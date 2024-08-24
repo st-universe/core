@@ -12,11 +12,11 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Override;
-use Stu\Orm\Repository\UserCharactersRepository;
+use Stu\Orm\Repository\UserCharacterRepository;
 
-#[Entity(repositoryClass: UserCharactersRepository::class)]
-#[Table(name: 'stu_user_characters')]
-class UserCharacters implements UserCharactersInterface
+#[Entity(repositoryClass: UserCharacterRepository::class)]
+#[Table(name: 'stu_user_character')]
+class UserCharacter implements UserCharacterInterface
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -52,7 +52,7 @@ class UserCharacters implements UserCharactersInterface
     }
 
     #[Override]
-    public function setUser(UserInterface $user): UserCharactersInterface
+    public function setUser(UserInterface $user): UserCharacterInterface
     {
         $this->user = $user;
         return $this;
@@ -65,7 +65,7 @@ class UserCharacters implements UserCharactersInterface
     }
 
     #[Override]
-    public function setName(string $name): UserCharactersInterface
+    public function setName(string $name): UserCharacterInterface
     {
         $this->name = $name;
         return $this;
@@ -78,7 +78,7 @@ class UserCharacters implements UserCharactersInterface
     }
 
     #[Override]
-    public function setDescription(?string $description): UserCharactersInterface
+    public function setDescription(?string $description): UserCharacterInterface
     {
         $this->description = $description;
         return $this;
@@ -91,7 +91,7 @@ class UserCharacters implements UserCharactersInterface
     }
 
     #[Override]
-    public function setAvatar(?string $avatar): UserCharactersInterface
+    public function setAvatar(?string $avatar): UserCharacterInterface
     {
         $this->avatar = $avatar;
         return $this;
@@ -104,7 +104,7 @@ class UserCharacters implements UserCharactersInterface
     }
 
     #[Override]
-    public function setFormerUserId(?int $formerUserId): UserCharactersInterface
+    public function setFormerUserId(?int $formerUserId): UserCharacterInterface
     {
         $this->former_user_id = $formerUserId;
         return $this;

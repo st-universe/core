@@ -7,15 +7,13 @@ namespace Stu\Module\Communication\View\ShowKnCharacters;
 use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Repository\UserCharactersRepositoryInterface;
+use Stu\Orm\Repository\UserCharacterRepositoryInterface;
 
 final class ShowKnCharacters implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_KN_CHARACTERS';
 
-    public function __construct(private ShowKnCharactersRequestInterface $showKnCharactersRequest, private UserCharactersRepositoryInterface $userCharactersRepository)
-    {
-    }
+    public function __construct(private ShowKnCharactersRequestInterface $showKnCharactersRequest, private UserCharacterRepositoryInterface $userCharactersRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void

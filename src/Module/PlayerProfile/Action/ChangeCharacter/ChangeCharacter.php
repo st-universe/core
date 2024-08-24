@@ -9,15 +9,13 @@ use Noodlehaus\ConfigInterface;
 use Override;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Repository\UserCharactersRepositoryInterface;
+use Stu\Orm\Repository\UserCharacterRepositoryInterface;
 
 final class ChangeCharacter implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_CHANGE_CHARACTER';
 
-    public function __construct(private ChangeCharacterRequestInterface $request, private UserCharactersRepositoryInterface $userCharactersRepository, private ConfigInterface $config)
-    {
-    }
+    public function __construct(private ChangeCharacterRequestInterface $request, private UserCharacterRepositoryInterface $userCharactersRepository, private ConfigInterface $config) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void

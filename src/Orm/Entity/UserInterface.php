@@ -137,7 +137,7 @@ interface UserInterface
     public function getSettings(): Collection;
 
     /**
-     * @return Collection<int, UserCharactersInterface>
+     * @return Collection<int, UserCharacterInterface>
      */
     public function getCharacters(): Collection;
 

@@ -3,7 +3,7 @@
 namespace Stu\Component\Communication\Kn;
 
 use Doctrine\Common\Collections\Collection;
-use Stu\Orm\Entity\KnCharactersInterface;
+use Stu\Orm\Entity\KnCharacterInterface;
 use Stu\Orm\Entity\RpgPlotInterface;
 use Stu\Orm\Entity\UserInterface;
 
@@ -28,7 +28,7 @@ interface KnItemInterface
     public function getPlot(): ?RpgPlotInterface;
 
     /**
-     * @return Collection<int, KnCharactersInterface>
+     * @return Collection<int, KnCharacterInterface>
      */
     public function getCharacters(): Collection;
 
