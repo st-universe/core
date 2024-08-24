@@ -65,7 +65,7 @@ interface KnPostInterface
     public function getUrl(): string;
 
     /**
-     * @return Collection<int, KnCharactersInterface>
+     * @return Collection<int, KnCharacterInterface>
      */
     public function getKnCharacters(): Collection;
 }

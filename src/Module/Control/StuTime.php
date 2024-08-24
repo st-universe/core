@@ -16,6 +16,19 @@ class StuTime
 
     public function transformToStuDate(int $unixTimestamp): string
     {
-        return date("d.m.", $unixTimestamp) . (date("Y", $unixTimestamp) + self::STU_YEARS_IN_FUTURE_OFFSET) . " " . date("H:i", $unixTimestamp);
+        return sprintf(
+            '%s%s',
+            date('d.m.', $unixTimestamp),
+            (int)date("Y", $unixTimestamp) + StuTime::STU_YEARS_IN_FUTURE_OFFSET,
+        );
+    }
+
+    public function transformToStuDateTime(int $unixTimestamp): string
+    {
+        return sprintf(
+            '%s %s',
+            $this->transformToStuDate($unixTimestamp),
+            date("H:i", $unixTimestamp)
+        );
     }
 }
