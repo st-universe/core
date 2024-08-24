@@ -44,8 +44,10 @@ final class EditKnPost implements ActionControllerInterface
             return;
         }
 
+        $plotId = $this->editKnPostRequest->getPlotId();
+
         $title = $this->editKnPostRequest->getTitle();
-        if (mb_strlen($title) < 6) {
+        if ($plotId === 0 && mb_strlen($title) < 6) {
             $game->addInformation(_('Der Titel ist zu kurz (mindestens 6 Zeichen)'));
             return;
         }
@@ -55,7 +57,6 @@ final class EditKnPost implements ActionControllerInterface
         }
 
         $text = $this->editKnPostRequest->getText();
-        $plotId = $this->editKnPostRequest->getPlotId();
 
         if ($plotId > 0) {
             $plot = $this->rpgPlotRepository->find($plotId);
