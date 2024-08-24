@@ -70,9 +70,9 @@ class KnPost implements KnPostInterface
     private Collection $comments;
 
     /**
-     * @var ArrayCollection<int, KnCharactersInterface>
+     * @var ArrayCollection<int, KnCharacterInterface>
      */
-    #[OneToMany(targetEntity: 'KnCharacters', mappedBy: 'knPost')]
+    #[OneToMany(targetEntity: 'KnCharacter', mappedBy: 'knPost')]
     private Collection $knCharacters;
 
 
@@ -250,7 +250,7 @@ class KnPost implements KnPostInterface
     }
 
     /**
-     * @return Collection<int, KnCharactersInterface>
+     * @return Collection<int, KnCharacterInterface>
      */
     #[Override]
     public function getKnCharacters(): Collection

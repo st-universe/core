@@ -7,16 +7,14 @@ namespace Stu\Module\PlayerProfile\Action\DeleteCharacter;
 use Override;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Repository\UserCharactersRepositoryInterface;
+use Stu\Orm\Repository\UserCharacterRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class DeleteCharacter implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_DELETE_CHARACTER';
 
-    public function __construct(private DeleteCharacterRequestInterface $deleteCharacterRequest, private UserRepositoryInterface $userRepository, private UserCharactersRepositoryInterface $userCharactersRepository)
-    {
-    }
+    public function __construct(private DeleteCharacterRequestInterface $deleteCharacterRequest, private UserRepositoryInterface $userRepository, private UserCharacterRepositoryInterface $userCharactersRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void

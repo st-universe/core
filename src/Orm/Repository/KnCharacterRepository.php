@@ -6,22 +6,22 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Override;
-use Stu\Orm\Entity\KnCharacters;
-use Stu\Orm\Entity\KnCharactersInterface;
+use Stu\Orm\Entity\KnCharacter;
+use Stu\Orm\Entity\KnCharacterInterface;
 
 /**
- * @extends EntityRepository<KnCharacters>
+ * @extends EntityRepository<KnCharacter>
  */
-final class KnCharactersRepository extends EntityRepository implements KnCharactersRepositoryInterface
+final class KnCharacterRepository extends EntityRepository implements KnCharacterRepositoryInterface
 {
     #[Override]
-    public function prototype(): KnCharactersInterface
+    public function prototype(): KnCharacterInterface
     {
-        return new KnCharacters();
+        return new KnCharacter();
     }
 
     #[Override]
-    public function save(KnCharactersInterface $knCharacters): void
+    public function save(KnCharacterInterface $knCharacters): void
     {
         $em = $this->getEntityManager();
         $em->persist($knCharacters);
@@ -29,7 +29,7 @@ final class KnCharactersRepository extends EntityRepository implements KnCharact
     }
 
     #[Override]
-    public function delete(KnCharactersInterface $knCharacters): void
+    public function delete(KnCharacterInterface $knCharacters): void
     {
         $em = $this->getEntityManager();
         $em->remove($knCharacters);

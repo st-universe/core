@@ -62,7 +62,7 @@ use Stu\Orm\Entity\GameTurn;
 use Stu\Orm\Entity\GameTurnStats;
 use Stu\Orm\Entity\History;
 use Stu\Orm\Entity\IgnoreList;
-use Stu\Orm\Entity\KnCharacters;
+use Stu\Orm\Entity\KnCharacter;
 use Stu\Orm\Entity\KnComment;
 use Stu\Orm\Entity\KnPost;
 use Stu\Orm\Entity\KnPostToPlotApplication;
@@ -141,7 +141,7 @@ use Stu\Orm\Entity\TradeTransaction;
 use Stu\Orm\Entity\TradeTransfer;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserAward;
-use Stu\Orm\Entity\UserCharacters;
+use Stu\Orm\Entity\UserCharacter;
 use Stu\Orm\Entity\UserInvitation;
 use Stu\Orm\Entity\UserIpTable;
 use Stu\Orm\Entity\UserLayer;
@@ -208,7 +208,7 @@ return [
     GameTurnStatsRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(GameTurnStats::class),
     HistoryRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(History::class),
     IgnoreListRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(IgnoreList::class),
-    KnCharactersRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(KnCharacters::class),
+    KnCharacterRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(KnCharacter::class),
     KnCommentRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(KnComment::class),
     KnPostRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(KnPost::class),
     KnPostToPlotApplicationRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(KnPostToPlotApplication::class),
@@ -288,7 +288,7 @@ return [
     TradeTransactionRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(TradeTransaction::class),
     TradeTransferRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(TradeTransfer::class),
     UserAwardRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserAward::class),
-    UserCharactersRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserCharacters::class),
+    UserCharacterRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserCharacter::class),
     UserLayerRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserLayer::class),
     UserLockRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserLock::class),
     UserRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(User::class),

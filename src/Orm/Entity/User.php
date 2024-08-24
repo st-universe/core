@@ -151,9 +151,9 @@ class User implements UserInterface
     private Collection $settings;
 
     /**
-     * @var ArrayCollection<int, UserCharactersInterface>
+     * @var ArrayCollection<int, UserCharacterInterface>
      */
-    #[OneToMany(targetEntity: 'UserCharacters', mappedBy: 'user', cascade: ['persist'])]
+    #[OneToMany(targetEntity: 'UserCharacter', mappedBy: 'user', cascade: ['persist'])]
     private Collection $characters;
 
     /**

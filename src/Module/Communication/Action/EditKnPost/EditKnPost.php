@@ -12,13 +12,13 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\KnCharactersInterface;
+use Stu\Orm\Entity\KnCharacterInterface;
 use Stu\Orm\Entity\KnPostInterface;
-use Stu\Orm\Repository\KnCharactersRepositoryInterface;
+use Stu\Orm\Repository\KnCharacterRepositoryInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
-use Stu\Orm\Repository\UserCharactersRepositoryInterface;
+use Stu\Orm\Repository\UserCharacterRepositoryInterface;
 
 final class EditKnPost implements ActionControllerInterface
 {
@@ -27,7 +27,7 @@ final class EditKnPost implements ActionControllerInterface
     public const int EDIT_TIME = 600;
 
 
-    public function __construct(private EditKnPostRequestInterface $editKnPostRequest, private KnPostRepositoryInterface $knPostRepository, private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository, private RpgPlotRepositoryInterface $rpgPlotRepository, private KnCharactersRepositoryInterface $knCharactersRepository, private UserCharactersRepositoryInterface $userCharactersRepository, private PrivateMessageSenderInterface $privateMessageSender) {}
+    public function __construct(private EditKnPostRequestInterface $editKnPostRequest, private KnPostRepositoryInterface $knPostRepository, private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository, private RpgPlotRepositoryInterface $rpgPlotRepository, private KnCharacterRepositoryInterface $knCharactersRepository, private UserCharacterRepositoryInterface $userCharactersRepository, private PrivateMessageSenderInterface $privateMessageSender) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -76,7 +76,7 @@ final class EditKnPost implements ActionControllerInterface
 
         $href = sprintf('comm.php?%s=1&id=%d', ShowSingleKn::VIEW_IDENTIFIER, $post->getId());
         $currentCharacterEntities = $this->knCharactersRepository->findBy(['knPost' => $post]);
-        $currentCharacterIds = array_map(fn(KnCharactersInterface $character): int => $character->getUserCharacters()->getId(), $currentCharacterEntities);
+        $currentCharacterIds = array_map(fn(KnCharacterInterface $character): int => $character->getUserCharacter()->getId(), $currentCharacterEntities);
 
 
         $newCharacterIdsInput = $this->editKnPostRequest->getCharacterIds();
@@ -154,7 +154,7 @@ final class EditKnPost implements ActionControllerInterface
                 $userCharacter = $this->userCharactersRepository->find($newCharacterId);
                 if ($userCharacter) {
                     $newEntity = $this->knCharactersRepository->prototype();
-                    $newEntity->setUserCharacters($userCharacter);
+                    $newEntity->setUserCharacter($userCharacter);
                     $newEntity->setKnPost($post);
                     $this->knCharactersRepository->save($newEntity);
                 }

@@ -14,20 +14,28 @@ use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\KnPostInterface;
-use Stu\Orm\Repository\KnCharactersRepositoryInterface;
+use Stu\Orm\Repository\KnCharacterRepositoryInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
-use Stu\Orm\Repository\UserCharactersRepositoryInterface;
+use Stu\Orm\Repository\UserCharacterRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class AddKnPost implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_WRITE_KN';
 
-    public function __construct(private AddKnPostRequestInterface $addKnPostRequest, private KnPostRepositoryInterface $knPostRepository, private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository, private RpgPlotRepositoryInterface $rpgPlotRepository, private UserRepositoryInterface $userRepository, private NewKnPostNotificatorInterface $newKnPostNotificator, private KnCharactersRepositoryInterface $knCharactersRepository, private UserCharactersRepositoryInterface $userCharactersRepository, private PrivateMessageSenderInterface $privateMessageSender)
-    {
-    }
+    public function __construct(
+        private AddKnPostRequestInterface $addKnPostRequest,
+        private KnPostRepositoryInterface $knPostRepository,
+        private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository,
+        private RpgPlotRepositoryInterface $rpgPlotRepository,
+        private UserRepositoryInterface $userRepository,
+        private NewKnPostNotificatorInterface $newKnPostNotificator,
+        private KnCharacterRepositoryInterface $knCharactersRepository,
+        private UserCharacterRepositoryInterface $userCharactersRepository,
+        private PrivateMessageSenderInterface $privateMessageSender
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -94,10 +102,11 @@ final class AddKnPost implements ActionControllerInterface
                 continue;
             }
 
-            $characters = $this->knCharactersRepository->prototype();
-            $characters->setUserCharacters($userCharacter);
-            $characters->setKnPost($post);
-            $this->knCharactersRepository->save($characters);
+            $character = $this->knCharactersRepository->prototype();
+            $character->setUserCharacter($userCharacter);
+            $character->setKnPost($post);
+            $this->knCharactersRepository->save($character);
+            $post->getKnCharacters()->add($character);
         }
         $this->notifyCharacterOwners($post, $validIds);
 
