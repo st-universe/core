@@ -16,9 +16,10 @@ final class KnPostPreview implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_PREVIEW_KN';
 
-    public function __construct(private AddKnPostRequestInterface $request, private Parser $bbcodeParser)
-    {
-    }
+    public function __construct(
+        private AddKnPostRequestInterface $request,
+        private Parser $bbcodeParser
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -32,6 +33,7 @@ final class KnPostPreview implements ActionControllerInterface
         $game->setTemplateVar('TEXT', request::indString('text') ?: '');
         $game->setTemplateVar('PLOT_ID', $plotId);
         $game->setTemplateVar('MARK', $mark);
+        $game->setTemplateVar('CHARACTER_IDS_STRING', request::indString('characterids'));
         $game->setTemplateVar('PREVIEW', $this->bbcodeParser->parse($text)->getAsHTML());
 
         $game->addInformation(_('Vorschau wurde erstellt'));
