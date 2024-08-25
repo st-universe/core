@@ -77,7 +77,7 @@
                         <a onmouseover="cp('translate{{ postId }}','buttons/translate1', 'png')"
                             onmouseout="cp('translate{{ postId }}','buttons/translate0', 'png')">
                             <img src="/assets/buttons/translate0.png" alt="Toggle Translations"
-                                onclick="toggleAll(this.closest('.box_body'))" style="cursor: pointer;"
+                                onclick="toggleAll(this.closest('.box_body'));" style="cursor: pointer;"
                                 title="Alles übersetzen" name="translate{{ postId }}" /></a>
                         {% endif %}
                         <a href="?mark={{ KN_OFFSET }}&markid={{ postId }}&B_SET_KNMARK=1"
@@ -100,7 +100,7 @@
                         {% for knCharacter in post.getCharacters %}
                         {% set character = knCharacter.getUserCharacter %}
                         <div class="character-name" style="cursor: pointer;"
-                            onclick="showKnCharacters({{ character.getId }})">
+                            onclick="showKnCharacter({{ character.getId }});">
                             {{ character.getName }}
                         </div>
                         {% endfor %}
