@@ -52,9 +52,9 @@ use Stu\Module\Communication\View\ShowEditKn\ShowEditKnRequestInterface;
 use Stu\Module\Communication\View\ShowEditPlot\ShowEditPlot;
 use Stu\Module\Communication\View\ShowEditPlot\ShowEditPlotRequest;
 use Stu\Module\Communication\View\ShowEditPlot\ShowEditPlotRequestInterface;
-use Stu\Module\Communication\View\ShowKnCharacters\ShowKnCharacters;
-use Stu\Module\Communication\View\ShowKnCharacters\ShowKnCharactersRequest;
-use Stu\Module\Communication\View\ShowKnCharacters\ShowKnCharactersRequestInterface;
+use Stu\Module\Communication\View\ShowKnCharacter\ShowKnCharacter;
+use Stu\Module\Communication\View\ShowKnCharacter\ShowKnCharacterRequest;
+use Stu\Module\Communication\View\ShowKnCharacter\ShowKnCharacterRequestInterface;
 use Stu\Module\Communication\View\ShowKnComments\ShowKnComments;
 use Stu\Module\Communication\View\ShowKnComments\ShowKnCommentsRequest;
 use Stu\Module\Communication\View\ShowKnComments\ShowKnCommentsRequestInterface;
@@ -82,7 +82,7 @@ use function DI\get;
 return [
     RateKnPostRequestInterface::class => autowire(RateKnPostRequest::class),
     SetKnMarkRequestInterface::class => autowire(SetKnMarkRequest::class),
-    ShowKnCharactersRequestInterface::class => autowire(ShowKnCharactersRequest::class),
+    ShowKnCharacterRequestInterface::class => autowire(ShowKnCharacterRequest::class),
     ShowKnCommentsRequestInterface::class => autowire(ShowKnCommentsRequest::class),
     ShowKnPlotRequestInterface::class => autowire(ShowKnPlotRequest::class),
     ShowEditPlotRequestInterface::class => autowire(ShowEditPlotRequest::class),
@@ -126,7 +126,7 @@ return [
     ],
     'COMMUNICATION_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
-        ShowKnCharacters::VIEW_IDENTIFIER => autowire(ShowKnCharacters::class),
+        ShowKnCharacter::VIEW_IDENTIFIER => autowire(ShowKnCharacter::class),
         ShowKnComments::VIEW_IDENTIFIER => autowire(ShowKnComments::class),
         ShowKnPlot::VIEW_IDENTIFIER => autowire(ShowKnPlot::class),
         ShowPlotList::VIEW_IDENTIFIER => autowire(ShowPlotList::class),
