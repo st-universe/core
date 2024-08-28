@@ -32,7 +32,7 @@ class ManageReactor implements ManagerInterface
             return [];
         }
 
-        if ($values[$ship->getId()] < 1) {
+        if ($values[$ship->getId()] === '' || $values[$ship->getId()] < 1) {
             return [];
         }
 
