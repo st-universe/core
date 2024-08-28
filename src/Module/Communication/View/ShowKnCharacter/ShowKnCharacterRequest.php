@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Communication\View\ShowKnCharacters;
+namespace Stu\Module\Communication\View\ShowKnCharacter;
 
 use Override;
 use Stu\Lib\Request\CustomControllerHelperTrait;
 
-final class ShowKnCharactersRequest implements ShowKnCharactersRequestInterface
+final class ShowKnCharacterRequest implements ShowKnCharacterRequestInterface
 {
     use CustomControllerHelperTrait;
 

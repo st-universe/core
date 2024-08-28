@@ -223,8 +223,8 @@ final class GameController implements GameControllerInterface
         $this->gameInformations->addInformationArray($info, true);
     }
 
-    #[Override]
-    public function addInformationMergeDown(array $info): void
+    /** @param array<string> $info */
+    private function addInformationMergeDown(array $info): void
     {
         $this->gameInformations->addInformationArray($info);
     }
@@ -289,8 +289,7 @@ final class GameController implements GameControllerInterface
     /**
      * @return array<int, GameConfigInterface>
      */
-    #[Override]
-    public function getGameConfig(): array
+    private function getGameConfig(): array
     {
         if ($this->gameConfig === null) {
             $this->gameConfig = [];

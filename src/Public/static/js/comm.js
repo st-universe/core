@@ -134,10 +134,10 @@ function searchKn(view) {
 	switchInnerContent(view, 'KommNet - Suche', `search=${search}`);
 }
 
-function showKnCharacters(characterId) {
+function showKnCharacter(characterId) {
 	closeAjaxWindow();
-    var elt = 'kncharacters';
-    openWindow(elt, 1, 450); 
-    ajax_update(elt, "comm.php?SHOW_KN_CHARACTERS=1&character=" + characterId);
-	
+	var elt = 'kncharacter';
+	openWindow(elt, 1, 450);
+	ajax_update(elt, "comm.php?SHOW_KN_CHARACTER=1&character=" + characterId);
+
 }

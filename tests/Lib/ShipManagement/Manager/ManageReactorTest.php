@@ -135,6 +135,86 @@ class ManageReactorTest extends StuTestCase
         $this->assertEmpty($msg);
     }
 
+    public function testManageExpectInfoMessageWhenNotFriendButShieldsOn(): void
+    {
+        $reactorWrapper = $this->mock(ReactorWrapperInterface::class);
+        $dilithium = $this->mock(CommodityInterface::class);
+        $am = $this->mock(CommodityInterface::class);
+        $deut = $this->mock(CommodityInterface::class);
+
+        $storage = $this->mock(Collection::class);
+        $values = ['reactor' => ['555' => '42']];
+
+        $this->wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->ship);
+        $this->wrapper->shouldReceive('getReactorWrapper')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($reactorWrapper);
+
+        $this->ship->shouldReceive('getId')
+            ->withNoArgs()
+            ->twice()
+            ->andReturn($this->shipId);
+        $this->ship->shouldReceive('getName')
+            ->withNoArgs()
+            ->andReturn('name');
+
+        $userMock = $this->mock(UserInterface::class);
+        $this->ship->shouldReceive('getUser')
+            ->withNoArgs()
+            ->andReturn($userMock);
+        $this->ship->shouldReceive('getShieldState')
+            ->withNoArgs()
+            ->andReturn(true);
+
+        $managerProviderUserMock = $this->mock(UserInterface::class);
+        $this->managerProvider->shouldReceive('getUser')
+            ->withNoArgs()
+            ->andReturn($managerProviderUserMock);
+
+        $this->playerRelationDeterminator->shouldReceive('isFriend')
+            ->once()
+            ->with($userMock, $managerProviderUserMock)
+            ->andReturn(false);
+
+        $this->managerProvider->shouldReceive('getStorage')
+            ->withNoArgs()
+            ->andReturn($storage);
+
+        $this->reactorUtil->shouldReceive('storageContainsNeededCommodities')
+            ->with($storage, $reactorWrapper)
+            ->andReturn(false);
+
+        $this->commodityCache->shouldReceive('get')
+            ->with(CommodityTypeEnum::COMMODITY_DILITHIUM)
+            ->andReturn($dilithium);
+        $this->commodityCache->shouldReceive('get')
+            ->with(CommodityTypeEnum::COMMODITY_DEUTERIUM)
+            ->andReturn($deut);
+        $this->commodityCache->shouldReceive('get')
+            ->with(CommodityTypeEnum::COMMODITY_ANTIMATTER)
+            ->andReturn($am);
+
+        $dilithium->shouldReceive('getName')
+            ->withNoArgs()
+            ->andReturn("Dilithium");
+        $deut->shouldReceive('getName')
+            ->withNoArgs()
+            ->andReturn("Deuterium");
+        $am->shouldReceive('getName')
+            ->withNoArgs()
+            ->andReturn("Antimaterie");
+
+        $msg = $this->subject->manage($this->wrapper, $values, $this->managerProvider);
+
+        $this->assertEquals([
+            'name: Warpkern konnte wegen aktivierter Schilde nicht aufgeladen werden.'
+        ], $msg);
+    }
+
     public function testManageExpectInfoMessageWhenInsufficientCommoditiesOnProvider(): void
     {
         $reactorWrapper = $this->mock(ReactorWrapperInterface::class);
@@ -175,6 +255,9 @@ class ManageReactorTest extends StuTestCase
         $this->ship->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($userMock);
+        $this->ship->shouldReceive('getShieldState')
+            ->withNoArgs()
+            ->andReturn(true);
 
         $managerProviderUserMock = $this->mock(UserInterface::class);
         $this->managerProvider->shouldReceive('getUser')
@@ -182,6 +265,7 @@ class ManageReactorTest extends StuTestCase
             ->andReturn($managerProviderUserMock);
 
         $this->playerRelationDeterminator->shouldReceive('isFriend')
+            ->once()
             ->with($userMock, $managerProviderUserMock)
             ->andReturn(true);
 
@@ -250,15 +334,14 @@ class ManageReactorTest extends StuTestCase
         $this->ship->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($userMock);
+        $this->ship->shouldReceive('getShieldState')
+            ->withNoArgs()
+            ->andReturn(false);
 
         $managerProviderUserMock = $this->mock(UserInterface::class);
         $this->managerProvider->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($managerProviderUserMock);
-
-        $this->playerRelationDeterminator->shouldReceive('isFriend')
-            ->with($userMock, $managerProviderUserMock)
-            ->andReturn(true);
 
         $this->managerProvider->shouldReceive('getStorage')
             ->withNoArgs()
@@ -297,6 +380,9 @@ class ManageReactorTest extends StuTestCase
         $this->ship->shouldReceive('getName')
             ->withNoArgs()
             ->andReturn('name');
+        $this->ship->shouldReceive('getShieldState')
+            ->withNoArgs()
+            ->andReturn(false);
 
         $userMock = $this->mock(UserInterface::class);
         $this->ship->shouldReceive('getUser')
@@ -307,10 +393,6 @@ class ManageReactorTest extends StuTestCase
         $this->managerProvider->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($managerProviderUserMock);
-
-        $this->playerRelationDeterminator->shouldReceive('isFriend')
-            ->with($userMock, $managerProviderUserMock)
-            ->andReturn(true);
 
         $this->managerProvider->shouldReceive('getStorage')
             ->withNoArgs()

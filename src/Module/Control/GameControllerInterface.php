@@ -32,8 +32,6 @@ interface GameControllerInterface extends InformationInterface
 
     public function addInformationMerge(array $info): void;
 
-    public function addInformationMergeDown(array $info): void;
-
     public function addInformationWrapper(?InformationWrapper $informations, bool $isHead = false): void;
 
     public function getInformation(): array;
@@ -47,8 +45,6 @@ interface GameControllerInterface extends InformationInterface
     public function getUser(): UserInterface;
 
     public function hasUser(): bool;
-
-    public function getGameConfig(): array;
 
     public function getUniqId(): string;
 
@@ -92,7 +88,6 @@ interface GameControllerInterface extends InformationInterface
     public function getSessionString(): string;
 
     public function sessionAndAdminCheck(): void;
-
 
     public function getGameRequest(): GameRequestInterface;
 
