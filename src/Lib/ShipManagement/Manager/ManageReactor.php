@@ -41,29 +41,28 @@ class ManageReactor implements ManagerInterface
             return [];
         }
 
-        if (!$this->playerRelationDeterminator->isFriend($ship->getUser(), $managerProvider->getUser()) && $ship->getShieldState()) {
+        if ($ship->getShieldState() && !$this->playerRelationDeterminator->isFriend($ship->getUser(), $managerProvider->getUser())) {
             $msg[] = sprintf(
                 _('%s: Warpkern konnte wegen aktivierter Schilde nicht aufgeladen werden.'),
                 $ship->getName()
             );
             return $msg;
-        } else {
-
-            $storage = $managerProvider->getStorage();
-
-            if ($this->reactorUtil->storageContainsNeededCommodities($storage, $reactor)) {
-                $load = $values[$ship->getId()] == 'm' ? PHP_INT_MAX : (int)$values[$ship->getId()];
-                $loadMessage = $this->reactorUtil->loadReactor($ship, $load, $managerProvider, $reactor);
-
-                if ($loadMessage !== null) {
-                    return [$loadMessage];
-                }
-            } else {
-                return $this->createMissingCommoditiesMessage($ship, $reactor);
-            }
-
-            return [];
         }
+
+        $storage = $managerProvider->getStorage();
+
+        if ($this->reactorUtil->storageContainsNeededCommodities($storage, $reactor)) {
+            $load = $values[$ship->getId()] == 'm' ? PHP_INT_MAX : (int)$values[$ship->getId()];
+            $loadMessage = $this->reactorUtil->loadReactor($ship, $load, $managerProvider, $reactor);
+
+            if ($loadMessage !== null) {
+                return [$loadMessage];
+            }
+        } else {
+            return $this->createMissingCommoditiesMessage($ship, $reactor);
+        }
+
+        return [];
     }
 
     /**
