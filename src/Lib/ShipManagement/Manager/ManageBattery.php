@@ -36,39 +36,41 @@ class ManageBattery implements ManagerInterface
         $shipId = $ship->getId();
         $epsSystem = $wrapper->getEpsSystemData();
 
-        if (!$this->playerRelationDeterminator->isFriend($ship->getUser(), $managerProvider->getUser()) && $ship->getShieldState()) {
+        if (
+            $epsSystem === null
+            || !array_key_exists($shipId, $batt)
+        ) {
+            return $msg;
+        }
+
+        if ($ship->getShieldState() && !$this->playerRelationDeterminator->isFriend($ship->getUser(), $managerProvider->getUser())) {
             $msg[] = sprintf(
                 _('%s: Batterie konnte wegen aktivierter Schilde nicht aufgeladen werden.'),
                 $ship->getName()
             );
             return $msg;
-        } else {
-            if (
-                $epsSystem !== null
-                && array_key_exists(
-                    $shipId,
-                    $batt
-                )
-                && $managerProvider->getEps() > 0
-                && $epsSystem->getBattery() < $epsSystem->getMaxBattery()
-            ) {
-                $load = $this->determineLoad($batt[$shipId], $epsSystem, $managerProvider);
-
-                if ($load > 0) {
-                    $epsSystem->setBattery($epsSystem->getBattery() + $load)->update();
-                    $managerProvider->lowerEps($load);
-                    $msg[] = sprintf(
-                        _('%s: Batterie um %d Einheiten aufgeladen'),
-                        $ship->getName(),
-                        $load
-                    );
-
-                    $this->sendMessageToOwner($ship, $managerProvider, $load);
-                }
-            }
-
-            return $msg;
         }
+
+        if (
+            $managerProvider->getEps() > 0
+            && $epsSystem->getBattery() < $epsSystem->getMaxBattery()
+        ) {
+            $load = $this->determineLoad($batt[$shipId], $epsSystem, $managerProvider);
+
+            if ($load > 0) {
+                $epsSystem->setBattery($epsSystem->getBattery() + $load)->update();
+                $managerProvider->lowerEps($load);
+                $msg[] = sprintf(
+                    _('%s: Batterie um %d Einheiten aufgeladen'),
+                    $ship->getName(),
+                    $load
+                );
+
+                $this->sendMessageToOwner($ship, $managerProvider, $load);
+            }
+        }
+
+        return $msg;
     }
 
     private function determineLoad(

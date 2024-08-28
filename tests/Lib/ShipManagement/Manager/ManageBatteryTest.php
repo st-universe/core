@@ -94,10 +94,6 @@ class ManageBatteryTest extends StuTestCase
             ->withNoArgs()
             ->andReturn($this->mock(UserInterface::class));
 
-        $this->playerRelationDeterminator->shouldReceive('isFriend')
-            ->with($this->ship->getUser(), $this->managerProvider->getUser())
-            ->andReturn(true);
-
         $msg = $this->subject->manage($this->wrapper, $values, $this->managerProvider);
 
         $this->assertEmpty($msg);
@@ -128,14 +124,49 @@ class ManageBatteryTest extends StuTestCase
             ->withNoArgs()
             ->andReturn($this->mock(UserInterface::class));
 
-
-        $this->playerRelationDeterminator->shouldReceive('isFriend')
-            ->with($this->ship->getUser(), $this->managerProvider->getUser())
-            ->andReturn(true);
-
         $msg = $this->subject->manage($this->wrapper, $values, $this->managerProvider);
 
         $this->assertEmpty($msg);
+    }
+
+    public function testManageExpectMessageWhenNotFriendAndShieldsOn(): void
+    {
+        $values = ['batt' => ['555' => '42']];
+
+        $this->wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->ship);
+        $this->wrapper->shouldReceive('getEpsSystemData')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->epsSystemData);
+
+        $this->ship->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->shipId);
+        $this->ship->shouldReceive('getUser')
+            ->withNoArgs()
+            ->andReturn($this->mock(UserInterface::class));
+        $this->ship->shouldReceive('getShieldState')
+            ->withNoArgs()
+            ->andReturn(true);
+        $this->ship->shouldReceive('getName')
+            ->withNoArgs()
+            ->andReturn('SHIPNAME');
+
+        $this->managerProvider->shouldReceive('getUser')
+            ->withNoArgs()
+            ->andReturn($this->mock(UserInterface::class));
+
+        $this->playerRelationDeterminator->shouldReceive('isFriend')
+            ->with($this->ship->getUser(), $this->managerProvider->getUser())
+            ->andReturn(false);
+
+        $msg = $this->subject->manage($this->wrapper, $values, $this->managerProvider);
+
+        $this->assertEquals(['SHIPNAME: Batterie konnte wegen aktivierter Schilde nicht aufgeladen werden.'], $msg);
     }
 
     public function testManageExpectNothingWhenProviderEpsEmpty(): void
@@ -158,6 +189,9 @@ class ManageBatteryTest extends StuTestCase
         $this->ship->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($this->mock(UserInterface::class));
+        $this->ship->shouldReceive('getShieldState')
+            ->withNoArgs()
+            ->andReturn(false);
 
         $this->managerProvider->shouldReceive('getUser')
             ->withNoArgs()
@@ -197,11 +231,13 @@ class ManageBatteryTest extends StuTestCase
         $this->ship->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($this->mock(UserInterface::class));
+        $this->ship->shouldReceive('getShieldState')
+            ->withNoArgs()
+            ->andReturn(false);
 
         $this->managerProvider->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($this->mock(UserInterface::class));
-
 
         $this->playerRelationDeterminator->shouldReceive('isFriend')
             ->with($this->ship->getUser(), $this->managerProvider->getUser())
@@ -260,7 +296,7 @@ class ManageBatteryTest extends StuTestCase
 
         $this->ship->shouldReceive('getShieldState')
             ->withNoArgs()
-            ->andReturn(false);
+            ->andReturn(true);
 
         $managerProviderUserMock = $this->mock(UserInterface::class);
         $managerProviderUserMock->shouldReceive('getId')
@@ -272,6 +308,7 @@ class ManageBatteryTest extends StuTestCase
             ->andReturn($managerProviderUserMock);
 
         $this->playerRelationDeterminator->shouldReceive('isFriend')
+            ->once()
             ->with($userMock, $managerProviderUserMock)
             ->andReturn(true);
 
@@ -369,10 +406,6 @@ class ManageBatteryTest extends StuTestCase
             ->withNoArgs()
             ->andReturn($managerProviderUserMock);
 
-        $this->playerRelationDeterminator->shouldReceive('isFriend')
-            ->with($userMock, $managerProviderUserMock)
-            ->andReturn(true);
-
         $this->managerProvider->shouldReceive('getEps')
             ->withNoArgs()
             ->andReturn(100);
@@ -463,10 +496,6 @@ class ManageBatteryTest extends StuTestCase
         $this->managerProvider->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($managerProviderUserMock);
-
-        $this->playerRelationDeterminator->shouldReceive('isFriend')
-            ->with($userMock, $managerProviderUserMock)
-            ->andReturn(true);
 
         $this->managerProvider->shouldReceive('getEps')
             ->withNoArgs()
@@ -559,10 +588,6 @@ class ManageBatteryTest extends StuTestCase
         $this->managerProvider->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($managerProviderUserMock);
-
-        $this->playerRelationDeterminator->shouldReceive('isFriend')
-            ->with($userMock, $managerProviderUserMock)
-            ->andReturn(true);
 
         $this->managerProvider->shouldReceive('getEps')
             ->withNoArgs()
