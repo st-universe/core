@@ -103,7 +103,10 @@ final class TholianWebUtil implements TholianWebUtilInterface
             throw new RuntimeException('no web under construction');
         }
 
-        $this->releaseWebHelperIntern($wrapper);
+        $finishedTime = $this->releaseWebHelperIntern($wrapper);
+        if ($finishedTime === null) {
+            throw new RuntimeException('this should not happen');
+        }
 
         $currentSpinnerSystems = $this->shipSystemRepository->getWebConstructingShipSystems($web->getId());
 
@@ -123,7 +126,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
                         'Die %s hat den Netzaufbau in Sektor %s verlassen, Fertigstellung: %s',
                         $ship->getName(),
                         $ship->getSectorString(),
-                        $this->stuTime->transformToStuDate($web->getFinishedTime())
+                        $this->stuTime->transformToStuDateTime($finishedTime)
                     ),
                     PrivateMessageFolderTypeEnum::SPECIAL_SHIP
                 );
@@ -161,7 +164,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
         }
     }
 
-    private function releaseWebHelperIntern(ShipWrapperInterface $wrapper): void
+    private function releaseWebHelperIntern(ShipWrapperInterface $wrapper): ?int
     {
         $emitter = $wrapper->getWebEmitterSystemData();
         $web = $emitter->getWebUnderConstruction();
@@ -177,11 +180,11 @@ final class TholianWebUtil implements TholianWebUtilInterface
         $this->shipRepository->save($ship);
 
         //update finish time last
-        $this->updateWebFinishTime($web, -1);
+        return $this->updateWebFinishTime($web, -1);
     }
 
     #[Override]
-    public function updateWebFinishTime(TholianWebInterface $web, ?int $helperModifier = null): void
+    public function updateWebFinishTime(TholianWebInterface $web, ?int $helperModifier = null): ?int
     {
         $this->loggerUtil->log(sprintf('updateWebFinishTime, webId: %d', $web->getId()));
 
@@ -189,7 +192,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
         $this->entityManager->flush();
 
         if ($web->isFinished()) {
-            return;
+            return null;
         }
 
         $currentSpinnerSystems = $this->shipSystemRepository->getWebConstructingShipSystems($web->getId());
@@ -205,18 +208,19 @@ final class TholianWebUtil implements TholianWebUtilInterface
                 $web->setFinishedTime($time + (int)ceil($secondsLeft * $oldSpinnerCount / $currentSpinnerCount));
             }
             $this->tholianWebRepository->save($web);
-            return;
+
+            return $web->getFinishedTime();
         }
 
         //initialize by weight of targets and spinners
         $targetWeightSum = array_reduce(
             $web->getCapturedShips()->toArray(),
-            fn (int $sum, ShipInterface $ship): int => $sum + $ship->getRump()->getTractorMass(),
+            fn(int $sum, ShipInterface $ship): int => $sum + $ship->getRump()->getTractorMass(),
             0
         );
         $webSpinnerWeightSum = array_reduce(
             $this->shipSystemRepository->getWebConstructingShipSystems($web->getId()),
-            fn (int $sum, ShipSystemInterface $shipSystem): int => $sum + $shipSystem->getShip()->getRump()->getTractorMass(),
+            fn(int $sum, ShipSystemInterface $shipSystem): int => $sum + $shipSystem->getShip()->getRump()->getTractorMass(),
             0
         );
 
@@ -227,5 +231,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
             $web->setFinishedTime($time + ((int)ceil($targetWeightSum / $webSpinnerWeightSum)) * TimeConstants::ONE_HOUR_IN_SECONDS);
             $this->tholianWebRepository->save($web);
         }
+
+        return $web->getFinishedTime();
     }
 }

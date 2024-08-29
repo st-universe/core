@@ -1389,16 +1389,6 @@ parameters:
 			path: src/Module/Ship/Action/Selfrepair/Selfrepair.php
 
 		-
-			message: "#^Parameter \\#1 \\$unixTimestamp of method Stu\\\\Module\\\\Control\\\\StuTime\\:\\:transformToStuDate\\(\\) expects int, int\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/TholianWeb/CreateTholianWeb.php
-
-		-
-			message: "#^Parameter \\#1 \\$unixTimestamp of method Stu\\\\Module\\\\Control\\\\StuTime\\:\\:transformToStuDate\\(\\) expects int, int\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/TholianWeb/SupportTholianWeb.php
-
-		-
 			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\TradePostInterface and null will always evaluate to false\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/TransferFromAccount/TransferFromAccount.php
@@ -1510,11 +1500,6 @@ parameters:
 
 		-
 			message: "#^Cannot call method setWebUnderConstructionId\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WebEmitterSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Interaction/TholianWebUtil.php
-
-		-
-			message: "#^Parameter \\#1 \\$unixTimestamp of method Stu\\\\Module\\\\Control\\\\StuTime\\:\\:transformToStuDate\\(\\) expects int, int\\|null given\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/Interaction/TholianWebUtil.php
 

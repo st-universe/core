@@ -22,5 +22,5 @@ interface TholianWebUtilInterface
         bool $isFinished = false
     ): void;
 
-    public function updateWebFinishTime(TholianWebInterface $web, ?int $helperModifier = null): void;
+    public function updateWebFinishTime(TholianWebInterface $web, ?int $helperModifier = null): ?int;
 }
