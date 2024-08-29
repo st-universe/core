@@ -177,7 +177,7 @@ class PirateWrathManager implements PirateWrathManagerInterface
 
         $this->createPrestigeLog->createLog(
             -$prestige,
-            sprintf('-%d Prestige: Großer Nagus garantiert Schutz vor Piraten bis zum %s', $prestige, $this->stuTime->transformToStuDate($timestamp)),
+            sprintf('-%d Prestige: Großer Nagus garantiert Schutz vor Piraten bis zum %s', $prestige, $this->stuTime->transformToStuDateTime($timestamp)),
             $user,
             time()
         );
@@ -185,7 +185,7 @@ class PirateWrathManager implements PirateWrathManagerInterface
 
         $game->addInformation(sprintf(
             _('Der Nagus konnte einen Nichtangriffspakt mit den Kazon bis zum %s Uhr aushandeln'),
-            $this->stuTime->transformToStuDate($timestamp)
+            $this->stuTime->transformToStuDateTime($timestamp)
         ));
     }
 

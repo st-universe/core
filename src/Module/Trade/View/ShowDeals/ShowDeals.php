@@ -16,9 +16,7 @@ final class ShowDeals implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_DEALS';
 
-    public function __construct(private DealsRepositoryInterface $dealsRepository, private StuTime $stuTime, private TradeLicenseRepositoryInterface $tradeLicenseRepository)
-    {
-    }
+    public function __construct(private DealsRepositoryInterface $dealsRepository, private StuTime $stuTime, private TradeLicenseRepositoryInterface $tradeLicenseRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -56,7 +54,7 @@ final class ShowDeals implements ViewControllerInterface
             $game->setTemplateVar('PROTECTIONTIMEOUT', time());
         } else {
             $game->setTemplateVar('PROTECTIONTIMEOUT', $game->getUser()->getPirateWrath()->getProtectionTimeout());
-            $game->setTemplateVar('PROTECTIONTIME', $this->stuTime->transformToStuDate($game->getUser()->getPirateWrath()->getProtectionTimeout()));
+            $game->setTemplateVar('PROTECTIONTIME', $this->stuTime->transformToStuDateTime($game->getUser()->getPirateWrath()->getProtectionTimeout()));
         }
 
         $hasActivedeals = $this->dealsRepository->hasActiveDeals($userId);
