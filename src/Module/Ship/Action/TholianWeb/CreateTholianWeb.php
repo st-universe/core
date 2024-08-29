@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\Action\TholianWeb;
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use request;
+use RuntimeException;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\SpacecraftTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -31,9 +32,7 @@ final class CreateTholianWeb implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_CREATE_WEB';
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private ShipRepositoryInterface $shipRepository, private InteractionCheckerInterface $interactionChecker, private ActivatorDeactivatorHelperInterface $helper, private TholianWebRepositoryInterface $tholianWebRepository, private TholianWebUtilInterface $tholianWebUtil, private ShipCreatorInterface $shipCreator, private PrivateMessageSenderInterface $privateMessageSender, private StuTime $stuTime, private ShipStateChangerInterface $shipStateChanger, private EntityManagerInterface $entityManager)
-    {
-    }
+    public function __construct(private ShipLoaderInterface $shipLoader, private ShipRepositoryInterface $shipRepository, private InteractionCheckerInterface $interactionChecker, private ActivatorDeactivatorHelperInterface $helper, private TholianWebRepositoryInterface $tholianWebRepository, private TholianWebUtilInterface $tholianWebUtil, private ShipCreatorInterface $shipCreator, private PrivateMessageSenderInterface $privateMessageSender, private StuTime $stuTime, private ShipStateChangerInterface $shipStateChanger, private EntityManagerInterface $entityManager) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -127,12 +126,15 @@ final class CreateTholianWeb implements ActionControllerInterface
             ->setWebUnderConstructionId($web->getId())
             ->setOwnedWebId($web->getId())->update();
 
-        $this->tholianWebUtil->updateWebFinishTime($web);
+        $finishedTime = $this->tholianWebUtil->updateWebFinishTime($web);
+        if ($finishedTime === null) {
+            throw new RuntimeException('this should not happen');
+        }
 
         $game->addInformationf(
             "Es wird ein Energienetz um %d Ziele gespannt, Fertigstellung: %s",
             count($possibleCatches),
-            $this->stuTime->transformToStuDate($web->getFinishedTime())
+            $this->stuTime->transformToStuDateTime($finishedTime)
         );
     }
 

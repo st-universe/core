@@ -99,6 +99,36 @@ class ManageBatteryTest extends StuTestCase
         $this->assertEmpty($msg);
     }
 
+    public function testManageExpectNothingWhenValueIsEmptyString(): void
+    {
+        $values = ['batt' => ['555' => '']];
+
+        $this->wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->ship);
+        $this->wrapper->shouldReceive('getEpsSystemData')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->epsSystemData);
+
+        $this->ship->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->shipId);
+        $this->ship->shouldReceive('getUser')
+            ->withNoArgs()
+            ->andReturn($this->mock(UserInterface::class));
+
+        $this->managerProvider->shouldReceive('getUser')
+            ->withNoArgs()
+            ->andReturn($this->mock(UserInterface::class));
+
+        $msg = $this->subject->manage($this->wrapper, $values, $this->managerProvider);
+
+        $this->assertEmpty($msg);
+    }
+
     public function testManageExpectNothingWhenNotInValues(): void
     {
         $values = ['batt' => ['5' => '42']];

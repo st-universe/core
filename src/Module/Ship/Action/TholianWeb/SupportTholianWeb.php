@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Action\TholianWeb;
 
 use Override;
 use request;
+use RuntimeException;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Exception\SanityCheckException;
@@ -92,9 +93,12 @@ final class SupportTholianWeb implements ActionControllerInterface
         $emitter->setWebUnderConstructionId($web->getId())->update();
         $this->shipStateChanger->changeShipState($wrapper, ShipStateEnum::SHIP_STATE_WEB_SPINNING);
 
-        $this->tholianWebUtil->updateWebFinishTime($web, 1);
-        $finishTimeString = $this->stuTime->transformToStuDate($web->getFinishedTime());
+        $finishedTime = $this->tholianWebUtil->updateWebFinishTime($web, 1);
+        if ($finishedTime === null) {
+            throw new RuntimeException('this should not happen');
+        }
 
+        $finishTimeString = $this->stuTime->transformToStuDateTime($finishedTime);
 
         //notify other web spinners
         foreach ($currentSpinnerSystems as $shipSystem) {

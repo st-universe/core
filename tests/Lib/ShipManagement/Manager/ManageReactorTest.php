@@ -93,6 +93,25 @@ class ManageReactorTest extends StuTestCase
         $this->assertEmpty($msg);
     }
 
+    public function testManageExpectNothingWhenValueIsEmptyString(): void
+    {
+        $values = ['reactor' => ['555' => '']];
+
+        $this->wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->ship);
+
+        $this->ship->shouldReceive('getId')
+            ->withNoArgs()
+            ->times(2)
+            ->andReturn($this->shipId);
+
+        $msg = $this->subject->manage($this->wrapper, $values, $this->managerProvider);
+
+        $this->assertEmpty($msg);
+    }
+
     public function testManageExpectNothingWhenValueIsZero(): void
     {
         $values = ['reactor' => ['555' => '0']];
@@ -104,7 +123,7 @@ class ManageReactorTest extends StuTestCase
 
         $this->ship->shouldReceive('getId')
             ->withNoArgs()
-            ->twice()
+            ->times(3)
             ->andReturn($this->shipId);
 
         $msg = $this->subject->manage($this->wrapper, $values, $this->managerProvider);
@@ -127,7 +146,7 @@ class ManageReactorTest extends StuTestCase
 
         $this->ship->shouldReceive('getId')
             ->withNoArgs()
-            ->twice()
+            ->times(3)
             ->andReturn($this->shipId);
 
         $msg = $this->subject->manage($this->wrapper, $values, $this->managerProvider);
@@ -156,7 +175,7 @@ class ManageReactorTest extends StuTestCase
 
         $this->ship->shouldReceive('getId')
             ->withNoArgs()
-            ->twice()
+            ->times(3)
             ->andReturn($this->shipId);
         $this->ship->shouldReceive('getName')
             ->withNoArgs()
@@ -245,7 +264,7 @@ class ManageReactorTest extends StuTestCase
 
         $this->ship->shouldReceive('getId')
             ->withNoArgs()
-            ->twice()
+            ->times(3)
             ->andReturn($this->shipId);
         $this->ship->shouldReceive('getName')
             ->withNoArgs()

@@ -39,6 +39,7 @@ class ManageBattery implements ManagerInterface
         if (
             $epsSystem === null
             || !array_key_exists($shipId, $batt)
+            || $batt[$shipId] === ''
         ) {
             return $msg;
         }
