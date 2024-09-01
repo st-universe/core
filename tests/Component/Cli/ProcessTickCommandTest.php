@@ -7,26 +7,24 @@ namespace Stu\Component\Cli;
 use Ahc\Cli\Application;
 use Mockery\MockInterface;
 use Override;
-use Psr\Container\ContainerInterface;
 use Stu\CliInteractorHelper;
 use Stu\Module\Tick\Process\ProcessTickRunner;
-use Stu\Module\Tick\TickRunnerInterface;
 use Stu\StuTestCase;
 
 class ProcessTickCommandTest extends StuTestCase
 {
-    /** @var MockInterface&ContainerInterface */
-    private MockInterface $dic;
+    /** @var MockInterface&ProcessTickRunner */
+    private MockInterface $processTickRunner;
 
     private ProcessTickCommand $subject;
 
     #[Override]
     protected function setUp(): void
     {
-        $this->dic = $this->mock(ContainerInterface::class);
+        $this->processTickRunner = $this->mock(ProcessTickRunner::class);
 
         $this->subject = new ProcessTickCommand(
-            $this->dic
+            $this->processTickRunner
         );
     }
 
@@ -34,7 +32,6 @@ class ProcessTickCommandTest extends StuTestCase
     {
         $app = $this->mock(Application::class);
         $interactor = $this->mock(CliInteractorHelper::class);
-        $colonyTickRunner = $this->mock(TickRunnerInterface::class);
 
         $this->subject->bind($app);
 
@@ -50,12 +47,7 @@ class ProcessTickCommandTest extends StuTestCase
             )
             ->once();
 
-        $this->dic->shouldReceive('get')
-            ->with(ProcessTickRunner::class)
-            ->once()
-            ->andReturn($colonyTickRunner);
-
-        $colonyTickRunner->shouldReceive('run')
+        $this->processTickRunner->shouldReceive('run')
             ->with(1, 1)
             ->once();
 
