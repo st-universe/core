@@ -11,7 +11,7 @@ use Stu\Module\Tick\TransactionTickRunnerInterface;
 /**
  * Executes all process related tasks (e.g. finishing build processes, ...)
  */
-final class ProcessTickRunner implements TickRunnerInterface
+class ProcessTickRunner implements TickRunnerInterface
 {
     private const string TICK_DESCRIPTION = "processtick";
 

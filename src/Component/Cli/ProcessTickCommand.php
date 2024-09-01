@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Cli;
 
 use Ahc\Cli\Input\Command;
-use Psr\Container\ContainerInterface;
 use Stu\Module\Tick\Process\ProcessTickRunner;
 
 /**
@@ -14,7 +13,7 @@ use Stu\Module\Tick\Process\ProcessTickRunner;
 final class ProcessTickCommand extends Command
 {
     public function __construct(
-        private ContainerInterface $dic
+        private ProcessTickRunner $tickRunner,
     ) {
         parent::__construct(
             'tick:process',
@@ -29,8 +28,7 @@ final class ProcessTickCommand extends Command
 
     public function execute(): void
     {
-        $tickRunner = $this->dic->get(ProcessTickRunner::class);
-        $tickRunner->run(1, 1);
+        $this->tickRunner->run(1, 1);
 
         $this->io()->ok(
             'Process tick has been executed',
