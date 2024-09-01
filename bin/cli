@@ -5,7 +5,6 @@ declare(strict_types=1);
 
 use Ahc\Cli\IO\Interactor;
 use Doctrine\ORM\EntityManagerInterface;
-use Psr\Container\ContainerInterface;
 use Stu\Component\Cli\ColonyTickCommand;
 use Stu\Component\Cli\GameResetCommand;
 use Stu\Component\Cli\GenerateEmptySystemsCommand;
@@ -21,57 +20,55 @@ use Stu\Module\Config\StuConfigInterface;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-Init::run(
-    function (ContainerInterface $dic): void {
-        $em = $dic->get(EntityManagerInterface::class);
+$dic = Init::getContainer();
 
-        $em->beginTransaction();
+$em = $dic->get(EntityManagerInterface::class);
 
-        $app = new Ahc\Cli\Application(
-            'Star Trek Universe CLI',
-            (string) $dic->get(StuConfigInterface::class)->getGameSettings()->getVersion(),
-            function (int $exitCode = 0) use ($em): void {
-                if ($exitCode === 0) {
-                    $em->flush();
-                    $em->commit();
-                } else {
-                    $em->rollback();
-                }
-                exit($exitCode);
-            }
-        );
-        $app->io(new Interactor());
+$em->beginTransaction();
 
-        $logo = <<<LOGO
-              .dBBBBP  dBBBBBBP dBP dBP    dBBBP  dBP    dBP
-              BP
-              `BBBBb    dBP   dBP dBP    dBP    dBP    dBP
-                 dBP   dBP   dBP_dBP    dBP    dBP    dBP
-            dBBBBP'   dBP   dBBBBBP    dBBBBP dBBBBP dBP
-            LOGO;
-
-        $app->logo($logo);
-
-        // user
-        $app->add($dic->get(UserCreateCommand::class));
-
-        // tick
-        $app->add($dic->get(ColonyTickCommand::class));
-        $app->add($dic->get(ShipTickCommand::class));
-        $app->add(new MaintenanceTickCommand($dic));
-        $app->add(new ProcessTickCommand($dic));
-        $app->add(new ManagerTickCommand($dic));
-        $app->add(new PirateTickCommand($dic));
-
-        // system generation
-        $app->add(new GenerateEmptySystemsCommand($dic));
-
-        // reset
-        $app->add(new GameResetCommand($dic));
-
-        //refactor
-        $app->add(new RefactorCommand($dic));
-
-        $app->handle($_SERVER['argv']);
+$app = new Ahc\Cli\Application(
+    'Star Trek Universe CLI',
+    (string) $dic->get(StuConfigInterface::class)->getGameSettings()->getVersion(),
+    function (int $exitCode = 0) use ($em): void {
+        if ($exitCode === 0) {
+            $em->flush();
+            $em->commit();
+        } else {
+            $em->rollback();
+        }
+        exit($exitCode);
     }
 );
+$app->io(new Interactor());
+
+$logo = <<<LOGO
+      .dBBBBP  dBBBBBBP dBP dBP    dBBBP  dBP    dBP
+      BP
+      `BBBBb    dBP   dBP dBP    dBP    dBP    dBP
+         dBP   dBP   dBP_dBP    dBP    dBP    dBP
+    dBBBBP'   dBP   dBBBBBP    dBBBBP dBBBBP dBP
+    LOGO;
+
+$app->logo($logo);
+
+// user
+$app->add($dic->get(UserCreateCommand::class));
+
+// tick
+$app->add($dic->get(ColonyTickCommand::class));
+$app->add($dic->get(ShipTickCommand::class));
+$app->add(new MaintenanceTickCommand($dic));
+$app->add($dic->get(ProcessTickCommand::class));
+$app->add(new ManagerTickCommand($dic));
+$app->add(new PirateTickCommand($dic));
+
+// system generation
+$app->add(new GenerateEmptySystemsCommand($dic));
+
+// reset
+$app->add(new GameResetCommand($dic));
+
+//refactor
+$app->add(new RefactorCommand($dic));
+
+$app->handle($_SERVER['argv']);
