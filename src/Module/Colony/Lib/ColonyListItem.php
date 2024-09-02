@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Override;
 use Stu\Component\Colony\ColonyPopulationCalculatorInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;
+use Stu\Module\Colony\Lib\Gui\Component\EpsBarProvider;
 use Stu\Module\Template\StatusBarColorEnum;
 use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Orm\Entity\ColonyClassInterface;
@@ -21,6 +22,8 @@ final class ColonyListItem implements ColonyListItemInterface
     private ?array $production = null;
 
     private ?ColonyPopulationCalculatorInterface $colonyPopulationCalculator = null;
+
+    private ?int $energyProduction = null;
 
     public function __construct(
         private ColonyLibFactoryInterface $colonyLibFactory,
@@ -100,7 +103,11 @@ final class ColonyListItem implements ColonyListItemInterface
     #[Override]
     public function getEnergyProduction(): int
     {
-        return $this->planetFieldRepository->getEnergyProductionByHost($this->colony);
+        if ($this->energyProduction === null) {
+            $this->energyProduction = $this->planetFieldRepository->getEnergyProductionByHost($this->colony);
+        }
+
+        return $this->energyProduction;
     }
 
     #[Override]
@@ -209,13 +216,7 @@ final class ColonyListItem implements ColonyListItemInterface
     #[Override]
     public function getEpsStatusBar(): string
     {
-        return $this->statusBarFactory
-            ->createStatusBar()
-            ->setColor(StatusBarColorEnum::STATUSBAR_YELLOW)
-            ->setLabel(_('Energie'))
-            ->setMaxValue($this->colony->getMaxEps())
-            ->setValue($this->colony->getEps())
-            ->render();
+        return EpsBarProvider::getEpsStatusBar($this->colony, $this->getEnergyProduction(), 50);
     }
 
     /**

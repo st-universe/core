@@ -11,9 +11,7 @@ use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class EpsBarProvider implements GuiComponentProviderInterface
 {
-    public function __construct(private PlanetFieldRepositoryInterface $planetFieldRepository)
-    {
-    }
+    public function __construct(private PlanetFieldRepositoryInterface $planetFieldRepository) {}
 
     #[Override]
     public function setTemplateVariables(
@@ -22,8 +20,15 @@ final class EpsBarProvider implements GuiComponentProviderInterface
     ): void {
         $energyProduction = $this->planetFieldRepository->getEnergyProductionByHost($host);
 
+        $game->setTemplateVar('EPS_STATUS_BAR', $this->getEpsStatusBar($host, $energyProduction));
+        $game->setTemplateVar('EPS_PRODUCTION', $energyProduction);
+        $game->setTemplateVar('EPS_BAR_TITLE_STRING', $this->getEpsBarTitleString($host, $energyProduction));
+    }
+
+    public static function getEpsStatusBar(PlanetFieldHostInterface $host, int $energyProduction, int $width = 360): string
+    {
         $currentEps = $host instanceof ColonyInterface ? $host->getEps() : 0;
-        $width = 360;
+
         $bars = [];
         $epsBar = '';
         if ($energyProduction < 0) {
@@ -68,14 +73,8 @@ final class EpsBarProvider implements GuiComponentProviderInterface
             );
         }
 
-        $game->setTemplateVar('EPS_STATUS_BAR', $epsBar);
-
-        $energyProduction = $this->planetFieldRepository->getEnergyProductionByHost($host);
-        $game->setTemplateVar('EPS_PRODUCTION', $energyProduction);
-        $game->setTemplateVar('EPS_BAR_TITLE_STRING', $this->getEpsBarTitleString($host, $energyProduction));
+        return $epsBar;
     }
-
-
 
     private function getEpsBarTitleString(PlanetFieldHostInterface $host, int $energyProduction): string
     {
