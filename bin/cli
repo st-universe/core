@@ -60,7 +60,7 @@ $app->add($dic->get(ShipTickCommand::class));
 $app->add(new MaintenanceTickCommand($dic));
 $app->add($dic->get(ProcessTickCommand::class));
 $app->add(new ManagerTickCommand($dic));
-$app->add(new PirateTickCommand($dic));
+$app->add($dic->get(PirateTickCommand::class));
 
 // system generation
 $app->add(new GenerateEmptySystemsCommand($dic));

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Cli;
 
 use Ahc\Cli\Input\Command;
-use Psr\Container\ContainerInterface;
 use Stu\Module\Tick\Pirate\PirateTickRunner;
 
 /**
@@ -14,7 +13,7 @@ use Stu\Module\Tick\Pirate\PirateTickRunner;
 final class PirateTickCommand extends Command
 {
     public function __construct(
-        private ContainerInterface $dic
+        private PirateTickRunner $tickRunner,
     ) {
         parent::__construct(
             'tick:pirate',
@@ -29,8 +28,7 @@ final class PirateTickCommand extends Command
 
     public function execute(): void
     {
-        $tickRunner = $this->dic->get(PirateTickRunner::class);
-        $tickRunner->run(1, 1);
+        $this->tickRunner->run(1, 1);
 
         $this->io()->ok(
             'Pirate tick has been executed',
