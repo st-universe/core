@@ -92,6 +92,7 @@ use Stu\Module\Ship\Action\LeaveFleet\LeaveFleetRequestInterface;
 use Stu\Module\Ship\Action\LeaveStarSystem\LeaveStarSystem;
 use Stu\Module\Ship\Action\LeaveWormhole\LeaveWormhole;
 use Stu\Module\Ship\Action\LoadReactor\LoadReactor;
+use Stu\Module\Ship\Action\Mining\GatherResources;
 use Stu\Module\Ship\Action\MoveShip\MoveShip;
 use Stu\Module\Ship\Action\MoveShip\MoveShipDown;
 use Stu\Module\Ship\Action\MoveShip\MoveShipLeft;
@@ -310,6 +311,7 @@ use Stu\Module\Ship\View\ShowAnalyseBuoy\ShowAnalyseBuoy;
 use Stu\Module\Ship\View\ShowAstroEntry\ShowAstroEntry;
 use Stu\Module\Ship\View\ShowAvailableShips\ShowAvailableShips;
 use Stu\Module\Ship\View\ShowBuoyList\ShowBuoyList;
+use Stu\Module\Ship\View\ShowBussardCollector\ShowBussardCollector;
 use Stu\Module\Ship\View\ShowColonization\ShowColonization;
 use Stu\Module\Ship\View\ShowColonyScan\ShowColonyScan;
 use Stu\Module\Ship\View\ShowEpsTransfer\ShowEpsTransfer;
@@ -480,6 +482,7 @@ return [
         LeaveStarSystem::ACTION_IDENTIFIER => autowire(LeaveStarSystem::class),
         EnterStarSystem::ACTION_IDENTIFIER => autowire(EnterStarSystem::class),
         EnterWormhole::ACTION_IDENTIFIER => autowire(EnterWormhole::class),
+        GatherResources::ACTION_IDENTIFIER => autowire(GatherResources::class),
         LeaveWormhole::ACTION_IDENTIFIER => autowire(LeaveWormhole::class),
         MoveShip::ACTION_IDENTIFIER => autowire(MoveShip::class),
         MoveShipUp::ACTION_IDENTIFIER => autowire(MoveShipUp::class),
@@ -596,6 +599,7 @@ return [
             ),
         ShowSelfDestruct::VIEW_IDENTIFIER => autowire(ShowSelfDestruct::class),
         ShowScan::VIEW_IDENTIFIER => autowire(ShowScan::class),
+        ShowBussardCollector::VIEW_IDENTIFIER => autowire(ShowBussardCollector::class),
         ShowColonyScan::VIEW_IDENTIFIER => autowire(ShowColonyScan::class),
         ShowSectorScan::VIEW_IDENTIFIER => autowire(ShowSectorScan::class),
         ShowShipDetails::VIEW_IDENTIFIER => autowire(ShowShipDetails::class),

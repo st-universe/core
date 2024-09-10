@@ -153,6 +153,9 @@ class Ship implements ShipInterface
     #[JoinColumn(name: 'dock', referencedColumnName: 'id')]
     private ?ShipInterface $dockedTo = null;
 
+    #[OneToOne(targetEntity: 'MiningQueue', mappedBy: 'ship')]
+    private ?MiningQueueInterface $miningqueue = null;
+
     /**
      * @var ArrayCollection<int, ShipInterface>
      */
@@ -997,6 +1000,12 @@ class Ship implements ShipInterface
     }
 
     #[Override]
+    public function isBussardCollectorHealthy(): bool
+    {
+        return $this->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR);
+    }
+
+    #[Override]
     public function isWarpAble(): bool
     {
         return $this->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
@@ -1751,5 +1760,10 @@ class Ship implements ShipInterface
 
         // less than 25% - red
         return 'color: #ff3c3c;';
+    }
+    #[Override]
+    public function getMiningQueue(): ?MiningQueueInterface
+    {
+        return $this->miningqueue;
     }
 }

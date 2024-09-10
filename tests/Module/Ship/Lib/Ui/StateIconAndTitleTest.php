@@ -71,7 +71,7 @@ class StateIconAndTitleTest extends StuTestCase
 
         [$icon, $title] = $this->subject->getStateIconAndTitle($this->wrapper);
 
-        $this->assertEquals('rep2', $icon);
+        $this->assertEquals('buttons/rep2', $icon);
         $this->assertEquals($expectedTitle, $title);
     }
 
@@ -102,7 +102,7 @@ class StateIconAndTitleTest extends StuTestCase
 
         [$icon, $title] = $this->subject->getStateIconAndTitle($this->wrapper);
 
-        $this->assertEquals('rep2', $icon);
+        $this->assertEquals('buttons/rep2', $icon);
         $this->assertEquals($expectedTitle, $title);
     }
 
@@ -131,7 +131,7 @@ class StateIconAndTitleTest extends StuTestCase
 
         [$icon, $title] = $this->subject->getStateIconAndTitle($this->wrapper);
 
-        $this->assertEquals('map1', $icon);
+        $this->assertEquals('buttons/map1', $icon);
         $this->assertEquals('Schiff kartographiert (noch 2 Runden)', $title);
     }
 
@@ -176,7 +176,7 @@ class StateIconAndTitleTest extends StuTestCase
 
         [$icon, $title] = $this->subject->getStateIconAndTitle($this->wrapper);
 
-        $this->assertEquals('take2', $icon);
+        $this->assertEquals('buttons/take2', $icon);
         $this->assertEquals('Schiff übernimmt die "TARGET" (noch 9 Runden)', $title);
     }
 
@@ -225,7 +225,7 @@ class StateIconAndTitleTest extends StuTestCase
 
         [$icon, $title] = $this->subject->getStateIconAndTitle($this->wrapper);
 
-        $this->assertEquals('untake2', $icon);
+        $this->assertEquals('buttons/untake2', $icon);
         $this->assertEquals('Schiff wird von Spieler "USER" übernommen (noch 9 Runden)', $title);
     }
 }

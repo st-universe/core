@@ -20,6 +20,7 @@ final class ShipSystemDataFactory implements ShipSystemDataFactoryInterface
         private ShipSystemRepositoryInterface $shipSystemRepository,
         private TholianWebRepositoryInterface $tholianWebRepository,
         private StatusBarFactoryInterface $statusBarFactory
+
     ) {}
 
     #[Override]
@@ -83,6 +84,11 @@ final class ShipSystemDataFactory implements ShipSystemDataFactoryInterface
                 );
             case ShipSystemTypeEnum::SYSTEM_TORPEDO:
                 return  new ProjectileLauncherSystemData(
+                    $this->shipSystemRepository,
+                    $this->statusBarFactory
+                );
+            case ShipSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR:
+                return  new BussardCollectorSystemData(
                     $this->shipSystemRepository,
                     $this->statusBarFactory
                 );

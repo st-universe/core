@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib;
 
 use Override;
+use Stu\Component\Ship\Mining\CancelMiningInterface;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipStateEnum;
@@ -15,9 +16,7 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShipStateChanger implements ShipStateChangerInterface
 {
-    public function __construct(private CancelRepairInterface $cancelRepair, private AstroEntryLibInterface $astroEntryLib, private ShipRepositoryInterface $shipRepository, private TholianWebUtilInterface $tholianWebUtil, private ShipTakeoverManagerInterface $shipTakeoverManager)
-    {
-    }
+    public function __construct(private CancelMiningInterface $cancelMining, private CancelRepairInterface $cancelRepair, private AstroEntryLibInterface $astroEntryLib, private ShipRepositoryInterface $shipRepository, private TholianWebUtilInterface $tholianWebUtil, private ShipTakeoverManagerInterface $shipTakeoverManager) {}
 
     #[Override]
     public function changeShipState(ShipWrapperInterface $wrapper, ShipStateEnum $newState): void
@@ -46,6 +45,8 @@ final class ShipStateChanger implements ShipStateChangerInterface
                 null,
                 true
             );
+        } elseif ($currentState === ShipStateEnum::SHIP_STATE_GATHER_RESOURCES) {
+            $this->cancelMining->cancelMining($ship, $wrapper);
         }
 
         $ship->setState($newState);

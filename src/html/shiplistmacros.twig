@@ -43,7 +43,7 @@
             {% endif %}
             {% set stateIconAndTitle = wrapper.getStateIconAndTitle %}
             {% if stateIconAndTitle %}
-            <img src="/assets/buttons/{{ stateIconAndTitle[0] }}.png" title="{{ stateIconAndTitle[1] }}"
+            <img src="/assets/{{ stateIconAndTitle[0] }}.png" title="{{ stateIconAndTitle[1] }}"
                 style="height: 20px;" />
             {% endif %}
             <span>{{ ship.getName|bbcode }}</span>

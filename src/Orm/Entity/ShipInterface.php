@@ -208,6 +208,8 @@ interface ShipInterface extends ShipDestroyerInterface
 
     public function isWebEmitterHealthy(): bool;
 
+    public function isBussardCollectorHealthy(): bool;
+
     public function isWarpAble(): bool;
 
     public function isTractoring(): bool;
@@ -422,4 +424,6 @@ interface ShipInterface extends ShipDestroyerInterface
     public function setIsInEmergency(bool $inEmergency): ShipInterface;
 
     public function getDockedWorkbeeCount(): int;
+
+    public function getMiningQueue(): ?MiningQueueInterface;
 }

@@ -8,6 +8,7 @@ use function DI\autowire;
 use function DI\get;
 
 return [
+    CreateInterstellarMedia::class => autowire(CreateInterstellarMedia::class),
     ColonyCorrectorHandler::class => autowire(ColonyCorrectorHandler::class),
     CorruptFleetDeletion::class => autowire(CorruptFleetDeletion::class),
     DatabaseBackup::class => autowire(DatabaseBackup::class),
@@ -21,6 +22,7 @@ return [
     OldTradeOffersDeletion::class => autowire(OldTradeOffersDeletion::class),
     TopFlightsReward::class => autowire(TopFlightsReward::class),
     'maintenance_handler' => [
+        get(CreateInterstellarMedia::class),
         get(DatabaseBackup::class),
         get(IdleUserDeletion::class),
         get(MapCycle::class),

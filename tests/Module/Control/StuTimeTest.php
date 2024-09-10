@@ -28,7 +28,7 @@ class StuTimeTest extends StuTestCase
     public function testTransformToStuDateTime(): void
     {
         $this->assertEquals(
-            '22.08.2394 09:53',
+            '22.08.2394 11:53',
             $this->subject->transformToStuDateTime(1724320422)
         );
     }

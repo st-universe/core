@@ -7,8 +7,10 @@ namespace Stu\Module\Ship\Lib\Ui;
 use JBBCode\Parser;
 use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Ship\ShipStateEnum;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+
 
 class StateIconAndTitle
 {
@@ -27,13 +29,13 @@ class StateIconAndTitle
 
         if ($state === ShipStateEnum::SHIP_STATE_REPAIR_ACTIVE) {
             $isBase = $ship->isBase();
-            return ['rep2', sprintf('%s repariert die Station', $isBase ? 'Stationscrew' : 'Schiffscrew')];
+            return ['buttons/rep2', sprintf('%s repariert die Station', $isBase ? 'Stationscrew' : 'Schiffscrew')];
         }
 
         if ($state === ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE) {
             $isBase = $ship->isBase();
             $repairDuration = $wrapper->getRepairDuration();
-            return ['rep2', sprintf('%s wird repariert (noch %d Runden)', $isBase ? 'Station' : 'Schiff', $repairDuration)];
+            return ['buttons/rep2', sprintf('%s wird repariert (noch %d Runden)', $isBase ? 'Station' : 'Schiff', $repairDuration)];
         }
 
         $currentTurn = $this->game->getCurrentRound()->getTurn();
@@ -42,7 +44,7 @@ class StateIconAndTitle
             $state === ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING
             && $astroLab !== null
         ) {
-            return ['map1', sprintf(
+            return ['buttons/map1', sprintf(
                 'Schiff kartographiert (noch %d Runden)',
                 $astroLab->getAstroStartTurn() + AstronomicalMappingEnum::TURNS_TO_FINISH - $currentTurn
             )];
@@ -54,7 +56,7 @@ class StateIconAndTitle
             && $takeover !== null
         ) {
             $targetNamePlainText = $this->bbCodeParser->parse($takeover->getTargetShip()->getName())->getAsText();
-            return ['take2', sprintf(
+            return ['buttons/take2', sprintf(
                 'Schiff übernimmt die "%s" (noch %d Runden)',
                 $targetNamePlainText,
                 $wrapper->getTakeoverTicksLeft($takeover)
@@ -64,11 +66,33 @@ class StateIconAndTitle
         $takeover = $ship->getTakeoverPassive();
         if ($takeover !== null) {
             $sourceUserNamePlainText = $this->bbCodeParser->parse($takeover->getSourceShip()->getUser()->getName())->getAsText();
-            return ['untake2', sprintf(
+            return ['buttons/untake2', sprintf(
                 'Schiff wird von Spieler "%s" übernommen (noch %d Runden)',
                 $sourceUserNamePlainText,
                 $wrapper->getTakeoverTicksLeft($takeover)
             )];
+        }
+
+        if ($state === ShipStateEnum::SHIP_STATE_GATHER_RESOURCES) {
+            $miningqueue = $ship->getMiningQueue();
+            $module = $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR)->getModule();
+            $gathercount = 0;
+            if ($miningqueue) {
+                $locationmining = $miningqueue->getLocationMining();
+                if ($module) {
+                    if ($module->getFactionId() == null) {
+                        $gathercount =  100;
+                    } else {
+                        $gathercount = 200;
+                    }
+
+                    return [sprintf('commodities/%s', $locationmining->getCommodity()->getId()), sprintf(
+                        'Schiff sammelt Ressourcen (~%d %s/Tick)',
+                        $gathercount,
+                        $locationmining->getCommodity()->getName()
+                    )];
+                }
+            }
         }
 
         return null;

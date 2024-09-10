@@ -8,6 +8,7 @@ use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Ship\Repair\RepairUtilInterface;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipStateEnum;
+use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -32,6 +33,7 @@ use Stu\Orm\Entity\DatabaseEntryInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Repository\LocationMiningRepositoryInterface;
 
 final class ShipTick implements ShipTickInterface, ManagerComponentInterface
 {
@@ -56,6 +58,8 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
         private RepairUtilInterface $repairUtil,
         private ShipTakeoverManagerInterface $shipTakeoverManager,
         private TrackerDeviceManagerInterface $trackerDeviceManager,
+        private ShipStorageManagerInterface $shipStorageManager,
+        private LocationMiningRepositoryInterface $locationMiningRepository,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil(true);
@@ -249,6 +253,10 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
         $startTime = microtime(true);
         $this->sendMessages($ship);
         $this->potentialLog($ship, "marker14", $startTime);
+
+        $starTime = microtime(true);
+        $this->doBussardCollectorStuff($wrapper);
+        $this->potentialLog($ship, "marker15", $startTime);
     }
 
     private function potentialLog(ShipInterface $ship, string $marker, float $startTime): void
@@ -560,6 +568,53 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
             $this->trackerDeviceManager->deactivateTrackerIfActive($wrapper, true);
         }
     }
+
+    private function doBussardCollectorStuff(ShipWrapperInterface $wrapper): void
+    {
+        $ship = $wrapper->get();
+        $bussard = $wrapper->getBussardCollectorSystemData();
+        $miningqueue = $ship->getMiningQueue();
+
+        if ($bussard === null) {
+            return;
+        }
+
+        if ($miningqueue == null) {
+            return;
+        } else {
+            $locationmining = $miningqueue->getLocationMining();
+            $actualAmount = $locationmining->getActualAmount();
+            $freeStorage = $ship->getMaxStorage() - $ship->getStorageSum();
+            $module = $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR)->getModule();
+            $gathercount = 0;
+
+            if ($module) {
+                if ($module->getFactionId() == null) {
+                    $gathercount =  (int) min(min(round(mt_rand(95, 105)), $actualAmount), $freeStorage);
+                } else {
+                    $gathercount = (int) min(min(round(mt_rand(190, 220)), $actualAmount), $freeStorage);
+                }
+            }
+
+            $newAmount = $actualAmount - $gathercount;
+            if ($gathercount > 0 && $locationmining->getDepletedAt() !== null) {
+                $locationmining->setDepletedAt(null);
+            }
+            if ($newAmount == 0 && $actualAmount > 0) {
+                $locationmining->setDepletedAt(time());
+            }
+            $locationmining->setActualAmount($newAmount);
+
+            $this->locationMiningRepository->save($locationmining);
+
+            $this->shipStorageManager->upperStorage(
+                $ship,
+                $locationmining->getCommodity(),
+                $gathercount
+            );
+        }
+    }
+
 
     private function sendMessages(ShipInterface $ship): void
     {

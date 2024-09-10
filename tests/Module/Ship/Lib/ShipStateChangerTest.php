@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Lib;
 
 use Mockery\MockInterface;
 use Override;
+use Stu\Component\Ship\Mining\CancelMiningInterface;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipStateEnum;
@@ -19,6 +20,9 @@ use Stu\StuTestCase;
 
 class ShipStateChangerTest extends StuTestCase
 {
+    /** @var MockInterface|CancelMiningInterface */
+    private MockInterface $cancelMining;
+
     /** @var MockInterface|CancelRepairInterface */
     private MockInterface $cancelRepair;
 
@@ -46,6 +50,7 @@ class ShipStateChangerTest extends StuTestCase
     public function setUp(): void
     {
         //injected
+        $this->cancelMining = $this->mock(CancelMiningInterface::class);
         $this->cancelRepair = $this->mock(CancelRepairInterface::class);
         $this->astroEntryLib = $this->mock(AstroEntryLibInterface::class);
         $this->shipRepository = $this->mock(ShipRepositoryInterface::class);
@@ -64,6 +69,7 @@ class ShipStateChangerTest extends StuTestCase
             ->andReturn($this->ship);
 
         $this->subject = new ShipStateChanger(
+            $this->cancelMining,
             $this->cancelRepair,
             $this->astroEntryLib,
             $this->shipRepository,

@@ -21,6 +21,7 @@ final class ModuleSpecialAbilityEnum
     public const int MODULE_SPECIAL_TRANSWARP_COIL = 11;
     public const int MODULE_SPECIAL_HIROGEN_TRACKER = 12;
     public const int MODULE_SPECIAL_THOLIAN_WEB = 13;
+    public const int MODULE_SPECIAL_BUSSARD_COLLECTOR = 14;
 
     public static function getDescription(int $specialId): string
     {
@@ -37,6 +38,7 @@ final class ModuleSpecialAbilityEnum
             static::MODULE_SPECIAL_TRANSWARP_COIL => _('Transwarpspule'),
             static::MODULE_SPECIAL_HIROGEN_TRACKER => _('Tracker-Device'),
             static::MODULE_SPECIAL_THOLIAN_WEB => _('Tholianischer Netzemitter'),
+            static::MODULE_SPECIAL_BUSSARD_COLLECTOR => _('Bussard-Kollektor'),
             default => '',
         };
     }

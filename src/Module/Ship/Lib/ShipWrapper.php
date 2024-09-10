@@ -13,6 +13,7 @@ use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\Data\AbstractSystemData;
 use Stu\Component\Ship\System\Data\AstroLaboratorySystemData;
+use Stu\Component\Ship\System\Data\BussardCollectorSystemData;
 use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Component\Ship\System\Data\FusionCoreSystemData;
 use Stu\Component\Ship\System\Data\HullSystemData;
@@ -437,6 +438,15 @@ final class ShipWrapper implements ShipWrapperInterface
         return $this->getSpecificShipSystem(
             ShipSystemTypeEnum::SYSTEM_TRACKER,
             TrackerSystemData::class
+        );
+    }
+
+    #[Override]
+    public function getBussardCollectorSystemData(): ?BussardCollectorSystemData
+    {
+        return $this->getSpecificShipSystem(
+            ShipSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR,
+            BussardCollectorSystemData::class
         );
     }
 

@@ -1,0 +1,41 @@
+{% set SHIP = WRAPPER.get %}
+<form action="ship.php" method="post">
+  <input type="hidden" name="id" value="{{ SHIP.getId }}" />
+  <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+  {% if SHIP.isBussardCollectorHealthy %}
+  <table class="tcal">
+
+    {% if MINING is not empty %}
+
+
+        <div class="box">
+          <div class="box_title">Auswahl</div>
+       
+            <table class="tcal" id="availableCommodityTable">
+             
+                <td>
+                  <input type="radio" name="chosen" value="0" id="noSelection" {% if MININGQUEUE is empty %}checked{% endif %} />
+                  <label for="noSelection">Keine Auswahl</label>
+                </td>
+             
+              {% for miningEntry in MINING %}
+              {% set commodity = miningEntry.getCommodity %}
+              <tr>
+                <td>
+                  <input type="radio" name="chosen" value="{{ miningEntry.getId }}" id="miningEntry{{ miningEntry.getId }}" 
+                    {% if MININGQUEUE is not empty and MININGQUEUE.getLocationMiningId == miningEntry.getId %}checked{% endif %} />
+                    <img src="/assets/commodities/{{ commodity.getId }}.png"/>
+                    <label for="miningEntry{{ miningEntry.getId }}">{{ commodity.getName|bbcode }}&emsp;&emsp;ρ ~ {{ miningEntry.getActualAmount }} × 10<sup>-19</sup> kg/m<sup>3</sup></label>
+                </td>
+              </tr>
+              {% endfor %}
+            </table>
+            <br />
+            <input type="submit" class="button" name="B_GATHER_RESOURCES" value="Ressourcen sammeln" />
+        </div>
+
+
+    {% endif %}
+  </table>
+  {% endif %}
+</form>
