@@ -92,6 +92,11 @@ final class ShipSystemDataFactory implements ShipSystemDataFactoryInterface
                     $this->shipSystemRepository,
                     $this->statusBarFactory
                 );
+            case ShipSystemTypeEnum::SYSTEM_AGGREGATION_SYSTEM:
+                return  new AggregationSystemSystemData(
+                    $this->shipSystemRepository,
+                    $this->statusBarFactory
+                );
         }
 
         throw new InvalidSystemException(sprintf('no system data present for systemType: %d', $systemType->value));

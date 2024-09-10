@@ -14,6 +14,7 @@ use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -34,6 +35,8 @@ use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\LocationMiningRepositoryInterface;
+use Stu\Orm\Repository\CommodityRepositoryInterface;
+use Stu\Orm\Repository\StorageRepositoryInterface;
 
 final class ShipTick implements ShipTickInterface, ManagerComponentInterface
 {
@@ -60,6 +63,8 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
         private TrackerDeviceManagerInterface $trackerDeviceManager,
         private ShipStorageManagerInterface $shipStorageManager,
         private LocationMiningRepositoryInterface $locationMiningRepository,
+        private CommodityRepositoryInterface $commodityRepository,
+        private StorageRepositoryInterface $storageRepository,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil(true);
@@ -254,9 +259,13 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
         $this->sendMessages($ship);
         $this->potentialLog($ship, "marker14", $startTime);
 
-        $starTime = microtime(true);
+        $startTime = microtime(true);
         $this->doBussardCollectorStuff($wrapper);
         $this->potentialLog($ship, "marker15", $startTime);
+
+        $startTime = microtime(true);
+        $this->doAggregationSystemStuff($wrapper);
+        $this->potentialLog($ship, "marker16", $startTime);
     }
 
     private function potentialLog(ShipInterface $ship, string $marker, float $startTime): void
@@ -614,6 +623,74 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
             );
         }
     }
+
+    private function doAggregationSystemStuff(ShipWrapperInterface $wrapper): void
+    {
+        $ship = $wrapper->get();
+        $aggsys = $wrapper->getAggregationSystemSystemData();
+
+        if ($aggsys === null) {
+            return;
+        } else {
+            $module = $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_AGGREGATION_SYSTEM)->getModule();
+            $producedAmount = 0;
+            $usedAmount = 0;
+            $usedCommodity = null;
+            $producedCommodity = null;
+
+
+            if ($module) {
+                $commodity = $aggsys->getCommodityId();
+                $commodities = CommodityTypeEnum::COMMODITY_CONVERSIONS;
+
+                if ($commodity > 0) {
+                    foreach ($commodities as $entry) {
+                        if ($entry[0] === $commodity) {
+                            $producedCommodityId = $entry[1];
+                            $producedCommodity = $this->commodityRepository->find($producedCommodityId);
+                            $usedCommodity = $this->commodityRepository->find($entry[0]);
+                            $usedAmount = $entry[2];
+                            break;
+                        }
+                    }
+
+                    if ($module->getFactionId() == null) {
+                        $producedAmount = 1;
+                    } else {
+                        $producedAmount = 2;
+                        $usedAmount = $usedAmount * 2;
+                    }
+                    $storage = $this->storageRepository->findOneBy([
+                        'commodity' => $usedCommodity,
+                        'ship' => $ship
+                    ]);
+                    if (!$storage && $usedCommodity) {
+                        $this->msg[] = sprintf('Es ist kein %s vorhanden!', $usedCommodity->getName());
+                        $this->sendMessages($ship);
+                    }
+
+                    if ($storage && $producedCommodity && $usedCommodity) {
+                        if ($storage->getAmount() >= $usedAmount) {
+                            $this->shipStorageManager->lowerStorage(
+                                $ship,
+                                $usedCommodity,
+                                $usedAmount
+                            );
+                            $this->shipStorageManager->upperStorage(
+                                $ship,
+                                $producedCommodity,
+                                $producedAmount
+                            );
+                        } else {
+                            $this->msg[] = sprintf('Nicht genügend %s vorhanden!', $usedCommodity->getName());
+                            $this->sendMessages($ship);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 
 
     private function sendMessages(ShipInterface $ship): void

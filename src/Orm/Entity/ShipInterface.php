@@ -208,6 +208,8 @@ interface ShipInterface extends ShipDestroyerInterface
 
     public function isWebEmitterHealthy(): bool;
 
+    public function isAggregationSystemHealthy(): bool;
+
     public function isBussardCollectorHealthy(): bool;
 
     public function isWarpAble(): bool;

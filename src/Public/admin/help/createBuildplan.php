@@ -63,7 +63,8 @@ Init::run(function (ContainerInterface $dic): void {
             ModuleSpecialAbilityEnum::MODULE_SPECIAL_TRANSWARP_COIL,
             ModuleSpecialAbilityEnum::MODULE_SPECIAL_HIROGEN_TRACKER,
             ModuleSpecialAbilityEnum::MODULE_SPECIAL_THOLIAN_WEB,
-            ModuleSpecialAbilityEnum::MODULE_SPECIAL_BUSSARD_COLLECTOR
+            ModuleSpecialAbilityEnum::MODULE_SPECIAL_BUSSARD_COLLECTOR,
+            ModuleSpecialAbilityEnum::MODULE_SPECIAL_AGGREGATION_SYSTEM
         ];
         $moduleTypes = [
             ShipModuleTypeEnum::HULL,

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System;
 
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\ShipSystem;
+
 enum ShipSystemTypeEnum: int
 {
     case SYSTEM_HULL = 0;
@@ -38,6 +41,7 @@ enum ShipSystemTypeEnum: int
     case SYSTEM_RPG_MODULE = 29;
     case SYSTEM_SINGULARITY_REACTOR = 30;
     case SYSTEM_BUSSARD_COLLECTOR = 31;
+    case SYSTEM_AGGREGATION_SYSTEM = 32;
 
     public function getDescription(): string
     {
@@ -74,6 +78,7 @@ enum ShipSystemTypeEnum: int
             ShipSystemTypeEnum::SYSTEM_RPG_MODULE => _('RPG-Modul'),
             ShipSystemTypeEnum::SYSTEM_SINGULARITY_REACTOR => _('Singularitätsreaktor'),
             ShipSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR => _('Bussard-Kollector'),
+            ShipSystemTypeEnum::SYSTEM_AGGREGATION_SYSTEM => _('Aggregationssystem'),
         };
     }
 }

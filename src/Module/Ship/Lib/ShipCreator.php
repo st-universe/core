@@ -278,6 +278,9 @@ final class ShipCreator implements ShipCreatorInterface
                 case ModuleSpecialAbilityEnum::MODULE_SPECIAL_RPG:
                     $systems[ShipSystemTypeEnum::SYSTEM_RPG_MODULE->value] = null;
                     break;
+                case ModuleSpecialAbilityEnum::MODULE_SPECIAL_AGGREGATION_SYSTEM:
+                    $systems[ShipSystemTypeEnum::SYSTEM_AGGREGATION_SYSTEM->value] = $module;
+                    break;
             }
         }
     }

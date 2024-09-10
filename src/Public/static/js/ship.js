@@ -76,6 +76,11 @@ function showWebEmitterWindow() {
 	openWindow('elt', 1, 300);
 	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_WEBEMITTER_AJAX=1');
 }
+function showAggregationSystemWindow() {
+	closeAjaxWindow();
+	openWindow('elt', 1, 300);
+	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_AGGREGATION_SYSTEM_AJAX=1');
+}
 function showBussardCollectorWindow() {
 	closeAjaxWindow();
 	openWindow('elt', 1, 300);

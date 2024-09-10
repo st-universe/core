@@ -1,0 +1,66 @@
+{% set SHIP = WRAPPER.get %}
+<form action="ship.php" method="post">
+  <input type="hidden" name="id" value="{{ SHIP.getId }}" />
+  <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+  {% if SHIP.isAggregationSystemHealthy %}
+  <table class="tcal">
+    <div class="box">
+      <div class="box_title">Auswahl</div>
+      <table class="tcal" id="availableCommodityTable">
+        <tr>
+          <td>
+            <input type="radio" name="chosen" value="0" id="noSelection" {% if CHOSENCOMMODITY == 0 %}checked{% endif %} />
+            <label for="noSelection">Keine Auswahl</label>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2"><strong>Partikelkompressor</strong></td>
+        </tr>
+        {% for entry in MODE1_COMMODITIES %}
+          {% if loop.index is odd %}
+            <tr>
+          {% endif %}
+          <td style="vertical-align: middle;">
+            <input type="radio" name="chosen" value="{{ entry[0].getId }}" id="commodityEntry{{ entry[0].getId }}" 
+              {% if entry[0].getId == CHOSENCOMMODITY %}checked{% endif %} />
+              {{ entry[2]|bbcode }} <img src="/assets/commodities/{{ entry[0].getId }}.png" title="{{ entry[0].getName }}"/> 
+              <img src="/assets/buttons/b_to1.png" /><span> 1 </span>
+              <img src="/assets/commodities/{{ entry[1].getId }}.png" title="{{ entry[1].getName }}"/> 
+          </td>
+          {% if loop.index is even %}
+            </tr>
+          {% endif %}
+        {% endfor %}
+        {% if MODE1_COMMODITIES|length is odd %}
+          </tr>
+        {% endif %}
+        <tr>
+          <td colspan="2"><strong>Sublimator</strong></td>
+        </tr>
+        {% for entry in MODE2_COMMODITIES %}
+          {% if loop.index is odd %}
+            <tr>
+          {% endif %}
+          <td style="vertical-align: middle;">
+            <input type="radio" name="chosen" value="{{ entry[0].getId }}" id="commodityEntry{{ entry[0].getId }}" 
+              {% if entry[0].getId == CHOSENCOMMODITY %}checked{% endif %} />
+              {{ entry[2]|bbcode }} <img src="/assets/commodities/{{ entry[0].getId }}.png" title="{{ entry[0].getName }}"/> 
+              <img src="/assets/buttons/b_to1.png" /><span> 1 </span>
+              <img src="/assets/commodities/{{ entry[1].getId }}.png" title="{{ entry[1].getName }}"/> 
+          </td>
+          {% if loop.index is even %}
+            </tr>
+          {% endif %}
+        {% endfor %}
+        {% if MODE2_COMMODITIES|length is odd %}
+          </tr>
+        {% endif %}
+      </table>
+      <br />
+      <div style="text-align: center;">
+        <input type="submit" class="button" name="B_TRANSFORM_RESOURCES" value="Ressourcen umwandeln" />
+      </div>
+    </div>
+  </table>
+  {% endif %}
+</form>

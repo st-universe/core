@@ -1000,6 +1000,12 @@ class Ship implements ShipInterface
     }
 
     #[Override]
+    public function isAggregationSystemHealthy(): bool
+    {
+        return $this->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_AGGREGATION_SYSTEM);
+    }
+
+    #[Override]
     public function isBussardCollectorHealthy(): bool
     {
         return $this->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR);

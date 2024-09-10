@@ -24,6 +24,7 @@ use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\SystemDataDeserializer;
 use Stu\Component\Ship\System\SystemDataDeserializerInterface;
+use Stu\Component\Ship\System\Type\AggregationSystemShipSystem;
 use Stu\Component\Ship\System\Type\AstroLaboratoryShipSystem;
 use Stu\Component\Ship\System\Type\BeamBlockerShipSystem;
 use Stu\Component\Ship\System\Type\BussardCollectorShipSystem;
@@ -104,6 +105,7 @@ return [
             ShipSystemTypeEnum::SYSTEM_TRACKER->value => autowire(TrackerShipSystem::class),
             ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB->value => autowire(WebEmitterShipSystem::class),
             ShipSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR->value => autowire(BussardCollectorShipSystem::class),
+            ShipSystemTypeEnum::SYSTEM_AGGREGATION_SYSTEM->value => autowire(AggregationSystemShipSystem::class),
             ShipSystemTypeEnum::SYSTEM_RPG_MODULE->value => autowire(RPGShipSystem::class),
             ShipSystemTypeEnum::SYSTEM_SINGULARITY_REACTOR->value => autowire(SingularityShipSystem::class)
         ],

@@ -92,6 +92,7 @@ use Stu\Module\Ship\Action\LeaveFleet\LeaveFleetRequestInterface;
 use Stu\Module\Ship\Action\LeaveStarSystem\LeaveStarSystem;
 use Stu\Module\Ship\Action\LeaveWormhole\LeaveWormhole;
 use Stu\Module\Ship\Action\LoadReactor\LoadReactor;
+use Stu\Module\Ship\Action\Mining\TransformResources;
 use Stu\Module\Ship\Action\Mining\GatherResources;
 use Stu\Module\Ship\Action\MoveShip\MoveShip;
 use Stu\Module\Ship\Action\MoveShip\MoveShipDown;
@@ -306,6 +307,7 @@ use Stu\Module\Ship\Lib\Ui\ShipUiFactory;
 use Stu\Module\Ship\Lib\Ui\ShipUiFactoryInterface;
 use Stu\Module\Ship\Lib\Ui\StateIconAndTitle;
 use Stu\Module\Ship\View\Noop\Noop;
+use Stu\Module\Ship\View\ShowAggregationSystem\ShowAggregationSystem;
 use Stu\Module\Ship\View\ShowAlertLevel\ShowAlertLevel;
 use Stu\Module\Ship\View\ShowAnalyseBuoy\ShowAnalyseBuoy;
 use Stu\Module\Ship\View\ShowAstroEntry\ShowAstroEntry;
@@ -483,6 +485,7 @@ return [
         EnterStarSystem::ACTION_IDENTIFIER => autowire(EnterStarSystem::class),
         EnterWormhole::ACTION_IDENTIFIER => autowire(EnterWormhole::class),
         GatherResources::ACTION_IDENTIFIER => autowire(GatherResources::class),
+        TransformResources::ACTION_IDENTIFIER => autowire(TransformResources::class),
         LeaveWormhole::ACTION_IDENTIFIER => autowire(LeaveWormhole::class),
         MoveShip::ACTION_IDENTIFIER => autowire(MoveShip::class),
         MoveShipUp::ACTION_IDENTIFIER => autowire(MoveShipUp::class),
@@ -589,6 +592,7 @@ return [
     'SHIP_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
         ShowShip::VIEW_IDENTIFIER => autowire(ShowShip::class),
+        ShowAggregationSystem::VIEW_IDENTIFIER => autowire(ShowAggregationSystem::class),
         ShowAlertLevel::VIEW_IDENTIFIER => autowire(ShowAlertLevel::class),
         ShowAstroEntry::VIEW_IDENTIFIER => autowire(ShowAstroEntry::class),
         ShowEpsTransfer::VIEW_IDENTIFIER => autowire(ShowEpsTransfer::class),

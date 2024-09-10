@@ -18,6 +18,23 @@ final class CommodityTypeEnum
     public const int COMMODITY_ANTIMATTER = 6;
     public const int COMMODITY_PLASMA = 7;
     public const int COMMODITY_DILITHIUM = 8;
+    public const int COMMODITY_GALAZIT_ORE = 12;
+    public const int COMMODITY_NITRIUM_ORE = 13;
+    public const int COMMODITY_MAGNESIT_ORE = 14;
+    public const int COMMODITY_KELBONIT_ORE = 15;
+    public const int COMMODITY_TALGONIT_ORE = 16;
+    public const int COMMODITY_TRITANIUM_ORE = 19;
+    public const int COMMODITY_HIGH_ENERGY_PLASMA = 32;
+    public const int COMMODITY_DEUTERIUM_PARTICLE = 63;
+    public const int COMMODITY_ANTIMATTER_PARTICLE = 64;
+    public const int COMMODITY_PLASMA_PARTICLE = 65;
+    public const int COMMODITY_HIGH_ENERGY_PLASMA_PARTICLE = 66;
+    public const int COMMODITY_TRITANIUM_PARTICLE = 67;
+    public const int COMMODITY_TALGONIUM_GAS = 68;
+    public const int COMMODITY_NITRIUM_PARTICLE = 69;
+    public const int COMMODITY_METAPHASIC_GAS = 70;
+    public const int COMMODITY_GALONIUM_GAS = 71;
+    public const int COMMODITY_KELBONIUM_GAS = 72;
     public const int COMMODITY_DURANIUM = 21;
     public const int COMMODITY_LATINUM = 50;
     public const int COMMODITY_SPARE_PART = 10001;
@@ -52,4 +69,17 @@ final class CommodityTypeEnum
             default => '',
         };
     }
+
+    public const array COMMODITY_CONVERSIONS = [
+        [self::COMMODITY_DEUTERIUM_PARTICLE, self::COMMODITY_DEUTERIUM, 10, 1],
+        [self::COMMODITY_ANTIMATTER_PARTICLE, self::COMMODITY_ANTIMATTER, 20, 1],
+        [self::COMMODITY_PLASMA_PARTICLE, self::COMMODITY_PLASMA, 15, 1],
+        [self::COMMODITY_HIGH_ENERGY_PLASMA_PARTICLE, self::COMMODITY_HIGH_ENERGY_PLASMA, 1000, 1],
+        [self::COMMODITY_TRITANIUM_PARTICLE, self::COMMODITY_TRITANIUM_ORE, 300, 1],
+        [self::COMMODITY_TALGONIUM_GAS, self::COMMODITY_TALGONIT_ORE, 100, 2],
+        [self::COMMODITY_NITRIUM_PARTICLE, self::COMMODITY_NITRIUM_ORE, 100, 1],
+        [self::COMMODITY_METAPHASIC_GAS, self::COMMODITY_MAGNESIT_ORE, 100, 2],
+        [self::COMMODITY_GALONIUM_GAS, self::COMMODITY_GALAZIT_ORE, 100, 2],
+        [self::COMMODITY_KELBONIUM_GAS, self::COMMODITY_KELBONIT_ORE, 100, 2],
+    ];
 }
