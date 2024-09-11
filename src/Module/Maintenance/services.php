@@ -22,9 +22,9 @@ return [
     OldTradeOffersDeletion::class => autowire(OldTradeOffersDeletion::class),
     TopFlightsReward::class => autowire(TopFlightsReward::class),
     'maintenance_handler' => [
-        get(CreateInterstellarMedia::class),
         get(DatabaseBackup::class),
         get(IdleUserDeletion::class),
+        get(CreateInterstellarMedia::class),
         get(MapCycle::class),
         get(OldTachyonScanDeletion::class),
         get(OldTradeOffersDeletion::class),

@@ -46,7 +46,7 @@ final class ShowBussardCollector implements ViewControllerInterface
         }
 
         $mining = $this->locationMiningRepository->getMiningAtLocation($ship);
-        $miningqueue = $this->locationMiningRepository->getMiningQueueAtLocation($ship);
+        $miningqueue = $ship->getMiningQueue();
         $game->setTemplateVar('MINING', $mining);
         $game->setTemplateVar('MININGQUEUE', $miningqueue);
     }

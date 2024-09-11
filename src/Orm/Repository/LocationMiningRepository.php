@@ -17,6 +17,8 @@ use Stu\Orm\Entity\LocationMiningInterface;
  */
 final class LocationMiningRepository extends EntityRepository implements LocationMiningRepositoryInterface
 {
+    public const ISM_RECREATION_COOLDOWN = 1728000; // 20 days
+
     public function prototype(): LocationMiningInterface
     {
         return new LocationMining();
@@ -68,7 +70,7 @@ final class LocationMiningRepository extends EntityRepository implements Locatio
      */
     public function findDepletedEntries(): array
     {
-        $twentyDaysAgo = time() - (20 * 24 * 60 * 60);
+        $twentyDaysAgo = time() - self::ISM_RECREATION_COOLDOWN;
 
         return $this->getEntityManager()->createQuery(
             sprintf(

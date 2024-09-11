@@ -33,9 +33,10 @@
             <br />
             <input type="submit" class="button" name="B_GATHER_RESOURCES" value="Ressourcen sammeln" />
         </div>
-
-
+    {% else %}
+    <td>Keine signifikanten Partikel oder Gase im Sektor vorhanden</td>
     {% endif %}
+
   </table>
   {% endif %}
 </form>

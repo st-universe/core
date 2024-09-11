@@ -7,11 +7,14 @@ namespace Stu\Module\Ship\View\ShowAggregationSystem;
 use Override;
 use request;
 use Stu\Exception\SanityCheckException;
+use Stu\Component\Faction\FactionEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
+use Stu\Orm\Repository\BuildingCommodityRepositoryInterface;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 
 final class ShowAggregationSystem implements ViewControllerInterface
 {
@@ -19,7 +22,8 @@ final class ShowAggregationSystem implements ViewControllerInterface
 
     public function __construct(
         private ShipLoaderInterface $shipLoader,
-        private CommodityRepositoryInterface $commodityRepository
+        private CommodityRepositoryInterface $commodityRepository,
+        private BuildingCommodityRepositoryInterface $buildingCommodityRepository
     ) {}
 
     #[Override]
@@ -28,12 +32,20 @@ final class ShowAggregationSystem implements ViewControllerInterface
         $user = $game->getUser();
         $userId = $user->getId();
 
+        $ship = $this->shipLoader->getByIdAndUser(
+            request::indInt('id'),
+            $userId,
+            false,
+            false
+        );
+
         $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             request::indInt('id'),
             $userId,
             false,
             false
         );
+        $module = $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_AGGREGATION_SYSTEM)->getModule();
 
         $game->setPageTitle(_('Aggregationssystem'));
         $game->setMacroInAjaxWindow('html/ship/aggregationsystem.twig');
@@ -46,21 +58,44 @@ final class ShowAggregationSystem implements ViewControllerInterface
         }
 
         $commodities = CommodityTypeEnum::COMMODITY_CONVERSIONS;
-        $mode1Commodities = array_filter($commodities, fn($entry) => $entry[3] === 1);
-        $mode2Commodities = array_filter($commodities, fn($entry) => $entry[3] === 2);
+        $mode1Commodities = array_filter($commodities, fn($entry) => $entry[4] === 1);
+        $mode2Commodities = array_filter($commodities, fn($entry) => $entry[4] === 2);
 
 
         $mode1Commodities = array_map(fn($entry) => [
             $this->commodityRepository->find($entry[0]),
             $this->commodityRepository->find($entry[1]),
-            $entry[2]
+            $entry[2],
+            $entry[3]
         ], $mode1Commodities);
 
         $mode2Commodities = array_map(fn($entry) => [
             $this->commodityRepository->find($entry[0]),
             $this->commodityRepository->find($entry[1]),
-            $entry[2]
+            $entry[2],
+            $entry[3]
         ], $mode2Commodities);
+
+        if ($module && $module->getFactionId() == FactionEnum::FACTION_FERENGI) {
+            foreach ($mode1Commodities as &$entry) {
+                $entry[2] *= 2;
+                $entry[3] *= 2;
+            }
+
+            foreach ($mode2Commodities as &$entry) {
+                $entry[2] *= 2;
+                $entry[3] *= 2;
+            }
+        }
+
+
+        $mode1Commodities = array_filter($mode1Commodities, function ($entry) use ($userId) {
+            return $entry[1] !== null && $this->buildingCommodityRepository->canProduceCommodity($userId, $entry[1]->getId());
+        });
+
+        $mode2Commodities = array_filter($mode2Commodities, function ($entry) use ($userId) {
+            return $entry[1] !== null && $this->buildingCommodityRepository->canProduceCommodity($userId, $entry[1]->getId());
+        });
 
         $chosencommodity = $aggregationsystem->getCommodityId();
         $game->setTemplateVar('MODE1_COMMODITIES', $mode1Commodities);

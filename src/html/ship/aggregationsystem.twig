@@ -24,7 +24,7 @@
             <input type="radio" name="chosen" value="{{ entry[0].getId }}" id="commodityEntry{{ entry[0].getId }}" 
               {% if entry[0].getId == CHOSENCOMMODITY %}checked{% endif %} />
               {{ entry[2]|bbcode }} <img src="/assets/commodities/{{ entry[0].getId }}.png" title="{{ entry[0].getName }}"/> 
-              <img src="/assets/buttons/b_to1.png" /><span> 1 </span>
+              <img src="/assets/buttons/b_to1.png" /><span> {{ entry[3]|bbcode }} </span>
               <img src="/assets/commodities/{{ entry[1].getId }}.png" title="{{ entry[1].getName }}"/> 
           </td>
           {% if loop.index is even %}
@@ -45,7 +45,7 @@
             <input type="radio" name="chosen" value="{{ entry[0].getId }}" id="commodityEntry{{ entry[0].getId }}" 
               {% if entry[0].getId == CHOSENCOMMODITY %}checked{% endif %} />
               {{ entry[2]|bbcode }} <img src="/assets/commodities/{{ entry[0].getId }}.png" title="{{ entry[0].getName }}"/> 
-              <img src="/assets/buttons/b_to1.png" /><span> 1 </span>
+              <img src="/assets/buttons/b_to1.png" /><span> {{ entry[3]|bbcode }} </span>
               <img src="/assets/commodities/{{ entry[1].getId }}.png" title="{{ entry[1].getName }}"/> 
           </td>
           {% if loop.index is even %}

@@ -79,8 +79,15 @@ final class GatherResources implements ActionControllerInterface
             }
 
 
-            if (!$this->helper->activate($wrapper, ShipSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR, $game)) {
-                return;
+            if (!$ship->getSystemState(ShipSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR)) {
+                if (!$this->helper->activate($wrapper, ShipSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR, $game)) {
+                    return;
+                }
+            } else {
+                $miningQueue = $this->miningQueueRepository->getByShip($ship->getId());
+                if ($miningQueue !== null) {
+                    $this->miningQueueRepository->truncateByShipId($ship->getId());
+                }
             }
             $this->shipStateChanger->changeShipState($wrapper, ShipStateEnum::SHIP_STATE_GATHER_RESOURCES);
 
@@ -93,7 +100,7 @@ final class GatherResources implements ActionControllerInterface
             $this->entityManager->flush();
 
             $game->addInformationf(
-                "Ressourcen werden gesammelt",
+                sprintf('%s wird gesammelt', $locationMining->getCommodity()->getName()),
             );
         }
     }

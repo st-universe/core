@@ -71,7 +71,7 @@ function showAggregationSystemWindow() {
 }
 function showBussardCollectorWindow() {
 	closeAjaxWindow();
-	openWindow('elt', 1, 300);
+	openWindow('elt', 1);
 	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_BUSSARD_COLLECTOR_AJAX=1');
 }
 function showScanWindow(shipid, target) {

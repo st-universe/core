@@ -4,6 +4,7 @@ namespace Stu\Module\Tick\Ship;
 
 use Override;
 use RuntimeException;
+use Stu\Component\Faction\FactionEnum;
 use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Ship\Repair\RepairUtilInterface;
 use Stu\Component\Ship\ShipAlertStateEnum;
@@ -650,14 +651,13 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
                             $producedCommodity = $this->commodityRepository->find($producedCommodityId);
                             $usedCommodity = $this->commodityRepository->find($entry[0]);
                             $usedAmount = $entry[2];
+                            $producedAmount = $entry[3];
                             break;
                         }
                     }
 
-                    if ($module->getFactionId() == null) {
-                        $producedAmount = 1;
-                    } else {
-                        $producedAmount = 2;
+                    if ($module->getFactionId() == FactionEnum::FACTION_FERENGI) {
+                        $producedAmount = $producedAmount * 2;
                         $usedAmount = $usedAmount * 2;
                     }
                     $storage = $this->storageRepository->findOneBy([

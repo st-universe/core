@@ -13,7 +13,9 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
-
+use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Orm\Repository\BuildingCommodityRepositoryInterface;
+use Stu\Orm\Repository\CommodityRepositoryInterface;
 
 final class TransformResources implements ActionControllerInterface
 {
@@ -21,7 +23,9 @@ final class TransformResources implements ActionControllerInterface
 
     public function __construct(
         private ShipLoaderInterface $shipLoader,
-        private ActivatorDeactivatorHelperInterface $helper
+        private ActivatorDeactivatorHelperInterface $helper,
+        private BuildingCommodityRepositoryInterface $buildingCommodityRepository,
+        private CommodityRepositoryInterface $commodityRepository
     ) {}
 
     #[Override]
@@ -46,6 +50,8 @@ final class TransformResources implements ActionControllerInterface
 
         $commodityId = request::postInt('chosen');
 
+
+
         if ($commodityId === 0) {
             if ($ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_AGGREGATION_SYSTEM)) {
                 $this->helper->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_AGGREGATION_SYSTEM, $game);
@@ -54,14 +60,40 @@ final class TransformResources implements ActionControllerInterface
             return;
         } else {
 
+            if (!$ship->getSystemState(ShipSystemTypeEnum::SYSTEM_AGGREGATION_SYSTEM)) {
+                if (!$this->helper->activate($wrapper, ShipSystemTypeEnum::SYSTEM_AGGREGATION_SYSTEM, $game)) {
+                    return;
+                }
+            }
 
-            if (!$this->helper->activate($wrapper, ShipSystemTypeEnum::SYSTEM_AGGREGATION_SYSTEM, $game)) {
+            $canProduce = false;
+            foreach (CommodityTypeEnum::COMMODITY_CONVERSIONS as $conversion) {
+                if ($conversion[0] === $commodityId) {
+                    $targetCommodityId = $conversion[1];
+                    if ($this->buildingCommodityRepository->canProduceCommodity($userId, $targetCommodityId)) {
+                        $canProduce = true;
+                        $sourceCommodity = $this->commodityRepository->find($conversion[0]);
+                        $targetCommodity = $this->commodityRepository->find($conversion[1]);
+                        break;
+                    }
+                }
+            }
+
+            if (!$canProduce) {
+                $game->addInformation("Diese Ressource kann nicht produziert werden");
                 return;
             }
+
             $aggregationsystem->setCommodityId($commodityId)->update();
-            $game->addInformationf(
-                "Ressourcen werden umgewandelt",
-            );
+            if ($sourceCommodity &&  $targetCommodity) {
+                $game->addInformationf(
+                    sprintf(
+                        "%s wird in %s umgewandelt",
+                        $sourceCommodity->getName(),
+                        $targetCommodity->getName()
+                    )
+                );
+            }
         }
     }
 
