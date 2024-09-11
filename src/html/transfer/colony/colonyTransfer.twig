@@ -1,5 +1,5 @@
-<form action="ship.php" method="post">
-    <input type="hidden" name="id" value="{{ SHIP.getId }}" />
+<form action="colony.php" method="post">
+    <input type="hidden" name="id" value="{{ COLONY.getId }}" />
     <input type="hidden" name="target" value="{{ TARGET.getId }}" />
     <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
     <input type="hidden" name="transfer_type" value="{{ TRANSFER_INFO.getTransferType.value }}" />
@@ -13,15 +13,10 @@
         <tr>
             <td colspan="3">Ziel: {{ TARGET.getName|bbcode }}</td>
         </tr>
-        <tr>
-            {% if SHOW_SHIELD_FREQUENCY %}
-            <td>Schildfrequenz:</td>
-            <td><input type="text" size="3" name="frequency" /> MHz</td>
-            {% endif %}
-        </tr>
+        <tr></tr>
         <tr>
             <td colspan="3">
-                Kapazität pro 1 Energie: {{ SHIP.getRump.getBeamFactor }}
+                Kapazität pro 1 Energie: {{ COLONY.getBeamFactor }}
             </td>
         </tr>
         <tr>
@@ -32,15 +27,15 @@
                 {% embed "html/transfer/directionSelection.twig" %}
                 {% from 'html/transfer/transferMacros.twig' import entity %}
                 {% block source %}
-                {{ entity(SHIP, false, true) }}
+                {{ entity(TARGET, false , OWNS_TARGET) }}
                 {% autoescape false %}
-                {{ SOURCE_STORAGE_BAR }}
+                {{ TARGET_STORAGE_BAR }}
                 {% endautoescape %}
                 {% endblock %}
                 {% block target %}
-                {{ entity(TARGET, TRANSFER_INFO.isColonyTarget , OWNS_TARGET, SHIP.getId) }}
+                {{ entity(COLONY, true, true) }}
                 {% autoescape false %}
-                {{ TARGET_STORAGE_BAR }}
+                {{ SOURCE_STORAGE_BAR }}
                 {% endautoescape %}
                 {% endblock %}
                 {% endembed %}

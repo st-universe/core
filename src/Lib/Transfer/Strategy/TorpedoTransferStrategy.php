@@ -34,21 +34,24 @@ class TorpedoTransferStrategy implements TransferStrategyInterface
     #[Override]
     public function setTemplateVariables(
         bool $isUnload,
-        ShipInterface $ship,
+        ShipInterface|ColonyInterface $source,
         ShipInterface|ColonyInterface $target,
         GameControllerInterface $game
     ): void {
 
-        if ($target instanceof ColonyInterface) {
+        if (
+            $source instanceof ColonyInterface ||
+            $target instanceof ColonyInterface
+        ) {
             throw new RuntimeException('this should not happen');
         }
 
         if ($isUnload) {
             $max = min(
                 $target->getMaxTorpedos(),
-                $ship->getTorpedoCount()
+                $source->getTorpedoCount()
             );
-            $commodityId = $ship->getTorpedo() === null ? null : $ship->getTorpedo()->getCommodityId();
+            $commodityId = $source->getTorpedo() === null ? null : $source->getTorpedo()->getCommodityId();
         } else {
             $max = $target->getTorpedoCount();
             $commodityId = $target->getTorpedo() === null ? null : $target->getTorpedo()->getCommodityId();

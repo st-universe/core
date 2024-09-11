@@ -596,11 +596,7 @@ return [
         ShowAlertLevel::VIEW_IDENTIFIER => autowire(ShowAlertLevel::class),
         ShowAstroEntry::VIEW_IDENTIFIER => autowire(ShowAstroEntry::class),
         ShowEpsTransfer::VIEW_IDENTIFIER => autowire(ShowEpsTransfer::class),
-        ShowTransfer::VIEW_IDENTIFIER => autowire(ShowTransfer::class)
-            ->constructorParameter(
-                'transferStrategies',
-                get('transferStrategies')
-            ),
+        ShowTransfer::VIEW_IDENTIFIER => autowire(ShowTransfer::class),
         ShowSelfDestruct::VIEW_IDENTIFIER => autowire(ShowSelfDestruct::class),
         ShowScan::VIEW_IDENTIFIER => autowire(ShowScan::class),
         ShowBussardCollector::VIEW_IDENTIFIER => autowire(ShowBussardCollector::class),

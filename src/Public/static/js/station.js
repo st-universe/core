@@ -32,19 +32,3 @@ function getShipList() {
 	openPJsWin('shiplist', 1);
 	ajax_update('shiplist', 'station.php?id=' + shipid + '&SHOW_STATION_SHIPLIST=1');
 }
-
-function showBeamToWindow() {
-	closeAjaxWindow();
-
-	var target = $('selshipid').value;
-	openPJsWin('elt', 1);
-	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_BEAMTO=1&target=' + target);
-}
-
-function showBeamFromWindow() {
-	closeAjaxWindow();
-
-	var target = $('selshipid').value;
-	openPJsWin('elt', 1);
-	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_BEAMFROM=1&target=' + target);
-}

@@ -719,6 +719,18 @@ function switchInnerContent(identifier, title, params, page, stateUrl) {
         );
 }
 
+function showTransfer(sourceId, targetId, transferTypeValue, isUnload, isColonyTarget, isReplace) {
+        if (!isReplace) {
+                closeAjaxWindow();
+                openPJsWin('elt', 1);
+        }
+
+        isUnloadValue = isUnload ? 1 : 0;
+        isColonyTargetValue = isColonyTarget ? 1 : 0;
+
+        ajax_update('elt', `?SHOW_TRANSFER=1&id=${sourceId}&target=${targetId}&is_unload=${isUnloadValue}&is_colony=${isColonyTargetValue}&transfer_type=${transferTypeValue}`);
+}
+
 function maximizeCommodityAmounts() {
         document.querySelectorAll('.commodityAmount').forEach(function (elem) {
                 elem.value = 'max';

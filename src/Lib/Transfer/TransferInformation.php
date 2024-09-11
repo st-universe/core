@@ -82,6 +82,11 @@ class TransferInformation
         return $this->isUnload;
     }
 
+    public function getSourceId(): int
+    {
+        return $this->from->getId();
+    }
+
     public function getTargetId(): int
     {
         return $this->to->getId();
@@ -100,5 +105,10 @@ class TransferInformation
     public function getTarget(): ShipInterface|ColonyInterface
     {
         return $this->to;
+    }
+
+    public function isUpIcon(): bool
+    {
+        return ($this->getSource() instanceof ColonyInterface) == $this->isUnload();
     }
 }

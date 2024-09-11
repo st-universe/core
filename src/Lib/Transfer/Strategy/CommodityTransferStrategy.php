@@ -13,6 +13,8 @@ use Stu\Lib\Transfer\BeamUtilInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Template\StatusBarColorEnum;
+use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
 
@@ -21,29 +23,43 @@ class CommodityTransferStrategy implements TransferStrategyInterface
     public function __construct(
         private ColonyLibFactoryInterface $colonyLibFactory,
         private BeamUtilInterface $beamUtil,
-        private PirateReactionInterface $pirateReaction
-    ) {
-    }
+        private PirateReactionInterface $pirateReaction,
+        private StatusBarFactoryInterface $statusBarFactory
+    ) {}
 
     #[Override]
     public function setTemplateVariables(
         bool $isUnload,
-        ShipInterface $ship,
+        ShipInterface|ColonyInterface $source,
         ShipInterface|ColonyInterface $target,
         GameControllerInterface $game
     ): void {
 
         $game->setTemplateVar(
             'BEAMABLE_STORAGE',
-            $isUnload ? $ship->getBeamableStorage() : $target->getBeamableStorage()
+            $isUnload ? $source->getBeamableStorage() : $target->getBeamableStorage()
         );
 
         if ($target instanceof ColonyInterface) {
             $game->setTemplateVar(
                 'SHOW_SHIELD_FREQUENCY',
-                $this->colonyLibFactory->createColonyShieldingManager($target)->isShieldingEnabled() && $target->getUser() !== $ship->getUser()
+                $this->colonyLibFactory->createColonyShieldingManager($target)->isShieldingEnabled() && $target->getUser() !== $source->getUser()
             );
         }
+
+        $game->setTemplateVar('SOURCE_STORAGE_BAR', $this->createStorageBar($source));
+        $game->setTemplateVar('TARGET_STORAGE_BAR', $this->createStorageBar($target));
+    }
+
+    private function createStorageBar(ShipInterface|ColonyInterface $target): string
+    {
+        return $this->statusBarFactory
+            ->createStatusBar()
+            ->setColor(StatusBarColorEnum::STATUSBAR_GREEN)
+            ->setLabel(_('Lager'))
+            ->setMaxValue($target->getMaxStorage())
+            ->setValue($target->getStorageSum())
+            ->render();
     }
 
     #[Override]
