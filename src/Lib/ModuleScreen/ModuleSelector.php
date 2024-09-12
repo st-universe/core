@@ -118,11 +118,10 @@ class ModuleSelector implements ModuleSelectorInterface
 
             $host = $this->getHost();
             if ($this->getModuleType() === ShipModuleTypeEnum::SPECIAL) {
-                $modules = $this->moduleRepository->getBySpecialTypeAndRump(
+                $modules = $this->moduleRepository->getBySpecialTypeAndRumpWithoutRole(
                     $host,
                     $this->getModuleType(),
-                    $this->getRump()->getId(),
-                    $this->getShipRumpRole()->getId()
+                    $this->getRump()->getId()
                 );
             } elseif ($this->getHost() instanceof ColonyInterface) {
                 $mod_level = $this->shipRumpModuleLevelRepository->getByShipRump(

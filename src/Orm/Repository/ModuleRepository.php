@@ -62,6 +62,41 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
             ->getResult();
     }
 
+    #[Override]
+public function getBySpecialTypeAndRumpWithoutRole(
+    ColonyInterface|ShipInterface $host,
+    ShipModuleTypeEnum $moduleType,
+    int $shipRumpId
+): array {
+    return $this->getEntityManager()
+        ->createNativeQuery(
+            'SELECT
+                    m.id, m.name, m.level, m.upgrade_factor, m.default_factor, m.downgrade_factor, m.crew,
+                    m.type, m.research_id, m.commodity_id, m.viewable, m.rumps_role_id, m.ecost, m.faction_id
+                FROM stu_modules m
+                WHERE m.type = :typeId
+                AND (m.viewable = :state OR m.commodity_id IN (SELECT commodity_id
+                                                            FROM stu_storage
+                                                            WHERE :hostIdColumnName = :hostId))
+                AND m.id IN (SELECT module_id
+                            FROM stu_modules_specials
+                            WHERE special_id IN (SELECT module_special_id
+                                                FROM stu_rumps_module_special
+                                                WHERE rump_id = :shipRumpId))
+            ',
+            $this->getResultSetMapping()
+        )
+        ->setParameters([
+            'typeId' => $moduleType->value,
+            'hostIdColumnName' => $host instanceof ColonyInterface ? 'colony_id' : 'ship_id',
+            'hostId' => $host->getId(),
+            'shipRumpId' => $shipRumpId,
+            'state' => 1
+        ])
+        ->getResult();
+}
+
+
     // used for ModuleSelector
     #[Override]
     public function getByTypeColonyAndLevel(
