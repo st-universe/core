@@ -118,7 +118,7 @@ class ModuleSelector implements ModuleSelectorInterface
 
             $host = $this->getHost();
             if ($this->getModuleType() === ShipModuleTypeEnum::SPECIAL) {
-                $modules = $this->moduleRepository->getBySpecialTypeAndRumpWithoutRole(
+                $modules = $this->moduleRepository->getBySpecialTypeAndRump(
                     $host,
                     $this->getModuleType(),
                     $this->getRump()->getId()

@@ -20,7 +20,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
 {
     // used for ModuleSelector
     #[Override]
-    public function getBySpecialTypeAndRump(
+    public function getBySpecialTypeAndRumpAndRole(
         ColonyInterface|ShipInterface $host,
         ShipModuleTypeEnum $moduleType,
         int $shipRumpId,
@@ -63,7 +63,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
     }
 
     #[Override]
-public function getBySpecialTypeAndRumpWithoutRole(
+public function getBySpecialTypeAndRump(
     ColonyInterface|ShipInterface $host,
     ShipModuleTypeEnum $moduleType,
     int $shipRumpId

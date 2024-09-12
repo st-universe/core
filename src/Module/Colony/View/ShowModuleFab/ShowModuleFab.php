@@ -115,8 +115,7 @@ final class ShowModuleFab implements ViewControllerInterface
                             $specialModules = $this->moduleRepository->getBySpecialTypeAndRump(
                                 $colony,
                                 ShipModuleTypeEnum::SPECIAL,
-                                $rumpId,
-                                $rumpRoleId
+                                $rumpId
                             );
 
                             foreach ($specialModules as $specialModule) {

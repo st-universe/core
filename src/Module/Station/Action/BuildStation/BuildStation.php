@@ -197,8 +197,7 @@ final class BuildStation implements ActionControllerInterface
         return $this->moduleRepository->getBySpecialTypeAndRump(
             $ship,
             ShipModuleTypeEnum::SPECIAL,
-            $rump->getId(),
-            $shipRumpRole->getId()
+            $rump->getId()
         );
     }
 
