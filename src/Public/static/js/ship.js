@@ -49,6 +49,18 @@ function showAvailableShips(fleetid) {
 	ajax_update('elt', 'ship.php?SHOW_AVAILABLE_SHIPS=1&fleetid=' + fleetid);
 }
 
+function showTransfer(targetId, transferTypeValue, isUnload, isColonyTarget, isReplace) {
+	if (!isReplace) {
+		closeAjaxWindow();
+		openPJsWin('elt', 1);
+	}
+
+	isUnloadValue = isUnload ? 1 : 0;
+	isColonyTargetValue = isColonyTarget ? 1 : 0;
+
+	ajax_update('elt', `?SHOW_TRANSFER=1&id=${shipid}&target=${targetId}&is_unload=${isUnloadValue}&is_colony=${isColonyTargetValue}&transfer_type=${transferTypeValue}`);
+}
+
 function showSelfdestructWindow(target) {
 	closeAjaxWindow();
 	openWindow('elt', 1, 300);

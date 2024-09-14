@@ -105,6 +105,12 @@ use Stu\Module\Colony\View\ShowAcademy\ShowAcademyRequestInterface;
 use Stu\Module\Colony\View\ShowAirfield\ShowAirfield;
 use Stu\Module\Colony\View\ShowAirfield\ShowAirfieldRequest;
 use Stu\Module\Colony\View\ShowAirfield\ShowAirfieldRequestInterface;
+use Stu\Module\Colony\View\ShowBeamFrom\ShowBeamFrom;
+use Stu\Module\Colony\View\ShowBeamFrom\ShowBeamFromRequest;
+use Stu\Module\Colony\View\ShowBeamFrom\ShowBeamFromRequestInterface;
+use Stu\Module\Colony\View\ShowBeamTo\ShowBeamTo;
+use Stu\Module\Colony\View\ShowBeamTo\ShowBeamToRequest;
+use Stu\Module\Colony\View\ShowBeamTo\ShowBeamToRequestInterface;
 use Stu\Module\Colony\View\ShowBuilding\ShowBuilding;
 use Stu\Module\Colony\View\ShowBuilding\ShowBuildingRequest;
 use Stu\Module\Colony\View\ShowBuilding\ShowBuildingRequestInterface;
@@ -168,7 +174,6 @@ use Stu\Module\Colony\View\ShowSurface\ShowSurface;
 use Stu\Module\Colony\View\ShowTorpedoFab\ShowTorpedoFab;
 use Stu\Module\Colony\View\ShowTorpedoFab\ShowTorpedoFabRequest;
 use Stu\Module\Colony\View\ShowTorpedoFab\ShowTorpedoFabRequestInterface;
-use Stu\Module\Colony\View\ShowTransfer\ShowTransfer;
 use Stu\Module\Colony\View\ShowWaste\ShowWaste;
 use Stu\Module\Control\GameController;
 use Stu\Module\Game\View\Overview\Overview;
@@ -217,6 +222,8 @@ return [
     PlanetGeneratorInterface::class => autowire(PlanetGenerator::class),
     ShowAcademyRequestInterface::class => autowire(ShowAcademyRequest::class),
     ShowAirfieldRequestInterface::class => autowire(ShowAirfieldRequest::class),
+    ShowBeamFromRequestInterface::class => autowire(ShowBeamFromRequest::class),
+    ShowBeamToRequestInterface::class => autowire(ShowBeamToRequest::class),
     ShowBuildingRequestInterface::class => autowire(ShowBuildingRequest::class),
     ShowBuildPlansRequestInterface::class => autowire(ShowBuildPlansRequest::class),
     ShowColonyRequestInterface::class => autowire(ShowColonyRequest::class),
@@ -298,6 +305,8 @@ return [
         ShowInformation::VIEW_IDENTIFIER => autowire(ShowInformation::class),
         ShowSurface::VIEW_IDENTIFIER => autowire(ShowSurface::class),
         ShowOrbitShiplist::VIEW_IDENTIFIER => autowire(ShowOrbitShiplist::class),
+        ShowBeamTo::VIEW_IDENTIFIER => autowire(ShowBeamTo::class),
+        ShowBeamFrom::VIEW_IDENTIFIER => autowire(ShowBeamFrom::class),
         ShowEpsBar::VIEW_IDENTIFIER => autowire(ShowEpsBar::class),
         ShowShields::VIEW_IDENTIFIER => autowire(ShowShields::class),
         ShowStorage::VIEW_IDENTIFIER => autowire(ShowStorage::class),
@@ -315,7 +324,6 @@ return [
         ShowWaste::VIEW_IDENTIFIER => autowire(ShowWaste::class),
         ShowSubspaceTelescope::VIEW_IDENTIFIER => autowire(ShowSubspaceTelescope::class),
         ShowSubspaceTelescopeScan::VIEW_IDENTIFIER => autowire(ShowSubspaceTelescopeScan::class),
-        ShowTransfer::VIEW_IDENTIFIER => autowire(ShowTransfer::class),
         RefreshColonyEps::VIEW_IDENTIFIER => autowire(RefreshColonyEps::class)
     ],
     BuildPlanDeleterInterface::class => autowire(BuildPlanDeleter::class),

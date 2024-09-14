@@ -66,8 +66,6 @@ use Stu\Lib\ShipManagement\Provider\ManagerProviderFactory;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderFactoryInterface;
 use Stu\Lib\Transfer\BeamUtil;
 use Stu\Lib\Transfer\BeamUtilInterface;
-use Stu\Lib\Transfer\InitializeShowTransfer;
-use Stu\Lib\Transfer\InitializeShowTransferInterface;
 use Stu\Lib\Transfer\Strategy\CommodityTransferStrategy;
 use Stu\Lib\Transfer\Strategy\TorpedoTransferStrategy;
 use Stu\Lib\Transfer\Strategy\TroopTransferStrategy;
@@ -89,17 +87,7 @@ return [
     BeamUtilInterface::class => autowire(BeamUtil::class),
     MailFactoryInterface::class => autowire(MailFactory::class),
     PlanetFieldHostProviderInterface::class => autowire(PlanetFieldHostProvider::class),
-    'transferStrategies' => [
-        TransferTypeEnum::COMMODITIES->value => autowire(CommodityTransferStrategy::class),
-        TransferTypeEnum::CREW->value => autowire(TroopTransferStrategy::class),
-        TransferTypeEnum::TORPEDOS->value => autowire(TorpedoTransferStrategy::class)
-    ],
     TransferTargetLoaderInterface::class => autowire(TransferTargetLoader::class),
-    InitializeShowTransferInterface::class => autowire(InitializeShowTransfer::class)
-        ->constructorParameter(
-            'transferStrategies',
-            get('transferStrategies')
-        ),
     HandleManagersInterface::class => create(HandleManagers::class)->constructor(
         [
             autowire(ManageBattery::class),
@@ -119,6 +107,11 @@ return [
             PanelLayerEnum::BORDER->value => autowire(BorderDataProvider::class)
         ]
     ),
+    'transferStrategies' => [
+        TransferTypeEnum::COMMODITIES->value => autowire(CommodityTransferStrategy::class),
+        TransferTypeEnum::CREW->value => autowire(TroopTransferStrategy::class),
+        TransferTypeEnum::TORPEDOS->value => autowire(TorpedoTransferStrategy::class)
+    ],
     'pirateBehaviours' => [
         PirateBehaviourEnum::FLY->value => autowire(FlyBehaviour::class),
         PirateBehaviourEnum::RUB_COLONY->value => autowire(RubColonyBehaviour::class),

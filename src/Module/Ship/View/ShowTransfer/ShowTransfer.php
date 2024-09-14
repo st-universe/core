@@ -6,7 +6,11 @@ namespace Stu\Module\Ship\View\ShowTransfer;
 
 use Override;
 use request;
-use Stu\Lib\Transfer\InitializeShowTransferInterface;
+use RuntimeException;
+use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
+use Stu\Lib\Transfer\BeamUtilInterface;
+use Stu\Lib\Transfer\Strategy\TransferStrategyInterface;
+use Stu\Lib\Transfer\TransferInformation;
 use Stu\Lib\Transfer\TransferTargetLoaderInterface;
 use Stu\Lib\Transfer\TransferTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
@@ -18,11 +22,10 @@ final class ShowTransfer implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_TRANSFER';
 
-    public function __construct(
-        private ShipLoaderInterface $shipLoader,
-        private TransferTargetLoaderInterface $transferTargetLoader,
-        private InitializeShowTransferInterface $initializeShowTransfer
-    ) {}
+    /** @param array<TransferStrategyInterface> $transferStrategies */
+    public function __construct(private ShipLoaderInterface $shipLoader, private TransferTargetLoaderInterface $transferTargetLoader, private BeamUtilInterface $beamUtil, private PlayerRelationDeterminatorInterface $playerRelationDeterminator, private array $transferStrategies)
+    {
+    }
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -46,6 +49,15 @@ final class ShowTransfer implements ViewControllerInterface
 
         $target = $this->transferTargetLoader->loadTarget($targetId, $isColonyTarget, false);
 
+        $transferInformation = new TransferInformation(
+            $transferType,
+            $ship,
+            $target,
+            $isUnload,
+            $this->playerRelationDeterminator->isFriend($target->getUser(), $ship->getUser())
+        );
+
+        $this->setPageTitle($transferInformation, $game);
         $game->setMacroInAjaxWindow('html/entityNotAvailable.twig');
 
         if (!InteractionChecker::canInteractWith($ship, $target, $game, true)) {
@@ -54,13 +66,35 @@ final class ShowTransfer implements ViewControllerInterface
 
         $game->setMacroInAjaxWindow('html/transfer/ship/shipTransfer.twig');
 
+        $game->setTemplateVar('TARGET', $target);
         $game->setTemplateVar('SHIP', $ship);
-        $this->initializeShowTransfer->init(
-            $ship,
-            $target,
-            $isUnload,
-            $transferType,
-            $game
-        );
+        $game->setTemplateVar('OWNS_TARGET', $target->getUser() === $user);
+        $game->setTemplateVar('TRANSFER_INFO', $transferInformation);
+
+        $strategy = $this->getTransferStrategy($transferType);
+        $strategy->setTemplateVariables($isUnload, $ship, $target, $game);
+    }
+
+
+    private function setPageTitle(
+        TransferInformation $transferInformation,
+        GameControllerInterface $game
+    ): void {
+        $game->setPageTitle(sprintf(
+            '%s %s %s %s',
+            $transferInformation->getTransferType()->getGoodName(),
+            $transferInformation->isUnload() ? 'zu' : 'von',
+            $transferInformation->isColonyTarget() ? 'Kolonie' : 'Schiff',
+            $this->beamUtil->isDockTransfer($transferInformation->getSource(), $transferInformation->getTarget()) ? 'transferieren' : 'beamen'
+        ));
+    }
+
+    private function getTransferStrategy(TransferTypeEnum $transferType): TransferStrategyInterface
+    {
+        if (!array_key_exists($transferType->value, $this->transferStrategies)) {
+            throw new RuntimeException(sprintf('transfer strategy with typeValue %d does not exist', $transferType->value));
+        }
+
+        return $this->transferStrategies[$transferType->value];
     }
 }

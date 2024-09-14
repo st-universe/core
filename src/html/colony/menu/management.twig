@@ -15,14 +15,12 @@
             {% if FIRST_ORBIT_SHIP %}
             <div style="width: 100%;">
                 <br />
-                <a href="javascript:void(0);"
-                    onclick="showTransfer({{ COLONY.getId }}, document.getElementById('selshipid').value, 1, false, false);"
+                <a href="javascript:void(0);" onclick="showBFromSWindow();"
                     onmouseover="cp('beamfrom','buttons/b_down2')" onmouseout="cp('beamfrom','buttons/b_down1')"><img
                         src="/assets/buttons/b_down1.png" name="beamfrom" title="Von Schiff beamen" /></a>
-                <a href="javascript:void(0);"
-                    onclick="showTransfer({{ COLONY.getId }}, document.getElementById('selshipid').value, 1, true, false);"
-                    onmouseover="cp('beamto','buttons/b_up2')" onmouseout="cp('beamto','buttons/b_up1')"><img
-                        src="/assets/buttons/b_up1.png" name="beamto" title="Zu Schiff beamen" /></a>
+                <a href="javascript:void(0);" onclick="showBToSWindow();" onmouseover="cp('beamto','buttons/b_up2')"
+                    onmouseout="cp('beamto','buttons/b_up1')"><img src="/assets/buttons/b_up1.png" name="beamto"
+                        title="Zu Schiff beamen" /></a>
                 <a href="javascript:void(0);" onclick="getOrbitShipList({{ COLONY.getId }});">Liste</a> | <a
                     href="javascript:void(0);"
                     onclick="switchInnerContent('SHOW_SHIP_MANAGEMENT', 'Orbitalmanagement', 'id={{ COLONY.getId }}');">Management</a>
