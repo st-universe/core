@@ -228,12 +228,12 @@
 							{% if FIRST_MANAGE_SHIP %}
 							<div style="width: 70%; float: left;">
 								<a href="javascript:void(0);"
-									onclick="showTransfer({{shipId}}, document.getElementById('selshipid').value, 1, true, false, false);"
+									onclick="showTransfer(document.getElementById('selshipid').value, 1, true, false, false);"
 									onmouseover="cp('beamfrom','buttons/b_down2')"
 									onmouseout="cp('beamfrom','buttons/b_down1')"><img src="/assets/buttons/b_down1.png"
 										name="beamfrom" title="Zu Schiff beamen" /></a>
 								<a href="javascript:void(0);"
-									onclick="showTransfer({{shipId}}, document.getElementById('selshipid').value, 1, false, false, false);"
+									onclick="showTransfer(document.getElementById('selshipid').value, 1, false, false, false);"
 									onmouseover="cp('beamto','buttons/b_up2')"
 									onmouseout="cp('beamto','buttons/b_up1')"><img src="/assets/buttons/b_up1.png"
 										name="beamto" title="Von Schiff beamen" /></a>

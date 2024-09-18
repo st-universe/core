@@ -7,12 +7,12 @@
         </td>
     </tr>
     <tr>
-        {% set icon = TRANSFER_INFO.isUpIcon ? 'b_up' : 'b_down' %}
+        {% set icon = TRANSFER_INFO.isUnload ? 'b_down' : 'b_up' %}
         {% set isUnload = TRANSFER_INFO.isUnload ? 0 : 1 %}
         {% set isColonyTarget = TRANSFER_INFO.isColonyTarget ? 1 : 0 %}
         <td style="text-align: center; height: 10%;">
             <a href="javascript:void(0);"
-                onclick="showTransfer({{ TRANSFER_INFO.getSourceId }}, {{ TRANSFER_INFO.getTargetId }}, {{ TRANSFER_INFO.getTransferType.value }}, {{ isUnload }}, {{ isColonyTarget }}, true);"
+                onclick="showTransfer({{ TRANSFER_INFO.getTargetId }}, {{ TRANSFER_INFO.getTransferType.value }}, {{ isUnload }}, {{ isColonyTarget }}, true);"
                 title="Richtung wechseln" onmouseover="cp('beamtrigger','buttons/{{ icon }}2');"
                 onmouseout="cp('beamtrigger','buttons/{{ icon }}1');">
                 <img src="assets/buttons/{{ icon }}1.png" name="beamtrigger" />

@@ -14,7 +14,7 @@ interface TransferStrategyInterface
 {
     public function setTemplateVariables(
         bool $isUnload,
-        ShipInterface|ColonyInterface $source,
+        ShipInterface $ship,
         ShipInterface|ColonyInterface $target,
         GameControllerInterface $game
     ): void;

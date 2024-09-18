@@ -6,10 +6,11 @@ namespace Stu\Module\Ship\Action\Transfer;
 
 use Override;
 use request;
+use RuntimeException;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Exception\SanityCheckException;
 use Stu\Lib\Information\InformationWrapper;
-use Stu\Lib\Transfer\Strategy\TransferStrategyProviderInterface;
+use Stu\Lib\Transfer\Strategy\TransferStrategyInterface;
 use Stu\Lib\Transfer\TransferInformation;
 use Stu\Lib\Transfer\TransferTargetLoaderInterface;
 use Stu\Lib\Transfer\TransferTypeEnum;
@@ -31,13 +32,15 @@ final class Transfer implements ActionControllerInterface
 
     private LoggerUtilInterface $logger;
 
+    /** @param array<TransferStrategyInterface> $transferStrategies */
+
     public function __construct(
         private ShipLoaderInterface $shipLoader,
         private TransferTargetLoaderInterface $transferTargetLoader,
         private PlayerRelationDeterminatorInterface $playerRelationDeterminator,
         private PrivateMessageSenderInterface $privateMessageSender,
-        private TransferStrategyProviderInterface $transferStrategyProvider,
-        LoggerUtilFactoryInterface $loggerUtilFactory
+        LoggerUtilFactoryInterface $loggerUtilFactory,
+        private array $transferStrategies
     ) {
         $this->logger = $loggerUtilFactory->getLoggerUtil();
         //$this->logger->init('TRANSFER', LoggerEnum::LEVEL_ERROR);
@@ -115,7 +118,7 @@ final class Transfer implements ActionControllerInterface
         }
         $this->logger->log('T10');
 
-        $strategy = $this->transferStrategyProvider->getTransferStrategy($transferType);
+        $strategy = $this->getTransferStrategy($transferType);
 
         $informations = new InformationWrapper();
 
@@ -165,6 +168,15 @@ final class Transfer implements ActionControllerInterface
             $transferInformation->getTarget()->getId(),
             $transferInformation->isColonyTarget() ? 'colony' : 'ship'
         ));
+    }
+
+    private function getTransferStrategy(TransferTypeEnum $transferType): TransferStrategyInterface
+    {
+        if (!array_key_exists($transferType->value, $this->transferStrategies)) {
+            throw new RuntimeException(sprintf('transfer strategy with typeValue %d does not exist', $transferType->value));
+        }
+
+        return $this->transferStrategies[$transferType->value];
     }
 
     #[Override]

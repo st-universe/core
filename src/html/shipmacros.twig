@@ -226,13 +226,13 @@
     </div>
     {% endif %}
     <div style="float:left; margin-right:4px;">
-        <a href="javascript:void(0);" onclick="showTransfer({{shipId}}, {{ targetId }}, 1, true, false, false);"
+        <a href="javascript:void(0);" onclick="showTransfer({{ targetId }}, 1, true, false, false);"
             onmouseover="cp('bto_{{ targetId }}','buttons/b_down2')"
             onmouseout="cp('bto_{{ targetId }}','buttons/b_down1')">
             <img src="/assets/buttons/b_down1.png" name="bto_{{ targetId }}"
                 title="Zur {{ nameWithoutMarkup }} runterbeamen" />
         </a>
-        <a href="javascript:void(0);" onclick="showTransfer({{shipId}}, {{ targetId }}, 1, false, false, false);"
+        <a href="javascript:void(0);" onclick="showTransfer({{ targetId }}, 1, false, false, false);"
             onmouseover="cp('bfr_{{ targetId }}','buttons/b_up2')"
             onmouseout="cp('bfr_{{ targetId }}','buttons/b_up1')">
             <img src="/assets/buttons/b_up1.png" name="bfr_{{ targetId }}"

@@ -33,15 +33,9 @@
                 {% from 'html/transfer/transferMacros.twig' import entity %}
                 {% block source %}
                 {{ entity(SHIP, false, true) }}
-                {% autoescape false %}
-                {{ SOURCE_STORAGE_BAR }}
-                {% endautoescape %}
                 {% endblock %}
                 {% block target %}
-                {{ entity(TARGET, TRANSFER_INFO.isColonyTarget , OWNS_TARGET, SHIP.getId) }}
-                {% autoescape false %}
-                {{ TARGET_STORAGE_BAR }}
-                {% endautoescape %}
+                {{ entity(TARGET, TRANSFER_INFO.isColonyTarget , OWNS_TARGET) }}
                 {% endblock %}
                 {% endembed %}
             </td>

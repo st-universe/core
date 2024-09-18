@@ -6,7 +6,6 @@ namespace Stu\Lib\Transfer\Strategy;
 
 use Override;
 use request;
-use RuntimeException;
 use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Component\Ship\System\Exception\SystemNotActivatableException;
@@ -55,18 +54,12 @@ class TroopTransferStrategy implements TransferStrategyInterface
     #[Override]
     public function setTemplateVariables(
         bool $isUnload,
-        ShipInterface|ColonyInterface $source,
+        ShipInterface $ship,
         ShipInterface|ColonyInterface $target,
         GameControllerInterface $game
     ): void {
 
         $user = $game->getUser();
-
-        if (
-            $source instanceof ColonyInterface
-        ) {
-            throw new RuntimeException('this should not happen');
-        }
 
         if (
             $target instanceof ShipInterface
@@ -85,11 +78,11 @@ class TroopTransferStrategy implements TransferStrategyInterface
 
         if ($target instanceof ColonyInterface) {
             if ($isUnload) {
-                $max = $this->transferUtility->getBeamableTroopCount($source);
+                $max = $this->transferUtility->getBeamableTroopCount($ship);
             } else {
                 $max = min(
                     $target->getCrewAssignmentAmount(),
-                    $this->transferUtility->getFreeQuarters($source)
+                    $this->transferUtility->getFreeQuarters($ship)
                 );
             }
         } else {
@@ -105,21 +98,21 @@ class TroopTransferStrategy implements TransferStrategyInterface
 
             if ($isUnload) {
                 $max = min(
-                    $this->transferUtility->getBeamableTroopCount($source),
+                    $this->transferUtility->getBeamableTroopCount($ship),
                     $this->transferUtility->getFreeQuarters($target),
                     $isUplinkSituation ? ($ownCrewOnTarget === 0 ? 1 : 0) : PHP_INT_MAX
                 );
             } else {
                 $max = min(
                     $ownCrewOnTarget,
-                    $this->transferUtility->getFreeQuarters($source)
+                    $this->transferUtility->getFreeQuarters($ship)
                 );
 
                 echo $ownCrewOnTarget;
             }
         }
 
-        if (!$isUplinkSituation && $target->getUser() !== $source->getUser()) {
+        if (!$isUplinkSituation && $target->getUser() !== $ship->getUser()) {
             return;
         }
 

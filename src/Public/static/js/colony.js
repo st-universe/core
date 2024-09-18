@@ -221,6 +221,20 @@ function getOrbitShipList(colonyId) {
 	ajax_update(elt, 'colony.php?id=' + colonyId + '&SHOW_ORBIT_SHIPLIST=1');
 }
 
+function showBToSWindow() {
+	var shipid = $('selshipid').value;
+	elt = 'beam'
+	openPJsWin(elt, 1);
+	ajax_update(elt, 'colony.php?id=' + colonyid + '&SHOW_BEAMTO=1&target=' + shipid);
+}
+
+function showBFromSWindow() {
+	var shipid = $('selshipid').value;
+	elt = 'beam'
+	openPJsWin(elt, 1);
+	ajax_update(elt, 'colony.php?id=' + colonyid + '&SHOW_BEAMFROM=1&target=' + shipid);
+}
+
 function showColonySectorScanWindow(id) {
 	closeAjaxWindow();
 	openPJsWin('elt', 1);
@@ -231,6 +245,16 @@ function showPodLocationWindow() {
 	elt = 'podlocations';
 	openPJsWin(elt, 1);
 	ajax_update(elt, 'colony.php?SHOW_PODS_LOCATIONS=1');
+}
+
+function triggerBeamToShip() {
+	var shipid = $('selshipid').value;
+	ajax_update(elt, 'colony.php?id=' + colonyid + '&SHOW_BEAMTO=1&target=' + shipid);
+}
+
+function triggerBeamFromShip() {
+	var shipid = $('selshipid').value;
+	ajax_update(elt, 'colony.php?id=' + colonyid + '&SHOW_BEAMFROM=1&target=' + shipid);
 }
 
 function toggleMaxEmpty(elem, max) {
