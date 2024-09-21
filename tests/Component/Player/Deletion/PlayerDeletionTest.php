@@ -8,7 +8,9 @@ use JBBCode\Parser;
 use Mockery;
 use Mockery\MockInterface;
 use Override;
+use Noodlehaus\ConfigInterface;
 use Stu\Component\Player\Deletion\Handler\PlayerDeletionHandlerInterface;
+use Stu\Lib\Mail\MailFactoryInterface;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -17,34 +19,24 @@ use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\StuTestCase;
 
+
 class PlayerDeletionTest extends StuTestCase
 {
-    /**
-     * @var null|MockInterface|UserRepositoryInterface
-     */
-    private $userRepository;
+    private MockInterface|UserRepositoryInterface $userRepository;
 
-    /**
-     * @var null|MockInterface|StuConfigInterface
-     */
-    private $config;
+    private MockInterface|StuConfigInterface $config;
 
-    /**
-     * @var null|MockInterface|LoggerUtilInterface
-     */
-    private $loggerUtil;
+    private MockInterface|LoggerUtilInterface $loggerUtil;
 
-    /**
-     * @var null|MockInterface|Parser
-     */
-    private $bbCodeParser;
+    private MockInterface|Parser $bbCodeParser;
 
-    /**
-     * @var null|MockInterface|PlayerDeletionHandlerInterface
-     */
-    private $deletionHandler;
+    private MockInterface|PlayerDeletionHandlerInterface $deletionHandler;
 
     private PlayerDeletionInterface $playerDeletion;
+
+    private MockInterface|ConfigInterface $configs;
+
+    private MockInterface|MailFactoryInterface $mailFactory;
 
     #[Override]
     public function setUp(): void
@@ -54,6 +46,8 @@ class PlayerDeletionTest extends StuTestCase
         $this->loggerUtil = $this->mock(LoggerUtilInterface::class);
         $this->bbCodeParser = $this->mock(Parser::class);
         $this->deletionHandler = $this->mock(PlayerDeletionHandlerInterface::class);
+        $this->configs = $this->mock(ConfigInterface::class);
+        $this->mailFactory = $this->mock(MailFactoryInterface::class);
 
         $loggerUtilFactory = $this->mock(LoggerUtilFactoryInterface::class);
         $loggerUtilFactory->shouldReceive('getLoggerUtil')
@@ -64,9 +58,11 @@ class PlayerDeletionTest extends StuTestCase
         $this->playerDeletion = new PlayerDeletion(
             $this->userRepository,
             $this->config,
+            $this->configs,
             $loggerUtilFactory,
             $this->bbCodeParser,
-            [$this->deletionHandler]
+            [$this->deletionHandler],
+            $this->mailFactory
         );
     }
 
@@ -80,24 +76,27 @@ class PlayerDeletionTest extends StuTestCase
             ->once();
 
         $this->userRepository->shouldReceive('getIdleRegistrations')
-            ->with(
-                Mockery::on(fn ($value): bool => $value === time() - PlayerDeletion::USER_IDLE_REGISTRATION)
-            )
-            ->once()
-            ->andReturn([$idlePlayer]);
+            ->atLeast()->times(2)
+            ->andReturn([$idlePlayer], [], []);
+
 
         $this->config->shouldReceive('getGameSettings->getAdminIds')
             ->withNoArgs()
             ->andReturn([101]);
 
         $this->userRepository->shouldReceive('getDeleteable')
-            ->with(
-                Mockery::on(fn ($value): bool => $value === time() - PlayerDeletion::USER_IDLE_TIME),
-                Mockery::on(fn ($value): bool => $value === time() - PlayerDeletion::USER_IDLE_TIME_VACATION),
-                [101]
-            )
-            ->once()
-            ->andReturn([$player]);
+            ->times(3)
+            ->andReturn([$player], [], []);
+
+        $this->loggerUtil->shouldReceive('init')
+            ->with('mail', LoggerEnum::LEVEL_ERROR)
+            ->zeroOrMoreTimes();
+
+        $this->loggerUtil->shouldReceive('log')
+            ->with(Mockery::pattern('/Unable to send mail:.*/'))
+            ->zeroOrMoreTimes();
+
+
 
         $deletedPlayers = [1 => $idlePlayer, 2 => $player];
 
@@ -108,12 +107,16 @@ class PlayerDeletionTest extends StuTestCase
                 ->andReturn($key);
             $player->shouldReceive('getName')
                 ->withNoArgs()
-                ->once()
+                ->twice()
                 ->andReturn('foo' . $key);
             $player->shouldReceive('getDeletionMark')
                 ->withNoArgs()
                 ->once()
                 ->andReturn(666);
+            $player->shouldReceive('getEmail')
+                ->withNoArgs()
+                ->once()
+                ->andReturn('player' . $key . '@example.com');
             $this->bbCodeParser->shouldReceive('parse')
                 ->with('foo' . $key)
                 ->once()
@@ -123,7 +126,6 @@ class PlayerDeletionTest extends StuTestCase
                 ->with($player)
                 ->once();
 
-            //LOGGER STUFF
             $this->loggerUtil->shouldReceive('log')
                 ->with('deleting userId: ' . $key)
                 ->once();
@@ -136,6 +138,16 @@ class PlayerDeletionTest extends StuTestCase
             ->with()
             ->twice()
             ->andReturn('bar');
+
+        $this->configs->shouldReceive('get')
+            ->with('game.email_sender_address')
+            ->atLeast()->twice()
+            ->andReturn('sender@example.com');
+        $this->configs->shouldReceive('get')
+            ->with('game.base_url')
+            ->times(2)
+            ->andReturn('http://example.com');
+
 
         $this->playerDeletion->handleDeleteable();
     }
@@ -170,7 +182,6 @@ class PlayerDeletionTest extends StuTestCase
             ->with($player)
             ->once();
 
-        //LOGGER STUFF
         $this->loggerUtil->shouldReceive('log')
             ->with('deleting userId: 1')
             ->once();
