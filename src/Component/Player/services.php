@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Player;
 
 use JBBCode\Parser;
+use RdKafka\Conf;
+use Noodlehaus\ConfigInterface;
 use Stu\Component\Player\ColonizationChecker;
 use Stu\Component\Player\ColonizationCheckerInterface;
 use Stu\Component\Player\ColonyLimitCalculator;
@@ -53,6 +55,7 @@ return [
     ColonizationCheckerInterface::class => autowire(ColonizationChecker::class),
     RequestDeletionConfirmationInterface::class => autowire(RequestDeletionConfirmation::class),
     PlayerDeletionInterface::class => create(PlayerDeletion::class)->constructor(
+        get(ConfigInterface::class),
         get(UserRepositoryInterface::class),
         get(StuConfigInterface::class),
         get(LoggerUtilFactoryInterface::class),
