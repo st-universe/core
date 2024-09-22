@@ -22,6 +22,8 @@ use Stu\StuTestCase;
 
 class PlayerDeletionTest extends StuTestCase
 {
+    private MockInterface|ConfigInterface $configs;
+
     private MockInterface|UserRepositoryInterface $userRepository;
 
     private MockInterface|StuConfigInterface $config;
@@ -34,19 +36,17 @@ class PlayerDeletionTest extends StuTestCase
 
     private PlayerDeletionInterface $playerDeletion;
 
-    private MockInterface|ConfigInterface $configs;
-
     private MockInterface|MailFactoryInterface $mailFactory;
 
     #[Override]
     public function setUp(): void
     {
+        $this->configs = $this->mock(ConfigInterface::class);
         $this->userRepository = $this->mock(UserRepositoryInterface::class);
         $this->config = $this->mock(StuConfigInterface::class);
         $this->loggerUtil = $this->mock(LoggerUtilInterface::class);
         $this->bbCodeParser = $this->mock(Parser::class);
         $this->deletionHandler = $this->mock(PlayerDeletionHandlerInterface::class);
-        $this->configs = $this->mock(ConfigInterface::class);
         $this->mailFactory = $this->mock(MailFactoryInterface::class);
 
         $loggerUtilFactory = $this->mock(LoggerUtilFactoryInterface::class);
@@ -56,9 +56,9 @@ class PlayerDeletionTest extends StuTestCase
             ->andReturn($this->loggerUtil);
 
         $this->playerDeletion = new PlayerDeletion(
+            $this->configs,
             $this->userRepository,
             $this->config,
-            $this->configs,
             $loggerUtilFactory,
             $this->bbCodeParser,
             [$this->deletionHandler],
@@ -85,7 +85,7 @@ class PlayerDeletionTest extends StuTestCase
             ->andReturn([101]);
 
         $this->userRepository->shouldReceive('getDeleteable')
-            ->times(3)
+            ->times(2)
             ->andReturn([$player], [], []);
 
         $this->loggerUtil->shouldReceive('init')
@@ -119,7 +119,7 @@ class PlayerDeletionTest extends StuTestCase
                 ->andReturn('player' . $key . '@example.com');
             $this->bbCodeParser->shouldReceive('parse')
                 ->with('foo' . $key)
-                ->once()
+                ->twice()
                 ->andReturnSelf();
 
             $this->deletionHandler->shouldReceive('delete')
@@ -136,7 +136,7 @@ class PlayerDeletionTest extends StuTestCase
 
         $this->bbCodeParser->shouldReceive('getAsText')
             ->with()
-            ->twice()
+            ->times(4)
             ->andReturn('bar');
 
         $this->configs->shouldReceive('get')
