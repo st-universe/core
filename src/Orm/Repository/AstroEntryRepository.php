@@ -9,6 +9,7 @@ use Override;
 use Stu\Orm\Entity\AstronomicalEntry;
 use Stu\Orm\Entity\AstronomicalEntryInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\UserInterface;
 
 /**
  * @extends EntityRepository<AstronomicalEntry>
@@ -48,6 +49,16 @@ final class AstroEntryRepository extends EntityRepository implements AstroEntryR
     }
 
     #[Override]
+    public function delete(AstronomicalEntryInterface $entry): void
+    {
+        $em = $this->getEntityManager();
+
+        $em->remove($entry);
+        $em->flush();
+    }
+
+
+    #[Override]
     public function truncateAllAstroEntries(): void
     {
         $this->getEntityManager()->createQuery(
@@ -58,17 +69,12 @@ final class AstroEntryRepository extends EntityRepository implements AstroEntryR
         )->execute();
     }
 
+    /** @return array<AstronomicalEntryInterface> */
     #[Override]
-    public function truncateByUser(int $userId): void
+    public function getByUser(UserInterface $user): array
     {
-        $this->getEntityManager()
-            ->createQuery(
-                sprintf(
-                    'DELETE FROM %s ae WHERE ae.user_id = :userId',
-                    AstronomicalEntry::class
-                )
-            )
-            ->setParameter('userId', $userId)
-            ->execute();
+        return $this->findBy(
+            ['user_id' => $user->getId()]
+        );
     }
 }

@@ -15,6 +15,10 @@ final class PirateWrathDeletionHandler implements PlayerDeletionHandlerInterface
     #[Override]
     public function delete(UserInterface $user): void
     {
-        $this->pirateWrathRepository->truncateByUser($user->getId());
+        $entries = $this->pirateWrathRepository->getByUser($user);
+
+        foreach ($entries as $entry) {
+            $this->pirateWrathRepository->delete($entry);
+        }
     }
 }
