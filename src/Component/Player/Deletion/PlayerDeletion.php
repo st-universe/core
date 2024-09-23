@@ -153,8 +153,8 @@ final class PlayerDeletion implements PlayerDeletionInterface
 
         //inform all 48h before deletion
         $list = $this->userRepository->getDeleteable(
-            time() - self::USER_IDLE_TIME + self::USER_IDLE_TWO_DAYS,
-            time() - self::USER_IDLE_TIME_VACATION + self::USER_IDLE_TWO_DAYS,
+            time() - self::USER_IDLE_TIME - self::USER_IDLE_TWO_DAYS,
+            time() - self::USER_IDLE_TIME_VACATION - self::USER_IDLE_TWO_DAYS,
             $this->config->getGameSettings()->getAdminIds()
         );
         foreach ($list as $player) {
@@ -185,8 +185,8 @@ final class PlayerDeletion implements PlayerDeletionInterface
 
         //inform all 24h before deletion
         $list = $this->userRepository->getDeleteable(
-            time() - self::USER_IDLE_TIME + self::USER_IDLE_ONE_DAY,
-            time() - self::USER_IDLE_TIME_VACATION + self::USER_IDLE_ONE_DAY,
+            time() - self::USER_IDLE_TIME - self::USER_IDLE_ONE_DAY,
+            time() - self::USER_IDLE_TIME_VACATION - self::USER_IDLE_ONE_DAY,
             $this->config->getGameSettings()->getAdminIds()
         );
         foreach ($list as $player) {
