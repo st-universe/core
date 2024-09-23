@@ -151,41 +151,58 @@ final class PlayerDeletion implements PlayerDeletionInterface
             }
         }
 
-        //inform all 48/24h before deletion
+        //inform all 48h before deletion
         $list = $this->userRepository->getDeleteable(
             time() - self::USER_IDLE_TIME + self::USER_IDLE_TWO_DAYS,
             time() - self::USER_IDLE_TIME_VACATION + self::USER_IDLE_TWO_DAYS,
             $this->config->getGameSettings()->getAdminIds()
         );
         foreach ($list as $player) {
-            if ($player->isVacationMode()) {
-                if (time() - $player->getLastaction() > self::USER_IDLE_TIME_VACATION + self::USER_IDLE_ONE_DAY) {
-                    $time = 24;
-                } else {
-                    $time = 48;
-                }
-            } else {
-                if (time() - $player->getLastaction() > self::USER_IDLE_TIME + self::USER_IDLE_ONE_DAY) {
-                    $time = 24;
-                } else {
-                    $time = 48;
-                }
-            }
-
             $mail = new Message();
             $mail->addTo($player->getEmail());
-            $mail->setSubject(sprintf('Star Trek Universe - Löschung wegen Inaktvität in %d Stunden', $time));
+            $mail->setSubject(_('Star Trek Universe - Löschung wegen Inaktvität in 48h'));
             $mail->setFrom($this->configs->get('game.email_sender_address'));
             $mail->setBody(
                 sprintf(
                     "Hallo %s.\n\n
-    Du bekommst diese eMail, da Du seit längerem in Star Trek Universe inaktiv bist.\n\n
-    Wenn du dich nicht innerhalb von %d Stunden in deinen Account wieder einloggst, wird dieser gelöscht.\n\n
+    Du bekommst diese eMail, da Du seit längerem in Star Trek Universe inaktiv ist.\n\n
+    Wenn du dich nicht innerhalb von 48 Stunden in deinen Account wieder einloggst, wird dieser gelöscht.\n\n
     Wir würden uns freuen dich bei uns wieder zu sehen!\n\n
     Das Star Trek Universe Team\n
     %s",
                     $player->getName(),
-                    $time,
+                    $this->configs->get('game.base_url'),
+                )
+            );
+            try {
+                $transport = new Sendmail();
+                $transport->send($mail);
+            } catch (RuntimeException $e) {
+                $this->loggerUtil->init("mail", LoggerEnum::LEVEL_ERROR);
+                $this->loggerUtil->log($e->getMessage());
+            }
+        }
+
+        //inform all 24h before deletion
+        $list = $this->userRepository->getDeleteable(
+            time() - self::USER_IDLE_TIME + self::USER_IDLE_ONE_DAY,
+            time() - self::USER_IDLE_TIME_VACATION + self::USER_IDLE_ONE_DAY,
+            $this->config->getGameSettings()->getAdminIds()
+        );
+        foreach ($list as $player) {
+            $mail = new Message();
+            $mail->addTo($player->getEmail());
+            $mail->setSubject(_('Star Trek Universe - Löschung wegen Inaktvität in 24h'));
+            $mail->setFrom($this->configs->get('game.email_sender_address'));
+            $mail->setBody(
+                sprintf(
+                    "Hallo %s.\n\n
+            Du bekommst diese eMail, da Du seit längerem in Star Trek Universe inaktiv ist.\n\n
+            Wenn du dich nicht innerhalb von 24 Stunden in deinen Account wieder einloggst, wird dieser gelöscht.\n\n
+            Wir würden uns freuen dich bei uns wieder zu sehen!\n\n
+            Das Star Trek Universe Team\n
+            %s",
+                    $player->getName(),
                     $this->configs->get('game.base_url'),
                 )
             );
