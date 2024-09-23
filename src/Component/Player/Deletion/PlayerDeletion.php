@@ -42,9 +42,9 @@ final class PlayerDeletion implements PlayerDeletionInterface
      * @param array<PlayerDeletionHandlerInterface> $deletionHandler
      */
     public function __construct(
-        private ConfigInterface $configs,
         private UserRepositoryInterface $userRepository,
         private StuConfigInterface $config,
+        private ConfigInterface $configs,
         LoggerUtilFactoryInterface $loggerUtilFactory,
         private Parser $bbCodeParser,
         private array $deletionHandler
