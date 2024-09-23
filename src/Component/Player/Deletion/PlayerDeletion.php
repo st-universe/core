@@ -62,7 +62,6 @@ final class PlayerDeletion implements PlayerDeletionInterface
             time() - self::USER_IDLE_REGISTRATION
         );
         foreach ($list as $player) {
-            $playerName = $this->bbCodeParser->parse($player->getName())->getAsHTML();
             $mail = new Message();
             $mail->addTo($player->getEmail());
             $mail->setSubject(_('Star Trek Universe - Löschung wegen Nichtaktivierung'));
@@ -75,7 +74,7 @@ final class PlayerDeletion implements PlayerDeletionInterface
             Wir würden uns freuen dich bei uns bald wieder zu sehen!\n\n
             Das Star Trek Universe Team\n
             %s",
-                    $playerName,
+                    $player->getName(),
                     $this->configs->get('game.base_url'),
                 )
             );
@@ -96,7 +95,6 @@ final class PlayerDeletion implements PlayerDeletionInterface
             $this->config->getGameSettings()->getAdminIds()
         );
         foreach ($list as $player) {
-            $playerName = $this->bbCodeParser->parse($player->getName())->getAsHTML();
             $mail = new Message();
             $mail->addTo($player->getEmail());
             $mail->setSubject(_('Star Trek Universe - Löschung wegen Inaktvität'));
@@ -109,7 +107,7 @@ final class PlayerDeletion implements PlayerDeletionInterface
             Wir würden uns freuen dich bei uns bald wieder zu sehen!\n\n
             Das Star Trek Universe Team\n
             %s",
-                    $playerName,
+                    $player->getName(),
                     $this->configs->get('game.base_url'),
                 )
             );
@@ -128,7 +126,6 @@ final class PlayerDeletion implements PlayerDeletionInterface
             time() - self::USER_IDLE_ONE_DAY
         );
         foreach ($list as $player) {
-            $playerName = $this->bbCodeParser->parse($player->getName())->getAsHTML();
             $mail = new Message();
             $mail->addTo($player->getEmail());
             $mail->setSubject(_('Star Trek Universe - Löschung wegen Nichtaktivierung in 24h'));
@@ -141,7 +138,7 @@ final class PlayerDeletion implements PlayerDeletionInterface
     Wenn der Account nicht innerhalb von 24 Stunden aktiviert wird, wird dieser gelöscht.\n\n
     Das Star Trek Universe Team\n
     %s",
-                    $playerName,
+                    $player->getName(),
                     $this->configs->get('game.base_url'),
                 )
             );
@@ -161,7 +158,6 @@ final class PlayerDeletion implements PlayerDeletionInterface
             $this->config->getGameSettings()->getAdminIds()
         );
         foreach ($list as $player) {
-            $playerName = $this->bbCodeParser->parse($player->getName())->getAsHTML();
             $time = 0;
             if ($player->isVacationMode()) {
                 if (time() - $player->getLastaction() > self::USER_IDLE_TIME_VACATION - self::USER_IDLE_ONE_DAY) {
@@ -190,7 +186,7 @@ final class PlayerDeletion implements PlayerDeletionInterface
     Wir würden uns freuen dich bei uns wieder zu sehen!\n\n
     Das Star Trek Universe Team\n
     %s",
-                    $playerName,
+                    $player->getName(),
                     $time,
                     $this->configs->get('game.base_url'),
                 )
