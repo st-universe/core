@@ -15,6 +15,7 @@ return [
     EmptyPlotDeletion::class => autowire(EmptyPlotDeletion::class),
     EndLotteryPeriod::class => autowire(EndLotteryPeriod::class),
     IdleUserDeletion::class => autowire(IdleUserDeletion::class),
+    IdleUserWarning::class => autowire(IdleUserWarning::class),
     MapCycle::class => autowire(MapCycle::class),
     OldFlightSignatureDeletion::class => autowire(OldFlightSignatureDeletion::class),
     OldTachyonScanDeletion::class => autowire(OldTachyonScanDeletion::class),
@@ -23,6 +24,7 @@ return [
     TopFlightsReward::class => autowire(TopFlightsReward::class),
     'maintenance_handler' => [
         get(DatabaseBackup::class),
+        get(IdleUserWarning::class),
         get(IdleUserDeletion::class),
         get(CreateInterstellarMedia::class),
         get(MapCycle::class),
