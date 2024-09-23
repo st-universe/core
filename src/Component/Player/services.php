@@ -60,7 +60,6 @@ return [
         get(LoggerUtilFactoryInterface::class),
         get(Parser::class),
         [
-            autowire(AstronomicalEntryDeletionHandler::class),
             autowire(AllianceDeletionHandler::class),
             autowire(ColonyDeletionHandler::class),
             autowire(PrivateMessageDeletionHandler::class),
@@ -70,6 +69,7 @@ return [
             autowire(PirateWrathDeletionHandler::class),
             autowire(CrewDeletionHandler::class),
             autowire(ShipDeletionHandler::class),
+            autowire(AstronomicalEntryDeletionHandler::class),
             autowire(FleetDeletionHandler::class),
             autowire(ShipBuildplanDeletionHandler::class),
             autowire(UserMapDeletionHandler::class),

@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\PirateWrath;
 use Stu\Orm\Entity\PirateWrathInterface;
+use Stu\Orm\Entity\UserInterface;
 
 /**
  * @extends EntityRepository<PirateWrath>
@@ -28,8 +29,8 @@ final class PirateWrathRepository extends EntityRepository implements PirateWrat
     public function delete(PirateWrathInterface $wrath): void
     {
         $em = $this->getEntityManager();
-
         $em->remove($wrath);
+        $em->flush();
     }
 
     #[Override]
@@ -68,17 +69,14 @@ final class PirateWrathRepository extends EntityRepository implements PirateWrat
             ->getResult();
     }
 
+    /**
+     * @return PirateWrathInterface[]
+     */
     #[Override]
-    public function truncateByUser(int $userId): void
+    public function getByUser(UserInterface $user): array
     {
-        $this->getEntityManager()
-            ->createQuery(
-                sprintf(
-                    'DELETE FROM %s pw WHERE pw.user_id = :userId',
-                    PirateWrath::class
-                )
-            )
-            ->setParameter('userId', $userId)
-            ->execute();
+        return $this->findBy(
+            ['user_id' => $user->getId()]
+        );
     }
 }

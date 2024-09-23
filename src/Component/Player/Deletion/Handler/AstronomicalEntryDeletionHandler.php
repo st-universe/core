@@ -15,6 +15,10 @@ final class AstronomicalEntryDeletionHandler implements PlayerDeletionHandlerInt
     #[Override]
     public function delete(UserInterface $user): void
     {
-        $this->astroEntryRepository->truncateByUser($user->getId());
+        $entries = $this->astroEntryRepository->getByUser($user);
+
+        foreach ($entries as $entry) {
+            $this->astroEntryRepository->delete($entry);
+        }
     }
 }
