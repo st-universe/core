@@ -158,21 +158,19 @@ final class PlayerDeletion implements PlayerDeletionInterface
             $this->config->getGameSettings()->getAdminIds()
         );
         foreach ($list as $player) {
-            $time = 0;
             if ($player->isVacationMode()) {
-                if (time() - $player->getLastaction() > self::USER_IDLE_TIME_VACATION - self::USER_IDLE_ONE_DAY) {
+                if (time() - $player->getLastaction() > self::USER_IDLE_TIME_VACATION + self::USER_IDLE_ONE_DAY) {
                     $time = 24;
-                } else if (time() - $player->getLastaction() > self::USER_IDLE_TIME_VACATION - self::USER_IDLE_TWO_DAYS) {
+                } else {
                     $time = 48;
                 }
             } else {
-                if (time() - $player->getLastaction() > self::USER_IDLE_TIME - self::USER_IDLE_ONE_DAY) {
+                if (time() - $player->getLastaction() > self::USER_IDLE_TIME + self::USER_IDLE_ONE_DAY) {
                     $time = 24;
-                } else if (time() - $player->getLastaction() > self::USER_IDLE_TIME - self::USER_IDLE_TWO_DAYS) {
+                } else {
                     $time = 48;
                 }
             }
-
 
             $mail = new Message();
             $mail->addTo($player->getEmail());
