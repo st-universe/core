@@ -25,4 +25,6 @@ interface PirateWrathRepositoryInterface extends ObjectRepository
      * @return PirateWrathInterface[]
      */
     public function getPirateWrathTop10(): array;
+
+    public function truncateByUser(int $userId): void;
 }

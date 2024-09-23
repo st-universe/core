@@ -22,4 +22,6 @@ interface AstroEntryRepositoryInterface extends ObjectRepository
     public function save(AstronomicalEntryInterface $entry): void;
 
     public function truncateAllAstroEntries(): void;
+
+    public function truncateByUser(int $userId): void;
 }

@@ -67,4 +67,18 @@ final class PirateWrathRepository extends EntityRepository implements PirateWrat
             ->setMaxResults(10)
             ->getResult();
     }
+
+    #[Override]
+    public function truncateByUser(int $userId): void
+    {
+        $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'DELETE FROM %s pw WHERE pw.user_id = :userId',
+                    PirateWrath::class
+                )
+            )
+            ->setParameter('userId', $userId)
+            ->execute();
+    }
 }

@@ -57,4 +57,18 @@ final class AstroEntryRepository extends EntityRepository implements AstroEntryR
             )
         )->execute();
     }
+
+    #[Override]
+    public function truncateByUser(int $userId): void
+    {
+        $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'DELETE FROM %s ae WHERE ae.user_id = :userId',
+                    AstronomicalEntry::class
+                )
+            )
+            ->setParameter('userId', $userId)
+            ->execute();
+    }
 }
