@@ -19,6 +19,7 @@ final class PirateWrathDeletionHandler implements PlayerDeletionHandlerInterface
 
         foreach ($entries as $entry) {
             $this->pirateWrathRepository->delete($entry);
+            $user->setPirateWrath(null);
         }
     }
 }

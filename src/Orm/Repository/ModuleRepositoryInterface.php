@@ -28,7 +28,6 @@ interface ModuleRepositoryInterface extends ObjectRepository
     /**
      * @return array<ModuleInterface>
      */
-    #[Override]
     public function getBySpecialTypeAndRumpAndRole(
         ColonyInterface|ShipInterface $host,
         ShipModuleTypeEnum $moduleType,

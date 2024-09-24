@@ -35,7 +35,6 @@ final class ShipSystemRepository extends EntityRepository implements ShipSystemR
         $em = $this->getEntityManager();
 
         $em->remove($post);
-        $em->flush();
     }
 
     #[Override]

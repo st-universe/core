@@ -42,7 +42,6 @@ final class MiningQueueRepository extends EntityRepository implements MiningQueu
         $em = $this->getEntityManager();
 
         $em->remove($miningqueue);
-        //$em->flush();
     }
 
     #[Override]
