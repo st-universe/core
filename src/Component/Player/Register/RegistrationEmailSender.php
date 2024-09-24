@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Register;
 
-use Laminas\Mail\Exception\RuntimeException;
-use Laminas\Mail\Message;
-use Laminas\Mail\Transport\Sendmail;
 use Noodlehaus\ConfigInterface;
 use Override;
+use RuntimeException;
+use Stu\Lib\Mail\MailFactoryInterface;
 use Stu\Orm\Entity\UserInterface;
 
 final class RegistrationEmailSender implements RegistrationEmailSenderInterface
 {
-    public function __construct(private ConfigInterface $config)
-    {
-    }
+    public function __construct(
+        private MailFactoryInterface $mailFactory,
+        private ConfigInterface $config
+    ) {}
 
     #[Override]
     public function send(UserInterface $player, string $password): void
@@ -31,22 +31,21 @@ final class RegistrationEmailSender implements RegistrationEmailSenderInterface
             %s
             EOT;
 
-        $mail = new Message();
-        $mail->addTo($player->getEmail());
-        $mail->setSubject(_('Star Trek Universe - Anmeldung'));
-        $mail->setFrom($this->config->get('game.email_sender_address'));
-        $mail->setBody(
-            sprintf(
-                $body,
-                $player->getLogin(),
-                $player->getLogin(),
-                $password,
-                $this->config->get('game.base_url')
-            )
-        );
+        $mail = $this->mailFactory->createStuMail()
+            ->setFrom($this->config->get('game.email_sender_address'))
+            ->addTo($player->getEmail())
+            ->setSubject(_('Star Trek Universe - Anmeldung'))
+            ->setBody(
+                sprintf(
+                    $body,
+                    $player->getLogin(),
+                    $player->getLogin(),
+                    $password,
+                    $this->config->get('game.base_url')
+                )
+            );
         try {
-            $transport = new Sendmail();
-            $transport->send($mail);
+            $mail->send();
         } catch (RuntimeException) {
             //nothing to do here
         }

@@ -6,9 +6,9 @@ namespace Stu\Module\Message\Lib;
 
 use InvalidArgumentException;
 use JBBCode\Parser;
-use Laminas\Mail\Exception\RuntimeException;
 use Noodlehaus\ConfigInterface;
 use Override;
+use RuntimeException;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Lib\Mail\MailFactoryInterface;
 use Stu\Module\Control\StuTime;
@@ -176,17 +176,17 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
 
     private function sendEmailNotification(string $senderName, string $message, UserInterface $user): void
     {
-        $mail = $this->mailFactory->createMessage();
-
-        $mail->addTo($user->getEmail());
-        $senderNameAsText = $this->bbcodeParser->parse($senderName)->getAsText();
-        $mail->setSubject(sprintf(_('Neue Privatnachricht von Spieler %s'), $senderNameAsText));
-        $mail->setFrom($this->config->get('game.email_sender_address'));
-        $mail->setBody($message);
+        $mail = $this->mailFactory->createStuMail()
+            ->setFrom($this->config->get('game.email_sender_address'))
+            ->addTo($user->getEmail())
+            ->setSubject(sprintf(
+                'Neue Privatnachricht von Spieler %s',
+                $this->bbcodeParser->parse($senderName)->getAsText()
+            ))
+            ->setBody($message);
 
         try {
-            $transport = $this->mailFactory->createSendmail();
-            $transport->send($mail);
+            $mail->send();
         } catch (RuntimeException $e) {
             $this->loggerUtil->init("mail", LoggerEnum::LEVEL_ERROR);
             $this->loggerUtil->log($e->getMessage());

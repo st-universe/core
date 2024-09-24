@@ -72,6 +72,8 @@ use Stu\Lib\Transfer\Strategy\TroopTransferStrategy;
 use Stu\Lib\Transfer\TransferTargetLoader;
 use Stu\Lib\Transfer\TransferTargetLoaderInterface;
 use Stu\Lib\Transfer\TransferTypeEnum;
+use Symfony\Component\Mailer\Mailer;
+use Symfony\Component\Mailer\Transport;
 
 use function DI\autowire;
 use function DI\create;
@@ -85,6 +87,10 @@ return [
     GradientColorInterface::class => autowire(GradientColor::class),
     DistanceCalculationInterface::class => autowire(DistanceCalculation::class),
     BeamUtilInterface::class => autowire(BeamUtil::class),
+    Mailer::class => function (): Mailer {
+
+        return new Mailer(Transport::fromDsn('smtp://localhost'));
+    },
     MailFactoryInterface::class => autowire(MailFactory::class),
     PlanetFieldHostProviderInterface::class => autowire(PlanetFieldHostProvider::class),
     TransferTargetLoaderInterface::class => autowire(TransferTargetLoader::class),

@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action;
 
-use Laminas\Mail\Exception\RuntimeException;
-use Laminas\Mail\Message;
-use Laminas\Mail\Transport\Sendmail;
 use Noodlehaus\ConfigInterface;
 use Override;
 use request;
+use RuntimeException;
+use Stu\Lib\Mail\MailFactoryInterface;
 use Stu\Module\Admin\View\MassMail\MassMail;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -30,6 +29,7 @@ final class SendMassMail implements ActionControllerInterface
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
+        private MailFactoryInterface $mailFactory,
         private ConfigInterface $config,
         private PrivateMessageSenderInterface $privateMessageSender,
         private UserRepositoryInterface $userRepository,
@@ -72,16 +72,14 @@ final class SendMassMail implements ActionControllerInterface
                 continue;
             }
 
-            $mail = new Message();
+            $mail = $this->mailFactory->createStuMail();
 
             try {
-                $mail->addTo($user->getEmail());
-                $mail->setSubject($subject);
-                $mail->setFrom($this->config->get('game.email_sender_address'));
-                $mail->setBody($text);
-
-                $transport = new Sendmail();
-                $transport->send($mail);
+                $mail->addTo($user->getEmail())
+                    ->setSubject($subject)
+                    ->setFrom($this->config->get('game.email_sender_address'))
+                    ->setBody($text)
+                    ->send();
                 $count++;
             } catch (RuntimeException) {
                 $this->loggerUtil->init("mail", LoggerEnum::LEVEL_ERROR);

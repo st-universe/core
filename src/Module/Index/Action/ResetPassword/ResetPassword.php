@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace Stu\Module\Index\Action\ResetPassword;
 
 use Hackzilla\PasswordGenerator\Generator\PasswordGeneratorInterface;
-use Laminas\Mail\Exception\RuntimeException;
-use Laminas\Mail\Message;
-use Laminas\Mail\Transport\Sendmail;
 use Noodlehaus\ConfigInterface;
 use Override;
+use RuntimeException;
 use Stu\Exception\InvalidParamException;
+use Stu\Lib\Mail\MailFactoryInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Index\View\ShowLostPassword\ShowLostPassword;
@@ -20,9 +19,13 @@ final class ResetPassword implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_RESET_PASSWORD';
 
-    public function __construct(private ResetPasswordRequestInterface $resetPasswordRequest, private ConfigInterface $config, private UserRepositoryInterface $userRepository, private PasswordGeneratorInterface $passwordGenerator)
-    {
-    }
+    public function __construct(
+        private ResetPasswordRequestInterface $resetPasswordRequest,
+        private MailFactoryInterface $mailFactory,
+        private ConfigInterface $config,
+        private UserRepositoryInterface $userRepository,
+        private PasswordGeneratorInterface $passwordGenerator
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -51,20 +54,19 @@ final class ResetPassword implements ActionControllerInterface
             %s,
             EOT;
 
-        $mail = new Message();
-        $mail->addTo($user->getEmail());
-        $mail->setSubject(_('Star Trek Universe - Neues Passwort'));
-        $mail->setFrom($this->config->get('game.email_sender_address'));
-        $mail->setBody(
-            sprintf(
-                $body,
-                $password,
-                $this->config->get('game.base_url'),
-            )
-        );
+        $mail = $this->mailFactory->createStuMail()
+            ->setFrom($this->config->get('game.email_sender_address'))
+            ->addTo($user->getEmail())
+            ->setSubject(_('Star Trek Universe - Neues Passwort'))
+            ->setBody(
+                sprintf(
+                    $body,
+                    $password,
+                    $this->config->get('game.base_url'),
+                )
+            );
         try {
-            $transport = new Sendmail();
-            $transport->send($mail);
+            $mail->send();
         } catch (RuntimeException) {
             $game->addInformation(_('Die eMail konnte nicht verschickt werden'));
         }
