@@ -60,7 +60,6 @@ final class DatabaseUserRepository extends EntityRepository implements DatabaseU
     {
         $em = $this->getEntityManager();
         $em->persist($entry);
-        //$em->flush();
     }
 
     #[Override]

@@ -801,7 +801,7 @@ class User implements UserInterface
     }
 
     #[Override]
-    public function setPirateWrath(PirateWrathInterface $wrath): UserInterface
+    public function setPirateWrath(?PirateWrathInterface $wrath): UserInterface
     {
         $this->pirateWrath = $wrath;
 
