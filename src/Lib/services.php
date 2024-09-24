@@ -88,8 +88,8 @@ return [
     DistanceCalculationInterface::class => autowire(DistanceCalculation::class),
     BeamUtilInterface::class => autowire(BeamUtil::class),
     Mailer::class => function (): Mailer {
-
-        return new Mailer(Transport::fromDsn('smtp://localhost'));
+        //TODO add entry to config.dist.json
+        return new Mailer(Transport::fromDsn('sendmail://default'));
     },
     MailFactoryInterface::class => autowire(MailFactory::class),
     PlanetFieldHostProviderInterface::class => autowire(PlanetFieldHostProvider::class),
