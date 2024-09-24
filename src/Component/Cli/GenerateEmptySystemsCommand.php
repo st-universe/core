@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Cli;
 
 use Ahc\Cli\Input\Command;
-use Psr\Container\ContainerInterface;
 use Stu\Component\StarSystem\GenerateEmptySystemsInterface;
 
 /**
@@ -14,7 +13,7 @@ use Stu\Component\StarSystem\GenerateEmptySystemsInterface;
 final class GenerateEmptySystemsCommand extends Command
 {
     public function __construct(
-        private ContainerInterface $dic
+        private GenerateEmptySystemsInterface $component,
     ) {
         parent::__construct(
             'system:generate',
@@ -35,9 +34,7 @@ final class GenerateEmptySystemsCommand extends Command
     {
         $io = $this->io();
 
-        $component = $this->dic->get(GenerateEmptySystemsInterface::class);
-
-        $count = $component->generate($layerid, null);
+        $count = $this->component->generate($layerid, null);
 
         $io->ok(
             sprintf('Es wurden %d Systeme generiert.', $count),
