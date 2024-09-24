@@ -5,9 +5,8 @@ namespace Stu\Module\Maintenance;
 use Override;
 use JBBCode\Parser;
 use Noodlehaus\ConfigInterface;
-use Laminas\Mail\Exception\RuntimeException;
-use Laminas\Mail\Message;
-use Laminas\Mail\Transport\Sendmail;
+use RuntimeException;
+use Stu\Lib\Mail\MailFactoryInterface;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -34,8 +33,9 @@ final class IdleUserWarning implements MaintenanceHandlerInterface
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
-        private ConfigInterface $configs,
         private UserRepositoryInterface $userRepository,
+        private MailFactoryInterface $mailFactory,
+        private ConfigInterface $configs,
         private StuConfigInterface $config,
         LoggerUtilFactoryInterface $loggerUtilFactory,
         private Parser $bbCodeParser
@@ -56,25 +56,25 @@ final class IdleUserWarning implements MaintenanceHandlerInterface
         );
         foreach ($list as $player) {
             $playerName = $this->bbCodeParser->parse($player->getName())->getAsText();
-            $mail = new Message();
-            $mail->addTo($player->getEmail());
-            $mail->setSubject(_('Star Trek Universe - Löschung wegen Nichtaktivierung'));
-            $mail->setFrom($this->configs->get('game.email_sender_address'));
-            $mail->setBody(
-                sprintf(
-                    "Hallo %s.\n\n
+
+            $mail = $this->mailFactory->createStuMail()
+                ->setFrom($this->configs->get('game.email_sender_address'))
+                ->addTo($player->getEmail())
+                ->setSubject(_('Star Trek Universe - Löschung wegen Nichtaktivierung'))
+                ->setBody(
+                    sprintf(
+                        "Hallo %s.\n\n
             Du bekommst diese eMail, da Du deinen Account bisher nicht aktiviert hast.\n\n
             Daher wurde dein Account nun gelöscht.\n\n
             Wir würden uns freuen dich bei uns bald wieder zu sehen!\n\n
             Das Star Trek Universe Team\n
             %s",
-                    $playerName,
-                    $this->configs->get('game.base_url'),
-                )
-            );
+                        $playerName,
+                        $this->configs->get('game.base_url'),
+                    )
+                );
             try {
-                $transport = new Sendmail();
-                $transport->send($mail);
+                $mail->send();
                 $notifiedEmails[] = $player->getEmail();
             } catch (RuntimeException $e) {
                 $this->loggerUtil->init("mail", LoggerEnum::LEVEL_ERROR);
@@ -90,25 +90,25 @@ final class IdleUserWarning implements MaintenanceHandlerInterface
         );
         foreach ($list as $player) {
             $playerName = $this->bbCodeParser->parse($player->getName())->getAsText();
-            $mail = new Message();
-            $mail->addTo($player->getEmail());
-            $mail->setSubject(_('Star Trek Universe - Löschung wegen Inaktvität'));
-            $mail->setFrom($this->configs->get('game.email_sender_address'));
-            $mail->setBody(
-                sprintf(
-                    "Hallo %s.\n\n
+
+            $mail = $this->mailFactory->createStuMail()
+                ->setFrom($this->configs->get('game.email_sender_address'))
+                ->addTo($player->getEmail())
+                ->setSubject(_('Star Trek Universe - Löschung wegen Inaktvität'))
+                ->setBody(
+                    sprintf(
+                        "Hallo %s.\n\n
             Du bekommst diese eMail, da Du seit längerem in Star Trek Universe inaktiv bist.\n\n
             Daher wurde dein Account nun gelöscht.\n\n
             Wir würden uns freuen dich bei uns bald wieder zu sehen!\n\n
             Das Star Trek Universe Team\n
             %s",
-                    $playerName,
-                    $this->configs->get('game.base_url'),
-                )
-            );
+                        $playerName,
+                        $this->configs->get('game.base_url'),
+                    )
+                );
             try {
-                $transport = new Sendmail();
-                $transport->send($mail);
+                $mail->send();
                 $notifiedEmails[] = $player->getEmail();
             } catch (RuntimeException $e) {
                 $this->loggerUtil->init("mail", LoggerEnum::LEVEL_ERROR);
@@ -125,25 +125,25 @@ final class IdleUserWarning implements MaintenanceHandlerInterface
                 continue;
             }
             $playerName = $this->bbCodeParser->parse($player->getName())->getAsText();
-            $mail = new Message();
-            $mail->addTo($player->getEmail());
-            $mail->setSubject(_('Star Trek Universe - Löschung wegen Nichtaktivierung in 24h'));
-            $mail->setFrom($this->configs->get('game.email_sender_address'));
-            $mail->setBody(
-                sprintf(
-                    "Hallo %s.\n\n
+
+            $mail = $this->mailFactory->createStuMail()
+                ->setFrom($this->configs->get('game.email_sender_address'))
+                ->addTo($player->getEmail())
+                ->setSubject(_('Star Trek Universe - Löschung wegen Nichtaktivierung in 24h'))
+                ->setBody(
+                    sprintf(
+                        "Hallo %s.\n\n
         Du bekommst diese eMail, da Du dich in Star Trek Universe Registriert hast aber deinen Account noch nicht aktiviert hast. \n\n
     Sollte es Probleme bei der Registrierung gegeben haben (kein Passwort per Mail erhalten / keine Verifikations SMS erhalten), so kontaktiere uns bitte in unserem Forum, unserem Discord Chat oder per E-Mail.\n\n
     Wenn der Account nicht innerhalb von 24 Stunden aktiviert wird, wird dieser gelöscht.\n\n
     Das Star Trek Universe Team\n
     %s",
-                    $playerName,
-                    $this->configs->get('game.base_url'),
-                )
-            );
+                        $playerName,
+                        $this->configs->get('game.base_url'),
+                    )
+                );
             try {
-                $transport = new Sendmail();
-                $transport->send($mail);
+                $mail->send();
                 $notifiedEmails[] = $player->getEmail();
             } catch (RuntimeException $e) {
                 $this->loggerUtil->init("mail", LoggerEnum::LEVEL_ERROR);
@@ -181,26 +181,25 @@ final class IdleUserWarning implements MaintenanceHandlerInterface
             }
 
             if ($time > 0) {
-                $mail = new Message();
-                $mail->addTo($player->getEmail());
-                $mail->setSubject(sprintf('Star Trek Universe - Löschung wegen Inaktvität in %d Stunden', $time));
-                $mail->setFrom($this->configs->get('game.email_sender_address'));
-                $mail->setBody(
-                    sprintf(
-                        "Hallo %s.\n\n
+                $mail = $this->mailFactory->createStuMail()
+                    ->setFrom($this->configs->get('game.email_sender_address'))
+                    ->addTo($player->getEmail())
+                    ->setSubject(sprintf('Star Trek Universe - Löschung wegen Inaktvität in %d Stunden', $time))
+                    ->setBody(
+                        sprintf(
+                            "Hallo %s.\n\n
     Du bekommst diese eMail, da Du seit längerem in Star Trek Universe inaktiv bist.\n\n
     Wenn du dich nicht innerhalb von %d Stunden in deinen Account wieder einloggst, wird dieser gelöscht.\n\n
     Wir würden uns freuen dich bei uns wieder zu sehen!\n\n
     Das Star Trek Universe Team\n
     %s",
-                        $playerName,
-                        $time,
-                        $this->configs->get('game.base_url'),
-                    )
-                );
+                            $playerName,
+                            $time,
+                            $this->configs->get('game.base_url'),
+                        )
+                    );
                 try {
-                    $transport = new Sendmail();
-                    $transport->send($mail);
+                    $mail->send();
                 } catch (RuntimeException $e) {
                     $this->loggerUtil->init("mail", LoggerEnum::LEVEL_ERROR);
                     $this->loggerUtil->log($e->getMessage());

@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace Stu\Module\Message\Lib;
 
 use JBBCode\Parser;
-use Laminas\Mail\Message;
-use Laminas\Mail\Transport\Sendmail;
 use Mockery\MockInterface;
 use Noodlehaus\ConfigInterface;
 use Override;
 use Stu\Lib\Mail\MailFactoryInterface;
+use Stu\Lib\Mail\StuMailInterface;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -321,32 +320,30 @@ class PrivateMessageSenderTest extends StuTestCase
             ->once()
             ->andReturn('emai@sender.adress');
 
-        $message = $this->mock(Message::class);
-        $this->mailFactory->shouldReceive('createMessage')
+        $message = $this->mock(StuMailInterface::class);
+        $this->mailFactory->shouldReceive('createStuMail')
             ->withNoArgs()
             ->once()
             ->andReturn($message);
-        $sendmail = $this->mock(Sendmail::class);
-        $this->mailFactory->shouldReceive('createSendmail')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($sendmail);
-
-        $sendmail->shouldReceive('send')
-            ->with($message)
-            ->once();
 
         $message->shouldReceive('addTo')
             ->with('e@mail.de')
-            ->once();
+            ->once()
+            ->andReturnSelf();
         $message->shouldReceive('setSubject')
             ->with('Neue Privatnachricht von Spieler Sender')
-            ->once();
+            ->once()
+            ->andReturnSelf();
         $message->shouldReceive('setFrom')
             ->with('emai@sender.adress')
-            ->once();
+            ->once()
+            ->andReturnSelf();
         $message->shouldReceive('setBody')
             ->with('foobar')
+            ->once()
+            ->andReturnSelf();
+        $message->shouldReceive('send')
+            ->withNoArgs()
             ->once();
 
         $this->messageRepository->shouldReceive('save')
