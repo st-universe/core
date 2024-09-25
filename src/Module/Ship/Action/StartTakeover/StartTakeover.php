@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Action\StartTakeover;
 
 use Override;
 use request;
+use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\Nbs\NbsUtilityInterface;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Exception\SanityCheckException;
@@ -110,6 +111,18 @@ final class StartTakeover implements ActionControllerInterface
             $game->addInformation(_('Aktion nicht möglich, das Ziel ist bemannt'));
             return;
         }
+
+        if ($target->getRumpId() && in_array($target->getRumpId(), [
+            ShipEnum::FED_COL_BUILDPLAN,
+            ShipEnum::ROM_COL_BUILDPLAN,
+            ShipEnum::KLING_COL_BUILDPLAN,
+            ShipEnum::CARD_COL_BUILDPLAN,
+            ShipEnum::FERG_COL_BUILDPLAN
+        ])) {
+            $game->addInformation(_('Dieses Schiff ist nicht zur Übernahme geeignet'));
+            return;
+        }
+        
 
         if ($target->getTakeoverPassive() !== null) {
             $game->addInformationf(
