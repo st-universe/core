@@ -187,6 +187,19 @@ class PirateWrathManager implements PirateWrathManagerInterface
             _('Der Nagus konnte einen Nichtangriffspakt mit den Kazon bis zum %s Uhr aushandeln'),
             $this->stuTime->transformToStuDateTime($timestamp)
         ));
+
+        $this->privateMessageSender->send(
+            UserEnum::USER_NPC_KAZON,
+            $user->getId(),
+            sprintf(
+                'Ihr habt Euch einen Nicht-Angriffs-Pakt mit uns erkauft, dieser gilt bis zum %s.\n\n' .
+                'Denkt aber immer daran: Wir mögen es nicht, wenn man uns in die Quere kommt!\n' .
+                'Jede Provokation und sei es auch nur ein übereifriger Sensoroffizier der unsere Schiffe scannt oder gar ein AR-Warnschuss vor den Bug unserer Schiffe, stellt einen Vertragsbruch dar. Ein solcher Vertragsbruch würde Euch auf unserer roten Liste ganz nach oben katapultieren und die Jagd auf Euch wäre wieder freigegeben.\n' .
+                'Es wäre doch zu Schade wenn Eure Investition dadurch völlig verpuffen würde, nicht wahr?',
+            date('d.m.Y H:i', $timestamp)
+            ),
+            PrivateMessageFolderTypeEnum::SPECIAL_MAIN
+        );
     }
 
     private function getPirateWrathOfUser(UserInterface $user): PirateWrathInterface
