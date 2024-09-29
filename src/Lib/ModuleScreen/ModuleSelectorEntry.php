@@ -34,9 +34,11 @@ final class ModuleSelectorEntry implements ModuleSelectorEntryInterface
     #[Override]
     public function isChosen(): bool
     {
+        /*
         if ($this->isDisabled()) {
             return false;
         }
+         */
 
         if ($this->buildplan !== null) {
             if ($this->module->getType() === ShipModuleTypeEnum::SPECIAL) {
