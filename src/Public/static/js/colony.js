@@ -320,7 +320,9 @@ function replaceTabImage(type, moduleId, commodityId, module_crew, amount) {
 		$('module_type_' + type).innerHTML = '';
 		updateCrewCount(type, 0);
 	} else {
-		Element.removeClassName($('module_tab_' + type), 'module_select_base_mandatory');
+		if (amount > 0) {
+			Element.removeClassName($('module_tab_' + type), 'module_select_base_mandatory');
+		}
 		$('tab_image_mod_' + type).src = 'assets/commodities/' + commodityId + '.png';
 		$('module_type_' + type).innerHTML = $(moduleId + '_content').innerHTML;
 		$('module_type_' + type).show();
