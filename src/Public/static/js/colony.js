@@ -313,7 +313,10 @@ function toggleTorpedoInfo(module_crew) {
 	}
 }
 
-function replaceTabImage(type, moduleId, commodityId, module_crew) {
+function replaceTabImage(type, moduleId, commodityId, module_crew, amount) {
+	if (amount <= 0) {
+		return;
+	}
 	if (moduleId == 0) {
 		$('tab_image_mod_' + type).src = 'assets/buttons/modul_' + type + '.png';
 		$('module_type_' + type).innerHTML = '';
@@ -329,9 +332,13 @@ function replaceTabImage(type, moduleId, commodityId, module_crew) {
 	enableShipBuildButton();
 }
 var disabledSlots = new Set();
-function toggleSpecialModuleDisplay(type, module_id, module_crew) {
+function toggleSpecialModuleDisplay(type, module_id, module_crew, amount) {
 	let innerHTML = '';
 	let checkedCount = 0;
+
+	if (amount <= 0) {
+		return;
+	}
 
 	//count and set tab images
 	Element.select($('selector_' + type), '.specialModuleRadio').each(function (elem) {
