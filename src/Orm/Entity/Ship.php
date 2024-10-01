@@ -244,6 +244,10 @@ class Ship implements ShipInterface
     #[OneToOne(targetEntity: 'ShipTakeover', mappedBy: 'target')]
     private ?ShipTakeoverInterface $takeoverPassive = null;
 
+    #[OneToOne(targetEntity: 'ColonyShipQueue', mappedBy: 'ship')]
+    private ?ColonyShipQueueInterface $colonyShipQueue = null;
+
+
     public function __construct()
     {
         $this->dockedShips = new ArrayCollection();
@@ -1771,5 +1775,16 @@ class Ship implements ShipInterface
     public function getMiningQueue(): ?MiningQueueInterface
     {
         return $this->miningqueue;
+    }
+
+    public function getColonyShipQueue(): ?ColonyShipQueueInterface
+    {
+        return $this->colonyShipQueue;
+    }
+
+    public function setColonyShipQueue(?ColonyShipQueueInterface $queue): ShipInterface
+    {
+        $this->colonyShipQueue = $queue;
+        return $this;
     }
 }

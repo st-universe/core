@@ -48,6 +48,7 @@ use Stu\Module\Colony\Action\RenameBuildplan\RenameBuildplanRequest;
 use Stu\Module\Colony\Action\RenameBuildplan\RenameBuildplanRequestInterface;
 use Stu\Module\Colony\Action\RepairBuilding\RepairBuilding;
 use Stu\Module\Colony\Action\RepairShip\RepairShip;
+use Stu\Module\Colony\Action\RetrofitShip\RetrofitShip;
 use Stu\Module\Colony\Action\ScrollBuildMenu\ScrollBuildMenu;
 use Stu\Module\Colony\Action\SetPopulationLimit\SetPopulationLimit;
 use Stu\Module\Colony\Action\StartAirfieldShip\StartAirfieldShip;
@@ -145,6 +146,7 @@ use Stu\Module\Colony\View\ShowModuleScreen\ShowModuleScreen;
 use Stu\Module\Colony\View\ShowModuleScreen\ShowModuleScreenRequest;
 use Stu\Module\Colony\View\ShowModuleScreen\ShowModuleScreenRequestInterface;
 use Stu\Module\Colony\View\ShowModuleScreenBuildplan\ShowModuleScreenBuildplan;
+use Stu\Module\Colony\View\ShowModuleScreenRetrofit\ShowModuleScreenRetrofit;
 use Stu\Module\Colony\View\ShowOrbitManagement\ShowOrbitManagement;
 use Stu\Module\Colony\View\ShowOrbitManagement\ShowOrbitManagementRequest;
 use Stu\Module\Colony\View\ShowOrbitManagement\ShowOrbitManagementRequestInterface;
@@ -282,7 +284,8 @@ return [
         ChangeFrequency::ACTION_IDENTIFIER => autowire(ChangeFrequency::class),
         ChangeTorpedoType::ACTION_IDENTIFIER => autowire(ChangeTorpedoType::class),
         RenameBuildplan::ACTION_IDENTIFIER => autowire(RenameBuildplan::class),
-        RemoveWaste::ACTION_IDENTIFIER => autowire(RemoveWaste::class)
+        RemoveWaste::ACTION_IDENTIFIER => autowire(RemoveWaste::class),
+        RetrofitShip::ACTION_IDENTIFIER => autowire(RetrofitShip::class)
     ],
     'COLONY_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
@@ -313,6 +316,7 @@ return [
         ShowOrbitManagement::VIEW_IDENTIFIER => autowire(ShowOrbitManagement::class),
         ShowModuleScreen::VIEW_IDENTIFIER => autowire(ShowModuleScreen::class),
         ShowModuleScreenBuildplan::VIEW_IDENTIFIER => autowire(ShowModuleScreenBuildplan::class),
+        ShowModuleScreenRetrofit::VIEW_IDENTIFIER => autowire(ShowModuleScreenRetrofit::class),
         ShowModuleFab::VIEW_IDENTIFIER => autowire(ShowModuleFab::class),
         ShowModuleCancel::VIEW_IDENTIFIER => autowire(ShowModuleCancel::class),
         ShowShipRepair::VIEW_IDENTIFIER => autowire(ShowShipRepair::class),

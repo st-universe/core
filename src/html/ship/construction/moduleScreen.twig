@@ -7,6 +7,9 @@
   </script>
   <input type="hidden" name="id" value="{{ COLONY.getId }}" />
   <input type="hidden" name="rump" value="{{ RUMP.getId }}" />
+  {% if SHIP %}
+  <input type="hidden" name="shipid" value="{{ SHIP.getId }}" />
+  {% endif %}
   <div class="moduleScreenGrid">
     <div>
       <div class="box">
@@ -40,13 +43,25 @@
             <img src="assets/ships/{{ RUMP.getId }}.png" />
           </div>
           <br />
+          {% if SHIP %}
+          <div style="text-align: center; width: 100%;">{{ SHIP.getName |bbcode}}</div>
+          <div style="text-align: center; width: 100%;">
+            <input type="submit" class="button" name="B_RETROFIT_SHIP" value="Schiff umrüsten" id="buildbutton"
+              disabled="disabled" />
+          </div>
+          {% else %}
           <div style="text-align: center; width: 100%;">
             <input type="submit" class="button" name="B_BUILD_SHIP" value="Schiff bauen" id="buildbutton"
               disabled="disabled" />
           </div>
+          {% endif %}
           <br />
           <div class="box" style="width: 75%; margin:0 auto;">
+            {% if SHIP %}
+            <div class="box_title">Umrüstkosten</div>
+            {% else %}
             <div class="box_title">Baukosten</div>
+            {% endif %}
             <div class="box_body">
               <div>
                 <img src="assets/commodities/0.png" /> {{ RUMP.getEpsCost }} Energie

@@ -16,4 +16,5 @@ enum ShipStateEnum: int
     case SHIP_STATE_WEB_SPINNING = 7;
     case SHIP_STATE_ACTIVE_TAKEOVER = 8;
     case SHIP_STATE_GATHER_RESOURCES = 9;
+    case SHIP_STATE_RETROFIT = 10;
 }
