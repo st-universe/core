@@ -428,4 +428,8 @@ interface ShipInterface extends ShipDestroyerInterface
     public function getDockedWorkbeeCount(): int;
 
     public function getMiningQueue(): ?MiningQueueInterface;
+
+    public function getColonyShipQueue(): ?ColonyShipQueueInterface;
+
+    public function setColonyShipQueue(?ColonyShipQueueInterface $queue): ShipInterface;
 }

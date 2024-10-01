@@ -293,6 +293,8 @@ use Stu\Module\Ship\Lib\ShipCreator;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Module\Ship\Lib\ShipLoader;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\Lib\ShipRetrofit;
+use Stu\Module\Ship\Lib\ShipRetrofitInterface;
 use Stu\Module\Ship\Lib\ShipRemover;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\Lib\ShipStateChanger;
@@ -373,6 +375,7 @@ return [
     ShipRemoverInterface::class => autowire(ShipRemover::class),
     ShipConfiguratorFactoryInterface::class => autowire(ShipConfiguratorFactory::class),
     ShipCreatorInterface::class => autowire(ShipCreator::class),
+    ShipRetrofitInterface::class => autowire(ShipRetrofit::class),
     ShipUndockingInterface::class => autowire(ShipUndocking::class),
     ShipShutdownInterface::class => autowire(ShipShutdown::class),
     ThreatReactionInterface::class => autowire(ThreatReaction::class),

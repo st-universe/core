@@ -24,6 +24,7 @@ use Stu\Module\Tick\Pirate\PirateTickInterface;
 use Stu\Module\Tick\Pirate\PirateTickRunner;
 use Stu\Module\Tick\Process\FinishBuildJobs;
 use Stu\Module\Tick\Process\FinishShipBuildJobs;
+use Stu\Module\Tick\Process\FinishShipRetrofitJobs;
 use Stu\Module\Tick\Process\FinishTerraformingJobs;
 use Stu\Module\Tick\Process\FinishTholianWebs;
 use Stu\Module\Tick\Process\ProcessTickRunner;
@@ -73,6 +74,7 @@ return [
     'process_tick_handler' => [
         autowire(FinishBuildJobs::class),
         autowire(FinishShipBuildJobs::class),
+        autowire(FinishShipRetrofitJobs::class),
         autowire(FinishTerraformingJobs::class),
         autowire(ShieldRegeneration::class),
         autowire(RepairTaskJobs::class),
@@ -80,7 +82,7 @@ return [
     ],
     TransactionTickRunnerInterface::class => autowire(TransactionTickRunner::class),
     MaintenanceTickRunnerFactoryInterface::class => autowire(MaintenanceTickRunnerFactory::class),
-    MaintenanceTickRunner::class => fn (ContainerInterface $dic): TickRunnerInterface => $dic
+    MaintenanceTickRunner::class => fn(ContainerInterface $dic): TickRunnerInterface => $dic
         ->get(MaintenanceTickRunnerFactoryInterface::class)
         ->createMaintenanceTickRunner($dic->get('maintenance_handler')),
     ProcessTickRunner::class => create(ProcessTickRunner::class)

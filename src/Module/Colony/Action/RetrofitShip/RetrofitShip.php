@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Colony\Action\BuildShip;
+namespace Stu\Module\Colony\Action\RetrofitShip;
 
 use Override;
 use request;
@@ -11,6 +11,7 @@ use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Component\Ship\ShipModuleTypeEnum;
+use Stu\Component\Ship\ShipStateEnum;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
@@ -23,16 +24,17 @@ use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpBuildingFunctionRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 
-final class BuildShip implements ActionControllerInterface
+final class RetrofitShip implements ActionControllerInterface
 {
-    public const string ACTION_IDENTIFIER = 'B_BUILD_SHIP';
+    public const string ACTION_IDENTIFIER = 'B_RETROFIT_SHIP';
 
-    public function __construct(private ColonyFunctionManagerInterface $colonyFunctionManager, private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository, private ColonyLoaderInterface $colonyLoader, private BuildplanModuleRepositoryInterface $buildplanModuleRepository, private ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository, private ShipBuildplanRepositoryInterface $shipBuildplanRepository, private ModuleRepositoryInterface $moduleRepository, private ColonyShipQueueRepositoryInterface $colonyShipQueueRepository, private ShipRumpRepositoryInterface $shipRumpRepository, private ColonyStorageManagerInterface $colonyStorageManager, private ColonyLibFactoryInterface $colonyLibFactory, private ShipCrewCalculatorInterface $shipCrewCalculator, private ColonyRepositoryInterface $colonyRepository) {}
+    public function __construct(private ColonyFunctionManagerInterface $colonyFunctionManager, private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository, private ColonyLoaderInterface $colonyLoader, private BuildplanModuleRepositoryInterface $buildplanModuleRepository, private ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository, private ShipBuildplanRepositoryInterface $shipBuildplanRepository, private ModuleRepositoryInterface $moduleRepository, private ColonyShipQueueRepositoryInterface $colonyShipQueueRepository, private ShipRumpRepositoryInterface $shipRumpRepository, private ColonyStorageManagerInterface $colonyStorageManager, private ColonyLibFactoryInterface $colonyLibFactory, private ShipCrewCalculatorInterface $shipCrewCalculator, private ColonyRepositoryInterface $colonyRepository, private ShipRepositoryInterface $shipRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -51,6 +53,26 @@ final class BuildShip implements ActionControllerInterface
         $rump = $this->shipRumpRepository->find(request::indInt('rump'));
         if ($rump === null) {
             return;
+        }
+
+        $ship = $this->shipRepository->find(request::indInt('shipid'));
+        if ($ship === null) {
+            return;
+        }
+
+        $oldplan = $ship->getBuildplan();
+        if ($oldplan === null) {
+            return;
+        }
+
+        if ($ship->getBuildplan()) {
+            if ($ship->getBuildplan() != $oldplan) {
+                $game->addInformation(_('Das Schiff hat einen anderen Bauplan'));
+                return;
+            }
+            if ($ship->getBuildplan()->getUser() !== $user) {
+                $game->addInformation(_('Übernommene Schiffe können nicht umgerüstet werden'));
+            }
         }
 
         $building_function = null;
@@ -72,7 +94,7 @@ final class BuildShip implements ActionControllerInterface
 
         if ($colony->getEps() < $rump->getEpsCost()) {
             $game->addInformationf(
-                _('Zum Bau wird %d Energie benötigt, es ist jedoch nur %d Energie vorhanden'),
+                _('Zur Umrüstung wird %d Energie benötigt, es ist jedoch nur %d Energie vorhanden'),
                 $rump->getEpsCost(),
                 $colony->getEps()
             );
@@ -80,7 +102,7 @@ final class BuildShip implements ActionControllerInterface
         }
 
         if ($colony->isBlocked()) {
-            $game->addInformation(_('Schiffbau ist nicht möglich während die Kolonie blockiert wird'));
+            $game->addInformation(_('Schiffsumrüstung ist nicht möglich während die Kolonie blockiert wird'));
             return;
         }
 
@@ -89,11 +111,13 @@ final class BuildShip implements ActionControllerInterface
         /** @var array<int, ModuleInterface> */
         $modules = [];
         $sigmod = [];
+        $oldModulesOfType = [];
 
         foreach (ShipModuleTypeEnum::cases() as $moduleType) {
-
             $value = $moduleType->value;
             $module = request::postArray('mod_' . $value);
+
+            $oldModulesOfType[$value] = $this->buildplanModuleRepository->getByBuildplanAndModuleType($oldplan->getId(), $value);
 
             if (
                 $moduleType != ShipModuleTypeEnum::SPECIAL
@@ -150,26 +174,41 @@ final class BuildShip implements ActionControllerInterface
             $game->addInformation(_('Crew-Maximum wurde überschritten'));
             return;
         }
+
         $storage = $colony->getStorage();
+        $modulesToLower = [];
         foreach ($modules as $module) {
-            if (!$storage->containsKey($module->getCommodityId())) {
-                $game->addInformationf(_('Es wird 1 %s benötigt'), $module->getName());
-                return;
-            }
-            $selector = $this->colonyLibFactory->createModuleSelector(
-                $module->getType(),
-                $colony,
-                $rump,
-                $user
-            );
-            if (!array_key_exists($module->getId(), $selector->getAvailableModules())) {
-                return;
+            $isNewModule = !array_filter($oldModulesOfType[$module->getType()->value], function ($bpm) use ($module) {
+                return $bpm->getModule()->getId() === $module->getId();
+            });
+
+
+            if ($isNewModule) {
+                if (!$storage->containsKey($module->getCommodityId())) {
+                    $game->addInformationf(_('Es wird 1 %s benötigt'), $module->getName());
+                    return;
+                }
+                $selector = $this->colonyLibFactory->createModuleSelector(
+                    $module->getType(),
+                    $colony,
+                    $rump,
+                    $user
+                );
+                if (!array_key_exists($module->getId(), $selector->getAvailableModules())) {
+                    return;
+                }
+                $modulesToLower[] = $module;
             }
         }
-        foreach ($modules as $module) {
+
+
+
+        foreach ($modulesToLower as $module) {
             $this->colonyStorageManager->lowerStorage($colony, $module->getCommodity(), 1);
         }
+
         $game->setView(ShowColony::VIEW_IDENTIFIER);
+
         $signature = ShipBuildplan::createSignature($sigmod, $crewUsage);
         $plan = $this->shipBuildplanRepository->getByUserShipRumpAndSignature($userId, $rump->getId(), $signature);
         if ($plan === null) {
@@ -178,8 +217,11 @@ final class BuildShip implements ActionControllerInterface
                 $plannameFromRequest !== false
                 && $plannameFromRequest !== ''
                 && $plannameFromRequest !== 'Bauplanname'
+                && $plannameFromRequest !== $oldplan->getName()
             ) {
                 $planname = $plannameFromRequest;
+            } elseif ($plannameFromRequest === $oldplan->getName()) {
+                $planname = $plannameFromRequest . " Retrofit";
             } else {
                 $planname = sprintf(
                     _('Bauplan %s %s'),
@@ -224,16 +266,22 @@ final class BuildShip implements ActionControllerInterface
         $queue->setBuildtime($plan->getBuildtime());
         $queue->setFinishDate(time() + $plan->getBuildtime());
         $queue->setBuildingFunctionId($building_function->getBuildingFunction());
-        $queue->setMode(1);
+        $queue->setMode(2);
+        $queue->setShip($ship);
 
         $colony->setEps($colony->getEps() - $rump->getEpsCost());
 
         $this->colonyRepository->save($colony);
         $this->colonyShipQueueRepository->save($queue);
 
+        $ship->setState(ShipStateEnum::SHIP_STATE_RETROFIT);
+
+        $this->shipRepository->save($ship);
+
+
         $game->addInformationf(
-            _('Das Schiff der %s-Klasse wird gebaut - Fertigstellung: %s'),
-            $rump->getName(),
+            _('Die %s wird umgerüstet - Fertigstellung: %s'),
+            $ship->getName(),
             date("d.m.Y H:i", (time() + $plan->getBuildtime()))
         );
     }

@@ -205,7 +205,7 @@ class ShipBuildplan implements ShipBuildplanInterface
     {
         return $this->getModules()
             ->filter(
-                fn (BuildplanModuleInterface $buildplanModule): bool => $buildplanModule->getModuleType() === $type
+                fn(BuildplanModuleInterface $buildplanModule): bool => $buildplanModule->getModuleType() === $type
             )
             ->toArray();
     }

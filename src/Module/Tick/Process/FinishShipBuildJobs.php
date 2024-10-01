@@ -14,36 +14,37 @@ use Stu\Orm\Repository\ShipyardShipQueueRepositoryInterface;
 
 final class FinishShipBuildJobs implements ProcessTickHandlerInterface
 {
-    public function __construct(private ShipCreatorInterface $shipCreator, private ColonyShipQueueRepositoryInterface $colonyShipQueueRepository, private ShipyardShipQueueRepositoryInterface $shipyardShipQueueRepository, private PrivateMessageSenderInterface $privateMessageSender)
-    {
-    }
+    public function __construct(private ShipCreatorInterface $shipCreator, private ColonyShipQueueRepositoryInterface $colonyShipQueueRepository, private ShipyardShipQueueRepositoryInterface $shipyardShipQueueRepository, private PrivateMessageSenderInterface $privateMessageSender) {}
 
     #[Override]
     public function work(): void
     {
         $queue = $this->colonyShipQueueRepository->getFinishedJobs();
         foreach ($queue as $obj) {
-            $colony = $obj->getColony();
+            if ($obj->getMode() == 1) {
 
-            $ship = $this->shipCreator->createBy(
-                $obj->getUserId(),
-                $obj->getRumpId(),
-                $obj->getShipBuildplan()->getId(),
-                $colony
-            )
-                ->finishConfiguration()
-                ->get();
+                $colony = $obj->getColony();
 
-            $this->colonyShipQueueRepository->delete($obj);
+                $ship = $this->shipCreator->createBy(
+                    $obj->getUserId(),
+                    $obj->getRumpId(),
+                    $obj->getShipBuildplan()->getId(),
+                    $colony
+                )
+                    ->finishConfiguration()
+                    ->get();
 
-            $txt = _("Auf der Kolonie " . $colony->getName() . " wurde ein Schiff der " . $ship->getRump()->getName() . "-Klasse fertiggestellt");
+                $this->colonyShipQueueRepository->delete($obj);
 
-            $this->privateMessageSender->send(
-                UserEnum::USER_NOONE,
-                $colony->getUserId(),
-                $txt,
-                PrivateMessageFolderTypeEnum::SPECIAL_COLONY
-            );
+                $txt = _("Auf der Kolonie " . $colony->getName() . " wurde ein Schiff der " . $ship->getRump()->getName() . "-Klasse fertiggestellt");
+
+                $this->privateMessageSender->send(
+                    UserEnum::USER_NOONE,
+                    $colony->getUserId(),
+                    $txt,
+                    PrivateMessageFolderTypeEnum::SPECIAL_COLONY
+                );
+            }
         }
 
         $queue = $this->shipyardShipQueueRepository->getFinishedJobs();

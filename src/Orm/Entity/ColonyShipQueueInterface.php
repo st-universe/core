@@ -41,4 +41,12 @@ interface ColonyShipQueueInterface
     public function getShipBuildplan(): ShipBuildplanInterface;
 
     public function setShipBuildplan(ShipBuildplanInterface $shipBuildplan): ColonyShipQueueInterface;
+
+    public function getMode(): ?int;
+
+    public function setMode(?int $mode): ColonyShipQueueInterface;
+
+    public function getShip(): ?ShipInterface;
+
+    public function setShip(?ShipInterface $ship): ColonyShipQueueInterface;
 }

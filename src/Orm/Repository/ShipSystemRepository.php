@@ -47,6 +47,15 @@ final class ShipSystemRepository extends EntityRepository implements ShipSystemR
     }
 
     #[Override]
+    public function getByShipAndModule(int $shipId, int $moduleId): ?ShipSystemInterface
+    {
+        return $this->findOneBy([
+            'ship_id' => $shipId,
+            'module_id' => $moduleId
+        ]);
+    }
+
+    #[Override]
     public function getTrackingShipSystems(int $targetId): array
     {
         return $this->getEntityManager()

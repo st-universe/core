@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
 use Override;
 use Stu\Orm\Repository\ColonyShipQueueRepository;
@@ -51,6 +52,12 @@ class ColonyShipQueue implements ColonyShipQueueInterface
     #[Column(type: 'smallint')]
     private int $building_function_id = 0;
 
+    #[Column(type: 'integer', nullable: true)]
+    private ?int $mode = null;
+
+    #[Column(type: 'integer', nullable: true)]
+    private ?int $ship_id = null;
+
     #[ManyToOne(targetEntity: 'ShipBuildplan')]
     #[JoinColumn(name: 'buildplan_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ShipBuildplanInterface $shipBuildplan;
@@ -62,6 +69,10 @@ class ColonyShipQueue implements ColonyShipQueueInterface
     #[ManyToOne(targetEntity: 'Colony')]
     #[JoinColumn(name: 'colony_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ColonyInterface $colony;
+
+    #[OneToOne(targetEntity: 'Ship')]
+    #[JoinColumn(name: 'ship_id', referencedColumnName: 'id')]
+    private ?ShipInterface $ship = null;
 
     #[Override]
     public function getId(): int
@@ -191,6 +202,29 @@ class ColonyShipQueue implements ColonyShipQueueInterface
     {
         $this->shipBuildplan = $shipBuildplan;
 
+        return $this;
+    }
+
+
+    public function getMode(): ?int
+    {
+        return $this->mode;
+    }
+
+    public function setMode(?int $mode): ColonyShipQueueInterface
+    {
+        $this->mode = $mode;
+        return $this;
+    }
+
+    public function getShip(): ?ShipInterface
+    {
+        return $this->ship;
+    }
+
+    public function setShip(?ShipInterface $ship): ColonyShipQueueInterface
+    {
+        $this->ship = $ship;
         return $this;
     }
 }
