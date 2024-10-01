@@ -57,7 +57,6 @@ final class ShipRetrofitProvider implements GuiComponentProviderInterface
 
             $game->setTemplateVar('RETROFIT_SHIP_LIST', $retrofitShips);
             $game->setTemplateVar('FIELD', $field);
-            $game->setTemplateVar('HOST', $host);
         }
     }
 }
