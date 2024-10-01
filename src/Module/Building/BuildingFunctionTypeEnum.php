@@ -48,6 +48,7 @@ final class BuildingFunctionTypeEnum
             case ColonyMenuEnum::MENU_SHIP_REPAIR:
             case ColonyMenuEnum::MENU_SHIP_DISASSEMBLY:
             case ColonyMenuEnum::MENU_BUILDPLANS:
+            case ColonyMenuEnum::MENU_SHIP_RETROFIT:
                 return true;
             default:
                 return false;
