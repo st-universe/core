@@ -85,11 +85,12 @@ final class ColonyShipQueueRepository extends EntityRepository implements Colony
     }
 
     #[Override]
-    public function getAmountByColonyAndBuildingFunction(int $colonyId, int $buildingFunctionId): int
+    public function getAmountByColonyAndBuildingFunctionAndMode(int $colonyId, int $buildingFunctionId, int $mode): int
     {
         return $this->count([
             'colony_id' => $colonyId,
-            'building_function_id' => $buildingFunctionId
+            'building_function_id' => $buildingFunctionId,
+            'mode' => $mode
         ]);
     }
 
@@ -102,10 +103,28 @@ final class ColonyShipQueueRepository extends EntityRepository implements Colony
     }
 
     #[Override]
+    public function getByColonyAndMode(int $colonyId, int $mode): array
+    {
+        return $this->findBy([
+            'colony_id' => $colonyId,
+            'mode' => $mode
+        ]);
+    }
+
+    #[Override]
     public function getByUser(int $userId): array
     {
         return $this->findBy([
             'user_id' => $userId
+        ]);
+    }
+
+    #[Override]
+    public function getByUserAndMode(int $userId, int $mode): array
+    {
+        return $this->findBy([
+            'user_id' => $userId,
+            'mode' => $mode
         ]);
     }
 

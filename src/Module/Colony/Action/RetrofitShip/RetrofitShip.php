@@ -87,8 +87,13 @@ final class RetrofitShip implements ActionControllerInterface
         }
         $game->setView('SHOW_MODULE_SCREEN');
 
-        if ($this->colonyShipQueueRepository->getAmountByColonyAndBuildingFunction($colonyId, $building_function->getBuildingFunction()) > 0) {
-            $game->addInformation(_('In dieser Werft wird bereits ein Schiff gebaut'));
+        if ($this->colonyShipQueueRepository->getAmountByColonyAndBuildingFunctionAndMode($colonyId, $building_function->getBuildingFunction(), 1) > 0) {
+            $game->addInformation(_('In dieser Werft wird aktuell ein Schiff gebaut'));
+            return;
+        }
+
+        if ($this->colonyShipQueueRepository->getAmountByColonyAndBuildingFunctionAndMode($colonyId, $building_function->getBuildingFunction(), 2) > 0) {
+            $game->addInformation(_('In dieser Werft wird aktuell ein Schiff umgerüstet'));
             return;
         }
 
@@ -211,6 +216,10 @@ final class RetrofitShip implements ActionControllerInterface
 
         $signature = ShipBuildplan::createSignature($sigmod, $crewUsage);
         $plan = $this->shipBuildplanRepository->getByUserShipRumpAndSignature($userId, $rump->getId(), $signature);
+        if ($plan == $oldplan) {
+            $game->addInformation(_('Es wurden keine Änderungen ausgewählt'));
+            return;
+        }
         if ($plan === null) {
             $plannameFromRequest = request::indString('buildplanname');
             if (
@@ -258,6 +267,7 @@ final class RetrofitShip implements ActionControllerInterface
                 $plan->getName()
             );
         }
+
         $queue = $this->colonyShipQueueRepository->prototype();
         $queue->setColony($colony);
         $queue->setUserId($userId);

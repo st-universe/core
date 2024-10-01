@@ -424,6 +424,7 @@
             {% if COLONY and BUILDING_FUNCTION.isShipyard %}
             {% set host = COLONY %}
             {% include 'html/ship/buildProgress.twig' %}
+            {% include 'html/ship/retrofitProgress.twig' %}
             {% include 'html/ship/repairProgress.twig' %}
             {% endif %}
         </td>
