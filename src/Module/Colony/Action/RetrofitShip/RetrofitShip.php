@@ -7,6 +7,8 @@ namespace Stu\Module\Colony\Action\RetrofitShip;
 use Override;
 use request;
 use RuntimeException;
+use Stu\Component\Colony\ColonyMenuEnum;
+use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
@@ -213,6 +215,7 @@ final class RetrofitShip implements ActionControllerInterface
         }
 
         $game->setView(ShowColony::VIEW_IDENTIFIER);
+        $game->setViewContext(ViewContextTypeEnum::COLONY_MENU, ColonyMenuEnum::MENU_SHIP_RETROFIT);
 
         $signature = ShipBuildplan::createSignature($sigmod, $crewUsage);
         $plan = $this->shipBuildplanRepository->getByUserShipRumpAndSignature($userId, $rump->getId(), $signature);
