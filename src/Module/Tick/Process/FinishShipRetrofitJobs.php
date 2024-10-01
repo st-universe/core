@@ -15,7 +15,7 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class FinishShipRetrofitJobs implements ProcessTickHandlerInterface
 {
-    public function __construct(private ShipRetrofitInterface $shipRetrofit, private ColonyShipQueueRepositoryInterface $colonyShipQueueRepository, private PrivateMessageSenderInterface $privateMessageSender, private ShipRepositoryInterface $shipRepository) {}
+    public function __construct(private ShipRetrofitInterface $shipRetrofit, private ColonyShipQueueRepositoryInterface $colonyShipQueueRepository, private ShipRepositoryInterface $shipRepository) {}
 
     #[Override]
     public function work(): void
@@ -35,22 +35,14 @@ final class FinishShipRetrofitJobs implements ProcessTickHandlerInterface
 
                 $this->shipRetrofit->updateBy(
                     $ship,
-                    $newbuildplan
+                    $newbuildplan,
+                    $colony
                 );
                 $this->colonyShipQueueRepository->delete($obj);
 
                 $ship->setState(ShipStateEnum::SHIP_STATE_NONE);
 
                 $this->shipRepository->save($ship);
-
-                $txt = _("Auf der Kolonie " . $colony->getName() . " wurde die " . $ship->getName() . " umgerüstet");
-
-                $this->privateMessageSender->send(
-                    UserEnum::USER_NOONE,
-                    $colony->getUserId(),
-                    $txt,
-                    PrivateMessageFolderTypeEnum::SPECIAL_COLONY
-                );
             }
         }
     }

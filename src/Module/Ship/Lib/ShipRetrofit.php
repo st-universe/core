@@ -5,9 +5,14 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib;
 
 use Stu\Component\Ship\ShipModuleTypeEnum;
+use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ModuleInterface;
@@ -24,23 +29,30 @@ final class ShipRetrofit implements ShipRetrofitInterface
     private BuildplanModuleRepositoryInterface $buildplanModuleRepository;
     private ModuleSpecialRepositoryInterface $moduleSpecialRepository;
     private ShipWrapperFactoryInterface $shipWrapperFactory;
+    private ColonyStorageManagerInterface $colonyStorageManager;
+    private PrivateMessageSenderInterface $privateMessageSender;
 
     public function __construct(
         ShipSystemRepositoryInterface $shipSystemRepository,
         BuildplanModuleRepositoryInterface $buildplanModuleRepository,
         ModuleSpecialRepositoryInterface $moduleSpecialRepository,
-        ShipWrapperFactoryInterface $shipWrapperFactory
+        ShipWrapperFactoryInterface $shipWrapperFactory,
+        ColonyStorageManagerInterface $colonyStorageManager,
+        PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->shipSystemRepository = $shipSystemRepository;
         $this->buildplanModuleRepository = $buildplanModuleRepository;
         $this->moduleSpecialRepository = $moduleSpecialRepository;
         $this->shipWrapperFactory = $shipWrapperFactory;
+        $this->colonyStorageManager = $colonyStorageManager;
+        $this->privateMessageSender = $privateMessageSender;
     }
 
-    public function updateBy(ShipInterface $ship, ShipBuildplanInterface $newBuildplan): void
+    public function updateBy(ShipInterface $ship, ShipBuildplanInterface $newBuildplan, ColonyInterface $colony): void
     {
         $oldBuildplan = $ship->getBuildplan();
         $wrapper = $this->shipWrapperFactory->wrapShip($ship);
+        $returnedmodules = [];
 
         if ($oldBuildplan === null) {
             return;
@@ -55,6 +67,10 @@ final class ShipRetrofit implements ShipRetrofitInterface
                 return $a->getModule()->getId() - $b->getModule()->getId();
             });
 
+            $deletingModules = array_udiff($oldModules, $newModules, function ($a, $b) {
+                return $a->getModule()->getId() - $b->getModule()->getId();
+            });
+
             if (!empty($addingModules)) {
                 $systems = [];
                 $this->addModuleSystems($addingModules, $systems);
@@ -65,19 +81,45 @@ final class ShipRetrofit implements ShipRetrofitInterface
                 }
             }
 
-            $deletingModules = array_udiff($oldModules, $newModules, function ($a, $b) {
-                return $a->getModule()->getId() - $b->getModule()->getId();
-            });
-
             foreach ($deletingModules as $oldModule) {
                 $system = $this->shipSystemRepository->getByShipAndModule($ship->getId(), $oldModule->getModule()->getId());
                 if ($system !== null) {
-                    $this->shipSystemRepository->delete($system);
+                    if ($system->getStatus() >= 100) {
+                        if (mt_rand(1, 100) <= 25) {
+                            $returnedmodules[] = $system->getModule();
+                        }
+                        $this->shipSystemRepository->delete($system);
+                    }
                 }
             }
         }
 
+        if (!empty($returnedmodules)) {
+            $msg = "
+            Die folgenden Module wurden durch den Umbau zurückgewonnen: ";
+            foreach ($returnedmodules as $module) {
+                if ($module != null) {
+                    $this->colonyStorageManager->upperStorage($colony, $module->getCommodity(), 1);
+                    $msg .= $module->getName() . ", ";
+                }
+            }
+            $msg = rtrim($msg, ", ");
+        } else {
+            $msg = null;
+        }
 
+        $txt = _("Auf der Kolonie " . $colony->getName() . " wurde die " . $ship->getName() . " umgerüstet");
+
+        if ($msg !== null) {
+            $txt .= '. ' . $msg;
+        }
+
+        $this->privateMessageSender->send(
+            UserEnum::USER_NOONE,
+            $colony->getUserId(),
+            $txt,
+            PrivateMessageFolderTypeEnum::SPECIAL_COLONY
+        );
 
         $ship->setBuildplan($newBuildplan);
     }

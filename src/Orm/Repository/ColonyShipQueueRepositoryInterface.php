@@ -22,7 +22,7 @@ interface ColonyShipQueueRepositoryInterface extends ObjectRepository
 
     public function restartQueueByColonyAndBuildingFunction(int $colonyId, int $buildingFunctionId): void;
 
-    public function getAmountByColonyAndBuildingFunction(int $colonyId, int $buildingFunctionId): int;
+    public function getAmountByColonyAndBuildingFunctionAndMode(int $colonyId, int $buildingFunctionId, int $mode): int;
 
     /**
      * @return array<ColonyShipQueueInterface>
@@ -32,7 +32,17 @@ interface ColonyShipQueueRepositoryInterface extends ObjectRepository
     /**
      * @return array<ColonyShipQueueInterface>
      */
+    public function getByColonyAndMode(int $colonyId, int $mode): array;
+
+    /**
+     * @return array<ColonyShipQueueInterface>
+     */
     public function getByUser(int $userId): array;
+
+    /**
+     * @return array<ColonyShipQueueInterface>
+     */
+    public function getByUserAndMode(int $userId, int $mode): array;
 
     public function getCountByBuildplan(int $buildplanId): int;
 

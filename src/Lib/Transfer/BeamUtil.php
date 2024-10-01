@@ -17,9 +17,7 @@ use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class BeamUtil implements BeamUtilInterface
 {
-    public function __construct(private ShipStorageManagerInterface $shipStorageManager, private ColonyStorageManagerInterface $colonyStorageManager, private ColonyRepositoryInterface $colonyRepository)
-    {
-    }
+    public function __construct(private ShipStorageManagerInterface $shipStorageManager, private ColonyStorageManagerInterface $colonyStorageManager, private ColonyRepositoryInterface $colonyRepository) {}
 
     #[Override]
     public function transferCommodity(
