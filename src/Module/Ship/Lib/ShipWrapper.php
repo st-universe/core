@@ -268,6 +268,28 @@ final class ShipWrapper implements ShipWrapperInterface
     }
 
     #[Override]
+    public function canBeRetrofitted(): bool
+    {
+        if ($this->ship->getAlertState() !== ShipAlertStateEnum::ALERT_GREEN) {
+            return false;
+        }
+
+        if ($this->ship->getShieldState()) {
+            return false;
+        }
+
+        if ($this->ship->getCloakState()) {
+            return false;
+        }
+
+        if ($this->ship->getBuildplan()->getUser() != $this->game->getUser()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    #[Override]
     public function canFire(): bool
     {
         $ship = $this->ship;

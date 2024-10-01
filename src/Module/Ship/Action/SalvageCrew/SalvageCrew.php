@@ -8,6 +8,7 @@ use Override;
 use request;
 use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
+use Stu\Component\Ship\Retrofit\CancelRetrofitInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Exception\SanityCheckException;
@@ -24,9 +25,7 @@ final class SalvageCrew implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_SALVAGE_CREW';
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private ShipCrewRepositoryInterface $shipCrewRepository, private TroopTransferUtilityInterface  $troopTransferUtility, private ActivatorDeactivatorHelperInterface $helper, private CancelRepairInterface $cancelRepair, private ShipCrewCalculatorInterface $shipCrewCalculator)
-    {
-    }
+    public function __construct(private ShipLoaderInterface $shipLoader, private ShipCrewRepositoryInterface $shipCrewRepository, private TroopTransferUtilityInterface  $troopTransferUtility, private ActivatorDeactivatorHelperInterface $helper, private CancelRepairInterface $cancelRepair, private ShipCrewCalculatorInterface $shipCrewCalculator, private CancelRetrofitInterface $cancelRetrofit) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -74,6 +73,9 @@ final class SalvageCrew implements ActionControllerInterface
         }
         if ($this->cancelRepair->cancelRepair($ship)) {
             $game->addInformation("Die Reparatur wurde abgebrochen");
+        }
+        if ($this->cancelRetrofit->cancelRetrofit($ship)) {
+            $game->addInformation("Die Umrüstung wurde abgebrochen");
         }
 
         $crewToTransfer = min(

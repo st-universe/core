@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib\Battle;
 
 use Override;
+use pq\Cancel;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
+use Stu\Component\Ship\Retrofit\CancelRetrofitInterface;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -23,10 +25,10 @@ final class FightLib implements FightLibInterface
     public function __construct(
         private ShipSystemManagerInterface $shipSystemManager,
         private  CancelRepairInterface $cancelRepair,
+        private CancelRetrofitInterface $cancelRetrofit,
         private AlertLevelBasedReactionInterface $alertLevelBasedReaction,
         private InformationFactoryInterface $informationFactory
-    ) {
-    }
+    ) {}
 
     #[Override]
     public function ready(ShipWrapperInterface $wrapper, InformationInterface $informations): void
@@ -63,6 +65,8 @@ final class FightLib implements FightLibInterface
         }
 
         $this->cancelRepair->cancelRepair($ship);
+
+        $this->cancelRetrofit->cancelRetrofit($ship);
 
         $this->alertLevelBasedReaction->react($wrapper, $informationWrapper);
 

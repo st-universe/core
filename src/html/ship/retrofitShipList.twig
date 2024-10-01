@@ -1,0 +1,72 @@
+{% from 'html/shipmacros.twig' import shipImageWithoutWarp %}
+
+{# needs following variables: host, RETROFIT_SHIP_LIST) #}
+<table class="tcal" style="width: 40vw;">
+    {% set RetrofitoverlibText = "<table class='tcal' style='width:250px'>
+        <tr>
+            <th style='text-align: left'><img src='/assets/buttons/info2.png' /> Umrüstung </th>
+        </tr>
+        <tr>
+            <td>Die Umrüstung eines Raumschiffes kann die Werte des jeweiligen Schiffes ändern. </br>
+            Dabei können Module gegeneinander ausgetauscht werden. Mit einer Chance das alte Modul zurück zu bekommen.</br>Klicke auf das <img
+                    style='height:16px' src='/assets/buttons/info2.png' /> für mehr Infos.</td>
+        </tr>
+    </table>" %}
+
+    <tr class="responsive-hide">
+        <th>Klasse</th>
+        <th>Name</th>
+        <th>Dauer</th>
+        <th><a href="https://wiki.stuniverse.de/index.php?title=Anfaenger:Schiffsumrüstung" target="_blank"
+                onmouseover="return overlib('{{ RetrofitoverlibText|e('js') }}', CAPTION, '',  CLOSETEXT, 'X', CLOSECOLOR, '#8897cf', TEXTCOLOR, '#000000', CELLPAD, 4);"
+                onmouseout="return nd();"><img src="/assets/buttons/info2.png" style="height:16px;" /></a></th>
+    </tr>
+    {% for wrapper in RETROFIT_SHIP_LIST %}
+    {% set ship = wrapper.get %}
+    <tr class="row responsive-hide">
+        <td>
+            <input type="hidden" name="ships[]" value="{{ ship.getId }}" />
+            {{ shipImageWithoutWarp(ship) }}
+        </td>
+        <td class="break-word">{{ ship.getName|bbcode }}</td>
+        <td>{{ ship.getRump.getBuildtime|formatSeconds  }}</td>
+        <td>
+            {% if wrapper.canBeRetrofitted %}
+            <div>
+                <a
+                    href="?SHOW_MODULE_SCREEN_RETROFIT=1&id={{ host.getId }}&planid={{ ship.getBuildplan.getId }}&shipid={{ ship.getId }}">Umrüsten</a>
+            </div>
+            {% endif %}
+        </td>
+    </tr>
+    <!-- Responsive rows -->
+    <tr class="responsive-show">
+        <th>Klasse</th>
+        <th colspan="2">Name</th>
+    </tr>
+    <tr class="responsive-show">
+        <td>
+            <input type="hidden" name="ships[]" value="{{ ship.getId }}" />
+            {{ shipImageWithoutWarp(ship) }}
+        </td>
+        <td class="break-word" colspan="2">{{ ship.getName|bbcode }}</td>
+    </tr>
+    <tr class="responsive-show">
+        <th>Dauer</th>
+        <th><a href="https://wiki.stuniverse.de/index.php?title=Anfaenger:Schiffsumrüstung" target="_blank"
+                onmouseover="return overlib('{{ RetrofitoverlibText|e('js') }}', CAPTION, '',  CLOSETEXT, 'X', CLOSECOLOR, '#8897cf', TEXTCOLOR, '#000000', CELLPAD, 4);"
+                onmouseout="return nd();"><img src="/assets/buttons/info2.png" style="height:16px;" /></a></th>
+    </tr>
+    <tr class="responsive-show">
+        <td>{{ ship.getRump.getBuildtime|formatSeconds  }}</td>
+        <td>
+            {% if wrapper.canBeRetrofitted %}
+            <div>
+                <a
+                href="?SHOW_MODULE_SCREEN_RETROFIT=1&id={{ host.getId }}&planid={{ ship.getBuildplan.getId }}&shipid={{ ship.getId }}">Umrüsten</a>
+            </div>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>

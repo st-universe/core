@@ -48,6 +48,8 @@ interface ShipWrapperInterface
 
     public function canBeRepaired(): bool;
 
+    public function canBeRetrofitted(): bool;
+
     public function canFire(): bool;
 
     public function getRepairDuration(): int;

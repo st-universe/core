@@ -71,7 +71,7 @@ class ColonyShipQueue implements ColonyShipQueueInterface
     private ColonyInterface $colony;
 
     #[OneToOne(targetEntity: 'Ship')]
-    #[JoinColumn(name: 'ship_id', referencedColumnName: 'id')]
+    #[JoinColumn(name: 'ship_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?ShipInterface $ship = null;
 
     #[Override]

@@ -5,17 +5,17 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight;
 
 use Override;
-use Stu\Component\Ship\Repair\CancelRepairInterface;
+use Stu\Component\Ship\Retrofit\CancelRetrofitInterface;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\AbstractFlightConsequence;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
-class RepairConsequence extends AbstractFlightConsequence
+class RetrofitConsequence extends AbstractFlightConsequence
 {
     public function __construct(
-        private CancelRepairInterface $cancelRepair,
+        private CancelRetrofitInterface $cancelRetrofit,
         private MessageFactoryInterface $messageFactory
     ) {}
 
@@ -28,11 +28,11 @@ class RepairConsequence extends AbstractFlightConsequence
 
         $ship = $wrapper->get();
 
-        if ($ship->isUnderRepair()) {
+        if ($ship->isUnderRetrofit()) {
             $message = $this->messageFactory->createMessage(null, $ship->getUser()->getId());
             $messages->add($message);
-            $this->cancelRepair->cancelRepair($ship);
-            $message->add(sprintf(_('Die Reparatur der %s wurde abgebrochen'), $ship->getName()));
+            $this->cancelRetrofit->cancelRetrofit($ship);
+            $message->add(sprintf(_('Der Umbau der %s wurde abgebrochen'), $ship->getName()));
         }
     }
 }

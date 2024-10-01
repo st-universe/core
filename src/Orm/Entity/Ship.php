@@ -821,6 +821,12 @@ class Ship implements ShipInterface
     }
 
     #[Override]
+    public function isUnderRetrofit(): bool
+    {
+        return $this->getState() === ShipStateEnum::SHIP_STATE_RETROFIT;
+    }
+
+    #[Override]
     public function getIsFleetLeader(): bool
     {
         return $this->getFleet() !== null && $this->is_fleet_leader;

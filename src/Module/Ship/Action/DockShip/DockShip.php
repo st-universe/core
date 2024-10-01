@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\Action\DockShip;
 use Override;
 use request;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
+use Stu\Component\Ship\Retrofit\CancelRetrofitInterface;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
@@ -26,7 +27,7 @@ final class DockShip implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_DOCK';
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private DockPrivilegeUtilityInterface $dockPrivilegeUtility, private PrivateMessageSenderInterface $privateMessageSender, private ShipSystemManagerInterface $shipSystemManager, private InteractionCheckerInterface $interactionChecker, private CancelRepairInterface $cancelRepair) {}
+    public function __construct(private ShipLoaderInterface $shipLoader, private DockPrivilegeUtilityInterface $dockPrivilegeUtility, private PrivateMessageSenderInterface $privateMessageSender, private ShipSystemManagerInterface $shipSystemManager, private InteractionCheckerInterface $interactionChecker, private CancelRepairInterface $cancelRepair, private CancelRetrofitInterface $cancelRetrofit) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -125,6 +126,9 @@ final class DockShip implements ActionControllerInterface
         if ($this->cancelRepair->cancelRepair($ship)) {
             $game->addInformation("Die Reparatur wurde abgebrochen");
         }
+        if ($this->cancelRetrofit->cancelRetrofit($ship)) {
+            $game->addInformation("Die Umrüstung wurde abgebrochen");
+        }
         $epsSystem->lowerEps(1)->update();
         $ship->setDockedTo($target);
 
@@ -182,6 +186,10 @@ final class DockShip implements ActionControllerInterface
             }
             if ($this->cancelRepair->cancelRepair($fleetShip)) {
                 $msg[] = $fleetShip->getName() . _(': Die Reparatur wurde abgebrochen');
+                continue;
+            }
+            if ($this->cancelRetrofit->cancelRetrofit($fleetShip)) {
+                $msg[] = $fleetShip->getName() . _(': Die Umrüstung wurde abgebrochen');
                 continue;
             }
 
