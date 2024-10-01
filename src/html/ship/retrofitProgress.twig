@@ -8,7 +8,7 @@
         <td style="text-align: center; vertical-align: middle;">
             <img src="/assets/ships/{{ data.getRump.getId }}.png" />
         </td>
-        <td style="text-align: center; vertical-align: middle">{{ data.getShip.getName }}</td>
+        <td style="text-align: center; vertical-align: middle">{{ data.getShip.getName|bbcode }}</td>
         {% if data.getStopDate %}
         <td colspan="2" style="text-align: center; vertical-align: middle">Angehalten</td>
         {% else %}
