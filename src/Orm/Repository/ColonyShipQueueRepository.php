@@ -30,11 +30,17 @@ final class ColonyShipQueueRepository extends EntityRepository implements Colony
     }
 
     #[Override]
-    public function delete(ColonyShipQueueInterface $post): void
+    public function delete(ColonyShipQueueInterface $queue): void
     {
         $em = $this->getEntityManager();
 
-        $em->remove($post);
+        $ship = $queue->getShip();
+        if ($ship !== null) {
+            $ship->setColonyShipQueue(null);
+        }
+
+        $em->remove($queue);
+        $em->flush();
     }
 
     #[Override]
@@ -157,6 +163,22 @@ final class ColonyShipQueueRepository extends EntityRepository implements Colony
             ->setParameters([
                 'colony' => $colony,
                 'buildingFunctionId' => $buildingFunctionId
+            ])
+            ->execute();
+    }
+
+    #[Override]
+    public function truncateByShip(int $shipId): void
+    {
+        $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'DELETE FROM %s sq WHERE sq.ship_id = :shipId',
+                    ColonyShipQueue::class
+                )
+            )
+            ->setParameters([
+                'shipId' => $shipId
             ])
             ->execute();
     }

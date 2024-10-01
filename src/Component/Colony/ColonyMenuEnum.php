@@ -19,6 +19,7 @@ use Stu\Module\Colony\View\ShowMisc\ShowMisc;
 use Stu\Module\Colony\View\ShowModuleFab\ShowModuleFab;
 use Stu\Module\Colony\View\ShowShipDisassembly\ShowShipDisassembly;
 use Stu\Module\Colony\View\ShowShipRepair\ShowShipRepair;
+use Stu\Module\Colony\View\ShowShipRetrofit\ShowShipRetrofit;
 use Stu\Module\Colony\View\ShowShipyard\ShowShipyard;
 use Stu\Module\Colony\View\ShowSocial\ShowSocial;
 use Stu\Module\Colony\View\ShowSubspaceTelescope\ShowSubspaceTelescope;
@@ -46,6 +47,7 @@ enum ColonyMenuEnum: int
     case MENU_SUBSPACE_TELESCOPE = 16;
     case MENU_SHIP_DISASSEMBLY = 17;
     case MENU_SHIP_REPAIR = 18;
+    case MENU_SHIP_RETROFIT = 19;
 
     public static function getFor(mixed $value): ColonyMenuEnum
     {
@@ -92,7 +94,8 @@ enum ColonyMenuEnum: int
             self::MENU_TECH_CENTER => [BuildingEnum::BUILDING_FUNCTION_TECH_CENTER],
             self::MENU_SUBSPACE_TELESCOPE => [BuildingEnum::BUILDING_FUNCTION_SUBSPACE_TELESCOPE],
             self::MENU_SHIP_DISASSEMBLY => BuildingFunctionTypeEnum::getShipyardOptions(),
-            self::MENU_SHIP_REPAIR => BuildingFunctionTypeEnum::getShipyardOptions()
+            self::MENU_SHIP_REPAIR => BuildingFunctionTypeEnum::getShipyardOptions(),
+            self::MENU_SHIP_RETROFIT => BuildingFunctionTypeEnum::getShipyardOptions()
         };
     }
 
@@ -117,7 +120,8 @@ enum ColonyMenuEnum: int
             self::MENU_TECH_CENTER => ShowModuleFab::VIEW_IDENTIFIER,
             self::MENU_SUBSPACE_TELESCOPE => ShowSubspaceTelescope::VIEW_IDENTIFIER,
             self::MENU_SHIP_DISASSEMBLY => ShowShipDisassembly::VIEW_IDENTIFIER,
-            self::MENU_SHIP_REPAIR => ShowShipRepair::VIEW_IDENTIFIER
+            self::MENU_SHIP_REPAIR => ShowShipRepair::VIEW_IDENTIFIER,
+            self::MENU_SHIP_RETROFIT => ShowShipRetrofit::VIEW_IDENTIFIER
         };
     }
 
@@ -142,7 +146,8 @@ enum ColonyMenuEnum: int
             self::MENU_TECH_CENTER => 'html/colony/menu/componentFab.twig',
             self::MENU_SUBSPACE_TELESCOPE => 'html/colony/menu/telescope.twig',
             self::MENU_SHIP_DISASSEMBLY => 'html/colony/menu/shipDisassembly.twig',
-            self::MENU_SHIP_REPAIR => 'html/colony/menu/shipRepair.twig'
+            self::MENU_SHIP_REPAIR => 'html/colony/menu/shipRepair.twig',
+            self::MENU_SHIP_RETROFIT => 'html/colony/menu/shipRetrofit.twig'
         };
     }
 
@@ -180,7 +185,8 @@ enum ColonyMenuEnum: int
             self::MENU_TECH_CENTER => [GuiComponentEnum::MODULE_FAB],
             self::MENU_SUBSPACE_TELESCOPE => [],
             self::MENU_SHIP_DISASSEMBLY => [GuiComponentEnum::SHIP_DISASSEMBLY],
-            self::MENU_SHIP_REPAIR => [GuiComponentEnum::SHIP_REPAIR]
+            self::MENU_SHIP_REPAIR => [GuiComponentEnum::SHIP_REPAIR],
+            self::MENU_SHIP_RETROFIT => [GuiComponentEnum::SHIP_RETROFIT]
         };
     }
 }

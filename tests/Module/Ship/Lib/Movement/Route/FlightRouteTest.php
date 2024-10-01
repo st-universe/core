@@ -360,7 +360,7 @@ class FlightRouteTest extends StuTestCase
 
         Init::run($app, false);
 
-        $this->assertEquals(11, count(get('flightConsequences')->resolve($container)));
+        $this->assertEquals(12, count(get('flightConsequences')->resolve($container)));
     }
 
     public function testAllPostFlightConsequencesRegistered(): void

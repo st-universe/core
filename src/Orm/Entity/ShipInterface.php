@@ -161,6 +161,8 @@ interface ShipInterface extends ShipDestroyerInterface
 
     public function isUnderRepair(): bool;
 
+    public function isUnderRetrofit(): bool;
+
     public function getIsFleetLeader(): bool;
 
     public function setIsFleetLeader(bool $isFleetLeader): ShipInterface;

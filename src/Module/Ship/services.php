@@ -250,6 +250,7 @@ use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\DriveDeactivationC
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\EpsConsequence;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\FlightDirectionConsequence;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\RepairConsequence;
+use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\RetrofitConsequence;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\TakeoverConsequence;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\TholianWebConsequence;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\TractorConsequence;
@@ -422,6 +423,7 @@ return [
         ),
     'flightConsequences' => [
         autowire(RepairConsequence::class),
+        autowire(RetrofitConsequence::class),
         autowire(DockConsequence::class),
         autowire(TakeoverConsequence::class),
         autowire(AstroMappingConsequence::class),

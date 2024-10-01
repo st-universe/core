@@ -13,6 +13,8 @@ use Stu\Component\Ship\Mining\CancelMining;
 use Stu\Component\Ship\Mining\CancelMiningInterface;
 use Stu\Component\Ship\Repair\CancelRepair;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
+use Stu\Component\Ship\Retrofit\CancelRetrofit;
+use Stu\Component\Ship\Retrofit\CancelRetrofitInterface;
 use Stu\Component\Ship\Repair\RepairUtil;
 use Stu\Component\Ship\Repair\RepairUtilInterface;
 use Stu\Component\Ship\Storage\ShipStorageManager;
@@ -70,6 +72,7 @@ return [
     RepairUtilInterface::class => autowire(RepairUtil::class),
     CancelMiningInterface::class => autowire(CancelMining::class),
     CancelRepairInterface::class => autowire(CancelRepair::class),
+    CancelRetrofitInterface::class => autowire(CancelRetrofit::class),
     TractorMassPayloadUtilInterface::class => autowire(TractorMassPayloadUtil::class),
     ShipSystemDataFactoryInterface::class => autowire(ShipSystemDataFactory::class),
     SystemDataDeserializerInterface::class => autowire(SystemDataDeserializer::class),

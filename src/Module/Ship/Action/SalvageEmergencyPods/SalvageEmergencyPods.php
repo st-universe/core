@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Action\SalvageEmergencyPods;
 
 use Override;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
+use Stu\Component\Ship\Retrofit\CancelRetrofitInterface;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -25,9 +26,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_SALVAGE_EPODS';
 
-    public function __construct(private SalvageEmergencyPodsRequestInterface $request, private ShipLoaderInterface $shipLoader, private ShipCrewRepositoryInterface $shipCrewRepository, private TradePostRepositoryInterface $tradePostRepository, private PrivateMessageSenderInterface $privateMessageSender, private TroopTransferUtilityInterface  $troopTransferUtility, private CancelRepairInterface $cancelRepair, private TransferToClosestLocation $transferToClosestLocation)
-    {
-    }
+    public function __construct(private SalvageEmergencyPodsRequestInterface $request, private ShipLoaderInterface $shipLoader, private ShipCrewRepositoryInterface $shipCrewRepository, private TradePostRepositoryInterface $tradePostRepository, private PrivateMessageSenderInterface $privateMessageSender, private TroopTransferUtilityInterface  $troopTransferUtility, private CancelRepairInterface $cancelRepair, private TransferToClosestLocation $transferToClosestLocation, private CancelRetrofitInterface $cancelRetrofit) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -69,6 +68,9 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         }
         if ($this->cancelRepair->cancelRepair($ship)) {
             $game->addInformation("Die Reparatur wurde abgebrochen");
+        }
+        if ($this->cancelRetrofit->cancelRetrofit($ship)) {
+            $game->addInformation("Die Umrüstung wurde abgebrochen");
         }
 
 

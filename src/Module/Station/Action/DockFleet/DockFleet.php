@@ -7,6 +7,7 @@ namespace Stu\Module\Station\Action\DockFleet;
 use Override;
 use request;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
+use Stu\Component\Ship\Retrofit\CancelRetrofitInterface;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
@@ -37,6 +38,7 @@ final class DockFleet implements ActionControllerInterface
         private ShipSystemManagerInterface $shipSystemManager,
         private InteractionCheckerInterface $interactionChecker,
         private CancelRepairInterface $cancelRepair,
+        private CancelRetrofitInterface $cancelRetrofit,
         private ShipWrapperFactoryInterface $shipWrapperFactory,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
@@ -116,6 +118,9 @@ final class DockFleet implements ActionControllerInterface
             }
             if ($this->cancelRepair->cancelRepair($ship)) {
                 $msg[] = $ship->getName() . _(': Die Reparatur wurde abgebrochen');
+            }
+            if ($this->cancelRetrofit->cancelRetrofit($ship)) {
+                $msg[] = $ship->getName() . _(': Die Umrüstung wurde abgebrochen');
             }
 
             $wrapper = $this->shipWrapperFactory->wrapShip($ship);

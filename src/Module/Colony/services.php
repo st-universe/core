@@ -87,6 +87,7 @@ use Stu\Module\Colony\Lib\Gui\Component\ShieldingProvider;
 use Stu\Module\Colony\Lib\Gui\Component\ShipBuildplansProvider;
 use Stu\Module\Colony\Lib\Gui\Component\ShipDisassemblyProvider;
 use Stu\Module\Colony\Lib\Gui\Component\ShipRepairProvider;
+use Stu\Module\Colony\Lib\Gui\Component\ShipRetrofitProvider;
 use Stu\Module\Colony\Lib\Gui\Component\ShipyardProvider;
 use Stu\Module\Colony\Lib\Gui\Component\SocialProvider;
 use Stu\Module\Colony\Lib\Gui\Component\StorageProvider;
@@ -162,6 +163,9 @@ use Stu\Module\Colony\View\ShowShipDisassembly\ShowShipDisassemblyRequestInterfa
 use Stu\Module\Colony\View\ShowShipRepair\ShowShipRepair;
 use Stu\Module\Colony\View\ShowShipRepair\ShowShipRepairRequest;
 use Stu\Module\Colony\View\ShowShipRepair\ShowShipRepairRequestInterface;
+use Stu\Module\Colony\View\ShowShipRetrofit\ShowShipRetrofit;
+use Stu\Module\Colony\View\ShowShipRetrofit\ShowShipRetrofitRequest;
+use Stu\Module\Colony\View\ShowShipRetrofit\ShowShipRetrofitRequestInterface;
 use Stu\Module\Colony\View\ShowShipyard\ShowShipyard;
 use Stu\Module\Colony\View\ShowShipyard\ShowShipyardRequest;
 use Stu\Module\Colony\View\ShowShipyard\ShowShipyardRequestInterface;
@@ -210,6 +214,7 @@ return [
             GuiComponentEnum::FIGHTER_SHIPYARD->value => autowire(FighterShipyardProvider::class),
             GuiComponentEnum::SHIP_BUILDPLANS->value => autowire(ShipBuildplansProvider::class),
             GuiComponentEnum::SHIP_REPAIR->value => autowire(ShipRepairProvider::class),
+            GuiComponentEnum::SHIP_RETROFIT->value => autowire(ShipRetrofitProvider::class),
             GuiComponentEnum::SHIP_DISASSEMBLY->value => autowire(ShipDisassemblyProvider::class),
         ]
     ),
@@ -238,6 +243,7 @@ return [
     ShowOrbitShiplistRequestInterface::class => autowire(ShowOrbitShiplistRequest::class),
     ShowShipDisassemblyRequestInterface::class => autowire(ShowShipDisassemblyRequest::class),
     ShowShipRepairRequestInterface::class => autowire(ShowShipRepairRequest::class),
+    ShowShipRetrofitRequestInterface::class => autowire(ShowShipRetrofitRequest::class),
     ShowShipyardRequestInterface::class => autowire(ShowShipyardRequest::class),
     ShowShuttleManagementRequestInterface::class => autowire(ShowShuttleManagementRequest::class),
     ShowTorpedoFabRequestInterface::class => autowire(ShowTorpedoFabRequest::class),
@@ -320,6 +326,7 @@ return [
         ShowModuleFab::VIEW_IDENTIFIER => autowire(ShowModuleFab::class),
         ShowModuleCancel::VIEW_IDENTIFIER => autowire(ShowModuleCancel::class),
         ShowShipRepair::VIEW_IDENTIFIER => autowire(ShowShipRepair::class),
+        ShowShipRetrofit::VIEW_IDENTIFIER => autowire(ShowShipRetrofit::class),
         ShowShipDisassembly::VIEW_IDENTIFIER => autowire(ShowShipDisassembly::class),
         ShowGiveUp::VIEW_IDENTIFIER => autowire(ShowGiveUp::class),
         ShowSectorScan::VIEW_IDENTIFIER => autowire(ShowSectorScan::class),

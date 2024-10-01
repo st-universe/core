@@ -7,6 +7,8 @@ namespace Stu\Module\Ship\Lib;
 use Override;
 use Stu\Component\Ship\Mining\CancelMiningInterface;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
+use Stu\Component\Ship\Retrofit\CancelRetrofit;
+use Stu\Component\Ship\Retrofit\CancelRetrofitInterface;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
@@ -16,7 +18,7 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShipStateChanger implements ShipStateChangerInterface
 {
-    public function __construct(private CancelMiningInterface $cancelMining, private CancelRepairInterface $cancelRepair, private AstroEntryLibInterface $astroEntryLib, private ShipRepositoryInterface $shipRepository, private TholianWebUtilInterface $tholianWebUtil, private ShipTakeoverManagerInterface $shipTakeoverManager) {}
+    public function __construct(private CancelMiningInterface $cancelMining, private CancelRepairInterface $cancelRepair, private AstroEntryLibInterface $astroEntryLib, private ShipRepositoryInterface $shipRepository, private TholianWebUtilInterface $tholianWebUtil, private ShipTakeoverManagerInterface $shipTakeoverManager, private CancelRetrofitInterface $cancelRetrofit) {}
 
     #[Override]
     public function changeShipState(ShipWrapperInterface $wrapper, ShipStateEnum $newState): void
@@ -37,6 +39,8 @@ final class ShipStateChanger implements ShipStateChangerInterface
             $this->cancelRepair->cancelRepair($ship);
         } elseif ($currentState === ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING) {
             $this->astroEntryLib->cancelAstroFinalizing($wrapper);
+        } elseif ($currentState === ShipStateEnum::SHIP_STATE_RETROFIT) {
+            $this->cancelRetrofit->cancelRetrofit($ship);
         } elseif ($currentState === ShipStateEnum::SHIP_STATE_WEB_SPINNING) {
             $this->tholianWebUtil->releaseWebHelper($wrapper);
         } elseif ($currentState === ShipStateEnum::SHIP_STATE_ACTIVE_TAKEOVER) {
@@ -86,6 +90,10 @@ final class ShipStateChanger implements ShipStateChangerInterface
         // cancel repair if not on alert green
         if ($alertState !== ShipAlertStateEnum::ALERT_GREEN && $this->cancelRepair->cancelRepair($ship)) {
             $msg = _('Die Reparatur wurde abgebrochen');
+        }
+
+        if ($alertState !== ShipAlertStateEnum::ALERT_GREEN && $this->cancelRetrofit->cancelRetrofit($ship)) {
+            $msg = _('Die Umrüstung wurde abgebrochen');
         }
 
         // now change

@@ -27,6 +27,10 @@ class StateIconAndTitle
         $ship = $wrapper->get();
         $state = $ship->getState();
 
+        if ($state === ShipStateEnum::SHIP_STATE_RETROFIT) {
+            return ['buttons/konstr1', 'Schiff wird umgerüstet'];
+        }
+
         if ($state === ShipStateEnum::SHIP_STATE_REPAIR_ACTIVE) {
             $isBase = $ship->isBase();
             return ['buttons/rep2', sprintf('%s repariert die Station', $isBase ? 'Stationscrew' : 'Schiffscrew')];
