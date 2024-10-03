@@ -217,7 +217,7 @@ final class RetrofitShip implements ActionControllerInterface
         $game->setView(ShowColony::VIEW_IDENTIFIER);
 
 
-        $signature = ShipBuildplan::createSignature($sigmod, $crewUsage);
+        $signature = ShipBuildplan::createBuildplanSignature($sigmod, $crewUsage);
         $plan = $this->shipBuildplanRepository->getByUserShipRumpAndSignature($userId, $rump->getId(), $signature);
         if ($plan == $oldplan) {
             $game->addInformation(_('Es wurden keine Änderungen ausgewählt'));

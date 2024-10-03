@@ -544,11 +544,6 @@ function calculateLocalCrew() {
 	document.getElementById('calculatedCrewResponsive').innerText = result.toString();
 }
 
-function syncInputs(id1, id2) {
-	const value = document.getElementById(id1).value;
-	document.getElementById(id2).value = value;
-}
-
 /**
  * All module production functionality
  */
@@ -560,6 +555,16 @@ function clearModuleInputs() {
 
 function setModuleInput(input) {
 	moduleProductionInputs.set(input.getAttribute('data-module-id'), input.value);
+	syncAllInputFields(input);
+}
+
+function syncAllInputFields(input) {
+	const moduleId = input.getAttribute('data-module-id');
+	const value = input.value;
+	const inputs = document.querySelectorAll(`input[data-module-id="${moduleId}"]`);
+	inputs.forEach(inp => {
+		inp.value = value;
+	});
 }
 
 function startModuleProduction() {
