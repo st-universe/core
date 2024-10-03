@@ -161,7 +161,7 @@ final class CreateBuildplan implements ActionControllerInterface
             return;
         }
         $this->loggerUtil->log('G');
-        $signature = ShipBuildplan::createSignature($sigmod, $crewUsage);
+        $signature = ShipBuildplan::createBuildplanSignature($sigmod, $crewUsage);
 
         $plannameFromRequest = request::indString('buildplanname');
         if (
