@@ -147,7 +147,7 @@ class ShipBuildplan implements ShipBuildplanInterface
     /**
      * @param array<int> $modules
      */
-    public static function createSignature(array $modules, int $crewUsage = 0): string
+    public static function createBuildplanSignature(array $modules, int $crewUsage = 0): string
     {
         return md5(implode('_', $modules) . '_' . $crewUsage);
     }

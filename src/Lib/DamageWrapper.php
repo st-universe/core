@@ -13,9 +13,9 @@
 namespace Stu\Lib;
 
 use Stu\Component\Ship\ShipEnum;
+use Stu\Lib\Pirate\Component\PirateWrathManager;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\PirateWrathInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
 
@@ -30,9 +30,7 @@ class DamageWrapper
     private int $modificator = 100;
     private ?int $pirateWrath = null;
 
-    public function __construct(private float $netDamage)
-    {
-    }
+    public function __construct(private float $netDamage) {}
 
     private int $hull_damage_factor = 100;
 
@@ -221,6 +219,6 @@ class DamageWrapper
             return $damage;
         }
 
-        return round($damage / PirateWrathInterface::DEFAULT_WRATH * $this->pirateWrath);
+        return round($damage / PirateWrathManager::DEFAULT_WRATH * $this->pirateWrath);
     }
 }

@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
 use Override;
+use Stu\Lib\Pirate\Component\PirateWrathManager;
 use Stu\Orm\Repository\PirateWrathRepository;
 
 #[Table(name: 'stu_pirate_wrath')]
@@ -22,7 +23,7 @@ class PirateWrath implements PirateWrathInterface
     private int $user_id;
 
     #[Column(type: 'integer')]
-    private int $wrath = PirateWrathInterface::DEFAULT_WRATH;
+    private int $wrath = PirateWrathManager::DEFAULT_WRATH;
 
     #[Column(type: 'integer', nullable: true)]
     private ?int $protection_timeout = null;

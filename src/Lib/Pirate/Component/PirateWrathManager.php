@@ -20,6 +20,7 @@ use Stu\Orm\Repository\PirateWrathRepositoryInterface;
 class PirateWrathManager implements PirateWrathManagerInterface
 {
     public const MINIMUM_WRATH = 500;
+    public const DEFAULT_WRATH = 1000;
     public const MAXIMUM_WRATH = 2000;
 
     private PirateLoggerInterface $logger;
@@ -156,7 +157,7 @@ class PirateWrathManager implements PirateWrathManagerInterface
     {
         $wrath = $this->getPirateWrathOfUser($user);
 
-        $wrathFactor = $wrath->getWrath() / PirateWrathInterface::DEFAULT_WRATH;
+        $wrathFactor = $wrath->getWrath() / self::DEFAULT_WRATH;
 
         // 1 Prestige = 2.88 Stunden = 10368 Sekunden
         $baseTimeoutInSeconds = max(1, ((1 / $wrathFactor) ** 2) * ($prestige * 10368));
@@ -197,7 +198,7 @@ class PirateWrathManager implements PirateWrathManagerInterface
 Denkt aber immer daran: Wir mögen es nicht, wenn man uns in die Quere kommt!
 Jede Provokation und sei es auch nur ein übereifriger Sensoroffizier der unsere Schiffe scannt oder gar ein AR-Warnschuss vor den Bug unserer Schiffe, stellt einen Vertragsbruch dar. Ein solcher Vertragsbruch würde Euch auf unserer roten Liste ganz nach oben katapultieren und die Jagd auf Euch wäre wieder freigegeben.
 Es wäre doch zu Schade wenn Eure Investition dadurch völlig verpuffen würde, nicht wahr?',
-            date('d.m.Y H:i', $timestamp)
+                date('d.m.Y H:i', $timestamp)
             ),
             PrivateMessageFolderTypeEnum::SPECIAL_MAIN
         );

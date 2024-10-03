@@ -6,6 +6,7 @@ namespace Stu\Module\Colony\View\ShowModuleFab;
 
 use Override;
 use request;
+use RuntimeException;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Component\Building\BuildingEnum;
@@ -14,7 +15,6 @@ use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\BuildingFunctionRepositoryInterface;
-use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\ModuleBuildingFunctionRepositoryInterface;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
@@ -26,7 +26,17 @@ final class ShowModuleFab implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_MODULEFAB';
 
-    public function __construct(private ColonyLoaderInterface $colonyLoader, private ShowModuleFabRequestInterface $showModuleFabRequest, private ModuleBuildingFunctionRepositoryInterface $moduleBuildingFunctionRepository, private BuildingFunctionRepositoryInterface $buildingFunctionRepository, private ModuleQueueRepositoryInterface $moduleQueueRepository, private ShipRumpRepositoryInterface $shipRumpRepository, private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository, private ShipBuildplanRepositoryInterface $shipBuildplanRepository, private BuildplanModuleRepositoryInterface $buildplanModuleRepository, private ModuleRepositoryInterface $moduleRepository) {}
+    public function __construct(
+        private ColonyLoaderInterface $colonyLoader,
+        private ShowModuleFabRequestInterface $showModuleFabRequest,
+        private ModuleBuildingFunctionRepositoryInterface $moduleBuildingFunctionRepository,
+        private BuildingFunctionRepositoryInterface $buildingFunctionRepository,
+        private ModuleQueueRepositoryInterface $moduleQueueRepository,
+        private ShipRumpRepositoryInterface $shipRumpRepository,
+        private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository,
+        private ShipBuildplanRepositoryInterface $shipBuildplanRepository,
+        private ModuleRepositoryInterface $moduleRepository
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -45,7 +55,7 @@ final class ShowModuleFab implements ViewControllerInterface
             return;
         }
 
-        $modules = $this->moduleBuildingFunctionRepository->getByBuildingFunctionAndUser(
+        $moduleBuildingFunctions = $this->moduleBuildingFunctionRepository->getByBuildingFunctionAndUser(
             $func->getFunction(),
             $userId
         );
@@ -56,21 +66,30 @@ final class ShowModuleFab implements ViewControllerInterface
             default => ColonyMenuEnum::MENU_MODULEFAB->getTemplate(),
         };
 
+        /** @var array<int, array<int, array<int, ModuleFabricationListItem>>> $sortedModules */
         $sortedModules = [];
-        foreach ($modules as $module) {
-            $moduleType = $module->getModule()->getType()->value;
-            $moduleLevel = $module->getModule()->getLevel();
+        /** @var array<int, ModuleFabricationListItem> $allModules */
+        $allModules = [];
+
+        foreach ($moduleBuildingFunctions as $moduleBuildingFunction) {
+            $module = $moduleBuildingFunction->getModule();
+            $moduleType = $module->getType()->value;
+            $moduleLevel = $module->getLevel();
             if (!isset($sortedModules[$moduleType])) {
                 $sortedModules[$moduleType] = [];
             }
             if (!isset($sortedModules[$moduleType][$moduleLevel])) {
                 $sortedModules[$moduleType][$moduleLevel] = [];
             }
-            $sortedModules[$moduleType][$moduleLevel][] = new ModuleFabricationListItem(
+
+            $moduleFabricationListItem = new ModuleFabricationListItem(
                 $this->moduleQueueRepository,
-                $module->getModule(),
+                $module,
                 $colony
             );
+
+            $sortedModules[$moduleType][$moduleLevel][] = $moduleFabricationListItem;
+            $allModules[$module->getId()] = $moduleFabricationListItem;
         }
 
         $shipRumps = $this->shipRumpRepository->getBuildableByUser($userId);
@@ -82,188 +101,88 @@ final class ShowModuleFab implements ViewControllerInterface
                 'image' => "/assets/buttons/modul_screen_{$moduleType->value}.png"
             ];
         }
-        $rumpModules = [];
-        $rumpModules[0] = $sortedModules;
 
         foreach ($shipRumps as $rump) {
             $rumpId = $rump->getId();
-            $rumpModules[$rumpId] = [];
+            $rumpRoleId = $rump->getRoleId();
 
-            foreach ($sortedModules as $type => $levels) {
-                $mod_level = $this->shipRumpModuleLevelRepository->getByShipRump($rumpId);
-                $rumpRoleId = $rump->getRoleId();
-                $hasMatchingRoleModule = false;
+            $shipRumpModuleLevel = $this->shipRumpModuleLevelRepository->getByShipRump($rumpId);
+            if ($shipRumpModuleLevel === null) {
+                throw new RuntimeException('this should not happen');
+            }
 
-                foreach ($levels as $level => $modules) {
-                    foreach ($modules as $module) {
-                        if ($module->getModule()->getShipRumpRoleId() === $rumpRoleId) {
-                            $hasMatchingRoleModule = true;
-                            break 2;
-                        }
-                    }
-                }
+            foreach ($allModules as $listItem) {
+                $module = $listItem->getModule();
+                $type = $module->getType()->value;
 
                 if ($type === ShipModuleTypeEnum::SPECIAL->value) {
-                    $addedModules = [];
+                    continue;
+                }
 
-                    foreach ($levels as $level => $modules) {
-                        if (!isset($rumpModules[$rumpId][$type])) {
-                            $rumpModules[$rumpId][$type] = [];
-                        }
+                $moduleLevel = $module->getLevel();
+                $moduleShipRumpRoleId = $module->getShipRumpRoleId();
 
-                        if ($rumpRoleId !== null) {
-                            $specialModules = $this->moduleRepository->getBySpecialTypeAndRump(
-                                $colony,
-                                ShipModuleTypeEnum::SPECIAL,
-                                $rumpId
-                            );
+                if ($rump->getId() === 3203 && $module->getId() === 10101) {
+                    $rump->getId();
+                }
 
-                            foreach ($specialModules as $specialModule) {
-                                $moduleName = $specialModule->getName();
-                                $matchingModule = null;
-
-                                foreach ($sortedModules[$type][$level] as $sortedModule) {
-                                    if ($sortedModule->getModule()->getName() === $moduleName) {
-                                        $matchingModule = $sortedModule;
-                                        break;
-                                    }
-                                }
-
-                                if ($matchingModule !== null && !in_array($matchingModule->getModule()->getId(), $addedModules)) {
-                                    $rumpModules[$rumpId][$type][$level][] = $matchingModule;
-                                    $addedModules[] = $matchingModule->getModule()->getId();
-                                }
-                            }
-                        }
-                    }
-                    if (empty($rumpModules[$rumpId][$type])) {
-                        unset($rumpModules[$rumpId][$type]);
+                if ($moduleShipRumpRoleId !== null) {
+                    if ($moduleShipRumpRoleId === $rumpRoleId) {
+                        $listItem->addRump($rump);
                     }
                 } else {
                     $min_level_method = 'getModuleLevel' . $type . 'Min';
                     $max_level_method = 'getModuleLevel' . $type . 'Max';
+                    $min_level = $shipRumpModuleLevel->$min_level_method();
+                    $max_level = $shipRumpModuleLevel->$max_level_method();
 
-                    if ($mod_level !== null && method_exists($mod_level, $min_level_method) && method_exists($mod_level, $max_level_method)) {
-                        $min_level = $mod_level->$min_level_method();
-                        $max_level = $mod_level->$max_level_method();
-
-                        foreach ($levels as $level => $modules) {
-                            if ($level >= $min_level && $level <= $max_level) {
-                                $filteredModules = [];
-
-                                foreach ($modules as $module) {
-                                    if ($hasMatchingRoleModule) {
-                                        if ($module->getModule()->getShipRumpRoleId() === $rumpRoleId) {
-                                            $filteredModules[] = $module;
-                                        }
-                                    } else {
-                                        if ($module->getModule()->getShipRumpRoleId() === null) {
-                                            $filteredModules[] = $module;
-                                        }
-                                    }
-                                }
-
-                                if (!empty($filteredModules)) {
-                                    if (!isset($rumpModules[$rumpId][$type])) {
-                                        $rumpModules[$rumpId][$type] = [];
-                                    }
-                                    $rumpModules[$rumpId][$type][$level] = $filteredModules;
-                                }
-                            }
-                        }
+                    if ($moduleLevel >= $min_level && $moduleLevel <= $max_level) {
+                        $listItem->addRump($rump);
                     }
-                    if (empty($rumpModules[$rumpId][$type])) {
-                        unset($rumpModules[$rumpId][$type]);
-                    }
+                }
+            }
+
+            $specialModules = $this->moduleRepository->getBySpecialTypeAndRump(
+                $colony,
+                ShipModuleTypeEnum::SPECIAL,
+                $rumpId
+            );
+            foreach ($specialModules as $module) {
+                if (array_key_exists($module->getId(), $allModules)) {
+                    $allModules[$module->getId()]->addRump($rump);
                 }
             }
         }
 
         $buildplans = [];
-        $buildplanModules = [];
         foreach ($shipRumps as $rump) {
             $rumpId = $rump->getId();
-            $buildplans[$rumpId] = $this->shipBuildplanRepository->getByUserAndRump($userId, $rumpId);
+            $rumpBuildplans = $this->shipBuildplanRepository->getByUserAndRump($userId, $rumpId);
+            $buildplans[$rumpId] = $rumpBuildplans;
 
-            foreach ($buildplans[$rumpId] as $buildplan) {
-                $buildplanId = $buildplan->getId();
-                $buildplanModules[$buildplanId] = [];
+            foreach ($rumpBuildplans as $buildplan) {
 
-                foreach ($this->buildplanModuleRepository->getByBuildplan($buildplanId) as $buildplanModule) {
+                foreach ($buildplan->getModules() as $buildplanModule) {
                     $moduleType = $buildplanModule->getModuleType()->value;
                     $moduleLevel = $buildplanModule->getModule()->getLevel();
                     $moduleId = $buildplanModule->getModule()->getId();
 
-                    if (!isset($buildplanModules[$buildplanId][$moduleType])) {
-                        $buildplanModules[$buildplanId][$moduleType] = [];
-                    }
-                    if (!isset($buildplanModules[$buildplanId][$moduleType][$moduleLevel])) {
-                        $buildplanModules[$buildplanId][$moduleType][$moduleLevel] = [];
-                    }
-
-                    if (isset($sortedModules[$moduleType][$moduleLevel])) {
-                        foreach ($sortedModules[$moduleType][$moduleLevel] as $module) {
-                            if ($module->getModuleId() === $moduleId) {
-                                $buildplanModules[$buildplanId][$moduleType][$moduleLevel][] = $module;
-                            }
-                        }
+                    if (array_key_exists($moduleId, $allModules)) {
+                        $allModules[$moduleId]->addBuildplan($buildplan);
                     }
                 }
             }
         }
-
-
-        foreach ($buildplanModules as $buildplanId => $modulesByType) {
-            foreach ($modulesByType as $type => $levels) {
-                foreach ($levels as $level => $modules) {
-                    if ($modules === []) {
-                        unset($buildplanModules[$buildplanId][$type][$level]);
-                    }
-                }
-                if (empty($buildplanModules[$buildplanId][$type])) {
-                    unset($buildplanModules[$buildplanId][$type]);
-                }
-            }
-            if (empty($buildplanModules[$buildplanId])) {
-                unset($buildplanModules[$buildplanId]);
-            }
-        }
-
-        $combinedModules = [];
-        $combinedModules[0] = [
-            'no_buildplan' => $sortedModules,
-            'buildplans' => []
-        ];
-        foreach ($shipRumps as $rump) {
-            $rumpId = $rump->getId();
-            $combinedModules[$rumpId] = [
-                'no_buildplan' => $rumpModules[$rumpId] ?? [],
-                'buildplans' => []
-            ];
-
-            if (isset($buildplans[$rumpId])) {
-                foreach ($buildplans[$rumpId] as $buildplan) {
-                    $buildplanId = $buildplan->getId();
-                    if (isset($buildplanModules[$buildplanId])) {
-                        $combinedModules[$rumpId]['buildplans'][$buildplanId] = $buildplanModules[$buildplanId];
-                    }
-                }
-            }
-        }
-
 
         $game->showMacro($template);
         $game->setTemplateVar('CURRENT_MENU', ColonyMenuEnum::MENU_MODULEFAB);
 
         $game->setTemplateVar('HOST', $colony);
         $game->setTemplateVar('FUNC', $func);
-        $game->setTemplateVar('SORTED_MODULES', $sortedModules);
         $game->setTemplateVar('SHIP_RUMPS', $shipRumps);
         $game->setTemplateVar('MODULE_TYPES', $moduleTypes);
-        $game->setTemplateVar('RUMP_MODULES', $rumpModules);
         $game->setTemplateVar('BUILDPLANS', $buildplans);
-        $game->setTemplateVar('BUILDPLAN_MODULES', $buildplanModules);
-        $game->setTemplateVar('COMBINED_MODULES', $combinedModules);
+        $game->setTemplateVar('MODULES_BY_TYPE_AND_LEVEL', $sortedModules);
 
         $game->addExecuteJS('clearModuleInputs();', GameEnum::JS_EXECUTION_AFTER_RENDER);
     }
