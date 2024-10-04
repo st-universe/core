@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System;
 
-use Stu\Orm\Entity\Ship;
-use Stu\Orm\Entity\ShipSystem;
-
 enum ShipSystemTypeEnum: int
 {
     case SYSTEM_HULL = 0;

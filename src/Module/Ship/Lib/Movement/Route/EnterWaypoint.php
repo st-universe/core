@@ -27,6 +27,7 @@ final class EnterWaypoint implements EnterWaypointInterface
     ): void {
 
         $ship->setLocation($waypoint);
+        $waypoint->getShips()->set($ship->getId(), $ship);
 
         if ($wormholeEntry !== null) {
             $wormholeEntry->setLastUsed($this->stuTime->time());
