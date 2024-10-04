@@ -122,10 +122,6 @@ final class ShowModuleFab implements ViewControllerInterface
                 $moduleLevel = $module->getLevel();
                 $moduleShipRumpRoleId = $module->getShipRumpRoleId();
 
-                if ($rump->getId() === 3203 && $module->getId() === 10101) {
-                    $rump->getId();
-                }
-
                 if ($moduleShipRumpRoleId !== null) {
                     if ($moduleShipRumpRoleId === $rumpRoleId) {
                         $listItem->addRump($rump);
