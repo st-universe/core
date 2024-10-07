@@ -67,18 +67,19 @@ final class DealsTakeAuction implements ActionControllerInterface
             ));
         }
 
-        // $neededStorageSpace = $this->determineNeededStorageSpace($auction);
+        $neededStorageSpace = $this->determineNeededStorageSpace($auction);
         $tradePost = $this->tradepostRepository->getFergTradePost(TradeEnum::DEALS_FERG_TRADEPOST_ID);
         $storageManagerUser = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $user);
         $freeStorage = $storageManagerUser->getFreeStorage();
 
         //check if enough space in storage
-        /*
+
         if ($neededStorageSpace > $freeStorage) {
-            $game->addInformationf(_('Dein Warenkonto auf diesem Handelsposten ist zu voll, es wird %d freier Lagerraum benötigt'), $neededStorageSpace);
-            return;
+            /*$game->addInformationf(_('Dein Warenkonto auf diesem Handelsposten ist zu voll, es wird %d freier Lagerraum benötigt'), $neededStorageSpace);
+            
+            return; */
         }
-            */
+
 
         $currentBidAmount = $auction->getAuctionAmount();
         $currentMaxAmount = $auction->getHighestBid()->getMaxAmount();
