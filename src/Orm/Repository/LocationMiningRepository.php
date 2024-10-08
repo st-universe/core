@@ -28,7 +28,6 @@ final class LocationMiningRepository extends EntityRepository implements Locatio
     {
         $em = $this->getEntityManager();
         $em->persist($locationMining);
-        $em->flush();
     }
 
     #[Override]
