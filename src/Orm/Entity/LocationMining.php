@@ -8,7 +8,6 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
-use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
@@ -16,8 +15,6 @@ use Stu\Orm\Repository\LocationMiningRepository;
 
 #[Table(name: 'stu_location_mining')]
 #[Entity(repositoryClass: LocationMiningRepository::class)]
-#[Index(name: 'location_id_idx', columns: ['location_id'])]
-#[Index(name: 'commodity_id_idx', columns: ['commodity_id'])]
 class LocationMining implements LocationMiningInterface
 {
     #[Id]

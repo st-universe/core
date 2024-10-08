@@ -9,7 +9,6 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
-use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
@@ -19,8 +18,6 @@ use Stu\Orm\Repository\MiningQueueRepository;
 
 #[Table(name: 'stu_mining_queue')]
 #[Entity(repositoryClass: MiningQueueRepository::class)]
-#[Index(name: 'ship_id_idx', columns: ['ship_id'])]
-#[Index(name: 'location_mining_id_idx', columns: ['location_mining_id'])]
 class MiningQueue implements MiningQueueInterface
 {
     #[Id]
