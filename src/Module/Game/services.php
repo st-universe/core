@@ -12,6 +12,7 @@ use Stu\Module\Control\Render\Fragments\ResearchFragment;
 use Stu\Module\Control\Render\Fragments\ServertimeFragment;
 use Stu\Module\Control\Render\Fragments\UserFragment;
 use Stu\Module\Game\Action\SwitchView\SwitchView;
+use Stu\Module\Game\Action\SetTutorial\SetTutorial;
 use Stu\Module\Game\Lib\Component\ComponentEnum;
 use Stu\Module\Game\Lib\Component\ComponentLoader;
 use Stu\Module\Game\Lib\Component\ComponentLoaderInterface;
@@ -36,6 +37,7 @@ use Stu\Module\Game\Lib\View\ViewComponentLoaderInterface;
 use Stu\Module\Game\View\Overview\Overview;
 use Stu\Module\Game\View\ShowComponent\ShowComponent;
 use Stu\Module\Game\View\ShowInnerContent\ShowInnerContent;
+use Stu\Module\Game\View\Noop\Noop;
 
 use function DI\autowire;
 
@@ -71,11 +73,13 @@ return [
         ]
     ),
     'GAME_ACTIONS' => [
-        SwitchView::ACTION_IDENTIFIER => autowire(SwitchView::class)
+        SwitchView::ACTION_IDENTIFIER => autowire(SwitchView::class),
+        SetTutorial::ACTION_IDENTIFIER => autowire(SetTutorial::class)
     ],
     'GAME_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
         ShowInnerContent::VIEW_IDENTIFIER => autowire(ShowInnerContent::class),
         ShowComponent::VIEW_IDENTIFIER => autowire(ShowComponent::class),
+        Noop::VIEW_IDENTIFIER => autowire(Noop::class),
     ]
 ];

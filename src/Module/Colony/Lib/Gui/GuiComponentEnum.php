@@ -30,4 +30,7 @@ enum GuiComponentEnum: int
     case SHIP_REPAIR = 17;
     case SHIP_DISASSEMBLY = 18;
     case SHIP_RETROFIT = 19;
+
+        // tutorial
+    case TUTORIAL = 20;
 }
