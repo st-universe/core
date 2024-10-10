@@ -150,6 +150,7 @@ use Stu\Orm\Entity\UserMap;
 use Stu\Orm\Entity\UserProfileVisitor;
 use Stu\Orm\Entity\UserSetting;
 use Stu\Orm\Entity\UserTag;
+use Stu\Orm\Entity\UserTutorial;
 use Stu\Orm\Entity\Weapon;
 use Stu\Orm\Entity\WeaponShield;
 use Stu\Orm\Entity\WormholeEntry;
@@ -298,6 +299,7 @@ return [
     UserProfileVisitorRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserProfileVisitor::class),
     UserSettingRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserSetting::class),
     UserTagRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserTag::class),
+    UserTutorialRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserTutorial::class),
     WeaponRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(Weapon::class),
     WeaponShieldRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(WeaponShield::class),
     WormholeEntryRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(WormholeEntry::class),

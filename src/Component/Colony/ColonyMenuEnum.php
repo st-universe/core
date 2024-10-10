@@ -163,6 +163,7 @@ enum ColonyMenuEnum: int
                 GuiComponentEnum::STORAGE,
                 GuiComponentEnum::MANAGEMENT,
                 GuiComponentEnum::EFFECTS,
+                GuiComponentEnum::TUTORIAL
             ],
 
             // submenues

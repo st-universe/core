@@ -93,6 +93,7 @@ use Stu\Module\Colony\Lib\Gui\Component\SocialProvider;
 use Stu\Module\Colony\Lib\Gui\Component\StorageProvider;
 use Stu\Module\Colony\Lib\Gui\Component\SurfaceProvider;
 use Stu\Module\Colony\Lib\Gui\Component\TorpedoFabProvider;
+use Stu\Module\Colony\Lib\Gui\Component\TutorialProvider;
 use Stu\Module\Colony\Lib\Gui\GuiComponentEnum;
 use Stu\Module\Colony\Lib\ModuleQueueLib;
 use Stu\Module\Colony\Lib\ModuleQueueLibInterface;
@@ -216,6 +217,7 @@ return [
             GuiComponentEnum::SHIP_REPAIR->value => autowire(ShipRepairProvider::class),
             GuiComponentEnum::SHIP_RETROFIT->value => autowire(ShipRetrofitProvider::class),
             GuiComponentEnum::SHIP_DISASSEMBLY->value => autowire(ShipDisassemblyProvider::class),
+            GuiComponentEnum::TUTORIAL->value => autowire(TutorialProvider::class),
         ]
     ),
     ColonyLibFactoryInterface::class => autowire(ColonyLibFactory::class),
