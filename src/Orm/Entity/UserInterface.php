@@ -191,4 +191,9 @@ interface UserInterface
     public function setPirateWrath(?PirateWrathInterface $wrath): UserInterface;
 
     public function isProtectedAgainstPirates(): bool;
+
+    /**
+     * @return Collection<int, UserTutorialInterface>
+     */
+    public function getTutorials(): Collection;
 }

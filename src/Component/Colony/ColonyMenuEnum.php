@@ -162,7 +162,7 @@ enum ColonyMenuEnum: int
                 GuiComponentEnum::EPS_BAR,
                 GuiComponentEnum::STORAGE,
                 GuiComponentEnum::MANAGEMENT,
-                GuiComponentEnum::EFFECTS,
+                GuiComponentEnum::EFFECTS
             ],
 
             // submenues

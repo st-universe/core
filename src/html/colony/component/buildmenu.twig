@@ -13,7 +13,7 @@
 <ul class="menu" style="width: 10vw;">
     {% for building in menu.buildings %}
     <li>
-        <div onclick="openBuildingInfo({{ building.getId }})">
+        <div id="{{ building.getName }}" onclick="openBuildingInfo({{ building.getId }})">
             <img src="/assets/generated/buildings/{{ building.getId }}/{{ building.getBuildingType }}at.png" /><br />
             <span style="word-wrap: break-word; white-space: normal;">
                 {{ building.getName }}

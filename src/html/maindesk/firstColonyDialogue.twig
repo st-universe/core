@@ -1,5 +1,5 @@
 {% if DISPLAY_FIRST_COLONY_DIALOGUE %}
-<div class="box">
+<div id="firstcolony" class="box">
     <div class="box_title">Die erste Kolonie</div>
     <div class="box_body">
         <div>
@@ -8,11 +8,13 @@
             im Kerngebiet deiner Fraktion auswählen, oder ein Kolonisationsschiff erhalten
             und auf eigene Faust eine freie Kolonie suchen.
         </div>
-        <div>
-            Bitte wirf bei dieser Gelegenheit einen Blick in unsere Spielstart Anleitung.
-        </div><br />
-        - <a href="?SHOW_COLONYLIST=1">Kolonie gründen</a> - <a href="?B_COLONIZATION_SHIP=1">Kolonisationsschiff
-            erhalten</a>
+        <br />
+        <form action="" method="post">
+            <div id="colonychoicebuttons">
+                <input type="submit" class="button" name="SHOW_COLONYLIST" value="Kolonie gründen" id="createcolony" />
+                <input type="submit" class="button" name="B_COLONIZATION_SHIP" value="Kolonisationsschiff erhalten" id="createcoloship" />
+            </div>
+        </form>
     </div>
 </div>
 <br />

@@ -18,8 +18,11 @@ use Stu\Component\Station\StationUtilityInterface;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Component\Game\ModuleViewEnum;
+use Stu\Module\Control\ViewContext;
 use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Control\ViewWithTutorialInterface;
 use Stu\Module\Database\View\Category\Wrapper\DatabaseCategoryWrapperFactoryInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -40,7 +43,7 @@ use Stu\Orm\Repository\ShipyardShipQueueRepositoryInterface;
 use Stu\Orm\Repository\StationShipRepairRepositoryInterface;
 use Stu\Orm\Repository\UserLayerRepositoryInterface;
 
-final class ShowShip implements ViewControllerInterface
+final class ShowShip implements ViewControllerInterface, ViewWithTutorialInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_SHIP';
 
@@ -378,5 +381,9 @@ final class ShowShip implements ViewControllerInterface
         if ($ship->getRump()->isShipyard()) {
             $game->setTemplateVar('AVAILABLE_BUILDPLANS', $this->stationUtility->getShipyardBuildplansByUser($game->getUser()->getId()));
         }
+    }
+    public function getViewContext(): ViewContext
+    {
+        return new ViewContext(ModuleViewEnum::SHIP, self::VIEW_IDENTIFIER);
     }
 }

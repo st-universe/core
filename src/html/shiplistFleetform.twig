@@ -3,6 +3,7 @@
 
 {% set fleet = FLEETWRAPPER.get %}
 {% set fleetid = fleet.getId %}
+<div id="fleetlist">
 <form action="ship.php" method="post" id="shiplist_fleet_form_{{ fleet.getId }}">
     <input type="hidden" name="fleetid" value="{{ fleetid }}" />
     <table class="tcal">
@@ -60,3 +61,4 @@
         {% endfor %}
     </table>
 </form>
+</div>

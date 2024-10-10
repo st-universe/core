@@ -46,26 +46,6 @@ final class MaindeskProvider implements ViewComponentProviderInterface
             $user->getState() === UserEnum::USER_STATE_COLONIZATION_SHIP
         );
 
-        $game->setTemplateVar(
-            'DISPLAY_TUTORIAL_1',
-            $user->getState() === UserEnum::USER_STATE_TUTORIAL1
-        );
-
-        $game->setTemplateVar(
-            'DISPLAY_TUTORIAL_2',
-            $user->getState() === UserEnum::USER_STATE_TUTORIAL2
-        );
-
-        $game->setTemplateVar(
-            'DISPLAY_TUTORIAL_3',
-            $user->getState() === UserEnum::USER_STATE_TUTORIAL3
-        );
-
-        $game->setTemplateVar(
-            'DISPLAY_TUTORIAL_4',
-            $user->getState() === UserEnum::USER_STATE_TUTORIAL4
-        );
-
         $newAmount = $this->knPostRepository->getAmountSince($user->getKNMark());
 
         $game->setTemplateVar(

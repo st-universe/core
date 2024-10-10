@@ -76,6 +76,7 @@ function closeAjaxWindow() {
         isClosingAjaxWindow = false;
 }
 
+
 function clearAjaxCallbacks() {
         closeAjaxCallbacks = new Array();
 }
@@ -679,6 +680,9 @@ var isUpdateInProgress = false;
 function switchInnerContent(identifier, title, params, page, stateUrl) {
         if (isUpdateInProgress) {
                 return;
+        }
+        if (isTutorial) {
+                clearTutorial();
         }
 
         isUpdateInProgress = true;
