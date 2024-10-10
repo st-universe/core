@@ -142,7 +142,6 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
         $em = $this->getEntityManager();
 
         $em->persist($shipBuildplan);
-        $em->flush();
     }
 
     #[Override]

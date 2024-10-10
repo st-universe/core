@@ -59,7 +59,7 @@ final class ShipRetrofit implements ShipRetrofitInterface
         }
 
 
-        foreach (ShipModuleTypeEnum::cases() as $moduleType) {
+        foreach (ShipModuleTypeEnum::getModuleSelectorOrder() as $moduleType) {
             $oldModules = $this->buildplanModuleRepository->getByBuildplanAndModuleType($oldBuildplan->getId(), $moduleType->value);
             $newModules = $this->buildplanModuleRepository->getByBuildplanAndModuleType($newBuildplan->getId(), $moduleType->value);
 

@@ -7,10 +7,9 @@ namespace Stu\Module\Colony\Action\RetrofitShip;
 use Override;
 use request;
 use RuntimeException;
-use Stu\Component\Colony\ColonyMenuEnum;
-use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
+use Stu\Component\Ship\Buildplan\BuildplanSignatureCreationInterface;
 use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Component\Ship\ShipStateEnum;
@@ -21,7 +20,6 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
 use Stu\Orm\Entity\ModuleInterface;
-use Stu\Orm\Entity\ShipBuildplan;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
@@ -36,7 +34,23 @@ final class RetrofitShip implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_RETROFIT_SHIP';
 
-    public function __construct(private ColonyFunctionManagerInterface $colonyFunctionManager, private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository, private ColonyLoaderInterface $colonyLoader, private BuildplanModuleRepositoryInterface $buildplanModuleRepository, private ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository, private ShipBuildplanRepositoryInterface $shipBuildplanRepository, private ModuleRepositoryInterface $moduleRepository, private ColonyShipQueueRepositoryInterface $colonyShipQueueRepository, private ShipRumpRepositoryInterface $shipRumpRepository, private ColonyStorageManagerInterface $colonyStorageManager, private ColonyLibFactoryInterface $colonyLibFactory, private ShipCrewCalculatorInterface $shipCrewCalculator, private ColonyRepositoryInterface $colonyRepository, private ShipRepositoryInterface $shipRepository) {}
+    public function __construct(
+        private ColonyFunctionManagerInterface $colonyFunctionManager,
+        private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository,
+        private ColonyLoaderInterface $colonyLoader,
+        private BuildplanModuleRepositoryInterface $buildplanModuleRepository,
+        private ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository,
+        private ShipBuildplanRepositoryInterface $shipBuildplanRepository,
+        private ModuleRepositoryInterface $moduleRepository,
+        private ColonyShipQueueRepositoryInterface $colonyShipQueueRepository,
+        private ShipRumpRepositoryInterface $shipRumpRepository,
+        private ColonyStorageManagerInterface $colonyStorageManager,
+        private ColonyLibFactoryInterface $colonyLibFactory,
+        private ShipCrewCalculatorInterface $shipCrewCalculator,
+        private ColonyRepositoryInterface $colonyRepository,
+        private ShipRepositoryInterface $shipRepository,
+        private BuildplanSignatureCreationInterface $buildplanSignatureCreation
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -117,10 +131,9 @@ final class RetrofitShip implements ActionControllerInterface
 
         /** @var array<int, ModuleInterface> */
         $modules = [];
-        $sigmod = [];
         $oldModulesOfType = [];
 
-        foreach (ShipModuleTypeEnum::cases() as $moduleType) {
+        foreach (ShipModuleTypeEnum::getModuleSelectorOrder() as $moduleType) {
             $value = $moduleType->value;
             $module = request::postArray('mod_' . $value);
 
@@ -137,7 +150,7 @@ final class RetrofitShip implements ActionControllerInterface
                 );
                 return;
             }
-            if ($moduleType === ShipModuleTypeEnum::SPECIAL) {
+            if ($moduleType->isSpecialSystemType()) {
                 $specialCount = 0;
                 foreach ($module as $id) {
                     $specialMod = $this->moduleRepository->find((int) $id);
@@ -146,7 +159,6 @@ final class RetrofitShip implements ActionControllerInterface
                     }
 
                     $modules[$id] = $specialMod;
-                    $sigmod[$id] = $id;
                     $specialCount++;
                 }
 
@@ -157,7 +169,6 @@ final class RetrofitShip implements ActionControllerInterface
                 continue;
             }
             if (count($module) == 0 || current($module) == 0) {
-                $sigmod[$value] = 0;
                 continue;
             }
             if (current($module) > 0) {
@@ -173,7 +184,6 @@ final class RetrofitShip implements ActionControllerInterface
                 throw new RuntimeException(sprintf('moduleId %d does not exist', (int)current($module)));
             }
             $modules[current($module)] = $mod;
-            $sigmod[$value] = $mod->getId();
         }
 
         $crewUsage = $this->shipCrewCalculator->getCrewUsage($modules, $rump, $user);
@@ -217,7 +227,7 @@ final class RetrofitShip implements ActionControllerInterface
         $game->setView(ShowColony::VIEW_IDENTIFIER);
 
 
-        $signature = ShipBuildplan::createBuildplanSignature($sigmod, $crewUsage);
+        $signature = $this->buildplanSignatureCreation->createSignature($modules, $crewUsage);
         $plan = $this->shipBuildplanRepository->getByUserShipRumpAndSignature($userId, $rump->getId(), $signature);
         if ($plan == $oldplan) {
             $game->addInformation(_('Es wurden keine Änderungen ausgewählt'));

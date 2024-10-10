@@ -91,7 +91,7 @@ final class ShipCreator implements ShipCreatorInterface
 
         $wrapper = $this->shipWrapperFactory->wrapShip($ship);
 
-        foreach (ShipModuleTypeEnum::cases() as $moduleType) {
+        foreach (ShipModuleTypeEnum::getModuleSelectorOrder() as $moduleType) {
 
             $moduleTypeId = $moduleType->value;
 

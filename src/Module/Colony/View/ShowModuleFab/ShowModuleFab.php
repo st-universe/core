@@ -95,7 +95,7 @@ final class ShowModuleFab implements ViewControllerInterface
         $shipRumps = $this->shipRumpRepository->getBuildableByUser($userId);
 
         $moduleTypes = [];
-        foreach (ShipModuleTypeEnum::cases() as $moduleType) {
+        foreach (ShipModuleTypeEnum::getModuleSelectorOrder() as $moduleType) {
             $moduleTypes[$moduleType->value] = [
                 'name' => $moduleType->getDescription(),
                 'image' => "/assets/buttons/modul_screen_{$moduleType->value}.png"
@@ -113,9 +113,9 @@ final class ShowModuleFab implements ViewControllerInterface
 
             foreach ($allModules as $listItem) {
                 $module = $listItem->getModule();
-                $type = $module->getType()->value;
+                $type = $module->getType();
 
-                if ($type === ShipModuleTypeEnum::SPECIAL->value) {
+                if ($type->isSpecialSystemType()) {
                     continue;
                 }
 
@@ -127,8 +127,8 @@ final class ShowModuleFab implements ViewControllerInterface
                         $listItem->addRump($rump);
                     }
                 } else {
-                    $min_level_method = 'getModuleLevel' . $type . 'Min';
-                    $max_level_method = 'getModuleLevel' . $type . 'Max';
+                    $min_level_method = 'getModuleLevel' . $type->value . 'Min';
+                    $max_level_method = 'getModuleLevel' . $type->value . 'Max';
                     $min_level = $shipRumpModuleLevel->$min_level_method();
                     $max_level = $shipRumpModuleLevel->$max_level_method();
 
