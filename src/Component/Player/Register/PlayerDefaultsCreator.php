@@ -13,12 +13,13 @@ use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\UserLayerRepositoryInterface;
+use Stu\Orm\Repository\TutorialStepRepositoryInterface;
+use Stu\Orm\Repository\UserTutorialRepositoryInterface;
+
 
 final class PlayerDefaultsCreator implements PlayerDefaultsCreatorInterface
 {
-    public function __construct(private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository, private ResearchedRepositoryInterface $researchedRepository, private LayerRepositoryInterface $layerRepository, private UserLayerRepositoryInterface $userLayerRepository)
-    {
-    }
+    public function __construct(private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository, private ResearchedRepositoryInterface $researchedRepository, private LayerRepositoryInterface $layerRepository, private UserLayerRepositoryInterface $userLayerRepository,  private TutorialStepRepositoryInterface $tutorialStepRepository,  private UserTutorialRepositoryInterface $userTutorialRepository) {}
 
     #[Override]
     public function createDefault(UserInterface $user): void
@@ -26,6 +27,7 @@ final class PlayerDefaultsCreator implements PlayerDefaultsCreatorInterface
         $this->createDefaultPmCategories($user);
         $this->createDefaultUserLayer($user);
         $this->createDefaultStartResearch($user);
+        $this->createTutorialsForPlayer($user);
     }
 
     private function createDefaultPmCategories(UserInterface $user): void
@@ -78,5 +80,19 @@ final class PlayerDefaultsCreator implements PlayerDefaultsCreatorInterface
         $db->setActive(0);
 
         $this->researchedRepository->save($db);
+    }
+
+    private function createTutorialsForPlayer(UserInterface $player): void
+    {
+        $firstSteps = $this->tutorialStepRepository->findAllFirstSteps();
+        foreach ($firstSteps as $step) {
+            $userTutorial = $this->userTutorialRepository->prototype();
+            $userTutorial->setUser($player);
+            $userTutorial->setTutorialStep($step);
+            $userTutorial->setUserId($player->getId());
+            $userTutorial->setTutorialStepId($step->getId());
+
+            $this->userTutorialRepository->save($userTutorial);
+        }
     }
 }

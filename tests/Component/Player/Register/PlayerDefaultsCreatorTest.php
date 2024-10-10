@@ -16,33 +16,29 @@ use Stu\Orm\Entity\ResearchedInterface;
 use Stu\Orm\Entity\ResearchInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Entity\UserLayerInterface;
+use Stu\Orm\Entity\TutorialStepInterface;
+use Stu\Orm\Entity\UserTutorialInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\ResearchRepositoryInterface;
 use Stu\Orm\Repository\UserLayerRepositoryInterface;
+use Stu\Orm\Repository\UserTutorialRepositoryInterface;
+use Stu\Orm\Repository\TutorialStepRepositoryInterface;
 
 class PlayerDefaultsCreatorTest extends MockeryTestCase
 {
-    /**
-     * @var null|MockInterface|PrivateMessageFolderRepositoryInterface
-     */
-    private $privateMessageFolderRepository;
+    private MockInterface&PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository;
 
-    /**
-     * @var null|MockInterface|ResearchRepositoryInterface
-     */
-    private $researchedRepository;
+    private MockInterface&ResearchedRepositoryInterface $researchedRepository;
 
-    /**
-     * @var null|MockInterface|LayerRepositoryInterface
-     */
-    private $layerRepository;
+    private MockInterface&LayerRepositoryInterface $layerRepository;
 
-    /**
-     * @var null|MockInterface|UserLayerRepositoryInterface
-     */
-    private $userLayerRepository;
+    private MockInterface&UserLayerRepositoryInterface $userLayerRepository;
+
+    private MockInterface&TutorialStepRepositoryInterface $tutorialStepRepository;
+
+    private MockInterface&UserTutorialRepositoryInterface $userTutorialRepository;
 
     private PlayerDefaultsCreatorInterface $defaultsCreator;
 
@@ -53,28 +49,34 @@ class PlayerDefaultsCreatorTest extends MockeryTestCase
         $this->researchedRepository = Mockery::mock(ResearchedRepositoryInterface::class);
         $this->layerRepository = Mockery::mock(LayerRepositoryInterface::class);
         $this->userLayerRepository = Mockery::mock(UserLayerRepositoryInterface::class);
+        $this->tutorialStepRepository = Mockery::mock(TutorialStepRepositoryInterface::class);
+        $this->userTutorialRepository = Mockery::mock(UserTutorialRepositoryInterface::class);
 
         $this->defaultsCreator = new PlayerDefaultsCreator(
             $this->privateMessageFolderRepository,
             $this->researchedRepository,
             $this->layerRepository,
-            $this->userLayerRepository
+            $this->userLayerRepository,
+            $this->tutorialStepRepository,
+            $this->userTutorialRepository
         );
     }
 
     public function testCreateDefaultCreatesDefaults(): void
     {
-        $user = Mockery::mock(UserInterface::class);
+        $user = Mockery::mock(UserInterface::class)->shouldAllowMockingProtectedMethods();
+        /** @var UserInterface&MockInterface $user */
         $pmFolder = Mockery::mock(PrivateMessageFolderInterface::class);
         $startResearch = Mockery::mock(ResearchInterface::class);
         $researchEntry = Mockery::mock(ResearchedInterface::class);
         $layer = Mockery::mock(LayerInterface::class);
         $userLayer = Mockery::mock(UserLayerInterface::class);
-
+        $tutorialStep = Mockery::mock(TutorialStepInterface::class);
+        $userTutorial = Mockery::mock(UserTutorialInterface::class);
 
         $defaultCategoryCount = count(array_filter(
             PrivateMessageFolderTypeEnum::cases(),
-            fn (PrivateMessageFolderTypeEnum $case): bool => $case->isDefault()
+            fn(PrivateMessageFolderTypeEnum $case): bool => $case->isDefault()
         ));
 
         $this->privateMessageFolderRepository->shouldReceive('prototype')
@@ -91,7 +93,6 @@ class PlayerDefaultsCreatorTest extends MockeryTestCase
             ->andReturnSelf();
 
         foreach (PrivateMessageFolderTypeEnum::cases() as $case) {
-
             if (!$case->isDefault()) {
                 continue;
             }
@@ -161,6 +162,43 @@ class PlayerDefaultsCreatorTest extends MockeryTestCase
             ->once();
         $user->shouldReceive('getUserLayers->set')
             ->with(MapEnum::DEFAULT_LAYER, $userLayer)
+            ->once();
+
+        $this->tutorialStepRepository->shouldReceive('findAllFirstSteps')
+            ->withNoArgs()
+            ->once()
+            ->andReturn([$tutorialStep]);
+
+        $this->userTutorialRepository->shouldReceive('prototype')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($userTutorial);
+
+        $user->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(42);
+
+        $tutorialStep->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(1);
+
+        $userTutorial->shouldReceive('setUser')
+            ->with($user)
+            ->once();
+        $userTutorial->shouldReceive('setTutorialStep')
+            ->with($tutorialStep)
+            ->once();
+        $userTutorial->shouldReceive('setUserId')
+            ->with(42)
+            ->once();
+        $userTutorial->shouldReceive('setTutorialStepId')
+            ->with(1)
+            ->once();
+
+        $this->userTutorialRepository->shouldReceive('save')
+            ->with($userTutorial)
             ->once();
 
         $this->defaultsCreator->createDefault($user);

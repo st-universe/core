@@ -42,6 +42,7 @@ use Stu\Module\Config\StuConfig;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\GameController;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Game\Lib\TutorialProvider;
 use Ubench;
 
 use function DI\autowire;
@@ -141,7 +142,8 @@ return [
             'charset' => 'utf8',
         ], $configuration);
     },
-    GameControllerInterface::class => autowire(GameController::class),
+    GameControllerInterface::class => autowire(GameController::class)
+        ->constructorParameter('tutorialProvider', autowire(TutorialProvider::class)),
     Parser::class => function (): Parser {
         $parser = new Parser();
         $parser->addCodeDefinitionSet(new StuBbCodeDefinitionSet());
@@ -152,7 +154,7 @@ return [
         $parser->addCodeDefinitionSet(new StuBbCodeWithImageDefinitionSet());
         return new ParserWithImage($parser);
     },
-    JsonMapperInterface::class => fn (): JsonMapperInterface => (new JsonMapperFactory())->bestFit(),
+    JsonMapperInterface::class => fn(): JsonMapperInterface => (new JsonMapperFactory())->bestFit(),
     Ubench::class => function (): Ubench {
         $bench = new Ubench();
         $bench->start();

@@ -1,8 +1,9 @@
+<div id="researchlist">
 <div class="divhead">Verfügbare Forschungen</div>
 <div class="researchList">
   {% for data in RESEARCH_LIST %}
   {% set researchId = data.getId %}
-  <div class="researchListItem">
+  <div id="{{ data.getName }}"class="researchListItem">
     <div class="researchListItemImage">
       <a href="javascript:void(0);" onclick="showResearchDetails({{ researchId }});">
         <img src="/assets/research/{{ researchId }}.png" />
@@ -21,8 +22,9 @@
   </div>
   {% endfor %}
 </div>
+</div>
 {% if RESEARCHED_LIST %}
-<div>
+<div id="doneactivresearch">
   <br />
   <div class="divhead">Aktive/Abgeschlossene Forschungen</div>
   <div class="finishedResearchList">

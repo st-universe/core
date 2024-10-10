@@ -20,10 +20,6 @@ final class UserEnum
     public const int USER_STATE_ACTIVE = 2;
     public const int USER_STATE_SMS_VERIFICATION = 3;
     public const int USER_STATE_COLONIZATION_SHIP = 4;
-    public const int USER_STATE_TUTORIAL1 = 5;
-    public const int USER_STATE_TUTORIAL2 = 6;
-    public const int USER_STATE_TUTORIAL3 = 7;
-    public const int USER_STATE_TUTORIAL4 = 8;
 
 
     //DELMARK
@@ -43,10 +39,6 @@ final class UserEnum
             self::USER_STATE_ACTIVE => _("AKTIV"),
             self::USER_STATE_SMS_VERIFICATION => _("SMS VERIFIKATION"),
             self::USER_STATE_COLONIZATION_SHIP => _("KOLONISATIONS SCHIFF"),
-            self::USER_STATE_TUTORIAL1 => _("TUTORIAL GEBÄUDE"),
-            self::USER_STATE_TUTORIAL2 => _("TUTORIAL FORSCHUNG"),
-            self::USER_STATE_TUTORIAL3 => _("TUTORIAL SCHIFFE"),
-            self::USER_STATE_TUTORIAL4 => _("TUTORIAL HANDEL"),
             default => '',
         };
     }

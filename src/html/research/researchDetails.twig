@@ -1,4 +1,4 @@
-<div style="width: 610px;">
+<div id="researchdetails" style="width: 610px;">
 	<table class="tcal">
 		{% set research = TAL_RESEARCH.getResearch %}
 		{% set researchId = research.getId %}
@@ -6,7 +6,7 @@
 			<td rowspan="2" style="width: 110px; height: 110px">
 				<img src="assets/research/{{ researchId }}.png" />
 			</td>
-			<td>
+			<td id="researchdescription">
 				{% autoescape false %}
 				{{ research.getDescription|nl2br }}
 				{% endautoescape %}
@@ -29,8 +29,9 @@
 				{% endif %}
 			</td>
 		</tr>
+		
 		<tr>
-			<td>
+			<td><div id="researchproduction">
 				<table class="tcal">
 					<tr>
 						<td class="darkbg">Punkte</td>
@@ -50,21 +51,25 @@
 						{% endif %}
 					</tr>
 				</table>
+			</div>
 			</td>
 		</tr>
+		
 		<tr>
 			<td colspan="3" style="text-align: center;"><a style="color: aqua;"
 					href="{{ TAL_RESEARCH.getWikiLink }}">Wiki-Seite</a>
 			</td>
 		</tr>
+	
 		{% for building in TAL_RESEARCH.getBuildings %}
-		<tr>
+		<tr >
 			<td>{{ building.getName }}</td>
 			<td colspan="3">
 				{% include 'html/colony/component/buildingPreview.twig' %}
 			</td>
 		</tr>
 		{% endfor %}
+
 	</table>
 	{% if TAL_RESEARCH.getResearchState %}
 	<div>
@@ -87,15 +92,17 @@
 	<div>
 		<br />
 		{% if CURRENT_TAL_RESEARCH %}
+		<div id="researchbutton">
 		<div class="fabutton_yellow">
 			<a href="research.php?B_DO_RESEARCH=1&id={{ researchId }}&sstr={{ SESSIONSTRING }}"
 				class="fabutton fabutton_yellow">In den Warteslot</a>
 		</div>
 		{% else %}
-		<div class="fabutton_blue">
+		<div id="beginresearch"class="fabutton_blue">
 			<a href="research.php?B_DO_RESEARCH=1&id={{ researchId }}&sstr={{ SESSIONSTRING }}"
 				class="fabutton fabutton_blue">Erforschen</a>
 		</div>
+	</div>
 		{% endif %}
 	</div>
 	{% endif %}
@@ -123,7 +130,7 @@
 	</div>
 	{% endif %}
 	{% if TAL_RESEARCH.hasPositiveDependencies %}
-	<div>
+	<div id="researchdependencies">
 		<br />
 		<table class="tcal">
 			<tr>

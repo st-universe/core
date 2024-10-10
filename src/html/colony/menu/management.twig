@@ -1,7 +1,7 @@
 {% embed "html/colony/menu/submenuForm.twig" %}
 {% block containment %}
 <div style="width: 40vw;">
-    <div class="box">
+    <div id="shipinorbit" class="box">
         <div class="box_title">Schiffe im Orbit</div>
         <div class="box_body">
             <ul id="shipselector">
@@ -29,7 +29,7 @@
         </div>
     </div>
     <br />
-    <div class="colonyInfoContainer">
+    <div id="colonyinfocontainer" class="colonyInfoContainer">
         <div class="box">
             <div class="box_title">Planet</div>
             <div class="box_body">
@@ -172,7 +172,7 @@
     </div>
     <br />
     {% endif %}
-    <table class="tcal population">
+    <table id="colonypopulation" class="tcal population">
         <tr>
             <th colspan="5">Bevölkerung</th>
         </tr>
@@ -209,7 +209,7 @@
     </table>
     {% if EFFECTS %}
     <br />
-    <div style="white-space: normal">
+    <div id="colonyeffects" style="white-space: normal">
         <div class="box">
             <div class="box_title">Effekte</div>
             <div class="box_body">

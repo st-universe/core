@@ -7,7 +7,7 @@ canColonize, closestAnomalyDistance) %}
 {% set location = ship.getLocation %}
 {% set shipId = ship.getId %}
 {% set starSystem = ship.getSystem %}
-<table class="tcal">
+<table id="schiffskontrolle" class="tcal">
     <tr>
         {% set header = ship.isBase ? 'Stationskontrolle' : 'Schiffskontrolle' %}
         <th colspan="2"><img src="/assets/buttons/gefecht.png" /> {{ header }}</th>
