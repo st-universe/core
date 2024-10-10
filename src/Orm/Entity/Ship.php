@@ -955,7 +955,7 @@ class Ship implements ShipInterface
 
         foreach ($buildplan->getModules() as $obj) {
             $module = $obj->getModule();
-            $index = $module->getType() === ShipModuleTypeEnum::SPECIAL ? $module->getId() : $module->getType()->value;
+            $index = $module->getType()->isSpecialSystemType() ? $module->getId() : $module->getType()->getOrder();
             $modules[$index] = $module;
         }
 
@@ -964,7 +964,7 @@ class Ship implements ShipInterface
                 $module = $system->getModule();
 
                 if ($module !== null) {
-                    $index = $module->getType() === ShipModuleTypeEnum::SPECIAL ? $module->getId() : $module->getType()->value;
+                    $index = $module->getType()->isSpecialSystemType() ? $module->getId() : $module->getType()->value;
                     $modules[$index] = $module;
                 }
             }

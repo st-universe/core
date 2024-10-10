@@ -4,110 +4,117 @@ declare(strict_types=1);
 
 namespace Stu\Component\Refactor;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperProjectileWeapon;
-use Stu\Orm\Entity\AstronomicalEntryInterface;
-use Stu\Orm\Entity\LocationInterface;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\MapRegionInterface;
-use Stu\Orm\Entity\StarSystemInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
-use Stu\Orm\Repository\AstroEntryRepositoryInterface;
-use Stu\Orm\Repository\LocationRepositoryInterface;
-use Stu\Orm\Repository\MapRepositoryInterface;
-use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use Stu\Component\Ship\Buildplan\BuildplanSignatureCreationInterface;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
+use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Orm\Entity\BuildplanModuleInterface;
+use Stu\Orm\Entity\ShipBuildplan;
+use Stu\Orm\Entity\ShipBuildplanInterface;
+use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class RefactorRunner
 {
+    private LoggerUtilInterface $logger;
+
     public function __construct(
-        private AstroEntryRepositoryInterface $astroEntryRepository,
-        private LocationRepositoryInterface $locationRepository,
-        private MapRepositoryInterface $mapRepository,
-        private StarSystemMapRepositoryInterface $starSystemMapRepository,
-    ) {}
+        private ShipBuildplanRepositoryInterface $shipBuildplanRepository,
+        private BuildplanSignatureCreationInterface $buildplanSignatureCreation,
+        private ShipRepositoryInterface $shipRepository,
+        private EntityManagerInterface $entityManager,
+        LoggerUtilFactoryInterface $loggerUtilFactory
+    ) {
+        $this->logger = $loggerUtilFactory->getLoggerUtil(true);
+    }
 
     public function refactor(): void
     {
-        foreach ($this->astroEntryRepository->findAll() as $astroEntry) {
-
-            if ($astroEntry->getFieldIds() === '') {
-                continue;
-            }
-
-            $fieldIds = new ArrayCollection(unserialize($astroEntry->getFieldIds()));
-            if ($fieldIds->isEmpty()) {
-                continue;
-            }
-
-            $locations = $fieldIds->map(fn(int $id) => $this->locationRepository->find($id));
-
-            $lost = false;
-            $isMap = false;
-            $isSystemMap = false;
-
-            /** @var LocationInterface|null $location */
-            foreach ($locations as $location) {
-                if ($location === null) {
-                    $lost = true;
-                    break;
-                }
-
-                if (
-                    $location instanceof MapInterface
-                    && $location->getMapRegion() !== $astroEntry->getRegion()
-                ) {
-                    $lost = true;
-                    break;
-                }
-
-                if (
-                    $location instanceof StarSystemMapInterface
-                    && $location->getSystem() !== $astroEntry->getSystem()
-                ) {
-                    $lost = true;
-                    break;
-                }
-
-                $isMap = $isMap || $location->isMap();
-                $isSystemMap = $isSystemMap || !$location->isMap();
-            }
-
-            if ($lost || ($isMap && $isSystemMap)) {
-                $this->obtainMeasurementFields(
-                    $astroEntry->getSystem(),
-                    $astroEntry->getRegion(),
-                    $astroEntry
-                );
-            }
-        }
+        $this->recalculateAllBuildplanSignatures();
+        $this->entityManager->flush();
+        $this->removeBuildplanDuplicates();
     }
 
-    private function obtainMeasurementFields(
-        ?StarSystemInterface $system,
-        ?MapRegionInterface $mapRegion,
-        AstronomicalEntryInterface $entry
-    ): void {
-        if ($system !== null) {
-            $this->obtainMeasurementFieldsForSystem($system, $entry);
-        }
-        if ($mapRegion !== null) {
-            $this->obtainMeasurementFieldsForRegion($mapRegion, $entry);
-        }
-
-        $this->astroEntryRepository->save($entry);
-    }
-
-    private function obtainMeasurementFieldsForSystem(StarSystemInterface $system, AstronomicalEntryInterface $entry): void
+    private function recalculateAllBuildplanSignatures(): void
     {
-        $idArray = $this->starSystemMapRepository->getRandomSystemMapIdsForAstroMeasurement($system->getId(), 0);
+        foreach ($this->shipBuildplanRepository->findAll() as $buildplan) {
+            $calculatedSignature = $this->calculateSignature($buildplan);
 
-        $entry->setFieldIds(serialize($idArray));
+            $buildplan->setSignature($calculatedSignature);
+            $this->shipBuildplanRepository->save($buildplan);
+        }
     }
 
-    private function obtainMeasurementFieldsForRegion(MapRegionInterface $mapRegion, AstronomicalEntryInterface $entry): void
+    private function removeBuildplanDuplicates(): void
     {
-        $mapIds = $this->mapRepository->getRandomMapIdsForAstroMeasurement($mapRegion->getId(), 25, 0);
+        $buildplanCount = 0;
+        $shipCount = 0;
 
-        $entry->setFieldIds(serialize($mapIds));
+        /** @var null|ShipBuildplanInterface */
+        $lastBuildplan = null;
+        foreach ($this->getBuildplansWithDuplicates() as $buildplan) {
+            $buildplanUser = $buildplan->getUser();
+            $buildplanRump = $buildplan->getRump();
+            $buildplanSignature = $buildplan->getSignature();
+
+            if (
+                $lastBuildplan === null
+                || $buildplanUser !== $lastBuildplan->getUser()
+                || $buildplanRump !== $lastBuildplan->getRump()
+                || $buildplanSignature !== $lastBuildplan->getSignature()
+            ) {
+                $lastBuildplan = $buildplan;
+            } else {
+                $buildplanCount++;
+                foreach ($buildplan->getShiplist() as $ship) {
+                    $ship->setBuildplan($lastBuildplan);
+                    $this->shipRepository->save($ship);
+                    $shipCount++;
+                }
+
+                $buildplan->getShiplist()->clear();
+                $this->shipBuildplanRepository->delete($buildplan);
+            }
+        }
+
+        $this->logger->logf('removed %d buildplan duplicates (%d ships affected)', $buildplanCount, $shipCount);
+    }
+
+    private function calculateSignature(ShipBuildplanInterface $buildplan): string
+    {
+        $modules = $buildplan
+            ->getModules()
+            ->map(fn(BuildplanModuleInterface $buildplanModule) => $buildplanModule->getModule())
+            ->toArray();
+
+        $crewUsage = $buildplan->getUser()->isNpc() ? 0 : $buildplan->getCrew();
+
+        $signature = $this->buildplanSignatureCreation->createSignature(
+            $modules,
+            $crewUsage
+        );
+
+        return $signature;
+    }
+
+    /** @return array<ShipBuildplanInterface> */
+    private function getBuildplansWithDuplicates(): array
+    {
+        return $this->entityManager
+            ->createQuery(
+                sprintf(
+                    'SELECT bp FROM %1$s bp
+                    WHERE EXISTS (SELECT bp2
+                                    FROM %1$s bp2
+                                    WHERE bp.signature = bp2.signature
+                                    AND bp.rump_id = bp2.rump_id
+                                    AND bp.user_id = bp2.user_id
+                                    AND bp.id != bp2.id)
+                    AND bp.signature IS NOT NULL
+                    ORDER BY bp.user_id ASC, bp.rump_id ASC, bp.signature ASC, bp.id ASC',
+                    ShipBuildplan::class
+                )
+            )
+            ->getResult();
     }
 }

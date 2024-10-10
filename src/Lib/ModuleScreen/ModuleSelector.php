@@ -45,7 +45,7 @@ class ModuleSelector implements ModuleSelectorInterface
     #[Override]
     public function isSpecial(): bool
     {
-        return $this->getModuleType() === ShipModuleTypeEnum::SPECIAL;
+        return $this->getModuleType()->isSpecialSystemType();
     }
 
     public function getScreenTab(): ModuleScreenTab
@@ -117,7 +117,7 @@ class ModuleSelector implements ModuleSelectorInterface
             $modules = [];
 
             $host = $this->getHost();
-            if ($this->getModuleType() === ShipModuleTypeEnum::SPECIAL) {
+            if ($this->getModuleType()->isSpecialSystemType()) {
                 $modules = $this->moduleRepository->getBySpecialTypeAndRump(
                     $host,
                     $this->getModuleType(),

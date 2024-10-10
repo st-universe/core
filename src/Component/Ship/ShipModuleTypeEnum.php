@@ -84,35 +84,47 @@ enum ShipModuleTypeEnum: int
     public function getModuleRumpWrapperCallable(): callable
     {
         return match ($this) {
-            self::HULL => fn (ShipRumpInterface $rump, ?ShipBuildplanInterface $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperHull($rump, $buildplan),
-            self::SHIELDS => fn (ShipRumpInterface $rump, ?ShipBuildplanInterface $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperShield($rump, $buildplan),
-            self::EPS => fn (ShipRumpInterface $rump, ?ShipBuildplanInterface $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperEps($rump, $buildplan),
-            self::IMPULSEDRIVE => fn (ShipRumpInterface $rump, ?ShipBuildplanInterface $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperImpulseDrive($rump, $buildplan),
-            self::REACTOR => fn (ShipRumpInterface $rump, ?ShipBuildplanInterface $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperReactor($rump, $buildplan),
-            self::COMPUTER => fn (ShipRumpInterface $rump, ?ShipBuildplanInterface $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperComputer($rump, $buildplan),
-            self::PHASER => fn (ShipRumpInterface $rump, ?ShipBuildplanInterface $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperEnergyWeapon($rump, $buildplan),
-            self::TORPEDO => fn (ShipRumpInterface $rump, ?ShipBuildplanInterface $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperProjectileWeapon($rump, $buildplan),
-            self::SENSOR => fn (ShipRumpInterface $rump, ?ShipBuildplanInterface $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperSensor($rump, $buildplan),
-            self::WARPDRIVE => fn (ShipRumpInterface $rump, ?ShipBuildplanInterface $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperWarpDrive($rump, $buildplan),
-            self::SPECIAL => fn (ShipRumpInterface $rump, ?ShipBuildplanInterface $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperSpecial($rump, $buildplan)
+            self::HULL => fn(ShipRumpInterface $rump, ?ShipBuildplanInterface $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperHull($rump, $buildplan),
+            self::SHIELDS => fn(ShipRumpInterface $rump, ?ShipBuildplanInterface $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperShield($rump, $buildplan),
+            self::EPS => fn(ShipRumpInterface $rump, ?ShipBuildplanInterface $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperEps($rump, $buildplan),
+            self::IMPULSEDRIVE => fn(ShipRumpInterface $rump, ?ShipBuildplanInterface $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperImpulseDrive($rump, $buildplan),
+            self::REACTOR => fn(ShipRumpInterface $rump, ?ShipBuildplanInterface $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperReactor($rump, $buildplan),
+            self::COMPUTER => fn(ShipRumpInterface $rump, ?ShipBuildplanInterface $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperComputer($rump, $buildplan),
+            self::PHASER => fn(ShipRumpInterface $rump, ?ShipBuildplanInterface $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperEnergyWeapon($rump, $buildplan),
+            self::TORPEDO => fn(ShipRumpInterface $rump, ?ShipBuildplanInterface $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperProjectileWeapon($rump, $buildplan),
+            self::SENSOR => fn(ShipRumpInterface $rump, ?ShipBuildplanInterface $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperSensor($rump, $buildplan),
+            self::WARPDRIVE => fn(ShipRumpInterface $rump, ?ShipBuildplanInterface $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperWarpDrive($rump, $buildplan),
+            self::SPECIAL => fn(ShipRumpInterface $rump, ?ShipBuildplanInterface $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperSpecial($rump, $buildplan)
+        };
+    }
+
+    public function getOrder(): int
+    {
+        return match ($this) {
+            self::HULL => 1,
+            self::SHIELDS => 2,
+            self::COMPUTER => 3,
+            self::IMPULSEDRIVE => 4,
+            self::SENSOR => 5,
+            self::WARPDRIVE => 6,
+            self::REACTOR => 7,
+            self::EPS => 8,
+            self::PHASER => 9,
+            self::TORPEDO => 10,
+            self::SPECIAL => 99
         };
     }
 
     /** @return array<ShipModuleTypeEnum> */
     public static function getModuleSelectorOrder(): array
     {
-        return [
-            self::HULL,
-            self::SHIELDS,
-            self::COMPUTER,
-            self::IMPULSEDRIVE,
-            self::SENSOR,
-            self::WARPDRIVE,
-            self::REACTOR,
-            self::EPS,
-            self::PHASER,
-            self::TORPEDO,
-            self::SPECIAL
-        ];
+        $cases = self::cases();
+
+        usort(
+            $cases,
+            fn(ShipModuleTypeEnum $a, ShipModuleTypeEnum $b): int => $a->getOrder() <=> $b->getOrder()
+        );
+
+        return $cases;
     }
 }
