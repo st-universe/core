@@ -193,7 +193,7 @@ final class CreateBuildplan implements ActionControllerInterface
         }
         $existingPlan = $this->shipBuildplanRepository->getByUserShipRumpAndSignature($userId, $rump->getId(), $signature);
         if ($existingPlan !== null) {
-            $game->addInformation(_('Ein Bauplan mit dieser Konfiguration existiert bereits: %s'));
+            $game->addInformationf('Ein Bauplan mit dieser Konfiguration existiert bereits: %s', $existingPlan->getName());
             $this->exitOnError($game);
             return;
         }
