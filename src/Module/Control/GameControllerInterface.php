@@ -9,6 +9,7 @@ use Stu\Lib\Information\InformationWrapper;
 use Stu\Orm\Entity\GameRequestInterface;
 use Stu\Orm\Entity\GameTurnInterface;
 use Stu\Orm\Entity\UserInterface;
+use SysvSemaphore;
 
 interface GameControllerInterface extends InformationInterface
 {
@@ -34,13 +35,14 @@ interface GameControllerInterface extends InformationInterface
 
     public function addInformationWrapper(?InformationWrapper $informations, bool $isHead = false): void;
 
+    /** @return array<string> */
     public function getInformation(): array;
 
     public function getTargetLink(): ?TargetLink;
 
     public function setTargetLink(TargetLink $targetLink): GameControllerInterface;
 
-    public function setTemplateVar(string $key, $variable);
+    public function setTemplateVar(string $key, mixed $variable);
 
     public function getUser(): UserInterface;
 
@@ -83,6 +85,7 @@ interface GameControllerInterface extends InformationInterface
 
     public function checkDatabaseItem(?int $databaseEntryId): void;
 
+    /** @return array<string> */
     public function getAchievements(): array;
 
     public function getSessionString(): string;
@@ -110,7 +113,7 @@ interface GameControllerInterface extends InformationInterface
 
     public function isSemaphoreAlreadyAcquired(int $key): bool;
 
-    public function addSemaphore(int $key, $semaphore): void;
+    public function addSemaphore(int $key, SysvSemaphore $semaphore): void;
 
     public function triggerEvent(object $event): void;
 
