@@ -55,7 +55,7 @@ final class ResetPassword implements ActionControllerInterface
             EOT;
 
         $mail = $this->mailFactory->createStuMail()
-            ->setFrom($this->config->get('game.email_sender_address'))
+            ->withDefaultSender()
             ->addTo($user->getEmail())
             ->setSubject(_('Star Trek Universe - Neues Passwort'))
             ->setBody(

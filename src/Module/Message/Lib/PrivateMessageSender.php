@@ -6,7 +6,6 @@ namespace Stu\Module\Message\Lib;
 
 use InvalidArgumentException;
 use JBBCode\Parser;
-use Noodlehaus\ConfigInterface;
 use Override;
 use RuntimeException;
 use Stu\Lib\Information\InformationWrapper;
@@ -31,7 +30,6 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
         private PrivateMessageRepositoryInterface $privateMessageRepository,
         private UserRepositoryInterface $userRepository,
         private MailFactoryInterface $mailFactory,
-        private ConfigInterface $config,
         private Parser $bbcodeParser,
         private StuTime $stuTime,
         LoggerUtilFactoryInterface $loggerUtilFactory
@@ -177,7 +175,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
     private function sendEmailNotification(string $senderName, string $message, UserInterface $user): void
     {
         $mail = $this->mailFactory->createStuMail()
-            ->setFrom($this->config->get('game.email_sender_address'))
+            ->withDefaultSender()
             ->addTo($user->getEmail())
             ->setSubject(sprintf(
                 'Neue Privatnachricht von Spieler %s',

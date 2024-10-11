@@ -844,6 +844,11 @@ parameters:
 			path: src/Module/Config/Model/GameSettings.php
 
 		-
+			message: "#^Method Stu\\\\Module\\\\Config\\\\Model\\\\GameSettings\\:\\:getEmailSettings\\(\\) should return Stu\\\\Module\\\\Config\\\\Model\\\\EmailSettingsInterface but returns Stu\\\\Module\\\\Config\\\\Model\\\\SettingsInterface\\.$#"
+			count: 1
+			path: src/Module/Config/Model/GameSettings.php
+
+		-
 			message: "#^Method Stu\\\\Module\\\\Config\\\\Model\\\\GameSettings\\:\\:getMapSettings\\(\\) should return Stu\\\\Module\\\\Config\\\\Model\\\\MapSettingsInterface but returns Stu\\\\Module\\\\Config\\\\Model\\\\SettingsInterface\\.$#"
 			count: 1
 			path: src/Module/Config/Model/GameSettings.php

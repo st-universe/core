@@ -37,7 +37,7 @@ final class RequestDeletionConfirmation implements RequestDeletionConfirmationIn
             EOT;
 
         $mail = $this->mailFactory->createStuMail()
-            ->setFrom($this->config->get('game.email_sender_address'))
+            ->withDefaultSender()
             ->addTo($user->getEmail())
             ->setSubject('Star Trek Universe - Accountlöschung')
             ->setBody(
