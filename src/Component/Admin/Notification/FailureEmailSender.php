@@ -28,7 +28,7 @@ final class FailureEmailSender implements FailureEmailSenderInterface
     public function sendMail(string $subject, string $message): void
     {
         $mail = $this->mailFactory->createStuMail()
-            ->setFrom($this->config->get('game.email_sender_address'))
+            ->withDefaultSender()
             ->addTo($this->config->get('game.admin.email'))
             ->setSubject($subject)
             ->setBody($message);

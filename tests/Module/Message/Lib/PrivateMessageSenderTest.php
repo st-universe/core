@@ -6,7 +6,6 @@ namespace Stu\Module\Message\Lib;
 
 use JBBCode\Parser;
 use Mockery\MockInterface;
-use Noodlehaus\ConfigInterface;
 use Override;
 use Stu\Lib\Mail\MailFactoryInterface;
 use Stu\Lib\Mail\StuMailInterface;
@@ -38,8 +37,6 @@ class PrivateMessageSenderTest extends StuTestCase
     /** @var MockInterface|MailFactoryInterface */
     private $mailFactory;
 
-    private ConfigInterface $config;
-
     private Parser $parser;
 
     private StuTime $stuTime;
@@ -53,7 +50,6 @@ class PrivateMessageSenderTest extends StuTestCase
         $this->messageRepository = $this->mock(PrivateMessageRepositoryInterface::class);
         $this->userRepository = $this->mock(UserRepositoryInterface::class);
         $this->mailFactory = $this->mock(MailFactoryInterface::class);
-        $this->config = $this->mock(ConfigInterface::class);
         $this->parser = $this->mock(Parser::class);
         $this->stuTime = $this->mock(StuTime::class);
 
@@ -73,7 +69,6 @@ class PrivateMessageSenderTest extends StuTestCase
             $this->messageRepository,
             $this->userRepository,
             $this->mailFactory,
-            $this->config,
             $this->parser,
             $this->stuTime,
             $loggerUtilFactory
@@ -315,11 +310,6 @@ class PrivateMessageSenderTest extends StuTestCase
             ->once()
             ->andReturn('Sender');
 
-        $this->config->shouldReceive('get')
-            ->with('game.email_sender_address')
-            ->once()
-            ->andReturn('emai@sender.adress');
-
         $message = $this->mock(StuMailInterface::class);
         $this->mailFactory->shouldReceive('createStuMail')
             ->withNoArgs()
@@ -334,8 +324,8 @@ class PrivateMessageSenderTest extends StuTestCase
             ->with('Neue Privatnachricht von Spieler Sender')
             ->once()
             ->andReturnSelf();
-        $message->shouldReceive('setFrom')
-            ->with('emai@sender.adress')
+        $message->shouldReceive('withDefaultSender')
+            ->withNoArgs()
             ->once()
             ->andReturnSelf();
         $message->shouldReceive('setBody')

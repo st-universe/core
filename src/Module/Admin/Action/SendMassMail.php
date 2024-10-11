@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action;
 
-use Noodlehaus\ConfigInterface;
 use Override;
 use request;
 use RuntimeException;
@@ -30,7 +29,6 @@ final class SendMassMail implements ActionControllerInterface
 
     public function __construct(
         private MailFactoryInterface $mailFactory,
-        private ConfigInterface $config,
         private PrivateMessageSenderInterface $privateMessageSender,
         private UserRepositoryInterface $userRepository,
         LoggerUtilFactoryInterface $loggerUtilFactory
@@ -77,7 +75,7 @@ final class SendMassMail implements ActionControllerInterface
             try {
                 $mail->addTo($user->getEmail())
                     ->setSubject($subject)
-                    ->setFrom($this->config->get('game.email_sender_address'))
+                    ->withDefaultSender()
                     ->setBody($text)
                     ->send();
                 $count++;
