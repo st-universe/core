@@ -879,42 +879,7 @@ parameters:
 			path: src/Module/Config/StuConfig.php
 
 		-
-			message: "#^Cannot call method getReason\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserLockInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
-			message: "#^Cannot call method getRemainingTicks\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserLockInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:addInformationMerge\\(\\) has parameter \\$info with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:addSemaphore\\(\\) has parameter \\$semaphore with no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:getAchievements\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:getCurrentRound\\(\\) should return Stu\\\\Orm\\\\Entity\\\\GameTurnInterface but returns Stu\\\\Orm\\\\Entity\\\\GameTurnInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:getInformation\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:setTemplateVar\\(\\) has parameter \\$variable with no type specified\\.$#"
 			count: 1
 			path: src/Module/Control/GameController.php
 
@@ -924,22 +889,7 @@ parameters:
 			path: src/Module/Control/GameControllerInterface.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:addSemaphore\\(\\) has parameter \\$semaphore with no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/GameControllerInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:getAchievements\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Control/GameControllerInterface.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:getBenchmarkResult\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Control/GameControllerInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:getInformation\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Control/GameControllerInterface.php
 
@@ -949,54 +899,9 @@ parameters:
 			path: src/Module/Control/GameControllerInterface.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:setTemplateVar\\(\\) has parameter \\$variable with no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/GameControllerInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\SemaphoreUtil\\:\\:acquire\\(\\) has parameter \\$semaphore with no type specified\\.$#"
+			message: "#^Method Stu\\\\Module\\\\Control\\\\SemaphoreUtil\\:\\:getSemaphore\\(\\) never returns int so it can be removed from the return type\\.$#"
 			count: 1
 			path: src/Module/Control/SemaphoreUtil.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\SemaphoreUtil\\:\\:acquireMainSemaphore\\(\\) has parameter \\$semaphore with no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/SemaphoreUtil.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\SemaphoreUtil\\:\\:acquireSemaphore\\(\\) has parameter \\$semaphore with no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/SemaphoreUtil.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\SemaphoreUtil\\:\\:release\\(\\) has parameter \\$semaphore with no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/SemaphoreUtil.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\SemaphoreUtil\\:\\:releaseSemaphore\\(\\) has parameter \\$semaphore with no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/SemaphoreUtil.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\SemaphoreUtilInterface\\:\\:acquireMainSemaphore\\(\\) has parameter \\$semaphore with no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/SemaphoreUtilInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\SemaphoreUtilInterface\\:\\:acquireSemaphore\\(\\) has parameter \\$semaphore with no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/SemaphoreUtilInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\SemaphoreUtilInterface\\:\\:getSemaphore\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Control/SemaphoreUtilInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\SemaphoreUtilInterface\\:\\:releaseSemaphore\\(\\) has parameter \\$semaphore with no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/SemaphoreUtilInterface.php
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Control\\\\StuRandom\\:\\:array_rand\\(\\) has parameter \\$array with no value type specified in iterable type array\\.$#"

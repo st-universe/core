@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use request;
+use RuntimeException;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Component\Logging\GameRequest\GameRequestSaverInterface;
@@ -47,6 +48,7 @@ use Stu\Orm\Repository\GameRequestRepositoryInterface;
 use Stu\Orm\Repository\GameTurnRepositoryInterface;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
+use SysvSemaphore;
 use Throwable;
 use Ubench;
 
@@ -85,7 +87,7 @@ final class GameController implements GameControllerInterface
     /** @var array{currentTurn:int, player:int, playeronline:int, gameState:int, gameStateTextual:string} */
     private ?array $gameStats = null;
 
-    /** @var array<int, resource> */
+    /** @var array<int, SysvSemaphore> */
     private array $semaphores = [];
 
     /** @var GameConfigInterface[]|null */
@@ -264,7 +266,7 @@ final class GameController implements GameControllerInterface
     }
 
     #[Override]
-    public function setTemplateVar(string $key, $variable): void
+    public function setTemplateVar(string $key, mixed $variable): void
     {
         $this->twigPage->setVar($key, $variable);
     }
@@ -388,6 +390,9 @@ final class GameController implements GameControllerInterface
     {
         if ($this->currentRound === null) {
             $this->currentRound = $this->gameTurnRepository->getCurrent();
+            if ($this->currentRound === null) {
+                throw new RuntimeException('no current round existing');
+            }
         }
         return $this->currentRound;
     }
@@ -641,10 +646,11 @@ final class GameController implements GameControllerInterface
     private function checkUserAndGameState(GameRequestInterface $gameRequest): void
     {
         if ($this->hasUser()) {
-            $gameRequest->setUserId($this->getUser());
+            $user = $this->getUser();
+            $gameRequest->setUserId($user);
 
-            if ($this->getUser()->isLocked()) {
-                $userLock = $this->getUser()->getUserLock();
+            $userLock = $user->getUserLock();
+            if ($this->getUser()->isLocked() && $userLock !== null) {
                 $this->session->logout();
 
                 throw new UserLockedException(
@@ -702,7 +708,7 @@ final class GameController implements GameControllerInterface
     }
 
     #[Override]
-    public function addSemaphore(int $key, $semaphore): void
+    public function addSemaphore(int $key, SysvSemaphore $semaphore): void
     {
         $this->semaphores[$key] = $semaphore;
     }
