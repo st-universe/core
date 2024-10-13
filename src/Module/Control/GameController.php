@@ -210,11 +210,7 @@ final class GameController implements GameControllerInterface
     #[Override]
     public function addInformation(?string $information): InformationInterface
     {
-        if ($information !== null) {
-            $this->loggerUtil->log(sprintf('addInformation: %s', $information));
-
-            $this->gameInformations->addInformation($information);
-        }
+        $this->gameInformations->addInformation($information);
 
         return $this;
     }
@@ -550,6 +546,7 @@ final class GameController implements GameControllerInterface
                 $gameRequest->addError($e);
             } catch (EntityLockedException $e) {
                 $this->addInformation($e->getMessage());
+                $this->setMacroInAjaxWindow('');
             }
             $viewMs = hrtime(true) - $startTime;
 
@@ -580,17 +577,14 @@ final class GameController implements GameControllerInterface
         } catch (MaintenanceGameStateException) {
             $this->setPageTitle(_('Wartungsmodus'));
             $this->setTemplateFile('html/index/maintenance.twig');
-
             $this->setTemplateVar('THIS', $this);
         } catch (ResetGameStateException) {
             $this->setPageTitle(_('Resetmodus'));
             $this->setTemplateFile('html/index/gameReset.twig');
-
             $this->setTemplateVar('THIS', $this);
         } catch (RelocationGameStateException) {
             $this->setPageTitle(_('Umzugsmodus'));
             $this->setTemplateFile('html/index/relocation.twig');
-
             $this->setTemplateVar('THIS', $this);
         } catch (ShipDoesNotExistException) {
             $this->addInformation(_('Dieses Schiff existiert nicht!'));
@@ -609,8 +603,6 @@ final class GameController implements GameControllerInterface
             } else {
                 $this->setViewTemplate('html/ship/ship.twig');
             }
-        } catch (Throwable $e) {
-            throw $e;
         }
 
         $isTemplateSet = $this->twigPage->isTemplateSet();

@@ -15,9 +15,7 @@ final class ShowAnalyseBuoy implements ViewControllerInterface
     public const string VIEW_IDENTIFIER = 'SHOW_ANALYSE_BUOY';
 
 
-    public function __construct(private BuoyRepositoryInterface $buoyRepository)
-    {
-    }
+    public function __construct(private BuoyRepositoryInterface $buoyRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -28,20 +26,14 @@ final class ShowAnalyseBuoy implements ViewControllerInterface
             request::indInt('id')
         );
 
-
         $game->setPageTitle("Boje analysieren");
         $game->setMacroInAjaxWindow('html/ship/analysebuoy.twig');
-
-        $game->setTemplateVar('ERROR', true);
 
         $amplitude = $buoy !== null ? $buoy->getId() * $buoy->getUserId() : 0;
         $wavelength = ceil($amplitude / 2);
 
         $game->setTemplateVar('AMPLITUDE', $amplitude);
         $game->setTemplateVar('WAVELENGTH', $wavelength);
-
-
-
         $game->setTemplateVar('BUOY', $buoy);
         $game->setTemplateVar('USER', $user);
     }
