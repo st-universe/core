@@ -13,6 +13,7 @@ enum StuConfigSettingEnum: int
     case MAP = 7;
     case RESET = 8;
     case SQL_LOGGING = 9;
+    case EMAIL = 10;
 
     public function getParent(): ?StuConfigSettingEnum
     {
@@ -25,7 +26,8 @@ enum StuConfigSettingEnum: int
             self::GAME => null,
             self::MAP => self::GAME,
             self::RESET => null,
-            self::SQL_LOGGING => self::DEBUG
+            self::SQL_LOGGING => self::DEBUG,
+            self::EMAIL => self::GAME
         };
     }
 
@@ -40,7 +42,8 @@ enum StuConfigSettingEnum: int
             self::GAME => 'game',
             self::MAP => 'map',
             self::RESET => 'reset',
-            self::SQL_LOGGING => 'sqlLogging'
+            self::SQL_LOGGING => 'sqlLogging',
+            self::EMAIL => 'email'
         };
     }
 }

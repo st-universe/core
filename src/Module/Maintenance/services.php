@@ -37,6 +37,7 @@ return [
         get(OldTradeLicenseDeletion::class),
         get(TopFlightsReward::class),
         get(EndLotteryPeriod::class),
-        get(PirateWrathDecreaser::class)
+        get(PirateWrathDecreaser::class),
+        get(GameRequestCleanUp::class)
     ]
 ];

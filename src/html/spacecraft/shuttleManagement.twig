@@ -4,7 +4,7 @@
     <input type="hidden" name="id" value="{{ MANAGER.getId }}" />
     <input type="hidden" name="sid" value="{{ SHIP.getId }}" />
     <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
-    {% if not ERROR and AVAILABLE_SHUTTLES %}
+    {% if AVAILABLE_SHUTTLES %}
     <table class="tcal">
         <tr>
             <th>Shuttle-Typ</th>

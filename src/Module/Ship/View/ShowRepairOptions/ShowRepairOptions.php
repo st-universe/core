@@ -16,9 +16,7 @@ final class ShowRepairOptions implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_REPAIR_OPTIONS';
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private RepairUtilInterface $repairUtil)
-    {
-    }
+    public function __construct(private ShipLoaderInterface $shipLoader, private RepairUtilInterface $repairUtil) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -35,21 +33,20 @@ final class ShowRepairOptions implements ViewControllerInterface
         $ship = $wrapper->get();
 
         $game->setPageTitle("Reparatur Optionen");
-        $game->setMacroInAjaxWindow('html/ship/repairoptions.twig');
-
-        $game->setTemplateVar('ERROR', true);
 
         if (!$ship->hasEnoughCrew()) {
             $game->addInformation("Nicht genügend Crew vorhanden");
+            $game->setMacroInAjaxWindow('');
             return;
         }
+
+        $game->setMacroInAjaxWindow('html/ship/repairoptions.twig');
 
         $repairOptions = $this->repairUtil->determineRepairOptions($wrapper);
 
         $game->setTemplateVar('SHIP', $ship);
         $game->setTemplateVar('REPAIR_OPTIONS', $repairOptions);
         $game->setTemplateVar('ENGINEER_COUNT', $this->repairUtil->determineFreeEngineerCount($ship));
-        $game->setTemplateVar('ERROR', false);
         $game->setTemplateVar('ROUNDS', $this->repairUtil->getRepairDuration($wrapper));
 
         $game->setTemplateVar('SPARE_PARTS_ONLY', (RepairTaskEnum::SPARE_PARTS_ONLY_MIN + RepairTaskEnum::SPARE_PARTS_ONLY_MAX) / 2);

@@ -15,15 +15,11 @@ final class ShowStationCosts implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_STATION_COSTS';
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private StationUtilityInterface $stationUtility)
-    {
-    }
+    public function __construct(private ShipLoaderInterface $shipLoader, private StationUtilityInterface $stationUtility) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $game->setTemplateVar('ERROR', true);
-
         $ship = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
             $game->getUser()->getId(),
@@ -55,7 +51,5 @@ final class ShowStationCosts implements ViewControllerInterface
         $dockedWorkbees = $this->stationUtility->getDockedWorkbeeCount($ship);
         $game->setTemplateVar('DOCKED', $dockedWorkbees);
         $game->setTemplateVar('WORKBEECOLOR', $dockedWorkbees < $plan->getRump()->getNeededWorkbees() ? 'red' : 'green');
-
-        $game->setTemplateVar('ERROR', false);
     }
 }

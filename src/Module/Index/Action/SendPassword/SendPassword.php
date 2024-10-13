@@ -49,7 +49,7 @@ final class SendPassword implements ActionControllerInterface
         $this->userRepository->save($user);
 
         $mail = $this->mailFactory->createStuMail()
-            ->setFrom($this->config->get('game.email_sender_address'))
+            ->withDefaultSender()
             ->addTo($user->getEmail())
             ->setSubject(_('Star Trek Universe - Password vergessen'))
             ->setBody(

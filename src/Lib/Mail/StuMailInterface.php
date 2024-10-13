@@ -4,6 +4,8 @@ namespace Stu\Lib\Mail;
 
 interface StuMailInterface
 {
+    public function withDefaultSender(): StuMailInterface;
+
     public function setFrom(string $from): StuMailInterface;
 
     public function addTo(string $to): StuMailInterface;

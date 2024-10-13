@@ -1,6 +1,5 @@
 {% embed "html/ajaxwindow.twig" %}
 {% block content %}
-{% if not ERROR %}
 {% set SHIP = WRAPPER.get %}
 <table class="tcal">
     <tr>
@@ -16,14 +15,5 @@
         </td>
     </tr>
 </table>
-{% else %}
-<table class="tcal">
-    <tr>
-        <td>
-            <span>Für den Scan wird 15 Energie benötigt</span>
-        </td>
-    </tr>
-</table>
-{% endif %}
 {% endblock %}
 {% endembed %}

@@ -22,9 +22,7 @@ final class ShowSectorScan implements ViewControllerInterface
     private array $fadedSignaturesUncloaked = [];
     private array $fadedSignaturesCloaked = [];
 
-    public function __construct(private ColonyLoaderInterface $colonyLoader, private StarSystemMapRepositoryInterface $mapRepository, private FlightSignatureRepositoryInterface $flightSignatureRepository)
-    {
-    }
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private StarSystemMapRepositoryInterface $mapRepository, private FlightSignatureRepositoryInterface $flightSignatureRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -38,9 +36,6 @@ final class ShowSectorScan implements ViewControllerInterface
         );
 
         $game->setPageTitle("Sektor Scan");
-        $game->setMacroInAjaxWindow('html/colony/component/sectorscan.twig');
-
-        $game->setTemplateVar('ERROR', true);
 
         $mapField = $this->mapRepository->getByCoordinates(
             $colony->getSystem()->getId(),
@@ -52,10 +47,11 @@ final class ShowSectorScan implements ViewControllerInterface
             return;
         }
 
+        $game->setMacroInAjaxWindow('html/colony/component/sectorscan.twig');
+
         $game->setTemplateVar('SIGNATURES', $this->getSignatures($mapField, $userId));
         $game->setTemplateVar('OTHER_SIG_COUNT', $this->fadedSignaturesUncloaked === [] ? null : count($this->fadedSignaturesUncloaked));
         $game->setTemplateVar('OTHER_CLOAKED_COUNT', $this->fadedSignaturesCloaked === [] ? null : count($this->fadedSignaturesCloaked));
-        $game->setTemplateVar('ERROR', false);
     }
 
     /**

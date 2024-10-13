@@ -25,15 +25,11 @@ final class ShowColonyScan implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_COLONY_SCAN';
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private ShipRepositoryInterface $shipRepository, private ColonyLibFactoryInterface $colonyLibFactory, private ColonyScanRepositoryInterface $colonyScanRepository, private PrivateMessageSenderInterface $privateMessageSender)
-    {
-    }
+    public function __construct(private ShipLoaderInterface $shipLoader, private ShipRepositoryInterface $shipRepository, private ColonyLibFactoryInterface $colonyLibFactory, private ColonyScanRepositoryInterface $colonyScanRepository, private PrivateMessageSenderInterface $privateMessageSender) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $game->setTemplateVar('ERROR', true);
-
         $game->setPageTitle(_('Kolonie scannen'));
 
         $userId = $game->getUser()->getId();
@@ -69,8 +65,10 @@ final class ShowColonyScan implements ViewControllerInterface
             throw new SanityCheckException('ship has no eps system installed');
         }
 
+
         if ($epsSystem->getEps() < MatrixScannerShipSystem::SCAN_EPS_COST) {
             $game->addInformation(sprintf(_('Aktion nicht möglich, ungenügend Energie vorhanden. Bedarf: %dE'), MatrixScannerShipSystem::SCAN_EPS_COST));
+            $game->setMacroInAjaxWindow('');
             return;
         }
 
@@ -91,7 +89,6 @@ final class ShowColonyScan implements ViewControllerInterface
         $game->setTemplateVar('SHIP', $ship);
         $game->setTemplateVar('DEPOSITS', $colony->getColonyClass()->getColonyClassDeposits());
         $game->setTemplateVar('SURFACE', $colonySurface);
-        $game->setTemplateVar('ERROR', false);
 
         $this->createColonyScan($game->getUser(), $colony);
         $game->setMacroInAjaxWindow('html/ship/colonyscan.twig');

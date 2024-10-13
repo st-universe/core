@@ -2,16 +2,27 @@
 
 namespace Stu\Lib\Mail;
 
-use Symfony\Component\Mailer\Mailer;
+use Stu\Module\Config\StuConfigInterface;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 
 class StuMail implements StuMailInterface
 {
-    private Email $email;
+    public function __construct(
+        private Email $email,
+        private MailerInterface $mailer,
+        private StuConfigInterface $stuConfig
+    ) {}
 
-    public function __construct(private Mailer $mailer)
+    public function withDefaultSender(): StuMailInterface
     {
-        $this->email = new Email();
+        $this->email->from($this
+            ->stuConfig
+            ->getGameSettings()
+            ->getEmailSettings()
+            ->getSenderAddress());
+
+        return $this;
     }
 
     public function setFrom(string $from): StuMailInterface

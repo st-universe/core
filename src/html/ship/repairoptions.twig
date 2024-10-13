@@ -1,69 +1,79 @@
-{% if not ERROR %}
-    <form id="selfrepair_form" method="post" action="ship.php">
-      <input type="hidden" name="id" value="{{ SHIP.getId }}" />
-      <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
-      {% if SHIP.isBase %}
-        <div class="box">
-          <div class="box_title">Passive Reparatur <img title="Wird durch angedockte Workbees durchgeführt" src="assets/buttons/info2.png" style="height:16px;" /></div>
-          <div class="box_body">
-            <table class="tcal">
-              <tr>
-                <th>Workbees <img title="Anzahl der benötigten und aktuell angedockten Workbees für die Reparatur" src="assets/buttons/info2.png" style="height:16px;" /></th>
-                <th>Runden <img title="Anzahl der benötigten Runden um die Reparatur zu beenden" src="assets/buttons/info2.png" style="height:16px;" /></th>
-              </tr>
-              <tr>
-                <td style="text-align: center;">({{ SHIP.getDockedWorkbeeCount }}/{{ SHIP.getRump.getNeededRepairWorkbees }})</td>
-                <td style="text-align: center;">{{ ROUNDS }}</td>
-              </tr>
-              <tr style="text-align: center;">
-                <td colspan="3"><input type="submit" class="button" value="Passive Reparatur starten" name="B_STATION_REPAIR" id="repair_button" /></td>
-              </tr>
-            </table>
-          </div>
-        </div>
-        <br />
-      {% endif %}
-      <div class="box">
-        <div class="box_title">Aktive Reparatur <img title="Wird durch die Crew des Schiffes durchgeführt" src="assets/buttons/info2.png" style="height:16px;" /></div>
-        <div class="box_body">
-          <table class="tcal">
-            <tr>
-              <th>Beschädigtes System <img title="Durch die Crew reparierbare Systeme" src="assets/buttons/info2.png" style="height:16px;" /></th>
-              <th>Anzahl Ingenieure <img title="Die Anzahl Ingenieure beschleunigt die Reparatur" src="assets/buttons/info2.png" style="height:16px;" /></th>
-              <th>Verwendete Teile <img title="Umfang der Reparatur" src="assets/buttons/info2.png" style="height:16px;" /></th>
-              <th>Sofortreparatur <img title="Erfordert die dreifache Menge an Teilen" src="assets/buttons/info2.png" style="height:16px;" /></th>
-            </tr>
-            <tr>
-              <td>
-                <select name="sid" id="systemSelect" style="width:100%;">
-                  {% for data in REPAIR_OPTIONS %}
-                    <option value="{{ data.getSystemType.value }}">{{ data.getName }}, aktuell: {{ data.getStatus }}%</option>
-                  {% endfor %}
-                </select>
-              </td>
-              <td style="text-align: center;">{{ ENGINEER_COUNT }}</td>
-              <td>
-                <label>
-                  <input type="radio" name="partschoice" value="1" /> nur Ersatzteile (~ auf {{ SPARE_PARTS_ONLY }}%)
-                </label>
-                <br />
-                <label>
-                  <input type="radio" name="partschoice" value="2" /> nur Systemkomponenten (~ auf {{ SYSTEM_COMPONENTS_ONLY }}%)
-                </label>
-                <br />
-                <label>
-                  <input type="radio" name="partschoice" value="3" /> beides (~ auf {{ BOTH }}%)
-                </label>
-              </td>
-              <td>
-                <input type="checkbox" name="instantrepair" /> sofort
-              </td>
-            </tr>
-            <tr style="text-align: center;">
-              <td colspan="4"><input type="submit" class="button" value="Aktive Reparatur starten" name="B_SELF_REPAIR" id="selfrepair_button" /></td>
-            </tr>
-          </table>
-        </div>
-      </div>
-    </form>
+<form id="selfrepair_form" method="post" action="ship.php">
+  <input type="hidden" name="id" value="{{ SHIP.getId }}" />
+  <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+  {% if SHIP.isBase %}
+  <div class="box">
+    <div class="box_title">Passive Reparatur <img title="Wird durch angedockte Workbees durchgeführt"
+        src="assets/buttons/info2.png" style="height:16px;" /></div>
+    <div class="box_body">
+      <table class="tcal">
+        <tr>
+          <th>Workbees <img title="Anzahl der benötigten und aktuell angedockten Workbees für die Reparatur"
+              src="assets/buttons/info2.png" style="height:16px;" /></th>
+          <th>Runden <img title="Anzahl der benötigten Runden um die Reparatur zu beenden"
+              src="assets/buttons/info2.png" style="height:16px;" /></th>
+        </tr>
+        <tr>
+          <td style="text-align: center;">({{ SHIP.getDockedWorkbeeCount }}/{{ SHIP.getRump.getNeededRepairWorkbees }})
+          </td>
+          <td style="text-align: center;">{{ ROUNDS }}</td>
+        </tr>
+        <tr style="text-align: center;">
+          <td colspan="3"><input type="submit" class="button" value="Passive Reparatur starten" name="B_STATION_REPAIR"
+              id="repair_button" /></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <br />
   {% endif %}
+  <div class="box">
+    <div class="box_title">Aktive Reparatur <img title="Wird durch die Crew des Schiffes durchgeführt"
+        src="assets/buttons/info2.png" style="height:16px;" /></div>
+    <div class="box_body">
+      <table class="tcal">
+        <tr>
+          <th>Beschädigtes System <img title="Durch die Crew reparierbare Systeme" src="assets/buttons/info2.png"
+              style="height:16px;" /></th>
+          <th>Anzahl Ingenieure <img title="Die Anzahl Ingenieure beschleunigt die Reparatur"
+              src="assets/buttons/info2.png" style="height:16px;" /></th>
+          <th>Verwendete Teile <img title="Umfang der Reparatur" src="assets/buttons/info2.png" style="height:16px;" />
+          </th>
+          <th>Sofortreparatur <img title="Erfordert die dreifache Menge an Teilen" src="assets/buttons/info2.png"
+              style="height:16px;" /></th>
+        </tr>
+        <tr>
+          <td>
+            <select name="sid" id="systemSelect" style="width:100%;">
+              {% for data in REPAIR_OPTIONS %}
+              <option value="{{ data.getSystemType.value }}">{{ data.getName }}, aktuell: {{ data.getStatus }}%</option>
+              {% endfor %}
+            </select>
+          </td>
+          <td style="text-align: center;">{{ ENGINEER_COUNT }}</td>
+          <td>
+            <label>
+              <input type="radio" name="partschoice" value="1" /> nur Ersatzteile (~ auf {{ SPARE_PARTS_ONLY }}%)
+            </label>
+            <br />
+            <label>
+              <input type="radio" name="partschoice" value="2" /> nur Systemkomponenten (~ auf {{ SYSTEM_COMPONENTS_ONLY
+              }}%)
+            </label>
+            <br />
+            <label>
+              <input type="radio" name="partschoice" value="3" /> beides (~ auf {{ BOTH }}%)
+            </label>
+          </td>
+          <td>
+            <input type="checkbox" name="instantrepair" /> sofort
+          </td>
+        </tr>
+        <tr style="text-align: center;">
+          <td colspan="4"><input type="submit" class="button" value="Aktive Reparatur starten" name="B_SELF_REPAIR"
+              id="selfrepair_button" /></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</form>

@@ -34,6 +34,12 @@ final class GameSettings extends AbstractSettings implements GameSettingsInterfa
     }
 
     #[Override]
+    public function getEmailSettings(): EmailSettingsInterface
+    {
+        return $this->settingsCache->getSettings(StuConfigSettingEnum::EMAIL, $this);
+    }
+
+    #[Override]
     public function getMapSettings(): MapSettingsInterface
     {
         return $this->settingsCache->getSettings(StuConfigSettingEnum::MAP, $this);

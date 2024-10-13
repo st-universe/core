@@ -32,7 +32,7 @@ final class RegistrationEmailSender implements RegistrationEmailSenderInterface
             EOT;
 
         $mail = $this->mailFactory->createStuMail()
-            ->setFrom($this->config->get('game.email_sender_address'))
+            ->withDefaultSender()
             ->addTo($player->getEmail())
             ->setSubject(_('Star Trek Universe - Anmeldung'))
             ->setBody(

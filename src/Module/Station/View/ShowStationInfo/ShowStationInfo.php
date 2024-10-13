@@ -16,17 +16,12 @@ final class ShowStationInfo implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_STATION_INFO';
 
-    public function __construct(private StationUtilityInterface $stationUtility, private ShipRumpUserRepositoryInterface $shipRumpUserRepository)
-    {
-    }
+    public function __construct(private StationUtilityInterface $stationUtility, private ShipRumpUserRepositoryInterface $shipRumpUserRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $game->setTemplateVar('ERROR', true);
-
         $game->setPageTitle(_('Baukosten'));
-        $game->setMacroInAjaxWindow('html/station/stationInfo.twig');
 
         $userId = $game->getUser()->getId();
         $planId = request::getIntFatal('pid');
@@ -38,6 +33,8 @@ final class ShowStationInfo implements ViewControllerInterface
             return;
         }
 
+        $game->setMacroInAjaxWindow('html/station/stationInfo.twig');
+
         $game->setTemplateVar('PLAN', $plan);
 
         $limit = StationEnum::BUILDABLE_LIMITS_PER_ROLE[$rump->getRoleId()];
@@ -45,7 +42,5 @@ final class ShowStationInfo implements ViewControllerInterface
 
         $location = StationEnum::BUILDABLE_LOCATIONS_PER_ROLE[$rump->getRoleId()];
         $game->setTemplateVar('LOCATION', $location);
-
-        $game->setTemplateVar('ERROR', false);
     }
 }

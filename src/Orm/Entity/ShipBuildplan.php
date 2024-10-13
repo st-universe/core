@@ -15,14 +15,14 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
+use Doctrine\ORM\Mapping\UniqueConstraint;
 use Override;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Orm\Repository\ShipBuildplanRepository;
 
 #[Table(name: 'stu_buildplans')]
 #[Entity(repositoryClass: ShipBuildplanRepository::class)]
-//TODO uniqueIndex on signature
-//TODO check on creation and tell existing name
+#[UniqueConstraint(name: 'buildplan_signatures_idx', columns: ['user_id', 'rump_id', 'signature'])]
 class ShipBuildplan implements ShipBuildplanInterface
 {
     #[Id]

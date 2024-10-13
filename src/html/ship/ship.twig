@@ -29,7 +29,6 @@
 	<br />
 </div>
 {% endif %}
-{% if WRAPPER %}
 {% set SHIP = WRAPPER.get %}
 {% set shipId = SHIP.getId %}
 <form action="ship.php" method="post" name="shipform" id="shipform" onkeydown="return event.key != 'Enter';">
@@ -318,4 +317,3 @@
 {% endif %}
 <br />
 {{ shipstorage(SHIP) }}
-{% endif %}

@@ -7,9 +7,7 @@ use Stu\Module\Config\StuConfigSettingEnum;
 
 class SettingsFactory implements SettingsFactoryInterface
 {
-    public function __construct(private ConfigInterface $config)
-    {
-    }
+    public function __construct(private ConfigInterface $config) {}
     public function createSettings(
         StuConfigSettingEnum $type,
         ?SettingsInterface $parent,
@@ -57,6 +55,11 @@ class SettingsFactory implements SettingsFactoryInterface
                 $settingsCache
             ),
             StuConfigSettingEnum::SQL_LOGGING => new SqlLoggingSettings(
+                $parent,
+                $this->createSettingsCore($type, $parent),
+                $settingsCache
+            ),
+            StuConfigSettingEnum::EMAIL => new EmailSettings(
                 $parent,
                 $this->createSettingsCore($type, $parent),
                 $settingsCache

@@ -66,8 +66,6 @@ final class ShowShip implements ViewControllerInterface
         private LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->loggerUtil = $this->loggerUtilFactory->getLoggerUtil();
-
-        //$this->loggerUtil->init('SHOW', LoggerEnum::LEVEL_ERROR);
     }
 
     #[Override]

@@ -14,9 +14,7 @@ final class ShowPodsLocations implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_PODS_LOCATIONS';
 
-    public function __construct(private ShipRepositoryInterface $shipRepository, private ShipCrewRepositoryInterface $shipCrewRepository)
-    {
-    }
+    public function __construct(private ShipRepositoryInterface $shipRepository, private ShipCrewRepositoryInterface $shipCrewRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -31,6 +29,5 @@ final class ShowPodsLocations implements ViewControllerInterface
 
         $game->setTemplateVar('PODS', $pods);
         $game->setTemplateVar('TRADEPOSTS', $crewAssignmentsAtTradeposts);
-        $game->setTemplateVar('ERROR', false);
     }
 }

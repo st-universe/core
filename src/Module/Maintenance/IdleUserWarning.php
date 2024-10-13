@@ -58,7 +58,7 @@ final class IdleUserWarning implements MaintenanceHandlerInterface
             $playerName = $this->bbCodeParser->parse($player->getName())->getAsText();
 
             $mail = $this->mailFactory->createStuMail()
-                ->setFrom($this->configs->get('game.email_sender_address'))
+                ->withDefaultSender()
                 ->addTo($player->getEmail())
                 ->setSubject(_('Star Trek Universe - Löschung wegen Nichtaktivierung'))
                 ->setBody(
@@ -92,7 +92,7 @@ final class IdleUserWarning implements MaintenanceHandlerInterface
             $playerName = $this->bbCodeParser->parse($player->getName())->getAsText();
 
             $mail = $this->mailFactory->createStuMail()
-                ->setFrom($this->configs->get('game.email_sender_address'))
+                ->withDefaultSender()
                 ->addTo($player->getEmail())
                 ->setSubject(_('Star Trek Universe - Löschung wegen Inaktvität'))
                 ->setBody(
@@ -127,7 +127,7 @@ final class IdleUserWarning implements MaintenanceHandlerInterface
             $playerName = $this->bbCodeParser->parse($player->getName())->getAsText();
 
             $mail = $this->mailFactory->createStuMail()
-                ->setFrom($this->configs->get('game.email_sender_address'))
+                ->withDefaultSender()
                 ->addTo($player->getEmail())
                 ->setSubject(_('Star Trek Universe - Löschung wegen Nichtaktivierung in 24h'))
                 ->setBody(
@@ -182,7 +182,7 @@ final class IdleUserWarning implements MaintenanceHandlerInterface
 
             if ($time > 0) {
                 $mail = $this->mailFactory->createStuMail()
-                    ->setFrom($this->configs->get('game.email_sender_address'))
+                    ->withDefaultSender()
                     ->addTo($player->getEmail())
                     ->setSubject(sprintf('Star Trek Universe - Löschung wegen Inaktvität in %d Stunden', $time))
                     ->setBody(

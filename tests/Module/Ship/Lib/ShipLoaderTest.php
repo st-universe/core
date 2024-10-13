@@ -23,21 +23,20 @@ use Stu\StuTestCase;
 
 class ShipLoaderTest extends StuTestCase
 {
-    private ShipRepositoryInterface $shipRepository;
+    /** @var MockInterface|ShipRepositoryInterface */
+    private  $shipRepository;
+    /** @var MockInterface|SemaphoreUtilInterface */
+    private  $semaphoreUtil;
+    /** @var MockInterface|ShipWrapperFactoryInterface */
+    private  $shipWrapperFactory;
+    /** @var MockInterface|LockManagerInterface */
+    private  $lockManager;
+    /** @var MockInterface|GameControllerInterface */
+    private  $game;
+    /** @var MockInterface|ShipLoader */
+    private  $shipLoader;
 
-    private SemaphoreUtilInterface $semaphoreUtil;
-
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
-    private LockManagerInterface $lockManager;
-
-    private GameControllerInterface $game;
-
-    private ShipLoader $shipLoader;
-
-    /**
-     * @var MockInterface|ShipInterface
-     */
+    /** @var MockInterface|ShipInterface */
     private $ship;
 
     /**
