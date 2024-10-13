@@ -22,7 +22,9 @@
     {% include MACRO %}
     {% else %}
     {% block content %}
-    ...
+    {% if INFORMATION %}
+    {% include 'html/systeminformation.twig' %}
+    {% endif %}
     {% endblock %}
     {% endif %}
   </div>

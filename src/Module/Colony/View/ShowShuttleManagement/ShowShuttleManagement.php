@@ -80,12 +80,10 @@ final class ShowShuttleManagement implements ViewControllerInterface
             }
         }
 
-
         $game->setTemplateVar('MODULE_VIEW', ModuleViewEnum::COLONY);
         $game->setTemplateVar('WRAPPER', $this->shipWrapperFactory->wrapShip($ship));
         $game->setTemplateVar('MANAGER', $colony);
         $game->setTemplateVar('CURRENTLY_STORED', $currentlyStored);
         $game->setTemplateVar('AVAILABLE_SHUTTLES', $shuttles);
-        $game->setTemplateVar('ERROR', false);
     }
 }

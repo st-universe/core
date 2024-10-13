@@ -34,15 +34,14 @@ final class ShowSectorScan implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $game->setPageTitle("Sektor Scan");
-        $game->setMacroInAjaxWindow('html/ship/sectorscan.twig');
-        $game->setTemplateVar('ERROR', true);
-
         $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             request::indInt('id'),
             $userId,
             true
         );
+
+        $game->setPageTitle("Sektor Scan");
+        $game->setMacroInAjaxWindow('');
         $ship = $wrapper->get();
 
         if (!$ship->getNbs()) {
@@ -55,6 +54,8 @@ final class ShowSectorScan implements ViewControllerInterface
             $game->addInformation("Nicht genügend Energie vorhanden (1 benötigt)");
             return;
         }
+
+        $game->setMacroInAjaxWindow('html/ship/sectorscan.twig');
 
         $epsSystem->lowerEps(1)->update();
 
@@ -72,8 +73,6 @@ final class ShowSectorScan implements ViewControllerInterface
         $game->setTemplateVar('SHIP', $ship);
         $game->setTemplateVar('MAP_PATH', $this->getMapPath($ship));
         $game->setTemplateVar('BUOYS', $ship->getLocation()->getBuoys());
-
-        $game->setTemplateVar('ERROR', false);
     }
 
     private function checkDatabaseItemForMap(LocationInterface $location, GameControllerInterface $game): void
