@@ -3,8 +3,9 @@
 namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\Collection;
+use Stu\Module\Ship\Lib\EntityWithAstroEntryInterface;
 
-interface StarSystemInterface
+interface StarSystemInterface extends EntityWithAstroEntryInterface
 {
     public function getId(): int;
 

@@ -2,7 +2,9 @@
 
 namespace Stu\Orm\Entity;
 
-interface MapRegionInterface
+use Stu\Module\Ship\Lib\EntityWithAstroEntryInterface;
+
+interface MapRegionInterface extends EntityWithAstroEntryInterface
 {
     public function getId(): int;
 

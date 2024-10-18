@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\AstronomicalEntry;
 use Stu\Orm\Entity\AstronomicalEntryInterface;
-use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
 
 /**
@@ -20,24 +19,6 @@ final class AstroEntryRepository extends EntityRepository implements AstroEntryR
     public function prototype(): AstronomicalEntryInterface
     {
         return new AstronomicalEntry();
-    }
-
-    #[Override]
-    public function getByShipLocation(ShipInterface $ship, bool $showOverSystem = true): ?AstronomicalEntryInterface
-    {
-        $system = $ship->getSystem();
-        if ($system === null && $showOverSystem) {
-            $system = $ship->isOverSystem();
-        }
-        $mapRegion = $system === null ? $ship->getMapRegion() : null;
-
-        return $this->findOneBy(
-            [
-                'user_id' => $ship->getUser()->getId(),
-                'systems_id' => $system === null ? null : $system->getId(),
-                'region_id' => $mapRegion === null ? null : $mapRegion->getId()
-            ]
-        );
     }
 
     #[Override]

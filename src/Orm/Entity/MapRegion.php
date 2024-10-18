@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
 use Override;
 use Stu\Orm\Repository\MapRegionRepository;
@@ -32,6 +35,15 @@ class MapRegion implements MapRegionInterface
     #[ManyToOne(targetEntity: 'DatabaseEntry')]
     #[JoinColumn(name: 'database_id', referencedColumnName: 'id')]
     private ?DatabaseEntryInterface $databaseEntry = null;
+
+    /** @var ArrayCollection<int, AstronomicalEntryInterface> */
+    #[OneToMany(targetEntity: 'AstronomicalEntry', mappedBy: 'region', indexBy: 'user_id', fetch: 'EXTRA_LAZY')]
+    private Collection $astronomicalEntries;
+
+    public function __construct()
+    {
+        $this->astronomicalEntries = new ArrayCollection();
+    }
 
     #[Override]
     public function getId(): int
@@ -65,5 +77,11 @@ class MapRegion implements MapRegionInterface
         $this->databaseEntry = $databaseEntry;
 
         return $this;
+    }
+
+    #[Override]
+    public function getAstronomicalEntries(): Collection
+    {
+        return $this->astronomicalEntries;
     }
 }

@@ -23,6 +23,7 @@ use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\View\Category\Wrapper\DatabaseCategoryWrapperFactoryInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
@@ -34,7 +35,6 @@ use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StationShipRepairInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\AnomalyRepositoryInterface;
-use Stu\Orm\Repository\AstroEntryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\ShipyardShipQueueRepositoryInterface;
 use Stu\Orm\Repository\StationShipRepairRepositoryInterface;
@@ -47,22 +47,22 @@ final class ShowShip implements ViewControllerInterface
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
-        private SessionInterface $session,
         private ShipLoaderInterface $shipLoader,
-        private ColonizationCheckerInterface $colonizationChecker,
-        private DatabaseCategoryWrapperFactoryInterface $databaseCategoryWrapperFactory,
-        private AstroEntryRepositoryInterface $astroEntryRepository,
         private DatabaseUserRepositoryInterface $databaseUserRepository,
-        private NbsUtilityInterface $nbsUtility,
         private StationShipRepairRepositoryInterface $stationShipRepairRepository,
         private ShipyardShipQueueRepositoryInterface $shipyardShipQueueRepository,
         private UserLayerRepositoryInterface $userLayerRepository,
+        private AnomalyRepositoryInterface $anomalyRepository,
+        private DatabaseCategoryWrapperFactoryInterface $databaseCategoryWrapperFactory,
+        private NbsUtilityInterface $nbsUtility,
         private StationUtilityInterface $stationUtility,
         private ShipWrapperFactoryInterface $shipWrapperFactory,
         private ColonyLibFactoryInterface $colonyLibFactory,
         private ShipUiFactoryInterface $shipUiFactory,
         private ShipCrewCalculatorInterface $shipCrewCalculator,
-        private AnomalyRepositoryInterface $anomalyRepository,
+        private AstroEntryLibInterface $astroEntryLib,
+        private ColonizationCheckerInterface $colonizationChecker,
+        private SessionInterface $session,
         private LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->loggerUtil = $this->loggerUtilFactory->getLoggerUtil();
@@ -251,7 +251,7 @@ final class ShowShip implements ViewControllerInterface
         } elseif ($this->databaseUserRepository->exists($game->getUser()->getId(), $databaseEntry->getId())) {
             $state = AstronomicalMappingEnum::DONE;
         } else {
-            $astroEntry = $this->astroEntryRepository->getByShipLocation($ship, $isSystem);
+            $astroEntry = $this->astroEntryLib->getAstroEntryByShipLocation($ship, $isSystem);
 
             $this->loggerUtil->log(sprintf('isSystem: %b, astroEntry?: %b', $isSystem, $astroEntry !== null));
 

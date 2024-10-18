@@ -10,6 +10,7 @@ use request;
 use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\AstronomicalEntryInterface;
@@ -26,7 +27,13 @@ final class PlanAstroMapping implements ActionControllerInterface
 
     private const int REGION_MAP_PERCENTAGE = 25;
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private StarSystemMapRepositoryInterface $starSystemMapRepository, private MapRepositoryInterface $mapRepository, private AstroEntryRepositoryInterface $astroEntryRepository) {}
+    public function __construct(
+        private ShipLoaderInterface $shipLoader,
+        private StarSystemMapRepositoryInterface $starSystemMapRepository,
+        private MapRepositoryInterface $mapRepository,
+        private AstroEntryRepositoryInterface $astroEntryRepository,
+        private AstroEntryLibInterface $astroEntryLib
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -48,7 +55,7 @@ final class PlanAstroMapping implements ActionControllerInterface
             return;
         }
 
-        if ($this->astroEntryRepository->getByShipLocation($ship, false) !== null) {
+        if ($this->astroEntryLib->getAstroEntryByShipLocation($ship, false) !== null) {
             return;
         }
 

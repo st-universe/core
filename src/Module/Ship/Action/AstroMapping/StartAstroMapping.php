@@ -12,6 +12,7 @@ use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\Type\AstroLaboratoryShipSystem;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\AstroEntryRepositoryInterface;
@@ -21,9 +22,12 @@ final class StartAstroMapping implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_START_ASTRO';
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private ShipRepositoryInterface $shipRepository, private AstroEntryRepositoryInterface $astroEntryRepository)
-    {
-    }
+    public function __construct(
+        private ShipLoaderInterface $shipLoader,
+        private ShipRepositoryInterface $shipRepository,
+        private AstroEntryRepositoryInterface $astroEntryRepository,
+        private AstroEntryLibInterface $astroEntryLib
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -38,7 +42,7 @@ final class StartAstroMapping implements ActionControllerInterface
         );
         $message = '';
         $ship = $wrapper->get();
-        $entry = $this->astroEntryRepository->getByShipLocation($ship, false);
+        $entry = $this->astroEntryLib->getAstroEntryByShipLocation($ship, false);
         if ($entry === null || $entry->getState() !== AstronomicalMappingEnum::MEASURED) {
             return;
         }
