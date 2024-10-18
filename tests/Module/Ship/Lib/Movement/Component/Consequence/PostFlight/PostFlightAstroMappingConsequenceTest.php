@@ -11,6 +11,7 @@ use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\Data\AstroLaboratorySystemData;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
+use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Ship\Lib\Message\MessageInterface;
@@ -29,6 +30,8 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
 {
     /** @var MockInterface&AstroEntryRepositoryInterface */
     private $astroEntryRepository;
+    /** @var MockInterface&AstroEntryLibInterface */
+    private $astroEntryLib;
     /** @var MockInterface&CreatePrestigeLogInterface */
     private $createPrestigeLog;
     /** @var MockInterface|MessageFactoryInterface */
@@ -49,6 +52,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
     protected function setUp(): void
     {
         $this->astroEntryRepository = $this->mock(AstroEntryRepositoryInterface::class);
+        $this->astroEntryLib = $this->mock(AstroEntryLibInterface::class);
         $this->createPrestigeLog = $this->mock(CreatePrestigeLogInterface::class);
         $this->messageFactory = $this->mock(MessageFactoryInterface::class);
 
@@ -62,6 +66,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
 
         $this->subject = new PostFlightAstroMappingConsequence(
             $this->astroEntryRepository,
+            $this->astroEntryLib,
             $this->createPrestigeLog,
             $this->messageFactory
         );
@@ -150,7 +155,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
             ->once()
             ->andReturn($this->mock(StarSystemInterface::class));
 
-        $this->astroEntryRepository->shouldReceive('getByShipLocation')
+        $this->astroEntryLib->shouldReceive('getAstroEntryByShipLocation')
             ->with($this->ship, false)
             ->once()
             ->andReturn(null);
@@ -230,7 +235,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
             ->with("a:4:{i:0;i:1;i:1;i:2;i:2;i:3;i:3;i:4;}")
             ->once();
 
-        $this->astroEntryRepository->shouldReceive('getByShipLocation')
+        $this->astroEntryLib->shouldReceive('getAstroEntryByShipLocation')
             ->with($this->ship, false)
             ->once()
             ->andReturn($astroEntry);
@@ -339,7 +344,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
             ->with(AstronomicalMappingEnum::MEASURED)
             ->once();
 
-        $this->astroEntryRepository->shouldReceive('getByShipLocation')
+        $this->astroEntryLib->shouldReceive('getAstroEntryByShipLocation')
             ->with($this->ship, false)
             ->once()
             ->andReturn($astroEntry);
@@ -452,7 +457,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
             ->withNoArgs()
             ->once();
 
-        $this->astroEntryRepository->shouldReceive('getByShipLocation')
+        $this->astroEntryLib->shouldReceive('getAstroEntryByShipLocation')
             ->with($this->ship, false)
             ->once()
             ->andReturn($astroEntry);

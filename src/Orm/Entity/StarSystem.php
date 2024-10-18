@@ -70,9 +70,14 @@ class StarSystem implements StarSystemInterface
     #[OrderBy(['sy' => 'ASC', 'sx' => 'ASC'])]
     private Collection $fields;
 
+    /** @var ArrayCollection<int, AstronomicalEntryInterface> */
+    #[OneToMany(targetEntity: 'AstronomicalEntry', mappedBy: 'starSystem', indexBy: 'user_id', fetch: 'EXTRA_LAZY')]
+    private Collection $astronomicalEntries;
+
     public function __construct()
     {
         $this->fields = new ArrayCollection();
+        $this->astronomicalEntries = new ArrayCollection();
     }
 
     #[Override]
@@ -225,5 +230,11 @@ class StarSystem implements StarSystemInterface
     public function isWormhole(): bool
     {
         return $this->is_wormhole;
+    }
+
+    #[Override]
+    public function getAstronomicalEntries(): Collection
+    {
+        return $this->astronomicalEntries;
     }
 }

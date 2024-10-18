@@ -1314,21 +1314,6 @@ parameters:
 			path: src/Module/Ship/Action/UnloadBattery/UnloadBattery.php
 
 		-
-			message: "#^Cannot call method setAstroStartTurn\\(\\) on Stu\\\\Orm\\\\Entity\\\\AstronomicalEntryInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Ship/Lib/AstroEntryLib.php
-
-		-
-			message: "#^Cannot call method setState\\(\\) on Stu\\\\Orm\\\\Entity\\\\AstronomicalEntryInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Ship/Lib/AstroEntryLib.php
-
-		-
-			message: "#^Parameter \\#1 \\$entry of method Stu\\\\Orm\\\\Repository\\\\AstroEntryRepositoryInterface\\:\\:save\\(\\) expects Stu\\\\Orm\\\\Entity\\\\AstronomicalEntryInterface, Stu\\\\Orm\\\\Entity\\\\AstronomicalEntryInterface\\|null given\\.$#"
-			count: 2
-			path: src/Module/Ship/Lib/AstroEntryLib.php
-
-		-
 			message: "#^Parameter \\#1 \\$p of method Doctrine\\\\Common\\\\Collections\\\\Collection\\<int,Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\|null\\>\\:\\:filter\\(\\) expects Closure\\(Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\|null, int\\)\\: bool, Closure\\(Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\)\\: bool given\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/Battle/Party/AttackedBattleParty.php

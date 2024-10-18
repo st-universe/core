@@ -8,6 +8,7 @@ use Override;
 use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
+use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Ship\Lib\Message\MessageInterface;
@@ -21,6 +22,7 @@ class PostFlightAstroMappingConsequence extends AbstractFlightConsequence
 {
     public function __construct(
         private AstroEntryRepositoryInterface $astroEntryRepository,
+        private AstroEntryLibInterface $astroEntryLib,
         private CreatePrestigeLogInterface $createPrestigeLog,
         private MessageFactoryInterface $messageFactory
     ) {}
@@ -42,7 +44,7 @@ class PostFlightAstroMappingConsequence extends AbstractFlightConsequence
             return;
         }
 
-        $astroEntry = $this->astroEntryRepository->getByShipLocation($ship, false);
+        $astroEntry = $this->astroEntryLib->getAstroEntryByShipLocation($ship, false);
         if ($astroEntry === null) {
             return;
         }

@@ -5,7 +5,6 @@ namespace Stu\Orm\Repository;
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\AstronomicalEntry;
 use Stu\Orm\Entity\AstronomicalEntryInterface;
-use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
 
 /**
@@ -17,8 +16,6 @@ use Stu\Orm\Entity\UserInterface;
 interface AstroEntryRepositoryInterface extends ObjectRepository
 {
     public function prototype(): AstronomicalEntryInterface;
-
-    public function getByShipLocation(ShipInterface $ship, bool $showOverSystem = true): ?AstronomicalEntryInterface;
 
     public function save(AstronomicalEntryInterface $entry): void;
 
