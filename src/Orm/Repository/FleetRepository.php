@@ -37,7 +37,7 @@ final class FleetRepository extends EntityRepository implements FleetRepositoryI
         $em = $this->getEntityManager();
 
         $em->remove($fleet);
-        $em->flush();
+        $em->flush(); //TODO really neccessary?
     }
 
     #[Override]
