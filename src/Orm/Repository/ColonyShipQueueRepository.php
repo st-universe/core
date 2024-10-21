@@ -40,7 +40,7 @@ final class ColonyShipQueueRepository extends EntityRepository implements Colony
         }
 
         $em->remove($queue);
-        $em->flush();
+        $em->flush(); //TODO really neccessary?
     }
 
     #[Override]

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Index\Action\Logout;
+namespace Stu\Module\Game\Action\Logout;
 
 use Mockery\MockInterface;
 use Override;
@@ -36,6 +36,10 @@ class LogoutTest extends StuTestCase
             ->once()
             ->andReturnFalse();
 
+        $game->shouldReceive('redirectTo')
+            ->with('/index.php')
+            ->once();
+
         $this->subject->handle($game);
     }
 
@@ -48,6 +52,10 @@ class LogoutTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturnTrue();
+
+        $game->shouldReceive('redirectTo')
+            ->with('/index.php')
+            ->once();
 
         $this->session->shouldReceive('logout')
             ->withNoArgs()

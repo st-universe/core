@@ -95,7 +95,7 @@ final class ResearchedRepository extends EntityRepository implements ResearchedR
         $em = $this->getEntityManager();
 
         $em->persist($researched);
-        $em->flush();
+        $em->flush(); //TODO really neccessary?
     }
 
     #[Override]

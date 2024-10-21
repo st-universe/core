@@ -14,7 +14,6 @@ use Stu\Module\Index\Action\DeletionConfirmation\DeletionConfirmationRequestInte
 use Stu\Module\Index\Action\Login\Login;
 use Stu\Module\Index\Action\Login\LoginRequest;
 use Stu\Module\Index\Action\Login\LoginRequestInterface;
-use Stu\Module\Index\Action\Logout\Logout;
 use Stu\Module\Index\Action\Register\Register;
 use Stu\Module\Index\Action\Register\RegisterRequest;
 use Stu\Module\Index\Action\Register\RegisterRequestInterface;
@@ -56,7 +55,6 @@ return [
         Login::ACTION_IDENTIFIER => autowire(Login::class),
         SendPassword::ACTION_IDENTIFIER => autowire(SendPassword::class),
         ResetPassword::ACTION_IDENTIFIER => autowire(ResetPassword::class),
-        Logout::ACTION_IDENTIFIER => autowire(Logout::class),
         DeletionConfirmation::ACTION_IDENTIFIER => autowire(DeletionConfirmation::class)
     ],
     'INDEX_VIEWS' => [

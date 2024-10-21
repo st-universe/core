@@ -52,7 +52,7 @@ final class BuildplanModuleRepository extends EntityRepository implements Buildp
         $em = $this->getEntityManager();
 
         $em->remove($obj);
-        $em->flush();
+        $em->flush(); //TODO really neccessary?
     }
 
     #[Override]

@@ -35,7 +35,7 @@ final class AstroEntryRepository extends EntityRepository implements AstroEntryR
         $em = $this->getEntityManager();
 
         $em->remove($entry);
-        $em->flush();
+        $em->flush(); //TODO really neccessary?
     }
 
 
