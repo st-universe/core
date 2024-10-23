@@ -29,4 +29,6 @@ interface UserTutorialRepositoryInterface extends ObjectRepository
      * @return UserTutorialInterface|null
      */
     public function findByUserAndModule(UserInterface $user, string $module): ?UserTutorialInterface;
+
+    public function truncateByUserAndModule(UserInterface $user, string $module): void;
 }

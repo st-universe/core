@@ -14,6 +14,7 @@ use Stu\Module\Control\Render\Fragments\UserFragment;
 use Stu\Module\Game\Action\Logout\Logout;
 use Stu\Module\Game\Action\SwitchView\SwitchView;
 use Stu\Module\Game\Action\SetTutorial\SetTutorial;
+use Stu\Module\Game\Action\FinishTutorial\FinishTutorial;
 use Stu\Module\Game\Lib\Component\ComponentEnum;
 use Stu\Module\Game\Lib\Component\ComponentLoader;
 use Stu\Module\Game\Lib\Component\ComponentLoaderInterface;
@@ -76,7 +77,8 @@ return [
     'GAME_ACTIONS' => [
         SwitchView::ACTION_IDENTIFIER => autowire(SwitchView::class),
         Logout::ACTION_IDENTIFIER => autowire(Logout::class),
-        SetTutorial::ACTION_IDENTIFIER => autowire(SetTutorial::class)
+        SetTutorial::ACTION_IDENTIFIER => autowire(SetTutorial::class),
+        FinishTutorial::ACTION_IDENTIFIER => autowire(FinishTutorial::class)
     ],
     'GAME_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
