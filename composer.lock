@@ -9157,7 +9157,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/st-universe/assets.git",
-                "reference": "961b5023d41546214249664a44b0f836c5f86622"
+                "reference": "d1163fec06ce53e19cfbd4e14054b4fab6da49a1"
             },
             "require": {
                 "ext-gd": "*",
@@ -9170,7 +9170,7 @@
                 "proprietary"
             ],
             "description": "STU Assets",
-            "time": "2024-05-26T15:09:33+00:00"
+            "time": "2024-10-18T07:24:07+00:00"
         },
         {
             "name": "symfony/finder",
