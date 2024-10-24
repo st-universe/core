@@ -215,7 +215,7 @@ return [
             GuiComponentEnum::SHIP_BUILDPLANS->value => autowire(ShipBuildplansProvider::class),
             GuiComponentEnum::SHIP_REPAIR->value => autowire(ShipRepairProvider::class),
             GuiComponentEnum::SHIP_RETROFIT->value => autowire(ShipRetrofitProvider::class),
-            GuiComponentEnum::SHIP_DISASSEMBLY->value => autowire(ShipDisassemblyProvider::class),
+            GuiComponentEnum::SHIP_DISASSEMBLY->value => autowire(ShipDisassemblyProvider::class)
         ]
     ),
     ColonyLibFactoryInterface::class => autowire(ColonyLibFactory::class),
