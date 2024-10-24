@@ -11,6 +11,7 @@ use Stu\Module\Control\Render\Fragments\MessageFolderFragment;
 use Stu\Module\Control\Render\Fragments\ResearchFragment;
 use Stu\Module\Control\Render\Fragments\ServertimeFragment;
 use Stu\Module\Control\Render\Fragments\UserFragment;
+use Stu\Module\Game\Action\Logout\Logout;
 use Stu\Module\Game\Action\SwitchView\SwitchView;
 use Stu\Module\Game\Lib\Component\ComponentEnum;
 use Stu\Module\Game\Lib\Component\ComponentLoader;
@@ -71,7 +72,8 @@ return [
         ]
     ),
     'GAME_ACTIONS' => [
-        SwitchView::ACTION_IDENTIFIER => autowire(SwitchView::class)
+        SwitchView::ACTION_IDENTIFIER => autowire(SwitchView::class),
+        Logout::ACTION_IDENTIFIER => autowire(Logout::class),
     ],
     'GAME_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),

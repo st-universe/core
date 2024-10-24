@@ -49,7 +49,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
         $em = $this->getEntityManager();
 
         $em->remove($colony);
-        $em->flush();
+        $em->flush(); //TODO really neccessary?
     }
 
     #[Override]

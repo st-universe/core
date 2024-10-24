@@ -27,7 +27,7 @@ final class GameRequestRepository extends EntityRepository implements GameReques
     {
         $em = $this->getEntityManager();
         $em->persist($gameRequest);
-        $em->flush();
+        $em->flush(); //TODO really neccessary?
     }
 
     #[Override]

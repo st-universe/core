@@ -28,7 +28,7 @@ final class AwardRepository extends EntityRepository implements AwardRepositoryI
         $em = $this->getEntityManager();
 
         $em->remove($award);
-        $em->flush();
+        $em->flush(); //TODO really neccessary?
     }
 
     #[Override]

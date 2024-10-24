@@ -44,7 +44,7 @@ final class LaunchEscapePods implements LaunchEscapePodsInterface
         $this->returnToSafety($pods, $ship);
 
         $this->shipRepository->save($pods);
-        $this->entityManager->flush();
+        $this->entityManager->flush(); //TODO really neccessary?
         return $pods;
     }
 
