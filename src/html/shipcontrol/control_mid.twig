@@ -79,8 +79,10 @@ canColonize, closestAnomalyDistance) %}
     <tr>
         <td title="Bussard-Kollektor Einstellungen" colspan="2">
             <a href="javascript:void(0);" onclick="showBussardCollectorWindow();"
-                onmouseover="cp('bussardcollecotr','buttons/bussard_2')" onmouseout="cp('bussardcollector','buttons/bussard_1')">
-                <img style="width: 20px;" src="/assets/buttons/bussard_1.png" name="bussardcollector" /> Bussard-Kollektor
+                onmouseover="cp('bussardcollecotr','buttons/bussard_2')"
+                onmouseout="cp('bussardcollector','buttons/bussard_1')">
+                <img style="width: 20px;" src="/assets/buttons/bussard_1.png" name="bussardcollector" />
+                Bussard-Kollektor
                 Einstellungen
             </a>
         </td>
@@ -90,8 +92,10 @@ canColonize, closestAnomalyDistance) %}
     <tr>
         <td title="Aggregation-System Einstellungen" colspan="2">
             <a href="javascript:void(0);" onclick="showAggregationSystemWindow();"
-                onmouseover="cp('aggregationsystem','buttons/aggsys_2')" onmouseout="cp('aggregationsystem','buttons/aggsys_1')">
-                <img style="width: 20px;" src="/assets/buttons/aggsys_1.png" name="aggregationsystem" /> Aggregation-System
+                onmouseover="cp('aggregationsystem','buttons/aggsys_2')"
+                onmouseout="cp('aggregationsystem','buttons/aggsys_1')">
+                <img style="width: 20px;" src="/assets/buttons/aggsys_1.png" name="aggregationsystem" />
+                Aggregation-System
                 Einstellungen
             </a>
         </td>
@@ -138,6 +142,18 @@ canColonize, closestAnomalyDistance) %}
         </td>
         <td>
             {{ ship.getStoredShuttleCount }} / {{ ship.getRump.getShuttleSlots }} geladen
+        </td>
+    </tr>
+    {% endif %}
+    {% set tradePost = ship.getTradePost %}
+    {% if tradePost %}
+    <tr>
+        <td colspan="2">
+            <a href="javascript:void(0);" onclick="openTradeMenu({{ tradePost.getId }});"
+                onmouseover="cp('trade','buttons/menu_trade1')" onmouseout="cp('trade','buttons/menu_trade0')">
+                <img src="/assets/buttons/menu_trade0.png" title="Handel" name="trade" />
+                Warenkontotransfer
+            </a>
         </td>
     </tr>
     {% endif %}
