@@ -139,6 +139,7 @@ use Stu\Orm\Entity\TradePost;
 use Stu\Orm\Entity\TradeShoutbox;
 use Stu\Orm\Entity\TradeTransaction;
 use Stu\Orm\Entity\TradeTransfer;
+use Stu\Orm\Entity\TutorialStep;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserAward;
 use Stu\Orm\Entity\UserCharacter;
@@ -288,6 +289,7 @@ return [
     TradeShoutboxRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(TradeShoutbox::class),
     TradeTransactionRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(TradeTransaction::class),
     TradeTransferRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(TradeTransfer::class),
+    TutorialStepRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(TutorialStep::class),
     UserAwardRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserAward::class),
     UserCharacterRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserCharacter::class),
     UserLayerRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserLayer::class),

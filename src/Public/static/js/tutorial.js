@@ -7,11 +7,11 @@ let originalFunction = null;
 
 function openPaddPopup(tutorialSteps, newStepIndex) {
     currentStepIndex = newStepIndex;
-    
+
     const currentStep = tutorialSteps[currentStepIndex];
-	const hasInnerUpdate = currentStep.innerUpdate;
-	const title = currentStep.title;
-	const text = currentStep.text;
+    const hasInnerUpdate = currentStep.innerUpdate;
+    const title = currentStep.title;
+    const text = currentStep.text;
 
     let padd = document.getElementById('padd-popup');
     let nextButton;
@@ -25,9 +25,9 @@ function openPaddPopup(tutorialSteps, newStepIndex) {
         padd.style.transform = 'translate(-50%, -50%)';
         padd.style.width = '350px';
         padd.style.height = '500px';
-        padd.style.backgroundColor = '#A6A6A6'; 
+        padd.style.backgroundColor = '#A6A6A6';
         padd.style.borderRadius = '20px';
-        padd.style.boxShadow = 'inset 0 0 0 5px #666666'; 
+        padd.style.boxShadow = 'inset 0 0 0 5px #666666';
         padd.style.zIndex = '1003';
         padd.style.padding = '10px';
         padd.style.display = 'flex';
@@ -36,7 +36,7 @@ function openPaddPopup(tutorialSteps, newStepIndex) {
         padd.style.cursor = 'move';
         padd.style.transition = 'left 0.5s ease-out';
 
-        
+
         const screen = document.createElement('div');
         screen.id = 'padd-screen';
         screen.style.backgroundColor = '#000000';
@@ -56,7 +56,7 @@ function openPaddPopup(tutorialSteps, newStepIndex) {
         titleField.id = 'padd-title';
         titleField.style.fontFamily = 'LCARS';
         titleField.style.fontSize = '24px';
-        titleField.style.color = '#FFCC00'; 
+        titleField.style.color = '#FFCC00';
         titleField.style.marginBottom = '10px';
 
         const textField = document.createElement('div');
@@ -92,13 +92,13 @@ function openPaddPopup(tutorialSteps, newStepIndex) {
         backButton.style.fontFamily = 'LCARS';
         backButton.addEventListener('click', () => {
             if (currentStepIndex > 0) {
-				currentStepIndex--;
-				console.log('Current Step Index Backbutton:', currentStepIndex);
-				console.log('Back original Function 1:', originalFunction);
-				originalFunction = null;
-				console.log('Back original Function 2:', originalFunction);
+                currentStepIndex--;
+                console.log('Current Step Index Backbutton:', currentStepIndex);
+                console.log('Back original Function 1:', originalFunction);
+                originalFunction = null;
+                console.log('Back original Function 2:', originalFunction);
                 updateTutorialStep(tutorialSteps, null, currentStepIndex);
-				saveTutorialStep('colony', currentStepIndex);
+                saveTutorialStep('colony', currentStepIndex);
             }
         });
 
@@ -122,7 +122,7 @@ function openPaddPopup(tutorialSteps, newStepIndex) {
 
         document.body.appendChild(padd);
 
-  
+
         addDragAndDrop(padd);
 
 
@@ -134,21 +134,21 @@ function openPaddPopup(tutorialSteps, newStepIndex) {
         nextButton = document.getElementById('next-button');
     }
 
-   
+
     if (hasInnerUpdate) {
-        nextButton.style.backgroundColor = '#666666'; 
+        nextButton.style.backgroundColor = '#666666';
         nextButton.style.cursor = 'not-allowed';
-        nextButton.onclick = null; 
+        nextButton.onclick = null;
     } else {
         nextButton.style.backgroundColor = '#FF6A00';
         nextButton.style.cursor = 'pointer';
         nextButton.onclick = () => {
             if (currentStepIndex < tutorialSteps.length - 1) {
-				currentStepIndex++;
-				console.log('Current Step Index Nextbutton:', currentStepIndex);
-				console.log('originalFunction Nextbutton 1:', originalFunction);
-				originalFunction = null;
-				console.log('originalFunction Nextbutton 1:', originalFunction);
+                currentStepIndex++;
+                console.log('Current Step Index Nextbutton:', currentStepIndex);
+                console.log('originalFunction Nextbutton 1:', originalFunction);
+                originalFunction = null;
+                console.log('originalFunction Nextbutton 1:', originalFunction);
                 updateTutorialStep(tutorialSteps, null, currentStepIndex);
                 saveTutorialStep('colony', currentStepIndex);
             }
@@ -172,7 +172,7 @@ function addDragAndDrop(element) {
         offsetX = e.clientX - element.getBoundingClientRect().left;
         offsetY = e.clientY - element.getBoundingClientRect().top;
         element.style.cursor = 'grabbing';
-        element.style.transition = 'none'; 
+        element.style.transition = 'none';
     });
 
     document.addEventListener('mousemove', (e) => {
@@ -191,19 +191,19 @@ function addDragAndDrop(element) {
 
 
 function initOverlay(innerContentElement) {
-	const innerRect = innerContentElement.getBoundingClientRect();
+    const innerRect = innerContentElement.getBoundingClientRect();
     let overlay = document.getElementById('tutorial-overlay');
     if (!overlay) {
         overlay = document.createElement('div');
         overlay.id = 'tutorial-overlay';
         overlay.style.position = 'fixed';
         overlay.style.top = `${innerRect.top}px`;
-        overlay.style.left = `${innerRect.left}px`;	
+        overlay.style.left = `${innerRect.left}px`;
         overlay.style.width = '100vw';
         overlay.style.height = '100vh';
         overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.4)';
-		overlay.style.zIndex = '1000';
-		
+        overlay.style.zIndex = '1000';
+
 
         document.body.appendChild(overlay);
     }
@@ -236,8 +236,10 @@ function updateFramesPositions() {
 
 const originalFunctions = {};
 
-function updateTutorialStep(tutorialSteps, startIndex, currentStepIndex) {
- 
+function updateTutorialStep(tutorialStepsJson, startIndex, currentStepIndex) {
+
+    let tutorialSteps = JSON.parse(tutorialStepsJson);
+
     if (startIndex != null) {
         currentStepIndex = startIndex;
         const fallbackIndex = tutorialSteps[currentStepIndex].fallbackIndex;
@@ -255,25 +257,24 @@ function updateTutorialStep(tutorialSteps, startIndex, currentStepIndex) {
     console.log('InnerUpdate:', innerUpdate);
     console.log('window InnerUpdate:', window[innerUpdate]);
 
-    
-    tutorialSteps.forEach(step => {
+
+    for (const key in tutorialSteps) {
+        step = tutorialSteps[key];
         const stepElements = step.elementIds.map(id => document.getElementById(id));
         stepElements.forEach(element => {
             if (element) {
                 removeHighlightFromElement(element);
             }
         });
-    });
-
+    }
 
     const overlay = initOverlay(innerContentElement);
-
 
     elements.forEach(element => {
         addHighlightToElement(element);
     });
 
- 
+
     initCloseButton(overlay, elements, innerContentElement);
 
     if (innerUpdate) {
@@ -282,22 +283,22 @@ function updateTutorialStep(tutorialSteps, startIndex, currentStepIndex) {
         }
 
         if (!window[innerUpdate].isModified) {
-            window[innerUpdate] = function(...args) {
+            window[innerUpdate] = function (...args) {
                 window[innerUpdate].isModified = true;
 
-            
+
                 originalFunctions[innerUpdate].apply(this, args);
 
-           
+
                 if (currentStepIndex < tutorialSteps.length - 1) {
                     setTimeout(() => {
                         currentStepIndex++;
                         updateTutorialStep(tutorialSteps, null, currentStepIndex);
                         saveTutorialStep('colony', currentStepIndex);
-                    }, 500); 
+                    }, 500);
                 }
 
-            
+
                 window[innerUpdate] = originalFunctions[innerUpdate];
                 delete window[innerUpdate].isModified;
             };
@@ -311,17 +312,17 @@ function updateTutorialStep(tutorialSteps, startIndex, currentStepIndex) {
 
 
 function removeHighlightFromElement(element) {
-    element.style.border = ''; 
-    element.style.zIndex = ''; 
-    element.style.position = ''; 
-    element.style.animation = ''; 
+    element.style.border = '';
+    element.style.zIndex = '';
+    element.style.position = '';
+    element.style.animation = '';
 }
 
 function addHighlightToElement(element) {
-    
+
     if (!document.getElementById('pulse-animation')) {
         const style = document.createElement('style');
-        style.id = 'pulse-animation'; 
+        style.id = 'pulse-animation';
         style.innerHTML = `
         @keyframes pulse {
             0% {
@@ -339,10 +340,10 @@ function addHighlightToElement(element) {
     }
 
 
-    element.style.zIndex = '1001'; 
-    element.style.position = 'relative'; 
-    element.style.border = '2px solid white'; 
-    element.style.animation = 'pulse 2s infinite'; 
+    element.style.zIndex = '1001';
+    element.style.position = 'relative';
+    element.style.border = '2px solid white';
+    element.style.animation = 'pulse 2s infinite';
 }
 
 
@@ -360,7 +361,7 @@ function initCloseButton(overlay, elements, innerContentElement) {
         closeButton.style.zIndex = '1002';
 
 
-        closeButton.style.backgroundColor = '#FF6A00'; 
+        closeButton.style.backgroundColor = '#FF6A00';
         closeButton.style.color = '#FFFFFF';
         closeButton.style.border = 'none';
         closeButton.style.padding = '0';
@@ -390,7 +391,7 @@ function initCloseButton(overlay, elements, innerContentElement) {
             closeButton.style.transform = 'translateX(0)';
         });
 
-      
+
         closeButton.addEventListener('mousedown', () => {
             closeButton.style.transform = 'translateX(5px) scale(0.95)';
             closeButton.style.boxShadow = '0 0 10px rgba(255, 140, 0, 0.5)';
@@ -401,25 +402,25 @@ function initCloseButton(overlay, elements, innerContentElement) {
             closeButton.style.boxShadow = '0 0 25px rgba(255, 140, 0, 1)';
         });
 
-      
+
         closeButton.addEventListener('click', () => {
-        
+
             overlay.remove();
 
-			elements.forEach(element => {
-				removeHighlightFromElement(element);
-                element.style.border = ''; 
-                element.style.zIndex = ''; 
+            elements.forEach(element => {
+                removeHighlightFromElement(element);
+                element.style.border = '';
+                element.style.zIndex = '';
                 element.style.position = '';
             });
 
-           
+
             const padd = document.getElementById('padd-popup');
             if (padd) {
                 padd.remove();
             }
 
-			finishTutorial('colony');
+            finishTutorial('colony');
             closeButton.remove();
         });
 
@@ -441,10 +442,10 @@ function saveTutorialStep(module, currentStepIndex) {
                 nextstep: currentStepIndex
             },
             evalScripts: true,
-            onSuccess: function(response) {
+            onSuccess: function (response) {
                 console.log('Tutorial step saved successfully.');
             },
-            onFailure: function(response) {
+            onFailure: function (response) {
                 console.error('Failed to save tutorial step:', response.statusText);
             }
         });
@@ -452,18 +453,18 @@ function saveTutorialStep(module, currentStepIndex) {
 }
 
 function finishTutorial(module) {
-	new Ajax.Request('game.php', {
-		method: 'post',
-		parameters: {
-			B_FINISH_TUTORIAL: 1,
-			module: module
-		},
-		evalScripts: true,
-		onSuccess: function(response) {
-			console.log('Tutorial finished successfully.');
-		},
-		onFailure: function(response) {
-			console.error('Failed to finish tutorial:', response.statusText);
-		}
-	});
+    new Ajax.Request('game.php', {
+        method: 'post',
+        parameters: {
+            B_FINISH_TUTORIAL: 1,
+            module: module
+        },
+        evalScripts: true,
+        onSuccess: function (response) {
+            console.log('Tutorial finished successfully.');
+        },
+        onFailure: function (response) {
+            console.error('Failed to finish tutorial:', response.statusText);
+        }
+    });
 }

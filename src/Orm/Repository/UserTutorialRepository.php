@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stu\Orm\Entity\TutorialStep;
 use Stu\Orm\Entity\UserTutorial;
 use Stu\Orm\Entity\UserTutorialInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -41,27 +42,22 @@ final class UserTutorialRepository extends EntityRepository implements UserTutor
         return $this->findBy(['user' => $user]);
     }
 
-    /**
-     * @param UserInterface $user
-     * @param string $module
-     * @return UserTutorialInterface|null
-     */
-    public function findByUserAndModule(UserInterface $user, string $module): ?UserTutorialInterface
-    {
-        return $this->findOneBy(['user' => $user, 'module' => $module]);
-    }
-
     public function truncateByUserAndModule(UserInterface $user, string $module): void
     {
         $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'DELETE FROM %s t WHERE t.user = :userId AND t.module = :module',
-                    UserTutorial::class
+                    'DELETE ut FROM %s ut
+                    WHERE t.user = :user
+                    AND EXISTS (SELECT ts FROM %s ts
+                                WHERE ts.id = ut.tutorial_step_id
+                                AND ts.module = :module)',
+                    UserTutorial::class,
+                    TutorialStep::class
                 )
             )
             ->setParameters([
-                'userId' => $user->getId(),
+                'user' => $user,
                 'module' => $module
             ])
             ->execute();

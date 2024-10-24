@@ -23,12 +23,5 @@ interface UserTutorialRepositoryInterface extends ObjectRepository
      */
     public function findByUser(UserInterface $user): array;
 
-    /**
-     * @param UserInterface $user
-     * @param string $module
-     * @return UserTutorialInterface|null
-     */
-    public function findByUserAndModule(UserInterface $user, string $module): ?UserTutorialInterface;
-
     public function truncateByUserAndModule(UserInterface $user, string $module): void;
 }

@@ -1,4 +1,3 @@
-
 <div id="colmenubutton_2" class="colonymenu colmenubutton selected"
     onclick="clearAjaxCallbacks(); switchColonySubmenu(2);">
     <img src="/assets/buttons/lupe2.png" /> <span>Informationen</span>
@@ -40,8 +39,3 @@
 <div id="submenu" class="colonymenu_container" onkeydown="return event.key != 'Enter';">
     {% include SELECTED_COLONY_SUB_MENU_TEMPLATE %}
 </div>
-{% if TUTORIAL %}
-<script>
-    updateTutorialStep({{ TUTORIAL|raw }}, {{STEP}});
-</script>
-{% endif %}

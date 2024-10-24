@@ -153,7 +153,7 @@ class User implements UserInterface
     /**
      * @var ArrayCollection<int, UserCharacterInterface>
      */
-    #[OneToMany(targetEntity: 'UserCharacter', mappedBy: 'user', cascade: ['persist'])]
+    #[OneToMany(targetEntity: 'UserCharacter', mappedBy: 'user')]
     private Collection $characters;
 
     /**
@@ -169,7 +169,7 @@ class User implements UserInterface
     /**
      * @var ArrayCollection<int, UserTutorialInterface>
      */
-    #[OneToMany(targetEntity: 'UserTutorial', mappedBy: 'user', cascade: ['persist', 'remove'])]
+    #[OneToMany(targetEntity: 'UserTutorial', mappedBy: 'user', indexBy: 'tutorial_step_id')]
     private Collection $tutorials;
 
     /** @var null|array<mixed> */

@@ -6,7 +6,6 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
@@ -20,24 +19,19 @@ class UserTutorial implements UserTutorialInterface
 {
     #[Id]
     #[Column(type: 'integer')]
-    #[GeneratedValue(strategy: 'IDENTITY')]
-    private int $id;
+    private int $user_id;
+
+    #[Id]
+    #[Column(type: 'integer')]
+    private int $tutorial_step_id;
 
     #[ManyToOne(targetEntity: 'User', inversedBy: 'tutorials')]
-    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false)]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
-    #[Column(type: 'string', length: 255)]
-    private string $module;
-
-    #[Column(type: 'integer')]
-    private int $step;
-
-    #[Override]
-    public function getId(): int
-    {
-        return $this->id;
-    }
+    #[ManyToOne(targetEntity: 'TutorialStep')]
+    #[JoinColumn(name: 'tutorial_step_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    private TutorialStepInterface $tutorialStep;
 
     #[Override]
     public function getUser(): UserInterface
@@ -53,28 +47,15 @@ class UserTutorial implements UserTutorialInterface
     }
 
     #[Override]
-    public function getModule(): string
+    public function getTutorialStep(): TutorialStepInterface
     {
-        return $this->module;
+        return $this->tutorialStep;
     }
 
     #[Override]
-    public function setModule(string $module): UserTutorialInterface
+    public function setTutorialStep(TutorialStepInterface $tutorialStep): UserTutorialInterface
     {
-        $this->module = $module;
-        return $this;
-    }
-
-    #[Override]
-    public function getStep(): int
-    {
-        return $this->step;
-    }
-
-    #[Override]
-    public function setStep(int $step): UserTutorialInterface
-    {
-        $this->step = $step;
+        $this->tutorialStep = $tutorialStep;
         return $this;
     }
 }

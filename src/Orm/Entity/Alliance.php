@@ -65,7 +65,7 @@ class Alliance implements AllianceInterface
     /**
      * @var ArrayCollection<int, AllianceJobInterface>
      */
-    #[OneToMany(targetEntity: 'AllianceJob', mappedBy: 'alliance', cascade: ['remove'], indexBy: 'type')]
+    #[OneToMany(targetEntity: 'AllianceJob', mappedBy: 'alliance', indexBy: 'type')]
     private Collection $jobs;
 
 

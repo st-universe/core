@@ -33,6 +33,7 @@ use Stu\Module\Control\Exception\ItemNotFoundException;
 use Stu\Module\Control\Render\GameTwigRendererInterface;
 use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
 use Stu\Module\Game\Lib\GameSetupInterface;
+use Stu\Module\Game\Lib\TutorialProvider;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -113,6 +114,7 @@ final class GameController implements GameControllerInterface
         private EventDispatcherInterface $eventDispatcher,
         private GameRequestSaverInterface $gameRequestSaver,
         private GameSetupInterface $gameSetup,
+        private TutorialProvider $tutorialProvider,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
@@ -743,15 +745,14 @@ final class GameController implements GameControllerInterface
     {
         $viewFromContext = $this->getViewContext(ViewContextTypeEnum::VIEW);
 
-        foreach ($views as $viewIdentifier => $config) {
+        foreach ($views as $viewIdentifier => $view) {
             if (
                 request::indString($viewIdentifier) !== false
                 || $viewIdentifier === $viewFromContext
             ) {
                 $gameRequest->setView($viewIdentifier);
 
-                $config->handle($this);
-                $this->entityManager->flush();
+                $this->handleView($view);
 
                 return;
             }
@@ -760,9 +761,22 @@ final class GameController implements GameControllerInterface
         $view = $views[static::DEFAULT_VIEW] ?? null;
 
         if ($view !== null) {
-            $view->handle($this);
-            $this->entityManager->flush();
+            $this->handleView($view);
         }
+    }
+
+    private function handleView(ViewControllerInterface $view): void
+    {
+        $view->handle($this);
+
+        if ($view instanceof ViewWithTutorialInterface) {
+            $this->tutorialProvider->setTemplateVariables(
+                $view->getViewContext(),
+                $this
+            );
+        }
+
+        $this->entityManager->flush();
     }
 
     #[Override]
