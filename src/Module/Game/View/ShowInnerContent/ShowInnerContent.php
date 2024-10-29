@@ -17,6 +17,8 @@ final class ShowInnerContent implements ViewControllerInterface, ViewWithTutoria
 {
     public const string VIEW_IDENTIFIER = 'SHOW_INNER_CONTENT';
 
+    private ModuleViewEnum $moduleView;
+
     public function __construct(private ViewComponentLoaderInterface $viewComponentLoader) {}
 
     #[Override]
@@ -24,6 +26,8 @@ final class ShowInnerContent implements ViewControllerInterface, ViewWithTutoria
     {
         /** @var ModuleViewEnum  */
         $view = $game->getViewContext(ViewContextTypeEnum::MODULE_VIEW);
+
+        $this->moduleView = $view;
 
         $this->viewComponentLoader->registerViewComponents($view, $game);
         $game->setTemplateVar('VIEW_TEMPLATE', $view->getTemplate());
@@ -33,6 +37,6 @@ final class ShowInnerContent implements ViewControllerInterface, ViewWithTutoria
 
     public function getViewContext(): ViewContext
     {
-        return new ViewContext(ModuleViewEnum::COLONY, self::VIEW_IDENTIFIER);
+        return new ViewContext($this->moduleView, self::VIEW_IDENTIFIER);
     }
 }

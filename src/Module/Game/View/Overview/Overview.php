@@ -18,6 +18,8 @@ final class Overview implements ViewControllerInterface, ViewWithTutorialInterfa
 {
     public const string VIEW_IDENTIFIER = 'OVERVIEW';
 
+    private ModuleViewEnum $moduleView;
+
     public function __construct(
         private ViewComponentLoaderInterface $viewComponentLoader,
     ) {}
@@ -26,7 +28,7 @@ final class Overview implements ViewControllerInterface, ViewWithTutorialInterfa
     public function handle(GameControllerInterface $game): void
     {
         $moduleView = $this->getModuleView($game);
-
+        $this->moduleView = $this->getModuleView($game);
         $this->viewComponentLoader->registerViewComponents($moduleView, $game);
 
         $game->setPageTitle($moduleView->getTitle());
@@ -49,6 +51,6 @@ final class Overview implements ViewControllerInterface, ViewWithTutorialInterfa
 
     public function getViewContext(): ViewContext
     {
-        return new ViewContext(ModuleViewEnum::COLONY, self::VIEW_IDENTIFIER);
+        return new ViewContext($this->moduleView, self::VIEW_IDENTIFIER);
     }
 }
