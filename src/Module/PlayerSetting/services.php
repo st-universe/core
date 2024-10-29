@@ -22,7 +22,9 @@ use Stu\Module\PlayerSetting\Action\ChangeSettings\ChangeSettings;
 use Stu\Module\PlayerSetting\Action\ChangeUserName\ChangeUserName;
 use Stu\Module\PlayerSetting\Action\ChangeUserName\ChangeUserNameRequest;
 use Stu\Module\PlayerSetting\Action\ChangeUserName\ChangeUserNameRequestInterface;
+use Stu\Module\PlayerSetting\Action\CreateTutorials\CreateTutorials;
 use Stu\Module\PlayerSetting\Action\DeleteAccount\DeleteAccount;
+use Stu\Module\PlayerSetting\Action\DeleteTutorials\DeleteTutorials;
 use Stu\Module\PlayerSetting\Lib\ChangeUserSetting;
 use Stu\Module\PlayerSetting\Lib\ChangeUserSettingInterface;
 
@@ -43,7 +45,9 @@ return [
         ChangeDescription::ACTION_IDENTIFIER => autowire(ChangeDescription::class),
         ChangeSettings::ACTION_IDENTIFIER => autowire(ChangeSettings::class),
         ActivateVacation::ACTION_IDENTIFIER => autowire(ActivateVacation::class),
+        CreateTutorials::ACTION_IDENTIFIER => autowire(CreateTutorials::class),
         DeleteAccount::ACTION_IDENTIFIER => autowire(DeleteAccount::class),
+        DeleteTutorials::ACTION_IDENTIFIER => autowire(DeleteTutorials::class),
     ],
     'PLAYER_SETTING_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),

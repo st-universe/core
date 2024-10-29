@@ -1,4 +1,4 @@
-// #### TUTORIAL STUFF: DO NOT TOUCH sonst Finger ab ####
+// #### TUTORIAL STUFF
 
 let currentStepIndex = 0;
 let hasSlidIn = false;
@@ -7,13 +7,11 @@ let originalFunction = null;
 
 function openPaddPopup(tutorialSteps, newStepIndex) {
     currentStepIndex = newStepIndex;
-
     const currentStep = tutorialSteps[currentStepIndex];
     const hasInnerUpdate = currentStep.innerUpdate;
     const title = currentStep.title;
     const text = currentStep.text;
     var stepId = currentStep.id;
-
     let padd = document.getElementById('padd-popup');
     let nextButton;
 
@@ -95,10 +93,7 @@ function openPaddPopup(tutorialSteps, newStepIndex) {
             if (currentStepIndex > 0) {
                 oldstepIndex = currentStepIndex;
                 currentStepIndex--;
-                console.log('Current Step Index Backbutton:', currentStepIndex);
-                console.log('Back original Function 1:', originalFunction);
                 originalFunction = null;
-                console.log('Back original Function 2:', originalFunction);
                 updateTutorialStep(tutorialSteps, null, currentStepIndex);
                 saveTutorialStep(stepId, 'back');
             }
@@ -124,9 +119,7 @@ function openPaddPopup(tutorialSteps, newStepIndex) {
 
         document.body.appendChild(padd);
 
-
         addDragAndDrop(padd);
-
 
         setTimeout(() => {
             padd.style.left = '50%';
@@ -136,35 +129,28 @@ function openPaddPopup(tutorialSteps, newStepIndex) {
         nextButton = document.getElementById('next-button');
     }
 
-
-    if (hasInnerUpdate) {
+    if (hasInnerUpdate || !tutorialSteps[currentStepIndex + 1]) {
         nextButton.style.backgroundColor = '#666666';
         nextButton.style.cursor = 'not-allowed';
         nextButton.onclick = null;
-    } else {
+    }
+     else {
         nextButton.style.backgroundColor = '#FF6A00';
         nextButton.style.cursor = 'pointer';
         nextButton.onclick = () => {
             if (currentStepIndex < tutorialSteps.length - 1) {
                 oldstepIndex = currentStepIndex;
                 currentStepIndex++;
-                console.log('Current Step Index Nextbutton:', currentStepIndex);
-                console.log('originalFunction Nextbutton 1:', originalFunction);
                 originalFunction = null;
-                console.log('originalFunction Nextbutton 1:', originalFunction);
                 updateTutorialStep(tutorialSteps, null, currentStepIndex);
                 saveTutorialStep(stepId, 'forward');
             }
         };
     }
 
-
     document.getElementById('padd-title').innerText = title;
     document.getElementById('padd-text').innerText = text;
 }
-
-
-
 
 function addDragAndDrop(element) {
     let isDragging = false;
@@ -192,7 +178,6 @@ function addDragAndDrop(element) {
     });
 }
 
-
 function initOverlay(innerContentElement) {
     const innerRect = innerContentElement.getBoundingClientRect();
     let overlay = document.getElementById('tutorial-overlay');
@@ -207,18 +192,14 @@ function initOverlay(innerContentElement) {
         overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.4)';
         overlay.style.zIndex = '1000';
 
-
         document.body.appendChild(overlay);
     }
     return overlay;
 }
 
 let frames = [];
-
-
 window.addEventListener('scroll', updateFramesPositions);
 window.addEventListener('resize', updateFramesPositions);
-
 
 function updateFramePosition(frame, targetElement) {
     const rect = targetElement.getBoundingClientRect();
@@ -238,9 +219,10 @@ function updateFramesPositions() {
 }
 
 const originalFunctions = {};
-
+var isTutorial = false;
 function updateTutorialStep(tutorialStepsJson, startIndex, currentStepIndex) {
     let tutorialSteps;
+    isTutorial = true;
 
     if (typeof tutorialStepsJson === 'string') {
         tutorialSteps = JSON.parse(tutorialStepsJson);
@@ -261,14 +243,6 @@ function updateTutorialStep(tutorialStepsJson, startIndex, currentStepIndex) {
     const elements = elementIds.map(id => document.getElementById(id));
     const innerContentElement = document.getElementById('innerContent');
     var stepId = currentStep.id;
-
-    console.log('Step ID:', stepId);
-    console.log('Whole Json:', tutorialStepsJson);
-
-    console.log('Updating tutorial step:', currentStepIndex, currentStep);
-    console.log('InnerUpdate:', innerUpdate);
-    console.log('window InnerUpdate:', window[innerUpdate]);
-
    
     tutorialSteps.forEach(step => {
         if (step.elementIds) {
@@ -282,11 +256,9 @@ function updateTutorialStep(tutorialStepsJson, startIndex, currentStepIndex) {
     });
 
     const overlay = initOverlay(innerContentElement);
-
     elements.forEach(element => {
         addHighlightToElement(element);
     });
-
 
     initCloseButton(overlay, elements, innerContentElement, stepId);
 
@@ -322,9 +294,6 @@ function updateTutorialStep(tutorialStepsJson, startIndex, currentStepIndex) {
     openPaddPopup(tutorialSteps, currentStepIndex);
 }
 
-
-
-
 function removeHighlightFromElement(element) {
     element.style.border = '';
     element.style.zIndex = '';
@@ -333,7 +302,6 @@ function removeHighlightFromElement(element) {
 }
 
 function addHighlightToElement(element) {
-
     if (!document.getElementById('pulse-animation')) {
         const style = document.createElement('style');
         style.id = 'pulse-animation';
@@ -353,14 +321,11 @@ function addHighlightToElement(element) {
         document.head.appendChild(style);
     }
 
-
     element.style.zIndex = '1001';
     element.style.position = 'relative';
     element.style.border = '2px solid white';
     element.style.animation = 'pulse 2s infinite';
 }
-
-
 
 function initCloseButton(overlay, elements, innerContentElement, stepId) {
     const innerRect = innerContentElement.getBoundingClientRect();
@@ -373,7 +338,6 @@ function initCloseButton(overlay, elements, innerContentElement, stepId) {
         closeButton.style.top = `${innerRect.top + 10}px`;
         closeButton.style.left = `${innerRect.left + 10}px`;
         closeButton.style.zIndex = '1002';
-
 
         closeButton.style.backgroundColor = '#FF6A00';
         closeButton.style.color = '#FFFFFF';
@@ -388,10 +352,7 @@ function initCloseButton(overlay, elements, innerContentElement, stepId) {
         closeButton.style.justifyContent = 'center';
         closeButton.style.boxShadow = '0 0 15px rgba(255, 106, 0, 0.7)';
         closeButton.style.transition = 'all 0.3s ease';
-
-
         closeButton.style.clipPath = 'polygon(0% 0%, 100% 0%, 85% 100%, 0% 100%)';
-
 
         closeButton.addEventListener('mouseover', () => {
             closeButton.style.backgroundColor = '#FF8C00';
@@ -405,7 +366,6 @@ function initCloseButton(overlay, elements, innerContentElement, stepId) {
             closeButton.style.transform = 'translateX(0)';
         });
 
-
         closeButton.addEventListener('mousedown', () => {
             closeButton.style.transform = 'translateX(5px) scale(0.95)';
             closeButton.style.boxShadow = '0 0 10px rgba(255, 140, 0, 0.5)';
@@ -415,7 +375,6 @@ function initCloseButton(overlay, elements, innerContentElement, stepId) {
             closeButton.style.transform = 'translateX(5px) scale(1)';
             closeButton.style.boxShadow = '0 0 25px rgba(255, 140, 0, 1)';
         });
-
 
         closeButton.addEventListener('click', () => {
 
@@ -427,7 +386,6 @@ function initCloseButton(overlay, elements, innerContentElement, stepId) {
                 element.style.zIndex = '';
                 element.style.position = '';
             });
-
 
             const padd = document.getElementById('padd-popup');
             if (padd) {
@@ -443,13 +401,37 @@ function initCloseButton(overlay, elements, innerContentElement, stepId) {
     return closeButton;
 }
 
+function clearTutorial() {
+    const closeButton = document.getElementById('tutorial-close-button');
+    if (closeButton) {
+        closeButton.remove();
+    }
+
+    const overlay = document.getElementById('tutorial-overlay');
+    if (overlay) {
+        overlay.remove();
+    }
+
+    const padd = document.getElementById('padd-popup');
+    if (padd) {
+        padd.remove();
+    }
+
+    const highlightedElements = document.querySelectorAll('[style*="z-index: 1001"]');
+    highlightedElements.forEach(element => {
+        element.style.border = '';
+        element.style.zIndex = '';
+        element.style.position = '';
+        element.style.animation = '';
+    });
+}
+
 var saveTimeout;
 function saveTutorialStep(currentStepIndex, directionmark) {
     clearTimeout(saveTimeout);
 
     saveTimeout = setTimeout(function () {
-        console.log('Save currentStepIndex:', currentStepIndex);
-        
+
         new Ajax.Request('game.php', {
             method: 'post',
             parameters: {
@@ -457,31 +439,18 @@ function saveTutorialStep(currentStepIndex, directionmark) {
                 currentstep: currentStepIndex,
                 direction: directionmark
             },
-            evalScripts: true,
-            onSuccess: function (response) {
-                console.log('Tutorial step saved successfully.');
-            },
-            onFailure: function (response) {
-                console.error('Failed to save tutorial step:', response.statusText);
-            }
+            evalScripts: true
         });
     }, 150);
 }
 
 function finishTutorial(stepId) {
-    console.log('Finishing tutorial:', stepId);
     new Ajax.Request('game.php', {
         method: 'post',
         parameters: {
             B_FINISH_TUTORIAL: 1,
             stepId: stepId
         },
-        evalScripts: true,
-        onSuccess: function (response) {
-            console.log('Tutorial finished successfully.');
-        },
-        onFailure: function (response) {
-            console.error('Failed to finish tutorial:', response.statusText);
-        }
+        evalScripts: true
     });
 }

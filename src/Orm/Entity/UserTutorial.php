@@ -58,4 +58,16 @@ class UserTutorial implements UserTutorialInterface
         $this->tutorialStep = $tutorialStep;
         return $this;
     }
+
+    #[Override]
+    public function setUserId(int $userId): void
+    {
+        $this->user_id = $userId;
+    }
+
+    #[Override]
+    public function setTutorialStepId(int $stepId): void
+    {
+        $this->tutorial_step_id = $stepId;
+    }
 }

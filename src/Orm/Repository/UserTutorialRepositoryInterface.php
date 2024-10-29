@@ -24,6 +24,8 @@ interface UserTutorialRepositoryInterface extends ObjectRepository
      */
     public function findByUser(UserInterface $user): array;
 
+    public function truncateByUser(UserInterface $user): void;
+
     public function truncateByUserAndStepId(UserInterface $user, int $stepId): void;
 
     public function findUserTutorialByUserAndViewContext(UserInterface $user, ViewContext $viewContext): ?UserTutorial;

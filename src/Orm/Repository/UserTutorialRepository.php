@@ -44,6 +44,22 @@ final class UserTutorialRepository extends EntityRepository implements UserTutor
         return $this->findBy(['user' => $user]);
     }
 
+    public function truncateByUser(UserInterface $user): void
+    {
+        $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'DELETE FROM %s ut WHERE ut.user = :user',
+                    UserTutorial::class
+                )
+            )
+            ->setParameters([
+                'user' => $user
+            ])
+            ->execute();
+    }
+
+
     public function truncateByUserAndStepId(UserInterface $user, int $stepId): void
     {
         $this->getEntityManager()

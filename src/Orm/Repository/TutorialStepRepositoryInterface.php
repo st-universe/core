@@ -19,4 +19,7 @@ interface TutorialStepRepositoryInterface extends ObjectRepository
     public function findByUserAndViewContext(UserInterface $user, ViewContext $viewContext): array;
 
     public function findByViewContextAndSort(string $viewContext, int $sort): ?TutorialStep;
+
+    /** @return array<TutorialStepInterface> */
+    public function findAllFirstSteps(): array;
 }

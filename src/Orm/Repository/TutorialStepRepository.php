@@ -66,4 +66,17 @@ final class TutorialStepRepository extends EntityRepository implements TutorialS
             'sort' => $sort
         ])->getOneOrNullResult();
     }
+
+    public function findAllFirstSteps(): array
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT ts FROM %s ts WHERE ts.sort = :sort',
+                    TutorialStep::class
+                )
+            )
+            ->setParameter('sort', 1)
+            ->getResult();
+    }
 }
