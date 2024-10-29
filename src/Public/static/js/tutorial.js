@@ -64,6 +64,28 @@ function openPaddPopup(tutorialSteps, newStepIndex) {
         textField.style.fontSize = '18px';
         textField.style.color = '#FFFFFF';
         textField.style.textAlign = 'center';
+        textField.style.overflowY = 'auto';
+        textField.style.maxHeight = '100%';
+        textField.style.width = '100%';
+        textField.style.padding = '10px';
+
+        textField.style.scrollbarWidth = 'thin';
+        textField.style.scrollbarColor = '#FF6A00 #000000';
+
+        const style = document.createElement('style');
+        style.textContent = `
+            #padd-text::-webkit-scrollbar {
+                width: 8px;
+            }
+            #padd-text::-webkit-scrollbar-track {
+                background: #000000;
+            }
+            #padd-text::-webkit-scrollbar-thumb {
+                background-color: #FF6A00;
+                border-radius: 4px;
+            }
+        `;
+        document.head.appendChild(style);
 
         screen.appendChild(titleField);
         screen.appendChild(textField);
@@ -122,7 +144,7 @@ function openPaddPopup(tutorialSteps, newStepIndex) {
         addDragAndDrop(padd);
 
         setTimeout(() => {
-            padd.style.left = '50%';
+            padd.style.left = '80%';
             hasSlidIn = true;
         }, 10);
     } else {

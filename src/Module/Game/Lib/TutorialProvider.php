@@ -63,11 +63,11 @@ final class TutorialProvider
             }
 
             if ($tutorialStep->getTitle() !== null) {
-                $result['title'] = $tutorialStep->getTitle();
+                $result['title'] = trim((string)json_encode($tutorialStep->getTitle()), '"');
             }
 
             if ($tutorialStep->getText() !== null) {
-                $result['text'] = $tutorialStep->getText();
+                $result['text'] = trim((string)json_encode($tutorialStep->getText()), '"');
             }
 
             if ($tutorialStep->getInnerUpdate() !== null) {
@@ -83,8 +83,6 @@ final class TutorialProvider
 
             $payloadArray[] = $result;
         }
-
-
 
         $game->addExecuteJS(sprintf(
             "updateTutorialStep('%s', %d);",
