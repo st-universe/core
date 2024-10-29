@@ -2,15 +2,41 @@
 
 namespace Stu\Orm\Entity;
 
+use Stu\Component\Game\ModuleViewEnum;
+
 interface TutorialStepInterface
 {
     public function getId(): int;
 
-    /** @return array{elementIds: array<string>, title: string, text: string} */
-    public function getPayload(): array;
+    public function getModule(): ModuleViewEnum;
 
-    public function getPreviousStep(): ?TutorialStepInterface;
+    public function setModule(ModuleViewEnum $module): void;
 
-    /** @return array<int> */
-    public function getNextStepIds(): array;
+    public function getView(): ?string;
+
+    public function setView(?string $view): void;
+
+    public function getSort(): int;
+
+    public function setSort(int $sort): void;
+
+    public function getTitle(): ?string;
+
+    public function setTitle(?string $title): void;
+
+    public function getText(): ?string;
+
+    public function setText(?string $text): void;
+
+    public function getElementIds(): ?string;
+
+    public function setElementIds(?string $elementIds): void;
+
+    public function getInnerUpdate(): ?string;
+
+    public function setInnerUpdate(?string $innerUpdate): void;
+
+    public function getFallbackIndex(): ?int;
+
+    public function setFallbackIndex(?int $fallbackIndex): void;
 }

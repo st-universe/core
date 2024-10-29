@@ -9,6 +9,8 @@ use Stu\Orm\Entity\TutorialStep;
 use Stu\Orm\Entity\UserTutorial;
 use Stu\Orm\Entity\UserTutorialInterface;
 use Stu\Orm\Entity\UserInterface;
+use Stu\Module\Control\ViewContext;
+use Stu\Orm\Entity\User;
 
 /**
  * @extends EntityRepository<UserTutorial>
@@ -42,24 +44,93 @@ final class UserTutorialRepository extends EntityRepository implements UserTutor
         return $this->findBy(['user' => $user]);
     }
 
-    public function truncateByUserAndModule(UserInterface $user, string $module): void
+    public function truncateByUserAndStepId(UserInterface $user, int $stepId): void
     {
         $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'DELETE ut FROM %s ut
-                    WHERE t.user = :user
-                    AND EXISTS (SELECT ts FROM %s ts
-                                WHERE ts.id = ut.tutorial_step_id
-                                AND ts.module = :module)',
-                    UserTutorial::class,
-                    TutorialStep::class
+                    'DELETE FROM %s ut
+                    WHERE ut.user = :user
+                    AND ut.tutorial_step_id = :stepId',
+                    UserTutorial::class
                 )
             )
             ->setParameters([
                 'user' => $user,
-                'module' => $module
+                'stepId' => $stepId
             ])
             ->execute();
+    }
+
+    public function findUserTutorialByUserAndViewContext(UserInterface $user, ViewContext $viewContext): ?UserTutorial
+    {
+        $tutorialSteps = $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT ts.id FROM %s ts
+             WHERE ts.module = :module
+             AND ts.view = :view',
+                TutorialStep::class
+            )
+        )->setParameters([
+            'module' => $viewContext->getModule()->value,
+            'view' => $viewContext->getViewIdentifier(),
+        ])->getResult();
+
+        if (empty($tutorialSteps)) {
+            return null;
+        }
+
+
+        $stepIds = array_map(fn($step) => $step['id'], $tutorialSteps);
+
+
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT ut FROM %s ut
+             JOIN %s ts WITH ut.tutorial_step_id = ts.id
+             WHERE ut.user = :user
+             AND ut.tutorial_step_id IN (:stepIds)',
+                UserTutorial::class,
+                TutorialStep::class
+            )
+        )->setParameters([
+            'user' => $user,
+            'stepIds' => $stepIds,
+        ])->getOneOrNullResult();
+    }
+
+    public function findUserTutorialByUserAndView(UserInterface $user, string $view): ?UserTutorial
+    {
+        $tutorialSteps = $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT ts.id FROM %s ts
+             WHERE ts.view = :view',
+                TutorialStep::class
+            )
+        )->setParameters([
+            'view' => $view,
+        ])->getResult();
+
+        if (empty($tutorialSteps)) {
+            return null;
+        }
+
+
+        $stepIds = array_map(fn($step) => $step['id'], $tutorialSteps);
+
+
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT ut FROM %s ut
+             JOIN %s ts WITH ut.tutorial_step_id = ts.id
+             WHERE ut.user = :user
+             AND ut.tutorial_step_id IN (:stepIds)',
+                UserTutorial::class,
+                TutorialStep::class
+            )
+        )->setParameters([
+            'user' => $user,
+            'stepIds' => $stepIds,
+        ])->getOneOrNullResult();
     }
 }

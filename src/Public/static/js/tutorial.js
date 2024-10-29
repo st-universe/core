@@ -12,6 +12,7 @@ function openPaddPopup(tutorialSteps, newStepIndex) {
     const hasInnerUpdate = currentStep.innerUpdate;
     const title = currentStep.title;
     const text = currentStep.text;
+    var stepId = currentStep.id;
 
     let padd = document.getElementById('padd-popup');
     let nextButton;
@@ -92,13 +93,14 @@ function openPaddPopup(tutorialSteps, newStepIndex) {
         backButton.style.fontFamily = 'LCARS';
         backButton.addEventListener('click', () => {
             if (currentStepIndex > 0) {
+                oldstepIndex = currentStepIndex;
                 currentStepIndex--;
                 console.log('Current Step Index Backbutton:', currentStepIndex);
                 console.log('Back original Function 1:', originalFunction);
                 originalFunction = null;
                 console.log('Back original Function 2:', originalFunction);
                 updateTutorialStep(tutorialSteps, null, currentStepIndex);
-                saveTutorialStep('colony', currentStepIndex);
+                saveTutorialStep(stepId, 'back');
             }
         });
 
@@ -144,13 +146,14 @@ function openPaddPopup(tutorialSteps, newStepIndex) {
         nextButton.style.cursor = 'pointer';
         nextButton.onclick = () => {
             if (currentStepIndex < tutorialSteps.length - 1) {
+                oldstepIndex = currentStepIndex;
                 currentStepIndex++;
                 console.log('Current Step Index Nextbutton:', currentStepIndex);
                 console.log('originalFunction Nextbutton 1:', originalFunction);
                 originalFunction = null;
                 console.log('originalFunction Nextbutton 1:', originalFunction);
                 updateTutorialStep(tutorialSteps, null, currentStepIndex);
-                saveTutorialStep('colony', currentStepIndex);
+                saveTutorialStep(stepId, 'forward');
             }
         };
     }
@@ -237,14 +240,19 @@ function updateFramesPositions() {
 const originalFunctions = {};
 
 function updateTutorialStep(tutorialStepsJson, startIndex, currentStepIndex) {
+    let tutorialSteps;
 
-    let tutorialSteps = JSON.parse(tutorialStepsJson);
+    if (typeof tutorialStepsJson === 'string') {
+        tutorialSteps = JSON.parse(tutorialStepsJson);
+    } else {
+        tutorialSteps = tutorialStepsJson;
+    }
 
     if (startIndex != null) {
-        currentStepIndex = startIndex;
+        currentStepIndex = startIndex -1;
         const fallbackIndex = tutorialSteps[currentStepIndex].fallbackIndex;
         if (fallbackIndex != null) {
-            currentStepIndex = fallbackIndex;
+            currentStepIndex = fallbackIndex -1;
         }
     }
     const currentStep = tutorialSteps[currentStepIndex];
@@ -252,21 +260,26 @@ function updateTutorialStep(tutorialStepsJson, startIndex, currentStepIndex) {
     var innerUpdate = currentStep.innerUpdate;
     const elements = elementIds.map(id => document.getElementById(id));
     const innerContentElement = document.getElementById('innerContent');
+    var stepId = currentStep.id;
+
+    console.log('Step ID:', stepId);
+    console.log('Whole Json:', tutorialStepsJson);
 
     console.log('Updating tutorial step:', currentStepIndex, currentStep);
     console.log('InnerUpdate:', innerUpdate);
     console.log('window InnerUpdate:', window[innerUpdate]);
 
-
-    for (const key in tutorialSteps) {
-        step = tutorialSteps[key];
-        const stepElements = step.elementIds.map(id => document.getElementById(id));
-        stepElements.forEach(element => {
-            if (element) {
-                removeHighlightFromElement(element);
-            }
-        });
-    }
+   
+    tutorialSteps.forEach(step => {
+        if (step.elementIds) {
+            const stepElements = step.elementIds.map(id => document.getElementById(id));
+            stepElements.forEach(element => {
+                if (element) {
+                    removeHighlightFromElement(element);
+                }
+            });
+        }
+    });
 
     const overlay = initOverlay(innerContentElement);
 
@@ -275,7 +288,7 @@ function updateTutorialStep(tutorialStepsJson, startIndex, currentStepIndex) {
     });
 
 
-    initCloseButton(overlay, elements, innerContentElement);
+    initCloseButton(overlay, elements, innerContentElement, stepId);
 
     if (innerUpdate) {
         if (!originalFunctions[innerUpdate]) {
@@ -292,9 +305,10 @@ function updateTutorialStep(tutorialStepsJson, startIndex, currentStepIndex) {
 
                 if (currentStepIndex < tutorialSteps.length - 1) {
                     setTimeout(() => {
+                        oldstepIndex = currentStepIndex;
                         currentStepIndex++;
+                        saveTutorialStep(stepId, 'forward');
                         updateTutorialStep(tutorialSteps, null, currentStepIndex);
-                        saveTutorialStep('colony', currentStepIndex);
                     }, 500);
                 }
 
@@ -348,7 +362,7 @@ function addHighlightToElement(element) {
 
 
 
-function initCloseButton(overlay, elements, innerContentElement) {
+function initCloseButton(overlay, elements, innerContentElement, stepId) {
     const innerRect = innerContentElement.getBoundingClientRect();
     let closeButton = document.getElementById('tutorial-close-button');
     if (!closeButton) {
@@ -420,7 +434,7 @@ function initCloseButton(overlay, elements, innerContentElement) {
                 padd.remove();
             }
 
-            finishTutorial('colony');
+            finishTutorial(stepId);
             closeButton.remove();
         });
 
@@ -430,16 +444,18 @@ function initCloseButton(overlay, elements, innerContentElement) {
 }
 
 var saveTimeout;
-function saveTutorialStep(module, currentStepIndex) {
+function saveTutorialStep(currentStepIndex, directionmark) {
     clearTimeout(saveTimeout);
 
     saveTimeout = setTimeout(function () {
+        console.log('Save currentStepIndex:', currentStepIndex);
+        
         new Ajax.Request('game.php', {
             method: 'post',
             parameters: {
                 B_SET_TUTORIAL: 1,
-                module: module,
-                nextstep: currentStepIndex
+                currentstep: currentStepIndex,
+                direction: directionmark
             },
             evalScripts: true,
             onSuccess: function (response) {
@@ -452,12 +468,13 @@ function saveTutorialStep(module, currentStepIndex) {
     }, 150);
 }
 
-function finishTutorial(module) {
+function finishTutorial(stepId) {
+    console.log('Finishing tutorial:', stepId);
     new Ajax.Request('game.php', {
         method: 'post',
         parameters: {
             B_FINISH_TUTORIAL: 1,
-            module: module
+            stepId: stepId
         },
         evalScripts: true,
         onSuccess: function (response) {

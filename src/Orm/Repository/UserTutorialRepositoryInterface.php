@@ -6,6 +6,7 @@ use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\UserTutorial;
 use Stu\Orm\Entity\UserTutorialInterface;
 use Stu\Orm\Entity\UserInterface;
+use Stu\Module\Control\ViewContext;
 
 /**
  * @extends ObjectRepository<UserTutorial>
@@ -23,5 +24,9 @@ interface UserTutorialRepositoryInterface extends ObjectRepository
      */
     public function findByUser(UserInterface $user): array;
 
-    public function truncateByUserAndModule(UserInterface $user, string $module): void;
+    public function truncateByUserAndStepId(UserInterface $user, int $stepId): void;
+
+    public function findUserTutorialByUserAndViewContext(UserInterface $user, ViewContext $viewContext): ?UserTutorial;
+
+    public function findUserTutorialByUserAndView(UserInterface $user, string $view): ?UserTutorial;
 }

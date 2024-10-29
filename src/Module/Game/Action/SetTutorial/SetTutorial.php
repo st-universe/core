@@ -9,77 +9,75 @@ use request;
 use RuntimeException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Repository\UserTutorialRepositoryInterface;
 use Stu\Module\Game\View\Noop\Noop;
-use Stu\Orm\Entity\UserTutorialInterface;
 use Stu\Orm\Repository\TutorialStepRepositoryInterface;
+use Stu\Orm\Repository\UserTutorialRepositoryInterface;
 
 final class SetTutorial implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_SET_TUTORIAL';
 
     public function __construct(
-        private UserTutorialRepositoryInterface $userTutorialRepository,
-        private TutorialStepRepositoryInterface $tutorialStepRepository
+        private TutorialStepRepositoryInterface $tutorialStepRepository,
+        private UserTutorialRepositoryInterface $userTutorialRepository
     ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(Noop::VIEW_IDENTIFIER);
+        $nextTutorial = null;
 
         $currentStepId = request::postIntFatal('currentstep');
-        $isForward = request::postIntFatal('isforward');
+        $direction = request::postStringFatal('direction');
 
-        /** @var ?UserTutorialInterface */
-        $userTutorial = $game->getUser()->getTutorials()->get($currentStepId);
-        if ($userTutorial === null) {
+
+        $tutorial = $this->tutorialStepRepository->findOneBy(
+            ['id' => $currentStepId]
+        );
+        if ($tutorial == null) {
+            throw new RuntimeException('Current Tutorial not found');
+        }
+
+        $view = $tutorial->getView();
+        if ($view == null) {
+            throw new RuntimeException('view not found');
+        }
+
+        $userTutorial = $this->userTutorialRepository->findUserTutorialByUserAndView(
+            $game->getUser(),
+            $view
+        );
+        if ($userTutorial == null) {
+            throw new RuntimeException('UserTutorial not found');
+        }
+
+        $currentTutorial = $userTutorial->getTutorialStep();
+        if ($currentTutorial == null) {
+            throw new RuntimeException('currentTutorial not found');
+        }
+
+        $sort = $currentTutorial->getSort();
+        if ($sort == null) {
+            throw new RuntimeException('sort not found');
+        }
+
+        if ($direction == 'forward') {
+            $nextTutorial = $this->tutorialStepRepository->findByViewContextAndSort($view, $sort + 1);
+        }
+        if ($direction == 'back') {
+            $nextTutorial = $this->tutorialStepRepository->findByViewContextAndSort($view, $sort - 1);
+        }
+
+
+        if ($nextTutorial == null) {
+            throw new RuntimeException(sprintf('Tutorial not found for view %s and sort %d', $view, $sort));
+        }
+
+        if ($userTutorial == null) {
             throw new RuntimeException('this should not happen');
         }
-
-        if ($isForward) {
-            $this->setNextSteps($userTutorial);
-        } else {
-            $this->setPreviousStep($userTutorial);
-        }
-    }
-
-    private function setNextSteps(UserTutorialInterface $userTutorial): void
-    {
-        $user = $userTutorial->getUser();
-        $tutorialStep = $userTutorial->getTutorialStep();
-        $nextStepIds = $tutorialStep->getNextStepIds();
-
-        $this->userTutorialRepository->delete($userTutorial);
-
-        if ($nextStepIds == []) {
-            return;
-        }
-
-        foreach ($nextStepIds as $stepId) {
-            $step = $this->tutorialStepRepository->find($stepId);
-            if ($step === null) {
-                throw new RuntimeException(sprintf('no tutorialStep with id %d present', $stepId));
-            }
-
-            $userTutorial = $this->userTutorialRepository->prototype();
-            $userTutorial->setUser($user);
-            $userTutorial->setTutorialStep($step);
-            $this->userTutorialRepository->save($userTutorial);
-        }
-    }
-
-    private function setPreviousStep(UserTutorialInterface $userTutorial): void
-    {
-
-        $tutorialStep = $userTutorial->getTutorialStep();
-        $previousStep = $tutorialStep->getPreviousStep();
-        if ($previousStep === null) {
-            return;
-        }
-
-        $userTutorial->setTutorialStep($previousStep);
-        $this->userTutorialRepository->save($userTutorial);
+        $userTutorial->setTutorialStep($nextTutorial);
     }
 
     #[Override]

@@ -8,18 +8,19 @@ use Override;
 use request;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewContext;
 use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Control\ViewWithTutorialInterface;
 use Stu\Module\Game\Lib\View\ViewComponentLoaderInterface;
 
-final class Overview implements ViewControllerInterface
+final class Overview implements ViewControllerInterface, ViewWithTutorialInterface
 {
     public const string VIEW_IDENTIFIER = 'OVERVIEW';
 
     public function __construct(
         private ViewComponentLoaderInterface $viewComponentLoader,
-    ) {
-    }
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -44,5 +45,10 @@ final class Overview implements ViewControllerInterface
         }
 
         return $game->getViewContext(ViewContextTypeEnum::MODULE_VIEW) ?? $game->getUser()->getDefaultView();
+    }
+
+    public function getViewContext(): ViewContext
+    {
+        return new ViewContext(ModuleViewEnum::COLONY, self::VIEW_IDENTIFIER);
     }
 }

@@ -7,17 +7,17 @@ namespace Stu\Module\Game\View\ShowInnerContent;
 use Override;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewContext;
 use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Control\ViewWithTutorialInterface;
 use Stu\Module\Game\Lib\View\ViewComponentLoaderInterface;
 
-final class ShowInnerContent implements ViewControllerInterface
+final class ShowInnerContent implements ViewControllerInterface, ViewWithTutorialInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_INNER_CONTENT';
 
-    public function __construct(private ViewComponentLoaderInterface $viewComponentLoader)
-    {
-    }
+    public function __construct(private ViewComponentLoaderInterface $viewComponentLoader) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -29,5 +29,10 @@ final class ShowInnerContent implements ViewControllerInterface
         $game->setTemplateVar('VIEW_TEMPLATE', $view->getTemplate());
 
         $game->showMacro('html/view/breadcrumbAndView.twig');
+    }
+
+    public function getViewContext(): ViewContext
+    {
+        return new ViewContext(ModuleViewEnum::COLONY, self::VIEW_IDENTIFIER);
     }
 }

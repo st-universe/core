@@ -9,8 +9,6 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
-use Doctrine\ORM\Mapping\JoinColumn;
-use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Override;
 use Stu\Component\Game\ModuleViewEnum;
@@ -30,26 +28,26 @@ class TutorialStep implements TutorialStepInterface
     #[Column(type: 'string', length: 50, enumType: ModuleViewEnum::class)]
     private ModuleViewEnum $module;
 
-    #[Column(type: 'string', length: 100)]
-    private string $view;
-
-    #[Column(type: 'integer', nullable: true)]
-    private ?int $previous_step_id;
-
-    /** @var array<int> */
-    #[Column(type: 'json')]
-    private array $next_steps = [];
-
-    /** @var array{elementIds: array<string>, title: string, text: string} */
-    #[Column(type: 'json')]
-    private array $payload;
+    #[Column(type: 'string', length: 100, nullable: true)]
+    private ?string $view = null;
 
     #[Column(type: 'integer')]
     private int $sort = 0;
 
-    #[ManyToOne(targetEntity: 'TutorialStep')]
-    #[JoinColumn(name: 'previous_step_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private TutorialStepInterface $previousStep;
+    #[Column(type: 'text', nullable: true)]
+    private ?string $title = null;
+
+    #[Column(type: 'text', nullable: true)]
+    private ?string $text = null;
+
+    #[Column(type: 'text', nullable: true)]
+    private ?string $elementIds = null;
+
+    #[Column(type: 'text', nullable: true)]
+    private ?string $innerUpdate = null;
+
+    #[Column(type: 'integer', nullable: true)]
+    private ?int $fallbackIndex = null;
 
     #[Override]
     public function getId(): int
@@ -57,21 +55,83 @@ class TutorialStep implements TutorialStepInterface
         return $this->id;
     }
 
-    #[Override]
-    public function getPayload(): array
+    public function getModule(): ModuleViewEnum
     {
-        return $this->payload;
+        return $this->module;
     }
 
-    #[Override]
-    public function getPreviousStep(): ?TutorialStepInterface
+    public function setModule(ModuleViewEnum $module): void
     {
-        return $this->previousStep;
+        $this->module = $module;
     }
 
-    #[Override]
-    public function getNextStepIds(): array
+    public function getView(): ?string
     {
-        return $this->next_steps;
+        return $this->view;
+    }
+
+    public function setView(?string $view): void
+    {
+        $this->view = $view;
+    }
+
+    public function getSort(): int
+    {
+        return $this->sort;
+    }
+
+    public function setSort(int $sort): void
+    {
+        $this->sort = $sort;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(?string $title): void
+    {
+        $this->title = $title;
+    }
+
+    public function getText(): ?string
+    {
+        return $this->text;
+    }
+
+    public function setText(?string $text): void
+    {
+        $this->text = $text;
+    }
+
+    public function getElementIds(): ?string
+    {
+        return $this->elementIds;
+    }
+
+    public function setElementIds(?string $elementIds): void
+    {
+        $this->elementIds = $elementIds;
+    }
+
+    public function getInnerUpdate(): ?string
+    {
+        return $this->innerUpdate;
+    }
+
+    public function setInnerUpdate(?string $innerUpdate): void
+    {
+        $this->innerUpdate = $innerUpdate;
+    }
+
+    public function getFallbackIndex(): ?int
+    {
+        return $this->fallbackIndex;
+    }
+
+    public function setFallbackIndex(?int $fallbackIndex): void
+    {
+        $this->fallbackIndex = $fallbackIndex;
     }
 }
