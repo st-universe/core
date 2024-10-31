@@ -265,7 +265,6 @@ function updateTutorialStep(tutorialStepsJson, startIndex, currentStepIndex) {
     const elements = elementIds.map(id => document.getElementById(id));
     const innerContentElement = document.getElementById('innerContent');
     var stepId = currentStep.id;
-   
     tutorialSteps.forEach(step => {
         if (step.elementIds) {
             const stepElements = step.elementIds.map(id => document.getElementById(id));
@@ -279,7 +278,16 @@ function updateTutorialStep(tutorialStepsJson, startIndex, currentStepIndex) {
 
     const overlay = initOverlay(innerContentElement);
     elements.forEach(element => {
-        addHighlightToElement(element);
+        if (elementIds.includes('clearpage')) { }
+        else {
+            if (element == null) {
+                updateTutorialStep(tutorialSteps, null, currentStepIndex + 1);
+            }
+            else {
+                addHighlightToElement(element);
+            }
+        }
+        
     });
 
     initCloseButton(overlay, elements, innerContentElement, stepId);

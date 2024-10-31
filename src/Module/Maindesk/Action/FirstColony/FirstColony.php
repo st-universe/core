@@ -23,9 +23,7 @@ final class FirstColony implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_FIRST_COLONY';
 
-    public function __construct(private FirstColonyRequestInterface $firstColonyRequest, private BuildingRepositoryInterface $buildingRepository, private PlanetColonizationInterface $planetColonization, private ColonyRepositoryInterface $colonyRepository, private ColonyStorageManagerInterface $colonyStorageManager, private CommodityRepositoryInterface $commodityRepository, private UserRepositoryInterface $userRepository)
-    {
-    }
+    public function __construct(private FirstColonyRequestInterface $firstColonyRequest, private BuildingRepositoryInterface $buildingRepository, private PlanetColonizationInterface $planetColonization, private ColonyRepositoryInterface $colonyRepository, private ColonyStorageManagerInterface $colonyStorageManager, private CommodityRepositoryInterface $commodityRepository, private UserRepositoryInterface $userRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -84,7 +82,7 @@ final class FirstColony implements ActionControllerInterface
             100
         );
 
-        $user->setState(UserEnum::USER_STATE_TUTORIAL1);
+        $user->setState(UserEnum::USER_STATE_ACTIVE);
 
         $this->userRepository->save($user);
 
