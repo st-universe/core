@@ -116,7 +116,7 @@ function openPaddPopup(tutorialSteps, newStepIndex) {
                 oldstepIndex = currentStepIndex;
                 currentStepIndex--;
                 originalFunction = null;
-                updateTutorialStep(tutorialSteps, null, currentStepIndex);
+                updateTutorialStep(tutorialSteps, null, currentStepIndex, 'back');
                 saveTutorialStep(stepId, 'back');
             }
         });
@@ -164,7 +164,7 @@ function openPaddPopup(tutorialSteps, newStepIndex) {
                 oldstepIndex = currentStepIndex;
                 currentStepIndex++;
                 originalFunction = null;
-                updateTutorialStep(tutorialSteps, null, currentStepIndex);
+                updateTutorialStep(tutorialSteps, null, currentStepIndex, 'forward') ;
                 saveTutorialStep(stepId, 'forward');
             }
         };
@@ -242,7 +242,7 @@ function updateFramesPositions() {
 
 const originalFunctions = {};
 var isTutorial = false;
-function updateTutorialStep(tutorialStepsJson, startIndex, currentStepIndex) {
+function updateTutorialStep(tutorialStepsJson, startIndex, currentStepIndex, direction) {
     let tutorialSteps;
     isTutorial = true;
 
@@ -278,17 +278,25 @@ function updateTutorialStep(tutorialStepsJson, startIndex, currentStepIndex) {
 
     const overlay = initOverlay(innerContentElement);
     elements.forEach(element => {
-        if (elementIds.includes('clearpage')) { }
-        else {
-            if (element == null) {
-                updateTutorialStep(tutorialSteps, null, currentStepIndex + 1);
-            }
-            else {
-                addHighlightToElement(element);
-            }
+        
+        if (elementIds.includes('clearpage')) {
+        } else if (element != null) {
+
+            addHighlightToElement(element);
+        }
+        else if (element == null) {     
+           // setTimeout(() => {
+                if (direction == 'forward' || direction == null) {
+                    updateTutorialStep(tutorialSteps, null, currentStepIndex + 1, 'forward');
+                }
+                if (direction == 'back') {
+                    updateTutorialStep(tutorialSteps, null, currentStepIndex - 1, 'back');
+                }
+        //    }, 0); 
         }
         
     });
+    
 
     initCloseButton(overlay, elements, innerContentElement, stepId);
 
@@ -310,7 +318,7 @@ function updateTutorialStep(tutorialStepsJson, startIndex, currentStepIndex) {
                         oldstepIndex = currentStepIndex;
                         currentStepIndex++;
                         saveTutorialStep(stepId, 'forward');
-                        updateTutorialStep(tutorialSteps, null, currentStepIndex);
+                        updateTutorialStep(tutorialSteps, null, currentStepIndex, 'forward');
                     }, 500);
                 }
 
