@@ -60,6 +60,7 @@ function openPaddPopup(stepId) {
 
   document.getElementById("padd-title").innerText = title;
   document.getElementById("padd-text").innerHTML = text;
+  document.getElementById("padd-text").scrollTop = 0;
 }
 
 function addDragAndDrop(element) {
