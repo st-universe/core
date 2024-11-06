@@ -16,7 +16,8 @@ function initPaddPopup(stepId) {
       addDragAndDrop(padd);
 
       setTimeout(() => {
-        padd.style.left = "80%";
+        const isMobile = window.innerWidth <= 1024;
+        padd.style.left = isMobile ? "70%" : "80%";
         hasSlidIn = true;
       }, 10);
       openPaddPopup(stepId);
@@ -66,27 +67,33 @@ function openPaddPopup(stepId) {
 function addDragAndDrop(element) {
   let isDragging = false;
   let offsetX, offsetY;
+  let isScrolling = false;
 
-  element.addEventListener("mousedown", (e) => {
-    isDragging = true;
-    offsetX = e.clientX - element.getBoundingClientRect().left;
-    offsetY = e.clientY - element.getBoundingClientRect().top;
-    element.style.cursor = "grabbing";
-    element.style.transition = "none";
+  const textContent = document.getElementById("padd-text");
+
+  textContent.addEventListener("touchstart", (e) => {
+    isScrolling = true;
+    e.stopPropagation();
+  });
+
+  textContent.addEventListener("touchend", () => {
+    isScrolling = false;
   });
 
   element.addEventListener("touchstart", (e) => {
-    isDragging = true;
-    const touch = e.touches[0];
-    offsetX = touch.clientX - element.getBoundingClientRect().left;
-    offsetY = touch.clientY - element.getBoundingClientRect().top;
-    element.style.transition = "none";
+    if (!isScrolling) {
+      isDragging = true;
+      const touch = e.touches[0];
+      offsetX = touch.clientX - element.getBoundingClientRect().left;
+      offsetY = touch.clientY - element.getBoundingClientRect().top;
+      element.style.transition = "none";
+    }
   });
 
   document.addEventListener(
     "touchmove",
     (e) => {
-      if (isDragging) {
+      if (isDragging && !isScrolling) {
         e.preventDefault();
         const touch = e.touches[0];
         element.style.left = `${touch.clientX - offsetX}px`;
@@ -99,6 +106,14 @@ function addDragAndDrop(element) {
 
   document.addEventListener("touchend", () => {
     isDragging = false;
+  });
+
+  element.addEventListener("mousedown", (e) => {
+    isDragging = true;
+    offsetX = e.clientX - element.getBoundingClientRect().left;
+    offsetY = e.clientY - element.getBoundingClientRect().top;
+    element.style.cursor = "grabbing";
+    element.style.transition = "none";
   });
 
   document.addEventListener("mousemove", (e) => {
