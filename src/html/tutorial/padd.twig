@@ -213,6 +213,23 @@
     color: var(--lcarslightorange);
     padding: calc(var(--padding) / 2);
     overflow-y: auto;
+    overflow-y: scroll; 
+    scrollbar-width: thin;
+    scrollbar-color: var(--lcarspink) var(--screenblack);
+}
+
+.top__screen_content::-webkit-scrollbar {
+    width: 8px;
+    background: var(--screenblack);
+}
+
+.top__screen_content::-webkit-scrollbar-thumb {
+    background-color: var(--lcarspink);
+    border-radius: 4px;
+}
+
+.top__screen_content::-webkit-scrollbar-track {
+    background: var(--screenblack);
 }
 
 .top__statusbar {
