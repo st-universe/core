@@ -39,6 +39,8 @@ use Stu\Module\Game\Lib\View\ViewComponentLoaderInterface;
 use Stu\Module\Game\View\Overview\Overview;
 use Stu\Module\Game\View\ShowComponent\ShowComponent;
 use Stu\Module\Game\View\ShowInnerContent\ShowInnerContent;
+use Stu\Module\Game\View\ShowPadd\ShowPadd;
+use Stu\Module\Game\View\ShowTutorialCloseButton\ShowTutorialCloseButton;
 use Stu\Module\Game\View\Noop\Noop;
 
 use function DI\autowire;
@@ -84,6 +86,8 @@ return [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
         ShowInnerContent::VIEW_IDENTIFIER => autowire(ShowInnerContent::class),
         ShowComponent::VIEW_IDENTIFIER => autowire(ShowComponent::class),
+        ShowPadd::VIEW_IDENTIFIER => autowire(ShowPadd::class),
+        ShowTutorialCloseButton::VIEW_IDENTIFIER => autowire(ShowTutorialCloseButton::class),
         Noop::VIEW_IDENTIFIER => autowire(Noop::class),
     ]
 ];

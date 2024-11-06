@@ -1,0 +1,35 @@
+<button id="tutorial-close-button" class="tutorial-close-button">
+    <strong>&#10005;</strong>
+</button>
+
+<style>
+.tutorial-close-button {
+    position: absolute;
+    background-color: #FF6A00;
+    color: #FFFFFF;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-size: 20px;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 15px rgba(255, 106, 0, 0.7);
+    transition: all 0.3s ease;
+    clip-path: polygon(0% 0%, 100% 0%, 85% 100%, 0% 100%);
+    z-index: 1002;
+}
+
+.tutorial-close-button:hover {
+    background-color: #FF8C00;
+    box-shadow: 0 0 25px rgba(255, 140, 0, 1);
+    transform: translateX(5px);
+}
+
+.tutorial-close-button:active {
+    transform: translateX(5px) scale(0.95);
+    box-shadow: 0 0 10px rgba(255, 140, 0, 0.5);
+}
+</style>
