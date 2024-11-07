@@ -303,10 +303,10 @@ function analysebuoy(id) {
 	openPJsWin('elt', 1);
 	ajax_update('elt', 'ship.php?id=' + id + '&SHOW_ANALYSE_BUOY=1');
 }
-function leaveFleetInShiplist(shipid, sessionstring) {
+function leaveFleetInShiplist(shipid) {
 	new Ajax.Updater('result', 'ship.php', {
 		method: 'get',
-		parameters: 'B_LEAVE_FLEET=1&id=' + shipid + '&sstr=' + sessionstring,
+		parameters: 'B_LEAVE_FLEET=1&id=' + shipid,
 		evalScripts: true,
 		onSuccess: function (transport) {
 			$('result').show();

@@ -28,7 +28,7 @@
 {% set shipId = ship.getId %}
 {% set epssystem = wrapper.getEpsSystemData %}
 <tr>
-    
+
     <td id="shipimage" style="height:1px; width:1px;" class="shiplistshipimage">
         <a href="javascript:void(0);"
             onclick="showShiplistShip({{ shipId }}, '{{ ship.getName|bbcode2txt|htmlSafe }}');" class="imgOverlayText"
@@ -64,11 +64,11 @@
         {% endif %}
     </td>
     {% else %}
-    <td id="shipposition"  align="center">
+    <td id="shipposition" align="center">
         ({{ ship.getMap.getCx }}|{{ ship.getMap.getCy }})
     </td>
     {% endif %}
-    <td  id="shiphull">
+    <td id="shiphull">
         <span style="{{ ship.getHullColorStyle }}">{{ ship.getHull }}</span>/{{ ship.getMaxHull }}
     </td>
     <td id="shipshields">
@@ -79,7 +79,7 @@
         {% endif %}
         (+{{ ship.getShieldRegenerationRate }})
     </td>
-    <td  id="shipenergy">
+    <td id="shipenergy">
         <table>
             {% set reactor = wrapper.getReactorWrapper %}
             <tr>
@@ -103,7 +103,7 @@
             </tr>
         </table>
     </td>
-    <td  id="shipreactor">
+    <td id="shipreactor">
         {% set reactor = wrapper.getReactorWrapper %}
         {% if reactor %}
         <div style="float: left; width: 50%">
@@ -121,9 +121,9 @@
         {% endif %}
     </td>
 
-    <td  id="shipcrew" style="text-align: center; {{ wrapper.getCrewStyle }}">{{ ship.getCrewCount }}</td>
+    <td id="shipcrew" style="text-align: center; {{ wrapper.getCrewStyle }}">{{ ship.getCrewCount }}</td>
     <td id="shipsystems">
-      
+
         {% if ship.getNbs %}
         <img src="/assets/buttons/kss1.png" title="Nahbereichssensoren aktiviert" />
         {% else %}
@@ -167,7 +167,7 @@
             <img src="/assets/buttons/fl_flag2.png" name="fleet_{{ shipId }}" title="Flotte auflösen" />
         </a>
         {% else %}
-        <a href="javascript:void(0);" onclick="leaveFleetInShiplist({{ shipId }}, '{{ SESSIONSTRING }}');"
+        <a href="javascript:void(0);" onclick="leaveFleetInShiplist({{ shipId }});"
             onmouseover="cp('fleet_{{ shipId }}','buttons/fl_raus2')"
             onmouseout="cp('fleet_{{ shipId }}','buttons/fl_raus1')">
             <img src="/assets/buttons/fl_raus1.png" name="fleet_{{ shipId }}" title="Flotte verlassen" />
