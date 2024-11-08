@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\NPC\Action;
 
 use request;
+use RuntimeException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
@@ -65,14 +66,24 @@ final class CreateShip implements ActionControllerInterface
         }
 
         $user = $this->userRepository->find($userId);
+        if ($user === null) {
+            throw new RuntimeException(sprintf('userId %d does not exist', $userId));
+        }
+
         $buildplan = $this->buildplanRepository->find($buildplanId);
+        if ($buildplan === null) {
+            throw new RuntimeException(sprintf('buildplanId %d does not exist', $buildplanId));
+        }
+
         $layer = $this->layerRepository->find($layerId);
+        if ($layer === null) {
+            throw new RuntimeException(sprintf('layerId %d does not exist', $layerId));
+        }
 
         $field = $this->mapRepository->getByCoordinates($layer, $cx, $cy);
-
         if ($field === null) {
             $game->addInformation(sprintf(
-                'Die Position %s %d|%d existiert nicht!',
+                'Die Position %s|%d|%d existiert nicht!',
                 $layer->getName(),
                 $cx,
                 $cy
@@ -88,14 +99,14 @@ final class CreateShip implements ActionControllerInterface
         for ($i = 0; $i < $shipCount; $i++) {
             $ship = $this->shipCreator
                 ->createBy($userId, $buildplan->getRump()->getId(), $buildplan->getId())
-                ->setLocation($this->mapRepository->getByCoordinates($layer, $cx, $cy))
+                ->setLocation($field)
                 ->maxOutSystems()
                 ->createCrew()
                 ->finishConfiguration();
         }
 
         $logText = sprintf(
-            '%s hat für Spieler %s (%d) %dx %s erstellt. Module: %s, Position: %s %d|%d, Grund: %s',
+            '%s hat für Spieler %s (%d) %dx %s erstellt. Module: %s, Position: %s|%d|%d, Grund: %s',
             $game->getUser()->getName(),
             $user->getName(),
             $userId,
@@ -108,11 +119,11 @@ final class CreateShip implements ActionControllerInterface
             $reason
         );
 
-
         $this->createLogEntry($logText, $game->getUser()->getId());
 
-        $game->addInformation(sprintf('%d Schiff(e) wurden ohne Marderschaden erstellt', $shipCount));
+        $game->addInformation(sprintf('%d Schiff(e) wurden erstellt', $shipCount));
     }
+
 
     private function createLogEntry(string $text, int $userId): void
     {

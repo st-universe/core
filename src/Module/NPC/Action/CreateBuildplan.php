@@ -21,7 +21,6 @@ use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
 use Stu\Module\NPC\View\ShowBuildplanCreator\ShowBuildplanCreator;
 use Stu\Orm\Repository\NPCLogRepositoryInterface;
 
-
 final class CreateBuildplan implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_CREATE_BUILDPLAN';
@@ -80,6 +79,9 @@ final class CreateBuildplan implements ActionControllerInterface
         }
 
         $mod_level = $this->shipRumpModuleLevelRepository->getByShipRump($rump->getId());
+        if ($mod_level === null) {
+            throw new RuntimeException(sprintf('No module levels found for rump %d', $rump->getId()));
+        }
 
         if (count($moduleList) < $mod_level->getMandatoryModulesCount()) {
             $game->addInformation('Nicht alle benötigten Module wurden ausgewählt');
@@ -91,8 +93,9 @@ final class CreateBuildplan implements ActionControllerInterface
             throw new RuntimeException(sprintf('userId %d does not exist', $userId));
         }
 
+        $moduleIds = array_merge($moduleList, $moduleSpecialList);
         $signature = $this->buildplanSignatureCreation->createSignatureByModuleIds(
-            array_merge($moduleList, $moduleSpecialList),
+            $moduleIds,
             0
         );
 
@@ -192,7 +195,8 @@ final class CreateBuildplan implements ActionControllerInterface
             $game->addInformation('Bauplan existiert bereits');
         }
     }
-    private function createLogEntry(string $text, int $userId): void
+
+    public function createLogEntry(string $text, int $userId): void
     {
         $entry = $this->npcLogRepository->prototype();
         $entry->setText($text);
@@ -201,6 +205,7 @@ final class CreateBuildplan implements ActionControllerInterface
 
         $this->npcLogRepository->save($entry);
     }
+
     public function performSessionCheck(): bool
     {
         return true;

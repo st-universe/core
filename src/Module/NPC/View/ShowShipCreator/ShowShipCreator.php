@@ -44,10 +44,9 @@ final class ShowShipCreator implements ViewControllerInterface
             $game->setTemplateVar('BUILDPLANS', $this->shipBuildplanRepository->getByUser($userId));
             $game->setTemplateVar('LAYERS', $this->layerRepository->findAll());
         } else {
-            $allUsers = array_merge(
-                $this->userRepository->getNpcList(),
-                $this->userRepository->getNonNpcList()
-            );
+            $npcList = iterator_to_array($this->userRepository->getNpcList());
+            $nonNpcList = iterator_to_array($this->userRepository->getNonNpcList());
+            $allUsers = array_merge($npcList, $nonNpcList);
             $game->setTemplateVar('ALL_USERS', $allUsers);
         }
     }
