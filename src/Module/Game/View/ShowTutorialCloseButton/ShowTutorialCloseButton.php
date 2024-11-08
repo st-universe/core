@@ -6,6 +6,7 @@ namespace Stu\Module\Game\View\ShowTutorialCloseButton;
 
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Component\Faction\FactionEnum;
 
 final class ShowTutorialCloseButton implements ViewControllerInterface
 {
@@ -13,6 +14,12 @@ final class ShowTutorialCloseButton implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $game->setTemplateFile('html/tutorial/closebutton.twig');
+        if ($game->getUser()->getFactionId() === FactionEnum::FACTION_ROMULAN) {
+            $game->setTemplateFile('html/tutorial/closebutton2.twig');
+        } elseif ($game->getUser()->getFactionId() === FactionEnum::FACTION_KLINGON) {
+            $game->setTemplateFile('html/tutorial/closebutton3.twig');
+        } else {
+            $game->setTemplateFile('html/tutorial/closebutton1.twig');
+        }
     }
 }
