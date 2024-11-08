@@ -59,6 +59,7 @@ final class CreateShip implements ActionControllerInterface
         $cx = request::postIntFatal('cx');
         $cy = request::postIntFatal('cy');
         $reason = request::postString('reason');
+        $torpedoTypeId = request::postInt('torpedoTypeId');
 
         if ($reason === '') {
             $game->addInformation("Grund fehlt");
@@ -97,12 +98,17 @@ final class CreateShip implements ActionControllerInterface
         }
 
         for ($i = 0; $i < $shipCount; $i++) {
-            $ship = $this->shipCreator
+            $creator = $this->shipCreator
                 ->createBy($userId, $buildplan->getRump()->getId(), $buildplan->getId())
                 ->setLocation($field)
                 ->maxOutSystems()
-                ->createCrew()
-                ->finishConfiguration();
+                ->createCrew();
+
+            if ($torpedoTypeId > 0) {
+                $creator->setTorpedo($torpedoTypeId);
+            }
+
+            $creator->finishConfiguration();
         }
 
         $logText = sprintf(
@@ -123,7 +129,6 @@ final class CreateShip implements ActionControllerInterface
 
         $game->addInformation(sprintf('%d Schiff(e) wurden erstellt', $shipCount));
     }
-
 
     private function createLogEntry(string $text, int $userId): void
     {
