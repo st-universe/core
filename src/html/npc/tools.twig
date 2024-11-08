@@ -4,6 +4,7 @@
 {% include 'html/breadcrumb.twig' %}
 <form action="/npc/index.php" method="post" name="toolsform" id="toolsform">
     <div>
+    <h2>Waren Tool</h2>
         Schiffs ID: <input type="text" size="5" name="shipid" id="shipid" /> 
         Ware: <select name="commodityid" id="commoditySelect" style="width:10%;">
             <option value="0">----------------------</option>
@@ -25,4 +26,22 @@
             name="B_COMMODITY_CHEAT" value="Ware ercheaten" id="commoditycheatbutton" />
     </div>
 </form>
+
+<div style="margin-top: 20px;">
+    <h2>Schiff Tools</h2>
+    <br>
+    <form action="/npc/index.php" method="get" style="display: inline;">
+        <input type="hidden" name="SHOW_BUILDPLAN_CREATOR" value="1">
+        <input type="submit" class="button" value="Bauplan erstellen">
+    </form>
+    <br>
+    <br>
+    <form action="/npc/index.php" method="get" style="display: inline;">
+        <input type="hidden" name="SHOW_SHIP_CREATOR" value="1">
+        <input type="submit" class="button" value="Schiff erstellen">
+    </form>
+</div>
+
+
+
 {% endblock %}
