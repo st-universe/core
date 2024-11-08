@@ -1,0 +1,284 @@
+<div id="padd-popup" class="romulan-padd">
+    <div class="padd-outer">
+        <div class="border-top"></div>
+        <div class="border-left"></div>
+        <div class="border-right"></div>
+        <div class="border-bottom"></div>
+        <div class="border-bottomsmal"></div>
+        <div class="padd-background">
+            <div class="padd-content">
+                <div id="padd-title" class="padd-title"></div>
+                <div id="padd-text" class="padd-text"></div>
+                <div class="padd-controls">
+                    <div id="back-button" class="nav-button">◀</div>
+                    <div id="next-button" class="nav-button">▶</div>
+                </div>
+            </div>
+            <div class="deco-buttons">
+    <div class="deco-button triangle"></div>
+    <div class="deco-button quad-large"></div>
+    <div class="deco-button hexa"></div>
+    <div class="deco-button quad-small"></div>
+</div>
+
+        </div>
+    </div>
+</div>
+
+<style>
+.romulan-padd {
+    position: fixed;
+    top: 30%;
+    left: 100%;
+    transform: translate(-50%, 0%);
+    z-index: 1003;
+    cursor: move;
+    transition: left 0.5s ease-out;
+}
+
+.padd-outer {
+    position: relative;
+    width: 745px;
+    height: 320px;
+}
+
+.padd-background {
+    position: absolute;
+    width: 725px;
+    height: 300px;
+    top: 10px;
+    left: 10px;
+    background-color: #848276;
+    clip-path: path('M 16,8 C 16,8 16,8 16,8 L 530,8 Q 600,8 725,300 L 16,292 C 8,292 8,284 8,284 L 8,16 C 8,8 16,8 16,8 Z');
+    z-index: 1;
+}
+
+.border-left {
+    position: absolute;
+    width: 20px;
+    height: 200px;
+    background-color: #232220;
+    left: 10px;
+    bottom: 0;
+    border-radius: 10px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    z-index: 2;
+}
+
+.border-right {
+    position: absolute;
+    width: 23px;
+    height: 200px;
+    background-color: #232220;
+    right: 2px;
+    bottom: 0;
+    border-radius: 10px;
+    transform: skew(24deg);
+    transform-origin: bottom right;
+    box-shadow: -2px 2px 4px rgba(0, 0, 0, 0.5);
+    z-index: 2;
+}
+
+.border-bottom {
+    position: absolute;
+    height: 20px;
+    width: calc(100% - 20px);
+    background-color: #232220;
+    left: 10px;
+    bottom: 0;
+    border-radius: 10px;
+    box-shadow: 2px -2px 5px rgba(0, 0, 0, 0.5);
+    z-index: 2;
+}
+.border-bottomsmal {
+    position: absolute;
+    height: 25px;
+    width: 87%;
+    background-color: #232220;
+    left: 10px;
+    bottom: -10px;
+    clip-path: polygon(
+        0% 0%,
+        100% 0%,
+        100% 50%,
+        90% 50%,
+        80% 100%,
+        0% 100%
+    );
+    border-radius: 10px;
+    z-index: 2;
+}
+
+.border-top {
+    position: absolute;
+    height: 15px;
+    width: 40%;
+    background-color: #a7571c;
+    left: 20%;
+    top: 10px;
+    border-radius: 3px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    z-index: 2;
+}
+
+.border-left, .border-right, .border-bottom, .border-top {
+    filter: url('#round');
+}
+
+
+.padd-content {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    width: 470px;
+    bottom: 30px;
+    background-color: #1b1b1b;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 
+        inset 0 5px 15px rgba(0,0,0,0.7),
+        inset 0 -2px 8px rgba(0,0,0,0.5),
+        0 0 2px rgba(255,255,255,0.1);
+    border: 1px solid rgba(0,0,0,0.8);
+}
+
+
+.padd-title {
+    color: #32906d;
+    padding: 15px;
+    font-size: 1.2em;
+    font-weight: bold;
+    border-bottom: 1px solid #333;
+}
+
+.padd-text {
+    flex: 1;
+    color: #84e3c5;
+    padding: 15px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #69bde2 #1b1b1b;
+}
+
+.padd-text::-webkit-scrollbar {
+    width: 8px;
+}
+
+.padd-text::-webkit-scrollbar-track {
+    background: #69bde2;
+}
+
+.padd-text::-webkit-scrollbar-thumb {
+    background-color: #69bde2;
+    border-radius: 4px;
+}
+
+.padd-controls {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 15px;
+}
+
+.nav-button {
+    background-color: #40c48b;
+    color: #267292;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s;
+}
+
+.nav-button:hover {
+    background-color: #64b399;
+}
+
+.nav-button.inactive {
+    background-color: #128484;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.nav-button.inner-update {
+    background-color: #128484;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.deco-buttons {
+    position: absolute;
+    top: 30px;
+    left: 72%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    z-index: 2;
+}
+
+.deco-button {
+    background-color: #5a99ac;
+    filter: url('#round');
+    cursor: pointer;
+    transition: all 0.1s ease-out;
+    box-shadow: 
+        0 2px 0 rgba(0,0,0,0.3),
+        inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+.deco-button:hover {
+    box-shadow: 
+        0 3px 0 rgba(0,0,0,0.3),
+        inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+.deco-button:active {
+    box-shadow: 
+        0 0 0 rgba(0,0,0,0.3),
+        inset 0 1px 2px rgba(0,0,0,0.2);
+    transform: translateY(2px);
+}
+
+
+.deco-button.triangle {
+    width: 60px;
+    height: 60px;
+    clip-path: path('M 4,4 Q 45,30 54,54 L 4,54 Z');
+    border-radius: 20px;
+}
+
+
+.deco-button.quad-large {
+    width: 105px;
+    height: 100px;
+    clip-path: polygon(0 0, 55% 0%, 100% 100%, 0% 100%);
+}
+
+.deco-button.hexa {
+    width: 125px;
+    height: 90px;
+    clip-path: polygon(85% 0px, 100% 40%, 50% 40%, 50% 75%, 0px 75%, 0px 0%);
+}
+
+.deco-button.quad-small {
+    position: relative;
+    width: 70px;
+    height: 25px;
+    clip-path: polygon(00% 0, 85% 0%, 100% 100%, 0 100%);
+    top: -52px;
+    left: 55%;
+}
+
+
+</style>
+
+<svg width="0" height="0">
+    <defs>
+        <filter id="round">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="1"/>
+            <feOffset dx="0" dy="0"/>
+            <feComposite operator="in" in2="SourceGraphic"/>
+        </filter>
+    </defs>
+</svg>
+
