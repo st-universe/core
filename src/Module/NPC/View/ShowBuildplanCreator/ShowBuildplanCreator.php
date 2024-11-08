@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\NPC\View\ShowBuildplanCreator;
 
 use request;
+use RuntimeException;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
@@ -53,6 +54,10 @@ final class ShowBuildplanCreator implements ViewControllerInterface
 
             if ($rumpId > 0) {
                 $rump = $this->shipRumpRepository->find($rumpId);
+                if ($rump === null) {
+                    throw new RuntimeException(sprintf('rumpId %d does not exist', $rumpId));
+                }
+
                 $game->setTemplateVar('RUMP_ID', $rumpId);
                 $game->setTemplateVar('MODULE_SELECTION', true);
 
@@ -89,9 +94,14 @@ final class ShowBuildplanCreator implements ViewControllerInterface
                     $min_level = $mod_level->{'getModuleLevel' . $moduleTypeId . 'Min'}();
                     $max_level = $mod_level->{'getModuleLevel' . $moduleTypeId . 'Max'}();
 
+                    $shipRumpRole = $rump->getShipRumpRole();
+                    if ($shipRumpRole === null) {
+                        throw new RuntimeException(sprintf('No ship rump role found for rump %d', $rump->getId()));
+                    }
+
                     $availableModules[$moduleTypeId] = $this->moduleRepository->getByTypeAndLevel(
                         $moduleTypeId,
-                        $rump->getShipRumpRole()->getId(),
+                        $shipRumpRole->getId(),
                         range($min_level, $max_level)
                     );
                 }
@@ -116,10 +126,9 @@ final class ShowBuildplanCreator implements ViewControllerInterface
                 $game->setTemplateVar('SPECIAL_MODULES', $this->moduleRepository->getBySpecialTypeIds($specialModuleTypes));
             }
         } else {
-            $allUsers = array_merge(
-                $this->userRepository->getNpcList(),
-                $this->userRepository->getNonNpcList()
-            );
+            $npcList = iterator_to_array($this->userRepository->getNpcList());
+            $nonNpcList = iterator_to_array($this->userRepository->getNonNpcList());
+            $allUsers = array_merge($npcList, $nonNpcList);
             $game->setTemplateVar('ALL_USERS', $allUsers);
         }
     }
