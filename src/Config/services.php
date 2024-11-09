@@ -54,7 +54,7 @@ return [
         return new Config(
             [
                 sprintf('%s/config.dist.json', $path),
-                sprintf('?%s/config.json', $path),
+                sprintf('?%s/config.json', $path)
             ]
         );
     },

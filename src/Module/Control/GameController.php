@@ -50,7 +50,6 @@ use Stu\Orm\Repository\GameTurnRepositoryInterface;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use SysvSemaphore;
-use Throwable;
 use Ubench;
 
 final class GameController implements GameControllerInterface
@@ -623,7 +622,7 @@ final class GameController implements GameControllerInterface
         // RENDER!
         $startTime = hrtime(true);
 
-        $renderResult = $this->gameTwigRenderer->render($this, $user, $this->twigPage);
+        $renderResult = $this->gameTwigRenderer->render($this, $user);
 
         $renderMs = hrtime(true) - $startTime;
 

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Control\Render;
 
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Twig\TwigPageInterface;
 use Stu\Orm\Entity\UserInterface;
 
 interface GameTwigRendererInterface
@@ -15,7 +14,6 @@ interface GameTwigRendererInterface
      */
     public function render(
         GameControllerInterface $game,
-        ?UserInterface $user,
-        TwigPageInterface $twigPage
+        ?UserInterface $user
     ): string;
 }

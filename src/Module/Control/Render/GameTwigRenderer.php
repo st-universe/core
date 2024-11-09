@@ -19,57 +19,58 @@ use Stu\Orm\Entity\UserInterface;
  */
 final class GameTwigRenderer implements GameTwigRendererInterface
 {
-    public function __construct(private ConfigInterface $config, private ComponentLoaderInterface $componentLoader)
-    {
-    }
+    public function __construct(
+        private TwigPageInterface $twigPage,
+        private ConfigInterface $config,
+        private ComponentLoaderInterface $componentLoader
+    ) {}
 
     #[Override]
     public function render(
         GameControllerInterface $game,
-        ?UserInterface $user,
-        TwigPageInterface $twigPage
+        ?UserInterface $user
     ): string {
 
         $this->componentLoader->loadComponentUpdates($game);
-        $this->componentLoader->loadRegisteredComponents($twigPage, $game);
-        $this->setGameVariables($twigPage, $game);
-        $this->setUserVariables($user, $twigPage);
+        $this->componentLoader->loadRegisteredComponents($game);
+        $this->setGameVariables($game);
+        $this->setUserVariables($user);
 
-        $twigPage->setVar('WIKI', $this->config->get('wiki.base_url'));
-        $twigPage->setVar('FORUM', $this->config->get('board.base_url'));
-        $twigPage->setVar('CHAT', $this->config->get('discord.url'));
+        $this->twigPage->setVar('WIKI', $this->config->get('wiki.base_url'));
+        $this->twigPage->setVar('FORUM', $this->config->get('board.base_url'));
+        $this->twigPage->setVar('CHAT', $this->config->get('discord.url'));
 
-        return $twigPage->render();
+        return $this->twigPage->render();
     }
 
-    private function setGameVariables(TwigPageInterface $twigPage, GameControllerInterface $game): void
+    private function setGameVariables(GameControllerInterface $game): void
     {
-        $twigPage->setVar('MACRO', $game->getMacro());
-        $twigPage->setVar('NAVIGATION', $game->getNavigation());
-        $twigPage->setVar('PAGETITLE', $game->getPageTitle());
-        $twigPage->setVar('INFORMATION', $game->getInformation());
-        $twigPage->setVar('TARGET_LINK', $game->getTargetLink());
-        $twigPage->setVar('ACHIEVEMENTS', $game->getAchievements());
-        $twigPage->setVar('EXECUTEJSBEFORERENDER', $game->getExecuteJS(GameEnum::JS_EXECUTION_BEFORE_RENDER));
-        $twigPage->setVar('EXECUTEJSAFTERRENDER', $game->getExecuteJS(GameEnum::JS_EXECUTION_AFTER_RENDER));
-        $twigPage->setVar('EXECUTEJSAJAXUPDATE', $game->getExecuteJS(GameEnum::JS_EXECUTION_AJAX_UPDATE));
-        $twigPage->setVar('JAVASCRIPTPATH', $game->getJavascriptPath(), true);
-        $twigPage->setVar('ISNPC', $game->isNpc());
-        $twigPage->setVar('ISADMIN', $game->isAdmin());
-        $twigPage->setVar('BENCHMARK', $game->getBenchmarkResult());
-        $twigPage->setVar('GAME_STATS', $game->getGameStats());
+        $this->twigPage->setVar('MACRO', $game->getMacro());
+        $this->twigPage->setVar('NAVIGATION', $game->getNavigation());
+        $this->twigPage->setVar('PAGETITLE', $game->getPageTitle());
+        $this->twigPage->setVar('INFORMATION', $game->getInformation());
+        $this->twigPage->setVar('TARGET_LINK', $game->getTargetLink());
+        $this->twigPage->setVar('ACHIEVEMENTS', $game->getAchievements());
+        $this->twigPage->setVar('EXECUTEJSBEFORERENDER', $game->getExecuteJS(GameEnum::JS_EXECUTION_BEFORE_RENDER));
+        $this->twigPage->setVar('EXECUTEJSAFTERRENDER', $game->getExecuteJS(GameEnum::JS_EXECUTION_AFTER_RENDER));
+        $this->twigPage->setVar('EXECUTEJSAJAXUPDATE', $game->getExecuteJS(GameEnum::JS_EXECUTION_AJAX_UPDATE));
+        $this->twigPage->setVar('JAVASCRIPTPATH', $game->getJavascriptPath(), true);
+        $this->twigPage->setVar('ISNPC', $game->isNpc());
+        $this->twigPage->setVar('ISADMIN', $game->isAdmin());
+        $this->twigPage->setVar('BENCHMARK', $game->getBenchmarkResult());
+        $this->twigPage->setVar('GAME_STATS', $game->getGameStats());
 
         if ($game->hasUser()) {
-            $twigPage->setVar('SESSIONSTRING', $game->getSessionString(), true);
+            $this->twigPage->setVar('SESSIONSTRING', $game->getSessionString(), true);
         }
     }
 
-    private function setUserVariables(?UserInterface $user, TwigPageInterface $twigPage): void
+    private function setUserVariables(?UserInterface $user): void
     {
         if ($user === null) {
-            $twigPage->setVar('USER', null);
+            $this->twigPage->setVar('USER', null);
         } else {
-            $twigPage->setVar('USER', new UserContainer(
+            $this->twigPage->setVar('USER', new UserContainer(
                 $user->getId(),
                 $user->getAvatar(),
                 $user->getName(),

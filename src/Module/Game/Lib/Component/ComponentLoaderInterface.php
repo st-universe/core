@@ -3,7 +3,6 @@
 namespace Stu\Module\Game\Lib\Component;
 
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Twig\TwigPageInterface;
 
 interface ComponentLoaderInterface
 {
@@ -22,5 +21,5 @@ interface ComponentLoaderInterface
      */
     public function registerComponent(ComponentEnum $component): void;
 
-    public function loadRegisteredComponents(TwigPageInterface $twigPage, GameControllerInterface $game): void;
+    public function loadRegisteredComponents(GameControllerInterface $game): void;
 }
