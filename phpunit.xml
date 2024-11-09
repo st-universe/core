@@ -21,6 +21,7 @@
   <testsuites>
     <testsuite name="STU">
       <directory>./tests</directory>
+      <directory>./inttests</directory>
     </testsuite>
   </testsuites>
   <php>

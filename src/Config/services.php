@@ -52,10 +52,7 @@ return [
     ConfigInterface::class => function (): ConfigInterface {
         $path = __DIR__ . '/../../';
         return new Config(
-            [
-                sprintf('%s/config.dist.json', $path),
-                sprintf('?%s/config.json', $path)
-            ]
+            array_map(fn(string $file) => sprintf($file, $path), Init::$configFiles)
         );
     },
     SettingsFactoryInterface::class => autowire(SettingsFactory::class),
