@@ -23,7 +23,7 @@ class TractorConsequenceTest extends StuTestCase
     private $tractorMassPayloadUtil;
     /** @var MockInterface&CancelColonyBlockOrDefendInterface */
     private $cancelColonyBlockOrDefend;
-    /** @var MockInterface|MessageFactoryInterface */
+    /** @var MockInterface&MessageFactoryInterface */
     private $messageFactory;
 
     private FlightConsequenceInterface $subject;
