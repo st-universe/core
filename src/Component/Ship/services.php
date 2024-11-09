@@ -9,6 +9,7 @@ use Stu\Component\Ship\Buildplan\BuildplanSignatureCreation;
 use Stu\Component\Ship\Buildplan\BuildplanSignatureCreationInterface;
 use Stu\Component\Ship\Crew\ShipCrewCalculator;
 use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
+use Stu\Component\Ship\Event\Listener\WarpdriveActivationSubscriber;
 use Stu\Component\Ship\Nbs\NbsUtility;
 use Stu\Component\Ship\Nbs\NbsUtilityInterface;
 use Stu\Component\Ship\Mining\CancelMining;
@@ -118,5 +119,6 @@ return [
     ),
     ShipCrewCalculatorInterface::class => autowire(ShipCrewCalculator::class),
     BuildplanSignatureCreationInterface::class => autowire(BuildplanSignatureCreation::class),
+    WarpdriveActivationSubscriber::class => autowire(),
     RefactorRunner::class => autowire(RefactorRunner::class),
 ];

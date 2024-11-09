@@ -7,6 +7,7 @@ namespace Stu\Component\Ship\System\Utility;
 use Override;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Ship\Lib\Damage\ApplyDamageInterface;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
@@ -23,13 +24,34 @@ final class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
         private ShipSystemManagerInterface $shipSystemManager,
         private StuRandom $stuRandom,
         private MessageFactoryInterface $messageFactory
-    ) {
-    }
+    ) {}
 
     #[Override]
-    public function tryToTow(ShipWrapperInterface $wrapper, ShipInterface $tractoredShip): ?string
-    {
+    public function tryToTow(
+        ShipWrapperInterface $wrapper,
+        ShipInterface $tractoredShip,
+        InformationInterface $information
+    ): bool {
+
         $ship = $wrapper->get();
+        $ownFleet = $ship->getFleet();
+        $tractoredShipFleet = $tractoredShip->getFleet();
+
+        // target in other fleet?
+        if (
+            $tractoredShipFleet !== null
+            && $tractoredShipFleet !== $ownFleet
+            && $tractoredShipFleet->getShipCount() > 1
+        ) {
+            $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
+            $information->addInformationf(
+                'Flottenschiffe können nicht mitgezogen werden - Der auf die %s gerichtete Traktorstrahl wurde deaktiviert',
+                $tractoredShip->getName()
+            );
+
+            return false;
+        }
+
         $mass = $tractoredShip->getRump()->getTractorMass();
         $payload = $ship->getTractorPayload();
 
@@ -37,14 +59,16 @@ final class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
         if ($mass > $payload) {
             $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
 
-            return sprintf(
-                _('Traktoremitter der %s war nicht stark genug um die %s zu ziehen und wurde daher deaktiviert'),
+            $information->addInformationf(
+                _('Traktoremitter der %s war nicht leistungsstark genug um die %s zu ziehen und wurde daher deaktiviert'),
                 $ship->getName(),
                 $tractoredShip->getName()
             );
+
+            return false;
         }
 
-        return null;
+        return true;
     }
 
     #[Override]

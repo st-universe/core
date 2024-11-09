@@ -8,12 +8,14 @@ use Mockery\MockInterface;
 use Override;
 use Stu\Component\Ship\System\Utility\TractorMassPayloadUtil;
 use Stu\Component\Ship\System\Utility\TractorMassPayloadUtilInterface;
+use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Ship\Lib\Damage\ApplyDamageInterface;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Ship\Lib\Message\MessageInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\StuTestCase;
@@ -31,12 +33,12 @@ class TractorMassPayloadUtilTest extends StuTestCase
 
     /** @var MockInterface|ShipInterface */
     private $ship;
-
     /** @var MockInterface|ShipInterface */
     private $tractoredShip;
-
     /** @var MockInterface|ShipWrapperInterface */
     private $wrapper;
+    /** @var MockInterface|InformationInterface */
+    private $information;
 
     private TractorMassPayloadUtilInterface $subject;
 
@@ -53,6 +55,7 @@ class TractorMassPayloadUtilTest extends StuTestCase
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
         $this->ship = $this->mock(ShipInterface::class);
         $this->tractoredShip = $this->mock(ShipInterface::class);
+        $this->information = $this->mock(InformationInterface::class);
 
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()
@@ -67,8 +70,51 @@ class TractorMassPayloadUtilTest extends StuTestCase
         );
     }
 
+
+    public function testTryToTowExpectReleaseWhenTargetInOtherFleetWithMoreThanOneShip(): void
+    {
+        $tractoredShipFleet = $this->mock(FleetInterface::class);
+
+        $this->ship->shouldReceive('getFleet')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->mock(FleetInterface::class));
+
+        $this->tractoredShip->shouldReceive('getFleet')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($tractoredShipFleet);
+        $this->tractoredShip->shouldReceive('getName')
+            ->withNoArgs()
+            ->once()
+            ->andReturn("TSHIP");
+
+        $tractoredShipFleet->shouldReceive('getShipCount')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(2);
+
+        $this->shipSystemManager->shouldReceive('deactivate')
+            ->with($this->wrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true)
+            ->once();
+
+        $this->information->shouldReceive('addInformationf')
+            ->with('Flottenschiffe können nicht mitgezogen werden - Der auf die %s gerichtete Traktorstrahl wurde deaktiviert', 'TSHIP')
+            ->once();
+
+        $result = $this->subject->tryToTow($this->wrapper, $this->tractoredShip, $this->information);
+
+        $this->assertFalse($result);
+    }
+
     public function testTryToTowExpectDeactivationWhenToHeavy(): void
     {
+        $tractoredShipFleet = $this->mock(FleetInterface::class);
+
+        $this->ship->shouldReceive('getFleet')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->mock(FleetInterface::class));
         $this->ship->shouldReceive('getTractorPayload')
             ->withNoArgs()
             ->once()
@@ -78,6 +124,10 @@ class TractorMassPayloadUtilTest extends StuTestCase
             ->once()
             ->andReturn('SHIP');
 
+        $this->tractoredShip->shouldReceive('getFleet')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($tractoredShipFleet);
         $this->tractoredShip->shouldReceive('getRump->getTractorMass')
             ->withNoArgs()
             ->once()
@@ -87,17 +137,38 @@ class TractorMassPayloadUtilTest extends StuTestCase
             ->once()
             ->andReturn('TSHIP');
 
+        $tractoredShipFleet->shouldReceive('getShipCount')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(1);
+
         $this->shipSystemManager->shouldReceive('deactivate')
             ->with($this->wrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true)
             ->once();
 
-        $reason = $this->subject->tryToTow($this->wrapper, $this->tractoredShip);
+        $this->information->shouldReceive('addInformationf')
+            ->with('Traktoremitter der %s war nicht stark genug um die %s zu ziehen und wurde daher deaktiviert', 'SHIP', 'TSHIP')
+            ->once();
 
-        $this->assertEquals('Traktoremitter der SHIP war nicht stark genug um die TSHIP zu ziehen und wurde daher deaktiviert', $reason);
+        $result = $this->subject->tryToTow($this->wrapper, $this->tractoredShip, $this->information);
+
+        $this->assertFalse($result);
     }
 
     public function testTryToTowExpectSuccessWhenPotentEnough(): void
     {
+        $fleet = $this->mock(FleetInterface::class);
+
+        $this->ship->shouldReceive('getFleet')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($fleet);
+
+        $this->tractoredShip->shouldReceive('getFleet')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($fleet);
+
         $this->ship->shouldReceive('getTractorPayload')
             ->withNoArgs()
             ->once()
@@ -108,9 +179,9 @@ class TractorMassPayloadUtilTest extends StuTestCase
             ->once()
             ->andReturn(42);
 
-        $reason = $this->subject->tryToTow($this->wrapper, $this->tractoredShip);
+        $result = $this->subject->tryToTow($this->wrapper, $this->tractoredShip, $this->information);
 
-        $this->assertNull($reason);
+        $this->assertTrue($result);
     }
 
     public function teststressTractorSystemForTowingExpectTrueWhenThresholdReached(): void
