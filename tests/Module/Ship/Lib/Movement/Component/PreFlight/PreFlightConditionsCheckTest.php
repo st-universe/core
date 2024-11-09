@@ -6,7 +6,6 @@ namespace Stu\Module\Ship\Lib\Movement\Component\PreFlight;
 
 use Mockery;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Stu\Config\Init;
 use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
 use Stu\Module\Ship\Lib\Movement\Component\PreFlight\Condition\PreFlightConditionInterface;
@@ -19,7 +18,6 @@ use function DI\get;
 /**
  * Avoid global settings to cause trouble within other tests
  */
-#[RunTestsInSeparateProcesses]
 class PreFlightConditionsCheckTest extends StuTestCase
 {
     public static function provideCheckPreconditionsData(): array
@@ -83,18 +81,8 @@ class PreFlightConditionsCheckTest extends StuTestCase
     {
         error_reporting(0);
 
-        $output = 'some-output';
+        $dic = Init::getContainer();
 
-        static::expectOutputString($output);
-
-        $container = null;
-        $app = function ($c) use ($output, &$container): void {
-            $container = $c;
-            echo $output;
-        };
-
-        Init::run($app, false);
-
-        $this->assertEquals(5, count(get('preFlightConditions')->resolve($container)));
+        $this->assertEquals(5, count(get('preFlightConditions')->resolve($dic)));
     }
 }

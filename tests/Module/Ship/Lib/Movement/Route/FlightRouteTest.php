@@ -7,7 +7,6 @@ namespace Stu\Module\Ship\Lib\Movement\Route;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Override;
-use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use RuntimeException;
 use Stu\Config\Init;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
@@ -25,7 +24,6 @@ use function DI\get;
 /**
  * Avoid global settings to cause trouble within other tests
  */
-#[RunTestsInSeparateProcesses]
 class FlightRouteTest extends StuTestCase
 {
     /** @var MockInterface&CheckDestinationInterface */
@@ -348,19 +346,9 @@ class FlightRouteTest extends StuTestCase
     {
         error_reporting(0);
 
-        $output = 'some-output';
+        $dic = Init::getContainer();
 
-        static::expectOutputString($output);
-
-        $container = null;
-        $app = function ($c) use ($output, &$container): void {
-            $container = $c;
-            echo $output;
-        };
-
-        Init::run($app, false);
-
-        $this->assertEquals(12, count(get('flightConsequences')->resolve($container)));
+        $this->assertEquals(12, count(get('flightConsequences')->resolve($dic)));
     }
 
     public function testAllPostFlightConsequencesRegistered(): void
