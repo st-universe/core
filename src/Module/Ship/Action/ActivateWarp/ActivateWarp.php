@@ -16,9 +16,7 @@ final class ActivateWarp implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_ACTIVATE_WARP';
 
-    public function __construct(private ActivatorDeactivatorHelperInterface $helper)
-    {
-    }
+    public function __construct(private ActivatorDeactivatorHelperInterface $helper) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -26,8 +24,6 @@ final class ActivateWarp implements ActionControllerInterface
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
         $this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_WARPDRIVE, $game);
-
-        //TODO tryToTow for tractored ships
     }
 
     #[Override]

@@ -26,7 +26,7 @@ class RepairUtilTest extends StuTestCase
     /** @var ShipSystemRepositoryInterface|MockInterface */
     private $shipSystemRepository;
 
-    /** @var ShipSystemRepositoryInterface|MockInterface */
+    /** @var RepairTaskRepositoryInterface|MockInterface */
     private $repairTaskRepository;
 
     /** @var ColonyShipRepairRepositoryInterface|MockInterface */
@@ -200,8 +200,10 @@ class RepairUtilTest extends StuTestCase
 
         $this->wrapper->shouldReceive('getDamagedSystems')
             ->withNoArgs()->once()->andReturn([
-                $damagedSystem1, $damagedSystem2,
-                $damagedSystem3, $damagedSystem4
+                $damagedSystem1,
+                $damagedSystem2,
+                $damagedSystem3,
+                $damagedSystem4
             ]);
 
         $this->ship->shouldReceive('getMaxHull')
