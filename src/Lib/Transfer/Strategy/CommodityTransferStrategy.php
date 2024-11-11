@@ -22,8 +22,7 @@ class CommodityTransferStrategy implements TransferStrategyInterface
         private ColonyLibFactoryInterface $colonyLibFactory,
         private BeamUtilInterface $beamUtil,
         private PirateReactionInterface $pirateReaction
-    ) {
-    }
+    ) {}
 
     #[Override]
     public function setTemplateVariables(
@@ -33,9 +32,15 @@ class CommodityTransferStrategy implements TransferStrategyInterface
         GameControllerInterface $game
     ): void {
 
+        $beamableStorage = $isUnload ? $ship->getBeamableStorage() : $target->getBeamableStorage();
+
+        usort($beamableStorage, function ($a, $b) {
+            return $a->getCommodity()->getSort() <=> $b->getCommodity()->getSort();
+        });
+
         $game->setTemplateVar(
             'BEAMABLE_STORAGE',
-            $isUnload ? $ship->getBeamableStorage() : $target->getBeamableStorage()
+            $beamableStorage
         );
 
         if ($target instanceof ColonyInterface) {
