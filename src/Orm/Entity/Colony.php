@@ -617,13 +617,18 @@ class Colony implements ColonyInterface
     /**
      * @return StorageInterface[]
      */
-    #[Override]
     public function getBeamableStorage(): array
     {
-        return array_filter(
+        $beamableStorage = array_filter(
             $this->getStorage()->getValues(),
             fn(StorageInterface $storage): bool => $storage->getCommodity()->isBeamable() === true
         );
+
+        usort($beamableStorage, function ($a, $b) {
+            return $a->getCommodity()->getSort() <=> $b->getCommodity()->getSort();
+        });
+
+        return $beamableStorage;
     }
 
     #[Override]
