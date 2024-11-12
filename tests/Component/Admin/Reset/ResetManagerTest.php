@@ -40,54 +40,40 @@ class ResetManagerTest extends StuTestCase
 {
     /** @var MockInterface&KnResetInterface */
     private MockInterface $knReset;
-
     /** @var MockInterface&PmResetInterface */
     private MockInterface $pmReset;
-
     /** @var MockInterface&AllianceResetInterface */
     private MockInterface $allianceReset;
-
     /** @var MockInterface&FleetResetInterface */
     private MockInterface $fleetReset;
-
     /** @var MockInterface&CrewResetInterface */
     private MockInterface $crewReset;
-
     /** @var MockInterface&ShipResetInterface */
     private MockInterface $shipReset;
-
     /** @var MockInterface&StorageResetInterface */
     private MockInterface $storageReset;
-
     /** @var MockInterface&MapResetInterface */
     private MockInterface $mapReset;
-
     /** @var MockInterface&TradeResetInterface */
     private MockInterface $tradeReset;
-
     /** @var MockInterface&UserResetInterface */
     private MockInterface $userReset;
-
     /** @var MockInterface&GameRequestRepositoryInterface */
     private MockInterface $gameRequestRepository;
-
     /** @var MockInterface&GameConfigRepositoryInterface */
     private MockInterface $gameConfigRepository;
-
     /** @var MockInterface&PlayerDeletionInterface */
     private MockInterface $playerDeletion;
-
     /** @var MockInterface&ColonyRepositoryInterface */
     private MockInterface $colonyRepository;
-
     /** @var MockInterface&HistoryRepositoryInterface */
     private MockInterface $historyRepository;
-
     /** @var MockInterface&GameTurnRepositoryInterface */
     private MockInterface $gameTurnRepository;
-
     /** @var MockInterface&PlanetFieldRepositoryInterface */
     private MockInterface $planetFieldRepository;
+    /** @var MockInterface&SequenceResetInterface */
+    private MockInterface $sequenceReset;
 
     /** @var MockInterface&StuConfigInterface */
     private MockInterface $stuConfig;
@@ -125,6 +111,7 @@ class ResetManagerTest extends StuTestCase
         $this->historyRepository = $this->mock(HistoryRepositoryInterface::class);
         $this->gameTurnRepository = $this->mock(GameTurnRepositoryInterface::class);
         $this->planetFieldRepository = $this->mock(PlanetFieldRepositoryInterface::class);
+        $this->sequenceReset = $this->mock(SequenceResetInterface::class);
         $this->stuConfig = $this->mock(StuConfigInterface::class);
         $this->entityManager = $this->mock(EntityManagerInterface::class);
         $this->connection = $this->mock(Connection::class);
@@ -149,6 +136,7 @@ class ResetManagerTest extends StuTestCase
             $this->historyRepository,
             $this->gameTurnRepository,
             $this->planetFieldRepository,
+            $this->sequenceReset,
             $this->stuConfig,
             $this->entityManager,
             $this->connection
@@ -309,10 +297,6 @@ class ResetManagerTest extends StuTestCase
         $this->entityManager->shouldReceive('flush')
             ->withNoArgs()
             ->once();
-        $this->entityManager->shouldReceive('getConnection')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($database);
 
         $result = $this->mock(Result::class);
 
@@ -336,6 +320,10 @@ class ResetManagerTest extends StuTestCase
 
         $this->planetFieldRepository->shouldReceive('truncateByColony')
             ->with($colony)
+            ->once();
+
+        $this->sequenceReset->shouldReceive('resetSequences')
+            ->withNoArgs()
             ->once();
 
         $colony->shouldReceive('setMask')

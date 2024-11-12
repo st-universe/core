@@ -118,7 +118,7 @@ return [
         if ($stuConfig->getDbSettings()->useSqlite()) {
             $dsnParser = new DsnParser(['sqlite' => 'pdo_sqlite']);
             $connectionParams = $dsnParser
-                ->parse('sqlite:///:memory:');
+                ->parse($stuConfig->getDbSettings()->getSqliteDsn());
 
             return DriverManager::getConnection($connectionParams);
         }

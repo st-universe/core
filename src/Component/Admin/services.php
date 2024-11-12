@@ -20,6 +20,8 @@ use Stu\Component\Admin\Reset\Map\MapReset;
 use Stu\Component\Admin\Reset\Map\MapResetInterface;
 use Stu\Component\Admin\Reset\ResetManager;
 use Stu\Component\Admin\Reset\ResetManagerInterface;
+use Stu\Component\Admin\Reset\SequenceReset;
+use Stu\Component\Admin\Reset\SequenceResetInterface;
 use Stu\Component\Admin\Reset\Ship\ShipReset;
 use Stu\Component\Admin\Reset\Ship\ShipResetInterface;
 use Stu\Component\Admin\Reset\Storage\StorageReset;
@@ -39,6 +41,7 @@ return [
     KnResetInterface::class => autowire(KnReset::class),
     MapResetInterface::class => autowire(MapReset::class),
     PmResetInterface::class => autowire(PmReset::class),
+    SequenceResetInterface::class => autowire(SequenceReset::class),
     ResetManagerInterface::class => autowire(ResetManager::class),
     ShipResetInterface::class => autowire(ShipReset::class),
     StorageResetInterface::class => autowire(StorageReset::class),

@@ -1,6 +1,7 @@
 {
   "db": {
     "useSqlite": true,
+    "sqliteDsn": "sqlite:///:memory:",
     "host": "change.me",
     "port": 3306,
     "user": "change",

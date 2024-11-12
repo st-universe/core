@@ -6,7 +6,8 @@
     "classmap": [
       "src/Lib",
       "src/admin",
-      "tests/"
+      "tests/",
+      "testdata/"
     ],
     "psr-4": {
       "Stu\\": [
