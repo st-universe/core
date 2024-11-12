@@ -40,6 +40,18 @@ class DbSettingsTest extends StuTestCase
         $this->assertTrue($useSqlite);
     }
 
+    public function testGetSqliteDsn(): void
+    {
+        $this->settingsCore->shouldReceive('getStringConfigValue')
+            ->with('sqliteDsn')
+            ->once()
+            ->andReturn('DSN');
+
+        $result = $this->subject->getSqliteDsn();
+
+        $this->assertEquals('DSN', $result);
+    }
+
     public function testGetDatabase(): void
     {
         $this->settingsCore->shouldReceive('getStringConfigValue')

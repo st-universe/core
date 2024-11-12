@@ -9,6 +9,7 @@ config.json.backup
 src/Public/assets
 src/Public/version_*
 backup
+*.sqlite
 build
 OrmProxy
 src/lang/*/*/*.mo

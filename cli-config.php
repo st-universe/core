@@ -14,6 +14,6 @@ $config = new PhpFile('dist/db/migrations/migrations.php'); // Or use one of the
 
 return DependencyFactory::fromEntityManager(
     $config,
-    new ExistingEntityManager(Init::getContainer(false)
+    new ExistingEntityManager(Init::getContainer()
         ->get(EntityManagerInterface::class))
 );
