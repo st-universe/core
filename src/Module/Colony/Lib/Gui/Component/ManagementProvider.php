@@ -18,9 +18,14 @@ use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 final class ManagementProvider implements GuiComponentProviderInterface
 {
-    public function __construct(private TorpedoTypeRepositoryInterface $torpedoTypeRepository, private DatabaseCategoryWrapperFactoryInterface $databaseCategoryWrapperFactory, private OrbitShipListRetrieverInterface $orbitShipListRetriever, private ColonyFunctionManagerInterface $colonyFunctionManager, private ShipWrapperFactoryInterface $shipWrapperFactory, private ColonyLibFactoryInterface $colonyLibFactory)
-    {
-    }
+    public function __construct(
+        private TorpedoTypeRepositoryInterface $torpedoTypeRepository,
+        private DatabaseCategoryWrapperFactoryInterface $databaseCategoryWrapperFactory,
+        private OrbitShipListRetrieverInterface $orbitShipListRetriever,
+        private ColonyFunctionManagerInterface $colonyFunctionManager,
+        private ShipWrapperFactoryInterface $shipWrapperFactory,
+        private ColonyLibFactoryInterface $colonyLibFactory
+    ) {}
 
     #[Override]
     public function setTemplateVariables(
@@ -79,6 +84,8 @@ final class ManagementProvider implements GuiComponentProviderInterface
         $game->setTemplateVar('SHIELDING_MANAGER', $shieldingManager);
 
         $game->setTemplateVar('DEPOSIT_MININGS', $this->getUserDepositMinings($host));
+
+        $game->setTemplateVar('VISUAL_PANEL', $this->colonyLibFactory->createColonyScanPanel($host));
     }
 
     /**
