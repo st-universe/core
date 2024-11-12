@@ -2,15 +2,14 @@
 
 declare(strict_types=1);
 
-use Stu\Lib\NavPanelButton;
-use Stu\Lib\NavPanelButtonInterface;
+namespace Stu\Lib\Map\NavPanel;
+
+use RuntimeException;
 use Stu\Orm\Entity\ShipInterface;
 
 class NavPanel
 {
-    public function __construct(private ShipInterface $ship)
-    {
-    }
+    public function __construct(private ShipInterface $ship) {}
 
     public function getShip(): ShipInterface
     {

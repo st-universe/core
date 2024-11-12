@@ -1,6 +1,6 @@
 <?php
 
-namespace Stu\Lib;
+namespace Stu\Lib\Map\NavPanel;
 
 interface NavPanelButtonInterface
 {
