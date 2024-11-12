@@ -147,7 +147,7 @@ class TractorMassPayloadUtilTest extends StuTestCase
             ->once();
 
         $this->information->shouldReceive('addInformationf')
-            ->with('Traktoremitter der %s war nicht stark genug um die %s zu ziehen und wurde daher deaktiviert', 'SHIP', 'TSHIP')
+            ->with('Traktoremitter der %s war nicht leistungsstark genug um die %s zu ziehen und wurde daher deaktiviert', 'SHIP', 'TSHIP')
             ->once();
 
         $result = $this->subject->tryToTow($this->wrapper, $this->tractoredShip, $this->information);

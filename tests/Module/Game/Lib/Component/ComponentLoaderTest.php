@@ -18,6 +18,8 @@ class ComponentLoaderTest extends StuTestCase
 {
     /** @var MockInterface&RenderFragmentInterface  */
     private MockInterface $componentProvider;
+    /** @var MockInterface&TwigPageInterface  */
+    private MockInterface $twigPage;
 
     /** @var MockInterface&GameControllerInterface  */
     private MockInterface $game;
@@ -28,9 +30,14 @@ class ComponentLoaderTest extends StuTestCase
     protected function setUp(): void
     {
         $this->componentProvider = $this->mock(RenderFragmentInterface::class);
+        $this->twigPage = $this->mock(TwigPageInterface::class);
+
         $this->game = $this->mock(GameControllerInterface::class);
 
-        $this->subject = new ComponentLoader([ComponentEnum::PM_NAVLET->value => $this->componentProvider]);
+        $this->subject = new ComponentLoader(
+            $this->twigPage,
+            [ComponentEnum::PM_NAVLET->value => $this->componentProvider]
+        );
     }
 
     public function testLoadComponentUpdatesAsInstantUpdate(): void
@@ -101,16 +108,13 @@ class ComponentLoaderTest extends StuTestCase
         static::expectExceptionMessage('componentProvider with follwing id does not exist: servertime');
         static::expectException(RuntimeException::class);
 
-        $twigPage = $this->mock(TwigPageInterface::class);
-
         $this->subject->registerComponent(ComponentEnum::SERVERTIME_NAVLET);
 
-        $this->subject->loadRegisteredComponents($twigPage, $this->game);
+        $this->subject->loadRegisteredComponents($this->game);
     }
 
     public function testLoadRegisteredComponents(): void
     {
-        $twigPage = $this->mock(TwigPageInterface::class);
         $user = $this->mock(UserInterface::class);
 
         $this->subject->registerComponent(ComponentEnum::PM_NAVLET);
@@ -122,9 +126,9 @@ class ComponentLoaderTest extends StuTestCase
             ->andReturn($user);
 
         $this->componentProvider->shouldReceive('render')
-            ->with($user, $twigPage, $this->game)
+            ->with($user, $this->twigPage, $this->game)
             ->once();
 
-        $this->subject->loadRegisteredComponents($twigPage, $this->game);
+        $this->subject->loadRegisteredComponents($this->game);
     }
 }
