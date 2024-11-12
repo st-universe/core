@@ -2,15 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Stu\Lib;
+namespace Stu\Lib\Map\NavPanel;
 
 use Override;
 
 final class NavPanelButton implements NavPanelButtonInterface
 {
-    public function __construct(private string $label, private bool $disabled = false)
-    {
-    }
+    public function __construct(private string $label, private bool $disabled = false) {}
 
     #[Override]
     public function getLabel(): string

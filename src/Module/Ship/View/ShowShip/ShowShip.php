@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\View\ShowShip;
 
-use NavPanel;
 use Override;
 use request;
 use Stu\Component\Game\GameEnum;
@@ -19,6 +18,7 @@ use Stu\Lib\SessionInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Component\Game\ModuleViewEnum;
+use Stu\Lib\Map\NavPanel\NavPanel;
 use Stu\Module\Control\ViewContext;
 use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Control\ViewControllerInterface;
