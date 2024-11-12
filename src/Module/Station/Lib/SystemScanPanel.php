@@ -39,9 +39,7 @@ class SystemScanPanel extends AbstractVisualPanel
     {
         $panelLayerCreation = $this->panelLayerCreation
             ->addShipCountLayer($this->currentShip->getTachyonState(), null, ShipcountLayerTypeEnum::ALL, 0)
-            ->addBorderLayer($this->currentShip, $this->system === $this->currentShip->getSystem());
-
-        $panelLayerCreation
+            ->addBorderLayer($this->currentShip, $this->system === $this->currentShip->getSystem())
             ->addSystemLayer()
             ->addColonyShieldLayer();
 
@@ -55,7 +53,7 @@ class SystemScanPanel extends AbstractVisualPanel
     #[Override]
     protected function getEntryCallable(): callable
     {
-        return fn (int $x, int $y): SystemScanPanelEntry => new SystemScanPanelEntry(
+        return fn(int $x, int $y): SystemScanPanelEntry => new SystemScanPanelEntry(
             $x,
             $y,
             $this->layers,

@@ -33,16 +33,24 @@
         <div class="box">
             <div class="box_title">Planet</div>
             <div class="box_body">
-                <div>
-                    <img src="/assets/planets/{{ COLONY.getColonyClassId }}.png" style="width: 30px; height: 30px;" />
-                    {{ COLONY.getPlanetName }} ({{ COLONY.getSX }}|{{ COLONY.getSY }})
+                <div style="float:left;">
+                    <div>
+                        <img src="/assets/planets/{{ COLONY.getColonyClassId }}.png"
+                            style="width: 30px; height: 30px;" />
+                        {{ COLONY.getPlanetName }} ({{ COLONY.getSX }}|{{ COLONY.getSY }})
+                    </div>
+                    <div>
+                        <img src="/assets/buttons/t_{{ COLONY.getDayTimePrefix }}.png"
+                            title="{{ COLONY.getDayTimeName }}" />
+                        <span>{{ COLONY.getColonyTimeHour }}:{{ COLONY.getColonyTimeMinute }} Uhr</span>
+                    </div>
+                    <div>
+                        <img src="/assets/buttons/classm.png" title="Eigenrotationsdauer" alt="Eigenrotationsdauer" />
+                        {{ COLONY.getRotationTime|formatSeconds }}
+                    </div>
                 </div>
-                <div>
-                    <img src="/assets/buttons/t_{{ COLONY.getDayTimePrefix }}.png"
-                        title="{{ COLONY.getDayTimeName }}" />
-                    <span>{{ COLONY.getColonyTimeHour }}:{{ COLONY.getColonyTimeMinute }} Uhr</span>
-                    <img src="/assets/buttons/classm.png" title="Eigenrotationsdauer" alt="Eigenrotationsdauer" />
-                    {{ COLONY.getRotationTime|formatSeconds }}
+                <div style="float:right;">
+                    {% include 'html/visualPanel/panel.twig' %}
                 </div>
             </div>
         </div>
@@ -107,9 +115,11 @@
                         <th style='text-align: left'><img src='/assets/buttons/info2.png' /> Planetarer Schild </th>
                     </tr>
                     <tr>
-                        <td>Ein Planetarer Schutzschild schützt deine Gebäude vor Angriffen und dich davor beklaut zu werden. Wenn du die richtige Schildfrequenz deinen Freunden gibst, können Sie damit von deiner Kolonie beamen.</br>
-                        Das Deaktivieren des Schildes führt dazu, dass alle Schildpunkte entladen werden.</br>Klicke auf das <img
-                                style='height:16px' src='/assets/buttons/info2.png' /> für mehr Infos.</td>
+                        <td>Ein Planetarer Schutzschild schützt deine Gebäude vor Angriffen und dich davor beklaut zu
+                            werden. Wenn du die richtige Schildfrequenz deinen Freunden gibst, können Sie damit von
+                            deiner Kolonie beamen.</br>
+                            Das Deaktivieren des Schildes führt dazu, dass alle Schildpunkte entladen werden.</br>Klicke
+                            auf das <img style='height:16px' src='/assets/buttons/info2.png' /> für mehr Infos.</td>
                     </tr>
                 </table>" %}
                 <tr>
@@ -133,10 +143,11 @@
                         </a>
                         {% endif %}
                         <a href="https://wiki.stuniverse.de/index.php?title=Schildgenerator" target="_blank"
-                onmouseover="return overlib('{{ ShieldoverlibText|e('js') }}', CAPTION, '',  CLOSETEXT, 'X', CLOSECOLOR, '#8897cf', TEXTCOLOR, '#000000', CELLPAD, 4);"
-                onmouseout="return nd();"><img src="/assets/buttons/info2.png" style="height:16px;" /></a></th>
-    </tr>
-                    </td>
+                            onmouseover="return overlib('{{ ShieldoverlibText|e('js') }}', CAPTION, '',  CLOSETEXT, 'X', CLOSECOLOR, '#8897cf', TEXTCOLOR, '#000000', CELLPAD, 4);"
+                            onmouseout="return nd();"><img src="/assets/buttons/info2.png" style="height:16px;" /></a>
+                        </th>
+                </tr>
+                </td>
                 </tr>
                 <tr>
                     <td>Schildfrequenz in MHz (max. 6 Stellen):</td>
