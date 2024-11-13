@@ -1,0 +1,582 @@
+<div id="padd-popup" class="cardassian-padd">
+    <div class="padd-container">
+        <div class="padd-background">
+        <div class="deco-button-shadow1"></div>
+        <div class="deco-button1"></div>
+                <div class="deco-button-shadow2"></div>
+                <div class="deco-button-shadow3"></div>
+                <div class="deco-button-shadow4"></div>
+                <div class="deco-button-shadow5"></div>
+        <div class="deco-button2"></div>
+        <div class="deco-button3"></div>
+        <div class="deco-button4"></div>
+        <div class="deco-button5"></div>
+            <div class="screen-container">
+                <div class="screen-frame"></div>
+                <div class="screen">
+                    <div id="padd-title" class="padd-title"></div>
+                    <div id="padd-text" class="padd-text"></div>
+                </div>
+            </div>
+            <div class="control-panel-frame"></div>
+            <div class="control-panel">
+                <div class="nav-controls">
+                    <div class="button-frame back-frame"></div>
+                    <div id="back-button" class="nav-button">◀</div>
+                    <div class="button-frame next-frame"></div>
+                    <div id="next-button" class="nav-button">▶</div>
+                </div>
+                <div class="deco-button-shadow6"></div>
+                <div class="deco-button6"></div>
+                                <div class="deco-button-shadow7"></div>
+                <div class="deco-button7"></div>
+                <div class="deco-button-shadow8"></div>
+<div class="deco-button8"></div>
+<div class="deco-button-shadow9"></div>
+<div class="deco-button9"></div>
+<div class="deco-button-shadow10"></div>
+<div class="deco-button10"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.cardassian-padd {
+    position: fixed;
+    top: 10%;
+    left: 100%;
+    transform: translate(-50%, 0%);
+    z-index: 1003;
+    cursor: move;
+    transition: left 0.5s ease-out;
+}
+
+.padd-container {
+    position: relative;
+    width: 550px;
+    height: 700px;
+}
+
+.padd-background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #7b664b;
+    clip-path: polygon(17% 11%, 70% 11%, 77% 15%, 77% 34%, 73% 37%, 73% 89%, 66% 94%, 32.36% 94%, 24.55% 64.57%, 15.1% 59.43%, 14% 15%);
+}
+
+.control-panel-frame {
+    position: absolute;
+    width: 347px;
+    height: 357px;
+    background-color: #513e26;
+    margin-top: 41.5%;
+    margin-left: 13.5%;
+    clip-path: polygon(16.31% 13%, 70% 13%, 75% 20%, 77.29% 31.29%, 86% 39%, 86% 85%, 75% 93%, 43% 93%, 34% 85%, 24.94% 38.00%, 10.29% 30.14%, 10% 18%);
+}
+
+.control-panel {
+    position: absolute;
+    width: 340px;
+    height: 350px;
+    background-color: #9b9b9b;
+    margin-top: 42%;
+    margin-left: 14%;
+    clip-path: polygon(16.31% 13%, 70% 13%, 75% 20%, 77.29% 31.29%, 86% 39%, 86% 85%, 75% 93%, 43% 93%, 34% 85%, 24.94% 38.00%, 10.29% 30.14%, 10% 18%);
+}
+
+.screen-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    margin-top: 70px;
+    margin-left: -45px;
+}
+
+.screen-frame {
+    position: absolute;
+    width: 326px;
+    height: 280px;
+    background-color: #604829;
+    clip-path: ellipse(49% 41% at 50% 50%);
+    margin-top: -5px;
+}
+
+.screen {
+    position: absolute;
+    width: 320px;
+    height: 270px;
+    background-color: #000000;
+    clip-path: ellipse(49% 41% at 50% 50%);
+    display: flex;
+    flex-direction: column;
+}
+
+.padd-title {
+    color: #9244df;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    margin: 35px 40px 5px 95px;
+    width: 40%;
+}
+
+.padd-text {
+    color: #d9c4a9;
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 40px;
+    margin: 0 auto;
+    width: 85%;
+    max-height: 160px;
+}
+
+.nav-controls {
+    position: absolute;
+    top: 15%;
+    left: 15%;
+    width: 70%;
+    height: auto;
+    display: flex;
+    gap: 20px;
+}
+
+.button-frame {
+    position: absolute;
+    background-color: #533e26;
+    clip-path: polygon(0 0, 76% 0, 100% 100%, 19% 100%);
+}
+
+.back-frame {
+    width: 61px;
+    height: 78px;
+    margin-left: 11%;
+}
+
+.next-frame {
+    width: 70px;
+    height: 78px;
+    margin-left: 43%;
+}
+
+.nav-button {
+    position: relative;
+    height: 75px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #8b6b42;
+    color: #2a1810;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+    user-select: none;
+    z-index: 1;
+}
+
+#back-button {
+    width: 55px;
+    clip-path: polygon(0 0, 76% 0, 100% 100%, 19% 100%);
+    margin-left:12%;
+}
+
+#next-button {
+    width: 65px;
+    clip-path: polygon(0 0, 76% 0, 100% 100%, 19% 100%);
+}
+
+.nav-button:hover {
+    background-color: #8b6b42; 
+    transform: none;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.4); 
+}
+
+.nav-button:active {
+    background-color: #765937;
+    transform: translateY(2px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.nav-button.inactive,
+.nav-button.inner-update {
+    background-color: #665039;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+.deco-button-shadow1 {
+    position: absolute;
+    width: 124px;
+    height: 144px;
+    background-color: #5e452c;
+    clip-path: polygon(13.17% 93%, 13.83% 60.57%, 49.5% 30.29%, 94.67% 28.86%, 78.67% 32.57%, 69% 36.71%, 56.5% 44.43%, 47.17% 52%, 37.17% 60%, 27% 69.86%, 18.33% 81.43%);
+    left: calc(13%);
+    top: calc(7%);
+    z-index: 3;
+}
+
+
+.deco-button1 {
+    position: absolute;
+    width: 120px;
+    height: 140px;
+    background-color: #8b6b42; 
+    clip-path: polygon(13.17% 93%, 13.83% 60.57%, 49.5% 30.29%, 94.67% 28.86%, 78.67% 32.57%, 69% 36.71%, 56.5% 44.43%, 47.17% 52%, 37.17% 60%, 27% 69.86%, 18.33% 81.43%);
+    left: 13%;
+    top: 7%;
+    z-index: 4;
+    background-image: repeating-linear-gradient(
+        to right,
+        rgba(211, 215, 219, 0.7) 0,
+        rgba(211, 215, 219, 0.7) 2px,
+        transparent 2px,
+        transparent 4px
+    );
+
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.3); 
+}
+
+.deco-button-shadow2 {
+    position: absolute;
+    width: 64px;
+    height: 94px;
+    background-color: #5e452c;
+    clip-path: polygon(5.33% 14.56%, 79.33% 15.56%, 101.33% 26.22%, 76.33% 45.33%, 56.33% 33.11%, 30.67% 23.12%);
+    left: calc(61% - 3px);
+    top: calc(11.5% + 1px);
+    z-index: 3;
+}
+
+
+.deco-button2 {
+    position: absolute;
+    width: 60px;
+    height: 90px;
+    background-color: #8b6b42; 
+    clip-path: polygon(5.33% 14.56%, 79.33% 15.56%, 101.33% 26.22%, 76.33% 45.33%, 56.33% 33.11%, 30.67% 23.12%);
+    left: 61%;
+    top: 11.5%;
+    z-index: 4;
+    background-image: repeating-linear-gradient(
+        to right,
+        rgba(211, 215, 219, 0.7) 0,
+        rgba(211, 215, 219, 0.7) 2px,
+        transparent 2px,
+        transparent 4px
+    );
+
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.3); 
+}
+
+.deco-button-shadow3 {
+    position: absolute;
+    width: 64px;
+    height: 94px;
+    background-color: #5e452c;
+    clip-path: polygon(65.33% 16.79%, 89.33% 28.89%, 87.99% 78.45%, 72.99% 59.77%, 54.66% 46.45%, 39.01% 37.56%);
+    left: calc(66% - 3px);
+    top: calc(13.5% + 1px);
+    z-index: 3;
+}
+
+.deco-button3 {
+    position: absolute;
+    width: 60px;
+    height: 90px;
+    background-color: #8b6b42; 
+    clip-path: polygon(65.33% 16.79%, 89.33% 28.89%, 87.99% 78.45%, 72.99% 59.77%, 54.66% 46.45%, 39.01% 37.56%);
+    left: 66%;
+    top: 13.5%;
+    z-index: 4;
+    background-image: repeating-linear-gradient(
+        to right,
+        rgba(211, 215, 219, 0.7) 0,
+        rgba(211, 215, 219, 0.7) 2px,
+        transparent 2px,
+        transparent 4px
+    );
+
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.3); 
+}
+
+.deco-button-shadow4 {
+    position: absolute;
+    width: 66px;
+    height: 96px;
+    background-color: #5e452c;
+    clip-path: polygon(100% 31%, 0% 100%, 100% 100%);
+    left: calc(60.5% - 2px);
+    top: calc(34% - 3px);
+    z-index: 3;
+}
+
+.deco-button-shadow5 {
+    position: absolute;
+    width: 66px;
+    height: 96px;
+    background-color: #5e452c;
+    clip-path: polygon(0 31%, 0% 100%, 100% 100%);
+    left: calc(16.5% - 3px);
+    top: calc(33.5% + 1px);
+    z-index: 3;
+}
+
+.deco-button4 {
+    position: absolute;
+    width: 60px;
+    height: 90px;
+    background-color: #8b6b42; 
+    clip-path: polygon(100% 31%, 0% 100%, 100% 100%);
+    left: 61.5%;
+    top: 34%;
+    z-index: 4;
+    background-image: repeating-linear-gradient(
+        to right,
+        rgba(211, 215, 219, 0.7) 0,
+        rgba(211, 215, 219, 0.7) 2px,
+        transparent 2px,
+        transparent 4px
+    );
+
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.3); 
+}
+
+.deco-button5 {
+    position: absolute;
+    width: 60px;
+    height: 90px;
+    background-color: #8b6b42; 
+    clip-path: polygon(0 31%, 0% 100%, 100% 100%);
+    left: 16.5%;
+    top: 34%;
+    z-index: 4;
+    background-image: repeating-linear-gradient(
+        to right,
+        rgba(211, 215, 219, 0.7) 0,
+        rgba(211, 215, 219, 0.7) 2px,
+        transparent 2px,
+        transparent 4px
+    );
+
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.3); 
+}
+
+.deco-button-shadow6 {
+    position: absolute;
+    width: 76px;
+    height: 94px;
+    background-color: #5e452c;
+    clip-path:polygon(2px 0px, 60.57% 0px, 92.86% 95.56%, 27.43% 95.56%);
+    left: calc(30.5% - 3px);
+    top: calc(43.5% + 1px);
+    z-index: 3;
+}
+
+.deco-button6 {
+    position: absolute;
+    width: 70px;
+    height: 90px;
+    background-color: #8b6b42; 
+    clip-path: polygon(2px 0px, 60.57% 0px, 92.86% 95.56%, 27.43% 95.56%);
+    left: 30.5%;
+    top: 44%;
+    z-index: 4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.deco-button6::before {
+    content: '';
+    position: absolute;
+    left: 30%;
+    top:54%;
+    width: 30px;
+    height: 30px;
+    background-color: #32CD32; 
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5); 
+    border: 1px solid #228B22; 
+}
+
+.deco-button6::after {
+    content: '';
+    width: 25px;
+    height: 25px;
+    position: absolute;
+    top: calc(44% - 35px);
+    left: calc(38% - 10px - 2px);
+    background-color: #8b6b42; 
+    border: 1px solid #000000; 
+    box-shadow: -2px 2px 6px rgba(0, 0, 0, 0.5); 
+}
+
+.deco-button6:active::before {
+    transform: translateY(2px);
+}
+
+.deco-button-shadow7 {
+    position: absolute;
+    width: 116px;
+    height: 94px;
+    background-color: #5e452c;
+    clip-path: polygon(0px 0px, 50.15% 0px, 82.73% 64.44%, 18.49% 64.44%);
+    left: calc(50.5% - 2px);
+    top: calc(43.5% + 2px);
+    z-index: 3;
+}
+
+.deco-button7 {
+    position: absolute;
+    width: 110px;
+    height: 90px;
+    background-color: #8b6b42; 
+    clip-path: polygon(0px 0px, 50.15% 0px, 82.73% 64.44%, 18.49% 64.44%);
+    left: 50.5%;
+    top: 44%;
+    z-index: 4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.deco-button7::before {
+    content: '';
+    position: absolute;
+    left: 12%;
+    top:5%;
+    width: 40px;
+    height: 3px;
+    background-color: #BF9DCE;
+    box-shadow: inset 0 0 5px rgba(76, 42, 91, 0.5);
+    border: 1px solid #8A6697; 
+}
+
+.deco-button7::after {
+    content: '';
+    position: absolute;
+    left: 12%;
+    top:10%;
+    width: 40px;
+    height: 20px;
+    background-color: #8a6b43; 
+    box-shadow: inset 0 0 5px rgba(66, 53, 41, 0.5);
+    border: 1px solid #916f45;
+}
+
+
+.deco-button-shadow8 {
+    position: absolute;
+    width: 96px;
+    height: 58px;
+    background-color: #5e452c;
+    clip-path: polygon(2px 0px, 60.57% 0px, 92.86% 95.56%, 27.43% 95.56%);
+    left: calc(36.5% - 3px); 
+    top: calc(73.5% + 1px);
+    z-index: 3;
+}
+
+.deco-button8 {
+    position: absolute;
+    width: 90px; 
+    height: 55px; 
+    background-color: #8b6b42; 
+    clip-path: polygon(2px 0px, 60.57% 0px, 92.86% 95.56%, 27.43% 95.56%);
+    left: 36.5%;
+    top: 74%; 
+    z-index: 4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: repeating-linear-gradient(
+        to bottom,
+        transparent,
+        transparent 4px,
+        black 3px,
+        black 6px
+    );
+}
+
+.deco-button8::before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: #db4d4d; 
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
+    border: 1px solid #770707;
+    top: 25%; 
+    left: 20%; 
+}
+
+.deco-button-shadow9 {
+    position: absolute;
+    width: 19px;
+    height: 93px;
+    background-color: #5e452c;
+    left: calc(65% - 2px); 
+    top: calc(64%); 
+    z-index: 3;
+}
+
+.deco-button9 {
+    position: absolute;
+    width: 15px;
+    height: 90px;
+    background-color: #8b6b42; 
+    left: calc(65%);
+    top: 64%;
+    z-index: 4;
+}
+
+.deco-button9::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 5px;
+    background-color: #BF9DCE; 
+    top: 8%;
+    left: 0;
+}
+
+.deco-button-shadow10 {
+    position: absolute;
+    width: 33px; 
+    height: 76px;
+    background-color: #5e452c;
+    left: calc(75% - 2px); 
+    top: calc(64%); 
+    z-index: 3;
+}
+
+.deco-button10 {
+    position: absolute;
+    width: 29px;
+    height: 73px;
+    background-color: #8b6b42; 
+    left: calc(75%); 
+    top: 64%;
+    z-index: 4;
+}
+
+.deco-button10::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 5px;
+    background-color: #BF9DCE; 
+    top: 11%;
+    left: 0;
+}
+
+.deco-button6, .deco-button7, .deco-button8, .deco-button9, .deco-button10 {
+    box-shadow: 0 2px 0 rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+    transition: all 0.1s ease-out;
+    cursor: pointer; 
+}
+
+.deco-button6:active, .deco-button7:active, .deco-button8:active, .deco-button9:active, .deco-button10:active {
+    box-shadow: 0 0 0 rgba(0,0,0,0.3), inset 0 1px 2px rgba(0,0,0,0.2);
+    transform: translateY(2px);
+}
+</style>
