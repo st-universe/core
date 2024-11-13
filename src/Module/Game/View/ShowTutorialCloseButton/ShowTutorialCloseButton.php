@@ -18,6 +18,8 @@ final class ShowTutorialCloseButton implements ViewControllerInterface
             $game->setTemplateFile('html/tutorial/closebutton2.twig');
         } elseif ($game->getUser()->getFactionId() === FactionEnum::FACTION_KLINGON) {
             $game->setTemplateFile('html/tutorial/closebutton3.twig');
+        } elseif ($game->getUser()->getFactionId() === FactionEnum::FACTION_CARDASSIAN) {
+            $game->setTemplateFile('html/tutorial/closebutton4.twig');
         } else {
             $game->setTemplateFile('html/tutorial/closebutton1.twig');
         }
