@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Deletion\Handler;
 
+use ArrayIterator;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
@@ -136,7 +137,7 @@ class AllianceDeletionHandlerTest extends MockeryTestCase
             ->with($user)
             ->once();
         $members->shouldReceive('getIterator')
-            ->andReturn(new \ArrayIterator([]));
+            ->andReturn(new ArrayIterator([]));
 
         $this->allianceActionManager->shouldReceive('delete')
             ->with($allianceId, true)
@@ -209,7 +210,7 @@ class AllianceDeletionHandlerTest extends MockeryTestCase
             ->with($user)
             ->once();
         $members->shouldReceive('getIterator')
-            ->andReturn(new \ArrayIterator([]));
+            ->andReturn(new ArrayIterator([]));
 
         $successorJob->shouldReceive('getUserId')
             ->withNoArgs()

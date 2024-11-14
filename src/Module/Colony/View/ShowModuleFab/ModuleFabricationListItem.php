@@ -101,7 +101,7 @@ final class ModuleFabricationListItem
     {
         return sprintf(
             'type_%d level_%d rump_%s buildplan_%s',
-            $this->getModuleType(),
+            $this->module->getType()->value,
             $this->getModuleLevel(),
             implode(' rump_', $this->rump_ids),
             implode(' buildplan_', $this->buildplan_ids)

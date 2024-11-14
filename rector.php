@@ -40,7 +40,7 @@ return static function (RectorConfig $rectorConfig): void {
         //SetList::CODE_QUALITY,        //last 2024-07-03
         //SetList::CODING_STYLE,
         //SetList::DEAD_CODE,           //last 2024-07-03
-        SetList::PRIVATIZATION,         //last 2024-07-03
+        SetList::PRIVATIZATION,         //last 2024-11-14
         //SetList::TYPE_DECLARATION,    //last 2024-07-03
         //LevelSetList::UP_TO_PHP_74,   //last 2024-07-03
         //LevelSetList::UP_TO_PHP_83,
@@ -59,8 +59,7 @@ return static function (RectorConfig $rectorConfig): void {
         MyCLabsClassToEnumRector::class
     ]); */
 
-    $rectorConfig->rules([
-    ]);
+    $rectorConfig->rules([]);
 
     $rectorConfig->skip([
         SimplifyBoolIdenticalTrueRector::class,
