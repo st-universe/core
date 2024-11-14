@@ -93,7 +93,7 @@ final class Init
     {
         date_default_timezone_set('Europe/Berlin');
 
-        $container = static::getContainer();
+        $container = self::getContainer();
 
         $config = $container->get(StuConfigInterface::class);
 

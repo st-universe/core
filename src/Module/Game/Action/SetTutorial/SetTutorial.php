@@ -40,7 +40,7 @@ final class SetTutorial implements ActionControllerInterface
 
         $userTutorial = $this->determineUserTutorial($tutorialStep, $isForward === 1, $game->getUser());
 
-        $followingTutorial = $isForward ? $tutorialStep->getNextStep() : $tutorialStep->getPreviousStep();
+        $followingTutorial = $isForward !== 0 ? $tutorialStep->getNextStep() : $tutorialStep->getPreviousStep();
         if ($followingTutorial == null) {
             throw new RuntimeException(sprintf(
                 'Tutorial not found for currentStepId %d and isForward %d',

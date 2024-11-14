@@ -31,9 +31,9 @@ final class ShowPostSearchResult implements ViewControllerInterface
         $game->setViewTemplate(ModuleViewEnum::COMMUNICATION->getTemplate());
         $game->appendNavigationPart('comm.php', _('KommNet'));
 
-        if (strlen($this->showSearchResultRequest->getSearchString()) < static::MINIMUM_SEARCH_WORD_LENGTH) {
+        if (strlen($this->showSearchResultRequest->getSearchString()) < self::MINIMUM_SEARCH_WORD_LENGTH) {
             $game->setTemplateVar('KN_POSTINGS', null);
-            $game->addInformation(sprintf('Der Suchbegriff muss mindestens %d Zeichen lang sein!', static::MINIMUM_SEARCH_WORD_LENGTH));
+            $game->addInformation(sprintf('Der Suchbegriff muss mindestens %d Zeichen lang sein!', self::MINIMUM_SEARCH_WORD_LENGTH));
 
             return;
         }

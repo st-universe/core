@@ -38,7 +38,7 @@ final class Category implements ViewControllerInterface
         $game->appendNavigationPart(
             sprintf(
                 'database.php?%s=1&cat=%d',
-                static::VIEW_IDENTIFIER,
+                self::VIEW_IDENTIFIER,
                 $category_id
             ),
             $category_description

@@ -40,7 +40,7 @@ final class ShowSystem implements ViewControllerInterface
         $game->appendNavigationPart(
             sprintf(
                 '/admin/?%s=1&sysid=%d',
-                static::VIEW_IDENTIFIER,
+                self::VIEW_IDENTIFIER,
                 $system->getId()
             ),
             sprintf(_('System %s editieren'), $system->getName())

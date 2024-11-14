@@ -44,7 +44,7 @@ class BussardCollectorShipSystem extends AbstractShipSystemType implements ShipS
             return false;
         }
 
-        if ($ship->getDockedTo()) {
+        if ($ship->getDockedTo() !== null) {
             $reason = _('das Schiff angedockt ist');
             return false;
         }

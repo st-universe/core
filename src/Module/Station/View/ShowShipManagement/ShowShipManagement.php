@@ -110,7 +110,7 @@ final class ShowShipManagement implements ViewControllerInterface
         $game->appendNavigationPart(
             sprintf(
                 '?%s=1&id=%d',
-                static::VIEW_IDENTIFIER,
+                self::VIEW_IDENTIFIER,
                 $station->getId()
             ),
             _('Schiffsmanagement')

@@ -38,7 +38,7 @@ final class ShowBasicTrade implements ViewControllerInterface
             _('Handel')
         );
         $game->appendNavigationPart(
-            sprintf('trade.php?%s=1', static::VIEW_IDENTIFIER),
+            sprintf('trade.php?%s=1', self::VIEW_IDENTIFIER),
             _('Basishandel')
         );
         $game->setPageTitle(_('/ Handel'));

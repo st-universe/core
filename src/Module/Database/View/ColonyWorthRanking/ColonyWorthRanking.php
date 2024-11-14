@@ -28,7 +28,7 @@ final class ColonyWorthRanking implements ViewControllerInterface
                 'title' => 'Datenbank'
             ],
             [
-                'url' => sprintf('database.php?%s=1', static::VIEW_IDENTIFIER),
+                'url' => sprintf('database.php?%s=1', self::VIEW_IDENTIFIER),
                 'title' => 'Die Top 10 der Architekten'
             ]
         ]);

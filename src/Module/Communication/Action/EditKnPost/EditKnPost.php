@@ -39,7 +39,7 @@ final class EditKnPost implements ActionControllerInterface
         if ($post === null || $post->getUserId() !== $userId) {
             throw new AccessViolation();
         }
-        if ($post->getDate() < time() - static::EDIT_TIME) {
+        if ($post->getDate() < time() - self::EDIT_TIME) {
             $game->addInformation(_('Dieser Beitrag kann nicht editiert werden'));
             return;
         }

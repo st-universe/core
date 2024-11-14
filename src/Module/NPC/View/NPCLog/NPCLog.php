@@ -23,7 +23,7 @@ final class NPCLog implements ViewControllerInterface
         $game->appendNavigationPart(
             sprintf(
                 '/npc/?%s=1',
-                static::VIEW_IDENTIFIER
+                self::VIEW_IDENTIFIER
             ),
             _('NPC Log')
         );

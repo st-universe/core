@@ -18,11 +18,7 @@ final class CreateInterstellarMedia implements MaintenanceHandlerInterface
             $currentAmount = $entry->getActualAmount();
             $maxAmount = $entry->getMaxAmount();
 
-            if ($currentAmount === 0) {
-                $newAmount = max(1, (int) ceil($maxAmount * 0.05));
-            } else {
-                $newAmount = (int) ceil($currentAmount * 1.15);
-            }
+            $newAmount = $currentAmount === 0 ? max(1, (int) ceil($maxAmount * 0.05)) : (int) ceil($currentAmount * 1.15);
 
             if ($newAmount >= $maxAmount) {
                 $newAmount = $maxAmount;

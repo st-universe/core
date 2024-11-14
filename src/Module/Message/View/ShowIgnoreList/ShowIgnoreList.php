@@ -24,7 +24,7 @@ final class ShowIgnoreList implements ViewControllerInterface
 
         $game->setViewTemplate('html/communication/ignorelist.twig');
         $game->appendNavigationPart(
-            sprintf('pm.php?%s=1', static::VIEW_IDENTIFIER),
+            sprintf('pm.php?%s=1', self::VIEW_IDENTIFIER),
             _('Ignoreliste')
         );
         $game->setPageTitle(_('Ignoreliste'));

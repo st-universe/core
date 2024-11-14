@@ -18,7 +18,7 @@ final class MassMail implements ViewControllerInterface
         $game->appendNavigationPart(
             sprintf(
                 '/admin/?%s=1',
-                static::VIEW_IDENTIFIER
+                self::VIEW_IDENTIFIER
             ),
             _('Massen-Mails')
         );

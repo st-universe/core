@@ -119,7 +119,7 @@ final class ShowShip implements ViewControllerInterface, ViewWithTutorialInterfa
         );
 
         $game->appendNavigationPart(
-            sprintf('?%s=1&id=%d', static::VIEW_IDENTIFIER, $ship->getId()),
+            sprintf('?%s=1&id=%d', self::VIEW_IDENTIFIER, $ship->getId()),
             $ship->getName()
         );
 

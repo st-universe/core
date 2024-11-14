@@ -38,7 +38,7 @@ final class ShowColonyList implements ViewControllerInterface, ViewWithTutorialI
         $game->appendNavigationPart(
             sprintf(
                 '?%s=1',
-                static::VIEW_IDENTIFIER
+                self::VIEW_IDENTIFIER
             ),
             _('Kolonie gründen')
         );

@@ -71,7 +71,7 @@ final class ShipRetrofit implements ShipRetrofitInterface
                 return $a->getModule()->getId() - $b->getModule()->getId();
             });
 
-            if (!empty($addingModules)) {
+            if ($addingModules !== []) {
                 $systems = [];
                 $this->addModuleSystems($addingModules, $systems);
                 foreach ($systems as $systemType => $module) {
@@ -83,18 +83,16 @@ final class ShipRetrofit implements ShipRetrofitInterface
 
             foreach ($deletingModules as $oldModule) {
                 $system = $this->shipSystemRepository->getByShipAndModule($ship->getId(), $oldModule->getModule()->getId());
-                if ($system !== null) {
-                    if ($system->getStatus() >= 100) {
-                        if (mt_rand(1, 100) <= 25) {
-                            $returnedmodules[] = $system->getModule();
-                        }
-                        $this->shipSystemRepository->delete($system);
+                if ($system !== null && $system->getStatus() >= 100) {
+                    if (mt_rand(1, 100) <= 25) {
+                        $returnedmodules[] = $system->getModule();
                     }
+                    $this->shipSystemRepository->delete($system);
                 }
             }
         }
 
-        if (!empty($returnedmodules)) {
+        if ($returnedmodules !== []) {
             $msg = "
             Die folgenden Module wurden durch den Umbau zurückgewonnen: ";
             foreach ($returnedmodules as $module) {
@@ -145,10 +143,8 @@ final class ShipRetrofit implements ShipRetrofitInterface
                 $systems[$systemType->value] = $module;
             }
 
-            switch ($module->getType()) {
-                case ShipModuleTypeEnum::SPECIAL:
-                    $this->addSpecialSystems($module, $systems);
-                    break;
+            if ($module->getType() === ShipModuleTypeEnum::SPECIAL) {
+                $this->addSpecialSystems($module, $systems);
             }
         }
     }

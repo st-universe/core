@@ -46,10 +46,8 @@ final class AllianceDeletionHandler implements PlayerDeletionHandlerInterface
                     $this->allianceJobRepository->delete($successor);
                 }
                 if ($successor == null && $lastonlinemember != null) {
-                    if ($diplomatic !== null) {
-                        if ($lastonlinemember == $diplomatic->getUser()) {
-                            $this->allianceJobRepository->delete($diplomatic);
-                        }
+                    if ($diplomatic !== null && $lastonlinemember == $diplomatic->getUser()) {
+                        $this->allianceJobRepository->delete($diplomatic);
                     }
                     $this->allianceActionManager->setJobForUser(
                         $alliance->getId(),

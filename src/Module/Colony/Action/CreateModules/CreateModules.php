@@ -125,21 +125,13 @@ final class CreateModules implements ActionControllerInterface
                 $isEnoughAvailable = true;
             }
 
-            if (!$isEnoughAvailable) {
-                $missing = sprintf(_(' von %s'), $initialcount);
-            } else {
-                $missing = '';
-            }
+            $missing = $isEnoughAvailable ? '' : sprintf(_(' von %s'), $initialcount);
 
             $prod[] = $count . $missing . ' ' . $module->getName();
-            if ($missingeps > 0) {
-                $epsmessage = sprintf(
-                    _('%s Energie, '),
-                    $missingeps
-                );
-            } else {
-                $epsmessage = '';
-            }
+            $epsmessage = $missingeps > 0 ? sprintf(
+                _('%s Energie, '),
+                $missingeps
+            ) : '';
 
             if (!$isEnoughAvailable) {
                 $missingCommodities = [];

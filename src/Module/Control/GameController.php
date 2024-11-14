@@ -757,7 +757,7 @@ final class GameController implements GameControllerInterface
             }
         }
 
-        $view = $views[static::DEFAULT_VIEW] ?? null;
+        $view = $views[self::DEFAULT_VIEW] ?? null;
 
         if ($view !== null) {
             $this->handleView($view);
