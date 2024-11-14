@@ -3,6 +3,7 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\PlanetField;
@@ -94,12 +95,12 @@ interface PlanetFieldRepositoryInterface extends ObjectRepository
     public function getCountByBuildingAndUser(int $buildingId, int $userId): int;
 
     /**
-     * @param array<int> $buildingFunctionIds
+     * @param array<BuildingFunctionEnum> $buildingFunctions
      * @param array<int> $state
      */
     public function getCountByColonyAndBuildingFunctionAndState(
         PlanetFieldHostInterface $host,
-        array $buildingFunctionIds,
+        array $buildingFunctions,
         array $state
     ): int;
 

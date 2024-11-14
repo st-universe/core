@@ -6,7 +6,7 @@ namespace Stu\Module\Colony\Action\RepairShip;
 
 use Override;
 use request;
-use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Component\Colony\OrbitShipListRetrieverInterface;
@@ -31,9 +31,7 @@ final class RepairShip implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_REPAIR_SHIP';
 
-    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyShipRepairRepositoryInterface $colonyShipRepairRepository, private ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository, private PlanetFieldRepositoryInterface $planetFieldRepository, private ShipRepositoryInterface $shipRepository, private ShipWrapperFactoryInterface $shipWrapperFactory, private OrbitShipListRetrieverInterface $orbitShipListRetriever, private InteractionCheckerInterface $interactionChecker, private PrivateMessageSenderInterface $privateMessageSender, private ColonyFunctionManagerInterface $colonyFunctionManager)
-    {
-    }
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyShipRepairRepositoryInterface $colonyShipRepairRepository, private ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository, private PlanetFieldRepositoryInterface $planetFieldRepository, private ShipRepositoryInterface $shipRepository, private ShipWrapperFactoryInterface $shipWrapperFactory, private OrbitShipListRetrieverInterface $orbitShipListRetriever, private InteractionCheckerInterface $interactionChecker, private PrivateMessageSenderInterface $privateMessageSender, private ColonyFunctionManagerInterface $colonyFunctionManager) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -81,7 +79,7 @@ final class RepairShip implements ActionControllerInterface
                     continue;
                 }
                 foreach ($this->shipRumpBuildingFunctionRepository->getByShipRump($orbitShip->getRump()) as $rump_rel) {
-                    if (array_key_exists($rump_rel->getBuildingFunction(), $fieldFunctions)) {
+                    if (array_key_exists($rump_rel->getBuildingFunction()->value, $fieldFunctions)) {
                         $repairableShiplist[$orbitShip->getId()] = $wrapper;
                         break;
                     }
@@ -134,7 +132,7 @@ final class RepairShip implements ActionControllerInterface
         $wrapper = $repairableShiplist[$ship->getId()];
 
         $ticks = $wrapper->getRepairDuration();
-        $isRepairStationBonus = $this->colonyFunctionManager->hasActiveFunction($colony, BuildingEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD);
+        $isRepairStationBonus = $this->colonyFunctionManager->hasActiveFunction($colony, BuildingFunctionEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD);
         if ($isRepairStationBonus) {
             $ticks = ceil($ticks * 0.5);
         }

@@ -6,7 +6,7 @@ namespace Stu\Module\Ship\Action\AttackBuilding;
 
 use Override;
 use request;
-use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyFunctionManager;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Lib\Information\InformationWrapper;
@@ -47,8 +47,7 @@ final class AttackBuilding implements ActionControllerInterface
         private AttackerProviderFactoryInterface $attackerProviderFactory,
         private BattlePartyFactoryInterface $battlePartyFactory,
         private MessageFactoryInterface $messageFactory
-    ) {
-    }
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -126,7 +125,7 @@ final class AttackBuilding implements ActionControllerInterface
         // ORBITAL DEFENSE
         $count = $this->colonyFunctionManager->getBuildingWithFunctionCount(
             $colony,
-            BuildingEnum::BUILDING_FUNCTION_ENERGY_PHALANX,
+            BuildingFunctionEnum::BUILDING_FUNCTION_ENERGY_PHALANX,
             [ColonyFunctionManager::STATE_ENABLED]
         );
         $defendingPhalanx =  $this->attackerProviderFactory->getEnergyPhalanxAttacker($colony);
@@ -148,7 +147,7 @@ final class AttackBuilding implements ActionControllerInterface
 
         $count = $this->colonyFunctionManager->getBuildingWithFunctionCount(
             $colony,
-            BuildingEnum::BUILDING_FUNCTION_PARTICLE_PHALANX,
+            BuildingFunctionEnum::BUILDING_FUNCTION_PARTICLE_PHALANX,
             [ColonyFunctionManager::STATE_ENABLED]
         );
         $defendingPhalanx = $this->attackerProviderFactory->getProjectilePhalanxAttacker($colony);
@@ -171,7 +170,7 @@ final class AttackBuilding implements ActionControllerInterface
         $isOrbitField = $this->planetFieldTypeRetriever->isOrbitField($field);
         $count = $this->colonyFunctionManager->getBuildingWithFunctionCount(
             $colony,
-            BuildingEnum::BUILDING_FUNCTION_ANTI_PARTICLE,
+            BuildingFunctionEnum::BUILDING_FUNCTION_ANTI_PARTICLE,
             [ColonyFunctionManager::STATE_ENABLED]
         ) * 6;
 

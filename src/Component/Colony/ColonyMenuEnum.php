@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Colony;
 
-use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Module\Building\BuildingFunctionTypeEnum;
 use Stu\Module\Colony\Lib\Gui\GuiComponentEnum;
 use Stu\Module\Colony\View\ShowAcademy\ShowAcademy;
@@ -72,30 +72,25 @@ enum ColonyMenuEnum: int
     }
 
 
-    /** @return array<int>|null */
+    /** @return array<BuildingFunctionEnum>|null */
     public function getNeededBuildingFunction(): ?array
     {
         return match ($this) {
-            self::MENU_MAINSCREEN => null,
-            self::MENU_BUILD => null,
-            self::MENU_INFO => null,
-            self::MENU_OPTION => null,
-            self::MENU_SOCIAL => null,
-            self::MENU_BUILDINGS => null,
-            self::MENU_AIRFIELD => [BuildingEnum::BUILDING_FUNCTION_AIRFIELD],
+            self::MENU_AIRFIELD => [BuildingFunctionEnum::BUILDING_FUNCTION_AIRFIELD],
             self::MENU_MODULEFAB => BuildingFunctionTypeEnum::getModuleFabOptions(),
             self::MENU_SHIPYARD => BuildingFunctionTypeEnum::getShipyardOptions(),
             self::MENU_BUILDPLANS => BuildingFunctionTypeEnum::getShipyardOptions(),
-            self::MENU_FIGHTER_SHIPYARD => [BuildingEnum::BUILDING_FUNCTION_FIGHTER_SHIPYARD],
-            self::MENU_TORPEDOFAB => [BuildingEnum::BUILDING_FUNCTION_TORPEDO_FAB],
-            self::MENU_ACADEMY => [BuildingEnum::BUILDING_FUNCTION_ACADEMY],
-            self::MENU_WASTE => [BuildingEnum::BUILDING_FUNCTION_WAREHOUSE],
-            self::MENU_FAB_HALL => [BuildingEnum::BUILDING_FUNCTION_FABRICATION_HALL],
-            self::MENU_TECH_CENTER => [BuildingEnum::BUILDING_FUNCTION_TECH_CENTER],
-            self::MENU_SUBSPACE_TELESCOPE => [BuildingEnum::BUILDING_FUNCTION_SUBSPACE_TELESCOPE],
+            self::MENU_FIGHTER_SHIPYARD => [BuildingFunctionEnum::BUILDING_FUNCTION_FIGHTER_SHIPYARD],
+            self::MENU_TORPEDOFAB => [BuildingFunctionEnum::BUILDING_FUNCTION_TORPEDO_FAB],
+            self::MENU_ACADEMY => [BuildingFunctionEnum::BUILDING_FUNCTION_ACADEMY],
+            self::MENU_WASTE => [BuildingFunctionEnum::BUILDING_FUNCTION_WAREHOUSE],
+            self::MENU_FAB_HALL => [BuildingFunctionEnum::BUILDING_FUNCTION_FABRICATION_HALL],
+            self::MENU_TECH_CENTER => [BuildingFunctionEnum::BUILDING_FUNCTION_TECH_CENTER],
+            self::MENU_SUBSPACE_TELESCOPE => [BuildingFunctionEnum::BUILDING_FUNCTION_SUBSPACE_TELESCOPE],
             self::MENU_SHIP_DISASSEMBLY => BuildingFunctionTypeEnum::getShipyardOptions(),
             self::MENU_SHIP_REPAIR => BuildingFunctionTypeEnum::getShipyardOptions(),
-            self::MENU_SHIP_RETROFIT => BuildingFunctionTypeEnum::getShipyardOptions()
+            self::MENU_SHIP_RETROFIT => BuildingFunctionTypeEnum::getShipyardOptions(),
+            default => null
         };
     }
 
@@ -174,15 +169,15 @@ enum ColonyMenuEnum: int
 
             // menues without surface
             self::MENU_AIRFIELD => [GuiComponentEnum::AIRFIELD],
-            self::MENU_MODULEFAB => [GuiComponentEnum::MODULE_FAB],
+            self::MENU_MODULEFAB,
+            self::MENU_FAB_HALL,
+            self::MENU_TECH_CENTER,
             self::MENU_SHIPYARD => [GuiComponentEnum::SHIPYARD],
             self::MENU_BUILDPLANS => [GuiComponentEnum::SHIP_BUILDPLANS],
             self::MENU_FIGHTER_SHIPYARD => [GuiComponentEnum::FIGHTER_SHIPYARD],
             self::MENU_TORPEDOFAB => [GuiComponentEnum::TORPEDO_FAB],
             self::MENU_ACADEMY => [GuiComponentEnum::ACADEMY],
             self::MENU_WASTE => [],
-            self::MENU_FAB_HALL => [GuiComponentEnum::MODULE_FAB],
-            self::MENU_TECH_CENTER => [GuiComponentEnum::MODULE_FAB],
             self::MENU_SUBSPACE_TELESCOPE => [],
             self::MENU_SHIP_DISASSEMBLY => [GuiComponentEnum::SHIP_DISASSEMBLY],
             self::MENU_SHIP_REPAIR => [GuiComponentEnum::SHIP_REPAIR],

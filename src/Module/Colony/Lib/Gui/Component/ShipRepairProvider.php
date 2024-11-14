@@ -16,9 +16,7 @@ use Stu\Orm\Repository\ShipRumpBuildingFunctionRepositoryInterface;
 
 final class ShipRepairProvider implements GuiComponentProviderInterface
 {
-    public function __construct(private ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository, private PlanetFieldHostProviderInterface $planetFieldHostProvider, private ColonyLibFactoryInterface $colonyLibFactory, private OrbitShipListRetrieverInterface $orbitShipListRetriever, private ShipWrapperFactoryInterface $shipWrapperFactory)
-    {
-    }
+    public function __construct(private ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository, private PlanetFieldHostProviderInterface $planetFieldHostProvider, private ColonyLibFactoryInterface $colonyLibFactory, private OrbitShipListRetrieverInterface $orbitShipListRetriever, private ShipWrapperFactoryInterface $shipWrapperFactory) {}
 
     /** @param ColonyInterface $host */
     #[Override]
@@ -49,7 +47,7 @@ final class ShipRepairProvider implements GuiComponentProviderInterface
                         continue;
                     }
                     foreach ($this->shipRumpBuildingFunctionRepository->getByShipRump($ship->getRump()) as $rump_rel) {
-                        if (array_key_exists($rump_rel->getBuildingFunction(), $fieldFunctions)) {
+                        if (array_key_exists($rump_rel->getBuildingFunction()->value, $fieldFunctions)) {
                             $repairableShips[$ship->getId()] = $wrapper;
                             break;
                         }

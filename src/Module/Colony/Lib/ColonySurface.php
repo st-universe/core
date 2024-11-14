@@ -7,6 +7,7 @@ namespace Stu\Module\Colony\Lib;
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Building\BuildingFunctionTypeEnum;
 use Stu\Orm\Entity\ColonyInterface;
@@ -23,9 +24,7 @@ use Stu\PlanetGenerator\PlanetGeneratorInterface;
  */
 final class ColonySurface implements ColonySurfaceInterface
 {
-    public function __construct(private PlanetFieldRepositoryInterface $planetFieldRepository, private BuildingRepositoryInterface $buildingRepository, private ColonyRepositoryInterface $colonyRepository, private ResearchedRepositoryInterface $researchedRepository, private PlanetGeneratorInterface $planetGenerator, private EntityManagerInterface $entityManager, private PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever, private PlanetFieldHostInterface $host, private ?int $buildingId, private bool $showUnderground)
-    {
-    }
+    public function __construct(private PlanetFieldRepositoryInterface $planetFieldRepository, private BuildingRepositoryInterface $buildingRepository, private ColonyRepositoryInterface $colonyRepository, private ResearchedRepositoryInterface $researchedRepository, private PlanetGeneratorInterface $planetGenerator, private EntityManagerInterface $entityManager, private PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever, private PlanetFieldHostInterface $host, private ?int $buildingId, private bool $showUnderground) {}
 
     #[Override]
     public function getSurface(): array
@@ -41,7 +40,7 @@ final class ColonySurface implements ColonySurfaceInterface
         if (!$this->showUnderground) {
             $fields = array_filter(
                 $fields,
-                fn (PlanetFieldInterface $field): bool => !$this->planetFieldTypeRetriever->isUndergroundField($field)
+                fn(PlanetFieldInterface $field): bool => !$this->planetFieldTypeRetriever->isUndergroundField($field)
             );
         }
 
@@ -161,7 +160,7 @@ final class ColonySurface implements ColonySurfaceInterface
     {
         return $this->planetFieldRepository->getCountByColonyAndBuildingFunctionAndState(
             $this->host,
-            [BuildingEnum::BUILDING_FUNCTION_AIRFIELD],
+            [BuildingFunctionEnum::BUILDING_FUNCTION_AIRFIELD],
             [0, 1]
         ) > 0;
     }

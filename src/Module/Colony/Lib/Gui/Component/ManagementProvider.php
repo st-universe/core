@@ -4,7 +4,7 @@ namespace Stu\Module\Colony\Lib\Gui\Component;
 
 use Override;
 use request;
-use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Colony\OrbitShipListRetrieverInterface;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
@@ -74,7 +74,7 @@ final class ManagementProvider implements GuiComponentProviderInterface
             $firstOrbitShip ? $this->shipWrapperFactory->wrapShip($firstOrbitShip) : null
         );
 
-        $particlePhalanx = $this->colonyFunctionManager->hasFunction($host, BuildingEnum::BUILDING_FUNCTION_PARTICLE_PHALANX);
+        $particlePhalanx = $this->colonyFunctionManager->hasFunction($host, BuildingFunctionEnum::BUILDING_FUNCTION_PARTICLE_PHALANX);
         $game->setTemplateVar(
             'BUILDABLE_TORPEDO_TYPES',
             $particlePhalanx ? $this->torpedoTypeRepository->getForUser($game->getUser()->getId()) : null

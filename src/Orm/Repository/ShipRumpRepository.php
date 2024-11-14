@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Override;
+use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Database\DatabaseEntryTypeEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Orm\Entity\DatabaseEntry;
@@ -49,7 +50,7 @@ final class ShipRumpRepository extends EntityRepository implements ShipRumpRepos
     }
 
     #[Override]
-    public function getBuildableByUserAndBuildingFunction(int $userId, int $buildingFunction): array
+    public function getBuildableByUserAndBuildingFunction(int $userId, BuildingFunctionEnum $buildingFunction): array
     {
         return $this->getEntityManager()
             ->createQuery(
@@ -67,7 +68,7 @@ final class ShipRumpRepository extends EntityRepository implements ShipRumpRepos
             ->setParameters([
                 'state' => 1,
                 'userId' => $userId,
-                'buildingFunction' => $buildingFunction
+                'buildingFunction' => $buildingFunction->value
             ])
             ->getResult();
     }

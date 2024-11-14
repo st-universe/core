@@ -6,6 +6,7 @@ namespace Stu\Module\Colony\Action\CreateModules;
 
 use Override;
 use request;
+use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
@@ -21,7 +22,14 @@ final class CreateModules implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_CREATE_MODULES';
 
-    public function __construct(private ColonyLoaderInterface $colonyLoader, private ModuleBuildingFunctionRepositoryInterface $moduleBuildingFunctionRepository, private ModuleQueueRepositoryInterface $moduleQueueRepository, private PlanetFieldRepositoryInterface $planetFieldRepository, private ColonyStorageManagerInterface $colonyStorageManager, private ColonyRepositoryInterface $colonyRepository) {}
+    public function __construct(
+        private ColonyLoaderInterface $colonyLoader,
+        private ModuleBuildingFunctionRepositoryInterface $moduleBuildingFunctionRepository,
+        private ModuleQueueRepositoryInterface $moduleQueueRepository,
+        private PlanetFieldRepositoryInterface $planetFieldRepository,
+        private ColonyStorageManagerInterface $colonyStorageManager,
+        private ColonyRepositoryInterface $colonyRepository
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -41,11 +49,11 @@ final class CreateModules implements ActionControllerInterface
 
         $moduleIds = request::getArrayFatal('moduleids');
         $values = request::getArrayFatal('values');
-        $func = request::getIntFatal('func');
+        $function = BuildingFunctionEnum::from(request::getIntFatal('func'));
 
         if ($this->planetFieldRepository->getCountByColonyAndBuildingFunctionAndState(
             $colony,
-            [$func],
+            [$function],
             [0, 1]
         ) === 0) {
             return;
@@ -54,7 +62,7 @@ final class CreateModules implements ActionControllerInterface
 
         /** @var ModuleBuildingFunctionInterface[] $modules_av */
         $modules_av = [];
-        foreach ($this->moduleBuildingFunctionRepository->getByBuildingFunctionAndUser($func, $userId) as $module) {
+        foreach ($this->moduleBuildingFunctionRepository->getByBuildingFunctionAndUser($function, $userId) as $module) {
             $modules_av[$module->getModuleId()] = $module;
         }
 
@@ -105,7 +113,7 @@ final class CreateModules implements ActionControllerInterface
                 $colony->lowerEps($count * $module->getEcost());
 
                 $this->colonyRepository->save($colony);
-                if (($queue = $this->moduleQueueRepository->getByColonyAndModuleAndBuilding($colonyId, (int) $moduleId, $func)) !== null) {
+                if (($queue = $this->moduleQueueRepository->getByColonyAndModuleAndBuilding($colonyId, (int) $moduleId, $function->value)) !== null) {
                     $queue->setAmount($queue->getAmount() + $count);
 
                     $this->moduleQueueRepository->save($queue);
@@ -113,7 +121,7 @@ final class CreateModules implements ActionControllerInterface
                 } else {
                     $queue = $this->moduleQueueRepository->prototype();
                     $queue->setColony($colony);
-                    $queue->setBuildingFunction($func);
+                    $queue->setBuildingFunction($function);
                     $queue->setModule($module);
                     $queue->setAmount($count);
 

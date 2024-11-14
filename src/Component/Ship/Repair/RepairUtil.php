@@ -6,7 +6,7 @@ namespace Stu\Component\Ship\Repair;
 
 use Override;
 use RuntimeException;
-use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Crew\CrewEnum;
@@ -29,9 +29,7 @@ use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 //TODO unit tests
 final class RepairUtil implements RepairUtilInterface
 {
-    public function __construct(private ShipSystemRepositoryInterface $shipSystemRepository, private RepairTaskRepositoryInterface $repairTaskRepository, private ColonyShipRepairRepositoryInterface $colonyShipRepairRepository, private ShipStorageManagerInterface $shipStorageManager, private ColonyStorageManagerInterface $colonyStorageManager, private ColonyFunctionManagerInterface $colonyFunctionManager, private PrivateMessageSenderInterface $privateMessageSender)
-    {
-    }
+    public function __construct(private ShipSystemRepositoryInterface $shipSystemRepository, private RepairTaskRepositoryInterface $repairTaskRepository, private ColonyShipRepairRepositoryInterface $colonyShipRepairRepository, private ShipStorageManagerInterface $shipStorageManager, private ColonyStorageManagerInterface $colonyStorageManager, private ColonyFunctionManagerInterface $colonyFunctionManager, private PrivateMessageSenderInterface $privateMessageSender) {}
 
     //REPAIR STUFF
     #[Override]
@@ -354,7 +352,7 @@ final class RepairUtil implements RepairUtilInterface
             return false;
         }
 
-        return $this->colonyFunctionManager->hasActiveFunction($colony, BuildingEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD);
+        return $this->colonyFunctionManager->hasActiveFunction($colony, BuildingFunctionEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD);
     }
 
     #[Override]
@@ -366,7 +364,7 @@ final class RepairUtil implements RepairUtilInterface
         //check if repair station is active
         $colonyRepair = $this->colonyShipRepairRepository->getByShip($ship->getId());
         if ($colonyRepair !== null) {
-            $isRepairStationBonus = $this->colonyFunctionManager->hasActiveFunction($colonyRepair->getColony(), BuildingEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD);
+            $isRepairStationBonus = $this->colonyFunctionManager->hasActiveFunction($colonyRepair->getColony(), BuildingFunctionEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD);
             if ($isRepairStationBonus) {
                 $ticks = (int)ceil($ticks / 2);
             }
@@ -383,7 +381,7 @@ final class RepairUtil implements RepairUtilInterface
 
         $colony = $ship->isOverColony();
         if ($colony !== null) {
-            $isRepairStationBonus = $this->colonyFunctionManager->hasActiveFunction($colony, BuildingEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD);
+            $isRepairStationBonus = $this->colonyFunctionManager->hasActiveFunction($colony, BuildingFunctionEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD);
             if ($isRepairStationBonus) {
                 $ticks = (int)ceil($ticks / 2);
             }

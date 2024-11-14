@@ -6,7 +6,7 @@ namespace Stu\Module\Colony\Action\BuildFighterShipyardRump;
 
 use Override;
 use request;
-use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
@@ -21,9 +21,12 @@ final class BuildFighterShipyardRump implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_BUILD_FIGHTER_SHIPYARD_RUMP';
 
-    public function __construct(private ColonyLoaderInterface $colonyLoader, private ShipRumpRepositoryInterface $shipRumpRepository, private ColonyStorageManagerInterface $colonyStorageManager, private ColonyRepositoryInterface $colonyRepository)
-    {
-    }
+    public function __construct(
+        private ColonyLoaderInterface $colonyLoader,
+        private ShipRumpRepositoryInterface $shipRumpRepository,
+        private ColonyStorageManagerInterface $colonyStorageManager,
+        private ColonyRepositoryInterface $colonyRepository
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -41,7 +44,7 @@ final class BuildFighterShipyardRump implements ActionControllerInterface
 
         $availableShipRumps = $this->shipRumpRepository->getBuildableByUserAndBuildingFunction(
             $userId,
-            BuildingEnum::BUILDING_FUNCTION_FIGHTER_SHIPYARD
+            BuildingFunctionEnum::BUILDING_FUNCTION_FIGHTER_SHIPYARD
         );
 
         if (!array_key_exists($rumpId, $availableShipRumps)) {

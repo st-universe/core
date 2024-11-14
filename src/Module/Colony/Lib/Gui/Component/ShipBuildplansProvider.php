@@ -13,9 +13,11 @@ use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 
 final class ShipBuildplansProvider implements GuiComponentProviderInterface
 {
-    public function __construct(private BuildPlanDeleterInterface $buildPlanDeleter, private BuildingFunctionRepositoryInterface $buildingFunctionRepository, private ShipBuildplanRepositoryInterface $shipBuildplanRepository)
-    {
-    }
+    public function __construct(
+        private BuildPlanDeleterInterface $buildPlanDeleter,
+        private BuildingFunctionRepositoryInterface $buildingFunctionRepository,
+        private ShipBuildplanRepositoryInterface $shipBuildplanRepository
+    ) {}
 
     #[Override]
     public function setTemplateVariables(
@@ -34,7 +36,7 @@ final class ShipBuildplansProvider implements GuiComponentProviderInterface
         $game->setTemplateVar(
             'AVAILABLE_BUILDPLANS',
             array_map(
-                fn (ShipBuildplanInterface $plan): array => [
+                fn(ShipBuildplanInterface $plan): array => [
                     'plan' => $plan,
                     'deletable' => $this->buildPlanDeleter->isDeletable($plan)
                 ],

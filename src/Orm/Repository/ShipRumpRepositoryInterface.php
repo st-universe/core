@@ -3,6 +3,7 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Orm\Entity\ShipRump;
 use Stu\Orm\Entity\ShipRumpInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -24,7 +25,7 @@ interface ShipRumpRepositoryInterface extends ObjectRepository
     /**
      * @return array<ShipRumpInterface>
      */
-    public function getBuildableByUserAndBuildingFunction(int $userId, int $buildingFunction): array;
+    public function getBuildableByUserAndBuildingFunction(int $userId, BuildingFunctionEnum $buildingFunction): array;
 
     /**
      * @return array<int, ShipRumpInterface>

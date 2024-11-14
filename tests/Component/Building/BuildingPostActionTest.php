@@ -38,7 +38,7 @@ class BuildingPostActionTest extends StuTestCase
         $function = $this->mock(BuildingFunctionInterface::class);
         $buildingActionHandler = $this->mock(BuildingActionHandlerInterface::class);
 
-        $functionId = 666;
+        $buildingFunction = BuildingFunctionEnum::BUILDING_FUNCTION_SHIELD_BATTERY;
 
         $building->shouldReceive('getFunctions')
             ->withNoArgs()
@@ -48,15 +48,15 @@ class BuildingPostActionTest extends StuTestCase
         $function->shouldReceive('getFunction')
             ->withNoArgs()
             ->once()
-            ->andReturn($functionId);
+            ->andReturn($buildingFunction);
 
         $this->buildingFunctionActionMapper->shouldReceive('map')
-            ->with($functionId)
+            ->with($buildingFunction)
             ->once()
             ->andReturn($buildingActionHandler);
 
         $buildingActionHandler->shouldReceive('deactivate')
-            ->with($functionId, $colony)
+            ->with($buildingFunction, $colony)
             ->once();
 
         $this->subject->handleDeactivation($building, $colony);
@@ -69,7 +69,7 @@ class BuildingPostActionTest extends StuTestCase
         $function = $this->mock(BuildingFunctionInterface::class);
         $buildingActionHandler = $this->mock(BuildingActionHandlerInterface::class);
 
-        $functionId = 666;
+        $buildingFunction = BuildingFunctionEnum::BUILDING_FUNCTION_SHIELD_BATTERY;
 
         $building->shouldReceive('getFunctions')
             ->withNoArgs()
@@ -79,15 +79,15 @@ class BuildingPostActionTest extends StuTestCase
         $function->shouldReceive('getFunction')
             ->withNoArgs()
             ->once()
-            ->andReturn($functionId);
+            ->andReturn($buildingFunction);
 
         $this->buildingFunctionActionMapper->shouldReceive('map')
-            ->with($functionId)
+            ->with($buildingFunction)
             ->once()
             ->andReturn($buildingActionHandler);
 
         $buildingActionHandler->shouldReceive('activate')
-            ->with($functionId, $colony)
+            ->with($buildingFunction, $colony)
             ->once();
 
         $this->subject->handleActivation($building, $colony);

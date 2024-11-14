@@ -6,6 +6,7 @@ namespace Stu\Module\Colony\Action\SwitchColonyMenu;
 
 use Override;
 use request;
+use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
@@ -19,9 +20,7 @@ final class SwitchColonyMenu implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_SWITCH_COLONYMENU';
 
-    public function __construct(private PlanetFieldHostProviderInterface $planetFieldHostProvider, private BuildingFunctionRepositoryInterface $buildingFunctionRepository, private PlanetFieldRepositoryInterface $planetFieldRepository)
-    {
-    }
+    public function __construct(private PlanetFieldHostProviderInterface $planetFieldHostProvider, private BuildingFunctionRepositoryInterface $buildingFunctionRepository, private PlanetFieldRepositoryInterface $planetFieldRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -51,7 +50,7 @@ final class SwitchColonyMenu implements ActionControllerInterface
         }
     }
 
-    /** @param array<int> $functions */
+    /** @param array<BuildingFunctionEnum> $functions */
     private function hasSpecialBuilding(PlanetFieldHostInterface $host, array $functions): bool
     {
         return $this->planetFieldRepository->getCountByColonyAndBuildingFunctionAndState(

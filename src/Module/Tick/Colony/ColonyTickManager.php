@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Tick\Colony;
 
 use Override;
-use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Crew\CrewCountRetrieverInterface;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
@@ -115,7 +115,7 @@ final class ColonyTickManager extends AbstractTickManager implements ColonyTickM
             }
 
             //no academy online
-            if (!$this->colonyFunctionManager->hasActiveFunction($colony, BuildingEnum::BUILDING_FUNCTION_ACADEMY)) {
+            if (!$this->colonyFunctionManager->hasActiveFunction($colony, BuildingFunctionEnum::BUILDING_FUNCTION_ACADEMY)) {
                 continue;
             }
             $this->crewCreator->create($obj->getUserId(), $colony);

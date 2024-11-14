@@ -14,9 +14,11 @@ use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 
 final class ShipyardProvider implements GuiComponentProviderInterface
 {
-    public function __construct(private BuildingFunctionRepositoryInterface $buildingFunctionRepository, private ShipRumpRepositoryInterface $shipRumpRepository, private ColonyLibFactoryInterface $colonyLibFactory)
-    {
-    }
+    public function __construct(
+        private BuildingFunctionRepositoryInterface $buildingFunctionRepository,
+        private ShipRumpRepositoryInterface $shipRumpRepository,
+        private ColonyLibFactoryInterface $colonyLibFactory
+    ) {}
 
     #[Override]
     public function setTemplateVariables(
@@ -38,7 +40,7 @@ final class ShipyardProvider implements GuiComponentProviderInterface
         $game->setTemplateVar(
             'BUILDABLE_SHIPS',
             array_map(
-                fn (ShipRumpInterface $shipRump): BuildableRumpListItemInterface => $this->colonyLibFactory->createBuildableRumpItem(
+                fn(ShipRumpInterface $shipRump): BuildableRumpListItemInterface => $this->colonyLibFactory->createBuildableRumpItem(
                     $shipRump,
                     $user
                 ),

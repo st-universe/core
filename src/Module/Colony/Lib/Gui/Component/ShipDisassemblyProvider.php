@@ -15,9 +15,12 @@ use Stu\Orm\Repository\ShipRumpBuildingFunctionRepositoryInterface;
 
 final class ShipDisassemblyProvider implements GuiComponentProviderInterface
 {
-    public function __construct(private ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository, private PlanetFieldHostProviderInterface $planetFieldHostProvider, private ColonyLibFactoryInterface $colonyLibFactory, private OrbitShipListRetrieverInterface $orbitShipListRetriever)
-    {
-    }
+    public function __construct(
+        private ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository,
+        private PlanetFieldHostProviderInterface $planetFieldHostProvider,
+        private ColonyLibFactoryInterface $colonyLibFactory,
+        private OrbitShipListRetrieverInterface $orbitShipListRetriever
+    ) {}
 
     /** @param ColonyInterface $host */
     #[Override]
@@ -44,7 +47,7 @@ final class ShipDisassemblyProvider implements GuiComponentProviderInterface
                         continue;
                     }
                     foreach ($this->shipRumpBuildingFunctionRepository->getByShipRump($ship->getRump()) as $rump_rel) {
-                        if (array_key_exists($rump_rel->getBuildingFunction(), $fieldFunctions)) {
+                        if (array_key_exists($rump_rel->getBuildingFunction()->value, $fieldFunctions)) {
                             $repairableShips[$ship->getId()] = $ship;
                             break;
                         }

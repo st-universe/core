@@ -7,7 +7,7 @@ namespace Stu\Module\Colony\View\ShowSubspaceTelescopeScan;
 use Override;
 use request;
 use RuntimeException;
-use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -47,7 +47,7 @@ final class ShowSubspaceTelescopeScan implements ViewControllerInterface
             $userId
         );
 
-        if (!$this->colonyFunctionManager->hasFunction($colony, BuildingEnum::BUILDING_FUNCTION_SUBSPACE_TELESCOPE)) {
+        if (!$this->colonyFunctionManager->hasFunction($colony, BuildingFunctionEnum::BUILDING_FUNCTION_SUBSPACE_TELESCOPE)) {
             return;
         }
 

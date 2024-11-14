@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Colony;
 
+use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 
 interface ColonyFunctionManagerInterface
@@ -11,14 +12,14 @@ interface ColonyFunctionManagerInterface
     /**
      * Returns `true` if the colony hat at least one active building with the requested function id
      */
-    public function hasActiveFunction(PlanetFieldHostInterface $host, int $functionId, bool $useCache = true): bool;
+    public function hasActiveFunction(PlanetFieldHostInterface $host, BuildingFunctionEnum $function, bool $useCache = true): bool;
 
     /**
      * Returns `true` if the colony has at least on building with the requested function
      */
     public function hasFunction(
         PlanetFieldHostInterface $host,
-        int $functionId
+        BuildingFunctionEnum $function
     ): bool;
 
     /**
@@ -28,7 +29,7 @@ interface ColonyFunctionManagerInterface
      */
     public function getBuildingWithFunctionCount(
         PlanetFieldHostInterface $host,
-        int $functionId,
+        BuildingFunctionEnum $function,
         array $states
     ): int;
 }

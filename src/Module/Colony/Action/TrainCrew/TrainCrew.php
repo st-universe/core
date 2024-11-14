@@ -6,7 +6,7 @@ namespace Stu\Module\Colony\Action\TrainCrew;
 
 use Override;
 use request;
-use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Crew\CrewCountRetrieverInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
@@ -70,7 +70,7 @@ final class TrainCrew implements ActionControllerInterface
         if ($count <= 0) {
             return;
         }
-        if (!$this->colonyFunctionManager->hasActiveFunction($colony, BuildingEnum::BUILDING_FUNCTION_ACADEMY)) {
+        if (!$this->colonyFunctionManager->hasActiveFunction($colony, BuildingFunctionEnum::BUILDING_FUNCTION_ACADEMY)) {
             $game->addInformation(_('Es befindet sich keine aktivierte Akademie auf diesen Planeten'));
             return;
         }

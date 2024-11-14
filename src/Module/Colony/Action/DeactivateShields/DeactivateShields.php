@@ -7,7 +7,7 @@ namespace Stu\Module\Colony\Action\DeactivateShields;
 use Override;
 use request;
 
-use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Module\Colony\Lib\BuildingActionInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
@@ -19,9 +19,11 @@ final class DeactivateShields implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_DEACTIVATE_SHIELDS';
 
-    public function __construct(private ColonyLoaderInterface $colonyLoader, private PlanetFieldRepositoryInterface $planetFieldRepository, private BuildingActionInterface $buildingAction)
-    {
-    }
+    public function __construct(
+        private ColonyLoaderInterface $colonyLoader,
+        private PlanetFieldRepositoryInterface $planetFieldRepository,
+        private BuildingActionInterface $buildingAction
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -35,7 +37,7 @@ final class DeactivateShields implements ActionControllerInterface
 
         $fields = $this->planetFieldRepository->getByColonyAndBuildingFunction(
             $colony->getId(),
-            [BuildingEnum::BUILDING_FUNCTION_SHIELD_GENERATOR]
+            [BuildingFunctionEnum::BUILDING_FUNCTION_SHIELD_GENERATOR->value]
         );
 
         if (count($fields) !== 1) {

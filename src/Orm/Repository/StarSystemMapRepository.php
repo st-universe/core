@@ -7,7 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Override;
-use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -156,7 +156,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
             'yEnd' => $boundaries->getMaxY(),
             'systemId' => $boundaries->getParentId(),
             'active' => 1,
-            'shieldBuilding' => BuildingEnum::BUILDING_FUNCTION_SHIELD_GENERATOR
+            'shieldBuilding' => BuildingFunctionEnum::BUILDING_FUNCTION_SHIELD_GENERATOR
         ])->getResult();
     }
 

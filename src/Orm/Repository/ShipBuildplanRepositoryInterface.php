@@ -3,6 +3,7 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Orm\Entity\ShipBuildplan;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 
@@ -17,7 +18,7 @@ interface ShipBuildplanRepositoryInterface extends ObjectRepository
     /**
      * @return array<ShipBuildplanInterface>
      */
-    public function getByUserAndBuildingFunction(int $userId, int $buildingFunction): array;
+    public function getByUserAndBuildingFunction(int $userId, BuildingFunctionEnum $buildingFunction): array;
 
     public function getCountByRumpAndUser(int $rumpId, int $userId): int;
 

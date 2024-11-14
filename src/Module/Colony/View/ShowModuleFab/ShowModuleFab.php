@@ -9,7 +9,7 @@ use request;
 use RuntimeException;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Component\Ship\ShipModuleTypeEnum;
-use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Game\GameEnum;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -61,8 +61,8 @@ final class ShowModuleFab implements ViewControllerInterface
         );
 
         $template = match ($func->getFunction()) {
-            BuildingEnum::BUILDING_FUNCTION_FABRICATION_HALL => ColonyMenuEnum::MENU_FAB_HALL->getTemplate(),
-            BuildingEnum::BUILDING_FUNCTION_TECH_CENTER => ColonyMenuEnum::MENU_TECH_CENTER->getTemplate(),
+            BuildingFunctionEnum::BUILDING_FUNCTION_FABRICATION_HALL => ColonyMenuEnum::MENU_FAB_HALL->getTemplate(),
+            BuildingFunctionEnum::BUILDING_FUNCTION_TECH_CENTER => ColonyMenuEnum::MENU_TECH_CENTER->getTemplate(),
             default => ColonyMenuEnum::MENU_MODULEFAB->getTemplate(),
         };
 
