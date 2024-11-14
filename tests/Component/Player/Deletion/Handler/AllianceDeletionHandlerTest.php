@@ -19,14 +19,9 @@ use Doctrine\Common\Collections\Collection;
 
 class AllianceDeletionHandlerTest extends MockeryTestCase
 {
-    /**
-     * @var AllianceJobRepositoryInterface|MockInterface|null
-     */
+    /** @var AllianceJobRepositoryInterface&MockInterface */
     private $allianceJobRepository;
-
-    /**
-     * @var AllianceActionManagerInterface|MockInterface|null
-     */
+    /** @var AllianceActionManagerInterface&MockInterface */
     private $allianceActionManager;
 
     private PlayerDeletionHandlerInterface $handler;
@@ -34,10 +29,8 @@ class AllianceDeletionHandlerTest extends MockeryTestCase
     #[Override]
     public function setUp(): void
     {
-        /** @var AllianceJobRepositoryInterface|MockInterface $allianceJobRepository */
         $this->allianceJobRepository = Mockery::mock(AllianceJobRepositoryInterface::class);
 
-        /** @var AllianceActionManagerInterface|MockInterface $allianceActionManager */
         $this->allianceActionManager = Mockery::mock(AllianceActionManagerInterface::class);
 
         $this->handler = new AllianceDeletionHandler(

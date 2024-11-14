@@ -127,9 +127,6 @@ class Colony implements ColonyInterface
     #[JoinColumn(name: 'torpedo_type', referencedColumnName: 'id')]
     private ?TorpedoTypeInterface $torpedo = null;
 
-    /**
-     * @var DatabaseEntryInterface|null
-     */
     #[OneToOne(targetEntity: 'DatabaseEntry')]
     #[JoinColumn(name: 'database_id', referencedColumnName: 'id')]
     private ?DatabaseEntryInterface $databaseEntry;

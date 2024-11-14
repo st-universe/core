@@ -16,7 +16,6 @@ class AdminSettingsTest extends StuTestCase
     /** @var MockInterface|SettingsCacheInterface */
     private $cache;
 
-    /** @var MockObject|AdminSettings */
     private AdminSettings $subject;
 
     #[Override]

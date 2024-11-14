@@ -193,9 +193,6 @@ class Ship implements ShipInterface
     #[OneToOne(targetEntity: 'TorpedoStorage', mappedBy: 'ship')]
     private ?TorpedoStorageInterface $torpedoStorage = null;
 
-    /**
-     * @var DatabaseEntryInterface|null
-     */
     #[OneToOne(targetEntity: 'DatabaseEntry')]
     #[JoinColumn(name: 'database_id', referencedColumnName: 'id')]
     private ?DatabaseEntryInterface $databaseEntry;

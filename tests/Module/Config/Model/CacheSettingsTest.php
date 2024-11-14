@@ -16,7 +16,6 @@ class CacheSettingsTest extends StuTestCase
     /** @var MockInterface|SettingsCacheInterface */
     private $cache;
 
-    /** @var MockObject|CacheSettings */
     private CacheSettings $subject;
 
     #[Override]

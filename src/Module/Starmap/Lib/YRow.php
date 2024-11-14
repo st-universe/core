@@ -95,9 +95,6 @@ class YRow
         );
     }
 
-    /**
-     * @return int
-     */
     public function getRow(): int
     {
         return $this->row;

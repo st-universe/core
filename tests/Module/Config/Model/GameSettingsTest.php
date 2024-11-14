@@ -17,7 +17,6 @@ class GameSettingsTest extends StuTestCase
     /** @var MockInterface|SettingsCacheInterface */
     private $cache;
 
-    /** @var MockObject|GameSettings */
     private GameSettings $subject;
 
     #[Override]

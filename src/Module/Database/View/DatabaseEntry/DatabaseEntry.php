@@ -234,7 +234,7 @@ final class DatabaseEntry implements ViewControllerInterface
         }
 
         $latestScans = [];
-        foreach ($scansByColony as $colonyId => $scans) {
+        foreach ($scansByColony as $scans) {
             usort($scans, fn ($a, $b) => $b->getDate() <=> $a->getDate());
             $latestScans[] = $scans[0];
         }

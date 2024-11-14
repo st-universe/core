@@ -16,7 +16,6 @@ class DbSettingsTest extends StuTestCase
     /** @var MockInterface|SettingsCacheInterface */
     private $cache;
 
-    /** @var MockObject|DbSettings */
     private DbSettings $subject;
 
     #[Override]
