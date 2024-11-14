@@ -49,9 +49,12 @@
                         {{ COLONY.getRotationTime|formatSeconds }}
                     </div>
                 </div>
-                <div style="float:right;">
-                    {% include 'html/visualPanel/panel.twig' %}
-                </div>
+            </div>
+        </div>
+        <div class="box">
+            <div class="box_title">Umgebungsscan</div>
+            <div class="box_body" style="display: flex; justify-content: center;">
+                {% include 'html/visualPanel/panel.twig' %}
             </div>
         </div>
         {% if STARSYSTEM_ENTRY_TAL %}
@@ -74,13 +77,16 @@
                     ({{ COLONY.getSystem.getCx }}|{{ COLONY.getSystem.getCy }})</span>
                 {% endif %}
                 <div>
-                    Typ: {{ COLONY.getSystem.getSystemType.getDescription }}
+                    <span style="display: block; white-space:pre-line;">
+                        Typ:
+                        {{COLONY.getSystem.getSystemType.getDescription }}</span>
                 </div>
             </div>
         </div>
         {% endif %}
     </div>
     {% if DEPOSIT_MININGS %}
+    <br />
     <div class="box">
         <div class="box_title">Geschürfte Ressourcen</div>
         <div class="box_body">
@@ -105,6 +111,7 @@
     <br />
     {% endif %}
     {% if SHIELDING_MANAGER.hasShielding or BUILDABLE_TORPEDO_TYPES %}
+    <br />
     <div class="box">
         <div class="box_title">Schilde + Orbitalverteidigung</div>
         <div class="box_body">
