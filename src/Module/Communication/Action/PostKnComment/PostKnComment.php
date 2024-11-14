@@ -42,7 +42,7 @@ final class PostKnComment implements ActionControllerInterface
         if (mb_strlen($text) < 3) {
             return;
         }
-        if (mb_strlen($text) > static::CHARACTER_LIMIT) {
+        if (mb_strlen($text) > self::CHARACTER_LIMIT) {
             return;
         }
         $obj = $this->knCommentRepository->prototype()

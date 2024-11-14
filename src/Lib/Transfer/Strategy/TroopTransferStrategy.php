@@ -311,17 +311,15 @@ class TroopTransferStrategy implements TransferStrategyInterface
             $actualcrew = $target->getCrewCount();
             $maxcrew = $this->shipCrewCalculator->getMaxCrewCountByRump($target->getRump());
 
-            if ($actualcrew >= $mincrew && $actualcrew + $amount > $maxcrew) {
-
-
-                if (
-                    $target->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
+            if (
+                $actualcrew >= $mincrew
+                && $actualcrew + $amount > $maxcrew
+                && ($target->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
                     && ($target->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() === ShipSystemModeEnum::MODE_OFF
-                        && !$this->helper->activate($this->shipWrapperFactory->wrapShip($target), ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $informations))
-                ) {
-                    $amount = 0;
-                    throw new SystemNotActivatableException();
-                }
+                        && !$this->helper->activate($this->shipWrapperFactory->wrapShip($target), ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $informations)))
+            ) {
+                $amount = 0;
+                throw new SystemNotActivatableException();
             }
         }
 

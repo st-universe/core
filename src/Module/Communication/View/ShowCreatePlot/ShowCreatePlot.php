@@ -18,7 +18,7 @@ final class ShowCreatePlot implements ViewControllerInterface
         $game->setViewTemplate('html/communication/plot/createPlot.twig');
         $game->appendNavigationPart('comm.php', _('KommNet'));
         $game->appendNavigationPart(
-            sprintf('comm.php?%s=1', static::VIEW_IDENTIFIER),
+            sprintf('comm.php?%s=1', self::VIEW_IDENTIFIER),
             _('Plot erstellen')
         );
         $game->setPageTitle(_('Plot erstellen'));

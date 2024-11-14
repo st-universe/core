@@ -112,13 +112,15 @@ class ManageCrew implements ManagerInterface
                 $actualcrew = $ship->getCrewCount();
                 $maxcrew = $this->shipCrewCalculator->getMaxCrewCountByRump($ship->getRump());
 
-                if ($actualcrew >= $mincrew && $actualcrew + $additionalCrew > $maxcrew) {
-
-                    if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS) && ($additionalCrew > 0
+                if (
+                    $actualcrew >= $mincrew
+                    && $actualcrew + $additionalCrew > $maxcrew
+                    && ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS) && ($additionalCrew > 0
                         && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() === ShipSystemModeEnum::MODE_OFF
-                        && !$this->helper->activate($wrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $informations))) {
-                        $additionalCrew  = 0;
-                    }
+                        && !$this->helper->activate($wrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $informations)))
+                ) {
+
+                    $additionalCrew  = 0;
                 }
             }
 

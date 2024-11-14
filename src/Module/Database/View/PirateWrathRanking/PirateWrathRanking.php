@@ -31,7 +31,7 @@ final class PirateWrathRanking implements ViewControllerInterface
         $game->appendNavigationPart(
             sprintf(
                 'database.php?%s=1',
-                static::VIEW_IDENTIFIER
+                self::VIEW_IDENTIFIER
             ),
             'Die 10 meistgehassten Siedler der Kazon'
         );

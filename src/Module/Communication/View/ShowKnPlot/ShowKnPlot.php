@@ -68,7 +68,7 @@ final class ShowKnPlot implements ViewControllerInterface
         $game->appendNavigationPart(
             sprintf(
                 'comm.php?%s=1&plotid=%d',
-                static::VIEW_IDENTIFIER,
+                self::VIEW_IDENTIFIER,
                 $plot->getId()
             ),
             $plot->getTitle()

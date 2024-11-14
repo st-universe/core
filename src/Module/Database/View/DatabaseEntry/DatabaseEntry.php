@@ -79,7 +79,7 @@ final class DatabaseEntry implements ViewControllerInterface
         $game->appendNavigationPart(
             sprintf(
                 'database.php?%s=1&cat=%d&ent=%d',
-                static::VIEW_IDENTIFIER,
+                self::VIEW_IDENTIFIER,
                 $categoryId,
                 $entryId,
             ),

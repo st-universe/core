@@ -40,7 +40,7 @@ final class ShowColonySandbox implements ViewControllerInterface
             $game->appendNavigationPart(
                 sprintf(
                     '/admin/?%s=1&id=%d&hosttype=%d',
-                    static::VIEW_IDENTIFIER,
+                    self::VIEW_IDENTIFIER,
                     $sandbox->getId(),
                     PlanetFieldHostTypeEnum::SANDBOX->value
                 ),

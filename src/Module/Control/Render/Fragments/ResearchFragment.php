@@ -61,8 +61,8 @@ final class ResearchFragment implements RenderFragmentInterface
         }
 
         $researchList = $this->techlistRetriever->getResearchList($user);
-        $hasResearchList = !empty($researchList);
-        $hasCurrentResearch = !empty($currentResearch);
+        $hasResearchList = $researchList !== [];
+        $hasCurrentResearch = $currentResearch !== [];
 
         $page->setVar('CURRENT_RESEARCH', current($currentResearch));
         $page->setVar('CURRENT_RESEARCH_STATUS', $researchStatusBar);

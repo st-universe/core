@@ -36,7 +36,7 @@ final class ShowPrestigeLog implements ViewControllerInterface
         $game->appendNavigationPart(
             sprintf(
                 'database.php?%s=1',
-                static::VIEW_IDENTIFIER
+                self::VIEW_IDENTIFIER
             ),
             _('Prestigehistorie')
         );

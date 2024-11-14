@@ -85,10 +85,10 @@ final class PanelBoundaries
     public static function fromLocation(LocationInterface $location, int $range): PanelBoundaries
     {
         if ($location instanceof MapInterface) {
-            return static::fromMap($location, $range);
+            return self::fromMap($location, $range);
         }
         if ($location instanceof StarSystemMapInterface) {
-            return static::fromSystemMap($location, $range);
+            return self::fromSystemMap($location, $range);
         }
 
         throw new RuntimeException('unsupported location type');
@@ -101,7 +101,7 @@ final class PanelBoundaries
             throw new RuntimeException('this should not happen');
         }
 
-        return static::createLocationWithRange(
+        return self::createLocationWithRange(
             $map,
             $layer->getWidth(),
             $layer->getHeight(),
@@ -112,7 +112,7 @@ final class PanelBoundaries
 
     private static function fromSystemMap(StarSystemMapInterface $systemMap, int $range): PanelBoundaries
     {
-        return static::createLocationWithRange(
+        return self::createLocationWithRange(
             $systemMap,
             $systemMap->getSystem()->getMaxX(),
             $systemMap->getSystem()->getMaxY(),

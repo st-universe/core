@@ -26,7 +26,7 @@ final class ShowLottery implements ViewControllerInterface
             _('Handel')
         );
         $game->appendNavigationPart(
-            sprintf('trade.php?%s=1', static::VIEW_IDENTIFIER),
+            sprintf('trade.php?%s=1', self::VIEW_IDENTIFIER),
             _('Lotterie')
         );
         $game->setPageTitle(_('/ Handel / Nagus Lotterie'));

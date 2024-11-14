@@ -98,7 +98,7 @@ final class ShowColony implements ViewControllerInterface, ViewWithTutorialInter
             _('Kolonien')
         );
         $game->appendNavigationPart(
-            sprintf('?%s=1&id=%d', static::VIEW_IDENTIFIER, $colony->getId()),
+            sprintf('?%s=1&id=%d', self::VIEW_IDENTIFIER, $colony->getId()),
             $colony->getName()
         );
         $game->setViewTemplate('html/colony/colony.twig');

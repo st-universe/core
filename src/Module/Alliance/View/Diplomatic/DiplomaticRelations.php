@@ -44,7 +44,7 @@ final class DiplomaticRelations implements ViewControllerInterface
                 'title' => 'Allianzliste',
             ],
             [
-                'url' => sprintf('alliance.php?%s=1', static::VIEW_IDENTIFIER),
+                'url' => sprintf('alliance.php?%s=1', self::VIEW_IDENTIFIER),
                 'title' => 'Diplomatische Beziehungen'
             ]
         ]);

@@ -47,7 +47,7 @@ final class ShowWritePm implements ViewControllerInterface
         $game->setViewTemplate('html/message/writePm.twig');
         $game->setPageTitle('Neue private Nachricht');
         $game->appendNavigationPart(
-            sprintf('pm.php?%s=1', static::VIEW_IDENTIFIER),
+            sprintf('pm.php?%s=1', self::VIEW_IDENTIFIER),
             'Private Nachrichte verfassen'
         );
         $game->setTemplateVar(

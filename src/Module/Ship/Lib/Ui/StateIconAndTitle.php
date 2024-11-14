@@ -81,15 +81,10 @@ class StateIconAndTitle
             $miningqueue = $ship->getMiningQueue();
             $module = $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR)->getModule();
             $gathercount = 0;
-            if ($miningqueue) {
+            if ($miningqueue !== null) {
                 $locationmining = $miningqueue->getLocationMining();
-                if ($module) {
-                    if ($module->getFactionId() == null) {
-                        $gathercount =  100;
-                    } else {
-                        $gathercount = 200;
-                    }
-
+                if ($module !== null) {
+                    $gathercount = $module->getFactionId() == null ? 100 : 200;
                     return [sprintf('commodities/%s', $locationmining->getCommodity()->getId()), sprintf(
                         'Schiff sammelt Ressourcen (~%d %s/Tick)',
                         $gathercount,

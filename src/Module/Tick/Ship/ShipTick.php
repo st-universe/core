@@ -598,7 +598,7 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
             $module = $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR)->getModule();
             $gathercount = 0;
 
-            if ($module) {
+            if ($module !== null) {
                 if ($module->getFactionId() == null) {
                     $gathercount =  (int) min(min(round(mt_rand(95, 105)), $actualAmount), $freeStorage);
                 } else {
@@ -640,7 +640,7 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
             $producedCommodity = null;
 
 
-            if ($module) {
+            if ($module !== null) {
                 $commodity = $aggsys->getCommodityId();
                 $commodities = CommodityTypeEnum::COMMODITY_CONVERSIONS;
 
@@ -657,8 +657,8 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
                     }
 
                     if ($module->getFactionId() == FactionEnum::FACTION_FERENGI) {
-                        $producedAmount = $producedAmount * 2;
-                        $usedAmount = $usedAmount * 2;
+                        $producedAmount *= 2;
+                        $usedAmount *= 2;
                     }
                     $storage = $this->storageRepository->findOneBy([
                         'commodity' => $usedCommodity,

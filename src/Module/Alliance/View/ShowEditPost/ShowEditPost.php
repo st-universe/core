@@ -43,7 +43,7 @@ final class ShowEditPost implements ViewControllerInterface
         $game->appendNavigationPart('alliance.php?SHOW_BOARDS=1', _('Forum'));
         $game->appendNavigationPart(sprintf('alliance.php?SHOW_TOPIC=1&bid=%d&tid=%d', $board->getId(), $topic->getId()), _('Allianz'));
         $game->appendNavigationPart(
-            sprintf('alliance.php?%s=1&pid=%d', static::VIEW_IDENTIFIER, $post->getId()),
+            sprintf('alliance.php?%s=1&pid=%d', self::VIEW_IDENTIFIER, $post->getId()),
             _('Beitrag bearbeiten')
         );
         $game->setPageTitle(_('Beitrag bearbeiten'));

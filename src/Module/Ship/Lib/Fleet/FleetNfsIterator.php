@@ -45,7 +45,7 @@ final class FleetNfsIterator implements Iterator
             }
         }
 
-        if (!empty($currentFleet)) {
+        if ($currentFleet !== null) {
             $this->fleets[] = $currentFleet;
         }
     }

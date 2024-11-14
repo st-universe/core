@@ -60,7 +60,7 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
 
         $isSystemNameSet = false;
         if ($this->exploreableStarMap->getMapped() !== null) {
-            if ($result != '') {
+            if ($result !== '') {
                 $result .= ' über ';
             }
             $isSystemNameSet = true;

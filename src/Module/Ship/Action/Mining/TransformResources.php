@@ -60,10 +60,11 @@ final class TransformResources implements ActionControllerInterface
             return;
         } else {
 
-            if (!$ship->getSystemState(ShipSystemTypeEnum::SYSTEM_AGGREGATION_SYSTEM)) {
-                if (!$this->helper->activate($wrapper, ShipSystemTypeEnum::SYSTEM_AGGREGATION_SYSTEM, $game)) {
-                    return;
-                }
+            if (
+                !$ship->getSystemState(ShipSystemTypeEnum::SYSTEM_AGGREGATION_SYSTEM)
+                && !$this->helper->activate($wrapper, ShipSystemTypeEnum::SYSTEM_AGGREGATION_SYSTEM, $game)
+            ) {
+                return;
             }
 
             $canProduce = false;

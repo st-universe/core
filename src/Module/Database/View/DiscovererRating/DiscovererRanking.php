@@ -29,7 +29,7 @@ final class DiscovererRanking implements ViewControllerInterface
         $game->appendNavigationPart(
             sprintf(
                 'database.php?%s=1',
-                static::VIEW_IDENTIFIER
+                self::VIEW_IDENTIFIER
             ),
             'Die 10 besten Entdecker'
         );
