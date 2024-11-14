@@ -217,7 +217,7 @@ class ShipBuildplan implements ShipBuildplanInterface
     {
         $array = $this->modules->toArray();
 
-        uasort($array, function (BuildplanModuleInterface $a, BuildplanModuleInterface $b) {
+        uasort($array, function (BuildplanModuleInterface $a, BuildplanModuleInterface $b): int {
             return $a->getModuleType()->getOrder() <=> $b->getModuleType()->getOrder();
         });
 

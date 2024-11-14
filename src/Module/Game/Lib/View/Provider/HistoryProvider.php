@@ -74,7 +74,7 @@ final class HistoryProvider implements ViewComponentProviderInterface
             ? $this->historyRepository->getByTypeAndSearch($type, $count)
             : $this->historyRepository->getByTypeAndSearchWithoutPirate($type, $count);
 
-        $filteredEntries = array_filter($historyEntries, function ($entry) use ($search) {
+        $filteredEntries = array_filter($historyEntries, function ($entry) use ($search): bool {
             $this->bbcodeParser->parse($entry->getText());
             $plainText = $this->bbcodeParser->getAsText() ?: '';
             return stripos($plainText, $search) !== false;

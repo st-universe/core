@@ -38,7 +38,7 @@ final class TutorialProvider
             return;
         }
 
-        $payloadArray = array_map(fn(TutorialStepInterface $tutorialStep) => $this->convertTutorialStep($tutorialStep), $tutorialSteps);
+        $payloadArray = array_map(fn(TutorialStepInterface $tutorialStep): array => $this->convertTutorialStep($tutorialStep), $tutorialSteps);
 
         $game->addExecuteJS(sprintf(
             "initTutorialSteps('%s', %d);",

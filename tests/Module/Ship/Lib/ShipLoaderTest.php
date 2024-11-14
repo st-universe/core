@@ -33,8 +33,8 @@ class ShipLoaderTest extends StuTestCase
     private  $lockManager;
     /** @var MockInterface|GameControllerInterface */
     private  $game;
-    /** @var MockInterface|ShipLoader */
-    private  $shipLoader;
+
+    private  ShipLoader $shipLoader;
 
     /** @var MockInterface|ShipInterface */
     private $ship;

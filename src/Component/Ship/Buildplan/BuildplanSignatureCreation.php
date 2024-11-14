@@ -9,7 +9,7 @@ class BuildplanSignatureCreation implements BuildplanSignatureCreationInterface
 
     public function createSignature(array $modules, int $crewUsage): string
     {
-        $ids = array_map(fn(ModuleInterface $module) => $module->getId(), $modules);
+        $ids = array_map(fn(ModuleInterface $module): int => $module->getId(), $modules);
 
         return $this->createSignatureByModuleIds($ids, $crewUsage);
     }

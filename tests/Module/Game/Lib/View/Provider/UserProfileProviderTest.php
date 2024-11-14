@@ -211,7 +211,7 @@ class UserProfileProviderTest extends StuTestCase
             ->andReturn($colonyId);
 
         $game->shouldReceive('setTemplateVar')
-            ->with('COLONYSCANLIST', Mockery::on(function ($arg) use ($colonyScan) {
+            ->with('COLONYSCANLIST', Mockery::on(function ($arg) use ($colonyScan): bool {
                 return is_array($arg) && count($arg) === 1 && $arg[0] === $colonyScan;
             }))
             ->once();

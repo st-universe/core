@@ -182,7 +182,7 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
             return;
         }
 
-        $chances = array_map(fn(LotteryWinnerBuildplanInterface $winnerBuildplan) => $winnerBuildplan->getChance(), $winnerBuildplans);
+        $chances = array_map(fn(LotteryWinnerBuildplanInterface $winnerBuildplan): int => $winnerBuildplan->getChance(), $winnerBuildplans);
 
         $randomKey = $this->stuRandom->randomKeyOfProbabilities($chances);
         $buildplan = $winnerBuildplans[$randomKey]->getBuildplan();

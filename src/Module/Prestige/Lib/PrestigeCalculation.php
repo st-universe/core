@@ -42,9 +42,9 @@ class PrestigeCalculation implements PrestigeCalculationInterface
     public function getPrestigeOfBattleParty(BattlePartyInterface $battleParty): int
     {
         return $battleParty->getActiveMembers()
-            ->map(fn(ShipWrapperInterface $wrapper) => $wrapper->get()->getRump()->getPrestige())
+            ->map(fn(ShipWrapperInterface $wrapper): int => $wrapper->get()->getRump()->getPrestige())
             ->reduce(
-                fn(int $sum, int $prestige) => $sum + $prestige,
+                fn(int $sum, int $prestige): int => $sum + $prestige,
                 0
             );
     }

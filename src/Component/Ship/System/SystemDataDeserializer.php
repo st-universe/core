@@ -25,7 +25,7 @@ class SystemDataDeserializer implements SystemDataDeserializerInterface
         string $className,
         Collection $shipSystemDataCache,
         ShipWrapperFactoryInterface $shipWrapperFactory
-    ) {
+    ): ?object {
         if (
             $systemType !== ShipSystemTypeEnum::SYSTEM_HULL
             && !$ship->hasShipSystem($systemType)

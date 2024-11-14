@@ -295,7 +295,7 @@ class Deals implements DealsInterface
     {
         return $this->getBuildplan()
             ->getModules()
-            ->map(fn(BuildplanModuleInterface $buildplanModule) => $buildplanModule->getModule())
+            ->map(fn(BuildplanModuleInterface $buildplanModule): ModuleInterface => $buildplanModule->getModule())
             ->toArray();
     }
 

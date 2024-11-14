@@ -58,18 +58,18 @@ final class ShowAggregationSystem implements ViewControllerInterface
         }
 
         $commodities = CommodityTypeEnum::COMMODITY_CONVERSIONS;
-        $mode1Commodities = array_filter($commodities, fn($entry) => $entry[4] === 1);
-        $mode2Commodities = array_filter($commodities, fn($entry) => $entry[4] === 2);
+        $mode1Commodities = array_filter($commodities, fn($entry): bool => $entry[4] === 1);
+        $mode2Commodities = array_filter($commodities, fn($entry): bool => $entry[4] === 2);
 
 
-        $mode1Commodities = array_map(fn($entry) => [
+        $mode1Commodities = array_map(fn($entry): array => [
             $this->commodityRepository->find($entry[0]),
             $this->commodityRepository->find($entry[1]),
             $entry[2],
             $entry[3]
         ], $mode1Commodities);
 
-        $mode2Commodities = array_map(fn($entry) => [
+        $mode2Commodities = array_map(fn($entry): array => [
             $this->commodityRepository->find($entry[0]),
             $this->commodityRepository->find($entry[1]),
             $entry[2],
@@ -89,11 +89,11 @@ final class ShowAggregationSystem implements ViewControllerInterface
         }
 
 
-        $mode1Commodities = array_filter($mode1Commodities, function ($entry) use ($userId) {
+        $mode1Commodities = array_filter($mode1Commodities, function ($entry) use ($userId): bool {
             return $entry[1] !== null && $this->buildingCommodityRepository->canProduceCommodity($userId, $entry[1]->getId());
         });
 
-        $mode2Commodities = array_filter($mode2Commodities, function ($entry) use ($userId) {
+        $mode2Commodities = array_filter($mode2Commodities, function ($entry) use ($userId): bool {
             return $entry[1] !== null && $this->buildingCommodityRepository->canProduceCommodity($userId, $entry[1]->getId());
         });
 
