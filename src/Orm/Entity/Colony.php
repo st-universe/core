@@ -621,7 +621,7 @@ class Colony implements ColonyInterface
             fn(StorageInterface $storage): bool => $storage->getCommodity()->isBeamable() === true
         );
 
-        usort($beamableStorage, function ($a, $b) {
+        usort($beamableStorage, function ($a, $b): int {
             return $a->getCommodity()->getSort() <=> $b->getCommodity()->getSort();
         });
 

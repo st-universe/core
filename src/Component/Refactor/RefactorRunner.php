@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Refactor;
 
+use Stu\Orm\Entity\ModuleInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Ship\Buildplan\BuildplanSignatureCreationInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -84,7 +85,7 @@ final class RefactorRunner
     {
         $modules = $buildplan
             ->getModules()
-            ->map(fn(BuildplanModuleInterface $buildplanModule) => $buildplanModule->getModule())
+            ->map(fn(BuildplanModuleInterface $buildplanModule): ModuleInterface => $buildplanModule->getModule())
             ->toArray();
 
         $crewUsage = $buildplan->getUser()->isNpc() ? 0 : $buildplan->getCrew();

@@ -153,7 +153,7 @@ final class CreateModules implements ActionControllerInterface
                     }
                 }
 
-                $missingText = array_map(function ($commodity) {
+                $missingText = array_map(function (array $commodity): string {
                     return sprintf(
                         '%d %s',
                         $commodity['missing'],

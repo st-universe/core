@@ -195,7 +195,7 @@ final class RetrofitShip implements ActionControllerInterface
         $storage = $colony->getStorage();
         $modulesToLower = [];
         foreach ($modules as $module) {
-            $isNewModule = !array_filter($oldModulesOfType[$module->getType()->value], function ($bpm) use ($module) {
+            $isNewModule = !array_filter($oldModulesOfType[$module->getType()->value], function ($bpm) use ($module): bool {
                 return $bpm->getModule()->getId() === $module->getId();
             });
 

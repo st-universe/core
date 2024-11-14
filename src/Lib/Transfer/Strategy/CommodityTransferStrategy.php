@@ -34,7 +34,7 @@ class CommodityTransferStrategy implements TransferStrategyInterface
 
         $beamableStorage = $isUnload ? $ship->getBeamableStorage() : $target->getBeamableStorage();
 
-        usort($beamableStorage, function ($a, $b) {
+        usort($beamableStorage, function ($a, $b): int {
             return $a->getCommodity()->getSort() <=> $b->getCommodity()->getSort();
         });
 
