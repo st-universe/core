@@ -165,13 +165,7 @@ class ColonyShipQueue implements ColonyShipQueueInterface
     }
 
     #[Override]
-    public function getBuildingFunctionId(): BuildingFunctionEnum
-    {
-        return $this->building_function_id;
-    }
-
-    #[Override]
-    public function setBuildingFunctionId(BuildingFunctionEnum $buildingFunction): ColonyShipQueueInterface
+    public function setBuildingFunction(BuildingFunctionEnum $buildingFunction): ColonyShipQueueInterface
     {
         $this->building_function_id = $buildingFunction;
 
