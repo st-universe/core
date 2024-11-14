@@ -18,7 +18,7 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 
 final class ShowAggregationSystem implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_AGGREGATION_SYSTEM_AJAX';
+    public const string VIEW_IDENTIFIER = 'SHOW_AGGREGATION_SYSTEM_AJAX';
 
     public function __construct(
         private ShipLoaderInterface $shipLoader,

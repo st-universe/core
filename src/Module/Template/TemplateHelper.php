@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Template;
 
+use Override;
 use Stu\Module\Colony\Lib\PlanetFieldTypeRetrieverInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
@@ -17,6 +18,7 @@ final class TemplateHelper implements TemplateHelperInterface
     ) {
     }
 
+    #[Override]
     public function formatProductionValue(int $value): string
     {
         if ($value > 0) {
@@ -27,6 +29,7 @@ final class TemplateHelper implements TemplateHelperInterface
         return (string) $value;
     }
 
+    #[Override]
     public function addPlusCharacter(string $value): string
     {
         if ($value <= 0) {
@@ -35,6 +38,7 @@ final class TemplateHelper implements TemplateHelperInterface
         return sprintf('+%d', $value);
     }
 
+    #[Override]
     public function jsquote(string $str): string
     {
         return str_replace(
@@ -50,6 +54,7 @@ final class TemplateHelper implements TemplateHelperInterface
         );
     }
 
+    #[Override]
     public function formatSeconds(string $time): string
     {
         $time = (int) $time;
@@ -71,17 +76,20 @@ final class TemplateHelper implements TemplateHelperInterface
         return $ret;
     }
 
+    #[Override]
     public function getNumberWithThousandSeperator(int $number): string
     {
         return number_format((float) $number, 0, '', '.');
     }
 
+    #[Override]
     public function getPlanetFieldTypeDescription(
         int $fieldTypeId
     ): string {
         return $this->planetFieldTypeRetriever->getDescription($fieldTypeId);
     }
 
+    #[Override]
     public function getPlanetFieldTitle(
         PlanetFieldInterface $planetField
     ): string {

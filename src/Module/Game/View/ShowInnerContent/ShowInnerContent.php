@@ -36,6 +36,7 @@ final class ShowInnerContent implements ViewControllerInterface, ViewWithTutoria
         $game->showMacro('html/view/breadcrumbAndView.twig');
     }
 
+    #[Override]
     public function getViewContext(): ViewContext
     {
         return new ViewContext($this->moduleView, Overview::VIEW_IDENTIFIER);

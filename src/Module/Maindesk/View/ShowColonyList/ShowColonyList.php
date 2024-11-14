@@ -48,6 +48,7 @@ final class ShowColonyList implements ViewControllerInterface, ViewWithTutorialI
             $this->colonyRepository->getStartingByFaction($user->getFactionId())
         );
     }
+    #[Override]
     public function getViewContext(): ViewContext
     {
         return new ViewContext(ModuleViewEnum::MAINDESK, self::VIEW_IDENTIFIER);

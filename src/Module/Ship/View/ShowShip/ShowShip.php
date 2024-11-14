@@ -382,6 +382,7 @@ final class ShowShip implements ViewControllerInterface, ViewWithTutorialInterfa
             $game->setTemplateVar('AVAILABLE_BUILDPLANS', $this->stationUtility->getShipyardBuildplansByUser($game->getUser()->getId()));
         }
     }
+    #[Override]
     public function getViewContext(): ViewContext
     {
         return new ViewContext(ModuleViewEnum::SHIP, self::VIEW_IDENTIFIER);

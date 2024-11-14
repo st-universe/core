@@ -126,6 +126,7 @@ final class ShowColony implements ViewControllerInterface, ViewWithTutorialInter
         );
     }
 
+    #[Override]
     public function getViewContext(): ViewContext
     {
         return new ViewContext(ModuleViewEnum::COLONY, self::VIEW_IDENTIFIER);

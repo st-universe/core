@@ -32,6 +32,7 @@ class CreatePostRequestTest extends RequestTestCase
         ];
     }
 
+    #[Override]
     public static function requiredRequestVarsDataProvider(): array
     {
         return [

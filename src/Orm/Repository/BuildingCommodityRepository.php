@@ -115,6 +115,7 @@ final class BuildingCommodityRepository extends EntityRepository implements Buil
         ])->getSingleScalarResult();
     }
 
+    #[Override]
     public function canProduceCommodity(int $userId, int $commodityId): bool
     {
         $rsm = new ResultSetMapping();

@@ -4,17 +4,20 @@ declare(strict_types=1);
 
 namespace Stu\Migrations;
 
+use Override;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
 
 final class Version20240930084058_Retrofit extends AbstractMigration
 {
+    #[Override]
     public function getDescription(): string
     {
         return 'Retrofit ship queue';
     }
 
+    #[Override]
     public function up(Schema $schema): void
     {
         $this->addSql('ALTER TABLE stu_colonies_shipqueue ADD mode INT DEFAULT NULL');
@@ -26,6 +29,7 @@ final class Version20240930084058_Retrofit extends AbstractMigration
         $this->addSql('ALTER INDEX idx_5f64a41aa76ed395 RENAME TO IDX_6E46626CA76ED395');
     }
 
+    #[Override]
     public function down(Schema $schema): void
     {
         $this->addSql('CREATE SCHEMA public');

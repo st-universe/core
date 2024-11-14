@@ -49,6 +49,7 @@ final class Overview implements ViewControllerInterface, ViewWithTutorialInterfa
         return $game->getViewContext(ViewContextTypeEnum::MODULE_VIEW) ?? $game->getUser()->getDefaultView();
     }
 
+    #[Override]
     public function getViewContext(): ViewContext
     {
         return new ViewContext($this->moduleView, self::VIEW_IDENTIFIER);
