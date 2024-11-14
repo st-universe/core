@@ -239,7 +239,7 @@ final class BuildShip implements ActionControllerInterface
         $queue->setShipBuildplan($plan);
         $queue->setBuildtime($plan->getBuildtime());
         $queue->setFinishDate(time() + $plan->getBuildtime());
-        $queue->setBuildingFunctionId($building_function->getBuildingFunction());
+        $queue->setBuildingFunction($building_function->getBuildingFunction());
         $queue->setMode(1);
 
         $colony->setEps($colony->getEps() - $rump->getEpsCost());

@@ -32,9 +32,7 @@ interface ColonyShipQueueInterface
 
     public function setStopDate(int $stopDate): ColonyShipQueueInterface;
 
-    public function getBuildingFunctionId(): BuildingFunctionEnum;
-
-    public function setBuildingFunctionId(BuildingFunctionEnum $buildingFunction): ColonyShipQueueInterface;
+    public function setBuildingFunction(BuildingFunctionEnum $buildingFunction): ColonyShipQueueInterface;
 
     public function getRump(): ShipRumpInterface;
 
