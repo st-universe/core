@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Lib\View\Provider;
 
+use Mockery;
 use JBBCode\Parser;
 use Mockery\MockInterface;
 use Override;
@@ -210,7 +211,7 @@ class UserProfileProviderTest extends StuTestCase
             ->andReturn($colonyId);
 
         $game->shouldReceive('setTemplateVar')
-            ->with('COLONYSCANLIST', \Mockery::on(function ($arg) use ($colonyScan) {
+            ->with('COLONYSCANLIST', Mockery::on(function ($arg) use ($colonyScan) {
                 return is_array($arg) && count($arg) === 1 && $arg[0] === $colonyScan;
             }))
             ->once();
