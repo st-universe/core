@@ -2,6 +2,8 @@
 
 namespace Stu\Orm\Entity;
 
+use Stu\Component\Building\BuildingFunctionEnum;
+
 interface BuildingFunctionInterface
 {
     public function getId(): int;
@@ -10,7 +12,7 @@ interface BuildingFunctionInterface
 
     public function setBuildingId(int $buildingId): BuildingFunctionInterface;
 
-    public function getFunction(): int;
+    public function getFunction(): BuildingFunctionEnum;
 
-    public function setFunction(int $function): BuildingFunctionInterface;
+    public function setFunction(BuildingFunctionEnum $function): BuildingFunctionInterface;
 }

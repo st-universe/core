@@ -6,7 +6,7 @@ namespace Stu\Module\Colony\View\ShowColony;
 
 use Override;
 use request;
-use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Component\Colony\OrbitShipListRetrieverInterface;
@@ -119,7 +119,7 @@ final class ShowColony implements ViewControllerInterface, ViewWithTutorialInter
 
         $game->setTemplateVar('FIRST_ORBIT_SHIP', $firstOrbitShip ? $this->shipWrapperFactory->wrapShip($firstOrbitShip) : null);
 
-        $particlePhalanx = $this->colonyFunctionManager->hasFunction($colony, BuildingEnum::BUILDING_FUNCTION_PARTICLE_PHALANX);
+        $particlePhalanx = $this->colonyFunctionManager->hasFunction($colony, BuildingFunctionEnum::BUILDING_FUNCTION_PARTICLE_PHALANX);
         $game->setTemplateVar(
             'BUILDABLE_TORPEDO_TYPES',
             $particlePhalanx ? $this->torpedoTypeRepository->getForUser($userId) : null

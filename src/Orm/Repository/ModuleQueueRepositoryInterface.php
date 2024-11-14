@@ -30,9 +30,9 @@ interface ModuleQueueRepositoryInterface extends ObjectRepository
     ): ?ModuleQueueInterface;
 
     /**
-     * @param list<int> $buildingFunctions
+     * @param array<int> $buildingFunctions
      *
-     * @return list<ModuleQueueInterface>
+     * @return array<ModuleQueueInterface>
      */
     public function getByColonyAndBuilding(
         int $colonyId,

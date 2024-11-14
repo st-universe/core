@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Override;
+use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Orm\Repository\ModuleQueueRepository;
 
 #[Table(name: 'stu_modules_queue')]
@@ -34,8 +35,8 @@ class ModuleQueue implements ModuleQueueInterface
     #[Column(type: 'integer')]
     private int $count = 0;
 
-    #[Column(type: 'integer')]
-    private int $buildingfunction = 0;
+    #[Column(type: 'integer', enumType: BuildingFunctionEnum::class)]
+    private BuildingFunctionEnum $buildingfunction = BuildingFunctionEnum::BUILDING_FUNCTION_BASE_CAMP;
 
     #[ManyToOne(targetEntity: 'Module')]
     #[JoinColumn(name: 'module_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
@@ -93,13 +94,13 @@ class ModuleQueue implements ModuleQueueInterface
     }
 
     #[Override]
-    public function getBuildingFunction(): int
+    public function getBuildingFunction(): BuildingFunctionEnum
     {
         return $this->buildingfunction;
     }
 
     #[Override]
-    public function setBuildingFunction(int $buildingFunction): ModuleQueueInterface
+    public function setBuildingFunction(BuildingFunctionEnum $buildingFunction): ModuleQueueInterface
     {
         $this->buildingfunction = $buildingFunction;
 

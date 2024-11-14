@@ -2,6 +2,8 @@
 
 namespace Stu\Orm\Entity;
 
+use Stu\Component\Building\BuildingFunctionEnum;
+
 interface ColonyShipQueueInterface
 {
     public function getId(): int;
@@ -30,9 +32,9 @@ interface ColonyShipQueueInterface
 
     public function setStopDate(int $stopDate): ColonyShipQueueInterface;
 
-    public function getBuildingFunctionId(): int;
+    public function getBuildingFunctionId(): BuildingFunctionEnum;
 
-    public function setBuildingFunctionId(int $buildingFunctionId): ColonyShipQueueInterface;
+    public function setBuildingFunctionId(BuildingFunctionEnum $buildingFunction): ColonyShipQueueInterface;
 
     public function getRump(): ShipRumpInterface;
 

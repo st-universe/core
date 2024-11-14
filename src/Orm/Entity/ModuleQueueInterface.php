@@ -2,6 +2,8 @@
 
 namespace Stu\Orm\Entity;
 
+use Stu\Component\Building\BuildingFunctionEnum;
+
 interface ModuleQueueInterface
 {
     public function getId(): int;
@@ -18,9 +20,9 @@ interface ModuleQueueInterface
 
     public function setAmount(int $amount): ModuleQueueInterface;
 
-    public function getBuildingFunction(): int;
+    public function getBuildingFunction(): BuildingFunctionEnum;
 
-    public function setBuildingFunction(int $buildingFunction): ModuleQueueInterface;
+    public function setBuildingFunction(BuildingFunctionEnum $buildingFunction): ModuleQueueInterface;
 
     public function getModule(): ModuleInterface;
 

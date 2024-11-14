@@ -6,7 +6,7 @@ namespace Stu\Module\Colony\View\ShowSubspaceTelescope;
 
 use Override;
 use request;
-use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Component\Game\GameEnum;
@@ -29,8 +29,7 @@ final class ShowSubspaceTelescope implements ViewControllerInterface
         private ColonyGuiHelperInterface $colonyGuiHelper,
         private StarmapUiFactoryInterface $starmapUiFactory,
         private ColonyFunctionManagerInterface $colonyFunctionManager
-    ) {
-    }
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -43,7 +42,7 @@ final class ShowSubspaceTelescope implements ViewControllerInterface
             false
         );
 
-        if (!$this->colonyFunctionManager->hasFunction($colony, BuildingEnum::BUILDING_FUNCTION_SUBSPACE_TELESCOPE)) {
+        if (!$this->colonyFunctionManager->hasFunction($colony, BuildingFunctionEnum::BUILDING_FUNCTION_SUBSPACE_TELESCOPE)) {
             return;
         }
 

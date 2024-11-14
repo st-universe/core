@@ -47,7 +47,7 @@ final class ShipRetrofitProvider implements GuiComponentProviderInterface
                         continue;
                     }
                     foreach ($this->shipRumpBuildingFunctionRepository->getByShipRump($ship->getRump()) as $rump_rel) {
-                        if (array_key_exists($rump_rel->getBuildingFunction(), $fieldFunctions)) {
+                        if (array_key_exists($rump_rel->getBuildingFunction()->value, $fieldFunctions)) {
                             $retrofitShips[$ship->getId()] = $wrapper;
                             break;
                         }

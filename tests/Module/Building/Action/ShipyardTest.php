@@ -7,15 +7,14 @@ namespace Stu\Module\Building\Action;
 use Mockery;
 use Mockery\MockInterface;
 use Override;
+use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 use Stu\StuTestCase;
 
 class ShipyardTest extends StuTestCase
 {
-    /**
-     * @var null|MockInterface|ColonyShipQueueRepositoryInterface
-     */
+    /** @var MockInterface&ColonyShipQueueRepositoryInterface */
     private $colonyShipQueueRepository;
 
     private Shipyard $shipyard;
@@ -33,19 +32,19 @@ class ShipyardTest extends StuTestCase
     public function testDestructTruncatesQueue(): void
     {
         $colony = $this->mock(ColonyInterface::class);
-        $buildingFunctionId = 42;
+        $buildingFunction = BuildingFunctionEnum::BUILDING_FUNCTION_SHIELD_BATTERY;
 
         $this->colonyShipQueueRepository->shouldReceive('truncateByColonyAndBuildingFunction')
-            ->with($colony, $buildingFunctionId)
+            ->with($colony, $buildingFunction)
             ->once();
 
-        $this->shipyard->destruct($buildingFunctionId, $colony);
+        $this->shipyard->destruct($buildingFunction, $colony);
     }
 
     public function testDeactivateStopsBuildProcesses(): void
     {
         $colony = Mockery::mock(ColonyInterface::class);
-        $buildingFunctionId = 42;
+        $buildingFunction = BuildingFunctionEnum::BUILDING_FUNCTION_SHIELD_BATTERY;
 
         $colony->shouldReceive('getId')
             ->withNoArgs()
@@ -53,16 +52,16 @@ class ShipyardTest extends StuTestCase
             ->andReturn(666);
 
         $this->colonyShipQueueRepository->shouldReceive('stopQueueByColonyAndBuildingFunction')
-            ->with(666, $buildingFunctionId)
+            ->with(666, $buildingFunction)
             ->once();
 
-        $this->shipyard->deactivate($buildingFunctionId, $colony);
+        $this->shipyard->deactivate($buildingFunction, $colony);
     }
 
     public function testActivateRestartsBuildProcesses(): void
     {
         $colony = Mockery::mock(ColonyInterface::class);
-        $buildingFunctionId = 42;
+        $buildingFunction = BuildingFunctionEnum::BUILDING_FUNCTION_SHIELD_BATTERY;
 
         $colony->shouldReceive('getId')
             ->withNoArgs()
@@ -70,9 +69,9 @@ class ShipyardTest extends StuTestCase
             ->andReturn(666);
 
         $this->colonyShipQueueRepository->shouldReceive('restartQueueByColonyAndBuildingFunction')
-            ->with(666, $buildingFunctionId)
+            ->with(666, $buildingFunction)
             ->once();
 
-        $this->shipyard->activate($buildingFunctionId, $colony);
+        $this->shipyard->activate($buildingFunction, $colony);
     }
 }

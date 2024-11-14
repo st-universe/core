@@ -16,9 +16,7 @@ use Stu\Orm\Entity\ColonySandboxInterface;
  */
 final class BuildingPostAction implements BuildingPostActionInterface
 {
-    public function __construct(private BuildingFunctionActionMapperInterface $buildingFunctionActionMapper)
-    {
-    }
+    public function __construct(private BuildingFunctionActionMapperInterface $buildingFunctionActionMapper) {}
 
     #[Override]
     public function handleDeactivation(
@@ -27,8 +25,8 @@ final class BuildingPostAction implements BuildingPostActionInterface
     ): void {
         $this->handle(
             $building,
-            static function (BuildingActionHandlerInterface $handler, int $buildingFunctionId) use ($host): void {
-                $handler->deactivate($buildingFunctionId, $host);
+            static function (BuildingActionHandlerInterface $handler, BuildingFunctionEnum $buildingFunction) use ($host): void {
+                $handler->deactivate($buildingFunction, $host);
             }
         );
     }
@@ -40,8 +38,8 @@ final class BuildingPostAction implements BuildingPostActionInterface
     ): void {
         $this->handle(
             $building,
-            static function (BuildingActionHandlerInterface $handler, int $buildingFunctionId) use ($host): void {
-                $handler->activate($buildingFunctionId, $host);
+            static function (BuildingActionHandlerInterface $handler, BuildingFunctionEnum $buildingFunction) use ($host): void {
+                $handler->activate($buildingFunction, $host);
             }
         );
     }
@@ -51,11 +49,11 @@ final class BuildingPostAction implements BuildingPostActionInterface
         callable $callback
     ): void {
         foreach ($building->getFunctions() as $function) {
-            $buildingFunctionId = $function->getFunction();
+            $buildingFunction = $function->getFunction();
 
-            $handler = $this->buildingFunctionActionMapper->map($buildingFunctionId);
+            $handler = $this->buildingFunctionActionMapper->map($buildingFunction);
             if ($handler !== null) {
-                $callback($handler, $buildingFunctionId);
+                $callback($handler, $buildingFunction);
             }
         }
     }

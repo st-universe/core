@@ -505,7 +505,7 @@ class BuildingManagerTest extends StuTestCase
         $storage = 44;
         $currentEps = 33;
         $eps = 22;
-        $functionId = 123;
+        $buildingFunction = BuildingFunctionEnum::BUILDING_FUNCTION_SHIELD_BATTERY;
 
         $field->shouldReceive('getBuilding')
             ->withNoArgs()
@@ -547,15 +547,15 @@ class BuildingManagerTest extends StuTestCase
         $function->shouldReceive('getFunction')
             ->withNoArgs()
             ->once()
-            ->andReturn($functionId);
+            ->andReturn($buildingFunction);
 
         $this->buildingFunctionActionMapper->shouldReceive('map')
-            ->with($functionId)
+            ->with($buildingFunction)
             ->once()
             ->andReturn($buildingAction);
 
         $buildingAction->shouldReceive('destruct')
-            ->with($functionId, $host)
+            ->with($buildingFunction, $host)
             ->once();
 
         $host->shouldReceive('getMaxStorage')
@@ -595,7 +595,7 @@ class BuildingManagerTest extends StuTestCase
         $storage = 44;
         $currentEps = 33;
         $eps = 22;
-        $functionId = 123;
+        $buildingFunction = BuildingFunctionEnum::BUILDING_FUNCTION_SHIELD_BATTERY;
         $buildingWorkers = 123;
 
         $field->shouldReceive('getBuilding')
@@ -653,15 +653,15 @@ class BuildingManagerTest extends StuTestCase
         $function->shouldReceive('getFunction')
             ->withNoArgs()
             ->once()
-            ->andReturn($functionId);
+            ->andReturn($buildingFunction);
 
         $this->buildingFunctionActionMapper->shouldReceive('map')
-            ->with($functionId)
+            ->with($buildingFunction)
             ->once()
             ->andReturn($buildingAction);
 
         $buildingAction->shouldReceive('destruct')
-            ->with($functionId, $host)
+            ->with($buildingFunction, $host)
             ->once();
 
         $host->shouldReceive('getMaxStorage')
@@ -726,7 +726,7 @@ class BuildingManagerTest extends StuTestCase
         $storage = 44;
         $currentEps = 33;
         $eps = 22;
-        $functionId = 123;
+        $buildingFunction = BuildingFunctionEnum::BUILDING_FUNCTION_SHIELD_BATTERY;
         $buildingWorkers = 123;
 
         $field->shouldReceive('getBuilding')
@@ -780,15 +780,15 @@ class BuildingManagerTest extends StuTestCase
         $function->shouldReceive('getFunction')
             ->withNoArgs()
             ->once()
-            ->andReturn($functionId);
+            ->andReturn($buildingFunction);
 
         $this->buildingFunctionActionMapper->shouldReceive('map')
-            ->with($functionId)
+            ->with($buildingFunction)
             ->once()
             ->andReturn($buildingAction);
 
         $buildingAction->shouldReceive('destruct')
-            ->with($functionId, $host)
+            ->with($buildingFunction, $host)
             ->once();
 
         $host->shouldReceive('getMaxStorage')

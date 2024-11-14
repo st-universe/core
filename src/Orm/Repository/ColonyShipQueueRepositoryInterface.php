@@ -3,6 +3,7 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ColonyShipQueue;
 use Stu\Orm\Entity\ColonyShipQueueInterface;
@@ -18,11 +19,11 @@ interface ColonyShipQueueRepositoryInterface extends ObjectRepository
 
     public function delete(ColonyShipQueueInterface $post): void;
 
-    public function stopQueueByColonyAndBuildingFunction(int $colonyId, int $buildingFunctionId): void;
+    public function stopQueueByColonyAndBuildingFunction(int $colonyId, BuildingFunctionEnum $buildingFunction): void;
 
-    public function restartQueueByColonyAndBuildingFunction(int $colonyId, int $buildingFunctionId): void;
+    public function restartQueueByColonyAndBuildingFunction(int $colonyId, BuildingFunctionEnum $buildingFunction): void;
 
-    public function getAmountByColonyAndBuildingFunctionAndMode(int $colonyId, int $buildingFunctionId, int $mode): int;
+    public function getAmountByColonyAndBuildingFunctionAndMode(int $colonyId, BuildingFunctionEnum $buildingFunction, int $mode): int;
 
     /**
      * @return array<ColonyShipQueueInterface>
@@ -53,7 +54,7 @@ interface ColonyShipQueueRepositoryInterface extends ObjectRepository
 
     public function truncateByColony(ColonyInterface $colony): void;
 
-    public function truncateByColonyAndBuildingFunction(ColonyInterface $colony, int $buildingFunctionId): void;
+    public function truncateByColonyAndBuildingFunction(ColonyInterface $colony, BuildingFunctionEnum $buildingFunction): void;
 
     public function truncateByShip(int $shipId): void;
 }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Lib\Gui;
 
 use Override;
-use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Shipcount\ShipcountLayerTypeEnum;
@@ -31,10 +31,11 @@ class ColonyScanPanel extends AbstractVisualPanel
     protected function createBoundaries(): PanelBoundaries
     {
         $range = 1;
-        // TODO range = 2 for colony central
 
-        if ($this->colonyFunctionManager->hasFunction($this->colony, BuildingEnum::BUILDING_FUNCTION_SUBSPACE_TELESCOPE)) {
+        if ($this->colonyFunctionManager->hasFunction($this->colony, BuildingFunctionEnum::BUILDING_FUNCTION_SUBSPACE_TELESCOPE)) {
             $range = 3;
+        } elseif ($this->colonyFunctionManager->hasFunction($this->colony, BuildingFunctionEnum::BUILDING_FUNCTION_COLONY_CENTRAL)) {
+            $range = 2;
         }
 
         return PanelBoundaries::fromLocation($this->colony->getStarsystemMap(), $range);
@@ -43,13 +44,17 @@ class ColonyScanPanel extends AbstractVisualPanel
     #[Override]
     protected function loadLayers(): void
     {
-        //TODO cloaked for colony central
+        $showCloaked = $this->colonyFunctionManager->hasFunction($this->colony, BuildingFunctionEnum::BUILDING_FUNCTION_COLONY_CENTRAL);
+
         $panelLayerCreation = $this->panelLayerCreation
-            ->addShipCountLayer(false, null, ShipcountLayerTypeEnum::ALL, 0)
+            ->addShipCountLayer($showCloaked, null, ShipcountLayerTypeEnum::ALL, 0)
             ->addSystemLayer()
             ->addColonyShieldLayer();
 
-        if ($this->colonyFunctionManager->hasFunction($this->colony, BuildingEnum::BUILDING_FUNCTION_SUBSPACE_TELESCOPE)) {
+        if ($this->colonyFunctionManager->hasFunction($this->colony, BuildingFunctionEnum::BUILDING_FUNCTION_SUBSPACE_TELESCOPE)) {
+            $panelLayerCreation->addSubspaceLayer($this->colony->getUser()->getId(), SubspaceLayerTypeEnum::IGNORE_USER);
+        }
+        if ($this->colonyFunctionManager->hasFunction($this->colony, BuildingFunctionEnum::BUILDING_FUNCTION_SUBSPACE_TELESCOPE)) {
             $panelLayerCreation->addSubspaceLayer($this->colony->getUser()->getId(), SubspaceLayerTypeEnum::IGNORE_USER);
         }
 

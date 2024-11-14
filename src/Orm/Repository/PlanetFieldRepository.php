@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Override;
 use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\BuildingCommodity;
@@ -261,7 +262,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
     #[Override]
     public function getCountByColonyAndBuildingFunctionAndState(
         PlanetFieldHostInterface $host,
-        array $buildingFunctionIds,
+        array $buildingFunctions,
         array $state
     ): int {
         return (int) $this->getEntityManager()->createQuery(
@@ -276,7 +277,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
             )
         )->setParameters([
             'host' => $host,
-            'buildingFunctionIds' => $buildingFunctionIds,
+            'buildingFunctionIds' => array_map(fn(BuildingFunctionEnum $function): int => $function->value, $buildingFunctions),
             'state' => $state,
         ])->getSingleScalarResult();
     }
@@ -326,8 +327,8 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
             $rsm
         )->setParameters([
             'hostId' => $host->getId(),
-            'shieldGenerator' => BuildingEnum::BUILDING_FUNCTION_SHIELD_GENERATOR,
-            'shieldBattery' => BuildingEnum::BUILDING_FUNCTION_SHIELD_BATTERY,
+            'shieldGenerator' => BuildingFunctionEnum::BUILDING_FUNCTION_SHIELD_GENERATOR->value,
+            'shieldBattery' => BuildingFunctionEnum::BUILDING_FUNCTION_SHIELD_BATTERY->value,
             'generatorCapacity' => BuildingEnum::SHIELD_GENERATOR_CAPACITY,
             'batteryCapacity' => BuildingEnum::SHIELD_BATTERY_CAPACITY
         ])->getSingleScalarResult();

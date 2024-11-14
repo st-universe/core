@@ -6,7 +6,7 @@ namespace Stu\Module\Colony\Action\RemoveWaste;
 
 use Override;
 use request;
-use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
@@ -20,9 +20,13 @@ final class RemoveWaste implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_REMOVE_WASTE';
 
-    public function __construct(private ColonyLoaderInterface $colonyLoader, private PlanetFieldRepositoryInterface $planetFieldRepository, private ColonyStorageManagerInterface $colonyStorageManager, private ColonyRepositoryInterface $colonyRepository, private CommodityRepositoryInterface $commodityRepository)
-    {
-    }
+    public function __construct(
+        private ColonyLoaderInterface $colonyLoader,
+        private PlanetFieldRepositoryInterface $planetFieldRepository,
+        private ColonyStorageManagerInterface $colonyStorageManager,
+        private ColonyRepositoryInterface $colonyRepository,
+        private CommodityRepositoryInterface $commodityRepository
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -40,7 +44,7 @@ final class RemoveWaste implements ActionControllerInterface
 
         if ($this->planetFieldRepository->getCountByColonyAndBuildingFunctionAndState(
             $colony,
-            [BuildingEnum::BUILDING_FUNCTION_WAREHOUSE],
+            [BuildingFunctionEnum::BUILDING_FUNCTION_WAREHOUSE],
             [0, 1]
         ) === 0) {
             return;

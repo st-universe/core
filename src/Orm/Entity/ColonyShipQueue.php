@@ -14,6 +14,7 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
 use Override;
+use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Orm\Repository\ColonyShipQueueRepository;
 
 #[Table(name: 'stu_colonies_shipqueue')]
@@ -49,8 +50,8 @@ class ColonyShipQueue implements ColonyShipQueueInterface
     #[Column(type: 'integer')]
     private int $stop_date = 0;
 
-    #[Column(type: 'smallint')]
-    private int $building_function_id = 0;
+    #[Column(type: 'smallint', enumType: BuildingFunctionEnum::class)]
+    private BuildingFunctionEnum $building_function_id = BuildingFunctionEnum::BUILDING_FUNCTION_BASE_CAMP;
 
     #[Column(type: 'integer', nullable: true)]
     private ?int $mode = null;
@@ -164,15 +165,15 @@ class ColonyShipQueue implements ColonyShipQueueInterface
     }
 
     #[Override]
-    public function getBuildingFunctionId(): int
+    public function getBuildingFunctionId(): BuildingFunctionEnum
     {
         return $this->building_function_id;
     }
 
     #[Override]
-    public function setBuildingFunctionId(int $buildingFunctionId): ColonyShipQueueInterface
+    public function setBuildingFunctionId(BuildingFunctionEnum $buildingFunction): ColonyShipQueueInterface
     {
-        $this->building_function_id = $buildingFunctionId;
+        $this->building_function_id = $buildingFunction;
 
         return $this;
     }

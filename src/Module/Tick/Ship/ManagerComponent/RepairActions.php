@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Tick\Ship\ManagerComponent;
 
 use Override;
-use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Ship\Repair\RepairUtilInterface;
@@ -26,9 +26,7 @@ use Stu\Orm\Repository\StationShipRepairRepositoryInterface;
 
 final class RepairActions implements ManagerComponentInterface
 {
-    public function __construct(private ShipRepositoryInterface $shipRepository, private PrivateMessageSenderInterface $privateMessageSender, private ShipSystemManagerInterface $shipSystemManager, private ColonyShipRepairRepositoryInterface $colonyShipRepairRepository, private StationShipRepairRepositoryInterface $stationShipRepairRepository, private ColonyStorageManagerInterface $colonyStorageManager, private ModuleQueueRepositoryInterface $moduleQueueRepository, private RepairUtilInterface $repairUtil, private ShipWrapperFactoryInterface $shipWrapperFactory, private PlanetFieldRepositoryInterface $planetFieldRepository, private ColonyFunctionManagerInterface $colonyFunctionManager)
-    {
-    }
+    public function __construct(private ShipRepositoryInterface $shipRepository, private PrivateMessageSenderInterface $privateMessageSender, private ShipSystemManagerInterface $shipSystemManager, private ColonyShipRepairRepositoryInterface $colonyShipRepairRepository, private StationShipRepairRepositoryInterface $stationShipRepairRepository, private ColonyStorageManagerInterface $colonyStorageManager, private ModuleQueueRepositoryInterface $moduleQueueRepository, private RepairUtilInterface $repairUtil, private ShipWrapperFactoryInterface $shipWrapperFactory, private PlanetFieldRepositoryInterface $planetFieldRepository, private ColonyFunctionManagerInterface $colonyFunctionManager) {}
 
     #[Override]
     public function work(): void
@@ -45,8 +43,8 @@ final class RepairActions implements ManagerComponentInterface
             $buildingFunction = $queue->getBuildingFunction();
 
             if (
-                $buildingFunction === BuildingEnum::BUILDING_FUNCTION_FABRICATION_HALL ||
-                $buildingFunction === BuildingEnum::BUILDING_FUNCTION_TECH_CENTER
+                $buildingFunction === BuildingFunctionEnum::BUILDING_FUNCTION_FABRICATION_HALL ||
+                $buildingFunction === BuildingFunctionEnum::BUILDING_FUNCTION_TECH_CENTER
             ) {
                 $colony = $queue->getColony();
 
@@ -103,7 +101,7 @@ final class RepairActions implements ManagerComponentInterface
                 $usedShipyards[$colony->getId()] = [];
             }
 
-            $isRepairStationBonus = $this->colonyFunctionManager->hasActiveFunction($colony, BuildingEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD);
+            $isRepairStationBonus = $this->colonyFunctionManager->hasActiveFunction($colony, BuildingFunctionEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD);
 
             //already repaired a ship on this colony field, max is one without repair station
             if (

@@ -4,20 +4,21 @@ declare(strict_types=1);
 
 namespace Stu\Module\Building\Action;
 
+use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ColonySandboxInterface;
 
 interface BuildingActionHandlerInterface
 {
-    public function destruct(int $buildingFunctionId, ColonyInterface $colony): void;
+    public function destruct(BuildingFunctionEnum $buildingFunction, ColonyInterface $colony): void;
 
     public function deactivate(
-        int $buildingFunctionId,
+        BuildingFunctionEnum $buildingFunction,
         ColonyInterface|ColonySandboxInterface $host
     ): void;
 
     public function activate(
-        int $buildingFunctionId,
+        BuildingFunctionEnum $buildingFunction,
         ColonyInterface|ColonySandboxInterface $host
     ): void;
 }

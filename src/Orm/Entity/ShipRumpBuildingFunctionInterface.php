@@ -2,6 +2,8 @@
 
 namespace Stu\Orm\Entity;
 
+use Stu\Component\Building\BuildingFunctionEnum;
+
 interface ShipRumpBuildingFunctionInterface
 {
     public function getId(): int;
@@ -10,7 +12,7 @@ interface ShipRumpBuildingFunctionInterface
 
     public function setShipRumpId(int $shipRumpId): ShipRumpBuildingFunctionInterface;
 
-    public function getBuildingFunction(): int;
+    public function getBuildingFunction(): BuildingFunctionEnum;
 
-    public function setBuildingFunction(int $buildingFunction): ShipRumpBuildingFunctionInterface;
+    public function setBuildingFunction(BuildingFunctionEnum $buildingFunction): ShipRumpBuildingFunctionInterface;
 }
