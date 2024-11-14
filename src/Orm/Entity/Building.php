@@ -385,7 +385,7 @@ class Building implements BuildingInterface
     public function isRemovable(): bool
     {
         return !$this->getFunctions()->containsKey(BuildingFunctionEnum::BUILDING_FUNCTION_COLONY_CENTRAL->value)
-            && $this->getFunctions()->containsKey(BuildingFunctionEnum::BUILDING_FUNCTION_BASE_CAMP->value);
+            && !$this->getFunctions()->containsKey(BuildingFunctionEnum::BUILDING_FUNCTION_BASE_CAMP->value);
     }
 
     #[Override]
