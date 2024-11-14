@@ -95,6 +95,7 @@ class LocationRepository extends EntityRepository implements LocationRepositoryI
         ])->getResult();
     }
 
+    #[Override]
     public function getForSubspaceEllipseCreation(): array
     {
         $rsm = new ResultSetMapping();

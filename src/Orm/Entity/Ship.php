@@ -1779,11 +1779,13 @@ class Ship implements ShipInterface
         return $this->miningqueue;
     }
 
+    #[Override]
     public function getColonyShipQueue(): ?ColonyShipQueueInterface
     {
         return $this->colonyShipQueue;
     }
 
+    #[Override]
     public function setColonyShipQueue(?ColonyShipQueueInterface $queue): ShipInterface
     {
         $this->colonyShipQueue = $queue;

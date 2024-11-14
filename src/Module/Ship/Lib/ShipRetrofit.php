@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
+use Override;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -25,29 +26,16 @@ use Stu\Orm\Entity\BuildplanModuleInterface;
 
 final class ShipRetrofit implements ShipRetrofitInterface
 {
-    private ShipSystemRepositoryInterface $shipSystemRepository;
-    private BuildplanModuleRepositoryInterface $buildplanModuleRepository;
-    private ModuleSpecialRepositoryInterface $moduleSpecialRepository;
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-    private ColonyStorageManagerInterface $colonyStorageManager;
-    private PrivateMessageSenderInterface $privateMessageSender;
-
     public function __construct(
-        ShipSystemRepositoryInterface $shipSystemRepository,
-        BuildplanModuleRepositoryInterface $buildplanModuleRepository,
-        ModuleSpecialRepositoryInterface $moduleSpecialRepository,
-        ShipWrapperFactoryInterface $shipWrapperFactory,
-        ColonyStorageManagerInterface $colonyStorageManager,
-        PrivateMessageSenderInterface $privateMessageSender
-    ) {
-        $this->shipSystemRepository = $shipSystemRepository;
-        $this->buildplanModuleRepository = $buildplanModuleRepository;
-        $this->moduleSpecialRepository = $moduleSpecialRepository;
-        $this->shipWrapperFactory = $shipWrapperFactory;
-        $this->colonyStorageManager = $colonyStorageManager;
-        $this->privateMessageSender = $privateMessageSender;
-    }
+        private ShipSystemRepositoryInterface $shipSystemRepository,
+        private BuildplanModuleRepositoryInterface $buildplanModuleRepository,
+        private ModuleSpecialRepositoryInterface $moduleSpecialRepository,
+        private ShipWrapperFactoryInterface $shipWrapperFactory,
+        private ColonyStorageManagerInterface $colonyStorageManager,
+        private PrivateMessageSenderInterface $privateMessageSender
+    ) {}
 
+    #[Override]
     public function updateBy(ShipInterface $ship, ShipBuildplanInterface $newBuildplan, ColonyInterface $colony): void
     {
         $oldBuildplan = $ship->getBuildplan();

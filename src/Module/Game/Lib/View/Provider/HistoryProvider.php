@@ -17,14 +17,10 @@ final class HistoryProvider implements ViewComponentProviderInterface
 
     private const int LIMIT = 50;
 
-    private HistoryRepositoryInterface $historyRepository;
-    private Parser $bbcodeParser;
-
-    public function __construct(HistoryRepositoryInterface $historyRepository, Parser $bbcodeParser)
-    {
-        $this->historyRepository = $historyRepository;
-        $this->bbcodeParser = $bbcodeParser;
-    }
+    public function __construct(
+        private HistoryRepositoryInterface $historyRepository,
+        private Parser $bbcodeParser
+    ) {}
 
     #[Override]
     public function setTemplateVariables(GameControllerInterface $game): void

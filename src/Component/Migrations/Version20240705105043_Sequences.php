@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Migrations;
 
+use Override;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
@@ -154,11 +155,13 @@ final class Version20240705105043_Sequences extends AbstractMigration
         'stu_wormhole_entry'
     ];
 
+    #[Override]
     public function getDescription(): string
     {
         return 'Modifies Entity IDs from default nextval() to DEFAULT IDENTITY';
     }
 
+    #[Override]
     public function up(Schema $schema): void
     {
         foreach (self::TABLE_NAMES as $table) {
@@ -195,6 +198,7 @@ final class Version20240705105043_Sequences extends AbstractMigration
         $this->addSql(sprintf('DROP SEQUENCE %s_id_seq_alt', $table));
     }
 
+    #[Override]
     public function down(Schema $schema): void
     {
         foreach (self::TABLE_NAMES as $table) {

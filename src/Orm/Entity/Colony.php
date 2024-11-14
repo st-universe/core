@@ -614,6 +614,7 @@ class Colony implements ColonyInterface
     /**
      * @return StorageInterface[]
      */
+    #[Override]
     public function getBeamableStorage(): array
     {
         $beamableStorage = array_filter(

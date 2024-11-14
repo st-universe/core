@@ -140,6 +140,7 @@ class StarSystemMap extends Location implements StarSystemMapInterface
         return null;
     }
 
+    #[Override]
     protected function getWormholeEntries(): Collection
     {
         return $this->wormholeEntries;

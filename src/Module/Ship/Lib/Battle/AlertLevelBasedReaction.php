@@ -89,7 +89,7 @@ final class AlertLevelBasedReaction implements AlertLevelBasedReactionInterface
             $this->shipSystemManager->activate($wrapper, ShipSystemTypeEnum::SYSTEM_NBS);
 
             $informations->addInformation("- Die Nahbereichssensoren wurden aktiviert");
-        } catch (ShipSystemException $e) {
+        } catch (ShipSystemException) {
         }
 
         try {

@@ -246,6 +246,7 @@ class Map extends Location implements MapInterface
         return 'border: 1px solid ' . $borderType->getColor();
     }
 
+    #[Override]
     protected function getWormholeEntries(): Collection
     {
         return $this->wormholeEntries;

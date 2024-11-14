@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\NPC\View\ShowShipCreator;
 
+use Override;
 use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -14,25 +15,16 @@ use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 final class ShowShipCreator implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_SHIP_CREATOR';
-
-    private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
-    private UserRepositoryInterface $userRepository;
-    private LayerRepositoryInterface $layerRepository;
-    private TorpedoTypeRepositoryInterface $torpedoTypeRepository;
+    public const string VIEW_IDENTIFIER = 'SHOW_SHIP_CREATOR';
 
     public function __construct(
-        ShipBuildplanRepositoryInterface $shipBuildplanRepository,
-        UserRepositoryInterface $userRepository,
-        LayerRepositoryInterface $layerRepository,
-        TorpedoTypeRepositoryInterface $torpedoTypeRepository
-    ) {
-        $this->shipBuildplanRepository = $shipBuildplanRepository;
-        $this->userRepository = $userRepository;
-        $this->layerRepository = $layerRepository;
-        $this->torpedoTypeRepository = $torpedoTypeRepository;
-    }
+        private ShipBuildplanRepositoryInterface $shipBuildplanRepository,
+        private UserRepositoryInterface $userRepository,
+        private LayerRepositoryInterface $layerRepository,
+        private TorpedoTypeRepositoryInterface $torpedoTypeRepository
+    ) {}
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = request::getInt('userId');

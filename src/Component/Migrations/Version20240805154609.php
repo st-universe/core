@@ -4,17 +4,20 @@ declare(strict_types=1);
 
 namespace Stu\Migrations;
 
+use Override;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
 
 final class Version20240805154609 extends AbstractMigration
 {
+    #[Override]
     public function getDescription(): string
     {
         return 'Add LocationMining Entity';
     }
 
+    #[Override]
     public function up(Schema $schema): void
     {
 
@@ -25,6 +28,7 @@ final class Version20240805154609 extends AbstractMigration
         $this->addSql('ALTER TABLE stu_location_mining ADD CONSTRAINT FK_AC85C1ACB4ACC212 FOREIGN KEY (commodity_id) REFERENCES stu_commodity (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
     }
 
+    #[Override]
     public function down(Schema $schema): void
     {
 

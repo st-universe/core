@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\NPC\View\ShowBuildplanCreator;
 
+use Override;
 use request;
 use RuntimeException;
 use Stu\Component\Ship\ShipModuleTypeEnum;
@@ -18,25 +19,16 @@ use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
 
 final class ShowBuildplanCreator implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_BUILDPLAN_CREATOR';
-
-    private ShipRumpRepositoryInterface $shipRumpRepository;
-    private UserRepositoryInterface $userRepository;
-    private ModuleRepositoryInterface $moduleRepository;
-    private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository;
+    public const string VIEW_IDENTIFIER = 'SHOW_BUILDPLAN_CREATOR';
 
     public function __construct(
-        ShipRumpRepositoryInterface $shipRumpRepository,
-        UserRepositoryInterface $userRepository,
-        ModuleRepositoryInterface $moduleRepository,
-        ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository
-    ) {
-        $this->shipRumpRepository = $shipRumpRepository;
-        $this->userRepository = $userRepository;
-        $this->moduleRepository = $moduleRepository;
-        $this->shipRumpModuleLevelRepository = $shipRumpModuleLevelRepository;
-    }
+        private ShipRumpRepositoryInterface $shipRumpRepository,
+        private UserRepositoryInterface $userRepository,
+        private ModuleRepositoryInterface $moduleRepository,
+        private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository
+    ) {}
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = request::getInt('userId');

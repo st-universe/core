@@ -4,16 +4,19 @@ declare(strict_types=1);
 
 namespace Stu\Migrations;
 
+use Override;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
 final class Version20240816121145_DatabaseEntry extends AbstractMigration
 {
+    #[Override]
     public function getDescription(): string
     {
         return 'Add database entry foreign keys and indices';
     }
 
+    #[Override]
     public function up(Schema $schema): void
     {
         $this->addSql('ALTER TABLE stu_ships ALTER database_id DROP NOT NULL');
@@ -24,6 +27,7 @@ final class Version20240816121145_DatabaseEntry extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX UNIQ_A560DD56F0AA09DB ON stu_ships (database_id)');
     }
 
+    #[Override]
     public function down(Schema $schema): void
     {
         $this->addSql('ALTER TABLE stu_ships DROP CONSTRAINT FK_A560DD56F0AA09DB');

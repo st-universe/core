@@ -195,7 +195,7 @@ final class DockShip implements ActionControllerInterface
 
             try {
                 $this->shipSystemManager->deactivate($fleetShipWrapper, ShipSystemTypeEnum::SYSTEM_SHIELDS);
-            } catch (ShipSystemException $e) {
+            } catch (ShipSystemException) {
             }
 
             try {

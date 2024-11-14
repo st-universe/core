@@ -206,22 +206,26 @@ class ColonyShipQueue implements ColonyShipQueueInterface
     }
 
 
+    #[Override]
     public function getMode(): ?int
     {
         return $this->mode;
     }
 
+    #[Override]
     public function setMode(?int $mode): ColonyShipQueueInterface
     {
         $this->mode = $mode;
         return $this;
     }
 
+    #[Override]
     public function getShip(): ?ShipInterface
     {
         return $this->ship;
     }
 
+    #[Override]
     public function setShip(?ShipInterface $ship): ColonyShipQueueInterface
     {
         $this->ship = $ship;

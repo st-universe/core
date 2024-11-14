@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\NPC\Action;
 
+use Override;
 use request;
 use RuntimeException;
 use Stu\Module\Control\ActionControllerInterface;
@@ -18,31 +19,18 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class CreateShip implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_CREATE_SHIP';
-
-    private ShipCreatorInterface $shipCreator;
-    private MapRepositoryInterface $mapRepository;
-    private ShipBuildplanRepositoryInterface $buildplanRepository;
-    private NPCLogRepositoryInterface $npcLogRepository;
-    private LayerRepositoryInterface $layerRepository;
-    private UserRepositoryInterface $userRepository;
+    public const string ACTION_IDENTIFIER = 'B_CREATE_SHIP';
 
     public function __construct(
-        ShipCreatorInterface $shipCreator,
-        MapRepositoryInterface $mapRepository,
-        ShipBuildplanRepositoryInterface $buildplanRepository,
-        NPCLogRepositoryInterface $npcLogRepository,
-        LayerRepositoryInterface $layerRepository,
-        UserRepositoryInterface $userRepository
-    ) {
-        $this->shipCreator = $shipCreator;
-        $this->mapRepository = $mapRepository;
-        $this->buildplanRepository = $buildplanRepository;
-        $this->npcLogRepository = $npcLogRepository;
-        $this->layerRepository = $layerRepository;
-        $this->userRepository = $userRepository;
-    }
+        private ShipCreatorInterface $shipCreator,
+        private MapRepositoryInterface $mapRepository,
+        private ShipBuildplanRepositoryInterface $buildplanRepository,
+        private NPCLogRepositoryInterface $npcLogRepository,
+        private LayerRepositoryInterface $layerRepository,
+        private UserRepositoryInterface $userRepository
+    ) {}
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShipCreator::VIEW_IDENTIFIER);
@@ -140,6 +128,7 @@ final class CreateShip implements ActionControllerInterface
         $this->npcLogRepository->save($entry);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

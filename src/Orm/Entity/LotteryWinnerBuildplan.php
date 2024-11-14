@@ -33,6 +33,7 @@ class LotteryWinnerBuildplan implements LotteryWinnerBuildplanInterface
     #[JoinColumn(name: 'buildplan_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ShipBuildplanInterface $buildplan;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;

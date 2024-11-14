@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\NPC\Action;
 
+use Override;
 use Doctrine\ORM\EntityManagerInterface;
 use RuntimeException;
 use request;
@@ -23,43 +24,22 @@ use Stu\Orm\Repository\NPCLogRepositoryInterface;
 
 final class CreateBuildplan implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_CREATE_BUILDPLAN';
-
-    private EntityManagerInterface $entityManager;
-    private ShipRumpRepositoryInterface $shipRumpRepository;
-    private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository;
-    private ModuleRepositoryInterface $moduleRepository;
-    private ShipBuildplanRepositoryInterface $buildplanRepository;
-    private BuildplanModuleRepositoryInterface $buildplanModuleRepository;
-    private UserRepositoryInterface $userRepository;
-    private ShipCrewCalculatorInterface $shipCrewCalculator;
-    private BuildplanSignatureCreationInterface $buildplanSignatureCreation;
-    private NPCLogRepositoryInterface $npcLogRepository;
+    public const string ACTION_IDENTIFIER = 'B_CREATE_BUILDPLAN';
 
     public function __construct(
-        EntityManagerInterface $entityManager,
-        ShipRumpRepositoryInterface $shipRumpRepository,
-        ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository,
-        ModuleRepositoryInterface $moduleRepository,
-        ShipBuildplanRepositoryInterface $buildplanRepository,
-        BuildplanModuleRepositoryInterface $buildplanModuleRepository,
-        UserRepositoryInterface $userRepository,
-        ShipCrewCalculatorInterface $shipCrewCalculator,
-        BuildplanSignatureCreationInterface $buildplanSignatureCreation,
-        NPCLogRepositoryInterface $npcLogRepository
-    ) {
-        $this->entityManager = $entityManager;
-        $this->shipRumpRepository = $shipRumpRepository;
-        $this->shipRumpModuleLevelRepository = $shipRumpModuleLevelRepository;
-        $this->moduleRepository = $moduleRepository;
-        $this->buildplanRepository = $buildplanRepository;
-        $this->buildplanModuleRepository = $buildplanModuleRepository;
-        $this->userRepository = $userRepository;
-        $this->shipCrewCalculator = $shipCrewCalculator;
-        $this->buildplanSignatureCreation = $buildplanSignatureCreation;
-        $this->npcLogRepository = $npcLogRepository;
-    }
+        private EntityManagerInterface $entityManager,
+        private ShipRumpRepositoryInterface $shipRumpRepository,
+        private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository,
+        private ModuleRepositoryInterface $moduleRepository,
+        private ShipBuildplanRepositoryInterface $buildplanRepository,
+        private BuildplanModuleRepositoryInterface $buildplanModuleRepository,
+        private UserRepositoryInterface $userRepository,
+        private ShipCrewCalculatorInterface $shipCrewCalculator,
+        private BuildplanSignatureCreationInterface $buildplanSignatureCreation,
+        private NPCLogRepositoryInterface $npcLogRepository
+    ) {}
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowBuildplanCreator::VIEW_IDENTIFIER);
@@ -206,6 +186,7 @@ final class CreateBuildplan implements ActionControllerInterface
         $this->npcLogRepository->save($entry);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

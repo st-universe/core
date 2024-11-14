@@ -2,6 +2,7 @@
 
 namespace Stu\Lib\Mail;
 
+use Override;
 use Stu\Module\Config\StuConfigInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
@@ -14,6 +15,7 @@ class StuMail implements StuMailInterface
         private StuConfigInterface $stuConfig
     ) {}
 
+    #[Override]
     public function withDefaultSender(): StuMailInterface
     {
         $this->email->from($this
@@ -25,6 +27,7 @@ class StuMail implements StuMailInterface
         return $this;
     }
 
+    #[Override]
     public function setFrom(string $from): StuMailInterface
     {
         $this->email->from($from);
@@ -32,6 +35,7 @@ class StuMail implements StuMailInterface
         return $this;
     }
 
+    #[Override]
     public function addTo(string $to): StuMailInterface
     {
         $this->email->to($to);
@@ -39,6 +43,7 @@ class StuMail implements StuMailInterface
         return $this;
     }
 
+    #[Override]
     public function setSubject(string $subject): StuMailInterface
     {
         $this->email->subject($subject);
@@ -46,6 +51,7 @@ class StuMail implements StuMailInterface
         return $this;
     }
 
+    #[Override]
     public function setBody(string $text): StuMailInterface
     {
         $this->email->text($text);
@@ -53,6 +59,7 @@ class StuMail implements StuMailInterface
         return $this;
     }
 
+    #[Override]
     public function send(): void
     {
         $this->mailer->send($this->email);

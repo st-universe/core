@@ -21,7 +21,7 @@ use Stu\Orm\Repository\MiningQueueRepositoryInterface;
 
 final class GatherResources implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_GATHER_RESOURCES';
+    public const string ACTION_IDENTIFIER = 'B_GATHER_RESOURCES';
 
     public function __construct(
         private ShipLoaderInterface $shipLoader,

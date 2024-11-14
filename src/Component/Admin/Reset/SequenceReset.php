@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Admin\Reset;
 
+use Override;
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 
@@ -13,6 +14,7 @@ final class SequenceReset implements SequenceResetInterface
         private EntityManagerInterface $entityManager,
     ) {}
 
+    #[Override]
     public function resetSequences(): int
     {
         $connection = $this->entityManager->getConnection();

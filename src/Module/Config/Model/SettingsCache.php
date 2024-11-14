@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Config\Model;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Stu\Module\Config\StuConfigSettingEnum;
@@ -16,6 +17,7 @@ class SettingsCache implements SettingsCacheInterface
         $this->settings = new ArrayCollection();
     }
 
+    #[Override]
     public function getSettings(StuConfigSettingEnum $type, ?SettingsInterface $parent): SettingsInterface
     {
         $setting = $this->settings->get($type->value);
