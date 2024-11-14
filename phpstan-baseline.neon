@@ -1,11 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Parameter \\#1 \\$sql of method Doctrine\\\\DBAL\\\\Connection\\:\\:executeQuery\\(\\) expects literal\\-string, mixed given\\.$#"
-			count: 1
-			path: src/Component/Admin/Reset/SequenceReset.php
-
-		-
 			message: "#^Constant _IMG_HANDLER not found\\.$#"
 			count: 1
 			path: src/Component/Image/ImageCreation.php
@@ -2005,11 +2000,6 @@ parameters:
 			message: "#^Method Stu\\\\Orm\\\\Repository\\\\RepairTaskRepository\\:\\:getByShip\\(\\) should return Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null but returns Stu\\\\Orm\\\\Entity\\\\RepairTask\\|null\\.$#"
 			count: 1
 			path: src/Orm/Repository/RepairTaskRepository.php
-
-		-
-			message: "#^Parameter \\#1 \\$sql of method Doctrine\\\\DBAL\\\\Connection\\:\\:executeQuery\\(\\) expects literal\\-string, non\\-falsy\\-string given\\.$#"
-			count: 1
-			path: src/Orm/Repository/UserMapRepository.php
 
 		-
 			message: "#^Parameter \\#1 \\$category of method Stu\\\\Orm\\\\Entity\\\\DatabaseEntryInterface\\:\\:setCategory\\(\\) expects Stu\\\\Orm\\\\Entity\\\\DatabaseCategoryInterface, Stu\\\\Orm\\\\Entity\\\\DatabaseCategoryInterface\\|null given\\.$#"
