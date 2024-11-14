@@ -17,7 +17,6 @@ class ColonySettingsTest extends StuTestCase
     /** @var MockInterface|SettingsCacheInterface */
     private $cache;
 
-    /** @var MockObject|ColonySettings */
     private ColonySettings $subject;
 
     #[Override]

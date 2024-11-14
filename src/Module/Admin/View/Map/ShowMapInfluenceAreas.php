@@ -110,7 +110,7 @@ final class ShowMapInfluenceAreas implements ViewControllerInterface
             }
 
             if ($col === null) {
-                $rest = (int) ($id % 200);
+                $rest = $id % 200;
                 $rest = max(1, $rest);
                 $rest = $this->validateRgb($rest);
                 $col = imagecolorallocate($border, $rest, $rest, $rest);

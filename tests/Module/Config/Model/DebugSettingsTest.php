@@ -16,7 +16,6 @@ class DebugSettingsTest extends StuTestCase
     /** @var MockInterface|SettingsCacheInterface */
     private $cache;
 
-    /** @var MockObject|DebugSettings */
     private DebugSettings $subject;
 
     #[Override]

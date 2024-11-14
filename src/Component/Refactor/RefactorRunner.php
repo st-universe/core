@@ -89,12 +89,10 @@ final class RefactorRunner
 
         $crewUsage = $buildplan->getUser()->isNpc() ? 0 : $buildplan->getCrew();
 
-        $signature = $this->buildplanSignatureCreation->createSignature(
+        return $this->buildplanSignatureCreation->createSignature(
             $modules,
             $crewUsage
         );
-
-        return $signature;
     }
 
     /** @return array<ShipBuildplanInterface> */

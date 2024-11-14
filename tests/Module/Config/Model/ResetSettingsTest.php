@@ -16,7 +16,6 @@ class ResetSettingsTest extends StuTestCase
     /** @var MockInterface|SettingsCacheInterface */
     private $cache;
 
-    /** @var MockObject|ResetSettings */
     private ResetSettings $subject;
 
     #[Override]

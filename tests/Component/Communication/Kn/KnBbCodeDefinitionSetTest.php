@@ -9,9 +9,6 @@ use Stu\StuTestCase;
 
 class KnBbCodeDefinitionSetTest extends StuTestCase
 {
-    /**
-     * @var KnBbCodeDefinitionSet
-     */
     private KnBbCodeDefinitionSet $set;
 
     #[Override]

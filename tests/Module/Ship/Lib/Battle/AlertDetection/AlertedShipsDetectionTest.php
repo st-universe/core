@@ -54,7 +54,6 @@ class AlertedShipsDetectionTest extends StuTestCase
 
     public function testGetAlertedShipsOnLocationExpectEmptyCollectionWhenUserOnVacation(): void
     {
-        $user = $this->mock(UserInterface::class);
         $ship = $this->mock(ShipInterface::class);
 
         $this->location->shouldReceive('getShips')
