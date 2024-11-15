@@ -3,9 +3,13 @@
 namespace Stu\Module\Ship\Lib\Interaction;
 
 use Stu\Lib\Information\InformationInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 interface InterceptShipCoreInterface
 {
-    public function intercept(ShipInterface $ship, ShipInterface $target, InformationInterface $informations): void;
+    public function intercept(
+        ShipWrapperInterface $wrapper,
+        ShipWrapperInterface $targetWrapper,
+        InformationInterface $informations
+    ): void;
 }
