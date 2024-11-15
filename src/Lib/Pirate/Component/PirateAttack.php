@@ -35,8 +35,9 @@ class PirateAttack implements PirateAttackInterface
     public function attackShip(FleetWrapperInterface $fleetWrapper, ShipInterface $target): void
     {
         $leadWrapper = $fleetWrapper->getLeadWrapper();
+        $targetWrapper = $this->shipWrapperFactory->wrapShip($target);
 
-        $this->interceptIfNeccessary($leadWrapper->get(), $target);
+        $this->interceptIfNeccessary($leadWrapper, $targetWrapper);
 
         if ($fleetWrapper->get()->getShips()->isEmpty()) {
             $this->logger->log('    cancel attack, no ships left');
@@ -57,22 +58,22 @@ class PirateAttack implements PirateAttackInterface
 
         $this->shipAttackCore->attack(
             $leadWrapper,
-            $this->shipWrapperFactory->wrapShip($target),
+            $targetWrapper,
             $isFleetFight,
             $informations
         );
     }
 
 
-    private function interceptIfNeccessary(ShipInterface $ship, ShipInterface $target): void
+    private function interceptIfNeccessary(ShipWrapperInterface $wrapper, ShipWrapperInterface $targetWrapper): void
     {
-        //TODO what about tractored ships?
+        $target = $targetWrapper->get();
         if (!$target->getWarpDriveState()) {
             return;
         }
 
         $this->logger->logf('    intercepting target with shipId: %d', $target->getId());
-        $this->interceptShipCore->intercept($ship, $target, new InformationWrapper());
+        $this->interceptShipCore->intercept($wrapper, $targetWrapper, new InformationWrapper());
     }
 
     private function unwarpIfNeccessary(ShipWrapperInterface $wrapper): void
