@@ -75,6 +75,7 @@
     "phpstan/phpstan-phpunit": "^1.3",
     "phpunit/phpunit": "^11.2.6",
     "rector/rector": "^1.2.10",
+    "spatie/phpunit-snapshot-assertions": "^5.1",
     "st-universe/assets": "dev-master"
   },
   "config": {
