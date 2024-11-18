@@ -23,9 +23,12 @@ final class Selfrepair implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_SELF_REPAIR';
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private RepairUtilInterface $repairUtil, private ShipRepositoryInterface $shipRepository, private ShipStorageManagerInterface $shipStorageManager)
-    {
-    }
+    public function __construct(
+        private ShipLoaderInterface $shipLoader,
+        private RepairUtilInterface $repairUtil,
+        private ShipRepositoryInterface $shipRepository,
+        private ShipStorageManagerInterface $shipStorageManager
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void

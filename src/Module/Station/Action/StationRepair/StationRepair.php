@@ -6,6 +6,7 @@ namespace Stu\Module\Station\Action\StationRepair;
 
 use Override;
 use request;
+use Stu\Component\Ship\Repair\RepairUtilInterface;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -17,9 +18,11 @@ final class StationRepair implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_STATION_REPAIR';
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private ShipRepositoryInterface $shipRepository)
-    {
-    }
+    public function __construct(
+        private ShipLoaderInterface $shipLoader,
+        private ShipRepositoryInterface $shipRepository,
+        private RepairUtilInterface $repairUtil
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -28,8 +31,12 @@ final class StationRepair implements ActionControllerInterface
 
         $userId = $game->getUser()->getId();
 
-        $station = $this->shipLoader->getByIdAndUser(request::postIntFatal('id'), $userId);
+        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
+            request::postIntFatal('id'),
+            $userId
+        );
 
+        $station = $wrapper->get();
         if (!$station->hasEnoughCrew($game)) {
             return;
         }
@@ -46,6 +53,13 @@ final class StationRepair implements ActionControllerInterface
         $station->setState(ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE);
 
         $this->shipRepository->save($station);
+
+        $duration = $this->repairUtil->getRepairDuration($wrapper);
+
+        $game->addInformationf(
+            'Die Station wird repariert. Fertigstellung in %s Ticks.',
+            $duration
+        );
     }
 
     #[Override]
