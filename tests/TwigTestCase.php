@@ -7,6 +7,7 @@ namespace Stu;
 use Doctrine\Migrations\Configuration\EntityManager\ExistingEntityManager;
 use Doctrine\Migrations\Configuration\Migration\PhpFile;
 use Doctrine\Migrations\DependencyFactory;
+use Doctrine\Migrations\Tools\Console\Command\DiffCommand;
 use Doctrine\Migrations\Tools\Console\Command\ExecuteCommand;
 use Doctrine\Migrations\Tools\Console\Command\MigrateCommand;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,7 +18,7 @@ use JetBrains\PhpStorm\Deprecated;
 use Override;
 use Psr\Container\ContainerInterface;
 use RuntimeException;
-use Stu\Component\Admin\Reset\SequenceResetInterface;
+use Spatie\Snapshots\MatchesSnapshots;
 use Stu\Config\Init;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -27,6 +28,10 @@ use Symfony\Component\Console\Input\StringInput;
 
 abstract class TwigTestCase extends StuTestCase
 {
+    use MatchesSnapshots;
+
+    private static string $INTTEST_MIGRATIONS_CONFIG_PATH = 'dist/db/migrations/testdata.php';
+
     private static bool $isSchemaCreated = false;
 
     #[Override]
@@ -49,7 +54,7 @@ abstract class TwigTestCase extends StuTestCase
         $subject->handle($game);
         $renderResult = $twigRenderer->render($game, $game->getUser());
 
-        $this->assertEquals("FOO", $renderResult);
+        $this->assertMatchesHtmlSnapshot($renderResult);
     }
 
     protected abstract function getViewController(): string;
@@ -62,7 +67,7 @@ abstract class TwigTestCase extends StuTestCase
     #[Deprecated()]
     protected function loadTestDataMigration(string $className): void
     {
-        $inputString = str_replace('\\', '\\\\', sprintf("execute --configuration=\"dist/db/migrations/testdata.php\" --quiet %s --up", $className));
+        $inputString = str_replace('\\', '\\\\', sprintf("execute --configuration=\"%s\" --quiet %s --up", $className));
 
         $this->runCommandWithDependecyFactory(ExecuteCommand::class, new StringInput($inputString));
     }
@@ -74,12 +79,9 @@ abstract class TwigTestCase extends StuTestCase
             // add inttest configuration
             Init::$configFiles[] = '%s/config.intttest.json';
 
-            $dic = Init::getContainer();
-
-            $this->forceSchemaUpdate($dic);
+            //$this->createInitialDiff($dic);
+            //$this->forceSchemaUpdate($dic);
             $this->initializeTestData();
-
-            //static::resetSequences($dic); TODO postgres version not working on sqlite
 
             static::$isSchemaCreated = true;
         }
@@ -91,6 +93,14 @@ abstract class TwigTestCase extends StuTestCase
         $_SESSION['login'] = 1;
         $session = $dic->get(SessionInterface::class);
         $session->createSession();
+    }
+
+    private function createInitialDiff(ContainerInterface $dic): void
+    {
+        $this->runCommandWithDependecyFactory(
+            DiffCommand::class,
+            new StringInput(sprintf("diff --configuration=\"%s\"", self::$INTTEST_MIGRATIONS_CONFIG_PATH))
+        );
     }
 
     private function forceSchemaUpdate(ContainerInterface $dic): void
@@ -113,7 +123,13 @@ abstract class TwigTestCase extends StuTestCase
 
     private function initializeTestData(): void
     {
-        $this->runCommandWithDependecyFactory(MigrateCommand::class, new StringInput("migrate --configuration=\"dist/db/migrations/testdata.php\" --all-or-nothing --allow-no-migration --no-interaction"));
+        $this->runCommandWithDependecyFactory(
+            MigrateCommand::class,
+            new StringInput(sprintf(
+                "migrate --configuration=\"%s\" --all-or-nothing --allow-no-migration --no-interaction",
+                self::$INTTEST_MIGRATIONS_CONFIG_PATH
+            ))
+        );
     }
 
     private function runCommandWithDependecyFactory(string $command, InputInterface $input): void
@@ -124,7 +140,7 @@ abstract class TwigTestCase extends StuTestCase
         $entityManager->wrapInTransaction(function (EntityManagerInterface $entityManager) use ($command, $input) {
 
             $entityManagerProvider = new SingleManagerProvider($entityManager);
-            $config = new PhpFile('dist/db/migrations/testdata.php');
+            $config = new PhpFile(self::$INTTEST_MIGRATIONS_CONFIG_PATH);
             $dependencyFactory = DependencyFactory::fromEntityManager(
                 $config,
                 new ExistingEntityManager($entityManager)
@@ -139,11 +155,5 @@ abstract class TwigTestCase extends StuTestCase
                 throw new RuntimeException(sprintf('Could not execute %s!', $command));
             }
         });
-    }
-
-    private static function resetSequences(ContainerInterface $dic): void
-    {
-        $sequenceReset = $dic->get(SequenceResetInterface::class);
-        $sequenceReset->resetSequences();
     }
 }
