@@ -21,9 +21,11 @@ final class DeleteAlliance implements ActionControllerInterface
      */
     public const string ACTION_IDENTIFIER = 'B_DELETE_ALLIANCE';
 
-    public function __construct(private AllianceActionManagerInterface $allianceActionManager, private AllianceJobRepositoryInterface $allianceJobRepository, private UserRepositoryInterface $userRepository)
-    {
-    }
+    public function __construct(
+        private AllianceActionManagerInterface $allianceActionManager,
+        private AllianceJobRepositoryInterface $allianceJobRepository,
+        private UserRepositoryInterface $userRepository
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -39,19 +41,23 @@ final class DeleteAlliance implements ActionControllerInterface
             AllianceEnum::ALLIANCE_JOBS_FOUNDER
         );
 
+        if ($jobFounder === null) {
+            throw new AccessViolation();
+        }
+
         $jobSuccessor = $this->allianceJobRepository->getSingleResultByAllianceAndType(
             $allianceId,
             AllianceEnum::ALLIANCE_JOBS_SUCCESSOR
         );
 
         if (
-            $jobFounder->getUserId() !== $user->getId()
-            && ($jobSuccessor === null || $jobSuccessor->getUserId() !== $user->getId())
+            $jobFounder->getUser() !== $user
+            && ($jobSuccessor === null || $jobSuccessor->getUser() !== $user)
         ) {
             throw new AccessViolation();
         }
 
-        $this->allianceActionManager->delete($allianceId);
+        $this->allianceActionManager->delete($jobFounder->getAlliance());
 
         $user->setAlliance(null);
 

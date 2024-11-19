@@ -329,11 +329,6 @@ parameters:
 			path: src/Module/Alliance/Action/DeleteAlliance/DeleteAlliance.php
 
 		-
-			message: "#^Cannot call method getUserId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceJobInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/DeleteAlliance/DeleteAlliance.php
-
-		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Alliance/Action/DeleteBoard/DeleteBoard.php

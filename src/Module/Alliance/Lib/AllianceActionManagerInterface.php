@@ -11,7 +11,7 @@ interface AllianceActionManagerInterface
 {
     public function setJobForUser(int $allianceId, int $userId, int $jobTypeId): void;
 
-    public function delete(int $allianceId, bool $sendMessage = true): void;
+    public function delete(AllianceInterface $alliance, bool $sendMessage = true): void;
 
     public function mayEdit(AllianceInterface $alliance, UserInterface $user): bool;
 
