@@ -13,7 +13,7 @@ use Stu\Module\Ship\Lib\Movement\Component\Consequence\AbstractFlightConsequence
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
-class TractorConsequence extends AbstractFlightConsequence
+class TractorConsequence extends AbstractFlightConsequence implements FlightStartConsequenceInterface
 {
     public function __construct(
         private TractorMassPayloadUtilInterface $tractorMassPayloadUtil,

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Communication\Kn;
 
-use JBBCode\Parser;
 use Mockery\MockInterface;
 use Override;
 use Stu\Module\Template\StatusBar;
@@ -18,7 +17,7 @@ use Stu\StuTestCase;
 
 class KnItemTest extends StuTestCase
 {
-    /** @var MockInterface|Parser */
+    /** @var MockInterface|KnBbCodeParser */
     private $bbcodeParser;
     /** @var MockInterface|KnCommentRepositoryInterface */
     private $knCommentRepository;
@@ -34,7 +33,7 @@ class KnItemTest extends StuTestCase
     #[Override]
     public function setUp(): void
     {
-        $this->bbcodeParser = $this->mock(Parser::class);
+        $this->bbcodeParser = $this->mock(KnBbCodeParser::class);
         $this->knCommentRepository = $this->mock(KnCommentRepositoryInterface::class);
         $this->statusBarFactory = $this->mock(StatusBarFactoryInterface::class);
         $this->post = $this->mock(KnPostInterface::class);

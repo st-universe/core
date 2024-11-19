@@ -79,10 +79,8 @@ class PreFlightConditionsCheckTest extends StuTestCase
 
     public function testAllConditionsRegistered(): void
     {
-        error_reporting(0);
-
         $dic = Init::getContainer();
 
-        $this->assertEquals(5, count(get('preFlightConditions')->resolve($dic)));
+        $this->assertEquals(5, count(get(PreFlightConditionInterface::class)->resolve($dic)));
     }
 }

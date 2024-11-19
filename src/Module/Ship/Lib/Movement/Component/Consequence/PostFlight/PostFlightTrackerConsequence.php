@@ -13,13 +13,12 @@ use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\Movement\Route\RouteModeEnum;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
-class PostFlightTrackerConsequence extends AbstractFlightConsequence
+class PostFlightTrackerConsequence extends AbstractFlightConsequence implements PostFlightConsequenceInterface
 {
     public function __construct(
         private TrackerDeviceManagerInterface $trackerDeviceManager,
         private ShipSystemManagerInterface $shipSystemManager
-    ) {
-    }
+    ) {}
 
     #[Override]
     protected function triggerSpecific(

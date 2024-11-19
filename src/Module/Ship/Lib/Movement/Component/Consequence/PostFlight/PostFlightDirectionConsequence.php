@@ -12,11 +12,9 @@ use Stu\Module\Ship\Lib\Movement\Component\UpdateFlightDirectionInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
-class PostFlightDirectionConsequence extends AbstractFlightConsequence
+class PostFlightDirectionConsequence extends AbstractFlightConsequence implements PostFlightConsequenceInterface
 {
-    public function __construct(private FlightSignatureCreatorInterface $flightSignatureCreator, private UpdateFlightDirectionInterface $updateFlightDirection)
-    {
-    }
+    public function __construct(private FlightSignatureCreatorInterface $flightSignatureCreator, private UpdateFlightDirectionInterface $updateFlightDirection) {}
 
     #[Override]
     protected function triggerSpecific(

@@ -10,6 +10,7 @@ use Stu\Lib\Pirate\Component\PirateFlight;
 use Stu\Lib\Pirate\Component\PirateFlightInterface;
 use Stu\Lib\Pirate\PirateCreation;
 use Stu\Lib\Pirate\PirateCreationInterface;
+use Stu\Module\Maintenance\MaintenanceHandlerInterface;
 use Stu\Module\Tick\Colony\ColonyTick;
 use Stu\Module\Tick\Colony\ColonyTickInterface;
 use Stu\Module\Tick\Colony\ColonyTickManager;
@@ -83,7 +84,8 @@ return [
         autowire(FinishTholianWebs::class)
     ],
     TransactionTickRunnerInterface::class => autowire(TransactionTickRunner::class),
-    MaintenanceTickRunnerFactoryInterface::class => autowire(MaintenanceTickRunnerFactory::class),
+    MaintenanceTickRunnerFactoryInterface::class => autowire(MaintenanceTickRunnerFactory::class)
+        ->constructorParameter('handlerList', get(MaintenanceHandlerInterface::class)),
     MaintenanceTickRunner::class => fn(ContainerInterface $dic): TickRunnerInterface => $dic
         ->get(MaintenanceTickRunnerFactoryInterface::class)
         ->createMaintenanceTickRunner(),

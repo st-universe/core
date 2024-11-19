@@ -14,7 +14,7 @@ use Stu\Module\Ship\Lib\Movement\Route\RouteModeEnum;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
 
-class FlightDirectionConsequence extends AbstractFlightConsequence
+class FlightDirectionConsequence extends AbstractFlightConsequence implements FlightStartConsequenceInterface
 {
     public function __construct(private UpdateFlightDirectionInterface $updateFlightDirection) {}
 

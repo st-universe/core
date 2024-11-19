@@ -10,7 +10,9 @@ use Override;
 use RuntimeException;
 use Stu\Config\Init;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
+use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\FlightStartConsequenceInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\FlightConsequenceInterface;
+use Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight\PostFlightConsequenceInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -35,6 +37,7 @@ class FlightRouteTest extends StuTestCase
     /** @var MockInterface&EnterWaypointInterface */
     private MockInterface $enterWaypoint;
 
+    /** @var MockInterface&FlightConsequenceInterface */
     private FlightConsequenceInterface $flightConsequence;
 
     private FlightRouteInterface $subject;
@@ -344,20 +347,16 @@ class FlightRouteTest extends StuTestCase
 
     public function testAllFlightConsequencesRegistered(): void
     {
-        error_reporting(0);
-
         $dic = Init::getContainer();
 
-        $this->assertEquals(12, count(get('flightConsequences')->resolve($dic)));
+        $this->assertEquals(12, count(get(FlightStartConsequenceInterface::class)->resolve($dic)));
     }
 
     public function testAllPostFlightConsequencesRegistered(): void
     {
-        error_reporting(0);
-
         $dic = Init::getContainer();
 
-        $this->assertEquals(6, count(get('postFlightConsequences')->resolve($dic)));
+        $this->assertEquals(6, count(get(PostFlightConsequenceInterface::class)->resolve($dic)));
     }
 
     public function testhasSpecialDamageOnFieldExpectFalseIfWaypointsWithoutSpecialDamage(): void

@@ -14,7 +14,7 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipInterface;
 
-class EpsConsequence extends AbstractFlightConsequence
+class EpsConsequence extends AbstractFlightConsequence implements FlightStartConsequenceInterface
 {
     #[Override]
     protected function triggerSpecific(

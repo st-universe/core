@@ -119,7 +119,7 @@ parameters:
 			path: src/Component/Station/StationUtility.php
 
 		-
-			message: "#^Method Stu\\\\Config\\\\StuContainer\\:\\:getAllImplementations\\(\\) should return Doctrine\\\\Common\\\\Collections\\\\Collection\\<int\\|string, T\\> but returns Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int\\|string, mixed\\>\\|Doctrine\\\\Common\\\\Collections\\\\Collection\\<int, T\\>\\.$#"
+			message: "#^Method Stu\\\\Config\\\\StuContainer\\:\\:getAllImplementations\\(\\) should return Doctrine\\\\Common\\\\Collections\\\\Collection\\<int\\|string, T\\> but returns Doctrine\\\\Common\\\\Collections\\\\Collection\\<int, T\\>\\|Doctrine\\\\Common\\\\Collections\\\\Collection\\<int\\|string, mixed\\>\\.$#"
 			count: 1
 			path: src/Config/StuContainer.php
 

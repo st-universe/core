@@ -12,7 +12,7 @@ use Stu\Module\Ship\Lib\Movement\Component\Consequence\AbstractFlightConsequence
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
-class RetrofitConsequence extends AbstractFlightConsequence
+class RetrofitConsequence extends AbstractFlightConsequence implements FlightStartConsequenceInterface
 {
     public function __construct(
         private CancelRetrofitInterface $cancelRetrofit,

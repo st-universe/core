@@ -250,6 +250,7 @@ use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\DriveActivationCon
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\DriveDeactivationConsequence;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\EpsConsequence;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\FlightDirectionConsequence;
+use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\FlightStartConsequenceInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\RepairConsequence;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\RetrofitConsequence;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\TakeoverConsequence;
@@ -259,6 +260,7 @@ use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\WarpdriveConsequen
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight\DeactivateTranswarpConsequence;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight\DeflectorConsequence;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight\PostFlightAstroMappingConsequence;
+use Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight\PostFlightConsequenceInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight\PostFlightDirectionConsequence;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight\PostFlightTrackerConsequence;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight\PostFlightTractorConsequence;
@@ -423,33 +425,35 @@ return [
             'conditions',
             get(PreFlightConditionInterface::class)
         ),
+    FlightStartConsequenceInterface::class => [
+        autowire(RepairConsequence::class),
+        autowire(RetrofitConsequence::class),
+        autowire(DockConsequence::class),
+        autowire(TakeoverConsequence::class),
+        autowire(AstroMappingConsequence::class),
+        autowire(TholianWebConsequence::class),
+        autowire(TractorConsequence::class),
+        autowire(DriveDeactivationConsequence::class),
+        autowire(DriveActivationConsequence::class),
+        autowire(EpsConsequence::class),
+        autowire(WarpdriveConsequence::class),
+        autowire(FlightDirectionConsequence::class)
+    ],
+    PostFlightConsequenceInterface::class => [
+        autowire(PostFlightDirectionConsequence::class),
+        autowire(PostFlightAstroMappingConsequence::class),
+        autowire(DeactivateTranswarpConsequence::class),
+        autowire(PostFlightTrackerConsequence::class),
+        autowire(PostFlightTractorConsequence::class),
+        autowire(DeflectorConsequence::class)
+    ],
     FlightRouteFactoryInterface::class => autowire(FlightRouteFactory::class)
         ->constructorParameter(
             'flightConsequences',
-            [
-                autowire(RepairConsequence::class),
-                autowire(RetrofitConsequence::class),
-                autowire(DockConsequence::class),
-                autowire(TakeoverConsequence::class),
-                autowire(AstroMappingConsequence::class),
-                autowire(TholianWebConsequence::class),
-                autowire(TractorConsequence::class),
-                autowire(DriveDeactivationConsequence::class),
-                autowire(DriveActivationConsequence::class),
-                autowire(EpsConsequence::class),
-                autowire(WarpdriveConsequence::class),
-                autowire(FlightDirectionConsequence::class)
-            ]
+            get(FlightStartConsequenceInterface::class)
         )->constructorParameter(
             'postFlightConsequences',
-            [
-                autowire(PostFlightDirectionConsequence::class),
-                autowire(PostFlightAstroMappingConsequence::class),
-                autowire(DeactivateTranswarpConsequence::class),
-                autowire(PostFlightTrackerConsequence::class),
-                autowire(PostFlightTractorConsequence::class),
-                autowire(DeflectorConsequence::class)
-            ]
+            get(PostFlightConsequenceInterface::class)
         ),
     'SHIP_ACTIONS' => [
         DisplayNotOwner::ACTION_IDENTIFIER => autowire(DisplayNotOwner::class),

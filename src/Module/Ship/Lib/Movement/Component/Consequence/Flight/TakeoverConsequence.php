@@ -11,11 +11,9 @@ use Stu\Module\Ship\Lib\Movement\Component\Consequence\AbstractFlightConsequence
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
-class TakeoverConsequence extends AbstractFlightConsequence
+class TakeoverConsequence extends AbstractFlightConsequence implements FlightStartConsequenceInterface
 {
-    public function __construct(private ShipTakeoverManagerInterface $shipTakeoverManager)
-    {
-    }
+    public function __construct(private ShipTakeoverManagerInterface $shipTakeoverManager) {}
 
     #[Override]
     protected function triggerSpecific(

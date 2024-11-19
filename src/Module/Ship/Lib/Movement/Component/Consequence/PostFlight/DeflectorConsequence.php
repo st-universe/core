@@ -13,11 +13,9 @@ use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\MapFieldTypeInterface;
 
-class DeflectorConsequence extends AbstractFlightConsequence
+class DeflectorConsequence extends AbstractFlightConsequence implements PostFlightConsequenceInterface
 {
-    public function __construct(private ApplyFieldDamageInterface $applyFieldDamage)
-    {
-    }
+    public function __construct(private ApplyFieldDamageInterface $applyFieldDamage) {}
 
     #[Override]
     protected function triggerSpecific(

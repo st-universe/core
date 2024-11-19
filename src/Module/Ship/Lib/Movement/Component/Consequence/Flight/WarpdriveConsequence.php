@@ -13,7 +13,7 @@ use Stu\Module\Ship\Lib\Movement\Route\RouteModeEnum;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
 
-class WarpdriveConsequence extends AbstractFlightConsequence
+class WarpdriveConsequence extends AbstractFlightConsequence implements FlightStartConsequenceInterface
 {
     #[Override]
     protected function triggerSpecific(
