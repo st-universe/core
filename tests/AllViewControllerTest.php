@@ -6,35 +6,42 @@ namespace Stu\Module\Ship\View\ShowRegionInfo;
 
 use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
+use ReflectionClass;
 use Stu\Config\Init;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\TestUser;
 use Stu\TwigTestCase;
 
 class AllViewControllerTest extends TwigTestCase
 {
+    private string $snapshotKey = '';
+
     #[Override]
     protected function getViewControllerClass(): string
     {
         return 'PROVIDED_BY_DATA_PROVIDER';
     }
 
+    #[Override]
+    protected function getSnapshotId(): string
+    {
+        return (new ReflectionClass($this))->getShortName() . '--' .
+            $this->snapshotKey;
+    }
+
     public static function getAllViewControllerDataProvider(): array
     {
-        $stuContainer = Init::getContainer(TwigTestCase::$INTTEST_CONFIG_PATH);
+        $definedImplementations =  Init::getContainer(TwigTestCase::$INTTEST_CONFIG_PATH)
+            ->getDefinedImplementationsOf(ViewControllerInterface::class, true);
 
-        $result =  $stuContainer
-            ->getDefinedImplementationsOf(ViewControllerInterface::class, true)
-            ->map(fn(ViewControllerInterface $viewController): array => [$viewController])
+        return $definedImplementations
+            ->map(fn(ViewControllerInterface $viewController): array => [$definedImplementations->indexOf($viewController), $viewController])
             ->toArray();
-
-        return $result;
     }
 
     #[DataProvider('getAllViewControllerDataProvider')]
-    public function testHandle(ViewControllerInterface $viewController): void
+    public function testHandle(string $key, ViewControllerInterface $viewController): void
     {
-        //$userId = $this->loadTestData(new TestUser());
+        $this->snapshotKey = $key;
 
         $this->renderSnapshot($viewController);
     }
