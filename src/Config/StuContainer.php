@@ -6,18 +6,18 @@ namespace Stu\Config;
 
 use DI\Container;
 use DI\Definition\ArrayDefinition;
-use DI\Definition\AutowireDefinition;
 use DI\Definition\Definition;
-use DI\Definition\Exception\InvalidDefinition;
+use DI\Definition\FactoryDefinition;
 use DI\Definition\Source\MutableDefinitionSource;
 use DI\Proxy\ProxyFactory;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Psr\Container\ContainerInterface;
 
+use function DI\get;
+
 class StuContainer extends Container
 {
-
     private MutableDefinitionSource $definitionSource;
 
     /** @var array<string, Definition> */
@@ -46,11 +46,11 @@ class StuContainer extends Container
      * 
      * @return Collection<int|string, T>
      */
-    public function getAllImplementations(string $interfaceName): Collection
+    public function getDefinedImplementationsOf(string $interfaceName, bool $addDefinitionKey = false): Collection
     {
         $services = $this->services->get($interfaceName);
         if ($services === null) {
-            $services = $this->getServices($interfaceName);
+            $services = $this->getServices($interfaceName, $addDefinitionKey);
         }
 
         return $services;
@@ -62,7 +62,7 @@ class StuContainer extends Container
      * 
      * @return Collection<int, T>
      */
-    private function getServices(string $interfaceName): Collection
+    private function getServices(string $interfaceName, bool $addDefinitionKey): Collection
     {
         $services = new ArrayCollection();
 
@@ -72,11 +72,24 @@ class StuContainer extends Container
 
             if ($definition instanceof ArrayDefinition) {
 
-                foreach ($definition->getValues() as $arrayKey => $value) {
-                    if ($value instanceof AutowireDefinition) {
-                        $this->addDefinition($value->getClassName(), $arrayKey, $services, $interfaceName);
-                    }
+                foreach (
+                    get($definitionKey)->resolve($this->delegateContainer)
+                    as $arrayKey => $service
+                ) {
+                    $this->addDefinition(
+                        $service,
+                        $addDefinitionKey ? sprintf('%s-%s', $definitionKey, $arrayKey) : $arrayKey,
+                        $services,
+                        $interfaceName
+                    );
                 }
+            } elseif (!$definition instanceof FactoryDefinition) {
+                $this->addDefinition(
+                    get($definitionKey)->resolve($this->delegateContainer),
+                    $definitionKey,
+                    $services,
+                    $interfaceName
+                );
             }
         }
 
@@ -98,25 +111,22 @@ class StuContainer extends Container
     /**
      * @template T
      * @param class-string<T> $interfaceName
+     * @param T $service
      * @param Collection<int|string, T> $services
      */
     private function addDefinition(
-        string $className,
+        $service,
         int|string $key,
         Collection $services,
         string $interfaceName
     ): void {
-        $classImplements = class_implements($className);
+        $classImplements = class_implements($service);
         if (!$classImplements) {
             return;
         }
 
         if (in_array($interfaceName, $classImplements)) {
-            try {
-                $services->set($key, $this->get($className));
-            } catch (InvalidDefinition $e) {
-                return; //TODO find out, why
-            }
+            $services->set($key, $service);
         }
     }
 }
