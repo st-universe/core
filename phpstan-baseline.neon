@@ -119,6 +119,11 @@ parameters:
 			path: src/Component/Station/StationUtility.php
 
 		-
+			message: "#^Method Stu\\\\Config\\\\StuContainer\\:\\:getAllImplementations\\(\\) should return Doctrine\\\\Common\\\\Collections\\\\Collection\\<int\\|string, T\\> but returns Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int\\|string, mixed\\>\\|Doctrine\\\\Common\\\\Collections\\\\Collection\\<int, T\\>\\.$#"
+			count: 1
+			path: src/Config/StuContainer.php
+
+		-
 			message: "#^Method Stu\\\\Exception\\\\SanityCheckException\\:\\:__construct\\(\\) has parameter \\$message with no type specified\\.$#"
 			count: 1
 			path: src/Exception/SanityCheckException.php
