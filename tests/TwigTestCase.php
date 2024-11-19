@@ -23,6 +23,7 @@ use Stu\Config\Init;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\Render\GameTwigRendererInterface;
+use Stu\Module\Control\ViewControllerInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\StringInput;
 
@@ -31,6 +32,7 @@ abstract class TwigTestCase extends StuTestCase
     use MatchesSnapshots;
 
     private static string $INTTEST_MIGRATIONS_CONFIG_PATH = 'dist/db/migrations/testdata.php';
+    public static string $INTTEST_CONFIG_PATH = '%s/config.intttest.json';
 
     private static bool $isSchemaCreated = false;
 
@@ -40,15 +42,15 @@ abstract class TwigTestCase extends StuTestCase
         $this->initializeSchema();
     }
 
-    protected function renderSnapshot(): void
+    protected function renderSnapshot(ViewControllerInterface $viewController = null): void
     {
-        $dic = Init::getContainer();
+        $dic = Init::getContainer(self::$INTTEST_CONFIG_PATH);
 
         $this->setupSession($dic);
 
         $game = $dic->get(GameControllerInterface::class);
         $twigRenderer = $dic->get(GameTwigRendererInterface::class);
-        $subject = $dic->get($this->getViewController());
+        $subject = $viewController ?? $dic->get($this->getViewControllerClass());
 
         // execute ViewController and render
         $subject->handle($game);
@@ -57,7 +59,7 @@ abstract class TwigTestCase extends StuTestCase
         $this->assertMatchesHtmlSnapshot($renderResult);
     }
 
-    protected abstract function getViewController(): string;
+    protected abstract function getViewControllerClass(): string;
 
     protected function loadTestData(TestDataInterface $testData): int
     {
@@ -134,7 +136,7 @@ abstract class TwigTestCase extends StuTestCase
 
     private function runCommandWithDependecyFactory(string $command, InputInterface $input): void
     {
-        $dic = Init::getContainer();
+        $dic = Init::getContainer(self::$INTTEST_CONFIG_PATH);
         $entityManager = $dic->get(EntityManagerInterface::class);
 
         $entityManager->wrapInTransaction(function (EntityManagerInterface $entityManager) use ($command, $input) {

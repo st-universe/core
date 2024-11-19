@@ -20,13 +20,17 @@ final class Init
         '?%s/config.json'
     ];
 
-    private static ?ContainerInterface $CONTAINER = null;
+    private static ?StuContainer $CONTAINER = null;
 
-    public static function getContainer(): ContainerInterface
+    public static function getContainer(string $additionalConfigPath = null): StuContainer
     {
         if (static::$CONTAINER === null) {
+            if ($additionalConfigPath !== null) {
+                self::$configFiles[] = $additionalConfigPath;
+            }
+
             // ordered alphabetically
-            $builder = new ContainerBuilder();
+            $builder = new ContainerBuilder(StuContainer::class);
             $builder->addDefinitions(__DIR__ . '/services.php');
             $builder->addDefinitions(__DIR__ . '/../Component/Admin/services.php');
             $builder->addDefinitions(__DIR__ . '/../Component/Alliance/services.php');

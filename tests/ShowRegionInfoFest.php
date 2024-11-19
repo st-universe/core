@@ -11,7 +11,7 @@ use Stu\TwigTestCase;
 class ShowRegionInfoFest extends TwigTestCase
 {
     #[Override]
-    protected function getViewController(): string
+    protected function getViewControllerClass(): string
     {
         return ShowRegionInfo::class;
     }

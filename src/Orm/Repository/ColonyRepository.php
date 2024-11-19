@@ -239,6 +239,8 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
         $rsm->addScalarResult('user_id', 'user_id', 'integer');
         $rsm->addScalarResult('satisfied', 'satisfied', 'integer');
 
+        //TODO use MIN instead of LEAST ?
+
         return $this->getEntityManager()
             ->createNativeQuery(
                 'SELECT user_id, SUM(satisfied) AS satisfied
