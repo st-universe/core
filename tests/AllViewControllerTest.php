@@ -24,7 +24,7 @@ class AllViewControllerTest extends TwigTestCase
         $stuContainer = Init::getContainer(TwigTestCase::$INTTEST_CONFIG_PATH);
 
         $result =  $stuContainer
-            ->getAllImplementations(ViewControllerInterface::class)
+            ->getDefinedImplementationsOf(ViewControllerInterface::class, true)
             ->map(fn(ViewControllerInterface $viewController): array => [$viewController])
             ->toArray();
 
@@ -32,7 +32,7 @@ class AllViewControllerTest extends TwigTestCase
     }
 
     #[DataProvider('getAllViewControllerDataProvider')]
-    public function festHandle(ViewControllerInterface $viewController): void
+    public function testHandle(ViewControllerInterface $viewController): void
     {
         //$userId = $this->loadTestData(new TestUser());
 
