@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Communication\Kn;
 
 use Doctrine\Common\Collections\Collection;
-use JBBCode\Parser;
 use Override;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Template\StatusBarColorEnum;
@@ -22,7 +21,7 @@ final class KnItem implements KnItemInterface
     private bool $isHighlighted = false;
 
     public function __construct(
-        private Parser $bbcodeParser,
+        private KnBbCodeParser $bbcodeParser,
         private KnCommentRepositoryInterface $knCommentRepository,
         private StatusBarFactoryInterface $statusBarFactory,
         private KnPostInterface $post,

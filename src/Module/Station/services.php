@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station;
 
+use Stu\Lib\Transfer\Strategy\TransferStrategyInterface;
 use Stu\Module\Control\GameController;
 use Stu\Module\Game\View\Overview\Overview;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
@@ -77,7 +78,7 @@ return [
         ShowTransfer::VIEW_IDENTIFIER => autowire(ShowTransfer::class)
             ->constructorParameter(
                 'transferStrategies',
-                get('transferStrategies')
+                get(TransferStrategyInterface::class)
             ),
         ShowStationCosts::VIEW_IDENTIFIER => autowire(ShowStationCosts::class),
         ShowSensorScan::VIEW_IDENTIFIER => autowire(ShowSensorScan::class),

@@ -16,25 +16,26 @@ use Stu\Orm\Repository\GameConfigRepositoryInterface;
  */
 final class MaintenanceTickRunnerFactory implements MaintenanceTickRunnerFactoryInterface
 {
+    /** @param array<MaintenanceHandlerInterface> $handlerList */
     public function __construct(
         private GameConfigRepositoryInterface $gameConfigRepository,
         private TransactionTickRunnerInterface $transactionTickRunner,
-        private Connection $connection
-    ) {
-    }
+        private Connection $connection,
+        private array $handlerList
+    ) {}
 
     /**
      * @param array<MaintenanceHandlerInterface> $handlerList
      */
     #[Override]
     public function createMaintenanceTickRunner(
-        array $handlerList
+        array $handlerList = null
     ): TickRunnerInterface {
         return new MaintenanceTickRunner(
             $this->gameConfigRepository,
             $this->transactionTickRunner,
             $this->connection,
-            $handlerList
+            $handlerList ?? $this->handlerList
         );
     }
 }

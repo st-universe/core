@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship;
 
+use Stu\Lib\Transfer\Strategy\TransferStrategyInterface;
 use Stu\Module\Control\GameController;
 use Stu\Module\Game\View\Overview\Overview;
 use Stu\Module\Ship\Action\ActivateAstroLaboratory\ActivateAstroLaboratory;
@@ -268,6 +269,7 @@ use Stu\Module\Ship\Lib\Movement\Component\PreFlight\Condition\CrewCondition;
 use Stu\Module\Ship\Lib\Movement\Component\PreFlight\Condition\DriveActivatableCondition;
 use Stu\Module\Ship\Lib\Movement\Component\PreFlight\Condition\EnoughEpsCondition;
 use Stu\Module\Ship\Lib\Movement\Component\PreFlight\Condition\EnoughWarpdriveCondition;
+use Stu\Module\Ship\Lib\Movement\Component\PreFlight\Condition\PreFlightConditionInterface;
 use Stu\Module\Ship\Lib\Movement\Component\PreFlight\PreFlightConditionsCheck;
 use Stu\Module\Ship\Lib\Movement\Component\PreFlight\PreFlightConditionsCheckInterface;
 use Stu\Module\Ship\Lib\Movement\Component\UpdateFlightDirection;
@@ -409,7 +411,7 @@ return [
     ShipMovementInformationAdderInterface::class => autowire(ShipMovementInformationAdder::class),
     InterceptShipCoreInterface::class => autowire(InterceptShipCore::class),
     TrackerDeviceManagerInterface::class => autowire(TrackerDeviceManager::class),
-    'preFlightConditions' => [
+    PreFlightConditionInterface::class => [
         autowire(BlockedCondition::class),
         autowire(CrewCondition::class),
         autowire(DriveActivatableCondition::class),
@@ -419,37 +421,35 @@ return [
     PreFlightConditionsCheckInterface::class => autowire(PreFlightConditionsCheck::class)
         ->constructorParameter(
             'conditions',
-            get('preFlightConditions')
+            get(PreFlightConditionInterface::class)
         ),
-    'flightConsequences' => [
-        autowire(RepairConsequence::class),
-        autowire(RetrofitConsequence::class),
-        autowire(DockConsequence::class),
-        autowire(TakeoverConsequence::class),
-        autowire(AstroMappingConsequence::class),
-        autowire(TholianWebConsequence::class),
-        autowire(TractorConsequence::class),
-        autowire(DriveDeactivationConsequence::class),
-        autowire(DriveActivationConsequence::class),
-        autowire(EpsConsequence::class),
-        autowire(WarpdriveConsequence::class),
-        autowire(FlightDirectionConsequence::class)
-    ],
-    'postFlightConsequences' => [
-        autowire(PostFlightDirectionConsequence::class),
-        autowire(PostFlightAstroMappingConsequence::class),
-        autowire(DeactivateTranswarpConsequence::class),
-        autowire(PostFlightTrackerConsequence::class),
-        autowire(PostFlightTractorConsequence::class),
-        autowire(DeflectorConsequence::class)
-    ],
     FlightRouteFactoryInterface::class => autowire(FlightRouteFactory::class)
         ->constructorParameter(
             'flightConsequences',
-            get('flightConsequences')
+            [
+                autowire(RepairConsequence::class),
+                autowire(RetrofitConsequence::class),
+                autowire(DockConsequence::class),
+                autowire(TakeoverConsequence::class),
+                autowire(AstroMappingConsequence::class),
+                autowire(TholianWebConsequence::class),
+                autowire(TractorConsequence::class),
+                autowire(DriveDeactivationConsequence::class),
+                autowire(DriveActivationConsequence::class),
+                autowire(EpsConsequence::class),
+                autowire(WarpdriveConsequence::class),
+                autowire(FlightDirectionConsequence::class)
+            ]
         )->constructorParameter(
             'postFlightConsequences',
-            get('postFlightConsequences')
+            [
+                autowire(PostFlightDirectionConsequence::class),
+                autowire(PostFlightAstroMappingConsequence::class),
+                autowire(DeactivateTranswarpConsequence::class),
+                autowire(PostFlightTrackerConsequence::class),
+                autowire(PostFlightTractorConsequence::class),
+                autowire(DeflectorConsequence::class)
+            ]
         ),
     'SHIP_ACTIONS' => [
         DisplayNotOwner::ACTION_IDENTIFIER => autowire(DisplayNotOwner::class),
@@ -510,7 +510,7 @@ return [
         Transfer::ACTION_IDENTIFIER => autowire(Transfer::class)
             ->constructorParameter(
                 'transferStrategies',
-                get('transferStrategies')
+                get(TransferStrategyInterface::class)
             ),
         SelfDestruct::ACTION_IDENTIFIER => autowire(SelfDestruct::class),
         AttackBuilding::ACTION_IDENTIFIER => autowire(AttackBuilding::class),
@@ -604,7 +604,7 @@ return [
         ShowTransfer::VIEW_IDENTIFIER => autowire(ShowTransfer::class)
             ->constructorParameter(
                 'transferStrategies',
-                get('transferStrategies')
+                get(TransferStrategyInterface::class)
             ),
         ShowSelfDestruct::VIEW_IDENTIFIER => autowire(ShowSelfDestruct::class),
         ShowScan::VIEW_IDENTIFIER => autowire(ShowScan::class),

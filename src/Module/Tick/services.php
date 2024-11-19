@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Tick;
 
 use Psr\Container\ContainerInterface;
+use Stu\Lib\Pirate\Behaviour\PirateBehaviourInterface;
 use Stu\Lib\Pirate\Component\PirateFlight;
 use Stu\Lib\Pirate\Component\PirateFlightInterface;
 use Stu\Lib\Pirate\PirateCreation;
@@ -27,6 +28,7 @@ use Stu\Module\Tick\Process\FinishShipBuildJobs;
 use Stu\Module\Tick\Process\FinishShipRetrofitJobs;
 use Stu\Module\Tick\Process\FinishTerraformingJobs;
 use Stu\Module\Tick\Process\FinishTholianWebs;
+use Stu\Module\Tick\Process\ProcessTickHandlerInterface;
 use Stu\Module\Tick\Process\ProcessTickRunner;
 use Stu\Module\Tick\Process\RepairTaskJobs;
 use Stu\Module\Tick\Process\ShieldRegeneration;
@@ -71,7 +73,7 @@ return [
         ),
     TickManagerInterface::class => autowire(TickManager::class),
     LockManagerInterface::class => autowire(LockManager::class),
-    'process_tick_handler' => [
+    ProcessTickHandlerInterface::class => [
         autowire(FinishBuildJobs::class),
         autowire(FinishShipBuildJobs::class),
         autowire(FinishShipRetrofitJobs::class),
@@ -84,16 +86,16 @@ return [
     MaintenanceTickRunnerFactoryInterface::class => autowire(MaintenanceTickRunnerFactory::class),
     MaintenanceTickRunner::class => fn(ContainerInterface $dic): TickRunnerInterface => $dic
         ->get(MaintenanceTickRunnerFactoryInterface::class)
-        ->createMaintenanceTickRunner($dic->get('maintenance_handler')),
+        ->createMaintenanceTickRunner(),
     ProcessTickRunner::class => create(ProcessTickRunner::class)
         ->constructor(
             get(TransactionTickRunnerInterface::class),
-            get('process_tick_handler')
+            get(ProcessTickHandlerInterface::class)
         ),
     ShipTickRunner::class => autowire(),
     PirateTickInterface::class => autowire(PirateTick::class)->constructorParameter(
         'behaviours',
-        get('pirateBehaviours')
+        get(PirateBehaviourInterface::class)
     ),
     PirateCreationInterface::class => autowire(PirateCreation::class),
     PirateFlightInterface::class => autowire(PirateFlight::class),

@@ -33,6 +33,7 @@ use Stu\Lib\Pirate\Behaviour\ChangeAlertStateToRed;
 use Stu\Lib\Pirate\Behaviour\DeactivateShieldsBehaviour;
 use Stu\Lib\Pirate\Behaviour\FlyBehaviour;
 use Stu\Lib\Pirate\Behaviour\HideBehaviour;
+use Stu\Lib\Pirate\Behaviour\PirateBehaviourInterface;
 use Stu\Lib\Pirate\Behaviour\RageBehaviour;
 use Stu\Lib\Pirate\Behaviour\RubColonyBehaviour;
 use Stu\Lib\Pirate\Behaviour\SearchFriendBehaviour;
@@ -69,6 +70,7 @@ use Stu\Lib\Transfer\BeamUtil;
 use Stu\Lib\Transfer\BeamUtilInterface;
 use Stu\Lib\Transfer\Strategy\CommodityTransferStrategy;
 use Stu\Lib\Transfer\Strategy\TorpedoTransferStrategy;
+use Stu\Lib\Transfer\Strategy\TransferStrategyInterface;
 use Stu\Lib\Transfer\Strategy\TroopTransferStrategy;
 use Stu\Lib\Transfer\TransferTargetLoader;
 use Stu\Lib\Transfer\TransferTargetLoaderInterface;
@@ -118,12 +120,12 @@ return [
             PanelLayerEnum::BORDER->value => autowire(BorderDataProvider::class)
         ]
     ),
-    'transferStrategies' => [
+    TransferStrategyInterface::class => [
         TransferTypeEnum::COMMODITIES->value => autowire(CommodityTransferStrategy::class),
         TransferTypeEnum::CREW->value => autowire(TroopTransferStrategy::class),
         TransferTypeEnum::TORPEDOS->value => autowire(TorpedoTransferStrategy::class)
     ],
-    'pirateBehaviours' => [
+    PirateBehaviourInterface::class => [
         PirateBehaviourEnum::FLY->value => autowire(FlyBehaviour::class),
         PirateBehaviourEnum::RUB_COLONY->value => autowire(RubColonyBehaviour::class),
         PirateBehaviourEnum::ATTACK_SHIP->value => autowire(AttackShipBehaviour::class),
@@ -137,7 +139,7 @@ return [
     PirateCreationInterface::class => autowire(PirateCreation::class),
     PirateReactionInterface::class => autowire(PirateReaction::class)->constructorParameter(
         'behaviours',
-        get('pirateBehaviours')
+        get(PirateBehaviourInterface::class)
     ),
     PirateFlightInterface::class => autowire(PirateFlight::class),
     SafeFlightRouteInterface::class => autowire(SafeFlightRoute::class),

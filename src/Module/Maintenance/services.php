@@ -22,7 +22,7 @@ return [
     OldTradeLicenseDeletion::class => autowire(OldTradeLicenseDeletion::class),
     OldTradeOffersDeletion::class => autowire(OldTradeOffersDeletion::class),
     TopFlightsReward::class => autowire(TopFlightsReward::class),
-    'maintenance_handler' => [
+    MaintenanceHandlerInterface::class => [
         get(DatabaseBackup::class),
         get(IdleUserWarning::class),
         get(IdleUserDeletion::class),
