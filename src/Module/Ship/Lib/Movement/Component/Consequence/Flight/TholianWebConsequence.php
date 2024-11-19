@@ -13,13 +13,12 @@ use Stu\Module\Ship\Lib\Movement\Component\Consequence\AbstractFlightConsequence
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
-class TholianWebConsequence extends AbstractFlightConsequence
+class TholianWebConsequence extends AbstractFlightConsequence implements FlightStartConsequenceInterface
 {
     public function __construct(
         private TholianWebUtilInterface $tholianWebUtil,
         private MessageFactoryInterface $messageFactory
-    ) {
-    }
+    ) {}
 
     #[Override]
     protected function triggerSpecific(

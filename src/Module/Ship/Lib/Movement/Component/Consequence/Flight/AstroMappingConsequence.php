@@ -13,13 +13,12 @@ use Stu\Module\Ship\Lib\Movement\Component\Consequence\AbstractFlightConsequence
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
-class AstroMappingConsequence extends AbstractFlightConsequence
+class AstroMappingConsequence extends AbstractFlightConsequence implements FlightStartConsequenceInterface
 {
     public function __construct(
         private AstroEntryLibInterface $astroEntryLib,
         private MessageFactoryInterface $messageFactory
-    ) {
-    }
+    ) {}
 
     #[Override]
     protected function triggerSpecific(

@@ -12,7 +12,7 @@ use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Component\Ship\ShipEnum;
 
-class DockConsequence extends AbstractFlightConsequence
+class DockConsequence extends AbstractFlightConsequence implements FlightStartConsequenceInterface
 {
     public function __construct(
         private MessageFactoryInterface $messageFactory

@@ -13,11 +13,9 @@ use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\Movement\Route\RouteModeEnum;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
-class DeactivateTranswarpConsequence extends AbstractFlightConsequence
+class DeactivateTranswarpConsequence extends AbstractFlightConsequence implements PostFlightConsequenceInterface
 {
-    public function __construct(private ShipSystemManagerInterface $shipSystemManager)
-    {
-    }
+    public function __construct(private ShipSystemManagerInterface $shipSystemManager) {}
 
     #[Override]
     protected function triggerSpecific(

@@ -18,7 +18,7 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\AstroEntryRepositoryInterface;
 
-class PostFlightAstroMappingConsequence extends AbstractFlightConsequence
+class PostFlightAstroMappingConsequence extends AbstractFlightConsequence implements PostFlightConsequenceInterface
 {
     public function __construct(
         private AstroEntryRepositoryInterface $astroEntryRepository,
