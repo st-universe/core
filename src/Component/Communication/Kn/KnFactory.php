@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Communication\Kn;
 
-use JBBCode\Parser;
 use Override;
 use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Orm\Entity\KnPostInterface;
@@ -14,7 +13,7 @@ use Stu\Orm\Repository\KnCommentRepositoryInterface;
 final class KnFactory implements KnFactoryInterface
 {
     public function __construct(
-        private Parser $bbCodeParser,
+        private KnBbCodeParser $bbCodeParser,
         private KnCommentRepositoryInterface $knCommentRepository,
         private StatusBarFactoryInterface $statusBarFactory
     ) {}

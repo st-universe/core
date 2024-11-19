@@ -65,6 +65,8 @@ use Stu\Module\Admin\View\ShowSignatures\ShowSignatures;
 use Stu\Module\Admin\View\ShowUserLock\ShowUserLock;
 use Stu\Module\Admin\View\Ticks\ShowTicks;
 use Stu\Module\Control\GameController;
+use Stu\Module\Maintenance\MaintenanceHandlerInterface;
+use Stu\Module\Tick\Process\ProcessTickHandlerInterface;
 
 use function DI\autowire;
 use function DI\get;
@@ -92,13 +94,13 @@ return [
         DoManualMaintenance::ACTION_IDENTIFIER => autowire(DoManualMaintenance::class)
             ->constructorParameter(
                 'handlerList',
-                get('maintenance_handler')
+                get(MaintenanceHandlerInterface::class)
             ),
         DoManualShipTick::ACTION_IDENTIFIER => autowire(DoManualShipTick::class),
         DoManualProcessTick::ACTION_IDENTIFIER => autowire(DoManualProcessTick::class)
             ->constructorParameter(
                 'tickHandler',
-                get('process_tick_handler')
+                get(ProcessTickHandlerInterface::class)
             ),
         CreateInfluenceAreas::ACTION_IDENTIFIER => autowire(CreateInfluenceAreas::class),
         ClearFaultyBBCodes::ACTION_IDENTIFIER => autowire(ClearFaultyBBCodes::class),
