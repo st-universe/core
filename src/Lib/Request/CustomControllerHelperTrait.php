@@ -13,8 +13,10 @@ trait CustomControllerHelperTrait
 
     public function __construct()
     {
-        $request = $_SERVER['REQUEST_METHOD'] === 'GET' ? $_GET : $_POST;
-        $this->initRequestParser($request);
+        if (array_key_exists('REQUEST_METHOD', $_SERVER)) {
+            $request = $_SERVER['REQUEST_METHOD'] === 'GET' ? $_GET : $_POST;
+            $this->initRequestParser($request);
+        }
     }
 
     /**
