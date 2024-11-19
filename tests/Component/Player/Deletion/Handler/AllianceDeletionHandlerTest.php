@@ -85,7 +85,6 @@ class AllianceDeletionHandlerTest extends MockeryTestCase
         $members = Mockery::mock(Collection::class);
 
         $userId = 666;
-        $allianceId = 42;
 
         $user->shouldReceive('getId')
             ->withNoArgs()
@@ -109,10 +108,6 @@ class AllianceDeletionHandlerTest extends MockeryTestCase
             ->once()
             ->andReturn($alliance);
 
-        $alliance->shouldReceive('getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($allianceId);
         $alliance->shouldReceive('getSuccessor')
             ->withNoArgs()
             ->once()
@@ -133,7 +128,7 @@ class AllianceDeletionHandlerTest extends MockeryTestCase
             ->andReturn(new ArrayIterator([]));
 
         $this->allianceActionManager->shouldReceive('delete')
-            ->with($allianceId, true)
+            ->with($alliance)
             ->once();
 
         $this->handler->delete($user);

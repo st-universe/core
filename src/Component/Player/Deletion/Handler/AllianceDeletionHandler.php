@@ -33,7 +33,7 @@ final class AllianceDeletionHandler implements PlayerDeletionHandlerInterface
 
                 if ($successor === null && $lastonlinemember === null) {
                     $this->allianceJobRepository->delete($job);
-                    $this->allianceActionManager->delete($alliance->getId(), true);
+                    $this->allianceActionManager->delete($alliance);
                 }
                 if ($successor !== null) {
                     $successorUserId = $successor->getUserId();
