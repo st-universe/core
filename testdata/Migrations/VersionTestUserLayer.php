@@ -16,8 +16,9 @@ final class VersionTestUserLayer extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('INSERT INTO stu_user_layer (user_id, layer_id, map_type) VALUES (101, 2, 1);
-INSERT INTO stu_user_layer (user_id, layer_id, map_type) VALUES (102, 2, 1);
+        $this->addSql('INSERT INTO stu_user_layer (user_id, layer_id, map_type)
+                VALUES (101, 2, 1),
+                       (102, 2, 1);
         ');
     }
 }

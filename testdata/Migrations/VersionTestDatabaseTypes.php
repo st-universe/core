@@ -16,13 +16,14 @@ final class VersionTestDatabaseTypes extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('INSERT INTO stu_database_types (id, description, macro) VALUES (1, \'Schiffsrümpfe\', \'shiprump\');
-INSERT INTO stu_database_types (id, description, macro) VALUES (3, \'Point of Interest\', \'poiinfo\');
-INSERT INTO stu_database_types (id, description, macro) VALUES (4, \'Sternensysteme\', \'starsystem\');
-INSERT INTO stu_database_types (id, description, macro) VALUES (5, \'Sternensystemtypen\', \'starsystemtype\');
-INSERT INTO stu_database_types (id, description, macro) VALUES (6, \'Planetentypen\', \'planettype\');
-INSERT INTO stu_database_types (id, description, macro) VALUES (7, \'Karte\', \'regioninfo\');
-INSERT INTO stu_database_types (id, description, macro) VALUES (8, \'Forschung\', \'research\');
+        $this->addSql('INSERT INTO stu_database_types (id, description, macro)
+                VALUES (1, \'Schiffsrümpfe\', \'shiprump\'),
+                       (3, \'Point of Interest\', \'poiinfo\'),
+                       (4, \'Sternensysteme\', \'starsystem\'),
+                       (5, \'Sternensystemtypen\', \'starsystemtype\'),
+                       (6, \'Planetentypen\', \'planettype\'),
+                       (7, \'Karte\', \'regioninfo\'),
+                       (8, \'Forschung\', \'research\');
         ');
     }
 }
