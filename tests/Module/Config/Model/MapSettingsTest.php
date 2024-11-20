@@ -16,7 +16,6 @@ class MapSettingsTest extends StuTestCase
     /** @var MockInterface|SettingsCacheInterface */
     private $cache;
 
-    /** @var MockObject|MapSettings */
     private MapSettings $subject;
 
     #[Override]

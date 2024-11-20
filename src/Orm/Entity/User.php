@@ -153,7 +153,7 @@ class User implements UserInterface
     /**
      * @var ArrayCollection<int, UserCharacterInterface>
      */
-    #[OneToMany(targetEntity: 'UserCharacter', mappedBy: 'user', cascade: ['persist'])]
+    #[OneToMany(targetEntity: 'UserCharacter', mappedBy: 'user')]
     private Collection $characters;
 
     /**
@@ -165,6 +165,12 @@ class User implements UserInterface
 
     #[OneToOne(targetEntity: 'PirateWrath', mappedBy: 'user')]
     private ?PirateWrathInterface $pirateWrath = null;
+
+    /**
+     * @var ArrayCollection<int, UserTutorialInterface>
+     */
+    #[OneToMany(targetEntity: 'UserTutorial', mappedBy: 'user', indexBy: 'tutorial_step_id', fetch: 'EXTRA_LAZY')]
+    private Collection $tutorials;
 
     /** @var null|array<mixed> */
     private $sessiondataUnserialized;
@@ -178,6 +184,7 @@ class User implements UserInterface
         $this->characters = new ArrayCollection();
         $this->buoys = new ArrayCollection();
         $this->colonyScans = new ArrayCollection();
+        $this->tutorials = new ArrayCollection();
     }
 
     #[Override]
@@ -801,7 +808,7 @@ class User implements UserInterface
     }
 
     #[Override]
-    public function setPirateWrath(PirateWrathInterface $wrath): UserInterface
+    public function setPirateWrath(?PirateWrathInterface $wrath): UserInterface
     {
         $this->pirateWrath = $wrath;
 
@@ -822,5 +829,15 @@ class User implements UserInterface
         }
 
         return $timeout > time();
+    }
+
+
+    /**
+     * @return Collection<int, UserTutorialInterface>
+     */
+    #[Override]
+    public function getTutorials(): Collection
+    {
+        return $this->tutorials;
     }
 }

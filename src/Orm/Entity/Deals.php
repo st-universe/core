@@ -16,7 +16,6 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use Override;
-use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Orm\Repository\DealsRepository;
 
 #[Table(name: 'stu_deals')]
@@ -294,14 +293,10 @@ class Deals implements DealsInterface
     #[Override]
     public function getModules(): array
     {
-        $modules = [];
-
-        foreach ($this->getBuildplan()->getModules() as $obj) {
-            $module = $obj->getModule();
-            $index = $module->getType() === ShipModuleTypeEnum::SPECIAL ? $module->getId() : $module->getType()->value;
-            $modules[$index] = $module;
-        }
-        return $modules;
+        return $this->getBuildplan()
+            ->getModules()
+            ->map(fn(BuildplanModuleInterface $buildplanModule): ModuleInterface => $buildplanModule->getModule())
+            ->toArray();
     }
 
     #[Override]

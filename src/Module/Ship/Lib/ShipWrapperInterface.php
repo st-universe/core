@@ -12,6 +12,8 @@ use Stu\Component\Ship\System\Data\TrackerSystemData;
 use Stu\Component\Ship\System\Data\WarpDriveSystemData;
 use Stu\Component\Ship\System\Data\WebEmitterSystemData;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
+use Stu\Component\Ship\System\Data\BussardCollectorSystemData;
+use Stu\Component\Ship\System\Data\AggregationSystemSystemData;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\Orm\Entity\ShipTakeoverInterface;
@@ -45,6 +47,8 @@ interface ShipWrapperInterface
     public function canLandOnCurrentColony(): bool;
 
     public function canBeRepaired(): bool;
+
+    public function canBeRetrofitted(): bool;
 
     public function canFire(): bool;
 
@@ -86,6 +90,10 @@ interface ShipWrapperInterface
     public function getEpsSystemData(): ?EpsSystemData;
 
     public function getWarpDriveSystemData(): ?WarpDriveSystemData;
+
+    public function getAggregationSystemSystemData(): ?AggregationSystemSystemData;
+
+    public function getBussardCollectorSystemData(): ?BussardCollectorSystemData;
 
     public function getTrackerSystemData(): ?TrackerSystemData;
 

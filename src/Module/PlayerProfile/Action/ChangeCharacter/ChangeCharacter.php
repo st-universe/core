@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerProfile\Action\ChangeCharacter;
 
-use Laminas\Mail\Exception\RuntimeException;
 use Noodlehaus\ConfigInterface;
 use Override;
+use RuntimeException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\UserCharacterRepositoryInterface;

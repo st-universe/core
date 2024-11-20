@@ -19,9 +19,7 @@ use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
  */
 final class BuildingManager implements BuildingManagerInterface
 {
-    public function __construct(private PlanetFieldRepositoryInterface $planetFieldRepository, private ColonyRepositoryInterface $colonyRepository, private ColonySandboxRepositoryInterface $colonySandboxRepository, private BuildingFunctionActionMapperInterface $buildingFunctionActionMapper, private BuildingPostActionInterface $buildingPostAction)
-    {
-    }
+    public function __construct(private PlanetFieldRepositoryInterface $planetFieldRepository, private ColonyRepositoryInterface $colonyRepository, private ColonySandboxRepositoryInterface $colonySandboxRepository, private BuildingFunctionActionMapperInterface $buildingFunctionActionMapper, private BuildingPostActionInterface $buildingPostAction) {}
 
     #[Override]
     public function activate(PlanetFieldInterface $field): bool
@@ -142,11 +140,11 @@ final class BuildingManager implements BuildingManagerInterface
         }
 
         foreach ($building->getFunctions() as $function) {
-            $buildingFunctionId = $function->getFunction();
+            $buildingFunction = $function->getFunction();
 
-            $handler = $this->buildingFunctionActionMapper->map($buildingFunctionId);
+            $handler = $this->buildingFunctionActionMapper->map($buildingFunction);
             if ($handler !== null && $host instanceof ColonyInterface) {
-                $handler->destruct($buildingFunctionId, $host);
+                $handler->destruct($buildingFunction, $host);
             }
         }
 

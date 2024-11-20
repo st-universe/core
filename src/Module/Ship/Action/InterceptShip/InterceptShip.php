@@ -24,8 +24,7 @@ final class InterceptShip implements ActionControllerInterface
         private InterceptShipCoreInterface $interceptShipCore,
         private InteractionCheckerInterface $interactionChecker,
         private PirateReactionInterface $pirateReaction
-    ) {
-    }
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -79,7 +78,12 @@ final class InterceptShip implements ActionControllerInterface
             return;
         }
 
-        $this->interceptShipCore->intercept($ship, $target, $game);
+        if ($ship->getDockedTo() !== null) {
+            $game->addInformation('Das Schiff hat abgedockt');
+            $ship->setDockedTo(null);
+        }
+
+        $this->interceptShipCore->intercept($wrapper, $targetWrapper, $game);
 
         $this->pirateReaction->checkForPirateReaction(
             $target,

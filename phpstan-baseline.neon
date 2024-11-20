@@ -1,11 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Parameter \\#1 \\$sql of method Doctrine\\\\DBAL\\\\Connection\\:\\:executeQuery\\(\\) expects literal\\-string, mixed given\\.$#"
-			count: 1
-			path: src/Component/Admin/Reset/ResetManager.php
-
-		-
 			message: "#^Constant _IMG_HANDLER not found\\.$#"
 			count: 1
 			path: src/Component/Image/ImageCreation.php
@@ -699,11 +694,6 @@ parameters:
 			path: src/Module/Colony/Lib/ColonySurface.php
 
 		-
-			message: "#^Cannot call method getAmount\\(\\) on Stu\\\\Orm\\\\Entity\\\\StorageInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/CommodityConsumption.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\ModuleQueueLibInterface\\:\\:cancelModuleQueues\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/Module/Colony/Lib/ModuleQueueLibInterface.php
@@ -722,11 +712,6 @@ parameters:
 			message: "#^Parameter \\#2 \\$commodity of method Stu\\\\Component\\\\Colony\\\\Storage\\\\ColonyStorageManagerInterface\\:\\:upperStorage\\(\\) expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface, Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Colony/Lib/PlanetColonization.php
-
-		-
-			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\ColonyInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowGiveUp/ShowGiveUp.php
 
 		-
 			message: "#^Property Stu\\\\Module\\\\Colony\\\\View\\\\ShowSectorScan\\\\ShowSectorScan\\:\\:\\$fadedSignaturesCloaked type has no value type specified in iterable type array\\.$#"
@@ -844,6 +829,11 @@ parameters:
 			path: src/Module/Config/Model/GameSettings.php
 
 		-
+			message: "#^Method Stu\\\\Module\\\\Config\\\\Model\\\\GameSettings\\:\\:getEmailSettings\\(\\) should return Stu\\\\Module\\\\Config\\\\Model\\\\EmailSettingsInterface but returns Stu\\\\Module\\\\Config\\\\Model\\\\SettingsInterface\\.$#"
+			count: 1
+			path: src/Module/Config/Model/GameSettings.php
+
+		-
 			message: "#^Method Stu\\\\Module\\\\Config\\\\Model\\\\GameSettings\\:\\:getMapSettings\\(\\) should return Stu\\\\Module\\\\Config\\\\Model\\\\MapSettingsInterface but returns Stu\\\\Module\\\\Config\\\\Model\\\\SettingsInterface\\.$#"
 			count: 1
 			path: src/Module/Config/Model/GameSettings.php
@@ -874,42 +864,7 @@ parameters:
 			path: src/Module/Config/StuConfig.php
 
 		-
-			message: "#^Cannot call method getReason\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserLockInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
-			message: "#^Cannot call method getRemainingTicks\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserLockInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:addInformationMerge\\(\\) has parameter \\$info with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:addSemaphore\\(\\) has parameter \\$semaphore with no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:getAchievements\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:getCurrentRound\\(\\) should return Stu\\\\Orm\\\\Entity\\\\GameTurnInterface but returns Stu\\\\Orm\\\\Entity\\\\GameTurnInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:getInformation\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:setTemplateVar\\(\\) has parameter \\$variable with no type specified\\.$#"
 			count: 1
 			path: src/Module/Control/GameController.php
 
@@ -919,22 +874,7 @@ parameters:
 			path: src/Module/Control/GameControllerInterface.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:addSemaphore\\(\\) has parameter \\$semaphore with no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/GameControllerInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:getAchievements\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Control/GameControllerInterface.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:getBenchmarkResult\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Control/GameControllerInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:getInformation\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Control/GameControllerInterface.php
 
@@ -944,54 +884,9 @@ parameters:
 			path: src/Module/Control/GameControllerInterface.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:setTemplateVar\\(\\) has parameter \\$variable with no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/GameControllerInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\SemaphoreUtil\\:\\:acquire\\(\\) has parameter \\$semaphore with no type specified\\.$#"
+			message: "#^Method Stu\\\\Module\\\\Control\\\\SemaphoreUtil\\:\\:getSemaphore\\(\\) never returns int so it can be removed from the return type\\.$#"
 			count: 1
 			path: src/Module/Control/SemaphoreUtil.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\SemaphoreUtil\\:\\:acquireMainSemaphore\\(\\) has parameter \\$semaphore with no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/SemaphoreUtil.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\SemaphoreUtil\\:\\:acquireSemaphore\\(\\) has parameter \\$semaphore with no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/SemaphoreUtil.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\SemaphoreUtil\\:\\:release\\(\\) has parameter \\$semaphore with no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/SemaphoreUtil.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\SemaphoreUtil\\:\\:releaseSemaphore\\(\\) has parameter \\$semaphore with no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/SemaphoreUtil.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\SemaphoreUtilInterface\\:\\:acquireMainSemaphore\\(\\) has parameter \\$semaphore with no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/SemaphoreUtilInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\SemaphoreUtilInterface\\:\\:acquireSemaphore\\(\\) has parameter \\$semaphore with no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/SemaphoreUtilInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\SemaphoreUtilInterface\\:\\:getSemaphore\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Control/SemaphoreUtilInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\SemaphoreUtilInterface\\:\\:releaseSemaphore\\(\\) has parameter \\$semaphore with no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/SemaphoreUtilInterface.php
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Control\\\\StuRandom\\:\\:array_rand\\(\\) has parameter \\$array with no value type specified in iterable type array\\.$#"
@@ -1402,21 +1297,6 @@ parameters:
 			message: "#^Cannot call method getShips\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/UnloadBattery/UnloadBattery.php
-
-		-
-			message: "#^Cannot call method setAstroStartTurn\\(\\) on Stu\\\\Orm\\\\Entity\\\\AstronomicalEntryInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Ship/Lib/AstroEntryLib.php
-
-		-
-			message: "#^Cannot call method setState\\(\\) on Stu\\\\Orm\\\\Entity\\\\AstronomicalEntryInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Ship/Lib/AstroEntryLib.php
-
-		-
-			message: "#^Parameter \\#1 \\$entry of method Stu\\\\Orm\\\\Repository\\\\AstroEntryRepositoryInterface\\:\\:save\\(\\) expects Stu\\\\Orm\\\\Entity\\\\AstronomicalEntryInterface, Stu\\\\Orm\\\\Entity\\\\AstronomicalEntryInterface\\|null given\\.$#"
-			count: 2
-			path: src/Module/Ship/Lib/AstroEntryLib.php
 
 		-
 			message: "#^Parameter \\#1 \\$p of method Doctrine\\\\Common\\\\Collections\\\\Collection\\<int,Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\|null\\>\\:\\:filter\\(\\) expects Closure\\(Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\|null, int\\)\\: bool, Closure\\(Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\)\\: bool given\\.$#"
@@ -2110,11 +1990,6 @@ parameters:
 			message: "#^Method Stu\\\\Orm\\\\Repository\\\\RepairTaskRepository\\:\\:getByShip\\(\\) should return Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null but returns Stu\\\\Orm\\\\Entity\\\\RepairTask\\|null\\.$#"
 			count: 1
 			path: src/Orm/Repository/RepairTaskRepository.php
-
-		-
-			message: "#^Parameter \\#1 \\$sql of method Doctrine\\\\DBAL\\\\Connection\\:\\:executeQuery\\(\\) expects literal\\-string, non\\-falsy\\-string given\\.$#"
-			count: 1
-			path: src/Orm/Repository/UserMapRepository.php
 
 		-
 			message: "#^Parameter \\#1 \\$category of method Stu\\\\Orm\\\\Entity\\\\DatabaseEntryInterface\\:\\:setCategory\\(\\) expects Stu\\\\Orm\\\\Entity\\\\DatabaseCategoryInterface, Stu\\\\Orm\\\\Entity\\\\DatabaseCategoryInterface\\|null given\\.$#"

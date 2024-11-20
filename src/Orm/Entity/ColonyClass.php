@@ -58,9 +58,6 @@ class ColonyClass implements ColonyClassInterface
     #[Column(type: 'integer')]
     private int $max_rot = 1;
 
-    /**
-     * @var DatabaseEntryInterface|null
-     */
     #[OneToOne(targetEntity: 'DatabaseEntry')]
     #[JoinColumn(name: 'database_id', referencedColumnName: 'id')]
     private ?DatabaseEntryInterface $databaseEntry;

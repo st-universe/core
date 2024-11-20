@@ -63,7 +63,7 @@ $app->add(new ManagerTickCommand($dic));
 $app->add($dic->get(PirateTickCommand::class));
 
 // system generation
-$app->add(new GenerateEmptySystemsCommand($dic));
+$app->add($dic->get(GenerateEmptySystemsCommand::class));
 
 // reset
 $app->add(new GameResetCommand($dic));

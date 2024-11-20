@@ -1,6 +1,7 @@
 {
   "db": {
     "useSqlite": true,
+    "sqliteDsn": "sqlite:///:memory:",
     "host": "change.me",
     "port": 3306,
     "user": "change",
@@ -65,7 +66,10 @@
         "email_sender_address": "foo@bar.de"
       }
     },
-    "email_sender_address": "some@e.mail",
+    "email": {
+      "transportDsn": "sendmail://default",
+      "senderAddress": "some@e.mail"
+    },
     "admins": [
       101,
       102

@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Override;
+use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ColonyShipQueue;
 use Stu\Orm\Entity\ColonyShipQueueInterface;
@@ -30,15 +31,21 @@ final class ColonyShipQueueRepository extends EntityRepository implements Colony
     }
 
     #[Override]
-    public function delete(ColonyShipQueueInterface $post): void
+    public function delete(ColonyShipQueueInterface $queue): void
     {
         $em = $this->getEntityManager();
 
-        $em->remove($post);
+        $ship = $queue->getShip();
+        if ($ship !== null) {
+            $ship->setColonyShipQueue(null);
+        }
+
+        $em->remove($queue);
+        $em->flush(); //TODO really neccessary?
     }
 
     #[Override]
-    public function stopQueueByColonyAndBuildingFunction(int $colonyId, int $buildingFunctionId): void
+    public function stopQueueByColonyAndBuildingFunction(int $colonyId, BuildingFunctionEnum $buildingFunction): void
     {
         $this->getEntityManager()
             ->createQuery(
@@ -50,13 +57,13 @@ final class ColonyShipQueueRepository extends EntityRepository implements Colony
             ->setParameters([
                 'time' => time(),
                 'colonyId' => $colonyId,
-                'buildingFunctionId' => $buildingFunctionId
+                'buildingFunctionId' => $buildingFunction->value
             ])
             ->execute();
     }
 
     #[Override]
-    public function restartQueueByColonyAndBuildingFunction(int $colonyId, int $buildingFunctionId): void
+    public function restartQueueByColonyAndBuildingFunction(int $colonyId, BuildingFunctionEnum $buildingFunction): void
     {
         $this->getEntityManager()
             ->createQuery(
@@ -73,17 +80,18 @@ final class ColonyShipQueueRepository extends EntityRepository implements Colony
                 'stopDate' => 0,
                 'time' => time(),
                 'colonyId' => $colonyId,
-                'buildingFunctionId' => $buildingFunctionId
+                'buildingFunctionId' => $buildingFunction->value
             ])
             ->execute();
     }
 
     #[Override]
-    public function getAmountByColonyAndBuildingFunction(int $colonyId, int $buildingFunctionId): int
+    public function getAmountByColonyAndBuildingFunctionAndMode(int $colonyId, BuildingFunctionEnum $buildingFunction, int $mode): int
     {
         return $this->count([
             'colony_id' => $colonyId,
-            'building_function_id' => $buildingFunctionId
+            'building_function_id' => $buildingFunction->value,
+            'mode' => $mode
         ]);
     }
 
@@ -96,10 +104,28 @@ final class ColonyShipQueueRepository extends EntityRepository implements Colony
     }
 
     #[Override]
+    public function getByColonyAndMode(int $colonyId, int $mode): array
+    {
+        return $this->findBy([
+            'colony_id' => $colonyId,
+            'mode' => $mode
+        ]);
+    }
+
+    #[Override]
     public function getByUser(int $userId): array
     {
         return $this->findBy([
             'user_id' => $userId
+        ]);
+    }
+
+    #[Override]
+    public function getByUserAndMode(int $userId, int $mode): array
+    {
+        return $this->findBy([
+            'user_id' => $userId,
+            'mode' => $mode
         ]);
     }
 
@@ -145,7 +171,7 @@ final class ColonyShipQueueRepository extends EntityRepository implements Colony
     }
 
     #[Override]
-    public function truncateByColonyAndBuildingFunction(ColonyInterface $colony, int $buildingFunctionId): void
+    public function truncateByColonyAndBuildingFunction(ColonyInterface $colony, BuildingFunctionEnum $buildingFunction): void
     {
         $this->getEntityManager()
             ->createQuery(
@@ -156,7 +182,23 @@ final class ColonyShipQueueRepository extends EntityRepository implements Colony
             )
             ->setParameters([
                 'colony' => $colony,
-                'buildingFunctionId' => $buildingFunctionId
+                'buildingFunctionId' => $buildingFunction->value
+            ])
+            ->execute();
+    }
+
+    #[Override]
+    public function truncateByShip(int $shipId): void
+    {
+        $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'DELETE FROM %s sq WHERE sq.ship_id = :shipId',
+                    ColonyShipQueue::class
+                )
+            )
+            ->setParameters([
+                'shipId' => $shipId
             ])
             ->execute();
     }

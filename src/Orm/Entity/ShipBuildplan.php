@@ -13,13 +13,16 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
+use Doctrine\ORM\Mapping\UniqueConstraint;
 use Override;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Orm\Repository\ShipBuildplanRepository;
 
 #[Table(name: 'stu_buildplans')]
 #[Entity(repositoryClass: ShipBuildplanRepository::class)]
+#[UniqueConstraint(name: 'buildplan_signatures_idx', columns: ['user_id', 'rump_id', 'signature'])]
 class ShipBuildplan implements ShipBuildplanInterface
 {
     #[Id]
@@ -63,6 +66,7 @@ class ShipBuildplan implements ShipBuildplanInterface
      * @var Collection<int, BuildplanModuleInterface>
      */
     #[OneToMany(targetEntity: 'BuildplanModule', mappedBy: 'buildplan', indexBy: 'module_id', fetch: 'EXTRA_LAZY')]
+    #[OrderBy(['module_id' => 'ASC'])]
     private Collection $modules;
 
     public function __construct()
@@ -144,14 +148,6 @@ class ShipBuildplan implements ShipBuildplanInterface
         return $this->getShiplist()->count();
     }
 
-    /**
-     * @param array<int> $modules
-     */
-    public static function createSignature(array $modules, int $crewUsage = 0): string
-    {
-        return md5(implode('_', $modules) . '_' . $crewUsage);
-    }
-
     #[Override]
     public function getSignature(): ?string
     {
@@ -205,7 +201,7 @@ class ShipBuildplan implements ShipBuildplanInterface
     {
         return $this->getModules()
             ->filter(
-                fn (BuildplanModuleInterface $buildplanModule): bool => $buildplanModule->getModuleType() === $type
+                fn(BuildplanModuleInterface $buildplanModule): bool => $buildplanModule->getModuleType() === $type
             )
             ->toArray();
     }
@@ -213,6 +209,18 @@ class ShipBuildplan implements ShipBuildplanInterface
     #[Override]
     public function getModules(): Collection
     {
-        return $this->modules;
+        return $this->getModulesSortedByOrder();
+    }
+
+    /** @return Collection<int, BuildplanModuleInterface> */
+    private function getModulesSortedByOrder(): Collection
+    {
+        $array = $this->modules->toArray();
+
+        uasort($array, function (BuildplanModuleInterface $a, BuildplanModuleInterface $b): int {
+            return $a->getModuleType()->getOrder() <=> $b->getModuleType()->getOrder();
+        });
+
+        return new ArrayCollection($array);
     }
 }

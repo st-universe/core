@@ -5,19 +5,20 @@ declare(strict_types=1);
 namespace Stu\Module\Maindesk\View\ShowColonyList;
 
 use Override;
+use Stu\Component\Game\ModuleViewEnum;
 use Stu\Exception\AccessViolation;
+use Stu\Module\Control\ViewContext;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Control\ViewWithTutorialInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 
-final class ShowColonyList implements ViewControllerInterface
+final class ShowColonyList implements ViewControllerInterface, ViewWithTutorialInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_COLONYLIST';
 
-    public function __construct(private ColonyRepositoryInterface $colonyRepository)
-    {
-    }
+    public function __construct(private ColonyRepositoryInterface $colonyRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -37,7 +38,7 @@ final class ShowColonyList implements ViewControllerInterface
         $game->appendNavigationPart(
             sprintf(
                 '?%s=1',
-                static::VIEW_IDENTIFIER
+                self::VIEW_IDENTIFIER
             ),
             _('Kolonie gründen')
         );
@@ -46,5 +47,10 @@ final class ShowColonyList implements ViewControllerInterface
             'FREE_PLANET_LIST',
             $this->colonyRepository->getStartingByFaction($user->getFactionId())
         );
+    }
+    #[Override]
+    public function getViewContext(): ViewContext
+    {
+        return new ViewContext(ModuleViewEnum::MAINDESK, self::VIEW_IDENTIFIER);
     }
 }

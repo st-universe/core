@@ -5,12 +5,19 @@ declare(strict_types=1);
 namespace Stu\Component\Ship;
 
 use Stu\Component\Refactor\RefactorRunner;
+use Stu\Component\Ship\Buildplan\BuildplanSignatureCreation;
+use Stu\Component\Ship\Buildplan\BuildplanSignatureCreationInterface;
 use Stu\Component\Ship\Crew\ShipCrewCalculator;
 use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
+use Stu\Component\Ship\Event\Listener\WarpdriveActivationSubscriber;
 use Stu\Component\Ship\Nbs\NbsUtility;
 use Stu\Component\Ship\Nbs\NbsUtilityInterface;
+use Stu\Component\Ship\Mining\CancelMining;
+use Stu\Component\Ship\Mining\CancelMiningInterface;
 use Stu\Component\Ship\Repair\CancelRepair;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
+use Stu\Component\Ship\Retrofit\CancelRetrofit;
+use Stu\Component\Ship\Retrofit\CancelRetrofitInterface;
 use Stu\Component\Ship\Repair\RepairUtil;
 use Stu\Component\Ship\Repair\RepairUtilInterface;
 use Stu\Component\Ship\Storage\ShipStorageManager;
@@ -22,8 +29,10 @@ use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\SystemDataDeserializer;
 use Stu\Component\Ship\System\SystemDataDeserializerInterface;
+use Stu\Component\Ship\System\Type\AggregationSystemShipSystem;
 use Stu\Component\Ship\System\Type\AstroLaboratoryShipSystem;
 use Stu\Component\Ship\System\Type\BeamBlockerShipSystem;
+use Stu\Component\Ship\System\Type\BussardCollectorShipSystem;
 use Stu\Component\Ship\System\Type\CloakShipSystem;
 use Stu\Component\Ship\System\Type\ComputerShipSystem;
 use Stu\Component\Ship\System\Type\ConstructionHubShipSystem;
@@ -64,7 +73,9 @@ return [
     ShipStorageManagerInterface::class => autowire(ShipStorageManager::class),
     NbsUtilityInterface::class => autowire(NbsUtility::class),
     RepairUtilInterface::class => autowire(RepairUtil::class),
+    CancelMiningInterface::class => autowire(CancelMining::class),
     CancelRepairInterface::class => autowire(CancelRepair::class),
+    CancelRetrofitInterface::class => autowire(CancelRetrofit::class),
     TractorMassPayloadUtilInterface::class => autowire(TractorMassPayloadUtil::class),
     ShipSystemDataFactoryInterface::class => autowire(ShipSystemDataFactory::class),
     SystemDataDeserializerInterface::class => autowire(SystemDataDeserializer::class),
@@ -99,11 +110,15 @@ return [
             ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL->value => autowire(TranswarpCoilShipSystem::class),
             ShipSystemTypeEnum::SYSTEM_TRACKER->value => autowire(TrackerShipSystem::class),
             ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB->value => autowire(WebEmitterShipSystem::class),
+            ShipSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR->value => autowire(BussardCollectorShipSystem::class),
+            ShipSystemTypeEnum::SYSTEM_AGGREGATION_SYSTEM->value => autowire(AggregationSystemShipSystem::class),
             ShipSystemTypeEnum::SYSTEM_RPG_MODULE->value => autowire(RPGShipSystem::class),
             ShipSystemTypeEnum::SYSTEM_SINGULARITY_REACTOR->value => autowire(SingularityShipSystem::class)
         ],
         autowire(StuTime::class)
     ),
     ShipCrewCalculatorInterface::class => autowire(ShipCrewCalculator::class),
+    BuildplanSignatureCreationInterface::class => autowire(BuildplanSignatureCreation::class),
+    WarpdriveActivationSubscriber::class => autowire(),
     RefactorRunner::class => autowire(RefactorRunner::class),
 ];

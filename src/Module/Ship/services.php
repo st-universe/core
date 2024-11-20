@@ -92,6 +92,8 @@ use Stu\Module\Ship\Action\LeaveFleet\LeaveFleetRequestInterface;
 use Stu\Module\Ship\Action\LeaveStarSystem\LeaveStarSystem;
 use Stu\Module\Ship\Action\LeaveWormhole\LeaveWormhole;
 use Stu\Module\Ship\Action\LoadReactor\LoadReactor;
+use Stu\Module\Ship\Action\Mining\TransformResources;
+use Stu\Module\Ship\Action\Mining\GatherResources;
 use Stu\Module\Ship\Action\MoveShip\MoveShip;
 use Stu\Module\Ship\Action\MoveShip\MoveShipDown;
 use Stu\Module\Ship\Action\MoveShip\MoveShipLeft;
@@ -248,6 +250,7 @@ use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\DriveDeactivationC
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\EpsConsequence;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\FlightDirectionConsequence;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\RepairConsequence;
+use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\RetrofitConsequence;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\TakeoverConsequence;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\TholianWebConsequence;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\TractorConsequence;
@@ -291,6 +294,8 @@ use Stu\Module\Ship\Lib\ShipCreator;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Module\Ship\Lib\ShipLoader;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\Lib\ShipRetrofit;
+use Stu\Module\Ship\Lib\ShipRetrofitInterface;
 use Stu\Module\Ship\Lib\ShipRemover;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\Lib\ShipStateChanger;
@@ -305,11 +310,13 @@ use Stu\Module\Ship\Lib\Ui\ShipUiFactory;
 use Stu\Module\Ship\Lib\Ui\ShipUiFactoryInterface;
 use Stu\Module\Ship\Lib\Ui\StateIconAndTitle;
 use Stu\Module\Ship\View\Noop\Noop;
+use Stu\Module\Ship\View\ShowAggregationSystem\ShowAggregationSystem;
 use Stu\Module\Ship\View\ShowAlertLevel\ShowAlertLevel;
 use Stu\Module\Ship\View\ShowAnalyseBuoy\ShowAnalyseBuoy;
 use Stu\Module\Ship\View\ShowAstroEntry\ShowAstroEntry;
 use Stu\Module\Ship\View\ShowAvailableShips\ShowAvailableShips;
 use Stu\Module\Ship\View\ShowBuoyList\ShowBuoyList;
+use Stu\Module\Ship\View\ShowBussardCollector\ShowBussardCollector;
 use Stu\Module\Ship\View\ShowColonization\ShowColonization;
 use Stu\Module\Ship\View\ShowColonyScan\ShowColonyScan;
 use Stu\Module\Ship\View\ShowEpsTransfer\ShowEpsTransfer;
@@ -369,6 +376,7 @@ return [
     ShipRemoverInterface::class => autowire(ShipRemover::class),
     ShipConfiguratorFactoryInterface::class => autowire(ShipConfiguratorFactory::class),
     ShipCreatorInterface::class => autowire(ShipCreator::class),
+    ShipRetrofitInterface::class => autowire(ShipRetrofit::class),
     ShipUndockingInterface::class => autowire(ShipUndocking::class),
     ShipShutdownInterface::class => autowire(ShipShutdown::class),
     ThreatReactionInterface::class => autowire(ThreatReaction::class),
@@ -415,6 +423,7 @@ return [
         ),
     'flightConsequences' => [
         autowire(RepairConsequence::class),
+        autowire(RetrofitConsequence::class),
         autowire(DockConsequence::class),
         autowire(TakeoverConsequence::class),
         autowire(AstroMappingConsequence::class),
@@ -480,6 +489,8 @@ return [
         LeaveStarSystem::ACTION_IDENTIFIER => autowire(LeaveStarSystem::class),
         EnterStarSystem::ACTION_IDENTIFIER => autowire(EnterStarSystem::class),
         EnterWormhole::ACTION_IDENTIFIER => autowire(EnterWormhole::class),
+        GatherResources::ACTION_IDENTIFIER => autowire(GatherResources::class),
+        TransformResources::ACTION_IDENTIFIER => autowire(TransformResources::class),
         LeaveWormhole::ACTION_IDENTIFIER => autowire(LeaveWormhole::class),
         MoveShip::ACTION_IDENTIFIER => autowire(MoveShip::class),
         MoveShipUp::ACTION_IDENTIFIER => autowire(MoveShipUp::class),
@@ -586,6 +597,7 @@ return [
     'SHIP_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
         ShowShip::VIEW_IDENTIFIER => autowire(ShowShip::class),
+        ShowAggregationSystem::VIEW_IDENTIFIER => autowire(ShowAggregationSystem::class),
         ShowAlertLevel::VIEW_IDENTIFIER => autowire(ShowAlertLevel::class),
         ShowAstroEntry::VIEW_IDENTIFIER => autowire(ShowAstroEntry::class),
         ShowEpsTransfer::VIEW_IDENTIFIER => autowire(ShowEpsTransfer::class),
@@ -596,6 +608,7 @@ return [
             ),
         ShowSelfDestruct::VIEW_IDENTIFIER => autowire(ShowSelfDestruct::class),
         ShowScan::VIEW_IDENTIFIER => autowire(ShowScan::class),
+        ShowBussardCollector::VIEW_IDENTIFIER => autowire(ShowBussardCollector::class),
         ShowColonyScan::VIEW_IDENTIFIER => autowire(ShowColonyScan::class),
         ShowSectorScan::VIEW_IDENTIFIER => autowire(ShowSectorScan::class),
         ShowShipDetails::VIEW_IDENTIFIER => autowire(ShowShipDetails::class),

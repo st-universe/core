@@ -17,14 +17,10 @@ final class HistoryProvider implements ViewComponentProviderInterface
 
     private const int LIMIT = 50;
 
-    private HistoryRepositoryInterface $historyRepository;
-    private Parser $bbcodeParser;
-
-    public function __construct(HistoryRepositoryInterface $historyRepository, Parser $bbcodeParser)
-    {
-        $this->historyRepository = $historyRepository;
-        $this->bbcodeParser = $bbcodeParser;
-    }
+    public function __construct(
+        private HistoryRepositoryInterface $historyRepository,
+        private Parser $bbcodeParser
+    ) {}
 
     #[Override]
     public function setTemplateVariables(GameControllerInterface $game): void
@@ -74,7 +70,7 @@ final class HistoryProvider implements ViewComponentProviderInterface
             ? $this->historyRepository->getByTypeAndSearch($type, $count)
             : $this->historyRepository->getByTypeAndSearchWithoutPirate($type, $count);
 
-        $filteredEntries = array_filter($historyEntries, function ($entry) use ($search) {
+        $filteredEntries = array_filter($historyEntries, function ($entry) use ($search): bool {
             $this->bbcodeParser->parse($entry->getText());
             $plainText = $this->bbcodeParser->getAsText() ?: '';
             return stripos($plainText, $search) !== false;

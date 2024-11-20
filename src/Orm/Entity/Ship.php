@@ -22,7 +22,6 @@ use RuntimeException;
 use Stu\Component\Game\TimeConstants;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipLSSModeEnum;
-use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\SpacecraftTypeEnum;
@@ -153,6 +152,9 @@ class Ship implements ShipInterface
     #[JoinColumn(name: 'dock', referencedColumnName: 'id')]
     private ?ShipInterface $dockedTo = null;
 
+    #[OneToOne(targetEntity: 'MiningQueue', mappedBy: 'ship')]
+    private ?MiningQueueInterface $miningqueue = null;
+
     /**
      * @var ArrayCollection<int, ShipInterface>
      */
@@ -191,9 +193,6 @@ class Ship implements ShipInterface
     #[OneToOne(targetEntity: 'TorpedoStorage', mappedBy: 'ship')]
     private ?TorpedoStorageInterface $torpedoStorage = null;
 
-    /**
-     * @var DatabaseEntryInterface|null
-     */
     #[OneToOne(targetEntity: 'DatabaseEntry')]
     #[JoinColumn(name: 'database_id', referencedColumnName: 'id')]
     private ?DatabaseEntryInterface $databaseEntry;
@@ -240,6 +239,10 @@ class Ship implements ShipInterface
 
     #[OneToOne(targetEntity: 'ShipTakeover', mappedBy: 'target')]
     private ?ShipTakeoverInterface $takeoverPassive = null;
+
+    #[OneToOne(targetEntity: 'ColonyShipQueue', mappedBy: 'ship')]
+    private ?ColonyShipQueueInterface $colonyShipQueue = null;
+
 
     public function __construct()
     {
@@ -814,6 +817,12 @@ class Ship implements ShipInterface
     }
 
     #[Override]
+    public function isUnderRetrofit(): bool
+    {
+        return $this->getState() === ShipStateEnum::SHIP_STATE_RETROFIT;
+    }
+
+    #[Override]
     public function getIsFleetLeader(): bool
     {
         return $this->getFleet() !== null && $this->is_fleet_leader;
@@ -942,7 +951,7 @@ class Ship implements ShipInterface
 
         foreach ($buildplan->getModules() as $obj) {
             $module = $obj->getModule();
-            $index = $module->getType() === ShipModuleTypeEnum::SPECIAL ? $module->getId() : $module->getType()->value;
+            $index = $module->getType()->isSpecialSystemType() ? $module->getId() : $module->getType()->getOrder();
             $modules[$index] = $module;
         }
 
@@ -951,7 +960,7 @@ class Ship implements ShipInterface
                 $module = $system->getModule();
 
                 if ($module !== null) {
-                    $index = $module->getType() === ShipModuleTypeEnum::SPECIAL ? $module->getId() : $module->getType()->value;
+                    $index = $module->getType()->isSpecialSystemType() ? $module->getId() : $module->getType()->value;
                     $modules[$index] = $module;
                 }
             }
@@ -994,6 +1003,18 @@ class Ship implements ShipInterface
     public function isWebEmitterHealthy(): bool
     {
         return $this->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB);
+    }
+
+    #[Override]
+    public function isAggregationSystemHealthy(): bool
+    {
+        return $this->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_AGGREGATION_SYSTEM);
+    }
+
+    #[Override]
+    public function isBussardCollectorHealthy(): bool
+    {
+        return $this->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR);
     }
 
     #[Override]
@@ -1751,5 +1772,23 @@ class Ship implements ShipInterface
 
         // less than 25% - red
         return 'color: #ff3c3c;';
+    }
+    #[Override]
+    public function getMiningQueue(): ?MiningQueueInterface
+    {
+        return $this->miningqueue;
+    }
+
+    #[Override]
+    public function getColonyShipQueue(): ?ColonyShipQueueInterface
+    {
+        return $this->colonyShipQueue;
+    }
+
+    #[Override]
+    public function setColonyShipQueue(?ColonyShipQueueInterface $queue): ShipInterface
+    {
+        $this->colonyShipQueue = $queue;
+        return $this;
     }
 }

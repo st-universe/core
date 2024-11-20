@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use request;
+use RuntimeException;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Component\Logging\GameRequest\GameRequestSaverInterface;
@@ -32,6 +33,7 @@ use Stu\Module\Control\Exception\ItemNotFoundException;
 use Stu\Module\Control\Render\GameTwigRendererInterface;
 use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
 use Stu\Module\Game\Lib\GameSetupInterface;
+use Stu\Module\Game\Lib\TutorialProvider;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -47,7 +49,7 @@ use Stu\Orm\Repository\GameRequestRepositoryInterface;
 use Stu\Orm\Repository\GameTurnRepositoryInterface;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
-use Throwable;
+use SysvSemaphore;
 use Ubench;
 
 final class GameController implements GameControllerInterface
@@ -85,7 +87,7 @@ final class GameController implements GameControllerInterface
     /** @var array{currentTurn:int, player:int, playeronline:int, gameState:int, gameStateTextual:string} */
     private ?array $gameStats = null;
 
-    /** @var array<int, resource> */
+    /** @var array<int, SysvSemaphore> */
     private array $semaphores = [];
 
     /** @var GameConfigInterface[]|null */
@@ -111,6 +113,7 @@ final class GameController implements GameControllerInterface
         private EventDispatcherInterface $eventDispatcher,
         private GameRequestSaverInterface $gameRequestSaver,
         private GameSetupInterface $gameSetup,
+        private TutorialProvider $tutorialProvider,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
@@ -208,11 +211,7 @@ final class GameController implements GameControllerInterface
     #[Override]
     public function addInformation(?string $information): InformationInterface
     {
-        if ($information !== null) {
-            $this->loggerUtil->log(sprintf('addInformation: %s', $information));
-
-            $this->gameInformations->addInformation($information);
-        }
+        $this->gameInformations->addInformation($information);
 
         return $this;
     }
@@ -264,7 +263,7 @@ final class GameController implements GameControllerInterface
     }
 
     #[Override]
-    public function setTemplateVar(string $key, $variable): void
+    public function setTemplateVar(string $key, mixed $variable): void
     {
         $this->twigPage->setVar($key, $variable);
     }
@@ -388,6 +387,9 @@ final class GameController implements GameControllerInterface
     {
         if ($this->currentRound === null) {
             $this->currentRound = $this->gameTurnRepository->getCurrent();
+            if ($this->currentRound === null) {
+                throw new RuntimeException('no current round existing');
+            }
         }
         return $this->currentRound;
     }
@@ -545,6 +547,7 @@ final class GameController implements GameControllerInterface
                 $gameRequest->addError($e);
             } catch (EntityLockedException $e) {
                 $this->addInformation($e->getMessage());
+                $this->setMacroInAjaxWindow('');
             }
             $viewMs = hrtime(true) - $startTime;
 
@@ -575,17 +578,14 @@ final class GameController implements GameControllerInterface
         } catch (MaintenanceGameStateException) {
             $this->setPageTitle(_('Wartungsmodus'));
             $this->setTemplateFile('html/index/maintenance.twig');
-
             $this->setTemplateVar('THIS', $this);
         } catch (ResetGameStateException) {
             $this->setPageTitle(_('Resetmodus'));
             $this->setTemplateFile('html/index/gameReset.twig');
-
             $this->setTemplateVar('THIS', $this);
         } catch (RelocationGameStateException) {
             $this->setPageTitle(_('Umzugsmodus'));
             $this->setTemplateFile('html/index/relocation.twig');
-
             $this->setTemplateVar('THIS', $this);
         } catch (ShipDoesNotExistException) {
             $this->addInformation(_('Dieses Schiff existiert nicht!'));
@@ -604,8 +604,6 @@ final class GameController implements GameControllerInterface
             } else {
                 $this->setViewTemplate('html/ship/ship.twig');
             }
-        } catch (Throwable $e) {
-            throw $e;
         }
 
         $isTemplateSet = $this->twigPage->isTemplateSet();
@@ -624,7 +622,7 @@ final class GameController implements GameControllerInterface
         // RENDER!
         $startTime = hrtime(true);
 
-        $renderResult = $this->gameTwigRenderer->render($this, $user, $this->twigPage);
+        $renderResult = $this->gameTwigRenderer->render($this, $user);
 
         $renderMs = hrtime(true) - $startTime;
 
@@ -641,10 +639,11 @@ final class GameController implements GameControllerInterface
     private function checkUserAndGameState(GameRequestInterface $gameRequest): void
     {
         if ($this->hasUser()) {
-            $gameRequest->setUserId($this->getUser());
+            $user = $this->getUser();
+            $gameRequest->setUserId($user);
 
-            if ($this->getUser()->isLocked()) {
-                $userLock = $this->getUser()->getUserLock();
+            $userLock = $user->getUserLock();
+            if ($this->getUser()->isLocked() && $userLock !== null) {
                 $this->session->logout();
 
                 throw new UserLockedException(
@@ -702,7 +701,7 @@ final class GameController implements GameControllerInterface
     }
 
     #[Override]
-    public function addSemaphore(int $key, $semaphore): void
+    public function addSemaphore(int $key, SysvSemaphore $semaphore): void
     {
         $this->semaphores[$key] = $semaphore;
     }
@@ -745,26 +744,38 @@ final class GameController implements GameControllerInterface
     {
         $viewFromContext = $this->getViewContext(ViewContextTypeEnum::VIEW);
 
-        foreach ($views as $viewIdentifier => $config) {
+        foreach ($views as $viewIdentifier => $view) {
             if (
                 request::indString($viewIdentifier) !== false
                 || $viewIdentifier === $viewFromContext
             ) {
                 $gameRequest->setView($viewIdentifier);
 
-                $config->handle($this);
-                $this->entityManager->flush();
+                $this->handleView($view);
 
                 return;
             }
         }
 
-        $view = $views[static::DEFAULT_VIEW] ?? null;
+        $view = $views[self::DEFAULT_VIEW] ?? null;
 
         if ($view !== null) {
-            $view->handle($this);
-            $this->entityManager->flush();
+            $this->handleView($view);
         }
+    }
+
+    private function handleView(ViewControllerInterface $view): void
+    {
+        $view->handle($this);
+
+        if ($view instanceof ViewWithTutorialInterface) {
+            $this->tutorialProvider->setTemplateVariables(
+                $view->getViewContext(),
+                $this
+            );
+        }
+
+        $this->entityManager->flush();
     }
 
     #[Override]

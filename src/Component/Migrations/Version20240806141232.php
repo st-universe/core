@@ -4,17 +4,20 @@ declare(strict_types=1);
 
 namespace Stu\Migrations;
 
+use Override;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
 
 final class Version20240806141232 extends AbstractMigration
 {
+    #[Override]
     public function getDescription(): string
     {
         return 'Add mining queue entity';
     }
 
+    #[Override]
     public function up(Schema $schema): void
     {
 
@@ -25,6 +28,7 @@ final class Version20240806141232 extends AbstractMigration
         $this->addSql('ALTER TABLE stu_mining_queue ADD CONSTRAINT FK_BBFEF8C4C256317D FOREIGN KEY (ship_id) REFERENCES stu_ships (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
     }
 
+    #[Override]
     public function down(Schema $schema): void
     {
         $this->addSql('CREATE SCHEMA public');

@@ -368,7 +368,7 @@ class Module implements ModuleInterface
                 $this->getSpecials()->toArray()
             );
         }
-        return in_array((int)$special_id, $this->specialAbilities);
+        return in_array($special_id, $this->specialAbilities);
     }
 
     #[Override]

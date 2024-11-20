@@ -1,0 +1,83 @@
+{% extends "html/npcdefaults.twig" %}
+
+{% block body %}
+{% include 'html/breadcrumb.twig' %}
+
+<div>
+{% if not USER_ID %}
+    <h2>Spieler auswählen</h2>
+    {% for user in ALL_USERS %}
+        <div><a href="?SHOW_SHIP_CREATOR=1&userId={{ user.getId }}">{{ user.getName|bbcode }} ({{ user.getId }})</a></div>
+    {% endfor %}
+{% elseif not SELECTED_BUILDPLAN %}
+    <h2>Bauplan auswählen für {{ SELECTED_USER.getName|bbcode }} ({{SELECTED_USER.getId}})</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; padding: 20px;">
+        {% for buildplan in BUILDPLANS %}
+            <div style="border: 1px solid #444; border-radius: 8px; padding: 10px; background-color: #1b1b1b; text-align: center;">
+                <div style="margin-bottom: 10px;">
+                    <img src="/assets/ships/{{ buildplan.getRump.getId }}.png" style="max-width: 120px;" alt="{{ buildplan.getName }}">
+                </div>
+                <div style="font-weight: bold; margin-bottom: 5px;">{{ buildplan.getName }}</div>
+                <div style="color: #888; font-size: 0.9em; margin-bottom: 10px;">
+                    Rumpf: {{ buildplan.getRump.getName }}
+                </div>
+                <a href="?SHOW_SHIP_CREATOR=1&userId={{ USER_ID }}&buildplanId={{ buildplan.getId }}" 
+                   style="display: inline-block; padding: 5px 15px; background-color: #2b2b2b; border-radius: 4px; text-decoration: none; color: #fff;">
+                    Auswählen
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <h2>Schiff erstellen: {{ SELECTED_BUILDPLAN.getName }}</h2>
+    <form action="/npc/index.php" method="post">
+        <input type="hidden" name="userId" value="{{ USER_ID }}">
+        <input type="hidden" name="buildplanId" value="{{ SELECTED_BUILDPLAN.getId }}">
+
+        {% if TORPEDO_TYPES|length > 0 %}
+            <div class="torpedo-selection" style="margin: 10px 0;">
+                <h3>Torpedos</h3>
+                <div>
+                    <input type="radio" name="torpedoTypeId" value="0" checked />Keine Torpedos
+                </div>
+                {% for torpedo in TORPEDO_TYPES %}
+                    <div>
+                        <input type="radio" name="torpedoTypeId" value="{{ torpedo.getId }}" />
+                        {{ torpedo.getName }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div style="margin: 10px 0;">
+            <label for="layer">Layer:</label>
+            <select name="layer" id="layer">
+                {% for layer in LAYERS %}
+                    <option value="{{ layer.getId }}" {% if layer.getId == 2 %}selected{% endif %}>{{ layer.getName }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div style="margin: 10px 0;">
+            <label for="cx">X-Koordinate:</label>
+            <input type="number" id="cx" name="cx" required>
+            
+            <label for="cy">Y-Koordinate:</label>
+            <input type="number" id="cy" name="cy" required>
+        </div>
+
+        <div style="margin: 10px 0;">
+            <label for="shipcount">Anzahl Schiffe:</label>
+            <input type="number" id="shipcount" name="shipcount" value="1" min="1">
+        </div>
+
+        <div style="margin: 10px 0;">
+            <label for="reason">Grund:</label>
+            <input type="text" id="reason" name="reason" size="20">
+        </div>
+
+        <input type="submit" name="B_CREATE_SHIP" value="Schiff(e) erstellen" />
+    </form>
+{% endif %}
+</div>
+{% endblock %}

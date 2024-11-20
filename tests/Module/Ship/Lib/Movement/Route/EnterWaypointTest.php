@@ -44,6 +44,14 @@ class EnterWaypointTest extends StuTestCase
         $ship->shouldReceive('setLocation')
             ->with($waypoint)
             ->once();
+        $ship->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(42);
+
+        $waypoint->shouldReceive('getShips->set')
+            ->with(42, $ship)
+            ->once();
 
         $this->subject->enterNextWaypoint(
             $ship,
@@ -61,6 +69,14 @@ class EnterWaypointTest extends StuTestCase
 
         $ship->shouldReceive('setLocation')
             ->with($waypoint)
+            ->once();
+        $ship->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(1234);
+
+        $waypoint->shouldReceive('getShips->set')
+            ->with(1234, $ship)
             ->once();
 
         $this->stuTime->shouldReceive('time')
@@ -92,6 +108,14 @@ class EnterWaypointTest extends StuTestCase
         $ship->shouldReceive('setLocation')
             ->with($waypoint)
             ->once();
+        $ship->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(1234);
+
+        $waypoint->shouldReceive('getShips->set')
+            ->with(1234, $ship)
+            ->once();
 
         $this->subject->enterNextWaypoint(
             $ship,
@@ -108,6 +132,14 @@ class EnterWaypointTest extends StuTestCase
 
         $ship->shouldReceive('setLocation')
             ->with($waypoint)
+            ->once();
+        $ship->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(1234);
+
+        $waypoint->shouldReceive('getShips->set')
+            ->with(1234, $ship)
             ->once();
 
         $this->subject->enterNextWaypoint(

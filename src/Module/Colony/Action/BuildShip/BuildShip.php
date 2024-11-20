@@ -9,6 +9,7 @@ use request;
 use RuntimeException;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
+use Stu\Component\Ship\Buildplan\BuildplanSignatureCreationInterface;
 use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
@@ -18,7 +19,6 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
 use Stu\Orm\Entity\ModuleInterface;
-use Stu\Orm\Entity\ShipBuildplan;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
@@ -32,9 +32,22 @@ final class BuildShip implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_BUILD_SHIP';
 
-    public function __construct(private ColonyFunctionManagerInterface $colonyFunctionManager, private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository, private ColonyLoaderInterface $colonyLoader, private BuildplanModuleRepositoryInterface $buildplanModuleRepository, private ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository, private ShipBuildplanRepositoryInterface $shipBuildplanRepository, private ModuleRepositoryInterface $moduleRepository, private ColonyShipQueueRepositoryInterface $colonyShipQueueRepository, private ShipRumpRepositoryInterface $shipRumpRepository, private ColonyStorageManagerInterface $colonyStorageManager, private ColonyLibFactoryInterface $colonyLibFactory, private ShipCrewCalculatorInterface $shipCrewCalculator, private ColonyRepositoryInterface $colonyRepository)
-    {
-    }
+    public function __construct(
+        private ColonyFunctionManagerInterface $colonyFunctionManager,
+        private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository,
+        private ColonyLoaderInterface $colonyLoader,
+        private BuildplanModuleRepositoryInterface $buildplanModuleRepository,
+        private ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository,
+        private ShipBuildplanRepositoryInterface $shipBuildplanRepository,
+        private ModuleRepositoryInterface $moduleRepository,
+        private ColonyShipQueueRepositoryInterface $colonyShipQueueRepository,
+        private ShipRumpRepositoryInterface $shipRumpRepository,
+        private ColonyStorageManagerInterface $colonyStorageManager,
+        private ColonyLibFactoryInterface $colonyLibFactory,
+        private ShipCrewCalculatorInterface $shipCrewCalculator,
+        private BuildplanSignatureCreationInterface $buildplanSignatureCreation,
+        private ColonyRepositoryInterface $colonyRepository
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -67,8 +80,13 @@ final class BuildShip implements ActionControllerInterface
         }
         $game->setView('SHOW_MODULE_SCREEN');
 
-        if ($this->colonyShipQueueRepository->getAmountByColonyAndBuildingFunction($colonyId, $building_function->getBuildingFunction()) > 0) {
-            $game->addInformation(_('In dieser Werft wird bereits ein Schiff gebaut'));
+        if ($this->colonyShipQueueRepository->getAmountByColonyAndBuildingFunctionAndMode($colonyId, $building_function->getBuildingFunction(), 1) > 0) {
+            $game->addInformation(_('In dieser Werft wird aktuell ein Schiff gebaut'));
+            return;
+        }
+
+        if ($this->colonyShipQueueRepository->getAmountByColonyAndBuildingFunctionAndMode($colonyId, $building_function->getBuildingFunction(), 2) > 0) {
+            $game->addInformation(_('In dieser Werft wird aktuell ein Schiff umgerüstet'));
             return;
         }
 
@@ -90,9 +108,8 @@ final class BuildShip implements ActionControllerInterface
 
         /** @var array<int, ModuleInterface> */
         $modules = [];
-        $sigmod = [];
 
-        foreach (ShipModuleTypeEnum::cases() as $moduleType) {
+        foreach (ShipModuleTypeEnum::getModuleSelectorOrder() as $moduleType) {
 
             $value = $moduleType->value;
             $module = request::postArray('mod_' . $value);
@@ -108,7 +125,7 @@ final class BuildShip implements ActionControllerInterface
                 );
                 return;
             }
-            if ($moduleType === ShipModuleTypeEnum::SPECIAL) {
+            if ($moduleType->isSpecialSystemType()) {
                 $specialCount = 0;
                 foreach ($module as $id) {
                     $specialMod = $this->moduleRepository->find((int) $id);
@@ -117,7 +134,6 @@ final class BuildShip implements ActionControllerInterface
                     }
 
                     $modules[$id] = $specialMod;
-                    $sigmod[$id] = $id;
                     $specialCount++;
                 }
 
@@ -128,7 +144,6 @@ final class BuildShip implements ActionControllerInterface
                 continue;
             }
             if (count($module) == 0 || current($module) == 0) {
-                $sigmod[$value] = 0;
                 continue;
             }
             if (current($module) > 0) {
@@ -144,7 +159,6 @@ final class BuildShip implements ActionControllerInterface
                 throw new RuntimeException(sprintf('moduleId %d does not exist', (int)current($module)));
             }
             $modules[current($module)] = $mod;
-            $sigmod[$value] = $mod->getId();
         }
 
         $crewUsage = $this->shipCrewCalculator->getCrewUsage($modules, $rump, $user);
@@ -172,7 +186,7 @@ final class BuildShip implements ActionControllerInterface
             $this->colonyStorageManager->lowerStorage($colony, $module->getCommodity(), 1);
         }
         $game->setView(ShowColony::VIEW_IDENTIFIER);
-        $signature = ShipBuildplan::createSignature($sigmod, $crewUsage);
+        $signature = $this->buildplanSignatureCreation->createSignature($modules, $crewUsage);
         $plan = $this->shipBuildplanRepository->getByUserShipRumpAndSignature($userId, $rump->getId(), $signature);
         if ($plan === null) {
             $plannameFromRequest = request::indString('buildplanname');
@@ -225,7 +239,8 @@ final class BuildShip implements ActionControllerInterface
         $queue->setShipBuildplan($plan);
         $queue->setBuildtime($plan->getBuildtime());
         $queue->setFinishDate(time() + $plan->getBuildtime());
-        $queue->setBuildingFunctionId($building_function->getBuildingFunction());
+        $queue->setBuildingFunction($building_function->getBuildingFunction());
+        $queue->setMode(1);
 
         $colony->setEps($colony->getEps() - $rump->getEpsCost());
 

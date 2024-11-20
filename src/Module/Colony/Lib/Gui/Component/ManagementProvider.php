@@ -4,7 +4,7 @@ namespace Stu\Module\Colony\Lib\Gui\Component;
 
 use Override;
 use request;
-use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Colony\OrbitShipListRetrieverInterface;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
@@ -18,9 +18,14 @@ use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 final class ManagementProvider implements GuiComponentProviderInterface
 {
-    public function __construct(private TorpedoTypeRepositoryInterface $torpedoTypeRepository, private DatabaseCategoryWrapperFactoryInterface $databaseCategoryWrapperFactory, private OrbitShipListRetrieverInterface $orbitShipListRetriever, private ColonyFunctionManagerInterface $colonyFunctionManager, private ShipWrapperFactoryInterface $shipWrapperFactory, private ColonyLibFactoryInterface $colonyLibFactory)
-    {
-    }
+    public function __construct(
+        private TorpedoTypeRepositoryInterface $torpedoTypeRepository,
+        private DatabaseCategoryWrapperFactoryInterface $databaseCategoryWrapperFactory,
+        private OrbitShipListRetrieverInterface $orbitShipListRetriever,
+        private ColonyFunctionManagerInterface $colonyFunctionManager,
+        private ShipWrapperFactoryInterface $shipWrapperFactory,
+        private ColonyLibFactoryInterface $colonyLibFactory
+    ) {}
 
     #[Override]
     public function setTemplateVariables(
@@ -69,7 +74,7 @@ final class ManagementProvider implements GuiComponentProviderInterface
             $firstOrbitShip ? $this->shipWrapperFactory->wrapShip($firstOrbitShip) : null
         );
 
-        $particlePhalanx = $this->colonyFunctionManager->hasFunction($host, BuildingEnum::BUILDING_FUNCTION_PARTICLE_PHALANX);
+        $particlePhalanx = $this->colonyFunctionManager->hasFunction($host, BuildingFunctionEnum::BUILDING_FUNCTION_PARTICLE_PHALANX);
         $game->setTemplateVar(
             'BUILDABLE_TORPEDO_TYPES',
             $particlePhalanx ? $this->torpedoTypeRepository->getForUser($game->getUser()->getId()) : null
@@ -79,6 +84,8 @@ final class ManagementProvider implements GuiComponentProviderInterface
         $game->setTemplateVar('SHIELDING_MANAGER', $shieldingManager);
 
         $game->setTemplateVar('DEPOSIT_MININGS', $this->getUserDepositMinings($host));
+
+        $game->setTemplateVar('VISUAL_PANEL', $this->colonyLibFactory->createColonyScanPanel($host));
     }
 
     /**

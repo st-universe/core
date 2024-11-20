@@ -35,7 +35,6 @@ final class ShipSystemRepository extends EntityRepository implements ShipSystemR
         $em = $this->getEntityManager();
 
         $em->remove($post);
-        $em->flush();
     }
 
     #[Override]
@@ -45,6 +44,15 @@ final class ShipSystemRepository extends EntityRepository implements ShipSystemR
             ['ship_id' => $shipId],
             ['system_type' => 'asc']
         );
+    }
+
+    #[Override]
+    public function getByShipAndModule(int $shipId, int $moduleId): ?ShipSystemInterface
+    {
+        return $this->findOneBy([
+            'ship_id' => $shipId,
+            'module_id' => $moduleId
+        ]);
     }
 
     #[Override]

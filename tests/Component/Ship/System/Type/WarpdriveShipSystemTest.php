@@ -7,43 +7,39 @@ namespace Stu\Component\Ship\System\Type;
 use Mockery;
 use Mockery\MockInterface;
 use Override;
-use Stu\Component\Ship\ShipStateEnum;
+use Stu\Component\Ship\Event\WarpdriveActivationEvent;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Module\Ship\Lib\Interaction\ShipUndockingInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ReactorWrapperInterface;
-use Stu\Module\Ship\Lib\ShipStateChangerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\TholianWebInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\StuTestCase;
 
 //TODO@hux test handleDamage + handleDestruction
 class WarpdriveShipSystemTest extends StuTestCase
 {
-    /** @var null|MockInterface|ShipStateChangerInterface */
-    private $shipStateChanger;
+    /** @var MockInterface&GameControllerInterface */
+    private $game;
 
-    /** @var null|MockInterface|ShipRepositoryInterface */
-    private $shipUndocking;
-
-    /** @var null|MockInterface|ShipSystemManagerInterface */
+    /** @var MockInterface&ShipSystemManagerInterface */
     private $managerMock;
 
     private WarpdriveShipSystem $system;
 
+    /** @var MockInterface&ShipInterface */
     private ShipInterface $ship;
+    /** @var MockInterface&ShipWrapperInterface */
     private ShipWrapperInterface $wrapper;
 
     #[Override]
     public function setUp(): void
     {
-        $this->shipStateChanger = $this->mock(ShipStateChangerInterface::class);
-        $this->shipUndocking = $this->mock(ShipUndockingInterface::class);
+        $this->game = $this->mock(GameControllerInterface::class);
 
         $this->managerMock = $this->mock(ShipSystemManagerInterface::class);
 
@@ -56,8 +52,7 @@ class WarpdriveShipSystemTest extends StuTestCase
             ->andReturn($this->ship);
 
         $this->system = new WarpdriveShipSystem(
-            $this->shipStateChanger,
-            $this->shipUndocking
+            $this->game
         );
     }
 
@@ -229,7 +224,6 @@ class WarpdriveShipSystemTest extends StuTestCase
     public function testActivateActivatesAndActivatesWarpStateOnTraktorShip(): void
     {
         $system = $this->mock(ShipSystemInterface::class);
-        $traktorBeamShipWrapper = $this->mock(ShipWrapperInterface::class);
 
         //DOCKING STUFF
         $this->ship->shouldReceive('setDockedTo')
@@ -245,23 +239,19 @@ class WarpdriveShipSystemTest extends StuTestCase
             ->with(ShipSystemModeEnum::MODE_ON)
             ->once();
 
-        $this->wrapper->shouldReceive('getTractoredShipWrapper')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($traktorBeamShipWrapper);
-
-        $this->shipStateChanger->shouldReceive('changeShipState')
-            ->with($this->wrapper, ShipStateEnum::SHIP_STATE_NONE)
-            ->once();
-        $this->shipStateChanger->shouldReceive('changeShipState')
-            ->with($traktorBeamShipWrapper, ShipStateEnum::SHIP_STATE_NONE)
-            ->once();
-
-        $this->shipUndocking->shouldReceive('undockAllDocked')
-            ->with($this->ship)
+        /** @var WarpdriveActivationEvent|null */
+        $event = null;
+        $this->game->shouldReceive('triggerEvent')
+            ->with(Mockery::on(function ($arg) use (&$event): bool {
+                $event = $arg;
+                return true;
+            }))
             ->once();
 
         $this->system->activate($this->wrapper, $this->managerMock);
+
+        $this->assertNotNull($event);
+        $this->assertEquals($this->wrapper, $event->getWrapper());
     }
 
     public function testDeactivateDeactivates(): void

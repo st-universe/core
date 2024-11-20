@@ -10,6 +10,7 @@ use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Lib\ModuleScreen\ModuleSelector;
+use Stu\Module\Colony\Lib\Gui\ColonyScanPanel;
 use Stu\Orm\Entity\BuildingFunctionInterface;
 use Stu\Orm\Entity\BuildingInterface;
 use Stu\Orm\Entity\ColonyInterface;
@@ -83,4 +84,8 @@ interface ColonyLibFactoryInterface
         PlanetFieldHostInterface $host,
         ?array $production = null
     ): ColonyPopulationCalculatorInterface;
+
+    public function createColonyScanPanel(
+        ColonyInterface $colony
+    ): ColonyScanPanel;
 }

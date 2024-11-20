@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Deletion\Handler;
 
+use ArrayIterator;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
@@ -18,14 +19,9 @@ use Doctrine\Common\Collections\Collection;
 
 class AllianceDeletionHandlerTest extends MockeryTestCase
 {
-    /**
-     * @var AllianceJobRepositoryInterface|MockInterface|null
-     */
+    /** @var AllianceJobRepositoryInterface&MockInterface */
     private $allianceJobRepository;
-
-    /**
-     * @var AllianceActionManagerInterface|MockInterface|null
-     */
+    /** @var AllianceActionManagerInterface&MockInterface */
     private $allianceActionManager;
 
     private PlayerDeletionHandlerInterface $handler;
@@ -33,10 +29,8 @@ class AllianceDeletionHandlerTest extends MockeryTestCase
     #[Override]
     public function setUp(): void
     {
-        /** @var AllianceJobRepositoryInterface|MockInterface $allianceJobRepository */
         $this->allianceJobRepository = Mockery::mock(AllianceJobRepositoryInterface::class);
 
-        /** @var AllianceActionManagerInterface|MockInterface $allianceActionManager */
         $this->allianceActionManager = Mockery::mock(AllianceActionManagerInterface::class);
 
         $this->handler = new AllianceDeletionHandler(
@@ -136,7 +130,7 @@ class AllianceDeletionHandlerTest extends MockeryTestCase
             ->with($user)
             ->once();
         $members->shouldReceive('getIterator')
-            ->andReturn(new \ArrayIterator([]));
+            ->andReturn(new ArrayIterator([]));
 
         $this->allianceActionManager->shouldReceive('delete')
             ->with($allianceId, true)
@@ -209,7 +203,7 @@ class AllianceDeletionHandlerTest extends MockeryTestCase
             ->with($user)
             ->once();
         $members->shouldReceive('getIterator')
-            ->andReturn(new \ArrayIterator([]));
+            ->andReturn(new ArrayIterator([]));
 
         $successorJob->shouldReceive('getUserId')
             ->withNoArgs()

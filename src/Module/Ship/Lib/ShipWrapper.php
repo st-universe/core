@@ -13,6 +13,8 @@ use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\Data\AbstractSystemData;
 use Stu\Component\Ship\System\Data\AstroLaboratorySystemData;
+use Stu\Component\Ship\System\Data\AggregationSystemSystemData;
+use Stu\Component\Ship\System\Data\BussardCollectorSystemData;
 use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Component\Ship\System\Data\FusionCoreSystemData;
 use Stu\Component\Ship\System\Data\HullSystemData;
@@ -266,6 +268,31 @@ final class ShipWrapper implements ShipWrapperInterface
     }
 
     #[Override]
+    public function canBeRetrofitted(): bool
+    {
+        if ($this->ship->getAlertState() !== ShipAlertStateEnum::ALERT_GREEN) {
+            return false;
+        }
+
+        if ($this->ship->getShieldState()) {
+            return false;
+        }
+
+        if ($this->ship->getCloakState()) {
+            return false;
+        }
+
+        if (
+            $this->ship->getBuildplan() != null
+            && $this->ship->getBuildplan()->getUser() != $this->game->getUser()
+        ) {
+            return false;
+        }
+
+        return true;
+    }
+
+    #[Override]
     public function canFire(): bool
     {
         $ship = $this->ship;
@@ -437,6 +464,24 @@ final class ShipWrapper implements ShipWrapperInterface
         return $this->getSpecificShipSystem(
             ShipSystemTypeEnum::SYSTEM_TRACKER,
             TrackerSystemData::class
+        );
+    }
+
+    #[Override]
+    public function getAggregationSystemSystemData(): ?AggregationSystemSystemData
+    {
+        return $this->getSpecificShipSystem(
+            ShipSystemTypeEnum::SYSTEM_AGGREGATION_SYSTEM,
+            AggregationSystemSystemData::class
+        );
+    }
+
+    #[Override]
+    public function getBussardCollectorSystemData(): ?BussardCollectorSystemData
+    {
+        return $this->getSpecificShipSystem(
+            ShipSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR,
+            BussardCollectorSystemData::class
         );
     }
 

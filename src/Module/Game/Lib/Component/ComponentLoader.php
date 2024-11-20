@@ -22,10 +22,10 @@ final class ComponentLoader implements ComponentLoaderInterface
     private array $neededComponents = [];
 
     /** @param array<int, RenderFragmentInterface> $componentProviders */
-    public function __construct(private array $componentProviders)
-    {
-    }
-
+    public function __construct(
+        private TwigPageInterface $twigPage,
+        private array $componentProviders
+    ) {}
 
     #[Override]
     public function addComponentUpdate(ComponentEnum $component, bool $isInstantUpdate = true): void
@@ -87,10 +87,8 @@ final class ComponentLoader implements ComponentLoaderInterface
     }
 
     #[Override]
-    public function loadRegisteredComponents(
-        TwigPageInterface $twigPage,
-        GameControllerInterface $game
-    ): void {
+    public function loadRegisteredComponents(GameControllerInterface $game): void
+    {
 
         foreach ($this->neededComponents as $component) {
             if (!array_key_exists($component->value, $this->componentProviders)) {
@@ -98,7 +96,7 @@ final class ComponentLoader implements ComponentLoaderInterface
             }
 
             $componentProvider = $this->componentProviders[$component->value];
-            $componentProvider->render($game->getUser(), $twigPage, $game);
+            $componentProvider->render($game->getUser(), $this->twigPage, $game);
         }
     }
 }

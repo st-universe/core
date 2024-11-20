@@ -11,4 +11,10 @@ interface MiningQueueInterface
     public function getShip(): ShipInterface;
 
     public function setShip(ShipInterface $ship): MiningQueueInterface;
+
+    public function getLocationMiningId(): int;
+
+    public function setLocationMining(LocationMiningInterface $locationMining): MiningQueueInterface;
+
+    public function getLocationMining(): LocationMiningInterface;
 }

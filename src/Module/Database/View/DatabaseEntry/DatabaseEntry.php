@@ -79,7 +79,7 @@ final class DatabaseEntry implements ViewControllerInterface
         $game->appendNavigationPart(
             sprintf(
                 'database.php?%s=1&cat=%d&ent=%d',
-                static::VIEW_IDENTIFIER,
+                self::VIEW_IDENTIFIER,
                 $categoryId,
                 $entryId,
             ),
@@ -234,8 +234,8 @@ final class DatabaseEntry implements ViewControllerInterface
         }
 
         $latestScans = [];
-        foreach ($scansByColony as $colonyId => $scans) {
-            usort($scans, fn ($a, $b) => $b->getDate() <=> $a->getDate());
+        foreach ($scansByColony as $scans) {
+            usort($scans, fn ($a, $b): int => $b->getDate() <=> $a->getDate());
             $latestScans[] = $scans[0];
         }
 

@@ -2,21 +2,25 @@
 
 namespace Stu\Lib\Mail;
 
-use Laminas\Mail\Message;
-use Laminas\Mail\Transport\Sendmail;
 use Override;
+use Stu\Module\Config\StuConfigInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 
 class MailFactory implements MailFactoryInterface
 {
-    #[Override]
-    public function createMessage(): Message
-    {
-        return new Message();
-    }
+    public function __construct(
+        private MailerInterface $mailer,
+        private StuConfigInterface $stuConfig
+    ) {}
 
     #[Override]
-    public function createSendmail(): Sendmail
+    public function createStuMail(): StuMailInterface
     {
-        return new Sendmail();
+        return new StuMail(
+            new Email(),
+            $this->mailer,
+            $this->stuConfig
+        );
     }
 }

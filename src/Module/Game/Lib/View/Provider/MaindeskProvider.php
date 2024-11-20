@@ -28,9 +28,7 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class MaindeskProvider implements ViewComponentProviderInterface
 {
-    public function __construct(private HistoryRepositoryInterface $historyRepository, private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository, private UserProfileVisitorRepositoryInterface $userProfileVisitorRepository, private KnPostRepositoryInterface $knPostRepository, private ColonyShipQueueRepositoryInterface $colonyShipQueueRepository, private ShipyardShipQueueRepositoryInterface $shipyardShipQueueRepository, private UserRepositoryInterface $userRepository, private SpacecraftEmergencyRepositoryInterface $spacecraftEmergencyRepository, private KnFactoryInterface $knFactory, private ColonyLimitCalculatorInterface $colonyLimitCalculator, private PlayerRelationDeterminatorInterface $playerRelationDeterminator, private CrewLimitCalculatorInterface $crewLimitCalculator, private CrewCountRetrieverInterface $crewCountRetriever)
-    {
-    }
+    public function __construct(private HistoryRepositoryInterface $historyRepository, private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository, private UserProfileVisitorRepositoryInterface $userProfileVisitorRepository, private KnPostRepositoryInterface $knPostRepository, private ColonyShipQueueRepositoryInterface $colonyShipQueueRepository, private ShipyardShipQueueRepositoryInterface $shipyardShipQueueRepository, private UserRepositoryInterface $userRepository, private SpacecraftEmergencyRepositoryInterface $spacecraftEmergencyRepository, private KnFactoryInterface $knFactory, private ColonyLimitCalculatorInterface $colonyLimitCalculator, private PlayerRelationDeterminatorInterface $playerRelationDeterminator, private CrewLimitCalculatorInterface $crewLimitCalculator, private CrewCountRetrieverInterface $crewCountRetriever) {}
 
     #[Override]
     public function setTemplateVariables(GameControllerInterface $game): void
@@ -46,26 +44,6 @@ final class MaindeskProvider implements ViewComponentProviderInterface
         $game->setTemplateVar(
             'DISPLAY_COLONIZATION_SHIP_DIALOGUE',
             $user->getState() === UserEnum::USER_STATE_COLONIZATION_SHIP
-        );
-
-        $game->setTemplateVar(
-            'DISPLAY_TUTORIAL_1',
-            $user->getState() === UserEnum::USER_STATE_TUTORIAL1
-        );
-
-        $game->setTemplateVar(
-            'DISPLAY_TUTORIAL_2',
-            $user->getState() === UserEnum::USER_STATE_TUTORIAL2
-        );
-
-        $game->setTemplateVar(
-            'DISPLAY_TUTORIAL_3',
-            $user->getState() === UserEnum::USER_STATE_TUTORIAL3
-        );
-
-        $game->setTemplateVar(
-            'DISPLAY_TUTORIAL_4',
-            $user->getState() === UserEnum::USER_STATE_TUTORIAL4
         );
 
         $newAmount = $this->knPostRepository->getAmountSince($user->getKNMark());
@@ -99,7 +77,11 @@ final class MaindeskProvider implements ViewComponentProviderInterface
         );
         $game->setTemplateVar(
             'SHIP_BUILD_PROGRESS',
-            [...$this->colonyShipQueueRepository->getByUser($userId), ...$this->shipyardShipQueueRepository->getByUser($userId)]
+            [...$this->colonyShipQueueRepository->getByUserAndMode($userId, 1), ...$this->shipyardShipQueueRepository->getByUser($userId)]
+        );
+        $game->setTemplateVar(
+            'SHIP_RETROFIT_PROGRESS',
+            [...$this->colonyShipQueueRepository->getByUserAndMode($userId, 2)]
         );
 
         $alliance = $user->getAlliance();

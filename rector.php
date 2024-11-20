@@ -37,30 +37,29 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->importNames();
 
     $rectorConfig->sets([
-        //SetList::CODE_QUALITY,        //last 2024-07-03
+        //SetList::CODE_QUALITY,        //last 2024-11-14
         //SetList::CODING_STYLE,
-        //SetList::DEAD_CODE,           //last 2024-07-03
-        SetList::PRIVATIZATION,         //last 2024-07-03
-        //SetList::TYPE_DECLARATION,    //last 2024-07-03
+        //SetList::DEAD_CODE,           //last 2024-11-14
+        //SetList::PRIVATIZATION,       //last 2024-11-14
+        //SetList::TYPE_DECLARATION,    //last 2024-11-14
         //LevelSetList::UP_TO_PHP_74,   //last 2024-07-03
-        //LevelSetList::UP_TO_PHP_83,
+        //LevelSetList::UP_TO_PHP_84,
         //DoctrineSetList::ANNOTATIONS_TO_ATTRIBUTES //last 2023-12-13
     ]);
 
-    /** last 2024-07-03 - partial of php80 to php84
+    /** last 2024-11-14 - partial of php80 to php84
     $rectorConfig->rules([
         AddOverrideAttributeToOverriddenMethodsRector::class,
         AddTypeToConstRector::class,
         RemoveUnusedVariableInCatchRector::class,
         ClassPropertyAssignToConstructorPromotionRector::class,
         ChangeSwitchToMatchRector::class,
-        MixedTypeRector::class
+        MixedTypeRector::class,
         FinalPrivateToPrivateVisibilityRector::class,
         MyCLabsClassToEnumRector::class
     ]); */
 
-    $rectorConfig->rules([
-    ]);
+    $rectorConfig->rules([]);
 
     $rectorConfig->skip([
         SimplifyBoolIdenticalTrueRector::class,

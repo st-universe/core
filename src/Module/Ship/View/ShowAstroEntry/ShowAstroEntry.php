@@ -9,8 +9,8 @@ use request;
 
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Orm\Repository\AstroEntryRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
@@ -18,9 +18,12 @@ final class ShowAstroEntry implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_ASTRO_ENTRY';
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private AstroEntryRepositoryInterface $astroEntryRepository, private MapRepositoryInterface $mapRepository, private StarSystemMapRepositoryInterface $starSystemMapRepository)
-    {
-    }
+    public function __construct(
+        private ShipLoaderInterface $shipLoader,
+        private MapRepositoryInterface $mapRepository,
+        private StarSystemMapRepositoryInterface $starSystemMapRepository,
+        private AstroEntryLibInterface $astroEntryLib
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -36,7 +39,7 @@ final class ShowAstroEntry implements ViewControllerInterface
 
         $isSystem = request::getIntFatal('isSystem');
 
-        $astroEntry = $this->astroEntryRepository->getByShipLocation($ship, $isSystem === 1);
+        $astroEntry = $this->astroEntryLib->getAstroEntryByShipLocation($ship, $isSystem === 1);
         if ($astroEntry === null) {
             return;
         }
@@ -58,7 +61,7 @@ final class ShowAstroEntry implements ViewControllerInterface
         $game->setTemplateVar(
             'FIELDS',
             array_map(
-                fn (int $id) => $repository->find($id),
+                fn(int $id) => $repository->find($id),
                 $fieldIdArray
             )
         );

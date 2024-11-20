@@ -14,11 +14,13 @@ use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Component\Player\Deletion\Confirmation\RequestDeletionConfirmation;
 use Stu\Component\Player\Deletion\Confirmation\RequestDeletionConfirmationInterface;
 use Stu\Component\Player\Deletion\Handler\AllianceDeletionHandler;
+use Stu\Component\Player\Deletion\Handler\AstronomicalEntryDeletionHandler;
 use Stu\Component\Player\Deletion\Handler\ColonyDeletionHandler;
 use Stu\Component\Player\Deletion\Handler\CrewDeletionHandler;
 use Stu\Component\Player\Deletion\Handler\FleetDeletionHandler;
 use Stu\Component\Player\Deletion\Handler\KnPostDeletionHandler;
 use Stu\Component\Player\Deletion\Handler\PrivateMessageDeletionHandler;
+use Stu\Component\Player\Deletion\Handler\PirateWrathDeletionHandler;
 use Stu\Component\Player\Deletion\Handler\RpgPlotDeletionHandler;
 use Stu\Component\Player\Deletion\Handler\ShipBuildplanDeletionHandler;
 use Stu\Component\Player\Deletion\Handler\ShipDeletionHandler;
@@ -58,6 +60,7 @@ return [
         get(LoggerUtilFactoryInterface::class),
         get(Parser::class),
         [
+            autowire(PirateWrathDeletionHandler::class),
             autowire(AllianceDeletionHandler::class),
             autowire(ColonyDeletionHandler::class),
             autowire(PrivateMessageDeletionHandler::class),
@@ -66,6 +69,7 @@ return [
             autowire(TradepostDeletionHandler::class),
             autowire(CrewDeletionHandler::class),
             autowire(ShipDeletionHandler::class),
+            autowire(AstronomicalEntryDeletionHandler::class),
             autowire(FleetDeletionHandler::class),
             autowire(ShipBuildplanDeletionHandler::class),
             autowire(UserMapDeletionHandler::class),

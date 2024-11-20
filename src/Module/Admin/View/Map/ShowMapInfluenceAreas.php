@@ -18,7 +18,11 @@ final class ShowMapInfluenceAreas implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_INFLUENCE_AREAS';
 
-    public function __construct(private MapRepositoryInterface $mapRepository, private LayerRepositoryInterface $layerRepository, private ImageCreationInterface $imageCreation) {}
+    public function __construct(
+        private MapRepositoryInterface $mapRepository,
+        private LayerRepositoryInterface $layerRepository,
+        private ImageCreationInterface $imageCreation
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -35,7 +39,7 @@ final class ShowMapInfluenceAreas implements ViewControllerInterface
         $game->appendNavigationPart(
             sprintf(
                 '/admin/?%s=1',
-                static::VIEW_IDENTIFIER
+                self::VIEW_IDENTIFIER
             ),
             _('Einflussgebiete')
         );
@@ -55,8 +59,6 @@ final class ShowMapInfluenceAreas implements ViewControllerInterface
 
         $img = imagecreatetruecolor($width, $height);
 
-
-        // mapfields
         $startY = 1;
         $cury = 0;
         $curx = 0;
@@ -92,19 +94,15 @@ final class ShowMapInfluenceAreas implements ViewControllerInterface
 
                             $ret = [];
                             if (mb_eregi("[#]?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})", $rgbCode, $ret)) {
-                                $red = hexdec($ret[1]);
-
-                                $green = hexdec($ret[2]);
-
-                                $blue = hexdec($ret[3]);
+                                $red = (int) hexdec($ret[1]);
+                                $green = (int) hexdec($ret[2]);
+                                $blue = (int) hexdec($ret[3]);
                             }
-                            if (
-                                !is_int($red) || $red < 1 || $red > 255
-                                || !is_int($green) || $green < 1 || $green > 255
-                                || !is_int($blue) || $blue < 1 || $blue > 255
-                            ) {
-                                throw new RuntimeException('rgb range exception');
-                            }
+
+                            $red = $this->validateRgb($red);
+                            $green = $this->validateRgb($green);
+                            $blue = $this->validateRgb($blue);
+
                             $col = imagecolorallocate($border, $red, $green, $blue);
                         }
                     }
@@ -113,13 +111,12 @@ final class ShowMapInfluenceAreas implements ViewControllerInterface
 
             if ($col === null) {
                 $rest = $id % 200;
-                if ($rest < 1) {
-                    throw new RuntimeException('rgb range exception');
-                }
+                $rest = max(1, $rest);
+                $rest = $this->validateRgb($rest);
                 $col = imagecolorallocate($border, $rest, $rest, $rest);
             }
 
-            if (!$col) {
+            if ($col === false) {
                 throw new RuntimeException('color range exception');
             }
             imagefill($border, 0, 0, $col);
@@ -128,5 +125,11 @@ final class ShowMapInfluenceAreas implements ViewControllerInterface
         }
 
         return $img;
+    }
+
+    /** @return int<0, 255> */
+    private function validateRgb(int $value): int
+    {
+        return max(0, min(255, $value));
     }
 }

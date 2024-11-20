@@ -33,7 +33,7 @@ final class ShowNewNote implements ViewControllerInterface
         $game->appendNavigationPart(
             sprintf(
                 'notes.php?%s=1',
-                static::VIEW_IDENTIFIER
+                self::VIEW_IDENTIFIER
             ),
             _('Neue Notiz')
         );

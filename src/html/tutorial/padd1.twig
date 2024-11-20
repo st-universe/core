@@ -1,0 +1,475 @@
+{# Credits Matthew Simpson https://codepen.io/matthewcsimpson/pen/MWZVLpz #}
+
+<div id="padd-popup" class="padd-popup">
+    <div class="top">
+        <div class="top__screen">
+            <div class="top__screen_screen">
+                <div class="top__screen_bars">
+                    <div class="top__screen_barleft"></div>
+                    <div class="top__screen_barcenter">
+                        <p class="top__screen_barnums">4701-D</p>
+                    </div>
+                    <div class="top__screen_barright"></div>
+                </div>
+                <div id="padd-title" class="top__screen_title">
+                    <p class="top__screen_titletext"></p>
+                </div>
+                <div id="padd-text" class="top__screen_content"></div>
+                <div class="top__screen_bars">
+                    <div class="top__screen_barleft"></div>
+                    <div class="top__screen_barcenter"></div>
+                    <div class="top__screen_barright"></div>
+                </div>
+            </div>
+        </div>
+        <div class="top__statusbar">
+            <div class="top__statusbar_screen">
+                <div class="top__statusbar_left">
+                    <div class="top__statusbar_leftgradient">
+                        <div class="top__statusbar_buttonred"></div>
+                    </div>
+                </div>
+                <div class="top__statusbar_right">
+                    <div class="top__statusbar_rightbars">
+                        <div class="top__statusbar_bar"></div>
+                        <div class="top__statusbar_bar"></div>
+                        <div class="top__statusbar_bar"></div>
+                        <div class="top__statusbar_bar"></div>
+                        <div class="top__statusbar_bar"></div>
+                        <div class="top__statusbar_bar"></div>
+                        <div class="top__statusbar_bar"></div>
+                        <div class="top__statusbar_bar"></div>
+                        <div class="top__statusbar_bar"></div>
+                        <div class="top__statusbar_bar"></div>
+                    </div>
+
+                    <div class="top__statusbar_rightgradient"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bot">
+        <div class="bot__left">
+            <div class="bot__left_screen">
+                <div class="bot__left_buttontop">
+                    <p class="bot__left_buttontext">8921</p>
+                </div>
+                <div class="bot__left_buttonbot">
+                    <p class="bot__left_buttontext">0023</p>
+                </div>
+            </div>
+        </div>
+        <div class="bot__right">
+            <div class="bot__right_screen">
+                <div class="bot__right_buttontop">
+                    <div class="bot__right_buttonsec bot__right_buttonsec--top">
+                        <p class="bot__right_buttonnums bot__right_buttonnums--top">55</p>
+                    </div>
+                    <div class="bot__right_buttonsec bot__right_buttonsec--top">
+                        <div id="back-button" class="nav-button">◀</div>
+                    </div>
+                    <div class="bot__right_buttonsec bot__right_buttonsec--top">
+                        <div class="bot__right_buttonblack"></div>
+                    </div>
+                </div>
+                <div class="bot__right_buttonbot">
+                    <div class="bot__right_buttonsec bot__right_buttonsec--bot">
+                        <p class="bot__right_buttonnums bot__right_buttonnums--bot">47</p>
+                    </div>
+                    <div class="bot__right_buttonsec bot__right_buttonsec--bot">
+                        <div id="next-button" class="nav-button">▶</div>
+                    </div>
+                    <div class="bot__right_buttonsec bot__right_buttonsec--bot">
+                        <div class="bot__right_buttonblack"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+:root {
+    --padding: 18px;
+    --containerwidth: 420px;
+    --containerheight: 570px;
+    --topheight: 390px;
+    --botheight: 179px;
+    --border-radius: 12px;
+    --horizontal-border-width: 6px;
+    --vertical-border-width: 5px;
+    --bodycolour: #a6a6a6;
+    --screenblack: #282725;
+    --lcarsorange: #dc9a49;
+    --lcarslightorange: #d4a96f;
+    --lcarspeach: #c0755a;
+    --lcarsyellow: #d2a558;
+    --lcarspink: #a4666a;
+    --lcarsviolet: #b97b95;
+    --lcarsred: #b12938;
+    --smallgradientstart: #fff;
+    --smallgradientend: #000;
+    --biggradientstart: #91b756;
+    --biggradientend: #132763;
+}
+
+.padd-popup {
+    position: fixed;
+    top: 10%;
+    left: 100%;
+    transform: translate(-50%, 0%);
+    width: var(--containerwidth);
+    height: var(--containerheight);
+    background: var(--bodycolour);
+    border-radius: var(--border-radius);
+    z-index: 1003;
+    cursor: move;
+    transition: left 0.5s ease-out;
+}
+
+.top {
+    width: 100%;
+    height: var(--topheight);
+    border-bottom: var(--horizontal-border-width) solid var(--screenblack);
+}
+
+.top__screen {
+    width: 100%;
+    height: 80%;
+    padding: var(--padding) var(--padding) calc(var(--padding) / 2);
+}
+
+.top__screen_screen {
+    width: 100%;
+    height: 100%;
+    border: 1px solid var(--screenblack);
+    border-radius: var(--border-radius);
+    background: var(--screenblack);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: calc(var(--padding) / 2) var(--padding);
+}
+
+.top__screen_bars {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    justify-content: space-between;
+    gap: calc(var(--padding) / 3);
+}
+
+.top__screen_barleft,
+.top__screen_barright {
+    width: 7.5%;
+    height: 100%;
+    background: var(--lcarsorange);
+}
+
+.top__screen_barleft {
+    border-radius: var(--border-radius) 0 0 var(--border-radius);
+}
+
+.top__screen_barcenter {
+    width: 85%;
+    height: 100%;
+    background: var(--lcarsorange);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.top__screen_barnums {
+    display: block;
+    background: var(--screenblack);
+    padding-left: calc(var(--padding) / 3);
+    font-weight: 600;
+    color: var(--lcarsorange);
+    font-size: 0.9rem;
+    transform: scaley(2);
+    user-select: none;
+}
+
+.top__screen_barright {
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+}
+
+.top__screen_title {
+    width: 85%;
+    height: 10%;
+    margin: 0 0 calc(var(--padding)) 0;
+    padding: 0 calc(var(--padding) / 3);
+    display: flex;
+    font-weight: 600;
+    justify-content: flex-end;
+    align-items: flex-end;
+    color: var(--lcarspink);
+}
+
+.top__screen_content {
+    width: 85%;
+    height: 70%;
+    font-weight: 600;
+    color: var(--lcarslightorange);
+    padding: calc(var(--padding) / 2);
+    overflow-y: auto;
+    overflow-y: scroll; 
+    scrollbar-width: thin;
+    scrollbar-color: var(--lcarspink) var(--screenblack);
+}
+
+.top__screen_content::-webkit-scrollbar {
+    width: 8px;
+    background: var(--screenblack);
+}
+
+.top__screen_content::-webkit-scrollbar-thumb {
+    background-color: var(--lcarspink);
+    border-radius: 4px;
+}
+
+.top__screen_content::-webkit-scrollbar-track {
+    background: var(--screenblack);
+}
+
+.top__statusbar {
+    width: 100%;
+    height: 20%;
+    padding: var(--padding);
+}
+
+.top__statusbar_screen {
+    width: 100%;
+    height: 100%;
+    border: 1px solid var(--screenblack);
+    border-radius: calc(var(--border-radius) / 2);
+    background: var(--screenblack);
+    padding: calc(var(--padding) / 3) calc(var(--padding) / 2);
+    display: flex;
+}
+
+.top__statusbar_left {
+    width: 35%;
+    height: 100%;
+}
+
+.top__statusbar_leftgradient {
+    width: 60%;
+    height: 60%;
+    border: 1px solid var(--bodycolour);
+    background: linear-gradient(90deg, var(--smallgradientstart) 0%, var(--smallgradientend) 100%);
+    display: flex;
+    padding: calc(var(--padding) / 7) calc(var(--padding) / 7) calc(var(--padding) / 7) calc(var(--padding) / 3.5);
+}
+
+.top__statusbar_buttonred {
+    background: var(--lcarsred);
+    width: 30%;
+    height: 100%;
+}
+
+.top__statusbar_right {
+    width: 65%;
+    height: 100%;
+    display: flex;
+}
+
+.top__statusbar_rightbars {
+    width: 33%;
+    height: 100%;
+    padding-right: 2%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.top__statusbar_bar {
+    width: 4%;
+    height: 100%;
+    background: var(--biggradientstart);
+}
+
+.top__statusbar_bar:last-child {
+    width: 2%;
+}
+
+.top__statusbar_rightgradient {
+    width: 65%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--biggradientstart) 0%, var(--biggradientend) 100%);
+}
+
+.bot {
+    width: 100%;
+    height: var(--botheight);
+    display: flex;
+}
+
+.bot__left {
+    width: 30%;
+    height: var(--botheight);
+    padding: calc(var(--padding) * 2) var(--padding) var(--padding);
+}
+
+.bot__left_screen {
+    width: 100%;
+    height: 100%;
+    background: var(--screenblack);
+    border-radius: var(--border-radius);
+    padding: var(--padding) calc(var(--padding) / 2);
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--padding) / 2);
+}
+
+.bot__left_buttontop,
+.bot__left_buttonbot {
+    width: 100%;
+    height: 50%;
+    padding-right: calc(var(--padding) / 2);
+    padding-bottom: calc(var(--padding) / 2);
+    border-radius: 24px 0 0 24px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    user-select: none;
+}
+
+.bot__left_buttontop {
+    background: var(--lcarsorange);
+}
+
+.bot__left_buttonbot {
+    background: var(--lcarslightorange);
+}
+
+.bot__left_buttontext {
+    display: block;
+    margin: 0;
+    padding: 0;
+    font-weight: 800;
+    transform: scaley(2);
+    font-size: 10px;
+    color: var(--screenblack);
+}
+
+.nav-button {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    cursor: pointer;
+    background: var(--lcarspeach);
+    font-size: 14px;
+}
+
+.nav-button.inactive {
+    background: var(--lcarsviolet);
+    cursor: not-allowed;
+}
+
+.nav-button.inner-update {
+    background: var(--lcarsviolet);
+    cursor: not-allowed;
+}
+
+.bot__right {
+    width: 70%;
+    height: var(--botheight);
+    border-left: var(--vertical-border-width) solid var(--screenblack);
+    padding: calc(var(--padding) * 2) var(--padding) var(--padding);
+}
+
+.bot__right_screen {
+    width: 100%;
+    height: 100%;
+    background: var(--screenblack);
+    border-radius: var(--border-radius);
+    padding: var(--padding);
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--padding) / 2);
+}
+
+.bot__right_buttontop,
+.bot__right_buttonbot {
+    width: 100%;
+    height: 50%;
+    display: flex;
+}
+
+.bot__right_buttonsec {
+    height: 100%;
+}
+
+.bot__right_buttonsec:nth-child(1) {
+    width: 20%;
+    margin-right: 3.5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bot__right_buttonsec:nth-child(2) {
+    width: 15%;
+    margin-right: 6%;
+}
+
+.bot__right_buttonsec:nth-child(3) {
+    width: 55%;
+    border-radius: 0 24px 24px 0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+}
+
+.bot__right_buttonsec--top:nth-child(2) {
+    background: var(--lcarspeach);
+}
+
+.bot__right_buttonsec--top:nth-child(3) {
+    background: var(--lcarspink);
+}
+
+.bot__right_buttonsec--bot:nth-child(2),
+.bot__right_buttonsec--bot:nth-child(3) {
+    background: var(--lcarspeach);
+}
+
+.bot__right_buttonnums {
+    display: block;
+    margin: 0;
+    padding: 0;
+    font-weight: 500;
+    font-size: 1.8rem;
+    transform: scaley(1.75);
+    user-select: none;
+}
+
+.bot__right_buttonnums--top {
+    color: var(--lcarsorange);
+}
+
+.bot__right_buttonnums--bot {
+    color: var(--lcarsviolet);
+}
+
+.bot__right_buttonblack {
+    width: 20%;
+    height: 15%;
+    background: var(--screenblack);
+    margin: 0 0 calc(var(--padding) / 2) calc(var(--padding) / 1.5);
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const statusbars = document.querySelector(".top__statusbar_rightbars");
+    for (let i = 0; i < 10; i++) {
+        const bar = document.createElement("div");
+        bar.classList.add("top__statusbar_bar");
+        statusbars.appendChild(bar);
+    }
+});
+</script>

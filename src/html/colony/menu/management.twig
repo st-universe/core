@@ -1,7 +1,7 @@
 {% embed "html/colony/menu/submenuForm.twig" %}
 {% block containment %}
 <div style="width: 40vw;">
-    <div class="box">
+    <div id="shipinorbit" class="box">
         <div class="box_title">Schiffe im Orbit</div>
         <div class="box_body">
             <ul id="shipselector">
@@ -29,21 +29,32 @@
         </div>
     </div>
     <br />
-    <div class="colonyInfoContainer">
+    <div id="colonyinfocontainer" class="colonyInfoContainer">
         <div class="box">
             <div class="box_title">Planet</div>
             <div class="box_body">
-                <div>
-                    <img src="/assets/planets/{{ COLONY.getColonyClassId }}.png" style="width: 30px; height: 30px;" />
-                    {{ COLONY.getPlanetName }} ({{ COLONY.getSX }}|{{ COLONY.getSY }})
+                <div style="float:left;">
+                    <div>
+                        <img src="/assets/planets/{{ COLONY.getColonyClassId }}.png"
+                            style="width: 30px; height: 30px;" />
+                        {{ COLONY.getPlanetName }} ({{ COLONY.getSX }}|{{ COLONY.getSY }})
+                    </div>
+                    <div>
+                        <img src="/assets/buttons/t_{{ COLONY.getDayTimePrefix }}.png"
+                            title="{{ COLONY.getDayTimeName }}" />
+                        <span>{{ COLONY.getColonyTimeHour }}:{{ COLONY.getColonyTimeMinute }} Uhr</span>
+                    </div>
+                    <div>
+                        <img src="/assets/buttons/classm.png" title="Eigenrotationsdauer" alt="Eigenrotationsdauer" />
+                        {{ COLONY.getRotationTime|formatSeconds }}
+                    </div>
                 </div>
-                <div>
-                    <img src="/assets/buttons/t_{{ COLONY.getDayTimePrefix }}.png"
-                        title="{{ COLONY.getDayTimeName }}" />
-                    <span>{{ COLONY.getColonyTimeHour }}:{{ COLONY.getColonyTimeMinute }} Uhr</span>
-                    <img src="/assets/buttons/classm.png" title="Eigenrotationsdauer" alt="Eigenrotationsdauer" />
-                    {{ COLONY.getRotationTime|formatSeconds }}
-                </div>
+            </div>
+        </div>
+        <div class="box">
+            <div class="box_title">Umgebungsscan</div>
+            <div class="box_body" style="display: flex; justify-content: center;">
+                {% include 'html/visualPanel/panel.twig' %}
             </div>
         </div>
         {% if STARSYSTEM_ENTRY_TAL %}
@@ -66,13 +77,16 @@
                     ({{ COLONY.getSystem.getCx }}|{{ COLONY.getSystem.getCy }})</span>
                 {% endif %}
                 <div>
-                    Typ: {{ COLONY.getSystem.getSystemType.getDescription }}
+                    <span style="display: block; white-space:pre-line;">
+                        Typ:
+                        {{COLONY.getSystem.getSystemType.getDescription }}</span>
                 </div>
             </div>
         </div>
         {% endif %}
     </div>
     {% if DEPOSIT_MININGS %}
+    <br />
     <div class="box">
         <div class="box_title">Geschürfte Ressourcen</div>
         <div class="box_body">
@@ -97,11 +111,24 @@
     <br />
     {% endif %}
     {% if SHIELDING_MANAGER.hasShielding or BUILDABLE_TORPEDO_TYPES %}
+    <br />
     <div class="box">
         <div class="box_title">Schilde + Orbitalverteidigung</div>
         <div class="box_body">
             <table class="tcal">
                 {% if SHIELDING_MANAGER.hasShielding %}
+                {% set ShieldoverlibText = "<table class='tcal' style='width:250px'>
+                    <tr>
+                        <th style='text-align: left'><img src='/assets/buttons/info2.png' /> Planetarer Schild </th>
+                    </tr>
+                    <tr>
+                        <td>Ein Planetarer Schutzschild schützt deine Gebäude vor Angriffen und dich davor beklaut zu
+                            werden. Wenn du die richtige Schildfrequenz deinen Freunden gibst, können Sie damit von
+                            deiner Kolonie beamen.</br>
+                            Das Deaktivieren des Schildes führt dazu, dass alle Schildpunkte entladen werden.</br>Klicke
+                            auf das <img style='height:16px' src='/assets/buttons/info2.png' /> für mehr Infos.</td>
+                    </tr>
+                </table>" %}
                 <tr>
                     <td>Schildstärke: <input type="text" size="4" name="load" id="loadshield_value"
                             onkeydown="event.key == 'Enter' &&  $('loadshield_button').click()" />
@@ -122,7 +149,12 @@
                             <img src="/assets/buttons/shldac2.png" name="shields" /> Aktivieren
                         </a>
                         {% endif %}
-                    </td>
+                        <a href="https://wiki.stuniverse.de/index.php?title=Schildgenerator" target="_blank"
+                            onmouseover="return overlib('{{ ShieldoverlibText|e('js') }}', CAPTION, '',  CLOSETEXT, 'X', CLOSECOLOR, '#8897cf', TEXTCOLOR, '#000000', CELLPAD, 4);"
+                            onmouseout="return nd();"><img src="/assets/buttons/info2.png" style="height:16px;" /></a>
+                        </th>
+                </tr>
+                </td>
                 </tr>
                 <tr>
                     <td>Schildfrequenz in MHz (max. 6 Stellen):</td>
@@ -158,7 +190,7 @@
     </div>
     <br />
     {% endif %}
-    <table class="tcal population">
+    <table id="colonypopulation" class="tcal population">
         <tr>
             <th colspan="5">Bevölkerung</th>
         </tr>
@@ -195,7 +227,7 @@
     </table>
     {% if EFFECTS %}
     <br />
-    <div style="white-space: normal">
+    <div id="colonyeffects" style="white-space: normal">
         <div class="box">
             <div class="box_title">Effekte</div>
             <div class="box_body">

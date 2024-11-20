@@ -6,7 +6,7 @@ namespace Stu\Component\Colony\Shields;
 
 use Mockery\MockInterface;
 use Override;
-use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
@@ -44,7 +44,7 @@ class ColonyShieldingManagerTest extends StuTestCase
         $this->colonyFunctionManager->shouldReceive('hasFunction')
             ->with(
                 $this->colony,
-                BuildingEnum::BUILDING_FUNCTION_SHIELD_GENERATOR
+                BuildingFunctionEnum::BUILDING_FUNCTION_SHIELD_GENERATOR
             )
             ->once()
             ->andReturnTrue();
@@ -74,7 +74,7 @@ class ColonyShieldingManagerTest extends StuTestCase
         $this->colonyFunctionManager->shouldReceive('hasActiveFunction')
             ->with(
                 $this->colony,
-                BuildingEnum::BUILDING_FUNCTION_SHIELD_GENERATOR
+                BuildingFunctionEnum::BUILDING_FUNCTION_SHIELD_GENERATOR
             )
             ->once()
             ->andReturnFalse();
@@ -89,7 +89,7 @@ class ColonyShieldingManagerTest extends StuTestCase
         $this->colonyFunctionManager->shouldReceive('hasActiveFunction')
             ->with(
                 $this->colony,
-                BuildingEnum::BUILDING_FUNCTION_SHIELD_GENERATOR
+                BuildingFunctionEnum::BUILDING_FUNCTION_SHIELD_GENERATOR
             )
             ->once()
             ->andReturnTrue();
@@ -109,7 +109,7 @@ class ColonyShieldingManagerTest extends StuTestCase
         $this->colonyFunctionManager->shouldReceive('hasActiveFunction')
             ->with(
                 $this->colony,
-                BuildingEnum::BUILDING_FUNCTION_SHIELD_GENERATOR
+                BuildingFunctionEnum::BUILDING_FUNCTION_SHIELD_GENERATOR
             )
             ->once()
             ->andReturnTrue();

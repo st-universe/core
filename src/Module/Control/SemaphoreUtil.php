@@ -25,7 +25,7 @@ final class SemaphoreUtil implements SemaphoreUtilInterface
     }
 
     #[Override]
-    public function getSemaphore(int $key): ?SysvSemaphore
+    public function getSemaphore(int $key): null|int|SysvSemaphore
     {
         if (!$this->isSemaphoreUsageActive()) {
             return null;
@@ -46,9 +46,9 @@ final class SemaphoreUtil implements SemaphoreUtilInterface
     }
 
     #[Override]
-    public function acquireMainSemaphore($semaphore): void
+    public function acquireMainSemaphore(null|int|SysvSemaphore $semaphore): void
     {
-        if (!$this->isSemaphoreUsageActive()) {
+        if (!$this->isSemaphoreUsageActive() || !$semaphore instanceof SysvSemaphore) {
             return;
         }
 
@@ -56,9 +56,9 @@ final class SemaphoreUtil implements SemaphoreUtilInterface
     }
 
     #[Override]
-    public function acquireSemaphore(int $key, $semaphore): void
+    public function acquireSemaphore(int $key, null|int|SysvSemaphore $semaphore): void
     {
-        if (!$this->isSemaphoreUsageActive()) {
+        if (!$this->isSemaphoreUsageActive() || !$semaphore instanceof SysvSemaphore) {
             return;
         }
 
@@ -70,7 +70,7 @@ final class SemaphoreUtil implements SemaphoreUtilInterface
         $this->game->addSemaphore($key, $semaphore);
     }
 
-    private function acquire($semaphore): void
+    private function acquire(SysvSemaphore $semaphore): void
     {
         if (!sem_acquire($semaphore)) {
             throw new SemaphoreException("Error acquiring Semaphore!");
@@ -78,16 +78,16 @@ final class SemaphoreUtil implements SemaphoreUtilInterface
     }
 
     #[Override]
-    public function releaseSemaphore($semaphore, bool $doRemove = false): void
+    public function releaseSemaphore(null|int|SysvSemaphore $semaphore, bool $doRemove = false): void
     {
-        if (!$this->isSemaphoreUsageActive()) {
+        if (!$this->isSemaphoreUsageActive() || !$semaphore instanceof SysvSemaphore) {
             return;
         }
 
         $this->release($semaphore, $doRemove);
     }
 
-    private function release($semaphore, bool $doRemove): void
+    private function release(SysvSemaphore $semaphore, bool $doRemove): void
     {
         if (!sem_release($semaphore)) {
             $this->loggerUtil->init('semaphores', LoggerEnum::LEVEL_ERROR);

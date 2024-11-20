@@ -34,6 +34,6 @@ final class AuctionBidRepository extends EntityRepository implements AuctionBidR
         $em = $this->getEntityManager();
 
         $em->remove($post);
-        $em->flush();
+        $em->flush(); //TODO really neccessary?
     }
 }

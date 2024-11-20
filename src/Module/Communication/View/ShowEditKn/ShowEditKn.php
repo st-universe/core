@@ -46,7 +46,7 @@ final class ShowEditKn implements ViewControllerInterface
             $game->addInformation(sprintf(_('Die Zeit zum Editieren ist abgelaufen (%d Sekunden)'), EditKnPost::EDIT_TIME));
         } else {
             $game->appendNavigationPart(
-                sprintf('comm.php?%s=1&knid=%d', static::VIEW_IDENTIFIER, $post->getId()),
+                sprintf('comm.php?%s=1&knid=%d', self::VIEW_IDENTIFIER, $post->getId()),
                 _('Beitrag bearbeiten')
             );
             $game->setPageTitle(_('Beitrag bearbeiten'));

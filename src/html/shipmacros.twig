@@ -303,7 +303,7 @@
         </a>
     </div>
     {% endif %}
-    {% if wrapper.getTrackerSystemData and wrapper.getTrackerSystemData.isUseable and not nbsItem.isDestroyed %}
+    {% if WRAPPER.getTrackerSystemData and WRAPPER.getTrackerSystemData.isUseable and not nbsItem.isDestroyed %}
     <div style="float:left; margin-right:4px;">
         <a href="?B_TRACK=1&id={{ shipId }}&target={{ targetId }}&sstr={{ SESSIONSTRING }}"
             onmouseover="cp('track_{{ targetId }}','buttons/mark_1', 'png')"

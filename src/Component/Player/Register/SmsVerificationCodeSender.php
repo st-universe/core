@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Register;
 
-use Laminas\Mail\Exception\RuntimeException;
-use Laminas\Mail\Message;
-use Laminas\Mail\Transport\Sendmail;
 use Noodlehaus\ConfigInterface;
 use Override;
+use RuntimeException;
+use Stu\Lib\Mail\MailFactoryInterface;
 use Stu\Orm\Entity\UserInterface;
 
 final class SmsVerificationCodeSender implements SmsVerificationCodeSenderInterface
 {
-    public function __construct(private ConfigInterface $config)
-    {
-    }
+    public function __construct(
+        private MailFactoryInterface $mailFactory,
+        private ConfigInterface $config
+    ) {}
 
     #[Override]
     public function send(UserInterface $player, string $code): void
@@ -26,10 +26,10 @@ final class SmsVerificationCodeSender implements SmsVerificationCodeSenderInterf
             Viel Spaß!
             EOT;
 
-        $mail = new Message();
-        $mail->addTo(sprintf('%s@%s', $player->getMobile(), $this->config->get('game.registration.sms_code_verification.email_to_sms_mail_domain')));
-        $mail->setFrom($this->config->get('game.registration.sms_code_verification.email_sender_address'));
-        $mail->setBody(sprintf($body, $code));
+        $mail = $this->mailFactory->createStuMail()
+            ->setFrom($this->config->get('game.registration.sms_code_verification.email_sender_address'))
+            ->addTo(sprintf('%s@%s', $player->getMobile(), $this->config->get('game.registration.sms_code_verification.email_to_sms_mail_domain')))
+            ->setBody(sprintf($body, $code));
 
         $token = $this->config->get('game.registration.sms_code_verification.email_to_sms_token');
         if ($token) {
@@ -37,8 +37,7 @@ final class SmsVerificationCodeSender implements SmsVerificationCodeSenderInterf
         }
 
         try {
-            $transport = new Sendmail();
-            $transport->send($mail);
+            $mail->send();
         } catch (RuntimeException) {
             //nothing to do here
         }

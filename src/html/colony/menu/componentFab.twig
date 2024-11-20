@@ -2,19 +2,16 @@
 {% block containment %}
 
 <div class="box" style="width: 40vw;">
-    <input type="hidden" name="func" id="func" value="{{ FUNC.getFunction }}" />
+    <input type="hidden" name="func" id="func" value="{{ FUNC.getFunction.value }}" />
     <input type="hidden" id="colony-id" value="{{ HOST.getId }}" />
     <div class="box_title">Komponentenbaumenü</div>
     </br>
     <div id="module-container">
-        {% for rumpId, modulesByType in COMBINED_MODULES %}
-        <div class="rump-modules" id="rump-modules-{{ rumpId }}"
-            style="display: {% if rumpId == 0 %}block{% else %}none{% endif %};">
-            {% for type, levels in modulesByType.no_buildplan %}
+        <div class="rump-modules">
+            {% for type, levels in MODULES_BY_TYPE_AND_LEVEL %}
             {% set moduleType = type %}
-
             {% for level, modules in levels %}
-            <div id="module-level-{{ type }}-{{ level }}-{{ rumpId }}" class="module-level" style="display: block;">
+            <div id="module-level-{{ type }}-{{ level }}" class="module-level" style="display: block;">
                 <table class="tcal">
                     <tr>
                         <th>Verfügbare Komponenten</th>
@@ -24,8 +21,7 @@
                     </tr>
                     {% for data in modules %}
                     {% set moduleId = data.getModuleId %}
-                    <tr class="row" data-rump-ids="{{ data.getModule.getRumpIds | join(',') }}"
-                        data-module-type="{{ type }}" data-module-level="{{ level }}" data-module-id="{{ moduleId }}">
+                    <tr class="row" class="{{ data.getClass }}">
                         <td>
                             <div style="margin-bottom: 5px;">
                                 <img src="/assets/commodities/{{ data.getCommodityId }}.png" /> {{ data.getName }}
@@ -42,21 +38,20 @@
                             <div style="display: table-cell; vertical-align: middle;">{{ cost.getAmount }}</div>
                             {% endfor %}
                         </td>
-                        <td id="module_{{ moduleId }}_action_{{ rumpId }}" class="responsive-hide"
+                        <td id="module_{{ moduleId }}_action" class="responsive-hide"
                             style="vertical-align: middle; text-align: center;">
                             {% if data.getAmountQueued %}
                             <div>
                                 <div style="display: table-cell; vertical-align:middle;">
                                     <input type="text" size="2" name="cancel_module[{{ moduleId }}]"
-                                        id="module_{{ moduleId }}_count_{{ rumpId }}"
-                                        value="{{ data.getAmountQueued }}" />
+                                        id="module_{{ moduleId }}_count" value="{{ data.getAmountQueued }}" />
                                 </div>
                                 <div style="display: table-cell; vertical-align:middle; padding-left: 4px;">
-                                    <a href="Javascript:cancelModuleQueueEntries({{ moduleId }}, {{ rumpId }});"
-                                        onmouseover="cp('cancelModuleList{{ moduleId }}_{{ rumpId }}','buttons/x2')"
-                                        onmouseout="cp('cancelModuleList{{ moduleId }}_{{ rumpId }}','buttons/x1')">
-                                        <img src="/assets/buttons/x1.png"
-                                            name="cancelModuleList{{ moduleId }}_{{ rumpId }}" title="Anzahl löschen" />
+                                    <a href="Javascript:cancelModuleQueueEntries({{ moduleId }});"
+                                        onmouseover="cp('cancelModuleList{{ moduleId }}','buttons/x2')"
+                                        onmouseout="cp('cancelModuleList{{ moduleId }}','buttons/x1')">
+                                        <img src="/assets/buttons/x1.png" name="cancelModuleList{{ moduleId }}"
+                                            title="Anzahl löschen" />
                                     </a>
                                 </div>
                             </div>
@@ -82,22 +77,22 @@
                                     <th>Anzahl</th>
                                 </tr>
                                 <tr>
-                                    <td id="module_{{ moduleId }}_action_{{ rumpId }}"
+                                    <td id="module_{{ moduleId }}_action"
                                         style="vertical-align: middle; text-align: center;">
                                         {% if data.getAmountQueued %}
                                         <div>
                                             <div style="display: table-cell; vertical-align:middle;">
                                                 <input type="text" size="2" name="cancel_module[{{ moduleId }}]"
-                                                    id="module_{{ moduleId }}_count_{{ rumpId }}"
+                                                    id="module_{{ moduleId }}_count"
                                                     value="{{ data.getAmountQueued }}" />
                                             </div>
                                             <div style="display: table-cell; vertical-align:middle; padding-left: 4px;">
-                                                <a href="Javascript:cancelModuleQueueEntries({{ moduleId }}, {{ rumpId }});"
-                                                    onmouseover="cp('cancelModuleList{{ moduleId }}_{{ rumpId }}','buttons/x2')"
-                                                    onmouseout="cp('cancelModuleList{{ moduleId }}_{{ rumpId }}','buttons/x1')">
+                                                <a href="javascript:void(0);"
+                                                    onclick="cancelModuleQueueEntries({{ moduleId }});"
+                                                    onmouseover="cp('cancelModuleList{{ moduleId }}','buttons/x2')"
+                                                    onmouseout="cp('cancelModuleList{{ moduleId }}','buttons/x1')">
                                                     <img src="/assets/buttons/x1.png"
-                                                        name="cancelModuleList{{ moduleId }}_{{ rumpId }}"
-                                                        title="Anzahl löschen" />
+                                                        name="cancelModuleList{{ moduleId }}" title="Anzahl löschen" />
                                                 </a>
                                             </div>
                                         </div>
@@ -123,7 +118,6 @@
             {% endfor %}
             {% endfor %}
         </div>
-        {% endfor %}
     </div>
 
     <div style="text-align: center; margin-top: 10px;" class="fabutton">
@@ -134,22 +128,6 @@
 </div>
 
 <style>
-    @media (max-width: 1200px) {
-        .responsive-hide {
-            display: none;
-        }
-
-        .responsive-show {
-            display: table-row;
-        }
-    }
-
-    @media (min-width: 1201px) {
-        .responsive-show {
-            display: none;
-        }
-    }
-
     .level-box button.active {
         background-color: #d3d3d3;
     }

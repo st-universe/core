@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ShipManagement\Manager;
 
+use Override;
+use Stu\Lib\Information\InformationWrapper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery;
 use Mockery\MockInterface;
@@ -66,6 +68,7 @@ class ManageCrewTest extends StuTestCase
 
     private ManageCrew $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->shipCrewCalculator = $this->mock(ShipCrewCalculatorInterface::class);
@@ -91,6 +94,7 @@ class ManageCrewTest extends StuTestCase
         );
     }
 
+    #[Override]
     protected function tearDown(): void
     {
         Mockery::close();
@@ -372,7 +376,7 @@ class ManageCrewTest extends StuTestCase
             ->andReturn(25);
 
         $this->helper->shouldReceive('activate')
-            ->with($this->wrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, \Mockery::type(\Stu\Lib\Information\InformationWrapper::class))
+            ->with($this->wrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, Mockery::type(InformationWrapper::class))
             ->once()
             ->andReturn(true);
 
@@ -462,7 +466,7 @@ class ManageCrewTest extends StuTestCase
             ->andReturn(20);
 
         $this->helper->shouldReceive('activate')
-            ->with($this->wrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, \Mockery::type(\Stu\Lib\Information\InformationWrapper::class))
+            ->with($this->wrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, Mockery::type(InformationWrapper::class))
             ->once()
             ->andReturn(true);
 

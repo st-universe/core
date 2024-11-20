@@ -28,8 +28,8 @@ final class EditContactComment implements ActionControllerInterface
 
         $text = $this->editContactCommentRequest->getText();
 
-        if (mb_strlen($text) > static::CHARACTER_LIMIT) {
-            $game->addInformation(sprintf(_('Es sind maximal %d Zeichen erlaubt'), static::CHARACTER_LIMIT));
+        if (mb_strlen($text) > self::CHARACTER_LIMIT) {
+            $game->addInformation(sprintf(_('Es sind maximal %d Zeichen erlaubt'), self::CHARACTER_LIMIT));
             return;
         }
 

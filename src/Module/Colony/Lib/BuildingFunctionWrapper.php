@@ -5,51 +5,49 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Lib;
 
 use Override;
-use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Module\Building\BuildingFunctionTypeEnum;
 use Stu\Orm\Entity\BuildingFunctionInterface;
 
 final class BuildingFunctionWrapper implements BuildingFunctionWrapperInterface
 {
     /** @param array<BuildingFunctionInterface> $buildingfunctions */
-    public function __construct(private array $buildingfunctions)
-    {
-    }
+    public function __construct(private array $buildingfunctions) {}
 
     #[Override]
     public function isTorpedoFab(): bool
     {
-        return $this->hasFunction(BuildingEnum::BUILDING_FUNCTION_TORPEDO_FAB);
+        return $this->hasFunction(BuildingFunctionEnum::BUILDING_FUNCTION_TORPEDO_FAB);
     }
 
     #[Override]
     public function isAirfield(): bool
     {
-        return $this->hasFunction(BuildingEnum::BUILDING_FUNCTION_AIRFIELD);
+        return $this->hasFunction(BuildingFunctionEnum::BUILDING_FUNCTION_AIRFIELD);
     }
 
     #[Override]
     public function isFighterShipyard(): bool
     {
-        return $this->hasFunction(BuildingEnum::BUILDING_FUNCTION_FIGHTER_SHIPYARD);
+        return $this->hasFunction(BuildingFunctionEnum::BUILDING_FUNCTION_FIGHTER_SHIPYARD);
     }
 
     #[Override]
     public function isAcademy(): bool
     {
-        return $this->hasFunction(BuildingEnum::BUILDING_FUNCTION_ACADEMY);
+        return $this->hasFunction(BuildingFunctionEnum::BUILDING_FUNCTION_ACADEMY);
     }
 
     #[Override]
     public function isFabHall(): bool
     {
-        return $this->hasFunction(BuildingEnum::BUILDING_FUNCTION_FABRICATION_HALL);
+        return $this->hasFunction(BuildingFunctionEnum::BUILDING_FUNCTION_FABRICATION_HALL);
     }
 
     #[Override]
     public function isTechCenter(): bool
     {
-        return $this->hasFunction(BuildingEnum::BUILDING_FUNCTION_TECH_CENTER);
+        return $this->hasFunction(BuildingFunctionEnum::BUILDING_FUNCTION_TECH_CENTER);
     }
 
     #[Override]
@@ -88,13 +86,13 @@ final class BuildingFunctionWrapper implements BuildingFunctionWrapperInterface
     #[Override]
     public function isWarehouse(): bool
     {
-        return $this->hasFunction(BuildingEnum::BUILDING_FUNCTION_WAREHOUSE);
+        return $this->hasFunction(BuildingFunctionEnum::BUILDING_FUNCTION_WAREHOUSE);
     }
 
     #[Override]
     public function isSubspaceTelescope(): bool
     {
-        return $this->hasFunction(BuildingEnum::BUILDING_FUNCTION_SUBSPACE_TELESCOPE);
+        return $this->hasFunction(BuildingFunctionEnum::BUILDING_FUNCTION_SUBSPACE_TELESCOPE);
     }
 
     #[Override]
@@ -112,7 +110,7 @@ final class BuildingFunctionWrapper implements BuildingFunctionWrapperInterface
     public function getFabHallBuildingFunctionId(): ?int
     {
         foreach ($this->buildingfunctions as $func) {
-            if ($func->getFunction() === BuildingEnum::BUILDING_FUNCTION_FABRICATION_HALL) {
+            if ($func->getFunction() === BuildingFunctionEnum::BUILDING_FUNCTION_FABRICATION_HALL) {
                 return $func->getId();
             }
         }
@@ -123,7 +121,7 @@ final class BuildingFunctionWrapper implements BuildingFunctionWrapperInterface
     public function getTechCenterBuildingFunctionId(): ?int
     {
         foreach ($this->buildingfunctions as $func) {
-            if ($func->getFunction() === BuildingEnum::BUILDING_FUNCTION_TECH_CENTER) {
+            if ($func->getFunction() === BuildingFunctionEnum::BUILDING_FUNCTION_TECH_CENTER) {
                 return $func->getId();
             }
         }
@@ -134,15 +132,15 @@ final class BuildingFunctionWrapper implements BuildingFunctionWrapperInterface
     public function getSubspaceTelescopeBuildingFunctionId(): ?int
     {
         foreach ($this->buildingfunctions as $func) {
-            if ($func->getFunction() === BuildingEnum::BUILDING_FUNCTION_SUBSPACE_TELESCOPE) {
+            if ($func->getFunction() === BuildingFunctionEnum::BUILDING_FUNCTION_SUBSPACE_TELESCOPE) {
                 return $func->getId();
             }
         }
         return null;
     }
 
-    private function hasFunction(int $functionId): bool
+    private function hasFunction(BuildingFunctionEnum $function): bool
     {
-        return array_key_exists($functionId, $this->buildingfunctions);
+        return array_key_exists($function->value, $this->buildingfunctions);
     }
 }

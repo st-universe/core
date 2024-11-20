@@ -16,7 +16,6 @@ class DbSettingsTest extends StuTestCase
     /** @var MockInterface|SettingsCacheInterface */
     private $cache;
 
-    /** @var MockObject|DbSettings */
     private DbSettings $subject;
 
     #[Override]
@@ -38,6 +37,18 @@ class DbSettingsTest extends StuTestCase
         $useSqlite = $this->subject->useSqlite();
 
         $this->assertTrue($useSqlite);
+    }
+
+    public function testGetSqliteDsn(): void
+    {
+        $this->settingsCore->shouldReceive('getStringConfigValue')
+            ->with('sqliteDsn')
+            ->once()
+            ->andReturn('DSN');
+
+        $result = $this->subject->getSqliteDsn();
+
+        $this->assertEquals('DSN', $result);
     }
 
     public function testGetDatabase(): void

@@ -24,9 +24,10 @@ abstract class AbstractVisualPanel implements PanelAttributesInterface
 
     private ?string $fontSize = null;
 
-    public function __construct(protected PanelLayerCreationInterface $panelLayerCreation, protected LoggerUtilInterface $loggerUtil)
-    {
-    }
+    public function __construct(
+        protected PanelLayerCreationInterface $panelLayerCreation,
+        protected LoggerUtilInterface $loggerUtil
+    ) {}
 
     abstract protected function createBoundaries(): PanelBoundaries;
 
@@ -109,7 +110,7 @@ abstract class AbstractVisualPanel implements PanelAttributesInterface
     private function getViewport(): float
     {
         if ($this->viewport === null) {
-            $navPercentage = 100;
+            $navPercentage = $this->getPanelViewportPercentage();
             $perColumn = $navPercentage / count($this->getHeadRow());
             $this->viewport = min($perColumn, 1.7);
         }

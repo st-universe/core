@@ -16,6 +16,7 @@ use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use Override;
 use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Orm\Repository\BuildingRepository;
 
 #[Table(name: 'stu_buildings')]
@@ -383,17 +384,18 @@ class Building implements BuildingInterface
     #[Override]
     public function isRemovable(): bool
     {
-        return $this->getFunctions()->containsKey(BuildingEnum::BUILDING_FUNCTION_CENTRAL) === false;
+        return !$this->getFunctions()->containsKey(BuildingFunctionEnum::BUILDING_FUNCTION_COLONY_CENTRAL->value)
+            && !$this->getFunctions()->containsKey(BuildingFunctionEnum::BUILDING_FUNCTION_BASE_CAMP->value);
     }
 
     #[Override]
     public function getShieldCapacity(): ?int
     {
-        if ($this->getFunctions()->containsKey(BuildingEnum::BUILDING_FUNCTION_SHIELD_GENERATOR) === true) {
+        if ($this->getFunctions()->containsKey(BuildingFunctionEnum::BUILDING_FUNCTION_SHIELD_GENERATOR->value) === true) {
             return BuildingEnum::SHIELD_GENERATOR_CAPACITY;
         }
 
-        if ($this->getFunctions()->containsKey(BuildingEnum::BUILDING_FUNCTION_SHIELD_BATTERY) === true) {
+        if ($this->getFunctions()->containsKey(BuildingFunctionEnum::BUILDING_FUNCTION_SHIELD_BATTERY->value) === true) {
             return BuildingEnum::SHIELD_BATTERY_CAPACITY;
         }
         return null;

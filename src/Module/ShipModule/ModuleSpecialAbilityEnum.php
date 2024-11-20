@@ -21,22 +21,26 @@ final class ModuleSpecialAbilityEnum
     public const int MODULE_SPECIAL_TRANSWARP_COIL = 11;
     public const int MODULE_SPECIAL_HIROGEN_TRACKER = 12;
     public const int MODULE_SPECIAL_THOLIAN_WEB = 13;
+    public const int MODULE_SPECIAL_BUSSARD_COLLECTOR = 14;
+    public const int MODULE_SPECIAL_AGGREGATION_SYSTEM = 15;
 
     public static function getDescription(int $specialId): string
     {
         return match ($specialId) {
-            static::MODULE_SPECIAL_CLOAK => _('Tarnung'),
-            static::MODULE_SPECIAL_RPG => _('RPG-Schiff'),
-            static::MODULE_SPECIAL_TACHYON_SCANNER => _('Tachyon-Scanner'),
-            static::MODULE_SPECIAL_TROOP_QUARTERS => _('Truppen-Quartiere'),
-            static::MODULE_SPECIAL_ASTRO_LABORATORY => _('Astrometrie-Labor'),
-            static::MODULE_SPECIAL_SUBSPACE_FIELD_SENSOR => _('Subraumfeldsensor'),
-            static::MODULE_SPECIAL_MATRIX_SENSOR => _('Matrix-Sensor'),
-            static::MODULE_SPECIAL_TORPEDO_STORAGE => _('Torpedo-Lager'),
-            static::MODULE_SPECIAL_SHUTTLE_RAMP => _('Shuttle-Rampe'),
-            static::MODULE_SPECIAL_TRANSWARP_COIL => _('Transwarpspule'),
-            static::MODULE_SPECIAL_HIROGEN_TRACKER => _('Tracker-Device'),
-            static::MODULE_SPECIAL_THOLIAN_WEB => _('Tholianischer Netzemitter'),
+            self::MODULE_SPECIAL_CLOAK => _('Tarnung'),
+            self::MODULE_SPECIAL_RPG => _('RPG-Schiff'),
+            self::MODULE_SPECIAL_TACHYON_SCANNER => _('Tachyon-Scanner'),
+            self::MODULE_SPECIAL_TROOP_QUARTERS => _('Truppen-Quartiere'),
+            self::MODULE_SPECIAL_ASTRO_LABORATORY => _('Astrometrie-Labor'),
+            self::MODULE_SPECIAL_SUBSPACE_FIELD_SENSOR => _('Subraumfeldsensor'),
+            self::MODULE_SPECIAL_MATRIX_SENSOR => _('Matrix-Sensor'),
+            self::MODULE_SPECIAL_TORPEDO_STORAGE => _('Torpedo-Lager'),
+            self::MODULE_SPECIAL_SHUTTLE_RAMP => _('Shuttle-Rampe'),
+            self::MODULE_SPECIAL_TRANSWARP_COIL => _('Transwarpspule'),
+            self::MODULE_SPECIAL_HIROGEN_TRACKER => _('Tracker-Device'),
+            self::MODULE_SPECIAL_THOLIAN_WEB => _('Tholianischer Netzemitter'),
+            self::MODULE_SPECIAL_BUSSARD_COLLECTOR => _('Bussard-Kollektor'),
+            self::MODULE_SPECIAL_AGGREGATION_SYSTEM => _('Aggregationssystem'),
             default => '',
         };
     }

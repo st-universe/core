@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index\Action\SendPassword;
 
-use Laminas\Mail\Exception\RuntimeException;
-use Laminas\Mail\Message;
-use Laminas\Mail\Transport\Sendmail;
 use Noodlehaus\ConfigInterface;
 use Override;
+use RuntimeException;
+use Stu\Lib\Mail\MailFactoryInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuHashInterface;
@@ -19,9 +18,13 @@ final class SendPassword implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_SEND_PASSWORD';
 
-    public function __construct(private SendPasswordRequestInterface $sendPasswordRequest, private UserRepositoryInterface $userRepository, private StuHashInterface $stuHash, private ConfigInterface $config)
-    {
-    }
+    public function __construct(
+        private SendPasswordRequestInterface $sendPasswordRequest,
+        private UserRepositoryInterface $userRepository,
+        private MailFactoryInterface $mailFactory,
+        private StuHashInterface $stuHash,
+        private ConfigInterface $config
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -45,27 +48,26 @@ final class SendPassword implements ActionControllerInterface
 
         $this->userRepository->save($user);
 
-        $mail = new Message();
-        $mail->addTo($user->getEmail());
-        $mail->setSubject(_('Star Trek Universe - Password vergessen'));
-        $mail->setFrom($this->config->get('game.email_sender_address'));
-        $mail->setBody(
-            sprintf(
-                "Hallo.\n\n
+        $mail = $this->mailFactory->createStuMail()
+            ->withDefaultSender()
+            ->addTo($user->getEmail())
+            ->setSubject(_('Star Trek Universe - Password vergessen'))
+            ->setBody(
+                sprintf(
+                    "Hallo.\n\n
 Du bekommst diese eMail, da Du in Star Trek Universe ein neues Password angefordert hast. Solltest Du das nicht getan
 haben, so ignoriere die eMail einfach.\n\n
 Klicke auf folgenden Link um Dir ein neues Password zu setzen:\n
 %s/?SHOW_RESET_PASSWORD=1&TOKEN=%s\n\n
 Das Star Trek Universe Team\n
 %s",
-                $this->config->get('game.base_url'),
-                $token,
-                $this->config->get('game.base_url'),
-            )
-        );
+                    $this->config->get('game.base_url'),
+                    $token,
+                    $this->config->get('game.base_url'),
+                )
+            );
         try {
-            $transport = new Sendmail();
-            $transport->send($mail);
+            $mail->send();
         } catch (RuntimeException) {
             $game->addInformation(_('Die eMail konnte nicht verschickt werden'));
             return;

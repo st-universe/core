@@ -285,14 +285,15 @@
     </tr>
 </table>
 {% endif %}
-{% if wrapper.getTrackerSystemData and wrapper.getTrackerSystemData.getTargetWrapper %}
+{% set tracker = wrapper.getTrackerSystemData %}
+{% if tracker and tracker.getTargetWrapper %}
 <table class="tcal">
     <tr>
         <th colspan="3"><img src="/assets/buttons/mark.png" title="Tracker-Device" />
             Tracker-Device</th>
     </tr>
-    {% set targetWrapper = wrapper.getTrackerSystemData.getTargetWrapper %}
-    {% set targetShip = targetShip %}
+    {% set targetWrapper = tracker.getTargetWrapper %}
+    {% set targetShip = targetWrapper.get %}
     <tr>
         <td colspan="3">
             Markiert: {{ targetShip.getName|bbcode }}
@@ -300,7 +301,7 @@
     </tr>
     <tr>
         <td>
-            {% if wrapper.getTrackerSystemData.canAttackCloakedTarget %}
+            {% if tracker.canAttackCloakedTarget %}
             <a href="?B_ATTACK_TRACKED=1&id={{ shipId }}&target={{ targetShip.getId }}&sstr={{ SESSIONSTRING }}"
                 onmouseover="cp('attacktracked','buttons/phaser2')" onmouseout="cp('attacktracked','buttons/phaser1')"
                 title="Getarntes Ziel angreifen">

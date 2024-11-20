@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\UndockShip;
 
 use Override;
+use pq\Cancel;
 use request;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
+use Stu\Component\Ship\Retrofit\CancelRetrofitInterface;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -18,7 +20,7 @@ final class UndockShip implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_UNDOCK';
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private ShipRepositoryInterface $shipRepository, private CancelRepairInterface $cancelRepair) {}
+    public function __construct(private ShipLoaderInterface $shipLoader, private ShipRepositoryInterface $shipRepository, private CancelRepairInterface $cancelRepair, private CancelRetrofitInterface $cancelRetrofit) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -69,6 +71,10 @@ final class UndockShip implements ActionControllerInterface
                     $msg[] = $ship->getName() . _(": Die Reparatur wurde abgebrochen");
                     continue;
                 }
+                if ($this->cancelRetrofit->cancelRetrofit($ship)) {
+                    $msg[] = $ship->getName() . _(": Die Rüstung wurde abgebrochen");
+                    continue;
+                }
                 $ship->setDockedTo(null);
                 $epsSystem->lowerEps(ShipEnum::SYSTEM_ECOST_DOCK)->update();
 
@@ -89,6 +95,9 @@ final class UndockShip implements ActionControllerInterface
         }
         if ($this->cancelRepair->cancelRepair($ship)) {
             $game->addInformation("Die Reparatur wurde abgebrochen");
+        }
+        if ($this->cancelRetrofit->cancelRetrofit($ship)) {
+            $game->addInformation("Die Umrüstung wurde abgebrochen");
         }
         $epsSystem->lowerEps(1)->update();
         $ship->setDockedTo(null);

@@ -18,9 +18,12 @@ use Stu\Component\Colony\Shields\ColonyShieldingManagerInterface;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;
+use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreationInterface;
 use Stu\Lib\ModuleScreen\Addon\ModuleSelectorAddonFactoryInterface;
 use Stu\Lib\ModuleScreen\ModuleSelector;
+use Stu\Module\Colony\Lib\Gui\ColonyScanPanel;
 use Stu\Module\Commodity\Lib\CommodityCacheInterface;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Module\Twig\TwigPageInterface;
 use Stu\Orm\Entity\BuildingInterface;
@@ -63,7 +66,9 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         private ColonyFunctionManagerInterface $colonyFunctionManager,
         private ModuleSelectorAddonFactoryInterface $moduleSelectorAddonFactory,
         private CommodityCacheInterface $commodityCache,
-        private StatusBarFactoryInterface $statusBarFactory
+        private StatusBarFactoryInterface $statusBarFactory,
+        private PanelLayerCreationInterface $panelLayerCreation,
+        private LoggerUtilFactoryInterface $loggerUtilFactory
     ) {}
 
     #[Override]
@@ -219,6 +224,18 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         return new ColonyPopulationCalculator(
             $host,
             $production ?? $this->createColonyCommodityProduction($host)->getProduction()
+        );
+    }
+
+    #[Override]
+    public function createColonyScanPanel(
+        ColonyInterface $colony
+    ): ColonyScanPanel {
+        return new ColonyScanPanel(
+            $this->panelLayerCreation,
+            $colony,
+            $this->colonyFunctionManager,
+            $this->loggerUtilFactory->getLoggerUtil()
         );
     }
 }

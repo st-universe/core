@@ -127,9 +127,6 @@ class Colony implements ColonyInterface
     #[JoinColumn(name: 'torpedo_type', referencedColumnName: 'id')]
     private ?TorpedoTypeInterface $torpedo = null;
 
-    /**
-     * @var DatabaseEntryInterface|null
-     */
     #[OneToOne(targetEntity: 'DatabaseEntry')]
     #[JoinColumn(name: 'database_id', referencedColumnName: 'id')]
     private ?DatabaseEntryInterface $databaseEntry;
@@ -620,10 +617,16 @@ class Colony implements ColonyInterface
     #[Override]
     public function getBeamableStorage(): array
     {
-        return array_filter(
+        $beamableStorage = array_filter(
             $this->getStorage()->getValues(),
             fn(StorageInterface $storage): bool => $storage->getCommodity()->isBeamable() === true
         );
+
+        usort($beamableStorage, function ($a, $b): int {
+            return $a->getCommodity()->getSort() <=> $b->getCommodity()->getSort();
+        });
+
+        return $beamableStorage;
     }
 
     #[Override]

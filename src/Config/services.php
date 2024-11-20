@@ -42,6 +42,7 @@ use Stu\Module\Config\StuConfig;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\GameController;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Game\Lib\TutorialProvider;
 use Ubench;
 
 use function DI\autowire;
@@ -51,10 +52,7 @@ return [
     ConfigInterface::class => function (): ConfigInterface {
         $path = __DIR__ . '/../../';
         return new Config(
-            [
-                sprintf('%s/config.dist.json', $path),
-                sprintf('?%s/config.json', $path),
-            ]
+            array_map(fn(string $file): string => sprintf($file, $path), Init::$configFiles)
         );
     },
     SettingsFactoryInterface::class => autowire(SettingsFactory::class),
@@ -120,7 +118,7 @@ return [
         if ($stuConfig->getDbSettings()->useSqlite()) {
             $dsnParser = new DsnParser(['sqlite' => 'pdo_sqlite']);
             $connectionParams = $dsnParser
-                ->parse('sqlite:///:memory:');
+                ->parse($stuConfig->getDbSettings()->getSqliteDsn());
 
             return DriverManager::getConnection($connectionParams);
         }
@@ -141,7 +139,8 @@ return [
             'charset' => 'utf8',
         ], $configuration);
     },
-    GameControllerInterface::class => autowire(GameController::class),
+    GameControllerInterface::class => autowire(GameController::class)
+        ->constructorParameter('tutorialProvider', autowire(TutorialProvider::class)),
     Parser::class => function (): Parser {
         $parser = new Parser();
         $parser->addCodeDefinitionSet(new StuBbCodeDefinitionSet());
@@ -152,7 +151,7 @@ return [
         $parser->addCodeDefinitionSet(new StuBbCodeWithImageDefinitionSet());
         return new ParserWithImage($parser);
     },
-    JsonMapperInterface::class => fn (): JsonMapperInterface => (new JsonMapperFactory())->bestFit(),
+    JsonMapperInterface::class => fn(): JsonMapperInterface => (new JsonMapperFactory())->bestFit(),
     Ubench::class => function (): Ubench {
         $bench = new Ubench();
         $bench->start();

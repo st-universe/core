@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Override;
+use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\ShipBuildplan;
@@ -20,7 +21,7 @@ use Stu\Orm\Entity\ShipRumpUser;
 final class ShipBuildplanRepository extends EntityRepository implements ShipBuildplanRepositoryInterface
 {
     #[Override]
-    public function getByUserAndBuildingFunction(int $userId, int $buildingFunction): array
+    public function getByUserAndBuildingFunction(int $userId, BuildingFunctionEnum $buildingFunction): array
     {
         return $this->getEntityManager()
             ->createQuery(
@@ -34,7 +35,7 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
             )
             ->setParameters([
                 'userId' => $userId,
-                'buildingFunction' => $buildingFunction
+                'buildingFunction' => $buildingFunction->value
             ])
             ->getResult();
     }
@@ -142,7 +143,6 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
         $em = $this->getEntityManager();
 
         $em->persist($shipBuildplan);
-        $em->flush();
     }
 
     #[Override]

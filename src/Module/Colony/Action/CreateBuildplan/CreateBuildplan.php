@@ -9,6 +9,7 @@ use Override;
 
 use request;
 use RuntimeException;
+use Stu\Component\Ship\Buildplan\BuildplanSignatureCreationInterface;
 use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Exception\AccessViolation;
@@ -22,7 +23,6 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
 use Stu\Orm\Entity\ModuleInterface;
-use Stu\Orm\Entity\ShipBuildplan;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
@@ -43,6 +43,7 @@ final class CreateBuildplan implements ActionControllerInterface
         private ShipRumpRepositoryInterface $shipRumpRepository,
         private EntityManagerInterface $entityManager,
         private ShipCrewCalculatorInterface $shipCrewCalculator,
+        private BuildplanSignatureCreationInterface $buildplanSignatureCreation,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
@@ -83,10 +84,9 @@ final class CreateBuildplan implements ActionControllerInterface
 
         /** @var array<int, ModuleInterface> */
         $modules = [];
-        $sigmod = [];
 
         $error = false;
-        foreach (ShipModuleTypeEnum::cases() as $moduleType) {
+        foreach (ShipModuleTypeEnum::getModuleSelectorOrder() as $moduleType) {
 
             $value = $moduleType->value;
             $this->loggerUtil->log(sprintf('%d', $value));
@@ -104,7 +104,7 @@ final class CreateBuildplan implements ActionControllerInterface
                 $this->exitOnError($game);
                 $error = true;
             }
-            if ($moduleType === ShipModuleTypeEnum::SPECIAL) {
+            if ($moduleType->isSpecialSystemType()) {
                 $specialCount = 0;
                 foreach ($module as $id) {
                     $specialMod = $this->moduleRepository->find((int) $id);
@@ -114,7 +114,6 @@ final class CreateBuildplan implements ActionControllerInterface
                     }
 
                     $modules[$id] = $specialMod;
-                    $sigmod[$id] = $id;
                     $specialCount++;
                 }
 
@@ -127,7 +126,6 @@ final class CreateBuildplan implements ActionControllerInterface
                 continue;
             }
             if (count($module) == 0 || current($module) == 0) {
-                $sigmod[$value] = 0;
                 continue;
             }
             $mod = null;
@@ -143,7 +141,6 @@ final class CreateBuildplan implements ActionControllerInterface
             }
             if ($mod !== null) {
                 $modules[current($module)] = $mod;
-                $sigmod[$value] = $mod->getId();
             }
         }
 
@@ -161,7 +158,7 @@ final class CreateBuildplan implements ActionControllerInterface
             return;
         }
         $this->loggerUtil->log('G');
-        $signature = ShipBuildplan::createSignature($sigmod, $crewUsage);
+        $signature = $this->buildplanSignatureCreation->createSignature($modules, $crewUsage);
 
         $plannameFromRequest = request::indString('buildplanname');
         if (
@@ -191,6 +188,12 @@ final class CreateBuildplan implements ActionControllerInterface
         }
         if ($this->shipBuildplanRepository->findByUserAndName($userId, $planname) !== null) {
             $game->addInformation(_('Ein Bauplan mit diesem Namen existiert bereits'));
+            $this->exitOnError($game);
+            return;
+        }
+        $existingPlan = $this->shipBuildplanRepository->getByUserShipRumpAndSignature($userId, $rump->getId(), $signature);
+        if ($existingPlan !== null) {
+            $game->addInformationf('Ein Bauplan mit dieser Konfiguration existiert bereits: %s', $existingPlan->getName());
             $this->exitOnError($game);
             return;
         }

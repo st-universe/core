@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Override;
+use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Orm\Repository\BuildingFunctionRepository;
 
 #[Table(name: 'stu_buildings_functions')]
@@ -29,8 +30,8 @@ class BuildingFunction implements BuildingFunctionInterface
     #[Column(type: 'integer')]
     private int $buildings_id = 0;
 
-    #[Column(type: 'smallint')]
-    private int $function = 0;
+    #[Column(type: 'smallint', enumType: BuildingFunctionEnum::class)]
+    private BuildingFunctionEnum $function = BuildingFunctionEnum::BUILDING_FUNCTION_COLONY_CENTRAL;
 
     /**
      * @var BuildingInterface
@@ -60,13 +61,13 @@ class BuildingFunction implements BuildingFunctionInterface
     }
 
     #[Override]
-    public function getFunction(): int
+    public function getFunction(): BuildingFunctionEnum
     {
         return $this->function;
     }
 
     #[Override]
-    public function setFunction(int $function): BuildingFunctionInterface
+    public function setFunction(BuildingFunctionEnum $function): BuildingFunctionInterface
     {
         $this->function = $function;
 

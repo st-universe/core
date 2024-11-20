@@ -68,7 +68,8 @@ final class ShowField implements ViewControllerInterface
         if ($host instanceof ColonyInterface) {
             $game->setTemplateVar('COLONY', $host);
             $game->setTemplateVar('FORM_ACTION', 'colony.php');
-            $game->setTemplateVar('SHIP_BUILD_PROGRESS', $this->colonyShipQueueRepository->getByColony($host->getId()));
+            $game->setTemplateVar('SHIP_BUILD_PROGRESS', $this->colonyShipQueueRepository->getByColonyAndMode($host->getId(), 1));
+            $game->setTemplateVar('SHIP_RETROFIT_PROGRESS', $this->colonyShipQueueRepository->getByColonyAndMode($host->getId(), 2));
 
             $shipRepairProgress = array_map(
                 fn(ColonyShipRepairInterface $repair): ShipWrapperInterface => $this->shipWrapperFactory->wrapShip($repair->getShip()),

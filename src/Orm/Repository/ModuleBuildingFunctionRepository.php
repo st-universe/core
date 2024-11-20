@@ -7,6 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Override;
+use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Orm\Entity\ModuleBuildingFunction;
 
 /**
@@ -15,7 +16,7 @@ use Stu\Orm\Entity\ModuleBuildingFunction;
 final class ModuleBuildingFunctionRepository extends EntityRepository implements ModuleBuildingFunctionRepositoryInterface
 {
     #[Override]
-    public function getByBuildingFunctionAndUser(int $buildingFunction, int $userId): array
+    public function getByBuildingFunctionAndUser(BuildingFunctionEnum $buildingFunction, int $userId): array
     {
         $rsm = new ResultSetMapping();
         $rsm->addEntityResult(ModuleBuildingFunction::class, 'mbf');
@@ -33,7 +34,7 @@ final class ModuleBuildingFunctionRepository extends EntityRepository implements
             $rsm
         )
             ->setParameters([
-                'buildingFunction' => $buildingFunction,
+                'buildingFunction' => $buildingFunction->value,
                 'userId' => $userId,
                 'activeState' => 0
             ])

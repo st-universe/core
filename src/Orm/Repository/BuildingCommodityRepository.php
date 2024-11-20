@@ -114,4 +114,31 @@ final class BuildingCommodityRepository extends EntityRepository implements Buil
             'commodityId' => $commodityId
         ])->getSingleScalarResult();
     }
+
+    #[Override]
+    public function canProduceCommodity(int $userId, int $commodityId): bool
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('buildings_id', 'buildings_id', 'integer');
+
+        $query = $this->getEntityManager()->createNativeQuery(
+            'SELECT bc.buildings_id
+            FROM stu_buildings_commodity bc
+            JOIN stu_buildings b ON bc.buildings_id = b.id
+            LEFT JOIN stu_researched r ON b.research_id = r.research_id AND r.user_id = :userId AND r.aktiv = 0
+            WHERE bc.commodity_id = :commodityId
+            AND bc.count > 0
+            AND (b.research_id IS NULL OR r.id IS NOT NULL)',
+            $rsm
+        );
+
+        $query->setParameters([
+            'commodityId' => $commodityId,
+            'userId' => $userId
+        ]);
+
+        $result = $query->getResult();
+
+        return !empty($result);
+    }
 }

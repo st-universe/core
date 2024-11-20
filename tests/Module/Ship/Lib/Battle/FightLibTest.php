@@ -8,6 +8,7 @@ use Mockery\MockInterface;
 use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
+use Stu\Component\Ship\Retrofit\CancelRetrofitInterface;
 use Stu\Component\Ship\System\Exception\SystemNotFoundException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -31,6 +32,8 @@ class FightLibTest extends StuTestCase
     private $shipSystemManager;
     /** @var MockInterface|CancelRepairInterface */
     private $cancelRepair;
+    /** @var MockInterface|CancelRetrofitInterface */
+    private $cancelRetrofit;
     /** @var MockInterface|AlertLevelBasedReactionInterface */
     private $alertLevelBasedReaction;
     /** @var MockInterface|InformationFactoryInterface */
@@ -50,6 +53,7 @@ class FightLibTest extends StuTestCase
         //injected
         $this->shipSystemManager = $this->mock(ShipSystemManagerInterface::class);
         $this->cancelRepair = $this->mock(CancelRepairInterface::class);
+        $this->cancelRetrofit = $this->mock(CancelRetrofitInterface::class);
         $this->alertLevelBasedReaction = $this->mock(AlertLevelBasedReactionInterface::class);
         $this->informationFactory = $this->mock(InformationFactoryInterface::class);
 
@@ -67,6 +71,7 @@ class FightLibTest extends StuTestCase
         $this->subject = new FightLib(
             $this->shipSystemManager,
             $this->cancelRepair,
+            $this->cancelRetrofit,
             $this->alertLevelBasedReaction,
             $this->informationFactory
         );
@@ -186,6 +191,10 @@ class FightLibTest extends StuTestCase
             ->with($this->ship)
             ->once();
 
+        $this->cancelRetrofit->shouldReceive('cancelRetrofit')
+            ->with($this->ship)
+            ->once();
+
         $this->informationFactory->shouldReceive('createInformationWrapper')
             ->withNoArgs()
             ->once()
@@ -254,6 +263,10 @@ class FightLibTest extends StuTestCase
             ->andThrow(new SystemNotFoundException());
 
         $this->cancelRepair->shouldReceive('cancelRepair')
+            ->with($this->ship)
+            ->once();
+
+        $this->cancelRetrofit->shouldReceive('cancelRetrofit')
             ->with($this->ship)
             ->once();
 

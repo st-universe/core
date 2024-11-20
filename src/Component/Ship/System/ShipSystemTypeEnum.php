@@ -37,6 +37,8 @@ enum ShipSystemTypeEnum: int
     case SYSTEM_THOLIAN_WEB = 28;
     case SYSTEM_RPG_MODULE = 29;
     case SYSTEM_SINGULARITY_REACTOR = 30;
+    case SYSTEM_BUSSARD_COLLECTOR = 31;
+    case SYSTEM_AGGREGATION_SYSTEM = 32;
 
     public function getDescription(): string
     {
@@ -71,7 +73,9 @@ enum ShipSystemTypeEnum: int
             ShipSystemTypeEnum::SYSTEM_TRACKER => _('Tracker'),
             ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB => _('Netzemitter'),
             ShipSystemTypeEnum::SYSTEM_RPG_MODULE => _('RPG-Modul'),
-            ShipSystemTypeEnum::SYSTEM_SINGULARITY_REACTOR => _('Singularitätsreaktor')
+            ShipSystemTypeEnum::SYSTEM_SINGULARITY_REACTOR => _('Singularitätsreaktor'),
+            ShipSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR => _('Bussard-Kollector'),
+            ShipSystemTypeEnum::SYSTEM_AGGREGATION_SYSTEM => _('Aggregationssystem'),
         };
     }
 }

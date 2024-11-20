@@ -76,6 +76,16 @@ function showWebEmitterWindow() {
 	openWindow('elt', 1, 300);
 	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_WEBEMITTER_AJAX=1');
 }
+function showAggregationSystemWindow() {
+	closeAjaxWindow();
+	openWindow('elt', 1, 300);
+	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_AGGREGATION_SYSTEM_AJAX=1');
+}
+function showBussardCollectorWindow() {
+	closeAjaxWindow();
+	openWindow('elt', 1);
+	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_BUSSARD_COLLECTOR_AJAX=1');
+}
 function showScanWindow(shipid, target) {
 	closeAjaxWindow();
 	openPJsWin('elt', 1);
@@ -293,10 +303,10 @@ function analysebuoy(id) {
 	openPJsWin('elt', 1);
 	ajax_update('elt', 'ship.php?id=' + id + '&SHOW_ANALYSE_BUOY=1');
 }
-function leaveFleetInShiplist(shipid, sessionstring) {
+function leaveFleetInShiplist(shipid) {
 	new Ajax.Updater('result', 'ship.php', {
 		method: 'get',
-		parameters: 'B_LEAVE_FLEET=1&id=' + shipid + '&sstr=' + sessionstring,
+		parameters: 'B_LEAVE_FLEET=1&id=' + shipid,
 		evalScripts: true,
 		onSuccess: function (transport) {
 			$('result').show();

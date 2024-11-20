@@ -29,9 +29,7 @@ final class DealsTakeAuction implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_DEALS_TAKE_AUCTION';
 
-    public function __construct(private DealsTakeAuctionRequestInterface $dealstakeAuctionRequest, private TradeLibFactoryInterface $tradeLibFactory, private DealsRepositoryInterface $dealsRepository, private TradePostRepositoryInterface $tradepostRepository, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private BuildplanModuleRepositoryInterface $buildplanModuleRepository, private ShipBuildplanRepositoryInterface $shipBuildplanRepository, private ShipCreatorInterface $shipCreator, private CreatePrestigeLogInterface $createPrestigeLog, private StuTime $stuTime)
-    {
-    }
+    public function __construct(private DealsTakeAuctionRequestInterface $dealstakeAuctionRequest, private TradeLibFactoryInterface $tradeLibFactory, private DealsRepositoryInterface $dealsRepository, private TradePostRepositoryInterface $tradepostRepository, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private BuildplanModuleRepositoryInterface $buildplanModuleRepository, private ShipBuildplanRepositoryInterface $shipBuildplanRepository, private ShipCreatorInterface $shipCreator, private CreatePrestigeLogInterface $createPrestigeLog, private StuTime $stuTime) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -75,10 +73,13 @@ final class DealsTakeAuction implements ActionControllerInterface
         $freeStorage = $storageManagerUser->getFreeStorage();
 
         //check if enough space in storage
+
         if ($neededStorageSpace > $freeStorage) {
-            $game->addInformationf(_('Dein Warenkonto auf diesem Handelsposten ist zu voll, es wird %d freier Lagerraum benötigt'), $neededStorageSpace);
-            return;
+            /*$game->addInformationf(_('Dein Warenkonto auf diesem Handelsposten ist zu voll, es wird %d freier Lagerraum benötigt'), $neededStorageSpace);
+            
+            return; */
         }
+
 
         $currentBidAmount = $auction->getAuctionAmount();
         $currentMaxAmount = $auction->getHighestBid()->getMaxAmount();

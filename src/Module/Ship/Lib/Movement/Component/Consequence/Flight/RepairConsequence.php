@@ -17,8 +17,7 @@ class RepairConsequence extends AbstractFlightConsequence
     public function __construct(
         private CancelRepairInterface $cancelRepair,
         private MessageFactoryInterface $messageFactory
-    ) {
-    }
+    ) {}
 
     #[Override]
     protected function triggerSpecific(

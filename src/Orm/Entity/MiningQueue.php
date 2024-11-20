@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -61,5 +62,24 @@ class MiningQueue implements MiningQueueInterface
     public function getShip(): ShipInterface
     {
         return $this->ship;
+    }
+
+    #[Override]
+    public function getLocationMiningId(): int
+    {
+        return $this->location_mining_id;
+    }
+
+    #[Override]
+    public function setLocationMining(LocationMiningInterface $locationMining): MiningQueueInterface
+    {
+        $this->locationMining = $locationMining;
+        return $this;
+    }
+
+    #[Override]
+    public function getLocationMining(): LocationMiningInterface
+    {
+        return $this->locationMining;
     }
 }

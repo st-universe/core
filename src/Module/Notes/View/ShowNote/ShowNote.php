@@ -35,7 +35,7 @@ final class ShowNote implements ViewControllerInterface
         $game->appendNavigationPart(
             sprintf(
                 'notes.php?%s=1&note=%d',
-                static::VIEW_IDENTIFIER,
+                self::VIEW_IDENTIFIER,
                 $note->getId()
             ),
             $note->getTitle()

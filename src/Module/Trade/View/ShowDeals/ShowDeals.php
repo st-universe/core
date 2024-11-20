@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\View\ShowDeals;
 
 use Override;
+use Stu\Lib\Pirate\Component\PirateWrathManager;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Entity\PirateWrathInterface;
 use Stu\Orm\Repository\DealsRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 
@@ -28,7 +28,7 @@ final class ShowDeals implements ViewControllerInterface
             _('Handel')
         );
         $game->appendNavigationPart(
-            sprintf('trade.php?%s=1', static::VIEW_IDENTIFIER),
+            sprintf('trade.php?%s=1', self::VIEW_IDENTIFIER),
             _('Deals')
         );
         $game->setPageTitle(_('/ Handel / Deals des Großen Nagus'));
@@ -46,7 +46,7 @@ final class ShowDeals implements ViewControllerInterface
         }
 
         if ($game->getUser()->getPirateWrath() === null) {
-            $game->setTemplateVar('WRATH', PirateWrathInterface::DEFAULT_WRATH);
+            $game->setTemplateVar('WRATH', PirateWrathManager::DEFAULT_WRATH);
         } else {
             $game->setTemplateVar('WRATH', $game->getUser()->getPirateWrath()->getWrath());
         }

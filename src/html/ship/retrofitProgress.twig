@@ -1,0 +1,22 @@
+{% if SHIP_RETROFIT_PROGRESS %}
+<table class="tcal">
+    <tr>
+        <th colspan="3">Schiffe im Umbau</th>
+    </tr>
+    {% for data in SHIP_RETROFIT_PROGRESS %}
+    <tr style="height: 50px" class="row">
+        <td style="text-align: center; vertical-align: middle;">
+            <img src="/assets/ships/{{ data.getRump.getId }}.png" />
+        </td>
+        <td style="text-align: center; vertical-align: middle">{{ data.getShip.getName|bbcode }}</td>
+        {% if data.getStopDate %}
+        <td colspan="2" style="text-align: center; vertical-align: middle">Angehalten</td>
+        {% else %}
+        <td style="text-align: center; vertical-align: middle">
+            {{ data.getFinishDate|stuDateTime }}
+        </td>
+        {% endif %}
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}

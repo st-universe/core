@@ -6,22 +6,16 @@ namespace Stu\Module\Colony\Lib;
 
 use Override;
 use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\CommodityInterface;
-use Stu\Orm\Repository\CommodityRepositoryInterface;
 
 final class CommodityConsumption implements CommodityConsumptionInterface
 {
-    public function __construct(private CommodityRepositoryInterface $commodityRepository)
-    {
-    }
-
     #[Override]
     public function getConsumption(
         array $production,
         ColonyInterface $colony
     ): array {
         $depositMinings = $colony->getUserDepositMinings();
-        $stor = $colony->getStorage();
+        $storages = $colony->getStorage();
         $ret = [];
         foreach ($production as $commodityId => $productionItem) {
             $proc = $productionItem->getProduction();
@@ -29,8 +23,7 @@ final class CommodityConsumption implements CommodityConsumptionInterface
                 continue;
             }
 
-            /** @var CommodityInterface $commodity */
-            $commodity = $this->commodityRepository->find($productionItem->getCommodityId());
+            $commodity = $productionItem->getCommodity();
             $ret[$commodityId]['commodity'] = $commodity;
             $ret[$commodityId]['production'] = $productionItem->getProduction();
 
@@ -38,7 +31,8 @@ final class CommodityConsumption implements CommodityConsumptionInterface
                 $deposit = $depositMinings[$commodityId];
                 $ret[$commodityId]['turnsleft'] = (int) floor($deposit->getAmountLeft() / abs($proc));
             } else {
-                $stored = $stor->containsKey($commodityId) ? $stor[$commodityId]->getAmount() : 0;
+                $storage = $storages->get($commodityId);
+                $stored = $storage !== null ? $storage->getAmount() : 0;
                 $ret[$commodityId]['turnsleft'] = (int) floor($stored / abs($proc));
             }
         }

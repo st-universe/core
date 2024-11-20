@@ -34,12 +34,14 @@ final class ModuleSelectorEntry implements ModuleSelectorEntryInterface
     #[Override]
     public function isChosen(): bool
     {
+        /*
         if ($this->isDisabled()) {
             return false;
         }
+         */
 
         if ($this->buildplan !== null) {
-            if ($this->module->getType() === ShipModuleTypeEnum::SPECIAL) {
+            if ($this->module->getType()->isSpecialSystemType()) {
                 $allModulesWithSameName = $this->moduleRepository->findBy(['name' => $this->module->getName()]);
 
                 $modules = $this->buildplan->getModules();

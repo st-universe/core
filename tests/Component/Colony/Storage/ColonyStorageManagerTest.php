@@ -25,9 +25,6 @@ class ColonyStorageManagerTest extends StuTestCase
      */
     private ?MockInterface $storageRepository;
 
-    /**
-     * @var ColonyStorageManager|null
-     */
     private ?ColonyStorageManager $manager;
 
     private ColonyInterface $colony;

@@ -22,9 +22,19 @@ interface ModuleRepositoryInterface extends ObjectRepository
     public function getBySpecialTypeAndRump(
         ColonyInterface|ShipInterface $host,
         ShipModuleTypeEnum $moduleType,
+        int $shipRumpId
+    ): array;
+
+    /**
+     * @return array<ModuleInterface>
+     */
+    public function getBySpecialTypeAndRumpAndRole(
+        ColonyInterface|ShipInterface $host,
+        ShipModuleTypeEnum $moduleType,
         int $shipRumpId,
         int $shipRumpRoleId
     ): array;
+
 
     /**
      * @param array<int> $moduleLevel

@@ -89,6 +89,5 @@ final class ShowShuttleManagement implements ViewControllerInterface
         $game->setTemplateVar('MANAGER', $station);
         $game->setTemplateVar('CURRENTLY_STORED', $currentlyStored);
         $game->setTemplateVar('AVAILABLE_SHUTTLES', $shuttles);
-        $game->setTemplateVar('ERROR', false);
     }
 }

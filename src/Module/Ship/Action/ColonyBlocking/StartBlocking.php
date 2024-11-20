@@ -6,7 +6,7 @@ namespace Stu\Module\Ship\Action\ColonyBlocking;
 
 use Override;
 use request;
-use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -21,9 +21,13 @@ final class StartBlocking implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_START_BLOCKING';
 
-    public function __construct(private ColonyFunctionManagerInterface $colonyFunctionManager, private ShipLoaderInterface $shipLoader, private ColonyRepositoryInterface $colonyRepository, private FleetRepositoryInterface $fleetRepository, private PrivateMessageSenderInterface $privateMessageSender)
-    {
-    }
+    public function __construct(
+        private ColonyFunctionManagerInterface $colonyFunctionManager,
+        private ShipLoaderInterface $shipLoader,
+        private ColonyRepositoryInterface $colonyRepository,
+        private FleetRepositoryInterface $fleetRepository,
+        private PrivateMessageSenderInterface $privateMessageSender
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -69,9 +73,9 @@ final class StartBlocking implements ActionControllerInterface
         }
 
         if (
-            $this->colonyFunctionManager->hasActiveFunction($currentColony, BuildingEnum::BUILDING_FUNCTION_ENERGY_PHALANX)
-            || $this->colonyFunctionManager->hasActiveFunction($currentColony, BuildingEnum::BUILDING_FUNCTION_PARTICLE_PHALANX)
-            || $this->colonyFunctionManager->hasActiveFunction($currentColony, BuildingEnum::BUILDING_FUNCTION_ANTI_PARTICLE)
+            $this->colonyFunctionManager->hasActiveFunction($currentColony, BuildingFunctionEnum::BUILDING_FUNCTION_ENERGY_PHALANX)
+            || $this->colonyFunctionManager->hasActiveFunction($currentColony, BuildingFunctionEnum::BUILDING_FUNCTION_PARTICLE_PHALANX)
+            || $this->colonyFunctionManager->hasActiveFunction($currentColony, BuildingFunctionEnum::BUILDING_FUNCTION_ANTI_PARTICLE)
         ) {
             $game->addInformation(_('Aktion nicht möglich, die Kolonie verfügt über aktive Orbitalverteidigung'));
             return;

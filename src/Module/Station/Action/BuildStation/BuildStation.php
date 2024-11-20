@@ -28,16 +28,12 @@ final class BuildStation implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_BUILD_STATION';
 
-    public function __construct(private StationUtilityInterface $stationUtility, private ShipLoaderInterface $shipLoader, private ShipRepositoryInterface $shipRepository, private ModuleRepositoryInterface $moduleRepository, private ShipStorageManagerInterface $shipStorageManager, private ConstructionProgressRepositoryInterface $constructionProgressRepository, private ConstructionProgressModuleRepositoryInterface $constructionProgressModuleRepository)
-    {
-    }
+    public function __construct(private StationUtilityInterface $stationUtility, private ShipLoaderInterface $shipLoader, private ShipRepositoryInterface $shipRepository, private ModuleRepositoryInterface $moduleRepository, private ShipStorageManagerInterface $shipStorageManager, private ConstructionProgressRepositoryInterface $constructionProgressRepository, private ConstructionProgressModuleRepositoryInterface $constructionProgressModuleRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
-
-        $game->setTemplateVar('ERROR', true);
 
         $ship = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
@@ -197,8 +193,7 @@ final class BuildStation implements ActionControllerInterface
         return $this->moduleRepository->getBySpecialTypeAndRump(
             $ship,
             ShipModuleTypeEnum::SPECIAL,
-            $rump->getId(),
-            $shipRumpRole->getId()
+            $rump->getId()
         );
     }
 

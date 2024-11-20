@@ -20,9 +20,7 @@ final class ShowColonySandbox implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_COLONY_SANDBOX';
 
-    public function __construct(private ColonySandboxRepositoryInterface $colonySandboxRepository, private PlanetFieldHostProviderInterface $planetFieldHostProvider, private ColonyGuiHelperInterface $colonyGuiHelper)
-    {
-    }
+    public function __construct(private ColonySandboxRepositoryInterface $colonySandboxRepository, private PlanetFieldHostProviderInterface $planetFieldHostProvider, private ColonyGuiHelperInterface $colonyGuiHelper) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -42,7 +40,7 @@ final class ShowColonySandbox implements ViewControllerInterface
             $game->appendNavigationPart(
                 sprintf(
                     '/admin/?%s=1&id=%d&hosttype=%d',
-                    static::VIEW_IDENTIFIER,
+                    self::VIEW_IDENTIFIER,
                     $sandbox->getId(),
                     PlanetFieldHostTypeEnum::SANDBOX->value
                 ),

@@ -28,7 +28,8 @@
 {% set shipId = ship.getId %}
 {% set epssystem = wrapper.getEpsSystemData %}
 <tr>
-    <td style="height:1px; width:1px;" class="shiplistshipimage">
+
+    <td id="shipimage" style="height:1px; width:1px;" class="shiplistshipimage">
         <a href="javascript:void(0);"
             onclick="showShiplistShip({{ shipId }}, '{{ ship.getName|bbcode2txt|htmlSafe }}');" class="imgOverlayText"
             onmouseover="openStorageInit(this, {{ shipId }});" onmouseout="closeStorage();">
@@ -36,25 +37,25 @@
             {{ shipimage(ship) }}
         </a>
     </td>
-    <td>
+    <td id="shipname">
         <a {{ onClickShip(ship) }}>
             {% if ship.getDockedTo %}
             <img src="/assets/buttons/dock2.png" title="Schiff ist angedockt" style="height: 20px;" />
             {% endif %}
             {% set stateIconAndTitle = wrapper.getStateIconAndTitle %}
             {% if stateIconAndTitle %}
-            <img src="/assets/buttons/{{ stateIconAndTitle[0] }}.png" title="{{ stateIconAndTitle[1] }}"
+            <img src="/assets/{{ stateIconAndTitle[0] }}.png" title="{{ stateIconAndTitle[1] }}"
                 style="height: 20px;" />
             {% endif %}
             <span>{{ ship.getName|bbcode }}</span>
         </a>
     </td>
-    <td style="text-align: center;">
+    <td id="shipalarmstate" style="text-align: center;">
         <img src="/assets/buttons/alert{{ ship.getAlertState.value }}_1.png" title="Alarmstufe" />
     </td>
     {% set system = ship.getSystem %}
     {% if system %}
-    <td align="center">
+    <td id="shipposition" align="center">
         {{ ship.getPosX }}|{{ ship.getPosY }}<br />
         {% if not system.isWormhole %}
         ({{ system.getCx }}|{{ system.getCy }})
@@ -63,14 +64,14 @@
         {% endif %}
     </td>
     {% else %}
-    <td align="center">
+    <td id="shipposition" align="center">
         ({{ ship.getMap.getCx }}|{{ ship.getMap.getCy }})
     </td>
     {% endif %}
-    <td>
+    <td id="shiphull">
         <span style="{{ ship.getHullColorStyle }}">{{ ship.getHull }}</span>/{{ ship.getMaxHull }}
     </td>
-    <td>
+    <td id="shipshields">
         {% if ship.getShieldState %}
         <span class="activeshield">{{ ship.getShield }}/{{ ship.getMaxShield }}</span>
         {% else %}
@@ -78,7 +79,7 @@
         {% endif %}
         (+{{ ship.getShieldRegenerationRate }})
     </td>
-    <td>
+    <td id="shipenergy">
         <table>
             {% set reactor = wrapper.getReactorWrapper %}
             <tr>
@@ -102,9 +103,7 @@
             </tr>
         </table>
     </td>
-
-
-    <td>
+    <td id="shipreactor">
         {% set reactor = wrapper.getReactorWrapper %}
         {% if reactor %}
         <div style="float: left; width: 50%">
@@ -121,8 +120,10 @@
         </div>
         {% endif %}
     </td>
-    <td style="text-align: center; {{ wrapper.getCrewStyle }}">{{ ship.getCrewCount }}</td>
-    <td>
+
+    <td id="shipcrew" style="text-align: center; {{ wrapper.getCrewStyle }}">{{ ship.getCrewCount }}</td>
+    <td id="shipsystems">
+
         {% if ship.getNbs %}
         <img src="/assets/buttons/kss1.png" title="Nahbereichssensoren aktiviert" />
         {% else %}
@@ -166,7 +167,7 @@
             <img src="/assets/buttons/fl_flag2.png" name="fleet_{{ shipId }}" title="Flotte auflösen" />
         </a>
         {% else %}
-        <a href="javascript:void(0);" onclick="leaveFleetInShiplist({{ shipId }}, '{{ SESSIONSTRING }}');"
+        <a href="javascript:void(0);" onclick="leaveFleetInShiplist({{ shipId }});"
             onmouseover="cp('fleet_{{ shipId }}','buttons/fl_raus2')"
             onmouseout="cp('fleet_{{ shipId }}','buttons/fl_raus1')">
             <img src="/assets/buttons/fl_raus1.png" name="fleet_{{ shipId }}" title="Flotte verlassen" />

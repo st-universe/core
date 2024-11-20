@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
+use Stu\Component\Ship\Buildplan\BuildplanSignatureCreationInterface;
 use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Component\Ship\ShipRumpEnum;
@@ -11,7 +12,6 @@ use Stu\Config\Init;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
 use Stu\Orm\Entity\ModuleInterface;
-use Stu\Orm\Entity\ShipBuildplan;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
@@ -37,6 +37,7 @@ Init::run(function (ContainerInterface $dic): void {
     $buildplanModuleRepo = $dic->get(BuildplanModuleRepositoryInterface::class);
     $userRepo = $dic->get(UserRepositoryInterface::class);
     $shipCrewCalculator = $dic->get(ShipCrewCalculatorInterface::class);
+    $buildplanSignatureCreation = $dic->get(BuildplanSignatureCreationInterface::class);
 
     $userId = request::indInt('userId');
     $rumpId = request::indInt('rumpId');
@@ -62,7 +63,9 @@ Init::run(function (ContainerInterface $dic): void {
             ModuleSpecialAbilityEnum::MODULE_SPECIAL_SHUTTLE_RAMP,
             ModuleSpecialAbilityEnum::MODULE_SPECIAL_TRANSWARP_COIL,
             ModuleSpecialAbilityEnum::MODULE_SPECIAL_HIROGEN_TRACKER,
-            ModuleSpecialAbilityEnum::MODULE_SPECIAL_THOLIAN_WEB
+            ModuleSpecialAbilityEnum::MODULE_SPECIAL_THOLIAN_WEB,
+            ModuleSpecialAbilityEnum::MODULE_SPECIAL_BUSSARD_COLLECTOR,
+            ModuleSpecialAbilityEnum::MODULE_SPECIAL_AGGREGATION_SYSTEM
         ];
         $moduleTypes = [
             ShipModuleTypeEnum::HULL,
@@ -88,7 +91,7 @@ Init::run(function (ContainerInterface $dic): void {
                 throw new RuntimeException('userId %d does not exist', $userId);
             }
 
-            $signature = ShipBuildplan::createSignature(array_merge($moduleList, $moduleSpecialList));
+            $signature = $buildplanSignatureCreation->createSignatureByModuleIds(array_merge($moduleList, $moduleSpecialList), 0);
             $plan = $buildplanRepo->getByUserShipRumpAndSignature($userId, $rump->getId(), $signature);
 
             if ($plan === null) {

@@ -14,6 +14,12 @@ use Stu\Module\Twig\TwigHelper;
  */
 final class Init
 {
+    /** @var array<string> */
+    public static array $configFiles = [
+        '%s/config.dist.json',
+        '?%s/config.json'
+    ];
+
     private static ?ContainerInterface $CONTAINER = null;
 
     public static function getContainer(): ContainerInterface
@@ -87,7 +93,7 @@ final class Init
     {
         date_default_timezone_set('Europe/Berlin');
 
-        $container = static::getContainer();
+        $container = self::getContainer();
 
         $config = $container->get(StuConfigInterface::class);
 

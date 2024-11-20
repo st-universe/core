@@ -91,7 +91,7 @@ final class ShipCreator implements ShipCreatorInterface
 
         $wrapper = $this->shipWrapperFactory->wrapShip($ship);
 
-        foreach (ShipModuleTypeEnum::cases() as $moduleType) {
+        foreach (ShipModuleTypeEnum::getModuleSelectorOrder() as $moduleType) {
 
             $moduleTypeId = $moduleType->value;
 
@@ -272,8 +272,14 @@ final class ShipCreator implements ShipCreatorInterface
                 case ModuleSpecialAbilityEnum::MODULE_SPECIAL_THOLIAN_WEB:
                     $systems[ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB->value] = $module;
                     break;
+                case ModuleSpecialAbilityEnum::MODULE_SPECIAL_BUSSARD_COLLECTOR:
+                    $systems[ShipSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR->value] = $module;
+                    break;
                 case ModuleSpecialAbilityEnum::MODULE_SPECIAL_RPG:
                     $systems[ShipSystemTypeEnum::SYSTEM_RPG_MODULE->value] = null;
+                    break;
+                case ModuleSpecialAbilityEnum::MODULE_SPECIAL_AGGREGATION_SYSTEM:
+                    $systems[ShipSystemTypeEnum::SYSTEM_AGGREGATION_SYSTEM->value] = $module;
                     break;
             }
         }

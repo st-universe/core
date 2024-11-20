@@ -2,6 +2,7 @@
 
 namespace Stu\Lib\Pirate\Component;
 
+use Override;
 use Doctrine\Common\Collections\Collection;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Prestige\Lib\PrestigeCalculationInterface;
@@ -18,6 +19,7 @@ class TrapDetection implements TrapDetectionInterface
         private StuRandom $stuRandom
     ) {}
 
+    #[Override]
     public function isAlertTrap(LocationInterface $location, ShipInterface $leadShip): bool
     {
         $alertedWrappers = $this->alertedShipsDetection->getAlertedShipsOnLocation(
@@ -42,9 +44,9 @@ class TrapDetection implements TrapDetectionInterface
     private function getPrestigeOfAlertedSpacecrafts(Collection $alertedWrappers): int
     {
         return $alertedWrappers
-            ->map(fn(ShipWrapperInterface $wrapper) => $this->prestigeCalculation->getPrestigeOfSpacecraftOrFleet($wrapper))
+            ->map(fn(ShipWrapperInterface $wrapper): int => $this->prestigeCalculation->getPrestigeOfSpacecraftOrFleet($wrapper))
             ->reduce(
-                fn(int $sum, int $prestige) => $sum + $prestige,
+                fn(int $sum, int $prestige): int => $sum + $prestige,
                 0
             );
     }

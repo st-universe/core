@@ -22,16 +22,12 @@ final class ShowMemberRumpInfo implements ViewControllerInterface
      */
     public const string VIEW_IDENTIFIER = 'SHOW_MEMBER_RUMP_INFO';
 
-    public function __construct(private AllianceActionManagerInterface $allianceActionManager, private UserRepositoryInterface $userRepository, private ShipRumpRepositoryInterface $shipRumpRepository, private Parser $bbcodeParser, private ShipRepositoryInterface $shipRepository, private ShipWrapperFactoryInterface $shipWrapperFactory)
-    {
-    }
+    public function __construct(private AllianceActionManagerInterface $allianceActionManager, private UserRepositoryInterface $userRepository, private ShipRumpRepositoryInterface $shipRumpRepository, private Parser $bbcodeParser, private ShipRepositoryInterface $shipRepository, private ShipWrapperFactoryInterface $shipWrapperFactory) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
-
-        $game->setTemplateVar('ERROR', true);
 
         $memberId = request::getIntFatal('uid');
         $rumpId = request::getIntFatal('rid');
@@ -63,6 +59,5 @@ final class ShowMemberRumpInfo implements ViewControllerInterface
         $ships = $this->shipRepository->getByUserAndRump($memberId, $rumpId);
 
         $game->setTemplateVar('WRAPPERS', $this->shipWrapperFactory->wrapShips($ships));
-        $game->setTemplateVar('ERROR', false);
     }
 }

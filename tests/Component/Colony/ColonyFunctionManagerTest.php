@@ -6,6 +6,7 @@ namespace Stu\Component\Colony;
 
 use Mockery\MockInterface;
 use Override;
+use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\StuTestCase;
@@ -31,15 +32,15 @@ class ColonyFunctionManagerTest extends StuTestCase
     {
         $colony = $this->mock(ColonyInterface::class);
 
-        $functionId = 666;
+        $function = BuildingFunctionEnum::BUILDING_FUNCTION_BASE_CAMP;
 
         $this->planetFieldRepository->shouldReceive('getCountByColonyAndBuildingFunctionAndState')
-            ->with($colony, [$functionId], [ColonyFunctionManager::STATE_ENABLED])
+            ->with($colony, [$function], [ColonyFunctionManager::STATE_ENABLED])
             ->once()
             ->andReturn(42);
 
         static::assertTrue(
-            $this->subject->hasActiveFunction($colony, $functionId, false)
+            $this->subject->hasActiveFunction($colony, $function, false)
         );
     }
 
@@ -47,7 +48,7 @@ class ColonyFunctionManagerTest extends StuTestCase
     {
         $colony = $this->mock(ColonyInterface::class);
 
-        $functionId = 666;
+        $function = BuildingFunctionEnum::BUILDING_FUNCTION_BASE_CAMP;
         $colonyId = 21;
 
         $colony->shouldReceive('getId')
@@ -56,15 +57,15 @@ class ColonyFunctionManagerTest extends StuTestCase
             ->andReturn($colonyId);
 
         $this->planetFieldRepository->shouldReceive('getCountByColonyAndBuildingFunctionAndState')
-            ->with($colony, [$functionId], [ColonyFunctionManager::STATE_ENABLED])
+            ->with($colony, [$function], [ColonyFunctionManager::STATE_ENABLED])
             ->once()
             ->andReturn(0);
 
         static::assertFalse(
-            $this->subject->hasActiveFunction($colony, $functionId)
+            $this->subject->hasActiveFunction($colony, $function)
         );
         static::assertFalse(
-            $this->subject->hasActiveFunction($colony, $functionId)
+            $this->subject->hasActiveFunction($colony, $function)
         );
     }
 
@@ -72,15 +73,15 @@ class ColonyFunctionManagerTest extends StuTestCase
     {
         $colony = $this->mock(ColonyInterface::class);
 
-        $functionId = 666;
+        $function = BuildingFunctionEnum::BUILDING_FUNCTION_BASE_CAMP;
 
         $this->planetFieldRepository->shouldReceive('getCountByColonyAndBuildingFunctionAndState')
-            ->with($colony, [$functionId], [ColonyFunctionManager::STATE_DISABLED, ColonyFunctionManager::STATE_ENABLED])
+            ->with($colony, [$function], [ColonyFunctionManager::STATE_DISABLED, ColonyFunctionManager::STATE_ENABLED])
             ->once()
             ->andReturn(42);
 
         static::assertTrue(
-            $this->subject->hasFunction($colony, $functionId)
+            $this->subject->hasFunction($colony, $function)
         );
     }
 }

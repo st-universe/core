@@ -16,7 +16,6 @@ class SqlLoggingSettingsTest extends StuTestCase
     /** @var MockInterface|SettingsCacheInterface */
     private $cache;
 
-    /** @var MockObject|SqlLoggingSettings */
     private SqlLoggingSettings $subject;
 
     #[Override]

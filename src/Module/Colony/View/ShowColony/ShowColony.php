@@ -6,28 +6,38 @@ namespace Stu\Module\Colony\View\ShowColony;
 
 use Override;
 use request;
-use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Component\Colony\OrbitShipListRetrieverInterface;
+use Stu\Component\Game\ModuleViewEnum;
 use Stu\Lib\Colony\PlanetFieldHostTypeEnum;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\Lib\Gui\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\Gui\GuiComponentEnum;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewContext;
 use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Control\ViewWithTutorialInterface;
 use Stu\Module\Database\View\Category\Wrapper\DatabaseCategoryWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
-final class ShowColony implements ViewControllerInterface
+final class ShowColony implements ViewControllerInterface, ViewWithTutorialInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_COLONY';
 
-    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyGuiHelperInterface $colonyGuiHelper, private ShowColonyRequestInterface $showColonyRequest, private TorpedoTypeRepositoryInterface $torpedoTypeRepository, private DatabaseCategoryWrapperFactoryInterface $databaseCategoryWrapperFactory, private OrbitShipListRetrieverInterface $orbitShipListRetriever, private ColonyFunctionManagerInterface $colonyFunctionManager, private ShipWrapperFactoryInterface $shipWrapperFactory)
-    {
-    }
+    public function __construct(
+        private ColonyLoaderInterface $colonyLoader,
+        private ColonyGuiHelperInterface $colonyGuiHelper,
+        private ShowColonyRequestInterface $showColonyRequest,
+        private TorpedoTypeRepositoryInterface $torpedoTypeRepository,
+        private DatabaseCategoryWrapperFactoryInterface $databaseCategoryWrapperFactory,
+        private OrbitShipListRetrieverInterface $orbitShipListRetriever,
+        private ColonyFunctionManagerInterface $colonyFunctionManager,
+        private ShipWrapperFactoryInterface $shipWrapperFactory
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -88,7 +98,7 @@ final class ShowColony implements ViewControllerInterface
             _('Kolonien')
         );
         $game->appendNavigationPart(
-            sprintf('?%s=1&id=%d', static::VIEW_IDENTIFIER, $colony->getId()),
+            sprintf('?%s=1&id=%d', self::VIEW_IDENTIFIER, $colony->getId()),
             $colony->getName()
         );
         $game->setViewTemplate('html/colony/colony.twig');
@@ -109,10 +119,16 @@ final class ShowColony implements ViewControllerInterface
 
         $game->setTemplateVar('FIRST_ORBIT_SHIP', $firstOrbitShip ? $this->shipWrapperFactory->wrapShip($firstOrbitShip) : null);
 
-        $particlePhalanx = $this->colonyFunctionManager->hasFunction($colony, BuildingEnum::BUILDING_FUNCTION_PARTICLE_PHALANX);
+        $particlePhalanx = $this->colonyFunctionManager->hasFunction($colony, BuildingFunctionEnum::BUILDING_FUNCTION_PARTICLE_PHALANX);
         $game->setTemplateVar(
             'BUILDABLE_TORPEDO_TYPES',
             $particlePhalanx ? $this->torpedoTypeRepository->getForUser($userId) : null
         );
+    }
+
+    #[Override]
+    public function getViewContext(): ViewContext
+    {
+        return new ViewContext(ModuleViewEnum::COLONY, self::VIEW_IDENTIFIER);
     }
 }

@@ -21,7 +21,6 @@ use Stu\Component\Admin\Reset\User\UserResetInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Player\Deletion\PlayerDeletionInterface;
 use Stu\Module\Config\StuConfigInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\GameConfigRepositoryInterface;
 use Stu\Orm\Repository\GameRequestRepositoryInterface;
@@ -53,11 +52,11 @@ final class ResetManager implements ResetManagerInterface
         private HistoryRepositoryInterface $historyRepository,
         private GameTurnRepositoryInterface $gameTurnRepository,
         private PlanetFieldRepositoryInterface $planetFieldRepository,
+        private SequenceResetInterface $sequenceReset,
         private StuConfigInterface $stuConfig,
         private EntityManagerInterface $entityManager,
         private Connection $connection
-    ) {
-    }
+    ) {}
 
     #[Override]
     public function performReset(Interactor $io): void
@@ -212,40 +211,7 @@ final class ResetManager implements ResetManagerInterface
     {
         $io->info('  - resetting sequences', true);
 
-        $connection = $this->entityManager->getConnection();
-
-        $result = $connection->executeQuery(
-            "SELECT  'SELECT SETVAL(' ||quote_literal(S.relname)|| ',
-                        (SELECT COALESCE(MAX(' ||quote_ident(C.attname)|| '), 1)
-                        FROM ' ||quote_ident(T.relname)  || '));'
-            FROM pg_class S
-            JOIN pg_depend D
-                ON S.oid = D.objid
-            JOIN pg_class T
-                ON D.refobjid = T.oid
-            JOIN pg_attribute C
-                ON D.refobjid = C.attrelid
-                AND D.refobjsubid = C.attnum
-            WHERE S.relkind = 'S'
-            ORDER BY S.relname"
-        );
-
-        $count = 0;
-
-        while ($query = $result->fetchOne()) {
-            $connection->executeQuery(
-                $query
-            );
-
-            $count++;
-        }
-
-        $connection->executeQuery(
-            sprintf(
-                "SELECT SETVAL('stu_user_id_seq', %d)",
-                UserEnum::USER_FIRST_ID
-            )
-        );
+        $count = $this->sequenceReset->resetSequences();
 
         $io->info('    - resetted ' . $count . ' sequences', true);
     }

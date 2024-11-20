@@ -32,4 +32,6 @@ interface BuildingCommodityRepositoryInterface extends ObjectRepository
     public function getProductionSumForAllUserColonies(UserInterface $user): iterable;
 
     public function getProductionByCommodityAndUser(int $commodityId, UserInterface $user): int;
+
+    public function canProduceCommodity(int $userId, int $commodityId): bool;
 }

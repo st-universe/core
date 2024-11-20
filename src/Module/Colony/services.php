@@ -48,6 +48,7 @@ use Stu\Module\Colony\Action\RenameBuildplan\RenameBuildplanRequest;
 use Stu\Module\Colony\Action\RenameBuildplan\RenameBuildplanRequestInterface;
 use Stu\Module\Colony\Action\RepairBuilding\RepairBuilding;
 use Stu\Module\Colony\Action\RepairShip\RepairShip;
+use Stu\Module\Colony\Action\RetrofitShip\RetrofitShip;
 use Stu\Module\Colony\Action\ScrollBuildMenu\ScrollBuildMenu;
 use Stu\Module\Colony\Action\SetPopulationLimit\SetPopulationLimit;
 use Stu\Module\Colony\Action\StartAirfieldShip\StartAirfieldShip;
@@ -86,6 +87,7 @@ use Stu\Module\Colony\Lib\Gui\Component\ShieldingProvider;
 use Stu\Module\Colony\Lib\Gui\Component\ShipBuildplansProvider;
 use Stu\Module\Colony\Lib\Gui\Component\ShipDisassemblyProvider;
 use Stu\Module\Colony\Lib\Gui\Component\ShipRepairProvider;
+use Stu\Module\Colony\Lib\Gui\Component\ShipRetrofitProvider;
 use Stu\Module\Colony\Lib\Gui\Component\ShipyardProvider;
 use Stu\Module\Colony\Lib\Gui\Component\SocialProvider;
 use Stu\Module\Colony\Lib\Gui\Component\StorageProvider;
@@ -145,6 +147,7 @@ use Stu\Module\Colony\View\ShowModuleScreen\ShowModuleScreen;
 use Stu\Module\Colony\View\ShowModuleScreen\ShowModuleScreenRequest;
 use Stu\Module\Colony\View\ShowModuleScreen\ShowModuleScreenRequestInterface;
 use Stu\Module\Colony\View\ShowModuleScreenBuildplan\ShowModuleScreenBuildplan;
+use Stu\Module\Colony\View\ShowModuleScreenRetrofit\ShowModuleScreenRetrofit;
 use Stu\Module\Colony\View\ShowOrbitManagement\ShowOrbitManagement;
 use Stu\Module\Colony\View\ShowOrbitManagement\ShowOrbitManagementRequest;
 use Stu\Module\Colony\View\ShowOrbitManagement\ShowOrbitManagementRequestInterface;
@@ -160,6 +163,9 @@ use Stu\Module\Colony\View\ShowShipDisassembly\ShowShipDisassemblyRequestInterfa
 use Stu\Module\Colony\View\ShowShipRepair\ShowShipRepair;
 use Stu\Module\Colony\View\ShowShipRepair\ShowShipRepairRequest;
 use Stu\Module\Colony\View\ShowShipRepair\ShowShipRepairRequestInterface;
+use Stu\Module\Colony\View\ShowShipRetrofit\ShowShipRetrofit;
+use Stu\Module\Colony\View\ShowShipRetrofit\ShowShipRetrofitRequest;
+use Stu\Module\Colony\View\ShowShipRetrofit\ShowShipRetrofitRequestInterface;
 use Stu\Module\Colony\View\ShowShipyard\ShowShipyard;
 use Stu\Module\Colony\View\ShowShipyard\ShowShipyardRequest;
 use Stu\Module\Colony\View\ShowShipyard\ShowShipyardRequestInterface;
@@ -208,7 +214,8 @@ return [
             GuiComponentEnum::FIGHTER_SHIPYARD->value => autowire(FighterShipyardProvider::class),
             GuiComponentEnum::SHIP_BUILDPLANS->value => autowire(ShipBuildplansProvider::class),
             GuiComponentEnum::SHIP_REPAIR->value => autowire(ShipRepairProvider::class),
-            GuiComponentEnum::SHIP_DISASSEMBLY->value => autowire(ShipDisassemblyProvider::class),
+            GuiComponentEnum::SHIP_RETROFIT->value => autowire(ShipRetrofitProvider::class),
+            GuiComponentEnum::SHIP_DISASSEMBLY->value => autowire(ShipDisassemblyProvider::class)
         ]
     ),
     ColonyLibFactoryInterface::class => autowire(ColonyLibFactory::class),
@@ -236,6 +243,7 @@ return [
     ShowOrbitShiplistRequestInterface::class => autowire(ShowOrbitShiplistRequest::class),
     ShowShipDisassemblyRequestInterface::class => autowire(ShowShipDisassemblyRequest::class),
     ShowShipRepairRequestInterface::class => autowire(ShowShipRepairRequest::class),
+    ShowShipRetrofitRequestInterface::class => autowire(ShowShipRetrofitRequest::class),
     ShowShipyardRequestInterface::class => autowire(ShowShipyardRequest::class),
     ShowShuttleManagementRequestInterface::class => autowire(ShowShuttleManagementRequest::class),
     ShowTorpedoFabRequestInterface::class => autowire(ShowTorpedoFabRequest::class),
@@ -282,7 +290,8 @@ return [
         ChangeFrequency::ACTION_IDENTIFIER => autowire(ChangeFrequency::class),
         ChangeTorpedoType::ACTION_IDENTIFIER => autowire(ChangeTorpedoType::class),
         RenameBuildplan::ACTION_IDENTIFIER => autowire(RenameBuildplan::class),
-        RemoveWaste::ACTION_IDENTIFIER => autowire(RemoveWaste::class)
+        RemoveWaste::ACTION_IDENTIFIER => autowire(RemoveWaste::class),
+        RetrofitShip::ACTION_IDENTIFIER => autowire(RetrofitShip::class)
     ],
     'COLONY_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
@@ -313,9 +322,11 @@ return [
         ShowOrbitManagement::VIEW_IDENTIFIER => autowire(ShowOrbitManagement::class),
         ShowModuleScreen::VIEW_IDENTIFIER => autowire(ShowModuleScreen::class),
         ShowModuleScreenBuildplan::VIEW_IDENTIFIER => autowire(ShowModuleScreenBuildplan::class),
+        ShowModuleScreenRetrofit::VIEW_IDENTIFIER => autowire(ShowModuleScreenRetrofit::class),
         ShowModuleFab::VIEW_IDENTIFIER => autowire(ShowModuleFab::class),
         ShowModuleCancel::VIEW_IDENTIFIER => autowire(ShowModuleCancel::class),
         ShowShipRepair::VIEW_IDENTIFIER => autowire(ShowShipRepair::class),
+        ShowShipRetrofit::VIEW_IDENTIFIER => autowire(ShowShipRetrofit::class),
         ShowShipDisassembly::VIEW_IDENTIFIER => autowire(ShowShipDisassembly::class),
         ShowGiveUp::VIEW_IDENTIFIER => autowire(ShowGiveUp::class),
         ShowSectorScan::VIEW_IDENTIFIER => autowire(ShowSectorScan::class),

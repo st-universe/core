@@ -5,6 +5,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\PirateWrath;
 use Stu\Orm\Entity\PirateWrathInterface;
+use Stu\Orm\Entity\UserInterface;
 
 /**
  * @extends ObjectRepository<PirateWrath>
@@ -25,4 +26,9 @@ interface PirateWrathRepositoryInterface extends ObjectRepository
      * @return PirateWrathInterface[]
      */
     public function getPirateWrathTop10(): array;
+
+    /**
+     * @return PirateWrathInterface[]
+     */
+    public function getByUser(UserInterface $user): array;
 }

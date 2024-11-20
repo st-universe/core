@@ -53,6 +53,10 @@ final class ModuleRumpWrapperReactor extends ModuleRumpWrapperBase implements Mo
             throw new RuntimeException('this should not happen');
         }
 
+        if ($reactorWrapper->getLoad() > $this->getSecondValue() && $this->getSecondValue()) {
+            $reactorWrapper->setLoad($this->getSecondValue());
+        }
+
         $reactorWrapper->setOutput($this->getValue());
     }
 }

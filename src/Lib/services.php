@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib;
 
+use Psr\Container\ContainerInterface;
 use Stu\Lib\Colony\PlanetFieldHostProvider;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Lib\Information\InformationFactory;
@@ -72,6 +73,10 @@ use Stu\Lib\Transfer\Strategy\TroopTransferStrategy;
 use Stu\Lib\Transfer\TransferTargetLoader;
 use Stu\Lib\Transfer\TransferTargetLoaderInterface;
 use Stu\Lib\Transfer\TransferTypeEnum;
+use Stu\Module\Config\StuConfigInterface;
+use Symfony\Component\Mailer\Mailer;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mailer\Transport;
 
 use function DI\autowire;
 use function DI\create;
@@ -85,6 +90,12 @@ return [
     GradientColorInterface::class => autowire(GradientColor::class),
     DistanceCalculationInterface::class => autowire(DistanceCalculation::class),
     BeamUtilInterface::class => autowire(BeamUtil::class),
+    MailerInterface::class => function (ContainerInterface $c): MailerInterface {
+        $stuConfig = $c->get(StuConfigInterface::class);
+        $transportDsn = $stuConfig->getGameSettings()->getEmailSettings()->getTransportDsn();
+
+        return new Mailer(Transport::fromDsn($transportDsn));
+    },
     MailFactoryInterface::class => autowire(MailFactory::class),
     PlanetFieldHostProviderInterface::class => autowire(PlanetFieldHostProvider::class),
     TransferTargetLoaderInterface::class => autowire(TransferTargetLoader::class),

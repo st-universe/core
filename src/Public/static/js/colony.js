@@ -313,23 +313,30 @@ function toggleTorpedoInfo(module_crew) {
 	}
 }
 
-function replaceTabImage(type, moduleId, commodityId, module_crew) {
+function replaceTabImage(type, moduleId, commodityId, module_crew, amount) {
+
 	if (moduleId == 0) {
 		$('tab_image_mod_' + type).src = 'assets/buttons/modul_' + type + '.png';
 		$('module_type_' + type).innerHTML = '';
 		updateCrewCount(type, 0);
 	} else {
-		Element.removeClassName($('module_tab_' + type), 'module_select_base_mandatory');
+		if (amount > 0) {
+			Element.removeClassName($('module_tab_' + type), 'module_select_base_mandatory');
+		}
 		$('tab_image_mod_' + type).src = 'assets/commodities/' + commodityId + '.png';
 		$('module_type_' + type).innerHTML = $(moduleId + '_content').innerHTML;
 		$('module_type_' + type).show();
 		updateCrewCount(type, module_crew);
 	}
-
-	enableShipBuildButton();
+	if (amount > 0) {
+		enableShipBuildButton();
+	}
+	else {
+		checkCrewCount();
+	}
 }
 var disabledSlots = new Set();
-function toggleSpecialModuleDisplay(type, module_id, module_crew) {
+function toggleSpecialModuleDisplay(type, module_id, module_crew, amount) {
 	let innerHTML = '';
 	let checkedCount = 0;
 
@@ -373,7 +380,12 @@ function toggleSpecialModuleDisplay(type, module_id, module_crew) {
 	$('module_type_' + type).innerHTML = innerHTML;
 	$('module_type_' + type).show();
 
-	enableShipBuildButton();
+	if (amount > 0) {
+		enableShipBuildButton();
+	}
+	else {
+		checkCrewCount();
+	}
 }
 var maxCrew;
 var baseCrew;
@@ -428,10 +440,10 @@ function enableShipBuildButton() {
 	Form.Element.enable('buildbutton');
 	new Effect.Highlight($('buildbutton'));
 }
-function cancelModuleQueueEntries(module_id, rump_id) {
+function cancelModuleQueueEntries(module_id) {
 	ajaxPostUpdate(
-		`module_${module_id}_action_${rump_id}`,
-		'colony.php', `B_CANCEL_MODULECREATION=1&id=${colonyid}&module=${module_id}&func=${$('func').value}&count=${$('module_' + module_id + '_count_' + rump_id).value}`
+		`module_${module_id}_action`,
+		'colony.php', `B_CANCEL_MODULECREATION=1&id=${colonyid}&module=${module_id}&func=${$('func').value}&count=${$('module_' + module_id + '_count').value}`
 	);
 	document.querySelectorAll(`[id^="module_${module_id}_action"]`).forEach(function (element) {
 		element.innerHTML = '<div>-</div>';
@@ -532,11 +544,6 @@ function calculateLocalCrew() {
 	document.getElementById('calculatedCrewResponsive').innerText = result.toString();
 }
 
-function syncInputs(id1, id2) {
-	const value = document.getElementById(id1).value;
-	document.getElementById(id2).value = value;
-}
-
 /**
  * All module production functionality
  */
@@ -548,6 +555,16 @@ function clearModuleInputs() {
 
 function setModuleInput(input) {
 	moduleProductionInputs.set(input.getAttribute('data-module-id'), input.value);
+	syncAllInputFields(input);
+}
+
+function syncAllInputFields(input) {
+	const moduleId = input.getAttribute('data-module-id');
+	const value = input.value;
+	const inputs = document.querySelectorAll(`input[data-module-id="${moduleId}"]`);
+	inputs.forEach(inp => {
+		inp.value = value;
+	});
 }
 
 function startModuleProduction() {
@@ -560,32 +577,37 @@ function startModuleProduction() {
 	actionToInnerContent('B_CREATE_MODULES', `id=${colonyId}&func=${func}&moduleids[]=${moduleIds}&values[]=${values}&sstr=${sstr}`);
 }
 
-function filterByRump() {
-	const selectedRump = document.getElementById('rump-select').value;
-	const allRumpModules = document.querySelectorAll('.rump-modules');
-	const allBuildplanModules = document.querySelectorAll('.buildplan-modules');
+function filterByRump(selectedRump) {
+	const isSelected = selectedRump !== '0' && selectedRump !== '';
 
-	allRumpModules.forEach(rumpModule => {
-		rumpModule.style.display = 'none';
-	});
-
-	allBuildplanModules.forEach(buildplanModule => {
-		buildplanModule.style.display = 'none';
-	});
-
-	if (selectedRump === '0' || selectedRump === '') {
-		const selectedRumpModules = document.getElementById('rump-modules-0');
-		if (selectedRumpModules) {
-			selectedRumpModules.style.display = 'block';
-		}
-	} else {
-		const selectedRumpModules = document.getElementById(`rump-modules-${selectedRump}`);
-		if (selectedRumpModules) {
-			selectedRumpModules.style.display = 'block';
-		}
-	}
+	applyFilter(isSelected, `.rump_${selectedRump}`, false);
 
 	updateBuildplanDropdown(selectedRump);
+}
+
+function filterByBuildplan(selectedBuildplan) {
+	const isSelected = selectedBuildplan !== '0' && selectedBuildplan !== '';
+
+	if (isSelected) {
+		applyFilter(isSelected, `.buildplan_${selectedBuildplan}`, true);
+	} else {
+		filterByRump(document.getElementById('rump-select').value);
+	}
+}
+
+function applyFilter(isSelected, querySelector, expandAll) {
+	hideAllModulesAndLevelButtons(isSelected);
+
+	if (isSelected) {
+		const modules = document.querySelectorAll(querySelector);
+		modules.forEach(module => {
+			module.style.display = 'table-row';
+			enableLevelButton(module);
+			if (expandAll) {
+				showModuleLevel(module);
+			}
+		});
+	}
 }
 
 function updateBuildplanDropdown(rumpId) {
@@ -603,43 +625,8 @@ function updateBuildplanDropdown(rumpId) {
 	buildplanSelect.value = '0';
 }
 
-function filterByBuildplan() {
-	const selectedRump = document.getElementById('rump-select').value;
-	const selectedBuildplan = document.getElementById('buildplan-select').value;
-	const allRumpModules = document.querySelectorAll('.rump-modules');
-	const allBuildplanModules = document.querySelectorAll('.buildplan-modules');
-
-	allRumpModules.forEach(rumpModule => {
-		rumpModule.style.display = 'none';
-	});
-
-	allBuildplanModules.forEach(buildplanModule => {
-		buildplanModule.style.display = 'none';
-	});
-
-	if (selectedRump === '0' || selectedRump === '') {
-		const selectedRumpModules = document.getElementById('rump-modules-0');
-		if (selectedRumpModules) {
-			selectedRumpModules.style.display = 'block';
-		}
-	} else {
-		if (selectedBuildplan === '0') {
-			const selectedRumpModules = document.getElementById(`rump-modules-${selectedRump}`);
-			if (selectedRumpModules) {
-				selectedRumpModules.style.display = 'block';
-			}
-		} else {
-			const selectedBuildplanModules = document.getElementById(`buildplan-modules-${selectedBuildplan}`);
-			if (selectedBuildplanModules) {
-				selectedBuildplanModules.style.display = 'block';
-			}
-		}
-	}
-}
-
-
-function toggleModuleType(type, rumpId = 'all') {
-	const levelBox = document.getElementById(`level-box-${type}_${rumpId}`);
+function toggleModuleType(type) {
+	const levelBox = document.getElementById(`level-box-${type}`);
 	const moduleLevels = document.querySelectorAll(`.module-level`);
 
 	if (levelBox.style.display === 'none') {
@@ -651,7 +638,7 @@ function toggleModuleType(type, rumpId = 'all') {
 			if (moduleLevel.id.startsWith(`module-level-${type}-`)) {
 				moduleLevel.style.display = 'none';
 
-				const levelButton = document.querySelector(`#level-box-${type}_${rumpId} button.active`);
+				const levelButton = document.querySelector(`#level-box-${type} button.active`);
 				if (levelButton) {
 					levelButton.classList.remove('active');
 				}
@@ -660,15 +647,47 @@ function toggleModuleType(type, rumpId = 'all') {
 	}
 }
 
-function toggleModuleLevel(type, level, rumpId = 'all', event) {
-	event.stopPropagation();
-	const moduleLevelDiv = document.getElementById(`module-level-${type}-${level}-${rumpId}`);
+function toggleModuleLevel(type, level, element) {
+	const moduleLevelDiv = document.getElementById(`module-level-${type}-${level}`);
 
 	if (moduleLevelDiv.style.display === 'none') {
-		event.target.classList.add('active');
+		element.classList.add('active');
 		moduleLevelDiv.style.display = 'block';
 	} else {
-		event.target.classList.remove('active');
+		element.classList.remove('active');
 		moduleLevelDiv.style.display = 'none';
 	}
+}
+
+function hideAllModulesAndLevelButtons(isFilterActive) {
+	const allModules = document.querySelectorAll('.modules');
+	const allLevelButtons = document.querySelectorAll('.level-button');
+	const allModuleLevels = document.querySelectorAll('.module-level');
+	const allLevelBoxes = document.querySelectorAll('.level-box');
+
+	allModules.forEach(module => {
+		module.style.display = isFilterActive ? 'none' : 'table-row'
+	});
+	allLevelButtons.forEach(button => {
+		button.style.display = isFilterActive ? 'none' : 'block';
+		button.classList.remove('active');
+	});
+	allModuleLevels.forEach(moduleLevel => {
+		moduleLevel.style.display = 'none';
+	});
+	allLevelBoxes.forEach(levelBox => {
+		levelBox.style.display = 'none';
+	});
+}
+
+function enableLevelButton(module) {
+	const type = module.getAttribute('data-module-type');
+	const level = module.getAttribute('data-module-level');
+	document.getElementById(`level-button-${type}-${level}`).style.display = 'block';
+}
+
+function showModuleLevel(module) {
+	const type = module.getAttribute('data-module-type');
+	const level = module.getAttribute('data-module-level');
+	document.getElementById(`module-level-${type}-${level}`).style.display = 'block';
 }

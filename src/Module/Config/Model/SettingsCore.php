@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Config\Model;
 
+use Override;
 use Noodlehaus\ConfigInterface;
 use Stu\Module\Config\StuConfigException;
 
@@ -14,6 +15,7 @@ class SettingsCore implements SettingsCoreInterface
     ) {
     }
 
+    #[Override]
     public function getPath(): string
     {
         if ($this->parentSetting === null) {
@@ -22,11 +24,13 @@ class SettingsCore implements SettingsCoreInterface
         return sprintf('%s.%s', $this->parentSetting->getPath(), $this->configPath);
     }
 
+    #[Override]
     public function getConfig(): ConfigInterface
     {
         return $this->config;
     }
 
+    #[Override]
     public function getIntegerConfigValue(string $setting, ?int $default = null): int
     {
         $path = $this->getSettingPath($setting);
@@ -39,6 +43,7 @@ class SettingsCore implements SettingsCoreInterface
         return (int)$value;
     }
 
+    #[Override]
     public function getStringConfigValue(string $setting, ?string $default = null): string
     {
         $path = $this->getSettingPath($setting);
@@ -51,6 +56,7 @@ class SettingsCore implements SettingsCoreInterface
         return $value;
     }
 
+    #[Override]
     public function getBooleanConfigValue(string $setting, ?bool $default = null): bool
     {
         $path = $this->getSettingPath($setting);
@@ -68,6 +74,7 @@ class SettingsCore implements SettingsCoreInterface
      *
      * @return array<string>
      */
+    #[Override]
     public function getArrayConfigValue(string $setting, ?array $default = null): array
     {
         $path = $this->getSettingPath($setting);
@@ -75,6 +82,7 @@ class SettingsCore implements SettingsCoreInterface
         return $this->getConfigArray($path, $default);
     }
 
+    #[Override]
     public function exists(string $setting): bool
     {
         $path = $this->getSettingPath($setting);

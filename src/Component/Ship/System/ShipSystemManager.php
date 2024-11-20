@@ -28,9 +28,7 @@ final class ShipSystemManager implements ShipSystemManagerInterface
     /**
      * @param array<ShipSystemTypeInterface> $systemList
      */
-    public function __construct(private array $systemList, private StuTime $stuTime)
-    {
-    }
+    public function __construct(private array $systemList, private StuTime $stuTime) {}
 
     #[Override]
     public function activate(
@@ -225,7 +223,7 @@ final class ShipSystemManager implements ShipSystemManagerInterface
         if ($sort) {
             usort(
                 $activeSystems,
-                fn (ShipSystemInterface $a, ShipSystemInterface $b): int => $prioArray[$a->getSystemType()->value] <=> $prioArray[$b->getSystemType()->value]
+                fn(ShipSystemInterface $a, ShipSystemInterface $b): int => $prioArray[$a->getSystemType()->value] <=> $prioArray[$b->getSystemType()->value]
             );
         }
 

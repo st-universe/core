@@ -161,6 +161,8 @@ interface ShipInterface extends ShipDestroyerInterface
 
     public function isUnderRepair(): bool;
 
+    public function isUnderRetrofit(): bool;
+
     public function getIsFleetLeader(): bool;
 
     public function setIsFleetLeader(bool $isFleetLeader): ShipInterface;
@@ -207,6 +209,10 @@ interface ShipInterface extends ShipDestroyerInterface
     public function isShuttleRampHealthy(): bool;
 
     public function isWebEmitterHealthy(): bool;
+
+    public function isAggregationSystemHealthy(): bool;
+
+    public function isBussardCollectorHealthy(): bool;
 
     public function isWarpAble(): bool;
 
@@ -422,4 +428,10 @@ interface ShipInterface extends ShipDestroyerInterface
     public function setIsInEmergency(bool $inEmergency): ShipInterface;
 
     public function getDockedWorkbeeCount(): int;
+
+    public function getMiningQueue(): ?MiningQueueInterface;
+
+    public function getColonyShipQueue(): ?ColonyShipQueueInterface;
+
+    public function setColonyShipQueue(?ColonyShipQueueInterface $queue): ShipInterface;
 }

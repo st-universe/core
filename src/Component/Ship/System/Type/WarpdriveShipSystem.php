@@ -6,20 +6,19 @@ namespace Stu\Component\Ship\System\Type;
 
 use Override;
 use RuntimeException;
-use Stu\Component\Ship\ShipStateEnum;
+use Stu\Component\Ship\Event\WarpdriveActivationEvent;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
-use Stu\Module\Ship\Lib\Interaction\ShipUndockingInterface;
-use Stu\Module\Ship\Lib\ShipStateChangerInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
-    public function __construct(private ShipStateChangerInterface $shipStateChanger, private ShipUndockingInterface $shipUndocking)
-    {
-    }
+    public function __construct(
+        private GameControllerInterface $game
+    ) {}
 
     #[Override]
     public function getSystemType(): ShipSystemTypeEnum
@@ -64,15 +63,10 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
     public function activate(ShipWrapperInterface $wrapper, ShipSystemManagerInterface $manager): void
     {
         $ship = $wrapper->get();
-        $this->shipStateChanger->changeShipState($wrapper, ShipStateEnum::SHIP_STATE_NONE);
-        $this->shipUndocking->undockAllDocked($ship);
         $ship->setDockedTo(null);
         $ship->getShipSystem($this->getSystemType())->setMode(ShipSystemModeEnum::MODE_ON);
 
-        $tractoredShipWrapper = $wrapper->getTractoredShipWrapper();
-        if ($tractoredShipWrapper !== null) {
-            $this->shipStateChanger->changeShipState($tractoredShipWrapper, ShipStateEnum::SHIP_STATE_NONE);
-        }
+        $this->game->triggerEvent(new WarpdriveActivationEvent($wrapper));
     }
 
     #[Override]
