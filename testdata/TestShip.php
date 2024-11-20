@@ -15,9 +15,11 @@ class TestShip extends AbstractTestData
         private int $layerId,
         private $x,
         private $y
-    ) {}
+    ) {
+        parent::__construct();
+    }
 
-    public function insertTestData(): int
+    public function insertTestData(): Object
     {
         $shipCreator = $this->dic->get(ShipCreatorInterface::class);
         $layerRepository = $this->dic->get(LayerRepositoryInterface::class);
@@ -26,11 +28,11 @@ class TestShip extends AbstractTestData
         $layer = $layerRepository->find(MapEnum::DEFAULT_LAYER);
         $map = $mapRepository->getByCoordinates($layer, $this->x, $this->y);
 
-        $wrapper = $shipCreator->createBy(1, 2, 3)
+        $wrapper = $shipCreator->createBy(1, 6501, 2075)
             ->setLocation($map)
             ->createCrew()
             ->finishConfiguration();
 
-        return $wrapper->get()->getId();
+        return $wrapper->get();
     }
 }

@@ -10,7 +10,7 @@ use Stu\Orm\Repository\FactionRepositoryInterface;
 
 class TestUser extends AbstractTestData
 {
-    public function insertTestData(): int
+    public function insertTestData(): Object
     {
         $factionRepository = $this->dic->get(FactionRepositoryInterface::class);
         $playerCreator = $this->dic->get(LocalPlayerCreator::class);
@@ -22,6 +22,6 @@ class TestUser extends AbstractTestData
             'password'
         );
 
-        return $user->getId();
+        return $user;
     }
 }

@@ -17,6 +17,7 @@ use Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider;
 use JetBrains\PhpStorm\Deprecated;
 use Override;
 use Psr\Container\ContainerInterface;
+use request;
 use RuntimeException;
 use Spatie\Snapshots\MatchesSnapshots;
 use Stu\Config\Init;
@@ -24,6 +25,7 @@ use Stu\Lib\SessionInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\Render\GameTwigRendererInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Twig\TwigHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\StringInput;
 
@@ -36,17 +38,28 @@ abstract class TwigTestCase extends StuTestCase
 
     private static bool $isSchemaCreated = false;
 
+    private ?ContainerInterface $container = null;
+
     #[Override]
     public function setUp(): void
     {
         $this->initializeSchema();
     }
 
-    protected function renderSnapshot(ViewControllerInterface $viewController = null): void
-    {
-        $dic = Init::getContainer(self::$INTTEST_CONFIG_PATH);
+    protected abstract function getViewControllerClass(): string;
 
+    /** @param array<string, mixed> $requestVars*/
+    protected function renderSnapshot(array $requestVars, ViewControllerInterface $viewController = null): void
+    {
+        $dic = $this->getContainer();
+
+        request::setMockVars($requestVars);
         $this->setupSession($dic);
+
+        // TWIG
+        $twigHelper = $dic->get(TwigHelper::class);
+        $twigHelper->registerFiltersAndFunctions();
+        $twigHelper->registerGlobalVariables();
 
         $game = $dic->get(GameControllerInterface::class);
         $twigRenderer = $dic->get(GameTwigRendererInterface::class);
@@ -59,11 +72,15 @@ abstract class TwigTestCase extends StuTestCase
         $this->assertMatchesHtmlSnapshot($renderResult);
     }
 
-    protected abstract function getViewControllerClass(): string;
-
     protected function loadTestData(TestDataInterface $testData): int
     {
-        return $testData->insertTestData();
+        $object = $testData->insertTestData();
+
+        $this->getContainer()
+            ->get(EntityManagerInterface::class)
+            ->flush();
+
+        return $object->getId();
     }
 
     #[Deprecated()]
@@ -136,7 +153,7 @@ abstract class TwigTestCase extends StuTestCase
 
     private function runCommandWithDependecyFactory(string $command, InputInterface $input): void
     {
-        $dic = Init::getContainer(self::$INTTEST_CONFIG_PATH);
+        $dic = $this->getContainer();
         $entityManager = $dic->get(EntityManagerInterface::class);
 
         $entityManager->wrapInTransaction(function (EntityManagerInterface $entityManager) use ($command, $input) {
@@ -157,5 +174,14 @@ abstract class TwigTestCase extends StuTestCase
                 throw new RuntimeException(sprintf('Could not execute %s!', $command));
             }
         });
+    }
+
+    private function getContainer(): ContainerInterface
+    {
+        if ($this->container === null) {
+            $this->container = Init::getContainer(self::$INTTEST_CONFIG_PATH);
+        }
+
+        return $this->container;
     }
 }

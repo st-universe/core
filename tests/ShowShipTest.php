@@ -5,21 +5,24 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\View\ShowRegionInfo;
 
 use Override;
+use request;
+use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\TestShip;
 use Stu\TestUser;
 use Stu\TwigTestCase;
 
-class ShowRegionInfoFest extends TwigTestCase
+class ShowShipTest extends TwigTestCase
 {
     #[Override]
     protected function getViewControllerClass(): string
     {
-        return ShowRegionInfo::class;
+        return ShowShip::class;
     }
 
     public function testHandle(): void
     {
-        $userId = $this->loadTestData(new TestUser());
+        $shipId = $this->loadTestData(new TestShip(2, 5, 5));
 
-        $this->renderSnapshot();
+        $this->renderSnapshot(['id' => $shipId]);
     }
 }
