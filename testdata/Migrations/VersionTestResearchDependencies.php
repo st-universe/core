@@ -7,16 +7,16 @@ namespace Stu\Testdata;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class VersionTestAlliancesJobs extends AbstractMigration
+final class VersionTestResearchDependencies extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'Adds default stu_alliances_jobs.';
+        return 'Adds default stu_research_dependencies.';
     }
 
     public function up(Schema $schema): void
     {
-        $this->addSql('INSERT INTO stu_alliances_jobs (id, alliance_id, user_id, type) VALUES (2, 2, 101, 1);
+        $this->addSql('
         ');
     }
 }
