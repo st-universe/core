@@ -14,9 +14,7 @@ final class CreateFleet implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_NEW_FLEET';
 
-    public function __construct(private CreateFleetRequestInterface $createFleetRequest, private FleetRepositoryInterface $fleetRepository, private ShipLoaderInterface $shipLoader)
-    {
-    }
+    public function __construct(private CreateFleetRequestInterface $createFleetRequest, private FleetRepositoryInterface $fleetRepository, private ShipLoaderInterface $shipLoader) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -27,6 +25,10 @@ final class CreateFleet implements ActionControllerInterface
             return;
         }
         if ($ship->isBase()) {
+            return;
+        }
+        if ($ship->isUnderRetrofit()) {
+            $game->addInformation(_('Aktion nicht möglich, da das Schiff umgerüstet wird.'));
             return;
         }
         if ($ship->isTractored()) {

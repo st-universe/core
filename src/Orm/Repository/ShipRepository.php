@@ -132,6 +132,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 AND s.fleets_id IS NULL
                 AND s.user_id = :userId
                 AND s.type = :type
+                AND s.state != :state
                 ORDER BY s.rumps_id ASC, s.name ASC',
                 Ship::class
             )
@@ -139,6 +140,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'userId' => $fleetLeader->getUser()->getId(),
             'type' => SpacecraftTypeEnum::SPACECRAFT_TYPE_SHIP->value,
             'location' => $fleetLeader->getLocation(),
+            'state' => ShipStateEnum::SHIP_STATE_RETROFIT
         ])->getResult();
     }
 

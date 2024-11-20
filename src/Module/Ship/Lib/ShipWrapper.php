@@ -274,6 +274,10 @@ final class ShipWrapper implements ShipWrapperInterface
             return false;
         }
 
+        if ($this->ship->getFleet()) {
+            return false;
+        }
+
         if ($this->ship->getShieldState()) {
             return false;
         }
