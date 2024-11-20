@@ -16,318 +16,319 @@ final class VersionTestRumpsModuleSpecial extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (3, 1302, 1);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (4, 1402, 1);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (5, 1403, 1);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (8, 2202, 1);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (9, 2203, 1);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (10, 2302, 1);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (11, 2303, 1);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (12, 3102, 1);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (13, 3103, 1);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (14, 3203, 1);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (15, 3302, 1);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (16, 3402, 1);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (17, 3403, 1);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (18, 4102, 1);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (19, 4203, 1);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (20, 4302, 1);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (21, 4303, 1);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (22, 5103, 1);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (23, 5202, 1);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (24, 5203, 1);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (25, 5302, 1);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (26, 6502, 1);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (27, 6503, 1);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (28, 6602, 1);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (29, 6603, 1);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (30, 8102, 1);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (31, 8203, 1);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (32, 6702, 1);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (33, 6703, 1);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (34, 5403, 1);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (35, 5402, 1);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (36, 8213, 1);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (37, 3401, 4);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (39, 3491, 4);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (40, 5401, 4);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (41, 5491, 4);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (42, 6501, 5);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (43, 6502, 5);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (44, 6503, 5);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (45, 1401, 6);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (46, 1402, 6);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (47, 1403, 6);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (48, 1491, 6);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (49, 3401, 6);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (50, 3402, 6);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (51, 3403, 6);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (52, 3491, 6);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (53, 5401, 6);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (54, 5402, 6);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (55, 5403, 6);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (56, 5491, 6);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (58, 6504, 5);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (59, 6505, 5);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (60, 1404, 6);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (61, 1405, 6);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (62, 3404, 6);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (63, 3405, 6);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (64, 5404, 6);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (65, 5405, 6);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (66, 5404, 4);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (67, 5405, 4);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (68, 3404, 4);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (69, 3405, 4);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (71, 2101, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (72, 2202, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (73, 2203, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (74, 2204, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (75, 2205, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (76, 2301, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (77, 2302, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (78, 2303, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (79, 2304, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (80, 2305, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (81, 2606, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (82, 3101, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (83, 3102, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (84, 3103, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (85, 3104, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (86, 3105, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (87, 3201, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (88, 3203, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (89, 3205, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (90, 3302, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (91, 3304, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (92, 3401, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (93, 3402, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (94, 3403, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (95, 3404, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (96, 3405, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (97, 3491, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (98, 4101, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (99, 4102, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (100, 4104, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (101, 4203, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (102, 4205, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (103, 4301, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (104, 4302, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (105, 4303, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (106, 4304, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (107, 4305, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (108, 5101, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (109, 5103, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (110, 5105, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (111, 5191, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (112, 5201, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (113, 5202, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (114, 5203, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (115, 5204, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (116, 5205, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (117, 5302, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (118, 5304, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (119, 5401, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (120, 5402, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (121, 5403, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (122, 5404, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (123, 5405, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (124, 5491, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (125, 6501, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (126, 6502, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (127, 6503, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (128, 6504, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (129, 6505, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (130, 8101, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (131, 8102, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (132, 8104, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (133, 8203, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (134, 8205, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (135, 8213, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (136, 2101, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (137, 2202, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (138, 2203, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (139, 2204, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (140, 2205, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (141, 2301, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (142, 2302, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (143, 2303, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (144, 2304, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (145, 2305, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (146, 2606, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (147, 3101, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (148, 3102, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (149, 3103, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (150, 3104, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (151, 3105, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (152, 3201, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (153, 3203, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (154, 3205, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (155, 3302, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (156, 3304, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (157, 3401, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (158, 3402, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (159, 3403, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (160, 3404, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (161, 3405, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (162, 3491, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (163, 4101, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (164, 4102, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (165, 4104, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (166, 4203, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (167, 4205, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (168, 4301, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (169, 4302, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (170, 4303, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (171, 4304, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (172, 4305, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (173, 5101, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (174, 5103, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (175, 5105, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (176, 5191, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (177, 5201, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (178, 5202, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (179, 5203, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (180, 5204, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (181, 5205, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (182, 5302, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (183, 5304, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (184, 5401, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (185, 5402, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (186, 5403, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (187, 5404, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (188, 5405, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (189, 5491, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (190, 6501, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (191, 6502, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (192, 6503, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (193, 6504, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (194, 6505, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (195, 6601, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (196, 6602, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (197, 6603, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (198, 6604, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (199, 6605, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (200, 6701, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (201, 6702, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (202, 6703, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (203, 6704, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (204, 6705, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (205, 8101, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (206, 8102, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (207, 8104, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (208, 8203, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (209, 8205, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (210, 8213, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (212, 6502, 9);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (213, 6503, 9);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (214, 6504, 9);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (215, 6505, 9);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (216, 6501, 9);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (217, 10041, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (218, 10065, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (219, 10064, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (220, 10063, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (221, 10062, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (222, 10061, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (223, 10055, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (224, 10054, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (225, 10053, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (226, 10052, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (227, 10051, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (228, 10045, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (229, 10044, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (230, 10043, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (231, 10042, 7);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (232, 10065, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (233, 10064, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (234, 10063, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (235, 10062, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (236, 10061, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (237, 10055, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (238, 10054, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (239, 10053, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (240, 10052, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (241, 10051, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (242, 10045, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (243, 10044, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (244, 10043, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (245, 10042, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (246, 10041, 8);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (247, 10065, 4);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (248, 10064, 4);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (249, 10061, 4);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (250, 10055, 4);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (251, 10054, 4);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (252, 10051, 4);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (253, 10045, 4);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (254, 10044, 4);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (255, 10041, 4);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (256, 10065, 5);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (257, 10064, 5);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (258, 10063, 5);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (259, 10062, 5);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (260, 10061, 5);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (261, 10055, 5);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (262, 10054, 5);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (263, 10053, 5);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (264, 10052, 5);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (265, 10051, 5);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (266, 10065, 9);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (267, 10064, 9);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (268, 10063, 9);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (269, 10062, 9);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (270, 10061, 9);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (271, 10055, 9);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (272, 10054, 9);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (273, 10053, 9);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (274, 10052, 9);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (275, 10051, 9);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (276, 10065, 10);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (277, 10064, 10);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (278, 10063, 10);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (279, 10062, 10);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (280, 10061, 10);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (281, 10055, 10);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (282, 10054, 10);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (283, 10053, 10);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (284, 10052, 10);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (285, 10051, 10);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (286, 6503, 10);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (287, 6501, 10);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (288, 6502, 10);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (289, 6504, 10);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (290, 6505, 10);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (291, 10042, 4);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (292, 10043, 4);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (293, 2109, 11);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (294, 10062, 4);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (295, 10063, 4);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (296, 2606, 14);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (297, 6601, 14);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (298, 6602, 14);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (299, 6603, 14);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (300, 6604, 14);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (301, 6605, 14);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (302, 6607, 14);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (303, 6701, 14);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (304, 6702, 14);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (305, 6703, 14);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (306, 6704, 14);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (307, 6705, 14);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (308, 6706, 14);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (309, 6707, 14);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (310, 6716, 14);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (311, 10011, 15);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (312, 10012, 15);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (313, 10013, 15);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (314, 10014, 15);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (315, 10015, 15);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (316, 10021, 15);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (317, 10022, 15);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (318, 10023, 15);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (319, 10024, 15);
-INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id) VALUES (320, 10025, 15);
+        $this->addSql('INSERT INTO stu_rumps_module_special (id, rump_id, module_special_id)
+                VALUES (3, 1302, 1),
+                       (4, 1402, 1),
+                       (5, 1403, 1),
+                       (8, 2202, 1),
+                       (9, 2203, 1),
+                       (10, 2302, 1),
+                       (11, 2303, 1),
+                       (12, 3102, 1),
+                       (13, 3103, 1),
+                       (14, 3203, 1),
+                       (15, 3302, 1),
+                       (16, 3402, 1),
+                       (17, 3403, 1),
+                       (18, 4102, 1),
+                       (19, 4203, 1),
+                       (20, 4302, 1),
+                       (21, 4303, 1),
+                       (22, 5103, 1),
+                       (23, 5202, 1),
+                       (24, 5203, 1),
+                       (25, 5302, 1),
+                       (26, 6502, 1),
+                       (27, 6503, 1),
+                       (28, 6602, 1),
+                       (29, 6603, 1),
+                       (30, 8102, 1),
+                       (31, 8203, 1),
+                       (32, 6702, 1),
+                       (33, 6703, 1),
+                       (34, 5403, 1),
+                       (35, 5402, 1),
+                       (36, 8213, 1),
+                       (37, 3401, 4),
+                       (39, 3491, 4),
+                       (40, 5401, 4),
+                       (41, 5491, 4),
+                       (42, 6501, 5),
+                       (43, 6502, 5),
+                       (44, 6503, 5),
+                       (45, 1401, 6),
+                       (46, 1402, 6),
+                       (47, 1403, 6),
+                       (48, 1491, 6),
+                       (49, 3401, 6),
+                       (50, 3402, 6),
+                       (51, 3403, 6),
+                       (52, 3491, 6),
+                       (53, 5401, 6),
+                       (54, 5402, 6),
+                       (55, 5403, 6),
+                       (56, 5491, 6),
+                       (58, 6504, 5),
+                       (59, 6505, 5),
+                       (60, 1404, 6),
+                       (61, 1405, 6),
+                       (62, 3404, 6),
+                       (63, 3405, 6),
+                       (64, 5404, 6),
+                       (65, 5405, 6),
+                       (66, 5404, 4),
+                       (67, 5405, 4),
+                       (68, 3404, 4),
+                       (69, 3405, 4),
+                       (71, 2101, 7),
+                       (72, 2202, 7),
+                       (73, 2203, 7),
+                       (74, 2204, 7),
+                       (75, 2205, 7),
+                       (76, 2301, 7),
+                       (77, 2302, 7),
+                       (78, 2303, 7),
+                       (79, 2304, 7),
+                       (80, 2305, 7),
+                       (81, 2606, 7),
+                       (82, 3101, 7),
+                       (83, 3102, 7),
+                       (84, 3103, 7),
+                       (85, 3104, 7),
+                       (86, 3105, 7),
+                       (87, 3201, 7),
+                       (88, 3203, 7),
+                       (89, 3205, 7),
+                       (90, 3302, 7),
+                       (91, 3304, 7),
+                       (92, 3401, 7),
+                       (93, 3402, 7),
+                       (94, 3403, 7),
+                       (95, 3404, 7),
+                       (96, 3405, 7),
+                       (97, 3491, 7),
+                       (98, 4101, 7),
+                       (99, 4102, 7),
+                       (100, 4104, 7),
+                       (101, 4203, 7),
+                       (102, 4205, 7),
+                       (103, 4301, 7),
+                       (104, 4302, 7),
+                       (105, 4303, 7),
+                       (106, 4304, 7),
+                       (107, 4305, 7),
+                       (108, 5101, 7),
+                       (109, 5103, 7),
+                       (110, 5105, 7),
+                       (111, 5191, 7),
+                       (112, 5201, 7),
+                       (113, 5202, 7),
+                       (114, 5203, 7),
+                       (115, 5204, 7),
+                       (116, 5205, 7),
+                       (117, 5302, 7),
+                       (118, 5304, 7),
+                       (119, 5401, 7),
+                       (120, 5402, 7),
+                       (121, 5403, 7),
+                       (122, 5404, 7),
+                       (123, 5405, 7),
+                       (124, 5491, 7),
+                       (125, 6501, 7),
+                       (126, 6502, 7),
+                       (127, 6503, 7),
+                       (128, 6504, 7),
+                       (129, 6505, 7),
+                       (130, 8101, 7),
+                       (131, 8102, 7),
+                       (132, 8104, 7),
+                       (133, 8203, 7),
+                       (134, 8205, 7),
+                       (135, 8213, 7),
+                       (136, 2101, 8),
+                       (137, 2202, 8),
+                       (138, 2203, 8),
+                       (139, 2204, 8),
+                       (140, 2205, 8),
+                       (141, 2301, 8),
+                       (142, 2302, 8),
+                       (143, 2303, 8),
+                       (144, 2304, 8),
+                       (145, 2305, 8),
+                       (146, 2606, 8),
+                       (147, 3101, 8),
+                       (148, 3102, 8),
+                       (149, 3103, 8),
+                       (150, 3104, 8),
+                       (151, 3105, 8),
+                       (152, 3201, 8),
+                       (153, 3203, 8),
+                       (154, 3205, 8),
+                       (155, 3302, 8),
+                       (156, 3304, 8),
+                       (157, 3401, 8),
+                       (158, 3402, 8),
+                       (159, 3403, 8),
+                       (160, 3404, 8),
+                       (161, 3405, 8),
+                       (162, 3491, 8),
+                       (163, 4101, 8),
+                       (164, 4102, 8),
+                       (165, 4104, 8),
+                       (166, 4203, 8),
+                       (167, 4205, 8),
+                       (168, 4301, 8),
+                       (169, 4302, 8),
+                       (170, 4303, 8),
+                       (171, 4304, 8),
+                       (172, 4305, 8),
+                       (173, 5101, 8),
+                       (174, 5103, 8),
+                       (175, 5105, 8),
+                       (176, 5191, 8),
+                       (177, 5201, 8),
+                       (178, 5202, 8),
+                       (179, 5203, 8),
+                       (180, 5204, 8),
+                       (181, 5205, 8),
+                       (182, 5302, 8),
+                       (183, 5304, 8),
+                       (184, 5401, 8),
+                       (185, 5402, 8),
+                       (186, 5403, 8),
+                       (187, 5404, 8),
+                       (188, 5405, 8),
+                       (189, 5491, 8),
+                       (190, 6501, 8),
+                       (191, 6502, 8),
+                       (192, 6503, 8),
+                       (193, 6504, 8),
+                       (194, 6505, 8),
+                       (195, 6601, 8),
+                       (196, 6602, 8),
+                       (197, 6603, 8),
+                       (198, 6604, 8),
+                       (199, 6605, 8),
+                       (200, 6701, 8),
+                       (201, 6702, 8),
+                       (202, 6703, 8),
+                       (203, 6704, 8),
+                       (204, 6705, 8),
+                       (205, 8101, 8),
+                       (206, 8102, 8),
+                       (207, 8104, 8),
+                       (208, 8203, 8),
+                       (209, 8205, 8),
+                       (210, 8213, 8),
+                       (212, 6502, 9),
+                       (213, 6503, 9),
+                       (214, 6504, 9),
+                       (215, 6505, 9),
+                       (216, 6501, 9),
+                       (217, 10041, 7),
+                       (218, 10065, 7),
+                       (219, 10064, 7),
+                       (220, 10063, 7),
+                       (221, 10062, 7),
+                       (222, 10061, 7),
+                       (223, 10055, 7),
+                       (224, 10054, 7),
+                       (225, 10053, 7),
+                       (226, 10052, 7),
+                       (227, 10051, 7),
+                       (228, 10045, 7),
+                       (229, 10044, 7),
+                       (230, 10043, 7),
+                       (231, 10042, 7),
+                       (232, 10065, 8),
+                       (233, 10064, 8),
+                       (234, 10063, 8),
+                       (235, 10062, 8),
+                       (236, 10061, 8),
+                       (237, 10055, 8),
+                       (238, 10054, 8),
+                       (239, 10053, 8),
+                       (240, 10052, 8),
+                       (241, 10051, 8),
+                       (242, 10045, 8),
+                       (243, 10044, 8),
+                       (244, 10043, 8),
+                       (245, 10042, 8),
+                       (246, 10041, 8),
+                       (247, 10065, 4),
+                       (248, 10064, 4),
+                       (249, 10061, 4),
+                       (250, 10055, 4),
+                       (251, 10054, 4),
+                       (252, 10051, 4),
+                       (253, 10045, 4),
+                       (254, 10044, 4),
+                       (255, 10041, 4),
+                       (256, 10065, 5),
+                       (257, 10064, 5),
+                       (258, 10063, 5),
+                       (259, 10062, 5),
+                       (260, 10061, 5),
+                       (261, 10055, 5),
+                       (262, 10054, 5),
+                       (263, 10053, 5),
+                       (264, 10052, 5),
+                       (265, 10051, 5),
+                       (266, 10065, 9),
+                       (267, 10064, 9),
+                       (268, 10063, 9),
+                       (269, 10062, 9),
+                       (270, 10061, 9),
+                       (271, 10055, 9),
+                       (272, 10054, 9),
+                       (273, 10053, 9),
+                       (274, 10052, 9),
+                       (275, 10051, 9),
+                       (276, 10065, 10),
+                       (277, 10064, 10),
+                       (278, 10063, 10),
+                       (279, 10062, 10),
+                       (280, 10061, 10),
+                       (281, 10055, 10),
+                       (282, 10054, 10),
+                       (283, 10053, 10),
+                       (284, 10052, 10),
+                       (285, 10051, 10),
+                       (286, 6503, 10),
+                       (287, 6501, 10),
+                       (288, 6502, 10),
+                       (289, 6504, 10),
+                       (290, 6505, 10),
+                       (291, 10042, 4),
+                       (292, 10043, 4),
+                       (293, 2109, 11),
+                       (294, 10062, 4),
+                       (295, 10063, 4),
+                       (296, 2606, 14),
+                       (297, 6601, 14),
+                       (298, 6602, 14),
+                       (299, 6603, 14),
+                       (300, 6604, 14),
+                       (301, 6605, 14),
+                       (302, 6607, 14),
+                       (303, 6701, 14),
+                       (304, 6702, 14),
+                       (305, 6703, 14),
+                       (306, 6704, 14),
+                       (307, 6705, 14),
+                       (308, 6706, 14),
+                       (309, 6707, 14),
+                       (310, 6716, 14),
+                       (311, 10011, 15),
+                       (312, 10012, 15),
+                       (313, 10013, 15),
+                       (314, 10014, 15),
+                       (315, 10015, 15),
+                       (316, 10021, 15),
+                       (317, 10022, 15),
+                       (318, 10023, 15),
+                       (319, 10024, 15),
+                       (320, 10025, 15);
         ');
     }
 }
