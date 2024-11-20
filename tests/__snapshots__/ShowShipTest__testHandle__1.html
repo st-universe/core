@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:stu="stu">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="theme-color" content="#121220">
+    <script src="/static/js/prototype.js"></script>
+    <script src="/static/js/scriptaculous/scriptaculous.js"></script>
+    <script>
+        var userDeals = 0;
+    </script>
+    <script src="/static/js/default.js"></script>
+    <script src="/static/js/colony.js"></script>
+    <script src="/static/js/comm.js"></script>
+    <script src="/static/js/database.js"></script>
+    <script src="/static/js/profile.js"></script>
+    <script src="/static/js/ship.js"></script>
+    <script src="/static/js/shipmanagement.js"></script>
+    <script src="/static/js/starmap.js"></script>
+    <script src="/static/js/station.js"></script>
+    <script src="/static/js/trade.js"></script>
+    <script src="/static/js/tutorial.js"></script>
+    <title></title>
+    <script>
+        var gfx_path = '/assets';
+    </script>
+    <script src="/static/js/overlib.js"></script>
+    <script src="/static/js/drag.js"></script>
+    <script src="/static/js/overlib_exclusive.js"></script>
+    <link rel="STYLESHEET" type="text/css" href="/static/css/schwarz.css">
+    <link rel="STYLESHEET" type="text/css" href="/static/css/stu.css">
+    <link rel="shortcut icon" href="/assets/favicon.ico">
+
+
+</head>
+<body onload="startUp();">
+    <div id="overDiv">...</div>
+    <div class="container">
+        <div class="header">
+            <div id="navlet_user">
+                <div class="header_box header_box_user border_box action" onclick="goToUrl('/maindesk.php'); return false;">
+    <div style="margin: 5px">
+        <div class="user_box_grid">
+            <div class="user_box_avatar" onclick="event.stopPropagation();">
+                                <div class="userAvatar">
+    <a href="/userprofile.php?uid=1">
+                <img src="/assets/rassen//9kn.png" title="Niemand">
+            </a>
+</div>
+
+            </div>
+            <div class="user_box_avatar_mobile">
+                                <div class="userAvatar">
+    <a href="/userprofile.php?uid=1">
+                <img src="/assets/rassen//9kn.png" title="Niemand">
+            </a>
+</div>
+
+            </div>
+            <div class="user_box_details">
+                <div class="userBoxDetailName">
+                    Niemand
+                </div>
+                <span>ID:</span> 1<span>,
+                    Prestige:</span> 19<br>
+
+                <a href="javascript:void(0);" onclick="event.stopPropagation(); openNotes()" title="Notizzettel &ouml;ffnen" onmouseover="cp('headerNotiz','buttons/notiz2')" onmouseout="cp('headerNotiz','buttons/notiz1')">
+                    <img src="/assets/buttons/notiz1.png" name="headerNotiz">
+                </a>
+                <a href="javascript:void(0);" onclick="event.stopPropagation(); switchInnerContent('WRITE_PM', 'Neue private Nachricht', null, '/pm.php');" onmouseover="cp('writePm','buttons/msg2')" onmouseout="cp('writePm','buttons/msg1')">
+                    <img src="/assets/buttons/msg1.png" name="writePm" title="Neue Nachricht schreiben">
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+            </div>
+            <div id="navlet_pm">
+                <div class="header_box header_box_pm border_box">
+        <a href="pm.php?pmcat=57">
+        <div style="width: 30px; height: 100%; margin: 7px 5px 7px 5px; text-align: center; float: left" class="action">
+                                    <img src="/assets/buttons/pmnavlet_1_0.png" width="30" height="30" id="newpm1" title="Pers&ouml;nlich" onmouseover="cp(this.id,'buttons/pmnavlet_1_1', 'png')" onmouseout="cp(this.id,'buttons/pmnavlet_1_0', 'png')">
+            <div style="margin-top: 5px">0</div>
+                    </div>
+    </a>
+        <a href="pm.php?pmcat=58">
+        <div style="width: 30px; height: 100%; margin: 7px 5px 7px 5px; text-align: center; float: left" class="action">
+                                    <img src="/assets/buttons/pmnavlet_2_0.png" width="30" height="30" id="newpm2" title="Schiffe" onmouseover="cp(this.id,'buttons/pmnavlet_2_1', 'png')" onmouseout="cp(this.id,'buttons/pmnavlet_2_0', 'png')">
+            <div style="margin-top: 5px">0</div>
+                    </div>
+    </a>
+        <a href="pm.php?pmcat=1154">
+        <div style="width: 30px; height: 100%; margin: 7px 5px 7px 5px; text-align: center; float: left" class="action">
+                                    <img src="/assets/buttons/pmnavlet_7_0.png" width="30" height="30" id="newpm7" title="Stationen" onmouseover="cp(this.id,'buttons/pmnavlet_7_1', 'png')" onmouseout="cp(this.id,'buttons/pmnavlet_7_0', 'png')">
+            <div style="margin-top: 5px">0</div>
+                    </div>
+    </a>
+        <a href="pm.php?pmcat=59">
+        <div style="width: 30px; height: 100%; margin: 7px 5px 7px 5px; text-align: center; float: left" class="action">
+                                    <img src="/assets/buttons/pmnavlet_3_0.png" width="30" height="30" id="newpm3" title="Kolonien" onmouseover="cp(this.id,'buttons/pmnavlet_3_1', 'png')" onmouseout="cp(this.id,'buttons/pmnavlet_3_0', 'png')">
+            <div style="margin-top: 5px">0</div>
+                    </div>
+    </a>
+        <a href="pm.php?pmcat=60">
+        <div style="width: 30px; height: 100%; margin: 7px 5px 7px 5px; text-align: center; float: left" class="action">
+                                    <img src="/assets/buttons/pmnavlet_4_0.png" width="30" height="30" id="newpm4" title="Handel" onmouseover="cp(this.id,'buttons/pmnavlet_4_1', 'png')" onmouseout="cp(this.id,'buttons/pmnavlet_4_0', 'png')">
+            <div style="margin-top: 5px">0</div>
+                    </div>
+    </a>
+        <a href="pm.php?pmcat=1010">
+        <div style="width: 30px; height: 100%; margin: 7px 5px 7px 5px; text-align: center; float: left" class="action">
+                                    <img src="/assets/buttons/pmnavlet_5_0.png" width="30" height="30" id="newpm5" title="Systemmeldungen" onmouseover="cp(this.id,'buttons/pmnavlet_5_1', 'png')" onmouseout="cp(this.id,'buttons/pmnavlet_5_0', 'png')">
+            <div style="margin-top: 5px">0</div>
+                    </div>
+    </a>
+    </div>
+            </div>
+            <div id="navlet_research">
+                            </div>
+            <div id="navlet_colonies">
+                
+<div class="header_box header_box_col border_box">
+    </div>
+            </div>
+            <div id="nagus">
+            </div>
+            <div class="header_box header_box_logout border_box action" onclick="goToUrl('game.php?B_LOGOUT=1')" onmouseover="cp('header_menu_logout','navigation/menu_logout1', 'png')" onmouseout="cp('header_menu_logout','navigation/menu_logout0', 'png')">
+                <div>
+                    <img style="width: 40px; height: 40px;" id="header_menu_logout" src="/assets/navigation/menu_logout0.png" title="Logout">
+                    <div style="margin-top: 5px">Logout</div>
+                </div>
+            </div>
+                        <div class="header_box header_box_help border_box action" onclick="openNewTab('https://wiki.change.me')" onmouseover="cp('header_menu_docu','navigation/menu_doku1', 'png')" onmouseout="cp('header_menu_docu','navigation/menu_doku0', 'png')">
+                <div>
+                    <img style="width: 40px; height: 40px;" id="header_menu_docu" src="/assets/navigation/menu_doku0.png" title="Wiki">
+                    <div style="margin-top: 5px">Wiki</div>
+                </div>
+            </div>
+                                    <div class="header_box header_box_help border_box action" onclick="openNewTab('https://board.change.me')" onmouseover="cp('header_menu_board','navigation/menu_scripts1', 'png')" onmouseout="cp('header_menu_board','navigation/menu_scripts0', 'png')">
+                <div>
+                    <img style="width: 40px; height: 40px;" id="header_menu_board" src="/assets/navigation/menu_scripts0.png" title="Forum">
+                    <div style="margin-top: 5px">Forum</div>
+                </div>
+            </div>
+                        <div class="header_box header_box_settings border_box action" onmouseover="cp('header_menu_settings','navigation/menu_option1', 'png')" onmouseout="cp('header_menu_settings','navigation/menu_option0', 'png')">
+                <a href="options.php" onclick="if(event.button === 0) { switchInnerContent('', '', '', '/options.php'); event.preventDefault(); }; event.preventDefault(); }" style="display: block; text-decoration: none; color: inherit;">
+                    <div>
+                        <img style="width: 40px; height: 40px;" id="header_menu_settings" src="/assets/navigation/menu_option0.png" title="Einstellungen">
+                        <div style="margin-top: 5px">Einstellungen</div>
+                    </div>
+                </a>
+            </div>
+            <div class="headerBottom"> </div>
+        </div>
+        <div style="margin-top: 80px;">
+            <div class="sidebar">
+                <div style="width: 100%; padding-left: 12px; padding-right: 10px">
+                                        <a class="navitem_link" href="colony.php" onclick="if(event.button === 0) { switchView('colony', 'Kolonien', 'colony.php'); event.preventDefault(); }">
+<div class="navigation_item border_box" onmouseover="cp('nav_item_planets','navigation/menu_planets1', 'png')" onmouseout="cp('nav_item_planets','navigation/menu_planets0', 'png')">
+        <img class="navitem_img" src="/assets/navigation/menu_planets0.png" id="nav_item_planets" title="Kolonien">
+        <div class="navitem_title">Kolonien</div>
+</div>
+</a>
+
+<a class="navitem_link" href="ship.php" onclick="if(event.button === 0) { switchView('ship', 'Schiffe', 'ship.php'); event.preventDefault(); }">
+<div class="navigation_item border_box" onmouseover="cp('nav_item_ships','navigation/menu_ships1', 'png')" onmouseout="cp('nav_item_ships','navigation/menu_ships0', 'png')">
+        <img class="navitem_img" src="/assets/navigation/menu_ships0.png" id="nav_item_ships" title="Schiffe">
+        <div class="navitem_title">Schiffe</div>
+</div>
+</a>
+
+<a class="navitem_link" href="station.php" onclick="if(event.button === 0) { switchView('station', 'Stationen', 'station.php'); event.preventDefault(); }">
+<div class="navigation_item border_box" onmouseover="cp('nav_item_station','navigation/menu_station1', 'png')" onmouseout="cp('nav_item_station','navigation/menu_station0', 'png')">
+        <img class="navitem_img" src="/assets/navigation/menu_station0.png" id="nav_item_station" title="Stationen">
+        <div class="navitem_title">Stationen</div>
+</div>
+</a>
+
+<a class="navitem_link" href="comm.php" onclick="if(event.button === 0) { switchView('comm', 'KommNet', 'comm.php'); event.preventDefault(); }">
+<div class="navigation_item border_box" onmouseover="cp('nav_item_comm','navigation/menu_comm1', 'png')" onmouseout="cp('nav_item_comm','navigation/menu_comm0', 'png')">
+        <img class="navitem_img" src="/assets/navigation/menu_comm0.png" id="nav_item_comm" title="KommNet">
+        <div class="navitem_title">KommNet</div>
+</div>
+</a>
+
+<a class="navitem_link" href="pm.php" onclick="if(event.button === 0) { switchView('pm', 'Nachrichten', 'pm.php'); event.preventDefault(); }">
+<div class="navigation_item border_box" onmouseover="cp('nav_item_msg','navigation/menu_msg1', 'png')" onmouseout="cp('nav_item_msg','navigation/menu_msg0', 'png')">
+        <img class="navitem_img" src="/assets/navigation/menu_msg0.png" id="nav_item_msg" title="Nachrichten">
+        <div class="navitem_title">Nachrichten</div>
+</div>
+</a>
+
+<a class="navitem_link" href="research.php" onclick="if(event.button === 0) { switchView('research', 'Forschung', 'research.php'); event.preventDefault(); }">
+<div class="navigation_item border_box" onmouseover="cp('nav_item_forsch','navigation/menu_forsch1', 'png')" onmouseout="cp('nav_item_forsch','navigation/menu_forsch0', 'png')">
+        <img class="navitem_img" src="/assets/navigation/menu_forsch0.png" id="nav_item_forsch" title="Forschung">
+        <div class="navitem_title">Forschung</div>
+</div>
+</a>
+
+<a class="navitem_link" href="trade.php" onclick="if(event.button === 0) { switchView('trade', 'Handel', 'trade.php'); event.preventDefault(); }">
+<div class="navigation_item border_box" onmouseover="cp('nav_item_trade','navigation/menu_trade1', 'png')" onmouseout="cp('nav_item_trade','navigation/menu_trade0', 'png')">
+        <img class="navitem_img" src="/assets/navigation/menu_trade0.png" id="nav_item_trade" title="Handel">
+        <div class="navitem_title">Handel</div>
+</div>
+</a>
+
+<a class="navitem_link" href="alliance.php" onclick="if(event.button === 0) { switchView('alliance', 'Allianz', 'alliance.php'); event.preventDefault(); }">
+<div class="navigation_item border_box" onmouseover="cp('nav_item_ally','navigation/menu_ally1', 'png')" onmouseout="cp('nav_item_ally','navigation/menu_ally0', 'png')">
+        <img class="navitem_img" src="/assets/navigation/menu_ally0.png" id="nav_item_ally" title="Allianz">
+        <div class="navitem_title">Allianz</div>
+</div>
+</a>
+
+<a class="navitem_link" href="database.php" onclick="if(event.button === 0) { switchView('database', 'Datenbank', 'database.php'); event.preventDefault(); }">
+<div class="navigation_item border_box" onmouseover="cp('nav_item_data','navigation/menu_data1', 'png')" onmouseout="cp('nav_item_data','navigation/menu_data0', 'png')">
+        <img class="navitem_img" src="/assets/navigation/menu_data0.png" id="nav_item_data" title="Datenbank">
+        <div class="navitem_title">Datenbank</div>
+</div>
+</a>
+
+<a class="navitem_link" href="history.php" onclick="if(event.button === 0) { switchView('history', 'Ereignisse', 'history.php'); event.preventDefault(); }">
+<div class="navigation_item border_box" onmouseover="cp('nav_item_history','navigation/menu_history1', 'png')" onmouseout="cp('nav_item_history','navigation/menu_history0', 'png')">
+        <img class="navitem_img" src="/assets/navigation/menu_history0.png" id="nav_item_history" title="Ereignisse">
+        <div class="navitem_title">Ereignisse</div>
+</div>
+</a>
+
+<a class="navitem_link" href="starmap.php" onclick="if(event.button === 0) { switchView('starmap', 'Karte', 'starmap.php'); event.preventDefault(); }">
+<div class="navigation_item border_box" onmouseover="cp('nav_item_map','navigation/menu_map1', 'png')" onmouseout="cp('nav_item_map','navigation/menu_map0', 'png')">
+        <img class="navitem_img" src="/assets/navigation/menu_map0.png" id="nav_item_map" title="Karte">
+        <div class="navitem_title">Karte</div>
+</div>
+</a>
+
+<div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/npc'; }" onmouseover="cp('nav_item_ticks','navigation/menu_ticks1', 'png')" onmouseout="cp('nav_item_ticks','navigation/menu_ticks0', 'png')">
+    <a class="navitem_link" href="/npc">
+        <img class="navitem_img" src="/assets/navigation/menu_ticks0.png" id="nav_item_ticks" title="'NPC'">
+        <div class="navitem_title">NPC</div>
+    </a>
+</div>
+
+                    <div id="navlet_servertime">
+                        <div class="border_box navigation_item_servertime">
+    <img title="Serverzeit" style="width: 15px; height: 15px;" src="/assets/buttons/time.png">
+    <span id="servertime" style="display: none;">Nov, 20 2024 19:40:17</span>
+    <span>Runde: 1<br>
+        <span>Version: <a href="https://board.change.me/viewforum.php?f=12">dev</a></span><br>
+</span>
+</div>
+                    </div>
+                </div>
+            </div>
+            <div id="innerContent" class="innerContent">
+                <div class="box">
+    <div class="box_title" style="text-align: left">/
+                <a href="ship.php">
+            Schiffe
+        </a>
+                <span> / </span>
+                        <a href="?SHOW_SHIP=1&amp;id=8">
+            Aerie
+        </a>
+                    </div>
+</div>
+<br>
+<script>
+            setShipIdAndSstr(8, '43a3f7ff3af6b59fd2ce0c282d6e9e')
+        </script>
+<div id="result" style="display: none;">..</div>
+
+<form action="ship.php" method="post" name="shipform" id="shipform" onkeydown="return event.key != 'Enter';">
+	<input type="hidden" name="id" value="8">
+	<input type="hidden" name="sstr" value="bc02db043a6f9189eafb6aef5dddae">
+	<table class="tcal">
+		<tr>
+			<th style="text-align: center;">Typ</th>
+			<th></th>
+			<th style="text-align: center;" title="im System">Koordinaten <img src="/assets/buttons/info2.png" style="height:16px;">
+</th>
+			<th style="text-align: center;" title="aktuell/maximal">H&uuml;lle <img src="/assets/buttons/info2.png" style="height:16px;">
+</th>
+			<th style="text-align: center;" title="aktuell/maximal (Regeneration [alle 15min])">Schilde
+				<img src="/assets/buttons/info2.png" style="height:16px;">
+			</th>
+						<th style="text-align: center;" title="aktuell/maximal, Zuwachs">
+				Warpdrive <img src="/assets/buttons/info2.png" style="height:16px;">
+</th>
+						<th style="text-align: center;" title="aktuell/maximal, Zuwachs, (Systemverbrauch/Reaktornutzung)">
+				Energie <img src="/assets/buttons/info2.png" style="height:16px;">
+</th>
+			<th style="text-align: center;">Batterie</th>
+			<th style="text-align: center;" title="aktuell (Minimum, Maximum)">Crew <img src="/assets/buttons/info2.png" style="height:16px;">
+</th>
+			<th style="text-align: center;">Name</th>
+			<td rowspan="3" style="text-align: center;">
+								<a href="javascript:void(0);" onclick="showSelfdestructWindow(8);" onmouseover="cp('selfdestruct','buttons/selfdes2');" onmouseout="cp('selfdestruct','buttons/selfdes1');">
+					<img src="/assets/buttons/selfdes1.png" name="selfdestruct" title="Selbstzerst&ouml;rung">
+				</a>
+											</td>
+		</tr>
+		<tr>
+						<td style="" rowspan="2" class="shipimage">
+				<a href="javascript:void(0);" onclick="window.scrollTo(0,document.body.scrollHeight);">
+					<img src="/assets/ships/6501.png" title="Aerie">
+
+				</a>
+			</td>
+			<td style="text-align: center;">
+				<a href="javascript:void(0);" onclick="showALvlWindow();"><img src="/assets/buttons/alert1.png" title="Alarmstufe" name="setalvl"></a>
+			</td>
+			<td style="text-align: center;">
+				5|5
+			</td>
+			<td style="text-align: center;">
+				819/819
+			</td>
+			<td style="text-align: center;">
+								<span>0/819</span>
+								(+82)
+			</td>
+						<td style="text-align: center;">
+								0/60
+				<span id="effectiveWarpdrive"></span>
+							</td>
+<td style="text-align: center;">
+								0/144
+								<span id="effectiveEps"></span>
+												(<span class="neg">0</span>/<span class="neg" id="reactorUsage">0</span>)
+							</td>
+			<td style="text-align: center;">
+								<span>0</span>
+							</td>
+			<td style="text-align: center;">
+												<span style="">0</span>
+				(0,18)
+			</td>
+			<td style="text-align: center;">
+				<input type="text" name="shipname" size="25" value="Aerie" onkeydown="event.key == 'Enter' &amp;&amp;  $('changeshipnamebutton').click()">
+				<input type="submit" class="button" id="changeshipnamebutton" name="B_CHANGE_NAME" value="&auml;ndern">
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<a href="javascript:void(0);" onclick="switchInnerContent('SHOW_SHIP', 'Aerie', 'id=8', 'ship.php');
+updateSelectedShipId('8');" onmouseover="cp('uship','buttons/update1');" onmouseout="cp('uship','buttons/update0');">
+					<img src="/assets/buttons/update0.png" title="Aktualisieren" name="uship">
+				</a>
+				<a href="javascript:void(0);" onclick="showShipDetails(8);" onmouseover="cp('shinfo','buttons/info2');" onmouseout="cp('shinfo','buttons/info1');">
+					<img src="/assets/buttons/info1.png" title="Schiffsinformationen anzeigen" name="shinfo">
+				</a>
+				<a href="javascript:void(0);" onclick="showShipCommunication(8);" onmouseover="cp('shipcom','buttons/msg2');" onmouseout="cp('shipcom','buttons/msg1');">
+					<img src="/assets/buttons/msg1.png" title="Kommunikation" name="shipcom">
+				</a>
+								<a href="?B_SET_LSS_BORDER=1&amp;id=8&amp;sstr=bc02db043a6f9189eafb6aef5dddae" onmouseover="cp('actlss','buttons/lss_button1');" onmouseout="cp('actlss','buttons/lss_button3');">
+					<img src="/assets/buttons/lss_button3.png" title="Territoriale Grenzansicht aktivieren" name="actlss">
+				</a>
+																<a href="?B_SHUTDOWN=1&amp;id=8&amp;sstr=bc02db043a6f9189eafb6aef5dddae" onmouseover="cp('shutdown','buttons/shutdown2');" onmouseout="cp('shutdown','buttons/shutdown1');">
+					<img src="/assets/buttons/shutdown1.png" title="Energieverbrauch minimieren" name="shutdown">
+				</a>
+							</td>
+			<td colspan="2">
+												<img style="margin-right: 5px;" src="/assets/commodities/10102.png" title="Monotanium-H&uuml;llenpanzerung (Klasse 2)">
+								<img style="margin-right: 5px;" src="/assets/commodities/10202.png" title="Elektromagnetische-Schilde (Klasse 2)">
+								<img style="margin-right: 5px;" src="/assets/commodities/11902.png" title="Computer (Klasse 2)">
+								<img style="margin-right: 5px;" src="/assets/commodities/10402.png" title="Impulsantrieb (Klasse 2)">
+								<img style="margin-right: 5px;" src="/assets/commodities/10603.png" title="Sensorenphalanx (Klasse 3)">
+								<img style="margin-right: 5px;" src="/assets/commodities/10903.png" title="Warpantrieb (Klasse 3)">
+								<img style="margin-right: 5px;" src="/assets/commodities/10504.png" title="Warpkern (Klasse 4)">
+								<img style="margin-right: 5px;" src="/assets/commodities/10304.png" title="EPS-Gitter (Klasse 4)">
+								<img style="margin-right: 5px;" src="/assets/commodities/10702.png" title="F&ouml;derations Phaser (Klasse 2)">
+											</td>
+			<td colspan="5">
+				<img title="Deflektor: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/16.png"><img title="Traktorstrahl: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/14.png"><img title="Lebenserhaltungssystem: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/13.png"><img title="Schilde: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/11.png"><img title="Energiesystem: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/1.png"><img title="Impulsantrieb: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/2.png"><img title="Warpkern: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/3.png"><img title="Computer: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/4.png"><img title="Energiewaffe: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/5.png"><img title="Langstreckensensoren: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/8.png"><img title="Nahbereichssensoren: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/9.png"><img title="Warpantrieb: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/10.png">			</td>
+		</tr>
+	</table>
+	<br>
+	<table style="width: 100%;">
+				<tr>
+			<td style="width: 33%; vertical-align: top;">
+				<table class="tcal">
+        <tr>
+        <th colspan="3">
+<a href="?B_ACTIVATE_LSS=1&amp;id=8"><img src="/assets/buttons/lss2.png" title="Langstreckensensoren aktivieren"></a>
+                        Navigation Applet (<a href="?B_ACTIVATE_LSS=1&amp;id=8">Langstreckensensoren
+                aktivieren</a>)
+                    </th>
+    </tr>
+                            <tr>
+        <td colspan="3" style="text-align: center;">
+                        <a href="javascript:void(0);" onclick="moveInDirection('B_MOVE_UP');" class="linkbutton" style="width: 100px;">
+                5|4
+            </a>
+                    </td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">
+                        <a href="javascript:void(0);" onclick="moveInDirection('B_MOVE_LEFT');" class="linkbutton" style="width: 100px;">
+                4|5
+            </a>
+                    </td>
+        <td style="width: 100px; text-align: center; font-weight: bold;">
+            <input type="text" onfocus="focusNavApplet();" onblur="blurNavApplet();" id="navapp" style="text-align: center;" size="7" value="5|5">
+        </td>
+        <td style="text-align: center;">
+                        <a href="javascript:void(0);" onclick="moveInDirection('B_MOVE_RIGHT');" class="linkbutton" style="width: 100px;">
+                6|5
+            </a>
+                    </td>
+    </tr>
+    <tr>
+        <td colspan="3" style="text-align: center;">
+                        <a href="javascript:void(0);" onclick="moveInDirection('B_MOVE_DOWN');" class="linkbutton" style="width: 100px;">
+                5|6
+            </a>
+                    </td>
+    </tr>
+    </table>
+
+			</td>
+			<td style="vertical-align: top; width: 33%;">
+				
+
+<table id="schiffskontrolle" class="tcal">
+    <tr>
+                <th colspan="2">
+<img src="/assets/buttons/gefecht.png"> Schiffskontrolle</th>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <a href="javascript:void(0);" onclick="actionToInnerContent('B_ACTIVATE_SHIELDS', 'id=8&amp;sstr=bc02db043a6f9189eafb6aef5dddae');" onmouseover="cp('shldac','buttons/shldac1');" onmouseout="cp('shldac','buttons/shldac2');">
+    <img src="/assets/buttons/shldac2.png" name="shldac"> Schilde aktivieren</a>
+
+        </td>
+    </tr>
+        <tr>
+                <td colspan="2">
+            <img src="/assets/buttons/act_phaser2.png" name="actphaser"> bei Alarmstufe
+            deaktiviert
+        </td>
+            </tr>
+                                                                </table>
+<br>
+<table class="tcal">
+        <tr>
+        <th style="width: 50%;">Informationen</th>
+                            </tr>
+    <tr>
+        <td>
+            <a href="javascript:void(0);" onclick="showSectorScanWindow(this)" onmouseover="cp('sectorScanButton','buttons/lupe2')" onmouseout="cp('sectorScanButton','buttons/lupe1')">
+                <img src="/assets/buttons/lupe1.png" name="sectorScanButton">
+                <span>Sektor 5|5 scannen</span>
+            </a>
+                        
+            <br>
+
+                                                                                                <a href="javascript:void(0);" onclick="showRegionInfo(134)" onmouseover="cp('mapRegionButton','buttons/info2')" onmouseout="cp('mapRegionButton','buttons/info1')">
+                <img src="/assets/buttons/info1.png" name="mapRegionButton">
+                Thalassanebel
+            </a>
+                                                        </td>
+                                                    </tr>
+</table>
+
+			</td>
+			<td style="vertical-align: top; width: 33%;">
+				
+
+<table class="tcal">
+    <tr>
+        <th colspan="3">
+            <img src="/assets/buttons/warpk.png">
+            <span>Reaktor-System</span>
+        </th>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <img src="/assets/buttons/warpk.png" title="Warpkern">
+            <span style="color: red;">0/1080</span>
+            <input type="text" size="3" name="reactorload" id="reactorload" value="1" onkeydown="event.key == 'Enter' &amp;&amp; $('loadreactorbutton').click();">
+            <input type="submit" class="button" name="B_LOAD_REACTOR" value="aufladen" id="loadreactorbutton">
+            <input type="button" class="button" value="max" onclick="$('reactorload').value = 9999; $('loadreactorbutton').click()">
+        </td>
+        <td style="width: 15%;">
+                    </td>
+    </tr>
+                
+    <tr>
+        <td style="width: 60%;">
+<img src="/assets/buttons/wkp2.png" title="Zuwachs zum Warpdrive">
+            <span id="calculatedWarpDrive"></span>
+            <input type="range" min="0" max="100" value="100" id="warpdriveSplit" onchange="saveWarpCoreSplit(8);" oninput="updateReactorValues();">
+            <img src="/assets/buttons/battp2.png" title="Zuwachs zum EPS">
+            <span id="calculatedEPS"></span>
+        </td>
+        <td>
+            <div style="display: inline-block;" title="&Uuml;bersch&uuml;ssige Energie wird in anderen Speicher &uuml;bertragen">
+                                <img src="/assets/buttons/transfer.png" style="height:16px;">
+                <input type="checkbox" id="autoCarryOver" onchange="saveWarpCoreSplit(8); updateReactorValues();">
+            </div>
+        </td>
+        <td style="width: 15%;">
+                        <input type="checkbox" id="fleetSplit" style="display: none;">
+                    </td>
+    </tr>
+
+
+        <tr>
+        <td colspan="3">
+                        <img src="/assets/buttons/warp2.png" title="Warpantrieb deaktiviert">
+                        Warpantrieb
+                        <a href="javascript:void(0);" onclick="actionToInnerContent('B_ACTIVATE_WARP', 'id=8&amp;sstr=bc02db043a6f9189eafb6aef5dddae');" class="linkbutton">aktivieren</a>
+                    </td>
+    </tr>
+            </table>
+<table class="tcal">
+    <tr>
+        <th colspan="3">
+            <img src="/assets/buttons/batt.png" title="Ersatzbatterie"> Ersatzbatterie
+            0 / 48
+        </th>
+    </tr>
+    <tr>
+                <td style="width: 60%;">
+            Einheiten
+            <input type="text" size="5" name="ebattload" id="ebattload" onkeydown="event.key == 'Enter' &amp;&amp; $('unloadBatteryButton').click()">
+            <input type="submit" class="button" name="B_USE_BATTERY" value="entladen" id="unloadBatteryButton">
+            <input type="button" class="button" onclick="$('ebattload').value = 99999999; $('unloadBatteryButton').click();" value="max">
+        </td>
+                <td>
+                    </td>
+        <td style="width: 15%;">
+                    </td>
+    </tr>
+</table>
+<br>
+
+			</td>
+		</tr>
+			</table>
+	<br>
+</form>
+<table class="tcal">
+	<tr>
+		<th>
+						<a href="?B_ACTIVATE_NBS=1&amp;id=8"><img src="/assets/buttons/kss2.png"> Nahbereichssensoren
+				aktivieren</a>
+					</th>
+	</tr>
+</table>
+<br>
+<table class="use" style="width: 200px;">
+    <tr>
+        <th>
+<img onclick="window.scrollTo(0,0);" src="/assets/buttons/lager.png" title="Lagerraum"> Lagerraum
+            0/155</th>
+    </tr>
+    <tr>
+        <td>
+                    </td>
+    </tr>
+</table>
+
+<div class="footer">
+    Rendered in 283ms - Memory usage: 48.00Mb
+</div>
+<script>
+            setReactorSplitConstants(0,0,2,144,0,60);
+                updateReactorValues(100);
+                updateComponent('navlet_pm', '/game.php?SHOW_COMPONENT=1&component=pm', 60000);
+                updateComponent('navlet_servertime', '/game.php?SHOW_COMPONENT=1&component=servertime', 300000);
+        </script>
+                <script>
+                    window.addEventListener("popstate", function (e) {
+                        window.location.reload();
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
