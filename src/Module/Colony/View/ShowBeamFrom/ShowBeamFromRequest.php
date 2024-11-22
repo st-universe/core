@@ -14,12 +14,12 @@ final class ShowBeamFromRequest implements ShowBeamFromRequestInterface
     #[Override]
     public function getColonyId(): int
     {
-        return $this->queryParameter('id')->int()->required();
+        return $this->parameter('id')->int()->required();
     }
 
     #[Override]
     public function getShipId(): int
     {
-        return $this->queryParameter('target')->int()->required();
+        return $this->parameter('target')->int()->required();
     }
 }

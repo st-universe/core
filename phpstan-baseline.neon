@@ -124,6 +124,11 @@ parameters:
 			path: src/Config/StuContainer.php
 
 		-
+			message: "#^Template type T of method Stu\\\\Config\\\\StuContainer\\:\\:get\\(\\) is not referenced in a parameter\\.$#"
+			count: 1
+			path: src/Config/StuContainer.php
+
+		-
 			message: "#^Method Stu\\\\Exception\\\\SanityCheckException\\:\\:__construct\\(\\) has parameter \\$message with no type specified\\.$#"
 			count: 1
 			path: src/Exception/SanityCheckException.php

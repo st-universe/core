@@ -14,12 +14,12 @@ final class EditRegionRequest implements EditRegionRequestInterface
     #[Override]
     public function getFieldId(): int
     {
-        return $this->queryParameter('field')->int()->required();
+        return $this->parameter('field')->int()->required();
     }
 
     #[Override]
     public function getRegionId(): int
     {
-        return $this->queryParameter('region')->int()->required();
+        return $this->parameter('region')->int()->required();
     }
 }

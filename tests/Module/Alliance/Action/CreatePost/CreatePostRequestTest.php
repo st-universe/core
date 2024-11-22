@@ -27,8 +27,8 @@ class CreatePostRequestTest extends RequestTestCase
         return [
             ['getText', 'ttext', '<foo>bar</foo>', 'bar'],
             ['getText', 'ttext', null, ''],
-            ['getTopicId', 'tid', '666', 666],
-            ['getBoardId', 'bid', '666', 666],
+            ['getTopicId', 'topicid', '666', 666],
+            ['getBoardId', 'boardid', '666', 666],
         ];
     }
 

@@ -14,6 +14,6 @@ final class SetKnMarkRequest implements SetKnMarkRequestInterface
     #[Override]
     public function getKnOffset(): int
     {
-        return $this->queryParameter('markid')->int()->required();
+        return $this->parameter('markid')->int()->required();
     }
 }

@@ -14,6 +14,6 @@ final class ShowContactModeSwitchRequest implements ShowContactModeSwitchRequest
     #[Override]
     public function getContactId(): int
     {
-        return $this->queryParameter('cid')->int()->required();
+        return $this->parameter('contactid')->int()->required();
     }
 }

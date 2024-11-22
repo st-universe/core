@@ -190,14 +190,14 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('user_id', 'user_id', 'integer');
         $rsm->addScalarResult('sc', 'sc', 'integer');
-        $rsm->addScalarResult('race', 'race', 'integer');
+        $rsm->addScalarResult('factionid', 'factionid', 'integer');
         $rsm->addScalarResult('shipc', 'shipc', 'integer');
 
         return $this
             ->getEntityManager()
             ->createNativeQuery(
                 'SELECT fs.user_id, count(*) as sc,
-                (SELECT race
+                (SELECT race as factionid
                 FROM stu_user u
                 WHERE fs.user_id = u.id),
                 count(distinct ship_id) as shipc

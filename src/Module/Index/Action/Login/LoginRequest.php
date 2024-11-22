@@ -14,12 +14,12 @@ final class LoginRequest implements LoginRequestInterface
     #[Override]
     public function getLoginName(): string
     {
-        return $this->queryParameter('login')->string()->defaultsToIfEmpty('');
+        return $this->parameter('login')->string()->defaultsToIfEmpty('');
     }
 
     #[Override]
     public function getPassword(): string
     {
-        return $this->queryParameter('pass')->string()->defaultsToIfEmpty('');
+        return $this->parameter('pass')->string()->defaultsToIfEmpty('');
     }
 }

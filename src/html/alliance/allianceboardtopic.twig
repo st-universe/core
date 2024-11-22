@@ -1,7 +1,8 @@
 {% from 'html/macros.twig' import userAvatar, pmWindow, userProfile %}
 
 {% block body %}
-<a href="?SHOW_NEW_POST=1&bid={{ TOPIC.getBoardId }}&tid={{ TOPIC.getId }}" class="linkbutton">Antwort erstellen</a>
+<a href="?SHOW_NEW_POST=1&boardid={{ TOPIC.getBoardId }}&topicid={{ TOPIC.getId }}" class="linkbutton">Antwort
+    erstellen</a>
 <br />
 <br />
 {{ _self.topicnavigation(TOPIC_NAVIGATION, TOPIC) }}
@@ -25,7 +26,7 @@
             </a>
             {% endif %}
             {% if IS_MODERATOR %}
-            <a href="?B_DEL_POSTING=1&bid={{ TOPIC.getBoardId }}&tid={{ post.getTopic.getId }}&pid={{ post.getId }}&sstr={{ SESSIONSTRING }}"
+            <a href="?B_DEL_POSTING=1&boardid={{ TOPIC.getBoardId }}&topicid={{ post.getTopic.getId }}&pid={{ post.getId }}&sstr={{ SESSIONSTRING }}"
                 onmouseover="cp('delPost{{ post.getId }}','buttons/x2')"
                 onmouseout="cp('delPost{{ post.getId }}','buttons/x1')">
                 <img src="/assets/buttons/x1.png" name="delPost{{ post.getId }}" title="löschen" />
@@ -52,7 +53,7 @@
             {% autoescape false %}
             <span>{{ post.getText | nl2br | bbcode }}</span>
             {% endautoescape %}
-        </td>      
+        </td>
     </tr>
     <tr class="row{{ loop.index is odd ? 'odd' : '' }}">
         <td colspan="2">
@@ -68,7 +69,8 @@
 <br />
 {{ _self.topicnavigation(TOPIC_NAVIGATION, TOPIC) }}
 <br />
-<a href="?SHOW_NEW_POST=1&bid={{ TOPIC.getBoardId }}&tid={{ TOPIC.getId }}" class="linkbutton">Antwort erstellen</a>
+<a href="?SHOW_NEW_POST=1&boardid={{ TOPIC.getBoardId }}&topicid={{ TOPIC.getId }}" class="linkbutton">Antwort
+    erstellen</a>
 {% endblock %}
 
 {% macro topicnavigation(TOPIC_NAVIGATION, TOPIC) %}
@@ -76,7 +78,7 @@
     <tr>
         {% for item in TOPIC_NAVIGATION %}
         <td>
-            <a href="?SHOW_TOPIC=1&bid={{ TOPIC.getBoardId }}&tid={{ TOPIC.getId }}&mark={{ item.mark }}"
+            <a href="?SHOW_TOPIC=1&boardid={{ TOPIC.getBoardId }}&topicid={{ TOPIC.getId }}&mark={{ item.mark }}"
                 class="{{ item.cssclass }}">{{ item.page }}</a>
         </td>
         {% endfor %}

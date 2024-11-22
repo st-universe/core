@@ -14,6 +14,6 @@ final class SortPmCategoriesRequest implements SortPmCategoriesRequestInterface
     #[Override]
     public function getCategoryIds(): array
     {
-        return $this->queryParameter('catlist')->commaSeparated()->int()->required();
+        return $this->parameter('catlist')->commaSeparated()->int()->required();
     }
 }

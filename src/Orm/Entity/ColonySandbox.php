@@ -185,9 +185,9 @@ class ColonySandbox implements ColonySandboxInterface, PlanetFieldHostInterface
     }
 
     #[Override]
-    public function getTwilightZone(): int
+    public function getTwilightZone(int $timestamp): int
     {
-        return $this->getColony()->getTwilightZone();
+        return $this->getColony()->getTwilightZone($timestamp);
     }
 
     #[Override]

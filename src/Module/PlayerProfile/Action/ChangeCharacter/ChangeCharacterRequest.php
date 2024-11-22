@@ -14,19 +14,19 @@ final class ChangeCharacterRequest implements ChangeCharacterRequestInterface
     #[Override]
     public function getCharacterId(): int
     {
-        return $this->queryParameter('character_id')->int()->required();
+        return $this->parameter('character_id')->int()->required();
     }
 
     #[Override]
     public function getName(): string
     {
-        return $this->tidyString($this->queryParameter('name')->string()->required());
+        return $this->tidyString($this->parameter('name')->string()->required());
     }
 
     #[Override]
     public function getDescription(): string
     {
-        return $this->tidyString($this->queryParameter('description')->string()->required());
+        return $this->tidyString($this->parameter('description')->string()->required());
     }
 
     /**

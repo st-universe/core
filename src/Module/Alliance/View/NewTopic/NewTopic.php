@@ -13,14 +13,12 @@ use Stu\Orm\Repository\AllianceBoardRepositoryInterface;
 
 final class NewTopic implements ViewControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string VIEW_IDENTIFIER = 'SHOW_NEW_TOPIC';
 
-    public function __construct(private NewTopicRequestInterface $newTopicRequest, private AllianceBoardRepositoryInterface $allianceBoardRepository)
-    {
-    }
+    public function __construct(
+        private NewTopicRequestInterface $newTopicRequest,
+        private AllianceBoardRepositoryInterface $allianceBoardRepository
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -47,14 +45,14 @@ final class NewTopic implements ViewControllerInterface
         );
         $game->appendNavigationPart(
             sprintf(
-                'alliance.php?SHOW_BOARD=1&bid=%d',
+                'alliance.php?SHOW_BOARD=1&boardid=%d',
                 $boardId
             ),
             $board->getName()
         );
         $game->appendNavigationPart(
             sprintf(
-                'alliance.php?SHOW_NEW_TOPIC=1&bid=%d',
+                'alliance.php?SHOW_NEW_TOPIC=1&boardid=%d',
                 $boardId
             ),
             _('Thema erstellen')

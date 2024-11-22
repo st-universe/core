@@ -14,14 +14,14 @@ final class RenameBoardRequest implements RenameBoardRequestInterface
     #[Override]
     public function getBoardId(): int
     {
-        return $this->queryParameter('bid')->int()->required();
+        return $this->parameter('boardid')->int()->required();
     }
 
     #[Override]
     public function getTitle(): string
     {
         return $this->tidyString(
-            $this->queryParameter('tname')->string()->defaultsToIfEmpty('')
+            $this->parameter('tname')->string()->defaultsToIfEmpty('')
         );
     }
 }

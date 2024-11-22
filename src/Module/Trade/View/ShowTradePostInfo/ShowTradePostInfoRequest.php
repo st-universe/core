@@ -14,6 +14,6 @@ final class ShowTradePostInfoRequest implements ShowTradePostInfoRequestInterfac
     #[Override]
     public function getTradePostId(): int
     {
-        return $this->queryParameter('postid')->int()->required();
+        return $this->parameter('postid')->int()->required();
     }
 }

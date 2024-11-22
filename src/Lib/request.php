@@ -25,6 +25,10 @@ class request
      */
     public static function postvars(): array
     {
+        if (self::$mockVars !== null) {
+            return self::$mockVars;
+        }
+
         global $_POST;
         return $_POST;
     }
@@ -192,5 +196,10 @@ class request
     public static function setMockVars(?array $mockVars): void
     {
         self::$mockVars = $mockVars;
+    }
+
+    public static function isMocked(): bool
+    {
+        return self::$mockVars !== null;
     }
 }

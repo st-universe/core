@@ -14,12 +14,12 @@ final class TakeOfferRequest implements TakeOfferRequestInterface
     #[Override]
     public function getOfferId(): int
     {
-        return $this->queryParameter('offerid')->int()->required();
+        return $this->parameter('offerid')->int()->required();
     }
 
     #[Override]
     public function getAmount(): int
     {
-        return $this->queryParameter('amount')->int()->defaultsTo(1);
+        return $this->parameter('amount')->int()->defaultsTo(1);
     }
 }

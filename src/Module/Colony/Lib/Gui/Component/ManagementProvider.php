@@ -10,6 +10,7 @@ use Stu\Component\Colony\OrbitShipListRetrieverInterface;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\StuTime;
 use Stu\Module\Database\View\Category\Wrapper\DatabaseCategoryWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Entity\ColonyDepositMiningInterface;
@@ -24,7 +25,8 @@ final class ManagementProvider implements GuiComponentProviderInterface
         private OrbitShipListRetrieverInterface $orbitShipListRetriever,
         private ColonyFunctionManagerInterface $colonyFunctionManager,
         private ShipWrapperFactoryInterface $shipWrapperFactory,
-        private ColonyLibFactoryInterface $colonyLibFactory
+        private ColonyLibFactoryInterface $colonyLibFactory,
+        private StuTime $stuTime
     ) {}
 
     #[Override]
@@ -82,10 +84,14 @@ final class ManagementProvider implements GuiComponentProviderInterface
 
         $shieldingManager = $this->colonyLibFactory->createColonyShieldingManager($host);
         $game->setTemplateVar('SHIELDING_MANAGER', $shieldingManager);
-
         $game->setTemplateVar('DEPOSIT_MININGS', $this->getUserDepositMinings($host));
-
         $game->setTemplateVar('VISUAL_PANEL', $this->colonyLibFactory->createColonyScanPanel($host));
+
+        $timestamp = $this->stuTime->time();
+        $game->setTemplateVar('COLONY_TIME_HOUR', $host->getColonyTimeHour($timestamp));
+        $game->setTemplateVar('COLONY_TIME_MINUTE', $host->getColonyTimeMinute($timestamp));
+        $game->setTemplateVar('COLONY_DAY_TIME_PREFIX', $host->getDayTimePrefix($timestamp));
+        $game->setTemplateVar('COLONY_DAY_TIME_NAME', $host->getDayTimeName($timestamp));
     }
 
     /**

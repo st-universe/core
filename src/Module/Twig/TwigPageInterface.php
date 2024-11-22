@@ -11,4 +11,6 @@ interface TwigPageInterface
     public function isTemplateSet(): bool;
 
     public function render(): string;
+
+    public function resetVariables(): void;
 }

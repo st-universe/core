@@ -18,9 +18,7 @@ final class ShowEditPost implements ViewControllerInterface
      */
     public const string VIEW_IDENTIFIER = 'SHOW_EDIT_ALLY_POST';
 
-    public function __construct(private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository)
-    {
-    }
+    public function __construct(private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -41,7 +39,7 @@ final class ShowEditPost implements ViewControllerInterface
         $game->setViewTemplate('html/alliance/editallypost.twig');
         $game->appendNavigationPart(sprintf('alliance.php?id=%d', $alliance->getId()), _('Allianz'));
         $game->appendNavigationPart('alliance.php?SHOW_BOARDS=1', _('Forum'));
-        $game->appendNavigationPart(sprintf('alliance.php?SHOW_TOPIC=1&bid=%d&tid=%d', $board->getId(), $topic->getId()), _('Allianz'));
+        $game->appendNavigationPart(sprintf('alliance.php?SHOW_TOPIC=1&boardid=%d&topicid=%d', $board->getId(), $topic->getId()), _('Allianz'));
         $game->appendNavigationPart(
             sprintf('alliance.php?%s=1&pid=%d', self::VIEW_IDENTIFIER, $post->getId()),
             _('Beitrag bearbeiten')

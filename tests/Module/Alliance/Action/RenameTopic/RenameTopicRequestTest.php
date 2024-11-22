@@ -22,7 +22,7 @@ class RenameTopicRequestTest extends RequestTestCase
     public static function requestVarsDataProvider(): array
     {
         return [
-            ['getTopicId', 'tid', '666', 666],
+            ['getTopicId', 'topicid', '666', 666],
             ['getTitle', 'tname', '<foo>bar</foo>', 'bar'],
             ['getTitle', 'tname', null, ''],
         ];

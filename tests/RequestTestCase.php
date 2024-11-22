@@ -34,7 +34,6 @@ abstract class RequestTestCase extends StuTestCase
     protected function tearDown(): void
     {
         // reset vars
-        $_SERVER = [];
         $_GET = [];
         $_POST = [];
     }

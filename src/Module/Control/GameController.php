@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Control;
 
-use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -25,6 +24,7 @@ use Stu\Lib\AccountNotVerifiedException;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Lib\LoginException;
+use Stu\Lib\Session\SessionStringFactoryInterface;
 use Stu\Lib\SessionInterface;
 use Stu\Lib\UserLockedException;
 use Stu\Lib\UuidGeneratorInterface;
@@ -60,40 +60,9 @@ final class GameController implements GameControllerInterface
     /** @var string */
     private const string GAME_VERSION_DEV = 'dev';
 
+    private GameData $gameData;
+
     private LoggerUtilInterface $loggerUtil;
-
-    private InformationWrapper $gameInformations;
-
-    private ?TargetLink $targetLink = null;
-
-    /** @var array<string, string> */
-    private array $siteNavigation = [];
-
-    private string $pagetitle = '';
-
-    private string $macro = '';
-
-    /** @var array<int, array<string>> */
-    private array $execjs = [];
-
-    private ?GameTurnInterface $currentRound = null;
-
-    /** @var array<string> */
-    private array $achievements = [];
-
-    /** @var array<int, mixed> $viewContext */
-    private array $viewContext = [];
-
-    /** @var array{currentTurn:int, player:int, playeronline:int, gameState:int, gameStateTextual:string} */
-    private ?array $gameStats = null;
-
-    /** @var array<int, SysvSemaphore> */
-    private array $semaphores = [];
-
-    /** @var GameConfigInterface[]|null */
-    private ?array $gameConfig = null;
-
-    private ?GameRequestInterface $gameRequest = null;
 
     public function __construct(
         private SessionInterface $session,
@@ -114,11 +83,14 @@ final class GameController implements GameControllerInterface
         private GameRequestSaverInterface $gameRequestSaver,
         private GameSetupInterface $gameSetup,
         private TutorialProvider $tutorialProvider,
+        private SessionStringFactoryInterface $sessionStringFactory,
+        private BenchmarkResultInterface $benchmarkResult,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         //$this->loggerUtil->init('game', LoggerEnum::LEVEL_ERROR);
-        $this->gameInformations = new InformationWrapper();
+
+        $this->gameData = new GameData();
     }
 
     #[Override]
@@ -134,17 +106,17 @@ final class GameController implements GameControllerInterface
     #[Override]
     public function getViewContext(ViewContextTypeEnum $type): mixed
     {
-        if (!array_key_exists($type->value, $this->viewContext)) {
+        if (!array_key_exists($type->value, $this->gameData->viewContext)) {
             return null;
         }
 
-        return $this->viewContext[$type->value];
+        return $this->gameData->viewContext[$type->value];
     }
 
     #[Override]
     public function setViewContext(ViewContextTypeEnum $type, mixed $value): void
     {
-        $this->viewContext[$type->value] = $value;
+        $this->gameData->viewContext[$type->value] = $value;
     }
 
     #[Override]
@@ -176,7 +148,7 @@ final class GameController implements GameControllerInterface
     #[Override]
     public function setMacroInAjaxWindow(string $macro): void
     {
-        $this->macro = $macro;
+        $this->gameData->macro = $macro;
 
         $this->setTemplateFile('html/ajaxwindow.twig');
     }
@@ -186,7 +158,7 @@ final class GameController implements GameControllerInterface
     {
         $this->loggerUtil->log(sprintf('showMacro: %s', $macro));
 
-        $this->macro = $macro;
+        $this->gameData->macro = $macro;
 
         $this->setTemplateFile('html/ajaxempty.twig');
     }
@@ -194,7 +166,7 @@ final class GameController implements GameControllerInterface
     #[Override]
     public function getMacro(): string
     {
-        return $this->macro;
+        return $this->gameData->macro;
     }
 
     #[Override]
@@ -211,7 +183,7 @@ final class GameController implements GameControllerInterface
     #[Override]
     public function addInformation(?string $information): InformationInterface
     {
-        $this->gameInformations->addInformation($information);
+        $this->gameData->gameInformations->addInformation($information);
 
         return $this;
     }
@@ -219,13 +191,13 @@ final class GameController implements GameControllerInterface
     #[Override]
     public function addInformationMerge(array $info): void
     {
-        $this->gameInformations->addInformationArray($info, true);
+        $this->gameData->gameInformations->addInformationArray($info, true);
     }
 
     /** @param array<string> $info */
     private function addInformationMergeDown(array $info): void
     {
-        $this->gameInformations->addInformationArray($info);
+        $this->gameData->gameInformations->addInformationArray($info);
     }
 
     #[Override]
@@ -245,19 +217,19 @@ final class GameController implements GameControllerInterface
     #[Override]
     public function getInformation(): array
     {
-        return $this->gameInformations->getInformations();
+        return $this->gameData->gameInformations->getInformations();
     }
 
     #[Override]
     public function getTargetLink(): ?TargetLink
     {
-        return $this->targetLink;
+        return $this->gameData->targetLink;
     }
 
     #[Override]
     public function setTargetLink(TargetLink $targetLink): GameControllerInterface
     {
-        $this->targetLink = $targetLink;
+        $this->gameData->targetLink = $targetLink;
 
         return $this;
     }
@@ -290,20 +262,14 @@ final class GameController implements GameControllerInterface
      */
     private function getGameConfig(): array
     {
-        if ($this->gameConfig === null) {
-            $this->gameConfig = [];
+        if ($this->gameData->gameConfig === null) {
+            $this->gameData->gameConfig = [];
 
             foreach ($this->gameConfigRepository->findAll() as $item) {
-                $this->gameConfig[$item->getOption()] = $item;
+                $this->gameData->gameConfig[$item->getOption()] = $item;
             }
         }
-        return $this->gameConfig;
-    }
-
-    #[Override]
-    public function getUniqId(): string
-    {
-        return uniqid();
+        return $this->gameData->gameConfig;
     }
 
     #[Override]
@@ -322,35 +288,35 @@ final class GameController implements GameControllerInterface
         string $url,
         string $title
     ): void {
-        $this->siteNavigation[$url] = $title;
+        $this->gameData->siteNavigation[$url] = $title;
     }
 
     #[Override]
     public function getNavigation(): array
     {
-        return $this->siteNavigation;
+        return $this->gameData->siteNavigation;
     }
 
     #[Override]
     public function getPageTitle(): string
     {
-        return $this->pagetitle;
+        return $this->gameData->pagetitle;
     }
 
     #[Override]
     public function setPageTitle(string $title): void
     {
-        $this->pagetitle = $title;
+        $this->gameData->pagetitle = $title;
     }
 
     #[Override]
     public function getExecuteJS(int $when): ?array
     {
-        if (!array_key_exists($when, $this->execjs)) {
+        if (!array_key_exists($when, $this->gameData->execjs)) {
             return null;
         }
 
-        return $this->execjs[$when];
+        return $this->gameData->execjs[$when];
     }
 
     #[Override]
@@ -358,15 +324,15 @@ final class GameController implements GameControllerInterface
     {
         switch ($when) {
             case GameEnum::JS_EXECUTION_BEFORE_RENDER:
-                $this->execjs[$when][] = $value;
+                $this->gameData->execjs[$when][] = $value;
                 $this->loggerUtil->log(sprintf('before: %s', $value));
                 break;
             case GameEnum::JS_EXECUTION_AFTER_RENDER:
-                $this->execjs[$when][] = $value;
+                $this->gameData->execjs[$when][] = $value;
                 $this->loggerUtil->log(sprintf('after: %s', $value));
                 break;
             case GameEnum::JS_EXECUTION_AJAX_UPDATE:
-                $this->execjs[$when][] = $value;
+                $this->gameData->execjs[$when][] = $value;
                 $this->loggerUtil->log(sprintf('update: %s', $value));
                 break;
         }
@@ -385,13 +351,13 @@ final class GameController implements GameControllerInterface
     #[Override]
     public function getCurrentRound(): GameTurnInterface
     {
-        if ($this->currentRound === null) {
-            $this->currentRound = $this->gameTurnRepository->getCurrent();
-            if ($this->currentRound === null) {
+        if ($this->gameData->currentRound === null) {
+            $this->gameData->currentRound = $this->gameTurnRepository->getCurrent();
+            if ($this->gameData->currentRound === null) {
                 throw new RuntimeException('no current round existing');
             }
         }
-        return $this->currentRound;
+        return $this->gameData->currentRound;
     }
 
     #[Override]
@@ -427,7 +393,7 @@ final class GameController implements GameControllerInterface
             $entry = $this->createDatabaseEntry->createDatabaseEntryForUser($this->getUser(), $databaseEntryId);
 
             if ($entry !== null) {
-                $this->achievements[] = sprintf(
+                $this->gameData->achievements[] = sprintf(
                     _('Neuer Datenbankeintrag: %s (+%d Punkte)'),
                     $entry->getDescription(),
                     $entry->getCategory()->getPoints()
@@ -439,22 +405,13 @@ final class GameController implements GameControllerInterface
     #[Override]
     public function getAchievements(): array
     {
-        return $this->achievements;
+        return $this->gameData->achievements;
     }
 
     #[Override]
     public function getSessionString(): string
     {
-        $string = bin2hex(random_bytes(15));
-
-        $sessionStringEntry = $this->sessionStringRepository->prototype();
-        $sessionStringEntry->setUser($this->getUser());
-        $sessionStringEntry->setDate(new DateTime());
-        $sessionStringEntry->setSessionString($string);
-
-        $this->sessionStringRepository->save($sessionStringEntry);
-
-        return $string;
+        return $this->sessionStringFactory->createSessionString($this->getUser());
     }
 
     #[Override]
@@ -476,7 +433,7 @@ final class GameController implements GameControllerInterface
     #[Override]
     public function getGameRequest(): GameRequestInterface
     {
-        if ($this->gameRequest === null) {
+        if ($this->gameData->gameRequest === null) {
             $gameRequest = $this->gameRequestRepository->prototype();
             $gameRequest->setTime(time());
             $gameRequest->setTurnId($this->getCurrentRound());
@@ -487,9 +444,9 @@ final class GameController implements GameControllerInterface
                 $gameRequest->setUserId($this->getUser());
             }
 
-            $this->gameRequest = $gameRequest;
+            $this->gameData->gameRequest = $gameRequest;
         }
-        return $this->gameRequest;
+        return $this->gameData->gameRequest;
     }
 
     #[Override]
@@ -697,13 +654,13 @@ final class GameController implements GameControllerInterface
     #[Override]
     public function isSemaphoreAlreadyAcquired(int $key): bool
     {
-        return array_key_exists($key, $this->semaphores);
+        return array_key_exists($key, $this->gameData->semaphores);
     }
 
     #[Override]
     public function addSemaphore(int $key, SysvSemaphore $semaphore): void
     {
-        $this->semaphores[$key] = $semaphore;
+        $this->gameData->semaphores[$key] = $semaphore;
     }
 
     /**
@@ -781,8 +738,8 @@ final class GameController implements GameControllerInterface
     #[Override]
     public function getGameStats(): array
     {
-        if ($this->gameStats === null) {
-            $this->gameStats = [
+        if ($this->gameData->gameStats === null) {
+            $this->gameData->gameStats = [
                 'currentTurn' => $this->getCurrentRound()->getTurn(),
                 'player' => $this->userRepository->getActiveAmount(),
                 'playeronline' => $this->userRepository->getActiveAmountRecentlyOnline(time() - 300),
@@ -790,7 +747,7 @@ final class GameController implements GameControllerInterface
                 'gameStateTextual' => $this->getGameStateTextual()
             ];
         }
-        return $this->gameStats;
+        return $this->gameData->gameStats;
     }
 
     #[Override]
@@ -799,8 +756,14 @@ final class GameController implements GameControllerInterface
         return GameEnum::gameStateTypeToDescription($this->getGameState());
     }
 
+    #[Override]
+    public function resetGameData(): void
+    {
+        $this->gameData = new GameData();
+    }
+
     /**
-     * @return array{executionTime: float|string, memoryUsage: float|string, memoryPeakUsage: float|string}
+     * @return array{executionTime: float|string, memoryPeakUsage: float|string}
      */
     #[Override]
     public function getBenchmarkResult(): array
@@ -808,10 +771,6 @@ final class GameController implements GameControllerInterface
         $this->loggerUtil->log(sprintf('getBenchmarkResult, timestamp: %F', microtime(true)));
         $this->benchmark->end();
 
-        return [
-            'executionTime' => $this->benchmark->getTime(),
-            'memoryUsage' => $this->benchmark->getMemoryUsage(),
-            'memoryPeakUsage' => $this->benchmark->getMemoryPeak()
-        ];
+        return $this->benchmarkResult->getResult($this->benchmark);
     }
 }

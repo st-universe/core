@@ -26,5 +26,6 @@ return [
         autowire(ServertimeFragment::class),
         autowire(UserFragment::class),
     ],
+    BenchmarkResultInterface::class => autowire(BenchmarkResult::class),
     GameTwigRendererInterface::class => autowire(GameTwigRenderer::class)
 ];

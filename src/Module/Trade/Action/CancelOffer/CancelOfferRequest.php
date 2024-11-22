@@ -14,12 +14,12 @@ final class CancelOfferRequest implements CancelOfferRequestInterface
     #[Override]
     public function getOfferId(): int
     {
-        return $this->queryParameter('offerid')->int()->required();
+        return $this->parameter('offerid')->int()->required();
     }
 
     #[Override]
     public function getView(): ?string
     {
-        return $this->queryParameter('view')->string()->defaultsTo(null);
+        return $this->parameter('view')->string()->defaultsTo(null);
     }
 }

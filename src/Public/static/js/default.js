@@ -133,7 +133,7 @@ function showContactModeSwitcher(div, contactid) {
         clmodeswitchdiv = div;
         elt = 'clmswitcher';
         openWindow(elt, 0, 70);
-        ajax_update('clmswitcher', '/pm.php?SHOW_CONTACT_MODESWITCH=1&cid=' + contactid);
+        ajax_update('clmswitcher', '/pm.php?SHOW_CONTACT_MODESWITCH=1&contactid=' + contactid);
 }
 function switchContactMode(contactid, mode) {
         ajax_update(clmodeswitchdiv, '/pm.php?B_CHANGE_CONTACTMODE=1&cid=' + contactid + '&clmode=' + mode + "&cldiv=" + clmodeswitchdiv);
@@ -397,13 +397,13 @@ function openTopicSettings(obj, tid, bid) {
         var pos = findObject(obj);
         elt = 'topicaction';
         openWindowPosition(elt, 1, 200, pos[0] - 200, pos[1]);
-        ajax_update(elt, "alliance.php?SHOW_TOPIC_SETTINGS=1&tid=" + tid + "&bid=" + bid);
+        ajax_update(elt, "alliance.php?SHOW_TOPIC_SETTINGS=1&topicid=" + tid + "&boardid=" + bid);
 }
 function openBoardSettings(obj, bid) {
         var pos = findObject(obj);
         elt = 'boardaction';
         openWindowPosition(elt, 1, 200, pos[0] - 200, pos[1]);
-        ajax_update(elt, "alliance.php?SHOW_BOARD_SETTINGS=1&bid=" + bid);
+        ajax_update(elt, "alliance.php?SHOW_BOARD_SETTINGS=1&boardid=" + bid);
 }
 function openPmWindow(fromId, toId, fromType, toType) {
         elt = 'pmwindow';

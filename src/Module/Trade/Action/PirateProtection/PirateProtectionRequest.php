@@ -14,6 +14,6 @@ final class PirateProtectionRequest implements PirateProtectionRequestInterface
     #[Override]
     public function getPrestige(): int
     {
-        return $this->queryParameter('prestige')->int()->defaultsTo(0);
+        return $this->parameter('prestige')->int()->defaultsTo(0);
     }
 }

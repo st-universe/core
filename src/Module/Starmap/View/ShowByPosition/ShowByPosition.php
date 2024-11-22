@@ -19,15 +19,13 @@ final class ShowByPosition implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_STARMAP_POSITION';
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private StarmapUiFactoryInterface $starmapUiFactory)
-    {
-    }
+    public function __construct(private ShipLoaderInterface $shipLoader, private StarmapUiFactoryInterface $starmapUiFactory) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $ship =  $this->shipLoader->getByIdAndUser(
-            request::getIntFatal('sid'),
+            request::getIntFatal('shipid'),
             $game->getUser()->getId(),
             true,
             false

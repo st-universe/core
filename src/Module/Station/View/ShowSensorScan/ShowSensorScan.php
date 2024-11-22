@@ -60,8 +60,8 @@ final class ShowSensorScan implements ViewControllerInterface
         );
         $station = $wrapper->get();
 
-        $cx = request::getIntFatal('cx');
-        $cy = request::getIntFatal('cy');
+        $cx = request::getIntFatal('x');
+        $cy = request::getIntFatal('y');
 
         if (!$station->getLss()) {
             return;
@@ -75,7 +75,7 @@ final class ShowSensorScan implements ViewControllerInterface
             return;
         }
 
-        $sysid = request::getIntFatal('sysid');
+        $sysid = request::getIntFatal('systemid');
 
         $this->loggerUtil->log(sprintf('cx: %d, cy: %d, sysid: %d', $cx, $cy, $sysid));
 

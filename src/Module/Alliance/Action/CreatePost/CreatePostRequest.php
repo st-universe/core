@@ -14,20 +14,20 @@ final class CreatePostRequest implements CreatePostRequestInterface
     #[Override]
     public function getBoardId(): int
     {
-        return $this->queryParameter('bid')->int()->required();
+        return $this->parameter('boardid')->int()->required();
     }
 
     #[Override]
     public function getTopicId(): int
     {
-        return $this->queryParameter('tid')->int()->required();
+        return $this->parameter('topicid')->int()->required();
     }
 
     #[Override]
     public function getText(): string
     {
         return $this->tidyString(
-            $this->queryParameter('ttext')->string()->defaultsToIfEmpty('')
+            $this->parameter('ttext')->string()->defaultsToIfEmpty('')
         );
     }
 }

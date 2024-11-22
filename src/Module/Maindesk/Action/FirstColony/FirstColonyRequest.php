@@ -14,6 +14,6 @@ final class FirstColonyRequest implements FirstColonyRequestInterface
     #[Override]
     public function getPlanetId(): int
     {
-        return $this->queryParameter('id')->int()->required();
+        return $this->parameter('id')->int()->required();
     }
 }

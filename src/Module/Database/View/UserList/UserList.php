@@ -18,7 +18,7 @@ final class UserList implements ViewControllerInterface
 
     private const array SORT_FIELD_MAP = [
         'id' => 'id',
-        'fac' => 'race',
+        'fac' => 'factionid',
         'alliance' => 'allys_id',
     ];
 

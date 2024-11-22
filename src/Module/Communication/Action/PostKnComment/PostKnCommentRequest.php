@@ -14,14 +14,14 @@ final class PostKnCommentRequest implements PostKnCommentRequestInterface
     #[Override]
     public function getPostId(): int
     {
-        return $this->queryParameter('posting')->int()->required();
+        return $this->parameter('posting')->int()->required();
     }
 
     #[Override]
     public function getText(): string
     {
         return $this->tidyString(
-            $this->queryParameter('comment')->string()->trim()->defaultsToIfEmpty('')
+            $this->parameter('comment')->string()->trim()->defaultsToIfEmpty('')
         );
     }
 }

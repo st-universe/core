@@ -14,12 +14,12 @@ final class EditAdminRegionRequest implements EditAdminRegionRequestInterface
     #[Override]
     public function getFieldId(): int
     {
-        return $this->queryParameter('field')->int()->required();
+        return $this->parameter('field')->int()->required();
     }
 
     #[Override]
     public function getAdminRegionId(): int
     {
-        return $this->queryParameter('adminregion')->int()->required();
+        return $this->parameter('adminregion')->int()->required();
     }
 }

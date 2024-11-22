@@ -19,7 +19,13 @@ final class ShowModuleScreen implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_MODULE_SCREEN';
 
-    public function __construct(private ColonyLoaderInterface $colonyLoader, private ShowModuleScreenRequestInterface $showModuleScreenRequest, private ShipRumpRepositoryInterface $shipRumpRepository, private ShipCrewCalculatorInterface $shipCrewCalculator, private ColonyLibFactoryInterface $colonyLibFactory) {}
+    public function __construct(
+        private ColonyLoaderInterface $colonyLoader,
+        private ShowModuleScreenRequestInterface $showModuleScreenRequest,
+        private ShipRumpRepositoryInterface $shipRumpRepository,
+        private ShipCrewCalculatorInterface $shipCrewCalculator,
+        private ColonyLibFactoryInterface $colonyLibFactory
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void

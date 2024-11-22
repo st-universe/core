@@ -211,12 +211,12 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('user_id', 'user_id', 'integer');
-        $rsm->addScalarResult('race', 'race', 'integer');
+        $rsm->addScalarResult('factionid', 'factionid', 'integer');
         $rsm->addScalarResult('crewc', 'crewc', 'integer');
 
         return $this->getEntityManager()->createNativeQuery(
             'SELECT sc.user_id, count(*) as crewc,
-                (SELECT race
+                (SELECT race as factionid
                 FROM stu_user u
                 WHERE sc.user_id = u.id)
             FROM stu_crew_assign sc

@@ -14,12 +14,12 @@ final class PromotePlayerRequest implements PromotePlayerRequestInterface
     #[Override]
     public function getPlayerId(): int
     {
-        return $this->queryParameter('uid')->int()->required();
+        return $this->parameter('uid')->int()->required();
     }
 
     #[Override]
     public function getPromotionType(): int
     {
-        return $this->queryParameter('type')->int()->required();
+        return $this->parameter('type')->int()->required();
     }
 }

@@ -8,6 +8,7 @@ use Override;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Communication\Action\EditKnPost\EditKnPost;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\StuTime;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Repository\KnCharacterRepositoryInterface;
@@ -22,7 +23,8 @@ final class ShowEditKn implements ViewControllerInterface
         private ShowEditKnRequestInterface $showEditKnRequest,
         private KnPostRepositoryInterface $knPostRepository,
         private RpgPlotRepositoryInterface $rpgPlotRepository,
-        private KnCharacterRepositoryInterface $knCharactersRepository
+        private KnCharacterRepositoryInterface $knCharactersRepository,
+        private StuTime $stuTime
     ) {}
 
     #[Override]
@@ -42,7 +44,7 @@ final class ShowEditKn implements ViewControllerInterface
         $game->setViewTemplate('html/communication/editKn.twig');
         $game->appendNavigationPart('comm.php', _('KommNet'));
 
-        if ($post->getDate() < time() - EditKnPost::EDIT_TIME) {
+        if ($post->getDate() < $this->stuTime->time() - EditKnPost::EDIT_TIME) {
             $game->addInformation(sprintf(_('Die Zeit zum Editieren ist abgelaufen (%d Sekunden)'), EditKnPost::EDIT_TIME));
         } else {
             $game->appendNavigationPart(

@@ -28,6 +28,13 @@ final class ComponentLoader implements ComponentLoaderInterface
     ) {}
 
     #[Override]
+    public function resetComponents(): void
+    {
+        $this->componentUpdates = [];
+        $this->neededComponents = [];
+    }
+
+    #[Override]
     public function addComponentUpdate(ComponentEnum $component, bool $isInstantUpdate = true): void
     {
         if (!array_key_exists($component->value, $this->componentUpdates)) {

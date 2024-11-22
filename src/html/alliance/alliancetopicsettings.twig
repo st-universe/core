@@ -1,24 +1,30 @@
-    <form action="alliance.php" method="post">
-        <input type="hidden" name="bid" value="{{ TOPIC.getBoardId }}" />
-        <input type="hidden" name="tid" value="{{ TOPIC.getId }}" />
-        <table class="use" style="width: 200px">
-            <tr>
-                <td>
-                    <a href="?B_DELETE_TOPIC=1&tid={{ TOPIC.getId }}&bid={{ TOPIC.getBoardId }}&sstr={{ SESSIONSTRING }}" class="linkbutton">Thema löschen</a>
-                    <br />
-                    <br />
-                    <br />
-                    <input type="text" style="width: 100%" name="tname" value="{{ TOPIC.getName }}" /><br />
-                    <br />
-                    <input type="submit" value="Umbenennen" name="B_RENAME_TOPIC" />
-                    <br />
-                    <br />
-                    {% if not TOPIC.getSticky %}
-                        <a class="linkbutton" href="?B_SET_STICKY=1&SHOW_BOARD=1&bid={{ TOPIC.getBoardId }}&tid={{ TOPIC.getId }}">Als Wichtig markieren</a>
-                    {% else %}
-                        <a class="linkbutton" href="?B_UNSET_STICKY=1&SHOW_BOARD=1&bid={{ TOPIC.getBoardId }}&tid={{ TOPIC.getId }}">Als Unwichtig markieren</a>
-                    {% endif %}
-                </td>
-            </tr>
-        </table>
-    </form>
+<form action="alliance.php" method="post">
+    <input type="hidden" name="bid" value="{{ TOPIC.getBoardId }}" />
+    <input type="hidden" name="tid" value="{{ TOPIC.getId }}" />
+    <table class="use" style="width: 200px">
+        <tr>
+            <td>
+                <a href="?B_DELETE_TOPIC=1&topicid={{ TOPIC.getId }}&boardid={{ TOPIC.getBoardId }}&sstr={{ SESSIONSTRING }}"
+                    class="linkbutton">Thema löschen</a>
+                <br />
+                <br />
+                <br />
+                <input type="text" style="width: 100%" name="tname" value="{{ TOPIC.getName }}" /><br />
+                <br />
+                <input type="submit" value="Umbenennen" name="B_RENAME_TOPIC" />
+                <br />
+                <br />
+                {% if not TOPIC.getSticky %}
+                <a class="linkbutton"
+                    href="?B_SET_STICKY=1&SHOW_BOARD=1&boardid={{ TOPIC.getBoardId }}&topicid={{ TOPIC.getId }}">Als
+                    Wichtig
+                    markieren</a>
+                {% else %}
+                <a class="linkbutton"
+                    href="?B_UNSET_STICKY=1&SHOW_BOARD=1&boardid={{ TOPIC.getBoardId }}&topicid={{ TOPIC.getId }}">Als
+                    Unwichtig markieren</a>
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+</form>

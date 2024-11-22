@@ -22,9 +22,9 @@ final class Init
 
     private static ?StuContainer $CONTAINER = null;
 
-    public static function getContainer(string $additionalConfigPath = null): StuContainer
+    public static function getContainer(string $additionalConfigPath = null, bool $doReload = false): StuContainer
     {
-        if (static::$CONTAINER === null) {
+        if (static::$CONTAINER === null || $doReload) {
             if ($additionalConfigPath !== null) {
                 self::$configFiles[] = $additionalConfigPath;
             }

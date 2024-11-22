@@ -15,7 +15,7 @@ final class ChangeNameRequest implements ChangeNameRequestInterface
     public function getName(): string
     {
         return $this->tidyString(
-            $this->queryParameter('colname')->string()->defaultsToIfEmpty('')
+            $this->parameter('colname')->string()->defaultsToIfEmpty('')
         );
     }
 }

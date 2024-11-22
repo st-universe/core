@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:stu="stu">
+<body>
+<form action="colony.php" method="post">
+    <input type="hidden" name="id" value="42">
+    <input type="hidden" name="hosttype" value="1">
+    <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
+    <div>
+    <div id="buildingselection" style="float: left; width: 20vw; font-size: 1vw;">
+        <div class="divhead">Geb&Atilde;&curren;udewahl</div>
+        <div class="divbody">
+            <select style="width: 100%; height: 370px;" multiple name="selection[]">
+                                                                                <option style="padding-top: 2px; padding-left: 2px;" value="26" title="Koloniezentrale">
+                    [an] Koloniezentrale
+                </option>
+                                            </select>
+            <input type="hidden" name="mode" value="2">
+            <div style="margin-top: 10px; width: 50%; float: left;">
+                <input type="submit" value="Aktivieren" name="B_MULTIPLE_ACTIVATION">
+            </div>
+            <div style="margin-top: 10px; text-align: right; width: 50%; float: left;">
+                <input type="submit" value="Deaktivieren" name="B_MULTIPLE_DEACTIVATION">
+            </div>
+            <br style="clear: both;">
+        </div>
+    </div>
+    <div id="buildinggroups" style="margin-left: 5px; float: left; width: 20vw;">
+                        <div class="divhead">Geb&Atilde;&curren;udegruppen</div>
+        <div class="divbody">
+            <img src="/assets/buttons/e_trans2.png" title="Energie" style="width: 10px; height: 10px;">
+            <strong>Energie</strong><br>
+            <span style="color: rgb(206, 206, 206);">&gt;</span> <a href="?id=42&amp;hosttype=1&amp;B_MULTIPLE_ACTIVATION=1&amp;mode=1&amp;sstr=MOCKED_SESSIONSTRING">Verbraucher
+                aktivieren</a><br>
+            <span style="color: rgb(206, 206, 206);">&gt;</span> <a href="?id=42&amp;hosttype=1&amp;B_MULTIPLE_DEACTIVATION=1&amp;mode=1&amp;sstr=MOCKED_SESSIONSTRING">Verbraucher
+                deaktivieren</a><br><br>
+            <span style="color: rgb(206, 206, 206);">&gt;</span> <a href="?id=42&amp;hosttype=1&amp;B_MULTIPLE_ACTIVATION=1&amp;mode=3&amp;sstr=MOCKED_SESSIONSTRING">Produzenten
+                aktivieren</a><br>
+            <span style="color: rgb(206, 206, 206);">&gt;</span> <a href="?id=42&amp;hosttype=1&amp;B_MULTIPLE_DEACTIVATION=1&amp;mode=3&amp;sstr=MOCKED_SESSIONSTRING">Produzenten
+                deaktivieren</a><br><br>
+            <img src="/assets/buttons/lager.png" title="Warenbezogen" style="width: 10px; height: 10px;">
+            <strong>Warenbezogen</strong><br>
+            Ware w&Atilde;&curren;hlen:<br>
+            <select name="commodity" style="height: 17px;" id="commodityselector">
+                            </select><br><br>
+            <table class="tcal">
+                <tr>
+                    <td style="text-align: center;" class="darkbg">Produzenten</td>
+                    <td style="text-align: center;" class="darkbg">Verbraucher</td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">
+                        <input type="button" value="aktivieren" onclick="snafu(42,1,'B_MULTIPLE_ACTIVATION', 7, 'MOCKED_SESSIONSTRING')"><br><br>
+                        <input type="button" value="deaktivieren" onclick="snafu(42,1,'B_MULTIPLE_DEACTIVATION', 7, 'MOCKED_SESSIONSTRING')">
+
+                    </td>
+                    <td style="text-align: center;">
+                        <input type="button" value="aktivieren" onclick="snafu(42,1,'B_MULTIPLE_ACTIVATION', 6, 'MOCKED_SESSIONSTRING')"><br><br>
+                        <input type="button" value="deaktivieren" onclick="snafu(42,1,'B_MULTIPLE_DEACTIVATION', 6, 'MOCKED_SESSIONSTRING')">
+                    </td>
+                </tr>
+            </table>
+            <br>
+            <img src="/assets/buttons/lager.png" title="Bev&Atilde;&para;lkerungsbezogen" style="width: 10px; height: 10px;">
+            <strong>Bev&Atilde;&para;lkerungsbezogen</strong><br>
+            <span style="color: rgb(206, 206, 206);">&gt;</span> <a href="?id=42&amp;hosttype=1&amp;B_MULTIPLE_ACTIVATION=1&amp;mode=5&amp;sstr=MOCKED_SESSIONSTRING">Wohngeb&Atilde;&curren;ude
+                aktivieren</a><br>
+            <span style="color: rgb(206, 206, 206);">&gt;</span> <a href="?id=42&amp;hosttype=1&amp;B_MULTIPLE_DEACTIVATION=1&amp;mode=5&amp;sstr=MOCKED_SESSIONSTRING">Wohngeb&Atilde;&curren;ude
+                deaktivieren</a><br><br>
+            <span style="color: rgb(206, 206, 206);">&gt;</span> <a href="?id=42&amp;hosttype=1&amp;B_MULTIPLE_ACTIVATION=1&amp;mode=4&amp;sstr=MOCKED_SESSIONSTRING">Arbeitgeber
+                aktivieren</a><br>
+            <span style="color: rgb(206, 206, 206);">&gt;</span> <a href="?id=42&amp;hosttype=1&amp;B_MULTIPLE_DEACTIVATION=1&amp;mode=4&amp;sstr=MOCKED_SESSIONSTRING">Arbeitgeber
+                deaktivieren</a><br><br>
+        </div>
+    </div>
+</div>
+</form>
+
+</body>
+</html>

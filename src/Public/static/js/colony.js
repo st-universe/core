@@ -80,8 +80,8 @@ function openBuildingInfo(buildingId) {
 	closeAjaxWindow();
 	elt = 'buildinginfo';
 	openPJsWin(elt);
-	ajax_update(elt, createHostUri('SHOW_BUILDING', '&bid=' + buildingId));
-	ajax_update('colsurface', createHostUri('SHOW_SURFACE', '&bid=' + buildingId));
+	ajax_update(elt, createHostUri('SHOW_BUILDING', '&buildingid=' + buildingId));
+	ajax_update('colsurface', createHostUri('SHOW_SURFACE', '&buildingid=' + buildingId));
 	buildmode = 1;
 	selectedbuilding = buildingId;
 
@@ -163,7 +163,7 @@ function buildOnField(action, fieldId, buildingId) {
 		bid = selectedbuilding;
 	}
 
-	performActionAndUpdateResult(action, `fid=${fieldId}&bid=${bid}`);
+	performActionAndUpdateResult(action, `fid=${fieldId}&boardid=${bid}`);
 }
 
 function terraformOnField(fieldId, terraformId) {
@@ -194,7 +194,7 @@ function performActionAndUpdateResult(action, params) {
 }
 
 function refreshHost() {
-	ajax_update('colsurface', createHostUri('SHOW_SURFACE', '&bid=' + selectedbuilding));
+	ajax_update('colsurface', createHostUri('SHOW_SURFACE', '&buildingid=' + selectedbuilding));
 	ajax_update('colonyeps', createHostUri('SHOW_EPSBAR_AJAX'));
 	ajax_update('colonyshields', createHostUri('SHOW_SHIELDBAR_AJAX'));
 	ajax_update('colonystorage', createHostUri('SHOW_STORAGE_AJAX'));
@@ -505,7 +505,7 @@ function showTelescopeScan(cx, cy) {
 	openPJsWin('elt', 1);
 
 	if (calculateScanCost(cx, cy) <= parseInt($('current_energy').innerHTML)) {
-		ajax_update('elt', 'colony.php?SHOW_TELESCOPE_SCAN=1&id=' + colonyid + '&cx=' + cx + '&cy=' + cy);
+		ajax_update('elt', 'colony.php?SHOW_TELESCOPE_SCAN=1&id=' + colonyid + '&x=' + cx + '&y=' + cy);
 	}
 
 	//refresh current colony eps

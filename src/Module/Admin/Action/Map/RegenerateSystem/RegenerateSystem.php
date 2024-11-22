@@ -18,16 +18,14 @@ final class RegenerateSystem implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'REGENERATE_SYSTEM';
 
-    public function __construct(private StarSystemRepositoryInterface $starSystemRepository, private NamesRepositoryInterface $namesRepository, private StarSystemCreationInterface $starSystemCreation)
-    {
-    }
+    public function __construct(private StarSystemRepositoryInterface $starSystemRepository, private NamesRepositoryInterface $namesRepository, private StarSystemCreationInterface $starSystemCreation) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowSystem::VIEW_IDENTIFIER);
 
-        $systemId = request::getInt('sysid');
+        $systemId = request::getInt('systemid');
 
         $starSystem = $this->starSystemRepository->find($systemId);
         if ($starSystem === null) {

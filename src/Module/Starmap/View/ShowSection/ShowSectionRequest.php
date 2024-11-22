@@ -14,18 +14,18 @@ final class ShowSectionRequest implements ShowSectionRequestInterface
     #[Override]
     public function getLayerId(): int
     {
-        return $this->queryParameter('layerid')->int()->required();
+        return $this->parameter('layerid')->int()->required();
     }
 
     #[Override]
     public function getSection(): int
     {
-        return $this->queryParameter('section')->int()->required();
+        return $this->parameter('section')->int()->required();
     }
 
     #[Override]
     public function getDirection(): ?int
     {
-        return $this->queryParameter('direction')->int()->defaultsTo(null);
+        return $this->parameter('direction')->int()->defaultsTo(null);
     }
 }

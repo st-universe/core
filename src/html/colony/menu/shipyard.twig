@@ -14,7 +14,7 @@
                 {% for rump in BUILDABLE_SHIPS %}
                 <div style="width: 196px; height:120px; float: left;">
                     <a class="std" href="javascript:void(0);"
-                        onclick="switchInnerContent('SHOW_MODULE_SCREEN', 'Schiffbau', 'id={{ COLONY.getId }}&rump={{ rump.getId }}');"
+                        onclick="switchInnerContent('SHOW_MODULE_SCREEN', 'Schiffbau', 'id={{ COLONY.getId }}&rumpid={{ rump.getId }}');"
                         style="height: 120px; width: 196px; text-align: center; text-decoration: none; display: block;">
                         <img src="/assets/ships/{{ rump.getId }}.png" title="{{ rump.getName }}"
                             style="padding-top: 5px;" /><br />

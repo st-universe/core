@@ -14,6 +14,6 @@ final class CancelShipRepairRequest implements CancelShipRepairRequestInterface
     #[Override]
     public function getShipId(): int
     {
-        return $this->queryParameter('shipid')->int()->required();
+        return $this->parameter('shipid')->int()->required();
     }
 }

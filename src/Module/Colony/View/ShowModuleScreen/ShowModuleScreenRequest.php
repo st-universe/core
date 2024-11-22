@@ -14,12 +14,12 @@ final class ShowModuleScreenRequest implements ShowModuleScreenRequestInterface
     #[Override]
     public function getColonyId(): int
     {
-        return $this->queryParameter('id')->int()->required();
+        return $this->parameter('id')->int()->required();
     }
 
     #[Override]
     public function getRumpId(): int
     {
-        return $this->queryParameter('rump')->int()->required();
+        return $this->parameter('rumpid')->int()->required();
     }
 }

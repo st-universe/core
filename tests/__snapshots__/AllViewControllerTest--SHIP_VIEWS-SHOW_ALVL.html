@@ -1,0 +1,45 @@
+<html lang="de">
+
+<head>
+  <script src="/static/js/default.js"></script>
+</head>
+
+<body>
+  <div class="ajaxwin">
+        <table class="tcal">
+      <tr>
+        <th onmouseover="switch_drag_on();" onmouseout="switch_drag_off();">Alarmstufe &Atilde;&curren;ndern</th>
+        <th style="width: 18px;">
+          <a href="javascript:void(0);" onclick="closeAjaxWindow();" onmouseover="cp('ajaxclose','buttons/x2');" onmouseout="cp('ajaxclose','buttons/x1');">
+            <img src="/assets/buttons/x1.png" name="ajaxclose" title="Fenster schlie&Atilde;&#159;en">
+          </a>
+        </th>
+      </tr>
+    </table>
+        <table style="width: 100%;">
+    <tr>
+        <td>
+            <a href="?B_SET_GREEN_ALERT=1&amp;id=42&amp;sstr=MOCKED_SESSIONSTRING">
+                <img src="assets/buttons/alert1.png"> Alarmstufe Gr&Atilde;&frac14;n
+            </a>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <a href="?B_SET_YELLOW_ALERT=1&amp;id=42&amp;sstr=MOCKED_SESSIONSTRING">
+                <img src="assets/buttons/alert2.png"> Alarmstufe Gelb
+            </a>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <a href="?B_SET_RED_ALERT=1&amp;id=42&amp;sstr=MOCKED_SESSIONSTRING">
+                <img src="assets/buttons/alert3.png"> Alarmstufe Rot
+            </a>
+        </td>
+    </tr>
+</table>
+      </div>
+  </body>
+
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:stu="stu">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="theme-color" content="#000000">
+    <title>Registrierung - Star Trek Universe</title>
+    <link rel="shortcut icon" href="/assets/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="/static/css/main.css">
+    <meta name="description" content="Star Trek Universe - Ein Star Trek Browsergame">
+    <meta name="keywords" content="star trek, star, trek, spiel, browsergame, rollenspiel, rpg, online">
+    <meta name="author" content="Wolverine">
+    <meta name="robots" content="index">
+    <meta name="robots" content="follow">
+    <meta name="publisher" content="Wolverine">
+    <meta name="language" content="de">
+    <meta name="Copyright" content="Wolverine">
+    <meta name="Page-Topic" content="star trek, star, trek, rollenspiel, online, rpg, spiel, browsergame">
+    <script src="/static/js/prototype.js"></script>
+    <script src="/static/js/scriptaculous/scriptaculous.js"></script>
+    <script src="/static/js/main.js"></script>
+
+
+</head>
+<body onload="if ($('login')) $('login').focus(); updateBannerImage();">
+    <div style="width: 100%">
+        <div style="margin: auto;">
+            <div id="banner">
+                <img id="bannerImg" src="" border="0" title="Star Trek Universe">
+            </div>
+            <div style="width: 1160px; margin: auto;">
+                <div style="width: 880px; float: left;">
+                    <div class="mainbar_box_header">Navigation</div>
+
+                    <div class="mainbar_box_content topnav">
+                        <a href="/index.php">Hauptseite</a>
+                        <a href="/index.php?SHOW_REGISTRATION=1">Registrieren</a>
+                        <a href="/index.php?SHOW_HELP=1">Hilfe</a>
+                        <a href="/index.php?SHOW_INFOS=1">Impressum</a>
+                        <a href="https://board.change.me" target="_blank">Forum</a>
+                        <a href="https://chat.change.me" target="_blank">Chat</a>
+                        <a href="https://board.change.me/viewforum.php?f=12" target="_blank">Changelog</a>
+                        <a href="/index.php?SHOW_PARTNER_SITES=1">Partnerseiten</a>
+                    </div>
+                    <br>
+                    <div class="mainbar_box_header">Registrierung - Star Trek Universe</div>
+                    <div class="mainbar_box_content mainbar_box_content_border">
+                        <div style="margin: 5px">
+                            <form action="/index.php" method="post" onsubmit="checkSubmit(); return false;" id="registerform">
+	<input type="hidden" name="factionid" id="factionid" value="0">
+	<div style="display: inline-block; width: 300px; padding-right: 5px;">
+		<div class="divhead">Loginname</div>
+		<div class="divbody">
+			<input type="text" class="text" size="25" name="loginname" id="loginname" onblur="checkLogin(this, this.value)">
+			<span id="loginerror" style="display: none; color: #FF0000;">Fehler</span>
+			<span id="loginok" style="display: none; color: Green;">OK</span>
+			<div id="logindup" style="color: #FFAA00; display: none;">Dieser Loginname ist bereits registriert
+			</div>
+			<div style="font-size: 80%; padding-top: 5px;">Minimum 6 Buchstaben/Zahlen</div>
+		</div>
+		<br>
+		<div class="divhead">E-Mail Adresse</div>
+		<div class="divbody">
+			<input type="text" class="text" size="25" name="email" id="email" onblur="checkEmail(this, this.value);">
+			<span id="emailerror" style="display: none; color: #FF0000;">Fehler</span>
+			<span id="emailok" style="display: none; color: Green;">OK</span>
+			<div id="emaildup" style="color: #FFAA00; display: none;">Diese E-Mailadresse ist bereits
+				registriert</div>
+			<div id="emailblk" style="color: #FFAA00; display: none;">Diese E-Mailadresse ist blockiert</div>
+		</div>
+		<br>
+				<br>
+		<div class="divhead">Regeln</div>
+		<div class="divbody">
+			<input type="checkbox" onclick="$('asberror').hide()" id="asb" name="asb">Ich habe die
+			<a href="https://wiki.change.me/index.php?title=Spielregeln" target="_blank" style="text-decoration: underline">Spielregeln</a> und den
+			<a href="/?SHOW_INFOS=1" target="_blank" style="text-decoration: underline">Datenschutzhinweis</a>
+			gelesen und bin damit einverstanden.
+			<div id="asberror" style="display:none; color: #FF0000">Die Spielregeln/der Datenschutzhinweis
+				wurde(n) nicht akzeptiert</div>
+		</div>
+		<br>
+				<input type="submit" name="B_SEND_REGISTRATION" value="Registrieren" class="button">
+			</div>
+	<div style="vertical-align: top; display: inline-block; width: 355px;">
+		<div class="divhead">Gew&auml;hlte Fraktion</div>
+		<div class="divbody" id="ch_faction">
+			Keine
+		</div>
+		<br>
+		<br>
+		<div id="factionerror" style="display:none; color: #FF0000">Es wurde keine Fraktion gew&auml;hlt</div>
+		<div class="divhead">Fraktion w&auml;hlen</div>
+								<div class="divbody" style="display: block; cursor: pointer; background-color: #0d2029" onclick="toggleFaction(1); selectFaction(1);">
+			<div id="fachead_1">
+    <img src="assets/rassen/1s.png"> <strong>Vereinte F&ouml;deration der Planeten</strong>
+        (2/50)
+    </div>
+<div id="facinfo_1" style="display: none;">
+        <br>
+    Die F&ouml;deration ist in STU die vielseitigste Fraktion. 
+                        Sie hat mehr Schiffsr&uuml;mpfe zur Auswahl als die anderen spielbaren Rassen.
+                        Der Schwerpunkt liegt auf der Forschung, aber F&ouml;derationssiedler k&ouml;nnen sich auch im Kampf behaupten.
+</div>
+		</div>
+										<div class="divbody" style="display: block; cursor: pointer; background-color: #0d2000" onclick="toggleFaction(2); selectFaction(2);">
+			<div id="fachead_2">
+    <img src="assets/rassen/2s.png"> <strong>Romulanisches Imperium</strong>
+        (0/50)
+    </div>
+<div id="facinfo_2" style="display: none;">
+        <br>
+    Romulaner gelten allgemein als hinterh&auml;ltig und verschlagen - ein Ruf, den sie auch in der Cragganmore Verwerfung eifrig pflegen.
+                        Wer dieses Volk ausw&auml;hlt kann Tarnvorrichtungen in seine Schiffe einbauen.
+                        Dar&uuml;ber hinaus sind die Romulaner die einzige Rasse, die die hochwertigsten Torpedowerfer benutzen kann.
+</div>
+		</div>
+										<div class="divbody" style="display: block; cursor: pointer; background-color: #2f0300" onclick="toggleFaction(3); selectFaction(3);">
+			<div id="fachead_3">
+    <img src="assets/rassen/3s.png"> <strong>Klingonisches Imperium</strong>
+        (0/50)
+    </div>
+<div id="facinfo_3" style="display: none;">
+        <br>
+    Die Klingonen sind ein kriegerisches Volk aus dem Betaquadranten.
+                        Wer dieses Volk spielt, verf&uuml;gt &uuml;ber eine Auswahl an effektiven Kampfschiffen und kann Tarnvorrichtungen benutzen.
+</div>
+		</div>
+										<div class="divbody" style="display: block; cursor: pointer; background-color: #402e00" onclick="toggleFaction(4); selectFaction(4);">
+			<div id="fachead_4">
+    <img src="assets/rassen/4s.png"> <strong>Cardassianische Union</strong>
+        (0/50)
+    </div>
+<div id="facinfo_4" style="display: none;">
+        <br>
+    Schon wieder eine Station weniger :-(
+</div>
+		</div>
+										<div class="divbody" style="display: block; cursor: pointer; background-color: #402100" onclick="toggleFaction(5); selectFaction(5);">
+			<div id="fachead_5">
+    <img src="assets/rassen/5s.png"> <strong>Ferengi Allianz</strong>
+        (0/50)
+    </div>
+<div id="facinfo_5" style="display: none;">
+        <br>
+    Die Ferengi sind eine Kultur skrupelloser Kapitalisten, die selbst ihre eigene Gro&szlig;mutter verkaufen w&uuml;rden, wenn sie Latinum daf&uuml;r bek&auml;men.
+                        In STU haben sie Schiffe mit hoher Ladekapazit&auml;t und k&ouml;nnen Tachyonscanner einsetzen, um getarnte Schiffe aufzusp&uuml;ren.
+</div>
+		</div>
+					</div>
+</form>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="float: left; width: 250px; position: relative;">
+                    <div class="sidebar_box_header">Spielstatus</div>
+                    <div class="sidebar_box_content">
+                        <div id="gamestate_1">Online</div>
+                    </div>
+                    <br>
+                                        <div class="sidebar_box_header">Willkommen zur&uuml;ck</div>
+                    <div class="sidebar_box_content">
+                                                Siedler 101
+                                                <br><br>
+                        <a href="/maindesk.php" class="linkbutton">Zum Maindesk</a>
+                    </div>
+                                        <br>
+                    <div class="sidebar_box_header">Statistiken</div>
+                    <div class="sidebar_box_content">
+                        Spieler: 2<br>
+                        Online: 0<br>
+                        Runde: 1<br>
+                    </div>
+                    <br>
+                    <div class="sidebar_box_header">Links</div>
+                    <div class="sidebar_box_content">
+                        <a href="https://www.v2.6.stuniverse.de" target="_blank">STU V2.6</a><br>
+                        <a href="https://nicotintel.de" target="_blank">
+                            <img src="/assets/buttons/blog.png">
+                            <span>Hux's Blog</span>
+                        </a><br>
+                        <a href="https://www.facebook.com/groups/185062741732" target="_blank">Facebook</a><br>
+                    </div>
+                    <br>
+                    <iframe src="https://discord.com/widget?id=486609699870081026&amp;theme=dark" width="230" height="400" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+                    <br>
+                    <br>
+                    <div class="sidebar_box_header">Copyright</div>
+                    <div class="sidebar_box_content">
+                        Star Trek is a registered trademark of Paramount Pictures.<br><br>
+                        This site is a fan project and therefor strictly non-profit.<br>
+                        No copyright infringement is intended.<br>
+                        &copy; 2001 - now STU-Team
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>

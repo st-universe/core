@@ -14,6 +14,6 @@ final class DealsTakeAuctionRequest implements DealsTakeAuctionRequestInterface
     #[Override]
     public function getDealId(): int
     {
-        return $this->queryParameter('dealid')->int()->required();
+        return $this->parameter('dealid')->int()->required();
     }
 }

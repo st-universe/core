@@ -14,12 +14,12 @@ final class CheckInputRequest implements CheckInputRequestInterface
     #[Override]
     public function getVariable(): string
     {
-        return $this->queryParameter('var')->string()->defaultsToIfEmpty('');
+        return $this->parameter('var')->string()->defaultsToIfEmpty('');
     }
 
     #[Override]
     public function getValue(): string
     {
-        return $this->queryParameter('value')->string()->defaultsToIfEmpty('');
+        return $this->parameter('value')->string()->defaultsToIfEmpty('');
     }
 }

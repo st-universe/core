@@ -24,7 +24,7 @@ final class ShowStationInfo implements ViewControllerInterface
         $game->setPageTitle(_('Baukosten'));
 
         $userId = $game->getUser()->getId();
-        $planId = request::getIntFatal('pid');
+        $planId = request::getIntFatal('planid');
 
         $plan = $this->stationUtility->getBuidplanIfResearchedByUser($planId, $userId);
         $rump = $plan->getRump();

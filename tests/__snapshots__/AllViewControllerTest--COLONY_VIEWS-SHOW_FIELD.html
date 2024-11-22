@@ -1,0 +1,108 @@
+<html lang="de">
+
+<head>
+  <script src="/static/js/default.js"></script>
+</head>
+
+<body>
+  <div class="ajaxwin">
+        <table class="tcal">
+      <tr>
+        <th onmouseover="switch_drag_on();" onmouseout="switch_drag_off();">Feld 24 - Informationen</th>
+        <th style="width: 18px;">
+          <a href="javascript:void(0);" onclick="closeAjaxWindow();" onmouseover="cp('ajaxclose','buttons/x2');" onmouseout="cp('ajaxclose','buttons/x1');">
+            <img src="/assets/buttons/x1.png" name="ajaxclose" title="Fenster schlie&Atilde;&#159;en">
+          </a>
+        </th>
+      </tr>
+    </table>
+        <div>
+    <form action="colony.php" method="post">
+        <table id="fieldaction" class="use" style="width: 600px;">
+
+    <input type="hidden" name="id" value="42">
+    <input type="hidden" name="hosttype" value="1">
+    <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
+    <input type="hidden" name="fid" value="26">
+
+                            <tr>
+        <td>
+                        <div>
+                                <div>
+                    <div style="display: table-cell">
+                        <div style="background-image: url(/assets/generated/fields/t101.png); width: 40px; height: 40px;">
+                            <img style="width: 40px; height: 40px;" title="Koloniezentrale (aktiviert) auf Wiese" src="/assets/generated/buildings/82010100/0at.png">
+                        </div>
+                    </div>
+                    <div style="text-align: left; padding-left: 5px; display: table-cell; vertical-align: top;">
+                        <span style="font-weight: bold;">Koloniezentrale</span><br>
+                        <div onmouseover="cp('fieldinfo','buttons/info2')" onmouseout="cp('fieldinfo','buttons/info1')">
+                            <span>auf</span> Wiese <a href="https://wiki.stuniverse.de/index.php?title=Kartenfelder" target="_blank">
+                                <img src="/assets/buttons/info1.png" name="fieldinfo" width="12" height="12" title="Wiki-Info &Atilde;&frac14;ber Kartenfelder">
+                            </a>
+                        </div>
+<br>
+                        <span>Integrit&Atilde;&curren;t</span>: 1500/1500
+                    </div>
+                    <br><br>
+                                                                                                                                                                                                                                                <br>
+                </div>
+                                            </div>
+                    </td>
+                <td style="vertical-align: top; width: 100px;">
+            <strong>Auswirkungen</strong>
+<div>
+    <img src="/assets/bev/bev_free_5_1.png" title="Wohnraum">
+    +84
+</div>
+<div>
+    <img src="/assets/buttons/lager.png" title="Lagerraum">
+    +100
+</div>
+<div>
+    <img src="/assets/buttons/eps.png" title="Energiespeicher">
+    +96
+</div>
+                        <div>
+                <br>
+                <strong>Produktion</strong>
+                                <div>
+                    <img src="/assets/buttons/e_trans2.png" title="Energie">
+                    +16
+                </div>
+                                                <br>
+            </div>
+                    </td>
+                    </tr>
+        <tr>
+        <td colspan="2" style="text-align: center;">
+            <table cellpadding="0" cellspacing="0">
+                <tr>
+                                        <td style="width: 100px;">
+                                                                        <div class="fabutton">
+                            <input type="submit" class="fabutton" name="B_DEACTIVATE" value="Deaktivieren">
+                        </div>
+                                                                    </td>
+                                        <td style="width: 100px;">
+                                            </td>
+                    <td style="width: 100px;">
+                                                <div class="fabutton_red">
+                            <a href="javascript:void(0);" onclick="toggleVisible('confirm_remove')" class="fabutton fabutton_red">Demontieren</a>
+                        </div>
+                                            </td>
+                    <td style="width: 100px;">
+                                                <div id="confirm_remove" style="display:none;" class="fabutton_red">
+                            <a href="javascript:void(0);" onclick="removeOnField(26);" class="fabutton_red">best&Atilde;&curren;tigen</a>
+                        </div>
+                                            </td>
+                </tr>
+            </table>
+                    </td>
+    </tr>
+    </table>
+    </form>
+</div>
+      </div>
+  </body>
+
+</html>

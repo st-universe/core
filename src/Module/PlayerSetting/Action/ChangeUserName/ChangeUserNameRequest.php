@@ -15,7 +15,7 @@ final class ChangeUserNameRequest implements ChangeUserNameRequestInterface
     public function getName(): string
     {
         return $this->tidyString(
-            $this->queryParameter('uname')->string()->defaultsToIfEmpty('')
+            $this->parameter('uname')->string()->defaultsToIfEmpty('')
         );
     }
 }

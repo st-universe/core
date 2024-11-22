@@ -15,14 +15,9 @@ use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
 final class Board implements ViewControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string VIEW_IDENTIFIER = 'SHOW_BOARD';
 
-    public function __construct(private BoardRequestInterface $boardRequest, private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository, private AllianceBoardRepositoryInterface $allianceBoardRepository, private AllianceActionManagerInterface $allianceActionManager)
-    {
-    }
+    public function __construct(private BoardRequestInterface $boardRequest, private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository, private AllianceBoardRepositoryInterface $allianceBoardRepository, private AllianceActionManagerInterface $allianceActionManager) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -56,7 +51,7 @@ final class Board implements ViewControllerInterface
         );
         $game->appendNavigationPart(
             sprintf(
-                'alliance.php?SHOW_BOARD=1&bid=%d',
+                'alliance.php?SHOW_BOARD=1&boardid=%d',
                 $boardId,
             ),
             $board->getName()

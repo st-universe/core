@@ -9,6 +9,8 @@ use DI\Definition\ArrayDefinition;
 use DI\Definition\Definition;
 use DI\Definition\FactoryDefinition;
 use DI\Definition\Source\MutableDefinitionSource;
+use DI\DependencyException;
+use DI\NotFoundException;
 use DI\Proxy\ProxyFactory;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -26,6 +28,9 @@ class StuContainer extends Container
     /** @var Collection<string, Collection<int|string, mixed>> */
     private Collection $services;
 
+    /** @var Collection<string, Object> */
+    private Collection $additionalServices;
+
     /**
      * @param ContainerInterface $wrapperContainer If the container is wrapped by another container.
      */
@@ -38,6 +43,26 @@ class StuContainer extends Container
 
         $this->definitionSource = $definitions;
         $this->services = new ArrayCollection();
+        $this->additionalServices = new ArrayCollection();
+    }
+
+    /**
+     * Returns an entry of the container by its name.
+     *
+     * @template T
+     * @param string|class-string<T> $id Entry name or a class name.
+     *
+     * @return mixed|T
+     * @throws DependencyException Error while resolving the entry.
+     * @throws NotFoundException No entry found for the given name.
+     */
+    public function get(string $id): mixed
+    {
+        $service = $this->additionalServices->get($id);
+
+        return $service === null
+            ? parent::get($id)
+            : $service;
     }
 
     /**
@@ -54,6 +79,13 @@ class StuContainer extends Container
         }
 
         return $services;
+    }
+
+    public function setAdditionalService(string $id, Object $service): StuContainer
+    {
+        $this->additionalServices->set($id, $service);
+
+        return $this;
     }
 
     /**
