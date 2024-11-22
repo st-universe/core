@@ -26,8 +26,8 @@ final class VersionTestShipSystem extends AbstractMigration
                        (21, 42, 4, 11902, 100, 1, NULL, NULL),
                        (22, 42, 5, 10702, 100, 1, NULL, NULL),
                        (24, 42, 9, NULL, 100, 1, NULL, NULL),
-                       (25, 42, 10, 10912, 100, 1, NULL, \'{"wd":57,"maxwd":58,"split":100,"autoCarryOver":false}\'),
-                       (18, 42, 1, 10302, 100, 1, NULL, \'{"eps":107,"maxEps":108,"maxBattery":36,"battery":36,"batteryCooldown":0,"reloadBattery":false}\'),
+                       (25, 42, 10, 10912, 100, 1, NULL, \'{"wd":57,"maxwd":58,"split":100,"autoCarryOver":0}\'),
+                       (18, 42, 1, 10302, 100, 1, NULL, \'{"eps":107,"maxEps":108,"maxBattery":36,"battery":36,"batteryCooldown":0,"reloadBattery":0}\'),
                        (23, 42, 8, 10602, 100, 2, NULL, NULL);
         ');
     }

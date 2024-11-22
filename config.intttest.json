@@ -4,8 +4,13 @@
     "sqliteDsn": "sqlite:///inttest.sqlite"
   },
   "game": {
+    "webroot": "src/Public",
+    "temp_dir": "tmp",
     "map": {
       "encryptionKey": "kIWEuwnenWUIunwueww7whw3huuhweuh"
+    },
+    "registration": {
+      "enabled": true
     },
     "admins": [
       102

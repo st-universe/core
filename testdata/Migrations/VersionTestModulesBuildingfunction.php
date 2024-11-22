@@ -7,17 +7,15 @@ namespace Stu\Testdata;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class VersionTestBuildingFunctions extends AbstractMigration
+final class VersionTestModulesBuildingfunction extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'Adds building functions.';
+        return 'Adds a module building function.';
     }
 
     public function up(Schema $schema): void
     {
-        $this->addSql('INSERT INTO stu_buildings_functions (id, buildings_id, function)
-                VALUES (87, 424242, 10);
-        ');
+        $this->addSql('INSERT INTO stu_modules_buildingfunction (id, module_id,buildingfunction) VALUES (1, 10101,10);');
     }
 }
