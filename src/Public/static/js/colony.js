@@ -163,7 +163,7 @@ function buildOnField(action, fieldId, buildingId) {
 		bid = selectedbuilding;
 	}
 
-	performActionAndUpdateResult(action, `fid=${fieldId}&boardid=${bid}`);
+	performActionAndUpdateResult(action, `fid=${fieldId}&buildingid=${bid}`);
 }
 
 function terraformOnField(fieldId, terraformId) {
