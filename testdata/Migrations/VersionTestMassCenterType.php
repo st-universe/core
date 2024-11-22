@@ -16,7 +16,7 @@ final class VersionTestMassCenterType extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('INSERT INTO stu_layer (id, first_field_type_id, description, size)
+        $this->addSql('INSERT INTO stu_mass_center_type (id, first_field_type_id, description, size)
                 VALUES (1060, 106001, \'Roter Zwerg\', 4);
         ');
     }
