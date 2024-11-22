@@ -14,12 +14,12 @@ final class ManualColonyTickRequest implements ManualColonyTickRequestInterface
     #[Override]
     public function getColonyId(): ?int
     {
-        return $this->queryParameter('colonyid')->int()->defaultsTo(null);
+        return $this->parameter('colonyid')->int()->defaultsTo(null);
     }
 
     #[Override]
     public function getGroupId(): ?int
     {
-        return $this->queryParameter('groupid')->int()->defaultsTo(null);
+        return $this->parameter('groupid')->int()->defaultsTo(null);
     }
 }

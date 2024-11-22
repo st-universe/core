@@ -1,0 +1,4183 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:stu="stu">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="theme-color" content="#121220">
+    <script src="/static/js/prototype.js"></script>
+    <script src="/static/js/scriptaculous/scriptaculous.js"></script>
+    <script src="/static/js/admin.js"></script>
+    <script src="/static/js/starmap.js"></script>
+    <script src="/static/js/default.js"></script>
+    <title>System Stempor'Arr editieren</title>
+    <script>
+        var gfx_path = '/assets';
+    </script>
+    <script src="/static/js/overlib.js"></script>
+    <script src="/static/js/drag.js"></script>
+    <script src="/static/js/overlib_exclusive.js"></script>
+    <link rel="STYLESHEET" type="text/css" href="/static/css/schwarz.css">
+    <link rel="STYLESHEET" type="text/css" href="/static/css/stu.css">
+    <link rel="shortcut icon" href="/assets/favicon.ico">
+
+
+</head>
+<body onload="startUp();">
+    <div id="overDiv">...</div>
+    <div class="container">
+        <div class="header">
+            <div id="navlet_user">
+                <div class="header_box header_box_user border_box action" onclick="goToUrl('/maindesk.php'); return false;">
+    <div style="margin: 5px">
+        <div class="user_box_grid">
+            <div class="user_box_avatar" onclick="event.stopPropagation();">
+                                <div class="userAvatar">
+    <a href="/userprofile.php?uid=101">
+                <img src="/assets/rassen//1kn.png" title="Siedler 101">
+            </a>
+</div>
+
+            </div>
+            <div class="user_box_avatar_mobile">
+                                <div class="userAvatar">
+    <a href="/userprofile.php?uid=101">
+                <img src="/assets/rassen//1kn.png" title="Siedler 101">
+            </a>
+</div>
+
+            </div>
+            <div class="user_box_details">
+                <div class="userBoxDetailName">
+                    Siedler 101
+                </div>
+                <span>ID:</span> 101<span>,
+                    Prestige:</span> <br>
+
+                <a href="javascript:void(0);" onclick="event.stopPropagation(); openNotes()" title="Notizzettel &ouml;ffnen" onmouseover="cp('headerNotiz','buttons/notiz2')" onmouseout="cp('headerNotiz','buttons/notiz1')">
+                    <img src="/assets/buttons/notiz1.png" name="headerNotiz">
+                </a>
+                <a href="javascript:void(0);" onclick="event.stopPropagation(); switchInnerContent('WRITE_PM', 'Neue private Nachricht', null, '/pm.php');" onmouseover="cp('writePm','buttons/msg2')" onmouseout="cp('writePm','buttons/msg1')">
+                    <img src="/assets/buttons/msg1.png" name="writePm" title="Neue Nachricht schreiben">
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+            </div>
+            <div id="navlet_pm">
+                <div class="header_box header_box_pm border_box">
+    </div>
+            </div>
+            <div id="navlet_research">
+                            </div>
+            <div id="navlet_colonies">
+                
+<div class="header_box header_box_col border_box">
+    </div>
+            </div>
+            <div class="header_box header_box_logout border_box action" onclick="goToUrl('game.php?B_LOGOUT=1')" onmouseover="cp('header_menu_logout','navigation/menu_logout1', 'png')" onmouseout="cp('header_menu_logout','navigation/menu_logout0', 'png')">
+                <div>
+                    <img style="width: 40px; height: 40px;" id="header_menu_logout" src="/assets/navigation/menu_logout0.png" title="Logout">
+                    <div style="margin-top: 5px">Logout</div>
+                </div>
+            </div>
+                        <div class="header_box header_box_help border_box action" onclick="openNewTab('https://wiki.change.me')" onmouseover="cp('header_menu_docu','navigation/menu_doku1', 'png')" onmouseout="cp('header_menu_docu','navigation/menu_doku0', 'png')">
+                <div>
+                    <img style="width: 40px; height: 40px;" id="header_menu_docu" src="/assets/navigation/menu_doku0.png" title="Wiki">
+                    <div style="margin-top: 5px">Wiki</div>
+                </div>
+            </div>
+                                    <div class="header_box header_box_help border_box action" onclick="openNewTab('https://board.change.me')" onmouseover="cp('header_menu_board','navigation/menu_scripts1', 'png')" onmouseout="cp('header_menu_board','navigation/menu_scripts0', 'png')">
+                <div>
+                    <img style="width: 40px; height: 40px;" id="header_menu_board" src="/assets/navigation/menu_scripts0.png" title="Forum">
+                    <div style="margin-top: 5px">Forum</div>
+                </div>
+            </div>
+                        <div class="header_box header_box_settings border_box action" onclick="goToUrl('options.php')" onmouseover="cp('header_menu_settings','navigation/menu_option1', 'png')" onmouseout="cp('header_menu_settings','navigation/menu_option0', 'png')">
+                <div>
+                    <img style="width: 40px; height: 40px;" id="header_menu_settings" src="/assets/navigation/menu_option0.png" title="Einstellungen">
+                    <div style="margin-top: 5px">Einstellungen</div>
+                </div>
+            </div>
+            <div class="headerBottom"> </div>
+        </div>
+        <div style="margin-top: 80px;">
+            <div class="sidebar">
+                <div style="width: 100%; padding-left: 12px; padding-right: 10px">
+                                        <div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/admin/?SHOW_PLAYER_LIST=1'; }" onmouseover="cp('nav_item_ally','navigation/menu_ally1', 'png')" onmouseout="cp('nav_item_ally','navigation/menu_ally0', 'png')">
+    <a class="navitem_link" href="/admin/?SHOW_PLAYER_LIST=1">
+        <img class="navitem_img" src="/assets/navigation/menu_ally0.png" id="nav_item_ally" title="Spielerliste">
+        <div class="navitem_title">Spielerliste</div>
+    </a>
+</div>
+
+<div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/admin/?SHOW_MASS_MAIL=1'; }" onmouseover="cp('nav_item_msg','navigation/menu_msg1', 'png')" onmouseout="cp('nav_item_msg','navigation/menu_msg0', 'png')">
+    <a class="navitem_link" href="/admin/?SHOW_MASS_MAIL=1">
+        <img class="navitem_img" src="/assets/navigation/menu_msg0.png" id="nav_item_msg" title="Nachrichten">
+        <div class="navitem_title">Nachrichten</div>
+    </a>
+</div>
+
+<div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/admin/?SHOW_MAP_EDITOR=1'; }" onmouseover="cp('nav_item_map','navigation/menu_map1', 'png')" onmouseout="cp('nav_item_map','navigation/menu_map0', 'png')">
+    <a class="navitem_link" href="/admin/?SHOW_MAP_EDITOR=1">
+        <img class="navitem_img" src="/assets/navigation/menu_map0.png" id="nav_item_map" title="Karteneditor">
+        <div class="navitem_title">Karteneditor</div>
+    </a>
+</div>
+
+<div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/admin/?SHOW_COLONY_SANDBOX=1'; }" onmouseover="cp('nav_item_sandbox','navigation/menu_sandbox1', 'png')" onmouseout="cp('nav_item_sandbox','navigation/menu_sandbox0', 'png')">
+    <a class="navitem_link" href="/admin/?SHOW_COLONY_SANDBOX=1">
+        <img class="navitem_img" src="/assets/navigation/menu_sandbox0.png" id="nav_item_sandbox" title="Kolonie-Sandbox">
+        <div class="navitem_title">Kolonie-Sandbox</div>
+    </a>
+</div>
+
+<div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/admin/?SHOW_TICKS=1'; }" onmouseover="cp('nav_item_ticks','navigation/menu_ticks1', 'png')" onmouseout="cp('nav_item_ticks','navigation/menu_ticks0', 'png')">
+    <a class="navitem_link" href="/admin/?SHOW_TICKS=1">
+        <img class="navitem_img" src="/assets/navigation/menu_ticks0.png" id="nav_item_ticks" title="Ticks">
+        <div class="navitem_title">Ticks</div>
+    </a>
+</div>
+
+<div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/admin/?SHOW_SCRIPTS=1'; }" onmouseover="cp('nav_item_scripts','navigation/menu_scripts1', 'png')" onmouseout="cp('nav_item_scripts','navigation/menu_scripts0', 'png')">
+    <a class="navitem_link" href="/admin/?SHOW_SCRIPTS=1">
+        <img class="navitem_img" src="/assets/navigation/menu_scripts0.png" id="nav_item_scripts" title="Skripte">
+        <div class="navitem_title">Skripte</div>
+    </a>
+</div>
+
+
+                    <div id="navlet_servertime">
+                        <div class="border_box navigation_item_servertime">
+    <img title="Serverzeit" style="width: 15px; height: 15px;" src="/assets/buttons/time.png">
+    <span id="servertime" style="display: none;">Nov, 21 2024 14:30:45</span>
+    <span>Runde: <br>
+        <span>Version: <a href="https://board.change.me/viewforum.php?f=12"></a></span><br>
+</span>
+</div>
+                    </div>
+                </div>
+            </div>
+            <div id="innerContent" class="innerContent">
+                <div class="box">
+    <div class="box_title" style="text-align: left">/
+                <a href="/admin/?SHOW_MAP_EDITOR=1&amp;layerid=2">
+            Karteneditor
+        </a>
+                <span> / </span>
+                        <a href="/admin/?SHOW_SYSTEM=1&amp;systemid=252">
+            System Stempor'Arr editieren
+        </a>
+                    </div>
+</div>
+<br>
+<script>
+            registerSystemEditorNavKeys(0, 252, 0);
+        </script>
+<div id="result" style="display: none;">..</div>
+<div style="float: left">
+	<table class="use">
+		<tr>
+			<th>x|y</th>
+						<th>1</th>
+						<th>2</th>
+						<th>3</th>
+						<th>4</th>
+						<th>5</th>
+						<th>6</th>
+						<th>7</th>
+						<th>8</th>
+						<th>9</th>
+						<th>10</th>
+						<th>11</th>
+						<th>12</th>
+						<th>13</th>
+						<th>14</th>
+						<th>15</th>
+						<th>16</th>
+						<th>17</th>
+						<th>18</th>
+						<th>19</th>
+						<th>20</th>
+						<th>21</th>
+						<th>22</th>
+					</tr>
+				<tr>
+			<th>1</th>
+						<td onclick="openSystemFieldSelector(1, 1, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(2, 1, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(3, 1, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(4, 1, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(5, 1, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(6, 1, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(7, 1, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(8, 1, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(9, 1, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(10, 1, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(11, 1, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(12, 1, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(13, 1, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(14, 1, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(15, 1, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(16, 1, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(17, 1, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(18, 1, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(19, 1, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(20, 1, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(21, 1, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(22, 1, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+					</tr>
+				<tr>
+			<th>2</th>
+						<td onclick="openSystemFieldSelector(1, 2, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(2, 2, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(3, 2, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(4, 2, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(5, 2, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(6, 2, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(7, 2, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(8, 2, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(9, 2, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(10, 2, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(11, 2, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(12, 2, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(13, 2, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(14, 2, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(15, 2, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(16, 2, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(17, 2, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(18, 2, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(19, 2, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(20, 2, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(21, 2, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(22, 2, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+					</tr>
+				<tr>
+			<th>3</th>
+						<td onclick="openSystemFieldSelector(1, 3, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(2, 3, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(3, 3, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(4, 3, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(5, 3, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(6, 3, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(7, 3, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(8, 3, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(9, 3, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(10, 3, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(11, 3, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(12, 3, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(13, 3, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(14, 3, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(15, 3, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(16, 3, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(17, 3, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(18, 3, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(19, 3, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/401.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(20, 3, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(21, 3, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(22, 3, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+					</tr>
+				<tr>
+			<th>4</th>
+						<td onclick="openSystemFieldSelector(1, 4, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(2, 4, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(3, 4, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(4, 4, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(5, 4, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(6, 4, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(7, 4, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(8, 4, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(9, 4, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(10, 4, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(11, 4, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(12, 4, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(13, 4, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(14, 4, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(15, 4, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(16, 4, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(17, 4, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(18, 4, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(19, 4, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(20, 4, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/431.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(21, 4, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(22, 4, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+					</tr>
+				<tr>
+			<th>5</th>
+						<td onclick="openSystemFieldSelector(1, 5, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(2, 5, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(3, 5, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(4, 5, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(5, 5, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(6, 5, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(7, 5, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(8, 5, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/701.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(9, 5, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/702.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(10, 5, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/702.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(11, 5, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/702.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(12, 5, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(13, 5, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(14, 5, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(15, 5, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(16, 5, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(17, 5, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(18, 5, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(19, 5, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/221.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(20, 5, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(21, 5, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(22, 5, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+					</tr>
+				<tr>
+			<th>6</th>
+						<td onclick="openSystemFieldSelector(1, 6, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(2, 6, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(3, 6, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(4, 6, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/415.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(5, 6, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(6, 6, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(7, 6, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/703.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(8, 6, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/702.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(9, 6, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/701.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(10, 6, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(11, 6, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/405.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(12, 6, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(13, 6, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(14, 6, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(15, 6, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(16, 6, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(17, 6, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(18, 6, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(19, 6, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(20, 6, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(21, 6, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(22, 6, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+					</tr>
+				<tr>
+			<th>7</th>
+						<td onclick="openSystemFieldSelector(1, 7, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(2, 7, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(3, 7, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(4, 7, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(5, 7, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(6, 7, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/702.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(7, 7, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/701.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(8, 7, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(9, 7, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(10, 7, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(11, 7, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/203.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(12, 7, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/413.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(13, 7, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(14, 7, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(15, 7, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/703.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(16, 7, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/701.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(17, 7, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(18, 7, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(19, 7, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(20, 7, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(21, 7, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(22, 7, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+					</tr>
+				<tr>
+			<th>8</th>
+						<td onclick="openSystemFieldSelector(1, 8, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(2, 8, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(3, 8, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/223.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(4, 8, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(5, 8, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(6, 8, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/702.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(7, 8, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(8, 8, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(9, 8, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(10, 8, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(11, 8, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(12, 8, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(13, 8, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(14, 8, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(15, 8, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(16, 8, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/702.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(17, 8, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/703.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(18, 8, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(19, 8, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(20, 8, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(21, 8, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(22, 8, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+					</tr>
+				<tr>
+			<th>9</th>
+						<td onclick="openSystemFieldSelector(1, 9, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(2, 9, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(3, 9, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(4, 9, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(5, 9, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(6, 9, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(7, 9, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(8, 9, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(9, 9, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(10, 9, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(11, 9, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(12, 9, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(13, 9, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(14, 9, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(15, 9, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(16, 9, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/703.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(17, 9, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/701.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(18, 9, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(19, 9, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(20, 9, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(21, 9, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(22, 9, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+					</tr>
+				<tr>
+			<th>10</th>
+						<td onclick="openSystemFieldSelector(1, 10, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(2, 10, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(3, 10, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(4, 10, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(5, 10, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(6, 10, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(7, 10, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(8, 10, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(9, 10, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(10, 10, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/106001.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(11, 10, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/106002.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(12, 10, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/106003.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(13, 10, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/106004.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(14, 10, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(15, 10, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(16, 10, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(17, 10, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/703.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(18, 10, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(19, 10, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(20, 10, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(21, 10, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(22, 10, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+					</tr>
+				<tr>
+			<th>11</th>
+						<td onclick="openSystemFieldSelector(1, 11, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(2, 11, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(3, 11, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(4, 11, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(5, 11, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(6, 11, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(7, 11, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/201.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(8, 11, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(9, 11, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(10, 11, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/106005.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(11, 11, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/106006.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(12, 11, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/106007.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(13, 11, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/106008.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(14, 11, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(15, 11, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(16, 11, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(17, 11, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/703.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(18, 11, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(19, 11, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(20, 11, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(21, 11, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(22, 11, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+					</tr>
+				<tr>
+			<th>12</th>
+						<td onclick="openSystemFieldSelector(1, 12, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(2, 12, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(3, 12, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(4, 12, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(5, 12, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/701.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(6, 12, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(7, 12, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/405.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(8, 12, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(9, 12, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(10, 12, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/106009.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(11, 12, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/106010.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(12, 12, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/106011.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(13, 12, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/106012.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(14, 12, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(15, 12, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(16, 12, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(17, 12, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/702.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(18, 12, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(19, 12, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(20, 12, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(21, 12, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(22, 12, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+					</tr>
+				<tr>
+			<th>13</th>
+						<td onclick="openSystemFieldSelector(1, 13, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(2, 13, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(3, 13, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(4, 13, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(5, 13, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/701.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(6, 13, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/703.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(7, 13, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(8, 13, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(9, 13, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(10, 13, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/106013.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(11, 13, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/106014.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(12, 13, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/106015.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(13, 13, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/106016.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(14, 13, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(15, 13, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(16, 13, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/702.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(17, 13, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/702.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(18, 13, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(19, 13, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(20, 13, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(21, 13, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(22, 13, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+					</tr>
+				<tr>
+			<th>14</th>
+						<td onclick="openSystemFieldSelector(1, 14, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(2, 14, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(3, 14, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(4, 14, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(5, 14, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/702.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(6, 14, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/701.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(7, 14, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(8, 14, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(9, 14, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(10, 14, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(11, 14, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(12, 14, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(13, 14, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(14, 14, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(15, 14, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(16, 14, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/702.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(17, 14, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/703.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(18, 14, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(19, 14, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(20, 14, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(21, 14, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(22, 14, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+					</tr>
+				<tr>
+			<th>15</th>
+						<td onclick="openSystemFieldSelector(1, 15, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(2, 15, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(3, 15, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(4, 15, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(5, 15, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(6, 15, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/702.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(7, 15, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/701.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(8, 15, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(9, 15, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(10, 15, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(11, 15, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(12, 15, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(13, 15, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(14, 15, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(15, 15, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(16, 15, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(17, 15, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(18, 15, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(19, 15, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(20, 15, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(21, 15, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(22, 15, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+					</tr>
+				<tr>
+			<th>16</th>
+						<td onclick="openSystemFieldSelector(1, 16, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(2, 16, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(3, 16, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(4, 16, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(5, 16, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(6, 16, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(7, 16, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(8, 16, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(9, 16, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(10, 16, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(11, 16, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(12, 16, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(13, 16, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(14, 16, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(15, 16, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(16, 16, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(17, 16, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(18, 16, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(19, 16, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(20, 16, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(21, 16, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(22, 16, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+					</tr>
+				<tr>
+			<th>17</th>
+						<td onclick="openSystemFieldSelector(1, 17, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(2, 17, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(3, 17, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(4, 17, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(5, 17, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(6, 17, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(7, 17, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(8, 17, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(9, 17, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(10, 17, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(11, 17, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(12, 17, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(13, 17, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(14, 17, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(15, 17, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(16, 17, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(17, 17, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(18, 17, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(19, 17, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(20, 17, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(21, 17, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(22, 17, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+					</tr>
+				<tr>
+			<th>18</th>
+						<td onclick="openSystemFieldSelector(1, 18, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(2, 18, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(3, 18, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(4, 18, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(5, 18, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(6, 18, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(7, 18, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(8, 18, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(9, 18, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(10, 18, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(11, 18, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(12, 18, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(13, 18, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(14, 18, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(15, 18, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(16, 18, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/405.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(17, 18, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(18, 18, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(19, 18, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(20, 18, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(21, 18, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(22, 18, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+					</tr>
+				<tr>
+			<th>19</th>
+						<td onclick="openSystemFieldSelector(1, 19, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(2, 19, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(3, 19, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(4, 19, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(5, 19, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(6, 19, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(7, 19, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(8, 19, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(9, 19, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(10, 19, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(11, 19, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(12, 19, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(13, 19, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(14, 19, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/413.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(15, 19, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/211.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(16, 19, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(17, 19, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(18, 19, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(19, 19, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(20, 19, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(21, 19, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(22, 19, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+					</tr>
+				<tr>
+			<th>20</th>
+						<td onclick="openSystemFieldSelector(1, 20, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(2, 20, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(3, 20, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(4, 20, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(5, 20, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(6, 20, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(7, 20, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(8, 20, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/431.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(9, 20, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(10, 20, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(11, 20, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(12, 20, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(13, 20, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(14, 20, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(15, 20, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(16, 20, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(17, 20, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(18, 20, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(19, 20, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(20, 20, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(21, 20, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(22, 20, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+					</tr>
+				<tr>
+			<th>21</th>
+						<td onclick="openSystemFieldSelector(1, 21, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(2, 21, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(3, 21, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(4, 21, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(5, 21, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(6, 21, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(7, 21, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/231.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(8, 21, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(9, 21, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(10, 21, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(11, 21, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(12, 21, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(13, 21, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/215.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(14, 21, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(15, 21, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(16, 21, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(17, 21, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(18, 21, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(19, 21, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(20, 21, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(21, 21, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(22, 21, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+					</tr>
+				<tr>
+			<th>22</th>
+						<td onclick="openSystemFieldSelector(1, 22, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(2, 22, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(3, 22, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(4, 22, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(5, 22, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(6, 22, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(7, 22, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(8, 22, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(9, 22, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(10, 22, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(11, 22, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(12, 22, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(13, 22, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(14, 22, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(15, 22, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(16, 22, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(17, 22, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(18, 22, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(19, 22, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(20, 22, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(21, 22, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+						<td onclick="openSystemFieldSelector(22, 22, 252);" class="lss" id="_" style="background-size: cover;">
+				<div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img class="lssColoShield" src="/assets/map/1.png" style="z-index: 1;">
+					<div class="lssobj">
+						&nbsp;
+					</div>
+				</div>
+			</td>
+					</tr>
+			</table>
+</div>
+<div style="margin-left: 10px; float: left;">
+	<div>
+		<table class=" tcal">
+						<tr>
+				<td>System-Koordinaten</td>
+				<td style="text-align: right;">7|8</td>
+			</tr>
+						<tr>
+				<td>System-Typ</td>
+				<td style="text-align: right;">Roter Zwerg</td>
+			</tr>
+		</table>
+	</div>
+	<div style="margin-top: 10px;">
+		<table class="tcal">
+			<tr>
+				<td title="System zur&uuml;ck (Pfeiltaste links)">
+										x
+									</td>
+				<td style="text-align: center;">
+<a href="/admin/?REGENERATE_SYSTEM=1&amp;systemid=252"><img src="/assets/buttons/update1.png" title="System neu generieren (Pfeiltaste hoch)"></a>
+				</td>
+				<td title="System vor (Pfeiltaste rechts)" style="text-align: right;">
+										x
+									</td>
+			</tr>
+		</table>
+	</div>
+</div>
+            </div>
+            <div class="footer">
+                                Rendered in 4.203s - Memory usage: 42.77Mb
+            </div>
+        </div>
+    </div>
+    </body>
+
+</html>

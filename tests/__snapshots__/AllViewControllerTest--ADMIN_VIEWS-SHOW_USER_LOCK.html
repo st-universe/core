@@ -1,0 +1,51 @@
+<html lang="de">
+
+<head>
+  <script src="/static/js/default.js"></script>
+</head>
+
+<body>
+  <div class="ajaxwin">
+        <table class="tcal">
+      <tr>
+        <th onmouseover="switch_drag_on();" onmouseout="switch_drag_off();">User-Lock setzen</th>
+        <th style="width: 18px;">
+          <a href="javascript:void(0);" onclick="closeAjaxWindow();" onmouseover="cp('ajaxclose','buttons/x2');" onmouseout="cp('ajaxclose','buttons/x1');">
+            <img src="/assets/buttons/x1.png" name="ajaxclose" title="Fenster schlie&Atilde;&#159;en">
+          </a>
+        </th>
+      </tr>
+    </table>
+        <form action="/admin/index.php" method="post" name="userlockform" id="userlockform">
+    <input type="hidden" name="uid" value="42">
+    <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
+    <div style="float: left; width: 75%;">
+        <table class="tcal">
+            <tr>
+                <th>Anzahl Ticks</th>
+            </tr>
+            <tr>
+                <td>
+                                        <input type="text" style="width: 100%" name="ticks" value="">
+                                    </td>
+            </tr>
+            <tr>
+                <th>Begr&Atilde;&frac14;ndung</th>
+            </tr>
+            <tr>
+                <td>
+                                        <textarea name="reason" style="width: 100%; height: 300px;"></textarea>
+                                    </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" name="B_LOCK_USER" value="Spieler blockieren">
+                </td>
+            </tr>
+        </table>
+    </div>
+</form>
+      </div>
+  </body>
+
+</html>

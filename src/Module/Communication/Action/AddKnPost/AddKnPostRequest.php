@@ -14,20 +14,20 @@ final class AddKnPostRequest implements AddKnPostRequestInterface
     #[Override]
     public function getPostMark(): int
     {
-        return $this->queryParameter('markposting')->int()->defaultsTo(0);
+        return $this->parameter('markposting')->int()->defaultsTo(0);
     }
 
     #[Override]
     public function getPlotId(): int
     {
-        return $this->queryParameter('plotid')->int()->defaultsTo(0);
+        return $this->parameter('plotid')->int()->defaultsTo(0);
     }
 
     #[Override]
     public function getText(): string
     {
         return $this->tidyString(
-            $this->queryParameter('text')->string()->trim()->required()
+            $this->parameter('text')->string()->trim()->required()
         );
     }
 
@@ -35,13 +35,13 @@ final class AddKnPostRequest implements AddKnPostRequestInterface
     public function getTitle(): string
     {
         return $this->tidyString(
-            $this->queryParameter('title')->string()->trim()->required()
+            $this->parameter('title')->string()->trim()->required()
         );
     }
 
     #[Override]
     public function getCharacterIds(): string
     {
-        return $this->queryParameter('characterids')->string()->defaultsTo('');
+        return $this->parameter('characterids')->string()->defaultsTo('');
     }
 }

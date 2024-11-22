@@ -22,7 +22,7 @@ class RenameBoardRequestTest extends RequestTestCase
     public static function requestVarsDataProvider(): array
     {
         return [
-            ['getBoardId', 'bid', '666', 666],
+            ['getBoardId', 'boardid', '666', 666],
             ['getTitle', 'tname', '<foo>bar</foo>', 'bar'],
             ['getTitle', 'tname', null, ''],
         ];

@@ -14,6 +14,6 @@ final class ShowResetPasswordRequest implements ShowResetPasswordRequestInterfac
     #[Override]
     public function getToken(): string
     {
-        return $this->queryParameter('TOKEN')->string()->defaultsToIfEmpty('');
+        return $this->parameter('TOKEN')->string()->defaultsToIfEmpty('');
     }
 }

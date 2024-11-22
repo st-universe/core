@@ -1,0 +1,43 @@
+<html lang="de">
+
+<head>
+  <script src="/static/js/default.js"></script>
+</head>
+
+<body>
+  <div class="ajaxwin">
+        <table class="tcal">
+      <tr>
+        <th onmouseover="switch_drag_on();" onmouseout="switch_drag_off();">Thema bearbeiten</th>
+        <th style="width: 18px;">
+          <a href="javascript:void(0);" onclick="closeAjaxWindow();" onmouseover="cp('ajaxclose','buttons/x2');" onmouseout="cp('ajaxclose','buttons/x1');">
+            <img src="/assets/buttons/x1.png" name="ajaxclose" title="Fenster schlie&Atilde;&#159;en">
+          </a>
+        </th>
+      </tr>
+    </table>
+        <form action="alliance.php" method="post">
+    <input type="hidden" name="bid" value="1">
+    <input type="hidden" name="tid" value="1">
+    <table class="use" style="width: 200px">
+        <tr>
+            <td>
+                <a href="?B_DELETE_TOPIC=1&amp;topicid=1&amp;boardid=1&amp;sstr=MOCKED_SESSIONSTRING" class="linkbutton">Thema l&Atilde;&para;schen</a>
+                <br>
+                <br>
+                <br>
+                <input type="text" style="width: 100%" name="tname" value="Ally-Topic A"><br>
+                <br>
+                <input type="submit" value="Umbenennen" name="B_RENAME_TOPIC">
+                <br>
+                <br>
+                                <a class="linkbutton" href="?B_UNSET_STICKY=1&amp;SHOW_BOARD=1&amp;boardid=1&amp;topicid=1">Als
+                    Unwichtig markieren</a>
+                            </td>
+        </tr>
+    </table>
+</form>
+      </div>
+  </body>
+
+</html>

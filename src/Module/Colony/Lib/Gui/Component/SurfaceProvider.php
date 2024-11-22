@@ -10,9 +10,7 @@ use Stu\Module\Control\GameControllerInterface;
 
 final class SurfaceProvider implements GuiComponentProviderInterface
 {
-    public function __construct(private ColonyLibFactoryInterface $colonyLibFactory)
-    {
-    }
+    public function __construct(private ColonyLibFactoryInterface $colonyLibFactory) {}
 
     #[Override]
     public function setTemplateVariables(
@@ -21,7 +19,7 @@ final class SurfaceProvider implements GuiComponentProviderInterface
     ): void {
         $game->setTemplateVar(
             'SURFACE',
-            $this->colonyLibFactory->createColonySurface($host, request::getInt('bid') !== 0 ? request::getInt('bid') : null)
+            $this->colonyLibFactory->createColonySurface($host, request::getInt('buildingid') !== 0 ? request::getInt('buildingid') : null)
         );
     }
 }

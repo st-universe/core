@@ -14,6 +14,6 @@ final class DeleteContactsRequest implements DeleteContactsRequestInterface
     #[Override]
     public function getContactIds(): array
     {
-        return $this->queryParameter('deletion_mark')->commaSeparated()->int()->defaultsTo([]);
+        return $this->parameter('deletion_mark')->commaSeparated()->int()->defaultsTo([]);
     }
 }

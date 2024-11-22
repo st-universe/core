@@ -87,11 +87,11 @@ function updateRecipient() {
 	}
 }
 
-function showKnComments(postingId) {
+function showKnComments(knId) {
 	closeAjaxWindow();
 	elt = 'kncomments';
 	openWindow(elt, 1, 450);
-	ajax_update(elt, "comm.php?SHOW_KN_COMMENTS=1&posting=" + postingId);
+	ajax_update(elt, "comm.php?SHOW_KN_COMMENTS=1&knid=" + knId);
 }
 function postComment(postingId) {
 	comment = Form.Element.serialize('comment');

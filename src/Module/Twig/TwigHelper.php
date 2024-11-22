@@ -15,12 +15,14 @@ use Stu\Lib\ModuleScreen\GradientColorInterface;
 use Stu\Module\Colony\Lib\ColonyEpsProductionPreviewWrapper;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\ColonyProductionPreviewWrapper;
+use Stu\Module\Control\StuRandom;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Ship\Lib\Battle\FightLibInterface;
 use Stu\Module\Ship\Lib\ShipNfsItem;
 use Stu\Module\Template\TemplateHelperInterface;
 use Stu\Orm\Entity\AnomalyInterface;
 use Stu\Orm\Entity\BuildingInterface;
+use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Twig\Environment;
 use Twig\TwigFilter;
@@ -37,7 +39,8 @@ class TwigHelper
         private ShipCrewCalculatorInterface $shipCrewCalculator,
         private GradientColorInterface $gradientColor,
         private TemplateHelperInterface $templateHelper,
-        private StuTime $stuTime
+        private StuTime $stuTime,
+        private StuRandom $stuRandom
     ) {}
 
     public function registerGlobalVariables(): void
@@ -146,10 +149,16 @@ class TwigHelper
         $getViewFunction = new TwigFunction('getView', fn(string $value): ModuleViewEnum => ModuleViewEnum::from($value));
         $this->environment->addFunction($getViewFunction);
 
-        $getUniqIdFunction = new TwigFunction('getUniqId', fn(): string => uniqid());
+        $getUniqIdFunction = new TwigFunction('getUniqId', fn(): string => $this->stuRandom->uniqid());
         $this->environment->addFunction($getUniqIdFunction);
 
         $gradientColorFunction = new TwigFunction('gradientColor', fn(int $value, int $lowest, int $highest): string => $this->gradientColor->calculateGradientColor($value, $lowest, $highest));
         $this->environment->addFunction($gradientColorFunction);
+
+        $gradientColorFunction = new TwigFunction('stuDate', fn(string $format): string => $this->stuTime->date($format));
+        $this->environment->addFunction($gradientColorFunction);
+
+        $dayNightPrefixFunction = new TwigFunction('getDayNightPrefix', fn(PlanetFieldInterface $field): string => $field->getDayNightPrefix($this->stuTime->time()));
+        $this->environment->addFunction($dayNightPrefixFunction);
     }
 }

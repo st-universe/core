@@ -17,9 +17,6 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ShowMemberRumpInfo implements ViewControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string VIEW_IDENTIFIER = 'SHOW_MEMBER_RUMP_INFO';
 
     public function __construct(private AllianceActionManagerInterface $allianceActionManager, private UserRepositoryInterface $userRepository, private ShipRumpRepositoryInterface $shipRumpRepository, private Parser $bbcodeParser, private ShipRepositoryInterface $shipRepository, private ShipWrapperFactoryInterface $shipWrapperFactory) {}
@@ -29,8 +26,8 @@ final class ShowMemberRumpInfo implements ViewControllerInterface
     {
         $user = $game->getUser();
 
-        $memberId = request::getIntFatal('uid');
-        $rumpId = request::getIntFatal('rid');
+        $memberId = request::getIntFatal('userid');
+        $rumpId = request::getIntFatal('rumpid');
 
         $member = $this->userRepository->find($memberId);
         if ($member === null) {

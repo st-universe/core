@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:stu="stu">
+<body>
+<form action="" method="post">
+    <input type="hidden" name="id" value="42">
+    <input type="hidden" name="hosttype" value="1">
+    <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
+    
+<div class="box" style="width: 40vw;">
+    <input type="hidden" name="func" id="func" value="10">
+    <input type="hidden" id="colony-id" value="42">
+    <div class="box_title">Modulbaumen&Atilde;&frac14;</div>
+    
+    <div id="ship-rumps">
+        <select style="width:40%" id="rump-select" onchange="filterByRump(this.value);">
+            <option value="0">Alle R&Atilde;&frac14;mpfe</option>
+                        <option value="6501">Aerie</option>
+                    </select>
+        <select style="width:55%" id="buildplan-select" onchange="filterByBuildplan(this.value);">
+            <option value="0" selected>Alle Baupl&Atilde;&curren;ne</option>
+                                    <option style="display: none;" value="2324" data-rump-id="6501">Bauplan Aerie 19.11.2024 10:11
+            </option>
+                                </select>
+    </div>
+
+    <div id="module-container">
+                        <div id="module_tab_1" class="module_tab border_box " style="margin-top: 5px" onclick="toggleModuleType(1);">
+            <div class="module-header" style="display: flex; align-items: center; cursor: pointer;">
+                <img src="/assets/buttons/modul_screen_1.png" id="tab_image_mod_1" alt="H&Atilde;&frac14;lle">
+                <span> H&Atilde;&frac14;lle</span>
+            </div>
+
+            <div class="level-box" id="level-box-1" style="display: none; flex-wrap: wrap; gap: 10px; margin-left: 20px; margin-top: 10px;" onclick="event.stopPropagation();">
+                <span>Level:</span>
+                                <button id="level-button-1-1" type="button" class="level-button" onclick="toggleModuleLevel(1, 1, this);" style="cursor: pointer; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 16px;">1</button>
+                            </div>
+        </div>
+
+                <div id="module-level-1-1" class="module-level" style="display: none;">
+            <table class="tcal">
+                <tr>
+                    <th>Verf&Atilde;&frac14;gbare Module</th>
+                    <th class="responsive-hide">In Bau</th>
+                    <th class="responsive-hide">Lagernd</th>
+                    <th class="responsive-hide">Anzahl</th>
+                </tr>
+                                                <tr id="module_10101" data-module-type="1" data-module-level="1" class="modules type_1 level_1 rump_ buildplan_">
+                    <td>
+                        <div style="margin-bottom: 5px;">
+                            <img src="/assets/commodities/10101.png"> Monotanium-H&Atilde;&frac14;llenpanzerung (Klasse 1)
+                        </div>
+                        <div style="display: table-cell;">
+                            <img src="/assets/buttons/e_trans2.png" title="Energie">
+                            5
+                        </div>
+                                            </td>
+                    <td id="module_10101_action" class="responsive-hide" style="vertical-align: middle; text-align: center;">
+                                                <div>
+                            <div style="display: table-cell; vertical-align:middle;">
+                                <input type="text" size="2" name="cancel_module[10101]" id="module_10101_count" value="1">
+                            </div>
+                            <div style="display: table-cell; vertical-align:middle; padding-left: 4px;">
+                                <a href="javascript:void(0);" onclick="cancelModuleQueueEntries(10101);" onmouseover="cp('cancelModuleList10101','buttons/x2')" onmouseout="cp('cancelModuleList10101','buttons/x1')">
+                                    <img src="/assets/buttons/x1.png" name="cancelModuleList10101" title="Anzahl l&Atilde;&para;schen">
+                                </a>
+                            </div>
+                        </div>
+                                            </td>
+                    <td class="responsive-hide" style="vertical-align: middle; text-align: center;">
+                        0
+                    </td>
+                    <td class="responsive-hide" style="vertical-align: middle; text-align: center;">
+                        <input type="text" size="2" data-module-id="10101" onkeydown="event.key == 'Enter' &amp;&amp; $('producebutton').click()" oninput="setModuleInput(this);">
+                    </td>
+                </tr>
+                <tr class="responsive-show">
+                    <td colspan="3">
+                        <table class="tcal">
+                            <tr>
+                                <th>In Bau</th>
+                                <th>Lagernd</th>
+                                <th>Anzahl</th>
+                            </tr>
+                            <tr>
+                                <td id="module_10101_action" style="vertical-align: middle; text-align: center;">
+                                                                        <div>
+                                        <div style="display: table-cell; vertical-align:middle;">
+                                            <input type="text" size="2" name="cancel_module[10101]" id="module_10101_count" value="1">
+                                        </div>
+                                        <div style="display: table-cell; vertical-align:middle; padding-left: 4px;">
+                                            <a href="Javascript:cancelModuleQueueEntries(10101);" onmouseover="cp('cancelModuleList10101','buttons/x2')" onmouseout="cp('cancelModuleList10101','buttons/x1')">
+                                                <img src="/assets/buttons/x1.png" name="cancelModuleList10101" title="Anzahl l&Atilde;&para;schen">
+                                            </a>
+                                        </div>
+                                    </div>
+                                                                    </td>
+                                <td style="vertical-align: middle; text-align: center;">
+                                    0
+                                </td>
+                                <td style="vertical-align: middle; text-align: center;">
+                                    <input type="text" size="2" data-module-id="10101" onkeydown="event.key == 'Enter' &amp;&amp; $('producebutton').click()" oninput="setModuleInput(this);">
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                            </table>
+        </div>
+                    </div>
+
+    <div style="text-align: center; margin-top: 10px;" class="fabutton">
+        <a id="producebutton" href="javascript:void(0);" onclick="clearAjaxCallbacks(); startModuleProduction();" class="fabutton">Modulherstellung</a>
+    </div>
+
+</div>
+<script>
+            clearModuleInputs();
+        </script>
+<style>
+    .level-box button.active {
+        background-color: #d3d3d3;
+    }
+</style>
+</form>
+
+</body>
+</html>

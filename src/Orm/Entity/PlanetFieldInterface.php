@@ -66,7 +66,7 @@ interface PlanetFieldInterface
 
     public function setTerraforming(?TerraformingInterface $terraforming): PlanetFieldInterface;
 
-    public function getDayNightPrefix(): string;
+    public function getDayNightPrefix(int $timestamp): string;
 
     public function getBuildProgress(): int;
 

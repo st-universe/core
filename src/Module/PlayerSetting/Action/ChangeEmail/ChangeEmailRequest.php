@@ -14,6 +14,6 @@ final class ChangeEmailRequest implements ChangeEmailRequestInterface
     #[Override]
     public function getEmailAddress(): string
     {
-        return $this->queryParameter('email')->string()->defaultsToIfEmpty('');
+        return $this->parameter('email')->string()->defaultsToIfEmpty('');
     }
 }

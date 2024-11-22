@@ -2,5 +2,13 @@
   "db": {
     "useSqlite": true,
     "sqliteDsn": "sqlite:///inttest.sqlite"
+  },
+  "game": {
+    "map": {
+      "encryptionKey": "kIWEuwnenWUIunwueww7whw3huuhweuh"
+    },
+    "admins": [
+      102
+    ]
   }
 }

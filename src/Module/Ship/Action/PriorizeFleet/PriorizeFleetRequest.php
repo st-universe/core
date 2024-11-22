@@ -14,6 +14,6 @@ final class PriorizeFleetRequest implements PriorizeFleetRequestInterface
     #[Override]
     public function getFleetId(): int
     {
-        return $this->queryParameter('id')->int()->required();
+        return $this->parameter('id')->int()->required();
     }
 }

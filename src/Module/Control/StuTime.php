@@ -2,6 +2,8 @@
 
 namespace Stu\Module\Control;
 
+use DateTime;
+
 /**
  * This class adds the possibility to inject a timestamp generator
  */
@@ -12,6 +14,16 @@ class StuTime
     public function time(): int
     {
         return time();
+    }
+
+    public function date(string $format): string
+    {
+        return date($format);
+    }
+
+    public function dateTime(): DateTime
+    {
+        return new DateTime();
     }
 
     public function transformToStuDate(int $unixTimestamp): string

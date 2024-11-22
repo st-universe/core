@@ -14,7 +14,7 @@ final class EditContactCommentRequest implements EditContactCommentRequestInterf
     #[Override]
     public function getContactId(): int
     {
-        return $this->queryParameter('edit_contact')->int()->required();
+        return $this->parameter('edit_contact')->int()->required();
     }
 
     #[Override]

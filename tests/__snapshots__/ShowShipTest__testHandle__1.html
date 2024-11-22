@@ -44,26 +44,26 @@
         <div class="user_box_grid">
             <div class="user_box_avatar" onclick="event.stopPropagation();">
                                 <div class="userAvatar">
-    <a href="/userprofile.php?uid=1">
-                <img src="/assets/rassen//9kn.png" title="Niemand">
+    <a href="/userprofile.php?uid=101">
+                <img src="/assets/rassen//1kn.png" title="Siedler 101">
             </a>
 </div>
 
             </div>
             <div class="user_box_avatar_mobile">
                                 <div class="userAvatar">
-    <a href="/userprofile.php?uid=1">
-                <img src="/assets/rassen//9kn.png" title="Niemand">
+    <a href="/userprofile.php?uid=101">
+                <img src="/assets/rassen//1kn.png" title="Siedler 101">
             </a>
 </div>
 
             </div>
             <div class="user_box_details">
                 <div class="userBoxDetailName">
-                    Niemand
+                    Siedler 101
                 </div>
-                <span>ID:</span> 1<span>,
-                    Prestige:</span> 19<br>
+                <span>ID:</span> 101<span>,
+                    Prestige:</span> 0<br>
 
                 <a href="javascript:void(0);" onclick="event.stopPropagation(); openNotes()" title="Notizzettel &ouml;ffnen" onmouseover="cp('headerNotiz','buttons/notiz2')" onmouseout="cp('headerNotiz','buttons/notiz1')">
                     <img src="/assets/buttons/notiz1.png" name="headerNotiz">
@@ -78,37 +78,31 @@
             </div>
             <div id="navlet_pm">
                 <div class="header_box header_box_pm border_box">
-        <a href="pm.php?pmcat=57">
+        <a href="pm.php?pmcat=4778">
         <div style="width: 30px; height: 100%; margin: 7px 5px 7px 5px; text-align: center; float: left" class="action">
                                     <img src="/assets/buttons/pmnavlet_1_0.png" width="30" height="30" id="newpm1" title="Pers&ouml;nlich" onmouseover="cp(this.id,'buttons/pmnavlet_1_1', 'png')" onmouseout="cp(this.id,'buttons/pmnavlet_1_0', 'png')">
             <div style="margin-top: 5px">0</div>
                     </div>
     </a>
-        <a href="pm.php?pmcat=58">
+        <a href="pm.php?pmcat=4779">
         <div style="width: 30px; height: 100%; margin: 7px 5px 7px 5px; text-align: center; float: left" class="action">
                                     <img src="/assets/buttons/pmnavlet_2_0.png" width="30" height="30" id="newpm2" title="Schiffe" onmouseover="cp(this.id,'buttons/pmnavlet_2_1', 'png')" onmouseout="cp(this.id,'buttons/pmnavlet_2_0', 'png')">
             <div style="margin-top: 5px">0</div>
                     </div>
     </a>
-        <a href="pm.php?pmcat=1154">
-        <div style="width: 30px; height: 100%; margin: 7px 5px 7px 5px; text-align: center; float: left" class="action">
-                                    <img src="/assets/buttons/pmnavlet_7_0.png" width="30" height="30" id="newpm7" title="Stationen" onmouseover="cp(this.id,'buttons/pmnavlet_7_1', 'png')" onmouseout="cp(this.id,'buttons/pmnavlet_7_0', 'png')">
-            <div style="margin-top: 5px">0</div>
-                    </div>
-    </a>
-        <a href="pm.php?pmcat=59">
+        <a href="pm.php?pmcat=4780">
         <div style="width: 30px; height: 100%; margin: 7px 5px 7px 5px; text-align: center; float: left" class="action">
                                     <img src="/assets/buttons/pmnavlet_3_0.png" width="30" height="30" id="newpm3" title="Kolonien" onmouseover="cp(this.id,'buttons/pmnavlet_3_1', 'png')" onmouseout="cp(this.id,'buttons/pmnavlet_3_0', 'png')">
             <div style="margin-top: 5px">0</div>
                     </div>
     </a>
-        <a href="pm.php?pmcat=60">
+        <a href="pm.php?pmcat=4781">
         <div style="width: 30px; height: 100%; margin: 7px 5px 7px 5px; text-align: center; float: left" class="action">
                                     <img src="/assets/buttons/pmnavlet_4_0.png" width="30" height="30" id="newpm4" title="Handel" onmouseover="cp(this.id,'buttons/pmnavlet_4_1', 'png')" onmouseout="cp(this.id,'buttons/pmnavlet_4_0', 'png')">
             <div style="margin-top: 5px">0</div>
                     </div>
     </a>
-        <a href="pm.php?pmcat=1010">
+        <a href="pm.php?pmcat=4782">
         <div style="width: 30px; height: 100%; margin: 7px 5px 7px 5px; text-align: center; float: left" class="action">
                                     <img src="/assets/buttons/pmnavlet_5_0.png" width="30" height="30" id="newpm5" title="Systemmeldungen" onmouseover="cp(this.id,'buttons/pmnavlet_5_1', 'png')" onmouseout="cp(this.id,'buttons/pmnavlet_5_0', 'png')">
             <div style="margin-top: 5px">0</div>
@@ -117,11 +111,23 @@
     </div>
             </div>
             <div id="navlet_research">
-                            </div>
+                <div>
+        <div class="header_box header_box_research border_box action" onmouseover="cp('header_menu_research','navigation/menu_forsch1', 'png')" onmouseout="cp('header_menu_research','navigation/menu_forsch0', 'png')">
+    <a href="/research.php" onclick="if(event.button === 0) { switchInnerContent('', '', '', '/research.php'); event.preventDefault(); }" style="display: block; text-decoration: none; color: inherit;">
+        <img style="width: 40px; height: 40px;" src="/assets/navigation/menu_forsch0.png" id="header_menu_research" title="Forschung">
+        <div style="margin-top: 5px">Keine Forschung</div>
+    </a>
+</div>
+    </div>
+            </div>
             <div id="navlet_colonies">
                 
 <div class="header_box header_box_col border_box">
-    </div>
+                    
+        <a href="/colony.php?id=42" onclick="if(event.button === 0) { switchInnerContent('SHOW_COLONY', 'Stempor&amp;#039;Arr 4', 'id=42', '/colony.php'); event.preventDefault(); }" style="margin: 7px 5px 7px 5px; text-align: center; float: left" class="action" onmouseover="return overlib('\u003Ctable\u0020class\u003D\u0027tcal\u0027\u003E\u003Ctr\u003E\u003Cth\u003EKolonieinformationen\u003A\u0020Stempor\u0027Arr\u00204\u003C\/th\u003E\u003C\/tr\u003E\u003Ctr\u003E\u003Ctd\u003EKoordinaten\u003A\u00207\u007C11\u003Cbr\u003ESystem\u003A\u0020Stempor\u0027Arr\u002DSystem\u0020\u00287\u007C8\u0029\u003Cbr\u003EEPS\u003A\u002096\/96\u003Cbr\u003ELager\u003A\u0020700\/1000\u003C\/td\u003E\u003C\/tr\u003E\u003C\/table\u003E', CAPTION, '', CLOSETEXT, 'X', CLOSECOLOR, '#8897cf', TEXTCOLOR, '#000000', CELLPAD, 4);" onmouseout="return nd();">
+        <img src="/assets/planets/201.png">
+    </a>
+        </div>
             </div>
             <div id="nagus">
             </div>
@@ -144,7 +150,7 @@
                 </div>
             </div>
                         <div class="header_box header_box_settings border_box action" onmouseover="cp('header_menu_settings','navigation/menu_option1', 'png')" onmouseout="cp('header_menu_settings','navigation/menu_option0', 'png')">
-                <a href="options.php" onclick="if(event.button === 0) { switchInnerContent('', '', '', '/options.php'); event.preventDefault(); }; event.preventDefault(); }" style="display: block; text-decoration: none; color: inherit;">
+                <a href="options.php" onclick="if(event.button === 0) { switchInnerContent('', '', '', '/options.php'); event.preventDefault(); }" style="display: block; text-decoration: none; color: inherit;">
                     <div>
                         <img style="width: 40px; height: 40px;" id="header_menu_settings" src="/assets/navigation/menu_option0.png" title="Einstellungen">
                         <div style="margin-top: 5px">Einstellungen</div>
@@ -167,13 +173,6 @@
 <div class="navigation_item border_box" onmouseover="cp('nav_item_ships','navigation/menu_ships1', 'png')" onmouseout="cp('nav_item_ships','navigation/menu_ships0', 'png')">
         <img class="navitem_img" src="/assets/navigation/menu_ships0.png" id="nav_item_ships" title="Schiffe">
         <div class="navitem_title">Schiffe</div>
-</div>
-</a>
-
-<a class="navitem_link" href="station.php" onclick="if(event.button === 0) { switchView('station', 'Stationen', 'station.php'); event.preventDefault(); }">
-<div class="navigation_item border_box" onmouseover="cp('nav_item_station','navigation/menu_station1', 'png')" onmouseout="cp('nav_item_station','navigation/menu_station0', 'png')">
-        <img class="navitem_img" src="/assets/navigation/menu_station0.png" id="nav_item_station" title="Stationen">
-        <div class="navitem_title">Stationen</div>
 </div>
 </a>
 
@@ -233,17 +232,11 @@
 </div>
 </a>
 
-<div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/npc'; }" onmouseover="cp('nav_item_ticks','navigation/menu_ticks1', 'png')" onmouseout="cp('nav_item_ticks','navigation/menu_ticks0', 'png')">
-    <a class="navitem_link" href="/npc">
-        <img class="navitem_img" src="/assets/navigation/menu_ticks0.png" id="nav_item_ticks" title="'NPC'">
-        <div class="navitem_title">NPC</div>
-    </a>
-</div>
 
                     <div id="navlet_servertime">
                         <div class="border_box navigation_item_servertime">
     <img title="Serverzeit" style="width: 15px; height: 15px;" src="/assets/buttons/time.png">
-    <span id="servertime" style="display: none;">Nov, 20 2024 19:40:17</span>
+    <span id="servertime" style="display: none;">Nov, 21 2024 14:30:45</span>
     <span>Runde: 1<br>
         <span>Version: <a href="https://board.change.me/viewforum.php?f=12">dev</a></span><br>
 </span>
@@ -258,20 +251,20 @@
             Schiffe
         </a>
                 <span> / </span>
-                        <a href="?SHOW_SHIP=1&amp;id=8">
+                        <a href="?SHOW_SHIP=1&amp;id=42">
             Aerie
         </a>
                     </div>
 </div>
 <br>
 <script>
-            setShipIdAndSstr(8, '43a3f7ff3af6b59fd2ce0c282d6e9e')
+            setShipIdAndSstr(42, 'MOCKED_SESSIONSTRING')
         </script>
 <div id="result" style="display: none;">..</div>
 
 <form action="ship.php" method="post" name="shipform" id="shipform" onkeydown="return event.key != 'Enter';">
-	<input type="hidden" name="id" value="8">
-	<input type="hidden" name="sstr" value="bc02db043a6f9189eafb6aef5dddae">
+	<input type="hidden" name="id" value="42">
+	<input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
 	<table class="tcal">
 		<tr>
 			<th style="text-align: center;">Typ</th>
@@ -294,7 +287,7 @@
 </th>
 			<th style="text-align: center;">Name</th>
 			<td rowspan="3" style="text-align: center;">
-								<a href="javascript:void(0);" onclick="showSelfdestructWindow(8);" onmouseover="cp('selfdestruct','buttons/selfdes2');" onmouseout="cp('selfdestruct','buttons/selfdes1');">
+								<a href="javascript:void(0);" onclick="showSelfdestructWindow(42);" onmouseover="cp('selfdestruct','buttons/selfdes2');" onmouseout="cp('selfdestruct','buttons/selfdes1');">
 					<img src="/assets/buttons/selfdes1.png" name="selfdestruct" title="Selbstzerst&ouml;rung">
 				</a>
 											</td>
@@ -310,30 +303,30 @@
 				<a href="javascript:void(0);" onclick="showALvlWindow();"><img src="/assets/buttons/alert1.png" title="Alarmstufe" name="setalvl"></a>
 			</td>
 			<td style="text-align: center;">
-				5|5
+				7|8
 			</td>
 			<td style="text-align: center;">
 				819/819
 			</td>
 			<td style="text-align: center;">
-								<span>0/819</span>
+								<span>819/819</span>
 								(+82)
 			</td>
 						<td style="text-align: center;">
-								0/60
+								57/58
 				<span id="effectiveWarpdrive"></span>
 							</td>
 <td style="text-align: center;">
-								0/144
+								107/108
 								<span id="effectiveEps"></span>
-												(<span class="neg">0</span>/<span class="neg" id="reactorUsage">0</span>)
+												(<span class="neg">2</span>/<span class="neg" id="reactorUsage">0</span>)
 							</td>
 			<td style="text-align: center;">
-								<span>0</span>
+								<span>36</span>
 							</td>
 			<td style="text-align: center;">
-												<span style="">0</span>
-				(0,18)
+												<span style="">11</span>
+				(11,18)
 			</td>
 			<td style="text-align: center;">
 				<input type="text" name="shipname" size="25" value="Aerie" onkeydown="event.key == 'Enter' &amp;&amp;  $('changeshipnamebutton').click()">
@@ -342,20 +335,23 @@
 		</tr>
 		<tr>
 			<td colspan="2">
-				<a href="javascript:void(0);" onclick="switchInnerContent('SHOW_SHIP', 'Aerie', 'id=8', 'ship.php');
-updateSelectedShipId('8');" onmouseover="cp('uship','buttons/update1');" onmouseout="cp('uship','buttons/update0');">
+				<a href="javascript:void(0);" onclick="switchInnerContent('SHOW_SHIP', 'Aerie', 'id=42', 'ship.php');
+updateSelectedShipId('42');" onmouseover="cp('uship','buttons/update1');" onmouseout="cp('uship','buttons/update0');">
 					<img src="/assets/buttons/update0.png" title="Aktualisieren" name="uship">
 				</a>
-				<a href="javascript:void(0);" onclick="showShipDetails(8);" onmouseover="cp('shinfo','buttons/info2');" onmouseout="cp('shinfo','buttons/info1');">
+				<a href="javascript:void(0);" onclick="showShipDetails(42);" onmouseover="cp('shinfo','buttons/info2');" onmouseout="cp('shinfo','buttons/info1');">
 					<img src="/assets/buttons/info1.png" title="Schiffsinformationen anzeigen" name="shinfo">
 				</a>
-				<a href="javascript:void(0);" onclick="showShipCommunication(8);" onmouseover="cp('shipcom','buttons/msg2');" onmouseout="cp('shipcom','buttons/msg1');">
+				<a href="javascript:void(0);" onclick="showShipCommunication(42);" onmouseover="cp('shipcom','buttons/msg2');" onmouseout="cp('shipcom','buttons/msg1');">
 					<img src="/assets/buttons/msg1.png" title="Kommunikation" name="shipcom">
 				</a>
-								<a href="?B_SET_LSS_BORDER=1&amp;id=8&amp;sstr=bc02db043a6f9189eafb6aef5dddae" onmouseover="cp('actlss','buttons/lss_button1');" onmouseout="cp('actlss','buttons/lss_button3');">
+								<a href="?B_SET_LSS_BORDER=1&amp;id=42&amp;sstr=MOCKED_SESSIONSTRING" onmouseover="cp('actlss','buttons/lss_button1');" onmouseout="cp('actlss','buttons/lss_button3');">
 					<img src="/assets/buttons/lss_button3.png" title="Territoriale Grenzansicht aktivieren" name="actlss">
 				</a>
-																<a href="?B_SHUTDOWN=1&amp;id=8&amp;sstr=bc02db043a6f9189eafb6aef5dddae" onmouseover="cp('shutdown','buttons/shutdown2');" onmouseout="cp('shutdown','buttons/shutdown1');">
+																<a href="javascript:void(0);" onclick="openStarMap(this,42);" onmouseover="cp('shimap','buttons/map2');" onmouseout="cp('shimap','buttons/map1');">
+					<img src="/assets/buttons/map1.png" title="Karte anzeigen" name="shimap">
+				</a>
+								<a href="?B_SHUTDOWN=1&amp;id=42&amp;sstr=MOCKED_SESSIONSTRING" onmouseover="cp('shutdown','buttons/shutdown2');" onmouseout="cp('shutdown','buttons/shutdown1');">
 					<img src="/assets/buttons/shutdown1.png" title="Energieverbrauch minimieren" name="shutdown">
 				</a>
 							</td>
@@ -363,59 +359,134 @@ updateSelectedShipId('8');" onmouseover="cp('uship','buttons/update1');" onmouse
 												<img style="margin-right: 5px;" src="/assets/commodities/10102.png" title="Monotanium-H&uuml;llenpanzerung (Klasse 2)">
 								<img style="margin-right: 5px;" src="/assets/commodities/10202.png" title="Elektromagnetische-Schilde (Klasse 2)">
 								<img style="margin-right: 5px;" src="/assets/commodities/11902.png" title="Computer (Klasse 2)">
-								<img style="margin-right: 5px;" src="/assets/commodities/10402.png" title="Impulsantrieb (Klasse 2)">
-								<img style="margin-right: 5px;" src="/assets/commodities/10603.png" title="Sensorenphalanx (Klasse 3)">
-								<img style="margin-right: 5px;" src="/assets/commodities/10903.png" title="Warpantrieb (Klasse 3)">
-								<img style="margin-right: 5px;" src="/assets/commodities/10504.png" title="Warpkern (Klasse 4)">
-								<img style="margin-right: 5px;" src="/assets/commodities/10304.png" title="EPS-Gitter (Klasse 4)">
+								<img style="margin-right: 5px;" src="/assets/commodities/10403.png" title="Impulsantrieb (Klasse 3)">
+								<img style="margin-right: 5px;" src="/assets/commodities/10602.png" title="Sensorenphalanx (Klasse 2)">
+								<img style="margin-right: 5px;" src="/assets/commodities/10912.png" title="F&ouml;derations Warpantrieb (Klasse 2)">
+								<img style="margin-right: 5px;" src="/assets/commodities/10502.png" title="Warpkern (Klasse 2)">
+								<img style="margin-right: 5px;" src="/assets/commodities/10302.png" title="EPS-Gitter (Klasse 2)">
 								<img style="margin-right: 5px;" src="/assets/commodities/10702.png" title="F&ouml;derations Phaser (Klasse 2)">
 											</td>
 			<td colspan="5">
-				<img title="Deflektor: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/16.png"><img title="Traktorstrahl: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/14.png"><img title="Lebenserhaltungssystem: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/13.png"><img title="Schilde: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/11.png"><img title="Energiesystem: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/1.png"><img title="Impulsantrieb: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/2.png"><img title="Warpkern: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/3.png"><img title="Computer: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/4.png"><img title="Energiewaffe: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/5.png"><img title="Langstreckensensoren: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/8.png"><img title="Nahbereichssensoren: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/9.png"><img title="Warpantrieb: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/10.png">			</td>
+				<img title="Energiesystem: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/1.png"><img title="Impulsantrieb: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/2.png"><img title="Warpkern: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/3.png"><img title="Computer: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/4.png"><img title="Energiewaffe: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/5.png"><img title="Langstreckensensoren: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/8.png"><img title="Nahbereichssensoren: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/9.png"><img title="Warpantrieb: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/10.png"><img title="Schilde: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/11.png"><img title="Lebenserhaltungssystem: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/13.png"><img title="Traktorstrahl: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/14.png"><img title="Deflektor: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/16.png">			</td>
 		</tr>
 	</table>
 	<br>
 	<table style="width: 100%;">
 				<tr>
 			<td style="width: 33%; vertical-align: top;">
-				<table class="tcal">
+				
+
+<div style="float:left; padding-bottom:5px;">
+    <table class="lssarea" cellpadding="0" cellspacing="0">
         <tr>
-        <th colspan="3">
-<a href="?B_ACTIVATE_LSS=1&amp;id=8"><img src="/assets/buttons/lss2.png" title="Langstreckensensoren aktivieren"></a>
-                        Navigation Applet (<a href="?B_ACTIVATE_LSS=1&amp;id=8">Langstreckensensoren
-                aktivieren</a>)
-                    </th>
+            <td style="text-align: center; height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+                <a href="ship.php?B_DEACTIVATE_LSS=1&amp;id=42" style="height: 1.7vw; width: 1.7vw; position: absolute !important; top: 0px; left: 0px;"><img src="/assets/buttons/lss1.png" name="lss_panel" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" title="Langstreckensensoren deaktivieren"></a>
+            </td>
+                        <td style="font-size: 0.9vw; height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="th">
+                5
+            </td>
+                        <td style="font-size: 0.9vw; height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="th">
+                6
+            </td>
+                        <td style="font-size: 0.9vw; height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="th">
+                7
+            </td>
+                    </tr>
+        
+<tr>
+    <td style="height: 1.7vw; width: 1.7vw; font-size: 0.9vw;" class="th">6</td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+<img src="/assets/map/2/encoded/61306c48/636d786e/6232354e/57545277/61773d3d.png" style="z-index: 3; height: 1.7vw; width: 1.7vw; opacity:1;">
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+<img src="/assets/map/2/encoded/61306c55/59325272/51323555/53306434/56513d3d.png" style="z-index: 3; height: 1.7vw; width: 1.7vw; opacity:1;">
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText" onclick="moveToPosition(7,6);">
+            
+<img src="/assets/map/2/encoded/61306b75/526d3178/4d7a5a77/646c4657/52513d3d.png" style="z-index: 3; height: 1.7vw; width: 1.7vw; opacity:1;">
+        </div>
+            </td>
     </tr>
-                            <tr>
-        <td colspan="3" style="text-align: center;">
-                        <a href="javascript:void(0);" onclick="moveInDirection('B_MOVE_UP');" class="linkbutton" style="width: 100px;">
-                5|4
-            </a>
-                    </td>
+<tr>
+    <td style="height: 1.7vw; width: 1.7vw; font-size: 0.9vw;" class="th">7</td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+<img src="/assets/map/2/encoded/61306c6f/4d6c427a/5756646b/5a544975/57513d3d.png" style="z-index: 3; height: 1.7vw; width: 1.7vw; opacity:1;">
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+<img src="/assets/map/2/encoded/61306c4f/516c6871/56456472/546b6834/54513d3d.png" style="z-index: 3; height: 1.7vw; width: 1.7vw; opacity:1;">
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText" onclick="moveToPosition(7,7);">
+            
+<img src="/assets/map/2/encoded/61306c70/53464e4d/64316c36/5a303547/56513d3d.png" style="z-index: 3; height: 1.7vw; width: 1.7vw; opacity:1;">
+        </div>
+            </td>
     </tr>
-    <tr>
-        <td style="text-align: center;">
-                        <a href="javascript:void(0);" onclick="moveInDirection('B_MOVE_LEFT');" class="linkbutton" style="width: 100px;">
-                4|5
-            </a>
-                    </td>
-        <td style="width: 100px; text-align: center; font-weight: bold;">
-            <input type="text" onfocus="focusNavApplet();" onblur="blurNavApplet();" id="navapp" style="text-align: center;" size="7" value="5|5">
-        </td>
-        <td style="text-align: center;">
-                        <a href="javascript:void(0);" onclick="moveInDirection('B_MOVE_RIGHT');" class="linkbutton" style="width: 100px;">
-                6|5
-            </a>
-                    </td>
-    </tr>
-    <tr>
-        <td colspan="3" style="text-align: center;">
-                        <a href="javascript:void(0);" onclick="moveInDirection('B_MOVE_DOWN');" class="linkbutton" style="width: 100px;">
-                5|6
-            </a>
-                    </td>
+<tr>
+    <td style="height: 1.7vw; width: 1.7vw; font-size: 0.9vw;" class="th">8</td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText" onclick="moveToPosition(5,8);">
+            
+<img src="/assets/map/2/encoded/61306c46/56555a77/4c7a6c4c/5a45314c/62773d3d.png" style="z-index: 3; height: 1.7vw; width: 1.7vw; opacity:1;">
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText" onclick="moveToPosition(6,8);">
+            
+<img src="/assets/map/2/encoded/61306c76/61584e4b/4f455259/5347646b/53513d3d.png" style="z-index: 3; height: 1.7vw; width: 1.7vw; opacity:1;">
+        </div>
+            </td>
+        <td class="lss_current" style="border:1px solid #9b9b9b; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            <div style="font-size: 0.9vw; z-index: 6;" class="centered">1</div>
+<img src="/assets/map/2/encoded/61306c4f/53575979/576a4a70/55565575/59773d3d.png" style="z-index: 3; height: 1.7vw; width: 1.7vw; opacity:1;">
+        </div>
+            </td>
     </tr>
     </table>
+</div>
+<div style="float:left; margin-left:5px;">
+    <table class="tcal">
+        <tr>
+            <td colspan="3" style="text-align: center;">
+                                <a href="javascript:void(0);" onclick="moveInDirection('B_MOVE_UP');">
+                    <img style="height: 22px; width: 22px;" src="/assets/buttons/b_up1.png" title="Nach oben fliegen">
+                </a>
+                            </td>
+        </tr>
+        <tr>
+            <td>
+                                <a href="javascript:void(0);" onclick="moveInDirection('B_MOVE_LEFT');">
+                    <img style="height: 22px; width: 22px;" src="/assets/buttons/b_from1.png" title="Nach links fliegen">
+                </a>
+                            </td>
+            <td style="text-align: center; font-weight: bold;">
+                <input type="text" onfocus="focusNavApplet();" onblur="blurNavApplet();" id="navapp" style="text-align: center;" size="1" value="1">
+            </td>
+            <td>
+                                <img style="height: 22px; width: 22px; opacity: 0;" src="/assets/buttons/b_to1.png">
+                            </td>
+        </tr>
+        <tr>
+            <td colspan="3" style="text-align: center;">
+                                <img style="height: 22px; width: 22px; opacity: 0;" src="/assets/buttons/b_down1.png">
+                            </td>
+        </tr>
+    </table>
+</div>
 
 			</td>
 			<td style="vertical-align: top; width: 33%;">
@@ -428,7 +499,7 @@ updateSelectedShipId('8');" onmouseover="cp('uship','buttons/update1');" onmouse
     </tr>
     <tr>
         <td colspan="2">
-            <a href="javascript:void(0);" onclick="actionToInnerContent('B_ACTIVATE_SHIELDS', 'id=8&amp;sstr=bc02db043a6f9189eafb6aef5dddae');" onmouseover="cp('shldac','buttons/shldac1');" onmouseout="cp('shldac','buttons/shldac2');">
+            <a href="javascript:void(0);" onclick="actionToInnerContent('B_ACTIVATE_SHIELDS', 'id=42&amp;sstr=MOCKED_SESSIONSTRING');" onmouseover="cp('shldac','buttons/shldac1');" onmouseout="cp('shldac','buttons/shldac2');">
     <img src="/assets/buttons/shldac2.png" name="shldac"> Schilde aktivieren</a>
 
         </td>
@@ -444,14 +515,18 @@ updateSelectedShipId('8');" onmouseover="cp('uship','buttons/update1');" onmouse
 <table class="tcal">
         <tr>
         <th style="width: 50%;">Informationen</th>
-                            </tr>
+                        <th>Sternensystem</th>
+                    </tr>
     <tr>
         <td>
             <a href="javascript:void(0);" onclick="showSectorScanWindow(this)" onmouseover="cp('sectorScanButton','buttons/lupe2')" onmouseout="cp('sectorScanButton','buttons/lupe1')">
                 <img src="/assets/buttons/lupe1.png" name="sectorScanButton">
-                <span>Sektor 5|5 scannen</span>
+                <span>Sektor 7|8 scannen</span>
             </a>
-                        
+                        <br>
+<img src="/assets/buttons/map1.png">
+<span>System nicht kartographiert</span>
+
             <br>
 
                                                                                                 <a href="javascript:void(0);" onclick="showRegionInfo(134)" onmouseover="cp('mapRegionButton','buttons/info2')" onmouseout="cp('mapRegionButton','buttons/info1')">
@@ -459,7 +534,16 @@ updateSelectedShipId('8');" onmouseover="cp('uship','buttons/update1');" onmouse
                 Thalassanebel
             </a>
                                                         </td>
-                                                    </tr>
+                                                <td>
+                        <img src="/assets/map/systemtypes/1060.png" style="width: 15px; height: 15px;" title="Roter Zwerg">
+            Stempor'Arr
+                        <br>
+                        <a href="javascript:void(0);" onclick="actionToInnerContent('B_ENTER_STARSYSTEM', 'id=42&amp;sstr=MOCKED_SESSIONSTRING');">
+                <img src="/assets/buttons/sysenter1.png" name="sysleave" title="Ins System einfliegen">
+                einfliegen
+            </a>
+                    </td>
+                                    </tr>
 </table>
 
 			</td>
@@ -476,7 +560,7 @@ updateSelectedShipId('8');" onmouseover="cp('uship','buttons/update1');" onmouse
     <tr>
         <td colspan="2">
             <img src="/assets/buttons/warpk.png" title="Warpkern">
-            <span style="color: red;">0/1080</span>
+            <span style="">810/810</span>
             <input type="text" size="3" name="reactorload" id="reactorload" value="1" onkeydown="event.key == 'Enter' &amp;&amp; $('loadreactorbutton').click();">
             <input type="submit" class="button" name="B_LOAD_REACTOR" value="aufladen" id="loadreactorbutton">
             <input type="button" class="button" value="max" onclick="$('reactorload').value = 9999; $('loadreactorbutton').click()">
@@ -489,14 +573,14 @@ updateSelectedShipId('8');" onmouseover="cp('uship','buttons/update1');" onmouse
         <td style="width: 60%;">
 <img src="/assets/buttons/wkp2.png" title="Zuwachs zum Warpdrive">
             <span id="calculatedWarpDrive"></span>
-            <input type="range" min="0" max="100" value="100" id="warpdriveSplit" onchange="saveWarpCoreSplit(8);" oninput="updateReactorValues();">
+            <input type="range" min="0" max="100" value="100" id="warpdriveSplit" onchange="saveWarpCoreSplit(42);" oninput="updateReactorValues();">
             <img src="/assets/buttons/battp2.png" title="Zuwachs zum EPS">
             <span id="calculatedEPS"></span>
         </td>
         <td>
             <div style="display: inline-block;" title="&Uuml;bersch&uuml;ssige Energie wird in anderen Speicher &uuml;bertragen">
                                 <img src="/assets/buttons/transfer.png" style="height:16px;">
-                <input type="checkbox" id="autoCarryOver" onchange="saveWarpCoreSplit(8); updateReactorValues();">
+                <input type="checkbox" id="autoCarryOver" onchange="saveWarpCoreSplit(42); updateReactorValues();">
             </div>
         </td>
         <td style="width: 15%;">
@@ -509,7 +593,7 @@ updateSelectedShipId('8');" onmouseover="cp('uship','buttons/update1');" onmouse
         <td colspan="3">
                         <img src="/assets/buttons/warp2.png" title="Warpantrieb deaktiviert">
                         Warpantrieb
-                        <a href="javascript:void(0);" onclick="actionToInnerContent('B_ACTIVATE_WARP', 'id=8&amp;sstr=bc02db043a6f9189eafb6aef5dddae');" class="linkbutton">aktivieren</a>
+                        <a href="javascript:void(0);" onclick="actionToInnerContent('B_ACTIVATE_WARP', 'id=42&amp;sstr=MOCKED_SESSIONSTRING');" class="linkbutton">aktivieren</a>
                     </td>
     </tr>
             </table>
@@ -517,7 +601,7 @@ updateSelectedShipId('8');" onmouseover="cp('uship','buttons/update1');" onmouse
     <tr>
         <th colspan="3">
             <img src="/assets/buttons/batt.png" title="Ersatzbatterie"> Ersatzbatterie
-            0 / 48
+            36 / 36
         </th>
     </tr>
     <tr>
@@ -543,7 +627,7 @@ updateSelectedShipId('8');" onmouseover="cp('uship','buttons/update1');" onmouse
 <table class="tcal">
 	<tr>
 		<th>
-						<a href="?B_ACTIVATE_NBS=1&amp;id=8"><img src="/assets/buttons/kss2.png"> Nahbereichssensoren
+						<a href="?B_ACTIVATE_NBS=1&amp;id=42"><img src="/assets/buttons/kss2.png"> Nahbereichssensoren
 				aktivieren</a>
 					</th>
 	</tr>
@@ -562,10 +646,10 @@ updateSelectedShipId('8');" onmouseover="cp('uship','buttons/update1');" onmouse
 </table>
 
 <div class="footer">
-    Rendered in 283ms - Memory usage: 48.00Mb
+    Rendered in 4.203s - Memory usage: 42.77Mb
 </div>
 <script>
-            setReactorSplitConstants(0,0,2,144,0,60);
+            setReactorSplitConstants(54,2,2,1,57,58);
                 updateReactorValues(100);
                 updateComponent('navlet_pm', '/game.php?SHOW_COMPONENT=1&component=pm', 60000);
                 updateComponent('navlet_servertime', '/game.php?SHOW_COMPONENT=1&component=servertime', 300000);

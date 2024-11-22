@@ -14,14 +14,14 @@ final class CreateTopicRequest implements CreateTopicRequestInterface
     #[Override]
     public function getBoardId(): int
     {
-        return $this->queryParameter('bid')->int()->required();
+        return $this->parameter('boardid')->int()->required();
     }
 
     #[Override]
     public function getTopicTitle(): string
     {
         return $this->tidyString(
-            $this->queryParameter('tname')->string()->defaultsToIfEmpty('')
+            $this->parameter('tname')->string()->defaultsToIfEmpty('')
         );
     }
 
@@ -29,7 +29,7 @@ final class CreateTopicRequest implements CreateTopicRequestInterface
     public function getText(): string
     {
         return $this->tidyString(
-            $this->queryParameter('ttext')->string()->defaultsToIfEmpty('')
+            $this->parameter('ttext')->string()->defaultsToIfEmpty('')
         );
     }
 }

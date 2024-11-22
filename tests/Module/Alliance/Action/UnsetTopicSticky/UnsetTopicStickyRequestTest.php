@@ -22,7 +22,7 @@ class UnsetTopicStickyRequestTest extends RequestTestCase
     public static function requestVarsDataProvider(): array
     {
         return [
-            ['getTopicId', 'tid', '666', 666],
+            ['getTopicId', 'topicid', '666', 666],
         ];
     }
 

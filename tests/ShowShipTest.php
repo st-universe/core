@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\View\ShowRegionInfo;
 
+use Mockery;
 use Override;
-use request;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
-use Stu\TestShip;
-use Stu\TestUser;
+use Stu\Orm\Repository\AnomalyRepositoryInterface;
 use Stu\TwigTestCase;
 
 class ShowShipTest extends TwigTestCase
@@ -21,8 +20,13 @@ class ShowShipTest extends TwigTestCase
 
     public function testHandle(): void
     {
-        $shipId = $this->loadTestData(new TestShip(2, 5, 5));
+        $anomalyRepositoryMock = $this->mock(AnomalyRepositoryInterface::class);
+        $anomalyRepositoryMock->shouldReceive('getClosestAnomalyDistance')
+            ->with(Mockery::any())
+            ->andReturn(null);
 
-        $this->renderSnapshot(['id' => $shipId]);
+        $this->getContainer()->setAdditionalService(AnomalyRepositoryInterface::class, $anomalyRepositoryMock);
+
+        $this->renderSnapshot(['id' => 42]);
     }
 }

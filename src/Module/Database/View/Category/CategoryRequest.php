@@ -14,6 +14,6 @@ final class CategoryRequest implements CategoryRequestInterface
     #[Override]
     public function getCategoryId(): int
     {
-        return $this->queryParameter('cat')->int()->required();
+        return $this->parameter('cat')->int()->required();
     }
 }

@@ -17,7 +17,7 @@ final class UserListRequest implements UserListRequestInterface
         /**
          * @var string $param
          */
-        $param = $this->queryParameter('order')->oneOf(['id', 'fac', 'alliance'])->defaultsTo('id');
+        $param = $this->parameter('order')->oneOf(['id', 'fac', 'alliance'])->defaultsTo('id');
 
         return $param;
     }
@@ -28,7 +28,7 @@ final class UserListRequest implements UserListRequestInterface
         /**
          * @var string $param
          */
-        $param = $this->queryParameter('way')->oneOf(['up', 'down'])->defaultsTo('down');
+        $param = $this->parameter('way')->oneOf(['up', 'down'])->defaultsTo('down');
 
         return $param;
     }
@@ -36,6 +36,6 @@ final class UserListRequest implements UserListRequestInterface
     #[Override]
     public function getPagination(): int
     {
-        return $this->queryParameter('mark')->int()->defaultsTo(0);
+        return $this->parameter('mark')->int()->defaultsTo(0);
     }
 }

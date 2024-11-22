@@ -14,6 +14,6 @@ final class ShowEditKnRequest implements ShowEditKnRequestInterface
     #[Override]
     public function getPostId(): int
     {
-        return $this->queryParameter('knid')->int()->required();
+        return $this->parameter('knid')->int()->required();
     }
 }

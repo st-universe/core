@@ -1,0 +1,83 @@
+<html lang="de">
+
+<head>
+  <script src="/static/js/default.js"></script>
+</head>
+
+<body>
+  <div class="ajaxwin">
+        <table class="tcal">
+      <tr>
+        <th onmouseover="switch_drag_on();" onmouseout="switch_drag_off();">Boje analysieren</th>
+        <th style="width: 18px;">
+          <a href="javascript:void(0);" onclick="closeAjaxWindow();" onmouseover="cp('ajaxclose','buttons/x2');" onmouseout="cp('ajaxclose','buttons/x1');">
+            <img src="/assets/buttons/x1.png" name="ajaxclose" title="Fenster schlie&Atilde;&#159;en">
+          </a>
+        </th>
+      </tr>
+    </table>
+        <div>
+    <style>
+        .button-img {
+            cursor: pointer;
+            display: block;
+            margin: auto;
+        }
+
+        #dynamicValues img,
+        #dynamicValues span {
+            vertical-align: middle;
+        }
+
+        #matchNotification {
+            display: none;
+            margin-left: 20px;
+        }
+
+        .analysisResultCell {
+            font-weight: bold;
+        }
+
+        #ownerId {
+            margin-left: 20px;
+        }
+    </style>
+    <canvas id="buoyAnalysisCanvas" width="800" height="400"></canvas>
+    <table class="tcal">
+        <tr>
+            <td style="width: 70px;">
+                <img src="assets/buttons/amp_down.png" class="button-img" style="display: inline-block; margin: 0; padding: 0;" title="Amplitude verringern" onclick="decreaseDynamicAmplitude()">
+                <img src="assets/buttons/amp_up.png" class="button-img" style="display: inline-block; margin: 0; padding: 0;" title="Amplitude erh&Atilde;&para;hen" onclick="increaseDynamicAmplitude()">
+            </td>
+            <td class="dynamicValueCell">
+                <img src="assets/buttons/amp.png" title="Dynamische Amplitude">
+                <span id="dynamicAmplitude"></span> &Acirc;&micro;V/m<br>
+            </td>
+            <td class="analysisResultCell">
+                Analyseergebnis:
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src="assets/buttons/lambda_down.png" class="button-img" title="Wellenl&Atilde;&curren;nge verringern" style="display: inline-block; margin: 0; padding: 0;" onclick="decreaseDynamicWavelength()">
+                <img src="assets/buttons/lambda_up.png" class="button-img" style="display: inline-block; margin: 0; padding: 0;" title="Wellenl&Atilde;&curren;nge erh&Atilde;&para;hen" onclick="increaseDynamicWavelength()">
+            </td>
+            <td>
+                <img src="assets/buttons/lambda.png" title="Dynamische Wellenl&Atilde;&curren;nge">
+                <span id="dynamicWavelength"></span> nm
+            </td>
+            <td>
+                <div id="matchNotification">Besitzer:
+                    <span id="ownerId">Siedler 101</span>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+<script>
+    initialiseBuoyAnalysis(4242, 2121);
+</script>
+      </div>
+  </body>
+
+</html>

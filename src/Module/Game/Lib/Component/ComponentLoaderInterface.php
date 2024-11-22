@@ -22,4 +22,6 @@ interface ComponentLoaderInterface
     public function registerComponent(ComponentEnum $component): void;
 
     public function loadRegisteredComponents(GameControllerInterface $game): void;
+
+    public function resetComponents(): void;
 }

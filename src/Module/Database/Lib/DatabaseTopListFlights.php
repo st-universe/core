@@ -8,11 +8,11 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 class DatabaseTopListFlights extends DatabaseTopList
 {
-    /** @var array{user_id: int, sc: int, race: null|int, shipc: int} */
+    /** @var array{user_id: int, sc: int, factionid: null|int, shipc: int} */
     private array $entry;
 
     /**
-     * @param array{user_id: int, sc: int, race: null|int, shipc: int} $entry
+     * @param array{user_id: int, sc: int, factionid: null|int, shipc: int} $entry
      */
     public function __construct(
         UserRepositoryInterface $userRepository,
@@ -37,6 +37,6 @@ class DatabaseTopListFlights extends DatabaseTopList
 
     public function getFaction(): ?int
     {
-        return $this->entry['race'];
+        return $this->entry['factionid'];
     }
 }

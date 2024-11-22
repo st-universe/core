@@ -14,12 +14,12 @@ final class ShowShuttleManagementRequest implements ShowShuttleManagementRequest
     #[Override]
     public function getStationId(): int
     {
-        return $this->queryParameter('entity')->int()->required();
+        return $this->parameter('entity')->int()->required();
     }
 
     #[Override]
     public function getShipId(): int
     {
-        return $this->queryParameter('ship')->int()->required();
+        return $this->parameter('ship')->int()->required();
     }
 }

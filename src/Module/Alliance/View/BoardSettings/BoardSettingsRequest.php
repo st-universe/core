@@ -14,6 +14,6 @@ final class BoardSettingsRequest implements BoardSettingsRequestInterface
     #[Override]
     public function getBoardId(): int
     {
-        return $this->queryParameter('bid')->int()->required();
+        return $this->parameter('boardid')->int()->required();
     }
 }

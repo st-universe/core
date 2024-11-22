@@ -14,12 +14,12 @@ final class DealsBidAuctionRequest implements DealsBidAuctionRequestInterface
     #[Override]
     public function getDealId(): int
     {
-        return $this->queryParameter('dealid')->int()->required();
+        return $this->parameter('dealid')->int()->required();
     }
 
     #[Override]
     public function getMaxAmount(): int
     {
-        return $this->queryParameter('maxamount')->int()->defaultsTo(0);
+        return $this->parameter('maxamount')->int()->defaultsTo(0);
     }
 }

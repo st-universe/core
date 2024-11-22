@@ -32,7 +32,7 @@ final class ShowStationCosts implements ViewControllerInterface
 
         $userId = $game->getUser()->getId();
 
-        $wantedPlanId = request::getIntFatal('pid');
+        $wantedPlanId = request::getIntFatal('planid');
 
         $plan = $this->stationUtility->getBuidplanIfResearchedByUser($wantedPlanId, $userId);
 

@@ -25,7 +25,7 @@ class CreateTopicRequestTest extends RequestTestCase
     public static function requestVarsDataProvider(): array
     {
         return [
-            ['getBoardId', 'bid', (string) 666, 666],
+            ['getBoardId', 'boardid', (string) 666, 666],
             ['getTopicTitle', 'tname', '<foo>bar</foo>', 'bar'],
             ['getText', 'ttext', '<foo>bar</foo>', 'bar'],
         ];

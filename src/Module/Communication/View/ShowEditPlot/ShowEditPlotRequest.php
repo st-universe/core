@@ -14,6 +14,6 @@ final class ShowEditPlotRequest implements ShowEditPlotRequestInterface
     #[Override]
     public function getPlotId(): int
     {
-        return $this->queryParameter('plotid')->int()->required();
+        return $this->parameter('plotid')->int()->required();
     }
 }

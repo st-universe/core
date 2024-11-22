@@ -14,9 +14,7 @@ final class ShowSystem implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_SYSTEM';
 
-    public function __construct(private ShowSystemRequestInterface $showSystemRequest, private StarmapUiFactoryInterface $starmapUiFactory, private StarSystemRepositoryInterface $starSystemRepository)
-    {
-    }
+    public function __construct(private ShowSystemRequestInterface $showSystemRequest, private StarmapUiFactoryInterface $starmapUiFactory, private StarSystemRepositoryInterface $starSystemRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -39,7 +37,7 @@ final class ShowSystem implements ViewControllerInterface
         ), _('Karteneditor'));
         $game->appendNavigationPart(
             sprintf(
-                '/admin/?%s=1&sysid=%d',
+                '/admin/?%s=1&systemid=%d',
                 self::VIEW_IDENTIFIER,
                 $system->getId()
             ),

@@ -20,7 +20,7 @@ interface DatabaseUiFactoryInterface
     ): DatabaseTopActivTradePost;
 
     /**
-     * @param array{user_id: int, race: int, crewc: int} $item
+     * @param array{user_id: int, factionid: int, crewc: int} $item
      */
     public function createDatabaseTopListCrew(
         array $item
@@ -33,7 +33,7 @@ interface DatabaseUiFactoryInterface
     ): DatabaseTopListWithPoints;
 
     /**
-     * @param array{user_id: int, sc: int, race: null|int, shipc: int} $item
+     * @param array{user_id: int, sc: int, factionid: null|int, shipc: int} $item
      */
     public function createDatabaseTopListFlights(
         array $item

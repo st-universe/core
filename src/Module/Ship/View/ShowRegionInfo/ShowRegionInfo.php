@@ -31,7 +31,7 @@ final class ShowRegionInfo implements ViewControllerInterface
             false
         );
 
-        $regionId = request::getIntFatal('region');
+        $regionId = request::getIntFatal('regionid');
 
         $mapField = $ship->getLocation();
         if (!$mapField instanceof MapInterface) {

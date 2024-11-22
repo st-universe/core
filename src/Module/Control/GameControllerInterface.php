@@ -48,8 +48,6 @@ interface GameControllerInterface extends InformationInterface
 
     public function hasUser(): bool;
 
-    public function getUniqId(): string;
-
     public function isNpc(): bool;
 
     /**
@@ -121,6 +119,8 @@ interface GameControllerInterface extends InformationInterface
     public function getGameStats(): array;
 
     public function getGameStateTextual(): string;
+
+    public function resetGameData(): void;
 
     public function getBenchmarkResult(): array;
 }

@@ -14,6 +14,6 @@ final class ShowLicenseInfoRequest implements ShowLicenseInfoRequestInterface
     #[Override]
     public function getTradePostId(): int
     {
-        return $this->queryParameter('postid')->int()->required();
+        return $this->parameter('postid')->int()->required();
     }
 }

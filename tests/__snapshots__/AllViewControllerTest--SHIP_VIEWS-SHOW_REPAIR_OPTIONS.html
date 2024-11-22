@@ -1,0 +1,70 @@
+<html lang="de">
+
+<head>
+  <script src="/static/js/default.js"></script>
+</head>
+
+<body>
+  <div class="ajaxwin">
+        <table class="tcal">
+      <tr>
+        <th onmouseover="switch_drag_on();" onmouseout="switch_drag_off();">Reparatur Optionen</th>
+        <th style="width: 18px;">
+          <a href="javascript:void(0);" onclick="closeAjaxWindow();" onmouseover="cp('ajaxclose','buttons/x2');" onmouseout="cp('ajaxclose','buttons/x1');">
+            <img src="/assets/buttons/x1.png" name="ajaxclose" title="Fenster schlie&Atilde;&#159;en">
+          </a>
+        </th>
+      </tr>
+    </table>
+        <form id="selfrepair_form" method="post" action="ship.php">
+  <input type="hidden" name="id" value="42">
+  <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
+    <div class="box">
+    <div class="box_title">Aktive Reparatur <img title="Wird durch die Crew des Schiffes durchgef&Atilde;&frac14;hrt" src="assets/buttons/info2.png" style="height:16px;">
+</div>
+    <div class="box_body">
+      <table class="tcal">
+        <tr>
+          <th>Besch&Atilde;&curren;digtes System <img title="Durch die Crew reparierbare Systeme" src="assets/buttons/info2.png" style="height:16px;">
+</th>
+          <th>Anzahl Ingenieure <img title="Die Anzahl Ingenieure beschleunigt die Reparatur" src="assets/buttons/info2.png" style="height:16px;">
+</th>
+          <th>Verwendete Teile <img title="Umfang der Reparatur" src="assets/buttons/info2.png" style="height:16px;">
+          </th>
+          <th>Sofortreparatur <img title="Erfordert die dreifache Menge an Teilen" src="assets/buttons/info2.png" style="height:16px;">
+</th>
+        </tr>
+        <tr>
+          <td>
+            <select name="sid" id="systemSelect" style="width:100%;">
+                          </select>
+          </td>
+          <td style="text-align: center;">0</td>
+          <td>
+            <label>
+              <input type="radio" name="partschoice" value="1"> nur Ersatzteile (~ auf 15%)
+            </label>
+            <br>
+            <label>
+              <input type="radio" name="partschoice" value="2"> nur Systemkomponenten (~ auf 25%)
+            </label>
+            <br>
+            <label>
+              <input type="radio" name="partschoice" value="3"> beides (~ auf 40%)
+            </label>
+          </td>
+          <td>
+            <input type="checkbox" name="instantrepair"> sofort
+          </td>
+        </tr>
+        <tr style="text-align: center;">
+          <td colspan="4"><input type="submit" class="button" value="Aktive Reparatur starten" name="B_SELF_REPAIR" id="selfrepair_button"></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</form>
+      </div>
+  </body>
+
+</html>

@@ -14,12 +14,12 @@ final class EditBorderRequest implements EditBorderRequestInterface
     #[Override]
     public function getFieldId(): int
     {
-        return $this->queryParameter('field')->int()->required();
+        return $this->parameter('field')->int()->required();
     }
 
     #[Override]
     public function getBorder(): int
     {
-        return $this->queryParameter('border')->int()->required();
+        return $this->parameter('border')->int()->required();
     }
 }

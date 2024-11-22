@@ -41,6 +41,11 @@ class StuRandom
         throw new RuntimeException('this should not happen');
     }
 
+    public function uniqid(): string
+    {
+        return uniqid();
+    }
+
     private function generateRandomValueStandardNormalDistribution(int $min, int $max, ?int $mean): int
     {
         $usedMean = $mean ?? ($min + $max) / 2; // MW

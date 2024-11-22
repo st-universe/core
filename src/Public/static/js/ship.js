@@ -96,9 +96,9 @@ function showSectorScanWindow(obj, x, y, sysid, loadSystemSensorScan) {
 	var pos = findObject(obj);
 	openWindowPosition('elt', 1, 800, pos[0] - 250, pos[1] - 250);
 	if (x && y) {
-		ajax_update('elt', 'station.php?id=' + shipid + '&SHOW_SENSOR_SCAN=1&cx=' + x + '&cy=' + y + '&sysid=' + sysid);
+		ajax_update('elt', 'station.php?id=' + shipid + '&SHOW_SENSOR_SCAN=1&x=' + x + '&y=' + y + '&systemid=' + sysid);
 		if (loadSystemSensorScan) {
-			ajax_update('systemsensorscan', 'station.php?id=' + shipid + '&SHOW_SYSTEM_SENSOR_SCAN=1&cx=' + x + '&cy=' + y);
+			ajax_update('systemsensorscan', 'station.php?id=' + shipid + '&SHOW_SYSTEM_SENSOR_SCAN=1&x=' + x + '&y=' + y);
 		}
 	} else {
 		ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_SECTOR_SCAN=1');
@@ -114,7 +114,7 @@ function openStarMap(obj, shipId) {
 	closeAjaxWindow();
 	var pos = findObject(obj);
 	openWindowPosition('elt', 1, 700, pos[0], pos[1]);
-	ajax_update('elt', 'starmap.php?SHOW_STARMAP_POSITION=1&sid=' + shipId);
+	ajax_update('elt', 'starmap.php?SHOW_STARMAP_POSITION=1&shipid=' + shipId);
 }
 
 storageTimer = null;
@@ -213,7 +213,7 @@ function postLogEntry(shipid) {
 function showRegionInfo(region) {
 	closeAjaxWindow();
 	openPJsWin('elt', 1);
-	ajax_update('elt', 'ship.php?SHOW_REGION_INFO=1&id=' + shipid + '&region=' + region);
+	ajax_update('elt', 'ship.php?SHOW_REGION_INFO=1&id=' + shipid + '&regionid=' + region);
 }
 function showColonization(colonyId) {
 	closeAjaxWindow();

@@ -14,12 +14,12 @@ final class EditPmCategoryRequest implements EditPmCategoryRequestInterface
     #[Override]
     public function getCategoryId(): int
     {
-        return $this->queryParameter('pmcat')->int()->required();
+        return $this->parameter('pmcat')->int()->required();
     }
 
     #[Override]
     public function getName(): string
     {
-        return $this->tidyString($this->queryParameter('catname')->string()->defaultsToIfEmpty(''));
+        return $this->tidyString($this->parameter('catname')->string()->defaultsToIfEmpty(''));
     }
 }

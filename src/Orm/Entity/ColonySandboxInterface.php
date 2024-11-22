@@ -28,7 +28,7 @@ interface ColonySandboxInterface extends PlanetFieldHostInterface
 
     public function setMask(?string $mask): ColonySandboxInterface;
 
-    public function getTwilightZone(): int;
+    public function getTwilightZone(int $timestamp): int;
 
     public function getSurfaceWidth(): int;
 }

@@ -14,12 +14,12 @@ final class ShowSearchResultRequest implements ShowSearchResultRequestInterface
     #[Override]
     public function getSearchId(): int
     {
-        return $this->queryParameter('search')->int()->defaultsTo(0);
+        return $this->parameter('search')->int()->defaultsTo(0);
     }
 
     #[Override]
     public function getSearchString(): string
     {
-        return trim($this->queryParameter('search')->string()->defaultsToIfEmpty(''));
+        return trim($this->parameter('search')->string()->defaultsToIfEmpty(''));
     }
 }

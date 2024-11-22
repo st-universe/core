@@ -58,6 +58,8 @@ use Stu\Lib\Pirate\PirateCreation;
 use Stu\Lib\Pirate\PirateCreationInterface;
 use Stu\Lib\Pirate\PirateReaction;
 use Stu\Lib\Pirate\PirateReactionInterface;
+use Stu\Lib\Session\SessionStringFactory;
+use Stu\Lib\Session\SessionStringFactoryInterface;
 use Stu\Lib\ShipManagement\HandleManagers;
 use Stu\Lib\ShipManagement\HandleManagersInterface;
 use Stu\Lib\ShipManagement\Manager\ManageBattery;
@@ -85,6 +87,7 @@ use function DI\create;
 use function DI\get;
 
 return [
+    SessionStringFactoryInterface::class => autowire(SessionStringFactory::class),
     InformationFactoryInterface::class => autowire(InformationFactory::class),
     UuidGeneratorInterface::class => autowire(UuidGenerator::class),
     ManagerProviderFactoryInterface::class => autowire(ManagerProviderFactory::class),

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:stu="stu">
+<body>
+<form action="colony.php" method="post">
+    <input type="hidden" name="id" value="42">
+    <input type="hidden" name="hosttype" value="1">
+    <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
+    <div style="width: 40vw;">
+    <table class="tcal">
+        <tr class="responsive-hide">
+            <th colspan="4">Crewausbildung</th>
+        </tr>
+        <tr class="responsive-hide">
+            <td style="width: 25%" class="darkbg">Freie Bev&Atilde;&para;lkerung</td>
+            <td style="width: 25%" class="darkbg">Gleichzeitig Ausbildbar</td>
+            <td style="width: 25%" class="darkbg">In Ausbildung</td>
+            <td style="width: 25%" class="darkbg">Noch Ausbildbar</td>
+        </tr>
+        <tr class="responsive-hide">
+            <td>
+                <img src="/assets/bev/bev_unused_5_1.png" title="Freie Bev&Atilde;&para;lkerung">
+                84
+            </td>
+            <td>
+                <img src="/assets/bev/bev_free_5_1.png" title="Gleichzeitig Ausbildbar">
+                1
+            </td>
+            <td>
+                <img src="/assets/bev/bev_free_5_1.png" title="In Ausbildung">
+                0
+            </td>
+            <td>
+                <img src="/assets/bev/bev_free_5_1.png" title="Noch Ausbildbar">
+                10
+            </td>
+        </tr>
+        <!-- Responsive rows -->
+        <tr class="responsive-show">
+            <th colspan="2">Crewausbildung</th>
+        </tr>
+        <tr class="responsive-show">
+            <td style="width: 50%" class="darkbg">Freie Bev&Atilde;&para;lkerung</td>
+            <td style="width: 50%" class="darkbg">Gleichzeitig Ausbildbar</td>
+        </tr>
+        <tr class="responsive-show">
+            <td>
+                <img src="/assets/bev/bev_unused_5_1.png" title="Freie Bev&Atilde;&para;lkerung">
+                84
+            </td>
+            <td>
+                <img src="/assets/bev/bev_free_5_1.png" title="Gleichzeitig Ausbildbar">
+                1
+            </td>
+        </tr>
+        <tr class="responsive-show">
+            <td style="width: 50%" class="darkbg">In Ausbildung</td>
+            <td style="width: 50%" class="darkbg">Noch Ausbildbar</td>
+        </tr>
+        <tr class="responsive-show">
+            <td>
+                <img src="/assets/bev/bev_free_5_1.png" title="In Ausbildung">
+                0
+            </td>
+            <td>
+                <img src="/assets/bev/bev_free_5_1.png" title="Noch Ausbildbar">
+                10
+            </td>
+        </tr>
+    </table>
+    <br>
+    <table class="tcal">
+        <tr>
+            <th>Ausbildung</th>
+        </tr>
+        <tr>
+            <td>
+                <input type="text" name="crewcount" size="2"> / 1
+                <span>Crew</span>
+                <input type="submit" style="cursor: pointer;" name="B_TRAIN_CREW" value="Ausbilden">
+            </td>
+        </tr>
+    </table>
+</div>
+</form>
+
+</body>
+</html>

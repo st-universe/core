@@ -14,6 +14,6 @@ final class ShowBuildingRequest implements ShowBuildingRequestInterface
     #[Override]
     public function getBuildingId(): int
     {
-        return $this->queryParameter('bid')->int()->required();
+        return $this->parameter('buildingid')->int()->required();
     }
 }

@@ -14,6 +14,6 @@ final class DeclineApplicationRequest implements DeclineApplicationRequestInterf
     #[Override]
     public function getApplicationId(): int
     {
-        return $this->queryParameter('aid')->int()->required();
+        return $this->parameter('aid')->int()->required();
     }
 }

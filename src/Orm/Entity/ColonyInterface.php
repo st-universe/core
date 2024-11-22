@@ -67,7 +67,7 @@ interface ColonyInterface extends PlanetFieldHostInterface
 
     public function setShields(?int $shields): ColonyInterface;
 
-    public function getTwilightZone(): int;
+    public function getTwilightZone(int $timestamp): int;
 
     public function getShieldFrequency(): ?int;
 
@@ -83,15 +83,13 @@ interface ColonyInterface extends PlanetFieldHostInterface
 
     public function getRotationTime(): int;
 
-    public function getColonyTimeSeconds(): int;
+    public function getColonyTimeHour(int $timestamp): ?string;
 
-    public function getColonyTimeHour(): ?string;
+    public function getColonyTimeMinute(int $timestamp): ?string;
 
-    public function getColonyTimeMinute(): ?string;
+    public function getDayTimePrefix(int $timestamp): ?int;
 
-    public function getDayTimePrefix(): ?int;
-
-    public function getDayTimeName(): ?string;
+    public function getDayTimeName(int $timestamp): ?string;
 
     public function getSurfaceWidth(): int;
 

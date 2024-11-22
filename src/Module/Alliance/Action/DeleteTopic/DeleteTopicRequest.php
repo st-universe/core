@@ -14,6 +14,6 @@ final class DeleteTopicRequest implements DeleteTopicRequestInterface
     #[Override]
     public function getTopicId(): int
     {
-        return $this->queryParameter('tid')->int()->required();
+        return $this->parameter('topicid')->int()->required();
     }
 }

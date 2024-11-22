@@ -14,20 +14,20 @@ final class WritePmRequest implements WritePmRequestInterface
     #[Override]
     public function getRecipientId(): int
     {
-        return $this->queryParameter('recipient')->int()->defaultsTo(0);
+        return $this->parameter('recipient')->int()->defaultsTo(0);
     }
 
     #[Override]
     public function getText(): string
     {
         return $this->tidyString(
-            $this->queryParameter('text')->string()->trim()->required()
+            $this->parameter('text')->string()->trim()->required()
         );
     }
 
     #[Override]
     public function getReplyPmId(): int
     {
-        return $this->queryParameter('recipient')->int()->defaultsTo(0);
+        return $this->parameter('recipient')->int()->defaultsTo(0);
     }
 }

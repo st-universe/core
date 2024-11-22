@@ -14,6 +14,6 @@ final class ShowSingleKnRequest implements ShowSingleKnRequestInterface
     #[Override]
     public function getPostId(): int
     {
-        return $this->queryParameter('id')->int()->required();
+        return $this->parameter('id')->int()->required();
     }
 }

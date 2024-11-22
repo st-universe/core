@@ -18,9 +18,7 @@ final class NewPost implements ViewControllerInterface
      */
     public const string VIEW_IDENTIFIER = 'SHOW_NEW_POST';
 
-    public function __construct(private NewPostRequestInterface $newPostRequest, private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository)
-    {
-    }
+    public function __construct(private NewPostRequestInterface $newPostRequest, private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -50,14 +48,14 @@ final class NewPost implements ViewControllerInterface
         );
         $game->appendNavigationPart(
             sprintf(
-                'alliance.php?SHOW_BOARD=1&bid=%d',
+                'alliance.php?SHOW_BOARD=1&boardid=%d',
                 $boardId
             ),
             $board->getName()
         );
         $game->appendNavigationPart(
             sprintf(
-                'alliance.php?SHOW_TOPIC=1&bid=%d&tid=%d',
+                'alliance.php?SHOW_TOPIC=1&boardid=%d&topicid=%d',
                 $boardId,
                 $topicId
             ),
@@ -65,7 +63,7 @@ final class NewPost implements ViewControllerInterface
         );
         $game->appendNavigationPart(
             sprintf(
-                'alliance.php?SHOW_NEW_POST=1&bid=%s&tid=%d',
+                'alliance.php?SHOW_NEW_POST=1&boardid=%s&topicid=%d',
                 $boardId,
                 $topicId
             ),

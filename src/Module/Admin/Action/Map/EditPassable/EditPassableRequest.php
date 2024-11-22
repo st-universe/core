@@ -14,12 +14,12 @@ final class EditPassableRequest implements EditPassableRequestInterface
     #[Override]
     public function getFieldId(): int
     {
-        return $this->queryParameter('field')->int()->required();
+        return $this->parameter('field')->int()->required();
     }
 
     #[Override]
     public function getPassable(): int
     {
-        return $this->queryParameter('passable')->int()->required();
+        return $this->parameter('passable')->int()->required();
     }
 }

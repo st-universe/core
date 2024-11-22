@@ -18,13 +18,13 @@ final class StartEmergencyRequest implements StartEmergencyRequestInterface
     public function getEmergencyText(): string
     {
         return $this->tidyString(
-            $this->queryParameter('text')->string()->defaultsToIfEmpty('')
+            $this->parameter('text')->string()->defaultsToIfEmpty('')
         );
     }
 
     #[Override]
     public function getShipId(): int
     {
-        return $this->queryParameter('id')->int()->required();
+        return $this->parameter('id')->int()->required();
     }
 }

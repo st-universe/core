@@ -14,6 +14,6 @@ final class AddPmCategoryRequest implements AddPmCategoryRequestInterface
     #[Override]
     public function getName(): string
     {
-        return $this->tidyString($this->queryParameter('catname')->string()->defaultsToIfEmpty(''));
+        return $this->tidyString($this->parameter('catname')->string()->defaultsToIfEmpty(''));
     }
 }

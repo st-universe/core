@@ -56,7 +56,7 @@ interface ShipCrewRepositoryInterface extends ObjectRepository
     public function getAmountByUserOnShips(UserInterface $user): int;
 
     /**
-     * @return array<array{user_id: int, race: int, crewc: int}>
+     * @return array<array{user_id: int, factionid: int, crewc: int}>
      */
     public function getCrewsTop10(): array;
 

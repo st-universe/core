@@ -14,12 +14,12 @@ final class DatabaseEntryRequest implements DatabaseEntryRequestInterface
     #[Override]
     public function getCategoryId(): int
     {
-        return $this->queryParameter('cat')->int()->required();
+        return $this->parameter('cat')->int()->required();
     }
 
     #[Override]
     public function getEntryId(): int
     {
-        return $this->queryParameter('ent')->int()->required();
+        return $this->parameter('ent')->int()->required();
     }
 }

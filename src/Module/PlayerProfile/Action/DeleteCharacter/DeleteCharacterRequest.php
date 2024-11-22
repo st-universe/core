@@ -14,6 +14,6 @@ final class DeleteCharacterRequest implements DeleteCharacterRequestInterface
     #[Override]
     public function getCharacterId(): int
     {
-        return $this->queryParameter('character_id')->int()->required();
+        return $this->parameter('character_id')->int()->required();
     }
 }

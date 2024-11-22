@@ -17,12 +17,12 @@ final class SalvageEmergencyPodsRequest implements SalvageEmergencyPodsRequestIn
     #[Override]
     public function getShipId(): int
     {
-        return $this->queryParameter('id')->int()->required();
+        return $this->parameter('id')->int()->required();
     }
 
     #[Override]
     public function getTargetId(): int
     {
-        return $this->queryParameter('target')->int()->required();
+        return $this->parameter('target')->int()->required();
     }
 }

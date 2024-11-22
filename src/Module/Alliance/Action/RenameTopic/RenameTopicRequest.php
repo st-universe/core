@@ -14,14 +14,14 @@ final class RenameTopicRequest implements RenameTopicRequestInterface
     #[Override]
     public function getTopicId(): int
     {
-        return $this->queryParameter('tid')->int()->required();
+        return $this->parameter('topicid')->int()->required();
     }
 
     #[Override]
     public function getTitle(): string
     {
         return $this->tidyString(
-            $this->queryParameter('tname')->string()->defaultsToIfEmpty('')
+            $this->parameter('tname')->string()->defaultsToIfEmpty('')
         );
     }
 }

@@ -12,7 +12,7 @@
     {% set fieldType = FIELD.getFieldType %}
     {% set fieldHostId = FIELD.getHost.getId %}
     {% set fieldHostType = FIELD.getHost.getHostType.value %}
-    {% set dayNightPrefix = FIELD.getDayNightPrefix %}
+    {% set dayNightPrefix = getDayNightPrefix(FIELD) %}
     {% set building = FIELD.getBuilding %}
     <tr>
         <td>

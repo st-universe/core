@@ -14,6 +14,6 @@ final class SendPasswordRequest implements SendPasswordRequestInterface
     #[Override]
     public function getEmailAddress(): string
     {
-        return $this->queryParameter('emailaddress')->string()->defaultsToIfEmpty('');
+        return $this->parameter('emailaddress')->string()->defaultsToIfEmpty('');
     }
 }

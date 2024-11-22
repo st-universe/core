@@ -14,14 +14,14 @@ final class EditKnPlotRequest implements EditKnPlotRequestInterface
     #[Override]
     public function getPlotId(): int
     {
-        return $this->queryParameter('plotid')->int()->required();
+        return $this->parameter('plotid')->int()->required();
     }
 
     #[Override]
     public function getText(): string
     {
         return $this->tidyString(
-            $this->queryParameter('description')->string()->trim()->required()
+            $this->parameter('description')->string()->trim()->required()
         );
     }
 
@@ -29,7 +29,7 @@ final class EditKnPlotRequest implements EditKnPlotRequestInterface
     public function getTitle(): string
     {
         return $this->tidyString(
-            $this->queryParameter('title')->string()->trim()->required()
+            $this->parameter('title')->string()->trim()->required()
         );
     }
 }

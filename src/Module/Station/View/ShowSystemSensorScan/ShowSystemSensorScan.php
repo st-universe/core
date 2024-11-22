@@ -36,8 +36,8 @@ final class ShowSystemSensorScan implements ViewControllerInterface
             false
         );
 
-        $cx = request::getIntFatal('cx');
-        $cy = request::getIntFatal('cy');
+        $cx = request::getIntFatal('x');
+        $cy = request::getIntFatal('y');
 
 
         $field = $ship->getLocation();

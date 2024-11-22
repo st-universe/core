@@ -14,12 +14,12 @@ final class NewPostRequest implements NewPostRequestInterface
     #[Override]
     public function getBoardId(): int
     {
-        return $this->queryParameter('bid')->int()->required();
+        return $this->parameter('boardid')->int()->required();
     }
 
     #[Override]
     public function getTopicId(): int
     {
-        return $this->queryParameter('tid')->int()->required();
+        return $this->parameter('topicid')->int()->required();
     }
 }

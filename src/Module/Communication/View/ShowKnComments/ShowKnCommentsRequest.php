@@ -14,6 +14,6 @@ final class ShowKnCommentsRequest implements ShowKnCommentsRequestInterface
     #[Override]
     public function getKnPostId(): int
     {
-        return $this->queryParameter('posting')->int()->required();
+        return $this->parameter('knid')->int()->required();
     }
 }

@@ -14,12 +14,12 @@ final class RenameBuildplanRequest implements RenameBuildplanRequestInterface
     #[Override]
     public function getId(): int
     {
-        return $this->queryParameter('planid')->int()->required();
+        return $this->parameter('planid')->int()->required();
     }
 
     #[Override]
     public function getNewName(): string
     {
-        return trim(strip_tags($this->queryParameter('buildplanname')->string()->defaultsToIfEmpty('')));
+        return trim(strip_tags($this->parameter('buildplanname')->string()->defaultsToIfEmpty('')));
     }
 }

@@ -14,12 +14,12 @@ final class DeleteKnPlotMemberRequest implements DeleteKnPlotMemberRequestInterf
     #[Override]
     public function getPlotId(): int
     {
-        return $this->queryParameter('plotid')->int()->required();
+        return $this->parameter('plotid')->int()->required();
     }
 
     #[Override]
     public function getRecipientId(): int
     {
-        return $this->queryParameter('memid')->int()->required();
+        return $this->parameter('memid')->int()->required();
     }
 }

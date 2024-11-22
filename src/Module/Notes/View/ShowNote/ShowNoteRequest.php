@@ -14,6 +14,6 @@ final class ShowNoteRequest implements ShowNoteRequestInterface
     #[Override]
     public function getNoteId(): int
     {
-        return $this->queryParameter('note')->int()->required();
+        return $this->parameter('noteid')->int()->required();
     }
 }

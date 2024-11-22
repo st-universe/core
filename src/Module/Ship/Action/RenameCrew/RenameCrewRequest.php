@@ -15,7 +15,7 @@ final class RenameCrewRequest implements RenameCrewRequestInterface
     public function getName(int $crewId): string
     {
         return $this->tidyString(
-            $this->queryParameter('rn_crew_' . $crewId . '_value')->string()->defaultsToIfEmpty('')
+            $this->parameter('rn_crew_' . $crewId . '_value')->string()->defaultsToIfEmpty('')
         );
     }
 }

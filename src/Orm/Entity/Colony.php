@@ -395,15 +395,15 @@ class Colony implements ColonyInterface
     }
 
     #[Override]
-    public function getTwilightZone(): int
+    public function getTwilightZone(int $timestamp): int
     {
         $twilightZone = 0;
 
         $width = $this->getSurfaceWidth();
         $rotationTime = $this->getRotationTime();
-        $colonyTimeSeconds = $this->getColonyTimeSeconds();
+        $colonyTimeSeconds = $this->getColonyTimeSeconds($timestamp);
 
-        if ($this->getDayTimePrefix() == 1) {
+        if ($this->getDayTimePrefix($timestamp) == 1) {
             $scaled = floor((((100 / ($rotationTime * 0.125)) * ($colonyTimeSeconds - $rotationTime * 0.25)) / 100) * $width);
             if ($scaled == 0) {
                 $twilightZone = - (($width) - 1);
@@ -413,14 +413,14 @@ class Colony implements ColonyInterface
                 $twilightZone = (int) - (($width) - $scaled);
             }
         }
-        if ($this->getDayTimePrefix() == 2) {
+        if ($this->getDayTimePrefix($timestamp) == 2) {
             $twilightZone = $width;
         }
-        if ($this->getDayTimePrefix() == 3) {
+        if ($this->getDayTimePrefix($timestamp) == 3) {
             $scaled = floor((((100 / ($rotationTime * 0.125)) * ($colonyTimeSeconds - $rotationTime * 0.75)) / 100) * $width);
             $twilightZone = (int) ($width - $scaled);
         }
-        if ($this->getDayTimePrefix() == 4) {
+        if ($this->getDayTimePrefix($timestamp) == 4) {
             $twilightZone = 0;
         }
 
@@ -473,33 +473,32 @@ class Colony implements ColonyInterface
         return (int) (TimeConstants::ONE_DAY_IN_SECONDS * $this->getRotationFactor() / 100);
     }
 
-    #[Override]
-    public function getColonyTimeSeconds(): int
+    public function getColonyTimeSeconds(int $timestamp): int
     {
-        return time() % $this->getRotationTime();
+        return $timestamp % $this->getRotationTime();
     }
 
     #[Override]
-    public function getColonyTimeHour(): ?string
-    {
-        $rotationTime = $this->getRotationTime();
-
-        return sprintf("%02d", (int) floor(($rotationTime / 3600) * ($this->getColonyTimeSeconds() / $rotationTime)));
-    }
-
-    #[Override]
-    public function getColonyTimeMinute(): ?string
+    public function getColonyTimeHour(int $timestamp): ?string
     {
         $rotationTime = $this->getRotationTime();
 
-        return sprintf("%02d", (int) floor(60 * (($rotationTime / 3600) * ($this->getColonyTimeSeconds() / $rotationTime) - ((int) $this->getColonyTimeHour()))));
+        return sprintf("%02d", (int) floor(($rotationTime / 3600) * ($this->getColonyTimeSeconds($timestamp) / $rotationTime)));
     }
 
     #[Override]
-    public function getDayTimePrefix(): ?int
+    public function getColonyTimeMinute(int $timestamp): ?string
+    {
+        $rotationTime = $this->getRotationTime();
+
+        return sprintf("%02d", (int) floor(60 * (($rotationTime / 3600) * ($this->getColonyTimeSeconds($timestamp) / $rotationTime) - ((int) $this->getColonyTimeHour($timestamp)))));
+    }
+
+    #[Override]
+    public function getDayTimePrefix(int $timestamp): ?int
     {
         $daytimeprefix = null;
-        $daypercent = (int) (($this->getColonyTimeSeconds() / $this->getRotationTime()) * 100);
+        $daypercent = (int) (($this->getColonyTimeSeconds($timestamp) / $this->getRotationTime()) * 100);
         if ($daypercent > 25 && $daypercent <= 37.5) {
             $daytimeprefix = 1; //Sonnenaufgang
         }
@@ -516,22 +515,22 @@ class Colony implements ColonyInterface
     }
 
     #[Override]
-    public function getDayTimeName(): ?string
+    public function getDayTimeName(int $timestamp): ?string
     {
         $daytimename = null;
-        if ($this->getDayTimePrefix() == 1) {
+        if ($this->getDayTimePrefix($timestamp) == 1) {
             $daytimename = 'Morgen';
         }
 
-        if ($this->getDayTimePrefix() == 2) {
+        if ($this->getDayTimePrefix($timestamp) == 2) {
             $daytimename = 'Tag';
         }
 
-        if ($this->getDayTimePrefix() == 3) {
+        if ($this->getDayTimePrefix($timestamp) == 3) {
             $daytimename = 'Abend';
         }
 
-        if ($this->getDayTimePrefix() == 4) {
+        if ($this->getDayTimePrefix($timestamp) == 4) {
             $daytimename = 'Nacht';
         }
         return $daytimename;

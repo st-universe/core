@@ -14,12 +14,12 @@ final class CreateRelationRequest implements CreateRelationRequestInterface
     #[Override]
     public function getCounterpartId(): int
     {
-        return $this->queryParameter('oid')->int()->required();
+        return $this->parameter('oid')->int()->required();
     }
 
     #[Override]
     public function getRelationType(): int
     {
-        return $this->queryParameter('type')->int()->required();
+        return $this->parameter('type')->int()->required();
     }
 }

@@ -30,9 +30,7 @@ final class BuildOnField implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_BUILD';
 
-    public function __construct(private PlanetFieldHostProviderInterface $planetFieldHostProvider, private BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository, private ResearchedRepositoryInterface $researchedRepository, private BuildingRepositoryInterface $buildingRepository, private PlanetFieldRepositoryInterface $planetFieldRepository, private ColonyStorageManagerInterface $colonyStorageManager, private ColonyRepositoryInterface $colonyRepository, private BuildingActionInterface $buildingAction, private PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever, private BuildingManagerInterface $buildingManager)
-    {
-    }
+    public function __construct(private PlanetFieldHostProviderInterface $planetFieldHostProvider, private BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository, private ResearchedRepositoryInterface $researchedRepository, private BuildingRepositoryInterface $buildingRepository, private PlanetFieldRepositoryInterface $planetFieldRepository, private ColonyStorageManagerInterface $colonyStorageManager, private ColonyRepositoryInterface $colonyRepository, private BuildingActionInterface $buildingAction, private PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever, private BuildingManagerInterface $buildingManager) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -48,7 +46,7 @@ final class BuildOnField implements ActionControllerInterface
         if ($field->getTerraformingId() > 0) {
             return;
         }
-        $building = $this->buildingRepository->find(request::indInt('bid'));
+        $building = $this->buildingRepository->find(request::indInt('buildingid'));
         if ($building === null) {
             return;
         }
@@ -205,7 +203,7 @@ final class BuildOnField implements ActionControllerInterface
                 $currentBuildingCost = $field->getBuilding()->getCosts()->toArray();
                 $result = array_filter(
                     $currentBuildingCost,
-                    fn (BuildingCostInterface $buildingCost): bool => $commodityId === $buildingCost->getCommodityId()
+                    fn(BuildingCostInterface $buildingCost): bool => $commodityId === $buildingCost->getCommodityId()
                 );
                 if (
                     !$storage->containsKey($commodityId) &&
@@ -232,7 +230,7 @@ final class BuildOnField implements ActionControllerInterface
             if ($field->hasBuilding()) {
                 $result = array_filter(
                     $currentBuildingCost,
-                    fn (BuildingCostInterface $buildingCost): bool => $commodityId === $buildingCost->getCommodityId()
+                    fn(BuildingCostInterface $buildingCost): bool => $commodityId === $buildingCost->getCommodityId()
                 );
                 if ($result !== []) {
                     $amount += current($result)->getHalfAmount();

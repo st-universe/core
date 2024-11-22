@@ -4,7 +4,7 @@
     {% set fieldId = field.getId %}
     {% set fieldType = field.getFieldType %}
     {% set fieldCssClass = field.getCssClass %}
-    {% set dayNightPrefix = field.getDayNightPrefix %}
+    {% set dayNightPrefix = getDayNightPrefix(field) %}
 
     <div style="{{ style }}" class="{{ fieldCssClass }}">
         {% if field.hasBuilding %}

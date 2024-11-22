@@ -14,12 +14,12 @@ final class ShowKnPlotRequest implements ShowKnPlotRequestInterface
     #[Override]
     public function getPlotId(): int
     {
-        return $this->queryParameter('plotid')->int()->required();
+        return $this->parameter('plotid')->int()->required();
     }
 
     #[Override]
     public function getKnOffset(): int
     {
-        return $this->queryParameter('mark')->int()->defaultsTo(0);
+        return $this->parameter('mark')->int()->defaultsTo(0);
     }
 }

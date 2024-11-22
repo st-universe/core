@@ -51,8 +51,8 @@ final class ShowSubspaceTelescopeScan implements ViewControllerInterface
             return;
         }
 
-        $cx = request::getIntFatal('cx');
-        $cy = request::getIntFatal('cy');
+        $cx = request::getIntFatal('x');
+        $cy = request::getIntFatal('y');
 
         $scanCost = $this->calculateScanCost($colony, $cx, $cy);
 
