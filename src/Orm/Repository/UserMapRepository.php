@@ -29,13 +29,18 @@ final class UserMapRepository extends EntityRepository implements UserMapReposit
                 WHERE l.cx BETWEEN %d AND %d
                 AND l.cy BETWEEN %d AND %d
                 AND l.layer_id = %d
-                ON CONFLICT DO NOTHING',
+                AND NOT EXISTS (SELECT * FROM stu_user_map um
+                                WHERE um.user_id = %d
+                                AND um.layer_id = l.layer_id
+                                AND um.cx = l.cx
+                                AND um.cy = l.cy)',
                 $userId,
                 $cx - $range,
                 $cx + $range,
                 $cy - $range,
                 $cy + $range,
-                $layerId
+                $layerId,
+                $userId,
             )
         );
     }
