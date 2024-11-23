@@ -190,4 +190,8 @@ interface ShipRumpInterface
     public function getBaseWarpDrive(): int;
 
     public function setBaseWarpDrive(int $baseWarpDrive): ShipRumpInterface;
+
+    public function getNpcBuildable(): ?bool;
+
+    public function setNpcBuildable(?bool $npcBuildable): ShipRumpInterface;
 }

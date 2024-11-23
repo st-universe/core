@@ -12,6 +12,10 @@ use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
+use Stu\Orm\Repository\ShipRumpRepositoryInterface;
+use Stu\Orm\Entity\ShipBuildplanInterface;
+
+
 
 final class ShowShipCreator implements ViewControllerInterface
 {
@@ -21,7 +25,8 @@ final class ShowShipCreator implements ViewControllerInterface
         private ShipBuildplanRepositoryInterface $shipBuildplanRepository,
         private UserRepositoryInterface $userRepository,
         private LayerRepositoryInterface $layerRepository,
-        private TorpedoTypeRepositoryInterface $torpedoTypeRepository
+        private TorpedoTypeRepositoryInterface $torpedoTypeRepository,
+        private ShipRumpRepositoryInterface $shipRumpRepository
     ) {}
 
     #[Override]
@@ -42,13 +47,56 @@ final class ShowShipCreator implements ViewControllerInterface
             if ($buildplanId > 0) {
                 $buildplan = $this->shipBuildplanRepository->find($buildplanId);
                 if ($buildplan !== null) {
+
+                    $rump = $buildplan->getRump();
+
+                    $allRumps = iterator_to_array($this->shipRumpRepository->getList());
+                    $filteredRumps = array_filter($allRumps, fn($rump) => $rump->getNpcBuildable() === true);
+
+                    $isRumpInFiltered = false;
+                    foreach ($filteredRumps as $filteredRump) {
+                        if ($filteredRump->getId() === $rump->getId()) {
+                            $isRumpInFiltered = true;
+                            break;
+                        }
+                    }
+
+                    if (!$isRumpInFiltered) {
+                        $game->addInformation('Dieser Rumpf darf nicht gebaut werden!');
+                        return;
+                    }
+
+
                     $possibleTorpedoTypes = $this->torpedoTypeRepository->getByLevel($buildplan->getRump()->getTorpedoLevel());
                     $game->setTemplateVar('TORPEDO_TYPES', $possibleTorpedoTypes);
                     $game->setTemplateVar('SELECTED_BUILDPLAN', $buildplan);
                     $game->setTemplateVar('LAYERS', $this->layerRepository->findAll());
                 }
             } else {
-                $game->setTemplateVar('BUILDPLANS', $this->shipBuildplanRepository->getByUser($userId));
+                $allRumps = iterator_to_array($this->shipRumpRepository->getList());
+                $allBuildplans = $this->shipBuildplanRepository->getByUser($userId);
+                $filteredBuildplans = array_filter($allBuildplans, function ($buildplan) use ($allRumps) {
+                    $rump = $buildplan->getRump();
+                    foreach ($allRumps as $rumpItem) {
+                        if ($rumpItem->getId() === $rump->getId()  && $rumpItem->getNpcBuildable() === true) {
+                            return true;
+                        }
+                    }
+                    return false;
+                });
+
+                $filteredBuildplans = array_filter($allBuildplans, function ($buildplan) use ($allRumps) {
+                    $rump = $buildplan->getRump();
+                    foreach ($allRumps as $rumpItem) {
+                        if ($rumpItem->getId() === $rump->getId() && $rumpItem->getNpcBuildable() === true) {
+                            return true;
+                        }
+                    }
+                    return false;
+                });
+
+                $game->setTemplateVar('BUILDPLANS', $filteredBuildplans);
+                $game->setTemplateVar('DELETABLE_BUILDPLANS', array_filter($filteredBuildplans, fn($buildplan) => $this->isDeletable($buildplan)));
             }
         } else {
             $npcList = iterator_to_array($this->userRepository->getNpcList());
@@ -56,5 +104,10 @@ final class ShowShipCreator implements ViewControllerInterface
             $allUsers = array_merge($npcList, $nonNpcList);
             $game->setTemplateVar('ALL_USERS', $allUsers);
         }
+    }
+
+    private function isDeletable(ShipBuildplanInterface $buildplan): bool
+    {
+        return $buildplan->getShipCount() === 0;
     }
 }

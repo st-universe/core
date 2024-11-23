@@ -42,12 +42,28 @@ final class ShowBuildplanCreator implements ViewControllerInterface
             $selectedUser = $this->userRepository->find($userId);
             $game->setTemplateVar('USER_ID', $userId);
             $game->setTemplateVar('SELECTED_USER', $selectedUser);
-            $game->setTemplateVar('SHIP_RUMPS', $this->shipRumpRepository->getList());
+            $allRumps = iterator_to_array($this->shipRumpRepository->getList());
+            $filteredRumps = array_filter($allRumps, fn($rump) => $rump->getNpcBuildable() === true);
+
+            $game->setTemplateVar('SHIP_RUMPS', $filteredRumps);
 
             if ($rumpId > 0) {
                 $rump = $this->shipRumpRepository->find($rumpId);
                 if ($rump === null) {
                     throw new RuntimeException(sprintf('rumpId %d does not exist', $rumpId));
+                }
+
+                $isRumpInFiltered = false;
+                foreach ($filteredRumps as $filteredRump) {
+                    if ($filteredRump->getId() === $rumpId) {
+                        $isRumpInFiltered = true;
+                        break;
+                    }
+                }
+
+                if (!$isRumpInFiltered) {
+                    $game->addInformation('Dieser Rumpf darf nicht gebaut werden!');
+                    return;
                 }
 
                 $game->setTemplateVar('RUMP_ID', $rumpId);
