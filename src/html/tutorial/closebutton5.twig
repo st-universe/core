@@ -1,0 +1,91 @@
+<button id="tutorial-close-button" class="ferengi-close-button">
+    <div class="button-frame">
+        <div class="button-inner">
+            <span class="close-symbol">&#x2715;</span>
+        </div>
+    </div>
+</button>
+
+<style>
+.ferengi-close-button {
+    position: absolute;
+    width: 100px;
+    height: 50px;
+    background-color: #956a2f;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    z-index: 1002;
+    clip-path: polygon(
+        10% 0%,
+        90% 0%,
+        100% 50%,
+        90% 100%,
+        10% 100%,
+        0% 50%
+    );
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+
+.button-frame {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #b38329, #845736);
+    clip-path: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+.button-inner {
+    position: absolute;
+    width: 90%;
+    height: 90%;
+    background-color: #b9a080;
+    clip-path: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.3);
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.close-symbol {
+    color: #60492c;
+    font-size: 28px;
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(96, 72, 41, 0.6);
+    transition: all 0.2s ease;
+}
+
+.ferengi-close-button:hover .button-inner {
+    background-color: #f0e6d2;
+    animation: shineAnimation 1s infinite;
+}
+
+.ferengi-close-button:active .button-inner {
+    transform: scale(0.95);
+    box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.3);
+}
+
+.ferengi-close-button:hover .close-symbol {
+    color: #b38329;
+    text-shadow: 0 0 12px rgba(179, 131, 41, 0.8);
+}
+
+@keyframes shineAnimation {
+    0% {
+        box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.5);
+    }
+    50% {
+        box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.8);
+    }
+    100% {
+        box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.5);
+    }
+}
+</style>
