@@ -1,0 +1,331 @@
+<div id="padd-popup" class="custom-padd">
+    <div class="deco-button-shadow1"></div>
+    <div class="deco-button1"></div>
+    <div class="padd-background">
+        <div class="padd-background-image"></div> 
+
+        <div class="padd-screen">
+            <div class="padd-screen-frame">
+                <div class="padd-screen-inner">
+                    <div id="padd-title" class="padd-title"></div>
+                    <div id="padd-text" class="padd-text"></div>
+                </div>
+            </div>
+        </div>
+        <div class="nav-buttons">
+            <div id="back-button" class="nav-button">
+                <span class="nav-arrow">◀</span>
+            </div>
+            <div id="next-button" class="nav-button">
+                <span class="nav-arrow">▶</span>
+            </div>
+        </div>
+                <div id="deco-button-2" class="deco-button variant-1"></div>
+        <div id="deco-button-2" class="deco-button variant-2"></div>
+        <div id="deco-button-2" class="deco-button variant-3"></div>
+    </div>
+</div>
+
+<style>
+.custom-padd {
+    position: fixed;
+    top: 15%;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    z-index: 1003;
+    cursor: move;
+    transition: left 0.5s ease-out;
+}
+
+.padd-background {
+    position: relative;
+    width: 350px;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.padd-background-image {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #956a2f;
+    clip-path: polygon(75% 0, 100% 35%, 68% 100%, 32% 100%, 0 35%, 25% 0);
+    background-image: linear-gradient(90deg, rgba(255, 180, 0, 0.48), rgba(108, 75, 29, 0.73)), url('https://stuniverse.de/assets/navigation/ferengi_padd_background.png');
+    background-size: cover;
+    background-blend-mode: multiply;
+    filter: brightness(5.0) contrast(0.9);
+    border-radius: 10px;
+    z-index: -1; 
+}
+
+
+
+
+.padd-screen {
+    position: relative;
+    width: 280px;
+    height: 400px;
+    background-color: #000000;
+    clip-path: polygon(75% 0px, 100% 42%, 80% 90%, 20% 90%, 0px 42%, 25% 0px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.padd-screen-frame {
+    position: absolute;
+    top: 2%;
+    left: 3.5%;
+    width: 260px;
+    height: 380px;
+    background-color: #5E1488;
+    clip-path: polygon(75% 0px, 100% 42%, 80% 90%, 20% 90%, 0px 42%, 25% 0px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
+
+.padd-screen-inner {
+    position: absolute;
+    top: 2%;
+    left: 2%;
+    width: 250px;
+    height: 365px;
+    background-color: #000000;
+    clip-path: polygon(75% 0px, 100% 42%, 80% 90%, 20% 90%, 0px 42%, 25% 0px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+}
+
+
+.padd-title {
+    color: #B38329;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 5px;
+    position: absolute;
+    top: 1%;
+    width: 53%;
+}
+
+.padd-text {
+    color: #A48BDB;
+    font-size: 13px;
+    text-align: left;
+    overflow-y: auto;
+    height: 65%;
+    width: 65%;
+    position: absolute;
+    margin-top: 1%;
+    left: 20%;
+    scrollbar-width: thin; 
+    scrollbar-color: #5E1488 transparent; 
+}
+
+
+.padd-text::-webkit-scrollbar {
+    width: 8px; 
+}
+
+.padd-text::-webkit-scrollbar-track {
+    background: transparent; 
+}
+
+.padd-text::-webkit-scrollbar-thumb {
+    background-color: #5E1488; 
+    border-radius: 10px;
+    background-clip: content-box; 
+}
+
+.padd-text::-webkit-scrollbar-button {
+    display: none; 
+}
+
+
+.nav-buttons {
+    position: absolute;
+    bottom: 24%;
+    left: 22%;
+    width: 57%;
+    display: flex;
+    justify-content: space-between;
+    z-index: 1;
+}
+
+.nav-button {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #845736; 
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.5)); 
+    cursor: pointer;
+    position: relative;
+    border: 1px solid rgba(0,0,0,0.2);
+    box-shadow: 
+        0 4px 6px rgba(0,0,0,0.3), 
+        inset 0 1px 0 rgba(255,255,255,0.2);
+    transition: all 0.1s ease-out;
+}
+
+
+#back-button {
+    width: 90px;
+}
+
+#next-button {
+    width: 90px;
+}
+
+.nav-button:hover {
+    box-shadow: 
+        0 6px 8px rgba(0,0,0,0.3), 
+        inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+.nav-button:active {
+    box-shadow: 
+        0 2px 4px rgba(0,0,0,0.3), 
+        inset 0 1px 2px rgba(0,0,0,0.2);
+    transform: translateY(2px);
+}
+
+.nav-button.inactive {
+    background-color: #4f3424;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.nav-button.inner-update {
+    background-color: #4f3424;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.nav-arrow {
+    color: #c9a63e;
+    font-size: 24px;
+    user-select: none;
+}
+
+.nav-button.inactive .nav-arrow,
+.nav-button.inner-update .nav-arrow {
+    color: #8b7429;
+}
+
+.deco-button-shadow1 {
+    position: absolute;
+    width: 56px;
+    height: 42px;
+    background-color: #5e452c;
+    left: 42.2%;
+    top: -19px;
+    z-index: 3;
+}
+
+.deco-button1 {
+    position: absolute;
+    width: 50px;
+    height: 40px;
+    background-color: #8b6b42;
+    left: 43%; 
+    top: -20px;
+    z-index: 4;
+    background-image: repeating-linear-gradient( to right, rgba(147, 117, 87, 0.7) 2px, rgba(94, 69, 44, 0.7) 6px, rgba(39, 41, 43, 0.7) 4px, rgba(86, 93, 100, 0.7) 8px );
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+}
+
+.deco-button {
+    height: 40px;
+    position: relative;
+    cursor: pointer;
+    box-shadow: 
+        0 2px 0 rgba(0,0,0,0.3),
+        inset 0 1px 0 rgba(255,255,255,0.2);
+    transition: all 0.1s ease-out;
+    margin: 10px; 
+}
+
+.deco-button:hover {
+    box-shadow: 
+        0 3px 0 rgba(0,0,0,0.3),
+        inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+.deco-button:active {
+    box-shadow: 
+        0 0 0 rgba(0,0,0,0.3),
+        inset 0 1px 2px rgba(0,0,0,0.2);
+    transform: translateY(2px);
+}
+
+#deco-button-2 {
+    background-color: #60492c;
+    clip-path: polygon(0px 0%, 100% 0px, 100% 100%, 11px 100%);
+    width: 90px;
+    top: 3%;
+    left: -12%;
+    background-image: repeating-linear-gradient(
+        to right,
+        rgba(47, 37, 27, 0.7) 2px, 
+        rgba(30, 22, 14, 0.7) 6px, 
+        rgba(19, 20, 21, 0.7) 4px, 
+        rgba(43, 46, 50, 0.7) 8px
+    );
+    border: 2px solid rgba(0, 0, 0, 0.5); 
+    border-radius: 3px;
+    transition: all 0.1s ease-out;
+}
+
+#deco-button-2:hover {
+    box-shadow: 
+        0 4px 6px rgba(0,0,0,0.3), 
+        inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+#deco-button-2:active {
+    box-shadow: 
+        0 1px 3px rgba(0,0,0,0.3), 
+        inset 0 1px 2px rgba(0,0,0,0.2);
+    transform: translateY(2px);
+}
+
+
+#deco-button-2.variant-1 {
+    width: 100px;
+    top: 5%;
+    left: -10%;
+    clip-path: polygon(0px 0%, 90% 0px, 90% 100%, 10px 100%);
+}
+
+#deco-button-2.variant-2 {
+    width: 80px;
+    top: -5%;
+    left: 15%;
+    clip-path: polygon(0px 0%, 95% 0px, 80% 100%, 0px 100%);
+}
+
+#deco-button-2.variant-3 {
+    width: 150px;
+    height: 20px;
+    top: -5%;
+    left: 1%;
+    clip-path: polygon(0px 0%, 95% 0px, 91% 100%, 4% 100%);
+}
+
+
+
+</style>

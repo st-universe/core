@@ -16,14 +16,8 @@ final class ShowPadd implements ViewControllerInterface
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        if ($game->getUser()->getFactionId() === FactionEnum::FACTION_ROMULAN) {
-            $game->setTemplateFile('html/tutorial/padd2.twig');
-        } elseif ($game->getUser()->getFactionId() === FactionEnum::FACTION_KLINGON) {
-            $game->setTemplateFile('html/tutorial/padd3.twig');
-        } elseif ($game->getUser()->getFactionId() === FactionEnum::FACTION_CARDASSIAN) {
-            $game->setTemplateFile('html/tutorial/padd4.twig');
-        } else {
-            $game->setTemplateFile('html/tutorial/padd1.twig');
-        }
+        $factionId = $game->getUser()->getFactionId();
+        $templateFile = sprintf('html/tutorial/padd%d.twig', $factionId);
+        $game->setTemplateFile($templateFile);
     }
 }
