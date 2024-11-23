@@ -141,6 +141,9 @@ class ShipRump implements ShipRumpInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $base_warpdrive = 0;
 
+    #[Column(type: 'boolean', nullable: true)]
+    private ?bool $npc_buildable = true;
+
     #[ManyToOne(targetEntity: 'ShipRumpRole')]
     #[JoinColumn(name: 'role_id', referencedColumnName: 'id')]
     private ?ShipRumpRoleInterface $shipRumpRole = null;
@@ -752,5 +755,18 @@ class ShipRump implements ShipRumpInterface
     public function getSpecialAbilities(): Collection
     {
         return $this->specialAbilities;
+    }
+
+    #[Override]
+    public function getNpcBuildable(): ?bool
+    {
+        return $this->npc_buildable;
+    }
+
+    #[Override]
+    public function setNpcBuildable(?bool $npcBuildable): ShipRumpInterface
+    {
+        $this->npc_buildable = $npcBuildable;
+        return $this;
     }
 }
