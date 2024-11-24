@@ -50,7 +50,9 @@ final class DeleteBuildplan implements ActionControllerInterface
             $buildplan->getUserId(),
             $crewCount
         );
-        $this->createLogEntry($logText, $userId);
+        if ($game->getUser()->isNpc()) {
+            $this->createLogEntry($logText, $userId);
+        }
 
         $game->addInformation('Der Bauplan wurde gelöscht');
     }

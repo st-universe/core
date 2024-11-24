@@ -112,8 +112,9 @@ final class CreateShip implements ActionControllerInterface
             $cy,
             $reason
         );
-
-        $this->createLogEntry($logText, $game->getUser()->getId());
+        if ($game->getUser()->isNpc()) {
+            $this->createLogEntry($logText, $game->getUser()->getId());
+        }
 
         $game->addInformation(sprintf('%d Schiff(e) wurden erstellt', $shipCount));
     }

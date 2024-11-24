@@ -168,7 +168,9 @@ final class CreateBuildplan implements ActionControllerInterface
                 $reason
             );
 
-            $this->createLogEntry($logText, $game->getUser()->getId());
+            if ($game->getUser()->isNpc()) {
+                $this->createLogEntry($logText, $game->getUser()->getId());
+            }
 
             $game->addInformation('Bauplan wurde erstellt');
         } else {

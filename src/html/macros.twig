@@ -92,7 +92,7 @@
 {{ _self.navigation_item('Datenbank', 'database', 'data') }}
 {{ _self.navigation_item('Ereignisse', 'history', 'history') }}
 {{ _self.navigation_item('Karte', 'starmap', 'map') }}
-{% if isNpc %}
+{% if isNpc or isAdmin %}
 {% set linkid = 'nav_item_ticks' %}
 <div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/npc'; }"
     onmouseover="cp('{{ linkid }}','navigation/menu_ticks1', 'png')"
