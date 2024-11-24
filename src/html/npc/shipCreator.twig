@@ -31,6 +31,19 @@
                 <input type="submit" name="B_DELETE_BUILDPLAN" value="Löschen" style="background-color: #ff2626; color: #fff; border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer;">
             </form>
         {% endif %}
+        <br>
+        <span>Crew: {{ buildplan.getCrew }}</span>
+                <div style="margin-top: 10px;">
+            {% for module in buildplan.getModules %}
+                <img src="/assets/commodities/{{ module.getModule.getCommodityId }}.png"
+                                title="{{ module.getModule.getName }}" style="margin: 2px;" />
+            {% endfor %}
+    </div>
+            <form action="/npc/index.php" method="post">
+            <input type="hidden" name="planid" value="{{ buildplan.getId }}">
+            <input type="text" name="newName" value="{{ buildplan.getName }}" style="margin-bottom: 10px;">
+            <input type="submit" name="B_CHANGE_BUILDPLAN_NAME" value="Speichern" style="background-color: #4CAF50; color: #fff; border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer;">
+        </form>
     </div>
 {% endfor %}
 
