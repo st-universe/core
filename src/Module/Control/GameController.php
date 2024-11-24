@@ -470,18 +470,18 @@ final class GameController implements GameControllerInterface
                 $this->session->checkLoginCookie();
             }
 
-            if (
-                $admin_check === true
-                && $this->isAdmin() === false
-            ) {
-                header('Location: /');
+            if ($view === ModuleViewEnum::NPC) {
+                if (!$this->isNpc() && !$this->isAdmin()) {
+                    header('Location: /');
+                    exit;
+                }
             }
 
-            if (
-                $npc_check === true
-                && $this->isNpc() === false
-            ) {
-                header('Location: /');
+            if ($view === ModuleViewEnum::ADMIN) {
+                if (!$this->isAdmin()) {
+                    header('Location: /');
+                    exit;
+                }
             }
 
             $this->checkUserAndGameState($gameRequest);

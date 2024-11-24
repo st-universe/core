@@ -60,7 +60,9 @@ final class RenameBuildplan implements ActionControllerInterface
 
         $this->shipBuildplanRepository->save($plan);
 
-        $this->createLogEntry($oldName, $newName, $userId, $game->getUser()->getName(), $plan->getUser()->getName());
+        if ($game->getUser()->isNpc()) {
+            $this->createLogEntry($oldName, $newName, $userId, $game->getUser()->getName(), $plan->getUser()->getName());
+        }
 
         $game->addInformation(_('Der Name des Bauplans wurde geändert'));
     }

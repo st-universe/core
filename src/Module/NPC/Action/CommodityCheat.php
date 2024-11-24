@@ -20,9 +20,7 @@ final class CommodityCheat implements ActionControllerInterface
     public const string ACTION_IDENTIFIER = 'B_COMMODITY_CHEAT';
 
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private ShipStorageManagerInterface $shipStorageManager, private CommodityRepositoryInterface $commodityRepository, private NPCLogRepositoryInterface $npcLogRepository)
-    {
-    }
+    public function __construct(private ShipLoaderInterface $shipLoader, private ShipStorageManagerInterface $shipStorageManager, private CommodityRepositoryInterface $commodityRepository, private NPCLogRepositoryInterface $npcLogRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -88,8 +86,9 @@ final class CommodityCheat implements ActionControllerInterface
                 $commodity->getName(),
                 $reason
             );
-
-            $this->createEntry($text, $user->getId());
+            if ($game->getUser()->isNpc()) {
+                $this->createEntry($text, $user->getId());
+            }
             $game->addInformation("Waren hinzugefügt");
         }
     }
