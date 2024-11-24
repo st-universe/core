@@ -14,6 +14,7 @@ use Stu\Module\NPC\View\ShowBuildplanCreator\ShowBuildplanCreator;
 use Stu\Module\NPC\Action\CreateShip;
 use Stu\Module\NPC\Action\DeleteBuildplan;
 use Stu\Module\NPC\View\ShowShipCreator\ShowShipCreator;
+use Stu\Module\NPC\Action\RenameBuildplan;
 
 use function DI\autowire;
 
@@ -22,7 +23,8 @@ return [
         CommodityCheat::ACTION_IDENTIFIER => autowire(CommodityCheat::class),
         CreateBuildplan::ACTION_IDENTIFIER => autowire(CreateBuildplan::class),
         CreateShip::ACTION_IDENTIFIER => autowire(CreateShip::class),
-        DeleteBuildplan::ACTION_IDENTIFIER => autowire(DeleteBuildplan::class)
+        DeleteBuildplan::ACTION_IDENTIFIER => autowire(DeleteBuildplan::class),
+        RenameBuildplan::ACTION_IDENTIFIER => autowire(RenameBuildplan::class)
     ],
     'NPC_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
