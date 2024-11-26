@@ -286,6 +286,10 @@ final class ShipWrapper implements ShipWrapperInterface
             return false;
         }
 
+        if ($this->ship->getUser() != $this->game->getUser()) {
+            return false;
+        }
+
         if (
             $this->ship->getBuildplan() != null
             && $this->ship->getBuildplan()->getUser() != $this->game->getUser()
