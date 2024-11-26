@@ -36,7 +36,8 @@ class LeaveFleetTest extends StuTestCase
 
         $this->subject = new LeaveFleet(
             $this->shipRepository,
-            $this->changeFleetLeader
+            $this->changeFleetLeader,
+            $this->initLoggerUtil()
         );
     }
 
@@ -56,6 +57,13 @@ class LeaveFleetTest extends StuTestCase
     {
         $fleet = $this->mock(FleetInterface::class);
 
+        $fleet->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(43);
+
+        $this->ship->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(42);
         $this->ship->shouldReceive('getFleet')
             ->withNoArgs()
             ->once()
@@ -82,6 +90,13 @@ class LeaveFleetTest extends StuTestCase
     {
         $fleet = $this->mock(FleetInterface::class);
 
+        $fleet->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(43);
+
+        $this->ship->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(42);
         $this->ship->shouldReceive('getFleet')
             ->withNoArgs()
             ->once()

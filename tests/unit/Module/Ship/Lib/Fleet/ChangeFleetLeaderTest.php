@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib\Fleet;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManagerInterface;
 use Mockery;
 use Mockery\MockInterface;
 use Override;
@@ -18,17 +19,17 @@ use Stu\StuTestCase;
 
 class ChangeFleetLeaderTest extends StuTestCase
 {
-    /** @var MockInterface|FleetRepositoryInterface */
-    private MockInterface $fleetRepository;
+    /** @var MockInterface&FleetRepositoryInterface */
+    private $fleetRepository;
+    /** @var MockInterface&ShipRepositoryInterface */
+    private $shipRepository;
+    /** @var MockInterface&CancelColonyBlockOrDefendInterface */
+    private $cancelColonyBlockOrDefend;
+    /** @var MockInterface&EntityManagerInterface */
+    private $entityManager;
 
-    /** @var MockInterface|ShipRepositoryInterface */
-    private MockInterface $shipRepository;
-
-    /** @var MockInterface|CancelColonyBlockOrDefendInterface */
-    private MockInterface $cancelColonyBlockOrDefend;
-
-    /** @var MockInterface|ShipInterface */
-    private ShipInterface $ship;
+    /** @var MockInterface&ShipInterface */
+    private $ship;
 
     private ChangeFleetLeaderInterface $subject;
 
@@ -39,6 +40,7 @@ class ChangeFleetLeaderTest extends StuTestCase
         $this->fleetRepository = $this->mock(FleetRepositoryInterface::class);
         $this->shipRepository = $this->mock(ShipRepositoryInterface::class);
         $this->cancelColonyBlockOrDefend = $this->mock(CancelColonyBlockOrDefendInterface::class);
+        $this->entityManager = $this->mock(EntityManagerInterface::class);
 
         //params
         $this->ship = $this->mock(ShipInterface::class);
@@ -46,7 +48,9 @@ class ChangeFleetLeaderTest extends StuTestCase
         $this->subject = new ChangeFleetLeader(
             $this->fleetRepository,
             $this->shipRepository,
-            $this->cancelColonyBlockOrDefend
+            $this->cancelColonyBlockOrDefend,
+            $this->entityManager,
+            $this->initLoggerUtil()
         );
     }
 
@@ -66,6 +70,9 @@ class ChangeFleetLeaderTest extends StuTestCase
             ->with(false)
             ->once();
 
+        $fleet->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(43);
         $fleet->shouldReceive('getShips')
             ->withNoArgs()
             ->andReturn($fleetShips);
@@ -93,6 +100,9 @@ class ChangeFleetLeaderTest extends StuTestCase
         $otherShip = $this->mock(ShipInterface::class);
         $fleetShips = [$this->ship, $otherShip];
 
+        $this->ship->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(42);
         $this->ship->shouldReceive('getFleet')
             ->withNoArgs()
             ->once()
@@ -107,7 +117,13 @@ class ChangeFleetLeaderTest extends StuTestCase
         $otherShip->shouldReceive('setIsFleetLeader')
             ->with(true)
             ->once();
+        $otherShip->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(44);
 
+        $fleet->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(43);
         $fleet->shouldReceive('getShips->toArray')
             ->withNoArgs()
             ->once()
@@ -128,6 +144,10 @@ class ChangeFleetLeaderTest extends StuTestCase
             ->once();
         $this->shipRepository->shouldReceive('save')
             ->with($otherShip)
+            ->once();
+
+        $this->entityManager->shouldReceive('flush')
+            ->withNoArgs()
             ->once();
 
         $this->subject->change($this->ship);
