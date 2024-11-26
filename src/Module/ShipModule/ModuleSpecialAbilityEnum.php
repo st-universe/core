@@ -56,6 +56,6 @@ final class ModuleSpecialAbilityEnum
             $result += 2 ** ($special->getSpecialId() - 1);
         }
 
-        return $result == 0 ? null : $result;
+        return $result == 0 ? null : (int)$result;
     }
 }

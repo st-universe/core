@@ -1459,11 +1459,6 @@ parameters:
 			path: src/Module/Ship/View/ShowTradeMenuTransfer/ShowTradeMenuTransfer.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\ShipModule\\\\ModuleSpecialAbilityEnum\\:\\:getHash\\(\\) should return int\\|null but returns float\\|int\\|null\\.$#"
-			count: 1
-			path: src/Module/ShipModule/ModuleSpecialAbilityEnum.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Starmap\\\\Lib\\\\ExploreableStarMap\\:\\:getFieldId\\(\\) should return int but returns int\\|null\\.$#"
 			count: 1
 			path: src/Module/Starmap/Lib/ExploreableStarMap.php
