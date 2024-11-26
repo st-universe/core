@@ -15,6 +15,7 @@ use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Entity\AllianceJobInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 use Doctrine\Common\Collections\Collection;
 
 class AllianceDeletionHandlerTest extends MockeryTestCase
@@ -23,6 +24,8 @@ class AllianceDeletionHandlerTest extends MockeryTestCase
     private $allianceJobRepository;
     /** @var AllianceActionManagerInterface&MockInterface */
     private $allianceActionManager;
+    /** @var UserRepositoryInterface&MockInterface */
+    private $userRepository;
 
     private PlayerDeletionHandlerInterface $handler;
 
@@ -30,12 +33,13 @@ class AllianceDeletionHandlerTest extends MockeryTestCase
     public function setUp(): void
     {
         $this->allianceJobRepository = Mockery::mock(AllianceJobRepositoryInterface::class);
-
         $this->allianceActionManager = Mockery::mock(AllianceActionManagerInterface::class);
+        $this->userRepository = Mockery::mock(UserRepositoryInterface::class);
 
         $this->handler = new AllianceDeletionHandler(
             $this->allianceJobRepository,
-            $this->allianceActionManager
+            $this->allianceActionManager,
+            $this->userRepository
         );
     }
 
@@ -118,7 +122,7 @@ class AllianceDeletionHandlerTest extends MockeryTestCase
             ->andReturnNull();
         $alliance->shouldReceive('getMembers')
             ->withNoArgs()
-            ->once()
+            ->twice()
             ->andReturn($members);
 
         $members->shouldReceive('removeElement')
@@ -191,7 +195,7 @@ class AllianceDeletionHandlerTest extends MockeryTestCase
             ->andReturnNull();
         $alliance->shouldReceive('getMembers')
             ->withNoArgs()
-            ->once()
+            ->twice()
             ->andReturn($members);
 
         $members->shouldReceive('removeElement')
