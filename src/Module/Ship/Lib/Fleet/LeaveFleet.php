@@ -5,13 +5,21 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib\Fleet;
 
 use Override;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class LeaveFleet implements LeaveFleetInterface
 {
-    public function __construct(private ShipRepositoryInterface $shipRepository, private ChangeFleetLeaderInterface $changeFleetLeader)
-    {
+    private LoggerUtilInterface $logger;
+
+    public function __construct(
+        private ShipRepositoryInterface $shipRepository,
+        private ChangeFleetLeaderInterface $changeFleetLeader,
+        LoggerUtilFactoryInterface $loggerUtilFactory
+    ) {
+        $this->logger = $loggerUtilFactory->getLoggerUtil();
     }
 
     #[Override]
@@ -23,7 +31,10 @@ final class LeaveFleet implements LeaveFleetInterface
             return false;
         }
 
+        $this->logger->logf('shipId %d leaving fleetId %d', $ship->getId(), $fleet->getId());
+
         if ($ship->isFleetLeader()) {
+            $this->logger->logf('now changing fleet leader');
             $this->changeFleetLeader->change($ship);
         } else {
             $fleet->getShips()->removeElement($ship);
