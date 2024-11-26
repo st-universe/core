@@ -50,7 +50,7 @@ use function DI\autowire;
 return [
     ErrorHandler::class => autowire(),
     ConfigInterface::class => function (): ConfigInterface {
-        $path = __DIR__ . '/../../';
+        $path = __DIR__ . '/../../config/';
         return new Config(
             array_map(fn(string $file): string => sprintf($file, $path), ConfigFileSetup::getConfigFileSetup())
         );

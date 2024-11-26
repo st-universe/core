@@ -10,8 +10,8 @@ return [
     ],
 
     'migrations_paths' => [
-        'Stu\Migrations\Sqlite' => '../../../src/Migrations/Sqlite',
-        'Stu\Testdata' => '../../../testdata/Migrations'
+        'Stu\Migrations\Pgsql' => '../../src/Migrations/Pgsql',
+        'Stu\Migrations\Sqlite' => '../../src/Migrations/Sqlite'
     ],
 
     'all_or_nothing' => true,
@@ -19,5 +19,5 @@ return [
     'check_database_platform' => true,
     'organize_migrations' => 'none',
     'connection' => null,
-    'em' => null,
+    'em' => null
 ];
