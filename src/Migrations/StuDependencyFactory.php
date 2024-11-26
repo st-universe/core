@@ -6,7 +6,6 @@ use Doctrine\Migrations\Configuration\EntityManager\ExistingEntityManager;
 use Doctrine\Migrations\Configuration\Migration\PhpFile;
 use Doctrine\Migrations\DependencyFactory;
 use Doctrine\ORM\EntityManagerInterface;
-use RuntimeException;
 use Stu\Config\ConfigStageEnum;
 use Stu\Config\Init;
 
@@ -19,8 +18,8 @@ class StuDependencyFactory extends DependencyFactory
         /** @var array<string> */
         $argv = $_SERVER['argv'];
 
-        $configStage = ConfigStageEnum::from(self::popArgument('--stage=', $argv));
-        $configuration = self::popArgument('--configuration=', $argv);
+        $configStage = ConfigStageEnum::from(self::popArgument('--stage=', $argv, ConfigStageEnum::PRODUCTION->value));
+        $configuration = self::popArgument('--configuration=', $argv, 'dist/db/migrations/production.php');
 
         return DependencyFactory::fromEntityManager(
             new PhpFile($configuration),
@@ -29,11 +28,11 @@ class StuDependencyFactory extends DependencyFactory
         );
     }
 
-    private static function popArgument(string $name, array $argv): string
+    private static function popArgument(string $name, array $argv, string $default): string
     {
         $filtered = array_filter($argv, fn(string $token): bool => str_starts_with($token, $name));
         if (count($filtered) !== 1) {
-            throw new RuntimeException('Argument "%s" wasnt found!', $name);
+            return $default;
         }
 
         foreach ($filtered as $key => $value) {
