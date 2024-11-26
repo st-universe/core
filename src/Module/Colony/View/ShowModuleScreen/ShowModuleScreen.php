@@ -70,7 +70,7 @@ final class ShowModuleScreen implements ViewControllerInterface
 
         $game->appendNavigationPart(
             sprintf(
-                '?id=%d&SHOW_MODULE_SCREEN=1&rump=%d',
+                '?id=%d&SHOW_MODULE_SCREEN=1&rumpid=%d',
                 $colony->getId(),
                 $rump->getId()
             ),
