@@ -71,8 +71,8 @@ final class ShipRetrofit implements ShipRetrofitInterface
 
             foreach ($deletingModules as $oldModule) {
                 $system = $this->shipSystemRepository->getByShipAndModule($ship->getId(), $oldModule->getModule()->getId());
-                if ($system !== null && $system->getStatus() >= 100) {
-                    if (mt_rand(1, 100) <= 25) {
+                if ($system !== null) {
+                    if ($system->getStatus() >= 100 && mt_rand(1, 100) <= 25) {
                         $returnedmodules[] = $system->getModule();
                     }
                     $this->shipSystemRepository->delete($system);
