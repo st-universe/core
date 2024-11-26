@@ -48,10 +48,10 @@ Code:
 bin/doctrine orm:generate-proxies
 ```
 
-- DB-Änderungen generieren:
+- DB-Änderungen mit Script generieren. In src/Migrations/Sqlite darf immer nur die aktuellste Datei liegen!
 
 ```shell
-vendor/bin/doctrine-migrations diff
+generate-migrations.sh
 ```
 
 - DB-Änderungen einspielen:
