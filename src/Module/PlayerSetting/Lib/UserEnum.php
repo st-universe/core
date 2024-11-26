@@ -8,6 +8,7 @@ final class UserEnum
 {
     //NPC IDs
     public const int USER_NOONE = 1;
+    public const int USER_FOREIGN_BUILDPLANS = 4;
     public const int USER_NPC_FERG = 14;
     public const int USER_NPC_KAZON = 17;
 
