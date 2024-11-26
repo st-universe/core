@@ -14,6 +14,6 @@ final class DeleteKnCommentRequest implements DeleteKnCommentRequestInterface
     #[Override]
     public function getCommentId(): int
     {
-        return $this->parameter('comment')->int()->required();
+        return $this->parameter('commentid')->int()->required();
     }
 }

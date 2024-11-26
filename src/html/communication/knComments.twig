@@ -14,7 +14,7 @@
         <span id="commentTextLength">0</span>/{{ CHARLIMIT }} <span>Zeichen</span>
       </td>
       <td style="text-align: right;">
-        <input type="button" class="button" onclick="postComment({{ POST.getId }})" value="Abschicken"
+        <input type="button" class="button" onclick="postComment({{ POST.getId }});" value="Abschicken"
           id="postCommentButton" />
       </td>
     </tr>
@@ -39,8 +39,8 @@
     <th style="width: 120px; text-align: center;">{{ data.getDate | date("Y-m-d H:i:s") }}</th>
     <th style="width: 20px">
       {% if data.isDeleteable %}
-      <a href="javascript:void(0);" onclick="deletePostingComment({{ data.getKnId }}, {{ data.getId }})" title="Löschen"
-        onmouseover="cp('delComment{{ data.getId }}','buttons/x2')"
+      <a href="javascript:void(0);" onclick="deletePostingComment({{ data.getKnId }}, {{ data.getId }});"
+        title="Löschen" onmouseover="cp('delComment{{ data.getId }}','buttons/x2')"
         onmouseout="cp('delComment{{ data.getId }}','buttons/x1')">
         <img src="/assets/buttons/x1.png" name="delComment{{ data.getId }}" />
       </a>

@@ -32,7 +32,7 @@
         <span id="commentTextLength">0</span>/250 <span>Zeichen</span>
       </td>
       <td style="text-align: right;">
-        <input type="button" class="button" onclick="postComment(42)" value="Abschicken" id="postCommentButton">
+        <input type="button" class="button" onclick="postComment(42);" value="Abschicken" id="postCommentButton">
       </td>
     </tr>
   </table>
@@ -41,7 +41,25 @@
   <input type="button" class="button" value="Kommentar schreiben" onclick="Element.hide(this.parentNode);Element.show(document.getElementById('writecomment'))">
 </div>
 <br>
-<div class="divhead" style="text-align: center;">Keine Kommentare vorhanden</div>
+<table class="tcal">
+  <tr>
+    <td rowspan="2" style="width: 40px">
+            <img src="assets/rassen/1kn.png" style="width: 40px">
+          </td>
+    <th style="text-align: center;">
+      Siedler 101
+    </th>
+    <th style="width: 120px; text-align: center;">2024-11-26 13:16:25</th>
+    <th style="width: 20px">
+            <a href="javascript:void(0);" onclick="deletePostingComment(42, 43);" title="L&Atilde;&para;schen" onmouseover="cp('delComment43','buttons/x2')" onmouseout="cp('delComment43','buttons/x1')">
+        <img src="/assets/buttons/x1.png" name="delComment43">
+      </a>
+          </th>
+  </tr>
+  <tr>
+    <td colspan="3">This is a KN post comment.</td>
+  </tr>
+</table>
 <script>
     document.getElementById('comment').addEventListener(
       "keyup",

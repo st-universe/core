@@ -206,10 +206,6 @@ function switchScanToLogbook() {
 	document.getElementById('scanlogbook').style.display = "";
 	document.getElementById('scandetails').style.display = "none";
 }
-function postLogEntry(shipid) {
-	log = Form.Element.serialize('log');
-	ajax_update('kncomments', "comm.php?B_POST_COMMENT=1&posting=" + postingId + "&" + comment);
-}
 function showRegionInfo(region) {
 	closeAjaxWindow();
 	openPJsWin('elt', 1);
