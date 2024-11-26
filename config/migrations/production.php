@@ -10,8 +10,7 @@ return [
     ],
 
     'migrations_paths' => [
-        'Stu\Migrations\Pgsql' => '../../../src/Migrations/Pgsql',
-        'Stu\Migrations\Sqlite' => '../../../src/Migrations/Sqlite'
+        'Stu\Migrations\Pgsql' => '../../src/Migrations/Pgsql'
     ],
 
     'all_or_nothing' => true,

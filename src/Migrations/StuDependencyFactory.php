@@ -19,7 +19,7 @@ class StuDependencyFactory extends DependencyFactory
         $argv = $_SERVER['argv'];
 
         $configStage = ConfigStageEnum::from(self::popArgument('--stage=', $argv, ConfigStageEnum::PRODUCTION->value));
-        $configuration = self::popArgument('--configuration=', $argv, 'dist/db/migrations/production.php');
+        $configuration = self::popArgument('--configuration=', $argv, 'config/migrations/production.php');
 
         return DependencyFactory::fromEntityManager(
             new PhpFile($configuration),

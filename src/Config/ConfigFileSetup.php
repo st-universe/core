@@ -4,7 +4,6 @@ namespace Stu\Config;
 
 use RuntimeException;
 
-//TODO create config folder and move config files and migration configs into it
 class ConfigFileSetup
 {
     /** @var array<string> */

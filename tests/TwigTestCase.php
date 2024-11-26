@@ -43,7 +43,7 @@ abstract class TwigTestCase extends StuTestCase
 {
     use MatchesSnapshots;
 
-    private static string $INTTEST_MIGRATIONS_CONFIG_PATH = 'dist/db/migrations/inttest.php';
+    private static string $INTTEST_MIGRATIONS_CONFIG_PATH = 'config/migrations/inttest.php';
 
     private static bool $isSchemaCreated = false;
     private static ?StuContainer $INTTEST_CONTAINER = null;
