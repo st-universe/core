@@ -12,7 +12,7 @@ final class DeleteKnPostRequest implements DeleteKnPostRequestInterface
     use CustomControllerHelperTrait;
 
     #[Override]
-    public function getPostId(): int
+    public function getKnId(): int
     {
         return $this->parameter('knid')->int()->required();
     }

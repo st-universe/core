@@ -59,7 +59,7 @@ class KnComment implements KnCommentInterface
     }
 
     #[Override]
-    public function getPostId(): int
+    public function getKnId(): int
     {
         return $this->post_id;
     }

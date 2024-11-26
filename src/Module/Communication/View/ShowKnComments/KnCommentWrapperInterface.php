@@ -8,7 +8,7 @@ interface KnCommentWrapperInterface
 {
     public function getId(): int;
 
-    public function getPostId(): int;
+    public function getKnId(): int;
 
     public function getText(): string;
 

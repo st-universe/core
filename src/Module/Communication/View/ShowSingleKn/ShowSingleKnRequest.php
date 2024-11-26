@@ -12,8 +12,8 @@ final class ShowSingleKnRequest implements ShowSingleKnRequestInterface
     use CustomControllerHelperTrait;
 
     #[Override]
-    public function getPostId(): int
+    public function getKnId(): int
     {
-        return $this->parameter('id')->int()->required();
+        return $this->parameter('knid')->int()->required();
     }
 }

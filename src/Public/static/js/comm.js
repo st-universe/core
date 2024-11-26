@@ -93,12 +93,12 @@ function showKnComments(knId) {
 	openWindow(elt, 1, 450);
 	ajax_update(elt, "comm.php?SHOW_KN_COMMENTS=1&knid=" + knId);
 }
-function postComment(postingId) {
+function postComment(knId) {
 	comment = Form.Element.serialize('comment');
-	ajax_update('kncomments', "comm.php?B_POST_COMMENT=1&posting=" + postingId + "&" + comment);
+	ajax_update('kncomments', "comm.php?B_POST_COMMENT=1&knid=" + knId + "&" + comment);
 }
-function deletePostingComment(postingId, commentId) {
-	ajax_update('kncomments', "comm.php?B_DELETE_COMMENT=1&posting=" + postingId + "&comment=" + commentId);
+function deletePostingComment(knId, commentId) {
+	ajax_update('kncomments', "comm.php?B_DELETE_COMMENT=1&knid=" + knId + "&comment=" + commentId);
 }
 function updateCategoryOrder() {
 	ajax_update(false, '/pm.php?B_PMCATEGORY_SORT=1&catlist=' + Sortable.sequence('catlist').join(','));
@@ -117,12 +117,12 @@ function emptyContactComment(contactId) {
 	$('contact_comment_input_' + contactId).value = '';
 	saveContactComment(contactId)
 }
-function rateKnPost(postId, rating) {
+function rateKnPost(knId, rating) {
 	ajaxPostUpdate(
-		'kn_rating_' + postId,
+		'kn_rating_' + knId,
 		'comm.php?B_RATE_KN_POST=1',
 		{
-			'postid': postId,
+			'knid': knId,
 			'rating': rating
 		}
 	);

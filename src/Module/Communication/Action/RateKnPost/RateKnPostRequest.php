@@ -12,9 +12,9 @@ final class RateKnPostRequest implements RateKnPostRequestInterface
     use CustomControllerHelperTrait;
 
     #[Override]
-    public function getPostId(): int
+    public function getKnId(): int
     {
-        return $this->bodyParameter('postid')->int()->required();
+        return $this->bodyParameter('knid')->int()->required();
     }
 
     #[Override]

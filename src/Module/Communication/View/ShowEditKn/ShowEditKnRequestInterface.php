@@ -4,5 +4,5 @@ namespace Stu\Module\Communication\View\ShowEditKn;
 
 interface ShowEditKnRequestInterface
 {
-    public function getPostId(): int;
+    public function getKnId(): int;
 }

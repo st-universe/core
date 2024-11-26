@@ -35,7 +35,7 @@ final class EditKnPost implements ActionControllerInterface
         $userId = $game->getUser()->getId();
 
         /** @var KnPostInterface $post */
-        $post = $this->knPostRepository->find($this->editKnPostRequest->getPostId());
+        $post = $this->knPostRepository->find($this->editKnPostRequest->getKnId());
         if ($post === null || $post->getUserId() !== $userId) {
             throw new AccessViolation();
         }
