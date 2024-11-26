@@ -211,7 +211,7 @@ abstract class TwigTestCase extends StuTestCase
         $this->runCommandWithDependecyFactory(
             MigrateCommand::class,
             new StringInput(sprintf(
-                "migrate --configuration=\"%s\" --all-or-nothing --allow-no-migration --no-interaction", // -vv",
+                "migrate --configuration=\"%s\" --all-or-nothing --allow-no-migration --no-interaction --quiet", // -vv",
                 self::$INTTEST_MIGRATIONS_CONFIG_PATH
             ))
         );

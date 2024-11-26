@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\html;
+namespace Stu\Html;
 
 use DirectoryIterator;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -18,7 +18,7 @@ class CorrectTwigFormatTest extends StuTestCase
     {
         $result = [];
 
-        $list = new DirectoryIterator(__DIR__ . '/../../src/html');
+        $list = new DirectoryIterator(__DIR__ . '/../../../src/html');
 
         foreach ($list as $file) {
             if (!$file->isDir() && str_ends_with($file->getFilename(), '.twig')) {

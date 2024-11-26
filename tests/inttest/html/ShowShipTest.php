@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Ship\View\ShowRegionInfo;
+namespace Stu\Html;
 
 use Mockery;
 use Override;

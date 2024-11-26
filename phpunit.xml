@@ -14,13 +14,15 @@
     </include>
     <exclude>
       <directory suffix="services.php">src</directory>
-      <directory>src/Public</directory>
+      <directory>src/Migrations</directory>
       <directory>src/OrmProxy</directory>
+      <directory>src/Public</directory>
     </exclude>
   </source>
   <testsuites>
     <testsuite name="STU">
-      <directory>./tests</directory>
+      <directory>./tests/unit</directory>
+      <directory>./tests/inttest</directory>
     </testsuite>
   </testsuites>
   <php>
