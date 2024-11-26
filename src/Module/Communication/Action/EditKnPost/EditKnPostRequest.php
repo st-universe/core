@@ -12,7 +12,7 @@ final class EditKnPostRequest implements EditKnPostRequestInterface
     use CustomControllerHelperTrait;
 
     #[Override]
-    public function getPostId(): int
+    public function getKnId(): int
     {
         return $this->parameter('knid')->int()->required();
     }

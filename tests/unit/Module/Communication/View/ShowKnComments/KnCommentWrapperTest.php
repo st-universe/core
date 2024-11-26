@@ -53,7 +53,7 @@ class KnCommentWrapperTest extends StuTestCase
         );
     }
 
-    public function testGetPostIdReturnsValue(): void
+    public function testGetKnIdReturnsValue(): void
     {
         $value = 666;
 
@@ -64,7 +64,7 @@ class KnCommentWrapperTest extends StuTestCase
 
         static::assertSame(
             $value,
-            $this->tal->getPostId()
+            $this->tal->getKnId()
         );
     }
 

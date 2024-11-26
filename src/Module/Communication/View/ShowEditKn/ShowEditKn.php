@@ -31,7 +31,7 @@ final class ShowEditKn implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         /** @var KnPostInterface $post */
-        $post = $this->knPostRepository->find($this->showEditKnRequest->getPostId());
+        $post = $this->knPostRepository->find($this->showEditKnRequest->getKnId());
 
         if ($post === null) {
             throw new AccessViolation(sprintf(_('UserId %d tried to edit non-existing kn post'), $game->getUser()->getId()));

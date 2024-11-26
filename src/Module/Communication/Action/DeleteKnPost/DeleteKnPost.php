@@ -16,9 +16,7 @@ final class DeleteKnPost implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_DEL_KN';
 
-    public function __construct(private DeleteKnPostRequestInterface $deleteKnPostRequest, private KnPostRepositoryInterface $knPostRepository)
-    {
-    }
+    public function __construct(private DeleteKnPostRequestInterface $deleteKnPostRequest, private KnPostRepositoryInterface $knPostRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -26,7 +24,7 @@ final class DeleteKnPost implements ActionControllerInterface
         $userId = $game->getUser()->getId();
 
         /** @var KnPostInterface $post */
-        $post = $this->knPostRepository->find($this->deleteKnPostRequest->getPostId());
+        $post = $this->knPostRepository->find($this->deleteKnPostRequest->getKnId());
         if ($post === null || $post->getUserId() !== $userId) {
             throw new AccessViolation();
         }
