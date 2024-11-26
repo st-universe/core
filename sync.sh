@@ -53,7 +53,7 @@ else
         exit 1
     fi
 
-    jq '.game.version += 1' config.json | sponge config.json
+    jq '.game.version += 1' config/config.json | sponge config/config.json
 
     exit 0
 fi
