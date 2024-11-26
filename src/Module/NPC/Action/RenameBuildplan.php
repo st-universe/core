@@ -33,7 +33,7 @@ final class RenameBuildplan implements ActionControllerInterface
         }
 
         $buildplanId = request::postIntFatal('planid');
-        $newName = CleanTextUtils::clearEmojis(request::postString('newName'));
+        $newName = CleanTextUtils::clearEmojis(request::postStringFatal('newName'));
 
         if (mb_strlen($newName) === 0) {
             return;
