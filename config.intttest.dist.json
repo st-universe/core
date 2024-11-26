@@ -1,7 +1,7 @@
 {
   "db": {
     "useSqlite": true,
-    "sqliteDsn": "sqlite:///inttest.sqlite"
+    "sqliteDsn": "sqlite:///:memory:"
   },
   "game": {
     "webroot": "src/Public",

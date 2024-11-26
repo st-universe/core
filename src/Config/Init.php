@@ -14,20 +14,12 @@ use Stu\Module\Twig\TwigHelper;
  */
 final class Init
 {
-    /** @var array<string> */
-    public static array $configFiles = [
-        '%s/config.dist.json',
-        '?%s/config.json'
-    ];
-
     private static ?StuContainer $CONTAINER = null;
 
-    public static function getContainer(string $additionalConfigPath = null, bool $doReload = false): StuContainer
+    public static function getContainer(ConfigStageEnum $stage = ConfigStageEnum::PRODUCTION, bool $doReload = false): StuContainer
     {
         if (static::$CONTAINER === null || $doReload) {
-            if ($additionalConfigPath !== null) {
-                self::$configFiles[] = $additionalConfigPath;
-            }
+            ConfigFileSetup::initConfigStage($stage);
 
             // ordered alphabetically
             $builder = new ContainerBuilder(StuContainer::class);

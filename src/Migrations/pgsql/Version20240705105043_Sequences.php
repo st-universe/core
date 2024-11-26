@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Migrations;
+namespace Stu\Migrations\Pgsql;
 
 use Override;
 use Doctrine\DBAL\Schema\Schema;

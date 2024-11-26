@@ -21,6 +21,7 @@ use Psr\Container\ContainerInterface;
 use request;
 use RuntimeException;
 use Spatie\Snapshots\MatchesSnapshots;
+use Stu\Config\ConfigStageEnum;
 use Stu\Config\Init;
 use Stu\Config\StuContainer;
 use Stu\Lib\Session\SessionStringFactoryInterface;
@@ -42,8 +43,7 @@ abstract class TwigTestCase extends StuTestCase
 {
     use MatchesSnapshots;
 
-    private static string $INTTEST_MIGRATIONS_CONFIG_PATH = 'dist/db/migrations/testdata.php';
-    private static string $INTTEST_CONFIG_PATH = '%s/config.intttest.json';
+    private static string $INTTEST_MIGRATIONS_CONFIG_PATH = 'dist/db/migrations/inttest.php';
 
     private static bool $isSchemaCreated = false;
     private static ?StuContainer $INTTEST_CONTAINER = null;
@@ -184,7 +184,7 @@ abstract class TwigTestCase extends StuTestCase
     {
         $this->runCommandWithDependecyFactory(
             DiffCommand::class,
-            new StringInput(sprintf("diff --configuration=\"%s\"", self::$INTTEST_MIGRATIONS_CONFIG_PATH))
+            new StringInput(sprintf("diff --configuration=\"%s\" --from-empty-schema", self::$INTTEST_MIGRATIONS_CONFIG_PATH))
         );
     }
 
@@ -211,7 +211,7 @@ abstract class TwigTestCase extends StuTestCase
         $this->runCommandWithDependecyFactory(
             MigrateCommand::class,
             new StringInput(sprintf(
-                "migrate --configuration=\"%s\" --all-or-nothing --allow-no-migration --no-interaction",
+                "migrate --configuration=\"%s\" --all-or-nothing --allow-no-migration --no-interaction", // -vv",
                 self::$INTTEST_MIGRATIONS_CONFIG_PATH
             ))
         );
@@ -247,7 +247,7 @@ abstract class TwigTestCase extends StuTestCase
     protected function getContainer(): StuContainer
     {
         if (self::$INTTEST_CONTAINER === null) {
-            self::$INTTEST_CONTAINER = Init::getContainer(self::$INTTEST_CONFIG_PATH, true);
+            self::$INTTEST_CONTAINER = Init::getContainer(ConfigStageEnum::INTEGRATION_TEST, true);
         }
 
         return self::$INTTEST_CONTAINER;

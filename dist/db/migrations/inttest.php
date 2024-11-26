@@ -10,7 +10,8 @@ return [
     ],
 
     'migrations_paths' => [
-        'Stu\Migrations' => '../../../src/Component/Migrations'
+        'Stu\Migrations\Sqlite' => '../../../src/Migrations/Sqlite',
+        'Stu\Testdata' => '../../../testdata/Migrations'
     ],
 
     'all_or_nothing' => true,

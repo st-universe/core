@@ -52,7 +52,7 @@ return [
     ConfigInterface::class => function (): ConfigInterface {
         $path = __DIR__ . '/../../';
         return new Config(
-            array_map(fn(string $file): string => sprintf($file, $path), Init::$configFiles)
+            array_map(fn(string $file): string => sprintf($file, $path), ConfigFileSetup::getConfigFileSetup())
         );
     },
     SettingsFactoryInterface::class => autowire(SettingsFactory::class),
