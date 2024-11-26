@@ -10,7 +10,10 @@
       "encryptionKey": "kIWEuwnenWUIunwueww7whw3huuhweuh"
     },
     "registration": {
-      "enabled": true
+      "enabled": true,
+      "sms_code_verification": {
+        "enabled": false
+      }
     },
     "admins": [
       102
