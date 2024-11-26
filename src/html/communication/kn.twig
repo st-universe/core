@@ -115,7 +115,7 @@
                     <div class="segment" id="kn_rating_{{ postId }}">
                         {% set userCanRate = post.userCanRate %}
                         {% if userCanRate %}
-                        <div class="knRatingNegative" onclick="rateKnPost({{ postId }},-1)">
+                        <div class="knRatingNegative" onclick="rateKnPost({{ postId }},-1);">
                             -</div>
                         {% endif %}
                         {% if post.getRatingBar %}
@@ -126,7 +126,7 @@
                         </div>
                         {% endif %}
                         {% if userCanRate %}
-                        <div class="knRatingPositive" onclick="rateKnPost({{ postId }},1)">
+                        <div class="knRatingPositive" onclick="rateKnPost({{ postId }},1);">
                             +</div>
                         {% endif %}
                     </div>
