@@ -64,7 +64,7 @@ final class PostKnComment implements ActionControllerInterface
             );
 
             $href = sprintf(
-                _('comm.php?%s=1&id=%d'),
+                _('comm.php?%s=1&knid=%d'),
                 ShowSingleKn::VIEW_IDENTIFIER,
                 $post->getId()
             );
@@ -97,7 +97,7 @@ final class PostKnComment implements ActionControllerInterface
                 );
 
                 $href = sprintf(
-                    _('comm.php?%s=1&id=%d'),
+                    _('comm.php?%s=1&knid=%d'),
                     ShowSingleKn::VIEW_IDENTIFIER,
                     $post->getId()
                 );

@@ -155,7 +155,7 @@ final class AddKnPost implements ActionControllerInterface
                 );
 
                 $href = sprintf(
-                    'comm.php?%s=1&id=%d',
+                    'comm.php?%s=1&knid=%d',
                     ShowSingleKn::VIEW_IDENTIFIER,
                     $post->getId()
                 );
