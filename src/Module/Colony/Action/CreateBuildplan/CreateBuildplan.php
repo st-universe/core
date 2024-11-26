@@ -64,7 +64,7 @@ final class CreateBuildplan implements ActionControllerInterface
 
         //$this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
 
-        $rump = $this->shipRumpRepository->find(request::indInt('rump'));
+        $rump = $this->shipRumpRepository->find(request::indInt('rumpid'));
         if ($rump === null) {
             $this->loggerUtil->log('A');
             $this->exitOnError($game);

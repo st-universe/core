@@ -6,7 +6,7 @@
       setFixValues({{ baseCrew }}, {{ maxCrew }}, {{ specialSlots }});
   </script>
   <input type="hidden" name="id" value="{{ COLONY.getId }}" />
-  <input type="hidden" name="rump" value="{{ RUMP.getId }}" />
+  <input type="hidden" name="rumpid" value="{{ RUMP.getId }}" />
   {% if SHIP %}
   <input type="hidden" name="shipid" value="{{ SHIP.getId }}" />
   {% endif %}
@@ -46,8 +46,7 @@
           {% if SHIP %}
           <div style="text-align: center; width: 100%;">{{ SHIP.getName |bbcode}}</div>
           <div style="text-align: center; width: 100%;">
-            <input type="submit" class="button" name="B_RETROFIT_SHIP" value="Schiff umrüsten" 
-               />
+            <input type="submit" class="button" name="B_RETROFIT_SHIP" value="Schiff umrüsten" />
           </div>
           {% else %}
           <div style="text-align: center; width: 100%;">

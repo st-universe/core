@@ -63,7 +63,7 @@ final class BuildShip implements ActionControllerInterface
 
         $colonyId = $colony->getId();
 
-        $rump = $this->shipRumpRepository->find(request::indInt('rump'));
+        $rump = $this->shipRumpRepository->find(request::indInt('rumpid'));
         if ($rump === null) {
             return;
         }
