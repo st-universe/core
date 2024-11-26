@@ -2,20 +2,24 @@
 
 declare(strict_types=1);
 
-namespace Stu\Testdata;
+namespace Stu\Migrations\Sqlite;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version20241115113927_InitialSchemaCreation extends AbstractMigration
+/**
+ * Auto-generated Migration: Please modify to your needs!
+ */
+final class Version20241126083135 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'Initial Schema Creation from 15.11.2024';
+        return '';
     }
 
     public function up(Schema $schema): void
     {
+        // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE TABLE stu_alliance_boards (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, alliance_id INTEGER NOT NULL, name VARCHAR(255) NOT NULL, CONSTRAINT FK_5D868E4710A0EA3F FOREIGN KEY (alliance_id) REFERENCES stu_alliances (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX alliance_idx ON stu_alliance_boards (alliance_id)');
         $this->addSql('CREATE TABLE stu_alliance_posts (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, topic_id INTEGER NOT NULL, board_id INTEGER NOT NULL, name VARCHAR(255) NOT NULL, date INTEGER NOT NULL, text CLOB NOT NULL, user_id INTEGER NOT NULL, lastedit INTEGER DEFAULT NULL, CONSTRAINT FK_31F4A4121F55203D FOREIGN KEY (topic_id) REFERENCES stu_alliance_topics (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_31F4A412E7EC5785 FOREIGN KEY (board_id) REFERENCES stu_alliance_boards (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_31F4A412A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
@@ -357,7 +361,7 @@ final class Version20241115113927_InitialSchemaCreation extends AbstractMigratio
         $this->addSql('CREATE TABLE stu_rump_costs (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, rump_id INTEGER NOT NULL, commodity_id INTEGER NOT NULL, count INTEGER NOT NULL, CONSTRAINT FK_11BE8AA4B4ACC212 FOREIGN KEY (commodity_id) REFERENCES stu_commodity (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_11BE8AA42EE98D4C FOREIGN KEY (rump_id) REFERENCES stu_rumps (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_11BE8AA4B4ACC212 ON stu_rump_costs (commodity_id)');
         $this->addSql('CREATE INDEX rump_cost_ship_rump_idx ON stu_rump_costs (rump_id)');
-        $this->addSql('CREATE TABLE stu_rumps (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, category_id INTEGER NOT NULL, role_id INTEGER DEFAULT NULL, evade_chance SMALLINT NOT NULL, hit_chance SMALLINT NOT NULL, module_level SMALLINT NOT NULL, base_crew SMALLINT NOT NULL, base_eps SMALLINT NOT NULL, base_reactor SMALLINT NOT NULL, base_hull INTEGER NOT NULL, base_shield INTEGER NOT NULL, base_damage SMALLINT NOT NULL, base_sensor_range SMALLINT NOT NULL, base_torpedo_storage SMALLINT NOT NULL, phaser_volleys SMALLINT NOT NULL, phaser_hull_damage_factor SMALLINT NOT NULL, phaser_shield_damage_factor SMALLINT NOT NULL, torpedo_level SMALLINT NOT NULL, torpedo_volleys SMALLINT NOT NULL, name VARCHAR(255) NOT NULL, is_buildable BOOLEAN NOT NULL, is_npc BOOLEAN NOT NULL, eps_cost SMALLINT NOT NULL, storage INTEGER NOT NULL, slots SMALLINT NOT NULL, buildtime INTEGER NOT NULL, needed_workbees SMALLINT DEFAULT NULL, sort SMALLINT NOT NULL, database_id INTEGER DEFAULT NULL, commodity_id INTEGER DEFAULT NULL, flight_ecost SMALLINT NOT NULL, beam_factor SMALLINT NOT NULL, special_slots SMALLINT NOT NULL, shuttle_slots SMALLINT NOT NULL, tractor_mass INTEGER NOT NULL, tractor_payload INTEGER NOT NULL, prestige INTEGER NOT NULL, base_warpdrive INTEGER DEFAULT NULL, CONSTRAINT FK_3D7AD378D60322AC FOREIGN KEY (role_id) REFERENCES stu_rumps_roles (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_3D7AD37812469DE2 FOREIGN KEY (category_id) REFERENCES stu_rumps_categories (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_3D7AD378B4ACC212 FOREIGN KEY (commodity_id) REFERENCES stu_commodity (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_3D7AD378F0AA09DB FOREIGN KEY (database_id) REFERENCES stu_database_entrys (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE stu_rumps (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, category_id INTEGER NOT NULL, role_id INTEGER DEFAULT NULL, evade_chance SMALLINT NOT NULL, hit_chance SMALLINT NOT NULL, module_level SMALLINT NOT NULL, base_crew SMALLINT NOT NULL, base_eps SMALLINT NOT NULL, base_reactor SMALLINT NOT NULL, base_hull INTEGER NOT NULL, base_shield INTEGER NOT NULL, base_damage SMALLINT NOT NULL, base_sensor_range SMALLINT NOT NULL, base_torpedo_storage SMALLINT NOT NULL, phaser_volleys SMALLINT NOT NULL, phaser_hull_damage_factor SMALLINT NOT NULL, phaser_shield_damage_factor SMALLINT NOT NULL, torpedo_level SMALLINT NOT NULL, torpedo_volleys SMALLINT NOT NULL, name VARCHAR(255) NOT NULL, is_buildable BOOLEAN NOT NULL, is_npc BOOLEAN NOT NULL, eps_cost SMALLINT NOT NULL, storage INTEGER NOT NULL, slots SMALLINT NOT NULL, buildtime INTEGER NOT NULL, needed_workbees SMALLINT DEFAULT NULL, sort SMALLINT NOT NULL, database_id INTEGER DEFAULT NULL, commodity_id INTEGER DEFAULT NULL, flight_ecost SMALLINT NOT NULL, beam_factor SMALLINT NOT NULL, special_slots SMALLINT NOT NULL, shuttle_slots SMALLINT NOT NULL, tractor_mass INTEGER NOT NULL, tractor_payload INTEGER NOT NULL, prestige INTEGER NOT NULL, base_warpdrive INTEGER DEFAULT NULL, npc_buildable BOOLEAN DEFAULT NULL, CONSTRAINT FK_3D7AD378D60322AC FOREIGN KEY (role_id) REFERENCES stu_rumps_roles (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_3D7AD37812469DE2 FOREIGN KEY (category_id) REFERENCES stu_rumps_categories (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_3D7AD378B4ACC212 FOREIGN KEY (commodity_id) REFERENCES stu_commodity (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_3D7AD378F0AA09DB FOREIGN KEY (database_id) REFERENCES stu_database_entrys (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_3D7AD378B4ACC212 ON stu_rumps (commodity_id)');
         $this->addSql('CREATE INDEX IDX_3D7AD378F0AA09DB ON stu_rumps (database_id)');
         $this->addSql('CREATE INDEX rump_category_idx ON stu_rumps (category_id)');
@@ -545,5 +549,168 @@ final class Version20241115113927_InitialSchemaCreation extends AbstractMigratio
         $this->addSql('CREATE INDEX IDX_D68CF8C953C55F64 ON stu_wormhole_entry (map_id)');
         $this->addSql('CREATE INDEX IDX_D68CF8C9D0952FA5 ON stu_wormhole_entry (system_id)');
         $this->addSql('CREATE INDEX IDX_D68CF8C9434BEAA5 ON stu_wormhole_entry (system_map_id)');
+    }
+
+    public function down(Schema $schema): void
+    {
+        // this down() migration is auto-generated, please modify it to your needs
+        $this->addSql('DROP TABLE stu_alliance_boards');
+        $this->addSql('DROP TABLE stu_alliance_posts');
+        $this->addSql('DROP TABLE stu_alliance_topics');
+        $this->addSql('DROP TABLE stu_alliances');
+        $this->addSql('DROP TABLE stu_alliances_jobs');
+        $this->addSql('DROP TABLE stu_alliances_relations');
+        $this->addSql('DROP TABLE stu_anomaly');
+        $this->addSql('DROP TABLE stu_anomaly_type');
+        $this->addSql('DROP TABLE stu_astro_entry');
+        $this->addSql('DROP TABLE stu_auction_bid');
+        $this->addSql('DROP TABLE stu_award');
+        $this->addSql('DROP TABLE stu_basic_trade');
+        $this->addSql('DROP TABLE stu_blocked_user');
+        $this->addSql('DROP TABLE stu_buildings');
+        $this->addSql('DROP TABLE stu_buildings_commodity');
+        $this->addSql('DROP TABLE stu_buildings_cost');
+        $this->addSql('DROP TABLE stu_buildings_field_alternative');
+        $this->addSql('DROP TABLE stu_buildings_functions');
+        $this->addSql('DROP TABLE stu_buildings_upgrades');
+        $this->addSql('DROP TABLE stu_buildings_upgrades_cost');
+        $this->addSql('DROP TABLE stu_buildplans');
+        $this->addSql('DROP TABLE stu_buildplans_hangar');
+        $this->addSql('DROP TABLE stu_buildplans_modules');
+        $this->addSql('DROP TABLE stu_buoy');
+        $this->addSql('DROP TABLE stu_colonies');
+        $this->addSql('DROP TABLE stu_colonies_classes');
+        $this->addSql('DROP TABLE stu_colonies_fielddata');
+        $this->addSql('DROP TABLE stu_colonies_shipqueue');
+        $this->addSql('DROP TABLE stu_colonies_shiprepair');
+        $this->addSql('DROP TABLE stu_colonies_terraforming');
+        $this->addSql('DROP TABLE stu_colony_class_deposit');
+        $this->addSql('DROP TABLE stu_colony_deposit_mining');
+        $this->addSql('DROP TABLE stu_colony_fieldtype');
+        $this->addSql('DROP TABLE stu_colony_sandbox');
+        $this->addSql('DROP TABLE stu_colony_scan');
+        $this->addSql('DROP TABLE stu_commodity');
+        $this->addSql('DROP TABLE stu_construction_progress');
+        $this->addSql('DROP TABLE stu_contactlist');
+        $this->addSql('DROP TABLE stu_crew');
+        $this->addSql('DROP TABLE stu_crew_assign');
+        $this->addSql('DROP TABLE stu_crew_race');
+        $this->addSql('DROP TABLE stu_crew_training');
+        $this->addSql('DROP TABLE stu_database_categories');
+        $this->addSql('DROP TABLE stu_database_entrys');
+        $this->addSql('DROP TABLE stu_database_types');
+        $this->addSql('DROP TABLE stu_database_user');
+        $this->addSql('DROP TABLE stu_deals');
+        $this->addSql('DROP TABLE stu_dockingrights');
+        $this->addSql('DROP TABLE stu_factions');
+        $this->addSql('DROP TABLE stu_field_build');
+        $this->addSql('DROP TABLE stu_fleets');
+        $this->addSql('DROP TABLE stu_flight_sig');
+        $this->addSql('DROP TABLE stu_game_config');
+        $this->addSql('DROP TABLE stu_game_request');
+        $this->addSql('DROP TABLE stu_game_turn_stats');
+        $this->addSql('DROP TABLE stu_game_turns');
+        $this->addSql('DROP TABLE stu_history');
+        $this->addSql('DROP TABLE stu_ignorelist');
+        $this->addSql('DROP TABLE stu_kn');
+        $this->addSql('DROP TABLE stu_kn_archiv');
+        $this->addSql('DROP TABLE stu_kn_character');
+        $this->addSql('DROP TABLE stu_kn_comments');
+        $this->addSql('DROP TABLE stu_kn_comments_archiv');
+        $this->addSql('DROP TABLE stu_kn_plot_application');
+        $this->addSql('DROP TABLE stu_layer');
+        $this->addSql('DROP TABLE stu_location');
+        $this->addSql('DROP TABLE stu_location_mining');
+        $this->addSql('DROP TABLE stu_lottery_buildplan');
+        $this->addSql('DROP TABLE stu_lottery_ticket');
+        $this->addSql('DROP TABLE stu_map');
+        $this->addSql('DROP TABLE stu_map_bordertypes');
+        $this->addSql('DROP TABLE stu_map_ftypes');
+        $this->addSql('DROP TABLE stu_map_regions');
+        $this->addSql('DROP TABLE stu_map_regions_settlement');
+        $this->addSql('DROP TABLE stu_mass_center_type');
+        $this->addSql('DROP TABLE stu_mining_queue');
+        $this->addSql('DROP TABLE stu_modules');
+        $this->addSql('DROP TABLE stu_modules_buildingfunction');
+        $this->addSql('DROP TABLE stu_modules_cost');
+        $this->addSql('DROP TABLE stu_modules_queue');
+        $this->addSql('DROP TABLE stu_modules_specials');
+        $this->addSql('DROP TABLE stu_names');
+        $this->addSql('DROP TABLE stu_news');
+        $this->addSql('DROP TABLE stu_notes');
+        $this->addSql('DROP TABLE stu_npc_log');
+        $this->addSql('DROP TABLE stu_opened_advent_door');
+        $this->addSql('DROP TABLE stu_partnersite');
+        $this->addSql('DROP TABLE stu_pirate_setup');
+        $this->addSql('DROP TABLE stu_pirate_setup_buildplan');
+        $this->addSql('DROP TABLE stu_pirate_wrath');
+        $this->addSql('DROP TABLE stu_planet_type_research');
+        $this->addSql('DROP TABLE stu_planets_commodity');
+        $this->addSql('DROP TABLE stu_plots');
+        $this->addSql('DROP TABLE stu_plots_archiv');
+        $this->addSql('DROP TABLE stu_plots_members');
+        $this->addSql('DROP TABLE stu_plots_members_archiv');
+        $this->addSql('DROP TABLE stu_pm_cats');
+        $this->addSql('DROP TABLE stu_pms');
+        $this->addSql('DROP TABLE stu_prestige_log');
+        $this->addSql('DROP TABLE stu_progress_module');
+        $this->addSql('DROP TABLE stu_repair_task');
+        $this->addSql('DROP TABLE stu_research');
+        $this->addSql('DROP TABLE stu_research_dependencies');
+        $this->addSql('DROP TABLE stu_researched');
+        $this->addSql('DROP TABLE stu_rump_costs');
+        $this->addSql('DROP TABLE stu_rumps');
+        $this->addSql('DROP TABLE stu_rumps_buildingfunction');
+        $this->addSql('DROP TABLE stu_rumps_cat_role_crew');
+        $this->addSql('DROP TABLE stu_rumps_categories');
+        $this->addSql('DROP TABLE stu_rumps_colonize_building');
+        $this->addSql('DROP TABLE stu_rumps_module_level');
+        $this->addSql('DROP TABLE stu_rumps_module_special');
+        $this->addSql('DROP TABLE stu_rumps_roles');
+        $this->addSql('DROP TABLE stu_rumps_specials');
+        $this->addSql('DROP TABLE stu_rumps_user');
+        $this->addSql('DROP TABLE stu_session_strings');
+        $this->addSql('DROP TABLE stu_ship_log');
+        $this->addSql('DROP TABLE stu_ship_system');
+        $this->addSql('DROP TABLE stu_ship_takeover');
+        $this->addSql('DROP TABLE stu_ships');
+        $this->addSql('DROP TABLE stu_shipyard_shipqueue');
+        $this->addSql('DROP TABLE stu_spacecraft_emergency');
+        $this->addSql('DROP TABLE stu_station_shiprepair');
+        $this->addSql('DROP TABLE stu_storage');
+        $this->addSql('DROP TABLE stu_sys_map');
+        $this->addSql('DROP TABLE stu_system_types');
+        $this->addSql('DROP TABLE stu_systems');
+        $this->addSql('DROP TABLE stu_tachyon_scan');
+        $this->addSql('DROP TABLE stu_terraforming');
+        $this->addSql('DROP TABLE stu_terraforming_cost');
+        $this->addSql('DROP TABLE stu_tholian_web');
+        $this->addSql('DROP TABLE stu_torpedo_cost');
+        $this->addSql('DROP TABLE stu_torpedo_hull');
+        $this->addSql('DROP TABLE stu_torpedo_storage');
+        $this->addSql('DROP TABLE stu_torpedo_types');
+        $this->addSql('DROP TABLE stu_trade_license');
+        $this->addSql('DROP TABLE stu_trade_license_info');
+        $this->addSql('DROP TABLE stu_trade_offers');
+        $this->addSql('DROP TABLE stu_trade_posts');
+        $this->addSql('DROP TABLE stu_trade_shoutbox');
+        $this->addSql('DROP TABLE stu_trade_transaction');
+        $this->addSql('DROP TABLE stu_trade_transfers');
+        $this->addSql('DROP TABLE stu_tutorial_step');
+        $this->addSql('DROP TABLE stu_user');
+        $this->addSql('DROP TABLE stu_user_award');
+        $this->addSql('DROP TABLE stu_user_character');
+        $this->addSql('DROP TABLE stu_user_invitations');
+        $this->addSql('DROP TABLE stu_user_iptable');
+        $this->addSql('DROP TABLE stu_user_layer');
+        $this->addSql('DROP TABLE stu_user_lock');
+        $this->addSql('DROP TABLE stu_user_map');
+        $this->addSql('DROP TABLE stu_user_profile_visitors');
+        $this->addSql('DROP TABLE stu_user_setting');
+        $this->addSql('DROP TABLE stu_user_tag');
+        $this->addSql('DROP TABLE stu_user_tutorial');
+        $this->addSql('DROP TABLE stu_weapon_shield');
+        $this->addSql('DROP TABLE stu_weapons');
+        $this->addSql('DROP TABLE stu_wormhole_entry');
     }
 }
