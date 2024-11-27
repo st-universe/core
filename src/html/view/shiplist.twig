@@ -9,7 +9,13 @@
 </table>
 {% else %}
 {% for FLEETWRAPPER in FLEET_WRAPPERS %}
+{% if loop.first %}
+<div id="fleetlist">
 {% include 'html/shiplistFleetform.twig' %}
+</div>
+{% else %}
+{% include 'html/shiplistFleetform.twig' %}
+{% endif %}
 <br />
 {% endfor %}
 
