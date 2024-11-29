@@ -9,6 +9,8 @@ use Override;
 use request;
 use Stu\Module\Control\GameController;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Game\Lib\Component\ComponentEnum;
+use Stu\Module\Game\Lib\Component\ComponentLoaderInterface;
 use Stu\Orm\Entity\ResearchedInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
@@ -16,7 +18,10 @@ use Stu\StuTestCase;
 
 class CancelResearchTest extends StuTestCase
 {
-    private MockInterface $researchedRepository;
+    /** @var MockInterface&ResearchedRepositoryInterface */
+    private $researchedRepository;
+    /** @var MockInterface&ComponentLoaderInterface */
+    private $componentLoader;
 
     private CancelResearch $subject;
 
@@ -24,9 +29,11 @@ class CancelResearchTest extends StuTestCase
     protected function setUp(): void
     {
         $this->researchedRepository = $this->mock(ResearchedRepositoryInterface::class);
+        $this->componentLoader = $this->mock(ComponentLoaderInterface::class);
 
         $this->subject = new CancelResearch(
-            $this->researchedRepository
+            $this->researchedRepository,
+            $this->componentLoader
         );
     }
 
@@ -83,6 +90,10 @@ class CancelResearchTest extends StuTestCase
             ->andReturn($user);
         $game->shouldReceive('setView')
             ->with(GameController::DEFAULT_VIEW)
+            ->once();
+
+        $this->componentLoader->shouldReceive('addComponentUpdate')
+            ->with(ComponentEnum::RESEARCH_NAVLET)
             ->once();
 
         $this->subject->handle($game);
