@@ -16,6 +16,7 @@ use Stu\Component\Ship\ShipStateEnum;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Module\Colony\View\ShowModuleScreen\ShowModuleScreen;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
@@ -101,7 +102,7 @@ final class RetrofitShip implements ActionControllerInterface
             $game->addInformation(_('Die Werft ist nicht aktiviert'));
             return;
         }
-        $game->setView('SHOW_MODULE_SCREEN');
+        $game->setView(ShowModuleScreen::VIEW_IDENTIFIER);
 
         if ($this->colonyShipQueueRepository->getAmountByColonyAndBuildingFunctionAndMode($colonyId, $building_function->getBuildingFunction(), 1) > 0) {
             $game->addInformation(_('In dieser Werft wird aktuell ein Schiff gebaut'));

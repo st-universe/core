@@ -85,8 +85,9 @@ final class ShowModuleScreenRetrofit implements ViewControllerInterface
 
         $game->appendNavigationPart(
             sprintf(
-                '?id=%d&SHOW_MODULE_SCREEN_RETROFIT=1&planid=%d&shipid=%d',
+                '?id=%d&%s=1&planid=%d&shipid=%d',
                 $colony->getId(),
+                self::VIEW_IDENTIFIER,
                 $plan->getId(),
                 $ship->getId()
             ),
