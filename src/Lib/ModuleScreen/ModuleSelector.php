@@ -63,7 +63,7 @@ class ModuleSelector implements ModuleSelectorInterface
     public function render(): string
     {
         $this->twigPage->setTemplate(self::TEMPLATE);
-        $this->twigPage->setVar('THIS', $this);
+        $this->twigPage->setVar('SELECTOR', $this);
         $this->twigPage->setVar('MACRO', self::MACRO);
         return $this->twigPage->render();
     }
