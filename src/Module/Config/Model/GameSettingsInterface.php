@@ -23,5 +23,5 @@ interface GameSettingsInterface
 
     public function getMapSettings(): MapSettingsInterface;
 
-    public function getPirateLogfilePath(): string;
+    public function getPirateSettings(): PirateSettingsInterface;
 }
