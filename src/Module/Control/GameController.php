@@ -528,22 +528,18 @@ final class GameController implements GameControllerInterface
             $this->setTemplateVar('REASON', $e->getDetails());
         } catch (AccountNotVerifiedException $e) {
             $this->setTemplateFile('html/index/smsVerification.twig');
-            $this->setTemplateVar('THIS', $this);
             if ($e->getMessage() !== '') {
                 $this->setTemplateVar('REASON', $e->getMessage());
             }
         } catch (MaintenanceGameStateException) {
             $this->setPageTitle(_('Wartungsmodus'));
             $this->setTemplateFile('html/index/maintenance.twig');
-            $this->setTemplateVar('THIS', $this);
         } catch (ResetGameStateException) {
             $this->setPageTitle(_('Resetmodus'));
             $this->setTemplateFile('html/index/gameReset.twig');
-            $this->setTemplateVar('THIS', $this);
         } catch (RelocationGameStateException) {
             $this->setPageTitle(_('Umzugsmodus'));
             $this->setTemplateFile('html/index/relocation.twig');
-            $this->setTemplateVar('THIS', $this);
         } catch (ShipDoesNotExistException) {
             $this->addInformation(_('Dieses Schiff existiert nicht!'));
             $this->setViewTemplate('html/ship/ship.twig');
