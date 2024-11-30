@@ -4,7 +4,6 @@ namespace Stu\Module\Config\Model;
 
 use Override;
 use Stu\Module\Config\StuConfigException;
-use Stu\Module\Config\StuConfigSettingEnum;
 
 final class GameSettings extends AbstractSettings implements GameSettingsInterface
 {
@@ -23,31 +22,31 @@ final class GameSettings extends AbstractSettings implements GameSettingsInterfa
     #[Override]
     public function getAdminSettings(): AdminSettingsInterface
     {
-        return $this->settingsCache->getSettings(StuConfigSettingEnum::ADMIN, $this);
+        return $this->settingsCache->getSettings(AdminSettingsInterface::class, $this);
     }
 
     #[Override]
     public function getColonySettings(): ColonySettingsInterface
     {
-        return $this->settingsCache->getSettings(StuConfigSettingEnum::COLONY, $this);
+        return $this->settingsCache->getSettings(ColonySettingsInterface::class, $this);
     }
 
     #[Override]
     public function getEmailSettings(): EmailSettingsInterface
     {
-        return $this->settingsCache->getSettings(StuConfigSettingEnum::EMAIL, $this);
+        return $this->settingsCache->getSettings(EmailSettingsInterface::class, $this);
     }
 
     #[Override]
     public function getMapSettings(): MapSettingsInterface
     {
-        return $this->settingsCache->getSettings(StuConfigSettingEnum::MAP, $this);
+        return $this->settingsCache->getSettings(MapSettingsInterface::class, $this);
     }
 
     #[Override]
     public function getPirateSettings(): PirateSettingsInterface
     {
-        return $this->settingsCache->getSettings(StuConfigSettingEnum::PIRATES, $this);
+        return $this->settingsCache->getSettings(PirateSettingsInterface::class, $this);
     }
 
     #[Override]

@@ -34,8 +34,8 @@ class SettingsCacheTest extends StuTestCase
             ->once()
             ->andReturn($mapSettings);
 
-        $this->subject->getSettings(StuConfigSettingEnum::MAP, $parent);
-        $result = $this->subject->getSettings(StuConfigSettingEnum::MAP, $parent);
+        $this->subject->getSettings(MapSettingsInterface::class, $parent);
+        $result = $this->subject->getSettings(MapSettingsInterface::class, $parent);
 
         $this->assertSame($mapSettings, $result);
     }

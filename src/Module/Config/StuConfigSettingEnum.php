@@ -2,19 +2,31 @@
 
 namespace Stu\Module\Config;
 
-enum StuConfigSettingEnum: int
+use Stu\Module\Config\Model\AdminSettingsInterface;
+use Stu\Module\Config\Model\CacheSettingsInterface;
+use Stu\Module\Config\Model\ColonySettingsInterface;
+use Stu\Module\Config\Model\DbSettingsInterface;
+use Stu\Module\Config\Model\DebugSettingsInterface;
+use Stu\Module\Config\Model\EmailSettingsInterface;
+use Stu\Module\Config\Model\GameSettingsInterface;
+use Stu\Module\Config\Model\MapSettingsInterface;
+use Stu\Module\Config\Model\PirateSettingsInterface;
+use Stu\Module\Config\Model\ResetSettingsInterface;
+use Stu\Module\Config\Model\SqlLoggingSettingsInterface;
+
+enum StuConfigSettingEnum: string
 {
-    case ADMIN = 1;
-    case CACHE = 2;
-    case COLONY = 3;
-    case DB = 4;
-    case DEBUG = 5;
-    case GAME = 6;
-    case MAP = 7;
-    case RESET = 8;
-    case SQL_LOGGING = 9;
-    case EMAIL = 10;
-    case PIRATES = 11;
+    case ADMIN = AdminSettingsInterface::class;
+    case CACHE = CacheSettingsInterface::class;
+    case COLONY = ColonySettingsInterface::class;
+    case DB = DbSettingsInterface::class;
+    case DEBUG = DebugSettingsInterface::class;
+    case GAME = GameSettingsInterface::class;
+    case MAP = MapSettingsInterface::class;
+    case RESET = ResetSettingsInterface::class;
+    case SQL_LOGGING = SqlLoggingSettingsInterface::class;
+    case EMAIL = EmailSettingsInterface::class;
+    case PIRATES = PirateSettingsInterface::class;
 
     public function getParent(): ?StuConfigSettingEnum
     {
