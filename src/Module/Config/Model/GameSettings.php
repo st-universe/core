@@ -13,7 +13,6 @@ final class GameSettings extends AbstractSettings implements GameSettingsInterfa
     private const string SETTING_USE_SEMAPHORES = 'useSemaphores';
     private const string SETTING_VERSION = 'version';
     private const string SETTING_WEBROOT = 'webroot';
-    private const string SETTING_PIRATE_LOGFILE_PATH = 'pirate_logfile_path';
 
     #[Override]
     public function getAdminIds(): array
@@ -46,6 +45,12 @@ final class GameSettings extends AbstractSettings implements GameSettingsInterfa
     }
 
     #[Override]
+    public function getPirateSettings(): PirateSettingsInterface
+    {
+        return $this->settingsCache->getSettings(StuConfigSettingEnum::PIRATES, $this);
+    }
+
+    #[Override]
     public function getTempDir(): string
     {
         return $this->settingsCore->getStringConfigValue(self::SETTING_TEMP_DIR);
@@ -71,11 +76,5 @@ final class GameSettings extends AbstractSettings implements GameSettingsInterfa
     public function getWebroot(): string
     {
         return $this->settingsCore->getStringConfigValue(self::SETTING_WEBROOT);
-    }
-
-    #[Override]
-    public function getPirateLogfilePath(): string
-    {
-        return $this->settingsCore->getStringConfigValue(self::SETTING_PIRATE_LOGFILE_PATH);
     }
 }

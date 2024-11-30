@@ -86,7 +86,10 @@
     "map": {
       "encryptionKey": "the key to encrypt map data"
     },
-    "pirate_logfile_path": "pathToRotatingPirate.log",
+    "pirates": {
+      "doPirateTick": true,
+      "logfilePath": "pathToRotatingPirate.log"
+    },
     "useSemaphores": false,
     "imprint": {
       "name": "Max Mustermann",
