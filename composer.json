@@ -74,7 +74,7 @@
     "phpstan/phpstan-mockery": "^2.0",
     "phpstan/phpstan-phpunit": "^2.0",
     "phpunit/phpunit": "^11.2.6",
-    "rector/rector": "dev-main",
+    "rector/rector": "2.0.0-rc1",
     "spatie/phpunit-snapshot-assertions": "^5.1",
     "st-universe/assets": "dev-master"
   },
