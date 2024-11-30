@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4ec32ebe6a055051ed42db1f5de1ced8",
+    "content-hash": "2d1995ac1633f0ff6e90afe40495e761",
     "packages": [
         {
             "name": "adhocore/cli",
@@ -8118,16 +8118,16 @@
         },
         {
             "name": "rector/rector",
-            "version": "dev-main",
+            "version": "2.0.0-rc1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rectorphp/rector.git",
-                "reference": "707ad42e130c6e003795a9cd491a1fabb68d844a"
+                "reference": "75f78c934b79a5dd81415683600d85837edef86f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rectorphp/rector/zipball/707ad42e130c6e003795a9cd491a1fabb68d844a",
-                "reference": "707ad42e130c6e003795a9cd491a1fabb68d844a",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/75f78c934b79a5dd81415683600d85837edef86f",
+                "reference": "75f78c934b79a5dd81415683600d85837edef86f",
                 "shasum": ""
             },
             "require": {
@@ -8143,7 +8143,6 @@
             "suggest": {
                 "ext-dom": "To manipulate phpunit.xml via the custom-rule command"
             },
-            "default-branch": true,
             "bin": [
                 "bin/rector"
             ],
@@ -8166,7 +8165,7 @@
             ],
             "support": {
                 "issues": "https://github.com/rectorphp/rector/issues",
-                "source": "https://github.com/rectorphp/rector/tree/main"
+                "source": "https://github.com/rectorphp/rector/tree/2.0.0-rc1"
             },
             "funding": [
                 {
@@ -8174,7 +8173,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-11-22T18:45:24+00:00"
+            "time": "2024-11-27T18:01:51+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -9805,7 +9804,7 @@
     "stability-flags": {
         "st-universe/planet-generator": 20,
         "st-universe/starsystem-generator": 20,
-        "rector/rector": 20,
+        "rector/rector": 5,
         "st-universe/assets": 20
     },
     "prefer-stable": false,
