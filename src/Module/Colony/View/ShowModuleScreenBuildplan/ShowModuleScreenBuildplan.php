@@ -26,8 +26,7 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
         private ColonyLibFactoryInterface $colonyLibFactory,
         private ShipCrewCalculatorInterface $shipCrewCalculator,
         private ShipBuildplanRepositoryInterface $shipBuildplanRepository
-    ) {
-    }
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -76,8 +75,9 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
 
         $game->appendNavigationPart(
             sprintf(
-                '?id=%d&SHOW_MODULE_SCREEN_BUILDPLAN=1&planid=%d',
+                '?id=%d&%s=1&planid=%d',
                 $colony->getId(),
+                self::VIEW_IDENTIFIER,
                 $plan->getId()
             ),
             _('Schiffbau')
