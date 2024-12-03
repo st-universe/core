@@ -10,7 +10,10 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Override;
 use Stu\Component\Map\WormholeEntryTypeEnum;
 use Stu\Orm\Repository\WormholeEntryRepository;
@@ -53,6 +56,19 @@ class WormholeEntry implements WormholeEntryInterface
     #[ManyToOne(targetEntity: 'StarSystemMap', inversedBy: 'wormholeEntries')]
     #[JoinColumn(name: 'system_map_id', referencedColumnName: 'id')]
     private StarSystemMapInterface $systemMap;
+
+    /**
+     * @var Collection<int, WormholeRestriction>
+     */
+    #[OneToMany(targetEntity: 'WormholeRestriction', mappedBy: 'wormholeEntry')]
+    private Collection $restrictions;
+
+
+    public function __construct()
+    {
+        $this->restrictions = new ArrayCollection();
+    }
+
 
     #[Override]
     public function getId(): int
@@ -105,5 +121,14 @@ class WormholeEntry implements WormholeEntryInterface
         }
 
         return $location === $this->systemMap;
+    }
+
+    #[Override]
+    /**
+     * @return Collection<int, WormholeRestriction>
+     */
+    public function getRestrictions(): iterable
+    {
+        return $this->restrictions;
     }
 }
