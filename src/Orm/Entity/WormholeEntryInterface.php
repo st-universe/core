@@ -15,4 +15,9 @@ interface WormholeEntryInterface
     public function setLastUsed(int $lastUsed): WormholeEntryInterface;
 
     public function isUsable(LocationInterface $location): bool;
+
+    /**
+     * @return iterable<WormholeRestriction>
+     */
+    public function getRestrictions(): iterable;
 }

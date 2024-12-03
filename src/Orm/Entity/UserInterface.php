@@ -196,4 +196,9 @@ interface UserInterface
      * @return Collection<int, UserTutorialInterface>
      */
     public function getTutorials(): Collection;
+
+    /**
+     * @return iterable<WormholeRestriction>
+     */
+    public function getWormholeRestrictions(): iterable;
 }

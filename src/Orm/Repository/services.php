@@ -155,6 +155,7 @@ use Stu\Orm\Entity\UserTutorial;
 use Stu\Orm\Entity\Weapon;
 use Stu\Orm\Entity\WeaponShield;
 use Stu\Orm\Entity\WormholeEntry;
+use Stu\Orm\Entity\WormholeRestriction;
 
 return [
     AllianceRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(Alliance::class),
@@ -305,4 +306,5 @@ return [
     WeaponRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(Weapon::class),
     WeaponShieldRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(WeaponShield::class),
     WormholeEntryRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(WormholeEntry::class),
+    WormholeRestrictionRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(WormholeRestriction::class),
 ];

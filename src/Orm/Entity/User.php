@@ -175,6 +175,13 @@ class User implements UserInterface
     /** @var null|array<mixed> */
     private $sessiondataUnserialized;
 
+    /**
+     * @var Collection<int, WormholeRestriction>
+     */
+    #[OneToMany(targetEntity: 'WormholeRestriction', mappedBy: 'user')]
+    private Collection $wormholeRestrictions;
+
+
     public function __construct()
     {
         $this->awards = new ArrayCollection();
@@ -185,6 +192,7 @@ class User implements UserInterface
         $this->buoys = new ArrayCollection();
         $this->colonyScans = new ArrayCollection();
         $this->tutorials = new ArrayCollection();
+        $this->wormholeRestrictions = new ArrayCollection();
     }
 
     #[Override]
@@ -831,7 +839,6 @@ class User implements UserInterface
         return $timeout > time();
     }
 
-
     /**
      * @return Collection<int, UserTutorialInterface>
      */
@@ -839,5 +846,14 @@ class User implements UserInterface
     public function getTutorials(): Collection
     {
         return $this->tutorials;
+    }
+
+    #[Override]
+    /**
+     * @return Collection<int, WormholeRestriction>
+     */
+    public function getWormholeRestrictions(): iterable
+    {
+        return $this->wormholeRestrictions;
     }
 }

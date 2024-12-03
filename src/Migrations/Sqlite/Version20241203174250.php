@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20241126083135 extends AbstractMigration
+final class Version20241203174250 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -549,6 +549,9 @@ final class Version20241126083135 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_D68CF8C953C55F64 ON stu_wormhole_entry (map_id)');
         $this->addSql('CREATE INDEX IDX_D68CF8C9D0952FA5 ON stu_wormhole_entry (system_id)');
         $this->addSql('CREATE INDEX IDX_D68CF8C9434BEAA5 ON stu_wormhole_entry (system_map_id)');
+        $this->addSql('CREATE TABLE stu_wormhole_restrictions (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, mode INTEGER DEFAULT NULL, wormhole_entry_id INTEGER DEFAULT NULL, user_id INTEGER DEFAULT NULL, CONSTRAINT FK_76C7B8E0BE56147A FOREIGN KEY (wormhole_entry_id) REFERENCES stu_wormhole_entry (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_76C7B8E0A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE INDEX IDX_76C7B8E0BE56147A ON stu_wormhole_restrictions (wormhole_entry_id)');
+        $this->addSql('CREATE INDEX IDX_76C7B8E0A76ED395 ON stu_wormhole_restrictions (user_id)');
     }
 
     public function down(Schema $schema): void
@@ -712,5 +715,6 @@ final class Version20241126083135 extends AbstractMigration
         $this->addSql('DROP TABLE stu_weapon_shield');
         $this->addSql('DROP TABLE stu_weapons');
         $this->addSql('DROP TABLE stu_wormhole_entry');
+        $this->addSql('DROP TABLE stu_wormhole_restrictions');
     }
 }
