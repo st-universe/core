@@ -17,6 +17,7 @@ use Stu\Module\Control\StuHashInterface;
 use Stu\Orm\Entity\FactionInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
+use Stu\Orm\Repository\UserRefererRepositoryInterface;
 
 class PlayerCreatorTest extends MockeryTestCase
 {
@@ -56,6 +57,11 @@ class PlayerCreatorTest extends MockeryTestCase
      */
     private $entityManager;
 
+    /**
+     * @var null|MockInterface|UserRefererRepositoryInterface
+     */
+    private $userRefererRepository;
+
     private PlayerCreatorInterface $creator;
 
     #[Override]
@@ -68,6 +74,7 @@ class PlayerCreatorTest extends MockeryTestCase
         $this->stuHash = Mockery::mock(StuHashInterface::class);
         $this->passwordGenerator = Mockery::mock(PasswordGeneratorInterface::class);
         $this->entityManager = Mockery::mock(EntityManagerInterface::class);
+        $this->userRefererRepository = Mockery::mock(UserRefererRepositoryInterface::class);
 
         $this->creator = new PlayerCreator(
             $this->userRepository,
@@ -76,7 +83,8 @@ class PlayerCreatorTest extends MockeryTestCase
             $this->smsVerificationCodeSender,
             $this->stuHash,
             $this->passwordGenerator,
-            $this->entityManager
+            $this->entityManager,
+            $this->userRefererRepository
         );
     }
 
