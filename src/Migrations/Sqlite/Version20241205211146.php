@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20241203174250 extends AbstractMigration
+final class Version20241205211146 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -532,6 +532,8 @@ final class Version20241203174250 extends AbstractMigration
         $this->addSql('CREATE TABLE stu_user_profile_visitors (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, recipient INTEGER NOT NULL, date INTEGER NOT NULL, CONSTRAINT FK_DD0F4487A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_DD0F44876804FB49 FOREIGN KEY (recipient) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_DD0F44876804FB49 ON stu_user_profile_visitors (recipient)');
         $this->addSql('CREATE INDEX user_profile_visitor_user_idx ON stu_user_profile_visitors (user_id)');
+        $this->addSql('CREATE TABLE stu_user_referer (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, referer CLOB NOT NULL, user_id INTEGER NOT NULL, CONSTRAINT FK_A00722FDA76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_A00722FDA76ED395 ON stu_user_referer (user_id)');
         $this->addSql('CREATE TABLE stu_user_setting (user_id INTEGER NOT NULL, setting VARCHAR(255) NOT NULL, value VARCHAR(255) NOT NULL, PRIMARY KEY(user_id, setting), CONSTRAINT FK_6AAFACE0A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_6AAFACE0A76ED395 ON stu_user_setting (user_id)');
         $this->addSql('CREATE TABLE stu_user_tag (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, tag_type_id INTEGER NOT NULL, date DATETIME NOT NULL, CONSTRAINT FK_56CC7D00A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
@@ -709,6 +711,7 @@ final class Version20241203174250 extends AbstractMigration
         $this->addSql('DROP TABLE stu_user_lock');
         $this->addSql('DROP TABLE stu_user_map');
         $this->addSql('DROP TABLE stu_user_profile_visitors');
+        $this->addSql('DROP TABLE stu_user_referer');
         $this->addSql('DROP TABLE stu_user_setting');
         $this->addSql('DROP TABLE stu_user_tag');
         $this->addSql('DROP TABLE stu_user_tutorial');

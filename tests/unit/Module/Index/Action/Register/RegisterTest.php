@@ -144,6 +144,10 @@ class RegisterTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn('+49');
+        $this->registerRequest->shouldReceive('getReferer')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(null);
 
         $this->factionRepository->shouldReceive('getPlayableFactionsPlayerCount')
             ->withNoArgs()
@@ -156,7 +160,7 @@ class RegisterTest extends StuTestCase
             ->andReturn(2);
 
         $this->playerCreator->shouldReceive('createWithMobileNumber')
-            ->with('login', 'email', $this->faction, '+4912345')
+            ->with('login', 'email', $this->faction, '+4912345', null)
             ->once()
             ->andThrow(new LoginNameInvalidException());
 
@@ -164,6 +168,7 @@ class RegisterTest extends StuTestCase
 
         $this->subject->handle($this->game);
     }
+
 
     public function testHandleDoeaNothingIfMobileNumberIsEmpty(): void
     {
@@ -207,6 +212,11 @@ class RegisterTest extends StuTestCase
             ->once()
             ->andReturn(2);
 
+        $this->registerRequest->shouldReceive('getReferer')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(null);
+
         $this->subject->handle($this->game);
     }
 
@@ -241,7 +251,11 @@ class RegisterTest extends StuTestCase
         $this->registerRequest->shouldReceive('getCountryCode')
             ->withNoArgs()
             ->once()
-            ->andReturn(+49);
+            ->andReturn('+49');
+        $this->registerRequest->shouldReceive('getReferer')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(null);
 
         $this->factionRepository->shouldReceive('getPlayableFactionsPlayerCount')
             ->withNoArgs()
@@ -258,7 +272,7 @@ class RegisterTest extends StuTestCase
             ->once();
 
         $this->playerCreator->shouldReceive('createWithMobileNumber')
-            ->with('login', 'email', $this->faction, '+4912345')
+            ->with('login', 'email', $this->faction, '+4912345', null)
             ->once();
 
         $this->subject->handle($this->game);
