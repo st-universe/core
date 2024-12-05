@@ -13,6 +13,7 @@ use Stu\Module\Control\StuHashInterface;
 use Stu\Orm\Entity\FactionInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
+use Stu\Orm\Repository\UserRefererRepositoryInterface;
 use Stu\StuTestCase;
 
 class LocalPlayerCreatorTest extends StuTestCase
@@ -38,6 +39,9 @@ class LocalPlayerCreatorTest extends StuTestCase
     /** @var MockInterface&EntityManagerInterface */
     private MockInterface $entityManager;
 
+    /** @var MockInterface&UserRefererRepositoryInterface */
+    private MockInterface $userRefererRepository;
+
     private LocalPlayerCreator $subject;
 
     #[Override]
@@ -50,6 +54,7 @@ class LocalPlayerCreatorTest extends StuTestCase
         $this->stuHash = $this->mock(StuHashInterface::class);
         $this->passwordGenerator = $this->mock(PasswordGeneratorInterface::class);
         $this->entityManager = $this->mock(EntityManagerInterface::class);
+        $this->userRefererRepository = $this->mock(UserRefererRepositoryInterface::class);
 
         $this->subject = new LocalPlayerCreator(
             $this->userRepository,
@@ -58,7 +63,8 @@ class LocalPlayerCreatorTest extends StuTestCase
             $this->smsVerificationCodeSender,
             $this->stuHash,
             $this->passwordGenerator,
-            $this->entityManager
+            $this->entityManager,
+            $this->userRefererRepository
         );
     }
 
@@ -101,7 +107,7 @@ class LocalPlayerCreatorTest extends StuTestCase
             ->with(Mockery::type('int'))
             ->once();
         $user->shouldReceive('setPassword')
-            ->with(Mockery::on(fn (string $passwordHash): bool => password_verify($password, $passwordHash)))
+            ->with(Mockery::on(fn(string $passwordHash): bool => password_verify($password, $passwordHash)))
             ->once();
         $user->shouldReceive('getId')
             ->withNoArgs()

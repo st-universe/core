@@ -201,4 +201,8 @@ interface UserInterface
      * @return iterable<WormholeRestriction>
      */
     public function getWormholeRestrictions(): iterable;
+
+    public function getReferer(): ?UserRefererInterface;
+
+    public function setReferer(?UserRefererInterface $referer): UserInterface;
 }

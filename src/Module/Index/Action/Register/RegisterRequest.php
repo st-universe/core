@@ -48,4 +48,10 @@ final class RegisterRequest implements RegisterRequestInterface
 
         return preg_replace('/[\W_]+/', '', $token);
     }
+
+    #[Override]
+    public function getReferer(): ?string
+    {
+        return $this->parameter('referer')->string()->defaultsToIfEmpty(null);
+    }
 }

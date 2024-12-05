@@ -181,6 +181,9 @@ class User implements UserInterface
     #[OneToMany(targetEntity: 'WormholeRestriction', mappedBy: 'user')]
     private Collection $wormholeRestrictions;
 
+    #[OneToOne(targetEntity: 'UserReferer', mappedBy: 'user')]
+    private ?UserRefererInterface $referer = null;
+
 
     public function __construct()
     {
@@ -855,5 +858,18 @@ class User implements UserInterface
     public function getWormholeRestrictions(): iterable
     {
         return $this->wormholeRestrictions;
+    }
+
+    #[Override]
+    public function getReferer(): ?UserRefererInterface
+    {
+        return $this->referer;
+    }
+
+    #[Override]
+    public function setReferer(?UserRefererInterface $referer): UserInterface
+    {
+        $this->referer = $referer;
+        return $this;
     }
 }
