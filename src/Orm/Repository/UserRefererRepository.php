@@ -35,4 +35,15 @@ final class UserRefererRepository extends EntityRepository implements UserRefere
         $em->remove($referer);
         $em->flush();
     }
+
+    #[Override]
+    public function truncateAll(): void
+    {
+        $this->getEntityManager()->createQuery(
+            sprintf(
+                'DELETE FROM %s ur',
+                UserReferer::class
+            )
+        )->execute();
+    }
 }
