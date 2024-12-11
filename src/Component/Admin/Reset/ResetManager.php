@@ -116,6 +116,7 @@ final class ResetManager implements ResetManagerInterface
             $this->userReset->deleteAllUserInvitations();
             $this->userReset->deleteAllUserIpTableEntries();
             $this->userReset->deleteAllUserProfileVisitors();
+            $this->userReset->deleteAllUserReferers();
 
             $this->mapReset->deleteAllUserMaps();
             $this->mapReset->deleteAllFlightSignatures();
