@@ -56,7 +56,7 @@
     "monolog/monolog": "^3",
     "mpscholten/request-parser": "^1.5",
     "php-di/php-di": "^7",
-    "st-universe/planet-generator": "dev-feature/update_phpstan_to_v2",
+    "st-universe/planet-generator": "dev-master",
     "st-universe/starsystem-generator": "dev-master",
     "symfony/mailer": "^7.1.5",
     "twig/twig": "^3.6"
@@ -74,7 +74,7 @@
     "phpstan/phpstan-mockery": "^2.0",
     "phpstan/phpstan-phpunit": "^2.0",
     "phpunit/phpunit": "^11.2.6",
-    "rector/rector": "2.0.0-rc2",
+    "rector/rector": "^2.0",
     "spatie/phpunit-snapshot-assertions": "^5.1",
     "st-universe/assets": "dev-master"
   },
