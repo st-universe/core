@@ -68,14 +68,16 @@
                     title="Karte des Systems öffnen">
                     <img src="/assets/map/systemtypes/{{ COLONY.getSystem.getSystemType.getId }}.png"
                         title="{{ COLONY.getSystem.getSystemType.getDescription }}" />
-                    <span>{{ COLONY.getSystem.getName }}
+                    <span style="display: block; white-space:pre-line;">{{ COLONY.getSystem.getName }}
                         ({{ COLONY.getSystem.getCx }}|{{ COLONY.getSystem.getCy }})</span>
                 </a>
                 {% else %}
                 <img src="/assets/map/systemtypes/{{ COLONY.getSystem.getSystemType.getId }}.png"
                     title="{{ COLONY.getSystem.getSystemType.getDescription }}" />
-                <span>{{ COLONY.getSystem.getName }}
-                    ({{ COLONY.getSystem.getCx }}|{{ COLONY.getSystem.getCy }})</span>
+                <div>
+                    <span style="display: block; white-space:pre-line;">{{ COLONY.getSystem.getName }}
+                        ({{ COLONY.getSystem.getCx }}|{{ COLONY.getSystem.getCy }})</span>
+                </div>
                 {% endif %}
                 <div>
                     <span style="display: block; white-space:pre-line;">
