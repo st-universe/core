@@ -21,9 +21,7 @@ use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 //TODO unit tests
 final class ShipLeaver implements ShipLeaverInterface
 {
-    public function __construct(private ShipCrewRepositoryInterface $shipCrewRepository, private ShipRumpRepositoryInterface $shipRumpRepository, private CrewRepositoryInterface $crewRepository, private LaunchEscapePodsInterface $launchEscapePods, private ShipShutdownInterface $shipShutdown, private PrivateMessageSenderInterface $privateMessageSender)
-    {
-    }
+    public function __construct(private ShipCrewRepositoryInterface $shipCrewRepository, private ShipRumpRepositoryInterface $shipRumpRepository, private CrewRepositoryInterface $crewRepository, private LaunchEscapePodsInterface $launchEscapePods, private ShipShutdownInterface $shipShutdown, private PrivateMessageSenderInterface $privateMessageSender) {}
 
     #[Override]
     public function evacuate(ShipWrapperInterface $wrapper): string
@@ -38,7 +36,7 @@ final class ShipLeaver implements ShipLeaverInterface
 
         $podRump = $this->shipRumpRepository->find($ship->getUser()->getFactionId() + ShipRumpEnum::SHIP_RUMP_BASE_ID_ESCAPE_PODS);
 
-        if ($podRump === null) {
+        if ($podRump === null || $ship->getUser()->isNpc()) {
             $this->letCrewDie($ship);
             return _('Keine Rettungskapseln vorhanden, die Crew ist daher verstorben!');
         }
