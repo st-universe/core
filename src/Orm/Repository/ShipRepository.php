@@ -97,7 +97,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                     sp.type as spacecrafttype, sp.name as shipname, sp.huelle as hull, sp.max_huelle as maxhull,
                     sp.schilde as shield, sp.holding_web_id as webid, tw.finished_time as webfinishtime, u.id as userid, u.username,
                     r.category_id as rumpcategoryid, r.name as rumpname, r.role_id as rumproleid,
-                    (SELECT count(*) > 0 FROM stu_ship_log sl WHERE sl.spacecraft_id = s.id AND sl.is_private = 0) as haslogbook,
+                    (SELECT count(*) > 0 FROM stu_ship_log sl WHERE sl.spacecraft_id = s.id AND sl.is_private = :false) as haslogbook,
                     (SELECT count(*) > 0 FROM stu_crew_assign ca WHERE ca.spacecraft_id = s.id) as hascrew
                 FROM stu_ship s
                 JOIN stu_spacecraft sp
@@ -139,7 +139,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'cloakType' => SpacecraftSystemTypeEnum::SYSTEM_CLOAK->value,
             'warpdriveType' => SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE->value,
             'shieldType' => SpacecraftSystemTypeEnum::SYSTEM_SHIELDS->value,
-            'uplinkType' => SpacecraftSystemTypeEnum::SYSTEM_UPLINK->value
+            'uplinkType' => SpacecraftSystemTypeEnum::SYSTEM_UPLINK->value,
+            'false' => false
         ]);
 
         return $query->getResult();
@@ -254,7 +255,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                     COALESCE(ss4.status,0) as uplinkstate, sp.type as spacecrafttype, sp.name as shipname,
                     sp.huelle as hull, sp.max_huelle as maxhull, sp.schilde as shield, sp.holding_web_id as webid, tw.finished_time as webfinishtime,
                     u.id as userid, u.username, r.category_id as rumpcategoryid, r.name as rumpname, r.role_id as rumproleid,
-                    (SELECT count(*) > 0 FROM stu_ship_log sl WHERE sl.spacecraft_id = s.id AND sl.is_private = 0) as haslogbook,
+                    (SELECT count(*) > 0 FROM stu_ship_log sl WHERE sl.spacecraft_id = s.id AND sl.is_private = :false) as haslogbook,
                     (SELECT count(*) > 0 FROM stu_crew_assign ca WHERE ca.spacecraft_id = s.id) as hascrew
                 FROM stu_ship s
                 JOIN stu_spacecraft sp
@@ -297,7 +298,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'cloakType' => SpacecraftSystemTypeEnum::SYSTEM_CLOAK->value,
             'warpdriveType' => SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE->value,
             'shieldType' => SpacecraftSystemTypeEnum::SYSTEM_SHIELDS->value,
-            'uplinkType' => SpacecraftSystemTypeEnum::SYSTEM_UPLINK->value
+            'uplinkType' => SpacecraftSystemTypeEnum::SYSTEM_UPLINK->value,
+            'false' => false
         ]);
 
         return $query->getResult();
@@ -338,11 +340,11 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 WHERE l.layer_id = :layerId
                 AND l.cx BETWEEN :minX AND :maxX
                 AND l.cy BETWEEN :minY AND :maxY
-                AND (s.fleet_id IS NULL OR s.is_fleet_leader = 1)
+                AND (s.fleet_id IS NULL OR s.is_fleet_leader = :true)
                 AND u.id >= :firstUserId
                 AND u.state >= :stateActive
                 AND u.creation < :eightWeeksEarlier
-                AND (u.vac_active = 0 OR u.vac_request_date > :vacationThreshold)
+                AND (u.vac_active = :false OR u.vac_request_date > :vacationThreshold)
                 AND COALESCE(w.protection_timeout, 0) < :currentTime',
                 Ship::class,
                 Location::class,
@@ -360,7 +362,9 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 'stateActive' => UserEnum::USER_STATE_ACTIVE,
                 'eightWeeksEarlier' => time() - TimeConstants::EIGHT_WEEKS_IN_SECONDS,
                 'vacationThreshold' => time() - UserEnum::VACATION_DELAY_IN_SECONDS,
-                'currentTime' => time()
+                'currentTime' => time(),
+                'true' => true,
+                'false' => false
             ])
             ->getResult();
     }

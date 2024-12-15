@@ -53,8 +53,8 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
                     FROM %s fs
                     JOIN %s ssm
                     WITH fs.location_id = ssm.id
-                    WHERE (fs.is_cloaked = 0 AND fs.time > :maxAgeUncloaked
-                      OR fs.is_cloaked = 1 AND fs.time > :maxAgeCloaked)
+                    WHERE (fs.is_cloaked = :false AND fs.time > :maxAgeUncloaked
+                      OR fs.is_cloaked = :true AND fs.time > :maxAgeCloaked)
                     AND ssm.sx = :sx
                     AND ssm.sy = :sy
                     AND ssm.systems_id = :systemsId
@@ -69,7 +69,9 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
                 'sx' => $colony->getSx(),
                 'sy' => $colony->getSy(),
                 'systemsId' => $colony->getSystem()->getId(),
-                'ignoreId' => $colony->getUserId()
+                'ignoreId' => $colony->getUserId(),
+                'false' => false,
+                'true' => true
             ])
             ->getSingleScalarResult();
     }

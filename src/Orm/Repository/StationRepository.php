@@ -147,7 +147,7 @@ final class StationRepository extends EntityRepository implements StationReposit
                 AND c.user_id = :userId
                 AND ss.system_type = :systemType
                 AND ss.mode >= :mode
-                AND (u.vac_active = 0 OR u.vac_request_date > :vacationThreshold)',
+                AND (u.vac_active = :false OR u.vac_request_date > :vacationThreshold)',
                 Station::class,
                 CrewAssignment::class,
                 Crew::class,
@@ -158,7 +158,8 @@ final class StationRepository extends EntityRepository implements StationReposit
             'userId' => $userId,
             'systemType' => SpacecraftSystemTypeEnum::SYSTEM_UPLINK->value,
             'mode' => SpacecraftSystemModeEnum::MODE_ON,
-            'vacationThreshold' => time() - UserEnum::VACATION_DELAY_IN_SECONDS
+            'vacationThreshold' => time() - UserEnum::VACATION_DELAY_IN_SECONDS,
+            'false' => false
         ])
             ->getResult();
     }
@@ -203,7 +204,7 @@ final class StationRepository extends EntityRepository implements StationReposit
                     s.type as spacecrafttype, s.name as shipname, s.huelle as hull, s.max_huelle as maxhull,
                     s.schilde as shield, s.holding_web_id as webid, tw.finished_time as webfinishtime, u.id as userid, u.username,
                     r.category_id as rumpcategoryid, r.name as rumpname, r.role_id as rumproleid,
-                    (SELECT count(*) > 0 FROM stu_ship_log sl WHERE sl.spacecraft_id = s.id AND sl.is_private = 0) as haslogbook,
+                    (SELECT count(*) > 0 FROM stu_ship_log sl WHERE sl.spacecraft_id = s.id AND sl.is_private = :false) as haslogbook,
                     (SELECT count(*) > 0 FROM stu_crew_assign ca WHERE ca.spacecraft_id = s.id) as hascrew
                 FROM stu_spacecraft s
                 JOIN stu_station st
@@ -239,7 +240,8 @@ final class StationRepository extends EntityRepository implements StationReposit
             'cloakType' => SpacecraftSystemTypeEnum::SYSTEM_CLOAK->value,
             'warpdriveType' => SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE->value,
             'shieldType' => SpacecraftSystemTypeEnum::SYSTEM_SHIELDS->value,
-            'uplinkType' => SpacecraftSystemTypeEnum::SYSTEM_UPLINK->value
+            'uplinkType' => SpacecraftSystemTypeEnum::SYSTEM_UPLINK->value,
+            'false' => false
         ]);
 
         return $query->getResult();
