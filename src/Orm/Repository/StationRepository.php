@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Override;
 use Stu\Component\Spacecraft\SpacecraftRumpEnum;
-use Stu\Component\Spacecraft\SpacecraftTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -80,7 +79,9 @@ final class StationRepository extends EntityRepository implements StationReposit
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT s FROM %s s
+                    'SELECT st FROM %s st
+                     JOIN %s s
+                     WITH st.id = s.id
                      LEFT JOIN %s m
                      WITH s.location_id = m.id
                      LEFT JOIN %s l
@@ -88,13 +89,13 @@ final class StationRepository extends EntityRepository implements StationReposit
                      LEFT JOIN %s sm
                      WITH s.location_id = sm.id
                      WHERE s.user_id NOT IN (:ignoreIds)
-                     AND s.type = :spacecraftType
                      AND (:layerId = 0 OR (l.layer_id = :layerId
                         AND l.cx BETWEEN (:cx - 1) AND (:cx + 1)
                         AND l.cy BETWEEN (:cy - 1) AND (:cy + 1)))
                      AND (:systemId = 0 OR (sm.systems_id = :systemId
                         AND sm.sx BETWEEN (:sx - 1) AND (:sx + 1)
                         AND sm.sy BETWEEN (:sy - 1) AND (:sy + 1)))',
+                    Station::class,
                     Spacecraft::class,
                     Map::class,
                     Location::class,
@@ -103,7 +104,6 @@ final class StationRepository extends EntityRepository implements StationReposit
             )
             ->setParameters([
                 'ignoreIds' => [$spacecraft->getUser()->getId(), UserEnum::USER_NOONE],
-                'spacecraftType' => SpacecraftTypeEnum::STATION->value,
                 'systemId' => $systemMap === null ? 0 : $systemMap->getSystem()->getId(),
                 'sx' => $systemMap === null ? 0 : $systemMap->getSx(),
                 'sy' => $systemMap === null ? 0 : $systemMap->getSy(),
