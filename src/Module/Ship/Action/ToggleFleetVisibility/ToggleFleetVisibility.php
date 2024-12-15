@@ -9,7 +9,7 @@ use request;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Ship\View\Noop\Noop;
+use Stu\Module\Spacecraft\View\Noop\Noop;
 
 final class ToggleFleetVisibility implements ActionControllerInterface
 {
@@ -17,9 +17,7 @@ final class ToggleFleetVisibility implements ActionControllerInterface
 
     private const string SESSION_KEY = 'hiddenshiplistfleets';
 
-    public function __construct(private SessionInterface $session)
-    {
-    }
+    public function __construct(private SessionInterface $session) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void

@@ -6,23 +6,22 @@ namespace Stu\Module\Tick\Process;
 
 use Override;
 use RuntimeException;
-use Stu\Component\Ship\System\ShipSystemManagerInterface;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
-use Stu\Module\Ship\Lib\Interaction\TholianWebUtilInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Module\Ship\Lib\TholianWebUtilInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\TholianWebInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\TholianWebRepositoryInterface;
 
 final class FinishTholianWebs implements ProcessTickHandlerInterface
 {
-    public function __construct(private TholianWebRepositoryInterface $tholianWebRepository, private TholianWebUtilInterface $tholianWebUtil, private ShipWrapperFactoryInterface $shipWrapperFactory, private LeaveFleetInterface $leaveFleet, private ShipSystemManagerInterface $shipSystemManager, private PrivateMessageSenderInterface $privateMessageSender)
-    {
-    }
+    public function __construct(private TholianWebRepositoryInterface $tholianWebRepository, private TholianWebUtilInterface $tholianWebUtil, private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory, private LeaveFleetInterface $leaveFleet, private SpacecraftSystemManagerInterface $spacecraftSystemManager, private PrivateMessageSenderInterface $privateMessageSender) {}
 
     #[Override]
     public function work(): void
@@ -35,7 +34,7 @@ final class FinishTholianWebs implements ProcessTickHandlerInterface
             $this->cancelTractorBeams($web);
 
             //free helper
-            $this->tholianWebUtil->resetWebHelpers($web, $this->shipWrapperFactory, true);
+            $this->tholianWebUtil->resetWebHelpers($web, $this->spacecraftWrapperFactory, true);
 
             //set finished
             $web->setFinishedTime(null);
@@ -88,7 +87,6 @@ final class FinishTholianWebs implements ProcessTickHandlerInterface
 
                 if (!array_key_exists($userId, $pms)) {
                     $pms[$userId] = sprintf(_('Das Energienetz in Sektor %s wurde fertiggestellt') . "\n", $ship->getSectorString());
-                    ;
                 }
 
                 $pms[$userId] .= sprintf('Die %s hat die Flotte %s verlassen' . "\n", $ship->getName(), $fleetName);
@@ -114,29 +112,30 @@ final class FinishTholianWebs implements ProcessTickHandlerInterface
             if ($ship->isTractoring()) {
                 $this->cancelTractorBeam($webOwner, $ship);
             }
-            if ($ship->isTractored()) {
-                $this->cancelTractorBeam($webOwner, $ship->getTractoringShip());
+            $tractoringSpacecraft = $ship->getTractoringSpacecraft();
+            if ($tractoringSpacecraft !== null) {
+                $this->cancelTractorBeam($webOwner, $tractoringSpacecraft);
             }
         }
     }
 
-    private function cancelTractorBeam(UserInterface $webOwner, ShipInterface $ship): void
+    private function cancelTractorBeam(UserInterface $webOwner, SpacecraftInterface $spacecraft): void
     {
         $this->privateMessageSender->send(
             $webOwner->getId(),
-            $ship->getUser()->getId(),
+            $spacecraft->getUser()->getId(),
             sprintf(
                 'Der Traktorstrahl der %s auf die %s wurde in Sektor %s durch ein Energienetz unterbrochen',
-                $ship->getName(),
-                $ship->getTractoredShip(),
-                $ship->getSectorString()
+                $spacecraft->getName(),
+                $spacecraft->getTractoredShip(),
+                $spacecraft->getSectorString()
             ),
             PrivateMessageFolderTypeEnum::SPECIAL_SHIP
         );
 
-        $this->shipSystemManager->deactivate(
-            $this->shipWrapperFactory->wrapShip($ship),
-            ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM,
+        $this->spacecraftSystemManager->deactivate(
+            $this->spacecraftWrapperFactory->wrapSpacecraft($spacecraft),
+            SpacecraftSystemTypeEnum::SYSTEM_TRACTOR_BEAM,
             true
         ); //forced deactivation
     }

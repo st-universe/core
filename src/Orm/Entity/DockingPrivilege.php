@@ -13,10 +13,12 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Override;
+use Stu\Component\Station\Dock\DockModeEnum;
+use Stu\Component\Station\Dock\DockTypeEnum;
 use Stu\Orm\Repository\DockingPrivilegeRepository;
 
 #[Table(name: 'stu_dockingrights')]
-#[Index(name: 'dockingrights_ship_idx', columns: ['ships_id'])]
+#[Index(name: 'dockingrights_station_idx', columns: ['station_id'])]
 #[Entity(repositoryClass: DockingPrivilegeRepository::class)]
 class DockingPrivilege implements DockingPrivilegeInterface
 {
@@ -26,19 +28,20 @@ class DockingPrivilege implements DockingPrivilegeInterface
     private int $id;
 
     #[Column(type: 'integer')]
-    private int $ships_id = 0;
+    private int $station_id = 0;
 
     #[Column(type: 'integer')]
     private int $target = 0; //TODO create refs to user, ally, ship and faction entities and make cascade delete
-    #[Column(type: 'smallint')]
-    private int $privilege_type = 0;
 
-    #[Column(type: 'smallint')]
-    private int $privilege_mode = 0;
+    #[Column(type: 'smallint', enumType: DockTypeEnum::class)]
+    private DockTypeEnum $privilege_type = DockTypeEnum::ALLIANCE;
 
-    #[ManyToOne(targetEntity: 'Ship', inversedBy: 'dockingPrivileges')]
-    #[JoinColumn(name: 'ships_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ShipInterface $ship;
+    #[Column(type: 'smallint', enumType: DockModeEnum::class)]
+    private DockModeEnum $privilege_mode = DockModeEnum::ALLOW;
+
+    #[ManyToOne(targetEntity: 'Station', inversedBy: 'dockingPrivileges')]
+    #[JoinColumn(name: 'station_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    private StationInterface $station;
 
     #[Override]
     public function getId(): int
@@ -60,41 +63,41 @@ class DockingPrivilege implements DockingPrivilegeInterface
     }
 
     #[Override]
-    public function getPrivilegeType(): int
+    public function getPrivilegeType(): DockTypeEnum
     {
         return $this->privilege_type;
     }
 
     #[Override]
-    public function setPrivilegeType(int $privilegeType): DockingPrivilegeInterface
+    public function setPrivilegeType(DockTypeEnum $privilegeType): DockingPrivilegeInterface
     {
         $this->privilege_type = $privilegeType;
         return $this;
     }
 
     #[Override]
-    public function getPrivilegeMode(): int
+    public function getPrivilegeMode(): DockModeEnum
     {
         return $this->privilege_mode;
     }
 
     #[Override]
-    public function setPrivilegeMode(int $privilegeMode): DockingPrivilegeInterface
+    public function setPrivilegeMode(DockModeEnum $privilegeMode): DockingPrivilegeInterface
     {
         $this->privilege_mode = $privilegeMode;
         return $this;
     }
 
     #[Override]
-    public function getShip(): ShipInterface
+    public function getStation(): StationInterface
     {
-        return $this->ship;
+        return $this->station;
     }
 
     #[Override]
-    public function setShip(ShipInterface $ship): DockingPrivilegeInterface
+    public function setStation(StationInterface $station): DockingPrivilegeInterface
     {
-        $this->ship = $ship;
+        $this->station = $station;
         return $this;
     }
 }

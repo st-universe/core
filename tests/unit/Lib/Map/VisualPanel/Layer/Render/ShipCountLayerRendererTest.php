@@ -14,7 +14,7 @@ use Stu\StuTestCase;
 
 class ShipCountLayerRendererTest extends StuTestCase
 {
-    /** @var MockInterface|AbstractVisualPanel */
+    /** @var MockInterface&AbstractVisualPanel */
     private MockInterface $panel;
 
     #[Override]
@@ -156,7 +156,7 @@ class ShipCountLayerRendererTest extends StuTestCase
 
     #[DataProvider('parameterDataProvider')]
     public function testRenderExpectNoCloakedInfoWhenTachyonInRange(
-        bool $isBase,
+        bool $isStation,
         int $shipX,
         int $shipY,
         bool $isShowCloakedExpected
@@ -180,9 +180,9 @@ class ShipCountLayerRendererTest extends StuTestCase
         $ship->shouldReceive('getTachyonState')
             ->withNoArgs()
             ->andReturn(true);
-        $ship->shouldReceive('isBase')
+        $ship->shouldReceive('isStation')
             ->withNoArgs()
-            ->andReturn($isBase);
+            ->andReturn($isStation);
         $ship->shouldReceive('getPosX')
             ->withNoArgs()
             ->andReturn($shipX);

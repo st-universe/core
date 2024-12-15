@@ -93,7 +93,7 @@ class CancelResearchTest extends StuTestCase
             ->once();
 
         $this->componentLoader->shouldReceive('addComponentUpdate')
-            ->with(ComponentEnum::RESEARCH_NAVLET)
+            ->with(ComponentEnum::RESEARCH)
             ->once();
 
         $this->subject->handle($game);

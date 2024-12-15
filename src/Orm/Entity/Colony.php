@@ -19,8 +19,11 @@ use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use Override;
 use Stu\Component\Colony\ColonyMenuEnum;
+use Stu\Component\Game\ModuleViewEnum;
 use Stu\Component\Game\TimeConstants;
 use Stu\Lib\Colony\PlanetFieldHostTypeEnum;
+use Stu\Lib\Transfer\CommodityTransfer;
+use Stu\Lib\Transfer\TransferEntityTypeEnum;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Repository\ColonyRepository;
@@ -144,19 +147,19 @@ class Colony implements ColonyInterface
     private Collection $blockers;
 
     /**
-     * @var ArrayCollection<int, ShipCrewInterface>
+     * @var ArrayCollection<int, CrewAssignmentInterface>
      */
-    #[OneToMany(targetEntity: 'ShipCrew', mappedBy: 'colony')]
+    #[OneToMany(targetEntity: 'CrewAssignment', mappedBy: 'colony')]
     private Collection $crewAssignments;
 
     /**
-     * @var ArrayCollection<int, ShipCrewInterface>
+     * @var ArrayCollection<int, CrewAssignmentInterface>
      */
     #[OneToMany(targetEntity: 'CrewTraining', mappedBy: 'colony')]
     private Collection $crewTrainings;
 
     /**
-     * @var Collection<int, ColonyDepositMiningInterface>
+     * @var ArrayCollection<int, ColonyDepositMiningInterface>
      */
     #[OneToMany(targetEntity: 'ColonyDepositMining', mappedBy: 'colony')]
     #[OrderBy(['commodity_id' => 'ASC'])]
@@ -585,6 +588,12 @@ class Colony implements ColonyInterface
     }
 
     #[Override]
+    public function getLocation(): MapInterface|StarSystemMapInterface
+    {
+        return $this->getStarsystemMap();
+    }
+
+    #[Override]
     public function setStarsystemMap(StarSystemMapInterface $systemMap): ColonyInterface
     {
         $this->starsystem_map = $systemMap;
@@ -610,22 +619,10 @@ class Colony implements ColonyInterface
         return $this->planetFields;
     }
 
-    /**
-     * @return StorageInterface[]
-     */
     #[Override]
-    public function getBeamableStorage(): array
+    public function getBeamableStorage(): Collection
     {
-        $beamableStorage = array_filter(
-            $this->getStorage()->getValues(),
-            fn(StorageInterface $storage): bool => $storage->getCommodity()->isBeamable() === true
-        );
-
-        usort($beamableStorage, function ($a, $b): int {
-            return $a->getCommodity()->getSort() <=> $b->getCommodity()->getSort();
-        });
-
-        return $beamableStorage;
+        return CommodityTransfer::excludeNonBeamable($this->storage);
     }
 
     #[Override]
@@ -779,5 +776,22 @@ class Colony implements ColonyInterface
     public function isMenuAllowed(ColonyMenuEnum $menu): bool
     {
         return true;
+    }
+
+    #[Override]
+    public function getTransferEntityType(): TransferEntityTypeEnum
+    {
+        return TransferEntityTypeEnum::COLONY;
+    }
+
+    #[Override]
+    public function getHref(): string
+    {
+        return sprintf(
+            '%s?%s=1&id=%d',
+            ModuleViewEnum::COLONY->getPhpPage(),
+            ShowColony::VIEW_IDENTIFIER,
+            $this->getId()
+        );
     }
 }

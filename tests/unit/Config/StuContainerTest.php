@@ -11,15 +11,15 @@ use DI\Definition\Source\MutableDefinitionSource;
 use Mockery\MockInterface;
 use Override;
 use Psr\Container\ContainerInterface;
-use Stu\Component\Ship\Repair\RepairUtilInterface;
-use Stu\Component\Ship\System\ShipSystemManagerInterface;
+use Stu\Component\Spacecraft\Repair\RepairUtilInterface;
+use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\StuTestCase;
 
 class StuContainerTest extends StuTestCase
 {
-    /** @var MockInterface|MutableDefinitionSource */
+    /** @var MockInterface&MutableDefinitionSource */
     private $definitionSource;
-    /** @var MockInterface|ContainerInterface */
+    /** @var MockInterface&ContainerInterface */
     private $wrapperContainer;
 
     private StuContainer $subject;
@@ -75,7 +75,7 @@ class StuContainerTest extends StuTestCase
         $definitionWithUnwantedType = $this->mock(FactoryDefinition::class);
         $implementation1 = $this->mock(RepairUtilInterface::class);
         $implementation2 = $this->mock(RepairUtilInterface::class);
-        $implementation3 = $this->mock(ShipSystemManagerInterface::class);
+        $implementation3 = $this->mock(SpacecraftSystemManagerInterface::class);
 
         $this->definitionSource->shouldReceive('getDefinitions')
             ->withNoArgs()

@@ -7,6 +7,7 @@ namespace Stu\Module\Starmap\View\RefreshSection;
 use Override;
 use request;
 use RuntimeException;
+use Stu\Component\Map\DirectionEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -22,8 +23,7 @@ final class RefreshSection implements ViewControllerInterface
         private ShowSectionRequestInterface $request,
         private StarmapUiFactoryInterface $starmapUiFactory,
         private LayerRepositoryInterface $layerRepository
-    ) {
-    }
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -44,12 +44,13 @@ final class RefreshSection implements ViewControllerInterface
         $game->showMacro(request::getStringFatal('macro'));
 
         $helper = $this->starmapUiFactory->createMapSectionHelper();
+        $directionValue = $this->request->getDirection();
         $helper->setTemplateVars(
             $game,
             $layer,
             $section,
             false,
-            $this->request->getDirection()
+            $directionValue !== null ? DirectionEnum::from($directionValue) : null
         );
     }
 }

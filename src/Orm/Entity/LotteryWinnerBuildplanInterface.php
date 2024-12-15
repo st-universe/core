@@ -7,7 +7,7 @@ interface LotteryWinnerBuildplanInterface
 
     public function getId(): int;
 
-    public function getBuildplan(): ShipBuildplanInterface;
+    public function getBuildplan(): SpacecraftBuildplanInterface;
 
     public function getChance(): int;
 }

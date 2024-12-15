@@ -13,7 +13,7 @@ use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ColonyTerraformingInterface;
 use Stu\Orm\Entity\CrewInterface;
 use Stu\Orm\Entity\FleetInterface;
-use Stu\Orm\Entity\ShipCrewInterface;
+use Stu\Orm\Entity\CrewAssignmentInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonySandboxRepositoryInterface;
@@ -23,7 +23,7 @@ use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
-use Stu\Orm\Repository\ShipCrewRepositoryInterface;
+use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\StuTestCase;
@@ -31,27 +31,27 @@ use Stu\StuTestCase;
 class ColonyResetterTest extends StuTestCase
 {
     /**
-     * @var MockInterface|null|ColonyRepositoryInterface
+     * @var MockInterface&null|ColonyRepositoryInterface
      */
     private $colonyRepository;
 
     /**
-     * @var MockInterface|null|UserRepositoryInterface
+     * @var MockInterface&null|UserRepositoryInterface
      */
     private $userRepository;
 
     /**
-     * @var MockInterface|null|StorageRepositoryInterface
+     * @var MockInterface&null|StorageRepositoryInterface
      */
     private $storageRepository;
 
     /**
-     * @var MockInterface|null|ColonyTerraformingRepositoryInterface
+     * @var MockInterface&null|ColonyTerraformingRepositoryInterface
      */
     private $colonyTerraformingRepository;
 
     /**
-     * @var MockInterface|null|ColonyShipQueueRepositoryInterface
+     * @var MockInterface&null|ColonyShipQueueRepositoryInterface
      */
     private $colonyShipQueueRepository;
 
@@ -76,7 +76,7 @@ class ColonyResetterTest extends StuTestCase
     private $crewTrainingRepository;
 
     /**
-     * @var null|MockInterface|ShipCrewRepositoryInterface
+     * @var null|MockInterface|CrewAssignmentRepositoryInterface
      */
     private $shipCrewRepository;
 
@@ -104,7 +104,7 @@ class ColonyResetterTest extends StuTestCase
         $this->fleetRepository = $this->mock(FleetRepositoryInterface::class);
         $this->crewRepository = $this->mock(CrewRepositoryInterface::class);
         $this->crewTrainingRepository = $this->mock(CrewTrainingRepositoryInterface::class);
-        $this->shipCrewRepository = $this->mock(ShipCrewRepositoryInterface::class);
+        $this->shipCrewRepository = $this->mock(CrewAssignmentRepositoryInterface::class);
         $this->colonySandboxRepository = $this->mock(ColonySandboxRepositoryInterface::class);
         $this->privateMessageSender = $this->mock(PrivateMessageSenderInterface::class);
 
@@ -170,7 +170,7 @@ class ColonyResetterTest extends StuTestCase
             ->andReturn($defenderFleetCollection);
 
         //CREW
-        $crewAssignment = $this->mock(ShipCrewInterface::class);
+        $crewAssignment = $this->mock(CrewAssignmentInterface::class);
         $crew = $this->mock(CrewInterface::class);
         $crewAssignmentsCollection = new ArrayCollection([$crewAssignment]);
         $colony->shouldReceive('getCrewAssignments')

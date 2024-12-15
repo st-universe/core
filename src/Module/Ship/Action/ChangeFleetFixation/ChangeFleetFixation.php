@@ -9,16 +9,14 @@ use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 
 final class ChangeFleetFixation implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_CHANGE_FLEET_FIXATION';
 
-    public function __construct(private FleetRepositoryInterface $fleetRepository, private ShipLoaderInterface $shipLoader)
-    {
-    }
+    public function __construct(private FleetRepositoryInterface $fleetRepository, private ShipLoaderInterface $shipLoader) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -36,7 +34,7 @@ final class ChangeFleetFixation implements ActionControllerInterface
             return;
         }
 
-        $game->setView(ShowShip::VIEW_IDENTIFIER);
+        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         if (request::postString('fleetfixed') !== false) {
             $fleet->setIsFleetFixed(true);

@@ -75,7 +75,7 @@ class AnomalyHandlingTest extends StuTestCase
         $this->anomalyRepository->shouldReceive('save')
             ->with($anomaly)
             ->once();
-        $this->handler->shouldReceive('handleShipTick')
+        $this->handler->shouldReceive('handleSpacecraftTick')
             ->with($anomaly)
             ->once();
         $this->handler->shouldReceive('letAnomalyDisappear')
@@ -107,7 +107,7 @@ class AnomalyHandlingTest extends StuTestCase
         $this->anomalyRepository->shouldReceive('save')
             ->with($anomaly)
             ->once();
-        $this->handler->shouldReceive('handleShipTick')
+        $this->handler->shouldReceive('handleSpacecraftTick')
             ->with($anomaly)
             ->once();
 

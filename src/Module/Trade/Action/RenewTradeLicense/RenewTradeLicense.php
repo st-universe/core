@@ -16,6 +16,7 @@ use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\ShowAccounts\ShowAccounts;
+use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Entity\TradeLicenseInfoInterface;
 use Stu\Orm\Entity\TradeLicenseInterface;
 use Stu\Orm\Repository\TradeLicenseInfoRepositoryInterface;
@@ -26,9 +27,7 @@ final class RenewTradeLicense implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_RENEW_TRADELICENSE';
 
-    public function __construct(private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradeLicenseInfoRepositoryInterface $tradeCreateLicenseRepository, private TradeLibFactoryInterface $tradeLibFactory, private TradePostRepositoryInterface $tradePostRepository, private PrivateMessageSenderInterface $privateMessageSender)
-    {
-    }
+    public function __construct(private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradeLicenseInfoRepositoryInterface $tradeCreateLicenseRepository, private TradeLibFactoryInterface $tradeLibFactory, private TradePostRepositoryInterface $tradePostRepository, private PrivateMessageSenderInterface $privateMessageSender) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -100,6 +99,7 @@ final class RenewTradeLicense implements ActionControllerInterface
         $commodityId = $licenseInfo->getCommodity()->getId();
         $costs = $licenseInfo->getAmount();
 
+        /** @var ?StorageInterface */
         $stor = $storageManager->getStorage()->get($commodityId) ?? null;
         if ($stor === null) {
             throw new SanityCheckException('storage not existent');

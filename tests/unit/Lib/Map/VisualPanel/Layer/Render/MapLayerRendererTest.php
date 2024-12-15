@@ -14,13 +14,13 @@ use Stu\StuTestCase;
 
 class MapLayerRendererTest extends StuTestCase
 {
-    /** @var MockInterface|LayerInterface */
+    /** @var MockInterface&LayerInterface */
     private MockInterface $layer;
 
-    /** @var MockInterface|EncodedMapInterface */
+    /** @var MockInterface&EncodedMapInterface */
     private MockInterface $encodedMap;
 
-    /** @var MockInterface|AbstractVisualPanel */
+    /** @var MockInterface&AbstractVisualPanel */
     private MockInterface $panel;
 
     private LayerRendererInterface $subject;

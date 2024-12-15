@@ -28,9 +28,9 @@ final class FinishShipBuildJobs implements ProcessTickHandlerInterface
                 $ship = $this->shipCreator->createBy(
                     $obj->getUserId(),
                     $obj->getRumpId(),
-                    $obj->getShipBuildplan()->getId(),
-                    $colony
+                    $obj->getSpacecraftBuildplan()->getId()
                 )
+                    ->setLocation($colony->getStarsystemMap())
                     ->finishConfiguration()
                     ->get();
 
@@ -49,12 +49,12 @@ final class FinishShipBuildJobs implements ProcessTickHandlerInterface
 
         $queue = $this->shipyardShipQueueRepository->getFinishedJobs();
         foreach ($queue as $obj) {
-            $shipyard = $obj->getShip();
+            $shipyard = $obj->getStation();
 
             $ship = $this->shipCreator->createBy(
                 $obj->getUserId(),
                 $obj->getRumpId(),
-                $obj->getShipBuildplan()->getId()
+                $obj->getSpacecraftBuildplan()->getId()
             )
                 ->setLocation($shipyard->getLocation())
                 ->finishConfiguration()

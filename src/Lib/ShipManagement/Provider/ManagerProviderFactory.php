@@ -5,19 +5,21 @@ declare(strict_types=1);
 namespace Stu\Lib\ShipManagement\Provider;
 
 use Override;
-use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
-use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
-use Stu\Module\Ship\Lib\Crew\TroopTransferUtilityInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
+use Stu\Module\Station\Lib\StationWrapperInterface;
 use Stu\Orm\Entity\ColonyInterface;
 
 class ManagerProviderFactory implements ManagerProviderFactoryInterface
 {
-    public function __construct(private CrewCreatorInterface $crewCreator, private ColonyLibFactoryInterface $colonyLibFactory, private TroopTransferUtilityInterface $troopTransferUtility, private ColonyStorageManagerInterface $colonyStorageManager, private ShipStorageManagerInterface $shipStorageManager)
-    {
-    }
+    public function __construct(
+        private CrewCreatorInterface $crewCreator,
+        private ColonyLibFactoryInterface $colonyLibFactory,
+        private TroopTransferUtilityInterface $troopTransferUtility,
+        private StorageManagerInterface $storageManager
+    ) {}
 
     #[Override]
     public function getManagerProviderColony(ColonyInterface $colony): ManagerProviderInterface
@@ -26,19 +28,19 @@ class ManagerProviderFactory implements ManagerProviderFactoryInterface
             $colony,
             $this->crewCreator,
             $this->colonyLibFactory,
-            $this->colonyStorageManager,
+            $this->storageManager,
             $this->troopTransferUtility
         );
     }
 
     #[Override]
-    public function getManagerProviderStation(ShipWrapperInterface $wrapper): ManagerProviderInterface
+    public function getManagerProviderStation(StationWrapperInterface $wrapper): ManagerProviderInterface
     {
         return new ManagerProviderStation(
             $wrapper,
             $this->crewCreator,
             $this->troopTransferUtility,
-            $this->shipStorageManager
+            $this->storageManager
         );
     }
 }

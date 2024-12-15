@@ -11,7 +11,7 @@ use Stu\Module\Tick\Maintenance\MaintenanceTickRunner;
 use Stu\Module\Tick\Manager\TickManagerRunner;
 use Stu\Module\Tick\Pirate\PirateTickRunner;
 use Stu\Module\Tick\Process\ProcessTickRunner;
-use Stu\Module\Tick\Ship\ShipTickRunner;
+use Stu\Module\Tick\Spacecraft\SpacecraftTickRunner;
 
 $schedule = new Schedule();
 
@@ -37,12 +37,12 @@ for ($groupId = 1; $groupId <= $colonyTickGroupCount; $groupId++) {
 $schedule
     ->run(function (): void {
         Init::run(function (ContainerInterface $dic): void {
-            $dic->get(ShipTickRunner::class)->run(1, 1);
+            $dic->get(SpacecraftTickRunner::class)->run(1, 1);
         });
     })
     ->hour(12, 15, 18, 21, 00)
     ->minute(00)
-    ->description('ShipTick');
+    ->description('SpacecraftTick');
 
 $schedule
     ->run(function (): void {

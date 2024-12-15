@@ -19,9 +19,6 @@ Init::run(function (ContainerInterface $dic): void {
     $em = $dic->get(EntityManagerInterface::class);
     $em->beginTransaction();
 
-    /**
-     * @todo Remove merging of ship and station actions
-     */
     $dic->get(GameControllerInterface::class)->main(
         ModuleViewEnum::GAME,
         $dic->get('GAME_ACTIONS'),

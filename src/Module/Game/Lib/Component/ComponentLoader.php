@@ -11,7 +11,6 @@ use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\Render\Fragments\RenderFragmentInterface;
 use Stu\Module\Game\View\ShowComponent\ShowComponent;
-use Stu\Module\Twig\TwigPageInterface;
 
 final class ComponentLoader implements ComponentLoaderInterface
 {
@@ -23,7 +22,7 @@ final class ComponentLoader implements ComponentLoaderInterface
 
     /** @param array<int, RenderFragmentInterface> $componentProviders */
     public function __construct(
-        private TwigPageInterface $twigPage,
+        private ComponentRendererInterface $componentRenderer,
         private array $componentProviders
     ) {}
 
@@ -96,14 +95,13 @@ final class ComponentLoader implements ComponentLoaderInterface
     #[Override]
     public function loadRegisteredComponents(GameControllerInterface $game): void
     {
-
         foreach ($this->neededComponents as $component) {
             if (!array_key_exists($component->value, $this->componentProviders)) {
                 throw new RuntimeException(sprintf('componentProvider with follwing id does not exist: %s', $component->value));
             }
 
             $componentProvider = $this->componentProviders[$component->value];
-            $componentProvider->render($game->getUser(), $this->twigPage, $game);
+            $this->componentRenderer->renderComponent($componentProvider, $game->getUser(), $game);
         }
     }
 }

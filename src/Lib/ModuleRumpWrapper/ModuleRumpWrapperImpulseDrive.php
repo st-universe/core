@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Lib\ModuleRumpWrapper;
 
 use Override;
-use Stu\Component\Ship\ShipModuleTypeEnum;
-use Stu\Module\Ship\Lib\ModuleValueCalculator;
+use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
+use Stu\Module\Spacecraft\Lib\ModuleValueCalculator;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ModuleInterface;
 
@@ -35,9 +35,9 @@ final class ModuleRumpWrapperImpulseDrive extends ModuleRumpWrapperBase implemen
     }
 
     #[Override]
-    public function getModuleType(): ShipModuleTypeEnum
+    public function getModuleType(): SpacecraftModuleTypeEnum
     {
-        return ShipModuleTypeEnum::IMPULSEDRIVE;
+        return SpacecraftModuleTypeEnum::IMPULSEDRIVE;
     }
 
     #[Override]

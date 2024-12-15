@@ -11,9 +11,10 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 
 class PirateReaction implements PirateReactionInterface
 {
@@ -21,7 +22,7 @@ class PirateReaction implements PirateReactionInterface
 
     /** @param array<int, PirateBehaviourInterface> $behaviours */
     public function __construct(
-        private ShipWrapperFactoryInterface $shipWrapperFactory,
+        private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
         private ReloadMinimalEpsInterface $reloadMinimalEps,
         private PirateWrathManagerInterface $pirateWrathManager,
         private StuRandom $stuRandom,
@@ -33,12 +34,12 @@ class PirateReaction implements PirateReactionInterface
 
     #[Override]
     public function checkForPirateReaction(
-        ShipInterface $target,
+        SpacecraftInterface $target,
         PirateReactionTriggerEnum $reactionTrigger,
-        ShipInterface $triggerShip
+        SpacecraftInterface $triggerSpacecraft
     ): bool {
 
-        $targetFleet = $target->getFleet();
+        $targetFleet = $target instanceof ShipInterface ? $target->getFleet() : null;
         if (
             $targetFleet === null
             || $targetFleet->getUser()->getId() !== UserEnum::USER_NPC_KAZON
@@ -49,7 +50,7 @@ class PirateReaction implements PirateReactionInterface
         $this->react(
             $targetFleet,
             $reactionTrigger,
-            $triggerShip,
+            $triggerSpacecraft,
             new PirateReactionMetadata()
         );
 
@@ -57,9 +58,13 @@ class PirateReaction implements PirateReactionInterface
     }
 
     #[Override]
-    public function react(FleetInterface $fleet, PirateReactionTriggerEnum $reactionTrigger, ShipInterface $triggerShip, PirateReactionMetadata $reactionMetadata): void
-    {
-        $this->pirateWrathManager->increaseWrathViaTrigger($triggerShip->getUser(), $reactionTrigger);
+    public function react(
+        FleetInterface $fleet,
+        PirateReactionTriggerEnum $reactionTrigger,
+        SpacecraftInterface $triggerSpacecraft,
+        PirateReactionMetadata $reactionMetadata
+    ): void {
+        $this->pirateWrathManager->increaseWrathViaTrigger($triggerSpacecraft->getUser(), $reactionTrigger);
 
         // check if fleet already defeated
         if ($fleet->getShips()->isEmpty()) {
@@ -72,8 +77,8 @@ class PirateReaction implements PirateReactionInterface
             'pirateFleetId %d reacts on %s from "%s" (%d) with %s',
             $fleet->getId(),
             $reactionTrigger->name,
-            $triggerShip->getName(),
-            $triggerShip->getId(),
+            $triggerSpacecraft->getName(),
+            $triggerSpacecraft->getId(),
             $behaviourType->name
         ));
 
@@ -81,9 +86,9 @@ class PirateReaction implements PirateReactionInterface
             return;
         }
 
-        $fleetWrapper = $this->shipWrapperFactory->wrapFleet($fleet);
+        $fleetWrapper = $this->spacecraftWrapperFactory->wrapFleet($fleet);
 
-        $alternativeBehaviour = $this->action($behaviourType, $fleetWrapper, $reactionMetadata, $triggerShip);
+        $alternativeBehaviour = $this->action($behaviourType, $fleetWrapper, $reactionMetadata, $triggerSpacecraft);
         if (
             $reactionTrigger->triggerAlternativeReaction()
             &&  $alternativeBehaviour !== null
@@ -93,7 +98,7 @@ class PirateReaction implements PirateReactionInterface
                 $fleet->getId(),
                 $alternativeBehaviour->name
             ));
-            $this->action($alternativeBehaviour, $fleetWrapper, $reactionMetadata, $triggerShip);
+            $this->action($alternativeBehaviour, $fleetWrapper, $reactionMetadata, $triggerSpacecraft);
         }
 
         if ($reactionTrigger === PirateReactionTriggerEnum::ON_ATTACK) {
@@ -114,7 +119,7 @@ class PirateReaction implements PirateReactionInterface
         PirateBehaviourEnum $behaviour,
         FleetWrapperInterface $fleetWrapper,
         PirateReactionMetadata $reactionMetadata,
-        ?ShipInterface $triggerShip
+        ?SpacecraftInterface $triggerSpacecraft
     ): ?PirateBehaviourEnum {
 
         $reactionMetadata->addReaction($behaviour);
@@ -123,7 +128,7 @@ class PirateReaction implements PirateReactionInterface
             $fleetWrapper,
             $this,
             $reactionMetadata,
-            $triggerShip
+            $triggerSpacecraft
         );
 
         $this->reloadMinimalEps->reload($fleetWrapper);

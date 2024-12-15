@@ -7,7 +7,7 @@ use Stu\Config\Init;
 use Stu\Orm\Repository\DatabaseCategoryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseTypeRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Repository\StationRepositoryInterface;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
@@ -15,9 +15,9 @@ Init::run(function (ContainerInterface $dic): void {
     $repository = $dic->get(DatabaseEntryRepositoryInterface::class);
     $type = $dic->get(DatabaseTypeRepositoryInterface::class)->find(DatabaseEntryTypeEnum::DATABASE_TYPE_POI);
     $category = $dic->get(DatabaseCategoryRepositoryInterface::class)->find(DatabaseCategoryTypeEnum::DATABASE_CATEGORY_TRADEPOST);
-    $shipRepo = $dic->get(ShipRepositoryInterface::class);
+    $stationRepo = $dic->get(StationRepositoryInterface::class);
 
-    $result = $shipRepo->getTradePostsWithoutDatabaseEntry();
+    $result = $stationRepo->getTradePostsWithoutDatabaseEntry();
     foreach ($result as $obj) {
         $db = $repository->prototype();
         $db->setCategory($category);
@@ -29,8 +29,8 @@ Init::run(function (ContainerInterface $dic): void {
 
         $repository->save($db);
 
-        $obj->setDatabaseEntry($db);
+        $obj->setDatabaseId($db->getId());
 
-        $shipRepo->save($obj);
+        $stationRepo->save($obj);
     }
 });

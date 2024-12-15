@@ -7,11 +7,12 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Override;
-use Stu\Component\Ship\ShipModuleTypeEnum;
+use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\Module;
 use Stu\Orm\Entity\ModuleSpecial;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 
 /**
  * @extends EntityRepository<Module>
@@ -22,8 +23,8 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
     #[Override]
     public function getBySpecialTypeAndRumpAndRole(
         ColonyInterface|ShipInterface $host,
-        ShipModuleTypeEnum $moduleType,
-        int $shipRumpId,
+        SpacecraftModuleTypeEnum $moduleType,
+        int $rumpId,
         int $shipRumpRoleId
     ): array {
         return $this->getEntityManager()
@@ -47,7 +48,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
                                 FROM stu_modules_specials
                                 WHERE special_id IN (SELECT module_special_id
                                                     FROM stu_rumps_module_special
-                                                    WHERE rump_id = :shipRumpId))
+                                                    WHERE rump_id = :rumpId))
                 ',
                 $this->getResultSetMapping()
             )
@@ -56,21 +57,21 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
                 'hostIdColumnName' => $host instanceof ColonyInterface ? 'colony_id' : 'ship_id',
                 'hostId' => $host->getId(),
                 'shipRumpRoleId' => $shipRumpRoleId,
-                'shipRumpId' => $shipRumpId,
+                'rumpId' => $rumpId,
                 'state' => 1
             ])
             ->getResult();
     }
 
     #[Override]
-public function getBySpecialTypeAndRump(
-    ColonyInterface|ShipInterface $host,
-    ShipModuleTypeEnum $moduleType,
-    int $shipRumpId
-): array {
-    return $this->getEntityManager()
-        ->createNativeQuery(
-            'SELECT
+    public function getBySpecialTypeAndRump(
+        ColonyInterface|SpacecraftInterface $host,
+        SpacecraftModuleTypeEnum $moduleType,
+        int $rumpId
+    ): array {
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT
                     m.id, m.name, m.level, m.upgrade_factor, m.default_factor, m.downgrade_factor, m.crew,
                     m.type, m.research_id, m.commodity_id, m.viewable, m.rumps_role_id, m.ecost, m.faction_id
                 FROM stu_modules m
@@ -82,26 +83,26 @@ public function getBySpecialTypeAndRump(
                             FROM stu_modules_specials
                             WHERE special_id IN (SELECT module_special_id
                                                 FROM stu_rumps_module_special
-                                                WHERE rump_id = :shipRumpId))
+                                                WHERE rump_id = :rumpId))
             ',
-            $this->getResultSetMapping()
-        )
-        ->setParameters([
-            'typeId' => $moduleType->value,
-            'hostIdColumnName' => $host instanceof ColonyInterface ? 'colony_id' : 'ship_id',
-            'hostId' => $host->getId(),
-            'shipRumpId' => $shipRumpId,
-            'state' => 1
-        ])
-        ->getResult();
-}
+                $this->getResultSetMapping()
+            )
+            ->setParameters([
+                'typeId' => $moduleType->value,
+                'hostIdColumnName' => $host instanceof ColonyInterface ? 'colony_id' : 'ship_id',
+                'hostId' => $host->getId(),
+                'rumpId' => $rumpId,
+                'state' => 1
+            ])
+            ->getResult();
+    }
 
 
     // used for ModuleSelector
     #[Override]
     public function getByTypeColonyAndLevel(
         int $colonyId,
-        ShipModuleTypeEnum $moduleType,
+        SpacecraftModuleTypeEnum $moduleType,
         int $shipRumpRoleId,
         array $moduleLevel
     ): array {

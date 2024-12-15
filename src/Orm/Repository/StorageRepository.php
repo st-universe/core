@@ -99,11 +99,11 @@ final class StorageRepository extends EntityRepository implements StorageReposit
 
         return $this->getEntityManager()
             ->createNativeQuery(
-                'SELECT s.commodity_id AS commodity_id, s.ship_id AS ships_id, s.count AS amount
+                'SELECT s.commodity_id AS commodity_id, s.spacecraft_id AS ships_id, s.count AS amount
                 FROM stu_storage s
                 LEFT JOIN stu_commodity g ON g.id = s.commodity_id
                 WHERE s.user_id = :userId
-                AND s.ship_id IS NOT NULL
+                AND s.spacecraft_id IS NOT NULL
                 AND s.commodity_id = :commodityId
                 ORDER BY s.count DESC',
                 $rsm
@@ -168,11 +168,11 @@ final class StorageRepository extends EntityRepository implements StorageReposit
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('commodity_id', 'commodity_id', 'integer');
-        $rsm->addScalarResult('ship_id', 'ship_id', 'integer');
+        $rsm->addScalarResult('spacecraft_id', 'spacecraft_id', 'integer');
         $rsm->addScalarResult('amount', 'amount', 'integer');
 
         return $this->getEntityManager()->createNativeQuery(
-            'SELECT s.commodity_id AS commodity_id, ts.ship_id as ship_id,
+            'SELECT s.commodity_id AS commodity_id, ts.spacecraft_id as spacecraft_id,
                 SUM(s.count) AS amount
                 FROM stu_storage s
                 JOIN stu_torpedo_storage ts
@@ -180,7 +180,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
                 WHERE s.user_id = :userId
                 AND s.commodity_id = :commodityId
                 AND s.torpedo_storage_id IS NOT NULL
-                GROUP BY s.commodity_id, ts.ship_id
+                GROUP BY s.commodity_id, ts.spacecraft_id
                 ORDER BY amount DESC',
             $rsm
         )->setParameters([

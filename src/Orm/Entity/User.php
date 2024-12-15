@@ -176,7 +176,7 @@ class User implements UserInterface
     private $sessiondataUnserialized;
 
     /**
-     * @var Collection<int, WormholeRestriction>
+     * @var ArrayCollection<int, WormholeRestriction>
      */
     #[OneToMany(targetEntity: 'WormholeRestriction', mappedBy: 'user')]
     private Collection $wormholeRestrictions;

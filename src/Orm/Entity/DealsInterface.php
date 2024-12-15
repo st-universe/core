@@ -67,7 +67,7 @@ interface DealsInterface
      */
     public function getModules(): array;
 
-    public function getBuildplan(): ?ShipBuildplanInterface;
+    public function getBuildplan(): ?SpacecraftBuildplanInterface;
 
     public function getRumpId(): int;
 

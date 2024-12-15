@@ -7,6 +7,7 @@ namespace Stu\Module\Admin\View\Map\EditSection;
 use Override;
 use RuntimeException;
 use Stu\Component\Game\GameEnum;
+use Stu\Component\Map\DirectionEnum;
 use Stu\Component\Map\MapEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -22,9 +23,7 @@ final class EditSection implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_EDIT_MAP_SECTION';
 
-    public function __construct(private ShowSectionRequestInterface $request, private LayerRepositoryInterface $layerRepository, private StarmapUiFactoryInterface $starmapUiFactory, private MapRegionRepositoryInterface $mapRegionRepository, private MapBorderTypeRepositoryInterface $mapBorderTypeRepository, private MapFieldTypeRepositoryInterface $mapFieldTypeRepository, private StarSystemTypeRepositoryInterface $starSystemTypeRepository)
-    {
-    }
+    public function __construct(private ShowSectionRequestInterface $request, private LayerRepositoryInterface $layerRepository, private StarmapUiFactoryInterface $starmapUiFactory, private MapRegionRepositoryInterface $mapRegionRepository, private MapBorderTypeRepositoryInterface $mapBorderTypeRepository, private MapFieldTypeRepositoryInterface $mapFieldTypeRepository, private StarSystemTypeRepositoryInterface $starSystemTypeRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -75,12 +74,13 @@ final class EditSection implements ViewControllerInterface
         }
 
         $helper = $this->starmapUiFactory->createMapSectionHelper();
+        $directionValue = $this->request->getDirection();
         $newSectionId = $helper->setTemplateVars(
             $game,
             $layer,
             $section_id,
             true,
-            $this->request->getDirection()
+            $directionValue !== null ? DirectionEnum::from($directionValue) : null
         );
 
         $game->setTemplateFile('html/admin/mapeditor_section.twig');

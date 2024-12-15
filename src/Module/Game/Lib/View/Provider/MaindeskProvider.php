@@ -15,7 +15,7 @@ use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Module\Ship\Lib\EmergencyWrapper;
+use Stu\Module\Spacecraft\Lib\EmergencyWrapper;
 use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;

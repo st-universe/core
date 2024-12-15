@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Stu\Lib\Map\VisualPanel;
 
 use Override;
-use Stu\Component\Ship\ShipRumpEnum;
+use Stu\Component\Spacecraft\SpacecraftRumpEnum;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayers;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 
 class VisualNavPanelEntry extends SignaturePanelEntry
 {
@@ -16,7 +16,7 @@ class VisualNavPanelEntry extends SignaturePanelEntry
         int $y,
         private bool $isOnShipLevel,
         PanelLayers $layers,
-        private ShipInterface $currentShip
+        private SpacecraftInterface $currentSpacecraft
     ) {
         parent::__construct($x, $y, $layers);
     }
@@ -27,10 +27,10 @@ class VisualNavPanelEntry extends SignaturePanelEntry
             return false;
         }
 
-        if ($this->x !== $this->currentShip->getPosX()) {
+        if ($this->x !== $this->currentSpacecraft->getPosX()) {
             return false;
         }
-        return $this->y === $this->currentShip->getPosY();
+        return $this->y === $this->currentSpacecraft->getPosY();
     }
 
     #[Override]
@@ -45,24 +45,24 @@ class VisualNavPanelEntry extends SignaturePanelEntry
     public function isClickAble(): bool
     {
         if (
-            $this->currentShip->getRump()->getRoleId() === ShipRumpEnum::SHIP_ROLE_SENSOR
-            || $this->currentShip->getRump()->getRoleId() === ShipRumpEnum::SHIP_ROLE_BASE
+            $this->currentSpacecraft->getRump()->getRoleId() === SpacecraftRumpEnum::SHIP_ROLE_SENSOR
+            || $this->currentSpacecraft->getRump()->getRoleId() === SpacecraftRumpEnum::SHIP_ROLE_BASE
         ) {
             return true;
         }
-        if (!$this->currentShip->canMove()) {
+        if (!$this->currentSpacecraft->canMove()) {
             return false;
         }
 
         return !$this->isCurrentShipPosition()
-            && ($this->x === $this->currentShip->getPosX() || $this->y === $this->currentShip->getPosY());
+            && ($this->x === $this->currentSpacecraft->getPosX() || $this->y === $this->currentSpacecraft->getPosY());
     }
 
     public function getOnClick(): string
     {
         if (
-            $this->currentShip->getRump()->getRoleId() === ShipRumpEnum::SHIP_ROLE_SENSOR
-            || $this->currentShip->getRump()->getRoleId() === ShipRumpEnum::SHIP_ROLE_BASE
+            $this->currentSpacecraft->getRump()->getRoleId() === SpacecraftRumpEnum::SHIP_ROLE_SENSOR
+            || $this->currentSpacecraft->getRump()->getRoleId() === SpacecraftRumpEnum::SHIP_ROLE_BASE
         ) {
             return sprintf(
                 'showSectorScanWindow(this, %d, %d, %d, %s);',

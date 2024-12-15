@@ -14,6 +14,6 @@ final class ShowCommoditiesLocationsRequest implements ShowCommoditiesLocationsR
     #[Override]
     public function getCommodityId(): int
     {
-        return $this->parameter('commodityId')->int()->required();
+        return $this->parameter('commodityid')->int()->required();
     }
 }

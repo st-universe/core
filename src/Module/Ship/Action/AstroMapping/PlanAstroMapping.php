@@ -12,7 +12,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Orm\Entity\AstronomicalEntryInterface;
 use Stu\Orm\Entity\LocationInterface;
 use Stu\Orm\Entity\MapRegionInterface;
@@ -38,7 +38,7 @@ final class PlanAstroMapping implements ActionControllerInterface
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $game->setView(ShowShip::VIEW_IDENTIFIER);
+        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         $userId = $game->getUser()->getId();
 
@@ -76,7 +76,7 @@ final class PlanAstroMapping implements ActionControllerInterface
 
         $this->astroEntryRepository->save($astroEntry);
 
-        $game->setView(ShowShip::VIEW_IDENTIFIER);
+        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
         $game->addInformation("Kartographie-Messpunkte wurden ermittelt");
     }
 

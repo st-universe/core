@@ -8,7 +8,7 @@ use Override;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Ship\View\ShowInformation\ShowInformation;
+use Stu\Module\Spacecraft\View\ShowInformation\ShowInformation;
 
 final class JoinFleetInShiplist extends AbstractJoinFleet implements ActionControllerInterface
 {

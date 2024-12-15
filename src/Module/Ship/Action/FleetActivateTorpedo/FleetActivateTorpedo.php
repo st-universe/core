@@ -6,26 +6,24 @@ namespace Stu\Module\Ship\Action\FleetActivateTorpedo;
 
 use Override;
 use request;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
-use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Module\Spacecraft\Lib\ActivatorDeactivatorHelperInterface;
+use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 
 final class FleetActivateTorpedo implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_FLEET_ACTIVATE_TORPEDO';
 
-    public function __construct(private ActivatorDeactivatorHelperInterface $helper)
-    {
-    }
+    public function __construct(private ActivatorDeactivatorHelperInterface $helper) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $game->setView(ShowShip::VIEW_IDENTIFIER);
+        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $this->helper->activateFleet(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TORPEDO, $game);
+        $this->helper->activateFleet(request::indInt('id'), SpacecraftSystemTypeEnum::SYSTEM_TORPEDO, $game);
     }
 
     #[Override]

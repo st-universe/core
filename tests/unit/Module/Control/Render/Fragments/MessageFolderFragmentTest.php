@@ -78,7 +78,7 @@ class MessageFolderFragmentTest extends StuTestCase
 
         $twigPage->shouldReceive('setVar')
             ->with(
-                'PM_NAVLET',
+                'PM',
                 [
                     PrivateMessageFolderTypeEnum::SPECIAL_MAIN->value => $folderItem,
                     PrivateMessageFolderTypeEnum::SPECIAL_SHIP->value => $folderItem,
@@ -133,7 +133,7 @@ class MessageFolderFragmentTest extends StuTestCase
 
         $twigPage->shouldReceive('setVar')
             ->with(
-                'PM_NAVLET',
+                'PM',
                 [
                     PrivateMessageFolderTypeEnum::SPECIAL_MAIN->value => $folderItem,
                     PrivateMessageFolderTypeEnum::SPECIAL_SHIP->value => $folderItem,

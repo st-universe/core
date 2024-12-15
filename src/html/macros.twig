@@ -39,7 +39,7 @@
             <span>{{ data.getName|bbcode }}</span>
         </div>
         {% if data.getAlliance %}
-            <a href="alliance.php?id={{ data.getAlliance.getId }}">{{ data.getAlliance.getName|bbcode }}</a>
+        <a href="alliance.php?id={{ data.getAlliance.getId }}">{{ data.getAlliance.getName|bbcode }}</a>
         {% endif %}
         <br />
         Spielt seit: {{ data.getCreationDate|stuDateTime }}
@@ -68,13 +68,14 @@
 {% set view = getView(viewValue) %}
 {% set viewTitle = view.getTitle %}
 {% set viewUrl = view.getPhpPage %}
-<a class="navitem_link" href="{{ viewUrl }}" onclick="if(event.button === 0) { switchView('{{ viewValue }}', '{{ viewTitle }}', '{{ viewUrl }}'); event.preventDefault(); }">
-<div class="navigation_item border_box" onmouseover="cp('{{ linkid }}','navigation/menu_{{ iconUrl }}1', 'png')"
-    onmouseout="cp('{{ linkid }}','navigation/menu_{{ iconUrl }}0', 'png')">
+<a class="navitem_link" href="{{ viewUrl }}"
+    onclick="if(event.button === 0) { switchView('{{ viewValue }}', '{{ viewTitle }}', '{{ viewUrl }}'); event.preventDefault(); }">
+    <div class="navigation_item border_box" onmouseover="cp('{{ linkid }}','navigation/menu_{{ iconUrl }}1', 'png')"
+        onmouseout="cp('{{ linkid }}','navigation/menu_{{ iconUrl }}0', 'png')">
         <img class="navitem_img" src="/assets/navigation/menu_{{ iconUrl }}0.png" id="{{ linkid }}"
             title="{{ title }}" />
         <div class="navitem_title">{{ title }}</div>
-</div>
+    </div>
 </a>
 {% endmacro %}
 
@@ -179,10 +180,11 @@
 {% endif %}
 {% endmacro %}
 
-{% macro onClickShip(ship) %}
-{% set id = ship.getId %}
+{% macro onClickSpacecraft(spacecraft) %}
+{% set id = spacecraft.getId %}
 href="javascript:void(0);"
-onclick="switchInnerContent('SHOW_SHIP', '{{ ship.getName|bbcode2txt|htmlSafe }}', 'id={{ id }}', 'ship.php');
+onclick="switchInnerContent('SHOW_SPACECRAFT', '{{ spacecraft.getName|bbcode2txt|htmlSafe }}', 'id={{ id }}',
+'{{ spacecraft.getType.getModuleView.getPhpPage }}');
 updateSelectedShipId('{{ id }}');"
 {% endmacro %}
 
@@ -190,23 +192,25 @@ updateSelectedShipId('{{ id }}');"
 {% macro onClickColony(colony) %}
 {% set id = colony.getId %}
 href="/colony.php?id={{ id }}"
-onclick="if(event.button === 0) { switchInnerContent('SHOW_COLONY', '{{ colony.getName|bbcode2txt|htmlSafe }}', 'id={{ id }}', '/colony.php'); event.preventDefault(); }"
+onclick="if(event.button === 0) { switchInnerContent('SHOW_COLONY', '{{ colony.getName|bbcode2txt|htmlSafe }}', 'id={{
+id }}', '/colony.php'); event.preventDefault(); }"
 {% endmacro %}
 
 
 {% macro commoditySelection(name, commodityId, amount) %}
-  <table style="width: 100%;">
+<table style="width: 100%;">
     <tr>
-      <td style="width: 20px;">
-        <img src="/assets/commodities/{{ commodityId }}.png"
-          onclick="this.closest('tr').querySelector('.commodityAmount').value={{ amount }}" style="cursor: pointer;" title="{{ name }}" />
-      </td>
-      <td style="width: 60px; vertical-align: middle;">
-        {{ amount }}
-      </td>
-      <td>
-        <input type="text" size="3" name="count[]" class="commodityAmount" />
-      </td>
+        <td style="width: 20px;">
+            <img src="/assets/commodities/{{ commodityId }}.png"
+                onclick="this.closest('tr').querySelector('.commodityAmount').value={{ amount }}"
+                style="cursor: pointer;" title="{{ name }}" />
+        </td>
+        <td style="width: 60px; vertical-align: middle;">
+            {{ amount }}
+        </td>
+        <td>
+            <input type="text" size="3" name="count[]" class="commodityAmount" />
+        </td>
     </tr>
-  </table>
+</table>
 {% endmacro %}

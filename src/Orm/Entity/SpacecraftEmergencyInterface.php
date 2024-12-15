@@ -6,9 +6,9 @@ interface SpacecraftEmergencyInterface
 {
     public function getId(): int;
 
-    public function getShip(): ShipInterface;
+    public function getSpacecraft(): SpacecraftInterface;
 
-    public function setShip(ShipInterface $ship): SpacecraftEmergencyInterface;
+    public function setSpacecraft(SpacecraftInterface $spacecraft): SpacecraftEmergencyInterface;
 
     public function getText(): string;
 

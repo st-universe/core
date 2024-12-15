@@ -35,6 +35,5 @@ class AcceptApplicationRequestTest extends RequestTestCase
         return [
             ['getApplicationId'],
         ];
-        // TODO: Implement requiredRequestVarsDataProvider() method.
     }
 }

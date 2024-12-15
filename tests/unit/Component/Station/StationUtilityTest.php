@@ -7,37 +7,38 @@ namespace Stu\Component\Station;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Override;
-use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
-use Stu\Module\Ship\Lib\ShipCreatorInterface;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
+use Stu\Module\Station\Lib\Creation\StationCreatorInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\StationInterface;
 use Stu\Orm\Repository\ConstructionProgressModuleRepositoryInterface;
 use Stu\Orm\Repository\ConstructionProgressRepositoryInterface;
-use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
-use Stu\Orm\Repository\ShipRumpRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
+use Stu\Orm\Repository\StationRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 use Stu\StuTestCase;
 
 class StationUtilityTest extends StuTestCase
 {
-    /** @var ShipBuildplanRepositoryInterface|MockInterface */
-    private $shipBuildplanRepository;
-    /** @var ConstructionProgressRepositoryInterface|MockInterface */
+    /** @var SpacecraftBuildplanRepositoryInterface&MockInterface */
+    private $spacecraftBuildplanRepository;
+    /** @var ConstructionProgressRepositoryInterface&MockInterface */
     private $constructionProgressRepository;
-    /** @var ConstructionProgressModuleRepositoryInterface|MockInterface */
+    /** @var ConstructionProgressModuleRepositoryInterface&MockInterface */
     private $constructionProgressModuleRepository;
-    /** @var ShipCreatorInterface|MockInterface */
-    private $shipCreator;
-    /** @var ShipRepositoryInterface|MockInterface */
-    private $shipRepository;
-    /** @var ShipStorageManagerInterface|MockInterface */
-    private $shipStorageManager;
-    /** @var ShipRumpRepositoryInterface|MockInterface */
-    private $shipRumpRepository;
-    /** @var TradePostRepositoryInterface|MockInterface */
+    /** @var StationCreatorInterface&MockInterface */
+    private $stationCreator;
+    /** @var StationRepositoryInterface&MockInterface */
+    private $stationRepository;
+    /** @var StorageManagerInterface&MockInterface */
+    private $storageManager;
+    /** @var SpacecraftRumpRepositoryInterface&MockInterface */
+    private $spacecraftRumpRepository;
+    /** @var TradePostRepositoryInterface&MockInterface */
     private $tradePostRepository;
-    /** @var TradeLicenseRepositoryInterface|MockInterface */
+    /** @var TradeLicenseRepositoryInterface&MockInterface */
     private $tradeLicenseRepository;
 
     private StationUtilityInterface $subject;
@@ -45,24 +46,24 @@ class StationUtilityTest extends StuTestCase
     #[Override]
     public function setUp(): void
     {
-        $this->shipBuildplanRepository = $this->mock(ShipBuildplanRepositoryInterface::class);
+        $this->spacecraftBuildplanRepository = $this->mock(SpacecraftBuildplanRepositoryInterface::class);
         $this->constructionProgressRepository = $this->mock(ConstructionProgressRepositoryInterface::class);
         $this->constructionProgressModuleRepository = $this->mock(ConstructionProgressModuleRepositoryInterface::class);
-        $this->shipCreator = $this->mock(ShipCreatorInterface::class);
-        $this->shipRepository = $this->mock(ShipRepositoryInterface::class);
-        $this->shipStorageManager = $this->mock(ShipStorageManagerInterface::class);
-        $this->shipRumpRepository = $this->mock(ShipRumpRepositoryInterface::class);
+        $this->stationCreator = $this->mock(StationCreatorInterface::class);
+        $this->stationRepository = $this->mock(StationRepositoryInterface::class);
+        $this->storageManager = $this->mock(StorageManagerInterface::class);
+        $this->spacecraftRumpRepository = $this->mock(SpacecraftRumpRepositoryInterface::class);
         $this->tradePostRepository = $this->mock(TradePostRepositoryInterface::class);
         $this->tradeLicenseRepository = $this->mock(TradeLicenseRepositoryInterface::class);
 
         $this->subject = new StationUtility(
-            $this->shipBuildplanRepository,
+            $this->spacecraftBuildplanRepository,
             $this->constructionProgressRepository,
             $this->constructionProgressModuleRepository,
-            $this->shipCreator,
-            $this->shipRepository,
-            $this->shipStorageManager,
-            $this->shipRumpRepository,
+            $this->stationCreator,
+            $this->stationRepository,
+            $this->storageManager,
+            $this->spacecraftRumpRepository,
             $this->tradePostRepository,
             $this->tradeLicenseRepository,
             $this->initLoggerUtil()
@@ -71,13 +72,13 @@ class StationUtilityTest extends StuTestCase
 
     public function testGetDockedWorkbeeCount(): void
     {
-        $ship = $this->mock(ShipInterface::class);
+        $station = $this->mock(StationInterface::class);
         $docked1 = $this->mock(ShipInterface::class);
         $docked2 = $this->mock(ShipInterface::class);
         $docked3 = $this->mock(ShipInterface::class);
         $docked4 = $this->mock(ShipInterface::class);
 
-        $ship->shouldReceive('getDockedShips')
+        $station->shouldReceive('getDockedShips')
             ->withNoArgs()
             ->once()
             ->andReturn(new ArrayCollection([$docked1, $docked2, $docked3, $docked4]));
@@ -122,7 +123,7 @@ class StationUtilityTest extends StuTestCase
             ->once()
             ->andReturn(true);
 
-        $result = $this->subject->getDockedWorkbeeCount($ship);
+        $result = $this->subject->getDockedWorkbeeCount($station);
 
         $this->assertEquals(1, $result);
     }

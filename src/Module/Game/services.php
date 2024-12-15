@@ -15,9 +15,12 @@ use Stu\Module\Game\Action\Logout\Logout;
 use Stu\Module\Game\Action\SwitchView\SwitchView;
 use Stu\Module\Game\Action\SetTutorial\SetTutorial;
 use Stu\Module\Game\Action\FinishTutorial\FinishTutorial;
+use Stu\Module\Game\Action\Transfer\Transfer;
 use Stu\Module\Game\Lib\Component\ComponentEnum;
 use Stu\Module\Game\Lib\Component\ComponentLoader;
 use Stu\Module\Game\Lib\Component\ComponentLoaderInterface;
+use Stu\Module\Game\Lib\Component\ComponentRenderer;
+use Stu\Module\Game\Lib\Component\ComponentRendererInterface;
 use Stu\Module\Game\Lib\GameSetup;
 use Stu\Module\Game\Lib\GameSetupInterface;
 use Stu\Module\Game\Lib\View\Provider\AllianceProvider;
@@ -42,6 +45,7 @@ use Stu\Module\Game\View\ShowInnerContent\ShowInnerContent;
 use Stu\Module\Game\View\ShowPadd\ShowPadd;
 use Stu\Module\Game\View\ShowTutorialCloseButton\ShowTutorialCloseButton;
 use Stu\Module\Game\View\Noop\Noop;
+use Stu\Module\Game\View\ShowTransfer\ShowTransfer;
 
 use function DI\autowire;
 
@@ -69,13 +73,16 @@ return [
     ComponentLoaderInterface::class => autowire(ComponentLoader::class)->constructorParameter(
         'componentProviders',
         [
-            ComponentEnum::PM_NAVLET->value => autowire(MessageFolderFragment::class),
-            ComponentEnum::SERVERTIME_NAVLET->value => autowire(ServertimeFragment::class),
-            ComponentEnum::RESEARCH_NAVLET->value => autowire(ResearchFragment::class),
-            ComponentEnum::COLONIES_NAVLET->value => autowire(ColonyFragment::class),
-            ComponentEnum::USER_NAVLET->value => autowire(UserFragment::class),
+            ComponentEnum::PM->value => autowire(MessageFolderFragment::class),
+            ComponentEnum::SERVERTIME_AND_VERSION->value => autowire(ServertimeFragment::class),
+            ComponentEnum::RESEARCH->value => autowire(ResearchFragment::class),
+            ComponentEnum::COLONIES->value => autowire(ColonyFragment::class),
+            ComponentEnum::USER->value => autowire(UserFragment::class),
         ]
     ),
+    ComponentRendererInterface::class => autowire(ComponentRenderer::class),
+    ShowTransfer::class => autowire(ShowTransfer::class),
+    Transfer::class => autowire(Transfer::class),
     'GAME_ACTIONS' => [
         SwitchView::ACTION_IDENTIFIER => autowire(SwitchView::class),
         Logout::ACTION_IDENTIFIER => autowire(Logout::class),

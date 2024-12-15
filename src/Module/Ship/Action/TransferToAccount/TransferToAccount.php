@@ -6,12 +6,12 @@ namespace Stu\Module\Ship\Action\TransferToAccount;
 
 use Override;
 use request;
-use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
+use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
@@ -21,14 +21,12 @@ final class TransferToAccount implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_TRANSFER_TO_ACCOUNT';
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradeLibFactoryInterface $tradeLibFactory, private TradePostRepositoryInterface $tradePostRepository, private ShipStorageManagerInterface $shipStorageManager, private InteractionCheckerInterface $interactionChecker)
-    {
-    }
+    public function __construct(private ShipLoaderInterface $shipLoader, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradeLibFactoryInterface $tradeLibFactory, private TradePostRepositoryInterface $tradePostRepository, private StorageManagerInterface $storageManager, private InteractionCheckerInterface $interactionChecker) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $game->setView(ShowShip::VIEW_IDENTIFIER);
+        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         $userId = $game->getUser()->getId();
 
@@ -45,7 +43,7 @@ final class TransferToAccount implements ActionControllerInterface
             return;
         }
 
-        if (!$this->interactionChecker->checkPosition($ship, $tradepost->getShip())) {
+        if (!$this->interactionChecker->checkPosition($ship, $tradepost->getStation())) {
             return;
         }
 
@@ -115,7 +113,7 @@ final class TransferToAccount implements ActionControllerInterface
                 $count = $tradepost->getStorage() - $storageManager->getStorageSum();
             }
             $game->addInformationf(_('%d %s'), $count, $commodity->getName());
-            $this->shipStorageManager->lowerStorage($ship, $commodity, $count);
+            $this->storageManager->lowerStorage($ship, $commodity, $count);
             $storageManager->upperStorage((int) $value, $count);
         }
     }

@@ -8,7 +8,7 @@ use Noodlehaus\ConfigInterface;
 use Override;
 use RuntimeException;
 use Stu\Component\Alliance\AllianceEnum;
-use Stu\Component\Ship\ShipEnum;
+use Stu\Component\Station\Dock\DockTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\AllianceInterface;
@@ -54,7 +54,7 @@ final class AllianceActionManager implements AllianceActionManagerInterface
     #[Override]
     public function delete(AllianceInterface $alliance, bool $sendMesage = true): void
     {
-        $this->dockingPrivilegeRepository->truncateByTypeAndTarget(ShipEnum::DOCK_PRIVILEGE_ALLIANCE, $alliance->getId());
+        $this->dockingPrivilegeRepository->truncateByTypeAndTarget(DockTypeEnum::ALLIANCE, $alliance->getId());
 
         $text = sprintf(_('Die Allianz %s wurde aufgelöst'), $alliance->getName());
 

@@ -7,7 +7,7 @@ namespace Stu\Lib\ShipManagement\Manager;
 use Mockery\MockInterface;
 use Override;
 use RuntimeException;
-use Stu\Component\Ship\System\Data\EpsSystemData;
+use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -323,6 +323,10 @@ class ManageBatteryTest extends StuTestCase
         $this->ship->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($userMock);
+        $this->ship->shouldReceive('getHref')
+            ->withNoArgs()
+            ->once()
+            ->andReturn('HREF555');
 
         $this->ship->shouldReceive('getShieldState')
             ->withNoArgs()
@@ -384,7 +388,7 @@ class ManageBatteryTest extends StuTestCase
                 $this->shipUserId,
                 'Die providerName lädt in Sektor SECTOR die Batterie der name um 37 Einheiten',
                 PrivateMessageFolderTypeEnum::SPECIAL_TRADE,
-                'ship.php?SHOW_SHIP=1&id=555'
+                'HREF555'
             )
             ->once();
 
@@ -409,6 +413,10 @@ class ManageBatteryTest extends StuTestCase
         $this->ship->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn($this->shipId);
+        $this->ship->shouldReceive('getHref')
+            ->withNoArgs()
+            ->once()
+            ->andReturn('HREF555');
 
         $this->ship->shouldReceive('getName')
             ->withNoArgs()
@@ -477,7 +485,7 @@ class ManageBatteryTest extends StuTestCase
                 $this->shipUserId,
                 'Die providerName lädt in Sektor SECTOR die Batterie der name um 22 Einheiten',
                 PrivateMessageFolderTypeEnum::SPECIAL_TRADE,
-                'ship.php?SHOW_SHIP=1&id=555'
+                'HREF555'
             )
             ->once();
 
@@ -513,6 +521,10 @@ class ManageBatteryTest extends StuTestCase
         $this->ship->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($userMock);
+        $this->ship->shouldReceive('getHref')
+            ->withNoArgs()
+            ->once()
+            ->andReturn('HREF555');
 
         $this->ship->shouldReceive('getShieldState')
             ->withNoArgs()
@@ -568,7 +580,7 @@ class ManageBatteryTest extends StuTestCase
                 $this->shipUserId,
                 'Die providerName lädt in Sektor SECTOR die Batterie der name um 20 Einheiten',
                 PrivateMessageFolderTypeEnum::SPECIAL_TRADE,
-                'ship.php?SHOW_SHIP=1&id=555'
+                'HREF555'
             )
             ->once();
 
@@ -596,6 +608,10 @@ class ManageBatteryTest extends StuTestCase
         $this->ship->shouldReceive('getName')
             ->withNoArgs()
             ->andReturn('name');
+        $this->ship->shouldReceive('getHref')
+            ->withNoArgs()
+            ->once()
+            ->andReturn('HREF555');
 
         $userMock = $this->mock(UserInterface::class);
         $userMock->shouldReceive('getId')
@@ -660,7 +676,7 @@ class ManageBatteryTest extends StuTestCase
                 $this->shipUserId,
                 'Die providerName lädt in Sektor SECTOR die Batterie der name um 12 Einheiten',
                 PrivateMessageFolderTypeEnum::SPECIAL_TRADE,
-                'ship.php?SHOW_SHIP=1&id=555'
+                'HREF555'
             )
             ->once();
 

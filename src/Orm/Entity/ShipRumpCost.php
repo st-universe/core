@@ -38,12 +38,9 @@ class ShipRumpCost implements ShipRumpCostInterface
     #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $commodity;
 
-    /**
-     * @var ShipRumpInterface
-     */
-    #[ManyToOne(targetEntity: 'ShipRump', inversedBy: 'buildingCosts')]
+    #[ManyToOne(targetEntity: 'SpacecraftRump', inversedBy: 'buildingCosts')]
     #[JoinColumn(name: 'rump_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private $shipRump;
+    private SpacecraftRumpInterface $spacecraftRump;
 
     #[Override]
     public function getId(): int
@@ -55,14 +52,6 @@ class ShipRumpCost implements ShipRumpCostInterface
     public function getRumpId(): int
     {
         return $this->rump_id;
-    }
-
-    #[Override]
-    public function setRumpId(int $shipRumpId): ShipRumpCostInterface
-    {
-        $this->rump_id = $shipRumpId;
-
-        return $this;
     }
 
     #[Override]

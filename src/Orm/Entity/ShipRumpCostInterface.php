@@ -8,8 +8,6 @@ interface ShipRumpCostInterface
 
     public function getRumpId(): int;
 
-    public function setRumpId(int $shipRumpId): ShipRumpCostInterface;
-
     public function getCommodityId(): int;
 
     public function setCommodityId(int $commodityId): ShipRumpCostInterface;

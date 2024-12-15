@@ -11,9 +11,9 @@ use Stu\StuTestCase;
 
 class AdminSettingsTest extends StuTestCase
 {
-    /** @var MockInterface|SettingsCoreInterface */
+    /** @var MockInterface&SettingsCoreInterface */
     private $settingsCore;
-    /** @var MockInterface|SettingsCacheInterface */
+    /** @var MockInterface&SettingsCacheInterface */
     private $cache;
 
     private AdminSettings $subject;

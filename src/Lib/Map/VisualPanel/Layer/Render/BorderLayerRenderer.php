@@ -5,19 +5,16 @@ declare(strict_types=1);
 namespace Stu\Lib\Map\VisualPanel\Layer\Render;
 
 use Override;
-use Stu\Component\Ship\ShipLSSModeEnum;
 use Stu\Lib\Map\VisualPanel\Layer\Data\BorderData;
 use Stu\Lib\Map\VisualPanel\Layer\Data\CellDataInterface;
 use Stu\Lib\Map\VisualPanel\PanelAttributesInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 
 final class BorderLayerRenderer implements LayerRendererInterface
 {
     public const string DEFAULT_BORDER_COLOR = '#2d2d2d';
 
-    public function __construct(private ?ShipInterface $currentShip, private ?bool $isOnShipLevel)
-    {
-    }
+    public function __construct(private ?SpacecraftInterface $currentSpacecraft, private ?bool $isOnShipLevel) {}
 
     /** @param BorderData $data */
     #[Override]
@@ -31,19 +28,19 @@ final class BorderLayerRenderer implements LayerRendererInterface
 
     public function getBorderColor(BorderData $data): string
     {
-        if ($this->currentShip === null) {
+        if ($this->currentSpacecraft === null) {
 
             return self::DEFAULT_BORDER_COLOR;
         }
 
         // current position gets grey border
-        if ($this->isCurrentShipPosition($data, $this->currentShip)) {
+        if ($this->isCurrentShipPosition($data, $this->currentSpacecraft)) {
             return '#9b9b9b';
         }
 
         // hierarchy based border style
         if (
-            $this->currentShip->getLSSmode() == ShipLSSModeEnum::LSS_BORDER
+            $this->currentSpacecraft->getLssMode()->isBorderMode()
         ) {
             $factionColor = $data->getFactionColor();
             if ($factionColor !== null && $factionColor !== '' && $factionColor !== '0') {
@@ -64,10 +61,10 @@ final class BorderLayerRenderer implements LayerRendererInterface
         return self::DEFAULT_BORDER_COLOR;
     }
 
-    private function isCurrentShipPosition(BorderData $data, ShipInterface $currentShip): bool
+    private function isCurrentShipPosition(BorderData $data, SpacecraftInterface $currentSpacecraft): bool
     {
         return $this->isOnShipLevel === true
-            && $data->getPosX() === $currentShip->getPosX()
-            && $data->getPosY() === $currentShip->getPosY();
+            && $data->getPosX() === $currentSpacecraft->getPosX()
+            && $data->getPosY() === $currentSpacecraft->getPosY();
     }
 }

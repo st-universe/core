@@ -3,25 +3,23 @@
 namespace Stu\Lib\Pirate\Behaviour;
 
 use Override;
-use Stu\Component\Ship\System\ShipSystemManagerInterface;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Pirate\PirateBehaviourEnum;
 use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Lib\Pirate\PirateReactionMetadata;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 
 class DeactivateShieldsBehaviour implements PirateBehaviourInterface
 {
-    public function __construct(private ShipSystemManagerInterface $shipSystemManager)
-    {
-    }
+    public function __construct(private SpacecraftSystemManagerInterface $spacecraftSystemManager) {}
     #[Override]
     public function action(
         FleetWrapperInterface $fleetWrapper,
         PirateReactionInterface $pirateReaction,
         PirateReactionMetadata $reactionMetadata,
-        ?ShipInterface $triggerShip
+        ?SpacecraftInterface $triggerSpacecraft
     ): ?PirateBehaviourEnum {
 
         foreach ($fleetWrapper->getShipWrappers() as $wrapper) {
@@ -31,7 +29,7 @@ class DeactivateShieldsBehaviour implements PirateBehaviourInterface
             }
 
             if ($ship->getStorage()->isEmpty()) {
-                $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_SHIELDS, true);
+                $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_SHIELDS, true);
             }
         }
 

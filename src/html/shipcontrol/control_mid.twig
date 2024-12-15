@@ -1,7 +1,7 @@
 {% macro control_mid(wrapper, astroStateSystem, astroStateRegion, isTachyonActive, starSystemEntryTal, currentColony,
 canColonize, closestAnomalyDistance) %}
 
-{% from 'html/macros.twig' import onClickShip %}
+{% from 'html/macros.twig' import onClickSpacecraft %}
 
 {% set ship = wrapper.get %}
 {% set location = ship.getLocation %}
@@ -9,7 +9,7 @@ canColonize, closestAnomalyDistance) %}
 {% set starSystem = ship.getSystem %}
 <table id="schiffskontrolle" class="tcal">
     <tr>
-        {% set header = ship.isBase ? 'Stationskontrolle' : 'Schiffskontrolle' %}
+        {% set header = ship.isStation ? 'Stationskontrolle' : 'Schiffskontrolle' %}
         <th colspan="2"><img src="/assets/buttons/gefecht.png" /> {{ header }}</th>
     </tr>
     <tr>
@@ -235,7 +235,7 @@ canColonize, closestAnomalyDistance) %}
                 <img src="/assets/buttons/dock2.png" title="Abdocken" name="dock" />
             </a>
             {% if ship.getUser.getId == dockedTo.getUser.getId %}
-            <a {{ onClickShip(dockedTo) }} onmouseover="cp('dockedstation','buttons/pmnavlet_7_1')"
+            <a {{ onClickSpacecraft(dockedTo) }} onmouseover="cp('dockedstation','buttons/pmnavlet_7_1')"
                 onmouseout="cp('dockedstation','buttons/pmnavlet_7_0')">
                 <img src="/assets/buttons/pmnavlet_7_0.png" title="Zu Station wechseln" name="dockedstation"
                     style="height: 20px;" />
@@ -334,8 +334,8 @@ canColonize, closestAnomalyDistance) %}
                 {{ mapRegion.getDescription }}
             </a>
             {% endif %}
-            {% if location.getInfluenceArea and location.getInfluenceArea.getBase %}
-            {{ _self.influenceArea(location.getInfluenceArea.getBase.getUser, ship) }}
+            {% if location.getInfluenceArea and location.getInfluenceArea.getStation %}
+            {{ _self.influenceArea(location.getInfluenceArea.getStation.getUser, ship) }}
             {% endif %}
             {% set anomalies = location.getAnomalies %}
             {% if not anomalies.isEmpty %}
@@ -415,7 +415,7 @@ canColonize, closestAnomalyDistance) %}
         {% if wormholeEntry %}
         <td>
             {{ wormholeEntry.getSystem.getName }}<br />
-            {% if not ship.isWarped and not ship.isBase %}
+            {% if not ship.isWarped and not ship.isStation %}
             <a href="javascript:void(0);"
                 onClick="actionToInnerContent('B_ENTER_WORMHOLE', 'id={{ shipId }}&sstr={{ SESSIONSTRING }}');">
                 <img src="/assets/buttons/wlenter1.png" title="Ins Wurmloch einfliegen" />
@@ -441,7 +441,7 @@ canColonize, closestAnomalyDistance) %}
             {{ _self.colonyImageAndName(shipId, currentColony, ownsCurrentColony) }}
             <div>
                 {% if currentColony.getUser.isContactable and not ownsCurrentColony %}
-                {% set fromType = ship.isBase ? 4 : 2 %}
+                {% set fromType = ship.isStation ? 4 : 2 %}
                 <a href="javascript:void(0);" onmouseover="cp('pm_to_colony','buttons/msg2', 'png');"
                     onmouseout="cp('pm_to_colony','buttons/msg1', 'png');"
                     onclick="closePopup();openPmWindow({{ shipId }}, {{ colonyId }}, {{ fromType }},5);"><img
@@ -461,12 +461,16 @@ canColonize, closestAnomalyDistance) %}
             </div>
             {% endif %}
             {% if not currentColony.isFree %}
+            {% set sourceEntityType = ship.getTransferEntityType.value %}
+            {% set targetEntityType = currentColony.getTransferEntityType.value %}
             <div style="margin-top: 5px; margin-right: 20px; float: left;">
-                <a href="javascript:void(0);" onclick="showTransfer({{ colonyId }}, 1, true, true, false);"
+                <a href="javascript:void(0);"
+                    onclick="showTransfer({{ shipId }}, '{{sourceEntityType}}', {{ colonyId }}, '{{ targetEntityType }}', 1, true);"
                     onmouseover="cp('beamfrom','buttons/b_down2')" onmouseout="cp('beamfrom','buttons/b_down1')">
                     <img src="/assets/buttons/b_down1.png" name="beamfrom" title="Zu der Kolonie beamen" />
                 </a>
-                <a href="javascript:void(0);" onclick="showTransfer({{ colonyId }}, 1, false, true, false);"
+                <a href="javascript:void(0);"
+                    onclick="showTransfer({{ shipId }}, '{{sourceEntityType}}', {{ colonyId }}, '{{ targetEntityType }}', 1, false);"
                     onmouseover="cp('beamto','buttons/b_up2')" onmouseout="cp('beamto','buttons/b_up1')">
                     <img src="/assets/buttons/b_up1.png" name="beamto" title="Von der Kolonie beamen" />
                 </a>

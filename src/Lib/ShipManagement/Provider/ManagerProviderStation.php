@@ -7,19 +7,22 @@ namespace Stu\Lib\ShipManagement\Provider;
 use Doctrine\Common\Collections\Collection;
 use Override;
 use RuntimeException;
-use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
-use Stu\Module\Ship\Lib\Crew\TroopTransferUtilityInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
+use Stu\Module\Station\Lib\StationWrapperInterface;
 use Stu\Orm\Entity\CommodityInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\UserInterface;
 
 class ManagerProviderStation implements ManagerProviderInterface
 {
-    public function __construct(private ShipWrapperInterface $wrapper, private CrewCreatorInterface $crewCreator, private TroopTransferUtilityInterface $troopTransferUtility, private ShipStorageManagerInterface $shipStorageManager)
-    {
-    }
+    public function __construct(
+        private StationWrapperInterface $wrapper,
+        private CrewCreatorInterface $crewCreator,
+        private TroopTransferUtilityInterface $troopTransferUtility,
+        private StorageManagerInterface $storageManager
+    ) {}
 
     #[Override]
     public function getUser(): UserInterface
@@ -78,9 +81,9 @@ class ManagerProviderStation implements ManagerProviderInterface
     }
 
     #[Override]
-    public function addShipCrew(ShipInterface $ship, int $amount): void
+    public function addCrewAssignment(SpacecraftInterface $spacecraft, int $amount): void
     {
-        $this->crewCreator->createShipCrew($ship, $this->wrapper->get(), $amount);
+        $this->crewCreator->createCrewAssignment($spacecraft, $this->wrapper->get(), $amount);
     }
 
     #[Override]
@@ -110,7 +113,7 @@ class ManagerProviderStation implements ManagerProviderInterface
     #[Override]
     public function upperStorage(CommodityInterface $commodity, int $amount): void
     {
-        $this->shipStorageManager->upperStorage(
+        $this->storageManager->upperStorage(
             $this->wrapper->get(),
             $commodity,
             $amount
@@ -120,7 +123,7 @@ class ManagerProviderStation implements ManagerProviderInterface
     #[Override]
     public function lowerStorage(CommodityInterface $commodity, int $amount): void
     {
-        $this->shipStorageManager->lowerStorage(
+        $this->storageManager->lowerStorage(
             $this->wrapper->get(),
             $commodity,
             $amount

@@ -4,8 +4,17 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\Collection;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
+use Stu\Lib\Interaction\EntityWithInteractionCheckInterface;
+use Stu\Lib\Map\EntityWithLocationInterface;
+use Stu\Lib\Transfer\EntityWithStorageInterface;
+use Stu\Module\Spacecraft\Lib\Crew\EntityWithCrewAssignmentsInterface;
 
-interface ColonyInterface extends PlanetFieldHostInterface
+interface ColonyInterface extends
+    PlanetFieldHostInterface,
+    EntityWithStorageInterface,
+    EntityWithLocationInterface,
+    EntityWithCrewAssignmentsInterface,
+    EntityWithInteractionCheckInterface
 {
     public function getColonyClassId(): int;
 
@@ -16,8 +25,6 @@ interface ColonyInterface extends PlanetFieldHostInterface
     public function getSy(): int;
 
     public function getSystemsId(): int;
-
-    public function getName(): string;
 
     public function getNameAndSectorString(): string;
 
@@ -97,8 +104,6 @@ interface ColonyInterface extends PlanetFieldHostInterface
 
     public function setColonyClass(ColonyClassInterface $colonyClass): ColonyInterface;
 
-    public function getStorageSum(): int;
-
     public function storagePlaceLeft(): bool;
 
     public function getStarsystemMap(): StarSystemMapInterface;
@@ -108,16 +113,6 @@ interface ColonyInterface extends PlanetFieldHostInterface
     public function getSystem(): StarSystemInterface;
 
     public function getBeamFactor(): int;
-
-    /**
-     * @return StorageInterface[]
-     */
-    public function getBeamableStorage(): array;
-
-    /**
-     * @return Collection<int, StorageInterface>
-     */
-    public function getStorage(): Collection;
 
     public function isDefended(): bool;
 
@@ -132,11 +127,6 @@ interface ColonyInterface extends PlanetFieldHostInterface
      * @return Collection<int, FleetInterface>
      */
     public function getBlockers(): Collection;
-
-    /**
-     * @return Collection<int, ShipCrewInterface>
-     */
-    public function getCrewAssignments(): Collection;
 
     public function getCrewAssignmentAmount(): int;
 

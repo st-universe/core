@@ -5,20 +5,19 @@ declare(strict_types=1);
 namespace Stu\Module\Tick\Process;
 
 use Override;
-use Stu\Component\Ship\ShipEnum;
-use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class ShieldRegeneration implements ProcessTickHandlerInterface
 {
-    public function __construct(private ShipRepositoryInterface $shipRepository)
-    {
-    }
+    private const int SHIELD_REGENERATION_TIME = 900;
+
+    public function __construct(private SpacecraftRepositoryInterface $spacecraftRepository) {}
 
     #[Override]
     public function work(): void
     {
         $time = time();
-        $result = $this->shipRepository->getSuitableForShildRegeneration($time - ShipEnum::SHIELD_REGENERATION_TIME);
+        $result = $this->spacecraftRepository->getSuitableForShieldRegeneration($time - self::SHIELD_REGENERATION_TIME);
         $processedCount = 0;
         foreach ($result as $obj) {
             $processedCount++;
@@ -30,7 +29,7 @@ final class ShieldRegeneration implements ProcessTickHandlerInterface
             $obj->setShield($obj->getShield() + $rate);
             $obj->setShieldRegenerationTimer($time);
 
-            $this->shipRepository->save($obj);
+            $this->spacecraftRepository->save($obj);
         }
 
         //$this->loggerUtil->init('shield', LoggerEnum::LEVEL_ERROR);

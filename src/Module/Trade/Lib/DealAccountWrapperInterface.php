@@ -2,13 +2,13 @@
 
 namespace Stu\Module\Trade\Lib;
 
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\StationInterface;
 
 interface DealAccountWrapperInterface
 {
     public function getId(): int;
 
-    public function getShip(): ShipInterface;
+    public function getStation(): StationInterface;
 
     public function getStorageSum(): int;
 

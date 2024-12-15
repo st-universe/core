@@ -15,12 +15,15 @@ final class PlayerRelationDeterminator implements PlayerRelationDeterminatorInte
     public function __construct(
         private FriendDeterminator $friendDeterminator,
         private EnemyDeterminator $enemyDeterminator
-    ) {
-    }
+    ) {}
 
     #[Override]
-    public function isFriend(UserInterface $user, UserInterface $otherUser): bool
+    public function isFriend(?UserInterface $user, ?UserInterface $otherUser): bool
     {
+        if ($user === null || $otherUser === null) {
+            return false;
+        }
+
         $friendRelation = $this->friendDeterminator->isFriend($user, $otherUser);
         if ($friendRelation->isDominant()) {
             return true;

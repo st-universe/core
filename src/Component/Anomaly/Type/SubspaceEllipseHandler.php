@@ -6,22 +6,22 @@ namespace Stu\Component\Anomaly\Type;
 
 use Override;
 use Stu\Component\Anomaly\AnomalyCreationInterface;
-use Stu\Component\Ship\System\ShipSystemModeEnum;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Module\Ship\Lib\Damage\ApplyDamageInterface;
-use Stu\Module\Ship\Lib\Message\MessageCollection;
-use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
-use Stu\Module\Ship\Lib\Message\MessageFactoryInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Module\Spacecraft\Lib\Damage\ApplyDamageInterface;
+use Stu\Module\Spacecraft\Lib\Message\MessageCollection;
+use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
+use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Entity\AnomalyInterface;
 use Stu\Orm\Repository\LocationRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 //TODO unit tests
 final class SubspaceEllipseHandler implements AnomalyHandlerInterface
@@ -31,15 +31,14 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
     public function __construct(
         private LocationRepositoryInterface $locationRepository,
         private AnomalyCreationInterface $anomalyCreation,
-        private ShipRepositoryInterface $shipRepository,
-        private ShipWrapperFactoryInterface $shipWrapperFactory,
+        private SpacecraftRepositoryInterface $spacecraftRepository,
+        private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
         private ApplyDamageInterface $applyDamage,
         private PrivateMessageSenderInterface $privateMessageSender,
         private DistributedMessageSenderInterface $distributedMessageSender,
         private StuRandom $stuRandom,
         private MessageFactoryInterface $messageFactory
-    ) {
-    }
+    ) {}
 
     #[Override]
     public function checkForCreation(): void
@@ -59,10 +58,10 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
     }
 
     #[Override]
-    public function handleShipTick(AnomalyInterface $anomaly): void
+    public function handleSpacecraftTick(AnomalyInterface $anomaly): void
     {
         $location = $anomaly->getLocation();
-        $spacecrafts = $location->getShips();
+        $spacecrafts = $location->getSpacecrafts();
 
         $messagesForShips = new MessageCollection();
         $messagesForBases = new MessageCollection();
@@ -81,11 +80,11 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
                 continue;
             }
 
-            if (!$spacecraft->hasShipSystem(ShipSystemTypeEnum::SYSTEM_SHIELDS)) {
+            if (!$spacecraft->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_SHIELDS)) {
                 continue;
             }
 
-            $shieldSystem = $spacecraft->getShipSystem(ShipSystemTypeEnum::SYSTEM_SHIELDS);
+            $shieldSystem = $spacecraft->getShipSystem(SpacecraftSystemTypeEnum::SYSTEM_SHIELDS);
 
             if (
                 $spacecraft->getShield() === 0
@@ -97,8 +96,8 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
             $message = $this->messageFactory->createMessage(UserEnum::USER_NOONE, $spacecraft->getUser()->getId());
             $message->add($spacecraft->getName());
 
-            if ($shieldSystem->getMode() > ShipSystemModeEnum::MODE_OFF) {
-                $shieldSystem->setMode(ShipSystemModeEnum::MODE_OFF);
+            if ($shieldSystem->getMode() > SpacecraftSystemModeEnum::MODE_OFF) {
+                $shieldSystem->setMode(SpacecraftSystemModeEnum::MODE_OFF);
             }
 
             if ($spacecraft->getShield() > 0) {
@@ -107,7 +106,7 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
             }
 
             if ($shieldSystem->getStatus() > 0) {
-                $wrapper = $this->shipWrapperFactory->wrapShip($spacecraft);
+                $wrapper = $this->spacecraftWrapperFactory->wrapSpacecraft($spacecraft);
 
                 $informations = new InformationWrapper();
                 $this->applyDamage->damageShipSystem(
@@ -119,13 +118,13 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
                 $message->addMessageMerge($informations->getInformations());
             }
 
-            if ($spacecraft->isBase()) {
+            if ($spacecraft->isStation()) {
                 $messagesForBases->add($message);
             } else {
                 $messagesForShips->add($message);
             }
 
-            $this->shipRepository->save($spacecraft);
+            $this->spacecraftRepository->save($spacecraft);
         }
 
         $this->informSpacecraftOwnersAboutConsequences(
@@ -146,7 +145,7 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
         $usersToInform = [];
 
         $location = $anomaly->getLocation();
-        $spacecrafts = $location->getShips();
+        $spacecrafts = $location->getSpacecrafts();
 
         foreach ($spacecrafts as $spacecraft) {
             $usersToInform[$spacecraft->getUser()->getId()] = $spacecraft->getUser();

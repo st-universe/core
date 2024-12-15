@@ -8,15 +8,13 @@ use Override;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\View\ShowInformation\ShowInformation;
+use Stu\Module\Spacecraft\View\ShowInformation\ShowInformation;
 
 final class LeaveFleet implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_LEAVE_FLEET';
 
-    public function __construct(private LeaveFleetRequestInterface $leaveFleetRequest, private ShipLoaderInterface $shipLoader)
-    {
-    }
+    public function __construct(private LeaveFleetRequestInterface $leaveFleetRequest, private ShipLoaderInterface $shipLoader) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void

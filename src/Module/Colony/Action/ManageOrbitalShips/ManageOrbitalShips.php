@@ -13,8 +13,7 @@ use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowOrbitManagement\ShowOrbitManagement;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -23,9 +22,14 @@ final class ManageOrbitalShips implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_MANAGE_SHIPS';
 
-    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyRepositoryInterface $colonyRepository, private ShipRepositoryInterface $shipRepository, private InteractionCheckerInterface $interactionChecker, private ShipWrapperFactoryInterface $shipWrapperFactory, private ManagerProviderFactoryInterface $managerProviderFactory, private HandleManagersInterface $handleManagers)
-    {
-    }
+    public function __construct(
+        private ColonyLoaderInterface $colonyLoader,
+        private ColonyRepositoryInterface $colonyRepository,
+        private ShipRepositoryInterface $shipRepository,
+        private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
+        private ManagerProviderFactoryInterface $managerProviderFactory,
+        private HandleManagersInterface $handleManagers
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -83,14 +87,14 @@ final class ManageOrbitalShips implements ActionControllerInterface
         if ($ship->getCloakState()) {
             return [];
         }
-        if (!$this->interactionChecker->checkColonyPosition($colony, $ship)) {
+        if ($colony->getLocation() !== $ship->getLocation()) {
             return [];
         }
         if ($ship->isDestroyed()) {
             return [];
         }
 
-        $wrapper = $this->shipWrapperFactory->wrapShip($ship);
+        $wrapper = $this->spacecraftWrapperFactory->wrapShip($ship);
 
         $msg = $this->handleManagers->handle($wrapper, $values, $managerProvider);
 

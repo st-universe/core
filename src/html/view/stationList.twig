@@ -1,11 +1,11 @@
 {% from 'html/shiplistmacros.twig' import shiplist_header, shiplist_body %}
-{% if BASES %}
+{% if STATIONS %}
 <table class="tcal">
     <tr>
         <td colspan="11">Stationen</td>
     </tr>
     {{ shiplist_header()}}
-    {% for wrapper in BASES %}
+    {% for wrapper in STATIONS %}
     {{ shiplist_body(wrapper) }}
     {% endfor %}
 </table>

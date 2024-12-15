@@ -11,7 +11,7 @@ use Stu\StuTestCase;
 
 class SettingsCacheTest extends StuTestCase
 {
-    /** @var MockInterface|SettingsFactoryInterface */
+    /** @var MockInterface&SettingsFactoryInterface */
     private $settingsFactory;
 
     private SettingsCacheInterface $subject;

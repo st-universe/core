@@ -8,28 +8,26 @@ use Mockery;
 use Mockery\MockInterface;
 use Override;
 use Stu\Component\Building\BuildingManagerInterface;
-use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\BuildingInterface;
 use Stu\Orm\Entity\ColonySandboxInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
-use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\StuTestCase;
 
 class BuildingActionTest extends StuTestCase
 {
     /**
-     * @var MockInterface|ColonyRepositoryInterface
+     * @var MockInterface&StorageManagerInterface
      */
-    private $colonyStorageManager;
-
+    private $storageManager;
     /**
-     * @var MockInterface|BuildingManagerInterface
+     * @var MockInterface&BuildingManagerInterface
      */
     private $buildingManager;
 
     /**
-     * @var MockInterface|PlanetFieldInterface
+     * @var MockInterface&PlanetFieldInterface
      */
     private $field;
 
@@ -39,13 +37,13 @@ class BuildingActionTest extends StuTestCase
     #[Override]
     public function setUp(): void
     {
-        $this->colonyStorageManager = Mockery::mock(ColonyStorageManagerInterface::class);
+        $this->storageManager = Mockery::mock(StorageManagerInterface::class);
         $this->buildingManager = Mockery::mock(BuildingManagerInterface::class);
 
         $this->field = $this->mock(PlanetFieldInterface::class);
 
         $this->subject = new BuildingAction(
-            $this->colonyStorageManager,
+            $this->storageManager,
             $this->buildingManager
         );
     }

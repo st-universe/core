@@ -1,4 +1,4 @@
-{% from 'html/macros.twig' import onClickShip %}
+{% from 'html/macros.twig' import onClickSpacecraft %}
 
 <input type="hidden" name="id" value="{{ MANAGER_ID }}" />
 <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
@@ -13,18 +13,17 @@
     <th>Torpedo-Transfer</th>
     <th>Shuttle-Transfer</th>
   </tr>
-  {% for fleetwrapper in FLEET_WRAPPERS %}
-  {% set fleet = fleetwrapper.get %}
+  {% for group in SPACECRAFT_GROUPS %}
   <tr>
     <td colspan="7">
-      {{ fleet.getName|bbcode }}
-      {% if fleetwrapper.isForeignFleet %}
+      {{ group.getName|bbcode }}
+      {% if group.getUser %}
       <span> von </span>
-      {{ fleet.getUser.getName|bbcode }}
+      {{ group.getUser.getName|bbcode }}
       {% endif %}
     </td>
   </tr>
-  {% for wrapper in fleetwrapper.getShipWrappers %}
+  {% for wrapper in group.getWrappers %}
   {% set ship = wrapper.get %}
   {% set shipId = ship.getId %}
   {% set rumpId = ship.getRumpId %}
@@ -32,7 +31,7 @@
     <td>
       <input type="hidden" name="ships[]" value="{{ ship.getId }}" />
       {% if wrapper.isOwnedByCurrentUser %}
-      <a {{ onClickShip(ship) }}>
+      <a {{ onClickSpacecraft(ship) }}>
         <img src="assets/ships/{{ rumpId }}.png" title="{{ ship.getRumpName }}" />
       </a>
       {% else %}
@@ -41,7 +40,7 @@
     </td>
     {% if wrapper.isOwnedByCurrentUser %}
     <td>
-      <a {{ onClickShip(ship) }}>{{ ship.getName|bbcode }}</a>
+      <a {{ onClickSpacecraft(ship) }}>{{ ship.getName|bbcode }}</a>
     </td>
     {% else %}
     <td>{{ ship.getName|bbcode }}</td>

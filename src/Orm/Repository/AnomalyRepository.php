@@ -11,7 +11,7 @@ use Stu\Orm\Entity\Anomaly;
 use Stu\Orm\Entity\AnomalyInterface;
 use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Map;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 
 /**
  * @extends EntityRepository<Anomaly>
@@ -59,14 +59,14 @@ final class AnomalyRepository extends EntityRepository implements AnomalyReposit
     }
 
     #[Override]
-    public function getClosestAnomalyDistance(ShipInterface $ship): ?int
+    public function getClosestAnomalyDistance(SpacecraftInterface $spacecraft): ?int
     {
-        $map = $ship->getMap();
+        $map = $spacecraft->getMap();
         if ($map === null) {
             return null;
         }
 
-        $range = $ship->getSensorRange() * 2;
+        $range = $spacecraft->getSensorRange() * 2;
 
         try {
             $result = (int)$this->getEntityManager()->createQuery(

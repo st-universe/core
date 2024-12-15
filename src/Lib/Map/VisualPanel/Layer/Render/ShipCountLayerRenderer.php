@@ -9,13 +9,11 @@ use Stu\Lib\Map\VisualPanel\Layer\Data\CellDataInterface;
 use Stu\Lib\Map\VisualPanel\Layer\Data\ShipCountData;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerEnum;
 use Stu\Lib\Map\VisualPanel\PanelAttributesInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 
 final class ShipCountLayerRenderer implements LayerRendererInterface
 {
-    public function __construct(private bool $showCloakedEverywhere, private ?ShipInterface $currentShip)
-    {
-    }
+    public function __construct(private bool $showCloakedEverywhere, private ?SpacecraftInterface $currentSpacecraft) {}
 
     /** @param ShipCountData $data */
     #[Override]
@@ -44,13 +42,13 @@ final class ShipCountLayerRenderer implements LayerRendererInterface
                 return "?";
             }
 
-            $currentShip = $this->currentShip;
+            $currentSpacecraft = $this->currentSpacecraft;
 
             if (
-                $currentShip !== null
-                && $currentShip->getTachyonState()
-                && abs($data->getPosX() - $currentShip->getPosX()) <= $this->getTachyonRange($currentShip)
-                && abs($data->getPosY() - $currentShip->getPosY()) <= $this->getTachyonRange($currentShip)
+                $currentSpacecraft !== null
+                && $currentSpacecraft->getTachyonState()
+                && abs($data->getPosX() - $currentSpacecraft->getPosX()) <= $this->getTachyonRange($currentSpacecraft)
+                && abs($data->getPosY() - $currentSpacecraft->getPosY()) <= $this->getTachyonRange($currentSpacecraft)
             ) {
                 return "?";
             }
@@ -58,8 +56,8 @@ final class ShipCountLayerRenderer implements LayerRendererInterface
         return null;
     }
 
-    private function getTachyonRange(ShipInterface $ship): int
+    private function getTachyonRange(SpacecraftInterface $spacecraft): int
     {
-        return $ship->isBase() ? 7 : 3;
+        return $spacecraft->isStation() ? 7 : 3;
     }
 }

@@ -80,9 +80,9 @@ class Deals implements DealsInterface
     #[JoinColumn(name: 'give_commodity', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $giveCommodity;
 
-    #[ManyToOne(targetEntity: 'ShipBuildplan')]
+    #[ManyToOne(targetEntity: 'SpacecraftBuildplan')]
     #[JoinColumn(name: 'buildplan_id', referencedColumnName: 'id')]
-    private ?ShipBuildplanInterface $buildplan = null;
+    private ?SpacecraftBuildplanInterface $buildplan = null;
 
     /**
      * @var ArrayCollection<int, AuctionBidInterface>
@@ -300,7 +300,7 @@ class Deals implements DealsInterface
     }
 
     #[Override]
-    public function getBuildplan(): ?ShipBuildplanInterface
+    public function getBuildplan(): ?SpacecraftBuildplanInterface
     {
         return $this->buildplan;
     }

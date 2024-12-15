@@ -9,6 +9,10 @@ use Stu\Lib\Colony\PlanetFieldHostProvider;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Lib\Information\InformationFactory;
 use Stu\Lib\Information\InformationFactoryInterface;
+use Stu\Lib\Interaction\InteractionCheckerBuilderFactory;
+use Stu\Lib\Interaction\InteractionCheckerBuilderFactoryInterface;
+use Stu\Lib\Interaction\Member\InteractionMemberFactory;
+use Stu\Lib\Interaction\Member\InteractionMemberFactoryInterface;
 use Stu\Lib\Mail\MailFactory;
 use Stu\Lib\Mail\MailFactoryInterface;
 use Stu\Lib\Map\DistanceCalculation;
@@ -68,15 +72,21 @@ use Stu\Lib\ShipManagement\Manager\ManageReactor;
 use Stu\Lib\ShipManagement\Manager\ManageTorpedo;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderFactory;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderFactoryInterface;
-use Stu\Lib\Transfer\BeamUtil;
-use Stu\Lib\Transfer\BeamUtilInterface;
+use Stu\Lib\Transfer\CommodityTransfer;
+use Stu\Lib\Transfer\CommodityTransferInterface;
+use Stu\Lib\Transfer\Storage\StorageManager;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Lib\Transfer\Strategy\CommodityTransferStrategy;
 use Stu\Lib\Transfer\Strategy\TorpedoTransferStrategy;
 use Stu\Lib\Transfer\Strategy\TransferStrategyInterface;
 use Stu\Lib\Transfer\Strategy\TroopTransferStrategy;
-use Stu\Lib\Transfer\TransferTargetLoader;
-use Stu\Lib\Transfer\TransferTargetLoaderInterface;
+use Stu\Lib\Transfer\TransferInformationFactory;
+use Stu\Lib\Transfer\TransferInformationFactoryInterface;
+use Stu\Lib\Transfer\TransferEntityLoader;
+use Stu\Lib\Transfer\TransferEntityLoaderInterface;
 use Stu\Lib\Transfer\TransferTypeEnum;
+use Stu\Lib\Transfer\Wrapper\StorageEntityWrapperFactory;
+use Stu\Lib\Transfer\Wrapper\StorageEntityWrapperFactoryInterface;
 use Stu\Module\Config\StuConfigInterface;
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mailer\MailerInterface;
@@ -94,7 +104,7 @@ return [
     ModuleSelectorAddonFactoryInterface::class => autowire(ModuleSelectorAddonFactory::class),
     GradientColorInterface::class => autowire(GradientColor::class),
     DistanceCalculationInterface::class => autowire(DistanceCalculation::class),
-    BeamUtilInterface::class => autowire(BeamUtil::class),
+    CommodityTransferInterface::class => autowire(CommodityTransfer::class),
     MailerInterface::class => function (ContainerInterface $c): MailerInterface {
         $stuConfig = $c->get(StuConfigInterface::class);
         $transportDsn = $stuConfig->getGameSettings()->getEmailSettings()->getTransportDsn();
@@ -103,7 +113,7 @@ return [
     },
     MailFactoryInterface::class => autowire(MailFactory::class),
     PlanetFieldHostProviderInterface::class => autowire(PlanetFieldHostProvider::class),
-    TransferTargetLoaderInterface::class => autowire(TransferTargetLoader::class),
+    TransferEntityLoaderInterface::class => autowire(TransferEntityLoader::class),
     HandleManagersInterface::class => create(HandleManagers::class)->constructor(
         [
             autowire(ManageBattery::class),
@@ -123,6 +133,11 @@ return [
             PanelLayerEnum::BORDER->value => autowire(BorderDataProvider::class)
         ]
     ),
+    InteractionMemberFactoryInterface::class => autowire(InteractionMemberFactory::class),
+    InteractionCheckerBuilderFactoryInterface::class => autowire(InteractionCheckerBuilderFactory::class),
+    StorageManagerInterface::class => autowire(StorageManager::class),
+    StorageEntityWrapperFactoryInterface::class => autowire(StorageEntityWrapperFactory::class),
+    TransferInformationFactoryInterface::class => autowire(TransferInformationFactory::class),
     TransferStrategyInterface::class => [
         TransferTypeEnum::COMMODITIES->value => autowire(CommodityTransferStrategy::class),
         TransferTypeEnum::CREW->value => autowire(TroopTransferStrategy::class),

@@ -12,8 +12,7 @@ use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Repository\TholianWebRepositoryInterface;
 
 final class ShowWebEmitter implements ViewControllerInterface
@@ -24,7 +23,6 @@ final class ShowWebEmitter implements ViewControllerInterface
 
     public function __construct(
         private ShipLoaderInterface $shipLoader,
-        private ShipRepositoryInterface $shipRepository,
         private TholianWebRepositoryInterface $tholianWebRepository,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
@@ -78,11 +76,9 @@ final class ShowWebEmitter implements ViewControllerInterface
             // wenn keines da und isUseable -> dann Targetliste
             if ($emitter->isUseable()) {
                 $this->loggerUtil->log('C');
-                $possibleTargetList =
-                    array_filter(
-                        $this->shipRepository->getByLocation($ship->getLocation()),
-                        fn(ShipInterface $target): bool => !$target->getCloakState() && !$target->isWarped() && $target !== $ship
-                    );
+                $possibleTargetList = $ship->getLocation()
+                    ->getSpacecrafts()
+                    ->filter(fn(SpacecraftInterface $target): bool => !$target->getCloakState() && !$target->isWarped() && $target !== $ship);
 
                 $game->setTemplateVar('AVAILABLE_SHIPS', $possibleTargetList);
             } else {

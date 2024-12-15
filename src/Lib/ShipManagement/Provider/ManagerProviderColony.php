@@ -6,20 +6,18 @@ namespace Stu\Lib\ShipManagement\Provider;
 
 use Doctrine\Common\Collections\Collection;
 use Override;
-use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
-use Stu\Module\Ship\Lib\Crew\TroopTransferUtilityInterface;
+use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\CommodityInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\UserInterface;
 
 class ManagerProviderColony implements ManagerProviderInterface
 {
-    public function __construct(private ColonyInterface $colony, private CrewCreatorInterface $crewCreator, private ColonyLibFactoryInterface $colonyLibFactory, private ColonyStorageManagerInterface $colonyStorageManager, private TroopTransferUtilityInterface $troopTransferUtility)
-    {
-    }
+    public function __construct(private ColonyInterface $colony, private CrewCreatorInterface $crewCreator, private ColonyLibFactoryInterface $colonyLibFactory, private StorageManagerInterface $storageManager, private TroopTransferUtilityInterface $troopTransferUtility) {}
 
     #[Override]
     public function getUser(): UserInterface
@@ -60,9 +58,9 @@ class ManagerProviderColony implements ManagerProviderInterface
     }
 
     #[Override]
-    public function addShipCrew(ShipInterface $ship, int $amount): void
+    public function addCrewAssignment(SpacecraftInterface $spacecraft, int $amount): void
     {
-        $this->crewCreator->createShipCrew($ship, $this->colony, $amount);
+        $this->crewCreator->createCrewAssignment($spacecraft, $this->colony, $amount);
     }
 
     #[Override]
@@ -90,7 +88,7 @@ class ManagerProviderColony implements ManagerProviderInterface
     #[Override]
     public function upperStorage(CommodityInterface $commodity, int $amount): void
     {
-        $this->colonyStorageManager->upperStorage(
+        $this->storageManager->upperStorage(
             $this->colony,
             $commodity,
             $amount
@@ -100,7 +98,7 @@ class ManagerProviderColony implements ManagerProviderInterface
     #[Override]
     public function lowerStorage(CommodityInterface $commodity, int $amount): void
     {
-        $this->colonyStorageManager->lowerStorage(
+        $this->storageManager->lowerStorage(
             $this->colony,
             $commodity,
             $amount

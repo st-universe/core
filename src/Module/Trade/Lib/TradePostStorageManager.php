@@ -23,9 +23,12 @@ final class TradePostStorageManager implements TradePostStorageManagerInterface
      */
     private ?ArrayCollection $storage = null;
 
-    public function __construct(private StorageRepositoryInterface $storageRepository, private CommodityRepositoryInterface $commodityRepository, private TradePostInterface $tradePost, private UserInterface $user)
-    {
-    }
+    public function __construct(
+        private StorageRepositoryInterface $storageRepository,
+        private CommodityRepositoryInterface $commodityRepository,
+        private TradePostInterface $tradePost,
+        private UserInterface $user
+    ) {}
 
     #[Override]
     public function getTradePost(): TradePostInterface
@@ -37,9 +40,8 @@ final class TradePostStorageManager implements TradePostStorageManagerInterface
     public function getStorageSum(): int
     {
         if ($this->storageSum === null) {
-            $this->storageSum = array_reduce(
-                $this->getStorage()->toArray(),
-                fn (int $value, StorageInterface $storage): int => $value + $storage->getAmount(),
+            $this->storageSum = $this->getStorage()->reduce(
+                fn(int $value, StorageInterface $storage): int => $value + $storage->getAmount(),
                 0
             );
         }
@@ -71,6 +73,7 @@ final class TradePostStorageManager implements TradePostStorageManagerInterface
     {
         $storage = $this->getStorage();
 
+        /** @var ?StorageInterface */
         $stor = $storage->get($commodityId) ?? null;
         if ($stor === null) {
             $stor = $this->storageRepository->prototype();
@@ -93,6 +96,7 @@ final class TradePostStorageManager implements TradePostStorageManagerInterface
     {
         $storage = $this->getStorage();
 
+        /** @var ?StorageInterface */
         $stor = $storage->get($commodityId) ?? null;
         if ($stor === null) {
             return;

@@ -2,13 +2,11 @@
 
 namespace Stu\Lib\ModuleScreen;
 
-use Stu\Orm\Entity\BuildplanModuleInterface;
+use Stu\Orm\Entity\ModuleInterface;
 
 class ModuleScreenTab
 {
-    public function __construct(private ModuleSelectorInterface $moduleSelector)
-    {
-    }
+    public function __construct(private ModuleSelectorInterface $moduleSelector) {}
 
     public function getTabTitle(): string
     {
@@ -22,9 +20,9 @@ class ModuleScreenTab
             if (!$this->moduleSelector->hasSelectedModule()) {
                 $class .= ' module_select_base_mandatory';
             } else {
-                /** @var BuildplanModuleInterface $mod */
-                $mod = current($this->moduleSelector->getBuildplan()->getModulesByType($this->moduleSelector->getModuleType()));
-                $commodityId = $mod->getModule()->getCommodityId();
+                /** @var ModuleInterface $mod */
+                $mod = $this->moduleSelector->getBuildplan()->getModulesByType($this->moduleSelector->getModuleType())->first();
+                $commodityId = $mod->getCommodityId();
 
                 $stor = $this->moduleSelector->getHost()->getStorage()[$commodityId] ?? null;
                 if ($stor === null) {

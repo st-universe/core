@@ -17,13 +17,13 @@ use Stu\StuTestCase;
 
 class KnItemTest extends StuTestCase
 {
-    /** @var MockInterface|KnBbCodeParser */
+    /** @var MockInterface&KnBbCodeParser */
     private $bbcodeParser;
-    /** @var MockInterface|KnCommentRepositoryInterface */
+    /** @var MockInterface&KnCommentRepositoryInterface */
     private $knCommentRepository;
-    /** @var MockInterface|StatusBarFactoryInterface */
+    /** @var MockInterface&StatusBarFactoryInterface */
     private $statusBarFactory;
-    /** @var MockInterface|KnPostInterface */
+    /** @var MockInterface&KnPostInterface */
     private $post;
     /** @var null|MockInterface|UserInterface */
     private $currentUser;

@@ -7,7 +7,7 @@ namespace Stu\Module\Colony\Action\UpgradeBuilding;
 use Override;
 use request;
 use Stu\Component\Building\BuildingManagerInterface;
-use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Module\Colony\Lib\BuildingActionInterface;
 use Stu\Module\Colony\View\ShowInformation\ShowInformation;
@@ -27,7 +27,7 @@ final class UpgradeBuilding implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_UPGRADE_BUILDING';
 
-    public function __construct(private BuildingUpgradeRepositoryInterface $buildingUpgradeRepository, private PlanetFieldRepositoryInterface $planetFieldRepository, private BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository, private ResearchedRepositoryInterface $researchedRepository, private PlanetFieldHostProviderInterface $planetFieldHostProvider, private ColonyStorageManagerInterface $colonyStorageManager, private ColonyRepositoryInterface $colonyRepository, private BuildingActionInterface $buildingAction, private BuildingManagerInterface $buildingManager) {}
+    public function __construct(private BuildingUpgradeRepositoryInterface $buildingUpgradeRepository, private PlanetFieldRepositoryInterface $planetFieldRepository, private BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository, private ResearchedRepositoryInterface $researchedRepository, private PlanetFieldHostProviderInterface $planetFieldHostProvider, private StorageManagerInterface $storageManager, private ColonyRepositoryInterface $colonyRepository, private BuildingActionInterface $buildingAction, private BuildingManagerInterface $buildingManager) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -77,7 +77,7 @@ final class UpgradeBuilding implements ActionControllerInterface
 
         if ($host instanceof ColonyInterface) {
             foreach ($upgrade->getUpgradeCosts() as $obj) {
-                $this->colonyStorageManager->lowerStorage($host, $obj->getCommodity(), $obj->getAmount());
+                $this->storageManager->lowerStorage($host, $obj->getCommodity(), $obj->getAmount());
             }
         }
 

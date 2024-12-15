@@ -8,8 +8,6 @@ use Stu\Module\Colony\Action\ActivateBuilding\ActivateBuilding;
 use Stu\Module\Colony\Action\ActivateBuildings\ActivateBuildings;
 use Stu\Module\Colony\Action\ActivateShields\ActivateShields;
 use Stu\Module\Colony\Action\AllowImmigration\AllowImmigration;
-use Stu\Module\Colony\Action\BeamFrom\BeamFrom;
-use Stu\Module\Colony\Action\BeamTo\BeamTo;
 use Stu\Module\Colony\Action\BuildAirfieldRump\BuildAirfieldRump;
 use Stu\Module\Colony\Action\BuildFighterShipyardRump\BuildFighterShipyardRump;
 use Stu\Module\Colony\Action\BuildOnField\BuildOnField;
@@ -84,7 +82,7 @@ use Stu\Module\Colony\Lib\Gui\Component\FighterShipyardProvider;
 use Stu\Module\Colony\Lib\Gui\Component\ManagementProvider;
 use Stu\Module\Colony\Lib\Gui\Component\ModuleFabProvider;
 use Stu\Module\Colony\Lib\Gui\Component\ShieldingProvider;
-use Stu\Module\Colony\Lib\Gui\Component\ShipBuildplansProvider;
+use Stu\Module\Colony\Lib\Gui\Component\SpacecraftBuildplansProvider;
 use Stu\Module\Colony\Lib\Gui\Component\ShipDisassemblyProvider;
 use Stu\Module\Colony\Lib\Gui\Component\ShipRepairProvider;
 use Stu\Module\Colony\Lib\Gui\Component\ShipRetrofitProvider;
@@ -107,12 +105,6 @@ use Stu\Module\Colony\View\ShowAcademy\ShowAcademyRequestInterface;
 use Stu\Module\Colony\View\ShowAirfield\ShowAirfield;
 use Stu\Module\Colony\View\ShowAirfield\ShowAirfieldRequest;
 use Stu\Module\Colony\View\ShowAirfield\ShowAirfieldRequestInterface;
-use Stu\Module\Colony\View\ShowBeamFrom\ShowBeamFrom;
-use Stu\Module\Colony\View\ShowBeamFrom\ShowBeamFromRequest;
-use Stu\Module\Colony\View\ShowBeamFrom\ShowBeamFromRequestInterface;
-use Stu\Module\Colony\View\ShowBeamTo\ShowBeamTo;
-use Stu\Module\Colony\View\ShowBeamTo\ShowBeamToRequest;
-use Stu\Module\Colony\View\ShowBeamTo\ShowBeamToRequestInterface;
 use Stu\Module\Colony\View\ShowBuilding\ShowBuilding;
 use Stu\Module\Colony\View\ShowBuilding\ShowBuildingRequest;
 use Stu\Module\Colony\View\ShowBuilding\ShowBuildingRequestInterface;
@@ -182,11 +174,14 @@ use Stu\Module\Colony\View\ShowTorpedoFab\ShowTorpedoFabRequest;
 use Stu\Module\Colony\View\ShowTorpedoFab\ShowTorpedoFabRequestInterface;
 use Stu\Module\Colony\View\ShowWaste\ShowWaste;
 use Stu\Module\Control\GameController;
+use Stu\Module\Game\Action\Transfer\Transfer;
 use Stu\Module\Game\View\Overview\Overview;
+use Stu\Module\Game\View\ShowTransfer\ShowTransfer;
 use Stu\PlanetGenerator\PlanetGenerator;
 use Stu\PlanetGenerator\PlanetGeneratorInterface;
 
 use function DI\autowire;
+use function DI\get;
 
 return [
     BuildingActionInterface::class => autowire(BuildingAction::class),
@@ -212,7 +207,7 @@ return [
             GuiComponentEnum::TORPEDO_FAB->value => autowire(TorpedoFabProvider::class),
             GuiComponentEnum::SHIPYARD->value => autowire(ShipyardProvider::class),
             GuiComponentEnum::FIGHTER_SHIPYARD->value => autowire(FighterShipyardProvider::class),
-            GuiComponentEnum::SHIP_BUILDPLANS->value => autowire(ShipBuildplansProvider::class),
+            GuiComponentEnum::SHIP_BUILDPLANS->value => autowire(SpacecraftBuildplansProvider::class),
             GuiComponentEnum::SHIP_REPAIR->value => autowire(ShipRepairProvider::class),
             GuiComponentEnum::SHIP_RETROFIT->value => autowire(ShipRetrofitProvider::class),
             GuiComponentEnum::SHIP_DISASSEMBLY->value => autowire(ShipDisassemblyProvider::class)
@@ -229,8 +224,6 @@ return [
     PlanetGeneratorInterface::class => autowire(PlanetGenerator::class),
     ShowAcademyRequestInterface::class => autowire(ShowAcademyRequest::class),
     ShowAirfieldRequestInterface::class => autowire(ShowAirfieldRequest::class),
-    ShowBeamFromRequestInterface::class => autowire(ShowBeamFromRequest::class),
-    ShowBeamToRequestInterface::class => autowire(ShowBeamToRequest::class),
     ShowBuildingRequestInterface::class => autowire(ShowBuildingRequest::class),
     ShowBuildPlansRequestInterface::class => autowire(ShowBuildPlansRequest::class),
     ShowColonyRequestInterface::class => autowire(ShowColonyRequest::class),
@@ -254,8 +247,6 @@ return [
         ActivateBuilding::ACTION_IDENTIFIER => autowire(ActivateBuilding::class),
         ActivateShields::ACTION_IDENTIFIER => autowire(ActivateShields::class),
         AllowImmigration::ACTION_IDENTIFIER => autowire(AllowImmigration::class),
-        BeamFrom::ACTION_IDENTIFIER => autowire(BeamFrom::class),
-        BeamTo::ACTION_IDENTIFIER => autowire(BeamTo::class),
         BuildAirfieldRump::ACTION_IDENTIFIER => autowire(BuildAirfieldRump::class),
         BuildFighterShipyardRump::ACTION_IDENTIFIER => autowire(BuildFighterShipyardRump::class),
         BuildOnField::ACTION_IDENTIFIER => autowire(BuildOnField::class),
@@ -291,7 +282,8 @@ return [
         ChangeTorpedoType::ACTION_IDENTIFIER => autowire(ChangeTorpedoType::class),
         RenameBuildplan::ACTION_IDENTIFIER => autowire(RenameBuildplan::class),
         RemoveWaste::ACTION_IDENTIFIER => autowire(RemoveWaste::class),
-        RetrofitShip::ACTION_IDENTIFIER => autowire(RetrofitShip::class)
+        RetrofitShip::ACTION_IDENTIFIER => autowire(RetrofitShip::class),
+        Transfer::ACTION_IDENTIFIER => get(Transfer::class)
     ],
     'COLONY_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
@@ -314,8 +306,6 @@ return [
         ShowInformation::VIEW_IDENTIFIER => autowire(ShowInformation::class),
         ShowSurface::VIEW_IDENTIFIER => autowire(ShowSurface::class),
         ShowOrbitShiplist::VIEW_IDENTIFIER => autowire(ShowOrbitShiplist::class),
-        ShowBeamTo::VIEW_IDENTIFIER => autowire(ShowBeamTo::class),
-        ShowBeamFrom::VIEW_IDENTIFIER => autowire(ShowBeamFrom::class),
         ShowEpsBar::VIEW_IDENTIFIER => autowire(ShowEpsBar::class),
         ShowShields::VIEW_IDENTIFIER => autowire(ShowShields::class),
         ShowStorage::VIEW_IDENTIFIER => autowire(ShowStorage::class),
@@ -335,6 +325,7 @@ return [
         ShowWaste::VIEW_IDENTIFIER => autowire(ShowWaste::class),
         ShowSubspaceTelescope::VIEW_IDENTIFIER => autowire(ShowSubspaceTelescope::class),
         ShowSubspaceTelescopeScan::VIEW_IDENTIFIER => autowire(ShowSubspaceTelescopeScan::class),
+        ShowTransfer::VIEW_IDENTIFIER => get(ShowTransfer::class),
         RefreshColonyEps::VIEW_IDENTIFIER => autowire(RefreshColonyEps::class)
     ],
     BuildPlanDeleterInterface::class => autowire(BuildPlanDeleter::class),

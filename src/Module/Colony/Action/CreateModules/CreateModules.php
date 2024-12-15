@@ -7,7 +7,7 @@ namespace Stu\Module\Colony\Action\CreateModules;
 use Override;
 use request;
 use Stu\Component\Building\BuildingFunctionEnum;
-use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
@@ -27,7 +27,7 @@ final class CreateModules implements ActionControllerInterface
         private ModuleBuildingFunctionRepositoryInterface $moduleBuildingFunctionRepository,
         private ModuleQueueRepositoryInterface $moduleQueueRepository,
         private PlanetFieldRepositoryInterface $planetFieldRepository,
-        private ColonyStorageManagerInterface $colonyStorageManager,
+        private StorageManagerInterface $storageManager,
         private ColonyRepositoryInterface $colonyRepository
     ) {}
 
@@ -108,7 +108,7 @@ final class CreateModules implements ActionControllerInterface
             }
             if ($count > 0) {
                 foreach ($costs as $cost) {
-                    $this->colonyStorageManager->lowerStorage($colony, $cost->getCommodity(), $cost->getAmount() * $count);
+                    $this->storageManager->lowerStorage($colony, $cost->getCommodity(), $cost->getAmount() * $count);
                 }
                 $colony->lowerEps($count * $module->getEcost());
 

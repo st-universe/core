@@ -6,9 +6,10 @@ namespace Stu\Module\Ship\View\ShowTradeMenuPayment;
 
 use Override;
 use request;
+use Stu\Lib\Interaction\InteractionCheckerBuilderFactoryInterface;
+use Stu\Lib\Interaction\InteractionCheckType;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Ship\Lib\Interaction\InteractionChecker;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
@@ -22,9 +23,17 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_TRADEMENU_CHOOSE_PAYMENT';
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradeLicenseInfoRepositoryInterface $TradeLicenseInfoRepository, private TradeLibFactoryInterface $tradeLibFactory, private TradePostRepositoryInterface $tradePostRepository, private StorageRepositoryInterface $storageRepository, private ShipRepositoryInterface $shipRepository, private CommodityRepositoryInterface $commodityRepository)
-    {
-    }
+    public function __construct(
+        private ShipLoaderInterface $shipLoader,
+        private TradeLicenseRepositoryInterface $tradeLicenseRepository,
+        private TradeLicenseInfoRepositoryInterface $TradeLicenseInfoRepository,
+        private TradeLibFactoryInterface $tradeLibFactory,
+        private TradePostRepositoryInterface $tradePostRepository,
+        private StorageRepositoryInterface $storageRepository,
+        private ShipRepositoryInterface $shipRepository,
+        private CommodityRepositoryInterface $commodityRepository,
+        private InteractionCheckerBuilderFactoryInterface $interactionCheckerBuilderFactory
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -44,9 +53,22 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
             return;
         }
 
-        if (!InteractionChecker::canInteractWith($ship, $tradepost->getShip(), $game)) {
+        if (!$this->interactionCheckerBuilderFactory
+            ->createInteractionChecker()
+            ->setSource($ship)
+            ->setTarget($tradepost->getStation())
+            ->setCheckTypes([
+                InteractionCheckType::EXPECT_SOURCE_SUFFICIENT_CREW,
+                InteractionCheckType::EXPECT_SOURCE_UNSHIELDED,
+                InteractionCheckType::EXPECT_SOURCE_UNWARPED,
+                InteractionCheckType::EXPECT_TARGET_UNWARPED,
+                InteractionCheckType::EXPECT_TARGET_UNCLOAKED,
+                InteractionCheckType::EXPECT_TARGET_UNSHIELDED
+            ])
+            ->check($game)) {
             return;
         }
+
         $licenseInfo = $this->TradeLicenseInfoRepository->getLatestLicenseInfo($tradepost->getId());
         $commodityId = $licenseInfo->getCommodityId();
         $commodity = $this->commodityRepository->find($commodityId);
@@ -69,7 +91,7 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
                 'DOCKED_SHIPS_FOR_LICENSE',
                 $this->shipRepository->getWithTradeLicensePayment(
                     $userId,
-                    $tradepost->getShipId(),
+                    $tradepost->getStationId(),
                     $commodityId,
                     $licenseCost
                 )
