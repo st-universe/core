@@ -7,7 +7,7 @@
         <tr>
             <td class="darkbg" colspan="5">
                 {% if wrapper.isOwnedByCurrentUser %}
-                <a type="hidden" href="ship.php?SHOW_SPACECRAFT=1&id={{ data.getId }}" />
+                <a type="hidden" href="{{ data.getHref }}" />
                 {% endif %}
                 {{ data.getName|bbcode }} | {{ data.getUserName|bbcode }}
             </td>
@@ -16,7 +16,7 @@
             <td style="width: 20px; vertical-align: middle;">
                 {% if STATION %}
                 <a
-                    href="ship.php?id={{ STATION.getId }}&B_UNDOCK_SHIP=1&target={{ data.getId }}&sstr={{ SESSIONSTRING }}"><img
+                    href="station.php?id={{ STATION.getId }}&B_UNDOCK_SHIP=1&target={{ data.getId }}&sstr={{ SESSIONSTRING }}"><img
                         src="/assets/buttons/dock1.png" title="abdocken" /></a>
                 {% endif %}
             </td>

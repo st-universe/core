@@ -112,12 +112,6 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
             $game->setTemplateVar('STARSYSTEM_ENTRY_TAL', $starSystemEntryTal);
         }
 
-        $isStation = $spacecraft->isStation();
-        $game->appendNavigationPart(
-            $isStation ? 'station.php' : 'ship.php',
-            $isStation ? _('Stationen') : _('Schiffe')
-        );
-
         $game->appendNavigationPart(
             sprintf('?%s=1&id=%d', self::VIEW_IDENTIFIER, $spacecraft->getId()),
             $spacecraft->getName()
@@ -168,7 +162,7 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
                 : $this->shipCrewCalculator->getMaxCrewCountByShip($spacecraft)
         );
 
-        $game->addExecuteJS(sprintf("setShipIdAndSstr(%d, '%s')", $spacecraft->getId(), $game->getSessionString()));
+        $game->addExecuteJS(sprintf("setSpacecraftIdAndSstr(%d, '%s');", $spacecraft->getId(), $game->getSessionString()));
         $this->addWarpcoreSplitJavascript($wrapper, $game);
 
         $this->loggerUtil->log(sprintf('ShowShip.handle-end, timestamp: %F', microtime(true)));

@@ -4,7 +4,7 @@
   {% include 'html/systeminformation.twig' %}
   {% endif %}
   {% if HAS_LICENSE %}
-  <form method="post" action="ship.php">
+  <form method="post" action="{{ SHIP.getType.getModuleView.getPhpPage }}">
     <input type="hidden" name="id" value="{{ SHIP.getId }}" />
     <input type="hidden" name="postid" value="{{ TRADEPOST.getId }}" />
     <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />

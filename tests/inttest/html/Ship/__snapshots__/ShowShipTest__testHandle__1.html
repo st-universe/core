@@ -16,6 +16,7 @@
     <script src="/static/js/profile.js"></script>
     <script src="/static/js/ship.js"></script>
     <script src="/static/js/shipmanagement.js"></script>
+    <script src="/static/js/spacecraft.js"></script>
     <script src="/static/js/starmap.js"></script>
     <script src="/static/js/station.js"></script>
     <script src="/static/js/trade.js"></script>
@@ -175,7 +176,7 @@
 </div>
 <br>
 <script>
-            setShipIdAndSstr(42, 'MOCKED_SESSIONSTRING')
+            setSpacecraftIdAndSstr(42, 'MOCKED_SESSIONSTRING');
         </script>
 <div id="result" style="display: none;">..</div>
 
@@ -254,13 +255,13 @@
 			<td colspan="2">
 				<a href="javascript:void(0);" onclick="switchInnerContent('SHOW_SPACECRAFT', 'Aerie', 'id=42',
 'ship.php');
-updateSelectedShipId('42');" onmouseover="cp('uship','buttons/update1');" onmouseout="cp('uship','buttons/update0');">
+updateSelectedSpacecraftId('42');" onmouseover="cp('uship','buttons/update1');" onmouseout="cp('uship','buttons/update0');">
 					<img src="/assets/buttons/update0.png" title="Aktualisieren" name="uship">
 				</a>
-				<a href="javascript:void(0);" onclick="showShipDetails(42);" onmouseover="cp('shinfo','buttons/info2');" onmouseout="cp('shinfo','buttons/info1');">
+				<a href="javascript:void(0);" onclick="showSpacecraftDetails(42);" onmouseover="cp('shinfo','buttons/info2');" onmouseout="cp('shinfo','buttons/info1');">
 					<img src="/assets/buttons/info1.png" title="Schiffsinformationen anzeigen" name="shinfo">
 				</a>
-				<a href="javascript:void(0);" onclick="showShipCommunication(42);" onmouseover="cp('shipcom','buttons/msg2');" onmouseout="cp('shipcom','buttons/msg1');">
+				<a href="javascript:void(0);" onclick="showCommunication(42);" onmouseover="cp('shipcom','buttons/msg2');" onmouseout="cp('shipcom','buttons/msg1');">
 					<img src="/assets/buttons/msg1.png" title="Kommunikation" name="shipcom">
 				</a>
 								<a href="?B_SET_LSS_BORDER=1&amp;id=42&amp;sstr=MOCKED_SESSIONSTRING" onmouseover="cp('actlss','buttons/lss_button1');" onmouseout="cp('actlss','buttons/lss_button3');">
@@ -298,7 +299,7 @@ updateSelectedShipId('42');" onmouseover="cp('uship','buttons/update1');" onmous
     <table class="lssarea" cellpadding="0" cellspacing="0">
         <tr>
             <td style="text-align: center; height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
-                <a href="ship.php?B_DEACTIVATE_LSS=1&amp;id=42" style="height: 1.7vw; width: 1.7vw; position: absolute !important; top: 0px; left: 0px;"><img src="/assets/buttons/lss1.png" name="lss_panel" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" title="Langstreckensensoren deaktivieren"></a>
+                <a href="?B_DEACTIVATE_LSS=1&amp;id=42" style="height: 1.7vw; width: 1.7vw; position: absolute !important; top: 0px; left: 0px;"><img src="/assets/buttons/lss1.png" name="lss_panel" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" title="Langstreckensensoren deaktivieren"></a>
             </td>
                         <td style="font-size: 0.9vw; height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="th">
                 5
@@ -441,7 +442,7 @@ updateSelectedShipId('42');" onmouseover="cp('uship','buttons/update1');" onmous
             </a>
                         <a href="javascript:void(0);" onclick="switchInnerContent('SHOW_SPACECRAFT', 'Mighty AP', 'id=43',
 'station.php');
-updateSelectedShipId('43');" onmouseover="cp('dockedstation','buttons/pmnavlet_7_1')" onmouseout="cp('dockedstation','buttons/pmnavlet_7_0')">
+updateSelectedSpacecraftId('43');" onmouseover="cp('dockedstation','buttons/pmnavlet_7_1')" onmouseout="cp('dockedstation','buttons/pmnavlet_7_0')">
                 <img src="/assets/buttons/pmnavlet_7_0.png" title="Zu Station wechseln" name="dockedstation" style="height: 20px;">
             </a>
                                     <a href="javascript:void(0);" onclick="openTradeMenu(2);" onmouseover="cp('trade','buttons/menu_trade1')" onmouseout="cp('trade','buttons/menu_trade0')">
@@ -459,7 +460,7 @@ updateSelectedShipId('43');" onmouseover="cp('dockedstation','buttons/pmnavlet_7
                     </tr>
     <tr>
         <td>
-            <a href="javascript:void(0);" onclick="showSectorScanWindow(this)" onmouseover="cp('sectorScanButton','buttons/lupe2')" onmouseout="cp('sectorScanButton','buttons/lupe1')">
+            <a href="javascript:void(0);" onclick="showSectorScanWindow(this);" onmouseover="cp('sectorScanButton','buttons/lupe2')" onmouseout="cp('sectorScanButton','buttons/lupe1')">
                 <img src="/assets/buttons/lupe1.png" name="sectorScanButton">
                 <span>Sektor 7|8 scannen</span>
             </a>
@@ -611,7 +612,7 @@ updateSelectedShipId('43');" onmouseover="cp('dockedstation','buttons/pmnavlet_7
 <td style="" class="nbsshipimage">
         <a href="javascript:void(0);" onclick="switchInnerContent('SHOW_SPACECRAFT', 'Mighty AP', 'id=43',
 'station.php');
-updateSelectedShipId('43');">
+updateSelectedSpacecraftId('43');">
         <img src="/assets/ships/10053.png" title="Au&szlig;enposten">
 
     </a>
@@ -621,7 +622,7 @@ updateSelectedShipId('43');">
 <td>
         <a href="javascript:void(0);" onclick="switchInnerContent('SHOW_SPACECRAFT', 'Mighty AP', 'id=43',
 'station.php');
-updateSelectedShipId('43');"><span>Mighty AP</span></a>
+updateSelectedSpacecraftId('43');"><span>Mighty AP</span></a>
     </td>
 <td style="width: 160px;">
     20000/21000

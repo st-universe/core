@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Ship\View\ShowTradeMenuTransfer;
+namespace Stu\Module\Spacecraft\View\ShowTradeMenuTransfer;
 
 use Override;
 use request;
@@ -12,14 +12,18 @@ use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
-use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 final class ShowTradeMenuTransfer implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_TRADEMENU_TRANSFER';
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private TradeLibFactoryInterface $tradeLibFactory, private TradePostRepositoryInterface $tradePostRepository, private InteractionCheckerInterface $interactionChecker) {}
+    public function __construct(
+        private ShipLoaderInterface $shipLoader,
+        private TradeLibFactoryInterface $tradeLibFactory,
+        private TradePostRepositoryInterface $tradePostRepository,
+        private InteractionCheckerInterface $interactionChecker
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -38,14 +42,14 @@ final class ShowTradeMenuTransfer implements ViewControllerInterface
             'from' => $game->showMacro('html/ship/transferfromaccount.twig'),
             default => $game->showMacro('html/ship/transfertoaccount.twig'),
         };
-        /** @var TradePostInterface $tradepost */
+
         $tradepost = $this->tradePostRepository->find(request::getIntFatal('postid'));
         if ($tradepost === null) {
             return;
         }
 
         if (!$this->interactionChecker->checkPosition($ship, $tradepost->getStation())) {
-            new AccessViolation();
+            throw new AccessViolation();
         }
 
         $game->setTemplateVar('TRADEPOST', $this->tradeLibFactory->createTradeAccountWrapper($tradepost, $userId));

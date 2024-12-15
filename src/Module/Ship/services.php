@@ -100,7 +100,6 @@ use Stu\Module\Ship\View\ShowShiplistFleet\ShowShiplistFleet;
 use Stu\Module\Ship\View\ShowShiplistSingles\ShowShiplistSingles;
 use Stu\Module\Ship\View\ShowTradeMenu\ShowTradeMenu;
 use Stu\Module\Ship\View\ShowTradeMenuPayment\ShowTradeMenuPayment;
-use Stu\Module\Ship\View\ShowTradeMenuTransfer\ShowTradeMenuTransfer;
 use Stu\Module\Ship\View\ShowWebEmitter\ShowWebEmitter;
 
 use function DI\autowire;
@@ -186,7 +185,6 @@ return [
         ShowBussardCollector::VIEW_IDENTIFIER => autowire(ShowBussardCollector::class),
         ShowTradeMenu::VIEW_IDENTIFIER => autowire(ShowTradeMenu::class),
         ShowTradeMenuPayment::VIEW_IDENTIFIER => autowire(ShowTradeMenuPayment::class),
-        ShowTradeMenuTransfer::VIEW_IDENTIFIER => autowire(ShowTradeMenuTransfer::class),
         ShowColonization::VIEW_IDENTIFIER => autowire(ShowColonization::class),
         ShowShiplistFleet::VIEW_IDENTIFIER => autowire(ShowShiplistFleet::class),
         ShowShiplistSingles::VIEW_IDENTIFIER => autowire(ShowShiplistSingles::class),

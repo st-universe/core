@@ -58,23 +58,19 @@ final class UndockStationShip implements ActionControllerInterface
             return;
         }
 
-        if ($target->getUser() !== $game->getUser()) {
-            $href = sprintf('ship.php?%s=1&id=%d', ShowSpacecraft::VIEW_IDENTIFIER, $target->getId());
-
-            $this->privateMessageSender->send(
-                $userId,
-                $target->getUser()->getId(),
-                sprintf(
-                    _('Die %s %s hat die %s in Sektor %s abgedockt'),
-                    $station->getRump()->getName(),
-                    $station->getName(),
-                    $target->getName(),
-                    $station->getSectorString()
-                ),
-                PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
-                $href
-            );
-        }
+        $this->privateMessageSender->send(
+            $userId,
+            $target->getUser()->getId(),
+            sprintf(
+                _('Die %s %s hat die %s in Sektor %s abgedockt'),
+                $station->getRump()->getName(),
+                $station->getName(),
+                $target->getName(),
+                $station->getSectorString()
+            ),
+            PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
+            $target->getHref()
+        );
 
         $this->cancelRepair->cancelRepair($target);
         $this->cancelRetrofit->cancelRetrofit($target);

@@ -1,4 +1,4 @@
-<form id="selfrepair_form" method="post" action="ship.php">
+<form id="selfrepair_form" method="post" action="{{ SHIP.getType.getModuleView.getPhpPage }}">
   <input type="hidden" name="id" value="{{ SHIP.getId }}" />
   <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
   {% if SHIP.isStation %}
