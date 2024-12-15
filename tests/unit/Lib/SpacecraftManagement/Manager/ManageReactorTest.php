@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Stu\Lib\ShipManagement\Manager;
+namespace Stu\Lib\SpacecraftManagement\Manager;
 
 use Doctrine\Common\Collections\Collection;
 use Mockery\MockInterface;
 use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
-use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
+use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderInterface;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Commodity\Lib\CommodityCacheInterface;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Lib\ShipManagement\Manager;
+namespace Stu\Lib\SpacecraftManagement\Manager;
 
 use Override;
 use Stu\Lib\Information\InformationWrapper;
@@ -14,7 +14,7 @@ use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
-use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
+use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderInterface;
 use Stu\Module\Spacecraft\Lib\Auxiliary\ShipShutdownInterface;
 use Stu\Module\Spacecraft\Lib\Crew\SpacecraftLeaverInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;

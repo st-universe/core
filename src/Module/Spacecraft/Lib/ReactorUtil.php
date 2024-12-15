@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Override;
 use RuntimeException;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
-use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
+use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Entity\SpacecraftInterface;

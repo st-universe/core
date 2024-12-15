@@ -14,7 +14,7 @@ use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 
 final class ShowShipManagement implements ViewControllerInterface
 {
-    public const string VIEW_IDENTIFIER = 'SHOW_SHIP_MANAGEMENT';
+    public const string VIEW_IDENTIFIER = 'SHOW_SPACECRAFT_MANAGEMENT';
 
     public function __construct(
         private StationLoaderInterface $stationLoader,

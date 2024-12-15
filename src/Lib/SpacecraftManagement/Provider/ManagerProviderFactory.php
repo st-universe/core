@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Lib\ShipManagement\Provider;
+namespace Stu\Lib\SpacecraftManagement\Provider;
 
 use Override;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;

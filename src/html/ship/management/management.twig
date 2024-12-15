@@ -2,7 +2,7 @@
 
 <input type="hidden" name="id" value="{{ MANAGER_ID }}" />
 <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
-<input type="hidden" name="SHOW_SHIP_MANAGEMENT" value="1" />
+<input type="hidden" name="SHOW_SPACECRAFT_MANAGEMENT" value="1" />
 <table class="tcal">
   <tr>
     <th>Klasse</th>
@@ -29,7 +29,7 @@
   {% set rumpId = ship.getRumpId %}
   <tr class="row">
     <td>
-      <input type="hidden" name="ships[]" value="{{ ship.getId }}" />
+      <input type="hidden" name="spacecrafts[]" value="{{ ship.getId }}" />
       {% if wrapper.isOwnedByCurrentUser %}
       <a {{ onClickSpacecraft(ship) }}>
         <img src="assets/ships/{{ rumpId }}.png" title="{{ ship.getRumpName }}" />
@@ -123,4 +123,4 @@
   {% endfor %}
 </table>
 <br />
-<input type="submit" style="cursor: pointer" name="B_MANAGE_SHIPS" value="Ausführen" />
+<input type="submit" style="cursor: pointer" name="B_MANAGE_SPACECRAFTS" value="Ausführen" />
