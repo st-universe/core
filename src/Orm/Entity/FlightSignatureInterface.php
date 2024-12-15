@@ -34,11 +34,11 @@ interface FlightSignatureInterface
 
     public function setLocation(LocationInterface $location): FlightSignatureInterface;
 
-    public function getFromDirection(): DirectionEnum;
+    public function getFromDirection(): ?DirectionEnum;
 
     public function setFromDirection(DirectionEnum $direction): FlightSignatureInterface;
 
-    public function getToDirection(): DirectionEnum;
+    public function getToDirection(): ?DirectionEnum;
 
     public function setToDirection(DirectionEnum $direction): FlightSignatureInterface;
 }

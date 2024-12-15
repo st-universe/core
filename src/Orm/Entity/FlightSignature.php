@@ -42,11 +42,11 @@ class FlightSignature implements FlightSignatureInterface
     #[Column(type: 'integer')]
     private int $location_id = 0;
 
-    #[Column(type: 'smallint', length: 1, enumType: DirectionEnum::class)]
-    private DirectionEnum $from_direction = DirectionEnum::TOP;
+    #[Column(type: 'smallint', length: 1, enumType: DirectionEnum::class, nullable: true)]
+    private ?DirectionEnum $from_direction = null;
 
-    #[Column(type: 'smallint', length: 1, enumType: DirectionEnum::class)]
-    private DirectionEnum $to_direction = DirectionEnum::TOP;
+    #[Column(type: 'smallint', length: 1, enumType: DirectionEnum::class, nullable: true)]
+    private ?DirectionEnum $to_direction = null;
 
     #[Column(type: 'string')]
     private string $ship_name;
@@ -154,7 +154,7 @@ class FlightSignature implements FlightSignatureInterface
     }
 
     #[Override]
-    public function getFromDirection(): DirectionEnum
+    public function getFromDirection(): ?DirectionEnum
     {
         return $this->from_direction;
     }
@@ -167,7 +167,7 @@ class FlightSignature implements FlightSignatureInterface
     }
 
     #[Override]
-    public function getToDirection(): DirectionEnum
+    public function getToDirection(): ?DirectionEnum
     {
         return $this->to_direction;
     }

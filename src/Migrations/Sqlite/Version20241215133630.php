@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20241214234201 extends AbstractMigration
+final class Version20241215133630 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -203,7 +203,7 @@ final class Version20241214234201 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_2042261BF61193E4 ON stu_fleets (defended_colony_id)');
         $this->addSql('CREATE INDEX IDX_2042261B9722AC5D ON stu_fleets (blocked_colony_id)');
         $this->addSql('CREATE INDEX fleet_user_idx ON stu_fleets (user_id)');
-        $this->addSql('CREATE TABLE stu_flight_sig (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, ship_id INTEGER NOT NULL, rump_id INTEGER NOT NULL, time INTEGER NOT NULL, location_id INTEGER NOT NULL, from_direction SMALLINT NOT NULL, to_direction SMALLINT NOT NULL, ship_name VARCHAR(255) NOT NULL, is_cloaked BOOLEAN NOT NULL, CONSTRAINT FK_C789CFE12EE98D4C FOREIGN KEY (rump_id) REFERENCES stu_rump (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_C789CFE164D218E FOREIGN KEY (location_id) REFERENCES stu_location (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE stu_flight_sig (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, ship_id INTEGER NOT NULL, rump_id INTEGER NOT NULL, time INTEGER NOT NULL, location_id INTEGER NOT NULL, from_direction SMALLINT DEFAULT NULL, to_direction SMALLINT DEFAULT NULL, ship_name VARCHAR(255) NOT NULL, is_cloaked BOOLEAN NOT NULL, CONSTRAINT FK_C789CFE12EE98D4C FOREIGN KEY (rump_id) REFERENCES stu_rump (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_C789CFE164D218E FOREIGN KEY (location_id) REFERENCES stu_location (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_C789CFE12EE98D4C ON stu_flight_sig (rump_id)');
         $this->addSql('CREATE INDEX IDX_C789CFE164D218E ON stu_flight_sig (location_id)');
         $this->addSql('CREATE INDEX flight_sig_user_idx ON stu_flight_sig (user_id)');
