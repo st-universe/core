@@ -23,7 +23,7 @@
   </tr>
   {% for ship in STATION_NBS %}
   <tr class="row">
-    {% include 'html/station/nbsListBody.twig' %}
+    {% include 'html/spacecraft/nbsListBody.twig' %}
   </tr>
   {% endfor %}
   {% endif %}
@@ -42,19 +42,30 @@
   </tr>
   {% for ship in data.getVisibleShips %}
   <tr class="row fleet{{ data.getId }}">
-    {% include 'html/station/nbsListBody.twig' %}
+    {% include 'html/spacecraft/nbsListBody.twig' %}
   </tr>
   {% endfor %}
   {% endfor %}
   {% endif %}
-  {% if SHIP_NBS %}
+  {% if SPACECRAFT_NBS %}
   <tr>
     <td colspan="2"></td>
     <td colspan="5">Einzelschiffe</td>
   </tr>
-  {% for ship in SHIP_NBS %}
+  {% for ship in SPACECRAFT_NBS %}
   <tr class="row">
-    {% include 'html/station/nbsListBody.twig' %}
+    {% include 'html/spacecraft/nbsListBody.twig' %}
+  </tr>
+  {% endfor %}
+  {% endif %}
+  {% if TRUMFIELD_NBS %}
+  <tr>
+    <td colspan="2"></td>
+    <td colspan="5">Trümmerfelder</td>
+  </tr>
+  {% for trumfield in TRUMFIELD_NBS %}
+  <tr class="row">
+    {% include 'html/spacecraft/nbsTrumfieldBody.twig' %}
   </tr>
   {% endfor %}
   {% endif %}

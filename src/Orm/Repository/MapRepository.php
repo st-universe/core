@@ -9,7 +9,7 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Override;
 use RuntimeException;
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
 use Stu\Module\PlayerSetting\Lib\UserSettingEnum;
 use Stu\Module\Starmap\Lib\ExploreableStarMap;
@@ -157,13 +157,15 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             'SELECT l.cx AS x, l.cy AS y,
                 (SELECT al.rgb_code FROM stu_alliances al
                     JOIN stu_user u ON al.id = u.allys_id
-                    JOIN stu_ships s ON u.id = s.user_id
+                    JOIN stu_spacecraft sc ON u.id = sc.user_id
+                    JOIN stu_station s ON sc.id = s.id
                     JOIN stu_map ma ON ma.influence_area_id = s.influence_area_id
                     WHERE ma.id = m.id AND ma.bordertype_id IS NULL AND ma.admin_region_id IS NULL)
                             AS allycolor,
                 (SELECT COALESCE(us.value, \'\') FROM stu_user u
                     LEFT JOIN stu_user_setting us ON u.id = us.user_id
-                    JOIN stu_ships s ON u.id = s.user_id
+                    JOIN stu_spacecraft sc ON u.id = sc.user_id
+                    JOIN stu_station s ON sc.id = s.id
                     JOIN stu_map mu ON mu.influence_area_id = s.influence_area_id
                     WHERE us.setting = :rgbCodeSetting
                     AND mu.id = m.id AND mu.bordertype_id IS NULL AND mu.admin_region_id IS NULL)
@@ -194,26 +196,26 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     {
         return $this->getEntityManager()->createNativeQuery(
             'SELECT l.cx as x, l.cy AS y,
-                (SELECT count(DISTINCT b.id) FROM stu_ships b
+                (SELECT count(DISTINCT b.id) FROM stu_spacecraft b
                     JOIN stu_location l2
                     ON b.location_id = l2.id
                     WHERE l2.layer_id = l.layer_id 
                     AND l2.cx = l.cx
                     AND l2.cy = l.cy
                     AND NOT EXISTS (SELECT ss.id
-                                        FROM stu_ship_system ss
-                                        WHERE b.id = ss.ship_id
+                                        FROM stu_spacecraft_system ss
+                                        WHERE b.id = ss.spacecraft_id
                                         AND ss.system_type = :cloakSystemId
                                         AND ss.mode > 1)) AS shipcount,
-                (SELECT count(DISTINCT c.id) FROM stu_ships c
+                (SELECT count(DISTINCT c.id) FROM stu_spacecraft c
                     JOIN stu_location l2
                     ON c.location_id = l2.id
                     WHERE l2.layer_id = l.layer_id 
                     AND l2.cx = l.cx
                     AND l2.cy = l.cy
                     AND EXISTS (SELECT ss2.id
-                                        FROM stu_ship_system ss2
-                                        WHERE c.id = ss2.ship_id
+                                        FROM stu_spacecraft_system ss2
+                                        WHERE c.id = ss2.spacecraft_id
                                         AND ss2.system_type = :cloakSystemId
                                         AND ss2.mode > 1)) AS cloakcount
             FROM stu_location l
@@ -227,7 +229,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             'yStart' => $boundaries->getMinY(),
             'yEnd' => $boundaries->getMaxY(),
             'layerId' => $boundaries->getParentId(),
-            'cloakSystemId' => ShipSystemTypeEnum::SYSTEM_CLOAK->value
+            'cloakSystemId' => SpacecraftSystemTypeEnum::SYSTEM_CLOAK->value
         ])->getResult();
     }
 
@@ -277,7 +279,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                 'SELECT m.id, l.cx, l.cy, l.field_id, m.systems_id, m.bordertype_id, um.user_id,
                     dbu.database_id as mapped, m.influence_area_id as influence_area_id, m.admin_region_id as region_id,
                     sys.name as system_name, l.layer_id,
-                    (SELECT tp.id FROM stu_ships s JOIN stu_trade_posts tp ON s.id = tp.ship_id WHERE s.location_id = m.id) as tradepost_id,
+                    (SELECT tp.id FROM stu_spacecraft s JOIN stu_trade_posts tp ON s.id = tp.station_id WHERE s.location_id = m.id) as tradepost_id,
                     (SELECT mr.description FROM stu_map_regions mr JOIN stu_database_user dbu on dbu.user_id = :userId and mr.database_id = dbu.database_id WHERE m.region_id = mr.id) as region_description
                 FROM stu_map m
                 JOIN stu_location l
@@ -341,7 +343,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                 JOIN stu_map_ftypes mf
                 ON l.field_id = mf.id
                 WHERE m.region_id = :regionId
-                AND mf.passable IS true
+                AND mf.passable = 1
                 AND m.id != :loc
                 ORDER BY RANDOM()',
                 $rsm
@@ -380,10 +382,10 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                     ON m.id = l.id
                     JOIN stu_map_ftypes mft
                     ON l.field_id = mft.id
-                    WHERE NOT EXISTS (SELECT s.id FROM stu_ships s WHERE s.location_id = m.id)
+                    WHERE NOT EXISTS (SELECT s.id FROM stu_ship s WHERE s.location_id = m.id)
                     AND l.layer_id = :layerId
                     AND mft.x_damage = 0
-                    AND mft.passable = true
+                    AND mft.passable = 1
                     %s
                     ORDER BY RANDOM()
                     LIMIT 1',

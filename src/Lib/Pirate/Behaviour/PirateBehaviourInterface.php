@@ -6,7 +6,7 @@ use Stu\Lib\Pirate\PirateBehaviourEnum;
 use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Lib\Pirate\PirateReactionMetadata;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 
 interface PirateBehaviourInterface
 {
@@ -15,6 +15,6 @@ interface PirateBehaviourInterface
         FleetWrapperInterface $fleet,
         PirateReactionInterface $pirateReaction,
         PirateReactionMetadata $reactionMetadata,
-        ?ShipInterface $triggerShip
+        ?SpacecraftInterface $triggerSpacecraft
     ): ?PirateBehaviourEnum;
 }

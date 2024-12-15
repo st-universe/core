@@ -6,8 +6,8 @@ namespace Stu\Module\Colony\View\ShowModuleScreenRetrofit;
 
 use Override;
 use request;
-use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
-use Stu\Component\Ship\ShipModuleTypeEnum;
+use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
+use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
@@ -15,7 +15,7 @@ use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShowModuleScreenRetrofit implements ViewControllerInterface
@@ -25,8 +25,8 @@ final class ShowModuleScreenRetrofit implements ViewControllerInterface
     public function __construct(
         private ColonyLoaderInterface $colonyLoader,
         private ColonyLibFactoryInterface $colonyLibFactory,
-        private ShipCrewCalculatorInterface $shipCrewCalculator,
-        private ShipBuildplanRepositoryInterface $shipBuildplanRepository,
+        private SpacecraftCrewCalculatorInterface $shipCrewCalculator,
+        private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository,
         private ShipRepositoryInterface $shipRepository
     ) {}
 
@@ -45,7 +45,7 @@ final class ShowModuleScreenRetrofit implements ViewControllerInterface
 
         $shipId = $game->getViewContext(ViewContextTypeEnum::BUILDPLAN) ?? request::indInt('shipid');
 
-        $plan = $this->shipBuildplanRepository->find($planId);
+        $plan = $this->spacecraftBuildplanRepository->find($planId);
         if ($plan === null || $plan->getUser() !== $user) {
             throw new SanityCheckException('This buildplan belongs to someone else', null, self::VIEW_IDENTIFIER);
         }
@@ -59,7 +59,7 @@ final class ShowModuleScreenRetrofit implements ViewControllerInterface
         $rump = $plan->getRump();
 
         $moduleSelectors = [];
-        foreach (ShipModuleTypeEnum::getModuleSelectorOrder() as $moduleType) {
+        foreach (SpacecraftModuleTypeEnum::getModuleSelectorOrder() as $moduleType) {
 
             $moduleSelectors[] = $this->colonyLibFactory->createModuleSelector(
                 $moduleType,

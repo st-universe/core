@@ -6,43 +6,43 @@ namespace Stu\Component\Colony;
 
 use Override;
 use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\FleetInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 /**
- * Retrieve all ships within the orbit of a colony
+ * Retrieve all spacecrafts within the orbit of a colony
  */
 final class OrbitShipListRetriever implements OrbitShipListRetrieverInterface
 {
-    public function __construct(private ShipRepositoryInterface $shipRepository)
-    {
-    }
+    public function __construct(private SpacecraftRepositoryInterface $spacecraftRepository) {}
 
     #[Override]
     public function retrieve(ColonyInterface $colony): array
     {
         $result = [];
 
-        $shipList = $this->shipRepository->getByLocation($colony->getStarsystemMap());
+        $spacecraftList = $this->spacecraftRepository->getByLocation($colony->getStarsystemMap());
 
-        foreach ($shipList as $ship) {
-            $fleetId = (int) $ship->getFleetId();
-
-            if (!array_key_exists($fleetId, $result)) {
-                if ($fleetId === 0) {
-                    $name = 'Einzelschiffe';
-                } else {
-                    /** @var FleetInterface $fleet */
-                    $fleet = $ship->getFleet();
-                    $name = $fleet->getName();
-                }
-
-                $result[$fleetId] = ['ships' => [], 'name' => $name];
-            }
-
-            $result[$fleetId]['ships'][$ship->getId()] = $ship;
+        foreach ($spacecraftList as $spacecraft) {
+            $this->addShip($spacecraft, $result);
         }
 
         return $result;
+    }
+
+    /** @param array<int, array{ships: array<int, SpacecraftInterface>, name: string}> $fleetArray */
+    private function addShip(SpacecraftInterface $spacecraft, array &$fleetArray): void
+    {
+        $fleet = $spacecraft instanceof ShipInterface ? $spacecraft->getFleet() : null;
+        $fleetId = $fleet === null ? 0 : $fleet->getId();
+
+        if (!array_key_exists($fleetId, $fleetArray)) {
+            $name = $fleet === null ? 'Einzelschiffe' : $fleet->getName();
+
+            $fleetArray[$fleetId] = ['ships' => [], 'name' => $name];
+        }
+
+        $fleetArray[$fleetId]['ships'][$spacecraft->getId()] = $spacecraft;
     }
 }

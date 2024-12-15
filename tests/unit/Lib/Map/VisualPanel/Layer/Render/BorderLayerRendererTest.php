@@ -7,7 +7,7 @@ namespace Stu\Lib\Map\VisualPanel\Layer\Render;
 use Mockery\MockInterface;
 use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Stu\Component\Ship\ShipLSSModeEnum;
+use Stu\Component\Spacecraft\SpacecraftLssModeEnum;
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
 use Stu\Lib\Map\VisualPanel\Layer\Data\BorderData;
 use Stu\Orm\Entity\ShipInterface;
@@ -15,7 +15,7 @@ use Stu\StuTestCase;
 
 class BorderLayerRendererTest extends StuTestCase
 {
-    /** @var MockInterface|AbstractVisualPanel */
+    /** @var MockInterface&AbstractVisualPanel */
     private MockInterface $panel;
 
     #[Override]
@@ -55,9 +55,9 @@ class BorderLayerRendererTest extends StuTestCase
         $borderData = $this->mock(BorderData::class);
         $ship = $this->mock(ShipInterface::class);
 
-        $ship->shouldReceive('getLSSmode')
+        $ship->shouldReceive('getLssMode')
             ->withNoArgs()
-            ->andReturn(42);
+            ->andReturn(SpacecraftLssModeEnum::LSS_NORMAL);
 
         if ($shipX !== null) {
             $ship->shouldReceive('getPosX')
@@ -113,9 +113,9 @@ class BorderLayerRendererTest extends StuTestCase
             ->withNoArgs()
             ->andReturn($userColor);
 
-        $ship->shouldReceive('getLSSmode')
+        $ship->shouldReceive('getLssMode')
             ->withNoArgs()
-            ->andReturn(ShipLSSModeEnum::LSS_BORDER);
+            ->andReturn(SpacecraftLssModeEnum::LSS_BORDER);
 
         $subject = new BorderLayerRenderer($ship, null);
         $result = $subject->render($borderData, $this->panel);

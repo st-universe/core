@@ -12,35 +12,33 @@ use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Lib\Pirate\PirateReactionMetadata;
 use Stu\Lib\Pirate\PirateReactionTriggerEnum;
 use Stu\Module\Prestige\Lib\PrestigeCalculationInterface;
-use Stu\Module\Ship\Lib\Battle\FightLibInterface;
+use Stu\Module\Spacecraft\Lib\Battle\FightLibInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
-use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\FleetInterface;
+use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\StuTestCase;
 
 class RageBehaviourTest extends StuTestCase
 {
-    /** @var MockInterface|ShipRepositoryInterface */
+    /** @var MockInterface&ShipRepositoryInterface */
     private $shipRepository;
-    /** @var MockInterface|InteractionCheckerInterface */
-    private $interactionChecker;
-    /** @var MockInterface|FightLibInterface */
+    /** @var MockInterface&FightLibInterface */
     private $fightLib;
-    /** @var MockInterface|PrestigeCalculationInterface */
+    /** @var MockInterface&PrestigeCalculationInterface */
     private $prestigeCalculation;
-    /** @var MockInterface|PirateAttackInterface */
+    /** @var MockInterface&PirateAttackInterface */
     private $pirateAttack;
 
-    /** @var MockInterface|FleetWrapperInterface */
+    /** @var MockInterface&FleetWrapperInterface */
     private $fleetWrapper;
 
-    /** @var MockInterface|FleetWrapperInterface */
+    /** @var MockInterface&FleetWrapperInterface */
     private $fleet;
 
-    /** @var MockInterface|PirateReactionInterface */
+    /** @var MockInterface&PirateReactionInterface */
     private $pirateReaction;
 
     private PirateBehaviourInterface $subject;
@@ -49,7 +47,6 @@ class RageBehaviourTest extends StuTestCase
     protected function setUp(): void
     {
         $this->shipRepository = $this->mock(ShipRepositoryInterface::class);
-        $this->interactionChecker = $this->mock(InteractionCheckerInterface::class);
         $this->fightLib = $this->mock(FightLibInterface::class);
         $this->prestigeCalculation = $this->mock(PrestigeCalculationInterface::class);
         $this->pirateAttack = $this->mock(PirateAttackInterface::class);
@@ -64,7 +61,6 @@ class RageBehaviourTest extends StuTestCase
 
         $this->subject = new RageBehaviour(
             $this->shipRepository,
-            $this->interactionChecker,
             $this->fightLib,
             $this->prestigeCalculation,
             $this->pirateAttack,
@@ -99,6 +95,7 @@ class RageBehaviourTest extends StuTestCase
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $ship = $this->mock(ShipInterface::class);
         $target = $this->mock(ShipInterface::class);
+        $location = $this->mock(MapInterface::class);
 
         $this->fleetWrapper->shouldReceive('getLeadWrapper')
             ->once()
@@ -112,10 +109,12 @@ class RageBehaviourTest extends StuTestCase
             ->once()
             ->andReturn([$target]);
 
-        $this->interactionChecker->shouldReceive('checkPosition')
-            ->with($ship, $target)
-            ->once()
-            ->andReturn(false);
+        $ship->shouldReceive('getLocation')
+            ->withNoArgs()
+            ->andReturn($location);
+        $target->shouldReceive('getLocation')
+            ->withNoArgs()
+            ->andReturn($this->mock(MapInterface::class));
 
         $this->subject->action($this->fleetWrapper, $this->pirateReaction, $reactionMetadata, null);
     }
@@ -126,6 +125,7 @@ class RageBehaviourTest extends StuTestCase
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $ship = $this->mock(ShipInterface::class);
         $target = $this->mock(ShipInterface::class);
+        $location = $this->mock(MapInterface::class);
 
         $this->fleetWrapper->shouldReceive('getLeadWrapper')
             ->once()
@@ -139,10 +139,12 @@ class RageBehaviourTest extends StuTestCase
             ->once()
             ->andReturn([$target]);
 
-        $this->interactionChecker->shouldReceive('checkPosition')
-            ->with($ship, $target)
-            ->once()
-            ->andReturn(true);
+        $ship->shouldReceive('getLocation')
+            ->withNoArgs()
+            ->andReturn($location);
+        $target->shouldReceive('getLocation')
+            ->withNoArgs()
+            ->andReturn($location);
 
         $this->fightLib->shouldReceive('canAttackTarget')
             ->with($ship, $target, true, false, false)
@@ -158,6 +160,7 @@ class RageBehaviourTest extends StuTestCase
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $ship = $this->mock(ShipInterface::class);
         $target = $this->mock(ShipInterface::class);
+        $location = $this->mock(MapInterface::class);
 
         $target->shouldReceive('getUser->isProtectedAgainstPirates')
             ->withNoArgs()
@@ -175,10 +178,12 @@ class RageBehaviourTest extends StuTestCase
             ->once()
             ->andReturn([$target]);
 
-        $this->interactionChecker->shouldReceive('checkPosition')
-            ->with($ship, $target)
-            ->once()
-            ->andReturn(true);
+        $ship->shouldReceive('getLocation')
+            ->withNoArgs()
+            ->andReturn($location);
+        $target->shouldReceive('getLocation')
+            ->withNoArgs()
+            ->andReturn($location);
 
         $this->fightLib->shouldReceive('canAttackTarget')
             ->with($ship, $target, true, false, false)
@@ -194,6 +199,7 @@ class RageBehaviourTest extends StuTestCase
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $ship = $this->mock(ShipInterface::class);
         $target = $this->mock(ShipInterface::class);
+        $location = $this->mock(MapInterface::class);
 
         $target->shouldReceive('getUser->isProtectedAgainstPirates')
             ->withNoArgs()
@@ -217,10 +223,12 @@ class RageBehaviourTest extends StuTestCase
             ->once()
             ->andReturn([$target]);
 
-        $this->interactionChecker->shouldReceive('checkPosition')
-            ->with($ship, $target)
-            ->once()
-            ->andReturn(true);
+        $ship->shouldReceive('getLocation')
+            ->withNoArgs()
+            ->andReturn($location);
+        $target->shouldReceive('getLocation')
+            ->withNoArgs()
+            ->andReturn($location);
 
         $this->fightLib->shouldReceive('canAttackTarget')
             ->with($ship, $target, true, false, false)
@@ -236,6 +244,7 @@ class RageBehaviourTest extends StuTestCase
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $ship = $this->mock(ShipInterface::class);
         $target = $this->mock(ShipInterface::class);
+        $location = $this->mock(MapInterface::class);
 
         $target->shouldReceive('getId')
             ->withNoArgs()
@@ -265,10 +274,12 @@ class RageBehaviourTest extends StuTestCase
             ->once()
             ->andReturn([$target]);
 
-        $this->interactionChecker->shouldReceive('checkPosition')
-            ->with($ship, $target)
-            ->once()
-            ->andReturn(true);
+        $ship->shouldReceive('getLocation')
+            ->withNoArgs()
+            ->andReturn($location);
+        $target->shouldReceive('getLocation')
+            ->withNoArgs()
+            ->andReturn($location);
 
         $this->fightLib->shouldReceive('canAttackTarget')
             ->with($ship, $target, true, false, false)
@@ -297,6 +308,7 @@ class RageBehaviourTest extends StuTestCase
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $ship = $this->mock(ShipInterface::class);
         $target = $this->mock(ShipInterface::class);
+        $location = $this->mock(MapInterface::class);
 
         $target->shouldReceive('getId')
             ->withNoArgs()
@@ -326,10 +338,12 @@ class RageBehaviourTest extends StuTestCase
             ->once()
             ->andReturn([$target]);
 
-        $this->interactionChecker->shouldReceive('checkPosition')
-            ->with($ship, $target)
-            ->once()
-            ->andReturn(true);
+        $ship->shouldReceive('getLocation')
+            ->withNoArgs()
+            ->andReturn($location);
+        $target->shouldReceive('getLocation')
+            ->withNoArgs()
+            ->andReturn($location);
 
         $this->fightLib->shouldReceive('canAttackTarget')
             ->with($ship, $target, true, false, false)
@@ -420,22 +434,22 @@ class RageBehaviourTest extends StuTestCase
             ->once()
             ->andReturn([$target, $target2, $target3_1, $target4]);
 
-        $this->interactionChecker->shouldReceive('checkPosition')
-            ->with($ship, $target)
-            ->once()
-            ->andReturn(true);
-        $this->interactionChecker->shouldReceive('checkPosition')
-            ->with($ship, $target2)
-            ->once()
-            ->andReturn(true);
-        $this->interactionChecker->shouldReceive('checkPosition')
-            ->with($ship, $target3_1)
-            ->once()
-            ->andReturn(true);
-        $this->interactionChecker->shouldReceive('checkPosition')
-            ->with($ship, $target4)
-            ->once()
-            ->andReturn(true);
+        $location = $this->mock(MapInterface::class);
+        $ship->shouldReceive('getLocation')
+            ->withNoArgs()
+            ->andReturn($location);
+        $target->shouldReceive('getLocation')
+            ->withNoArgs()
+            ->andReturn($location);
+        $target2->shouldReceive('getLocation')
+            ->withNoArgs()
+            ->andReturn($location);
+        $target3_1->shouldReceive('getLocation')
+            ->withNoArgs()
+            ->andReturn($location);
+        $target4->shouldReceive('getLocation')
+            ->withNoArgs()
+            ->andReturn($location);
 
         $this->fightLib->shouldReceive('canAttackTarget')
             ->with($ship, $target, true, false, false)

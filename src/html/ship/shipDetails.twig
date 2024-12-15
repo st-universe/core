@@ -93,7 +93,7 @@
                 <td>
                     <img
                         src="assets/crew/{{ crew.getRace.getGfxPath }}/{{ crew.getGenderShort }}/1_{{ crew.getType }}.png" />
-                    {% if data.isForeigner %}
+                    {% if data.getCrew.getUser != SHIP.getUser %}
                     <span style="vertical-align: top; color:red; cursor: default;"
                         title="von {{ data.getCrew.getUser.getName|bbcode2txt }}">*</span>
                     <a href="?B_DUMP_CREWMAN=1&id={{ SHIP.getId }}&scid={{ crewId }}&sstr={{ SESSIONSTRING }}"
@@ -149,7 +149,7 @@
             <span>Torpedobasisschaden: {{ SHIP.getTorpedo.getBaseDamage }}</span><br />
             {% endif %}
             <span>Torpedokapazität: {{ SHIP.getMaxTorpedos }}</span><br />
-            {% if SHIP.isBase %}
+            {% if SHIP.isStation %}
             <span>Dockplätze: {{ SHIP.getRump.getDockingSlots }}</span><br />
             {% endif %}
         </div>

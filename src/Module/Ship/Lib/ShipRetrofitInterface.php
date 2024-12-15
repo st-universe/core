@@ -6,9 +6,9 @@ namespace Stu\Module\Ship\Lib;
 
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\ShipBuildplanInterface;
+use Stu\Orm\Entity\SpacecraftBuildplanInterface;
 
 interface ShipRetrofitInterface
 {
-    public function updateBy(ShipInterface $ship, ShipBuildplanInterface $newBuildplan, ColonyInterface $colony): void;
+    public function updateBy(ShipInterface $ship, SpacecraftBuildplanInterface $newBuildplan, ColonyInterface $colony): void;
 }

@@ -6,7 +6,7 @@ namespace Stu\Module\NPC\Action;
 
 use Override;
 use request;
-use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Exception\ShipDoesNotExistException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -20,7 +20,7 @@ final class CommodityCheat implements ActionControllerInterface
     public const string ACTION_IDENTIFIER = 'B_COMMODITY_CHEAT';
 
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private ShipStorageManagerInterface $shipStorageManager, private CommodityRepositoryInterface $commodityRepository, private NPCLogRepositoryInterface $npcLogRepository) {}
+    public function __construct(private ShipLoaderInterface $shipLoader, private StorageManagerInterface $storageManager, private CommodityRepositoryInterface $commodityRepository, private NPCLogRepositoryInterface $npcLogRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -69,7 +69,7 @@ final class CommodityCheat implements ActionControllerInterface
                 return;
             }
 
-            $this->shipStorageManager->upperStorage(
+            $this->storageManager->upperStorage(
                 $ship,
                 $commodity,
                 $amount

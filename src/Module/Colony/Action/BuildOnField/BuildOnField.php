@@ -7,7 +7,7 @@ namespace Stu\Module\Colony\Action\BuildOnField;
 use Override;
 use request;
 use Stu\Component\Building\BuildingManagerInterface;
-use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Module\Colony\Lib\BuildingActionInterface;
 use Stu\Module\Colony\Lib\PlanetFieldTypeRetrieverInterface;
@@ -30,7 +30,7 @@ final class BuildOnField implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_BUILD';
 
-    public function __construct(private PlanetFieldHostProviderInterface $planetFieldHostProvider, private BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository, private ResearchedRepositoryInterface $researchedRepository, private BuildingRepositoryInterface $buildingRepository, private PlanetFieldRepositoryInterface $planetFieldRepository, private ColonyStorageManagerInterface $colonyStorageManager, private ColonyRepositoryInterface $colonyRepository, private BuildingActionInterface $buildingAction, private PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever, private BuildingManagerInterface $buildingManager) {}
+    public function __construct(private PlanetFieldHostProviderInterface $planetFieldHostProvider, private BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository, private ResearchedRepositoryInterface $researchedRepository, private BuildingRepositoryInterface $buildingRepository, private PlanetFieldRepositoryInterface $planetFieldRepository, private StorageManagerInterface $storageManager, private ColonyRepositoryInterface $colonyRepository, private BuildingActionInterface $buildingAction, private PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever, private BuildingManagerInterface $buildingManager) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -174,7 +174,7 @@ final class BuildOnField implements ActionControllerInterface
         }
 
         foreach ($building->getCosts() as $cost) {
-            $this->colonyStorageManager->lowerStorage($colony, $cost->getCommodity(), $cost->getAmount());
+            $this->storageManager->lowerStorage($colony, $cost->getCommodity(), $cost->getAmount());
         }
 
         $colony->lowerEps($building->getEpsCost());

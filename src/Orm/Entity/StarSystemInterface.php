@@ -43,7 +43,7 @@ interface StarSystemInterface extends EntityWithAstroEntryInterface
 
     public function getMap(): ?MapInterface;
 
-    public function getBase(): ?ShipInterface;
+    public function getStation(): ?StationInterface;
 
     /**
      * @return Collection<int, StarSystemMapInterface>

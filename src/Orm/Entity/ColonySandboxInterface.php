@@ -10,8 +10,6 @@ interface ColonySandboxInterface extends PlanetFieldHostInterface
 
     public function setColony(ColonyInterface $colony): ColonySandboxInterface;
 
-    public function getName(): string;
-
     public function setName(string $name): ColonySandboxInterface;
 
     public function setWorkers(int $bev_work): ColonySandboxInterface;

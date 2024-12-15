@@ -16,9 +16,7 @@ final class DeleteFleet implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_DELETE_FLEET';
 
-    public function __construct(private DeleteFleetRequestInterface $deleteFleetRequest, private FleetRepositoryInterface $fleetRepository, private ShipLoaderInterface $shipLoader, private CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend)
-    {
-    }
+    public function __construct(private DeleteFleetRequestInterface $deleteFleetRequest, private FleetRepositoryInterface $fleetRepository, private ShipLoaderInterface $shipLoader, private CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void

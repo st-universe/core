@@ -6,8 +6,8 @@ use Override;
 use Doctrine\Common\Collections\Collection;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Prestige\Lib\PrestigeCalculationInterface;
-use Stu\Module\Ship\Lib\Battle\AlertDetection\AlertedShipsDetectionInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertedShipsDetectionInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\LocationInterface;
 use Stu\Orm\Entity\ShipInterface;
 
@@ -40,11 +40,11 @@ class TrapDetection implements TrapDetectionInterface
         return $this->stuRandom->rand(0, $alertedPrestige) > $piratePrestige;
     }
 
-    /** @param Collection<int, ShipWrapperInterface> $alertedWrappers */
+    /** @param Collection<int, SpacecraftWrapperInterface> $alertedWrappers */
     private function getPrestigeOfAlertedSpacecrafts(Collection $alertedWrappers): int
     {
         return $alertedWrappers
-            ->map(fn(ShipWrapperInterface $wrapper): int => $this->prestigeCalculation->getPrestigeOfSpacecraftOrFleet($wrapper))
+            ->map(fn(SpacecraftWrapperInterface $wrapper): int => $this->prestigeCalculation->getPrestigeOfSpacecraftOrFleet($wrapper))
             ->reduce(
                 fn(int $sum, int $prestige): int => $sum + $prestige,
                 0

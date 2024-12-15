@@ -9,14 +9,14 @@ use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRumpBuildingFunctionRepositoryInterface;
 
 final class ShipRetrofitProvider implements GuiComponentProviderInterface
 {
-    public function __construct(private ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository, private PlanetFieldHostProviderInterface $planetFieldHostProvider, private ColonyLibFactoryInterface $colonyLibFactory, private OrbitShipListRetrieverInterface $orbitShipListRetriever, private ShipWrapperFactoryInterface $shipWrapperFactory) {}
+    public function __construct(private ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository, private PlanetFieldHostProviderInterface $planetFieldHostProvider, private ColonyLibFactoryInterface $colonyLibFactory, private OrbitShipListRetrieverInterface $orbitShipListRetriever, private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory) {}
 
     /** @param ColonyInterface $host */
     #[Override]
@@ -39,7 +39,7 @@ final class ShipRetrofitProvider implements GuiComponentProviderInterface
             foreach ($this->orbitShipListRetriever->retrieve($host) as $fleet) {
                 /** @var ShipInterface $ship */
                 foreach ($fleet['ships'] as $ship) {
-                    $wrapper = $this->shipWrapperFactory->wrapShip($ship);
+                    $wrapper = $this->spacecraftWrapperFactory->wrapShip($ship);
 
                     if (
                         !$wrapper->canBeRetrofitted() || $ship->isUnderRetrofit()

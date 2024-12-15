@@ -10,7 +10,7 @@ use Stu\Exception\AccessViolation;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
+use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
@@ -52,7 +52,7 @@ abstract class AbstractJoinFleet
             return;
         }
 
-        if ($ship->isBase()) {
+        if ($ship->isStation()) {
             return;
         }
 

@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
-use Stu\Component\Ship\Buildplan\BuildplanSignatureCreationInterface;
-use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
-use Stu\Component\Ship\ShipModuleTypeEnum;
-use Stu\Component\Ship\ShipRumpEnum;
+use Stu\Component\Spacecraft\Buildplan\BuildplanSignatureCreationInterface;
+use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
+use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
+use Stu\Component\Spacecraft\SpacecraftRumpEnum;
 use Stu\Config\Init;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
+use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
-use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
-use Stu\Orm\Repository\ShipRumpRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 @session_start();
@@ -30,13 +30,13 @@ Init::run(function (ContainerInterface $dic): void {
 
     $dic->get(GameControllerInterface::class)->sessionAndAdminCheck();
 
-    $shipRumpRepo = $dic->get(ShipRumpRepositoryInterface::class);
+    $shipRumpRepo = $dic->get(SpacecraftRumpRepositoryInterface::class);
     $shipRumpModuleLevelRepo = $dic->get(ShipRumpModuleLevelRepositoryInterface::class);
     $moduleRepo = $dic->get(ModuleRepositoryInterface::class);
-    $buildplanRepo = $dic->get(ShipBuildplanRepositoryInterface::class);
+    $buildplanRepo = $dic->get(SpacecraftBuildplanRepositoryInterface::class);
     $buildplanModuleRepo = $dic->get(BuildplanModuleRepositoryInterface::class);
     $userRepo = $dic->get(UserRepositoryInterface::class);
-    $shipCrewCalculator = $dic->get(ShipCrewCalculatorInterface::class);
+    $shipCrewCalculator = $dic->get(SpacecraftCrewCalculatorInterface::class);
     $buildplanSignatureCreation = $dic->get(BuildplanSignatureCreationInterface::class);
 
     $userId = request::indInt('userId');
@@ -51,36 +51,20 @@ Init::run(function (ContainerInterface $dic): void {
         $mod_level = $shipRumpModuleLevelRepo->getByShipRump(
             $rump->getId()
         );
-        $specialModuleTypes = [
-            ModuleSpecialAbilityEnum::MODULE_SPECIAL_CLOAK,
-            ModuleSpecialAbilityEnum::MODULE_SPECIAL_RPG,
-            ModuleSpecialAbilityEnum::MODULE_SPECIAL_TACHYON_SCANNER,
-            ModuleSpecialAbilityEnum::MODULE_SPECIAL_TROOP_QUARTERS,
-            ModuleSpecialAbilityEnum::MODULE_SPECIAL_SUBSPACE_FIELD_SENSOR,
-            ModuleSpecialAbilityEnum::MODULE_SPECIAL_MATRIX_SENSOR,
-            ModuleSpecialAbilityEnum::MODULE_SPECIAL_ASTRO_LABORATORY,
-            ModuleSpecialAbilityEnum::MODULE_SPECIAL_TORPEDO_STORAGE,
-            ModuleSpecialAbilityEnum::MODULE_SPECIAL_SHUTTLE_RAMP,
-            ModuleSpecialAbilityEnum::MODULE_SPECIAL_TRANSWARP_COIL,
-            ModuleSpecialAbilityEnum::MODULE_SPECIAL_HIROGEN_TRACKER,
-            ModuleSpecialAbilityEnum::MODULE_SPECIAL_THOLIAN_WEB,
-            ModuleSpecialAbilityEnum::MODULE_SPECIAL_BUSSARD_COLLECTOR,
-            ModuleSpecialAbilityEnum::MODULE_SPECIAL_AGGREGATION_SYSTEM
-        ];
         $moduleTypes = [
-            ShipModuleTypeEnum::HULL,
-            ShipModuleTypeEnum::SHIELDS,
-            ShipModuleTypeEnum::EPS,
-            ShipModuleTypeEnum::IMPULSEDRIVE,
-            ShipModuleTypeEnum::REACTOR,
-            ShipModuleTypeEnum::COMPUTER,
-            ShipModuleTypeEnum::PHASER,
-            ShipModuleTypeEnum::TORPEDO,
-            ShipModuleTypeEnum::SENSOR
+            SpacecraftModuleTypeEnum::HULL,
+            SpacecraftModuleTypeEnum::SHIELDS,
+            SpacecraftModuleTypeEnum::EPS,
+            SpacecraftModuleTypeEnum::IMPULSEDRIVE,
+            SpacecraftModuleTypeEnum::REACTOR,
+            SpacecraftModuleTypeEnum::COMPUTER,
+            SpacecraftModuleTypeEnum::PHASER,
+            SpacecraftModuleTypeEnum::TORPEDO,
+            SpacecraftModuleTypeEnum::SENSOR
         ];
 
-        if ($rump->getCategoryId() !== ShipRumpEnum::SHIP_CATEGORY_STATION) {
-            $moduleTypes[] = ShipModuleTypeEnum::WARPDRIVE;
+        if ($rump->getCategoryId() !== SpacecraftRumpEnum::SHIP_CATEGORY_STATION) {
+            $moduleTypes[] = SpacecraftModuleTypeEnum::WARPDRIVE;
         }
 
         $moduleList = request::postArray('mod');
@@ -203,7 +187,7 @@ Init::run(function (ContainerInterface $dic): void {
                 echo '<br /><br />';
             }
 
-            $specialModules = $moduleRepo->getBySpecialTypeIds($specialModuleTypes);
+            $specialModules = $moduleRepo->getBySpecialTypeIds(ModuleSpecialAbilityEnum::getValueArray());
 
             foreach ($specialModules as $module) {
                 printf(

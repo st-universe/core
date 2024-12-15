@@ -5,41 +5,40 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib;
 
 use Override;
-use Stu\Component\Ship\ShipModuleTypeEnum;
-use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Component\Ship\System\ShipSystemModeEnum;
+use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\ShipBuildplanInterface;
+use Stu\Orm\Entity\SpacecraftBuildplanInterface;
 use Stu\Orm\Entity\ModuleInterface;
-use Stu\Orm\Repository\ShipSystemRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ModuleSpecialRepositoryInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Entity\BuildplanModuleInterface;
 
 
 final class ShipRetrofit implements ShipRetrofitInterface
 {
     public function __construct(
-        private ShipSystemRepositoryInterface $shipSystemRepository,
+        private SpacecraftSystemRepositoryInterface $shipSystemRepository,
         private BuildplanModuleRepositoryInterface $buildplanModuleRepository,
         private ModuleSpecialRepositoryInterface $moduleSpecialRepository,
-        private ShipWrapperFactoryInterface $shipWrapperFactory,
-        private ColonyStorageManagerInterface $colonyStorageManager,
+        private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
+        private StorageManagerInterface $storageManager,
         private PrivateMessageSenderInterface $privateMessageSender
     ) {}
 
     #[Override]
-    public function updateBy(ShipInterface $ship, ShipBuildplanInterface $newBuildplan, ColonyInterface $colony): void
+    public function updateBy(ShipInterface $ship, SpacecraftBuildplanInterface $newBuildplan, ColonyInterface $colony): void
     {
         $oldBuildplan = $ship->getBuildplan();
-        $wrapper = $this->shipWrapperFactory->wrapShip($ship);
+        $wrapper = $this->spacecraftWrapperFactory->wrapShip($ship);
         $returnedmodules = [];
 
         if ($oldBuildplan === null) {
@@ -47,7 +46,7 @@ final class ShipRetrofit implements ShipRetrofitInterface
         }
 
 
-        foreach (ShipModuleTypeEnum::getModuleSelectorOrder() as $moduleType) {
+        foreach (SpacecraftModuleTypeEnum::getModuleSelectorOrder() as $moduleType) {
             $oldModules = $this->buildplanModuleRepository->getByBuildplanAndModuleType($oldBuildplan->getId(), $moduleType->value);
             $newModules = $this->buildplanModuleRepository->getByBuildplanAndModuleType($newBuildplan->getId(), $moduleType->value);
 
@@ -85,7 +84,7 @@ final class ShipRetrofit implements ShipRetrofitInterface
             Die folgenden Module wurden durch den Umbau zurückgewonnen: ";
             foreach ($returnedmodules as $module) {
                 if ($module != null) {
-                    $this->colonyStorageManager->upperStorage($colony, $module->getCommodity(), 1);
+                    $this->storageManager->upperStorage($colony, $module->getCommodity(), 1);
                     $msg .= $module->getName() . ", ";
                 }
             }
@@ -131,7 +130,7 @@ final class ShipRetrofit implements ShipRetrofitInterface
                 $systems[$systemType->value] = $module;
             }
 
-            if ($module->getType() === ShipModuleTypeEnum::SPECIAL) {
+            if ($module->getType() === SpacecraftModuleTypeEnum::SPECIAL) {
                 $this->addSpecialSystems($module, $systems);
             }
         }
@@ -145,50 +144,8 @@ final class ShipRetrofit implements ShipRetrofitInterface
         $moduleSpecials = $this->moduleSpecialRepository->getByModule($module->getId());
 
         foreach ($moduleSpecials as $special) {
-            switch ($special->getSpecialId()) {
-                case ModuleSpecialAbilityEnum::MODULE_SPECIAL_CLOAK:
-                    $systems[ShipSystemTypeEnum::SYSTEM_CLOAK->value] = $module;
-                    break;
-                case ModuleSpecialAbilityEnum::MODULE_SPECIAL_TACHYON_SCANNER:
-                    $systems[ShipSystemTypeEnum::SYSTEM_TACHYON_SCANNER->value] = $module;
-                    break;
-                case ModuleSpecialAbilityEnum::MODULE_SPECIAL_TROOP_QUARTERS:
-                    $systems[ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS->value] = $module;
-                    break;
-                case ModuleSpecialAbilityEnum::MODULE_SPECIAL_ASTRO_LABORATORY:
-                    $systems[ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY->value] = $module;
-                    break;
-                case ModuleSpecialAbilityEnum::MODULE_SPECIAL_SUBSPACE_FIELD_SENSOR:
-                    $systems[ShipSystemTypeEnum::SYSTEM_SUBSPACE_SCANNER->value] = $module;
-                    break;
-                case ModuleSpecialAbilityEnum::MODULE_SPECIAL_MATRIX_SENSOR:
-                    $systems[ShipSystemTypeEnum::SYSTEM_MATRIX_SCANNER->value] = $module;
-                    break;
-                case ModuleSpecialAbilityEnum::MODULE_SPECIAL_TORPEDO_STORAGE:
-                    $systems[ShipSystemTypeEnum::SYSTEM_TORPEDO_STORAGE->value] = $module;
-                    break;
-                case ModuleSpecialAbilityEnum::MODULE_SPECIAL_SHUTTLE_RAMP:
-                    $systems[ShipSystemTypeEnum::SYSTEM_SHUTTLE_RAMP->value] = $module;
-                    break;
-                case ModuleSpecialAbilityEnum::MODULE_SPECIAL_TRANSWARP_COIL:
-                    $systems[ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL->value] = $module;
-                    break;
-                case ModuleSpecialAbilityEnum::MODULE_SPECIAL_HIROGEN_TRACKER:
-                    $systems[ShipSystemTypeEnum::SYSTEM_TRACKER->value] = $module;
-                    break;
-                case ModuleSpecialAbilityEnum::MODULE_SPECIAL_THOLIAN_WEB:
-                    $systems[ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB->value] = $module;
-                    break;
-                case ModuleSpecialAbilityEnum::MODULE_SPECIAL_BUSSARD_COLLECTOR:
-                    $systems[ShipSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR->value] = $module;
-                    break;
-                case ModuleSpecialAbilityEnum::MODULE_SPECIAL_RPG:
-                    $systems[ShipSystemTypeEnum::SYSTEM_RPG_MODULE->value] = null;
-                    break;
-                case ModuleSpecialAbilityEnum::MODULE_SPECIAL_AGGREGATION_SYSTEM:
-                    $systems[ShipSystemTypeEnum::SYSTEM_AGGREGATION_SYSTEM->value] = $module;
-                    break;
-            }
+            $moduleSpecial = $special->getSpecialId();
+            $systems[$moduleSpecial->getSystemType()->value] = $moduleSpecial->hasCorrespondingModule() ? $module : null;
         }
     }
 
@@ -196,14 +153,14 @@ final class ShipRetrofit implements ShipRetrofitInterface
     private function createShipSystem(int $systemType, ShipInterface $ship, ?ModuleInterface $module): void
     {
         $shipSystem = $this->shipSystemRepository->prototype();
-        $shipSystem->setShip($ship);
+        $shipSystem->setSpacecraft($ship);
         $ship->getSystems()->set($systemType, $shipSystem);
-        $shipSystem->setSystemType(ShipSystemTypeEnum::from($systemType));
+        $shipSystem->setSystemType(SpacecraftSystemTypeEnum::from($systemType));
         if ($module !== null) {
             $shipSystem->setModule($module);
         }
         $shipSystem->setStatus(100);
-        $shipSystem->setMode(ShipSystemModeEnum::MODE_OFF);
+        $shipSystem->setMode(SpacecraftSystemModeEnum::MODE_OFF);
 
         $this->shipSystemRepository->save($shipSystem);
     }

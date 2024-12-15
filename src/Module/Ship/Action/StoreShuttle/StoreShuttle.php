@@ -7,18 +7,19 @@ namespace Stu\Module\Ship\Action\StoreShuttle;
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use request;
-use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\Ship\Lib\Crew\TroopTransferUtilityInterface;
-use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
+use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
+use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\Lib\ShipRemoverInterface;
-use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Module\Spacecraft\Lib\SpacecraftRemoverInterface;
+use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 
 final class StoreShuttle implements ActionControllerInterface
 {
@@ -28,10 +29,10 @@ final class StoreShuttle implements ActionControllerInterface
 
     public function __construct(
         private ShipLoaderInterface $shipLoader,
-        private ShipStorageManagerInterface $shipStorageManager,
+        private StorageManagerInterface $storageManager,
         private EntityManagerInterface $entityManager,
         private TroopTransferUtilityInterface $troopTransferUtility,
-        private ShipRemoverInterface $shipRemover,
+        private SpacecraftRemoverInterface $spacecraftRemover,
         private InteractionCheckerInterface $interactionChecker,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
@@ -41,7 +42,7 @@ final class StoreShuttle implements ActionControllerInterface
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $game->setView(ShowShip::VIEW_IDENTIFIER);
+        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         $userId = $game->getUser()->getId();
 
@@ -96,7 +97,7 @@ final class StoreShuttle implements ActionControllerInterface
         }
 
         // check if shuttle ramp is healthy
-        if (!$ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_SHUTTLE_RAMP)) {
+        if (!$ship->isSystemHealthy(SpacecraftSystemTypeEnum::SYSTEM_SHUTTLE_RAMP)) {
             $game->addInformation(_("Die Shuttle-Rampe ist zerstört"));
             return;
         }
@@ -114,7 +115,7 @@ final class StoreShuttle implements ActionControllerInterface
         }
 
         // send shuttle to target storage
-        $this->shipStorageManager->upperStorage(
+        $this->storageManager->upperStorage(
             $ship,
             $commodity,
             1
@@ -126,14 +127,14 @@ final class StoreShuttle implements ActionControllerInterface
         $game->addInformation("Shuttle erfolgreich eingesammelt");
     }
 
-    private function storeShuttle(ShipInterface $ship, ShipInterface $shuttle): void
+    private function storeShuttle(ShipInterface $ship, SpacecraftInterface $shuttle): void
     {
         foreach ($shuttle->getCrewAssignments() as $crewAssignment) {
             $this->troopTransferUtility->assignCrew($crewAssignment, $ship);
         }
         $this->entityManager->flush();
 
-        $this->shipRemover->remove($shuttle);
+        $this->spacecraftRemover->remove($shuttle);
 
         $this->shipLoader->save($ship);
     }

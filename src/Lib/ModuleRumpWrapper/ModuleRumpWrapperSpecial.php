@@ -3,7 +3,7 @@
 namespace Stu\Lib\ModuleRumpWrapper;
 
 use Override;
-use Stu\Component\Ship\ShipModuleTypeEnum;
+use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ModuleInterface;
 
@@ -22,9 +22,9 @@ final class ModuleRumpWrapperSpecial extends ModuleRumpWrapperBase implements Mo
     }
 
     #[Override]
-    public function getModuleType(): ShipModuleTypeEnum
+    public function getModuleType(): SpacecraftModuleTypeEnum
     {
-        return ShipModuleTypeEnum::SPECIAL;
+        return SpacecraftModuleTypeEnum::SPECIAL;
     }
 
     #[Override]

@@ -3,15 +3,15 @@
 namespace Stu\Lib\Pirate\Behaviour;
 
 use Override;
-use Stu\Component\Ship\System\ShipSystemManagerInterface;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Lib\Map\DistanceCalculationInterface;
 use Stu\Lib\Pirate\Component\PirateNavigationInterface;
 use Stu\Lib\Pirate\PirateBehaviourEnum;
 use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Lib\Pirate\PirateReactionMetadata;
-use Stu\Lib\Transfer\BeamUtilInterface;
+use Stu\Lib\Transfer\CommodityTransferInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\StuRandom;
@@ -21,7 +21,7 @@ use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 
@@ -34,8 +34,8 @@ class RubColonyBehaviour implements PirateBehaviourInterface
         private DistanceCalculationInterface $distanceCalculation,
         private PirateNavigationInterface $pirateNavigation,
         private ColonyLibFactoryInterface $colonyLibFactory,
-        private ShipSystemManagerInterface $shipSystemManager,
-        private BeamUtilInterface $beamUtil,
+        private SpacecraftSystemManagerInterface $spacecraftSystemManager,
+        private CommodityTransferInterface $commodityTransfer,
         private PrivateMessageSenderInterface $privateMessageSender,
         private StuRandom $stuRandom,
         LoggerUtilFactoryInterface $loggerUtilFactory
@@ -48,7 +48,7 @@ class RubColonyBehaviour implements PirateBehaviourInterface
         FleetWrapperInterface $fleet,
         PirateReactionInterface $pirateReaction,
         PirateReactionMetadata $reactionMetadata,
-        ?ShipInterface $triggerShip
+        ?SpacecraftInterface $triggerSpacecraft
     ): ?PirateBehaviourEnum {
 
         $leadWrapper = $fleet->getLeadWrapper();
@@ -60,8 +60,8 @@ class RubColonyBehaviour implements PirateBehaviourInterface
             return PirateBehaviourEnum::FLY;
         }
 
-        usort($targets, fn (ColonyInterface $a, ColonyInterface $b): int =>
-        $this->distanceCalculation->shipToColonyDistance($leadShip, $a) - $this->distanceCalculation->shipToColonyDistance($leadShip, $b));
+        usort($targets, fn(ColonyInterface $a, ColonyInterface $b): int =>
+        $this->distanceCalculation->spacecraftToColonyDistance($leadShip, $a) - $this->distanceCalculation->spacecraftToColonyDistance($leadShip, $b));
 
         $closestColony = current($targets);
 
@@ -88,7 +88,7 @@ class RubColonyBehaviour implements PirateBehaviourInterface
 
         $filteredColonyStorage = array_filter(
             $colony->getStorage()->toArray(),
-            fn (StorageInterface $storage): bool => $storage->getCommodity()->isBeamable($colony->getUser(), $pirateUser)
+            fn(StorageInterface $storage): bool => $storage->getCommodity()->isBeamable($colony->getUser(), $pirateUser)
         );
 
         $allInformations = new InformationWrapper();
@@ -100,14 +100,14 @@ class RubColonyBehaviour implements PirateBehaviourInterface
                 return;
             }
 
-            $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_SHIELDS, true);
+            $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_SHIELDS, true);
 
             $ship = $wrapper->get();
             $randomCommodityId = array_rand($filteredColonyStorage);
 
             $informations = new InformationWrapper();
 
-            $hasStolen = $this->beamUtil->transferCommodity(
+            $hasStolen = $this->commodityTransfer->transferCommodity(
                 $randomCommodityId,
                 $this->stuRandom->rand(1, $wrapper->get()->getMaxStorage()),
                 $wrapper,
@@ -123,7 +123,7 @@ class RubColonyBehaviour implements PirateBehaviourInterface
                     $colony->getName()
                 )], true);
 
-                $this->shipSystemManager->activate($wrapper, ShipSystemTypeEnum::SYSTEM_SHIELDS, true);
+                $this->spacecraftSystemManager->activate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_SHIELDS, true);
             }
 
             $allInformations->addInformationWrapper($informations);

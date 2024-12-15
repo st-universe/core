@@ -7,7 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\ShipRumpBuildingFunction;
-use Stu\Orm\Entity\ShipRumpInterface;
+use Stu\Orm\Entity\SpacecraftRumpInterface;
 
 /**
  * @extends EntityRepository<ShipRumpBuildingFunction>
@@ -15,7 +15,7 @@ use Stu\Orm\Entity\ShipRumpInterface;
 final class ShipRumpBuildingFunctionRepository extends EntityRepository implements ShipRumpBuildingFunctionRepositoryInterface
 {
     #[Override]
-    public function getByShipRump(ShipRumpInterface $shipRump): array
+    public function getByShipRump(SpacecraftRumpInterface $shipRump): array
     {
         return $this->findBy([
             'rump_id' => $shipRump

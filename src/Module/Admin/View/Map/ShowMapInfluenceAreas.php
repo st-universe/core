@@ -80,7 +80,7 @@ final class ShowMapInfluenceAreas implements ViewControllerInterface
             } elseif ($showAllyAreas) {
                 $influenceArea = $data->getInfluenceArea();
                 if ($influenceArea !== null) {
-                    $base = $influenceArea->getBase();
+                    $base = $influenceArea->getStation();
 
                     if ($base !== null) {
                         $ally = $base->getUser()->getAlliance();

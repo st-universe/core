@@ -5,16 +5,19 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Lib;
 
 use Override;
-use Stu\Orm\Entity\ShipRumpInterface;
+use Stu\Orm\Entity\SpacecraftRumpInterface;
 use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class BuildableRumpListItem implements BuildableRumpListItemInterface
 {
-    public function __construct(private ShipRepositoryInterface $shipRepository, private ShipBuildplanRepositoryInterface $shipBuildplanRepository, private ShipRumpInterface $shipRump, private UserInterface $currentUser)
-    {
-    }
+    public function __construct(
+        private SpacecraftRepositoryInterface $spacecraftRepository,
+        private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository,
+        private SpacecraftRumpInterface $shipRump,
+        private UserInterface $currentUser
+    ) {}
 
     #[Override]
     public function getId(): int
@@ -37,7 +40,7 @@ final class BuildableRumpListItem implements BuildableRumpListItemInterface
     #[Override]
     public function getActiveShipCount(): int
     {
-        return $this->shipRepository->getAmountByUserAndRump(
+        return $this->spacecraftRepository->getAmountByUserAndRump(
             $this->currentUser->getId(),
             $this->shipRump->getId()
         );
@@ -46,7 +49,7 @@ final class BuildableRumpListItem implements BuildableRumpListItemInterface
     #[Override]
     public function getBuildplanCount(): int
     {
-        return $this->shipBuildplanRepository->getCountByRumpAndUser(
+        return $this->spacecraftBuildplanRepository->getCountByRumpAndUser(
             $this->shipRump->getId(),
             $this->currentUser->getId()
         );

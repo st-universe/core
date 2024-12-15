@@ -47,7 +47,7 @@ interface StorageRepositoryInterface extends ObjectRepository
     public function getTradeOfferStorageByUserAndCommodity(UserInterface $user, int $commodityId): array;
 
     /**
-     * @return array<array{commodity_id: int, ship_id: int, amount: int}>
+     * @return array<array{commodity_id: int, spacecraft_id: int, amount: int}>
      */
     public function getTorpdeoStorageByUserAndCommodity(UserInterface $user, int $commodityId): array;
 

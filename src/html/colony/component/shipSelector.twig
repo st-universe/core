@@ -1,25 +1,20 @@
 {# needs following variables: SHIP, wrapper) #}
-{% from 'html/macros.twig' import onClickShip %}
+{% from 'html/macros.twig' import onClickSpacecraft %}
 {% set ship = wrapper.get %}
 {% set shipId = ship.getId %}
 <li>
-  <table class="use" style="width: 100%;" onmouseover="shipSelectorHover(this)" onmouseout="shipSelectorHoverEnd(this)"
-    onclick="shipSelectorChoose(this);">
+  <table class="use" style="width: 100%;" onmouseover="shipSelectorHover(this);"
+    onmouseout="shipSelectorHoverEnd(this);" onclick="shipSelectorChoose(this);">
     <tr>
       <td class="darkbg" colspan="5">
         {% if wrapper.isOwnedByCurrentUser %}
-        <a type="hidden" {{ onClickShip(ship) }} />
+        <a type="hidden" {{ onClickSpacecraft(ship) }} />
         {% endif %}
         {{ ship.getName|bbcode }} | {{ ship.getUserName|bbcode }}
       </td>
     </tr>
     <tr>
       <td style="width: 20px; vertical-align: middle;">
-        {% if CAN_UNDOCK %}
-        <a href="javascript:void(0);"
-          onClick="actionToInnerContent('B_UNDOCK_SHIP', 'id={{ SHIP.getId }}&target={{ shipId }}&sstr={{ SESSIONSTRING }}', null, '/ship.php');"><img
-            src="/assets/buttons/dock1.png" title="abdocken" /></a>
-        {% endif %}
       </td>
       <td style="width: 120px; vertical-align: middle;">
         {% from 'html/shipmacros.twig' import shipImageWithoutWarp %}

@@ -7,7 +7,7 @@ namespace Stu\Module\Trade\Lib;
 use Override;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Orm\Entity\BasicTradeInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\StationInterface;
 use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
@@ -23,9 +23,7 @@ final class BasicTradeAccountWrapper implements BasicTradeAccountWrapperInterfac
     /**
      * @param array<BasicTradeInterface> $basicTrades
      */
-    public function __construct(private StorageRepositoryInterface $storageRepository, private TradePostInterface $tradePost, private array $basicTrades, private int $userId, private CommodityRepositoryInterface $commodityRepository)
-    {
-    }
+    public function __construct(private StorageRepositoryInterface $storageRepository, private TradePostInterface $tradePost, private array $basicTrades, private int $userId, private CommodityRepositoryInterface $commodityRepository) {}
 
     #[Override]
     public function getId(): int
@@ -34,9 +32,9 @@ final class BasicTradeAccountWrapper implements BasicTradeAccountWrapperInterfac
     }
 
     #[Override]
-    public function getShip(): ShipInterface
+    public function getStation(): StationInterface
     {
-        return $this->tradePost->getShip();
+        return $this->tradePost->getStation();
     }
 
     #[Override]
@@ -87,7 +85,7 @@ final class BasicTradeAccountWrapper implements BasicTradeAccountWrapperInterfac
     {
         return array_reduce(
             $this->getStorage(),
-            fn (int $value, StorageInterface $storage): int => $value + $storage->getAmount(),
+            fn(int $value, StorageInterface $storage): int => $value + $storage->getAmount(),
             0
         );
     }

@@ -56,7 +56,7 @@ final class StartResearch implements ActionControllerInterface
 
         $game->setView(GameController::DEFAULT_VIEW);
 
-        $this->componentLoader->addComponentUpdate(ComponentEnum::RESEARCH_NAVLET);
+        $this->componentLoader->addComponentUpdate(ComponentEnum::RESEARCH);
     }
 
     #[Override]

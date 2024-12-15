@@ -14,12 +14,12 @@ use Stu\StuTestCase;
 
 class EpsBarProviderTest extends StuTestCase
 {
-    /** @var MockInterface|PlanetFieldRepositoryInterface */
+    /** @var MockInterface&PlanetFieldRepositoryInterface */
     private $planetFieldRepository;
 
-    /** @var MockInterface|ColonyInterface */
+    /** @var MockInterface&ColonyInterface */
     private $host;
-    /** @var MockInterface|GameControllerInterface */
+    /** @var MockInterface&GameControllerInterface */
     private $game;
 
 

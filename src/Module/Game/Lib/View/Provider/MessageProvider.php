@@ -27,9 +27,7 @@ final class MessageProvider implements ViewComponentProviderInterface
 {
     private const int PMLIMITER = 6;
 
-    public function __construct(private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository, private PrivateMessageRepositoryInterface $privateMessageRepository, private IgnoreListRepositoryInterface $ignoreListRepository, private PrivateMessageUiFactoryInterface $privateMessageUiFactory, private ContactRepositoryInterface $contactRepository, private ComponentLoaderInterface $componentLoader)
-    {
-    }
+    public function __construct(private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository, private PrivateMessageRepositoryInterface $privateMessageRepository, private IgnoreListRepositoryInterface $ignoreListRepository, private PrivateMessageUiFactoryInterface $privateMessageUiFactory, private ContactRepositoryInterface $contactRepository, private ComponentLoaderInterface $componentLoader) {}
 
     #[Override]
     public function setTemplateVariables(GameControllerInterface $game): void
@@ -93,7 +91,7 @@ final class MessageProvider implements ViewComponentProviderInterface
         $game->setTemplateVar(
             'PM_LIST',
             array_map(
-                fn (PrivateMessageInterface $message): PrivateMessageListItem => new PrivateMessageListItem(
+                fn(PrivateMessageInterface $message): PrivateMessageListItem => new PrivateMessageListItem(
                     $this->privateMessageRepository,
                     $this->contactRepository,
                     $this->ignoreListRepository,
@@ -112,13 +110,13 @@ final class MessageProvider implements ViewComponentProviderInterface
         $game->setTemplateVar(
             'PM_CATEGORIES',
             array_map(
-                fn (PrivateMessageFolderInterface $folder): PrivateMessageFolderItem =>
+                fn(PrivateMessageFolderInterface $folder): PrivateMessageFolderItem =>
                 $this->privateMessageUiFactory->createPrivateMessageFolderItem($folder),
                 $this->privateMessageFolderRepository->getOrderedByUser($userId)
             )
         );
 
-        $this->componentLoader->addComponentUpdate(ComponentEnum::PM_NAVLET);
+        $this->componentLoader->addComponentUpdate(ComponentEnum::PM);
         $game->addExecuteJS("initTranslations();", GameEnum::JS_EXECUTION_AFTER_RENDER);
     }
 }

@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace Stu\Component\Ship\Mining;
 
 use Override;
-use Stu\Component\Ship\ShipStateEnum;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Spacecraft\SpacecraftStateEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\MiningQueueRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-
-
 
 final class CancelMining implements CancelMiningInterface
 {
@@ -23,14 +21,14 @@ final class CancelMining implements CancelMiningInterface
     ) {}
 
     #[Override]
-    public function cancelMining(ShipInterface $ship, ShipWrapperInterface $wrapper): bool
+    public function cancelMining(ShipWrapperInterface $wrapper): bool
     {
-
+        $ship = $wrapper->get();
 
         $state = $ship->getState();
-        if ($state === ShipStateEnum::SHIP_STATE_GATHER_RESOURCES) {
-            if ($ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR)) {
-                $wrapper->getShipSystemManager()->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR, true);
+        if ($state === SpacecraftStateEnum::SHIP_STATE_GATHER_RESOURCES) {
+            if ($ship->isSystemHealthy(SpacecraftSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR)) {
+                $wrapper->getSpacecraftSystemManager()->deactivate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR, true);
             }
 
             $miningQueue = $this->miningQueueRepository->getByShip($ship->getId());
@@ -44,7 +42,7 @@ final class CancelMining implements CancelMiningInterface
 
     private function setStateNoneAndSave(ShipInterface $ship): void
     {
-        $ship->setState(ShipStateEnum::SHIP_STATE_NONE);
+        $ship->setState(SpacecraftStateEnum::SHIP_STATE_NONE);
         $this->shipRepository->save($ship);
     }
 }

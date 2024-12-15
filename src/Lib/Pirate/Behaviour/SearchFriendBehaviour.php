@@ -11,9 +11,10 @@ use Stu\Lib\Pirate\PirateReactionMetadata;
 use Stu\Lib\Pirate\PirateReactionTriggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
-use Stu\Module\Ship\Lib\Battle\FightLibInterface;
+use Stu\Module\Spacecraft\Lib\Battle\FightLibInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 class SearchFriendBehaviour implements PirateBehaviourInterface
@@ -35,7 +36,7 @@ class SearchFriendBehaviour implements PirateBehaviourInterface
         FleetWrapperInterface $fleet,
         PirateReactionInterface $pirateReaction,
         PirateReactionMetadata $reactionMetadata,
-        ?ShipInterface $triggerShip
+        ?SpacecraftInterface $triggerSpacecraft
     ): ?PirateBehaviourEnum {
 
         $leadWrapper = $fleet->getLeadWrapper();

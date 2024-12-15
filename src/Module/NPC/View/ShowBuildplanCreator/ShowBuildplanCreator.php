@@ -7,12 +7,12 @@ namespace Stu\Module\NPC\View\ShowBuildplanCreator;
 use Override;
 use request;
 use RuntimeException;
-use Stu\Component\Ship\ShipModuleTypeEnum;
-use Stu\Component\Ship\ShipRumpEnum;
-use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
+use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
+use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
+use Stu\Component\Spacecraft\SpacecraftRumpEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Repository\ShipRumpRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
@@ -22,7 +22,7 @@ final class ShowBuildplanCreator implements ViewControllerInterface
     public const string VIEW_IDENTIFIER = 'SHOW_BUILDPLAN_CREATOR';
 
     public function __construct(
-        private ShipRumpRepositoryInterface $shipRumpRepository,
+        private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository,
         private UserRepositoryInterface $userRepository,
         private ModuleRepositoryInterface $moduleRepository,
         private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository
@@ -42,13 +42,13 @@ final class ShowBuildplanCreator implements ViewControllerInterface
             $selectedUser = $this->userRepository->find($userId);
             $game->setTemplateVar('USER_ID', $userId);
             $game->setTemplateVar('SELECTED_USER', $selectedUser);
-            $allRumps = iterator_to_array($this->shipRumpRepository->getList());
+            $allRumps = iterator_to_array($this->spacecraftRumpRepository->getList());
             $filteredRumps = array_filter($allRumps, fn($rump) => $rump->getNpcBuildable() === true);
 
             $game->setTemplateVar('SHIP_RUMPS', $filteredRumps);
 
             if ($rumpId > 0) {
-                $rump = $this->shipRumpRepository->find($rumpId);
+                $rump = $this->spacecraftRumpRepository->find($rumpId);
                 if ($rump === null) {
                     throw new RuntimeException(sprintf('rumpId %d does not exist', $rumpId));
                 }
@@ -70,19 +70,19 @@ final class ShowBuildplanCreator implements ViewControllerInterface
                 $game->setTemplateVar('MODULE_SELECTION', true);
 
                 $moduleTypes = [
-                    ShipModuleTypeEnum::HULL,
-                    ShipModuleTypeEnum::SHIELDS,
-                    ShipModuleTypeEnum::EPS,
-                    ShipModuleTypeEnum::IMPULSEDRIVE,
-                    ShipModuleTypeEnum::REACTOR,
-                    ShipModuleTypeEnum::COMPUTER,
-                    ShipModuleTypeEnum::PHASER,
-                    ShipModuleTypeEnum::TORPEDO,
-                    ShipModuleTypeEnum::SENSOR
+                    SpacecraftModuleTypeEnum::HULL,
+                    SpacecraftModuleTypeEnum::SHIELDS,
+                    SpacecraftModuleTypeEnum::EPS,
+                    SpacecraftModuleTypeEnum::IMPULSEDRIVE,
+                    SpacecraftModuleTypeEnum::REACTOR,
+                    SpacecraftModuleTypeEnum::COMPUTER,
+                    SpacecraftModuleTypeEnum::PHASER,
+                    SpacecraftModuleTypeEnum::TORPEDO,
+                    SpacecraftModuleTypeEnum::SENSOR
                 ];
 
-                if ($rump->getCategoryId() !== ShipRumpEnum::SHIP_CATEGORY_STATION) {
-                    $moduleTypes[] = ShipModuleTypeEnum::WARPDRIVE;
+                if ($rump->getCategoryId() !== SpacecraftRumpEnum::SHIP_CATEGORY_STATION) {
+                    $moduleTypes[] = SpacecraftModuleTypeEnum::WARPDRIVE;
                 }
 
                 $game->setTemplateVar('MODULE_TYPES', $moduleTypes);
@@ -114,24 +114,7 @@ final class ShowBuildplanCreator implements ViewControllerInterface
                     );
                 }
                 $game->setTemplateVar('AVAILABLE_MODULES', $availableModules);
-
-                $specialModuleTypes = [
-                    ModuleSpecialAbilityEnum::MODULE_SPECIAL_CLOAK,
-                    ModuleSpecialAbilityEnum::MODULE_SPECIAL_RPG,
-                    ModuleSpecialAbilityEnum::MODULE_SPECIAL_TACHYON_SCANNER,
-                    ModuleSpecialAbilityEnum::MODULE_SPECIAL_TROOP_QUARTERS,
-                    ModuleSpecialAbilityEnum::MODULE_SPECIAL_SUBSPACE_FIELD_SENSOR,
-                    ModuleSpecialAbilityEnum::MODULE_SPECIAL_MATRIX_SENSOR,
-                    ModuleSpecialAbilityEnum::MODULE_SPECIAL_ASTRO_LABORATORY,
-                    ModuleSpecialAbilityEnum::MODULE_SPECIAL_TORPEDO_STORAGE,
-                    ModuleSpecialAbilityEnum::MODULE_SPECIAL_SHUTTLE_RAMP,
-                    ModuleSpecialAbilityEnum::MODULE_SPECIAL_TRANSWARP_COIL,
-                    ModuleSpecialAbilityEnum::MODULE_SPECIAL_HIROGEN_TRACKER,
-                    ModuleSpecialAbilityEnum::MODULE_SPECIAL_THOLIAN_WEB,
-                    ModuleSpecialAbilityEnum::MODULE_SPECIAL_BUSSARD_COLLECTOR,
-                    ModuleSpecialAbilityEnum::MODULE_SPECIAL_AGGREGATION_SYSTEM
-                ];
-                $game->setTemplateVar('SPECIAL_MODULES', $this->moduleRepository->getBySpecialTypeIds($specialModuleTypes));
+                $game->setTemplateVar('SPECIAL_MODULES', $this->moduleRepository->getBySpecialTypeIds(ModuleSpecialAbilityEnum::getValueArray()));
             }
         } else {
             $npcList = iterator_to_array($this->userRepository->getNpcList());

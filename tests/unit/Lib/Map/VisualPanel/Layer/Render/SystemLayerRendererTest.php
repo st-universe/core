@@ -16,7 +16,7 @@ class SystemLayerRendererTest extends StuTestCase
 {
     private LayerRendererInterface $subject;
 
-    /** @var MockInterface|AbstractVisualPanel */
+    /** @var MockInterface&AbstractVisualPanel */
     private MockInterface $panel;
 
     #[Override]

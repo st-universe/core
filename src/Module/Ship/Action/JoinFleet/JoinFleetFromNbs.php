@@ -8,7 +8,7 @@ use Override;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 
 final class JoinFleetFromNbs extends AbstractJoinFleet implements ActionControllerInterface
 {
@@ -22,7 +22,7 @@ final class JoinFleetFromNbs extends AbstractJoinFleet implements ActionControll
 
         $this->tryToAddToFleet($ship, $game);
 
-        $game->setView(ShowShip::VIEW_IDENTIFIER);
+        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
     }
 
     #[Override]

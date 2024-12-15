@@ -6,7 +6,7 @@ namespace Stu\Module\Database\View\DatabaseEntry;
 
 use Override;
 use Stu\Component\Database\DatabaseEntryTypeEnum;
-use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
+use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Exception\AccessViolation;
 use Stu\Lib\Map\VisualPanel\Layer\Data\MapData;
 use Stu\Lib\Map\VisualPanel\Layer\Render\SystemLayerRenderer;
@@ -23,7 +23,7 @@ use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\MapRegionRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
-use Stu\Orm\Repository\ShipRumpRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
 use Stu\PlanetGenerator\PlanetGeneratorInterface;
 
@@ -38,12 +38,11 @@ final class DatabaseEntry implements ViewControllerInterface
         private DatabaseUserRepositoryInterface $databaseUserRepository,
         private MapRegionRepositoryInterface $mapRegionRepository,
         private StarSystemRepositoryInterface $starSystemRepository,
-        private ShipRumpRepositoryInterface $shipRumpRepository,
-        private ShipCrewCalculatorInterface $shipCrewCalculator,
+        private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository,
+        private SpacecraftCrewCalculatorInterface $shipCrewCalculator,
         private ShipRepositoryInterface $shipRepository,
         private PlanetGeneratorInterface $planetGenerator
-    ) {
-    }
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -111,7 +110,7 @@ final class DatabaseEntry implements ViewControllerInterface
                 $game->setTemplateVar('REGION', $this->mapRegionRepository->find($entry_object_id));
                 break;
             case DatabaseEntryTypeEnum::DATABASE_TYPE_RUMP:
-                $rump = $this->shipRumpRepository->find($entry_object_id);
+                $rump = $this->spacecraftRumpRepository->find($entry_object_id);
                 if ($rump === null) {
                     return;
                 }
@@ -214,14 +213,14 @@ final class DatabaseEntry implements ViewControllerInterface
         $alliance = $user->getAlliance();
 
         if ($alliance !== null) {
-            $unfilteredScans = array_merge(...$alliance->getMembers()->map(fn (UserInterface $user) => $user->getColonyScans()->toArray()));
+            $unfilteredScans = array_merge(...$alliance->getMembers()->map(fn(UserInterface $user) => $user->getColonyScans()->toArray()));
         } else {
             $unfilteredScans = $user->getColonyScans()->toArray();
         }
 
         $filteredScans = array_filter(
             $unfilteredScans,
-            fn (ColonyScanInterface $scan): bool => $scan->getColony()->getSystemsId() === $systemId
+            fn(ColonyScanInterface $scan): bool => $scan->getColony()->getSystemsId() === $systemId
         );
 
         $scansByColony = [];
@@ -235,7 +234,7 @@ final class DatabaseEntry implements ViewControllerInterface
 
         $latestScans = [];
         foreach ($scansByColony as $scans) {
-            usort($scans, fn ($a, $b): int => $b->getDate() <=> $a->getDate());
+            usort($scans, fn($a, $b): int => $b->getDate() <=> $a->getDate());
             $latestScans[] = $scans[0];
         }
 

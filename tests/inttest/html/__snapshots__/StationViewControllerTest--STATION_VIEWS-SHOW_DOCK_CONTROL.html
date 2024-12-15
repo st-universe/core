@@ -1,0 +1,81 @@
+<html lang="de">
+
+<head>
+  <script src="/static/js/default.js"></script>
+</head>
+
+<body>
+  <div class="ajaxwin">
+        <table class="tcal">
+      <tr>
+        <th onmouseover="switch_drag_on();" onmouseout="switch_drag_off();">Dockkontrolle</th>
+        <th style="width: 18px;">
+          <a href="javascript:void(0);" onclick="closeAjaxWindow();" onmouseover="cp('ajaxclose','buttons/x2');" onmouseout="cp('ajaxclose','buttons/x1');">
+            <img src="/assets/buttons/x1.png" name="ajaxclose" title="Fenster schlie&Atilde;&#159;en">
+          </a>
+        </th>
+      </tr>
+    </table>
+        <br>
+<input type="checkbox" checked onchange="toggleDockPmAutoRead('MOCKED_SESSIONSTRING');">
+Andocken ignorieren <img title="Andockbenachrichtigungen werden automatisch als gelesen markiert" src="/assets/buttons/info2.png" style="height:16px;">
+<br>
+<div id="dockprivilegelist">
+    <input type="hidden" id="dock_sstr" value="MOCKED_SESSIONSTRING">
+<table class="tcal" style="width: 400px;">
+    <tr>
+        <th>Ziel</th>
+        <th>Modus</th>
+        <th></th>
+    </tr>
+    </table>
+</div>
+<br>
+<table class="tcal">
+    <tr>
+        <th colspan="2">Neuer Eintrag</th>
+    </tr>
+    <tr>
+        <td>
+            <select id="docktype" onchange="$('dock_opt1').hide();$('dock_opt2').hide();$('dock_opt3').hide();$('dock_opt'+this.value).show();">
+                <option value="1">Siedler</option>
+                <option value="2">Allianz</option>
+                <option value="3">Rasse</option>
+            </select>
+        </td>
+        <td>
+            <span id="dock_opt1">
+                Siedler-ID: <input type="text" size="6" name="docktarget" id="docktarget_1">
+            </span>
+            <span id="dock_opt2" style="display: none;">
+                Allianz: <select name="docktarget" id="docktarget_2">
+                                        <option value="2">
+                        testally
+                    </option>
+                                    </select>
+            </span>
+            <span id="dock_opt3" style="display: none;">
+                Rasse: <select name="docktarget" id="docktarget_3">
+                    <option value="1">F&Atilde;&para;deration</option>
+                    <option value="2">Romulaner</option>
+                    <option value="3">Klingonen</option>
+                    <option value="4">Cardassianer</option>
+                    <option value="5">Ferengi</option>
+                </select>
+            </span>
+            <select id="dockmode">
+                <option value="1">Erlauben</option>
+                <option value="2">Verbieten</option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" style="text-align: center;">
+            <input class="button" type="button" value="Erstellen" onclick="addDockPrivilege();">
+        </td>
+    </tr>
+</table>
+      </div>
+  </body>
+
+</html>

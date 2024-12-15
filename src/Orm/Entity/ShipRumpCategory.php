@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Override;
+use Stu\Component\Spacecraft\SpacecraftTypeEnum;
 use Stu\Orm\Repository\ShipRumpCategoryRepository;
 
 #[Table(name: 'stu_rumps_categories')]
@@ -29,8 +30,8 @@ class ShipRumpCategory implements ShipRumpCategoryInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $database_id = 0;
 
-    #[Column(type: 'integer')]
-    private int $points = 0;
+    #[Column(type: 'string', enumType: SpacecraftTypeEnum::class)]
+    private SpacecraftTypeEnum $type = SpacecraftTypeEnum::SHIP;
 
     #[ManyToOne(targetEntity: 'DatabaseEntry')]
     #[JoinColumn(name: 'database_id', referencedColumnName: 'id')]
@@ -62,21 +63,6 @@ class ShipRumpCategory implements ShipRumpCategoryInterface
         return $this->database_id;
     }
 
-    //@deprecated
-    #[Override]
-    public function getPoints(): int
-    {
-        return $this->points;
-    }
-
-    #[Override]
-    public function setPoints(int $points): ShipRumpCategoryInterface
-    {
-        $this->points = $points;
-
-        return $this;
-    }
-
     #[Override]
     public function getDatabaseEntry(): ?DatabaseEntryInterface
     {
@@ -89,5 +75,11 @@ class ShipRumpCategory implements ShipRumpCategoryInterface
         $this->databaseEntry = $databaseEntry;
 
         return $this;
+    }
+
+    #[Override]
+    public function getType(): SpacecraftTypeEnum
+    {
+        return $this->type;
     }
 }

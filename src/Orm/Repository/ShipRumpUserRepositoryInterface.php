@@ -11,7 +11,7 @@ use Stu\Orm\Entity\ShipRumpUserInterface;
  */
 interface ShipRumpUserRepositoryInterface extends ObjectRepository
 {
-    public function isAvailableForUser(int $shipRumpId, int $userId): bool;
+    public function isAvailableForUser(int $rumpId, int $userId): bool;
 
     public function prototype(): ShipRumpUserInterface;
 

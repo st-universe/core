@@ -7,17 +7,17 @@ namespace Stu\Lib\Pirate\Component;
 use Mockery\MockInterface;
 use Override;
 use Stu\Lib\Pirate\PirateCreation;
-use Stu\Module\Ship\Lib\Movement\Route\FlightRouteFactoryInterface;
-use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
+use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteFactoryInterface;
+use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\StuTestCase;
 
 class SafeFlightRouteTest extends StuTestCase
 {
-    /** @var MockInterface|FlightRouteFactoryInterface */
+    /** @var MockInterface&FlightRouteFactoryInterface */
     private $flightRouteFactory;
 
-    /** @var MockInterface|ShipInterface */
+    /** @var MockInterface&ShipInterface */
     private $ship;
 
     private SafeFlightRouteInterface $subject;

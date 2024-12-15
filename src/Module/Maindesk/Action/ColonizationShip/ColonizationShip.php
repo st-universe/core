@@ -7,7 +7,7 @@ namespace Stu\Module\Maindesk\Action\ColonizationShip;
 use InvalidArgumentException;
 use Override;
 use RuntimeException;
-use Stu\Component\Ship\ShipEnum;
+use Stu\Component\Spacecraft\SpacecraftRumpEnum;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -19,9 +19,13 @@ final class ColonizationShip implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_COLONIZATION_SHIP';
 
-    public function __construct(private ShipCreatorInterface $shipCreator, private UserRepositoryInterface $userRepository)
-    {
-    }
+    public const int FED_COL_BUILDPLAN = 2075;
+    public const int ROM_COL_BUILDPLAN = 2076;
+    public const int KLING_COL_BUILDPLAN = 2077;
+    public const int CARD_COL_BUILDPLAN = 2078;
+    public const int FERG_COL_BUILDPLAN = 2079;
+
+    public function __construct(private ShipCreatorInterface $shipCreator, private UserRepositoryInterface $userRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -80,49 +84,29 @@ final class ColonizationShip implements ActionControllerInterface
 
     private function getRumpId(int $factionId): int
     {
-        if ($factionId == 1) {
-            return ShipEnum::FED_COL_RUMP;
-        }
-
-        if ($factionId == 2) {
-            return ShipEnum::ROM_COL_RUMP;
-        }
-
-        if ($factionId == 3) {
-            return ShipEnum::KLING_COL_RUMP;
-        }
-
-        if ($factionId == 4) {
-            return ShipEnum::CARD_COL_RUMP;
-        }
-
-        if ($factionId == 5) {
-            return ShipEnum::FERG_COL_RUMP;
-        }
-
-        throw new InvalidArgumentException('faction is not configured');
+        return SpacecraftRumpEnum::SHIP_RUMP_BASE_ID_COLONIZER + $factionId;
     }
 
     private function getBuildplanId(int $factionId): int
     {
         if ($factionId == 1) {
-            return ShipEnum::FED_COL_BUILDPLAN;
+            return self::FED_COL_BUILDPLAN;
         }
 
         if ($factionId == 2) {
-            return ShipEnum::ROM_COL_BUILDPLAN;
+            return self::ROM_COL_BUILDPLAN;
         }
 
         if ($factionId == 3) {
-            return ShipEnum::KLING_COL_BUILDPLAN;
+            return self::KLING_COL_BUILDPLAN;
         }
 
         if ($factionId == 4) {
-            return ShipEnum::CARD_COL_BUILDPLAN;
+            return self::CARD_COL_BUILDPLAN;
         }
 
         if ($factionId == 5) {
-            return ShipEnum::FERG_COL_BUILDPLAN;
+            return self::FERG_COL_BUILDPLAN;
         }
 
         throw new InvalidArgumentException('faction is not configured');

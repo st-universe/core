@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1c4c143b06319333bcb2cb20194a4a8b",
+    "content-hash": "a2c219d52f27697d8afdf98bf6cb873e",
     "packages": [
         {
             "name": "adhocore/cli",
@@ -3109,7 +3109,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/st-universe/planet-generator.git",
-                "reference": "789b516bc1ae991ac42c6edbd1ce3ba5f023362f"
+                "reference": "7b60b281c7bfee8552909662b58b426a6186df69"
             },
             "require": {
                 "jetbrains/phpstorm-stubs": "^2022.3",
@@ -3133,16 +3133,13 @@
                 }
             },
             "autoload": {
-                "classmap": [
-                    "tests/"
-                ],
                 "psr-4": {
                     "Stu\\PlanetGenerator\\": "src/PlanetGenerator"
                 }
             },
             "autoload-dev": {
                 "psr-4": {
-                    "Stu\\PlanetGenerator\\": "src/PlanetGenerator"
+                    "Stu\\": "tests/"
                 }
             },
             "scripts": {
@@ -3165,7 +3162,7 @@
                 "MIT"
             ],
             "description": "ST-Universe planet surface generator",
-            "time": "2024-12-12T19:32:36+00:00"
+            "time": "2024-12-13T15:22:04+00:00"
         },
         {
             "name": "st-universe/starsystem-generator",
@@ -9865,7 +9862,7 @@
         "ext-iconv": "*",
         "ext-intl": "*",
         "ext-json": "*",
-        "ext-mysqli": "*",
+        "ext-pdo_sqlite": "*",
         "ext-pcntl": "*",
         "ext-redis": "*",
         "ext-sockets": "*",

@@ -3,13 +3,14 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
-use Stu\Component\Ship\SpacecraftTypeEnum;
 use Stu\Module\Ship\Lib\TFleetShipItemInterface;
-use Stu\Module\Ship\Lib\TSpacecraftItemInterface;
+use Stu\Module\Spacecraft\Lib\TSpacecraftItemInterface;
 use Stu\Orm\Entity\LocationInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\SpacecraftRumpInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Entity\UserInterface;
 
@@ -21,33 +22,14 @@ use Stu\Orm\Entity\UserInterface;
  */
 interface ShipRepositoryInterface extends ObjectRepository
 {
-    public function prototype(): ShipInterface;
-
     public function save(ShipInterface $post): void;
 
     public function delete(ShipInterface $post): void;
 
-    public function getAmountByUserAndSpecialAbility(
-        int $userId,
-        int $specialAbilityId
-    ): int;
-
-    public function getAmountByUserAndRump(int $userId, int $shipRumpId): int;
-
-    /**
-     * @return iterable<ShipInterface>
-     */
-    public function getByUser(UserInterface $user): iterable;
-
     /**
      * @return array<ShipInterface>
      */
-    public function getByUserAndRump(int $userId, int $rumpId): array;
-
-    /**
-     * @return iterable<ShipInterface>
-     */
-    public function getPossibleFleetMembers(ShipInterface $fleetLeader): iterable;
+    public function getByUserAndFleet(int $userId, ?int $fleetId): array;
 
     /**
      * @return array<ShipInterface>
@@ -58,29 +40,18 @@ interface ShipRepositoryInterface extends ObjectRepository
     ): array;
 
     /**
-     * @return array<ShipInterface>
+     * @return array<TSpacecraftItemInterface>
      */
-    public function getByLocation(LocationInterface $location): array;
-
-    /**
-     * @return array<ShipInterface>
-     */
-    public function getForeignStationsInBroadcastRange(ShipInterface $ship): array;
+    public function getSingleSpacecraftScannerResults(
+        SpacecraftInterface $spacecraft,
+        bool $showCloaked = false,
+        MapInterface|StarSystemMapInterface|null $field = null
+    ): array;
 
     /**
      * @return iterable<ShipInterface>
      */
-    public function getTradePostsWithoutDatabaseEntry(): iterable;
-
-    /**
-     * @return array<ShipInterface>
-     */
-    public function getByUserAndFleetAndType(int $userId, ?int $fleetId, SpacecraftTypeEnum $type): array;
-
-    /**
-     * @return array<ShipInterface>
-     */
-    public function getByUplink(int $userId): array;
+    public function getPossibleFleetMembers(ShipInterface $fleetLeader): iterable;
 
     /**
      * @return iterable<ShipInterface>
@@ -93,83 +64,28 @@ interface ShipRepositoryInterface extends ObjectRepository
     ): iterable;
 
     /**
-     * @return iterable<ShipInterface>
+     * @return array<ShipInterface>
      */
-    public function getSuitableForShildRegeneration(int $regenerationThreshold): iterable;
+    public function getEscapePods(): array;
 
     /**
-     * @return iterable<ShipInterface>
+     * @return array<ShipInterface>
      */
-    public function getDebrisFields(): iterable;
-
-    /**
-     * @return iterable<ShipInterface>
-     */
-    public function getStationConstructions(): iterable;
-
-    /**
-     * @return iterable<ShipInterface>
-     */
-    public function getEscapePods(): iterable;
-
-    /**
-     * @return iterable<ShipInterface>
-     */
-    public function getEscapePodsByCrewOwner(int $userId): iterable;
-
-    /**
-     * @return iterable<ShipInterface>
-     */
-    public function getPlayerShipsForTick(): iterable;
-
-    /**
-     * @return iterable<ShipInterface>
-     */
-    public function getNpcShipsForTick(): iterable;
+    public function getEscapePodsByCrewOwner(int $userId): array;
 
     /**
      * @return array<TFleetShipItemInterface>
      */
     public function getFleetShipsScannerResults(
-        ShipInterface $ship,
+        SpacecraftInterface $spacecraft,
         bool $showCloaked = false,
         MapInterface|StarSystemMapInterface|null $field = null
     ): array;
-
-    /**
-     * @param array<int> $types
-     *
-     * @return array<TSpacecraftItemInterface>
-     */
-    public function getSingleShipScannerResults(
-        ShipInterface $ship,
-        array $types,
-        bool $showCloaked = false,
-        MapInterface|StarSystemMapInterface|null $field = null
-    ): array;
-
-    public function isCloakedShipAtShipLocation(
-        ShipInterface $ship
-    ): bool;
-
-    public function getRandomShipIdWithCrewByUser(int $userId): ?int;
-
-    public function isBaseOnLocation(ShipInterface $ship): bool;
-
-    /**
-     * @return array<ShipInterface>
-     */
-    public function getStationsByUser(int $userId): array;
 
     /**
      * @return array<ShipInterface>
      */
     public function getAllDockedShips(): array;
-
-    /**
-     * @return array<ShipInterface>
-     */
-    public function getAllTractoringShips(): array;
 
     /**
      * @return array<ShipInterface>
@@ -181,5 +97,8 @@ interface ShipRepositoryInterface extends ObjectRepository
      */
     public function getPirateFriends(ShipInterface $ship): array;
 
-    public function truncateAllShips(): void;
+    /**
+     * @return array<ShipInterface>
+     */
+    public function getByUserAndRump(UserInterface $user, SpacecraftRumpInterface $rump): array;
 }

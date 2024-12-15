@@ -6,7 +6,7 @@ namespace Stu\Module\Colony\Action\BuildTorpedos;
 
 use Override;
 use request;
-use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
@@ -18,9 +18,7 @@ final class BuildTorpedos implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_BUILD_TORPEDOS';
 
-    public function __construct(private ColonyLoaderInterface $colonyLoader, private TorpedoTypeRepositoryInterface $torpedoTypeRepository, private ColonyStorageManagerInterface $colonyStorageManager, private ColonyRepositoryInterface $colonyRepository)
-    {
-    }
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private TorpedoTypeRepositoryInterface $torpedoTypeRepository, private StorageManagerInterface $storageManager, private ColonyRepositoryInterface $colonyRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -66,10 +64,10 @@ final class BuildTorpedos implements ActionControllerInterface
             $count = (int)$count;
 
             foreach ($torp->getProductionCosts() as $cost) {
-                $this->colonyStorageManager->lowerStorage($colony, $cost->getCommodity(), $cost->getAmount() * $count);
+                $this->storageManager->lowerStorage($colony, $cost->getCommodity(), $cost->getAmount() * $count);
             }
 
-            $this->colonyStorageManager->upperStorage($colony, $torp->getCommodity(), $count * $torp->getProductionAmount());
+            $this->storageManager->upperStorage($colony, $torp->getCommodity(), $count * $torp->getProductionAmount());
 
             $msg[] = sprintf(
                 _('Es wurden %d Torpedos des Typs %s hergestellt'),

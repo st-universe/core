@@ -7,7 +7,7 @@ namespace Stu\Module\Maindesk\Action\FirstColony;
 use InvalidArgumentException;
 use Override;
 use RuntimeException;
-use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Lib\PlanetColonizationInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
@@ -23,7 +23,7 @@ final class FirstColony implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_FIRST_COLONY';
 
-    public function __construct(private FirstColonyRequestInterface $firstColonyRequest, private BuildingRepositoryInterface $buildingRepository, private PlanetColonizationInterface $planetColonization, private ColonyRepositoryInterface $colonyRepository, private ColonyStorageManagerInterface $colonyStorageManager, private CommodityRepositoryInterface $commodityRepository, private UserRepositoryInterface $userRepository) {}
+    public function __construct(private FirstColonyRequestInterface $firstColonyRequest, private BuildingRepositoryInterface $buildingRepository, private PlanetColonizationInterface $planetColonization, private ColonyRepositoryInterface $colonyRepository, private StorageManagerInterface $storageManager, private CommodityRepositoryInterface $commodityRepository, private UserRepositoryInterface $userRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -61,22 +61,22 @@ final class FirstColony implements ActionControllerInterface
             $startingBuilding
         );
 
-        $this->colonyStorageManager->upperStorage(
+        $this->storageManager->upperStorage(
             $colony,
             $this->getCommodity(CommodityTypeEnum::COMMODITY_BUILDING_MATERIALS),
             150
         );
-        $this->colonyStorageManager->upperStorage(
+        $this->storageManager->upperStorage(
             $colony,
             $this->getCommodity(CommodityTypeEnum::COMMODITY_TRANSPARENT_ALUMINIUM),
             150
         );
-        $this->colonyStorageManager->upperStorage(
+        $this->storageManager->upperStorage(
             $colony,
             $this->getCommodity(CommodityTypeEnum::COMMODITY_DURANIUM),
             150
         );
-        $this->colonyStorageManager->upperStorage(
+        $this->storageManager->upperStorage(
             $colony,
             $this->getCommodity(CommodityTypeEnum::COMMODITY_DEUTERIUM),
             100

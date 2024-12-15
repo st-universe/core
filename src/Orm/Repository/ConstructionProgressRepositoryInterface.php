@@ -5,6 +5,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\ConstructionProgress;
 use Stu\Orm\Entity\ConstructionProgressInterface;
+use Stu\Orm\Entity\StationInterface;
 
 /**
  * @extends ObjectRepository<ConstructionProgress>
@@ -14,7 +15,7 @@ use Stu\Orm\Entity\ConstructionProgressInterface;
  */
 interface ConstructionProgressRepositoryInterface extends ObjectRepository
 {
-    public function getByShip(int $shipId): ?ConstructionProgressInterface;
+    public function getByStation(StationInterface $station): ?ConstructionProgressInterface;
 
     public function prototype(): ConstructionProgressInterface;
 

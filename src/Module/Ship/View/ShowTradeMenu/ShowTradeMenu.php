@@ -10,10 +10,9 @@ use Stu\Exception\AccessViolation;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
+use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
-use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseInfoRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
@@ -23,9 +22,7 @@ final class ShowTradeMenu implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_TRADEMENU';
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradeLicenseInfoRepositoryInterface $TradeLicenseInfoRepository, private TradeLibFactoryInterface $tradeLibFactory, private TradePostRepositoryInterface $tradePostRepository, private CommodityRepositoryInterface $commodityRepository, private InteractionCheckerInterface $interactionChecker)
-    {
-    }
+    public function __construct(private ShipLoaderInterface $shipLoader, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradeLicenseInfoRepositoryInterface $TradeLicenseInfoRepository, private TradeLibFactoryInterface $tradeLibFactory, private TradePostRepositoryInterface $tradePostRepository, private CommodityRepositoryInterface $commodityRepository, private InteractionCheckerInterface $interactionChecker) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -39,15 +36,12 @@ final class ShowTradeMenu implements ViewControllerInterface
             false
         );
 
-        /**
-         * @var TradePostInterface $tradepost
-         */
         $tradepost = $this->tradePostRepository->find(request::indInt('postid'));
         if ($tradepost === null) {
             return;
         }
 
-        if (!$this->interactionChecker->checkPosition($ship, $tradepost->getShip())) {
+        if (!$this->interactionChecker->checkPosition($ship, $tradepost->getStation())) {
             new AccessViolation();
         }
 
@@ -58,7 +52,7 @@ final class ShowTradeMenu implements ViewControllerInterface
             $game->setMacroInAjaxWindow('html/ship/trademenu.twig');
         }
 
-        $databaseEntryId = $tradepost->getShip()->getDatabaseId();
+        $databaseEntryId = $tradepost->getStation()->getDatabaseId();
 
         if ($databaseEntryId > 0) {
             $game->checkDatabaseItem($databaseEntryId);

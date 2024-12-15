@@ -21,7 +21,7 @@ use Stu\Lib\Map\VisualPanel\Layer\Render\ShipCountLayerRenderer;
 use Stu\Lib\Map\VisualPanel\Layer\Render\SubspaceLayerRenderer;
 use Stu\Lib\Map\VisualPanel\Layer\Render\SystemLayerRenderer;
 use Stu\Orm\Entity\LayerInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 
 final class PanelLayerCreation implements PanelLayerCreationInterface
 {
@@ -32,9 +32,12 @@ final class PanelLayerCreation implements PanelLayerCreationInterface
     private array $layers = [];
 
     /** @param array<int, PanelLayerDataProviderInterface> $dataProviders */
-    public function __construct(private EncodedMapInterface $encodedMap, private ShipcountDataProviderFactoryInterface $shipcountDataProviderFactory, private SubspaceDataProviderFactoryInterface $subspaceDataProviderFactory, private array $dataProviders)
-    {
-    }
+    public function __construct(
+        private EncodedMapInterface $encodedMap,
+        private ShipcountDataProviderFactoryInterface $shipcountDataProviderFactory,
+        private SubspaceDataProviderFactoryInterface $subspaceDataProviderFactory,
+        private array $dataProviders
+    ) {}
 
     #[Override]
     public function addSystemLayer(): PanelLayerCreationInterface
@@ -72,20 +75,20 @@ final class PanelLayerCreation implements PanelLayerCreationInterface
     #[Override]
     public function addShipCountLayer(
         bool $showCloakedEverywhere,
-        ?ShipInterface $currentShip,
+        ?SpacecraftInterface $currentSpacecraft,
         ShipcountLayerTypeEnum $type,
         int $id
     ): PanelLayerCreationInterface {
-        $this->layers[PanelLayerEnum::SHIP_COUNT->value] = new ShipCountLayerRenderer($showCloakedEverywhere, $currentShip);
+        $this->layers[PanelLayerEnum::SHIP_COUNT->value] = new ShipCountLayerRenderer($showCloakedEverywhere, $currentSpacecraft);
         $this->specialDataProviders[PanelLayerEnum::SHIP_COUNT->value] = $this->shipcountDataProviderFactory->getDataProvider($id, $type);
 
         return $this;
     }
 
     #[Override]
-    public function addBorderLayer(?ShipInterface $currentShip, ?bool $isOnShipLevel): PanelLayerCreationInterface
+    public function addBorderLayer(?SpacecraftInterface $currentSpacecraft, ?bool $isOnShipLevel): PanelLayerCreationInterface
     {
-        $this->layers[PanelLayerEnum::BORDER->value] = new BorderLayerRenderer($currentShip, $isOnShipLevel);
+        $this->layers[PanelLayerEnum::BORDER->value] = new BorderLayerRenderer($currentSpacecraft, $isOnShipLevel);
 
         return $this;
     }

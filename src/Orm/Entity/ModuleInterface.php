@@ -3,8 +3,8 @@
 namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\Collection;
-use Stu\Component\Ship\ShipModuleTypeEnum;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 
 interface ModuleInterface
 {
@@ -34,11 +34,11 @@ interface ModuleInterface
 
     public function setCrew(int $crew): ModuleInterface;
 
-    public function getCrewByFactionAndRumpLvl(FactionInterface $faction, ShipRumpInterface $rump): int;
+    public function getCrewByFactionAndRumpLvl(FactionInterface $faction, SpacecraftRumpInterface $rump): int;
 
-    public function getType(): ShipModuleTypeEnum;
+    public function getType(): SpacecraftModuleTypeEnum;
 
-    public function setType(ShipModuleTypeEnum $type): ModuleInterface;
+    public function setType(SpacecraftModuleTypeEnum $type): ModuleInterface;
 
     public function getResearchId(): ?int;
 
@@ -99,5 +99,5 @@ interface ModuleInterface
 
     public function setFactionId(int $factionId): ?ModuleInterface;
 
-    public function getSystemType(): ?ShipSystemTypeEnum;
+    public function getSystemType(): ?SpacecraftSystemTypeEnum;
 }

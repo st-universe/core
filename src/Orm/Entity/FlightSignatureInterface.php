@@ -2,6 +2,8 @@
 
 namespace Stu\Orm\Entity;
 
+use Stu\Component\Map\DirectionEnum;
+
 interface FlightSignatureInterface
 {
     public function getId(): int;
@@ -14,15 +16,15 @@ interface FlightSignatureInterface
 
     public function getShipName(): string;
 
-    public function setShipName(string $name): FlightSignatureInterface;
+    public function setSpacecraftName(string $name): FlightSignatureInterface;
 
     public function isCloaked(): bool;
 
     public function setIsCloaked(bool $isCloaked): FlightSignatureInterface;
 
-    public function getRump(): ShipRumpInterface;
+    public function getRump(): SpacecraftRumpInterface;
 
-    public function setRump(ShipRumpInterface $shipRump): FlightSignatureInterface;
+    public function setRump(SpacecraftRumpInterface $shipRump): FlightSignatureInterface;
 
     public function getTime(): int;
 
@@ -32,11 +34,11 @@ interface FlightSignatureInterface
 
     public function setLocation(LocationInterface $location): FlightSignatureInterface;
 
-    public function getFromDirection(): int;
+    public function getFromDirection(): DirectionEnum;
 
-    public function setFromDirection(int $direction): FlightSignatureInterface;
+    public function setFromDirection(DirectionEnum $direction): FlightSignatureInterface;
 
-    public function getToDirection(): int;
+    public function getToDirection(): DirectionEnum;
 
-    public function setToDirection(int $direction): FlightSignatureInterface;
+    public function setToDirection(DirectionEnum $direction): FlightSignatureInterface;
 }

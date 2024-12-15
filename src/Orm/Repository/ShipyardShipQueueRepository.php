@@ -48,7 +48,7 @@ final class ShipyardShipQueueRepository extends EntityRepository implements Ship
     public function getByShipyard(int $stationId): array
     {
         return $this->findBy([
-            'ship_id' => $stationId
+            'station_id' => $stationId
         ]);
     }
 
@@ -56,7 +56,7 @@ final class ShipyardShipQueueRepository extends EntityRepository implements Ship
     public function getAmountByShipyard(int $shipId): int
     {
         return $this->count([
-            'ship_id' => $shipId
+            'station_id' => $shipId
         ]);
     }
 

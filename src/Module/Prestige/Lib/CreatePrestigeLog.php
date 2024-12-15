@@ -14,9 +14,7 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class CreatePrestigeLog implements CreatePrestigeLogInterface
 {
-    public function __construct(private PrestigeLogRepositoryInterface $prestigeLogRepository, private UserRepositoryInterface $userRepository, private ComponentLoaderInterface $componentLoader)
-    {
-    }
+    public function __construct(private PrestigeLogRepositoryInterface $prestigeLogRepository, private UserRepositoryInterface $userRepository, private ComponentLoaderInterface $componentLoader) {}
 
     #[Override]
     public function createLog(int $amount, string $description, UserInterface $user, int $date): void
@@ -52,6 +50,6 @@ final class CreatePrestigeLog implements CreatePrestigeLogInterface
         $user->setPrestige($user->getPrestige() + $prestigeLog->getAmount());
         $this->userRepository->save($user);
 
-        $this->componentLoader->addComponentUpdate(ComponentEnum::USER_NAVLET);
+        $this->componentLoader->addComponentUpdate(ComponentEnum::USER);
     }
 }

@@ -6,26 +6,24 @@ namespace Stu\Module\Ship\Action\FleetDeactivateCloak;
 
 use Override;
 use request;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
-use Stu\Module\Ship\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
+use Stu\Module\Spacecraft\Lib\ActivatorDeactivatorHelperInterface;
+use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 
 final class FleetDeactivateCloak implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_FLEET_DEACTIVATE_CLOAK';
 
-    public function __construct(private ActivatorDeactivatorHelperInterface $helper, private ShipLoaderInterface $shipLoader, private AlertReactionFacadeInterface $alertReactionFacade)
-    {
-    }
+    public function __construct(private ActivatorDeactivatorHelperInterface $helper, private ShipLoaderInterface $shipLoader, private AlertReactionFacadeInterface $alertReactionFacade) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $this->helper->deactivateFleet(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_CLOAK, $game);
+        $this->helper->deactivateFleet(request::indInt('id'), SpacecraftSystemTypeEnum::SYSTEM_CLOAK, $game);
 
         $userId = $game->getUser()->getId();
 
@@ -41,7 +39,7 @@ final class FleetDeactivateCloak implements ActionControllerInterface
             return;
         }
 
-        $game->setView(ShowShip::VIEW_IDENTIFIER);
+        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
     }
 
     #[Override]

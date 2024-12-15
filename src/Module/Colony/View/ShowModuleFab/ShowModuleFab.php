@@ -8,7 +8,7 @@ use Override;
 use request;
 use RuntimeException;
 use Stu\Component\Colony\ColonyMenuEnum;
-use Stu\Component\Ship\ShipModuleTypeEnum;
+use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Game\GameEnum;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -18,9 +18,9 @@ use Stu\Orm\Repository\BuildingFunctionRepositoryInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\ModuleBuildingFunctionRepositoryInterface;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
-use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
-use Stu\Orm\Repository\ShipRumpRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 
 final class ShowModuleFab implements ViewControllerInterface
 {
@@ -32,9 +32,9 @@ final class ShowModuleFab implements ViewControllerInterface
         private ModuleBuildingFunctionRepositoryInterface $moduleBuildingFunctionRepository,
         private BuildingFunctionRepositoryInterface $buildingFunctionRepository,
         private ModuleQueueRepositoryInterface $moduleQueueRepository,
-        private ShipRumpRepositoryInterface $shipRumpRepository,
+        private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository,
         private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository,
-        private ShipBuildplanRepositoryInterface $shipBuildplanRepository,
+        private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository,
         private ModuleRepositoryInterface $moduleRepository
     ) {}
 
@@ -92,10 +92,10 @@ final class ShowModuleFab implements ViewControllerInterface
             $allModules[$module->getId()] = $moduleFabricationListItem;
         }
 
-        $shipRumps = $this->shipRumpRepository->getBuildableByUser($userId);
+        $shipRumps = $this->spacecraftRumpRepository->getBuildableByUser($userId);
 
         $moduleTypes = [];
-        foreach (ShipModuleTypeEnum::getModuleSelectorOrder() as $moduleType) {
+        foreach (SpacecraftModuleTypeEnum::getModuleSelectorOrder() as $moduleType) {
             $moduleTypes[$moduleType->value] = [
                 'name' => $moduleType->getDescription(),
                 'image' => "/assets/buttons/modul_screen_{$moduleType->value}.png"
@@ -140,7 +140,7 @@ final class ShowModuleFab implements ViewControllerInterface
 
             $specialModules = $this->moduleRepository->getBySpecialTypeAndRump(
                 $colony,
-                ShipModuleTypeEnum::SPECIAL,
+                SpacecraftModuleTypeEnum::SPECIAL,
                 $rumpId
             );
             foreach ($specialModules as $module) {
@@ -153,7 +153,7 @@ final class ShowModuleFab implements ViewControllerInterface
         $buildplans = [];
         foreach ($shipRumps as $rump) {
             $rumpId = $rump->getId();
-            $rumpBuildplans = $this->shipBuildplanRepository->getByUserAndRump($userId, $rumpId);
+            $rumpBuildplans = $this->spacecraftBuildplanRepository->getByUserAndRump($userId, $rumpId);
             $buildplans[$rumpId] = $rumpBuildplans;
 
             foreach ($rumpBuildplans as $buildplan) {

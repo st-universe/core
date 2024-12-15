@@ -21,9 +21,7 @@ final class GiveUp implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_GIVEUP_COLONY';
 
-    public function __construct(private GiveUpRequestInterface $giveupRequest, private ColonyRepositoryInterface $colonyRepository, private ColonyResetterInterface $colonyResetter, private UserRepositoryInterface $userRepository, private ComponentLoaderInterface $componentLoader)
-    {
-    }
+    public function __construct(private GiveUpRequestInterface $giveupRequest, private ColonyRepositoryInterface $colonyRepository, private ColonyResetterInterface $colonyResetter, private UserRepositoryInterface $userRepository, private ComponentLoaderInterface $componentLoader) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -58,7 +56,7 @@ final class GiveUp implements ActionControllerInterface
             $this->userRepository->save($user);
         }
 
-        $this->componentLoader->addComponentUpdate(ComponentEnum::COLONIES_NAVLET);
+        $this->componentLoader->addComponentUpdate(ComponentEnum::COLONIES);
 
         $game->addInformation(_('Die Kolonie wurde aufgegeben'));
     }

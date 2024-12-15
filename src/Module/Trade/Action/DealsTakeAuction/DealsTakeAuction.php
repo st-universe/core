@@ -12,16 +12,16 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
-use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
+use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\ShowDeals\ShowDeals;
 use Stu\Orm\Entity\DealsInterface;
-use Stu\Orm\Entity\ShipBuildplanInterface;
+use Stu\Orm\Entity\SpacecraftBuildplanInterface;
 use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\DealsRepositoryInterface;
-use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 
@@ -29,7 +29,7 @@ final class DealsTakeAuction implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_DEALS_TAKE_AUCTION';
 
-    public function __construct(private DealsTakeAuctionRequestInterface $dealstakeAuctionRequest, private TradeLibFactoryInterface $tradeLibFactory, private DealsRepositoryInterface $dealsRepository, private TradePostRepositoryInterface $tradepostRepository, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private BuildplanModuleRepositoryInterface $buildplanModuleRepository, private ShipBuildplanRepositoryInterface $shipBuildplanRepository, private ShipCreatorInterface $shipCreator, private CreatePrestigeLogInterface $createPrestigeLog, private StuTime $stuTime) {}
+    public function __construct(private DealsTakeAuctionRequestInterface $dealstakeAuctionRequest, private TradeLibFactoryInterface $tradeLibFactory, private DealsRepositoryInterface $dealsRepository, private TradePostRepositoryInterface $tradepostRepository, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private BuildplanModuleRepositoryInterface $buildplanModuleRepository, private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository, private ShipCreatorInterface $shipCreator, private CreatePrestigeLogInterface $createPrestigeLog, private StuTime $stuTime) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -157,10 +157,10 @@ final class DealsTakeAuction implements ActionControllerInterface
     }
 
 
-    private function createShip(ShipBuildplanInterface $buildplan, TradePostInterface $tradePost, int $userId): void
+    private function createShip(SpacecraftBuildplanInterface $buildplan, TradePostInterface $tradePost, int $userId): void
     {
         $this->shipCreator->createBy($userId, $buildplan->getRump()->getId(), $buildplan->getId())
-            ->setLocation($tradePost->getShip()->getLocation())
+            ->setLocation($tradePost->getStation()->getLocation())
             ->loadEps(25)
             ->loadReactor(25)
             ->loadWarpdrive(25)
@@ -173,10 +173,10 @@ final class DealsTakeAuction implements ActionControllerInterface
         return true;
     }
 
-    private function copyBuildplan(ShipBuildplanInterface $buildplan, UserInterface $user): void
+    private function copyBuildplan(SpacecraftBuildplanInterface $buildplan, UserInterface $user): void
     {
         //copying buildplan
-        $newPlan = $this->shipBuildplanRepository->prototype();
+        $newPlan = $this->spacecraftBuildplanRepository->prototype();
         $newPlan->setUser($user);
         $newPlan->setRump($buildplan->getRump());
         $newPlan->setName($buildplan->getName());
@@ -184,7 +184,7 @@ final class DealsTakeAuction implements ActionControllerInterface
         $newPlan->setBuildtime($buildplan->getBuildtime());
         $newPlan->setCrew($buildplan->getCrew());
 
-        $this->shipBuildplanRepository->save($newPlan);
+        $this->spacecraftBuildplanRepository->save($newPlan);
 
         //copying buildplan modules
         foreach ($buildplan->getModules() as $buildplanModule) {

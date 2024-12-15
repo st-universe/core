@@ -8,7 +8,7 @@ use Override;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 use Stu\Orm\Repository\NPCLogRepositoryInterface;
 
 final class DeleteBuildplan implements ActionControllerInterface
@@ -16,7 +16,7 @@ final class DeleteBuildplan implements ActionControllerInterface
     public const ACTION_IDENTIFIER = 'B_DELETE_BUILDPLAN';
 
     public function __construct(
-        private ShipBuildplanRepositoryInterface $shipBuildplanRepository,
+        private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository,
         private NPCLogRepositoryInterface $npcLogRepository
     ) {}
 
@@ -30,7 +30,7 @@ final class DeleteBuildplan implements ActionControllerInterface
             return;
         }
 
-        $buildplan = $this->shipBuildplanRepository->find($buildplanId);
+        $buildplan = $this->spacecraftBuildplanRepository->find($buildplanId);
         if ($buildplan === null || $buildplan->getUserId() !== $userId) {
             $game->addInformation('Der Bauplan konnte nicht gelöscht werden');
             return;
@@ -39,7 +39,7 @@ final class DeleteBuildplan implements ActionControllerInterface
         $crewCount = $buildplan->getCrew();
 
 
-        $this->shipBuildplanRepository->delete($buildplan);
+        $this->spacecraftBuildplanRepository->delete($buildplan);
 
         $logText = sprintf(
             '%s hat den Bauplan %s (%d) von Benutzer %s (%d) gelöscht. Crew: %d',

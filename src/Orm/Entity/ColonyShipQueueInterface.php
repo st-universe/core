@@ -18,8 +18,6 @@ interface ColonyShipQueueInterface
 
     public function getRumpId(): int;
 
-    public function setRumpId(int $shipRumpId): ColonyShipQueueInterface;
-
     public function getBuildtime(): int;
 
     public function setBuildtime(int $buildtime): ColonyShipQueueInterface;
@@ -34,13 +32,13 @@ interface ColonyShipQueueInterface
 
     public function setBuildingFunction(BuildingFunctionEnum $buildingFunction): ColonyShipQueueInterface;
 
-    public function getRump(): ShipRumpInterface;
+    public function getRump(): SpacecraftRumpInterface;
 
-    public function setRump(ShipRumpInterface $shipRump): ColonyShipQueueInterface;
+    public function setRump(SpacecraftRumpInterface $shipRump): ColonyShipQueueInterface;
 
-    public function getShipBuildplan(): ShipBuildplanInterface;
+    public function getSpacecraftBuildplan(): SpacecraftBuildplanInterface;
 
-    public function setShipBuildplan(ShipBuildplanInterface $shipBuildplan): ColonyShipQueueInterface;
+    public function setSpacecraftBuildplan(SpacecraftBuildplanInterface $spacecraftBuildplan): ColonyShipQueueInterface;
 
     public function getMode(): ?int;
 

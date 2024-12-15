@@ -23,7 +23,7 @@
 
 
 {% macro shiplist_body(wrapper) %}
-{% from 'html/macros.twig' import onClickShip %}
+{% from 'html/macros.twig' import onClickSpacecraft %}
 {% set ship = wrapper.get %}
 {% set shipId = ship.getId %}
 {% set epssystem = wrapper.getEpsSystemData %}
@@ -31,14 +31,14 @@
 
     <td id="shipimage" style="height:1px; width:1px;" class="shiplistshipimage">
         <a href="javascript:void(0);"
-            onclick="showShiplistShip({{ shipId }}, '{{ ship.getName|bbcode2txt|htmlSafe }}');" class="imgOverlayText"
-            onmouseover="openStorageInit(this, {{ shipId }});" onmouseout="closeStorage();">
+            onclick="showSpacecraft({{ shipId }}, '{{ ship.getName|bbcode2txt|htmlSafe }}', '{{ ship.getType.getModuleView.getPhpPage }}');"
+            class="imgOverlayText" onmouseover="openStorageInit(this, {{ shipId }});" onmouseout="closeStorage();">
             {% from 'html/shipmacros.twig' import shipimage %}
             {{ shipimage(ship) }}
         </a>
     </td>
     <td id="shipname">
-        <a {{ onClickShip(ship) }}>
+        <a {{ onClickSpacecraft(ship) }}>
             {% if ship.getDockedTo %}
             <img src="/assets/buttons/dock2.png" title="Schiff ist angedockt" style="height: 20px;" />
             {% endif %}
@@ -174,7 +174,7 @@
         </a>
         {% endif %}
         {% else %}
-        {% if not ship.isBase %}
+        {% if not ship.isStation %}
         <a href="?B_NEW_FLEET=1&id={{ shipId }}" onmouseover="cp('fleet_{{ shipId }}','buttons/fl_flag2')"
             onmouseout="cp('fleet_{{ shipId }}','buttons/fl_flag1')">
             <img src="/assets/buttons/fl_flag1.png" name="fleet_{{ shipId }}" title="Flotte erstellen" />

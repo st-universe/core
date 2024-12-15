@@ -13,8 +13,8 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShowShuttleManagement implements ViewControllerInterface
@@ -27,7 +27,7 @@ final class ShowShuttleManagement implements ViewControllerInterface
         private ShowShuttleManagementRequestInterface $request,
         private ColonyLoaderInterface $colonyLoader,
         private ShipRepositoryInterface $shipRepository,
-        private ShipWrapperFactoryInterface $shipWrapperFactory,
+        private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
         private InteractionCheckerInterface $interactionChecker,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
@@ -44,7 +44,7 @@ final class ShowShuttleManagement implements ViewControllerInterface
             return;
         }
 
-        if (!$this->interactionChecker->checkColonyPosition($colony, $ship)) {
+        if (!$this->interactionChecker->checkPosition($colony, $ship)) {
             throw new SanityCheckException('InteractionChecker->checkPosition failed', null, self::VIEW_IDENTIFIER);
         }
 
@@ -81,7 +81,7 @@ final class ShowShuttleManagement implements ViewControllerInterface
         }
 
         $game->setTemplateVar('MODULE_VIEW', ModuleViewEnum::COLONY);
-        $game->setTemplateVar('WRAPPER', $this->shipWrapperFactory->wrapShip($ship));
+        $game->setTemplateVar('WRAPPER', $this->spacecraftWrapperFactory->wrapShip($ship));
         $game->setTemplateVar('MANAGER', $colony);
         $game->setTemplateVar('CURRENTLY_STORED', $currentlyStored);
         $game->setTemplateVar('AVAILABLE_SHUTTLES', $shuttles);

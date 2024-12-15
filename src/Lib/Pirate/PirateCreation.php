@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use RuntimeException;
 use Stu\Component\Map\MapEnum;
-use Stu\Component\Ship\ShipAlertStateEnum;
+use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -125,7 +125,7 @@ class PirateCreation implements PirateCreationInterface
     {
         $randomLocation = $supportCaller === null ? $this->getRandomMapLocation() : $supportCaller->getLocation();
 
-        $randomAlertLevel = ShipAlertStateEnum::getRandomAlertLevel();
+        $randomAlertLevel = SpacecraftAlertStateEnum::getRandomAlertLevel();
 
         $this->logger->log(sprintf('    randomAlertLevel: %d', $randomAlertLevel->value));
 
@@ -159,7 +159,7 @@ class PirateCreation implements PirateCreationInterface
                     ->maxOutSystems()
                     ->createCrew()
                     ->setTorpedo()
-                    ->setShipName($shipName)
+                    ->setSpacecraftName($shipName)
                     ->setAlertState($randomAlertLevel)
                     ->finishConfiguration()
                     ->get();

@@ -6,7 +6,7 @@ namespace Stu\Module\Colony\Action\RepairBuilding;
 
 use Override;
 use request;
-use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\Lib\PlanetFieldTypeRetrieverInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
@@ -19,9 +19,7 @@ final class RepairBuilding implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_REPAIR';
 
-    public function __construct(private ColonyLoaderInterface $colonyLoader, private PlanetFieldRepositoryInterface $planetFieldRepository, private ColonyStorageManagerInterface $colonyStorageManager, private PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever, private ColonyRepositoryInterface $colonyRepository)
-    {
-    }
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private PlanetFieldRepositoryInterface $planetFieldRepository, private StorageManagerInterface $storageManager, private PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever, private ColonyRepositoryInterface $colonyRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -108,7 +106,7 @@ final class RepairBuilding implements ActionControllerInterface
             }
         }
         foreach ($costs as $cost) {
-            $this->colonyStorageManager->lowerStorage(
+            $this->storageManager->lowerStorage(
                 $colony,
                 $cost->getCommodity(),
                 (int) ceil($cost->getAmount() * $damageInPercent / 100)

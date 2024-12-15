@@ -9,7 +9,7 @@ use Mockery\MockInterface;
 use Override;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Prestige\Lib\PrestigeCalculationInterface;
-use Stu\Module\Ship\Lib\Battle\AlertDetection\AlertedShipsDetectionInterface;
+use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertedShipsDetectionInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\LocationInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -18,18 +18,18 @@ use Stu\StuTestCase;
 
 class TrapDetectionTest extends StuTestCase
 {
-    /** @var MockInterface|AlertedShipsDetectionInterface */
+    /** @var MockInterface&AlertedShipsDetectionInterface */
     private $alertedShipsDetection;
-    /** @var MockInterface|PrestigeCalculationInterface */
+    /** @var MockInterface&PrestigeCalculationInterface */
     private $prestigeCalculation;
-    /** @var MockInterface|StuRandom */
+    /** @var MockInterface&StuRandom */
     private $stuRandom;
 
-    /** @var MockInterface|LocationInterface */
+    /** @var MockInterface&LocationInterface */
     private $location;
-    /** @var MockInterface|ShipInterface */
+    /** @var MockInterface&ShipInterface */
     private $leadShip;
-    /** @var MockInterface|UserInterface */
+    /** @var MockInterface&UserInterface */
     private $user;
 
     private TrapDetectionInterface $subject;

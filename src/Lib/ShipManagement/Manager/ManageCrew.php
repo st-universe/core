@@ -6,33 +6,33 @@ namespace Stu\Lib\ShipManagement\Manager;
 
 use Override;
 use RuntimeException;
-use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
-use Stu\Component\Ship\System\ShipSystemManagerInterface;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Component\Ship\System\ShipSystemModeEnum;
+use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
+use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
-use Stu\Module\Ship\Lib\Auxiliary\ShipShutdownInterface;
-use Stu\Module\Ship\Lib\Crew\ShipLeaverInterface;
-use Stu\Module\Ship\Lib\Crew\TroopTransferUtilityInterface;
-use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
+use Stu\Module\Spacecraft\Lib\Auxiliary\ShipShutdownInterface;
+use Stu\Module\Spacecraft\Lib\Crew\SpacecraftLeaverInterface;
+use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
+use Stu\Module\Spacecraft\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Lib\Information\InformationWrapper;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ShipBuildplanInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Orm\Entity\SpacecraftBuildplanInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 
 class ManageCrew implements ManagerInterface
 {
     public function __construct(
-        private ShipCrewCalculatorInterface $shipCrewCalculator,
-        private ShipSystemManagerInterface $shipSystemManager,
+        private SpacecraftCrewCalculatorInterface $shipCrewCalculator,
+        private SpacecraftSystemManagerInterface $spacecraftSystemManager,
         private TroopTransferUtilityInterface $troopTransferUtility,
         private ShipShutdownInterface $shipShutdown,
-        private ShipLeaverInterface $shipLeaver,
+        private SpacecraftLeaverInterface $spacecraftLeaver,
         private ActivatorDeactivatorHelperInterface $helper
     ) {}
 
     #[Override]
-    public function manage(ShipWrapperInterface $wrapper, array $values, ManagerProviderInterface $managerProvider): array
+    public function manage(SpacecraftWrapperInterface $wrapper, array $values, ManagerProviderInterface $managerProvider): array
     {
         $msg = [];
         $informations = new InformationWrapper();
@@ -66,8 +66,8 @@ class ManageCrew implements ManagerInterface
      */
     private function setNewCrew(
         int $newCrewCount,
-        ShipWrapperInterface $wrapper,
-        ShipBuildplanInterface $buildplan,
+        SpacecraftWrapperInterface $wrapper,
+        SpacecraftBuildplanInterface $buildplan,
         ManagerProviderInterface $managerProvider,
         array &$msg,
         InformationWrapper $informations
@@ -86,8 +86,8 @@ class ManageCrew implements ManagerInterface
      */
     private function increaseCrew(
         int $newCrewCount,
-        ShipWrapperInterface $wrapper,
-        ShipBuildplanInterface $buildplan,
+        SpacecraftWrapperInterface $wrapper,
+        SpacecraftBuildplanInterface $buildplan,
         ManagerProviderInterface $managerProvider,
         array &$msg,
         InformationWrapper $informations
@@ -115,24 +115,24 @@ class ManageCrew implements ManagerInterface
                 if (
                     $actualcrew >= $mincrew
                     && $actualcrew + $additionalCrew > $maxcrew
-                    && ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS) && ($additionalCrew > 0
-                        && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() === ShipSystemModeEnum::MODE_OFF
-                        && !$this->helper->activate($wrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $informations)))
+                    && ($ship->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_TROOP_QUARTERS) && ($additionalCrew > 0
+                        && $ship->getShipSystem(SpacecraftSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() === SpacecraftSystemModeEnum::MODE_OFF
+                        && !$this->helper->activate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $informations)))
                 ) {
 
                     $additionalCrew  = 0;
                 }
             }
 
-            $managerProvider->addShipCrew($ship, $additionalCrew);
+            $managerProvider->addCrewAssignment($ship, $additionalCrew);
             $msg[] = sprintf(
                 _('%s: %d Crewman wurde(n) hochgebeamt'),
                 $ship->getName(),
                 $additionalCrew
             );
 
-            if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)) {
-                $this->shipSystemManager->activate($wrapper, ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT, true);
+            if ($ship->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_LIFE_SUPPORT)) {
+                $this->spacecraftSystemManager->activate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_LIFE_SUPPORT, true);
             }
         }
     }
@@ -142,7 +142,7 @@ class ManageCrew implements ManagerInterface
      */
     private function descreaseCrew(
         int $newCrewCount,
-        ShipWrapperInterface $wrapper,
+        SpacecraftWrapperInterface $wrapper,
         ManagerProviderInterface $managerProvider,
         array &$msg
     ): void {
@@ -185,17 +185,17 @@ class ManageCrew implements ManagerInterface
         }
     }
 
-    private function dumpForeignCrew(ShipInterface $ship): void
+    private function dumpForeignCrew(SpacecraftInterface $spacecraft): void
     {
-        foreach ($ship->getCrewAssignments() as $shipCrew) {
-            if ($shipCrew->getCrew()->getUser() !== $ship->getUser()) {
-                $this->shipLeaver->dumpCrewman(
+        foreach ($spacecraft->getCrewAssignments() as $shipCrew) {
+            if ($shipCrew->getCrew()->getUser() !== $spacecraft->getUser()) {
+                $this->spacecraftLeaver->dumpCrewman(
                     $shipCrew,
                     sprintf(
                         'Die Dienste von Crewman %s werden nicht mehr auf der Station %s von Spieler %s benötigt.',
                         $shipCrew->getCrew()->getName(),
-                        $ship->getName(),
-                        $ship->getUser()->getName(),
+                        $spacecraft->getName(),
+                        $spacecraft->getUser()->getName(),
                     )
                 );
             }

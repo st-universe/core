@@ -1,7 +1,7 @@
 <form id="selfrepair_form" method="post" action="ship.php">
   <input type="hidden" name="id" value="{{ SHIP.getId }}" />
   <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
-  {% if SHIP.isBase %}
+  {% if SHIP.isStation %}
   <div class="box">
     <div class="box_title">Passive Reparatur <img title="Wird durch angedockte Workbees durchgeführt"
         src="assets/buttons/info2.png" style="height:16px;" /></div>

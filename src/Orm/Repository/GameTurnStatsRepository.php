@@ -12,8 +12,9 @@ use Stu\Orm\Entity\FlightSignature;
 use Stu\Orm\Entity\GameTurnStats;
 use Stu\Orm\Entity\GameTurnStatsInterface;
 use Stu\Orm\Entity\Ship;
-use Stu\Orm\Entity\ShipCrew;
-use Stu\Orm\Entity\ShipRump;
+use Stu\Orm\Entity\CrewAssignment;
+use Stu\Orm\Entity\SpacecraftRump;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\StarSystemMap;
 
 /**
@@ -63,12 +64,12 @@ final class GameTurnStatsRepository extends EntityRepository implements GameTurn
         return (int)$this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT count(s) FROM %s s
-                JOIN %s r WITH s.rumps_id = r.id
-                WHERE r.base_crew <= (SELECT count(sc) FROM %s sc WHERE sc.ship_id = s.id)
+                JOIN %s r WITH s.rump_id = r.id
+                WHERE r.base_crew <= (SELECT count(sc) FROM %s sc WHERE sc.spacecraft_id = s.id)
                 AND s.user_id != :noOne',
-                Ship::class,
-                ShipRump::class,
-                ShipCrew::class
+                Spacecraft::class,
+                SpacecraftRump::class,
+                CrewAssignment::class
             )
         )->setParameter('noOne', UserEnum::USER_NOONE)
             ->getSingleScalarResult();

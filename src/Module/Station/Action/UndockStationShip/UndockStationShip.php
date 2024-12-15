@@ -6,21 +6,24 @@ namespace Stu\Module\Station\Action\UndockStationShip;
 
 use Override;
 use request;
-use Stu\Component\Ship\Repair\CancelRepairInterface;
+use Stu\Component\Spacecraft\Repair\CancelRepairInterface;
 use Stu\Component\Ship\Retrofit\CancelRetrofitInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Module\Station\Lib\StationLoaderInterface;
+use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
+use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class UndockStationShip implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_UNDOCK_SHIP';
 
     public function __construct(
-        private ShipLoaderInterface $shipLoader,
+        private StationLoaderInterface $stationLoader,
+        private SpacecraftRepositoryInterface $spacecraftRepository,
         private PrivateMessageSenderInterface $privateMessageSender,
         private CancelRepairInterface $cancelRepair,
         private CancelRetrofitInterface $cancelRetrofit
@@ -29,14 +32,14 @@ final class UndockStationShip implements ActionControllerInterface
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $game->setView(ShowShip::VIEW_IDENTIFIER);
+        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         $userId = $game->getUser()->getId();
 
         $stationId = request::indInt('id');
         $targetId = request::indInt('target');
 
-        $wrappers = $this->shipLoader->getWrappersBySourceAndUserAndTarget(
+        $wrappers = $this->stationLoader->getWrappersBySourceAndUserAndTarget(
             $stationId,
             $userId,
             $targetId
@@ -51,12 +54,12 @@ final class UndockStationShip implements ActionControllerInterface
         }
         $target = $targetWrapper->get();
 
-        if ($target->getDockedTo() !== $station) {
+        if (!$target instanceof ShipInterface || $target->getDockedTo() !== $station) {
             return;
         }
 
         if ($target->getUser() !== $game->getUser()) {
-            $href = sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $target->getId());
+            $href = sprintf('ship.php?%s=1&id=%d', ShowSpacecraft::VIEW_IDENTIFIER, $target->getId());
 
             $this->privateMessageSender->send(
                 $userId,
@@ -79,8 +82,8 @@ final class UndockStationShip implements ActionControllerInterface
         $target->setDockedToId(null);
         $station->getDockedShips()->remove($target->getId());
 
-        $this->shipLoader->save($target);
-        $this->shipLoader->save($station);
+        $this->spacecraftRepository->save($target);
+        $this->stationLoader->save($station);
 
         $game->addInformation(sprintf(_('Die %s wurde erfolgreich abgedockt'), $target->getName()));
     }

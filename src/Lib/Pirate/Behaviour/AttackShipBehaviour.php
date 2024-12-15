@@ -13,9 +13,10 @@ use Stu\Lib\Pirate\PirateReactionMetadata;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Module\Prestige\Lib\PrestigeCalculationInterface;
-use Stu\Module\Ship\Lib\Battle\FightLibInterface;
+use Stu\Module\Spacecraft\Lib\Battle\FightLibInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 class AttackShipBehaviour implements PirateBehaviourInterface
@@ -40,7 +41,7 @@ class AttackShipBehaviour implements PirateBehaviourInterface
         FleetWrapperInterface $fleet,
         PirateReactionInterface $pirateReaction,
         PirateReactionMetadata $reactionMetadata,
-        ?ShipInterface $triggerShip
+        ?SpacecraftInterface $triggerSpacecraft
     ): ?PirateBehaviourEnum {
         $leadWrapper = $fleet->getLeadWrapper();
         $leadShip = $leadWrapper->get();
@@ -58,7 +59,7 @@ class AttackShipBehaviour implements PirateBehaviourInterface
             fn(ShipInterface $target): bool =>
             $this->fightLib->canAttackTarget($leadShip, $target, true, false, false)
                 && !$this->trapDetection->isAlertTrap($target->getLocation(), $leadShip)
-                && ($target === $triggerShip
+                && ($target === $triggerSpacecraft
                     || $this->targetHasEnoughPrestige($piratePrestige, $target))
         );
 

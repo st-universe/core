@@ -20,7 +20,7 @@ use Stu\Orm\Repository\StorageRepository;
 #[Index(name: 'storage_user_idx', columns: ['user_id'])]
 #[Index(name: 'storage_commodity_idx', columns: ['commodity_id'])]
 #[Index(name: 'storage_colony_idx', columns: ['colony_id'])]
-#[Index(name: 'storage_ship_idx', columns: ['ship_id'])]
+#[Index(name: 'storage_spacecraft_idx', columns: ['spacecraft_id'])]
 #[Index(name: 'storage_torpedo_idx', columns: ['torpedo_storage_id'])]
 #[Index(name: 'storage_tradepost_idx', columns: ['tradepost_id'])]
 #[Index(name: 'storage_tradeoffer_idx', columns: ['tradeoffer_id'])]
@@ -46,7 +46,7 @@ class Storage implements StorageInterface
     private ?int $colony_id = null;
 
     #[Column(type: 'integer', nullable: true)]
-    private ?int $ship_id = null;
+    private ?int $spacecraft_id = null;
 
     #[Column(type: 'integer', nullable: true)]
     private ?int $torpedo_storage_id = null;
@@ -56,6 +56,9 @@ class Storage implements StorageInterface
 
     #[Column(type: 'integer', nullable: true)]
     private ?int $tradeoffer_id = null;
+
+    #[Column(type: 'integer', nullable: true)]
+    private ?int $trumfield_id = null;
 
     #[ManyToOne(targetEntity: 'User')]
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
@@ -69,9 +72,9 @@ class Storage implements StorageInterface
     #[JoinColumn(name: 'colony_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?ColonyInterface $colony = null;
 
-    #[ManyToOne(targetEntity: 'Ship', inversedBy: 'storage')]
-    #[JoinColumn(name: 'ship_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ?ShipInterface $ship = null;
+    #[ManyToOne(targetEntity: 'Spacecraft', inversedBy: 'storage')]
+    #[JoinColumn(name: 'spacecraft_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    private ?SpacecraftInterface $spacecraft = null;
 
     #[OneToOne(targetEntity: 'TorpedoStorage', inversedBy: 'storage')]
     #[JoinColumn(name: 'torpedo_storage_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
@@ -84,6 +87,10 @@ class Storage implements StorageInterface
     #[OneToOne(targetEntity: 'TradeOffer', inversedBy: 'storage')]
     #[JoinColumn(name: 'tradeoffer_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?TradeOfferInterface $tradeOffer = null;
+
+    #[ManyToOne(targetEntity: 'Trumfield', inversedBy: 'storage')]
+    #[JoinColumn(name: 'trumfield_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    private ?TrumfieldInterface $trumfield = null;
 
     #[Override]
     public function getId(): int
@@ -153,15 +160,15 @@ class Storage implements StorageInterface
     }
 
     #[Override]
-    public function getShip(): ?ShipInterface
+    public function getSpacecraft(): ?SpacecraftInterface
     {
-        return $this->ship;
+        return $this->spacecraft;
     }
 
     #[Override]
-    public function setShip(ShipInterface $ship): StorageInterface
+    public function setSpacecraft(?SpacecraftInterface $spacecraft): StorageInterface
     {
-        $this->ship = $ship;
+        $this->spacecraft = $spacecraft;
         return $this;
     }
 
@@ -201,6 +208,13 @@ class Storage implements StorageInterface
     public function setTradeOffer(TradeOfferInterface $tradeOffer): StorageInterface
     {
         $this->tradeOffer = $tradeOffer;
+        return $this;
+    }
+
+    #[Override]
+    public function setTrumfield(TrumfieldInterface $trumfield): StorageInterface
+    {
+        $this->trumfield = $trumfield;
         return $this;
     }
 }

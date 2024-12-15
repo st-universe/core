@@ -22,9 +22,7 @@ interface TradePostInterface
 
     public function setDescription(string $description): TradePostInterface;
 
-    public function getShipId(): int;
-
-    public function setShipId(int $shipId): TradePostInterface;
+    public function getStationId(): int;
 
     public function getTradeNetwork(): int;
 
@@ -48,12 +46,12 @@ interface TradePostInterface
 
     public function getLatestLicenseInfo(): ?TradeLicenseInfoInterface;
 
-    public function getShip(): ShipInterface;
+    public function getStation(): StationInterface;
 
-    public function setShip(ShipInterface $ship): TradePostInterface;
+    public function setStation(StationInterface $station): TradePostInterface;
 
     /**
-     * @return Collection<int, ShipCrewInterface>
+     * @return Collection<int, CrewAssignmentInterface>
      */
     public function getCrewAssignments(): Collection;
 

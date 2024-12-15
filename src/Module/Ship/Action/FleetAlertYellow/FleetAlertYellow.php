@@ -6,26 +6,24 @@ namespace Stu\Module\Ship\Action\FleetAlertYellow;
 
 use Override;
 use request;
-use Stu\Component\Ship\ShipAlertStateEnum;
+use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
-use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Module\Spacecraft\Lib\ActivatorDeactivatorHelperInterface;
+use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 
 final class FleetAlertYellow implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_FLEET_ALERT_YELLOW';
 
-    public function __construct(private ActivatorDeactivatorHelperInterface $helper)
-    {
-    }
+    public function __construct(private ActivatorDeactivatorHelperInterface $helper) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $game->setView(ShowShip::VIEW_IDENTIFIER);
+        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $this->helper->setAlertStateFleet(request::indInt('id'), ShipAlertStateEnum::ALERT_YELLOW, $game);
+        $this->helper->setAlertStateFleet(request::indInt('id'), SpacecraftAlertStateEnum::ALERT_YELLOW, $game);
     }
 
     #[Override]

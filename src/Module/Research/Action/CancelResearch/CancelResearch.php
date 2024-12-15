@@ -37,7 +37,7 @@ final class CancelResearch extends AuthenticatedActionController
                 $this->researchedRepository->delete($researched);
                 $game->addInformation('Die laufende Forschung wurde abgebrochen');
 
-                $this->componentLoader->addComponentUpdate(ComponentEnum::RESEARCH_NAVLET);
+                $this->componentLoader->addComponentUpdate(ComponentEnum::RESEARCH);
             }
         }
         $game->setView(GameController::DEFAULT_VIEW);

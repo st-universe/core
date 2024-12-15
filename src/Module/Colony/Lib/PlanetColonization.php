@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Lib;
 
 use Override;
+use RuntimeException;
 use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Component\Colony\ColonyEnum;
-use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Orm\Entity\BuildingInterface;
 use Stu\Orm\Entity\ColonyInterface;
@@ -19,9 +20,7 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class PlanetColonization implements PlanetColonizationInterface
 {
-    public function __construct(private PlanetFieldRepositoryInterface $planetFieldRepository, private CommodityRepositoryInterface $commodityRepository, private ColonyStorageManagerInterface $colonyStorageManager, private ColonyLibFactoryInterface $colonyLibFactory, private ColonyRepositoryInterface $colonyRepository, private UserRepositoryInterface $userRepository, private BuildingManagerInterface $buildingManager)
-    {
-    }
+    public function __construct(private PlanetFieldRepositoryInterface $planetFieldRepository, private CommodityRepositoryInterface $commodityRepository, private StorageManagerInterface $storageManager, private ColonyLibFactoryInterface $colonyLibFactory, private ColonyRepositoryInterface $colonyRepository, private UserRepositoryInterface $userRepository, private BuildingManagerInterface $buildingManager) {}
 
     #[Override]
     public function colonize(
@@ -61,9 +60,14 @@ final class PlanetColonization implements PlanetColonizationInterface
         $this->colonyRepository->save($colony);
         $this->planetFieldRepository->save($field);
 
-        $this->colonyStorageManager->upperStorage(
+        $commodity = $this->commodityRepository->find(CommodityTypeEnum::COMMODITY_BUILDING_MATERIALS);
+        if ($commodity === null) {
+            throw new RuntimeException('commodity does not exist');
+        }
+
+        $this->storageManager->upperStorage(
             $colony,
-            $this->commodityRepository->find(CommodityTypeEnum::COMMODITY_BUILDING_MATERIALS),
+            $commodity,
             150
         );
     }

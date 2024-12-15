@@ -9,24 +9,22 @@ use request;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
-use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Module\Station\Lib\StationLoaderInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
+use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 
 final class ShowShipRepair implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_SHIP_REPAIR';
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private StationUtilityInterface $stationUtility, private ShipWrapperFactoryInterface $shipWrapperFactory)
-    {
-    }
+    public function __construct(private StationLoaderInterface $stationLoader, private StationUtilityInterface $stationUtility, private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
 
-        $station = $this->shipLoader->getByIdAndUser(
+        $station = $this->stationLoader->getByIdAndUser(
             request::indInt('id'),
             $userId,
             false,
@@ -39,7 +37,7 @@ final class ShowShipRepair implements ViewControllerInterface
 
         $repairableShips = [];
         foreach ($station->getDockedShips() as $ship) {
-            $wrapper = $this->shipWrapperFactory->wrapShip($ship);
+            $wrapper = $this->spacecraftWrapperFactory->wrapShip($ship);
             if (
                 !$wrapper->canBeRepaired() || $ship->isUnderRepair()
             ) {
@@ -55,7 +53,7 @@ final class ShowShipRepair implements ViewControllerInterface
         $game->appendNavigationPart(
             sprintf(
                 '?%s=1&id=%d',
-                ShowShip::VIEW_IDENTIFIER,
+                ShowSpacecraft::VIEW_IDENTIFIER,
                 $station->getId()
             ),
             $station->getName()

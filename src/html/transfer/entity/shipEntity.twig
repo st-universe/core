@@ -1,0 +1,8 @@
+{% set rumpId = entity.getRump.getId %}
+{% if ownsEntity %}
+<a href="?SHOW_SPACECRAFT=1&id={{ entity.getId }}">
+    <img src="assets/ships/{{ rumpId }}.png" />
+</a>
+{% else %}
+<img src="assets/ships/{{ rumpId }}.png" />
+{% endif %}

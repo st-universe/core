@@ -8,7 +8,6 @@ use Mockery\MockInterface;
 use Override;
 use Stu\Lib\Map\DistanceCalculationInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
-use Stu\Module\Ship\Lib\Movement\ShipMoverInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -17,13 +16,12 @@ use Stu\StuTestCase;
 class RubColonyBehaviourFest extends StuTestCase
 {
     /** @var MockInterface&ColonyRepositoryInterface */
-    private MockInterface $colonyRepository;
-
+    private $colonyRepository;
     /** @var MockInterface&DistanceCalculationInterface */
-    private MockInterface $distanceCalculation;
+    private $distanceCalculation;
 
-    /** @var MockInterface&ShipMoverInterface */
-    private MockInterface $fleetWrapper;
+    /** @var MockInterface&FleetWrapperInterface */
+    private $fleetWrapper;
 
     private PirateBehaviourInterface $subject;
 
@@ -76,11 +74,11 @@ class RubColonyBehaviourFest extends StuTestCase
             ->once()
             ->andReturn([$colonyB, $colonyA]);
 
-        $this->distanceCalculation->shouldReceive('shipToColonyDistance')
+        $this->distanceCalculation->shouldReceive('spacecraftToColonyDistance')
             ->with($leadShip, $colonyA)
             ->once()
             ->andReturn(3);
-        $this->distanceCalculation->shouldReceive('shipToColonyDistance')
+        $this->distanceCalculation->shouldReceive('spacecraftToColonyDistance')
             ->with($leadShip, $colonyB)
             ->once()
             ->andReturn(10);

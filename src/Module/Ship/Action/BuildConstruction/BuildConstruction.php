@@ -7,30 +7,33 @@ namespace Stu\Module\Ship\Action\BuildConstruction;
 use Override;
 use request;
 use RuntimeException;
-use Stu\Component\Ship\ShipEnum;
-use Stu\Component\Ship\ShipRumpEnum;
-use Stu\Component\Ship\ShipStateEnum;
-use Stu\Component\Ship\SpacecraftTypeEnum;
-use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
-use Stu\Component\Ship\System\Data\EpsSystemData;
-use Stu\Component\Ship\System\ShipSystemModeEnum;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Spacecraft\SpacecraftRumpEnum;
+use Stu\Component\Spacecraft\SpacecraftStateEnum;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
+use Stu\Component\Spacecraft\System\Data\EpsSystemData;
+use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
+use Stu\Component\Station\Dock\DockModeEnum;
+use Stu\Component\Station\Dock\DockTypeEnum;
 use Stu\Component\Station\StationEnum;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Ship\Lib\Crew\TroopTransferUtilityInterface;
+use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\View\ShowShip\ShowShip;
-use Stu\Orm\Entity\ShipBuildplanInterface;
+use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
+use Stu\Orm\Entity\SpacecraftBuildplanInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\StationInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\DockingPrivilegeRepositoryInterface;
-use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
-use Stu\Orm\Repository\ShipRumpRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpUserRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftRepositoryInterface;
+use Stu\Orm\Repository\StationRepositoryInterface;
 
 final class BuildConstruction implements ActionControllerInterface
 {
@@ -43,14 +46,25 @@ final class BuildConstruction implements ActionControllerInterface
         CommodityTypeEnum::COMMODITY_DURANIUM => 50
     ];
 
-    public function __construct(private ShipRepositoryInterface $shipRepository, private ShipLoaderInterface $shipLoader, private ShipCreatorInterface $shipCreator, private ShipBuildplanRepositoryInterface $shipBuildplanRepository, private ShipStorageManagerInterface $shipStorageManager, private TroopTransferUtilityInterface $troopTransferUtility, private ShipRumpRepositoryInterface $shipRumpRepository, private ShipRumpUserRepositoryInterface $shipRumpUserRepository, private CommodityRepositoryInterface $commodityRepository, private DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository)
-    {
-    }
+    public function __construct(
+        private SpacecraftRepositoryInterface $spacecraftRepository,
+        private ShipRepositoryInterface $shipRepository,
+        private StationRepositoryInterface $stationRepository,
+        private ShipLoaderInterface $shipLoader,
+        private ShipCreatorInterface $shipCreator,
+        private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository,
+        private StorageManagerInterface $storageManager,
+        private TroopTransferUtilityInterface $troopTransferUtility,
+        private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository,
+        private ShipRumpUserRepositoryInterface $shipRumpUserRepository,
+        private CommodityRepositoryInterface $commodityRepository,
+        private DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $game->setView(ShowShip::VIEW_IDENTIFIER);
+        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         $userId = $game->getUser()->getId();
 
@@ -64,7 +78,7 @@ final class BuildConstruction implements ActionControllerInterface
             return;
         }
 
-        $rumpId = $ship->getUser()->getFactionId() + ShipRumpEnum::SHIP_RUMP_BASE_ID_CONSTRUCTION;
+        $rumpId = $ship->getUser()->getFactionId() + SpacecraftRumpEnum::SHIP_RUMP_BASE_ID_CONSTRUCTION;
         if (!$this->shipRumpUserRepository->isAvailableForUser($rumpId, $userId)) {
             return;
         }
@@ -80,19 +94,19 @@ final class BuildConstruction implements ActionControllerInterface
         }
 
         // check if there already is a base
-        if ($this->shipRepository->isBaseOnLocation($ship)) {
+        if ($this->stationRepository->isStationOnLocation($ship)) {
             $game->addInformation(_("Hier ist bereits eine Station errichtet"));
             return;
         }
 
         // check if the construction limit is reached
-        $limit = StationEnum::BUILDABLE_LIMITS_PER_ROLE[ShipRumpEnum::SHIP_ROLE_CONSTRUCTION];
-        if ($this->shipRepository->getAmountByUserAndRump($userId, $rumpId) >= $limit) {
+        $limit = StationEnum::BUILDABLE_LIMITS_PER_ROLE[SpacecraftRumpEnum::SHIP_ROLE_CONSTRUCTION];
+        if ($this->spacecraftRepository->getAmountByUserAndRump($userId, $rumpId) >= $limit) {
             $game->addInformation(sprintf(_('Es können nur %d Konstrukte errichtet werden'), $limit));
             return;
         }
 
-        if (!$ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_SHUTTLE_RAMP)) {
+        if (!$ship->isSystemHealthy(SpacecraftSystemTypeEnum::SYSTEM_SHUTTLE_RAMP)) {
             $game->addInformation(_("Die Shuttle-Rampe ist zerstört"));
             return;
         }
@@ -130,7 +144,7 @@ final class BuildConstruction implements ActionControllerInterface
                 continue;
             }
 
-            $plan = $this->shipBuildplanRepository->getShuttleBuildplan($commodity->getId());
+            $plan = $this->spacecraftBuildplanRepository->getShuttleBuildplan($commodity->getId());
             if ($plan === null) {
                 continue;
             }
@@ -173,7 +187,7 @@ final class BuildConstruction implements ActionControllerInterface
             $rumpCommodity = $rump->getCommodity();
             if ($rumpCommodity !== null) {
                 // remove shuttle from storage
-                $this->shipStorageManager->lowerStorage(
+                $this->storageManager->lowerStorage(
                     $ship,
                     $rumpCommodity,
                     1
@@ -193,7 +207,7 @@ final class BuildConstruction implements ActionControllerInterface
                 throw new RuntimeException('commodity not existent');
             }
 
-            $this->shipStorageManager->lowerStorage(
+            $this->storageManager->lowerStorage(
                 $ship,
                 $commodity,
                 $amount
@@ -216,7 +230,7 @@ final class BuildConstruction implements ActionControllerInterface
         $game->addInformation('Die gestarteten Workbees haben an das Konstrukt angedockt');
     }
 
-    private function startWorkbee(ShipInterface $ship, EpsSystemData $epsSystem, ShipBuildplanInterface $plan): ShipInterface
+    private function startWorkbee(ShipInterface $ship, EpsSystemData $epsSystem, SpacecraftBuildplanInterface $plan): ShipInterface
     {
         $rump = $plan->getRump();
 
@@ -237,8 +251,8 @@ final class BuildConstruction implements ActionControllerInterface
             throw new RuntimeException('workbee has not eps system installed');
         }
 
-        $workbee->getShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)->setMode(ShipSystemModeEnum::MODE_ALWAYS_ON);
-        $workbee->getShipSystem(ShipSystemTypeEnum::SYSTEM_NBS)->setMode(ShipSystemModeEnum::MODE_ON);
+        $workbee->getShipSystem(SpacecraftSystemTypeEnum::SYSTEM_LIFE_SUPPORT)->setMode(SpacecraftSystemModeEnum::MODE_ALWAYS_ON);
+        $workbee->getShipSystem(SpacecraftSystemTypeEnum::SYSTEM_NBS)->setMode(SpacecraftSystemModeEnum::MODE_ON);
 
         $shipCrewArray = $ship->getCrewAssignments()->getValues();
         for ($i = 0; $i < $plan->getCrew(); $i++) {
@@ -254,38 +268,37 @@ final class BuildConstruction implements ActionControllerInterface
         return $workbee;
     }
 
-    private function buildConstruction(ShipInterface $ship, int $rumpId): ShipInterface
+    private function buildConstruction(ShipInterface $ship, int $rumpId): StationInterface
     {
-        $rump = $this->shipRumpRepository->find($rumpId);
+        $rump = $this->spacecraftRumpRepository->find($rumpId);
 
         if ($rump === null) {
             throw new RuntimeException('rump does not exist');
         }
 
-        $construction = $this->shipRepository->prototype();
+        $construction = $this->stationRepository->prototype();
         $construction->setUser($ship->getUser());
         $construction->setRump($rump);
-        $construction->setSpacecraftType(SpacecraftTypeEnum::SPACECRAFT_TYPE_STATION);
         $construction->setName($rump->getName());
         $construction->setHuell($rump->getBaseHull());
         $construction->setMaxHuell($rump->getBaseHull());
         $construction->setAlertStateGreen();
-        $construction->setState(ShipStateEnum::SHIP_STATE_UNDER_CONSTRUCTION);
+        $construction->setState(SpacecraftStateEnum::SHIP_STATE_UNDER_CONSTRUCTION);
 
         $construction->setLocation($ship->getLocation());
 
-        $this->shipRepository->save($construction);
+        $this->stationRepository->save($construction);
 
         return $construction;
     }
 
-    private function allowDockingForOwner(ShipInterface $ship): void
+    private function allowDockingForOwner(StationInterface $station): void
     {
         $dock = $this->dockingPrivilegeRepository->prototype();
-        $dock->setPrivilegeMode(ShipEnum::DOCK_PRIVILEGE_MODE_ALLOW);
-        $dock->setPrivilegeType(ShipEnum::DOCK_PRIVILEGE_USER);
-        $dock->setTargetId($ship->getUser()->getId());
-        $dock->setShip($ship);
+        $dock->setPrivilegeMode(DockModeEnum::ALLOW);
+        $dock->setPrivilegeType(DockTypeEnum::USER);
+        $dock->setTargetId($station->getUser()->getId());
+        $dock->setStation($station);
 
         $this->dockingPrivilegeRepository->save($dock);
     }

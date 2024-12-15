@@ -31,7 +31,7 @@ WarpDrive: aktuell/maximal, Zuwachs">
         <tr>
 
     <td id="shipimage" style="height:1px; width:1px;" class="shiplistshipimage">
-        <a href="javascript:void(0);" onclick="showShiplistShip(42, 'Aerie');" class="imgOverlayText" onmouseover="openStorageInit(this, 42);" onmouseout="closeStorage();">
+        <a href="javascript:void(0);" onclick="showSpacecraft(42, 'Aerie', 'ship.php');" class="imgOverlayText" onmouseover="openStorageInit(this, 42);" onmouseout="closeStorage();">
                         
 
 <img src="/assets/buttons/warp_1.png" class="indexedGraphics" style="z-index: 1;">
@@ -41,8 +41,10 @@ WarpDrive: aktuell/maximal, Zuwachs">
         </a>
     </td>
     <td id="shipname">
-        <a href="javascript:void(0);" onclick="switchInnerContent('SHOW_SHIP', 'Aerie', 'id=42', 'ship.php');
+        <a href="javascript:void(0);" onclick="switchInnerContent('SHOW_SPACECRAFT', 'Aerie', 'id=42',
+'ship.php');
 updateSelectedShipId('42');">
+                        <img src="/assets/buttons/dock2.png" title="Schiff ist angedockt" style="height: 20px;">
                                                 <span>Aerie</span>
         </a>
     </td>
@@ -65,7 +67,7 @@ updateSelectedShipId('42');">
                 <td style="background-color: transparent !important;">
                                                             107/108
                                         <span>+1</span>
-                                        (<span class="neg">2</span>/<span class="neg">3</span>)
+                                        (<span class="neg">3</span>/<span class="neg">4</span>)
                                     </td>
                                 <td style="background-color: transparent !important;">
                                         57/58
@@ -88,13 +90,70 @@ updateSelectedShipId('42');">
     <td id="shipcrew" style="text-align: center; ">11</td>
     <td id="shipsystems">
 
-                <img src="/assets/buttons/kss2.png" title="Nahbereichssensoren deaktiviert">
+                <img src="/assets/buttons/kss1.png" title="Nahbereichssensoren aktiviert">
                         <img src="/assets/buttons/lss1.png" title="Langstreckensensoren aktiviert">
                                 <img src="/assets/buttons/act_phaser2.png" title="Strahlenwaffe deaktiviert">
                                     </td>
     <td style="text-align: center;">
                         <a href="?B_NEW_FLEET=1&amp;id=42" onmouseover="cp('fleet_42','buttons/fl_flag2')" onmouseout="cp('fleet_42','buttons/fl_flag1')">
             <img src="/assets/buttons/fl_flag1.png" name="fleet_42" title="Flotte erstellen">
+        </a>
+                    </td>
+</tr>
+
+        <tr>
+
+    <td id="shipimage" style="height:1px; width:1px;" class="shiplistshipimage">
+        <a href="javascript:void(0);" onclick="showSpacecraft(78, 'Aerie Three', 'ship.php');" class="imgOverlayText" onmouseover="openStorageInit(this, 78);" onmouseout="closeStorage();">
+                        
+
+<img src="/assets/buttons/warp_1.png" class="indexedGraphics" style="z-index: 1;">
+<img src="assets/ships/6501.png" class="indexedGraphicsShips" style="z-index: 5;" title="Aerie" onload="adjustCellHeight(this); adjustCellWidth(this);">
+
+
+        </a>
+    </td>
+    <td id="shipname">
+        <a href="javascript:void(0);" onclick="switchInnerContent('SHOW_SPACECRAFT', 'Aerie Three', 'id=78',
+'ship.php');
+updateSelectedShipId('78');">
+                                                <span>Aerie Three</span>
+        </a>
+    </td>
+    <td id="shipalarmstate" style="text-align: center;">
+        <img src="/assets/buttons/alert1_1.png" title="Alarmstufe">
+    </td>
+            <td id="shipposition" align="center">
+        7|11<br>
+                (7|8)
+            </td>
+        <td id="shiphull">
+        <span style="">819</span>/819
+    </td>
+    <td id="shipshields">
+                <span>819/819</span>
+                (+0)
+    </td>
+    <td id="shipenergy">
+        <table>
+                        <tr>
+                <td style="background-color: transparent !important;">
+                                    </td>
+                            </tr>
+        </table>
+    </td>
+    <td id="shipreactor">
+                            </td>
+
+    <td id="shipcrew" style="text-align: center; color: red;">0</td>
+    <td id="shipsystems">
+
+                <img src="/assets/buttons/kss2.png" title="Nahbereichssensoren deaktiviert">
+                        <img src="/assets/buttons/lss2.png" title="Langstreckensensoren deaktiviert">
+                                    </td>
+    <td style="text-align: center;">
+                        <a href="?B_NEW_FLEET=1&amp;id=78" onmouseover="cp('fleet_78','buttons/fl_flag2')" onmouseout="cp('fleet_78','buttons/fl_flag1')">
+            <img src="/assets/buttons/fl_flag1.png" name="fleet_78" title="Flotte erstellen">
         </a>
                     </td>
 </tr>

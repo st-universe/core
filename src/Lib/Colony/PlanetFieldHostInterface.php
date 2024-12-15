@@ -17,6 +17,8 @@ interface PlanetFieldHostInterface
 
     public function getId(): int;
 
+    public function getName(): string;
+
     public function getUser(): UserInterface;
 
     public function getWorkers(): int;
