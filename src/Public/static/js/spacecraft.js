@@ -86,10 +86,6 @@ function openStorage(id) {
 function closeStorage() {
 	closeAjaxWindow();
 }
-function showSpacecraft(id, title, phpPage) {
-	clearTimeout(storageTimer);
-	switchInnerContent('?SHOW_SPACECRAFT', title, `id=${id}`, phpPage);
-}
 function showSpacecraftDetails(id) {
 	closeAjaxWindow();
 	openPJsWin('elt', 1);

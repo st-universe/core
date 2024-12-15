@@ -30,9 +30,8 @@
 <tr>
 
     <td id="shipimage" style="height:1px; width:1px;" class="shiplistshipimage">
-        <a href="javascript:void(0);"
-            onclick="showSpacecraft({{ shipId }}, '{{ ship.getName|bbcode2txt|htmlSafe }}', '{{ ship.getType.getModuleView.getPhpPage }}');"
-            class="imgOverlayText" onmouseover="openStorageInit(this, {{ shipId }});" onmouseout="closeStorage();">
+        <a {{ onClickSpacecraft(ship) }} class="imgOverlayText" onmouseover="openStorageInit(this, {{ shipId }});"
+            onmouseout="closeStorage();">
             {% from 'html/shipmacros.twig' import shipimage %}
             {{ shipimage(ship) }}
         </a>
