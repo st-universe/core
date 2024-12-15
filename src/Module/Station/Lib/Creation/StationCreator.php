@@ -23,7 +23,7 @@ class StationCreator implements StationCreatorInterface
             $userId,
             $rumpId,
             $buildplanId,
-            new StationSpecialSystemsProvider($progress)
+            new StationCreationConfig($progress)
         );
 
         return $configurator;

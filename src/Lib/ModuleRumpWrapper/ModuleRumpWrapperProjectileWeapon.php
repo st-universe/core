@@ -8,7 +8,7 @@ use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Module\Spacecraft\Lib\ModuleValueCalculator;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\ModuleInterface;
 
 final class ModuleRumpWrapperProjectileWeapon extends ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
@@ -41,7 +41,7 @@ final class ModuleRumpWrapperProjectileWeapon extends ModuleRumpWrapperBase impl
     }
 
     #[Override]
-    public function apply(ShipWrapperInterface $wrapper): void
+    public function apply(SpacecraftWrapperInterface $wrapper): void
     {
         $systemData = $wrapper->getProjectileLauncherSystemData();
         if ($systemData === null) {

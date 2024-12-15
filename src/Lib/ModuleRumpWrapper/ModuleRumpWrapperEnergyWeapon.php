@@ -8,6 +8,7 @@ use Override;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Module\Spacecraft\Lib\ModuleValueCalculator;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\ModuleInterface;
 
 final class ModuleRumpWrapperEnergyWeapon extends ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
@@ -40,7 +41,7 @@ final class ModuleRumpWrapperEnergyWeapon extends ModuleRumpWrapperBase implemen
     }
 
     #[Override]
-    public function apply(ShipWrapperInterface $wrapper): void
+    public function apply(SpacecraftWrapperInterface $wrapper): void
     {
         $wrapper->get()->setBaseDamage($this->getValue());
     }

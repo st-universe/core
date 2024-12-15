@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ModuleRumpWrapper;
 
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\ModuleInterface;
 
 interface ModuleRumpWrapperInterface
@@ -18,5 +18,5 @@ interface ModuleRumpWrapperInterface
 
     public function getSecondValue(?ModuleInterface $module = null): ?int;
 
-    public function apply(ShipWrapperInterface $wrapper): void;
+    public function apply(SpacecraftWrapperInterface $wrapper): void;
 }
