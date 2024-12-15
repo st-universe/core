@@ -10,20 +10,20 @@
                 <th>Zeitpunkt</th>
             </tr>
             {% for wrapper in EMERGENCYWRAPPERS %}
-            {% set ship = wrapper.get.getShip %}
+            {% set spacecraft = wrapper.get.getSpacecraft %}
             <tr>
                 {% if wrapper.showDetails %}
-                <td>{{ ship.getSectorString }}</td>
+                <td>{{ spacecraft.getSectorString }}</td>
                 <td>
-                    {{ ship.getName|bbcode }}
-                    von {{ ship.getUser.getName|bbcode }}
+                    {{ spacecraft.getName|bbcode }}
+                    von {{ spacecraft.getUser.getName|bbcode }}
                 </td>
                 <td>{{ wrapper.get.getText }}</td>
                 <td>{{ wrapper.get.getDate|stuDateTime }}</td>
                 {% else %}
                 <td>
-                    {% if ship.getLocation.getSectorId %}
-                    <span>Sektor {{ ship.getLocation.getSectorId }}</span>
+                    {% if spacecraft.getLocation.getSectorId %}
+                    <span>Sektor {{ spacecraft.getLocation.getSectorId }}</span>
                     {% endif %}
                 </td>
                 <td></td>
