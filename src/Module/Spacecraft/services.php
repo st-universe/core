@@ -21,7 +21,7 @@ use Stu\Module\Spacecraft\Action\ActivateTractorBeam\ActivateTractorBeam;
 use Stu\Module\Spacecraft\Action\ActivateWarp\ActivateWarp;
 use Stu\Module\Spacecraft\Action\AddShipLog\AddShipLog;
 use Stu\Module\Spacecraft\Action\AttackBuilding\AttackBuilding;
-use Stu\Module\Spacecraft\Action\AttackShip\AttackShip;
+use Stu\Module\Spacecraft\Action\AttackSpacecraft\AttackSpacecraft;
 use Stu\Module\Spacecraft\Action\BoardShip\BoardShip;
 use Stu\Module\Spacecraft\Action\ChangeName\ChangeName;
 use Stu\Module\Spacecraft\Action\ChangeName\ChangeNameRequest;
@@ -426,7 +426,7 @@ return [
         EpsTransfer::ACTION_IDENTIFIER => autowire(EpsTransfer::class),
         SelfDestruct::ACTION_IDENTIFIER => autowire(SelfDestruct::class),
         AttackBuilding::ACTION_IDENTIFIER => autowire(AttackBuilding::class),
-        AttackShip::ACTION_IDENTIFIER => autowire(AttackShip::class),
+        AttackSpacecraft::ACTION_IDENTIFIER => autowire(AttackSpacecraft::class),
         TakeBuoy::ACTION_IDENTIFIER => autowire(TakeBuoy::class),
         InterceptShip::ACTION_IDENTIFIER => autowire(InterceptShip::class),
         DoTachyonScan::ACTION_IDENTIFIER => autowire(DoTachyonScan::class),

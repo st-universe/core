@@ -195,7 +195,7 @@
 <td style="width: 30px; text-align: center;">
     {% if canAttackTarget(SHIP, nbsItem) %}
     <div style="cursor: pointer;"
-        onClick="actionToInnerContent('B_ATTACK_SHIP', 'id={{ shipId }}&target={{ targetId }}&sstr={{ SESSIONSTRING }}');"
+        onClick="actionToInnerContent('B_ATTACK_SPACECRAFT', 'id={{ shipId }}&target={{ targetId }}&sstr={{ SESSIONSTRING }}');"
         onmouseover="cp('att_{{ targetId }}','buttons/phaser2')"
         onmouseout="cp('att_{{ targetId }}','buttons/phaser1')">
         <img src="/assets/buttons/phaser1.png" name="att_{{ targetId }}" title="{{ nameWithoutMarkup }} angreifen" />
@@ -205,7 +205,7 @@
 <td style="width: 120px;">
     {% if not nbsItem.getCloakState %}
     <div style="float:left; margin-right:4px;">
-        <a href="javascript:void(0);" onclick="showScanWindow({{ shipId }},{{ targetId }})"
+        <a href="javascript:void(0);" onclick="showScanWindow({{ shipId }},{{ targetId }});"
             onmouseover="cp('scn_{{ targetId }}','buttons/lupe2')"
             onmouseout="cp('scn_{{ targetId }}','buttons/lupe1')">
             <img src="/assets/buttons/lupe1.png" name="scn_{{ targetId }}" title="{{ nameWithoutMarkup }} scannen" />

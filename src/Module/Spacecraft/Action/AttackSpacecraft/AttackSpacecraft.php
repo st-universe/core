@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Spacecraft\Action\AttackShip;
+namespace Stu\Module\Spacecraft\Action\AttackSpacecraft;
 
 use Override;
 use request;
@@ -22,9 +22,9 @@ use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Orm\Entity\ShipInterface;
 
 //TODO unit tests and request class
-final class AttackShip implements ActionControllerInterface
+final class AttackSpacecraft implements ActionControllerInterface
 {
-    public const string ACTION_IDENTIFIER = 'B_ATTACK_SHIP';
+    public const string ACTION_IDENTIFIER = 'B_ATTACK_SPACECRAFT';
 
     /** @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader */
     public function __construct(
