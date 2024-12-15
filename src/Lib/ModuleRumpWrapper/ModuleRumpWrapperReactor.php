@@ -8,9 +8,9 @@ use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Module\Spacecraft\Lib\ModuleValueCalculator;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Module\Spacecraft\Lib\ReactorWrapperInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 
 final class ModuleRumpWrapperReactor extends ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
 {
@@ -46,7 +46,7 @@ final class ModuleRumpWrapperReactor extends ModuleRumpWrapperBase implements Mo
     }
 
     #[Override]
-    public function apply(ShipWrapperInterface $wrapper): void
+    public function apply(SpacecraftWrapperInterface $wrapper): void
     {
         $reactorWrapper = $wrapper->getReactorWrapper();
         if ($reactorWrapper === null) {

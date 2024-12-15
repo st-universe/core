@@ -14,6 +14,6 @@ interface SpacecraftSystemCreationInterface
     public function createShipSystemsByModuleList(
         SpacecraftInterface $spacecraft,
         Collection $buildplanModules,
-        SpecialSystemsProviderInterface $specialSystemsProvider
+        SpacecraftCreationConfigInterface $specialSystemsProvider
     ): void;
 }

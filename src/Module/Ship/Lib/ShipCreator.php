@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
-use Stu\Module\Spacecraft\Lib\Creation\ShipSpecialSystemsProvider;
+use Stu\Module\Spacecraft\Lib\Creation\ShipCreationConfig;
 use Stu\Module\Spacecraft\Lib\Creation\SpacecraftConfiguratorInterface;
 use Stu\Module\Spacecraft\Lib\Creation\SpacecraftCreatorInterface;
 use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
@@ -27,7 +27,7 @@ final class ShipCreator implements ShipCreatorInterface
             $userId,
             $rumpId,
             $buildplanId,
-            new ShipSpecialSystemsProvider($this->buildplanRepository, $buildplanId)
+            new ShipCreationConfig($this->buildplanRepository, $buildplanId)
         );
 
         return $configurator;

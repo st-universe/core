@@ -23,7 +23,7 @@ class SpacecraftSystemCreation implements SpacecraftSystemCreationInterface
     public function createShipSystemsByModuleList(
         SpacecraftInterface $spacecraft,
         Collection $buildplanModules,
-        SpecialSystemsProviderInterface $specialSystemsProvider
+        SpacecraftCreationConfigInterface $specialSystemsProvider
     ): void {
         $systems = $this->getDefaultSystems($spacecraft);
 
@@ -111,7 +111,7 @@ class SpacecraftSystemCreation implements SpacecraftSystemCreationInterface
     /**
      * @param array<int, ModuleInterface|null> $systems
      */
-    private function addSpecialSystems(SpecialSystemsProviderInterface $specialSystemsProvider, array &$systems): void
+    private function addSpecialSystems(SpacecraftCreationConfigInterface $specialSystemsProvider, array &$systems): void
     {
         foreach ($specialSystemsProvider->getSpecialSystemModules() as $module) {
             $this->addSpecialSystem($module, $systems);

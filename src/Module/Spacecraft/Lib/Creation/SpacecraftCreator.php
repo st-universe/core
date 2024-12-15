@@ -45,7 +45,7 @@ final class SpacecraftCreator implements SpacecraftCreatorInterface
         int $userId,
         int $rumpId,
         int $buildplanId,
-        SpecialSystemsProviderInterface $specialSystemsProvider
+        SpacecraftCreationConfigInterface $specialSystemsProvider
     ): SpacecraftConfiguratorInterface {
 
         $user = $this->userRepository->find($userId);
@@ -63,7 +63,7 @@ final class SpacecraftCreator implements SpacecraftCreatorInterface
             throw new RuntimeException('buildplan not existent');
         }
 
-        $spacecraft = $this->spacecraftFactory->create($rump);
+        $spacecraft =  $specialSystemsProvider->getSpacecraft() ?? $this->spacecraftFactory->create($rump);
         $spacecraft->setUser($user);
         $spacecraft->setBuildplan($buildplan);
         $spacecraft->setRump($rump);

@@ -7,7 +7,7 @@ namespace Stu\Lib\ModuleRumpWrapper;
 use Override;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Module\Spacecraft\Lib\ModuleValueCalculator;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\ModuleInterface;
 
 final class ModuleRumpWrapperHull extends ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
@@ -40,7 +40,7 @@ final class ModuleRumpWrapperHull extends ModuleRumpWrapperBase implements Modul
     }
 
     #[Override]
-    public function apply(ShipWrapperInterface $wrapper): void
+    public function apply(SpacecraftWrapperInterface $wrapper): void
     {
         $value = $this->getValue();
         $wrapper->get()->setMaxHuell($value);
