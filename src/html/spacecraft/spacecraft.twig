@@ -31,7 +31,8 @@
 {% endif %}
 {% set SHIP = WRAPPER.get %}
 {% set shipId = SHIP.getId %}
-<form action="ship.php" method="post" name="shipform" id="shipform" onkeydown="return event.key != 'Enter';">
+<form action="{{ SHIP.getType.getModuleView.getPhpPage }}" method="post" name="shipform" id="shipform"
+	onkeydown="return event.key != 'Enter';">
 	<input type="hidden" name="id" value="{{ SHIP.getId }}" />
 	<input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
 	<table class="tcal">
@@ -143,11 +144,11 @@
 					onmouseout="cp('uship','buttons/update0');">
 					<img src="/assets/buttons/update0.png" title="Aktualisieren" name="uship" />
 				</a>
-				<a href="javascript:void(0);" onclick="showShipDetails({{ SHIP.getId }});"
+				<a href="javascript:void(0);" onclick="showSpacecraftDetails({{ SHIP.getId }});"
 					onmouseover="cp('shinfo','buttons/info2');" onmouseout="cp('shinfo','buttons/info1');">
 					<img src="/assets/buttons/info1.png" title="Schiffsinformationen anzeigen" name="shinfo" />
 				</a>
-				<a href="javascript:void(0);" onclick="showShipCommunication({{ SHIP.getId }});"
+				<a href="javascript:void(0);" onclick="showCommunication({{ SHIP.getId }});"
 					onmouseover="cp('shipcom','buttons/msg2');" onmouseout="cp('shipcom','buttons/msg1');">
 					<img src="/assets/buttons/msg1.png" title="Kommunikation" name="shipcom" />
 				</a>

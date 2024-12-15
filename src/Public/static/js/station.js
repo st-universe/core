@@ -27,8 +27,34 @@ function showStationInformation(obj, planid) {
 	openWindowPosition('elt', 1, 200, pos[0] + 210, pos[1] - 180);
 	ajax_update('elt', 'station.php?SHOW_STATION_INFO=1&planid=' + planid);
 }
+
+function showScrapWindow() {
+	closeAjaxWindow();
+	openWindow('elt', 1, 300);
+	ajax_update('elt', 'station.php?id=' + shipid + '&SHOW_SCRAP_AJAX=1');
+}
+
 function getShipList() {
 	closeAjaxWindow();
 	openPJsWin('shiplist', 1);
 	ajax_update('shiplist', 'station.php?id=' + shipid + '&SHOW_STATION_SHIPLIST=1');
+}
+
+function showAggregationSystemWindow() {
+	closeAjaxWindow();
+	openWindow('elt', 1, 300);
+	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_AGGREGATION_SYSTEM_AJAX=1');
+}
+
+currentTab = false;
+function showStationModuleSelector(id) {
+	if (currentTab) {
+		currentTab.hide();
+
+		Element.select(currentTab, '.specialModuleRadio').each(function (elem) {
+			elem.checked = false;
+		});
+	}
+	$('selector_' + id).show();
+	currentTab = $('selector_' + id);
 }

@@ -1402,18 +1402,6 @@ parameters:
 			path: src/Module/Ship/View/ShowTradeMenuPayment/ShowTradeMenuPayment.php
 
 		-
-			message: '#^Call to Stu\\Exception\\AccessViolation\:\:__construct\(\) on a separate line has no effect\.$#'
-			identifier: new.resultUnused
-			count: 1
-			path: src/Module/Ship/View/ShowTradeMenuTransfer/ShowTradeMenuTransfer.php
-
-		-
-			message: '#^Strict comparison using \=\=\= between Stu\\Orm\\Entity\\TradePostInterface and null will always evaluate to false\.$#'
-			identifier: identical.alwaysFalse
-			count: 1
-			path: src/Module/Ship/View/ShowTradeMenuTransfer/ShowTradeMenuTransfer.php
-
-		-
 			message: '#^Negated boolean expression is always false\.$#'
 			identifier: booleanNot.alwaysFalse
 			count: 1

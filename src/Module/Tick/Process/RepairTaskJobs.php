@@ -9,7 +9,6 @@ use Stu\Component\Spacecraft\Repair\RepairUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Orm\Repository\RepairTaskRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
@@ -29,8 +28,6 @@ final class RepairTaskJobs implements ProcessTickHandlerInterface
         foreach ($result as $repairTask) {
             $spacecraft = $repairTask->getSpacecraft();
 
-            $href = sprintf('ship.php?%s=1&id=%d', ShowSpacecraft::VIEW_IDENTIFIER, $spacecraft->getId());
-
             if (!$spacecraft->hasEnoughCrew()) {
                 $this->privateMessageSender->send(
                     UserEnum::USER_NOONE,
@@ -41,7 +38,7 @@ final class RepairTaskJobs implements ProcessTickHandlerInterface
                         $repairTask->getSystemType()->getDescription()
                     ),
                     PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
-                    $href
+                    $spacecraft->getHref()
                 );
 
                 $this->repairTaskRepository->delete($repairTask);
@@ -72,7 +69,7 @@ final class RepairTaskJobs implements ProcessTickHandlerInterface
                 $spacecraft->getUser()->getId(),
                 $msg,
                 PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
-                $href
+                $spacecraft->getHref()
             );
         }
     }

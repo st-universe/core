@@ -16,7 +16,6 @@ use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Station\Lib\StationLoaderInterface;
-use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Module\Station\View\ShowShipManagement\ShowShipManagement;
 use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\StationInterface;
@@ -138,13 +137,12 @@ final class ManageShuttles implements ActionControllerInterface
                 $ship->getPosY(),
                 $informations->getInformationsAsString()
             );
-            $href = sprintf('ship.php?%s=1&id=%d', ShowSpacecraft::VIEW_IDENTIFIER, $ship->getId());
             $this->privateMessageSender->send(
                 $userId,
                 $ship->getUser()->getId(),
                 $pm,
                 PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
-                $href
+                $ship->getHref()
             );
         }
     }
