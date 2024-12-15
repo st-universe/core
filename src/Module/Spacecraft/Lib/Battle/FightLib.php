@@ -121,7 +121,7 @@ final class FightLib implements FightLibInterface
 
         //can't attack same fleet
         $ownFleetId = $spacecraft instanceof ShipInterface ? $spacecraft->getFleetId() : null;
-        $targetFleetId = $target instanceof ShipInterface ? $target->getFleetId() : null;
+        $targetFleetId = ($target instanceof ShipInterface || $target instanceof ShipNfsItem) ? $target->getFleetId() : null;
         if ($ownFleetId === null || $targetFleetId === null) {
             return true;
         }
