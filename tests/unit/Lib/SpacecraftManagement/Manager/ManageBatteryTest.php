@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Stu\Lib\ShipManagement\Manager;
+namespace Stu\Lib\SpacecraftManagement\Manager;
 
 use Mockery\MockInterface;
 use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
-use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
+use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;

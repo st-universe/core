@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Stu\Lib\ShipManagement\Manager;
+namespace Stu\Lib\SpacecraftManagement\Manager;
 
-use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
+use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 
 interface ManagerInterface

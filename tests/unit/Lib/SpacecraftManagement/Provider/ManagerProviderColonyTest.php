@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Lib\ShipManagement\Provider;
+namespace Stu\Lib\SpacecraftManagement\Provider;
 
 use Doctrine\Common\Collections\Collection;
 use Mockery\MockInterface;

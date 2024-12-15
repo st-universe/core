@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Colony\Action\ManageOrbitalShips;
+namespace Stu\Module\Colony\Action\ManageOrbitalSpacecrafts;
 
 use Override;
 use request;
-use Stu\Lib\ShipManagement\HandleManagersInterface;
-use Stu\Lib\ShipManagement\Provider\ManagerProviderFactoryInterface;
-use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
+use Stu\Lib\SpacecraftManagement\HandleManagersInterface;
+use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderFactoryInterface;
+use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowOrbitManagement\ShowOrbitManagement;
 use Stu\Module\Control\ActionControllerInterface;
@@ -16,16 +16,16 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
-final class ManageOrbitalShips implements ActionControllerInterface
+final class ManageOrbitalSpacecrafts implements ActionControllerInterface
 {
-    public const string ACTION_IDENTIFIER = 'B_MANAGE_SHIPS';
+    public const string ACTION_IDENTIFIER = 'B_MANAGE_SPACECRAFTS';
 
     public function __construct(
         private ColonyLoaderInterface $colonyLoader,
         private ColonyRepositoryInterface $colonyRepository,
-        private ShipRepositoryInterface $shipRepository,
+        private SpacecraftRepositoryInterface $spacecraftRepository,
         private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
         private ManagerProviderFactoryInterface $managerProviderFactory,
         private HandleManagersInterface $handleManagers
@@ -44,8 +44,8 @@ final class ManageOrbitalShips implements ActionControllerInterface
             $userId
         );
 
-        $shipIds = request::postArray('ships');
-        if (count($shipIds) == 0) {
+        $spacecraftIds = request::postArray('spacecrafts');
+        if (count($spacecraftIds) == 0) {
             $game->addInformation(_('Es wurden keine Schiffe ausgewählt'));
             return;
         }
@@ -61,8 +61,8 @@ final class ManageOrbitalShips implements ActionControllerInterface
             'torp_type' => request::postArray('torp_type'),
         ];
 
-        foreach ($shipIds as $shipId) {
-            $msg = array_merge($msg, $this->handleShip($values, $managerProvider, (int)$shipId, $colony));
+        foreach ($spacecraftIds as $spacecraftId) {
+            $msg = array_merge($msg, $this->handleSpacecraft($values, $managerProvider, (int)$spacecraftId, $colony));
         }
         $this->colonyRepository->save($colony);
 
@@ -74,31 +74,31 @@ final class ManageOrbitalShips implements ActionControllerInterface
      *
      * @return array<string>
      */
-    private function handleShip(
+    private function handleSpacecraft(
         array $values,
         ManagerProviderInterface $managerProvider,
-        int $shipId,
+        int $spacecraftId,
         ColonyInterface $colony
     ): array {
-        $ship = $this->shipRepository->find($shipId);
-        if ($ship === null) {
+        $spacecraft = $this->spacecraftRepository->find($spacecraftId);
+        if ($spacecraft === null) {
             return [];
         }
-        if ($ship->getCloakState()) {
+        if ($spacecraft->getCloakState()) {
             return [];
         }
-        if ($colony->getLocation() !== $ship->getLocation()) {
+        if ($colony->getLocation() !== $spacecraft->getLocation()) {
             return [];
         }
-        if ($ship->isDestroyed()) {
+        if ($spacecraft->isDestroyed()) {
             return [];
         }
 
-        $wrapper = $this->spacecraftWrapperFactory->wrapShip($ship);
+        $wrapper = $this->spacecraftWrapperFactory->wrapSpacecraft($spacecraft);
 
         $msg = $this->handleManagers->handle($wrapper, $values, $managerProvider);
 
-        $this->shipRepository->save($ship);
+        $this->spacecraftRepository->save($spacecraft);
 
         return $msg;
     }

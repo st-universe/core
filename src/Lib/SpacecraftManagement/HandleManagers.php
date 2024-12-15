@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Stu\Lib\ShipManagement;
+namespace Stu\Lib\SpacecraftManagement;
 
 use Override;
-use Stu\Lib\ShipManagement\Manager\ManagerInterface;
-use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
+use Stu\Lib\SpacecraftManagement\Manager\ManagerInterface;
+use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 
 class HandleManagers implements HandleManagersInterface

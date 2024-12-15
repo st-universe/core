@@ -13,7 +13,7 @@ use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 
 final class ShowOrbitManagement implements ViewControllerInterface
 {
-    public const string VIEW_IDENTIFIER = 'SHOW_SHIP_MANAGEMENT';
+    public const string VIEW_IDENTIFIER = 'SHOW_SPACECRAFT_MANAGEMENT';
 
     public function __construct(
         private ColonyLoaderInterface $colonyLoader,

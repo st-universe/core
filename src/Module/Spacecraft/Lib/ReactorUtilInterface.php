@@ -3,7 +3,7 @@
 namespace Stu\Module\Spacecraft\Lib;
 
 use Doctrine\Common\Collections\Collection;
-use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
+use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\StorageInterface;
 

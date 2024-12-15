@@ -2,39 +2,56 @@
 
 declare(strict_types=1);
 
-namespace Stu\Lib\ShipManagement\Provider;
+namespace Stu\Lib\SpacecraftManagement\Provider;
 
 use Doctrine\Common\Collections\Collection;
 use Override;
+use RuntimeException;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
-use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Module\Station\Lib\StationWrapperInterface;
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\UserInterface;
 
-class ManagerProviderColony implements ManagerProviderInterface
+class ManagerProviderStation implements ManagerProviderInterface
 {
-    public function __construct(private ColonyInterface $colony, private CrewCreatorInterface $crewCreator, private ColonyLibFactoryInterface $colonyLibFactory, private StorageManagerInterface $storageManager, private TroopTransferUtilityInterface $troopTransferUtility) {}
+    public function __construct(
+        private StationWrapperInterface $wrapper,
+        private CrewCreatorInterface $crewCreator,
+        private TroopTransferUtilityInterface $troopTransferUtility,
+        private StorageManagerInterface $storageManager
+    ) {}
 
     #[Override]
     public function getUser(): UserInterface
     {
-        return $this->colony->getUser();
+        return $this->wrapper->get()->getUser();
     }
 
     #[Override]
     public function getEps(): int
     {
-        return $this->colony->getEps();
+        $eps = $this->wrapper->getEpsSystemData();
+
+        if ($eps === null) {
+            return 0;
+        }
+
+        return $eps->getEps();
     }
 
     #[Override]
     public function lowerEps(int $amount): ManagerProviderInterface
     {
-        $this->colony->lowerEps($amount);
+        $eps = $this->wrapper->getEpsSystemData();
+
+        if ($eps === null) {
+            throw new RuntimeException('can not lower eps without eps system');
+        }
+
+        $eps->lowerEps($amount)->update();
 
         return $this;
     }
@@ -42,54 +59,62 @@ class ManagerProviderColony implements ManagerProviderInterface
     #[Override]
     public function getName(): string
     {
-        return sprintf('Kolonie %s', $this->colony->getName());
+        $station = $this->wrapper->get();
+
+        return sprintf(
+            '%s %s',
+            $station->getRump()->getName(),
+            $station->getName(),
+        );
     }
 
     #[Override]
     public function getSectorString(): string
     {
-        return $this->colony->getSectorString();
+        return $this->wrapper->get()->getSectorString();
     }
 
     #[Override]
     public function getFreeCrewAmount(): int
     {
-        return $this->colony->getCrewAssignmentAmount();
+        return $this->wrapper->get()->getExcessCrewCount();
     }
 
     #[Override]
     public function addCrewAssignment(SpacecraftInterface $spacecraft, int $amount): void
     {
-        $this->crewCreator->createCrewAssignment($spacecraft, $this->colony, $amount);
+        $this->crewCreator->createCrewAssignment($spacecraft, $this->wrapper->get(), $amount);
     }
 
     #[Override]
     public function getFreeCrewStorage(): int
     {
-        return $this->colonyLibFactory->createColonyPopulationCalculator(
-            $this->colony
-        )->getFreeAssignmentCount();
+        $station = $this->wrapper->get();
+
+        return $this->troopTransferUtility->getFreeQuarters($station);
     }
 
     #[Override]
     public function addCrewAssignments(array $crewAssignments): void
     {
+        $station = $this->wrapper->get();
+
         foreach ($crewAssignments as $crewAssignment) {
-            $this->troopTransferUtility->assignCrew($crewAssignment, $this->colony);
+            $this->troopTransferUtility->assignCrew($crewAssignment, $station);
         }
     }
 
     #[Override]
     public function getStorage(): Collection
     {
-        return $this->colony->getStorage();
+        return $this->wrapper->get()->getStorage();
     }
 
     #[Override]
     public function upperStorage(CommodityInterface $commodity, int $amount): void
     {
         $this->storageManager->upperStorage(
-            $this->colony,
+            $this->wrapper->get(),
             $commodity,
             $amount
         );
@@ -99,7 +124,7 @@ class ManagerProviderColony implements ManagerProviderInterface
     public function lowerStorage(CommodityInterface $commodity, int $amount): void
     {
         $this->storageManager->lowerStorage(
-            $this->colony,
+            $this->wrapper->get(),
             $commodity,
             $amount
         );

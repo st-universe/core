@@ -7,9 +7,9 @@ namespace Stu\Module\Station\Action\ManageShips;
 use Override;
 use request;
 use Stu\Component\Station\StationUtilityInterface;
-use Stu\Lib\ShipManagement\HandleManagersInterface;
-use Stu\Lib\ShipManagement\Provider\ManagerProviderFactoryInterface;
-use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
+use Stu\Lib\SpacecraftManagement\HandleManagersInterface;
+use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderFactoryInterface;
+use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
@@ -21,7 +21,7 @@ use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class ManageShips implements ActionControllerInterface
 {
-    public const string ACTION_IDENTIFIER = 'B_MANAGE_SHIPS';
+    public const string ACTION_IDENTIFIER = 'B_MANAGE_SPACECRAFTS';
 
     public function __construct(
         private StationLoaderInterface $stationLoader,
