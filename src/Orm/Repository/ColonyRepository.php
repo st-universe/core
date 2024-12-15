@@ -300,7 +300,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                 AND u.id >= :firstUserId
                 AND u.state >= :stateActive
                 AND u.creation < :fourMonthEarlier
-                AND (u.vac_active = 0 OR u.vac_request_date > :vacationThreshold)
+                AND (u.vac_active = :false OR u.vac_request_date > :vacationThreshold)
                 AND COALESCE(w.protection_timeout, 0) < :currentTime',
                 Colony::class,
                 StarSystemMap::class,
@@ -320,6 +320,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                 'firstUserId' => UserEnum::USER_FIRST_ID,
                 'stateActive' => UserEnum::USER_STATE_ACTIVE,
                 'fourMonthEarlier' => time() - TimeConstants::EIGHT_WEEKS_IN_SECONDS,
+                'false' => false,
                 'vacationThreshold' => time() - UserEnum::VACATION_DELAY_IN_SECONDS,
                 'currentTime' => time()
             ])

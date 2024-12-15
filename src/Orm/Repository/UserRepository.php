@@ -66,8 +66,8 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
                  AND u.id NOT IN (:ignoreIds)
                  AND u.delmark != :deletionForbidden
                  AND (u.delmark = :deletionMark
-                        OR (u.vac_active = 0 AND u.lastaction > 0 AND u.lastaction < :idleTimeThreshold)
-                        OR (u.vac_active = 1 AND u.lastaction > 0 AND u.lastaction < :idleTimeVacationThreshold)
+                        OR (u.vac_active = :false AND u.lastaction > 0 AND u.lastaction < :idleTimeThreshold)
+                        OR (u.vac_active = :true AND u.lastaction > 0 AND u.lastaction < :idleTimeVacationThreshold)
                     )
                  ORDER BY u.id ASC',
                 User::class
@@ -78,7 +78,9 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
             'ignoreIds' => $ignoreIds,
             'deletionMark' => UserEnum::DELETION_CONFIRMED,
             'deletionForbidden' => UserEnum::DELETION_FORBIDDEN,
-            'firstUserId' => UserEnum::USER_FIRST_ID
+            'firstUserId' => UserEnum::USER_FIRST_ID,
+            'false' => false,
+            'true' => true
         ])->getResult();
     }
 
@@ -261,13 +263,14 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
             sprintf(
                 'SELECT COUNT(u.id) FROM %s u
                 WHERE u.id >= :firstUserId
-                AND u.vac_active = 1
+                AND u.vac_active = :true
                 AND u.vac_request_date < :vacThreshold',
                 User::class
             )
         )->setParameters([
             'vacThreshold' => time() - UserEnum::VACATION_DELAY_IN_SECONDS,
-            'firstUserId' => UserEnum::USER_FIRST_ID
+            'firstUserId' => UserEnum::USER_FIRST_ID,
+            'true' => true
         ])
             ->getSingleScalarResult();
     }

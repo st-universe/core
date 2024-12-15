@@ -178,7 +178,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
                         (s.state IN (:scrapping, :underConstruction))
                     OR
                         (p.crew = 0))
-                AND (u.vac_active = 0 OR u.vac_request_date > :vacationThreshold)',
+                AND (u.vac_active = :false OR u.vac_request_date > :vacationThreshold)',
                 Spacecraft::class,
                 SpacecraftBuildplan::class,
                 User::class,
@@ -188,7 +188,8 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
             'underConstruction' => SpacecraftStateEnum::SHIP_STATE_UNDER_CONSTRUCTION,
             'scrapping' => SpacecraftStateEnum::SHIP_STATE_UNDER_SCRAPPING,
             'vacationThreshold' => time() - UserEnum::VACATION_DELAY_IN_SECONDS,
-            'firstUserId' => UserEnum::USER_FIRST_ID
+            'firstUserId' => UserEnum::USER_FIRST_ID,
+            'false' => false
         ])->toIterable();
     }
 

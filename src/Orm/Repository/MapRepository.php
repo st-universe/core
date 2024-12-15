@@ -343,7 +343,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                 JOIN stu_map_ftypes mf
                 ON l.field_id = mf.id
                 WHERE m.region_id = :regionId
-                AND mf.passable = 1
+                AND mf.passable = :true
                 AND m.id != :loc
                 ORDER BY RANDOM()',
                 $rsm
@@ -351,6 +351,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             ->setParameters([
                 'regionId' => $regionId,
                 'loc' => $location,
+                'true' => true
             ])
             ->getResult();
 
@@ -385,7 +386,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                     WHERE NOT EXISTS (SELECT s.id FROM stu_ship s WHERE s.location_id = m.id)
                     AND l.layer_id = :layerId
                     AND mft.x_damage = 0
-                    AND mft.passable = 1
+                    AND mft.passable = :true
                     %s
                     ORDER BY RANDOM()
                     LIMIT 1',
@@ -393,7 +394,10 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                 ),
                 $rsm
             )
-            ->setParameter('layerId', $layer->getId())
+            ->setParameters([
+                'layerId' => $layer->getId(),
+                'true' => true
+            ])
             ->getSingleScalarResult();
 
         $map = $this->find($randomMapId);
