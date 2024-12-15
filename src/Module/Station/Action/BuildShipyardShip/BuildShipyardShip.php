@@ -7,27 +7,31 @@ namespace Stu\Module\Station\Action\BuildShipyardShip;
 use Override;
 use request;
 
-use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\View\ShowShip\ShowShip;
-use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
+use Stu\Module\Station\Lib\StationLoaderInterface;
+use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipyardShipQueueRepositoryInterface;
+use Stu\Orm\Repository\StationRepositoryInterface;
 
 final class BuildShipyardShip implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_BUILD_SHIPYARD_SHIP';
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private ShipRepositoryInterface $shipRepository, private ShipBuildplanRepositoryInterface $shipBuildplanRepository, private ShipyardShipQueueRepositoryInterface $shipyardShipQueueRepository, private ShipStorageManagerInterface $shipStorageManager)
-    {
-    }
+    public function __construct(
+        private StationLoaderInterface $stationLoader,
+        private StationRepositoryInterface $stationRepository,
+        private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository,
+        private ShipyardShipQueueRepositoryInterface $shipyardShipQueueRepository,
+        private StorageManagerInterface $storageManager
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
+        $wrapper = $this->stationLoader->getWrapperByIdAndUser(
             request::indInt('id'),
             $game->getUser()->getId()
         );
@@ -36,7 +40,7 @@ final class BuildShipyardShip implements ActionControllerInterface
         $userId = $game->getUser()->getId();
         $shipyardId = $shipyard->getId();
 
-        $plan = $this->shipBuildplanRepository->find(request::getIntFatal('planid'));
+        $plan = $this->spacecraftBuildplanRepository->find(request::getIntFatal('planid'));
         if ($plan === null) {
             return;
         }
@@ -49,7 +53,7 @@ final class BuildShipyardShip implements ActionControllerInterface
             return;
         }
 
-        $game->setView(ShowShip::VIEW_IDENTIFIER);
+        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         if ($this->shipyardShipQueueRepository->getAmountByShipyard($shipyardId) > 0) {
             $game->addInformation(_('In dieser Werft wird bereits ein Schiff gebaut'));
@@ -83,20 +87,20 @@ final class BuildShipyardShip implements ActionControllerInterface
         foreach ($modules as $moduleObj) {
             $module = $moduleObj->getModule();
 
-            $this->shipStorageManager->lowerStorage($shipyard, $module->getCommodity(), 1);
+            $this->storageManager->lowerStorage($shipyard, $module->getCommodity(), 1);
         }
 
         $queue = $this->shipyardShipQueueRepository->prototype();
-        $queue->setShip($shipyard);
+        $queue->setStation($shipyard);
         $queue->setUserId($userId);
         $queue->setRump($rump);
-        $queue->setShipBuildplan($plan);
+        $queue->setSpacecraftBuildplan($plan);
         $queue->setBuildtime($plan->getBuildtime());
         $queue->setFinishDate(time() + $plan->getBuildtime());
 
         $epsSystem->lowerEps($rump->getEpsCost())->update();
 
-        $this->shipRepository->save($shipyard);
+        $this->stationRepository->save($shipyard);
         $this->shipyardShipQueueRepository->save($queue);
 
         $game->addInformationf(

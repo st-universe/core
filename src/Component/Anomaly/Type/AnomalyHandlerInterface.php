@@ -10,7 +10,7 @@ interface AnomalyHandlerInterface
 {
     public function checkForCreation(): void;
 
-    public function handleShipTick(AnomalyInterface $anomaly): void;
+    public function handleSpacecraftTick(AnomalyInterface $anomaly): void;
 
     public function letAnomalyDisappear(AnomalyInterface $anomaly): void;
 }

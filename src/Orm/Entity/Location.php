@@ -30,7 +30,10 @@ use Stu\Orm\Repository\LocationRepository;
 #[Entity(repositoryClass: LocationRepository::class)]
 #[InheritanceType('JOINED')]
 #[DiscriminatorColumn(name: 'discr', type: 'string')]
-#[DiscriminatorMap(['map' => Map::class, 'systemMap' => StarSystemMap::class])]
+#[DiscriminatorMap([
+    'map' => Map::class,
+    'systemMap' => StarSystemMap::class
+])]
 abstract class Location implements LocationInterface
 {
     #[Id]
@@ -59,10 +62,16 @@ abstract class Location implements LocationInterface
     private MapFieldTypeInterface $mapFieldType;
 
     /**
-     * @var ArrayCollection<int, ShipInterface>
+     * @var ArrayCollection<int, SpacecraftInterface>
      */
-    #[OneToMany(targetEntity: 'Ship', mappedBy: 'location', indexBy: 'id', fetch: 'EXTRA_LAZY')]
-    private Collection $ships;
+    #[OneToMany(targetEntity: 'Spacecraft', mappedBy: 'location', indexBy: 'id', fetch: 'EXTRA_LAZY')]
+    private Collection $spacecrafts;
+
+    /**
+     * @var ArrayCollection<int, TrumfieldInterface>
+     */
+    #[OneToMany(targetEntity: 'Trumfield', mappedBy: 'location', indexBy: 'id', fetch: 'EXTRA_LAZY')]
+    private Collection $trumfields;
 
     /**
      * @var ArrayCollection<int, FlightSignatureInterface>
@@ -74,7 +83,7 @@ abstract class Location implements LocationInterface
     /**
      * @var ArrayCollection<int, BuoyInterface>
      */
-    #[OneToMany(targetEntity: 'Buoy', mappedBy: 'location')]
+    #[OneToMany(targetEntity: 'Buoy', mappedBy: 'location', fetch: 'EXTRA_LAZY')]
     private Collection $buoys;
 
     /**
@@ -91,7 +100,8 @@ abstract class Location implements LocationInterface
 
     public function __construct()
     {
-        $this->ships = new ArrayCollection();
+        $this->spacecrafts = new ArrayCollection();
+        $this->trumfields = new ArrayCollection();
         $this->signatures = new ArrayCollection();
         $this->buoys = new ArrayCollection();
         $this->anomalies = new ArrayCollection();
@@ -136,9 +146,15 @@ abstract class Location implements LocationInterface
     }
 
     #[Override]
-    public function getShips(): Collection
+    public function getSpacecrafts(): Collection
     {
-        return $this->ships;
+        return $this->spacecrafts;
+    }
+
+    #[Override]
+    public function getTrumfields(): Collection
+    {
+        return $this->trumfields;
     }
 
     #[Override]

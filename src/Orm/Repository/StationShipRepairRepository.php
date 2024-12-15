@@ -50,7 +50,7 @@ final class StationShipRepairRepository extends EntityRepository implements Stat
             ->createNativeQuery(
                 'SELECT s.id, s.station_id, s.ship_id
                 FROM    (
-                        SELECT  *, ROW_NUMBER() OVER (PARTITION BY station_id ORDER BY id ASC) rn
+                        SELECT *, ROW_NUMBER() OVER (PARTITION BY station_id ORDER BY id ASC) rn
                         FROM stu_station_shiprepair
                         ) s
                 WHERE   s.rn = 1',

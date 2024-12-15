@@ -6,10 +6,10 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Override;
 use Stu\Component\Anomaly\Type\SubspaceEllipseHandler;
-use Stu\Component\Ship\ShipRumpEnum;
-use Stu\Component\Ship\ShipStateEnum;
-use Stu\Component\Ship\System\ShipSystemModeEnum;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Spacecraft\SpacecraftRumpEnum;
+use Stu\Component\Spacecraft\SpacecraftStateEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\LayerInterface;
@@ -26,7 +26,7 @@ class LocationRepository extends EntityRepository implements LocationRepositoryI
         return $this->getEntityManager()->createNativeQuery(
             'SELECT l.cx as x, l.cy as y,
              (SELECT count(distinct s.id)
-                    FROM stu_ships s
+                    FROM stu_ship s
                     JOIN stu_user u ON s.user_id = u.id
                     WHERE s.location_id = l.id
                     AND u.allys_id = :allyId) as shipcount
@@ -51,7 +51,7 @@ class LocationRepository extends EntityRepository implements LocationRepositoryI
         return $this->getEntityManager()->createNativeQuery(
             'SELECT l.cx as x, l.cy as y,
             (SELECT count(distinct s.id)
-                FROM stu_ships s
+                FROM stu_ship s
                 WHERE s.location_id = l.id
                 AND s.id = :shipId) as shipcount
             FROM stu_location l
@@ -76,7 +76,7 @@ class LocationRepository extends EntityRepository implements LocationRepositoryI
         return $this->getEntityManager()->createNativeQuery(
             'SELECT l.cx as x, l.cy as y,
             (SELECT count(distinct s.id)
-                FROM stu_ships s
+                FROM stu_ship s
                 WHERE s.location_id = l.id
                 AND s.user_id = :userId) as shipcount
             FROM stu_location l
@@ -109,25 +109,25 @@ class LocationRepository extends EntityRepository implements LocationRepositoryI
                             + coalesce(sum(r2.tractor_mass), 0)
                             + coalesce((SELECT count(ca.id)
                                             FROM stu_crew_assign ca
-                                            JOIN stu_ships s
-                                            ON ca.ship_id = s.id
+                                            JOIN stu_spacecraft s
+                                            ON ca.spacecraft_id = s.id
                                             WHERE s.user_id >= :firstUserId
                                             AND s.state != :state
                                             AND s.location_id = l.id
                                             AND NOT EXISTS (SELECT ss.id
-                                                            FROM stu_ship_system ss
-                                                            WHERE ss.ship_id = s.id
+                                                            FROM stu_spacecraft_system ss
+                                                            WHERE ss.spacecraft_id = s.id
                                                             AND ss.system_type = :systemwarp
                                                             AND ss.mode > :mode))
                                         * (SELECT count(ss.id)
-                                            FROM stu_ship_system ss
-                                            JOIN stu_ships s
-                                            ON ss.ship_id = s.id
+                                            FROM stu_spacecraft_system ss
+                                            JOIN stu_spacecraft s
+                                            ON ss.spacecraft_id = s.id
                                             WHERE s.user_id >= :firstUserId
                                             AND s.state != :state
                                             AND NOT EXISTS (SELECT ss.id
-                                                            FROM stu_ship_system ss
-                                                            WHERE ss.ship_id = s.id
+                                                            FROM stu_spacecraft_system ss
+                                                            WHERE ss.spacecraft_id = s.id
                                                             AND ss.system_type = :systemwarp
                                                             AND ss.mode > :mode)
                                             AND s.location_id = l.id
@@ -135,19 +135,19 @@ class LocationRepository extends EntityRepository implements LocationRepositoryI
                                         * 100, 0) - :threshold as descriminator,
                         l.id AS location_id
                         FROM stu_location l
-                        JOIN stu_ships s
+                        JOIN stu_spacecraft s
                         ON s.location_id = l.id
-                        LEFT JOIN stu_rumps r1
-                        ON s.rumps_id = r1.id
+                        LEFT JOIN stu_rump r1
+                        ON s.rump_id = r1.id
                         and r1.category_id = :rumpCategory
-                        LEFT JOIN stu_rumps r2
-                        ON s.rumps_id = r2.id
+                        LEFT JOIN stu_rump r2
+                        ON s.rump_id = r2.id
                         AND r2.category_id != :rumpCategory
                         WHERE s.user_id >= :firstUserId
                         AND s.state != :state
                         AND NOT EXISTS (SELECT ss.id
-                                        FROM stu_ship_system ss
-                                        WHERE ss.ship_id = s.id
+                                        FROM stu_spacecraft_system ss
+                                        WHERE ss.spacecraft_id = s.id
                                         AND ss.system_type = :systemwarp
                                         AND ss.mode > :mode)
                         GROUP BY l.id) AS foo
@@ -156,11 +156,11 @@ class LocationRepository extends EntityRepository implements LocationRepositoryI
             )
             ->setParameters([
                 'threshold' => SubspaceEllipseHandler::MASS_CALCULATION_THRESHOLD,
-                'rumpCategory' => ShipRumpEnum::SHIP_CATEGORY_STATION,
+                'rumpCategory' => SpacecraftRumpEnum::SHIP_CATEGORY_STATION,
                 'firstUserId' => UserEnum::USER_FIRST_ID,
-                'mode' => ShipSystemModeEnum::MODE_OFF,
-                'state' => ShipStateEnum::SHIP_STATE_UNDER_CONSTRUCTION,
-                'systemwarp' => ShipSystemTypeEnum::SYSTEM_WARPDRIVE
+                'mode' => SpacecraftSystemModeEnum::MODE_OFF,
+                'state' => SpacecraftStateEnum::SHIP_STATE_UNDER_CONSTRUCTION,
+                'systemwarp' => SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE
             ])
             ->getResult();
 
@@ -198,9 +198,9 @@ class LocationRepository extends EntityRepository implements LocationRepositoryI
         return $this->getEntityManager()
             ->createNativeQuery(
                 'SELECT rc.name as category_name, count(*) as amount
-                FROM stu_ships s
-                JOIN stu_rumps r
-                ON s.rumps_id = r.id
+                FROM stu_spacecraft s
+                JOIN stu_rump r
+                ON s.rump_id = r.id
                 JOIN stu_rumps_categories rc
                 ON r.category_id = rc.id
                 JOIN stu_location l
@@ -209,8 +209,8 @@ class LocationRepository extends EntityRepository implements LocationRepositoryI
                 AND l.cx = :cx
                 AND l.cy = :cy
                 AND NOT EXISTS (SELECT ss.id
-                                    FROM stu_ship_system ss
-                                    WHERE s.id = ss.ship_id
+                                    FROM stu_spacecraft_system ss
+                                    WHERE s.id = ss.spacecraft_id
                                     AND ss.system_type = :systemId
                                     AND ss.mode > 1)
                 GROUP BY rc.name
@@ -221,7 +221,7 @@ class LocationRepository extends EntityRepository implements LocationRepositoryI
                 'layerId' => $layer->getId(),
                 'cx' => $cx,
                 'cy' => $cy,
-                'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK
+                'systemId' => SpacecraftSystemTypeEnum::SYSTEM_CLOAK
             ])
             ->getResult();
     }

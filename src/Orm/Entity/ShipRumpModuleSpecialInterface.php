@@ -6,9 +6,7 @@ interface ShipRumpModuleSpecialInterface
 {
     public function getId(): int;
 
-    public function getShipRumpId(): int;
-
-    public function setShipRumpId(int $shipRumpId): ShipRumpModuleSpecialInterface;
+    public function setRumpId(int $rumpId): ShipRumpModuleSpecialInterface;
 
     public function getModuleSpecialId(): int;
 

@@ -6,30 +6,37 @@ namespace Stu\Module\Station\Action\AddDockPrivilege;
 
 use Override;
 use request;
-use Stu\Component\Ship\ShipEnum;
+use Stu\Component\Station\Dock\DockModeEnum;
+use Stu\Component\Station\Dock\DockTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Module\Station\View\ShowDockingPrivileges\ShowDockingPrivileges;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
 use Stu\Orm\Repository\DockingPrivilegeRepositoryInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class AddDockPrivilege implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_ADD_DOCKPRIVILEGE';
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private FactionRepositoryInterface $factionRepository, private DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository, private AllianceRepositoryInterface $allianceRepository, private UserRepositoryInterface $userRepository)
-    {
-    }
+    public function __construct(
+        private StationLoaderInterface $stationLoader,
+        private FactionRepositoryInterface $factionRepository,
+        private DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository,
+        private AllianceRepositoryInterface $allianceRepository,
+        private UserRepositoryInterface $userRepository,
+        private ShipRepositoryInterface $shipRepository
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
 
-        $ship = $this->shipLoader->getByIdAndUser(
+        $station = $this->stationLoader->getByIdAndUser(
             request::indInt('id'),
             $userId,
             false,
@@ -37,37 +44,38 @@ final class AddDockPrivilege implements ActionControllerInterface
         );
 
         $target = request::getIntFatal('target');
-        $type = request::getIntFatal('type');
-        $mode = request::getIntFatal('mode');
+        $type = DockTypeEnum::from(request::getIntFatal('type'));
+        $mode = DockModeEnum::from(request::getIntFatal('mode'));
 
         $game->setView(ShowDockingPrivileges::VIEW_IDENTIFIER);
-        if ($mode != ShipEnum::DOCK_PRIVILEGE_MODE_ALLOW && $mode != ShipEnum::DOCK_PRIVILEGE_MODE_DENY) {
-            return;
-        }
-        if ($this->dockingPrivilegeRepository->existsForTargetAndTypeAndShip($target, $type, $ship->getId()) === true) {
+        if ($this->dockingPrivilegeRepository->existsForTargetAndTypeAndShip($target, $type, $station->getId()) === true) {
             return;
         }
         $save = 0;
         switch ($type) {
-            case ShipEnum::DOCK_PRIVILEGE_USER:
+            case DockTypeEnum::USER:
                 if ($this->userRepository->find($target) === null) {
                     break;
                 }
                 $save = 1;
                 break;
-            case ShipEnum::DOCK_PRIVILEGE_ALLIANCE:
+            case DockTypeEnum::ALLIANCE:
                 if ($this->allianceRepository->find($target) === null) {
                     break;
                 }
                 $save = 1;
                 break;
-            case ShipEnum::DOCK_PRIVILEGE_FACTION:
+            case DockTypeEnum::FACTION:
                 if ($this->factionRepository->find($target) === null) {
                     break;
                 }
                 $save = 1;
                 break;
-            default:
+            case DockTypeEnum::SHIP:
+                if ($this->shipRepository->find($target) === null) {
+                    break;
+                }
+                $save = 1;
                 break;
         }
         if ($save == 1) {
@@ -75,7 +83,7 @@ final class AddDockPrivilege implements ActionControllerInterface
             $dock->setPrivilegeMode($mode);
             $dock->setPrivilegeType($type);
             $dock->setTargetId($target);
-            $dock->setShip($ship);
+            $dock->setStation($station);
 
             $this->dockingPrivilegeRepository->save($dock);
         }

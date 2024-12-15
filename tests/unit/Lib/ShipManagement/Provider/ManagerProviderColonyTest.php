@@ -8,13 +8,13 @@ use Doctrine\Common\Collections\Collection;
 use Mockery\MockInterface;
 use Override;
 use Stu\Component\Colony\ColonyPopulationCalculatorInterface;
-use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
-use Stu\Module\Ship\Lib\Crew\TroopTransferUtilityInterface;
+use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\CommodityInterface;
-use Stu\Orm\Entity\ShipCrewInterface;
+use Stu\Orm\Entity\CrewAssignmentInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\StuTestCase;
@@ -30,8 +30,8 @@ class ManagerProviderColonyTest extends StuTestCase
     /** @var MockInterface&ColonyLibFactoryInterface */
     private MockInterface $colonyLibFactory;
 
-    /** @var MockInterface&ColonyStorageManagerInterface */
-    private MockInterface $colonyStorageManager;
+    /** @var MockInterface&StorageManagerInterface */
+    private MockInterface $storageManager;
 
     /** @var MockInterface&TroopTransferUtilityInterface */
     private MockInterface $troopTransferUtility;
@@ -44,14 +44,14 @@ class ManagerProviderColonyTest extends StuTestCase
         $this->colony = $this->mock(ColonyInterface::class);
         $this->crewCreator = $this->mock(CrewCreatorInterface::class);
         $this->colonyLibFactory = $this->mock(ColonyLibFactoryInterface::class);
-        $this->colonyStorageManager = $this->mock(ColonyStorageManagerInterface::class);
+        $this->storageManager = $this->mock(StorageManagerInterface::class);
         $this->troopTransferUtility = $this->mock(TroopTransferUtilityInterface::class);
 
         $this->subject = new ManagerProviderColony(
             $this->colony,
             $this->crewCreator,
             $this->colonyLibFactory,
-            $this->colonyStorageManager,
+            $this->storageManager,
             $this->troopTransferUtility
         );
     }
@@ -117,16 +117,16 @@ class ManagerProviderColonyTest extends StuTestCase
         $this->assertEquals(123, $this->subject->getFreeCrewAmount());
     }
 
-    public function testCreateShipCrew(): void
+    public function testCreateCrewAssignment(): void
     {
         $ship = $this->mock(ShipInterface::class);
 
-        $this->crewCreator->shouldReceive('createShipCrew')
+        $this->crewCreator->shouldReceive('createCrewAssignment')
             ->with($ship, $this->colony, 42)
             ->once()
             ->andReturn(123);
 
-        $this->subject->addShipCrew($ship, 42);
+        $this->subject->addCrewAssignment($ship, 42);
     }
 
     public function testGetFreeCrewStorage(): void
@@ -148,7 +148,7 @@ class ManagerProviderColonyTest extends StuTestCase
 
     public function testAddCrewAssignments(): void
     {
-        $crewAssignment = $this->mock(ShipCrewInterface::class);
+        $crewAssignment = $this->mock(CrewAssignmentInterface::class);
         $crewAssignments = [$crewAssignment];
 
         $this->troopTransferUtility->shouldReceive('assignCrew')
@@ -174,7 +174,7 @@ class ManagerProviderColonyTest extends StuTestCase
     {
         $commodity = $this->mock(CommodityInterface::class);
 
-        $this->colonyStorageManager->shouldReceive('upperStorage')
+        $this->storageManager->shouldReceive('upperStorage')
             ->with($this->colony, $commodity, 5)
             ->once();
 
@@ -185,7 +185,7 @@ class ManagerProviderColonyTest extends StuTestCase
     {
         $commodity = $this->mock(CommodityInterface::class);
 
-        $this->colonyStorageManager->shouldReceive('lowerStorage')
+        $this->storageManager->shouldReceive('lowerStorage')
             ->with($this->colony, $commodity, 5)
             ->once();
 

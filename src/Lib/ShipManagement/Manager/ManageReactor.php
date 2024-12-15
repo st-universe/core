@@ -9,17 +9,18 @@ use RuntimeException;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Module\Commodity\Lib\CommodityCacheInterface;
-use Stu\Module\Ship\Lib\ReactorUtilInterface;
-use Stu\Module\Ship\Lib\ReactorWrapperInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\ReactorUtilInterface;
+use Stu\Module\Spacecraft\Lib\ReactorWrapperInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 
 class ManageReactor implements ManagerInterface
 {
     public function __construct(private ReactorUtilInterface $reactorUtil, private CommodityCacheInterface $commodityCache, private PlayerRelationDeterminatorInterface $playerRelationDeterminator) {}
 
     #[Override]
-    public function manage(ShipWrapperInterface $wrapper, array $values, ManagerProviderInterface $managerProvider): array
+    public function manage(SpacecraftWrapperInterface $wrapper, array $values, ManagerProviderInterface $managerProvider): array
     {
         $values = $values['reactor'] ?? null;
         if ($values === null) {
@@ -68,13 +69,13 @@ class ManageReactor implements ManagerInterface
     /**
      * @return array<string>
      */
-    private function createMissingCommoditiesMessage(ShipInterface $ship, ReactorWrapperInterface $reactor): array
+    private function createMissingCommoditiesMessage(SpacecraftInterface $spacecraft, ReactorWrapperInterface $reactor): array
     {
         $msg = [];
 
         $msg[] = sprintf(
             _('%s: Es werden mindestens folgende Waren zum Aufladen des %ss benötigt:'),
-            $ship->getName(),
+            $spacecraft->getName(),
             $reactor->get()->getSystemType()->getDescription()
         );
 

@@ -7,15 +7,15 @@ namespace Stu\Module\Ship\Action\Mining;
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use request;
-use Stu\Component\Ship\ShipStateEnum;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Spacecraft\SpacecraftStateEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
+use Stu\Module\Spacecraft\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\Lib\ShipStateChangerInterface;
-use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Module\Spacecraft\Lib\SpacecraftStateChangerInterface;
+use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Orm\Repository\LocationMiningRepositoryInterface;
 use Stu\Orm\Repository\MiningQueueRepositoryInterface;
 
@@ -27,7 +27,7 @@ final class GatherResources implements ActionControllerInterface
         private ShipLoaderInterface $shipLoader,
         private ActivatorDeactivatorHelperInterface $helper,
         private MiningQueueRepositoryInterface $miningQueueRepository,
-        private ShipStateChangerInterface $shipStateChanger,
+        private SpacecraftStateChangerInterface $spacecraftStateChanger,
         private EntityManagerInterface $entityManager,
         private LocationMiningRepositoryInterface $locationMiningRepository
     ) {}
@@ -35,7 +35,7 @@ final class GatherResources implements ActionControllerInterface
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $game->setView(ShowShip::VIEW_IDENTIFIER);
+        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         $userId = $game->getUser()->getId();
         $shipId = request::indInt('id');
@@ -60,8 +60,8 @@ final class GatherResources implements ActionControllerInterface
         $chosenLocationId = request::postInt('chosen');
 
         if ($chosenLocationId === 0) {
-            if ($ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR)) {
-                $this->helper->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR, $game);
+            if ($ship->isSystemHealthy(SpacecraftSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR)) {
+                $this->helper->deactivate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR, $game);
             }
 
             $miningQueue = $this->miningQueueRepository->getByShip($ship->getId());
@@ -69,7 +69,7 @@ final class GatherResources implements ActionControllerInterface
                 $this->miningQueueRepository->truncateByShipId($ship->getId());
                 $game->addInformation("Es werden keine Ressourcen mehr gesammelt");
             }
-            $this->shipStateChanger->changeShipState($wrapper, ShipStateEnum::SHIP_STATE_NONE);
+            $this->spacecraftStateChanger->changeShipState($wrapper, SpacecraftStateEnum::SHIP_STATE_NONE);
             return;
         } else {
 
@@ -79,8 +79,8 @@ final class GatherResources implements ActionControllerInterface
             }
 
 
-            if (!$ship->getSystemState(ShipSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR)) {
-                if (!$this->helper->activate($wrapper, ShipSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR, $game)) {
+            if (!$ship->getSystemState(SpacecraftSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR)) {
+                if (!$this->helper->activate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR, $game)) {
                     return;
                 }
             } else {
@@ -89,7 +89,7 @@ final class GatherResources implements ActionControllerInterface
                     $this->miningQueueRepository->truncateByShipId($ship->getId());
                 }
             }
-            $this->shipStateChanger->changeShipState($wrapper, ShipStateEnum::SHIP_STATE_GATHER_RESOURCES);
+            $this->spacecraftStateChanger->changeShipState($wrapper, SpacecraftStateEnum::SHIP_STATE_GATHER_RESOURCES);
 
 
             $miningqueue = $this->miningQueueRepository->prototype();

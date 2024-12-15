@@ -23,8 +23,7 @@ final class AdventDoorHandler implements AnomalyHandlerInterface
         private LayerRepositoryInterface $layerRepository,
         private AnomalyCreationInterface $anomalyCreation,
         private StorageRepositoryInterface $storageRepository
-    ) {
-    }
+    ) {}
 
     /** create advent door anomalies on first of december */
     #[Override]
@@ -50,7 +49,7 @@ final class AdventDoorHandler implements AnomalyHandlerInterface
 
     /** reset location */
     #[Override]
-    public function handleShipTick(AnomalyInterface $anomaly): void
+    public function handleSpacecraftTick(AnomalyInterface $anomaly): void
     {
         $hour = (int)date("G");
         if ($hour !== 0) {

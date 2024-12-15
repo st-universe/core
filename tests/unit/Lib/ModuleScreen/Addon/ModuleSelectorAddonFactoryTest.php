@@ -6,7 +6,7 @@ namespace Stu\Lib\ModuleScreen\Addon;
 
 use Mockery\MockInterface;
 use Override;
-use Stu\Component\Ship\ShipModuleTypeEnum;
+use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Lib\ModuleScreen\GradientColorInterface;
 use Stu\Orm\Repository\TorpedoHullRepositoryInterface;
 use Stu\Orm\Repository\WeaponShieldRepositoryInterface;
@@ -41,21 +41,21 @@ class ModuleSelectorAddonFactoryTest extends StuTestCase
 
     public function testCeateModuleSelectorAddonExpectNullWhenTypeUnknown(): void
     {
-        $result = $this->subject->createModuleSelectorAddon(ShipModuleTypeEnum::EPS);
+        $result = $this->subject->createModuleSelectorAddon(SpacecraftModuleTypeEnum::EPS);
 
         $this->assertNull($result);
     }
 
     public function testCeateModuleSelectorAddonExpectAddonHullWhenTypeHull(): void
     {
-        $result = $this->subject->createModuleSelectorAddon(ShipModuleTypeEnum::HULL);
+        $result = $this->subject->createModuleSelectorAddon(SpacecraftModuleTypeEnum::HULL);
 
         $this->assertTrue($result instanceof ModuleSelectorAddonHull);
     }
 
     public function testCeateModuleSelectorAddonExpectAddonShieldWhenTypeShield(): void
     {
-        $result = $this->subject->createModuleSelectorAddon(ShipModuleTypeEnum::SHIELDS);
+        $result = $this->subject->createModuleSelectorAddon(SpacecraftModuleTypeEnum::SHIELDS);
 
         $this->assertTrue($result instanceof ModuleSelectorAddonShield);
     }

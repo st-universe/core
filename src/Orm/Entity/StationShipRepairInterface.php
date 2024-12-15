@@ -10,9 +10,9 @@ interface StationShipRepairInterface
 
     public function getShipId(): int;
 
-    public function getStation(): ShipInterface;
+    public function getStation(): StationInterface;
 
-    public function setStation(ShipInterface $station): StationShipRepairInterface;
+    public function setStation(StationInterface $station): StationShipRepairInterface;
 
     public function getShip(): ShipInterface;
 

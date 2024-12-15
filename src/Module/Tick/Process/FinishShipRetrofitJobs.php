@@ -8,7 +8,7 @@ use Override;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Component\Ship\ShipStateEnum;
+use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Module\Ship\Lib\ShipRetrofitInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -26,7 +26,7 @@ final class FinishShipRetrofitJobs implements ProcessTickHandlerInterface
 
                 $colony = $obj->getColony();
 
-                $newbuildplan = $obj->getShipBuildplan();
+                $newbuildplan = $obj->getSpacecraftBuildplan();
                 $ship = $obj->getShip();
 
                 if ($ship == null) {
@@ -40,7 +40,7 @@ final class FinishShipRetrofitJobs implements ProcessTickHandlerInterface
                 );
                 $this->colonyShipQueueRepository->delete($obj);
 
-                $ship->setState(ShipStateEnum::SHIP_STATE_NONE);
+                $ship->setState(SpacecraftStateEnum::SHIP_STATE_NONE);
 
                 $this->shipRepository->save($ship);
             }

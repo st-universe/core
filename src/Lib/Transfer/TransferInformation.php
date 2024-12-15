@@ -4,12 +4,26 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Transfer;
 
+use Stu\Lib\Transfer\Wrapper\StorageEntityWrapperInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 
 class TransferInformation
 {
-    public function __construct(private TransferTypeEnum $currentType, private ColonyInterface|ShipInterface $from, private ColonyInterface|ShipInterface $to, private bool $isUnload, private bool $isFriend) {}
+    private EntityWithStorageInterface $source;
+    private EntityWithStorageInterface $target;
+
+    public function __construct(
+        private TransferTypeEnum $currentType,
+        private StorageEntityWrapperInterface $sourceWrapper,
+        private StorageEntityWrapperInterface $targetWrapper,
+        private bool $isUnload,
+        private bool $isFriend
+    ) {
+        $this->source = $sourceWrapper->get();
+        $this->target = $targetWrapper->get();
+    }
 
     public function isCommodityTransferPossible(bool $isOtherTypeRequired = true): bool
     {
@@ -27,13 +41,13 @@ class TransferInformation
         }
 
         if (
-            $this->to instanceof ShipInterface
-            && $this->to->hasUplink()
+            $this->target instanceof ShipInterface
+            && $this->target->hasUplink()
         ) {
             return true;
         }
 
-        return $this->to->getUser() === $this->from->getUser();
+        return $this->target->getUser() === $this->source->getUser();
     }
 
     public function isTorpedoTransferPossible(bool $isOtherTypeRequired = true): bool
@@ -45,19 +59,19 @@ class TransferInformation
             return false;
         }
 
-        return $this->from instanceof ShipInterface
-            && $this->to instanceof ShipInterface
-            && $this->from->isTorpedoStorageHealthy()
-            && (!$this->isUnload() || $this->from->getTorpedoCount() > 0)
-            && ($this->to->hasTorpedo() || $this->to->isTorpedoStorageHealthy())
-            && ($this->isUnload() || $this->to->getTorpedoCount() > 0);
+        return $this->source instanceof SpacecraftInterface
+            && $this->target instanceof SpacecraftInterface
+            && $this->source->isTorpedoStorageHealthy()
+            && (!$this->isUnload() || $this->source->getTorpedoCount() > 0)
+            && ($this->target->hasTorpedo() || $this->target->isTorpedoStorageHealthy())
+            && ($this->isUnload() || $this->target->getTorpedoCount() > 0);
     }
 
     public function isFriend(): bool
     {
         if (
             !$this->isFriend
-            && $this->from->getUser() !== $this->to->getUser()
+            && $this->source->getUser() !== $this->target->getUser()
         ) {
             return false;
         } else {
@@ -77,28 +91,63 @@ class TransferInformation
         return $this->currentType;
     }
 
+    public function getSourceType(): TransferEntityTypeEnum
+    {
+        return $this->source->getTransferEntityType();
+    }
+
+    public function getTargetType(): TransferEntityTypeEnum
+    {
+        return $this->target->getTransferEntityType();
+    }
+
     public function isUnload(): bool
     {
         return $this->isUnload;
     }
 
+    public function getSourceId(): int
+    {
+        return $this->source->getId();
+    }
+
     public function getTargetId(): int
     {
-        return $this->to->getId();
+        return $this->target->getId();
     }
 
-    public function isColonyTarget(): bool
+    public function getSource(): EntityWithStorageInterface
     {
-        return $this->to instanceof ColonyInterface;
+        return $this->source;
     }
 
-    public function getSource(): ShipInterface|ColonyInterface
+    public function getTarget(): EntityWithStorageInterface
     {
-        return $this->from;
+        return $this->target;
     }
 
-    public function getTarget(): ShipInterface|ColonyInterface
+    public function getSourceWrapper(): StorageEntityWrapperInterface
     {
-        return $this->to;
+        return $this->sourceWrapper;
+    }
+
+    public function getTargetWrapper(): StorageEntityWrapperInterface
+    {
+        return $this->targetWrapper;
+    }
+
+    public function getBeamFactor(): int
+    {
+        return $this->sourceWrapper->getBeamFactor();
+    }
+
+    public function isSourceAbove(): bool
+    {
+        return $this->getSourceType() !== TransferEntityTypeEnum::COLONY;
+    }
+
+    public function isUpIcon(): bool
+    {
+        return ($this->getSource() instanceof ColonyInterface) === $this->isUnload();
     }
 }

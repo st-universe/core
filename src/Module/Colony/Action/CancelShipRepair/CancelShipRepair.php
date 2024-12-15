@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\CancelShipRepair;
 
 use Override;
-use Stu\Component\Ship\Repair\CancelRepairInterface;
-use Stu\Component\Ship\ShipStateEnum;
+use Stu\Component\Spacecraft\Repair\CancelRepairInterface;
+use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
@@ -20,9 +20,7 @@ final class CancelShipRepair implements ActionControllerInterface
     public const string ACTION_IDENTIFIER = 'B_CANCEL_REPAIR';
 
 
-    public function __construct(private CancelShipRepairRequestInterface $request, private ColonyShipRepairRepositoryInterface $colonyShipRepairRepository, private CancelRepairInterface $cancelRepair, private PrivateMessageSenderInterface $privateMessageSender)
-    {
-    }
+    public function __construct(private CancelShipRepairRequestInterface $request, private ColonyShipRepairRepositoryInterface $colonyShipRepairRepository, private CancelRepairInterface $cancelRepair, private PrivateMessageSenderInterface $privateMessageSender) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -41,7 +39,7 @@ final class CancelShipRepair implements ActionControllerInterface
         $ship = $obj->getShip();
         $colony = $obj->getColony();
 
-        if ($ship->getState() !== ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE) {
+        if ($ship->getState() !== SpacecraftStateEnum::SHIP_STATE_REPAIR_PASSIVE) {
             return;
         }
 

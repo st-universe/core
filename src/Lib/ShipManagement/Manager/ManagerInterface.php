@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Lib\ShipManagement\Manager;
 
 use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 
 interface ManagerInterface
 {
@@ -15,7 +15,7 @@ interface ManagerInterface
      * @return array<string>
      */
     public function manage(
-        ShipWrapperInterface $wrapper,
+        SpacecraftWrapperInterface $wrapper,
         array $values,
         ManagerProviderInterface $managerProvider
     ): array;

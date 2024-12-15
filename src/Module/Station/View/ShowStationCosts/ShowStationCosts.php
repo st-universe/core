@@ -9,18 +9,18 @@ use request;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Station\Lib\StationLoaderInterface;
 
 final class ShowStationCosts implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_STATION_COSTS';
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private StationUtilityInterface $stationUtility) {}
+    public function __construct(private StationLoaderInterface $stationLoader, private StationUtilityInterface $stationUtility) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $ship = $this->shipLoader->getByIdAndUser(
+        $ship = $this->stationLoader->getByIdAndUser(
             request::indInt('id'),
             $game->getUser()->getId(),
             false,

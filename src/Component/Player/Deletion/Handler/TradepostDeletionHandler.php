@@ -9,16 +9,21 @@ use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class TradepostDeletionHandler implements PlayerDeletionHandlerInterface
 {
-    public function __construct(private TradePostRepositoryInterface $tradePostRepository, private ShipRepositoryInterface $shipRepository, private UserRepositoryInterface $userRepository, private StorageRepositoryInterface $storageRepository, private EntryCreatorInterface $entryCreator, private PrivateMessageSenderInterface $privateMessageSender)
-    {
-    }
+    public function __construct(
+        private TradePostRepositoryInterface $tradePostRepository,
+        private SpacecraftRepositoryInterface $spacecraftRepository,
+        private UserRepositoryInterface $userRepository,
+        private StorageRepositoryInterface $storageRepository,
+        private EntryCreatorInterface $entryCreator,
+        private PrivateMessageSenderInterface $privateMessageSender
+    ) {}
 
     #[Override]
     public function delete(UserInterface $user): void
@@ -26,7 +31,7 @@ final class TradepostDeletionHandler implements PlayerDeletionHandlerInterface
         $fallbackUser = $this->userRepository->getFallbackUser();
 
         foreach ($this->tradePostRepository->getByUser($user->getId()) as $tradepost) {
-            $ship = $tradepost->getShip();
+            $station = $tradepost->getStation();
 
             // send PMs to storage owners except tradepost owner
             foreach ($this->tradePostRepository->getUsersWithStorageOnTradepost($tradepost->getId()) as $user) {
@@ -37,7 +42,7 @@ final class TradepostDeletionHandler implements PlayerDeletionHandlerInterface
                         sprintf(
                             'Der Handelsposten "%s" bei den Koordinaten %s wurde verlassen. Du solltest deine Waren hier schleunigst abholen, sonst gehen sie verloren.',
                             $tradepost->getName(),
-                            $ship->getSectorString()
+                            $station->getSectorString()
                         )
                     );
                 }
@@ -45,9 +50,9 @@ final class TradepostDeletionHandler implements PlayerDeletionHandlerInterface
 
             //create history entry
             $this->entryCreator->addEntry(
-                'Der Handelsposten in Sektor ' . $ship->getSectorString() . ' wurde verlassen.',
+                'Der Handelsposten in Sektor ' . $station->getSectorString() . ' wurde verlassen.',
                 UserEnum::USER_NOONE,
-                $ship
+                $station
             );
 
             //transfer tradepost to noone user
@@ -57,14 +62,14 @@ final class TradepostDeletionHandler implements PlayerDeletionHandlerInterface
             $tradepost->setTradeNetwork(UserEnum::USER_NOONE);
             $this->tradePostRepository->save($tradepost);
 
-            $ship->setUser($fallbackUser);
-            $ship->setName('Verlassener Handelsposten');
-            $ship->setDisabled(true);
-            $this->shipRepository->save($ship);
+            $station->setUser($fallbackUser);
+            $station->setName('Verlassener Handelsposten');
+            $station->setDisabled(true);
+            $this->spacecraftRepository->save($station);
 
             //change torpedo owner
-            if ($ship->getTorpedoStorage() !== null) {
-                $storage = $ship->getTorpedoStorage()->getStorage();
+            if ($station->getTorpedoStorage() !== null) {
+                $storage = $station->getTorpedoStorage()->getStorage();
                 $storage->setUser($fallbackUser);
                 $this->storageRepository->save($storage);
             }

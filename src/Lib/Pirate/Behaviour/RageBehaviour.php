@@ -11,10 +11,10 @@ use Stu\Lib\Pirate\PirateReactionTriggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Module\Prestige\Lib\PrestigeCalculationInterface;
-use Stu\Module\Ship\Lib\Battle\FightLibInterface;
+use Stu\Module\Spacecraft\Lib\Battle\FightLibInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
-use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 class RageBehaviour implements PirateBehaviourInterface
@@ -23,7 +23,6 @@ class RageBehaviour implements PirateBehaviourInterface
 
     public function __construct(
         private ShipRepositoryInterface $shipRepository,
-        private InteractionCheckerInterface $interactionChecker,
         private FightLibInterface $fightLib,
         private PrestigeCalculationInterface $prestigeCalculation,
         private PirateAttackInterface $pirateAttack,
@@ -37,7 +36,7 @@ class RageBehaviour implements PirateBehaviourInterface
         FleetWrapperInterface $fleet,
         PirateReactionInterface $pirateReaction,
         PirateReactionMetadata $reactionMetadata,
-        ?ShipInterface $triggerShip
+        ?SpacecraftInterface $triggerSpacecraft
     ): ?PirateBehaviourEnum {
 
         $leadWrapper = $fleet->getLeadWrapper();
@@ -50,10 +49,10 @@ class RageBehaviour implements PirateBehaviourInterface
         $filteredTargets = array_filter(
             $targets,
             fn(ShipInterface $target): bool =>
-            $this->interactionChecker->checkPosition($leadShip, $target)
+            $leadShip->getLocation() ===  $target->getLocation()
                 && $this->fightLib->canAttackTarget($leadShip, $target, true, false, false)
                 && !$target->getUser()->isProtectedAgainstPirates()
-                && ($target === $triggerShip
+                && ($target === $triggerSpacecraft
                     || $this->prestigeCalculation->targetHasPositivePrestige($target))
         );
 

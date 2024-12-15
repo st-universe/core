@@ -8,7 +8,7 @@ use Override;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Module\Station\View\ShowDockingPrivileges\ShowDockingPrivileges;
 use Stu\Orm\Repository\DockingPrivilegeRepositoryInterface;
 
@@ -16,16 +16,14 @@ final class DeleteDockPrivilege implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_DELETE_DOCKPRIVILEGE';
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository)
-    {
-    }
+    public function __construct(private StationLoaderInterface $stationLoader, private DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
 
-        $ship = $this->shipLoader->getByIdAndUser(
+        $station = $this->stationLoader->getByIdAndUser(
             request::indInt('id'),
             $userId,
             false,
@@ -35,7 +33,10 @@ final class DeleteDockPrivilege implements ActionControllerInterface
         $game->setView(ShowDockingPrivileges::VIEW_IDENTIFIER);
         $privilege = $this->dockingPrivilegeRepository->find(request::getIntFatal('privilegeid'));
 
-        if ($privilege->getShip()->getId() !== $ship->getId()) {
+        if (
+            $privilege === null
+            || $privilege->getStation() !== $station
+        ) {
             return;
         }
 

@@ -6,17 +6,18 @@ namespace Stu\Module\Colony\Action\DisassembleShip;
 
 use Override;
 use request;
-use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
+use RuntimeException;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Ship\Lib\Crew\TroopTransferUtilityInterface;
+use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\Lib\ShipRemoverInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftRemoverInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Module\Ship\Lib\Torpedo\ClearTorpedoInterface;
+use Stu\Module\Spacecraft\Lib\Torpedo\ClearTorpedoInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -26,9 +27,7 @@ final class DisassembleShip implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_DISASSEMBLE_SHIP';
 
-    public function __construct(private ColonyLoaderInterface $colonyLoader, private ShipLoaderInterface $shipLoader, private ColonyRepositoryInterface $colonyRepository, private ShipRemoverInterface $shipRemover, private ColonyStorageManagerInterface $colonyStorageManager, private CommodityRepositoryInterface $commodityRepository, private ClearTorpedoInterface $clearTorpedo, private ColonyLibFactoryInterface $colonyLibFactory, private TroopTransferUtilityInterface $troopTransferUtility)
-    {
-    }
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private ShipLoaderInterface $shipLoader, private ColonyRepositoryInterface $colonyRepository, private SpacecraftRemoverInterface $spacecraftRemover, private StorageManagerInterface $storageManager, private CommodityRepositoryInterface $commodityRepository, private ClearTorpedoInterface $clearTorpedo, private ColonyLibFactoryInterface $colonyLibFactory, private TroopTransferUtilityInterface $troopTransferUtility) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -53,6 +52,7 @@ final class DisassembleShip implements ActionControllerInterface
 
         $ship_id = request::getIntFatal('ship_id');
         $wrapper = $this->shipLoader->getWrapperByIdAndUser($ship_id, $userId);
+
         $ship = $wrapper->get();
         if ($ship->getCrewCount() > $freeAssignmentCount) {
             $game->addInformation(_('Nicht genügend Platz für die Crew auf der Kolonie'));
@@ -69,7 +69,7 @@ final class DisassembleShip implements ActionControllerInterface
 
         $this->transferCrewToColony($ship, $colony);
 
-        $this->shipRemover->remove($ship);
+        $this->spacecraftRemover->remove($ship);
 
         $game->addInformationf(_('Das Schiff wurde demontiert'));
     }
@@ -111,7 +111,7 @@ final class DisassembleShip implements ActionControllerInterface
             $module = $intactModules[array_rand($intactModules)];
             unset($intactModules[$module->getId()]);
 
-            $this->colonyStorageManager->upperStorage(
+            $this->storageManager->upperStorage(
                 $colony,
                 $module->getCommodity(),
                 1
@@ -152,7 +152,10 @@ final class DisassembleShip implements ActionControllerInterface
             }
 
             $commodity = $this->commodityRepository->find($commodityId);
-            $this->colonyStorageManager->upperStorage(
+            if ($commodity === null) {
+                throw new RuntimeException(sprintf('commodityId %d does not exist', $commodityId));
+            }
+            $this->storageManager->upperStorage(
                 $colony,
                 $commodity,
                 $amount
@@ -184,7 +187,7 @@ final class DisassembleShip implements ActionControllerInterface
         }
 
         $commodity = $torpedoStorage->getStorage()->getCommodity();
-        $this->colonyStorageManager->upperStorage(
+        $this->storageManager->upperStorage(
             $colony,
             $commodity,
             $amount

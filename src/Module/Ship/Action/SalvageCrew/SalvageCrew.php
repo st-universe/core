@@ -6,31 +6,42 @@ namespace Stu\Module\Ship\Action\SalvageCrew;
 
 use Override;
 use request;
-use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
-use Stu\Component\Ship\Repair\CancelRepairInterface;
+use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
+use Stu\Component\Spacecraft\Repair\CancelRepairInterface;
 use Stu\Component\Ship\Retrofit\CancelRetrofitInterface;
-use Stu\Component\Ship\System\ShipSystemModeEnum;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Exception\SanityCheckException;
+use Stu\Lib\Interaction\InteractionCheckerBuilderFactoryInterface;
+use Stu\Lib\Interaction\InteractionCheckType;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
-use Stu\Module\Ship\Lib\Crew\TroopTransferUtilityInterface;
-use Stu\Module\Ship\Lib\Interaction\InteractionChecker;
+use Stu\Module\Spacecraft\Lib\ActivatorDeactivatorHelperInterface;
+use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\View\ShowShip\ShowShip;
-use Stu\Orm\Repository\ShipCrewRepositoryInterface;
+use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
+use Stu\Orm\Entity\StationInterface;
+use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 
 final class SalvageCrew implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_SALVAGE_CREW';
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private ShipCrewRepositoryInterface $shipCrewRepository, private TroopTransferUtilityInterface  $troopTransferUtility, private ActivatorDeactivatorHelperInterface $helper, private CancelRepairInterface $cancelRepair, private ShipCrewCalculatorInterface $shipCrewCalculator, private CancelRetrofitInterface $cancelRetrofit) {}
+    public function __construct(
+        private ShipLoaderInterface $shipLoader,
+        private CrewAssignmentRepositoryInterface $shipCrewRepository,
+        private TroopTransferUtilityInterface  $troopTransferUtility,
+        private ActivatorDeactivatorHelperInterface $helper,
+        private CancelRepairInterface $cancelRepair,
+        private SpacecraftCrewCalculatorInterface $shipCrewCalculator,
+        private CancelRetrofitInterface $cancelRetrofit,
+        private InteractionCheckerBuilderFactoryInterface $interactionCheckerBuilderFactory
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $game->setView(ShowShip::VIEW_IDENTIFIER);
+        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
         $user = $game->getUser();
         $userId = $user->getId();
 
@@ -51,12 +62,26 @@ final class SalvageCrew implements ActionControllerInterface
         }
         $target = $targetWrapper->get();
 
-        $tradepost = $target->getTradePost();
+        $tradepost = $target instanceof StationInterface ? $target->getTradePost() : null;
         if ($tradepost === null) {
             throw new SanityCheckException('target is not a tradepost', self::ACTION_IDENTIFIER);
         }
-        if (!InteractionChecker::canInteractWith($ship, $target, $game)) {
-            throw new SanityCheckException('can not interact with target', self::ACTION_IDENTIFIER);
+
+        if (!$this->interactionCheckerBuilderFactory
+            ->createInteractionChecker()
+            ->setSource($ship)
+            ->setTarget($target)
+            ->setCheckTypes([
+                InteractionCheckType::EXPECT_SOURCE_SUFFICIENT_CREW,
+                InteractionCheckType::EXPECT_SOURCE_UNSHIELDED,
+                InteractionCheckType::EXPECT_SOURCE_UNCLOAKED,
+                InteractionCheckType::EXPECT_SOURCE_UNWARPED,
+                InteractionCheckType::EXPECT_TARGET_UNWARPED,
+                InteractionCheckType::EXPECT_TARGET_UNCLOAKED,
+                InteractionCheckType::EXPECT_TARGET_UNSHIELDED
+            ])
+            ->check($game)) {
+            return;
         }
 
         if (!$ship->hasEnoughCrew($game)) {
@@ -68,7 +93,7 @@ final class SalvageCrew implements ActionControllerInterface
         }
         $epsSystem = $wrapper->getEpsSystemData();
         if ($epsSystem === null || $epsSystem->getEps() < 1) {
-            $game->addInformation(sprintf(_('Zum Bergen der Crew wird %d Energie benötigt'), 1));
+            $game->addInformationf('Zum Bergen der Crew wird %d Energie benötigt', 1);
             return;
         }
         if ($this->cancelRepair->cancelRepair($ship)) {
@@ -85,7 +110,7 @@ final class SalvageCrew implements ActionControllerInterface
 
         if (
             $ship->getCrewCount() + $crewToTransfer > $this->shipCrewCalculator->getMaxCrewCountByRump($ship->getRump())
-            && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() == ShipSystemModeEnum::MODE_OFF && !$this->helper->activate($wrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game)
+            && $ship->getShipSystem(SpacecraftSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() == SpacecraftSystemModeEnum::MODE_OFF && !$this->helper->activate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game)
         ) {
             return;
         }
@@ -100,7 +125,7 @@ final class SalvageCrew implements ActionControllerInterface
                 continue;
             }
             $crewAssignment->setTradepost(null);
-            $crewAssignment->setShip($ship);
+            $crewAssignment->setSpacecraft($ship);
             $ship->getCrewAssignments()->add($crewAssignment);
             $this->shipCrewRepository->save($crewAssignment);
 

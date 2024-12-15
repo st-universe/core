@@ -16,8 +16,8 @@ use Override;
 use Stu\Orm\Repository\ShipTakeoverRepository;
 
 #[Table(name: 'stu_ship_takeover')]
-#[Index(name: 'ship_takeover_source_idx', columns: ['source_ship_id'])]
-#[Index(name: 'ship_takeover_target_idx', columns: ['target_ship_id'])]
+#[Index(name: 'ship_takeover_source_idx', columns: ['source_spacecraft_id'])]
+#[Index(name: 'ship_takeover_target_idx', columns: ['target_spacecraft_id'])]
 #[Entity(repositoryClass: ShipTakeoverRepository::class)]
 class ShipTakeover implements ShipTakeoverInterface
 {
@@ -27,10 +27,10 @@ class ShipTakeover implements ShipTakeoverInterface
     private int $id;
 
     #[Column(type: 'integer')]
-    private int $source_ship_id;
+    private int $source_spacecraft_id;
 
     #[Column(type: 'integer')]
-    private int $target_ship_id;
+    private int $target_spacecraft_id;
 
     #[Column(type: 'integer')]
     private int $start_turn = 0;
@@ -38,13 +38,13 @@ class ShipTakeover implements ShipTakeoverInterface
     #[Column(type: 'integer')]
     private int $prestige = 0;
 
-    #[OneToOne(targetEntity: 'Ship')]
-    #[JoinColumn(name: 'source_ship_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ShipInterface $source;
+    #[OneToOne(targetEntity: 'Spacecraft')]
+    #[JoinColumn(name: 'source_spacecraft_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    private SpacecraftInterface $source;
 
-    #[OneToOne(targetEntity: 'Ship')]
-    #[JoinColumn(name: 'target_ship_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ShipInterface $target;
+    #[OneToOne(targetEntity: 'Spacecraft')]
+    #[JoinColumn(name: 'target_spacecraft_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    private SpacecraftInterface $target;
 
     #[Override]
     public function getId(): int
@@ -53,29 +53,29 @@ class ShipTakeover implements ShipTakeoverInterface
     }
 
     #[Override]
-    public function setSourceShip(ShipInterface $ship): ShipTakeoverInterface
+    public function setSourceSpacecraft(SpacecraftInterface $spacecraft): ShipTakeoverInterface
     {
-        $this->source = $ship;
+        $this->source = $spacecraft;
 
         return $this;
     }
 
     #[Override]
-    public function getSourceShip(): ShipInterface
+    public function getSourceSpacecraft(): SpacecraftInterface
     {
         return $this->source;
     }
 
     #[Override]
-    public function setTargetShip(ShipInterface $ship): ShipTakeoverInterface
+    public function setTargetSpacecraft(SpacecraftInterface $spacecraft): ShipTakeoverInterface
     {
-        $this->target = $ship;
+        $this->target = $spacecraft;
 
         return $this;
     }
 
     #[Override]
-    public function getTargetShip(): ShipInterface
+    public function getTargetSpacecraft(): SpacecraftInterface
     {
         return $this->target;
     }

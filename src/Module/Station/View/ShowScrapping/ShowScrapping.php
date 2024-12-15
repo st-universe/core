@@ -8,22 +8,20 @@ use Override;
 use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Station\Lib\StationLoaderInterface;
 
 final class ShowScrapping implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_SCRAP_AJAX';
 
-    public function __construct(private ShipLoaderInterface $shipLoader)
-    {
-    }
+    public function __construct(private StationLoaderInterface $stationLoader) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
 
-        $ship = $this->shipLoader->getByIdAndUser(
+        $ship = $this->stationLoader->getByIdAndUser(
             request::indInt('id'),
             $userId,
             false,

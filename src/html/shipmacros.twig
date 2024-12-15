@@ -1,8 +1,4 @@
 {% macro shipimage(ship) %}
-{% if ship.isTrumfield %}
-<img src="/assets/ships/wrack/{{ ship.getFormerRumpId }}.png" title="{{ rumpname }}"
-    onload="adjustCellHeight(this); adjustCellWidth(this);" />
-{% else %}
 {% set rumpid = ship.getRumpId %}
 {% set rumpname = ship.getRumpName %}
 
@@ -30,18 +26,13 @@
 }}" class="indexedGraphics" style="z-index: 4;" />
 {% endif %}
 
-{% endif %}
 {% endmacro %}
 
 {% macro shipImageWithoutWarp(ship) %}
-{% if ship.isTrumfield %}
-<img src="/assets/ships/wrack/{{ ship.getFormerRumpId }}.png" title="{{ ship.getRumpName }}" />
-{% else %}
 {% if ship.getCloakState %}
 <img src="/assets/ships/{{ ship.getRumpId }}_cloaked.png" style="opacity:0.55;" title="{{ ship.getRumpName }}" />
 {% else %}
 <img src="/assets/ships/{{ ship.getRumpId }}.png" title="{{ ship.getRumpName }}" />
-{% endif %}
 {% endif %}
 {% endmacro %}
 
@@ -53,8 +44,13 @@
 {% endif %}
 {% endmacro %}
 
-{% macro nbsblock(WRAPPER, hasNbs, cloakNbs, stationNbs, fleetNbs, shipNbs) %}
-{% from 'html/macros.twig' import onClickShip %}
+{% macro trumfieldImage(trumfield) %}
+<img src="/assets/ships/wrack/{{ trumfield.getFormerRumpId }}.png" title="Trümmerfeld"
+    onload="adjustCellHeight(this); adjustCellWidth(this);" />
+{% endmacro %}
+
+{% macro nbsblock(WRAPPER, hasNbs, cloakNbs, stationNbs, fleetNbs, shipNbs, trumfieldNbs) %}
+{% from 'html/macros.twig' import onClickSpacecraft %}
 {% set SHIP = WRAPPER.get %}
 {% if not hasNbs and not cloakNbs %}
 <table class="tcal">
@@ -89,7 +85,7 @@
     <tr>
         <td colspan="2">
             {{ data.getVisibleShipsCount }} Schiffe
-            {% if data.showManagement and not SHIP.getFleetId and not SHIP.isBase %}
+            {% if data.showManagement and not SHIP.getFleetId and not SHIP.isStation %}
             (<a href="?B_JOIN_FLEET_NBS=1&id={{ SHIP.getId }}&fleetid={{ data.getId }}" title="Flotte beitreten">+</a>)
             {% endif %}
         </td>
@@ -101,7 +97,7 @@
             <img src="/assets/buttons/block1.png" title="blockiert die Kolonie" />
             {% endif %}
             {% if data.showManagement %}
-            <a {{ onClickShip(data.getLeadShip) }}>{{ data.getName|bbcode }}</a>
+            <a {{ onClickSpacecraft(data.getLeadShip) }}>{{ data.getName|bbcode }}</a>
             {% else %}
             <span>{{ data.getName|bbcode }}</span>
             {% endif %}
@@ -120,7 +116,7 @@
                 (<a href="javascript:void(0);" onclick="hideFleet({{ data.getId }});">zuklappen</a>)
             </span>
             {% endif %}
-            {% if SHIP.isBase and data.getLeadShip.isOwnedByCurrentUser %}
+            {% if SHIP.isStation and data.getLeadShip.isOwnedByCurrentUser %}
             <span>
                 (<a href="javascript:void(0);"
                     onClick="actionToInnerContent('B_DOCK_FLEET', 'id={{ SHIP.getId }}&fid={{ data.getId }}&sstr={{ SESSIONSTRING }}', null, 'station.php');">andocken</a>)
@@ -130,7 +126,7 @@
         <td>
             {% set style = data.isHidden ? '' : 'display: none;' %}
             <div id="fleetuser{{ data.getId }}" style="{{ style }}">
-                {% set fromType = SHIP.isBase ? 4 : 2 %}
+                {% set fromType = SHIP.isStation ? 4 : 2 %}
                 <a href="javascript:void(0);" onclick="openPmWindow({{ SHIP.getId }},{{ data.getId }},{{ fromType }},3)"
                     title="Nachricht an {{ data.getUserName|bbcode2txt }} verfassen"
                     onmouseover="cp('nbsPm{{ data.getId }}','buttons/msg2')"
@@ -161,6 +157,19 @@
     </tr>
     {% endfor %}
     {% endif %}
+
+    {% if trumfieldNbs %}
+    <tr>
+        <td colspan="2"></td>
+        <td colspan="5">Trümmerfelder</td>
+    </tr>
+    {% for trumfield in trumfieldNbs %}
+    <tr class="row">
+        {% include 'html/spacecraft/nbsTrumfieldBody.twig' %}
+    </tr>
+    {% endfor %}
+    {% endif %}
+
 </table>
 {% endif %}
 {% endmacro %}
@@ -177,7 +186,7 @@
 {% endmacro %}
 
 {% macro nbslist_body(WRAPPER, nbsItem) %}
-{% from 'html/macros.twig' import onClickShip %}
+{% from 'html/macros.twig' import onClickSpacecraft %}
 {% set SHIP = WRAPPER.get %}
 {% set shipId = SHIP.getId %}
 {% set targetId = nbsItem.getId %}
@@ -226,13 +235,17 @@
     </div>
     {% endif %}
     <div style="float:left; margin-right:4px;">
-        <a href="javascript:void(0);" onclick="showTransfer({{ targetId }}, 1, true, false, false);"
+        {% set sourceEntityType = SHIP.getTransferEntityType.value %}
+        {% set targetEntityType = nbsItem.getTransferEntityType.value %}
+        <a href="javascript:void(0);"
+            onclick="showTransfer({{ shipId }}, '{{sourceEntityType}}', {{ targetId }}, '{{ targetEntityType }}', 1, true);"
             onmouseover="cp('bto_{{ targetId }}','buttons/b_down2')"
             onmouseout="cp('bto_{{ targetId }}','buttons/b_down1')">
             <img src="/assets/buttons/b_down1.png" name="bto_{{ targetId }}"
                 title="Zur {{ nameWithoutMarkup }} runterbeamen" />
         </a>
-        <a href="javascript:void(0);" onclick="showTransfer({{ targetId }}, 1, false, false, false);"
+        <a href="javascript:void(0);"
+            onclick="showTransfer({{ shipId }}, '{{sourceEntityType}}', {{ targetId }}, '{{ targetEntityType }}', 1, false);"
             onmouseover="cp('bfr_{{ targetId }}','buttons/b_up2')"
             onmouseout="cp('bfr_{{ targetId }}','buttons/b_up1')">
             <img src="/assets/buttons/b_up1.png" name="bfr_{{ targetId }}"
@@ -313,7 +326,7 @@
     </div>
     {% endif %}
     {% endif %}
-    {% if nbsItem.isBase and not nbsItem.isDestroyed and not SHIP.getDockedTo %}
+    {% if nbsItem.isStation and not nbsItem.isDestroyed and not SHIP.getDockedTo %}
     <div style="float:left; margin-right:4px;">
         <a href="javascript:void(0);"
             onClick="actionToInnerContent('B_DOCK', 'id={{ shipId }}&target={{ targetId }}&sstr={{ SESSIONSTRING }}');"
@@ -352,7 +365,7 @@
 {% endif %}
 <td style="{{ nbsItem.getHoldingWebBackgroundStyle }}" class="nbsshipimage">
     {% if nbsItem.isOwnedByCurrentUser %}
-    <a {{ onClickShip(nbsItem) }}>
+    <a {{ onClickSpacecraft(nbsItem) }}>
         {{ _self.shipImageWithoutWarp(nbsItem) }}
     </a>
     {% else %}
@@ -366,14 +379,14 @@
 </td>
 <td>
     {% if nbsItem.isOwnedByCurrentUser %}
-    <a {{ onClickShip(nbsItem) }}><span>{{ nbsItem.getName|bbcode }}</span></a>
+    <a {{ onClickSpacecraft(nbsItem) }}><span>{{ nbsItem.getName|bbcode }}</span></a>
     {% else %}
     {{ nbsItem.getName|bbcode }}
     {% endif %}
 </td>
 {% if nbsItem.isTrumfield %}
 <td style="width: 160px;">{{ nbsItem.getHull }}</td>
-<td>{{ nbsItem.getUserName|bbcode }}</td>
+<td></td>
 {% else %}
 <td style="width: 160px;">
     {{ nbsItem.getHull }}/{{ nbsItem.getMaxHull }}
@@ -383,8 +396,8 @@
 </td>
 <td>
     {% if nbsItem.isContactable %}
-    {% set fromType = SHIP.isBase ? 4 : 2 %}
-    {% set toType = nbsItem.isBase ? 4 : 2 %}
+    {% set fromType = SHIP.isStation ? 4 : 2 %}
+    {% set toType = nbsItem.isStation ? 4 : 2 %}
     <a href="javascript:void(0);" onclick="openPmWindow({{ shipId }},{{ targetId }},{{ fromType }},{{ toType }})"
         title="Nachricht an {{ nbsItem.getUserName|bbcode2txt }} verfassen"
         onmouseover="cp('nbsPm{{ targetId }}','buttons/msg2')" onmouseout="cp('nbsPm{{ targetId }}','buttons/msg1')">

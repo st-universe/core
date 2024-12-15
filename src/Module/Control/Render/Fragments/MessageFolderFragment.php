@@ -18,9 +18,7 @@ use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
  */
 final class MessageFolderFragment implements RenderFragmentInterface
 {
-    public function __construct(private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository, private PrivateMessageUiFactoryInterface $commUiFactory)
-    {
-    }
+    public function __construct(private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository, private PrivateMessageUiFactoryInterface $commUiFactory) {}
 
     #[Override]
     public function render(
@@ -54,6 +52,6 @@ final class MessageFolderFragment implements RenderFragmentInterface
             $folder[$folderType->value] = $this->commUiFactory->createPrivateMessageFolderItem($specialFolder);
         }
 
-        $page->setVar('PM_NAVLET', $folder);
+        $page->setVar('PM', $folder);
     }
 }

@@ -10,7 +10,7 @@ use Stu\Exception\AccessViolation;
 use Stu\Lib\CleanTextUtils;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 use Stu\Orm\Repository\NPCLogRepositoryInterface;
 
 final class RenameBuildplan implements ActionControllerInterface
@@ -18,7 +18,7 @@ final class RenameBuildplan implements ActionControllerInterface
     public const ACTION_IDENTIFIER = 'B_CHANGE_BUILDPLAN_NAME';
 
     public function __construct(
-        private ShipBuildplanRepositoryInterface $shipBuildplanRepository,
+        private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository,
         private NPCLogRepositoryInterface $npcLogRepository
     ) {}
 
@@ -50,7 +50,7 @@ final class RenameBuildplan implements ActionControllerInterface
             return;
         }
 
-        $plan = $this->shipBuildplanRepository->find($buildplanId);
+        $plan = $this->spacecraftBuildplanRepository->find($buildplanId);
         if ($plan === null || $plan->getUserId() !== $userId) {
             throw new AccessViolation();
         }
@@ -58,7 +58,7 @@ final class RenameBuildplan implements ActionControllerInterface
         $oldName = $plan->getName();
         $plan->setName($newName);
 
-        $this->shipBuildplanRepository->save($plan);
+        $this->spacecraftBuildplanRepository->save($plan);
 
         if ($game->getUser()->isNpc()) {
             $this->createLogEntry($oldName, $newName, $userId, $game->getUser()->getName(), $plan->getUser()->getName());

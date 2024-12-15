@@ -723,6 +723,17 @@ function switchInnerContent(identifier, title, params, page, stateUrl) {
         );
 }
 
+function showTransfer(sourceId, sourceType, targetId, targetType, transferTypeValue, isUnload, isReplace) {
+        if (!isReplace) {
+                closeAjaxWindow();
+                openPJsWin('elt', 1);
+        }
+
+        isUnloadValue = isUnload ? 1 : 0;
+
+        ajax_update('elt', `?SHOW_TRANSFER=1&id=${sourceId}&source_type=${sourceType}&target=${targetId}&target_type=${targetType}&transfer_type=${transferTypeValue}&is_unload=${isUnloadValue}`);
+}
+
 function maximizeCommodityAmounts() {
         document.querySelectorAll('.commodityAmount').forEach(function (elem) {
                 elem.value = 'max';

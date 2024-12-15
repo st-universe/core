@@ -8,50 +8,49 @@ use Doctrine\Common\Collections\Collection;
 use Mockery\MockInterface;
 use Override;
 use RuntimeException;
-use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
-use Stu\Component\Ship\System\Data\EpsSystemData;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
+use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
-use Stu\Module\Ship\Lib\Crew\TroopTransferUtilityInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
+use Stu\Module\Station\Lib\StationWrapperInterface;
 use Stu\Orm\Entity\CommodityInterface;
-use Stu\Orm\Entity\ShipCrewInterface;
+use Stu\Orm\Entity\CrewAssignmentInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\StationInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\StuTestCase;
 
 class ManagerProviderStationTest extends StuTestCase
 {
-    /** @var MockInterface&ShipWrapperInterface */
-    private MockInterface $wrapper;
-
+    /** @var MockInterface&StationWrapperInterface */
+    private $wrapper;
     /** @var MockInterface&CrewCreatorInterface */
-    private MockInterface $crewCreator;
-
+    private $crewCreator;
     /** @var MockInterface&TroopTransferUtilityInterface */
-    private MockInterface $troopTransferUtility;
+    private $troopTransferUtility;
+    /** @var MockInterface&StorageManagerInterface */
+    private $storageManager;
 
-    /** @var MockInterface&ShipStorageManagerInterface */
-    private MockInterface $shipStorageManager;
-
-    private ShipInterface $station;
+    /** @var MockInterface&StationInterface */
+    private $station;
 
     private ManagerProviderInterface $subject;
 
     #[Override]
     protected function setUp(): void
     {
-        $this->wrapper = $this->mock(ShipWrapperInterface::class);
+        $this->wrapper = $this->mock(StationWrapperInterface::class);
         $this->crewCreator = $this->mock(CrewCreatorInterface::class);
         $this->troopTransferUtility = $this->mock(TroopTransferUtilityInterface::class);
-        $this->shipStorageManager = $this->mock(ShipStorageManagerInterface::class);
+        $this->storageManager = $this->mock(StorageManagerInterface::class);
 
-        $this->station = $this->mock(ShipInterface::class);
+        $this->station = $this->mock(StationInterface::class);
 
         $this->subject = new ManagerProviderStation(
             $this->wrapper,
             $this->crewCreator,
             $this->troopTransferUtility,
-            $this->shipStorageManager
+            $this->storageManager
         );
     }
 
@@ -165,11 +164,11 @@ class ManagerProviderStationTest extends StuTestCase
         $this->assertEquals(123, $this->subject->getFreeCrewAmount());
     }
 
-    public function testCreateShipCrew(): void
+    public function testCreateCrewAssignment(): void
     {
         $ship = $this->mock(ShipInterface::class);
 
-        $this->crewCreator->shouldReceive('createShipCrew')
+        $this->crewCreator->shouldReceive('createCrewAssignment')
             ->with($ship, $this->station, 42)
             ->once()
             ->andReturn(123);
@@ -179,7 +178,7 @@ class ManagerProviderStationTest extends StuTestCase
             ->once()
             ->andReturn($this->station);
 
-        $this->subject->addShipCrew($ship, 42);
+        $this->subject->addCrewAssignment($ship, 42);
     }
 
     public function testGetFreeCrewStorage(): void
@@ -199,7 +198,7 @@ class ManagerProviderStationTest extends StuTestCase
 
     public function testAddCrewAssignments(): void
     {
-        $crewAssignment = $this->mock(ShipCrewInterface::class);
+        $crewAssignment = $this->mock(CrewAssignmentInterface::class);
         $crewAssignments = [$crewAssignment];
 
         $this->wrapper->shouldReceive('get')
@@ -235,7 +234,7 @@ class ManagerProviderStationTest extends StuTestCase
             ->once()
             ->andReturn($this->station);
 
-        $this->shipStorageManager->shouldReceive('upperStorage')
+        $this->storageManager->shouldReceive('upperStorage')
             ->with($this->station, $commodity, 5)
             ->once();
 
@@ -251,7 +250,7 @@ class ManagerProviderStationTest extends StuTestCase
             ->once()
             ->andReturn($this->station);
 
-        $this->shipStorageManager->shouldReceive('lowerStorage')
+        $this->storageManager->shouldReceive('lowerStorage')
             ->with($this->station, $commodity, 5)
             ->once();
 

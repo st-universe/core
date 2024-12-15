@@ -8,13 +8,13 @@ use Doctrine\Common\Collections\Collection;
 use Mockery\MockInterface;
 use Override;
 use RuntimeException;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Commodity\Lib\CommodityCacheInterface;
-use Stu\Module\Ship\Lib\ReactorUtilInterface;
-use Stu\Module\Ship\Lib\ReactorWrapperInterface;
+use Stu\Module\Spacecraft\Lib\ReactorUtilInterface;
+use Stu\Module\Spacecraft\Lib\ReactorWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -256,7 +256,7 @@ class ManageReactorTest extends StuTestCase
         $reactorWrapper->shouldReceive('get->getSystemType')
             ->withNoArgs()
             ->once()
-            ->andReturn(ShipSystemTypeEnum::SYSTEM_WARPCORE);
+            ->andReturn(SpacecraftSystemTypeEnum::SYSTEM_WARPCORE);
         $reactorWrapper->shouldReceive('get->getLoadCost')
             ->withNoArgs()
             ->once()

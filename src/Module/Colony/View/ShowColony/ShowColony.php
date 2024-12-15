@@ -21,7 +21,7 @@ use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Control\ViewWithTutorialInterface;
 use Stu\Module\Database\View\Category\Wrapper\DatabaseCategoryWrapperFactoryInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 final class ShowColony implements ViewControllerInterface, ViewWithTutorialInterface
@@ -36,7 +36,7 @@ final class ShowColony implements ViewControllerInterface, ViewWithTutorialInter
         private DatabaseCategoryWrapperFactoryInterface $databaseCategoryWrapperFactory,
         private OrbitShipListRetrieverInterface $orbitShipListRetriever,
         private ColonyFunctionManagerInterface $colonyFunctionManager,
-        private ShipWrapperFactoryInterface $shipWrapperFactory
+        private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory
     ) {}
 
     #[Override]
@@ -72,7 +72,7 @@ final class ShowColony implements ViewControllerInterface, ViewWithTutorialInter
         }
 
 
-        $firstOrbitShip = null;
+        $firstOrbitSpacecraft = null;
 
         $shipList = $this->orbitShipListRetriever->retrieve($colony);
         if ($shipList !== []) {
@@ -83,13 +83,13 @@ final class ShowColony implements ViewControllerInterface, ViewWithTutorialInter
                 foreach ($shipList as $fleet) {
                     foreach ($fleet['ships'] as $idx => $ship) {
                         if ($idx == $target) {
-                            $firstOrbitShip = $ship;
+                            $firstOrbitSpacecraft = $ship;
                         }
                     }
                 }
             }
-            if ($firstOrbitShip === null) {
-                $firstOrbitShip = current(current($shipList)['ships']);
+            if ($firstOrbitSpacecraft === null) {
+                $firstOrbitSpacecraft = current(current($shipList)['ships']);
             }
         }
 
@@ -117,7 +117,7 @@ final class ShowColony implements ViewControllerInterface, ViewWithTutorialInter
             $game->setTemplateVar('STARSYSTEM_ENTRY_TAL', $starsystem);
         }
 
-        $game->setTemplateVar('FIRST_ORBIT_SHIP', $firstOrbitShip ? $this->shipWrapperFactory->wrapShip($firstOrbitShip) : null);
+        $game->setTemplateVar('FIRST_ORBIT_SPACECRAFT', $firstOrbitSpacecraft ? $this->spacecraftWrapperFactory->wrapSpacecraft($firstOrbitSpacecraft) : null);
 
         $particlePhalanx = $this->colonyFunctionManager->hasFunction($colony, BuildingFunctionEnum::BUILDING_FUNCTION_PARTICLE_PHALANX);
         $game->setTemplateVar(

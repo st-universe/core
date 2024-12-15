@@ -6,13 +6,14 @@ namespace Stu\Module\Ship\Action\TransferFromAccount;
 
 use Override;
 use request;
-use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
+use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
+use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
@@ -21,14 +22,19 @@ final class TransferFromAccount implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_TRANSFER_FROM_ACCOUNT';
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradeLibFactoryInterface $tradeLibFactory, private TradePostRepositoryInterface $tradePostRepository, private ShipStorageManagerInterface $shipStorageManager, private InteractionCheckerInterface $interactionChecker)
-    {
-    }
+    public function __construct(
+        private ShipLoaderInterface $shipLoader,
+        private TradeLicenseRepositoryInterface $tradeLicenseRepository,
+        private TradeLibFactoryInterface $tradeLibFactory,
+        private TradePostRepositoryInterface $tradePostRepository,
+        private StorageManagerInterface $storageManager,
+        private InteractionCheckerInterface $interactionChecker
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $game->setView(ShowShip::VIEW_IDENTIFIER);
+        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         $userId = $game->getUser()->getId();
 
@@ -45,7 +51,7 @@ final class TransferFromAccount implements ActionControllerInterface
             return;
         }
 
-        if (!$this->interactionChecker->checkPosition($ship, $tradepost->getShip())) {
+        if (!$this->interactionChecker->checkPosition($ship, $tradepost->getStation())) {
             return;
         }
 
@@ -64,6 +70,7 @@ final class TransferFromAccount implements ActionControllerInterface
         $gcount = request::postArray('count');
 
         $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradepost, $game->getUser());
+        /** @var array<int, StorageInterface> */
         $curCommodities = $storageManager->getStorage()->toArray();
 
         if ($curCommodities === []) {
@@ -107,7 +114,7 @@ final class TransferFromAccount implements ActionControllerInterface
             }
 
             $storageManager->lowerStorage((int) $value, $count);
-            $this->shipStorageManager->upperStorage($ship, $commodity, $count);
+            $this->storageManager->upperStorage($ship, $commodity, $count);
 
             $game->addInformation($count . " " . $curCommodities[$value]->getCommodity()->getName());
         }

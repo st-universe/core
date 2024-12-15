@@ -12,7 +12,7 @@ use Stu\StuTestCase;
 
 class SubspaceLayerRendererTest extends StuTestCase
 {
-    /** @var MockInterface|AbstractVisualPanel */
+    /** @var MockInterface&AbstractVisualPanel */
     private MockInterface $panel;
 
     private LayerRendererInterface $subject;

@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Override;
+use Stu\Component\Station\Dock\DockTypeEnum;
 use Stu\Orm\Entity\DockingPrivilege;
 use Stu\Orm\Entity\DockingPrivilegeInterface;
 
@@ -38,25 +39,25 @@ final class DockingPrivilegeRepository extends EntityRepository implements Docki
     }
 
     #[Override]
-    public function existsForTargetAndTypeAndShip(int $targetId, int $privilegeType, int $shipId): bool
+    public function existsForTargetAndTypeAndShip(int $targetId, DockTypeEnum $privilegeType, int $shipId): bool
     {
         return $this->count([
-            'ships_id' => $shipId,
+            'station_id' => $shipId,
             'target' => $targetId,
-            'privilege_type' => $privilegeType,
+            'privilege_type' => $privilegeType->value,
         ]) > 0;
     }
 
     #[Override]
-    public function getByShip(int $shipId): array
+    public function getByStation(int $stationId): array
     {
         return $this->findBy([
-            'ships_id' => $shipId,
+            'station_id' => $stationId,
         ]);
     }
 
     #[Override]
-    public function truncateByTypeAndTarget(int $typeId, int $targetId): void
+    public function truncateByTypeAndTarget(DockTypeEnum $type, int $targetId): void
     {
         $this->getEntityManager()
             ->createQuery(
@@ -66,7 +67,7 @@ final class DockingPrivilegeRepository extends EntityRepository implements Docki
                 )
             )
             ->setParameters([
-                'typeId' => $typeId,
+                'typeId' => $type->value,
                 'targetId' => $targetId,
             ])
             ->execute();

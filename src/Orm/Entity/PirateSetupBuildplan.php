@@ -31,12 +31,12 @@ class PirateSetupBuildplan implements PirateSetupBuildplanInterface
     #[JoinColumn(name: 'pirate_setup_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private PirateSetupInterface $setup;
 
-    #[ManyToOne(targetEntity: ShipBuildplan::class)]
+    #[ManyToOne(targetEntity: SpacecraftBuildplan::class)]
     #[JoinColumn(name: 'buildplan_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ShipBuildplanInterface $buildplan;
+    private SpacecraftBuildplanInterface $buildplan;
 
     #[Override]
-    public function getBuildplan(): ShipBuildplanInterface
+    public function getBuildplan(): SpacecraftBuildplanInterface
     {
         return $this->buildplan;
     }

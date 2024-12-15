@@ -7,8 +7,8 @@ namespace Stu\Module\Ship\Action\TholianWeb;
 use Override;
 use request;
 use RuntimeException;
-use Stu\Component\Ship\ShipStateEnum;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Spacecraft\SpacecraftStateEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -17,12 +17,12 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
-use Stu\Module\Ship\Lib\Interaction\TholianWebUtilInterface;
+use Stu\Module\Spacecraft\Lib\ActivatorDeactivatorHelperInterface;
+use Stu\Module\Ship\Lib\TholianWebUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\Lib\ShipStateChangerInterface;
-use Stu\Module\Ship\View\ShowShip\ShowShip;
-use Stu\Orm\Repository\ShipSystemRepositoryInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftStateChangerInterface;
+use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
+use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
 use Stu\Orm\Repository\TholianWebRepositoryInterface;
 
 final class SupportTholianWeb implements ActionControllerInterface
@@ -35,8 +35,8 @@ final class SupportTholianWeb implements ActionControllerInterface
         private ShipLoaderInterface $shipLoader,
         private TholianWebUtilInterface $tholianWebUtil,
         private TholianWebRepositoryInterface $tholianWebRepository,
-        private ShipSystemRepositoryInterface $shipSystemRepository,
-        private ShipStateChangerInterface $shipStateChanger,
+        private SpacecraftSystemRepositoryInterface $shipSystemRepository,
+        private SpacecraftStateChangerInterface $spacecraftStateChanger,
         private ActivatorDeactivatorHelperInterface $helper,
         private StuTime $stuTime,
         private PrivateMessageSenderInterface $privateMessageSender,
@@ -48,7 +48,7 @@ final class SupportTholianWeb implements ActionControllerInterface
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $game->setView(ShowShip::VIEW_IDENTIFIER);
+        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         $userId = $game->getUser()->getId();
         $shipId = request::indInt('id');
@@ -84,14 +84,14 @@ final class SupportTholianWeb implements ActionControllerInterface
         }
 
         // activate system
-        if (!$this->helper->activate($wrapper, ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB, $game)) {
+        if (!$this->helper->activate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_THOLIAN_WEB, $game)) {
             return;
         }
 
         $currentSpinnerSystems = $this->shipSystemRepository->getWebConstructingShipSystems($web->getId());
 
         $emitter->setWebUnderConstructionId($web->getId())->update();
-        $this->shipStateChanger->changeShipState($wrapper, ShipStateEnum::SHIP_STATE_WEB_SPINNING);
+        $this->spacecraftStateChanger->changeShipState($wrapper, SpacecraftStateEnum::SHIP_STATE_WEB_SPINNING);
 
         $finishedTime = $this->tholianWebUtil->updateWebFinishTime($web, 1);
         if ($finishedTime === null) {
@@ -104,7 +104,7 @@ final class SupportTholianWeb implements ActionControllerInterface
         foreach ($currentSpinnerSystems as $shipSystem) {
             $this->privateMessageSender->send(
                 $userId,
-                $shipSystem->getShip()->getUser()->getId(),
+                $shipSystem->getSpacecraft()->getUser()->getId(),
                 sprintf(
                     'Die %s unterstützt den Netzaufbau in Sektor %s, Fertigstellung: %s',
                     $ship->getName(),

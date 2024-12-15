@@ -6,10 +6,9 @@ namespace Stu\Module\Starmap\Lib;
 
 use RuntimeException;
 use Stu\Component\Game\GameEnum;
+use Stu\Component\Map\DirectionEnum;
 use Stu\Component\Map\MapEnum;
-use Stu\Component\Ship\ShipEnum;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\LayerInterface;
@@ -30,7 +29,7 @@ final class MapSectionHelper
         LayerInterface $layer,
         int $currentSection,
         bool $isMapEditor = false,
-        ?int $direction = null
+        ?DirectionEnum $direction = null
     ): int {
         //$this->loggerUtil->init('MSH', LoggerEnum::LEVEL_ERROR);
 
@@ -152,23 +151,23 @@ final class MapSectionHelper
 
     private function getSection(
         int $currentSection,
-        ?int $direction,
+        ?DirectionEnum $direction,
         LayerInterface $layer
     ): int {
 
         $result = $currentSection;
 
         switch ($direction) {
-            case ShipEnum::DIRECTION_LEFT:
+            case DirectionEnum::LEFT:
                 $result -= 1;
                 break;
-            case ShipEnum::DIRECTION_RIGHT:
+            case DirectionEnum::RIGHT:
                 $result += 1;
                 break;
-            case ShipEnum::DIRECTION_TOP:
+            case DirectionEnum::TOP:
                 $result -= $layer->getSectorsHorizontal();
                 break;
-            case ShipEnum::DIRECTION_BOTTOM:
+            case DirectionEnum::BOTTOM:
                 $result += $layer->getSectorsHorizontal();
                 break;
         }

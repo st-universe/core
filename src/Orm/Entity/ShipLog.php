@@ -8,7 +8,6 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
-use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
@@ -16,7 +15,6 @@ use Override;
 use Stu\Orm\Repository\ShipLogRepository;
 
 #[Table(name: 'stu_ship_log')]
-#[Index(name: 'ship_log_ship_idx', columns: ['ship_id'])]
 #[Entity(repositoryClass: ShipLogRepository::class)]
 class ShipLog implements ShipLogInterface
 {
@@ -26,7 +24,7 @@ class ShipLog implements ShipLogInterface
     private int $id;
 
     #[Column(type: 'integer')]
-    private int $ship_id;
+    private int $spacecraft_id;
 
     #[Column(type: 'text')]
     private string $text = '';
@@ -40,9 +38,9 @@ class ShipLog implements ShipLogInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $deleted = null;
 
-    #[ManyToOne(targetEntity: 'Ship')]
-    #[JoinColumn(name: 'ship_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ?ShipInterface $ship = null;
+    #[ManyToOne(targetEntity: 'Spacecraft')]
+    #[JoinColumn(name: 'spacecraft_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    private ?SpacecraftInterface $spacecraft = null;
 
     #[Override]
     public function getId(): int
@@ -51,9 +49,9 @@ class ShipLog implements ShipLogInterface
     }
 
     #[Override]
-    public function setShip(ShipInterface $ship): ShipLogInterface
+    public function setSpacecraft(SpacecraftInterface $spacecraft): ShipLogInterface
     {
-        $this->ship = $ship;
+        $this->spacecraft = $spacecraft;
 
         return $this;
     }

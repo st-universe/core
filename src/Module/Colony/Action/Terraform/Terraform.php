@@ -6,7 +6,7 @@ namespace Stu\Module\Colony\Action\Terraform;
 
 use Override;
 use request;
-use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Exception\SanityCheckException;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Module\Colony\View\ShowInformation\ShowInformation;
@@ -24,9 +24,7 @@ final class Terraform implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_TERRAFORM';
 
-    public function __construct(private PlanetFieldHostProviderInterface $planetFieldHostProvider, private TerraformingRepositoryInterface $terraformingRepository, private ColonyTerraformingRepositoryInterface $colonyTerraformingRepository, private PlanetFieldRepositoryInterface $planetFieldRepository, private ColonyStorageManagerInterface $colonyStorageManager, private ColonyRepositoryInterface $colonyRepository)
-    {
-    }
+    public function __construct(private PlanetFieldHostProviderInterface $planetFieldHostProvider, private TerraformingRepositoryInterface $terraformingRepository, private ColonyTerraformingRepositoryInterface $colonyTerraformingRepository, private PlanetFieldRepositoryInterface $planetFieldRepository, private StorageManagerInterface $storageManager, private ColonyRepositoryInterface $colonyRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -130,10 +128,10 @@ final class Terraform implements ActionControllerInterface
 
             if ($amount < 0) {
 
-                $this->colonyStorageManager->upperStorage($colony, $commodity, abs($amount));
+                $this->storageManager->upperStorage($colony, $commodity, abs($amount));
             } else {
 
-                $this->colonyStorageManager->lowerStorage($colony, $commodity, $amount);
+                $this->storageManager->lowerStorage($colony, $commodity, $amount);
             }
         }
 

@@ -6,23 +6,24 @@ namespace Stu\Module\Ship\Action\EscapeTractorBeam;
 
 use Override;
 use request;
-use Stu\Component\Ship\System\ShipSystemManagerInterface;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Lib\DamageWrapper;
+use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
+use Stu\Lib\Damage\DamageWrapper;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Ship\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
-use Stu\Module\Ship\Lib\Damage\ApplyDamageInterface;
-use Stu\Module\Ship\Lib\Destruction\ShipDestructionCauseEnum;
-use Stu\Module\Ship\Lib\Destruction\ShipDestructionInterface;
+use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
+use Stu\Module\Spacecraft\Lib\Damage\ApplyDamageInterface;
+use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionCauseEnum;
+use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Module\Ship\View\ShowShip\ShowShip;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class EscapeTractorBeam implements ActionControllerInterface
 {
@@ -31,13 +32,12 @@ final class EscapeTractorBeam implements ActionControllerInterface
     public function __construct(
         private ShipLoaderInterface $shipLoader,
         private ApplyDamageInterface $applyDamage,
-        private ShipRepositoryInterface $shipRepository,
+        private SpacecraftRepositoryInterface $spacecraftRepository,
         private PrivateMessageSenderInterface $privateMessageSender,
-        private ShipDestructionInterface $shipDestruction,
+        private SpacecraftDestructionInterface $spacecraftDestruction,
         private AlertReactionFacadeInterface $alertReactionFacade,
-        private ShipSystemManagerInterface $shipSystemManager
-    ) {
-    }
+        private SpacecraftSystemManagerInterface $spacecraftSystemManager
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -48,15 +48,15 @@ final class EscapeTractorBeam implements ActionControllerInterface
             request::indInt('id'),
             $userId
         );
-        $ship = $wrapper->get();
 
         // is ship trapped in tractor beam?
+        $ship = $wrapper->get();
         if (!$ship->isTractored()) {
             return;
         }
 
         //is deflector working?
-        if (!$ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_DEFLECTOR)) {
+        if (!$ship->isSystemHealthy(SpacecraftSystemTypeEnum::SYSTEM_DEFLECTOR)) {
             return;
         }
 
@@ -64,7 +64,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
             return;
         }
 
-        $tractoringShipWrapper = $wrapper->getTractoringShipWrapper();
+        $tractoringShipWrapper = $wrapper->getTractoringSpacecraftWrapper();
         if ($tractoringShipWrapper === null) {
             return;
         }
@@ -74,7 +74,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
         //enough energy?
         if ($epsSystem === null || $epsSystem->getEps() < 20) {
             $game->addInformation(sprintf(_('Nicht genug Energie für Fluchtversuch (%d benötigt)'), 20));
-            $game->setView(ShowShip::VIEW_IDENTIFIER);
+            $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
             return;
         }
 
@@ -102,13 +102,13 @@ final class EscapeTractorBeam implements ActionControllerInterface
             return;
         }
 
-        $game->setView(ShowShip::VIEW_IDENTIFIER);
+        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $this->shipRepository->save($ship);
+        $this->spacecraftRepository->save($ship);
     }
 
     private function escape(
-        ShipWrapperInterface $tractoringShipWrapper,
+        SpacecraftWrapperInterface $tractoringShipWrapper,
         ShipWrapperInterface $wrapper,
         GameControllerInterface $game
     ): void {
@@ -116,19 +116,17 @@ final class EscapeTractorBeam implements ActionControllerInterface
         $tractoringShip = $tractoringShipWrapper->get();
         $isTractoringShipWarped = $tractoringShip->getWarpDriveState();
 
-        $tractoringShip->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM)->setStatus(0);
-        $this->shipSystemManager->deactivate($tractoringShipWrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true); // forced active deactivation
+        $tractoringShip->getShipSystem(SpacecraftSystemTypeEnum::SYSTEM_TRACTOR_BEAM)->setStatus(0);
+        $this->spacecraftSystemManager->deactivate($tractoringShipWrapper, SpacecraftSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true); // forced active deactivation
 
-        $this->shipRepository->save($tractoringShip);
-
-        $href = sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $tractoringShip->getId());
+        $this->spacecraftRepository->save($tractoringShip);
 
         $this->privateMessageSender->send(
             $ship->getUser()->getId(),
             $tractoringShip->getUser()->getId(),
             sprintf(_('Bei dem Fluchtversuch der %s wurde der Traktorstrahl der %s in Sektor %s zerstört'), $ship->getName(), $tractoringShip->getName(), $ship->getSectorString()),
-            $tractoringShip->isBase() ? PrivateMessageFolderTypeEnum::SPECIAL_STATION : PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
-            $href
+            $tractoringShip->getType()->getMessageFolderType(),
+            $tractoringShip->getHref()
         );
 
         $game->addInformation(_('Der Fluchtversuch ist gelungen'));
@@ -140,50 +138,46 @@ final class EscapeTractorBeam implements ActionControllerInterface
     }
 
     private function sufferDeflectorDamage(
-        ShipInterface $tractoringShip,
+        SpacecraftInterface $tractoringSpacecraft,
         ShipWrapperInterface $wrapper,
         GameControllerInterface $game
     ): void {
         $informations = new InformationWrapper([_('Der Fluchtversuch ist fehlgeschlagen:')]);
 
         $ship = $wrapper->get();
-        $system = $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_DEFLECTOR);
+        $system = $ship->getShipSystem(SpacecraftSystemTypeEnum::SYSTEM_DEFLECTOR);
         $this->applyDamage->damageShipSystem($wrapper, $system, random_int(5, 25), $informations);
 
         $game->addInformationWrapper($informations);
 
-        $href = sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $tractoringShip->getId());
-
         $this->privateMessageSender->send(
             $ship->getUser()->getId(),
-            $tractoringShip->getUser()->getId(),
+            $tractoringSpacecraft->getUser()->getId(),
             sprintf(_('Der Fluchtversuch der %s ist gescheitert'), $ship->getName()),
-            $tractoringShip->isBase() ? PrivateMessageFolderTypeEnum::SPECIAL_STATION : PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
-            $href
+            $tractoringSpacecraft->getType()->getMessageFolderType(),
+            $tractoringSpacecraft->getHref()
         );
     }
 
     private function sufferHullDamage(
-        ShipInterface $tractoringShip,
+        SpacecraftInterface $tractoringSpacecraft,
         ShipWrapperInterface $wrapper,
         GameControllerInterface $game
     ): void {
         $ship = $wrapper->get();
-        $otherUserId = $tractoringShip->getUser()->getId();
+        $otherUserId = $tractoringSpacecraft->getUser()->getId();
         $shipName = $ship->getName();
 
         $game->addInformation(_('Der Fluchtversuch ist fehlgeschlagen:'));
 
         $this->applyDamage->damage(new DamageWrapper((int) ceil($ship->getMaxHull() * random_int(10, 25) / 100)), $wrapper, $game);
 
-        $href = sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $tractoringShip->getId());
-
         if ($ship->isDestroyed()) {
 
-            $this->shipDestruction->destroy(
-                $tractoringShip,
+            $this->spacecraftDestruction->destroy(
+                $tractoringSpacecraft,
                 $wrapper,
-                ShipDestructionCauseEnum::ESCAPE_TRACTOR,
+                SpacecraftDestructionCauseEnum::ESCAPE_TRACTOR,
                 $game
             );
 
@@ -191,7 +185,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
                 $ship->getUser()->getId(),
                 $otherUserId,
                 sprintf(_('Die %s wurde beim Fluchtversuch zerstört'), $shipName),
-                $tractoringShip->isBase() ? PrivateMessageFolderTypeEnum::SPECIAL_STATION : PrivateMessageFolderTypeEnum::SPECIAL_SHIP
+                $tractoringSpacecraft->getType()->getMessageFolderType()
             );
         } else {
             $this->privateMessageSender->send(
@@ -199,7 +193,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
                 $otherUserId,
                 sprintf(_('Der Fluchtversuch der %s ist gescheitert'), $shipName),
                 PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
-                $href
+                $tractoringSpacecraft->getHref()
             );
         }
     }

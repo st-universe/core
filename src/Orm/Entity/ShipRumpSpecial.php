@@ -31,9 +31,9 @@ class ShipRumpSpecial implements ShipRumpSpecialInterface
     #[Column(type: 'integer')]
     private int $special = 0;
 
-    #[ManyToOne(targetEntity: 'ShipRump', inversedBy: 'specialAbilities')]
+    #[ManyToOne(targetEntity: 'SpacecraftRump', inversedBy: 'specialAbilities')]
     #[JoinColumn(name: 'rumps_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ?ShipRumpInterface $shipRump = null;
+    private ?SpacecraftRumpInterface $spacecraftRump = null;
 
     #[Override]
     public function getId(): int
@@ -42,15 +42,9 @@ class ShipRumpSpecial implements ShipRumpSpecialInterface
     }
 
     #[Override]
-    public function getShipRumpId(): int
+    public function setRumpId(int $rumpId): ShipRumpSpecialInterface
     {
-        return $this->rumps_id;
-    }
-
-    #[Override]
-    public function setShipRumpId(int $shipRumpId): ShipRumpSpecialInterface
-    {
-        $this->rumps_id = $shipRumpId;
+        $this->rumps_id = $rumpId;
 
         return $this;
     }

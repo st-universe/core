@@ -9,15 +9,13 @@ use request;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Ship\View\Noop\Noop;
+use Stu\Module\Spacecraft\View\Noop\Noop;
 
 final class ShowFleet implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_SHOW_FLEET';
 
-    public function __construct(private SessionInterface $session)
-    {
-    }
+    public function __construct(private SessionInterface $session) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void

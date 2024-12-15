@@ -29,14 +29,13 @@ interface LocationInterface
 
     public function setFieldType(MapFieldTypeInterface $mapFieldType): LocationInterface;
 
-    /**
-     * @return Collection<int, ShipInterface>
-     */
-    public function getShips(): Collection;
+    /** @return Collection<int, SpacecraftInterface> */
+    public function getSpacecrafts(): Collection;
 
-    /**
-     * @return Collection<int, AnomalyInterface>
-     */
+    /** @return Collection<int, TrumfieldInterface> */
+    public function getTrumfields(): Collection;
+
+    /** @return Collection<int, AnomalyInterface> */
     public function getAnomalies(bool $onlyActive = true): Collection;
 
     public function hasAnomaly(AnomalyTypeEnum $type): bool;

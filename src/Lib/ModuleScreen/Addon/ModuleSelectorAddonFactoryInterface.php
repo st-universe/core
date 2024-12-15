@@ -2,9 +2,9 @@
 
 namespace Stu\Lib\ModuleScreen\Addon;
 
-use Stu\Component\Ship\ShipModuleTypeEnum;
+use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 
 interface ModuleSelectorAddonFactoryInterface
 {
-    public function createModuleSelectorAddon(ShipModuleTypeEnum $moduleType): ?ModuleSelectorAddonInterface;
+    public function createModuleSelectorAddon(SpacecraftModuleTypeEnum $moduleType): ?ModuleSelectorAddonInterface;
 }

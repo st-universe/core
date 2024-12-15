@@ -1,0 +1,476 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Stu\Module\Spacecraft;
+
+use Stu\Component\Spacecraft\SpacecraftTypeEnum;
+use Stu\Module\Game\Action\Transfer\Transfer;
+use Stu\Module\Game\View\ShowTransfer\ShowTransfer;
+use Stu\Module\Ship\View\ShowShip\ShipShowStrategy;
+use Stu\Module\Spacecraft\Action\ActivateCloak\ActivateCloak;
+use Stu\Module\Spacecraft\Action\ActivateLss\ActivateLss;
+use Stu\Module\Spacecraft\Action\ActivateNbs\ActivateNbs;
+use Stu\Module\Spacecraft\Action\ActivatePhaser\ActivatePhaser;
+use Stu\Module\Spacecraft\Action\ActivateRPGModule\ActivateRPGModule;
+use Stu\Module\Spacecraft\Action\ActivateShields\ActivateShields;
+use Stu\Module\Spacecraft\Action\ActivateSubspace\ActivateSubspace;
+use Stu\Module\Spacecraft\Action\ActivateTachyon\ActivateTachyon;
+use Stu\Module\Spacecraft\Action\ActivateTorpedo\ActivateTorpedo;
+use Stu\Module\Spacecraft\Action\ActivateTractorBeam\ActivateTractorBeam;
+use Stu\Module\Spacecraft\Action\ActivateWarp\ActivateWarp;
+use Stu\Module\Spacecraft\Action\AddShipLog\AddShipLog;
+use Stu\Module\Spacecraft\Action\AttackBuilding\AttackBuilding;
+use Stu\Module\Spacecraft\Action\AttackShip\AttackShip;
+use Stu\Module\Spacecraft\Action\BoardShip\BoardShip;
+use Stu\Module\Spacecraft\Action\ChangeName\ChangeName;
+use Stu\Module\Spacecraft\Action\ChangeName\ChangeNameRequest;
+use Stu\Module\Spacecraft\Action\ChangeName\ChangeNameRequestInterface;
+use Stu\Module\Spacecraft\Action\DeactivateCloak\DeactivateCloak;
+use Stu\Module\Spacecraft\Action\DeactivateLss\DeactivateLss;
+use Stu\Module\Spacecraft\Action\DeactivateNbs\DeactivateNbs;
+use Stu\Module\Spacecraft\Action\DeactivatePhaser\DeactivatePhaser;
+use Stu\Module\Spacecraft\Action\DeactivateRPGModule\DeactivateRPGModule;
+use Stu\Module\Spacecraft\Action\DeactivateShields\DeactivateShields;
+use Stu\Module\Spacecraft\Action\DeactivateSubspace\DeactivateSubspace;
+use Stu\Module\Spacecraft\Action\DeactivateTachyon\DeactivateTachyon;
+use Stu\Module\Spacecraft\Action\DeactivateTorpedo\DeactivateTorpedo;
+use Stu\Module\Spacecraft\Action\DeactivateTractorBeam\DeactivateTractorBeam;
+use Stu\Module\Spacecraft\Action\DeactivateWarp\DeactivateWarp;
+use Stu\Module\Spacecraft\Action\DoTachyonScan\DoTachyonScan;
+use Stu\Module\Spacecraft\Action\DropBuoy\DropBuoy;
+use Stu\Module\Spacecraft\Action\DumpForeignCrewman\DumpForeignCrewman;
+use Stu\Module\Spacecraft\Action\EnterStarSystem\EnterStarSystem;
+use Stu\Module\Spacecraft\Action\EnterWormhole\EnterWormhole;
+use Stu\Module\Spacecraft\Action\EpsTransfer\EpsTransfer;
+use Stu\Module\Spacecraft\Action\InterceptShip\InterceptShip;
+use Stu\Module\Spacecraft\Action\LeaveStarSystem\LeaveStarSystem;
+use Stu\Module\Spacecraft\Action\LeaveWormhole\LeaveWormhole;
+use Stu\Module\Spacecraft\Action\LoadReactor\LoadReactor;
+use Stu\Module\Spacecraft\Action\MoveShip\MoveShip;
+use Stu\Module\Spacecraft\Action\MoveShip\MoveShipDown;
+use Stu\Module\Spacecraft\Action\MoveShip\MoveShipLeft;
+use Stu\Module\Spacecraft\Action\MoveShip\MoveShipRequest;
+use Stu\Module\Spacecraft\Action\MoveShip\MoveShipRequestInterface;
+use Stu\Module\Spacecraft\Action\MoveShip\MoveShipRight;
+use Stu\Module\Spacecraft\Action\MoveShip\MoveShipUp;
+use Stu\Module\Spacecraft\Action\OpenAdventDoor\OpenAdventDoor;
+use Stu\Module\Spacecraft\Action\RenameCrew\RenameCrew;
+use Stu\Module\Spacecraft\Action\RenameCrew\RenameCrewRequest;
+use Stu\Module\Spacecraft\Action\RenameCrew\RenameCrewRequestInterface;
+use Stu\Module\Spacecraft\Action\SalvageEmergencyPods\ClosestLocations;
+use Stu\Module\Spacecraft\Action\SalvageEmergencyPods\SalvageEmergencyPods;
+use Stu\Module\Spacecraft\Action\SalvageEmergencyPods\TransferToClosestLocation;
+use Stu\Module\Spacecraft\Action\SelfDestruct\SelfDestruct;
+use Stu\Module\Spacecraft\Action\Selfrepair\Selfrepair;
+use Stu\Module\Spacecraft\Action\SendBroadcast\SendBroadcast;
+use Stu\Module\Spacecraft\Action\SetGreenAlert\SetGreenAlert;
+use Stu\Module\Spacecraft\Action\SetLSSModeBorder\SetLSSModeBorder;
+use Stu\Module\Spacecraft\Action\SetLSSModeNormal\SetLSSModeNormal;
+use Stu\Module\Spacecraft\Action\SetRedAlert\SetRedAlert;
+use Stu\Module\Spacecraft\Action\SetYellowAlert\SetYellowAlert;
+use Stu\Module\Spacecraft\Action\Shutdown\Shutdown;
+use Stu\Module\Spacecraft\Action\SplitReactorOutput\SplitReactorOutput;
+use Stu\Module\Spacecraft\Action\StartEmergency\StartEmergency;
+use Stu\Module\Spacecraft\Action\StartEmergency\StartEmergencyRequest;
+use Stu\Module\Spacecraft\Action\StartShuttle\StartShuttle;
+use Stu\Module\Spacecraft\Action\StartTakeover\StartTakeover;
+use Stu\Module\Spacecraft\Action\StopEmergency\StopEmergency;
+use Stu\Module\Spacecraft\Action\StopEmergency\StopEmergencyRequest;
+use Stu\Module\Spacecraft\Action\StopTakeover\StopTakeover;
+use Stu\Module\Spacecraft\Action\TakeBuoy\TakeBuoy;
+use Stu\Module\Spacecraft\Action\UnloadBattery\UnloadBattery;
+use Stu\Module\Spacecraft\Lib\Creation\SpacecraftConfiguratorFactory;
+use Stu\Module\Spacecraft\Lib\Creation\SpacecraftConfiguratorFactoryInterface;
+use Stu\Module\Spacecraft\Lib\Creation\SpacecraftCreator;
+use Stu\Module\Spacecraft\Lib\Creation\SpacecraftCreatorInterface;
+use Stu\Module\Spacecraft\Lib\Creation\SpacecraftFactory;
+use Stu\Module\Spacecraft\Lib\Creation\SpacecraftFactoryInterface;
+use Stu\Module\Spacecraft\Lib\Creation\SpacecraftSystemCreation;
+use Stu\Module\Spacecraft\Lib\Creation\SpacecraftSystemCreationInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftLoader;
+use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
+use Stu\Module\Spacecraft\View\Noop\Noop;
+use Stu\Module\Spacecraft\View\ShowAlertLevel\ShowAlertLevel;
+use Stu\Module\Spacecraft\View\ShowAnalyseBuoy\ShowAnalyseBuoy;
+use Stu\Module\Spacecraft\View\ShowColonyScan\ShowColonyScan;
+use Stu\Module\Spacecraft\View\ShowEpsTransfer\ShowEpsTransfer;
+use Stu\Module\Spacecraft\View\ShowInformation\ShowInformation;
+use Stu\Module\Spacecraft\View\ShowRegionInfo\ShowRegionInfo;
+use Stu\Module\Spacecraft\View\ShowRenameCrew\ShowRenameCrew;
+use Stu\Module\Spacecraft\View\ShowRepairOptions\ShowRepairOptions;
+use Stu\Module\Spacecraft\View\ShowScan\ShowScan;
+use Stu\Module\Spacecraft\View\ShowSectorScan\ShowSectorScan;
+use Stu\Module\Spacecraft\View\ShowSelfDestruct\ShowSelfDestruct;
+use Stu\Module\Spacecraft\View\ShowShipCommunication\ShowShipCommunication;
+use Stu\Module\Spacecraft\View\ShowShipDetails\ShowShipDetails;
+use Stu\Module\Spacecraft\View\ShowShipStorage\ShowShipStorage;
+use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
+use Stu\Module\Spacecraft\View\ShowSpacecraft\SpacecraftTypeShowStragegyInterface;
+use Stu\Module\Station\View\ShowStation\StationShowStrategy;
+use Stu\Module\Spacecraft\Lib\ActivatorDeactivatorHelper;
+use Stu\Module\Spacecraft\Lib\ActivatorDeactivatorHelperInterface;
+use Stu\Module\Spacecraft\Lib\Auxiliary\ShipShutdown;
+use Stu\Module\Spacecraft\Lib\Auxiliary\ShipShutdownInterface;
+use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertDetection;
+use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertDetectionInterface;
+use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertedShipInformation;
+use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertedShipInformationInterface;
+use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertedShipsDetection;
+use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertedShipsDetectionInterface;
+use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacade;
+use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
+use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\SkipDetection;
+use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\SkipDetectionInterface;
+use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\TrojanHorseNotifier;
+use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\TrojanHorseNotifierInterface;
+use Stu\Module\Spacecraft\Lib\Battle\AlertLevelBasedReaction;
+use Stu\Module\Spacecraft\Lib\Battle\AlertLevelBasedReactionInterface;
+use Stu\Module\Spacecraft\Lib\Battle\AttackMatchup;
+use Stu\Module\Spacecraft\Lib\Battle\AttackMatchupInterface;
+use Stu\Module\Spacecraft\Lib\Battle\FightLib;
+use Stu\Module\Spacecraft\Lib\Battle\FightLibInterface;
+use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyFactory;
+use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyFactoryInterface;
+use Stu\Module\Spacecraft\Lib\Battle\Provider\AttackerProviderFactory;
+use Stu\Module\Spacecraft\Lib\Battle\Provider\AttackerProviderFactoryInterface;
+use Stu\Module\Spacecraft\Lib\Battle\SpacecraftAttackCore;
+use Stu\Module\Spacecraft\Lib\Battle\SpacecraftAttackCoreInterface;
+use Stu\Module\Spacecraft\Lib\Battle\SpacecraftAttackCycle;
+use Stu\Module\Spacecraft\Lib\Battle\SpacecraftAttackCycleInterface;
+use Stu\Module\Spacecraft\Lib\Battle\SpacecraftAttackPreparation;
+use Stu\Module\Spacecraft\Lib\Battle\SpacecraftAttackPreparationInterface;
+use Stu\Module\Spacecraft\Lib\Battle\Weapon\EnergyWeaponPhase;
+use Stu\Module\Spacecraft\Lib\Battle\Weapon\EnergyWeaponPhaseInterface;
+use Stu\Module\Spacecraft\Lib\Battle\Weapon\ProjectileWeaponPhase;
+use Stu\Module\Spacecraft\Lib\Battle\Weapon\ProjectileWeaponPhaseInterface;
+use Stu\Module\Spacecraft\Lib\Battle\Weapon\TholianWebWeaponPhase;
+use Stu\Module\Spacecraft\Lib\Battle\Weapon\TholianWebWeaponPhaseInterface;
+use Stu\Module\Spacecraft\Lib\CloseCombat\CloseCombatUtil;
+use Stu\Module\Spacecraft\Lib\CloseCombat\CloseCombatUtilInterface;
+use Stu\Module\Spacecraft\Lib\Crew\LaunchEscapePods;
+use Stu\Module\Spacecraft\Lib\Crew\LaunchEscapePodsInterface;
+use Stu\Module\Spacecraft\Lib\Crew\SpacecraftLeaver;
+use Stu\Module\Spacecraft\Lib\Crew\SpacecraftLeaverInterface;
+use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtility;
+use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
+use Stu\Module\Spacecraft\Lib\Damage\ApplyDamage;
+use Stu\Module\Spacecraft\Lib\Damage\ApplyDamageInterface;
+use Stu\Module\Spacecraft\Lib\Damage\ApplyFieldDamage;
+use Stu\Module\Spacecraft\Lib\Damage\ApplyFieldDamageInterface;
+use Stu\Module\Spacecraft\Lib\Destruction\Handler\CancelTakeover;
+use Stu\Module\Spacecraft\Lib\Destruction\Handler\ClearTractoringBeam;
+use Stu\Module\Spacecraft\Lib\Destruction\Handler\ColonizationShipCheck;
+use Stu\Module\Spacecraft\Lib\Destruction\Handler\CrewEvacuation;
+use Stu\Module\Spacecraft\Lib\Destruction\Handler\HistoryEntryCreation;
+use Stu\Module\Spacecraft\Lib\Destruction\Handler\LeaveIntactModules;
+use Stu\Module\Spacecraft\Lib\Destruction\Handler\OrphanizeStorage;
+use Stu\Module\Spacecraft\Lib\Destruction\Handler\PrestigeGain;
+use Stu\Module\Spacecraft\Lib\Destruction\Handler\ResetTrackerDevices;
+use Stu\Module\Spacecraft\Lib\Destruction\Handler\TradepostDestruction;
+use Stu\Module\Spacecraft\Lib\Destruction\Handler\TransformToTrumfield;
+use Stu\Module\Spacecraft\Lib\Destruction\Handler\UpdatePirateWrath;
+use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestruction;
+use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionInterface;
+use Stu\Module\Spacecraft\Lib\Interaction\InteractionChecker;
+use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
+use Stu\Module\Spacecraft\Lib\Interaction\InterceptShipCore;
+use Stu\Module\Spacecraft\Lib\Interaction\InterceptShipCoreInterface;
+use Stu\Module\Spacecraft\Lib\Interaction\ShipTakeoverManager;
+use Stu\Module\Spacecraft\Lib\Interaction\ShipTakeoverManagerInterface;
+use Stu\Module\Spacecraft\Lib\Interaction\ShipUndocking;
+use Stu\Module\Spacecraft\Lib\Interaction\ShipUndockingInterface;
+use Stu\Module\Spacecraft\Lib\Interaction\ThreatReaction;
+use Stu\Module\Spacecraft\Lib\Interaction\ThreatReactionInterface;
+use Stu\Module\Spacecraft\Lib\Interaction\TrackerDeviceManager;
+use Stu\Module\Spacecraft\Lib\Interaction\TrackerDeviceManagerInterface;
+use Stu\Module\Spacecraft\Lib\Message\MessageFactory;
+use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
+use Stu\Module\Spacecraft\Lib\ModuleValueCalculator;
+use Stu\Module\Spacecraft\Lib\ModuleValueCalculatorInterface;
+use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\Flight\AstroMappingConsequence;
+use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\Flight\DockConsequence;
+use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\Flight\DriveActivationConsequence;
+use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\Flight\DriveDeactivationConsequence;
+use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\Flight\EpsConsequence;
+use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\Flight\FlightDirectionConsequence;
+use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\Flight\FlightStartConsequenceInterface;
+use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\Flight\RepairConsequence;
+use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\Flight\RetrofitConsequence;
+use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\Flight\TakeoverConsequence;
+use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\Flight\TholianWebConsequence;
+use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\Flight\TractorConsequence;
+use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\Flight\WarpdriveConsequence;
+use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight\DeactivateTranswarpConsequence;
+use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight\DeflectorConsequence;
+use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight\PostFlightAstroMappingConsequence;
+use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight\PostFlightConsequenceInterface;
+use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight\PostFlightDirectionConsequence;
+use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight\PostFlightTrackerConsequence;
+use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight\PostFlightTractorConsequence;
+use Stu\Module\Spacecraft\Lib\Movement\Component\FlightSignatureCreator;
+use Stu\Module\Spacecraft\Lib\Movement\Component\FlightSignatureCreatorInterface;
+use Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\Condition\BlockedCondition;
+use Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\Condition\CrewCondition;
+use Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\Condition\DriveActivatableCondition;
+use Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\Condition\EnoughEpsCondition;
+use Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\Condition\EnoughWarpdriveCondition;
+use Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\Condition\PreFlightConditionInterface;
+use Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\PreFlightConditionsCheck;
+use Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\PreFlightConditionsCheckInterface;
+use Stu\Module\Spacecraft\Lib\Movement\Component\UpdateFlightDirection;
+use Stu\Module\Spacecraft\Lib\Movement\Component\UpdateFlightDirectionInterface;
+use Stu\Module\Spacecraft\Lib\Movement\Route\CheckDestination;
+use Stu\Module\Spacecraft\Lib\Movement\Route\CheckDestinationInterface;
+use Stu\Module\Spacecraft\Lib\Movement\Route\EnterWaypoint;
+use Stu\Module\Spacecraft\Lib\Movement\Route\EnterWaypointInterface;
+use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteFactory;
+use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteFactoryInterface;
+use Stu\Module\Spacecraft\Lib\Movement\Route\LoadWaypoints;
+use Stu\Module\Spacecraft\Lib\Movement\Route\LoadWaypointsInterface;
+use Stu\Module\Spacecraft\Lib\Movement\Route\RandomSystemEntry;
+use Stu\Module\Spacecraft\Lib\Movement\Route\RandomSystemEntryInterface;
+use Stu\Module\Spacecraft\Lib\Movement\ShipMovementInformationAdder;
+use Stu\Module\Spacecraft\Lib\Movement\ShipMovementInformationAdderInterface;
+use Stu\Module\Spacecraft\Lib\Movement\ShipMover;
+use Stu\Module\Spacecraft\Lib\Movement\ShipMoverInterface;
+use Stu\Module\Spacecraft\Lib\ReactorUtil;
+use Stu\Module\Spacecraft\Lib\ReactorUtilInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftRemover;
+use Stu\Module\Spacecraft\Lib\SpacecraftRemoverInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftStateChanger;
+use Stu\Module\Spacecraft\Lib\SpacecraftStateChangerInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactory;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
+use Stu\Module\Spacecraft\Lib\Torpedo\ClearTorpedo;
+use Stu\Module\Spacecraft\Lib\Torpedo\ClearTorpedoInterface;
+use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManager;
+use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
+use Stu\Module\Spacecraft\Lib\Ui\ShipUiFactory;
+use Stu\Module\Spacecraft\Lib\Ui\ShipUiFactoryInterface;
+use Stu\Module\Spacecraft\Lib\Ui\StateIconAndTitle;
+
+use function DI\autowire;
+use function DI\get;
+
+return [
+    MessageFactoryInterface::class => autowire(MessageFactory::class),
+    ShipMoverInterface::class => autowire(ShipMover::class),
+    ModuleValueCalculatorInterface::class => autowire(ModuleValueCalculator::class),
+    InteractionCheckerInterface::class => autowire(InteractionChecker::class),
+    ApplyDamageInterface::class => autowire(ApplyDamage::class),
+    ApplyFieldDamageInterface::class => autowire(ApplyFieldDamage::class),
+    EnergyWeaponPhaseInterface::class => autowire(EnergyWeaponPhase::class),
+    FightLibInterface::class => autowire(FightLib::class),
+    ProjectileWeaponPhaseInterface::class => autowire(ProjectileWeaponPhase::class),
+    TholianWebWeaponPhaseInterface::class => autowire(TholianWebWeaponPhase::class),
+    SpacecraftAttackCoreInterface::class => autowire(SpacecraftAttackCore::class),
+    SpacecraftAttackPreparationInterface::class => autowire(SpacecraftAttackPreparation::class),
+    SpacecraftAttackCycleInterface::class => autowire(SpacecraftAttackCycle::class),
+    ActivatorDeactivatorHelperInterface::class => autowire(ActivatorDeactivatorHelper::class),
+    BattlePartyFactoryInterface::class => autowire(BattlePartyFactory::class),
+    SkipDetectionInterface::class => autowire(SkipDetection::class),
+    AlertedShipsDetectionInterface::class => autowire(AlertedShipsDetection::class),
+    AlertedShipInformationInterface::class => autowire(AlertedShipInformation::class),
+    TrojanHorseNotifierInterface::class => autowire(TrojanHorseNotifier::class),
+    AlertDetectionInterface::class => autowire(AlertDetection::class),
+    AlertReactionFacadeInterface::class => autowire(AlertReactionFacade::class),
+    SpacecraftLeaverInterface::class => autowire(SpacecraftLeaver::class),
+    LaunchEscapePodsInterface::class => autowire(LaunchEscapePods::class),
+    TroopTransferUtilityInterface::class => autowire(TroopTransferUtility::class),
+    SpacecraftRemoverInterface::class => autowire(SpacecraftRemover::class),
+    ShipUndockingInterface::class => autowire(ShipUndocking::class),
+    ShipShutdownInterface::class => autowire(ShipShutdown::class),
+    ThreatReactionInterface::class => autowire(ThreatReaction::class),
+    CloseCombatUtilInterface::class => autowire(CloseCombatUtil::class),
+    ReactorUtilInterface::class => autowire(ReactorUtil::class),
+    ClearTorpedoInterface::class => autowire(ClearTorpedo::class),
+    ShipTorpedoManagerInterface::class => autowire(ShipTorpedoManager::class),
+    SpacecraftWrapperFactoryInterface::class => autowire(SpacecraftWrapperFactory::class)
+        ->constructorParameter('stateIconAndTitle', autowire(StateIconAndTitle::class)),
+    SpacecraftStateChangerInterface::class => autowire(SpacecraftStateChanger::class),
+    ShipTakeoverManagerInterface::class => autowire(ShipTakeoverManager::class),
+    AttackerProviderFactoryInterface::class => autowire(AttackerProviderFactory::class),
+    AttackMatchupInterface::class => autowire(AttackMatchup::class),
+    AlertLevelBasedReactionInterface::class => autowire(AlertLevelBasedReaction::class),
+    FlightSignatureCreatorInterface::class => autowire(FlightSignatureCreator::class),
+    EnterWaypointInterface::class => autowire(EnterWaypoint::class),
+    CheckDestinationInterface::class => autowire(CheckDestination::class),
+    LoadWaypointsInterface::class => autowire(LoadWaypoints::class),
+    UpdateFlightDirectionInterface::class => autowire(UpdateFlightDirection::class),
+    RandomSystemEntryInterface::class => autowire(RandomSystemEntry::class),
+    ShipMovementInformationAdderInterface::class => autowire(ShipMovementInformationAdder::class),
+    InterceptShipCoreInterface::class => autowire(InterceptShipCore::class),
+    TrackerDeviceManagerInterface::class => autowire(TrackerDeviceManager::class),
+    PreFlightConditionInterface::class => [
+        autowire(BlockedCondition::class),
+        autowire(CrewCondition::class),
+        autowire(DriveActivatableCondition::class),
+        autowire(EnoughEpsCondition::class),
+        autowire(EnoughWarpdriveCondition::class)
+    ],
+    PreFlightConditionsCheckInterface::class => autowire(PreFlightConditionsCheck::class)
+        ->constructorParameter(
+            'conditions',
+            get(PreFlightConditionInterface::class)
+        ),
+    FlightStartConsequenceInterface::class => [
+        autowire(RepairConsequence::class),
+        autowire(RetrofitConsequence::class),
+        autowire(DockConsequence::class),
+        autowire(TakeoverConsequence::class),
+        autowire(AstroMappingConsequence::class),
+        autowire(TholianWebConsequence::class),
+        autowire(TractorConsequence::class),
+        autowire(DriveDeactivationConsequence::class),
+        autowire(DriveActivationConsequence::class),
+        autowire(EpsConsequence::class),
+        autowire(WarpdriveConsequence::class),
+        autowire(FlightDirectionConsequence::class)
+    ],
+    PostFlightConsequenceInterface::class => [
+        autowire(PostFlightDirectionConsequence::class),
+        autowire(PostFlightAstroMappingConsequence::class),
+        autowire(DeactivateTranswarpConsequence::class),
+        autowire(PostFlightTrackerConsequence::class),
+        autowire(PostFlightTractorConsequence::class),
+        autowire(DeflectorConsequence::class)
+    ],
+    FlightRouteFactoryInterface::class => autowire(FlightRouteFactory::class)
+        ->constructorParameter(
+            'flightConsequences',
+            get(FlightStartConsequenceInterface::class)
+        )->constructorParameter(
+            'postFlightConsequences',
+            get(PostFlightConsequenceInterface::class)
+        ),
+    MoveShipRequestInterface::class => autowire(MoveShipRequest::class),
+    RenameCrewRequestInterface::class => autowire(RenameCrewRequest::class),
+    ChangeNameRequestInterface::class => autowire(ChangeNameRequest::class),
+    SpacecraftLoaderInterface::class => autowire(SpacecraftLoader::class),
+    SpacecraftFactoryInterface::class => autowire(SpacecraftFactory::class),
+    SpacecraftConfiguratorFactoryInterface::class => autowire(SpacecraftConfiguratorFactory::class),
+    SpacecraftSystemCreationInterface::class => autowire(SpacecraftSystemCreation::class),
+    SpacecraftCreatorInterface::class => autowire(SpacecraftCreator::class),
+    SpacecraftTypeShowStragegyInterface::class => [
+        SpacecraftTypeEnum::SHIP->value => autowire(ShipShowStrategy::class),
+        SpacecraftTypeEnum::STATION->value => autowire(StationShowStrategy::class)
+    ],
+    ShipUiFactoryInterface::class => autowire(ShipUiFactory::class),
+    SpacecraftDestructionInterface::class => autowire(SpacecraftDestruction::class)
+        ->constructorParameter(
+            'destructionHandlers',
+            [
+                autowire(CrewEvacuation::class),
+                autowire(HistoryEntryCreation::class),
+                autowire(UpdatePirateWrath::class),
+                autowire(CancelTakeover::class),
+                autowire(LeaveIntactModules::class),
+                autowire(ClearTractoringBeam::class),
+                autowire(ColonizationShipCheck::class),
+                autowire(PrestigeGain::class),
+                autowire(TransformToTrumfield::class),
+                autowire(ResetTrackerDevices::class),
+                autowire(OrphanizeStorage::class),
+                autowire(TradepostDestruction::class),
+            ],
+        ),
+    'SPACECRAFT_ACTIONS' => [
+        AddShipLog::ACTION_IDENTIFIER => autowire(AddShipLog::class),
+        DumpForeignCrewman::ACTION_IDENTIFIER => autowire(DumpForeignCrewman::class),
+        OpenAdventDoor::ACTION_IDENTIFIER => autowire(OpenAdventDoor::class),
+        Selfrepair::ACTION_IDENTIFIER => autowire(Selfrepair::class),
+        SendBroadcast::ACTION_IDENTIFIER => autowire(SendBroadcast::class),
+        SetLSSModeBorder::ACTION_IDENTIFIER => autowire(SetLSSModeBorder::class),
+        SetLSSModeNormal::ACTION_IDENTIFIER => autowire(SetLSSModeNormal::class),
+        BoardShip::ACTION_IDENTIFIER => autowire(BoardShip::class),
+        StartTakeover::ACTION_IDENTIFIER => autowire(StartTakeover::class),
+        StopTakeover::ACTION_IDENTIFIER => autowire(StopTakeover::class),
+        ActivateCloak::ACTION_IDENTIFIER => autowire(ActivateCloak::class),
+        ActivateSubspace::ACTION_IDENTIFIER => autowire(ActivateSubspace::class),
+        ActivateRPGModule::ACTION_IDENTIFIER => autowire(ActivateRPGModule::class),
+        ActivateTachyon::ACTION_IDENTIFIER => autowire(ActivateTachyon::class),
+        DeactivateCloak::ACTION_IDENTIFIER => autowire(DeactivateCloak::class),
+        DeactivateRPGModule::ACTION_IDENTIFIER => autowire(DeactivateRPGModule::class),
+        DeactivateSubspace::ACTION_IDENTIFIER => autowire(DeactivateSubspace::class),
+        DeactivateTachyon::ACTION_IDENTIFIER => autowire(DeactivateTachyon::class),
+        ActivateLss::ACTION_IDENTIFIER => autowire(ActivateLss::class),
+        DeactivateLss::ACTION_IDENTIFIER => autowire(DeactivateLss::class),
+        ActivateNbs::ACTION_IDENTIFIER => autowire(ActivateNbs::class),
+        DeactivateNbs::ACTION_IDENTIFIER => autowire(DeactivateNbs::class),
+        ActivateShields::ACTION_IDENTIFIER => autowire(ActivateShields::class),
+        DeactivateShields::ACTION_IDENTIFIER => autowire(DeactivateShields::class),
+        ActivatePhaser::ACTION_IDENTIFIER => autowire(ActivatePhaser::class),
+        DeactivatePhaser::ACTION_IDENTIFIER => autowire(DeactivatePhaser::class),
+        ActivateTorpedo::ACTION_IDENTIFIER => autowire(ActivateTorpedo::class),
+        DeactivateTorpedo::ACTION_IDENTIFIER => autowire(DeactivateTorpedo::class),
+        ChangeName::ACTION_IDENTIFIER => autowire(ChangeName::class),
+        LeaveStarSystem::ACTION_IDENTIFIER => autowire(LeaveStarSystem::class),
+        EnterStarSystem::ACTION_IDENTIFIER => autowire(EnterStarSystem::class),
+        EnterWormhole::ACTION_IDENTIFIER => autowire(EnterWormhole::class),
+        LeaveWormhole::ACTION_IDENTIFIER => autowire(LeaveWormhole::class),
+        MoveShip::ACTION_IDENTIFIER => autowire(MoveShip::class),
+        MoveShipUp::ACTION_IDENTIFIER => autowire(MoveShipUp::class),
+        MoveShipDown::ACTION_IDENTIFIER => autowire(MoveShipDown::class),
+        MoveShipLeft::ACTION_IDENTIFIER => autowire(MoveShipLeft::class),
+        MoveShipRight::ACTION_IDENTIFIER => autowire(MoveShipRight::class),
+        ActivateWarp::ACTION_IDENTIFIER => autowire(ActivateWarp::class),
+        DeactivateWarp::ACTION_IDENTIFIER => autowire(DeactivateWarp::class),
+        UnloadBattery::ACTION_IDENTIFIER => autowire(UnloadBattery::class),
+        ActivateTractorBeam::ACTION_IDENTIFIER => autowire(ActivateTractorBeam::class),
+        DeactivateTractorBeam::ACTION_IDENTIFIER => autowire(DeactivateTractorBeam::class),
+        SetGreenAlert::ACTION_IDENTIFIER => autowire(SetGreenAlert::class),
+        SetYellowAlert::ACTION_IDENTIFIER => autowire(SetYellowAlert::class),
+        SetRedAlert::ACTION_IDENTIFIER => autowire(SetRedAlert::class),
+        LoadReactor::ACTION_IDENTIFIER => autowire(LoadReactor::class),
+        RenameCrew::ACTION_IDENTIFIER => autowire(RenameCrew::class),
+        EpsTransfer::ACTION_IDENTIFIER => autowire(EpsTransfer::class),
+        SelfDestruct::ACTION_IDENTIFIER => autowire(SelfDestruct::class),
+        AttackBuilding::ACTION_IDENTIFIER => autowire(AttackBuilding::class),
+        AttackShip::ACTION_IDENTIFIER => autowire(AttackShip::class),
+        TakeBuoy::ACTION_IDENTIFIER => autowire(TakeBuoy::class),
+        InterceptShip::ACTION_IDENTIFIER => autowire(InterceptShip::class),
+        DoTachyonScan::ACTION_IDENTIFIER => autowire(DoTachyonScan::class),
+        DropBuoy::ACTION_IDENTIFIER => autowire(DropBuoy::class),
+        Shutdown::ACTION_IDENTIFIER => autowire(Shutdown::class),
+        Transfer::ACTION_IDENTIFIER => get(Transfer::class),
+        SplitReactorOutput::ACTION_IDENTIFIER => autowire(SplitReactorOutput::class),
+        StartShuttle::ACTION_IDENTIFIER => autowire(StartShuttle::class),
+        StartEmergency::ACTION_IDENTIFIER => autowire(StartEmergency::class)
+            ->constructorParameter(
+                'startEmergencyRequest',
+                autowire(StartEmergencyRequest::class)
+            ),
+        StopEmergency::ACTION_IDENTIFIER => autowire(StopEmergency::class)
+            ->constructorParameter(
+                'stopEmergencyRequest',
+                autowire(StopEmergencyRequest::class)
+            ),
+        SalvageEmergencyPods::ACTION_IDENTIFIER => autowire(SalvageEmergencyPods::class)->constructorParameter(
+            'transferToClosestLocation',
+            autowire(TransferToClosestLocation::class)->constructorParameter(
+                'closestLocations',
+                autowire(ClosestLocations::class)
+            )
+        ),
+    ],
+    'SPACECRAFT_VIEWS' => [
+        ShowAlertLevel::VIEW_IDENTIFIER => autowire(ShowAlertLevel::class),
+        ShowAnalyseBuoy::VIEW_IDENTIFIER => autowire(ShowAnalyseBuoy::class),
+        ShowColonyScan::VIEW_IDENTIFIER => autowire(ShowColonyScan::class),
+        ShowEpsTransfer::VIEW_IDENTIFIER => autowire(ShowEpsTransfer::class),
+        ShowInformation::VIEW_IDENTIFIER => autowire(ShowInformation::class),
+        ShowRegionInfo::VIEW_IDENTIFIER => autowire(ShowRegionInfo::class),
+        ShowRenameCrew::VIEW_IDENTIFIER => autowire(ShowRenameCrew::class),
+        ShowRepairOptions::VIEW_IDENTIFIER => autowire(ShowRepairOptions::class),
+        ShowScan::VIEW_IDENTIFIER => autowire(ShowScan::class),
+        ShowSectorScan::VIEW_IDENTIFIER => autowire(ShowSectorScan::class),
+        ShowSelfDestruct::VIEW_IDENTIFIER => autowire(ShowSelfDestruct::class),
+        ShowShipCommunication::VIEW_IDENTIFIER => autowire(ShowShipCommunication::class),
+        ShowShipDetails::VIEW_IDENTIFIER => autowire(ShowShipDetails::class),
+        ShowShipStorage::VIEW_IDENTIFIER => autowire(ShowShipStorage::class),
+        ShowSpacecraft::VIEW_IDENTIFIER => autowire(ShowSpacecraft::class),
+        ShowTransfer::VIEW_IDENTIFIER => get(ShowTransfer::class),
+        Noop::VIEW_IDENTIFIER => autowire(Noop::class),
+    ],
+];

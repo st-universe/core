@@ -10,23 +10,23 @@ use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\StuTestCase;
 
 class OrbitShipListRetrieverTest extends StuTestCase
 {
-    /** @var MockInterface&ShipRepositoryInterface */
-    private MockInterface $shipRepository;
+    /** @var MockInterface&SpacecraftRepositoryInterface */
+    private $spacecraftRepository;
 
     private OrbitShipListRetriever $subject;
 
     #[Override]
     protected function setUp(): void
     {
-        $this->shipRepository = $this->mock(ShipRepositoryInterface::class);
+        $this->spacecraftRepository = $this->mock(SpacecraftRepositoryInterface::class);
 
         $this->subject = new OrbitShipListRetriever(
-            $this->shipRepository
+            $this->spacecraftRepository
         );
     }
 
@@ -48,15 +48,11 @@ class OrbitShipListRetrieverTest extends StuTestCase
             ->once()
             ->andReturn($starSystemMap);
 
-        $this->shipRepository->shouldReceive('getByLocation')
+        $this->spacecraftRepository->shouldReceive('getByLocation')
             ->with($starSystemMap)
             ->once()
             ->andReturn([$ship1, $ship2]);
 
-        $ship1->shouldReceive('getFleetId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($fleetId);
         $ship1->shouldReceive('getId')
             ->withNoArgs()
             ->once()
@@ -66,7 +62,7 @@ class OrbitShipListRetrieverTest extends StuTestCase
             ->once()
             ->andReturn($fleet);
 
-        $ship2->shouldReceive('getFleetId')
+        $ship2->shouldReceive('getFleet')
             ->withNoArgs()
             ->once()
             ->andReturnNull();
@@ -75,6 +71,10 @@ class OrbitShipListRetrieverTest extends StuTestCase
             ->once()
             ->andReturn($shipId2);
 
+        $fleet->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($fleetId);
         $fleet->shouldReceive('getName')
             ->withNoArgs()
             ->once()

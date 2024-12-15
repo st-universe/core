@@ -10,15 +10,13 @@ use Stu\Module\Colony\Lib\BuildPlanDeleterInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 
 final class DeleteBuildPlan implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_DEL_BUILDPLAN';
 
-    public function __construct(private BuildPlanDeleterInterface $buildPlanDeleter, private ShipBuildplanRepositoryInterface $shipBuildplanRepository)
-    {
-    }
+    public function __construct(private BuildPlanDeleterInterface $buildPlanDeleter, private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -27,18 +25,18 @@ final class DeleteBuildPlan implements ActionControllerInterface
 
         $game->setView(ShowColony::VIEW_IDENTIFIER);
 
-        $shipBuildplan = $this->shipBuildplanRepository->find(request::getIntFatal('planid'));
+        $spacecraftBuildplan = $this->spacecraftBuildplanRepository->find(request::getIntFatal('planid'));
         if (
-            $shipBuildplan === null
-            || $shipBuildplan->getUserId() !== $userId
-            || $this->buildPlanDeleter->isDeletable($shipBuildplan) === false
+            $spacecraftBuildplan === null
+            || $spacecraftBuildplan->getUserId() !== $userId
+            || $this->buildPlanDeleter->isDeletable($spacecraftBuildplan) === false
         ) {
             $game->addInformation('Der Bauplan konnte nicht gelöscht werden');
 
             return;
         }
 
-        $this->buildPlanDeleter->delete($shipBuildplan);
+        $this->buildPlanDeleter->delete($spacecraftBuildplan);
 
         $game->addInformation('Der Bauplan wurde gelöscht');
     }

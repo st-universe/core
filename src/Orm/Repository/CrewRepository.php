@@ -8,9 +8,9 @@ use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\CrewInterface;
-use Stu\Orm\Entity\Ship;
-use Stu\Orm\Entity\ShipCrew;
-use Stu\Orm\Entity\ShipRump;
+use Stu\Orm\Entity\CrewAssignment;
+use Stu\Orm\Entity\SpacecraftRump;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\UserInterface;
 
 /**
@@ -49,16 +49,16 @@ final class CrewRepository extends EntityRepository implements CrewRepositoryInt
             ->createQuery(
                 sprintf(
                     'SELECT COUNT(c.id) FROM %s c WHERE c.user = :user AND c.id IN (
-                        SELECT ship.crew_id FROM %s ship WHERE ship.ship_id IN (
-                            SELECT rump.id FROM %s rump WHERE rump.rumps_id IN (
-                                SELECT rump_category.id FROM %s rump_category WHERE rump_category.category_id = :categoryId
+                        SELECT sc.crew_id FROM %s sc WHERE sc.spacecraft_id IN (
+                            SELECT sp.id FROM %s sp WHERE sp.rump_id IN (
+                                SELECT sr.id FROM %s sr WHERE sr.category_id = :categoryId
                             )
                         )
                     )',
                     Crew::class,
-                    ShipCrew::class,
-                    Ship::class,
-                    ShipRump::class
+                    CrewAssignment::class,
+                    Spacecraft::class,
+                    SpacecraftRump::class
                 )
             )
             ->setParameters([

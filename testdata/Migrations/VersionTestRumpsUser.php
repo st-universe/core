@@ -17,7 +17,8 @@ final class VersionTestRumpsUser extends AbstractMigration
     public function up(Schema $schema): void
     {
         $this->addSql('INSERT INTO stu_rumps_user (id, rump_id, user_id)
-                VALUES (1, 6501, 101);
+                VALUES (1, 6501, 101),
+                        (2, 10053, 101);
         ');
     }
 }

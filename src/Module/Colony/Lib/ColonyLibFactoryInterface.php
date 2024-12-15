@@ -6,7 +6,7 @@ use Stu\Component\Colony\ColonyPopulationCalculatorInterface;
 use Stu\Component\Colony\Commodity\ColonyCommodityProductionInterface;
 use Stu\Component\Colony\Commodity\ColonyProductionSumReducerInterface;
 use Stu\Component\Colony\Shields\ColonyShieldingManagerInterface;
-use Stu\Component\Ship\ShipModuleTypeEnum;
+use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Lib\ModuleScreen\ModuleSelector;
@@ -15,9 +15,9 @@ use Stu\Orm\Entity\BuildingFunctionInterface;
 use Stu\Orm\Entity\BuildingInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\CommodityInterface;
-use Stu\Orm\Entity\ShipBuildplanInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\ShipRumpInterface;
+use Stu\Orm\Entity\SpacecraftBuildplanInterface;
+use Stu\Orm\Entity\SpacecraftRumpInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\UserInterface;
 
 interface ColonyLibFactoryInterface
@@ -38,7 +38,7 @@ interface ColonyLibFactoryInterface
     ): ColonyListItemInterface;
 
     public function createBuildableRumpItem(
-        ShipRumpInterface $shipRump,
+        SpacecraftRumpInterface $shipRump,
         UserInterface $currentUser
     ): BuildableRumpListItemInterface;
 
@@ -53,11 +53,11 @@ interface ColonyLibFactoryInterface
     ): ColonyEpsProductionPreviewWrapper;
 
     public function createModuleSelector(
-        ShipModuleTypeEnum $type,
-        ColonyInterface|ShipInterface $host,
-        ShipRumpInterface $rump,
+        SpacecraftModuleTypeEnum $type,
+        ColonyInterface|SpacecraftInterface $host,
+        SpacecraftRumpInterface $rump,
         UserInterface $user,
-        ?ShipBuildplanInterface $buildplan = null
+        ?SpacecraftBuildplanInterface $buildplan = null
     ): ModuleSelector;
 
     public function createColonyProduction(

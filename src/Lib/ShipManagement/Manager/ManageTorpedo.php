@@ -6,25 +6,26 @@ namespace Stu\Lib\ShipManagement\Manager;
 
 use Override;
 use RuntimeException;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Module\Ship\Lib\Torpedo\ShipTorpedoManagerInterface;
-use Stu\Module\Ship\View\ShowShip\ShowShip;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\TorpedoTypeInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 class ManageTorpedo implements ManagerInterface
 {
-    public function __construct(private TorpedoTypeRepositoryInterface $torpedoTypeRepository, private ShipTorpedoManagerInterface $shipTorpedoManager, private PrivateMessageSenderInterface $privateMessageSender)
-    {
-    }
+    public function __construct(
+        private TorpedoTypeRepositoryInterface $torpedoTypeRepository,
+        private ShipTorpedoManagerInterface $shipTorpedoManager,
+        private PrivateMessageSenderInterface $privateMessageSender
+    ) {}
 
     #[Override]
-    public function manage(ShipWrapperInterface $wrapper, array $values, ManagerProviderInterface $managerProvider): array
+    public function manage(SpacecraftWrapperInterface $wrapper, array $values, ManagerProviderInterface $managerProvider): array
     {
         $torp = $values['torp'] ?? null;
         if ($torp === null) {
@@ -59,15 +60,15 @@ class ManageTorpedo implements ManagerInterface
         }
     }
 
-    private function determineCount(mixed $value, ShipInterface $ship): int
+    private function determineCount(mixed $value, SpacecraftInterface $spacecraft): int
     {
         if ($value == 'm') {
-            return $ship->getMaxTorpedos();
+            return $spacecraft->getMaxTorpedos();
         } else {
             $count = (int) $value;
 
-            if ($count > $ship->getMaxTorpedos()) {
-                $count = $ship->getMaxTorpedos();
+            if ($count > $spacecraft->getMaxTorpedos()) {
+                $count = $spacecraft->getMaxTorpedos();
             }
 
             return $count;
@@ -77,19 +78,19 @@ class ManageTorpedo implements ManagerInterface
     /**
      * @return array<int, TorpedoTypeInterface>
      */
-    private function getPossibleTorpedoTypes(ShipInterface $ship): array
+    private function getPossibleTorpedoTypes(SpacecraftInterface $spacecraft): array
     {
-        if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TORPEDO_STORAGE)) {
+        if ($spacecraft->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_TORPEDO_STORAGE)) {
             return $this->torpedoTypeRepository->getAll();
         } else {
-            return $this->torpedoTypeRepository->getByLevel($ship->getRump()->getTorpedoLevel());
+            return $this->torpedoTypeRepository->getByLevel($spacecraft->getRump()->getTorpedoLevel());
         }
     }
 
     /**
      * @return array<string>
      */
-    private function unloadTorpedo(int $unload, ShipWrapperInterface $wrapper, ManagerProviderInterface $managerProvider): array
+    private function unloadTorpedo(int $unload, SpacecraftWrapperInterface $wrapper, ManagerProviderInterface $managerProvider): array
     {
         $user = $managerProvider->getUser();
         $ship = $wrapper->get();
@@ -118,22 +119,22 @@ class ManageTorpedo implements ManagerInterface
     /**
      * @param array<int|string, mixed>|null $selectedTorpedoTypeArray
      */
-    private function determineTorpedoType(ShipInterface $ship, ?array $selectedTorpedoTypeArray): ?TorpedoTypeInterface
+    private function determineTorpedoType(SpacecraftInterface $spacecraft, ?array $selectedTorpedoTypeArray): ?TorpedoTypeInterface
     {
-        if ($ship->getTorpedoCount() > 0) {
-            return $ship->getTorpedo();
+        if ($spacecraft->getTorpedoCount() > 0) {
+            return $spacecraft->getTorpedo();
         }
 
         if ($selectedTorpedoTypeArray === null) {
             return null;
         }
 
-        if (!array_key_exists($ship->getId(), $selectedTorpedoTypeArray)) {
+        if (!array_key_exists($spacecraft->getId(), $selectedTorpedoTypeArray)) {
             return null;
         }
 
-        $selectedTorpedoTypeId = (int) $selectedTorpedoTypeArray[$ship->getId()];
-        $possibleTorpedoTypes = $this->getPossibleTorpedoTypes($ship);
+        $selectedTorpedoTypeId = (int) $selectedTorpedoTypeArray[$spacecraft->getId()];
+        $possibleTorpedoTypes = $this->getPossibleTorpedoTypes($spacecraft);
 
         if (!array_key_exists($selectedTorpedoTypeId, $possibleTorpedoTypes)) {
             return null;
@@ -148,7 +149,7 @@ class ManageTorpedo implements ManagerInterface
     private function loadTorpedo(
         int $load,
         ?TorpedoTypeInterface $torpedoType,
-        ShipWrapperInterface $wrapper,
+        SpacecraftWrapperInterface $wrapper,
         ManagerProviderInterface $managerProvider
     ): array {
         $ship = $wrapper->get();
@@ -201,23 +202,21 @@ class ManageTorpedo implements ManagerInterface
         int $load,
         TorpedoTypeInterface $torpedoType,
         ManagerProviderInterface $managerProvider,
-        ShipInterface $ship
+        SpacecraftInterface $spacecraft
     ): void {
-        $href = sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $ship->getId());
-
         $this->privateMessageSender->send(
             $managerProvider->getUser()->getId(),
-            $ship->getUser()->getId(),
+            $spacecraft->getUser()->getId(),
             sprintf(
                 _('Die %s hat in Sektor %s %d %s auf die %s transferiert'),
                 $managerProvider->getName(),
-                $ship->getSectorString(),
+                $spacecraft->getSectorString(),
                 $load,
                 $torpedoType->getName(),
-                $ship->getName()
+                $spacecraft->getName()
             ),
             PrivateMessageFolderTypeEnum::SPECIAL_TRADE,
-            $href
+            $spacecraft->getHref()
         );
     }
 }

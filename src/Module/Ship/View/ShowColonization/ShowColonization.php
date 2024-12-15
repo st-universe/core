@@ -12,16 +12,14 @@ use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
+use Stu\Module\Spacecraft\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class ShowColonization implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_COLONIZATION';
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private ColonyLibFactoryInterface $colonyLibFactory, private ColonyRepositoryInterface $colonyRepository, private ColonizationCheckerInterface $colonizationChecker)
-    {
-    }
+    public function __construct(private ShipLoaderInterface $shipLoader, private ColonyLibFactoryInterface $colonyLibFactory, private ColonyRepositoryInterface $colonyRepository, private ColonizationCheckerInterface $colonizationChecker) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void

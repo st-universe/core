@@ -9,7 +9,7 @@ use request;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
+use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Orm\Entity\TradePostInterface;
@@ -19,9 +19,7 @@ final class ShowTradeMenuTransfer implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_TRADEMENU_TRANSFER';
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private TradeLibFactoryInterface $tradeLibFactory, private TradePostRepositoryInterface $tradePostRepository, private InteractionCheckerInterface $interactionChecker)
-    {
-    }
+    public function __construct(private ShipLoaderInterface $shipLoader, private TradeLibFactoryInterface $tradeLibFactory, private TradePostRepositoryInterface $tradePostRepository, private InteractionCheckerInterface $interactionChecker) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -46,7 +44,7 @@ final class ShowTradeMenuTransfer implements ViewControllerInterface
             return;
         }
 
-        if (!$this->interactionChecker->checkPosition($ship, $tradepost->getShip())) {
+        if (!$this->interactionChecker->checkPosition($ship, $tradepost->getStation())) {
             new AccessViolation();
         }
 

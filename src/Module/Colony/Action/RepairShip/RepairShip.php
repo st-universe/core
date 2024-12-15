@@ -10,7 +10,7 @@ use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Component\Colony\OrbitShipListRetrieverInterface;
-use Stu\Component\Ship\ShipStateEnum;
+use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
@@ -19,8 +19,8 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
@@ -31,7 +31,7 @@ final class RepairShip implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_REPAIR_SHIP';
 
-    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyShipRepairRepositoryInterface $colonyShipRepairRepository, private ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository, private PlanetFieldRepositoryInterface $planetFieldRepository, private ShipRepositoryInterface $shipRepository, private ShipWrapperFactoryInterface $shipWrapperFactory, private OrbitShipListRetrieverInterface $orbitShipListRetriever, private InteractionCheckerInterface $interactionChecker, private PrivateMessageSenderInterface $privateMessageSender, private ColonyFunctionManagerInterface $colonyFunctionManager) {}
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyShipRepairRepositoryInterface $colonyShipRepairRepository, private ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository, private PlanetFieldRepositoryInterface $planetFieldRepository, private ShipRepositoryInterface $shipRepository, private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory, private OrbitShipListRetrieverInterface $orbitShipListRetriever, private InteractionCheckerInterface $interactionChecker, private PrivateMessageSenderInterface $privateMessageSender, private ColonyFunctionManagerInterface $colonyFunctionManager) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -52,7 +52,7 @@ final class RepairShip implements ActionControllerInterface
             return;
         }
 
-        if (!$this->interactionChecker->checkColonyPosition($colony, $ship)) {
+        if (!$this->interactionChecker->checkPosition($colony, $ship)) {
             throw new SanityCheckException('InteractionChecker->checkPosition failed', self::ACTION_IDENTIFIER);
         }
 
@@ -74,7 +74,7 @@ final class RepairShip implements ActionControllerInterface
         foreach ($this->orbitShipListRetriever->retrieve($colony) as $fleet) {
             /** @var ShipInterface $orbitShip */
             foreach ($fleet['ships'] as $orbitShip) {
-                $wrapper = $this->shipWrapperFactory->wrapShip($orbitShip);
+                $wrapper = $this->spacecraftWrapperFactory->wrapShip($orbitShip);
                 if (!$wrapper->canBeRepaired() || $orbitShip->isUnderRepair()) {
                     continue;
                 }
@@ -98,13 +98,13 @@ final class RepairShip implements ActionControllerInterface
             return;
         }
 
-        $wrapper = $this->shipWrapperFactory->wrapShip($ship);
+        $wrapper = $this->spacecraftWrapperFactory->wrapShip($ship);
         if (!$wrapper->canBeRepaired()) {
             $game->addInformation(_('Das Schiff kann nicht repariert werden.'));
             return;
         }
 
-        if ($ship->getState() == ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING) {
+        if ($ship->getState() == SpacecraftStateEnum::SHIP_STATE_ASTRO_FINALIZING) {
             $game->addInformation(_('Das Schiff kartographiert derzeit und kann daher nicht repariert werden.'));
             return;
         }
@@ -115,7 +115,7 @@ final class RepairShip implements ActionControllerInterface
         $obj->setFieldId($field->getFieldId());
         $this->colonyShipRepairRepository->save($obj);
 
-        $ship->setState(ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE);
+        $ship->setState(SpacecraftStateEnum::SHIP_STATE_REPAIR_PASSIVE);
 
         $this->shipRepository->save($ship);
 

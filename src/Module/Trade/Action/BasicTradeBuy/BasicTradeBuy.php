@@ -13,6 +13,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Trade\Lib\BasicTradeItem;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\ShowBasicTrade\ShowBasicTrade;
+use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Repository\BasicTradeRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 
@@ -20,9 +21,7 @@ final class BasicTradeBuy implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_BASIC_BUY';
 
-    public function __construct(private TradeLibFactoryInterface $tradeLibFactory, private BasicTradeRepositoryInterface $basicTradeRepository, private TradePostRepositoryInterface $tradePostRepository)
-    {
-    }
+    public function __construct(private TradeLibFactoryInterface $tradeLibFactory, private BasicTradeRepositoryInterface $basicTradeRepository, private TradePostRepositoryInterface $tradePostRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -63,6 +62,7 @@ final class BasicTradeBuy implements ActionControllerInterface
             return;
         }
 
+        /** @var ?StorageInterface */
         $latinumStorage = $storageManager->getStorage()->get(CommodityTypeEnum::COMMODITY_LATINUM);
 
         if ($latinumStorage === null || $latinumStorage->getAmount() < 1) {

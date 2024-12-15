@@ -9,16 +9,17 @@ use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 
 final class ShowOrbitManagement implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_SHIP_MANAGEMENT';
 
-    public function __construct(private ColonyLoaderInterface $colonyLoader, private ShowOrbitManagementRequestInterface $showOrbitManagementRequest, private ShipRepositoryInterface $shipRepository, private ShipWrapperFactoryInterface $shipWrapperFactory)
-    {
-    }
+    public function __construct(
+        private ColonyLoaderInterface $colonyLoader,
+        private ShowOrbitManagementRequestInterface $showOrbitManagementRequest,
+        private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -31,29 +32,8 @@ final class ShowOrbitManagement implements ViewControllerInterface
             false
         );
 
-        $shipList = $this->shipRepository->getByLocation($colony->getStarsystemMap());
-
-        $groupedList = [];
-
-        foreach ($shipList as $ship) {
-            $fleet = $ship->getFleet();
-            $fleetId = $fleet === null ? 0 : $fleet->getId();
-
-            $fleet = $groupedList[$fleetId] ?? null;
-            if ($fleet === null) {
-                $groupedList[$fleetId] = [];
-            }
-
-            $groupedList[$fleetId][] = $ship;
-        }
-
-        $list = [];
-
-        foreach ($groupedList as $fleetId => $shipList) {
-            $fleetWrapper = $this->shipWrapperFactory->wrapShipsAsFleet($shipList, $fleetId === 0);
-            $key = sprintf('%d.%d', $fleetWrapper->get()->getSort(), $fleetWrapper->get()->getUser()->getId());
-            $list[$key] = $fleetWrapper;
-        }
+        $spacecraftGroups = $this->spacecraftWrapperFactory
+            ->wrapSpacecraftsAsGroups($colony->getStarsystemMap()->getSpacecrafts());
 
         $game->appendNavigationPart(
             'colony.php',
@@ -79,6 +59,6 @@ final class ShowOrbitManagement implements ViewControllerInterface
         $game->setViewTemplate('html/colony/menu/orbitalmanagement.twig');
 
         $game->setTemplateVar('MANAGER_ID', $colony->getId());
-        $game->setTemplateVar('FLEET_WRAPPERS', $list);
+        $game->setTemplateVar('SPACECRAFT_GROUPS', $spacecraftGroups);
     }
 }

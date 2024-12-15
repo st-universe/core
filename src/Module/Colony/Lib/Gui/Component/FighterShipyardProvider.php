@@ -6,11 +6,11 @@ use Override;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Repository\ShipRumpRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 
 final class FighterShipyardProvider implements GuiComponentProviderInterface
 {
-    public function __construct(private ShipRumpRepositoryInterface $shipRumpRepository) {}
+    public function __construct(private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository) {}
 
     #[Override]
     public function setTemplateVariables(
@@ -20,7 +20,7 @@ final class FighterShipyardProvider implements GuiComponentProviderInterface
 
         $game->setTemplateVar(
             'BUILDABLE_SHIPS',
-            $this->shipRumpRepository->getBuildableByUserAndBuildingFunction(
+            $this->spacecraftRumpRepository->getBuildableByUserAndBuildingFunction(
                 $game->getUser()->getId(),
                 BuildingFunctionEnum::BUILDING_FUNCTION_FIGHTER_SHIPYARD
             )

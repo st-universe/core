@@ -6,14 +6,14 @@ namespace Stu\Module\Colony\Lib;
 
 use Override;
 use Stu\Component\Building\BuildingFunctionEnum;
-use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Orm\Entity\BuildingInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
 
 final class ModuleQueueLib implements ModuleQueueLibInterface
 {
-    public function __construct(private ModuleQueueRepositoryInterface $moduleQueueRepository, private ColonyStorageManagerInterface $colonyStorageManager) {}
+    public function __construct(private ModuleQueueRepositoryInterface $moduleQueueRepository, private StorageManagerInterface $storageManager) {}
 
     #[Override]
     public function cancelModuleQueues(ColonyInterface $colony, BuildingFunctionEnum $buildingFunction): void
@@ -50,7 +50,7 @@ final class ModuleQueueLib implements ModuleQueueLibInterface
                     $gc = $count * $cost->getAmount();
                 }
 
-                $this->colonyStorageManager->upperStorage($colony, $cost->getCommodity(), $gc);
+                $this->storageManager->upperStorage($colony, $cost->getCommodity(), $gc);
             }
         }
     }

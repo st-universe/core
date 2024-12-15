@@ -36,7 +36,7 @@ class AllianceBoard implements AllianceBoardInterface
     private string $name = '';
 
     /**
-     * @var Collection<int, AllianceBoardTopicInterface>
+     * @var ArrayCollection<int, AllianceBoardTopicInterface>
      */
     #[OneToMany(targetEntity: 'AllianceBoardTopic', mappedBy: 'board')]
     private Collection $topics;
@@ -95,7 +95,7 @@ class AllianceBoard implements AllianceBoardInterface
     {
         return array_reduce(
             $this->getTopics()->toArray(),
-            fn (int $sum, AllianceBoardTopicInterface $allianceBoardTopic): int => $sum + $allianceBoardTopic->getPostCount(),
+            fn(int $sum, AllianceBoardTopicInterface $allianceBoardTopic): int => $sum + $allianceBoardTopic->getPostCount(),
             0
         );
     }

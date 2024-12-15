@@ -10,60 +10,60 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Mockery;
 use Mockery\MockInterface;
 use RuntimeException;
-use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
-use Stu\Component\Ship\System\ShipSystemModeEnum;
-use Stu\Component\Ship\System\ShipSystemManagerInterface;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
+use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
-use Stu\Module\Ship\Lib\Auxiliary\ShipShutdownInterface;
-use Stu\Module\Ship\Lib\Crew\ShipLeaverInterface;
-use Stu\Module\Ship\Lib\Crew\TroopTransferUtilityInterface;
-use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
+use Stu\Module\Spacecraft\Lib\Auxiliary\ShipShutdownInterface;
+use Stu\Module\Spacecraft\Lib\Crew\SpacecraftLeaverInterface;
+use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
+use Stu\Module\Spacecraft\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\CrewInterface;
-use Stu\Orm\Entity\ShipBuildplanInterface;
-use Stu\Orm\Entity\ShipCrewInterface;
+use Stu\Orm\Entity\SpacecraftBuildplanInterface;
+use Stu\Orm\Entity\CrewAssignmentInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Entity\ShipRumpInterface;
-use Stu\Orm\Entity\ShipSystemInterface;
+use Stu\Orm\Entity\SpacecraftRumpInterface;
+use Stu\Orm\Entity\SpacecraftSystemInterface;
 use Stu\StuTestCase;
 
 class ManageCrewTest extends StuTestCase
 {
-    /** @var MockInterface|ShipCrewCalculatorInterface */
+    /** @var MockInterface&SpacecraftCrewCalculatorInterface */
     private MockInterface $shipCrewCalculator;
 
-    /** @var MockInterface|ShipSystemManagerInterface */
-    private MockInterface $shipSystemManager;
+    /** @var MockInterface&SpacecraftSystemManagerInterface */
+    private MockInterface $spacecraftSystemManager;
 
-    /** @var MockInterface|TroopTransferUtilityInterface */
+    /** @var MockInterface&TroopTransferUtilityInterface */
     private MockInterface $troopTransferUtility;
 
-    /** @var MockInterface|ShipShutdownInterface */
+    /** @var MockInterface&ShipShutdownInterface */
     private MockInterface $shipShutdown;
 
-    /** @var MockInterface|ShipLeaverInterface */
-    private MockInterface $shipLeaver;
+    /** @var MockInterface&SpacecraftLeaverInterface */
+    private MockInterface $spacecraftLeaver;
 
-    /** @var MockInterface|ActivatorDeactivatorHelperInterface */
+    /** @var MockInterface&ActivatorDeactivatorHelperInterface */
     private MockInterface $helper;
 
-    /** @var MockInterface|ShipWrapperInterface */
+    /** @var MockInterface&ShipWrapperInterface */
     private MockInterface $wrapper;
 
-    /** @var MockInterface|ShipBuildplanInterface */
+    /** @var MockInterface&SpacecraftBuildplanInterface */
     private MockInterface $buildplan;
 
-    /** @var MockInterface|ShipInterface */
+    /** @var MockInterface&ShipInterface */
     private MockInterface $ship;
 
-    /** @var MockInterface|ManagerProviderInterface */
+    /** @var MockInterface&ManagerProviderInterface */
     private MockInterface $managerProvider;
 
     private int $shipId = 555;
 
-    /** @var MockInterface|UserInterface */
+    /** @var MockInterface&UserInterface */
     private MockInterface $user;
 
     private ManageCrew $subject;
@@ -71,25 +71,25 @@ class ManageCrewTest extends StuTestCase
     #[Override]
     protected function setUp(): void
     {
-        $this->shipCrewCalculator = $this->mock(ShipCrewCalculatorInterface::class);
-        $this->shipSystemManager = $this->mock(ShipSystemManagerInterface::class);
+        $this->shipCrewCalculator = $this->mock(SpacecraftCrewCalculatorInterface::class);
+        $this->spacecraftSystemManager = $this->mock(SpacecraftSystemManagerInterface::class);
         $this->troopTransferUtility = $this->mock(TroopTransferUtilityInterface::class);
         $this->shipShutdown = $this->mock(ShipShutdownInterface::class);
-        $this->shipLeaver = $this->mock(ShipLeaverInterface::class);
+        $this->spacecraftLeaver = $this->mock(SpacecraftLeaverInterface::class);
         $this->helper = $this->mock(ActivatorDeactivatorHelperInterface::class);
 
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
         $this->ship = $this->mock(ShipInterface::class);
-        $this->buildplan = $this->mock(ShipBuildplanInterface::class);
+        $this->buildplan = $this->mock(SpacecraftBuildplanInterface::class);
         $this->user = $this->mock(UserInterface::class);
         $this->managerProvider = $this->mock(ManagerProviderInterface::class);
 
         $this->subject = new ManageCrew(
             $this->shipCrewCalculator,
-            $this->shipSystemManager,
+            $this->spacecraftSystemManager,
             $this->troopTransferUtility,
             $this->shipShutdown,
-            $this->shipLeaver,
+            $this->spacecraftLeaver,
             $this->helper
         );
     }
@@ -115,7 +115,7 @@ class ManageCrewTest extends StuTestCase
     public function testManageExpectNothingWhenNotInValues(): void
     {
         $values = ['crew' => ['5' => '42']];
-        $this->mock(ShipBuildplanInterface::class);
+        $this->mock(SpacecraftBuildplanInterface::class);
 
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()
@@ -143,7 +143,7 @@ class ManageCrewTest extends StuTestCase
 
     public function testManageExpectNothingWhenShipCantBeManned(): void
     {
-        $buildplan = $this->mock(ShipBuildplanInterface::class);
+        $buildplan = $this->mock(SpacecraftBuildplanInterface::class);
         $values = ['crew' => ['555' => '42']];
 
         $this->wrapper->shouldReceive('get')
@@ -174,7 +174,7 @@ class ManageCrewTest extends StuTestCase
         $this->assertEmpty($msg);
     }
 
-    public function testManageExpectNothingWhenShipBuildplanIsNull(): void
+    public function testManageExpectNothingWhenSpacecraftBuildplanIsNull(): void
     {
         $values = ['crew' => ['555' => '42']];
 
@@ -209,7 +209,7 @@ class ManageCrewTest extends StuTestCase
     public function testManageExpectNothingWhenForeignShip(): void
     {
         $shipOwner = $this->mock(UserInterface::class);
-        $buildplan = $this->mock(ShipBuildplanInterface::class);
+        $buildplan = $this->mock(SpacecraftBuildplanInterface::class);
         $values = ['crew' => ['555' => '42']];
 
         $this->wrapper->shouldReceive('get')
@@ -302,7 +302,7 @@ class ManageCrewTest extends StuTestCase
         $values = ['crew' => ['555' => '42']];
 
 
-        $rumpMock = $this->mock(ShipRumpInterface::class);
+        $rumpMock = $this->mock(SpacecraftRumpInterface::class);
 
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()
@@ -315,7 +315,7 @@ class ManageCrewTest extends StuTestCase
         $this->managerProvider->shouldReceive('getFreeCrewAmount')
             ->withNoArgs()
             ->andReturn(10);
-        $this->managerProvider->shouldReceive('addShipCrew')
+        $this->managerProvider->shouldReceive('addCrewAssignment')
             ->with($this->ship, 10)
             ->once();
 
@@ -342,7 +342,7 @@ class ManageCrewTest extends StuTestCase
             ->once()
             ->andReturn('name');
         $this->ship->shouldReceive('hasShipSystem')
-            ->with(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
+            ->with(SpacecraftSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
             ->once()
             ->andReturn(true);
 
@@ -356,18 +356,18 @@ class ManageCrewTest extends StuTestCase
             ->once()
             ->andReturn(35);
 
-        $shipSystemMock = $this->mock(ShipSystemInterface::class);
+        $shipSystemMock = $this->mock(SpacecraftSystemInterface::class);
         $shipSystemMock->shouldReceive('getMode')
             ->once()
-            ->andReturn(ShipSystemModeEnum::MODE_OFF);
+            ->andReturn(SpacecraftSystemModeEnum::MODE_OFF);
 
         $this->ship->shouldReceive('getShipSystem')
-            ->with(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
+            ->with(SpacecraftSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
             ->once()
             ->andReturn($shipSystemMock);
 
         $this->ship->shouldReceive('hasShipSystem')
-            ->with(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)
+            ->with(SpacecraftSystemTypeEnum::SYSTEM_LIFE_SUPPORT)
             ->once()
             ->andReturn(true);
 
@@ -376,12 +376,12 @@ class ManageCrewTest extends StuTestCase
             ->andReturn(25);
 
         $this->helper->shouldReceive('activate')
-            ->with($this->wrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, Mockery::type(InformationWrapper::class))
+            ->with($this->wrapper, SpacecraftSystemTypeEnum::SYSTEM_TROOP_QUARTERS, Mockery::type(InformationWrapper::class))
             ->once()
             ->andReturn(true);
 
-        $this->shipSystemManager->shouldReceive('activate')
-            ->with($this->wrapper, ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT, true);
+        $this->spacecraftSystemManager->shouldReceive('activate')
+            ->with($this->wrapper, SpacecraftSystemTypeEnum::SYSTEM_LIFE_SUPPORT, true);
 
         $msg = $this->subject->manage($this->wrapper, $values, $this->managerProvider);
 
@@ -392,7 +392,7 @@ class ManageCrewTest extends StuTestCase
         $values = ['crew' => ['555' => '42']];
 
 
-        $rumpMock = $this->mock(ShipRumpInterface::class);
+        $rumpMock = $this->mock(SpacecraftRumpInterface::class);
 
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()
@@ -405,7 +405,7 @@ class ManageCrewTest extends StuTestCase
         $this->managerProvider->shouldReceive('getFreeCrewAmount')
             ->withNoArgs()
             ->andReturn(42);
-        $this->managerProvider->shouldReceive('addShipCrew')
+        $this->managerProvider->shouldReceive('addCrewAssignment')
             ->with($this->ship, 22)
             ->once();
 
@@ -432,7 +432,7 @@ class ManageCrewTest extends StuTestCase
             ->once()
             ->andReturn('name');
         $this->ship->shouldReceive('hasShipSystem')
-            ->with(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
+            ->with(SpacecraftSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
             ->once()
             ->andReturn(true);
 
@@ -446,18 +446,18 @@ class ManageCrewTest extends StuTestCase
             ->once()
             ->andReturn(40);
 
-        $shipSystemMock = $this->mock(ShipSystemInterface::class);
+        $shipSystemMock = $this->mock(SpacecraftSystemInterface::class);
         $shipSystemMock->shouldReceive('getMode')
             ->once()
-            ->andReturn(ShipSystemModeEnum::MODE_OFF);
+            ->andReturn(SpacecraftSystemModeEnum::MODE_OFF);
 
         $this->ship->shouldReceive('getShipSystem')
-            ->with(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
+            ->with(SpacecraftSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
             ->once()
             ->andReturn($shipSystemMock);
 
         $this->ship->shouldReceive('hasShipSystem')
-            ->with(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)
+            ->with(SpacecraftSystemTypeEnum::SYSTEM_LIFE_SUPPORT)
             ->once()
             ->andReturn(true);
 
@@ -466,12 +466,12 @@ class ManageCrewTest extends StuTestCase
             ->andReturn(20);
 
         $this->helper->shouldReceive('activate')
-            ->with($this->wrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, Mockery::type(InformationWrapper::class))
+            ->with($this->wrapper, SpacecraftSystemTypeEnum::SYSTEM_TROOP_QUARTERS, Mockery::type(InformationWrapper::class))
             ->once()
             ->andReturn(true);
 
-        $this->shipSystemManager->shouldReceive('activate')
-            ->with($this->wrapper, ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT, true);
+        $this->spacecraftSystemManager->shouldReceive('activate')
+            ->with($this->wrapper, SpacecraftSystemTypeEnum::SYSTEM_LIFE_SUPPORT, true);
 
         $msg = $this->subject->manage($this->wrapper, $values, $this->managerProvider);
 
@@ -494,7 +494,7 @@ class ManageCrewTest extends StuTestCase
         $this->ship->shouldReceive('getBuildplan')
             ->withNoArgs()
             ->once()
-            ->andReturn($this->mock(ShipBuildplanInterface::class));
+            ->andReturn($this->mock(SpacecraftBuildplanInterface::class));
         $this->ship->shouldReceive('getCrewCount')
             ->withNoArgs()
             ->andReturn(42);
@@ -556,7 +556,7 @@ class ManageCrewTest extends StuTestCase
         $this->ship->shouldReceive('getBuildplan')
             ->withNoArgs()
             ->once()
-            ->andReturn($this->mock(ShipBuildplanInterface::class));
+            ->andReturn($this->mock(SpacecraftBuildplanInterface::class));
 
         $msg = $this->subject->manage($this->wrapper, $values, $this->managerProvider);
 
@@ -565,8 +565,8 @@ class ManageCrewTest extends StuTestCase
 
     public function testManageExpectUnmanCappedByProviderSpace(): void
     {
-        $shipCrew1 = $this->mock(ShipCrewInterface::class);
-        $shipCrew2 = $this->mock(ShipCrewInterface::class);
+        $shipCrew1 = $this->mock(CrewAssignmentInterface::class);
+        $shipCrew2 = $this->mock(CrewAssignmentInterface::class);
 
         $shipCrewlist = new ArrayCollection([$shipCrew1, $shipCrew2]);
 
@@ -589,7 +589,7 @@ class ManageCrewTest extends StuTestCase
         $this->ship->shouldReceive('getBuildplan')
             ->withNoArgs()
             ->once()
-            ->andReturn($this->mock(ShipBuildplanInterface::class));
+            ->andReturn($this->mock(SpacecraftBuildplanInterface::class));
         $this->ship->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn($this->shipId);
@@ -632,11 +632,11 @@ class ManageCrewTest extends StuTestCase
 
     public function testManageExpectCompleteUnmanWhenEnoughSpaceOnProvider(): void
     {
-        $ownCrew = $this->mock(ShipCrewInterface::class);
+        $ownCrew = $this->mock(CrewAssignmentInterface::class);
         $foreignCrew = $this->mock(CrewInterface::class);
-        $foreignShipCrew = $this->mock(ShipCrewInterface::class);
+        $foreignCrewAssignment = $this->mock(CrewAssignmentInterface::class);
 
-        $shipCrewlist = new ArrayCollection([$ownCrew, $foreignShipCrew]);
+        $shipCrewlist = new ArrayCollection([$ownCrew, $foreignCrewAssignment]);
 
         $values = ['crew' => ['555' => '0']];
 
@@ -660,7 +660,7 @@ class ManageCrewTest extends StuTestCase
         $this->ship->shouldReceive('getBuildplan')
             ->withNoArgs()
             ->once()
-            ->andReturn($this->mock(ShipBuildplanInterface::class));
+            ->andReturn($this->mock(SpacecraftBuildplanInterface::class));
         $this->ship->shouldReceive('canMan')
             ->withNoArgs()
             ->once()
@@ -692,7 +692,7 @@ class ManageCrewTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($this->user);
-        $foreignShipCrew->shouldReceive('getCrew')
+        $foreignCrewAssignment->shouldReceive('getCrew')
             ->withNoArgs()
             ->andReturn($foreignCrew);
         $foreignCrew->shouldReceive('getUser')
@@ -704,9 +704,9 @@ class ManageCrewTest extends StuTestCase
             ->once()
             ->andReturn('Foreigner');
 
-        $this->shipLeaver->shouldReceive('dumpCrewman')
+        $this->spacecraftLeaver->shouldReceive('dumpCrewman')
             ->with(
-                $foreignShipCrew,
+                $foreignCrewAssignment,
                 'Die Dienste von Crewman Foreigner werden nicht mehr auf der Station name von Spieler spieler benötigt.'
             )
             ->once()

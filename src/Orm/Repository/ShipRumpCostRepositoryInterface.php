@@ -14,5 +14,5 @@ interface ShipRumpCostRepositoryInterface extends ObjectRepository
     /**
      * @return list<ShipRumpCostInterface>
      */
-    public function getByShipRump(int $shipRumpId): array;
+    public function getByShipRump(int $rumpId): array;
 }

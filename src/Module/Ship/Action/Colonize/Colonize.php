@@ -7,7 +7,7 @@ namespace Stu\Module\Ship\Action\Colonize;
 use InvalidArgumentException;
 use Override;
 use request;
-use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Component\Player\ColonizationCheckerInterface;
 use Stu\Module\Colony\Lib\PlanetColonizationInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
@@ -17,12 +17,12 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Game\Lib\Component\ComponentEnum;
 use Stu\Module\Game\Lib\Component\ComponentLoaderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Module\Ship\Lib\Crew\TroopTransferUtilityInterface;
-use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
+use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
+use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\Lib\ShipRemoverInterface;
-use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
-use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Module\Spacecraft\Lib\SpacecraftRemoverInterface;
+use Stu\Module\Spacecraft\Lib\ShipRumpSpecialAbilityEnum;
+use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -38,12 +38,12 @@ final class Colonize implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_COLONIZE';
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private ShipRumpColonizationBuildingRepositoryInterface $shipRumpColonizationBuildingRepository, private BuildingRepositoryInterface $buildingRepository, private PlanetFieldRepositoryInterface $planetFieldRepository, private PlanetColonizationInterface $planetColonization, private ColonyRepositoryInterface $colonyRepository, private ColonyStorageManagerInterface $colonyStorageManager, private CommodityRepositoryInterface $commodityRepository, private ShipRemoverInterface $shipRemover, private InteractionCheckerInterface $interactionChecker, private ColonizationCheckerInterface $colonizationChecker, private TroopTransferUtilityInterface $troopTransferUtility, private ColonyDepositMiningRepositoryInterface $colonyDepositMiningRepository, private UserRepositoryInterface $userRepository, private ComponentLoaderInterface $componentLoader) {}
+    public function __construct(private ShipLoaderInterface $shipLoader, private ShipRumpColonizationBuildingRepositoryInterface $shipRumpColonizationBuildingRepository, private BuildingRepositoryInterface $buildingRepository, private PlanetFieldRepositoryInterface $planetFieldRepository, private PlanetColonizationInterface $planetColonization, private ColonyRepositoryInterface $colonyRepository, private StorageManagerInterface $storageManager, private CommodityRepositoryInterface $commodityRepository, private SpacecraftRemoverInterface $spacecraftRemover, private InteractionCheckerInterface $interactionChecker, private ColonizationCheckerInterface $colonizationChecker, private TroopTransferUtilityInterface $troopTransferUtility, private ColonyDepositMiningRepositoryInterface $colonyDepositMiningRepository, private UserRepositoryInterface $userRepository, private ComponentLoaderInterface $componentLoader) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $game->setView(ShowShip::VIEW_IDENTIFIER);
+        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         $user = $game->getUser();
         $userId = $user->getId();
@@ -70,7 +70,7 @@ final class Colonize implements ActionControllerInterface
         if ($colony !== $field->getHost()) {
             return;
         }
-        if (!$this->interactionChecker->checkColonyPosition($colony, $ship)) {
+        if (!$this->interactionChecker->checkPosition($colony, $ship)) {
             return;
         }
         if ($this->colonizationChecker->canColonize($user, $colony) === false) {
@@ -96,22 +96,22 @@ final class Colonize implements ActionControllerInterface
                 $building,
                 $field
             );
-            $this->colonyStorageManager->upperStorage(
+            $this->storageManager->upperStorage(
                 $colony,
                 $this->getCommodity(CommodityTypeEnum::COMMODITY_BUILDING_MATERIALS),
                 150
             );
-            $this->colonyStorageManager->upperStorage(
+            $this->storageManager->upperStorage(
                 $colony,
                 $this->getCommodity(CommodityTypeEnum::COMMODITY_TRANSPARENT_ALUMINIUM),
                 150
             );
-            $this->colonyStorageManager->upperStorage(
+            $this->storageManager->upperStorage(
                 $colony,
                 $this->getCommodity(CommodityTypeEnum::COMMODITY_DURANIUM),
                 150
             );
-            $this->colonyStorageManager->upperStorage(
+            $this->storageManager->upperStorage(
                 $colony,
                 $this->getCommodity(CommodityTypeEnum::COMMODITY_DEUTERIUM),
                 100
@@ -131,11 +131,11 @@ final class Colonize implements ActionControllerInterface
 
         $this->createUserDepositMinings($colony);
 
-        $this->shipRemover->remove($ship);
+        $this->spacecraftRemover->remove($ship);
 
         $game->checkDatabaseItem($colony->getColonyClass()->getDatabaseId());
 
-        $this->componentLoader->addComponentUpdate(ComponentEnum::COLONIES_NAVLET);
+        $this->componentLoader->addComponentUpdate(ComponentEnum::COLONIES);
 
         $game->redirectTo(sprintf(
             '/colony.php?%s=1&id=%d',

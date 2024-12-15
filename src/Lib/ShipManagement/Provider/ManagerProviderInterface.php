@@ -6,8 +6,8 @@ namespace Stu\Lib\ShipManagement\Provider;
 
 use Doctrine\Common\Collections\Collection;
 use Stu\Orm\Entity\CommodityInterface;
-use Stu\Orm\Entity\ShipCrewInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\CrewAssignmentInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Entity\UserInterface;
 
@@ -25,12 +25,12 @@ interface ManagerProviderInterface
 
     public function getFreeCrewAmount(): int;
 
-    public function addShipCrew(ShipInterface $ship, int $amount): void;
+    public function addCrewAssignment(SpacecraftInterface $spacecraft, int $amount): void;
 
     public function getFreeCrewStorage(): int;
 
     /**
-     * @param array<ShipCrewInterface> $crewAssignments
+     * @param array<CrewAssignmentInterface> $crewAssignments
      */
     public function addCrewAssignments(array $crewAssignments): void;
 

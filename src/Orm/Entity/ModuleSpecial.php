@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Override;
-use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
+use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
 use Stu\Orm\Repository\ModuleSpecialRepository;
 
 #[Table(name: 'stu_modules_specials')]
@@ -29,15 +29,12 @@ class ModuleSpecial implements ModuleSpecialInterface
     #[Column(type: 'integer')]
     private int $module_id = 0;
 
-    #[Column(type: 'smallint')]
-    private int $special_id = 0;
+    #[Column(type: 'smallint', enumType: ModuleSpecialAbilityEnum::class)]
+    private ModuleSpecialAbilityEnum $special_id = ModuleSpecialAbilityEnum::MODULE_SPECIAL_RPG;
 
-    /**
-     * @var ModuleInterface
-     */
     #[ManyToOne(targetEntity: 'Module', inversedBy: 'moduleSpecials')]
     #[JoinColumn(name: 'module_id', referencedColumnName: 'id')]
-    private $module;
+    private ModuleInterface $module;
 
     #[Override]
     public function getId(): int
@@ -60,13 +57,13 @@ class ModuleSpecial implements ModuleSpecialInterface
     }
 
     #[Override]
-    public function getSpecialId(): int
+    public function getSpecialId(): ModuleSpecialAbilityEnum
     {
         return $this->special_id;
     }
 
     #[Override]
-    public function setSpecialId(int $specialId): ModuleSpecialInterface
+    public function setSpecialId(ModuleSpecialAbilityEnum $specialId): ModuleSpecialInterface
     {
         $this->special_id = $specialId;
 
@@ -76,6 +73,6 @@ class ModuleSpecial implements ModuleSpecialInterface
     #[Override]
     public function getName(): string
     {
-        return ModuleSpecialAbilityEnum::getDescription($this->getSpecialId());
+        return $this->getSpecialId()->getDescription();
     }
 }

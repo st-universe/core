@@ -7,13 +7,17 @@ namespace Stu\Module\Ship\Lib;
 use Doctrine\Common\Collections\Collection;
 use Override;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Entity\FleetInterface;
 
 final class FleetWrapper implements FleetWrapperInterface
 {
-    public function __construct(private FleetInterface $fleet, private ShipWrapperFactoryInterface $shipWrapperFactory, private GameControllerInterface $game, private bool $isSingleShips)
-    {
-    }
+    public function __construct(
+        private FleetInterface $fleet,
+        private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
+        private GameControllerInterface $game,
+        private bool $isSingleShips
+    ) {}
 
     #[Override]
     public function get(): FleetInterface
@@ -24,13 +28,13 @@ final class FleetWrapper implements FleetWrapperInterface
     #[Override]
     public function getLeadWrapper(): ShipWrapperInterface
     {
-        return $this->shipWrapperFactory->wrapShip($this->fleet->getLeadShip());
+        return $this->spacecraftWrapperFactory->wrapShip($this->fleet->getLeadShip());
     }
 
     #[Override]
     public function getShipWrappers(): Collection
     {
-        return $this->shipWrapperFactory->wrapShips($this->fleet->getShips()->toArray());
+        return $this->spacecraftWrapperFactory->wrapShips($this->fleet->getShips()->toArray());
     }
 
     #[Override]

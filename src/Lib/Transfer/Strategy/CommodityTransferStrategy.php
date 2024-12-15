@@ -6,37 +6,30 @@ namespace Stu\Lib\Transfer\Strategy;
 
 use Override;
 use request;
-use Stu\Lib\Information\InformationWrapper;
-use Stu\Lib\Pirate\PirateReactionInterface;
-use Stu\Lib\Pirate\PirateReactionTriggerEnum;
-use Stu\Lib\Transfer\BeamUtilInterface;
+use Stu\Lib\Information\InformationInterface;
+use Stu\Lib\Transfer\Wrapper\StorageEntityWrapperInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Template\StatusBarColorEnum;
+use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\ShipInterface;
 
 class CommodityTransferStrategy implements TransferStrategyInterface
 {
     public function __construct(
         private ColonyLibFactoryInterface $colonyLibFactory,
-        private BeamUtilInterface $beamUtil,
-        private PirateReactionInterface $pirateReaction
+        private StatusBarFactoryInterface $statusBarFactory
     ) {}
 
     #[Override]
     public function setTemplateVariables(
         bool $isUnload,
-        ShipInterface $ship,
-        ShipInterface|ColonyInterface $target,
+        StorageEntityWrapperInterface $source,
+        StorageEntityWrapperInterface $target,
         GameControllerInterface $game
     ): void {
 
-        $beamableStorage = $isUnload ? $ship->getBeamableStorage() : $target->getBeamableStorage();
-
-        usort($beamableStorage, function ($a, $b): int {
-            return $a->getCommodity()->getSort() <=> $b->getCommodity()->getSort();
-        });
+        $beamableStorage = $isUnload ? $source->get()->getBeamableStorage() : $target->get()->getBeamableStorage();
 
         $game->setTemplateVar(
             'BEAMABLE_STORAGE',
@@ -46,149 +39,56 @@ class CommodityTransferStrategy implements TransferStrategyInterface
         if ($target instanceof ColonyInterface) {
             $game->setTemplateVar(
                 'SHOW_SHIELD_FREQUENCY',
-                $this->colonyLibFactory->createColonyShieldingManager($target)->isShieldingEnabled() && $target->getUser() !== $ship->getUser()
+                $this->colonyLibFactory->createColonyShieldingManager($target)->isShieldingEnabled() && $target->getUser() !== $source->getUser()
             );
         }
+
+        $game->setTemplateVar('SOURCE_STORAGE_BAR', $this->createStorageBar($source));
+        $game->setTemplateVar('TARGET_STORAGE_BAR', $this->createStorageBar($target));
+    }
+
+    private function createStorageBar(StorageEntityWrapperInterface $entityWrapper): string
+    {
+        return $this->statusBarFactory
+            ->createStatusBar()
+            ->setColor(StatusBarColorEnum::STATUSBAR_GREEN)
+            ->setLabel(_('Lager'))
+            ->setMaxValue($entityWrapper->get()->getMaxStorage())
+            ->setValue($entityWrapper->get()->getStorageSum())
+            ->render();
     }
 
     #[Override]
     public function transfer(
         bool $isUnload,
-        ShipWrapperInterface $wrapper,
-        ShipInterface|ColonyInterface $target,
-        InformationWrapper $informations
+        StorageEntityWrapperInterface $source,
+        StorageEntityWrapperInterface $target,
+        InformationInterface $information
     ): void {
 
-        $commodities = request::postArray('commodities');
-        $gcount = request::postArray('count');
-        if (count($commodities) == 0 || count($gcount) == 0) {
-            $informations->addInformation(_("Es wurden keine Waren zum Beamen ausgewählt"));
+        $from = $isUnload ? $source : $target;
+        if ($from->get()->getBeamableStorage()->isEmpty()) {
+            $information->addInformation('Keine Waren zum Beamen vorhanden');
             return;
         }
 
-        $user = $wrapper->get()->getUser();
-
-        if (
-            $target instanceof ColonyInterface
-            && $target->getUser() !== $user
-            && $this->colonyLibFactory->createColonyShieldingManager($target)->isShieldingEnabled()
-            && $target->getShieldFrequency() !== 0
-        ) {
-            $frequency = request::postInt('frequency');
-            if ($frequency !== $target->getShieldFrequency()) {
-                $informations->addInformation(_("Die Schildfrequenz ist nicht korrekt"));
-                return;
-            }
-        }
-
-        $hasTransfered = false;
-
-        // check for fleet option
-        $fleetWrapper = $wrapper->getFleetWrapper();
-        if (request::postInt('isfleet') && $fleetWrapper !== null) {
-            foreach ($fleetWrapper->getShipWrappers() as $wrapper) {
-                if ($this->transferPerShip(
-                    $isUnload,
-                    $wrapper,
-                    $target,
-                    $informations
-                )) {
-                    $hasTransfered = true;
-                }
-            }
-        } else {
-            $hasTransfered =  $this->transferPerShip($isUnload, $wrapper, $target, $informations);
-        }
-
-        if (
-            !$isUnload
-            && $hasTransfered
-            && $target instanceof ShipInterface
-        ) {
-            $this->pirateReaction->checkForPirateReaction(
-                $target,
-                PirateReactionTriggerEnum::ON_BEAM,
-                $wrapper->get()
-            );
-        }
-    }
-
-    private function transferPerShip(
-        bool $isUnload,
-        ShipWrapperInterface $wrapper,
-        ShipInterface|ColonyInterface $target,
-        InformationWrapper $informations
-    ): bool {
-
-        $ship = $wrapper->get();
-        $epsSystem = $wrapper->getEpsSystemData();
-
-        //sanity checks
-        $isDockTransfer = $this->beamUtil->isDockTransfer($ship, $target);
-        if (!$isDockTransfer && ($epsSystem === null || $epsSystem->getEps() === 0)) {
-            $informations->addInformation(_("Keine Energie vorhanden"));
-            return false;
-        }
-        if ($ship->getCloakState()) {
-            $informations->addInformation(_("Die Tarnung ist aktiviert"));
-            return false;
-        }
-        if ($ship->isWarped()) {
-            $informations->addInformation("Schiff befindet sich im Warp");
-            return false;
-        }
-        if ($target instanceof ShipInterface && $target->isWarped()) {
-            $informations->addInformation(sprintf(_('Die %s befindet sich im Warp'), $target->getName()));
-            return false;
-        }
-
-        $transferTarget = $isUnload ? $target : $ship;
-        if ($transferTarget->getMaxStorage() <= $transferTarget->getStorageSum()) {
-            $informations->addInformation(sprintf(_('%s: Der Lagerraum ist voll'), $transferTarget->getName()));
-            return false;
-        }
-
         $commodities = request::postArray('commodities');
         $gcount = request::postArray('count');
-
-        $storage = $isUnload ? $ship->getStorage() : $target->getStorage();
-
-        if ($storage->isEmpty()) {
-            $informations->addInformation(_("Keine Waren zum Beamen vorhanden"));
-            return false;
-        }
         if (count($commodities) == 0 || count($gcount) == 0) {
-            $informations->addInformation(_("Es wurden keine Waren zum Beamen ausgewählt"));
-            return false;
-        }
-        $informations->addInformation(sprintf(
-            _('Die %s hat folgende Waren %s %s %s transferiert'),
-            $ship->getName(),
-            $isUnload ? 'zur' : 'von der',
-            $target instanceof ColonyInterface ? 'Kolonie' : '',
-            $target->getName()
-        ));
-
-        $hasTransfered = false;
-        foreach ($commodities as $key => $value) {
-            $commodityId = (int) $value;
-
-            if (!array_key_exists($key, $gcount)) {
-                continue;
-            }
-
-            if ($this->beamUtil->transferCommodity(
-                $commodityId,
-                $gcount[$key],
-                $wrapper,
-                $isUnload ? $ship : $target,
-                $transferTarget,
-                $informations
-            )) {
-                $hasTransfered = true;
-            }
+            $information->addInformation("Es wurden keine Waren zum Beamen ausgewählt");
+            return;
         }
 
-        return $hasTransfered;
+        if (!$target->canPenetrateShields($source->getUser(), $information)) {
+            return;
+        }
+
+        $destination = $isUnload ? $target : $source;
+        if ($destination->get()->getStorageSum() >= $destination->get()->getMaxStorage()) {
+            $information->addInformationf('Der Lagerraum der %s ist voll', $destination->getName());
+            return;
+        }
+
+        $source->transfer($isUnload, $target, $information);
     }
 }

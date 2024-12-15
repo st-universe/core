@@ -18,8 +18,7 @@ final class AnomalyHandling implements AnomalyHandlingInterface
     public function __construct(
         private AnomalyRepositoryInterface $anomalyRepository,
         private array $handlerList
-    ) {
-    }
+    ) {}
 
     #[Override]
     public function processExistingAnomalies(): void
@@ -33,7 +32,7 @@ final class AnomalyHandling implements AnomalyHandlingInterface
 
             $handler = $this->handlerList[$type];
 
-            $handler->handleShipTick($anomaly);
+            $handler->handleSpacecraftTick($anomaly);
             $this->decreaseLifespan($anomaly, $handler);
         }
     }

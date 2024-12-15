@@ -59,13 +59,13 @@ class ColonyShipQueue implements ColonyShipQueueInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $ship_id = null;
 
-    #[ManyToOne(targetEntity: 'ShipBuildplan')]
+    #[ManyToOne(targetEntity: 'SpacecraftBuildplan')]
     #[JoinColumn(name: 'buildplan_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ShipBuildplanInterface $shipBuildplan;
+    private SpacecraftBuildplanInterface $spacecraftBuildplan;
 
-    #[ManyToOne(targetEntity: 'ShipRump')]
+    #[ManyToOne(targetEntity: 'SpacecraftRump')]
     #[JoinColumn(name: 'rump_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ShipRumpInterface $shipRump;
+    private SpacecraftRumpInterface $shipRump;
 
     #[ManyToOne(targetEntity: 'Colony')]
     #[JoinColumn(name: 'colony_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
@@ -112,14 +112,6 @@ class ColonyShipQueue implements ColonyShipQueueInterface
     public function getRumpId(): int
     {
         return $this->rump_id;
-    }
-
-    #[Override]
-    public function setRumpId(int $shipRumpId): ColonyShipQueueInterface
-    {
-        $this->rump_id = $shipRumpId;
-
-        return $this;
     }
 
     #[Override]
@@ -173,13 +165,13 @@ class ColonyShipQueue implements ColonyShipQueueInterface
     }
 
     #[Override]
-    public function getRump(): ShipRumpInterface
+    public function getRump(): SpacecraftRumpInterface
     {
         return $this->shipRump;
     }
 
     #[Override]
-    public function setRump(ShipRumpInterface $shipRump): ColonyShipQueueInterface
+    public function setRump(SpacecraftRumpInterface $shipRump): ColonyShipQueueInterface
     {
         $this->shipRump = $shipRump;
 
@@ -187,15 +179,15 @@ class ColonyShipQueue implements ColonyShipQueueInterface
     }
 
     #[Override]
-    public function getShipBuildplan(): ShipBuildplanInterface
+    public function getSpacecraftBuildplan(): SpacecraftBuildplanInterface
     {
-        return $this->shipBuildplan;
+        return $this->spacecraftBuildplan;
     }
 
     #[Override]
-    public function setShipBuildplan(ShipBuildplanInterface $shipBuildplan): ColonyShipQueueInterface
+    public function setSpacecraftBuildplan(SpacecraftBuildplanInterface $spacecraftBuildplan): ColonyShipQueueInterface
     {
-        $this->shipBuildplan = $shipBuildplan;
+        $this->spacecraftBuildplan = $spacecraftBuildplan;
 
         return $this;
     }

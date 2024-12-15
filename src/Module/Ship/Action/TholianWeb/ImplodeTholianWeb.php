@@ -14,10 +14,11 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Ship\Lib\Battle\Weapon\TholianWebWeaponPhaseInterface;
-use Stu\Module\Ship\Lib\Interaction\TholianWebUtilInterface;
+use Stu\Module\Spacecraft\Lib\Battle\Weapon\TholianWebWeaponPhaseInterface;
+use Stu\Module\Ship\Lib\TholianWebUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 
 final class ImplodeTholianWeb implements ActionControllerInterface
 {
@@ -38,7 +39,7 @@ final class ImplodeTholianWeb implements ActionControllerInterface
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $game->setView(ShowShip::VIEW_IDENTIFIER);
+        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         $userId = $game->getUser()->getId();
         $shipId = request::indInt('id');
@@ -78,7 +79,7 @@ final class ImplodeTholianWeb implements ActionControllerInterface
         //damage captured targets
         foreach ($web->getCapturedShips() as $target) {
             $this->loggerUtil->log(sprintf('capturedTargetId: %d', $target->getId()));
-            $targetWrapper = $wrapper->getShipWrapperFactory()->wrapShip($target);
+            $targetWrapper = $wrapper->getSpacecraftWrapperFactory()->wrapShip($target);
             $this->tholianWebUtil->releaseShipFromWeb($targetWrapper);
 
             //don't damage trumfields
@@ -88,7 +89,7 @@ final class ImplodeTholianWeb implements ActionControllerInterface
 
             //store these values, cause they are changed in case of destruction
             $targetUserId = $target->getUser()->getId();
-            $isTargetBase = $target->isBase();
+            $isTargetBase = $target->isStation();
 
             $informations = new InformationWrapper();
 

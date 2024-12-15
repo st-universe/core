@@ -18,15 +18,13 @@ use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
-use Stu\Orm\Repository\ShipCrewRepositoryInterface;
+use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ColonyResetter implements ColonyResetterInterface
 {
-    public function __construct(private ColonyRepositoryInterface $colonyRepository, private UserRepositoryInterface $userRepository, private StorageRepositoryInterface $storageRepository, private ColonyTerraformingRepositoryInterface $colonyTerraformingRepository, private ColonyShipQueueRepositoryInterface $colonyShipQueueRepository, private PlanetFieldRepositoryInterface $planetFieldRepository, private FleetRepositoryInterface $fleetRepository, private CrewRepositoryInterface $crewRepository, private CrewTrainingRepositoryInterface $crewTrainingRepository, private ShipCrewRepositoryInterface $shipCrewRepository, private ColonySandboxRepositoryInterface $colonySandboxRepository, private PrivateMessageSenderInterface $privateMessageSender)
-    {
-    }
+    public function __construct(private ColonyRepositoryInterface $colonyRepository, private UserRepositoryInterface $userRepository, private StorageRepositoryInterface $storageRepository, private ColonyTerraformingRepositoryInterface $colonyTerraformingRepository, private ColonyShipQueueRepositoryInterface $colonyShipQueueRepository, private PlanetFieldRepositoryInterface $planetFieldRepository, private FleetRepositoryInterface $fleetRepository, private CrewRepositoryInterface $crewRepository, private CrewTrainingRepositoryInterface $crewTrainingRepository, private CrewAssignmentRepositoryInterface $shipCrewRepository, private ColonySandboxRepositoryInterface $colonySandboxRepository, private PrivateMessageSenderInterface $privateMessageSender) {}
 
     #[Override]
     public function reset(

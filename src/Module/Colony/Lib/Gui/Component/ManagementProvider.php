@@ -12,7 +12,7 @@ use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Database\View\Category\Wrapper\DatabaseCategoryWrapperFactoryInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Entity\ColonyDepositMiningInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
@@ -24,7 +24,7 @@ final class ManagementProvider implements GuiComponentProviderInterface
         private DatabaseCategoryWrapperFactoryInterface $databaseCategoryWrapperFactory,
         private OrbitShipListRetrieverInterface $orbitShipListRetriever,
         private ColonyFunctionManagerInterface $colonyFunctionManager,
-        private ShipWrapperFactoryInterface $shipWrapperFactory,
+        private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
         private ColonyLibFactoryInterface $colonyLibFactory,
         private StuTime $stuTime
     ) {}
@@ -45,7 +45,7 @@ final class ManagementProvider implements GuiComponentProviderInterface
             $game->setTemplateVar('STARSYSTEM_ENTRY_TAL', $starsystem);
         }
 
-        $firstOrbitShip = null;
+        $firstOrbitSpacecraft = null;
 
         $shipList = $this->orbitShipListRetriever->retrieve($host);
         if ($shipList !== []) {
@@ -56,13 +56,13 @@ final class ManagementProvider implements GuiComponentProviderInterface
                 foreach ($shipList as $fleet) {
                     foreach ($fleet['ships'] as $idx => $ship) {
                         if ($idx == $target) {
-                            $firstOrbitShip = $ship;
+                            $firstOrbitSpacecraft = $ship;
                         }
                     }
                 }
             }
-            if ($firstOrbitShip === null) {
-                $firstOrbitShip = current(current($shipList)['ships']);
+            if ($firstOrbitSpacecraft === null) {
+                $firstOrbitSpacecraft = current(current($shipList)['ships']);
             }
         }
 
@@ -72,8 +72,8 @@ final class ManagementProvider implements GuiComponentProviderInterface
         );
 
         $game->setTemplateVar(
-            'FIRST_ORBIT_SHIP',
-            $firstOrbitShip ? $this->shipWrapperFactory->wrapShip($firstOrbitShip) : null
+            'FIRST_ORBIT_SPACECRAFT',
+            $firstOrbitSpacecraft ? $this->spacecraftWrapperFactory->wrapSpacecraft($firstOrbitSpacecraft) : null
         );
 
         $particlePhalanx = $this->colonyFunctionManager->hasFunction($host, BuildingFunctionEnum::BUILDING_FUNCTION_PARTICLE_PHALANX);

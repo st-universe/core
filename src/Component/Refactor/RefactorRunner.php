@@ -6,13 +6,13 @@ namespace Stu\Component\Refactor;
 
 use Stu\Orm\Entity\ModuleInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Stu\Component\Ship\Buildplan\BuildplanSignatureCreationInterface;
+use Stu\Component\Spacecraft\Buildplan\BuildplanSignatureCreationInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\BuildplanModuleInterface;
-use Stu\Orm\Entity\ShipBuildplan;
-use Stu\Orm\Entity\ShipBuildplanInterface;
-use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
+use Stu\Orm\Entity\SpacecraftBuildplan;
+use Stu\Orm\Entity\SpacecraftBuildplanInterface;
+use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class RefactorRunner
@@ -20,7 +20,7 @@ final class RefactorRunner
     private LoggerUtilInterface $logger;
 
     public function __construct(
-        private ShipBuildplanRepositoryInterface $shipBuildplanRepository,
+        private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository,
         private BuildplanSignatureCreationInterface $buildplanSignatureCreation,
         private ShipRepositoryInterface $shipRepository,
         private EntityManagerInterface $entityManager,
@@ -38,11 +38,11 @@ final class RefactorRunner
 
     private function recalculateAllBuildplanSignatures(): void
     {
-        foreach ($this->shipBuildplanRepository->findAll() as $buildplan) {
+        foreach ($this->spacecraftBuildplanRepository->findAll() as $buildplan) {
             $calculatedSignature = $this->calculateSignature($buildplan);
 
             $buildplan->setSignature($calculatedSignature);
-            $this->shipBuildplanRepository->save($buildplan);
+            $this->spacecraftBuildplanRepository->save($buildplan);
         }
     }
 
@@ -51,7 +51,7 @@ final class RefactorRunner
         $buildplanCount = 0;
         $shipCount = 0;
 
-        /** @var null|ShipBuildplanInterface */
+        /** @var null|SpacecraftBuildplanInterface */
         $lastBuildplan = null;
         foreach ($this->getBuildplansWithDuplicates() as $buildplan) {
             $buildplanUser = $buildplan->getUser();
@@ -74,14 +74,14 @@ final class RefactorRunner
                 }
 
                 $buildplan->getShiplist()->clear();
-                $this->shipBuildplanRepository->delete($buildplan);
+                $this->spacecraftBuildplanRepository->delete($buildplan);
             }
         }
 
         $this->logger->logf('removed %d buildplan duplicates (%d ships affected)', $buildplanCount, $shipCount);
     }
 
-    private function calculateSignature(ShipBuildplanInterface $buildplan): string
+    private function calculateSignature(SpacecraftBuildplanInterface $buildplan): string
     {
         $modules = $buildplan
             ->getModules()
@@ -96,7 +96,7 @@ final class RefactorRunner
         );
     }
 
-    /** @return array<ShipBuildplanInterface> */
+    /** @return array<SpacecraftBuildplanInterface> */
     private function getBuildplansWithDuplicates(): array
     {
         return $this->entityManager
@@ -111,7 +111,7 @@ final class RefactorRunner
                                     AND bp.id != bp2.id)
                     AND bp.signature IS NOT NULL
                     ORDER BY bp.user_id ASC, bp.rump_id ASC, bp.signature ASC, bp.id ASC',
-                    ShipBuildplan::class
+                    SpacecraftBuildplan::class
                 )
             )
             ->getResult();

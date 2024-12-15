@@ -17,9 +17,10 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -33,7 +34,7 @@ class CallForSupportBehaviour implements PirateBehaviourInterface
         private DistanceCalculationInterface $distanceCalculation,
         private ReloadMinimalEpsInterface $reloadMinimalEps,
         private PirateNavigationInterface $pirateNavigation,
-        private ShipWrapperFactoryInterface $shipWrapperFactory,
+        private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
         private FleetRepositoryInterface $fleetRepository,
         private StuRandom $stuRandom,
         LoggerUtilFactoryInterface $loggerUtilFactory
@@ -46,7 +47,7 @@ class CallForSupportBehaviour implements PirateBehaviourInterface
         FleetWrapperInterface $fleet,
         PirateReactionInterface $pirateReaction,
         PirateReactionMetadata $reactionMetadata,
-        ?ShipInterface $triggerShip
+        ?SpacecraftInterface $triggerSpacecraft
     ): ?PirateBehaviourEnum {
 
         $leadWrapper = $fleet->getLeadWrapper();
@@ -104,7 +105,7 @@ class CallForSupportBehaviour implements PirateBehaviourInterface
             $leadShip->getSectorString()
         );
 
-        $fleetWrapper = $this->shipWrapperFactory->wrapFleet($supportFleet);
+        $fleetWrapper = $this->spacecraftWrapperFactory->wrapFleet($supportFleet);
 
         $this->reloadMinimalEps->reload($fleetWrapper, 75);
         if (!$this->pirateNavigation->navigateToTarget($fleetWrapper, $leadShip->getLocation())) {

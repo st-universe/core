@@ -19,13 +19,10 @@ Init::run(function (ContainerInterface $dic): void {
     $em = $dic->get(EntityManagerInterface::class);
     $em->beginTransaction();
 
-    /**
-     * @todo Remove merging of ship and station actions
-     */
     $dic->get(GameControllerInterface::class)->main(
         ModuleViewEnum::STATION,
-        array_merge($dic->get('SHIP_ACTIONS'), $dic->get('STATION_ACTIONS')),
-        $dic->get('STATION_VIEWS')
+        array_merge($dic->get('SPACECRAFT_ACTIONS'), $dic->get('STATION_ACTIONS')),
+        array_merge($dic->get('SPACECRAFT_VIEWS'), $dic->get('STATION_VIEWS'))
     );
 
     $em->commit();

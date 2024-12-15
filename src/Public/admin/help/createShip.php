@@ -9,7 +9,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
-use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -24,7 +24,7 @@ Init::run(function (ContainerInterface $dic): void {
 
     $dic->get(GameControllerInterface::class)->sessionAndAdminCheck();
 
-    $buildplanRepo = $dic->get(ShipBuildplanRepositoryInterface::class);
+    $buildplanRepo = $dic->get(SpacecraftBuildplanRepositoryInterface::class);
     $torpedoTypeRepo = $dic->get(TorpedoTypeRepositoryInterface::class);
     $userRepo = $dic->get(UserRepositoryInterface::class);
     $shipCreator = $dic->get(ShipCreatorInterface::class);

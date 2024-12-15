@@ -7,12 +7,12 @@ namespace Stu\Lib\ShipManagement\Manager;
 use Mockery\MockInterface;
 use Override;
 use RuntimeException;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Module\Ship\Lib\Torpedo\ShipTorpedoManagerInterface;
+use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StorageInterface;
@@ -25,25 +25,23 @@ class ManageTorpedoTest extends StuTestCase
 {
     /** @var MockInterface&TorpedoTypeRepositoryInterface */
     private MockInterface $torpedoTypeRepository;
-
     /** @var MockInterface&ShipTorpedoManagerInterface */
     private MockInterface $shipTorpedoManager;
-
     /** @var MockInterface&PrivateMessageSenderInterface */
     private MockInterface $privateMessageSender;
 
     /** @var MockInterface&ShipWrapperInterface */
-    private MockInterface $wrapper;
-
+    private $wrapper;
     /** @var MockInterface&ShipInterface */
-    private MockInterface $ship;
-
+    private $ship;
     /** @var MockInterface&ManagerProviderInterface */
-    private MockInterface $managerProvider;
+    private $managerProvider;
+    /** @var MockInterface&UserInterface */
+    private $user;
+    /** @var MockInterface&TorpedoTypeInterface */
+    private $torpedoType;
 
     private int $shipId = 555;
-    private UserInterface $user;
-    private TorpedoTypeInterface $torpedoType;
 
     private ManageTorpedo $subject;
 
@@ -343,7 +341,7 @@ class ManageTorpedoTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(0);
         $this->ship->shouldReceive('hasShipSystem')
-            ->with(ShipSystemTypeEnum::SYSTEM_TORPEDO_STORAGE)
+            ->with(SpacecraftSystemTypeEnum::SYSTEM_TORPEDO_STORAGE)
             ->once()
             ->andReturn(false);
         $this->ship->shouldReceive('getRump->getTorpedoLevel')
@@ -397,7 +395,7 @@ class ManageTorpedoTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(0);
         $this->ship->shouldReceive('hasShipSystem')
-            ->with(ShipSystemTypeEnum::SYSTEM_TORPEDO_STORAGE)
+            ->with(SpacecraftSystemTypeEnum::SYSTEM_TORPEDO_STORAGE)
             ->once()
             ->andReturn(true);
         $this->ship->shouldReceive('getName')
@@ -481,6 +479,10 @@ class ManageTorpedoTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn('SECTOR');
+        $this->ship->shouldReceive('getHref')
+            ->withNoArgs()
+            ->once()
+            ->andReturn('HREF555');
 
         $this->shipTorpedoManager->shouldReceive('changeTorpedo')
             ->with($this->wrapper, 3)
@@ -492,7 +494,7 @@ class ManageTorpedoTest extends StuTestCase
                 777,
                 'Die providername hat in Sektor SECTOR 3 torpedoname auf die name transferiert',
                 PrivateMessageFolderTypeEnum::SPECIAL_TRADE,
-                'ship.php?SHOW_SHIP=1&id=555'
+                'HREF555'
             )
             ->once();
 
@@ -559,7 +561,7 @@ class ManageTorpedoTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(0);
         $this->ship->shouldReceive('hasShipSystem')
-            ->with(ShipSystemTypeEnum::SYSTEM_TORPEDO_STORAGE)
+            ->with(SpacecraftSystemTypeEnum::SYSTEM_TORPEDO_STORAGE)
             ->once()
             ->andReturn(true);
         $this->ship->shouldReceive('getName')
@@ -573,6 +575,10 @@ class ManageTorpedoTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn('SECTOR');
+        $this->ship->shouldReceive('getHref')
+            ->withNoArgs()
+            ->once()
+            ->andReturn('HREF555');
 
         $this->shipTorpedoManager->shouldReceive('changeTorpedo')
             ->with($this->wrapper, 5, $this->torpedoType)
@@ -584,7 +590,7 @@ class ManageTorpedoTest extends StuTestCase
                 777,
                 'Die providername hat in Sektor SECTOR 5 torpedoname auf die name transferiert',
                 PrivateMessageFolderTypeEnum::SPECIAL_TRADE,
-                'ship.php?SHOW_SHIP=1&id=555'
+                'HREF555'
             )
             ->once();
 

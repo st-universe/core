@@ -6,8 +6,8 @@ namespace Stu\Lib\ModuleRumpWrapper;
 
 use Override;
 use RuntimeException;
-use Stu\Component\Ship\ShipModuleTypeEnum;
-use Stu\Module\Ship\Lib\ModuleValueCalculator;
+use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
+use Stu\Module\Spacecraft\Lib\ModuleValueCalculator;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ModuleInterface;
 
@@ -39,9 +39,9 @@ final class ModuleRumpWrapperEps extends ModuleRumpWrapperBase implements Module
     }
 
     #[Override]
-    public function getModuleType(): ShipModuleTypeEnum
+    public function getModuleType(): SpacecraftModuleTypeEnum
     {
-        return ShipModuleTypeEnum::EPS;
+        return SpacecraftModuleTypeEnum::EPS;
     }
 
     #[Override]

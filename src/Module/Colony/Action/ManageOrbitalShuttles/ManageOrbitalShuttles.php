@@ -6,8 +6,7 @@ namespace Stu\Module\Colony\Action\ManageOrbitalShuttles;
 
 use Override;
 use request;
-use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
-use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\Lib\ShuttleManagementItem;
@@ -16,9 +15,8 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
+use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -28,9 +26,14 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_MANAGE_SHUTTLES';
 
-    public function __construct(private ColonyLoaderInterface $colonyLoader, private PrivateMessageSenderInterface $privateMessageSender, private ColonyStorageManagerInterface $colonyStorageManager, private ShipStorageManagerInterface $shipStorageManager, private CommodityRepositoryInterface $commodityRepository, private ShipLoaderInterface $shipLoader, private InteractionCheckerInterface $interactionChecker)
-    {
-    }
+    public function __construct(
+        private ColonyLoaderInterface $colonyLoader,
+        private PrivateMessageSenderInterface $privateMessageSender,
+        private StorageManagerInterface $storageManager,
+        private CommodityRepositoryInterface $commodityRepository,
+        private ShipLoaderInterface $shipLoader,
+        private InteractionCheckerInterface $interactionChecker
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -52,7 +55,7 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
 
         $ship = $wrapper->get();
 
-        if (!$this->interactionChecker->checkColonyPosition($colony, $ship)) {
+        if (!$this->interactionChecker->checkPosition($colony, $ship)) {
             return;
         }
 
@@ -148,13 +151,12 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
                 $ship->getPosY(),
                 $informations->getInformationsAsString()
             );
-            $href = sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $ship->getId());
             $this->privateMessageSender->send(
                 $userId,
                 $ship->getUser()->getId(),
                 $pm,
                 PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
-                $href
+                $ship->getHref()
             );
         }
     }
@@ -170,13 +172,13 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
         $diff = abs($wanted - $current);
 
         if ($current < $wanted) {
-            $this->shipStorageManager->upperStorage($ship, $commodity, $diff);
-            $this->colonyStorageManager->lowerStorage($colony, $commodity, $diff);
+            $this->storageManager->upperStorage($ship, $commodity, $diff);
+            $this->storageManager->lowerStorage($colony, $commodity, $diff);
 
             $msg = _('Es wurden %d %s zur %s transferiert');
         } else {
-            $this->shipStorageManager->lowerStorage($ship, $commodity, $diff);
-            $this->colonyStorageManager->upperStorage($colony, $commodity, $diff);
+            $this->storageManager->lowerStorage($ship, $commodity, $diff);
+            $this->storageManager->upperStorage($colony, $commodity, $diff);
 
             $msg = _('Es wurden %d %s von der %s transferiert');
         }

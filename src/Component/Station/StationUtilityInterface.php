@@ -3,39 +3,37 @@
 namespace Stu\Component\Station;
 
 use Stu\Orm\Entity\ConstructionProgressInterface;
-use Stu\Orm\Entity\ShipBuildplanInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\ShipRumpInterface;
+use Stu\Orm\Entity\SpacecraftBuildplanInterface;
+use Stu\Orm\Entity\SpacecraftRumpInterface;
+use Stu\Orm\Entity\StationInterface;
 
 interface StationUtilityInterface
 {
     /**
-     * @return ShipBuildplanInterface[]
+     * @return SpacecraftBuildplanInterface[]
      */
     public function getStationBuildplansByUser(int $userId): array;
 
     /**
-     * @return ShipBuildplanInterface[]
+     * @return SpacecraftBuildplanInterface[]
      */
     public function getShipyardBuildplansByUser(int $userId): array;
 
-    public function getBuidplanIfResearchedByUser(int $planId, int $userId): ?ShipBuildplanInterface;
+    public function getBuidplanIfResearchedByUser(int $planId, int $userId): ?SpacecraftBuildplanInterface;
 
-    public function getDockedWorkbeeCount(ShipInterface $ship): int;
+    public function getDockedWorkbeeCount(StationInterface $station): int;
 
-    public function getNeededWorkbeeCount(ShipInterface $station, ShipRumpInterface $rump): int;
+    public function getNeededWorkbeeCount(StationInterface $station, SpacecraftRumpInterface $rump): int;
 
-    public function hasEnoughDockedWorkbees(ShipInterface $station, ShipRumpInterface $rump): bool;
-
-    public function getConstructionProgress(ShipInterface $ship): ?ConstructionProgressInterface;
+    public function hasEnoughDockedWorkbees(StationInterface $station, SpacecraftRumpInterface $rump): bool;
 
     public function reduceRemainingTicks(ConstructionProgressInterface $progress): void;
 
-    public function finishStation(ShipInterface $ship, ConstructionProgressInterface $progress): void;
+    public function finishStation(ConstructionProgressInterface $progress): void;
 
-    public function finishScrapping(ShipInterface $station, ConstructionProgressInterface $progress): void;
+    public function finishScrapping(ConstructionProgressInterface $progress): void;
 
-    public function canManageShips(ShipInterface $ship): bool;
+    public function canManageShips(StationInterface $station): bool;
 
-    public function canRepairShips(ShipInterface $ship): bool;
+    public function canRepairShips(StationInterface $station): bool;
 }

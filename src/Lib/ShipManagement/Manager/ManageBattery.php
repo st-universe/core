@@ -6,14 +6,13 @@ namespace Stu\Lib\ShipManagement\Manager;
 
 use Override;
 use RuntimeException;
-use Stu\Component\Ship\System\Data\EpsSystemData;
+use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Module\Ship\View\ShowShip\ShowShip;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 
 class ManageBattery implements ManagerInterface
 {
@@ -23,7 +22,7 @@ class ManageBattery implements ManagerInterface
     ) {}
 
     #[Override]
-    public function manage(ShipWrapperInterface $wrapper, array $values, ManagerProviderInterface $managerProvider): array
+    public function manage(SpacecraftWrapperInterface $wrapper, array $values, ManagerProviderInterface $managerProvider): array
     {
         $msg = [];
 
@@ -94,22 +93,20 @@ class ManageBattery implements ManagerInterface
         return $load;
     }
 
-    private function sendMessageToOwner(ShipInterface $ship, ManagerProviderInterface $managerProvider, int $load): void
+    private function sendMessageToOwner(SpacecraftInterface $spacecraft, ManagerProviderInterface $managerProvider, int $load): void
     {
-        $href = sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $ship->getId());
-
         $this->privateMessageSender->send(
             $managerProvider->getUser()->getId(),
-            $ship->getUser()->getId(),
+            $spacecraft->getUser()->getId(),
             sprintf(
                 _('Die %s lädt in Sektor %s die Batterie der %s um %s Einheiten'),
                 $managerProvider->getName(),
                 $managerProvider->getSectorString(),
-                $ship->getName(),
+                $spacecraft->getName(),
                 $load
             ),
             PrivateMessageFolderTypeEnum::SPECIAL_TRADE,
-            $href
+            $spacecraft->getHref()
         );
     }
 }

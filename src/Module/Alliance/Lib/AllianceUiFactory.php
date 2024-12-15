@@ -12,16 +12,14 @@ use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Entity\AllianceRelationInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
-use Stu\Orm\Repository\ShipRumpRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 
 /**
  * Creates several UI related item/wrapper classes
  */
 final class AllianceUiFactory implements AllianceUiFactoryInterface
 {
-    public function __construct(private AllianceJobRepositoryInterface $allianceJobRepository, private ShipRumpRepositoryInterface $shipRumpRepository, private CrewCountRetrieverInterface $crewCountRetriever, private CrewLimitCalculatorInterface $crewLimitCalculator)
-    {
-    }
+    public function __construct(private AllianceJobRepositoryInterface $allianceJobRepository, private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository, private CrewCountRetrieverInterface $crewCountRetriever, private CrewLimitCalculatorInterface $crewLimitCalculator) {}
 
     #[Override]
     public function createManagementListItem(
@@ -31,7 +29,7 @@ final class AllianceUiFactory implements AllianceUiFactoryInterface
     ): ManagementListItem {
         return new ManagementListItem(
             $this->allianceJobRepository,
-            $this->shipRumpRepository,
+            $this->spacecraftRumpRepository,
             $alliance,
             $user,
             $currentUserId,

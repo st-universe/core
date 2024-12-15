@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Override;
+use Stu\Component\Map\DirectionEnum;
 use Stu\Orm\Repository\FlightSignatureRepository;
 
 #[Table(name: 'stu_flight_sig')]
@@ -41,11 +42,11 @@ class FlightSignature implements FlightSignatureInterface
     #[Column(type: 'integer')]
     private int $location_id = 0;
 
-    #[Column(type: 'smallint', length: 1)]
-    private int $from_direction = 0;
+    #[Column(type: 'smallint', length: 1, enumType: DirectionEnum::class)]
+    private DirectionEnum $from_direction = DirectionEnum::TOP;
 
-    #[Column(type: 'smallint', length: 1)]
-    private int $to_direction = 0;
+    #[Column(type: 'smallint', length: 1, enumType: DirectionEnum::class)]
+    private DirectionEnum $to_direction = DirectionEnum::TOP;
 
     #[Column(type: 'string')]
     private string $ship_name;
@@ -53,9 +54,9 @@ class FlightSignature implements FlightSignatureInterface
     #[Column(type: 'boolean')]
     private bool $is_cloaked = false;
 
-    #[ManyToOne(targetEntity: 'ShipRump')]
+    #[ManyToOne(targetEntity: 'SpacecraftRump')]
     #[JoinColumn(name: 'rump_id', referencedColumnName: 'id')]
-    private ShipRumpInterface $rump;
+    private SpacecraftRumpInterface $rump;
 
     #[ManyToOne(targetEntity: 'Location')]
     #[JoinColumn(name: 'location_id', referencedColumnName: 'id')]
@@ -94,7 +95,7 @@ class FlightSignature implements FlightSignatureInterface
     }
 
     #[Override]
-    public function setShipName(string $name): FlightSignatureInterface
+    public function setSpacecraftName(string $name): FlightSignatureInterface
     {
         $this->ship_name = $name;
         return $this;
@@ -114,15 +115,15 @@ class FlightSignature implements FlightSignatureInterface
     }
 
     #[Override]
-    public function getRump(): ShipRumpInterface
+    public function getRump(): SpacecraftRumpInterface
     {
         return $this->rump;
     }
 
     #[Override]
-    public function setRump(ShipRumpInterface $shipRump): FlightSignatureInterface
+    public function setRump(SpacecraftRumpInterface $rump): FlightSignatureInterface
     {
-        $this->rump = $shipRump;
+        $this->rump = $rump;
         return $this;
     }
 
@@ -153,26 +154,26 @@ class FlightSignature implements FlightSignatureInterface
     }
 
     #[Override]
-    public function getFromDirection(): int
+    public function getFromDirection(): DirectionEnum
     {
         return $this->from_direction;
     }
 
     #[Override]
-    public function setFromDirection(int $direction): FlightSignatureInterface
+    public function setFromDirection(DirectionEnum $direction): FlightSignatureInterface
     {
         $this->from_direction = $direction;
         return $this;
     }
 
     #[Override]
-    public function getToDirection(): int
+    public function getToDirection(): DirectionEnum
     {
         return $this->to_direction;
     }
 
     #[Override]
-    public function setToDirection(int $direction): FlightSignatureInterface
+    public function setToDirection(DirectionEnum $direction): FlightSignatureInterface
     {
         $this->to_direction = $direction;
         return $this;

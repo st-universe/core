@@ -11,7 +11,7 @@ interface PlayerRelationDeterminatorInterface
     /**
      * Checks if $otherUser is a friend of $user
      */
-    public function isFriend(UserInterface $user, UserInterface $otherUser): bool;
+    public function isFriend(?UserInterface $user, ?UserInterface $otherUser): bool;
 
     /**
      * Checks if $otherUser is an enemy of $user

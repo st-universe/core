@@ -6,17 +6,21 @@ namespace Stu\Module\Ship\Lib\Fleet;
 
 use RuntimeException;
 use Stu\Lib\SessionInterface;
-use Stu\Module\Ship\Lib\ShipNfsItem;
-use Stu\Module\Ship\Lib\ShipNfsIterator;
+use Stu\Module\Spacecraft\Lib\ShipNfsItem;
+use Stu\Module\Spacecraft\Lib\ShipNfsIterator;
 use Stu\Module\Ship\Lib\TFleetShipItemInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 
 final class FleetNfsItem
 {
     /** @param array<TFleetShipItemInterface> $ships */
-    public function __construct(private array $ships, private ShipInterface $currentShip, private ?SessionInterface $session, private int $userId)
-    {
-    }
+    public function __construct(
+        private array $ships,
+        private SpacecraftInterface $currentSpacecraft,
+        private ?SessionInterface $session,
+        private int $userId
+    ) {}
 
     public function isHidden(): bool
     {
@@ -35,7 +39,7 @@ final class FleetNfsItem
 
     public function isFleetOfCurrentShip(): bool
     {
-        $currentFleet = $this->currentShip->getFleet();
+        $currentFleet = $this->currentSpacecraft instanceof ShipInterface ? $this->currentSpacecraft->getFleet() : null;
         if ($currentFleet === null) {
             throw new RuntimeException('should not happen');
         }
@@ -45,7 +49,7 @@ final class FleetNfsItem
 
     public function showManagement(): bool
     {
-        return $this->currentShip->getUser()->getId() === $this->getUserId();
+        return $this->currentSpacecraft->getUser()->getId() === $this->getUserId();
     }
 
     public function getName(): string
