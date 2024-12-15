@@ -45,6 +45,6 @@ final class SpacecraftDestruction implements SpacecraftDestructionInterface
             }
         );
 
-        $this->spacecraftRepository->save($destroyedSpacecraftWrapper->get());
+        $this->spacecraftRepository->delete($destroyedSpacecraftWrapper->get());
     }
 }
