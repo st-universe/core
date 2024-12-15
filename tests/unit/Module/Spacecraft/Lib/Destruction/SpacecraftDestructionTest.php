@@ -71,7 +71,7 @@ class SpacecraftDestructionTest extends StuTestCase
             ->withNOArgs()
             ->once()
             ->andReturn($destroyedShip);
-        $this->spacecraftRepository->shouldReceive('save')
+        $this->spacecraftRepository->shouldReceive('delete')
             ->with($destroyedShip)
             ->once();
 

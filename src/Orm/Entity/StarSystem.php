@@ -221,6 +221,12 @@ class StarSystem implements StarSystemInterface
     }
 
     #[Override]
+    public function unsetStation(): void
+    {
+        $this->station = null;
+    }
+
+    #[Override]
     public function getFields(): Collection
     {
         return $this->fields;

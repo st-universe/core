@@ -164,7 +164,6 @@ use Stu\Module\Spacecraft\Lib\Destruction\Handler\ColonizationShipCheck;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\CrewEvacuation;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\HistoryEntryCreation;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\LeaveIntactModules;
-use Stu\Module\Spacecraft\Lib\Destruction\Handler\OrphanizeStorage;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\PrestigeGain;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\ResetTrackerDevices;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\TradepostDestruction;
@@ -370,10 +369,9 @@ return [
                 autowire(ClearTractoringBeam::class),
                 autowire(ColonizationShipCheck::class),
                 autowire(PrestigeGain::class),
-                autowire(TransformToTrumfield::class),
                 autowire(ResetTrackerDevices::class),
-                autowire(OrphanizeStorage::class),
                 autowire(TradepostDestruction::class),
+                autowire(TransformToTrumfield::class)
             ],
         ),
     'SPACECRAFT_ACTIONS' => [

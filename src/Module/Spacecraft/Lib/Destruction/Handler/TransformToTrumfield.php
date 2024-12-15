@@ -11,21 +11,24 @@ use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionCauseEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftStateChangerInterface;
 use Stu\Module\Spacecraft\Lib\Torpedo\ClearTorpedoInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Orm\Entity\StationInterface;
+use Stu\Orm\Repository\ConstructionProgressRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
-use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TrumfieldRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 class TransformToTrumfield implements SpacecraftDestructionHandlerInterface
 {
     public function __construct(
-        private SpacecraftRepositoryInterface $spacecraftRepository,
         private TrumfieldRepositoryInterface $trumfieldRepository,
         private SpacecraftSystemRepositoryInterface $shipSystemRepository,
         private StorageRepositoryInterface $storageRepository,
+        private UserRepositoryInterface $userRepository,
         private ShipShutdownInterface $shipShutdown,
         private SpacecraftStateChangerInterface $spacecraftStateChanger,
-        private ClearTorpedoInterface $clearTorpedo
+        private ClearTorpedoInterface $clearTorpedo,
+        private ConstructionProgressRepositoryInterface $constructionProgressRepository,
     ) {}
 
     #[Override]
@@ -36,6 +39,7 @@ class TransformToTrumfield implements SpacecraftDestructionHandlerInterface
         InformationInterface $informations
     ): void {
 
+        $nobody = $this->userRepository->getFallbackUser();
         $spacecraft = $destroyedSpacecraftWrapper->get();
 
         $this->shipShutdown->shutdown($destroyedSpacecraftWrapper, true);
@@ -49,20 +53,40 @@ class TransformToTrumfield implements SpacecraftDestructionHandlerInterface
         $this->trumfieldRepository->save($trumfield);
 
         foreach ($spacecraft->getBeamableStorage() as $storage) {
-            $storage->setSpacecraft(null);
-            $storage->setTrumfield($trumfield);
+            $storage->setSpacecraft(null)
+                ->setTrumfield($trumfield)
+                ->setUser($nobody);
+
             $this->storageRepository->save($storage);
+            $spacecraft->getStorage()->removeElement($storage);
+        }
+        foreach ($spacecraft->getStorage() as $storage) {
+            $this->storageRepository->delete($storage);
         }
 
         $this->spacecraftStateChanger->changeShipState($destroyedSpacecraftWrapper, SpacecraftStateEnum::SHIP_STATE_DESTROYED);
 
         // delete ship systems
-        $this->shipSystemRepository->truncateByShip($spacecraft->getId());
+        foreach ($spacecraft->getSystems() as $system) {
+            $this->shipSystemRepository->delete($system);
+        }
         $spacecraft->getSystems()->clear();
 
         // delete torpedo storage
         $this->clearTorpedo->clearTorpedoStorage($destroyedSpacecraftWrapper);
 
-        $this->spacecraftRepository->delete($spacecraft);
+        if (!$spacecraft instanceof StationInterface) {
+            return;
+        }
+
+        $influenceArea = $spacecraft->getInfluenceArea();
+        if ($influenceArea !== null) {
+            $influenceArea->unsetStation();
+        }
+
+        $constructionProgress = $spacecraft->getConstructionProgress();
+        if ($constructionProgress !== null) {
+            $this->constructionProgressRepository->delete($constructionProgress);
+        }
     }
 }
