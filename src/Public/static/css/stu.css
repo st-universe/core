@@ -40,6 +40,8 @@ div.sidebar {
   border-right: 1px solid #4b4b4b;
   left: 0;
   position: fixed;
+  padding-left: 12px;
+  padding-right: 10px;
 }
 
 div.footer {
