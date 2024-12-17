@@ -1,6 +1,6 @@
 {% from 'html/macros.twig' import navigation_item %}
 
-{{ navigation_item('Kolonien', 'colony', 'planets') }}
+{{ navigation_item('Kolonien', 'colony', 'planets', 'first-navigation-item') }}
 {{ navigation_item('Schiffe', 'ship', 'ships') }}
 {% if USER.hasStationsNavigation %}
 {{ navigation_item('Stationen', 'station', 'station') }}

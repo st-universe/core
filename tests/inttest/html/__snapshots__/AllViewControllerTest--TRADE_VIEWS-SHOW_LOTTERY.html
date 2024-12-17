@@ -1,88 +1,11 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:stu="stu" lang="de">
+<html>
 
 <head>
     <meta charset="utf-8">
-    <meta name="theme-color" content="#121220">
-    <script src="/static/js/prototype.js"></script>
-    <script src="/static/js/scriptaculous/scriptaculous.js"></script>
-    <script src="/static/js/default.js"></script>
-    <script src="/static/js/colony.js"></script>
-    <script src="/static/js/comm.js"></script>
-    <script src="/static/js/database.js"></script>
-    <script src="/static/js/profile.js"></script>
-    <script src="/static/js/ship.js"></script>
-    <script src="/static/js/shipmanagement.js"></script>
-    <script src="/static/js/spacecraft.js"></script>
-    <script src="/static/js/starmap.js"></script>
-    <script src="/static/js/station.js"></script>
-    <script src="/static/js/trade.js"></script>
-    <script src="/static/js/tutorial.js"></script>
-    <title>/ Handel / Nagus Lotterie</title>
-    <script>
-        var gfx_path = '/assets';
-    </script>
-    <script src="/static/js/overlib.js"></script>
-    <script src="/static/js/drag.js"></script>
-    <script src="/static/js/overlib_exclusive.js"></script>
-    <link rel="STYLESHEET" type="text/css" href="/static/css/schwarz.css">
-    <link rel="STYLESHEET" type="text/css" href="/static/css/stu.css">
-    <link rel="shortcut icon" href="/assets/favicon.ico">
 </head>
 
-<body onload="startUp();">
-    <div id="overDiv">...</div>
-    <div class="container">
-                <div class="header">
-            <div id="GAME_USER_PROFILE">
-    </div>
-            <div id="GAME_PM_NAVLET">
-    </div>
-            <div id="GAME_RESEARCH_NAVLET">
-    </div>
-            <div id="GAME_COLONIES_NAVLET">
-    </div>
-            <div id="GAME_NAGUS_POPUP">
-            </div>
-            <div id="nagus">
-            </div>
-            <div class="header_box header_box_logout border_box action" onclick="goToUrl('game.php?B_LOGOUT=1')" onmouseover="cp('header_menu_logout','navigation/menu_logout1', 'png')" onmouseout="cp('header_menu_logout','navigation/menu_logout0', 'png')">
-                <div>
-                    <img style="width: 40px; height: 40px;" id="header_menu_logout" src="/assets/navigation/menu_logout0.png" title="Logout">
-                    <div style="margin-top: 5px">Logout</div>
-                </div>
-            </div>
-                        <div class="header_box header_box_help border_box action" onclick="openNewTab('https://wiki.change.me')" onmouseover="cp('header_menu_docu','navigation/menu_doku1', 'png')" onmouseout="cp('header_menu_docu','navigation/menu_doku0', 'png')">
-                <div>
-                    <img style="width: 40px; height: 40px;" id="header_menu_docu" src="/assets/navigation/menu_doku0.png" title="Wiki">
-                    <div style="margin-top: 5px">Wiki</div>
-                </div>
-            </div>
-                                    <div class="header_box header_box_help border_box action" onclick="openNewTab('https://board.change.me')" onmouseover="cp('header_menu_board','navigation/menu_scripts1', 'png')" onmouseout="cp('header_menu_board','navigation/menu_scripts0', 'png')">
-                <div>
-                    <img style="width: 40px; height: 40px;" id="header_menu_board" src="/assets/navigation/menu_scripts0.png" title="Forum">
-                    <div style="margin-top: 5px">Forum</div>
-                </div>
-            </div>
-                        <div class="header_box header_box_settings border_box action" onmouseover="cp('header_menu_settings','navigation/menu_option1', 'png')" onmouseout="cp('header_menu_settings','navigation/menu_option0', 'png')">
-                <a href="options.php" onclick="if(event.button === 0) { switchInnerContent('', '', '', '/options.php'); event.preventDefault(); }" style="display: block; text-decoration: none; color: inherit;">
-                    <div>
-                        <img style="width: 40px; height: 40px;" id="header_menu_settings" src="/assets/navigation/menu_option0.png" title="Einstellungen">
-                        <div style="margin-top: 5px">Einstellungen</div>
-                    </div>
-                </a>
-            </div>
-            <div class="headerBottom"> </div>
-        </div>
-        <div style="margin-top: 80px;">
-            <div class="sidebar">
-                <div id="GAME_NAVIGATION">
-    </div>
-                <div id="GAME_SERVERTIME">
-    </div>
-            </div>
-            <div id="innerContent" class="innerContent">
-                <div class="box">
+<body>
+<div class="box">
     <div class="box_title" style="text-align: left">/
                 <a href="trade.php">
             Handel
@@ -158,18 +81,6 @@
 <div class="footer">
     Rendered in 4.203s - Memory usage: 42.77Mb
 </div>
-<script>
-            updateComponent('GAME_PM_NAVLET', '/game.php?SHOW_COMPONENT=1&id=GAME_PM_NAVLET', 60000);
-                updateComponent('GAME_SERVERTIME', '/game.php?SHOW_COMPONENT=1&id=GAME_SERVERTIME', 300000);
-        </script>
-                <script>
-                    window.addEventListener("popstate", function (e) {
-                        window.location.reload();
-                    });
-                </script>
-            </div>
-        </div>
-    </div>
-</body>
 
+</body>
 </html>
