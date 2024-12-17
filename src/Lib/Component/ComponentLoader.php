@@ -14,6 +14,9 @@ use Stu\Module\Game\View\ShowComponent\ShowComponent;
 
 final class ComponentLoader implements ComponentLoaderInterface
 {
+    /** @var array<ComponentEnumInterface> */
+    private array $registeredStubs = [];
+
     public function __construct(
         private ComponentRegistrationInterface $componentRegistration,
         private ComponentRendererInterface $componentRenderer,
@@ -71,7 +74,9 @@ final class ComponentLoader implements ComponentLoaderInterface
     {
         foreach ($this->componentRegistration->getRegisteredComponents() as $id => $componentEnum) {
 
-            if ($componentEnum->hasTemplateVariables()) {
+            $isStubbed = in_array($componentEnum, $this->registeredStubs);
+
+            if (!$isStubbed && $componentEnum->hasTemplateVariables()) {
                 $moduleId = strtoupper($componentEnum->getModuleView()->value);
 
                 /** @var array<string, ComponentInterface> */
@@ -86,7 +91,21 @@ final class ComponentLoader implements ComponentLoaderInterface
                 $this->componentRenderer->renderComponent($component, $game);
             }
 
-            $game->setTemplateVar($id, ['id' => $id, 'template' => $componentEnum->getTemplate()]);
+            $game->setTemplateVar($id, ['id' => $id, 'template' => $isStubbed ? null : $componentEnum->getTemplate()]);
         }
+    }
+
+    #[Override]
+    public function registerStubbedComponent(ComponentEnumInterface $componentEnum): ComponentLoaderInterface
+    {
+        $this->registeredStubs[] = $componentEnum;
+
+        return $this;
+    }
+
+    #[Override]
+    public function resetStubbedComponents(): void
+    {
+        $this->registeredStubs = [];
     }
 }
