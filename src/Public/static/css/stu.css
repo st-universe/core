@@ -890,7 +890,9 @@ div.top_box {
   border: 1px solid var(--color-22);
   border-radius: 3px 3px 3px 3px;
 }
-
+div.navigation_item.first-navigation-item {
+  margin-top: 0;
+}
 div.navigation_item {
   text-align: center;
   height: 6.2vh;
@@ -898,9 +900,10 @@ div.navigation_item {
   margin-top: 0.6vh;
   color: var(--color-23);
   vertical-align: middle;
-  font-size: 80% ! important;
+  font-size: 80% !important;
   cursor: pointer;
   background-color: var(--color-24);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 div.navitem_title {
@@ -942,7 +945,8 @@ div.header_box_settings:hover,
 div.header_box_col:hover,
 div.header_box_user:hover {
   background-color: var(--color-31);
-  color: var(--color-56) ! important;
+  color: var(--color-56) !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
 }
 
 div.header_box_logout:hover {
@@ -965,6 +969,7 @@ div.header_box {
 div.header_box_user {
   width: 300px;
   margin: 5px 0 0 10px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease; 
 }
 
 div.header_box_pm {
@@ -973,6 +978,7 @@ div.header_box_pm {
 
 div.header_box_col {
   margin: 5px 0 0 15px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 div.header_box_research {
@@ -980,6 +986,7 @@ div.header_box_research {
   text-align: center;
   margin: 5px 0 0 15px;
   padding: 5px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 div.header_box_logout {
@@ -989,6 +996,7 @@ div.header_box_logout {
   background-color: var(--color-26);
   text-align: center;
   width: 70px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 div.header_box_help {
@@ -997,6 +1005,7 @@ div.header_box_help {
   float: right;
   text-align: center;
   width: 70px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 div.header_box_settings {
@@ -1004,6 +1013,7 @@ div.header_box_settings {
   padding: 5px;
   float: right;
   text-align: center;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 div.border_box p {
@@ -1498,6 +1508,8 @@ div.header {
   grid-column: 1 / span 2;
   top: 0;
   position: fixed;
+  border-left: 2px solid var(--color-50); 
+  margin-left: -2px;
 }
 
 div.headerBottom {
