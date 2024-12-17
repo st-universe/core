@@ -6,9 +6,6 @@
     <meta name="theme-color" content="#121220" />
     <script src="{{ JAVASCRIPTPATH }}/js/prototype.js"></script>
     <script src="{{ JAVASCRIPTPATH }}/js/scriptaculous/scriptaculous.js"></script>
-    <script>
-        var userDeals = {{ USER.showDeals }};
-    </script>
     <script src="{{ JAVASCRIPTPATH }}/js/default.js"></script>
     <script src="{{ JAVASCRIPTPATH }}/js/colony.js"></script>
     <script src="{{ JAVASCRIPTPATH }}/js/comm.js"></script>
@@ -36,19 +33,13 @@
 <body onload="startUp();">
     <div id="overDiv">...</div>
     <div class="container">
+        {% from 'html/macros.twig' import component %}
         <div class="header">
-            <div id="navlet_user">
-                {% include 'html/game/component/userComponent.twig' %}
-            </div>
-            <div id="navlet_pm">
-                {% include 'html/game/component/pmComponent.twig' %}
-            </div>
-            <div id="navlet_research">
-                {% include 'html/game/component/researchComponent.twig' %}
-            </div>
-            <div id="navlet_colonies">
-                {% include 'html/game/component/coloniesComponent.twig' %}
-            </div>
+            {% include 'html/component.twig' with GAME_USER_PROFILE %}
+            {% include 'html/component.twig' with GAME_PM_NAVLET %}
+            {% include 'html/component.twig' with GAME_RESEARCH_NAVLET %}
+            {% include 'html/component.twig' with GAME_COLONIES_NAVLET %}
+            {% include 'html/component.twig' with GAME_NAGUS_POPUP %}
             <div id="nagus">
             </div>
             <div class="header_box header_box_logout border_box action" onclick="goToUrl('game.php?B_LOGOUT=1')"
@@ -99,11 +90,8 @@
         </div>
         <div style="margin-top: 80px;">
             <div class="sidebar">
-                {% from 'html/macros.twig' import navigation %}
-                {{ navigation(USER.hasStationsNavigation, ISADMIN, ISNPC) }}
-                <div id="navlet_servertime">
-                    {% include 'html/game/component/serverTimeAndVersionComponent.twig' %}
-                </div>
+                {% include 'html/component.twig' with GAME_NAVIGATION %}
+                {% include 'html/component.twig' with GAME_SERVERTIME %}
             </div>
             <div id="innerContent" class="innerContent">
                 {% block body %}

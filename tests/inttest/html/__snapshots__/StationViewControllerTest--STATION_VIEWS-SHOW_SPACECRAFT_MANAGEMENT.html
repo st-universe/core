@@ -6,9 +6,6 @@
     <meta name="theme-color" content="#121220">
     <script src="/static/js/prototype.js"></script>
     <script src="/static/js/scriptaculous/scriptaculous.js"></script>
-    <script>
-        var userDeals = 0;
-    </script>
     <script src="/static/js/default.js"></script>
     <script src="/static/js/colony.js"></script>
     <script src="/static/js/comm.js"></script>
@@ -36,21 +33,99 @@
 <body onload="startUp();">
     <div id="overDiv">...</div>
     <div class="container">
-        <div class="header">
-            <div id="navlet_user">
-                <div id="userComponent" class="header_box header_box_user border_box action" onclick="goToUrl('/maindesk.php'); return false;">
-    </div>
+                <div class="header">
+            <div id="GAME_USER_PROFILE">
+        <div class="header_box header_box_user border_box action" onclick="goToUrl('/maindesk.php'); return false;">
+    <div style="margin: 5px">
+        <div class="user_box_grid">
+            <div class="user_box_avatar" onclick="event.stopPropagation();">
+                                <div class="userAvatar">
+    <a href="/userprofile.php?uid=101">
+                <img src="/assets/rassen//1kn.png" title="Siedler 101">
+            </a>
+</div>
+
             </div>
-            <div id="navlet_pm">
-                <div id="pmComponent" class="header_box header_box_pm border_box">
-    </div>
+            <div class="user_box_avatar_mobile">
+                                <div class="userAvatar">
+    <a href="/userprofile.php?uid=101">
+                <img src="/assets/rassen//1kn.png" title="Siedler 101">
+            </a>
+</div>
+
             </div>
-            <div id="navlet_research">
-                            </div>
-            <div id="navlet_colonies">
-                
+            <div class="user_box_details">
+                <div class="userBoxDetailName">
+                    Siedler 101
+                </div>
+                <span>ID:</span> 101<span>,
+                    Prestige:</span> 0<br>
+
+                <a href="javascript:void(0);" onclick="event.stopPropagation(); openNotes()" title="Notizzettel &ouml;ffnen" onmouseover="cp('headerNotiz','buttons/notiz2')" onmouseout="cp('headerNotiz','buttons/notiz1')">
+                    <img src="/assets/buttons/notiz1.png" name="headerNotiz">
+                </a>
+                <a href="javascript:void(0);" onclick="event.stopPropagation(); switchInnerContent('WRITE_PM', 'Neue private Nachricht', null, '/pm.php');" onmouseover="cp('writePm','buttons/msg2')" onmouseout="cp('writePm','buttons/msg1')">
+                    <img src="/assets/buttons/msg1.png" name="writePm" title="Neue Nachricht schreiben">
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+    </div>
+            <div id="GAME_PM_NAVLET">
+        <div id="pmComponent" class="header_box header_box_pm border_box">
+        <a href="pm.php?pmcat=4778">
+        <div style="width: 30px; height: 100%; margin: 7px 5px 7px 5px; text-align: center; float: left" class="action">
+                                    <img src="/assets/buttons/pmnavlet_1_0.png" width="30" height="30" id="newpm1" title="Pers&ouml;nlich" onmouseover="cp(this.id,'buttons/pmnavlet_1_1', 'png')" onmouseout="cp(this.id,'buttons/pmnavlet_1_0', 'png')">
+            <div style="margin-top: 5px">0</div>
+                    </div>
+    </a>
+        <a href="pm.php?pmcat=4779">
+        <div style="width: 30px; height: 100%; margin: 7px 5px 7px 5px; text-align: center; float: left" class="action">
+                                    <img src="/assets/buttons/pmnavlet_2_0.png" width="30" height="30" id="newpm2" title="Schiffe" onmouseover="cp(this.id,'buttons/pmnavlet_2_1', 'png')" onmouseout="cp(this.id,'buttons/pmnavlet_2_0', 'png')">
+            <div style="margin-top: 5px">0</div>
+                    </div>
+    </a>
+        <a href="pm.php?pmcat=4780">
+        <div style="width: 30px; height: 100%; margin: 7px 5px 7px 5px; text-align: center; float: left" class="action">
+                                    <img src="/assets/buttons/pmnavlet_3_0.png" width="30" height="30" id="newpm3" title="Kolonien" onmouseover="cp(this.id,'buttons/pmnavlet_3_1', 'png')" onmouseout="cp(this.id,'buttons/pmnavlet_3_0', 'png')">
+            <div style="margin-top: 5px">0</div>
+                    </div>
+    </a>
+        <a href="pm.php?pmcat=4781">
+        <div style="width: 30px; height: 100%; margin: 7px 5px 7px 5px; text-align: center; float: left" class="action">
+                                    <img src="/assets/buttons/pmnavlet_4_0.png" width="30" height="30" id="newpm4" title="Handel" onmouseover="cp(this.id,'buttons/pmnavlet_4_1', 'png')" onmouseout="cp(this.id,'buttons/pmnavlet_4_0', 'png')">
+            <div style="margin-top: 5px">0</div>
+                    </div>
+    </a>
+        <a href="pm.php?pmcat=4782">
+        <div style="width: 30px; height: 100%; margin: 7px 5px 7px 5px; text-align: center; float: left" class="action">
+                                    <img src="/assets/buttons/pmnavlet_5_0.png" width="30" height="30" id="newpm5" title="Systemmeldungen" onmouseover="cp(this.id,'buttons/pmnavlet_5_1', 'png')" onmouseout="cp(this.id,'buttons/pmnavlet_5_0', 'png')">
+            <div style="margin-top: 5px">0</div>
+                    </div>
+    </a>
+    </div>
+    </div>
+            <div id="GAME_RESEARCH_NAVLET">
+        <div id="researchComponent">
+        <div class="header_box header_box_research border_box action" onmouseover="cp('header_menu_research','navigation/menu_forsch1', 'png')" onmouseout="cp('header_menu_research','navigation/menu_forsch0', 'png')">
+        <a href="/research.php" onclick="if(event.button === 0) { switchInnerContent('', '', '', '/research.php'); event.preventDefault(); }" style="display: block; text-decoration: none; color: inherit;">
+            <img style="width: 40px; height: 40px;" src="/assets/navigation/menu_forsch0.png" id="header_menu_research" title="Forschung">
+            <div style="margin-top: 5px">Keine Forschung</div>
+        </a>
+    </div>
+    </div>
+    </div>
+            <div id="GAME_COLONIES_NAVLET">
+        
 <div id="coloniesComponent" class="header_box header_box_col border_box">
+                    
+        <a href="/colony.php?id=42" onclick="if(event.button === 0) { switchInnerContent('SHOW_COLONY', 'Stempor&amp;#039;Arr 4', 'id=42', '/colony.php'); event.preventDefault(); }" style="margin: 7px 5px 7px 5px; text-align: center; float: left" class="action" onmouseover="return overlib('\u003Ctable\u0020class\u003D\u0027tcal\u0027\u003E\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u003Ctr\u003E\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u003Cth\u003EKolonieinformationen\u003A\u0020Stempor\u0027Arr\u00204\u003C\/th\u003E\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u003C\/tr\u003E\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u003Ctr\u003E\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u003Ctd\u003EKoordinaten\u003A\u00207\u007C11\u003Cbr\u003ESystem\u003A\u0020Stempor\u0027Arr\u002DSystem\u0020\u00287\u007C8\u0029\u003Cbr\u003EEPS\u003A\u002096\/96\u003Cbr\u003ELager\u003A\u0020701\/1000\u003C\/td\u003E\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u003C\/tr\u003E\n\u0020\u0020\u0020\u0020\u003C\/table\u003E', CAPTION, '', CLOSETEXT, 'X', CLOSECOLOR, '#8897cf', TEXTCOLOR, '#000000', CELLPAD, 4);" onmouseout="return nd();">
+        <img src="/assets/planets/201.png">
+    </a>
+        </div>
     </div>
+            <div id="GAME_NAGUS_POPUP">
             </div>
             <div id="nagus">
             </div>
@@ -84,8 +159,9 @@
         </div>
         <div style="margin-top: 80px;">
             <div class="sidebar">
-                <div style="width: 100%; padding-left: 12px; padding-right: 10px">
-                                        <a class="navitem_link" href="colony.php" onclick="if(event.button === 0) { switchView('colony', 'Kolonien', 'colony.php'); event.preventDefault(); }">
+                <div id="GAME_NAVIGATION">
+        
+<a class="navitem_link" href="colony.php" onclick="if(event.button === 0) { switchView('colony', 'Kolonien', 'colony.php'); event.preventDefault(); }">
     <div class="navigation_item border_box" onmouseover="cp('nav_item_planets','navigation/menu_planets1', 'png')" onmouseout="cp('nav_item_planets','navigation/menu_planets0', 'png')">
         <img class="navitem_img" src="/assets/navigation/menu_planets0.png" id="nav_item_planets" title="Kolonien">
         <div class="navitem_title">Kolonien</div>
@@ -155,12 +231,15 @@
     </div>
 </a>
 
-
-                    <div id="navlet_servertime">
-                        <div id="serverTimeAndVersionComponent" class="border_box navigation_item_servertime">
     </div>
-                    </div>
-                </div>
+                <div id="GAME_SERVERTIME">
+        <div class="border_box navigation_item_servertime">
+        <img title="Serverzeit" style="width: 15px; height: 15px;" src="/assets/buttons/time.png">
+    <span id="servertime" style="display: none;">Nov, 21 2024 14:30:45</span>
+    <span>Runde: 1</span><br>
+    <span>Version: <a href="https://board.change.me/viewforum.php?f=12">dev</a></span><br>
+    </div>
+    </div>
             </div>
             <div id="innerContent" class="innerContent">
                 <div class="box">
@@ -254,8 +333,8 @@ updateSelectedSpacecraftId('42');">Aerie</a>
     Rendered in 4.203s - Memory usage: 42.77Mb
 </div>
 <script>
-            updateComponent('navlet_pm', '/game.php?SHOW_COMPONENT=1&component=pm', 60000);
-                updateComponent('navlet_servertime', '/game.php?SHOW_COMPONENT=1&component=servertime', 300000);
+            updateComponent('GAME_PM_NAVLET', '/game.php?SHOW_COMPONENT=1&id=GAME_PM_NAVLET', 60000);
+                updateComponent('GAME_SERVERTIME', '/game.php?SHOW_COMPONENT=1&id=GAME_SERVERTIME', 300000);
         </script>
                 <script>
                     window.addEventListener("popstate", function (e) {

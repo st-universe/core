@@ -24,6 +24,8 @@ use Spatie\Snapshots\MatchesSnapshots;
 use Stu\Config\ConfigStageEnum;
 use Stu\Config\Init;
 use Stu\Config\StuContainer;
+use Stu\Lib\Component\ComponentRegistrationInterface;
+use Stu\Lib\Component\ComponentRendererInterface;
 use Stu\Lib\Session\SessionStringFactoryInterface;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Control\BenchmarkResultInterface;
@@ -32,8 +34,6 @@ use Stu\Module\Control\Render\GameTwigRendererInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Game\Lib\Component\ComponentLoaderInterface;
-use Stu\Module\Game\Lib\Component\ComponentRendererInterface;
 use Stu\Module\Twig\TwigHelper;
 use Stu\Module\Twig\TwigPageInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -58,7 +58,7 @@ abstract class TwigTestCase extends StuTestCase
 
         $dic->get(GameControllerInterface::class)->resetGameData();
         $dic->get(TwigPageInterface::class)->resetVariables();
-        $dic->get(ComponentLoaderInterface::class)->resetComponents();
+        $dic->get(ComponentRegistrationInterface::class)->resetComponents();
     }
 
     protected abstract function getViewControllerClass(): string;

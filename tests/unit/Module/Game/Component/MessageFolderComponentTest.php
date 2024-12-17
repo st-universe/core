@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Control\Render\Fragments;
+namespace Stu\Module\Game\Component;
 
 use Mockery\MockInterface;
 use Override;
@@ -10,21 +10,20 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderItem;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageUiFactoryInterface;
-use Stu\Module\Twig\TwigPageInterface;
 use Stu\Orm\Entity\PrivateMessageFolderInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\StuTestCase;
 
-class MessageFolderFragmentTest extends StuTestCase
+class MessageFolderComponentTest extends StuTestCase
 {
     /** @var MockInterface&PrivateMessageFolderRepositoryInterface */
-    private MockInterface $privateMessageFolderRepository;
+    private $privateMessageFolderRepository;
 
     /** @var MockInterface&PrivateMessageUiFactoryInterface */
-    private MockInterface $privateMessageUiFactory;
+    private $privateMessageUiFactory;
 
-    private MessageFolderFragment $subject;
+    private MessageFolderComponent $subject;
 
     #[Override]
     protected function setUp(): void
@@ -32,7 +31,7 @@ class MessageFolderFragmentTest extends StuTestCase
         $this->privateMessageFolderRepository = $this->mock(PrivateMessageFolderRepositoryInterface::class);
         $this->privateMessageUiFactory = $this->mock(PrivateMessageUiFactoryInterface::class);
 
-        $this->subject = new MessageFolderFragment(
+        $this->subject = new MessageFolderComponent(
             $this->privateMessageFolderRepository,
             $this->privateMessageUiFactory
         );
@@ -40,8 +39,8 @@ class MessageFolderFragmentTest extends StuTestCase
 
     public function testRenderRendersFolderListWithoutStation(): void
     {
+        $game = $this->mock(GameControllerInterface::class);
         $user = $this->mock(UserInterface::class);
-        $twigPage = $this->mock(TwigPageInterface::class);
         $folder = $this->mock(PrivateMessageFolderInterface::class);
         $folderItem = $this->mock(PrivateMessageFolderItem::class);
 
@@ -62,6 +61,11 @@ class MessageFolderFragmentTest extends StuTestCase
                 ->andReturn($folder);
         }
 
+        $game->shouldReceive('getUser')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($user);
+
         $this->privateMessageUiFactory->shouldReceive('createPrivateMessageFolderItem')
             ->with($folder)
             ->times(count($folderTypeIds))
@@ -69,14 +73,13 @@ class MessageFolderFragmentTest extends StuTestCase
 
         $user->shouldReceive('getId')
             ->withNoArgs()
-            ->once()
             ->andReturn($userId);
         $user->shouldReceive('hasStationsNavigation')
             ->withNoArgs()
             ->once()
             ->andReturnFalse();
 
-        $twigPage->shouldReceive('setVar')
+        $game->shouldReceive('setTemplateVar')
             ->with(
                 'PM',
                 [
@@ -89,13 +92,13 @@ class MessageFolderFragmentTest extends StuTestCase
             )
             ->once();
 
-        $this->subject->render($user, $twigPage, $this->mock(GameControllerInterface::class));
+        $this->subject->setTemplateVariables($game);
     }
 
     public function testRenderRendersFolderListWithStation(): void
     {
+        $game = $this->mock(GameControllerInterface::class);
         $user = $this->mock(UserInterface::class);
-        $twigPage = $this->mock(TwigPageInterface::class);
         $folder = $this->mock(PrivateMessageFolderInterface::class);
         $folderItem = $this->mock(PrivateMessageFolderItem::class);
 
@@ -110,6 +113,12 @@ class MessageFolderFragmentTest extends StuTestCase
             PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,
         ];
 
+        $game->shouldReceive('getUser')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($user);
+
+
         foreach ($folderTypeIds as $typeId) {
             $this->privateMessageFolderRepository->shouldReceive('getByUserAndSpecial')
                 ->with($userId, $typeId)
@@ -124,14 +133,13 @@ class MessageFolderFragmentTest extends StuTestCase
 
         $user->shouldReceive('getId')
             ->withNoArgs()
-            ->once()
             ->andReturn($userId);
         $user->shouldReceive('hasStationsNavigation')
             ->withNoArgs()
             ->once()
             ->andReturnTrue();
 
-        $twigPage->shouldReceive('setVar')
+        $game->shouldReceive('setTemplateVar')
             ->with(
                 'PM',
                 [
@@ -145,6 +153,6 @@ class MessageFolderFragmentTest extends StuTestCase
             )
             ->once();
 
-        $this->subject->render($user, $twigPage, $this->mock(GameControllerInterface::class));
+        $this->subject->setTemplateVariables($game);
     }
 }

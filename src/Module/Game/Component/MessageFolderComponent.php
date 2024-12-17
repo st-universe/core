@@ -2,31 +2,30 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Control\Render\Fragments;
+namespace Stu\Module\Game\Component;
 
 use Override;
+use Stu\Lib\Component\ComponentInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageUiFactoryInterface;
-use Stu\Module\Twig\TwigPageInterface;
 use Stu\Orm\Entity\PrivateMessageFolderInterface;
-use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 
 /**
  * Renders the pm folders in the header
  */
-final class MessageFolderFragment implements RenderFragmentInterface
+final class MessageFolderComponent implements ComponentInterface
 {
-    public function __construct(private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository, private PrivateMessageUiFactoryInterface $commUiFactory) {}
+    public function __construct(
+        private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
+        private PrivateMessageUiFactoryInterface $commUiFactory
+    ) {}
 
     #[Override]
-    public function render(
-        UserInterface $user,
-        TwigPageInterface $page,
-        GameControllerInterface $game
-    ): void {
-        $userId = $user->getId();
+    public function setTemplateVariables(GameControllerInterface $game): void
+    {
+        $user = $game->getUser();
 
         $pmFolder = [
             PrivateMessageFolderTypeEnum::SPECIAL_MAIN,
@@ -47,11 +46,11 @@ final class MessageFolderFragment implements RenderFragmentInterface
             }
 
             /** @var PrivateMessageFolderInterface $specialFolder */
-            $specialFolder = $this->privateMessageFolderRepository->getByUserAndSpecial($userId, $folderType);
+            $specialFolder = $this->privateMessageFolderRepository->getByUserAndSpecial($user->getId(), $folderType);
 
             $folder[$folderType->value] = $this->commUiFactory->createPrivateMessageFolderItem($specialFolder);
         }
 
-        $page->setVar('PM', $folder);
+        $game->setTemplateVar('PM', $folder);
     }
 }

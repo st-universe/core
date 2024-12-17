@@ -6,21 +6,18 @@ namespace Stu\Module\Game;
 
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Control\GameController;
-use Stu\Module\Control\Render\Fragments\ColonyFragment;
-use Stu\Module\Control\Render\Fragments\MessageFolderFragment;
-use Stu\Module\Control\Render\Fragments\ResearchFragment;
-use Stu\Module\Control\Render\Fragments\ServertimeFragment;
-use Stu\Module\Control\Render\Fragments\UserFragment;
 use Stu\Module\Game\Action\Logout\Logout;
 use Stu\Module\Game\Action\SwitchView\SwitchView;
 use Stu\Module\Game\Action\SetTutorial\SetTutorial;
 use Stu\Module\Game\Action\FinishTutorial\FinishTutorial;
 use Stu\Module\Game\Action\Transfer\Transfer;
-use Stu\Module\Game\Lib\Component\ComponentEnum;
-use Stu\Module\Game\Lib\Component\ComponentLoader;
-use Stu\Module\Game\Lib\Component\ComponentLoaderInterface;
-use Stu\Module\Game\Lib\Component\ComponentRenderer;
-use Stu\Module\Game\Lib\Component\ComponentRendererInterface;
+use Stu\Module\Game\Component\ColoniesComponent;
+use Stu\Module\Game\Component\GameComponentEnum;
+use Stu\Module\Game\Component\MessageFolderComponent;
+use Stu\Module\Game\Component\NagusComponent;
+use Stu\Module\Game\Component\ResearchComponent;
+use Stu\Module\Game\Component\ServertimeComponent;
+use Stu\Module\Game\Component\UserProfileComponent;
 use Stu\Module\Game\Lib\GameSetup;
 use Stu\Module\Game\Lib\GameSetupInterface;
 use Stu\Module\Game\Lib\View\Provider\AllianceProvider;
@@ -70,17 +67,6 @@ return [
             ModuleViewEnum::PROFILE->value => autowire(UserProfileProvider::class),
         ]
     ),
-    ComponentLoaderInterface::class => autowire(ComponentLoader::class)->constructorParameter(
-        'componentProviders',
-        [
-            ComponentEnum::PM->value => autowire(MessageFolderFragment::class),
-            ComponentEnum::SERVERTIME_AND_VERSION->value => autowire(ServertimeFragment::class),
-            ComponentEnum::RESEARCH->value => autowire(ResearchFragment::class),
-            ComponentEnum::COLONIES->value => autowire(ColonyFragment::class),
-            ComponentEnum::USER->value => autowire(UserFragment::class),
-        ]
-    ),
-    ComponentRendererInterface::class => autowire(ComponentRenderer::class),
     ShowTransfer::class => autowire(ShowTransfer::class),
     Transfer::class => autowire(Transfer::class),
     'GAME_ACTIONS' => [
@@ -96,5 +82,13 @@ return [
         ShowPadd::VIEW_IDENTIFIER => autowire(ShowPadd::class),
         ShowTutorialCloseButton::VIEW_IDENTIFIER => autowire(ShowTutorialCloseButton::class),
         Noop::VIEW_IDENTIFIER => autowire(Noop::class),
+    ],
+    'GAME_COMPONENTS' => [
+        GameComponentEnum::COLONIES->value => autowire(ColoniesComponent::class),
+        GameComponentEnum::NAGUS->value => autowire(NagusComponent::class),
+        GameComponentEnum::PM->value => autowire(MessageFolderComponent::class),
+        GameComponentEnum::RESEARCH->value => autowire(ResearchComponent::class),
+        GameComponentEnum::SERVERTIME_AND_VERSION->value => autowire(ServertimeComponent::class),
+        GameComponentEnum::USER->value => autowire(UserProfileComponent::class)
     ]
 ];

@@ -6,15 +6,13 @@ namespace Stu\Module\Game\Lib;
 
 use Override;
 use Stu\Component\Game\ModuleViewEnum;
+use Stu\Lib\Component\ComponentRegistrationInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Game\Lib\Component\ComponentEnum;
-use Stu\Module\Game\Lib\Component\ComponentLoaderInterface;
+use Stu\Module\Game\Component\GameComponentEnum;
 
 final class GameSetup implements GameSetupInterface
 {
-    public function __construct(private ComponentLoaderInterface $componentLoader)
-    {
-    }
+    public function __construct(private ComponentRegistrationInterface $componentRegistration) {}
 
     #[Override]
     public function setTemplateAndComponents(string $viewTemplate, GameControllerInterface $game): void
@@ -27,11 +25,11 @@ final class GameSetup implements GameSetupInterface
 
     private function registerComponents(): void
     {
-        foreach (ComponentEnum::cases() as $component) {
-            $this->componentLoader->registerComponent($component);
+        foreach (GameComponentEnum::cases() as $componentEnum) {
+            $this->componentRegistration->registerComponent($componentEnum);
 
-            if ($component->getRefreshIntervalInSeconds() !== null) {
-                $this->componentLoader->addComponentUpdate($component, false);
+            if ($componentEnum->getRefreshIntervalInSeconds() !== null) {
+                $this->componentRegistration->addComponentUpdate($componentEnum, false);
             }
         }
     }
