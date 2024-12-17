@@ -6,25 +6,24 @@ namespace Stu\Module\Game\View\ShowComponent;
 
 use Override;
 use request;
+use Stu\Component\Game\ModuleViewEnum;
+use Stu\Lib\Component\ComponentRegistrationInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Game\Lib\Component\ComponentEnum;
-use Stu\Module\Game\Lib\Component\ComponentLoaderInterface;
 
 final class ShowComponent implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_COMPONENT';
 
-    public function __construct(private ComponentLoaderInterface $componentLoader)
-    {
-    }
+    public function __construct(private ComponentRegistrationInterface $componentRegistration) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $component = ComponentEnum::from(request::getStringFatal('component'));
+        $exploded = explode('_', request::getStringFatal('id'), 2);
+        $componentEnum = ModuleViewEnum::from(strtolower($exploded[0]))->getComponentEnum($exploded[1]);
 
-        $this->componentLoader->registerComponent($component);
-        $game->showMacro($component->getTemplate());
+        $this->componentRegistration->registerComponent($componentEnum);
+        $game->showMacro($componentEnum->getTemplate());
     }
 }

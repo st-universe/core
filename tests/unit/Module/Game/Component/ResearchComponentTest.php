@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Control\Render\Fragments;
+namespace Stu\Module\Game\Component;
 
 use Mockery\MockInterface;
 use Override;
@@ -11,7 +11,6 @@ use Stu\Module\Research\TechlistRetrieverInterface;
 use Stu\Module\Template\StatusBarColorEnum;
 use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Module\Template\StatusBarInterface;
-use Stu\Module\Twig\TwigPageInterface;
 use Stu\Orm\Entity\ResearchedInterface;
 use Stu\Orm\Entity\ResearchInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -19,21 +18,18 @@ use Stu\Orm\Repository\BuildingCommodityRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\StuTestCase;
 
-class ResearchFragmentTest extends StuTestCase
+class ResearchComponentTest extends StuTestCase
 {
     /** @var ResearchedRepositoryInterface&MockInterface  */
     private $researchedRepository;
-
     /** @var StatusBarFactoryInterface&MockInterface */
     private $statusBarFactory;
-
     /** @var MockInterface&BuildingCommodityRepositoryInterface */
     private $buildingCommodityRepository;
-
     /** @var MockInterface&TechlistRetrieverInterface */
     private $techlistRetriever;
 
-    private ResearchFragment $subject;
+    private ResearchComponent $subject;
 
     #[Override]
     protected function setUp(): void
@@ -43,7 +39,7 @@ class ResearchFragmentTest extends StuTestCase
         $this->buildingCommodityRepository = $this->mock(BuildingCommodityRepositoryInterface::class);
         $this->techlistRetriever = $this->mock(TechlistRetrieverInterface::class);
 
-        $this->subject = new ResearchFragment(
+        $this->subject = new ResearchComponent(
             $this->researchedRepository,
             $this->statusBarFactory,
             $this->techlistRetriever,
@@ -53,8 +49,8 @@ class ResearchFragmentTest extends StuTestCase
 
     public function testRenderRendersWithoutCurrentResearch(): void
     {
+        $game = $this->mock(GameControllerInterface::class);
         $user = $this->mock(UserInterface::class);
-        $twigPage = $this->mock(TwigPageInterface::class);
 
         $this->researchedRepository->shouldReceive('getCurrentResearch')
             ->with($user)
@@ -66,26 +62,30 @@ class ResearchFragmentTest extends StuTestCase
             ->once()
             ->andReturn([]);
 
-        $twigPage->shouldReceive('setVar')
+        $game->shouldReceive('getUser')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($user);
+        $game->shouldReceive('setTemplateVar')
             ->with('CURRENT_RESEARCH', null)
             ->once();
-        $twigPage->shouldReceive('setVar')
+        $game->shouldReceive('setTemplateVar')
             ->with('CURRENT_RESEARCH_STATUS', '')
             ->once();
-        $twigPage->shouldReceive('setVar')
+        $game->shouldReceive('setTemplateVar')
             ->with('WAITING_RESEARCH', null)
             ->once();
-        $twigPage->shouldReceive('setVar')
+        $game->shouldReceive('setTemplateVar')
             ->with('RESEARCH_POSSIBLE', false)
             ->once();
 
-        $this->subject->render($user, $twigPage, $this->mock(GameControllerInterface::class));
+        $this->subject->setTemplateVariables($game);
     }
 
     public function testRenderRendersWithResearch(): void
     {
+        $game = $this->mock(GameControllerInterface::class);
         $user = $this->mock(UserInterface::class);
-        $twigPage = $this->mock(TwigPageInterface::class);
         $currentResearch = $this->mock(ResearchedInterface::class);
         $waitingResearch = $this->mock(ResearchedInterface::class);
         $statusBar = $this->mock(StatusBarInterface::class);
@@ -155,25 +155,29 @@ class ResearchFragmentTest extends StuTestCase
             ->once()
             ->andReturnSelf();
 
-        $twigPage->shouldReceive('setVar')
+        $game->shouldReceive('getUser')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($user);
+        $game->shouldReceive('setTemplateVar')
             ->with('CURRENT_RESEARCH', $currentResearch)
             ->once();
-        $twigPage->shouldReceive('setVar')
+        $game->shouldReceive('setTemplateVar')
             ->with('CURRENT_RESEARCH_STATUS', $statusBar)
             ->once();
-        $twigPage->shouldReceive('setVar')
+        $game->shouldReceive('setTemplateVar')
             ->with('WAITING_RESEARCH', $waitingResearch)
             ->once();
-        $twigPage->shouldReceive('setVar')
+        $game->shouldReceive('setTemplateVar')
             ->with(
                 'CURRENT_RESEARCH_PRODUCTION_COMMODITY',
                 $productionValue
             )
             ->once();
-        $twigPage->shouldReceive('setVar')
+        $game->shouldReceive('setTemplateVar')
             ->with('RESEARCH_POSSIBLE', true)
             ->once();
 
-        $this->subject->render($user, $twigPage, $this->mock(GameControllerInterface::class));
+        $this->subject->setTemplateVariables($game);
     }
 }

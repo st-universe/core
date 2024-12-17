@@ -2,22 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Control\Render\Fragments;
+namespace Stu\Module\Game\Component;
 
 use Override;
+use Stu\Lib\Component\ComponentInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Research\TechlistRetrieverInterface;
 use Stu\Module\Template\StatusBarColorEnum;
 use Stu\Module\Template\StatusBarFactoryInterface;
-use Stu\Module\Twig\TwigPageInterface;
-use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\BuildingCommodityRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 
 /**
  * Renders the research state view in the header
  */
-final class ResearchFragment implements RenderFragmentInterface
+final class ResearchComponent implements ComponentInterface
 {
     public function __construct(
         private ResearchedRepositoryInterface $researchedRepository,
@@ -27,11 +26,9 @@ final class ResearchFragment implements RenderFragmentInterface
     ) {}
 
     #[Override]
-    public function render(
-        UserInterface $user,
-        TwigPageInterface $page,
-        GameControllerInterface $game
-    ): void {
+    public function setTemplateVariables(GameControllerInterface $game): void
+    {
+        $user = $game->getUser();
         $researchStatusBar = '';
         $currentResearch = $this->researchedRepository->getCurrentResearch($user);
 
@@ -48,7 +45,7 @@ final class ResearchFragment implements RenderFragmentInterface
                 ->setValue($researchPoints - current($currentResearch)->getActive())
                 ->setSizeModifier(2);
 
-            $page->setVar(
+            $game->setTemplateVar(
                 'CURRENT_RESEARCH_PRODUCTION_COMMODITY',
                 max(
                     0,
@@ -64,9 +61,9 @@ final class ResearchFragment implements RenderFragmentInterface
         $hasResearchList = $researchList !== [];
         $hasCurrentResearch = $currentResearch !== [];
 
-        $page->setVar('CURRENT_RESEARCH', current($currentResearch));
-        $page->setVar('CURRENT_RESEARCH_STATUS', $researchStatusBar);
-        $page->setVar('WAITING_RESEARCH', count($currentResearch) === 2 ? $currentResearch[1] : null);
-        $page->setVar('RESEARCH_POSSIBLE', $hasResearchList || $hasCurrentResearch);
+        $game->setTemplateVar('CURRENT_RESEARCH', current($currentResearch));
+        $game->setTemplateVar('CURRENT_RESEARCH_STATUS', $researchStatusBar);
+        $game->setTemplateVar('WAITING_RESEARCH', count($currentResearch) === 2 ? $currentResearch[1] : null);
+        $game->setTemplateVar('RESEARCH_POSSIBLE', $hasResearchList || $hasCurrentResearch);
     }
 }

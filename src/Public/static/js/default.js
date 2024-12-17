@@ -627,42 +627,6 @@ function toggleTranslation(targetId) {
         }
 }
 
-if (typeof userDeals !== 'undefined' && userDeals) {
-        setTimeout(function () {
-                showPopup();
-        }, 3000);
-}
-
-function showPopup() {
-        var popup = document.getElementById('nagus');
-        var popupContent = '<div class="header_box border_box action" style="text-align: center; margin: 5px 0 0 15px; padding: 5px; overflow: hidden; "> <a href="trade.php?SHOW_DEALS=1"><img id="romImage" src="/assets/buttons/romblinck.gif" style="width: 65px; clip: rect(0px, 0px, 50px, 0px);" alt="Zu den Deals gehen"></a> </div>';
-        popup.innerHTML = popupContent;
-        popup.style.display = 'block';
-
-
-        var romImage = document.getElementById('romImage');
-
-        romImage.addEventListener('mouseover', function () {
-                romImage.title = 'Neue Deals: Zu den Deals gehen';
-        });
-
-        romImage.addEventListener('mouseout', function () {
-                romImage.title = '';
-        });
-
-        setTimeout(function () {
-                closeNagusPopup();
-                setTimeout(function () {
-                        showPopup();
-                }, 2000);
-        }, 7000);
-}
-
-function closeNagusPopup() {
-        var popup = document.getElementById('nagus');
-        popup.style.display = 'none';
-}
-
 function deleteColonyScan(id) {
         ajaxrequest('database.php?B_DELETE_COLONY_SCAN=1&id=' + id);
         document.getElementById(`colonyScan_${id}`).remove();

@@ -9,9 +9,9 @@ use request;
 use RuntimeException;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\ModuleViewEnum;
+use Stu\Lib\Component\ComponentRegistrationInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Game\Lib\Component\ComponentEnum;
-use Stu\Module\Game\Lib\Component\ComponentLoaderInterface;
+use Stu\Module\Game\Component\GameComponentEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderItem;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageListItem;
@@ -27,7 +27,14 @@ final class MessageProvider implements ViewComponentProviderInterface
 {
     private const int PMLIMITER = 6;
 
-    public function __construct(private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository, private PrivateMessageRepositoryInterface $privateMessageRepository, private IgnoreListRepositoryInterface $ignoreListRepository, private PrivateMessageUiFactoryInterface $privateMessageUiFactory, private ContactRepositoryInterface $contactRepository, private ComponentLoaderInterface $componentLoader) {}
+    public function __construct(
+        private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
+        private PrivateMessageRepositoryInterface $privateMessageRepository,
+        private IgnoreListRepositoryInterface $ignoreListRepository,
+        private PrivateMessageUiFactoryInterface $privateMessageUiFactory,
+        private ContactRepositoryInterface $contactRepository,
+        private ComponentRegistrationInterface $componentRegistration
+    ) {}
 
     #[Override]
     public function setTemplateVariables(GameControllerInterface $game): void
@@ -116,7 +123,7 @@ final class MessageProvider implements ViewComponentProviderInterface
             )
         );
 
-        $this->componentLoader->addComponentUpdate(ComponentEnum::PM);
+        $this->componentRegistration->addComponentUpdate(GameComponentEnum::PM);
         $game->addExecuteJS("initTranslations();", GameEnum::JS_EXECUTION_AFTER_RENDER);
     }
 }

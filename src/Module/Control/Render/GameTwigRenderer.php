@@ -7,8 +7,8 @@ namespace Stu\Module\Control\Render;
 use Noodlehaus\ConfigInterface;
 use Override;
 use Stu\Component\Game\GameEnum;
+use Stu\Lib\Component\ComponentLoaderInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Game\Lib\Component\ComponentLoaderInterface;
 use Stu\Module\Twig\TwigPageInterface;
 use Stu\Orm\Entity\UserInterface;
 
@@ -76,8 +76,7 @@ final class GameTwigRenderer implements GameTwigRendererInterface
                 $user->getName(),
                 $user->getFactionId(),
                 $user->getCss(),
-                $user->hasStationsNavigation(),
-                $user->getDeals()
+                $user->hasStationsNavigation()
             ));
         }
     }

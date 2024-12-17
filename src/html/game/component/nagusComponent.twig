@@ -1,0 +1,25 @@
+{% if SHOW_DEALS %}
+<div class="header_box border_box action"
+    style="text-align: center; margin: 5px 0 0 15px; padding: 5px; overflow: hidden; "> <a
+        href="trade.php?SHOW_DEALS=1">
+        <img id="romImage" src="/assets/buttons/romblinck.gif" style="width: 65px; clip: rect(0px, 0px, 50px, 0px);"
+            alt="Neue Deals: Zu den Deals gehen">
+    </a>
+</div>
+<script>
+    function closeNagusPopup() {
+            document.getElementById('GAME_NAGUS_POPUP').style.display = 'none';
+        }
+    function showNagusPopup() {
+            document.getElementById('GAME_NAGUS_POPUP').style.display = 'block';
+            setTimeout(function () {
+                closeNagusPopup();
+                setTimeout(function () {
+                    showNagusPopup();
+                }, 2000);
+            }, 7000);
+        }
+
+    showNagusPopup();
+</script>
+{% endif %}

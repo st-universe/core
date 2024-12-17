@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Component\Game;
 
+use RuntimeException;
+use Stu\Lib\Component\ComponentEnumInterface;
+use Stu\Module\Game\Component\GameComponentEnum;
+
 enum ModuleViewEnum: string
 {
     case INDEX = 'index';
@@ -78,6 +82,15 @@ enum ModuleViewEnum: string
             self::PROFILE => 'html/view/userprofile.twig',
             self::ADMIN => 'not needed',
             self::NPC => 'not needed'
+        };
+    }
+
+    public function getComponentEnum(string $value): ComponentEnumInterface
+    {
+        return match ($this) {
+            self::GAME => GameComponentEnum::from($value),
+                //self::COLONY => GuiComponentEnum::from($value),
+            default => throw new RuntimeException('no components in this module view')
         };
     }
 }

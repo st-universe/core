@@ -6,11 +6,11 @@ namespace Stu\Module\Research\Action\CancelResearch;
 
 use Override;
 use request;
+use Stu\Lib\Component\ComponentRegistrationInterface;
 use Stu\Module\Control\AuthenticatedActionController;
 use Stu\Module\Control\GameController;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Game\Lib\Component\ComponentEnum;
-use Stu\Module\Game\Lib\Component\ComponentLoaderInterface;
+use Stu\Module\Game\Component\GameComponentEnum;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 
 /**
@@ -22,7 +22,7 @@ final class CancelResearch extends AuthenticatedActionController
 
     public function __construct(
         private ResearchedRepositoryInterface $researchedRepository,
-        private ComponentLoaderInterface $componentLoader
+        private ComponentRegistrationInterface $componentRegistration
     ) {}
 
     #[Override]
@@ -37,7 +37,7 @@ final class CancelResearch extends AuthenticatedActionController
                 $this->researchedRepository->delete($researched);
                 $game->addInformation('Die laufende Forschung wurde abgebrochen');
 
-                $this->componentLoader->addComponentUpdate(ComponentEnum::RESEARCH);
+                $this->componentRegistration->addComponentUpdate(GameComponentEnum::RESEARCH);
             }
         }
         $game->setView(GameController::DEFAULT_VIEW);
