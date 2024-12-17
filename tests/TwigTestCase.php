@@ -24,8 +24,8 @@ use Spatie\Snapshots\MatchesSnapshots;
 use Stu\Config\ConfigStageEnum;
 use Stu\Config\Init;
 use Stu\Config\StuContainer;
+use Stu\Lib\Component\ComponentLoaderInterface;
 use Stu\Lib\Component\ComponentRegistrationInterface;
-use Stu\Lib\Component\ComponentRendererInterface;
 use Stu\Lib\Session\SessionStringFactoryInterface;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Control\BenchmarkResultInterface;
@@ -59,6 +59,7 @@ abstract class TwigTestCase extends StuTestCase
         $dic->get(GameControllerInterface::class)->resetGameData();
         $dic->get(TwigPageInterface::class)->resetVariables();
         $dic->get(ComponentRegistrationInterface::class)->resetComponents();
+        $dic->get(ComponentLoaderInterface::class)->resetStubbedComponents();
     }
 
     protected abstract function getViewControllerClass(): string;
@@ -158,10 +159,6 @@ abstract class TwigTestCase extends StuTestCase
             ->zeroOrMoreTimes()
             ->andReturn('21.07.2394 11:30');
 
-        $componentRenderer = $this->mock(ComponentRendererInterface::class);
-        $componentRenderer->shouldReceive('renderComponent')
-            ->zeroOrMoreTimes();
-
         $benchmarkResultMock = $this->mock(BenchmarkResultInterface::class);
         $benchmarkResultMock->shouldReceive('getResult')
             ->zeroOrMoreTimes()
@@ -174,7 +171,6 @@ abstract class TwigTestCase extends StuTestCase
         $dic->setAdditionalService(SessionStringFactoryInterface::class, $sessionStringFactoryMock);
         $dic->setAdditionalService(StuRandom::class, $stuRandomMock);
         $dic->setAdditionalService(StuTime::class, $stuTimeMock);
-        $dic->setAdditionalService(ComponentRendererInterface::class, $componentRenderer);
         $dic->setAdditionalService(BenchmarkResultInterface::class, $benchmarkResultMock);
 
         return $this;

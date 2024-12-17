@@ -12,4 +12,8 @@ interface ComponentLoaderInterface
     public function loadComponentUpdates(GameControllerInterface $game): void;
 
     public function loadRegisteredComponents(GameControllerInterface $game): void;
+
+    public function registerStubbedComponent(ComponentEnumInterface $componentEnum): ComponentLoaderInterface;
+
+    public function resetStubbedComponents(): void;
 }

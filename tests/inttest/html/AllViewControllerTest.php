@@ -9,6 +9,8 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use ReflectionClass;
 use Stu\Config\Init;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Game\Component\GameComponentEnum;
+use Stu\StuMocks;
 use Stu\TwigTestCase;
 
 class AllViewControllerTest extends TwigTestCase
@@ -89,6 +91,13 @@ class AllViewControllerTest extends TwigTestCase
     #[DataProvider('getAllViewControllerDataProvider')]
     public function testHandle(string $key): void
     {
+        StuMocks::registerStubbedComponent(GameComponentEnum::COLONIES);
+        StuMocks::registerStubbedComponent(GameComponentEnum::NAVIGATION);
+        StuMocks::registerStubbedComponent(GameComponentEnum::PM);
+        StuMocks::registerStubbedComponent(GameComponentEnum::RESEARCH);
+        StuMocks::registerStubbedComponent(GameComponentEnum::SERVERTIME_AND_VERSION);
+        StuMocks::registerStubbedComponent(GameComponentEnum::USER);
+
         $this->snapshotKey = $key;
 
         $this->renderSnapshot(
