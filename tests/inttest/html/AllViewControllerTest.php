@@ -123,6 +123,7 @@ class AllViewControllerTest extends TwigTestCase
             'commodityid' => 21,
             'noteid' => 42,
             'regionid' => 134,
+            'switch' => 1,
 
             // SHIP
             'rumpid' => 6501,

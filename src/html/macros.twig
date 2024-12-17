@@ -70,53 +70,14 @@
 {% set viewUrl = view.getPhpPage %}
 <a class="navitem_link" href="{{ viewUrl }}"
     onclick="if(event.button === 0) { switchView('{{ viewValue }}', '{{ viewTitle }}', '{{ viewUrl }}'); event.preventDefault(); }">
-    <div class="navigation_item border_box {{ extraClass }}" onmouseover="cp('{{ linkid }}','navigation/menu_{{ iconUrl }}1', 'png')"
+    <div class="navigation_item border_box {{ extraClass }}"
+        onmouseover="cp('{{ linkid }}','navigation/menu_{{ iconUrl }}1', 'png')"
         onmouseout="cp('{{ linkid }}','navigation/menu_{{ iconUrl }}0', 'png')">
         <img class="navitem_img" src="/assets/navigation/menu_{{ iconUrl }}0.png" id="{{ linkid }}"
             title="{{ title }}" />
         <div class="navitem_title">{{ title }}</div>
     </div>
 </a>
-{% endmacro %}
-
-
-
-{% macro navigation(hasStationsNavigation, isAdmin, isNpc) %}
-{{ _self.navigation_item('Kolonien', 'colony', 'planets', 'first-navigation-item') }}
-{{ _self.navigation_item('Schiffe', 'ship', 'ships') }}
-{% if hasStationsNavigation %}
-{{ _self.navigation_item('Stationen', 'station', 'station') }}
-{% endif %}
-{{ _self.navigation_item('KommNet', 'comm', 'comm') }}
-{{ _self.navigation_item('Nachrichten', 'pm', 'msg') }}
-{{ _self.navigation_item('Forschung', 'research', 'forsch') }}
-{{ _self.navigation_item('Handel', 'trade', 'trade') }}
-{{ _self.navigation_item('Allianz', 'alliance', 'ally') }}
-{{ _self.navigation_item('Datenbank', 'database', 'data') }}
-{{ _self.navigation_item('Ereignisse', 'history', 'history') }}
-{{ _self.navigation_item('Karte', 'starmap', 'map') }}
-{% if isNpc or isAdmin %}
-{% set linkid = 'nav_item_ticks' %}
-<div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/npc'; }"
-    onmouseover="cp('{{ linkid }}','navigation/menu_ticks1', 'png')"
-    onmouseout="cp('{{ linkid }}','navigation/menu_ticks0', 'png')">
-    <a class="navitem_link" href="/npc">
-        <img class="navitem_img" src="/assets/navigation/menu_ticks0.png" id="{{ linkid }}" title="'NPC'" />
-        <div class="navitem_title">NPC</div>
-    </a>
-</div>
-{% endif %}
-{% if isAdmin %}
-{% set linkid = 'nav_item_ticks' %}
-<div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/admin'; }"
-    onmouseover="cp('{{ linkid }}','navigation/menu_ticks1', 'png')"
-    onmouseout="cp('{{ linkid }}','navigation/menu_ticks0', 'png')">
-    <a class="navitem_link" href="/admin">
-        <img class="navitem_img" src="/assets/navigation/menu_ticks0.png" id="{{ linkid }}" title="'Admin'" />
-        <div class="navitem_title">Admin</div>
-    </a>
-</div>
-{% endif %}
 {% endmacro %}
 
 {% macro adminnavigation() %}
