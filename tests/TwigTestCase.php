@@ -52,12 +52,20 @@ abstract class TwigTestCase extends StuTestCase
     public function setUp(): void
     {
         $this->initializeSchema();
+    }
 
+    #[Override]
+    public function tearDown(): void
+    {
         $dic = $this->getContainer();
-
         $dic->get(GameControllerInterface::class)->resetGameData();
         $dic->get(TwigPageInterface::class)->resetVariables();
         $dic->get(ComponentRegistrationInterface::class)->resetComponents();
+    }
+
+    public static function tearDownAfterClass(): void
+    {
+        StuMocks::get()->reset();
     }
 
     protected abstract function getViewControllerClass(): string;

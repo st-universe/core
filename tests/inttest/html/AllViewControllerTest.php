@@ -77,11 +77,6 @@ class AllViewControllerTest extends TwigTestCase
             ->registerStubbedComponent(GameComponentEnum::USER);
     }
 
-    public static function tearDownAfterClass(): void
-    {
-        StuMocks::get()->reset();
-    }
-
     #[Override]
     protected function getSnapshotId(): string
     {

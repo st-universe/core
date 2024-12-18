@@ -13,12 +13,7 @@ class StuMocks
 {
     private static ?StuMocks $INSTANCE = null;
 
-    private StuContainer $dic;
-
-    private function __construct()
-    {
-        $this->dic = Init::getContainer();
-    }
+    private function __construct() {}
 
     public static function get(): StuMocks
     {
@@ -31,14 +26,14 @@ class StuMocks
 
     public function mockService(string $id, mixed $serviceMock): StuMocks
     {
-        $this->dic->setAdditionalService($id, $serviceMock);
+        $this->getStuContainer()->setAdditionalService($id, $serviceMock);
 
         return $this;
     }
 
     public function registerStubbedComponent(ComponentEnumInterface $componentEnum): StuMocks
     {
-        $this->dic
+        $this->getStuContainer()
             ->get(ComponentLoaderInterface::class)
             ->registerStubbedComponent($componentEnum);
 
@@ -47,9 +42,14 @@ class StuMocks
 
     public function reset(): void
     {
-        $this->dic->clearAdditionalServices();
-        $this->dic
+        $this->getStuContainer()->clearAdditionalServices();
+        $this->getStuContainer()
             ->get(ComponentLoaderInterface::class)
             ->resetStubbedComponents();
+    }
+
+    private function getStuContainer(): StuContainer
+    {
+        return Init::getContainer();
     }
 }
