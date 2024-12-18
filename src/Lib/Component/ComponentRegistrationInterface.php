@@ -8,9 +8,13 @@ use Doctrine\Common\Collections\Collection;
 
 interface ComponentRegistrationInterface
 {
-    public function addComponentUpdate(ComponentEnumInterface $componentEnum, bool $isInstantUpdate = true): void;
+    public function addComponentUpdate(
+        ComponentEnumInterface $componentEnum,
+        ?EntityWithComponentsInterface $entity = null,
+        bool $isInstantUpdate = true
+    ): ComponentRegistrationInterface;
 
-    public function registerComponent(ComponentEnumInterface $componentEnum, ?object $entity = null): void;
+    public function registerComponent(ComponentEnumInterface $componentEnum, ?EntityWithComponentsInterface $entity = null): ComponentRegistrationInterface;
 
     /** @return Collection<string, RegisteredComponent> */
     public function getRegisteredComponents(): Collection;

@@ -36,17 +36,25 @@ class ComponentRegistrationTest extends StuTestCase
 
     public function testAddComponentUpdate(): void
     {
-        $this->subject->addComponentUpdate(GameComponentEnum::COLONIES, false);
-        $this->subject->addComponentUpdate(GameComponentEnum::COLONIES, true);
-        $this->subject->addComponentUpdate(GameComponentEnum::NAVIGATION, true);
+        $entity = $this->mock(EntityWithComponentsInterface::class);
+        $this->subject->addComponentUpdate(GameComponentEnum::COLONIES, $entity, false);
+        $this->subject->addComponentUpdate(GameComponentEnum::COLONIES, null, true);
+        $this->subject->addComponentUpdate(GameComponentEnum::NAVIGATION, null, true);
+
+        $entity->shouldReceive('getComponentParameters')
+            ->withNoArgs()
+            ->once()
+            ->andReturn('&id=42&foo=bar');
 
         $result = $this->subject->getComponentUpdates();
 
         $this->assertEquals(2, $result->count());
         $componentUpdateColonies = $result->get('GAME_COLONIES_NAVLET');
         $componentUpdateNavigation = $result->get('GAME_NAVIGATION');
+        $this->assertEquals('&id=42&foo=bar', $componentUpdateColonies->getComponentParameters());
         $this->assertFalse($componentUpdateColonies->isInstantUpdate());
         $this->assertEquals(GameComponentEnum::COLONIES, $componentUpdateColonies->getComponentEnum());
+        $this->assertNull($componentUpdateNavigation->getComponentParameters());
         $this->assertTrue($componentUpdateNavigation->isInstantUpdate());
         $this->assertEquals(GameComponentEnum::NAVIGATION, $componentUpdateNavigation->getComponentEnum());
     }
@@ -72,7 +80,7 @@ class ComponentRegistrationTest extends StuTestCase
 
     public function testResetComponents(): void
     {
-        $this->subject->addComponentUpdate(GameComponentEnum::COLONIES, false);
+        $this->subject->addComponentUpdate(GameComponentEnum::COLONIES, null,  false);
         $this->subject->registerComponent(GameComponentEnum::PM);
         $this->subject->resetComponents();
 

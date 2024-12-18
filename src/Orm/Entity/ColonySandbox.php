@@ -243,4 +243,14 @@ class ColonySandbox implements ColonySandboxInterface, PlanetFieldHostInterface
             ColonyMenuEnum::MENU_SOCIAL
         ]);
     }
+
+    #[Override]
+    public function getComponentParameters(): string
+    {
+        return sprintf(
+            '&hosttype=%d&id=%d',
+            $this->getHostType()->value,
+            $this->getId()
+        );
+    }
 }

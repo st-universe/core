@@ -6,6 +6,6 @@ class RegisteredComponent
 {
     public function __construct(
         public readonly ComponentEnumInterface $componentEnum,
-        public readonly ?object $entity
+        public readonly ?EntityWithComponentsInterface $entity
     ) {}
 }

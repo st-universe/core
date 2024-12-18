@@ -7,6 +7,7 @@ namespace Stu\Lib\Component;
 use Override;
 use RuntimeException;
 use Stu\Component\Game\GameEnum;
+use Stu\Component\Game\ModuleViewEnum;
 use Stu\Config\Init;
 use Stu\Lib\Component\ComponentInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -27,26 +28,24 @@ final class ComponentLoader implements ComponentLoaderInterface
     #[Override]
     public function loadComponentUpdates(GameControllerInterface $game): void
     {
-        foreach ($this->componentRegistration->getComponentUpdates() as $id => $update) {
+        foreach ($this->componentRegistration->getComponentUpdates() as $id => $componentUpdate) {
 
-            $componentEnum = $update->getComponentEnum();
-            $isInstantUpdate = $update->isInstantUpdate();
-
+            $isInstantUpdate = $componentUpdate->isInstantUpdate();
             if ($isInstantUpdate) {
                 $this->addExecuteJs(
                     $id,
-                    $componentEnum,
+                    $componentUpdate,
                     '',
                     $game
                 );
                 continue;
             }
 
-            $refreshInterval = $componentEnum->getRefreshIntervalInSeconds();
+            $refreshInterval = $componentUpdate->getComponentEnum()->getRefreshIntervalInSeconds();
             if ($refreshInterval !== null) {
                 $this->addExecuteJs(
                     $id,
-                    $componentEnum,
+                    $componentUpdate,
                     sprintf(', %d', $refreshInterval * 1000),
                     $game
                 );
@@ -54,16 +53,20 @@ final class ComponentLoader implements ComponentLoaderInterface
         }
     }
 
-    private function addExecuteJs(string $id, ComponentEnumInterface $componentEnum, string $refreshParam, GameControllerInterface $game): void
-    {
-        $moduleView = $componentEnum->getModuleView();
+    private function addExecuteJs(
+        string $id,
+        ComponentUpdate $componentUpdate,
+        string $refreshParam,
+        GameControllerInterface $game
+    ): void {
 
         $game->addExecuteJS(sprintf(
-            "updateComponent('%s', '/%s?%s=1&id=%s'%s);",
+            "updateComponent('%s', '/%s?%s=1&component=%s%s'%s);",
             $id,
-            $moduleView->getPhpPage(),
+            ModuleViewEnum::GAME->getPhpPage(),
             ShowComponent::VIEW_IDENTIFIER,
             $id,
+            $componentUpdate->getComponentParameters() ?? '',
             $refreshParam
         ), GameEnum::JS_EXECUTION_AFTER_RENDER);
     }

@@ -29,7 +29,7 @@ final class GameSetup implements GameSetupInterface
             $this->componentRegistration->registerComponent($componentEnum);
 
             if ($componentEnum->getRefreshIntervalInSeconds() !== null) {
-                $this->componentRegistration->addComponentUpdate($componentEnum, false);
+                $this->componentRegistration->addComponentUpdate($componentEnum, null, false);
             }
         }
     }

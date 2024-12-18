@@ -6,6 +6,8 @@ namespace Stu\Module\Colony\Action\RemoveBuilding;
 
 use Override;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
+use Stu\Lib\Component\ComponentRegistrationInterface;
+use Stu\Module\Colony\Component\ColonyComponentEnum;
 use Stu\Module\Colony\Lib\BuildingActionInterface;
 use Stu\Module\Colony\View\ShowInformation\ShowInformation;
 use Stu\Module\Control\ActionControllerInterface;
@@ -15,9 +17,11 @@ final class RemoveBuilding implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_REMOVE_BUILDING';
 
-    public function __construct(private PlanetFieldHostProviderInterface $planetFieldHostProvider, private BuildingActionInterface $buildingAction)
-    {
-    }
+    public function __construct(
+        private PlanetFieldHostProviderInterface $planetFieldHostProvider,
+        private BuildingActionInterface $buildingAction,
+        private ComponentRegistrationInterface $componentRegistration
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -36,6 +40,13 @@ final class RemoveBuilding implements ActionControllerInterface
         $this->buildingAction->remove($field, $game);
 
         $game->addExecuteJS('refreshHost();');
+
+        $host = $field->getHost();
+
+        $this->componentRegistration
+            ->addComponentUpdate(ColonyComponentEnum::SHIELDING, $host)
+            ->addComponentUpdate(ColonyComponentEnum::EPS_BAR, $host)
+            ->addComponentUpdate(ColonyComponentEnum::STORAGE, $host);
     }
 
     #[Override]

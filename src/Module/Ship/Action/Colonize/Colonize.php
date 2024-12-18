@@ -9,13 +9,11 @@ use Override;
 use request;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Component\Player\ColonizationCheckerInterface;
-use Stu\Lib\Component\ComponentRegistrationInterface;
 use Stu\Module\Colony\Lib\PlanetColonizationInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Game\Component\GameComponentEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
@@ -52,8 +50,7 @@ final class Colonize implements ActionControllerInterface
         private ColonizationCheckerInterface $colonizationChecker,
         private TroopTransferUtilityInterface $troopTransferUtility,
         private ColonyDepositMiningRepositoryInterface $colonyDepositMiningRepository,
-        private UserRepositoryInterface $userRepository,
-        private ComponentRegistrationInterface $componentRegistration
+        private UserRepositoryInterface $userRepository
     ) {}
 
     #[Override]
@@ -150,8 +147,6 @@ final class Colonize implements ActionControllerInterface
         $this->spacecraftRemover->remove($ship);
 
         $game->checkDatabaseItem($colony->getColonyClass()->getDatabaseId());
-
-        $this->componentRegistration->addComponentUpdate(GameComponentEnum::COLONIES);
 
         $game->redirectTo(sprintf(
             '/colony.php?%s=1&id=%d',

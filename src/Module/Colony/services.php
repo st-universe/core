@@ -117,7 +117,6 @@ use Stu\Module\Colony\View\ShowBuildPlans\ShowBuildPlansRequestInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Colony\View\ShowColony\ShowColonyRequest;
 use Stu\Module\Colony\View\ShowColony\ShowColonyRequestInterface;
-use Stu\Module\Colony\View\ShowEpsBar\ShowEpsBar;
 use Stu\Module\Colony\View\ShowField\ShowField;
 use Stu\Module\Colony\View\ShowFighterShipyard\ShowFighterShipyard;
 use Stu\Module\Colony\View\ShowFighterShipyard\ShowFighterShipyardRequest;
@@ -148,7 +147,6 @@ use Stu\Module\Colony\View\ShowOrbitShiplist\ShowOrbitShiplistRequest;
 use Stu\Module\Colony\View\ShowOrbitShiplist\ShowOrbitShiplistRequestInterface;
 use Stu\Module\Colony\View\ShowPodsLocations\ShowPodsLocations;
 use Stu\Module\Colony\View\ShowSectorScan\ShowSectorScan;
-use Stu\Module\Colony\View\ShowShields\ShowShields;
 use Stu\Module\Colony\View\ShowShipDisassembly\ShowShipDisassembly;
 use Stu\Module\Colony\View\ShowShipDisassembly\ShowShipDisassemblyRequest;
 use Stu\Module\Colony\View\ShowShipDisassembly\ShowShipDisassemblyRequestInterface;
@@ -165,7 +163,6 @@ use Stu\Module\Colony\View\ShowShuttleManagement\ShowShuttleManagement;
 use Stu\Module\Colony\View\ShowShuttleManagement\ShowShuttleManagementRequest;
 use Stu\Module\Colony\View\ShowShuttleManagement\ShowShuttleManagementRequestInterface;
 use Stu\Module\Colony\View\ShowSocial\ShowSocial;
-use Stu\Module\Colony\View\ShowStorage\ShowStorage;
 use Stu\Module\Colony\View\ShowSubspaceTelescope\ShowSubspaceTelescope;
 use Stu\Module\Colony\View\ShowSubspaceTelescopeScan\ShowSubspaceTelescopeScan;
 use Stu\Module\Colony\View\ShowSurface\ShowSurface;
@@ -284,9 +281,6 @@ return [
         ShowInformation::VIEW_IDENTIFIER => autowire(ShowInformation::class),
         ShowSurface::VIEW_IDENTIFIER => autowire(ShowSurface::class),
         ShowOrbitShiplist::VIEW_IDENTIFIER => autowire(ShowOrbitShiplist::class),
-        ShowEpsBar::VIEW_IDENTIFIER => autowire(ShowEpsBar::class),
-        ShowShields::VIEW_IDENTIFIER => autowire(ShowShields::class),
-        ShowStorage::VIEW_IDENTIFIER => autowire(ShowStorage::class),
         ShowOrbitManagement::VIEW_IDENTIFIER => autowire(ShowOrbitManagement::class),
         ShowModuleScreen::VIEW_IDENTIFIER => autowire(ShowModuleScreen::class),
         ShowModuleScreenBuildplan::VIEW_IDENTIFIER => autowire(ShowModuleScreenBuildplan::class),
