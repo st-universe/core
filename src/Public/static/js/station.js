@@ -43,7 +43,7 @@ function getShipList() {
 function showAggregationSystemWindow() {
 	closeAjaxWindow();
 	openWindow('elt', 1, 300);
-	ajax_update('elt', 'id=' + spacecraftid + '&SHOW_AGGREGATION_SYSTEM_AJAX=1');
+	ajax_update('elt', 'station.php?id=' + spacecraftid + '&SHOW_AGGREGATION_SYSTEM_AJAX=1');
 }
 
 currentTab = false;
