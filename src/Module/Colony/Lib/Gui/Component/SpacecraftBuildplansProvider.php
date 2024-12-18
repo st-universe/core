@@ -11,7 +11,7 @@ use Stu\Orm\Entity\SpacecraftBuildplanInterface;
 use Stu\Orm\Repository\BuildingFunctionRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 
-final class SpacecraftBuildplansProvider implements GuiComponentProviderInterface
+final class SpacecraftBuildplansProvider implements PlanetFieldHostComponentInterface
 {
     public function __construct(
         private BuildPlanDeleterInterface $buildPlanDeleter,
@@ -21,7 +21,7 @@ final class SpacecraftBuildplansProvider implements GuiComponentProviderInterfac
 
     #[Override]
     public function setTemplateVariables(
-        PlanetFieldHostInterface $host,
+        $entity,
         GameControllerInterface $game
     ): void {
 

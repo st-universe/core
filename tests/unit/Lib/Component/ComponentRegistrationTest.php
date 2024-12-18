@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Stu\Lib\Component;
 
 use Override;
+use Stu\Module\Colony\Component\ColonyComponentEnum;
 use Stu\Module\Game\Component\GameComponentEnum;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\StuTestCase;
 
 class ComponentRegistrationTest extends StuTestCase
@@ -51,17 +53,21 @@ class ComponentRegistrationTest extends StuTestCase
 
     public function testRegisterComponent(): void
     {
+        $entity = $this->mock(ColonyInterface::class);
+
         $this->subject->registerComponent(GameComponentEnum::PM);
-        $this->subject->registerComponent(GameComponentEnum::NAVIGATION);
+        $this->subject->registerComponent(ColonyComponentEnum::SURFACE, $entity);
         $this->subject->registerComponent(GameComponentEnum::PM);
 
         $result = $this->subject->getRegisteredComponents();
 
         $this->assertEquals(2, $result->count());
-        $this->assertEquals([
-            'GAME_PM_NAVLET' => GameComponentEnum::PM,
-            'GAME_NAVIGATION' => GameComponentEnum::NAVIGATION
-        ], $result->toArray());
+        $registered1 = $result->get('GAME_PM_NAVLET');
+        $registered2 = $result->get('COLONY_SURFACE');
+        $this->assertEquals($registered1->componentEnum, GameComponentEnum::PM);
+        $this->assertEquals($registered2->componentEnum, ColonyComponentEnum::SURFACE);
+        $this->assertNull($registered1->entity);
+        $this->assertEquals($entity, $registered2->entity);
     }
 
     public function testResetComponents(): void

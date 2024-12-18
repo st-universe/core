@@ -18,8 +18,7 @@ final class ComponentLoader implements ComponentLoaderInterface
     private array $registeredStubs = [];
 
     public function __construct(
-        private ComponentRegistrationInterface $componentRegistration,
-        private ComponentRendererInterface $componentRenderer,
+        private ComponentRegistrationInterface $componentRegistration
     ) {}
 
     /**
@@ -40,15 +39,15 @@ final class ComponentLoader implements ComponentLoaderInterface
                     '',
                     $game
                 );
+                continue;
             }
 
             $refreshInterval = $componentEnum->getRefreshIntervalInSeconds();
-
-            if (!$isInstantUpdate || $refreshInterval !== null) {
+            if ($refreshInterval !== null) {
                 $this->addExecuteJs(
                     $id,
                     $componentEnum,
-                    $refreshInterval === null ? '' : sprintf(', %d', $refreshInterval * 1000),
+                    sprintf(', %d', $refreshInterval * 1000),
                     $game
                 );
             }
@@ -72,14 +71,15 @@ final class ComponentLoader implements ComponentLoaderInterface
     #[Override]
     public function loadRegisteredComponents(GameControllerInterface $game): void
     {
-        foreach ($this->componentRegistration->getRegisteredComponents() as $id => $componentEnum) {
+        foreach ($this->componentRegistration->getRegisteredComponents() as $id => $registeredComponent) {
 
+            $componentEnum = $registeredComponent->componentEnum;
             $isStubbed = in_array($componentEnum, $this->registeredStubs);
 
             if (!$isStubbed && $componentEnum->hasTemplateVariables()) {
                 $moduleId = strtoupper($componentEnum->getModuleView()->value);
 
-                /** @var array<string, ComponentInterface> */
+                /** @var array<string, ComponentInterface|EntityComponentInterface<object>> */
                 $moduleComponents = Init::getContainer()
                     ->get(sprintf('%s_COMPONENTS', $moduleId));
 
@@ -88,7 +88,17 @@ final class ComponentLoader implements ComponentLoaderInterface
                 }
 
                 $component = $moduleComponents[$componentEnum->getValue()];
-                $this->componentRenderer->renderComponent($component, $game);
+
+                if ($component instanceof ComponentInterface) {
+                    $component->setTemplateVariables($game);
+                }
+                if ($component instanceof EntityComponentInterface) {
+                    $entity = $registeredComponent->entity;
+                    if ($entity === null) {
+                        throw new RuntimeException('this should not happen');
+                    }
+                    $component->setTemplateVariables($entity, $game);
+                }
             }
 
             $game->setTemplateVar($id, ['id' => $id, 'template' => $isStubbed ? null : $componentEnum->getTemplate()]);

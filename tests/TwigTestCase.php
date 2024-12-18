@@ -59,7 +59,6 @@ abstract class TwigTestCase extends StuTestCase
         $dic->get(GameControllerInterface::class)->resetGameData();
         $dic->get(TwigPageInterface::class)->resetVariables();
         $dic->get(ComponentRegistrationInterface::class)->resetComponents();
-        $dic->get(ComponentLoaderInterface::class)->resetStubbedComponents();
     }
 
     protected abstract function getViewControllerClass(): string;
@@ -167,11 +166,12 @@ abstract class TwigTestCase extends StuTestCase
                 'memoryPeakUsage' => '42.77Mb'
             ]);
 
-        $dic->setAdditionalService(SessionInterface::class, $sessionMock);
-        $dic->setAdditionalService(SessionStringFactoryInterface::class, $sessionStringFactoryMock);
-        $dic->setAdditionalService(StuRandom::class, $stuRandomMock);
-        $dic->setAdditionalService(StuTime::class, $stuTimeMock);
-        $dic->setAdditionalService(BenchmarkResultInterface::class, $benchmarkResultMock);
+        $dic
+            ->setAdditionalService(SessionInterface::class, $sessionMock)
+            ->setAdditionalService(SessionStringFactoryInterface::class, $sessionStringFactoryMock)
+            ->setAdditionalService(StuRandom::class, $stuRandomMock)
+            ->setAdditionalService(StuTime::class, $stuTimeMock)
+            ->setAdditionalService(BenchmarkResultInterface::class, $benchmarkResultMock);
 
         return $this;
     }

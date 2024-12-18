@@ -22,8 +22,7 @@ class EpsBarProviderTest extends StuTestCase
     /** @var MockInterface&GameControllerInterface */
     private $game;
 
-
-    private GuiComponentProviderInterface $subject;
+    private PlanetFieldHostComponentInterface $subject;
 
     #[Override]
     public function setUp(): void

@@ -12,7 +12,7 @@ use Stu\Orm\Entity\SpacecraftRumpInterface;
 use Stu\Orm\Repository\BuildingFunctionRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 
-final class ShipyardProvider implements GuiComponentProviderInterface
+final class ShipyardProvider implements PlanetFieldHostComponentInterface
 {
     public function __construct(
         private BuildingFunctionRepositoryInterface $buildingFunctionRepository,
@@ -22,7 +22,7 @@ final class ShipyardProvider implements GuiComponentProviderInterface
 
     #[Override]
     public function setTemplateVariables(
-        PlanetFieldHostInterface $host,
+        $entity,
         GameControllerInterface $game
     ): void {
 

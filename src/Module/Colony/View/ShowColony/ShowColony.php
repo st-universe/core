@@ -14,7 +14,7 @@ use Stu\Component\Game\ModuleViewEnum;
 use Stu\Lib\Colony\PlanetFieldHostTypeEnum;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\Lib\Gui\ColonyGuiHelperInterface;
-use Stu\Module\Colony\Lib\Gui\GuiComponentEnum;
+use Stu\Module\Colony\Component\ColonyComponentEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContext;
 use Stu\Module\Control\ViewContextTypeEnum;
@@ -64,10 +64,10 @@ final class ShowColony implements ViewControllerInterface, ViewWithTutorialInter
 
             $game->setTemplateVar('SELECTED_COLONY_SUB_MENU_TEMPLATE', $menu->getTemplate());
             $this->colonyGuiHelper->registerComponents($colony, $game, [
-                GuiComponentEnum::SURFACE,
-                GuiComponentEnum::SHIELDING,
-                GuiComponentEnum::EPS_BAR,
-                GuiComponentEnum::STORAGE
+                ColonyComponentEnum::SURFACE,
+                ColonyComponentEnum::SHIELDING,
+                ColonyComponentEnum::EPS_BAR,
+                ColonyComponentEnum::STORAGE
             ]);
         }
 

@@ -8,13 +8,13 @@ use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 
-final class FighterShipyardProvider implements GuiComponentProviderInterface
+final class FighterShipyardProvider implements PlanetFieldHostComponentInterface
 {
     public function __construct(private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository) {}
 
     #[Override]
     public function setTemplateVariables(
-        PlanetFieldHostInterface $host,
+        $entity,
         GameControllerInterface $game
     ): void {
 

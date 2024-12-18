@@ -13,7 +13,7 @@ final class ComponentRegistration implements ComponentRegistrationInterface
     /** @var Collection<string, ComponentUpdate> */
     private Collection $componentUpdates;
 
-    /** @var Collection<string, ComponentEnumInterface> */
+    /** @var Collection<string, RegisteredComponent> */
     private Collection $registeredComponents;
 
     public function __construct()
@@ -32,11 +32,11 @@ final class ComponentRegistration implements ComponentRegistrationInterface
     }
 
     #[Override]
-    public function registerComponent(ComponentEnumInterface $componentEnum): void
+    public function registerComponent(ComponentEnumInterface $componentEnum, ?object $entity = null): void
     {
         $id = $this->getId($componentEnum);
         if (!$this->registeredComponents->containsKey($id)) {
-            $this->registeredComponents->set($id, $componentEnum);
+            $this->registeredComponents->set($id, new RegisteredComponent($componentEnum, $entity));
         }
     }
 

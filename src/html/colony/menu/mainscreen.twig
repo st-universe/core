@@ -16,25 +16,14 @@
 </div>
 <br />
 <div style="display: inline-block">
-    <div id="colonyeps">
-        {% include 'html/colony/component/colonyEps.twig' %}
-    </div>
+    {% include 'html/component.twig' with COLONY_EPS_BAR %}
     <br />
     {% if SHIELD_STATUS_BAR %}
-    <div id="colonyshields">
-        {% include 'html/colony/component/colonyShields.twig' %}
-    </div>
-    <br />
+    {% include 'html/component.twig' with COLONY_SHIELDING %}
     {% endif %}
-    <div id="colsurface">
-        {% include 'html/colony/component/colonySurface.twig' %}
-    </div>
+    {% include 'html/component.twig' with COLONY_SURFACE %}
     <br />
-    {% if STORAGE %}
-    <div id="colonystorage">
-        {% include 'html/colony/component/colonyStorage.twig' %}
-    </div>
-    {% endif %}
+    {% include 'html/component.twig' with COLONY_STORAGE %}
 </div>
 <div id="submenu" class="colonymenu_container" onkeydown="return event.key != 'Enter';">
     {% include SELECTED_COLONY_SUB_MENU_TEMPLATE %}

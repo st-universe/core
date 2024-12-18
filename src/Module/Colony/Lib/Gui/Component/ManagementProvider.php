@@ -17,7 +17,7 @@ use Stu\Orm\Entity\ColonyDepositMiningInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
-final class ManagementProvider implements GuiComponentProviderInterface
+final class ManagementProvider implements PlanetFieldHostComponentInterface
 {
     public function __construct(
         private TorpedoTypeRepositoryInterface $torpedoTypeRepository,
@@ -31,15 +31,15 @@ final class ManagementProvider implements GuiComponentProviderInterface
 
     #[Override]
     public function setTemplateVariables(
-        PlanetFieldHostInterface $host,
+        $entity,
         GameControllerInterface $game
     ): void {
 
-        if (!$host instanceof ColonyInterface) {
+        if (!$entity instanceof ColonyInterface) {
             return;
         }
 
-        $systemDatabaseEntry = $host->getSystem()->getDatabaseEntry();
+        $systemDatabaseEntry = $entity->getSystem()->getDatabaseEntry();
         if ($systemDatabaseEntry !== null) {
             $starsystem = $this->databaseCategoryWrapperFactory->createDatabaseCategoryEntryWrapper($systemDatabaseEntry, $game->getUser());
             $game->setTemplateVar('STARSYSTEM_ENTRY_TAL', $starsystem);
@@ -47,7 +47,7 @@ final class ManagementProvider implements GuiComponentProviderInterface
 
         $firstOrbitSpacecraft = null;
 
-        $shipList = $this->orbitShipListRetriever->retrieve($host);
+        $shipList = $this->orbitShipListRetriever->retrieve($entity);
         if ($shipList !== []) {
             // if selected, return the current target
             $target = request::postInt('target');
@@ -68,7 +68,7 @@ final class ManagementProvider implements GuiComponentProviderInterface
 
         $game->setTemplateVar(
             'POPULATION_CALCULATOR',
-            $this->colonyLibFactory->createColonyPopulationCalculator($host)
+            $this->colonyLibFactory->createColonyPopulationCalculator($entity)
         );
 
         $game->setTemplateVar(
@@ -76,22 +76,22 @@ final class ManagementProvider implements GuiComponentProviderInterface
             $firstOrbitSpacecraft ? $this->spacecraftWrapperFactory->wrapSpacecraft($firstOrbitSpacecraft) : null
         );
 
-        $particlePhalanx = $this->colonyFunctionManager->hasFunction($host, BuildingFunctionEnum::BUILDING_FUNCTION_PARTICLE_PHALANX);
+        $particlePhalanx = $this->colonyFunctionManager->hasFunction($entity, BuildingFunctionEnum::BUILDING_FUNCTION_PARTICLE_PHALANX);
         $game->setTemplateVar(
             'BUILDABLE_TORPEDO_TYPES',
             $particlePhalanx ? $this->torpedoTypeRepository->getForUser($game->getUser()->getId()) : null
         );
 
-        $shieldingManager = $this->colonyLibFactory->createColonyShieldingManager($host);
+        $shieldingManager = $this->colonyLibFactory->createColonyShieldingManager($entity);
         $game->setTemplateVar('SHIELDING_MANAGER', $shieldingManager);
-        $game->setTemplateVar('DEPOSIT_MININGS', $this->getUserDepositMinings($host));
-        $game->setTemplateVar('VISUAL_PANEL', $this->colonyLibFactory->createColonyScanPanel($host));
+        $game->setTemplateVar('DEPOSIT_MININGS', $this->getUserDepositMinings($entity));
+        $game->setTemplateVar('VISUAL_PANEL', $this->colonyLibFactory->createColonyScanPanel($entity));
 
         $timestamp = $this->stuTime->time();
-        $game->setTemplateVar('COLONY_TIME_HOUR', $host->getColonyTimeHour($timestamp));
-        $game->setTemplateVar('COLONY_TIME_MINUTE', $host->getColonyTimeMinute($timestamp));
-        $game->setTemplateVar('COLONY_DAY_TIME_PREFIX', $host->getDayTimePrefix($timestamp));
-        $game->setTemplateVar('COLONY_DAY_TIME_NAME', $host->getDayTimeName($timestamp));
+        $game->setTemplateVar('COLONY_TIME_HOUR', $entity->getColonyTimeHour($timestamp));
+        $game->setTemplateVar('COLONY_TIME_MINUTE', $entity->getColonyTimeMinute($timestamp));
+        $game->setTemplateVar('COLONY_DAY_TIME_PREFIX', $entity->getDayTimePrefix($timestamp));
+        $game->setTemplateVar('COLONY_DAY_TIME_NAME', $entity->getDayTimeName($timestamp));
     }
 
     /**

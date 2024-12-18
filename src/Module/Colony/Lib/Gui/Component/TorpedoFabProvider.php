@@ -7,15 +7,13 @@ use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
-final class TorpedoFabProvider implements GuiComponentProviderInterface
+final class TorpedoFabProvider implements PlanetFieldHostComponentInterface
 {
-    public function __construct(private TorpedoTypeRepositoryInterface $torpedoTypeRepository)
-    {
-    }
+    public function __construct(private TorpedoTypeRepositoryInterface $torpedoTypeRepository) {}
 
     #[Override]
     public function setTemplateVariables(
-        PlanetFieldHostInterface $host,
+        $entity,
         GameControllerInterface $game
     ): void {
 
