@@ -7,30 +7,30 @@ function showAvailableShips(fleetid) {
 function showWebEmitterWindow() {
 	closeAjaxWindow();
 	openWindow('elt', 1, 300);
-	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_WEBEMITTER_AJAX=1');
+	ajax_update('elt', 'ship.php?id=' + spacecraftid + '&SHOW_WEBEMITTER_AJAX=1');
 }
 function showBussardCollectorWindow() {
 	closeAjaxWindow();
 	openWindow('elt', 1);
-	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_BUSSARD_COLLECTOR_AJAX=1');
+	ajax_update('elt', 'ship.php?id=' + spacecraftid + '&SHOW_BUSSARD_COLLECTOR_AJAX=1');
 }
 function showAstroEntryWindow(isSystem) {
 	closeAjaxWindow();
 	openPJsWin('elt', 1);
 	isSystemParam = isSystem ? '&isSystem=1' : '&isSystem=0';
-	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_ASTRO_ENTRY=1' + isSystemParam);
+	ajax_update('elt', 'ship.php?id=' + spacecraftid + '&SHOW_ASTRO_ENTRY=1' + isSystemParam);
 }
 
 function tradeMenuChoosePayment(postid) {
-	ajax_update('trademenucontent', 'ship.php?SHOW_TRADEMENU_CHOOSE_PAYMENT=1&id=' + shipid + "&postid=" + postid);
+	ajax_update('trademenucontent', 'ship.php?SHOW_TRADEMENU_CHOOSE_PAYMENT=1&id=' + spacecraftid + "&postid=" + postid);
 }
 function payTradeLicense(postid, method, id) {
-	ajax_update('trademenucontent', 'ship.php?B_PAY_TRADELICENSE=1&id=' + shipid + "&method=" + method + "&target=" + id + "&postid=" + postid + "&sstr=" + $('sstrajax').value);
+	ajax_update('trademenucontent', 'ship.php?B_PAY_TRADELICENSE=1&id=' + spacecraftid + "&method=" + method + "&target=" + id + "&postid=" + postid + "&sstr=" + $('sstrajax').value);
 }
 function showColonization(colonyId) {
 	closeAjaxWindow();
 	openPJsWin('elt', 1);
-	ajax_update('elt', 'ship.php?SHOW_COLONIZATION=1&id=' + shipid + '&colid=' + colonyId);
+	ajax_update('elt', 'ship.php?SHOW_COLONIZATION=1&id=' + spacecraftid + '&colid=' + colonyId);
 }
 
 function hideFleet(fleetid) {
@@ -40,7 +40,7 @@ function hideFleet(fleetid) {
 	$('hidefleet' + fleetid).hide();
 	$('showfleet' + fleetid).show();
 	$('fleetuser' + fleetid).show();
-	ajaxrequest('ship.php?B_HIDE_FLEET=1&id=' + shipid + '&fleet=' + fleetid);
+	ajaxrequest('ship.php?B_HIDE_FLEET=1&id=' + spacecraftid + '&fleet=' + fleetid);
 }
 function showFleet(fleetid) {
 	$('nbstab').select('.fleet' + fleetid).each(function (obj) {
@@ -49,7 +49,7 @@ function showFleet(fleetid) {
 	$('hidefleet' + fleetid).show();
 	$('showfleet' + fleetid).hide();
 	$('fleetuser' + fleetid).hide();
-	ajaxrequest('ship.php?B_SHOW_FLEET=1&id=' + shipid + '&fleet=' + fleetid);
+	ajaxrequest('ship.php?B_SHOW_FLEET=1&id=' + spacecraftid + '&fleet=' + fleetid);
 }
 function toggleFleet(fleetid) {
 	var x = document.getElementById('fleetbody_' + fleetid);
