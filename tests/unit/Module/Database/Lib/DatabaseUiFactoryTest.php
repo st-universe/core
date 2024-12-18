@@ -8,7 +8,7 @@ use Mockery\MockInterface;
 use Override;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\StuTestCase;
@@ -16,19 +16,15 @@ use Stu\StuTestCase;
 class DatabaseUiFactoryTest extends StuTestCase
 {
     /** @var MockInterface&CommodityRepositoryInterface */
-    private MockInterface $commodityRepository;
-
-    /** @var MockInterface&ShipRepositoryInterface */
-    private MockInterface $shipRepository;
-
+    private $commodityRepository;
+    /** @var MockInterface&SpacecraftRepositoryInterface */
+    private $spacecraftRepository;
     /** @var MockInterface&ColonyRepositoryInterface */
-    private MockInterface $colonyRepository;
-
+    private $colonyRepository;
     /** @var MockInterface&TradePostRepositoryInterface */
-    private MockInterface $tradePostRepository;
-
+    private $tradePostRepository;
     /** @var MockInterface&UserRepositoryInterface */
-    private MockInterface $userRepository;
+    private $userRepository;
 
     private DatabaseUiFactory $subject;
 
@@ -36,14 +32,14 @@ class DatabaseUiFactoryTest extends StuTestCase
     protected function setUp(): void
     {
         $this->commodityRepository = $this->mock(CommodityRepositoryInterface::class);
-        $this->shipRepository = $this->mock(ShipRepositoryInterface::class);
+        $this->spacecraftRepository = $this->mock(SpacecraftRepositoryInterface::class);
         $this->colonyRepository = $this->mock(ColonyRepositoryInterface::class);
         $this->tradePostRepository = $this->mock(TradePostRepositoryInterface::class);
         $this->userRepository = $this->mock(UserRepositoryInterface::class);
 
         $this->subject = new DatabaseUiFactory(
             $this->commodityRepository,
-            $this->shipRepository,
+            $this->spacecraftRepository,
             $this->colonyRepository,
             $this->userRepository,
             $this->tradePostRepository

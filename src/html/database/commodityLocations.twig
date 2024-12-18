@@ -27,20 +27,20 @@
     {% endfor %}
 </table>
 {% endif %}
-{% if SHIP_LOCATIONS %}
+{% if SPACECRAFT_LOCATIONS %}
 <table class="use" style="width: 500px;">
     <tr>
         <th>Anzahl</th>
-        <th>auf Schiff</th>
+        <th>auf Station/Schiff</th>
     </tr>
-    {% for storageWrapper in SHIP_LOCATIONS %}
-    {% set ship = storageWrapper.getShip %}
+    {% for storageWrapper in SPACECRAFT_LOCATIONS %}
+    {% set spacecraft = storageWrapper.getSpacecraft %}
     <tr>
         <td>{{ storageWrapper.getAmount }}</td>
         <td>
-            <a href="{{ ship.getHref }}">
-                {{ spacecraftImageWithoutWarp(ship) }}
-                {{ ship.getName|bbcode }}
+            <a href="{{ spacecraft.getHref }}">
+                {{ spacecraftImageWithoutWarp(spacecraft) }}
+                {{ spacecraft.getName|bbcode }}
             </a>
         </td>
     </tr>
@@ -54,13 +54,13 @@
         <th>geladene Torpedos</th>
     </tr>
     {% for storageWrapper in TORPEDO_LOCATIONS %}
-    {% set ship = storageWrapper.getShip %}
+    {% set spacecraft = storageWrapper.getSpacecraft %}
     <tr>
         <td>{{ storageWrapper.getAmount }}</td>
         <td>
-            <a href="{{ ship.getHref }}">
-                {{ spacecraftImageWithoutWarp(ship) }}
-                {{ ship.getName|bbcode }}
+            <a href="{{ spacecraft.getHref }}">
+                {{ spacecraftImageWithoutWarp(spacecraft) }}
+                {{ spacecraft.getName|bbcode }}
             </a>
         </td>
     </tr>
