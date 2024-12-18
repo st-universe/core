@@ -1,6 +1,6 @@
 {% from 'html/macros.twig' import onClickColony %}
 
-<div id="coloniesComponent" class="header_box header_box_col border_box">
+<div class="header_box header_box_col border_box">
     {% for item in USER_COLONIES %}
     {% set colonyClass = item.getColonyClass %}
     {% set colonyClassId = colonyClass.getId %}
