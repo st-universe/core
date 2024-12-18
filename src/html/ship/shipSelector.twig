@@ -1,4 +1,4 @@
-{% from 'html/shipmacros.twig' import shipImageWithoutWarp %}
+{% from 'html/shipmacros.twig' import spacecraftImageWithoutWarp %}
 
 {% set data = wrapper.get %}
 <li>
@@ -21,7 +21,7 @@
                 {% endif %}
             </td>
             <td style="width: 120px; vertical-align: middle;">
-                {{ shipImageWithoutWarp(data) }}
+                {{ spacecraftImageWithoutWarp(data) }}
             </td>
             <td style="width: 150px;">
                 <table class="tcal">

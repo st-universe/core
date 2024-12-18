@@ -1,4 +1,4 @@
-{% from 'html/shipmacros.twig' import shipImageWithoutWarp %}
+{% from 'html/shipmacros.twig' import spacecraftImageWithoutWarp %}
 
 {# needs following variables: host, REPAIRABLE_SHIP_LIST) #}
 <table class="tcal" style="width: 40vw;">
@@ -27,7 +27,7 @@
     <tr class="row responsive-hide">
         <td>
             <input type="hidden" name="ships[]" value="{{ ship.getId }}" />
-            {{ shipImageWithoutWarp(ship) }}
+            {{ spacecraftImageWithoutWarp(ship) }}
         </td>
         <td class="break-word">{{ ship.getName|bbcode }}</td>
         <td>{{ wrapper.getRepairDurationPreview|bbcode }}</td>
@@ -59,7 +59,7 @@
     <tr class="responsive-show">
         <td>
             <input type="hidden" name="ships[]" value="{{ ship.getId }}" />
-            {{ shipImageWithoutWarp(ship) }}
+            {{ spacecraftImageWithoutWarp(ship) }}
         </td>
         <td class="break-word" colspan="2">{{ ship.getName|bbcode }}</td>
     </tr>

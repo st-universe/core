@@ -1,4 +1,4 @@
-{% from 'html/shipmacros.twig' import shipImageWithoutWarp %}
+{% from 'html/shipmacros.twig' import spacecraftImageWithoutWarp %}
 
 <br />
 <table class="tcal">
@@ -8,7 +8,7 @@
     </tr>
     <tr>
         <td rowspan="5">
-            {{ shipImageWithoutWarp(ship) }}
+            {{ spacecraftImageWithoutWarp(ship) }}
         </td>
         <th>Standort</th>
         <td>{{ ship.getSectorString }}</td>

@@ -1,5 +1,5 @@
 {% macro control_right(wrapper, constructionProgressWrapper, possibleStations, moduleSelectors, userLayers) %}
-{% from 'html/shipmacros.twig' import shipImageWithoutWarp %}
+{% from 'html/shipmacros.twig' import spacecraftImageWithoutWarp %}
 
 {% set ship = wrapper.get %}
 {% set shipId = ship.getId %}
@@ -308,7 +308,7 @@
                 <img src="/assets/buttons/phaser1.png" name="attacktracked" />
             </a>
             {% endif %}
-            {{ shipImageWithoutWarp(targetShip) }}
+            {{ spacecraftImageWithoutWarp(targetShip) }}
         </td>
         <td>
             {{ targetShip.getSectorString }}

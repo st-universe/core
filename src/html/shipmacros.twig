@@ -28,7 +28,7 @@
 
 {% endmacro %}
 
-{% macro shipImageWithoutWarp(ship) %}
+{% macro spacecraftImageWithoutWarp(ship) %}
 {% if ship.getCloakState %}
 <img src="/assets/ships/{{ ship.getRumpId }}_cloaked.png" style="opacity:0.55;" title="{{ ship.getRumpName }}" />
 {% else %}
@@ -366,10 +366,10 @@
 <td style="{{ nbsItem.getHoldingWebBackgroundStyle }}" class="nbsshipimage">
     {% if nbsItem.isOwnedByCurrentUser %}
     <a {{ onClickSpacecraft(nbsItem) }}>
-        {{ _self.shipImageWithoutWarp(nbsItem) }}
+        {{ _self.spacecraftImageWithoutWarp(nbsItem) }}
     </a>
     {% else %}
-    {{ _self.shipImageWithoutWarp(nbsItem) }}
+    {{ _self.spacecraftImageWithoutWarp(nbsItem) }}
     {% endif %}
 </td>
 <td>

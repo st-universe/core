@@ -1,4 +1,4 @@
-{% from 'html/shipmacros.twig' import nbsblock, shipImageWithoutWarp, shipstorage %}
+{% from 'html/shipmacros.twig' import nbsblock, spacecraftImageWithoutWarp, shipstorage %}
 {% from 'html/macros.twig' import onClickSpacecraft %}
 {% from 'html/shipcontrol/control_nav.twig' import control_nav %}
 {% from 'html/shipcontrol/control_mid.twig' import control_mid %}
@@ -81,7 +81,7 @@
 			{% set epssystem = WRAPPER.getEpsSystemData %}
 			<td style="{{ SHIP.getHoldingWebBackgroundStyle }}" rowspan="2" class="shipimage">
 				<a href="javascript:void(0);" onclick="window.scrollTo(0,document.body.scrollHeight);">
-					{{ shipImageWithoutWarp(SHIP) }}
+					{{ spacecraftImageWithoutWarp(SHIP) }}
 				</a>
 			</td>
 			<td style="text-align: center;">

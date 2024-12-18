@@ -1,4 +1,4 @@
-{% from 'html/shipmacros.twig' import shipImageWithoutWarp %}
+{% from 'html/shipmacros.twig' import spacecraftImageWithoutWarp %}
 
 {% if COLONY_LOCATIONS %}
 <table class="use" style="width: 500px;">
@@ -39,7 +39,7 @@
         <td>{{ storageWrapper.getAmount }}</td>
         <td>
             <a href="{{ ship.getHref }}">
-                {{ shipImageWithoutWarp(ship) }}
+                {{ spacecraftImageWithoutWarp(ship) }}
                 {{ ship.getName|bbcode }}
             </a>
         </td>
@@ -59,7 +59,7 @@
         <td>{{ storageWrapper.getAmount }}</td>
         <td>
             <a href="{{ ship.getHref }}">
-                {{ shipImageWithoutWarp(ship) }}
+                {{ spacecraftImageWithoutWarp(ship) }}
                 {{ ship.getName|bbcode }}
             </a>
         </td>
@@ -80,7 +80,7 @@
         <td>{{ storageWrapper.getAmount }}</td>
         <td>
             <a href="trade.php?SHOW_ACCOUNTS=1">
-                {{ shipImageWithoutWarp(ship) }}
+                {{ spacecraftImageWithoutWarp(ship) }}
                 {{ ship.getName|bbcode }}
             </a>
         </td>
@@ -98,7 +98,7 @@
         <td>{{ storageWrapper.getAmount }}</td>
         <td>
             <a href="trade.php?SHOW_ACCOUNTS=1">
-                {{ shipImageWithoutWarp(ship) }}
+                {{ spacecraftImageWithoutWarp(ship) }}
                 {{ ship.getName|bbcode }}
             </a>
         </td>
