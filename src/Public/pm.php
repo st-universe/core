@@ -21,8 +21,8 @@ Init::run(function (ContainerInterface $dic): void {
 
     $dic->get(GameControllerInterface::class)->main(
         ModuleViewEnum::PM,
-        $dic->get('MESSAGE_ACTIONS'),
-        $dic->get('MESSAGE_VIEWS')
+        $dic->get('PM_ACTIONS'),
+        $dic->get('PM_VIEWS')
     );
 
     $em->commit();

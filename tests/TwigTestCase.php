@@ -126,6 +126,8 @@ abstract class TwigTestCase extends StuTestCase
         $sessionMock->shouldReceive('hasSessionValue')
             ->zeroOrMoreTimes()
             ->andReturn(false);
+        $sessionMock->shouldReceive('deleteSessionData')
+            ->zeroOrMoreTimes();
 
         $sessionStringFactoryMock = $this->mock(SessionStringFactoryInterface::class);
         $sessionStringFactoryMock->shouldReceive('createSessionString')

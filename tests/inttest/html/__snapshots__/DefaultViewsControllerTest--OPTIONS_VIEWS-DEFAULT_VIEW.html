@@ -1,0 +1,395 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body>
+<div class="box">
+    <div class="box_title" style="text-align: left">/
+                <a href="options.php">
+            Optionen
+        </a>
+                    </div>
+</div>
+<br>
+<div id="result" style="display: none;">..</div>
+
+<div class="optionsView">
+    <form action="options.php" method="post">
+        <table class="tcal">
+            <tr>
+                <th colspan="2">Siedlername</th>
+            </tr>
+            <tr>
+                <td style="width: 50%;">
+                    <input type="text" style="width: 75%;" name="uname" value="Siedler 101" class="text" maxlength="255">
+                    <input type="submit" name="B_CHANGE_NAME" value="&auml;ndern" class="button">
+                </td>
+                <td style="width: 50%;">Vorschau: Siedler 101
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">Dein Spielername ist im Spiel an allen Ecken zu finden. Beachte
+                    deshalb bei der Wahl des Namens bitte die <a href="https://wiki.change.me/index.php?title=Spielregeln" target="_blank">Regeln</a><br>
+                    Du kannst BB-Code ([b][/b], [i][/i], [color][/color]) verwenden um
+                    Deinen Namen zu designen.</td>
+            </tr>
+        </table>
+    </form>
+    <br>
+    <form action="options.php" method="post">
+        <table class="tcal">
+            <tr>
+                <th colspan="2">Passwort</th>
+            </tr>
+            <tr>
+                <td style="width: 200px;">Aktuelles Passwort eingeben</td>
+                <td>
+<input type="password" style="width: 150px;" name="oldpass" class="text">
+                </td>
+            </tr>
+            <tr>
+                <td>Neues Passwort eingeben</td>
+                <td>
+<input type="password" style="width: 150px;" name="pass" class="text">
+                </td>
+            </tr>
+            <tr>
+                <td>Neues Passwort wiederholen</td>
+                <td>
+<input type="password" style="width: 150px;" name="pass2" class="text">
+                    <input type="submit" name="B_CHANGE_PASSWORD" value="&auml;ndern" class="button">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">Das Passwort muss aus mindestens 6 Zeichen bestehen. Bitte gib
+                    Dein Passwort niemals an andere Personen weiter.</td>
+            </tr>
+        </table>
+    </form>
+    <br>
+    <form action="options.php" method="post">
+        <table class="tcal">
+            <tr>
+                <th>E-Mailadresse</th>
+            </tr>
+            <tr>
+                <td>
+<input type="text" style="width: 250px;" name="email" class="text" value="npc@stuniverse.de"> <input type="submit" name="B_CHANGE_EMAIL" value="&auml;ndern" class="button">
+</td>
+            </tr>
+            <tr>
+                <td>Beachte bitte, dass diese Adresse g&uuml;ltig ist und benutze keine Wegwerf
+                    E-Mailadressen. Nachrichten und L&ouml;schbest&auml;tigungen k&ouml;nnen Dir sonst
+                    unter Umst&auml;nden nicht zugestellt werden.</td>
+            </tr>
+        </table>
+    </form>
+    <br>
+    <form action="options.php" method="post" enctype="multipart/form-data">
+        <table class="tcal">
+            <tr>
+                <th colspan="2">Avatar</th>
+            </tr>
+            <tr>
+                <td rowspan="3" style="vertical-align: top; width: 160px;">
+                    <div class="userAvatar">
+    <a href="/userprofile.php?uid=101">
+                <img src="/assets/rassen//1kn.png" title="Siedler 101">
+            </a>
+</div>
+
+                </td>
+                <td>
+<input type="file" class="button" name="avatar"> <input type="submit" name="B_CHANGE_AVATAR" value="Hochladen" class="button">
+</td>
+            </tr>
+            <tr>
+                <td style="height: 125px; vertical-align: top;">Hier kannst Du einen Avatar
+                    hochladen der in Deinem Profil angezeigt wird. Dieses Bild sollte
+                    150x150 Pixel gro&szlig; sein und im PNG-Format vorliegen.</td>
+            </tr>
+        </table>
+    </form>
+    <br>
+    <form action="options.php" method="post">
+        <table class="tcal">
+            <tr>
+                <th>Territorialfarbe</th>
+            </tr>
+            <tr>
+                <td>
+<input type="text" style="width: 250px;" name="rgb_code" class="text" value=""> <input type="submit" name="B_CHANGE_USER_RGB" value="&auml;ndern" class="button">
+</td>
+            </tr>
+            <tr>
+                <td>Dieser RGB-Farbcode kennzeichnet Kartenfelder, die dem Spieler zugeordnet
+                    werden k&ouml;nnen. Beispiel: #9ab5ef</td>
+            </tr>
+        </table>
+    </form>
+    <br>
+    <form action="options.php" method="post">
+        <table class="tcal">
+            <tr>
+                <th>Siedlerbeschreibung</th>
+            </tr>
+            <tr>
+                <td><textarea name="description" style="width: 100%; height: 200px;">
+                                                
+                                            </textarea></td>
+            </tr>
+            <tr>
+                <td><input type="submit" value="&auml;ndern" name="B_CHANGE_DESCRIPTION" class="button"></td>
+            </tr>
+        </table>
+    </form>
+    <br>
+    <form action="options.php" method="post">
+        <table class="tcal">
+            <th colspan="2">Accounteinstellungen</th>
+            <tr>
+                <td>
+                                        <input type="checkbox" name="email_notification" value="1">
+                                    </td>
+                <td>
+                    Emailbenachrichtigung bei privaten Nachrichten
+                </td>
+            </tr>
+            <tr>
+                <td>
+                                        <input type="checkbox" name="save_login" value="1">
+                                    </td>
+                <td>
+                    Login nicht speichern (Ideal an fremden Computern)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                                        <input type="checkbox" name="storage_notification" value="1">
+                                    </td>
+                <td>
+                    Nachricht bei vollen Lagern zum Tick
+                </td>
+            </tr>
+            <tr>
+                <td>
+                                        <input type="checkbox" name="show_online_status" value="1">
+                                    </td>
+                <td>
+                    Online Status &ouml;ffentlich
+                </td>
+            </tr>
+            <tr>
+                <td>
+                                        <input type="checkbox" name="show_pm_read_receipt" value="1">
+                                    </td>
+                <td>
+                    Lesebest&auml;tigungen bei PMs anzeigen (nur wenn sowohl Sender als auch
+                    Empf&auml;nger den Haken gesetzt haben)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                                        <input type="checkbox" name="fleet_fixed_default" value="1">
+                                    </td>
+                <td>
+                    Flotten standardm&auml;&szlig;ig fixieren, sodass keine Schiffe beim Flug verloren
+                    gehen k&ouml;nnen.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                                        <input type="checkbox" name="warpsplit_auto_carryover_default" value="1">
+                                    </td>
+                <td>
+                    F&uuml;hrt dazu, dass &uuml;bersch&uuml;ssige Reaktorleistung bei Schiffen automatisch an die &uuml;brigen Systeme
+                    transferiert wird.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                                        <input type="checkbox" name="show_pirate_history_entrys" value="1">
+                                    </td>
+                <td>
+                    Zeigt eintr&auml;ge in der History an die durch Interaktion mit dem
+                    Piraten NPC entstanden sind.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                                        <select name="default_view">
+                        <option value="0">----------------------</option>
+                                                                        <option value="maindesk" selected>
+                            Maindesk
+                        </option>
+                                                                                                <option value="colony">
+                            Kolonien
+                        </option>
+                                                                                                <option value="ship">
+                            Schiffe
+                        </option>
+                                                                                                <option value="station">
+                            Stationen
+                        </option>
+                                                                                                <option value="comm">
+                            KommNet
+                        </option>
+                                                                                                <option value="pm">
+                            Nachrichten
+                        </option>
+                                                                                                <option value="research">
+                            Forschung
+                        </option>
+                                                                                                <option value="trade">
+                            Handel
+                        </option>
+                                                                                                <option value="alliance">
+                            Allianz
+                        </option>
+                                                                                                <option value="database">
+                            Datenbank
+                        </option>
+                                                                                                <option value="history">
+                            Ereignisse
+                        </option>
+                                                                                                <option value="starmap">
+                            Karte
+                        </option>
+                                                                                                <option value="options">
+                            Optionen
+                        </option>
+                                                                                                <option value="userprofile">
+                            Spielerprofil
+                        </option>
+                                                                    </select>
+                </td>
+                <td>
+                    Auswahl der Startseite, welche nach dem Login angezeigt werden soll.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                                        <select name="rpg_behavior">
+                                                                        <option value="0" selected>
+                            Der Spieler hat seine Rollenspieleinstellung nicht gesetzt
+                        </option>
+                                                                                                <option value="1">
+                            Der Spieler betreibt gerne Rollenspiel
+                        </option>
+                                                                                                <option value="2">
+                            Der Spieler betreibt gelegentlich Rollenspiel
+                        </option>
+                                                                                                <option value="3">
+                            Der Spieler betreibt ungern Rollenspiel
+                        </option>
+                                                                    </select>
+                </td>
+                <td>
+                    Information f&uuml;r andere Spieler ob man selbst gern Rollenspiel betreibt.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <select name="css_color_sheet">
+                                                                                                <option value="schwarz" selected>
+                            Schwarz
+                        </option>
+                                                                                                                        <option value="lila">
+                            Lila
+                        </option>
+                                                                                                                        <option value="gr&uuml;n">
+                            Gr&uuml;n
+                        </option>
+                                                                                                                        <option value="gelb">
+                            Gelb
+                        </option>
+                                                                                                                        <option value="rot">
+                            Rot
+                        </option>
+                                                                                                                        <option value="lcars">
+                            LCARS
+                        </option>
+                                                                                                                        <option value="orange">
+                            Orange
+                        </option>
+                                                                    </select>
+                </td>
+                <td>
+                    Auswahl der Interface-Farben.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" class="button" value="Tutorial Neustart" name="B_CREATE_TUTORIALS">
+                </td>
+                <td>
+                    Setzt alle Tutorials zur&uuml;ck, sodass diese erneut durchlaufen werden
+                    k&ouml;nnen.
+                    </td>
+</tr>
+                    <tr>
+                <td>
+<input type="submit" class="button" value="Tutorials beenden" name="B_DELETE_TUTORIALS">
+                </td>
+                <td>Beendet alle Tutorials sofort.</td>
+                </tr>
+            <tr>
+                <td colspan="4">
+                    <input type="submit" class="button" value="Einstellungen &auml;ndern" name="B_CHANGE_SETTINGS">
+                </td>
+            </tr>
+
+        </table>
+    </form>
+    <br>
+    <form action="options.php" method="post">
+        <input type="hidden" name="B_ACTIVATE_VACATION" value="1">
+        <table class="tcal">
+            <th colspan="4">Urlaubsmodus</th>
+            <tr>
+                <td>Der Urlaubsmodus friert den Account ein. Andere Spieler k&ouml;nnen nicht mehr
+                    mit Schiffen oder Kolonien von dir interagieren.</td>
+            </tr>
+            <tr>
+                <td>Die Aktivierung findet erst nach 48 Stunden ohne Login statt!</td>
+            </tr>
+            <tr>
+                <td>Die Aktivierung h&auml;ngt &uuml;berall eine Info an den Usernamen an.</td>
+            </tr>
+            <tr>
+                <td>Diese Aktion ist danach f&uuml;r eine Woche nicht ausf&uuml;hrbar.</td>
+            </tr>
+            <tr>
+                <td>Der Klick auf den Button f&uuml;hrt den Logout durch.</td>
+            </tr>
+            <tr>
+                <td>Ein erneuter Login deaktiviert den Urlaubsmodus wieder.</td>
+            </tr>
+            <tr>
+                <td style="width: 100px;">
+<input type="submit" class="button" value="Urlaubsmodus aktivieren">
+                </td>
+            </tr>
+        </table>
+    </form>
+    <br>
+    <form action="options.php" method="post">
+        <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
+        <input type="hidden" name="B_DELETE_ACCOUNT" value="1">
+        <table class="tcal">
+            <tr>
+                <td style="width: 100px;"><input type="submit" class="button" value="Accountl&ouml;schung"></td>
+                <td>Um eine L&ouml;schung durchzuf&uuml;hren muss diese best&auml;tigt werden. Dies geschieht
+                    via eines Links in einer Email</td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div class="footer">
+    Rendered in 4.203s - Memory usage: 42.77Mb
+</div>
+
+</body>
+</html>

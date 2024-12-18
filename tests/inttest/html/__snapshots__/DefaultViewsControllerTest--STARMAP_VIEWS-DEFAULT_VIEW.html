@@ -1,0 +1,42 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body>
+<div class="box">
+    <div class="box_title" style="text-align: left">/
+                <a href="starmap.php">
+            Karte
+        </a>
+                    </div>
+</div>
+<br>
+<div id="result" style="display: none;">..</div>
+<div>
+	<select onchange="window.location.href='?layerid=' + this.value">
+						<option value="2" selected>
+			Tullamore Trench</option>
+					</select>
+</div>
+<br>
+<table class="tcal">
+	<tr>
+		<th>x|y</th>
+						<th>20</th>
+			</tr>
+		<tr>
+				<th style="width: 30px;">20</th>
+				<td>
+			<a href="javascript:void(0);" onclick="switchInnerContent('SHOW_SECTION', 'Sektion anzeigen', 'section=1&amp;layerid=2');">
+				Sektor 1</a>
+		</td>
+			</tr>
+	</table>
+<div class="footer">
+    Rendered in 4.203s - Memory usage: 42.77Mb
+</div>
+
+</body>
+</html>

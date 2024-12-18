@@ -96,7 +96,7 @@ return [
     MovePmRequestInterface::class => autowire(MovePmRequest::class),
     WritePmRequestInterface::class => autowire(WritePmRequest::class),
     EditContactCommentRequestInterface::class => autowire(EditContactCommentRequest::class),
-    'MESSAGE_ACTIONS' => [
+    'PM_ACTIONS' => [
         SwitchContactMode::ACTION_IDENTIFIER => autowire(SwitchContactMode::class),
         AddContact::ACTION_IDENTIFIER => autowire(AddContact::class),
         DeleteContacts::ACTION_IDENTIFIER => autowire(DeleteContacts::class),
@@ -114,7 +114,7 @@ return [
         WritePm::ACTION_IDENTIFIER => autowire(WritePm::class),
         EditContactComment::ACTION_IDENTIFIER => autowire(EditContactComment::class),
     ],
-    'MESSAGE_VIEWS' => [
+    'PM_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
         ShowWriteQuickPm::VIEW_IDENTIFIER => autowire(ShowWriteQuickPm::class),
         ShowWritePm::VIEW_IDENTIFIER => autowire(ShowWritePm::class),

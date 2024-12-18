@@ -1,0 +1,344 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body>
+<div class="box">
+    <div class="box_title" style="text-align: left">/
+                <a href="ship.php">
+            Schiffe
+        </a>
+                    </div>
+</div>
+<br>
+<div id="result" style="display: none;">..</div>
+<div id="fleetlist">
+
+<form action="ship.php" method="post" id="shiplist_fleet_form_77">
+    <input type="hidden" name="fleetid" value="77">
+    <table class="tcal">
+        <tr>
+            <td colspan="11">
+                <table style="width: 100%;">
+                    <tr>
+                        <td style="width: 35%;">
+                            <div style="display: table-cell;">
+                                <a href="javascript:void(0);" onclick="toggleFleet(77);" title="zuklappen/aufklappen">
+                                    <img src="/assets/buttons/fleet.png">
+                                </a>
+                            </div>
+                            <div style="display: table-cell; vertical-align:middle;">
+                                <strong><span style="color: #760505">The FLEET</span></strong>
+                                <span>
+                                    (11/100 Crew)
+                                </span>
+                            </div>
+                        </td>
+                        <td style="width: 25%;">
+                                                                                </td>
+                        <td style="width: 20%;">
+                            <input type="text" name="fleetname" style="width: 150px;" value="[b][color=#760505]The FLEET[/color][/b]">
+                            <button type="submit" name="B_FLEET_CHANGE_NAME" value="Name &auml;ndern" title="Name &auml;ndern">
+                                <img src="/assets/buttons/knedit2.png" alt="Name &auml;ndern">
+                            </button>
+                        </td>
+                        <td style="width: 20%; text-align: right;">
+                            <a href="javascript:void(0);" onclick="showAvailableShips(77);" title="Schiff hinzuf&uuml;gen"><img src="/assets/buttons/fl_join2.png" alt="Schiff hinzuf&uuml;gen"></a>
+                            <a href="?B_FLEET_UP=1&amp;id=77">
+                                <img src="/assets/buttons/bt_up1.png" title="Flotte nach oben schieben">
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <table style="" class="tcal" id="fleetbody_77">
+        <tr>
+    <th style="width: 140px;">Klasse</th>
+    <th>Name</th>
+    <th style="width: 30px;"></th>
+    <th style="width: 70px;" title="im System (au&szlig;erhalb)">x|y <img src="/assets/buttons/info2.png" style="height:16px;">
+</th>
+    <th style="width: 100px;" title="aktuell/maximal">H&uuml;lle <img src="/assets/buttons/info2.png" style="height:16px;">
+    </th>
+    <th style="width: 160px;" title="aktuell/maximal (Regeneration [alle 15min])">Schilde <img src="/assets/buttons/info2.png" style="height:16px;">
+</th>
+    <th style="width: 210px;" title="EPS: aktuell/maximal, Zuwachs, (Systemverbrauch/Reaktornutzung)
+WarpDrive: aktuell/maximal, Zuwachs">
+        Energie <img src="/assets/buttons/info2.png" style="height:16px;">
+</th>
+    <th style="width: 120px;" title="Warpkern, Ersatzbatterie">Versorgung <img src="/assets/buttons/info2.png" style="height:16px;">
+</th>
+    <th style="width: 90px; text-align: center;" title="gr&uuml;n: mehr als ausreichend, rot: zu wenig">Crew <img src="/assets/buttons/info2.png" style="height:16px;">
+</th>
+    <th style="width: 125px; text-align: center;">Systeme</th>
+    <th style="width: 35px;"></th>
+</tr>
+
+                <tr>
+
+    <td id="shipimage" style="height:1px; width:1px;" class="shiplistshipimage">
+        <a href="javascript:void(0);" onclick="switchInnerContent('SHOW_SPACECRAFT', 'Aerie Zwo', 'id=77',
+'ship.php');
+updateSelectedSpacecraftId('77');" class="imgOverlayText" onmouseover="openStorageInit(this, 77);" onmouseout="closeStorage();">
+                        
+
+<img src="/assets/buttons/warp_1.png" class="indexedGraphics" style="z-index: 1;">
+<img src="assets/ships/6501.png" class="indexedGraphicsShips" style="z-index: 5;" title="Aerie" onload="adjustCellHeight(this); adjustCellWidth(this);">
+
+
+        </a>
+    </td>
+    <td id="shipname">
+        <a href="javascript:void(0);" onclick="switchInnerContent('SHOW_SPACECRAFT', 'Aerie Zwo', 'id=77',
+'ship.php');
+updateSelectedSpacecraftId('77');">
+                                                <span>Aerie Zwo</span>
+        </a>
+    </td>
+    <td id="shipalarmstate" style="text-align: center;">
+        <img src="/assets/buttons/alert1_1.png" title="Alarmstufe">
+    </td>
+            <td id="shipposition" align="center">
+        7|11<br>
+                (7|8)
+            </td>
+        <td id="shiphull">
+        <span style="">819</span>/819
+    </td>
+    <td id="shipshields">
+                <span>819/819</span>
+                (+0)
+    </td>
+    <td id="shipenergy">
+        <table>
+                        <tr>
+                <td style="background-color: transparent !important;">
+                                    </td>
+                            </tr>
+        </table>
+    </td>
+    <td id="shipreactor">
+                            </td>
+
+    <td id="shipcrew" style="text-align: center; color: red;">0</td>
+    <td id="shipsystems">
+
+                <img src="/assets/buttons/kss2.png" title="Nahbereichssensoren deaktiviert">
+                        <img src="/assets/buttons/lss2.png" title="Langstreckensensoren deaktiviert">
+                                    </td>
+    <td style="text-align: center;">
+                        <a href="?B_DELETE_FLEET=1&amp;id=77&amp;sstr=MOCKED_SESSIONSTRING" onmouseover="cp('fleet_77','buttons/fl_flag3')" onmouseout="cp('fleet_77','buttons/fl_flag2')">
+            <img src="/assets/buttons/fl_flag2.png" name="fleet_77" title="Flotte aufl&ouml;sen">
+        </a>
+                    </td>
+</tr>
+
+            </table>
+</form>
+</div>
+<br>
+
+
+<table id="shiplist_singles_table" class="tcal">
+    <tr>
+        <td colspan="11">Einzelschiffe</td>
+    </tr>
+    <tr>
+    <th style="width: 140px;">Klasse</th>
+    <th>Name</th>
+    <th style="width: 30px;"></th>
+    <th style="width: 70px;" title="im System (au&szlig;erhalb)">x|y <img src="/assets/buttons/info2.png" style="height:16px;">
+</th>
+    <th style="width: 100px;" title="aktuell/maximal">H&uuml;lle <img src="/assets/buttons/info2.png" style="height:16px;">
+    </th>
+    <th style="width: 160px;" title="aktuell/maximal (Regeneration [alle 15min])">Schilde <img src="/assets/buttons/info2.png" style="height:16px;">
+</th>
+    <th style="width: 210px;" title="EPS: aktuell/maximal, Zuwachs, (Systemverbrauch/Reaktornutzung)
+WarpDrive: aktuell/maximal, Zuwachs">
+        Energie <img src="/assets/buttons/info2.png" style="height:16px;">
+</th>
+    <th style="width: 120px;" title="Warpkern, Ersatzbatterie">Versorgung <img src="/assets/buttons/info2.png" style="height:16px;">
+</th>
+    <th style="width: 90px; text-align: center;" title="gr&uuml;n: mehr als ausreichend, rot: zu wenig">Crew <img src="/assets/buttons/info2.png" style="height:16px;">
+</th>
+    <th style="width: 125px; text-align: center;">Systeme</th>
+    <th style="width: 35px;"></th>
+</tr>
+
+        <tr>
+
+    <td id="shipimage" style="height:1px; width:1px;" class="shiplistshipimage">
+        <a href="javascript:void(0);" onclick="switchInnerContent('SHOW_SPACECRAFT', 'Aerie', 'id=42',
+'ship.php');
+updateSelectedSpacecraftId('42');" class="imgOverlayText" onmouseover="openStorageInit(this, 42);" onmouseout="closeStorage();">
+                        
+
+<img src="/assets/buttons/warp_1.png" class="indexedGraphics" style="z-index: 1;">
+<img src="assets/ships/6501.png" class="indexedGraphicsShips" style="z-index: 5;" title="Aerie" onload="adjustCellHeight(this); adjustCellWidth(this);">
+
+
+        </a>
+    </td>
+    <td id="shipname">
+        <a href="javascript:void(0);" onclick="switchInnerContent('SHOW_SPACECRAFT', 'Aerie', 'id=42',
+'ship.php');
+updateSelectedSpacecraftId('42');">
+                        <img src="/assets/buttons/dock2.png" title="Schiff ist angedockt" style="height: 20px;">
+                                                <span>Aerie</span>
+        </a>
+    </td>
+    <td id="shipalarmstate" style="text-align: center;">
+        <img src="/assets/buttons/alert1_1.png" title="Alarmstufe">
+    </td>
+            <td id="shipposition" align="center">
+        (7|8)
+    </td>
+        <td id="shiphull">
+        <span style="">819</span>/819
+    </td>
+    <td id="shipshields">
+                <span>819/819</span>
+                (+82)
+    </td>
+    <td id="shipenergy">
+        <table>
+                        <tr>
+                <td style="background-color: transparent !important;">
+                                                            107/108
+                                        <span>+1</span>
+                                        (<span class="neg">3</span>/<span class="neg">4</span>)
+                                    </td>
+                                <td style="background-color: transparent !important;">
+                                        57/58
+                    <span>0</span>
+                </td>
+                            </tr>
+        </table>
+    </td>
+    <td id="shipreactor">
+                        <div style="float: left; width: 50%">
+            <img src="/assets/buttons/warpk.png" title="Reaktorladung">
+            <span style="">810</span>
+        </div>
+                        <div style="float: left; width: 50%">
+                        <img src="/assets/buttons/batt.png" title="Ersatzbatterie">
+             36
+        </div>
+            </td>
+
+    <td id="shipcrew" style="text-align: center; ">11</td>
+    <td id="shipsystems">
+
+                <img src="/assets/buttons/kss1.png" title="Nahbereichssensoren aktiviert">
+                        <img src="/assets/buttons/lss1.png" title="Langstreckensensoren aktiviert">
+                                <img src="/assets/buttons/act_phaser2.png" title="Strahlenwaffe deaktiviert">
+                                    </td>
+    <td style="text-align: center;">
+                        <a href="?B_NEW_FLEET=1&amp;id=42" onmouseover="cp('fleet_42','buttons/fl_flag2')" onmouseout="cp('fleet_42','buttons/fl_flag1')">
+            <img src="/assets/buttons/fl_flag1.png" name="fleet_42" title="Flotte erstellen">
+        </a>
+                    </td>
+</tr>
+
+        <tr>
+
+    <td id="shipimage" style="height:1px; width:1px;" class="shiplistshipimage">
+        <a href="javascript:void(0);" onclick="switchInnerContent('SHOW_SPACECRAFT', 'Aerie Three', 'id=78',
+'ship.php');
+updateSelectedSpacecraftId('78');" class="imgOverlayText" onmouseover="openStorageInit(this, 78);" onmouseout="closeStorage();">
+                        
+
+<img src="/assets/buttons/warp_1.png" class="indexedGraphics" style="z-index: 1;">
+<img src="assets/ships/6501.png" class="indexedGraphicsShips" style="z-index: 5;" title="Aerie" onload="adjustCellHeight(this); adjustCellWidth(this);">
+
+
+        </a>
+    </td>
+    <td id="shipname">
+        <a href="javascript:void(0);" onclick="switchInnerContent('SHOW_SPACECRAFT', 'Aerie Three', 'id=78',
+'ship.php');
+updateSelectedSpacecraftId('78');">
+                                                <span>Aerie Three</span>
+        </a>
+    </td>
+    <td id="shipalarmstate" style="text-align: center;">
+        <img src="/assets/buttons/alert1_1.png" title="Alarmstufe">
+    </td>
+            <td id="shipposition" align="center">
+        7|11<br>
+                (7|8)
+            </td>
+        <td id="shiphull">
+        <span style="">819</span>/819
+    </td>
+    <td id="shipshields">
+                <span>819/819</span>
+                (+0)
+    </td>
+    <td id="shipenergy">
+        <table>
+                        <tr>
+                <td style="background-color: transparent !important;">
+                                    </td>
+                            </tr>
+        </table>
+    </td>
+    <td id="shipreactor">
+                            </td>
+
+    <td id="shipcrew" style="text-align: center; color: red;">0</td>
+    <td id="shipsystems">
+
+                <img src="/assets/buttons/kss2.png" title="Nahbereichssensoren deaktiviert">
+                        <img src="/assets/buttons/lss2.png" title="Langstreckensensoren deaktiviert">
+                                    </td>
+    <td style="text-align: center;">
+                        <a href="?B_NEW_FLEET=1&amp;id=78" onmouseover="cp('fleet_78','buttons/fl_flag2')" onmouseout="cp('fleet_78','buttons/fl_flag1')">
+            <img src="/assets/buttons/fl_flag1.png" name="fleet_78" title="Flotte erstellen">
+        </a>
+                    </td>
+</tr>
+
+    </table>
+
+
+<br>
+<table class="tcal" id="buoyes_table" style="width: 500px;">
+    <tr>
+        <td colspan="11">Bojen</td>
+    </tr>
+    <tr>
+        <th style="width: 60px;"></th>
+        <th>Botschaft</th>
+        <th style="width: 30px;"></th>
+        <th style="width: 200px;" title="im System (au&szlig;erhalb)">x|y <img src="/assets/buttons/info2.png" style="height:16px;">
+</th>
+    </tr>
+        <tr>
+        <td style="height:1px; width:1px;" class="shiplistshipimage">
+            <a class="imgOverlayText">
+                
+                                                <img src="/assets/buttons/warp_1.png" class="indexedGraphics" style="z-index: 1;">
+                <img src="assets/ships/buoy/1.png" class="indexedGraphicsShips" style="z-index: 5;" title="Boje" onload="adjustCellHeight(this); adjustCellWidth(this);">
+
+            </a>
+        </td>
+        <td>
+            Boje des Todes
+        </td>
+        <td></td>
+        <td align="center">
+            6|1
+        </td>
+    </tr>
+    </table>
+<div class="footer">
+    Rendered in 4.203s - Memory usage: 42.77Mb
+</div>
+
+</body>
+</html>

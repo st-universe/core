@@ -15,11 +15,11 @@ class StationViewControllerTest extends TwigTestCase
 {
     private const array CURRENTLY_UNSUPPORTED_KEYS = [
         'STATION_VIEWS-SHOW_AGGREGATION_SYSTEM_AJAX',   // needs corresponding system
-        'STATION_VIEWS-SHOW_SENSOR_SCAN',               // render not possible if template it not set
-        'STATION_VIEWS-SHOW_SHIP_REPAIR',               // render not possible if template it not set
+        'STATION_VIEWS-SHOW_SENSOR_SCAN',               // render not possible if template is not set
+        'STATION_VIEWS-SHOW_SHIP_REPAIR',               // render not possible if template is not set
         'STATION_VIEWS-SHOW_SHUTTLE_MANAGEMENT',        // Parameter "entity" not found
         'STATION_VIEWS-SHOW_STATION_COSTS',             // needs construction
-        'STATION_VIEWS-SHOW_SYSTEM_SENSOR_SCAN',        // render not possible if template it not set
+        'STATION_VIEWS-SHOW_SYSTEM_SENSOR_SCAN',        // render not possible if template is not set
     ];
 
     private string $snapshotKey = '';
