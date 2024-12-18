@@ -215,7 +215,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
                     WHERE s.location = :location
                     AND EXISTS (SELECT ss.id
                             FROM %s ss
-                            WHERE s = ss.ship
+                            WHERE s = ss.spacecraft
                             AND ss.system_type = %d
                             AND ss.mode > 1)
                     AND s.user != :ignoreUser',
