@@ -45,5 +45,8 @@ jobs:
           max_attempts: 3
           command: composer install --no-interaction --no-progress --ignore-platform-req=php
 
-      - name: Run test suite
-        run: composer run-script qa
+      - name: Run "STU unit" test suite
+        run: composer run-script qaStage1
+
+      - name: Run "STU integration" test suite
+        run: composer run-script qaStage2
