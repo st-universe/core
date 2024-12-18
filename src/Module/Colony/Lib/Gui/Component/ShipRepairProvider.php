@@ -36,12 +36,12 @@ final class ShipRepairProvider implements PlanetFieldHostComponentInterface
 
         if ($colonySurface->hasShipyard()) {
             $repairableShips = [];
-            foreach ($this->orbitShipListRetriever->retrieve($entity) as $fleet) {
-                /** @var ShipInterface $ship */
-                foreach ($fleet['ships'] as $ship) {
-                    if (!$ship instanceof ShipInterface) {
-                        continue;
-                    }
+            $fleets = $this->orbitShipListRetriever->retrieve($entity);
+
+            foreach ($fleets as $fleet) {
+                $ships = array_filter($fleet['ships'], fn($ship) => $ship instanceof ShipInterface);
+
+                foreach ($ships as $ship) {
                     $wrapper = $this->spacecraftWrapperFactory->wrapShip($ship);
 
                     if (

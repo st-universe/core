@@ -12,11 +12,12 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpBuildingFunctionRepositoryInterface;
 
 final class ShipRetrofitProvider implements PlanetFieldHostComponentInterface
 {
-    public function __construct(private ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository, private PlanetFieldHostProviderInterface $planetFieldHostProvider, private ColonyLibFactoryInterface $colonyLibFactory, private OrbitShipListRetrieverInterface $orbitShipListRetriever, private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory) {}
+    public function __construct(private ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository, private PlanetFieldHostProviderInterface $planetFieldHostProvider, private ColonyLibFactoryInterface $colonyLibFactory, private OrbitShipListRetrieverInterface $orbitShipListRetriever, private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory, private ShipRepositoryInterface $shipRepository) {}
 
     /** @param ColonyInterface $entity */
     #[Override]
@@ -36,10 +37,14 @@ final class ShipRetrofitProvider implements PlanetFieldHostComponentInterface
 
         if ($colonySurface->hasShipyard()) {
             $retrofitShips = [];
-            foreach ($this->orbitShipListRetriever->retrieve($entity) as $fleet) {
-                /** @var ShipInterface $ship */
-                foreach ($fleet['ships'] as $ship) {
-                    if (!$ship instanceof ShipInterface) {
+            $fleets = $this->orbitShipListRetriever->retrieve($entity);
+
+            foreach ($fleets as $fleet) {
+                $ships = array_filter($fleet['ships'], fn($ship) => $ship instanceof ShipInterface);
+
+                foreach ($ships as $ship) {
+                    $ship = $this->shipRepository->find($ship->getId());
+                    if ($ship === null) {
                         continue;
                     }
                     $wrapper = $this->spacecraftWrapperFactory->wrapShip($ship);

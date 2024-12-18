@@ -72,12 +72,9 @@ final class RepairShip implements ActionControllerInterface
         /**@var array<int, ShipWrapperInterface> */
         $repairableShiplist = [];
         foreach ($this->orbitShipListRetriever->retrieve($colony) as $fleet) {
-            /** @var ShipInterface $orbitShip */
-            foreach ($fleet['ships'] as $orbitShip) {
-                if (!$orbitShip instanceof ShipInterface) {
-                    continue;
-                }
+            $ships = array_filter($fleet['ships'], fn($ship) => $ship instanceof ShipInterface);
 
+            foreach ($ships as $orbitShip) {
                 $wrapper = $this->spacecraftWrapperFactory->wrapShip($orbitShip);
                 if (!$wrapper->canBeRepaired() || $orbitShip->isUnderRepair()) {
                     continue;
