@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:stu="stu">
-
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:stu="stu" lang="de">
 
 <head>
     <meta charset="utf-8">
@@ -17,9 +16,8 @@
     <link rel="STYLESHEET" type="text/css" href="/static/css/schwarz.css">
     <link rel="STYLESHEET" type="text/css" href="/static/css/stu.css">
     <link rel="shortcut icon" href="/assets/favicon.ico">
-
-
 </head>
+
 <body>
     <div>
         <script src="/static/js/trade.js"></script>
@@ -41,10 +39,21 @@
 			<th></th>
 			<th style="width: 20px;"></th>
 		</tr>
-				<tr>
-			<td colspan="4" style="text-align: center">Keine Notizen vorhanden</td>
+								<tr>
+			<td>
+				<a href="notes.php?SHOW_NOTE=1&amp;noteid=42">Notiztitel</a>
+			</td>
+			<td style="text-align: center;">21.07.2394 11:30</td>
+			<td style="width: 20px;">
+				<a href="notes.php?B_DELETE_NOTES=1&amp;delnotes=42&amp;sstr=MOCKED_SESSIONSTRING" onmouseover="cp('note42','buttons/x2')" onmouseout="cp('note42','buttons/x1')">
+					<img src="/assets/buttons/x1.png" name="note42">
+				</a>
+			</td>
+			<td style="text-align: center;">
+				<input type="checkbox" name="marked_notes[]" value="42" onclick="$('delnotes').value = nodelistToString(document.getElementById('note_form').elements['marked_notes[]']);">
+			</td>
 		</tr>
-				<tr>
+						<tr>
 			<td colspan="3" style="text-align: center;">
 				<input type="submit" style="cursor: pointer" id="SHOW_NEW_NOTE" name="SHOW_NEW_NOTE" value="Neue Notiz">
 			</td>

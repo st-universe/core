@@ -21,8 +21,8 @@ Init::run(function (ContainerInterface $dic): void {
 
     $dic->get(GameControllerInterface::class)->main(
         ModuleViewEnum::OPTIONS,
-        $dic->get('PLAYER_SETTING_ACTIONS'),
-        $dic->get('PLAYER_SETTING_VIEWS')
+        $dic->get('OPTIONS_ACTIONS'),
+        $dic->get('OPTIONS_VIEWS')
     );
 
     $em->commit();

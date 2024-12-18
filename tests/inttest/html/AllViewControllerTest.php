@@ -40,8 +40,8 @@ class AllViewControllerTest extends TwigTestCase
         'GAME_VIEWS-SHOW_COMPONENT',                // make separate tests for each ComponentEnum
         'GAME_VIEWS-SHOW_INNER_CONTENT',            // make separate tests for each ModuleViewEnum
         'MAINDESK_VIEWS-SHOW_COLONYLIST',           // needs uncolonized user
-        'MESSAGE_VIEWS-SHOW_CONTACT_MODESWITCH',
-        'PLAYER_PROFILE_VIEWS-SHOW_SURFACE',        // needs surface scan test data
+        'PM_VIEWS-SHOW_CONTACT_MODESWITCH',
+        'USERPROFILE_VIEWS-SHOW_SURFACE',           // needs surface scan test data
         'SHIP_VIEWS-SHOW_ASTRO_ENTRY',              // needs astro entry
         'SHIP_VIEWS-SHOW_BUSSARD_COLLECTOR_AJAX',   // needs corresponding ship system
         'SHIP_VIEWS-SHOW_COLONIZATION',             // needs colonizer ship over free colony
@@ -82,7 +82,7 @@ class AllViewControllerTest extends TwigTestCase
         return $definedImplementations
             ->map(fn(ViewControllerInterface $viewController): array => [$definedImplementations->indexOf($viewController)])
             //->filter(fn(array $array): bool => $array[0] === 'SHIP_VIEWS-SHOW_ANALYSE_BUOY')
-            ->filter(fn(array $array): bool => !str_ends_with($array[0], '-DEFAULT_VIEW') || str_starts_with($array[0], 'NPC_VIEWS') || str_starts_with($array[0], 'ADMIN_VIEWS'))
+            ->filter(fn(array $array): bool => !str_ends_with($array[0], '-DEFAULT_VIEW')) // got its own test: DefaultViewsControllerTest.php
             ->filter(fn(array $array): bool => !in_array($array[0], self::CURRENTLY_UNSUPPORTED_KEYS))
             ->filter(fn(array $array): bool => array_filter(self::CURRENTLY_UNSUPPORTED_MODULES, fn(string $unsupportedModule) => str_starts_with($array[0], $unsupportedModule)) == [])
             ->toArray();

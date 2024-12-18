@@ -17,13 +17,13 @@
       <ul>
         {% if HAS_NEW_KN_POSTINGS %}
         <li>
-          <span style="color: #cecece">&gt;</span> <a href="?view={{ CURRENT_VIEW.value }}&user_mark=1">Neue Beiträge ab
+          <span style="color: #cecece">&gt;</span> <a href="?user_mark=1">Neue Beiträge ab
             Lesezeichen:</a> {{ NEW_KN_POSTING_COUNT }}
         </li>
         {% endif %}
         <li>
-          <span style="color: #cecece">&gt;</span> <a href="?view={{ CURRENT_VIEW.value }}">Alle Beiträge</a> (<a
-            href="view={{ CURRENT_VIEW.value }}&mark={{ KN_START }}">aufsteigend</a>)
+          <span style="color: #cecece">&gt;</span> <a href="?">Alle Beiträge</a> (<a
+            href="?mark={{ KN_START }}">aufsteigend</a>)
         </li>
       </ul>
       <div class="seperator"> </div>

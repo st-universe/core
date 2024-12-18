@@ -17,12 +17,10 @@ final class PlayerSettingsProvider implements ViewComponentProviderInterface
     {
         $user = $game->getUser();
 
-
         $game->appendNavigationPart(
             'options.php',
             _('Optionen')
         );
-
 
         $filteredViews = array_filter(ModuleViewEnum::cases(), function (ModuleViewEnum $case) use ($game): bool {
 

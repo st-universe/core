@@ -1,0 +1,123 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body>
+<div class="box">
+    <div class="box_title" style="text-align: left">/
+                <a href="userprofile.php">
+            Spielerprofil
+        </a>
+                    </div>
+</div>
+<br>
+<div id="result" style="display: none;">..</div>
+
+<div style="width: 530px; float: left;">
+		<div class="userProfileView">
+		<div class="userAvatar">
+    <a href="/userprofile.php?uid=101">
+                <img src="/assets/rassen//1kn.png" title="Siedler 101">
+            </a>
+</div>
+
+			</div>
+	<div style="float: left;">
+		<div style="width: 350px;">
+			<div class="divhead">Name</div>
+			<div class="divbody">
+				<img src="assets/rassen/1s.png">
+				Siedler 101
+			</div>
+			<br>
+						<div class="divhead">Allianz</div>
+			<div class="divbody">
+				<a href="alliance.php?id=2">
+					testally
+				</a>
+			</div>
+						<br>
+			<div class="divhead">Siedler seit</div>
+			<div class="divbody">21.07.2394 11:30</div>
+		</div>
+	</div>
+
+	<br style="clear: both;">
+	<br>
+		<div style="width: 530px;">
+		<table class="tcal">
+			<tr>
+				<th>Plots</th>
+			</tr>
+						<tr>
+				<td>Keine</td>
+			</tr>
+								</table>
+	</div>
+</div>
+
+<div style="float: left;">
+	<div style="margin-left: 5px;">
+		<table class="tcal">
+			<tr>
+				<th style="width: 300px;">Freunde</th>
+			</tr>
+			<tr>
+				<td>
+										<div class="darkbg" style="text-align: center;">Keine
+					</div>
+									</td>
+			</tr>
+		</table>
+	</div>
+	<div style="margin-left: 5px; margin-top: 20px;">
+		<table class="tcal">
+			<tr>
+				<th style="width: 300px;">Awards</th>
+			</tr>
+			<tr>
+				<td>
+														</td>
+			</tr>
+		</table>
+	</div>
+	
+</div>
+
+<div id="charactersContainer" style="float: left; width: 500px; margin-left: 20px;">
+	<div class="divhead">
+		Spieler Charaktere
+				<img src="/assets/buttons/char_new1.png" alt="Neuen Charakter hinzuf&uuml;gen" id="addCharacterButton" onmouseover="this.src='/assets/buttons/char_new2.png';" onmouseout="this.src='/assets/buttons/char_new1.png';" style="cursor: pointer; float: right;" title="Neuen Charakter hinzuf&uuml;gen">
+			</div>
+		<table class="tcal" style="width: 100%; margin-top: 3px;">
+		<tr class="character-bar" data-character-id="42" style="cursor: pointer;">
+			<th>
+				John Wick
+								(ID 42)
+				<img src="/assets/buttons/char_edit1.png" alt="Charakter bearbeiten" class="edit-character-button" data-character-id="42" style="cursor: pointer; float: right;" onmouseover="this.src='/assets/buttons/char_edit2.png';" onmouseout="this.src='/assets/buttons/char_edit1.png';" title="Charakter bearbeiten">
+
+				<img src="/assets/buttons/char_del1.png" alt="Charakter l&ouml;schen" class="delete-character-button" data-character-id="42" style="cursor: pointer; float: right; margin-right: 5px;" onmouseover="this.src='/assets/buttons/char_del2.png';" onmouseout="this.src='/assets/buttons/char_del1.png';" title="Charakter l&ouml;schen">
+
+							</th>
+		</tr>
+		<tr id="character-42" class="character-content" style="display: none;" data-character-name="John Wick" data-character-description="Full time Killer">
+			<td>
+				<div style="overflow: hidden;">
+										<p class="translatable-content" style="margin: 0;">Full time Killer
+					</p>
+				</div>
+			</td>
+		</tr>
+	</table>
+	</div>
+<div class="footer">
+    Rendered in 4.203s - Memory usage: 42.77Mb
+</div>
+<script>
+            initTranslations();
+        </script>
+
+</body>
+</html>
