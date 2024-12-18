@@ -20,8 +20,10 @@
     </exclude>
   </source>
   <testsuites>
-    <testsuite name="STU">
+    <testsuite name="STU unit">
       <directory>./tests/unit</directory>
+    </testsuite>
+    <testsuite name="STU integration">
       <directory>./tests/inttest</directory>
     </testsuite>
   </testsuites>
