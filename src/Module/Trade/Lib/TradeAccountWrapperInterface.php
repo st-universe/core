@@ -9,7 +9,7 @@ interface TradeAccountWrapperInterface
 {
     public function getId(): int;
 
-    public function getShip(): StationInterface;
+    public function getStation(): StationInterface;
 
     public function getTradePostDescription(): string;
 
