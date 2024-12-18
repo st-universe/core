@@ -195,9 +195,6 @@ function performActionAndUpdateResult(action, params) {
 
 function refreshHost() {
 	ajax_update('COLONY_SURFACE', createHostUri('SHOW_SURFACE', '&buildingid=' + selectedbuilding));
-	ajax_update('COLONY_EPS_BAR', createHostUri('SHOW_EPSBAR_AJAX'));
-	ajax_update('COLONY_SHIELDING', createHostUri('SHOW_SHIELDBAR_AJAX'));
-	ajax_update('COLONY_STORAGE', createHostUri('SHOW_STORAGE_AJAX'));
 
 	//reload info submenu if selected
 	if (colonySubMenu == 2) {

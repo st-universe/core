@@ -24,7 +24,6 @@ use Spatie\Snapshots\MatchesSnapshots;
 use Stu\Config\ConfigStageEnum;
 use Stu\Config\Init;
 use Stu\Config\StuContainer;
-use Stu\Lib\Component\ComponentLoaderInterface;
 use Stu\Lib\Component\ComponentRegistrationInterface;
 use Stu\Lib\Session\SessionStringFactoryInterface;
 use Stu\Lib\SessionInterface;

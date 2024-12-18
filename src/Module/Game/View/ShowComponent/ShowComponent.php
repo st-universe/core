@@ -8,8 +8,9 @@ use Override;
 use request;
 use RuntimeException;
 use Stu\Component\Game\ModuleViewEnum;
+use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Lib\Component\ComponentRegistrationInterface;
-use Stu\Module\Colony\Lib\ColonyLoaderInterface;
+use Stu\Lib\Component\EntityWithComponentsInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -20,13 +21,13 @@ final class ShowComponent implements ViewControllerInterface
 
     public function __construct(
         private ComponentRegistrationInterface $componentRegistration,
-        private ColonyLoaderInterface $colonyLoader
+        private PlanetFieldHostProviderInterface $planetFieldHostProvider
     ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $exploded = explode('_', request::getStringFatal('id'), 2);
+        $exploded = explode('_', request::getStringFatal('component'), 2);
         $moduleView = ModuleViewEnum::from(strtolower($exploded[0]));
         $componentEnum = $moduleView->getComponentEnum($exploded[1]);
 
@@ -34,15 +35,15 @@ final class ShowComponent implements ViewControllerInterface
         $game->showMacro($componentEnum->getTemplate());
     }
 
-    private function getEntity(ModuleViewEnum $moduleView, UserInterface $user): ?object
+    private function getEntity(ModuleViewEnum $moduleView, UserInterface $user): ?EntityWithComponentsInterface
     {
-        $entityId = request::getInt('entityid');
+        $entityId = request::getInt('id');
         if (!$entityId) {
             return null;
         }
 
         return match ($moduleView) {
-            ModuleViewEnum::COLONY => $this->colonyLoader->loadWithOwnerValidation($entityId, $user->getId(), false),
+            ModuleViewEnum::COLONY => $this->planetFieldHostProvider->loadHostViaRequestParameters($user, false),
             default => throw new RuntimeException(sprintf('module view %s is not supported', $moduleView->value))
         };
     }

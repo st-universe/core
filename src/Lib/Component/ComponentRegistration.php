@@ -23,21 +23,29 @@ final class ComponentRegistration implements ComponentRegistrationInterface
     }
 
     #[Override]
-    public function addComponentUpdate(ComponentEnumInterface $componentEnum, bool $isInstantUpdate = true): void
-    {
+    public function addComponentUpdate(
+        ComponentEnumInterface $componentEnum,
+        ?EntityWithComponentsInterface $entity = null,
+        bool $isInstantUpdate = true
+    ): ComponentRegistrationInterface {
+
         $id = $this->getId($componentEnum);
         if (!$this->componentUpdates->containsKey($id)) {
-            $this->componentUpdates[$id] = new ComponentUpdate($componentEnum, $isInstantUpdate);
+            $this->componentUpdates[$id] = new ComponentUpdate($componentEnum, $entity, $isInstantUpdate);
         }
+
+        return $this;
     }
 
     #[Override]
-    public function registerComponent(ComponentEnumInterface $componentEnum, ?object $entity = null): void
+    public function registerComponent(ComponentEnumInterface $componentEnum, ?EntityWithComponentsInterface $entity = null): ComponentRegistrationInterface
     {
         $id = $this->getId($componentEnum);
         if (!$this->registeredComponents->containsKey($id)) {
             $this->registeredComponents->set($id, new RegisteredComponent($componentEnum, $entity));
         }
+
+        return $this;
     }
 
     #[Override]

@@ -794,4 +794,14 @@ class Colony implements ColonyInterface
             $this->getId()
         );
     }
+
+    #[Override]
+    public function getComponentParameters(): string
+    {
+        return sprintf(
+            '&hosttype=%d&id=%d',
+            $this->getHostType()->value,
+            $this->getId()
+        );
+    }
 }

@@ -9,6 +9,8 @@ use request;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Exception\SanityCheckException;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
+use Stu\Lib\Component\ComponentRegistrationInterface;
+use Stu\Module\Colony\Component\ColonyComponentEnum;
 use Stu\Module\Colony\View\ShowInformation\ShowInformation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -24,7 +26,15 @@ final class Terraform implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_TERRAFORM';
 
-    public function __construct(private PlanetFieldHostProviderInterface $planetFieldHostProvider, private TerraformingRepositoryInterface $terraformingRepository, private ColonyTerraformingRepositoryInterface $colonyTerraformingRepository, private PlanetFieldRepositoryInterface $planetFieldRepository, private StorageManagerInterface $storageManager, private ColonyRepositoryInterface $colonyRepository) {}
+    public function __construct(
+        private PlanetFieldHostProviderInterface $planetFieldHostProvider,
+        private TerraformingRepositoryInterface $terraformingRepository,
+        private ColonyTerraformingRepositoryInterface $colonyTerraformingRepository,
+        private PlanetFieldRepositoryInterface $planetFieldRepository,
+        private StorageManagerInterface $storageManager,
+        private ColonyRepositoryInterface $colonyRepository,
+        private ComponentRegistrationInterface $componentRegistration
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -75,6 +85,11 @@ final class Terraform implements ActionControllerInterface
         }
 
         $game->addExecuteJS('refreshHost();');
+
+        $this->componentRegistration
+            ->addComponentUpdate(ColonyComponentEnum::SHIELDING, $host)
+            ->addComponentUpdate(ColonyComponentEnum::EPS_BAR, $host)
+            ->addComponentUpdate(ColonyComponentEnum::STORAGE, $host);
 
         $this->planetFieldRepository->save($field);
     }

@@ -9,6 +9,7 @@ use Mockery\MockInterface;
 use Override;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\ModuleViewEnum;
+use Stu\Module\Colony\Component\ColonyComponentEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Game\Component\GameComponentEnum;
 use Stu\Orm\Entity\ColonyInterface;
@@ -48,11 +49,11 @@ class ComponentLoaderTest extends StuTestCase
         $this->componentRegistration->shouldReceive('getComponentUpdates')
             ->withNoArgs()
             ->once()
-            ->andReturn(new ArrayCollection(['ID' => new ComponentUpdate(GameComponentEnum::USER, true)]));
+            ->andReturn(new ArrayCollection(['ID' => new ComponentUpdate(GameComponentEnum::USER, null, true)]));
 
         $this->game->shouldReceive('addExecuteJS')
             ->with(
-                "updateComponent('ID', '/game.php?SHOW_COMPONENT=1&id=ID');",
+                "updateComponent('ID', '/game.php?SHOW_COMPONENT=1&component=ID');",
                 GameEnum::JS_EXECUTION_AFTER_RENDER
             )
             ->once();
@@ -65,7 +66,7 @@ class ComponentLoaderTest extends StuTestCase
         $this->componentRegistration->shouldReceive('getComponentUpdates')
             ->withNoArgs()
             ->once()
-            ->andReturn(new ArrayCollection(['ID' => new ComponentUpdate(GameComponentEnum::USER, false)]));
+            ->andReturn(new ArrayCollection(['ID' => new ComponentUpdate(GameComponentEnum::USER, null,  false)]));
 
         $this->subject->loadComponentUpdates($this->game);
     }
@@ -75,11 +76,11 @@ class ComponentLoaderTest extends StuTestCase
         $this->componentRegistration->shouldReceive('getComponentUpdates')
             ->withNoArgs()
             ->once()
-            ->andReturn(new ArrayCollection(['ID' => new ComponentUpdate(GameComponentEnum::PM, false)]));
+            ->andReturn(new ArrayCollection(['ID' => new ComponentUpdate(GameComponentEnum::PM, null, false)]));
 
         $this->game->shouldReceive('addExecuteJS')
             ->with(
-                "updateComponent('ID', '/game.php?SHOW_COMPONENT=1&id=ID', 60000);",
+                "updateComponent('ID', '/game.php?SHOW_COMPONENT=1&component=ID', 60000);",
                 GameEnum::JS_EXECUTION_AFTER_RENDER
             )
             ->once();
@@ -92,11 +93,35 @@ class ComponentLoaderTest extends StuTestCase
         $this->componentRegistration->shouldReceive('getComponentUpdates')
             ->withNoArgs()
             ->once()
-            ->andReturn(new ArrayCollection(['ID' => new ComponentUpdate(GameComponentEnum::PM, true)]));
+            ->andReturn(new ArrayCollection(['ID' => new ComponentUpdate(GameComponentEnum::PM, null,  true)]));
 
         $this->game->shouldReceive('addExecuteJS')
             ->with(
-                "updateComponent('ID', '/game.php?SHOW_COMPONENT=1&id=ID');",
+                "updateComponent('ID', '/game.php?SHOW_COMPONENT=1&component=ID');",
+                GameEnum::JS_EXECUTION_AFTER_RENDER
+            )
+            ->once();
+
+        $this->subject->loadComponentUpdates($this->game);
+    }
+
+    public function testLoadComponentUpdatesWithParameters(): void
+    {
+        $entity = $this->mock(EntityWithComponentsInterface::class);
+
+        $this->componentRegistration->shouldReceive('getComponentUpdates')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(new ArrayCollection(['ID' => new ComponentUpdate(ColonyComponentEnum::SHIELDING, $entity,  true)]));
+
+        $entity->shouldReceive('getComponentParameters')
+            ->withNoArgs()
+            ->once()
+            ->andReturn('&hosttype=1&id=42');
+
+        $this->game->shouldReceive('addExecuteJS')
+            ->with(
+                "updateComponent('ID', '/game.php?SHOW_COMPONENT=1&component=ID&hosttype=1&id=42');",
                 GameEnum::JS_EXECUTION_AFTER_RENDER
             )
             ->once();
