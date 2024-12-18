@@ -90,16 +90,16 @@ final class StorageRepository extends EntityRepository implements StorageReposit
     }
 
     #[Override]
-    public function getShipStorageByUserAndCommodity(UserInterface $user, int $commodityId): array
+    public function getSpacecraftStorageByUserAndCommodity(UserInterface $user, int $commodityId): array
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('commodity_id', 'commodity_id', 'integer');
-        $rsm->addScalarResult('ships_id', 'ships_id', 'integer');
+        $rsm->addScalarResult('spacecraft_id', 'spacecraft_id', 'integer');
         $rsm->addScalarResult('amount', 'amount', 'integer');
 
         return $this->getEntityManager()
             ->createNativeQuery(
-                'SELECT s.commodity_id AS commodity_id, s.spacecraft_id AS ships_id, s.count AS amount
+                'SELECT s.commodity_id AS commodity_id, s.spacecraft_id AS spacecraft_id, s.count AS amount
                 FROM stu_storage s
                 LEFT JOIN stu_commodity g ON g.id = s.commodity_id
                 WHERE s.user_id = :userId

@@ -35,14 +35,14 @@ final class ShowCommoditiesLocations implements ViewControllerInterface
         $game->setMacroInAjaxWindow('html/database/commodityLocations.twig');
 
         $game->setTemplateVar(
-            'SHIP_LOCATIONS',
+            'SPACECRAFT_LOCATIONS',
             array_map(
                 fn(array $data): StorageWrapper => $this->databaseUiFactory->createStorageWrapper(
                     $data['commodity_id'],
                     $data['amount'],
-                    $data['ships_id']
+                    $data['spacecraft_id']
                 ),
-                $this->storageRepository->getShipStorageByUserAndCommodity($user, $commodityId)
+                $this->storageRepository->getSpacecraftStorageByUserAndCommodity($user, $commodityId)
             )
         );
         $game->setTemplateVar(

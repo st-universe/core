@@ -32,9 +32,9 @@ interface StorageRepositoryInterface extends ObjectRepository
     public function getColonyStorageByUserAndCommodity(UserInterface $user, int $commodityId): array;
 
     /**
-     * @return list<array{commodity_id: int, ships_id: int, amount: int}>
+     * @return list<array{commodity_id: int, spacecraft_id: int, amount: int}>
      */
-    public function getShipStorageByUserAndCommodity(UserInterface $user, int $commodityId): array;
+    public function getSpacecraftStorageByUserAndCommodity(UserInterface $user, int $commodityId): array;
 
     /**
      * @return list<StorageInterface>
