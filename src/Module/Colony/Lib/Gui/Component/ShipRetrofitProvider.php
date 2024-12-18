@@ -39,6 +39,9 @@ final class ShipRetrofitProvider implements PlanetFieldHostComponentInterface
             foreach ($this->orbitShipListRetriever->retrieve($entity) as $fleet) {
                 /** @var ShipInterface $ship */
                 foreach ($fleet['ships'] as $ship) {
+                    if (!$ship instanceof ShipInterface) {
+                        continue;
+                    }
                     $wrapper = $this->spacecraftWrapperFactory->wrapShip($ship);
 
                     if (
