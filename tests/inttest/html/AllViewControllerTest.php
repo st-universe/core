@@ -91,12 +91,12 @@ class AllViewControllerTest extends TwigTestCase
     #[DataProvider('getAllViewControllerDataProvider')]
     public function testHandle(string $key): void
     {
-        StuMocks::registerStubbedComponent(GameComponentEnum::COLONIES);
-        StuMocks::registerStubbedComponent(GameComponentEnum::NAVIGATION);
-        StuMocks::registerStubbedComponent(GameComponentEnum::PM);
-        StuMocks::registerStubbedComponent(GameComponentEnum::RESEARCH);
-        StuMocks::registerStubbedComponent(GameComponentEnum::SERVERTIME_AND_VERSION);
-        StuMocks::registerStubbedComponent(GameComponentEnum::USER);
+        StuMocks::get()->registerStubbedComponent(GameComponentEnum::COLONIES)
+            ->registerStubbedComponent(GameComponentEnum::NAVIGATION)
+            ->registerStubbedComponent(GameComponentEnum::PM)
+            ->registerStubbedComponent(GameComponentEnum::RESEARCH)
+            ->registerStubbedComponent(GameComponentEnum::SERVERTIME_AND_VERSION)
+            ->registerStubbedComponent(GameComponentEnum::USER);
 
         $this->snapshotKey = $key;
 

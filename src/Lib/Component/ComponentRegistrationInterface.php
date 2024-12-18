@@ -10,9 +10,9 @@ interface ComponentRegistrationInterface
 {
     public function addComponentUpdate(ComponentEnumInterface $componentEnum, bool $isInstantUpdate = true): void;
 
-    public function registerComponent(ComponentEnumInterface $componentEnum): void;
+    public function registerComponent(ComponentEnumInterface $componentEnum, ?object $entity = null): void;
 
-    /** @return Collection<string, ComponentEnumInterface> */
+    /** @return Collection<string, RegisteredComponent> */
     public function getRegisteredComponents(): Collection;
 
     /** @return Collection<string, ComponentUpdate> */

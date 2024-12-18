@@ -4,23 +4,22 @@ namespace Stu\Module\Colony\Lib\Gui\Component;
 
 use Override;
 use Stu\Component\Building\BuildingFunctionEnum;
-use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 
-final class AirfieldProvider implements GuiComponentProviderInterface
+final class AirfieldProvider implements PlanetFieldHostComponentInterface
 {
     public function __construct(private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository) {}
 
     #[Override]
     public function setTemplateVariables(
-        PlanetFieldHostInterface $host,
+        $entity,
         GameControllerInterface $game
     ): void {
 
         $game->setTemplateVar(
             'STARTABLE_SHIPS',
-            $this->spacecraftRumpRepository->getStartableByColony($host->getId())
+            $this->spacecraftRumpRepository->getStartableByColony($entity->getId())
         );
         $game->setTemplateVar(
             'BUILDABLE_SHIPS',

@@ -13,7 +13,7 @@ use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRumpBuildingFunctionRepositoryInterface;
 
-final class ShipDisassemblyProvider implements GuiComponentProviderInterface
+final class ShipDisassemblyProvider implements PlanetFieldHostComponentInterface
 {
     public function __construct(
         private ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository,
@@ -22,10 +22,10 @@ final class ShipDisassemblyProvider implements GuiComponentProviderInterface
         private OrbitShipListRetrieverInterface $orbitShipListRetriever
     ) {}
 
-    /** @param ColonyInterface $host */
+    /** @param ColonyInterface $entity */
     #[Override]
     public function setTemplateVariables(
-        PlanetFieldHostInterface $host,
+        $entity,
         GameControllerInterface $game
     ): void {
         $field = $this->planetFieldHostProvider->loadFieldViaRequestParameter($game->getUser(), false);
@@ -36,11 +36,11 @@ final class ShipDisassemblyProvider implements GuiComponentProviderInterface
         }
 
         $fieldFunctions = $building->getFunctions()->toArray();
-        $colonySurface = $this->colonyLibFactory->createColonySurface($host);
+        $colonySurface = $this->colonyLibFactory->createColonySurface($entity);
 
         if ($colonySurface->hasShipyard()) {
             $repairableShips = [];
-            foreach ($this->orbitShipListRetriever->retrieve($host) as $fleet) {
+            foreach ($this->orbitShipListRetriever->retrieve($entity) as $fleet) {
                 /** @var ShipInterface $ship */
                 foreach ($fleet['ships'] as $ship) {
                     if ($ship->getUser() !== $game->getUser()) {

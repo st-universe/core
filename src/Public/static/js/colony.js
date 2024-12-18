@@ -81,7 +81,7 @@ function openBuildingInfo(buildingId) {
 	elt = 'buildinginfo';
 	openPJsWin(elt);
 	ajax_update(elt, createHostUri('SHOW_BUILDING', '&buildingid=' + buildingId));
-	ajax_update('colsurface', createHostUri('SHOW_SURFACE', '&buildingid=' + buildingId));
+	ajax_update('COLONY_SURFACE', createHostUri('SHOW_SURFACE', '&buildingid=' + buildingId));
 	buildmode = 1;
 	selectedbuilding = buildingId;
 
@@ -91,7 +91,7 @@ function openBuildingInfo(buildingId) {
 }
 
 function closeBuildingInfo() {
-	ajax_update('colsurface', createHostUri('SHOW_SURFACE'));
+	ajax_update('COLONY_SURFACE', createHostUri('SHOW_SURFACE'));
 	buildmode = 0;
 	selectedbuilding = 0;
 }
@@ -194,10 +194,10 @@ function performActionAndUpdateResult(action, params) {
 }
 
 function refreshHost() {
-	ajax_update('colsurface', createHostUri('SHOW_SURFACE', '&buildingid=' + selectedbuilding));
-	ajax_update('colonyeps', createHostUri('SHOW_EPSBAR_AJAX'));
-	ajax_update('colonyshields', createHostUri('SHOW_SHIELDBAR_AJAX'));
-	ajax_update('colonystorage', createHostUri('SHOW_STORAGE_AJAX'));
+	ajax_update('COLONY_SURFACE', createHostUri('SHOW_SURFACE', '&buildingid=' + selectedbuilding));
+	ajax_update('COLONY_EPS_BAR', createHostUri('SHOW_EPSBAR_AJAX'));
+	ajax_update('COLONY_SHIELDING', createHostUri('SHOW_SHIELDBAR_AJAX'));
+	ajax_update('COLONY_STORAGE', createHostUri('SHOW_STORAGE_AJAX'));
 
 	//reload info submenu if selected
 	if (colonySubMenu == 2) {

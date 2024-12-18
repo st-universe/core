@@ -11,26 +11,24 @@ use Stu\Module\Template\StatusBarColorEnum;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
-final class ShieldingProvider implements GuiComponentProviderInterface
+final class ShieldingProvider implements PlanetFieldHostComponentInterface
 {
-    public function __construct(private ColonyLibFactoryInterface $colonyLibFactory, private PlanetFieldRepositoryInterface $planetFieldRepository)
-    {
-    }
+    public function __construct(private ColonyLibFactoryInterface $colonyLibFactory, private PlanetFieldRepositoryInterface $planetFieldRepository) {}
 
     #[Override]
     public function setTemplateVariables(
-        PlanetFieldHostInterface $host,
+        $entity,
         GameControllerInterface $game
     ): void {
-        $shieldingManager = $this->colonyLibFactory->createColonyShieldingManager($host);
+        $shieldingManager = $this->colonyLibFactory->createColonyShieldingManager($entity);
 
         if ($shieldingManager->hasShielding()) {
             $game->setTemplateVar(
                 'SHIELD_STATUS_BAR',
-                $this->buildShieldBar($shieldingManager, $host)
+                $this->buildShieldBar($shieldingManager, $entity)
             );
 
-            $game->setTemplateVar('SHIELD_BAR_TITLE_STRING', $this->getShieldBarTitleString($host));
+            $game->setTemplateVar('SHIELD_BAR_TITLE_STRING', $this->getShieldBarTitleString($entity));
         }
     }
 

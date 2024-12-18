@@ -28,7 +28,7 @@ class StuContainer extends Container
     /** @var Collection<string, Collection<int|string, mixed>> */
     private Collection $services;
 
-    /** @var Collection<string, Object> */
+    /** @var Collection<string, mixed> */
     private Collection $additionalServices;
 
     /**
@@ -81,9 +81,16 @@ class StuContainer extends Container
         return $services;
     }
 
-    public function setAdditionalService(string $id, Object $service): StuContainer
+    public function setAdditionalService(string $id, mixed $service): StuContainer
     {
         $this->additionalServices->set($id, $service);
+
+        return $this;
+    }
+
+    public function clearAdditionalServices(): StuContainer
+    {
+        $this->additionalServices->clear();
 
         return $this;
     }

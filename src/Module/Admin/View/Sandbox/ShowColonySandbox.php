@@ -10,7 +10,7 @@ use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Lib\Colony\PlanetFieldHostTypeEnum;
 use Stu\Module\Colony\Lib\Gui\ColonyGuiHelperInterface;
-use Stu\Module\Colony\Lib\Gui\GuiComponentEnum;
+use Stu\Module\Colony\Component\ColonyComponentEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Control\ViewControllerInterface;
@@ -66,10 +66,10 @@ final class ShowColonySandbox implements ViewControllerInterface
 
                 $game->setTemplateVar('SELECTED_COLONY_SUB_MENU_TEMPLATE', $menu->getTemplate());
                 $this->colonyGuiHelper->registerComponents($sandbox, $game, [
-                    GuiComponentEnum::SURFACE,
-                    GuiComponentEnum::SHIELDING,
-                    GuiComponentEnum::EPS_BAR,
-                    GuiComponentEnum::STORAGE
+                    ColonyComponentEnum::SURFACE,
+                    ColonyComponentEnum::SHIELDING,
+                    ColonyComponentEnum::EPS_BAR,
+                    ColonyComponentEnum::STORAGE
                 ]);
             }
         }

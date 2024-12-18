@@ -11,8 +11,6 @@ use Stu\Lib\Component\ComponentLoader;
 use Stu\Lib\Component\ComponentLoaderInterface;
 use Stu\Lib\Component\ComponentRegistration;
 use Stu\Lib\Component\ComponentRegistrationInterface;
-use Stu\Lib\Component\ComponentRenderer;
-use Stu\Lib\Component\ComponentRendererInterface;
 use Stu\Lib\Information\InformationFactory;
 use Stu\Lib\Information\InformationFactoryInterface;
 use Stu\Lib\Interaction\InteractionCheckerBuilderFactory;
@@ -105,7 +103,6 @@ use function DI\get;
 return [
     ComponentRegistrationInterface::class => autowire(ComponentRegistration::class),
     ComponentLoaderInterface::class => autowire(ComponentLoader::class),
-    ComponentRendererInterface::class => autowire(ComponentRenderer::class),
     SessionStringFactoryInterface::class => autowire(SessionStringFactory::class),
     InformationFactoryInterface::class => autowire(InformationFactory::class),
     UuidGeneratorInterface::class => autowire(UuidGenerator::class),

@@ -6,6 +6,7 @@ namespace Stu\Component\Game;
 
 use RuntimeException;
 use Stu\Lib\Component\ComponentEnumInterface;
+use Stu\Module\Colony\Component\ColonyComponentEnum;
 use Stu\Module\Game\Component\GameComponentEnum;
 
 enum ModuleViewEnum: string
@@ -89,7 +90,7 @@ enum ModuleViewEnum: string
     {
         return match ($this) {
             self::GAME => GameComponentEnum::from($value),
-                //self::COLONY => GuiComponentEnum::from($value),
+            self::COLONY => ColonyComponentEnum::from($value),
             default => throw new RuntimeException('no components in this module view')
         };
     }
