@@ -73,23 +73,23 @@ function showSectorScanWindow(obj, x, y, sysid, loadSystemSensorScan) {
     ajax_update(
       "elt",
       "station.php?id=" +
-        spacecraftid +
-        "&SHOW_SENSOR_SCAN=1&x=" +
-        x +
-        "&y=" +
-        y +
-        "&systemid=" +
-        sysid
+      spacecraftid +
+      "&SHOW_SENSOR_SCAN=1&x=" +
+      x +
+      "&y=" +
+      y +
+      "&systemid=" +
+      sysid
     );
     if (loadSystemSensorScan) {
       ajax_update(
         "systemsensorscan",
         "station.php?id=" +
-          spacecraftid +
-          "&SHOW_SYSTEM_SENSOR_SCAN=1&x=" +
-          x +
-          "&y=" +
-          y
+        spacecraftid +
+        "&SHOW_SYSTEM_SENSOR_SCAN=1&x=" +
+        x +
+        "&y=" +
+        y
       );
     }
   } else {
@@ -140,9 +140,9 @@ function switchTransferFromAccount(postid) {
   ajax_update(
     "trademenutransfer",
     "?SHOW_TRADEMENU_TRANSFER=1&id=" +
-      spacecraftid +
-      "&mode=from&postid=" +
-      postid
+    spacecraftid +
+    "&mode=from&postid=" +
+    postid
   );
   $("transfertoaccount").removeClassName("selected");
   $("transferfromaccount").addClassName("selected");
@@ -151,9 +151,9 @@ function switchTransferToAccount(postid) {
   ajax_update(
     "trademenutransfer",
     "?SHOW_TRADEMENU_TRANSFER=1&id=" +
-      spacecraftid +
-      "&mode=to&postid=" +
-      postid
+    spacecraftid +
+    "&mode=to&postid=" +
+    postid
   );
   $("transferfromaccount").removeClassName("selected");
   $("transfertoaccount").addClassName("selected");
@@ -241,11 +241,11 @@ function renameCrew(crew_id) {
   ajax_update(
     "rn_crew_" + crew_id,
     "?B_RENAME_CREW=1&id=" +
-      shipid +
-      "&crewid=" +
-      crew_id +
-      "&" +
-      Form.Element.serialize("rn_crew_" + crew_id + "_value")
+    shipid +
+    "&crewid=" +
+    crew_id +
+    "&" +
+    Form.Element.serialize("rn_crew_" + crew_id + "_value")
   );
 }
 function adjustCellHeight(image) {
@@ -315,9 +315,9 @@ function updateReactorValues() {
     excess = Math.max(
       0,
       reactorOutput -
-        epsUsage -
-        effEpsProduction -
-        effWarpdriveProduction * flightCost
+      epsUsage -
+      effEpsProduction -
+      effWarpdriveProduction * flightCost
     );
     epsChange = epsProduction + excess - epsUsage;
 
@@ -351,7 +351,7 @@ function saveWarpCoreSplit(shipId) {
   params = `B_SPLIT_REACTOR_OUTPUT=1&id=${shipId}&value=${value}&fleet=${fleetSplit}&autocarryover=${autoCarryOver}`;
 
   saveTimeout = setTimeout(function () {
-    new Ajax.Updater("result", "", {
+    new Ajax.Updater("result", "station.php", {
       method: "post",
       parameters: params,
       evalScripts: true,
