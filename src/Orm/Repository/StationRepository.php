@@ -135,6 +135,8 @@ final class StationRepository extends EntityRepository implements StationReposit
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT s FROM %s s
+                JOIN %s sp
+                WITH s.id = sp.id
                 JOIN %s sc
                 WITH s.id = sc.spacecraft_id
                 JOIN %s c
@@ -142,13 +144,14 @@ final class StationRepository extends EntityRepository implements StationReposit
                 JOIN %s ss
                 WITH ss.spacecraft_id = s.id
                 JOIN %s u
-                WITH s.user_id = u.id
-                WHERE s.user_id != :userId
+                WITH sp.user_id = u.id
+                WHERE sp.user_id != :userId
                 AND c.user_id = :userId
                 AND ss.system_type = :systemType
                 AND ss.mode >= :mode
                 AND (u.vac_active = :false OR u.vac_request_date > :vacationThreshold)',
                 Station::class,
+                Spacecraft::class,
                 CrewAssignment::class,
                 Crew::class,
                 SpacecraftSystem::class,

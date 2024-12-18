@@ -30,7 +30,7 @@ final class StationProvider implements ViewComponentProviderInterface
             'STATIONS',
             array_map(
                 fn(StationInterface $station): StationWrapperInterface => $this->spacecraftWrapperFactory->wrapStation($station),
-                $stations +  $uplinkStations
+                array_merge($stations, $uplinkStations)
             )
         );
     }
