@@ -98,7 +98,6 @@ use Stu\Module\Ship\View\ShowBussardCollector\ShowBussardCollector;
 use Stu\Module\Ship\View\ShowColonization\ShowColonization;
 use Stu\Module\Ship\View\ShowShiplistFleet\ShowShiplistFleet;
 use Stu\Module\Ship\View\ShowShiplistSingles\ShowShiplistSingles;
-use Stu\Module\Ship\View\ShowTradeMenu\ShowTradeMenu;
 use Stu\Module\Ship\View\ShowTradeMenuPayment\ShowTradeMenuPayment;
 use Stu\Module\Ship\View\ShowWebEmitter\ShowWebEmitter;
 
@@ -183,7 +182,6 @@ return [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
         ShowAstroEntry::VIEW_IDENTIFIER => autowire(ShowAstroEntry::class),
         ShowBussardCollector::VIEW_IDENTIFIER => autowire(ShowBussardCollector::class),
-        ShowTradeMenu::VIEW_IDENTIFIER => autowire(ShowTradeMenu::class),
         ShowTradeMenuPayment::VIEW_IDENTIFIER => autowire(ShowTradeMenuPayment::class),
         ShowColonization::VIEW_IDENTIFIER => autowire(ShowColonization::class),
         ShowShiplistFleet::VIEW_IDENTIFIER => autowire(ShowShiplistFleet::class),

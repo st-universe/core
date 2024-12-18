@@ -248,6 +248,7 @@ use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Module\Spacecraft\Lib\Ui\ShipUiFactory;
 use Stu\Module\Spacecraft\Lib\Ui\ShipUiFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Ui\StateIconAndTitle;
+use Stu\Module\Spacecraft\View\ShowTradeMenu\ShowTradeMenu;
 use Stu\Module\Spacecraft\View\ShowTradeMenuTransfer\ShowTradeMenuTransfer;
 
 use function DI\autowire;
@@ -469,6 +470,7 @@ return [
         ShowShipDetails::VIEW_IDENTIFIER => autowire(ShowShipDetails::class),
         ShowShipStorage::VIEW_IDENTIFIER => autowire(ShowShipStorage::class),
         ShowSpacecraft::VIEW_IDENTIFIER => autowire(ShowSpacecraft::class),
+        ShowTradeMenu::VIEW_IDENTIFIER => autowire(ShowTradeMenu::class),
         ShowTradeMenuTransfer::VIEW_IDENTIFIER => autowire(ShowTradeMenuTransfer::class),
         ShowTransfer::VIEW_IDENTIFIER => get(ShowTransfer::class),
         Noop::VIEW_IDENTIFIER => autowire(Noop::class),

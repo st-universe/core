@@ -10,16 +10,19 @@ use Stu\Exception\AccessViolation;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
-use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 final class ShowTradeMenuTransfer implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_TRADEMENU_TRANSFER';
-
+    /**
+     * @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spaceCraftLoader
+     */
     public function __construct(
-        private ShipLoaderInterface $shipLoader,
+        private SpacecraftLoaderInterface $spaceCraftLoader,
         private TradeLibFactoryInterface $tradeLibFactory,
         private TradePostRepositoryInterface $tradePostRepository,
         private InteractionCheckerInterface $interactionChecker
@@ -30,12 +33,7 @@ final class ShowTradeMenuTransfer implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $ship = $this->shipLoader->getByIdAndUser(
-            request::indInt('id'),
-            $userId,
-            false,
-            false
-        );
+        $spacecraft = $this->spaceCraftLoader->getByIdAndUser(request::getIntFatal('id'), $userId);
 
         $mode = request::getStringFatal('mode');
         match ($mode) {
@@ -48,11 +46,11 @@ final class ShowTradeMenuTransfer implements ViewControllerInterface
             return;
         }
 
-        if (!$this->interactionChecker->checkPosition($ship, $tradepost->getStation())) {
+        if (!$this->interactionChecker->checkPosition($spacecraft, $tradepost->getStation())) {
             throw new AccessViolation();
         }
 
         $game->setTemplateVar('TRADEPOST', $this->tradeLibFactory->createTradeAccountWrapper($tradepost, $userId));
-        $game->setTemplateVar('SHIP', $ship);
+        $game->setTemplateVar('SHIP', $spacecraft);
     }
 }

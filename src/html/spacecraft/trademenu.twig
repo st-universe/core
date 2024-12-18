@@ -50,24 +50,25 @@
           <th>Waren auf dem Schiff</th>
         </tr>
         <tr>
-          <td>
-            {% if SHIP.getBeamableStorage %}
-            {% for stor in SHIP.getBeamableStorage %}
+<td>
+    {% if SHIP.getBeamableStorage and SHIP.getBeamableStorage|length > 0 %}
+        {% for stor in SHIP.getBeamableStorage %}
             <input type="hidden" name="commodities[]" value="{{ stor.getCommodity.getId }}" />
             {% if not loop.index is odd %}
-            <div style="float: right; width: 50%;">
-              {{ commoditySelection(stor.getCommodity.getName, stor.getCommodity.getId, stor.getAmount) }}
-            </div>
+                <div style="float: right; width: 50%;">
+                    {{ commoditySelection(stor.getCommodity.getName, stor.getCommodity.getId, stor.getAmount) }}
+                </div>
             {% else %}
-            <div style="float: left; width: 50%;">
-              {{ commoditySelection(stor.getCommodity.getName, stor.getCommodity.getId, stor.getAmount) }}
-            </div>
+                <div style="float: left; width: 50%;">
+                    {{ commoditySelection(stor.getCommodity.getName, stor.getCommodity.getId, stor.getAmount) }}
+                </div>
             {% endif %}
-            {% endfor %}
-            {% else %}
-            Keine Waren vorhanden
-            {% endif %}
-          </td>
+        {% endfor %}
+    {% else %}
+        Keine Waren vorhanden
+    {% endif %}
+</td>
+
         </tr>
       </table>
     </div>

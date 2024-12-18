@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Ship\View\ShowTradeMenu;
+namespace Stu\Module\Spacecraft\View\ShowTradeMenu;
 
 use Override;
 use request;
@@ -11,7 +11,8 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
-use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseInfoRepositoryInterface;
@@ -20,36 +21,42 @@ use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 final class ShowTradeMenu implements ViewControllerInterface
 {
-    public const string VIEW_IDENTIFIER = 'SHOW_TRADEMENU';
+    public const VIEW_IDENTIFIER = 'SHOW_TRADEMENU';
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradeLicenseInfoRepositoryInterface $TradeLicenseInfoRepository, private TradeLibFactoryInterface $tradeLibFactory, private TradePostRepositoryInterface $tradePostRepository, private CommodityRepositoryInterface $commodityRepository, private InteractionCheckerInterface $interactionChecker) {}
+    /**
+     * @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spaceCraftLoader
+     */
+    public function __construct(
+        private TradeLicenseRepositoryInterface $tradeLicenseRepository,
+        private TradeLicenseInfoRepositoryInterface $TradeLicenseInfoRepository,
+        private TradeLibFactoryInterface $tradeLibFactory,
+        private TradePostRepositoryInterface $tradePostRepository,
+        private CommodityRepositoryInterface $commodityRepository,
+        private InteractionCheckerInterface $interactionChecker,
+        private SpacecraftLoaderInterface $spaceCraftLoader
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
 
-        $ship = $this->shipLoader->getByIdAndUser(
-            request::indInt('id'),
-            $userId,
-            false,
-            false
-        );
+        $spacecraft = $this->spaceCraftLoader->getByIdAndUser(request::getIntFatal('id'), $userId);
 
         $tradepost = $this->tradePostRepository->find(request::indInt('postid'));
         if ($tradepost === null) {
             return;
         }
 
-        if (!$this->interactionChecker->checkPosition($ship, $tradepost->getStation())) {
-            new AccessViolation();
+        if (!$this->interactionChecker->checkPosition($spacecraft, $tradepost->getStation())) {
+            throw new AccessViolation();
         }
 
         $game->setPageTitle(_('Handelstransfermenü'));
         if ($game->getViewContext(ViewContextTypeEnum::NO_AJAX) === true) {
-            $game->showMacro('html/ship/trademenu.twig');
+            $game->showMacro('html/spacecraft/trademenu.twig');
         } else {
-            $game->setMacroInAjaxWindow('html/ship/trademenu.twig');
+            $game->setMacroInAjaxWindow('html/spacecraft/trademenu.twig');
         }
 
         $databaseEntryId = $tradepost->getStation()->getDatabaseId();
@@ -61,7 +68,12 @@ final class ShowTradeMenu implements ViewControllerInterface
 
         if ($licenseInfo !== null) {
             $commodityId = $licenseInfo->getCommodityId();
-            $commodityName = $this->commodityRepository->find($commodityId)->getName();
+            $commodity = $this->commodityRepository->find($commodityId);
+            if ($commodity !== null) {
+                $commodityName = $commodity->getName();
+            } else {
+                $commodityName = '';
+            }
             $licensecost = $licenseInfo->getAmount();
             $licensedays = $licenseInfo->getDays();
         } else {
@@ -72,7 +84,7 @@ final class ShowTradeMenu implements ViewControllerInterface
         }
 
         $game->setTemplateVar('TRADEPOST', $this->tradeLibFactory->createTradeAccountWrapper($tradepost, $userId));
-        $game->setTemplateVar('SHIP', $ship);
+        $game->setTemplateVar('SHIP', $spacecraft);
         $game->setTemplateVar(
             'HAS_LICENSE',
             $this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, $tradepost->getId())

@@ -6,7 +6,7 @@
     </tr>
     <tr>
       <td>
-        {% if SHIP.getBeamableStorage %}
+        {% if SHIP.getBeamableStorage and SHIP.getBeamableStorage|length > 0 %}
           {% for stor in SHIP.getBeamableStorage %}
             <input type="hidden" name="commodities[]" value="{{ stor.getCommodity.getId }}" />
             {% if not loop.index is odd %}
