@@ -67,6 +67,21 @@ class AllViewControllerTest extends TwigTestCase
         return 'PROVIDED_BY_DATA_PROVIDER';
     }
 
+    public static function setUpBeforeClass(): void
+    {
+        StuMocks::get()->registerStubbedComponent(GameComponentEnum::COLONIES)
+            ->registerStubbedComponent(GameComponentEnum::NAVIGATION)
+            ->registerStubbedComponent(GameComponentEnum::PM)
+            ->registerStubbedComponent(GameComponentEnum::RESEARCH)
+            ->registerStubbedComponent(GameComponentEnum::SERVERTIME_AND_VERSION)
+            ->registerStubbedComponent(GameComponentEnum::USER);
+    }
+
+    public static function tearDownAfterClass(): void
+    {
+        StuMocks::get()->reset();
+    }
+
     #[Override]
     protected function getSnapshotId(): string
     {
@@ -91,13 +106,6 @@ class AllViewControllerTest extends TwigTestCase
     #[DataProvider('getAllViewControllerDataProvider')]
     public function testHandle(string $key): void
     {
-        StuMocks::get()->registerStubbedComponent(GameComponentEnum::COLONIES)
-            ->registerStubbedComponent(GameComponentEnum::NAVIGATION)
-            ->registerStubbedComponent(GameComponentEnum::PM)
-            ->registerStubbedComponent(GameComponentEnum::RESEARCH)
-            ->registerStubbedComponent(GameComponentEnum::SERVERTIME_AND_VERSION)
-            ->registerStubbedComponent(GameComponentEnum::USER);
-
         $this->snapshotKey = $key;
 
         $this->renderSnapshot(
