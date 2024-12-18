@@ -30,7 +30,7 @@ final class TradeAccountWrapper implements TradeAccountWrapperInterface
     }
 
     #[Override]
-    public function getShip(): StationInterface
+    public function getStation(): StationInterface
     {
         return $this->tradePost->getStation();
     }
