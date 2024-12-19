@@ -7,18 +7,18 @@ namespace Stu\Module\Message\View\ShowWriteQuickPm;
 use JBBCode\Parser;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\FleetInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\UserInterface;
 
 class ConversationInfo
 {
     /**
-     * @var UserInterface|ShipInterface|FleetInterface|ColonyInterface
+     * @var UserInterface|SpacecraftInterface|FleetInterface|ColonyInterface
      */
     private $from;
 
     /**
-     * @var UserInterface|ShipInterface|FleetInterface|ColonyInterface
+     * @var UserInterface|SpacecraftInterface|FleetInterface|ColonyInterface
      */
     private $to;
 
@@ -30,7 +30,7 @@ class ConversationInfo
 
 
     /**
-     * @param UserInterface|ShipInterface|FleetInterface|ColonyInterface $from
+     * @param UserInterface|SpacecraftInterface|FleetInterface|ColonyInterface $from
      */
     public function setFrom($from): void
     {
@@ -38,7 +38,7 @@ class ConversationInfo
     }
 
     /**
-     * @param UserInterface|ShipInterface|FleetInterface|ColonyInterface $to
+     * @param UserInterface|SpacecraftInterface|FleetInterface|ColonyInterface $to
      */
     public function setTo($to): void
     {
