@@ -11,7 +11,6 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Exception\AccessViolation;
 use Stu\Exception\EntityLockedException;
 use Stu\Exception\ShipDoesNotExistException;
-use Stu\Exception\ShipIsDestroyedException;
 use Stu\Exception\UnallowedUplinkOperation;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\SemaphoreUtilInterface;
@@ -107,27 +106,6 @@ class SpacecraftLoaderTest extends StuTestCase
         $this->subject->getByIdAndUser($this->spacecraftId, $this->userId);
     }
 
-    public function testGetByIdAndUserAwaitExceptionIfShipIsDestroyed(): void
-    {
-        $this->expectException(ShipIsDestroyedException::class);
-
-        $this->lockManager->shouldReceive('isLocked')
-            ->with($this->spacecraftId, LockTypeEnum::SHIP_GROUP)
-            ->once()
-            ->andReturn(false);
-
-        $this->spacecraftRepository->shouldReceive('find')
-            ->with(5)
-            ->once()
-            ->andReturn($this->spacecraft);
-        $this->spacecraft->shouldReceive('isDestroyed')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(true);
-
-        $this->subject->getByIdAndUser($this->spacecraftId, $this->userId);
-    }
-
     public function testGetByIdAndUserAwaitExceptionIfShipBelongsToOtherUser(): void
     {
         $this->expectException(AccessViolation::class);
@@ -141,10 +119,6 @@ class SpacecraftLoaderTest extends StuTestCase
             ->with(5)
             ->once()
             ->andReturn($this->spacecraft);
-        $this->spacecraft->shouldReceive('isDestroyed')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(false);
         $this->spacecraft->shouldReceive('hasCrewmanOfUser')
             ->with(999)
             ->once()
@@ -168,10 +142,6 @@ class SpacecraftLoaderTest extends StuTestCase
             ->with(5)
             ->once()
             ->andReturn($this->spacecraft);
-        $this->spacecraft->shouldReceive('isDestroyed')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(false);
         $this->spacecraft->shouldReceive('hasCrewmanOfUser')
             ->with(999)
             ->once()
@@ -195,10 +165,6 @@ class SpacecraftLoaderTest extends StuTestCase
             ->with(5)
             ->once()
             ->andReturn($this->spacecraft);
-        $this->spacecraft->shouldReceive('isDestroyed')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(false);
         $this->spacecraft->shouldReceive('hasCrewmanOfUser')
             ->with(999)
             ->once()
@@ -226,10 +192,6 @@ class SpacecraftLoaderTest extends StuTestCase
             ->with(5)
             ->once()
             ->andReturn($this->spacecraft);
-        $this->spacecraft->shouldReceive('isDestroyed')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(false);
         $this->spacecraft->shouldReceive('hasCrewmanOfUser')
             ->with(999)
             ->once()
@@ -261,10 +223,6 @@ class SpacecraftLoaderTest extends StuTestCase
             ->with(5)
             ->once()
             ->andReturn($this->spacecraft);
-        $this->spacecraft->shouldReceive('isDestroyed')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(false);
         $this->game->shouldReceive('isSemaphoreAlreadyAcquired')
             ->with($this->userId)
             ->once()
@@ -304,10 +262,6 @@ class SpacecraftLoaderTest extends StuTestCase
             ->with(5)
             ->once()
             ->andReturn($this->spacecraft);
-        $this->spacecraft->shouldReceive('isDestroyed')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(false);
         $this->game->shouldReceive('isSemaphoreAlreadyAcquired')
             ->with($this->userId)
             ->once()
@@ -344,10 +298,6 @@ class SpacecraftLoaderTest extends StuTestCase
             ->with(5)
             ->once()
             ->andReturn($this->spacecraft);
-        $this->spacecraft->shouldReceive('isDestroyed')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(false);
         $this->semaphoreUtil->shouldReceive('getSemaphore')
             ->with($this->userId)
             ->once()
@@ -389,10 +339,6 @@ class SpacecraftLoaderTest extends StuTestCase
             ->with(5)
             ->once()
             ->andReturn($this->spacecraft);
-        $this->spacecraft->shouldReceive('isDestroyed')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(false);
         $this->semaphoreUtil->shouldReceive('getSemaphore')
             ->with($this->userId)
             ->once()
