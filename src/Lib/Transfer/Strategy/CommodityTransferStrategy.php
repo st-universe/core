@@ -25,11 +25,12 @@ class CommodityTransferStrategy implements TransferStrategyInterface
     public function setTemplateVariables(
         bool $isUnload,
         StorageEntityWrapperInterface $source,
-        StorageEntityWrapperInterface $target,
+        StorageEntityWrapperInterface $targetWrapper,
         GameControllerInterface $game
     ): void {
 
-        $beamableStorage = $isUnload ? $source->get()->getBeamableStorage() : $target->get()->getBeamableStorage();
+        $target = $targetWrapper->get();
+        $beamableStorage = $isUnload ? $source->get()->getBeamableStorage() : $target->getBeamableStorage();
 
         $game->setTemplateVar(
             'BEAMABLE_STORAGE',
@@ -44,7 +45,7 @@ class CommodityTransferStrategy implements TransferStrategyInterface
         }
 
         $game->setTemplateVar('SOURCE_STORAGE_BAR', $this->createStorageBar($source));
-        $game->setTemplateVar('TARGET_STORAGE_BAR', $this->createStorageBar($target));
+        $game->setTemplateVar('TARGET_STORAGE_BAR', $this->createStorageBar($targetWrapper));
     }
 
     private function createStorageBar(StorageEntityWrapperInterface $entityWrapper): string
