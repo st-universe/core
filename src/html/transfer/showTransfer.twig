@@ -44,6 +44,7 @@
                 {% block above %}
                 {% include 'html/transfer/entity/' ~ aboveSourceType.value ~ 'Entity.twig' with
                 {'entity': aboveEntity, 'ownsEntity' : ownsAbove} %}
+                <br />
                 {% autoescape false %}
                 {{ aboveStorageBar }}
                 {% endautoescape %}
@@ -51,6 +52,7 @@
                 {% block below %}
                 {% include 'html/transfer/entity/' ~ belowSourceType.value ~ 'Entity.twig' with
                 {'entity': belowEntity, 'ownsEntity' : ownsBelow} %}
+                <br />
                 {% autoescape false %}
                 {{ belowStorageBar }}
                 {% endautoescape %}

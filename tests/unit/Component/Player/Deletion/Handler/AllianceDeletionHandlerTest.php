@@ -94,6 +94,9 @@ class AllianceDeletionHandlerTest extends MockeryTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($userId);
+        $user->shouldReceive('setAlliance')
+            ->with(null)
+            ->once();
 
         $this->allianceJobRepository->shouldReceive('getByUser')
             ->with($userId)
@@ -101,6 +104,10 @@ class AllianceDeletionHandlerTest extends MockeryTestCase
             ->andReturn([$job]);
         $this->allianceJobRepository->shouldReceive('delete')
             ->with($job)
+            ->once();
+
+        $this->userRepository->shouldReceive('save')
+            ->with($user)
             ->once();
 
         $job->shouldReceive('getType')
@@ -122,7 +129,7 @@ class AllianceDeletionHandlerTest extends MockeryTestCase
             ->andReturnNull();
         $alliance->shouldReceive('getMembers')
             ->withNoArgs()
-            ->twice()
+            ->once()
             ->andReturn($members);
 
         $members->shouldReceive('removeElement')
@@ -163,6 +170,9 @@ class AllianceDeletionHandlerTest extends MockeryTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($userId);
+        $user->shouldReceive('setAlliance')
+            ->with(null)
+            ->once();
 
         $this->allianceJobRepository->shouldReceive('getByUser')
             ->with($userId)
@@ -170,6 +180,10 @@ class AllianceDeletionHandlerTest extends MockeryTestCase
             ->andReturn([$job]);
         $this->allianceJobRepository->shouldReceive('delete')
             ->with($successorJob)
+            ->once();
+
+        $this->userRepository->shouldReceive('save')
+            ->with($user)
             ->once();
 
         $job->shouldReceive('getType')
@@ -195,7 +209,7 @@ class AllianceDeletionHandlerTest extends MockeryTestCase
             ->andReturnNull();
         $alliance->shouldReceive('getMembers')
             ->withNoArgs()
-            ->twice()
+            ->once()
             ->andReturn($members);
 
         $members->shouldReceive('removeElement')
