@@ -48,6 +48,17 @@ class ColonyStorageEntityWrapper implements StorageEntityWrapperInterface
     }
 
     #[Override]
+    public function canTransfer(InformationInterface $information): bool
+    {
+        if ($this->colony->getWorkers() + $this->colony->getWorkless() === 0) {
+            $information->addInformation("Es lebt niemand auf dieser Kolonie");
+            return false;
+        }
+
+        return true;
+    }
+
+    #[Override]
     public function getLocation(): LocationInterface
     {
         return $this->colony->getLocation();

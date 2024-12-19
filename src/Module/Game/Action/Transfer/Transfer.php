@@ -52,6 +52,10 @@ final class Transfer implements ActionControllerInterface
 
         $game->setView($source->getTransferEntityType()->getViewIdentifier());
 
+        if (!$transferInformation->getSourceWrapper()->canTransfer($game)) {
+            return;
+        }
+
         $this->sanityCheck($transferInformation);
 
         if (!$this->interactionCheckerBuilderFactory

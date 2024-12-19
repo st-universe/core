@@ -3,7 +3,7 @@
     <input type="submit" class="button" value="Beamen" name="B_TRANSFER" />
 </td>
 <td>
-    {% if SHIP.getIsFleetLeader %}
+    {% if TRANSFER_INFO.showFleetleaderActions %}
     <input value="1" type="checkbox" name="isfleet" />
     Flotte <img title="Alle Flottenschiffe versuchen die Waren zu beamen" src="assets/buttons/info2.png"
         style="height:16px;" />
