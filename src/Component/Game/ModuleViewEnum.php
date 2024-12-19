@@ -88,10 +88,12 @@ enum ModuleViewEnum: string
 
     public function getComponentEnum(string $value): ComponentEnumInterface
     {
-        return match ($this) {
-            self::GAME => GameComponentEnum::from($value),
-            self::COLONY => ColonyComponentEnum::from($value),
+        $result =  match ($this) {
+            self::GAME => GameComponentEnum::tryFrom($value),
+            self::COLONY => ColonyComponentEnum::tryFrom($value),
             default => throw new RuntimeException('no components in this module view')
         };
+
+        return $result ?? GameComponentEnum::OUTDATED;
     }
 }
