@@ -14,6 +14,7 @@ use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Repository\StationRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ShowWriteQuickPm implements ViewControllerInterface
@@ -27,9 +28,14 @@ final class ShowWriteQuickPm implements ViewControllerInterface
     public const int TYPE_COLONY = 5;
 
 
-    public function __construct(private Parser $bbCodeParser, private UserRepositoryInterface $userRepository, private FleetRepositoryInterface $fleetRepository, private ShipRepositoryInterface $shipRepository, private ColonyRepositoryInterface $colonyRepository)
-    {
-    }
+    public function __construct(
+        private Parser $bbCodeParser,
+        private UserRepositoryInterface $userRepository,
+        private FleetRepositoryInterface $fleetRepository,
+        private ShipRepositoryInterface $shipRepository,
+        private StationRepositoryInterface $stationRepository,
+        private ColonyRepositoryInterface $colonyRepository
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -88,7 +94,7 @@ final class ShowWriteQuickPm implements ViewControllerInterface
                 $conversationInfo->setSectorString($from->getLeadShip()->getSectorString());
                 break;
             case self::TYPE_STATION:
-                $from = $this->shipRepository->find($fromId);
+                $from = $this->stationRepository->find($fromId);
                 if ($from === null || $from->getUser() !== $user) {
                     return null;
                 }
@@ -143,7 +149,7 @@ final class ShowWriteQuickPm implements ViewControllerInterface
                 $conversationInfo->setRecipient($to->getUser());
                 break;
             case self::TYPE_STATION:
-                $to = $this->shipRepository->find($toId);
+                $to = $this->stationRepository->find($toId);
                 if ($to === null) {
                     return;
                 }

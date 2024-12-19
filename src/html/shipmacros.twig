@@ -127,7 +127,8 @@
             {% set style = data.isHidden ? '' : 'display: none;' %}
             <div id="fleetuser{{ data.getId }}" style="{{ style }}">
                 {% set fromType = SHIP.isStation ? 4 : 2 %}
-                <a href="javascript:void(0);" onclick="openPmWindow({{ SHIP.getId }},{{ data.getId }},{{ fromType }},3)"
+                <a href="javascript:void(0);"
+                    onclick="openPmWindow({{ SHIP.getId }},{{ data.getId }},{{ fromType }},3);"
                     title="Nachricht an {{ data.getUserName|bbcode2txt }} verfassen"
                     onmouseover="cp('nbsPm{{ data.getId }}','buttons/msg2')"
                     onmouseout="cp('nbsPm{{ data.getId }}','buttons/msg1')">
@@ -398,7 +399,7 @@
     {% if nbsItem.isContactable %}
     {% set fromType = SHIP.isStation ? 4 : 2 %}
     {% set toType = nbsItem.isStation ? 4 : 2 %}
-    <a href="javascript:void(0);" onclick="openPmWindow({{ shipId }},{{ targetId }},{{ fromType }},{{ toType }})"
+    <a href="javascript:void(0);" onclick="openPmWindow({{ shipId }},{{ targetId }},{{ fromType }},{{ toType }});"
         title="Nachricht an {{ nbsItem.getUserName|bbcode2txt }} verfassen"
         onmouseover="cp('nbsPm{{ targetId }}','buttons/msg2')" onmouseout="cp('nbsPm{{ targetId }}','buttons/msg1')">
         <img src="/assets/buttons/msg1.png" name="nbsPm{{ targetId }}" /></a>
