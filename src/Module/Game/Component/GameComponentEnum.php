@@ -17,6 +17,7 @@ enum GameComponentEnum: string implements ComponentEnumInterface
     case RESEARCH = 'RESEARCH_NAVLET';
     case SERVERTIME_AND_VERSION = 'SERVERTIME';
     case USER = 'USER_PROFILE';
+    case OUTDATED = 'OUTDATED';
 
     #[Override]
     public function getModuleView(): ModuleViewEnum
@@ -35,6 +36,7 @@ enum GameComponentEnum: string implements ComponentEnumInterface
             self::RESEARCH => 'html/game/component/researchComponent.twig',
             self::SERVERTIME_AND_VERSION => 'html/game/component/serverTimeAndVersionComponent.twig',
             self::USER => 'html/game/component/userComponent.twig',
+            self::OUTDATED => 'html/game/component/outdatedComponent.twig'
         };
     }
 
@@ -52,7 +54,8 @@ enum GameComponentEnum: string implements ComponentEnumInterface
     public function hasTemplateVariables(): bool
     {
         return match ($this) {
-            self::NAVIGATION => false,
+            self::NAVIGATION,
+            self::OUTDATED => false,
             default => true
         };
     }
