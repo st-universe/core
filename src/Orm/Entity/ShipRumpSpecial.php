@@ -16,7 +16,7 @@ use Override;
 use Stu\Orm\Repository\ShipRumpSpecialRepository;
 
 #[Table(name: 'stu_rumps_specials')]
-#[Index(name: 'rump_special_ship_rump_idx', columns: ['rumps_id'])]
+#[Index(name: 'rump_special_ship_rump_idx', columns: ['rump_id'])]
 #[Entity(repositoryClass: ShipRumpSpecialRepository::class)]
 class ShipRumpSpecial implements ShipRumpSpecialInterface
 {
@@ -26,13 +26,13 @@ class ShipRumpSpecial implements ShipRumpSpecialInterface
     private int $id;
 
     #[Column(type: 'integer')]
-    private int $rumps_id = 0;
+    private int $rump_id = 0;
 
     #[Column(type: 'integer')]
     private int $special = 0;
 
     #[ManyToOne(targetEntity: 'SpacecraftRump', inversedBy: 'specialAbilities')]
-    #[JoinColumn(name: 'rumps_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'rump_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?SpacecraftRumpInterface $spacecraftRump = null;
 
     #[Override]
@@ -44,7 +44,7 @@ class ShipRumpSpecial implements ShipRumpSpecialInterface
     #[Override]
     public function setRumpId(int $rumpId): ShipRumpSpecialInterface
     {
-        $this->rumps_id = $rumpId;
+        $this->rump_id = $rumpId;
 
         return $this;
     }
