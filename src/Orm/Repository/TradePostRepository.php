@@ -11,7 +11,7 @@ use Stu\Component\Trade\TradeEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\LocationInterface;
-use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Station;
 use Stu\Orm\Entity\Storage;
 use Stu\Orm\Entity\TradeLicense;
 use Stu\Orm\Entity\TradeOffer;
@@ -133,20 +133,20 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
                         'SELECT tp
                             FROM %s tp
                             JOIN %s s
-                            WITH tp.ship_id = s.id
+                            WITH tp.station = s
                             JOIN %s l
-                            WITH s.location_id = l.id
+                            WITH s.location = l
                             WHERE tp.user_id < :firstUserId
-                            AND l.layer_id = :layerId
+                            AND l.layer = :layer
                             ORDER BY abs(l.cx - :cx) + abs(l.cy - :cy) ASC',
                         TradePost::class,
-                        Ship::class,
+                        Station::class,
                         Location::class
                     )
                 )
                 ->setMaxResults(1)
                 ->setParameters([
-                    'layerId' => $layer->getId(),
+                    'layer' => $layer,
                     'cx' => $location->getCx(),
                     'cy' => $location->getCy(),
                     'firstUserId' => UserEnum::USER_FIRST_ID
