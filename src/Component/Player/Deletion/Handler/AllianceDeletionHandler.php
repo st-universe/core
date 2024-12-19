@@ -21,20 +21,15 @@ final class AllianceDeletionHandler implements PlayerDeletionHandlerInterface
     {
         foreach ($this->allianceJobRepository->getByUser($user->getId()) as $job) {
             if ($job->getType() === AllianceEnum::ALLIANCE_JOBS_FOUNDER) {
+
                 $alliance = $job->getAlliance();
-
-                foreach ($alliance->getMembers() as $member) {
-                    $member->setAlliance(null);
-                    $this->userRepository->save($member);
-                }
-
-
                 $successor = $alliance->getSuccessor();
-
                 $diplomatic = $alliance->getDiplomatic();
 
                 $members = $alliance->getMembers();
                 $members->removeElement($user);
+                $user->setAlliance(null);
+                $this->userRepository->save($user);
 
                 $lastonlinemember = $this->getLastOnlineMember($members);
 
