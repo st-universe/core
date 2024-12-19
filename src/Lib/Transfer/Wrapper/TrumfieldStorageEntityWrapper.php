@@ -41,6 +41,12 @@ class TrumfieldStorageEntityWrapper implements StorageEntityWrapperInterface
     }
 
     #[Override]
+    public function canTransfer(InformationInterface $information): bool
+    {
+        return false;
+    }
+
+    #[Override]
     public function getLocation(): LocationInterface
     {
         return $this->trumfield->getLocation();

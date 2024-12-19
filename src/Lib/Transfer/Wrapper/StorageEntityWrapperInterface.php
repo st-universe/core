@@ -17,6 +17,7 @@ interface StorageEntityWrapperInterface
     public function getUser(): UserInterface;
     public function getName(): string;
     public function getLocation(): LocationInterface;
+    public function canTransfer(InformationInterface $information): bool;
     public function canPenetrateShields(UserInterface $user, InformationInterface $information): bool;
 
     // COMMODITIES

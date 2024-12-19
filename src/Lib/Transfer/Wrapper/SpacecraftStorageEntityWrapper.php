@@ -70,6 +70,17 @@ class SpacecraftStorageEntityWrapper implements StorageEntityWrapperInterface
     }
 
     #[Override]
+    public function canTransfer(InformationInterface $information): bool
+    {
+        if (!$this->spacecraft->hasEnoughCrew()) {
+            $information->addInformation("Ungenügend Crew vorhanden");
+            return false;
+        }
+
+        return true;
+    }
+
+    #[Override]
     public function getLocation(): LocationInterface
     {
         return $this->spacecraft->getLocation();
@@ -318,7 +329,10 @@ class SpacecraftStorageEntityWrapper implements StorageEntityWrapperInterface
         if ($foreignCrewChangeAmount !== 0) {
 
             $isOn = $this->troopTransferUtility->foreignerCount($this->spacecraft) > 0;
-            if (!$isOn) {
+            if (
+                !$isOn
+                && $this->spacecraft->getSystemState(SpacecraftSystemTypeEnum::SYSTEM_UPLINK)
+            ) {
                 $this->spacecraft->getShipSystem(SpacecraftSystemTypeEnum::SYSTEM_UPLINK)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
             }
 

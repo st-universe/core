@@ -41,7 +41,7 @@ class TransferInformation
         }
 
         if (
-            $this->target instanceof ShipInterface
+            $this->target instanceof SpacecraftInterface
             && $this->target->hasUplink()
         ) {
             return true;
@@ -149,5 +149,19 @@ class TransferInformation
     public function isUpIcon(): bool
     {
         return ($this->getSource() instanceof ColonyInterface) === $this->isUnload();
+    }
+
+    public function showFleetleaderActions(): bool
+    {
+        $source = $this->getSource();
+        if (!$source instanceof ShipInterface) {
+            return false;
+        }
+
+        $fleet = $source->getFleet();
+
+        return $fleet !== null
+            && $source->isFleetLeader()
+            && $fleet->getShipCount() > 1;
     }
 }
