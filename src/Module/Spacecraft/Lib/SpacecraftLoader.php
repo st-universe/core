@@ -11,7 +11,6 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Exception\AccessViolation;
 use Stu\Exception\EntityLockedException;
 use Stu\Exception\ShipDoesNotExistException;
-use Stu\Exception\ShipIsDestroyedException;
 use Stu\Exception\UnallowedUplinkOperation;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\SemaphoreUtilInterface;
@@ -121,10 +120,6 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
 
     private function checkviolations(SpacecraftInterface $spacecraft, int $userId, bool $allowUplink): void
     {
-        if ($spacecraft->isDestroyed()) {
-            throw new ShipIsDestroyedException(_('Spacecraft is destroyed!'));
-        }
-
         if ($spacecraft->getUser()->getId() !== $userId) {
             if ($spacecraft->hasCrewmanOfUser($userId)) {
                 if (!$allowUplink) {

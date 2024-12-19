@@ -15,6 +15,6 @@ final class Noop implements ViewControllerInterface
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $game->showMacro('../html/noop.twig');
+        $game->showMacro('../html/empty.twig');
     }
 }

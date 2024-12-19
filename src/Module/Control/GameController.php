@@ -18,7 +18,6 @@ use Stu\Exception\ResetGameStateException;
 use Stu\Exception\SanityCheckException;
 use Stu\Exception\SessionInvalidException;
 use Stu\Exception\ShipDoesNotExistException;
-use Stu\Exception\ShipIsDestroyedException;
 use Stu\Exception\UnallowedUplinkOperation;
 use Stu\Lib\AccountNotVerifiedException;
 use Stu\Lib\Information\InformationInterface;
@@ -532,30 +531,27 @@ final class GameController implements GameControllerInterface
                 $this->setTemplateVar('REASON', $e->getMessage());
             }
         } catch (MaintenanceGameStateException) {
-            $this->setPageTitle(_('Wartungsmodus'));
+            $this->setPageTitle('Wartungsmodus');
             $this->setTemplateFile('html/index/maintenance.twig');
         } catch (ResetGameStateException) {
-            $this->setPageTitle(_('Resetmodus'));
+            $this->setPageTitle('Resetmodus');
             $this->setTemplateFile('html/index/gameReset.twig');
         } catch (RelocationGameStateException) {
-            $this->setPageTitle(_('Umzugsmodus'));
+            $this->setPageTitle('Umzugsmodus');
             $this->setTemplateFile('html/index/relocation.twig');
-        } catch (ShipDoesNotExistException) {
-            $this->addInformation(_('Dieses Schiff existiert nicht!'));
-            $this->setViewTemplate('html/ship/ship.twig');
-        } catch (ShipIsDestroyedException) {
-            $this->addInformation('Dieses Schiff wurde zerstört!');
-            $this->setViewTemplate('html/ship/ship.twig');
+        } catch (ShipDoesNotExistException $e) {
+            $this->addInformation($e->getMessage());
+            $this->setViewTemplate('html/empty.twig');
         } catch (ItemNotFoundException) {
             $this->addInformation('Das angeforderte Item wurde nicht gefunden');
-            $this->setTemplateFile('html/notFound.twig');
+            $this->setViewTemplate('html/empty.twig');
         } catch (UnallowedUplinkOperation) {
             $this->addInformation('Diese Aktion ist per Uplink nicht möglich!');
 
             if (request::isAjaxRequest()) {
                 $this->setMacroInAjaxWindow('html/systeminformation.twig');
             } else {
-                $this->setViewTemplate('html/ship/ship.twig');
+                $this->setViewTemplate('html/empty.twig');
             }
         }
 
