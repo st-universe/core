@@ -34,7 +34,7 @@ class Research implements ResearchInterface
     private int $sort;
 
     #[Column(type: 'integer')]
-    private int $rumps_id;
+    private int $rump_id;
 
     /**
      * @var int[]|null
@@ -126,7 +126,7 @@ class Research implements ResearchInterface
     #[Override]
     public function getRumpId(): int
     {
-        return $this->rumps_id;
+        return $this->rump_id;
     }
 
     #[Override]

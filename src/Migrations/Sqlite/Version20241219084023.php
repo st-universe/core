@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20241215133630 extends AbstractMigration
+final class Version20241219084023 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -347,7 +347,7 @@ final class Version20241215133630 extends AbstractMigration
         $this->addSql('CREATE TABLE stu_repair_task (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, spacecraft_id INTEGER NOT NULL, finish_time INTEGER NOT NULL, system_type INTEGER NOT NULL, healing_percentage INTEGER NOT NULL, CONSTRAINT FK_36DA3BAFA76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_36DA3BAF1C6AF6FD FOREIGN KEY (spacecraft_id) REFERENCES stu_spacecraft (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_36DA3BAFA76ED395 ON stu_repair_task (user_id)');
         $this->addSql('CREATE INDEX IDX_36DA3BAF1C6AF6FD ON stu_repair_task (spacecraft_id)');
-        $this->addSql('CREATE TABLE stu_research (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL, description CLOB NOT NULL, sort SMALLINT NOT NULL, rumps_id INTEGER NOT NULL, database_entries CLOB NOT NULL, points SMALLINT NOT NULL, commodity_id INTEGER NOT NULL, reward_buildplan_id INTEGER DEFAULT NULL, award_id INTEGER DEFAULT NULL, needed_award INTEGER DEFAULT NULL, upper_limit_colony_type SMALLINT DEFAULT NULL, upper_limit_colony_amount SMALLINT DEFAULT NULL, CONSTRAINT FK_E9B8FBCAB4ACC212 FOREIGN KEY (commodity_id) REFERENCES stu_commodity (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_E9B8FBCAEEF0C2F2 FOREIGN KEY (reward_buildplan_id) REFERENCES stu_buildplan (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_E9B8FBCA3D5282CF FOREIGN KEY (award_id) REFERENCES stu_award (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE stu_research (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL, description CLOB NOT NULL, sort SMALLINT NOT NULL, rump_id INTEGER NOT NULL, database_entries CLOB NOT NULL, points SMALLINT NOT NULL, commodity_id INTEGER NOT NULL, reward_buildplan_id INTEGER DEFAULT NULL, award_id INTEGER DEFAULT NULL, needed_award INTEGER DEFAULT NULL, upper_limit_colony_type SMALLINT DEFAULT NULL, upper_limit_colony_amount SMALLINT DEFAULT NULL, CONSTRAINT FK_E9B8FBCAB4ACC212 FOREIGN KEY (commodity_id) REFERENCES stu_commodity (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_E9B8FBCAEEF0C2F2 FOREIGN KEY (reward_buildplan_id) REFERENCES stu_buildplan (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_E9B8FBCA3D5282CF FOREIGN KEY (award_id) REFERENCES stu_award (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_E9B8FBCAB4ACC212 ON stu_research (commodity_id)');
         $this->addSql('CREATE INDEX IDX_E9B8FBCAEEF0C2F2 ON stu_research (reward_buildplan_id)');
         $this->addSql('CREATE INDEX IDX_E9B8FBCA3D5282CF ON stu_research (award_id)');
@@ -380,8 +380,8 @@ final class Version20241215133630 extends AbstractMigration
         $this->addSql('CREATE TABLE stu_rumps_module_special (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, rump_id INTEGER NOT NULL, module_special_id INTEGER NOT NULL)');
         $this->addSql('CREATE INDEX rump_module_special_ship_rump_idx ON stu_rumps_module_special (rump_id)');
         $this->addSql('CREATE TABLE stu_rumps_roles (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL)');
-        $this->addSql('CREATE TABLE stu_rumps_specials (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, rumps_id INTEGER NOT NULL, special INTEGER NOT NULL, CONSTRAINT FK_3F94D9B298355913 FOREIGN KEY (rumps_id) REFERENCES stu_rump (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
-        $this->addSql('CREATE INDEX rump_special_ship_rump_idx ON stu_rumps_specials (rumps_id)');
+        $this->addSql('CREATE TABLE stu_rumps_specials (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, rump_id INTEGER NOT NULL, special INTEGER NOT NULL, CONSTRAINT FK_3F94D9B22EE98D4C FOREIGN KEY (rump_id) REFERENCES stu_rump (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE INDEX rump_special_ship_rump_idx ON stu_rumps_specials (rump_id)');
         $this->addSql('CREATE TABLE stu_rumps_user (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, rump_id INTEGER NOT NULL, user_id INTEGER NOT NULL, CONSTRAINT FK_1E7BBE13A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_1E7BBE13A76ED395 ON stu_rumps_user (user_id)');
         $this->addSql('CREATE INDEX rump_user_idx ON stu_rumps_user (rump_id, user_id)');
