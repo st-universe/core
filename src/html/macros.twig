@@ -160,13 +160,33 @@ id }}', '/colony.php'); event.preventDefault(); }"
 {% endmacro %}
 
 
-{% macro commoditySelection(name, commodityId, amount) %}
+{% macro commoditySelectorList(commodities) %}
+{% if commodities and not commodities.isEmpty %}
+{% for storage in commodities %}
+<input type="hidden" name="commodities[]" value="{{ storage.getCommodity.getId }}" />
+{% set float = loop.index is even ? 'right' : 'left' %}
+<div style="float: {{ float }}; width: 50%;">
+    {{ _self.commoditySelector(storage) }}
+</div>
+{% if loop.index is even %}
+<br style="clear: both;" />
+{% endif %}
+{% endfor %}
+{% else %}
+Keine Waren vorhanden
+{% endif %}
+{% endmacro %}
+
+{% macro commoditySelector(storage) %}
+{% set commodityId = storage.getCommodity.getId %}
+{% set name = storage.getCommodity.getName %}
+{% set amount = storage.getAmount %}
 <table style="width: 100%;">
     <tr>
         <td style="width: 20px;">
             <img src="/assets/commodities/{{ commodityId }}.png"
-                onclick="this.closest('tr').querySelector('.commodityAmount').value={{ amount }}"
-                style="cursor: pointer;" title="{{ name }}" />
+                onclick="this.up('tr').down('.commodityAmount').value={{ amount }}" style="cursor: pointer;"
+                title="{{ name }}" />
         </td>
         <td style="width: 60px; vertical-align: middle;">
             {{ amount }}
