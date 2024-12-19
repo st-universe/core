@@ -383,7 +383,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                     ON m.id = l.id
                     JOIN stu_map_ftypes mft
                     ON l.field_id = mft.id
-                    WHERE NOT EXISTS (SELECT s.id FROM stu_ship s WHERE s.location_id = m.id)
+                    WHERE NOT EXISTS (SELECT s.id FROM stu_spacecraft s WHERE s.location_id = m.id)
                     AND l.layer_id = :layerId
                     AND mft.x_damage = 0
                     AND mft.passable = :true
