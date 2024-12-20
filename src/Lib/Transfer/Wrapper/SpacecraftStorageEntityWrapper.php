@@ -432,12 +432,18 @@ class SpacecraftStorageEntityWrapper implements StorageEntityWrapperInterface
             return false;
         }
 
-        if ($torpedoType->getLevel() > $this->spacecraft->getRump()->getTorpedoLevel()) {
+        if (
+            !$this->spacecraft->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_TORPEDO_STORAGE)
+            && $torpedoType->getLevel() > $this->spacecraft->getRump()->getTorpedoLevel()
+        ) {
             $information->addInformationf("Die %s kann den Torpedotyp nicht ausrüsten", $this->spacecraft->getName());
             return false;
         }
 
-        if ($this->spacecraft->getTorpedo() !== $torpedoType) {
+        if (
+            $this->spacecraft->getTorpedo() !== null
+            && $this->spacecraft->getTorpedo() !== $torpedoType
+        ) {
             $information->addInformation("Es ist bereits ein anderer Torpedotyp geladen");
             return false;
         }
