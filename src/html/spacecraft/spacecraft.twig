@@ -239,6 +239,7 @@
 										name="beamto" title="Von Schiff beamen" /></a>
 								<a href="javascript:void(0);" onclick="getShipList();">Liste</a>
 								{% if CAN_MANAGE %}
+								<span> | </span>
 								<a href="javascript:void(0);"
 									onclick="switchInnerContent('SHOW_SPACECRAFT_MANAGEMENT', 'Schiffsmanagement', 'id={{ SHIP.getId }}', 'station.php');">Management</a>
 								{% endif %}
