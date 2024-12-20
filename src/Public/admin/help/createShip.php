@@ -48,7 +48,7 @@ Init::run(function (ContainerInterface $dic): void {
                 ->setLocation($mapRepo->getByCoordinates($layer, $cx, $cy))
                 ->maxOutSystems()
                 ->createCrew()
-                ->setTorpedo($torptypeId)
+                ->setTorpedo($noTorps ? null : $torptypeId)
                 ->finishConfiguration();
 
             $db->flush();
