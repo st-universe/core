@@ -9,11 +9,12 @@ use request;
 use RuntimeException;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
+use Stu\Lib\Component\ComponentEnumInterface;
 use Stu\Lib\Component\ComponentRegistrationInterface;
 use Stu\Lib\Component\EntityWithComponentsInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Module\Game\Component\GameComponentEnum;
 
 final class ShowComponent implements ViewControllerInterface
 {
@@ -28,22 +29,39 @@ final class ShowComponent implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $exploded = explode('_', request::getStringFatal('component'), 2);
-        $moduleView = ModuleViewEnum::from(strtolower($exploded[0]));
-        $componentEnum = $moduleView->getComponentEnum($exploded[1]);
+        $moduleView = ModuleViewEnum::tryFrom(strtolower($exploded[0]));
+        $componentEnum = $this->getComponentEnum($moduleView, $exploded);
 
-        $this->componentRegistration->registerComponent($componentEnum, $this->getEntity($moduleView, $game->getUser()));
+        $this->componentRegistration->registerComponent($componentEnum, $this->getEntity($moduleView, $game));
         $game->showMacro($componentEnum->getTemplate());
     }
 
-    private function getEntity(ModuleViewEnum $moduleView, UserInterface $user): ?EntityWithComponentsInterface
+    /** @param array<string> $exploded */
+    private function getComponentEnum(?ModuleViewEnum $moduleView, array $exploded): ComponentEnumInterface
     {
+        if (
+            $moduleView === null
+            || !array_key_exists(1, $exploded)
+        ) {
+            return GameComponentEnum::OUTDATED;
+        }
+
+        return $moduleView->getComponentEnum($exploded[1]);
+    }
+
+    private function getEntity(?ModuleViewEnum $moduleView, GameControllerInterface $game): ?EntityWithComponentsInterface
+    {
+        if ($moduleView === null) {
+            return null;
+        }
+
         $entityId = request::getInt('id');
         if (!$entityId) {
             return null;
         }
 
         return match ($moduleView) {
-            ModuleViewEnum::COLONY => $this->planetFieldHostProvider->loadHostViaRequestParameters($user, false),
+            ModuleViewEnum::COLONY => $this->planetFieldHostProvider->loadHostViaRequestParameters($game->getUser(), false),
             default => throw new RuntimeException(sprintf('module view %s is not supported', $moduleView->value))
         };
     }

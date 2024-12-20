@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu;
 
+use request;
 use Stu\Config\Init;
 use Stu\Config\StuContainer;
 use Stu\Lib\Component\ComponentEnumInterface;
@@ -42,6 +43,7 @@ class StuMocks
 
     public function reset(): void
     {
+        request::setMockVars(null);
         $this->getStuContainer()->clearAdditionalServices();
         $this->getStuContainer()
             ->get(ComponentLoaderInterface::class)
