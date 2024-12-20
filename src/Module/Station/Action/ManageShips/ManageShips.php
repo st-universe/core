@@ -51,7 +51,7 @@ final class ManageShips implements ActionControllerInterface
             return;
         }
 
-        $shipIds = request::postArray('ships');
+        $shipIds = request::postArray('spacecrafts');
         if (count($shipIds) == 0) {
             $game->addInformation(_('Es wurden keine Schiffe ausgewählt'));
             return;
