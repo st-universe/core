@@ -303,8 +303,7 @@ abstract class Spacecraft implements SpacecraftInterface
             return false;
         }
 
-        return $this->getShipSystem($type)->getMode() === SpacecraftSystemModeEnum::MODE_ON
-            || $this->getShipSystem($type)->getMode() === SpacecraftSystemModeEnum::MODE_ALWAYS_ON;
+        return $this->getShipSystem($type)->getMode()->isActivated();
     }
 
     #[Override]

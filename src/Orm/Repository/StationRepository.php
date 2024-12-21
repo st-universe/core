@@ -160,7 +160,7 @@ final class StationRepository extends EntityRepository implements StationReposit
         )->setParameters([
             'userId' => $userId,
             'systemType' => SpacecraftSystemTypeEnum::SYSTEM_UPLINK->value,
-            'mode' => SpacecraftSystemModeEnum::MODE_ON,
+            'mode' => SpacecraftSystemModeEnum::MODE_ON->value,
             'vacationThreshold' => time() - UserEnum::VACATION_DELAY_IN_SECONDS,
             'false' => false
         ])
@@ -234,7 +234,7 @@ final class StationRepository extends EntityRepository implements StationReposit
                 AND s.id != :ignoreId
                 %s
                 ORDER BY r.category_id ASC, r.role_id ASC, r.id ASC, s.name ASC',
-                $showCloaked ? '' : sprintf(' AND (s.user_id = %d OR COALESCE(ss2.mode,0) < %d) ', $spacecraft->getUser()->getId(), SpacecraftSystemModeEnum::MODE_ON)
+                $showCloaked ? '' : sprintf(' AND (s.user_id = %d OR COALESCE(ss2.mode,0) < %d) ', $spacecraft->getUser()->getId(), SpacecraftSystemModeEnum::MODE_ON->value)
             ),
             $rsm
         )->setParameters([

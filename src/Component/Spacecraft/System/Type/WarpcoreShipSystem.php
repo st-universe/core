@@ -55,7 +55,7 @@ final class WarpcoreShipSystem extends AbstractSpacecraftSystemType implements S
     }
 
     #[Override]
-    public function getDefaultMode(): int
+    public function getDefaultMode(): SpacecraftSystemModeEnum
     {
         return SpacecraftSystemModeEnum::MODE_ALWAYS_ON;
     }

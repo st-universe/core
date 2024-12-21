@@ -153,7 +153,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
             )
         )->setParameters([
             'shieldType' => SpacecraftSystemTypeEnum::SYSTEM_SHIELDS->value,
-            'modeOn' => SpacecraftSystemModeEnum::MODE_ON,
+            'modeOn' => SpacecraftSystemModeEnum::MODE_ON->value,
             'regenerationThreshold' => $regenerationThreshold,
             'anomalyType' => AnomalyTypeEnum::SUBSPACE_ELLIPSE
         ])->getResult();

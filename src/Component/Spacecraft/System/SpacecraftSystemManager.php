@@ -134,10 +134,7 @@ final class SpacecraftSystemManager implements SpacecraftSystemManagerInterface
             throw new SystemNotActivatableException();
         }
 
-        if (
-            $mode === SpacecraftSystemModeEnum::MODE_ON
-            ||  $mode === SpacecraftSystemModeEnum::MODE_ALWAYS_ON
-        ) {
+        if ($mode->isActivated()) {
             throw new AlreadyActiveException();
         }
 
@@ -212,7 +209,7 @@ final class SpacecraftSystemManager implements SpacecraftSystemManagerInterface
         $activeSystems = [];
         $prioArray = [];
         foreach ($ship->getSystems() as $system) {
-            if ($system->getMode() > 1) {
+            if ($system->getMode()->isActivated()) {
                 $activeSystems[] = $system;
                 if ($sort) {
                     $prioArray[$system->getSystemType()->value] = $this->lookupSystem($system->getSystemType())->getPriority();
