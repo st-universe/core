@@ -7,7 +7,6 @@ namespace Stu\Module\Tick\Spacecraft;
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use Stu\Component\Admin\Notification\FailureEmailSenderInterface;
-use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Tick\TickRunnerInterface;
@@ -19,7 +18,6 @@ use Throwable;
  */
 class SpacecraftTickRunner implements TickRunnerInterface
 {
-    /** @var int */
     private const int ATTEMPTS = 5;
 
     private const string TICK_DESCRIPTION = "spacecrafttick";
@@ -33,7 +31,7 @@ class SpacecraftTickRunner implements TickRunnerInterface
         LoggerUtilFactoryInterface $loggerUtilFactory,
         private EntityManagerInterface $entityManager
     ) {
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil(true);
     }
 
     #[Override]
@@ -43,13 +41,11 @@ class SpacecraftTickRunner implements TickRunnerInterface
             return;
         }
 
-        $this->loggerUtil->init('mail', LoggerEnum::LEVEL_ERROR);
-
         /**
          * There seems to be some sort of locking-problem. Because of that, the tick gets retried several times
          */
         for ($i = 1; $i <= self::ATTEMPTS; $i++) {
-            $exception = $this->execute($this->loggerUtil);
+            $exception = $this->execute();
 
             if ($exception === null) {
                 break;
@@ -83,7 +79,7 @@ class SpacecraftTickRunner implements TickRunnerInterface
         }
     }
 
-    private function execute(LoggerUtilInterface $loggerUtil): ?Throwable
+    private function execute(): ?Throwable
     {
         try {
             $this->entityManager->beginTransaction();
@@ -92,7 +88,6 @@ class SpacecraftTickRunner implements TickRunnerInterface
 
             return null;
         } catch (Throwable $e) {
-            $loggerUtil->log('  rollback');
             $this->entityManager->rollback();
 
             return $e;
