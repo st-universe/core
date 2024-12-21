@@ -6,6 +6,7 @@ namespace Stu\Lib\Transfer;
 
 use Override;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
+use Stu\Orm\Entity\UserInterface;
 
 class TransferInformationFactory implements TransferInformationFactoryInterface
 {
@@ -21,11 +22,13 @@ class TransferInformationFactory implements TransferInformationFactoryInterface
         int $targetId,
         TransferEntityTypeEnum $targetType,
         TransferTypeEnum $currentType,
-        bool $isUnload
+        bool $isUnload,
+        UserInterface $user,
+        bool $checkForEntityLock
     ): TransferInformation {
 
-        $source = $this->transferEntityLoader->loadEntity($sourceId, $sourceType);
-        $target = $this->transferEntityLoader->loadEntity($targetId, $targetType);
+        $source = $this->transferEntityLoader->loadEntity($sourceId, $sourceType, $checkForEntityLock, $user);
+        $target = $this->transferEntityLoader->loadEntity($targetId, $targetType, $checkForEntityLock);
         $isFriend = $this->playerRelationDeterminator->isFriend($source->getUser(), $target->getUser());
 
         return new TransferInformation(

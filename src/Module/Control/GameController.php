@@ -17,7 +17,7 @@ use Stu\Exception\RelocationGameStateException;
 use Stu\Exception\ResetGameStateException;
 use Stu\Exception\SanityCheckException;
 use Stu\Exception\SessionInvalidException;
-use Stu\Exception\ShipDoesNotExistException;
+use Stu\Exception\SpacecraftDoesNotExistException;
 use Stu\Exception\UnallowedUplinkOperation;
 use Stu\Lib\AccountNotVerifiedException;
 use Stu\Lib\Information\InformationInterface;
@@ -539,7 +539,7 @@ final class GameController implements GameControllerInterface
         } catch (RelocationGameStateException) {
             $this->setPageTitle('Umzugsmodus');
             $this->setTemplateFile('html/index/relocation.twig');
-        } catch (ShipDoesNotExistException $e) {
+        } catch (SpacecraftDoesNotExistException $e) {
             $this->addInformation($e->getMessage());
             $this->setViewTemplate('html/empty.twig');
         } catch (ItemNotFoundException) {

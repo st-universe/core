@@ -13,6 +13,7 @@ use Stu\Lib\Information\InformationWrapper;
 use Stu\Lib\Interaction\InteractionCheckerBuilderFactoryInterface;
 use Stu\Lib\Interaction\InteractionCheckType;
 use Stu\Lib\Transfer\Strategy\TransferStrategyInterface;
+use Stu\Lib\Transfer\TransferEntityNotFoundException;
 use Stu\Lib\Transfer\TransferInformation;
 use Stu\Lib\Transfer\TransferInformationFactoryInterface;
 use Stu\Lib\Transfer\TransferEntityTypeEnum;
@@ -38,14 +39,21 @@ final class Transfer implements ActionControllerInterface
         $isUnload = request::postIntFatal('is_unload') === 1;
         $transferType = TransferTypeEnum::from(request::postIntFatal('transfer_type'));
 
-        $transferInformation = $this->transferInformationFactory->createTransferInformation(
-            request::postIntFatal('id'),
-            TransferEntityTypeEnum::from(request::postStringFatal('source_type')),
-            request::postIntFatal('target'),
-            TransferEntityTypeEnum::from(request::postStringFatal('target_type')),
-            $transferType,
-            $isUnload
-        );
+        try {
+            $transferInformation = $this->transferInformationFactory->createTransferInformation(
+                request::postIntFatal('id'),
+                TransferEntityTypeEnum::from(request::postStringFatal('source_type')),
+                request::postIntFatal('target'),
+                TransferEntityTypeEnum::from(request::postStringFatal('target_type')),
+                $transferType,
+                $isUnload,
+                $game->getUser(),
+                true
+            );
+        } catch (TransferEntityNotFoundException) {
+            $game->addInformation('Das Ziel konnte nicht gefunden werden');
+            return;
+        }
 
         $source = $transferInformation->getSource();
         $target = $transferInformation->getTarget();

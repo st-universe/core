@@ -7,7 +7,7 @@ namespace Stu\Module\Admin\Action\Ticks;
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use request;
-use Stu\Exception\ShipDoesNotExistException;
+use Stu\Exception\SpacecraftDoesNotExistException;
 use Stu\Module\Admin\View\Ticks\ShowTicks;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -48,7 +48,7 @@ final class DoManualSpacecraftTick implements ActionControllerInterface
             $wrapper = $this->spacecraftLoader->find($shipId);
 
             if ($wrapper === null) {
-                throw new ShipDoesNotExistException('Spacecraft does not exist!');
+                throw new SpacecraftDoesNotExistException('Spacecraft does not exist!');
             }
 
             $this->spacecraftTick->workSpacecraft($wrapper);

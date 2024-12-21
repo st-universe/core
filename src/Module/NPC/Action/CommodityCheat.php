@@ -7,7 +7,7 @@ namespace Stu\Module\NPC\Action;
 use Override;
 use request;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
-use Stu\Exception\ShipDoesNotExistException;
+use Stu\Exception\SpacecraftDoesNotExistException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\NPC\View\ShowTools\ShowTools;
@@ -47,7 +47,7 @@ final class CommodityCheat implements ActionControllerInterface
             $wrapper = $this->shipLoader->find($shipId);
 
             if ($wrapper === null) {
-                throw new ShipDoesNotExistException(_('Ship does not exist!'));
+                throw new SpacecraftDoesNotExistException(_('Ship does not exist!'));
             } else {
                 $ship = $wrapper->get();
             }
