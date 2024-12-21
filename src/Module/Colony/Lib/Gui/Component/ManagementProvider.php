@@ -50,7 +50,7 @@ final class ManagementProvider implements PlanetFieldHostComponentInterface
         $shipList = $this->orbitShipListRetriever->retrieve($entity);
         if ($shipList !== []) {
             // if selected, return the current target
-            $target = request::postInt('target');
+            $target = request::indInt('target');
 
             if ($target !== 0) {
                 foreach ($shipList as $fleet) {

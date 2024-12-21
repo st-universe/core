@@ -5,11 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowColony;
 
 use Override;
-use request;
-use Stu\Component\Building\BuildingFunctionEnum;
-use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Colony\ColonyMenuEnum;
-use Stu\Component\Colony\OrbitShipListRetrieverInterface;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Lib\Colony\PlanetFieldHostTypeEnum;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -20,9 +16,6 @@ use Stu\Module\Control\ViewContext;
 use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Control\ViewWithTutorialInterface;
-use Stu\Module\Database\View\Category\Wrapper\DatabaseCategoryWrapperFactoryInterface;
-use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
-use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 final class ShowColony implements ViewControllerInterface, ViewWithTutorialInterface
 {
@@ -32,11 +25,6 @@ final class ShowColony implements ViewControllerInterface, ViewWithTutorialInter
         private ColonyLoaderInterface $colonyLoader,
         private ColonyGuiHelperInterface $colonyGuiHelper,
         private ShowColonyRequestInterface $showColonyRequest,
-        private TorpedoTypeRepositoryInterface $torpedoTypeRepository,
-        private DatabaseCategoryWrapperFactoryInterface $databaseCategoryWrapperFactory,
-        private OrbitShipListRetrieverInterface $orbitShipListRetriever,
-        private ColonyFunctionManagerInterface $colonyFunctionManager,
-        private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory
     ) {}
 
     #[Override]
@@ -71,28 +59,6 @@ final class ShowColony implements ViewControllerInterface, ViewWithTutorialInter
             ]);
         }
 
-
-        $firstOrbitSpacecraft = null;
-
-        $shipList = $this->orbitShipListRetriever->retrieve($colony);
-        if ($shipList !== []) {
-            // if selected, return the current target
-            $target = request::indInt('target');
-
-            if ($target !== 0) {
-                foreach ($shipList as $fleet) {
-                    foreach ($fleet['ships'] as $idx => $ship) {
-                        if ($idx == $target) {
-                            $firstOrbitSpacecraft = $ship;
-                        }
-                    }
-                }
-            }
-            if ($firstOrbitSpacecraft === null) {
-                $firstOrbitSpacecraft = current(current($shipList)['ships']);
-            }
-        }
-
         $game->appendNavigationPart(
             'colony.php',
             _('Kolonien')
@@ -110,20 +76,6 @@ final class ShowColony implements ViewControllerInterface, ViewWithTutorialInter
             PlanetFieldHostTypeEnum::COLONY->value,
             $game->getSessionString()
         ));
-
-        $databaseEntry = $colony->getSystem()->getDatabaseEntry();
-        if ($databaseEntry !== null) {
-            $starsystem = $this->databaseCategoryWrapperFactory->createDatabaseCategoryEntryWrapper($databaseEntry, $user);
-            $game->setTemplateVar('STARSYSTEM_ENTRY_TAL', $starsystem);
-        }
-
-        $game->setTemplateVar('FIRST_ORBIT_SPACECRAFT', $firstOrbitSpacecraft ? $this->spacecraftWrapperFactory->wrapSpacecraft($firstOrbitSpacecraft) : null);
-
-        $particlePhalanx = $this->colonyFunctionManager->hasFunction($colony, BuildingFunctionEnum::BUILDING_FUNCTION_PARTICLE_PHALANX);
-        $game->setTemplateVar(
-            'BUILDABLE_TORPEDO_TYPES',
-            $particlePhalanx ? $this->torpedoTypeRepository->getForUser($userId) : null
-        );
     }
 
     #[Override]
