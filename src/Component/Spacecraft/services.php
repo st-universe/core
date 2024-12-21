@@ -20,6 +20,8 @@ use Stu\Component\Spacecraft\System\Data\ShipSystemDataFactoryInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManager;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemWrapperFactory;
+use Stu\Component\Spacecraft\System\SpacecraftSystemWrapperFactoryInterface;
 use Stu\Component\Spacecraft\System\SystemDataDeserializer;
 use Stu\Component\Spacecraft\System\SystemDataDeserializerInterface;
 use Stu\Component\Spacecraft\System\Type\AggregationSystemShipSystem;
@@ -53,6 +55,7 @@ use Stu\Component\Spacecraft\System\Type\TranswarpCoilShipSystem;
 use Stu\Component\Spacecraft\System\Type\TroopQuartersShipSystem;
 use Stu\Component\Spacecraft\System\Type\UplinkShipSystem;
 use Stu\Component\Spacecraft\System\Type\WarpcoreShipSystem;
+use Stu\Component\Spacecraft\System\Type\WarpdriveBoosterShipSystem;
 use Stu\Component\Spacecraft\System\Type\WarpdriveShipSystem;
 use Stu\Component\Spacecraft\System\Type\WebEmitterShipSystem;
 use Stu\Component\Spacecraft\System\Utility\TractorMassPayloadUtil;
@@ -103,11 +106,13 @@ return [
             SpacecraftSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR->value => autowire(BussardCollectorShipSystem::class),
             SpacecraftSystemTypeEnum::SYSTEM_AGGREGATION_SYSTEM->value => autowire(AggregationSystemShipSystem::class),
             SpacecraftSystemTypeEnum::SYSTEM_RPG_MODULE->value => autowire(RPGShipSystem::class),
-            SpacecraftSystemTypeEnum::SYSTEM_SINGULARITY_REACTOR->value => autowire(SingularityShipSystem::class)
+            SpacecraftSystemTypeEnum::SYSTEM_SINGULARITY_REACTOR->value => autowire(SingularityShipSystem::class),
+            SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE_BOOSTER->value => autowire(WarpdriveBoosterShipSystem::class)
         ],
         autowire(StuTime::class)
     ),
     SpacecraftCrewCalculatorInterface::class => autowire(SpacecraftCrewCalculator::class),
     BuildplanSignatureCreationInterface::class => autowire(BuildplanSignatureCreation::class),
+    SpacecraftSystemWrapperFactoryInterface::class => autowire(SpacecraftSystemWrapperFactory::class),
     WarpdriveActivationSubscriber::class => autowire()
 ];

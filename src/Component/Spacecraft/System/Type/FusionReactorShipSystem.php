@@ -38,7 +38,7 @@ final class FusionReactorShipSystem extends AbstractSpacecraftSystemType impleme
     }
 
     #[Override]
-    public function getDefaultMode(): int
+    public function getDefaultMode(): SpacecraftSystemModeEnum
     {
         return SpacecraftSystemModeEnum::MODE_ALWAYS_ON;
     }

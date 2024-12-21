@@ -26,7 +26,7 @@ class ModuleSpecialAbilityEnumTest extends StuTestCase
         $moduleSpecial = $this->mock(ModuleSpecialInterface::class);
         $moduleSpecial->shouldReceive('getSpecialId')
             ->withNoArgs()
-            ->andReturn(ModuleSpecialAbilityEnum::MODULE_SPECIAL_CLOAK);
+            ->andReturn(ModuleSpecialAbilityEnum::CLOAK);
 
         $collection->add($moduleSpecial);
 
@@ -42,12 +42,12 @@ class ModuleSpecialAbilityEnumTest extends StuTestCase
         $moduleSpecial2 = $this->mock(ModuleSpecialInterface::class);
         $moduleSpecial2->shouldReceive('getSpecialId')
             ->withNoArgs()
-            ->andReturn(ModuleSpecialAbilityEnum::MODULE_SPECIAL_RPG);
+            ->andReturn(ModuleSpecialAbilityEnum::RPG);
 
         $moduleSpecial3 = $this->mock(ModuleSpecialInterface::class);
         $moduleSpecial3->shouldReceive('getSpecialId')
             ->withNoArgs()
-            ->andReturn(ModuleSpecialAbilityEnum::MODULE_SPECIAL_TACHYON_SCANNER);
+            ->andReturn(ModuleSpecialAbilityEnum::TACHYON_SCANNER);
 
         $collection->add($moduleSpecial2);
         $collection->add($moduleSpecial3);
@@ -64,17 +64,17 @@ class ModuleSpecialAbilityEnumTest extends StuTestCase
         $moduleSpecial2 = $this->mock(ModuleSpecialInterface::class);
         $moduleSpecial2->shouldReceive('getSpecialId')
             ->withNoArgs()
-            ->andReturn(ModuleSpecialAbilityEnum::MODULE_SPECIAL_RPG);
+            ->andReturn(ModuleSpecialAbilityEnum::RPG);
 
         $moduleSpecial4 = $this->mock(ModuleSpecialInterface::class);
         $moduleSpecial4->shouldReceive('getSpecialId')
             ->withNoArgs()
-            ->andReturn(ModuleSpecialAbilityEnum::MODULE_SPECIAL_TACHYON_SCANNER);
+            ->andReturn(ModuleSpecialAbilityEnum::TACHYON_SCANNER);
 
         $moduleSpecial6 = $this->mock(ModuleSpecialInterface::class);
         $moduleSpecial6->shouldReceive('getSpecialId')
             ->withNoArgs()
-            ->andReturn(ModuleSpecialAbilityEnum::MODULE_SPECIAL_ASTRO_LABORATORY);
+            ->andReturn(ModuleSpecialAbilityEnum::ASTRO_LABORATORY);
 
         $collection->add($moduleSpecial2);
         $collection->add($moduleSpecial4);

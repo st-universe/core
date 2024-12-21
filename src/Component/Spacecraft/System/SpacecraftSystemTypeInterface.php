@@ -30,7 +30,7 @@ interface SpacecraftSystemTypeInterface
 
     public function handleDamage(SpacecraftWrapperInterface $wrapper): void;
 
-    public function getDefaultMode(): int;
+    public function getDefaultMode(): SpacecraftSystemModeEnum;
 
     public function getCooldownSeconds(): ?int;
 }
