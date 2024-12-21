@@ -36,7 +36,6 @@ class TransferEntityLoader implements TransferEntityLoaderInterface
     ): StorageEntityWrapperInterface {
 
 
-        //TODO add ?UserInterface parameter, and then do with ownerValidation
         /** @var null|SpacecraftInterface|ColonyInterface|TrumfieldInterface */
         $target = match ($entityType) {
             TransferEntityTypeEnum::SHIP,
@@ -46,8 +45,8 @@ class TransferEntityLoader implements TransferEntityLoaderInterface
         };
 
         if ($target === null) {
-            throw new RuntimeException(sprintf(
-                'entity with id %d and type %d does not exist',
+            throw new TransferEntityNotFoundException(sprintf(
+                'entity with id %d and type %s does not exist',
                 $id,
                 $entityType->value
             ));

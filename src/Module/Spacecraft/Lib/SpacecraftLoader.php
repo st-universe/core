@@ -10,7 +10,7 @@ use Stu\Component\Game\SemaphoreConstants;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Exception\AccessViolation;
 use Stu\Exception\EntityLockedException;
-use Stu\Exception\ShipDoesNotExistException;
+use Stu\Exception\SpacecraftDoesNotExistException;
 use Stu\Exception\UnallowedUplinkOperation;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\SemaphoreUtilInterface;
@@ -104,7 +104,7 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
 
         $spacecraft = $this->spacecraftRepository->find($spacecraftId);
         if ($spacecraft === null) {
-            throw new ShipDoesNotExistException(_('Spacecraft does not exist!'));
+            throw new SpacecraftDoesNotExistException('Spacecraft does not exist!');
         }
         $this->checkviolations($spacecraft, $userId, $allowUplink);
 

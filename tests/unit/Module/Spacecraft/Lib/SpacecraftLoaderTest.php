@@ -10,7 +10,7 @@ use Stu\Component\Game\SemaphoreConstants;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Exception\AccessViolation;
 use Stu\Exception\EntityLockedException;
-use Stu\Exception\ShipDoesNotExistException;
+use Stu\Exception\SpacecraftDoesNotExistException;
 use Stu\Exception\UnallowedUplinkOperation;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\SemaphoreUtilInterface;
@@ -91,7 +91,7 @@ class SpacecraftLoaderTest extends StuTestCase
 
     public function testGetByIdAndUserAwaitExceptionIfShipNonExistent(): void
     {
-        $this->expectException(ShipDoesNotExistException::class);
+        $this->expectException(SpacecraftDoesNotExistException::class);
 
         $this->lockManager->shouldReceive('isLocked')
             ->with($this->spacecraftId, LockTypeEnum::SHIP_GROUP)

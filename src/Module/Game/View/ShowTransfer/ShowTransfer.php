@@ -12,6 +12,7 @@ use Stu\Lib\Interaction\InteractionCheckerBuilderFactoryInterface;
 use Stu\Lib\Interaction\InteractionCheckType;
 use Stu\Lib\Transfer\CommodityTransferInterface;
 use Stu\Lib\Transfer\Strategy\TransferStrategyInterface;
+use Stu\Lib\Transfer\TransferEntityNotFoundException;
 use Stu\Lib\Transfer\TransferInformation;
 use Stu\Lib\Transfer\TransferInformationFactoryInterface;
 use Stu\Lib\Transfer\TransferEntityTypeEnum;
@@ -38,17 +39,26 @@ final class ShowTransfer implements ViewControllerInterface
         $isUnload = request::getIntFatal('is_unload') === 1;
         $transferType = TransferTypeEnum::from(request::getIntFatal('transfer_type'));
 
-        $transferInformation = $this->transferInformationFactory->createTransferInformation(
-            $id,
-            TransferEntityTypeEnum::from(request::getStringFatal('source_type')),
-            request::getIntFatal('target'),
-            TransferEntityTypeEnum::from(request::getStringFatal('target_type')),
-            $transferType,
-            $isUnload
-        );
+        $game->setMacroInAjaxWindow('html/entityNotAvailable.twig');
+
+        try {
+            $transferInformation = $this->transferInformationFactory->createTransferInformation(
+                $id,
+                TransferEntityTypeEnum::from(request::getStringFatal('source_type')),
+                request::getIntFatal('target'),
+                TransferEntityTypeEnum::from(request::getStringFatal('target_type')),
+                $transferType,
+                $isUnload,
+                $user,
+                false
+            );
+        } catch (TransferEntityNotFoundException) {
+            $game->setMacroInAjaxWindow('');
+            $game->addInformation('Das Ziel konnte nicht gefunden werden');
+            return;
+        }
 
         $this->setPageTitle($transferInformation, $game);
-        $game->setMacroInAjaxWindow('html/entityNotAvailable.twig');
 
         $source = $transferInformation->getSource();
         $target = $transferInformation->getTarget();
