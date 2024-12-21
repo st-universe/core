@@ -44,20 +44,20 @@ class ShipNfsItem
     }
     public function getShieldState(): bool
     {
-        return $this->item->getShieldState() > SpacecraftSystemModeEnum::MODE_OFF;
+        return $this->item->getShieldState() > SpacecraftSystemModeEnum::MODE_OFF->value;
     }
     public function getCloakState(): bool
     {
-        return $this->item->getCloakState() > SpacecraftSystemModeEnum::MODE_OFF;
+        return $this->item->getCloakState() > SpacecraftSystemModeEnum::MODE_OFF->value;
     }
     public function getWarpDriveState(): bool
     {
-        return $this->item->getWarpDriveState() > SpacecraftSystemModeEnum::MODE_OFF;
+        return $this->item->getWarpDriveState() > SpacecraftSystemModeEnum::MODE_OFF->value;
     }
     public function isWarped(): bool
     {
         return $this->getWarpDriveState()
-            || $this->item->getTractorWarpState() > SpacecraftSystemModeEnum::MODE_OFF;
+            || $this->item->getTractorWarpState() > SpacecraftSystemModeEnum::MODE_OFF->value;
     }
     public function isTractorbeamPossible(): bool
     {
@@ -135,7 +135,7 @@ class ShipNfsItem
 
     public function hasUplink(): bool
     {
-        return $this->item->getUplinkState() > SpacecraftSystemModeEnum::MODE_OFF;
+        return $this->item->getUplinkState() > SpacecraftSystemModeEnum::MODE_OFF->value;
     }
 
     public function getRump(): mixed

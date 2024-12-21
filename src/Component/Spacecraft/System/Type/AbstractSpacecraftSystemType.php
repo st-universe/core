@@ -84,7 +84,7 @@ abstract class AbstractSpacecraftSystemType implements SpacecraftSystemTypeInter
     }
 
     #[Override]
-    public function getDefaultMode(): int
+    public function getDefaultMode(): SpacecraftSystemModeEnum
     {
         return SpacecraftSystemModeEnum::MODE_OFF;
     }

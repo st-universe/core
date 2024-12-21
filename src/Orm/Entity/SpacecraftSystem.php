@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Override;
+use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Orm\Repository\SpacecraftSystemRepository;
 
@@ -40,8 +41,8 @@ class SpacecraftSystem implements SpacecraftSystemInterface
     #[Column(type: 'smallint')]
     private int $status = 0;
 
-    #[Column(type: 'smallint')]
-    private int $mode = 1;
+    #[Column(type: 'smallint', enumType: SpacecraftSystemModeEnum::class)]
+    private SpacecraftSystemModeEnum $mode = SpacecraftSystemModeEnum::MODE_OFF;
 
     #[Column(type: 'integer', nullable: true)]
     private ?int $cooldown = null;
@@ -128,13 +129,13 @@ class SpacecraftSystem implements SpacecraftSystemInterface
     }
 
     #[Override]
-    public function getMode(): int
+    public function getMode(): SpacecraftSystemModeEnum
     {
         return $this->mode;
     }
 
     #[Override]
-    public function setMode(int $mode): SpacecraftSystemInterface
+    public function setMode(SpacecraftSystemModeEnum $mode): SpacecraftSystemInterface
     {
         $this->mode = $mode;
 

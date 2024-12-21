@@ -96,7 +96,7 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
             $message = $this->messageFactory->createMessage(UserEnum::USER_NOONE, $spacecraft->getUser()->getId());
             $message->add($spacecraft->getName());
 
-            if ($shieldSystem->getMode() > SpacecraftSystemModeEnum::MODE_OFF) {
+            if ($shieldSystem->getMode()->isActivated()) {
                 $shieldSystem->setMode(SpacecraftSystemModeEnum::MODE_OFF);
             }
 

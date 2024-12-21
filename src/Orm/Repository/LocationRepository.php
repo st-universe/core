@@ -158,7 +158,7 @@ class LocationRepository extends EntityRepository implements LocationRepositoryI
                 'threshold' => SubspaceEllipseHandler::MASS_CALCULATION_THRESHOLD,
                 'rumpCategory' => SpacecraftRumpEnum::SHIP_CATEGORY_STATION,
                 'firstUserId' => UserEnum::USER_FIRST_ID,
-                'mode' => SpacecraftSystemModeEnum::MODE_OFF,
+                'mode' => SpacecraftSystemModeEnum::MODE_OFF->value,
                 'state' => SpacecraftStateEnum::SHIP_STATE_UNDER_CONSTRUCTION,
                 'systemwarp' => SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE
             ])

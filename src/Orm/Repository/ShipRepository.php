@@ -130,7 +130,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 AND s.fleet_id IS NULL
                 %s
                 ORDER BY r.category_id ASC, r.role_id ASC, r.id ASC, sp.name ASC',
-                $showCloaked ? '' : sprintf(' AND (sp.user_id = %d OR COALESCE(ss2.mode,0) < %d) ', $spacecraft->getUser()->getId(), SpacecraftSystemModeEnum::MODE_ON)
+                $showCloaked ? '' : sprintf(' AND (sp.user_id = %d OR COALESCE(ss2.mode,0) < %d) ', $spacecraft->getUser()->getId(), SpacecraftSystemModeEnum::MODE_ON->value)
             ),
             $rsm
         )->setParameters([
@@ -289,7 +289,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 AND s.id != :ignoreId
                 %s
                 ORDER BY f.sort DESC, f.id DESC, (CASE WHEN s.is_fleet_leader THEN 0 ELSE 1 END), r.category_id ASC, r.role_id ASC, r.id ASC, sp.name ASC',
-                $showCloaked ? '' : sprintf(' AND (sp.user_id = %d OR COALESCE(ss2.mode,0) < %d) ', $spacecraft->getUser()->getId(), SpacecraftSystemModeEnum::MODE_ON)
+                $showCloaked ? '' : sprintf(' AND (sp.user_id = %d OR COALESCE(ss2.mode,0) < %d) ', $spacecraft->getUser()->getId(), SpacecraftSystemModeEnum::MODE_ON->value)
             ),
             $rsm
         )->setParameters([

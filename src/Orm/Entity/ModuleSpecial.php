@@ -30,7 +30,7 @@ class ModuleSpecial implements ModuleSpecialInterface
     private int $module_id = 0;
 
     #[Column(type: 'smallint', enumType: ModuleSpecialAbilityEnum::class)]
-    private ModuleSpecialAbilityEnum $special_id = ModuleSpecialAbilityEnum::MODULE_SPECIAL_RPG;
+    private ModuleSpecialAbilityEnum $special_id = ModuleSpecialAbilityEnum::RPG;
 
     #[ManyToOne(targetEntity: 'Module', inversedBy: 'moduleSpecials')]
     #[JoinColumn(name: 'module_id', referencedColumnName: 'id')]

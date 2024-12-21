@@ -10,6 +10,9 @@ use Stu\Component\Building\NameAbbreviations;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemWrapper;
+use Stu\Component\Spacecraft\System\SpacecraftSystemWrapperFactoryInterface;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Lib\ModuleScreen\GradientColorInterface;
 use Stu\Module\Colony\Lib\ColonyEpsProductionPreviewWrapper;
@@ -37,6 +40,7 @@ class TwigHelper
         private FightLibInterface $fightLib,
         private ColonyLibFactoryInterface $colonyLibFactory,
         private SpacecraftCrewCalculatorInterface $shipCrewCalculator,
+        private SpacecraftSystemWrapperFactoryInterface $spacecraftSystemWrapperFactory,
         private GradientColorInterface $gradientColor,
         private TemplateHelperInterface $templateHelper,
         private StuTime $stuTime,
@@ -160,5 +164,12 @@ class TwigHelper
 
         $dayNightPrefixFunction = new TwigFunction('getDayNightPrefix', fn(PlanetFieldInterface $field): string => $field->getDayNightPrefix($this->stuTime->time()));
         $this->environment->addFunction($dayNightPrefixFunction);
+
+        $hasSpacecraftSystemByNameFunction = new TwigFunction(
+            'getSpacecraftSystemWrapper',
+            fn(SpacecraftInterface $spacecraft, string $name): ?SpacecraftSystemWrapper
+            => $this->spacecraftSystemWrapperFactory->create($spacecraft, SpacecraftSystemTypeEnum::getByName($name))
+        );
+        $this->environment->addFunction($hasSpacecraftSystemByNameFunction);
     }
 }

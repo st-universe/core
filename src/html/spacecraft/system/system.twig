@@ -1,0 +1,5 @@
+{% set systemWrapper = getSpacecraftSystemWrapper(SHIP, name) %}
+
+{% if systemWrapper %}
+{% include 'html/spacecraft/system/' ~ name ~ '.twig' %}
+{% endif %}

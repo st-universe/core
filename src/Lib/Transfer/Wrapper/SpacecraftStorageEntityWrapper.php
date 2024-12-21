@@ -258,7 +258,7 @@ class SpacecraftStorageEntityWrapper implements StorageEntityWrapperInterface
             return false;
         }
 
-        if ($this->spacecraft->getShipSystem(SpacecraftSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() > SpacecraftSystemModeEnum::MODE_OFF) {
+        if ($this->spacecraft->getShipSystem(SpacecraftSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode()->isActivated()) {
             return true;
         }
 

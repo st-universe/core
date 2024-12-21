@@ -80,6 +80,7 @@ use Stu\Module\Spacecraft\Action\StopEmergency\StopEmergencyRequest;
 use Stu\Module\Spacecraft\Action\StopTakeover\StopTakeover;
 use Stu\Module\Spacecraft\Action\TakeBuoy\TakeBuoy;
 use Stu\Module\Spacecraft\Action\UnloadBattery\UnloadBattery;
+use Stu\Module\Spacecraft\Action\WarpdriveBoost\WarpdriveBoost;
 use Stu\Module\Spacecraft\Lib\Creation\SpacecraftConfiguratorFactory;
 use Stu\Module\Spacecraft\Lib\Creation\SpacecraftConfiguratorFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Creation\SpacecraftCreator;
@@ -453,6 +454,7 @@ return [
                 autowire(ClosestLocations::class)
             )
         ),
+        WarpdriveBoost::ACTION_IDENTIFIER => autowire(WarpdriveBoost::class)
     ],
     'SPACECRAFT_VIEWS' => [
         ShowAlertLevel::VIEW_IDENTIFIER => autowire(ShowAlertLevel::class),

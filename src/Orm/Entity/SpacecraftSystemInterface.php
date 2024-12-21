@@ -2,6 +2,7 @@
 
 namespace Stu\Orm\Entity;
 
+use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 
 interface SpacecraftSystemInterface
@@ -24,9 +25,9 @@ interface SpacecraftSystemInterface
 
     public function getCssClass(): string;
 
-    public function getMode(): int;
+    public function getMode(): SpacecraftSystemModeEnum;
 
-    public function setMode(int $mode): SpacecraftSystemInterface;
+    public function setMode(SpacecraftSystemModeEnum $mode): SpacecraftSystemInterface;
 
     public function getCooldown(): ?int;
 
