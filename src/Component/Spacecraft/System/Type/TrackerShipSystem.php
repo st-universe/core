@@ -42,7 +42,7 @@ class TrackerShipSystem extends AbstractSpacecraftSystemType implements Spacecra
     public function deactivate(SpacecraftWrapperInterface $wrapper): void
     {
         $this->reset($wrapper);
-        $wrapper->get()->getShipSystem(SpacecraftSystemTypeEnum::TRACKER)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
+        $wrapper->get()->getSpacecraftSystem(SpacecraftSystemTypeEnum::TRACKER)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
     }
 
     #[Override]

@@ -50,7 +50,7 @@ enum SpacecraftSystemTypeEnum: int
             Self::CLOAK => "Tarnung",
             Self::NBS => "Nahbereichssensoren",
             Self::LSS => "Langstreckensensoren",
-            Self::PHASER => "Energiewaffe",
+            Self::PHASER => "Strahlenwaffe",
             Self::TORPEDO => "Projektilwaffe",
             Self::WARPDRIVE => "Warpantrieb",
             Self::EPS => "Energiesystem",
@@ -80,6 +80,36 @@ enum SpacecraftSystemTypeEnum: int
             Self::BUSSARD_COLLECTOR => "Bussardkollektor",
             Self::AGGREGATION_SYSTEM => "Aggregationssystem",
             Self::WARPDRIVE_BOOSTER => "Warpantrieb Booster"
+        };
+    }
+
+    public function getGenericTemplate(): ?string
+    {
+        return match ($this) {
+            self::ASTRO_LABORATORY,
+            self::SHIELDS,
+            self::SUBSPACE_SCANNER,
+            self::RPG_MODULE,
+            self::TACHYON_SCANNER,
+            self::CONSTRUCTION_HUB,
+            self::CLOAK => 'html/spacecraft/system/systemWithOnOff.twig',
+            default => null
+        };
+    }
+
+    public function getIcon(): string
+    {
+        return match ($this) {
+            self::SHIELDS => 'shldac',
+            self::PHASER => 'act_phaser',
+            self::TORPEDO => 'act_torp',
+            self::SUBSPACE_SCANNER => 'subspace',
+            self::CLOAK => 'tarn',
+            self::TACHYON_SCANNER => 'decloak',
+            self::RPG_MODULE => 'rpg',
+            self::ASTRO_LABORATORY => 'map',
+            self::CONSTRUCTION_HUB => 'rep',
+            default => throw new RuntimeException(sprintf('no icon defined for system type: %s', $this->name))
         };
     }
 

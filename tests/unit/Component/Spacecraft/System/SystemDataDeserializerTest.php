@@ -78,7 +78,7 @@ class SystemDataDeserializerTest extends StuTestCase
 
     public function testGetEpsSystemDataReturnNullIfSystemNotFound(): void
     {
-        $this->ship->shouldReceive('hasShipSystem')
+        $this->ship->shouldReceive('hasSpacecraftSystem')
             ->with(SpacecraftSystemTypeEnum::EPS)
             ->once()
             ->andReturn(false);
@@ -102,11 +102,11 @@ class SystemDataDeserializerTest extends StuTestCase
             $this->mock(StatusBarFactoryInterface::class)
         );
 
-        $this->ship->shouldReceive('hasShipSystem')
+        $this->ship->shouldReceive('hasSpacecraftSystem')
             ->with(SpacecraftSystemTypeEnum::EPS)
             ->once()
             ->andReturn(true);
-        $this->ship->shouldReceive('getShipSystem')
+        $this->ship->shouldReceive('getSpacecraftSystem')
             ->with(SpacecraftSystemTypeEnum::EPS)
             ->once()
             ->andReturn($this->shipSystem);
@@ -143,11 +143,11 @@ class SystemDataDeserializerTest extends StuTestCase
             $this->mock(StatusBarFactoryInterface::class)
         );
 
-        $this->ship->shouldReceive('hasShipSystem')
+        $this->ship->shouldReceive('hasSpacecraftSystem')
             ->with(SpacecraftSystemTypeEnum::EPS)
             ->twice()
             ->andReturn(true);
-        $this->ship->shouldReceive('getShipSystem')
+        $this->ship->shouldReceive('getSpacecraftSystem')
             ->with(SpacecraftSystemTypeEnum::EPS)
             ->once()
             ->andReturn($this->shipSystem);

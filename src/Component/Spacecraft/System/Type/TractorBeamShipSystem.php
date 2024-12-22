@@ -93,7 +93,7 @@ final class TractorBeamShipSystem extends AbstractSpacecraftSystemType implement
     {
         $spacecraft = $wrapper->get();
 
-        $spacecraft->getShipSystem($this->getSystemType())->setMode(SpacecraftSystemModeEnum::MODE_OFF);
+        $spacecraft->getSpacecraftSystem($this->getSystemType())->setMode(SpacecraftSystemModeEnum::MODE_OFF);
 
         if ($spacecraft->isTractoring()) {
             $traktor = $spacecraft->getTractoredShip();

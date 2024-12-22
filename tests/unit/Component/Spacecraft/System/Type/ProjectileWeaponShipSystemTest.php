@@ -128,7 +128,7 @@ class ProjectileWeaponShipSystemTest extends StuTestCase
         $managerMock = $this->mock(SpacecraftSystemManagerInterface::class);
         $system = $this->mock(SpacecraftSystemInterface::class);
 
-        $this->ship->shouldReceive('getShipSystem')
+        $this->ship->shouldReceive('getSpacecraftSystem')
             ->with(SpacecraftSystemTypeEnum::TORPEDO)
             ->once()
             ->andReturn($system);
@@ -143,7 +143,7 @@ class ProjectileWeaponShipSystemTest extends StuTestCase
     {
         $system = $this->mock(SpacecraftSystemInterface::class);
 
-        $this->ship->shouldReceive('getShipSystem')
+        $this->ship->shouldReceive('getSpacecraftSystem')
             ->with(SpacecraftSystemTypeEnum::TORPEDO)
             ->once()
             ->andReturn($system);

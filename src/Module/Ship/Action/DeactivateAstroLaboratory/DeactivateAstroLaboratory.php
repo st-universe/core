@@ -14,7 +14,7 @@ use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 
 final class DeactivateAstroLaboratory implements ActionControllerInterface
 {
-    public const string ACTION_IDENTIFIER = 'B_DEACTIVATE_ASTRO';
+    public const string ACTION_IDENTIFIER = 'B_DEACTIVATE_ASTRO_LABORATORY';
 
     public function __construct(private ActivatorDeactivatorHelperInterface $helper) {}
 

@@ -27,7 +27,7 @@ class SystemDataDeserializer implements SystemDataDeserializerInterface
     ): ?object {
         if (
             $systemType !== SpacecraftSystemTypeEnum::HULL
-            && !$spacecraft->hasShipSystem($systemType)
+            && !$spacecraft->hasSpacecraftSystem($systemType)
         ) {
             return null;
         }
@@ -40,7 +40,7 @@ class SystemDataDeserializer implements SystemDataDeserializerInterface
             );
             $systemData->setSpacecraft($spacecraft);
 
-            $data = $systemType === SpacecraftSystemTypeEnum::HULL ? null : $spacecraft->getShipSystem($systemType)->getData();
+            $data = $systemType === SpacecraftSystemTypeEnum::HULL ? null : $spacecraft->getSpacecraftSystem($systemType)->getData();
 
             if ($data === null) {
                 $shipSystemDataCache->set($systemType->value, $systemData);

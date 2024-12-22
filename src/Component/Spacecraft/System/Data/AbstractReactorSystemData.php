@@ -24,7 +24,7 @@ abstract class AbstractReactorSystemData extends AbstractSystemData
     public function getOutput(): int
     {
         return (int) (ceil($this->output
-            * $this->spacecraft->getShipSystem($this->getSystemType())->getStatus() / 100));
+            * $this->spacecraft->getSpacecraftSystem($this->getSystemType())->getStatus() / 100));
     }
 
     public function getTheoreticalReactorOutput(): int

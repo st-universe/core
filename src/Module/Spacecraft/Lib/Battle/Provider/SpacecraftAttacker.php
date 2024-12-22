@@ -49,7 +49,7 @@ class SpacecraftAttacker extends AbstractEnergyAttacker implements ProjectileAtt
     public function getWeaponModule(): ModuleInterface
     {
         if ($this->module === null) {
-            $shipSystem = $this->get()->getShipSystem(SpacecraftSystemTypeEnum::PHASER);
+            $shipSystem = $this->get()->getSpacecraftSystem(SpacecraftSystemTypeEnum::PHASER);
 
             $module = $shipSystem->getModule();
             if ($module === null) {
@@ -162,7 +162,7 @@ class SpacecraftAttacker extends AbstractEnergyAttacker implements ProjectileAtt
             return 0;
         }
 
-        $module = $this->get()->getShipSystem(SpacecraftSystemTypeEnum::TORPEDO)->getModule();
+        $module = $this->get()->getSpacecraftSystem(SpacecraftSystemTypeEnum::TORPEDO)->getModule();
         if ($module === null) {
             return 0;
         }

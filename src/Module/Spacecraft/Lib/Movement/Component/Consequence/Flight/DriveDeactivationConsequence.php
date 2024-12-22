@@ -58,7 +58,7 @@ class DriveDeactivationConsequence extends AbstractFlightConsequence implements 
     ): void {
         $ship = $wrapper->get();
 
-        if (!$ship->hasShipSystem($systemType)) {
+        if (!$ship->hasSpacecraftSystem($systemType)) {
             return;
         }
 

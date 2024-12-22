@@ -240,9 +240,9 @@ interface SpacecraftInterface extends
      */
     public function getSystems(): Collection;
 
-    public function hasShipSystem(SpacecraftSystemTypeEnum $type): bool;
+    public function hasSpacecraftSystem(SpacecraftSystemTypeEnum $type): bool;
 
-    public function getShipSystem(SpacecraftSystemTypeEnum $type): SpacecraftSystemInterface;
+    public function getSpacecraftSystem(SpacecraftSystemTypeEnum $type): SpacecraftSystemInterface;
 
     /**
      * @return SpacecraftSystemInterface[]
@@ -295,19 +295,11 @@ interface SpacecraftInterface extends
 
     public function hasCloak(): bool;
 
-    public function hasTachyonScanner(): bool;
-
     public function hasShuttleRamp(): bool;
-
-    public function hasSubspaceScanner(): bool;
-
-    public function hasAstroLaboratory(): bool;
 
     public function hasWarpdrive(): bool;
 
     public function hasReactor(): bool;
-
-    public function hasRPGModule(): bool;
 
     public function hasNbsLss(): bool;
 

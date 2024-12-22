@@ -31,7 +31,7 @@ abstract class AbstractSystemData
      */
     public function update(): void
     {
-        $system = $this->spacecraft->getShipSystem($this->getSystemType());
+        $system = $this->spacecraft->getSpacecraftSystem($this->getSystemType());
         $system->setData(json_encode($this, JSON_THROW_ON_ERROR));
         $this->shipSystemRepository->save($system);
     }

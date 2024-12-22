@@ -107,6 +107,12 @@ class SpacecraftSystem implements SpacecraftSystemInterface
     }
 
     #[Override]
+    public function isHealthy(): bool
+    {
+        return $this->getStatus() > 0;
+    }
+
+    #[Override]
     public function getName(): string
     {
         return $this->getSystemType()->getDescription();

@@ -110,7 +110,7 @@ final class SalvageCrew implements ActionControllerInterface
 
         if (
             $ship->getCrewCount() + $crewToTransfer > $this->shipCrewCalculator->getMaxCrewCountByRump($ship->getRump())
-            && $ship->getShipSystem(SpacecraftSystemTypeEnum::TROOP_QUARTERS)->getMode() == SpacecraftSystemModeEnum::MODE_OFF && !$this->helper->activate($wrapper, SpacecraftSystemTypeEnum::TROOP_QUARTERS, $game)
+            && $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::TROOP_QUARTERS)->getMode() == SpacecraftSystemModeEnum::MODE_OFF && !$this->helper->activate($wrapper, SpacecraftSystemTypeEnum::TROOP_QUARTERS, $game)
         ) {
             return;
         }

@@ -76,7 +76,7 @@ class EnoughEpsCondition implements PreFlightConditionInterface
 
     private function getEnergyUsageForActivation(SpacecraftInterface $spacecraft, SpacecraftSystemTypeEnum $systemId): int
     {
-        if (!$spacecraft->hasShipSystem($systemId)) {
+        if (!$spacecraft->hasSpacecraftSystem($systemId)) {
             return 0;
         }
 
@@ -98,7 +98,7 @@ class EnoughEpsCondition implements PreFlightConditionInterface
             return 0;
         }
 
-        if (!$spacecraft->hasShipSystem(SpacecraftSystemTypeEnum::IMPULSEDRIVE)) {
+        if (!$spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::IMPULSEDRIVE)) {
             return 0;
         }
 

@@ -341,7 +341,7 @@ class ManageCrewTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn('name');
-        $this->ship->shouldReceive('hasShipSystem')
+        $this->ship->shouldReceive('hasSpacecraftSystem')
             ->with(SpacecraftSystemTypeEnum::TROOP_QUARTERS)
             ->once()
             ->andReturn(true);
@@ -361,12 +361,12 @@ class ManageCrewTest extends StuTestCase
             ->once()
             ->andReturn(SpacecraftSystemModeEnum::MODE_OFF);
 
-        $this->ship->shouldReceive('getShipSystem')
+        $this->ship->shouldReceive('getSpacecraftSystem')
             ->with(SpacecraftSystemTypeEnum::TROOP_QUARTERS)
             ->once()
             ->andReturn($shipSystemMock);
 
-        $this->ship->shouldReceive('hasShipSystem')
+        $this->ship->shouldReceive('hasSpacecraftSystem')
             ->with(SpacecraftSystemTypeEnum::LIFE_SUPPORT)
             ->once()
             ->andReturn(true);
@@ -431,7 +431,7 @@ class ManageCrewTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn('name');
-        $this->ship->shouldReceive('hasShipSystem')
+        $this->ship->shouldReceive('hasSpacecraftSystem')
             ->with(SpacecraftSystemTypeEnum::TROOP_QUARTERS)
             ->once()
             ->andReturn(true);
@@ -451,12 +451,12 @@ class ManageCrewTest extends StuTestCase
             ->once()
             ->andReturn(SpacecraftSystemModeEnum::MODE_OFF);
 
-        $this->ship->shouldReceive('getShipSystem')
+        $this->ship->shouldReceive('getSpacecraftSystem')
             ->with(SpacecraftSystemTypeEnum::TROOP_QUARTERS)
             ->once()
             ->andReturn($shipSystemMock);
 
-        $this->ship->shouldReceive('hasShipSystem')
+        $this->ship->shouldReceive('hasSpacecraftSystem')
             ->with(SpacecraftSystemTypeEnum::LIFE_SUPPORT)
             ->once()
             ->andReturn(true);

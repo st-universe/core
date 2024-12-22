@@ -340,7 +340,7 @@ class ManageTorpedoTest extends StuTestCase
         $this->ship->shouldReceive('getTorpedoCount')
             ->withNoArgs()
             ->andReturn(0);
-        $this->ship->shouldReceive('hasShipSystem')
+        $this->ship->shouldReceive('hasSpacecraftSystem')
             ->with(SpacecraftSystemTypeEnum::TORPEDO_STORAGE)
             ->once()
             ->andReturn(false);
@@ -394,7 +394,7 @@ class ManageTorpedoTest extends StuTestCase
         $this->ship->shouldReceive('getTorpedoCount')
             ->withNoArgs()
             ->andReturn(0);
-        $this->ship->shouldReceive('hasShipSystem')
+        $this->ship->shouldReceive('hasSpacecraftSystem')
             ->with(SpacecraftSystemTypeEnum::TORPEDO_STORAGE)
             ->once()
             ->andReturn(true);
@@ -560,7 +560,7 @@ class ManageTorpedoTest extends StuTestCase
         $this->ship->shouldReceive('getTorpedoCount')
             ->withNoArgs()
             ->andReturn(0);
-        $this->ship->shouldReceive('hasShipSystem')
+        $this->ship->shouldReceive('hasSpacecraftSystem')
             ->with(SpacecraftSystemTypeEnum::TORPEDO_STORAGE)
             ->once()
             ->andReturn(true);

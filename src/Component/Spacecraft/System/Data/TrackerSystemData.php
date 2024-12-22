@@ -60,7 +60,7 @@ class TrackerSystemData extends AbstractSystemData
             return false;
         }
 
-        $cooldown = $this->spacecraft->getShipSystem(SpacecraftSystemTypeEnum::TRACKER)->getCooldown();
+        $cooldown = $this->spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::TRACKER)->getCooldown();
 
         return $cooldown === null ? true : $cooldown < time();
     }

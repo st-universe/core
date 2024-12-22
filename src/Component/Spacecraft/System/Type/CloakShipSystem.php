@@ -78,19 +78,19 @@ final class CloakShipSystem extends AbstractSpacecraftSystemType implements Spac
         }
         $this->spacecraftStateChanger->changeShipState($wrapper, SpacecraftStateEnum::SHIP_STATE_NONE);
 
-        if ($spacecraft->hasShipSystem(SpacecraftSystemTypeEnum::ASTRO_LABORATORY)) {
-            $spacecraft->getShipSystem(SpacecraftSystemTypeEnum::ASTRO_LABORATORY)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
+        if ($spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::ASTRO_LABORATORY)) {
+            $spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::ASTRO_LABORATORY)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
         }
-        if ($spacecraft->hasShipSystem(SpacecraftSystemTypeEnum::SHIELDS)) {
-            $spacecraft->getShipSystem(SpacecraftSystemTypeEnum::SHIELDS)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
+        if ($spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::SHIELDS)) {
+            $spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::SHIELDS)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
         }
-        if ($spacecraft->hasShipSystem(SpacecraftSystemTypeEnum::PHASER)) {
-            $spacecraft->getShipSystem(SpacecraftSystemTypeEnum::PHASER)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
+        if ($spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::PHASER)) {
+            $spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::PHASER)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
         }
-        if ($spacecraft->hasShipSystem(SpacecraftSystemTypeEnum::TORPEDO)) {
-            $spacecraft->getShipSystem(SpacecraftSystemTypeEnum::TORPEDO)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
+        if ($spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::TORPEDO)) {
+            $spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::TORPEDO)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
         }
 
-        $spacecraft->getShipSystem($this->getSystemType())->setMode(SpacecraftSystemModeEnum::MODE_ON);
+        $spacecraft->getSpacecraftSystem($this->getSystemType())->setMode(SpacecraftSystemModeEnum::MODE_ON);
     }
 }

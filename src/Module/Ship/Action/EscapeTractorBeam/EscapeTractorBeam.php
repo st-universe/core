@@ -116,7 +116,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
         $tractoringShip = $tractoringShipWrapper->get();
         $isTractoringShipWarped = $tractoringShip->getWarpDriveState();
 
-        $tractoringShip->getShipSystem(SpacecraftSystemTypeEnum::TRACTOR_BEAM)->setStatus(0);
+        $tractoringShip->getSpacecraftSystem(SpacecraftSystemTypeEnum::TRACTOR_BEAM)->setStatus(0);
         $this->spacecraftSystemManager->deactivate($tractoringShipWrapper, SpacecraftSystemTypeEnum::TRACTOR_BEAM, true); // forced active deactivation
 
         $this->spacecraftRepository->save($tractoringShip);
@@ -145,7 +145,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
         $informations = new InformationWrapper([_('Der Fluchtversuch ist fehlgeschlagen:')]);
 
         $ship = $wrapper->get();
-        $system = $ship->getShipSystem(SpacecraftSystemTypeEnum::DEFLECTOR);
+        $system = $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::DEFLECTOR);
         $this->applyDamage->damageShipSystem($wrapper, $system, random_int(5, 25), $informations);
 
         $game->addInformationWrapper($informations);

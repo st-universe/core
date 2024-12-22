@@ -78,7 +78,7 @@ class EnoughEpsConditionTest extends StuTestCase
 
         $this->ship->shouldReceive('getDockedTo')
             ->andReturn(null);
-        $this->ship->shouldReceive('hasShipSystem')
+        $this->ship->shouldReceive('hasSpacecraftSystem')
             ->with($expectedSystemId)
             ->andReturn(true);
         $this->ship->shouldReceive('getSystemState')
@@ -131,7 +131,7 @@ class EnoughEpsConditionTest extends StuTestCase
         bool $isTranswarpNeeded,
         SpacecraftSystemTypeEnum $expectedSystemId
     ): void {
-        $this->ship->shouldReceive('hasShipSystem')
+        $this->ship->shouldReceive('hasSpacecraftSystem')
             ->with($expectedSystemId)
             ->andReturn(false);
 
@@ -215,7 +215,7 @@ class EnoughEpsConditionTest extends StuTestCase
         }
 
         if ($nextWaypointClass === StarSystemMapInterface::class) {
-            $this->ship->shouldReceive('hasShipSystem')
+            $this->ship->shouldReceive('hasSpacecraftSystem')
                 ->with(SpacecraftSystemTypeEnum::IMPULSEDRIVE)
                 ->andReturn($hasImpulse);
         }
@@ -257,7 +257,7 @@ class EnoughEpsConditionTest extends StuTestCase
 
         $this->ship->shouldReceive('getDockedTo')
             ->andReturn(null);
-        $this->ship->shouldReceive('hasShipSystem')
+        $this->ship->shouldReceive('hasSpacecraftSystem')
             ->with(SpacecraftSystemTypeEnum::IMPULSEDRIVE)
             ->andReturn(true);
         $this->ship->shouldReceive('getSystemState')
@@ -311,7 +311,7 @@ class EnoughEpsConditionTest extends StuTestCase
 
         $this->ship->shouldReceive('getDockedTo')
             ->andReturn(null);
-        $this->ship->shouldReceive('hasShipSystem')
+        $this->ship->shouldReceive('hasSpacecraftSystem')
             ->with(SpacecraftSystemTypeEnum::IMPULSEDRIVE)
             ->andReturn(true);
         $this->ship->shouldReceive('getSystemState')

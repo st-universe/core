@@ -190,11 +190,11 @@ class CloakShipSystemTest extends StuTestCase
             SpacecraftSystemTypeEnum::TORPEDO->value => $this->mock(SpacecraftSystemInterface::class),
         ];
         foreach ($systemTypes as $systemType => $system) {
-            $this->ship->shouldReceive('hasShipSystem')
+            $this->ship->shouldReceive('hasSpacecraftSystem')
                 ->with(SpacecraftSystemTypeEnum::from($systemType))
                 ->once()
                 ->andReturnTrue();
-            $this->ship->shouldReceive('getShipSystem')
+            $this->ship->shouldReceive('getSpacecraftSystem')
                 ->with(SpacecraftSystemTypeEnum::from($systemType))
                 ->once()
                 ->andReturn($system);
@@ -203,7 +203,7 @@ class CloakShipSystemTest extends StuTestCase
                 ->once();
         }
 
-        $this->ship->shouldReceive('getShipSystem')
+        $this->ship->shouldReceive('getSpacecraftSystem')
             ->with(SpacecraftSystemTypeEnum::CLOAK)
             ->once()
             ->andReturn($systemCloak);
@@ -221,7 +221,7 @@ class CloakShipSystemTest extends StuTestCase
     {
         $system = $this->mock(SpacecraftSystemInterface::class);
 
-        $this->ship->shouldReceive('getShipSystem')
+        $this->ship->shouldReceive('getSpacecraftSystem')
             ->with(SpacecraftSystemTypeEnum::CLOAK)
             ->once()
             ->andReturn($system);

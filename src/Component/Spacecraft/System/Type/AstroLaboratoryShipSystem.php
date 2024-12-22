@@ -56,7 +56,7 @@ final class AstroLaboratoryShipSystem extends AbstractSpacecraftSystemType imple
             $this->astroEntryLib->cancelAstroFinalizing($wrapper);
         }
 
-        $spacecraft->getShipSystem(SpacecraftSystemTypeEnum::ASTRO_LABORATORY)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
+        $spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::ASTRO_LABORATORY)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
     }
 
     #[Override]

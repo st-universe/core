@@ -83,17 +83,17 @@ class BussardCollectorShipSystem extends AbstractSpacecraftSystemType implements
         }
         $this->spacecraftStateChanger->changeShipState($wrapper, SpacecraftStateEnum::SHIP_STATE_NONE);
 
-        if ($spacecraft->hasShipSystem(SpacecraftSystemTypeEnum::SHIELDS)) {
-            $spacecraft->getShipSystem(SpacecraftSystemTypeEnum::SHIELDS)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
+        if ($spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::SHIELDS)) {
+            $spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::SHIELDS)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
         }
 
-        $spacecraft->getShipSystem($this->getSystemType())->setMode(SpacecraftSystemModeEnum::MODE_ON);
+        $spacecraft->getSpacecraftSystem($this->getSystemType())->setMode(SpacecraftSystemModeEnum::MODE_ON);
     }
 
     #[Override]
     public function deactivate(SpacecraftWrapperInterface $wrapper): void
     {
-        $wrapper->get()->getShipSystem($this->getSystemType())->setMode(SpacecraftSystemModeEnum::MODE_OFF);
+        $wrapper->get()->getSpacecraftSystem($this->getSystemType())->setMode(SpacecraftSystemModeEnum::MODE_OFF);
     }
 
     #[Override]

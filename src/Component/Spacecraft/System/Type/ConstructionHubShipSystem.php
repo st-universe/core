@@ -52,7 +52,7 @@ final class ConstructionHubShipSystem extends AbstractSpacecraftSystemType imple
     public function activate(SpacecraftWrapperInterface $wrapper, SpacecraftSystemManagerInterface $manager): void
     {
         $spacecraft = $wrapper->get();
-        $spacecraft->getShipSystem($this->getSystemType())->setMode(SpacecraftSystemModeEnum::MODE_ON);
+        $spacecraft->getSpacecraftSystem($this->getSystemType())->setMode(SpacecraftSystemModeEnum::MODE_ON);
         $this->shipyardShipQueueRepository->restartQueueByShipyard($spacecraft->getId());
     }
 
@@ -60,7 +60,7 @@ final class ConstructionHubShipSystem extends AbstractSpacecraftSystemType imple
     public function deactivate(SpacecraftWrapperInterface $wrapper): void
     {
         $spacecraft = $wrapper->get();
-        $spacecraft->getShipSystem($this->getSystemType())->setMode(SpacecraftSystemModeEnum::MODE_OFF);
+        $spacecraft->getSpacecraftSystem($this->getSystemType())->setMode(SpacecraftSystemModeEnum::MODE_OFF);
         $this->stopShipyardQeue($spacecraft);
     }
 
