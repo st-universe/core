@@ -19,7 +19,7 @@ final class ShuttleRampShipSystem extends AbstractSpacecraftSystemType implement
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
-        return SpacecraftSystemTypeEnum::SYSTEM_SHUTTLE_RAMP;
+        return SpacecraftSystemTypeEnum::SHUTTLE_RAMP;
     }
 
     #[Override]

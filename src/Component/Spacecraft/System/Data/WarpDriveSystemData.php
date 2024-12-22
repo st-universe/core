@@ -19,7 +19,7 @@ class WarpDriveSystemData extends AbstractSystemData
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
-        return SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE;
+        return SpacecraftSystemTypeEnum::WARPDRIVE;
     }
 
     #[Override]
@@ -65,7 +65,7 @@ class WarpDriveSystemData extends AbstractSystemData
     public function getMaxWarpDrive(): int
     {
         return (int) (ceil($this->maxwd
-            * $this->spacecraft->getShipSystem(SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE)->getStatus() / 100));
+            * $this->spacecraft->getShipSystem(SpacecraftSystemTypeEnum::WARPDRIVE)->getStatus() / 100));
     }
 
     public function getWarpDriveSplit(): int

@@ -43,22 +43,22 @@ class SpacecraftSystemCreation implements SpacecraftSystemCreationInterface
 
         //default systems, that almost every ship should have
         if ($spacecraft->getRump()->getCategoryId() !== SpacecraftRumpEnum::SHIP_CATEGORY_SHUTTLE) {
-            $systems[SpacecraftSystemTypeEnum::SYSTEM_DEFLECTOR->value] = null;
-            $systems[SpacecraftSystemTypeEnum::SYSTEM_TRACTOR_BEAM->value] = null;
+            $systems[SpacecraftSystemTypeEnum::DEFLECTOR->value] = null;
+            $systems[SpacecraftSystemTypeEnum::TRACTOR_BEAM->value] = null;
         }
-        $systems[SpacecraftSystemTypeEnum::SYSTEM_LIFE_SUPPORT->value] = null;
+        $systems[SpacecraftSystemTypeEnum::LIFE_SUPPORT->value] = null;
         //TODO transporter
 
         if ($spacecraft->getRump()->getCategoryId() === SpacecraftRumpEnum::SHIP_CATEGORY_STATION) {
-            $systems[SpacecraftSystemTypeEnum::SYSTEM_BEAM_BLOCKER->value] = null;
+            $systems[SpacecraftSystemTypeEnum::BEAM_BLOCKER->value] = null;
         }
 
         if ($spacecraft->getRump()->isShipyard()) {
-            $systems[SpacecraftSystemTypeEnum::SYSTEM_CONSTRUCTION_HUB->value] = null;
+            $systems[SpacecraftSystemTypeEnum::CONSTRUCTION_HUB->value] = null;
         }
 
         if ($spacecraft->getRump()->getRoleId() === SpacecraftRumpEnum::SHIP_ROLE_SENSOR) {
-            $systems[SpacecraftSystemTypeEnum::SYSTEM_UPLINK->value] = null;
+            $systems[SpacecraftSystemTypeEnum::UPLINK->value] = null;
         }
 
         return $systems;
@@ -102,7 +102,7 @@ class SpacecraftSystemCreation implements SpacecraftSystemCreationInterface
 
             switch ($module->getType()) {
                 case SpacecraftModuleTypeEnum::SENSOR:
-                    $systems[SpacecraftSystemTypeEnum::SYSTEM_NBS->value] = null;
+                    $systems[SpacecraftSystemTypeEnum::NBS->value] = null;
                     break;
             }
         }

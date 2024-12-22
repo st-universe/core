@@ -127,12 +127,12 @@ final class DockFleet implements ActionControllerInterface
             $wrapper = $this->spacecraftWrapperFactory->wrapShip($ship);
 
             try {
-                $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_SHIELDS);
+                $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::SHIELDS);
             } catch (SpacecraftSystemException) {
             }
 
             try {
-                $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE);
+                $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::WARPDRIVE);
             } catch (SpacecraftSystemException) {
             }
 

@@ -174,13 +174,13 @@ class Ship extends Spacecraft implements ShipInterface
     #[Override]
     public function getAstroState(): bool
     {
-        return $this->getSystemState(SpacecraftSystemTypeEnum::SYSTEM_ASTRO_LABORATORY);
+        return $this->getSystemState(SpacecraftSystemTypeEnum::ASTRO_LABORATORY);
     }
 
     #[Override]
     public function isBussardCollectorHealthy(): bool
     {
-        return $this->isSystemHealthy(SpacecraftSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR);
+        return $this->isSystemHealthy(SpacecraftSystemTypeEnum::BUSSARD_COLLECTOR);
     }
 
     #[Override]

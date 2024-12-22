@@ -137,7 +137,7 @@ final class StartAirfieldShip implements ActionControllerInterface
             $this->storageManager->lowerStorage($colony, $defaultTorpedoType->getCommodity(), $count);
         }
         if ($hangar->getBuildplan()->getCrew() > 0) {
-            $this->spacecraftSystemManager->activate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_LIFE_SUPPORT, true);
+            $this->spacecraftSystemManager->activate($wrapper, SpacecraftSystemTypeEnum::LIFE_SUPPORT, true);
             $this->shipRepository->save($ship);
         }
 

@@ -161,7 +161,7 @@ class WarpdriveShipSystemTest extends StuTestCase
         $reactorWrapper->shouldReceive('get->getSystemType')
             ->withNoArgs()
             ->once()
-            ->andReturn(SpacecraftSystemTypeEnum::SYSTEM_WARPCORE);
+            ->andReturn(SpacecraftSystemTypeEnum::WARPCORE);
 
         $reason = '';
         $this->assertFalse(
@@ -232,7 +232,7 @@ class WarpdriveShipSystemTest extends StuTestCase
 
         //SYSTEM ACTIVATION
         $this->ship->shouldReceive('getShipSystem')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE)
+            ->with(SpacecraftSystemTypeEnum::WARPDRIVE)
             ->once()
             ->andReturn($system);
         $system->shouldReceive('setMode')
@@ -259,7 +259,7 @@ class WarpdriveShipSystemTest extends StuTestCase
         $system = $this->mock(SpacecraftSystemInterface::class);
 
         $this->ship->shouldReceive('getShipSystem')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE)
+            ->with(SpacecraftSystemTypeEnum::WARPDRIVE)
             ->once()
             ->andReturn($system);
         $system->shouldReceive('setMode')

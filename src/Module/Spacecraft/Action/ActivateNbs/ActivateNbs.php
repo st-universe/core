@@ -23,7 +23,7 @@ final class ActivateNbs implements ActionControllerInterface
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $this->helper->activate(request::indInt('id'), SpacecraftSystemTypeEnum::SYSTEM_NBS, $game);
+        $this->helper->activate(request::indInt('id'), SpacecraftSystemTypeEnum::NBS, $game);
     }
 
     #[Override]

@@ -152,7 +152,7 @@ class SpacecraftAttackerTest extends StuTestCase
             ->once()
             ->andReturn($this->ship);
         $this->ship->shouldReceive('getShipSystem')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_PHASER)
+            ->with(SpacecraftSystemTypeEnum::PHASER)
             ->once()
             ->andReturn($system);
         $system->shouldReceive('getModule')
@@ -176,7 +176,7 @@ class SpacecraftAttackerTest extends StuTestCase
             ->once()
             ->andReturn($this->ship);
         $this->ship->shouldReceive('getShipSystem')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_PHASER)
+            ->with(SpacecraftSystemTypeEnum::PHASER)
             ->once()
             ->andReturn($system);
         $system->shouldReceive('getModule')
@@ -402,7 +402,7 @@ class SpacecraftAttackerTest extends StuTestCase
             ->once()
             ->andReturn($torpedo);
         $this->ship->shouldReceive('getShipSystem')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_TORPEDO)
+            ->with(SpacecraftSystemTypeEnum::TORPEDO)
             ->once()
             ->andReturn($system);
         $system->shouldReceive('getModule')
@@ -430,7 +430,7 @@ class SpacecraftAttackerTest extends StuTestCase
             ->once()
             ->andReturn($torpedo);
         $this->ship->shouldReceive('getShipSystem')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_TORPEDO)
+            ->with(SpacecraftSystemTypeEnum::TORPEDO)
             ->once()
             ->andReturn($system);
         $system->shouldReceive('getModule')

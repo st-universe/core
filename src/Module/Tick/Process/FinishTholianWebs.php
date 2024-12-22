@@ -135,7 +135,7 @@ final class FinishTholianWebs implements ProcessTickHandlerInterface
 
         $this->spacecraftSystemManager->deactivate(
             $this->spacecraftWrapperFactory->wrapSpacecraft($spacecraft),
-            SpacecraftSystemTypeEnum::SYSTEM_TRACTOR_BEAM,
+            SpacecraftSystemTypeEnum::TRACTOR_BEAM,
             true
         ); //forced deactivation
     }

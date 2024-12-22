@@ -184,10 +184,10 @@ class CloakShipSystemTest extends StuTestCase
 
         //SYSTEMS TO SHUTDOWN
         $systemTypes = [
-            SpacecraftSystemTypeEnum::SYSTEM_ASTRO_LABORATORY->value => $this->mock(SpacecraftSystemInterface::class),
-            SpacecraftSystemTypeEnum::SYSTEM_SHIELDS->value => $this->mock(SpacecraftSystemInterface::class),
-            SpacecraftSystemTypeEnum::SYSTEM_PHASER->value => $this->mock(SpacecraftSystemInterface::class),
-            SpacecraftSystemTypeEnum::SYSTEM_TORPEDO->value => $this->mock(SpacecraftSystemInterface::class),
+            SpacecraftSystemTypeEnum::ASTRO_LABORATORY->value => $this->mock(SpacecraftSystemInterface::class),
+            SpacecraftSystemTypeEnum::SHIELDS->value => $this->mock(SpacecraftSystemInterface::class),
+            SpacecraftSystemTypeEnum::PHASER->value => $this->mock(SpacecraftSystemInterface::class),
+            SpacecraftSystemTypeEnum::TORPEDO->value => $this->mock(SpacecraftSystemInterface::class),
         ];
         foreach ($systemTypes as $systemType => $system) {
             $this->ship->shouldReceive('hasShipSystem')
@@ -204,14 +204,14 @@ class CloakShipSystemTest extends StuTestCase
         }
 
         $this->ship->shouldReceive('getShipSystem')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_CLOAK)
+            ->with(SpacecraftSystemTypeEnum::CLOAK)
             ->once()
             ->andReturn($systemCloak);
         $systemCloak->shouldReceive('setMode')
             ->with(SpacecraftSystemModeEnum::MODE_ON)
             ->once();
         $managerMock->shouldReceive('deactivate')
-            ->with($this->wrapper, SpacecraftSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true)
+            ->with($this->wrapper, SpacecraftSystemTypeEnum::TRACTOR_BEAM, true)
             ->once();
 
         $this->system->activate($this->wrapper, $managerMock);
@@ -222,7 +222,7 @@ class CloakShipSystemTest extends StuTestCase
         $system = $this->mock(SpacecraftSystemInterface::class);
 
         $this->ship->shouldReceive('getShipSystem')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_CLOAK)
+            ->with(SpacecraftSystemTypeEnum::CLOAK)
             ->once()
             ->andReturn($system);
         $system->shouldReceive('setMode')

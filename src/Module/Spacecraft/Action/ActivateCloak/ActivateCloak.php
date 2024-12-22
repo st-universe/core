@@ -23,7 +23,7 @@ final class ActivateCloak implements ActionControllerInterface
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $this->helper->activate(request::indInt('id'), SpacecraftSystemTypeEnum::SYSTEM_CLOAK, $game);
+        $this->helper->activate(request::indInt('id'), SpacecraftSystemTypeEnum::CLOAK, $game);
     }
 
     #[Override]

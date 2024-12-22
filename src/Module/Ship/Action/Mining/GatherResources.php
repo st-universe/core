@@ -60,8 +60,8 @@ final class GatherResources implements ActionControllerInterface
         $chosenLocationId = request::postInt('chosen');
 
         if ($chosenLocationId === 0) {
-            if ($ship->isSystemHealthy(SpacecraftSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR)) {
-                $this->helper->deactivate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR, $game);
+            if ($ship->isSystemHealthy(SpacecraftSystemTypeEnum::BUSSARD_COLLECTOR)) {
+                $this->helper->deactivate($wrapper, SpacecraftSystemTypeEnum::BUSSARD_COLLECTOR, $game);
             }
 
             $miningQueue = $this->miningQueueRepository->getByShip($ship->getId());
@@ -79,8 +79,8 @@ final class GatherResources implements ActionControllerInterface
             }
 
 
-            if (!$ship->getSystemState(SpacecraftSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR)) {
-                if (!$this->helper->activate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR, $game)) {
+            if (!$ship->getSystemState(SpacecraftSystemTypeEnum::BUSSARD_COLLECTOR)) {
+                if (!$this->helper->activate($wrapper, SpacecraftSystemTypeEnum::BUSSARD_COLLECTOR, $game)) {
                     return;
                 }
             } else {

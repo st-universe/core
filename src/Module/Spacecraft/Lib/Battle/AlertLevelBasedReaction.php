@@ -66,7 +66,7 @@ final class AlertLevelBasedReaction implements AlertLevelBasedReactionInterface
 
         if ($ship->getCloakState()) {
             try {
-                $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_CLOAK);
+                $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::CLOAK);
                 $informations->addInformation("- Die Tarnung wurde deaktiviert");
             } catch (SpacecraftSystemException) {
             }
@@ -76,7 +76,7 @@ final class AlertLevelBasedReaction implements AlertLevelBasedReactionInterface
 
         if (!$ship->isTractoring() && (!$ship instanceof ShipInterface || !$ship->isTractored())) {
             try {
-                $this->spacecraftSystemManager->activate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_SHIELDS);
+                $this->spacecraftSystemManager->activate($wrapper, SpacecraftSystemTypeEnum::SHIELDS);
 
                 $informations->addInformation("- Die Schilde wurden aktiviert");
             } catch (SpacecraftSystemException) {
@@ -85,14 +85,14 @@ final class AlertLevelBasedReaction implements AlertLevelBasedReactionInterface
             $informations->addInformation("- Die Schilde konnten wegen aktiviertem Traktorstrahl nicht aktiviert werden");
         }
         try {
-            $this->spacecraftSystemManager->activate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_NBS);
+            $this->spacecraftSystemManager->activate($wrapper, SpacecraftSystemTypeEnum::NBS);
 
             $informations->addInformation("- Die Nahbereichssensoren wurden aktiviert");
         } catch (SpacecraftSystemException) {
         }
 
         try {
-            $this->spacecraftSystemManager->activate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_PHASER);
+            $this->spacecraftSystemManager->activate($wrapper, SpacecraftSystemTypeEnum::PHASER);
 
             $informations->addInformation("- Die Energiewaffe wurde aktiviert");
         } catch (SpacecraftSystemException) {
@@ -104,7 +104,7 @@ final class AlertLevelBasedReaction implements AlertLevelBasedReactionInterface
     private function doAlertRedReactions(SpacecraftWrapperInterface $wrapper, InformationInterface $informations): void
     {
         try {
-            $this->spacecraftSystemManager->activate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_TORPEDO);
+            $this->spacecraftSystemManager->activate($wrapper, SpacecraftSystemTypeEnum::TORPEDO);
 
             $informations->addInformation("- Der Torpedowerfer wurde aktiviert");
         } catch (SpacecraftSystemException) {

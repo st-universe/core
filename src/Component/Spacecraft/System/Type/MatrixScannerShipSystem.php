@@ -17,7 +17,7 @@ final class MatrixScannerShipSystem extends AbstractSpacecraftSystemType impleme
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
-        return SpacecraftSystemTypeEnum::SYSTEM_MATRIX_SCANNER;
+        return SpacecraftSystemTypeEnum::MATRIX_SCANNER;
     }
 
     #[Override]

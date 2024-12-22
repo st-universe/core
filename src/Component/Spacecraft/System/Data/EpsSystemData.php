@@ -23,7 +23,7 @@ class EpsSystemData extends AbstractSystemData
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
-        return SpacecraftSystemTypeEnum::SYSTEM_EPS;
+        return SpacecraftSystemTypeEnum::EPS;
     }
 
     public function getEps(): int
@@ -60,12 +60,12 @@ class EpsSystemData extends AbstractSystemData
      */
     public function getMaxEps(): int
     {
-        if (!$this->spacecraft->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_EPS)) {
+        if (!$this->spacecraft->hasShipSystem(SpacecraftSystemTypeEnum::EPS)) {
             return $this->maxEps;
         }
 
         return (int) (ceil($this->maxEps
-            * $this->spacecraft->getShipSystem(SpacecraftSystemTypeEnum::SYSTEM_EPS)->getStatus() / 100));
+            * $this->spacecraft->getShipSystem(SpacecraftSystemTypeEnum::EPS)->getStatus() / 100));
     }
 
     public function getMaxBattery(): int

@@ -86,7 +86,7 @@ class AlertLevelBasedReactionTest extends StuTestCase
             ->andReturn(true);
 
         $this->spacecraftSystemManager->shouldReceive('deactivate')
-            ->with($this->wrapper, SpacecraftSystemTypeEnum::SYSTEM_CLOAK)
+            ->with($this->wrapper, SpacecraftSystemTypeEnum::CLOAK)
             ->once();
 
         $this->informations->shouldReceive('addInformation')
@@ -115,13 +115,13 @@ class AlertLevelBasedReactionTest extends StuTestCase
             ->andReturn(false);
 
         $this->spacecraftSystemManager->shouldReceive('activate')
-            ->with($this->wrapper, SpacecraftSystemTypeEnum::SYSTEM_SHIELDS)
+            ->with($this->wrapper, SpacecraftSystemTypeEnum::SHIELDS)
             ->once();
         $this->spacecraftSystemManager->shouldReceive('activate')
-            ->with($this->wrapper, SpacecraftSystemTypeEnum::SYSTEM_NBS)
+            ->with($this->wrapper, SpacecraftSystemTypeEnum::NBS)
             ->once();
         $this->spacecraftSystemManager->shouldReceive('activate')
-            ->with($this->wrapper, SpacecraftSystemTypeEnum::SYSTEM_PHASER)
+            ->with($this->wrapper, SpacecraftSystemTypeEnum::PHASER)
             ->once();
 
         $this->informations->shouldReceive('addInformation')
@@ -152,10 +152,10 @@ class AlertLevelBasedReactionTest extends StuTestCase
             ->andReturn(true);
 
         $this->spacecraftSystemManager->shouldReceive('activate')
-            ->with($this->wrapper, SpacecraftSystemTypeEnum::SYSTEM_NBS)
+            ->with($this->wrapper, SpacecraftSystemTypeEnum::NBS)
             ->once();
         $this->spacecraftSystemManager->shouldReceive('activate')
-            ->with($this->wrapper, SpacecraftSystemTypeEnum::SYSTEM_PHASER)
+            ->with($this->wrapper, SpacecraftSystemTypeEnum::PHASER)
             ->once();
 
         $this->informations->shouldReceive('addInformation')
@@ -190,10 +190,10 @@ class AlertLevelBasedReactionTest extends StuTestCase
             ->andReturn(true);
 
         $this->spacecraftSystemManager->shouldReceive('activate')
-            ->with($this->wrapper, SpacecraftSystemTypeEnum::SYSTEM_NBS)
+            ->with($this->wrapper, SpacecraftSystemTypeEnum::NBS)
             ->once();
         $this->spacecraftSystemManager->shouldReceive('activate')
-            ->with($this->wrapper, SpacecraftSystemTypeEnum::SYSTEM_PHASER)
+            ->with($this->wrapper, SpacecraftSystemTypeEnum::PHASER)
             ->once();
 
         $this->informations->shouldReceive('addInformation')
@@ -228,15 +228,15 @@ class AlertLevelBasedReactionTest extends StuTestCase
             ->andReturn(false);
 
         $this->spacecraftSystemManager->shouldReceive('activate')
-            ->with($this->wrapper, SpacecraftSystemTypeEnum::SYSTEM_SHIELDS)
+            ->with($this->wrapper, SpacecraftSystemTypeEnum::SHIELDS)
             ->once()
             ->andThrow(new SystemNotFoundException());
         $this->spacecraftSystemManager->shouldReceive('activate')
-            ->with($this->wrapper, SpacecraftSystemTypeEnum::SYSTEM_NBS)
+            ->with($this->wrapper, SpacecraftSystemTypeEnum::NBS)
             ->once()
             ->andThrow(new SystemNotFoundException());
         $this->spacecraftSystemManager->shouldReceive('activate')
-            ->with($this->wrapper, SpacecraftSystemTypeEnum::SYSTEM_PHASER)
+            ->with($this->wrapper, SpacecraftSystemTypeEnum::PHASER)
             ->once()
             ->andThrow(new SystemNotFoundException());
 
@@ -262,16 +262,16 @@ class AlertLevelBasedReactionTest extends StuTestCase
             ->andReturn(false);
 
         $this->spacecraftSystemManager->shouldReceive('activate')
-            ->with($this->wrapper, SpacecraftSystemTypeEnum::SYSTEM_SHIELDS)
+            ->with($this->wrapper, SpacecraftSystemTypeEnum::SHIELDS)
             ->once();
         $this->spacecraftSystemManager->shouldReceive('activate')
-            ->with($this->wrapper, SpacecraftSystemTypeEnum::SYSTEM_NBS)
+            ->with($this->wrapper, SpacecraftSystemTypeEnum::NBS)
             ->once();
         $this->spacecraftSystemManager->shouldReceive('activate')
-            ->with($this->wrapper, SpacecraftSystemTypeEnum::SYSTEM_PHASER)
+            ->with($this->wrapper, SpacecraftSystemTypeEnum::PHASER)
             ->once();
         $this->spacecraftSystemManager->shouldReceive('activate')
-            ->with($this->wrapper, SpacecraftSystemTypeEnum::SYSTEM_TORPEDO)
+            ->with($this->wrapper, SpacecraftSystemTypeEnum::TORPEDO)
             ->once();
 
         $this->informations->shouldReceive('addInformation')

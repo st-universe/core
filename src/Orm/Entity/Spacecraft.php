@@ -309,13 +309,13 @@ abstract class Spacecraft implements SpacecraftInterface
     #[Override]
     public function getImpulseState(): bool
     {
-        return $this->getSystemState(SpacecraftSystemTypeEnum::SYSTEM_IMPULSEDRIVE);
+        return $this->getSystemState(SpacecraftSystemTypeEnum::IMPULSEDRIVE);
     }
 
     #[Override]
     public function getWarpDriveState(): bool
     {
-        return $this->getSystemState(SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE);
+        return $this->getSystemState(SpacecraftSystemTypeEnum::WARPDRIVE);
     }
 
     #[Override]
@@ -333,25 +333,25 @@ abstract class Spacecraft implements SpacecraftInterface
     #[Override]
     public function getCloakState(): bool
     {
-        return $this->getSystemState(SpacecraftSystemTypeEnum::SYSTEM_CLOAK);
+        return $this->getSystemState(SpacecraftSystemTypeEnum::CLOAK);
     }
 
     #[Override]
     public function getTachyonState(): bool
     {
-        return $this->getSystemState(SpacecraftSystemTypeEnum::SYSTEM_TACHYON_SCANNER);
+        return $this->getSystemState(SpacecraftSystemTypeEnum::TACHYON_SCANNER);
     }
 
     #[Override]
     public function getSubspaceState(): bool
     {
-        return $this->getSystemState(SpacecraftSystemTypeEnum::SYSTEM_SUBSPACE_SCANNER);
+        return $this->getSystemState(SpacecraftSystemTypeEnum::SUBSPACE_SCANNER);
     }
 
     #[Override]
     public function getRPGModuleState(): bool
     {
-        return $this->getSystemState(SpacecraftSystemTypeEnum::SYSTEM_RPG_MODULE);
+        return $this->getSystemState(SpacecraftSystemTypeEnum::RPG_MODULE);
     }
 
     #[Override]
@@ -399,12 +399,12 @@ abstract class Spacecraft implements SpacecraftInterface
     #[Override]
     public function getMaxShield(bool $isTheoretical = false): int
     {
-        if ($isTheoretical || !$this->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_SHIELDS)) {
+        if ($isTheoretical || !$this->hasShipSystem(SpacecraftSystemTypeEnum::SHIELDS)) {
             return $this->max_schilde;
         }
 
         return (int) (ceil($this->max_schilde
-            * $this->getShipSystem(SpacecraftSystemTypeEnum::SYSTEM_SHIELDS)->getStatus() / 100));
+            * $this->getShipSystem(SpacecraftSystemTypeEnum::SHIELDS)->getStatus() / 100));
     }
 
     #[Override]
@@ -424,25 +424,25 @@ abstract class Spacecraft implements SpacecraftInterface
     #[Override]
     public function getShieldState(): bool
     {
-        return $this->getSystemState(SpacecraftSystemTypeEnum::SYSTEM_SHIELDS);
+        return $this->getSystemState(SpacecraftSystemTypeEnum::SHIELDS);
     }
 
     #[Override]
     public function getNbs(): bool
     {
-        return $this->getSystemState(SpacecraftSystemTypeEnum::SYSTEM_NBS);
+        return $this->getSystemState(SpacecraftSystemTypeEnum::NBS);
     }
 
     #[Override]
     public function getLss(): bool
     {
-        return $this->getSystemState(SpacecraftSystemTypeEnum::SYSTEM_LSS);
+        return $this->getSystemState(SpacecraftSystemTypeEnum::LSS);
     }
 
     #[Override]
     public function getPhaserState(): bool
     {
-        return $this->getSystemState(SpacecraftSystemTypeEnum::SYSTEM_PHASER);
+        return $this->getSystemState(SpacecraftSystemTypeEnum::PHASER);
     }
 
     #[Override]
@@ -454,7 +454,7 @@ abstract class Spacecraft implements SpacecraftInterface
     #[Override]
     public function getTorpedoState(): bool
     {
-        return $this->getSystemState(SpacecraftSystemTypeEnum::SYSTEM_TORPEDO);
+        return $this->getSystemState(SpacecraftSystemTypeEnum::TORPEDO);
     }
 
     #[Override]
@@ -532,12 +532,12 @@ abstract class Spacecraft implements SpacecraftInterface
     #[Override]
     public function getHitChance(): int
     {
-        if (!$this->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_COMPUTER)) {
+        if (!$this->hasShipSystem(SpacecraftSystemTypeEnum::COMPUTER)) {
             return $this->hit_chance;
         }
 
         return (int) (ceil($this->hit_chance
-            * $this->getShipSystem(SpacecraftSystemTypeEnum::SYSTEM_COMPUTER)->getStatus() / 100));
+            * $this->getShipSystem(SpacecraftSystemTypeEnum::COMPUTER)->getStatus() / 100));
     }
 
     #[Override]
@@ -553,12 +553,12 @@ abstract class Spacecraft implements SpacecraftInterface
     #[Override]
     public function getEvadeChance(): int
     {
-        if (!$this->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_IMPULSEDRIVE)) {
+        if (!$this->hasShipSystem(SpacecraftSystemTypeEnum::IMPULSEDRIVE)) {
             return $this->evade_chance;
         }
 
         return (int) (ceil($this->evade_chance
-            * $this->getShipSystem(SpacecraftSystemTypeEnum::SYSTEM_IMPULSEDRIVE)->getStatus() / 100));
+            * $this->getShipSystem(SpacecraftSystemTypeEnum::IMPULSEDRIVE)->getStatus() / 100));
     }
 
     #[Override]
@@ -574,12 +574,12 @@ abstract class Spacecraft implements SpacecraftInterface
     #[Override]
     public function getBaseDamage(): int
     {
-        if (!$this->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_PHASER)) {
+        if (!$this->hasShipSystem(SpacecraftSystemTypeEnum::PHASER)) {
             return $this->base_damage;
         }
 
         return (int) (ceil($this->base_damage
-            * $this->getShipSystem(SpacecraftSystemTypeEnum::SYSTEM_PHASER)->getStatus() / 100));
+            * $this->getShipSystem(SpacecraftSystemTypeEnum::PHASER)->getStatus() / 100));
     }
 
     #[Override]
@@ -595,12 +595,12 @@ abstract class Spacecraft implements SpacecraftInterface
     #[Override]
     public function getSensorRange(): int
     {
-        if (!$this->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_LSS)) {
+        if (!$this->hasShipSystem(SpacecraftSystemTypeEnum::LSS)) {
             return $this->sensor_range;
         }
 
         return (int) (ceil($this->sensor_range
-            * $this->getShipSystem(SpacecraftSystemTypeEnum::SYSTEM_LSS)->getStatus() / 100));
+            * $this->getShipSystem(SpacecraftSystemTypeEnum::LSS)->getStatus() / 100));
     }
 
     #[Override]
@@ -616,12 +616,12 @@ abstract class Spacecraft implements SpacecraftInterface
     #[Override]
     public function getTractorPayload(): int
     {
-        if (!$this->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_TRACTOR_BEAM)) {
+        if (!$this->hasShipSystem(SpacecraftSystemTypeEnum::TRACTOR_BEAM)) {
             return 0;
         }
 
         return (int) (ceil($this->getRump()->getTractorPayload()
-            * $this->getShipSystem(SpacecraftSystemTypeEnum::SYSTEM_TRACTOR_BEAM)->getStatus() / 100));
+            * $this->getShipSystem(SpacecraftSystemTypeEnum::TRACTOR_BEAM)->getStatus() / 100));
     }
 
     #[Override]
@@ -777,43 +777,43 @@ abstract class Spacecraft implements SpacecraftInterface
     #[Override]
     public function isDeflectorHealthy(): bool
     {
-        return $this->isSystemHealthy(SpacecraftSystemTypeEnum::SYSTEM_DEFLECTOR);
+        return $this->isSystemHealthy(SpacecraftSystemTypeEnum::DEFLECTOR);
     }
 
     #[Override]
     public function isTroopQuartersHealthy(): bool
     {
-        return $this->isSystemHealthy(SpacecraftSystemTypeEnum::SYSTEM_TROOP_QUARTERS);
+        return $this->isSystemHealthy(SpacecraftSystemTypeEnum::TROOP_QUARTERS);
     }
 
     #[Override]
     public function isMatrixScannerHealthy(): bool
     {
-        return $this->isSystemHealthy(SpacecraftSystemTypeEnum::SYSTEM_MATRIX_SCANNER);
+        return $this->isSystemHealthy(SpacecraftSystemTypeEnum::MATRIX_SCANNER);
     }
 
     #[Override]
     public function isTorpedoStorageHealthy(): bool
     {
-        return $this->isSystemHealthy(SpacecraftSystemTypeEnum::SYSTEM_TORPEDO_STORAGE);
+        return $this->isSystemHealthy(SpacecraftSystemTypeEnum::TORPEDO_STORAGE);
     }
 
     #[Override]
     public function isShuttleRampHealthy(): bool
     {
-        return $this->isSystemHealthy(SpacecraftSystemTypeEnum::SYSTEM_SHUTTLE_RAMP);
+        return $this->isSystemHealthy(SpacecraftSystemTypeEnum::SHUTTLE_RAMP);
     }
 
     #[Override]
     public function isWebEmitterHealthy(): bool
     {
-        return $this->isSystemHealthy(SpacecraftSystemTypeEnum::SYSTEM_THOLIAN_WEB);
+        return $this->isSystemHealthy(SpacecraftSystemTypeEnum::THOLIAN_WEB);
     }
 
     #[Override]
     public function isWarpAble(): bool
     {
-        return $this->isSystemHealthy(SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE);
+        return $this->isSystemHealthy(SpacecraftSystemTypeEnum::WARPDRIVE);
     }
 
     #[Override]
@@ -842,7 +842,7 @@ abstract class Spacecraft implements SpacecraftInterface
     #[Override]
     public function isWarpPossible(): bool
     {
-        return $this->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE) && $this->getSystem() === null;
+        return $this->hasShipSystem(SpacecraftSystemTypeEnum::WARPDRIVE) && $this->getSystem() === null;
     }
 
     #[Override]
@@ -1151,7 +1151,7 @@ abstract class Spacecraft implements SpacecraftInterface
 
     private function getShieldRegenerationPercentage(): int
     {
-        return $this->isSystemHealthy(SpacecraftSystemTypeEnum::SYSTEM_SHIELDS) ? 10 : 0;
+        return $this->isSystemHealthy(SpacecraftSystemTypeEnum::SHIELDS) ? 10 : 0;
     }
 
     #[Override]
@@ -1163,7 +1163,7 @@ abstract class Spacecraft implements SpacecraftInterface
     #[Override]
     public function canIntercept(): bool
     {
-        return $this->isSystemHealthy(SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE)
+        return $this->isSystemHealthy(SpacecraftSystemTypeEnum::WARPDRIVE)
             && !$this->isTractoring()
             && (!$this instanceof ShipInterface || !$this->isTractored());
     }
@@ -1171,8 +1171,8 @@ abstract class Spacecraft implements SpacecraftInterface
     #[Override]
     public function canMove(): bool
     {
-        return $this->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE)
-            || $this->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_IMPULSEDRIVE);
+        return $this->hasShipSystem(SpacecraftSystemTypeEnum::WARPDRIVE)
+            || $this->hasShipSystem(SpacecraftSystemTypeEnum::IMPULSEDRIVE);
     }
 
     #[Override]
@@ -1222,87 +1222,87 @@ abstract class Spacecraft implements SpacecraftInterface
     #[Override]
     public function hasPhaser(): bool
     {
-        return $this->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_PHASER);
+        return $this->hasShipSystem(SpacecraftSystemTypeEnum::PHASER);
     }
 
     #[Override]
     public function hasTorpedo(): bool
     {
-        return $this->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_TORPEDO);
+        return $this->hasShipSystem(SpacecraftSystemTypeEnum::TORPEDO);
     }
 
     #[Override]
     public function hasCloak(): bool
     {
-        return $this->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_CLOAK);
+        return $this->hasShipSystem(SpacecraftSystemTypeEnum::CLOAK);
     }
 
     #[Override]
     public function hasTachyonScanner(): bool
     {
-        return $this->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_TACHYON_SCANNER);
+        return $this->hasShipSystem(SpacecraftSystemTypeEnum::TACHYON_SCANNER);
     }
 
     #[Override]
     public function hasShuttleRamp(): bool
     {
-        return $this->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_SHUTTLE_RAMP);
+        return $this->hasShipSystem(SpacecraftSystemTypeEnum::SHUTTLE_RAMP);
     }
 
     #[Override]
     public function hasSubspaceScanner(): bool
     {
-        return $this->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_SUBSPACE_SCANNER);
+        return $this->hasShipSystem(SpacecraftSystemTypeEnum::SUBSPACE_SCANNER);
     }
 
     #[Override]
     public function hasAstroLaboratory(): bool
     {
-        return $this->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_ASTRO_LABORATORY);
+        return $this->hasShipSystem(SpacecraftSystemTypeEnum::ASTRO_LABORATORY);
     }
 
     #[Override]
     public function hasWarpdrive(): bool
     {
-        return $this->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE);
+        return $this->hasShipSystem(SpacecraftSystemTypeEnum::WARPDRIVE);
     }
 
     #[Override]
     public function hasReactor(): bool
     {
-        return $this->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_WARPCORE) ||
-            $this->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_FUSION_REACTOR) ||
-            $this->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_SINGULARITY_REACTOR);
+        return $this->hasShipSystem(SpacecraftSystemTypeEnum::WARPCORE) ||
+            $this->hasShipSystem(SpacecraftSystemTypeEnum::FUSION_REACTOR) ||
+            $this->hasShipSystem(SpacecraftSystemTypeEnum::SINGULARITY_REACTOR);
     }
 
     #[Override]
     public function hasRPGModule(): bool
     {
-        return $this->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_RPG_MODULE);
+        return $this->hasShipSystem(SpacecraftSystemTypeEnum::RPG_MODULE);
     }
 
     #[Override]
     public function hasNbsLss(): bool
     {
-        return $this->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_LSS);
+        return $this->hasShipSystem(SpacecraftSystemTypeEnum::LSS);
     }
 
     #[Override]
     public function hasUplink(): bool
     {
-        return $this->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_UPLINK);
+        return $this->hasShipSystem(SpacecraftSystemTypeEnum::UPLINK);
     }
 
     #[Override]
     public function hasTranswarp(): bool
     {
-        return $this->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_TRANSWARP_COIL);
+        return $this->hasShipSystem(SpacecraftSystemTypeEnum::TRANSWARP_COIL);
     }
 
     #[Override]
     public function getTranswarpCooldown(): ?int
     {
-        $cooldown = $this->getShipSystem(SpacecraftSystemTypeEnum::SYSTEM_TRANSWARP_COIL)->getCooldown();
+        $cooldown = $this->getShipSystem(SpacecraftSystemTypeEnum::TRANSWARP_COIL)->getCooldown();
 
         return $cooldown > time() ? $cooldown : null;
     }
@@ -1311,7 +1311,7 @@ abstract class Spacecraft implements SpacecraftInterface
     public function getMaxTorpedos(): int
     {
         return $this->getRump()->getBaseTorpedoStorage()
-            + ($this->isSystemHealthy(SpacecraftSystemTypeEnum::SYSTEM_TORPEDO_STORAGE)
+            + ($this->isSystemHealthy(SpacecraftSystemTypeEnum::TORPEDO_STORAGE)
                 ? TorpedoStorageShipSystem::TORPEDO_CAPACITY : 0);
     }
 
@@ -1322,7 +1322,7 @@ abstract class Spacecraft implements SpacecraftInterface
             $loggerUtil->log(sprintf('rumpShuttleSlots: %d', $this->getRump()->getShuttleSlots()));
             $loggerUtil->log(sprintf('storedShuttleCount: %d', $this->getStoredShuttleCount()));
         }
-        return $this->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_SHUTTLE_RAMP)
+        return $this->hasShipSystem(SpacecraftSystemTypeEnum::SHUTTLE_RAMP)
             && $this->getRump()->getShuttleSlots() - $this->getStoredShuttleCount() > 0;
     }
 
@@ -1385,7 +1385,7 @@ abstract class Spacecraft implements SpacecraftInterface
 
         return $buildplan !== null
             && $buildplan->getCrew() > 0
-            && $this->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_LIFE_SUPPORT);
+            && $this->hasShipSystem(SpacecraftSystemTypeEnum::LIFE_SUPPORT);
     }
 
     #[Override]

@@ -35,7 +35,7 @@ class ClearTractoringBeam implements SpacecraftDestructionHandlerInterface
         $tractoringShipWrapper = $destroyedSpacecraftWrapper->getTractoringSpacecraftWrapper();
         if ($tractoringShipWrapper !== null) {
             $tractoringShip = $tractoringShipWrapper->get();
-            $this->spacecraftSystemManager->deactivate($tractoringShipWrapper, SpacecraftSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
+            $this->spacecraftSystemManager->deactivate($tractoringShipWrapper, SpacecraftSystemTypeEnum::TRACTOR_BEAM, true);
 
             $this->privateMessageSender->send(
                 UserEnum::USER_NOONE,

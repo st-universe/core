@@ -37,7 +37,7 @@ final class ClearTorpedo implements ClearTorpedoInterface
         $this->torpedoStorageRepository->delete($torpedoStorage);
 
         if ($ship->getTorpedoState()) {
-            $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_TORPEDO, true);
+            $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::TORPEDO, true);
         }
     }
 }

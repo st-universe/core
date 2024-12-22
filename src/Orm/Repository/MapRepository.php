@@ -229,7 +229,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             'yStart' => $boundaries->getMinY(),
             'yEnd' => $boundaries->getMaxY(),
             'layerId' => $boundaries->getParentId(),
-            'cloakSystemId' => SpacecraftSystemTypeEnum::SYSTEM_CLOAK->value
+            'cloakSystemId' => SpacecraftSystemTypeEnum::CLOAK->value
         ])->getResult();
     }
 

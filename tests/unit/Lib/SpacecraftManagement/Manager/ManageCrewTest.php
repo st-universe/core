@@ -342,7 +342,7 @@ class ManageCrewTest extends StuTestCase
             ->once()
             ->andReturn('name');
         $this->ship->shouldReceive('hasShipSystem')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
+            ->with(SpacecraftSystemTypeEnum::TROOP_QUARTERS)
             ->once()
             ->andReturn(true);
 
@@ -362,12 +362,12 @@ class ManageCrewTest extends StuTestCase
             ->andReturn(SpacecraftSystemModeEnum::MODE_OFF);
 
         $this->ship->shouldReceive('getShipSystem')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
+            ->with(SpacecraftSystemTypeEnum::TROOP_QUARTERS)
             ->once()
             ->andReturn($shipSystemMock);
 
         $this->ship->shouldReceive('hasShipSystem')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_LIFE_SUPPORT)
+            ->with(SpacecraftSystemTypeEnum::LIFE_SUPPORT)
             ->once()
             ->andReturn(true);
 
@@ -376,12 +376,12 @@ class ManageCrewTest extends StuTestCase
             ->andReturn(25);
 
         $this->helper->shouldReceive('activate')
-            ->with($this->wrapper, SpacecraftSystemTypeEnum::SYSTEM_TROOP_QUARTERS, Mockery::type(InformationWrapper::class))
+            ->with($this->wrapper, SpacecraftSystemTypeEnum::TROOP_QUARTERS, Mockery::type(InformationWrapper::class))
             ->once()
             ->andReturn(true);
 
         $this->spacecraftSystemManager->shouldReceive('activate')
-            ->with($this->wrapper, SpacecraftSystemTypeEnum::SYSTEM_LIFE_SUPPORT, true);
+            ->with($this->wrapper, SpacecraftSystemTypeEnum::LIFE_SUPPORT, true);
 
         $msg = $this->subject->manage($this->wrapper, $values, $this->managerProvider);
 
@@ -432,7 +432,7 @@ class ManageCrewTest extends StuTestCase
             ->once()
             ->andReturn('name');
         $this->ship->shouldReceive('hasShipSystem')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
+            ->with(SpacecraftSystemTypeEnum::TROOP_QUARTERS)
             ->once()
             ->andReturn(true);
 
@@ -452,12 +452,12 @@ class ManageCrewTest extends StuTestCase
             ->andReturn(SpacecraftSystemModeEnum::MODE_OFF);
 
         $this->ship->shouldReceive('getShipSystem')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
+            ->with(SpacecraftSystemTypeEnum::TROOP_QUARTERS)
             ->once()
             ->andReturn($shipSystemMock);
 
         $this->ship->shouldReceive('hasShipSystem')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_LIFE_SUPPORT)
+            ->with(SpacecraftSystemTypeEnum::LIFE_SUPPORT)
             ->once()
             ->andReturn(true);
 
@@ -466,12 +466,12 @@ class ManageCrewTest extends StuTestCase
             ->andReturn(20);
 
         $this->helper->shouldReceive('activate')
-            ->with($this->wrapper, SpacecraftSystemTypeEnum::SYSTEM_TROOP_QUARTERS, Mockery::type(InformationWrapper::class))
+            ->with($this->wrapper, SpacecraftSystemTypeEnum::TROOP_QUARTERS, Mockery::type(InformationWrapper::class))
             ->once()
             ->andReturn(true);
 
         $this->spacecraftSystemManager->shouldReceive('activate')
-            ->with($this->wrapper, SpacecraftSystemTypeEnum::SYSTEM_LIFE_SUPPORT, true);
+            ->with($this->wrapper, SpacecraftSystemTypeEnum::LIFE_SUPPORT, true);
 
         $msg = $this->subject->manage($this->wrapper, $values, $this->managerProvider);
 

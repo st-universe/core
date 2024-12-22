@@ -43,7 +43,7 @@ final class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
             && $tractoredShipFleet !== $ownFleet
             && $tractoredShipFleet->getShipCount() > 1
         ) {
-            $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
+            $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::TRACTOR_BEAM, true);
             $information->addInformationf(
                 'Flottenschiffe können nicht mitgezogen werden - Der auf die %s gerichtete Traktorstrahl wurde deaktiviert',
                 $tractoredShip->getName()
@@ -57,7 +57,7 @@ final class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
 
         // ship to heavy?
         if ($mass > $payload) {
-            $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
+            $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::TRACTOR_BEAM, true);
 
             $information->addInformationf(
                 _('Traktoremitter der %s war nicht leistungsstark genug um die %s zu ziehen und wurde daher deaktiviert'),
@@ -93,7 +93,7 @@ final class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
         $ship = $wrapper->get();
 
         if ($this->isTractorSystemStressed($wrapper, $tractoredShip) && $this->stuRandom->rand(1, 10) === 1) {
-            $system = $ship->getShipSystem(SpacecraftSystemTypeEnum::SYSTEM_TRACTOR_BEAM);
+            $system = $ship->getShipSystem(SpacecraftSystemTypeEnum::TRACTOR_BEAM);
 
             $message = $this->messageFactory->createMessage();
 
@@ -104,7 +104,7 @@ final class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
                     $ship->getName(),
                     $tractoredShip->getName()
                 ));
-                $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
+                $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::TRACTOR_BEAM, true);
             } else {
                 $message->addInformation(sprintf(
                     _('Traktoremitter der %s ist überbelastet und wurde dadurch beschädigt, Status: %d%%'),

@@ -22,7 +22,7 @@ class BussardCollectorShipSystem extends AbstractSpacecraftSystemType implements
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
-        return SpacecraftSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR;
+        return SpacecraftSystemTypeEnum::BUSSARD_COLLECTOR;
     }
 
     #[Override]
@@ -75,7 +75,7 @@ class BussardCollectorShipSystem extends AbstractSpacecraftSystemType implements
     {
         $spacecraft = $wrapper->get();
         if ($spacecraft->isTractoring()) {
-            $manager->deactivate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
+            $manager->deactivate($wrapper, SpacecraftSystemTypeEnum::TRACTOR_BEAM, true);
         }
 
         if ($spacecraft instanceof ShipInterface) {
@@ -83,8 +83,8 @@ class BussardCollectorShipSystem extends AbstractSpacecraftSystemType implements
         }
         $this->spacecraftStateChanger->changeShipState($wrapper, SpacecraftStateEnum::SHIP_STATE_NONE);
 
-        if ($spacecraft->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_SHIELDS)) {
-            $spacecraft->getShipSystem(SpacecraftSystemTypeEnum::SYSTEM_SHIELDS)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
+        if ($spacecraft->hasShipSystem(SpacecraftSystemTypeEnum::SHIELDS)) {
+            $spacecraft->getShipSystem(SpacecraftSystemTypeEnum::SHIELDS)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
         }
 
         $spacecraft->getShipSystem($this->getSystemType())->setMode(SpacecraftSystemModeEnum::MODE_ON);

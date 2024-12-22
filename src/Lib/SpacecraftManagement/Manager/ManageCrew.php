@@ -115,9 +115,9 @@ class ManageCrew implements ManagerInterface
                 if (
                     $actualcrew >= $mincrew
                     && $actualcrew + $additionalCrew > $maxcrew
-                    && ($ship->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_TROOP_QUARTERS) && ($additionalCrew > 0
-                        && $ship->getShipSystem(SpacecraftSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() === SpacecraftSystemModeEnum::MODE_OFF
-                        && !$this->helper->activate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $informations)))
+                    && ($ship->hasShipSystem(SpacecraftSystemTypeEnum::TROOP_QUARTERS) && ($additionalCrew > 0
+                        && $ship->getShipSystem(SpacecraftSystemTypeEnum::TROOP_QUARTERS)->getMode() === SpacecraftSystemModeEnum::MODE_OFF
+                        && !$this->helper->activate($wrapper, SpacecraftSystemTypeEnum::TROOP_QUARTERS, $informations)))
                 ) {
 
                     $additionalCrew  = 0;
@@ -131,8 +131,8 @@ class ManageCrew implements ManagerInterface
                 $additionalCrew
             );
 
-            if ($ship->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_LIFE_SUPPORT)) {
-                $this->spacecraftSystemManager->activate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_LIFE_SUPPORT, true);
+            if ($ship->hasShipSystem(SpacecraftSystemTypeEnum::LIFE_SUPPORT)) {
+                $this->spacecraftSystemManager->activate($wrapper, SpacecraftSystemTypeEnum::LIFE_SUPPORT, true);
             }
         }
     }

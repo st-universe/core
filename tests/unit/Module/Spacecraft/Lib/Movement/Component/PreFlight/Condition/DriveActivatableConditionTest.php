@@ -45,9 +45,9 @@ class DriveActivatableConditionTest extends StuTestCase
     public static function provideCheckData(): array
     {
         return [
-            [true, false, false, SpacecraftSystemTypeEnum::SYSTEM_IMPULSEDRIVE],
-            [false, true, false,  SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE],
-            [false, false, true,  SpacecraftSystemTypeEnum::SYSTEM_TRANSWARP_COIL]
+            [true, false, false, SpacecraftSystemTypeEnum::IMPULSEDRIVE],
+            [false, true, false,  SpacecraftSystemTypeEnum::WARPDRIVE],
+            [false, false, true,  SpacecraftSystemTypeEnum::TRANSWARP_COIL]
         ];
     }
 

@@ -92,7 +92,7 @@ final class LandShuttle implements ActionControllerInterface
         }
 
         // check if target shuttle ramp is healthy
-        if (!$target->isSystemHealthy(SpacecraftSystemTypeEnum::SYSTEM_SHUTTLE_RAMP)) {
+        if (!$target->isSystemHealthy(SpacecraftSystemTypeEnum::SHUTTLE_RAMP)) {
             $game->addInformation(_("Die Shuttle-Rampe des Zieles ist zerstört"));
             return;
         }

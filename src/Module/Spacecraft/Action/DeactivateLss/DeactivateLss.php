@@ -23,7 +23,7 @@ final class DeactivateLss implements ActionControllerInterface
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $this->helper->deactivate(request::indInt('id'), SpacecraftSystemTypeEnum::SYSTEM_LSS, $game);
+        $this->helper->deactivate(request::indInt('id'), SpacecraftSystemTypeEnum::LSS, $game);
     }
 
     #[Override]

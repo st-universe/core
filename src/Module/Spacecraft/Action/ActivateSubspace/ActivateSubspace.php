@@ -23,7 +23,7 @@ final class ActivateSubspace implements ActionControllerInterface
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $this->helper->activate(request::indInt('id'), SpacecraftSystemTypeEnum::SYSTEM_SUBSPACE_SCANNER, $game, true);
+        $this->helper->activate(request::indInt('id'), SpacecraftSystemTypeEnum::SUBSPACE_SCANNER, $game, true);
     }
 
     #[Override]

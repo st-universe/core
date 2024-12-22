@@ -130,7 +130,7 @@ class SpacecraftConfigurator implements SpacecraftConfiguratorInterface
             }
 
             if ($crewAmount > 0) {
-                $ship->getShipSystem(SpacecraftSystemTypeEnum::SYSTEM_LIFE_SUPPORT)->setMode(SpacecraftSystemModeEnum::MODE_ALWAYS_ON);
+                $ship->getShipSystem(SpacecraftSystemTypeEnum::LIFE_SUPPORT)->setMode(SpacecraftSystemModeEnum::MODE_ALWAYS_ON);
             }
         }
 

@@ -98,7 +98,7 @@ class EnergyWeaponShipSystemTest extends StuTestCase
         $system = $this->mock(SpacecraftSystemInterface::class);
 
         $this->ship->shouldReceive('getShipSystem')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_PHASER)
+            ->with(SpacecraftSystemTypeEnum::PHASER)
             ->once()
             ->andReturn($system);
         $system->shouldReceive('setMode')
@@ -113,7 +113,7 @@ class EnergyWeaponShipSystemTest extends StuTestCase
         $system = $this->mock(SpacecraftSystemInterface::class);
 
         $this->ship->shouldReceive('getShipSystem')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_PHASER)
+            ->with(SpacecraftSystemTypeEnum::PHASER)
             ->once()
             ->andReturn($system);
         $system->shouldReceive('setMode')

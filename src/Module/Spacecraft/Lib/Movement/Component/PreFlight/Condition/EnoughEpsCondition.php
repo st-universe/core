@@ -56,15 +56,15 @@ class EnoughEpsCondition implements PreFlightConditionInterface
         $result = 0;
 
         if ($flightRoute->isImpulseDriveNeeded()) {
-            $result += $this->getEnergyUsageForActivation($spacecraft, SpacecraftSystemTypeEnum::SYSTEM_IMPULSEDRIVE);
+            $result += $this->getEnergyUsageForActivation($spacecraft, SpacecraftSystemTypeEnum::IMPULSEDRIVE);
         }
 
         if ($flightRoute->isWarpDriveNeeded()) {
-            $result += $this->getEnergyUsageForActivation($spacecraft, SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE);
+            $result += $this->getEnergyUsageForActivation($spacecraft, SpacecraftSystemTypeEnum::WARPDRIVE);
         }
 
         if ($flightRoute->isTranswarpCoilNeeded()) {
-            $result += $this->getEnergyUsageForActivation($spacecraft, SpacecraftSystemTypeEnum::SYSTEM_TRANSWARP_COIL);
+            $result += $this->getEnergyUsageForActivation($spacecraft, SpacecraftSystemTypeEnum::TRANSWARP_COIL);
         }
 
         if ($spacecraft instanceof ShipInterface && $spacecraft->getDockedTo() !== null) {
@@ -98,7 +98,7 @@ class EnoughEpsCondition implements PreFlightConditionInterface
             return 0;
         }
 
-        if (!$spacecraft->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_IMPULSEDRIVE)) {
+        if (!$spacecraft->hasShipSystem(SpacecraftSystemTypeEnum::IMPULSEDRIVE)) {
             return 0;
         }
 

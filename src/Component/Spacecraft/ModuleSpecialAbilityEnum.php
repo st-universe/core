@@ -50,21 +50,21 @@ enum ModuleSpecialAbilityEnum: int
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
         return match ($this) {
-            self::CLOAK => SpacecraftSystemTypeEnum::SYSTEM_CLOAK,
-            self::RPG => SpacecraftSystemTypeEnum::SYSTEM_RPG_MODULE,
-            self::TACHYON_SCANNER => SpacecraftSystemTypeEnum::SYSTEM_TACHYON_SCANNER,
-            self::TROOP_QUARTERS => SpacecraftSystemTypeEnum::SYSTEM_TROOP_QUARTERS,
-            self::ASTRO_LABORATORY => SpacecraftSystemTypeEnum::SYSTEM_ASTRO_LABORATORY,
-            self::SUBSPACE_FIELD_SENSOR => SpacecraftSystemTypeEnum::SYSTEM_SUBSPACE_SCANNER,
-            self::MATRIX_SENSOR => SpacecraftSystemTypeEnum::SYSTEM_MATRIX_SCANNER,
-            self::TORPEDO_STORAGE => SpacecraftSystemTypeEnum::SYSTEM_TORPEDO_STORAGE,
-            self::SHUTTLE_RAMP => SpacecraftSystemTypeEnum::SYSTEM_SHUTTLE_RAMP,
-            self::TRANSWARP_COIL => SpacecraftSystemTypeEnum::SYSTEM_TRANSWARP_COIL,
-            self::HIROGEN_TRACKER => SpacecraftSystemTypeEnum::SYSTEM_TRACKER,
-            self::THOLIAN_WEB => SpacecraftSystemTypeEnum::SYSTEM_THOLIAN_WEB,
-            self::BUSSARD_COLLECTOR => SpacecraftSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR,
-            self::AGGREGATION_SYSTEM => SpacecraftSystemTypeEnum::SYSTEM_AGGREGATION_SYSTEM,
-            self::WARPDRIVE_BOOST => SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE_BOOSTER
+            self::CLOAK => SpacecraftSystemTypeEnum::CLOAK,
+            self::RPG => SpacecraftSystemTypeEnum::RPG_MODULE,
+            self::TACHYON_SCANNER => SpacecraftSystemTypeEnum::TACHYON_SCANNER,
+            self::TROOP_QUARTERS => SpacecraftSystemTypeEnum::TROOP_QUARTERS,
+            self::ASTRO_LABORATORY => SpacecraftSystemTypeEnum::ASTRO_LABORATORY,
+            self::SUBSPACE_FIELD_SENSOR => SpacecraftSystemTypeEnum::SUBSPACE_SCANNER,
+            self::MATRIX_SENSOR => SpacecraftSystemTypeEnum::MATRIX_SCANNER,
+            self::TORPEDO_STORAGE => SpacecraftSystemTypeEnum::TORPEDO_STORAGE,
+            self::SHUTTLE_RAMP => SpacecraftSystemTypeEnum::SHUTTLE_RAMP,
+            self::TRANSWARP_COIL => SpacecraftSystemTypeEnum::TRANSWARP_COIL,
+            self::HIROGEN_TRACKER => SpacecraftSystemTypeEnum::TRACKER,
+            self::THOLIAN_WEB => SpacecraftSystemTypeEnum::THOLIAN_WEB,
+            self::BUSSARD_COLLECTOR => SpacecraftSystemTypeEnum::BUSSARD_COLLECTOR,
+            self::AGGREGATION_SYSTEM => SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM,
+            self::WARPDRIVE_BOOST => SpacecraftSystemTypeEnum::WARPDRIVE_BOOSTER
         };
     }
 

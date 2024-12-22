@@ -82,7 +82,7 @@ final class DockTractoredShip implements ActionControllerInterface
         $this->spacecraftRepository->save($tractoredShip);
 
         $game->addInformation('Andockvorgang abgeschlossen');
-        $this->helper->deactivate($stationId, SpacecraftSystemTypeEnum::SYSTEM_TRACTOR_BEAM, $game);
+        $this->helper->deactivate($stationId, SpacecraftSystemTypeEnum::TRACTOR_BEAM, $game);
 
         $this->privateMessageSender->send(
             $userId,

@@ -95,7 +95,7 @@ class TractorMassPayloadUtilTest extends StuTestCase
             ->andReturn(2);
 
         $this->spacecraftSystemManager->shouldReceive('deactivate')
-            ->with($this->wrapper, SpacecraftSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true)
+            ->with($this->wrapper, SpacecraftSystemTypeEnum::TRACTOR_BEAM, true)
             ->once();
 
         $this->information->shouldReceive('addInformationf')
@@ -143,7 +143,7 @@ class TractorMassPayloadUtilTest extends StuTestCase
             ->andReturn(1);
 
         $this->spacecraftSystemManager->shouldReceive('deactivate')
-            ->with($this->wrapper, SpacecraftSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true)
+            ->with($this->wrapper, SpacecraftSystemTypeEnum::TRACTOR_BEAM, true)
             ->once();
 
         $this->information->shouldReceive('addInformationf')
@@ -236,7 +236,7 @@ class TractorMassPayloadUtilTest extends StuTestCase
             ->once()
             ->andReturn(100);
         $this->ship->shouldReceive('getShipSystem')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_TRACTOR_BEAM)
+            ->with(SpacecraftSystemTypeEnum::TRACTOR_BEAM)
             ->once()
             ->andReturn($system);
         $this->ship->shouldReceive('getName')
@@ -297,7 +297,7 @@ class TractorMassPayloadUtilTest extends StuTestCase
             ->once()
             ->andReturn(100);
         $this->ship->shouldReceive('getShipSystem')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_TRACTOR_BEAM)
+            ->with(SpacecraftSystemTypeEnum::TRACTOR_BEAM)
             ->once()
             ->andReturn($system);
         $this->ship->shouldReceive('getName')
@@ -329,7 +329,7 @@ class TractorMassPayloadUtilTest extends StuTestCase
             ->andReturn(true);
 
         $this->spacecraftSystemManager->shouldReceive('deactivate')
-            ->with($this->wrapper, SpacecraftSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true)
+            ->with($this->wrapper, SpacecraftSystemTypeEnum::TRACTOR_BEAM, true)
             ->once()
             ->andReturn(true);
 

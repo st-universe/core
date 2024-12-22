@@ -48,15 +48,15 @@ enum SpacecraftModuleTypeEnum: int
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
         return match ($this) {
-            self::SHIELDS => SpacecraftSystemTypeEnum::SYSTEM_SHIELDS,
-            self::WARPDRIVE => SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE,
-            self::EPS => SpacecraftSystemTypeEnum::SYSTEM_EPS,
-            self::IMPULSEDRIVE => SpacecraftSystemTypeEnum::SYSTEM_IMPULSEDRIVE,
-            self::REACTOR => SpacecraftSystemTypeEnum::SYSTEM_WARPCORE,
-            self::COMPUTER => SpacecraftSystemTypeEnum::SYSTEM_COMPUTER,
-            self::PHASER => SpacecraftSystemTypeEnum::SYSTEM_PHASER,
-            self::TORPEDO => SpacecraftSystemTypeEnum::SYSTEM_TORPEDO,
-            self::SENSOR => SpacecraftSystemTypeEnum::SYSTEM_LSS,
+            self::SHIELDS => SpacecraftSystemTypeEnum::SHIELDS,
+            self::WARPDRIVE => SpacecraftSystemTypeEnum::WARPDRIVE,
+            self::EPS => SpacecraftSystemTypeEnum::EPS,
+            self::IMPULSEDRIVE => SpacecraftSystemTypeEnum::IMPULSEDRIVE,
+            self::REACTOR => SpacecraftSystemTypeEnum::WARPCORE,
+            self::COMPUTER => SpacecraftSystemTypeEnum::COMPUTER,
+            self::PHASER => SpacecraftSystemTypeEnum::PHASER,
+            self::TORPEDO => SpacecraftSystemTypeEnum::TORPEDO,
+            self::SENSOR => SpacecraftSystemTypeEnum::LSS,
             default => throw new NotImplementedException('should not be called')
         };
     }

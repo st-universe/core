@@ -31,7 +31,7 @@ final class DeactivateRPGModule implements ActionControllerInterface
 
         $userId = $game->getUser()->getId();
 
-        $this->helper->deactivate(request::indInt('id'), SpacecraftSystemTypeEnum::SYSTEM_RPG_MODULE, $game, true);
+        $this->helper->deactivate(request::indInt('id'), SpacecraftSystemTypeEnum::RPG_MODULE, $game, true);
 
         $ship = $this->spacecraftLoader->getByIdAndUser(
             request::indInt('id'),

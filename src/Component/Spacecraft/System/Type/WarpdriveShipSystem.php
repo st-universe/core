@@ -24,7 +24,7 @@ final class WarpdriveShipSystem extends AbstractSpacecraftSystemType implements 
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
-        return SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE;
+        return SpacecraftSystemTypeEnum::WARPDRIVE;
     }
 
     #[Override]

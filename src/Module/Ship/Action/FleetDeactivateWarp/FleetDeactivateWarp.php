@@ -33,7 +33,7 @@ final class FleetDeactivateWarp implements ActionControllerInterface
 
         $success =  $this->helper->deactivateFleet(
             $wrapper,
-            SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE,
+            SpacecraftSystemTypeEnum::WARPDRIVE,
             $game
         );
 

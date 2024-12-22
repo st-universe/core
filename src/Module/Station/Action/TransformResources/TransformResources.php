@@ -53,16 +53,16 @@ final class TransformResources implements ActionControllerInterface
 
 
         if ($commodityId === 0) {
-            if ($ship->isSystemHealthy(SpacecraftSystemTypeEnum::SYSTEM_AGGREGATION_SYSTEM)) {
-                $this->helper->deactivate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_AGGREGATION_SYSTEM, $game);
+            if ($ship->isSystemHealthy(SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM)) {
+                $this->helper->deactivate($wrapper, SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM, $game);
                 $aggregationsystem->setCommodityId($commodityId)->update();
             }
             return;
         } else {
 
             if (
-                !$ship->getSystemState(SpacecraftSystemTypeEnum::SYSTEM_AGGREGATION_SYSTEM)
-                && !$this->helper->activate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_AGGREGATION_SYSTEM, $game)
+                !$ship->getSystemState(SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM)
+                && !$this->helper->activate($wrapper, SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM, $game)
             ) {
                 return;
             }

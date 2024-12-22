@@ -30,7 +30,7 @@ class TrackerSystemData extends AbstractSystemData
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
-        return SpacecraftSystemTypeEnum::SYSTEM_TRACKER;
+        return SpacecraftSystemTypeEnum::TRACKER;
     }
 
     public function getTargetWrapper(): ?ShipWrapperInterface
@@ -60,7 +60,7 @@ class TrackerSystemData extends AbstractSystemData
             return false;
         }
 
-        $cooldown = $this->spacecraft->getShipSystem(SpacecraftSystemTypeEnum::SYSTEM_TRACKER)->getCooldown();
+        $cooldown = $this->spacecraft->getShipSystem(SpacecraftSystemTypeEnum::TRACKER)->getCooldown();
 
         return $cooldown === null ? true : $cooldown < time();
     }

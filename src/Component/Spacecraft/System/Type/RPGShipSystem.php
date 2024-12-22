@@ -13,7 +13,7 @@ final class RPGShipSystem extends AbstractSpacecraftSystemType implements Spacec
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
-        return SpacecraftSystemTypeEnum::SYSTEM_RPG_MODULE;
+        return SpacecraftSystemTypeEnum::RPG_MODULE;
     }
 
     #[Override]

@@ -15,7 +15,7 @@ final class HullShipSystem extends AbstractSpacecraftSystemType implements Space
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
-        return SpacecraftSystemTypeEnum::SYSTEM_HULL;
+        return SpacecraftSystemTypeEnum::HULL;
     }
 
     #[Override]

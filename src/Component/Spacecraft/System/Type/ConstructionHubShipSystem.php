@@ -20,7 +20,7 @@ final class ConstructionHubShipSystem extends AbstractSpacecraftSystemType imple
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
-        return SpacecraftSystemTypeEnum::SYSTEM_CONSTRUCTION_HUB;
+        return SpacecraftSystemTypeEnum::CONSTRUCTION_HUB;
     }
 
     #[Override]

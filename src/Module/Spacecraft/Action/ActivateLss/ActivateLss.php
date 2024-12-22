@@ -23,7 +23,7 @@ final class ActivateLss implements ActionControllerInterface
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $this->helper->activate(request::indInt('id'), SpacecraftSystemTypeEnum::SYSTEM_LSS, $game);
+        $this->helper->activate(request::indInt('id'), SpacecraftSystemTypeEnum::LSS, $game);
     }
 
     #[Override]

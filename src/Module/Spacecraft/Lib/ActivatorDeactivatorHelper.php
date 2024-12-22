@@ -398,10 +398,10 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
     private function setAlertRed(SpacecraftWrapperInterface $wrapper, GameControllerInterface $game): void
     {
         $alertSystems = [
-            SpacecraftSystemTypeEnum::SYSTEM_SHIELDS,
-            SpacecraftSystemTypeEnum::SYSTEM_NBS,
-            SpacecraftSystemTypeEnum::SYSTEM_PHASER,
-            SpacecraftSystemTypeEnum::SYSTEM_TORPEDO
+            SpacecraftSystemTypeEnum::SHIELDS,
+            SpacecraftSystemTypeEnum::NBS,
+            SpacecraftSystemTypeEnum::PHASER,
+            SpacecraftSystemTypeEnum::TORPEDO
         ];
 
         foreach ($alertSystems as $type) {
@@ -412,7 +412,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
     private function setAlertYellow(SpacecraftWrapperInterface $wrapper, GameControllerInterface $game): void
     {
         $alertSystems = [
-            SpacecraftSystemTypeEnum::SYSTEM_NBS
+            SpacecraftSystemTypeEnum::NBS
         ];
 
         foreach ($alertSystems as $type) {
@@ -423,9 +423,9 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
     private function setAlertGreen(SpacecraftWrapperInterface $wrapper, GameControllerInterface $game): void
     {
         $deactivateSystems = [
-            SpacecraftSystemTypeEnum::SYSTEM_PHASER,
-            SpacecraftSystemTypeEnum::SYSTEM_TORPEDO,
-            SpacecraftSystemTypeEnum::SYSTEM_SHIELDS
+            SpacecraftSystemTypeEnum::PHASER,
+            SpacecraftSystemTypeEnum::TORPEDO,
+            SpacecraftSystemTypeEnum::SHIELDS
         ];
 
         foreach ($deactivateSystems as $type) {

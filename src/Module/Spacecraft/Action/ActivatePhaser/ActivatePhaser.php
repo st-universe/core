@@ -23,7 +23,7 @@ final class ActivatePhaser implements ActionControllerInterface
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $this->helper->activate(request::indInt('id'), SpacecraftSystemTypeEnum::SYSTEM_PHASER, $game);
+        $this->helper->activate(request::indInt('id'), SpacecraftSystemTypeEnum::PHASER, $game);
     }
 
     #[Override]

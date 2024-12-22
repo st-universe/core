@@ -18,7 +18,7 @@ final class TachyonScannerShipSystem extends AbstractSpacecraftSystemType implem
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
-        return SpacecraftSystemTypeEnum::SYSTEM_TACHYON_SCANNER;
+        return SpacecraftSystemTypeEnum::TACHYON_SCANNER;
     }
 
     #[Override]

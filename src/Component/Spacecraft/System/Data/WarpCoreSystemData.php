@@ -13,7 +13,7 @@ class WarpCoreSystemData extends AbstractReactorSystemData
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
-        return SpacecraftSystemTypeEnum::SYSTEM_WARPCORE;
+        return SpacecraftSystemTypeEnum::WARPCORE;
     }
 
     #[Override]

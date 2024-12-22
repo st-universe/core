@@ -26,7 +26,7 @@ class SystemDataDeserializer implements SystemDataDeserializerInterface
         SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory
     ): ?object {
         if (
-            $systemType !== SpacecraftSystemTypeEnum::SYSTEM_HULL
+            $systemType !== SpacecraftSystemTypeEnum::HULL
             && !$spacecraft->hasShipSystem($systemType)
         ) {
             return null;
@@ -40,7 +40,7 @@ class SystemDataDeserializer implements SystemDataDeserializerInterface
             );
             $systemData->setSpacecraft($spacecraft);
 
-            $data = $systemType === SpacecraftSystemTypeEnum::SYSTEM_HULL ? null : $spacecraft->getShipSystem($systemType)->getData();
+            $data = $systemType === SpacecraftSystemTypeEnum::HULL ? null : $spacecraft->getShipSystem($systemType)->getData();
 
             if ($data === null) {
                 $shipSystemDataCache->set($systemType->value, $systemData);

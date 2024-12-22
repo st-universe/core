@@ -65,7 +65,7 @@ final class StartShuttle implements ActionControllerInterface
             return;
         }
 
-        if (!$ship->isSystemHealthy(SpacecraftSystemTypeEnum::SYSTEM_SHUTTLE_RAMP)) {
+        if (!$ship->isSystemHealthy(SpacecraftSystemTypeEnum::SHUTTLE_RAMP)) {
             $game->addInformation(_("Die Shuttle-Rampe ist zerstört"));
             return;
         }
@@ -151,7 +151,7 @@ final class StartShuttle implements ActionControllerInterface
         }
 
         $shuttle = $shuttleWrapper->get();
-        $shuttle->getShipSystem(SpacecraftSystemTypeEnum::SYSTEM_LIFE_SUPPORT)->setMode(SpacecraftSystemModeEnum::MODE_ALWAYS_ON);
+        $shuttle->getShipSystem(SpacecraftSystemTypeEnum::LIFE_SUPPORT)->setMode(SpacecraftSystemModeEnum::MODE_ALWAYS_ON);
 
         $shipCrewArray = $ship->getCrewAssignments()->getValues();
         for ($i = 0; $i < $plan->getCrew(); $i++) {
@@ -161,11 +161,11 @@ final class StartShuttle implements ActionControllerInterface
         $this->spacecraftRepository->save($shuttle);
 
         if (
-            $ship->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
-            && $ship->getSystemState(SpacecraftSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
+            $ship->hasShipSystem(SpacecraftSystemTypeEnum::TROOP_QUARTERS)
+            && $ship->getSystemState(SpacecraftSystemTypeEnum::TROOP_QUARTERS)
             && $ship->getExcessCrewCount() <= 0
         ) {
-            $this->helper->deactivate($ship->getId(), SpacecraftSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game);
+            $this->helper->deactivate($ship->getId(), SpacecraftSystemTypeEnum::TROOP_QUARTERS, $game);
         }
         $this->spacecraftRepository->save($ship);
     }

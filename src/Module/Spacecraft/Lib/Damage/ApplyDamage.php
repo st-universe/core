@@ -54,7 +54,7 @@ final class ApplyDamage implements ApplyDamageInterface
 
         $disablemessage = false;
         $damage = (int) $damageWrapper->getDamageRelative($ship, DamageModeEnum::HULL);
-        if ($ship->getSystemState(SpacecraftSystemTypeEnum::SYSTEM_RPG_MODULE) && $ship->getHull() - $damage < round($ship->getMaxHull() / 100 * 10)) {
+        if ($ship->getSystemState(SpacecraftSystemTypeEnum::RPG_MODULE) && $ship->getHull() - $damage < round($ship->getMaxHull() / 100 * 10)) {
             $damage = (int) round($ship->getHull() - $ship->getMaxHull() / 100 * 10);
             $disablemessage = _('-- Das Schiff wurde kampfunfähig gemacht');
             $ship->setDisabled(true);
@@ -107,7 +107,7 @@ final class ApplyDamage implements ApplyDamageInterface
             $informations->addInformation("- Schildschaden: " . $ship->getShield());
             $informations->addInformation("-- Schilde brechen zusammen!");
 
-            $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_SHIELDS);
+            $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::SHIELDS);
 
             $ship->setShield(0);
         } else {

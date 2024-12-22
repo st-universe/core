@@ -37,7 +37,7 @@ class ActivateShieldsTest extends ActionControllerTestCase
             ->once();
 
         $this->helper->shouldReceive('activate')
-            ->with(42, SpacecraftSystemTypeEnum::SYSTEM_SHIELDS, $this->game)
+            ->with(42, SpacecraftSystemTypeEnum::SHIELDS, $this->game)
             ->once();
 
         $this->subject->handle($this->game);

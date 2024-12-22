@@ -44,8 +44,8 @@ final class Shutdown implements ActionControllerInterface
         //deactivate all systems except life support and troop quarters
         foreach ($this->spacecraftSystemManager->getActiveSystems($ship) as $system) {
             if (
-                $system->getSystemType() !== SpacecraftSystemTypeEnum::SYSTEM_LIFE_SUPPORT &&
-                $system->getSystemType() !== SpacecraftSystemTypeEnum::SYSTEM_TROOP_QUARTERS
+                $system->getSystemType() !== SpacecraftSystemTypeEnum::LIFE_SUPPORT &&
+                $system->getSystemType() !== SpacecraftSystemTypeEnum::TROOP_QUARTERS
             ) {
                 $this->helper->deactivate(request::indInt('id'), $system->getSystemType(), $game);
             }

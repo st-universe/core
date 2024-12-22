@@ -125,7 +125,7 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
                 if (!$allowUplink) {
                     throw new UnallowedUplinkOperation(_('This Operation is not allowed via uplink!'));
                 }
-                if (!$spacecraft->getSystemState(SpacecraftSystemTypeEnum::SYSTEM_UPLINK)) {
+                if (!$spacecraft->getSystemState(SpacecraftSystemTypeEnum::UPLINK)) {
                     throw new UnallowedUplinkOperation(_('Uplink is not activated!'));
                 }
                 if ($spacecraft->getUser()->isVacationRequestOldEnough()) {

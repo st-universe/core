@@ -16,7 +16,7 @@ final class ComputerShipSystem extends AbstractSpacecraftSystemType implements S
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
-        return SpacecraftSystemTypeEnum::SYSTEM_COMPUTER;
+        return SpacecraftSystemTypeEnum::COMPUTER;
     }
 
     #[Override]

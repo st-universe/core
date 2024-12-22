@@ -14,7 +14,7 @@ class AstroLaboratorySystemData extends AbstractSystemData
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
-        return SpacecraftSystemTypeEnum::SYSTEM_ASTRO_LABORATORY;
+        return SpacecraftSystemTypeEnum::ASTRO_LABORATORY;
     }
 
     public function getAstroStartTurn(): ?int

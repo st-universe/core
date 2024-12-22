@@ -37,7 +37,7 @@ class DriveDeactivationConsequence extends AbstractFlightConsequence implements 
         if (!$flightRoute->isWarpDriveNeeded()) {
             $this->deactivateSystem(
                 $wrapper,
-                SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE,
+                SpacecraftSystemTypeEnum::WARPDRIVE,
                 $messages
             );
         }
@@ -45,7 +45,7 @@ class DriveDeactivationConsequence extends AbstractFlightConsequence implements 
         if (!$flightRoute->isImpulseDriveNeeded()) {
             $this->deactivateSystem(
                 $wrapper,
-                SpacecraftSystemTypeEnum::SYSTEM_IMPULSEDRIVE,
+                SpacecraftSystemTypeEnum::IMPULSEDRIVE,
                 $messages
             );
         }
@@ -73,7 +73,7 @@ class DriveDeactivationConsequence extends AbstractFlightConsequence implements 
         $message->add(sprintf(
             _('Die %s deaktiviert %s %s'),
             $ship->getName(),
-            $systemType === SpacecraftSystemTypeEnum::SYSTEM_TRANSWARP_COIL ? 'die' : 'den',
+            $systemType === SpacecraftSystemTypeEnum::TRANSWARP_COIL ? 'die' : 'den',
             $systemType->getDescription()
         ));
     }

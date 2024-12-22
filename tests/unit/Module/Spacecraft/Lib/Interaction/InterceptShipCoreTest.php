@@ -123,10 +123,10 @@ class InterceptShipCoreTest extends StuTestCase
             ->andReturn($tractoredWrapper2);
 
         $this->spacecraftSystemManager->shouldReceive('deactivate')
-            ->with($this->wrapper, SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE)
+            ->with($this->wrapper, SpacecraftSystemTypeEnum::WARPDRIVE)
             ->once();
         $this->spacecraftSystemManager->shouldReceive('deactivate')
-            ->with($this->targetWrapper, SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE)
+            ->with($this->targetWrapper, SpacecraftSystemTypeEnum::WARPDRIVE)
             ->once();
 
         $this->spacecraftRepository->shouldReceive('save')

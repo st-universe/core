@@ -19,7 +19,7 @@ class ShieldSystemData extends AbstractSystemData
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
-        return SpacecraftSystemTypeEnum::SYSTEM_SHIELDS;
+        return SpacecraftSystemTypeEnum::SHIELDS;
     }
 
     public function getShieldStatusBar(): string

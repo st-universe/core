@@ -90,7 +90,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
         $targetName = $target->getName();
 
         // activate system
-        if (!$this->helper->activate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_TRACTOR_BEAM, $game)) {
+        if (!$this->helper->activate($wrapper, SpacecraftSystemTypeEnum::TRACTOR_BEAM, $game)) {
             $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
             return;
         }
@@ -141,7 +141,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         //is tractor beam system still healthy?
-        if (!$ship->isSystemHealthy(SpacecraftSystemTypeEnum::SYSTEM_TRACTOR_BEAM)) {
+        if (!$ship->isSystemHealthy(SpacecraftSystemTypeEnum::TRACTOR_BEAM)) {
             $game->addInformation("Der Traktorstrahl wurde bei dem Angriff zerstört");
             return;
         }
@@ -152,7 +152,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
         }
 
         //is nbs system still healthy?
-        if (!$ship->isSystemHealthy(SpacecraftSystemTypeEnum::SYSTEM_NBS)) {
+        if (!$ship->isSystemHealthy(SpacecraftSystemTypeEnum::NBS)) {
             $game->addInformation("Abbruch, die Nahbereichssensoren wurden bei dem Angriff zerstört");
             $this->abort($wrapper, $game);
             return;
@@ -165,7 +165,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
             return;
         }
         if ($target->isTractoring()) {
-            $this->spacecraftSystemManager->deactivate($targetWrapper, SpacecraftSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true); //forced active deactivation
+            $this->spacecraftSystemManager->deactivate($targetWrapper, SpacecraftSystemTypeEnum::TRACTOR_BEAM, true); //forced active deactivation
         }
 
         $this->spacecraftStateChanger->changeShipState($targetWrapper, SpacecraftStateEnum::SHIP_STATE_NONE);
@@ -192,7 +192,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
     private function abort(SpacecraftWrapperInterface $wrapper, GameControllerInterface $game): void
     {
         //deactivate system
-        if (!$this->helper->deactivate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_TRACTOR_BEAM, $game)) {
+        if (!$this->helper->deactivate($wrapper, SpacecraftSystemTypeEnum::TRACTOR_BEAM, $game)) {
             throw new SystemNotDeactivatableException('TRACTOR ERROR');
         }
 

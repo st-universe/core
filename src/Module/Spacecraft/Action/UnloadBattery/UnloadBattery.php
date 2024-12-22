@@ -80,7 +80,7 @@ final class UnloadBattery implements ActionControllerInterface
         if ($eps->getEps() >= $eps->getMaxEps()) {
             return sprintf(_('%s: Der Energiespeicher ist voll'), $ship->getName());
         }
-        if (!$ship->isSystemHealthy(SpacecraftSystemTypeEnum::SYSTEM_EPS)) {
+        if (!$ship->isSystemHealthy(SpacecraftSystemTypeEnum::EPS)) {
             return sprintf(_('%s: Das Energienetz ist zerstört und kann nicht geladen werden'), $ship->getName());
         }
 

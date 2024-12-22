@@ -256,7 +256,7 @@ class ManageReactorTest extends StuTestCase
         $reactorWrapper->shouldReceive('get->getSystemType')
             ->withNoArgs()
             ->once()
-            ->andReturn(SpacecraftSystemTypeEnum::SYSTEM_WARPCORE);
+            ->andReturn(SpacecraftSystemTypeEnum::WARPCORE);
         $reactorWrapper->shouldReceive('get->getLoadCost')
             ->withNoArgs()
             ->once()

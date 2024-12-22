@@ -114,7 +114,7 @@ class TrackerDeviceManagerTest extends StuTestCase
             ->andReturn($targetWrapper);
 
         $spacecraftSystemManager->shouldReceive('deactivate')
-            ->with($this->wrapper, SpacecraftSystemTypeEnum::SYSTEM_TRACKER, true)
+            ->with($this->wrapper, SpacecraftSystemTypeEnum::TRACKER, true)
             ->once()
             ->andReturn($trackerSystemData);
 

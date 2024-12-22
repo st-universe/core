@@ -33,7 +33,7 @@ class SpacecraftSystem implements SpacecraftSystemInterface
     private int $spacecraft_id = 0;
 
     #[Column(type: 'smallint', enumType: SpacecraftSystemTypeEnum::class)]
-    private SpacecraftSystemTypeEnum $system_type = SpacecraftSystemTypeEnum::SYSTEM_HULL;
+    private SpacecraftSystemTypeEnum $system_type = SpacecraftSystemTypeEnum::HULL;
 
     #[Column(type: 'integer', nullable: true)]
     private ?int $module_id = 0;

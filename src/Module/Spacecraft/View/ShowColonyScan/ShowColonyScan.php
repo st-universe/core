@@ -62,7 +62,7 @@ final class ShowColonyScan implements ViewControllerInterface
             throw new SanityCheckException('ship is not over colony');
         }
 
-        if (!$ship->isSystemHealthy(SpacecraftSystemTypeEnum::SYSTEM_MATRIX_SCANNER)) {
+        if (!$ship->isSystemHealthy(SpacecraftSystemTypeEnum::MATRIX_SCANNER)) {
             throw new SanityCheckException('matrix scanner is not healthy');
         }
 

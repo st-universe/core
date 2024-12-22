@@ -56,11 +56,11 @@ final class FightLib implements FightLibInterface
         }
 
         try {
-            $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE);
+            $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::WARPDRIVE);
         } catch (SpacecraftSystemException) {
         }
         try {
-            $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_CLOAK);
+            $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::CLOAK);
         } catch (SpacecraftSystemException) {
         }
 

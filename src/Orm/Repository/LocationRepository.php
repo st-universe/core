@@ -160,7 +160,7 @@ class LocationRepository extends EntityRepository implements LocationRepositoryI
                 'firstUserId' => UserEnum::USER_FIRST_ID,
                 'mode' => SpacecraftSystemModeEnum::MODE_OFF->value,
                 'state' => SpacecraftStateEnum::SHIP_STATE_UNDER_CONSTRUCTION,
-                'systemwarp' => SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE
+                'systemwarp' => SpacecraftSystemTypeEnum::WARPDRIVE
             ])
             ->getResult();
 
@@ -221,7 +221,7 @@ class LocationRepository extends EntityRepository implements LocationRepositoryI
                 'layerId' => $layer->getId(),
                 'cx' => $cx,
                 'cy' => $cy,
-                'systemId' => SpacecraftSystemTypeEnum::SYSTEM_CLOAK
+                'systemId' => SpacecraftSystemTypeEnum::CLOAK
             ])
             ->getResult();
     }
