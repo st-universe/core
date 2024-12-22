@@ -79,8 +79,10 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
             ON ca.tradepost_id = tp.id
             JOIN stu_station s
             ON tp.station_id = s.id
+            JOIN stu_spacecraft sp
+            ON s.id = sp.id
             JOIN stu_map m
-            ON s.location_id = m.id
+            ON sp.location_id = m.id
             JOIN stu_location l
             ON m.id = l.id
             WHERE ca.user_id = :userId
