@@ -17,17 +17,7 @@ canColonize, closestAnomalyDistance) %}
     {% include 'html/spacecraft/system/torpedoAndStorage.twig' %}
     {% include 'html/spacecraft/system/system.twig' with {'name': 'SUBSPACE_SCANNER'} %}
     {% include 'html/spacecraft/system/system.twig' with {'name': 'CLOAK'} %}
-    {% if SHIP.isWebEmitterHealthy %}
-    <tr>
-        <td title="Webemitter Einstellungen" colspan="2">
-            <a href="javascript:void(0);" onclick="showWebEmitterWindow();"
-                onmouseover="cp('webemitter','buttons/net_2')" onmouseout="cp('webemitter','buttons/net_1')">
-                <img style="width: 20px;" src="/assets/buttons/net_1.png" name="webemitter" /> Webemitter
-                Einstellungen
-            </a>
-        </td>
-    </tr>
-    {% endif %}
+    {% include 'html/spacecraft/system/system.twig' with {'name': 'THOLIAN_WEB'} %}
     {% include 'html/spacecraft/system/system.twig' with {'name': 'BUSSARD_COLLECTOR'} %}
     {% include 'html/spacecraft/system/system.twig' with {'name': 'AGGREGATION_SYSTEM'} %}
     {% include 'html/spacecraft/system/system.twig' with {'name': 'TACHYON_SCANNER'} %}

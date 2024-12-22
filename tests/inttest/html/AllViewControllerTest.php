@@ -45,7 +45,6 @@ class AllViewControllerTest extends TwigTestCase
         'SHIP_VIEWS-SHOW_ASTRO_ENTRY',              // needs astro entry
         'SHIP_VIEWS-SHOW_BUSSARD_COLLECTOR_AJAX',   // needs corresponding ship system
         'SHIP_VIEWS-SHOW_COLONIZATION',             // needs colonizer ship over free colony
-        'SHIP_VIEWS-SHOW_WEBEMITTER_AJAX',          // needs web emitter module
         'SPACECRAFT_VIEWS-SHOW_COLONY_SCAN',        // needs ship over colony with matrix scanner
         'SPACECRAFT_VIEWS-SHOW_RENAME_CREW',
         'SPACECRAFT_VIEWS-SHOW_SCAN',               // needs ship on same location

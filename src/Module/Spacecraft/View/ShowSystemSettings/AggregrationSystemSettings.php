@@ -2,54 +2,45 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Station\View\ShowAggregationSystem;
+namespace Stu\Module\Spacecraft\View\ShowSystemSettings;
 
-use Override;
-use request;
-use Stu\Exception\SanityCheckException;
+use RuntimeException;
 use Stu\Component\Faction\FactionEnum;
-use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Commodity\CommodityTypeEnum;
-use Stu\Orm\Repository\CommodityRepositoryInterface;
-use Stu\Orm\Repository\BuildingCommodityRepositoryInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
-use Stu\Module\Station\Lib\StationLoaderInterface;
+use Stu\Exception\SanityCheckException;
+use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Module\Station\Lib\StationWrapperInterface;
+use Stu\Orm\Repository\BuildingCommodityRepositoryInterface;
+use Stu\Orm\Repository\CommodityRepositoryInterface;
 
-final class ShowAggregationSystem implements ViewControllerInterface
+class AggregrationSystemSettings implements SystemSettingsProviderInterface
 {
-    public const string VIEW_IDENTIFIER = 'SHOW_AGGREGATION_SYSTEM_AJAX';
-
     public function __construct(
-        private StationLoaderInterface $stationLoader,
         private CommodityRepositoryInterface $commodityRepository,
         private BuildingCommodityRepositoryInterface $buildingCommodityRepository
     ) {}
 
-    #[Override]
-    public function handle(GameControllerInterface $game): void
-    {
-        $user = $game->getUser();
-        $userId = $user->getId();
+    public function setTemplateVariables(
+        SpacecraftSystemTypeEnum $systemType,
+        SpacecraftWrapperInterface $wrapper,
+        GameControllerInterface $game
+    ): void {
 
-        $wrapper = $this->stationLoader->getWrapperByIdAndUser(
-            request::indInt('id'),
-            $userId,
-            false,
-            false
-        );
-        $station = $wrapper->get();
+        $userId = $game->getUser()->getId();
+        $spacecraft = $wrapper->get();
+        $module = $spacecraft->getSpacecraftSystem($systemType)->getModule();
 
-        $module = $station->getSpacecraftSystem(SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM)->getModule();
-
-        $game->setPageTitle(_('Aggregationssystem'));
         $game->setMacroInAjaxWindow('html/ship/aggregationsystem.twig');
 
-        $game->setTemplateVar('WRAPPER', $wrapper);
+        if (!$wrapper instanceof StationWrapperInterface) {
+            throw new RuntimeException('this should not happen');
+        }
 
         $aggregationsystem = $wrapper->getAggregationSystemSystemData();
         if ($aggregationsystem === null) {
-            throw new SanityCheckException('no aggregation system installed', null, self::VIEW_IDENTIFIER);
+            throw new SanityCheckException('no aggregation system installed', null, ShowSystemSettings::VIEW_IDENTIFIER);
         }
 
         $commodities = CommodityTypeEnum::COMMODITY_CONVERSIONS;
@@ -82,7 +73,6 @@ final class ShowAggregationSystem implements ViewControllerInterface
                 $entry[3] *= 2;
             }
         }
-
 
         $mode1Commodities = array_filter($mode1Commodities, function ($entry) use ($userId): bool {
             return $entry[1] !== null && $this->buildingCommodityRepository->canProduceCommodity($userId, $entry[1]->getId());

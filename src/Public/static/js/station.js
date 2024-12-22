@@ -40,12 +40,6 @@ function getShipList() {
 	ajax_update('shiplist', 'station.php?id=' + spacecraftid + '&SHOW_STATION_SHIPLIST=1');
 }
 
-function showAggregationSystemWindow() {
-	closeAjaxWindow();
-	openWindow('elt', 1, 300);
-	ajax_update('elt', 'station.php?id=' + spacecraftid + '&SHOW_AGGREGATION_SYSTEM_AJAX=1');
-}
-
 currentTab = false;
 function showStationModuleSelector(id) {
 	if (currentTab) {
