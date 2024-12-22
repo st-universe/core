@@ -241,7 +241,7 @@ function renameCrew(crew_id) {
   ajax_update(
     "rn_crew_" + crew_id,
     "?B_RENAME_CREW=1&id=" +
-    shipid +
+    spacecraftid +
     "&crewid=" +
     crew_id +
     "&" +
