@@ -86,7 +86,7 @@ class PirateAttack implements PirateAttackInterface
 
         if ($this->helper->deactivateFleet(
             $wrapper,
-            SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE,
+            SpacecraftSystemTypeEnum::WARPDRIVE,
             $informationWrapper
         )) {
             $this->logger->log('    deactivated warp');

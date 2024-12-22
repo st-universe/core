@@ -100,7 +100,7 @@ class RubColonyBehaviour implements PirateBehaviourInterface
                 return;
             }
 
-            $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_SHIELDS, true);
+            $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::SHIELDS, true);
 
             $ship = $wrapper->get();
             $randomCommodityId = array_rand($filteredColonyStorage);
@@ -123,7 +123,7 @@ class RubColonyBehaviour implements PirateBehaviourInterface
                     $colony->getName()
                 )], true);
 
-                $this->spacecraftSystemManager->activate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_SHIELDS, true);
+                $this->spacecraftSystemManager->activate($wrapper, SpacecraftSystemTypeEnum::SHIELDS, true);
             }
 
             $allInformations->addInformationWrapper($informations);

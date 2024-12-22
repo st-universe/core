@@ -95,12 +95,12 @@ class DriveActivationConsequenceTest extends StuTestCase
     public static function provideTriggerData(): array
     {
         return [
-            [true, false, false, false, SpacecraftSystemTypeEnum::SYSTEM_IMPULSEDRIVE],
-            [true, false, false, true, SpacecraftSystemTypeEnum::SYSTEM_IMPULSEDRIVE],
-            [false, true, false, false, SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE],
-            [false, true, false, true, SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE],
-            [false, false, true, false, SpacecraftSystemTypeEnum::SYSTEM_TRANSWARP_COIL],
-            [false, false, true, true, SpacecraftSystemTypeEnum::SYSTEM_TRANSWARP_COIL],
+            [true, false, false, false, SpacecraftSystemTypeEnum::IMPULSEDRIVE],
+            [true, false, false, true, SpacecraftSystemTypeEnum::IMPULSEDRIVE],
+            [false, true, false, false, SpacecraftSystemTypeEnum::WARPDRIVE],
+            [false, true, false, true, SpacecraftSystemTypeEnum::WARPDRIVE],
+            [false, false, true, false, SpacecraftSystemTypeEnum::TRANSWARP_COIL],
+            [false, false, true, true, SpacecraftSystemTypeEnum::TRANSWARP_COIL],
         ];
     }
 
@@ -166,7 +166,7 @@ class DriveActivationConsequenceTest extends StuTestCase
             $message->shouldReceive('add')
                 ->with(sprintf(
                     'Die SHIP aktiviert %s %s',
-                    $expectedSystemId === SpacecraftSystemTypeEnum::SYSTEM_TRANSWARP_COIL ? 'die' : 'den',
+                    $expectedSystemId === SpacecraftSystemTypeEnum::TRANSWARP_COIL ? 'die' : 'den',
                     $expectedSystemId->getDescription()
                 ))
                 ->once();

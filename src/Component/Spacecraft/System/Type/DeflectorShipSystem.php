@@ -16,7 +16,7 @@ final class DeflectorShipSystem extends AbstractSpacecraftSystemType implements 
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
-        return SpacecraftSystemTypeEnum::SYSTEM_DEFLECTOR;
+        return SpacecraftSystemTypeEnum::DEFLECTOR;
     }
 
     #[Override]

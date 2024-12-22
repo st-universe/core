@@ -96,7 +96,7 @@ class SpacecraftDeletionHandlerTest extends StuTestCase
         $this->spacecraftSystemManager->shouldReceive('deactivate')
             ->with(
                 $wrapper,
-                SpacecraftSystemTypeEnum::SYSTEM_TRACTOR_BEAM,
+                SpacecraftSystemTypeEnum::TRACTOR_BEAM,
                 true
             )
             ->once();

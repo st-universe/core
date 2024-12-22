@@ -34,7 +34,7 @@ class RepairTask implements RepairTaskInterface
     private int $finish_time = 0;
 
     #[Column(type: 'integer', enumType: SpacecraftSystemTypeEnum::class)]
-    private SpacecraftSystemTypeEnum $system_type = SpacecraftSystemTypeEnum::SYSTEM_HULL;
+    private SpacecraftSystemTypeEnum $system_type = SpacecraftSystemTypeEnum::HULL;
 
     #[Column(type: 'integer')]
     private int $healing_percentage = 0;

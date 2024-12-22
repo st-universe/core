@@ -23,7 +23,7 @@ final class ActivateTachyon implements ActionControllerInterface
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $this->helper->activate(request::indInt('id'), SpacecraftSystemTypeEnum::SYSTEM_TACHYON_SCANNER, $game, true);
+        $this->helper->activate(request::indInt('id'), SpacecraftSystemTypeEnum::TACHYON_SCANNER, $game, true);
     }
 
     #[Override]

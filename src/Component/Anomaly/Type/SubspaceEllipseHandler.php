@@ -80,11 +80,11 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
                 continue;
             }
 
-            if (!$spacecraft->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_SHIELDS)) {
+            if (!$spacecraft->hasShipSystem(SpacecraftSystemTypeEnum::SHIELDS)) {
                 continue;
             }
 
-            $shieldSystem = $spacecraft->getShipSystem(SpacecraftSystemTypeEnum::SYSTEM_SHIELDS);
+            $shieldSystem = $spacecraft->getShipSystem(SpacecraftSystemTypeEnum::SHIELDS);
 
             if (
                 $spacecraft->getShield() === 0

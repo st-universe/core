@@ -16,7 +16,7 @@ final class FusionReactorShipSystem extends AbstractSpacecraftSystemType impleme
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
-        return SpacecraftSystemTypeEnum::SYSTEM_FUSION_REACTOR;
+        return SpacecraftSystemTypeEnum::FUSION_REACTOR;
     }
 
     #[Override]

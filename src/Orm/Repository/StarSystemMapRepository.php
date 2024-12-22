@@ -126,7 +126,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
             'yStart' => $boundaries->getMinY(),
             'yEnd' => $boundaries->getMaxY(),
             'systemId' => $boundaries->getParentId(),
-            'cloakSystemId' => SpacecraftSystemTypeEnum::SYSTEM_CLOAK->value
+            'cloakSystemId' => SpacecraftSystemTypeEnum::CLOAK->value
         ])->getResult();
     }
 

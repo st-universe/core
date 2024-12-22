@@ -46,7 +46,7 @@ class EpsSystemDataTest extends StuTestCase
         $this->subject->setMaxEps(100);
 
         $this->ship->shouldReceive('hasShipSystem')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_EPS)
+            ->with(SpacecraftSystemTypeEnum::EPS)
             ->andReturn(false);
 
         $result = $this->subject->getEpsPercentage();

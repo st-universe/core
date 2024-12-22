@@ -58,11 +58,11 @@ class EnoughEpsConditionTest extends StuTestCase
     public static function provideCheckWhenSystemInstalledData(): array
     {
         return [
-            [true, false, false, false, SpacecraftSystemTypeEnum::SYSTEM_IMPULSEDRIVE],
-            [true, false, false, true, SpacecraftSystemTypeEnum::SYSTEM_IMPULSEDRIVE],
-            [false, true, false, false, SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE],
-            [false, true, false, true, SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE],
-            [false, false, true, false, SpacecraftSystemTypeEnum::SYSTEM_TRANSWARP_COIL]
+            [true, false, false, false, SpacecraftSystemTypeEnum::IMPULSEDRIVE],
+            [true, false, false, true, SpacecraftSystemTypeEnum::IMPULSEDRIVE],
+            [false, true, false, false, SpacecraftSystemTypeEnum::WARPDRIVE],
+            [false, true, false, true, SpacecraftSystemTypeEnum::WARPDRIVE],
+            [false, false, true, false, SpacecraftSystemTypeEnum::TRANSWARP_COIL]
         ];
     }
 
@@ -118,9 +118,9 @@ class EnoughEpsConditionTest extends StuTestCase
     public static function provideCheckWhenSystemNotInstalledData(): array
     {
         return [
-            [true, false, false,  SpacecraftSystemTypeEnum::SYSTEM_IMPULSEDRIVE],
-            [false, true, false,  SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE],
-            [false, false, true,  SpacecraftSystemTypeEnum::SYSTEM_TRANSWARP_COIL]
+            [true, false, false,  SpacecraftSystemTypeEnum::IMPULSEDRIVE],
+            [false, true, false,  SpacecraftSystemTypeEnum::WARPDRIVE],
+            [false, false, true,  SpacecraftSystemTypeEnum::TRANSWARP_COIL]
         ];
     }
 
@@ -216,7 +216,7 @@ class EnoughEpsConditionTest extends StuTestCase
 
         if ($nextWaypointClass === StarSystemMapInterface::class) {
             $this->ship->shouldReceive('hasShipSystem')
-                ->with(SpacecraftSystemTypeEnum::SYSTEM_IMPULSEDRIVE)
+                ->with(SpacecraftSystemTypeEnum::IMPULSEDRIVE)
                 ->andReturn($hasImpulse);
         }
 
@@ -258,10 +258,10 @@ class EnoughEpsConditionTest extends StuTestCase
         $this->ship->shouldReceive('getDockedTo')
             ->andReturn(null);
         $this->ship->shouldReceive('hasShipSystem')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_IMPULSEDRIVE)
+            ->with(SpacecraftSystemTypeEnum::IMPULSEDRIVE)
             ->andReturn(true);
         $this->ship->shouldReceive('getSystemState')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_IMPULSEDRIVE)
+            ->with(SpacecraftSystemTypeEnum::IMPULSEDRIVE)
             ->andReturn(false);
         $this->ship->shouldReceive('getName')
             ->withNoArgs()
@@ -299,7 +299,7 @@ class EnoughEpsConditionTest extends StuTestCase
             ->once();
 
         $this->spacecraftSystemManager->shouldReceive('getEnergyUsageForActivation')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_IMPULSEDRIVE)
+            ->with(SpacecraftSystemTypeEnum::IMPULSEDRIVE)
             ->andReturn(1);
 
         $this->subject->check($this->wrapper, $this->flightRoute, $this->conditionCheckResult);
@@ -312,10 +312,10 @@ class EnoughEpsConditionTest extends StuTestCase
         $this->ship->shouldReceive('getDockedTo')
             ->andReturn(null);
         $this->ship->shouldReceive('hasShipSystem')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_IMPULSEDRIVE)
+            ->with(SpacecraftSystemTypeEnum::IMPULSEDRIVE)
             ->andReturn(true);
         $this->ship->shouldReceive('getSystemState')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_IMPULSEDRIVE)
+            ->with(SpacecraftSystemTypeEnum::IMPULSEDRIVE)
             ->andReturn(false);
         $this->ship->shouldReceive('getName')
             ->withNoArgs()
@@ -353,7 +353,7 @@ class EnoughEpsConditionTest extends StuTestCase
             ->once();
 
         $this->spacecraftSystemManager->shouldReceive('getEnergyUsageForActivation')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_IMPULSEDRIVE)
+            ->with(SpacecraftSystemTypeEnum::IMPULSEDRIVE)
             ->andReturn(1);
 
         $this->subject->check($this->wrapper, $this->flightRoute, $this->conditionCheckResult);

@@ -23,7 +23,7 @@ final class FleetActivateShields implements ActionControllerInterface
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $this->helper->activateFleet(request::indInt('id'), SpacecraftSystemTypeEnum::SYSTEM_SHIELDS, $game);
+        $this->helper->activateFleet(request::indInt('id'), SpacecraftSystemTypeEnum::SHIELDS, $game);
     }
 
     #[Override]

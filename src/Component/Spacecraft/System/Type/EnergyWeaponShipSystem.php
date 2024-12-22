@@ -14,7 +14,7 @@ final class EnergyWeaponShipSystem extends AbstractSpacecraftSystemType implemen
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
-        return SpacecraftSystemTypeEnum::SYSTEM_PHASER;
+        return SpacecraftSystemTypeEnum::PHASER;
     }
 
     #[Override]

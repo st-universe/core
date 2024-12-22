@@ -54,7 +54,7 @@ class TrackerDeviceManager implements TrackerDeviceManagerInterface
 
         $wrapper
             ->getSpacecraftSystemManager()
-            ->deactivate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_TRACKER, true);
+            ->deactivate($wrapper, SpacecraftSystemTypeEnum::TRACKER, true);
     }
 
     private function sendDeactivationPMs(SpacecraftInterface $spacecraft, ShipInterface $target, bool $sendPmToTargetOwner): void

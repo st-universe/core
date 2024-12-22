@@ -15,7 +15,7 @@ final class TranswarpCoilShipSystem extends AbstractSpacecraftSystemType impleme
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
-        return SpacecraftSystemTypeEnum::SYSTEM_TRANSWARP_COIL;
+        return SpacecraftSystemTypeEnum::TRANSWARP_COIL;
     }
 
     #[Override]

@@ -22,7 +22,7 @@ final class AstroLaboratoryShipSystem extends AbstractSpacecraftSystemType imple
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
-        return SpacecraftSystemTypeEnum::SYSTEM_ASTRO_LABORATORY;
+        return SpacecraftSystemTypeEnum::ASTRO_LABORATORY;
     }
 
     #[Override]
@@ -56,7 +56,7 @@ final class AstroLaboratoryShipSystem extends AbstractSpacecraftSystemType imple
             $this->astroEntryLib->cancelAstroFinalizing($wrapper);
         }
 
-        $spacecraft->getShipSystem(SpacecraftSystemTypeEnum::SYSTEM_ASTRO_LABORATORY)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
+        $spacecraft->getShipSystem(SpacecraftSystemTypeEnum::ASTRO_LABORATORY)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
     }
 
     #[Override]

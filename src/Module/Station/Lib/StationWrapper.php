@@ -71,7 +71,7 @@ class StationWrapper extends SpacecraftWrapper implements StationWrapperInterfac
     public function getAggregationSystemSystemData(): ?AggregationSystemSystemData
     {
         return $this->getSpecificShipSystem(
-            SpacecraftSystemTypeEnum::SYSTEM_AGGREGATION_SYSTEM,
+            SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM,
             AggregationSystemSystemData::class
         );
     }

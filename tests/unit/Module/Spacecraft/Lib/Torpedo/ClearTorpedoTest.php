@@ -137,7 +137,7 @@ class ClearTorpedoTest extends StuTestCase
             ->once();
 
         $this->spacecraftSystemManager->shouldReceive('deactivate')
-            ->with($this->wrapper, SpacecraftSystemTypeEnum::SYSTEM_TORPEDO, true)
+            ->with($this->wrapper, SpacecraftSystemTypeEnum::TORPEDO, true)
             ->once();
 
         $this->subject->clearTorpedoStorage($this->wrapper);

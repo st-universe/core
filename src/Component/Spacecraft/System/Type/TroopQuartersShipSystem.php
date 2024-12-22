@@ -20,7 +20,7 @@ final class TroopQuartersShipSystem extends AbstractSpacecraftSystemType impleme
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
-        return SpacecraftSystemTypeEnum::SYSTEM_TROOP_QUARTERS;
+        return SpacecraftSystemTypeEnum::TROOP_QUARTERS;
     }
 
     #[Override]

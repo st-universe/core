@@ -341,7 +341,7 @@ class ManageTorpedoTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(0);
         $this->ship->shouldReceive('hasShipSystem')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_TORPEDO_STORAGE)
+            ->with(SpacecraftSystemTypeEnum::TORPEDO_STORAGE)
             ->once()
             ->andReturn(false);
         $this->ship->shouldReceive('getRump->getTorpedoLevel')
@@ -395,7 +395,7 @@ class ManageTorpedoTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(0);
         $this->ship->shouldReceive('hasShipSystem')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_TORPEDO_STORAGE)
+            ->with(SpacecraftSystemTypeEnum::TORPEDO_STORAGE)
             ->once()
             ->andReturn(true);
         $this->ship->shouldReceive('getName')
@@ -561,7 +561,7 @@ class ManageTorpedoTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(0);
         $this->ship->shouldReceive('hasShipSystem')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_TORPEDO_STORAGE)
+            ->with(SpacecraftSystemTypeEnum::TORPEDO_STORAGE)
             ->once()
             ->andReturn(true);
         $this->ship->shouldReceive('getName')

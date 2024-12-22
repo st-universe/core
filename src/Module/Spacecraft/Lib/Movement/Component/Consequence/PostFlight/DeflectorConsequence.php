@@ -59,7 +59,7 @@ class DeflectorConsequence extends AbstractFlightConsequence implements PostFlig
         }
 
         //check for deflector state
-        $deflectorDestroyed = !$ship->isSystemHealthy(SpacecraftSystemTypeEnum::SYSTEM_DEFLECTOR);
+        $deflectorDestroyed = !$ship->isSystemHealthy(SpacecraftSystemTypeEnum::DEFLECTOR);
         if ($deflectorDestroyed) {
 
             $this->applyFieldDamage->damage(

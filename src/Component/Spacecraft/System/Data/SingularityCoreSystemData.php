@@ -13,7 +13,7 @@ class SingularityCoreSystemData extends AbstractReactorSystemData
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
-        return SpacecraftSystemTypeEnum::SYSTEM_SINGULARITY_REACTOR;
+        return SpacecraftSystemTypeEnum::SINGULARITY_REACTOR;
     }
 
     #[Override]

@@ -183,10 +183,10 @@ class FightLibTest extends StuTestCase
             ->once();
 
         $this->spacecraftSystemManager->shouldReceive('deactivate')
-            ->with($this->wrapper, SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE)
+            ->with($this->wrapper, SpacecraftSystemTypeEnum::WARPDRIVE)
             ->once();
         $this->spacecraftSystemManager->shouldReceive('deactivate')
-            ->with($this->wrapper, SpacecraftSystemTypeEnum::SYSTEM_CLOAK)
+            ->with($this->wrapper, SpacecraftSystemTypeEnum::CLOAK)
             ->once();
 
         $this->cancelRepair->shouldReceive('cancelRepair')
@@ -256,11 +256,11 @@ class FightLibTest extends StuTestCase
             ->andReturn(null);
 
         $this->spacecraftSystemManager->shouldReceive('deactivate')
-            ->with($this->wrapper, SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE)
+            ->with($this->wrapper, SpacecraftSystemTypeEnum::WARPDRIVE)
             ->once()
             ->andThrow(new SystemNotFoundException());
         $this->spacecraftSystemManager->shouldReceive('deactivate')
-            ->with($this->wrapper, SpacecraftSystemTypeEnum::SYSTEM_CLOAK)
+            ->with($this->wrapper, SpacecraftSystemTypeEnum::CLOAK)
             ->once()
             ->andThrow(new SystemNotFoundException());
 

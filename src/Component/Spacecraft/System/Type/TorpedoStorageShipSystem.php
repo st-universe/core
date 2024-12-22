@@ -17,7 +17,7 @@ final class TorpedoStorageShipSystem extends AbstractSpacecraftSystemType implem
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
-        return SpacecraftSystemTypeEnum::SYSTEM_TORPEDO_STORAGE;
+        return SpacecraftSystemTypeEnum::TORPEDO_STORAGE;
     }
 
     #[Override]

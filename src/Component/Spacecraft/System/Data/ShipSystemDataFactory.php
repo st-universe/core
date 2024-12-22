@@ -29,70 +29,70 @@ final class ShipSystemDataFactory implements ShipSystemDataFactoryInterface
         SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory
     ): AbstractSystemData {
         switch ($systemType) {
-            case SpacecraftSystemTypeEnum::SYSTEM_HULL:
+            case SpacecraftSystemTypeEnum::HULL:
                 return  new HullSystemData(
                     $this->shipSystemRepository,
                     $this->statusBarFactory
                 );
-            case SpacecraftSystemTypeEnum::SYSTEM_SHIELDS:
+            case SpacecraftSystemTypeEnum::SHIELDS:
                 return  new ShieldSystemData(
                     $this->shipSystemRepository,
                     $this->statusBarFactory
                 );
-            case SpacecraftSystemTypeEnum::SYSTEM_EPS:
+            case SpacecraftSystemTypeEnum::EPS:
                 return  new EpsSystemData(
                     $this->shipSystemRepository,
                     $this->statusBarFactory
                 );
-            case SpacecraftSystemTypeEnum::SYSTEM_TRACKER:
+            case SpacecraftSystemTypeEnum::TRACKER:
                 return  new TrackerSystemData(
                     $this->shipRepository,
                     $spacecraftWrapperFactory,
                     $this->shipSystemRepository,
                     $this->statusBarFactory
                 );
-            case SpacecraftSystemTypeEnum::SYSTEM_THOLIAN_WEB:
+            case SpacecraftSystemTypeEnum::THOLIAN_WEB:
                 return  new WebEmitterSystemData(
                     $this->shipSystemRepository,
                     $this->tholianWebRepository,
                     $this->statusBarFactory
                 );
-            case SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE:
+            case SpacecraftSystemTypeEnum::WARPDRIVE:
                 return  new WarpDriveSystemData(
                     $this->shipSystemRepository,
                     $this->statusBarFactory
                 );
-            case SpacecraftSystemTypeEnum::SYSTEM_WARPCORE:
+            case SpacecraftSystemTypeEnum::WARPCORE:
                 return  new WarpCoreSystemData(
                     $this->shipSystemRepository,
                     $this->statusBarFactory
                 );
-            case SpacecraftSystemTypeEnum::SYSTEM_SINGULARITY_REACTOR:
+            case SpacecraftSystemTypeEnum::SINGULARITY_REACTOR:
                 return  new SingularityCoreSystemData(
                     $this->shipSystemRepository,
                     $this->statusBarFactory
                 );
-            case SpacecraftSystemTypeEnum::SYSTEM_FUSION_REACTOR:
+            case SpacecraftSystemTypeEnum::FUSION_REACTOR:
                 return  new FusionCoreSystemData(
                     $this->shipSystemRepository,
                     $this->statusBarFactory
                 );
-            case SpacecraftSystemTypeEnum::SYSTEM_ASTRO_LABORATORY:
+            case SpacecraftSystemTypeEnum::ASTRO_LABORATORY:
                 return  new AstroLaboratorySystemData(
                     $this->shipSystemRepository,
                     $this->statusBarFactory
                 );
-            case SpacecraftSystemTypeEnum::SYSTEM_TORPEDO:
+            case SpacecraftSystemTypeEnum::TORPEDO:
                 return  new ProjectileLauncherSystemData(
                     $this->shipSystemRepository,
                     $this->statusBarFactory
                 );
-            case SpacecraftSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR:
+            case SpacecraftSystemTypeEnum::BUSSARD_COLLECTOR:
                 return  new BussardCollectorSystemData(
                     $this->shipSystemRepository,
                     $this->statusBarFactory
                 );
-            case SpacecraftSystemTypeEnum::SYSTEM_AGGREGATION_SYSTEM:
+            case SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM:
                 return  new AggregationSystemSystemData(
                     $this->shipSystemRepository,
                     $this->statusBarFactory

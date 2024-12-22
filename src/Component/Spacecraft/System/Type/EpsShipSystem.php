@@ -16,7 +16,7 @@ class EpsShipSystem extends AbstractSpacecraftSystemType implements SpacecraftSy
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
-        return SpacecraftSystemTypeEnum::SYSTEM_EPS;
+        return SpacecraftSystemTypeEnum::EPS;
     }
 
     #[Override]

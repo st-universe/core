@@ -23,7 +23,7 @@ final class FleetDeactivateCloak implements ActionControllerInterface
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $this->helper->deactivateFleet(request::indInt('id'), SpacecraftSystemTypeEnum::SYSTEM_CLOAK, $game);
+        $this->helper->deactivateFleet(request::indInt('id'), SpacecraftSystemTypeEnum::CLOAK, $game);
 
         $userId = $game->getUser()->getId();
 

@@ -23,7 +23,7 @@ final class DeactivateAstroLaboratory implements ActionControllerInterface
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $this->helper->deactivate(request::indInt('id'), SpacecraftSystemTypeEnum::SYSTEM_ASTRO_LABORATORY, $game);
+        $this->helper->deactivate(request::indInt('id'), SpacecraftSystemTypeEnum::ASTRO_LABORATORY, $game);
     }
 
     #[Override]

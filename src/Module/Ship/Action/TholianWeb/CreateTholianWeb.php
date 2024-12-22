@@ -80,7 +80,7 @@ final class CreateTholianWeb implements ActionControllerInterface
         }
 
         // activate system
-        if (!$this->helper->activate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_THOLIAN_WEB, $game)) {
+        if (!$this->helper->activate($wrapper, SpacecraftSystemTypeEnum::THOLIAN_WEB, $game)) {
             return;
         }
         $this->spacecraftStateChanger->changeShipState($wrapper, SpacecraftStateEnum::SHIP_STATE_WEB_SPINNING);

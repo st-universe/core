@@ -265,7 +265,7 @@ class DeflectorConsequenceTest extends StuTestCase
             ->once()
             ->andReturn(false);
         $this->ship->shouldReceive('isSystemHealthy')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_DEFLECTOR)
+            ->with(SpacecraftSystemTypeEnum::DEFLECTOR)
             ->once()
             ->andReturn(false);
 
@@ -325,7 +325,7 @@ class DeflectorConsequenceTest extends StuTestCase
             ->once()
             ->andReturn(false);
         $this->ship->shouldReceive('isSystemHealthy')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_DEFLECTOR)
+            ->with(SpacecraftSystemTypeEnum::DEFLECTOR)
             ->once()
             ->andReturn(true);
 
@@ -392,7 +392,7 @@ class DeflectorConsequenceTest extends StuTestCase
             ->once()
             ->andReturn(false);
         $this->ship->shouldReceive('isSystemHealthy')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_DEFLECTOR)
+            ->with(SpacecraftSystemTypeEnum::DEFLECTOR)
             ->once()
             ->andReturn(true);
 
@@ -471,7 +471,7 @@ class DeflectorConsequenceTest extends StuTestCase
             ->once()
             ->andReturn(false);
         $this->ship->shouldReceive('isSystemHealthy')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_DEFLECTOR)
+            ->with(SpacecraftSystemTypeEnum::DEFLECTOR)
             ->once()
             ->andReturn(true);
 

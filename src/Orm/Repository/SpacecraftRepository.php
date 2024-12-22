@@ -121,7 +121,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
             )
             ->setParameters([
                 'location' => $location,
-                'systemId' => SpacecraftSystemTypeEnum::SYSTEM_CLOAK->value
+                'systemId' => SpacecraftSystemTypeEnum::CLOAK->value
             ])
             ->getResult();
     }
@@ -152,7 +152,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
                 Anomaly::class
             )
         )->setParameters([
-            'shieldType' => SpacecraftSystemTypeEnum::SYSTEM_SHIELDS->value,
+            'shieldType' => SpacecraftSystemTypeEnum::SHIELDS->value,
             'modeOn' => SpacecraftSystemModeEnum::MODE_ON->value,
             'regenerationThreshold' => $regenerationThreshold,
             'anomalyType' => AnomalyTypeEnum::SUBSPACE_ELLIPSE
@@ -221,7 +221,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
                     AND s.user != :ignoreUser',
                 Spacecraft::class,
                 SpacecraftSystem::class,
-                SpacecraftSystemTypeEnum::SYSTEM_CLOAK->value
+                SpacecraftSystemTypeEnum::CLOAK->value
             )
         )->setParameters([
             'location' => $spacecraft->getLocation(),

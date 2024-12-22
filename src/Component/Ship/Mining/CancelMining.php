@@ -27,8 +27,8 @@ final class CancelMining implements CancelMiningInterface
 
         $state = $ship->getState();
         if ($state === SpacecraftStateEnum::SHIP_STATE_GATHER_RESOURCES) {
-            if ($ship->isSystemHealthy(SpacecraftSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR)) {
-                $wrapper->getSpacecraftSystemManager()->deactivate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR, true);
+            if ($ship->isSystemHealthy(SpacecraftSystemTypeEnum::BUSSARD_COLLECTOR)) {
+                $wrapper->getSpacecraftSystemManager()->deactivate($wrapper, SpacecraftSystemTypeEnum::BUSSARD_COLLECTOR, true);
             }
 
             $miningQueue = $this->miningQueueRepository->getByShip($ship->getId());

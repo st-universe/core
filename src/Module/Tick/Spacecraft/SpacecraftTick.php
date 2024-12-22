@@ -108,7 +108,7 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
 
         $startTime = microtime(true);
         // leave ship
-        if ($spacecraft->getCrewCount() > 0 && !$spacecraft->isSystemHealthy(SpacecraftSystemTypeEnum::SYSTEM_LIFE_SUPPORT)) {
+        if ($spacecraft->getCrewCount() > 0 && !$spacecraft->isSystemHealthy(SpacecraftSystemTypeEnum::LIFE_SUPPORT)) {
             $this->msg[] = _('Die Lebenserhaltung ist ausgefallen:');
             $this->msg[] = $this->spacecraftLeaver->evacuate($wrapper);
             $this->sendMessages($spacecraft);
@@ -133,7 +133,7 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
 
             //deactivate all systems except life support
             foreach ($this->spacecraftSystemManager->getActiveSystems($spacecraft) as $system) {
-                if ($system->getSystemType() != SpacecraftSystemTypeEnum::SYSTEM_LIFE_SUPPORT) {
+                if ($system->getSystemType() != SpacecraftSystemTypeEnum::LIFE_SUPPORT) {
                     $this->spacecraftSystemManager->deactivate($wrapper, $system->getSystemType(), true);
                 }
             }
@@ -197,7 +197,7 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
                     $wrapper->lowerEpsUsage($energyConsumption);
                     $this->msg[] = $system->getSystemType()->getDescription() . ' deaktiviert wegen Energiemangel';
 
-                    if ($spacecraft->getCrewCount() > 0 && $system->getSystemType() == SpacecraftSystemTypeEnum::SYSTEM_LIFE_SUPPORT) {
+                    if ($spacecraft->getCrewCount() > 0 && $system->getSystemType() == SpacecraftSystemTypeEnum::LIFE_SUPPORT) {
                         $this->msg[] = _('Die Lebenserhaltung ist ausgefallen:');
                         $this->msg[] = $this->spacecraftLeaver->evacuate($wrapper);
                         $this->sendMessages($spacecraft);
@@ -609,7 +609,7 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
             $locationmining = $miningqueue->getLocationMining();
             $actualAmount = $locationmining->getActualAmount();
             $freeStorage = $ship->getMaxStorage() - $ship->getStorageSum();
-            $module = $ship->getShipSystem(SpacecraftSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR)->getModule();
+            $module = $ship->getShipSystem(SpacecraftSystemTypeEnum::BUSSARD_COLLECTOR)->getModule();
             $gathercount = 0;
 
             if ($module !== null) {
@@ -651,7 +651,7 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
         if ($aggsys === null) {
             return;
         } else {
-            $module = $station->getShipSystem(SpacecraftSystemTypeEnum::SYSTEM_AGGREGATION_SYSTEM)->getModule();
+            $module = $station->getShipSystem(SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM)->getModule();
             $producedAmount = 0;
             $usedAmount = 0;
             $usedCommodity = null;

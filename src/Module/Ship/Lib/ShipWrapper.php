@@ -155,7 +155,7 @@ final class ShipWrapper extends SpacecraftWrapper implements ShipWrapperInterfac
     public function getTrackerSystemData(): ?TrackerSystemData
     {
         return $this->getSpecificShipSystem(
-            SpacecraftSystemTypeEnum::SYSTEM_TRACKER,
+            SpacecraftSystemTypeEnum::TRACKER,
             TrackerSystemData::class
         );
     }
@@ -164,7 +164,7 @@ final class ShipWrapper extends SpacecraftWrapper implements ShipWrapperInterfac
     public function getBussardCollectorSystemData(): ?BussardCollectorSystemData
     {
         return $this->getSpecificShipSystem(
-            SpacecraftSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR,
+            SpacecraftSystemTypeEnum::BUSSARD_COLLECTOR,
             BussardCollectorSystemData::class
         );
     }
@@ -173,7 +173,7 @@ final class ShipWrapper extends SpacecraftWrapper implements ShipWrapperInterfac
     public function getWebEmitterSystemData(): ?WebEmitterSystemData
     {
         return $this->getSpecificShipSystem(
-            SpacecraftSystemTypeEnum::SYSTEM_THOLIAN_WEB,
+            SpacecraftSystemTypeEnum::THOLIAN_WEB,
             WebEmitterSystemData::class
         );
     }
@@ -182,7 +182,7 @@ final class ShipWrapper extends SpacecraftWrapper implements ShipWrapperInterfac
     public function getAstroLaboratorySystemData(): ?AstroLaboratorySystemData
     {
         return $this->getSpecificShipSystem(
-            SpacecraftSystemTypeEnum::SYSTEM_ASTRO_LABORATORY,
+            SpacecraftSystemTypeEnum::ASTRO_LABORATORY,
             AstroLaboratorySystemData::class
         );
     }

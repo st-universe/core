@@ -33,7 +33,7 @@ final class ActivateRPGModule implements ActionControllerInterface
 
         $userId = $game->getUser()->getId();
 
-        $this->helper->activate(request::indInt('id'), SpacecraftSystemTypeEnum::SYSTEM_RPG_MODULE, $game, true);
+        $this->helper->activate(request::indInt('id'), SpacecraftSystemTypeEnum::RPG_MODULE, $game, true);
 
         $ship = $this->spacecraftLoader->getByIdAndUser(
             request::indInt('id'),

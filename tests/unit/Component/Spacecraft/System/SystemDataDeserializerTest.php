@@ -61,13 +61,13 @@ class SystemDataDeserializerTest extends StuTestCase
             ->once();
 
         $this->shipSystemDataFactory->shouldReceive('createSystemData')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_HULL, $this->spacecraftWrapperFactory)
+            ->with(SpacecraftSystemTypeEnum::HULL, $this->spacecraftWrapperFactory)
             ->once()
             ->andReturn($hullSystemData);
 
         $hull = $this->subject->getSpecificShipSystem(
             $this->ship,
-            SpacecraftSystemTypeEnum::SYSTEM_HULL,
+            SpacecraftSystemTypeEnum::HULL,
             HullSystemData::class,
             new ArrayCollection(),
             $this->spacecraftWrapperFactory
@@ -79,13 +79,13 @@ class SystemDataDeserializerTest extends StuTestCase
     public function testGetEpsSystemDataReturnNullIfSystemNotFound(): void
     {
         $this->ship->shouldReceive('hasShipSystem')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_EPS)
+            ->with(SpacecraftSystemTypeEnum::EPS)
             ->once()
             ->andReturn(false);
 
         $eps = $this->subject->getSpecificShipSystem(
             $this->ship,
-            SpacecraftSystemTypeEnum::SYSTEM_EPS,
+            SpacecraftSystemTypeEnum::EPS,
             EpsSystemData::class,
             new ArrayCollection(),
             $this->spacecraftWrapperFactory
@@ -103,11 +103,11 @@ class SystemDataDeserializerTest extends StuTestCase
         );
 
         $this->ship->shouldReceive('hasShipSystem')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_EPS)
+            ->with(SpacecraftSystemTypeEnum::EPS)
             ->once()
             ->andReturn(true);
         $this->ship->shouldReceive('getShipSystem')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_EPS)
+            ->with(SpacecraftSystemTypeEnum::EPS)
             ->once()
             ->andReturn($this->shipSystem);
         $this->shipSystem->shouldReceive('getData')
@@ -115,13 +115,13 @@ class SystemDataDeserializerTest extends StuTestCase
             ->once()
             ->andReturn(null);
         $this->shipSystemDataFactory->shouldReceive('createSystemData')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_EPS, $this->spacecraftWrapperFactory)
+            ->with(SpacecraftSystemTypeEnum::EPS, $this->spacecraftWrapperFactory)
             ->once()
             ->andReturn($epsSystemData);
 
         $eps = $this->subject->getSpecificShipSystem(
             $this->ship,
-            SpacecraftSystemTypeEnum::SYSTEM_EPS,
+            SpacecraftSystemTypeEnum::EPS,
             EpsSystemData::class,
             new ArrayCollection(),
             $this->spacecraftWrapperFactory
@@ -144,15 +144,15 @@ class SystemDataDeserializerTest extends StuTestCase
         );
 
         $this->ship->shouldReceive('hasShipSystem')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_EPS)
+            ->with(SpacecraftSystemTypeEnum::EPS)
             ->twice()
             ->andReturn(true);
         $this->ship->shouldReceive('getShipSystem')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_EPS)
+            ->with(SpacecraftSystemTypeEnum::EPS)
             ->once()
             ->andReturn($this->shipSystem);
         $this->shipSystemDataFactory->shouldReceive('createSystemData')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_EPS, $this->spacecraftWrapperFactory)
+            ->with(SpacecraftSystemTypeEnum::EPS, $this->spacecraftWrapperFactory)
             ->once()
             ->andReturn($epsSystemData);
         $this->shipSystem->shouldReceive('getData')
@@ -172,14 +172,14 @@ class SystemDataDeserializerTest extends StuTestCase
         // call two times to check if cache works
         $eps = $this->subject->getSpecificShipSystem(
             $this->ship,
-            SpacecraftSystemTypeEnum::SYSTEM_EPS,
+            SpacecraftSystemTypeEnum::EPS,
             EpsSystemData::class,
             $cache,
             $this->spacecraftWrapperFactory
         );
         $eps = $this->subject->getSpecificShipSystem(
             $this->ship,
-            SpacecraftSystemTypeEnum::SYSTEM_EPS,
+            SpacecraftSystemTypeEnum::EPS,
             EpsSystemData::class,
             $cache,
             $this->spacecraftWrapperFactory

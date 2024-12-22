@@ -83,7 +83,7 @@ final class ResearchState implements ResearchStateInterface
         $ship = $wrapper->get();
 
         if ($plan->getCrew() > 0) {
-            $this->spacecraftSystemManager->activate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_LIFE_SUPPORT, true);
+            $this->spacecraftSystemManager->activate($wrapper, SpacecraftSystemTypeEnum::LIFE_SUPPORT, true);
         }
 
         $this->shipRepository->save($ship);

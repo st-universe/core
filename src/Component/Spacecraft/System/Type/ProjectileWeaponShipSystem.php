@@ -14,7 +14,7 @@ final class ProjectileWeaponShipSystem extends AbstractSpacecraftSystemType impl
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
-        return SpacecraftSystemTypeEnum::SYSTEM_TORPEDO;
+        return SpacecraftSystemTypeEnum::TORPEDO;
     }
 
     #[Override]

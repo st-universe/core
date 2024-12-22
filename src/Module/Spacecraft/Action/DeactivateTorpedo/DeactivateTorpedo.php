@@ -23,7 +23,7 @@ final class DeactivateTorpedo implements ActionControllerInterface
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $this->helper->deactivate(request::indInt('id'), SpacecraftSystemTypeEnum::SYSTEM_TORPEDO, $game);
+        $this->helper->deactivate(request::indInt('id'), SpacecraftSystemTypeEnum::TORPEDO, $game);
     }
 
     #[Override]

@@ -138,21 +138,21 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
             $reactorSystemData = null;
 
 
-            if ($ship->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_WARPCORE)) {
+            if ($ship->hasShipSystem(SpacecraftSystemTypeEnum::WARPCORE)) {
                 $reactorSystemData = $this->getSpecificShipSystem(
-                    SpacecraftSystemTypeEnum::SYSTEM_WARPCORE,
+                    SpacecraftSystemTypeEnum::WARPCORE,
                     WarpCoreSystemData::class
                 );
             }
-            if ($ship->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_SINGULARITY_REACTOR)) {
+            if ($ship->hasShipSystem(SpacecraftSystemTypeEnum::SINGULARITY_REACTOR)) {
                 $reactorSystemData = $this->getSpecificShipSystem(
-                    SpacecraftSystemTypeEnum::SYSTEM_SINGULARITY_REACTOR,
+                    SpacecraftSystemTypeEnum::SINGULARITY_REACTOR,
                     SingularityCoreSystemData::class
                 );
             }
-            if ($ship->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_FUSION_REACTOR)) {
+            if ($ship->hasShipSystem(SpacecraftSystemTypeEnum::FUSION_REACTOR)) {
                 $reactorSystemData = $this->getSpecificShipSystem(
-                    SpacecraftSystemTypeEnum::SYSTEM_FUSION_REACTOR,
+                    SpacecraftSystemTypeEnum::FUSION_REACTOR,
                     FusionCoreSystemData::class
                 );
             }
@@ -279,7 +279,7 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
     #[Override]
     public function getPossibleTorpedoTypes(): array
     {
-        if ($this->spacecraft->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_TORPEDO_STORAGE)) {
+        if ($this->spacecraft->hasShipSystem(SpacecraftSystemTypeEnum::TORPEDO_STORAGE)) {
             return $this->torpedoTypeRepository->getAll();
         }
 
@@ -333,7 +333,7 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
     public function getHullSystemData(): HullSystemData
     {
         $hullSystemData = $this->getSpecificShipSystem(
-            SpacecraftSystemTypeEnum::SYSTEM_HULL,
+            SpacecraftSystemTypeEnum::HULL,
             HullSystemData::class
         );
 
@@ -348,7 +348,7 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
     public function getShieldSystemData(): ?ShieldSystemData
     {
         return $this->getSpecificShipSystem(
-            SpacecraftSystemTypeEnum::SYSTEM_SHIELDS,
+            SpacecraftSystemTypeEnum::SHIELDS,
             ShieldSystemData::class
         );
     }
@@ -357,7 +357,7 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
     public function getEpsSystemData(): ?EpsSystemData
     {
         return $this->getSpecificShipSystem(
-            SpacecraftSystemTypeEnum::SYSTEM_EPS,
+            SpacecraftSystemTypeEnum::EPS,
             EpsSystemData::class
         );
     }
@@ -366,7 +366,7 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
     public function getWarpDriveSystemData(): ?WarpDriveSystemData
     {
         return $this->getSpecificShipSystem(
-            SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE,
+            SpacecraftSystemTypeEnum::WARPDRIVE,
             WarpDriveSystemData::class
         );
     }
@@ -375,7 +375,7 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
     public function getProjectileLauncherSystemData(): ?ProjectileLauncherSystemData
     {
         return $this->getSpecificShipSystem(
-            SpacecraftSystemTypeEnum::SYSTEM_TORPEDO,
+            SpacecraftSystemTypeEnum::TORPEDO,
             ProjectileLauncherSystemData::class
         );
     }

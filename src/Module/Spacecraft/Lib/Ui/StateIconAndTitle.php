@@ -82,7 +82,7 @@ class StateIconAndTitle
             && $spacecraft instanceof ShipInterface
         ) {
             $miningqueue = $spacecraft->getMiningQueue();
-            $module = $spacecraft->getShipSystem(SpacecraftSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR)->getModule();
+            $module = $spacecraft->getShipSystem(SpacecraftSystemTypeEnum::BUSSARD_COLLECTOR)->getModule();
             $gathercount = 0;
             if ($miningqueue !== null) {
                 $locationmining = $miningqueue->getLocationMining();

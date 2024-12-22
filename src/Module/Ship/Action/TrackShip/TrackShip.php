@@ -81,7 +81,7 @@ final class TrackShip implements ActionControllerInterface
         }
 
         // activate system
-        if (!$this->helper->activate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_TRACKER, $game)) {
+        if (!$this->helper->activate($wrapper, SpacecraftSystemTypeEnum::TRACKER, $game)) {
             $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
             return;
         }

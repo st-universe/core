@@ -22,7 +22,7 @@ final class CloakShipSystem extends AbstractSpacecraftSystemType implements Spac
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
-        return SpacecraftSystemTypeEnum::SYSTEM_CLOAK;
+        return SpacecraftSystemTypeEnum::CLOAK;
     }
 
     #[Override]
@@ -70,7 +70,7 @@ final class CloakShipSystem extends AbstractSpacecraftSystemType implements Spac
     {
         $spacecraft = $wrapper->get();
         if ($spacecraft->isTractoring()) {
-            $manager->deactivate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
+            $manager->deactivate($wrapper, SpacecraftSystemTypeEnum::TRACTOR_BEAM, true);
         }
 
         if ($spacecraft instanceof ShipInterface) {
@@ -78,17 +78,17 @@ final class CloakShipSystem extends AbstractSpacecraftSystemType implements Spac
         }
         $this->spacecraftStateChanger->changeShipState($wrapper, SpacecraftStateEnum::SHIP_STATE_NONE);
 
-        if ($spacecraft->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_ASTRO_LABORATORY)) {
-            $spacecraft->getShipSystem(SpacecraftSystemTypeEnum::SYSTEM_ASTRO_LABORATORY)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
+        if ($spacecraft->hasShipSystem(SpacecraftSystemTypeEnum::ASTRO_LABORATORY)) {
+            $spacecraft->getShipSystem(SpacecraftSystemTypeEnum::ASTRO_LABORATORY)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
         }
-        if ($spacecraft->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_SHIELDS)) {
-            $spacecraft->getShipSystem(SpacecraftSystemTypeEnum::SYSTEM_SHIELDS)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
+        if ($spacecraft->hasShipSystem(SpacecraftSystemTypeEnum::SHIELDS)) {
+            $spacecraft->getShipSystem(SpacecraftSystemTypeEnum::SHIELDS)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
         }
-        if ($spacecraft->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_PHASER)) {
-            $spacecraft->getShipSystem(SpacecraftSystemTypeEnum::SYSTEM_PHASER)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
+        if ($spacecraft->hasShipSystem(SpacecraftSystemTypeEnum::PHASER)) {
+            $spacecraft->getShipSystem(SpacecraftSystemTypeEnum::PHASER)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
         }
-        if ($spacecraft->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_TORPEDO)) {
-            $spacecraft->getShipSystem(SpacecraftSystemTypeEnum::SYSTEM_TORPEDO)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
+        if ($spacecraft->hasShipSystem(SpacecraftSystemTypeEnum::TORPEDO)) {
+            $spacecraft->getShipSystem(SpacecraftSystemTypeEnum::TORPEDO)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
         }
 
         $spacecraft->getShipSystem($this->getSystemType())->setMode(SpacecraftSystemModeEnum::MODE_ON);

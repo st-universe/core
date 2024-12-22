@@ -23,7 +23,7 @@ final class FleetDeactivateShields implements ActionControllerInterface
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $this->helper->deactivateFleet(request::indInt('id'), SpacecraftSystemTypeEnum::SYSTEM_SHIELDS, $game);
+        $this->helper->deactivateFleet(request::indInt('id'), SpacecraftSystemTypeEnum::SHIELDS, $game);
     }
 
     #[Override]

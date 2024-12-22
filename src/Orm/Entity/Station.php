@@ -176,13 +176,13 @@ class Station extends Spacecraft implements StationInterface
     #[Override]
     public function getConstructionHubState(): bool
     {
-        return $this->getSystemState(SpacecraftSystemTypeEnum::SYSTEM_CONSTRUCTION_HUB);
+        return $this->getSystemState(SpacecraftSystemTypeEnum::CONSTRUCTION_HUB);
     }
 
     #[Override]
     public function isAggregationSystemHealthy(): bool
     {
-        return $this->isSystemHealthy(SpacecraftSystemTypeEnum::SYSTEM_AGGREGATION_SYSTEM);
+        return $this->isSystemHealthy(SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM);
     }
 
     #[Override]

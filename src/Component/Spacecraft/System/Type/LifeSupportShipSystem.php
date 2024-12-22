@@ -16,7 +16,7 @@ final class LifeSupportShipSystem extends AbstractSpacecraftSystemType implement
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
-        return SpacecraftSystemTypeEnum::SYSTEM_LIFE_SUPPORT;
+        return SpacecraftSystemTypeEnum::LIFE_SUPPORT;
     }
 
     #[Override]

@@ -27,7 +27,7 @@ class WebEmitterSystemData extends AbstractSystemData
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
-        return SpacecraftSystemTypeEnum::SYSTEM_THOLIAN_WEB;
+        return SpacecraftSystemTypeEnum::THOLIAN_WEB;
     }
 
     public function getWebUnderConstruction(): ?TholianWebInterface
@@ -61,7 +61,7 @@ class WebEmitterSystemData extends AbstractSystemData
 
     public function getCooldown(): ?int
     {
-        return $this->spacecraft->getShipSystem(SpacecraftSystemTypeEnum::SYSTEM_THOLIAN_WEB)->getCooldown();
+        return $this->spacecraft->getShipSystem(SpacecraftSystemTypeEnum::THOLIAN_WEB)->getCooldown();
     }
 
     public function isUseable(): bool

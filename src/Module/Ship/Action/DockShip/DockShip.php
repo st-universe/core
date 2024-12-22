@@ -129,7 +129,7 @@ final class DockShip implements ActionControllerInterface
         }
 
         try {
-            $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_SHIELDS);
+            $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::SHIELDS);
         } catch (SpacecraftSystemException) {
         }
 
@@ -202,12 +202,12 @@ final class DockShip implements ActionControllerInterface
             }
 
             try {
-                $this->spacecraftSystemManager->deactivate($fleetShipWrapper, SpacecraftSystemTypeEnum::SYSTEM_SHIELDS);
+                $this->spacecraftSystemManager->deactivate($fleetShipWrapper, SpacecraftSystemTypeEnum::SHIELDS);
             } catch (SpacecraftSystemException) {
             }
 
             try {
-                $this->spacecraftSystemManager->deactivate($fleetShipWrapper, SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE);
+                $this->spacecraftSystemManager->deactivate($fleetShipWrapper, SpacecraftSystemTypeEnum::WARPDRIVE);
             } catch (SpacecraftSystemException) {
             }
 

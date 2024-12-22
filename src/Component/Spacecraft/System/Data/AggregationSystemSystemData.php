@@ -15,7 +15,7 @@ class AggregationSystemSystemData extends AbstractSystemData
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
-        return SpacecraftSystemTypeEnum::SYSTEM_AGGREGATION_SYSTEM;
+        return SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM;
     }
 
     public function getCommodityId(): int

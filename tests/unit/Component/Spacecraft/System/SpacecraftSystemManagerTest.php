@@ -54,7 +54,7 @@ class SpacecraftSystemManagerTest extends StuTestCase
      */
     private $stuTimeMock;
 
-    private SpacecraftSystemTypeEnum $system_id = SpacecraftSystemTypeEnum::SYSTEM_EPS;
+    private SpacecraftSystemTypeEnum $system_id = SpacecraftSystemTypeEnum::EPS;
 
     private SpacecraftSystemManagerInterface $manager;
 
@@ -620,7 +620,7 @@ class SpacecraftSystemManagerTest extends StuTestCase
     {
         $this->expectException(InvalidSystemException::class);
 
-        $this->manager->deactivate($this->wrapper, SpacecraftSystemTypeEnum::SYSTEM_FUSION_REACTOR);
+        $this->manager->deactivate($this->wrapper, SpacecraftSystemTypeEnum::FUSION_REACTOR);
     }
 
     public function testDeactivateErrorsOnNotDeactivatable(): void

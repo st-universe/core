@@ -122,7 +122,7 @@ final class ShowSensorScan implements ViewControllerInterface
         $this->stationLoader->save($station);
 
         //$tachyonActive = $this->nbsUtility->isTachyonActive($ship);
-        $tachyonActive = $station->getSystemState(SpacecraftSystemTypeEnum::SYSTEM_TACHYON_SCANNER);
+        $tachyonActive = $station->getSystemState(SpacecraftSystemTypeEnum::TACHYON_SCANNER);
 
         if ($sysid !== 0) {
             $this->loggerUtil->log('system!');

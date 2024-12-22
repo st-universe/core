@@ -23,7 +23,7 @@ final class DeactivateNbs implements ActionControllerInterface
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $this->helper->deactivate(request::indInt('id'), SpacecraftSystemTypeEnum::SYSTEM_NBS, $game);
+        $this->helper->deactivate(request::indInt('id'), SpacecraftSystemTypeEnum::NBS, $game);
     }
 
     #[Override]

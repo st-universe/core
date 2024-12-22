@@ -25,7 +25,7 @@ class DriveActivatableCondition implements PreFlightConditionInterface
         if ($flightRoute->isImpulseDriveNeeded()) {
             $this->activatorDeactivatorHelper->activate(
                 $wrapper,
-                SpacecraftSystemTypeEnum::SYSTEM_IMPULSEDRIVE,
+                SpacecraftSystemTypeEnum::IMPULSEDRIVE,
                 $conditionCheckResult,
                 false,
                 true
@@ -35,7 +35,7 @@ class DriveActivatableCondition implements PreFlightConditionInterface
         if ($flightRoute->isWarpDriveNeeded()) {
             $this->activatorDeactivatorHelper->activate(
                 $wrapper,
-                SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE,
+                SpacecraftSystemTypeEnum::WARPDRIVE,
                 $conditionCheckResult,
                 false,
                 true
@@ -45,7 +45,7 @@ class DriveActivatableCondition implements PreFlightConditionInterface
         if ($flightRoute->isTranswarpCoilNeeded()) {
             $this->activatorDeactivatorHelper->activate(
                 $wrapper,
-                SpacecraftSystemTypeEnum::SYSTEM_TRANSWARP_COIL,
+                SpacecraftSystemTypeEnum::TRANSWARP_COIL,
                 $conditionCheckResult,
                 false,
                 true

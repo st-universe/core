@@ -159,7 +159,7 @@ final class StationRepository extends EntityRepository implements StationReposit
             )
         )->setParameters([
             'userId' => $userId,
-            'systemType' => SpacecraftSystemTypeEnum::SYSTEM_UPLINK->value,
+            'systemType' => SpacecraftSystemTypeEnum::UPLINK->value,
             'mode' => SpacecraftSystemModeEnum::MODE_ON->value,
             'vacationThreshold' => time() - UserEnum::VACATION_DELAY_IN_SECONDS,
             'false' => false
@@ -240,10 +240,10 @@ final class StationRepository extends EntityRepository implements StationReposit
         )->setParameters([
             'locationId' => $location->getId(),
             'ignoreId' => $spacecraft->getId(),
-            'cloakType' => SpacecraftSystemTypeEnum::SYSTEM_CLOAK->value,
-            'warpdriveType' => SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE->value,
-            'shieldType' => SpacecraftSystemTypeEnum::SYSTEM_SHIELDS->value,
-            'uplinkType' => SpacecraftSystemTypeEnum::SYSTEM_UPLINK->value,
+            'cloakType' => SpacecraftSystemTypeEnum::CLOAK->value,
+            'warpdriveType' => SpacecraftSystemTypeEnum::WARPDRIVE->value,
+            'shieldType' => SpacecraftSystemTypeEnum::SHIELDS->value,
+            'uplinkType' => SpacecraftSystemTypeEnum::UPLINK->value,
             'false' => false
         ]);
 

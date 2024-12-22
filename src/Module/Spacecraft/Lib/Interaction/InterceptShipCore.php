@@ -85,7 +85,7 @@ final class InterceptShipCore implements InterceptShipCoreInterface
     private function deactivateWarpdrive(SpacecraftWrapperInterface $wrapper, Collection $wrappersToToggleAlertReaction, bool $addSelfAsToggle = false): void
     {
         try {
-            $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE);
+            $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::WARPDRIVE);
             $this->spacecraftRepository->save($wrapper->get());
 
             $tractoredWrapper = $wrapper->getTractoredShipWrapper();

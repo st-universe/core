@@ -28,7 +28,7 @@ final class TractorBeamShipSystem extends AbstractSpacecraftSystemType implement
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
-        return SpacecraftSystemTypeEnum::SYSTEM_TRACTOR_BEAM;
+        return SpacecraftSystemTypeEnum::TRACTOR_BEAM;
     }
 
     #[Override]

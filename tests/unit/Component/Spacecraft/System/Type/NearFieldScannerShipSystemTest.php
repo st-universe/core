@@ -160,7 +160,7 @@ class NearFieldScannerShipSystemTest extends StuTestCase
         $system = $this->mock(SpacecraftSystemInterface::class);
 
         $this->ship->shouldReceive('getShipSystem')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_NBS)
+            ->with(SpacecraftSystemTypeEnum::NBS)
             ->once()
             ->andReturn($system);
         $system->shouldReceive('setMode')
@@ -176,7 +176,7 @@ class NearFieldScannerShipSystemTest extends StuTestCase
         $systemAstro = $this->mock(SpacecraftSystemInterface::class);
 
         $this->ship->shouldReceive('getShipSystem')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_NBS)
+            ->with(SpacecraftSystemTypeEnum::NBS)
             ->once()
             ->andReturn($systemNbs);
         $systemNbs->shouldReceive('setMode')
@@ -185,11 +185,11 @@ class NearFieldScannerShipSystemTest extends StuTestCase
 
         //ASTRO STUFF
         $this->ship->shouldReceive('hasShipSystem')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_ASTRO_LABORATORY)
+            ->with(SpacecraftSystemTypeEnum::ASTRO_LABORATORY)
             ->once()
             ->andReturnTrue();
         $this->ship->shouldReceive('getShipSystem')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_ASTRO_LABORATORY)
+            ->with(SpacecraftSystemTypeEnum::ASTRO_LABORATORY)
             ->once()
             ->andReturn($systemAstro);
         $systemAstro->shouldReceive('setMode')
@@ -212,11 +212,11 @@ class NearFieldScannerShipSystemTest extends StuTestCase
 
         //ASTRO STUFF
         $this->ship->shouldReceive('hasShipSystem')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_ASTRO_LABORATORY)
+            ->with(SpacecraftSystemTypeEnum::ASTRO_LABORATORY)
             ->once()
             ->andReturnTrue();
         $this->ship->shouldReceive('getShipSystem')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_ASTRO_LABORATORY)
+            ->with(SpacecraftSystemTypeEnum::ASTRO_LABORATORY)
             ->once()
             ->andReturn($systemAstro);
         $systemAstro->shouldReceive('setMode')

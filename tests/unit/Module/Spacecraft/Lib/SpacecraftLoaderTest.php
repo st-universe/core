@@ -170,7 +170,7 @@ class SpacecraftLoaderTest extends StuTestCase
             ->once()
             ->andReturn(true);
         $this->spacecraft->shouldReceive('getSystemState')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_UPLINK)
+            ->with(SpacecraftSystemTypeEnum::UPLINK)
             ->once()
             ->andReturn(false);
 
@@ -197,7 +197,7 @@ class SpacecraftLoaderTest extends StuTestCase
             ->once()
             ->andReturn(true);
         $this->spacecraft->shouldReceive('getSystemState')
-            ->with(SpacecraftSystemTypeEnum::SYSTEM_UPLINK)
+            ->with(SpacecraftSystemTypeEnum::UPLINK)
             ->once()
             ->andReturn(true);
         $this->spacecraft->shouldReceive('getUser->isVacationRequestOldEnough')

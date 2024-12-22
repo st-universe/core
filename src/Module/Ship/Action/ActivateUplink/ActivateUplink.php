@@ -23,7 +23,7 @@ final class ActivateUplink implements ActionControllerInterface
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $this->helper->activate(request::indInt('id'), SpacecraftSystemTypeEnum::SYSTEM_UPLINK, $game, true);
+        $this->helper->activate(request::indInt('id'), SpacecraftSystemTypeEnum::UPLINK, $game, true);
     }
 
     #[Override]

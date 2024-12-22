@@ -68,7 +68,7 @@ final class SpacecraftDeletionHandler implements PlayerDeletionHandlerInterface
 
         $this->spacecraftSystemManager->deactivate(
             $this->spacecraftWrapperFactory->wrapSpacecraft($spacecraft),
-            SpacecraftSystemTypeEnum::SYSTEM_TRACTOR_BEAM,
+            SpacecraftSystemTypeEnum::TRACTOR_BEAM,
             true
         );
     }

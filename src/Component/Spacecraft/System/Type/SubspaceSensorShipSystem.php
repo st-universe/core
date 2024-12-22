@@ -14,7 +14,7 @@ final class SubspaceSensorShipSystem extends AbstractSpacecraftSystemType implem
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
-        return SpacecraftSystemTypeEnum::SYSTEM_SUBSPACE_SCANNER;
+        return SpacecraftSystemTypeEnum::SUBSPACE_SCANNER;
     }
 
     #[Override]

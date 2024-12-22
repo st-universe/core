@@ -23,7 +23,7 @@ final class ActivateConstructionHub implements ActionControllerInterface
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $this->helper->activate(request::indInt('id'), SpacecraftSystemTypeEnum::SYSTEM_CONSTRUCTION_HUB, $game);
+        $this->helper->activate(request::indInt('id'), SpacecraftSystemTypeEnum::CONSTRUCTION_HUB, $game);
     }
 
     #[Override]

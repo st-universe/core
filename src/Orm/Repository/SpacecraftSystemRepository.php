@@ -68,7 +68,7 @@ final class SpacecraftSystemRepository extends EntityRepository implements Space
                 )
             )
             ->setParameters([
-                'systemType' => SpacecraftSystemTypeEnum::SYSTEM_TRACKER,
+                'systemType' => SpacecraftSystemTypeEnum::TRACKER,
                 'target' => sprintf('%%"targetId":%d%%', $targetId)
             ])
             ->getResult();
@@ -87,7 +87,7 @@ final class SpacecraftSystemRepository extends EntityRepository implements Space
                 )
             )
             ->setParameters([
-                'systemType' => SpacecraftSystemTypeEnum::SYSTEM_THOLIAN_WEB,
+                'systemType' => SpacecraftSystemTypeEnum::THOLIAN_WEB,
                 'target' => sprintf('%%"webUnderConstructionId":%d%%', $webId)
             ])
             ->getResult();

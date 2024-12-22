@@ -16,7 +16,7 @@ final class BeamBlockerShipSystem extends AbstractSpacecraftSystemType implement
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
-        return SpacecraftSystemTypeEnum::SYSTEM_BEAM_BLOCKER;
+        return SpacecraftSystemTypeEnum::BEAM_BLOCKER;
     }
 
     #[Override]

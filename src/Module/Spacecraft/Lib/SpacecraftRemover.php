@@ -39,7 +39,7 @@ final class SpacecraftRemover implements SpacecraftRemoverInterface
         foreach ($this->shipSystemRepository->getTrackingShipSystems($shipId) as $system) {
             $wrapper = $this->spacecraftWrapperFactory->wrapSpacecraft($system->getSpacecraft());
 
-            $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_TRACKER, true);
+            $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::TRACKER, true);
         }
     }
 
@@ -53,11 +53,11 @@ final class SpacecraftRemover implements SpacecraftRemoverInterface
 
         //both sides have to be cleared, foreign key violation
         if ($spacecraft->isTractoring()) {
-            $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
+            $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::TRACTOR_BEAM, true);
         } else {
             $tractoringShipWrapper = $wrapper instanceof ShipWrapperInterface ? $wrapper->getTractoringSpacecraftWrapper() : null;
             if ($tractoringShipWrapper !== null) {
-                $this->spacecraftSystemManager->deactivate($tractoringShipWrapper, SpacecraftSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
+                $this->spacecraftSystemManager->deactivate($tractoringShipWrapper, SpacecraftSystemTypeEnum::TRACTOR_BEAM, true);
             }
         }
 

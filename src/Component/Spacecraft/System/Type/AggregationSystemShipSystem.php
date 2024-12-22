@@ -15,7 +15,7 @@ class AggregationSystemShipSystem extends AbstractSpacecraftSystemType implement
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
-        return SpacecraftSystemTypeEnum::SYSTEM_AGGREGATION_SYSTEM;
+        return SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM;
     }
 
     #[Override]

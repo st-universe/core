@@ -80,7 +80,7 @@ class ManageTorpedo implements ManagerInterface
      */
     private function getPossibleTorpedoTypes(SpacecraftInterface $spacecraft): array
     {
-        if ($spacecraft->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_TORPEDO_STORAGE)) {
+        if ($spacecraft->hasShipSystem(SpacecraftSystemTypeEnum::TORPEDO_STORAGE)) {
             return $this->torpedoTypeRepository->getAll();
         } else {
             return $this->torpedoTypeRepository->getByLevel($spacecraft->getRump()->getTorpedoLevel());

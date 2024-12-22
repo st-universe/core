@@ -40,7 +40,7 @@ final class DropBuoy implements ActionControllerInterface
         );
         $ship = $wrapper->get();
 
-        if (!$ship->isSystemHealthy(SpacecraftSystemTypeEnum::SYSTEM_TORPEDO)) {
+        if (!$ship->isSystemHealthy(SpacecraftSystemTypeEnum::TORPEDO)) {
             $game->addInformation(_("Keine nutzbare Torpedorampe vorhanden"));
             return;
         }

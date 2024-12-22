@@ -20,7 +20,7 @@ class WebEmitterShipSystem extends AbstractSpacecraftSystemType implements Space
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
-        return SpacecraftSystemTypeEnum::SYSTEM_THOLIAN_WEB;
+        return SpacecraftSystemTypeEnum::THOLIAN_WEB;
     }
 
     #[Override]

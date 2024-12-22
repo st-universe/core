@@ -15,7 +15,7 @@ class WarpdriveBoosterShipSystem extends AbstractSpacecraftSystemType implements
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
-        return SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE_BOOSTER;
+        return SpacecraftSystemTypeEnum::WARPDRIVE_BOOSTER;
     }
 
     #[Override]
@@ -23,7 +23,7 @@ class WarpdriveBoosterShipSystem extends AbstractSpacecraftSystemType implements
     {
         $spacecraft = $wrapper->get();
 
-        if (!$spacecraft->isSystemHealthy(SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE)) {
+        if (!$spacecraft->isSystemHealthy(SpacecraftSystemTypeEnum::WARPDRIVE)) {
             $reason = _('der Warpantrieb beschädigt ist');
             return false;
         }

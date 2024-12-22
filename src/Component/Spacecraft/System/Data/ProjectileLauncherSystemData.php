@@ -14,7 +14,7 @@ class ProjectileLauncherSystemData extends AbstractSystemData
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
-        return SpacecraftSystemTypeEnum::SYSTEM_TORPEDO;
+        return SpacecraftSystemTypeEnum::TORPEDO;
     }
 
     public function getShieldPenetration(): int

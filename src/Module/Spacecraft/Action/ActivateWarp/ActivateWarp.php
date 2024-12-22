@@ -23,7 +23,7 @@ final class ActivateWarp implements ActionControllerInterface
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $this->helper->activate(request::indInt('id'), SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE, $game);
+        $this->helper->activate(request::indInt('id'), SpacecraftSystemTypeEnum::WARPDRIVE, $game);
     }
 
     #[Override]

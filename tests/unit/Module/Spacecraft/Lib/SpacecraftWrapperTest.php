@@ -86,7 +86,7 @@ class SpacecraftWrapperTest extends StuTestCase
         $this->systemDataDeserializer->shouldReceive('getSpecificShipSystem')
             ->with(
                 $this->spacecraft,
-                SpacecraftSystemTypeEnum::SYSTEM_HULL,
+                SpacecraftSystemTypeEnum::HULL,
                 HullSystemData::class,
                 Mockery::any(),
                 $this->spacecraftWrapperFactory
@@ -142,7 +142,7 @@ class SpacecraftWrapperTest extends StuTestCase
         $this->systemDataDeserializer->shouldReceive('getSpecificShipSystem')
             ->with(
                 $this->spacecraft,
-                SpacecraftSystemTypeEnum::SYSTEM_EPS,
+                SpacecraftSystemTypeEnum::EPS,
                 EpsSystemData::class,
                 Mockery::any(),
                 $this->spacecraftWrapperFactory
@@ -171,7 +171,7 @@ class SpacecraftWrapperTest extends StuTestCase
         $this->systemDataDeserializer->shouldReceive('getSpecificShipSystem')
             ->with(
                 $this->spacecraft,
-                SpacecraftSystemTypeEnum::SYSTEM_EPS,
+                SpacecraftSystemTypeEnum::EPS,
                 EpsSystemData::class,
                 Mockery::any(),
                 $this->spacecraftWrapperFactory

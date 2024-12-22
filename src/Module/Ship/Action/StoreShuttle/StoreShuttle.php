@@ -97,7 +97,7 @@ final class StoreShuttle implements ActionControllerInterface
         }
 
         // check if shuttle ramp is healthy
-        if (!$ship->isSystemHealthy(SpacecraftSystemTypeEnum::SYSTEM_SHUTTLE_RAMP)) {
+        if (!$ship->isSystemHealthy(SpacecraftSystemTypeEnum::SHUTTLE_RAMP)) {
             $game->addInformation(_("Die Shuttle-Rampe ist zerstört"));
             return;
         }

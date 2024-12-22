@@ -37,7 +37,7 @@ final class WarpdriveBoost implements ActionControllerInterface
             $game->getUser()->getId()
         );
 
-        $activated = $this->helper->activate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE_BOOSTER, $game);
+        $activated = $this->helper->activate($wrapper, SpacecraftSystemTypeEnum::WARPDRIVE_BOOSTER, $game);
         if ($activated) {
             $warpdrive = $wrapper->getWarpDriveSystemData();
             if ($warpdrive === null) {
@@ -57,7 +57,7 @@ final class WarpdriveBoost implements ActionControllerInterface
                 $newValue - $currentValue
             );
 
-            $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE_BOOSTER);
+            $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::WARPDRIVE_BOOSTER);
         }
     }
 

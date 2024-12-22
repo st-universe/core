@@ -243,7 +243,7 @@ class SpacecraftStorageEntityWrapper implements StorageEntityWrapperInterface
     #[Override]
     public function checkCrewStorage(int $amount, bool $isUnload, InformationInterface $information): bool
     {
-        if (!$this->spacecraft->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_TROOP_QUARTERS)) {
+        if (!$this->spacecraft->hasShipSystem(SpacecraftSystemTypeEnum::TROOP_QUARTERS)) {
             return true;
         }
 
@@ -253,18 +253,18 @@ class SpacecraftStorageEntityWrapper implements StorageEntityWrapperInterface
             return true;
         }
 
-        if (!$this->spacecraft->isSystemHealthy(SpacecraftSystemTypeEnum::SYSTEM_TROOP_QUARTERS)) {
+        if (!$this->spacecraft->isSystemHealthy(SpacecraftSystemTypeEnum::TROOP_QUARTERS)) {
             $information->addInformation("Die Truppenquartiere sind zerstört");
             return false;
         }
 
-        if ($this->spacecraft->getShipSystem(SpacecraftSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode()->isActivated()) {
+        if ($this->spacecraft->getShipSystem(SpacecraftSystemTypeEnum::TROOP_QUARTERS)->getMode()->isActivated()) {
             return true;
         }
 
         if (!$this->activatorDeactivatorHelper->activate(
             $this->spacecraftWrapper,
-            SpacecraftSystemTypeEnum::SYSTEM_TROOP_QUARTERS,
+            SpacecraftSystemTypeEnum::TROOP_QUARTERS,
             $information
         )) {
             $information->addInformation("Die Truppenquartiere konnten nicht aktiviert werden");
@@ -277,7 +277,7 @@ class SpacecraftStorageEntityWrapper implements StorageEntityWrapperInterface
     #[Override]
     public function acceptsCrewFrom(int $amount, UserInterface $user, InformationInterface $information): bool
     {
-        if (!$this->spacecraft->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_LIFE_SUPPORT)) {
+        if (!$this->spacecraft->hasShipSystem(SpacecraftSystemTypeEnum::LIFE_SUPPORT)) {
             $information->addInformationf('Die %s hat keine Lebenserhaltungssysteme', $this->spacecraft->getName());
 
             return false;
@@ -286,9 +286,9 @@ class SpacecraftStorageEntityWrapper implements StorageEntityWrapperInterface
         $needsTroopQuarters = $this->spacecraft->getCrewCount() + $amount > $this->shipCrewCalculator->getMaxCrewCountByRump($this->spacecraft->getRump());
         if (
             $needsTroopQuarters
-            && $this->spacecraft->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
-            && $this->spacecraft->getShipSystem(SpacecraftSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() === SpacecraftSystemModeEnum::MODE_OFF
-            && !$this->activatorDeactivatorHelper->activate($this->spacecraftWrapper, SpacecraftSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $information)
+            && $this->spacecraft->hasShipSystem(SpacecraftSystemTypeEnum::TROOP_QUARTERS)
+            && $this->spacecraft->getShipSystem(SpacecraftSystemTypeEnum::TROOP_QUARTERS)->getMode() === SpacecraftSystemModeEnum::MODE_OFF
+            && !$this->activatorDeactivatorHelper->activate($this->spacecraftWrapper, SpacecraftSystemTypeEnum::TROOP_QUARTERS, $information)
         ) {
             return false;
         }
@@ -304,7 +304,7 @@ class SpacecraftStorageEntityWrapper implements StorageEntityWrapperInterface
             $information->addInformation("Benötigte Andockerlaubnis wurde verweigert");
             return false;
         }
-        if (!$this->spacecraft->isSystemHealthy(SpacecraftSystemTypeEnum::SYSTEM_UPLINK)) {
+        if (!$this->spacecraft->isSystemHealthy(SpacecraftSystemTypeEnum::UPLINK)) {
             $information->addInformation("Das Ziel verfügt über keinen intakten Uplink");
             return false;
         }
@@ -331,9 +331,9 @@ class SpacecraftStorageEntityWrapper implements StorageEntityWrapperInterface
             $isOn = $this->troopTransferUtility->foreignerCount($this->spacecraft) > 0;
             if (
                 !$isOn
-                && $this->spacecraft->getSystemState(SpacecraftSystemTypeEnum::SYSTEM_UPLINK)
+                && $this->spacecraft->getSystemState(SpacecraftSystemTypeEnum::UPLINK)
             ) {
-                $this->spacecraft->getShipSystem(SpacecraftSystemTypeEnum::SYSTEM_UPLINK)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
+                $this->spacecraft->getShipSystem(SpacecraftSystemTypeEnum::UPLINK)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
             }
 
             if ($foreignCrewChangeAmount > 0) {
@@ -345,28 +345,28 @@ class SpacecraftStorageEntityWrapper implements StorageEntityWrapperInterface
         }
 
         if (
-            $this->spacecraft->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
-            && $this->spacecraft->getSystemState(SpacecraftSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
+            $this->spacecraft->hasShipSystem(SpacecraftSystemTypeEnum::TROOP_QUARTERS)
+            && $this->spacecraft->getSystemState(SpacecraftSystemTypeEnum::TROOP_QUARTERS)
             && $this->spacecraft->getBuildplan() !== null
             && $this->spacecraft->getCrewCount() <= $this->shipCrewCalculator->getMaxCrewCountByRump($this->spacecraft->getRump())
         ) {
-            $this->activatorDeactivatorHelper->deactivate($this->spacecraftWrapper, SpacecraftSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $information);
+            $this->activatorDeactivatorHelper->deactivate($this->spacecraftWrapper, SpacecraftSystemTypeEnum::TROOP_QUARTERS, $information);
         }
 
-        if (!$this->spacecraft->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_LIFE_SUPPORT)) {
+        if (!$this->spacecraft->hasShipSystem(SpacecraftSystemTypeEnum::LIFE_SUPPORT)) {
             return;
         }
 
         if ($this->spacecraft->getCrewCount() === 0) {
-            $this->spacecraftSystemManager->deactivate($this->spacecraftWrapper, SpacecraftSystemTypeEnum::SYSTEM_LIFE_SUPPORT, true);
+            $this->spacecraftSystemManager->deactivate($this->spacecraftWrapper, SpacecraftSystemTypeEnum::LIFE_SUPPORT, true);
             return;
         }
 
         if (
             $this->spacecraft->getCrewCount() > 0
-            && !$this->spacecraft->getSystemState(SpacecraftSystemTypeEnum::SYSTEM_LIFE_SUPPORT)
+            && !$this->spacecraft->getSystemState(SpacecraftSystemTypeEnum::LIFE_SUPPORT)
         ) {
-            $this->spacecraftSystemManager->activate($this->spacecraftWrapper, SpacecraftSystemTypeEnum::SYSTEM_LIFE_SUPPORT, true);
+            $this->spacecraftSystemManager->activate($this->spacecraftWrapper, SpacecraftSystemTypeEnum::LIFE_SUPPORT, true);
         }
     }
 
@@ -413,7 +413,7 @@ class SpacecraftStorageEntityWrapper implements StorageEntityWrapperInterface
     #[Override]
     public function canTransferTorpedos(InformationInterface $information): bool
     {
-        if (!$this->spacecraft->isSystemHealthy(SpacecraftSystemTypeEnum::SYSTEM_TORPEDO_STORAGE)) {
+        if (!$this->spacecraft->isSystemHealthy(SpacecraftSystemTypeEnum::TORPEDO_STORAGE)) {
             $information->addInformation("Das Torpedolager ist zerstört");
             return false;
         }
@@ -425,7 +425,7 @@ class SpacecraftStorageEntityWrapper implements StorageEntityWrapperInterface
     public function canStoreTorpedoType(TorpedoTypeInterface $torpedoType, InformationInterface $information): bool
     {
         if (
-            !$this->spacecraft->isSystemHealthy(SpacecraftSystemTypeEnum::SYSTEM_TORPEDO_STORAGE)
+            !$this->spacecraft->isSystemHealthy(SpacecraftSystemTypeEnum::TORPEDO_STORAGE)
             && $this->spacecraft->getRump()->getTorpedoLevel() !== $torpedoType->getLevel()
         ) {
             $information->addInformationf('Die %s kann den Torpedotyp nicht ausrüsten', $this->spacecraft->getName());
@@ -433,7 +433,7 @@ class SpacecraftStorageEntityWrapper implements StorageEntityWrapperInterface
         }
 
         if (
-            !$this->spacecraft->hasShipSystem(SpacecraftSystemTypeEnum::SYSTEM_TORPEDO_STORAGE)
+            !$this->spacecraft->hasShipSystem(SpacecraftSystemTypeEnum::TORPEDO_STORAGE)
             && $torpedoType->getLevel() > $this->spacecraft->getRump()->getTorpedoLevel()
         ) {
             $information->addInformationf("Die %s kann den Torpedotyp nicht ausrüsten", $this->spacecraft->getName());

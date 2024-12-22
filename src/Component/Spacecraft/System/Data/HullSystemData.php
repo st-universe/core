@@ -19,7 +19,7 @@ class HullSystemData extends AbstractSystemData
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
-        return SpacecraftSystemTypeEnum::SYSTEM_HULL;
+        return SpacecraftSystemTypeEnum::HULL;
     }
 
     public function getHullStatusBar(): string

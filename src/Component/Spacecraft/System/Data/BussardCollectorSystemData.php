@@ -15,7 +15,7 @@ class BussardCollectorSystemData extends AbstractSystemData
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
-        return SpacecraftSystemTypeEnum::SYSTEM_BUSSARD_COLLECTOR;
+        return SpacecraftSystemTypeEnum::BUSSARD_COLLECTOR;
     }
 
     public function getCommodityId(): int

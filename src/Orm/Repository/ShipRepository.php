@@ -136,10 +136,10 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         )->setParameters([
             'locationId' => $location->getId(),
             'ignoreId' => $spacecraft->getId(),
-            'cloakType' => SpacecraftSystemTypeEnum::SYSTEM_CLOAK->value,
-            'warpdriveType' => SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE->value,
-            'shieldType' => SpacecraftSystemTypeEnum::SYSTEM_SHIELDS->value,
-            'uplinkType' => SpacecraftSystemTypeEnum::SYSTEM_UPLINK->value,
+            'cloakType' => SpacecraftSystemTypeEnum::CLOAK->value,
+            'warpdriveType' => SpacecraftSystemTypeEnum::WARPDRIVE->value,
+            'shieldType' => SpacecraftSystemTypeEnum::SHIELDS->value,
+            'uplinkType' => SpacecraftSystemTypeEnum::UPLINK->value,
             'false' => false
         ]);
 
@@ -295,10 +295,10 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         )->setParameters([
             'locationId' => $location->getId(),
             'ignoreId' => $spacecraft->getId(),
-            'cloakType' => SpacecraftSystemTypeEnum::SYSTEM_CLOAK->value,
-            'warpdriveType' => SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE->value,
-            'shieldType' => SpacecraftSystemTypeEnum::SYSTEM_SHIELDS->value,
-            'uplinkType' => SpacecraftSystemTypeEnum::SYSTEM_UPLINK->value,
+            'cloakType' => SpacecraftSystemTypeEnum::CLOAK->value,
+            'warpdriveType' => SpacecraftSystemTypeEnum::WARPDRIVE->value,
+            'shieldType' => SpacecraftSystemTypeEnum::SHIELDS->value,
+            'uplinkType' => SpacecraftSystemTypeEnum::UPLINK->value,
             'false' => false
         ]);
 

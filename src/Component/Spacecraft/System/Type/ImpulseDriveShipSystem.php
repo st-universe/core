@@ -13,7 +13,7 @@ final class ImpulseDriveShipSystem extends AbstractSpacecraftSystemType implemen
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
-        return SpacecraftSystemTypeEnum::SYSTEM_IMPULSEDRIVE;
+        return SpacecraftSystemTypeEnum::IMPULSEDRIVE;
     }
 
     #[Override]

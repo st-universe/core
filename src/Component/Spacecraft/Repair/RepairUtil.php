@@ -250,10 +250,10 @@ final class RepairUtil implements RepairUtilInterface
         $hullPercentage = (int) ($ship->getHull() * 100 / $ship->getMaxHull());
         if ($hullPercentage < RepairTaskConstants::BOTH_MAX) {
             $hullSystem = $this->shipSystemRepository->prototype();
-            $hullSystem->setSystemType(SpacecraftSystemTypeEnum::SYSTEM_HULL);
+            $hullSystem->setSystemType(SpacecraftSystemTypeEnum::HULL);
             $hullSystem->setStatus($hullPercentage);
 
-            $repairOptions[SpacecraftSystemTypeEnum::SYSTEM_HULL->value] = $hullSystem;
+            $repairOptions[SpacecraftSystemTypeEnum::HULL->value] = $hullSystem;
         }
 
         //check for system options
@@ -321,7 +321,7 @@ final class RepairUtil implements RepairUtilInterface
     {
         $result = true;
 
-        if ($systemType === SpacecraftSystemTypeEnum::SYSTEM_HULL) {
+        if ($systemType === SpacecraftSystemTypeEnum::HULL) {
             $hullPercentage = (int) ($spacecraft->getHull() * 100 / $spacecraft->getMaxHull());
 
             if ($hullPercentage > $percentage) {

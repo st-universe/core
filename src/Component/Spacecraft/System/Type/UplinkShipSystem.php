@@ -17,7 +17,7 @@ final class UplinkShipSystem extends AbstractSpacecraftSystemType implements Spa
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
-        return SpacecraftSystemTypeEnum::SYSTEM_UPLINK;
+        return SpacecraftSystemTypeEnum::UPLINK;
     }
 
     #[Override]

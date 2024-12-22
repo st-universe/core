@@ -22,7 +22,7 @@ final class ShieldShipSystem extends AbstractSpacecraftSystemType implements Spa
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
-        return SpacecraftSystemTypeEnum::SYSTEM_SHIELDS;
+        return SpacecraftSystemTypeEnum::SHIELDS;
     }
 
     #[Override]

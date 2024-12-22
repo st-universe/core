@@ -40,7 +40,7 @@ class DriveActivationConsequence extends AbstractFlightConsequence implements Fl
         if ($flightRoute->isImpulseDriveNeeded()) {
             $this->activate(
                 $wrapper,
-                SpacecraftSystemTypeEnum::SYSTEM_IMPULSEDRIVE,
+                SpacecraftSystemTypeEnum::IMPULSEDRIVE,
                 $message
             );
         }
@@ -48,7 +48,7 @@ class DriveActivationConsequence extends AbstractFlightConsequence implements Fl
         if ($flightRoute->isWarpDriveNeeded()) {
             $this->activate(
                 $wrapper,
-                SpacecraftSystemTypeEnum::SYSTEM_WARPDRIVE,
+                SpacecraftSystemTypeEnum::WARPDRIVE,
                 $message
             );
         }
@@ -56,7 +56,7 @@ class DriveActivationConsequence extends AbstractFlightConsequence implements Fl
         if ($flightRoute->isTranswarpCoilNeeded()) {
             $this->activate(
                 $wrapper,
-                SpacecraftSystemTypeEnum::SYSTEM_TRANSWARP_COIL,
+                SpacecraftSystemTypeEnum::TRANSWARP_COIL,
                 $message
             );
         }
@@ -75,7 +75,7 @@ class DriveActivationConsequence extends AbstractFlightConsequence implements Fl
             $message->add(sprintf(
                 _('Die %s aktiviert %s %s'),
                 $ship->getName(),
-                $systemType === SpacecraftSystemTypeEnum::SYSTEM_TRANSWARP_COIL ? 'die' : 'den',
+                $systemType === SpacecraftSystemTypeEnum::TRANSWARP_COIL ? 'die' : 'den',
                 $systemType->getDescription()
             ));
         }

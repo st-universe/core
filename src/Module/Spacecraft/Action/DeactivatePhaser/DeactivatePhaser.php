@@ -23,7 +23,7 @@ final class DeactivatePhaser implements ActionControllerInterface
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $this->helper->deactivate(request::indInt('id'), SpacecraftSystemTypeEnum::SYSTEM_PHASER, $game);
+        $this->helper->deactivate(request::indInt('id'), SpacecraftSystemTypeEnum::PHASER, $game);
     }
 
     #[Override]

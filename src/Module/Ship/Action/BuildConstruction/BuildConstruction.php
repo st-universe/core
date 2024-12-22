@@ -106,7 +106,7 @@ final class BuildConstruction implements ActionControllerInterface
             return;
         }
 
-        if (!$ship->isSystemHealthy(SpacecraftSystemTypeEnum::SYSTEM_SHUTTLE_RAMP)) {
+        if (!$ship->isSystemHealthy(SpacecraftSystemTypeEnum::SHUTTLE_RAMP)) {
             $game->addInformation(_("Die Shuttle-Rampe ist zerstört"));
             return;
         }
@@ -251,8 +251,8 @@ final class BuildConstruction implements ActionControllerInterface
             throw new RuntimeException('workbee has not eps system installed');
         }
 
-        $workbee->getShipSystem(SpacecraftSystemTypeEnum::SYSTEM_LIFE_SUPPORT)->setMode(SpacecraftSystemModeEnum::MODE_ALWAYS_ON);
-        $workbee->getShipSystem(SpacecraftSystemTypeEnum::SYSTEM_NBS)->setMode(SpacecraftSystemModeEnum::MODE_ON);
+        $workbee->getShipSystem(SpacecraftSystemTypeEnum::LIFE_SUPPORT)->setMode(SpacecraftSystemModeEnum::MODE_ALWAYS_ON);
+        $workbee->getShipSystem(SpacecraftSystemTypeEnum::NBS)->setMode(SpacecraftSystemModeEnum::MODE_ON);
 
         $shipCrewArray = $ship->getCrewAssignments()->getValues();
         for ($i = 0; $i < $plan->getCrew(); $i++) {

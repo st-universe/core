@@ -23,7 +23,7 @@ final class DeactivateTachyon implements ActionControllerInterface
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $this->helper->deactivate(request::indInt('id'), SpacecraftSystemTypeEnum::SYSTEM_TACHYON_SCANNER, $game, true);
+        $this->helper->deactivate(request::indInt('id'), SpacecraftSystemTypeEnum::TACHYON_SCANNER, $game, true);
     }
 
     #[Override]
