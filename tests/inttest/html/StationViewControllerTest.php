@@ -55,6 +55,7 @@ class StationViewControllerTest extends TwigTestCase
         $this->snapshotKey = $key;
 
         $this->renderSnapshot(
+            101,
             $this->getGeneralRequestVariables(),
             Init::getContainer()
                 ->getDefinedImplementationsOf(ViewControllerInterface::class, true)->get($key)

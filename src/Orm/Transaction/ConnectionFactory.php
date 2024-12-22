@@ -17,8 +17,7 @@ class ConnectionFactory implements ConnectionFactoryInterface
         private ConfigInterface $config,
         private StuConfigInterface $stuConfig,
         private SqlLogger $sqlLogger
-    ) {
-    }
+    ) {}
 
     public function createConnection(): Connection
     {
@@ -26,7 +25,7 @@ class ConnectionFactory implements ConnectionFactoryInterface
         if ($this->stuConfig->getDbSettings()->useSqlite()) {
             $dsnParser = new DsnParser(['sqlite' => 'pdo_sqlite']);
             $connectionParams = $dsnParser
-                ->parse('sqlite:///:memory:');
+                ->parse($this->stuConfig->getDbSettings()->getSqliteDsn());
 
             return DriverManager::getConnection($connectionParams);
         }

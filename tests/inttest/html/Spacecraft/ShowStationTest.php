@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Html\Ship;
+namespace Stu\Html\Spacecraft;
 
 use Mockery;
 use Override;
@@ -27,6 +27,6 @@ class ShowStationTest extends TwigTestCase
 
         $this->getContainer()->setAdditionalService(AnomalyRepositoryInterface::class, $anomalyRepositoryMock);
 
-        $this->renderSnapshot(['id' => 43]);
+        $this->renderSnapshot(101, ['id' => 43]);
     }
 }
