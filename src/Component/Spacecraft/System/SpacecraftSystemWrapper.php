@@ -11,9 +11,9 @@ class SpacecraftSystemWrapper
 
     public function __construct(
         SpacecraftInterface $spacecraft,
-        SpacecraftSystemTypeEnum $type
+        private SpacecraftSystemTypeEnum $type
     ) {
-        $this->spacecraftSystem = $spacecraft->getShipSystem($type);
+        $this->spacecraftSystem = $spacecraft->getSpacecraftSystem($type);
     }
 
     public function get(): SpacecraftSystemInterface
@@ -24,5 +24,25 @@ class SpacecraftSystemWrapper
     public function isActivated(): bool
     {
         return $this->spacecraftSystem->getMode()->isActivated();
+    }
+
+    public function isHealthy(): bool
+    {
+        return $this->spacecraftSystem->isHealthy();
+    }
+
+    public function getGenericTemplate(): ?string
+    {
+        return $this->type->getGenericTemplate();
+    }
+
+    public function getIcon(): string
+    {
+        return $this->type->getIcon();
+    }
+
+    public function getDescription(): string
+    {
+        return $this->type->getDescription();
     }
 }

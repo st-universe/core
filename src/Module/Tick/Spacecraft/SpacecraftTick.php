@@ -609,7 +609,7 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
             $locationmining = $miningqueue->getLocationMining();
             $actualAmount = $locationmining->getActualAmount();
             $freeStorage = $ship->getMaxStorage() - $ship->getStorageSum();
-            $module = $ship->getShipSystem(SpacecraftSystemTypeEnum::BUSSARD_COLLECTOR)->getModule();
+            $module = $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::BUSSARD_COLLECTOR)->getModule();
             $gathercount = 0;
 
             if ($module !== null) {
@@ -651,7 +651,7 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
         if ($aggsys === null) {
             return;
         } else {
-            $module = $station->getShipSystem(SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM)->getModule();
+            $module = $station->getSpacecraftSystem(SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM)->getModule();
             $producedAmount = 0;
             $usedAmount = 0;
             $usedCommodity = null;

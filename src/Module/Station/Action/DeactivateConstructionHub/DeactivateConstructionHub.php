@@ -14,7 +14,7 @@ use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 
 final class DeactivateConstructionHub implements ActionControllerInterface
 {
-    public const string ACTION_IDENTIFIER = 'B_DEACTIVATE_HUB';
+    public const string ACTION_IDENTIFIER = 'B_DEACTIVATE_CONSTRUCTION_HUB';
 
     public function __construct(private ActivatorDeactivatorHelperInterface $helper) {}
 

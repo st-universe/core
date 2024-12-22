@@ -151,7 +151,7 @@ final class StartShuttle implements ActionControllerInterface
         }
 
         $shuttle = $shuttleWrapper->get();
-        $shuttle->getShipSystem(SpacecraftSystemTypeEnum::LIFE_SUPPORT)->setMode(SpacecraftSystemModeEnum::MODE_ALWAYS_ON);
+        $shuttle->getSpacecraftSystem(SpacecraftSystemTypeEnum::LIFE_SUPPORT)->setMode(SpacecraftSystemModeEnum::MODE_ALWAYS_ON);
 
         $shipCrewArray = $ship->getCrewAssignments()->getValues();
         for ($i = 0; $i < $plan->getCrew(); $i++) {
@@ -161,7 +161,7 @@ final class StartShuttle implements ActionControllerInterface
         $this->spacecraftRepository->save($shuttle);
 
         if (
-            $ship->hasShipSystem(SpacecraftSystemTypeEnum::TROOP_QUARTERS)
+            $ship->hasSpacecraftSystem(SpacecraftSystemTypeEnum::TROOP_QUARTERS)
             && $ship->getSystemState(SpacecraftSystemTypeEnum::TROOP_QUARTERS)
             && $ship->getExcessCrewCount() <= 0
         ) {

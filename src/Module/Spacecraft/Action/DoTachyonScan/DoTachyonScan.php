@@ -6,7 +6,7 @@ namespace Stu\Module\Spacecraft\Action\DoTachyonScan;
 
 use Override;
 use request;
-
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\Type\TachyonScannerShipSystem;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -47,7 +47,7 @@ final class DoTachyonScan implements ActionControllerInterface
         }
 
         // scanner needs to be present
-        if (!$ship->hasTachyonScanner()) {
+        if (!$ship->hasSpacecraftSystem(SpacecraftSystemTypeEnum::TACHYON_SCANNER)) {
             $game->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, kein Tachyon-Scanner installiert![/color][/b]'));
             return;
         }

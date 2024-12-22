@@ -39,7 +39,7 @@ final class WarpcoreShipSystem extends AbstractSpacecraftSystemType implements S
     #[Override]
     public function activate(SpacecraftWrapperInterface $wrapper, SpacecraftSystemManagerInterface $manager): void
     {
-        $wrapper->get()->getShipSystem($this->getSystemType())->setMode(SpacecraftSystemModeEnum::MODE_ALWAYS_ON);
+        $wrapper->get()->getSpacecraftSystem($this->getSystemType())->setMode(SpacecraftSystemModeEnum::MODE_ALWAYS_ON);
     }
 
     #[Override]
@@ -64,8 +64,8 @@ final class WarpcoreShipSystem extends AbstractSpacecraftSystemType implements S
     public function handleDestruction(SpacecraftWrapperInterface $wrapper): void
     {
         $ship = $wrapper->get();
-        if ($ship->hasShipSystem(SpacecraftSystemTypeEnum::WARPDRIVE)) {
-            $ship->getShipSystem(SpacecraftSystemTypeEnum::WARPDRIVE)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
+        if ($ship->hasSpacecraftSystem(SpacecraftSystemTypeEnum::WARPDRIVE)) {
+            $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::WARPDRIVE)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
         }
     }
 }

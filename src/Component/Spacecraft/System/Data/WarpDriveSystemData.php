@@ -65,7 +65,7 @@ class WarpDriveSystemData extends AbstractSystemData
     public function getMaxWarpDrive(): int
     {
         return (int) (ceil($this->maxwd
-            * $this->spacecraft->getShipSystem(SpacecraftSystemTypeEnum::WARPDRIVE)->getStatus() / 100));
+            * $this->spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::WARPDRIVE)->getStatus() / 100));
     }
 
     public function getWarpDriveSplit(): int

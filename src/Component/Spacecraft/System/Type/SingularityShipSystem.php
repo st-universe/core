@@ -22,7 +22,7 @@ final class SingularityShipSystem extends AbstractSpacecraftSystemType implement
     #[Override]
     public function activate(SpacecraftWrapperInterface $wrapper, SpacecraftSystemManagerInterface $manager): void
     {
-        $wrapper->get()->getShipSystem($this->getSystemType())->setMode(SpacecraftSystemModeEnum::MODE_ALWAYS_ON);
+        $wrapper->get()->getSpacecraftSystem($this->getSystemType())->setMode(SpacecraftSystemModeEnum::MODE_ALWAYS_ON);
     }
 
     #[Override]
@@ -47,8 +47,8 @@ final class SingularityShipSystem extends AbstractSpacecraftSystemType implement
     public function handleDestruction(SpacecraftWrapperInterface $wrapper): void
     {
         $spacecraft = $wrapper->get();
-        if ($spacecraft->hasShipSystem(SpacecraftSystemTypeEnum::WARPDRIVE)) {
-            $spacecraft->getShipSystem(SpacecraftSystemTypeEnum::WARPDRIVE)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
+        if ($spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::WARPDRIVE)) {
+            $spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::WARPDRIVE)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
         }
     }
 }

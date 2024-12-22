@@ -231,7 +231,7 @@ class WarpdriveShipSystemTest extends StuTestCase
             ->once();
 
         //SYSTEM ACTIVATION
-        $this->ship->shouldReceive('getShipSystem')
+        $this->ship->shouldReceive('getSpacecraftSystem')
             ->with(SpacecraftSystemTypeEnum::WARPDRIVE)
             ->once()
             ->andReturn($system);
@@ -258,7 +258,7 @@ class WarpdriveShipSystemTest extends StuTestCase
     {
         $system = $this->mock(SpacecraftSystemInterface::class);
 
-        $this->ship->shouldReceive('getShipSystem')
+        $this->ship->shouldReceive('getSpacecraftSystem')
             ->with(SpacecraftSystemTypeEnum::WARPDRIVE)
             ->once()
             ->andReturn($system);

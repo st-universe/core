@@ -27,7 +27,7 @@ class WebEmitterShipSystem extends AbstractSpacecraftSystemType implements Space
     public function deactivate(SpacecraftWrapperInterface $wrapper): void
     {
         $this->checkForWebAbortion($wrapper);
-        $wrapper->get()->getShipSystem($this->getSystemType())->setMode(SpacecraftSystemModeEnum::MODE_OFF);
+        $wrapper->get()->getSpacecraftSystem($this->getSystemType())->setMode(SpacecraftSystemModeEnum::MODE_OFF);
     }
 
     #[Override]

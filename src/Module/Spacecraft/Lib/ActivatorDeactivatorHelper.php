@@ -429,7 +429,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         ];
 
         foreach ($deactivateSystems as $type) {
-            if ($wrapper->get()->hasShipSystem($type)) {
+            if ($wrapper->get()->hasSpacecraftSystem($type)) {
                 $this->deactivateIntern($wrapper, $type, $game);
             }
         }

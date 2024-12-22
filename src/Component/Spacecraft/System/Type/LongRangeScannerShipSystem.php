@@ -45,11 +45,11 @@ final class LongRangeScannerShipSystem extends AbstractSpacecraftSystemType impl
     public function deactivate(SpacecraftWrapperInterface $wrapper): void
     {
         $spacecraft = $wrapper->get();
-        $spacecraft->getShipSystem($this->getSystemType())->setMode(SpacecraftSystemModeEnum::MODE_OFF);
+        $spacecraft->getSpacecraftSystem($this->getSystemType())->setMode(SpacecraftSystemModeEnum::MODE_OFF);
 
         //other consequences
-        if ($spacecraft->hasShipSystem(SpacecraftSystemTypeEnum::ASTRO_LABORATORY)) {
-            $spacecraft->getShipSystem(SpacecraftSystemTypeEnum::ASTRO_LABORATORY)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
+        if ($spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::ASTRO_LABORATORY)) {
+            $spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::ASTRO_LABORATORY)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
 
             if ($spacecraft->getState() === SpacecraftStateEnum::SHIP_STATE_ASTRO_FINALIZING) {
                 $this->astroEntryLib->cancelAstroFinalizing($wrapper);
@@ -61,8 +61,8 @@ final class LongRangeScannerShipSystem extends AbstractSpacecraftSystemType impl
     public function handleDestruction(SpacecraftWrapperInterface $wrapper): void
     {
         $spacecraft = $wrapper->get();
-        if ($spacecraft->hasShipSystem(SpacecraftSystemTypeEnum::ASTRO_LABORATORY)) {
-            $spacecraft->getShipSystem(SpacecraftSystemTypeEnum::ASTRO_LABORATORY)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
+        if ($spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::ASTRO_LABORATORY)) {
+            $spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::ASTRO_LABORATORY)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
 
             if ($spacecraft->getState() === SpacecraftStateEnum::SHIP_STATE_ASTRO_FINALIZING) {
                 $this->astroEntryLib->cancelAstroFinalizing($wrapper);

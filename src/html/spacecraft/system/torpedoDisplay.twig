@@ -1,0 +1,10 @@
+<td>
+    {% set torpedo = SHIP.getTorpedo %}
+    {% set torpedoCount = SHIP.getTorpedoCount %}
+    {% if torpedo %}
+    <img src="/assets/commodities/{{ torpedo.getCommodityId }}.png" />
+    {{ torpedo.getName }}: {{ torpedoCount }}
+    {% else %}
+    <img src="/assets/buttons/torp.png" /> Torpedos: {{ torpedoCount }}
+    {% endif %}
+</td>

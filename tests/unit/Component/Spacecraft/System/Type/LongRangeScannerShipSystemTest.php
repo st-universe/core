@@ -66,7 +66,7 @@ class LongRangeScannerShipSystemTest extends StuTestCase
         $managerMock = $this->mock(SpacecraftSystemManagerInterface::class);
         $system = $this->mock(SpacecraftSystemInterface::class);
 
-        $this->ship->shouldReceive('getShipSystem')
+        $this->ship->shouldReceive('getSpacecraftSystem')
             ->with(SpacecraftSystemTypeEnum::LSS)
             ->once()
             ->andReturn($system);
@@ -87,7 +87,7 @@ class LongRangeScannerShipSystemTest extends StuTestCase
         $systemNbs = $this->mock(SpacecraftSystemInterface::class);
         $systemAstro = $this->mock(SpacecraftSystemInterface::class);
 
-        $this->ship->shouldReceive('getShipSystem')
+        $this->ship->shouldReceive('getSpacecraftSystem')
             ->with(SpacecraftSystemTypeEnum::LSS)
             ->once()
             ->andReturn($systemNbs);
@@ -96,11 +96,11 @@ class LongRangeScannerShipSystemTest extends StuTestCase
             ->once();
 
         //ASTRO STUFF
-        $this->ship->shouldReceive('hasShipSystem')
+        $this->ship->shouldReceive('hasSpacecraftSystem')
             ->with(SpacecraftSystemTypeEnum::ASTRO_LABORATORY)
             ->once()
             ->andReturnTrue();
-        $this->ship->shouldReceive('getShipSystem')
+        $this->ship->shouldReceive('getSpacecraftSystem')
             ->with(SpacecraftSystemTypeEnum::ASTRO_LABORATORY)
             ->once()
             ->andReturn($systemAstro);
@@ -152,11 +152,11 @@ class LongRangeScannerShipSystemTest extends StuTestCase
         $this->mock(SpacecraftSystemInterface::class);
 
         //ASTRO STUFF
-        $this->ship->shouldReceive('hasShipSystem')
+        $this->ship->shouldReceive('hasSpacecraftSystem')
             ->with(SpacecraftSystemTypeEnum::ASTRO_LABORATORY)
             ->once()
             ->andReturnTrue();
-        $this->ship->shouldReceive('getShipSystem')
+        $this->ship->shouldReceive('getSpacecraftSystem')
             ->with(SpacecraftSystemTypeEnum::ASTRO_LABORATORY)
             ->once()
             ->andReturn($systemAstro);

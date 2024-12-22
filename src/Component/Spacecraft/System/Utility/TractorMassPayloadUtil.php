@@ -93,7 +93,7 @@ final class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
         $ship = $wrapper->get();
 
         if ($this->isTractorSystemStressed($wrapper, $tractoredShip) && $this->stuRandom->rand(1, 10) === 1) {
-            $system = $ship->getShipSystem(SpacecraftSystemTypeEnum::TRACTOR_BEAM);
+            $system = $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::TRACTOR_BEAM);
 
             $message = $this->messageFactory->createMessage();
 

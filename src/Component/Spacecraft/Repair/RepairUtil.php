@@ -330,7 +330,7 @@ final class RepairUtil implements RepairUtilInterface
                 $spacecraft->setHuell((int)($spacecraft->getMaxHull() * $percentage / 100));
             }
         } else {
-            $system = $spacecraft->getShipSystem($systemType);
+            $system = $spacecraft->getSpacecraftSystem($systemType);
 
             if ($system->getStatus() > $percentage) {
                 $result = false;

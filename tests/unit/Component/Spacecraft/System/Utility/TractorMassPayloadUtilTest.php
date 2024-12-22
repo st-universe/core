@@ -235,7 +235,7 @@ class TractorMassPayloadUtilTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(100);
-        $this->ship->shouldReceive('getShipSystem')
+        $this->ship->shouldReceive('getSpacecraftSystem')
             ->with(SpacecraftSystemTypeEnum::TRACTOR_BEAM)
             ->once()
             ->andReturn($system);
@@ -296,7 +296,7 @@ class TractorMassPayloadUtilTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(100);
-        $this->ship->shouldReceive('getShipSystem')
+        $this->ship->shouldReceive('getSpacecraftSystem')
             ->with(SpacecraftSystemTypeEnum::TRACTOR_BEAM)
             ->once()
             ->andReturn($system);

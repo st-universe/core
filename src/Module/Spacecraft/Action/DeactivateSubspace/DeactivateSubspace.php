@@ -14,7 +14,7 @@ use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 
 final class DeactivateSubspace implements ActionControllerInterface
 {
-    public const string ACTION_IDENTIFIER = 'B_DEACTIVATE_SUBSPACE';
+    public const string ACTION_IDENTIFIER = 'B_DEACTIVATE_SUBSPACE_SCANNER';
 
     public function __construct(private ActivatorDeactivatorHelperInterface $helper) {}
 

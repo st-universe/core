@@ -251,8 +251,8 @@ final class BuildConstruction implements ActionControllerInterface
             throw new RuntimeException('workbee has not eps system installed');
         }
 
-        $workbee->getShipSystem(SpacecraftSystemTypeEnum::LIFE_SUPPORT)->setMode(SpacecraftSystemModeEnum::MODE_ALWAYS_ON);
-        $workbee->getShipSystem(SpacecraftSystemTypeEnum::NBS)->setMode(SpacecraftSystemModeEnum::MODE_ON);
+        $workbee->getSpacecraftSystem(SpacecraftSystemTypeEnum::LIFE_SUPPORT)->setMode(SpacecraftSystemModeEnum::MODE_ALWAYS_ON);
+        $workbee->getSpacecraftSystem(SpacecraftSystemTypeEnum::NBS)->setMode(SpacecraftSystemModeEnum::MODE_ON);
 
         $shipCrewArray = $ship->getCrewAssignments()->getValues();
         for ($i = 0; $i < $plan->getCrew(); $i++) {

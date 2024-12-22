@@ -45,7 +45,7 @@ class EpsSystemDataTest extends StuTestCase
         $this->subject->setEps(80);
         $this->subject->setMaxEps(100);
 
-        $this->ship->shouldReceive('hasShipSystem')
+        $this->ship->shouldReceive('hasSpacecraftSystem')
             ->with(SpacecraftSystemTypeEnum::EPS)
             ->andReturn(false);
 

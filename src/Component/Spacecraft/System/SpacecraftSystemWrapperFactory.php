@@ -8,7 +8,7 @@ class SpacecraftSystemWrapperFactory implements SpacecraftSystemWrapperFactoryIn
 {
     public function create(SpacecraftInterface $spacecraft, SpacecraftSystemTypeEnum $type): ?SpacecraftSystemWrapper
     {
-        if (!$spacecraft->hasShipSystem($type)) {
+        if (!$spacecraft->hasSpacecraftSystem($type)) {
             return null;
         }
 

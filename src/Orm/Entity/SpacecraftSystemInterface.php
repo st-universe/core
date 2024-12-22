@@ -21,6 +21,8 @@ interface SpacecraftSystemInterface
 
     public function setStatus(int $status): SpacecraftSystemInterface;
 
+    public function isHealthy(): bool;
+
     public function getName(): string;
 
     public function getCssClass(): string;

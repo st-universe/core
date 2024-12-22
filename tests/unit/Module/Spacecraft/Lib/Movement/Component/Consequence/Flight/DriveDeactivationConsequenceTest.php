@@ -109,7 +109,7 @@ class DriveDeactivationConsequenceTest extends StuTestCase
         bool $isImpulsNeeded,
         bool $isWarpdriveNeeded,
         SpacecraftSystemTypeEnum $systemId,
-        bool $hasShipSystem,
+        bool $hasSpacecraftSystem,
         ?bool $isSystemActive = null,
     ): void {
         $messages = $this->mock(MessageCollectionInterface::class);
@@ -129,9 +129,9 @@ class DriveDeactivationConsequenceTest extends StuTestCase
         $this->ship->shouldReceive('getName')
             ->withNoArgs()
             ->andReturn('SHIP');
-        $this->ship->shouldReceive('hasShipSystem')
+        $this->ship->shouldReceive('hasSpacecraftSystem')
             ->with($systemId)
-            ->andReturn($hasShipSystem);
+            ->andReturn($hasSpacecraftSystem);
 
         $this->flightRoute->shouldReceive('isImpulseDriveNeeded')
             ->withNoArgs()
@@ -142,13 +142,13 @@ class DriveDeactivationConsequenceTest extends StuTestCase
             ->once()
             ->andReturn($isWarpdriveNeeded);
 
-        if ($hasShipSystem) {
+        if ($hasSpacecraftSystem) {
             $this->ship->shouldReceive('getSystemState')
                 ->with($systemId)
                 ->andReturn($isSystemActive);
         }
 
-        if ($hasShipSystem && $isSystemActive) {
+        if ($hasSpacecraftSystem && $isSystemActive) {
             $this->spacecraftSystemManager->shouldReceive('deactivate')
                 ->with($this->wrapper, $systemId, true)
                 ->once();

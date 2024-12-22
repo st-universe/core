@@ -67,7 +67,7 @@ final class WarpdriveShipSystem extends AbstractSpacecraftSystemType implements 
         if ($spacecraft instanceof ShipInterface) {
             $spacecraft->setDockedTo(null);
         }
-        $spacecraft->getShipSystem($this->getSystemType())->setMode(SpacecraftSystemModeEnum::MODE_ON);
+        $spacecraft->getSpacecraftSystem($this->getSystemType())->setMode(SpacecraftSystemModeEnum::MODE_ON);
 
         $this->game->triggerEvent(new WarpdriveActivationEvent($wrapper));
     }

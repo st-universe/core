@@ -215,7 +215,7 @@ class ShieldShipSystemTest extends StuTestCase
         $this->ship->shouldReceive('setDockedTo')
             ->with(null)
             ->once();
-        $this->ship->shouldReceive('getShipSystem')
+        $this->ship->shouldReceive('getSpacecraftSystem')
             ->with(SpacecraftSystemTypeEnum::SHIELDS)
             ->once()
             ->andReturn($system);
@@ -234,7 +234,7 @@ class ShieldShipSystemTest extends StuTestCase
     {
         $system = $this->mock(SpacecraftSystemInterface::class);
 
-        $this->ship->shouldReceive('getShipSystem')
+        $this->ship->shouldReceive('getSpacecraftSystem')
             ->with(SpacecraftSystemTypeEnum::SHIELDS)
             ->once()
             ->andReturn($system);

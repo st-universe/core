@@ -40,7 +40,7 @@ final class ShowAggregationSystem implements ViewControllerInterface
         );
         $station = $wrapper->get();
 
-        $module = $station->getShipSystem(SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM)->getModule();
+        $module = $station->getSpacecraftSystem(SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM)->getModule();
 
         $game->setPageTitle(_('Aggregationssystem'));
         $game->setMacroInAjaxWindow('html/ship/aggregationsystem.twig');
