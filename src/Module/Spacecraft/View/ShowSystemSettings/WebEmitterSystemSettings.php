@@ -2,57 +2,42 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Ship\View\ShowWebEmitter;
+namespace Stu\Module\Spacecraft\View\ShowSystemSettings;
 
-use Override;
-use request;
+use RuntimeException;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Repository\TholianWebRepositoryInterface;
 
-final class ShowWebEmitter implements ViewControllerInterface
+class WebEmitterSystemSettings implements SystemSettingsProviderInterface
 {
-    public const string VIEW_IDENTIFIER = 'SHOW_WEBEMITTER_AJAX';
-
-    private LoggerUtilInterface $loggerUtil;
-
     public function __construct(
-        private ShipLoaderInterface $shipLoader,
-        private TholianWebRepositoryInterface $tholianWebRepository,
-        LoggerUtilFactoryInterface $loggerUtilFactory
-    ) {
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
-    }
+        private TholianWebRepositoryInterface $tholianWebRepository
+    ) {}
 
-    #[Override]
-    public function handle(GameControllerInterface $game): void
-    {
+    public function setTemplateVariables(
+        SpacecraftSystemTypeEnum $systemType,
+        SpacecraftWrapperInterface $wrapper,
+        GameControllerInterface $game
+    ): void {
+
+        if (!$wrapper instanceof ShipWrapperInterface) {
+            throw new RuntimeException('this should not happen');
+        }
+
         $user = $game->getUser();
-        $userId = $user->getId();
-
-        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
-            request::indInt('id'),
-            $userId,
-            false,
-            false
-        );
         $ship = $wrapper->get();
 
-        $game->setPageTitle(_('Webemitter'));
         $game->setMacroInAjaxWindow('html/ship/webemitter.twig');
-
-        $game->setTemplateVar('WRAPPER', $wrapper);
 
         $emitter = $wrapper->getWebEmitterSystemData();
         if ($emitter === null) {
-            throw new SanityCheckException('no web emitter installed', null, self::VIEW_IDENTIFIER);
+            throw new SanityCheckException('no web emitter installed', null, ShowSystemSettings::VIEW_IDENTIFIER);
         }
-
 
         $webUnderConstruction = $emitter->getWebUnderConstruction();
         $ownWeb = $emitter->getOwnedTholianWeb();
@@ -63,7 +48,6 @@ final class ShowWebEmitter implements ViewControllerInterface
 
         //helping under construction?
         if ($webUnderConstruction !== null && !$webUnderConstruction->isFinished()) {
-            $this->loggerUtil->log('A');
             $game->setTemplateVar('WEBCONSTRUCT', $webUnderConstruction);
             $game->setTemplateVar('ISOWNCONSTRUCT', $webUnderConstruction === $ownWeb);
             return;
@@ -72,29 +56,23 @@ final class ShowWebEmitter implements ViewControllerInterface
         $web = $this->tholianWebRepository->getWebAtLocation($ship);
 
         if ($web === null) {
-            $this->loggerUtil->log('B');
             // wenn keines da und isUseable -> dann Targetliste
             if ($emitter->isUseable()) {
-                $this->loggerUtil->log('C');
                 $possibleTargetList = $ship->getLocation()
                     ->getSpacecrafts()
                     ->filter(fn(SpacecraftInterface $target): bool => !$target->getCloakState() && !$target->isWarped() && $target !== $ship);
 
                 $game->setTemplateVar('AVAILABLE_SHIPS', $possibleTargetList);
             } else {
-                $this->loggerUtil->log('D');
                 $game->setTemplateVar('COOLDOWN', $emitter->getCooldown());
             }
         } else {
-            $this->loggerUtil->log('E');
 
             //can help under construction?
             //fremdes Netz under construction da? -> dann button für Support
             if (!$web->isFinished()) {
-                $this->loggerUtil->log('F');
                 $game->setTemplateVar('CANHELP', true);
             } else {
-                $this->loggerUtil->log('G');
                 $game->setTemplateVar('OWNFINISHED', $web->getUser() === $user);
             }
         }

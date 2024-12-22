@@ -4,16 +4,6 @@ function showAvailableShips(fleetid) {
 	ajax_update('elt', '?SHOW_AVAILABLE_SHIPS=1&fleetid=' + fleetid);
 }
 
-function showWebEmitterWindow() {
-	closeAjaxWindow();
-	openWindow('elt', 1, 300);
-	ajax_update('elt', 'ship.php?id=' + spacecraftid + '&SHOW_WEBEMITTER_AJAX=1');
-}
-function showBussardCollectorWindow() {
-	closeAjaxWindow();
-	openWindow('elt', 1);
-	ajax_update('elt', 'ship.php?id=' + spacecraftid + '&SHOW_BUSSARD_COLLECTOR_AJAX=1');
-}
 function showAstroEntryWindow(isSystem) {
 	closeAjaxWindow();
 	openPJsWin('elt', 1);

@@ -93,6 +93,9 @@ enum SpacecraftSystemTypeEnum: int
             self::TACHYON_SCANNER,
             self::CONSTRUCTION_HUB,
             self::CLOAK => 'html/spacecraft/system/systemWithOnOff.twig',
+            self::THOLIAN_WEB,
+            self::AGGREGATION_SYSTEM,
+            self::BUSSARD_COLLECTOR => 'html/spacecraft/system/openSettingsWhenHealthy.twig',
             default => null
         };
     }
@@ -109,6 +112,9 @@ enum SpacecraftSystemTypeEnum: int
             self::RPG_MODULE => 'rpg',
             self::ASTRO_LABORATORY => 'map',
             self::CONSTRUCTION_HUB => 'rep',
+            self::THOLIAN_WEB => 'net',
+            self::AGGREGATION_SYSTEM => 'aggsys',
+            self::BUSSARD_COLLECTOR => 'bussard',
             default => throw new RuntimeException(sprintf('no icon defined for system type: %s', $this->name))
         };
     }

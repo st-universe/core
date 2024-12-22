@@ -31,7 +31,6 @@ use Stu\Module\Station\Lib\StationLoader;
 use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Module\Station\Lib\StationUiFactory;
 use Stu\Module\Station\Lib\StationUiFactoryInterface;
-use Stu\Module\Station\View\ShowAggregationSystem\ShowAggregationSystem;
 use Stu\Module\Station\View\ShowDockingControl\ShowDockingControl;
 use Stu\Module\Station\View\ShowDockingPrivileges\ShowDockingPrivileges;
 use Stu\Module\Station\View\ShowScrapping\ShowScrapping;
@@ -81,7 +80,6 @@ return [
     ],
     'STATION_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
-        ShowAggregationSystem::VIEW_IDENTIFIER => autowire(ShowAggregationSystem::class),
         ShowDockingControl::VIEW_IDENTIFIER => autowire(ShowDockingControl::class),
         ShowDockingPrivileges::VIEW_IDENTIFIER => autowire(ShowDockingPrivileges::class),
         ShowStationCosts::VIEW_IDENTIFIER => autowire(ShowStationCosts::class),

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft;
 
 use Stu\Component\Spacecraft\SpacecraftTypeEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Game\Action\Transfer\Transfer;
 use Stu\Module\Game\View\ShowTransfer\ShowTransfer;
 use Stu\Module\Ship\View\ShowShip\ShipShowStrategy;
@@ -249,6 +250,10 @@ use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Module\Spacecraft\Lib\Ui\ShipUiFactory;
 use Stu\Module\Spacecraft\Lib\Ui\ShipUiFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Ui\StateIconAndTitle;
+use Stu\Module\Spacecraft\View\ShowSystemSettings\AggregrationSystemSettings;
+use Stu\Module\Spacecraft\View\ShowSystemSettings\BussardCollectorSystemSettings;
+use Stu\Module\Spacecraft\View\ShowSystemSettings\ShowSystemSettings;
+use Stu\Module\Spacecraft\View\ShowSystemSettings\WebEmitterSystemSettings;
 use Stu\Module\Spacecraft\View\ShowTradeMenu\ShowTradeMenu;
 use Stu\Module\Spacecraft\View\ShowTradeMenuTransfer\ShowTradeMenuTransfer;
 
@@ -472,6 +477,12 @@ return [
         ShowShipDetails::VIEW_IDENTIFIER => autowire(ShowShipDetails::class),
         ShowShipStorage::VIEW_IDENTIFIER => autowire(ShowShipStorage::class),
         ShowSpacecraft::VIEW_IDENTIFIER => autowire(ShowSpacecraft::class),
+        ShowSystemSettings::VIEW_IDENTIFIER => autowire(ShowSystemSettings::class)
+            ->constructorParameter('systemSettingsProvider', [
+                SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM->value => autowire(AggregrationSystemSettings::class),
+                SpacecraftSystemTypeEnum::BUSSARD_COLLECTOR->value => autowire(BussardCollectorSystemSettings::class),
+                SpacecraftSystemTypeEnum::THOLIAN_WEB->value => autowire(WebEmitterSystemSettings::class)
+            ]),
         ShowTradeMenu::VIEW_IDENTIFIER => autowire(ShowTradeMenu::class),
         ShowTradeMenuTransfer::VIEW_IDENTIFIER => autowire(ShowTradeMenuTransfer::class),
         ShowTransfer::VIEW_IDENTIFIER => get(ShowTransfer::class),

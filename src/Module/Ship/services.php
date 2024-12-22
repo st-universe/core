@@ -94,12 +94,10 @@ use Stu\Module\Ship\Lib\TholianWebUtilInterface;
 use Stu\Module\Ship\View\ShowAstroEntry\ShowAstroEntry;
 use Stu\Module\Ship\View\ShowAvailableShips\ShowAvailableShips;
 use Stu\Module\Ship\View\ShowBuoyList\ShowBuoyList;
-use Stu\Module\Ship\View\ShowBussardCollector\ShowBussardCollector;
 use Stu\Module\Ship\View\ShowColonization\ShowColonization;
 use Stu\Module\Ship\View\ShowShiplistFleet\ShowShiplistFleet;
 use Stu\Module\Ship\View\ShowShiplistSingles\ShowShiplistSingles;
 use Stu\Module\Ship\View\ShowTradeMenuPayment\ShowTradeMenuPayment;
-use Stu\Module\Ship\View\ShowWebEmitter\ShowWebEmitter;
 
 use function DI\autowire;
 
@@ -181,13 +179,11 @@ return [
     'SHIP_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
         ShowAstroEntry::VIEW_IDENTIFIER => autowire(ShowAstroEntry::class),
-        ShowBussardCollector::VIEW_IDENTIFIER => autowire(ShowBussardCollector::class),
         ShowTradeMenuPayment::VIEW_IDENTIFIER => autowire(ShowTradeMenuPayment::class),
         ShowColonization::VIEW_IDENTIFIER => autowire(ShowColonization::class),
         ShowShiplistFleet::VIEW_IDENTIFIER => autowire(ShowShiplistFleet::class),
         ShowShiplistSingles::VIEW_IDENTIFIER => autowire(ShowShiplistSingles::class),
         ShowAvailableShips::VIEW_IDENTIFIER => autowire(ShowAvailableShips::class),
-        ShowBuoyList::VIEW_IDENTIFIER => autowire(ShowBuoyList::class),
-        ShowWebEmitter::VIEW_IDENTIFIER => autowire(ShowWebEmitter::class),
+        ShowBuoyList::VIEW_IDENTIFIER => autowire(ShowBuoyList::class)
     ]
 ];

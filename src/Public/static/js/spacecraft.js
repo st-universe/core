@@ -378,3 +378,10 @@ function toggleTransferMessage(type) {
     message.style.display = "none";
   }
 }
+
+function showSystemSettingsWindow(name) {
+  closeAjaxWindow();
+  openWindow('elt', 1, 300);
+  ajax_update('elt', `?SHOW_SYSTEM_SETTINGS_AJAX=1&id=${spacecraftid}&system=${name}`);
+}
+
