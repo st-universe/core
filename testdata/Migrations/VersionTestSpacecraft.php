@@ -20,7 +20,9 @@ final class VersionTestSpacecraft extends AbstractMigration
             VALUES (42, 101, 6501, 2324, NULL, \'Aerie\', 1, 819, 819, 819, 819, NULL, 0, 68, 0, 43, 2, 0, 0, NULL, 1, NULL, \'SHIP\', 0, 15247),
                     (77, 101, 6501, 2324, NULL, \'Aerie Zwo\', 1, 819, 819, 819, 819, NULL, 0, 68, 0, 43, 2, 0, 0, NULL, 1, NULL, \'SHIP\', 0, 204359),
                     (78, 101, 6501, 2324, NULL, \'Aerie Three\', 1, 819, 819, 819, 819, NULL, 0, 68, 0, 43, 2, 0, 0, NULL, 1, NULL, \'SHIP\', 0, 204359),
-                    (43, 101, 10053, 689, NULL, \'Mighty AP\', 1, 20000, 21000, 24000, 25000, NULL, 0, 68, 0, 43, 2, 0, 0, NULL, 1, NULL, \'STATION\', 0, 15247);
+                    (43, 101, 10053, 689, NULL, \'Mighty AP\', 1, 20000, 21000, 24000, 25000, NULL, 0, 68, 0, 43, 2, 0, 0, NULL, 1, NULL, \'STATION\', 0, 15247),
+                    (1021, 102, 6501, 2324, NULL, \'Aerie 102\', 1, 819, 819, 819, 819, NULL, 0, 68, 0, 43, 2, 0, 0, NULL, 1, NULL, \'SHIP\', 0, 204143),
+                    (1022, 102, 10053, 689, NULL, \'AP 102\', 1, 819, 819, 819, 819, NULL, 0, 68, 0, 43, 2, 0, 0, NULL, 1, NULL, \'STATION\', 0, 204143);
         ');
     }
 }

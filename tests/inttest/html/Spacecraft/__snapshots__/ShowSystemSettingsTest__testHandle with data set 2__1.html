@@ -1,0 +1,55 @@
+<html lang="de">
+
+<head>
+  <script src="/static/js/default.js"></script>
+</head>
+
+<body>
+  <div class="ajaxwin">
+        <table class="tcal">
+      <tr>
+        <th onmouseover="switch_drag_on();" onmouseout="switch_drag_off();">Netzemitter</th>
+        <th style="width: 18px;">
+          <a href="javascript:void(0);" onclick="closeAjaxWindow();" onmouseover="cp('ajaxclose','buttons/x2');" onmouseout="cp('ajaxclose','buttons/x1');">
+            <img src="/assets/buttons/x1.png" name="ajaxclose" title="Fenster schlie&Atilde;&#159;en">
+          </a>
+        </th>
+      </tr>
+    </table>
+        <form action="ship.php" method="post">
+  <input type="hidden" name="id" value="1021">
+  <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
+    <table class="tcal">
+                        <tr>
+      <td colspan="2">
+        <div class="box">
+          <div class="box_title">Zielauswahl</div>
+          <div class="box_body">
+                        <table class="tcal" id="availableShipsTable">
+                            <tr>
+                <td style="" class="shiplistshipimage">
+                                    <img src="/assets/ships/10053.png" title="Au&Atilde;&#159;enposten">
+
+                </td>
+                <td>
+                  <input type="checkbox" class="chosenShipsCheckbox" name="chosen[]" value="1022">
+                  <span>AP 102</span>
+                </td>
+              </tr>
+                          </table>
+                        <br>
+            <input type="submit" class="button" name="B_CREATE_WEB" value="Schiffe einfangen">
+          </div>
+        </div>
+      </td>
+    </tr>
+        <tr>
+      <td colspan="2">
+              </td>
+    </tr>
+  </table>
+  </form>
+      </div>
+  </body>
+
+</html>

@@ -50,6 +50,7 @@ class AllViewControllerTest extends TwigTestCase
         'SPACECRAFT_VIEWS-SHOW_SCAN',               // needs ship on same location
         'SPACECRAFT_VIEWS-SHOW_SECTOR_SCAN',        // not idempotent, because it creates prestige log
         'SPACECRAFT_VIEWS-SHOW_SPACECRAFT',         // has own test case
+        'SPACECRAFT_VIEWS-SHOW_SYSTEM_SETTINGS_AJAX',  // has own test case
         'SPACECRAFT_VIEWS-SHOW_TRANSFER',           // has own test case
         'TRADE_VIEWS-SHOW_OFFER_MENU',
         'TRADE_VIEWS-SHOW_OFFER_MENU_TRANSFER',
@@ -103,6 +104,7 @@ class AllViewControllerTest extends TwigTestCase
         $this->snapshotKey = $key;
 
         $this->renderSnapshot(
+            101,
             $this->getGeneralRequestVariables(),
             Init::getContainer()
                 ->getDefinedImplementationsOf(ViewControllerInterface::class, true)->get($key)

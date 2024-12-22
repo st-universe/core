@@ -57,7 +57,7 @@ class ShowTransferTest extends TwigTestCase
         TransferEntityTypeEnum $targetType,
         TransferTypeEnum $transferType
     ): void {
-        $this->renderSnapshot([
+        $this->renderSnapshot(101, [
             'id' => $id,
             'source_type' => $sourceType->value,
             'target' => $target,

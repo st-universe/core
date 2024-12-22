@@ -47,6 +47,7 @@ class DefaultViewsControllerTest extends TwigTestCase
         $viewValue = strtolower(explode('_', $key, 2)[0]);
 
         $this->renderSnapshot(
+            101,
             [
                 'view' => $viewValue,
                 'switch' => 1

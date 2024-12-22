@@ -19,7 +19,8 @@ final class VersionTestShip extends AbstractMigration
         $this->addSql('INSERT INTO stu_ship (id, fleet_id, docked_to_id, is_fleet_leader)
             VALUES (42, NULL, 43, 0),
                     (77, 77, NULL, 1),
-                    (78, NULL, NULL, 0);
+                    (78, NULL, NULL, 0),
+                    (1021, NULL, NULL, 0);
         ');
     }
 }

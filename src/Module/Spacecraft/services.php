@@ -253,6 +253,7 @@ use Stu\Module\Spacecraft\Lib\Ui\StateIconAndTitle;
 use Stu\Module\Spacecraft\View\ShowSystemSettings\AggregrationSystemSettings;
 use Stu\Module\Spacecraft\View\ShowSystemSettings\BussardCollectorSystemSettings;
 use Stu\Module\Spacecraft\View\ShowSystemSettings\ShowSystemSettings;
+use Stu\Module\Spacecraft\View\ShowSystemSettings\SystemSettingsProviderInterface;
 use Stu\Module\Spacecraft\View\ShowSystemSettings\WebEmitterSystemSettings;
 use Stu\Module\Spacecraft\View\ShowTradeMenu\ShowTradeMenu;
 use Stu\Module\Spacecraft\View\ShowTradeMenuTransfer\ShowTradeMenuTransfer;
@@ -381,6 +382,11 @@ return [
                 autowire(TransformToTrumfield::class)
             ],
         ),
+    SystemSettingsProviderInterface::class => [
+        SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM->value => autowire(AggregrationSystemSettings::class),
+        SpacecraftSystemTypeEnum::BUSSARD_COLLECTOR->value => autowire(BussardCollectorSystemSettings::class),
+        SpacecraftSystemTypeEnum::THOLIAN_WEB->value => autowire(WebEmitterSystemSettings::class)
+    ],
     'SPACECRAFT_ACTIONS' => [
         AddShipLog::ACTION_IDENTIFIER => autowire(AddShipLog::class),
         DumpForeignCrewman::ACTION_IDENTIFIER => autowire(DumpForeignCrewman::class),
@@ -477,12 +483,7 @@ return [
         ShowShipDetails::VIEW_IDENTIFIER => autowire(ShowShipDetails::class),
         ShowShipStorage::VIEW_IDENTIFIER => autowire(ShowShipStorage::class),
         ShowSpacecraft::VIEW_IDENTIFIER => autowire(ShowSpacecraft::class),
-        ShowSystemSettings::VIEW_IDENTIFIER => autowire(ShowSystemSettings::class)
-            ->constructorParameter('systemSettingsProvider', [
-                SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM->value => autowire(AggregrationSystemSettings::class),
-                SpacecraftSystemTypeEnum::BUSSARD_COLLECTOR->value => autowire(BussardCollectorSystemSettings::class),
-                SpacecraftSystemTypeEnum::THOLIAN_WEB->value => autowire(WebEmitterSystemSettings::class)
-            ]),
+        ShowSystemSettings::VIEW_IDENTIFIER => autowire(ShowSystemSettings::class),
         ShowTradeMenu::VIEW_IDENTIFIER => autowire(ShowTradeMenu::class),
         ShowTradeMenuTransfer::VIEW_IDENTIFIER => autowire(ShowTradeMenuTransfer::class),
         ShowTransfer::VIEW_IDENTIFIER => get(ShowTransfer::class),

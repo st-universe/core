@@ -1,0 +1,49 @@
+<html lang="de">
+
+<head>
+  <script src="/static/js/default.js"></script>
+</head>
+
+<body>
+  <div class="ajaxwin">
+        <table class="tcal">
+      <tr>
+        <th onmouseover="switch_drag_on();" onmouseout="switch_drag_off();">Aggregationssystem</th>
+        <th style="width: 18px;">
+          <a href="javascript:void(0);" onclick="closeAjaxWindow();" onmouseover="cp('ajaxclose','buttons/x2');" onmouseout="cp('ajaxclose','buttons/x1');">
+            <img src="/assets/buttons/x1.png" name="ajaxclose" title="Fenster schlie&Atilde;&#159;en">
+          </a>
+        </th>
+      </tr>
+    </table>
+        <form action="station.php" method="post">
+  <input type="hidden" name="id" value="1022">
+  <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
+    <table class="tcal">
+    <div class="box">
+      <div class="box_title">Auswahl</div>
+      <table class="tcal" id="availableCommodityTable">
+        <tr>
+          <td>
+            <input type="radio" name="chosen" value="0" id="noSelection" checked>
+            <label for="noSelection">Keine Auswahl</label>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2"><strong>Partikelkompressor</strong></td>
+        </tr>
+                        <tr>
+          <td colspan="2"><strong>Sublimator</strong></td>
+        </tr>
+                      </table>
+      <br>
+      <div style="text-align: center;">
+        <input type="submit" class="button" name="B_TRANSFORM_RESOURCES" value="Ressourcen umwandeln">
+      </div>
+    </div>
+  </table>
+  </form>
+      </div>
+  </body>
+
+</html>
