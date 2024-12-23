@@ -182,7 +182,7 @@ final class ApplyDamage implements ApplyDamageInterface
 
     private function destroyRandomShipSystem(SpacecraftWrapperInterface $wrapper): ?string
     {
-        $healthySystems = $wrapper->get()->getHealthySystems();
+        $healthySystems = $this->getHealthySystems($wrapper);
         shuffle($healthySystems);
 
         if ($healthySystems === []) {
@@ -201,7 +201,7 @@ final class ApplyDamage implements ApplyDamageInterface
         InformationInterface $informations,
         ?int $percent = null
     ): void {
-        $healthySystems = $wrapper->get()->getHealthySystems();
+        $healthySystems = $this->getHealthySystems($wrapper);
         shuffle($healthySystems);
 
         if ($healthySystems !== []) {
@@ -209,6 +209,15 @@ final class ApplyDamage implements ApplyDamageInterface
 
             $this->damageShipSystem($wrapper, $system, $percent ?? random_int(1, 70), $informations);
         }
+    }
+
+    /** @return array<SpacecraftSystemInterface>  */
+    private function getHealthySystems(SpacecraftWrapperInterface $wrapper): array
+    {
+        return $wrapper->get()->getSystems()
+            ->filter(fn(SpacecraftSystemInterface $system): bool => $system->getStatus() > 0)
+            ->filter(fn(SpacecraftSystemInterface $system): bool => $system->getSystemType()->canBeDamaged())
+            ->toArray();
     }
 
     #[Override]

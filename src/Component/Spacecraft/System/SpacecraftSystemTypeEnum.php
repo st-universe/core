@@ -119,6 +119,14 @@ enum SpacecraftSystemTypeEnum: int
         };
     }
 
+    public function canBeDamaged(): bool
+    {
+        return match ($this) {
+            self::RPG_MODULE => false,
+            default => true
+        };
+    }
+
     public static function getByName(string $name): SpacecraftSystemTypeEnum
     {
         foreach (self::cases() as $type) {

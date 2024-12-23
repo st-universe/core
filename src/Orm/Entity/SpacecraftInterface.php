@@ -244,11 +244,6 @@ interface SpacecraftInterface extends
 
     public function getSpacecraftSystem(SpacecraftSystemTypeEnum $type): SpacecraftSystemInterface;
 
-    /**
-     * @return SpacecraftSystemInterface[]
-     */
-    public function getHealthySystems(): array;
-
     public function displayNbsActions(): bool;
 
     public function isTractorbeamPossible(): bool;
