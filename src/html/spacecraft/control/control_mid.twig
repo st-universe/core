@@ -173,8 +173,8 @@ canColonize, closestAnomalyDistance) %}
                 onmouseout="document.getElementsByName('setBuoyButton')[0].src='/assets/buttons/set_buoy_1.png';" />
 
             {% endif %}
-            {{ _self.astroStates(ship, astroStateSystem) }}
-            {{ _self.astroStates(ship, astroStateRegion) }}
+            {{ _self.astroStates(SPACECRAFT, astroStateSystem) }}
+            {{ _self.astroStates(SPACECRAFT, astroStateRegion) }}
             {% if isTachyonActive %}
             <br />
             {% if SPACECRAFT.getTachyonState %}
