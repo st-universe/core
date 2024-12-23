@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
+use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use Override;
 use Stu\Orm\Repository\ConstructionProgressRepository;
@@ -35,7 +36,8 @@ class ConstructionProgress implements ConstructionProgressInterface
     /**
      * @var ArrayCollection<int, ConstructionProgressModuleInterface>
      */
-    #[OneToMany(targetEntity: 'ConstructionProgressModule', mappedBy: 'progress')]
+    #[OneToMany(targetEntity: 'ConstructionProgressModule', mappedBy: 'progress', indexBy: 'module_id')]
+    #[OrderBy(['module_id' => 'ASC'])]
     private Collection $specialModules;
 
     #[OneToOne(targetEntity: 'Station')]
