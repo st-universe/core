@@ -92,6 +92,7 @@ enum SpacecraftSystemTypeEnum: int
             self::RPG_MODULE,
             self::TACHYON_SCANNER,
             self::CONSTRUCTION_HUB,
+            self::UPLINK,
             self::CLOAK => 'html/spacecraft/system/systemWithOnOff.twig',
             self::THOLIAN_WEB,
             self::AGGREGATION_SYSTEM,
