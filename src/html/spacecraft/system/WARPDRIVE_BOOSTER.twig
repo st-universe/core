@@ -3,7 +3,7 @@
 <img src="/assets/buttons/gebact1.png" title="Booster hat Cooldown bis {{ cooldown|stuDateTime }}" />
 {% else %}
 <a href="javascript:void(0);"
-    onClick="actionToInnerContent('B_WARPDRIVE_BOOST', 'id={{ SHIP.getId }}&sstr={{ SESSIONSTRING }}');">
+    onClick="actionToInnerContent('B_WARPDRIVE_BOOST', 'id={{ SPACECRAFT.getId }}&sstr={{ SESSIONSTRING }}');">
     <img src="/assets/buttons/gebact2.png" title="Warpantrieb Boost aktivieren" />
 </a>
 {% endif %}
