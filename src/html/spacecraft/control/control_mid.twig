@@ -418,7 +418,7 @@ canColonize, closestAnomalyDistance) %}
 </a>
 {% endmacro %}
 
-{% macro astroStates(ship, astroStateWrapper) %}
+{% macro astroStates(SPACECRAFT, astroStateWrapper) %}
 {% set shipId = SPACECRAFT.getId %}
 {% set target = astroStateWrapper.isSystem ? SPACECRAFT.getSystem : SPACECRAFT.getMapRegion %}
 {% set shipAstroState = SPACECRAFT.getAstroState %}

@@ -229,7 +229,7 @@ final class BuildShip implements ActionControllerInterface
             }
         } else {
             $game->addInformationf(
-                _('Benutze verfügbaren Bauplan: %s'),
+                'Benutze verfügbaren Bauplan: %s',
                 $plan->getName()
             );
         }
