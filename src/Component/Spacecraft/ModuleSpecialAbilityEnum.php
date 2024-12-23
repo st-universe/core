@@ -88,7 +88,7 @@ enum ModuleSpecialAbilityEnum: int
     /**
      * @param Collection<int, ModuleSpecialInterface> $specials
      */
-    public static function getHash($specials): ?int
+    public static function getHash(Collection $specials): ?int
     {
         $result = 0;
 
@@ -96,6 +96,6 @@ enum ModuleSpecialAbilityEnum: int
             $result += 2 ** ($special->getSpecialId()->value - 1);
         }
 
-        return $result == 0 ? null : (int)$result;
+        return $result === 0 ? null : (int)$result;
     }
 }
