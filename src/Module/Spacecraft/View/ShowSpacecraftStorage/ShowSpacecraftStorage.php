@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Spacecraft\View\ShowShipStorage;
+namespace Stu\Module\Spacecraft\View\ShowSpacecraftStorage;
 
 use Override;
 use request;
@@ -11,7 +11,7 @@ use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 
-final class ShowShipStorage implements ViewControllerInterface
+final class ShowSpacecraftStorage implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_SPACECRAFTSTORAGE';
 
@@ -25,7 +25,7 @@ final class ShowShipStorage implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $ship = $this->spacecraftLoader->getByIdAndUser(
+        $spacecraft = $this->spacecraftLoader->getByIdAndUser(
             request::indInt('id'),
             $userId,
             true,
@@ -33,8 +33,8 @@ final class ShowShipStorage implements ViewControllerInterface
         );
 
         $game->setPageTitle(_('Schiffsfracht'));
-        $game->setMacroInAjaxWindow('html/ship/shipstorage.twig');
+        $game->setMacroInAjaxWindow('html/spacecraft/spacecraftStorage.twig');
 
-        $game->setTemplateVar('SHIP', $ship);
+        $game->setTemplateVar('SPACECRAFT', $spacecraft);
     }
 }

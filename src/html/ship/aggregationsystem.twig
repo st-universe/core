@@ -1,8 +1,8 @@
-{% set SHIP = WRAPPER.get %}
+{% set STATION = WRAPPER.get %}
 <form action="station.php" method="post">
-  <input type="hidden" name="id" value="{{ SHIP.getId }}" />
+  <input type="hidden" name="id" value="{{ STATION.getId }}" />
   <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
-  {% if SHIP.isAggregationSystemHealthy %}
+  {% if STATION.isAggregationSystemHealthy %}
   <table class="tcal">
     <div class="box">
       <div class="box_title">Auswahl</div>

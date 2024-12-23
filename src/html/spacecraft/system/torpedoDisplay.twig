@@ -1,6 +1,6 @@
 <td>
-    {% set torpedo = SHIP.getTorpedo %}
-    {% set torpedoCount = SHIP.getTorpedoCount %}
+    {% set torpedo = SPACECRAFT.getTorpedo %}
+    {% set torpedoCount = SPACECRAFT.getTorpedoCount %}
     {% if torpedo %}
     <img src="/assets/commodities/{{ torpedo.getCommodityId }}.png" />
     {{ torpedo.getName }}: {{ torpedoCount }}

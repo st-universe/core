@@ -240,12 +240,8 @@ function renameCrew(crew_id) {
   }
   ajax_update(
     "rn_crew_" + crew_id,
-    "?B_RENAME_CREW=1&id=" +
-    spacecraftid +
-    "&crewid=" +
-    crew_id +
-    "&" +
-    Form.Element.serialize("rn_crew_" + crew_id + "_value")
+    `?B_RENAME_CREW=1&id=${spacecraftid}&crewid=${crew_id}&`
+    + Form.Element.serialize("rn_crew_" + crew_id + "_value")
   );
 }
 function adjustCellHeight(image) {

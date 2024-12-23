@@ -25,7 +25,7 @@
         {% if TRANSFER_INFO.isTorpedoTransferPossible %}
         {% if TRANSFER_INFO.isFriend %}
         <a href="javascript:void(0);"
-            onclick="showTransfer({{ sourceId }}, '{{ sourceEntityType }}', {{ targetId }}, '{{ targetEntityType }}', 3 , {{ isUnload }}, true);"
+            onclick="showTransfer({{ sourceId }}, '{{ sourceEntityType }}', {{ targetId }}, '{{ targetEntityType }}', 3, {{ isUnload }}, true);"
             onmouseover="cp('torpedobeamtrigger','buttons/act_torp1');"
             onmouseout="cp('torpedobeamtrigger','buttons/torp');">
             <img src="assets/buttons/torp.png" name="torpedobeamtrigger" title="Torpedos beamen" />
