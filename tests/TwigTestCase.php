@@ -28,6 +28,7 @@ use Stu\Lib\Component\ComponentRegistrationInterface;
 use Stu\Lib\Session\SessionStringFactoryInterface;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Control\BenchmarkResultInterface;
+use Stu\Module\Control\ComponentSetupInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\Render\GameTwigRendererInterface;
 use Stu\Module\Control\StuRandom;
@@ -84,12 +85,12 @@ abstract class TwigTestCase extends StuTestCase
         request::setMockVars($requestVars);
 
         $game = $dic->get(GameControllerInterface::class);
-        $twigRenderer = $dic->get(GameTwigRendererInterface::class);
         $subject = $viewController ?? $dic->get($this->getViewControllerClass());
 
-        // execute ViewController and render
+        // execute ViewController setup components and render
         $subject->handle($game);
-        $renderResult = $twigRenderer->render($game, $game->getUser());
+        $dic->get(ComponentSetupInterface::class)->setup($game);
+        $renderResult = $dic->get(GameTwigRendererInterface::class)->render($game, $game->getUser());
 
         $this->assertMatchesHtmlSnapshot($renderResult);
     }

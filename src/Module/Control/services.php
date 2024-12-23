@@ -15,5 +15,6 @@ return [
     StuRandom::class => autowire(StuRandom::class),
     StuHashInterface::class => autowire(StuHash::class),
     BenchmarkResultInterface::class => autowire(BenchmarkResult::class),
-    GameTwigRendererInterface::class => autowire(GameTwigRenderer::class)
+    GameTwigRendererInterface::class => autowire(GameTwigRenderer::class),
+    ComponentSetupInterface::class => autowire(ComponentSetup::class)
 ];

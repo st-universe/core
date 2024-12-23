@@ -15,6 +15,6 @@ final class ShowInformation implements ViewControllerInterface
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $game->showMacro('html/systeminformation.twig');
+        $game->showMacro('html/systeminformationAndJsBeforeAfterRender.twig');
     }
 }

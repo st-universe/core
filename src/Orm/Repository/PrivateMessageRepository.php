@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Override;
+use Stu\Module\Game\Component\GameComponentEnum;
 use Stu\Orm\Entity\PrivateMessage;
 use Stu\Orm\Entity\PrivateMessageFolder;
 use Stu\Orm\Entity\PrivateMessageFolderInterface;
@@ -128,6 +129,27 @@ final class PrivateMessageRepository extends EntityRepository implements Private
             'folderId' => $folderId,
             'timestamp' => $timestamp
         ])->execute();
+    }
+
+    #[Override]
+    public function hasRecentMessage(UserInterface $user): bool
+    {
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT count(pm.id)
+                    FROM %s pm
+                    WHERE pm.receivingUser = :user
+                    AND pm.new = :true
+                    AND pm.date > :threshold',
+                PrivateMessage::class
+            )
+        )
+            ->setParameters([
+                'user' => $user,
+                'threshold' => time() - GameComponentEnum::PM->getRefreshIntervalInSeconds(),
+                'true' => true
+            ])
+            ->getSingleScalarResult() > 0;
     }
 
     #[Override]
