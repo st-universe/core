@@ -106,7 +106,7 @@ use Stu\Module\Spacecraft\View\ShowSectorScan\ShowSectorScan;
 use Stu\Module\Spacecraft\View\ShowSelfDestruct\ShowSelfDestruct;
 use Stu\Module\Spacecraft\View\ShowShipCommunication\ShowShipCommunication;
 use Stu\Module\Spacecraft\View\ShowShipDetails\ShowShipDetails;
-use Stu\Module\Spacecraft\View\ShowShipStorage\ShowShipStorage;
+use Stu\Module\Spacecraft\View\ShowSpacecraftStorage\ShowSpacecraftStorage;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\SpacecraftTypeShowStragegyInterface;
 use Stu\Module\Station\View\ShowStation\StationShowStrategy;
@@ -481,7 +481,7 @@ return [
         ShowSelfDestruct::VIEW_IDENTIFIER => autowire(ShowSelfDestruct::class),
         ShowShipCommunication::VIEW_IDENTIFIER => autowire(ShowShipCommunication::class),
         ShowShipDetails::VIEW_IDENTIFIER => autowire(ShowShipDetails::class),
-        ShowShipStorage::VIEW_IDENTIFIER => autowire(ShowShipStorage::class),
+        ShowSpacecraftStorage::VIEW_IDENTIFIER => autowire(ShowSpacecraftStorage::class),
         ShowSpacecraft::VIEW_IDENTIFIER => autowire(ShowSpacecraft::class),
         ShowSystemSettings::VIEW_IDENTIFIER => autowire(ShowSystemSettings::class),
         ShowTradeMenu::VIEW_IDENTIFIER => autowire(ShowTradeMenu::class),

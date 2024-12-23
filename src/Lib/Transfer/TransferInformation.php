@@ -69,14 +69,7 @@ class TransferInformation
 
     public function isFriend(): bool
     {
-        if (
-            !$this->isFriend
-            && $this->source->getUser() !== $this->target->getUser()
-        ) {
-            return false;
-        } else {
-            return true;
-        }
+        return $this->isFriend || $this->source->getUser() === $this->target->getUser();
     }
 
     public function isOtherGoodTransferPossible(): bool

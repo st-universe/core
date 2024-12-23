@@ -1,8 +1,8 @@
-{% from 'html/shipmacros.twig' import nbsblock, spacecraftImageWithoutWarp, shipstorage %}
+{% from 'html/shipmacros.twig' import nbsblock, spacecraftImageWithoutWarp, spacecraftstorage %}
 {% from 'html/macros.twig' import onClickSpacecraft %}
-{% from 'html/shipcontrol/control_nav.twig' import control_nav %}
-{% from 'html/shipcontrol/control_mid.twig' import control_mid %}
-{% from 'html/shipcontrol/control_right.twig' import control_right %}
+{% from 'html/spacecraft/control/control_nav.twig' import control_nav %}
+{% from 'html/spacecraft/control/control_mid.twig' import control_mid %}
+{% from 'html/spacecraft/control/control_right.twig' import control_right %}
 
 {% if FIGHT_RESULTS %}
 <div style="width: 150px;">
@@ -29,11 +29,11 @@
 	<br />
 </div>
 {% endif %}
-{% set SHIP = WRAPPER.get %}
-{% set shipId = SHIP.getId %}
-<form action="{{ SHIP.getType.getModuleView.getPhpPage }}" method="post" name="shipform" id="shipform"
+{% set SPACECRAFT = WRAPPER.get %}
+{% set spacecraftId = SPACECRAFT.getId %}
+<form action="{{ SPACECRAFT.getType.getModuleView.getPhpPage }}" method="post" name="shipform" id="shipform"
 	onkeydown="return event.key != 'Enter';">
-	<input type="hidden" name="id" value="{{ SHIP.getId }}" />
+	<input type="hidden" name="id" value="{{ spacecraftId }}" />
 	<input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
 	<table class="tcal">
 		<tr>
@@ -46,7 +46,7 @@
 			<th style="text-align: center;" title="aktuell/maximal (Regeneration [alle 15min])">Schilde
 				<img src="/assets/buttons/info2.png" style="height:16px;" />
 			</th>
-			{% if SHIP.hasWarpdrive %}
+			{% if SPACECRAFT.hasWarpdrive %}
 			<th style="text-align: center;" title="aktuell/maximal, Zuwachs">
 				Warpdrive <img src="/assets/buttons/info2.png" style="height:16px;" /></th>
 			{% endif %}
@@ -57,13 +57,13 @@
 					style="height:16px;" /></th>
 			<th style="text-align: center;">Name</th>
 			<td rowspan="3" style="text-align: center;">
-				{% if SHIP.isConstruction %}
+				{% if SPACECRAFT.isConstruction %}
 				<a href="javascript:void(0);" onclick="showScrapWindow();" onmouseover="cp('scrap','buttons/scrap2');"
 					onmouseout="cp('scrap','buttons/scrap1');">
 					<img src="/assets/buttons/scrap1.png" name="scrap" title="Konstrukt entfernen" />
 				</a>
 				{% else %}
-				<a href="javascript:void(0);" onclick="showSelfdestructWindow({{ shipId }});"
+				<a href="javascript:void(0);" onclick="showSelfdestructWindow({{ spacecraftId }});"
 					onmouseover="cp('selfdestruct','buttons/selfdes2');"
 					onmouseout="cp('selfdestruct','buttons/selfdes1');">
 					<img src="/assets/buttons/selfdes1.png" name="selfdestruct" title="Selbstzerstörung" />
@@ -79,31 +79,31 @@
 		</tr>
 		<tr>
 			{% set epssystem = WRAPPER.getEpsSystemData %}
-			<td style="{{ SHIP.getHoldingWebBackgroundStyle }}" rowspan="2" class="shipimage">
+			<td style="{{ SPACECRAFT.getHoldingWebBackgroundStyle }}" rowspan="2" class="shipimage">
 				<a href="javascript:void(0);" onclick="window.scrollTo(0,document.body.scrollHeight);">
-					{{ spacecraftImageWithoutWarp(SHIP) }}
+					{{ spacecraftImageWithoutWarp(SPACECRAFT) }}
 				</a>
 			</td>
 			<td style="text-align: center;">
 				<a href="javascript:void(0);" onclick="showALvlWindow();"><img
-						src="/assets/buttons/alert{{ SHIP.getAlertState.value }}.png" title="Alarmstufe"
+						src="/assets/buttons/alert{{ SPACECRAFT.getAlertState.value }}.png" title="Alarmstufe"
 						name="setalvl" /></a>
 			</td>
 			<td style="text-align: center;">
-				{{ SHIP.getPosX }}|{{ SHIP.getPosY }}
+				{{ SPACECRAFT.getPosX }}|{{ SPACECRAFT.getPosY }}
 			</td>
 			<td style="text-align: center;">
-				{{ SHIP.getHull }}/{{ SHIP.getMaxHull }}
+				{{ SPACECRAFT.getHull }}/{{ SPACECRAFT.getMaxHull }}
 			</td>
 			<td style="text-align: center;">
-				{% if SHIP.getShieldState %}
-				<span class="activeshield">{{ SHIP.getShield }}/{{ SHIP.getMaxShield }}</span>
+				{% if SPACECRAFT.getShieldState %}
+				<span class="activeshield">{{ SPACECRAFT.getShield }}/{{ SPACECRAFT.getMaxShield }}</span>
 				{% else %}
-				<span>{{ SHIP.getShield }}/{{ SHIP.getMaxShield }}</span>
+				<span>{{ SPACECRAFT.getShield }}/{{ SPACECRAFT.getMaxShield }}</span>
 				{% endif %}
-				(+{{ SHIP.getShieldRegenerationRate }})
+				(+{{ SPACECRAFT.getShieldRegenerationRate }})
 			</td>
-			{% if SHIP.hasWarpdrive %}
+			{% if SPACECRAFT.hasWarpdrive %}
 			<td style="text-align: center;">
 				{% set warpdrivesystem = WRAPPER.getWarpDriveSystemData %}
 				{{ warpdrivesystem.getWarpDrive }}/{{ warpdrivesystem.getMaxWarpDrive }}
@@ -113,10 +113,10 @@
 			<td style="text-align: center;">
 				{% if epssystem %}
 				{{ epssystem.getEps }}/{{ epssystem.getMaxEps }}
-				{% if SHIP.hasWarpdrive %}
+				{% if SPACECRAFT.hasWarpdrive %}
 				<span id="effectiveEps"></span>
 				{% endif %}
-				{% if SHIP.hasReactor and not SHIP.hasWarpdrive %}
+				{% if SPACECRAFT.hasReactor and not SPACECRAFT.hasWarpdrive %}
 				<span>{{ WRAPPER.getReactorWrapper.getEffectiveEpsProduction|addPlusCharacter }}</span>
 				{% endif %}
 				(<span class="neg">{{ WRAPPER.getEpsUsage }}</span>/<span class="neg" id="reactorUsage">0</span>)
@@ -128,56 +128,56 @@
 				{% endif %}
 			</td>
 			<td style="text-align: center;">
-				{% set minCrew = SHIP.getBuildplan ? SHIP.getBuildplan.getCrew : 'kA' %}
+				{% set minCrew = SPACECRAFT.getBuildplan ? SPACECRAFT.getBuildplan.getCrew : 'kA' %}
 				{% set maxCrew = MAX_CREW_COUNT ? MAX_CREW_COUNT : 'kA' %}
-				<span style="{{ WRAPPER.getCrewStyle }}">{{ SHIP.getCrewCount }}</span>
+				<span style="{{ WRAPPER.getCrewStyle }}">{{ SPACECRAFT.getCrewCount }}</span>
 				({{ minCrew }},{{ maxCrew }})
 			</td>
 			<td style="text-align: center;">
-				<input type="text" name="shipname" size="25" value="{{ SHIP.getName }}"
-					onkeydown="event.key == 'Enter' &amp;&amp;  $('changeshipnamebutton').click()" />
+				<input type="text" name="shipname" size="25" value="{{ SPACECRAFT.getName }}"
+					onkeydown="event.key == 'Enter' && $('changeshipnamebutton').click()" />
 				<input type="submit" class="button" id="changeshipnamebutton" name="B_CHANGE_NAME" value="ändern" />
 			</td>
 		</tr>
 		<tr>
 			<td colspan="2">
-				<a {{ onClickSpacecraft(SHIP) }} onmouseover="cp('uship','buttons/update1');"
+				<a {{ onClickSpacecraft(SPACECRAFT) }} onmouseover="cp('uship','buttons/update1');"
 					onmouseout="cp('uship','buttons/update0');">
 					<img src="/assets/buttons/update0.png" title="Aktualisieren" name="uship" />
 				</a>
-				<a href="javascript:void(0);" onclick="showSpacecraftDetails({{ SHIP.getId }});"
+				<a href="javascript:void(0);" onclick="showSpacecraftDetails({{ spacecraftId }});"
 					onmouseover="cp('shinfo','buttons/info2');" onmouseout="cp('shinfo','buttons/info1');">
 					<img src="/assets/buttons/info1.png" title="Schiffsinformationen anzeigen" name="shinfo" />
 				</a>
-				<a href="javascript:void(0);" onclick="showCommunication({{ SHIP.getId }});"
+				<a href="javascript:void(0);" onclick="showCommunication({{ spacecraftId }});"
 					onmouseover="cp('shipcom','buttons/msg2');" onmouseout="cp('shipcom','buttons/msg1');">
 					<img src="/assets/buttons/msg1.png" title="Kommunikation" name="shipcom" />
 				</a>
-				{% if SHIP.getLssMode.isBorderMode %}
-				<a href="?B_SET_LSS_NORMAL=1&id={{ SHIP.getId }}&sstr={{ SESSIONSTRING }}"
+				{% if SPACECRAFT.getLssMode.isBorderMode %}
+				<a href="?B_SET_LSS_NORMAL=1&id={{ spacecraftId }}&sstr={{ SESSIONSTRING }}"
 					onmouseover="cp('actlss','buttons/lss_button2');" onmouseout="cp('actlss','buttons/lss_button1');">
 					<img src="/assets/buttons/lss_button1.png" title="Territoriale Grenzansicht deaktivieren"
 						name="actlss" />
 				</a>
 				{% else %}
-				<a href="?B_SET_LSS_BORDER=1&id={{ SHIP.getId }}&sstr={{ SESSIONSTRING }}"
+				<a href="?B_SET_LSS_BORDER=1&id={{ spacecraftId }}&sstr={{ SESSIONSTRING }}"
 					onmouseover="cp('actlss','buttons/lss_button1');" onmouseout="cp('actlss','buttons/lss_button3');">
 					<img src="/assets/buttons/lss_button3.png" title="Territoriale Grenzansicht aktivieren"
 						name="actlss" />
 				</a>
 				{% endif %}
 				{% if IS_MAP_BUTTON_VISIBLE %}
-				<a href="javascript:void(0);" onclick="openStarMap(this,{{ SHIP.getId }});"
+				<a href="javascript:void(0);" onclick="openStarMap(this,{{ spacecraftId }});"
 					onmouseover="cp('shimap','buttons/map2');" onmouseout="cp('shimap','buttons/map1');">
 					<img src="/assets/buttons/map1.png" title="Karte anzeigen" name="shimap" />
 				</a>
 				{% endif %}
-				<a href="?B_SHUTDOWN=1&id={{ SHIP.getId }}&sstr={{ SESSIONSTRING }}"
+				<a href="?B_SHUTDOWN=1&id={{ spacecraftId }}&sstr={{ SESSIONSTRING }}"
 					onmouseover="cp('shutdown','buttons/shutdown2');" onmouseout="cp('shutdown','buttons/shutdown1');">
 					<img src="/assets/buttons/shutdown1.png" title="Energieverbrauch minimieren" name="shutdown" />
 				</a>
 				{% if WRAPPER.canBeRepaired %}
-				<a href="javascript:void(0);" onclick="showRepairOptions({{ SHIP.getId }});"
+				<a href="javascript:void(0);" onclick="showRepairOptions({{ spacecraftId }});"
 					onmouseover="cp('selfrepair','buttons/rep2');" onmouseout="cp('selfrepair','buttons/rep1');">
 					<img src="/assets/buttons/rep1.png" style="height: 20px;" title="Reparaturoptionen anzeigen"
 						name="selfrepair" />
@@ -185,15 +185,15 @@
 				{% endif %}
 			</td>
 			<td colspan="2">
-				{% if SHIP.getBuildplan %}
-				{% for mod in SHIP.getModules %}
+				{% if SPACECRAFT.getBuildplan %}
+				{% for mod in SPACECRAFT.getModules %}
 				<img style="margin-right: 5px;" src="/assets/commodities/{{ mod.getCommodityId }}.png"
 					title="{{ mod.getName }}" />
 				{% endfor %}
 				{% endif %}
 			</td>
 			<td colspan="5">
-				{% for sys in SHIP.getSystems %}<img title="{{ sys.getName }}: {{ sys.getStatus }}%"
+				{% for sys in SPACECRAFT.getSystems %}<img title="{{ sys.getName }}: {{ sys.getStatus }}%"
 					style="margin-right: 5px;" class="{{ sys.getCssClass }}"
 					src="/assets/system/{{ sys.getSystemType.value }}.png" />{% endfor %}
 			</td>
@@ -201,16 +201,17 @@
 	</table>
 	<br />
 	<table style="width: 100%;">
-		{% if SHIP.isStation %}
+		{% if SPACECRAFT.isStation %}
 		<tr>
 			<td style="vertical-align: top; width: 33%;">
 				<div class="box">
 					<div class="box_title">Angedockte Schiffe
 						(
-						{% if SHIP.getDockedShipCount == SHIP.getDockingSlotCount %}
-						<span style="color: red;">{{ SHIP.getDockedShipCount }}/{{ SHIP.getDockingSlotCount }}</span>
+						{% if SPACECRAFT.getDockedShipCount == SPACECRAFT.getDockingSlotCount %}
+						<span style="color: red;">{{ SPACECRAFT.getDockedShipCount }}/{{ SPACECRAFT.getDockingSlotCount
+							}}</span>
 						{% else %}
-						<span>{{ SHIP.getDockedShipCount }}/{{ SHIP.getDockingSlotCount }}</span>
+						<span>{{ SPACECRAFT.getDockedShipCount }}/{{ SPACECRAFT.getDockingSlotCount }}</span>
 						{% endif %}
 						)
 					</div>
@@ -226,15 +227,15 @@
 						<br />
 						<div style="display: flex;">
 							{% if FIRST_MANAGE_SHIP %}
-							{% set sourceEntityType = SHIP.getTransferEntityType.value %}
+							{% set sourceEntityType = SPACECRAFT.getTransferEntityType.value %}
 							<div style="width: 70%; float: left;">
 								<a href="javascript:void(0);"
-									onclick="showTransfer({{shipId }}, '{{ sourceEntityType }}', document.getElementById('selshipid').value, 'ship', 1, true);"
+									onclick="showTransfer({{spacecraftId }}, '{{ sourceEntityType }}', document.getElementById('selshipid').value, 'ship', 1, true);"
 									onmouseover="cp('beamfrom','buttons/b_down2')"
 									onmouseout="cp('beamfrom','buttons/b_down1')"><img src="/assets/buttons/b_down1.png"
 										name="beamfrom" title="Zu Schiff beamen" /></a>
 								<a href="javascript:void(0);"
-									onclick="showTransfer({{shipId }}, '{{ sourceEntityType }}', document.getElementById('selshipid').value, 'ship', 1, false);"
+									onclick="showTransfer({{spacecraftId }}, '{{ sourceEntityType }}', document.getElementById('selshipid').value, 'ship', 1, false);"
 									onmouseover="cp('beamto','buttons/b_up2')"
 									onmouseout="cp('beamto','buttons/b_up1')"><img src="/assets/buttons/b_up1.png"
 										name="beamto" title="Von Schiff beamen" /></a>
@@ -242,11 +243,11 @@
 								{% if CAN_MANAGE %}
 								<span> | </span>
 								<a href="javascript:void(0);"
-									onclick="switchInnerContent('SHOW_SPACECRAFT_MANAGEMENT', 'Schiffsmanagement', 'id={{ SHIP.getId }}', 'station.php');">Management</a>
+									onclick="switchInnerContent('SHOW_SPACECRAFT_MANAGEMENT', 'Schiffsmanagement', 'id={{ spacecraftId }}', 'station.php');">Management</a>
 								{% endif %}
 								{% if CAN_REPAIR %}
 								| <a href="javascript:void(0);"
-									onclick="switchInnerContent('SHOW_SHIP_REPAIR', 'Schiffreparatur', 'id={{ SHIP.getId }}', 'station.php');">Reparatur</a>
+									onclick="switchInnerContent('SHOW_SHIP_REPAIR', 'Schiffreparatur', 'id={{ spacecraftId }}', 'station.php');">Reparatur</a>
 								{% endif %}
 							</div>
 							{% endif %}
@@ -269,12 +270,12 @@
 				<div id="systemsensorscan"></div>
 			</td>
 			<td style="vertical-align: top; width: 67%;">
-				{{ control_nav(SHIP, NAV_PANEL, VISUAL_NAV_PANEL) }}
-				{% set host = SHIP %}
+				{{ control_nav(SPACECRAFT, NAV_PANEL, VISUAL_NAV_PANEL) }}
+				{% set host = SPACECRAFT %}
 				{% include 'html/ship/repairProgress.twig' %}
-				{% if SHIP.getRump.isShipyard and SHIP.getConstructionHubState %}
+				{% if SPACECRAFT.getRump.isShipyard and SPACECRAFT.getConstructionHubState %}
 				{% include 'html/ship/buildProgress.twig' %}
-				{% set station = SHIP %}
+				{% set station = SPACECRAFT %}
 				{% set availableBuildplans = AVAILABLE_BUILDPLANS %}
 				{% include 'html/station/shipyardOptions.twig' %}
 				{% endif %}
@@ -283,7 +284,7 @@
 		{% else %}
 		<tr>
 			<td style="width: 33%; vertical-align: top;">
-				{{ control_nav(SHIP, NAV_PANEL, VISUAL_NAV_PANEL) }}
+				{{ control_nav(SPACECRAFT, NAV_PANEL, VISUAL_NAV_PANEL) }}
 			</td>
 			<td style="vertical-align: top; width: 33%;">
 				{{ control_mid(WRAPPER, ASTRO_STATE_SYSTEM, ASTRO_STATE_REGION, TACHYON_ACTIVE, STARSYSTEM_ENTRY_TAL,
@@ -300,23 +301,24 @@
 	</table>
 	<br />
 </form>
-{% if SHIP.hasNbsLss %}
+{% if SPACECRAFT.hasNbsLss %}
 <table class="tcal">
 	<tr>
 		<th>
-			{% if SHIP.getNbs %}
-			<a href="?B_DEACTIVATE_NBS=1&id={{ SHIP.getId }}&sstr={{ SESSIONSTRING }}"><img
+			{% if SPACECRAFT.getNbs %}
+			<a href="?B_DEACTIVATE_NBS=1&id={{ spacecraftId }}&sstr={{ SESSIONSTRING }}"><img
 					src="/assets/buttons/kss1.png" /> Nahbereichssensoren deaktivieren</a>
 			{% else %}
-			<a href="?B_ACTIVATE_NBS=1&id={{ SHIP.getId }}"><img src="/assets/buttons/kss2.png" /> Nahbereichssensoren
+			<a href="?B_ACTIVATE_NBS=1&id={{ spacecraftId }}"><img src="/assets/buttons/kss2.png" />
+				Nahbereichssensoren
 				aktivieren</a>
 			{% endif %}
 		</th>
 	</tr>
 </table>
 {% endif %}
-{% if SHIP.getNbs %}
+{% if SPACECRAFT.getNbs %}
 {{ nbsblock(WRAPPER, HAS_NBS, CLOAK_NBS, STATION_NBS, FLEET_NBS, SPACECRAFT_NBS, TRUMFIELD_NBS) }}
 {% endif %}
 <br />
-{{ shipstorage(SHIP) }}
+{% include 'html/spacecraft/spacecraftStorage.twig' %}

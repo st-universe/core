@@ -1,13 +1,13 @@
-{% if SHIP.hasTorpedo %}
+{% if SPACECRAFT.hasTorpedo %}
 <tr>
-    {% if SHIP.isAlertGreen %}
+    {% if SPACECRAFT.isAlertGreen %}
     <td>
         <img src="/assets/buttons/act_torp2.png" name="acttorp" /> bei Alarmstufe
         deaktiviert
     </td>
     {% else %}
     <td>
-        {% set systemWrapper = getSpacecraftSystemWrapper(SHIP, 'TORPEDO') %}
+        {% set systemWrapper = getSpacecraftSystemWrapper(SPACECRAFT, 'TORPEDO') %}
         {% set name = 'TORPEDO' %}
         {% set icon = systemWrapper.getIcon %}
         {% set description = systemWrapper.getDescription %}
@@ -16,7 +16,7 @@
     {% endif %}
     {% include 'html/spacecraft/system/torpedoDisplay.twig' %}
 </tr>
-{% elseif SHIP.isTorpedoStorageHealthy %}
+{% elseif SPACECRAFT.isTorpedoStorageHealthy %}
 <tr>
     {% include 'html/spacecraft/system/torpedoDisplay.twig' %}
 </tr>

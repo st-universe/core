@@ -408,36 +408,3 @@
 </td>
 {% endif %}
 {% endmacro %}
-
-{% macro shipstorage(ship) %}
-<table class="use" style="width: 200px;">
-    <tr>
-        <th><img onClick="window.scrollTo(0,0);" src="/assets/buttons/lager.png" title="Lagerraum" /> Lagerraum
-            {{ ship.getStorageSum }}/{{ ship.getMaxStorage }}</th>
-    </tr>
-    <tr>
-        <td>
-            {% for storage in ship.getStorage %}
-            {% if storage.getAmount %}
-            {% set commodity = storage.getCommodity %}
-            {% if loop.index0 % 2 == 0 %}
-            <div style="float: left; width: 50%;">
-                <img src="/assets/commodities/{{ commodity.getId }}.png" title="{{ commodity.getName }}" />
-                {{ storage.getAmount }}
-            </div>
-            {% else %}
-            <div style="float: right; width: 50%;">
-                <img src="/assets/commodities/{{ commodity.getId }}.png" title="{{ commodity.getName }}" />
-                {{ storage.getAmount }}
-            </div>
-            {% if loop.last %}
-            <div style="float: left; width: 50%;"> </div>
-            {% endif %}
-            <br style="clear: both;" />
-            {% endif %}
-            {% endif %}
-            {% endfor %}
-        </td>
-    </tr>
-</table>
-{% endmacro %}
