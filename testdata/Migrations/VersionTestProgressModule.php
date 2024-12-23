@@ -16,8 +16,9 @@ final class VersionTestProgressModule extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('INSERT INTO stu_progress_module (id, progress_id,module_id)
-            VALUES (1, 1, 20017);
+        $this->addSql('INSERT INTO stu_progress_module (id, progress_id, module_id)
+            VALUES (1, 1, 20017),
+                    (2, 1, 19403);
         ');
     }
 }
