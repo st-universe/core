@@ -9,17 +9,8 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Game\Action\Transfer\Transfer;
 use Stu\Module\Game\View\ShowTransfer\ShowTransfer;
 use Stu\Module\Ship\View\ShowShip\ShipShowStrategy;
-use Stu\Module\Spacecraft\Action\ActivateCloak\ActivateCloak;
-use Stu\Module\Spacecraft\Action\ActivateLss\ActivateLss;
-use Stu\Module\Spacecraft\Action\ActivateNbs\ActivateNbs;
-use Stu\Module\Spacecraft\Action\ActivatePhaser\ActivatePhaser;
-use Stu\Module\Spacecraft\Action\ActivateRPGModule\ActivateRPGModule;
-use Stu\Module\Spacecraft\Action\ActivateShields\ActivateShields;
-use Stu\Module\Spacecraft\Action\ActivateSubspace\ActivateSubspace;
-use Stu\Module\Spacecraft\Action\ActivateTachyon\ActivateTachyon;
-use Stu\Module\Spacecraft\Action\ActivateTorpedo\ActivateTorpedo;
+use Stu\Module\Spacecraft\Action\ActivateSystem\ActivateSystem;
 use Stu\Module\Spacecraft\Action\ActivateTractorBeam\ActivateTractorBeam;
-use Stu\Module\Spacecraft\Action\ActivateWarp\ActivateWarp;
 use Stu\Module\Spacecraft\Action\AddShipLog\AddShipLog;
 use Stu\Module\Spacecraft\Action\AttackBuilding\AttackBuilding;
 use Stu\Module\Spacecraft\Action\AttackSpacecraft\AttackSpacecraft;
@@ -27,17 +18,8 @@ use Stu\Module\Spacecraft\Action\BoardShip\BoardShip;
 use Stu\Module\Spacecraft\Action\ChangeName\ChangeName;
 use Stu\Module\Spacecraft\Action\ChangeName\ChangeNameRequest;
 use Stu\Module\Spacecraft\Action\ChangeName\ChangeNameRequestInterface;
-use Stu\Module\Spacecraft\Action\DeactivateCloak\DeactivateCloak;
-use Stu\Module\Spacecraft\Action\DeactivateLss\DeactivateLss;
-use Stu\Module\Spacecraft\Action\DeactivateNbs\DeactivateNbs;
-use Stu\Module\Spacecraft\Action\DeactivatePhaser\DeactivatePhaser;
-use Stu\Module\Spacecraft\Action\DeactivateRPGModule\DeactivateRPGModule;
-use Stu\Module\Spacecraft\Action\DeactivateShields\DeactivateShields;
-use Stu\Module\Spacecraft\Action\DeactivateSubspace\DeactivateSubspace;
-use Stu\Module\Spacecraft\Action\DeactivateTachyon\DeactivateTachyon;
-use Stu\Module\Spacecraft\Action\DeactivateTorpedo\DeactivateTorpedo;
+use Stu\Module\Spacecraft\Action\DeactivateSystem\DeactivateSystem;
 use Stu\Module\Spacecraft\Action\DeactivateTractorBeam\DeactivateTractorBeam;
-use Stu\Module\Spacecraft\Action\DeactivateWarp\DeactivateWarp;
 use Stu\Module\Spacecraft\Action\DoTachyonScan\DoTachyonScan;
 use Stu\Module\Spacecraft\Action\DropBuoy\DropBuoy;
 use Stu\Module\Spacecraft\Action\DumpForeignCrewman\DumpForeignCrewman;
@@ -398,24 +380,8 @@ return [
         BoardShip::ACTION_IDENTIFIER => autowire(BoardShip::class),
         StartTakeover::ACTION_IDENTIFIER => autowire(StartTakeover::class),
         StopTakeover::ACTION_IDENTIFIER => autowire(StopTakeover::class),
-        ActivateCloak::ACTION_IDENTIFIER => autowire(ActivateCloak::class),
-        ActivateSubspace::ACTION_IDENTIFIER => autowire(ActivateSubspace::class),
-        ActivateRPGModule::ACTION_IDENTIFIER => autowire(ActivateRPGModule::class),
-        ActivateTachyon::ACTION_IDENTIFIER => autowire(ActivateTachyon::class),
-        DeactivateCloak::ACTION_IDENTIFIER => autowire(DeactivateCloak::class),
-        DeactivateRPGModule::ACTION_IDENTIFIER => autowire(DeactivateRPGModule::class),
-        DeactivateSubspace::ACTION_IDENTIFIER => autowire(DeactivateSubspace::class),
-        DeactivateTachyon::ACTION_IDENTIFIER => autowire(DeactivateTachyon::class),
-        ActivateLss::ACTION_IDENTIFIER => autowire(ActivateLss::class),
-        DeactivateLss::ACTION_IDENTIFIER => autowire(DeactivateLss::class),
-        ActivateNbs::ACTION_IDENTIFIER => autowire(ActivateNbs::class),
-        DeactivateNbs::ACTION_IDENTIFIER => autowire(DeactivateNbs::class),
-        ActivateShields::ACTION_IDENTIFIER => autowire(ActivateShields::class),
-        DeactivateShields::ACTION_IDENTIFIER => autowire(DeactivateShields::class),
-        ActivatePhaser::ACTION_IDENTIFIER => autowire(ActivatePhaser::class),
-        DeactivatePhaser::ACTION_IDENTIFIER => autowire(DeactivatePhaser::class),
-        ActivateTorpedo::ACTION_IDENTIFIER => autowire(ActivateTorpedo::class),
-        DeactivateTorpedo::ACTION_IDENTIFIER => autowire(DeactivateTorpedo::class),
+        ActivateSystem::ACTION_IDENTIFIER => autowire(ActivateSystem::class),
+        DeactivateSystem::ACTION_IDENTIFIER => autowire(DeactivateSystem::class),
         ChangeName::ACTION_IDENTIFIER => autowire(ChangeName::class),
         LeaveStarSystem::ACTION_IDENTIFIER => autowire(LeaveStarSystem::class),
         EnterStarSystem::ACTION_IDENTIFIER => autowire(EnterStarSystem::class),
@@ -426,8 +392,6 @@ return [
         MoveShipDown::ACTION_IDENTIFIER => autowire(MoveShipDown::class),
         MoveShipLeft::ACTION_IDENTIFIER => autowire(MoveShipLeft::class),
         MoveShipRight::ACTION_IDENTIFIER => autowire(MoveShipRight::class),
-        ActivateWarp::ACTION_IDENTIFIER => autowire(ActivateWarp::class),
-        DeactivateWarp::ACTION_IDENTIFIER => autowire(DeactivateWarp::class),
         UnloadBattery::ACTION_IDENTIFIER => autowire(UnloadBattery::class),
         ActivateTractorBeam::ACTION_IDENTIFIER => autowire(ActivateTractorBeam::class),
         DeactivateTractorBeam::ACTION_IDENTIFIER => autowire(DeactivateTractorBeam::class),

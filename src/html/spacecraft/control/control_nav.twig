@@ -8,7 +8,7 @@
     <table class="lssarea" cellpadding="0" cellspacing="0">
         <tr>
             <td style="text-align: center; {{ heightAndWidth }} position: relative !important; top: 0px;">
-                <a href="?B_DEACTIVATE_LSS=1&id={{ ship.getId }}"
+                <a href="?B_DEACTIVATE_SYSTEM=1&id={{ ship.getId }}&type=LSS&sstr={{ SESSIONSTRING }}"
                     style="{{ heightAndWidth }} position: absolute !important; top: 0px; left: 0px;"><img
                         src="/assets/buttons/lss1.png" name="lss_panel"
                         style="{{ heightAndWidth }} position: relative !important; top: 0px;"
@@ -82,14 +82,15 @@
 <table class="tcal">
     {% if ship.hasNbsLss %}
     <tr>
-        <th colspan="3"><a href="?B_ACTIVATE_LSS=1&id={{ ship.getId }}"><img src="/assets/buttons/lss2.png"
-                    title="Langstreckensensoren aktivieren" /></a>
+        <th colspan="3"><a href="?B_ACTIVATE_SYSTEM=1&id={{ ship.getId }}&type=LSS&sstr={{ SESSIONSTRING }}"><img
+                    src="/assets/buttons/lss2.png" title="Langstreckensensoren aktivieren" /></a>
             {% if ship.isStation %}
-            <a href="?B_ACTIVATE_LSS=1&id={{ ship.getId }}">Langstreckensensoren
-                aktivieren</a>
+            <a href="?B_ACTIVATE_SYSTEM=1&id={{ ship.getId }}&type=LSS&sstr={{ SESSIONSTRING }}">
+                Langstreckensensoren aktivieren
+            </a>
             {% else %}
-            Navigation Applet (<a href="?B_ACTIVATE_LSS=1&id={{ ship.getId }}">Langstreckensensoren
-                aktivieren</a>)
+            Navigation Applet (<a href="?B_ACTIVATE_SYSTEM=1&id={{ ship.getId }}&type=LSS&sstr={{ SESSIONSTRING }}">
+                Langstreckensensoren aktivieren</a>)
             {% endif %}
         </th>
     </tr>

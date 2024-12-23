@@ -6,8 +6,6 @@ namespace Stu\Module\Ship;
 
 use Stu\Module\Control\GameController;
 use Stu\Module\Game\View\Overview\Overview;
-use Stu\Module\Ship\Action\ActivateAstroLaboratory\ActivateAstroLaboratory;
-use Stu\Module\Ship\Action\ActivateUplink\ActivateUplink;
 use Stu\Module\Ship\Action\AstroMapping\PlanAstroMapping;
 use Stu\Module\Ship\Action\AstroMapping\StartAstroMapping;
 use Stu\Module\Ship\Action\AttackTrackedShip\AttackTrackedShip;
@@ -23,7 +21,6 @@ use Stu\Module\Ship\Action\ColonyDefending\StopDefending;
 use Stu\Module\Ship\Action\CreateFleet\CreateFleet;
 use Stu\Module\Ship\Action\CreateFleet\CreateFleetRequest;
 use Stu\Module\Ship\Action\CreateFleet\CreateFleetRequestInterface;
-use Stu\Module\Ship\Action\DeactivateAstroLaboratory\DeactivateAstroLaboratory;
 use Stu\Module\Ship\Action\DeactivateTrackingDevice\DeactivateTrackingDevice;
 use Stu\Module\Ship\Action\DeleteFleet\DeleteFleet;
 use Stu\Module\Ship\Action\DeleteFleet\DeleteFleetRequest;
@@ -125,9 +122,6 @@ return [
         JoinFleetInShiplist::ACTION_IDENTIFIER => autowire(JoinFleetInShiplist::class),
         PriorizeFleet::ACTION_IDENTIFIER => autowire(PriorizeFleet::class),
         ChangeFleetFleader::ACTION_IDENTIFIER => autowire(ChangeFleetFleader::class),
-        ActivateAstroLaboratory::ACTION_IDENTIFIER => autowire(ActivateAstroLaboratory::class),
-        DeactivateAstroLaboratory::ACTION_IDENTIFIER => autowire(DeactivateAstroLaboratory::class),
-        ActivateUplink::ACTION_IDENTIFIER => autowire(ActivateUplink::class),
         GatherResources::ACTION_IDENTIFIER => autowire(GatherResources::class),
         UndockShip::ACTION_IDENTIFIER => autowire(UndockShip::class),
         DockShip::ACTION_IDENTIFIER => autowire(DockShip::class),

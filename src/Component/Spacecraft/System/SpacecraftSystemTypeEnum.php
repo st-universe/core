@@ -115,6 +115,7 @@ enum SpacecraftSystemTypeEnum: int
             self::THOLIAN_WEB => 'net',
             self::AGGREGATION_SYSTEM => 'aggsys',
             self::BUSSARD_COLLECTOR => 'bussard',
+            self::UPLINK => 'uplink',
             default => throw new RuntimeException(sprintf('no icon defined for system type: %s', $this->name))
         };
     }

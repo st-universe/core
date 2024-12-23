@@ -385,7 +385,7 @@ updateSelectedSpacecraftId('42');" onmouseover="cp('uship','buttons/update1');" 
     <table class="lssarea" cellpadding="0" cellspacing="0">
         <tr>
             <td style="text-align: center; height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
-                <a href="?B_DEACTIVATE_LSS=1&amp;id=42" style="height: 1.7vw; width: 1.7vw; position: absolute !important; top: 0px; left: 0px;"><img src="/assets/buttons/lss1.png" name="lss_panel" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" title="Langstreckensensoren deaktivieren"></a>
+                <a href="?B_DEACTIVATE_SYSTEM=1&amp;id=42&amp;type=LSS&amp;sstr=MOCKED_SESSIONSTRING" style="height: 1.7vw; width: 1.7vw; position: absolute !important; top: 0px; left: 0px;"><img src="/assets/buttons/lss1.png" name="lss_panel" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" title="Langstreckensensoren deaktivieren"></a>
             </td>
                         <td style="font-size: 0.9vw; height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="th">
                 5
@@ -505,7 +505,7 @@ updateSelectedSpacecraftId('42');" onmouseover="cp('uship','buttons/update1');" 
     
 <tr>
     <td colspan="2">
-                        <a href="javascript:void(0);" onclick="actionToInnerContent('B_ACTIVATE_SHIELDS', 'id=42&amp;sstr=MOCKED_SESSIONSTRING');" onmouseover="cp('shldac','buttons/shldac1');" onmouseout="cp('shldac','buttons/shldac2');">
+                        <a href="javascript:void(0);" onclick="actionToInnerContent('B_ACTIVATE_SYSTEM', 'id=42&amp;type=SHIELDS&amp;sstr=MOCKED_SESSIONSTRING');" onmouseover="cp('shldac','buttons/shldac1');" onmouseout="cp('shldac','buttons/shldac2');">
     <img src="/assets/buttons/shldac2.png" name="shldac"> Schilde aktivieren</a>
     </td>
 </tr>
@@ -522,7 +522,8 @@ updateSelectedSpacecraftId('42');" onmouseover="cp('uship','buttons/update1');" 
     
     
     
-        
+    
+    
                     
     
 </table>
@@ -630,7 +631,7 @@ updateSelectedSpacecraftId('43');" onmouseover="cp('dockedstation','buttons/pmna
         <td colspan="3">
                         <img src="/assets/buttons/warp2.png" title="Warpantrieb deaktiviert">
                         Warpantrieb
-                        <a href="javascript:void(0);" onclick="actionToInnerContent('B_ACTIVATE_WARP', 'id=42&amp;sstr=MOCKED_SESSIONSTRING');" class="linkbutton">aktivieren</a>
+                        <a href="javascript:void(0);" onclick="actionToInnerContent('B_ACTIVATE_SYSTEM', 'id=42&amp;type=WARPDRIVE&amp;sstr=MOCKED_SESSIONSTRING');" class="linkbutton">aktivieren</a>
                     </td>
     </tr>
             </table>
@@ -664,7 +665,7 @@ updateSelectedSpacecraftId('43');" onmouseover="cp('dockedstation','buttons/pmna
 <table class="tcal">
 	<tr>
 		<th>
-						<a href="?B_DEACTIVATE_NBS=1&amp;id=42&amp;sstr=MOCKED_SESSIONSTRING"><img src="/assets/buttons/kss1.png"> Nahbereichssensoren deaktivieren</a>
+						<a href="?B_DEACTIVATE_SYSTEM=1&amp;id=42&amp;type=NBS&amp;sstr=MOCKED_SESSIONSTRING"><img src="/assets/buttons/kss1.png"> Nahbereichssensoren deaktivieren</a>
 					</th>
 	</tr>
 </table>

@@ -21,18 +21,7 @@ canColonize, closestAnomalyDistance) %}
     {% include 'html/spacecraft/system/system.twig' with {'name': 'BUSSARD_COLLECTOR'} %}
     {% include 'html/spacecraft/system/system.twig' with {'name': 'AGGREGATION_SYSTEM'} %}
     {% include 'html/spacecraft/system/system.twig' with {'name': 'TACHYON_SCANNER'} %}
-    {% if SPACECRAFT.hasUplink %}
-    <tr>
-        <td colspan="2">
-            <a href="javascript:void(0);"
-                onClick="actionToInnerContent('B_ACTIVATE_UPLINK', 'id={{ spacecraftId }}&sstr={{ SESSIONSTRING }}');"
-                onmouseover="cp('uplink','buttons/uplink1')" onmouseout="cp('uplink','buttons/uplink2')">
-                <img src="/assets/buttons/uplink2.png" name="uplink" />
-                Uplink aktivieren
-            </a>
-        </td>
-    </tr>
-    {% endif %}
+    {% include 'html/spacecraft/system/system.twig' with {'name': 'UPLINK'} %}
     {% include 'html/spacecraft/system/system.twig' with {'name': 'RPG_MODULE'} %}
     {% if SPACECRAFT.hasShuttleRamp and SPACECRAFT.getStoredShuttles %}
     {% set defaultId = SPACECRAFT.getStoredShuttles[0].getId %}
