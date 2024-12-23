@@ -73,6 +73,7 @@ final class GameController implements GameControllerInterface
         private GameConfigRepositoryInterface $gameConfigRepository,
         private EntityManagerInterface $entityManager,
         private UserRepositoryInterface $userRepository,
+        private ComponentSetupInterface $componentSetup,
         private Ubench $benchmark,
         private CreateDatabaseEntryInterface $createDatabaseEntry,
         private GameRequestRepositoryInterface $gameRequestRepository,
@@ -568,11 +569,11 @@ final class GameController implements GameControllerInterface
             ? $this->getUser()
             : null;
 
+        $this->componentSetup->setup($this);
+
         // RENDER!
         $startTime = hrtime(true);
-
         $renderResult = $this->gameTwigRenderer->render($this, $user);
-
         $renderMs = hrtime(true) - $startTime;
 
         ob_start();
