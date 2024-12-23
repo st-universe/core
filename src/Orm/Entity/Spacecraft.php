@@ -29,7 +29,6 @@ use Stu\Component\Spacecraft\SpacecraftRumpEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\SpacecraftLssModeEnum;
 use Stu\Component\Spacecraft\SpacecraftTypeEnum;
-use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\Type\TorpedoStorageShipSystem;
 use Stu\Component\Spacecraft\System\Type\TractorBeamShipSystem;
@@ -1036,18 +1035,6 @@ abstract class Spacecraft implements SpacecraftInterface
         }
 
         return $system;
-    }
-
-    #[Override]
-    public function getHealthySystems(): array
-    {
-        $healthySystems = [];
-        foreach ($this->getSystems() as $system) {
-            if ($system->getStatus() > 0) {
-                $healthySystems[] = $system;
-            }
-        }
-        return $healthySystems;
     }
 
     #[Override]
