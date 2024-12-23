@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Station\Action\ActivateConstructionHub;
+namespace Stu\Module\Spacecraft\Action\ActivateSystem;
 
 use Override;
 use request;
@@ -12,9 +12,9 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 
-final class ActivateConstructionHub implements ActionControllerInterface
+final class ActivateSystem implements ActionControllerInterface
 {
-    public const string ACTION_IDENTIFIER = 'B_ACTIVATE_CONSTRUCTION_HUB';
+    public const string ACTION_IDENTIFIER = 'B_ACTIVATE_SYSTEM';
 
     public function __construct(private ActivatorDeactivatorHelperInterface $helper) {}
 
@@ -23,7 +23,11 @@ final class ActivateConstructionHub implements ActionControllerInterface
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $this->helper->activate(request::indInt('id'), SpacecraftSystemTypeEnum::CONSTRUCTION_HUB, $game);
+        $this->helper->activate(
+            request::getIntFatal('id'),
+            SpacecraftSystemTypeEnum::getByName(request::getStringFatal('type')),
+            $game
+        );
     }
 
     #[Override]

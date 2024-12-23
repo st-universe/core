@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Spacecraft\Action\DeactivateWarp;
+namespace Stu\Module\Spacecraft\Action\DeactivateSystem;
 
 use Override;
 use request;
@@ -15,9 +15,9 @@ use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 
-final class DeactivateWarp implements ActionControllerInterface
+final class DeactivateSystem implements ActionControllerInterface
 {
-    public const string ACTION_IDENTIFIER = 'B_DEACTIVATE_WARP';
+    public const string ACTION_IDENTIFIER = 'B_DEACTIVATE_SYSTEM';
 
     /** @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader */
     public function __construct(
@@ -30,18 +30,20 @@ final class DeactivateWarp implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $wrapper = $this->spacecraftLoader->getWrapperByIdAndUser(
-            request::indInt('id'),
+            request::getIntFatal('id'),
             $game->getUser()->getId()
         );
 
+        $systemType = SpacecraftSystemTypeEnum::getByName(request::getStringFatal('type'));
+
         $success = $this->helper->deactivate(
             $wrapper,
-            SpacecraftSystemTypeEnum::WARPDRIVE,
+            $systemType,
             $game
         );
 
-        if ($success) {
-            $ship = $wrapper->get();
+        if ($success && $this->isAlertReactionCheckNeeded($systemType)) {
+            $spacecraft = $wrapper->get();
             $traktoredShipWrapper = $wrapper->getTractoredShipWrapper();
 
             //Alarm-Rot check for ship
@@ -49,15 +51,24 @@ final class DeactivateWarp implements ActionControllerInterface
 
             //Alarm-Rot check for traktor ship
             if ($traktoredShipWrapper !== null) {
-                $this->alertReactionFacade->doItAll($traktoredShipWrapper, $game, $ship);
+                $this->alertReactionFacade->doItAll($traktoredShipWrapper, $game, $spacecraft);
             }
 
-            if ($ship->isDestroyed()) {
+            if ($spacecraft->isDestroyed()) {
                 return;
             }
         }
 
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+    }
+
+    private function isAlertReactionCheckNeeded(SpacecraftSystemTypeEnum $systemType): bool
+    {
+        return match ($systemType) {
+            SpacecraftSystemTypeEnum::CLOAK,
+            SpacecraftSystemTypeEnum::WARPDRIVE => true,
+            default => false
+        };
     }
 
     #[Override]

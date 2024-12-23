@@ -306,12 +306,12 @@
 	<tr>
 		<th>
 			{% if SPACECRAFT.getNbs %}
-			<a href="?B_DEACTIVATE_NBS=1&id={{ spacecraftId }}&sstr={{ SESSIONSTRING }}"><img
+			<a href="?B_DEACTIVATE_SYSTEM=1&id={{ spacecraftId }}&type=NBS&sstr={{ SESSIONSTRING }}"><img
 					src="/assets/buttons/kss1.png" /> Nahbereichssensoren deaktivieren</a>
 			{% else %}
-			<a href="?B_ACTIVATE_NBS=1&id={{ spacecraftId }}"><img src="/assets/buttons/kss2.png" />
-				Nahbereichssensoren
-				aktivieren</a>
+			<a href="?B_ACTIVATE_SYSTEM=1&id={{ spacecraftId }}&type=NBS&sstr={{ SESSIONSTRING }}"><img
+					src="/assets/buttons/kss2.png" />
+				Nahbereichssensoren aktivieren</a>
 			{% endif %}
 		</th>
 	</tr>

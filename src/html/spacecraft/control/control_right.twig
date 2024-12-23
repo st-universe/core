@@ -74,11 +74,11 @@
             Warpantrieb
             {% if ship.getWarpDriveState %}
             <a href="javascript:void(0);"
-                onClick="actionToInnerContent('B_DEACTIVATE_WARP', 'id={{ shipId }}&sstr={{ SESSIONSTRING }}');"
+                onClick="actionToInnerContent('B_DEACTIVATE_SYSTEM', 'id={{ shipId }}&type=WARPDRIVE&sstr={{ SESSIONSTRING }}');"
                 class="linkbutton">deaktivieren</a>
             {% else %}
             <a href="javascript:void(0);"
-                onClick="actionToInnerContent('B_ACTIVATE_WARP', 'id={{ shipId }}&sstr={{ SESSIONSTRING }}');"
+                onClick="actionToInnerContent('B_ACTIVATE_SYSTEM', 'id={{ shipId }}&type=WARPDRIVE&sstr={{ SESSIONSTRING }}');"
                 class="linkbutton">aktivieren</a>
             {% endif %}
         </td>

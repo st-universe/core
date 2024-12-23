@@ -7,12 +7,10 @@ namespace Stu\Module\Station;
 use Stu\Module\Control\GameController;
 use Stu\Module\Game\View\Overview\Overview;
 use Stu\Module\Spacecraft\Action\AttackSpacecraft\AttackSpacecraft;
-use Stu\Module\Station\Action\ActivateConstructionHub\ActivateConstructionHub;
 use Stu\Module\Station\Action\AddDockPrivilege\AddDockPrivilege;
 use Stu\Module\Station\Action\BuildShipyardShip\BuildShipyardShip;
 use Stu\Module\Station\Action\BuildStation\BuildStation;
 use Stu\Module\Station\Action\CancelShipRepair\CancelShipRepair;
-use Stu\Module\Station\Action\DeactivateConstructionHub\DeactivateConstructionHub;
 use Stu\Module\Station\Action\DeleteDockPrivilege\DeleteDockPrivilege;
 use Stu\Module\Station\Action\DockFleet\DockFleet;
 use Stu\Module\Station\Action\DockTractoredShip\DockTractoredShip;
@@ -66,8 +64,6 @@ return [
         AddDockPrivilege::ACTION_IDENTIFIER => autowire(AddDockPrivilege::class),
         DeleteDockPrivilege::ACTION_IDENTIFIER => autowire(DeleteDockPrivilege::class),
         UndockStationShip::ACTION_IDENTIFIER => autowire(UndockStationShip::class),
-        ActivateConstructionHub::ACTION_IDENTIFIER => autowire(ActivateConstructionHub::class),
-        DeactivateConstructionHub::ACTION_IDENTIFIER => autowire(DeactivateConstructionHub::class),
         RepairShip::ACTION_IDENTIFIER => autowire(RepairShip::class),
         CancelShipRepair::ACTION_IDENTIFIER => autowire(CancelShipRepair::class),
         DockFleet::ACTION_IDENTIFIER => autowire(DockFleet::class),
