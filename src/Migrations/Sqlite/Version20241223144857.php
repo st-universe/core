@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20241219084023 extends AbstractMigration
+final class Version20241223144857 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -95,7 +95,7 @@ final class Version20241219084023 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_DE1E0721497D0592 ON stu_buildplans_hangar (default_torpedo_type_id)');
         $this->addSql('CREATE INDEX IDX_DE1E07218638E4E7 ON stu_buildplans_hangar (buildplan_id)');
         $this->addSql('CREATE UNIQUE INDEX rump_idx ON stu_buildplans_hangar (rump_id)');
-        $this->addSql('CREATE TABLE stu_buildplans_modules (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, buildplan_id INTEGER NOT NULL, module_type SMALLINT NOT NULL, module_id INTEGER NOT NULL, module_special SMALLINT DEFAULT NULL, module_count SMALLINT NOT NULL, CONSTRAINT FK_82701FF58638E4E7 FOREIGN KEY (buildplan_id) REFERENCES stu_buildplan (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_82701FF5AFC2B591 FOREIGN KEY (module_id) REFERENCES stu_modules (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE stu_buildplans_modules (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, buildplan_id INTEGER NOT NULL, module_type SMALLINT NOT NULL, module_id INTEGER NOT NULL, module_special INTEGER DEFAULT NULL, module_count SMALLINT NOT NULL, CONSTRAINT FK_82701FF58638E4E7 FOREIGN KEY (buildplan_id) REFERENCES stu_buildplan (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_82701FF5AFC2B591 FOREIGN KEY (module_id) REFERENCES stu_modules (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_82701FF58638E4E7 ON stu_buildplans_modules (buildplan_id)');
         $this->addSql('CREATE INDEX IDX_82701FF5AFC2B591 ON stu_buildplans_modules (module_id)');
         $this->addSql('CREATE UNIQUE INDEX buildplan_module_type_idx ON stu_buildplans_modules (buildplan_id, module_type, module_special)');
