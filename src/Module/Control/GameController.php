@@ -548,7 +548,7 @@ final class GameController implements GameControllerInterface
         } catch (UnallowedUplinkOperation) {
             $this->addInformation('Diese Aktion ist per Uplink nicht möglich!');
 
-            if (request::isAjaxRequest()) {
+            if (request::isAjaxRequest() && !request::has('switch')) {
                 $this->setMacroInAjaxWindow('html/systeminformation.twig');
             } else {
                 $this->setViewTemplate('html/empty.twig');
