@@ -35,7 +35,7 @@ class BuildplanModule implements BuildplanModuleInterface
     #[Column(type: 'integer')]
     private int $module_id = 0;
 
-    #[Column(type: 'smallint', nullable: true)]
+    #[Column(type: 'integer', nullable: true)]
     private ?int $module_special = null;
 
     #[Column(type: 'smallint')]

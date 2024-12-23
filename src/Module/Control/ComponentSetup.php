@@ -17,7 +17,7 @@ class ComponentSetup implements ComponentSetupInterface
 
     public function setup(GameControllerInterface $game): void
     {
-        if ($this->privateMessageRepository->hasRecentMessage($game->getUser())) {
+        if ($game->hasUser() && $this->privateMessageRepository->hasRecentMessage($game->getUser())) {
             $this->componentRegistration->addComponentUpdate(GameComponentEnum::PM);
         }
 
