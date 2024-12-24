@@ -218,10 +218,10 @@ function showRepairOptions(spacecraftid) {
   ajax_update("elt", "?id=" + spacecraftid + "&SHOW_REPAIR_OPTIONS=1");
 }
 
-function analysebuoy(id) {
+function analysebuoy(buoyId) {
   closeAjaxWindow();
   openPJsWin("elt", 1);
-  ajax_update("elt", "?id=" + id + "&SHOW_ANALYSE_BUOY=1");
+  ajax_update("elt", `?SHOW_ANALYSE_BUOY=1&id=${spacecraftid}&buoyid=${buoyId}`);
 }
 function showFightLog() {
   openPJsWin("fightresult_content", 1);
