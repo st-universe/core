@@ -300,10 +300,6 @@ interface SpacecraftInterface extends
 
     public function hasUplink(): bool;
 
-    public function hasTranswarp(): bool;
-
-    public function getTranswarpCooldown(): ?int;
-
     public function getMaxTorpedos(): int;
 
     public function hasFreeShuttleSpace(?LoggerUtilInterface $loggerUtil): bool;

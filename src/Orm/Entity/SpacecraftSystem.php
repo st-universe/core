@@ -151,7 +151,7 @@ class SpacecraftSystem implements SpacecraftSystemInterface
     #[Override]
     public function getCooldown(): ?int
     {
-        return $this->cooldown;
+        return $this->cooldown > time() ? $this->cooldown : null;
     }
 
     #[Override]
