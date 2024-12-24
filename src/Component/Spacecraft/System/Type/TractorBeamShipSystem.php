@@ -99,7 +99,6 @@ final class TractorBeamShipSystem extends AbstractSpacecraftSystemType implement
             $traktor = $spacecraft->getTractoredShip();
 
             $spacecraft->setTractoredShip(null);
-            $spacecraft->setTractoredShipId(null);
             $this->spacecraftRepository->save($spacecraft);
             $this->entityManager->flush();
 

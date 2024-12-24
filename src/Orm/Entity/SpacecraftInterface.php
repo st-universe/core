@@ -175,8 +175,6 @@ interface SpacecraftInterface extends
 
     public function isDeflectorHealthy(): bool;
 
-    public function isTroopQuartersHealthy(): bool;
-
     public function isMatrixScannerHealthy(): bool;
 
     public function isTorpedoStorageHealthy(): bool;
@@ -184,8 +182,6 @@ interface SpacecraftInterface extends
     public function isShuttleRampHealthy(): bool;
 
     public function isWebEmitterHealthy(): bool;
-
-    public function isWarpAble(): bool;
 
     public function isTractoring(): bool;
 
@@ -256,8 +252,6 @@ interface SpacecraftInterface extends
 
     public function setTractoredShip(?ShipInterface $ship): SpacecraftInterface;
 
-    public function setTractoredShipId(?int $shipId): SpacecraftInterface;
-
     public function getHoldingWeb(): ?TholianWebInterface;
 
     public function setHoldingWeb(?TholianWebInterface $web): SpacecraftInterface;
@@ -322,7 +316,7 @@ interface SpacecraftInterface extends
 
     public function getHullColorStyle(): string;
 
-    public function getIsInEmergency(): bool;
+    public function isInEmergency(): bool;
 
     public function setIsInEmergency(bool $inEmergency): SpacecraftInterface;
 
