@@ -41,7 +41,7 @@ final class TakeBuoy implements ActionControllerInterface
             $userId
         );
         $ship = $wrapper->get();
-        $buoyId = request::indInt('buoy_id');
+        $buoyId = request::indInt('buoyId');
         $epsSystem = $wrapper->getEpsSystemData();
 
         if ($epsSystem === null || $epsSystem->getEps() == 0) {
