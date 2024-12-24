@@ -10,7 +10,7 @@ canColonize, closestAnomalyDistance) %}
 <table id="schiffskontrolle" class="tcal">
     <tr>
         {% set header = SPACECRAFT.isStation ? 'Stationskontrolle' : 'Schiffskontrolle' %}
-        <th colspan="2"><img src="/assets/buttons/gefecht.png" /> {{ header }}</th>
+        <th colspan="3"><img src="/assets/buttons/gefecht.png" /> {{ header }}</th>
     </tr>
     {% include 'html/spacecraft/system/system.twig' with {'name': 'SHIELDS'} %}
     {% include 'html/spacecraft/system/system.twig' with {'name': 'PHASER'} %}
