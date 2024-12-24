@@ -93,6 +93,7 @@ enum SpacecraftSystemTypeEnum: int
             self::TACHYON_SCANNER,
             self::CONSTRUCTION_HUB,
             self::UPLINK,
+            self::WARPDRIVE,
             self::CLOAK => 'html/spacecraft/system/systemWithOnOff.twig',
             self::THOLIAN_WEB,
             self::AGGREGATION_SYSTEM,
@@ -117,6 +118,7 @@ enum SpacecraftSystemTypeEnum: int
             self::AGGREGATION_SYSTEM => 'aggsys',
             self::BUSSARD_COLLECTOR => 'bussard',
             self::UPLINK => 'uplink',
+            self::WARPDRIVE => 'warp',
             default => throw new RuntimeException(sprintf('no icon defined for system type: %s', $this->name))
         };
     }
