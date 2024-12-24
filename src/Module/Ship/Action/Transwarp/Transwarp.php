@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\Action\Transwarp;
 use Override;
 use request;
 use RuntimeException;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
@@ -61,7 +62,7 @@ final class Transwarp extends AbstractDirectedMovement
             return true;
         }
 
-        if ($wrapper->get()->getTranswarpCooldown() !== null) {
+        if ($wrapper->get()->getSpacecraftSystem(SpacecraftSystemTypeEnum::TRANSWARP_COIL)->getCooldown() !== null) {
             return true;
         }
 
@@ -91,8 +92,12 @@ final class Transwarp extends AbstractDirectedMovement
             return true;
         }
 
-        if ($ship instanceof ShipInterface && $ship->getFleet() !== null) {
-            $game->addInformation(_('Transwarpflug nicht möglich wenn Teil einer Flotte'));
+        if (
+            $ship instanceof ShipInterface
+            && $ship->getFleet() !== null
+            && $ship->getFleet()->getShipCount() > 1
+        ) {
+            $game->addInformation('Transwarpflug nicht möglich wenn Teil einer Flotte');
             return true;
         }
 

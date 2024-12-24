@@ -1,0 +1,32 @@
+<tr>
+    {% set cooldown = systemWrapper.get.getCooldown %}
+    <td colspan="2">
+        <img src="/assets/buttons/transw.png" title="Transwarpantrieb" />
+        Transwarpantrieb
+        {% if cooldown %}
+        <span><br />
+            Gesperrt bis {{ cooldown|stuDateTime }}</span>
+        {% endif %}
+        {% if not cooldown %}
+        Areal:
+        <select name="transwarplayer">
+            {% for userlayer in userLayers %}
+            {% set selected = userlayer.getLayer == ship.getLayer %}
+            <option value="{{ userlayer.getLayer.getId }}" selected="{{ selected }}">
+                {{ userlayer.getLayer.getName }}</option>
+            {% endfor %}
+        </select>
+        X:
+        <input type="text" size="2" name="transwarpcx" id="transwarpcx"
+            onkeydown="event.key == 'Enter' && $('transwarpButton').click()" />
+        Y:
+        <input type="text" size="2" name="transwarpcy" id="transwarpcy"
+            onkeydown="event.key == 'Enter' && $('transwarpButton').click()" />
+        {% endif %}
+    </td>
+    <td style="width: 15%;">
+        {% if not cooldown %}
+        <input type="submit" class="button" name="B_TRANSWARP" value="Start" id="transwarpButton" />
+        {% endif %}
+    </td>
+</tr>

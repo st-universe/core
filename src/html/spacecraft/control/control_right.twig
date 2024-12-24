@@ -1,8 +1,8 @@
 {% macro control_right(wrapper, constructionProgressWrapper, possibleStations, moduleSelectors, userLayers) %}
 {% from 'html/shipmacros.twig' import spacecraftImageWithoutWarp %}
 
-{% set ship = wrapper.get %}
-{% set shipId = ship.getId %}
+{% set SPACECRAFT = wrapper.get %}
+{% set spacecraftId = SPACECRAFT.getId %}
 {% set reactor = wrapper.getReactorWrapper %}
 
 {% if reactor %}
@@ -25,13 +25,13 @@
                 onClick="$('reactorload').value = 9999; $('loadreactorbutton').click()" />
         </td>
         <td style="width: 15%;">
-            {% if ship.isFleetLeader %}
+            {% if SPACECRAFT.isFleetLeader %}
             <span><input type="checkbox" name="fleet_reactor" />
                 Flotte</span>
             {% endif %}
         </td>
     </tr>
-    {% if ship.hasWarpDrive %}
+    {% if SPACECRAFT.hasWarpDrive %}
     {% set epssystem = wrapper.getEpsSystemData %}
     {% set warpdriveSplit = wrapper.getWarpDriveSystemData.getWarpDriveSplit %}
     {% set autoCarryOver = wrapper.getWarpDriveSystemData.getAutoCarryOver %}
@@ -40,7 +40,7 @@
         <td style="width: 60%;"><img src="/assets/buttons/wkp2.png" title="Zuwachs zum Warpdrive" />
             <span id="calculatedWarpDrive"></span>
             <input type="range" min="0" max="100" value="{{ warpdriveSplit }}" id="warpdriveSplit"
-                onchange="saveWarpCoreSplit({{ shipId }});" oninput="updateReactorValues();">
+                onchange="saveWarpCoreSplit({{ spacecraftId }});" oninput="updateReactorValues();">
             <img src="/assets/buttons/battp2.png" title="Zuwachs zum EPS" />
             <span id="calculatedEPS"></span>
         </td>
@@ -49,12 +49,12 @@
                 {% set checked = autoCarryOver ? 'checked="true"' : '' %}
                 <img src="/assets/buttons/transfer.png" style="height:16px;" />
                 <input type="checkbox" id="autoCarryOver" {{ checked }}
-                    onchange="saveWarpCoreSplit({{ shipId }}); updateReactorValues();" />
+                    onchange="saveWarpCoreSplit({{ spacecraftId }}); updateReactorValues();" />
             </div>
         </td>
         <td style="width: 15%;">
-            {% if ship.isFleetLeader %}
-            <span><input type="checkbox" id="fleetSplit" onchange="saveWarpCoreSplit({{ shipId }});" />
+            {% if SPACECRAFT.isFleetLeader %}
+            <span><input type="checkbox" id="fleetSplit" onchange="saveWarpCoreSplit({{ spacecraftId }});" />
                 Flotte</span>
             {% else %}
             <input type="checkbox" id="fleetSplit" style="display: none;" />
@@ -63,62 +63,29 @@
     </tr>
 
 
-    {% if ship.isWarpPossible %}
+    {% if SPACECRAFT.isWarpPossible %}
     <tr>
         <td colspan="3">
-            {% if ship.getWarpDriveState %}
+            {% if SPACECRAFT.getWarpDriveState %}
             <img src="/assets/buttons/warp1.png" title="Warpantrieb aktiviert" />
             {% else %}
             <img src="/assets/buttons/warp2.png" title="Warpantrieb deaktiviert" />
             {% endif %}
             Warpantrieb
-            {% if ship.getWarpDriveState %}
+            {% if SPACECRAFT.getWarpDriveState %}
             <a href="javascript:void(0);"
-                onClick="actionToInnerContent('B_DEACTIVATE_SYSTEM', 'id={{ shipId }}&type=WARPDRIVE&sstr={{ SESSIONSTRING }}');"
+                onClick="actionToInnerContent('B_DEACTIVATE_SYSTEM', 'id={{ spacecraftId }}&type=WARPDRIVE&sstr={{ SESSIONSTRING }}');"
                 class="linkbutton">deaktivieren</a>
             {% else %}
             <a href="javascript:void(0);"
-                onClick="actionToInnerContent('B_ACTIVATE_SYSTEM', 'id={{ shipId }}&type=WARPDRIVE&sstr={{ SESSIONSTRING }}');"
+                onClick="actionToInnerContent('B_ACTIVATE_SYSTEM', 'id={{ spacecraftId }}&type=WARPDRIVE&sstr={{ SESSIONSTRING }}');"
                 class="linkbutton">aktivieren</a>
             {% endif %}
         </td>
     </tr>
     {% endif %}
     {% endif %}
-    {% if ship.hasTranswarp %}
-    <tr>
-        {% set cooldown = ship.getTranswarpCooldown %}
-        <td colspan="2">
-            <img src="/assets/buttons/transw.png" title="Transwarpantrieb" />
-            Transwarpantrieb
-            {% if cooldown %}
-            <span><br />
-                Gesperrt bis {{ cooldown|stuDateTime }}</span>
-            {% endif %}
-            {% if not cooldown %}
-            Areal:
-            <select name="transwarplayer">
-                {% for userlayer in userLayers %}
-                {% set selected = userlayer.getLayer == ship.getLayer %}
-                <option value="{{ userlayer.getLayer.getId }}" selected="{{ selected }}">
-                    {{ userlayer.getLayer.getName }}</option>
-                {% endfor %}
-            </select>
-            X:
-            <input type="text" size="2" name="transwarpcx" id="transwarpcx"
-                onkeydown="event.key == 'Enter' && $('transwarpButton').click()" />
-            Y:
-            <input type="text" size="2" name="transwarpcy" id="transwarpcy"
-                onkeydown="event.key == 'Enter' && $('transwarpButton').click()" />
-            {% endif %}
-        </td>
-        <td style="width: 15%;">
-            {% if not cooldown %}
-            <input type="submit" class="button" name="B_TRANSWARP" value="Start" id="transwarpButton" />
-            {% endif %}
-        </td>
-    </tr>
-    {% endif %}
+    {% include 'html/spacecraft/system/system.twig' with {'name': 'TRANSWARP_COIL'} %}
 </table>
 {% endif %}
 {% set eps = wrapper.getEpsSystemData %}
@@ -146,16 +113,16 @@
         </td>
         {% endif %}
         <td>
-            {% if ship.isStation %}
+            {% if SPACECRAFT.isStation %}
             {% set checked = eps.reloadBattery ? 'checked="true"' : '' %}
             <input type="checkbox" {{ checked }}
-                onchange="actionToInnerContent('B_TOGGLE_BATT_RELOAD', 'id={{ shipId }}&sstr={{ SESSIONSTRING }}');" />
+                onchange="actionToInnerContent('B_TOGGLE_BATT_RELOAD', 'id={{ spacecraftId }}&sstr={{ SESSIONSTRING }}');" />
             reload <img title="Ersatzbatterie wird vom Reaktor geladen" src="/assets/buttons/info2.png"
                 style="height:16px;" />
             {% endif %}
         </td>
         <td style="width: 15%;">
-            {% if ship.isFleetLeader %}
+            {% if SPACECRAFT.isFleetLeader %}
             <span><input type="checkbox" name="fleet_batt" />
                 Flotte</span>
             {% endif %}
@@ -183,7 +150,7 @@
         </td>
     </tr>
 </table>
-{% elseif ship.isConstruction %}
+{% elseif SPACECRAFT.isConstruction %}
 <table class="tcal">
     <tr>
         <th colspan="4"><img src="/assets/buttons/rep2.png" style="height: 20px;" />&nbsp;Erforschte Stationstypen
@@ -243,42 +210,42 @@
     {% endif %}
 </table>
 {% endif %}
-{% if ship.isTractoring or ship.isTractored %}
+{% if SPACECRAFT.isTractoring or SPACECRAFT.isTractored %}
 <table class="tcal">
     <tr>
         <th colspan="2"><img src="/assets/buttons/trak.png" title="Traktorstrahl" />
             Traktorstrahl</th>
     </tr>
     <tr>
-        {% if ship.isTractoring %}
+        {% if SPACECRAFT.isTractoring %}
         <td colspan="2">
-            Gerichtet auf: {{ ship.getTractoredShip.getName|bbcode }}
+            Gerichtet auf: {{ SPACECRAFT.getTractoredShip.getName|bbcode }}
         </td>
         {% else %}
         <td colspan="2">
-            Gehalten von: {{ ship.getTractoringSpacecraft.getName|bbcode }}
+            Gehalten von: {{ SPACECRAFT.getTractoringSpacecraft.getName|bbcode }}
         </td>
         {% endif %}
     </tr>
     <tr>
         <td>
-            {% if ship.isTractoring %}
-            {% if ship.isStation and not ship.getTractoredShip.isDestroyed %}
+            {% if SPACECRAFT.isTractoring %}
+            {% if SPACECRAFT.isStation and not SPACECRAFT.getTractoredShip.isDestroyed %}
             <a href="javascript:void(0);"
-                onClick="actionToInnerContent('B_DOCK_TRACTORED', 'id={{ shipId }}&sstr={{ SESSIONSTRING }}');"
+                onClick="actionToInnerContent('B_DOCK_TRACTORED', 'id={{ spacecraftId }}&sstr={{ SESSIONSTRING }}');"
                 onmouseover="cp('docktractored','buttons/dock2')" onmouseout="cp('docktractored','buttons/dock1')">
                 <img src="/assets/buttons/dock1.png" name="docktractored" title="Gezogenes Schiff andocken" />
             </a>
             {% endif %}
-            <img src="/assets/ships/{{ ship.getTractoredShip.getRump.getId }}.png" />
+            <img src="/assets/ships/{{ SPACECRAFT.getTractoredShip.getRump.getId }}.png" />
             {% else %}
-            <img src="/assets/ships/{{ ship.getTractoringSpacecraft.getRump.getId }}.png" />
+            <img src="/assets/ships/{{ SPACECRAFT.getTractoringSpacecraft.getRump.getId }}.png" />
             {% endif %}
         </td>
         <td>
-            {% if ship.isTractoring %}
+            {% if SPACECRAFT.isTractoring %}
             <input type="submit" class="button" name="B_DEACTIVATE_TRACTOR" value="deaktivieren" />
-            {% elseif ship.isDeflectorHealthy %}
+            {% elseif SPACECRAFT.isDeflectorHealthy %}
             <input type="submit" class="button" name="B_ESCAPE_TRAKTOR" value="Fluchtversuch" />
             {% endif %}
         </td>
@@ -302,7 +269,7 @@
     <tr>
         <td>
             {% if tracker.canAttackCloakedTarget %}
-            <a href="?B_ATTACK_TRACKED=1&id={{ shipId }}&target={{ targetShip.getId }}&sstr={{ SESSIONSTRING }}"
+            <a href="?B_ATTACK_TRACKED=1&id={{ spacecraftId }}&target={{ targetShip.getId }}&sstr={{ SESSIONSTRING }}"
                 onmouseover="cp('attacktracked','buttons/phaser2')" onmouseout="cp('attacktracked','buttons/phaser1')"
                 title="Getarntes Ziel angreifen">
                 <img src="/assets/buttons/phaser1.png" name="attacktracked" />
@@ -383,7 +350,7 @@
 </table>
 {% endif %}
 <br />
-{% if ship.getFleet %}
+{% if SPACECRAFT.getFleet %}
 {{ _self.fleetInfo(wrapper) }}
 {% endif %}
 {% endmacro %}

@@ -14,6 +14,7 @@ use Stu\Component\Spacecraft\Nbs\NbsUtilityInterface;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Config\Init;
 use Stu\Lib\Map\NavPanel\NavPanel;
 use Stu\Module\Control\ViewContext;
@@ -144,7 +145,7 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
         $game->setTemplateVar('CLOSEST_ANOMALY_DISTANCE', $this->anomalyRepository->getClosestAnomalyDistance($spacecraft));
 
         $userLayers = $user->getUserLayers();
-        if ($spacecraft->hasTranswarp()) {
+        if ($spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::TRANSWARP_COIL)) {
             $game->setTemplateVar('USER_LAYERS', $userLayers);
         }
 

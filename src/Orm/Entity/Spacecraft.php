@@ -1257,20 +1257,6 @@ abstract class Spacecraft implements SpacecraftInterface
     }
 
     #[Override]
-    public function hasTranswarp(): bool
-    {
-        return $this->hasSpacecraftSystem(SpacecraftSystemTypeEnum::TRANSWARP_COIL);
-    }
-
-    #[Override]
-    public function getTranswarpCooldown(): ?int
-    {
-        $cooldown = $this->getSpacecraftSystem(SpacecraftSystemTypeEnum::TRANSWARP_COIL)->getCooldown();
-
-        return $cooldown > time() ? $cooldown : null;
-    }
-
-    #[Override]
     public function getMaxTorpedos(): int
     {
         return $this->getRump()->getBaseTorpedoStorage()
