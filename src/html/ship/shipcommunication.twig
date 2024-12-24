@@ -86,7 +86,7 @@
   <div class="box_body">
     <form method="post" action="{{ SHIP.getType.getModuleView.getPhpPage }}">
       <input type="hidden" name="id" value="{{ SHIP.getId }}" />
-      <table class="tcal" {% if SHIP.getIsInEmergency %}style="display: none;" {% endif %}>
+      <table class="tcal" {% if SHIP.isInEmergency %}style="display: none;" {% endif %}>
         <tr>
           <th colspan="2">Sende Notrufsignal</th>
         </tr>
@@ -101,7 +101,7 @@
               value="Notruf senden" /></td>
         </tr>
       </table>
-      <table class="tcal" {% if not SHIP.getIsInEmergency %}style="display: none;" {% endif %}>
+      <table class="tcal" {% if not SHIP.isInEmergency %}style="display: none;" {% endif %}>
         <tr>
           <th>Aktuelles Notrufsignal</th>
         </tr>

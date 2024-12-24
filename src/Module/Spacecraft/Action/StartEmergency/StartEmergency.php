@@ -41,7 +41,7 @@ final class StartEmergency implements ActionControllerInterface
         $ship = $wrapper->get();
 
         // stop if emergency call is already active
-        if ($ship->getIsInEmergency() === true) {
+        if ($ship->isInEmergency()) {
             return;
         }
 

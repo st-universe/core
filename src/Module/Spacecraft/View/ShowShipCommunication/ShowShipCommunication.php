@@ -50,7 +50,7 @@ final class ShowShipCommunication implements ViewControllerInterface
             )
         );
 
-        if ($ship->getIsInEmergency() === true) {
+        if ($ship->isInEmergency()) {
             $emergency = $this->spacecraftEmergencyRepository->getByShipId($ship->getId());
 
             if ($emergency !== null) {

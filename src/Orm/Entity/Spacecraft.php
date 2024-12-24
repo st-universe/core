@@ -650,7 +650,7 @@ abstract class Spacecraft implements SpacecraftInterface
     }
 
     #[Override]
-    public function getIsInEmergency(): bool
+    public function isInEmergency(): bool
     {
         return $this->in_emergency;
     }
@@ -780,12 +780,6 @@ abstract class Spacecraft implements SpacecraftInterface
     }
 
     #[Override]
-    public function isTroopQuartersHealthy(): bool
-    {
-        return $this->isSystemHealthy(SpacecraftSystemTypeEnum::TROOP_QUARTERS);
-    }
-
-    #[Override]
     public function isMatrixScannerHealthy(): bool
     {
         return $this->isSystemHealthy(SpacecraftSystemTypeEnum::MATRIX_SCANNER);
@@ -807,12 +801,6 @@ abstract class Spacecraft implements SpacecraftInterface
     public function isWebEmitterHealthy(): bool
     {
         return $this->isSystemHealthy(SpacecraftSystemTypeEnum::THOLIAN_WEB);
-    }
-
-    #[Override]
-    public function isWarpAble(): bool
-    {
-        return $this->isSystemHealthy(SpacecraftSystemTypeEnum::WARPDRIVE);
     }
 
     #[Override]
@@ -1073,13 +1061,6 @@ abstract class Spacecraft implements SpacecraftInterface
     public function setTractoredShip(?ShipInterface $ship): SpacecraftInterface
     {
         $this->tractoredShip = $ship;
-        return $this;
-    }
-
-    #[Override]
-    public function setTractoredShipId(?int $shipId): SpacecraftInterface
-    {
-        $this->tractored_ship_id = $shipId;
         return $this;
     }
 

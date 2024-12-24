@@ -6,6 +6,7 @@ namespace Stu\Component\Spacecraft\Crew;
 
 use Override;
 use Stu\Component\Spacecraft\SpacecraftRumpEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\Type\TroopQuartersShipSystem;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Entity\ShipRumpCategoryRoleCrewInterface;
@@ -51,7 +52,7 @@ final class SpacecraftCrewCalculator implements SpacecraftCrewCalculatorInterfac
 
         $crewCount = $this->getMaxCrewCountByRump($rump);
 
-        if ($spacecraft->isTroopQuartersHealthy()) {
+        if ($spacecraft->isSystemHealthy(SpacecraftSystemTypeEnum::TROOP_QUARTERS)) {
             if ($rump->getRoleId() === SpacecraftRumpEnum::SHIP_ROLE_BASE) {
                 $crewCount += TroopQuartersShipSystem::QUARTER_COUNT_BASE;
             } else {

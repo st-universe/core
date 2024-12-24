@@ -80,7 +80,7 @@ class StartEmergencyTest extends StuTestCase
             ->once()
             ->andReturn($ship);
 
-        $ship->shouldReceive('getIsInEmergency')
+        $ship->shouldReceive('isInEmergency')
             ->withNoArgs()
             ->once()
             ->andReturnTrue();
@@ -137,7 +137,7 @@ class StartEmergencyTest extends StuTestCase
             ->once()
             ->andReturn($ship);
 
-        $ship->shouldReceive('getIsInEmergency')
+        $ship->shouldReceive('isInEmergency')
             ->withNoArgs()
             ->once()
             ->andReturnFalse();
@@ -192,7 +192,7 @@ class StartEmergencyTest extends StuTestCase
             ->once()
             ->andReturn($ship);
 
-        $ship->shouldReceive('getIsInEmergency')
+        $ship->shouldReceive('isInEmergency')
             ->withNoArgs()
             ->once()
             ->andReturnFalse();
