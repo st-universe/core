@@ -68,8 +68,6 @@ use Stu\Module\Ship\Action\TholianWeb\SupportTholianWeb;
 use Stu\Module\Ship\Action\TholianWeb\UnsupportTholianWeb;
 use Stu\Module\Ship\Action\ToggleFleetVisibility\ToggleFleetVisibility;
 use Stu\Module\Ship\Action\TrackShip\TrackShip;
-use Stu\Module\Ship\Action\TransferFromAccount\TransferFromAccount;
-use Stu\Module\Ship\Action\TransferToAccount\TransferToAccount;
 use Stu\Module\Ship\Action\Transwarp\Transwarp;
 use Stu\Module\Ship\Action\UndockShip\UndockShip;
 use Stu\Module\Ship\Lib\AstroEntryLib;
@@ -128,8 +126,6 @@ return [
         AttackTrackedShip::ACTION_IDENTIFIER => autowire(AttackTrackedShip::class),
         BuyTradeLicense::ACTION_IDENTIFIER => autowire(BuyTradeLicense::class),
         DeactivateTrackingDevice::ACTION_IDENTIFIER => autowire(DeactivateTrackingDevice::class),
-        TransferToAccount::ACTION_IDENTIFIER => autowire(TransferToAccount::class),
-        TransferFromAccount::ACTION_IDENTIFIER => autowire(TransferFromAccount::class),
         HideFleet::ACTION_IDENTIFIER => autowire(HideFleet::class),
         ShowFleet::ACTION_IDENTIFIER => autowire(ShowFleet::class),
         FleetActivateNbs::ACTION_IDENTIFIER => autowire(FleetActivateNbs::class),
