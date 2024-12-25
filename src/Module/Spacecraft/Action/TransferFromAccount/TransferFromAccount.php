@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Ship\Action\TransferFromAccount;
+namespace Stu\Module\Spacecraft\Action\TransferFromAccount;
 
 use Override;
 use request;
@@ -10,7 +10,8 @@ use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
-use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Orm\Entity\StorageInterface;
@@ -22,8 +23,9 @@ final class TransferFromAccount implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_TRANSFER_FROM_ACCOUNT';
 
+    /** @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader */
     public function __construct(
-        private ShipLoaderInterface $shipLoader,
+        private SpacecraftLoaderInterface $spacecraftLoader,
         private TradeLicenseRepositoryInterface $tradeLicenseRepository,
         private TradeLibFactoryInterface $tradeLibFactory,
         private TradePostRepositoryInterface $tradePostRepository,
@@ -38,28 +40,25 @@ final class TransferFromAccount implements ActionControllerInterface
 
         $userId = $game->getUser()->getId();
 
-        $ship = $this->shipLoader->getByIdAndUser(
+        $spacecraft = $this->spacecraftLoader->getByIdAndUser(
             request::indInt('id'),
             $userId
         );
 
-        /**
-         * @var TradePostInterface $tradepost
-         */
         $tradepost = $this->tradePostRepository->find(request::postIntFatal('postid'));
         if ($tradepost === null) {
             return;
         }
 
-        if (!$this->interactionChecker->checkPosition($ship, $tradepost->getStation())) {
+        if (!$this->interactionChecker->checkPosition($spacecraft, $tradepost->getStation())) {
             return;
         }
 
-        if ($ship->getCloakState()) {
+        if ($spacecraft->getCloakState()) {
             $game->addInformation(_("Die Tarnung ist aktiviert"));
             return;
         }
-        if ($ship->isWarped()) {
+        if ($spacecraft->isWarped()) {
             $game->addInformation("Schiff befindet sich im Warp");
             return;
         }
@@ -92,7 +91,7 @@ final class TransferFromAccount implements ActionControllerInterface
             }
             $count = $gcount[$key];
             $count = $count == "max" ? $curCommodities[$value]->getAmount() : (int) $count;
-            if ($count < 1 || $ship->getStorageSum() >= $ship->getMaxStorage()) {
+            if ($count < 1 || $spacecraft->getStorageSum() >= $spacecraft->getMaxStorage()) {
                 continue;
             }
 
@@ -109,12 +108,12 @@ final class TransferFromAccount implements ActionControllerInterface
             if ($count > $curCommodities[$value]->getAmount()) {
                 $count = $curCommodities[$value]->getAmount();
             }
-            if ($ship->getStorageSum() + $count > $ship->getMaxStorage()) {
-                $count = $ship->getMaxStorage() - $ship->getStorageSum();
+            if ($spacecraft->getStorageSum() + $count > $spacecraft->getMaxStorage()) {
+                $count = $spacecraft->getMaxStorage() - $spacecraft->getStorageSum();
             }
 
             $storageManager->lowerStorage((int) $value, $count);
-            $this->storageManager->upperStorage($ship, $commodity, $count);
+            $this->storageManager->upperStorage($spacecraft, $commodity, $count);
 
             $game->addInformation($count . " " . $curCommodities[$value]->getCommodity()->getName());
         }

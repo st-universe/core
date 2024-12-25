@@ -1306,18 +1306,6 @@ parameters:
 			path: src/Module/Ship/Action/JoinFleet/AbstractJoinFleet.php
 
 		-
-			message: '#^Strict comparison using \=\=\= between Stu\\Orm\\Entity\\TradePostInterface and null will always evaluate to false\.$#'
-			identifier: identical.alwaysFalse
-			count: 1
-			path: src/Module/Ship/Action/TransferFromAccount/TransferFromAccount.php
-
-		-
-			message: '#^Strict comparison using \=\=\= between Stu\\Orm\\Entity\\TradePostInterface and null will always evaluate to false\.$#'
-			identifier: identical.alwaysFalse
-			count: 1
-			path: src/Module/Ship/Action/TransferToAccount/TransferToAccount.php
-
-		-
 			message: '#^Cannot call method getBlockedColony\(\) on Stu\\Orm\\Entity\\FleetInterface\|null\.$#'
 			identifier: method.nonObject
 			count: 2

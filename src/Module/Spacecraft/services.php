@@ -62,6 +62,8 @@ use Stu\Module\Spacecraft\Action\StopEmergency\StopEmergency;
 use Stu\Module\Spacecraft\Action\StopEmergency\StopEmergencyRequest;
 use Stu\Module\Spacecraft\Action\StopTakeover\StopTakeover;
 use Stu\Module\Spacecraft\Action\TakeBuoy\TakeBuoy;
+use Stu\Module\Spacecraft\Action\TransferFromAccount\TransferFromAccount;
+use Stu\Module\Spacecraft\Action\TransferToAccount\TransferToAccount;
 use Stu\Module\Spacecraft\Action\UnloadBattery\UnloadBattery;
 use Stu\Module\Spacecraft\Action\WarpdriveBoost\WarpdriveBoost;
 use Stu\Module\Spacecraft\Lib\Creation\SpacecraftConfiguratorFactory;
@@ -429,6 +431,8 @@ return [
                 autowire(ClosestLocations::class)
             )
         ),
+        TransferToAccount::ACTION_IDENTIFIER => autowire(TransferToAccount::class),
+        TransferFromAccount::ACTION_IDENTIFIER => autowire(TransferFromAccount::class),
         WarpdriveBoost::ACTION_IDENTIFIER => autowire(WarpdriveBoost::class)
     ],
     'SPACECRAFT_VIEWS' => [

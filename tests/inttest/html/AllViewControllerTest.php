@@ -134,6 +134,7 @@ class AllViewControllerTest extends TwigTestCase
             'planid' => 2324,
             'shipid' => 42,
             'fleetid' => 77,
+            'buoyid' => 42,
 
             // COLONY
             'fid' => 26,
