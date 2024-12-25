@@ -63,7 +63,7 @@
     {% endif %}
 </table>
 {% endif %}
-{% if BUOYS.count > 0 %}
+{% if BUOYS|length > 0 %}
 <table class="tcal">
     <tr>
         <th colspan="4">Bojen</th>
@@ -80,7 +80,7 @@
         </td>
         <td>
             <a href="javascript:void(0);"
-                onclick="actionToInnerContent('B_TAKE_BUOY', 'id={{ SHIP.getId }}&buoyId={{ buoy.getId }}&sstr={{ SESSIONSTRING }}');"
+                onclick="actionToInnerContent('B_TAKE_BUOY', 'id={{ SHIP.getId }}&buoyid={{ buoy.getId }}&sstr={{ SESSIONSTRING }}');"
                 onmouseover="this.getElementsByTagName('img')[0].src='assets/buttons/take_buoy_2.png';"
                 onmouseout="this.getElementsByTagName('img')[0].src='assets/buttons/take_buoy_1.png';">
                 <img src="assets/buttons/take_buoy_1.png" title="Boje aufbringen" />

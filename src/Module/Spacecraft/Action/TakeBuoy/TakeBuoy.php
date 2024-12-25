@@ -40,8 +40,15 @@ final class TakeBuoy implements ActionControllerInterface
             request::indInt('id'),
             $userId
         );
+
         $ship = $wrapper->get();
-        $buoyId = request::indInt('buoyId');
+
+        $buoy = $ship->getLocation()->getBuoys()->get(request::indInt('buoyid'));
+        if ($buoy === null) {
+            $game->addInformation("Die Boje existiert nicht");
+            return;
+        }
+
         $epsSystem = $wrapper->getEpsSystemData();
 
         if ($epsSystem === null || $epsSystem->getEps() == 0) {
@@ -76,12 +83,6 @@ final class TakeBuoy implements ActionControllerInterface
             );
         }
 
-        $buoy = $this->buoyRepository->find($buoyId);
-        if ($buoy === null) {
-            $game->addInformation(_("Die Boje existiert nicht"));
-            return;
-        }
-
         if ($buoy->getUserId() !== $userId) {
             $this->privateMessageSender->send(
                 $game->getUser()->getId(),
@@ -101,7 +102,7 @@ final class TakeBuoy implements ActionControllerInterface
 
         $epsSystem->lowerEps(1)->update();
 
-        $game->addInformation(_('Die Boje wurde erfolgreich eingesammelt'));
+        $game->addInformation('Die Boje wurde erfolgreich eingesammelt');
     }
 
     #[Override]

@@ -83,7 +83,7 @@ abstract class Location implements LocationInterface
     /**
      * @var ArrayCollection<int, BuoyInterface>
      */
-    #[OneToMany(targetEntity: 'Buoy', mappedBy: 'location', fetch: 'EXTRA_LAZY')]
+    #[OneToMany(targetEntity: 'Buoy', mappedBy: 'location', indexBy: 'id', fetch: 'EXTRA_LAZY')]
     private Collection $buoys;
 
     /**
