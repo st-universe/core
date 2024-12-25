@@ -11,7 +11,6 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Repository\BuoyRepositoryInterface;
 
 final class ShowAnalyseBuoy implements ViewControllerInterface
 {
@@ -19,8 +18,7 @@ final class ShowAnalyseBuoy implements ViewControllerInterface
 
     /** @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader */
     public function __construct(
-        private SpacecraftLoaderInterface $spacecraftLoader,
-        private BuoyRepositoryInterface $buoyRepository
+        private SpacecraftLoaderInterface $spacecraftLoader
     ) {}
 
     #[Override]
@@ -35,14 +33,8 @@ final class ShowAnalyseBuoy implements ViewControllerInterface
             false
         );
 
-        $buoy = $this->buoyRepository->find(
-            request::indInt('buoyid')
-        );
+        $buoy = $wrapper->get()->getLocation()->getBuoys()->get(request::indInt('buoyid'));
         if ($buoy === null) {
-            return;
-        }
-
-        if ($wrapper->get()->getLocation() !== $buoy->getLocation()) {
             throw new SanityCheckException('buoy on different location', null, self::VIEW_IDENTIFIER);
         }
 
