@@ -14,15 +14,11 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Spacecraft\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Orm\Entity\Anomaly;
-use Stu\Orm\Entity\Fleet;
-use Stu\Orm\Entity\LocationInterface;
-use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\SpacecraftBuildplan;
 use Stu\Orm\Entity\CrewAssignment;
 use Stu\Orm\Entity\ShipRumpSpecial;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\SpacecraftSystem;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserInterface;
@@ -89,41 +85,6 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
         return $this->findBy([
             'user_id' => $user,
         ]);
-    }
-
-    #[Override]
-    public function getByLocation(LocationInterface $location): array
-    {
-        return $this->getEntityManager()
-            ->createQuery(
-                sprintf(
-                    'SELECT sc FROM %s sc
-                    LEFT JOIN %s s
-                    WITH sc.id = s.id
-                    LEFT JOIN %s f
-                    WITH s.fleet_id = f.id
-                    JOIN %s r
-                    WITH sc.rump_id = r.id
-                    WHERE sc.location = :location
-                    AND NOT EXISTS (SELECT ss.id
-                                        FROM %s ss
-                                        WHERE sc.id = ss.spacecraft_id
-                                        AND ss.system_type = :systemId
-                                        AND ss.mode > 1)
-                    ORDER BY f.sort DESC, f.id DESC, s.is_fleet_leader DESC,
-                    r.category_id ASC, r.role_id ASC, r.id ASC, sc.name ASC',
-                    Spacecraft::class,
-                    Ship::class,
-                    Fleet::class,
-                    SpacecraftRump::class,
-                    SpacecraftSystem::class
-                )
-            )
-            ->setParameters([
-                'location' => $location,
-                'systemId' => SpacecraftSystemTypeEnum::CLOAK->value
-            ])
-            ->getResult();
     }
 
     #[Override]

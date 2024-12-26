@@ -1,5 +1,7 @@
 <ul>
-    {% for wrapper in WRAPPERS %}
+    {% for group in GROUPS %}
+    {% for wrapper in group.getWrappers %}
     {% include 'html/ship/shipSelector.twig' %}
+    {% endfor %}
     {% endfor %}
 </ul>

@@ -6,13 +6,12 @@ use Override;
 use request;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
-use Stu\Component\Colony\OrbitShipListRetrieverInterface;
+use Stu\Component\Colony\OrbitShipWrappersRetrieverInterface;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Database\View\Category\Wrapper\DatabaseCategoryWrapperFactoryInterface;
-use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Entity\ColonyDepositMiningInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
@@ -22,9 +21,8 @@ final class ManagementProvider implements PlanetFieldHostComponentInterface
     public function __construct(
         private TorpedoTypeRepositoryInterface $torpedoTypeRepository,
         private DatabaseCategoryWrapperFactoryInterface $databaseCategoryWrapperFactory,
-        private OrbitShipListRetrieverInterface $orbitShipListRetriever,
+        private OrbitShipWrappersRetrieverInterface $orbitShipWrappersRetriever,
         private ColonyFunctionManagerInterface $colonyFunctionManager,
-        private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
         private ColonyLibFactoryInterface $colonyLibFactory,
         private StuTime $stuTime
     ) {}
@@ -45,25 +43,23 @@ final class ManagementProvider implements PlanetFieldHostComponentInterface
             $game->setTemplateVar('STARSYSTEM_ENTRY_TAL', $starsystem);
         }
 
-        $firstOrbitSpacecraft = null;
+        $firstOrbitShipWrapper = null;
 
-        $shipList = $this->orbitShipListRetriever->retrieve($entity);
-        if ($shipList !== []) {
-            // if selected, return the current target
-            $target = request::indInt('target');
+        $targetId = request::indInt('target');
+        $groups = $this->orbitShipWrappersRetriever->retrieve($entity);
 
-            if ($target !== 0) {
-                foreach ($shipList as $fleet) {
-                    foreach ($fleet['ships'] as $idx => $ship) {
-                        if ($idx == $target) {
-                            $firstOrbitSpacecraft = $ship;
-                        }
+        if ($targetId !== 0) {
+            foreach ($groups as $group) {
+                foreach ($group->getWrappers() as $wrapper) {
+                    if ($wrapper->get()->getId() === $targetId) {
+                        $firstOrbitShipWrapper = $wrapper;
                     }
                 }
             }
-            if ($firstOrbitSpacecraft === null) {
-                $firstOrbitSpacecraft = current(current($shipList)['ships']);
-            }
+        }
+        if ($firstOrbitShipWrapper === null) {
+            $firstGroup = $groups->first();
+            $firstOrbitShipWrapper = $firstGroup ? $firstGroup->getWrappers()->first() : null;
         }
 
         $game->setTemplateVar(
@@ -71,10 +67,7 @@ final class ManagementProvider implements PlanetFieldHostComponentInterface
             $this->colonyLibFactory->createColonyPopulationCalculator($entity)
         );
 
-        $game->setTemplateVar(
-            'FIRST_ORBIT_SPACECRAFT',
-            $firstOrbitSpacecraft ? $this->spacecraftWrapperFactory->wrapSpacecraft($firstOrbitSpacecraft) : null
-        );
+        $game->setTemplateVar('FIRST_ORBIT_SPACECRAFT', $firstOrbitShipWrapper);
 
         $particlePhalanx = $this->colonyFunctionManager->hasFunction($entity, BuildingFunctionEnum::BUILDING_FUNCTION_PARTICLE_PHALANX);
         $game->setTemplateVar(

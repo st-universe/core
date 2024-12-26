@@ -4,20 +4,22 @@ namespace Stu\Module\Colony\Lib\Gui\Component;
 
 use Override;
 use RuntimeException;
-use Stu\Component\Colony\OrbitShipListRetrieverInterface;
-use Stu\Lib\Colony\PlanetFieldHostInterface;
+use Stu\Component\Colony\OrbitShipWrappersRetrieverInterface;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpBuildingFunctionRepositoryInterface;
 
 final class ShipRetrofitProvider implements PlanetFieldHostComponentInterface
 {
-    public function __construct(private ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository, private PlanetFieldHostProviderInterface $planetFieldHostProvider, private ColonyLibFactoryInterface $colonyLibFactory, private OrbitShipListRetrieverInterface $orbitShipListRetriever, private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory, private ShipRepositoryInterface $shipRepository) {}
+    public function __construct(
+        private ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository,
+        private PlanetFieldHostProviderInterface $planetFieldHostProvider,
+        private ColonyLibFactoryInterface $colonyLibFactory,
+        private OrbitShipWrappersRetrieverInterface $orbitShipWrappersRetriever
+    ) {}
 
     /** @param ColonyInterface $entity */
     #[Override]
@@ -35,36 +37,34 @@ final class ShipRetrofitProvider implements PlanetFieldHostComponentInterface
         $fieldFunctions = $building->getFunctions()->toArray();
         $colonySurface = $this->colonyLibFactory->createColonySurface($entity);
 
-        if ($colonySurface->hasShipyard()) {
-            $retrofitShips = [];
-            $fleets = $this->orbitShipListRetriever->retrieve($entity);
+        if (!$colonySurface->hasShipyard()) {
+            return;
+        }
 
-            foreach ($fleets as $fleet) {
-                $ships = array_filter($fleet['ships'], fn($ship) => $ship instanceof ShipInterface);
+        $retrofitShipWrappers = [];
+        $groups = $this->orbitShipWrappersRetriever->retrieve($entity);
 
-                foreach ($ships as $ship) {
-                    $ship = $this->shipRepository->find($ship->getId());
-                    if ($ship === null) {
-                        continue;
-                    }
-                    $wrapper = $this->spacecraftWrapperFactory->wrapShip($ship);
+        foreach ($groups as $group) {
 
-                    if (
-                        !$wrapper->canBeRetrofitted() || $ship->isUnderRetrofit()
-                    ) {
-                        continue;
-                    }
-                    foreach ($this->shipRumpBuildingFunctionRepository->getByShipRump($ship->getRump()) as $rump_rel) {
-                        if (array_key_exists($rump_rel->getBuildingFunction()->value, $fieldFunctions)) {
-                            $retrofitShips[$ship->getId()] = $wrapper;
-                            break;
-                        }
+            /** @var ShipWrapperInterface $wrapper */
+            foreach ($group->getWrappers() as $wrapper) {
+
+                $ship = $wrapper->get();
+                if (
+                    !$wrapper->canBeRetrofitted() || $ship->isUnderRetrofit()
+                ) {
+                    continue;
+                }
+                foreach ($this->shipRumpBuildingFunctionRepository->getByShipRump($ship->getRump()) as $rump_rel) {
+                    if (array_key_exists($rump_rel->getBuildingFunction()->value, $fieldFunctions)) {
+                        $retrofitShipWrappers[$ship->getId()] = $wrapper;
+                        break;
                     }
                 }
             }
-
-            $game->setTemplateVar('RETROFIT_SHIP_LIST', $retrofitShips);
-            $game->setTemplateVar('FIELD', $field);
         }
+
+        $game->setTemplateVar('RETROFIT_SHIP_WRAPPERS', $retrofitShipWrappers);
+        $game->setTemplateVar('FIELD', $field);
     }
 }
