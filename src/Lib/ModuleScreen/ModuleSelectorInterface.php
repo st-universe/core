@@ -23,6 +23,8 @@ interface ModuleSelectorInterface
 
     public function allowEmptySlot(): bool;
 
+    public function isEmptySlot(): bool;
+
     public function getModuleDescription(): string;
 
     public function getUserId(): int;

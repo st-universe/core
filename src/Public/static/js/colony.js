@@ -268,9 +268,9 @@ function scrollBuildmenuByMouse(menu, delta) {
 currentTab = false;
 function showModuleSelector(obj, type) {
 	$('module_select_tabs').select('div').each(function (tab) {
-		Element.removeClassName(tab, 'module_select_base_selected');
+		Element.removeClassName(tab, 'module_selector_current');
 	});
-	Element.addClassName(obj, 'module_select_base_selected');
+	Element.addClassName(obj, 'module_selector_current');
 	if (currentTab) {
 		currentTab.hide();
 	}
@@ -288,25 +288,26 @@ function toggleTorpedoInfo(module_crew) {
 
 function replaceTabImage(type, moduleId, commodityId, module_crew, amount) {
 
+	tabElement = $('module_tab_' + type);
+	Element.removeClassName(tabElement, 'module_selector_unselected');
+	Element.removeClassName(tabElement, 'module_selector_skipped');
+
 	if (moduleId == 0) {
 		$('tab_image_mod_' + type).src = 'assets/buttons/modul_' + type + '.png';
 		$('module_type_' + type).innerHTML = '';
+		Element.addClassName(tabElement, 'module_selector_skipped');
 		updateCrewCount(type, 0);
 	} else {
-		if (amount > 0) {
-			Element.removeClassName($('module_tab_' + type), 'module_select_base_mandatory');
+		if (amount < 1) {
+			Element.addClassName(tabElement, 'module_selector_unselected');
 		}
 		$('tab_image_mod_' + type).src = 'assets/commodities/' + commodityId + '.png';
 		$('module_type_' + type).innerHTML = $(moduleId + '_content').innerHTML;
 		$('module_type_' + type).show();
 		updateCrewCount(type, module_crew);
 	}
-	if (amount > 0) {
-		enableShipBuildButton();
-	}
-	else {
-		checkCrewCount();
-	}
+
+	enableShipBuildButton();
 }
 var disabledSlots = new Set();
 function toggleSpecialModuleDisplay(type, module_id, module_crew, amount) {
@@ -353,12 +354,7 @@ function toggleSpecialModuleDisplay(type, module_id, module_crew, amount) {
 	$('module_type_' + type).innerHTML = innerHTML;
 	$('module_type_' + type).show();
 
-	if (amount > 0) {
-		enableShipBuildButton();
-	}
-	else {
-		checkCrewCount();
-	}
+	enableShipBuildButton();
 }
 var maxCrew;
 var baseCrew;
@@ -398,20 +394,25 @@ function checkCrewCount() {
 	}
 }
 function enableShipBuildButton() {
-	if (!checkCrewCount()) {
-		return;
+
+	if (isShipBuildPossible()) {
+		Form.Element.enable('buildbutton');
+		new Effect.Highlight($('buildbutton'));
+	} else {
+		Form.Element.disable('buildbutton');
 	}
-	mandatory = false;
+}
+function isShipBuildPossible() {
+	if (!checkCrewCount()) {
+		return false;
+	}
+	unselected = false;
 	$('module_select_tabs').select('div').each(function (tab) {
-		if (Element.hasClassName(tab, 'module_select_base_mandatory')) {
-			mandatory = true;
+		if (Element.hasClassName(tab, 'module_selector_unselected')) {
+			unselected = true;
 		}
 	});
-	if (mandatory) {
-		return;
-	}
-	Form.Element.enable('buildbutton');
-	new Effect.Highlight($('buildbutton'));
+	return !unselected;
 }
 function cancelModuleQueueEntries(module_id) {
 	ajaxPostUpdate(
