@@ -91,6 +91,14 @@ class ModuleSelector implements ModuleSelectorInterface
     }
 
     #[Override]
+    public function isEmptySlot(): bool
+    {
+        return $this->allowEmptySlot()
+            && $this->buildplan !== null
+            && !$this->hasSelectedModule();
+    }
+
+    #[Override]
     public function getModuleDescription(): string
     {
         return $this->getModuleType()->getDescription();

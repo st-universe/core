@@ -15,10 +15,24 @@ class ModuleScreenTab
 
     public function getCssClass(): string
     {
-        $class = 'module_select_base';
+        $class = 'module_selector';
+
+        if ($this->moduleSelector->getAvailableModules() === []) {
+            return $class;
+        }
+
+        if ($this->moduleSelector->allowEmptySlot()) {
+
+            if ($this->moduleSelector->isEmptySlot()) {
+                $class .= ' module_selector_skipped';
+            } else {
+                $class .= ' module_selector_unselected';
+            }
+        }
+
         if ($this->moduleSelector->isMandatory()) {
             if (!$this->moduleSelector->hasSelectedModule()) {
-                $class .= ' module_select_base_mandatory';
+                $class .= ' module_selector_unselected';
             } else {
                 /** @var ModuleInterface $mod */
                 $mod = $this->moduleSelector->getBuildplan()->getModulesByType($this->moduleSelector->getModuleType())->first();
@@ -26,7 +40,7 @@ class ModuleScreenTab
 
                 $stor = $this->moduleSelector->getHost()->getStorage()[$commodityId] ?? null;
                 if ($stor === null) {
-                    $class .= ' module_select_base_mandatory';
+                    $class .= ' module_selector_unselected';
                 }
             }
         }
