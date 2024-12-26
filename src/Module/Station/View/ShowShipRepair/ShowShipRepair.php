@@ -9,15 +9,21 @@ use request;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
+use Stu\Orm\Entity\ShipInterface;
 
 final class ShowShipRepair implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_SHIP_REPAIR';
 
-    public function __construct(private StationLoaderInterface $stationLoader, private StationUtilityInterface $stationUtility, private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory) {}
+    public function __construct(
+        private StationLoaderInterface $stationLoader,
+        private StationUtilityInterface $stationUtility,
+        private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -35,20 +41,14 @@ final class ShowShipRepair implements ViewControllerInterface
             return;
         }
 
-        $repairableShips = [];
-        foreach ($station->getDockedShips() as $ship) {
-            $wrapper = $this->spacecraftWrapperFactory->wrapShip($ship);
-            if (
-                !$wrapper->canBeRepaired() || $ship->isUnderRepair()
-            ) {
-                continue;
-            }
-            $repairableShips[$ship->getId()] = $wrapper;
-        }
+        $repairableShipWrappers = $station->getDockedShips()
+            ->filter(fn(ShipInterface $ship): bool => !$ship->isUnderRepair())
+            ->map(fn(ShipInterface $ship): ShipWrapperInterface => $this->spacecraftWrapperFactory->wrapShip($ship))
+            ->filter(fn(ShipWrapperInterface $wrapper): bool => $wrapper->canBeRepaired());
 
         $game->appendNavigationPart(
             'station.php',
-            _('Stationen')
+            'Stationen'
         );
         $game->appendNavigationPart(
             sprintf(
@@ -64,11 +64,11 @@ final class ShowShipRepair implements ViewControllerInterface
                 self::VIEW_IDENTIFIER,
                 $station->getId()
             ),
-            _('Schiffreparatur')
+            'Schiffreparatur'
         );
         $game->setViewTemplate('html/station/shipRepair.twig');
 
-        $game->setTemplateVar('REPAIRABLE_SHIP_LIST', $repairableShips);
+        $game->setTemplateVar('REPAIRABLE_SHIP_WRAPPERS', $repairableShipWrappers);
         $game->setTemplateVar('STATION', $station);
     }
 }
