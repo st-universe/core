@@ -793,6 +793,17 @@ class User implements UserInterface
     }
 
     #[Override]
+    public function isInboxMessengerStyle(): bool
+    {
+        $setting = $this->getSettings()->get(UserSettingEnum::INBOX_MESSENGER_STYLE->value);
+        if ($setting !== null) {
+            return (bool)$setting->getValue();
+        }
+
+        return false;
+    }
+
+    #[Override]
     public function getCharacters(): Collection
     {
         return $this->characters;

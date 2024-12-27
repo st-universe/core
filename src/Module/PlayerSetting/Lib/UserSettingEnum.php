@@ -17,6 +17,7 @@ enum UserSettingEnum: string
     case RPG_BEHAVIOR = 'rpg_behavior';
     case CSS_COLOR_SHEET = 'css_color_sheet';
     case SHOW_PIRATE_HISTORY_ENTRYS = 'show_pirate_history_entrys';
+    case INBOX_MESSENGER_STYLE = 'inbox_messenger_style';
 
     /**
      * returns true, if the setting has it's own action controller
@@ -24,6 +25,6 @@ enum UserSettingEnum: string
     public function isDistinctSetting(): bool
     {
         return $this === self::AVATAR
-        || $this === self::RGB_CODE;
+            || $this === self::RGB_CODE;
     }
 }

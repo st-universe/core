@@ -10,20 +10,20 @@ use Stu\Orm\Entity\ContactInterface;
 use Stu\Orm\Entity\PrivateMessageInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
-use Stu\Orm\Repository\IgnoreListRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 
-final class PrivateMessageListItem implements PrivateMessageListItemInterface
+class PrivateMessageListItem implements PrivateMessageListItemInterface
 {
     private ?UserInterface $sender = null;
 
-    private ?bool $senderignore = null;
-
     private ?ContactInterface $sendercontact = null;
 
-    public function __construct(private PrivateMessageRepositoryInterface $privateMessageRepository, private ContactRepositoryInterface $contactRepository, private IgnoreListRepositoryInterface $ignoreListRepository, private PrivateMessageInterface $message, private int $currentUserId)
-    {
-    }
+    public function __construct(
+        private PrivateMessageRepositoryInterface $privateMessageRepository,
+        private ContactRepositoryInterface $contactRepository,
+        private PrivateMessageInterface $message,
+        private int $currentUserId
+    ) {}
 
     #[Override]
     public function getSender(): UserInterface
@@ -47,7 +47,6 @@ final class PrivateMessageListItem implements PrivateMessageListItemInterface
             return false;
         }
         $this->message->setNew(false);
-
         $this->privateMessageRepository->save($this->message, true);
 
         return true;
@@ -109,18 +108,6 @@ final class PrivateMessageListItem implements PrivateMessageListItemInterface
     public function getReplied(): bool
     {
         return $this->message->getReplied();
-    }
-
-    #[Override]
-    public function senderIsIgnored(): bool
-    {
-        if ($this->senderignore === null) {
-            $this->senderignore = $this->ignoreListRepository->exists(
-                $this->currentUserId,
-                $this->message->getSenderId()
-            );
-        }
-        return $this->senderignore;
     }
 
     #[Override]

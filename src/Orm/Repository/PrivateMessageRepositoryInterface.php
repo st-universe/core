@@ -43,15 +43,16 @@ interface PrivateMessageRepositoryInterface extends ObjectRepository
      */
     public function getByReceiver(UserInterface $user): array;
 
-    /**
-     * @return array<PrivateMessageInterface>
-     */
+    /** @return array<PrivateMessageInterface> */
     public function getByUserAndFolder(
         int $userId,
         int $folderId,
         int $offset,
         int $limit
     ): array;
+
+    /** @return array<PrivateMessageInterface> */
+    public function getConversations(UserInterface $user): array;
 
     public function getAmountByFolder(PrivateMessageFolderInterface $privateMessageFolder): int;
 

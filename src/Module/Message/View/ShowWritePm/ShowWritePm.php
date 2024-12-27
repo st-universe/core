@@ -19,9 +19,13 @@ final class ShowWritePm implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'WRITE_PM';
 
-    public function __construct(private ShowWritePmRequestInterface $showWritePmRequest, private ContactRepositoryInterface $contactRepository, private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository, private PrivateMessageUiFactoryInterface $privateMessageUiFactory, private PrivateMessageRepositoryInterface $privateMessageRepository)
-    {
-    }
+    public function __construct(
+        private ShowWritePmRequestInterface $showWritePmRequest,
+        private ContactRepositoryInterface $contactRepository,
+        private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
+        private PrivateMessageUiFactoryInterface $privateMessageUiFactory,
+        private PrivateMessageRepositoryInterface $privateMessageRepository
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -60,7 +64,7 @@ final class ShowWritePm implements ViewControllerInterface
         $game->setTemplateVar(
             'PM_CATEGORIES',
             array_map(
-                fn (PrivateMessageFolderInterface $privateMessageFolder): PrivateMessageFolderItem =>
+                fn(PrivateMessageFolderInterface $privateMessageFolder): PrivateMessageFolderItem =>
                 $this->privateMessageUiFactory->createPrivateMessageFolderItem($privateMessageFolder),
                 $this->privateMessageFolderRepository->getOrderedByUser($userId)
             )
