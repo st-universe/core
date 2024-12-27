@@ -55,4 +55,9 @@ interface SpacecraftBuildplanInterface
      * @return Collection<int, BuildplanModuleInterface>
      */
     public function getModules(): Collection;
+
+    /**
+     * @return Collection<int, BuildplanModuleInterface>
+     */
+    public function getModulesOrdered(): Collection;
 }

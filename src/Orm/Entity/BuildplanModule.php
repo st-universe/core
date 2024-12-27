@@ -41,7 +41,7 @@ class BuildplanModule implements BuildplanModuleInterface
     #[Column(type: 'smallint')]
     private int $module_count = 1;
 
-    #[ManyToOne(targetEntity: 'SpacecraftBuildplan')]
+    #[ManyToOne(targetEntity: 'SpacecraftBuildplan', inversedBy: 'modules')]
     #[JoinColumn(name: 'buildplan_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private SpacecraftBuildplanInterface $buildplan;
 

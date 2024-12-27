@@ -43,7 +43,7 @@ final class ShowStationCosts implements ViewControllerInterface
         $game->setTemplateVar('PLAN', $plan);
 
         $mods = [];
-        foreach ($plan->getModules() as $mod) {
+        foreach ($plan->getModulesOrdered() as $mod) {
             $mods[] = new StationCostWrapper($mod, $ship->getStorage()->get($mod->getModule()->getCommodityId()));
         }
         $game->setTemplateVar('MODS', $mods);

@@ -19,8 +19,6 @@ use Stu\Module\Colony\View\ShowModuleScreenBuildplan\ShowModuleScreenBuildplan;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContextTypeEnum;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
@@ -33,8 +31,6 @@ final class CreateBuildplan implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_BUILDPLAN_SAVE';
 
-    private LoggerUtilInterface $loggerUtil;
-
     public function __construct(
         private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository,
         private BuildplanModuleRepositoryInterface $buildplanModuleRepository,
@@ -43,11 +39,8 @@ final class CreateBuildplan implements ActionControllerInterface
         private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository,
         private EntityManagerInterface $entityManager,
         private SpacecraftCrewCalculatorInterface $shipCrewCalculator,
-        private BuildplanSignatureCreationInterface $buildplanSignatureCreation,
-        LoggerUtilFactoryInterface $loggerUtilFactory
-    ) {
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
-    }
+        private BuildplanSignatureCreationInterface $buildplanSignatureCreation
+    ) {}
 
     private function exitOnError(GameControllerInterface $game): void
     {
@@ -66,11 +59,9 @@ final class CreateBuildplan implements ActionControllerInterface
 
         $rump = $this->spacecraftRumpRepository->find(request::indInt('rumpid'));
         if ($rump === null) {
-            $this->loggerUtil->log('A');
             $this->exitOnError($game);
             return;
         }
-        $this->loggerUtil->log('B');
 
         if (!array_key_exists($rump->getId(), $this->spacecraftRumpRepository->getBuildableByUser($userId))) {
             throw new AccessViolation(sprintf(
@@ -89,7 +80,6 @@ final class CreateBuildplan implements ActionControllerInterface
         foreach (SpacecraftModuleTypeEnum::getModuleSelectorOrder() as $moduleType) {
 
             $value = $moduleType->value;
-            $this->loggerUtil->log(sprintf('%d', $value));
             $module = request::postArray('mod_' . $value);
             if (
                 $moduleType != SpacecraftModuleTypeEnum::SPECIAL
@@ -100,7 +90,6 @@ final class CreateBuildplan implements ActionControllerInterface
                     _('Es wurde kein Modul des Typs %s ausgewählt'),
                     $moduleType->getDescription()
                 );
-                $this->loggerUtil->log('C');
                 $this->exitOnError($game);
                 $error = true;
             }
@@ -119,7 +108,6 @@ final class CreateBuildplan implements ActionControllerInterface
 
                 if ($specialCount > $rump->getSpecialSlots()) {
                     $game->addInformation(_('Mehr Spezial-Module als der Rumpf gestattet'));
-                    $this->loggerUtil->log('D');
                     $this->exitOnError($game);
                     $error = true;
                 }
@@ -148,16 +136,12 @@ final class CreateBuildplan implements ActionControllerInterface
             return;
         }
 
-        $this->loggerUtil->log('E');
-
         $crewUsage = $this->shipCrewCalculator->getCrewUsage($modules, $rump, $user);
         if ($crewUsage > $this->shipCrewCalculator->getMaxCrewCountByRump($rump)) {
             $game->addInformation(_('Crew-Maximum wurde überschritten'));
-            $this->loggerUtil->log('F');
             $this->exitOnError($game);
             return;
         }
-        $this->loggerUtil->log('G');
         $signature = $this->buildplanSignatureCreation->createSignature($modules, $crewUsage);
 
         $plannameFromRequest = request::indString('buildplanname');
@@ -186,18 +170,24 @@ final class CreateBuildplan implements ActionControllerInterface
                 date('d.m.Y H:i')
             );
         }
+
+
         if ($this->spacecraftBuildplanRepository->findByUserAndName($userId, $planname) !== null) {
             $game->addInformation(_('Ein Bauplan mit diesem Namen existiert bereits'));
             $this->exitOnError($game);
             return;
         }
+
+        $game->setView(ShowModuleScreenBuildplan::VIEW_IDENTIFIER);
+
         $existingPlan = $this->spacecraftBuildplanRepository->getByUserShipRumpAndSignature($userId, $rump->getId(), $signature);
         if ($existingPlan !== null) {
             $game->addInformationf('Ein Bauplan mit dieser Konfiguration existiert bereits: %s', $existingPlan->getName());
-            $this->exitOnError($game);
+            $game->setViewContext(ViewContextTypeEnum::BUILDPLAN, $existingPlan->getId());
+
             return;
         }
-        $this->loggerUtil->log('H');
+
         $game->addInformationf(
             _('Lege neuen Bauplan an: %s'),
             $planname
@@ -211,10 +201,6 @@ final class CreateBuildplan implements ActionControllerInterface
         $plan->setCrew($crewUsage);
 
         $this->spacecraftBuildplanRepository->save($plan);
-        $this->entityManager->flush();
-
-        $this->loggerUtil->log('I');
-
 
         foreach ($modules as $module) {
             $buildplanModule = $this->buildplanModuleRepository->prototype();
@@ -227,13 +213,9 @@ final class CreateBuildplan implements ActionControllerInterface
 
             $plan->getModules()->set($module->getId(), $buildplanModule);
         }
+        $this->entityManager->flush();
 
-        $this->loggerUtil->log('J');
-
-        $game->setView(ShowModuleScreenBuildplan::VIEW_IDENTIFIER);
         $game->setViewContext(ViewContextTypeEnum::BUILDPLAN, $plan->getId());
-
-        $this->loggerUtil->log('K');
     }
 
     #[Override]
