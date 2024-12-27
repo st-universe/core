@@ -764,7 +764,7 @@ abstract class Spacecraft implements SpacecraftInterface
             return $modules;
         }
 
-        foreach ($buildplan->getModules() as $obj) {
+        foreach ($buildplan->getModulesOrdered() as $obj) {
             $module = $obj->getModule();
             $index = $module->getType() === SpacecraftModuleTypeEnum::SPECIAL ? $module->getId() : $module->getType()->value;
             $modules[$index] = $module;

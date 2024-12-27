@@ -200,6 +200,12 @@ class SpacecraftBuildplan implements SpacecraftBuildplanInterface
     #[Override]
     public function getModules(): Collection
     {
+        return $this->modules;
+    }
+
+    #[Override]
+    public function getModulesOrdered(): Collection
+    {
         $array = $this->modules->toArray();
 
         uasort($array, function (BuildplanModuleInterface $a, BuildplanModuleInterface $b): int {

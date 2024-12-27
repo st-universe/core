@@ -84,7 +84,7 @@ final class RefactorRunner
     private function calculateSignature(SpacecraftBuildplanInterface $buildplan): string
     {
         $modules = $buildplan
-            ->getModules()
+            ->getModulesOrdered()
             ->map(fn(BuildplanModuleInterface $buildplanModule): ModuleInterface => $buildplanModule->getModule())
             ->toArray();
 

@@ -187,7 +187,7 @@ final class DealsTakeAuction implements ActionControllerInterface
         $this->spacecraftBuildplanRepository->save($newPlan);
 
         //copying buildplan modules
-        foreach ($buildplan->getModules() as $buildplanModule) {
+        foreach ($buildplan->getModulesOrdered() as $buildplanModule) {
             $mod = $this->buildplanModuleRepository->prototype();
             $mod->setModuleType($buildplanModule->getModule()->getType());
             $mod->setBuildplan($newPlan);

@@ -76,7 +76,7 @@
                     <tr>
                         <td>Module</td>
                         <td style="display: flex; flex-wrap: wrap;">
-                            {% for module in data.getModules %}
+                            {% for module in data.getModulesOrdered %}
                             <img src="/assets/commodities/{{ module.getModule.getCommodityId }}.png"
                                 title="{{ module.getModule.getName }}" style="margin: 2px;" />
                             {% endfor %}

@@ -107,10 +107,10 @@ class ShipTakeoverManagerTest extends StuTestCase
             ->once()
             ->andReturn($buildplan);
 
-        $buildplan->shouldReceive('getModules->toArray')
+        $buildplan->shouldReceive('getModules')
             ->withNoArgs()
             ->once()
-            ->andReturn([$buildplanModule1, $buildplanModule2]);
+            ->andReturn(new ArrayCollection([$buildplanModule1, $buildplanModule2]));
 
         $buildplanModule1->shouldReceive('getModule->getLevel')
             ->withNoArgs()

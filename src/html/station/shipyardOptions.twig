@@ -33,7 +33,7 @@
         <tr>
           <td>Module</td>
           <td>
-            {% for module in data.getModules %}
+            {% for module in data.getModulesOrdered %}
             <img src="/assets/commodities/{{ module.getModule.getCommodityId }}.png"
               name="{{ module.getModule.getName }}" />
             {% endfor %}

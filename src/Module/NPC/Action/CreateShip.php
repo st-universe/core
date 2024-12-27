@@ -81,7 +81,7 @@ final class CreateShip implements ActionControllerInterface
         }
 
         $moduleNames = [];
-        foreach ($buildplan->getModules() as $module) {
+        foreach ($buildplan->getModulesOrdered() as $module) {
             $moduleNames[] = $module->getModule()->getName();
         }
 
