@@ -32,7 +32,7 @@ final class ShowSpacecraftStorage implements ViewControllerInterface
             false
         );
 
-        $game->setPageTitle(_('Schiffsfracht'));
+        $game->setPageTitle(sprintf('Fracht der %s', $spacecraft->getName()));
         $game->setMacroInAjaxWindow('html/spacecraft/spacecraftStorage.twig');
 
         $game->setTemplateVar('SPACECRAFT', $spacecraft);

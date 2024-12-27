@@ -107,6 +107,9 @@ storageTimer = null;
 function openStorageInit(obj, id) {
   closeAjaxWindow();
   storageTimer = setTimeout("openStorage(" + id + ")", 1000); //wait 1 second
+  closeAjaxCallbacks.push(() => {
+    clearTimeout(storageTimer);
+  });
   obj.onmouseout = function () {
     clearTimeout(storageTimer);
   }; //remove timer
