@@ -27,8 +27,6 @@ interface PrivateMessageListItemInterface
 
     public function getReplied(): bool;
 
-    public function senderIsIgnored(): bool;
-
     public function senderIsContact(): ?ContactInterface;
 
     public function hasTranslation(): bool;

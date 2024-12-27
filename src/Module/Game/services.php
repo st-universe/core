@@ -27,7 +27,9 @@ use Stu\Module\Game\Lib\View\Provider\DatabaseProvider;
 use Stu\Module\Game\Lib\View\Provider\HistoryProvider;
 use Stu\Module\Game\Lib\View\Provider\MaindeskProvider;
 use Stu\Module\Game\Lib\View\Provider\MapProvider;
-use Stu\Module\Game\Lib\View\Provider\MessageProvider;
+use Stu\Module\Game\Lib\View\Provider\Message\ClassicStyleProvider;
+use Stu\Module\Game\Lib\View\Provider\Message\MessageProvider;
+use Stu\Module\Game\Lib\View\Provider\Message\MessengerStyleProvider;
 use Stu\Module\Game\Lib\View\Provider\PlayerSettingsProvider;
 use Stu\Module\Game\Lib\View\Provider\ResearchProvider;
 use Stu\Module\Game\Lib\View\Provider\ShipListProvider;
@@ -48,6 +50,8 @@ use function DI\autowire;
 
 return [
     GameSetupInterface::class => autowire(GameSetup::class),
+    ClassicStyleProvider::class => autowire(ClassicStyleProvider::class),
+    MessengerStyleProvider::class => autowire(MessengerStyleProvider::class),
     ViewComponentLoaderInterface::class => autowire(ViewComponentLoader::class)->constructorParameter(
         'viewComponentProviders',
         [

@@ -1367,6 +1367,12 @@ div.pmGrid {
   grid-template-rows: auto auto
 }
 
+div.pmGridMessenger {
+  display: grid;
+  grid-template-columns: 200px auto;
+  grid-template-rows: auto auto
+}
+
 div.knGridText {
   grid-row-start: span 2;
   background-color: var(--color-33);
