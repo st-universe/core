@@ -9,9 +9,7 @@ use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 
 class PrivateMessageFolderItem
 {
-    public function __construct(private PrivateMessageRepositoryInterface $privateMessageRepository, private PrivateMessageFolderInterface $privateMessageFolder)
-    {
-    }
+    public function __construct(private PrivateMessageRepositoryInterface $privateMessageRepository, private PrivateMessageFolderInterface $privateMessageFolder) {}
 
     /**
      * Returns the id of the folder
@@ -19,6 +17,11 @@ class PrivateMessageFolderItem
     public function getId(): int
     {
         return $this->privateMessageFolder->getId();
+    }
+
+    public function isMain(): bool
+    {
+        return $this->privateMessageFolder->getSpecial() === PrivateMessageFolderTypeEnum::SPECIAL_MAIN;
     }
 
     /**
