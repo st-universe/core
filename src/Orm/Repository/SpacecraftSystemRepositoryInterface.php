@@ -34,5 +34,7 @@ interface SpacecraftSystemRepositoryInterface extends ObjectRepository
      */
     public function getWebConstructingShipSystems(int $webId): array;
 
+    public function getWebOwningShipSystem(int $webId): ?SpacecraftSystemInterface;
+
     public function truncateByShip(int $shipId): void;
 }

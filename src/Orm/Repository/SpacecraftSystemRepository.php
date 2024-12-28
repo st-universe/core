@@ -94,6 +94,25 @@ final class SpacecraftSystemRepository extends EntityRepository implements Space
     }
 
     #[Override]
+    public function getWebOwningShipSystem(int $webId): ?SpacecraftSystemInterface
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT ss FROM %s ss
+                    WHERE ss.system_type = :systemType
+                    AND ss.data LIKE :target',
+                    SpacecraftSystem::class
+                )
+            )
+            ->setParameters([
+                'systemType' => SpacecraftSystemTypeEnum::THOLIAN_WEB,
+                'target' => sprintf('%%"ownedWebId":%d%%', $webId)
+            ])
+            ->getOneOrNullResult();
+    }
+
+    #[Override]
     public function truncateByShip(int $shipId): void
     {
         $this->getEntityManager()

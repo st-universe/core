@@ -48,6 +48,9 @@ class Ship extends Spacecraft implements ShipInterface
     #[OneToOne(targetEntity: 'ColonyShipQueue', mappedBy: 'ship')]
     private ?ColonyShipQueueInterface $colonyShipQueue = null;
 
+    #[OneToOne(targetEntity: 'TholianWeb', mappedBy: 'webShip')]
+    private ?TholianWebInterface $tholianWeb = null;
+
     #[Override]
     public function getType(): SpacecraftTypeEnum
     {
@@ -200,6 +203,12 @@ class Ship extends Spacecraft implements ShipInterface
     {
         $this->colonyShipQueue = $queue;
         return $this;
+    }
+
+    #[Override]
+    public function getTholianWeb(): ?TholianWebInterface
+    {
+        return $this->tholianWeb;
     }
 
     #[Override]

@@ -21,7 +21,7 @@
 {% if ship.getImpulseState %}
 <img src="/assets/buttons/warp_2.png" class="indexedGraphics" style="z-index: 2;" />
 {% endif %}
-{% if ship.getWebState %}
+{% if ship.isHeldByTholianWeb %}
 <img src="/assets/buttons/{{ ship.getHoldingWebImageStyle
 }}" class="indexedGraphics" style="z-index: 4;" />
 {% endif %}
