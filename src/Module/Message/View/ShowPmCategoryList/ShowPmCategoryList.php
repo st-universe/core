@@ -16,9 +16,7 @@ final class ShowPmCategoryList implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_CAT_LIST';
 
-    public function __construct(private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository, private PrivateMessageUiFactoryInterface $privateMessageUiFactory)
-    {
-    }
+    public function __construct(private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository, private PrivateMessageUiFactoryInterface $privateMessageUiFactory) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -29,9 +27,9 @@ final class ShowPmCategoryList implements ViewControllerInterface
         $game->setTemplateVar(
             'PM_CATEGORIES',
             array_map(
-                fn (PrivateMessageFolderInterface $privateMessageFolder): PrivateMessageFolderItem =>
+                fn(PrivateMessageFolderInterface $privateMessageFolder): PrivateMessageFolderItem =>
                 $this->privateMessageUiFactory->createPrivateMessageFolderItem($privateMessageFolder),
-                $this->privateMessageFolderRepository->getOrderedByUser($game->getUser()->getId())
+                $this->privateMessageFolderRepository->getOrderedByUser($game->getUser())
             )
         );
     }

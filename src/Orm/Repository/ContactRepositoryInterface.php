@@ -5,6 +5,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\Contact;
 use Stu\Orm\Entity\ContactInterface;
+use Stu\Orm\Entity\UserInterface;
 
 /**
  * @extends ObjectRepository<Contact>
@@ -24,12 +25,12 @@ interface ContactRepositoryInterface extends ObjectRepository
     /**
      * @return list<ContactInterface>
      */
-    public function getOrderedByUser(int $userId): array;
+    public function getOrderedByUser(UserInterface $user): array;
 
     /**
      * @return list<ContactInterface>
      */
-    public function getRemoteOrderedByUser(int $userId): array;
+    public function getRemoteOrderedByUser(UserInterface $user): array;
 
     public function truncateByUser(int $userId): void;
 
