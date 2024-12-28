@@ -66,7 +66,7 @@ interface SpacecraftInterface extends
 
     public function isWarped(): bool;
 
-    public function getWebState(): bool;
+    public function isHeldByTholianWeb(): bool;
 
     public function getCloakState(): bool;
 

@@ -129,7 +129,7 @@ abstract class Spacecraft implements SpacecraftInterface
     private ?ShipInterface $tractoredShip = null;
 
     #[ManyToOne(targetEntity: 'TholianWeb')]
-    #[JoinColumn(name: 'holding_web_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'holding_web_id', referencedColumnName: 'id')]
     private ?TholianWebInterface $holdingWeb = null;
 
     #[ManyToOne(targetEntity: 'User')]
@@ -324,7 +324,7 @@ abstract class Spacecraft implements SpacecraftInterface
     }
 
     #[Override]
-    public function getWebState(): bool
+    public function isHeldByTholianWeb(): bool
     {
         return $this->getHoldingWeb() !== null;
     }
@@ -1074,10 +1074,6 @@ abstract class Spacecraft implements SpacecraftInterface
     public function setHoldingWeb(?TholianWebInterface $web): SpacecraftInterface
     {
         $this->holdingWeb = $web;
-
-        if ($web === null) {
-            $this->holding_web_id = null;
-        }
 
         return $this;
     }
