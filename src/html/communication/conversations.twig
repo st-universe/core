@@ -12,14 +12,12 @@
             <div class="pmGridMessenger">
                 <div class="knGridUser">
                     <div class="segment">
+                        {% if conversation.isMarkableAsReceipt %}
+                        <img src="/assets/buttons/double_checked.png" title="Nachricht gelesen" />
+                        {% endif %}
                         {% set class = conversation.isMarkableAsNew ? 'negative' : '' %}
                         <span class="{{ class }}">{{ conversation.getDateString }}</span>
                     </div>
-                    {% if conversation.isMarkableAsReceipt %}
-                    <div class="segment">
-                        <img src="/assets/buttons/double_checked.png" title="Nachricht gelesen" />
-                    </div>
-                    {% endif %}
                     <div class="segment">
                         {% if otherUser.isNpc %}
                         <div>NPC</div>
@@ -30,13 +28,13 @@
                             </a>
                         </div>
                     </div>
+                    {% if otherUser.isContactable and conversation.senderIsContact %}
                     <div class="segment">
-                        {% if otherUser.isContactable and conversation.senderIsContact %}
                         <span id="contact{{ id }}">
                             {{ contactModeSwitcher(conversation.senderIsContact, 'contact' ~ id) }}
                         </span>
-                        {% endif %}
                     </div>
+                    {% endif %}
                 </div>
                 <div class="knGridText" style="cursor: pointer;"
                     onclick="switchInnerContent('WRITE_PM', 'Chatverlauf', 'recipient={{ otherUser.getId }}&reply={{ id }}');">
