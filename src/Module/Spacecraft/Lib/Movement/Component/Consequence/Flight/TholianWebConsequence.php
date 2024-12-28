@@ -53,7 +53,7 @@ class TholianWebConsequence extends AbstractFlightConsequence implements FlightS
         // release from unfinished web
         $holdingWeb = $ship->getHoldingWeb();
         if ($holdingWeb !== null && !$holdingWeb->isFinished()) {
-            $this->tholianWebUtil->releaseShipFromWeb($wrapper);
+            $this->tholianWebUtil->releaseSpacecraftFromWeb($wrapper);
 
             $message->add(sprintf('Die %s ist einem unfertigen Energienetz entkommen', $ship->getName()));
         }

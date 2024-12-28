@@ -14,6 +14,6 @@ interface SpacecraftCreatorInterface
         int $userId,
         int $rumpId,
         int $buildplanId,
-        SpacecraftCreationConfigInterface $specialSystemsProvider
+        ?SpacecraftCreationConfigInterface $spacecraftCreationConfig
     ): SpacecraftConfiguratorInterface;
 }

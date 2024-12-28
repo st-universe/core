@@ -28,6 +28,7 @@ use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\StationInterface;
+use Stu\Orm\Entity\TholianWebInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 final class SpacecraftWrapperFactory implements SpacecraftWrapperFactoryInterface
@@ -52,6 +53,10 @@ final class SpacecraftWrapperFactory implements SpacecraftWrapperFactoryInterfac
 
         if ($spacecraft instanceof StationInterface) {
             return $this->wrapStation($spacecraft);
+        }
+
+        if ($spacecraft instanceof TholianWebInterface) {
+            return $this->wrapTholianWeb($spacecraft);
         }
 
         throw new RuntimeException('unknown spacecraft type');
@@ -87,6 +92,21 @@ final class SpacecraftWrapperFactory implements SpacecraftWrapperFactoryInterfac
             $this->repairUtil,
             $this->stateIconAndTitle,
             $this->colonyLibFactory
+        );
+    }
+
+    private function wrapTholianWeb(TholianWebInterface $tholianWeb): TholianWebWrapper
+    {
+        return new TholianWebWrapper(
+            $tholianWeb,
+            $this->spacecraftSystemManager,
+            $this->systemDataDeserializer,
+            $this->torpedoTypeRepository,
+            $this->game,
+            $this,
+            $this->spacecraftStateChanger,
+            $this->repairUtil,
+            $this->stateIconAndTitle
         );
     }
 

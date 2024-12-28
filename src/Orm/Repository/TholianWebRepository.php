@@ -6,7 +6,6 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Override;
-use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\TholianWeb;
 use Stu\Orm\Entity\TholianWebInterface;
@@ -44,14 +43,11 @@ final class TholianWebRepository extends EntityRepository implements TholianWebR
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT tw FROM %s tw
-                 JOIN %s s
-                 WITH tw.ship_id = s.id
-                 WHERE s.location_id = :locationId',
-                TholianWeb::class,
-                Ship::class
+                 WHERE tw.location = :location',
+                TholianWeb::class
             )
         )->setParameters([
-            'locationId' => $ship->getLocation()->getId()
+            'location' => $ship->getLocation()
         ])->getOneOrNullResult();
     }
 

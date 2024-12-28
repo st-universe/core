@@ -8,7 +8,7 @@ use Override;
 use Stu\Lib\Damage\DamageWrapper;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionCauseEnum;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 
 //TODO unit tests
@@ -17,7 +17,7 @@ final class TholianWebWeaponPhase extends AbstractWeaponPhase implements Tholian
     #[Override]
     public function damageCapturedShip(
         ShipInterface $ship,
-        ShipWrapperInterface $wrapper,
+        SpacecraftWrapperInterface $wrapper,
         InformationInterface $informations
     ): void {
 

@@ -44,7 +44,8 @@ use Stu\Orm\Repository\SpacecraftRepository;
 #[DiscriminatorColumn(name: 'type', type: 'string')]
 #[DiscriminatorMap([
     SpacecraftTypeEnum::SHIP->value => Ship::class,
-    SpacecraftTypeEnum::STATION->value => Station::class
+    SpacecraftTypeEnum::STATION->value => Station::class,
+    SpacecraftTypeEnum::THOLIAN_WEB->value => TholianWeb::class
 ])]
 abstract class Spacecraft implements SpacecraftInterface
 {

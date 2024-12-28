@@ -18,20 +18,35 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Spacecraft\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\TholianWebUtilInterface;
-use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftStateChangerInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\Creation\SpacecraftCreatorInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\TholianWebInterface;
+use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\Orm\Repository\TholianWebRepositoryInterface;
 
 final class CreateTholianWeb implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_CREATE_WEB';
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private ShipRepositoryInterface $shipRepository, private InteractionCheckerInterface $interactionChecker, private ActivatorDeactivatorHelperInterface $helper, private TholianWebRepositoryInterface $tholianWebRepository, private TholianWebUtilInterface $tholianWebUtil, private ShipCreatorInterface $shipCreator, private PrivateMessageSenderInterface $privateMessageSender, private StuTime $stuTime, private SpacecraftStateChangerInterface $spacecraftStateChanger, private EntityManagerInterface $entityManager) {}
+    /** @param SpacecraftCreatorInterface<SpacecraftWrapperInterface> $spacecraftCreator */
+    public function __construct(
+        private ShipLoaderInterface $shipLoader,
+        private SpacecraftRepositoryInterface $spacecraftRepository,
+        private InteractionCheckerInterface $interactionChecker,
+        private ActivatorDeactivatorHelperInterface $helper,
+        private TholianWebRepositoryInterface $tholianWebRepository,
+        private TholianWebUtilInterface $tholianWebUtil,
+        private SpacecraftCreatorInterface $spacecraftCreator,
+        private PrivateMessageSenderInterface $privateMessageSender,
+        private StuTime $stuTime,
+        private SpacecraftStateChangerInterface $spacecraftStateChanger,
+        private EntityManagerInterface $entityManager
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -85,24 +100,18 @@ final class CreateTholianWeb implements ActionControllerInterface
         }
         $this->spacecraftStateChanger->changeShipState($wrapper, SpacecraftStateEnum::SHIP_STATE_WEB_SPINNING);
 
-        //create web ship
-        $webShip = $this->shipCreator->createBy($userId, 9, 1840)
+        //create web
+        /** @var TholianWebInterface */
+        $web = $this->spacecraftCreator->createBy($userId, 9, 1840, null)
             ->setLocation($ship->getLocation())
             ->finishConfiguration()
             ->get();
 
-        $this->shipRepository->save($webShip);
-
-        //create web entity
-        $web = $this->tholianWebRepository->prototype();
-        $web->setWebShip($webShip);
-        $this->tholianWebRepository->save($web);
-
-        //link ships to web
+        //link spacecrafts to web
         foreach ($possibleCatches as $target) {
             $target->setHoldingWeb($web);
-            $this->shipRepository->save($target);
-            $web->getCapturedShips()->add($target);
+            $this->spacecraftRepository->save($target);
+            $web->getCapturedSpacecrafts()->add($target);
 
             //notify target owner
             $this->privateMessageSender->send(
@@ -135,9 +144,9 @@ final class CreateTholianWeb implements ActionControllerInterface
         );
     }
 
-    private function tryToCatch(ShipInterface $ship, int $targetId, GameControllerInterface $game): ?ShipInterface
+    private function tryToCatch(ShipInterface $ship, int $targetId, GameControllerInterface $game): ?SpacecraftInterface
     {
-        $target = $this->shipRepository->find($targetId);
+        $target = $this->spacecraftRepository->find($targetId);
 
         if ($target === null || $target->getCloakState()) {
             return null;

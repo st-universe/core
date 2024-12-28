@@ -47,9 +47,8 @@ final class FinishTholianWebs implements ProcessTickHandlerInterface
         $fleets = [];
 
         //determine constellations
-        foreach ($web->getCapturedShips() as $ship) {
-            $fleet = $ship->getFleet();
-
+        foreach ($web->getCapturedSpacecrafts() as $spacecraft) {
+            $fleet = $spacecraft->getFleet();
             if ($fleet === null) {
                 continue;
             }
@@ -58,7 +57,7 @@ final class FinishTholianWebs implements ProcessTickHandlerInterface
                 $fleets[$fleet->getId()] = [];
             }
 
-            $fleets[$fleet->getId()][] = $ship;
+            $fleets[$fleet->getId()][] = $spacecraft;
         }
 
         $pms = [];
@@ -108,11 +107,12 @@ final class FinishTholianWebs implements ProcessTickHandlerInterface
     {
         $webOwner = $web->getUser();
 
-        foreach ($web->getCapturedShips() as $ship) {
-            if ($ship->isTractoring()) {
-                $this->cancelTractorBeam($webOwner, $ship);
+        foreach ($web->getCapturedSpacecrafts() as $spacecraft) {
+            if ($spacecraft->isTractoring()) {
+                $this->cancelTractorBeam($webOwner, $spacecraft);
             }
-            $tractoringSpacecraft = $ship->getTractoringSpacecraft();
+
+            $tractoringSpacecraft = $spacecraft instanceof ShipInterface ? $spacecraft->getTractoringSpacecraft() : null;
             if ($tractoringSpacecraft !== null) {
                 $this->cancelTractorBeam($webOwner, $tractoringSpacecraft);
             }

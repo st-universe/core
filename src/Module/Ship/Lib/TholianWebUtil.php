@@ -19,10 +19,12 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\SpacecraftSystemInterface;
 use Stu\Orm\Entity\TholianWebInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
 use Stu\Orm\Repository\TholianWebRepositoryInterface;
 
@@ -31,6 +33,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
+        private SpacecraftRepositoryInterface $spacecraftRepository,
         private ShipRepositoryInterface $shipRepository,
         private TholianWebRepositoryInterface $tholianWebRepository,
         private SpacecraftSystemRepositoryInterface $shipSystemRepository,
@@ -43,36 +46,36 @@ final class TholianWebUtil implements TholianWebUtilInterface
     }
 
     #[Override]
-    public function releaseShipFromWeb(ShipWrapperInterface $wrapper): void
+    public function releaseSpacecraftFromWeb(SpacecraftWrapperInterface $wrapper): void
     {
-        $this->loggerUtil->log(sprintf('releaseShipFromWeb, shipId: %d', $wrapper->get()->getId()));
+        $this->loggerUtil->log(sprintf('releaseSpacecraftFromWeb, shipId: %d', $wrapper->get()->getId()));
 
-        $ship = $wrapper->get();
-        $web = $ship->getHoldingWeb();
+        $spacecraft = $wrapper->get();
+        $web = $spacecraft->getHoldingWeb();
         if ($web === null) {
             return;
         }
 
-        $web->getCapturedShips()->removeElement($ship);
+        $web->getCapturedSpacecrafts()->removeElement($spacecraft);
 
-        if ($web->getCapturedShips()->isEmpty()) {
+        if ($web->getCapturedSpacecrafts()->isEmpty()) {
             $this->resetWebHelpers($web, $wrapper->getSpacecraftWrapperFactory());
             $this->removeWeb($web);
         }
 
-        $ship->setHoldingWeb(null);
-        $this->shipRepository->save($ship);
+        $spacecraft->setHoldingWeb(null);
+        $this->spacecraftRepository->save($spacecraft);
     }
 
     #[Override]
     public function releaseAllShips(TholianWebInterface $web, SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory): void
     {
-        foreach ($web->getCapturedShips() as $target) {
-            $this->releaseShipFromWeb($spacecraftWrapperFactory->wrapShip($target));
+        foreach ($web->getCapturedSpacecrafts() as $target) {
+            $this->releaseSpacecraftFromWeb($spacecraftWrapperFactory->wrapSpacecraft($target));
 
             //notify target owner
             $this->privateMessageSender->send(
-                $web->getWebShip()->getUser()->getId(),
+                $web->getUser()->getId(),
                 $target->getUser()->getId(),
                 sprintf(
                     'Das Energienetz um die %s in Sektor %s wurde aufgelöst',
@@ -90,7 +93,6 @@ final class TholianWebUtil implements TholianWebUtilInterface
         $this->loggerUtil->log(sprintf('removeWeb, webId: %d', $web->getId()));
 
         $this->tholianWebRepository->delete($web);
-        $this->shipRepository->delete($web->getWebShip());
     }
 
     #[Override]
@@ -213,8 +215,8 @@ final class TholianWebUtil implements TholianWebUtilInterface
 
         //initialize by weight of targets and spinners
         $targetWeightSum = array_reduce(
-            $web->getCapturedShips()->toArray(),
-            fn(int $sum, ShipInterface $ship): int => $sum + $ship->getRump()->getTractorMass(),
+            $web->getCapturedSpacecrafts()->toArray(),
+            fn(int $sum, SpacecraftInterface $spacecraft): int => $sum + $spacecraft->getRump()->getTractorMass(),
             0
         );
         $webSpinnerWeightSum = array_reduce(

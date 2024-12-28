@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20241228133259 extends AbstractMigration
+final class Version20241228164049 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -456,8 +456,7 @@ final class Version20241228133259 extends AbstractMigration
         $this->addSql('CREATE TABLE stu_terraforming_cost (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, terraforming_id INTEGER NOT NULL, commodity_id INTEGER NOT NULL, count INTEGER NOT NULL, CONSTRAINT FK_4CD9B703B4ACC212 FOREIGN KEY (commodity_id) REFERENCES stu_commodity (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_4CD9B703BD31079C FOREIGN KEY (terraforming_id) REFERENCES stu_terraforming (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_4CD9B703B4ACC212 ON stu_terraforming_cost (commodity_id)');
         $this->addSql('CREATE INDEX terraforming_idx ON stu_terraforming_cost (terraforming_id)');
-        $this->addSql('CREATE TABLE stu_tholian_web (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, finished_time INTEGER DEFAULT NULL, ship_id INTEGER NOT NULL, CONSTRAINT FK_D032F9A0C256317D FOREIGN KEY (ship_id) REFERENCES stu_ship (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
-        $this->addSql('CREATE INDEX tholian_web_ship_idx ON stu_tholian_web (ship_id)');
+        $this->addSql('CREATE TABLE stu_tholian_web (finished_time INTEGER DEFAULT NULL, id INTEGER NOT NULL, PRIMARY KEY(id), CONSTRAINT FK_D032F9A0BF396750 FOREIGN KEY (id) REFERENCES stu_spacecraft (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE TABLE stu_torpedo_cost (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, torpedo_type_id INTEGER NOT NULL, commodity_id INTEGER NOT NULL, count INTEGER NOT NULL, CONSTRAINT FK_AD0DEA44D12BAD4E FOREIGN KEY (torpedo_type_id) REFERENCES stu_torpedo_types (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_AD0DEA44B4ACC212 FOREIGN KEY (commodity_id) REFERENCES stu_commodity (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_AD0DEA44D12BAD4E ON stu_torpedo_cost (torpedo_type_id)');
         $this->addSql('CREATE INDEX IDX_AD0DEA44B4ACC212 ON stu_torpedo_cost (commodity_id)');

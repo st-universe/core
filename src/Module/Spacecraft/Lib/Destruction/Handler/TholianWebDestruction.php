@@ -5,12 +5,12 @@ namespace Stu\Module\Spacecraft\Lib\Destruction\Handler;
 use Override;
 use RuntimeException;
 use Stu\Lib\Information\InformationInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestroyerInterface;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionCauseEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\TholianWebInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
 use Stu\Orm\Repository\TholianWebRepositoryInterface;
@@ -32,18 +32,14 @@ class TholianWebDestruction implements SpacecraftDestructionHandlerInterface
         InformationInterface $informations,
     ): void {
 
-        if (!$destroyedSpacecraftWrapper instanceof ShipWrapperInterface) {
+        $tholianWeb = $destroyedSpacecraftWrapper->get();
+        if (!$tholianWeb instanceof TholianWebInterface) {
             return;
         }
 
-        $tholianWeb = $destroyedSpacecraftWrapper->get()->getTholianWeb();
-        if ($tholianWeb === null) {
-            return;
-        }
-
-        foreach ($tholianWeb->getCapturedShips() as $ship) {
-            $ship->setHoldingWeb(null);
-            $this->spacecraftRepository->save($ship);
+        foreach ($tholianWeb->getCapturedSpacecrafts() as $spacecraft) {
+            $spacecraft->setHoldingWeb(null);
+            $this->spacecraftRepository->save($spacecraft);
         }
 
         $owningSpacecraftSystem = $this->spacecraftSystemRepository->getWebOwningShipSystem($tholianWeb->getId());
