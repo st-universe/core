@@ -200,7 +200,7 @@ class TholianWebConsequenceTest extends StuTestCase
             ->with('Die SHIP ist einem unfertigen Energienetz entkommen')
             ->once();
 
-        $this->tholianWebUtil->shouldReceive('releaseShipFromWeb')
+        $this->tholianWebUtil->shouldReceive('releaseSpacecraftFromWeb')
             ->with($this->wrapper)
             ->once();
 

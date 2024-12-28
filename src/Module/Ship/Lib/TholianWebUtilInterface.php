@@ -4,11 +4,12 @@ namespace Stu\Module\Ship\Lib;
 
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\TholianWebInterface;
 
 interface TholianWebUtilInterface
 {
-    public function releaseShipFromWeb(ShipWrapperInterface $wrapper): void;
+    public function releaseSpacecraftFromWeb(SpacecraftWrapperInterface $wrapper): void;
 
     public function releaseAllShips(TholianWebInterface $web, SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory): void;
 

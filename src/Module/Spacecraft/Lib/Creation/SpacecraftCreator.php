@@ -12,6 +12,8 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\SpacecraftRumpInterface;
 use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
@@ -45,7 +47,7 @@ final class SpacecraftCreator implements SpacecraftCreatorInterface
         int $userId,
         int $rumpId,
         int $buildplanId,
-        SpacecraftCreationConfigInterface $specialSystemsProvider
+        ?SpacecraftCreationConfigInterface $spacecraftCreationConfig
     ): SpacecraftConfiguratorInterface {
 
         $user = $this->userRepository->find($userId);
@@ -63,7 +65,7 @@ final class SpacecraftCreator implements SpacecraftCreatorInterface
             throw new RuntimeException('buildplan not existent');
         }
 
-        $spacecraft =  $specialSystemsProvider->getSpacecraft() ?? $this->spacecraftFactory->create($rump);
+        $spacecraft =  $this->getSpacecraft($rump, $spacecraftCreationConfig);
         $spacecraft->setUser($user);
         $spacecraft->setBuildplan($buildplan);
         $spacecraft->setRump($rump);
@@ -73,7 +75,7 @@ final class SpacecraftCreator implements SpacecraftCreatorInterface
         $this->spacecraftSystemCreation->createShipSystemsByModuleList(
             $spacecraft,
             $buildplan->getModules(),
-            $specialSystemsProvider
+            $spacecraftCreationConfig
         );
 
         $wrapper = $this->spacecraftWrapperFactory->wrapSpacecraft($spacecraft);
@@ -104,5 +106,14 @@ final class SpacecraftCreator implements SpacecraftCreatorInterface
         $this->spacecraftRepository->save($spacecraft);
 
         return $this->spacecraftConfiguratorFactory->createSpacecraftConfigurator($wrapper);
+    }
+
+    private function getSpacecraft(SpacecraftRumpInterface $rump, ?SpacecraftCreationConfigInterface $spacecraftCreationConfig): SpacecraftInterface
+    {
+        if ($spacecraftCreationConfig === null) {
+            return $this->spacecraftFactory->create($rump);
+        }
+
+        return $spacecraftCreationConfig->getSpacecraft() ?? $this->spacecraftFactory->create($rump);
     }
 }

@@ -71,7 +71,7 @@ final class RemoveTholianWeb implements ActionControllerInterface
         $this->loggerUtil->log('5');
 
 
-        $this->loggerUtil->log(sprintf('capturedSize: %d', count($web->getCapturedShips())));
+        $this->loggerUtil->log(sprintf('capturedSize: %d', count($web->getCapturedSpacecrafts())));
         $this->loggerUtil->log('6');
 
         //unlink targets

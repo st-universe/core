@@ -42,7 +42,5 @@ interface ShipInterface extends SpacecraftInterface
 
     public function setColonyShipQueue(?ColonyShipQueueInterface $queue): ShipInterface;
 
-    public function getTholianWeb(): ?TholianWebInterface;
-
     public function getAstroState(): bool;
 }

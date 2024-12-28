@@ -129,7 +129,7 @@ final class SpacecraftAttackCore implements SpacecraftAttackCoreInterface
             }
 
             $defender = $this->battlePartyFactory->createMixedBattleParty(
-                $this->spacecraftWrapperFactory->wrapShips($holdingWeb->getCapturedShips()->toArray())
+                $this->spacecraftWrapperFactory->wrapSpacecrafts($holdingWeb->getCapturedSpacecrafts()->toArray())
             );
         }
 

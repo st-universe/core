@@ -65,7 +65,7 @@ final class CancelTholianWeb implements ActionControllerInterface
             throw new SanityCheckException('no own web', self::ACTION_IDENTIFIER);
         }
 
-        $this->loggerUtil->log(sprintf('capturedSize: %d', count($web->getCapturedShips())));
+        $this->loggerUtil->log(sprintf('capturedSize: %d', count($web->getCapturedSpacecrafts())));
         $this->loggerUtil->log('6');
         //unlink targets
         $this->tholianWebUtil->releaseAllShips($web, $wrapper->getSpacecraftWrapperFactory());

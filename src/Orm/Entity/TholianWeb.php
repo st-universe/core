@@ -8,51 +8,43 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\GeneratedValue;
-use Doctrine\ORM\Mapping\Id;
-use Doctrine\ORM\Mapping\Index;
-use Doctrine\ORM\Mapping\JoinColumn;
-use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
 use Override;
+use RuntimeException;
+use Stu\Component\Spacecraft\SpacecraftTypeEnum;
+use Stu\Lib\Transfer\TransferEntityTypeEnum;
 use Stu\Orm\Repository\TholianWebRepository;
 
 #[Table(name: 'stu_tholian_web')]
-#[Index(name: 'tholian_web_ship_idx', columns: ['ship_id'])]
 #[Entity(repositoryClass: TholianWebRepository::class)]
-class TholianWeb implements TholianWebInterface
+class TholianWeb extends Spacecraft implements TholianWebInterface
 {
-    #[Id]
-    #[Column(type: 'integer')]
-    #[GeneratedValue(strategy: 'IDENTITY')]
-    private int $id;
-
     #[Column(type: 'integer', nullable: true)]
     private ?int $finished_time = 0;
 
-    #[Column(type: 'integer')]
-    private int $ship_id = 0;
-
-    #[ManyToOne(targetEntity: 'Ship')]
-    #[JoinColumn(name: 'ship_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ShipInterface $webShip;
-
     /**
-     * @var ArrayCollection<int, ShipInterface>
+     * @var ArrayCollection<int, SpacecraftInterface>
      */
-    #[OneToMany(targetEntity: 'Ship', mappedBy: 'holdingWeb')]
-    private Collection $capturedShips;
+    #[OneToMany(targetEntity: 'Spacecraft', mappedBy: 'holdingWeb')]
+    private Collection $capturedSpacecrafts;
 
     public function __construct()
     {
-        $this->capturedShips = new ArrayCollection();
+        parent::__construct();
+        $this->capturedSpacecrafts = new ArrayCollection();
     }
 
     #[Override]
-    public function getId(): int
+    public function getType(): SpacecraftTypeEnum
     {
-        return $this->id;
+        return SpacecraftTypeEnum::THOLIAN_WEB;
+    }
+
+    #[Override]
+    public function getFleet(): ?FleetInterface
+    {
+        return null;
     }
 
     #[Override]
@@ -86,34 +78,20 @@ class TholianWeb implements TholianWebInterface
     }
 
     #[Override]
-    public function getUser(): UserInterface
+    public function getCapturedSpacecrafts(): Collection
     {
-        return $this->webShip->getUser();
-    }
-
-    #[Override]
-    public function getWebShip(): ShipInterface
-    {
-        return $this->webShip;
-    }
-
-    #[Override]
-    public function setWebShip(ShipInterface $webShip): TholianWebInterface
-    {
-        $this->webShip = $webShip;
-
-        return $this;
-    }
-
-    #[Override]
-    public function getCapturedShips(): Collection
-    {
-        return $this->capturedShips;
+        return $this->capturedSpacecrafts;
     }
 
     #[Override]
     public function updateFinishTime(int $time): void
     {
         $this->finished_time = $time;
+    }
+
+    #[Override]
+    public function getTransferEntityType(): TransferEntityTypeEnum
+    {
+        throw new RuntimeException('unsupported operation');
     }
 }
