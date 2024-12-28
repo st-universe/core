@@ -12,6 +12,7 @@ use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Module\Control\ViewContext;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -60,7 +61,7 @@ final class StationShowStrategy implements SpacecraftTypeShowStragegyInterface
 
     private function doConstructionStuff(StationInterface $station, GameControllerInterface $game): void
     {
-        if (!$station->isConstruction()) {
+        if (!$station->isConstruction() && $station->getState() !== SpacecraftStateEnum::SHIP_STATE_UNDER_SCRAPPING) {
             return;
         }
 
