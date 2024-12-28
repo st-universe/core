@@ -10,11 +10,8 @@ use RuntimeException;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Game\Lib\View\Provider\ViewComponentProviderInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderItem;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageListItem;
-use Stu\Module\Message\Lib\PrivateMessageUiFactoryInterface;
-use Stu\Orm\Entity\PrivateMessageFolderInterface;
 use Stu\Orm\Entity\PrivateMessageInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
@@ -27,7 +24,6 @@ final class ClassicStyleProvider implements ViewComponentProviderInterface
     public function __construct(
         private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
         private PrivateMessageRepositoryInterface $privateMessageRepository,
-        private PrivateMessageUiFactoryInterface $privateMessageUiFactory,
         private ContactRepositoryInterface $contactRepository
     ) {}
 
@@ -108,13 +104,5 @@ final class ClassicStyleProvider implements ViewComponentProviderInterface
             )
         );
         $game->setTemplateVar('PM_NAVIGATION', $pmNavigation);
-        $game->setTemplateVar(
-            'PM_CATEGORIES',
-            array_map(
-                fn(PrivateMessageFolderInterface $folder): PrivateMessageFolderItem =>
-                $this->privateMessageUiFactory->createPrivateMessageFolderItem($folder),
-                $this->privateMessageFolderRepository->getOrderedByUser($game->getUser())
-            )
-        );
     }
 }
