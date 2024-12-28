@@ -113,7 +113,7 @@ final class ClassicStyleProvider implements ViewComponentProviderInterface
             array_map(
                 fn(PrivateMessageFolderInterface $folder): PrivateMessageFolderItem =>
                 $this->privateMessageUiFactory->createPrivateMessageFolderItem($folder),
-                $this->privateMessageFolderRepository->getOrderedByUser($userId)
+                $this->privateMessageFolderRepository->getOrderedByUser($game->getUser())
             )
         );
     }

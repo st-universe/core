@@ -19,6 +19,9 @@ final class ShowWritePm implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'WRITE_PM';
 
+    private const int CORRESPONDENCE_LIMIT_CLASSIC = 10;
+    private const int CORRESPONDENCE_LIMIT_MESSENGER = PHP_INT_MAX;
+
     public function __construct(
         private ShowWritePmRequestInterface $showWritePmRequest,
         private ContactRepositoryInterface $contactRepository,
@@ -30,11 +33,11 @@ final class ShowWritePm implements ViewControllerInterface
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $userId = $game->getUser()->getId();
+        $user = $game->getUser();
         $recipientId = $this->showWritePmRequest->getRecipientId();
 
         $pm = $this->privateMessageRepository->find($this->showWritePmRequest->getReplyPmId());
-        if ($pm === null || $pm->getRecipientId() !== $userId) {
+        if ($pm === null || $pm->getRecipient() !== $user) {
             $reply = null;
             $correspondence = null;
         } else {
@@ -44,7 +47,7 @@ final class ShowWritePm implements ViewControllerInterface
                 $reply->getSenderId(),
                 $reply->getRecipientId(),
                 [PrivateMessageFolderTypeEnum::SPECIAL_MAIN->value, PrivateMessageFolderTypeEnum::DEFAULT_OWN->value],
-                10
+                $user->isInboxMessengerStyle() ? self::CORRESPONDENCE_LIMIT_MESSENGER : self::CORRESPONDENCE_LIMIT_CLASSIC
             );
         }
 
@@ -52,21 +55,21 @@ final class ShowWritePm implements ViewControllerInterface
         $game->setPageTitle('Neue private Nachricht');
         $game->appendNavigationPart(
             sprintf('pm.php?%s=1', self::VIEW_IDENTIFIER),
-            'Private Nachrichte verfassen'
+            'Private Nachricht verfassen'
         );
         $game->setTemplateVar(
             'RECIPIENT_ID',
             $recipientId === 0 ? '' : $recipientId
         );
         $game->setTemplateVar('REPLY', $reply);
-        $game->setTemplateVar('CONTACT_LIST', $this->contactRepository->getOrderedByUser($userId));
+        $game->setTemplateVar('CONTACT_LIST', $this->contactRepository->getOrderedByUser($user));
         $game->setTemplateVar('CORRESPONDENCE', $correspondence);
         $game->setTemplateVar(
             'PM_CATEGORIES',
             array_map(
                 fn(PrivateMessageFolderInterface $privateMessageFolder): PrivateMessageFolderItem =>
                 $this->privateMessageUiFactory->createPrivateMessageFolderItem($privateMessageFolder),
-                $this->privateMessageFolderRepository->getOrderedByUser($userId)
+                $this->privateMessageFolderRepository->getOrderedByUser($user)
             )
         );
     }
