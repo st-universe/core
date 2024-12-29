@@ -53,11 +53,7 @@ use Ubench;
 
 final class GameController implements GameControllerInterface
 {
-    /** @var string */
     public const string DEFAULT_VIEW = 'DEFAULT_VIEW';
-
-    /** @var string */
-    private const string GAME_VERSION_DEV = 'dev';
 
     private GameData $gameData;
 
@@ -358,20 +354,6 @@ final class GameController implements GameControllerInterface
             }
         }
         return $this->gameData->currentRound;
-    }
-
-    #[Override]
-    public function getJavascriptPath(): string
-    {
-        $gameVersion = $this->stuConfig->getGameSettings()->getVersion();
-        if ($gameVersion === self::GAME_VERSION_DEV) {
-            return '/static';
-        }
-
-        return sprintf(
-            '/version_%s/static',
-            $gameVersion
-        );
     }
 
     #[Override]

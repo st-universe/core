@@ -14,7 +14,6 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\TFleetShipItem;
-use Stu\Module\Ship\Lib\TShipItem;
 use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\LocationInterface;
 use Stu\Orm\Entity\MapInterface;
@@ -75,75 +74,6 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'is_fleet_leader' => 'desc',
             'id' => 'desc'
         ]);
-    }
-
-    #[Override]
-    public function getSingleSpacecraftScannerResults(
-        SpacecraftInterface $spacecraft,
-        bool $showCloaked = false,
-        MapInterface|StarSystemMapInterface|null $field = null
-    ): array {
-
-        $rsm = new ResultSetMapping();
-        $rsm->addEntityResult(TShipItem::class, 's');
-        TFleetShipItem::addTSpacecraftItemFields($rsm);
-
-        $location = $field ?? $spacecraft->getLocation();
-
-        $query = $this->getEntityManager()->createNativeQuery(
-            sprintf(
-                'SELECT s.id as shipid, s.fleet_id as fleetid, sp.rump_id as rumpid , ss.mode as warpstate,
-                    twd.mode as tractorwarpstate, COALESCE(ss2.mode,0) as cloakstate, ss3.mode as shieldstate, COALESCE(ss4.status,0) as uplinkstate,
-                    sp.type as spacecrafttype, sp.name as shipname, sp.huelle as hull, sp.max_huelle as maxhull,
-                    sp.schilde as shield, sp.holding_web_id as webid, tw.finished_time as webfinishtime, u.id as userid, u.username,
-                    r.category_id as rumpcategoryid, r.name as rumpname, r.role_id as rumproleid,
-                    (SELECT count(*) > 0 FROM stu_ship_log sl WHERE sl.spacecraft_id = s.id AND sl.is_private = :false) as haslogbook,
-                    (SELECT count(*) > 0 FROM stu_crew_assign ca WHERE ca.spacecraft_id = s.id) as hascrew
-                FROM stu_ship s
-                JOIN stu_spacecraft sp
-                ON s.id = sp.id
-                LEFT JOIN stu_spacecraft_system ss
-                ON s.id = ss.spacecraft_id
-                AND ss.system_type = :warpdriveType
-                LEFT JOIN stu_spacecraft tractor
-                ON tractor.tractored_ship_id = s.id
-                LEFT JOIN stu_spacecraft_system twd
-                ON tractor.id = twd.spacecraft_id
-                AND twd.system_type = :warpdriveType
-                LEFT JOIN stu_spacecraft_system ss2
-                ON s.id = ss2.spacecraft_id
-                AND ss2.system_type = :cloakType
-                LEFT JOIN stu_spacecraft_system ss3
-                ON s.id = ss3.spacecraft_id
-                AND ss3.system_type = :shieldType
-                LEFT JOIN stu_spacecraft_system ss4
-                ON s.id = ss4.spacecraft_id
-                AND ss4.system_type = :uplinkType
-                JOIN stu_rump r
-                ON sp.rump_id = r.id
-                LEFT OUTER JOIN stu_tholian_web tw
-                ON sp.holding_web_id = tw.id
-                JOIN stu_user u
-                ON sp.user_id = u.id
-                WHERE sp.location_id = :locationId
-                AND s.id != :ignoreId
-                AND s.fleet_id IS NULL
-                %s
-                ORDER BY r.category_id ASC, r.role_id ASC, r.id ASC, sp.name ASC',
-                $showCloaked ? '' : sprintf(' AND (sp.user_id = %d OR COALESCE(ss2.mode,0) < %d) ', $spacecraft->getUser()->getId(), SpacecraftSystemModeEnum::MODE_ON->value)
-            ),
-            $rsm
-        )->setParameters([
-            'locationId' => $location->getId(),
-            'ignoreId' => $spacecraft->getId(),
-            'cloakType' => SpacecraftSystemTypeEnum::CLOAK->value,
-            'warpdriveType' => SpacecraftSystemTypeEnum::WARPDRIVE->value,
-            'shieldType' => SpacecraftSystemTypeEnum::SHIELDS->value,
-            'uplinkType' => SpacecraftSystemTypeEnum::UPLINK->value,
-            'false' => false
-        ]);
-
-        return $query->getResult();
     }
 
     #[Override]

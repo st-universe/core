@@ -128,9 +128,10 @@ class ShipNfsItem
     {
         return $this->item->getUserName();
     }
-    public function isOwnedByCurrentUser(): bool
+    public function isSelectable(): bool
     {
-        return $this->userId === $this->getUserId();
+        return $this->userId === $this->getUserId()
+            && $this->getType()->getModuleView() !== null;
     }
 
     public function hasUplink(): bool

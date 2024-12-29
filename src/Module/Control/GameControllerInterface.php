@@ -80,8 +80,6 @@ interface GameControllerInterface extends InformationInterface
 
     public function getCurrentRound(): GameTurnInterface;
 
-    public function getJavascriptPath(): string;
-
     public function checkDatabaseItem(?int $databaseEntryId): void;
 
     /** @return array<string> */

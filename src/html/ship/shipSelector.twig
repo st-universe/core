@@ -6,7 +6,7 @@
         onmouseout="shipSelectorHoverEnd(this);" onclick="shipSelectorChoose(this);">
         <tr>
             <td class="darkbg" colspan="5">
-                {% if wrapper.isOwnedByCurrentUser %}
+                {% if wrapper.isSelectable %}
                 <a type="hidden" href="{{ data.getHref }}" />
                 {% endif %}
                 {{ data.getName|bbcode }} | {{ data.getUserName|bbcode }}

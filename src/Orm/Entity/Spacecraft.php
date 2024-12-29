@@ -1330,9 +1330,14 @@ abstract class Spacecraft implements SpacecraftInterface
     #[Override]
     public function getHref(): string
     {
+        $moduleView = $this->getType()->getModuleView();
+        if ($moduleView === null) {
+            return '';
+        }
+
         return sprintf(
             '%s?%s=1&id=%d',
-            $this->getType()->getModuleView()->getPhpPage(),
+            $moduleView->getPhpPage(),
             $this->getType()->getViewIdentifier(),
             $this->getId()
         );

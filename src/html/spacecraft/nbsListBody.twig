@@ -3,7 +3,7 @@
 
 <td colspan="2" style="text-align: center;">
 </td>
-{% if ship.isOwnedByCurrentUser %}
+{% if ship.isSelectable %}
 <td style="width: 200px; background-color: #000000 !important;">
   <a {{ onClickSpacecraft(ship) }}>
     {{ spacecraftImageWithoutWarp(ship) }}
@@ -35,7 +35,7 @@
   {% endif %}
 </td>
 <td>
-  {% if WRAPPER.isOwnedByCurrentUser %}
+  {% if WRAPPER.isSelectable %}
   {% set toType = ship.isStation ? 4 : 2 %}
   <a href="javascript:void(0);" onclick="openPmWindow({{ WRAPPER.get.getId }}, {{ ship.getId }}, 4, {{ toType }});"
     title="Nachricht an {{ ship.getUserName|bbcode2txt }} verfassen"

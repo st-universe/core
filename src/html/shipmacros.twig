@@ -117,7 +117,7 @@
                 (<a href="javascript:void(0);" onclick="hideFleet({{ data.getId }});">zuklappen</a>)
             </span>
             {% endif %}
-            {% if SPACECRAFT.isStation and data.getLeadShip.isOwnedByCurrentUser %}
+            {% if SPACECRAFT.isStation and data.getLeadShip.isSelectable %}
             <span>
                 (<a href="javascript:void(0);"
                     onClick="actionToInnerContent('B_DOCK_FLEET', 'id={{ SPACECRAFT.getId }}&fid={{ data.getId }}&sstr={{ SESSIONSTRING }}', null, 'station.php');">andocken</a>)
@@ -265,7 +265,7 @@
     </div>
     {% endif %}
     {% if nbsItem.hasCrew %}
-    {% if nbsItem.isBoardingPossible and not nbsItem.isOwnedByCurrentUser %}
+    {% if nbsItem.isBoardingPossible and not nbsItem.isSelectable %}
     <div style="float:left; margin-right:4px;">
         <a href="?B_BOARD_SHIP=1&id={{ spacecraftId }}&target={{ targetId }}&sstr={{ SESSIONSTRING }}"
             onmouseover="cp('boa_{{ targetId }}','buttons/boa2')" onmouseout="cp('boa_{{ targetId }}','buttons/boa1')">
@@ -288,7 +288,7 @@
     </div>
     {% endif %}
     {% else %}
-    {% if nbsItem.isBoardingPossible and not nbsItem.isOwnedByCurrentUser %}
+    {% if nbsItem.isBoardingPossible and not nbsItem.isSelectable %}
     <div style="float:left; margin-right:4px;">
         <a href="?B_TAKEOVER_SHIP=1&id={{ spacecraftId }}&target={{ targetId }}&sstr={{ SESSIONSTRING }}"
             onmouseover="cp('take_{{ targetId }}','buttons/take2')"
@@ -300,7 +300,7 @@
     {% endif %}
     {% endif %}
     {% endif %}
-    {% if nbsItem.isOwnedByCurrentUser and nbsItem.isShuttle and SPACECRAFT.hasFreeShuttleSpace %}
+    {% if nbsItem.isSelectable and nbsItem.isShuttle and SPACECRAFT.hasFreeShuttleSpace %}
     <div style="float:left; margin-right:4px;">
         <a href="?B_STORE_SHUTTLE=1&id={{ spacecraftId }}&target={{ targetId }}&sstr={{ SESSIONSTRING }}"
             onmouseover="cp('store_{{ targetId }}','buttons/landshuttle2', 'png')"
@@ -309,7 +309,7 @@
         </a>
     </div>
     {% endif %}
-    {% if SPACECRAFT.isShuttle and nbsItem.isOwnedByCurrentUser %}
+    {% if SPACECRAFT.isShuttle and nbsItem.isSelectable %}
     <div style="float:left; margin-right:4px;">
         <a href="?B_LAND_SHUTTLE=1&id={{ targetId }}&shuttle={{ spacecraftId }}&sstr={{ SESSIONSTRING }}"
             onmouseover="cp('land_{{ targetId }}','buttons/landshuttle2', 'png')"
@@ -366,7 +366,7 @@
 </td>
 {% endif %}
 <td style="{{ nbsItem.getHoldingWebBackgroundStyle }}" class="nbsshipimage">
-    {% if nbsItem.isOwnedByCurrentUser %}
+    {% if nbsItem.isSelectable %}
     <a {{ onClickSpacecraft(nbsItem) }}>
         {{ _self.spacecraftImageWithoutWarp(nbsItem) }}
     </a>
@@ -380,7 +380,7 @@
     {% endif %}
 </td>
 <td>
-    {% if nbsItem.isOwnedByCurrentUser %}
+    {% if nbsItem.isSelectable %}
     <a {{ onClickSpacecraft(nbsItem) }}><span>{{ nbsItem.getName|bbcode }}</span></a>
     {% else %}
     {{ nbsItem.getName|bbcode }}

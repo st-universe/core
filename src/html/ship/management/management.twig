@@ -30,7 +30,7 @@
   <tr class="row">
     <td>
       <input type="hidden" name="spacecrafts[]" value="{{ ship.getId }}" />
-      {% if wrapper.isOwnedByCurrentUser %}
+      {% if wrapper.isSelectable %}
       <a {{ onClickSpacecraft(ship) }}>
         <img src="assets/ships/{{ rumpId }}.png" title="{{ ship.getRumpName }}" />
       </a>
@@ -38,7 +38,7 @@
       <img src="assets/ships/{{ rumpId }}.png" title="{{ ship.getRumpName }}" />
       {% endif %}
     </td>
-    {% if wrapper.isOwnedByCurrentUser %}
+    {% if wrapper.isSelectable %}
     <td>
       <a {{ onClickSpacecraft(ship) }}>{{ ship.getName|bbcode }}</a>
     </td>
@@ -54,7 +54,7 @@
         <img class="center" onclick="this.up('div').down('input').value={{ eps.getMaxBattery }}"
           src="assets/buttons/batt.png" title="Ersatzbatterie" />
         <input type="text" size="3" name="batt[{{ shipId }}]" />
-        {% if wrapper.isOwnedByCurrentUser %}
+        {% if wrapper.isSelectable %}
         {{ eps.getBattery }}/{{ eps.getMaxBattery }}
         {% endif %}
       </div>
@@ -67,7 +67,7 @@
         <img class="center" onclick="this.up('div').down('input').value={{ reactor.getCapacity }}"
           src="assets/buttons/{{ reactor.get.getIcon }}" title="Reaktorladung" />
         <input type="text" size="3" name="reactor[{{ shipId }}]" />
-        {% if wrapper.isOwnedByCurrentUser %}
+        {% if wrapper.isSelectable %}
         <span style="{{ reactor.getReactorLoadStyle }}">{{ reactor.getLoad }}/{{ reactor.getCapacity }}</span>
         {% endif %}
       </div>
@@ -83,7 +83,7 @@
         <img class="center" onclick="this.up('div').down('input').value={{ ship.getMaxTorpedos }}"
           src="assets/buttons/torp.png" title="Torpedos" />
         {% endif %}
-        {% if wrapper.isOwnedByCurrentUser %}
+        {% if wrapper.isSelectable %}
         <input type="text" size="3" name="torp[{{ shipId }}]" value="{{ ship.getTorpedoCount }}" />
         <span>Max.</span> {{ ship.getMaxTorpedos }}
         {% else %}

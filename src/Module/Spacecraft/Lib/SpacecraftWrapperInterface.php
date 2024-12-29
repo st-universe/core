@@ -42,7 +42,7 @@ interface SpacecraftWrapperInterface
      */
     public function getDamagedSystems(): array;
 
-    public function isOwnedByCurrentUser(): bool;
+    public function isSelectable(): bool;
 
     public function canBeRepaired(): bool;
 
