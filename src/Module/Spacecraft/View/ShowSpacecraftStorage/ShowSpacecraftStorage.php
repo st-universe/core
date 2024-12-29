@@ -17,7 +17,7 @@ final class ShowSpacecraftStorage implements ViewControllerInterface
 
     /** @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader */
     public function __construct(
-        private SpacecraftLoaderInterface $spacecraftLoader,
+        private SpacecraftLoaderInterface $spacecraftLoader
     ) {}
 
     #[Override]

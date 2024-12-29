@@ -1,5 +1,7 @@
-{# needs following variables: SHIP, wrapper) #}
+{# needs following variables: wrapper) #}
 {% from 'html/macros.twig' import onClickSpacecraft %}
+{% from 'html/shipmacros.twig' import spacecraftImageWithoutWarp %}
+
 {% set ship = wrapper.get %}
 {% set shipId = ship.getId %}
 <li>
@@ -17,22 +19,18 @@
       <td style="width: 20px; vertical-align: middle;">
       </td>
       <td style="width: 120px; vertical-align: middle;">
-        {% from 'html/shipmacros.twig' import spacecraftImageWithoutWarp %}
         {{ spacecraftImageWithoutWarp(ship) }}
       </td>
       <td style="width: 150px;">
         <table class="tcal">
           <tr>
             <th style="width: 20px; text-align: center;">
-              <img src="/assets/buttons/modul_1.png" />
+              <img src="/assets/buttons/modul_1.png" title="Hülle" />
             </th>
             <td style="vertical-align: middle; text-align: center;">
               {% autoescape false %}
               {{ wrapper.getHullSystemData.getHullStatusBar }}
               {% endautoescape %}
-            </td>
-            <td style="text-align: center;">
-              {{ ship.getHull }}
             </td>
           </tr>
         </table>
@@ -46,15 +44,12 @@
         <table class="tcal">
           <tr>
             <th style="width: 20px; text-align: center;">
-              <img src="/assets/buttons/modul_2.png" />
+              <img src="/assets/buttons/modul_2.png" title="Schilde" />
             </th>
             <td style="text-align: center; vertical-align: middle;">
               {% autoescape false %}
               {{ shields.getShieldStatusBar }}
               {% endautoescape %}
-            </td>
-            <td style="text-align: center;">
-              {{ ship.getShield }}
             </td>
           </tr>
         </table>
@@ -66,15 +61,12 @@
         <table class="tcal">
           <tr>
             <th style="text-align: center; width: 20px;">
-              <img src="/assets/buttons/modul_8.png" />
+              <img src="/assets/buttons/modul_8.png" title="EPS" />
             </th>
             <td style="vertical-align: middle; text-align: center;">
               {% autoescape false %}
               {{ eps.getEpsStatusBar }}
               {% endautoescape %}
-            </td>
-            <td style="text-align: center;">
-              {{ eps.getEps }}
             </td>
           </tr>
         </table>

@@ -4,6 +4,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Module\Spacecraft\Lib\TSpacecraftItemInterface;
+use Stu\Orm\Entity\LocationInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\SpacecraftRumpInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
@@ -60,7 +61,7 @@ interface StationRepositoryInterface extends ObjectRepository
         MapInterface|StarSystemMapInterface|null $field = null
     ): array;
 
-    public function isStationOnLocation(SpacecraftInterface $spacecraft): bool;
+    public function getStationOnLocation(LocationInterface $location): ?StationInterface;
 
     /**
      * @return array<StationInterface>

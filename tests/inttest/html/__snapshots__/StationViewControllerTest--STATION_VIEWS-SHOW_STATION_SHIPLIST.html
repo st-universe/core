@@ -19,69 +19,61 @@
         <ul>
         
 <li>
-    <table class="use" style="width: 100%;" onmouseover="shipSelectorHover(this);" onmouseout="shipSelectorHoverEnd(this);" onclick="shipSelectorChoose(this);">
-        <tr>
-            <td class="darkbg" colspan="5">
-                                <a type="hidden" href="ship.php?SHOW_SPACECRAFT=1&amp;id=42"></a>
-                                Aerie | Siedler 101
-            </td>
-        </tr>
-        <tr>
-            <td style="width: 20px; vertical-align: middle;">
-                                <a href="station.php?id=43&amp;B_UNDOCK_SHIP=1&amp;target=42&amp;sstr=MOCKED_SESSIONSTRING"><img src="/assets/buttons/dock1.png" title="abdocken"></a>
-                            </td>
-            <td style="width: 120px; vertical-align: middle;">
-                <img src="/assets/ships/6501.png" title="Aerie">
+  <table class="use" style="width: 100%;" onmouseover="shipSelectorHover(this);" onmouseout="shipSelectorHoverEnd(this);" onclick="shipSelectorChoose(this);">
+    <tr>
+      <td class="darkbg" colspan="5">
+                <a type="hidden" href="javascript:void(0);" onclick="switchInnerContent('SHOW_SPACECRAFT', 'Aerie', 'id=42',
+'ship.php');
+updateSelectedSpacecraftId('42');"></a>
+                Aerie | Siedler 101
+      </td>
+    </tr>
+    <tr>
+      <td style="width: 20px; vertical-align: middle;">
+      </td>
+      <td style="width: 120px; vertical-align: middle;">
+        <img src="/assets/ships/6501.png" title="Aerie">
 
-            </td>
+      </td>
+      <td style="width: 150px;">
+        <table class="tcal">
+          <tr>
+            <th style="width: 20px; text-align: center;">
+              <img src="/assets/buttons/modul_1.png" title="H&Atilde;&frac14;lle">
+            </th>
+            <td style="vertical-align: middle; text-align: center;">
+                            <img alt="H&Atilde;&frac14;lle" src="/assets/bars/balken.png" style="background-color: #00aa00;height: 12px; width:50px;" title="H&Atilde;&frac14;lle: 819/819">
+                          </td>
+          </tr>
+        </table>
+      </td>
             <td style="width: 150px;">
-                <table class="tcal">
-                    <tr>
-                        <th style="width: 20px; text-align: center;">
-                            <img src="/assets/buttons/modul_1.png">
-                        </th>
-                        <td style="vertical-align: middle; text-align: center;">
-                                                        <img alt="H&Atilde;&frac14;lle" src="/assets/bars/balken.png" style="background-color: #00aa00;height: 12px; width:50px;" title="H&Atilde;&frac14;lle: 819/819">
-                                                    </td>
-                        <td style="text-align: center;">
-                            819
-                        </td>
-                    </tr>
-                </table>
-            </td>
-                                                <td style="width: 150px;">
-                                <table class="tcal">
-                    <tr>
-                        <th style="width: 20px; text-align: center;">
-                            <img src="/assets/buttons/modul_2.png">
-                        </th>
-                        <td style="text-align: center; vertical-align: middle;">
-                                                        <img alt="Schilde" src="/assets/bars/balken.png" style="background-color: #004aff;height: 12px; width:50px;" title="Schilde: 819/819">
-                                                    </td>
-                        <td style="text-align: center;">
-                            819
-                        </td>
-                    </tr>
-                </table>
-                            </td>
-            <td style="width: 150px;">
-                                <table class="tcal">
-                    <tr>
-                        <th style="text-align: center; width: 20px;">
-                            <img src="/assets/buttons/modul_8.png">
-                        </th>
-                        <td style="vertical-align: middle; text-align: center;">
-                                                        <img alt="Energie" src="/assets/bars/balken.png" style="background-color: #aaaa00;height: 12px; width:50px;" title="Energie: 107/108"><img alt="Energie" src="/assets/bars/balken.png" style="background-color: #777777;height: 12px; width:0px;" title="Energie: 107/108">
-                                                    </td>
-                        <td style="text-align: center;">
-                            107
-                        </td>
-                    </tr>
-                </table>
-                            </td>
-                    </tr>
-    </table>
-    <input type="hidden" name="selshipid" id="selshipid" value="42">
+                        <table class="tcal">
+          <tr>
+            <th style="width: 20px; text-align: center;">
+              <img src="/assets/buttons/modul_2.png" title="Schilde">
+            </th>
+            <td style="text-align: center; vertical-align: middle;">
+                            <img alt="Schilde" src="/assets/bars/balken.png" style="background-color: #004aff;height: 12px; width:50px;" title="Schilde: 819/819">
+                          </td>
+          </tr>
+        </table>
+              </td>
+      <td style="width: 150px;">
+                        <table class="tcal">
+          <tr>
+            <th style="text-align: center; width: 20px;">
+              <img src="/assets/buttons/modul_8.png" title="EPS">
+            </th>
+            <td style="vertical-align: middle; text-align: center;">
+                            <img alt="Energie" src="/assets/bars/balken.png" style="background-color: #aaaa00;height: 12px; width:50px;" title="Energie: 107/108"><img alt="Energie" src="/assets/bars/balken.png" style="background-color: #777777;height: 12px; width:0px;" title="Energie: 107/108">
+                          </td>
+          </tr>
+        </table>
+              </td>
+          </tr>
+  </table>
+  <input type="hidden" id="selshipid" value="42">
 </li>
     </ul>
       </div>
