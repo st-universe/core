@@ -12,13 +12,13 @@ use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Component\Game\ModuleViewEnum;
-use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Module\Control\ViewContext;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\SpacecraftTypeShowStragegyInterface;
 use Stu\Module\Station\Lib\StationLoaderInterface;
+use Stu\Orm\Entity\ConstructionProgressInterface;
 use Stu\Orm\Entity\StationInterface;
 use Stu\Orm\Entity\StationShipRepairInterface;
 use Stu\Orm\Repository\ShipyardShipQueueRepositoryInterface;
@@ -53,22 +53,8 @@ final class StationShowStrategy implements SpacecraftTypeShowStragegyInterface
             false
         );
 
-        $this->doConstructionStuff($station, $game);
-        $this->doStationStuff($station, $game);
-
-        return $this;
-    }
-
-    private function doConstructionStuff(StationInterface $station, GameControllerInterface $game): void
-    {
-        if (!$station->isConstruction() && $station->getState() !== SpacecraftStateEnum::SHIP_STATE_UNDER_SCRAPPING) {
-            return;
-        }
-
         $progress =  $station->getConstructionProgress();
-        if ($progress === null || $progress->getRemainingTicks() === 0) {
-            $game->setTemplateVar('CONSTRUCTION_PROGRESS_WRAPPER', null);
-        } else {
+        if ($progress !== null && $progress->getRemainingTicks() !== 0) {
             $dockedWorkbees = $this->stationUtility->getDockedWorkbeeCount($station);
             $neededWorkbees = $this->stationUtility->getNeededWorkbeeCount($station, $station->getRump());
 
@@ -78,6 +64,18 @@ final class StationShowStrategy implements SpacecraftTypeShowStragegyInterface
                 $dockedWorkbees,
                 $neededWorkbees
             ));
+        }
+
+        $this->doConstructionStuff($station, $progress, $game);
+        $this->doStationStuff($station, $game);
+
+        return $this;
+    }
+
+    private function doConstructionStuff(StationInterface $station, ?ConstructionProgressInterface $progress, GameControllerInterface $game): void
+    {
+        if (!$station->isConstruction()) {
+            return;
         }
 
         if ($progress === null || $progress->getRemainingTicks() === 0) {
