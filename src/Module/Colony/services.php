@@ -174,6 +174,7 @@ use Stu\Module\Control\GameController;
 use Stu\Module\Game\Action\Transfer\Transfer;
 use Stu\Module\Game\View\Overview\Overview;
 use Stu\Module\Game\View\ShowTransfer\ShowTransfer;
+use Stu\Module\Spacecraft\View\ShowSpacecraftStorage\ShowSpacecraftStorage;
 use Stu\PlanetGenerator\PlanetGenerator;
 use Stu\PlanetGenerator\PlanetGeneratorInterface;
 
@@ -292,6 +293,7 @@ return [
         ShowShipDisassembly::VIEW_IDENTIFIER => autowire(ShowShipDisassembly::class),
         ShowGiveUp::VIEW_IDENTIFIER => autowire(ShowGiveUp::class),
         ShowSectorScan::VIEW_IDENTIFIER => autowire(ShowSectorScan::class),
+        ShowSpacecraftStorage::VIEW_IDENTIFIER => autowire(ShowSpacecraftStorage::class),
         ShowPodsLocations::VIEW_IDENTIFIER => autowire(ShowPodsLocations::class),
         ShowShuttleManagement::VIEW_IDENTIFIER => autowire(ShowShuttleManagement::class),
         ShowWaste::VIEW_IDENTIFIER => autowire(ShowWaste::class),

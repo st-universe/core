@@ -1,7 +1,7 @@
 <ul>
     {% for group in GROUPS %}
     {% for wrapper in group.getWrappers %}
-    {% include 'html/ship/shipSelector.twig' %}
+    {% include 'html/colony/component/shipSelector.twig' %}
     {% endfor %}
     {% endfor %}
 </ul>

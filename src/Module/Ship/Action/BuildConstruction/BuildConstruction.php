@@ -94,8 +94,8 @@ final class BuildConstruction implements ActionControllerInterface
         }
 
         // check if there already is a base
-        if ($this->stationRepository->isStationOnLocation($ship)) {
-            $game->addInformation(_("Hier ist bereits eine Station errichtet"));
+        if ($this->stationRepository->getStationOnLocation($ship->getLocation()) !== null) {
+            $game->addInformation("Hier ist bereits eine Station errichtet");
             return;
         }
 

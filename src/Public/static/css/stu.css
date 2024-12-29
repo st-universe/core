@@ -1582,6 +1582,12 @@ td.populationValue img {
   vertical-align: middle;
 }
 
+div.orbitInfoContainer {
+  display: grid;
+  grid-template-columns: 32% auto;
+  column-gap: 2%;
+}
+
 div.colonyInfoContainer {
   display: grid;
   grid-template-columns: 32% 32% 32%;

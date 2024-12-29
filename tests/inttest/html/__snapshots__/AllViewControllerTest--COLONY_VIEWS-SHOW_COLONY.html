@@ -1256,11 +1256,13 @@
     <input type="hidden" name="hosttype" value="1">
     <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
     <div style="width: 40vw;">
-    <div id="shipinorbit" class="box">
-        <div class="box_title">Schiffe im Orbit</div>
-        <div class="box_body">
-            <ul id="shipselector">
-                                                <li>
+        <div class="">
+                <div id="shipinorbit" class="box">
+            <div class="box_title">Schiffe im Orbit</div>
+            <div class="box_body">
+                <ul id="shipselector">
+                                                            
+<li>
   <table class="use" style="width: 100%;" onmouseover="shipSelectorHover(this);" onmouseout="shipSelectorHoverEnd(this);" onclick="shipSelectorChoose(this);">
     <tr>
       <td class="darkbg" colspan="5">
@@ -1274,21 +1276,18 @@ updateSelectedSpacecraftId('77');"></a>
       <td style="width: 20px; vertical-align: middle;">
       </td>
       <td style="width: 120px; vertical-align: middle;">
-                <img src="/assets/ships/6501.png" title="Aerie">
+        <img src="/assets/ships/6501.png" title="Aerie">
 
       </td>
       <td style="width: 150px;">
         <table class="tcal">
           <tr>
             <th style="width: 20px; text-align: center;">
-              <img src="/assets/buttons/modul_1.png">
+              <img src="/assets/buttons/modul_1.png" title="H&uuml;lle">
             </th>
             <td style="vertical-align: middle; text-align: center;">
                             <img alt="H&uuml;lle" src="/assets/bars/balken.png" style="background-color: #00aa00;height: 12px; width:50px;" title="H&uuml;lle: 819/819">
                           </td>
-            <td style="text-align: center;">
-              819
-            </td>
           </tr>
         </table>
       </td>
@@ -1300,14 +1299,15 @@ updateSelectedSpacecraftId('77');"></a>
   </table>
   <input type="hidden" id="selshipid" value="77">
 </li>
-                            </ul>
-                                    <div style="width: 100%;">
-                <br>
-                <a href="javascript:void(0);" onclick="showTransfer(42, 'colony', document.getElementById('selshipid').value, 'ship', 1, 0);" onmouseover="cp('beamfrom','buttons/b_down2')" onmouseout="cp('beamfrom','buttons/b_down1')"><img src="/assets/buttons/b_down1.png" name="beamfrom" title="Von Schiff beamen"></a>
-                <a href="javascript:void(0);" onclick="showTransfer(42, 'colony', document.getElementById('selshipid').value, 'ship', 1, 1);" onmouseover="cp('beamto','buttons/b_up2')" onmouseout="cp('beamto','buttons/b_up1')"><img src="/assets/buttons/b_up1.png" name="beamto" title="Zu Schiff beamen"></a>
-                <a href="javascript:void(0);" onclick="getOrbitShipList(42);">Liste</a> | <a href="javascript:void(0);" onclick="switchInnerContent('SHOW_SPACECRAFT_MANAGEMENT', 'Orbitalmanagement', 'id=42');">Management</a>
-            </div>
-                    </div>
+                                    </ul>
+                                                <div style="width: 100%;">
+                    <br>
+                    <a href="javascript:void(0);" onclick="showTransfer(42, 'colony', document.getElementById('selshipid').value, 'ship', 1, 0);" onmouseover="cp('beamfrom','buttons/b_down2')" onmouseout="cp('beamfrom','buttons/b_down1')"><img src="/assets/buttons/b_down1.png" name="beamfrom" title="Von Schiff beamen"></a>
+                    <a href="javascript:void(0);" onclick="showTransfer(42, 'colony', document.getElementById('selshipid').value, 'ship', 1, 1);" onmouseover="cp('beamto','buttons/b_up2')" onmouseout="cp('beamto','buttons/b_up1')"><img src="/assets/buttons/b_up1.png" name="beamto" title="Zu Schiff beamen"></a>
+                    <a href="javascript:void(0);" onclick="getOrbitShipList(42);">Liste</a> | <a href="javascript:void(0);" onclick="switchInnerContent('SHOW_SPACECRAFT_MANAGEMENT', 'Orbitalmanagement', 'id=42');">Management</a>
+                </div>
+                            </div>
+        </div>
     </div>
     <br>
     <div id="colonyinfocontainer" class="colonyInfoContainer">

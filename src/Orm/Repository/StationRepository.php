@@ -18,6 +18,7 @@ use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\CrewAssignment;
+use Stu\Orm\Entity\LocationInterface;
 use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\SpacecraftRumpInterface;
 use Stu\Orm\Entity\Spacecraft;
@@ -251,19 +252,9 @@ final class StationRepository extends EntityRepository implements StationReposit
     }
 
     #[Override]
-    public function isStationOnLocation(SpacecraftInterface $spacecraft): bool
+    public function getStationOnLocation(LocationInterface $location): ?StationInterface
     {
-        $query = $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT COUNT(s.id) FROM %s s
-                WHERE s.location = :location',
-                Station::class
-            )
-        )->setParameters([
-            'location' => $spacecraft->getLocation()
-        ]);
-
-        return $query->getSingleScalarResult() > 0;
+        return $this->findOneBy(['location' => $location]);
     }
 
     #[Override]

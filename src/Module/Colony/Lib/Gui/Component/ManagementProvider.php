@@ -12,18 +12,22 @@ use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Database\View\Category\Wrapper\DatabaseCategoryWrapperFactoryInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Entity\ColonyDepositMiningInterface;
 use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Repository\StationRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 final class ManagementProvider implements PlanetFieldHostComponentInterface
 {
     public function __construct(
+        private StationRepositoryInterface $stationRepository,
         private TorpedoTypeRepositoryInterface $torpedoTypeRepository,
         private DatabaseCategoryWrapperFactoryInterface $databaseCategoryWrapperFactory,
         private OrbitShipWrappersRetrieverInterface $orbitShipWrappersRetriever,
         private ColonyFunctionManagerInterface $colonyFunctionManager,
         private ColonyLibFactoryInterface $colonyLibFactory,
+        private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
         private StuTime $stuTime
     ) {}
 
@@ -67,6 +71,10 @@ final class ManagementProvider implements PlanetFieldHostComponentInterface
             $this->colonyLibFactory->createColonyPopulationCalculator($entity)
         );
 
+        $station = $this->stationRepository->getStationOnLocation($entity->getLocation());
+        if ($station !== null) {
+            $game->setTemplateVar('ORBIT_STATION_WRAPPER', $this->spacecraftWrapperFactory->wrapStation($station));
+        }
         $game->setTemplateVar('FIRST_ORBIT_SPACECRAFT', $firstOrbitShipWrapper);
 
         $particlePhalanx = $this->colonyFunctionManager->hasFunction($entity, BuildingFunctionEnum::BUILDING_FUNCTION_PARTICLE_PHALANX);
