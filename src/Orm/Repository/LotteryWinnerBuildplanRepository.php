@@ -28,6 +28,9 @@ final class LotteryWinnerBuildplanRepository extends EntityRepository implements
         $em->persist($lotteryWinnerBuildplan);
     }
 
+    /**
+     * @return LotteryWinnerBuildplanInterface[]
+     */
     public function findByFactionId(?int $factionId): array
     {
         return $this->getEntityManager()

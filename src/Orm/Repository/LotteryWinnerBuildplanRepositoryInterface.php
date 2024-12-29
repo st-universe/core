@@ -16,4 +16,9 @@ interface LotteryWinnerBuildplanRepositoryInterface extends ObjectRepository
     public function prototype(): LotteryWinnerBuildplanInterface;
 
     public function save(LotteryWinnerBuildplanInterface $lotteryWinnerBuildplan): void;
+
+    /**
+     * @return LotteryWinnerBuildplanInterface[]
+     */
+    public function findByFactionId(?int $factionId): array;
 }
