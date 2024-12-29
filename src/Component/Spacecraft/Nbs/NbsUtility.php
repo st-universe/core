@@ -47,7 +47,7 @@ final class NbsUtility implements NbsUtilityInterface
                 $field
             ), $game->getUser()->getId());
 
-            $singleSpacecraftsNbs = new ShipNfsIterator($this->shipRepository->getSingleSpacecraftScannerResults(
+            $singleSpacecraftsNbs = new ShipNfsIterator($this->spacecraftRepository->getSingleSpacecraftScannerResults(
                 $spacecraft,
                 $tachyonActive,
                 $field

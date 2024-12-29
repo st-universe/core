@@ -33,12 +33,12 @@ enum SpacecraftTypeEnum: string
         };
     }
 
-    public function getModuleView(): ModuleViewEnum
+    public function getModuleView(): ?ModuleViewEnum
     {
         return match ($this) {
             self::SHIP => ModuleViewEnum::SHIP,
             self::STATION => ModuleViewEnum::STATION,
-            default => throw new RuntimeException(sprintf('unsupported operation for %s', $this->name))
+            default => null
         };
     }
 

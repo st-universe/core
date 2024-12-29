@@ -208,9 +208,10 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
     }
 
     #[Override]
-    public function isOwnedByCurrentUser(): bool
+    public function isSelectable(): bool
     {
-        return $this->game->getUser() === $this->spacecraft->getUser();
+        return $this->game->getUser() === $this->spacecraft->getUser()
+            && $this->spacecraft->getType()->getModuleView() !== null;
     }
 
     #[Override]

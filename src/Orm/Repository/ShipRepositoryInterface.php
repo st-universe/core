@@ -4,7 +4,6 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Module\Ship\Lib\TFleetShipItemInterface;
-use Stu\Module\Spacecraft\Lib\TSpacecraftItemInterface;
 use Stu\Orm\Entity\LocationInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\Ship;
@@ -37,15 +36,6 @@ interface ShipRepositoryInterface extends ObjectRepository
     public function getByLocationAndUser(
         LocationInterface $location,
         UserInterface $user
-    ): array;
-
-    /**
-     * @return array<TSpacecraftItemInterface>
-     */
-    public function getSingleSpacecraftScannerResults(
-        SpacecraftInterface $spacecraft,
-        bool $showCloaked = false,
-        MapInterface|StarSystemMapInterface|null $field = null
     ): array;
 
     /**

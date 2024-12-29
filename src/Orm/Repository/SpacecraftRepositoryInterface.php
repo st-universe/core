@@ -3,9 +3,11 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
-use Stu\Orm\Entity\LocationInterface;
+use Stu\Module\Spacecraft\Lib\TSpacecraftItemInterface;
+use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Entity\UserInterface;
 
 /**
@@ -42,14 +44,19 @@ interface SpacecraftRepositoryInterface extends ObjectRepository
      */
     public function getPlayerSpacecraftsForTick(): iterable;
 
-    /**
-     * @return array<SpacecraftInterface>
-     */
+    /** @return array<SpacecraftInterface> */
     public function getNpcSpacecraftsForTick(): array;
 
     public function isCloakedSpacecraftAtLocation(
         SpacecraftInterface $spacecraft
     ): bool;
+
+    /** @return array<TSpacecraftItemInterface> */
+    public function getSingleSpacecraftScannerResults(
+        SpacecraftInterface $spacecraft,
+        bool $showCloaked = false,
+        MapInterface|StarSystemMapInterface|null $field = null
+    ): array;
 
     public function getRandomSpacecraftIdWithCrewByUser(int $userId): ?int;
 

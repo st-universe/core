@@ -1,5 +1,5 @@
 <td>
-    {% if wrapper.isOwnedByCurrentUser and ship.canMan %}
+    {% if wrapper.isSelectable and ship.canMan %}
 
     {% set crewCount = ship.getCrewCount %}
     {% set neededCrewCount = ship.getNeededCrewCount %}
