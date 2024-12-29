@@ -10,4 +10,6 @@ interface LotteryWinnerBuildplanInterface
     public function getBuildplan(): SpacecraftBuildplanInterface;
 
     public function getChance(): int;
+
+    public function getFactionId(): ?int;
 }

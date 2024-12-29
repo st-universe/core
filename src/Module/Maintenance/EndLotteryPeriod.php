@@ -177,7 +177,7 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
     private function transmitShip(UserInterface $winner, TradePostInterface $tradePost): void
     {
         /** @var array<int, LotteryWinnerBuildplanInterface> */
-        $winnerBuildplans = $this->lotteryWinnerBuildplanRepository->findAll();
+        $winnerBuildplans = $this->lotteryWinnerBuildplanRepository->findByFactionId($winner->getFactionId());
         if (empty($winnerBuildplans)) {
             return;
         }

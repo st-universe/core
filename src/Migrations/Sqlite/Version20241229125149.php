@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20241228164049 extends AbstractMigration
+final class Version20241229125149 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -253,7 +253,7 @@ final class Version20241228164049 extends AbstractMigration
         $this->addSql('CREATE TABLE stu_location_mining (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, location_id INTEGER NOT NULL, commodity_id INTEGER NOT NULL, actual_amount INTEGER NOT NULL, max_amount INTEGER NOT NULL, depleted_at INTEGER DEFAULT NULL, CONSTRAINT FK_AC85C1AC64D218E FOREIGN KEY (location_id) REFERENCES stu_location (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_AC85C1ACB4ACC212 FOREIGN KEY (commodity_id) REFERENCES stu_commodity (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_AC85C1AC64D218E ON stu_location_mining (location_id)');
         $this->addSql('CREATE INDEX IDX_AC85C1ACB4ACC212 ON stu_location_mining (commodity_id)');
-        $this->addSql('CREATE TABLE stu_lottery_buildplan (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, buildplan_id INTEGER NOT NULL, chance INTEGER NOT NULL, CONSTRAINT FK_E8141D9B8638E4E7 FOREIGN KEY (buildplan_id) REFERENCES stu_buildplan (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE stu_lottery_buildplan (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, buildplan_id INTEGER NOT NULL, chance INTEGER NOT NULL, faction_id INTEGER DEFAULT NULL, CONSTRAINT FK_E8141D9B8638E4E7 FOREIGN KEY (buildplan_id) REFERENCES stu_buildplan (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_E8141D9B8638E4E7 ON stu_lottery_buildplan (buildplan_id)');
         $this->addSql('CREATE TABLE stu_lottery_ticket (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, period VARCHAR(255) NOT NULL, is_winner BOOLEAN DEFAULT NULL, CONSTRAINT FK_6300976CA76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_6300976CA76ED395 ON stu_lottery_ticket (user_id)');
