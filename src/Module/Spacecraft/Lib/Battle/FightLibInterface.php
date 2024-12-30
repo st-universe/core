@@ -33,7 +33,5 @@ interface FightLibInterface
         BattlePartyFactoryInterface $battlePartyFactory
     ): array;
 
-    public function isTargetOutsideFinishedTholianWeb(SpacecraftInterface $ship, SpacecraftInterface $target): bool;
-
     public function calculateHealthPercentage(ShipInterface $target): int;
 }

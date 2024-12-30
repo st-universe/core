@@ -6,14 +6,14 @@ namespace Stu\Module\Spacecraft\Action\StartTakeover;
 
 use Override;
 use request;
-use Stu\Component\Spacecraft\Nbs\NbsUtilityInterface;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Exception\SanityCheckException;
+use Stu\Lib\Interaction\InteractionCheckerBuilderFactoryInterface;
+use Stu\Lib\Interaction\InteractionCheckType;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Maindesk\Action\ColonizationShip\ColonizationShip;
 use Stu\Module\Spacecraft\Lib\Battle\FightLibInterface;
-use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\ShipTakeoverManagerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftStateChangerInterface;
@@ -27,11 +27,10 @@ final class StartTakeover implements ActionControllerInterface
     /** @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader */
     public function __construct(
         private SpacecraftLoaderInterface $spacecraftLoader,
-        private InteractionCheckerInterface $interactionChecker,
-        private NbsUtilityInterface $nbsUtility,
         private FightLibInterface $fightLib,
         private ShipTakeoverManagerInterface $shipTakeoverManager,
-        private SpacecraftStateChangerInterface $spacecraftStateChanger
+        private SpacecraftStateChangerInterface $spacecraftStateChanger,
+        private InteractionCheckerBuilderFactoryInterface $interactionCheckerBuilderFactory
     ) {}
 
     #[Override]
@@ -52,9 +51,9 @@ final class StartTakeover implements ActionControllerInterface
         );
 
         $wrapper = $wrappers->getSource();
-        $ship = $wrapper->get();
+        $spacecraft = $wrapper->get();
 
-        if ($ship->getTakeoverActive() !== null) {
+        if ($spacecraft->getTakeoverActive() !== null) {
             return;
         }
 
@@ -73,44 +72,28 @@ final class StartTakeover implements ActionControllerInterface
             return;
         }
 
-        if ($target->getUser()->isNpc()) {
-            $game->addInformation(_('Aktion nicht möglich, der Spieler ist NPC!'));
+        if (!$this->interactionCheckerBuilderFactory
+            ->createInteractionChecker()
+            ->setSource($spacecraft)
+            ->setTarget($target)
+            ->setCheckTypes([
+                InteractionCheckType::EXPECT_SOURCE_ENABLED,
+                InteractionCheckType::EXPECT_SOURCE_SUFFICIENT_CREW,
+                InteractionCheckType::EXPECT_SOURCE_TACHYON,
+                InteractionCheckType::EXPECT_TARGET_NO_VACATION,
+                InteractionCheckType::EXPECT_TARGET_ALSO_IN_FINISHED_WEB
+            ])
+            ->check($game)) {
             return;
         }
 
-        if ($target->getUser()->isVacationRequestOldEnough()) {
-            $game->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
-            return;
-        }
-
-        if (!$ship->hasEnoughCrew($game)) {
-            return;
-        }
-        if (!$this->interactionChecker->checkPosition($target, $ship)) {
-            throw new SanityCheckException('InteractionChecker->checkPosition failed', self::ACTION_IDENTIFIER);
-        }
-
-        if (!$this->fightLib->canAttackTarget($ship, $target, false, false)) {
+        if (!$this->fightLib->canAttackTarget($spacecraft, $target, false, false)) {
             throw new SanityCheckException('Target cant be attacked', self::ACTION_IDENTIFIER);
-        }
-
-        if ($target->getCloakState() && !$this->nbsUtility->isTachyonActive($ship)) {
-            throw new SanityCheckException('Attacked cloaked ship without active tachyon', self::ACTION_IDENTIFIER);
         }
 
         $epsSystemData = $wrapper->getEpsSystemData();
         if ($epsSystemData === null || $epsSystemData->getEps() === 0) {
             $game->addInformation(_('Keine Energie vorhanden'));
-            return;
-        }
-
-        if ($ship->isDisabled()) {
-            $game->addInformation(_('Das Schiff ist kampfunfähig'));
-            return;
-        }
-
-        if ($this->fightLib->isTargetOutsideFinishedTholianWeb($ship, $target)) {
-            $game->addInformation(_('Das Ziel ist nicht mit im Energienetz gefangen'));
             return;
         }
 
@@ -149,7 +132,7 @@ final class StartTakeover implements ActionControllerInterface
         }
 
         $this->spacecraftStateChanger->changeShipState($wrapper, SpacecraftStateEnum::SHIP_STATE_ACTIVE_TAKEOVER);
-        $this->shipTakeoverManager->startTakeover($ship, $target, $neededPrestige);
+        $this->shipTakeoverManager->startTakeover($spacecraft, $target, $neededPrestige);
 
         $game->addInformationf(
             'Übernahme der %s wurde gestartet. Fertigstellung in %d Runden.',

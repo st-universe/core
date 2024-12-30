@@ -2,9 +2,11 @@
 
 namespace Stu\Module\Ship\Lib;
 
+use Stu\Lib\Interaction\EntityWithInteractionCheckInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\TholianWebInterface;
 
 interface TholianWebUtilInterface
@@ -24,4 +26,8 @@ interface TholianWebUtilInterface
     ): void;
 
     public function updateWebFinishTime(TholianWebInterface $web, ?int $helperModifier = null): ?int;
+
+    public function isTargetOutsideFinishedTholianWeb(EntityWithInteractionCheckInterface $source, EntityWithInteractionCheckInterface $target): bool;
+
+    public function isTargetInsideFinishedTholianWeb(EntityWithInteractionCheckInterface $source, EntityWithInteractionCheckInterface $target): bool;
 }

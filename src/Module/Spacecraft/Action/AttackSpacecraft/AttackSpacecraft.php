@@ -6,16 +6,16 @@ namespace Stu\Module\Spacecraft\Action\AttackSpacecraft;
 
 use Override;
 use request;
-use Stu\Component\Spacecraft\Nbs\NbsUtilityInterface;
 use Stu\Exception\SanityCheckException;
 use Stu\Lib\Information\InformationWrapper;
+use Stu\Lib\Interaction\InteractionCheckerBuilderFactoryInterface;
+use Stu\Lib\Interaction\InteractionCheckType;
 use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Lib\Pirate\PirateReactionTriggerEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\Lib\Battle\FightLibInterface;
 use Stu\Module\Spacecraft\Lib\Battle\SpacecraftAttackCoreInterface;
-use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
@@ -29,11 +29,10 @@ final class AttackSpacecraft implements ActionControllerInterface
     /** @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader */
     public function __construct(
         private SpacecraftLoaderInterface $spacecraftLoader,
-        private InteractionCheckerInterface $interactionChecker,
-        private NbsUtilityInterface $nbsUtility,
         private FightLibInterface $fightLib,
         private SpacecraftAttackCoreInterface $spacecraftAttackCore,
-        private PirateReactionInterface $pirateReaction
+        private PirateReactionInterface $pirateReaction,
+        private InteractionCheckerBuilderFactoryInterface $interactionCheckerBuilderFactory
     ) {}
 
     #[Override]
@@ -41,17 +40,14 @@ final class AttackSpacecraft implements ActionControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $shipId = request::indInt('id');
-        $targetId = request::getIntFatal('target');
-
         $wrappers = $this->spacecraftLoader->getWrappersBySourceAndUserAndTarget(
-            $shipId,
+            request::indInt('id'),
             $userId,
-            $targetId
+            request::getIntFatal('target')
         );
 
         $wrapper = $wrappers->getSource();
-        $ship = $wrapper->get();
+        $spacecraft = $wrapper->get();
 
         $targetWrapper = $wrappers->getTarget();
         if ($targetWrapper === null) {
@@ -59,16 +55,21 @@ final class AttackSpacecraft implements ActionControllerInterface
         }
         $target = $targetWrapper->get();
 
-        if ($target->getUser()->isVacationRequestOldEnough()) {
-            $game->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
+        if (!$this->interactionCheckerBuilderFactory
+            ->createInteractionChecker()
+            ->setSource($spacecraft)
+            ->setTarget($target)
+            ->setCheckTypes([
+                InteractionCheckType::EXPECT_SOURCE_ENABLED,
+                InteractionCheckType::EXPECT_SOURCE_SUFFICIENT_CREW,
+                InteractionCheckType::EXPECT_SOURCE_UNCLOAKED,
+                InteractionCheckType::EXPECT_SOURCE_UNWARPED,
+                InteractionCheckType::EXPECT_SOURCE_TACHYON,
+                InteractionCheckType::EXPECT_TARGET_NO_VACATION,
+                InteractionCheckType::EXPECT_TARGET_UNWARPED
+            ])
+            ->check($game)) {
             return;
-        }
-
-        if (!$ship->hasEnoughCrew($game)) {
-            return;
-        }
-        if (!$this->interactionChecker->checkPosition($target, $ship)) {
-            throw new SanityCheckException('InteractionChecker->checkPosition failed', self::ACTION_IDENTIFIER);
         }
 
         if ($target->isDestroyed()) {
@@ -77,12 +78,8 @@ final class AttackSpacecraft implements ActionControllerInterface
             return;
         }
 
-        if (!$this->fightLib->canAttackTarget($ship, $target)) {
+        if (!$this->fightLib->canAttackTarget($spacecraft, $target)) {
             throw new SanityCheckException('Target cant be attacked', self::ACTION_IDENTIFIER);
-        }
-
-        if ($target->getCloakState() && !$this->nbsUtility->isTachyonActive($ship)) {
-            throw new SanityCheckException('Attacked cloaked ship without active tachyon', self::ACTION_IDENTIFIER);
         }
 
         $epsSystemData = $wrapper->getEpsSystemData();
@@ -91,12 +88,8 @@ final class AttackSpacecraft implements ActionControllerInterface
             return;
         }
 
-        if ($ship->isDisabled()) {
-            $game->addInformation(_('Das Schiff ist kampfunfähig'));
-            return;
-        }
-        if ($ship instanceof ShipInterface && $ship->getDockedTo() !== null) {
-            $ship->setDockedTo(null);
+        if ($spacecraft instanceof ShipInterface && $spacecraft->getDockedTo() !== null) {
+            $spacecraft->setDockedTo(null);
         }
 
         $isFleetFight = false;
@@ -107,10 +100,10 @@ final class AttackSpacecraft implements ActionControllerInterface
         $this->pirateReaction->checkForPirateReaction(
             $target,
             PirateReactionTriggerEnum::ON_ATTACK,
-            $ship
+            $spacecraft
         );
 
-        if ($ship->isDestroyed()) {
+        if ($spacecraft->isDestroyed()) {
             $game->addInformationWrapper($informations);
             return;
         }

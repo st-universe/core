@@ -5,6 +5,7 @@ namespace Stu\Module\Spacecraft\Lib\Destruction\Handler;
 use Override;
 use RuntimeException;
 use Stu\Lib\Information\InformationInterface;
+use Stu\Module\Ship\Lib\TholianWebUtilInterface;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestroyerInterface;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionCauseEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
@@ -21,7 +22,8 @@ class TholianWebDestruction implements SpacecraftDestructionHandlerInterface
         private TholianWebRepositoryInterface $tholianWebRepository,
         private SpacecraftSystemRepositoryInterface $spacecraftSystemRepository,
         private SpacecraftRepositoryInterface $spacecraftRepository,
-        private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory
+        private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
+        private TholianWebUtilInterface $tholianWebUtil
     ) {}
 
     #[Override]
@@ -46,6 +48,8 @@ class TholianWebDestruction implements SpacecraftDestructionHandlerInterface
         if ($owningSpacecraftSystem === null) {
             return;
         }
+
+        $this->tholianWebUtil->resetWebHelpers($tholianWeb, $this->spacecraftWrapperFactory);
 
         /** @var ShipInterface */
         $owningShip = $owningSpacecraftSystem->getSpacecraft();

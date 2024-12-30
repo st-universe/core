@@ -20,12 +20,11 @@ use Stu\Module\Spacecraft\Lib\Battle\Party\AttackedBattleParty;
 use Stu\Module\Spacecraft\Lib\Battle\Party\AttackingBattleParty;
 use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyFactoryInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
-use Stu\Module\Spacecraft\Lib\ShipNfsItem;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\TrumfieldNfsItem;
 use Stu\Orm\Entity\SpacecraftBuildplanInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StationInterface;
-use Stu\Orm\Entity\TholianWebInterface;
 use Stu\StuTestCase;
 
 class FightLibTest extends StuTestCase
@@ -760,89 +759,13 @@ class FightLibTest extends StuTestCase
         $this->assertTrue($isFleetFight === $expectedIsFleet);
     }
 
-    public function testisTargetOutsideFinishedTholianWebExpectFalseWhenNoWeb(): void
+    public function testIsBoardingPossibleExpectFalseWhenTrumfield(): void
     {
-        $ship = $this->mock(ShipInterface::class);
-        $target = $this->mock(ShipInterface::class);
+        $nfsItem = $this->mock(TrumfieldNfsItem::class);
 
-        $ship->shouldReceive('getHoldingWeb')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(null);
-
-        $result = $this->subject->isTargetOutsideFinishedTholianWeb($ship, $target);
+        $result = FightLib::isBoardingPossible($nfsItem);
 
         $this->assertFalse($result);
-    }
-
-    public function testisTargetOutsideFinishedTholianWebExpectFalseWhenWebUnfinished(): void
-    {
-        $ship = $this->mock(ShipInterface::class);
-        $target = $this->mock(ShipInterface::class);
-        $web = $this->mock(TholianWebInterface::class);
-
-        $ship->shouldReceive('getHoldingWeb')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($web);
-        $web->shouldReceive('isFinished')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(false);
-
-        $result = $this->subject->isTargetOutsideFinishedTholianWeb($ship, $target);
-
-        $this->assertFalse($result);
-    }
-
-    public function testisTargetOutsideFinishedTholianWebExpectFalseWhenTargetInSameFinishedWeb(): void
-    {
-        $ship = $this->mock(ShipInterface::class);
-        $target = $this->mock(ShipInterface::class);
-        $web = $this->mock(TholianWebInterface::class);
-
-        $ship->shouldReceive('getHoldingWeb')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($web);
-        $web->shouldReceive('isFinished')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(true);
-
-        $target->shouldReceive('getHoldingWeb')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($web);
-
-        $result = $this->subject->isTargetOutsideFinishedTholianWeb($ship, $target);
-
-        $this->assertFalse($result);
-    }
-
-    public function testisTargetOutsideFinishedTholianWebExpectTrueWhenTargetOutsideFinishedWeb(): void
-    {
-        $ship = $this->mock(ShipInterface::class);
-        $target = $this->mock(ShipInterface::class);
-        $web = $this->mock(TholianWebInterface::class);
-
-        $ship->shouldReceive('getHoldingWeb')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($web);
-        $web->shouldReceive('isFinished')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(true);
-
-        $target->shouldReceive('getHoldingWeb')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(null);
-
-        $result = $this->subject->isTargetOutsideFinishedTholianWeb($ship, $target);
-
-        $this->assertTrue($result);
     }
 
     public function testIsBoardingPossibleExpectFalseWhenNpc(): void
@@ -874,29 +797,6 @@ class FightLibTest extends StuTestCase
             ->andReturn(true);
 
         $result = FightLib::isBoardingPossible($ship);
-
-        $this->assertFalse($result);
-    }
-
-    public function testIsBoardingPossibleExpectFalseWhenTrumfield(): void
-    {
-        $nfsItem = $this->mock(ShipNfsItem::class);
-
-        $nfsItem->shouldReceive('getUserId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(UserEnum::USER_FIRST_ID);
-
-        $nfsItem->shouldReceive('isStation')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(false);
-        $nfsItem->shouldReceive('isTrumfield')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(true);
-
-        $result = FightLib::isBoardingPossible($nfsItem);
 
         $this->assertFalse($result);
     }

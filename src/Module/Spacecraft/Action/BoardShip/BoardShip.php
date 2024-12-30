@@ -7,9 +7,10 @@ namespace Stu\Module\Spacecraft\Action\BoardShip;
 use Override;
 use request;
 use Stu\Component\Game\ModuleViewEnum;
-use Stu\Component\Spacecraft\Nbs\NbsUtilityInterface;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Exception\SanityCheckException;
+use Stu\Lib\Interaction\InteractionCheckerBuilderFactoryInterface;
+use Stu\Lib\Interaction\InteractionCheckType;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuRandom;
@@ -19,7 +20,6 @@ use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Spacecraft\Lib\Auxiliary\ShipShutdownInterface;
 use Stu\Module\Spacecraft\Lib\Battle\FightLibInterface;
 use Stu\Module\Spacecraft\Lib\CloseCombat\CloseCombatUtilInterface;
-use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\ShipInteractionEnum;
 use Stu\Module\Spacecraft\Lib\Interaction\ShipTakeoverManagerInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\ThreatReactionInterface;
@@ -45,14 +45,13 @@ final class BoardShip implements ActionControllerInterface
         private CrewAssignmentRepositoryInterface $shipCrewRepository,
         private UserRepositoryInterface $userRepository,
         private SpacecraftLoaderInterface $spacecraftLoader,
-        private InteractionCheckerInterface $interactionChecker,
-        private NbsUtilityInterface $nbsUtility,
         private CloseCombatUtilInterface $closeCombatUtil,
         private ThreatReactionInterface $threatReaction,
         private FightLibInterface $fightLib,
         private SpacecraftStateChangerInterface $spacecraftStateChanger,
         private ShipShutdownInterface $shipShutdown,
         private ShipTakeoverManagerInterface $shipTakeoverManager,
+        private InteractionCheckerBuilderFactoryInterface $interactionCheckerBuilderFactory,
         private CreatePrestigeLogInterface $createPrestigeLog,
         private DistributedMessageSenderInterface $distributedMessageSender,
         private MessageFactoryInterface $messageFactory,
@@ -77,7 +76,7 @@ final class BoardShip implements ActionControllerInterface
         );
 
         $wrapper = $wrappers->getSource();
-        $ship = $wrapper->get();
+        $spacecraft = $wrapper->get();
 
         $targetWrapper = $wrappers->getTarget();
         if ($targetWrapper === null) {
@@ -97,33 +96,28 @@ final class BoardShip implements ActionControllerInterface
             return;
         }
 
-        if ($targetWrapper->get()->getShieldState()) {
+        if (!$this->interactionCheckerBuilderFactory
+            ->createInteractionChecker()
+            ->setSource($spacecraft)
+            ->setTarget($target)
+            ->setCheckTypes([
+                InteractionCheckType::EXPECT_SOURCE_ENABLED,
+                InteractionCheckType::EXPECT_SOURCE_UNCLOAKED,
+                InteractionCheckType::EXPECT_SOURCE_UNSHIELDED,
+                InteractionCheckType::EXPECT_SOURCE_UNWARPED,
+                InteractionCheckType::EXPECT_SOURCE_TACHYON,
+                InteractionCheckType::EXPECT_TARGET_NO_VACATION,
+                InteractionCheckType::EXPECT_TARGET_ALSO_IN_FINISHED_WEB
+            ])
+            ->check($game)) {
             return;
         }
 
-        if ($target->getUser()->isNpc()) {
-            $game->addInformation(_('Aktion nicht möglich, der Spieler ist NPC!'));
-            return;
-        }
-
-        if ($target->getUser()->isVacationRequestOldEnough()) {
-            $game->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
-            return;
-        }
-
-        if (!$this->interactionChecker->checkPosition($target, $ship)) {
-            throw new SanityCheckException('InteractionChecker->checkPosition failed', self::ACTION_IDENTIFIER);
-        }
-
-        if (!$this->fightLib->canAttackTarget($ship, $target, false, false)) {
+        if (!$this->fightLib->canAttackTarget($spacecraft, $target, false, false)) {
             throw new SanityCheckException('Target cant be attacked', self::ACTION_IDENTIFIER);
         }
 
-        if ($target->getCloakState() && !$this->nbsUtility->isTachyonActive($ship)) {
-            throw new SanityCheckException('Attacked cloaked ship without active tachyon', self::ACTION_IDENTIFIER);
-        }
-
-        if ($ship->getCrewCount() === 0) {
+        if ($spacecraft->getCrewCount() === 0) {
             $game->addInformation(_('Aktion nicht möglich, keine Crew vorhanden!'));
             return;
         }
@@ -146,20 +140,6 @@ final class BoardShip implements ActionControllerInterface
             return;
         }
 
-        if ($ship->isDisabled()) {
-            $game->addInformation(_('Das Schiff ist kampfunfähig'));
-            return;
-        }
-
-        if ($this->fightLib->isTargetOutsideFinishedTholianWeb($ship, $target)) {
-            $game->addInformation(_('Das Ziel ist nicht mit im Energienetz gefangen'));
-            return;
-        }
-
-        if ($ship->getShieldState()) {
-            $game->addInformation(_("Die Schilde sind aktiviert"));
-            return;
-        }
 
         $neededPrestige = $this->shipTakeoverManager->getPrestigeForBoardingAttempt($target);
         if ($user->getPrestige() < $neededPrestige) {
@@ -179,23 +159,18 @@ final class BoardShip implements ActionControllerInterface
             ShipInteractionEnum::BOARD_SHIP
         );
 
-        if ($ship->isDestroyed()) {
+        if ($spacecraft->isDestroyed()) {
             $game->setView(ModuleViewEnum::SHIP);
             return;
         }
 
-        if ($target->getShieldState()) {
-            $game->addInformationf("Die %s hat die Schilde aktiviert. Enterkommando kann nicht entsendet werden.", $targetName);
-            return;
-        }
-
-        $combatGroupAttacker = $this->closeCombatUtil->getCombatGroup($ship);
+        $combatGroupAttacker = $this->closeCombatUtil->getCombatGroup($spacecraft);
         $combatGroupDefender = $this->closeCombatUtil->getCombatGroup($target);
 
         $messages = new MessageCollection();
         $message = $this->messageFactory->createMessage($userId, $targetUserId, [sprintf(
             'Die %s entsendet ein Enterkommando auf die %s',
-            $ship->getName(),
+            $spacecraft->getName(),
             $target->getName()
         )]);
 
@@ -248,7 +223,7 @@ final class BoardShip implements ActionControllerInterface
 
         $this->sendPms(
             $userId,
-            $ship->getSectorString(),
+            $spacecraft->getSectorString(),
             $messages,
             $target->isStation()
         );

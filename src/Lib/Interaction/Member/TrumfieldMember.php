@@ -14,6 +14,12 @@ class TrumfieldMember implements InteractionMemberInterface
     public function __construct(private TrumfieldInterface $trumfield) {}
 
     #[Override]
+    public function get(): TrumfieldInterface
+    {
+        return $this->trumfield;
+    }
+
+    #[Override]
     public function canAccess(
         InteractionMemberInterface $other,
         callable $shouldCheck

@@ -14,6 +14,7 @@ use Stu\Module\Spacecraft\Lib\Battle\Party\AttackingBattleParty;
 use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
+use Stu\Module\Ship\Lib\TholianWebUtilInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -27,6 +28,7 @@ final class SpacecraftAttackCore implements SpacecraftAttackCoreInterface
         private SpacecraftAttackCycleInterface $spacecraftAttackCycle,
         private AlertReactionFacadeInterface $alertReactionFacade,
         private FightLibInterface $fightLib,
+        private TholianWebUtilInterface $tholianWebUtil,
         private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
         private BattlePartyFactoryInterface $battlePartyFactory
     ) {}
@@ -115,14 +117,16 @@ final class SpacecraftAttackCore implements SpacecraftAttackCoreInterface
      */
     private function getAttackersAndDefenders(SpacecraftWrapperInterface|FleetWrapperInterface $wrapper, SpacecraftWrapperInterface $targetWrapper): array
     {
+        $attackCause = SpacecraftAttackCauseEnum::SHIP_FIGHT;
         $ship = $wrapper instanceof SpacecraftWrapperInterface ? $wrapper->get() : $wrapper->get()->getLeadShip();
 
         [$attacker, $defender, $isFleetFight] = $this->fightLib->getAttackersAndDefenders($wrapper, $targetWrapper, $this->battlePartyFactory);
 
-        $isWebSituation = $this->fightLib->isTargetOutsideFinishedTholianWeb($ship, $targetWrapper->get());
+        $isTargetOutsideFinishedWeb = $this->tholianWebUtil->isTargetOutsideFinishedTholianWeb($ship, $targetWrapper->get());
 
         //if in tholian web and defenders outside, reflect damage
-        if ($isWebSituation) {
+        if ($isTargetOutsideFinishedWeb) {
+            $attackCause = SpacecraftAttackCauseEnum::THOLIAN_WEB_REFLECTION;
             $holdingWeb = $ship->getHoldingWeb();
             if ($holdingWeb === null) {
                 throw new RuntimeException('this should not happen');
@@ -131,13 +135,18 @@ final class SpacecraftAttackCore implements SpacecraftAttackCoreInterface
             $defender = $this->battlePartyFactory->createMixedBattleParty(
                 $this->spacecraftWrapperFactory->wrapSpacecrafts($holdingWeb->getCapturedSpacecrafts()->toArray())
             );
+        } elseif ($this->tholianWebUtil->isTargetInsideFinishedTholianWeb(
+            $ship,
+            $targetWrapper->get()
+        )) {
+            $attackCause = SpacecraftAttackCauseEnum::THOLIAN_WEB_REFLECTION;
         }
 
         return [
             $attacker,
             $defender,
             $isFleetFight,
-            $isWebSituation ? SpacecraftAttackCauseEnum::THOLIAN_WEB_REFLECTION : SpacecraftAttackCauseEnum::SHIP_FIGHT
+            $attackCause
         ];
     }
 }

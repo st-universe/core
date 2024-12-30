@@ -5,6 +5,7 @@ namespace Stu\Lib\Interaction\Member;
 use Override;
 use Stu\Component\Spacecraft\Nbs\NbsUtilityInterface;
 use Stu\Lib\Interaction\InteractionCheckType;
+use Stu\Module\Ship\Lib\TholianWebUtilInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
@@ -14,8 +15,15 @@ class SpacecraftMember implements InteractionMemberInterface
 {
     public function __construct(
         private NbsUtilityInterface $nbsUtility,
+        private TholianWebUtilInterface $tholianWebUtil,
         private SpacecraftInterface $spacecraft
     ) {}
+
+    #[Override]
+    public function get(): SpacecraftInterface
+    {
+        return $this->spacecraft;
+    }
 
     #[Override]
     public function canAccess(
@@ -39,8 +47,8 @@ class SpacecraftMember implements InteractionMemberInterface
 
         if (
             $shouldCheck(InteractionCheckType::EXPECT_SOURCE_TACHYON)
-            && $other instanceof SpacecraftInterface
-            && $other->getCloakState()
+            && $other instanceof SpacecraftMember
+            && $other->get()->getCloakState()
             && !$this->nbsUtility->isTachyonActive($this->spacecraft)
         ) {
             return InteractionCheckType::EXPECT_SOURCE_TACHYON;
@@ -68,6 +76,13 @@ class SpacecraftMember implements InteractionMemberInterface
             && $this->spacecraft->getCloakState()
         ) {
             return InteractionCheckType::EXPECT_TARGET_UNCLOAKED;
+        }
+
+        if (
+            $shouldCheck(InteractionCheckType::EXPECT_TARGET_ALSO_IN_FINISHED_WEB)
+            && $this->tholianWebUtil->isTargetOutsideFinishedTholianWeb($other->get(), $this->spacecraft)
+        ) {
+            return InteractionCheckType::EXPECT_TARGET_ALSO_IN_FINISHED_WEB;
         }
 
         return null;

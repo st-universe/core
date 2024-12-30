@@ -11,6 +11,7 @@ use Stu\Component\Game\TimeConstants;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\Data\WebEmitterSystemData;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
+use Stu\Lib\Interaction\EntityWithInteractionCheckInterface;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -23,7 +24,6 @@ use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\SpacecraftSystemInterface;
 use Stu\Orm\Entity\TholianWebInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
 use Stu\Orm\Repository\TholianWebRepositoryInterface;
@@ -34,13 +34,12 @@ final class TholianWebUtil implements TholianWebUtilInterface
 
     public function __construct(
         private SpacecraftRepositoryInterface $spacecraftRepository,
-        private ShipRepositoryInterface $shipRepository,
         private TholianWebRepositoryInterface $tholianWebRepository,
         private SpacecraftSystemRepositoryInterface $shipSystemRepository,
         private StuTime $stuTime,
         private PrivateMessageSenderInterface $privateMessageSender,
-        LoggerUtilFactoryInterface $loggerUtilFactory,
-        private EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
@@ -105,7 +104,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
 
         $finishedTime = $this->releaseWebHelperIntern($wrapper);
         if ($finishedTime === null) {
-            throw new RuntimeException('this should not happen');
+            return;
         }
 
         $currentSpinnerSystems = $this->shipSystemRepository->getWebConstructingShipSystems($web->getId());
@@ -178,7 +177,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
 
         $ship = $wrapper->get();
         $ship->setState(SpacecraftStateEnum::SHIP_STATE_NONE);
-        $this->shipRepository->save($ship);
+        $this->spacecraftRepository->save($ship);
 
         //update finish time last
         return $this->updateWebFinishTime($web, -1);
@@ -253,5 +252,35 @@ final class TholianWebUtil implements TholianWebUtilInterface
         }
 
         return $web;
+    }
+
+    #[Override]
+    public function isTargetOutsideFinishedTholianWeb(EntityWithInteractionCheckInterface $source, EntityWithInteractionCheckInterface $target): bool
+    {
+        if (!$source instanceof SpacecraftInterface) {
+            return false;
+        }
+
+        $web = $source->getHoldingWeb();
+        if ($web === null || !$web->isFinished()) {
+            return false;
+        }
+
+        return !$target instanceof SpacecraftInterface || $target->getHoldingWeb() !== $web;
+    }
+
+    #[Override]
+    public function isTargetInsideFinishedTholianWeb(EntityWithInteractionCheckInterface $source, EntityWithInteractionCheckInterface $target): bool
+    {
+        if (!$target instanceof SpacecraftInterface) {
+            return false;
+        }
+
+        $web = $target->getHoldingWeb();
+        if ($web === null || !$web->isFinished()) {
+            return false;
+        }
+
+        return !$source instanceof SpacecraftInterface || $source->getHoldingWeb() !== $web;
     }
 }
