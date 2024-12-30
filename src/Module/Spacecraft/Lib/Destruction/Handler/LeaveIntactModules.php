@@ -9,6 +9,7 @@ use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestroyerInterface;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionCauseEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Orm\Entity\TholianWebInterface;
 
 class LeaveIntactModules implements SpacecraftDestructionHandlerInterface
 {
@@ -24,15 +25,15 @@ class LeaveIntactModules implements SpacecraftDestructionHandlerInterface
         InformationInterface $informations
     ): void {
 
-        $ship = $destroyedSpacecraftWrapper->get();
+        $spacecraft = $destroyedSpacecraftWrapper->get();
 
-        if ($ship->isShuttle()) {
+        if ($spacecraft->isShuttle() || $spacecraft instanceof TholianWebInterface) {
             return;
         }
 
         $intactModules = [];
 
-        foreach ($ship->getSystems() as $system) {
+        foreach ($spacecraft->getSystems() as $system) {
             if (
                 $system->getModule() !== null
                 && $system->getStatus() == 100
@@ -49,7 +50,7 @@ class LeaveIntactModules implements SpacecraftDestructionHandlerInterface
         $leaveCount = (int) ceil(count($intactModules) / 2);
 
         //maximum of 1 if ship is pirate
-        if ($ship->getUser()->getId() === UserEnum::USER_NPC_KAZON) {
+        if ($spacecraft->getUser()->getId() === UserEnum::USER_NPC_KAZON) {
             $leaveCount = min(1, $leaveCount);
         }
 
@@ -58,7 +59,7 @@ class LeaveIntactModules implements SpacecraftDestructionHandlerInterface
             unset($intactModules[$module->getId()]);
 
             $this->storageManager->upperStorage(
-                $ship,
+                $spacecraft,
                 $module->getCommodity(),
                 1
             );
