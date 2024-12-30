@@ -16,6 +16,7 @@ use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyFactoryInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Spacecraft\Lib\ShipNfsItem;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Module\Spacecraft\Lib\TrumfieldNfsItem;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\User;
@@ -145,24 +146,11 @@ final class FightLib implements FightLibInterface
         ];
     }
 
-    #[Override]
-    public function isTargetOutsideFinishedTholianWeb(SpacecraftInterface $ship, SpacecraftInterface $target): bool
+    public static function isBoardingPossible(SpacecraftInterface|ShipNfsItem|TrumfieldNfsItem $object): bool
     {
-        $web = $ship->getHoldingWeb();
-        if ($web === null) {
-            return false;
-        }
-
-        return $web->isFinished() && ($target->getHoldingWeb() !== $web);
-    }
-
-    public static function isBoardingPossible(SpacecraftInterface|ShipNfsItem $object): bool
-    {
-        $isTrumfield = $object instanceof ShipNfsItem && $object->isTrumfield();
-
-        return !(User::isUserNpc($object->getUserId())
+        return !($object instanceof TrumfieldNfsItem
+            || User::isUserNpc($object->getUserId())
             || $object->isStation()
-            || $isTrumfield
             || $object->getCloakState()
             || $object->getShieldState()
             || $object->isWarped());

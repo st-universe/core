@@ -3,6 +3,7 @@
 namespace Stu\Lib\Interaction\Builder;
 
 use Stu\Lib\Interaction\CustomizedInteractionChecker;
+use Stu\Lib\Interaction\EntityWithInteractionCheckInterface;
 use Stu\Lib\Interaction\Member\InteractionMemberFactoryInterface;
 
 class SourceSetup
@@ -12,7 +13,7 @@ class SourceSetup
         private CustomizedInteractionChecker $interactionChecker
     ) {}
 
-    public function setSource(mixed $source): TargetSetup
+    public function setSource(EntityWithInteractionCheckInterface $source): TargetSetup
     {
         $interactionMember = $this->interactionMemberFactory->createMember($source);
         $this->interactionChecker->setSource($interactionMember);

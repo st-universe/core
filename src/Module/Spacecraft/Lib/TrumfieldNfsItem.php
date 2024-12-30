@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib;
 
-final class TrumfieldNfsItem
+class TrumfieldNfsItem
 {
     public function __construct(private TTrumfieldItem $item) {}
 

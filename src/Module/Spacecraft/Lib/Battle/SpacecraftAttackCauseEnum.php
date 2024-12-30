@@ -13,30 +13,25 @@ enum SpacecraftAttackCauseEnum
     case ACTIVATE_TRACTOR;
     case BOARD_SHIP;
     case THOLIAN_WEB_REFLECTION;
+    case TARGET_CAPTURED_IN_THOLIAN_WEB;
 
     public function isOneWay(): bool
     {
         return match ($this) {
-            self::SHIP_FIGHT => false,
-            self::ALERT_YELLOW => false,
-            self::ALERT_RED => false,
-            self::COLONY_DEFENSE => false,
-            self::ACTIVATE_TRACTOR => true,
-            self::BOARD_SHIP => true,
-            self::THOLIAN_WEB_REFLECTION => true,
+            self::ACTIVATE_TRACTOR,
+            self::BOARD_SHIP,
+            self::THOLIAN_WEB_REFLECTION,
+            self::TARGET_CAPTURED_IN_THOLIAN_WEB => true,
+            default => false
         };
     }
 
     public function getDestructionCause(): SpacecraftDestructionCauseEnum
     {
         return match ($this) {
-            self::SHIP_FIGHT => SpacecraftDestructionCauseEnum::SHIP_FIGHT,
             self::ALERT_YELLOW => SpacecraftDestructionCauseEnum::ALERT_YELLOW,
             self::ALERT_RED => SpacecraftDestructionCauseEnum::ALERT_RED,
-            self::COLONY_DEFENSE => SpacecraftDestructionCauseEnum::SHIP_FIGHT,
-            self::ACTIVATE_TRACTOR => SpacecraftDestructionCauseEnum::SHIP_FIGHT,
-            self::BOARD_SHIP => SpacecraftDestructionCauseEnum::SHIP_FIGHT,
-            self::THOLIAN_WEB_REFLECTION => SpacecraftDestructionCauseEnum::SHIP_FIGHT
+            default => SpacecraftDestructionCauseEnum::SHIP_FIGHT
         };
     }
 }
