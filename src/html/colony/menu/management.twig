@@ -12,13 +12,15 @@
             <div class="box_title">Station im Orbit</div>
             <div class="box_body">
                 <div>
-                    <span style="display: block; white-space:pre-line;">{{ station.getName|bbcode }}</span>
+
                     {% if ORBIT_STATION_WRAPPER.isSelectable %}
                     <a {{ onClickSpacecraft(station) }} class="imgOverlayText"
                         onmouseover="openStorageInit(this, {{ stationId }});" onmouseout="closeStorage();">
+                        <span style="display: block; white-space:pre-line;">{{ station.getName|bbcode }}</span>
                         {{ spacecraftImageWithoutWarp(station) }}
                     </a>
                     {% else %}
+                    <span style="display: block; white-space:pre-line;">{{ station.getName|bbcode }}</span>
                     {{ spacecraftImageWithoutWarp(station) }}
                     {% endif %}
                 </div>
