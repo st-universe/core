@@ -54,7 +54,9 @@ updateSelectedSpacecraftId('77');"></a>
                     <br>
                     <a href="javascript:void(0);" onclick="showTransfer(42, 'colony', document.getElementById('selshipid').value, 'ship', 1, 0);" onmouseover="cp('beamfrom','buttons/b_down2')" onmouseout="cp('beamfrom','buttons/b_down1')"><img src="/assets/buttons/b_down1.png" name="beamfrom" title="Von Schiff beamen"></a>
                     <a href="javascript:void(0);" onclick="showTransfer(42, 'colony', document.getElementById('selshipid').value, 'ship', 1, 1);" onmouseover="cp('beamto','buttons/b_up2')" onmouseout="cp('beamto','buttons/b_up1')"><img src="/assets/buttons/b_up1.png" name="beamto" title="Zu Schiff beamen"></a>
-                    <a href="javascript:void(0);" onclick="getOrbitShipList(42);">Liste</a> | <a href="javascript:void(0);" onclick="switchInnerContent('SHOW_SPACECRAFT_MANAGEMENT', 'Orbitalmanagement', 'id=42');">Management</a>
+                    <a href="javascript:void(0);" onclick="getOrbitShipList(42);" style="margin-left: 5px;">
+                        <img src="/assets/buttons/fleet.png" title="Schiffsliste aufklappen">
+                    </a>
                 </div>
                             </div>
         </div>
@@ -64,7 +66,14 @@ updateSelectedSpacecraftId('77');"></a>
         <div class="box">
             <div class="box_title">Planet</div>
             <div class="box_body">
-                <div style="float:left;">
+                <a href="javascript:void(0);" style="text-align: center; cursor: pointer;" onclick="switchInnerContent('SHOW_SPACECRAFT_MANAGEMENT', 'Orbitalmanagement', 'id=42');">
+                    <div class="box">
+                        <div class="box_body">
+                            Orbitalmanagement
+                        </div>
+                    </div>
+                </a>
+                <div class="box_body" style="float:left;">
                     <div>
                         <img src="/assets/planets/201.png" style="width: 30px; height: 30px;">
                         <span style="display: block; white-space:pre-line;">
