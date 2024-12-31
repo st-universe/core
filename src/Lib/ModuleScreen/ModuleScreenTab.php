@@ -25,7 +25,7 @@ class ModuleScreenTab
 
             if ($this->moduleSelector->isEmptySlot()) {
                 $class .= ' module_selector_skipped';
-            } else {
+            } elseif (!$this->moduleSelector->hasSelectedModule()) {
                 $class .= ' module_selector_unselected';
             }
         }
