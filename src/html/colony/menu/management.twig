@@ -24,19 +24,19 @@
                     {{ spacecraftImageWithoutWarp(station) }}
                     {% endif %}
                 </div>
-            </div>
-            <div style="position: absolute; bottom: 0; width: 100%;">
-                <a href="javascript:void(0);"
-                    onclick="showTransfer({{ COLONY.getId }}, 'colony', {{ stationId }}, '{{ station.getTransferEntityType.value }}', 1, 0);"
-                    onmouseover="cp('beamfromstation','buttons/b_down2')"
-                    onmouseout="cp('beamfromstation','buttons/b_down1')">
-                    <img src="/assets/buttons/b_down1.png" name="beamfromstation" title="Von Station beamen" />
-                </a>
-                <a href="javascript:void(0);"
-                    onclick="showTransfer({{ COLONY.getId }}, 'colony', {{ stationId }}, '{{ station.getTransferEntityType.value }}', 1, 1);"
-                    onmouseover="cp('beamtostation','buttons/b_up2')" onmouseout="cp('beamtostation','buttons/b_up1')">
-                    <img src="/assets/buttons/b_up1.png" name="beamtostation" title="Zu Station beamen" />
-                </a>
+                <div style="position: absolute; bottom: 0; width: 100%;">
+                    <a href="javascript:void(0);"
+                        onclick="showTransfer({{ COLONY.getId }}, 'colony', {{ stationId }}, '{{ station.getTransferEntityType.value }}', 1, 0);"
+                        onmouseover="cp('beamfromstation','buttons/b_down2')"
+                        onmouseout="cp('beamfromstation','buttons/b_down1')">
+                        <img src="/assets/buttons/b_down1.png" name="beamfromstation" title="Von Station beamen" />
+                    </a>
+                    <a href="javascript:void(0);"
+                        onclick="showTransfer({{ COLONY.getId }}, 'colony', {{ stationId }}, '{{ station.getTransferEntityType.value }}', 1, 1);"
+                        onmouseover="cp('beamtostation','buttons/b_up2')" onmouseout="cp('beamtostation','buttons/b_up1')">
+                        <img src="/assets/buttons/b_up1.png" name="beamtostation" title="Zu Station beamen" />
+                    </a>
+                </div>
             </div>
         </div>
         {% endif %}
