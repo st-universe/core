@@ -10,9 +10,8 @@
             {% from 'html/macros.twig' import onClickSpacecraft %}
             {% from 'html/shipmacros.twig' import spacecraftImageWithoutWarp %}
             <div class="box_title">Station im Orbit</div>
-            <div class="box_body">
+            <div class="box_body" style="padding-bottom: 40px;">
                 <div>
-
                     {% if ORBIT_STATION_WRAPPER.isSelectable %}
                     <a {{ onClickSpacecraft(station) }} class="imgOverlayText"
                         onmouseover="openStorageInit(this, {{ stationId }});" onmouseout="closeStorage();">
@@ -24,7 +23,7 @@
                     {{ spacecraftImageWithoutWarp(station) }}
                     {% endif %}
                 </div>
-                <div style="position: absolute; bottom: 0; width: 100%;">
+                <div style="position: absolute; bottom: 5px; width: 100%;">
                     <a href="javascript:void(0);"
                         onclick="showTransfer({{ COLONY.getId }}, 'colony', {{ stationId }}, '{{ station.getTransferEntityType.value }}', 1, 0);"
                         onmouseover="cp('beamfromstation','buttons/b_down2')"
