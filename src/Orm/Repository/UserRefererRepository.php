@@ -7,6 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\UserReferer;
 use Stu\Orm\Entity\UserRefererInterface;
+use Stu\Orm\Entity\UserInterface;
 use Override;
 
 /**
@@ -45,5 +46,16 @@ final class UserRefererRepository extends EntityRepository implements UserRefere
                 UserReferer::class
             )
         )->execute();
+    }
+
+    /**
+     * @return UserRefererInterface[]
+     */
+    #[Override]
+    public function getByUser(UserInterface $user): array
+    {
+        return $this->findBy(
+            ['user' => $user->getId()]
+        );
     }
 }
