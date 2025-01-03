@@ -112,6 +112,6 @@ class TroopTransferStrategy implements TransferStrategyInterface
             : 0;
 
         $source->postCrewTransfer($foreignCrewChangeAmount, $target, $information);
-        $target->postCrewTransfer($foreignCrewChangeAmount, $source, $information);
+        $target->postCrewTransfer(0, $source, $information);
     }
 }
