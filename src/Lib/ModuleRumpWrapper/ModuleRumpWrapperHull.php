@@ -28,12 +28,6 @@ final class ModuleRumpWrapperHull extends ModuleRumpWrapperBase implements Modul
     }
 
     #[Override]
-    public function getSecondValue(?ModuleInterface $module = null): ?int
-    {
-        return null;
-    }
-
-    #[Override]
     public function getModuleType(): SpacecraftModuleTypeEnum
     {
         return SpacecraftModuleTypeEnum::HULL;
@@ -43,7 +37,9 @@ final class ModuleRumpWrapperHull extends ModuleRumpWrapperBase implements Modul
     public function apply(SpacecraftWrapperInterface $wrapper): void
     {
         $value = $this->getValue();
+        if ($wrapper->get()->getHull() > $value) {
+            $wrapper->get()->setHuell($value);
+        }
         $wrapper->get()->setMaxHuell($value);
-        $wrapper->get()->setHuell($value);
     }
 }

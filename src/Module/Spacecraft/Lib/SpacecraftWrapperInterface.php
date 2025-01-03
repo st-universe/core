@@ -84,4 +84,6 @@ interface SpacecraftWrapperInterface
     public function getProjectileLauncherSystemData(): ?ProjectileLauncherSystemData;
 
     public function getReactorWrapper(): ?ReactorWrapperInterface;
+
+    public function __toString(): string;
 }

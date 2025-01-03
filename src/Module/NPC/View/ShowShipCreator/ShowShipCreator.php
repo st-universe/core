@@ -108,6 +108,6 @@ final class ShowShipCreator implements ViewControllerInterface
 
     private function isDeletable(SpacecraftBuildplanInterface $buildplan): bool
     {
-        return $buildplan->getShipCount() === 0;
+        return $buildplan->getSpacecraftCount() === 0;
     }
 }

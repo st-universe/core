@@ -134,6 +134,8 @@ use Stu\Module\Spacecraft\Lib\Battle\Weapon\TholianWebWeaponPhase;
 use Stu\Module\Spacecraft\Lib\Battle\Weapon\TholianWebWeaponPhaseInterface;
 use Stu\Module\Spacecraft\Lib\CloseCombat\CloseCombatUtil;
 use Stu\Module\Spacecraft\Lib\CloseCombat\CloseCombatUtilInterface;
+use Stu\Module\Spacecraft\Lib\Creation\SpacecraftCorrector;
+use Stu\Module\Spacecraft\Lib\Creation\SpacecraftCorrectorInterface;
 use Stu\Module\Spacecraft\Lib\Crew\LaunchEscapePods;
 use Stu\Module\Spacecraft\Lib\Crew\LaunchEscapePodsInterface;
 use Stu\Module\Spacecraft\Lib\Crew\SpacecraftLeaver;
@@ -345,6 +347,7 @@ return [
     SpacecraftConfiguratorFactoryInterface::class => autowire(SpacecraftConfiguratorFactory::class),
     SpacecraftSystemCreationInterface::class => autowire(SpacecraftSystemCreation::class),
     SpacecraftCreatorInterface::class => autowire(SpacecraftCreator::class),
+    SpacecraftCorrectorInterface::class => autowire(SpacecraftCorrector::class),
     SpacecraftTypeShowStragegyInterface::class => [
         SpacecraftTypeEnum::SHIP->value => autowire(ShipShowStrategy::class),
         SpacecraftTypeEnum::STATION->value => autowire(StationShowStrategy::class)

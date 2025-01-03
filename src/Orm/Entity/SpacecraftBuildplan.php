@@ -49,10 +49,10 @@ class SpacecraftBuildplan implements SpacecraftBuildplanInterface
     private int $crew = 0;
 
     /**
-     * @var ArrayCollection<int, ShipInterface>
+     * @var ArrayCollection<int, SpacecraftInterface>
      */
-    #[OneToMany(targetEntity: 'Ship', mappedBy: 'buildplan', fetch: 'EXTRA_LAZY')]
-    private Collection $ships;
+    #[OneToMany(targetEntity: 'Spacecraft', mappedBy: 'buildplan', fetch: 'EXTRA_LAZY')]
+    private Collection $spacecrafts;
 
     #[ManyToOne(targetEntity: 'SpacecraftRump')]
     #[JoinColumn(name: 'rump_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
@@ -71,7 +71,7 @@ class SpacecraftBuildplan implements SpacecraftBuildplanInterface
 
     public function __construct()
     {
-        $this->ships = new ArrayCollection();
+        $this->spacecrafts = new ArrayCollection();
         $this->modules = new ArrayCollection();
     }
 
@@ -135,9 +135,9 @@ class SpacecraftBuildplan implements SpacecraftBuildplanInterface
     }
 
     #[Override]
-    public function getShipCount(): int
+    public function getSpacecraftCount(): int
     {
-        return $this->getShiplist()->count();
+        return $this->getSpacecraftList()->count();
     }
 
     #[Override]
@@ -169,9 +169,9 @@ class SpacecraftBuildplan implements SpacecraftBuildplanInterface
     }
 
     #[Override]
-    public function getShiplist(): Collection
+    public function getSpacecraftList(): Collection
     {
-        return $this->ships;
+        return $this->spacecrafts;
     }
 
     #[Override]

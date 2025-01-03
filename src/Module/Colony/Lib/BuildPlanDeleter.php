@@ -30,6 +30,6 @@ final class BuildPlanDeleter implements BuildPlanDeleterInterface
     ): bool {
         $queuedShipsCount = $this->colonyShipQueueRepository->getCountByBuildplan($spacecraftBuildplan->getId());
 
-        return $spacecraftBuildplan->getShipCount() === 0 && $queuedShipsCount === 0;
+        return $spacecraftBuildplan->getSpacecraftCount() === 0 && $queuedShipsCount === 0;
     }
 }

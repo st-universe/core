@@ -29,22 +29,29 @@ final class ModuleRumpWrapperWarpDrive extends ModuleRumpWrapperBase implements 
     }
 
     #[Override]
-    public function getSecondValue(?ModuleInterface $module = null): ?int
-    {
-        return null;
-    }
-
-    #[Override]
     public function getModuleType(): SpacecraftModuleTypeEnum
     {
         return SpacecraftModuleTypeEnum::WARPDRIVE;
     }
 
     #[Override]
+    public function initialize(SpacecraftWrapperInterface $wrapper): ModuleRumpWrapperInterface
+    {
+        $systemData = $wrapper->getWarpDriveSystemData();
+        if ($systemData === null) {
+            throw new RuntimeException('this should not happen');
+        }
+
+        $systemData
+            ->setAutoCarryOver($wrapper->get()->getUser()->getWarpsplitAutoCarryoverDefault())
+            ->update();
+
+        return $this;
+    }
+
+    #[Override]
     public function apply(SpacecraftWrapperInterface $wrapper): void
     {
-        $ship = $wrapper->get();
-
         $systemData = $wrapper->getWarpDriveSystemData();
         if ($systemData === null) {
             throw new RuntimeException('this should not happen');
@@ -56,8 +63,6 @@ final class ModuleRumpWrapperWarpDrive extends ModuleRumpWrapperBase implements 
 
         $systemData
             ->setMaxWarpDrive($this->getValue())
-            ->setWarpDriveSplit(100)
-            ->setAutoCarryOver($ship->getUser()->getWarpsplitAutoCarryoverDefault())
             ->update();
     }
 }

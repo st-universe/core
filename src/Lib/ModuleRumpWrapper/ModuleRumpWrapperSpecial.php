@@ -16,12 +16,6 @@ final class ModuleRumpWrapperSpecial extends ModuleRumpWrapperBase implements Mo
     }
 
     #[Override]
-    public function getSecondValue(?ModuleInterface $module = null): ?int
-    {
-        return null;
-    }
-
-    #[Override]
     public function getModuleType(): SpacecraftModuleTypeEnum
     {
         return SpacecraftModuleTypeEnum::SPECIAL;

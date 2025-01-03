@@ -8,6 +8,7 @@ use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
+use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
@@ -92,8 +93,11 @@ final class SpacecraftCreator implements SpacecraftCreatorInterface
                 if ($this->loggerUtil->doLog()) {
                     $this->loggerUtil->log("wrapperCallable!");
                 }
+                /** @var ModuleRumpWrapperInterface */
                 $moduleRumpWrapper = $moduleType->getModuleRumpWrapperCallable()($rump, $buildplan);
-                $moduleRumpWrapper->apply($wrapper);
+                $moduleRumpWrapper
+                    ->initialize($wrapper)
+                    ->apply($wrapper);
             }
         }
 

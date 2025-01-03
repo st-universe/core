@@ -28,12 +28,6 @@ final class ModuleRumpWrapperComputer extends ModuleRumpWrapperBase implements M
     }
 
     #[Override]
-    public function getSecondValue(?ModuleInterface $module = null): ?int
-    {
-        return null;
-    }
-
-    #[Override]
     public function getModuleType(): SpacecraftModuleTypeEnum
     {
         return SpacecraftModuleTypeEnum::COMPUTER;

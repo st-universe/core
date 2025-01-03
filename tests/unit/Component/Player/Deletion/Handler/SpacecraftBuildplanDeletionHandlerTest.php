@@ -53,12 +53,12 @@ class SpacecraftBuildplanDeletionHandlerTest extends StuTestCase
             ->once()
             ->andReturn($userId);
 
-        $spacecraftBuildplanWithoutShips->shouldReceive('getShiplist')
+        $spacecraftBuildplanWithoutShips->shouldReceive('getSpacecraftList')
             ->withNoArgs()
             ->once()
             ->andReturn(new ArrayCollection());
 
-        $spacecraftBuildplanWithOwnShip->shouldReceive('getShiplist')
+        $spacecraftBuildplanWithOwnShip->shouldReceive('getSpacecraftList')
             ->withNoArgs()
             ->once()
             ->andReturn(new ArrayCollection([$ownShip]));
@@ -67,7 +67,7 @@ class SpacecraftBuildplanDeletionHandlerTest extends StuTestCase
             ->once()
             ->andReturn($user);
 
-        $spacecraftBuildplanWithForeignShip->shouldReceive('getShiplist')
+        $spacecraftBuildplanWithForeignShip->shouldReceive('getSpacecraftList')
             ->withNoArgs()
             ->once()
             ->andReturn(new ArrayCollection([$foreignShip]));

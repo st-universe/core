@@ -7,7 +7,7 @@ namespace Stu\Component\Player\Deletion\Handler;
 use Override;
 use RuntimeException;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -27,8 +27,8 @@ final class SpacecraftBuildplanDeletionHandler implements PlayerDeletionHandlerI
     {
         foreach ($this->spacecraftBuildplanRepository->getByUser($user->getId()) as $spacecraftBuildplan) {
 
-            $existsForeignShip = !$spacecraftBuildplan->getShiplist()
-                ->filter(fn(ShipInterface $ship): bool => $ship->getUser() !== $spacecraftBuildplan->getUser())
+            $existsForeignShip = !$spacecraftBuildplan->getSpacecraftList()
+                ->filter(fn(SpacecraftInterface $spacecraft): bool => $spacecraft->getUser() !== $spacecraftBuildplan->getUser())
                 ->isEmpty();
 
             if ($existsForeignShip) {
