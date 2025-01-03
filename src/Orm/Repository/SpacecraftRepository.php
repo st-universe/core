@@ -206,7 +206,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
 
         $rsm = new ResultSetMapping();
         $rsm->addEntityResult(TShipItem::class, 's');
-        TFleetShipItem::addTSpacecraftItemFields($rsm);
+        TShipItem::addTSpacecraftItemFields($rsm);
 
         $location = $field ?? $spacecraft->getLocation();
 

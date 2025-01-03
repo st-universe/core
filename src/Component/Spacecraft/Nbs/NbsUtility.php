@@ -8,7 +8,7 @@ use Override;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\Fleet\FleetNfsIterator;
-use Stu\Module\Spacecraft\Lib\ShipNfsIterator;
+use Stu\Module\Spacecraft\Lib\SpacecraftNfsIterator;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
@@ -41,13 +41,13 @@ final class NbsUtility implements NbsUtilityInterface
         MapInterface|StarSystemMapInterface|null $field = null
     ): void {
         if ($spacecraft->getNbs() || $field !== null) {
-            $stationNbs = new ShipNfsIterator($this->stationRepository->getStationScannerResults(
+            $stationNbs = new SpacecraftNfsIterator($this->stationRepository->getStationScannerResults(
                 $spacecraft,
                 $tachyonActive,
                 $field
             ), $game->getUser()->getId());
 
-            $singleSpacecraftsNbs = new ShipNfsIterator($this->spacecraftRepository->getSingleSpacecraftScannerResults(
+            $singleSpacecraftsNbs = new SpacecraftNfsIterator($this->spacecraftRepository->getSingleSpacecraftScannerResults(
                 $spacecraft,
                 $tachyonActive,
                 $field

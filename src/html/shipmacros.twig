@@ -205,7 +205,7 @@
     {% endif %}
 </td>
 <td style="width: 120px;">
-    {% if not nbsItem.getCloakState %}
+    {% if nbsItem.isScanPossible %}
     <div style="float:left; margin-right:4px;">
         <a href="javascript:void(0);" onclick="showScanWindow({{ spacecraftId }},{{ targetId }});"
             onmouseover="cp('scn_{{ targetId }}','buttons/lupe2')"
@@ -236,6 +236,7 @@
         </a>
     </div>
     {% endif %}
+    {% if nbsItem.isTransferPossible %}
     <div style="float:left; margin-right:4px;">
         {% set sourceEntityType = SPACECRAFT.getTransferEntityType.value %}
         {% set targetEntityType = nbsItem.getTransferEntityType.value %}
@@ -254,6 +255,7 @@
                 title="Von der {{ nameWithoutMarkup }} hochbeamen" />
         </a>
     </div>
+    {% endif %}
     {% if nbsItem.isTractorbeamPossible and not SPACECRAFT.isTractoring %}
     <div style="float:left; margin-right:4px;">
         <a href="?B_ACTIVATE_TRACTOR=1&id={{ spacecraftId }}&target={{ targetId }}&sstr={{ SESSIONSTRING }}"

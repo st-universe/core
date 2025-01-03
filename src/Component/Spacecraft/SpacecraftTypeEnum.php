@@ -50,4 +50,12 @@ enum SpacecraftTypeEnum: string
             default => throw new RuntimeException(sprintf('unsupported operation for %s', $this->name))
         };
     }
+
+    public function isTransferPossible(): bool
+    {
+        return match ($this) {
+            self::THOLIAN_WEB => false,
+            default => true
+        };
+    }
 }

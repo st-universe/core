@@ -7,6 +7,7 @@ namespace Stu\Module\Spacecraft\Lib\Battle;
 use Override;
 use Stu\Component\Spacecraft\Repair\CancelRepairInterface;
 use Stu\Component\Ship\Retrofit\CancelRetrofitInterface;
+use Stu\Component\Spacecraft\SpacecraftTypeEnum;
 use Stu\Component\Spacecraft\System\Exception\SpacecraftSystemException;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -14,7 +15,7 @@ use Stu\Lib\Information\InformationFactoryInterface;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyFactoryInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
-use Stu\Module\Spacecraft\Lib\ShipNfsItem;
+use Stu\Module\Spacecraft\Lib\SpacecraftNfsItem;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\Lib\TrumfieldNfsItem;
 use Stu\Orm\Entity\ShipInterface;
@@ -82,7 +83,7 @@ final class FightLib implements FightLibInterface
     #[Override]
     public function canAttackTarget(
         SpacecraftInterface $spacecraft,
-        SpacecraftInterface|ShipNfsItem $target,
+        SpacecraftInterface|SpacecraftNfsItem $target,
         bool $checkCloaked = false,
         bool $checkActiveWeapons = true,
         bool $checkWarped = true
@@ -122,7 +123,7 @@ final class FightLib implements FightLibInterface
 
         //can't attack same fleet
         $ownFleetId = $spacecraft instanceof ShipInterface ? $spacecraft->getFleetId() : null;
-        $targetFleetId = ($target instanceof ShipInterface || $target instanceof ShipNfsItem) ? $target->getFleetId() : null;
+        $targetFleetId = ($target instanceof ShipInterface || $target instanceof SpacecraftNfsItem) ? $target->getFleetId() : null;
         if ($ownFleetId === null || $targetFleetId === null) {
             return true;
         }
@@ -146,11 +147,18 @@ final class FightLib implements FightLibInterface
         ];
     }
 
-    public static function isBoardingPossible(SpacecraftInterface|ShipNfsItem|TrumfieldNfsItem $object): bool
+    public static function isBoardingPossible(SpacecraftInterface|SpacecraftNfsItem|TrumfieldNfsItem $object): bool
     {
-        return !($object instanceof TrumfieldNfsItem
-            || User::isUserNpc($object->getUserId())
-            || $object->isStation()
+        if ($object instanceof TrumfieldNfsItem) {
+            return false;
+        }
+
+        $type = $object->getType();
+        if ($type !== SpacecraftTypeEnum::SHIP) {
+            return false;
+        }
+
+        return !(User::isUserNpc($object->getUserId())
             || $object->getCloakState()
             || $object->getShieldState()
             || $object->isWarped());

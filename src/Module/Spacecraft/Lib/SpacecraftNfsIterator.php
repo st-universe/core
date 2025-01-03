@@ -9,15 +9,15 @@ use Override;
 use Stu\Module\Spacecraft\Lib\TSpacecraftItemInterface;
 
 /**
- * @implements Iterator<ShipNfsItem>
+ * @implements Iterator<SpacecraftNfsItem>
  *
  */
-final class ShipNfsIterator implements Iterator
+final class SpacecraftNfsIterator implements Iterator
 {
     private int $position = 0;
 
-    /** @param array<TSpacecraftItemInterface> $ships */
-    public function __construct(private array $ships, private int $userId) {}
+    /** @param array<TSpacecraftItemInterface> $spacecrafts */
+    public function __construct(private array $spacecrafts, private int $userId) {}
 
     #[Override]
     public function rewind(): void
@@ -26,9 +26,9 @@ final class ShipNfsIterator implements Iterator
     }
 
     #[Override]
-    public function current(): ShipNfsItem
+    public function current(): SpacecraftNfsItem
     {
-        return new ShipNfsItem($this->ships[$this->position], $this->userId);
+        return new SpacecraftNfsItem($this->spacecrafts[$this->position], $this->userId);
     }
 
     #[Override]
@@ -46,11 +46,11 @@ final class ShipNfsIterator implements Iterator
     #[Override]
     public function valid(): bool
     {
-        return isset($this->ships[$this->position]);
+        return isset($this->spacecrafts[$this->position]);
     }
 
     public function count(): int
     {
-        return count($this->ships);
+        return count($this->spacecrafts);
     }
 }

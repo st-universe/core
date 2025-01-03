@@ -14,7 +14,7 @@ use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Spacecraft\Lib\Battle\FightLib;
 use Stu\Module\Spacecraft\Lib\TSpacecraftItemInterface;
 
-class ShipNfsItem
+class SpacecraftNfsItem
 {
     public function __construct(private TSpacecraftItemInterface $item, private int $userId) {}
 
@@ -58,6 +58,11 @@ class ShipNfsItem
     {
         return $this->getWarpDriveState()
             || $this->item->getTractorWarpState() > SpacecraftSystemModeEnum::MODE_OFF->value;
+    }
+    public function isScanPossible(): bool
+    {
+        return !$this->getCloakState()
+            && $this->getType() !== SpacecraftTypeEnum::THOLIAN_WEB;
     }
     public function isTractorbeamPossible(): bool
     {
@@ -152,6 +157,11 @@ class ShipNfsItem
     public function hasCrew(): bool
     {
         return $this->item->hasCrew();
+    }
+
+    public function isTransferPossible(): bool
+    {
+        return $this->getType()->isTransferPossible();
     }
 
     public function getTransferEntityType(): TransferEntityTypeEnum

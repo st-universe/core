@@ -11,8 +11,7 @@ use Stu\Component\Spacecraft\SpacecraftRumpEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Module\Ship\Lib\TFleetShipItem;
-use Stu\Module\Ship\Lib\TShipItem;
+use Stu\Module\Station\Lib\TStationItem;
 use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Map;
@@ -196,8 +195,8 @@ final class StationRepository extends EntityRepository implements StationReposit
     ): array {
 
         $rsm = new ResultSetMapping();
-        $rsm->addEntityResult(TShipItem::class, 's');
-        TFleetShipItem::addTSpacecraftItemFields($rsm);
+        $rsm->addEntityResult(TStationItem::class, 's');
+        TStationItem::addTSpacecraftItemFields($rsm);
 
         $location = $field ?? $spacecraft->getLocation();
 
