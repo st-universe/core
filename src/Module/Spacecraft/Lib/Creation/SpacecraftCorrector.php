@@ -6,9 +6,7 @@ use Override;
 use SebastianBergmann\Diff\Differ;
 use SebastianBergmann\Diff\Output\DiffOnlyOutputBuilder;
 use Stu\Module\Logging\StuLogger;
-use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Entity\SpacecraftBuildplanInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
@@ -22,8 +20,7 @@ class SpacecraftCorrector implements SpacecraftCorrectorInterface
     public function __construct(
         private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository,
         private ConstructionProgressRepositoryInterface $constructionProgressRepository,
-        private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
-        private PrivateMessageSenderInterface $privateMessageSender
+        private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory
     ) {}
 
     #[Override]
@@ -96,27 +93,9 @@ class SpacecraftCorrector implements SpacecraftCorrectorInterface
                 $diff
             );
 
-            $this->sendPmToOwner($spacecraft, $diff);
-
             return true;
         }
 
         return false;
-    }
-
-    private function sendPmToOwner(SpacecraftInterface $spacecraft, string $diff): void
-    {
-        $this->privateMessageSender
-            ->send(
-                UserEnum::USER_NOONE,
-                $spacecraft->getUser()->getId(),
-                sprintf(
-                    "Die Werte der %s wurden automatisch wie folgt korrigiert:\n\n%s",
-                    $spacecraft->getName(),
-                    $diff
-                ),
-                PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,
-                $spacecraft->getHref()
-            );
     }
 }
