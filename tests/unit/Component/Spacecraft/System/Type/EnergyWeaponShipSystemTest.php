@@ -36,7 +36,7 @@ class EnergyWeaponShipSystemTest extends StuTestCase
 
     public function testCheckActivationConditionsReturnFalseIfCloaked(): void
     {
-        $this->ship->shouldReceive('getCloakState')
+        $this->ship->shouldReceive('isCloaked')
             ->withNoArgs()
             ->once()
             ->andReturnTrue();
@@ -50,7 +50,7 @@ class EnergyWeaponShipSystemTest extends StuTestCase
 
     public function testCheckActivationConditionsReturnFalseIfAlertGreen(): void
     {
-        $this->ship->shouldReceive('getCloakState')
+        $this->ship->shouldReceive('isCloaked')
             ->withNoArgs()
             ->once()
             ->andReturnFalse();
@@ -68,7 +68,7 @@ class EnergyWeaponShipSystemTest extends StuTestCase
 
     public function testCheckActivationConditionsReturnTrueIfActivateable(): void
     {
-        $this->ship->shouldReceive('getCloakState')
+        $this->ship->shouldReceive('isCloaked')
             ->withNoArgs()
             ->once()
             ->andReturnFalse();

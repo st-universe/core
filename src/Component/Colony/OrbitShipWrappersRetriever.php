@@ -26,7 +26,7 @@ final class OrbitShipWrappersRetriever implements OrbitShipWrappersRetrieverInte
         $shipsOnLocation = $colony->getLocation()
             ->getSpacecrafts()
             ->filter(fn(SpacecraftInterface $spacecraft): bool => $spacecraft instanceof ShipInterface
-                && !$spacecraft->getCloakState());
+                && !$spacecraft->isCloaked());
 
         return $this->spacecraftWrapperFactory->wrapSpacecraftsAsGroups($shipsOnLocation);
     }

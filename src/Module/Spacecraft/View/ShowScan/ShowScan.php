@@ -55,7 +55,7 @@ final class ShowScan implements ViewControllerInterface
         }
 
         $target = $targetWrapper->get();
-        if ($target->getCloakState()) {
+        if ($target->isCloaked()) {
             return;
         }
 

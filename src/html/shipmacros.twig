@@ -2,7 +2,7 @@
 {% set rumpid = ship.getRumpId %}
 {% set rumpname = ship.getRumpName %}
 
-{% if ship.getCloakState %}
+{% if ship.isCloaked %}
 {% set imagesrc = 'assets/ships/' ~ rumpid ~ '_cloaked.png' %}
 {% set imagestyle = 'opacity:0.55; z-index: 5;' %}
 {% else %}
@@ -29,7 +29,7 @@
 {% endmacro %}
 
 {% macro spacecraftImageWithoutWarp(ship) %}
-{% if ship.getCloakState %}
+{% if ship.isCloaked %}
 <img src="/assets/ships/{{ ship.getRumpId }}_cloaked.png" style="opacity:0.55;" title="{{ ship.getRumpName }}" />
 {% else %}
 <img src="/assets/ships/{{ ship.getRumpId }}.png" title="{{ ship.getRumpName }}" />
@@ -37,7 +37,7 @@
 {% endmacro %}
 
 {% macro shipimagenameastitle(ship) %}
-{% if ship.getCloakState %}
+{% if ship.isCloaked %}
 <img src="/assets/ships/{{ ship.getRumpId }}_cloaked.png" style="opacity:0.55;" title="{{ ship.getName|bbcode2txt }}" />
 {% else %}
 <img src="/assets/ships/{{ ship.getRumpId }}.png" title="{{ ship.getName|bbcode2txt }}" />
@@ -225,7 +225,7 @@
     {% if nbsItem.isWarped %}
     <span style="width: 100%; color: #474791;">Im Warp</span>
     {% else %}
-    {% if not nbsItem.getCloakState %}
+    {% if not nbsItem.isCloaked %}
     {% if not nbsItem.isDestroyed %}
     <div style="float:left; margin-right:4px;">
         <a href="javascript:void(0);" onclick="showETransferWindow({{ targetId }})"
@@ -353,7 +353,7 @@
             title="{{ nbsItem.getName|bbcode2txt }} abfangen" />
     </a>
     {% endif %}
-    {% if not nbsItem.getCloakState %}
+    {% if not nbsItem.isCloaked %}
     <a href="javascript:void(0);" onclick="showScanWindow({{ spacecraftId }},{{ targetId }});"
         onmouseover="cp('scn_{{ targetId }}','buttons/lupe2')" onmouseout="cp('scn_{{ targetId }}','buttons/lupe1')">
         <img src="/assets/buttons/lupe1.png" name="scn_{{ targetId }}"
@@ -362,7 +362,7 @@
     {% endif %}
     <span style="width: 100%; color: #49495f;">Warpantrieb aktiv</span>
     {% endif %}
-    {% if SPACECRAFT.getCloakState %}
+    {% if SPACECRAFT.isCloaked %}
     <div style="width: 100%; color: #404040;">Tarnung aktiv</div>
     {% endif %}
 </td>

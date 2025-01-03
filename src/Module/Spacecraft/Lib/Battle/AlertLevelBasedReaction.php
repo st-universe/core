@@ -64,7 +64,7 @@ final class AlertLevelBasedReaction implements AlertLevelBasedReactionInterface
     {
         $ship = $wrapper->get();
 
-        if ($ship->getCloakState()) {
+        if ($ship->isCloaked()) {
             try {
                 $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::CLOAK);
                 $informations->addInformation("- Die Tarnung wurde deaktiviert");

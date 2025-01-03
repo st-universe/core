@@ -54,7 +54,7 @@ final class TransferFromAccount implements ActionControllerInterface
             return;
         }
 
-        if ($spacecraft->getCloakState()) {
+        if ($spacecraft->isCloaked()) {
             $game->addInformation(_("Die Tarnung ist aktiviert"));
             return;
         }

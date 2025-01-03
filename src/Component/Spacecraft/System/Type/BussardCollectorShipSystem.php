@@ -62,7 +62,7 @@ class BussardCollectorShipSystem extends AbstractSpacecraftSystemType implements
             return false;
         }
 
-        if ($spacecraft->getCloakState()) {
+        if ($spacecraft->isCloaked()) {
             $reason = _('das Schiff getarnt ist');
             return false;
         }

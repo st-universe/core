@@ -329,7 +329,7 @@ class FightLibTest extends StuTestCase
             ->andReturn(true);
 
 
-        $target->shouldReceive('getCloakState')
+        $target->shouldReceive('isCloaked')
             ->withNoArgs()
             ->once()
             ->andReturn(true);
@@ -479,7 +479,7 @@ class FightLibTest extends StuTestCase
         $target->shouldReceive('getUserId')
             ->withNoArgs()
             ->andReturn(77777);
-        $target->shouldReceive('getCloakState')
+        $target->shouldReceive('isCloaked')
             ->withNoArgs()
             ->andReturn(true);
 
@@ -521,7 +521,7 @@ class FightLibTest extends StuTestCase
         $target->shouldReceive('getUserId')
             ->withNoArgs()
             ->andReturn(77777);
-        $target->shouldReceive('getCloakState')
+        $target->shouldReceive('isCloaked')
             ->withNoArgs()
             ->andReturn(false);
         $target->shouldReceive('getFleetId')
@@ -566,7 +566,7 @@ class FightLibTest extends StuTestCase
         $target->shouldReceive('getUserId')
             ->withNoArgs()
             ->andReturn(77777);
-        $target->shouldReceive('getCloakState')
+        $target->shouldReceive('isCloaked')
             ->withNoArgs()
             ->andReturn(false);
         $target->shouldReceive('getFleetId')
@@ -611,7 +611,7 @@ class FightLibTest extends StuTestCase
         $target->shouldReceive('getUserId')
             ->withNoArgs()
             ->andReturn(77777);
-        $target->shouldReceive('getCloakState')
+        $target->shouldReceive('isCloaked')
             ->withNoArgs()
             ->andReturn(false);
         $target->shouldReceive('getFleetId')
@@ -656,7 +656,7 @@ class FightLibTest extends StuTestCase
         $target->shouldReceive('getUserId')
             ->withNoArgs()
             ->andReturn(77777);
-        $target->shouldReceive('getCloakState')
+        $target->shouldReceive('isCloaked')
             ->withNoArgs()
             ->andReturn(false);
         $target->shouldReceive('getFleetId')
@@ -697,7 +697,7 @@ class FightLibTest extends StuTestCase
         $target->shouldReceive('getUserId')
             ->withNoArgs()
             ->andReturn(77777);
-        $target->shouldReceive('getCloakState')
+        $target->shouldReceive('isCloaked')
             ->withNoArgs()
             ->andReturn(false);
         $target->shouldReceive('getFleetId')
@@ -830,7 +830,7 @@ class FightLibTest extends StuTestCase
             ->once()
             ->andReturn(UserEnum::USER_FIRST_ID);
 
-        $ship->shouldReceive('getCloakState')
+        $ship->shouldReceive('isCloaked')
             ->withNoArgs()
             ->once()
             ->andReturn(true);
@@ -854,7 +854,7 @@ class FightLibTest extends StuTestCase
             ->once()
             ->andReturn(UserEnum::USER_FIRST_ID);
 
-        $ship->shouldReceive('getCloakState')
+        $ship->shouldReceive('isCloaked')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -882,7 +882,7 @@ class FightLibTest extends StuTestCase
             ->once()
             ->andReturn(UserEnum::USER_FIRST_ID);
 
-        $ship->shouldReceive('getCloakState')
+        $ship->shouldReceive('isCloaked')
             ->withNoArgs()
             ->once()
             ->andReturn(false);

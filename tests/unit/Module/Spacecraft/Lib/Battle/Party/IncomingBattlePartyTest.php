@@ -45,7 +45,7 @@ class IncomingBattlePartyTest extends StuTestCase
             ->withNoArgs()
             ->zeroOrMoreTimes()
             ->andReturn(false);
-        $ship->shouldReceive('getCloakState')
+        $ship->shouldReceive('isCloaked')
             ->withNoArgs()
             ->andReturn(true);
 
@@ -88,7 +88,7 @@ class IncomingBattlePartyTest extends StuTestCase
             ->withNoArgs()
             ->zeroOrMoreTimes()
             ->andReturn(false);
-        $ship->shouldReceive('getCloakState')
+        $ship->shouldReceive('isCloaked')
             ->withNoArgs()
             ->andReturn(false);
         $ship->shouldReceive('isWarped')
@@ -137,7 +137,7 @@ class IncomingBattlePartyTest extends StuTestCase
             ->withNoArgs()
             ->zeroOrMoreTimes()
             ->andReturn(false);
-        $ship->shouldReceive('getCloakState')
+        $ship->shouldReceive('isCloaked')
             ->withNoArgs()
             ->andReturn(false);
         $ship->shouldReceive('isWarped')
@@ -189,7 +189,7 @@ class IncomingBattlePartyTest extends StuTestCase
                 56 => $wrapperWarped
             ]));
 
-        $ship->shouldReceive('getCloakState')
+        $ship->shouldReceive('isCloaked')
             ->withNoArgs()
             ->andReturn(false);
         $ship->shouldReceive('isWarped')
@@ -204,11 +204,11 @@ class IncomingBattlePartyTest extends StuTestCase
         $ship->shouldReceive('isStation')
             ->withNoArgs()
             ->andReturn(false);
-        $shipCloaked->shouldReceive('getCloakState')
+        $shipCloaked->shouldReceive('isCloaked')
             ->withNoArgs()
             ->andReturn(true);
 
-        $shipWarped->shouldReceive('getCloakState')
+        $shipWarped->shouldReceive('isCloaked')
             ->withNoArgs()
             ->andReturn(false);
         $shipWarped->shouldReceive('isWarped')

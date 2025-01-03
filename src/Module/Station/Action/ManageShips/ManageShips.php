@@ -93,7 +93,7 @@ final class ManageShips implements ActionControllerInterface
         if ($ship === null) {
             return [];
         }
-        if ($ship->getCloakState()) {
+        if ($ship->isCloaked()) {
             return [];
         }
         if (!$this->interactionChecker->checkPosition($station, $ship)) {

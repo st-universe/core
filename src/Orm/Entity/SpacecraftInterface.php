@@ -68,7 +68,7 @@ interface SpacecraftInterface extends
 
     public function isHeldByTholianWeb(): bool;
 
-    public function getCloakState(): bool;
+    public function isCloaked(): bool;
 
     public function getTachyonState(): bool;
 

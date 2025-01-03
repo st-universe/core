@@ -27,7 +27,7 @@ final class ProjectileWeaponShipSystem extends AbstractSpacecraftSystemType impl
             return false;
         }
 
-        if ($spacecraft->getCloakState()) {
+        if ($spacecraft->isCloaked()) {
             $reason = _('die Tarnung aktiviert ist');
             return false;
         }

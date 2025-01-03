@@ -184,7 +184,7 @@ final class CrewLimitations implements ManagerComponentInterface
         }
 
         $wrapper = $this->spacecraftWrapperFactory->wrapSpacecraft($randomShip);
-        $doAlertRedCheck = $randomShip->getWarpDriveState() || $randomShip->getCloakState();
+        $doAlertRedCheck = $randomShip->getWarpDriveState() || $randomShip->isCloaked();
         //deactivate ship
         $this->spacecraftSystemManager->deactivateAll($wrapper);
         $randomShip->setAlertStateGreen();

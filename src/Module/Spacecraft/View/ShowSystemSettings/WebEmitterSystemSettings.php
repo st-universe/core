@@ -60,7 +60,7 @@ class WebEmitterSystemSettings implements SystemSettingsProviderInterface
             if ($emitter->isUseable()) {
                 $possibleTargetList = $ship->getLocation()
                     ->getSpacecrafts()
-                    ->filter(fn(SpacecraftInterface $target): bool => !$target->getCloakState() && !$target->isWarped() && $target !== $ship);
+                    ->filter(fn(SpacecraftInterface $target): bool => !$target->isCloaked() && !$target->isWarped() && $target !== $ship);
 
                 $game->setTemplateVar('AVAILABLE_SHIPS', $possibleTargetList);
             } else {

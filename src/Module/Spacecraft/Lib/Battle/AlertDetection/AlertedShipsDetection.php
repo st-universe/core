@@ -29,7 +29,7 @@ class AlertedShipsDetection implements AlertedShipsDetectionInterface
                     && ($spacecraft->getFleet() === null || !$spacecraft instanceof ShipInterface || $spacecraft->isFleetLeader())
                     && !$spacecraft->isAlertGreen()
                     && !$spacecraft->isWarped()
-                    && !$spacecraft->getCloakState()
+                    && !$spacecraft->isCloaked()
             )
             ->map(fn(SpacecraftInterface $spacecraft): SpacecraftWrapperInterface => $this->spacecraftWrapperFactory->wrapSpacecraft($spacecraft));
     }

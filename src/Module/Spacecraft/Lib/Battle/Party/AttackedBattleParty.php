@@ -27,7 +27,7 @@ class AttackedBattleParty extends AbstractBattleParty
 
             // only uncloaked defenders fight
             $uncloakedDefenders = $fleetWrapper->getShipWrappers()
-                ->filter(fn(SpacecraftWrapperInterface $wrapper): bool => !$wrapper->get()->getCloakState())
+                ->filter(fn(SpacecraftWrapperInterface $wrapper): bool => !$wrapper->get()->isCloaked())
                 ->toArray();
 
             $allDefenders = $this->addDockedTo($uncloakedDefenders);

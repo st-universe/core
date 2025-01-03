@@ -30,7 +30,7 @@ final class AstroLaboratoryShipSystem extends AbstractSpacecraftSystemType imple
     {
         $spacecraft = $wrapper->get();
 
-        if ($spacecraft->getCloakState()) {
+        if ($spacecraft->isCloaked()) {
             $reason = _('die Tarnung aktiv ist');
             return false;
         }

@@ -103,7 +103,7 @@ class FlightSignatureCreatorTest extends StuTestCase
             ->withNoArgs()
             ->twice()
             ->andReturn($shipRump);
-        $ship->shouldReceive('getCloakState')
+        $ship->shouldReceive('isCloaked')
             ->withNoArgs()
             ->twice()
             ->andReturn($cloakState);
@@ -214,7 +214,7 @@ class FlightSignatureCreatorTest extends StuTestCase
             ->withNoArgs()
             ->twice()
             ->andReturn($shipRump);
-        $ship->shouldReceive('getCloakState')
+        $ship->shouldReceive('isCloaked')
             ->withNoArgs()
             ->twice()
             ->andReturn($cloakState);

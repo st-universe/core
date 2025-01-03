@@ -36,7 +36,7 @@ final class TractorBeamShipSystem extends AbstractSpacecraftSystemType implement
     {
         $spacecraft = $wrapper->get();
 
-        if ($spacecraft->getCloakState()) {
+        if ($spacecraft->isCloaked()) {
             $reason = _('die Tarnung aktiviert ist');
             return false;
         }
@@ -125,7 +125,7 @@ final class TractorBeamShipSystem extends AbstractSpacecraftSystemType implement
     public static function isTractorBeamPossible(SpacecraftInterface|SpacecraftNfsItem $spacecraft): bool
     {
         return !($spacecraft->isStation()
-            || $spacecraft->getCloakState()
+            || $spacecraft->isCloaked()
             || $spacecraft->getShieldState()
             || $spacecraft->isWarped());
     }

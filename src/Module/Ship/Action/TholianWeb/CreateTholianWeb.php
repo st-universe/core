@@ -148,7 +148,7 @@ final class CreateTholianWeb implements ActionControllerInterface
     {
         $target = $this->spacecraftRepository->find($targetId);
 
-        if ($target === null || $target->getCloakState()) {
+        if ($target === null || $target->isCloaked()) {
             return null;
         }
 

@@ -80,7 +80,7 @@ class AlertLevelBasedReactionTest extends StuTestCase
         $this->ship->shouldReceive('getAlertState')
             ->withNoArgs()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_YELLOW);
-        $this->ship->shouldReceive('getCloakState')
+        $this->ship->shouldReceive('isCloaked')
             ->withNoArgs()
             ->once()
             ->andReturn(true);
@@ -101,7 +101,7 @@ class AlertLevelBasedReactionTest extends StuTestCase
         $this->ship->shouldReceive('getAlertState')
             ->withNoArgs()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_YELLOW);
-        $this->ship->shouldReceive('getCloakState')
+        $this->ship->shouldReceive('isCloaked')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -142,7 +142,7 @@ class AlertLevelBasedReactionTest extends StuTestCase
         $this->ship->shouldReceive('getAlertState')
             ->withNoArgs()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_YELLOW);
-        $this->ship->shouldReceive('getCloakState')
+        $this->ship->shouldReceive('isCloaked')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -176,7 +176,7 @@ class AlertLevelBasedReactionTest extends StuTestCase
         $this->ship->shouldReceive('getAlertState')
             ->withNoArgs()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_YELLOW);
-        $this->ship->shouldReceive('getCloakState')
+        $this->ship->shouldReceive('isCloaked')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -214,7 +214,7 @@ class AlertLevelBasedReactionTest extends StuTestCase
         $this->ship->shouldReceive('getAlertState')
             ->withNoArgs()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_YELLOW);
-        $this->ship->shouldReceive('getCloakState')
+        $this->ship->shouldReceive('isCloaked')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -248,7 +248,7 @@ class AlertLevelBasedReactionTest extends StuTestCase
         $this->ship->shouldReceive('getAlertState')
             ->withNoArgs()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_RED);
-        $this->ship->shouldReceive('getCloakState')
+        $this->ship->shouldReceive('isCloaked')
             ->withNoArgs()
             ->once()
             ->andReturn(false);

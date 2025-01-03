@@ -17,7 +17,7 @@
 <div id="scandetails" style="width: 500px;">
   {% if not TARGETSHIP.isDestroyed %}
   {% set TARGETSHIP_EPS = TARGETWRAPPER.getEpsSystemData %}
-  {% if SHIP.isMatrixScannerHealthy() and not SHIP.getCloakState() %}
+  {% if SHIP.isMatrixScannerHealthy() and not SHIP.isCloaked() %}
   <table class="tcal">
     <tr>
       <th colspan="2">Details</th>

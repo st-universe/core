@@ -156,7 +156,7 @@ class SpacecraftStorageEntityWrapper implements StorageEntityWrapperInterface
             $information->addInformation("Keine Energie vorhanden");
             return false;
         }
-        if ($ship->getCloakState()) {
+        if ($ship->isCloaked()) {
             $information->addInformation("Die Tarnung ist aktiviert");
             return false;
         }
