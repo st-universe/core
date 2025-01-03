@@ -3,6 +3,8 @@
 namespace Stu\Module\Spacecraft\Lib\Creation;
 
 use Override;
+use SebastianBergmann\Diff\Differ;
+use SebastianBergmann\Diff\Output\DiffOnlyOutputBuilder;
 use Stu\Module\Logging\StuLogger;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -15,6 +17,8 @@ use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 
 class SpacecraftCorrector implements SpacecraftCorrectorInterface
 {
+    private const string HEADER = "--- Vorher\n+++ Nachher\n";
+
     public function __construct(
         private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository,
         private ConstructionProgressRepositoryInterface $constructionProgressRepository,
@@ -27,6 +31,8 @@ class SpacecraftCorrector implements SpacecraftCorrectorInterface
     {
         $count = 0;
 
+        $differ = new Differ(new DiffOnlyOutputBuilder(self::HEADER));
+
         // correct all ships
         foreach ($this->spacecraftBuildplanRepository->getAllNonNpcBuildplans() as $buildplan) {
 
@@ -36,7 +42,7 @@ class SpacecraftCorrector implements SpacecraftCorrectorInterface
             }
 
             foreach ($spacecrafts as $spacecraft) {
-                if ($this->correctSpacecraft($spacecraft, $buildplan)) {
+                if ($this->correctSpacecraft($spacecraft, $buildplan, $differ)) {
                     $count++;
                 }
             }
@@ -56,7 +62,8 @@ class SpacecraftCorrector implements SpacecraftCorrectorInterface
 
             if ($this->correctSpacecraft(
                 $progress->getStation(),
-                $buildplan
+                $buildplan,
+                $differ
             )) {
                 $count++;
             }
@@ -67,7 +74,7 @@ class SpacecraftCorrector implements SpacecraftCorrectorInterface
         }
     }
 
-    private function correctSpacecraft(SpacecraftInterface $spacecraft, SpacecraftBuildplanInterface $buildplan): bool
+    private function correctSpacecraft(SpacecraftInterface $spacecraft, SpacecraftBuildplanInterface $buildplan, Differ $differ): bool
     {
         $rump = $buildplan->getRump();
         $wrapper = $this->spacecraftWrapperFactory->wrapSpacecraft($spacecraft);
@@ -80,9 +87,9 @@ class SpacecraftCorrector implements SpacecraftCorrectorInterface
         }
 
         $toStringAfter = $wrapper->__toString();
-        $diff = xdiff_string_diff($toStringBefore, $toStringAfter);
+        $diff = $differ->diff($toStringBefore, $toStringAfter);
 
-        if ($diff !== '') {
+        if (strlen($diff) > strlen(self::HEADER)) {
             StuLogger::logf(
                 'spacecraftId %d corrected: %s',
                 $spacecraft->getId(),
