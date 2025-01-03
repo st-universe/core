@@ -150,9 +150,9 @@ class DamageWrapper
 
         $targetShields = $target->getShield();
 
-        $grossModificator = round($this->getShieldDamageFactor() / 100);
+        $grossModificator = $this->getShieldDamageFactor() / 100;
         if ($this->getIsPhaserDamage() === true) {
-            $grossModificator = round($grossModificator * $this->modificator / 100);
+            $grossModificator = $grossModificator * $this->modificator / 100;
         }
 
         $neededNetDamageForShields = min($netDamage, (int)ceil($targetShields / $grossModificator));
