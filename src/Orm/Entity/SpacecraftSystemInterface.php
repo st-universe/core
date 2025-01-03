@@ -48,4 +48,6 @@ interface SpacecraftSystemInterface
     public function setData(string $data): SpacecraftSystemInterface;
 
     public function determineSystemLevel(): int;
+
+    public function __toString(): string;
 }

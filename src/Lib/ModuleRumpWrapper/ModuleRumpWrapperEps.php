@@ -29,11 +29,11 @@ final class ModuleRumpWrapperEps extends ModuleRumpWrapperBase implements Module
     }
 
     #[Override]
-    public function getSecondValue(?ModuleInterface $module = null): ?int
+    public function getSecondValue(?ModuleInterface $module = null): int
     {
         $module ??= current($this->getModule());
         if ($module === false) {
-            return null;
+            return 0;
         }
         return (int) round($this->getValue($module) / 3);
     }

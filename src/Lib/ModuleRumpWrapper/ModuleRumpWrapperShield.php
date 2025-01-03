@@ -28,12 +28,6 @@ final class ModuleRumpWrapperShield extends ModuleRumpWrapperBase implements Mod
     }
 
     #[Override]
-    public function getSecondValue(?ModuleInterface $module = null): ?int
-    {
-        return null;
-    }
-
-    #[Override]
     public function getModuleType(): SpacecraftModuleTypeEnum
     {
         return SpacecraftModuleTypeEnum::SHIELDS;

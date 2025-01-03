@@ -30,11 +30,11 @@ final class ModuleRumpWrapperReactor extends ModuleRumpWrapperBase implements Mo
     }
 
     #[Override]
-    public function getSecondValue(?ModuleInterface $module = null): ?int
+    public function getSecondValue(?ModuleInterface $module = null): int
     {
         $module ??= current($this->getModule());
         if ($module === false) {
-            return null;
+            return 0;
         }
         return $this->getValue($module) * ReactorWrapperInterface::WARPCORE_CAPACITY_MULTIPLIER;
     }

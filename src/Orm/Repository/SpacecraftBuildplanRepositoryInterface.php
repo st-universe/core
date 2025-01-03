@@ -42,12 +42,13 @@ interface SpacecraftBuildplanRepositoryInterface extends ObjectRepository
 
     public function delete(SpacecraftBuildplanInterface $spacecraftBuildplan): void;
 
-    /**
-     * @return array<SpacecraftBuildplanInterface>
-     */
+    /** @return array<SpacecraftBuildplanInterface> */
     public function getByUser(int $userId): array;
 
     public function findByUserAndName(int $userId, string $name): ?SpacecraftBuildplanInterface;
+
+    /** @return array<SpacecraftBuildplanInterface> */
+    public function getAllNonNpcBuildplans(): array;
 
     public function truncateAllBuildplansExceptNoOne(): void;
 

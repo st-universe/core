@@ -13,7 +13,7 @@ use Stu\Orm\Entity\BuildplanModuleInterface;
 use Stu\Orm\Entity\SpacecraftBuildplan;
 use Stu\Orm\Entity\SpacecraftBuildplanInterface;
 use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class RefactorRunner
 {
@@ -22,7 +22,7 @@ final class RefactorRunner
     public function __construct(
         private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository,
         private BuildplanSignatureCreationInterface $buildplanSignatureCreation,
-        private ShipRepositoryInterface $shipRepository,
+        private SpacecraftRepositoryInterface $spacecraftRepository,
         private EntityManagerInterface $entityManager,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
@@ -67,13 +67,13 @@ final class RefactorRunner
                 $lastBuildplan = $buildplan;
             } else {
                 $buildplanCount++;
-                foreach ($buildplan->getShiplist() as $ship) {
-                    $ship->setBuildplan($lastBuildplan);
-                    $this->shipRepository->save($ship);
+                foreach ($buildplan->getSpacecraftList() as $spacecraft) {
+                    $spacecraft->setBuildplan($lastBuildplan);
+                    $this->spacecraftRepository->save($spacecraft);
                     $shipCount++;
                 }
 
-                $buildplan->getShiplist()->clear();
+                $buildplan->getSpacecraftList()->clear();
                 $this->spacecraftBuildplanRepository->delete($buildplan);
             }
         }

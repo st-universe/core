@@ -29,12 +29,6 @@ final class ModuleRumpWrapperEnergyWeapon extends ModuleRumpWrapperBase implemen
     }
 
     #[Override]
-    public function getSecondValue(?ModuleInterface $module = null): ?int
-    {
-        return null;
-    }
-
-    #[Override]
     public function getModuleType(): SpacecraftModuleTypeEnum
     {
         return SpacecraftModuleTypeEnum::PHASER;

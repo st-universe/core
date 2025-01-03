@@ -1347,7 +1347,18 @@ abstract class Spacecraft implements SpacecraftInterface
     public function __toString(): string
     {
         if ($this->id !== null) {
-            return sprintf('id: %d, name: %s', $this->getId(), $this->getName());
+            return sprintf(
+                "id: %d, name: %s,\nhull: %d/%d, shields %d/%d,\nevadeChance: %d, hitChance: %d, baseDamage: %d",
+                $this->getId(),
+                $this->getName(),
+                $this->huelle,
+                $this->max_huelle,
+                $this->schilde,
+                $this->max_schilde,
+                $this->evade_chance,
+                $this->hit_chance,
+                $this->base_damage
+            );
         }
 
         return $this->getName();

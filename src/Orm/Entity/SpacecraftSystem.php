@@ -213,4 +213,14 @@ class SpacecraftSystem implements SpacecraftSystemInterface
             return max(1, $this->getSpacecraft()->getRump()->getModuleLevel() - 1);
         }
     }
+
+    #[Override]
+    public function __toString(): string
+    {
+        return sprintf(
+            '"%s": %s',
+            $this->system_type->name,
+            $this->data ?? 'null'
+        );
+    }
 }

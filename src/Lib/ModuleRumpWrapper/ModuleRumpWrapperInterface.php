@@ -16,7 +16,9 @@ interface ModuleRumpWrapperInterface
 
     public function getValue(?ModuleInterface $module = null): int;
 
-    public function getSecondValue(?ModuleInterface $module = null): ?int;
+    public function getSecondValue(?ModuleInterface $module = null): int;
+
+    public function initialize(SpacecraftWrapperInterface $wrapper): ModuleRumpWrapperInterface;
 
     public function apply(SpacecraftWrapperInterface $wrapper): void;
 }

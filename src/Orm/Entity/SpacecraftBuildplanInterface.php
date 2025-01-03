@@ -35,16 +35,16 @@ interface SpacecraftBuildplanInterface
 
     public function setCrew(int $crew): SpacecraftBuildplanInterface;
 
-    public function getShipCount(): int;
+    public function getSpacecraftCount(): int;
 
     /**
-     * @return Collection<int, ShipInterface>
+     * @return Collection<int, SpacecraftInterface>
      */
-    public function getShiplist(): Collection;
+    public function getSpacecraftList(): Collection;
 
     public function getRump(): SpacecraftRumpInterface;
 
-    public function setRump(SpacecraftRumpInterface $shipRump): SpacecraftBuildplanInterface;
+    public function setRump(SpacecraftRumpInterface $rump): SpacecraftBuildplanInterface;
 
     /**
      * @return Collection<int, ModuleInterface>

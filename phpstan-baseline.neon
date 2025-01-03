@@ -1486,12 +1486,6 @@ parameters:
 			path: src/Module/Tick/Process/FinishBuildJobs.php
 
 		-
-			message: '#^Parameter \#3 \.\.\.\$values of function sprintf expects bool\|float\|int\|string\|null, Stu\\Orm\\Entity\\ShipInterface\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Module/Tick/Process/FinishTholianWebs.php
-
-		-
 			message: '#^Cannot call method getId\(\) on Stu\\Orm\\Entity\\UserInterface\|null\.$#'
 			identifier: method.nonObject
 			count: 1

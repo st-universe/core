@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Stu\Lib\ModuleRumpWrapper;
 
 use Override;
+use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Entity\SpacecraftBuildplanInterface;
 use Stu\Orm\Entity\SpacecraftRumpInterface;
@@ -34,5 +36,18 @@ abstract class ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
         }
 
         return $this->modules;
+    }
+
+    #[Override]
+    public function getSecondValue(?ModuleInterface $module = null): int
+    {
+        throw new RuntimeException(sprintf('not implemented for moduleType: %s', $this->getModuleType()->name));
+    }
+
+    #[Override]
+    public function initialize(SpacecraftWrapperInterface $wrapper): ModuleRumpWrapperInterface
+    {
+        //override if neccessary
+        return $this;
     }
 }

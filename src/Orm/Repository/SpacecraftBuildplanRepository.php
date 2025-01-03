@@ -170,6 +170,20 @@ final class SpacecraftBuildplanRepository extends EntityRepository implements Sp
         ]);
     }
 
+    public function getAllNonNpcBuildplans(): array
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT bp FROM %s bp
+                    WHERE bp.user_id >= :firstUserId',
+                    SpacecraftBuildplan::class
+                )
+            )
+            ->setParameter('firstUserId', UserEnum::USER_FIRST_ID)
+            ->getResult();
+    }
+
     #[Override]
     public function truncateAllBuildplansExceptNoOne(): void
     {

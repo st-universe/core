@@ -397,4 +397,19 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
             $this->spacecraftWrapperFactory
         );
     }
+
+    #[Override]
+    public function __toString(): string
+    {
+        $systems = implode(",\n", $this->spacecraft->getSystems()
+            ->filter(fn($system): bool => $system->getData() !== null)
+            ->map(fn($system): string => $system->__toString())
+            ->toArray());
+
+        return sprintf(
+            "spacecraft: {%s,\n  systems: [\n%s\n}\n]",
+            $this->spacecraft->__toString(),
+            $systems
+        );
+    }
 }

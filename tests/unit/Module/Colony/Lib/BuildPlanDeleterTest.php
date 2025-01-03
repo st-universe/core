@@ -71,7 +71,7 @@ class BuildPlanDeleterTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($planId);
-        $spacecraftBuildplan->shouldReceive('getShipCount')
+        $spacecraftBuildplan->shouldReceive('getSpacecraftCount')
             ->withNoArgs()
             ->once()
             ->andReturn(42);
@@ -96,7 +96,7 @@ class BuildPlanDeleterTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($planId);
-        $spacecraftBuildplan->shouldReceive('getShipCount')
+        $spacecraftBuildplan->shouldReceive('getSpacecraftCount')
             ->withNoArgs()
             ->once()
             ->andReturn(0);
@@ -121,7 +121,7 @@ class BuildPlanDeleterTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($planId);
-        $spacecraftBuildplan->shouldReceive('getShipCount')
+        $spacecraftBuildplan->shouldReceive('getSpacecraftCount')
             ->withNoArgs()
             ->once()
             ->andReturn(0);
