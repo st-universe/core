@@ -89,7 +89,7 @@ class ColonyDefendingBattlePartyTest extends StuTestCase
                 34 => $wrapper2
             ]));
 
-        $ship->shouldReceive('getCloakState')
+        $ship->shouldReceive('isCloaked')
             ->withNoArgs()
             ->andReturn(false);
         $ship->shouldReceive('isDestroyed')
@@ -101,7 +101,7 @@ class ColonyDefendingBattlePartyTest extends StuTestCase
         $ship->shouldReceive('isStation')
             ->withNoArgs()
             ->andReturn(false);
-        $ship2->shouldReceive('getCloakState')
+        $ship2->shouldReceive('isCloaked')
             ->withNoArgs()
             ->andReturn(true);
         $ship2->shouldReceive('isDestroyed')

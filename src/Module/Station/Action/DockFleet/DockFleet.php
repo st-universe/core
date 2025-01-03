@@ -113,7 +113,7 @@ final class DockFleet implements ActionControllerInterface
                 $msg[] = $station->getName() . _(": Nicht genügend Energie vorhanden");
                 break;
             }
-            if ($ship->getCloakState()) {
+            if ($ship->isCloaked()) {
                 $msg[] = $ship->getName() . _(': Das Schiff ist getarnt');
                 continue;
             }

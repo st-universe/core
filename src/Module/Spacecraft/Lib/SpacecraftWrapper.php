@@ -225,7 +225,7 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
             return false;
         }
 
-        if ($this->spacecraft->getCloakState()) {
+        if ($this->spacecraft->isCloaked()) {
             return false;
         }
 

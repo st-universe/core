@@ -112,7 +112,7 @@ abstract class TSpacecraftItem implements TSpacecraftItemInterface
     }
 
     #[Override]
-    public function getCloakState(): int
+    public function isCloaked(): int
     {
         return $this->cloak_state ?? 0;
     }

@@ -39,7 +39,7 @@ final class Shutdown implements ActionControllerInterface
         $ship = $wrapper->get();
         $traktoredShipWrapper = $wrapper->getTractoredShipWrapper();
 
-        $triggerAlertRed = $ship->getWarpDriveState() || $ship->getCloakState();
+        $triggerAlertRed = $ship->getWarpDriveState() || $ship->isCloaked();
 
         //deactivate all systems except life support and troop quarters
         foreach ($this->spacecraftSystemManager->getActiveSystems($ship) as $system) {

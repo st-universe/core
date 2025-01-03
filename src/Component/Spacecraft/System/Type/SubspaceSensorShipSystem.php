@@ -22,7 +22,7 @@ final class SubspaceSensorShipSystem extends AbstractSpacecraftSystemType implem
     {
         $spacecraft = $wrapper->get();
 
-        if ($spacecraft->getCloakState()) {
+        if ($spacecraft->isCloaked()) {
             $reason = _('die Tarnung aktiviert ist');
             return false;
         }

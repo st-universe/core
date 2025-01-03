@@ -338,7 +338,7 @@ canColonize, closestAnomalyDistance) %}
             </div>
         </td>
         <td style="width: 50%;">
-            {% if not ownsCurrentColony and SPACECRAFT.isMatrixScannerHealthy and not SPACECRAFT.getCloakState %}
+            {% if not ownsCurrentColony and SPACECRAFT.isMatrixScannerHealthy and not SPACECRAFT.isCloaked %}
             <div style="float: left; margin-top: 5px; margin-right: 5px;">
                 <a href="javascript:void(0);" onclick="showColonyScan();"
                     onmouseover="cp('coloScanButton','buttons/lupe2')"

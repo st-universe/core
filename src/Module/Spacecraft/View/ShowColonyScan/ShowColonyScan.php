@@ -48,7 +48,7 @@ final class ShowColonyScan implements ViewControllerInterface
         );
         $ship = $wrapper->get();
 
-        if ($ship->getCloakState()) {
+        if ($ship->isCloaked()) {
             return;
         }
 

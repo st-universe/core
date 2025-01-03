@@ -221,10 +221,10 @@ class AttackedBattlePartyTest extends StuTestCase
                 67 => $cloakedWrapper
             ]));
 
-        $this->wrapper->shouldReceive('get->getCloakState')
+        $this->wrapper->shouldReceive('get->isCloaked')
             ->withNoArgs()
             ->andReturn(false);
-        $cloakedWrapper->shouldReceive('get->getCloakState')
+        $cloakedWrapper->shouldReceive('get->isCloaked')
             ->withNoArgs()
             ->andReturn(true);
 
@@ -259,14 +259,14 @@ class AttackedBattlePartyTest extends StuTestCase
                 678 => $secondWrapper
             ]));
 
-        $this->wrapper->shouldReceive('get->getCloakState')
+        $this->wrapper->shouldReceive('get->isCloaked')
             ->withNoArgs()
             ->andReturn(false);
 
         $secondWrapper->shouldReceive('get')
             ->withNoArgs()
             ->andReturn($secondShip);
-        $secondShip->shouldReceive('getCloakState')
+        $secondShip->shouldReceive('isCloaked')
             ->withNoArgs()
             ->andReturn(false);
         $secondShip->shouldReceive('isDestroyed')
@@ -297,7 +297,7 @@ class AttackedBattlePartyTest extends StuTestCase
             ->withNoArgs()
             ->zeroOrMoreTimes()
             ->andReturn(false);
-        $dockedToStation->shouldReceive('getCloakState')
+        $dockedToStation->shouldReceive('isCloaked')
             ->withNoArgs()
             ->andReturn(false);
 
@@ -333,14 +333,14 @@ class AttackedBattlePartyTest extends StuTestCase
                 678 => $secondWrapper
             ]));
 
-        $this->wrapper->shouldReceive('get->getCloakState')
+        $this->wrapper->shouldReceive('get->isCloaked')
             ->withNoArgs()
             ->andReturn(true);
 
         $secondWrapper->shouldReceive('get')
             ->withNoArgs()
             ->andReturn($secondShip);
-        $secondShip->shouldReceive('getCloakState')
+        $secondShip->shouldReceive('isCloaked')
             ->withNoArgs()
             ->andReturn(true);
         $secondShip->shouldReceive('isDestroyed')

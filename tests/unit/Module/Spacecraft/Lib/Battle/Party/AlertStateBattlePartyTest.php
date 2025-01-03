@@ -94,7 +94,7 @@ class AlertStateBattlePartyTest extends StuTestCase
         $ship->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($user);
-        $ship->shouldReceive('getCloakState')
+        $ship->shouldReceive('isCloaked')
             ->withNoArgs()
             ->andReturn(false);
         $ship->shouldReceive('isWarped')
@@ -119,14 +119,14 @@ class AlertStateBattlePartyTest extends StuTestCase
         $wrapperCloaked->shouldReceive('get')
             ->withNoArgs()
             ->andReturn($shipCloaked);
-        $shipCloaked->shouldReceive('getCloakState')
+        $shipCloaked->shouldReceive('isCloaked')
             ->withNoArgs()
             ->andReturn(true);
 
         $wrapperWarped->shouldReceive('get')
             ->withNoArgs()
             ->andReturn($shipWarped);
-        $shipWarped->shouldReceive('getCloakState')
+        $shipWarped->shouldReceive('isCloaked')
             ->withNoArgs()
             ->andReturn(false);
         $shipWarped->shouldReceive('isWarped')
@@ -136,7 +136,7 @@ class AlertStateBattlePartyTest extends StuTestCase
         $wrapperLowAlert->shouldReceive('get')
             ->withNoArgs()
             ->andReturn($shipLowerAlert);
-        $shipLowerAlert->shouldReceive('getCloakState')
+        $shipLowerAlert->shouldReceive('isCloaked')
             ->withNoArgs()
             ->andReturn(false);
         $shipLowerAlert->shouldReceive('isWarped')

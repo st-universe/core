@@ -18,7 +18,7 @@ interface TSpacecraftItemInterface
 
     public function getTractorWarpState(): int;
 
-    public function getCloakState(): int;
+    public function isCloaked(): int;
 
     public function getShieldState(): int;
 

@@ -142,7 +142,7 @@ class EnergyWeaponPhaseTest extends StuTestCase
         $target->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn($targetId);
-        $target->shouldReceive('getCloakState')
+        $target->shouldReceive('isCloaked')
             ->withNoArgs()
             ->andReturn(false);
         $target->shouldReceive('getName')

@@ -84,7 +84,7 @@ final class ManageOrbitalSpacecrafts implements ActionControllerInterface
         if ($spacecraft === null) {
             return [];
         }
-        if ($spacecraft->getCloakState()) {
+        if ($spacecraft->isCloaked()) {
             return [];
         }
         if ($colony->getLocation() !== $spacecraft->getLocation()) {

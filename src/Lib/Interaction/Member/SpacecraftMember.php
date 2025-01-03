@@ -40,7 +40,7 @@ class SpacecraftMember implements InteractionMemberInterface
 
         if (
             $shouldCheck(InteractionCheckType::EXPECT_SOURCE_UNCLOAKED)
-            && $this->spacecraft->getCloakState()
+            && $this->spacecraft->isCloaked()
         ) {
             return InteractionCheckType::EXPECT_SOURCE_UNCLOAKED;
         }
@@ -48,7 +48,7 @@ class SpacecraftMember implements InteractionMemberInterface
         if (
             $shouldCheck(InteractionCheckType::EXPECT_SOURCE_TACHYON)
             && $other instanceof SpacecraftMember
-            && $other->get()->getCloakState()
+            && $other->get()->isCloaked()
             && !$this->nbsUtility->isTachyonActive($this->spacecraft)
         ) {
             return InteractionCheckType::EXPECT_SOURCE_TACHYON;
@@ -73,7 +73,7 @@ class SpacecraftMember implements InteractionMemberInterface
 
         if (
             $shouldCheck(InteractionCheckType::EXPECT_TARGET_UNCLOAKED)
-            && $this->spacecraft->getCloakState()
+            && $this->spacecraft->isCloaked()
         ) {
             return InteractionCheckType::EXPECT_TARGET_UNCLOAKED;
         }

@@ -98,7 +98,7 @@ final class FightLib implements FightLibInterface
         }
 
         //can't attack cloaked target
-        if ($checkCloaked && $target->getCloakState()) {
+        if ($checkCloaked && $target->isCloaked()) {
             return false;
         }
 
@@ -116,7 +116,7 @@ final class FightLib implements FightLibInterface
         //can't attack own target under cloak
         if (
             $target->getUserId() === $spacecraft->getUserId()
-            && $target->getCloakState()
+            && $target->isCloaked()
         ) {
             return false;
         }
@@ -159,7 +159,7 @@ final class FightLib implements FightLibInterface
         }
 
         return !(User::isUserNpc($object->getUserId())
-            || $object->getCloakState()
+            || $object->isCloaked()
             || $object->getShieldState()
             || $object->isWarped());
     }

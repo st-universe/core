@@ -225,7 +225,7 @@ class AlertedShipsDetectionTest extends StuTestCase
         $ship->shouldReceive('isWarped')
             ->withNoArgs()
             ->andReturn(false);
-        $ship->shouldReceive('getCloakState')
+        $ship->shouldReceive('isCloaked')
             ->withNoArgs()
             ->andReturn(true);
 
@@ -265,7 +265,7 @@ class AlertedShipsDetectionTest extends StuTestCase
         $ship->shouldReceive('isWarped')
             ->withNoArgs()
             ->andReturn(false);
-        $ship->shouldReceive('getCloakState')
+        $ship->shouldReceive('isCloaked')
             ->withNoArgs()
             ->andReturn(false);
 
@@ -314,7 +314,7 @@ class AlertedShipsDetectionTest extends StuTestCase
         $ship->shouldReceive('isWarped')
             ->withNoArgs()
             ->andReturn(false);
-        $ship->shouldReceive('getCloakState')
+        $ship->shouldReceive('isCloaked')
             ->withNoArgs()
             ->andReturn(false);
 

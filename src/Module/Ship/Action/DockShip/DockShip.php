@@ -123,7 +123,7 @@ final class DockShip implements ActionControllerInterface
             $game->addInformation('Zur Zeit sind alle Dockplätze belegt');
             return;
         }
-        if ($ship->getCloakState()) {
+        if ($ship->isCloaked()) {
             $game->addInformation("Das Schiff ist getarnt");
             return;
         }
@@ -188,7 +188,7 @@ final class DockShip implements ActionControllerInterface
                 break;
             }
 
-            if ($fleetShip->getCloakState()) {
+            if ($fleetShip->isCloaked()) {
                 $msg[] = $fleetShip->getName() . _(': Das Schiff ist getarnt');
                 continue;
             }

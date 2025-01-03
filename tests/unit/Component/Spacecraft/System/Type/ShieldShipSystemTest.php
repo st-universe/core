@@ -47,7 +47,7 @@ class ShieldShipSystemTest extends StuTestCase
 
     public function testCheckActivationConditionsReturnsFalsIfCloaked(): void
     {
-        $this->ship->shouldReceive('getCloakState')
+        $this->ship->shouldReceive('isCloaked')
             ->withNoArgs()
             ->once()
             ->andReturnTrue();
@@ -61,7 +61,7 @@ class ShieldShipSystemTest extends StuTestCase
 
     public function testCheckActivationConditionsReturnsFalseIfTractoring(): void
     {
-        $this->ship->shouldReceive('getCloakState')
+        $this->ship->shouldReceive('isCloaked')
             ->withNoArgs()
             ->once()
             ->andReturnFalse();
@@ -79,7 +79,7 @@ class ShieldShipSystemTest extends StuTestCase
 
     public function testCheckActivationConditionsReturnsFalseIfTractored(): void
     {
-        $this->ship->shouldReceive('getCloakState')
+        $this->ship->shouldReceive('isCloaked')
             ->withNoArgs()
             ->once()
             ->andReturnFalse();
@@ -101,7 +101,7 @@ class ShieldShipSystemTest extends StuTestCase
 
     public function testCheckActivationConditionsReturnsFalseIfShieldsAreDepleted(): void
     {
-        $this->ship->shouldReceive('getCloakState')
+        $this->ship->shouldReceive('isCloaked')
             ->withNoArgs()
             ->once()
             ->andReturnFalse();
@@ -129,7 +129,7 @@ class ShieldShipSystemTest extends StuTestCase
     {
         $location = $this->mock(MapInterface::class);
 
-        $this->ship->shouldReceive('getCloakState')
+        $this->ship->shouldReceive('isCloaked')
             ->withNoArgs()
             ->once()
             ->andReturnFalse();
@@ -166,7 +166,7 @@ class ShieldShipSystemTest extends StuTestCase
     {
         $location = $this->mock(MapInterface::class);
 
-        $this->ship->shouldReceive('getCloakState')
+        $this->ship->shouldReceive('isCloaked')
             ->withNoArgs()
             ->once()
             ->andReturnFalse();

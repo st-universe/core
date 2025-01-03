@@ -64,7 +64,7 @@ final class FlightSignatureCreator implements FlightSignatureCreatorInterface
         $signature->setShipId($spacecraft->getId());
         $signature->setSpacecraftName($spacecraft->getName());
         $signature->setRump($spacecraft->getRump());
-        $signature->setIsCloaked($spacecraft->getCloakState());
+        $signature->setIsCloaked($spacecraft->isCloaked());
         $signature->setTime(time());
 
         return $signature;

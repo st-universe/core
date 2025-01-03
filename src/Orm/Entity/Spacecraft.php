@@ -331,7 +331,7 @@ abstract class Spacecraft implements SpacecraftInterface
     }
 
     #[Override]
-    public function getCloakState(): bool
+    public function isCloaked(): bool
     {
         return $this->getSystemState(SpacecraftSystemTypeEnum::CLOAK);
     }
@@ -1029,7 +1029,7 @@ abstract class Spacecraft implements SpacecraftInterface
     #[Override]
     public function displayNbsActions(): bool
     {
-        return !$this->getCloakState()
+        return !$this->isCloaked()
             && !$this->isWarped();
     }
 

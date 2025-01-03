@@ -55,7 +55,7 @@ class ProjectileWeaponShipSystemTest extends StuTestCase
             ->once()
             ->andReturn(1);
 
-        $this->ship->shouldReceive('getCloakState')
+        $this->ship->shouldReceive('isCloaked')
             ->withNoArgs()
             ->once()
             ->andReturn(true);
@@ -74,7 +74,7 @@ class ProjectileWeaponShipSystemTest extends StuTestCase
             ->once()
             ->andReturn(1);
 
-        $this->ship->shouldReceive('getCloakState')
+        $this->ship->shouldReceive('isCloaked')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -98,7 +98,7 @@ class ProjectileWeaponShipSystemTest extends StuTestCase
             ->once()
             ->andReturn(1);
 
-        $this->ship->shouldReceive('getCloakState')
+        $this->ship->shouldReceive('isCloaked')
             ->withNoArgs()
             ->once()
             ->andReturn(false);

@@ -34,7 +34,7 @@ class AlertStateBattleParty extends AbstractBattleParty implements AlertedBattle
 
             // only uncloaked and unwarped ships enter fight
             return $fleet->getShipWrappers()
-                ->filter(fn(SpacecraftWrapperInterface $wrapper): bool => !$wrapper->get()->getCloakState()
+                ->filter(fn(SpacecraftWrapperInterface $wrapper): bool => !$wrapper->get()->isCloaked()
                     && !$wrapper->get()->isWarped()
                     && $wrapper->get()->getAlertState()->isAtLeast($this->leaderAlertState));
         }

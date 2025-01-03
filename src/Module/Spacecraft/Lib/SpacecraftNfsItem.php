@@ -46,9 +46,9 @@ class SpacecraftNfsItem
     {
         return $this->item->getShieldState() > SpacecraftSystemModeEnum::MODE_OFF->value;
     }
-    public function getCloakState(): bool
+    public function isCloaked(): bool
     {
-        return $this->item->getCloakState() > SpacecraftSystemModeEnum::MODE_OFF->value;
+        return $this->item->isCloaked() > SpacecraftSystemModeEnum::MODE_OFF->value;
     }
     public function getWarpDriveState(): bool
     {
@@ -61,7 +61,7 @@ class SpacecraftNfsItem
     }
     public function isScanPossible(): bool
     {
-        return !$this->getCloakState()
+        return !$this->isCloaked()
             && $this->getType() !== SpacecraftTypeEnum::THOLIAN_WEB;
     }
     public function isTractorbeamPossible(): bool

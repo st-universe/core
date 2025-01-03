@@ -22,7 +22,7 @@ final class EnergyWeaponShipSystem extends AbstractSpacecraftSystemType implemen
     {
         $ship = $wrapper->get();
 
-        if ($ship->getCloakState()) {
+        if ($ship->isCloaked()) {
             $reason = _('die Tarnung aktiviert ist');
             return false;
         }

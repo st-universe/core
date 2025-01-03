@@ -66,7 +66,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
                 $message->add("Die " . $target->getName() . " wurde verfehlt");
                 continue;
             }
-            $isCritical = $this->isCritical($weapon, $target->getCloakState());
+            $isCritical = $this->isCritical($weapon, $target->isCloaked());
             $damage_wrapper = new DamageWrapper(
                 $attacker->getWeaponDamage($isCritical)
             );

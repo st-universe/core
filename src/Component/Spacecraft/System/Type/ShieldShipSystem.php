@@ -30,7 +30,7 @@ final class ShieldShipSystem extends AbstractSpacecraftSystemType implements Spa
     {
         $spacecraft = $wrapper->get();
 
-        if ($spacecraft->getCloakState()) {
+        if ($spacecraft->isCloaked()) {
             $reason = _('die Tarnung aktiviert ist');
             return false;
         }

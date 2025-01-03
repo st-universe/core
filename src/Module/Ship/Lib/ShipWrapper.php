@@ -111,7 +111,7 @@ final class ShipWrapper extends SpacecraftWrapper implements ShipWrapperInterfac
             return false;
         }
 
-        if ($this->spacecraft->getCloakState()) {
+        if ($this->spacecraft->isCloaked()) {
             return false;
         }
 

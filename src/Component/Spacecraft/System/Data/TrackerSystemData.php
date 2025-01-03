@@ -86,6 +86,6 @@ class TrackerSystemData extends AbstractSystemData
         $target = $targetWrapper->get();
 
         return $this->spacecraft->getLocation() ===  $target->getLocation()
-            && $target->getCloakState();
+            && $target->isCloaked();
     }
 }

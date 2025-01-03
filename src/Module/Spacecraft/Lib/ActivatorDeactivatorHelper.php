@@ -361,7 +361,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
             return false;
         }
 
-        if ($alertState === SpacecraftAlertStateEnum::ALERT_RED && $ship->getCloakState()) {
+        if ($alertState === SpacecraftAlertStateEnum::ALERT_RED && $ship->isCloaked()) {
             $game->addInformation(sprintf(_('%s: [b][color=#ff2626]Tarnung verhindert den Wechsel zu Alarm-Rot[/color][/b]'), $ship->getName()));
             return false;
         }

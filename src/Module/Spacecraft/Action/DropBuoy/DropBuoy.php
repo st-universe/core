@@ -49,7 +49,7 @@ final class DropBuoy implements ActionControllerInterface
             $game->addInformation(_("Keine Energie vorhanden"));
             return;
         }
-        if ($ship->getCloakState()) {
+        if ($ship->isCloaked()) {
             $game->addInformation(_("Die Tarnung ist aktiviert"));
             return;
         }
