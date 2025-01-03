@@ -12,17 +12,20 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Station\Lib\StationLoaderInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\StationInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class UndockStationShip implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_UNDOCK_SHIP';
 
+    /** @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader */
     public function __construct(
-        private StationLoaderInterface $stationLoader,
+        private SpacecraftLoaderInterface $spacecraftLoader,
         private SpacecraftRepositoryInterface $spacecraftRepository,
         private PrivateMessageSenderInterface $privateMessageSender,
         private CancelRepairInterface $cancelRepair,
@@ -39,7 +42,7 @@ final class UndockStationShip implements ActionControllerInterface
         $stationId = request::indInt('id');
         $targetId = request::indInt('target');
 
-        $wrappers = $this->stationLoader->getWrappersBySourceAndUserAndTarget(
+        $wrappers = $this->spacecraftLoader->getWrappersBySourceAndUserAndTarget(
             $stationId,
             $userId,
             $targetId
@@ -54,7 +57,11 @@ final class UndockStationShip implements ActionControllerInterface
         }
         $target = $targetWrapper->get();
 
-        if (!$target instanceof ShipInterface || $target->getDockedTo() !== $station) {
+        if (
+            !$target instanceof ShipInterface
+            || !$station instanceof StationInterface
+            || $target->getDockedTo() !== $station
+        ) {
             return;
         }
 
@@ -79,7 +86,7 @@ final class UndockStationShip implements ActionControllerInterface
         $station->getDockedShips()->remove($target->getId());
 
         $this->spacecraftRepository->save($target);
-        $this->stationLoader->save($station);
+        $this->spacecraftLoader->save($station);
 
         $game->addInformation(sprintf(_('Die %s wurde erfolgreich abgedockt'), $target->getName()));
     }
