@@ -53,6 +53,8 @@ final class StationShowStrategy implements SpacecraftTypeShowStragegyInterface
             false
         );
 
+        $game->setTemplateVar('STATION', $station);
+
         $progress =  $station->getConstructionProgress();
         if ($progress !== null && $progress->getRemainingTicks() !== 0) {
             $dockedWorkbees = $this->stationUtility->getDockedWorkbeeCount($station);

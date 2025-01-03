@@ -17,6 +17,12 @@
     </tr>
     <tr>
       <td style="width: 20px; vertical-align: middle;">
+        {% if STATION %}
+        <a href="javascript:void(0);"
+          onClick="actionToInnerContent('B_UNDOCK_SHIP', 'id={{ STATION.getId }}&target={{ shipId }}&sstr={{ SESSIONSTRING }}');">
+          <img src="/assets/buttons/dock1.png" title="abdocken" />
+        </a>
+        {% endif %}
       </td>
       <td style="width: 120px; vertical-align: middle;">
         {{ spacecraftImageWithoutWarp(ship) }}
