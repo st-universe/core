@@ -11,7 +11,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Spacecraft\Lib\ShipNfsItem;
+use Stu\Module\Spacecraft\Lib\SpacecraftNfsItem;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
@@ -122,7 +122,7 @@ final class TractorBeamShipSystem extends AbstractSpacecraftSystemType implement
         }
     }
 
-    public static function isTractorBeamPossible(SpacecraftInterface|ShipNfsItem $spacecraft): bool
+    public static function isTractorBeamPossible(SpacecraftInterface|SpacecraftNfsItem $spacecraft): bool
     {
         return !($spacecraft->isStation()
             || $spacecraft->getCloakState()

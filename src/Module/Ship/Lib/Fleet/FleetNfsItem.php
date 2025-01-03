@@ -6,8 +6,8 @@ namespace Stu\Module\Ship\Lib\Fleet;
 
 use RuntimeException;
 use Stu\Lib\SessionInterface;
-use Stu\Module\Spacecraft\Lib\ShipNfsItem;
-use Stu\Module\Spacecraft\Lib\ShipNfsIterator;
+use Stu\Module\Spacecraft\Lib\SpacecraftNfsItem;
+use Stu\Module\Spacecraft\Lib\SpacecraftNfsIterator;
 use Stu\Module\Ship\Lib\TFleetShipItemInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
@@ -27,9 +27,9 @@ final class FleetNfsItem
         return $this->session !== null && $this->session->hasSessionValue('hiddenfleets', $this->getId());
     }
 
-    public function getVisibleShips(): ShipNfsIterator
+    public function getVisibleShips(): SpacecraftNfsIterator
     {
-        return new ShipNfsIterator($this->ships, $this->userId);
+        return new SpacecraftNfsIterator($this->ships, $this->userId);
     }
 
     public function getVisibleShipsCount(): int
@@ -62,9 +62,9 @@ final class FleetNfsItem
         return $this->ships[0]->getFleetId() ?? 0;
     }
 
-    public function getLeadShip(): ShipNfsItem
+    public function getLeadShip(): SpacecraftNfsItem
     {
-        return new ShipNfsItem($this->ships[0], $this->userId);
+        return new SpacecraftNfsItem($this->ships[0], $this->userId);
     }
 
     public function getUserId(): int

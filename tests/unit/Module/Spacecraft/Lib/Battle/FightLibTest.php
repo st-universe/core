@@ -9,6 +9,7 @@ use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Spacecraft\Repair\CancelRepairInterface;
 use Stu\Component\Ship\Retrofit\CancelRetrofitInterface;
+use Stu\Component\Spacecraft\SpacecraftTypeEnum;
 use Stu\Component\Spacecraft\System\Exception\SystemNotFoundException;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -768,9 +769,42 @@ class FightLibTest extends StuTestCase
         $this->assertFalse($result);
     }
 
+    public function testIsBoardingPossibleExpectFalseWhenTholianWeb(): void
+    {
+        $ship = $this->mock(ShipInterface::class);
+
+        $ship->shouldReceive('getType')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(SpacecraftTypeEnum::THOLIAN_WEB);
+
+        $result = FightLib::isBoardingPossible($ship);
+
+        $this->assertFalse($result);
+    }
+
+    public function testIsBoardingPossibleExpectFalseWhenStation(): void
+    {
+        $station = $this->mock(StationInterface::class);
+
+        $station->shouldReceive('getType')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(SpacecraftTypeEnum::STATION);
+
+        $result = FightLib::isBoardingPossible($station);
+
+        $this->assertFalse($result);
+    }
+
     public function testIsBoardingPossibleExpectFalseWhenNpc(): void
     {
         $ship = $this->mock(ShipInterface::class);
+
+        $ship->shouldReceive('getType')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(SpacecraftTypeEnum::SHIP);
 
         $ship->shouldReceive('getUserId')
             ->withNoArgs()
@@ -782,38 +816,20 @@ class FightLibTest extends StuTestCase
         $this->assertFalse($result);
     }
 
-    public function testIsBoardingPossibleExpectFalseWhenBase(): void
-    {
-        $ship = $this->mock(ShipInterface::class);
-
-        $ship->shouldReceive('getUserId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(UserEnum::USER_FIRST_ID);
-
-        $ship->shouldReceive('isStation')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(true);
-
-        $result = FightLib::isBoardingPossible($ship);
-
-        $this->assertFalse($result);
-    }
-
     public function testIsBoardingPossibleExpectFalseWhenCloaked(): void
     {
         $ship = $this->mock(ShipInterface::class);
 
+        $ship->shouldReceive('getType')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(SpacecraftTypeEnum::SHIP);
+
         $ship->shouldReceive('getUserId')
             ->withNoArgs()
             ->once()
             ->andReturn(UserEnum::USER_FIRST_ID);
 
-        $ship->shouldReceive('isStation')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(false);
         $ship->shouldReceive('getCloakState')
             ->withNoArgs()
             ->once()
@@ -828,15 +844,16 @@ class FightLibTest extends StuTestCase
     {
         $ship = $this->mock(ShipInterface::class);
 
+        $ship->shouldReceive('getType')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(SpacecraftTypeEnum::SHIP);
+
         $ship->shouldReceive('getUserId')
             ->withNoArgs()
             ->once()
             ->andReturn(UserEnum::USER_FIRST_ID);
 
-        $ship->shouldReceive('isStation')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(false);
         $ship->shouldReceive('getCloakState')
             ->withNoArgs()
             ->once()
@@ -855,15 +872,16 @@ class FightLibTest extends StuTestCase
     {
         $ship = $this->mock(ShipInterface::class);
 
+        $ship->shouldReceive('getType')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(SpacecraftTypeEnum::SHIP);
+
         $ship->shouldReceive('getUserId')
             ->withNoArgs()
             ->once()
             ->andReturn(UserEnum::USER_FIRST_ID);
 
-        $ship->shouldReceive('isStation')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(false);
         $ship->shouldReceive('getCloakState')
             ->withNoArgs()
             ->once()

@@ -7,7 +7,7 @@ use Stu\Module\Spacecraft\Lib\Battle\Party\AttackedBattleParty;
 use Stu\Module\Spacecraft\Lib\Battle\Party\AttackingBattleParty;
 use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyFactoryInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
-use Stu\Module\Spacecraft\Lib\ShipNfsItem;
+use Stu\Module\Spacecraft\Lib\SpacecraftNfsItem;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
@@ -18,7 +18,7 @@ interface FightLibInterface
 
     public function canAttackTarget(
         SpacecraftInterface $spacecraft,
-        SpacecraftInterface|ShipNfsItem $nfsItem,
+        SpacecraftInterface|SpacecraftNfsItem $nfsItem,
         bool $checkCloaked = false,
         bool $checkActiveWeapons = true,
         bool $checkWarped = true

@@ -21,7 +21,7 @@ use Stu\Module\Colony\Lib\ColonyProductionPreviewWrapper;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Spacecraft\Lib\Battle\FightLibInterface;
-use Stu\Module\Spacecraft\Lib\ShipNfsItem;
+use Stu\Module\Spacecraft\Lib\SpacecraftNfsItem;
 use Stu\Module\Template\TemplateHelperInterface;
 use Stu\Orm\Entity\AnomalyInterface;
 use Stu\Orm\Entity\BuildingInterface;
@@ -138,7 +138,7 @@ class TwigHelper
 
     private function registerFunctions(): void
     {
-        $canAttackTargetFunction = new TwigFunction('canAttackTarget', fn(SpacecraftInterface $spacecraft, SpacecraftInterface|ShipNfsItem $target): bool => $this->fightLib->canAttackTarget($spacecraft, $target));
+        $canAttackTargetFunction = new TwigFunction('canAttackTarget', fn(SpacecraftInterface $spacecraft, SpacecraftInterface|SpacecraftNfsItem $target): bool => $this->fightLib->canAttackTarget($spacecraft, $target));
         $this->environment->addFunction($canAttackTargetFunction);
 
         $getEpsProductionPreviewFunction = new TwigFunction('getEpsProductionPreview', fn(PlanetFieldHostInterface $host, BuildingInterface $building): ColonyEpsProductionPreviewWrapper => $this->colonyLibFactory->createEpsProductionPreviewWrapper($host, $building));
