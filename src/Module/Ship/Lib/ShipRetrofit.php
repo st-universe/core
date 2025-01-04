@@ -17,17 +17,14 @@ use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\SpacecraftBuildplanInterface;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
-use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ModuleSpecialRepositoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
-use Stu\Orm\Entity\BuildplanModuleInterface;
 
 
 final class ShipRetrofit implements ShipRetrofitInterface
 {
     public function __construct(
         private SpacecraftSystemRepositoryInterface $shipSystemRepository,
-        private BuildplanModuleRepositoryInterface $buildplanModuleRepository,
         private ModuleSpecialRepositoryInterface $moduleSpecialRepository,
         private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
         private StorageManagerInterface $storageManager,
@@ -47,15 +44,18 @@ final class ShipRetrofit implements ShipRetrofitInterface
 
 
         foreach (SpacecraftModuleTypeEnum::getModuleSelectorOrder() as $moduleType) {
-            $oldModules = $this->buildplanModuleRepository->getByBuildplanAndModuleType($oldBuildplan->getId(), $moduleType->value);
-            $newModules = $this->buildplanModuleRepository->getByBuildplanAndModuleType($newBuildplan->getId(), $moduleType->value);
 
-            $addingModules = array_udiff($newModules, $oldModules, function ($a, $b): int {
-                return $a->getModule()->getId() - $b->getModule()->getId();
+            $oldModules = $oldBuildplan->getModulesByType($moduleType)->toArray();
+            $newModules = $newBuildplan->getModulesByType($moduleType)->toArray();
+
+            /** @var array<ModuleInterface> */
+            $addingModules = array_udiff($newModules, $oldModules, function (ModuleInterface $a, ModuleInterface $b): int {
+                return $a->getId() - $b->getId();
             });
 
-            $deletingModules = array_udiff($oldModules, $newModules, function ($a, $b): int {
-                return $a->getModule()->getId() - $b->getModule()->getId();
+            /** @var array<ModuleInterface> */
+            $deletingModules = array_udiff($oldModules, $newModules, function (ModuleInterface $a, ModuleInterface $b): int {
+                return $a->getId() - $b->getId();
             });
 
             if ($addingModules !== []) {
@@ -69,7 +69,8 @@ final class ShipRetrofit implements ShipRetrofitInterface
             }
 
             foreach ($deletingModules as $oldModule) {
-                $system = $this->shipSystemRepository->getByShipAndModule($ship->getId(), $oldModule->getModule()->getId());
+                $systemType = $oldModule->getSystemType() ?? $oldModule->getType()->getSystemType();
+                $system = $ship->getSystems()->get($systemType->value);
                 if ($system !== null) {
                     if ($system->getStatus() >= 100 && mt_rand(1, 100) <= 25) {
                         $returnedmodules[] = $system->getModule();
@@ -110,13 +111,12 @@ final class ShipRetrofit implements ShipRetrofitInterface
     }
 
     /**
-     * @param array<BuildplanModuleInterface> $modules
+     * @param array<ModuleInterface> $modules
      * @param array<int, ModuleInterface|null> $systems
      */
     private function addModuleSystems(array $modules, array &$systems): void
     {
-        foreach ($modules as $buildplanmodule) {
-            $module = $buildplanmodule->getModule();
+        foreach ($modules as $module) {
 
             $systemType = $module->getSystemType();
             if (
