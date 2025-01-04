@@ -76,6 +76,7 @@ final class ShipRetrofit implements ShipRetrofitInterface
                         $returnedmodules[] = $system->getModule();
                     }
                     $this->shipSystemRepository->delete($system);
+                    $ship->getSystems()->removeElement($system);
                 }
             }
         }
