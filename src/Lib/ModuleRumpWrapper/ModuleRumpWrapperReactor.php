@@ -11,6 +11,7 @@ use Stu\Module\Spacecraft\Lib\ModuleValueCalculator;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Module\Spacecraft\Lib\ReactorWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 
 final class ModuleRumpWrapperReactor extends ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
 {
@@ -36,7 +37,14 @@ final class ModuleRumpWrapperReactor extends ModuleRumpWrapperBase implements Mo
         if ($module === false) {
             return 0;
         }
-        return $this->getValue($module) * ReactorWrapperInterface::WARPCORE_CAPACITY_MULTIPLIER;
+        if ($module->getSystemType() == SpacecraftSystemTypeEnum::SINGULARITY_REACTOR) {
+            return $this->getValue($module) * ReactorWrapperInterface::SINGULARITY_CAPACITY_MULTIPLIER;
+        }
+        if ($module->getSystemType() == SpacecraftSystemTypeEnum::FUSION_REACTOR) {
+            return $this->getValue($module) * ReactorWrapperInterface::FUSIONCORE_CAPACITY_MULTIPLIER;
+        } else {
+            return $this->getValue($module) * ReactorWrapperInterface::WARPCORE_CAPACITY_MULTIPLIER;
+        }
     }
 
     #[Override]
