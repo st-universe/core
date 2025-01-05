@@ -58,16 +58,6 @@ final class ShipRetrofit implements ShipRetrofitInterface
                 return $a->getId() - $b->getId();
             });
 
-            if ($addingModules !== []) {
-                $systems = [];
-                $this->addModuleSystems($addingModules, $systems);
-                foreach ($systems as $systemType => $module) {
-                    $this->createShipSystem($systemType, $ship, $module);
-                    $moduleRumpWrapper = $moduleType->getModuleRumpWrapperCallable()($ship->getRump(), $newBuildplan);
-                    $moduleRumpWrapper->apply($wrapper);
-                }
-            }
-
             foreach ($deletingModules as $oldModule) {
                 $systemType = $oldModule->getSystemType() ?? $oldModule->getType()->getSystemType();
                 $system = $ship->getSystems()->get($systemType->value);
@@ -77,6 +67,16 @@ final class ShipRetrofit implements ShipRetrofitInterface
                     }
                     $this->shipSystemRepository->delete($system);
                     $ship->getSystems()->removeElement($system);
+                }
+            }
+
+            if ($addingModules !== []) {
+                $systems = [];
+                $this->addModuleSystems($addingModules, $systems);
+                foreach ($systems as $systemType => $module) {
+                    $this->createShipSystem($systemType, $ship, $module);
+                    $moduleRumpWrapper = $moduleType->getModuleRumpWrapperCallable()($ship->getRump(), $newBuildplan);
+                    $moduleRumpWrapper->apply($wrapper);
                 }
             }
         }
