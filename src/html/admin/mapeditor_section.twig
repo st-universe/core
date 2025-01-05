@@ -10,6 +10,7 @@
 	<img src="/assets/buttons/alert3.png" title="system type id" style="cursor: pointer;"
 		onclick="fieldEventSelector(3)" />
 	<img src="/assets/buttons/block1.png" title="passable" style="cursor: pointer;" onclick="fieldEventSelector(4)" />
+	<img src="/assets/buttons/lss_button1.png" title="Area" style="cursor: pointer;" onclick="fieldEventSelector(5)" />
 </div>
 <div style="float: left">
 	<table cellpadding="0" cellspacing="0">
@@ -72,7 +73,8 @@
 						{% set map = mapItem.getMap %}
 						<td class="starmap" data-passable="{{ map.getFieldType.getPassableAsInt }}"
 							data-region="{{ map.getRegionId }}" data-admin-region="{{ map.getAdminRegionId }}"
-							data-system-type-id="{{ map.getSystemTypeId }}" id="{{ map.getCx }}_{{ map.getCy }}">
+							data-system-type-id="{{ map.getSystemTypeId }}" id="{{ map.getCx }}_{{ map.getCy }}"
+							data-influence-area="{{map.getInfluenceAreaId}}" id="{{map.getInfluenceAreaId}}">
 							<div class="lssobj" style="cursor: pointer ! important;"
 								onmouseover="toggleMapfieldType(this)" onmouseout="toggleMapfieldType(this)">
 								<div class="divbody"
@@ -407,6 +409,43 @@
 								</div>
 							</table>
 						</div>
+					
+<div onclick="togglePanel('areaselectorPanel')"
+     style="cursor: pointer; padding: 10px; border: 1px solid #575757; width: 250px;">Area Selector
+</div>
+<div id="areaselectorPanel"
+     style="display: none; padding: 10px; border: 1px solid #575757; width: 250px;">
+    <div class="divbody" style="width: 230px;">
+        <table class="use">
+            <div style="width: 150px; float: left">
+                <div class="divhead">Gewählte Area</div>
+                <div class="divbody" id="areaselector">Keins</div>
+									<br />
+                <table class="use">
+                    {% set count = 0 %}
+                    <tr>
+                        {% for data in POSSIBLE_AREAS.row_0 %}
+                        <td style="vertical-align: top;">
+                            <span style="cursor: pointer;" title="{{ data }}" onclick="selectArea({{ data}})">{{ data }}
+								
+							</span>
+                        </td>
+                        {% set count = count + 1 %}
+                        {% if count == 7 %}
+                            </tr><tr>
+                            {% set count = 0 %}
+                        {% endif %}
+                        {% endfor %}
+                    </tr>
+                </table>
+				</div>
+        </table>
+    </div>
+</div>
+
+
+
+
 					</div>
 				</div>
 			</div>
