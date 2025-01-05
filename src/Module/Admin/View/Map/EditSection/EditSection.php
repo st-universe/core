@@ -18,12 +18,13 @@ use Stu\Orm\Repository\MapBorderTypeRepositoryInterface;
 use Stu\Orm\Repository\MapFieldTypeRepositoryInterface;
 use Stu\Orm\Repository\MapRegionRepositoryInterface;
 use Stu\Orm\Repository\StarSystemTypeRepositoryInterface;
+use Stu\Orm\Repository\MapRepositoryInterface;
 
 final class EditSection implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_EDIT_MAP_SECTION';
 
-    public function __construct(private ShowSectionRequestInterface $request, private LayerRepositoryInterface $layerRepository, private StarmapUiFactoryInterface $starmapUiFactory, private MapRegionRepositoryInterface $mapRegionRepository, private MapBorderTypeRepositoryInterface $mapBorderTypeRepository, private MapFieldTypeRepositoryInterface $mapFieldTypeRepository, private StarSystemTypeRepositoryInterface $starSystemTypeRepository) {}
+    public function __construct(private ShowSectionRequestInterface $request, private LayerRepositoryInterface $layerRepository, private StarmapUiFactoryInterface $starmapUiFactory, private MapRegionRepositoryInterface $mapRegionRepository, private MapBorderTypeRepositoryInterface $mapBorderTypeRepository, private MapFieldTypeRepositoryInterface $mapFieldTypeRepository, private StarSystemTypeRepositoryInterface $starSystemTypeRepository, private MapRepositoryInterface $mapRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -67,6 +68,10 @@ final class EditSection implements ViewControllerInterface
             }
             $possibleAdminRegion['row_' . ($key % 1)][] = $value;
         }
+        $possibleArea = ['row_0'];
+        foreach ($this->mapRepository->getUniqueInfluenceAreaIds() as $key => $value) {
+            $possibleArea['row_' . ($key % 1)][] = $value;
+        }
 
         $possibleBorder = ['row_0'];
         foreach ($this->mapBorderTypeRepository->findAll() as $key => $value) {
@@ -100,6 +105,7 @@ final class EditSection implements ViewControllerInterface
         $game->setTemplateVar('POSSIBLE_BORDER', $possibleBorder);
         $game->setTemplateVar('POSSIBLE_ADMIN_REGION', $possibleAdminRegion);
         $game->setTemplateVar('FIELDS_PER_SECTION', MapEnum::FIELDS_PER_SECTION);
+        $game->setTemplateVar('POSSIBLE_AREAS', $possibleArea);
 
 
         $game->addExecuteJS(sprintf(

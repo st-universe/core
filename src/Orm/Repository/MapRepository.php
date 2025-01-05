@@ -595,4 +595,20 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             'allyId' => $allianceId
         ])->getResult();
     }
+
+    public function getUniqueInfluenceAreaIds(): array
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('influence_area_id', 'influence_area_id', 'integer');
+
+        $query = $this->getEntityManager()->createNativeQuery(
+            'SELECT DISTINCT influence_area_id
+             FROM stu_map
+             WHERE influence_area_id IS NOT NULL
+             ORDER BY influence_area_id ASC',
+            $rsm
+        );
+
+        return array_map('intval', array_column($query->getResult(), 'influence_area_id'));
+    }
 }
