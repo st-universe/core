@@ -27,6 +27,8 @@ interface SpacecraftSystemRepositoryInterface extends ObjectRepository
      */
     public function getTrackingShipSystems(int $targetId): array;
 
+    public function getByShipAndModule(int $shipId, int $moduleId): ?SpacecraftSystemInterface;
+
     /**
      * @return array<SpacecraftSystemInterface>
      */
