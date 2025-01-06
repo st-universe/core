@@ -501,7 +501,8 @@ function hashNumberToColor(number) {
 	const r = (hash & 0xFF0000) >> 16;
 	const g = (hash & 0x00FF00) >> 8;
 	const b = hash & 0x0000FF;
-	return `rgb(${r}, ${g}, ${b})`;
+	const a = 0.5;
+	return `rgba(${r}, ${g}, ${b}, ${a})`;
 }
 function getRandomColorForNumber(number) {
 	return hashNumberToColor(number);
