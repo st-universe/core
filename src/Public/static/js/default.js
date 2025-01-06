@@ -502,7 +502,6 @@ function getRandomColorForNumber(number) {
 	for (let i = 0; i < number.length; i++) {
 		hash = number.charCodeAt(i) + ((hash << 5) - hash);
 	}
-	console.log(`Hash for ${number}: ${hash}`);
 	const r = (hash & 0xFF0000) >> 16;
 	const g = (hash & 0x00FF00) >> 8;
 	const b = hash & 0x0000FF;
