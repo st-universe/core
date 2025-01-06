@@ -496,16 +496,15 @@ function fieldEventSelector(type) {
 		});
 	}
 }
-function getRandomColorForNumber(number) {
-	number = number.toString();
-	let hash = 0;
-	for (let i = 0; i < number.length; i++) {
-		hash = number.charCodeAt(i) + ((hash << 5) - hash);
-	}
+function hashNumberToColor(number) {
+	const hash = number * 2654435761 % 2 ** 32;
 	const r = (hash & 0xFF0000) >> 16;
 	const g = (hash & 0x00FF00) >> 8;
 	const b = hash & 0x0000FF;
-	return `rgba(${r}, ${g}, ${b}, 0.5)`;
+	return `rgb(${r}, ${g}, ${b})`;
+}
+function getRandomColorForNumber(number) {
+	return hashNumberToColor(number);
 }
 function updateTransparency(value) {
 
@@ -516,7 +515,6 @@ function updateTransparency(value) {
 		overlay.style.backgroundColor = newColor;
 	});
 }
-
 function selectMapFieldType(type) {
 	if (type === 0) {
 		$("fieldtypeselector").innerHTML = "Nichts gewählt";
