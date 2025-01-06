@@ -11,6 +11,7 @@
 		onclick="fieldEventSelector(3)" />
 	<img src="/assets/buttons/block1.png" title="passable" style="cursor: pointer;" onclick="fieldEventSelector(4)" />
 	<img src="/assets/buttons/lss_button1.png" title="Area" style="cursor: pointer;" onclick="fieldEventSelector(5)" />
+	 <span>Transparenz: </span><input type="range" id="transparencySlider" min="0" max="1" step="0.1" value="0.5" onchange="updateTransparency(this.value)" style="margin-left: 20px;">
 </div>
 <div style="float: left">
 	<table cellpadding="0" cellspacing="0">
@@ -78,7 +79,7 @@
 							<div class="lssobj" style="cursor: pointer ! important;"
 								onmouseover="toggleMapfieldType(this)" onmouseout="toggleMapfieldType(this)">
 								<div class="divbody"
-									style="/*! position: absolute; */ /*! top: 0; */ /*! left: 0; */ width: 30px; height: 30px;"
+									style="/*! position: absolute; */ /*! top: 0; */ /*! left: 0; */ padding: 0px !important; width: 30px; height: 30px;"
 									onclick="updateField(this,{{ map.getId }});">
 									<img src="/assets/map/{{ mapItem.getMapGraphicPath }}" />
 								</div>
@@ -411,11 +412,11 @@
 						</div>
 					
 <div onclick="togglePanel('areaselectorPanel')"
-     style="cursor: pointer; padding: 10px; border: 1px solid #575757; width: 250px;">Area Selector
+     style="cursor: pointer; padding: 10px; border: 1px solid #575757; width: 820px;">Area Selector
 </div>
 <div id="areaselectorPanel"
-     style="display: none; padding: 10px; border: 1px solid #575757; width: 250px;">
-    <div class="divbody" style="width: 230px;">
+     style="display: none; padding: 10px; border: 1px solid #575757; width: 820px;">
+    <div class="divbody" style="width: 800px;">
         <table class="use">
             <div style="width: 150px; float: left">
                 <div class="divhead">Gewählte Area</div>
@@ -431,7 +432,7 @@
 							</span>
                         </td>
                         {% set count = count + 1 %}
-                        {% if count == 7 %}
+                        {% if count == 25 %}
                             </tr><tr>
                             {% set count = 0 %}
                         {% endif %}

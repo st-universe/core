@@ -373,27 +373,34 @@ function ajax_update(elt, url) {
 function fieldEventSelector(type) {
 	var cells = document.querySelectorAll(".starmap");
 	fieldevent = type;
+
+	cells.forEach(function (cell) {
+		var overlay = cell.querySelector(".overlay");
+		if (overlay) {
+			overlay.remove();
+		}
+	});
+
 	if (type === 0) {
 		console.log("Executing type 0");
-		cells.forEach(function (cell) {
-			var divbody = cell.querySelector(".divbody");
-			console.log("divbody:", divbody);
-			if (divbody) {
-				divbody.style.backgroundColor = "";
-				var span = divbody.querySelector(".influence-id");
-				if (span) {
-					span.remove();
-				}
-			}
-		});
 	}
+
 	if (type === 1) {
 		cells.forEach(function (cell) {
 			var regionValue = cell.getAttribute("data-region");
 
 			if (regionValue > 1) {
 				var divbody = cell.querySelector(".divbody");
-				divbody.style.backgroundColor = "rgba(255, 0, 0, 0.5)";
+				var overlay = document.createElement("div");
+				overlay.className = "overlay";
+				overlay.style.position = "absolute";
+				overlay.style.top = 0;
+				overlay.style.left = 0;
+				overlay.style.width = "100%";
+				overlay.style.height = "100%";
+				overlay.style.backgroundColor = "rgba(255, 0, 0, 0.5)";
+				divbody.style.position = "relative";
+				divbody.appendChild(overlay);
 			}
 		});
 	}
@@ -404,7 +411,16 @@ function fieldEventSelector(type) {
 
 			if (regionValue > 1) {
 				var divbody = cell.querySelector(".divbody");
-				divbody.style.backgroundColor = "rgba(0, 0, 255, 0.5)";
+				var overlay = document.createElement("div");
+				overlay.className = "overlay";
+				overlay.style.position = "absolute";
+				overlay.style.top = 0;
+				overlay.style.left = 0;
+				overlay.style.width = "100%";
+				overlay.style.height = "100%";
+				overlay.style.backgroundColor = "rgba(0, 0, 255, 0.5)";
+				divbody.style.position = "relative";
+				divbody.appendChild(overlay);
 			}
 		});
 	}
@@ -415,7 +431,16 @@ function fieldEventSelector(type) {
 
 			if (regionValue > 1) {
 				var divbody = cell.querySelector(".divbody");
-				divbody.style.backgroundColor = "rgba(255, 255, 0, 0.5)";
+				var overlay = document.createElement("div");
+				overlay.className = "overlay";
+				overlay.style.position = "absolute";
+				overlay.style.top = 0;
+				overlay.style.left = 0;
+				overlay.style.width = "100%";
+				overlay.style.height = "100%";
+				overlay.style.backgroundColor = "rgba(255, 255, 0, 0.5)";
+				divbody.style.position = "relative";
+				divbody.appendChild(overlay);
 			}
 		});
 	}
@@ -426,32 +451,71 @@ function fieldEventSelector(type) {
 
 			if (regionValue == 0) {
 				var divbody = cell.querySelector(".divbody");
-				divbody.style.backgroundColor = "rgba(255, 255, 0, 0.5)";
+				var overlay = document.createElement("div");
+				overlay.className = "overlay";
+				overlay.style.position = "absolute";
+				overlay.style.top = 0;
+				overlay.style.left = 0;
+				overlay.style.width = "100%";
+				overlay.style.height = "100%";
+				overlay.style.backgroundColor = "rgba(255, 255, 0, 0.5)";
+				divbody.style.position = "relative";
+				divbody.appendChild(overlay);
 			}
 		});
 	}
+
 	if (type === 5) {
 		cells.forEach(function (cell) {
 			var regionValue = cell.getAttribute("data-influence-area");
+
 			if (regionValue) {
 				var divbody = cell.querySelector(".divbody");
-				if (divbody) {
-					divbody.style.position = "relative";
+				var overlay = document.createElement("div");
+				overlay.className = "overlay";
+				overlay.style.position = "absolute";
+				overlay.style.top = 0;
+				overlay.style.left = 0;
+				overlay.style.width = "100%";
+				overlay.style.height = "100%";
+				overlay.style.backgroundColor = getRandomColorForNumber(regionValue);
+				divbody.style.position = "relative";
+				divbody.appendChild(overlay);
 
-					var span = document.createElement("span");
-					span.className = "influence-id";
-					span.style.position = "absolute";
-					span.style.top = "50%";
-					span.style.left = "50%";
-					span.style.transform = "translate(-50%, -50%)";
-					span.style.color = "white";
-					span.innerText = regionValue;
+				var span = document.createElement("span");
+				span.className = "influence-id";
+				span.style.position = "absolute";
+				span.style.top = "50%";
+				span.style.left = "50%";
+				span.style.transform = "translate(-50%, -50%)";
+				span.style.color = "white";
+				span.innerText = regionValue;
 
-					divbody.appendChild(span);
-				}
+				overlay.appendChild(span);
 			}
 		});
 	}
+}
+function getRandomColorForNumber(number) {
+	number = number.toString();
+	let hash = 0;
+	for (let i = 0; i < number.length; i++) {
+		hash = number.charCodeAt(i) + ((hash << 5) - hash);
+	}
+	console.log(`Hash for ${number}: ${hash}`);
+	const r = (hash & 0xFF0000) >> 16;
+	const g = (hash & 0x00FF00) >> 8;
+	const b = hash & 0x0000FF;
+	return `rgba(${r}, ${g}, ${b}, 0.5)`;
+}
+function updateTransparency(value) {
+
+	const overlays = document.querySelectorAll('.overlay');
+	overlays.forEach(overlay => {
+		const currentColor = overlay.style.backgroundColor;
+		const newColor = currentColor.replace(/rgba\((\d+), (\d+), (\d+), [^)]+\)/, `rgba($1, $2, $3, ${value})`);
+		overlay.style.backgroundColor = newColor;
+	});
 }
 
 function selectMapFieldType(type) {
@@ -587,11 +651,15 @@ function updateField(obj, fieldid) {
 			var divbody = obj.parentNode;
 			var span = divbody.querySelector(".influence-id");
 
-			if (span) {
+			var overlay = divbody.querySelector(".overlay");
+			if (overlay) {
+				console.log('areaid', areaid);
+				overlay.style.backgroundColor = getRandomColorForNumber(areaid);
+			}
 
+			if (span) {
 				span.innerText = areaid;
 			} else {
-
 				span = document.createElement("span");
 				span.className = "influence-id";
 				span.style.position = "absolute";
@@ -601,10 +669,11 @@ function updateField(obj, fieldid) {
 				span.style.color = "white";
 				span.style.fontWeight = "bold";
 				span.innerText = areaid;
-				divbody.appendChild(span);
+				overlay.appendChild(span);
 			}
 		}
 	}
+
 	if (adminregionselector != 0) {
 		ajax_update(
 			false,
