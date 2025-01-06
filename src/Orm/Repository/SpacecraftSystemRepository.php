@@ -47,6 +47,15 @@ final class SpacecraftSystemRepository extends EntityRepository implements Space
     }
 
     #[Override]
+    public function getByShipAndModule(int $shipId, int $moduleId): ?SpacecraftSystemInterface
+    {
+        return $this->findOneBy([
+            'spacecraft_id' => $shipId,
+            'module_id' => $moduleId
+        ]);
+    }
+
+    #[Override]
     public function getTrackingShipSystems(int $targetId): array
     {
         return $this->getEntityManager()

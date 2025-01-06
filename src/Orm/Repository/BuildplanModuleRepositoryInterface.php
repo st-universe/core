@@ -16,6 +16,11 @@ interface BuildplanModuleRepositoryInterface extends ObjectRepository
      */
     public function getByBuildplan(int $buildplanId): array;
 
+    /**
+     * @return array<BuildplanModuleInterface>
+     */
+    public function getByBuildplanAndModuleType(int $buildplanId, int $moduleType): array;
+
     public function prototype(): BuildplanModuleInterface;
 
     public function save(BuildplanModuleInterface $obj): void;

@@ -132,15 +132,13 @@ final class RetrofitShip implements ActionControllerInterface
 
         /** @var array<int, ModuleInterface> */
         $modules = [];
-
-        /** @var array<int, array<int, ModuleInterface>> */
         $oldModulesOfType = [];
 
         foreach (SpacecraftModuleTypeEnum::getModuleSelectorOrder() as $moduleType) {
             $value = $moduleType->value;
             $module = request::postArray('mod_' . $value);
 
-            $oldModulesOfType[$value] = $oldplan->getModulesByType($moduleType)->toArray();
+            $oldModulesOfType[$value] = $this->buildplanModuleRepository->getByBuildplanAndModuleType($oldplan->getId(), $value);
 
             if (
                 $moduleType != SpacecraftModuleTypeEnum::SPECIAL
@@ -198,9 +196,10 @@ final class RetrofitShip implements ActionControllerInterface
         $storage = $colony->getStorage();
         $modulesToLower = [];
         foreach ($modules as $module) {
-            $isNewModule = !array_filter($oldModulesOfType[$module->getType()->value], function (ModuleInterface $oldModule) use ($module): bool {
-                return $oldModule->getId() === $module->getId();
+            $isNewModule = !array_filter($oldModulesOfType[$module->getType()->value], function ($bpm) use ($module): bool {
+                return $bpm->getModule()->getId() === $module->getId();
             });
+
 
             if ($isNewModule) {
                 if (!$storage->containsKey($module->getCommodityId())) {
