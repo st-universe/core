@@ -13,34 +13,40 @@ use Stu\Orm\Repository\StarSystemRepositoryInterface;
 
 final class EditInfluenceArea implements ActionControllerInterface
 {
-    public const string ACTION_IDENTIFIER = 'B_EDIT_INFLUENCE_AREA';
+	public const string ACTION_IDENTIFIER = 'B_EDIT_INFLUENCE_AREA';
 
-    public function __construct(private EditInfluenceAreaRequestInterface $editInfluenceAreaRequest, private StarSystemRepositoryInterface $starSystemRepository, private MapRepositoryInterface $mapRepository) {}
+	public function __construct(private EditInfluenceAreaRequestInterface $editInfluenceAreaRequest, private StarSystemRepositoryInterface $starSystemRepository, private MapRepositoryInterface $mapRepository) {}
 
-    #[Override]
-    public function handle(GameControllerInterface $game): void
-    {
-        $selectedField = $this->mapRepository->find($this->editInfluenceAreaRequest->getFieldId());
+	#[Override]
+	public function handle(GameControllerInterface $game): void
+	{
+		$selectedField = $this->mapRepository->find($this->editInfluenceAreaRequest->getFieldId());
 
-        if ($selectedField === null) {
-            return;
-        }
+		if ($selectedField === null) {
+			return;
+		}
 
-        $system = $this->starSystemRepository->find($this->editInfluenceAreaRequest->getInfluenceAreaId());
-        if ($system === null) {
-            return;
-        }
+		if ($this->editInfluenceAreaRequest->getInfluenceAreaId() == 9999) {
 
-        $selectedField->setInfluenceArea($system);
+			$selectedField->setInfluenceArea(null);
+		} else {
 
-        $this->mapRepository->save($selectedField);
+			$system = $this->starSystemRepository->find($this->editInfluenceAreaRequest->getInfluenceAreaId());
+			if ($system === null) {
+				return;
+			}
 
-        $game->setView(Noop::VIEW_IDENTIFIER);
-    }
+			$selectedField->setInfluenceArea($system);
+		}
 
-    #[Override]
-    public function performSessionCheck(): bool
-    {
-        return false;
-    }
+		$this->mapRepository->save($selectedField);
+
+		$game->setView(Noop::VIEW_IDENTIFIER);
+	}
+
+	#[Override]
+	public function performSessionCheck(): bool
+	{
+		return false;
+	}
 }
