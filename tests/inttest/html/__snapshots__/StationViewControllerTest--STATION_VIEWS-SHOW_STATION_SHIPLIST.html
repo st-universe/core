@@ -22,8 +22,9 @@
   <table class="use" style="width: 100%;" onmouseover="shipSelectorHover(this);" onmouseout="shipSelectorHoverEnd(this);" onclick="shipSelectorChoose(this);">
     <tr>
       <td class="darkbg" colspan="5">
-                <a type="hidden" href="javascript:void(0);" onclick="switchInnerContent('SHOW_SPACECRAFT', 'Aerie', 'id=42',
-'ship.php');
+                <a type="hidden" href="/ship.php?SHOW_SPACECRAFT=1&amp;id=42" onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Aerie',
+'id=42',
+'ship.php'); event.preventDefault();}
 updateSelectedSpacecraftId('42');"></a>
                 Aerie | Siedler 101
       </td>

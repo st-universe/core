@@ -288,15 +288,17 @@
           <tr class="row">
     <td>
       <input type="hidden" name="spacecrafts[]" value="42">
-            <a href="javascript:void(0);" onclick="switchInnerContent('SHOW_SPACECRAFT', 'Aerie', 'id=42',
-'ship.php');
+            <a href="/ship.php?SHOW_SPACECRAFT=1&amp;id=42" onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Aerie',
+'id=42',
+'ship.php'); event.preventDefault();}
 updateSelectedSpacecraftId('42');">
         <img src="assets/ships/6501.png" title="Aerie">
       </a>
           </td>
         <td>
-      <a href="javascript:void(0);" onclick="switchInnerContent('SHOW_SPACECRAFT', 'Aerie', 'id=42',
-'ship.php');
+      <a href="/ship.php?SHOW_SPACECRAFT=1&amp;id=42" onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Aerie',
+'id=42',
+'ship.php'); event.preventDefault();}
 updateSelectedSpacecraftId('42');">Aerie</a>
     </td>
             <td>

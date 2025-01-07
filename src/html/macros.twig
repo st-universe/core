@@ -145,9 +145,10 @@
 
 {% macro onClickSpacecraft(spacecraft) %}
 {% set id = spacecraft.getId %}
-href="javascript:void(0);"
-onclick="switchInnerContent('SHOW_SPACECRAFT', '{{ spacecraft.getName|bbcode2txt|htmlSafe }}', 'id={{ id }}',
-'{{ spacecraft.getType.getModuleView.getPhpPage }}');
+href="/ship.php?SHOW_SPACECRAFT=1&id={{ id }}"
+onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', '{{ spacecraft.getName|bbcode2txt|htmlSafe }}',
+'id={{ id }}',
+'{{ spacecraft.getType.getModuleView.getPhpPage }}'); event.preventDefault();}
 updateSelectedSpacecraftId('{{ id }}');"
 {% endmacro %}
 
