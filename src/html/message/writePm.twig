@@ -56,7 +56,8 @@
 						</td>
 						{{ translationSwitcher(post.hasTranslation, 'message' ~ postId, 'Nachricht übersetzen') }}
 						<td style="width: 120px; text-align: center;">
-							{{ post.getDate|stuDateTime }}
+							{% set class = post.isMarkableAsNew ? 'negative' : '' %}
+							<span class="{{ class }}">{{ post.getDate|stuDateTime }}</span>
 						</td>
 					</tr>
 				</table>

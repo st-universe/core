@@ -74,10 +74,11 @@ abstract class TwigTestCase extends StuTestCase
         StuMocks::get()->reset();
     }
 
-    protected abstract function getViewControllerClass(): string;
-
-    /** @param array<string, mixed> $requestVars*/
-    protected function renderSnapshot(int $userId, array $requestVars, ViewControllerInterface $viewController = null): void
+    /** 
+     * @param class-string<ViewControllerInterface>|ViewControllerInterface $viewController
+     * @param array<string, mixed> $requestVars 
+     */
+    protected function renderSnapshot(int $userId, string|ViewControllerInterface $viewController, array $requestVars): void
     {
         $dic = $this->getContainer();
 
@@ -85,7 +86,7 @@ abstract class TwigTestCase extends StuTestCase
         request::setMockVars($requestVars);
 
         $game = $dic->get(GameControllerInterface::class);
-        $subject = $viewController ?? $dic->get($this->getViewControllerClass());
+        $subject = $viewController instanceof ViewControllerInterface ? $viewController : $dic->get($viewController);
 
         // execute ViewController setup components and render
         $subject->handle($game);

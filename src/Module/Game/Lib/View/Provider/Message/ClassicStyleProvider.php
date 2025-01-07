@@ -93,7 +93,7 @@ final class ClassicStyleProvider implements ViewComponentProviderInterface
                     $this->privateMessageRepository,
                     $this->contactRepository,
                     $message,
-                    $userId
+                    $game->getUser()
                 ),
                 $this->privateMessageRepository->getByUserAndFolder(
                     $userId,

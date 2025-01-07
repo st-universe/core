@@ -62,12 +62,6 @@ class AllViewControllerTest extends TwigTestCase
 
     private string $snapshotKey = '';
 
-    #[Override]
-    protected function getViewControllerClass(): string
-    {
-        return 'PROVIDED_BY_DATA_PROVIDER';
-    }
-
     public static function setUpBeforeClass(): void
     {
         StuMocks::get()->registerStubbedComponent(GameComponentEnum::COLONIES)
@@ -106,9 +100,9 @@ class AllViewControllerTest extends TwigTestCase
 
         $this->renderSnapshot(
             101,
-            $this->getGeneralRequestVariables(),
             Init::getContainer()
-                ->getDefinedImplementationsOf(ViewControllerInterface::class, true)->get($key)
+                ->getDefinedImplementationsOf(ViewControllerInterface::class, true)->get($key),
+            $this->getGeneralRequestVariables()
         );
     }
 

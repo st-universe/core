@@ -394,6 +394,18 @@ div.arrow:hover {
   text-decoration: blink;
 }
 
+.unreadPmCount {
+  margin-left: auto;
+  margin-right: auto;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  border-radius: 50%;
+  color: #fff;
+  text-align: center;
+  background: #07d362
+}
+
 .sibutton {
   text-align: center;
   width: 16px;

@@ -2,9 +2,11 @@
 
 namespace Stu\Module\Game\Lib\View\Provider\Message;
 
+use Stu\Component\Game\TimeConstants;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Game\Lib\View\Provider\ViewComponentProviderInterface;
+use Stu\Orm\Entity\PrivateMessageInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 
@@ -29,9 +31,9 @@ class MessengerStyleProvider implements ViewComponentProviderInterface
             if (!array_key_exists($senderId, $conversations)) {
                 $conversations[$senderId] = new Conversation(
                     $message,
-                    $timestamp,
-                    $this->stuTime,
-                    $user->getId(),
+                    $this->determineUnreadPmCount($message),
+                    $this->determineDateString($message, $timestamp),
+                    $user,
                     $this->privateMessageRepository,
                     $this->contactRepository
                 );
@@ -39,5 +41,35 @@ class MessengerStyleProvider implements ViewComponentProviderInterface
         }
 
         $game->setTemplateVar('CONVERSATIONS', $conversations);
+    }
+
+    private function determineUnreadPmCount(PrivateMessageInterface $message): int
+    {
+        return $this->privateMessageRepository->getNewAmountByFolderAndSender(
+            $message->getCategory(),
+            $message->getSender()
+        );
+    }
+
+    private function determineDateString(PrivateMessageInterface $message, int $timestamp): string
+    {
+        $messageTimestamp = $message->getDate();
+        $distanceInSeconds = $timestamp - $messageTimestamp;
+
+        if ($distanceInSeconds < TimeConstants::ONE_DAY_IN_SECONDS) {
+            return date("H:i", $messageTimestamp);
+        }
+        if ($distanceInSeconds < TimeConstants::SEVEN_DAYS_IN_SECONDS) {
+            return match ((int)date("N", $messageTimestamp)) {
+                1 => 'Montag',
+                2 => 'Dienstag',
+                3 => 'Mittwoch',
+                4 => 'Donnerstag',
+                5 => 'Freitag',
+                6 => 'Samstag',
+                7 => 'Sonntag'
+            };
+        }
+        return $this->stuTime->transformToStuDate($messageTimestamp);
     }
 }

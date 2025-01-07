@@ -58,6 +58,8 @@ interface PrivateMessageRepositoryInterface extends ObjectRepository
 
     public function getNewAmountByFolder(PrivateMessageFolderInterface $privateMessageFolder): int;
 
+    public function getNewAmountByFolderAndSender(PrivateMessageFolderInterface $privateMessageFolder, UserInterface $sender): int;
+
     public function setDeleteTimestampByFolder(int $folderId, int $timestamp): void;
 
     public function hasRecentMessage(UserInterface $user): bool;
