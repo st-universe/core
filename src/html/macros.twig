@@ -155,7 +155,7 @@ updateSelectedSpacecraftId('{{ id }}');"
 
 {% macro onClickColony(colony) %}
 {% set id = colony.getId %}
-href="/colony.php?id={{ id }}"
+href="/colony.php?SHOW_COLONY=1&id={{ id }}"
 onclick="if(event.button === 0) { switchInnerContent('SHOW_COLONY', '{{ colony.getName|bbcode2txt|htmlSafe }}', 'id={{
 id }}', '/colony.php'); event.preventDefault(); }"
 {% endmacro %}
