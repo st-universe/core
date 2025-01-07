@@ -192,7 +192,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     }
 
     #[Override]
-    public function getShipCountLayerData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
+    public function getSpacecraftCountLayerData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
     {
         return $this->getEntityManager()->createNativeQuery(
             'SELECT l.cx as x, l.cy AS y,
@@ -206,7 +206,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                                         FROM stu_spacecraft_system ss
                                         WHERE b.id = ss.spacecraft_id
                                         AND ss.system_type = :cloakSystemId
-                                        AND ss.mode > 1)) AS shipcount,
+                                        AND ss.mode > 1)) AS spacecraftcount,
                 (SELECT count(DISTINCT c.id) FROM stu_spacecraft c
                     JOIN stu_location l2
                     ON c.location_id = l2.id

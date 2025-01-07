@@ -13,7 +13,7 @@ use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 final class ShipSubspaceDataProvider extends AbstractSubspaceDataProvider
 {
-    public function __construct( #
+    public function __construct(
         private int $shipId,
         LocationRepositoryInterface $locationRepository,
         MapRepositoryInterface $mapRepository,

@@ -24,8 +24,8 @@ use Stu\Lib\Map\DistanceCalculationInterface;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\BorderDataProvider;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\ColonyShieldDataProvider;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\MapDataProvider;
-use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Shipcount\ShipcountDataProviderFactory;
-use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Shipcount\ShipcountDataProviderFactoryInterface;
+use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Spacecraftcount\SpacecraftCountDataProviderFactory;
+use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Spacecraftcount\SpacecraftCountDataProviderFactoryInterface;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace\SubspaceDataProviderFactory;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace\SubspaceDataProviderFactoryInterface;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreation;
@@ -129,7 +129,7 @@ return [
         ]
     ),
     SubspaceDataProviderFactoryInterface::class => autowire(SubspaceDataProviderFactory::class),
-    ShipcountDataProviderFactoryInterface::class => autowire(ShipcountDataProviderFactory::class),
+    SpacecraftCountDataProviderFactoryInterface::class => autowire(SpacecraftCountDataProviderFactory::class),
     PanelLayerCreationInterface::class => autowire(PanelLayerCreation::class)->constructorParameter(
         'dataProviders',
         [

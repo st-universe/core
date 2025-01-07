@@ -6,7 +6,7 @@ namespace Stu\Module\Station\Lib;
 
 use Override;
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
-use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Shipcount\ShipcountLayerTypeEnum;
+use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Spacecraftcount\SpacecraftCountLayerTypeEnum;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace\SubspaceLayerTypeEnum;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreationInterface;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
@@ -38,7 +38,7 @@ class SystemScanPanel extends AbstractVisualPanel
     protected function loadLayers(): void
     {
         $panelLayerCreation = $this->panelLayerCreation
-            ->addShipCountLayer($this->currentSpacecraft->getTachyonState(), null, ShipcountLayerTypeEnum::ALL, 0)
+            ->addShipCountLayer($this->currentSpacecraft->getTachyonState(), null, SpacecraftCountLayerTypeEnum::ALL, 0)
             ->addBorderLayer($this->currentSpacecraft, $this->system === $this->currentSpacecraft->getSystem())
             ->addSystemLayer()
             ->addColonyShieldLayer();

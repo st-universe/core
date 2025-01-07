@@ -21,15 +21,15 @@ use Stu\Orm\Entity\Location;
 class LocationRepository extends EntityRepository implements LocationRepositoryInterface
 {
     #[Override]
-    public function getAllianceShipcountLayerData(PanelBoundaries $boundaries, int $allianceId, ResultSetMapping $rsm): array
+    public function getAllianceSpacecraftCountLayerData(PanelBoundaries $boundaries, int $allianceId, ResultSetMapping $rsm): array
     {
         return $this->getEntityManager()->createNativeQuery(
             'SELECT l.cx as x, l.cy as y,
              (SELECT count(distinct s.id)
-                    FROM stu_ship s
+                    FROM stu_spacecraft s
                     JOIN stu_user u ON s.user_id = u.id
                     WHERE s.location_id = l.id
-                    AND u.allys_id = :allyId) as shipcount
+                    AND u.allys_id = :allyId) as spacecraftcount
             FROM stu_location l
             WHERE l.cx BETWEEN :xStart AND :xEnd
             AND l.cy BETWEEN :yStart AND :yEnd
@@ -46,14 +46,14 @@ class LocationRepository extends EntityRepository implements LocationRepositoryI
     }
 
     #[Override]
-    public function getShipShipcountLayerData(PanelBoundaries $boundaries, int $shipId, ResultSetMapping $rsm): array
+    public function getSpacecraftCountLayerDataForSpacecraft(PanelBoundaries $boundaries, int $spacecraftId, ResultSetMapping $rsm): array
     {
         return $this->getEntityManager()->createNativeQuery(
             'SELECT l.cx as x, l.cy as y,
             (SELECT count(distinct s.id)
-                FROM stu_ship s
+                FROM stu_spacecraft s
                 WHERE s.location_id = l.id
-                AND s.id = :shipId) as shipcount
+                AND s.id = :spacecraftId) as spacecraftcount
             FROM stu_location l
             WHERE l.cx BETWEEN :xStart AND :xEnd
             AND l.cy BETWEEN :yStart AND :yEnd
@@ -66,7 +66,7 @@ class LocationRepository extends EntityRepository implements LocationRepositoryI
             'yStart' => $boundaries->getMinY(),
             'yEnd' => $boundaries->getMaxY(),
             'layerId' => $boundaries->getParentId(),
-            'shipId' => $shipId
+            'spacecraftId' => $spacecraftId
         ])->getResult();
     }
 
@@ -76,9 +76,9 @@ class LocationRepository extends EntityRepository implements LocationRepositoryI
         return $this->getEntityManager()->createNativeQuery(
             'SELECT l.cx as x, l.cy as y,
             (SELECT count(distinct s.id)
-                FROM stu_ship s
+                FROM stu_spacecraft s
                 WHERE s.location_id = l.id
-                AND s.user_id = :userId) as shipcount
+                AND s.user_id = :userId) as spacecraftcount
             FROM stu_location l
             WHERE l.cx BETWEEN :xStart AND :xEnd
             AND l.cy BETWEEN :yStart AND :yEnd

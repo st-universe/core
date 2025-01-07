@@ -9,15 +9,15 @@ use RuntimeException;
 use Stu\Component\Map\EncodedMapInterface;
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\PanelLayerDataProviderInterface;
-use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Shipcount\ShipcountDataProviderFactoryInterface;
-use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Shipcount\ShipcountLayerTypeEnum;
+use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Spacecraftcount\SpacecraftCountDataProviderFactoryInterface;
+use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Spacecraftcount\SpacecraftCountLayerTypeEnum;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace\SubspaceDataProviderFactoryInterface;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace\SubspaceLayerTypeEnum;
 use Stu\Lib\Map\VisualPanel\Layer\Render\BorderLayerRenderer;
 use Stu\Lib\Map\VisualPanel\Layer\Render\ColonyShieldLayerRenderer;
 use Stu\Lib\Map\VisualPanel\Layer\Render\LayerRendererInterface;
 use Stu\Lib\Map\VisualPanel\Layer\Render\MapLayerRenderer;
-use Stu\Lib\Map\VisualPanel\Layer\Render\ShipCountLayerRenderer;
+use Stu\Lib\Map\VisualPanel\Layer\Render\SpacecraftCountLayerRenderer;
 use Stu\Lib\Map\VisualPanel\Layer\Render\SubspaceLayerRenderer;
 use Stu\Lib\Map\VisualPanel\Layer\Render\SystemLayerRenderer;
 use Stu\Orm\Entity\LayerInterface;
@@ -34,7 +34,7 @@ final class PanelLayerCreation implements PanelLayerCreationInterface
     /** @param array<int, PanelLayerDataProviderInterface> $dataProviders */
     public function __construct(
         private EncodedMapInterface $encodedMap,
-        private ShipcountDataProviderFactoryInterface $shipcountDataProviderFactory,
+        private SpacecraftCountDataProviderFactoryInterface $shipcountDataProviderFactory,
         private SubspaceDataProviderFactoryInterface $subspaceDataProviderFactory,
         private array $dataProviders
     ) {}
@@ -76,11 +76,11 @@ final class PanelLayerCreation implements PanelLayerCreationInterface
     public function addShipCountLayer(
         bool $showCloakedEverywhere,
         ?SpacecraftInterface $currentSpacecraft,
-        ShipcountLayerTypeEnum $type,
+        SpacecraftCountLayerTypeEnum $type,
         int $id
     ): PanelLayerCreationInterface {
-        $this->layers[PanelLayerEnum::SHIP_COUNT->value] = new ShipCountLayerRenderer($showCloakedEverywhere, $currentSpacecraft);
-        $this->specialDataProviders[PanelLayerEnum::SHIP_COUNT->value] = $this->shipcountDataProviderFactory->getDataProvider($id, $type);
+        $this->layers[PanelLayerEnum::SPACECRAFT_COUNT->value] = new SpacecraftCountLayerRenderer($showCloakedEverywhere, $currentSpacecraft);
+        $this->specialDataProviders[PanelLayerEnum::SPACECRAFT_COUNT->value] = $this->shipcountDataProviderFactory->getDataProvider($id, $type);
 
         return $this;
     }

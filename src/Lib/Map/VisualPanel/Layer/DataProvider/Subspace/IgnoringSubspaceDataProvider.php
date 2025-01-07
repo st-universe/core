@@ -12,7 +12,7 @@ use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 final class IgnoringSubspaceDataProvider extends AbstractSubspaceDataProvider
 {
-    public function __construct( #
+    public function __construct(
         private int $ignoreId,
         LocationRepositoryInterface $locationRepository,
         MapRepositoryInterface $mapRepository,

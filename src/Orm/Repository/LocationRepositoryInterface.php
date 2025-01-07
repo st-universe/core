@@ -18,13 +18,13 @@ use Stu\Orm\Entity\LocationInterface;
 interface LocationRepositoryInterface extends ObjectRepository
 {
     /** @return array<CellDataInterface> */
-    public function getAllianceShipcountLayerData(PanelBoundaries $boundaries, int $allianceId, ResultSetMapping $rsm): array;
+    public function getAllianceSpacecraftCountLayerData(PanelBoundaries $boundaries, int $allianceId, ResultSetMapping $rsm): array;
 
     /** @return array<CellDataInterface> */
     public function getUserShipcountLayerData(PanelBoundaries $boundaries, int $userId, ResultSetMapping $rsm): array;
 
     /** @return array<CellDataInterface> */
-    public function getShipShipcountLayerData(PanelBoundaries $boundaries, int $shipId, ResultSetMapping $rsm): array;
+    public function getSpacecraftCountLayerDataForSpacecraft(PanelBoundaries $boundaries, int $spacecraftId, ResultSetMapping $rsm): array;
 
     /**
      * @return array<LocationInterface>

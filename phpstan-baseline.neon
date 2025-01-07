@@ -103,12 +103,6 @@ parameters:
 			message: '#^Unreachable statement \- code above always terminates\.$#'
 			identifier: deadCode.unreachable
 			count: 1
-			path: src/Lib/Map/VisualPanel/Layer/DataProvider/Shipcount/ShipcountDataProviderFactory.php
-
-		-
-			message: '#^Unreachable statement \- code above always terminates\.$#'
-			identifier: deadCode.unreachable
-			count: 1
 			path: src/Lib/Map/VisualPanel/Layer/DataProvider/Subspace/SubspaceDataProviderFactory.php
 
 		-
