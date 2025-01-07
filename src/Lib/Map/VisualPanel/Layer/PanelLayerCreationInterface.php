@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Lib\Map\VisualPanel\Layer;
 
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
-use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Shipcount\ShipcountLayerTypeEnum;
+use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Spacecraftcount\SpacecraftCountLayerTypeEnum;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace\SubspaceLayerTypeEnum;
 use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
@@ -25,7 +25,7 @@ interface PanelLayerCreationInterface
     public function addShipCountLayer(
         bool $showCloakedEverywhere,
         ?SpacecraftInterface $currentSpacecraft,
-        ShipcountLayerTypeEnum $type,
+        SpacecraftCountLayerTypeEnum $type,
         int $id
     ): PanelLayerCreationInterface;
 

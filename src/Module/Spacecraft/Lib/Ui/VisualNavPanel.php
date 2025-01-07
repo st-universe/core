@@ -8,7 +8,7 @@ use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftRumpEnum;
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
-use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Shipcount\ShipcountLayerTypeEnum;
+use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Spacecraftcount\SpacecraftCountLayerTypeEnum;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace\SubspaceLayerTypeEnum;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreationInterface;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
@@ -50,7 +50,7 @@ class VisualNavPanel extends AbstractVisualPanel
     {
 
         $panelLayerCreation = $this->panelLayerCreation
-            ->addShipCountLayer($this->tachyonFresh, $this->currentSpacecraft, ShipcountLayerTypeEnum::ALL, 0)
+            ->addShipCountLayer($this->tachyonFresh, $this->currentSpacecraft, SpacecraftCountLayerTypeEnum::ALL, 0)
             ->addBorderLayer($this->currentSpacecraft, $this->isOnShipLevel());
 
         $map = $this->getPanelCenter();

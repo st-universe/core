@@ -97,7 +97,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
     }
 
     #[Override]
-    public function getShipCountLayerData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
+    public function getSpacecraftCountLayerData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
     {
         return $this->getEntityManager()->createNativeQuery(
             'SELECT sm.id, sm.sx as x, sm.sy AS y,
@@ -107,7 +107,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
                                         FROM stu_spacecraft_system ss
                                         WHERE b.id = ss.spacecraft_id
                                         AND ss.system_type = :cloakSystemId
-                                        AND ss.mode > 1)) AS shipcount,
+                                        AND ss.mode > 1)) AS spacecraftcount,
                 (SELECT count(DISTINCT c.id) FROM stu_spacecraft c
                     WHERE sm.id = c.location_id
                     AND EXISTS (SELECT ss2.id
