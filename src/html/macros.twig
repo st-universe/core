@@ -1,181 +1,199 @@
 {% macro userAvatar(user) %}
-	<div class="userAvatar">
-		<a href="/userprofile.php?uid={{ user.getId }}">
-			{% if user.getAvatar %}
-				<img src="/{{ ASSET_PATHS.user }}/{{ user.getAvatar }}.png" title="{{ user.getName|bbcode2txt }}"/>
-			{% else %}
-				<img src="/{{ ASSET_PATHS.faction }}/{{ user.getFactionId }}kn.png" title="{{ user.getName|bbcode2txt }}"/>
-			{% endif %}
-		</a>
-	</div>
+<div class="userAvatar">
+    <a href="/userprofile.php?uid={{ user.getId }}">
+        {% if user.getAvatar %}
+        <img src="/{{ ASSET_PATHS.user }}/{{ user.getAvatar }}.png" title="{{ user.getName|bbcode2txt }}" />
+        {% else %}
+        <img src="/{{ ASSET_PATHS.faction }}/{{ user.getFactionId }}kn.png" title="{{ user.getName|bbcode2txt }}" />
+        {% endif %}
+    </a>
+</div>
 {% endmacro %}
 
 {% macro userProfile(id) %}
-	{% set handle = getUniqId() %}
-	<a href="/userprofile.php?uid={{ id }}" onmouseover="cp('{{ handle }}','buttons/info2', 'png');" onmouseout="cp('{{ handle }}','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="{{ handle }}" title="Siedlerprofil ansehen"/></a>
+{% set handle = getUniqId() %}
+<a href="/userprofile.php?uid={{ id }}" onmouseover="cp('{{ handle }}','buttons/info2', 'png');"
+    onmouseout="cp('{{ handle }}','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="{{ handle }}"
+        title="Siedlerprofil ansehen" /></a>
 {% endmacro %}
 
 {% macro userInfo(user) %}
-	{{ user.getName|bbcode }}
-	({{ user.getId }})
-	<img src="/assets/buttons/rpg{{ user.getRpgBehavior.value }}.png" title="{{ user.getRpgBehavior.getDescription }}"/>
-	{% if user.isShowOnlineState %}
-		{% if user.isOnline %}
-			<img src="/assets/buttons/user_online.png" title="User ist online"/>
-		{% else %}
-			<img src="/assets/buttons/user_offline.png" title="User ist offline"/>
-		{% endif %}
-	{% endif %}
+{{ user.getName|bbcode }} ({{ user.getId }})
+<img src="/assets/buttons/rpg{{ user.getRpgBehavior.value }}.png" title="{{ user.getRpgBehavior.getDescription }}" />
+{% if user.isShowOnlineState %}
+{% if user.isOnline %}
+<img src="/assets/buttons/user_online.png" title="User ist online" />
+{% else %}
+<img src="/assets/buttons/user_offline.png" title="User ist offline" />
+{% endif %}
+{% endif %}
 {% endmacro %}
 
 {% macro userbox(data) %}
-	<div class="divbody userbox">
-		<div style="float: left; width: 50px;">
-			{{ _self.userAvatar(data) }}
-		</div>
-		<div style="float: left; width: 250px; margin-left: 5px;">
-			<div class="darkbg">
-				<span>{{ data.getName|bbcode }}</span>
-			</div>
-			{% if data.getAlliance %}
-				<a href="alliance.php?id={{ data.getAlliance.getId }}">{{ data.getAlliance.getName|bbcode }}</a>
-			{% endif %}
-			<br/>
-			Spielt seit:
-			{{ data.getCreationDate|stuDateTime }}
-		</div>
-		<div style="float: left; width: 15px; text-align: right;">
-			{{ _self.pmWindow(USER, data.getId) }}
-			{{ _self.userProfile(data.getId) }}
-			<img src="assets/rassen/{{ data.getFactionId }}s.png"/>
-		</div>
-	</div>
+<div class="divbody userbox">
+    <div style="float: left; width: 50px;">
+        {{ _self.userAvatar(data) }}
+    </div>
+    <div style="float: left; width: 250px; margin-left: 5px;">
+        <div class="darkbg">
+            <span>{{ data.getName|bbcode }}</span>
+        </div>
+        {% if data.getAlliance %}
+        <a href="alliance.php?id={{ data.getAlliance.getId }}">{{ data.getAlliance.getName|bbcode }}</a>
+        {% endif %}
+        <br />
+        Spielt seit: {{ data.getCreationDate|stuDateTime }}
+    </div>
+    <div style="float: left; width: 15px; text-align: right;">
+        {{ _self.pmWindow(USER, data.getId) }}
+        {{ _self.userProfile(data.getId) }}
+        <img src="assets/rassen/{{ data.getFactionId }}s.png" />
+    </div>
+</div>
 {% endmacro %}
 
 
 {% macro pmWindow(USER, id) %}
-	{% set handle = getUniqId() %}
-	{% if USER.getId != id %}
-		<a href="javascript:void(0);" onmouseover="cp('{{ handle }}','buttons/msg2', 'png');" onmouseout="cp('{{ handle }}','buttons/msg1', 'png');" onclick="closePopup(); openPmWindow({{ USER.getId }}, {{ id }}, 1,1);"><img src="/assets/buttons/msg1.png" name="{{ handle }}" title="Nachricht senden"/></a>
-	{% endif %}
+{% set handle = getUniqId() %}
+{% if USER.getId != id %}
+<a href="javascript:void(0);" onmouseover="cp('{{ handle }}','buttons/msg2', 'png');"
+    onmouseout="cp('{{ handle }}','buttons/msg1', 'png');"
+    onclick="closePopup(); openPmWindow({{ USER.getId }}, {{ id }}, 1,1);"><img src="/assets/buttons/msg1.png"
+        name="{{ handle }}" title="Nachricht senden" /></a>
+{% endif %}
 {% endmacro %}
 
 {% macro navigation_item(title, viewValue, iconUrl, extraClass='') %}
-	{% set linkid = 'nav_item_' ~ iconUrl %}
-	{% set view = getView(viewValue) %}
-	{% set viewTitle = view.getTitle %}
-	{% set viewUrl = view.getPhpPage %}
-	<a class="navitem_link" href="{{ viewUrl }}" onclick="if(event.button === 0) { switchView('{{ viewValue }}', '{{ viewTitle }}', '{{ viewUrl }}'); event.preventDefault(); }">
-		<div class="navigation_item border_box {{ extraClass }}" onmouseover="cp('{{ linkid }}','navigation/menu_{{ iconUrl }}1', 'png')" onmouseout="cp('{{ linkid }}','navigation/menu_{{ iconUrl }}0', 'png')">
-			<img class="navitem_img" src="/assets/navigation/menu_{{ iconUrl }}0.png" id="{{ linkid }}" title="{{ title }}"/>
-			<div class="navitem_title">{{ title }}</div>
-		</div>
-	</a>
+{% set linkid = 'nav_item_' ~ iconUrl %}
+{% set view = getView(viewValue) %}
+{% set viewTitle = view.getTitle %}
+{% set viewUrl = view.getPhpPage %}
+<a class="navitem_link" href="{{ viewUrl }}"
+    onclick="if(event.button === 0) { switchView('{{ viewValue }}', '{{ viewTitle }}', '{{ viewUrl }}'); event.preventDefault(); }">
+    <div class="navigation_item border_box {{ extraClass }}"
+        onmouseover="cp('{{ linkid }}','navigation/menu_{{ iconUrl }}1', 'png')"
+        onmouseout="cp('{{ linkid }}','navigation/menu_{{ iconUrl }}0', 'png')">
+        <img class="navitem_img" src="/assets/navigation/menu_{{ iconUrl }}0.png" id="{{ linkid }}"
+            title="{{ title }}" />
+        <div class="navitem_title">{{ title }}</div>
+    </div>
+</a>
 {% endmacro %}
 
 {% macro adminnavigation() %}
-	{{ _self.admin_navigation_item('Spielerliste', '/admin/?SHOW_PLAYER_LIST=1', 'ally') }}
-	{{ _self.admin_navigation_item('Nachrichten', '/admin/?SHOW_MASS_MAIL=1', 'msg') }}
-	{{ _self.admin_navigation_item('Karteneditor', '/admin/?SHOW_MAP_EDITOR=1', 'map') }}
-	{{ _self.admin_navigation_item('Kolonie-Sandbox', '/admin/?SHOW_COLONY_SANDBOX=1', 'sandbox') }}
-	{{ _self.admin_navigation_item('Ticks', '/admin/?SHOW_TICKS=1', 'ticks') }}
-	{{ _self.admin_navigation_item('Skripte', '/admin/?SHOW_SCRIPTS=1', 'scripts') }}
+{{ _self.admin_navigation_item('Spielerliste', '/admin/?SHOW_PLAYER_LIST=1', 'ally') }}
+{{ _self.admin_navigation_item('Nachrichten', '/admin/?SHOW_MASS_MAIL=1', 'msg') }}
+{{ _self.admin_navigation_item('Karteneditor', '/admin/?SHOW_MAP_EDITOR=1', 'map') }}
+{{ _self.admin_navigation_item('Kolonie-Sandbox', '/admin/?SHOW_COLONY_SANDBOX=1', 'sandbox') }}
+{{ _self.admin_navigation_item('Ticks', '/admin/?SHOW_TICKS=1', 'ticks') }}
+{{ _self.admin_navigation_item('Skripte', '/admin/?SHOW_SCRIPTS=1', 'scripts') }}
 {% endmacro %}
 
 {% macro admin_navigation_item(title, url, iconUrl) %}
-	{% set linkid = 'nav_item_' ~ iconUrl %}
-	<div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='{{ url }}'; }" onmouseover="cp('{{ linkid }}','navigation/menu_{{ iconUrl }}1', 'png')" onmouseout="cp('{{ linkid }}','navigation/menu_{{ iconUrl }}0', 'png')">
-		<a class="navitem_link" href="{{ url }}">
-			<img class="navitem_img" src="/assets/navigation/menu_{{ iconUrl }}0.png" id="{{ linkid }}" title="{{ title }}"/>
-			<div class="navitem_title">{{ title }}</div>
-		</a>
-	</div>
+{% set linkid = 'nav_item_' ~ iconUrl %}
+<div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='{{ url }}'; }"
+    onmouseover="cp('{{ linkid }}','navigation/menu_{{ iconUrl }}1', 'png')"
+    onmouseout="cp('{{ linkid }}','navigation/menu_{{ iconUrl }}0', 'png')">
+    <a class="navitem_link" href="{{ url }}">
+        <img class="navitem_img" src="/assets/navigation/menu_{{ iconUrl }}0.png" id="{{ linkid }}"
+            title="{{ title }}" />
+        <div class="navitem_title">{{ title }}</div>
+    </a>
+</div>
 {% endmacro %}
 
 {% macro npcnavigation() %}
-	{{ _self.npc_navigation_item('NPC Tools', '/npc/?SHOW_TOOLS=1', 'scripts') }}
-	{{ _self.admin_navigation_item('NPC Log', '/npc/?SHOW_NPC_LOG=1', 'history') }}
+{{ _self.npc_navigation_item('NPC Tools', '/npc/?SHOW_TOOLS=1', 'scripts') }}
+{{ _self.admin_navigation_item('NPC Log', '/npc/?SHOW_NPC_LOG=1', 'history') }}
 {% endmacro %}
 
 {% macro npc_navigation_item(title, url, iconUrl) %}
-	{% set linkid = 'nav_item_' ~ iconUrl %}
-	<div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='{{ url }}'; }" onmouseover="cp('{{ linkid }}','navigation/menu_{{ iconUrl }}1', 'png')" onmouseout="cp('{{ linkid }}','navigation/menu_{{ iconUrl }}0', 'png')">
-		<a class="navitem_link" href="{{ url }}">
-			<img class="navitem_img" src="/assets/navigation/menu_{{ iconUrl }}0.png" id="{{ linkid }}" title="{{ title }}"/>
-			<div class="navitem_title">{{ title }}</div>
-		</a>
-	</div>
+{% set linkid = 'nav_item_' ~ iconUrl %}
+<div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='{{ url }}'; }"
+    onmouseover="cp('{{ linkid }}','navigation/menu_{{ iconUrl }}1', 'png')"
+    onmouseout="cp('{{ linkid }}','navigation/menu_{{ iconUrl }}0', 'png')">
+    <a class="navitem_link" href="{{ url }}">
+        <img class="navitem_img" src="/assets/navigation/menu_{{ iconUrl }}0.png" id="{{ linkid }}"
+            title="{{ title }}" />
+        <div class="navitem_title">{{ title }}</div>
+    </a>
+</div>
 {% endmacro %}
 
 {% macro contactModeSwitcher(contact, div) %}
-	{% if contact %}
-		{% set mode = contact.getMode.value %}
-		{% set description = contact.getMode.getTitle %}
-		{% if div %}
-			<span class="cltype{{ mode }}" id="contact{{ contact.getId }}" onclick="showContactModeSwitcher('{{ div }}',{{ contact.getId }});">{{ description }}</span>
-		{% else %}
-			<span class="cltype{{ mode }}" style="cursor: auto;">{{ description }}</span>
-		{% endif %}
-	{% endif %}
+{% if contact %}
+{% set mode = contact.getMode.value %}
+{% set description = contact.getMode.getTitle %}
+{% if div %}
+<span class="cltype{{ mode }}" id="contact{{ contact.getId }}"
+    onclick="showContactModeSwitcher('{{ div }}',{{ contact.getId }});">{{ description }}</span>
+{% else %}
+<span class="cltype{{ mode }}" style="cursor: auto;">{{ description }}</span>
+{% endif %}
+{% endif %}
 {% endmacro %}
 
 {% macro translationSwitcher(hasTranslation, id, title) %}
-	{% if hasTranslation %}
-		<a onmouseover="cp('translate{{ id }}','buttons/translate1', 'png')" onmouseout="cp('translate{{ id }}','buttons/translate0', 'png')">
-			<img src="assets/buttons/translate0.png" title="{{ title }}" style="cursor:pointer; margin-left: 5px;" onclick="toggleTranslation('{{ id }}')" name="translate{{ id }}"/>
-		</a>
-	{% endif %}
+{% if hasTranslation %}
+<a onmouseover="cp('translate{{ id }}','buttons/translate1', 'png')"
+    onmouseout="cp('translate{{ id }}','buttons/translate0', 'png')">
+    <img src="assets/buttons/translate0.png" title="{{ title }}" style="cursor:pointer; margin-left: 5px;"
+        onclick="toggleTranslation('{{ id }}')" name="translate{{ id }}" />
+</a>
+{% endif %}
 {% endmacro %}
 
 {% macro onClickSpacecraft(spacecraft) %}
-	{% set id = spacecraft.getId %}
-	href="/ship.php?SHOW_SPACECRAFT=1&id={{id}}"
-		onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', '{{ spacecraft.getName|bbcode2txt|htmlSafe }}', 'id={{ id }}',
-		'{{ spacecraft.getType.getModuleView.getPhpPage }}'); event.preventDefault();}
-		updateSelectedSpacecraftId('{{ id }}');  "
+{% set id = spacecraft.getId %}
+href="javascript:void(0);"
+onclick="switchInnerContent('SHOW_SPACECRAFT', '{{ spacecraft.getName|bbcode2txt|htmlSafe }}', 'id={{ id }}',
+'{{ spacecraft.getType.getModuleView.getPhpPage }}');
+updateSelectedSpacecraftId('{{ id }}');"
 {% endmacro %}
 
 
 {% macro onClickColony(colony) %}
-	{% set id = colony.getId %}
-	href="/colony.php?SHOW_COLONY=1&id={{ id }}"
-			onclick="if(event.button === 0) { switchInnerContent('SHOW_COLONY', '{{ colony.getName|bbcode2txt|htmlSafe }}', 'id={{
+{% set id = colony.getId %}
+href="/colony.php?id={{ id }}"
+onclick="if(event.button === 0) { switchInnerContent('SHOW_COLONY', '{{ colony.getName|bbcode2txt|htmlSafe }}', 'id={{
 id }}', '/colony.php'); event.preventDefault(); }"
 {% endmacro %}
 
 
 {% macro commoditySelectorList(commodities) %}
-	{% if commodities and not commodities.isEmpty %}
-		{% for storage in commodities %}
-			<input type="hidden" name="commodities[]" value="{{ storage.getCommodity.getId }}"/>
-			{% set float = loop.index is even ? 'right' : 'left' %}
-			<div style="float: {{ float }}; width: 50%;">
-				{{ _self.commoditySelector(storage) }}
-			</div>
-			{% if loop.index is even %}
-				<br style="clear: both;"/>
-			{% endif %}
-		{% endfor %}
-	{% else %}
-		Keine Waren vorhanden
-	{% endif %}
+{% if commodities and not commodities.isEmpty %}
+{% for storage in commodities %}
+<input type="hidden" name="commodities[]" value="{{ storage.getCommodity.getId }}" />
+{% set float = loop.index is even ? 'right' : 'left' %}
+<div style="float: {{ float }}; width: 50%;">
+    {{ _self.commoditySelector(storage) }}
+</div>
+{% if loop.index is even %}
+<br style="clear: both;" />
+{% endif %}
+{% endfor %}
+{% else %}
+Keine Waren vorhanden
+{% endif %}
 {% endmacro %}
 
 {% macro commoditySelector(storage) %}
-	{% set commodityId = storage.getCommodity.getId %}
-	{% set name = storage.getCommodity.getName %}
-	{% set amount = storage.getAmount %}
-	<table style="width: 100%;">
-		<tr>
-			<td style="width: 20px;">
-				<img src="/assets/commodities/{{ commodityId }}.png" onclick="this.up('tr').down('.commodityAmount').value={{ amount }}" style="cursor: pointer;" title="{{ name }}"/>
-			</td>
-			<td style="width: 60px; vertical-align: middle;">
-				{{ amount }}
-			</td>
-			<td>
-				<input type="text" size="3" name="count[]" class="commodityAmount"/>
-			</td>
-		</tr>
-	</table>
+{% set commodityId = storage.getCommodity.getId %}
+{% set name = storage.getCommodity.getName %}
+{% set amount = storage.getAmount %}
+<table style="width: 100%;">
+    <tr>
+        <td style="width: 20px;">
+            <img src="/assets/commodities/{{ commodityId }}.png"
+                onclick="this.up('tr').down('.commodityAmount').value={{ amount }}" style="cursor: pointer;"
+                title="{{ name }}" />
+        </td>
+        <td style="width: 60px; vertical-align: middle;">
+            {{ amount }}
+        </td>
+        <td>
+            <input type="text" size="3" name="count[]" class="commodityAmount" />
+        </td>
+    </tr>
+</table>
 {% endmacro %}
