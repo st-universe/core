@@ -61,6 +61,7 @@ use Stu\Module\Spacecraft\Action\StartTakeover\StartTakeover;
 use Stu\Module\Spacecraft\Action\StopEmergency\StopEmergency;
 use Stu\Module\Spacecraft\Action\StopEmergency\StopEmergencyRequest;
 use Stu\Module\Spacecraft\Action\StopTakeover\StopTakeover;
+use Stu\Module\Spacecraft\Action\StoreShuttle\StoreShuttle;
 use Stu\Module\Spacecraft\Action\TakeBuoy\TakeBuoy;
 use Stu\Module\Spacecraft\Action\TransferFromAccount\TransferFromAccount;
 use Stu\Module\Spacecraft\Action\TransferToAccount\TransferToAccount;
@@ -387,6 +388,7 @@ return [
         BoardShip::ACTION_IDENTIFIER => autowire(BoardShip::class),
         StartTakeover::ACTION_IDENTIFIER => autowire(StartTakeover::class),
         StopTakeover::ACTION_IDENTIFIER => autowire(StopTakeover::class),
+        StoreShuttle::ACTION_IDENTIFIER => autowire(StoreShuttle::class),
         ActivateSystem::ACTION_IDENTIFIER => autowire(ActivateSystem::class),
         DeactivateSystem::ACTION_IDENTIFIER => autowire(DeactivateSystem::class),
         ChangeName::ACTION_IDENTIFIER => autowire(ChangeName::class),

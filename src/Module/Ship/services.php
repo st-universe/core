@@ -59,7 +59,6 @@ use Stu\Module\Ship\Action\RenameFleet\RenameFleetRequest;
 use Stu\Module\Ship\Action\RenameFleet\RenameFleetRequestInterface;
 use Stu\Module\Ship\Action\SalvageCrew\SalvageCrew;
 use Stu\Module\Ship\Action\ShowFleet\ShowFleet;
-use Stu\Module\Ship\Action\StoreShuttle\StoreShuttle;
 use Stu\Module\Ship\Action\TholianWeb\CancelTholianWeb;
 use Stu\Module\Ship\Action\TholianWeb\CreateTholianWeb;
 use Stu\Module\Ship\Action\TholianWeb\ImplodeTholianWeb;
@@ -151,7 +150,6 @@ return [
         StopBlocking::ACTION_IDENTIFIER => autowire(StopBlocking::class),
         PlanAstroMapping::ACTION_IDENTIFIER => autowire(PlanAstroMapping::class),
         StartAstroMapping::ACTION_IDENTIFIER => autowire(StartAstroMapping::class),
-        StoreShuttle::ACTION_IDENTIFIER => autowire(StoreShuttle::class),
         LandShuttle::ACTION_IDENTIFIER => autowire(LandShuttle::class),
         BuildConstruction::ACTION_IDENTIFIER => autowire(BuildConstruction::class),
         ChangeFleetFixation::ACTION_IDENTIFIER => autowire(ChangeFleetFixation::class),
