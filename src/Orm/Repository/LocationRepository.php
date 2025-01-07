@@ -71,7 +71,7 @@ class LocationRepository extends EntityRepository implements LocationRepositoryI
     }
 
     #[Override]
-    public function getUserShipcountLayerData(PanelBoundaries $boundaries, int $userId, ResultSetMapping $rsm): array
+    public function getUserSpacecraftCountLayerData(PanelBoundaries $boundaries, int $userId, ResultSetMapping $rsm): array
     {
         return $this->getEntityManager()->createNativeQuery(
             'SELECT l.cx as x, l.cy as y,
