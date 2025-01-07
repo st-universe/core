@@ -65,6 +65,13 @@ class SpacecraftMember implements InteractionMemberInterface
     ): ?InteractionCheckType {
 
         if (
+            $shouldCheck(InteractionCheckType::EXPECT_TARGET_SAME_USER)
+            && $this->spacecraft->getUser() !== $other->getUser()
+        ) {
+            return InteractionCheckType::EXPECT_TARGET_SAME_USER;
+        }
+
+        if (
             $shouldCheck(InteractionCheckType::EXPECT_TARGET_UNSHIELDED)
             && $this->spacecraft->getShieldState() && !$isFriend
         ) {
