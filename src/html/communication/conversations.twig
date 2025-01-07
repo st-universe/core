@@ -11,10 +11,12 @@
         <div class="box_body" style="margin: 0; padding: 0;">
             <div class="pmGridMessenger">
                 <div class="knGridUser">
+                    {% if conversation.getUnreadMessageCount %}
                     <div class="segment">
-                        {% if conversation.isMarkableAsReceipt %}
-                        <img src="/assets/buttons/double_checked.png" title="Nachricht gelesen" />
-                        {% endif %}
+                        <div class="unreadPmCount">{{ conversation.getUnreadMessageCount }}</div>
+                    </div>
+                    {% endif %}
+                    <div class="segment">
                         {% set class = conversation.isMarkableAsNew ? 'negative' : '' %}
                         <span class="{{ class }}">{{ conversation.getDateString }}</span>
                     </div>
@@ -39,6 +41,9 @@
                 <div class="knGridText" style="cursor: pointer;"
                     onclick="switchInnerContent('WRITE_PM', 'Chatverlauf', 'recipient={{ otherUser.getId }}&reply={{ id }}');">
                     <div style=" padding: 10px;">
+                        {% if conversation.isMarkableAsReceipt %}
+                        <img src="/assets/buttons/double_checked.png" title="Nachricht gelesen" />
+                        {% endif %}
                         <span class="translatable-content" id="message{{ id }}">
                             {% autoescape false %}
                             {{ conversation.getLastHeadline|bbcode|nl2br }}

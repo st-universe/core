@@ -25,12 +25,6 @@ class StationViewControllerTest extends TwigTestCase
     private string $snapshotKey = '';
 
     #[Override]
-    protected function getViewControllerClass(): string
-    {
-        return 'PROVIDED_BY_DATA_PROVIDER';
-    }
-
-    #[Override]
     protected function getSnapshotId(): string
     {
         return (new ReflectionClass($this))->getShortName() . '--' .
@@ -56,9 +50,9 @@ class StationViewControllerTest extends TwigTestCase
 
         $this->renderSnapshot(
             101,
-            $this->getGeneralRequestVariables(),
             Init::getContainer()
-                ->getDefinedImplementationsOf(ViewControllerInterface::class, true)->get($key)
+                ->getDefinedImplementationsOf(ViewControllerInterface::class, true)->get($key),
+            $this->getGeneralRequestVariables()
         );
     }
 

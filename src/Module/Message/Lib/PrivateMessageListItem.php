@@ -22,7 +22,7 @@ class PrivateMessageListItem implements PrivateMessageListItemInterface
         private PrivateMessageRepositoryInterface $privateMessageRepository,
         private ContactRepositoryInterface $contactRepository,
         private PrivateMessageInterface $message,
-        private int $currentUserId
+        private UserInterface $currentUser
     ) {}
 
     #[Override]
@@ -105,17 +105,11 @@ class PrivateMessageListItem implements PrivateMessageListItemInterface
     }
 
     #[Override]
-    public function getReplied(): bool
-    {
-        return $this->message->getReplied();
-    }
-
-    #[Override]
     public function senderIsContact(): ?ContactInterface
     {
         if ($this->sendercontact === null) {
             $this->sendercontact = $this->contactRepository->getByUserAndOpponent(
-                $this->currentUserId,
+                $this->currentUser->getId(),
                 $this->message->getSenderId()
             );
         }

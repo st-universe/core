@@ -5,12 +5,17 @@ declare(strict_types=1);
 namespace Stu\Module\Message\View\ShowWritePm;
 
 use Override;
+use Stu\Component\Game\GameEnum;
+use Stu\Lib\Component\ComponentRegistrationInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Game\Component\GameComponentEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderItem;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
+use Stu\Module\Message\Lib\PrivateMessageListItem;
 use Stu\Module\Message\Lib\PrivateMessageUiFactoryInterface;
 use Stu\Orm\Entity\PrivateMessageFolderInterface;
+use Stu\Orm\Entity\PrivateMessageInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
@@ -27,7 +32,8 @@ final class ShowWritePm implements ViewControllerInterface
         private ContactRepositoryInterface $contactRepository,
         private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
         private PrivateMessageUiFactoryInterface $privateMessageUiFactory,
-        private PrivateMessageRepositoryInterface $privateMessageRepository
+        private PrivateMessageRepositoryInterface $privateMessageRepository,
+        private ComponentRegistrationInterface $componentRegistration
     ) {}
 
     #[Override]
@@ -43,11 +49,19 @@ final class ShowWritePm implements ViewControllerInterface
         } else {
             $reply = $pm;
 
-            $correspondence = $this->privateMessageRepository->getOrderedCorrepondence(
-                $reply->getSenderId(),
-                $reply->getRecipientId(),
-                [PrivateMessageFolderTypeEnum::SPECIAL_MAIN->value, PrivateMessageFolderTypeEnum::DEFAULT_OWN->value],
-                $user->isInboxMessengerStyle() ? self::CORRESPONDENCE_LIMIT_MESSENGER : self::CORRESPONDENCE_LIMIT_CLASSIC
+            $correspondence = array_map(
+                fn(PrivateMessageInterface $message): PrivateMessageListItem => new PrivateMessageListItem(
+                    $this->privateMessageRepository,
+                    $this->contactRepository,
+                    $message,
+                    $game->getUser()
+                ),
+                $this->privateMessageRepository->getOrderedCorrepondence(
+                    $reply->getSenderId(),
+                    $reply->getRecipientId(),
+                    [PrivateMessageFolderTypeEnum::SPECIAL_MAIN->value, PrivateMessageFolderTypeEnum::DEFAULT_OWN->value],
+                    $user->isInboxMessengerStyle() ? self::CORRESPONDENCE_LIMIT_MESSENGER : self::CORRESPONDENCE_LIMIT_CLASSIC
+                )
             );
         }
 
@@ -72,5 +86,8 @@ final class ShowWritePm implements ViewControllerInterface
                 $this->privateMessageFolderRepository->getOrderedByUser($user)
             )
         );
+
+        $this->componentRegistration->addComponentUpdate(GameComponentEnum::PM);
+        $game->addExecuteJS("initTranslations();", GameEnum::JS_EXECUTION_AFTER_RENDER);
     }
 }

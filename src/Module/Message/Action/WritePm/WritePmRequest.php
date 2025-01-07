@@ -24,10 +24,4 @@ final class WritePmRequest implements WritePmRequestInterface
             $this->parameter('text')->string()->trim()->required()
         );
     }
-
-    #[Override]
-    public function getReplyPmId(): int
-    {
-        return $this->parameter('recipient')->int()->defaultsTo(0);
-    }
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Html\Game;
 
-use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Lib\Transfer\TransferEntityTypeEnum;
 use Stu\Lib\Transfer\TransferTypeEnum;
@@ -13,12 +12,6 @@ use Stu\TwigTestCase;
 
 class ShowTransferTest extends TwigTestCase
 {
-    #[Override]
-    protected function getViewControllerClass(): string
-    {
-        return ShowTransfer::class;
-    }
-
     public static function getCombinationsDataProvider(): array
     {
         //TODO more cases
@@ -57,13 +50,17 @@ class ShowTransferTest extends TwigTestCase
         TransferEntityTypeEnum $targetType,
         TransferTypeEnum $transferType
     ): void {
-        $this->renderSnapshot(101, [
-            'id' => $id,
-            'source_type' => $sourceType->value,
-            'target' => $target,
-            'target_type' => $targetType->value,
-            'transfer_type' => $transferType->value,
-            'is_unload' => $isUnload
-        ]);
+        $this->renderSnapshot(
+            101,
+            ShowTransfer::class,
+            [
+                'id' => $id,
+                'source_type' => $sourceType->value,
+                'target' => $target,
+                'target_type' => $targetType->value,
+                'transfer_type' => $transferType->value,
+                'is_unload' => $isUnload
+            ]
+        );
     }
 }

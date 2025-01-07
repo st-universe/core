@@ -118,6 +118,16 @@ final class PrivateMessageRepository extends EntityRepository implements Private
         ]);
     }
 
+    public function getNewAmountByFolderAndSender(PrivateMessageFolderInterface $privateMessageFolder, UserInterface $sender): int
+    {
+        return $this->count([
+            'category' => $privateMessageFolder,
+            'sendingUser' => $sender,
+            'new' => 1,
+            'deleted' => null
+        ]);
+    }
+
     #[Override]
     public function setDeleteTimestampByFolder(int $folderId, int $timestamp): void
     {
