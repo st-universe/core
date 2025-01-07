@@ -67,8 +67,9 @@ WarpDrive: aktuell/maximal, Zuwachs">
                 <tr>
 
     <td id="shipimage" style="height:1px; width:1px;" class="shiplistshipimage">
-        <a href="javascript:void(0);" onclick="switchInnerContent('SHOW_SPACECRAFT', 'Aerie Zwo', 'id=77',
-'ship.php');
+        <a href="/ship.php?SHOW_SPACECRAFT=1&amp;id=77" onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Aerie Zwo',
+'id=77',
+'ship.php'); event.preventDefault();}
 updateSelectedSpacecraftId('77');" class="imgOverlayText" onmouseover="openStorageInit(this, 77);" onmouseout="closeStorage();">
                         
 
@@ -79,8 +80,9 @@ updateSelectedSpacecraftId('77');" class="imgOverlayText" onmouseover="openStora
         </a>
     </td>
     <td id="shipname">
-        <a href="javascript:void(0);" onclick="switchInnerContent('SHOW_SPACECRAFT', 'Aerie Zwo', 'id=77',
-'ship.php');
+        <a href="/ship.php?SHOW_SPACECRAFT=1&amp;id=77" onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Aerie Zwo',
+'id=77',
+'ship.php'); event.preventDefault();}
 updateSelectedSpacecraftId('77');">
                                                 <span>Aerie Zwo</span>
         </a>
