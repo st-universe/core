@@ -13,19 +13,23 @@ use Stu\Module\Spacecraft\Lib\Interaction\ShipUndockingInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftRemoverInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Orm\Entity\ConstructionProgressInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StationInterface;
 use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Repository\ConstructionProgressRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\StuTestCase;
 
 class SpacecraftDeletionHandlerTest extends StuTestCase
 {
-    /** @var MockInterface&SpacecraftRemoverInterface */
-    private $spacecraftRemover;
     /** @var MockInterface&SpacecraftRepositoryInterface */
     private $spacecraftRepository;
+    /** @var MockInterface&ConstructionProgressRepositoryInterface */
+    private $constructionProgressRepository;
+    /** @var MockInterface&SpacecraftRemoverInterface */
+    private $spacecraftRemover;
     /** @var MockInterface&SpacecraftSystemManagerInterface */
     private $spacecraftSystemManager;
     /** @var MockInterface&SpacecraftWrapperFactoryInterface */
@@ -40,16 +44,18 @@ class SpacecraftDeletionHandlerTest extends StuTestCase
     #[Override]
     public function setUp(): void
     {
-        $this->spacecraftRemover = $this->mock(SpacecraftRemoverInterface::class);
         $this->spacecraftRepository = $this->mock(SpacecraftRepositoryInterface::class);
+        $this->constructionProgressRepository = $this->mock(ConstructionProgressRepositoryInterface::class);
+        $this->spacecraftRemover = $this->mock(SpacecraftRemoverInterface::class);
         $this->spacecraftSystemManager = $this->mock(SpacecraftSystemManagerInterface::class);
         $this->spacecraftWrapperFactory = $this->mock(SpacecraftWrapperFactoryInterface::class);
         $this->shipUndocking = $this->mock(ShipUndockingInterface::class);
         $this->entityManager = $this->mock(EntityManagerInterface::class);
 
         $this->handler = new SpacecraftDeletionHandler(
-            $this->spacecraftRemover,
             $this->spacecraftRepository,
+            $this->constructionProgressRepository,
+            $this->spacecraftRemover,
             $this->spacecraftSystemManager,
             $this->spacecraftWrapperFactory,
             $this->shipUndocking,
@@ -61,6 +67,8 @@ class SpacecraftDeletionHandlerTest extends StuTestCase
     {
         $user = $this->mock(UserInterface::class);
         $station = $this->mock(StationInterface::class);
+        $stationWithProgress = $this->mock(StationInterface::class);
+        $constructionProgress = $this->mock(ConstructionProgressInterface::class);
         $tradepostStation = $this->mock(StationInterface::class);
         $ship = $this->mock(ShipInterface::class);
         $wrapper = $this->mock(SpacecraftWrapperInterface::class);
@@ -70,16 +78,33 @@ class SpacecraftDeletionHandlerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(null);
+        $stationWithProgress->shouldReceive('getTradePost')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(null);
         $tradepostStation->shouldReceive('getTradePost')
             ->withNoArgs()
             ->once()
             ->andReturn($this->mock(TradePostInterface::class));
+
+        $station->shouldReceive('getConstructionProgress')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(null);
+        $stationWithProgress->shouldReceive('getConstructionProgress')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($constructionProgress);
 
         $ship->shouldReceive('getTractoredShip')
             ->withNoArgs()
             ->once()
             ->andReturn($tractoredShip);
         $station->shouldReceive('getTractoredShip')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(null);
+        $stationWithProgress->shouldReceive('getTractoredShip')
             ->withNoArgs()
             ->once()
             ->andReturn(null);
@@ -104,7 +129,7 @@ class SpacecraftDeletionHandlerTest extends StuTestCase
         $this->spacecraftRepository->shouldReceive('getByUser')
             ->with($user)
             ->once()
-            ->andReturn([$ship, $tradepostStation, $station]);
+            ->andReturn([$ship, $tradepostStation, $station, $stationWithProgress]);
 
         $this->spacecraftRemover->shouldReceive('remove')
             ->with($ship, true)
@@ -112,11 +137,22 @@ class SpacecraftDeletionHandlerTest extends StuTestCase
         $this->spacecraftRemover->shouldReceive('remove')
             ->with($station, true)
             ->once();
+        $this->spacecraftRemover->shouldReceive('remove')
+            ->with($stationWithProgress, true)
+            ->once();
 
         $this->shipUndocking->shouldReceive('undockAllDocked')
             ->with($station)
             ->once()
             ->andReturn(true);
+        $this->shipUndocking->shouldReceive('undockAllDocked')
+            ->with($stationWithProgress)
+            ->once()
+            ->andReturn(false);
+
+        $this->constructionProgressRepository->shouldReceive('delete')
+            ->with($constructionProgress)
+            ->once();
 
         $this->handler->delete($user);
     }
