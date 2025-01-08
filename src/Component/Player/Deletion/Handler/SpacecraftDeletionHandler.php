@@ -14,13 +14,15 @@ use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\StationInterface;
 use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Repository\ConstructionProgressRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class SpacecraftDeletionHandler implements PlayerDeletionHandlerInterface
 {
     public function __construct(
-        private SpacecraftRemoverInterface $spacecraftRemover,
         private SpacecraftRepositoryInterface $spacecraftRepository,
+        private ConstructionProgressRepositoryInterface $constructionProgressRepository,
+        private SpacecraftRemoverInterface $spacecraftRemover,
         private SpacecraftSystemManagerInterface $spacecraftSystemManager,
         private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
         private ShipUndockingInterface $shipUndocking,
@@ -41,11 +43,20 @@ final class SpacecraftDeletionHandler implements PlayerDeletionHandlerInterface
             }
 
             if ($spacecraft instanceof StationInterface) {
+                $this->deleteConstructionProgress($spacecraft);
                 $this->undockAllDockedShips($spacecraft);
             }
 
             $this->unsetTractor($spacecraft);
             $this->spacecraftRemover->remove($spacecraft, true);
+        }
+    }
+
+    private function deleteConstructionProgress(StationInterface $station): void
+    {
+        $progress = $station->getConstructionProgress();
+        if ($progress !== null) {
+            $this->constructionProgressRepository->delete($progress);
         }
     }
 
