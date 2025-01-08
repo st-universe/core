@@ -27,6 +27,8 @@ filter:
     - 'src/html/'
     - 'src/OrmProxy/'
     - 'src/Public/assets/'
+  dependency_paths:
+    - 'vendor/'
 checks:
   php:
     code_rating: true
