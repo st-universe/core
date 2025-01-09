@@ -370,6 +370,12 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
             return true;
         }
 
+        if ($isUnderConstruction) {
+            // raise hull
+            $increase = (int)ceil($station->getMaxHull() / (2 * $station->getRump()->getBuildtime()));
+            $station->setHuell($station->getHull() + $increase);
+        }
+
         if ($progress->getRemainingTicks() === 1) {
             if ($isUnderConstruction) {
                 $this->stationUtility->finishStation($progress);
@@ -385,12 +391,6 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
             );
         } else {
             $this->stationUtility->reduceRemainingTicks($progress);
-
-            if ($isUnderConstruction) {
-                // raise hull
-                $increase = intdiv($station->getMaxHull(), 2 * $station->getRump()->getBuildtime());
-                $station->setHuell($station->getHull() + $increase);
-            }
         }
 
         return true;
