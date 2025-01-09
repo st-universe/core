@@ -56,7 +56,7 @@ final class DockTractoredShip implements ActionControllerInterface
         //check for energy
         $epsSystem = $wrapper->getEpsSystemData();
         if ($epsSystem === null || $epsSystem->getEps() < ShipEnum::SYSTEM_ECOST_DOCK) {
-            $game->addInformation('Zum Andocken wird 1 Energie benötigt');
+            $game->addInformationf('Zum Andocken wird %d Energie benötigt', ShipEnum::SYSTEM_ECOST_DOCK);
             return;
         }
         //check for free dock slots
@@ -66,17 +66,18 @@ final class DockTractoredShip implements ActionControllerInterface
         }
         // check for fleet state
         if ($tractoredShip->getFleet() !== null && $tractoredShip->getFleet()->getShipCount() > 1) {
-            $game->addInformation(_("Aktion nicht möglich. Das Ziel befindet sich in einer FLotte."));
+            $game->addInformation("Aktion nicht möglich. Das Ziel befindet sich in einer Flotte.");
             return;
         }
         // check for alert green
         if (!$tractoredShip->isAlertGreen()) {
-            $game->addInformation(_("Aktion nicht möglich. Das Ziel ist nicht auf Alarm grün."));
+            $game->addInformation("Aktion nicht möglich. Das Ziel ist nicht auf Alarm Grün.");
             return;
         }
 
         $epsSystem->lowerEps(1)->update();
         $tractoredShip->setDockedTo($station);
+        $station->getDockedShips()->set($tractoredShip->getId(), $tractoredShip);
 
         $this->stationLoader->save($station);
         $this->spacecraftRepository->save($tractoredShip);

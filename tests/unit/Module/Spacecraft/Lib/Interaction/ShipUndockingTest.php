@@ -7,6 +7,8 @@ namespace Stu\Module\Spacecraft\Lib\Interaction;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Override;
+use Stu\Component\Ship\Retrofit\CancelRetrofitInterface;
+use Stu\Component\Spacecraft\Repair\CancelRepairInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -17,10 +19,13 @@ use Stu\StuTestCase;
 class ShipUndockingTest extends StuTestCase
 {
     /** @var MockInterface&ShipRepositoryInterface */
-    private MockInterface $shipRepository;
-
+    private $shipRepository;
+    /** @var MockInterface&CancelRepairInterface */
+    private $cancelRepair;
+    /** @var MockInterface&CancelRetrofitInterface */
+    private $cancelRetrofit;
     /** @var MockInterface&PrivateMessageSenderInterface */
-    private MockInterface $privateMessageSender;
+    private $privateMessageSender;
 
     private ShipUndockingInterface $subject;
 
@@ -29,10 +34,14 @@ class ShipUndockingTest extends StuTestCase
     {
         //injected
         $this->shipRepository = $this->mock(ShipRepositoryInterface::class);
+        $this->cancelRepair = $this->mock(CancelRepairInterface::class);
+        $this->cancelRetrofit = $this->mock(CancelRetrofitInterface::class);
         $this->privateMessageSender = $this->mock(PrivateMessageSenderInterface::class);
 
         $this->subject = new ShipUndocking(
             $this->shipRepository,
+            $this->cancelRepair,
+            $this->cancelRetrofit,
             $this->privateMessageSender
         );
     }
@@ -75,9 +84,6 @@ class ShipUndockingTest extends StuTestCase
         $ship1->shouldReceive('setDockedTo')
             ->with(null)
             ->once();
-        $ship1->shouldReceive('setDockedToId')
-            ->with(null)
-            ->once();
         $ship1->shouldReceive('getUser->getId')
             ->withNoArgs()
             ->once()
@@ -93,9 +99,6 @@ class ShipUndockingTest extends StuTestCase
         $ship2->shouldReceive('setDockedTo')
             ->with(null)
             ->once();
-        $ship2->shouldReceive('setDockedToId')
-            ->with(null)
-            ->once();
         $ship2->shouldReceive('getUser->getId')
             ->withNoArgs()
             ->once()
@@ -107,6 +110,20 @@ class ShipUndockingTest extends StuTestCase
         $ship2->shouldReceive('getHref')
             ->withNoArgs()
             ->andReturn('HREF77');
+
+        $this->cancelRepair->shouldReceive('cancelRepair')
+            ->with($ship1)
+            ->once();
+        $this->cancelRepair->shouldReceive('cancelRepair')
+            ->with($ship2)
+            ->once();
+
+        $this->cancelRetrofit->shouldReceive('cancelRetrofit')
+            ->with($ship1)
+            ->once();
+        $this->cancelRetrofit->shouldReceive('cancelRetrofit')
+            ->with($ship2)
+            ->once();
 
         $this->shipRepository->shouldReceive('save')
             ->with($ship1)
