@@ -25,7 +25,7 @@ final class ShowDockingControl implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $ship = $this->stationLoader->getByIdAndUser(
+        $station = $this->stationLoader->getByIdAndUser(
             request::indInt('id'),
             $userId,
             false,
@@ -35,10 +35,10 @@ final class ShowDockingControl implements ViewControllerInterface
         $game->setPageTitle(_('Dockkontrolle'));
         $game->setMacroInAjaxWindow('html/station/dockControl.twig');
         $game->setTemplateVar('ALLIANCE_LIST', $this->allianceRepository->findAllOrdered());
-        $game->setTemplateVar('SHIP', $ship);
+        $game->setTemplateVar('STATION', $station);
         $game->setTemplateVar(
             'DOCKING_PRIVILEGES',
-            $ship->getDockPrivileges()->map(
+            $station->getDockPrivileges()->map(
                 fn(DockingPrivilegeInterface $dockingPrivilege): DockingPrivilegeItem =>
                 $this->stationUiFactory->createDockingPrivilegeItem($dockingPrivilege)
             )

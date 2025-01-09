@@ -17,8 +17,14 @@
       </tr>
     </table>
         <br>
-<input type="checkbox" checked onchange="toggleDockPmAutoRead('MOCKED_SESSIONSTRING');">
-Andocken ignorieren <img title="Andockbenachrichtigungen werden automatisch als gelesen markiert" src="/assets/buttons/info2.png" style="height:16px;">
+<div>
+    <input type="button" class="button" value="Alle Schiffe abdocken" onclick="actionToInnerContent('B_UNDOCK_ALL_SHIPS', 'id=43&amp;sstr=MOCKED_SESSIONSTRING');">
+</div>
+<br>
+<div>
+    <input type="checkbox" checked onchange="toggleDockPmAutoRead('MOCKED_SESSIONSTRING');">
+    Andocken ignorieren <img title="Andockbenachrichtigungen werden automatisch als gelesen markiert" src="/assets/buttons/info2.png" style="height:16px;">
+</div>
 <br>
 <div id="dockprivilegelist">
     <input type="hidden" id="dock_sstr" value="MOCKED_SESSIONSTRING">
