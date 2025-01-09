@@ -147,13 +147,6 @@ class Ship extends Spacecraft implements ShipInterface
     }
 
     #[Override]
-    public function setDockedToId(?int $dockedToId): ShipInterface
-    {
-        $this->docked_to_id = $dockedToId;
-        return $this;
-    }
-
-    #[Override]
     public function canBuildConstruction(): bool
     {
         return StationUtility::canShipBuildConstruction($this);

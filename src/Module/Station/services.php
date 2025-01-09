@@ -22,6 +22,7 @@ use Stu\Module\Station\Action\StationRepair\StationRepair;
 use Stu\Module\Station\Action\ToggleBatteryReload\ToggleBatteryReload;
 use Stu\Module\Station\Action\ToggleDockPmAutoRead\ToggleDockPmAutoRead;
 use Stu\Module\Station\Action\TransformResources\TransformResources;
+use Stu\Module\Station\Action\UndockAllShips\UndockAllShips;
 use Stu\Module\Station\Action\UndockStationShip\UndockStationShip;
 use Stu\Module\Station\Lib\Creation\StationCreator;
 use Stu\Module\Station\Lib\Creation\StationCreatorInterface;
@@ -56,23 +57,24 @@ return [
     ShowStationShiplistRequestInterface::class => autowire(ShowStationShiplistRequest::class),
     ShowShuttleManagementRequestInterface::class => autowire(ShowShuttleManagementRequest::class),
     'STATION_ACTIONS' => [
+        AddDockPrivilege::ACTION_IDENTIFIER => autowire(AddDockPrivilege::class),
         AttackSpacecraft::ACTION_IDENTIFIER => autowire(AttackSpacecraft::class),
         BuildStation::ACTION_IDENTIFIER => autowire(BuildStation::class),
         BuildShipyardShip::ACTION_IDENTIFIER => autowire(BuildShipyardShip::class),
-        ManageShips::ACTION_IDENTIFIER => autowire(ManageShips::class),
-        ManageShuttles::ACTION_IDENTIFIER => autowire(ManageShuttles::class),
-        AddDockPrivilege::ACTION_IDENTIFIER => autowire(AddDockPrivilege::class),
-        DeleteDockPrivilege::ACTION_IDENTIFIER => autowire(DeleteDockPrivilege::class),
-        UndockStationShip::ACTION_IDENTIFIER => autowire(UndockStationShip::class),
-        RepairShip::ACTION_IDENTIFIER => autowire(RepairShip::class),
         CancelShipRepair::ACTION_IDENTIFIER => autowire(CancelShipRepair::class),
+        DeleteDockPrivilege::ACTION_IDENTIFIER => autowire(DeleteDockPrivilege::class),
         DockFleet::ACTION_IDENTIFIER => autowire(DockFleet::class),
         DockTractoredShip::ACTION_IDENTIFIER => autowire(DockTractoredShip::class),
+        ManageShips::ACTION_IDENTIFIER => autowire(ManageShips::class),
+        ManageShuttles::ACTION_IDENTIFIER => autowire(ManageShuttles::class),
+        RepairShip::ACTION_IDENTIFIER => autowire(RepairShip::class),
         Scrapping::ACTION_IDENTIFIER => autowire(Scrapping::class),
         StationRepair::ACTION_IDENTIFIER => autowire(StationRepair::class),
         ToggleBatteryReload::ACTION_IDENTIFIER => autowire(ToggleBatteryReload::class),
         ToggleDockPmAutoRead::ACTION_IDENTIFIER => autowire(ToggleDockPmAutoRead::class),
         TransformResources::ACTION_IDENTIFIER => autowire(TransformResources::class),
+        UndockAllShips::ACTION_IDENTIFIER => autowire(UndockAllShips::class),
+        UndockStationShip::ACTION_IDENTIFIER => autowire(UndockStationShip::class),
     ],
     'STATION_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),

@@ -32,8 +32,6 @@ interface ShipInterface extends SpacecraftInterface
 
     public function setDockedTo(?StationInterface $dockedTo): ShipInterface;
 
-    public function setDockedToId(?int $dockedToId): ShipInterface;
-
     public function canBuildConstruction(): bool;
 
     public function getMiningQueue(): ?MiningQueueInterface;
