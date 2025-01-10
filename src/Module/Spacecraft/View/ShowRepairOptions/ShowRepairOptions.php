@@ -35,11 +35,11 @@ final class ShowRepairOptions implements ViewControllerInterface
             false
         );
 
-        $ship = $wrapper->get();
+        $spacecraft = $wrapper->get();
 
         $game->setPageTitle("Reparatur Optionen");
 
-        if (!$ship->hasEnoughCrew()) {
+        if (!$spacecraft->hasEnoughCrew()) {
             $game->addInformation("Nicht genügend Crew vorhanden");
             $game->setMacroInAjaxWindow('');
             return;
@@ -49,9 +49,9 @@ final class ShowRepairOptions implements ViewControllerInterface
 
         $repairOptions = $this->repairUtil->determineRepairOptions($wrapper);
 
-        $game->setTemplateVar('SHIP', $ship);
+        $game->setTemplateVar('WRAPPER', $wrapper);
         $game->setTemplateVar('REPAIR_OPTIONS', $repairOptions);
-        $game->setTemplateVar('ENGINEER_COUNT', $this->repairUtil->determineFreeEngineerCount($ship));
+        $game->setTemplateVar('ENGINEER_COUNT', $this->repairUtil->determineFreeEngineerCount($spacecraft));
         $game->setTemplateVar('ROUNDS', $this->repairUtil->getRepairDuration($wrapper));
 
         $game->setTemplateVar('SPARE_PARTS_ONLY', (RepairTaskConstants::SPARE_PARTS_ONLY_MIN + RepairTaskConstants::SPARE_PARTS_ONLY_MAX) / 2);
