@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Spacecraft\Lib\Crew;
 
-use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\CrewAssignmentInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\UserInterface;

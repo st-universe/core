@@ -80,6 +80,14 @@
                     {% endif %}
                 </td>
             </tr>
+            {% if WRAPPER.get.hasUplink %}
+            <tr>
+                <td colspan="3" class="darkbg">Belegte Uplinkplätze</td>
+                <td class="darkbg">
+                    {{ FOREIGNER_COUNT }} / {{ MAX_FOREIGNERS }}
+                </td>
+            </tr>
+            {% endif %}
             <tr>
                 <td class="darkbg"></td>
                 <td class="darkbg"><strong>Position</strong></td>
