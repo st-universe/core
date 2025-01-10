@@ -115,6 +115,12 @@ class ColonyStorageEntityWrapper implements StorageEntityWrapperInterface
         }
 
         $informations = new InformationWrapper();
+        $informations->addInformationf(
+            'Die Kolonie %s hat folgende Waren %s %s gebeamt',
+            $this->colony->getName(),
+            $isUnload ? 'zur' : 'von der',
+            $target->getName()
+        );
 
         foreach ($commodities as $key => $value) {
             $commodityId = (int) $value;
@@ -129,19 +135,16 @@ class ColonyStorageEntityWrapper implements StorageEntityWrapperInterface
                 $this->colony,
                 $isUnload ? $this->colony : $target->get(),
                 $transferTarget,
-                $information
+                $informations
             );
         }
 
-        if (!$informations->isEmpty()) {
-            $informations->addInformationArray(
-                [sprintf(
-                    _('Die Kolonie %s hat folgende Waren zur %s transferiert'),
-                    $this->colony->getName(),
-                    $target->getName()
-                )],
-                true
-            );
+        $informationArray = $informations->getInformations();
+        if (count($informationArray) > 1) {
+
+            foreach ($informationArray as $info) {
+                $information->addInformation($info);
+            }
         }
     }
 
