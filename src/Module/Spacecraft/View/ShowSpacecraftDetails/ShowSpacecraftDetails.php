@@ -36,7 +36,7 @@ final class ShowSpacecraftDetails implements ViewControllerInterface
         );
 
         $game->setPageTitle('Schiffsinformationen');
-        $game->setMacroInAjaxWindow('html/ship/shipDetails.twig');
+        $game->setMacroInAjaxWindow('html/spacecraft/spacecraftDetails.twig');
 
         $game->setTemplateVar('WRAPPER', $wrapper);
 
