@@ -185,16 +185,15 @@
 			</td>
 			<td colspan="2">
 				{% if SPACECRAFT.getBuildplan %}
-				{% for mod in SPACECRAFT.getModules %}
-				<img style="margin-right: 5px;" src="/assets/commodities/{{ mod.getCommodityId }}.png"
-					title="{{ mod.getName }}" />
-				{% endfor %}
+				{% for mod in SPACECRAFT.getModules %}<img style="margin-right: 5px;"
+					src="/assets/commodities/{{ mod.getCommodityId }}.png" title="{{ mod.getName }}" />{% endfor %}
 				{% endif %}
 			</td>
 			<td colspan="5">
-				{% for sys in SPACECRAFT.getSystems %}<img title="{{ sys.getName }}: {{ sys.getStatus }}%"
-					style="margin-right: 5px;" class="{{ sys.getCssClass }}"
-					src="/assets/system/{{ sys.getSystemType.value }}.png" />{% endfor %}
+				{% for sys in SPACECRAFT.getSystems %}{% set cooldownString = sys.getCooldown ? ', Cooldown bis ' ~
+				sys.getCooldown|stuDateTime : '' %}<img
+					title="{{ sys.getName }}: {{ sys.getStatus }}%{{ cooldownString }}" style="margin-right: 5px;"
+					class="{{ sys.getCssClass }}" src="/assets/system/{{ sys.getSystemType.value }}.png" />{% endfor %}
 			</td>
 		</tr>
 	</table>
