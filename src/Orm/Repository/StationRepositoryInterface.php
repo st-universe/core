@@ -6,6 +6,7 @@ use Doctrine\Persistence\ObjectRepository;
 use Stu\Module\Spacecraft\Lib\TSpacecraftItemInterface;
 use Stu\Orm\Entity\LocationInterface;
 use Stu\Orm\Entity\MapInterface;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\SpacecraftRumpInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\Station;
@@ -27,29 +28,19 @@ interface StationRepositoryInterface extends ObjectRepository
 
     public function delete(StationInterface $station): void;
 
-    /**
-     * @return array<StationInterface>
-     */
+    /** @return array<StationInterface> */
     public function getByUser(int $userId): array;
 
-    /**
-     * @return array<StationInterface>
-     */
+    /** @return array<StationInterface> */
     public function getForeignStationsInBroadcastRange(SpacecraftInterface $spacecraft): array;
 
-    /**
-     * @return array<StationInterface>
-     */
+    /** @return array<StationInterface> */
     public function getTradePostsWithoutDatabaseEntry(): array;
 
-    /**
-     * @return array<StationInterface>
-     */
+    /** @return array<StationInterface> */
     public function getByUplink(int $userId): array;
 
-    /**
-     * @return array<StationInterface>
-     */
+    /** @return array<StationInterface> */
     public function getStationConstructions(): array;
 
     /**
@@ -63,13 +54,12 @@ interface StationRepositoryInterface extends ObjectRepository
 
     public function getStationOnLocation(LocationInterface $location): ?StationInterface;
 
-    /**
-     * @return array<StationInterface>
-     */
+    /** @return array<StationInterface> */
     public function getStationsByUser(int $userId): array;
 
-    /**
-     * @return array<StationInterface>
-     */
+    /** @return array<StationInterface> */
     public function getByUserAndRump(UserInterface $user, SpacecraftRumpInterface $rump): array;
+
+    /** @return array<StationInterface> */
+    public function getPiratePhalanxTargets(ShipInterface $pirateShip): array;
 }

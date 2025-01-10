@@ -7,6 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Override;
+use Stu\Component\Game\TimeConstants;
 use Stu\Component\Spacecraft\SpacecraftRumpEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -18,6 +19,8 @@ use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\CrewAssignment;
 use Stu\Orm\Entity\LocationInterface;
+use Stu\Orm\Entity\PirateWrath;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\SpacecraftRumpInterface;
 use Stu\Orm\Entity\Spacecraft;
@@ -30,6 +33,7 @@ use Stu\Orm\Entity\StationInterface;
 use Stu\Orm\Entity\TradePost;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Proxy\__CG__\Stu\Orm\Entity\ShipRump;
 
 /**
  * @extends EntityRepository<Station>
@@ -275,6 +279,57 @@ final class StationRepository extends EntityRepository implements StationReposit
             ->setParameters([
                 'userId' => $userId,
                 'categoryId' => SpacecraftRumpEnum::SHIP_CATEGORY_STATION
+            ])
+            ->getResult();
+    }
+
+    #[Override]
+    public function getPiratePhalanxTargets(ShipInterface $pirateShip): array
+    {
+        $layer = $pirateShip->getLayer();
+        if ($layer === null) {
+            return [];
+        }
+
+        $location = $pirateShip->getLocation();
+        $range = $pirateShip->getSensorRange() * 2;
+
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT s FROM %s s
+                JOIN %s r WITH s.rump = r
+                JOIN %s l WITH s.location = l
+                JOIN %s u WITH s.user = u
+                LEFT JOIN %s w WITH u = w.user
+                WHERE r.role_id = :phalanxRoleId
+                AND l.layer_id = :layerId
+                AND l.cx BETWEEN :minX AND :maxX
+                AND l.cy BETWEEN :minY AND :maxY
+                AND u.id >= :firstUserId
+                AND u.state >= :stateActive
+                AND u.creation < :eightWeeksEarlier
+                AND (u.vac_active = :false OR u.vac_request_date > :vacationThreshold)
+                AND COALESCE(w.protection_timeout, 0) < :currentTime',
+                Station::class,
+                SpacecraftRump::class,
+                Location::class,
+                User::class,
+                PirateWrath::class
+            )
+        )
+            ->setParameters([
+                'phalanxRoleId' => SpacecraftRumpEnum::SHIP_ROLE_SENSOR,
+                'minX' => $location->getCx() - $range,
+                'maxX' => $location->getCx() + $range,
+                'minY' => $location->getCy() - $range,
+                'maxY' => $location->getCy() + $range,
+                'layerId' => $layer->getId(),
+                'firstUserId' => UserEnum::USER_FIRST_ID,
+                'stateActive' => UserEnum::USER_STATE_ACTIVE,
+                'eightWeeksEarlier' => time() - TimeConstants::EIGHT_WEEKS_IN_SECONDS,
+                'vacationThreshold' => time() - UserEnum::VACATION_DELAY_IN_SECONDS,
+                'currentTime' => time(),
+                'false' => false
             ])
             ->getResult();
     }
