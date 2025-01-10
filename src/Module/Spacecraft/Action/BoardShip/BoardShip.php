@@ -13,12 +13,11 @@ use Stu\Lib\Interaction\InteractionCheckerBuilderFactoryInterface;
 use Stu\Lib\Interaction\InteractionCheckType;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Control\StuRandom;
 use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
-use Stu\Module\Spacecraft\Lib\Auxiliary\ShipShutdownInterface;
 use Stu\Module\Spacecraft\Lib\Battle\FightLibInterface;
+use Stu\Module\Spacecraft\Lib\CloseCombat\BoardShipUtilInterface;
 use Stu\Module\Spacecraft\Lib\CloseCombat\CloseCombatUtilInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\ShipInteractionEnum;
 use Stu\Module\Spacecraft\Lib\Interaction\ShipTakeoverManagerInterface;
@@ -30,9 +29,6 @@ use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftStateChangerInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\CrewAssignmentInterface;
-use Stu\Orm\Repository\CrewRepositoryInterface;
-use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class BoardShip implements ActionControllerInterface
@@ -41,21 +37,18 @@ final class BoardShip implements ActionControllerInterface
 
     /** @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader */
     public function __construct(
-        private  CrewRepositoryInterface $crewRepository,
-        private CrewAssignmentRepositoryInterface $shipCrewRepository,
         private UserRepositoryInterface $userRepository,
         private SpacecraftLoaderInterface $spacecraftLoader,
         private CloseCombatUtilInterface $closeCombatUtil,
         private ThreatReactionInterface $threatReaction,
         private FightLibInterface $fightLib,
         private SpacecraftStateChangerInterface $spacecraftStateChanger,
-        private ShipShutdownInterface $shipShutdown,
         private ShipTakeoverManagerInterface $shipTakeoverManager,
         private InteractionCheckerBuilderFactoryInterface $interactionCheckerBuilderFactory,
+        private BoardShipUtilInterface $boardShip,
         private CreatePrestigeLogInterface $createPrestigeLog,
         private DistributedMessageSenderInterface $distributedMessageSender,
-        private MessageFactoryInterface $messageFactory,
-        private StuRandom $stuRandom
+        private MessageFactoryInterface $messageFactory
     ) {}
 
     #[Override]
@@ -150,7 +143,6 @@ final class BoardShip implements ActionControllerInterface
             return;
         }
 
-        $targetName = $target->getName();
         $targetUserId = $target->getUser()->getId();
 
         $this->threatReaction->reactToThreat(
@@ -191,7 +183,7 @@ final class BoardShip implements ActionControllerInterface
         );
 
         while (!empty($combatGroupAttacker) && !empty($combatGroupDefender)) {
-            $this->cycleKillRound(
+            $this->boardShip->cycleKillRound(
                 $combatGroupAttacker,
                 $combatGroupDefender,
                 $wrapper,
@@ -231,71 +223,6 @@ final class BoardShip implements ActionControllerInterface
         $informations = $messages->getInformationDump();
 
         $game->addInformationWrapper($informations);
-    }
-
-    /**
-     * @param array<CrewAssignmentInterface> $attackers
-     * @param array<CrewAssignmentInterface> $defenders
-     */
-    private function cycleKillRound(
-        array &$attackers,
-        array &$defenders,
-        SpacecraftWrapperInterface $wrapper,
-        SpacecraftWrapperInterface $targetWrapper,
-        MessageCollectionInterface $messages
-    ): void {
-
-        $ship = $wrapper->get();
-        $target = $targetWrapper->get();
-
-        $combatValueAttacker = $this->closeCombatUtil->getCombatValue($attackers, $ship->getUser()->getFaction());
-        $combatValueDefender = $this->closeCombatUtil->getCombatValue($defenders, $target->getUser()->getFaction());
-
-        $rand = $this->stuRandom->rand(
-            0,
-            $combatValueAttacker + $combatValueDefender
-        );
-
-        $isDeathOnDefenderSide = $rand <= $combatValueAttacker;
-        if ($isDeathOnDefenderSide) {
-            $killedCrewAssignment = $this->getKilledCrew($defenders, $targetWrapper);
-        } else {
-            $killedCrewAssignment = $this->getKilledCrew($attackers, $wrapper);
-        }
-
-        $message = $this->messageFactory->createMessage();
-        $message->add(sprintf(
-            '%s %s von der %s wurde im Kampf getötet',
-            $killedCrewAssignment->getCrew()->getTypeDescription(),
-            $killedCrewAssignment->getCrew()->getName(),
-            $isDeathOnDefenderSide ? $target->getName() : $ship->getName()
-        ));
-        $messages->add($message);
-    }
-
-    /**
-     * @param array<int, CrewAssignmentInterface> &$combatGroup
-     */
-    private function getKilledCrew(array &$combatGroup, SpacecraftWrapperInterface $wrapper): CrewAssignmentInterface
-    {
-        $keys = array_keys($combatGroup);
-        shuffle($keys);
-
-        $randomKey = current($keys);
-
-        $killedCrewAssignment = $combatGroup[$randomKey];
-        unset($combatGroup[$randomKey]);
-
-        $ship = $wrapper->get();
-        $ship->getCrewAssignments()->removeElement($killedCrewAssignment);
-        $this->crewRepository->delete($killedCrewAssignment->getCrew());
-        $this->shipCrewRepository->delete($killedCrewAssignment);
-
-        if ($ship->getCrewAssignments()->isEmpty()) {
-            $this->shipShutdown->shutdown($wrapper, true);
-        }
-
-        return $killedCrewAssignment;
     }
 
     private function sendPms(

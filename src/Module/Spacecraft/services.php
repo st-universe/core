@@ -133,6 +133,8 @@ use Stu\Module\Spacecraft\Lib\Battle\Weapon\ProjectileWeaponPhase;
 use Stu\Module\Spacecraft\Lib\Battle\Weapon\ProjectileWeaponPhaseInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Weapon\TholianWebWeaponPhase;
 use Stu\Module\Spacecraft\Lib\Battle\Weapon\TholianWebWeaponPhaseInterface;
+use Stu\Module\Spacecraft\Lib\CloseCombat\BoardShipUtil;
+use Stu\Module\Spacecraft\Lib\CloseCombat\BoardShipUtilInterface;
 use Stu\Module\Spacecraft\Lib\CloseCombat\CloseCombatUtil;
 use Stu\Module\Spacecraft\Lib\CloseCombat\CloseCombatUtilInterface;
 use Stu\Module\Spacecraft\Lib\Creation\SpacecraftCorrector;
@@ -279,6 +281,7 @@ return [
     ShipShutdownInterface::class => autowire(ShipShutdown::class),
     ThreatReactionInterface::class => autowire(ThreatReaction::class),
     CloseCombatUtilInterface::class => autowire(CloseCombatUtil::class),
+    BoardShipUtilInterface::class => autowire(BoardShipUtil::class),
     ReactorUtilInterface::class => autowire(ReactorUtil::class),
     ClearTorpedoInterface::class => autowire(ClearTorpedo::class),
     ShipTorpedoManagerInterface::class => autowire(ShipTorpedoManager::class),

@@ -17,10 +17,11 @@ final class DistributedMessageSender implements DistributedMessageSenderInterfac
         MessageCollectionInterface $messageCollection,
         int $senderId = UserEnum::USER_NOONE,
         PrivateMessageFolderTypeEnum $folderType = PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,
-        ?string $header = null
+        ?string $header = null,
+        bool $sendDumpToEveryone = false
     ): void {
         foreach ($messageCollection->getRecipientIds() as $recipientId) {
-            $informations = $messageCollection->getInformationDump($recipientId);
+            $informations = $messageCollection->getInformationDump($sendDumpToEveryone ? null : $recipientId);
 
             if ($header !== null) {
                 $pm = sprintf(

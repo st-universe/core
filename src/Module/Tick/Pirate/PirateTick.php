@@ -16,16 +16,6 @@ use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 
 final class PirateTick implements PirateTickInterface
 {
-    private const array BEHAVIOUR_PROBABILITIES = [
-        PirateBehaviourEnum::DO_NOTHING->value => 30,
-        PirateBehaviourEnum::FLY->value => 40,
-        PirateBehaviourEnum::RUB_COLONY->value => 5,
-        PirateBehaviourEnum::ATTACK_SHIP->value => 5,
-        PirateBehaviourEnum::HIDE->value => 20,
-        PirateBehaviourEnum::RAGE->value => 2,
-        PirateBehaviourEnum::CALL_FOR_SUPPORT->value => 1,
-    ];
-
     private PirateLoggerInterface $logger;
 
     /** @param array<int, PirateBehaviourInterface> $behaviours */
@@ -74,7 +64,7 @@ final class PirateTick implements PirateTickInterface
 
     private function getRandomBehaviourType(): PirateBehaviourEnum
     {
-        $value = $this->stuRandom->randomKeyOfProbabilities(self::BEHAVIOUR_PROBABILITIES);
+        $value = $this->stuRandom->randomKeyOfProbabilities(PirateBehaviourEnum::getBehaviourProbabilities());
 
         return PirateBehaviourEnum::from($value);
     }
