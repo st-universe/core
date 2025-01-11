@@ -496,10 +496,14 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
 
         $ship = $wrapper->get();
 
+        $startTime = microtime(true);
+
         /** @var null|DatabaseEntryInterface $databaseEntry */
         [$message, $databaseEntry] = $this->getDatabaseEntryForShipLocation($ship);
 
         $astroLab = $wrapper->getAstroLaboratorySystemData();
+
+        $this->potentialLog($ship, "marker11.1", $startTime);
 
         if (
             $ship->getState() === SpacecraftStateEnum::SHIP_STATE_ASTRO_FINALIZING
@@ -507,7 +511,10 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
             && $astroLab !== null
             && $this->game->getCurrentRound()->getTurn() >= ($astroLab->getAstroStartTurn() + AstronomicalMappingEnum::TURNS_TO_FINISH)
         ) {
+
+            $startTime = microtime(true);
             $this->astroEntryLib->finish($wrapper);
+            $this->potentialLog($ship, "marker11.2", $startTime);
 
             $this->msg[] = sprintf(
                 _('Die Kartographierung %s wurde vollendet'),
@@ -516,6 +523,8 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
 
             $userId = $ship->getUser()->getId();
             $databaseEntryId = $databaseEntry->getId();
+
+            $startTime = microtime(true);
 
             if (!$this->databaseUserRepository->exists($userId, $databaseEntryId)) {
                 $entry = $this->createDatabaseEntry->createDatabaseEntryForUser($ship->getUser(), $databaseEntryId);
@@ -528,6 +537,8 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
                     );
                 }
             }
+
+            $this->potentialLog($ship, "marker11.3", $startTime);
         }
     }
 
