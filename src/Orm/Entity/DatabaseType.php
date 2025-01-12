@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping\Table;
 use Override;
 use Stu\Orm\Repository\DatabaseTypeRepository;
 
-#[Table(name: 'stu_database_types', options: ['engine' => 'InnoDB'])]
+#[Table(name: 'stu_database_types')]
 #[Entity(repositoryClass: DatabaseTypeRepository::class)]
 class DatabaseType implements DatabaseTypeInterface
 {
