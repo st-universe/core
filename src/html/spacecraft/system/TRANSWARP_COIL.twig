@@ -6,8 +6,7 @@
         {% if cooldown %}
         <span><br />
             Gesperrt bis {{ cooldown|stuDateTime }}</span>
-        {% endif %}
-        {% if not cooldown %}
+        {% else %}
         Areal:
         <select name="transwarplayer">
             {% for userlayer in userLayers %}
