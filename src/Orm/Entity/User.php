@@ -101,7 +101,7 @@ class User implements UserInterface
     #[Column(type: 'integer')]
     private int $prestige = 0;
 
-    #[Column(type: 'boolean', options: ['default' => false])]
+    #[Column(type: 'boolean')]
     private bool $deals = false;
 
     #[Column(type: 'integer', nullable: true)]

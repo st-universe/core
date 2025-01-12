@@ -32,7 +32,7 @@ class ShipLog implements ShipLogInterface
     #[Column(type: 'integer')]
     private int $date;
 
-    #[Column(type: 'boolean', options: ['default' => false])]
+    #[Column(type: 'boolean')]
     private bool $is_private = false;
 
     #[Column(type: 'integer', nullable: true)]
