@@ -527,6 +527,10 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
             $startTime = microtime(true);
 
             if (!$this->databaseUserRepository->exists($userId, $databaseEntryId)) {
+
+                $this->potentialLog($ship, "marker11.3", $startTime);
+                $startTime = microtime(true);
+
                 $entry = $this->createDatabaseEntry->createDatabaseEntryForUser($ship->getUser(), $databaseEntryId);
 
                 if ($entry !== null) {
@@ -538,7 +542,7 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
                 }
             }
 
-            $this->potentialLog($ship, "marker11.3", $startTime);
+            $this->potentialLog($ship, "marker11.4", $startTime);
         }
     }
 
