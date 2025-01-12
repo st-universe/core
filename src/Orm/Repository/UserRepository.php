@@ -34,7 +34,6 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         $em = $this->getEntityManager();
 
         $em->persist($post);
-        $em->flush(); //TODO really neccessary?
     }
 
     #[Override]
