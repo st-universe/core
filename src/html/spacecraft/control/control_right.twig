@@ -1,5 +1,4 @@
 {% macro control_right(wrapper, constructionProgressWrapper, possibleStations, moduleSelectors, userLayers) %}
-{% from 'html/shipmacros.twig' import spacecraftImageWithoutWarp %}
 
 {% set SPACECRAFT = wrapper.get %}
 {% set spacecraftId = SPACECRAFT.getId %}
@@ -236,103 +235,7 @@
     </tr>
 </table>
 {% endif %}
-{% set tracker = wrapper.getTrackerSystemData %}
-{% if tracker and tracker.getTargetWrapper %}
-<table class="tcal">
-    <tr>
-        <th colspan="3"><img src="/assets/buttons/mark.png" title="Tracker-Device" />
-            Tracker-Device</th>
-    </tr>
-    {% set targetWrapper = tracker.getTargetWrapper %}
-    {% set targetShip = targetWrapper.get %}
-    <tr>
-        <td colspan="3">
-            Markiert: {{ targetShip.getName|bbcode }}
-        </td>
-    </tr>
-    <tr>
-        <td>
-            {% if tracker.canAttackCloakedTarget %}
-            <a href="?B_ATTACK_TRACKED=1&id={{ spacecraftId }}&target={{ targetShip.getId }}&sstr={{ SESSIONSTRING }}"
-                onmouseover="cp('attacktracked','buttons/phaser2')" onmouseout="cp('attacktracked','buttons/phaser1')"
-                title="Getarntes Ziel angreifen">
-                <img src="/assets/buttons/phaser1.png" name="attacktracked" />
-            </a>
-            {% endif %}
-            {{ spacecraftImageWithoutWarp(targetShip) }}
-        </td>
-        <td>
-            {{ targetShip.getSectorString }}
-        </td>
-        <td>
-            <input type="submit" class="button" name="B_DEACTIVATE_TRACKER" value="deaktivieren" />
-        </td>
-    </tr>
-    <tr>
-        <td colspan="3" style="background-color: #000000 ! important">
-            <div style="width: 100%">
-                <div style="width: 33%; float: left;">
-                    <table class="tcal">
-                        <tr>
-                            <th style="width: 20px; text-align: center;">
-                                <img src="/assets/buttons/modul_1.png" />
-                            </th>
-                            <td style="vertical-align: middle; text-align: center;">
-                                {% autoescape false %}
-                                {{ targetWrapper.getHullSystemData.getHullStatusBar }}
-                                {% endautoescape %}
-                            </td>
-                            <td style="text-align: center; width: 60px;">
-                                {{ targetShip.getHull }}
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                {% set targetShields = targetWrapper.getShieldSystemData %}
-                {% if targetShields %}
-                <div style="width: 33%; float: left;">
-                    <table class="tcal">
-                        <tr>
-                            <th style="width: 20px; text-align: center;">
-                                <img src="/assets/buttons/modul_2.png" />
-                            </th>
-                            <td style="text-align: center; vertical-align: middle;">
-                                {% autoescape false %}
-                                {{ targetShields.getShieldStatusBar }}
-                                {% endautoescape %}
-                            </td>
-                            <td style="text-align: center; width: 60px;">
-                                {{ targetShip.getShield }}
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                {% endif %}
-                {% set targetEps = targetWrapper.getEpsSystemData %}
-                {% if targetEps %}
-                <div style="width: 33%; float: left;">
-                    <table class="tcal">
-                        <tr>
-                            <th style="text-align: center; width: 20px;">
-                                <img src="/assets/buttons/modul_8.png" />
-                            </th>
-                            <td style="vertical-align: middle; text-align: center;">
-                                {% autoescape false %}
-                                {{ targetEps.getEpsStatusBar }}
-                                {% endautoescape %}
-                            </td>
-                            <td style="text-align: center; width: 60px;">
-                                {{ targetEps.getEps }}
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                {% endif %}
-            </div>
-        </td>
-    </tr>
-</table>
-{% endif %}
+{% include 'html/spacecraft/system/system.twig' with {'name': 'TRACKER'} %}
 <br />
 {% if SPACECRAFT.getFleet %}
 {{ _self.fleetInfo(wrapper) }}
