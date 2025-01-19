@@ -107,12 +107,15 @@ final class ShipRetrofit implements ShipRetrofitInterface
     /** @param array<ModuleInterface> $returnedmodules */
     private function removeModule(ShipInterface $ship, ModuleInterface $oldModule, array &$returnedmodules): void
     {
-        $system = $this->getSystemByModule($oldModule, $ship);
-        if ($system->getStatus() >= 100 && mt_rand(1, 100) <= 25) {
-            $returnedmodules[] = $oldModule;
+        if ($oldModule->getType() != SpacecraftModuleTypeEnum::HULL) {
+
+            $system = $this->getSystemByModule($oldModule, $ship);
+            if ($system->getStatus() >= 100 && mt_rand(1, 100) <= 25) {
+                $returnedmodules[] = $oldModule;
+            }
+            $this->shipSystemRepository->delete($system);
+            $ship->getSystems()->removeElement($system);
         }
-        $this->shipSystemRepository->delete($system);
-        $ship->getSystems()->removeElement($system);
     }
 
     private function getSystemByModule(ModuleInterface $module, ShipInterface $ship): SpacecraftSystemInterface
