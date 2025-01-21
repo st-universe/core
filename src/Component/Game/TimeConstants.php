@@ -9,6 +9,8 @@ final class TimeConstants
     //minutes
     public const int THIRTY_MINUTES_IN_SECONDS = 1800;
 
+    public const int TEN_MINUTES_IN_SECONDS = 600;
+
     //hours
     public const int ONE_HOUR_IN_SECONDS = 3600;
 
