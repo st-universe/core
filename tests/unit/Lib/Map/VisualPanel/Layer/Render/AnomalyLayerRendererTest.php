@@ -46,9 +46,9 @@ class AnomalyLayerRendererTest extends StuTestCase
         $result = $this->subject->render($mapData, $this->panel);
 
         $expected = '<img src="/assets/map/anomalies/2.png" class="visualPanelLayer"
-                        style="z-index: 8; H+W; opacity: 1;" />
+                        style="z-index: 8; H+W; opacity: 0.8;" />
             <img src="/assets/map/anomalies/42.png" class="visualPanelLayer"
-                        style="z-index: 9; H+W; opacity: 1;" />';
+                        style="z-index: 9; H+W; opacity: 0.8;" />';
 
         $this->assertEquals(
             preg_replace('/\s+/', '', $expected),
