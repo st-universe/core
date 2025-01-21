@@ -218,7 +218,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 WHERE sp.location_id = :locationId
                 AND s.id != :ignoreId
                 %s
-                ORDER BY f.sort DESC, f.id DESC, (CASE WHEN s.is_fleet_leader THEN 0 ELSE 1 END), r.category_id ASC, r.role_id ASC, r.id ASC, sp.name ASC',
+                ORDER BY f.sort DESC, f.id DESC, (CASE WHEN s.is_fleet_leader = :true THEN 0 ELSE 1 END), r.category_id ASC, r.role_id ASC, r.id ASC, sp.name ASC',
                 $showCloaked ? '' : sprintf(' AND (sp.user_id = %d OR COALESCE(ss2.mode,0) < %d) ', $spacecraft->getUser()->getId(), SpacecraftSystemModeEnum::MODE_ON->value)
             ),
             $rsm
@@ -229,7 +229,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'warpdriveType' => SpacecraftSystemTypeEnum::WARPDRIVE->value,
             'shieldType' => SpacecraftSystemTypeEnum::SHIELDS->value,
             'uplinkType' => SpacecraftSystemTypeEnum::UPLINK->value,
-            'false' => false
+            'false' => false,
+            'true' => true
         ]);
 
         return $query->getResult();

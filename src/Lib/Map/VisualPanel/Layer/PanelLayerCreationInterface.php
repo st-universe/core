@@ -22,6 +22,8 @@ interface PanelLayerCreationInterface
 
     public function addBorderLayer(?SpacecraftInterface $currentSpacecraft, ?bool $isOnShipLevel): PanelLayerCreationInterface;
 
+    public function addAnomalyLayer(): PanelLayerCreationInterface;
+
     public function addShipCountLayer(
         bool $showCloakedEverywhere,
         ?SpacecraftInterface $currentSpacecraft,

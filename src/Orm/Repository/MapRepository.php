@@ -109,6 +109,18 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     }
 
     #[Override]
+    public function getByBoundaries(PanelBoundaries $boundaries): array
+    {
+        return $this->getByCoordinateRange(
+            $boundaries->getParentId(),
+            $boundaries->getMinX(),
+            $boundaries->getMaxX(),
+            $boundaries->getMinY(),
+            $boundaries->getMaxY()
+        );
+    }
+
+    #[Override]
     public function getByCoordinateRange(
         int $layerId,
         int $startCx,
@@ -188,6 +200,28 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             'yEnd' => $boundaries->getMaxY(),
             'layerId' => $boundaries->getParentId(),
             'rgbCodeSetting' => UserSettingEnum::RGB_CODE->value
+        ])->getResult();
+    }
+
+    #[Override]
+    public function getAnomalyData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
+    {
+        return $this->getEntityManager()->createNativeQuery(
+            'SELECT l.cx AS x, l.cy AS y,
+                (SELECT array_to_string(array(SELECT a.anomaly_type_id FROM stu_anomaly a WHERE a.location_id = m.id), \',\')) as anomalytypes
+            FROM stu_map m
+            JOIN stu_location l
+            ON m.id = l.id
+            WHERE l.cx BETWEEN :xStart AND :xEnd
+            AND l.cy BETWEEN :yStart AND :yEnd
+            AND l.layer_id = :layerId',
+            $rsm
+        )->setParameters([
+            'xStart' => $boundaries->getMinX(),
+            'xEnd' => $boundaries->getMaxX(),
+            'yStart' => $boundaries->getMinY(),
+            'yEnd' => $boundaries->getMaxY(),
+            'layerId' => $boundaries->getParentId(),
         ])->getResult();
     }
 

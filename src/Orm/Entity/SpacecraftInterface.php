@@ -28,6 +28,8 @@ interface SpacecraftInterface extends
 
     public function getUserId(): int;
 
+    public function getUser(): UserInterface;
+
     public function getUserName(): string;
 
     public function getFleet(): ?FleetInterface;
@@ -222,9 +224,6 @@ interface SpacecraftInterface extends
 
     public function getBeamFactor(): int;
 
-    /**
-     * return "x|y (System-Name)"
-     */
     public function getSectorString(): string;
 
     public function getBuildplan(): ?SpacecraftBuildplanInterface;

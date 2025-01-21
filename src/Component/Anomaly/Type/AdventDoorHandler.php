@@ -7,6 +7,8 @@ namespace Stu\Component\Anomaly\Type;
 use Override;
 use Stu\Component\Anomaly\AnomalyCreationInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\AnomalyInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
@@ -64,6 +66,12 @@ final class AdventDoorHandler implements AnomalyHandlerInterface
         $layer = $this->layerRepository->getDefaultLayer();
 
         return $this->mapRepository->getRandomPassableUnoccupiedWithoutDamage($layer);
+    }
+
+    #[Override]
+    public function handleIncomingSpacecraft(SpacecraftWrapperInterface $wrapper, AnomalyInterface $anomaly, MessageCollectionInterface $messages): void
+    {
+        //not needed
     }
 
     #[Override]

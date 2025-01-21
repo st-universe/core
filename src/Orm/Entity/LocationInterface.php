@@ -36,9 +36,13 @@ interface LocationInterface
     public function getTrumfields(): Collection;
 
     /** @return Collection<int, AnomalyInterface> */
-    public function getAnomalies(bool $onlyActive = true): Collection;
+    public function getAnomalies(): Collection;
+
+    public function addAnomaly(AnomalyInterface $anomaly): void;
 
     public function hasAnomaly(AnomalyTypeEnum $type): bool;
+
+    public function getAnomaly(AnomalyTypeEnum $type): ?AnomalyInterface;
 
     /**
      * @return Collection<int, FlightSignatureInterface>

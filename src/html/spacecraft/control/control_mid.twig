@@ -224,7 +224,7 @@ canColonize, closestAnomalyDistance) %}
             {{ _self.influenceArea(location.getInfluenceArea.getStation.getUser, ship) }}
             {% endif %}
             {% set anomalies = location.getAnomalies %}
-            {% if not anomalies.isEmpty %}
+            {% if anomalies|length > 0 %}
             {% for anomaly in anomalies %}
             <br />
             {% include anomaly.getAnomalyType.getTemplate %}

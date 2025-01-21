@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -11,8 +13,10 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
 use Override;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Repository\AnomalyRepository;
 
 #[Table(name: 'stu_anomaly')]
@@ -32,8 +36,14 @@ class Anomaly implements AnomalyInterface
     #[Column(type: 'integer')]
     private int $anomaly_type_id;
 
-    #[Column(type: 'integer')]
-    private int $location_id = 0;
+    #[Column(type: 'integer', nullable: true)]
+    private ?int $location_id = null;
+
+    #[Column(type: 'integer', nullable: true)]
+    private ?int $parent_id = null;
+
+    #[Column(type: 'text', nullable: true)]
+    private ?string $data = null;
 
     #[ManyToOne(targetEntity: 'AnomalyType')]
     #[JoinColumn(name: 'anomaly_type_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
@@ -41,7 +51,22 @@ class Anomaly implements AnomalyInterface
 
     #[ManyToOne(targetEntity: 'Location')]
     #[JoinColumn(name: 'location_id', referencedColumnName: 'id')]
-    private LocationInterface $location;
+    private ?LocationInterface $location;
+
+    #[ManyToOne(targetEntity: 'Anomaly')]
+    #[JoinColumn(name: 'parent_id', referencedColumnName: 'id')]
+    private ?AnomalyInterface $parent;
+
+    /**
+     * @var ArrayCollection<int, AnomalyInterface>
+     */
+    #[OneToMany(targetEntity: 'Anomaly', mappedBy: 'parent', indexBy: 'location_id')]
+    private Collection $children;
+
+    public function __construct()
+    {
+        $this->children = new ArrayCollection();
+    }
 
     #[Override]
     public function getId(): int
@@ -59,6 +84,14 @@ class Anomaly implements AnomalyInterface
     public function setRemainingTicks(int $remainingTicks): AnomalyInterface
     {
         $this->remaining_ticks = $remainingTicks;
+
+        return $this;
+    }
+
+    #[Override]
+    public function changeRemainingTicks(int $amount): AnomalyInterface
+    {
+        $this->remaining_ticks += $amount;
 
         return $this;
     }
@@ -84,16 +117,75 @@ class Anomaly implements AnomalyInterface
     }
 
     #[Override]
-    public function getLocation(): LocationInterface
+    public function getLocation(): ?LocationInterface
     {
         return $this->location;
     }
 
     #[Override]
-    public function setLocation(LocationInterface $location): AnomalyInterface
+    public function setLocation(?LocationInterface $location): AnomalyInterface
     {
         $this->location = $location;
 
         return $this;
+    }
+
+    #[Override]
+    public function getParent(): ?AnomalyInterface
+    {
+        return $this->parent;
+    }
+
+    #[Override]
+    public function setParent(?AnomalyInterface $anomaly): AnomalyInterface
+    {
+        $this->parent = $anomaly;
+
+        return $this;
+    }
+
+    #[Override]
+    public function getData(): ?string
+    {
+        return $this->data;
+    }
+
+    #[Override]
+    public function setData(string $data): AnomalyInterface
+    {
+        $this->data = $data;
+        return $this;
+    }
+
+    #[Override]
+    public function getRoot(): AnomalyInterface
+    {
+        $parent = $this->getParent();
+
+        return $parent === null ? $this : $parent->getRoot();
+    }
+
+    #[Override]
+    public function getChildren(): Collection
+    {
+        return $this->children;
+    }
+
+    #[Override]
+    public function hasChildren(): bool
+    {
+        return !$this->getChildren()->isEmpty();
+    }
+
+    #[Override]
+    public function getUserId(): int
+    {
+        return UserEnum::USER_NOONE;
+    }
+
+    #[Override]
+    public function getName(): string
+    {
+        return $this->getAnomalyType()->getName();
     }
 }

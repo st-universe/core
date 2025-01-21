@@ -44,7 +44,7 @@ final class SystemLayerRenderer implements LayerRendererInterface
         }
 
         return sprintf(
-            '<img src="/assets/map/%d.png" class="lssSubspaceOverShield"
+            '<img src="/assets/map/%d.png" class="visualPanelLayer"
                 style="z-index: %d; %s opacity:2;" />',
             $fieldId,
             PanelLayerEnum::SYSTEM->value,

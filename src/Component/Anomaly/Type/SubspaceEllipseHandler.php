@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Anomaly\Type;
 
 use Override;
+use RuntimeException;
 use Stu\Component\Anomaly\AnomalyCreationInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -19,6 +20,7 @@ use Stu\Module\Spacecraft\Lib\Message\MessageCollection;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\AnomalyInterface;
 use Stu\Orm\Repository\LocationRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
@@ -61,6 +63,10 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
     public function handleSpacecraftTick(AnomalyInterface $anomaly): void
     {
         $location = $anomaly->getLocation();
+        if ($location === null) {
+            throw new RuntimeException('this should not happen');
+        }
+
         $spacecrafts = $location->getSpacecrafts();
 
         $messagesForShips = new MessageCollection();
@@ -128,7 +134,7 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
         }
 
         $this->informSpacecraftOwnersAboutConsequences(
-            $anomaly->getLocation()->getSectorString(),
+            $location->getSectorString(),
             $messagesForShips,
             $messagesForBases
         );
@@ -145,6 +151,10 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
         $usersToInform = [];
 
         $location = $anomaly->getLocation();
+        if ($location === null) {
+            throw new RuntimeException('this should not happen');
+        }
+
         $spacecrafts = $location->getSpacecrafts();
 
         foreach ($spacecrafts as $spacecraft) {
@@ -184,5 +194,11 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
             PrivateMessageFolderTypeEnum::SPECIAL_STATION,
             $header
         );
+    }
+
+    #[Override]
+    public function handleIncomingSpacecraft(SpacecraftWrapperInterface $wrapper, AnomalyInterface $anomaly, MessageCollectionInterface $messages): void
+    {
+        //not needed
     }
 }

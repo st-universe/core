@@ -18,7 +18,6 @@ use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\SpacecraftBuildplanInterface;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
-use Stu\Orm\Repository\ModuleSpecialRepositoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Entity\SpacecraftSystemInterface;
 
@@ -26,7 +25,6 @@ final class ShipRetrofit implements ShipRetrofitInterface
 {
     public function __construct(
         private SpacecraftSystemRepositoryInterface $shipSystemRepository,
-        private ModuleSpecialRepositoryInterface $moduleSpecialRepository,
         private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
         private StorageManagerInterface $storageManager,
         private PrivateMessageSenderInterface $privateMessageSender
@@ -160,14 +158,15 @@ final class ShipRetrofit implements ShipRetrofitInterface
      */
     private function addSpecialSystems(ModuleInterface $module, array &$systems): void
     {
-        $moduleSpecials = $this->moduleSpecialRepository->getByModule($module->getId());
-
-        foreach ($moduleSpecials as $special) {
+        foreach ($module->getSpecials() as $special) {
             $moduleSpecial = $special->getSpecialId();
-            $systems[$moduleSpecial->getSystemType()->value] = $moduleSpecial->hasCorrespondingModule() ? $module : null;
+            $systemType = $moduleSpecial->getSystemType();
+
+            if ($systemType !== null) {
+                $systems[$systemType->value] = $moduleSpecial->hasCorrespondingModule() ? $module : null;
+            }
         }
     }
-
 
     private function createShipSystem(int $systemType, ShipInterface $ship, ?ModuleInterface $module): void
     {

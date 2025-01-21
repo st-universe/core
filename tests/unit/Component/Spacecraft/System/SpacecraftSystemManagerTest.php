@@ -29,29 +29,16 @@ use Stu\StuTestCase;
 
 class SpacecraftSystemManagerTest extends StuTestCase
 {
-    /**
-     * @var MockInterface&ShipInterface
-     */
+    /** @var MockInterface&ShipInterface */
     private $ship;
-
-    /**
-     * @var MockInterface&ShipWrapperInterface
-     */
+    /** @var MockInterface&ShipWrapperInterface */
     private $wrapper;
-
-    /**
-     * @var MockInterface&SpacecraftSystemInterface
-     */
+    /** @var MockInterface&SpacecraftSystemInterface */
     private $shipSystem;
-
-    /**
-     * @var null|MockInterface|SpacecraftSystemTypeInterface
-     */
+    /** @var MockInterface&SpacecraftSystemTypeInterface */
     private $systemType;
 
-    /**
-     * @var null|MockInterface|StuTime
-     */
+    /** @var MockInterface&StuTime */
     private $stuTimeMock;
 
     private SpacecraftSystemTypeEnum $system_id = SpacecraftSystemTypeEnum::EPS;

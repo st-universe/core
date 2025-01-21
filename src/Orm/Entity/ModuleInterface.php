@@ -3,6 +3,7 @@
 namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\Collection;
+use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 
@@ -62,12 +63,12 @@ interface ModuleInterface
 
     public function setEcost(int $energyCosts): ModuleInterface;
 
-    public function hasSpecial(int $special_id): bool;
-
     /**
      * @return Collection<int, ModuleSpecialInterface>
      */
     public function getSpecials(): Collection;
+
+    public function hasSpecial(ModuleSpecialAbilityEnum $ability): bool;
 
     /**
      * @return Collection<int, ModuleCostInterface>

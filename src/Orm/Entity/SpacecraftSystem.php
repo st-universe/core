@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Override;
+use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Orm\Repository\SpacecraftSystemRepository;
@@ -212,6 +213,14 @@ class SpacecraftSystem implements SpacecraftSystemInterface
         } else {
             return max(1, $this->getSpacecraft()->getRump()->getModuleLevel() - 1);
         }
+    }
+
+    #[Override]
+    public function hasSpecial(ModuleSpecialAbilityEnum $ability): bool
+    {
+        return $this->module !== null
+            ? $this->module->hasSpecial($ability)
+            : false;
     }
 
     #[Override]

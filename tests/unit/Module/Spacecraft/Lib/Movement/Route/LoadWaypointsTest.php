@@ -158,6 +158,11 @@ class LoadWaypointsTest extends StuTestCase
             ->once()
             ->andReturn($system);
 
+        $system->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(424242);
+
         $destination->shouldReceive('getX')
             ->withNoArgs()
             ->once()
@@ -169,7 +174,7 @@ class LoadWaypointsTest extends StuTestCase
 
         $this->starSystemMapRepository->shouldReceive('getByCoordinateRange')
             ->with(
-                $system,
+                424242,
                 min($startX, $destX),
                 max($startX, $destX),
                 min($startY, $destY),

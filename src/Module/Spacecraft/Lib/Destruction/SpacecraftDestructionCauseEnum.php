@@ -14,6 +14,7 @@ enum SpacecraftDestructionCauseEnum
     case SELF_DESTRUCTION;
     case THOLIAN_WEB_IMPLOSION;
     case ORPHANIZED_TRADEPOST;
+    case ANOMALY_DAMAGE;
 
     public function getHistoryEntryText(
         ?SpacecraftDestroyerInterface $destroyer,
@@ -54,7 +55,7 @@ enum SpacecraftDestructionCauseEnum
                 $sector
             ),
             self::SELF_DESTRUCTION => sprintf(
-                _('Die %s (%s) hat sich in Sektor %s selbst zerstört'),
+                'Die %s (%s) hat sich in Sektor %s selbst zerstört',
                 $shipName,
                 $rumpName,
                 $sector
@@ -68,6 +69,13 @@ enum SpacecraftDestructionCauseEnum
             self::ORPHANIZED_TRADEPOST => sprintf(
                 'Der verlassene Handelsposten in Sektor %s ist zerfallen',
                 $sector
+            ),
+            self::ANOMALY_DAMAGE => sprintf(
+                'Die %s (%s) wurde beim Einflug in Sektor %s durch die Anomalie %s zerstört',
+                $shipName,
+                $rumpName,
+                $sector,
+                $destroyerName
             )
         };
     }

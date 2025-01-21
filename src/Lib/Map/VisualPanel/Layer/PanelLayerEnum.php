@@ -13,4 +13,5 @@ enum PanelLayerEnum: int
     case SUBSPACE_SIGNATURES = 5;
     case SPACECRAFT_COUNT = 6;
     case BORDER = 7;
+    case ANOMALIES = 8;
 }

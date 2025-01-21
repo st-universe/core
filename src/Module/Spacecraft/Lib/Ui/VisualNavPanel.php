@@ -48,10 +48,10 @@ class VisualNavPanel extends AbstractVisualPanel
     #[Override]
     protected function loadLayers(): void
     {
-
         $panelLayerCreation = $this->panelLayerCreation
             ->addShipCountLayer($this->tachyonFresh, $this->currentSpacecraft, SpacecraftCountLayerTypeEnum::ALL, 0)
-            ->addBorderLayer($this->currentSpacecraft, $this->isOnShipLevel());
+            ->addBorderLayer($this->currentSpacecraft, $this->isOnShipLevel())
+            ->addAnomalyLayer();
 
         $map = $this->getPanelCenter();
 

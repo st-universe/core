@@ -26,13 +26,6 @@ final class PanelLayer
 
     public function renderCell(int $x, int $y, AbstractVisualPanel $panel): string
     {
-        /**
-         *
-         if ($this->renderer instanceof SystemLayerRenderer) {
-             // throw new RuntimeException(print_r($this->data, true));
-         }
-         */
-
         if (!array_key_exists($x, $this->data)) {
             throw new RuntimeException('array index not available');
         }

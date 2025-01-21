@@ -10,20 +10,15 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use RuntimeException;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ModuleInterface;
-use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\StuTestCase;
 
 class EnergyPhalanxTest extends StuTestCase
 {
-    /**
-     * @var MockInterface&ColonyInterface
-     */
+    /** @var MockInterface&ColonyInterface */
     private $colony;
 
-    /**
-     * @var MockInterface&ModuleRepositoryInterface
-     */
+    /** @var MockInterface&ModuleRepositoryInterface */
     private $moduleRepository;
 
     private EnergyPhalanx $subject;
@@ -80,16 +75,14 @@ class EnergyPhalanxTest extends StuTestCase
 
     public function testGetUser(): void
     {
-        $user = $this->mock(UserInterface::class);
-
-        $this->colony->shouldReceive('getUser')
+        $this->colony->shouldReceive('getUser->getId')
             ->withNoArgs()
             ->once()
-            ->andReturn($user);
+            ->andReturn(42);
 
-        $result = $this->subject->getUser();
+        $result = $this->subject->getUserId();
 
-        $this->assertSame($user, $result);
+        $this->assertSame(42, $result);
     }
 
     public static function provideGetNameData(): array

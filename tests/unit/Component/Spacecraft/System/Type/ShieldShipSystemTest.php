@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Spacecraft\System\Type;
 
+use Mockery\MockInterface;
 use Override;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
@@ -12,7 +13,6 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftStateChangerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\LocationInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\SpacecraftSystemInterface;
@@ -22,13 +22,13 @@ class ShieldShipSystemTest extends StuTestCase
 {
     private ShieldShipSystem $system;
 
-    /**
-     * @var SpacecraftStateChangerInterface|MockInterface
-     */
+    /** @var SpacecraftStateChangerInterface&MockInterface */
     private SpacecraftStateChangerInterface $spacecraftStateChanger;
 
-    private ShipInterface $ship;
-    private ShipWrapperInterface $wrapper;
+    /** @var ShipInterface&MockInterface */
+    private  $ship;
+    /** @var ShipWrapperInterface&MockInterface */
+    private $wrapper;
 
     #[Override]
     public function setUp(): void
@@ -45,7 +45,7 @@ class ShieldShipSystemTest extends StuTestCase
         $this->system = new ShieldShipSystem($this->spacecraftStateChanger);
     }
 
-    public function testCheckActivationConditionsReturnsFalsIfCloaked(): void
+    public function testCheckActivationConditionsReturnsFalseIfCloaked(): void
     {
         $this->ship->shouldReceive('isCloaked')
             ->withNoArgs()
@@ -147,7 +147,6 @@ class ShieldShipSystemTest extends StuTestCase
             ->andReturn(42);
         $this->ship->shouldReceive('getLocation')
             ->withNoArgs()
-            ->once()
             ->andReturn($location);
 
         $location->shouldReceive('hasAnomaly')
@@ -160,6 +159,46 @@ class ShieldShipSystemTest extends StuTestCase
             $this->system->checkActivationConditions($this->wrapper, $reason)
         );
         $this->assertEquals('in diesem Sektor eine Subraumellipse vorhanden ist', $reason);
+    }
+
+    public function testCheckActivationConditionsReturnsFalseIfIonStormIsExistent(): void
+    {
+        $location = $this->mock(MapInterface::class);
+
+        $this->ship->shouldReceive('isCloaked')
+            ->withNoArgs()
+            ->once()
+            ->andReturnFalse();
+        $this->ship->shouldReceive('isTractoring')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+        $this->ship->shouldReceive('isTractored')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+        $this->ship->shouldReceive('getShield')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(42);
+        $this->ship->shouldReceive('getLocation')
+            ->withNoArgs()
+            ->andReturn($location);
+
+        $location->shouldReceive('hasAnomaly')
+            ->with(AnomalyTypeEnum::SUBSPACE_ELLIPSE)
+            ->once()
+            ->andReturn(false);
+        $location->shouldReceive('hasAnomaly')
+            ->with(AnomalyTypeEnum::ION_STORM)
+            ->once()
+            ->andReturn(true);
+
+        $reason = '';
+        $this->assertFalse(
+            $this->system->checkActivationConditions($this->wrapper, $reason)
+        );
+        $this->assertEquals('in diesem Sektor ein Ionensturm tobt', $reason);
     }
 
     public function testCheckActivationConditionsReturnsTrueIfActivateable(): void
@@ -184,11 +223,14 @@ class ShieldShipSystemTest extends StuTestCase
             ->andReturn(1);
         $this->ship->shouldReceive('getLocation')
             ->withNoArgs()
-            ->once()
             ->andReturn($location);
 
         $location->shouldReceive('hasAnomaly')
             ->with(AnomalyTypeEnum::SUBSPACE_ELLIPSE)
+            ->once()
+            ->andReturn(false);
+        $location->shouldReceive('hasAnomaly')
+            ->with(AnomalyTypeEnum::ION_STORM)
             ->once()
             ->andReturn(false);
 

@@ -55,6 +55,11 @@ final class ShieldShipSystem extends AbstractSpacecraftSystemType implements Spa
             return false;
         }
 
+        if ($spacecraft->getLocation()->hasAnomaly(AnomalyTypeEnum::ION_STORM)) {
+            $reason = _('in diesem Sektor ein Ionensturm tobt');
+            return false;
+        }
+
         return true;
     }
 

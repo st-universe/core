@@ -13,6 +13,7 @@ use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Spacecraftcount\SpacecraftCountDa
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Spacecraftcount\SpacecraftCountLayerTypeEnum;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace\SubspaceDataProviderFactoryInterface;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace\SubspaceLayerTypeEnum;
+use Stu\Lib\Map\VisualPanel\Layer\Render\AnomalyLayerRenderer;
 use Stu\Lib\Map\VisualPanel\Layer\Render\BorderLayerRenderer;
 use Stu\Lib\Map\VisualPanel\Layer\Render\ColonyShieldLayerRenderer;
 use Stu\Lib\Map\VisualPanel\Layer\Render\LayerRendererInterface;
@@ -30,6 +31,9 @@ final class PanelLayerCreation implements PanelLayerCreationInterface
 
     /** @var array<int, LayerRendererInterface> */
     private array $layers = [];
+
+    /** @var array<int> */
+    public static array $skippedLayers = [];
 
     /** @param array<int, PanelLayerDataProviderInterface> $dataProviders */
     public function __construct(
@@ -94,6 +98,14 @@ final class PanelLayerCreation implements PanelLayerCreationInterface
     }
 
     #[Override]
+    public function addAnomalyLayer(): PanelLayerCreationInterface
+    {
+        $this->layers[PanelLayerEnum::ANOMALIES->value] = new AnomalyLayerRenderer();
+
+        return $this;
+    }
+
+    #[Override]
     public function build(AbstractVisualPanel $panel): PanelLayers
     {
         $layers = $this->layers;
@@ -108,9 +120,12 @@ final class PanelLayerCreation implements PanelLayerCreationInterface
         $result = new PanelLayers($panel);
 
         foreach ($layers as $layerType => $renderer) {
-            $result->addLayer(PanelLayerEnum::from($layerType), new PanelLayer($this->getDataProvider($layerType)->loadData(
-                $panel->getBoundaries()
-            ), $renderer));
+
+            if (!in_array($layerType, self::$skippedLayers)) {
+                $result->addLayer(PanelLayerEnum::from($layerType), new PanelLayer($this->getDataProvider($layerType)->loadData(
+                    $panel->getBoundaries()
+                ), $renderer));
+            }
         }
 
         return $result;

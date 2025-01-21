@@ -17,29 +17,20 @@ use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\SpacecraftRumpInterface;
 use Stu\Orm\Entity\SpacecraftSystemInterface;
 use Stu\Orm\Entity\TorpedoTypeInterface;
-use Stu\Orm\Entity\UserInterface;
 use Stu\StuTestCase;
 
 class SpacecraftAttackerTest extends StuTestCase
 {
-    /**
-     * @var MockInterface&ShipWrapperInterface
-     */
+    /** @var MockInterface&ShipWrapperInterface */
     private $wrapper;
 
-    /**
-     * @var MockInterface&ShipTorpedoManagerInterface
-     */
+    /** @var MockInterface&ShipTorpedoManagerInterface */
     private $shipTorpedoManager;
 
-    /**
-     * @var MockInterface&StuRandom
-     */
+    /** @var MockInterface&StuRandom */
     private $stuRandom;
 
-    /**
-     * @var MockInterface&ShipInterface
-     */
+    /** @var MockInterface&ShipInterface */
     private ShipInterface $ship;
 
     private SpacecraftAttacker $subject;
@@ -234,20 +225,18 @@ class SpacecraftAttackerTest extends StuTestCase
 
     public function testGetUser(): void
     {
-        $user = $this->mock(UserInterface::class);
-
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()
             ->once()
             ->andReturn($this->ship);
-        $this->ship->shouldReceive('getUser')
+        $this->ship->shouldReceive('getUser->getId')
             ->withNoArgs()
             ->once()
-            ->andReturn($user);
+            ->andReturn(42);
 
-        $result = $this->subject->getUser();
+        $result = $this->subject->getUserId();
 
-        $this->assertSame($user, $result);
+        $this->assertEquals(42, $result);
     }
 
     public function testGetName(): void

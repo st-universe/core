@@ -10,14 +10,12 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Orm\Entity\BuildplanModuleInterface;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Repository\ModuleSpecialRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
 
 class SpacecraftSystemCreation implements SpacecraftSystemCreationInterface
 {
     public function __construct(
-        private SpacecraftSystemRepositoryInterface $shipSystemRepository,
-        private ModuleSpecialRepositoryInterface $moduleSpecialRepository
+        private SpacecraftSystemRepositoryInterface $shipSystemRepository
     ) {}
 
     public function createShipSystemsByModuleList(
@@ -126,12 +124,13 @@ class SpacecraftSystemCreation implements SpacecraftSystemCreationInterface
      */
     private function addSpecialSystem(ModuleInterface $module, array &$systems): void
     {
-        $moduleSpecials = $this->moduleSpecialRepository->getByModule($module->getId());
-
-        foreach ($moduleSpecials as $special) {
-
+        foreach ($module->getSpecials() as $special) {
             $moduleSpecial = $special->getSpecialId();
-            $systems[$moduleSpecial->getSystemType()->value] = $moduleSpecial->hasCorrespondingModule() ? $module : null;
+
+            $systemType = $moduleSpecial->getSystemType();
+            if ($systemType !== null) {
+                $systems[$systemType->value] = $moduleSpecial->hasCorrespondingModule() ? $module : null;
+            }
         }
     }
 }

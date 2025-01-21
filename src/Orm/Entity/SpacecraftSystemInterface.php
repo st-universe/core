@@ -2,6 +2,7 @@
 
 namespace Stu\Orm\Entity;
 
+use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 
@@ -48,6 +49,8 @@ interface SpacecraftSystemInterface
     public function setData(string $data): SpacecraftSystemInterface;
 
     public function determineSystemLevel(): int;
+
+    public function hasSpecial(ModuleSpecialAbilityEnum $ability): bool;
 
     public function __toString(): string;
 }

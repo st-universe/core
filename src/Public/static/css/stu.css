@@ -509,7 +509,7 @@ div.lssobj {
   z-index: 1;
 }
 
-.lssSubspaceOverShield {
+.visualPanelLayer {
   position: absolute;
   top: 0;
   left: 0;
