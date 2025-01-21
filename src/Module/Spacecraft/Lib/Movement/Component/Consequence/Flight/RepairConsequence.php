@@ -38,7 +38,7 @@ class RepairConsequence extends AbstractFlightConsequence implements FlightStart
             $message = $this->messageFactory->createMessage(null, $ship->getUser()->getId());
             $messages->add($message);
             $this->cancelRepair->cancelRepair($ship);
-            $message->add(sprintf(_('Die Reparatur der %s wurde abgebrochen'), $ship->getName()));
+            $message->add(sprintf('Die Reparatur der %s wurde abgebrochen', $ship->getName()));
         }
     }
 }

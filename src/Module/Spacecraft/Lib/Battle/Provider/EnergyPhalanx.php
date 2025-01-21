@@ -8,7 +8,6 @@ use Override;
 use RuntimeException;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ModuleInterface;
-use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 
 final class EnergyPhalanx extends AbstractEnergyAttacker
@@ -41,9 +40,9 @@ final class EnergyPhalanx extends AbstractEnergyAttacker
     }
 
     #[Override]
-    public function getUser(): UserInterface
+    public function getUserId(): int
     {
-        return $this->colony->getUser();
+        return $this->colony->getUser()->getId();
     }
 
     private function isDisruptor(): bool

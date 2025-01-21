@@ -53,13 +53,21 @@ final class SpacecraftSystemManager implements SpacecraftSystemManagerInterface
             $epsSystem->lowerEps($system->getEnergyUsageForActivation())->update();
         }
 
-        //cooldown
+        $this->setCooldown($wrapper, $type, $time, $system);
+
+        $system->activate($wrapper, $this);
+    }
+
+    private function setCooldown(
+        SpacecraftWrapperInterface $wrapper,
+        SpacecraftSystemTypeEnum $type,
+        int $time,
+        SpacecraftSystemTypeInterface $system
+    ): void {
         $shipSystem = $wrapper->get()->getSystems()[$type->value] ?? null;
         if ($shipSystem !== null && $system->getCooldownSeconds() !== null) {
             $shipSystem->setCooldown($time + $system->getCooldownSeconds());
         }
-
-        $system->activate($wrapper, $this);
     }
 
     #[Override]

@@ -13,7 +13,6 @@ use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\TorpedoTypeInterface;
-use Stu\Orm\Entity\UserInterface;
 
 class SpacecraftAttacker extends AbstractEnergyAttacker implements ProjectileAttackerInterface
 {
@@ -85,9 +84,9 @@ class SpacecraftAttacker extends AbstractEnergyAttacker implements ProjectileAtt
     }
 
     #[Override]
-    public function getUser(): UserInterface
+    public function getUserId(): int
     {
-        return $this->get()->getUser();
+        return $this->get()->getUser()->getId();
     }
 
     private function get(): SpacecraftInterface

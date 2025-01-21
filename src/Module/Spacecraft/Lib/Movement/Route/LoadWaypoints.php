@@ -44,7 +44,7 @@ final class LoadWaypoints implements LoadWaypointsInterface
         }
         if ($start instanceof StarSystemMapInterface) {
             $waypoints = $this->starSystemMapRepository->getByCoordinateRange(
-                $start->getSystem(),
+                $start->getSystem()->getId(),
                 min($startX, $destinationX),
                 max($startX, $destinationX),
                 min($startY, $destinationY),

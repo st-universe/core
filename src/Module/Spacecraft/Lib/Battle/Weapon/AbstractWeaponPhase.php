@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Battle\Weapon;
 
+use RuntimeException;
 use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Lib\Information\InformationInterface;
@@ -19,12 +20,15 @@ use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 abstract class AbstractWeaponPhase
 {
     protected LoggerUtilInterface $loggerUtil;
 
     public function __construct(
+        private UserRepositoryInterface $userRepository,
         protected EntryCreatorInterface $entryCreator,
         protected ApplyDamageInterface $applyDamage,
         protected BuildingManagerInterface $buildingManager,
@@ -68,5 +72,15 @@ abstract class AbstractWeaponPhase
         }
 
         return $modules->first();
+    }
+
+    protected function getUser(int $userId): UserInterface
+    {
+        $user = $this->userRepository->find($userId);
+        if ($user === null) {
+            throw new RuntimeException('this should not happen');
+        }
+
+        return $user;
     }
 }

@@ -13,9 +13,9 @@ enum SpacecraftAlertStateEnum: int
     public function getDescription(): string
     {
         return match ($this) {
-            SpacecraftAlertStateEnum::ALERT_GREEN => _("Alarm Grün"),
-            SpacecraftAlertStateEnum::ALERT_YELLOW => _("Alarm Gelb"),
-            SpacecraftAlertStateEnum::ALERT_RED => _("Alarm Rot")
+            SpacecraftAlertStateEnum::ALERT_GREEN => "Alarm Grün",
+            SpacecraftAlertStateEnum::ALERT_YELLOW => "Alarm Gelb",
+            SpacecraftAlertStateEnum::ALERT_RED => "Alarm Rot"
         };
     }
 

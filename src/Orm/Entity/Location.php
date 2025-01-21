@@ -89,7 +89,7 @@ abstract class Location implements LocationInterface
     /**
      * @var ArrayCollection<int, AnomalyInterface>
      */
-    #[OneToMany(targetEntity: 'Anomaly', mappedBy: 'location', fetch: 'EXTRA_LAZY')]
+    #[OneToMany(targetEntity: 'Anomaly', mappedBy: 'location', indexBy: 'anomaly_type_id', fetch: 'EXTRA_LAZY')]
     private Collection $anomalies;
 
     /**
@@ -164,17 +164,26 @@ abstract class Location implements LocationInterface
     }
 
     #[Override]
-    public function getAnomalies(bool $onlyActive = true): Collection
+    public function getAnomalies(): Collection
     {
-        return $this->anomalies
-            ->filter(fn(AnomalyInterface $anomaly): bool => !$onlyActive || $anomaly->isActive());
+        return $this->anomalies;
+    }
+
+    public function addAnomaly(AnomalyInterface $anomaly): void
+    {
+        $this->anomalies->set($anomaly->getAnomalyType()->getId(), $anomaly);
     }
 
     #[Override]
     public function hasAnomaly(AnomalyTypeEnum $type): bool
     {
-        return $this->getAnomalies()
-            ->exists(fn(int $key, AnomalyInterface $anomaly): bool => $anomaly->getAnomalyType()->getId() === $type->value);
+        return $this->anomalies->containsKey($type->value);
+    }
+
+    #[Override]
+    public function getAnomaly(AnomalyTypeEnum $type): ?AnomalyInterface
+    {
+        return $this->anomalies->get($type->value);
     }
 
     #[Override]

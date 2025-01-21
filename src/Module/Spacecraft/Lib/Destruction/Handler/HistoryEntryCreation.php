@@ -28,7 +28,7 @@ class HistoryEntryCreation implements SpacecraftDestructionHandlerInterface
 
         $this->entryCreator->addEntry(
             $cause->getHistoryEntryText($destroyer, $spacecraft),
-            $destroyer === null ? UserEnum::USER_NOONE : $destroyer->getUser()->getId(),
+            $destroyer === null ? UserEnum::USER_NOONE : $destroyer->getUserId(),
             $spacecraft
         );
     }

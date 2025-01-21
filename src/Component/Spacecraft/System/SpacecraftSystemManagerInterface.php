@@ -37,7 +37,11 @@ interface SpacecraftSystemManagerInterface
      * @throws DeactivationConditionsNotMetException
      * @throws AlreadyOffException
      */
-    public function deactivate(SpacecraftWrapperInterface $wrapper, SpacecraftSystemTypeEnum $type, bool $force = false): void;
+    public function deactivate(
+        SpacecraftWrapperInterface $wrapper,
+        SpacecraftSystemTypeEnum $type,
+        bool $force = false
+    ): void;
 
     public function deactivateAll(SpacecraftWrapperInterface $wrapper): void;
 

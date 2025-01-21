@@ -50,7 +50,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
 
             $target = $targetWrapper->get();
 
-            $message = $this->messageFactory->createMessage($attacker->getUser()->getId(), $target->getUser()->getId());
+            $message = $this->messageFactory->createMessage($attacker->getUserId(), $target->getUser()->getId());
             $messages->add($message);
 
             $message->add(sprintf(
@@ -74,7 +74,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
             $damage_wrapper->setShieldDamageFactor($attacker->getPhaserShieldDamageFactor());
             $damage_wrapper->setHullDamageFactor($attacker->getPhaserHullDamageFactor());
             $damage_wrapper->setIsPhaserDamage(true);
-            $damage_wrapper->setPirateWrath($attacker->getUser(), $target);
+            $damage_wrapper->setPirateWrath($this->getUser($attacker->getUserId()), $target);
             $this->setWeaponShieldModificator($target, $weapon, $damage_wrapper);
 
             $this->applyDamage->damage($damage_wrapper, $targetWrapper, $message);
@@ -148,12 +148,12 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
             if ($target->getIntegrity() === 0) {
                 $this->entryCreator->addEntry(
                     sprintf(
-                        _('Das Gebäude %s auf Kolonie %s wurde von der %s zerstört'),
+                        'Das Gebäude %s auf Kolonie %s wurde von der %s zerstört',
                         $building->getName(),
                         $target->getHost()->getName(),
                         $attacker->getName()
                     ),
-                    $attacker->getUser()->getId(),
+                    $attacker->getUserId(),
                     $target->getHost()
                 );
 

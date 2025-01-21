@@ -179,6 +179,7 @@ use Stu\Module\Spacecraft\Lib\Message\MessageFactory;
 use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Spacecraft\Lib\ModuleValueCalculator;
 use Stu\Module\Spacecraft\Lib\ModuleValueCalculatorInterface;
+use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\Flight\AlertStateConsequence;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\Flight\AstroMappingConsequence;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\Flight\DockConsequence;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\Flight\DriveActivationConsequence;
@@ -192,6 +193,7 @@ use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\Flight\TakeoverCons
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\Flight\TholianWebConsequence;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\Flight\TractorConsequence;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\Flight\WarpdriveConsequence;
+use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight\AnomalyConsequence;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight\DeactivateTranswarpConsequence;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight\DeflectorConsequence;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight\PostFlightAstroMappingConsequence;
@@ -325,7 +327,8 @@ return [
         autowire(DriveActivationConsequence::class),
         autowire(EpsConsequence::class),
         autowire(WarpdriveConsequence::class),
-        autowire(FlightDirectionConsequence::class)
+        autowire(FlightDirectionConsequence::class),
+        autowire(AlertStateConsequence::class)
     ],
     PostFlightConsequenceInterface::class => [
         autowire(PostFlightDirectionConsequence::class),
@@ -333,7 +336,8 @@ return [
         autowire(DeactivateTranswarpConsequence::class),
         autowire(PostFlightTrackerConsequence::class),
         autowire(PostFlightTractorConsequence::class),
-        autowire(DeflectorConsequence::class)
+        autowire(DeflectorConsequence::class),
+        autowire(AnomalyConsequence::class)
     ],
     FlightRouteFactoryInterface::class => autowire(FlightRouteFactory::class)
         ->constructorParameter(

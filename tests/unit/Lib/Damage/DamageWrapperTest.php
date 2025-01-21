@@ -6,6 +6,7 @@ namespace Stu\Lib\Damage;
 
 use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\StuTestCase;
 
@@ -87,5 +88,35 @@ class DamageWrapperTest extends StuTestCase
         $result = $this->subject->getDamageRelative($target, $mode);
 
         $this->assertEquals($expectedHullDamage, $result);
+    }
+
+    public function testCanDamageSystemExpectTrueIfNoWhitelistDefined(): void
+    {
+        $result = $this->subject->canDamageSystem(SpacecraftSystemTypeEnum::HULL);
+
+        $this->assertTrue($result);
+    }
+
+    public function testCanDamageSystemExpectFalseIfNotOnWhitelist(): void
+    {
+        $this->subject->setTargetSystemTypes([SpacecraftSystemTypeEnum::SHIELDS]);
+
+        $result = $this->subject->canDamageSystem(SpacecraftSystemTypeEnum::HULL);
+
+        $this->assertFalse($result);
+    }
+
+    public function testCanDamageSystemExpectTrueIfOnWhitelist(): void
+    {
+        $this->subject->setTargetSystemTypes([
+            SpacecraftSystemTypeEnum::SHIELDS,
+            SpacecraftSystemTypeEnum::HULL
+        ]);
+
+        $result1 = $this->subject->canDamageSystem(SpacecraftSystemTypeEnum::HULL);
+        $result2 = $this->subject->canDamageSystem(SpacecraftSystemTypeEnum::HULL);
+
+        $this->assertTrue($result1);
+        $this->assertTrue($result2);
     }
 }

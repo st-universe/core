@@ -3,6 +3,7 @@
 namespace Stu\Module\Spacecraft\Lib\Destruction\Handler;
 
 use Override;
+use RuntimeException;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Pirate\Component\PirateWrathManagerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -12,12 +13,14 @@ use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestroyerInterface;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionCauseEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 class UpdatePirateWrath implements SpacecraftDestructionHandlerInterface
 {
     private PirateLoggerInterface $logger;
 
     public function __construct(
+        private UserRepositoryInterface $userRepository,
         private PirateWrathManagerInterface $pirateWrathManager,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
@@ -42,7 +45,11 @@ class UpdatePirateWrath implements SpacecraftDestructionHandlerInterface
             return;
         }
 
-        $destroyerUser = $destroyer->getUser();
+        $destroyerUser = $this->userRepository->find($destroyer->getUserId());
+        if ($destroyerUser === null) {
+            throw new RuntimeException('this should not happen');
+        }
+
         $userOfDestroyed = $destroyedSpacecraftWrapper->get()->getUser();
 
         if ($destroyerUser->getId() === UserEnum::USER_NPC_KAZON) {

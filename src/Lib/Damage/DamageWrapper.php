@@ -2,6 +2,7 @@
 
 namespace Stu\Lib\Damage;
 
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Pirate\Component\PirateWrathManager;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\ColonyInterface;
@@ -15,14 +16,19 @@ class DamageWrapper
     private int $modificator = 100;
     private ?int $pirateWrath = null;
 
+    /** @var null|array<SpacecraftSystemTypeEnum> */
+    private ?array $targetSystemTypes = null;
+
     public function __construct(private float $netDamage) {}
 
     private int $hull_damage_factor = 100;
 
 
-    public function setHullDamageFactor(int $value): void
+    public function setHullDamageFactor(int $value): DamageWrapper
     {
         $this->hull_damage_factor = $value;
+
+        return $this;
     }
 
 
@@ -31,9 +37,11 @@ class DamageWrapper
         return $this->hull_damage_factor;
     }
 
-    public function setCrit(bool $isCrit): void
+    public function setCrit(bool $isCrit): DamageWrapper
     {
         $this->isCrit = $isCrit;
+
+        return $this;
     }
 
     public function isCrit(): bool
@@ -54,9 +62,11 @@ class DamageWrapper
     private int $shield_damage_factor = 100;
 
 
-    public function setShieldDamageFactor(int $value): void
+    public function setShieldDamageFactor(int $value): DamageWrapper
     {
         $this->shield_damage_factor = $value;
+
+        return $this;
     }
 
 
@@ -125,6 +135,20 @@ class DamageWrapper
         }
 
         $this->pirateWrath = $pirateWrath->getWrath();
+    }
+
+    public function canDamageSystem(SpacecraftSystemTypeEnum $type): bool
+    {
+        return $this->targetSystemTypes === null
+            || in_array($type, $this->targetSystemTypes);
+    }
+
+    /** @param array<SpacecraftSystemTypeEnum> $targetSystemTypes */
+    public function setTargetSystemTypes(array $targetSystemTypes): DamageWrapper
+    {
+        $this->targetSystemTypes = $targetSystemTypes;
+
+        return $this;
     }
 
     public function getDamageRelative(ColonyInterface|SpacecraftInterface $target, DamageModeEnum $mode): float

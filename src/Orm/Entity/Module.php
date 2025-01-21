@@ -18,6 +18,7 @@ use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use Override;
+use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Orm\Repository\ModuleRepository;
@@ -102,7 +103,7 @@ class Module implements ModuleInterface
     /**
      * @var ArrayCollection<int, ModuleSpecialInterface>
      */
-    #[OneToMany(targetEntity: 'ModuleSpecial', mappedBy: 'module')]
+    #[OneToMany(targetEntity: 'ModuleSpecial', mappedBy: 'module', indexBy: 'special_id', fetch: 'EXTRA_LAZY')]
     #[OrderBy(['special_id' => 'ASC'])]
     private Collection $moduleSpecials;
 
@@ -128,9 +129,6 @@ class Module implements ModuleInterface
 
     #[OneToOne(targetEntity: 'Weapon', mappedBy: 'module')]
     private ?WeaponInterface $weapon = null;
-
-    /** @var null|array<int> */
-    private ?array $specialAbilities = null;
 
     public function __construct()
     {
@@ -360,21 +358,15 @@ class Module implements ModuleInterface
     }
 
     #[Override]
-    public function hasSpecial(int $special_id): bool
-    {
-        if ($this->specialAbilities === null) {
-            $this->specialAbilities = array_map(
-                fn(ModuleSpecialInterface $moduleSpecial): int => $moduleSpecial->getSpecialId()->value,
-                $this->getSpecials()->toArray()
-            );
-        }
-        return in_array($special_id, $this->specialAbilities);
-    }
-
-    #[Override]
     public function getSpecials(): Collection
     {
         return $this->moduleSpecials;
+    }
+
+    #[Override]
+    public function hasSpecial(ModuleSpecialAbilityEnum $ability): bool
+    {
+        return $this->moduleSpecials->containsKey($ability->value);
     }
 
     #[Override]

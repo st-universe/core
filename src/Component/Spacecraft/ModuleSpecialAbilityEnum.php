@@ -25,6 +25,7 @@ enum ModuleSpecialAbilityEnum: int
     case BUSSARD_COLLECTOR = 14;
     case AGGREGATION_SYSTEM = 15;
     case WARPDRIVE_BOOST = 16;
+    case ION_STORM_DAMAGE_REDUCTION = 17;
 
     public function getDescription(): string
     {
@@ -44,10 +45,11 @@ enum ModuleSpecialAbilityEnum: int
             self::BUSSARD_COLLECTOR => 'Bussard-Kollektor',
             self::AGGREGATION_SYSTEM => 'Aggregationssystem',
             self::WARPDRIVE_BOOST => 'Warpdrive Boost',
+            self::ION_STORM_DAMAGE_REDUCTION => 'Ionensturmresistenz'
         };
     }
 
-    public function getSystemType(): SpacecraftSystemTypeEnum
+    public function getSystemType(): ?SpacecraftSystemTypeEnum
     {
         return match ($this) {
             self::CLOAK => SpacecraftSystemTypeEnum::CLOAK,
@@ -64,7 +66,8 @@ enum ModuleSpecialAbilityEnum: int
             self::THOLIAN_WEB => SpacecraftSystemTypeEnum::THOLIAN_WEB,
             self::BUSSARD_COLLECTOR => SpacecraftSystemTypeEnum::BUSSARD_COLLECTOR,
             self::AGGREGATION_SYSTEM => SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM,
-            self::WARPDRIVE_BOOST => SpacecraftSystemTypeEnum::WARPDRIVE_BOOSTER
+            self::WARPDRIVE_BOOST => SpacecraftSystemTypeEnum::WARPDRIVE_BOOSTER,
+            default => null
         };
     }
 

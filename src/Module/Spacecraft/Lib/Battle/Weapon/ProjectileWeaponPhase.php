@@ -55,7 +55,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
             $attacker->lowerTorpedoCount(1);
             $attacker->reduceEps($this->getProjectileWeaponEnergyCosts());
 
-            $message = $this->messageFactory->createMessage($attacker->getUser()->getId(), $target->getUser()->getId());
+            $message = $this->messageFactory->createMessage($attacker->getUserId(), $target->getUser()->getId());
             $messages->add($message);
 
             $message->add("Die " . $attacker->getName() . " feuert einen " . $torpedoName . " auf die " . $target->getName());
@@ -71,7 +71,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
             $damage_wrapper->setShieldDamageFactor($torpedo->getShieldDamageFactor());
             $damage_wrapper->setHullDamageFactor($torpedo->getHullDamageFactor());
             $damage_wrapper->setIsTorpedoDamage(true);
-            $damage_wrapper->setPirateWrath($attacker->getUser(), $target);
+            $damage_wrapper->setPirateWrath($this->getUser($attacker->getUserId()), $target);
             $this->setTorpedoHullModificator($target, $torpedo, $damage_wrapper);
 
             $this->applyDamage->damage($damage_wrapper, $targetWrapper, $message);
@@ -151,7 +151,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
                         $target->getHost()->getName(),
                         $attacker->getName()
                     ),
-                    $attacker->getUser()->getId(),
+                    $attacker->getUserId(),
                     $target->getHost()
                 );
 

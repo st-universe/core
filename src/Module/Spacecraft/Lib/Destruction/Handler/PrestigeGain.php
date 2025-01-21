@@ -3,6 +3,7 @@
 namespace Stu\Module\Spacecraft\Lib\Destruction\Handler;
 
 use Override;
+use RuntimeException;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -10,10 +11,12 @@ use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestroyerInterface;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionCauseEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 class PrestigeGain implements SpacecraftDestructionHandlerInterface
 {
     public function __construct(
+        private UserRepositoryInterface $userRepository,
         private CreatePrestigeLogInterface $createPrestigeLog,
         private PrivateMessageSenderInterface $privateMessageSender
     ) {}
@@ -52,11 +55,16 @@ class PrestigeGain implements SpacecraftDestructionHandlerInterface
             $rump->getName()
         );
 
-        $this->createPrestigeLog->createLog($amount, $description, $destroyer->getUser(), time());
+        $destroyerUser = $this->userRepository->find($destroyer->getUserId());
+        if ($destroyerUser === null) {
+            throw new RuntimeException('this should not happen');
+        }
+
+        $this->createPrestigeLog->createLog($amount, $description, $destroyerUser, time());
 
         // system pm only for negative prestige
         if ($amount < 0) {
-            $this->sendSystemMessage($description, $destroyer->getUser()->getId());
+            $this->sendSystemMessage($description, $destroyerUser->getId());
         }
     }
 

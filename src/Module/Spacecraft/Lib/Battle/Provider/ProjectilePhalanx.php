@@ -8,7 +8,6 @@ use Override;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\TorpedoTypeInterface;
-use Stu\Orm\Entity\UserInterface;
 
 final class ProjectilePhalanx implements ProjectileAttackerInterface
 {
@@ -53,9 +52,9 @@ final class ProjectilePhalanx implements ProjectileAttackerInterface
     }
 
     #[Override]
-    public function getUser(): UserInterface
+    public function getUserId(): int
     {
-        return $this->colony->getUser();
+        return $this->colony->getUser()->getId();
     }
 
     #[Override]

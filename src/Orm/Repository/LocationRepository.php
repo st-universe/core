@@ -5,6 +5,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Override;
+use RuntimeException;
 use Stu\Component\Anomaly\Type\SubspaceEllipseHandler;
 use Stu\Component\Spacecraft\SpacecraftRumpEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
@@ -14,6 +15,7 @@ use Stu\Lib\Map\VisualPanel\PanelBoundaries;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\Location;
+use Stu\Orm\Entity\LocationInterface;
 
 /**
  * @extends EntityRepository<Location>
@@ -224,5 +226,29 @@ class LocationRepository extends EntityRepository implements LocationRepositoryI
                 'systemId' => SpacecraftSystemTypeEnum::CLOAK
             ])
             ->getResult();
+    }
+
+    #[Override]
+    public function getRandomLocation(): LocationInterface
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('id', 'id', 'integer');
+
+        $randomId =  (int) $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT l.id, RANDOM() * (CASE WHEN l.discr = \'map\' THEN 1 ELSE 50 END)
+                FROM stu_location l
+                ORDER BY 2
+                LIMIT 1',
+                $rsm
+            )
+            ->getSingleScalarResult();
+
+        $location = $this->find($randomId);
+        if ($location === null) {
+            throw new RuntimeException('this should not happen');
+        }
+
+        return $location;
     }
 }

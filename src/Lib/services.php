@@ -21,6 +21,7 @@ use Stu\Lib\Mail\MailFactory;
 use Stu\Lib\Mail\MailFactoryInterface;
 use Stu\Lib\Map\DistanceCalculation;
 use Stu\Lib\Map\DistanceCalculationInterface;
+use Stu\Lib\Map\VisualPanel\Layer\DataProvider\AnomalyDataProvider;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\BorderDataProvider;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\ColonyShieldDataProvider;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\MapDataProvider;
@@ -104,7 +105,8 @@ return [
             PanelLayerEnum::SYSTEM->value => autowire(MapDataProvider::class),
             PanelLayerEnum::MAP->value => autowire(MapDataProvider::class),
             PanelLayerEnum::COLONY_SHIELD->value => autowire(ColonyShieldDataProvider::class),
-            PanelLayerEnum::BORDER->value => autowire(BorderDataProvider::class)
+            PanelLayerEnum::BORDER->value => autowire(BorderDataProvider::class),
+            PanelLayerEnum::ANOMALIES->value => autowire(AnomalyDataProvider::class)
         ]
     ),
     InteractionMemberFactoryInterface::class => autowire(InteractionMemberFactory::class),

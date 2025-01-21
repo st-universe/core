@@ -13,19 +13,14 @@ use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Entity\TorpedoTypeInterface;
-use Stu\Orm\Entity\UserInterface;
 use Stu\StuTestCase;
 
 class ProjectilePhalanxTest extends StuTestCase
 {
-    /**
-     * @var MockInterface&ColonyInterface
-     */
+    /** @var MockInterface&ColonyInterface */
     private $colony;
 
-    /**
-     * @var MockInterface&StorageManagerInterface
-     */
+    /** @var MockInterface&StorageManagerInterface */
     private $storageManager;
 
     private ProjectilePhalanx $subject;
@@ -82,16 +77,14 @@ class ProjectilePhalanxTest extends StuTestCase
 
     public function testGetUser(): void
     {
-        $user = $this->mock(UserInterface::class);
-
-        $this->colony->shouldReceive('getUser')
+        $this->colony->shouldReceive('getUser->getId')
             ->withNoArgs()
             ->once()
-            ->andReturn($user);
+            ->andReturn(42);
 
-        $result = $this->subject->getUser();
+        $result = $this->subject->getUserId();
 
-        $this->assertSame($user, $result);
+        $this->assertEquals(42, $result);
     }
 
     public function testGetName(): void

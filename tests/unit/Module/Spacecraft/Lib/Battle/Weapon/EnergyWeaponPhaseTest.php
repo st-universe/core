@@ -24,11 +24,14 @@ use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\SpacecraftRumpInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Entity\WeaponInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\Orm\Repository\WeaponRepositoryInterface;
 use Stu\StuTestCase;
 
 class EnergyWeaponPhaseTest extends StuTestCase
 {
+    /** @var MockInterface&UserRepositoryInterface */
+    protected $userRepository;
     /** @var MockInterface&WeaponRepositoryInterface */
     protected $weaponRepository;
     /** @var MockInterface&EntryCreatorInterface */
@@ -49,6 +52,7 @@ class EnergyWeaponPhaseTest extends StuTestCase
     #[Override]
     public function setUp(): void
     {
+        $this->userRepository = $this->mock(UserRepositoryInterface::class);
         $this->weaponRepository = $this->mock(WeaponRepositoryInterface::class);
         $this->entryCreator = $this->mock(EntryCreatorInterface::class);
         $this->applyDamage = $this->mock(ApplyDamageInterface::class);
@@ -58,6 +62,7 @@ class EnergyWeaponPhaseTest extends StuTestCase
         $this->spacecraftDestruction = $this->mock(SpacecraftDestructionInterface::class);
 
         $this->subject = new EnergyWeaponPhase(
+            $this->userRepository,
             $this->entryCreator,
             $this->applyDamage,
             $this->buildingManager,
@@ -112,9 +117,9 @@ class EnergyWeaponPhaseTest extends StuTestCase
         $attacker->shouldReceive('reduceEps')
             ->with(1)
             ->once();
-        $attacker->shouldReceive('getUser')
+        $attacker->shouldReceive('getUserId')
             ->withNoArgs()
-            ->andReturn($user);
+            ->andReturn(888);
         $attacker->shouldReceive('getName')
             ->withNoArgs()
             ->andReturn("ATTACKER");
@@ -225,6 +230,11 @@ class EnergyWeaponPhaseTest extends StuTestCase
         $message->shouldReceive('add')
             ->with('Die ATTACKER feuert mit einem WEAPON auf die TARGET')
             ->once();
+
+        $this->userRepository->shouldReceive('find')
+            ->with(888)
+            ->once()
+            ->andReturn($user);
 
         $this->subject->fire($attacker, $targetPool, SpacecraftAttackCauseEnum::SHIP_FIGHT, $messages);
     }

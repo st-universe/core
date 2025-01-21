@@ -6,17 +6,18 @@ namespace Stu\Component\Anomaly\Type;
 
 enum AnomalyTypeEnum: int
 {
-    // anomaly types
+        // anomaly types
     case SUBSPACE_ELLIPSE = 1;
+    case ION_STORM = 2;
 
-    // special anomalies
+        // special anomalies
     case SPECIAL_ADVENT_DOOR = 1001;
 
     public function getTemplate(): string
     {
         return match ($this) {
-            self::SUBSPACE_ELLIPSE => 'html/anomaly/standardAnomaly.twig',
-            self::SPECIAL_ADVENT_DOOR => 'html/anomaly/adventDoor.twig'
+            self::SPECIAL_ADVENT_DOOR => 'html/anomaly/adventDoor.twig',
+            default => 'html/anomaly/standardAnomaly.twig'
         };
     }
 }

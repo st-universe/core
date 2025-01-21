@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250112193416 extends AbstractMigration
+final class Version20250121154150 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -43,8 +43,9 @@ final class Version20250112193416 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_9EBADCD910A0EA3F ON stu_alliances_relations (alliance_id)');
         $this->addSql('CREATE INDEX IDX_9EBADCD96804FB49 ON stu_alliances_relations (recipient)');
         $this->addSql('CREATE INDEX alliance_relation_idx ON stu_alliances_relations (alliance_id, recipient)');
-        $this->addSql('CREATE TABLE stu_anomaly (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, remaining_ticks INTEGER NOT NULL, anomaly_type_id INTEGER NOT NULL, location_id INTEGER NOT NULL, CONSTRAINT FK_A1426D1126894FC7 FOREIGN KEY (anomaly_type_id) REFERENCES stu_anomaly_type (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_A1426D1164D218E FOREIGN KEY (location_id) REFERENCES stu_location (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE stu_anomaly (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, remaining_ticks INTEGER NOT NULL, anomaly_type_id INTEGER NOT NULL, location_id INTEGER DEFAULT NULL, parent_id INTEGER DEFAULT NULL, data CLOB DEFAULT NULL, CONSTRAINT FK_A1426D1126894FC7 FOREIGN KEY (anomaly_type_id) REFERENCES stu_anomaly_type (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_A1426D1164D218E FOREIGN KEY (location_id) REFERENCES stu_location (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_A1426D11727ACA70 FOREIGN KEY (parent_id) REFERENCES stu_anomaly (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_A1426D1164D218E ON stu_anomaly (location_id)');
+        $this->addSql('CREATE INDEX IDX_A1426D11727ACA70 ON stu_anomaly (parent_id)');
         $this->addSql('CREATE INDEX anomaly_to_type_idx ON stu_anomaly (anomaly_type_id)');
         $this->addSql('CREATE INDEX anomaly_remaining_idx ON stu_anomaly (remaining_ticks)');
         $this->addSql('CREATE TABLE stu_anomaly_type (id INTEGER NOT NULL, name VARCHAR(200) NOT NULL, lifespan_in_ticks INTEGER NOT NULL, PRIMARY KEY(id))');

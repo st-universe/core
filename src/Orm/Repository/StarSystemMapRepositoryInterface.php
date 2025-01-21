@@ -18,9 +18,7 @@ use Stu\Orm\Entity\StarSystemMapInterface;
  */
 interface StarSystemMapRepositoryInterface extends ObjectRepository
 {
-    /**
-     * @return array<StarSystemMapInterface>
-     */
+    /** @return array<StarSystemMapInterface> */
     public function getBySystemOrdered(int $starSystemId): array;
 
     public function getByCoordinates(
@@ -29,11 +27,12 @@ interface StarSystemMapRepositoryInterface extends ObjectRepository
         int $sy
     ): ?StarSystemMapInterface;
 
-    /**
-     * @return array<StarSystemMapInterface>
-     */
+    /** @return array<string, StarSystemMapInterface> */
+    public function getByBoundaries(PanelBoundaries $boundaries): array;
+
+    /** @return array<string, StarSystemMapInterface> */
     public function getByCoordinateRange(
-        StarSystemInterface $starSystem,
+        int $starSystemId,
         int $startSx,
         int $endSx,
         int $startSy,
@@ -52,6 +51,9 @@ interface StarSystemMapRepositoryInterface extends ObjectRepository
 
     /** @return array<CellDataInterface> */
     public function getBorderData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
+
+    /** @return array<CellDataInterface> */
+    public function getAnomalyData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
 
     /** @return array<CellDataInterface> */
     public function getIgnoringSubspaceLayerData(PanelBoundaries $boundaries, int $ignoreId, ResultSetMapping $rsm): array;
