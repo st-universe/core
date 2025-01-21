@@ -214,7 +214,7 @@ final class IonStormHandler implements AnomalyHandlerInterface
         $system = $spacecraft->getSystems()[$systemType->value] ?? null;
         if ($system !== null) {
             $this->spacecraftSystemManager->deactivate($wrapper, $systemType, true);
-            $system->setCooldown($this->stuTime->time() + $this->stuRandom->rand(0, 2 * self::DRIVE_DEACTIVATION_MEAN_SECONDS, true, 10, 2));
+            $system->setCooldown($this->stuTime->time() + $this->stuRandom->rand(0, 2 * self::DRIVE_DEACTIVATION_MEAN_SECONDS, true, TimeConstants::TEN_MINUTES_IN_SECONDS, 2));
 
             $informations->addInformationf('Der %s ist ausgefallen und kann vorerst nicht mehr aktiviert werden', $systemType->getDescription());
         }
