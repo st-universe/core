@@ -477,6 +477,12 @@ div.lssobj {
   top: -50%;
 }
 
+.shipImgOverlayText {
+  position: relative;
+  text-align: center;
+  color: white;
+}
+
 .centered {
   position: absolute;
   top: 50%;
@@ -487,13 +493,13 @@ div.lssobj {
 
 .indexedGraphics {
   position: absolute;
-  top: 0;
+  margin-top: -20px;
   left: 0;
 }
 
 .indexedGraphicsShips {
   position: absolute;
-  top: 100%;
+  margin-top: -5px;
 }
 
 .lssColoShield {
