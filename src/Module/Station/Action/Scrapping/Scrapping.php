@@ -63,7 +63,13 @@ final class Scrapping implements ActionControllerInterface
         }
 
         if ($station->getRump()->getCategoryId() === SpacecraftRumpEnum::SHIP_CATEGORY_CONSTRUCTION) {
+
             $game->setView(ModuleViewEnum::STATION);
+
+            $progress = $station->getConstructionProgress();
+            if ($progress !== null) {
+                $this->constructionProgressRepository->delete($progress);
+            }
             $this->spacecraftRemover->remove($station);
             $game->addInformation(_('Konstrukt wurde entfernt'));
             return;
