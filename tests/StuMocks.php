@@ -9,6 +9,7 @@ use Stu\Config\Init;
 use Stu\Config\StuContainer;
 use Stu\Lib\Component\ComponentEnumInterface;
 use Stu\Lib\Component\ComponentLoaderInterface;
+use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreation;
 
 class StuMocks
 {
@@ -44,6 +45,7 @@ class StuMocks
     public function reset(): void
     {
         request::setMockVars(null);
+        PanelLayerCreation::$skippedLayers = [];
         $this->getStuContainer()->clearAdditionalServices();
         $this->getStuContainer()
             ->get(ComponentLoaderInterface::class)

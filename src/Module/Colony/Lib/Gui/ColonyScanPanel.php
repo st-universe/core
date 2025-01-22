@@ -49,6 +49,7 @@ class ColonyScanPanel extends AbstractVisualPanel
         $panelLayerCreation = $this->panelLayerCreation
             ->addShipCountLayer($showCloaked, null, SpacecraftCountLayerTypeEnum::ALL, 0)
             ->addSystemLayer()
+            ->addAnomalyLayer()
             ->addColonyShieldLayer();
 
         if ($this->colonyFunctionManager->hasFunction($this->colony, BuildingFunctionEnum::BUILDING_FUNCTION_SUBSPACE_TELESCOPE)) {
