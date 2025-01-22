@@ -3,6 +3,7 @@
 namespace Stu\Lib\Interaction\Member;
 
 use Override;
+use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Lib\Interaction\InteractionCheckType;
 use Stu\Module\Ship\Lib\TholianWebUtilInterface;
 use Stu\Orm\Entity\ColonyInterface;
@@ -37,6 +38,13 @@ class ColonyMember implements InteractionMemberInterface
         bool $isFriend,
         callable $shouldCheck
     ): ?InteractionCheckType {
+
+        if (
+            $shouldCheck(InteractionCheckType::EXPECT_TARGET_DOCKED_OR_NO_ION_STORM)
+            && $this->colony->getLocation()->hasAnomaly(AnomalyTypeEnum::ION_STORM)
+        ) {
+            return InteractionCheckType::EXPECT_TARGET_DOCKED_OR_NO_ION_STORM;
+        }
 
         if (
             $shouldCheck(InteractionCheckType::EXPECT_TARGET_ALSO_IN_FINISHED_WEB)

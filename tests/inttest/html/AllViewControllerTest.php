@@ -8,6 +8,8 @@ use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use ReflectionClass;
 use Stu\Config\Init;
+use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreation;
+use Stu\Lib\Map\VisualPanel\Layer\PanelLayerEnum;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Game\Component\GameComponentEnum;
 use Stu\StuMocks;
@@ -96,6 +98,8 @@ class AllViewControllerTest extends TwigTestCase
     #[DataProvider('getAllViewControllerDataProvider')]
     public function testHandle(string $key): void
     {
+        PanelLayerCreation::$skippedLayers[] = PanelLayerEnum::ANOMALIES->value;
+
         $this->snapshotKey = $key;
 
         $this->renderSnapshot(

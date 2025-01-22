@@ -23,6 +23,7 @@ enum InteractionCheckType
     case EXPECT_TARGET_UNWARPED;
     case EXPECT_TARGET_SAME_USER;
     case EXPECT_TARGET_ALSO_IN_FINISHED_WEB;
+    case EXPECT_TARGET_DOCKED_OR_NO_ION_STORM;
 
     public function getReason(string $placeholder = ''): string
     {
@@ -37,9 +38,10 @@ enum InteractionCheckType
             self::EXPECT_TARGET_NOT_NPC => 'Aktion nicht möglich, der Spieler ist NPC!',
             self::EXPECT_TARGET_UNSHIELDED => 'Das Ziel hat die Schilde aktiviert',
             self::EXPECT_TARGET_UNWARPED => 'Das Ziel hat den Warpantrieb aktiviert',
-            self::EXPECT_TARGET_SAME_USER => throw new SanityCheckException('Tried to interact with entity of other user'),
             self::EXPECT_TARGET_ALSO_IN_FINISHED_WEB => 'Das Ziel ist nicht mit im Energienetz gefangen',
+            self::EXPECT_TARGET_DOCKED_OR_NO_ION_STORM => 'Beamen nicht möglich während eines Ionensturms',
             self::EXPECT_SOURCE_TACHYON => throw new SanityCheckException('Tried to interact with cloaked entity without active tachyon'),
+            self::EXPECT_TARGET_SAME_USER => throw new SanityCheckException('Tried to interact with entity of other user'),
             self::EXPECT_TARGET_UNCLOAKED => throw new SanityCheckException('Tried to interact with cloaked entity')
         };
     }
