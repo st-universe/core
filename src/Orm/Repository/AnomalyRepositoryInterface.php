@@ -4,10 +4,10 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Anomaly;
 use Stu\Orm\Entity\AnomalyInterface;
 use Stu\Orm\Entity\LocationInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
 
 /**
  * @extends ObjectRepository<Anomaly>
@@ -30,5 +30,5 @@ interface AnomalyRepositoryInterface extends ObjectRepository
 
     public function getActiveCountByTypeWithoutParent(AnomalyTypeEnum $type): int;
 
-    public function getClosestAnomalyDistance(SpacecraftInterface $spacecraft): ?int;
+    public function getClosestAnomalyDistance(SpacecraftWrapperInterface $wrapper): ?int;
 }

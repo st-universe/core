@@ -43,7 +43,7 @@ class SearchFriendBehaviour implements PirateBehaviourInterface
         $leadShip = $leadWrapper->get();
 
         $filteredFriends = array_filter(
-            $this->shipRepository->getPirateFriends($leadShip),
+            $this->shipRepository->getPirateFriends($leadWrapper),
             fn(ShipInterface $friend): bool =>
             !$friend->isDestroyed() && $friend->isFleetLeader()
         );

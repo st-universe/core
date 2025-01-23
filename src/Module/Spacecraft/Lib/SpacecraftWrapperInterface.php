@@ -5,6 +5,7 @@ namespace Stu\Module\Spacecraft\Lib;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Component\Spacecraft\System\Data\HullSystemData;
+use Stu\Component\Spacecraft\System\Data\LssSystemData;
 use Stu\Component\Spacecraft\System\Data\ProjectileLauncherSystemData;
 use Stu\Component\Spacecraft\System\Data\ShieldSystemData;
 use Stu\Component\Spacecraft\System\Data\WarpDriveSystemData;
@@ -34,6 +35,10 @@ interface SpacecraftWrapperInterface
     public function lowerEpsUsage(int $value): void;
 
     public function setAlertState(SpacecraftAlertStateEnum $alertState): ?string;
+
+    public function getSensorRange(): int;
+
+    public function getShieldRegenerationRate(): int;
 
     /**
      * highest damage first, then prio
@@ -78,6 +83,8 @@ interface SpacecraftWrapperInterface
     public function getShieldSystemData(): ?ShieldSystemData;
 
     public function getEpsSystemData(): ?EpsSystemData;
+
+    public function getLssSystemData(): ?LssSystemData;
 
     public function getWarpDriveSystemData(): ?WarpDriveSystemData;
 

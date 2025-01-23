@@ -104,12 +104,12 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
                 WITH s.plan_id = bp.id
                 WHERE ss.system_type = :shieldType
                 AND ss.mode < :modeOn
-                AND s.schilde<s.max_schilde
-                AND s.shield_regeneration_timer <= :regenerationThreshold
+                AND s.schilde < s.max_schilde
+                AND CAST(ss.data::jsonb->>\'shieldRegenerationTimer\' AS INTEGER) <= :regenerationThreshold
                 AND (SELECT count(sc.id) FROM %s sc WHERE s.id = sc.spacecraft_id) >= bp.crew
                 AND NOT EXISTS (SELECT a FROM %s a
                                 WHERE a.location_id = s.location_id
-                                AND a.anomaly_type_id = :anomalyType
+                                AND a.anomaly_type_id in (:anomalyTypes)
                                 AND a.remaining_ticks > 0)',
                 Spacecraft::class,
                 SpacecraftSystem::class,
@@ -121,7 +121,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
             'shieldType' => SpacecraftSystemTypeEnum::SHIELDS->value,
             'modeOn' => SpacecraftSystemModeEnum::MODE_ON->value,
             'regenerationThreshold' => $regenerationThreshold,
-            'anomalyType' => AnomalyTypeEnum::SUBSPACE_ELLIPSE
+            'anomalyTypes' => [AnomalyTypeEnum::SUBSPACE_ELLIPSE, AnomalyTypeEnum::ION_STORM]
         ])->getResult();
     }
 

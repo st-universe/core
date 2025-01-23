@@ -20,7 +20,7 @@ final class VersionTestSpacecraftSystem extends AbstractMigration
                 VALUES (14, 42, 16, NULL, 100, 1, NULL, NULL),
                        (15, 42, 14, NULL, 100, 1, NULL, NULL),
                        (16, 42, 13, NULL, 100, 3, NULL, NULL),
-                       (17, 42, 11, 10202, 100, 1, NULL, NULL),
+                       (17, 42, 11, 10202, 100, 1, NULL, \'{"shieldRegenerationTimer":0}\'),
                        (19, 42, 2, 10403, 100, 1, NULL, NULL),
                        (20, 42, 3, 10502, 100, 1, NULL, \'{"output":54,"load":810}\'),
                        (21, 42, 4, 11902, 100, 1, NULL, NULL),
@@ -28,7 +28,7 @@ final class VersionTestSpacecraftSystem extends AbstractMigration
                        (24, 42, 9, NULL, 100, 2, NULL, NULL),
                        (25, 42, 10, 10912, 100, 1, NULL, \'{"wd":57,"maxwd":58,"split":100,"autoCarryOver":0}\'),
                        (18, 42, 1, 10302, 100, 1, NULL, \'{"eps":107,"maxEps":108,"maxBattery":36,"battery":36,"batteryCooldown":0,"reloadBattery":0}\'),
-                       (23, 42, 8, 10602, 100, 2, NULL, NULL),
+                       (23, 42, 8, 10602, 100, 2, NULL, \'{"sensorRange":2}\'),
                        (10211, 1021, 28, NULL, 100, 1, NULL, NULL),
                        (10212, 1021, 31, NULL, 100, 1, NULL, NULL),
                        (10213, 1022, 32, NULL, 100, 1, NULL, NULL);

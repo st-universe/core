@@ -126,7 +126,7 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
             $this->createUserLayerIfNecessary($user, $spacecraft);
 
             $game->setTemplateVar('VISUAL_NAV_PANEL', $this->shipUiFactory->createVisualNavPanel(
-                $spacecraft,
+                $wrapper,
                 $game->getUser(),
                 $this->loggerUtilFactory->getLoggerUtil(),
                 $tachyonFresh
@@ -142,7 +142,7 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
         $game->setTemplateVar('CAN_COLONIZE', $canColonize);
         $game->setTemplateVar('OWNS_CURRENT_COLONY', $ownsCurrentColony);
         $game->setTemplateVar('CURRENT_COLONY', $colony);
-        $game->setTemplateVar('CLOSEST_ANOMALY_DISTANCE', $this->anomalyRepository->getClosestAnomalyDistance($spacecraft));
+        $game->setTemplateVar('CLOSEST_ANOMALY_DISTANCE', $this->anomalyRepository->getClosestAnomalyDistance($wrapper));
 
         $userLayers = $user->getUserLayers();
         if ($spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::TRANSWARP_COIL)) {

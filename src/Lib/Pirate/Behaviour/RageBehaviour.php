@@ -42,7 +42,7 @@ class RageBehaviour implements PirateBehaviourInterface
         $leadWrapper = $fleet->getLeadWrapper();
         $leadShip = $leadWrapper->get();
 
-        $targets = $this->shipRepository->getPirateTargets($leadShip);
+        $targets = $this->shipRepository->getPirateTargets($leadWrapper);
 
         $this->logger->log(sprintf('    %d targets in reach', count($targets)));
 

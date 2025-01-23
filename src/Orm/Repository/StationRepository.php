@@ -12,6 +12,7 @@ use Stu\Component\Spacecraft\SpacecraftRumpEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Station\Lib\TStationItem;
 use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\Location;
@@ -20,7 +21,6 @@ use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\CrewAssignment;
 use Stu\Orm\Entity\LocationInterface;
 use Stu\Orm\Entity\PirateWrath;
-use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\SpacecraftRumpInterface;
 use Stu\Orm\Entity\Spacecraft;
@@ -33,7 +33,6 @@ use Stu\Orm\Entity\StationInterface;
 use Stu\Orm\Entity\TradePost;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Proxy\__CG__\Stu\Orm\Entity\ShipRump;
 
 /**
  * @extends EntityRepository<Station>
@@ -284,15 +283,15 @@ final class StationRepository extends EntityRepository implements StationReposit
     }
 
     #[Override]
-    public function getPiratePhalanxTargets(ShipInterface $pirateShip): array
+    public function getPiratePhalanxTargets(SpacecraftWrapperInterface $wrapper): array
     {
-        $layer = $pirateShip->getLayer();
+        $layer = $wrapper->get()->getLayer();
         if ($layer === null) {
             return [];
         }
 
-        $location = $pirateShip->getLocation();
-        $range = $pirateShip->getSensorRange() * 2;
+        $location = $wrapper->get()->getLocation();
+        $range = $wrapper->getSensorRange() * 2;
 
         return $this->getEntityManager()->createQuery(
             sprintf(

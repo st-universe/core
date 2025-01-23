@@ -603,13 +603,6 @@ abstract class Spacecraft implements SpacecraftInterface
             * $this->getSpacecraftSystem(SpacecraftSystemTypeEnum::LSS)->getStatus() / 100));
     }
 
-    #[Override]
-    public function setSensorRange(int $sensorRange): SpacecraftInterface
-    {
-        $this->sensor_range = $sensorRange;
-        return $this;
-    }
-
     /**
      * proportional to tractor beam system status
      */
@@ -628,13 +621,6 @@ abstract class Spacecraft implements SpacecraftInterface
     public function getShieldRegenerationTimer(): int
     {
         return $this->shield_regeneration_timer;
-    }
-
-    #[Override]
-    public function setShieldRegenerationTimer(int $shieldRegenerationTimer): SpacecraftInterface
-    {
-        $this->shield_regeneration_timer = $shieldRegenerationTimer;
-        return $this;
     }
 
     #[Override]
@@ -1112,17 +1098,6 @@ abstract class Spacecraft implements SpacecraftInterface
         }
 
         return $icon;
-    }
-
-    private function getShieldRegenerationPercentage(): int
-    {
-        return $this->isSystemHealthy(SpacecraftSystemTypeEnum::SHIELDS) ? 10 : 0;
-    }
-
-    #[Override]
-    public function getShieldRegenerationRate(): int
-    {
-        return (int) ceil(($this->getMaxShield() / 100) * $this->getShieldRegenerationPercentage());
     }
 
     #[Override]

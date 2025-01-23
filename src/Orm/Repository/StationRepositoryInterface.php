@@ -3,10 +3,10 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\Lib\TSpacecraftItemInterface;
 use Stu\Orm\Entity\LocationInterface;
 use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\SpacecraftRumpInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\Station;
@@ -61,5 +61,5 @@ interface StationRepositoryInterface extends ObjectRepository
     public function getByUserAndRump(UserInterface $user, SpacecraftRumpInterface $rump): array;
 
     /** @return array<StationInterface> */
-    public function getPiratePhalanxTargets(ShipInterface $pirateShip): array;
+    public function getPiratePhalanxTargets(SpacecraftWrapperInterface $wrapper): array;
 }

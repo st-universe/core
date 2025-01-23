@@ -231,8 +231,7 @@ canColonize, closestAnomalyDistance) %}
             {% endfor %}
             {% elseif SPACECRAFT.getLss and closestAnomalyDistance %}
             <br />
-            <span
-                style="border: 2px solid {{ gradientColor(closestAnomalyDistance, SPACECRAFT.getSensorRange * 2, 1) }}"
+            <span style="border: 2px solid {{ gradientColor(closestAnomalyDistance, wrapper.getSensorRange * 2, 1) }}"
                 title="Es wurde eine Anomalie in der Nähe detektiert">Anomalie in der Nähe</span>
             {% endif %}
         </td>

@@ -7,11 +7,11 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Component\Database\DatabaseCategoryTypeEnum;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Map;
-use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystem;
 use Stu\Orm\Entity\StarSystemInterface;
 
@@ -146,15 +146,15 @@ final class StarSystemRepository extends EntityRepository implements StarSystemR
     }
 
     #[Override]
-    public function getPirateHides(ShipInterface $ship): array
+    public function getPirateHides(SpacecraftWrapperInterface $wrapper): array
     {
-        $layer = $ship->getLayer();
+        $layer = $wrapper->get()->getLayer();
         if ($layer === null) {
             return [];
         }
 
-        $location = $ship->getLocation();
-        $range = $ship->getSensorRange() * 4;
+        $location = $wrapper->get()->getLocation();
+        $range = $wrapper->getSensorRange() * 4;
 
         return $this->getEntityManager()->createQuery(
             sprintf(

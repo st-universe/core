@@ -14,10 +14,10 @@ use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreationInterface;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
 use Stu\Lib\Map\VisualPanel\VisualNavPanelEntry;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\LocationInterface;
 use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\UserMapRepositoryInterface;
@@ -31,7 +31,7 @@ class VisualNavPanel extends AbstractVisualPanel
     public function __construct(
         PanelLayerCreationInterface $panelLayerCreation,
         private UserMapRepositoryInterface $userMapRepository,
-        private SpacecraftInterface $currentSpacecraft,
+        private SpacecraftWrapperInterface $wrapper,
         private UserInterface $user,
         LoggerUtilInterface $loggerUtil,
         private bool $tachyonFresh
@@ -42,15 +42,15 @@ class VisualNavPanel extends AbstractVisualPanel
     #[Override]
     protected function createBoundaries(): PanelBoundaries
     {
-        return PanelBoundaries::fromLocation($this->getPanelCenter(), $this->currentSpacecraft->getSensorRange());
+        return PanelBoundaries::fromLocation($this->getPanelCenter(), $this->wrapper->getSensorRange());
     }
 
     #[Override]
     protected function loadLayers(): void
     {
         $panelLayerCreation = $this->panelLayerCreation
-            ->addShipCountLayer($this->tachyonFresh, $this->currentSpacecraft, SpacecraftCountLayerTypeEnum::ALL, 0)
-            ->addBorderLayer($this->currentSpacecraft, $this->isOnShipLevel())
+            ->addShipCountLayer($this->tachyonFresh, $this->wrapper->get(), SpacecraftCountLayerTypeEnum::ALL, 0)
+            ->addBorderLayer($this->wrapper->get(), $this->isOnShipLevel())
             ->addAnomalyLayer();
 
         $map = $this->getPanelCenter();
@@ -68,7 +68,7 @@ class VisualNavPanel extends AbstractVisualPanel
                 ->addColonyShieldLayer();
         }
 
-        if ($this->currentSpacecraft->getSubspaceState()) {
+        if ($this->wrapper->get()->getSubspaceState()) {
             $panelLayerCreation->addSubspaceLayer($this->user->getId(), SubspaceLayerTypeEnum::IGNORE_USER);
         }
 
@@ -83,20 +83,20 @@ class VisualNavPanel extends AbstractVisualPanel
             $y,
             $this->isOnShipLevel(),
             $this->layers,
-            $this->currentSpacecraft
+            $this->wrapper->get()
         );
     }
 
     #[Override]
     protected function getPanelViewportPercentage(): int
     {
-        return $this->currentSpacecraft->isStation() ? 50 : 33;
+        return $this->wrapper->get()->isStation() ? 50 : 33;
     }
 
     private function isOnShipLevel(): bool
     {
         if ($this->isOnShipLevel === null) {
-            $this->isOnShipLevel = $this->currentSpacecraft->getLocation() === $this->getPanelCenter();
+            $this->isOnShipLevel = $this->wrapper->get()->getLocation() === $this->getPanelCenter();
         }
 
         return $this->isOnShipLevel;
@@ -113,14 +113,14 @@ class VisualNavPanel extends AbstractVisualPanel
 
     private function determinePanelCenter(): LocationInterface
     {
-        $location = $this->currentSpacecraft->getLocation();
+        $location = $this->wrapper->get()->getLocation();
         if ($location instanceof MapInterface) {
             return $location;
         }
 
         if (
-            $this->currentSpacecraft->getRump()->getRoleId() === SpacecraftRumpEnum::SHIP_ROLE_SENSOR
-            || $this->currentSpacecraft->getRump()->getRoleId() === SpacecraftRumpEnum::SHIP_ROLE_BASE
+            $this->wrapper->get()->getRump()->getRoleId() === SpacecraftRumpEnum::SHIP_ROLE_SENSOR
+            || $this->wrapper->get()->getRump()->getRoleId() === SpacecraftRumpEnum::SHIP_ROLE_BASE
         ) {
             $parentMapLocation = $this->getParentMapLocation($location);
 
@@ -141,14 +141,14 @@ class VisualNavPanel extends AbstractVisualPanel
 
     private function createUserMapEntries(LayerInterface $layer): void
     {
-        $map = $this->currentSpacecraft->getMap();
+        $map = $this->wrapper->get()->getMap();
         if ($map === null) {
             return;
         }
 
         $cx = $map->getX();
         $cy = $map->getY();
-        $range = $this->currentSpacecraft->getSensorRange();
+        $range = $this->wrapper->getSensorRange();
 
         if ($this->isUserMapActive($layer->getId())) {
             $this->userMapRepository->insertMapFieldsForUser(
