@@ -36,7 +36,7 @@ class HideBehaviour implements PirateBehaviourInterface
         $leadWrapper = $fleet->getLeadWrapper();
         $leadShip = $leadWrapper->get();
 
-        $hideSystems = $this->starSystemRepository->getPirateHides($leadShip);
+        $hideSystems = $this->starSystemRepository->getPirateHides($leadWrapper);
         if ($hideSystems === []) {
             $this->logger->log('    no hide system in reach');
             return PirateBehaviourEnum::RAGE;

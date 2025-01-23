@@ -84,10 +84,10 @@ final class ShowSensorScan implements ViewControllerInterface
         if ($sysid === 0) {
 
             if (
-                $cx < $stationCx - $station->getSensorRange()
-                || $cx > $stationCx + $station->getSensorRange()
-                || $cy < $stationCy - $station->getSensorRange()
-                || $cy > $stationCy + $station->getSensorRange()
+                $cx < $stationCx - $wrapper->getSensorRange()
+                || $cx > $stationCx + $wrapper->getSensorRange()
+                || $cy < $stationCy - $wrapper->getSensorRange()
+                || $cy > $stationCy + $wrapper->getSensorRange()
             ) {
                 return;
             }
@@ -102,10 +102,10 @@ final class ShowSensorScan implements ViewControllerInterface
             $system = $mapField->getSystem();
 
             if (
-                $system->getCx() < $stationCx - $station->getSensorRange()
-                || $system->getCx() > $stationCx + $station->getSensorRange()
-                || $system->getCy() < $stationCy - $station->getSensorRange()
-                || $system->getCy() > $stationCy + $station->getSensorRange()
+                $system->getCx() < $stationCx - $wrapper->getSensorRange()
+                || $system->getCx() > $stationCx + $wrapper->getSensorRange()
+                || $system->getCy() < $stationCy - $wrapper->getSensorRange()
+                || $system->getCy() > $stationCy + $wrapper->getSensorRange()
             ) {
                 return;
             }

@@ -2,6 +2,7 @@
 {% set hull = WRAPPER.getHullSystemData %}
 {% set shields = WRAPPER.getShieldSystemData %}
 {% set eps = WRAPPER.getEpsSystemData %}
+{% set lss = WRAPPER.getLssSystemData %}
 {% set reactor = WRAPPER.getReactorWrapper %}
 {% set launcher = WRAPPER.getProjectileLauncherSystemData %}
 <br />
@@ -135,11 +136,13 @@
             <br />
             <span>Trefferchance (eff.): {{ SHIP.getHitChance }}%</span><br />
             <span>Ausweichchance (eff.): {{ SHIP.getEvadeChance }}%</span><br />
-            <span>Schildregeneration: {{ SHIP.getShieldRegenerationRate }}</span><br />
+            <span>Schildregeneration: {{ WRAPPER.getShieldRegenerationRate }}</span><br />
             {% if reactor %}
             <span>Reaktorleistung: {{ reactor.get.getTheoreticalReactorOutput }}</span><br />
             {% endif %}
-            <span>Sensorreichtweite: {{ SHIP.getSensorRange }}</span><br />
+            {% if lss %}
+            <span>Sensorreichweite: {{ lss.getSensorRange }}</span><br />
+            {% endif %}
             {% if SHIP.canMove %}
             <span>Flugkosten: {{ SHIP.getRump.getFlightEcost }}</span><br />
             {% endif %}

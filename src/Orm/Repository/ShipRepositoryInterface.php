@@ -4,6 +4,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Module\Ship\Lib\TFleetShipItemInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\LocationInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\Ship;
@@ -80,12 +81,12 @@ interface ShipRepositoryInterface extends ObjectRepository
     /**
      * @return array<ShipInterface>
      */
-    public function getPirateTargets(ShipInterface $ship): array;
+    public function getPirateTargets(SpacecraftWrapperInterface $wrapper): array;
 
     /**
      * @return array<ShipInterface>
      */
-    public function getPirateFriends(ShipInterface $ship): array;
+    public function getPirateFriends(SpacecraftWrapperInterface $wrapper): array;
 
     /**
      * @return array<ShipInterface>

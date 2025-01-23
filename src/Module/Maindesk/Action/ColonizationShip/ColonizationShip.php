@@ -51,9 +51,10 @@ final class ColonizationShip implements ActionControllerInterface
             ->setLocation($startMap)
             ->finishConfiguration();
 
-        $ship = $wrapper->get();
-
-        $ship->setSensorRange(5);
+        $lssSystemData = $wrapper->getLssSystemData();
+        if ($lssSystemData !== null) {
+            $lssSystemData->setSensorRange(5)->update();
+        }
 
         $reactor = $wrapper->getReactorWrapper();
         if ($reactor !== null) {

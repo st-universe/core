@@ -82,7 +82,7 @@ class RageBehaviourTest extends StuTestCase
             ->andReturn($ship);
 
         $this->shipRepository->shouldReceive('getPirateTargets')
-            ->with($ship)
+            ->with($wrapper)
             ->once()
             ->andReturn([]);
 
@@ -105,7 +105,7 @@ class RageBehaviourTest extends StuTestCase
             ->andReturn($ship);
 
         $this->shipRepository->shouldReceive('getPirateTargets')
-            ->with($ship)
+            ->with($wrapper)
             ->once()
             ->andReturn([$target]);
 
@@ -135,7 +135,7 @@ class RageBehaviourTest extends StuTestCase
             ->andReturn($ship);
 
         $this->shipRepository->shouldReceive('getPirateTargets')
-            ->with($ship)
+            ->with($wrapper)
             ->once()
             ->andReturn([$target]);
 
@@ -174,7 +174,7 @@ class RageBehaviourTest extends StuTestCase
             ->andReturn($ship);
 
         $this->shipRepository->shouldReceive('getPirateTargets')
-            ->with($ship)
+            ->with($wrapper)
             ->once()
             ->andReturn([$target]);
 
@@ -219,7 +219,7 @@ class RageBehaviourTest extends StuTestCase
             ->andReturn($ship);
 
         $this->shipRepository->shouldReceive('getPirateTargets')
-            ->with($ship)
+            ->with($wrapper)
             ->once()
             ->andReturn([$target]);
 
@@ -270,7 +270,7 @@ class RageBehaviourTest extends StuTestCase
             ->andReturn($ship);
 
         $this->shipRepository->shouldReceive('getPirateTargets')
-            ->with($ship)
+            ->with($wrapper)
             ->once()
             ->andReturn([$target]);
 
@@ -334,7 +334,7 @@ class RageBehaviourTest extends StuTestCase
             ->andReturn($ship);
 
         $this->shipRepository->shouldReceive('getPirateTargets')
-            ->with($ship)
+            ->with($wrapper)
             ->once()
             ->andReturn([$target]);
 
@@ -430,7 +430,7 @@ class RageBehaviourTest extends StuTestCase
             ->andReturn($ship);
 
         $this->shipRepository->shouldReceive('getPirateTargets')
-            ->with($ship)
+            ->with($wrapper)
             ->once()
             ->andReturn([$target, $target2, $target3_1, $target4]);
 

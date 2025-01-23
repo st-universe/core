@@ -8,12 +8,12 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
 use Override;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Anomaly;
 use Stu\Orm\Entity\AnomalyInterface;
 use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\LocationInterface;
 use Stu\Orm\Entity\Map;
-use Stu\Orm\Entity\SpacecraftInterface;
 
 /**
  * @extends EntityRepository<Anomaly>
@@ -93,14 +93,14 @@ final class AnomalyRepository extends EntityRepository implements AnomalyReposit
     }
 
     #[Override]
-    public function getClosestAnomalyDistance(SpacecraftInterface $spacecraft): ?int
+    public function getClosestAnomalyDistance(SpacecraftWrapperInterface $wrapper): ?int
     {
-        $map = $spacecraft->getMap();
+        $map = $wrapper->get()->getMap();
         if ($map === null) {
             return null;
         }
 
-        $range = $spacecraft->getSensorRange() * 2;
+        $range = $wrapper->getSensorRange() * 2;
 
         try {
             $result = (int)$this->getEntityManager()->createQuery(
