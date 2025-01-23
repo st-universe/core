@@ -19,15 +19,13 @@ final class RateKnPost implements ActionControllerInterface
 
     private const int PRESTIGE_PER_POSITIVE_VOTE = 5;
 
-    public function __construct(private KnPostRepositoryInterface $knPostRepository, private RateKnPostRequestInterface $knPostRequest, private CreatePrestigeLogInterface $createPrestigeLog)
-    {
-    }
+    public function __construct(private KnPostRepositoryInterface $knPostRepository, private RateKnPostRequestInterface $knPostRequest, private CreatePrestigeLogInterface $createPrestigeLog) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
         /** @var KnPostInterface $post */
-        $post = $this->knPostRepository->find($this->knPostRequest->getPostId());
+        $post = $this->knPostRepository->find($this->knPostRequest->getKnId());
 
         if ($post === null) {
             return;

@@ -10,30 +10,32 @@ use Stu\Component\Alliance\AllianceEnum;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class AllianceDeletionHandler implements PlayerDeletionHandlerInterface
 {
-    public function __construct(private AllianceJobRepositoryInterface $allianceJobRepository, private AllianceActionManagerInterface $allianceActionManager) {}
+    public function __construct(private AllianceJobRepositoryInterface $allianceJobRepository, private AllianceActionManagerInterface $allianceActionManager, private UserRepositoryInterface $userRepository) {}
 
     #[Override]
     public function delete(UserInterface $user): void
     {
         foreach ($this->allianceJobRepository->getByUser($user->getId()) as $job) {
             if ($job->getType() === AllianceEnum::ALLIANCE_JOBS_FOUNDER) {
+
                 $alliance = $job->getAlliance();
-
                 $successor = $alliance->getSuccessor();
-
                 $diplomatic = $alliance->getDiplomatic();
 
                 $members = $alliance->getMembers();
                 $members->removeElement($user);
+                $user->setAlliance(null);
+                $this->userRepository->save($user);
 
                 $lastonlinemember = $this->getLastOnlineMember($members);
 
                 if ($successor === null && $lastonlinemember === null) {
                     $this->allianceJobRepository->delete($job);
-                    $this->allianceActionManager->delete($alliance->getId(), true);
+                    $this->allianceActionManager->delete($alliance);
                 }
                 if ($successor !== null) {
                     $successorUserId = $successor->getUserId();

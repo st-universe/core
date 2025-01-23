@@ -11,14 +11,14 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Ship\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
-use Stu\Module\Ship\Lib\Battle\FightLibInterface;
-use Stu\Module\Ship\Lib\Battle\Party\BattlePartyFactoryInterface;
-use Stu\Module\Ship\Lib\Battle\ShipAttackCauseEnum;
-use Stu\Module\Ship\Lib\Battle\ShipAttackCycleInterface;
-use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
+use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
+use Stu\Module\Spacecraft\Lib\Battle\FightLibInterface;
+use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyFactoryInterface;
+use Stu\Module\Spacecraft\Lib\Battle\SpacecraftAttackCauseEnum;
+use Stu\Module\Spacecraft\Lib\Battle\SpacecraftAttackCycleInterface;
+use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 
 final class AttackTrackedShip implements ActionControllerInterface
 {
@@ -27,30 +27,29 @@ final class AttackTrackedShip implements ActionControllerInterface
     public function __construct(
         private ShipLoaderInterface $shipLoader,
         private PrivateMessageSenderInterface $privateMessageSender,
-        private ShipAttackCycleInterface $shipAttackCycle,
+        private SpacecraftAttackCycleInterface $spacecraftAttackCycle,
         private InteractionCheckerInterface $interactionChecker,
         private AlertReactionFacadeInterface $alertReactionFacade,
         private FightLibInterface $fightLib,
         private BattlePartyFactoryInterface $battlePartyFactory
-    ) {
-    }
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
 
-        $shipId = request::getIntFatal('id');
+        $spacecraftId = request::getIntFatal('id');
         $targetId = request::getIntFatal('target');
 
         $wrappers = $this->shipLoader->getWrappersBySourceAndUserAndTarget(
-            $shipId,
+            $spacecraftId,
             $userId,
             $targetId
         );
 
         $wrapper = $wrappers->getSource();
-        $ship = $wrapper->get();
+        $spacecraft = $wrapper->get();
 
         $targetWrapper = $wrappers->getTarget();
         if ($targetWrapper === null) {
@@ -63,7 +62,7 @@ final class AttackTrackedShip implements ActionControllerInterface
             return;
         }
 
-        if (!$ship->hasActiveWeapon()) {
+        if (!$spacecraft->hasActiveWeapon()) {
             $game->addInformation(_('Waffen sind offline'));
             return;
         }
@@ -73,10 +72,10 @@ final class AttackTrackedShip implements ActionControllerInterface
             return;
         }
 
-        if (!$ship->hasEnoughCrew($game)) {
+        if (!$spacecraft->hasEnoughCrew($game)) {
             return;
         }
-        if (!$this->interactionChecker->checkPosition($target, $ship)) {
+        if (!$this->interactionChecker->checkPosition($target, $spacecraft)) {
             throw new SanityCheckException('InteractionChecker->checkPosition failed', self::ACTION_IDENTIFIER);
         }
 
@@ -85,16 +84,15 @@ final class AttackTrackedShip implements ActionControllerInterface
             $game->addInformation(_('Keine Energie vorhanden'));
             return;
         }
-        if ($ship->isDisabled()) {
+        if ($spacecraft->isDisabled()) {
             $game->addInformation(_('Das Schiff ist kampfunfähig'));
             return;
         }
-        if ($ship->getDockedTo() !== null) {
-            $ship->setDockedTo(null);
-        }
 
-        $isTargetBase = $target->isBase();
-        $isShipWarped = $ship->getWarpDriveState();
+        $spacecraft->setDockedTo(null);
+
+        $isTargetBase = $target->isStation();
+        $isShipWarped = $spacecraft->getWarpDriveState();
         $isTargetWarped = $target->getWarpDriveState();
 
         [$attacker, $defender, $fleet] = $this->fightLib->getAttackersAndDefenders(
@@ -103,13 +101,13 @@ final class AttackTrackedShip implements ActionControllerInterface
             $this->battlePartyFactory
         );
 
-        $messageCollection = $this->shipAttackCycle->cycle($attacker, $defender, ShipAttackCauseEnum::SHIP_FIGHT);
+        $messageCollection = $this->spacecraftAttackCycle->cycle($attacker, $defender, SpacecraftAttackCauseEnum::SHIP_FIGHT);
 
         $informations = $messageCollection->getInformationDump();
 
         $pm = sprintf(
             _("Kampf in Sektor %s\n%s"),
-            $ship->getSectorString(),
+            $spacecraft->getSectorString(),
             $informations->getInformationsAsString()
         );
         $this->privateMessageSender->send(
@@ -120,7 +118,7 @@ final class AttackTrackedShip implements ActionControllerInterface
         );
 
         //Alarm-Rot check for ship
-        if ($isShipWarped && !$ship->isDestroyed()) {
+        if ($isShipWarped && !$spacecraft->isDestroyed()) {
             $this->alertReactionFacade->doItAll($wrapper, $informations);
         }
 
@@ -129,11 +127,11 @@ final class AttackTrackedShip implements ActionControllerInterface
             $this->alertReactionFacade->doItAll($targetWrapper, $informations);
         }
 
-        if ($ship->isDestroyed()) {
+        if ($spacecraft->isDestroyed()) {
             $game->addInformationWrapper($informations);
             return;
         }
-        $game->setView(ShowShip::VIEW_IDENTIFIER);
+        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         if ($fleet) {
             $game->addInformation(_("Angriff durchgeführt"));

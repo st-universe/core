@@ -5,21 +5,27 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowModuleScreen;
 
 use Override;
-use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
-use Stu\Component\Ship\ShipModuleTypeEnum;
+use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
+use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Repository\ShipRumpRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 
 final class ShowModuleScreen implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_MODULE_SCREEN';
 
-    public function __construct(private ColonyLoaderInterface $colonyLoader, private ShowModuleScreenRequestInterface $showModuleScreenRequest, private ShipRumpRepositoryInterface $shipRumpRepository, private ShipCrewCalculatorInterface $shipCrewCalculator, private ColonyLibFactoryInterface $colonyLibFactory) {}
+    public function __construct(
+        private ColonyLoaderInterface $colonyLoader,
+        private ShowModuleScreenRequestInterface $showModuleScreenRequest,
+        private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository,
+        private SpacecraftCrewCalculatorInterface $shipCrewCalculator,
+        private ColonyLibFactoryInterface $colonyLibFactory
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -32,14 +38,14 @@ final class ShowModuleScreen implements ViewControllerInterface
             false
         );
 
-        $rump = $this->shipRumpRepository->find($this->showModuleScreenRequest->getRumpId());
+        $rump = $this->spacecraftRumpRepository->find($this->showModuleScreenRequest->getRumpId());
 
-        if ($rump === null || !array_key_exists($rump->getId(), $this->shipRumpRepository->getBuildableByUser($userId))) {
+        if ($rump === null || !array_key_exists($rump->getId(), $this->spacecraftRumpRepository->getBuildableByUser($userId))) {
             throw new AccessViolation();
         }
 
         $moduleSelectors = [];
-        foreach (ShipModuleTypeEnum::getModuleSelectorOrder() as $moduleType) {
+        foreach (SpacecraftModuleTypeEnum::getModuleSelectorOrder() as $moduleType) {
 
             $moduleSelectors[] = $this->colonyLibFactory->createModuleSelector(
                 $moduleType,
@@ -64,8 +70,9 @@ final class ShowModuleScreen implements ViewControllerInterface
 
         $game->appendNavigationPart(
             sprintf(
-                '?id=%d&SHOW_MODULE_SCREEN=1&rump=%d',
+                '?id=%d&%s=1&rumpid=%d',
                 $colony->getId(),
+                self::VIEW_IDENTIFIER,
                 $rump->getId()
             ),
             _('Schiffbau')

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:stu="stu">
+<body>
+<form action="colony.php" method="post">
+    <input type="hidden" name="id" value="42">
+    <input type="hidden" name="hosttype" value="1">
+    <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
+    <div id="colonyoptions">
+  <table class="tcal">
+    <tr>
+      <th>Name</th>
+    </tr>
+    <tr>
+      <td>
+        <input type="test" value="Stempor'Arr 4" name="colname" style="width: 250px;" onkeydown="event.key == 'Enter' &amp;&amp; $('changecolonynamebutton').click()">
+        <input type="submit" id="changecolonynamebutton" name="B_CHANGE_NAME" value="&Atilde;&#132;ndern">
+      </td>
+    </tr>
+  </table>
+  <br>
+  <div class="divhead">Einwanderung</div>
+  <div class="divbody">
+    <table cellpadding="0" cellspacing="0" style="width: 100%;">
+      <tr>
+        <td style="width: 50%;">
+                    Status: <span style="color: #007300;">Erlaubt</span>
+                  </td>
+        <td style="width: 50%; text-align: right;">
+                    <input type="submit" value="Verbieten" name="B_PERMIT_IMMIGRATION">
+                  </td>
+      </tr>
+    </table>
+  </div>
+  <br>
+  <div class="divhead">Bev&Atilde;&para;lkerungslimit</div>
+  <div class="divbody">
+    <input type="text" size="4" name="poplimit" value="0" onkeydown="event.key == 'Enter' &amp;&amp; $('setpopulationlimitbutton').click()">
+    <input type="submit" id="setpopulationlimitbutton" name="B_SET_POPULATIONLIMIT" value="&Atilde;&#132;ndern">
+  </div>
+  <br>
+  <div class="divhead">Kolonie aufgeben</div>
+  <div class="divbody">
+    <div class="fabutton_red">
+      <a href="javascript:void(0);" onclick="showGiveUpWindow(42);" class="fabutton fabutton_red">
+        Kolonie aufgeben
+      </a>
+    </div>
+  </div>
+</div>
+</form>
+
+</body>
+</html>

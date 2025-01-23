@@ -2,9 +2,13 @@
 
 namespace Stu\Module\Config\Model;
 
-use Stu\Module\Config\StuConfigSettingEnum;
-
 interface SettingsCacheInterface
 {
-    public function getSettings(StuConfigSettingEnum $type, ?SettingsInterface $parent): SettingsInterface;
+    /**
+     * @template T
+     * @param class-string<T> $configInterface Entry name or a class name.
+     *
+     * @return T
+     */
+    public function getSettings(string $configInterface, ?SettingsInterface $parent): mixed;
 }

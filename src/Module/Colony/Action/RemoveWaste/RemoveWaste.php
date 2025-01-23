@@ -7,7 +7,7 @@ namespace Stu\Module\Colony\Action\RemoveWaste;
 use Override;
 use request;
 use Stu\Component\Building\BuildingFunctionEnum;
-use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
@@ -23,7 +23,7 @@ final class RemoveWaste implements ActionControllerInterface
     public function __construct(
         private ColonyLoaderInterface $colonyLoader,
         private PlanetFieldRepositoryInterface $planetFieldRepository,
-        private ColonyStorageManagerInterface $colonyStorageManager,
+        private StorageManagerInterface $storageManager,
         private ColonyRepositoryInterface $colonyRepository,
         private CommodityRepositoryInterface $commodityRepository
     ) {}
@@ -75,7 +75,7 @@ final class RemoveWaste implements ActionControllerInterface
                 $count = $stor->getAmount();
             }
 
-            $this->colonyStorageManager->lowerStorage($colony, $commodity, $count);
+            $this->storageManager->lowerStorage($colony, $commodity, $count);
             $wasted[] = sprintf('%d %s', $count, $commodity->getName());
         }
         $this->colonyRepository->save($colony);

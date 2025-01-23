@@ -3,27 +3,24 @@
 namespace Stu\Module\Colony\Lib\Gui\Component;
 
 use Override;
-use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Commodity\Lib\CommodityCacheInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\ColonyInterface;
 
-final class EffectsProvider implements GuiComponentProviderInterface
+final class EffectsProvider implements PlanetFieldHostComponentInterface
 {
-    public function __construct(private ColonyLibFactoryInterface $colonyLibFactory, private CommodityCacheInterface $commodityCache)
-    {
-    }
+    public function __construct(private ColonyLibFactoryInterface $colonyLibFactory, private CommodityCacheInterface $commodityCache) {}
 
     #[Override]
     public function setTemplateVariables(
-        PlanetFieldHostInterface $host,
+        $entity,
         GameControllerInterface $game
     ): void {
         $commodities = $this->commodityCache->getAll(CommodityTypeEnum::COMMODITY_TYPE_EFFECT);
-        $depositMinings = $host instanceof ColonyInterface ? $host->getUserDepositMinings() : [];
-        $prod = $this->colonyLibFactory->createColonyCommodityProduction($host)->getProduction();
+        $depositMinings = $entity instanceof ColonyInterface ? $entity->getUserDepositMinings() : [];
+        $prod = $this->colonyLibFactory->createColonyCommodityProduction($entity)->getProduction();
 
         $effects = [];
         foreach ($commodities as $value) {

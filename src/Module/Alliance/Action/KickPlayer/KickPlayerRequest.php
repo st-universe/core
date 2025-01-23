@@ -14,6 +14,6 @@ final class KickPlayerRequest implements KickPlayerRequestInterface
     #[Override]
     public function getPlayerId(): int
     {
-        return $this->queryParameter('uid')->int()->required();
+        return $this->parameter('uid')->int()->required();
     }
 }

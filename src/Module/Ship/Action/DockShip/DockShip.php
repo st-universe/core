@@ -6,33 +6,41 @@ namespace Stu\Module\Ship\Action\DockShip;
 
 use Override;
 use request;
-use Stu\Component\Ship\Repair\CancelRepairInterface;
+use Stu\Component\Spacecraft\Repair\CancelRepairInterface;
 use Stu\Component\Ship\Retrofit\CancelRetrofitInterface;
 use Stu\Component\Ship\ShipEnum;
-use Stu\Component\Ship\System\Exception\ShipSystemException;
-use Stu\Component\Ship\System\ShipSystemManagerInterface;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Spacecraft\System\Exception\SpacecraftSystemException;
+use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
+use Stu\Component\Station\Dock\DockPrivilegeUtilityInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
-use Stu\Module\Ship\Lib\Interaction\DockPrivilegeUtilityInterface;
-use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
+use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\View\ShowShip\ShowShip;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
+use Stu\Orm\Entity\StationInterface;
 
 final class DockShip implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_DOCK';
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private DockPrivilegeUtilityInterface $dockPrivilegeUtility, private PrivateMessageSenderInterface $privateMessageSender, private ShipSystemManagerInterface $shipSystemManager, private InteractionCheckerInterface $interactionChecker, private CancelRepairInterface $cancelRepair, private CancelRetrofitInterface $cancelRetrofit) {}
+    public function __construct(
+        private ShipLoaderInterface $shipLoader,
+        private DockPrivilegeUtilityInterface $dockPrivilegeUtility,
+        private PrivateMessageSenderInterface $privateMessageSender,
+        private SpacecraftSystemManagerInterface $spacecraftSystemManager,
+        private InteractionCheckerInterface $interactionChecker,
+        private CancelRepairInterface $cancelRepair,
+        private CancelRetrofitInterface $cancelRetrofit
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $game->setView(ShowShip::VIEW_IDENTIFIER);
+        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         $userId = $game->getUser()->getId();
 
@@ -53,6 +61,9 @@ final class DockShip implements ActionControllerInterface
             return;
         }
         $target = $targetWrapper->get();
+        if (!$target instanceof StationInterface) {
+            return;
+        }
 
         if (!$this->interactionChecker->checkPosition($target, $ship)) {
             return;
@@ -60,7 +71,7 @@ final class DockShip implements ActionControllerInterface
         if ($ship->getDockedTo() !== null) {
             return;
         }
-        if (!$target->isBase()) {
+        if (!$target->isStation()) {
             return;
         }
 
@@ -78,8 +89,7 @@ final class DockShip implements ActionControllerInterface
             return;
         }
 
-        if (!$this->dockPrivilegeUtility->checkPrivilegeFor($target->getId(), $game->getUser())) {
-            $href = sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $target->getId());
+        if (!$this->dockPrivilegeUtility->checkPrivilegeFor($target->getId(), $ship)) {
 
             $this->privateMessageSender->send(
                 $userId,
@@ -91,7 +101,7 @@ final class DockShip implements ActionControllerInterface
                     $target->getName()
                 ),
                 PrivateMessageFolderTypeEnum::SPECIAL_STATION,
-                $href
+                $target->getHref()
             );
 
             $game->addInformation('Das Andocken wurde verweigert');
@@ -113,14 +123,14 @@ final class DockShip implements ActionControllerInterface
             $game->addInformation('Zur Zeit sind alle Dockplätze belegt');
             return;
         }
-        if ($ship->getCloakState()) {
+        if ($ship->isCloaked()) {
             $game->addInformation("Das Schiff ist getarnt");
             return;
         }
 
         try {
-            $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_SHIELDS);
-        } catch (ShipSystemException) {
+            $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::SHIELDS);
+        } catch (SpacecraftSystemException) {
         }
 
         if ($this->cancelRepair->cancelRepair($ship)) {
@@ -134,14 +144,12 @@ final class DockShip implements ActionControllerInterface
 
         $this->shipLoader->save($ship);
 
-        $href = sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $target->getId());
-
         $this->privateMessageSender->send(
             $userId,
             $target->getUser()->getId(),
             'Die ' . $ship->getName() . ' hat an der ' . $target->getName() . ' angedockt',
             PrivateMessageFolderTypeEnum::SPECIAL_STATION,
-            $href,
+            $target->getHref(),
             $this->isAutoReadOnDock($target)
         );
         $game->addInformation('Andockvorgang abgeschlossen');
@@ -149,7 +157,7 @@ final class DockShip implements ActionControllerInterface
 
     private function fleetDock(
         FleetWrapperInterface $fleetWrapper,
-        ShipInterface $target,
+        StationInterface $target,
         GameControllerInterface $game
     ): void {
         $msg = [_("Flottenbefehl ausgeführt: Andocken an ") . $target->getName()];
@@ -180,7 +188,7 @@ final class DockShip implements ActionControllerInterface
                 break;
             }
 
-            if ($fleetShip->getCloakState()) {
+            if ($fleetShip->isCloaked()) {
                 $msg[] = $fleetShip->getName() . _(': Das Schiff ist getarnt');
                 continue;
             }
@@ -194,13 +202,13 @@ final class DockShip implements ActionControllerInterface
             }
 
             try {
-                $this->shipSystemManager->deactivate($fleetShipWrapper, ShipSystemTypeEnum::SYSTEM_SHIELDS);
-            } catch (ShipSystemException) {
+                $this->spacecraftSystemManager->deactivate($fleetShipWrapper, SpacecraftSystemTypeEnum::SHIELDS);
+            } catch (SpacecraftSystemException) {
             }
 
             try {
-                $this->shipSystemManager->deactivate($fleetShipWrapper, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
-            } catch (ShipSystemException) {
+                $this->spacecraftSystemManager->deactivate($fleetShipWrapper, SpacecraftSystemTypeEnum::WARPDRIVE);
+            } catch (SpacecraftSystemException) {
             }
 
             $fleetShip->setDockedTo($target);
@@ -212,20 +220,18 @@ final class DockShip implements ActionControllerInterface
             $freeSlots--;
         }
 
-        $href = sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $target->getId());
-
         $this->privateMessageSender->send(
             $game->getUser()->getId(),
             $target->getUser()->getId(),
             'Die Flotte ' . $fleetWrapper->get()->getName() . ' hat an der ' . $target->getName() . ' angedockt',
             PrivateMessageFolderTypeEnum::SPECIAL_STATION,
-            $href,
+            $target->getHref(),
             $this->isAutoReadOnDock($target)
         );
         $game->addInformationMerge($msg);
     }
 
-    private function isAutoReadOnDock(ShipInterface $target): bool
+    private function isAutoReadOnDock(StationInterface $target): bool
     {
         $tradePost = $target->getTradePost();
         if ($tradePost === null) {

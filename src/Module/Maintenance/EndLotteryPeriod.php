@@ -177,7 +177,7 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
     private function transmitShip(UserInterface $winner, TradePostInterface $tradePost): void
     {
         /** @var array<int, LotteryWinnerBuildplanInterface> */
-        $winnerBuildplans = $this->lotteryWinnerBuildplanRepository->findAll();
+        $winnerBuildplans = $this->lotteryWinnerBuildplanRepository->findByFactionId($winner->getFactionId());
         if (empty($winnerBuildplans)) {
             return;
         }
@@ -192,8 +192,8 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
                 $winner->getId(),
                 $buildplan->getRumpId(),
                 $buildplan->getId()
-            )->setLocation($tradePost->getShip()->getLocation())
-            ->setShipName(sprintf(
+            )->setLocation($tradePost->getStation()->getLocation())
+            ->setSpacecraftName(sprintf(
                 'Lotteriegewinn (%s)',
                 $this->stuTime->transformToStuDate(time())
             ))

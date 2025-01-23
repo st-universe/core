@@ -1,0 +1,95 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body>
+<div class="box">
+    <div class="box_title" style="text-align: left">/
+                <a href="trade.php">
+            Handel
+        </a>
+                <span> / </span>
+                        <a href="trade.php?SHOW_ACCOUNTS=1">
+            Warenkonten
+        </a>
+                    </div>
+</div>
+<br>
+<div id="result" style="display: none;">..</div>
+<script src="/static/js/trade.js"></script>
+<form action="trade.php" method="post">
+	<table class="tcal">
+		<tr>
+			<th colspan="4">Goldene Kugel</th>
+						<th style="width: 15%;">
+				<input type="hidden" name="posts_id" value="2">
+				<input type="text" name="newtradepostname" style="width: 150px;" value="Goldene Kugel">
+				<button type="submit" name="B_TRADEPOST_CHANGE_NAME" value="Name &auml;ndern" title="Name &auml;ndern">
+					<img src="assets/buttons/knedit2.png" alt="Name &auml;ndern">
+				</button>
+			</th>
+					</tr>
+		<tr>
+			<td rowspan="6">
+				<img src="/assets/ships/10053.png" title="Au&szlig;enposten">
+
+			</td>
+			<td rowspan="6" style="width: 30%;">
+				<div style="font-weight: bold">
+					Waren lagernd
+				</div>
+							</td>
+			<td rowspan="6" style="width: 30%;">
+				<div style="font-weight: bold;">
+					Waren in Angeboten
+				</div>
+							</td>
+			<td class="darkbg" style="clear: both; width: 200px;">Standort</td>
+			<td style="width: 200px;">7|8 <a href="javascript:void(0);" onclick="openShiplist(2);"><img src="assets/navigation/menu_ships0.png" style="width: 20px;" title="Schiffe vor Ort anzeigen."></a>
+</td>
+
+		</tr>
+		<tr>
+			<td class="darkbg">Handelsnetz</td>
+			<td>
+								<a href="javascript:void(0);" onclick="openShoutbox(101);">
+					Schwarzes Brett
+				</a>
+			</td>
+		</tr>
+				<tr>
+			<td class="darkbg">Lagerraum</td>
+			<td>
+								<span class="positive">0</span>
+								(10000 pro Siedler)
+			</td>
+		</tr>
+		<tr>
+			<td class="darkbg">Ausgestellte Lizenzen</td>
+			<td>
+				1
+				(<a href="javascript:void(0);" onclick="showTradeLicenseList(this, 2);">
+					Liste anzeigen
+				</a>)
+			</td>
+		</tr>
+		<tr>
+			<td class="darkbg">Handelslizenz Geb&uuml;hren</td>
+			<td>
+								<span>
+					<a href="javascript:void(0);" onclick="showLicenseMenu(2);">Bearbeiten</a>
+				</span>
+							</td>
+		</tr>
+	</table>
+</form>
+<br>
+
+<div class="footer">
+    Rendered in 4.203s - Memory usage: 42.77Mb
+</div>
+
+</body>
+</html>

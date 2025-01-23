@@ -7,6 +7,7 @@ namespace Stu\Module\Tick\Pirate;
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use Stu\Component\Admin\Notification\FailureEmailSenderInterface;
+use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Module\Tick\TickRunnerInterface;
@@ -29,6 +30,7 @@ final class PirateTickRunner implements TickRunnerInterface
         private TransactionTickRunnerInterface $transactionTickRunner,
         private PirateTickInterface $pirateTick,
         private FailureEmailSenderInterface $failureEmailSender,
+        private StuConfigInterface $stuConfig,
         LoggerUtilFactoryInterface $loggerUtilFactory,
         private EntityManagerInterface $entityManager
     ) {
@@ -39,6 +41,13 @@ final class PirateTickRunner implements TickRunnerInterface
     public function run(int $batchGroup, int $batchGroupCount): void
     {
         if ($this->transactionTickRunner->isGameStateReset()) {
+            return;
+        }
+
+        if (!$this->stuConfig
+            ->getGameSettings()
+            ->getPirateSettings()
+            ->isPirateTickActive()) {
             return;
         }
 

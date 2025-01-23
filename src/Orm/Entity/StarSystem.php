@@ -60,11 +60,11 @@ class StarSystem implements StarSystemInterface
     #[JoinColumn(name: 'database_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?DatabaseEntryInterface $databaseEntry = null;
 
-    #[OneToOne(targetEntity: 'Ship', mappedBy: 'influenceArea')]
-    private ?ShipInterface $base = null;
+    #[OneToOne(targetEntity: 'Station', mappedBy: 'influenceArea')]
+    private ?StationInterface $station = null;
 
     /**
-     * @var Collection<int, StarSystemMapInterface>
+     * @var ArrayCollection<int, StarSystemMapInterface>
      */
     #[OneToMany(targetEntity: 'StarSystemMap', mappedBy: 'starSystem')]
     #[OrderBy(['sy' => 'ASC', 'sx' => 'ASC'])]
@@ -215,9 +215,15 @@ class StarSystem implements StarSystemInterface
     }
 
     #[Override]
-    public function getBase(): ?ShipInterface
+    public function getStation(): ?StationInterface
     {
-        return $this->base;
+        return $this->station;
+    }
+
+    #[Override]
+    public function unsetStation(): void
+    {
+        $this->station = null;
     }
 
     #[Override]

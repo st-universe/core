@@ -14,12 +14,12 @@ final class ChangeTradePostNameRequest implements ChangeTradePostNameRequestInte
     #[Override]
     public function getTradePostId(): int
     {
-        return $this->queryParameter('posts_id')->int()->required();
+        return $this->parameter('posts_id')->int()->required();
     }
 
     #[Override]
     public function getNewName(): string
     {
-        return trim(strip_tags($this->queryParameter('newtradepostname')->string()->defaultsToIfEmpty('')));
+        return trim(strip_tags($this->parameter('newtradepostname')->string()->defaultsToIfEmpty('')));
     }
 }

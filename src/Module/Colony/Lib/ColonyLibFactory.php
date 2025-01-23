@@ -15,7 +15,7 @@ use Stu\Component\Colony\Commodity\ColonyProductionSumReducer;
 use Stu\Component\Colony\Commodity\ColonyProductionSumReducerInterface;
 use Stu\Component\Colony\Shields\ColonyShieldingManager;
 use Stu\Component\Colony\Shields\ColonyShieldingManagerInterface;
-use Stu\Component\Ship\ShipModuleTypeEnum;
+use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreationInterface;
@@ -29,9 +29,9 @@ use Stu\Module\Twig\TwigPageInterface;
 use Stu\Orm\Entity\BuildingInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\CommodityInterface;
-use Stu\Orm\Entity\ShipBuildplanInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\ShipRumpInterface;
+use Stu\Orm\Entity\SpacecraftBuildplanInterface;
+use Stu\Orm\Entity\SpacecraftRumpInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\BuildingCommodityRepositoryInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
@@ -40,9 +40,9 @@ use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
-use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\PlanetGenerator\PlanetGeneratorInterface;
 
 final class ColonyLibFactory implements ColonyLibFactoryInterface
@@ -52,8 +52,8 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         private BuildingRepositoryInterface $buildingRepository,
         private ColonyRepositoryInterface $colonyRepository,
         private CommodityConsumptionInterface $commodityConsumption,
-        private ShipRepositoryInterface $shipRepository,
-        private ShipBuildplanRepositoryInterface $shipBuildplanRepository,
+        private SpacecraftRepositoryInterface $spacecraftRepository,
+        private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository,
         private ResearchedRepositoryInterface $researchedRepository,
         private FlightSignatureRepositoryInterface $flightSignatureRepository,
         private PlanetGeneratorInterface $planetGenerator,
@@ -114,12 +114,12 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
 
     #[Override]
     public function createBuildableRumpItem(
-        ShipRumpInterface $shipRump,
+        SpacecraftRumpInterface $shipRump,
         UserInterface $currentUser
     ): BuildableRumpListItemInterface {
         return new BuildableRumpListItem(
-            $this->shipRepository,
-            $this->shipBuildplanRepository,
+            $this->spacecraftRepository,
+            $this->spacecraftBuildplanRepository,
             $shipRump,
             $currentUser
         );
@@ -151,11 +151,11 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
 
     #[Override]
     public function createModuleSelector(
-        ShipModuleTypeEnum $moduleType,
-        ColonyInterface|ShipInterface $host,
-        ShipRumpInterface $rump,
+        SpacecraftModuleTypeEnum $moduleType,
+        ColonyInterface|SpacecraftInterface $host,
+        SpacecraftRumpInterface $rump,
         UserInterface $user,
-        ?ShipBuildplanInterface $buildplan = null
+        ?SpacecraftBuildplanInterface $buildplan = null
     ): ModuleSelector {
 
         $addon = $this->moduleSelectorAddonFactory->createModuleSelectorAddon($moduleType);

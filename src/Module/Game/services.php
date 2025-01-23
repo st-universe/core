@@ -6,18 +6,18 @@ namespace Stu\Module\Game;
 
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Control\GameController;
-use Stu\Module\Control\Render\Fragments\ColonyFragment;
-use Stu\Module\Control\Render\Fragments\MessageFolderFragment;
-use Stu\Module\Control\Render\Fragments\ResearchFragment;
-use Stu\Module\Control\Render\Fragments\ServertimeFragment;
-use Stu\Module\Control\Render\Fragments\UserFragment;
 use Stu\Module\Game\Action\Logout\Logout;
 use Stu\Module\Game\Action\SwitchView\SwitchView;
 use Stu\Module\Game\Action\SetTutorial\SetTutorial;
 use Stu\Module\Game\Action\FinishTutorial\FinishTutorial;
-use Stu\Module\Game\Lib\Component\ComponentEnum;
-use Stu\Module\Game\Lib\Component\ComponentLoader;
-use Stu\Module\Game\Lib\Component\ComponentLoaderInterface;
+use Stu\Module\Game\Action\Transfer\Transfer;
+use Stu\Module\Game\Component\ColoniesComponent;
+use Stu\Module\Game\Component\GameComponentEnum;
+use Stu\Module\Game\Component\MessageFolderComponent;
+use Stu\Module\Game\Component\NagusComponent;
+use Stu\Module\Game\Component\ResearchComponent;
+use Stu\Module\Game\Component\ServertimeComponent;
+use Stu\Module\Game\Component\UserProfileComponent;
 use Stu\Module\Game\Lib\GameSetup;
 use Stu\Module\Game\Lib\GameSetupInterface;
 use Stu\Module\Game\Lib\View\Provider\AllianceProvider;
@@ -27,7 +27,9 @@ use Stu\Module\Game\Lib\View\Provider\DatabaseProvider;
 use Stu\Module\Game\Lib\View\Provider\HistoryProvider;
 use Stu\Module\Game\Lib\View\Provider\MaindeskProvider;
 use Stu\Module\Game\Lib\View\Provider\MapProvider;
-use Stu\Module\Game\Lib\View\Provider\MessageProvider;
+use Stu\Module\Game\Lib\View\Provider\Message\ClassicStyleProvider;
+use Stu\Module\Game\Lib\View\Provider\Message\MessageProvider;
+use Stu\Module\Game\Lib\View\Provider\Message\MessengerStyleProvider;
 use Stu\Module\Game\Lib\View\Provider\PlayerSettingsProvider;
 use Stu\Module\Game\Lib\View\Provider\ResearchProvider;
 use Stu\Module\Game\Lib\View\Provider\ShipListProvider;
@@ -42,11 +44,14 @@ use Stu\Module\Game\View\ShowInnerContent\ShowInnerContent;
 use Stu\Module\Game\View\ShowPadd\ShowPadd;
 use Stu\Module\Game\View\ShowTutorialCloseButton\ShowTutorialCloseButton;
 use Stu\Module\Game\View\Noop\Noop;
+use Stu\Module\Game\View\ShowTransfer\ShowTransfer;
 
 use function DI\autowire;
 
 return [
     GameSetupInterface::class => autowire(GameSetup::class),
+    ClassicStyleProvider::class => autowire(ClassicStyleProvider::class),
+    MessengerStyleProvider::class => autowire(MessengerStyleProvider::class),
     ViewComponentLoaderInterface::class => autowire(ViewComponentLoader::class)->constructorParameter(
         'viewComponentProviders',
         [
@@ -66,16 +71,8 @@ return [
             ModuleViewEnum::PROFILE->value => autowire(UserProfileProvider::class),
         ]
     ),
-    ComponentLoaderInterface::class => autowire(ComponentLoader::class)->constructorParameter(
-        'componentProviders',
-        [
-            ComponentEnum::PM_NAVLET->value => autowire(MessageFolderFragment::class),
-            ComponentEnum::SERVERTIME_NAVLET->value => autowire(ServertimeFragment::class),
-            ComponentEnum::RESEARCH_NAVLET->value => autowire(ResearchFragment::class),
-            ComponentEnum::COLONIES_NAVLET->value => autowire(ColonyFragment::class),
-            ComponentEnum::USER_NAVLET->value => autowire(UserFragment::class),
-        ]
-    ),
+    ShowTransfer::class => autowire(ShowTransfer::class),
+    Transfer::class => autowire(Transfer::class),
     'GAME_ACTIONS' => [
         SwitchView::ACTION_IDENTIFIER => autowire(SwitchView::class),
         Logout::ACTION_IDENTIFIER => autowire(Logout::class),
@@ -89,5 +86,13 @@ return [
         ShowPadd::VIEW_IDENTIFIER => autowire(ShowPadd::class),
         ShowTutorialCloseButton::VIEW_IDENTIFIER => autowire(ShowTutorialCloseButton::class),
         Noop::VIEW_IDENTIFIER => autowire(Noop::class),
+    ],
+    'GAME_COMPONENTS' => [
+        GameComponentEnum::COLONIES->value => autowire(ColoniesComponent::class),
+        GameComponentEnum::NAGUS->value => autowire(NagusComponent::class),
+        GameComponentEnum::PM->value => autowire(MessageFolderComponent::class),
+        GameComponentEnum::RESEARCH->value => autowire(ResearchComponent::class),
+        GameComponentEnum::SERVERTIME_AND_VERSION->value => autowire(ServertimeComponent::class),
+        GameComponentEnum::USER->value => autowire(UserProfileComponent::class)
     ]
 ];

@@ -14,14 +14,14 @@ final class SaveNoteRequest implements SaveNoteRequestInterface
     #[Override]
     public function getNoteId(): int
     {
-        return $this->queryParameter('note')->int()->defaultsTo(0);
+        return $this->parameter('note')->int()->defaultsTo(0);
     }
 
     #[Override]
     public function getTitle(): string
     {
         return $this->tidyString(
-            $this->queryParameter('title')->string()->trim()->defaultsToIfEmpty('')
+            $this->parameter('title')->string()->trim()->defaultsToIfEmpty('')
         );
     }
 
@@ -29,7 +29,7 @@ final class SaveNoteRequest implements SaveNoteRequestInterface
     public function getText(): string
     {
         return $this->tidyString(
-            $this->queryParameter('text')->string()->trim()->defaultsToIfEmpty('')
+            $this->parameter('text')->string()->trim()->defaultsToIfEmpty('')
         );
     }
 }

@@ -15,10 +15,10 @@ use Stu\Orm\Entity\ShipRumpUserInterface;
 final class ShipRumpUserRepository extends EntityRepository implements ShipRumpUserRepositoryInterface
 {
     #[Override]
-    public function isAvailableForUser(int $shipRumpId, int $userId): bool
+    public function isAvailableForUser(int $rumpId, int $userId): bool
     {
         return $this->count([
-            'rump_id' => $shipRumpId,
+            'rump_id' => $rumpId,
             'user_id' => $userId,
         ]) > 0;
     }

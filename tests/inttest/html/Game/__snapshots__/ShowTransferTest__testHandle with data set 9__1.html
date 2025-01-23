@@ -1,0 +1,168 @@
+<html lang="de">
+
+<head>
+  <script src="/static/js/default.js"></script>
+</head>
+
+<body>
+  <div class="ajaxwin">
+        <table class="tcal">
+      <tr>
+        <th onmouseover="switch_drag_on();" onmouseout="switch_drag_off();">Waren von Kolonie beamen</th>
+        <th style="width: 18px;">
+          <a href="javascript:void(0);" onclick="closeAjaxWindow();" onmouseover="cp('ajaxclose','buttons/x2');" onmouseout="cp('ajaxclose','buttons/x1');">
+            <img src="/assets/buttons/x1.png" name="ajaxclose" title="Fenster schlie&Atilde;&#159;en">
+          </a>
+        </th>
+      </tr>
+    </table>
+        <form action="ship.php" method="post">
+    <input type="hidden" name="id" value="77">
+    <input type="hidden" name="source_type" value="ship">
+    <input type="hidden" name="target" value="42">
+    <input type="hidden" name="target_type" value="colony">
+    <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
+    <input type="hidden" name="transfer_type" value="1">
+    <input type="hidden" name="is_unload" value="0">
+
+    <table class="tcal" style="width: 425px;">
+        
+        <tr>
+    
+                        <td colspan="3">
+                        <a href="javascript:void(0);" onclick="showTransfer(77, 'ship', 42, 'colony', 2, 0, true);" onmouseover="cp('crewbeamtrigger','buttons/crew_2');" onmouseout="cp('crewbeamtrigger','buttons/crew_1');">
+            <img src="assets/buttons/crew_1.png" name="crewbeamtrigger" title="Crew beamen">
+        </a>
+                        <div id="torpedoTransferMessage" style="display: none;">Torpedotransfer nur zu befreundeten Schiffen</div>
+    </td>
+    </tr>
+        <tr>
+            <td colspan="3">Ziel: Kolonie Stempor'Arr 4</td>
+        </tr>
+        <tr>
+                    </tr>
+        <tr>
+            <td colspan="3">
+                Kapazit&Atilde;&curren;t pro 1 Energie: 20
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="width: 100%;">
+                
+<input type="hidden" name="commodities[]" value="2">
+<div style="float: left; width: 50%;">
+    <table style="width: 100%;">
+    <tr>
+        <td style="width: 20px;">
+            <img src="/assets/commodities/2.png" onclick="this.up('tr').down('.commodityAmount').value=300" style="cursor: pointer;" title="Baumaterial">
+        </td>
+        <td style="width: 60px; vertical-align: middle;">
+            300
+        </td>
+        <td>
+            <input type="text" size="3" name="count[]" class="commodityAmount">
+        </td>
+    </tr>
+</table>
+
+</div>
+<input type="hidden" name="commodities[]" value="4">
+<div style="float: right; width: 50%;">
+    <table style="width: 100%;">
+    <tr>
+        <td style="width: 20px;">
+            <img src="/assets/commodities/4.png" onclick="this.up('tr').down('.commodityAmount').value=150" style="cursor: pointer;" title="Transparentes Aluminium">
+        </td>
+        <td style="width: 60px; vertical-align: middle;">
+            150
+        </td>
+        <td>
+            <input type="text" size="3" name="count[]" class="commodityAmount">
+        </td>
+    </tr>
+</table>
+
+</div>
+<br style="clear: both;">
+<input type="hidden" name="commodities[]" value="5">
+<div style="float: left; width: 50%;">
+    <table style="width: 100%;">
+    <tr>
+        <td style="width: 20px;">
+            <img src="/assets/commodities/5.png" onclick="this.up('tr').down('.commodityAmount').value=100" style="cursor: pointer;" title="Deuterium">
+        </td>
+        <td style="width: 60px; vertical-align: middle;">
+            100
+        </td>
+        <td>
+            <input type="text" size="3" name="count[]" class="commodityAmount">
+        </td>
+    </tr>
+</table>
+
+</div>
+<input type="hidden" name="commodities[]" value="21">
+<div style="float: right; width: 50%;">
+    <table style="width: 100%;">
+    <tr>
+        <td style="width: 20px;">
+            <img src="/assets/commodities/21.png" onclick="this.up('tr').down('.commodityAmount').value=150" style="cursor: pointer;" title="Duranium">
+        </td>
+        <td style="width: 60px; vertical-align: middle;">
+            150
+        </td>
+        <td>
+            <input type="text" size="3" name="count[]" class="commodityAmount">
+        </td>
+    </tr>
+</table>
+
+</div>
+<br style="clear: both;">
+
+            </td>
+            <td rowspan="2" style="height: 100%;">
+                                                                                                                                                
+                <table style="width: 100%; height: 100%;">
+    <tr>
+        <td style="text-align: center;">
+                            <a href="?SHOW_SPACECRAFT=1&amp;id=77">
+    <img src="assets/ships/6501.png">
+</a>
+                <br>
+                                <img alt="Lager" src="/assets/bars/balken.png" style="background-color: #00aa00;height: 12px; width:1px;" title="Lager: 1/155"><img alt="Lager" src="/assets/bars/balken.png" style="background-color: #777777;height: 12px; width:49px;" title="Lager: 1/155">
+                                        </td>
+    </tr>
+    <tr>
+                                                                <td style="text-align: center; height: 10%;">
+            <a href="javascript:void(0);" onclick="showTransfer(77, 'ship', 42, 'colony', 1, 1, true);" title="Richtung wechseln" onmouseover="cp('beamtrigger','buttons/b_up2');" onmouseout="cp('beamtrigger','buttons/b_up1');">
+                <img src="assets/buttons/b_up1.png" name="beamtrigger">
+            </a>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">
+                            <a href="colony.php?SHOW_COLONY=1&amp;id=42&amp;target=">
+    <img src="assets/planets/201.png">
+</a>
+                <br>
+                                <img alt="Lager" src="/assets/bars/balken.png" style="background-color: #00aa00;height: 12px; width:35px;" title="Lager: 701/1000"><img alt="Lager" src="/assets/bars/balken.png" style="background-color: #777777;height: 12px; width:15px;" title="Lager: 701/1000">
+                                        </td>
+    </tr>
+</table>
+            </td>
+        </tr>
+        <tr style="text-align: right;">
+            <td style="width: 60%;">
+    <input type="button" class="button" value="max" onclick="maximizeCommodityAmounts();">
+    <input type="submit" class="button" value="Beamen" name="B_TRANSFER">
+</td>
+<td>
+    </td>
+        </tr>
+    </table>
+</form>
+      </div>
+  </body>
+
+</html>

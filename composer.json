@@ -30,8 +30,8 @@
     "ext-iconv": "*",
     "ext-intl": "*",
     "ext-json": "*",
-    "ext-mysqli": "*",
     "ext-pcntl": "*",
+    "ext-pdo_sqlite": "*",
     "ext-redis": "*",
     "ext-sockets": "*",
     "ext-sysvsem": "*",
@@ -56,6 +56,7 @@
     "monolog/monolog": "^3",
     "mpscholten/request-parser": "^1.5",
     "php-di/php-di": "^7",
+    "sebastian/diff": "^6.0",
     "st-universe/planet-generator": "dev-master",
     "st-universe/starsystem-generator": "dev-master",
     "symfony/mailer": "^7.1.5",
@@ -68,13 +69,13 @@
     "mikey179/vfsstream": "1.6.11",
     "mockery/mockery": "^1.1",
     "phpstan/extension-installer": "^1.4.3",
-    "phpstan/phpstan": "^1.12",
-    "phpstan/phpstan-deprecation-rules": "^1.1",
-    "phpstan/phpstan-doctrine": "^1.3",
-    "phpstan/phpstan-mockery": "^1.1",
-    "phpstan/phpstan-phpunit": "^1.3",
+    "phpstan/phpstan": "^2.0",
+    "phpstan/phpstan-deprecation-rules": "^2.0",
+    "phpstan/phpstan-doctrine": "^2.0",
+    "phpstan/phpstan-mockery": "^2.0",
+    "phpstan/phpstan-phpunit": "^2.0",
     "phpunit/phpunit": "^11.2.6",
-    "rector/rector": "^1.2.10",
+    "rector/rector": "^2.0",
     "spatie/phpunit-snapshot-assertions": "^5.1",
     "st-universe/assets": "dev-master"
   },
@@ -100,7 +101,9 @@
     }
   ],
   "scripts": {
-    "tests": "@php vendor/bin/phpunit tests",
+    "orm:proxies": "./bin/doctrine orm:generate-proxies",
+    "unittests": "@php vendor/bin/phpunit --testsuite 'STU unit'",
+    "integrationtests": "@php vendor/bin/phpunit --testsuite 'STU integration'",
     "stan": "phpstan",
     "rector:dry": "rector process -n",
     "coverage": "XDEBUG_MODE=coverage ./vendor/bin/phpunit --coverage-html build/coverage tests",
@@ -108,9 +111,18 @@
     "cs:fix": "php-cs-fixer fix",
     "security:check": "@php vendor/bin/security-checker security:check ./composer.lock",
     "qa": [
-      "@composer tests",
+      "@composer qaStage1",
+      "@composer qaStage2"
+    ],
+    "qaStage1": [
+      "@composer orm:proxies",
+      "@composer unittests",
       "@composer stan",
       "@composer security:check"
+    ],
+    "qaStage2": [
+      "@composer orm:proxies",
+      "@composer integrationtests"
     ],
     "gen:assets": [
       "@php src/Public/assets/generator/building_generator/gen.php",
@@ -121,7 +133,9 @@
     ]
   },
   "scripts-descriptions": {
-    "qa": "Executes alle qa related action",
+    "qa": "Executes all qa related actions",
+    "qaStage1": "Executes basic qa related actions",
+    "qaStage2": "Executes integrative qa related actions",
     "gen:assets": "Generates asset images",
     "gen:baseline": "Generates the phpstan baseline"
   },

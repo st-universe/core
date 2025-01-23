@@ -10,7 +10,7 @@ use Stu\Lib\CleanTextUtils;
 use Stu\Module\Colony\View\ShowModuleScreenBuildplan\ShowModuleScreenBuildplan;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 
 final class RenameBuildplan implements ActionControllerInterface
 {
@@ -18,9 +18,8 @@ final class RenameBuildplan implements ActionControllerInterface
 
     public function __construct(
         private RenameBuildplanRequestInterface $renameBuildplanRequest,
-        private ShipBuildplanRepositoryInterface $shipBuildplanRepository
-    ) {
-    }
+        private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -44,19 +43,19 @@ final class RenameBuildplan implements ActionControllerInterface
             return;
         }
 
-        if ($this->shipBuildplanRepository->findByUserAndName($userId, $newName) !== null) {
+        if ($this->spacecraftBuildplanRepository->findByUserAndName($userId, $newName) !== null) {
             $game->addInformation(_('Ein Bauplan mit diesem Namen existiert bereits'));
             return;
         }
 
-        $plan = $this->shipBuildplanRepository->find($this->renameBuildplanRequest->getId());
+        $plan = $this->spacecraftBuildplanRepository->find($this->renameBuildplanRequest->getId());
         if ($plan === null || $plan->getUserId() !== $userId) {
             throw new AccessViolation();
         }
 
         $plan->setName($newName);
 
-        $this->shipBuildplanRepository->save($plan);
+        $this->spacecraftBuildplanRepository->save($plan);
 
         $game->addInformation(_('Der Name des Bauplans wurde geändert'));
     }

@@ -3,7 +3,7 @@
 namespace Stu\Module\Message\Lib;
 
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
+use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 
 interface DistributedMessageSenderInterface
 {
@@ -11,6 +11,7 @@ interface DistributedMessageSenderInterface
         MessageCollectionInterface $messageCollection,
         int $senderId = UserEnum::USER_NOONE,
         PrivateMessageFolderTypeEnum $folderType = PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,
-        ?string $header = null
+        ?string $header = null,
+        bool $sendDumpToEveryone = false
     ): void;
 }

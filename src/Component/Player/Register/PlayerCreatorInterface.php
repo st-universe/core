@@ -15,7 +15,8 @@ interface PlayerCreatorInterface
         string $loginName,
         string $emailAddress,
         FactionInterface $faction,
-        string $mobile
+        string $mobile,
+        ?string $referer = null
     ): void;
 
     public function createPlayer(
@@ -24,6 +25,7 @@ interface PlayerCreatorInterface
         FactionInterface $faction,
         string $password,
         ?string $mobile = null,
-        ?string $smsCode = null
+        ?string $smsCode = null,
+        ?string $referer = null
     ): UserInterface;
 }

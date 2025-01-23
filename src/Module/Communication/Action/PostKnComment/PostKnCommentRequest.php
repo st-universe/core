@@ -12,16 +12,16 @@ final class PostKnCommentRequest implements PostKnCommentRequestInterface
     use CustomControllerHelperTrait;
 
     #[Override]
-    public function getPostId(): int
+    public function getKnId(): int
     {
-        return $this->queryParameter('posting')->int()->required();
+        return $this->parameter('knid')->int()->required();
     }
 
     #[Override]
     public function getText(): string
     {
         return $this->tidyString(
-            $this->queryParameter('comment')->string()->trim()->defaultsToIfEmpty('')
+            $this->parameter('comment')->string()->trim()->defaultsToIfEmpty('')
         );
     }
 }

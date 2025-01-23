@@ -14,6 +14,6 @@ final class ShowShipRetrofitRequest implements ShowShipRetrofitRequestInterface
     #[Override]
     public function getColonyId(): int
     {
-        return $this->queryParameter('id')->int()->required();
+        return $this->parameter('id')->int()->required();
     }
 }

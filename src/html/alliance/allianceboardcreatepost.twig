@@ -1,7 +1,7 @@
 {% block body %}
     <form method="post" action="alliance.php">
-        <input type="hidden" name="bid" value="{{ BOARD_ID }}" />
-        <input type="hidden" name="tid" value="{{ TOPIC.getId }}" />
+        <input type="hidden" name="boardid" value="{{ BOARD_ID }}" />
+        <input type="hidden" name="topicid" value="{{ TOPIC.getId }}" />
         <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
         <div class="divhead">Thema</div>
         <div class="divbody">{{ TOPIC.getName }}</div>

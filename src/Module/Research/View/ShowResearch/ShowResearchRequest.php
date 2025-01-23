@@ -14,6 +14,6 @@ final class ShowResearchRequest implements ShowResearchRequestInterface
     #[Override]
     public function getResearchId(): int
     {
-        return $this->queryParameter('id')->int()->required();
+        return $this->parameter('id')->int()->required();
     }
 }

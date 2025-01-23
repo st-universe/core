@@ -29,7 +29,11 @@ final class UserList implements ViewControllerInterface
 
     private const int LIST_LIMIT = 25;
 
-    public function __construct(private UserListRequestInterface $userListRequest, private UserRepositoryInterface $userRepository, private Parser $parser) {}
+    public function __construct(
+        private UserListRequestInterface $userListRequest,
+        private UserRepositoryInterface $userRepository,
+        private Parser $parser
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void

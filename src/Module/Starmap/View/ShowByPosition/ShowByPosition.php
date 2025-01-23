@@ -11,7 +11,8 @@ use Stu\Component\Game\ModuleViewEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Starmap\Lib\StarmapUiFactoryInterface;
 use Stu\Module\Starmap\View\RefreshSection\RefreshSection;
 
@@ -19,15 +20,17 @@ final class ShowByPosition implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_STARMAP_POSITION';
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private StarmapUiFactoryInterface $starmapUiFactory)
-    {
-    }
+    /** @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader */
+    public function __construct(
+        private SpacecraftLoaderInterface $spacecraftLoader,
+        private StarmapUiFactoryInterface $starmapUiFactory
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $ship =  $this->shipLoader->getByIdAndUser(
-            request::getIntFatal('sid'),
+        $ship =  $this->spacecraftLoader->getByIdAndUser(
+            request::getIntFatal('id'),
             $game->getUser()->getId(),
             true,
             false

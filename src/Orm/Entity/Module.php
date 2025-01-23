@@ -18,8 +18,9 @@ use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use Override;
-use Stu\Component\Ship\ShipModuleTypeEnum;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
+use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Orm\Repository\ModuleRepository;
 
 #[Table(name: 'stu_modules')]
@@ -50,8 +51,8 @@ class Module implements ModuleInterface
     #[Column(type: 'smallint')]
     private int $crew = 0;
 
-    #[Column(type: 'integer', enumType: ShipModuleTypeEnum::class)]
-    private ShipModuleTypeEnum $type = ShipModuleTypeEnum::HULL;
+    #[Column(type: 'integer', enumType: SpacecraftModuleTypeEnum::class)]
+    private SpacecraftModuleTypeEnum $type = SpacecraftModuleTypeEnum::HULL;
 
     #[Column(type: 'integer', nullable: true)]
     private ?int $research_id = 0;
@@ -71,8 +72,8 @@ class Module implements ModuleInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $faction_id = null;
 
-    #[Column(type: 'integer', enumType: ShipSystemTypeEnum::class, nullable: true)]
-    private ?ShipSystemTypeEnum $system_type = null;
+    #[Column(type: 'integer', enumType: SpacecraftSystemTypeEnum::class, nullable: true)]
+    private ?SpacecraftSystemTypeEnum $system_type = null;
 
     /**
      * @var ResearchInterface
@@ -102,7 +103,7 @@ class Module implements ModuleInterface
     /**
      * @var ArrayCollection<int, ModuleSpecialInterface>
      */
-    #[OneToMany(targetEntity: 'ModuleSpecial', mappedBy: 'module')]
+    #[OneToMany(targetEntity: 'ModuleSpecial', mappedBy: 'module', indexBy: 'special_id', fetch: 'EXTRA_LAZY')]
     #[OrderBy(['special_id' => 'ASC'])]
     private Collection $moduleSpecials;
 
@@ -128,9 +129,6 @@ class Module implements ModuleInterface
 
     #[OneToOne(targetEntity: 'Weapon', mappedBy: 'module')]
     private ?WeaponInterface $weapon = null;
-
-    /** @var null|array<int> */
-    private ?array $specialAbilities = null;
 
     public function __construct()
     {
@@ -223,7 +221,7 @@ class Module implements ModuleInterface
     }
 
     #[Override]
-    public function getCrewByFactionAndRumpLvl(FactionInterface $faction, ShipRumpInterface $rump): int
+    public function getCrewByFactionAndRumpLvl(FactionInterface $faction, SpacecraftRumpInterface $rump): int
     {
         $result = $this->getCrew();
 
@@ -250,13 +248,13 @@ class Module implements ModuleInterface
     }
 
     #[Override]
-    public function getType(): ShipModuleTypeEnum
+    public function getType(): SpacecraftModuleTypeEnum
     {
         return $this->type;
     }
 
     #[Override]
-    public function setType(ShipModuleTypeEnum $type): ModuleInterface
+    public function setType(SpacecraftModuleTypeEnum $type): ModuleInterface
     {
         $this->type = $type;
 
@@ -354,27 +352,21 @@ class Module implements ModuleInterface
     }
 
     #[Override]
-    public function getSystemType(): ?ShipSystemTypeEnum
+    public function getSystemType(): ?SpacecraftSystemTypeEnum
     {
         return $this->system_type;
-    }
-
-    #[Override]
-    public function hasSpecial(int $special_id): bool
-    {
-        if ($this->specialAbilities === null) {
-            $this->specialAbilities = array_map(
-                fn(ModuleSpecialInterface $moduleSpecial): int => $moduleSpecial->getSpecialId(),
-                $this->getSpecials()->toArray()
-            );
-        }
-        return in_array($special_id, $this->specialAbilities);
     }
 
     #[Override]
     public function getSpecials(): Collection
     {
         return $this->moduleSpecials;
+    }
+
+    #[Override]
+    public function hasSpecial(ModuleSpecialAbilityEnum $ability): bool
+    {
+        return $this->moduleSpecials->containsKey($ability->value);
     }
 
     #[Override]

@@ -1,0 +1,58 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body>
+<div class="box">
+    <div class="box_title" style="text-align: left">/
+                <a href="alliance.php">
+            Allianz
+        </a>
+                <span> / </span>
+                        <a href="alliance.php?SHOW_RELATIONS=1">
+            Diplomatie
+        </a>
+                    </div>
+</div>
+<br>
+<div id="result" style="display: none;">..</div>
+    <div class="divhead">Abkommen erstellen</div>
+    <div class="divbody">
+        <form action="alliance.php" method="post">
+            <input type="hidden" name="SHOW_RELATIONS" value="1">
+            <select name="oid">
+                                    <option value="2">testally</option>
+                            </select>
+            <select name="type">
+                                    <option value="1">Krieg</option>
+                                    <option value="3">Freundschaft</option>
+                                    <option value="4">B&uuml;ndnis</option>
+                                    <option value="5">Handelsabkommen</option>
+                                    <option value="6">Vasall</option>
+                            </select>
+            <input type="submit" value="Erstellen" name="B_NEW_RELATION">
+        </form>
+    </div>
+    <br>
+    <table class="tcal">
+        <tr>
+            <th colspan="4">Beziehungen</th>
+        </tr>
+        <tr>
+            <td class="darkbg">Allianz</td>
+            <td class="darkbg">Abkommen</td>
+            <td class="darkbg">Zeitpunkt</td>
+            <td class="darkbg">Aktionen</td>
+        </tr>
+                    <tr>
+                <td colspan="4">Keine Beziehungen vorhanden</td>
+            </tr>
+            </table>
+<div class="footer">
+    Rendered in 4.203s - Memory usage: 42.77Mb
+</div>
+
+</body>
+</html>

@@ -101,7 +101,7 @@ class User implements UserInterface
     #[Column(type: 'integer')]
     private int $prestige = 0;
 
-    #[Column(type: 'boolean', options: ['default' => false])]
+    #[Column(type: 'boolean')]
     private bool $deals = false;
 
     #[Column(type: 'integer', nullable: true)]
@@ -175,6 +175,16 @@ class User implements UserInterface
     /** @var null|array<mixed> */
     private $sessiondataUnserialized;
 
+    /**
+     * @var ArrayCollection<int, WormholeRestriction>
+     */
+    #[OneToMany(targetEntity: 'WormholeRestriction', mappedBy: 'user')]
+    private Collection $wormholeRestrictions;
+
+    #[OneToOne(targetEntity: 'UserReferer', mappedBy: 'user')]
+    private ?UserRefererInterface $referer = null;
+
+
     public function __construct()
     {
         $this->awards = new ArrayCollection();
@@ -185,6 +195,7 @@ class User implements UserInterface
         $this->buoys = new ArrayCollection();
         $this->colonyScans = new ArrayCollection();
         $this->tutorials = new ArrayCollection();
+        $this->wormholeRestrictions = new ArrayCollection();
     }
 
     #[Override]
@@ -782,6 +793,17 @@ class User implements UserInterface
     }
 
     #[Override]
+    public function isInboxMessengerStyle(): bool
+    {
+        $setting = $this->getSettings()->get(UserSettingEnum::INBOX_MESSENGER_STYLE->value);
+        if ($setting !== null) {
+            return (bool)$setting->getValue();
+        }
+
+        return false;
+    }
+
+    #[Override]
     public function getCharacters(): Collection
     {
         return $this->characters;
@@ -831,7 +853,6 @@ class User implements UserInterface
         return $timeout > time();
     }
 
-
     /**
      * @return Collection<int, UserTutorialInterface>
      */
@@ -839,5 +860,27 @@ class User implements UserInterface
     public function getTutorials(): Collection
     {
         return $this->tutorials;
+    }
+
+    #[Override]
+    /**
+     * @return Collection<int, WormholeRestriction>
+     */
+    public function getWormholeRestrictions(): iterable
+    {
+        return $this->wormholeRestrictions;
+    }
+
+    #[Override]
+    public function getReferer(): ?UserRefererInterface
+    {
+        return $this->referer;
+    }
+
+    #[Override]
+    public function setReferer(?UserRefererInterface $referer): UserInterface
+    {
+        $this->referer = $referer;
+        return $this;
     }
 }

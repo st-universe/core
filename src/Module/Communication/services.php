@@ -77,7 +77,6 @@ use Stu\Module\Control\GameController;
 use Stu\Module\Game\View\Overview\Overview;
 
 use function DI\autowire;
-use function DI\get;
 
 return [
     RateKnPostRequestInterface::class => autowire(RateKnPostRequest::class),
@@ -99,7 +98,7 @@ return [
     EndKnPlotRequestInterface::class => autowire(EndKnPlotRequest::class),
     ShowSingleKnRequestInterface::class => autowire(ShowSingleKnRequest::class),
     ShowSearchResultRequestInterface::class => autowire(ShowSearchResultRequest::class),
-    'COMMUNICATION_ACTIONS' => [
+    'COMM_ACTIONS' => [
         SetKnMark::ACTION_IDENTIFIER => autowire(SetKnMark::class),
         AddKnPost::ACTION_IDENTIFIER => autowire(AddKnPost::class)
             ->constructorParameter(
@@ -119,12 +118,8 @@ return [
         EndKnPlot::ACTION_IDENTIFIER => autowire(EndKnPlot::class),
         RateKnPost::ACTION_IDENTIFIER => autowire(RateKnPost::class),
         KnPostPreview::ACTION_IDENTIFIER => autowire(KnPostPreview::class)
-            ->constructorParameter(
-                'bbcodeParser',
-                get('kn_bbcode_parser')
-            )
     ],
-    'COMMUNICATION_VIEWS' => [
+    'COMM_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
         ShowKnCharacter::VIEW_IDENTIFIER => autowire(ShowKnCharacter::class),
         ShowKnComments::VIEW_IDENTIFIER => autowire(ShowKnComments::class),

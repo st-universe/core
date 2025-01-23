@@ -14,19 +14,15 @@ use Stu\Module\Twig\TwigHelper;
  */
 final class Init
 {
-    /** @var array<string> */
-    public static array $configFiles = [
-        '%s/config.dist.json',
-        '?%s/config.json'
-    ];
+    private static ?StuContainer $CONTAINER = null;
 
-    private static ?ContainerInterface $CONTAINER = null;
-
-    public static function getContainer(): ContainerInterface
+    public static function getContainer(ConfigStageEnum $stage = ConfigStageEnum::PRODUCTION, bool $doReload = false): StuContainer
     {
-        if (static::$CONTAINER === null) {
+        if (static::$CONTAINER === null || $doReload) {
+            ConfigFileSetup::initConfigStage($stage);
+
             // ordered alphabetically
-            $builder = new ContainerBuilder();
+            $builder = new ContainerBuilder(StuContainer::class);
             $builder->addDefinitions(__DIR__ . '/services.php');
             $builder->addDefinitions(__DIR__ . '/../Component/Admin/services.php');
             $builder->addDefinitions(__DIR__ . '/../Component/Alliance/services.php');
@@ -44,10 +40,13 @@ final class Init
             $builder->addDefinitions(__DIR__ . '/../Component/Logging/services.php');
             $builder->addDefinitions(__DIR__ . '/../Component/Map/services.php');
             $builder->addDefinitions(__DIR__ . '/../Component/Player/services.php');
+            $builder->addDefinitions(__DIR__ . '/../Component/Refactor/services.php');
             $builder->addDefinitions(__DIR__ . '/../Component/Ship/services.php');
+            $builder->addDefinitions(__DIR__ . '/../Component/Spacecraft/services.php');
             $builder->addDefinitions(__DIR__ . '/../Component/Station/services.php');
             $builder->addDefinitions(__DIR__ . '/../Component/StarSystem/services.php');
             $builder->addDefinitions(__DIR__ . '/../Lib/services.php');
+            $builder->addDefinitions(__DIR__ . '/../Lib/Pirate/services.php');
             $builder->addDefinitions(__DIR__ . '/../Module/Admin/services.php');
             $builder->addDefinitions(__DIR__ . '/../Module/Alliance/services.php');
             $builder->addDefinitions(__DIR__ . '/../Module/Award/services.php');
@@ -72,6 +71,7 @@ final class Init
             $builder->addDefinitions(__DIR__ . '/../Module/Prestige/services.php');
             $builder->addDefinitions(__DIR__ . '/../Module/Research/services.php');
             $builder->addDefinitions(__DIR__ . '/../Module/Ship/services.php');
+            $builder->addDefinitions(__DIR__ . '/../Module/Spacecraft/services.php');
             $builder->addDefinitions(__DIR__ . '/../Module/Starmap/services.php');
             $builder->addDefinitions(__DIR__ . '/../Module/Station/services.php');
             $builder->addDefinitions(__DIR__ . '/../Module/Template/services.php');
@@ -79,6 +79,7 @@ final class Init
             $builder->addDefinitions(__DIR__ . '/../Module/Trade/services.php');
             $builder->addDefinitions(__DIR__ . '/../Module/Twig/services.php');
             $builder->addDefinitions(__DIR__ . '/../Orm/Repository/services.php');
+            $builder->addDefinitions(__DIR__ . '/../Orm/Transaction/services.php');
 
             static::$CONTAINER = $builder->build();
         }

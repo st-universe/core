@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Stu\Lib\ModuleRumpWrapper;
 
 use Override;
-use Stu\Component\Ship\ShipModuleTypeEnum;
-use Stu\Module\Ship\Lib\ModuleValueCalculator;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
+use Stu\Module\Spacecraft\Lib\ModuleValueCalculator;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\ModuleInterface;
 
 final class ModuleRumpWrapperHull extends ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
@@ -28,22 +28,23 @@ final class ModuleRumpWrapperHull extends ModuleRumpWrapperBase implements Modul
     }
 
     #[Override]
-    public function getSecondValue(?ModuleInterface $module = null): ?int
+    public function getModuleType(): SpacecraftModuleTypeEnum
     {
-        return null;
+        return SpacecraftModuleTypeEnum::HULL;
     }
 
     #[Override]
-    public function getModuleType(): ShipModuleTypeEnum
+    public function apply(SpacecraftWrapperInterface $wrapper): void
     {
-        return ShipModuleTypeEnum::HULL;
-    }
-
-    #[Override]
-    public function apply(ShipWrapperInterface $wrapper): void
-    {
+        $actualHull = $wrapper->get()->getHull();
         $value = $this->getValue();
+        if (
+            $actualHull === 0
+            || $actualHull > $value
+        ) {
+            $wrapper->get()->setHuell($value);
+        }
+
         $wrapper->get()->setMaxHuell($value);
-        $wrapper->get()->setHuell($value);
     }
 }

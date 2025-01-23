@@ -8,9 +8,9 @@ interface ConstructionProgressInterface
 {
     public function getId(): int;
 
-    public function getShip(): ShipInterface;
+    public function getStation(): StationInterface;
 
-    public function setShip(ShipInterface $ship): ConstructionProgressInterface;
+    public function setStation(StationInterface $station): ConstructionProgressInterface;
 
     /**
      * @return Collection<int, ConstructionProgressModuleInterface>

@@ -28,7 +28,7 @@ jobs:
 
       - name: Cache Composer packages
         id: composer-cache
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: vendor
           key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
@@ -45,5 +45,8 @@ jobs:
           max_attempts: 3
           command: composer install --no-interaction --no-progress --ignore-platform-req=php
 
-      - name: Run test suite
-        run: composer run-script qa
+      - name: Run "STU unit" test suite
+        run: composer run-script qaStage1
+
+      - name: Run "STU integration" test suite
+        run: composer run-script qaStage2

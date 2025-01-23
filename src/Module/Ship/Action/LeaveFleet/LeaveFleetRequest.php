@@ -14,6 +14,6 @@ final class LeaveFleetRequest implements LeaveFleetRequestInterface
     #[Override]
     public function getShipId(): int
     {
-        return $this->queryParameter('id')->int()->required();
+        return $this->parameter('id')->int()->required();
     }
 }

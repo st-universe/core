@@ -15,7 +15,7 @@ final class ChangeDescriptionRequest implements ChangeDescriptionRequestInterfac
     public function getDescription(): string
     {
         return $this->tidyString(
-            $this->queryParameter('description')->string()->defaultsToIfEmpty('')
+            $this->parameter('description')->string()->defaultsToIfEmpty('')
         );
     }
 }

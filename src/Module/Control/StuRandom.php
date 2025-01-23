@@ -9,11 +9,21 @@ use RuntimeException;
  */
 class StuRandom
 {
-    public function rand(int $min, int $max, bool $useStandardNormalDistribution = false, ?int $mean = null): int
-    {
+    public function rand(
+        int $min,
+        int $max,
+        bool $useStandardNormalDistribution = false,
+        ?int $mean = null,
+        float $skewness = 0
+    ): int {
+        if ($skewness != 0 && $useStandardNormalDistribution) {
+            return $this->generateRandomValueAsymmetricDistribution($min, $max, $mean, $skewness);
+        }
+
         if ($useStandardNormalDistribution) {
             return $this->generateRandomValueStandardNormalDistribution($min, $max, $mean);
         }
+
 
         return random_int($min, $max);
     }
@@ -41,6 +51,11 @@ class StuRandom
         throw new RuntimeException('this should not happen');
     }
 
+    public function uniqid(): string
+    {
+        return uniqid();
+    }
+
     private function generateRandomValueStandardNormalDistribution(int $min, int $max, ?int $mean): int
     {
         $usedMean = $mean ?? ($min + $max) / 2; // MW
@@ -49,6 +64,28 @@ class StuRandom
         do {
             $value = random_int($min, $max);
             $probability = exp(-0.5 * (($value - $usedMean) / $stdDeviation) ** 2); // normal distribution
+            $randomProbability = random_int(0, mt_getrandmax()) / mt_getrandmax();
+
+            if ($randomProbability <= $probability) {
+                return $value;
+            }
+        } while (true);
+    }
+
+    private function generateRandomValueAsymmetricDistribution(int $min, int $max, ?int $mean = null, float $skewness = 0): int
+    {
+        $usedMean = $mean ?? ($min + $max) / 2;
+        $stdDeviation = ($max - $min) / 6;
+
+        do {
+            $value = random_int($min, $max);
+            $probability = exp(-0.5 * (($value - $usedMean) / $stdDeviation) ** 2);
+
+            if ($skewness) {
+                $skewFactor = 1 + $skewness * (($value - $usedMean) / ($max - $min));
+                $probability *= max(0, $skewFactor);
+            }
+
             $randomProbability = random_int(0, mt_getrandmax()) / mt_getrandmax();
 
             if ($randomProbability <= $probability) {

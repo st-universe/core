@@ -6,21 +6,21 @@ namespace Stu\Module\Station\Action\DockFleet;
 
 use Override;
 use request;
-use Stu\Component\Ship\Repair\CancelRepairInterface;
+use Stu\Component\Spacecraft\Repair\CancelRepairInterface;
 use Stu\Component\Ship\Retrofit\CancelRetrofitInterface;
 use Stu\Component\Ship\ShipEnum;
-use Stu\Component\Ship\System\Exception\ShipSystemException;
-use Stu\Component\Ship\System\ShipSystemManagerInterface;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Spacecraft\System\Exception\SpacecraftSystemException;
+use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
-use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
+use Stu\Module\Station\Lib\StationLoaderInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
+use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
+use Stu\Module\Station\Lib\StationWrapperInterface;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -32,14 +32,14 @@ final class DockFleet implements ActionControllerInterface
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
-        private ShipLoaderInterface $shipLoader,
+        private StationLoaderInterface $stationLoader,
         private FleetRepositoryInterface $fleetRepository,
         private ShipRepositoryInterface $shipRepository,
-        private ShipSystemManagerInterface $shipSystemManager,
+        private SpacecraftSystemManagerInterface $spacecraftSystemManager,
         private InteractionCheckerInterface $interactionChecker,
         private CancelRepairInterface $cancelRepair,
         private CancelRetrofitInterface $cancelRetrofit,
-        private ShipWrapperFactoryInterface $shipWrapperFactory,
+        private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
@@ -49,14 +49,15 @@ final class DockFleet implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         //$this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
-        $game->setView(ShowShip::VIEW_IDENTIFIER);
+        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         $userId = $game->getUser()->getId();
 
-        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
+        $wrapper = $this->stationLoader->getWrapperByIdAndUser(
             request::indInt('id'),
             $userId
         );
+
         $station = $wrapper->get();
 
         $this->loggerUtil->log('A');
@@ -73,7 +74,7 @@ final class DockFleet implements ActionControllerInterface
             $this->loggerUtil->log('D');
             return;
         }
-        if (!$station->isBase()) {
+        if (!$station->isStation()) {
             $this->loggerUtil->log('E');
             return;
         }
@@ -90,7 +91,7 @@ final class DockFleet implements ActionControllerInterface
         $this->fleetDock($wrapper, $targetFleet, $game);
     }
 
-    private function fleetDock(ShipWrapperInterface $stationWrapper, FleetInterface $targetFleet, GameControllerInterface $game): void
+    private function fleetDock(StationWrapperInterface $stationWrapper, FleetInterface $targetFleet, GameControllerInterface $game): void
     {
         $station = $stationWrapper->get();
         $epsSystem = $stationWrapper->getEpsSystemData();
@@ -112,7 +113,7 @@ final class DockFleet implements ActionControllerInterface
                 $msg[] = $station->getName() . _(": Nicht genügend Energie vorhanden");
                 break;
             }
-            if ($ship->getCloakState()) {
+            if ($ship->isCloaked()) {
                 $msg[] = $ship->getName() . _(': Das Schiff ist getarnt');
                 continue;
             }
@@ -123,16 +124,16 @@ final class DockFleet implements ActionControllerInterface
                 $msg[] = $ship->getName() . _(': Die Umrüstung wurde abgebrochen');
             }
 
-            $wrapper = $this->shipWrapperFactory->wrapShip($ship);
+            $wrapper = $this->spacecraftWrapperFactory->wrapShip($ship);
 
             try {
-                $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_SHIELDS);
-            } catch (ShipSystemException) {
+                $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::SHIELDS);
+            } catch (SpacecraftSystemException) {
             }
 
             try {
-                $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
-            } catch (ShipSystemException) {
+                $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::WARPDRIVE);
+            } catch (SpacecraftSystemException) {
             }
 
             $ship->setDockedTo($station);

@@ -1,0 +1,35 @@
+<html lang="de">
+
+<head>
+  <script src="/static/js/default.js"></script>
+</head>
+
+<body>
+  <div class="ajaxwin">
+        <table class="tcal">
+      <tr>
+        <th onmouseover="switch_drag_on();" onmouseout="switch_drag_off();">Schwarzes Brett</th>
+        <th style="width: 18px;">
+          <a href="javascript:void(0);" onclick="closeAjaxWindow();" onmouseover="cp('ajaxclose','buttons/x2');" onmouseout="cp('ajaxclose','buttons/x1');">
+            <img src="/assets/buttons/x1.png" name="ajaxclose" title="Fenster schlie&Atilde;&#159;en">
+          </a>
+        </th>
+      </tr>
+    </table>
+        <input type="hidden" name="network" id="network" value="101">
+<div id="shoutbox_list">
+    <table class="tcal">
+            <tr>
+        <td class="darkbg">Keine Eintr&Atilde;&curren;ge vorhanden</td>
+    </tr>
+    </table>
+</div>
+<br>
+<div class="divhead">Nachricht schreiben</div>
+<div class="divbody">
+    <input type="text" style="width: 500px;" name="shoutboxentry" id="shoutboxentry" maxlength="200"> <input type="button" class="button" value="Absenden" onclick="addShoutboxEntry();">
+</div>
+      </div>
+  </body>
+
+</html>

@@ -1,0 +1,32 @@
+<table class="use" style="width: 250px;">
+  <tr>
+    <th>
+      <img onClick="window.scrollTo(0,0);" src="/assets/buttons/lager.png" title="Lagerraum" /> Lagerraum
+      {{ SPACECRAFT.getStorageSum }}/{{ SPACECRAFT.getMaxStorage }}
+    </th>
+  </tr>
+  <tr>
+    <td>
+      {% for commodity in SPACECRAFT.getStorage %}
+      {% if commodity.getAmount %}
+      {% if not loop.index is odd %}
+      <div style="float: right; width: 50%;">
+        <img src="/assets/commodities/{{ commodity.getCommodity.getId }}.png"
+          title="{{ commodity.getCommodity.getName }}" />
+        {{ commodity.getAmount }}
+      </div>
+      {% if loop.last %}
+      <div style="float: left; width: 50%;"></div>
+      {% endif %}
+      {% else %}
+      <div style="float: left; width: 50%;">
+        <img src="/assets/commodities/{{ commodity.getCommodity.getId }}.png"
+          title="{{ commodity.getCommodity.getName }}" />
+        {{ commodity.getAmount }}
+      </div>
+      {% endif %}
+      {% endif %}
+      {% endfor %}
+    </td>
+  </tr>
+</table>

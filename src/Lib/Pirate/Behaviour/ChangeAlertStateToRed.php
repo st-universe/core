@@ -3,12 +3,12 @@
 namespace Stu\Lib\Pirate\Behaviour;
 
 use Override;
-use Stu\Component\Ship\ShipAlertStateEnum;
+use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Lib\Pirate\PirateBehaviourEnum;
 use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Lib\Pirate\PirateReactionMetadata;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 
 class ChangeAlertStateToRed implements PirateBehaviourInterface
 {
@@ -17,12 +17,12 @@ class ChangeAlertStateToRed implements PirateBehaviourInterface
         FleetWrapperInterface $fleet,
         PirateReactionInterface $pirateReaction,
         PirateReactionMetadata $reactionMetadata,
-        ?ShipInterface $triggerShip
+        ?SpacecraftInterface $triggerSpacecraft
     ): ?PirateBehaviourEnum {
         $fleet = $fleet->get();
 
         foreach ($fleet->getShips() as $ship) {
-            $ship->setAlertState(ShipAlertStateEnum::ALERT_RED);
+            $ship->setAlertState(SpacecraftAlertStateEnum::ALERT_RED);
         }
 
         return null;

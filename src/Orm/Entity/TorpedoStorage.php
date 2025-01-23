@@ -17,7 +17,7 @@ use Override;
 use Stu\Orm\Repository\TorpedoStorageRepository;
 
 #[Table(name: 'stu_torpedo_storage')]
-#[Index(name: 'torpedo_storage_ship_idx', columns: ['ship_id'])]
+#[Index(name: 'torpedo_storage_spacecraft_idx', columns: ['spacecraft_id'])]
 #[Entity(repositoryClass: TorpedoStorageRepository::class)]
 class TorpedoStorage implements TorpedoStorageInterface
 {
@@ -27,14 +27,14 @@ class TorpedoStorage implements TorpedoStorageInterface
     private int $id;
 
     #[Column(type: 'integer')]
-    private int $ship_id;
+    private int $spacecraft_id;
 
     #[Column(type: 'integer', length: 3)]
     private int $torpedo_type;
 
-    #[OneToOne(targetEntity: 'Ship', inversedBy: 'torpedoStorage')]
-    #[JoinColumn(name: 'ship_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ShipInterface $ship;
+    #[OneToOne(targetEntity: 'Spacecraft', inversedBy: 'torpedoStorage')]
+    #[JoinColumn(name: 'spacecraft_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    private SpacecraftInterface $spacecraft;
 
     #[ManyToOne(targetEntity: 'TorpedoType')]
     #[JoinColumn(name: 'torpedo_type', referencedColumnName: 'id')]
@@ -50,15 +50,15 @@ class TorpedoStorage implements TorpedoStorageInterface
     }
 
     #[Override]
-    public function getShip(): ShipInterface
+    public function getSpacecraft(): SpacecraftInterface
     {
-        return $this->ship;
+        return $this->spacecraft;
     }
 
     #[Override]
-    public function setShip(ShipInterface $ship): TorpedoStorageInterface
+    public function setSpacecraft(SpacecraftInterface $spacecraft): TorpedoStorageInterface
     {
-        $this->ship = $ship;
+        $this->spacecraft = $spacecraft;
         return $this;
     }
 

@@ -103,10 +103,9 @@ use Stu\Orm\Entity\RpgPlot;
 use Stu\Orm\Entity\RpgPlotMember;
 use Stu\Orm\Entity\SessionString;
 use Stu\Orm\Entity\Ship;
-use Stu\Orm\Entity\ShipBuildplan;
-use Stu\Orm\Entity\ShipCrew;
+use Stu\Orm\Entity\SpacecraftBuildplan;
+use Stu\Orm\Entity\CrewAssignment;
 use Stu\Orm\Entity\ShipLog;
-use Stu\Orm\Entity\ShipRump;
 use Stu\Orm\Entity\ShipRumpBuildingFunction;
 use Stu\Orm\Entity\ShipRumpCategory;
 use Stu\Orm\Entity\ShipRumpCategoryRoleCrew;
@@ -116,13 +115,16 @@ use Stu\Orm\Entity\ShipRumpModuleLevel;
 use Stu\Orm\Entity\ShipRumpRole;
 use Stu\Orm\Entity\ShipRumpSpecial;
 use Stu\Orm\Entity\ShipRumpUser;
-use Stu\Orm\Entity\ShipSystem;
 use Stu\Orm\Entity\ShipTakeover;
 use Stu\Orm\Entity\ShipyardShipQueue;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\SpacecraftEmergency;
+use Stu\Orm\Entity\SpacecraftRump;
+use Stu\Orm\Entity\SpacecraftSystem;
 use Stu\Orm\Entity\StarSystem;
 use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Entity\StarSystemType;
+use Stu\Orm\Entity\Station;
 use Stu\Orm\Entity\StationShipRepair;
 use Stu\Orm\Entity\Storage;
 use Stu\Orm\Entity\TachyonScan;
@@ -139,6 +141,7 @@ use Stu\Orm\Entity\TradePost;
 use Stu\Orm\Entity\TradeShoutbox;
 use Stu\Orm\Entity\TradeTransaction;
 use Stu\Orm\Entity\TradeTransfer;
+use Stu\Orm\Entity\Trumfield;
 use Stu\Orm\Entity\TutorialStep;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserAward;
@@ -149,12 +152,14 @@ use Stu\Orm\Entity\UserLayer;
 use Stu\Orm\Entity\UserLock;
 use Stu\Orm\Entity\UserMap;
 use Stu\Orm\Entity\UserProfileVisitor;
+use Stu\Orm\Entity\UserReferer;
 use Stu\Orm\Entity\UserSetting;
 use Stu\Orm\Entity\UserTag;
 use Stu\Orm\Entity\UserTutorial;
 use Stu\Orm\Entity\Weapon;
 use Stu\Orm\Entity\WeaponShield;
 use Stu\Orm\Entity\WormholeEntry;
+use Stu\Orm\Entity\WormholeRestriction;
 
 return [
     AllianceRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(Alliance::class),
@@ -252,8 +257,8 @@ return [
     RpgPlotRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(RpgPlot::class),
     RpgPlotMemberRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(RpgPlotMember::class),
     SessionStringRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(SessionString::class),
-    ShipBuildplanRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(ShipBuildplan::class),
-    ShipCrewRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(ShipCrew::class),
+    SpacecraftBuildplanRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(SpacecraftBuildplan::class),
+    CrewAssignmentRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(CrewAssignment::class),
     ShipLogRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(ShipLog::class),
     ShipRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(Ship::class),
     ShipRumpBuildingFunctionRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(ShipRumpBuildingFunction::class),
@@ -262,17 +267,19 @@ return [
     ShipRumpColonizationBuildingRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(ShipRumpColonizationBuilding::class),
     ShipRumpCostRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(ShipRumpCost::class),
     ShipRumpModuleLevelRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(ShipRumpModuleLevel::class),
-    ShipRumpRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(ShipRump::class),
+    SpacecraftRumpRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(SpacecraftRump::class),
     ShipRumpRoleRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(ShipRumpRole::class),
     ShipRumpSpecialRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(ShipRumpSpecial::class),
     ShipRumpUserRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(ShipRumpUser::class),
-    ShipSystemRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(ShipSystem::class),
+    SpacecraftSystemRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(SpacecraftSystem::class),
     ShipTakeoverRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(ShipTakeover::class),
     ShipyardShipQueueRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(ShipyardShipQueue::class),
+    SpacecraftRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(Spacecraft::class),
     SpacecraftEmergencyRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(SpacecraftEmergency::class),
     StarSystemMapRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(StarSystemMap::class),
     StarSystemRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(StarSystem::class),
     StarSystemTypeRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(StarSystemType::class),
+    StationRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(Station::class),
     StationShipRepairRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(StationShipRepair::class),
     StorageRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(Storage::class),
     TerraformingRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(Terraforming::class),
@@ -289,6 +296,7 @@ return [
     TradeShoutboxRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(TradeShoutbox::class),
     TradeTransactionRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(TradeTransaction::class),
     TradeTransferRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(TradeTransfer::class),
+    TrumfieldRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(Trumfield::class),
     TutorialStepRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(TutorialStep::class),
     UserAwardRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserAward::class),
     UserCharacterRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserCharacter::class),
@@ -299,10 +307,12 @@ return [
     UserInvitationRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserInvitation::class),
     UserMapRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserMap::class),
     UserProfileVisitorRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserProfileVisitor::class),
+    UserRefererRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserReferer::class),
     UserSettingRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserSetting::class),
     UserTagRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserTag::class),
     UserTutorialRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserTutorial::class),
     WeaponRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(Weapon::class),
     WeaponShieldRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(WeaponShield::class),
     WormholeEntryRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(WormholeEntry::class),
+    WormholeRestrictionRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(WormholeRestriction::class),
 ];

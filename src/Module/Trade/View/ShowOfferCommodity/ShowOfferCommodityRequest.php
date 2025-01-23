@@ -14,12 +14,12 @@ final class ShowOfferCommodityRequest implements ShowOfferCommodityRequestInterf
     #[Override]
     public function getTradePostId(): int
     {
-        return $this->queryParameter('postid')->int()->required();
+        return $this->parameter('postid')->int()->required();
     }
 
     #[Override]
     public function getCommodityId(): int
     {
-        return $this->queryParameter('commodityid')->int()->required();
+        return $this->parameter('commodityid')->int()->required();
     }
 }

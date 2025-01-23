@@ -19,8 +19,11 @@ use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use Override;
 use Stu\Component\Colony\ColonyMenuEnum;
+use Stu\Component\Game\ModuleViewEnum;
 use Stu\Component\Game\TimeConstants;
 use Stu\Lib\Colony\PlanetFieldHostTypeEnum;
+use Stu\Lib\Transfer\CommodityTransfer;
+use Stu\Lib\Transfer\TransferEntityTypeEnum;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Repository\ColonyRepository;
@@ -144,19 +147,19 @@ class Colony implements ColonyInterface
     private Collection $blockers;
 
     /**
-     * @var ArrayCollection<int, ShipCrewInterface>
+     * @var ArrayCollection<int, CrewAssignmentInterface>
      */
-    #[OneToMany(targetEntity: 'ShipCrew', mappedBy: 'colony')]
+    #[OneToMany(targetEntity: 'CrewAssignment', mappedBy: 'colony')]
     private Collection $crewAssignments;
 
     /**
-     * @var ArrayCollection<int, ShipCrewInterface>
+     * @var ArrayCollection<int, CrewAssignmentInterface>
      */
     #[OneToMany(targetEntity: 'CrewTraining', mappedBy: 'colony')]
     private Collection $crewTrainings;
 
     /**
-     * @var Collection<int, ColonyDepositMiningInterface>
+     * @var ArrayCollection<int, ColonyDepositMiningInterface>
      */
     #[OneToMany(targetEntity: 'ColonyDepositMining', mappedBy: 'colony')]
     #[OrderBy(['commodity_id' => 'ASC'])]
@@ -395,15 +398,15 @@ class Colony implements ColonyInterface
     }
 
     #[Override]
-    public function getTwilightZone(): int
+    public function getTwilightZone(int $timestamp): int
     {
         $twilightZone = 0;
 
         $width = $this->getSurfaceWidth();
         $rotationTime = $this->getRotationTime();
-        $colonyTimeSeconds = $this->getColonyTimeSeconds();
+        $colonyTimeSeconds = $this->getColonyTimeSeconds($timestamp);
 
-        if ($this->getDayTimePrefix() == 1) {
+        if ($this->getDayTimePrefix($timestamp) == 1) {
             $scaled = floor((((100 / ($rotationTime * 0.125)) * ($colonyTimeSeconds - $rotationTime * 0.25)) / 100) * $width);
             if ($scaled == 0) {
                 $twilightZone = - (($width) - 1);
@@ -413,14 +416,14 @@ class Colony implements ColonyInterface
                 $twilightZone = (int) - (($width) - $scaled);
             }
         }
-        if ($this->getDayTimePrefix() == 2) {
+        if ($this->getDayTimePrefix($timestamp) == 2) {
             $twilightZone = $width;
         }
-        if ($this->getDayTimePrefix() == 3) {
+        if ($this->getDayTimePrefix($timestamp) == 3) {
             $scaled = floor((((100 / ($rotationTime * 0.125)) * ($colonyTimeSeconds - $rotationTime * 0.75)) / 100) * $width);
             $twilightZone = (int) ($width - $scaled);
         }
-        if ($this->getDayTimePrefix() == 4) {
+        if ($this->getDayTimePrefix($timestamp) == 4) {
             $twilightZone = 0;
         }
 
@@ -473,33 +476,32 @@ class Colony implements ColonyInterface
         return (int) (TimeConstants::ONE_DAY_IN_SECONDS * $this->getRotationFactor() / 100);
     }
 
-    #[Override]
-    public function getColonyTimeSeconds(): int
+    public function getColonyTimeSeconds(int $timestamp): int
     {
-        return time() % $this->getRotationTime();
+        return $timestamp % $this->getRotationTime();
     }
 
     #[Override]
-    public function getColonyTimeHour(): ?string
-    {
-        $rotationTime = $this->getRotationTime();
-
-        return sprintf("%02d", (int) floor(($rotationTime / 3600) * ($this->getColonyTimeSeconds() / $rotationTime)));
-    }
-
-    #[Override]
-    public function getColonyTimeMinute(): ?string
+    public function getColonyTimeHour(int $timestamp): ?string
     {
         $rotationTime = $this->getRotationTime();
 
-        return sprintf("%02d", (int) floor(60 * (($rotationTime / 3600) * ($this->getColonyTimeSeconds() / $rotationTime) - ((int) $this->getColonyTimeHour()))));
+        return sprintf("%02d", (int) floor(($rotationTime / 3600) * ($this->getColonyTimeSeconds($timestamp) / $rotationTime)));
     }
 
     #[Override]
-    public function getDayTimePrefix(): ?int
+    public function getColonyTimeMinute(int $timestamp): ?string
+    {
+        $rotationTime = $this->getRotationTime();
+
+        return sprintf("%02d", (int) floor(60 * (($rotationTime / 3600) * ($this->getColonyTimeSeconds($timestamp) / $rotationTime) - ((int) $this->getColonyTimeHour($timestamp)))));
+    }
+
+    #[Override]
+    public function getDayTimePrefix(int $timestamp): ?int
     {
         $daytimeprefix = null;
-        $daypercent = (int) (($this->getColonyTimeSeconds() / $this->getRotationTime()) * 100);
+        $daypercent = (int) (($this->getColonyTimeSeconds($timestamp) / $this->getRotationTime()) * 100);
         if ($daypercent > 25 && $daypercent <= 37.5) {
             $daytimeprefix = 1; //Sonnenaufgang
         }
@@ -516,22 +518,22 @@ class Colony implements ColonyInterface
     }
 
     #[Override]
-    public function getDayTimeName(): ?string
+    public function getDayTimeName(int $timestamp): ?string
     {
         $daytimename = null;
-        if ($this->getDayTimePrefix() == 1) {
+        if ($this->getDayTimePrefix($timestamp) == 1) {
             $daytimename = 'Morgen';
         }
 
-        if ($this->getDayTimePrefix() == 2) {
+        if ($this->getDayTimePrefix($timestamp) == 2) {
             $daytimename = 'Tag';
         }
 
-        if ($this->getDayTimePrefix() == 3) {
+        if ($this->getDayTimePrefix($timestamp) == 3) {
             $daytimename = 'Abend';
         }
 
-        if ($this->getDayTimePrefix() == 4) {
+        if ($this->getDayTimePrefix($timestamp) == 4) {
             $daytimename = 'Nacht';
         }
         return $daytimename;
@@ -586,6 +588,12 @@ class Colony implements ColonyInterface
     }
 
     #[Override]
+    public function getLocation(): MapInterface|StarSystemMapInterface
+    {
+        return $this->getStarsystemMap();
+    }
+
+    #[Override]
     public function setStarsystemMap(StarSystemMapInterface $systemMap): ColonyInterface
     {
         $this->starsystem_map = $systemMap;
@@ -611,22 +619,10 @@ class Colony implements ColonyInterface
         return $this->planetFields;
     }
 
-    /**
-     * @return StorageInterface[]
-     */
     #[Override]
-    public function getBeamableStorage(): array
+    public function getBeamableStorage(): Collection
     {
-        $beamableStorage = array_filter(
-            $this->getStorage()->getValues(),
-            fn(StorageInterface $storage): bool => $storage->getCommodity()->isBeamable() === true
-        );
-
-        usort($beamableStorage, function ($a, $b): int {
-            return $a->getCommodity()->getSort() <=> $b->getCommodity()->getSort();
-        });
-
-        return $beamableStorage;
+        return CommodityTransfer::excludeNonBeamable($this->storage);
     }
 
     #[Override]
@@ -780,5 +776,32 @@ class Colony implements ColonyInterface
     public function isMenuAllowed(ColonyMenuEnum $menu): bool
     {
         return true;
+    }
+
+    #[Override]
+    public function getTransferEntityType(): TransferEntityTypeEnum
+    {
+        return TransferEntityTypeEnum::COLONY;
+    }
+
+    #[Override]
+    public function getHref(): string
+    {
+        return sprintf(
+            '%s?%s=1&id=%d',
+            ModuleViewEnum::COLONY->getPhpPage(),
+            ShowColony::VIEW_IDENTIFIER,
+            $this->getId()
+        );
+    }
+
+    #[Override]
+    public function getComponentParameters(): string
+    {
+        return sprintf(
+            '&hosttype=%d&id=%d',
+            $this->getHostType()->value,
+            $this->getId()
+        );
     }
 }

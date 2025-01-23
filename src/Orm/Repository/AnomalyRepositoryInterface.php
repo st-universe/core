@@ -3,9 +3,11 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Orm\Entity\Anomaly;
 use Stu\Orm\Entity\AnomalyInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\LocationInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 
 /**
  * @extends ObjectRepository<Anomaly>
@@ -21,10 +23,12 @@ interface AnomalyRepositoryInterface extends ObjectRepository
 
     public function delete(AnomalyInterface $anomaly): void;
 
-    /**
-     * @return array<AnomalyInterface>
-     */
-    public function findAllActive(): array;
+    public function getByLocationAndType(LocationInterface $location, AnomalyTypeEnum $type): ?AnomalyInterface;
 
-    public function getClosestAnomalyDistance(ShipInterface $ship): ?int;
+    /** @return array<AnomalyInterface> */
+    public function findAllRoot(): array;
+
+    public function getActiveCountByTypeWithoutParent(AnomalyTypeEnum $type): int;
+
+    public function getClosestAnomalyDistance(SpacecraftInterface $spacecraft): ?int;
 }

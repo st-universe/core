@@ -22,7 +22,7 @@ final class ShowShiplist implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
-        $tradePostId = request::getIntFatal('id');
+        $tradePostId = request::getIntFatal('postid');
 
         $game->setMacroInAjaxWindow('html/trade/tradePostShipList.twig');
         $game->setPageTitle(_('Schiffe vor Ort'));
@@ -33,7 +33,7 @@ final class ShowShiplist implements ViewControllerInterface
             throw new AccessViolation();
         }
 
-        $station = $license->getTradePost()->getShip();
+        $station = $license->getTradePost()->getStation();
 
         $game->setTemplateVar('LIST', $this->shipRepository->getByLocationAndUser(
             $station->getLocation(),

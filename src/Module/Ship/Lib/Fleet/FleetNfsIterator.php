@@ -8,7 +8,7 @@ use Iterator;
 use Override;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Ship\Lib\TFleetShipItemInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 
 /**
  * @implements Iterator<FleetNfsItem>
@@ -24,8 +24,12 @@ final class FleetNfsIterator implements Iterator
     /**
      * @param iterable<TFleetShipItemInterface> $ships
      */
-    public function __construct(iterable $ships, private ShipInterface $currentShip, private ?SessionInterface $session, private int $userId)
-    {
+    public function __construct(
+        iterable $ships,
+        private SpacecraftInterface $currentSpacecraft,
+        private ?SessionInterface $session,
+        private int $userId
+    ) {
         $currentFleetId = null;
         $currentFleet = null;
 
@@ -59,7 +63,7 @@ final class FleetNfsIterator implements Iterator
     #[Override]
     public function current(): FleetNfsItem
     {
-        return new FleetNfsItem($this->fleets[$this->position], $this->currentShip, $this->session, $this->userId);
+        return new FleetNfsItem($this->fleets[$this->position], $this->currentSpacecraft, $this->session, $this->userId);
     }
 
     #[Override]

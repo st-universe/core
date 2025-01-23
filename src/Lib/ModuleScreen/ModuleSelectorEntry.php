@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace Stu\Lib\ModuleScreen;
 
 use Override;
-use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ModuleInterface;
-use Stu\Orm\Entity\ShipBuildplanInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\ShipRumpInterface;
+use Stu\Orm\Entity\SpacecraftBuildplanInterface;
+use Stu\Orm\Entity\SpacecraftRumpInterface;
 use Stu\Orm\Entity\ShipRumpModuleLevelInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
@@ -22,24 +21,18 @@ final class ModuleSelectorEntry implements ModuleSelectorEntryInterface
     public function __construct(
         private ModuleSelectorInterface $moduleSelector,
         private ModuleInterface $module,
-        private ShipRumpInterface $rump,
+        private SpacecraftRumpInterface $rump,
         private ShipRumpModuleLevelInterface $shipRumpModuleLevel,
-        private ColonyInterface|ShipInterface $host,
+        private ColonyInterface|SpacecraftInterface $host,
         private UserInterface $user,
         private ModuleRepositoryInterface $moduleRepository,
-        private ?ShipBuildplanInterface $buildplan = null
+        private ?SpacecraftBuildplanInterface $buildplan = null
     ) {}
 
 
     #[Override]
     public function isChosen(): bool
     {
-        /*
-        if ($this->isDisabled()) {
-            return false;
-        }
-         */
-
         if ($this->buildplan !== null) {
             if ($this->module->getType()->isSpecialSystemType()) {
                 $allModulesWithSameName = $this->moduleRepository->findBy(['name' => $this->module->getName()]);
@@ -54,8 +47,8 @@ final class ModuleSelectorEntry implements ModuleSelectorEntryInterface
                 }
             } else {
                 $modulesByType = $this->buildplan->getModulesByType($this->module->getType());
-                foreach ($modulesByType as $buildplanModule) {
-                    if ($buildplanModule->getModule()->getId() === $this->module->getId()) {
+                foreach ($modulesByType as $module) {
+                    if ($module->getId() === $this->module->getId()) {
                         return true;
                     }
                 }

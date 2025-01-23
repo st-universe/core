@@ -9,7 +9,7 @@ use Stu\Module\Config\StuConfigSettingEnum;
 
 class SettingsCache implements SettingsCacheInterface
 {
-    /** @var Collection<int, SettingsInterface> */
+    /** @var Collection<string, SettingsInterface> */
     private Collection $settings;
 
     public function __construct(private SettingsFactoryInterface $settingsFactory)
@@ -18,15 +18,17 @@ class SettingsCache implements SettingsCacheInterface
     }
 
     #[Override]
-    public function getSettings(StuConfigSettingEnum $type, ?SettingsInterface $parent): SettingsInterface
+    public function getSettings(string $configInterface, ?SettingsInterface $parent): SettingsInterface
     {
-        $setting = $this->settings->get($type->value);
+        $configSetting = StuConfigSettingEnum::from($configInterface);
+
+        $setting = $this->settings->get($configSetting->value);
         if ($setting === null) {
 
-            $setting = $this->settingsFactory->createSettings($type, $parent, $this);
+            $setting = $this->settingsFactory->createSettings($configSetting, $parent, $this);
 
             $this->settings->set(
-                $type->value,
+                $configSetting->value,
                 $setting
             );
         }

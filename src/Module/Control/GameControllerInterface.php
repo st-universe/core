@@ -31,6 +31,7 @@ interface GameControllerInterface extends InformationInterface
 
     public function getMacro(): string;
 
+    /** @param array<string> $info */
     public function addInformationMerge(array $info): void;
 
     public function addInformationWrapper(?InformationWrapper $informations, bool $isHead = false): void;
@@ -47,8 +48,6 @@ interface GameControllerInterface extends InformationInterface
     public function getUser(): UserInterface;
 
     public function hasUser(): bool;
-
-    public function getUniqId(): string;
 
     public function isNpc(): bool;
 
@@ -80,8 +79,6 @@ interface GameControllerInterface extends InformationInterface
     public function redirectTo(string $href): void;
 
     public function getCurrentRound(): GameTurnInterface;
-
-    public function getJavascriptPath(): string;
 
     public function checkDatabaseItem(?int $databaseEntryId): void;
 
@@ -121,6 +118,8 @@ interface GameControllerInterface extends InformationInterface
     public function getGameStats(): array;
 
     public function getGameStateTextual(): string;
+
+    public function resetGameData(): void;
 
     public function getBenchmarkResult(): array;
 }

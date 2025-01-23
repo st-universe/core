@@ -9,14 +9,14 @@ use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\ColonyInterface;
 
-final class AcademyProvider implements GuiComponentProviderInterface
+final class AcademyProvider implements PlanetFieldHostComponentInterface
 {
     public function __construct(private ColonyLibFactoryInterface $colonyLibFactory, private CrewCountRetrieverInterface $crewCountRetriever) {}
 
-    /** @param ColonyInterface&PlanetFieldHostInterface $host */
+    /** @param ColonyInterface&PlanetFieldHostInterface $entity */
     #[Override]
     public function setTemplateVariables(
-        PlanetFieldHostInterface $host,
+        $entity,
         GameControllerInterface $game
     ): void {
         $user = $game->getUser();
@@ -30,19 +30,19 @@ final class AcademyProvider implements GuiComponentProviderInterface
             $trainableCrew = $crewRemainingCount;
         }
 
-        if ($trainableCrew > $host->getWorkless()) {
-            $trainableCrew = $host->getWorkless();
+        if ($trainableCrew > $entity->getWorkless()) {
+            $trainableCrew = $entity->getWorkless();
         }
 
         $freeAssignmentCount = $this->colonyLibFactory->createColonyPopulationCalculator(
-            $host
+            $entity
         )->getFreeAssignmentCount();
 
         $localcrewlimit = $this->colonyLibFactory->createColonyPopulationCalculator(
-            $host
+            $entity
         )->getCrewLimit();
 
-        $crewinlocalpool = $host->getCrewAssignmentAmount();
+        $crewinlocalpool = $entity->getCrewAssignmentAmount();
 
         if ($localcrewlimit - $crewinlocalpool < $trainableCrew) {
             $trainableCrew = $localcrewlimit - $crewinlocalpool;

@@ -4,7 +4,7 @@ namespace Stu\Orm\Entity;
 
 interface PirateSetupBuildplanInterface
 {
-    public function getBuildplan(): ShipBuildplanInterface;
+    public function getBuildplan(): SpacecraftBuildplanInterface;
 
     public function getAmount(): int;
 }

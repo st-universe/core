@@ -5,24 +5,17 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowColony;
 
 use Override;
-use request;
-use Stu\Component\Building\BuildingFunctionEnum;
-use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Colony\ColonyMenuEnum;
-use Stu\Component\Colony\OrbitShipListRetrieverInterface;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Lib\Colony\PlanetFieldHostTypeEnum;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\Lib\Gui\ColonyGuiHelperInterface;
-use Stu\Module\Colony\Lib\Gui\GuiComponentEnum;
+use Stu\Module\Colony\Component\ColonyComponentEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContext;
 use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Control\ViewWithTutorialInterface;
-use Stu\Module\Database\View\Category\Wrapper\DatabaseCategoryWrapperFactoryInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
-use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 final class ShowColony implements ViewControllerInterface, ViewWithTutorialInterface
 {
@@ -32,11 +25,6 @@ final class ShowColony implements ViewControllerInterface, ViewWithTutorialInter
         private ColonyLoaderInterface $colonyLoader,
         private ColonyGuiHelperInterface $colonyGuiHelper,
         private ShowColonyRequestInterface $showColonyRequest,
-        private TorpedoTypeRepositoryInterface $torpedoTypeRepository,
-        private DatabaseCategoryWrapperFactoryInterface $databaseCategoryWrapperFactory,
-        private OrbitShipListRetrieverInterface $orbitShipListRetriever,
-        private ColonyFunctionManagerInterface $colonyFunctionManager,
-        private ShipWrapperFactoryInterface $shipWrapperFactory
     ) {}
 
     #[Override]
@@ -64,33 +52,11 @@ final class ShowColony implements ViewControllerInterface, ViewWithTutorialInter
 
             $game->setTemplateVar('SELECTED_COLONY_SUB_MENU_TEMPLATE', $menu->getTemplate());
             $this->colonyGuiHelper->registerComponents($colony, $game, [
-                GuiComponentEnum::SURFACE,
-                GuiComponentEnum::SHIELDING,
-                GuiComponentEnum::EPS_BAR,
-                GuiComponentEnum::STORAGE
+                ColonyComponentEnum::SURFACE,
+                ColonyComponentEnum::SHIELDING,
+                ColonyComponentEnum::EPS_BAR,
+                ColonyComponentEnum::STORAGE
             ]);
-        }
-
-
-        $firstOrbitShip = null;
-
-        $shipList = $this->orbitShipListRetriever->retrieve($colony);
-        if ($shipList !== []) {
-            // if selected, return the current target
-            $target = request::indInt('target');
-
-            if ($target !== 0) {
-                foreach ($shipList as $fleet) {
-                    foreach ($fleet['ships'] as $idx => $ship) {
-                        if ($idx == $target) {
-                            $firstOrbitShip = $ship;
-                        }
-                    }
-                }
-            }
-            if ($firstOrbitShip === null) {
-                $firstOrbitShip = current(current($shipList)['ships']);
-            }
         }
 
         $game->appendNavigationPart(
@@ -110,20 +76,6 @@ final class ShowColony implements ViewControllerInterface, ViewWithTutorialInter
             PlanetFieldHostTypeEnum::COLONY->value,
             $game->getSessionString()
         ));
-
-        $databaseEntry = $colony->getSystem()->getDatabaseEntry();
-        if ($databaseEntry !== null) {
-            $starsystem = $this->databaseCategoryWrapperFactory->createDatabaseCategoryEntryWrapper($databaseEntry, $user);
-            $game->setTemplateVar('STARSYSTEM_ENTRY_TAL', $starsystem);
-        }
-
-        $game->setTemplateVar('FIRST_ORBIT_SHIP', $firstOrbitShip ? $this->shipWrapperFactory->wrapShip($firstOrbitShip) : null);
-
-        $particlePhalanx = $this->colonyFunctionManager->hasFunction($colony, BuildingFunctionEnum::BUILDING_FUNCTION_PARTICLE_PHALANX);
-        $game->setTemplateVar(
-            'BUILDABLE_TORPEDO_TYPES',
-            $particlePhalanx ? $this->torpedoTypeRepository->getForUser($userId) : null
-        );
     }
 
     #[Override]

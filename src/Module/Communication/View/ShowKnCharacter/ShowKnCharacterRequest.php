@@ -14,6 +14,6 @@ final class ShowKnCharacterRequest implements ShowKnCharacterRequestInterface
     #[Override]
     public function getCharacterId(): int
     {
-        return $this->queryParameter('character')->int()->required();
+        return $this->parameter('character')->int()->required();
     }
 }

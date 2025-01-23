@@ -14,12 +14,12 @@ final class EditSystemTypeRequest implements EditSystemTypeRequestInterface
     #[Override]
     public function getFieldId(): int
     {
-        return $this->queryParameter('field')->int()->required();
+        return $this->parameter('field')->int()->required();
     }
 
     #[Override]
     public function getSystemType(): int
     {
-        return $this->queryParameter('type')->int()->required();
+        return $this->parameter('type')->int()->required();
     }
 }

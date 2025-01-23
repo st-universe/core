@@ -185,9 +185,9 @@ class ColonySandbox implements ColonySandboxInterface, PlanetFieldHostInterface
     }
 
     #[Override]
-    public function getTwilightZone(): int
+    public function getTwilightZone(int $timestamp): int
     {
-        return $this->getColony()->getTwilightZone();
+        return $this->getColony()->getTwilightZone($timestamp);
     }
 
     #[Override]
@@ -242,5 +242,15 @@ class ColonySandbox implements ColonySandboxInterface, PlanetFieldHostInterface
             ColonyMenuEnum::MENU_INFO,
             ColonyMenuEnum::MENU_SOCIAL
         ]);
+    }
+
+    #[Override]
+    public function getComponentParameters(): string
+    {
+        return sprintf(
+            '&hosttype=%d&id=%d',
+            $this->getHostType()->value,
+            $this->getId()
+        );
     }
 }

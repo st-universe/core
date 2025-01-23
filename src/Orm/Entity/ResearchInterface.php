@@ -20,8 +20,6 @@ interface ResearchInterface
 
     public function getRumpId(): int;
 
-    public function setRumpId(int $rumpId): ResearchInterface;
-
     /**
      * @return array<int>
      */
@@ -50,7 +48,7 @@ interface ResearchInterface
 
     public function getRewardBuildplanId(): ?int;
 
-    public function getRewardBuildplan(): ?ShipBuildplanInterface;
+    public function getRewardBuildplan(): ?SpacecraftBuildplanInterface;
 
     public function getAward(): ?AwardInterface;
 

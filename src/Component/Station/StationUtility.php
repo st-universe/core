@@ -6,22 +6,23 @@ namespace Stu\Component\Station;
 
 use Override;
 use RuntimeException;
-use Stu\Component\Ship\ShipRumpEnum;
-use Stu\Component\Ship\ShipStateEnum;
-use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
+use Stu\Component\Spacecraft\SpacecraftRumpEnum;
+use Stu\Component\Spacecraft\SpacecraftStateEnum;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Action\BuildConstruction\BuildConstruction;
-use Stu\Module\Ship\Lib\ShipCreatorInterface;
+use Stu\Module\Station\Lib\Creation\StationCreatorInterface;
 use Stu\Orm\Entity\ConstructionProgressInterface;
-use Stu\Orm\Entity\ShipBuildplanInterface;
+use Stu\Orm\Entity\SpacecraftBuildplanInterface;
 use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\ShipRumpInterface;
+use Stu\Orm\Entity\SpacecraftRumpInterface;
+use Stu\Orm\Entity\StationInterface;
 use Stu\Orm\Repository\ConstructionProgressModuleRepositoryInterface;
 use Stu\Orm\Repository\ConstructionProgressRepositoryInterface;
-use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
-use Stu\Orm\Repository\ShipRumpRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
+use Stu\Orm\Repository\StationRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 
@@ -31,13 +32,13 @@ final class StationUtility implements StationUtilityInterface
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
-        private ShipBuildplanRepositoryInterface $shipBuildplanRepository,
+        private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository,
         private ConstructionProgressRepositoryInterface $constructionProgressRepository,
         private ConstructionProgressModuleRepositoryInterface $constructionProgressModuleRepository,
-        private ShipCreatorInterface $shipCreator,
-        private ShipRepositoryInterface $shipRepository,
-        private ShipStorageManagerInterface $shipStorageManager,
-        private ShipRumpRepositoryInterface $shipRumpRepository,
+        private StationCreatorInterface $stationCreator,
+        private StationRepositoryInterface $stationRepository,
+        private StorageManagerInterface $storageManager,
+        private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository,
         private TradePostRepositoryInterface $tradePostRepository,
         private TradeLicenseRepositoryInterface $tradeLicenseRepository,
         LoggerUtilFactoryInterface $loggerUtilFactory
@@ -64,9 +65,10 @@ final class StationUtility implements StationUtilityInterface
 
         // check if ship has the needed resources
         foreach (BuildConstruction::NEEDED_RESOURCES as $key => $amount) {
+            $storage = $ship->getStorage()->get($key);
             if (
-                !$ship->getStorage()->containsKey($key)
-                || $ship->getStorage()->get($key)->getAmount() < $amount
+                $storage === null
+                || $storage->getAmount() < $amount
             ) {
                 return false;
             }
@@ -78,17 +80,17 @@ final class StationUtility implements StationUtilityInterface
     #[Override]
     public function getStationBuildplansByUser(int $userId): array
     {
-        return $this->shipBuildplanRepository->getStationBuildplansByUser($userId);
+        return $this->spacecraftBuildplanRepository->getStationBuildplansByUser($userId);
     }
 
     #[Override]
     public function getShipyardBuildplansByUser(int $userId): array
     {
-        return $this->shipBuildplanRepository->getShipyardBuildplansByUser($userId);
+        return $this->spacecraftBuildplanRepository->getShipyardBuildplansByUser($userId);
     }
 
     #[Override]
-    public function getBuidplanIfResearchedByUser(int $planId, int $userId): ?ShipBuildplanInterface
+    public function getBuidplanIfResearchedByUser(int $planId, int $userId): ?SpacecraftBuildplanInterface
     {
         $this->loggerUtil->log(sprintf('getBuidplanIfResearchedByUser. planId: %d, userId: %d', $planId, $userId));
 
@@ -106,28 +108,28 @@ final class StationUtility implements StationUtilityInterface
     }
 
     #[Override]
-    public function getDockedWorkbeeCount(ShipInterface $ship): int
+    public function getDockedWorkbeeCount(StationInterface $station): int
     {
-        return $ship->getDockedShips()
-            ->filter(fn (ShipInterface $docked): bool => $docked->hasEnoughCrew()
+        return $station->getDockedShips()
+            ->filter(fn(ShipInterface $docked): bool => $docked->hasEnoughCrew()
                 && !$docked->getUser()->isVacationRequestOldEnough()
                 && $docked->getRump()->isWorkbee())
             ->count();
     }
 
     #[Override]
-    public function getNeededWorkbeeCount(ShipInterface $station, ShipRumpInterface $rump): int
+    public function getNeededWorkbeeCount(StationInterface $station, SpacecraftRumpInterface $rump): int
     {
         if ($rump->getNeededWorkbees() === null) {
             return 0;
         }
 
         switch ($station->getState()) {
-            case ShipStateEnum::SHIP_STATE_UNDER_CONSTRUCTION:
+            case SpacecraftStateEnum::SHIP_STATE_UNDER_CONSTRUCTION:
                 return $rump->getNeededWorkbees();
-            case ShipStateEnum::SHIP_STATE_UNDER_SCRAPPING:
+            case SpacecraftStateEnum::SHIP_STATE_UNDER_SCRAPPING:
                 return (int)ceil($rump->getNeededWorkbees() / 2);
-            case ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE:
+            case SpacecraftStateEnum::SHIP_STATE_REPAIR_PASSIVE:
                 return (int)ceil($rump->getNeededWorkbees() / 5);
             default:
                 throw new RuntimeException(sprintf(
@@ -139,15 +141,9 @@ final class StationUtility implements StationUtilityInterface
     }
 
     #[Override]
-    public function hasEnoughDockedWorkbees(ShipInterface $station, ShipRumpInterface $rump): bool
+    public function hasEnoughDockedWorkbees(StationInterface $station, SpacecraftRumpInterface $rump): bool
     {
         return $this->getDockedWorkbeeCount($station) >= $this->getNeededWorkbeeCount($station, $rump);
-    }
-
-    #[Override]
-    public function getConstructionProgress(ShipInterface $ship): ?ConstructionProgressInterface
-    {
-        return $this->constructionProgressRepository->getByShip($ship->getId());
     }
 
     #[Override]
@@ -158,25 +154,31 @@ final class StationUtility implements StationUtilityInterface
     }
 
     #[Override]
-    public function finishStation(ShipInterface $ship, ConstructionProgressInterface $progress): void
+    public function finishStation(ConstructionProgressInterface $progress): void
     {
-        $plan = $ship->getBuildplan();
-        $rump = $ship->getRump();
+        $station = $progress->getStation();
+        $plan = $station->getBuildplan();
+        $rump = $station->getRump();
 
         // transform ship
-        $station = $this->shipCreator
-            ->createBy($ship->getUser()->getId(), $rump->getId(), $plan->getId(), null, $progress)
+        $station = $this->stationCreator
+            ->createBy(
+                $station->getUser()->getId(),
+                $rump->getId(),
+                $plan->getId(),
+                $progress
+            )
             ->finishConfiguration()
             ->get();
 
         // set influence area
-        if ($station->getRump()->getShipRumpRole()->getId() === ShipRumpEnum::SHIP_ROLE_BASE) {
+        if ($station->getRump()->getShipRumpRole()->getId() === SpacecraftRumpEnum::SHIP_ROLE_BASE) {
             $station->setInfluenceArea($station->getMap()->getSystem());
-            $this->shipRepository->save($station);
+            $this->stationRepository->save($station);
         }
 
         // make tradepost entry
-        if ($station->getRump()->getShipRumpRole()->getId() === ShipRumpEnum::SHIP_ROLE_OUTPOST) {
+        if ($station->getRump()->getShipRumpRole()->getId() === SpacecraftRumpEnum::SHIP_ROLE_OUTPOST) {
             $this->createTradepostAndLicense($station);
         }
 
@@ -185,14 +187,14 @@ final class StationUtility implements StationUtilityInterface
         $this->constructionProgressRepository->save($progress);
     }
 
-    private function createTradepostAndLicense(ShipInterface $station): void
+    private function createTradepostAndLicense(StationInterface $station): void
     {
         $owner = $station->getUser();
         $tradepost = $this->tradePostRepository->prototype();
         $tradepost->setUser($owner);
         $tradepost->setName('Handelsposten');
         $tradepost->setDescription('Privater Handelsposten');
-        $tradepost->setShip($station);
+        $tradepost->setStation($station);
         $tradepost->setTradeNetwork($owner->getId());
         $tradepost->setLevel(1);
         $tradepost->setTransferCapacity(0);
@@ -200,7 +202,7 @@ final class StationUtility implements StationUtilityInterface
         $this->tradePostRepository->save($tradepost);
 
         $station->setTradePost($tradepost);
-        $this->shipRepository->save($station);
+        $this->stationRepository->save($station);
 
         $license = $this->tradeLicenseRepository->prototype();
         $license->setTradePost($tradepost);
@@ -212,24 +214,29 @@ final class StationUtility implements StationUtilityInterface
     }
 
     #[Override]
-    public function finishScrapping(ShipInterface $station, ConstructionProgressInterface $progress): void
+    public function finishScrapping(ConstructionProgressInterface $progress): void
     {
-        // transform to construction
-        $rumpId = $station->getUser()->getFactionId() + ShipRumpEnum::SHIP_RUMP_BASE_ID_CONSTRUCTION;
-        $rump = $this->shipRumpRepository->find($rumpId);
+        $station = $progress->getStation();
 
-        $station->setState(ShipStateEnum::SHIP_STATE_UNDER_CONSTRUCTION);
+        // transform to construction
+        $rumpId = $station->getUser()->getFactionId() + SpacecraftRumpEnum::SHIP_RUMP_BASE_ID_CONSTRUCTION;
+        $rump = $this->spacecraftRumpRepository->find($rumpId);
+        if ($rump === null) {
+            throw new RuntimeException(sprintf('construction rump with id %d not found', $rumpId));
+        }
+
+        $station->setState(SpacecraftStateEnum::SHIP_STATE_UNDER_CONSTRUCTION);
         $station->setBuildplan(null);
         $station->setRump($rump);
         $station->setName($rump->getName());
         $station->setHuell($rump->getBaseHull());
         $station->setMaxHuell($rump->getBaseHull());
 
-        $this->shipRepository->save($station);
+        $this->stationRepository->save($station);
 
         // salvage modules
         foreach ($progress->getSpecialModules() as $progressModule) {
-            $this->shipStorageManager->upperStorage(
+            $this->storageManager->upperStorage(
                 $station,
                 $progressModule->getModule()->getCommodity(),
                 1
@@ -245,20 +252,20 @@ final class StationUtility implements StationUtilityInterface
     }
 
     #[Override]
-    public function canManageShips(ShipInterface $ship): bool
+    public function canManageShips(StationInterface $station): bool
     {
-        return $ship->getRump()->getShipRumpRole() !== null
-            && ($ship->getRump()->getShipRumpRole()->getId() === ShipRumpEnum::SHIP_ROLE_OUTPOST
-                || $ship->getRump()->getShipRumpRole()->getId() === ShipRumpEnum::SHIP_ROLE_BASE)
-            && $ship->hasEnoughCrew();
+        return $station->getRump()->getShipRumpRole() !== null
+            && ($station->getRump()->getShipRumpRole()->getId() === SpacecraftRumpEnum::SHIP_ROLE_OUTPOST
+                || $station->getRump()->getShipRumpRole()->getId() === SpacecraftRumpEnum::SHIP_ROLE_BASE)
+            && $station->hasEnoughCrew();
     }
 
     #[Override]
-    public function canRepairShips(ShipInterface $ship): bool
+    public function canRepairShips(StationInterface $station): bool
     {
-        return $ship->getRump()->getShipRumpRole() !== null
-            && ($ship->getRump()->getShipRumpRole()->getId() === ShipRumpEnum::SHIP_ROLE_SHIPYARD
-                || $ship->getRump()->getShipRumpRole()->getId() === ShipRumpEnum::SHIP_ROLE_BASE)
-            && $ship->hasEnoughCrew();
+        return $station->getRump()->getShipRumpRole() !== null
+            && ($station->getRump()->getShipRumpRole()->getId() === SpacecraftRumpEnum::SHIP_ROLE_SHIPYARD
+                || $station->getRump()->getShipRumpRole()->getId() === SpacecraftRumpEnum::SHIP_ROLE_BASE)
+            && $station->hasEnoughCrew();
     }
 }

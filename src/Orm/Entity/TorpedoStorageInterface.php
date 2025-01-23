@@ -6,9 +6,9 @@ interface TorpedoStorageInterface
 {
     public function getId(): int;
 
-    public function getShip(): ShipInterface;
+    public function getSpacecraft(): SpacecraftInterface;
 
-    public function setShip(ShipInterface $ship): TorpedoStorageInterface;
+    public function setSpacecraft(SpacecraftInterface $spacecraft): TorpedoStorageInterface;
 
     public function getTorpedo(): TorpedoTypeInterface;
 

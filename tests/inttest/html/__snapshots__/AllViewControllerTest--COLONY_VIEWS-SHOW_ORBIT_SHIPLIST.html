@@ -1,0 +1,102 @@
+<html lang="de">
+
+<head>
+  <script src="/static/js/default.js"></script>
+</head>
+
+<body>
+  <div class="ajaxwin">
+        <table class="tcal">
+      <tr>
+        <th onmouseover="switch_drag_on();" onmouseout="switch_drag_off();">Schiffe im Orbit</th>
+        <th style="width: 18px;">
+          <a href="javascript:void(0);" onclick="closeAjaxWindow();" onmouseover="cp('ajaxclose','buttons/x2');" onmouseout="cp('ajaxclose','buttons/x1');">
+            <img src="/assets/buttons/x1.png" name="ajaxclose" title="Fenster schlie&Atilde;&#159;en">
+          </a>
+        </th>
+      </tr>
+    </table>
+        <ul>
+            
+<li>
+  <table class="use" style="width: 100%;" onmouseover="shipSelectorHover(this);" onmouseout="shipSelectorHoverEnd(this);" onclick="shipSelectorChoose(this);">
+    <tr>
+      <td class="darkbg" colspan="5">
+                <a type="hidden" href="/ship.php?SHOW_SPACECRAFT=1&amp;id=77" onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Aerie Zwo',
+'id=77',
+'ship.php'); event.preventDefault();}
+updateSelectedSpacecraftId('77');"></a>
+                Aerie Zwo | Siedler 101
+      </td>
+    </tr>
+    <tr>
+      <td style="width: 20px; vertical-align: middle;">
+              </td>
+      <td style="width: 120px; vertical-align: middle;">
+        <img src="/assets/ships/6501.png" title="Aerie">
+
+      </td>
+      <td style="width: 150px;">
+        <table class="tcal">
+          <tr>
+            <th style="width: 20px; text-align: center;">
+              <img src="/assets/buttons/modul_1.png" title="H&Atilde;&frac14;lle">
+            </th>
+            <td style="vertical-align: middle; text-align: center;">
+                            <img alt="H&Atilde;&frac14;lle" src="/assets/bars/balken.png" style="background-color: #00aa00;height: 12px; width:50px;" title="H&Atilde;&frac14;lle: 819/819">
+                          </td>
+          </tr>
+        </table>
+      </td>
+            <td style="width: 150px;">
+                      </td>
+      <td style="width: 150px;">
+                      </td>
+          </tr>
+  </table>
+  <input type="hidden" id="selshipid" value="77">
+</li>
+                
+<li>
+  <table class="use" style="width: 100%;" onmouseover="shipSelectorHover(this);" onmouseout="shipSelectorHoverEnd(this);" onclick="shipSelectorChoose(this);">
+    <tr>
+      <td class="darkbg" colspan="5">
+                <a type="hidden" href="/ship.php?SHOW_SPACECRAFT=1&amp;id=78" onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Aerie Three',
+'id=78',
+'ship.php'); event.preventDefault();}
+updateSelectedSpacecraftId('78');"></a>
+                Aerie Three | Siedler 101
+      </td>
+    </tr>
+    <tr>
+      <td style="width: 20px; vertical-align: middle;">
+              </td>
+      <td style="width: 120px; vertical-align: middle;">
+        <img src="/assets/ships/6501.png" title="Aerie">
+
+      </td>
+      <td style="width: 150px;">
+        <table class="tcal">
+          <tr>
+            <th style="width: 20px; text-align: center;">
+              <img src="/assets/buttons/modul_1.png" title="H&Atilde;&frac14;lle">
+            </th>
+            <td style="vertical-align: middle; text-align: center;">
+                            <img alt="H&Atilde;&frac14;lle" src="/assets/bars/balken.png" style="background-color: #00aa00;height: 12px; width:50px;" title="H&Atilde;&frac14;lle: 819/819">
+                          </td>
+          </tr>
+        </table>
+      </td>
+            <td style="width: 150px;">
+                      </td>
+      <td style="width: 150px;">
+                      </td>
+          </tr>
+  </table>
+  <input type="hidden" id="selshipid" value="78">
+</li>
+        </ul>
+      </div>
+  </body>
+
+</html>

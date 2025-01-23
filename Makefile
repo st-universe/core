@@ -47,7 +47,7 @@ clearCache:force
 	bin/doctrine orm:clear-cache:query
 
 generateMigrations:force
-	vendor/bin/doctrine-migrations diff
+	generate-migrations.sh
 
 migrateDatabase:force
 	vendor/bin/doctrine-migrations migrate --all-or-nothing --allow-no-migration --quiet -vv

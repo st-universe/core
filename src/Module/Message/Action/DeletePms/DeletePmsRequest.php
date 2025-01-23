@@ -15,8 +15,8 @@ final class DeletePmsRequest implements DeletePmsRequestInterface
     public function getDeletionIds(): array
     {
         return array_merge(
-            $this->queryParameter('deletion_mark')->commaSeparated()->int()->defaultsTo([]),
-            [$this->queryParameter('delete_single')->int()->defaultsTo(0)]
+            $this->parameter('deletion_mark')->commaSeparated()->int()->defaultsTo([]),
+            [$this->parameter('delete_single')->int()->defaultsTo(0)]
         );
     }
 }

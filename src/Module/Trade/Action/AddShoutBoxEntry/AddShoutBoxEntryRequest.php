@@ -14,12 +14,12 @@ final class AddShoutBoxEntryRequest implements AddShoutBoxEntryRequestInterface
     #[Override]
     public function getTradeNetworkId(): int
     {
-        return $this->queryParameter('network')->int()->required();
+        return $this->parameter('network')->int()->required();
     }
 
     #[Override]
     public function getMessage(): string
     {
-        return $this->queryParameter('shoutboxentry')->string()->defaultsToIfEmpty('');
+        return $this->parameter('shoutboxentry')->string()->defaultsToIfEmpty('');
     }
 }

@@ -14,6 +14,6 @@ final class ShowShoutBoxRequest implements ShowShoutBoxRequestInterface
     #[Override]
     public function getTradeNetworkId(): int
     {
-        return $this->queryParameter('network')->int()->required();
+        return $this->parameter('network')->int()->required();
     }
 }

@@ -6,8 +6,7 @@
 
 ## Lokales Setup
 
-Benötigte Software: Linux (geht u.U. auch unter macOS) docker, php 8.3,
-composer, git.
+Benötigte Software: Linux (geht u.U. auch unter macOS) docker, php 8.3, composer, git.
 
 - Repository forken und das Source-Code auschecken
 - config.dist.json nach config.json kopieren und anpassen
@@ -48,10 +47,10 @@ Code:
 bin/doctrine orm:generate-proxies
 ```
 
-- DB-Änderungen generieren:
+- DB-Änderungen mit Script generieren. In src/Migrations/Sqlite darf immer nur die aktuellste Datei liegen!
 
 ```shell
-vendor/bin/doctrine-migrations diff
+generate-migrations.sh
 ```
 
 - DB-Änderungen einspielen:

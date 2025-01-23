@@ -42,15 +42,9 @@ class ShipRumpUser implements ShipRumpUserInterface
     }
 
     #[Override]
-    public function getShipRumpId(): int
+    public function setRumpId(int $rumpId): ShipRumpUserInterface
     {
-        return $this->rump_id;
-    }
-
-    #[Override]
-    public function setShipRumpId(int $shipRumpId): ShipRumpUserInterface
-    {
-        $this->rump_id = $shipRumpId;
+        $this->rump_id = $rumpId;
 
         return $this;
     }

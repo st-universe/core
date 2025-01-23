@@ -14,9 +14,7 @@ class PanelLayers
 
     private ?PanelLayer $borderLayer = null;
 
-    public function __construct(private AbstractVisualPanel $panel)
-    {
-    }
+    public function __construct(private AbstractVisualPanel $panel) {}
 
     public function addLayer(PanelLayerEnum $type, PanelLayer $layer): void
     {
@@ -31,7 +29,7 @@ class PanelLayers
     public function getRenderedCellLayers(int $x, int $y): array
     {
         return array_map(
-            fn (PanelLayer $layer): string => $layer->renderCell($x, $y, $this->panel),
+            fn(PanelLayer $layer): string => $layer->renderCell($x, $y, $this->panel),
             $this->layers
         );
     }
@@ -39,14 +37,9 @@ class PanelLayers
     public function getCellBorder(int $x, int $y): string
     {
         if ($this->borderLayer === null) {
-            return BorderLayerRenderer::DEFAULT_BORDER_COLOR;
+            return '';
         }
 
-        $rendered = $this->borderLayer->renderCell($x, $y, $this->panel);
-        if ($rendered === '') {
-            return BorderLayerRenderer::DEFAULT_BORDER_COLOR;
-        }
-
-        return $rendered;
+        return $this->borderLayer->renderCell($x, $y, $this->panel);
     }
 }

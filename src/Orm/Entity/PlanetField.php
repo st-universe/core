@@ -322,9 +322,9 @@ class PlanetField implements PlanetFieldInterface
     }
 
     #[Override]
-    public function getDayNightPrefix(): string
+    public function getDayNightPrefix(int $timestamp): string
     {
-        $twilightZone = $this->getHost()->getTwilightZone();
+        $twilightZone = $this->getHost()->getTwilightZone($timestamp);
 
         if ($twilightZone >= 0) {
             return $this->getFieldId() % $this->getHost()->getSurfaceWidth() >= $twilightZone ? 'n' : 't';

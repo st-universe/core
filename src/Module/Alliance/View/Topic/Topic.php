@@ -25,9 +25,7 @@ final class Topic implements ViewControllerInterface
      */
     public const int ALLIANCEBOARDLIMITER = 20;
 
-    public function __construct(private TopicRequestInterface $topicRequest, private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository, private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository, private AllianceActionManagerInterface $allianceActionManager)
-    {
-    }
+    public function __construct(private TopicRequestInterface $topicRequest, private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository, private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository, private AllianceActionManagerInterface $allianceActionManager) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -66,7 +64,7 @@ final class Topic implements ViewControllerInterface
         );
         $game->appendNavigationPart(
             sprintf(
-                'alliance.php?SHOW_BOARD=1&bid=%d&id=%d',
+                'alliance.php?SHOW_BOARD=1&boardid=%d&id=%d',
                 $boardId,
                 $allianceId
             ),
@@ -74,7 +72,7 @@ final class Topic implements ViewControllerInterface
         );
         $game->appendNavigationPart(
             sprintf(
-                'alliance.php?SHOW_TOPIC=1&bid=%d&tid=%d',
+                'alliance.php?SHOW_TOPIC=1&boardid=%d&topicid=%d',
                 $boardId,
                 $topicId
             ),

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:stu="stu">
+
+
+
+<head>
+    <meta charset="utf-8">
+    <script src="/static/js/prototype.js"></script>
+    <script src="/static/js/scriptaculous/scriptaculous.js"></script>
+    <script src="/static/js/default.js"></script>
+    <title>Notiz: </title>
+    <script>
+      var gfx_path = '/assets';
+    </script>
+    <script src="/static/js/overlib.js"></script>
+    <script src="/static/js/drag.js"></script>
+    <script src="/static/js/overlib_exclusive.js"></script>
+    <link rel="STYLESHEET" type="text/css" href="/static/css/schwarz.css">
+    <link rel="STYLESHEET" type="text/css" href="/static/css/stu.css">
+    <link rel="shortcut icon" href="/assets/favicon.ico">
+
+
+</head>
+<body>
+    <div>
+        <script src="/static/js/trade.js"></script>
+<div class="box">
+    <div class="box_title" style="text-align: left">/
+                <a href="notes.php">
+            Notizen
+        </a>
+                <span> / </span>
+                        <a href="notes.php?SHOW_NEW_NOTE=1">
+            Neue Notiz
+        </a>
+                    </div>
+</div>
+<br>
+<div id="result" style="display: none;">..</div>
+<form action="notes.php" method="post">
+	<input type="hidden" name="SHOW_NOTE" value="1">
+	<input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
+		<table class="tcal">
+		<tr>
+			<th>Titel</th>
+			<td>
+				<input type="text" name="title" value="" style="width: 100%;">
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<textarea name="text" style="width: 100%; height: 400px;"></textarea>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" style="text-align: center;">
+				<input type="submit" name="B_SAVE_NOTE" value="Speichern">
+			</td>
+		</tr>
+	</table>
+</form>
+    </div>
+</body>
+
+</html>

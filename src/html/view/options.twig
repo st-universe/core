@@ -231,6 +231,18 @@
             </tr>
             <tr>
                 <td>
+                    {% if REAL_USER.isInboxMessengerStyle %}
+                    <input type="checkbox" name="inbox_messenger_style" value="1" checked="true" />
+                    {% else %}
+                    <input type="checkbox" name="inbox_messenger_style" value="1" />
+                    {% endif %}
+                </td>
+                <td>
+                    Nachrichteneingang des "Persönlich"-Ordners ist wie bei einem Messenger nach Kontakten gruppiert.
+                </td>
+            </tr>
+            <tr>
+                <td>
                     {% set defaultView = REAL_USER.getDefaultView %}
                     <select name="default_view">
                         <option value="0">----------------------</option>
@@ -300,12 +312,13 @@
                 <td>
                     Setzt alle Tutorials zurück, sodass diese erneut durchlaufen werden
                     können.
-                    </td></tr>
-                    <tr>
-                <td><input type="submit" class="button" value="Tutorials beenden" name="B_DELETE_TUTORIALS"/>
+                </td>
+            </tr>
+            <tr>
+                <td><input type="submit" class="button" value="Tutorials beenden" name="B_DELETE_TUTORIALS" />
                 </td>
                 <td>Beendet alle Tutorials sofort.</td>
-                </tr>
+            </tr>
             <tr>
                 <td colspan="4">
                     <input type="submit" class="button" value="Einstellungen ändern" name="B_CHANGE_SETTINGS" />

@@ -7,11 +7,13 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
 use Override;
+use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Orm\Entity\Anomaly;
 use Stu\Orm\Entity\AnomalyInterface;
 use Stu\Orm\Entity\Location;
+use Stu\Orm\Entity\LocationInterface;
 use Stu\Orm\Entity\Map;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 
 /**
  * @extends EntityRepository<Anomaly>
@@ -28,30 +30,45 @@ final class AnomalyRepository extends EntityRepository implements AnomalyReposit
     public function save(AnomalyInterface $anomaly): void
     {
         $em = $this->getEntityManager();
-
         $em->persist($anomaly);
     }
 
     #[Override]
     public function delete(AnomalyInterface $anomaly): void
     {
-        $em = $this->getEntityManager();
+        $location = $anomaly->getLocation();
+        if ($location !== null) {
+            $location->getAnomalies()->removeElement($anomaly);
+        }
 
-        $em->remove($anomaly);
+        $parent = $anomaly->getParent();
+        if ($parent !== null) {
+            $parent->getChildren()->removeElement($anomaly);
+        }
+
+        $this->getEntityManager()->remove($anomaly);
+    }
+
+    #[Override]
+    public function getByLocationAndType(LocationInterface $location, AnomalyTypeEnum $type): ?AnomalyInterface
+    {
+        return $this->findOneBy([
+            'location_id' => $location->getId(),
+            'anomaly_type_id' => $type->value
+        ]);
     }
 
     /**
      * @return array<AnomalyInterface>
      */
     #[Override]
-    public function findAllActive(): array
+    public function findAllRoot(): array
     {
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT a
-                        FROM %s a
-                        WHERE a.remaining_ticks > 0',
+                    'SELECT a FROM %s a
+                    WHERE a.parent_id IS NULL',
                     Anomaly::class
                 )
             )
@@ -59,14 +76,31 @@ final class AnomalyRepository extends EntityRepository implements AnomalyReposit
     }
 
     #[Override]
-    public function getClosestAnomalyDistance(ShipInterface $ship): ?int
+    public function getActiveCountByTypeWithoutParent(AnomalyTypeEnum $type): int
     {
-        $map = $ship->getMap();
+        return (int) $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT count(a.id) FROM %s a
+                    WHERE a.anomaly_type_id = :type
+                    AND a.remaining_ticks > 0
+                    AND a.parent_id IS NULL',
+                    Anomaly::class
+                )
+            )
+            ->setParameter('type', $type->value)
+            ->getSingleScalarResult();
+    }
+
+    #[Override]
+    public function getClosestAnomalyDistance(SpacecraftInterface $spacecraft): ?int
+    {
+        $map = $spacecraft->getMap();
         if ($map === null) {
             return null;
         }
 
-        $range = $ship->getSensorRange() * 2;
+        $range = $spacecraft->getSensorRange() * 2;
 
         try {
             $result = (int)$this->getEntityManager()->createQuery(

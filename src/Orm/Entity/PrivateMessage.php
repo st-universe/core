@@ -42,9 +42,6 @@ class PrivateMessage implements PrivateMessageInterface
     #[Column(type: 'boolean')]
     private bool $new = false;
 
-    #[Column(type: 'boolean')]
-    private bool $replied = false;
-
     #[Column(type: 'integer')]
     private int $cat_id = 0;
 
@@ -130,19 +127,6 @@ class PrivateMessage implements PrivateMessageInterface
     public function setNew(bool $new): PrivateMessageInterface
     {
         $this->new = $new;
-        return $this;
-    }
-
-    #[Override]
-    public function getReplied(): bool
-    {
-        return $this->replied;
-    }
-
-    #[Override]
-    public function setReplied(bool $replied): PrivateMessageInterface
-    {
-        $this->replied = $replied;
         return $this;
     }
 

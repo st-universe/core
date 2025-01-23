@@ -14,6 +14,6 @@ final class IgnoreUserRequest implements IgnoreUserRequestInterface
     #[Override]
     public function getRecipientId(): int
     {
-        return $this->queryParameter('recid')->int()->required();
+        return $this->parameter('recid')->int()->required();
     }
 }

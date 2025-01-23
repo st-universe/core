@@ -14,38 +14,44 @@ final class RegisterRequest implements RegisterRequestInterface
     #[Override]
     public function getLoginName(): string
     {
-        return $this->queryParameter('loginname')->string()->defaultsToIfEmpty('');
+        return $this->parameter('loginname')->string()->defaultsToIfEmpty('');
     }
 
     #[Override]
     public function getEmailAddress(): string
     {
-        return $this->queryParameter('email')->string()->defaultsToIfEmpty('');
+        return $this->parameter('email')->string()->defaultsToIfEmpty('');
     }
 
     #[Override]
     public function getMobileNumber(): string
     {
-        return trim($this->queryParameter('mobile')->string()->defaultsToIfEmpty(''));
+        return trim($this->parameter('mobile')->string()->defaultsToIfEmpty(''));
     }
 
     #[Override]
     public function getCountryCode(): string
     {
-        return $this->queryParameter('countrycode')->string()->defaultsToIfEmpty('');
+        return $this->parameter('countrycode')->string()->defaultsToIfEmpty('');
     }
 
     #[Override]
     public function getFactionId(): int
     {
-        return $this->queryParameter('factionid')->int()->required();
+        return $this->parameter('factionid')->int()->required();
     }
 
     #[Override]
     public function getToken(): string
     {
-        $token = $this->queryParameter('token')->string()->defaultsToIfEmpty('');
+        $token = $this->parameter('token')->string()->defaultsToIfEmpty('');
 
         return preg_replace('/[\W_]+/', '', $token);
+    }
+
+    #[Override]
+    public function getReferer(): ?string
+    {
+        return $this->parameter('referer')->string()->defaultsToIfEmpty(null);
     }
 }

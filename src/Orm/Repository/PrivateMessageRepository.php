@@ -6,6 +6,8 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Override;
+use Stu\Module\Game\Component\GameComponentEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Orm\Entity\PrivateMessage;
 use Stu\Orm\Entity\PrivateMessageFolder;
 use Stu\Orm\Entity\PrivateMessageFolderInterface;
@@ -116,6 +118,16 @@ final class PrivateMessageRepository extends EntityRepository implements Private
         ]);
     }
 
+    public function getNewAmountByFolderAndSender(PrivateMessageFolderInterface $privateMessageFolder, UserInterface $sender): int
+    {
+        return $this->count([
+            'category' => $privateMessageFolder,
+            'sendingUser' => $sender,
+            'new' => 1,
+            'deleted' => null
+        ]);
+    }
+
     #[Override]
     public function setDeleteTimestampByFolder(int $folderId, int $timestamp): void
     {
@@ -128,6 +140,61 @@ final class PrivateMessageRepository extends EntityRepository implements Private
             'folderId' => $folderId,
             'timestamp' => $timestamp
         ])->execute();
+    }
+
+    #[Override]
+    public function hasRecentMessage(UserInterface $user): bool
+    {
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT count(pm.id)
+                    FROM %s pm
+                    WHERE pm.receivingUser = :user
+                    AND pm.new = :true
+                    AND pm.date > :threshold',
+                PrivateMessage::class
+            )
+        )
+            ->setParameters([
+                'user' => $user,
+                'threshold' => time() - GameComponentEnum::PM->getRefreshIntervalInSeconds(),
+                'true' => true
+            ])
+            ->getSingleScalarResult() > 0;
+    }
+
+    #[Override]
+    public function getConversations(UserInterface $user): array
+    {
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT pm FROM %1$s pm
+                JOIN %2$s pmf
+                WITH pm.cat_id = pmf.id
+                LEFT JOIN %1$s inbox
+                WITH pm.inbox_pm_id = inbox.id
+                LEFT JOIN %2$s pmfinbox
+                WITH inbox.cat_id = pmfinbox.id
+                WHERE pmf.special in (:main, :out)
+                AND (pmfinbox.special is null or pmfinbox.special = :main)
+                AND pm.receivingUser = :user
+                AND pm.deleted IS NULL
+                AND  NOT EXISTS (SELECT pm2.id FROM %1$s pm2
+                                    WHERE pm2.send_user = pm.send_user
+                                    AND pm2.cat_id = pm.cat_id 
+                                    AND pm2.recip_user = pm.recip_user 
+                                    AND pm2.date > pm.date)
+                ORDER BY pm.id DESC',
+                PrivateMessage::class,
+                PrivateMessageFolder::class
+            )
+        )
+            ->setParameters([
+                'user' => $user,
+                'main' => PrivateMessageFolderTypeEnum::SPECIAL_MAIN,
+                'out' => PrivateMessageFolderTypeEnum::SPECIAL_PMOUT
+            ])
+            ->getResult();
     }
 
     #[Override]

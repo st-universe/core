@@ -6,7 +6,7 @@ namespace Stu\Module\Admin\View\ShowSignatures;
 
 use Override;
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
-use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Shipcount\ShipcountLayerTypeEnum;
+use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Spacecraftcount\SpacecraftCountLayerTypeEnum;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace\SubspaceLayerTypeEnum;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreationInterface;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
@@ -45,19 +45,19 @@ class SignaturePanel extends AbstractVisualPanel
 
         if ($this->shipId !== 0) {
             $panelLayerCreation
-                ->addShipCountLayer(true, null, ShipcountLayerTypeEnum::SHIP_ONLY, $this->shipId)
-                ->addSubspaceLayer($this->shipId, SubspaceLayerTypeEnum::SHIP_ONLY);
+                ->addShipCountLayer(true, null, SpacecraftCountLayerTypeEnum::SPACECRAFT_ONLY, $this->shipId)
+                ->addSubspaceLayer($this->shipId, SubspaceLayerTypeEnum::SPACECRAFT_ONLY);
         } elseif ($this->userId !== 0) {
             $panelLayerCreation
-                ->addShipCountLayer(true, null, ShipcountLayerTypeEnum::USER_ONLY, $this->userId)
+                ->addShipCountLayer(true, null, SpacecraftCountLayerTypeEnum::USER_ONLY, $this->userId)
                 ->addSubspaceLayer($this->userId, SubspaceLayerTypeEnum::USER_ONLY);
         } elseif ($this->allyId !== 0) {
             $panelLayerCreation
-                ->addShipCountLayer(true, null, ShipcountLayerTypeEnum::ALLIANCE_ONLY, $this->allyId)
+                ->addShipCountLayer(true, null, SpacecraftCountLayerTypeEnum::ALLIANCE_ONLY, $this->allyId)
                 ->addSubspaceLayer($this->allyId, SubspaceLayerTypeEnum::ALLIANCE_ONLY);
         } else {
             $panelLayerCreation
-                ->addShipCountLayer(true, null, ShipcountLayerTypeEnum::ALL, 0)
+                ->addShipCountLayer(true, null, SpacecraftCountLayerTypeEnum::ALL, 0)
                 ->addSubspaceLayer(0, SubspaceLayerTypeEnum::ALL);
         }
 

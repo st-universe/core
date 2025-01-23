@@ -15,7 +15,7 @@ final class EditDetailsRequest implements EditDetailsRequestInterface
     public function getName(): string
     {
         return $this->tidyString(
-            $this->queryParameter('name')->string()->required()
+            $this->parameter('name')->string()->required()
         );
     }
 
@@ -23,7 +23,7 @@ final class EditDetailsRequest implements EditDetailsRequestInterface
     public function getHomepage(): string
     {
         return $this->tidyString(
-            $this->queryParameter('homepage')->string()->defaultsToIfEmpty('')
+            $this->parameter('homepage')->string()->defaultsToIfEmpty('')
         );
     }
 
@@ -31,27 +31,27 @@ final class EditDetailsRequest implements EditDetailsRequestInterface
     public function getDescription(): string
     {
         return $this->tidyString(
-            $this->queryParameter('description')->string()->defaultsToIfEmpty('')
+            $this->parameter('description')->string()->defaultsToIfEmpty('')
         );
     }
 
     #[Override]
     public function getFactionMode(): int
     {
-        return $this->queryParameter('factionid')->int()->defaultsTo(0);
+        return $this->parameter('factionid')->int()->defaultsTo(0);
     }
 
     #[Override]
     public function getAcceptApplications(): int
     {
-        return $this->queryParameter('acceptapp')->int()->defaultsTo(0);
+        return $this->parameter('acceptapp')->int()->defaultsTo(0);
     }
 
     #[Override]
     public function getRgbCode(): string
     {
         return $this->tidyString(
-            $this->queryParameter('rgb')->string()->required()
+            $this->parameter('rgb')->string()->required()
         );
     }
 }

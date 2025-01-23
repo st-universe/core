@@ -8,9 +8,7 @@ interface ShipRumpBuildingFunctionInterface
 {
     public function getId(): int;
 
-    public function getShipRumpId(): int;
-
-    public function setShipRumpId(int $shipRumpId): ShipRumpBuildingFunctionInterface;
+    public function setRumpId(int $rumpId): ShipRumpBuildingFunctionInterface;
 
     public function getBuildingFunction(): BuildingFunctionEnum;
 

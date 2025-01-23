@@ -14,6 +14,6 @@ final class ShowTransferMenueRequest implements ShowTransferMenueRequestInterfac
     #[Override]
     public function getStorageId(): int
     {
-        return $this->queryParameter('storid')->int()->required();
+        return $this->parameter('storid')->int()->required();
     }
 }

@@ -9,7 +9,8 @@
   {% for data in availableBuildplans %}
   <tr class="row" style="cursor: pointer;" title="Details">
     <td class="selectable" onclick="toggleTableRowVisible('buildplan_{{ data.getId }}');">{{ data.getName }}</td>
-    <td class="selectable" onclick="toggleTableRowVisible('buildplan_{{ data.getId }}');">{{ data.getShipCount }}</td>
+    <td class="selectable" onclick="toggleTableRowVisible('buildplan_{{ data.getId }}');">{{ data.getSpacecraftCount }}
+    </td>
     <td onclick="toggleTableRowVisible('buildplan_{{ data.getId }}');">{{ data.getBuildtime|formatSeconds }}</td>
     <td style="text-align: center;">
       <a class="linkbutton"
@@ -33,7 +34,7 @@
         <tr>
           <td>Module</td>
           <td>
-            {% for module in data.getModules %}
+            {% for module in data.getModulesOrdered %}
             <img src="/assets/commodities/{{ module.getModule.getCommodityId }}.png"
               name="{{ module.getModule.getName }}" />
             {% endfor %}

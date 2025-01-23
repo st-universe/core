@@ -2,19 +2,19 @@
 
 namespace Stu\Orm\Entity;
 
-use Stu\Component\Ship\ShipModuleTypeEnum;
+use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 
 interface BuildplanModuleInterface
 {
     public function getId(): int;
 
-    public function getBuildplan(): ShipBuildplanInterface;
+    public function getBuildplan(): SpacecraftBuildplanInterface;
 
-    public function setBuildplan(ShipBuildplanInterface $buildplan): BuildplanModuleInterface;
+    public function setBuildplan(SpacecraftBuildplanInterface $buildplan): BuildplanModuleInterface;
 
-    public function getModuleType(): ShipModuleTypeEnum;
+    public function getModuleType(): SpacecraftModuleTypeEnum;
 
-    public function setModuleType(ShipModuleTypeEnum $type): BuildplanModuleInterface;
+    public function setModuleType(SpacecraftModuleTypeEnum $type): BuildplanModuleInterface;
 
     public function getModuleCount(): int;
 

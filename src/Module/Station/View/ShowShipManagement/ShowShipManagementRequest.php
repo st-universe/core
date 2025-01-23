@@ -14,6 +14,6 @@ final class ShowShipManagementRequest implements ShowShipManagementRequestInterf
     #[Override]
     public function getStationId(): int
     {
-        return $this->queryParameter('id')->int()->required();
+        return $this->parameter('id')->int()->required();
     }
 }

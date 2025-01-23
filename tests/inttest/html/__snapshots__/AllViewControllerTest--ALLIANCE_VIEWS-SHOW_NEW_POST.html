@@ -1,0 +1,52 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body>
+<div class="box">
+    <div class="box_title" style="text-align: left">/
+                <a href="alliance.php">
+            Allianz
+        </a>
+                <span> / </span>
+                        <a href="alliance.php?SHOW_BOARDS=1">
+            Forum
+        </a>
+                <span> / </span>
+                        <a href="alliance.php?SHOW_BOARD=1&amp;boardid=1">
+            Allianzboard Nr. 1
+        </a>
+                <span> / </span>
+                        <a href="alliance.php?SHOW_TOPIC=1&amp;boardid=1&amp;topicid=1">
+            Ally-Topic A
+        </a>
+                <span> / </span>
+                        <a href="alliance.php?SHOW_NEW_POST=1&amp;boardid=1&amp;topicid=1">
+            Antwort erstellen
+        </a>
+                    </div>
+</div>
+<br>
+<div id="result" style="display: none;">..</div>
+    <form method="post" action="alliance.php">
+        <input type="hidden" name="boardid" value="1">
+        <input type="hidden" name="topicid" value="1">
+        <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
+        <div class="divhead">Thema</div>
+        <div class="divbody">Ally-Topic A</div>
+        <br>
+        <div class="divhead">Text</div>
+        <div class="divbody">
+            <textarea name="ttext" style="width: 100%; height: 300px"></textarea>
+        </div>
+        <br>
+        <input type="submit" class="button" value="Beitrag erstellen" name="B_CREATE_POSTING">
+    </form>
+<div class="footer">
+    Rendered in 4.203s - Memory usage: 42.77Mb
+</div>
+
+</body>
+</html>

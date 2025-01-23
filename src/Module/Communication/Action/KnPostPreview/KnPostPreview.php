@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\KnPostPreview;
 
-use JBBCode\Parser;
 use Override;
 use request;
+use Stu\Component\Communication\Kn\KnBbCodeParser;
 use Stu\Module\Communication\Action\AddKnPost\AddKnPostRequestInterface;
 use Stu\Module\Communication\View\ShowWriteKn\ShowWriteKn;
 use Stu\Module\Control\ActionControllerInterface;
@@ -18,7 +18,7 @@ final class KnPostPreview implements ActionControllerInterface
 
     public function __construct(
         private AddKnPostRequestInterface $request,
-        private Parser $bbcodeParser
+        private KnBbCodeParser $bbcodeParser
     ) {}
 
     #[Override]

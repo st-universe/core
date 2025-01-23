@@ -1,0 +1,10 @@
+{% set systemWrapper = getSpacecraftSystemWrapper(SPACECRAFT, name) %}
+
+{% if systemWrapper %}
+{% set genericTemplate = systemWrapper.getGenericTemplate %}
+{% if genericTemplate %}
+{% include genericTemplate %}
+{% else %}
+{% include 'html/spacecraft/system/' ~ name ~ '.twig' %}
+{% endif %}
+{% endif %}

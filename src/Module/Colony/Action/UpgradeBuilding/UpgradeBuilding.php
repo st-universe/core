@@ -7,8 +7,10 @@ namespace Stu\Module\Colony\Action\UpgradeBuilding;
 use Override;
 use request;
 use Stu\Component\Building\BuildingManagerInterface;
-use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
+use Stu\Lib\Component\ComponentRegistrationInterface;
+use Stu\Module\Colony\Component\ColonyComponentEnum;
 use Stu\Module\Colony\Lib\BuildingActionInterface;
 use Stu\Module\Colony\View\ShowInformation\ShowInformation;
 use Stu\Module\Control\ActionControllerInterface;
@@ -27,9 +29,18 @@ final class UpgradeBuilding implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_UPGRADE_BUILDING';
 
-    public function __construct(private BuildingUpgradeRepositoryInterface $buildingUpgradeRepository, private PlanetFieldRepositoryInterface $planetFieldRepository, private BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository, private ResearchedRepositoryInterface $researchedRepository, private PlanetFieldHostProviderInterface $planetFieldHostProvider, private ColonyStorageManagerInterface $colonyStorageManager, private ColonyRepositoryInterface $colonyRepository, private BuildingActionInterface $buildingAction, private BuildingManagerInterface $buildingManager)
-    {
-    }
+    public function __construct(
+        private BuildingUpgradeRepositoryInterface $buildingUpgradeRepository,
+        private PlanetFieldRepositoryInterface $planetFieldRepository,
+        private BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository,
+        private ResearchedRepositoryInterface $researchedRepository,
+        private PlanetFieldHostProviderInterface $planetFieldHostProvider,
+        private StorageManagerInterface $storageManager,
+        private ColonyRepositoryInterface $colonyRepository,
+        private BuildingActionInterface $buildingAction,
+        private BuildingManagerInterface $buildingManager,
+        private ComponentRegistrationInterface $componentRegistration
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -40,7 +51,7 @@ final class UpgradeBuilding implements ActionControllerInterface
         $host = $field->getHost();
 
         // has to be string because of bigint issue
-        $upgradeId = request::postIntFatal('bid');
+        $upgradeId = request::postIntFatal('buildingid');
 
         $upgrade = $this->buildingUpgradeRepository->find($upgradeId);
         if ($upgrade === null) {
@@ -79,7 +90,7 @@ final class UpgradeBuilding implements ActionControllerInterface
 
         if ($host instanceof ColonyInterface) {
             foreach ($upgrade->getUpgradeCosts() as $obj) {
-                $this->colonyStorageManager->lowerStorage($host, $obj->getCommodity(), $obj->getAmount());
+                $this->storageManager->lowerStorage($host, $obj->getCommodity(), $obj->getAmount());
             }
         }
 
@@ -87,6 +98,11 @@ final class UpgradeBuilding implements ActionControllerInterface
         $field->setActivateAfterBuild($isActive);
 
         $game->addExecuteJS('refreshHost();');
+
+        $this->componentRegistration
+            ->addComponentUpdate(ColonyComponentEnum::SHIELDING, $host)
+            ->addComponentUpdate(ColonyComponentEnum::EPS_BAR, $host)
+            ->addComponentUpdate(ColonyComponentEnum::STORAGE, $host);
 
         if ($host instanceof ColonySandboxInterface) {
             $this->buildingManager->finish($field);

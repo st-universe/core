@@ -1,0 +1,102 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body>
+<div class="box">
+    <div class="box_title" style="text-align: left">/
+                <a href="alliance.php">
+            Allianz
+        </a>
+                <span> / </span>
+                        <a href="alliance.php?EDIT_ALLIANCE=1">
+            Editieren
+        </a>
+                    </div>
+</div>
+<br>
+<div id="result" style="display: none;">..</div>
+
+<form action="alliance.php" method="post" enctype="multipart/form-data">
+	<input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
+	<div style="width: 505px; float: left;">
+		<div class="divhead">Name</div>
+		<div class="divbody">
+			<input type="text" style="width: 500px" name="name" value="testally">
+		</div>
+		<br>
+		<div class="divhead">Homepage</div>
+		<div class="divbody">
+			<input type="text" style="width: 500px" name="homepage" value="">
+		</div>
+		<br>
+		<div class="divhead">Beschreibung</div>
+		<div class="divbody">
+			<textarea name="description" style="width: 500px; height: 150px;">testallytestallytestallytestallytestallytestallytestally</textarea>
+		</div>
+	</div>
+	<div style="margin-left: 5px; width: 200px; float: left;">
+		<div class="divhead">Rassenallianz</div>
+		<div class="divbody">
+			<img src="assets/rassen/1s.png">
+									<input type="checkbox" name="factionid" value="1">
+					</div>
+		<br>
+		<div class=" divhead">Bewerbungen
+		</div>
+		<div class="divbody">
+			<label>
+								<input type="radio" name="acceptapp" value="1">
+				erlauben
+			</label>
+			<label>
+								<input type="radio" name="acceptapp" value="0" checked>
+				verbieten
+			</label>
+		</div>
+		<br>
+		<div class="divhead" style="color: #FF0000;">L&ouml;schung</div>
+		<div class="divbody">
+			<a href="javascript:void(0);" class="linkbutton" onclick="$('real_del').show();">Allianz
+				l&ouml;schen?</a>
+			<div id="real_del" style="display: none">
+				<br>
+				<a href="alliance.php?B_DELETE_ALLIANCE=1&amp;sstr=MOCKED_SESSIONSTRING" class="linkbutton" style="color: #FF0000">L&ouml;schen!</a>
+			</div>
+		</div>
+		<br>
+		<div class="divhead">Editieren</div>
+		<div class="divbody">
+			<input type="submit" class="button" name="B_UPDATE_ALLIANCE" value="Allianz editieren">
+		</div>
+	</div>
+	<div style="padding-top: 10px; width: 505px; clear: both;">
+		<div class="divhead">Allianzlogo</div>
+		<div class="divbody">
+			<table style="width: 100%">
+				<tr>
+					<td style="vertical-align: top;">
+						<input type="file" class="button" name="avatar">
+						<input type="submit" name="B_CHANGE_AVATAR" value="Hochladen" class="button"> <input type="submit" name="B_DELETE_AVATAR" value="L&ouml;schen" class="button">
+					</td>
+				</tr>
+							</table>
+		</div>
+		<div class="divhead">Territorialfarbe</div>
+		<div class="divbody">
+			<input type="text" style="width: 500px" name="rgb" value="">
+		</div>
+		<div class="divbody">Dieser RGB-Farbcode kennzeichnet Kartenfelder, die der Allianz zugeordnet
+			werden k&ouml;nnen. Beispiel: #9ab5ef
+		</div>
+		<br>
+	</div>
+</form>
+<div class="footer">
+    Rendered in 4.203s - Memory usage: 42.77Mb
+</div>
+
+</body>
+</html>

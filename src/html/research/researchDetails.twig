@@ -29,40 +29,41 @@
 				{% endif %}
 			</td>
 		</tr>
-		
+
 		<tr>
-			<td><div id="researchproduction">
-				<table class="tcal">
-					<tr>
-						<td class="darkbg">Punkte</td>
-						{% if research.getCommodityId %}
-						<td class="darkbg">
-							Benötigte Ware / Effekt
-						</td>
-						{% endif %}
-					</tr>
-					<tr>
-						<td>{{ research.getPoints }}</td>
-						{% if research.getCommodityId %}
-						<td>
-							<img src="assets/commodities/{{ research.getCommodityId }}.png" />
-							{{ research.getCommodity.getName }}
-						</td>
-						{% endif %}
-					</tr>
-				</table>
-			</div>
+			<td>
+				<div id="researchproduction">
+					<table class="tcal">
+						<tr>
+							<td class="darkbg">Punkte</td>
+							{% if research.getCommodityId %}
+							<td class="darkbg">
+								Benötigte Ware / Effekt
+							</td>
+							{% endif %}
+						</tr>
+						<tr>
+							<td>{{ research.getPoints }}</td>
+							{% if research.getCommodityId %}
+							<td>
+								<img src="assets/commodities/{{ research.getCommodityId }}.png" />
+								{{ research.getCommodity.getName }}
+							</td>
+							{% endif %}
+						</tr>
+					</table>
+				</div>
 			</td>
 		</tr>
-		
+
 		<tr>
 			<td colspan="3" style="text-align: center;"><a style="color: aqua;"
 					href="{{ TAL_RESEARCH.getWikiLink }}">Wiki-Seite</a>
 			</td>
 		</tr>
-	
+
 		{% for building in TAL_RESEARCH.getBuildings %}
-		<tr >
+		<tr>
 			<td>{{ building.getName }}</td>
 			<td colspan="3">
 				{% include 'html/colony/component/buildingPreview.twig' %}
@@ -83,27 +84,24 @@
 			Status: {{ TAL_RESEARCH.getDonePoints }}/{{ research.getPoints }}
 		</div>
 		<div class="fabutton_red">
-			<a href="research.php?B_CANCEL_CURRENT_RESEARCH=1&id={{ TAL_RESEARCH.getResearchState.getId }}&sstr={{ SESSIONSTRING }}"
-				class="fabutton fabutton_red">Forschung abbrechen</a>
+			<a href="javascript:void(0);" class="fabutton fabutton_red"
+				onClick="actionToInnerContent('B_CANCEL_CURRENT_RESEARCH', 'id={{ TAL_RESEARCH.getResearchState.getId }}&sstr={{ SESSIONSTRING }}');">
+				Forschung abbrechen
+			</a>
 		</div>
 		{% endif %}
 	</div>
 	{% else %}
 	<div>
 		<br />
-		{% if CURRENT_TAL_RESEARCH %}
-		<div id="researchbutton">
-		<div class="fabutton_yellow">
-			<a href="research.php?B_DO_RESEARCH=1&id={{ researchId }}&sstr={{ SESSIONSTRING }}"
-				class="fabutton fabutton_yellow">In den Warteslot</a>
+		{% set buttonCaption = CURRENT_TAL_RESEARCH ? 'In den Warteslot' : 'Erforschen' %}
+		{% set buttonClass = CURRENT_TAL_RESEARCH ? 'fabutton_yellow' : 'fabutton_blue' %}
+		<div id="beginresearch" class="{{ buttonClass }}">
+			<a href="javascript:void(0);" class="fabutton {{ buttonClass }}"
+				onClick="actionToInnerContent('B_DO_RESEARCH', 'id={{ researchId }}&sstr={{ SESSIONSTRING }}');">
+				{{ buttonCaption }}
+			</a>
 		</div>
-		{% else %}
-		<div id="beginresearch"class="fabutton_blue">
-			<a href="research.php?B_DO_RESEARCH=1&id={{ researchId }}&sstr={{ SESSIONSTRING }}"
-				class="fabutton fabutton_blue">Erforschen</a>
-		</div>
-	</div>
-		{% endif %}
 	</div>
 	{% endif %}
 	{% if TAL_RESEARCH.hasExcludes %}

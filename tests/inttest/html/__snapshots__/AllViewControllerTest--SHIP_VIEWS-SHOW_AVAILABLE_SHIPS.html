@@ -1,0 +1,39 @@
+<html lang="de">
+
+<head>
+  <script src="/static/js/default.js"></script>
+</head>
+
+<body>
+  <div class="ajaxwin">
+        <table class="tcal">
+      <tr>
+        <th onmouseover="switch_drag_on();" onmouseout="switch_drag_off();">Schiff(e) hinzuf&Atilde;&frac14;gen</th>
+        <th style="width: 18px;">
+          <a href="javascript:void(0);" onclick="closeAjaxWindow();" onmouseover="cp('ajaxclose','buttons/x2');" onmouseout="cp('ajaxclose','buttons/x1');">
+            <img src="/assets/buttons/x1.png" name="ajaxclose" title="Fenster schlie&Atilde;&#159;en">
+          </a>
+        </th>
+      </tr>
+    </table>
+        <form action="ship.php" method="post">
+    <input type="hidden" name="fleetid" value="77">
+    <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
+            <table class="tcal" id="availableShipsTable">
+                            <tr>
+                    <td style="" class="shiplistshipimage">
+                        <img src="/assets/ships/6501.png" title="Aerie">
+
+                    </td>
+                    <td>
+                        <input type="checkbox" class="chosenShipsCheckbox" name="chosen[]" value="78">
+                        <span>Aerie Three</span>
+                    </td>
+                </tr>
+                    </table>
+        <a href="javascript:void(0);" onclick="joinFleetInShiplist(77);" title="Schiffe hinzuf&Atilde;&frac14;gen" class="fabutton">Schiffe hinzuf&Atilde;&frac14;gen</a>
+    </form>
+      </div>
+  </body>
+
+</html>

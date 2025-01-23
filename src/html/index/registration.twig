@@ -37,7 +37,8 @@
 				<option value="+41">(CH) +41</option>
 			</select>
 			<input type="text" class="text" size="25" name="mobile" id="mobile"
-				oninput="checkMobile(this, this.value); updateMobileValue()" />
+    		oninput="debouncedCheckMobile(this, this.value); updateMobileValue()" />
+
 			<span id="mobileerror" style="display: none; color: #FF0000;">Fehler</span>
 			<span id="mobileok" style="display: none; color: Green;">OK</span>
 			<div id="mobiledup" style="color: #FFAA00; display: none;">Diese Mobilfunknummer ist bereits
@@ -53,6 +54,11 @@
 			Deine Nummer: <div name="combinedMobileValue" id="combinedMobileValue"></div>
 		</div>
 		{% endif %}
+		<br />
+		<div class="divhead">Wie bist du auf STU gestoße?</div>
+		<div class="divbody">
+		<input type="text" class="text" size="25" name="referer" id="referer" />
+		</div>
 		<br />
 		<div class="divhead">Regeln</div>
 		<div class="divbody">

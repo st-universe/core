@@ -14,18 +14,18 @@ final class SwitchContactModeRequest implements SwitchContactModeRequestInterfac
     #[Override]
     public function getContactId(): int
     {
-        return $this->queryParameter('cid')->int()->required();
+        return $this->parameter('cid')->int()->required();
     }
 
     #[Override]
     public function getModeId(): int
     {
-        return $this->queryParameter('clmode')->int()->required();
+        return $this->parameter('clmode')->int()->required();
     }
 
     #[Override]
     public function getContactDiv(): string
     {
-        return $this->tidyString($this->queryParameter('cldiv')->string()->defaultsToIfEmpty(''));
+        return $this->tidyString($this->parameter('cldiv')->string()->defaultsToIfEmpty(''));
     }
 }

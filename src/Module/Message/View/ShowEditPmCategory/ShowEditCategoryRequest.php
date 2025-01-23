@@ -14,6 +14,6 @@ final class ShowEditCategoryRequest implements ShowEditCategoryRequestInterface
     #[Override]
     public function getCategoryId(): int
     {
-        return $this->queryParameter('pmcat')->int()->defaultsTo(0);
+        return $this->parameter('pmcat')->int()->defaultsTo(0);
     }
 }

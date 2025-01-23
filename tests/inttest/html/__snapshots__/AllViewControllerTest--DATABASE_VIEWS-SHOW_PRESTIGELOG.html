@@ -1,0 +1,56 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body>
+<div class="box">
+    <div class="box_title" style="text-align: left">/
+                <a href="database.php">
+            Datenbank
+        </a>
+                <span> / </span>
+                        <a href="database.php?SHOW_PRESTIGELOG=1">
+            Prestigehistorie
+        </a>
+                    </div>
+</div>
+<br>
+<div id="result" style="display: none;">..</div>
+<form method="post" action="database.php">
+    <div>
+        <div style="float:left; padding-right: 5px; width: 5vw;">
+            <div class="box">
+                <div class="box_title">Prestige</div>
+                <div class="box_body" style="vertical-align: middle; text-align: center;">
+                    0
+                </div>
+            </div>
+        </div>
+        <div class="box" style="float:left;">
+            <div class="box_title">Anzahl</div>
+            <div class="box_body">
+                <input type="text" size="3" name="count" value="50">
+                <input type="submit" name="SHOW_PRESTIGELOG" class="button" value="Aktualisieren">
+            </div>
+        </div>
+        <div style="float:left; width: 90vw; padding-top:5px;">
+            <table class="tcal">
+                <tr>
+                    <th>Eintrag</th>
+                    <th>Datum</th>
+                </tr>
+                                <tr>
+                    <td colspan="2">Keine Eintr&auml;ge vorhanden</td>
+                </tr>
+                            </table>
+        </div>
+    </div>
+</form>
+<div class="footer">
+    Rendered in 4.203s - Memory usage: 42.77Mb
+</div>
+
+</body>
+</html>

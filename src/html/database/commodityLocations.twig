@@ -1,4 +1,4 @@
-{% from 'html/shipmacros.twig' import shipImageWithoutWarp %}
+{% from 'html/shipmacros.twig' import spacecraftImageWithoutWarp %}
 
 {% if COLONY_LOCATIONS %}
 <table class="use" style="width: 500px;">
@@ -27,20 +27,20 @@
     {% endfor %}
 </table>
 {% endif %}
-{% if SHIP_LOCATIONS %}
+{% if SPACECRAFT_LOCATIONS %}
 <table class="use" style="width: 500px;">
     <tr>
         <th>Anzahl</th>
-        <th>auf Schiff</th>
+        <th>auf Station/Schiff</th>
     </tr>
-    {% for storageWrapper in SHIP_LOCATIONS %}
-    {% set ship = storageWrapper.getShip %}
+    {% for storageWrapper in SPACECRAFT_LOCATIONS %}
+    {% set spacecraft = storageWrapper.getSpacecraft %}
     <tr>
         <td>{{ storageWrapper.getAmount }}</td>
         <td>
-            <a href="ship.php?SHOW_SHIP=1&id={{ ship.getId }}">
-                {{ shipImageWithoutWarp(ship) }}
-                {{ ship.getName|bbcode }}
+            <a href="{{ spacecraft.getHref }}">
+                {{ spacecraftImageWithoutWarp(spacecraft) }}
+                {{ spacecraft.getName|bbcode }}
             </a>
         </td>
     </tr>
@@ -54,13 +54,13 @@
         <th>geladene Torpedos</th>
     </tr>
     {% for storageWrapper in TORPEDO_LOCATIONS %}
-    {% set ship = storageWrapper.getShip %}
+    {% set spacecraft = storageWrapper.getSpacecraft %}
     <tr>
         <td>{{ storageWrapper.getAmount }}</td>
         <td>
-            <a href="ship.php?SHOW_SHIP=1&id={{ ship.getId }}">
-                {{ shipImageWithoutWarp(ship) }}
-                {{ ship.getName|bbcode }}
+            <a href="{{ spacecraft.getHref }}">
+                {{ spacecraftImageWithoutWarp(spacecraft) }}
+                {{ spacecraft.getName|bbcode }}
             </a>
         </td>
     </tr>
@@ -75,13 +75,13 @@
         <th>im Lager der Warenbörse</th>
     </tr>
     {% for storageWrapper in POST_LOCATIONS %}
-    {% set ship = storageWrapper.getTradepost.getShip %}
+    {% set station = storageWrapper.getTradepost.getStation %}
     <tr>
         <td>{{ storageWrapper.getAmount }}</td>
         <td>
             <a href="trade.php?SHOW_ACCOUNTS=1">
-                {{ shipImageWithoutWarp(ship) }}
-                {{ ship.getName|bbcode }}
+                {{ spacecraftImageWithoutWarp(station) }}
+                {{ station.getName|bbcode }}
             </a>
         </td>
     </tr>
@@ -93,13 +93,13 @@
         <th>in Angeboten an der Warenbörse</th>
     </tr>
     {% for storageWrapper in OFFER_LOCATIONS %}
-    {% set ship = storageWrapper.getTradepost.getShip %}
+    {% set station = storageWrapper.getTradepost.getStation %}
     <tr>
         <td>{{ storageWrapper.getAmount }}</td>
         <td>
             <a href="trade.php?SHOW_ACCOUNTS=1">
-                {{ shipImageWithoutWarp(ship) }}
-                {{ ship.getName|bbcode }}
+                {{ spacecraftImageWithoutWarp(station) }}
+                {{ station.getName|bbcode }}
             </a>
         </td>
     </tr>

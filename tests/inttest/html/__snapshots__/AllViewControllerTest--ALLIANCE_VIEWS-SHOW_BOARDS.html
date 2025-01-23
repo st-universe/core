@@ -1,0 +1,65 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body>
+<div class="box">
+    <div class="box_title" style="text-align: left">/
+                <a href="alliance.php">
+            Allianz
+        </a>
+                <span> / </span>
+                        <a href="alliance.php?SHOW_BOARDS=1">
+            Forum
+        </a>
+                    </div>
+</div>
+<br>
+<div id="result" style="display: none;">..</div>
+<table class="tcal">
+    <tr>
+        <th>Forum</th>
+        <th>Themen</th>
+        <th>Beitr&auml;ge</th>
+        <th>Letzter Beitrag</th>
+                <th style="width: 30px;"></th>
+            </tr>
+        <tr class="rowodd">
+                <td>
+            <a href="alliance.php?SHOW_BOARD=1&amp;boardid=1">Allianzboard Nr. 1</a>
+        </td>
+        <td>1</td>
+        <td>1</td>
+        <td>
+                        <a href="?SHOW_TOPIC=1&amp;boardid=1&amp;topicid=1">Ally-Topic A</a><br>
+            <span>21.11.2024 18:37</span> von:<br>
+            <span>Siedler 101</span>
+                    </td>
+                        <td style="text-align: center;">
+            <a href="javascript:void(0);" onclick="openBoardSettings(this,1)" onmouseover="cp('','buttons/b_down2')" onmouseout="cp('','buttons/b_down1')">
+                <img src="assets/buttons/b_down1.png" title="Editieren" name="">
+            </a>
+        </td>
+            </tr>
+    </table>
+<br>
+<form action="alliance.php" method="post">
+    <table class="use">
+        <tr>
+            <th>Forum erstellen</th>
+        </tr>
+        <tr>
+            <td>
+                Name <input type="text" size="20" name="board"> <input type="submit" class="button" value="Erstellen" name="B_ADD_BOARD">
+            </td>
+        </tr>
+    </table>
+</form>
+<div class="footer">
+    Rendered in 4.203s - Memory usage: 42.77Mb
+</div>
+
+</body>
+</html>

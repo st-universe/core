@@ -11,9 +11,7 @@ use Stu\Orm\Entity\UserInterface;
 
 final class KnCommentWrapper implements KnCommentWrapperInterface
 {
-    public function __construct(private ConfigInterface $config, private KnCommentInterface $comment, private UserInterface $currentUser)
-    {
-    }
+    public function __construct(private ConfigInterface $config, private KnCommentInterface $comment, private UserInterface $currentUser) {}
 
     #[Override]
     public function getId(): int
@@ -22,7 +20,7 @@ final class KnCommentWrapper implements KnCommentWrapperInterface
     }
 
     #[Override]
-    public function getPostId(): int
+    public function getKnId(): int
     {
         return $this->comment->getPosting()->getId();
     }

@@ -7,25 +7,31 @@ namespace Stu\Module\Station\Action\ManageShips;
 use Override;
 use request;
 use Stu\Component\Station\StationUtilityInterface;
-use Stu\Lib\ShipManagement\HandleManagersInterface;
-use Stu\Lib\ShipManagement\Provider\ManagerProviderFactoryInterface;
-use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
+use Stu\Lib\SpacecraftManagement\HandleManagersInterface;
+use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderFactoryInterface;
+use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
-use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
+use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Module\Station\View\ShowShipManagement\ShowShipManagement;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Entity\StationInterface;
+use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class ManageShips implements ActionControllerInterface
 {
-    public const string ACTION_IDENTIFIER = 'B_MANAGE_SHIPS';
+    public const string ACTION_IDENTIFIER = 'B_MANAGE_SPACECRAFTS';
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private ShipRepositoryInterface $shipRepository, private InteractionCheckerInterface $interactionChecker, private StationUtilityInterface $stationUtility, private ShipWrapperFactoryInterface $shipWrapperFactory, private ManagerProviderFactoryInterface $managerProviderFactory, private HandleManagersInterface $handleManagers)
-    {
-    }
+    public function __construct(
+        private StationLoaderInterface $stationLoader,
+        private SpacecraftRepositoryInterface $spacecraftRepository,
+        private InteractionCheckerInterface $interactionChecker,
+        private StationUtilityInterface $stationUtility,
+        private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
+        private ManagerProviderFactoryInterface $managerProviderFactory,
+        private HandleManagersInterface $handleManagers
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -35,7 +41,7 @@ final class ManageShips implements ActionControllerInterface
         $user = $game->getUser();
         $userId = $user->getId();
 
-        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
+        $wrapper = $this->stationLoader->getWrapperByIdAndUser(
             request::indInt('id'),
             $userId
         );
@@ -45,7 +51,7 @@ final class ManageShips implements ActionControllerInterface
             return;
         }
 
-        $shipIds = request::postArray('ships');
+        $shipIds = request::postArray('spacecrafts');
         if (count($shipIds) == 0) {
             $game->addInformation(_('Es wurden keine Schiffe ausgewählt'));
             return;
@@ -67,7 +73,7 @@ final class ManageShips implements ActionControllerInterface
             $msg = array_merge($msg, $this->handleShip($values, $managerProvider, (int)$shipId, $station));
         }
 
-        $this->shipRepository->save($station);
+        $this->spacecraftRepository->save($station);
 
         $game->addInformationMerge($msg);
     }
@@ -81,13 +87,13 @@ final class ManageShips implements ActionControllerInterface
         array $values,
         ManagerProviderInterface $managerProvider,
         int $shipId,
-        ShipInterface $station
+        StationInterface $station
     ): array {
-        $ship = $this->shipRepository->find($shipId);
+        $ship = $this->spacecraftRepository->find($shipId);
         if ($ship === null) {
             return [];
         }
-        if ($ship->getCloakState()) {
+        if ($ship->isCloaked()) {
             return [];
         }
         if (!$this->interactionChecker->checkPosition($station, $ship)) {
@@ -97,11 +103,11 @@ final class ManageShips implements ActionControllerInterface
             return [];
         }
 
-        $wrapper = $this->shipWrapperFactory->wrapShip($ship);
+        $wrapper = $this->spacecraftWrapperFactory->wrapSpacecraft($ship);
 
         $msg = $this->handleManagers->handle($wrapper, $values, $managerProvider);
 
-        $this->shipRepository->save($ship);
+        $this->spacecraftRepository->save($ship);
 
         return $msg;
     }

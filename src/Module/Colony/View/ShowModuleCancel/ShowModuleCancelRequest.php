@@ -14,12 +14,12 @@ final class ShowModuleCancelRequest implements ShowModuleCancelRequestInterface
     #[Override]
     public function getColonyId(): int
     {
-        return $this->queryParameter('id')->int()->required();
+        return $this->parameter('id')->int()->required();
     }
 
     #[Override]
     public function getModuleId(): int
     {
-        return $this->queryParameter('module')->int()->required();
+        return $this->parameter('module')->int()->required();
     }
 }

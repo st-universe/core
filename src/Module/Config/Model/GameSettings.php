@@ -4,7 +4,6 @@ namespace Stu\Module\Config\Model;
 
 use Override;
 use Stu\Module\Config\StuConfigException;
-use Stu\Module\Config\StuConfigSettingEnum;
 
 final class GameSettings extends AbstractSettings implements GameSettingsInterface
 {
@@ -13,7 +12,6 @@ final class GameSettings extends AbstractSettings implements GameSettingsInterfa
     private const string SETTING_USE_SEMAPHORES = 'useSemaphores';
     private const string SETTING_VERSION = 'version';
     private const string SETTING_WEBROOT = 'webroot';
-    private const string SETTING_PIRATE_LOGFILE_PATH = 'pirate_logfile_path';
 
     #[Override]
     public function getAdminIds(): array
@@ -24,25 +22,31 @@ final class GameSettings extends AbstractSettings implements GameSettingsInterfa
     #[Override]
     public function getAdminSettings(): AdminSettingsInterface
     {
-        return $this->settingsCache->getSettings(StuConfigSettingEnum::ADMIN, $this);
+        return $this->settingsCache->getSettings(AdminSettingsInterface::class, $this);
     }
 
     #[Override]
     public function getColonySettings(): ColonySettingsInterface
     {
-        return $this->settingsCache->getSettings(StuConfigSettingEnum::COLONY, $this);
+        return $this->settingsCache->getSettings(ColonySettingsInterface::class, $this);
     }
 
     #[Override]
     public function getEmailSettings(): EmailSettingsInterface
     {
-        return $this->settingsCache->getSettings(StuConfigSettingEnum::EMAIL, $this);
+        return $this->settingsCache->getSettings(EmailSettingsInterface::class, $this);
     }
 
     #[Override]
     public function getMapSettings(): MapSettingsInterface
     {
-        return $this->settingsCache->getSettings(StuConfigSettingEnum::MAP, $this);
+        return $this->settingsCache->getSettings(MapSettingsInterface::class, $this);
+    }
+
+    #[Override]
+    public function getPirateSettings(): PirateSettingsInterface
+    {
+        return $this->settingsCache->getSettings(PirateSettingsInterface::class, $this);
     }
 
     #[Override]
@@ -71,11 +75,5 @@ final class GameSettings extends AbstractSettings implements GameSettingsInterfa
     public function getWebroot(): string
     {
         return $this->settingsCore->getStringConfigValue(self::SETTING_WEBROOT);
-    }
-
-    #[Override]
-    public function getPirateLogfilePath(): string
-    {
-        return $this->settingsCore->getStringConfigValue(self::SETTING_PIRATE_LOGFILE_PATH);
     }
 }

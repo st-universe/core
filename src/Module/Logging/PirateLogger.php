@@ -17,8 +17,7 @@ final class PirateLogger implements PirateLoggerInterface
     public function __construct(
         private StuConfigInterface $stuConfig,
         private Parser $parser
-    ) {
-    }
+    ) {}
 
     #[Override]
     public function initRotating(): void
@@ -26,7 +25,7 @@ final class PirateLogger implements PirateLoggerInterface
         $this->logger = new Logger('KAZON');
         $this->logger->pushHandler(
             new RotatingFileHandler(
-                $this->stuConfig->getGameSettings()->getPirateLogfilePath()
+                $this->stuConfig->getGameSettings()->getPirateSettings()->getPirateLogfilePath()
             ),
         );
     }

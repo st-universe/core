@@ -17,9 +17,7 @@ final class CreateLicense implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_CREATE_LICENSE';
 
-    public function __construct(private CreateLicenseRequestInterface $createLicenseRequest, private TradeLicenseInfoRepositoryInterface $TradeLicenseInfoRepository, private TradePostRepositoryInterface $tradePostRepository, private CommodityRepositoryInterface $commodityRepository)
-    {
-    }
+    public function __construct(private CreateLicenseRequestInterface $createLicenseRequest, private TradeLicenseInfoRepositoryInterface $TradeLicenseInfoRepository, private TradePostRepositoryInterface $tradePostRepository, private CommodityRepositoryInterface $commodityRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -36,7 +34,7 @@ final class CreateLicense implements ActionControllerInterface
         if ($tradepost === null) {
             throw new AccessViolation(sprintf("Tradepost with ID %d not existent! Fool: %d", $posts_id, $user->getId()));
         }
-        $tradepost_user = $tradepost->getShip()->getUser();
+        $tradepost_user = $tradepost->getStation()->getUser();
         if ($tradepost_user !== $user) {
             throw new AccessViolation(sprintf("Tradepost belongs to other user! Fool: %d", $user->getId()));
         }

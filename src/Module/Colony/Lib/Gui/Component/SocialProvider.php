@@ -5,26 +5,23 @@ namespace Stu\Module\Colony\Lib\Gui\Component;
 use Override;
 use Stu\Component\Crew\CrewCountRetrieverInterface;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
-use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 
-final class SocialProvider implements GuiComponentProviderInterface
+final class SocialProvider implements PlanetFieldHostComponentInterface
 {
-    public function __construct(private CrewLimitCalculatorInterface $crewLimitCalculator, private CrewCountRetrieverInterface $crewCountRetriever, private ColonyLibFactoryInterface $colonyLibFactory)
-    {
-    }
+    public function __construct(private CrewLimitCalculatorInterface $crewLimitCalculator, private CrewCountRetrieverInterface $crewCountRetriever, private ColonyLibFactoryInterface $colonyLibFactory) {}
 
     #[Override]
     public function setTemplateVariables(
-        PlanetFieldHostInterface $host,
+        $entity,
         GameControllerInterface $game
     ): void {
         $user = $game->getUser();
 
         $game->setTemplateVar(
             'POPULATION_CALCULATOR',
-            $this->colonyLibFactory->createColonyPopulationCalculator($host)
+            $this->colonyLibFactory->createColonyPopulationCalculator($entity)
         );
 
         $game->setTemplateVar('FACTION', $game->getUser()->getFaction());

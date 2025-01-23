@@ -15,10 +15,10 @@ use Stu\Orm\Entity\ShipRumpModuleLevelInterface;
 final class ShipRumpModuleLevelRepository extends EntityRepository implements ShipRumpModuleLevelRepositoryInterface
 {
     #[Override]
-    public function getByShipRump(int $shipRumpId): ?ShipRumpModuleLevelInterface
+    public function getByShipRump(int $rumpId): ?ShipRumpModuleLevelInterface
     {
         return $this->findOneBy([
-            'rump_id' => $shipRumpId,
+            'rump_id' => $rumpId,
         ]);
     }
 }

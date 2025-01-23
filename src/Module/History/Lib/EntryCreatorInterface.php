@@ -2,15 +2,15 @@
 
 namespace Stu\Module\History\Lib;
 
+use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Orm\Entity\AllianceInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 
 interface EntryCreatorInterface
 {
     public function addEntry(
         string $text,
         int $sourceUserId,
-        ShipInterface|ColonyInterface|AllianceInterface $target
+        SpacecraftInterface|PlanetFieldHostInterface|AllianceInterface $target
     ): void;
 }

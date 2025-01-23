@@ -14,6 +14,6 @@ final class ShowTakeOfferRequest implements ShowTakeOfferRequestInterface
     #[Override]
     public function getOfferId(): int
     {
-        return $this->queryParameter('offerid')->int()->required();
+        return $this->parameter('offerid')->int()->required();
     }
 }

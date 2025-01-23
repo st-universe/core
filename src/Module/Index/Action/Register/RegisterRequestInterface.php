@@ -15,4 +15,6 @@ interface RegisterRequestInterface
     public function getFactionId(): int;
 
     public function getToken(): string;
+
+    public function getReferer(): ?string;
 }

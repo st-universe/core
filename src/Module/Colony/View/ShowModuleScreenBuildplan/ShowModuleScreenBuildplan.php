@@ -6,8 +6,8 @@ namespace Stu\Module\Colony\View\ShowModuleScreenBuildplan;
 
 use Override;
 use request;
-use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
-use Stu\Component\Ship\ShipModuleTypeEnum;
+use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
+use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
@@ -15,7 +15,7 @@ use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 
 final class ShowModuleScreenBuildplan implements ViewControllerInterface
 {
@@ -24,10 +24,9 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
     public function __construct(
         private ColonyLoaderInterface $colonyLoader,
         private ColonyLibFactoryInterface $colonyLibFactory,
-        private ShipCrewCalculatorInterface $shipCrewCalculator,
-        private ShipBuildplanRepositoryInterface $shipBuildplanRepository
-    ) {
-    }
+        private SpacecraftCrewCalculatorInterface $shipCrewCalculator,
+        private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -42,7 +41,7 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
 
         $planId = $game->getViewContext(ViewContextTypeEnum::BUILDPLAN) ?? request::indInt('planid');
 
-        $plan = $this->shipBuildplanRepository->find($planId);
+        $plan = $this->spacecraftBuildplanRepository->find($planId);
         if ($plan === null || $plan->getUser() !== $user) {
             throw new SanityCheckException('This buildplan belongs to someone else', null, self::VIEW_IDENTIFIER);
         }
@@ -50,7 +49,7 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
         $rump = $plan->getRump();
 
         $moduleSelectors = [];
-        foreach (ShipModuleTypeEnum::getModuleSelectorOrder() as $moduleType) {
+        foreach (SpacecraftModuleTypeEnum::getModuleSelectorOrder() as $moduleType) {
 
             $moduleSelectors[] = $this->colonyLibFactory->createModuleSelector(
                 $moduleType,
@@ -76,8 +75,9 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
 
         $game->appendNavigationPart(
             sprintf(
-                '?id=%d&SHOW_MODULE_SCREEN_BUILDPLAN=1&planid=%d',
+                '?id=%d&%s=1&planid=%d',
                 $colony->getId(),
+                self::VIEW_IDENTIFIER,
                 $plan->getId()
             ),
             _('Schiffbau')

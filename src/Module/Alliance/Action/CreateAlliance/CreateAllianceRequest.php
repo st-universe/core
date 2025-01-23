@@ -15,7 +15,7 @@ final class CreateAllianceRequest implements CreateAllianceRequestInterface
     public function getName(): string
     {
         return $this->tidyString(
-            $this->queryParameter('name')->string()->required()
+            $this->parameter('name')->string()->required()
         );
     }
 
@@ -23,13 +23,13 @@ final class CreateAllianceRequest implements CreateAllianceRequestInterface
     public function getDescription(): string
     {
         return $this->tidyString(
-            $this->queryParameter('description')->string()->required()
+            $this->parameter('description')->string()->required()
         );
     }
 
     #[Override]
     public function getFactionMode(): int
     {
-        return $this->queryParameter('factionid')->int()->defaultsTo(0);
+        return $this->parameter('factionid')->int()->defaultsTo(0);
     }
 }

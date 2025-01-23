@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:stu="stu" lang="de">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="theme-color" content="#121220">
+    <script src="/static/js/prototype.js"></script>
+    <script src="/static/js/scriptaculous/scriptaculous.js"></script>
+    <script src="/static/js/starmap.js"></script>
+    <script src="/static/js/default.js"></script>
+    <title>Bauplan erstellen</title>
+    <script>
+        var gfx_path = '/assets';
+    </script>
+    <script src="/static/js/overlib.js"></script>
+    <script src="/static/js/drag.js"></script>
+    <script src="/static/js/overlib_exclusive.js"></script>
+    <link rel="STYLESHEET" type="text/css" href="/static/css/schwarz.css">
+    <link rel="STYLESHEET" type="text/css" href="/static/css/stu.css">
+    <link rel="shortcut icon" href="/assets/favicon.ico">
+</head>
+
+<body onload="startUp();">
+    <div id="overDiv">...</div>
+    <div class="container">
+        <div class="header">
+            <div onclick="goToUrl('/maindesk.php'); return false;" class="header_box header_box_user border_box action">
+                <img style="width: 30px; height: 30px;" src="/assets/buttons/b_from1.png" title="Zur&uuml;ck zu Spielmodus">
+                <br>
+                <span style="color: orange; font-size: 150%;">Klick f&uuml;hrt zur&uuml;ck aufs Maindesk</span>
+            </div>
+            <div class="header_box header_box_logout border_box action" onclick="goToUrl('game.php?B_LOGOUT=1')" onmouseover="cp('header_menu_logout','navigation/menu_logout1', 'png')" onmouseout="cp('header_menu_logout','navigation/menu_logout0', 'png')">
+                <div>
+                    <img style="width: 40px; height: 40px;" id="header_menu_logout" src="/assets/navigation/menu_logout0.png" title="Logout">
+                    <div style="margin-top: 5px">Logout</div>
+                </div>
+            </div>
+                        <div class="header_box header_box_help border_box action" onclick="openNewTab('https://wiki.change.me')" onmouseover="cp('header_menu_docu','navigation/menu_doku1', 'png')" onmouseout="cp('header_menu_docu','navigation/menu_doku0', 'png')">
+                <div>
+                    <img style="width: 40px; height: 40px;" id="header_menu_docu" src="/assets/navigation/menu_doku0.png" title="Wiki">
+                    <div style="margin-top: 5px">Wiki</div>
+                </div>
+            </div>
+                                    <div class="header_box header_box_help border_box action" onclick="openNewTab('https://board.change.me')" onmouseover="cp('header_menu_board','navigation/menu_scripts1', 'png')" onmouseout="cp('header_menu_board','navigation/menu_scripts0', 'png')">
+                <div>
+                    <img style="width: 40px; height: 40px;" id="header_menu_board" src="/assets/navigation/menu_scripts0.png" title="Forum">
+                    <div style="margin-top: 5px">Forum</div>
+                </div>
+            </div>
+                        <div class="header_box header_box_settings border_box action" onclick="goToUrl('options.php')" onmouseover="cp('header_menu_settings','navigation/menu_option1', 'png')" onmouseout="cp('header_menu_settings','navigation/menu_option0', 'png')">
+                <div>
+                    <img style="width: 40px; height: 40px;" id="header_menu_settings" src="/assets/navigation/menu_option0.png" title="Einstellungen">
+                    <div style="margin-top: 5px">Einstellungen</div>
+                </div>
+            </div>
+            <div class="headerBottom"> </div>
+        </div>
+        <div style="margin-top: 80px;">
+            <div class="sidebar">
+                                <div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/npc/?SHOW_TOOLS=1'; }" onmouseover="cp('nav_item_scripts','navigation/menu_scripts1', 'png')" onmouseout="cp('nav_item_scripts','navigation/menu_scripts0', 'png')">
+    <a class="navitem_link" href="/npc/?SHOW_TOOLS=1">
+        <img class="navitem_img" src="/assets/navigation/menu_scripts0.png" id="nav_item_scripts" title="NPC Tools">
+        <div class="navitem_title">NPC Tools</div>
+    </a>
+</div>
+
+<div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/npc/?SHOW_NPC_LOG=1'; }" onmouseover="cp('nav_item_history','navigation/menu_history1', 'png')" onmouseout="cp('nav_item_history','navigation/menu_history0', 'png')">
+    <a class="navitem_link" href="/npc/?SHOW_NPC_LOG=1">
+        <img class="navitem_img" src="/assets/navigation/menu_history0.png" id="nav_item_history" title="NPC Log">
+        <div class="navitem_title">NPC Log</div>
+    </a>
+</div>
+
+
+            </div>
+            <div id="innerContent" class="innerContent">
+                <div class="box">
+    <div class="box_title" style="text-align: left">/
+                <a href="/npc/index.php?SHOW_BUILDPLAN_CREATOR=1">
+            Bauplan erstellen
+        </a>
+                    </div>
+</div>
+<br>
+<div id="result" style="display: none;">..</div>
+
+<div>
+    <h2>Spieler und Rumpf ausw&auml;hlen</h2>
+    <div><a href="?SHOW_BUILDPLAN_CREATOR=1&amp;userId=10"><strong><span style="color: #6699CC">Vereinte F&ouml;deration der Planeten</span></strong> (10)</a></div>
+    <div><a href="?SHOW_BUILDPLAN_CREATOR=1&amp;userId=11"><strong><span style="color: #055415">Romulanisches Sternenimperium</span> </strong> (11)</a></div>
+    <div><a href="?SHOW_BUILDPLAN_CREATOR=1&amp;userId=12"><strong><span style="color: #760505">Klingonisches Reich</span></strong> (12)</a></div>
+    <div><a href="?SHOW_BUILDPLAN_CREATOR=1&amp;userId=13"><strong><span style="color: #999900">Cardassianische Union</span></strong> (13)</a></div>
+    <div><a href="?SHOW_BUILDPLAN_CREATOR=1&amp;userId=14"><span style="color: #FF8000"><strong>Ferengi Allianz</strong></span> (14)</a></div>
+    <div><a href="?SHOW_BUILDPLAN_CREATOR=1&amp;userId=15"><strong><span style="color: 552222">Pakled</span></strong> (NPC) (15)</a></div>
+    <div><a href="?SHOW_BUILDPLAN_CREATOR=1&amp;userId=17"><strong><span style="color: #9b734d">Kazon</span></strong> (KI-NPC) (17)</a></div>
+    <div><a href="?SHOW_BUILDPLAN_CREATOR=1&amp;userId=19"><strong><span style="color: #006400">Borg Kollektiv</span></strong> (19)</a></div>
+    <div><a href="?SHOW_BUILDPLAN_CREATOR=1&amp;userId=101">Siedler 101 (101)</a></div>
+    <div><a href="?SHOW_BUILDPLAN_CREATOR=1&amp;userId=102">Siedler 102 (102)</a></div>
+
+</div>
+            </div>
+        </div>
+    </div>
+    </body>
+
+</html>

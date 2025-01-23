@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:stu="stu">
+<body>
+<form action="colony.php" method="post">
+    <input type="hidden" name="id" value="42">
+    <input type="hidden" name="hosttype" value="1">
+    <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
+    <div style="width: 40vw;">
+        <div class="">
+                <div id="shipinorbit" class="box">
+            <div class="box_title">Schiffe im Orbit</div>
+            <div class="box_body">
+                <ul id="shipselector">
+                                                            
+<li>
+  <table class="use" style="width: 100%;" onmouseover="shipSelectorHover(this);" onmouseout="shipSelectorHoverEnd(this);" onclick="shipSelectorChoose(this);">
+    <tr>
+      <td class="darkbg" colspan="5">
+                <a type="hidden" href="/ship.php?SHOW_SPACECRAFT=1&amp;id=77" onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Aerie Zwo',
+'id=77',
+'ship.php'); event.preventDefault();}
+updateSelectedSpacecraftId('77');"></a>
+                Aerie Zwo | Siedler 101
+      </td>
+    </tr>
+    <tr>
+      <td style="width: 20px; vertical-align: middle;">
+              </td>
+      <td style="width: 120px; vertical-align: middle;">
+        <img src="/assets/ships/6501.png" title="Aerie">
+
+      </td>
+      <td style="width: 150px;">
+        <table class="tcal">
+          <tr>
+            <th style="width: 20px; text-align: center;">
+              <img src="/assets/buttons/modul_1.png" title="H&Atilde;&frac14;lle">
+            </th>
+            <td style="vertical-align: middle; text-align: center;">
+                            <img alt="H&Atilde;&frac14;lle" src="/assets/bars/balken.png" style="background-color: #00aa00;height: 12px; width:50px;" title="H&Atilde;&frac14;lle: 819/819">
+                          </td>
+          </tr>
+        </table>
+      </td>
+            <td style="width: 150px;">
+                      </td>
+      <td style="width: 150px;">
+                      </td>
+          </tr>
+  </table>
+  <input type="hidden" id="selshipid" value="77">
+</li>
+                                    </ul>
+                                                <div style="width: 100%;">
+                    <br>
+                    <a href="javascript:void(0);" onclick="showTransfer(42, 'colony', document.getElementById('selshipid').value, 'ship', 1, 0);" onmouseover="cp('beamfrom','buttons/b_down2')" onmouseout="cp('beamfrom','buttons/b_down1')"><img src="/assets/buttons/b_down1.png" name="beamfrom" title="Von Schiff beamen"></a>
+                    <a href="javascript:void(0);" onclick="showTransfer(42, 'colony', document.getElementById('selshipid').value, 'ship', 1, 1);" onmouseover="cp('beamto','buttons/b_up2')" onmouseout="cp('beamto','buttons/b_up1')"><img src="/assets/buttons/b_up1.png" name="beamto" title="Zu Schiff beamen"></a>
+                    <a href="javascript:void(0);" onclick="getOrbitShipList(42);" style="margin-left: 5px;">
+                        <img src="/assets/buttons/fleet.png" title="Schiffsliste aufklappen">
+                    </a>
+                </div>
+                            </div>
+        </div>
+    </div>
+    <br>
+    <div id="colonyinfocontainer" class="colonyInfoContainer">
+        <div class="box">
+            <div class="box_title">Planet</div>
+            <div class="box_body">
+                <a href="javascript:void(0);" style="text-align: center; cursor: pointer;" onclick="switchInnerContent('SHOW_SPACECRAFT_MANAGEMENT', 'Orbitalmanagement', 'id=42');">
+                    <div class="box">
+                        <div class="box_body">
+                            Orbitalmanagement
+                        </div>
+                    </div>
+                </a>
+                <div class="box_body" style="float:left;">
+                    <div>
+                        <img src="/assets/planets/201.png" style="width: 30px; height: 30px;">
+                        <span style="display: block; white-space:pre-line;">
+                            Stempor'Arr 4 (7|11)</span>
+                    </div>
+                    <div>
+                        <img src="/assets/buttons/t_2.png" title="Tag">
+                        <span>11:53 Uhr</span>
+                    </div>
+                    <div>
+                        <img src="/assets/buttons/classm.png" title="Eigenrotationsdauer" alt="Eigenrotationsdauer">
+                        27h 50m 24s
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box">
+            <div class="box_title">Umgebungsscan</div>
+            <div class="box_body" style="display: flex; justify-content: center;">
+                <div style="float:left;">
+            
+    <table class="lssarea" cellpadding="0" cellspacing="0">
+        <tr>
+            <td style="font-size: 0.9vw; height: 1.7vw; width: 1.7vw;" class="th">
+                &nbsp;
+            </td>
+                        <td style="font-size: 0.9vw; height: 1.7vw; width: 1.7vw;" class=" th">
+                6
+            </td>
+                        <td style="font-size: 0.9vw; height: 1.7vw; width: 1.7vw;" class=" th">
+                7
+            </td>
+                        <td style="font-size: 0.9vw; height: 1.7vw; width: 1.7vw;" class=" th">
+                8
+            </td>
+                    </tr>
+        
+<tr>
+    <td style="height: 1.7vw; width: 1.7vw; font-size: 0.9vw;" class="th">10</td>
+        <td class="lss" style=" height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+<img src="/assets/map/starmap/1006.png" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style=" height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+<img src="/assets/map/starmap/1007.png" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style=" height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+<img src="/assets/map/starmap/1008.png" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+    </tr>
+<tr>
+    <td style="height: 1.7vw; width: 1.7vw; font-size: 0.9vw;" class="th">11</td>
+        <td class="lss" style=" height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+<img src="/assets/map/starmap/1106.png" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style=" height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            <div style="font-size: 0.9vw; z-index: 6;" class="centered">2</div>
+<img src="/assets/map/starmap/1107.png" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/201.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style=" height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+<img src="/assets/map/starmap/1108.png" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+    </tr>
+<tr>
+    <td style="height: 1.7vw; width: 1.7vw; font-size: 0.9vw;" class="th">12</td>
+        <td class="lss" style=" height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+<img src="/assets/map/starmap/1206.png" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style=" height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+<img src="/assets/map/starmap/1207.png" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/405.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style=" height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+<img src="/assets/map/starmap/1208.png" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+    </tr>
+    </table>
+</div>
+            </div>
+        </div>
+                <div class="box">
+            <div class="box_title">Sternensystem</div>
+            <div class="box_body">
+                                <img src="/assets/map/systemtypes/1060.png" title="Roter Zwerg">
+                <div>
+                    <span style="display: block; white-space:pre-line;">Stempor'Arr
+                        (7|8)</span>
+                </div>
+                                <div>
+                    <span style="display: block; white-space:pre-line;">
+                        Typ:
+                        Roter Zwerg</span>
+                </div>
+            </div>
+        </div>
+            </div>
+            <table id="colonypopulation" class="tcal population">
+        <tr>
+            <th colspan="5">Bev&Atilde;&para;lkerung</th>
+        </tr>
+        <tr>
+            <td class="populationValue">
+                <div>Gesamt</div>
+                <img src="/assets/bev/bev_free_5_1.png" title="Bev&Atilde;&para;lkerung">
+                84
+            </td>
+            <td class="populationValue">
+                <div>Arbeiter</div>
+                <img src="/assets/bev/bev_used_5_1.png" title="Arbeiter">
+                0
+            </td>
+            <td class="populationValue">
+                <div>Verf&Atilde;&frac14;gbar</div>
+                <img src="/assets/bev/bev_unused_5_1.png" title="Freie Bev&Atilde;&para;lkerung">
+                84
+            </td>
+            <td class="populationValue">
+                <div>Wohnraum</div>
+                <img src="/assets/bev/bev_free_5_1.png" title="Wohnraum">
+                0 (84)
+            </td>
+            <td class="populationValue">
+                                <div>Entwicklung</div>
+                <img src="/assets/bev/bev_unused_5_1.png" title="Wachstum">
+                            </td>
+        </tr>
+    </table>
+        <br>
+    <div id="colonyeffects" style="white-space: normal">
+        <div class="box">
+            <div class="box_title">Effekte</div>
+            <div class="box_body">
+                <div class="colonyEffectGrid">
+                                        <div class="colonyEffectContainer">
+                        <img src="/assets/commodities/1505.png" title="Deuterium-Vorkommen">
+                        <span style="word-wrap: break-word; white-space: normal;">
+                            Deuterium-Vorkommen
+                        </span>
+                    </div>
+                    <div class="colonyEffectProduction positive">
+                        +12
+                    </div>
+                                        <div class="colonyEffectContainer">
+                        <img src="/assets/commodities/1508.png" title="Dilithium-Vorkommen">
+                        <span style="word-wrap: break-word; white-space: normal;">
+                            Dilithium-Vorkommen
+                        </span>
+                    </div>
+                    <div class="colonyEffectProduction positive">
+                        +2
+                    </div>
+                                        <div class="colonyEffectContainer">
+                        <img src="/assets/commodities/1511.png" title="Iridium-Erz-Vorkommen">
+                        <span style="word-wrap: break-word; white-space: normal;">
+                            Iridium-Erz-Vorkommen
+                        </span>
+                    </div>
+                    <div class="colonyEffectProduction positive">
+                        +12
+                    </div>
+                                    </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</form>
+
+</body>
+</html>

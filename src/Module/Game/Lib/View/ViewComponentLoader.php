@@ -13,9 +13,7 @@ use Stu\Module\Game\Lib\View\Provider\ViewComponentProviderInterface;
 final class ViewComponentLoader implements ViewComponentLoaderInterface
 {
     /** @param array<int, ViewComponentProviderInterface> $viewComponentProviders */
-    public function __construct(private array $viewComponentProviders)
-    {
-    }
+    public function __construct(private array $viewComponentProviders) {}
 
     #[Override]
     public function registerViewComponents(
@@ -34,7 +32,5 @@ final class ViewComponentLoader implements ViewComponentLoaderInterface
 
         $componentProvider = $this->viewComponentProviders[$view->value];
         $componentProvider->setTemplateVariables($game);
-
-        $game->setTemplateVar('CURRENT_VIEW', $view);
     }
 }

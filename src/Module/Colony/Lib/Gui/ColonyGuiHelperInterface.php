@@ -4,6 +4,7 @@ namespace Stu\Module\Colony\Lib\Gui;
 
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
+use Stu\Module\Colony\Component\ColonyComponentEnum;
 use Stu\Module\Control\GameControllerInterface;
 
 interface ColonyGuiHelperInterface
@@ -14,7 +15,7 @@ interface ColonyGuiHelperInterface
         GameControllerInterface $game
     ): void;
 
-    /** @param array<GuiComponentEnum> $guiComponents */
+    /** @param array<ColonyComponentEnum> $guiComponents */
     public function registerComponents(
         PlanetFieldHostInterface $host,
         GameControllerInterface $game,

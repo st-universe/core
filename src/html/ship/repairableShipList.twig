@@ -1,6 +1,6 @@
-{% from 'html/shipmacros.twig' import shipImageWithoutWarp %}
+{% from 'html/shipmacros.twig' import spacecraftImageWithoutWarp %}
 
-{# needs following variables: host, REPAIRABLE_SHIP_LIST) #}
+{# needs following variables: host, REPAIRABLE_SHIP_WRAPPERS) #}
 <table class="tcal" style="width: 40vw;">
     {% set RepairoverlibText = "<table class='tcal' style='width:250px'>
         <tr>
@@ -22,12 +22,12 @@
                 onmouseover="return overlib('{{ RepairoverlibText|e('js') }}', CAPTION, '',  CLOSETEXT, 'X', CLOSECOLOR, '#8897cf', TEXTCOLOR, '#000000', CELLPAD, 4);"
                 onmouseout="return nd();"><img src="/assets/buttons/info2.png" style="height:16px;" /></a></th>
     </tr>
-    {% for wrapper in REPAIRABLE_SHIP_LIST %}
+    {% for wrapper in REPAIRABLE_SHIP_WRAPPERS %}
     {% set ship = wrapper.get %}
     <tr class="row responsive-hide">
         <td>
             <input type="hidden" name="ships[]" value="{{ ship.getId }}" />
-            {{ shipImageWithoutWarp(ship) }}
+            {{ spacecraftImageWithoutWarp(ship) }}
         </td>
         <td class="break-word">{{ ship.getName|bbcode }}</td>
         <td>{{ wrapper.getRepairDurationPreview|bbcode }}</td>
@@ -59,7 +59,7 @@
     <tr class="responsive-show">
         <td>
             <input type="hidden" name="ships[]" value="{{ ship.getId }}" />
-            {{ shipImageWithoutWarp(ship) }}
+            {{ spacecraftImageWithoutWarp(ship) }}
         </td>
         <td class="break-word" colspan="2">{{ ship.getName|bbcode }}</td>
     </tr>

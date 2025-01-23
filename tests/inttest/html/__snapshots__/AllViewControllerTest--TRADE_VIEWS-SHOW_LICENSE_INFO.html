@@ -1,0 +1,54 @@
+<html lang="de">
+
+<head>
+  <script src="/static/js/default.js"></script>
+</head>
+
+<body>
+  <div class="ajaxwin">
+        <table class="tcal">
+      <tr>
+        <th onmouseover="switch_drag_on();" onmouseout="switch_drag_off();">Lizenzinformation</th>
+        <th style="width: 18px;">
+          <a href="javascript:void(0);" onclick="closeAjaxWindow();" onmouseover="cp('ajaxclose','buttons/x2');" onmouseout="cp('ajaxclose','buttons/x1');">
+            <img src="/assets/buttons/x1.png" name="ajaxclose" title="Fenster schlie&Atilde;&#159;en">
+          </a>
+        </th>
+      </tr>
+    </table>
+        <form method="post" action="trade.php">
+        <table class="tcal">
+        <input type="hidden" name="postid" value="2">
+        <input type="hidden" name="renewlicense" value="1">
+        <tr>
+            <td style="vertical-align: middle;">Verlangte Ware</td>
+            <td> <img src="assets/commodities/8.png" title="Dilithium">
+                15
+            </td>
+        </tr>
+                <tr>
+            <td style="vertical-align: middle;">Laufzeit in Tagen</td>
+            <td>
+                60
+                                <span>
+                    (3614 &Atilde;&frac14;brig)
+                </span>
+                            </td>
+        </tr>
+                <tr>
+            <td style="vertical-align: middle;">Lizenzgeb&Atilde;&frac14;hr zuletzt ge&Atilde;&curren;ndert</td>
+            <td>
+                21.07.2394
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="submit" class="button" value="Lizenz verl&Atilde;&curren;ngern" name="B_RENEW_TRADELICENSE">
+            </td>
+        </tr>
+    </table>
+    </form>
+      </div>
+  </body>
+
+</html>

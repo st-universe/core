@@ -1,0 +1,84 @@
+<html lang="de">
+
+<head>
+  <script src="/static/js/default.js"></script>
+</head>
+
+<body>
+  <div class="ajaxwin">
+        <table class="tcal">
+      <tr>
+        <th onmouseover="switch_drag_on();" onmouseout="switch_drag_off();">Kommentare f&Atilde;&frac14;r Beitrag 42</th>
+        <th style="width: 18px;">
+          <a href="javascript:void(0);" onclick="closeAjaxWindow();" onmouseover="cp('ajaxclose','buttons/x2');" onmouseout="cp('ajaxclose','buttons/x1');">
+            <img src="/assets/buttons/x1.png" name="ajaxclose" title="Fenster schlie&Atilde;&#159;en">
+          </a>
+        </th>
+      </tr>
+    </table>
+        <br>
+<div id="writecomment" style="display: none;">
+  <table class="tcal">
+    <tr>
+      <th colspan="2">Kommentar schreiben</th>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <textarea style="width: 100%; height: 100px;" name="comment" id="comment"></textarea>
+      </td>
+    </tr>
+    <tr>
+      <td style="width: 200px">
+        <span id="commentTextLength">0</span>/250 <span>Zeichen</span>
+      </td>
+      <td style="text-align: right;">
+        <input type="button" class="button" onclick="postComment(42);" value="Abschicken" id="postCommentButton">
+      </td>
+    </tr>
+  </table>
+</div>
+<div style="width: 100%; text-align: right;">
+  <input type="button" class="button" value="Kommentar schreiben" onclick="Element.hide(this.parentNode);Element.show(document.getElementById('writecomment'))">
+</div>
+<br>
+<table class="tcal">
+  <tr>
+    <td rowspan="2" style="width: 40px">
+            <img src="assets/rassen/1kn.png" style="width: 40px">
+          </td>
+    <th style="text-align: center;">
+      Siedler 101
+    </th>
+    <th style="width: 120px; text-align: center;">2024-11-26 13:16:25</th>
+    <th style="width: 20px">
+            <a href="javascript:void(0);" onclick="deletePostingComment(42, 43);" title="L&Atilde;&para;schen" onmouseover="cp('delComment43','buttons/x2')" onmouseout="cp('delComment43','buttons/x1')">
+        <img src="/assets/buttons/x1.png" name="delComment43">
+      </a>
+          </th>
+  </tr>
+  <tr>
+    <td colspan="3">This is a KN post comment.</td>
+  </tr>
+</table>
+<script>
+    document.getElementById('comment').addEventListener(
+      "keyup",
+      function () {
+        var limit = 250;
+        var length = this.value.length;
+        document.getElementById('commentTextLength').innerHTML = length;
+        if (length > limit) {
+          document.getElementById('commentTextLength').classList.add('error');
+          document.getElementById('postCommentButton').disabled = true;
+        } else {
+          document.getElementById('commentTextLength').classList.remove('error');
+          document.getElementById('postCommentButton').disabled = false;
+        }
+      },
+      false
+    );
+  </script>
+      </div>
+  </body>
+
+</html>

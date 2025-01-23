@@ -20,7 +20,8 @@ class LocalPlayerCreator extends PlayerCreator
         FactionInterface $faction,
         string $password,
         ?string $mobile = null,
-        ?string $smsCode = null
+        ?string $smsCode = null,
+        ?string $referrer = null
     ): UserInterface {
         $player = $this->userRepository->prototype();
         $player->setLogin($loginName);

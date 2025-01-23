@@ -14,6 +14,6 @@ final class ShowOfferMenuNewOfferRequest implements ShowOfferMenuNewOfferRequest
     #[Override]
     public function getStorageId(): int
     {
-        return $this->queryParameter('storid')->int()->required();
+        return $this->parameter('storid')->int()->required();
     }
 }

@@ -1,6 +1,6 @@
-{% from 'html/shipmacros.twig' import shipImageWithoutWarp %}
+{% from 'html/shipmacros.twig' import spacecraftImageWithoutWarp %}
 
-{# needs following variables: host, RETROFIT_SHIP_LIST) #}
+{# needs following variables: host, RETROFIT_SHIP_WRAPPERS) #}
 <table class="tcal" style="width: 40vw;">
     {% set RetrofitoverlibText = "<table class='tcal' style='width:250px'>
         <tr>
@@ -8,8 +8,9 @@
         </tr>
         <tr>
             <td>Die Umrüstung eines Raumschiffes kann die Werte des jeweiligen Schiffes ändern. </br>
-            Dabei können Module gegeneinander ausgetauscht werden. Mit einer Chance das alte Modul zurück zu bekommen.</br>Klicke auf das <img
-                    style='height:16px' src='/assets/buttons/info2.png' /> für mehr Infos.</td>
+                Dabei können Module gegeneinander ausgetauscht werden. Mit einer Chance das alte Modul zurück zu
+                bekommen.</br>Klicke auf das <img style='height:16px' src='/assets/buttons/info2.png' /> für mehr Infos.
+            </td>
         </tr>
     </table>" %}
 
@@ -21,22 +22,20 @@
                 onmouseover="return overlib('{{ RetrofitoverlibText|e('js') }}', CAPTION, '',  CLOSETEXT, 'X', CLOSECOLOR, '#8897cf', TEXTCOLOR, '#000000', CELLPAD, 4);"
                 onmouseout="return nd();"><img src="/assets/buttons/info2.png" style="height:16px;" /></a></th>
     </tr>
-    {% for wrapper in RETROFIT_SHIP_LIST %}
+    {% for wrapper in RETROFIT_SHIP_WRAPPERS %}
     {% set ship = wrapper.get %}
     <tr class="row responsive-hide">
         <td>
             <input type="hidden" name="ships[]" value="{{ ship.getId }}" />
-            {{ shipImageWithoutWarp(ship) }}
+            {{ spacecraftImageWithoutWarp(ship) }}
         </td>
         <td class="break-word">{{ ship.getName|bbcode }}</td>
-        <td>{{ ship.getRump.getBuildtime|formatSeconds  }}</td>
+        <td>{{ ship.getRump.getBuildtime|formatSeconds }}</td>
         <td>
-            {% if wrapper.canBeRetrofitted %}
             <div>
                 <a
                     href="?SHOW_MODULE_SCREEN_RETROFIT=1&id={{ host.getId }}&planid={{ ship.getBuildplan.getId }}&shipid={{ ship.getId }}">Umrüsten</a>
             </div>
-            {% endif %}
         </td>
     </tr>
     <!-- Responsive rows -->
@@ -47,7 +46,7 @@
     <tr class="responsive-show">
         <td>
             <input type="hidden" name="ships[]" value="{{ ship.getId }}" />
-            {{ shipImageWithoutWarp(ship) }}
+            {{ spacecraftImageWithoutWarp(ship) }}
         </td>
         <td class="break-word" colspan="2">{{ ship.getName|bbcode }}</td>
     </tr>
@@ -58,14 +57,12 @@
                 onmouseout="return nd();"><img src="/assets/buttons/info2.png" style="height:16px;" /></a></th>
     </tr>
     <tr class="responsive-show">
-        <td>{{ ship.getRump.getBuildtime|formatSeconds  }}</td>
+        <td>{{ ship.getRump.getBuildtime|formatSeconds }}</td>
         <td>
-            {% if wrapper.canBeRetrofitted %}
             <div>
                 <a
-                href="?SHOW_MODULE_SCREEN_RETROFIT=1&id={{ host.getId }}&planid={{ ship.getBuildplan.getId }}&shipid={{ ship.getId }}">Umrüsten</a>
+                    href="?SHOW_MODULE_SCREEN_RETROFIT=1&id={{ host.getId }}&planid={{ ship.getBuildplan.getId }}&shipid={{ ship.getId }}">Umrüsten</a>
             </div>
-            {% endif %}
         </td>
     </tr>
     {% endfor %}

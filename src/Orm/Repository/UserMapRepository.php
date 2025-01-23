@@ -22,20 +22,25 @@ final class UserMapRepository extends EntityRepository implements UserMapReposit
         $this->getEntityManager()->getConnection()->executeQuery(
             sprintf(
                 'INSERT INTO stu_user_map (user_id, layer_id, cx, cy, map_id)
-                (SELECT %d as user_id, l.layer_id, l.cx, l.cy, m.id as map_id
+                SELECT %d as user_id, l.layer_id, l.cx, l.cy, m.id as map_id
                 FROM stu_map m
                 JOIN stu_location l
                 ON m.id = l.id
                 WHERE l.cx BETWEEN %d AND %d
                 AND l.cy BETWEEN %d AND %d
-                AND l.layer_id = %d)
-                ON CONFLICT DO NOTHING',
+                AND l.layer_id = %d
+                AND NOT EXISTS (SELECT * FROM stu_user_map um
+                                WHERE um.user_id = %d
+                                AND um.layer_id = l.layer_id
+                                AND um.cx = l.cx
+                                AND um.cy = l.cy)',
                 $userId,
                 $cx - $range,
                 $cx + $range,
                 $cy - $range,
                 $cy + $range,
-                $layerId
+                $layerId,
+                $userId,
             )
         );
     }

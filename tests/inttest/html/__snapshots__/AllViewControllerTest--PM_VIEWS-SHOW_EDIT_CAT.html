@@ -1,0 +1,36 @@
+<html lang="de">
+
+<head>
+  <script src="/static/js/default.js"></script>
+</head>
+
+<body>
+  <div class="ajaxwin">
+        <table class="tcal">
+      <tr>
+        <th onmouseover="switch_drag_on();" onmouseout="switch_drag_off();">Ordner editieren</th>
+        <th style="width: 18px;">
+          <a href="javascript:void(0);" onclick="closeAjaxWindow();" onmouseover="cp('ajaxclose','buttons/x2');" onmouseout="cp('ajaxclose','buttons/x1');">
+            <img src="/assets/buttons/x1.png" name="ajaxclose" title="Fenster schlie&Atilde;&#159;en">
+          </a>
+        </th>
+      </tr>
+    </table>
+        
+  <form name="editcat" method="post" action="pm.php">
+    <table class="tcal">
+      <tr>
+        <td>Name</td>
+        <td>
+          <input type="text" style="width: 100px;" id="catname" name="catname" value="">
+          <input type="button" class="button" value="&Atilde;&#132;ndern" onclick="changeCategoryName();">
+        </td>
+      </tr>
+    </table>
+    <br>
+    <input type="hidden" name="pmcat" value="4780">
+      </form>
+      </div>
+  </body>
+
+</html>

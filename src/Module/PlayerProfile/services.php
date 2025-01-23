@@ -31,12 +31,12 @@ return [
     ChangeCharacterRequestInterface::class => autowire(ChangeCharacterRequest::class),
     DeleteCharacterRequestInterface::class => autowire(DeleteCharacterRequest::class),
     ShowColonySurfaceRequestInterface::class => autowire(ShowColonySurfaceRequest::class),
-    'PLAYER_PROFILE_ACTIONS' => [
+    'USERPROFILE_ACTIONS' => [
         CreateCharacter::ACTION_IDENTIFIER => autowire(CreateCharacter::class),
         ChangeCharacter::ACTION_IDENTIFIER => autowire(ChangeCharacter::class),
         DeleteCharacter::ACTION_IDENTIFIER => autowire(DeleteCharacter::class),
     ],
-    'PLAYER_PROFILE_VIEWS' => [
+    'USERPROFILE_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
         ShowColonySurface::VIEW_IDENTIFIER => autowire(ShowColonySurface::class),
     ],

@@ -4,7 +4,7 @@ namespace Stu\Module\Communication\Action\EditKnPost;
 
 interface EditKnPostRequestInterface
 {
-    public function getPostId(): int;
+    public function getKnId(): int;
 
     public function getPlotId(): int;
 

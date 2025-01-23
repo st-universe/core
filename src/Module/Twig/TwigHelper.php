@@ -9,19 +9,24 @@ use Noodlehaus\ConfigInterface;
 use Stu\Component\Building\NameAbbreviations;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Component\Game\ModuleViewEnum;
-use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
+use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemWrapper;
+use Stu\Component\Spacecraft\System\SpacecraftSystemWrapperFactoryInterface;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Lib\ModuleScreen\GradientColorInterface;
 use Stu\Module\Colony\Lib\ColonyEpsProductionPreviewWrapper;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\ColonyProductionPreviewWrapper;
+use Stu\Module\Control\StuRandom;
 use Stu\Module\Control\StuTime;
-use Stu\Module\Ship\Lib\Battle\FightLibInterface;
-use Stu\Module\Ship\Lib\ShipNfsItem;
+use Stu\Module\Spacecraft\Lib\Battle\FightLibInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftNfsItem;
 use Stu\Module\Template\TemplateHelperInterface;
 use Stu\Orm\Entity\AnomalyInterface;
 use Stu\Orm\Entity\BuildingInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\PlanetFieldInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 use Twig\Environment;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -34,10 +39,12 @@ class TwigHelper
         private ConfigInterface $config,
         private FightLibInterface $fightLib,
         private ColonyLibFactoryInterface $colonyLibFactory,
-        private ShipCrewCalculatorInterface $shipCrewCalculator,
+        private SpacecraftCrewCalculatorInterface $shipCrewCalculator,
+        private SpacecraftSystemWrapperFactoryInterface $spacecraftSystemWrapperFactory,
         private GradientColorInterface $gradientColor,
         private TemplateHelperInterface $templateHelper,
-        private StuTime $stuTime
+        private StuTime $stuTime,
+        private StuRandom $stuRandom
     ) {}
 
     public function registerGlobalVariables(): void
@@ -122,7 +129,7 @@ class TwigHelper
         ));
         $this->environment->addFilter($shortNameFilter);
 
-        $getMaxCrewCountByShipFilter = new TwigFilter('getMaxCrewCountByShip', fn(ShipInterface $ship): int => $this->shipCrewCalculator->getMaxCrewCountByShip($ship));
+        $getMaxCrewCountByShipFilter = new TwigFilter('getMaxCrewCountByShip', fn(SpacecraftInterface $spacecraft): int => $this->shipCrewCalculator->getMaxCrewCountByShip($spacecraft));
         $this->environment->addFilter($getMaxCrewCountByShipFilter);
 
         $numberWithThousandSeperatorFilter = new TwigFilter('numberWithThousandSeperator', fn($value): string => $this->templateHelper->getNumberWithThousandSeperator($value));
@@ -131,7 +138,7 @@ class TwigHelper
 
     private function registerFunctions(): void
     {
-        $canAttackTargetFunction = new TwigFunction('canAttackTarget', fn(ShipInterface $ship, ShipInterface|ShipNfsItem $target): bool => $this->fightLib->canAttackTarget($ship, $target));
+        $canAttackTargetFunction = new TwigFunction('canAttackTarget', fn(SpacecraftInterface $spacecraft, SpacecraftInterface|SpacecraftNfsItem $target): bool => $this->fightLib->canAttackTarget($spacecraft, $target));
         $this->environment->addFunction($canAttackTargetFunction);
 
         $getEpsProductionPreviewFunction = new TwigFunction('getEpsProductionPreview', fn(PlanetFieldHostInterface $host, BuildingInterface $building): ColonyEpsProductionPreviewWrapper => $this->colonyLibFactory->createEpsProductionPreviewWrapper($host, $building));
@@ -146,10 +153,23 @@ class TwigHelper
         $getViewFunction = new TwigFunction('getView', fn(string $value): ModuleViewEnum => ModuleViewEnum::from($value));
         $this->environment->addFunction($getViewFunction);
 
-        $getUniqIdFunction = new TwigFunction('getUniqId', fn(): string => uniqid());
+        $getUniqIdFunction = new TwigFunction('getUniqId', fn(): string => $this->stuRandom->uniqid());
         $this->environment->addFunction($getUniqIdFunction);
 
         $gradientColorFunction = new TwigFunction('gradientColor', fn(int $value, int $lowest, int $highest): string => $this->gradientColor->calculateGradientColor($value, $lowest, $highest));
         $this->environment->addFunction($gradientColorFunction);
+
+        $gradientColorFunction = new TwigFunction('stuDate', fn(string $format): string => $this->stuTime->date($format));
+        $this->environment->addFunction($gradientColorFunction);
+
+        $dayNightPrefixFunction = new TwigFunction('getDayNightPrefix', fn(PlanetFieldInterface $field): string => $field->getDayNightPrefix($this->stuTime->time()));
+        $this->environment->addFunction($dayNightPrefixFunction);
+
+        $hasSpacecraftSystemByNameFunction = new TwigFunction(
+            'getSpacecraftSystemWrapper',
+            fn(SpacecraftInterface $spacecraft, string $name): ?SpacecraftSystemWrapper
+            => $this->spacecraftSystemWrapperFactory->create($spacecraft, SpacecraftSystemTypeEnum::getByName($name))
+        );
+        $this->environment->addFunction($hasSpacecraftSystemByNameFunction);
     }
 }

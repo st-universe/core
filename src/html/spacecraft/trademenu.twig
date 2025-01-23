@@ -1,0 +1,93 @@
+{% from 'html/macros.twig' import commoditySelectorList %}
+
+<div id="trademenucontent" style="width: 400px;">
+  {% if INFORMATION %}
+  {% include 'html/systeminformation.twig' %}
+  {% endif %}
+  {% if HAS_LICENSE %}
+  <form method="post" action="{{ SHIP.getType.getModuleView.getPhpPage }}">
+    <input type="hidden" name="id" value="{{ SHIP.getId }}" />
+    <input type="hidden" name="postid" value="{{ TRADEPOST.getId }}" />
+    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+    <br />
+    <table class="tcal">
+      <tr>
+        <th style="width: 50%;">Warenkonto</th>
+        <th>Schiff</th>
+      </tr>
+      <tr>
+        <td>
+          <img src="assets/buttons/lager.png" />
+          {{ TRADEPOST.getStorageSum }}/{{ TRADEPOST.getStorageCapacity }}
+        </td>
+        <td>
+          <img src="assets/buttons/lager.png" />
+          {{ SHIP.getStorageSum }}/{{ SHIP.getRump.getStorage }}
+        </td>
+      </tr>
+    </table>
+    <br />
+    <table class="tcal">
+      <tr>
+        <th>Modus</th>
+      </tr>
+      <tr>
+        <td style="width: 50%" class="selected" id="transfertoaccount">
+          <a style="display: block;" href="javascript:void(0);"
+            onclick="switchTransferToAccount({{ TRADEPOST.getId }})">Transfer in Konto</a>
+        </td>
+        <td style="width: 50%" id="transferfromaccount">
+          <a style="display: block;" href="javascript:void(0);"
+            onclick="switchTransferFromAccount({{ TRADEPOST.getId }})">Transfer von Konto</a>
+        </td>
+      </tr>
+    </table>
+
+    <div id="trademenutransfer">
+      <br />
+      {% include 'html/ship/transfertoaccount.twig' %}
+    </div>
+    <br />
+    <div style="width: 100%; text-align: center;">
+      <input type="button" class="button" value="max" onclick="maximizeCommodityAmounts();" />
+      <input type="submit" class="button" value="Transferieren" />
+    </div>
+  </form>
+  {% else %}
+  <table class="tcal">
+    <tr>
+      <td>{{ TRADEPOST.getTradePostDescription|nl2br }}</td>
+    </tr>
+  </table>
+  <br />
+  {% if CAN_BUY_LICENSE %}
+  <table class="tcal">
+    <tr>
+      <th>Lizenz erwerben</th>
+    </tr>
+    <tr>
+      <td>
+        Um an diesem Posten Handel betreiben zu können ist eine Lizenz nötig. Die Gebühr für eine
+        {{ LICENSEDAYS }} Tage gültige Lizenz beträgt:<br />
+        {{ LICENSECOST }} {{ LICENSECOMMODITYNAME }}<br /><br />
+        Diese Gebühr kann entweder über ein bereits bestehendes Warenkonto an einem anderen Posten oder aus dem
+        Frachtraum des Schiffes beglichen werden.<br /><br />
+        <input class="button" type="button" value="Bezahlmethode wählen"
+          onclick="tradeMenuChoosePayment({{ TRADEPOST.getId }});" />
+      </td>
+    </tr>
+  </table>
+  {% else %}
+  <table class="tcal">
+    <tr>
+      <th>Lizenzerwerb nicht möglich</th>
+    </tr>
+    <tr>
+      <td>
+        Dieser Handelsposten hat noch keine Gebühren für den Lizenzerwerb eingestellt.
+      </td>
+    </tr>
+  </table>
+  {% endif %}
+  {% endif %}
+</div>

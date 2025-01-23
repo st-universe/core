@@ -5,33 +5,31 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Lib;
 
 use Override;
-use Stu\Orm\Entity\ShipBuildplanInterface;
+use Stu\Orm\Entity\SpacecraftBuildplanInterface;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
-use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 
 /**
  * Provides service methods for ship buildplan deletion
  */
 final class BuildPlanDeleter implements BuildPlanDeleterInterface
 {
-    public function __construct(private ShipBuildplanRepositoryInterface $shipBuildplanRepository, private BuildplanModuleRepositoryInterface $buildplanModuleRepository, private ColonyShipQueueRepositoryInterface $colonyShipQueueRepository)
-    {
-    }
+    public function __construct(private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository, private BuildplanModuleRepositoryInterface $buildplanModuleRepository, private ColonyShipQueueRepositoryInterface $colonyShipQueueRepository) {}
 
     #[Override]
-    public function delete(ShipBuildplanInterface $shipBuildplan): void
+    public function delete(SpacecraftBuildplanInterface $spacecraftBuildplan): void
     {
-        $this->buildplanModuleRepository->truncateByBuildplan($shipBuildplan->getId());
-        $this->shipBuildplanRepository->delete($shipBuildplan);
+        $this->buildplanModuleRepository->truncateByBuildplan($spacecraftBuildplan->getId());
+        $this->spacecraftBuildplanRepository->delete($spacecraftBuildplan);
     }
 
     #[Override]
     public function isDeletable(
-        ShipBuildplanInterface $shipBuildplan
+        SpacecraftBuildplanInterface $spacecraftBuildplan
     ): bool {
-        $queuedShipsCount = $this->colonyShipQueueRepository->getCountByBuildplan($shipBuildplan->getId());
+        $queuedShipsCount = $this->colonyShipQueueRepository->getCountByBuildplan($spacecraftBuildplan->getId());
 
-        return $shipBuildplan->getShipCount() === 0 && $queuedShipsCount === 0;
+        return $spacecraftBuildplan->getSpacecraftCount() === 0 && $queuedShipsCount === 0;
     }
 }

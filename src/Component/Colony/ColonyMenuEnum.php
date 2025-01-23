@@ -6,7 +6,7 @@ namespace Stu\Component\Colony;
 
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Module\Building\BuildingFunctionTypeEnum;
-use Stu\Module\Colony\Lib\Gui\GuiComponentEnum;
+use Stu\Module\Colony\Component\ColonyComponentEnum;
 use Stu\Module\Colony\View\ShowAcademy\ShowAcademy;
 use Stu\Module\Colony\View\ShowAirfield\ShowAirfield;
 use Stu\Module\Colony\View\ShowBuildingManagement\ShowBuildingManagement;
@@ -146,42 +146,42 @@ enum ColonyMenuEnum: int
         };
     }
 
-    /** @return array<GuiComponentEnum> */
+    /** @return array<ColonyComponentEnum> */
     public function getNecessaryGuiComponents(): array
     {
         return match ($this) {
             // mainscreen
             self::MENU_MAINSCREEN => [
-                GuiComponentEnum::SURFACE,
-                GuiComponentEnum::SHIELDING,
-                GuiComponentEnum::EPS_BAR,
-                GuiComponentEnum::STORAGE,
-                GuiComponentEnum::MANAGEMENT,
-                GuiComponentEnum::EFFECTS
+                ColonyComponentEnum::SURFACE,
+                ColonyComponentEnum::SHIELDING,
+                ColonyComponentEnum::EPS_BAR,
+                ColonyComponentEnum::STORAGE,
+                ColonyComponentEnum::MANAGEMENT,
+                ColonyComponentEnum::EFFECTS
             ],
 
             // submenues
-            self::MENU_BUILD => [GuiComponentEnum::BUILD_MENUES],
-            self::MENU_INFO => [GuiComponentEnum::MANAGEMENT, GuiComponentEnum::EFFECTS],
+            self::MENU_BUILD => [ColonyComponentEnum::BUILD_MENUES],
+            self::MENU_INFO => [ColonyComponentEnum::MANAGEMENT, ColonyComponentEnum::EFFECTS],
             self::MENU_OPTION => [],
-            self::MENU_SOCIAL => [GuiComponentEnum::SOCIAL],
-            self::MENU_BUILDINGS => [GuiComponentEnum::BUILDING_MANAGEMENT],
+            self::MENU_SOCIAL => [ColonyComponentEnum::SOCIAL],
+            self::MENU_BUILDINGS => [ColonyComponentEnum::BUILDING_MANAGEMENT],
 
             // menues without surface
-            self::MENU_AIRFIELD => [GuiComponentEnum::AIRFIELD],
+            self::MENU_AIRFIELD => [ColonyComponentEnum::AIRFIELD],
             self::MENU_MODULEFAB,
             self::MENU_FAB_HALL,
             self::MENU_TECH_CENTER,
-            self::MENU_SHIPYARD => [GuiComponentEnum::SHIPYARD],
-            self::MENU_BUILDPLANS => [GuiComponentEnum::SHIP_BUILDPLANS],
-            self::MENU_FIGHTER_SHIPYARD => [GuiComponentEnum::FIGHTER_SHIPYARD],
-            self::MENU_TORPEDOFAB => [GuiComponentEnum::TORPEDO_FAB],
-            self::MENU_ACADEMY => [GuiComponentEnum::ACADEMY],
+            self::MENU_SHIPYARD => [ColonyComponentEnum::SHIPYARD],
+            self::MENU_BUILDPLANS => [ColonyComponentEnum::SHIP_BUILDPLANS],
+            self::MENU_FIGHTER_SHIPYARD => [ColonyComponentEnum::FIGHTER_SHIPYARD],
+            self::MENU_TORPEDOFAB => [ColonyComponentEnum::TORPEDO_FAB],
+            self::MENU_ACADEMY => [ColonyComponentEnum::ACADEMY],
             self::MENU_WASTE => [],
             self::MENU_SUBSPACE_TELESCOPE => [],
-            self::MENU_SHIP_DISASSEMBLY => [GuiComponentEnum::SHIP_DISASSEMBLY],
-            self::MENU_SHIP_REPAIR => [GuiComponentEnum::SHIP_REPAIR],
-            self::MENU_SHIP_RETROFIT => [GuiComponentEnum::SHIP_RETROFIT]
+            self::MENU_SHIP_DISASSEMBLY => [ColonyComponentEnum::SHIP_DISASSEMBLY],
+            self::MENU_SHIP_REPAIR => [ColonyComponentEnum::SHIP_REPAIR],
+            self::MENU_SHIP_RETROFIT => [ColonyComponentEnum::SHIP_RETROFIT]
         };
     }
 }

@@ -22,10 +22,6 @@ interface PrivateMessageInterface
 
     public function setNew(bool $new): PrivateMessageInterface;
 
-    public function getReplied(): bool;
-
-    public function setReplied(bool $replied): PrivateMessageInterface;
-
     public function getCategoryId(): int;
 
     public function setCategoryId(int $categoryId): PrivateMessageInterface;

@@ -4,8 +4,17 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\Collection;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
+use Stu\Lib\Interaction\EntityWithInteractionCheckInterface;
+use Stu\Lib\Map\EntityWithLocationInterface;
+use Stu\Lib\Transfer\EntityWithStorageInterface;
+use Stu\Module\Spacecraft\Lib\Crew\EntityWithCrewAssignmentsInterface;
 
-interface ColonyInterface extends PlanetFieldHostInterface
+interface ColonyInterface extends
+    PlanetFieldHostInterface,
+    EntityWithStorageInterface,
+    EntityWithLocationInterface,
+    EntityWithCrewAssignmentsInterface,
+    EntityWithInteractionCheckInterface
 {
     public function getColonyClassId(): int;
 
@@ -16,8 +25,6 @@ interface ColonyInterface extends PlanetFieldHostInterface
     public function getSy(): int;
 
     public function getSystemsId(): int;
-
-    public function getName(): string;
 
     public function getNameAndSectorString(): string;
 
@@ -67,7 +74,7 @@ interface ColonyInterface extends PlanetFieldHostInterface
 
     public function setShields(?int $shields): ColonyInterface;
 
-    public function getTwilightZone(): int;
+    public function getTwilightZone(int $timestamp): int;
 
     public function getShieldFrequency(): ?int;
 
@@ -83,23 +90,19 @@ interface ColonyInterface extends PlanetFieldHostInterface
 
     public function getRotationTime(): int;
 
-    public function getColonyTimeSeconds(): int;
+    public function getColonyTimeHour(int $timestamp): ?string;
 
-    public function getColonyTimeHour(): ?string;
+    public function getColonyTimeMinute(int $timestamp): ?string;
 
-    public function getColonyTimeMinute(): ?string;
+    public function getDayTimePrefix(int $timestamp): ?int;
 
-    public function getDayTimePrefix(): ?int;
-
-    public function getDayTimeName(): ?string;
+    public function getDayTimeName(int $timestamp): ?string;
 
     public function getSurfaceWidth(): int;
 
     public function setSurfaceWidth(int $surfaceWidth): ColonyInterface;
 
     public function setColonyClass(ColonyClassInterface $colonyClass): ColonyInterface;
-
-    public function getStorageSum(): int;
 
     public function storagePlaceLeft(): bool;
 
@@ -110,16 +113,6 @@ interface ColonyInterface extends PlanetFieldHostInterface
     public function getSystem(): StarSystemInterface;
 
     public function getBeamFactor(): int;
-
-    /**
-     * @return StorageInterface[]
-     */
-    public function getBeamableStorage(): array;
-
-    /**
-     * @return Collection<int, StorageInterface>
-     */
-    public function getStorage(): Collection;
 
     public function isDefended(): bool;
 
@@ -134,11 +127,6 @@ interface ColonyInterface extends PlanetFieldHostInterface
      * @return Collection<int, FleetInterface>
      */
     public function getBlockers(): Collection;
-
-    /**
-     * @return Collection<int, ShipCrewInterface>
-     */
-    public function getCrewAssignments(): Collection;
 
     public function getCrewAssignmentAmount(): int;
 

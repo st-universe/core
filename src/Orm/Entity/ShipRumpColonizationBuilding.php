@@ -42,14 +42,6 @@ class ShipRumpColonizationBuilding implements ShipRumpColonizationBuildingInterf
     }
 
     #[Override]
-    public function setRumpId(int $shipRumpId): ShipRumpColonizationBuildingInterface
-    {
-        $this->rump_id = $shipRumpId;
-
-        return $this;
-    }
-
-    #[Override]
     public function getBuildingId(): int
     {
         return $this->building_id;

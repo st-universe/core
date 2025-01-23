@@ -14,6 +14,6 @@ final class ShowSystemRequest implements ShowSystemRequestInterface
     #[Override]
     public function getSystemId(): int
     {
-        return $this->queryParameter('sysid')->int()->required();
+        return $this->parameter('systemid')->int()->required();
     }
 }

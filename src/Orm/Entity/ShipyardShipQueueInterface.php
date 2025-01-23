@@ -6,17 +6,15 @@ interface ShipyardShipQueueInterface
 {
     public function getId(): int;
 
-    public function getShip(): ShipInterface;
+    public function getStation(): StationInterface;
 
-    public function setShip(ShipInterface $ship): ShipyardShipQueueInterface;
+    public function setStation(StationInterface $station): ShipyardShipQueueInterface;
 
     public function getUserId(): int;
 
     public function setUserId(int $userId): ShipyardShipQueueInterface;
 
     public function getRumpId(): int;
-
-    public function setRumpId(int $shipRumpId): ShipyardShipQueueInterface;
 
     public function getBuildtime(): int;
 
@@ -30,11 +28,11 @@ interface ShipyardShipQueueInterface
 
     public function setStopDate(int $stopDate): ShipyardShipQueueInterface;
 
-    public function getRump(): ShipRumpInterface;
+    public function getRump(): SpacecraftRumpInterface;
 
-    public function setRump(ShipRumpInterface $shipRump): ShipyardShipQueueInterface;
+    public function setRump(SpacecraftRumpInterface $shipRump): ShipyardShipQueueInterface;
 
-    public function getShipBuildplan(): ShipBuildplanInterface;
+    public function getSpacecraftBuildplan(): SpacecraftBuildplanInterface;
 
-    public function setShipBuildplan(ShipBuildplanInterface $shipBuildplan): ShipyardShipQueueInterface;
+    public function setSpacecraftBuildplan(SpacecraftBuildplanInterface $spacecraftBuildplan): ShipyardShipQueueInterface;
 }

@@ -16,22 +16,22 @@ use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\FactionInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
+use Stu\Orm\Repository\UserRefererRepositoryInterface;
 
 /**
  * Creates players with registration and optional sms validation
  */
 class PlayerCreator implements PlayerCreatorInterface
 {
-    public function __construct(protected UserRepositoryInterface $userRepository, protected PlayerDefaultsCreatorInterface $playerDefaultsCreator, private RegistrationEmailSenderInterface $registrationEmailSender, private SmsVerificationCodeSenderInterface $smsVerificationCodeSender, private StuHashInterface $stuHash, private PasswordGeneratorInterface $passwordGenerator, private EntityManagerInterface $entityManager)
-    {
-    }
+    public function __construct(protected UserRepositoryInterface $userRepository, protected PlayerDefaultsCreatorInterface $playerDefaultsCreator, private RegistrationEmailSenderInterface $registrationEmailSender, private SmsVerificationCodeSenderInterface $smsVerificationCodeSender, private StuHashInterface $stuHash, private PasswordGeneratorInterface $passwordGenerator, private EntityManagerInterface $entityManager, private UserRefererRepositoryInterface $userRefererRepository) {}
 
     #[Override]
     public function createWithMobileNumber(
         string $loginName,
         string $emailAddress,
         FactionInterface $faction,
-        string $mobile
+        string $mobile,
+        ?string $referer = null
     ): void {
         $mobileWithDoubleZero = str_replace('+', '00', $mobile);
         $this->checkForException($loginName, $emailAddress, $mobileWithDoubleZero);
@@ -44,7 +44,8 @@ class PlayerCreator implements PlayerCreatorInterface
             $faction,
             $this->passwordGenerator->generatePassword(),
             $mobileWithDoubleZero,
-            $randomHash
+            $randomHash,
+            $referer
         );
 
         $this->smsVerificationCodeSender->send($player, $randomHash);
@@ -89,7 +90,8 @@ class PlayerCreator implements PlayerCreatorInterface
         FactionInterface $faction,
         string $password,
         ?string $mobile = null,
-        ?string $smsCode = null
+        ?string $smsCode = null,
+        ?string $referer = null
     ): UserInterface {
         $player = $this->userRepository->prototype();
         $player->setLogin($loginName);
@@ -111,11 +113,29 @@ class PlayerCreator implements PlayerCreatorInterface
             $player->setState(UserEnum::USER_STATE_SMS_VERIFICATION);
         }
 
+        if ($referer !== null) {
+            $this->saveReferer($player, $referer);
+        }
+
         $this->userRepository->save($player);
 
         $this->playerDefaultsCreator->createDefault($player);
         $this->registrationEmailSender->send($player, $password);
 
         return $player;
+    }
+    private function saveReferer(UserInterface $user, ?string $referer): void
+    {
+        if ($referer !== null) {
+
+            $sanitizedReferer = preg_replace('/[^\p{L}\p{N}\s]/u', '', $referer);
+            $sanitizedReferer = $sanitizedReferer !== null ? substr($sanitizedReferer, 0, 2000) : '';
+
+            $userReferer = $this->userRefererRepository->prototype();
+            $userReferer->setUser($user);
+            $userReferer->setReferer($sanitizedReferer);
+
+            $this->userRefererRepository->save($userReferer);
+        }
     }
 }

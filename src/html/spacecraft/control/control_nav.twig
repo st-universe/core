@@ -1,0 +1,157 @@
+{% macro control_nav(ship, navPanel, visualPanel) %}
+{% if ship.getLss %}
+
+{% set fontSize = visualPanel.getFontSize %}
+{% set heightAndWidth = visualPanel.getHeightAndWidth %}
+
+<div style="float:left; padding-bottom:5px;">
+    <table class="lssarea" cellpadding="0" cellspacing="0">
+        <tr>
+            <td style="text-align: center; {{ heightAndWidth }} position: relative !important; top: 0px;">
+                <a href="?B_DEACTIVATE_SYSTEM=1&id={{ ship.getId }}&type=LSS&sstr={{ SESSIONSTRING }}"
+                    style="{{ heightAndWidth }} position: absolute !important; top: 0px; left: 0px;"><img
+                        src="/assets/buttons/lss1.png" name="lss_panel"
+                        style="{{ heightAndWidth }} position: relative !important; top: 0px;"
+                        title="Langstreckensensoren deaktivieren" /></a>
+            </td>
+            {% for column in visualPanel.getHeadRow %}
+            <td style="{{ fontSize }} {{ heightAndWidth }} position: relative !important; top: 0px;" class="th">
+                {{ column }}
+            </td>
+            {% endfor %}
+        </tr>
+        {% include 'html/visualPanel/panelRows.twig' %}
+    </table>
+</div>
+{% if ship.canMove %}
+<div style="float:left; margin-left:5px;">
+    <table class="tcal">
+        <tr>
+            <td colspan="3" style="text-align: center;">
+                {% if navPanel.getUp.isDisabled %}
+                <img style="height: 22px; width: 22px; opacity: 0;" src="/assets/buttons/b_up1.png" />
+                {% else %}
+                <a href="javascript:void(0);" onClick="moveInDirection('B_MOVE_UP');">
+                    <img style="height: 22px; width: 22px;" src="/assets/buttons/b_up1.png" title="Nach oben fliegen" />
+                </a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                {% if navPanel.getLeft.isDisabled %}
+                <img style="height: 22px; width: 22px; opacity: 0;" src="/assets/buttons/b_from1.png" />
+                {% else %}
+                <a href="javascript:void(0);" onClick="moveInDirection('B_MOVE_LEFT');">
+                    <img style="height: 22px; width: 22px;" src="/assets/buttons/b_from1.png"
+                        title="Nach links fliegen" />
+                </a>
+                {% endif %}
+            </td>
+            <td style="text-align: center; font-weight: bold;">
+                <input type="text" onfocus="focusNavApplet();" onblur="blurNavApplet();" id="navapp"
+                    style="text-align: center;" size="1" value="1" />
+            </td>
+            <td>
+                {% if navPanel.getRight.isDisabled %}
+                <img style="height: 22px; width: 22px; opacity: 0;" src="/assets/buttons/b_to1.png" />
+                {% else %}
+                <a href="javascript:void(0);" onClick="moveInDirection('B_MOVE_RIGHT');">
+                    <img style="height: 22px; width: 22px;" src="/assets/buttons/b_to1.png"
+                        title="Nach rechts fliegen" />
+                </a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" style="text-align: center;">
+                {% if navPanel.getDown.isDisabled %}
+                <img style="height: 22px; width: 22px; opacity: 0;" src="/assets/buttons/b_down1.png" />
+                {% else %}
+                <a href="javascript:void(0);" onClick="moveInDirection('B_MOVE_DOWN');">
+                    <img style="height: 22px; width: 22px;" src="/assets/buttons/b_down1.png"
+                        title="Nach unten fliegen" />
+                </a>
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+</div>
+{% endif %}
+{% else %}
+<table class="tcal">
+    {% if ship.hasNbsLss %}
+    <tr>
+        <th colspan="3"><a href="?B_ACTIVATE_SYSTEM=1&id={{ ship.getId }}&type=LSS&sstr={{ SESSIONSTRING }}"><img
+                    src="/assets/buttons/lss2.png" title="Langstreckensensoren aktivieren" /></a>
+            {% if ship.isStation %}
+            <a href="?B_ACTIVATE_SYSTEM=1&id={{ ship.getId }}&type=LSS&sstr={{ SESSIONSTRING }}">
+                Langstreckensensoren aktivieren
+            </a>
+            {% else %}
+            Navigation Applet (<a href="?B_ACTIVATE_SYSTEM=1&id={{ ship.getId }}&type=LSS&sstr={{ SESSIONSTRING }}">
+                Langstreckensensoren aktivieren</a>)
+            {% endif %}
+        </th>
+    </tr>
+    {% endif %}
+    {% if ship.canMove %}
+    {% set up = navPanel.getUp %}
+    {% set left = navPanel.getLeft %}
+    {% set right = navPanel.getRight %}
+    {% set down = navPanel.getDown %}
+    <tr>
+        <td colspan="3" style="text-align: center;">
+            {% if up.isDisabled %}
+            <input type="submit" class="button" style="width: 100px;" value="{{ up.getLabel }}" disabled="disabled" />
+            {% else %}
+            <a href="javascript:void(0);" onClick="moveInDirection('B_MOVE_UP');" class="linkbutton"
+                style="width: 100px;">
+                {{ up.getLabel }}
+            </a>
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">
+            {% if left.isDisabled %}
+            <input type="submit" class="button" style="width: 100px;" value="{{ left.getLabel }}" disabled="disabled" />
+            {% else %}
+            <a href="javascript:void(0);" onClick="moveInDirection('B_MOVE_LEFT');" class="linkbutton"
+                style="width: 100px;">
+                {{ left.getLabel }}
+            </a>
+            {% endif %}
+        </td>
+        <td style="width: 100px; text-align: center; font-weight: bold;">
+            <input type="text" onfocus="focusNavApplet();" onblur="blurNavApplet();" id="navapp"
+                style="text-align: center;" size="7" value="{{ ship.getPosX }}|{{ ship.getPosY }}" />
+        </td>
+        <td style="text-align: center;">
+            {% if right.isDisabled %}
+            <input type="submit" class="button" style="width: 100px;" value="{{ right.getLabel }}"
+                disabled="disabled" />
+            {% else %}
+            <a href="javascript:void(0);" onClick="moveInDirection('B_MOVE_RIGHT');" class="linkbutton"
+                style="width: 100px;">
+                {{ right.getLabel }}
+            </a>
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <td colspan="3" style="text-align: center;">
+            {% if down.isDisabled %}
+            <input type="submit" class="button" style="width: 100px;" value="{{ down.getLabel }}" disabled="disabled" />
+            {% else %}
+            <a href="javascript:void(0);" onClick="moveInDirection('B_MOVE_DOWN');" class="linkbutton"
+                style="width: 100px;">
+                {{ down.getLabel }}
+            </a>
+            {% endif %}
+        </td>
+    </tr>
+    {% endif %}
+</table>
+{% endif %}
+{% endmacro %}

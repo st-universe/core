@@ -21,8 +21,8 @@ Init::run(function (ContainerInterface $dic): void {
 
     $dic->get(GameControllerInterface::class)->main(
         ModuleViewEnum::PROFILE,
-        $dic->get('PLAYER_PROFILE_ACTIONS'),
-        $dic->get('PLAYER_PROFILE_VIEWS')
+        $dic->get('USERPROFILE_ACTIONS'),
+        $dic->get('USERPROFILE_VIEWS')
     );
 
     $em->commit();

@@ -1,0 +1,121 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body>
+<div class="box">
+    <div class="box_title" style="text-align: left">/
+                <a href="comm.php">
+            KommNet
+        </a>
+                    </div>
+</div>
+<br>
+<div id="result" style="display: none;">..</div>
+<div style="width: 75%; float: left; margin-right: 1%">
+    <br>
+<div style="overflow: hidden; text-overflow: ellipsis">
+    <div id="kn_post_42" class="box">
+        <div class="box_title" style="padding-top: 5px; padding-bottom: 5px; font-size: 110%;">
+                        Username
+                    </div>
+        <div class="box_body" style="margin: 0; padding: 0;">
+            <div class="knGrid">
+                <div class="knGridText">
+                    <div style="padding: 10px;">
+                                                <span class="knh1">The Plot Title</span>
+                        <span>(<a href="?SHOW_PLOT=1&amp;plotid=9" target="_blank">
+                                Zum Plot</a>)</span>
+                                                <br>
+                                                                                                <span class="knh2">Dies ist der KN Titel</span>
+                                                <br>
+                        <br>
+                        <span class="translatable-content" style="overflow-wrap: break-word; word-break: break-word;">
+                                                        Dies ist ein Post im Kommunikationsnetzwerk
+                                                    </span>
+                    </div>
+                </div>
+                <div class="knGridUser">
+                    <div class="segment">
+                                                <div class="negative">
+                            21.07.2394 11:30
+                        </div>
+                                            </div>
+                    <div class="segment">
+                                                <div class="knUserAvatar">
+                            <div class="userAvatar">
+    <a href="/userprofile.php?uid=101">
+                <img src="/assets/rassen//1kn.png" title="Siedler 101">
+            </a>
+</div>
+
+                        </div>
+                        <a href="?SHOW_SINGLE_KN=1&amp;knid=42" title="Beitrag-ID">42</a>
+                        <br>
+                    </div>
+                                        <div class="segment">
+                                                <a href="?mark=&amp;markid=42&amp;B_SET_KNMARK=1" onmouseover="cp('mark42','buttons/lese2', 'png')" onmouseout="cp('mark42','buttons/lese1', 'png')">
+                            <img src="/assets/buttons/lese1.png" title="Lesezeichen setzen" name="mark42">
+                        </a>
+                                                                    </div>
+                </div>
+                <div class="knGridRating">
+                                        <div class="segment" id="kn_rating_42">
+                                                                                                <div style="display: inline-block">
+                                                        <img alt="Bewertung" src="/assets/bars/balken.png" style="background-color: #aaaa00;height: 12px; width:50px;" title="Bewertung: 14/14">
+                                                    </div>
+                                                                    </div>
+                    <div class="segment">
+                        <a href="javascript:void(0);" onclick="showKnComments(42);">1
+                            <span>Kommentare</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+</div>
+<br>
+</div>
+<div style="width: 24%; float: left">
+    <br>
+  <div class="box">
+    <div class="box_title">Suche</div>
+    <div class="box_body">
+      <form method="post" action="comm.php" name="knsearchform">
+        <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
+        <ul>
+          <li>
+            <input type="text" name="search" style="width: 150px;" onkeypress="return event.keyCode != 13;">
+          </li>
+          <li>
+            <a href="javascript:void(0);" onclick="searchKn('SHOW_USER_SEARCH');" class="linkbutton">
+              nach Spieler-ID suchen
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0);" onclick="searchKn('SHOW_POSTID_SEARCH');" class="linkbutton">
+              nach Beitrag-ID suchen
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0);" onclick="searchKn('SHOW_POST_SEARCH');" class="linkbutton">
+              nach Text suchen
+            </a>
+          </li>
+        </ul>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="footer">
+    Rendered in 4.203s - Memory usage: 42.77Mb
+</div>
+<script>
+            initTranslations();
+        </script>
+
+</body>
+</html>

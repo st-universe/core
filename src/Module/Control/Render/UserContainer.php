@@ -6,9 +6,7 @@ namespace Stu\Module\Control\Render;
 
 final class UserContainer
 {
-    public function __construct(private int $id, private string $avatar, private string $name, private int $factionId, private string $css, private bool $hasStationsNavigation, private bool $showDeals)
-    {
-    }
+    public function __construct(private int $id, private string $avatar, private string $name, private int $factionId, private string $css, private bool $hasStationsNavigation) {}
 
     public function getId(): int
     {
@@ -38,10 +36,5 @@ final class UserContainer
     public function hasStationsNavigation(): bool
     {
         return $this->hasStationsNavigation;
-    }
-
-    public function showDeals(): int
-    {
-        return $this->showDeals ? 1 : 0;
     }
 }

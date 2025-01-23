@@ -6,17 +6,18 @@ namespace Stu\Module\Colony\Action\LandShip;
 
 use Override;
 use request;
-use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
+use RuntimeException;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Ship\Lib\Crew\TroopTransferUtilityInterface;
+use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\Lib\ShipRemoverInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftRemoverInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Module\Ship\Lib\Torpedo\ClearTorpedoInterface;
+use Stu\Module\Spacecraft\Lib\Torpedo\ClearTorpedoInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -25,9 +26,7 @@ final class LandShip implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_LAND_SHIP';
 
-    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyStorageManagerInterface $colonyStorageManager, private ColonyRepositoryInterface $colonyRepository, private ShipRemoverInterface $shipRemover, private ShipLoaderInterface $shipLoader, private ClearTorpedoInterface $clearTorpedo, private ColonyLibFactoryInterface $colonyLibFactory, private TroopTransferUtilityInterface $troopTransferUtility)
-    {
-    }
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private StorageManagerInterface $storageManager, private ColonyRepositoryInterface $colonyRepository, private SpacecraftRemoverInterface $spacecraftRemover, private ShipLoaderInterface $shipLoader, private ClearTorpedoInterface $clearTorpedo, private ColonyLibFactoryInterface $colonyLibFactory, private TroopTransferUtilityInterface $troopTransferUtility) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -67,12 +66,17 @@ final class LandShip implements ActionControllerInterface
             return;
         }
 
-        $this->colonyStorageManager->upperStorage($colony, $ship->getRump()->getCommodity(), 1);
+        $commodity = $ship->getRump()->getCommodity();
+        if ($commodity === null) {
+            throw new RuntimeException(sprintf('rumpId %d does not have commodity', $ship->getRumpId()));
+        }
+
+        $this->storageManager->upperStorage($colony, $commodity, 1);
 
         foreach ($ship->getStorage() as $stor) {
             $count = min($stor->getAmount(), $colony->getMaxStorage() - $colony->getStorageSum());
             if ($count > 0) {
-                $this->colonyStorageManager->upperStorage($colony, $stor->getCommodity(), $count);
+                $this->storageManager->upperStorage($colony, $stor->getCommodity(), $count);
             }
         }
 
@@ -82,7 +86,7 @@ final class LandShip implements ActionControllerInterface
 
         $this->transferCrewToColony($ship, $colony);
 
-        $this->shipRemover->remove($ship);
+        $this->spacecraftRemover->remove($ship);
 
         $game->addInformationf(_('Die %s ist gelandet'), $ship->getName());
     }
@@ -116,7 +120,7 @@ final class LandShip implements ActionControllerInterface
         }
 
         $commodity = $torpedoStorage->getStorage()->getCommodity();
-        $this->colonyStorageManager->upperStorage(
+        $this->storageManager->upperStorage(
             $colony,
             $commodity,
             $amount

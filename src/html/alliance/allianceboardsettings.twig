@@ -1,17 +1,17 @@
-    <form action="alliance.php" method="post">
-        <input type="hidden" name="bid" value="{{ BOARD.getId }}" />
-        <table class="use" style="width: 200px">
-            <tr>
-                <td>
-                    <a href="?B_DELETE_BOARD=1&bid={{ BOARD.getId }}&sstr={{ SESSIONSTRING}}" class="linkbutton">Forum löschen</a>
-                    <br />
-                    <br />
-                    <br />
-                    <input type="text" style="width: 100%" name="tname" value="{{ BOARD.getName }}" /><br />
-                    <br />
-                    <input type="submit" value="Umbenennen" name="B_RENAME_BOARD" />
-                </td>
-            </tr>
-        </table>
-    </form>
-
+<form action="alliance.php" method="post">
+    <input type="hidden" name="boardid" value="{{ BOARD.getId }}" />
+    <table class="use" style="width: 200px">
+        <tr>
+            <td>
+                <a href="?B_DELETE_BOARD=1&boardid={{ BOARD.getId }}&sstr={{ SESSIONSTRING}}" class="linkbutton">Forum
+                    löschen</a>
+                <br />
+                <br />
+                <br />
+                <input type="text" style="width: 100%" name="tname" value="{{ BOARD.getName }}" /><br />
+                <br />
+                <input type="submit" value="Umbenennen" name="B_RENAME_BOARD" />
+            </td>
+        </tr>
+    </table>
+</form>

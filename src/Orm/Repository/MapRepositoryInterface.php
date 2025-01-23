@@ -37,9 +37,10 @@ interface MapRepositoryInterface extends ObjectRepository
 
     public function getByCoordinates(?LayerInterface $layer, int $cx, int $cy): ?MapInterface;
 
-    /**
-     * @return array<MapInterface>
-     */
+    /** @return array<string, MapInterface> */
+    public function getByBoundaries(PanelBoundaries $boundaries): array;
+
+    /** @return array<string, MapInterface> */
     public function getByCoordinateRange(
         int $layerId,
         int $startSx,
@@ -58,7 +59,10 @@ interface MapRepositoryInterface extends ObjectRepository
     public function getBorderData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
 
     /** @return array<CellDataInterface> */
-    public function getShipCountLayerData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
+    public function getAnomalyData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
+
+    /** @return array<CellDataInterface> */
+    public function getSpacecraftCountLayerData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
 
     /**
      * @return array<ExploreableStarMapInterface>
@@ -99,4 +103,7 @@ interface MapRepositoryInterface extends ObjectRepository
 
     /** @return array<CellDataInterface> */
     public function getShipSubspaceLayerData(PanelBoundaries $boundaries, int $shipId, ResultSetMapping $rsm): array;
+
+    /** @return array<int> */
+    public function getUniqueInfluenceAreaIds(): array;
 }

@@ -14,6 +14,6 @@ final class DeleteAllPmsRequest implements DeleteAllPmsRequestInterface
     #[Override]
     public function getCategoryId(): int
     {
-        return $this->queryParameter('pmcat')->int()->required();
+        return $this->parameter('pmcat')->int()->required();
     }
 }

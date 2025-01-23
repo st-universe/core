@@ -6,28 +6,26 @@ namespace Stu\Module\History\Lib;
 
 use Override;
 use Stu\Component\History\HistoryTypeEnum;
+use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Orm\Entity\AllianceInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Repository\HistoryRepositoryInterface;
 
 final class EntryCreator implements EntryCreatorInterface
 {
-    public function __construct(private HistoryRepositoryInterface $historyRepository)
-    {
-    }
+    public function __construct(private HistoryRepositoryInterface $historyRepository) {}
 
     #[Override]
     public function addEntry(
         string $text,
         int $sourceUserId,
-        ShipInterface|ColonyInterface|AllianceInterface $target
+        SpacecraftInterface|PlanetFieldHostInterface|AllianceInterface $target
     ): void {
 
-        if ($target instanceof ShipInterface) {
-            $type = $target->isBase() ? HistoryTypeEnum::STATION : HistoryTypeEnum::SHIP;
+        if ($target instanceof SpacecraftInterface) {
+            $type = $target->isStation() ? HistoryTypeEnum::STATION : HistoryTypeEnum::SHIP;
             $targetUser = $target->getUser();
-        } elseif ($target instanceof ColonyInterface) {
+        } elseif ($target instanceof PlanetFieldHostInterface) {
             $type = HistoryTypeEnum::COLONY;
             $targetUser = $target->getUser();
         } else {

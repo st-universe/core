@@ -12,6 +12,7 @@ use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 
 final class CancelColonyBlockOrDefend implements CancelColonyBlockOrDefendInterface
@@ -27,13 +28,13 @@ final class CancelColonyBlockOrDefend implements CancelColonyBlockOrDefendInterf
     }
 
     #[Override]
-    public function work(ShipInterface $ship, InformationInterface $informations, bool $isTraktor = false): void
+    public function work(SpacecraftInterface $spacecraft, InformationInterface $informations, bool $isTraktor = false): void
     {
         $this->loggerUtil->log('A');
-        $target = $isTraktor ? $ship->getTractoredShip() : $ship;
+        $target = $isTraktor ? $spacecraft->getTractoredShip() : $spacecraft;
         $this->loggerUtil->log('B');
 
-        if ($target === null || !$target->isFleetLeader()) {
+        if ($target === null || !$target instanceof ShipInterface || !$target->isFleetLeader()) {
             $this->loggerUtil->log('C');
             return;
         }
@@ -47,7 +48,7 @@ final class CancelColonyBlockOrDefend implements CancelColonyBlockOrDefendInterf
 
             if ($isTraktor) {
                 $this->privateMessageSender->send(
-                    $ship->getUser()->getId(),
+                    $spacecraft->getUser()->getId(),
                     $target->getUser()->getId(),
                     sprintf(
                         _('Die %s wurde mit dem Traktorstrahl gezogen, daher hat die Flotte %s die Verteidigung der Kolonie %s eingestellt'),
@@ -85,7 +86,7 @@ final class CancelColonyBlockOrDefend implements CancelColonyBlockOrDefendInterf
 
             if ($isTraktor) {
                 $this->privateMessageSender->send(
-                    $ship->getUser()->getId(),
+                    $spacecraft->getUser()->getId(),
                     $target->getUser()->getId(),
                     sprintf(
                         _('Die %s wurde mit dem Traktorstrahl gezogen, daher hat die Flotte %s die Blockade der Kolonie %s eingestellt'),

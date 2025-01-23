@@ -5,14 +5,6 @@ declare(strict_types=1);
 namespace Stu\Config;
 
 use Cache\Adapter\PHPArray\ArrayCachePool;
-use Doctrine\DBAL\Configuration;
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\DriverManager;
-use Doctrine\DBAL\Logging\Middleware;
-use Doctrine\DBAL\Tools\DsnParser;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\ORMSetup;
 use Hackzilla\PasswordGenerator\Generator\ComputerPasswordGenerator;
 use Hackzilla\PasswordGenerator\Generator\PasswordGeneratorInterface;
 use JBBCode\Parser;
@@ -50,9 +42,9 @@ use function DI\autowire;
 return [
     ErrorHandler::class => autowire(),
     ConfigInterface::class => function (): ConfigInterface {
-        $path = __DIR__ . '/../../';
+        $path = __DIR__ . '/../../config/';
         return new Config(
-            array_map(fn(string $file): string => sprintf($file, $path), Init::$configFiles)
+            array_map(fn(string $file): string => sprintf($file, $path), ConfigFileSetup::getConfigFileSetup())
         );
     },
     SettingsFactoryInterface::class => autowire(SettingsFactory::class),
@@ -71,26 +63,6 @@ return [
         }
     },
     SessionInterface::class => autowire(Session::class),
-    EntityManagerInterface::class => function (ContainerInterface $c): EntityManagerInterface {
-        $stuConfig = $c->get(StuConfigInterface::class);
-
-        $emConfig = ORMSetup::createAttributeMetadataConfiguration(
-            [__DIR__ . '/../Orm/Entity/'],
-            $stuConfig->getDebugSettings()->isDebugMode(),
-            __DIR__ . '/../OrmProxy/',
-            $c->get(CacheItemPoolInterface::class)
-        );
-        $emConfig->setAutoGenerateProxyClasses(0);
-        $emConfig->setProxyNamespace($stuConfig->getDbSettings()->getProxyNamespace());
-
-        $manager = new EntityManager(
-            $c->get(Connection::class),
-            $emConfig
-        );
-
-        $manager->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'integer');
-        return $manager;
-    },
     SqlLogger::class => function (StuConfigInterface $stuConfig): SqlLogger {
         $logger = new Logger(
             'SqlLogger',
@@ -109,35 +81,6 @@ return [
         return new SqlLogger(
             $logger
         );
-    },
-    Connection::class => function (ContainerInterface $c): Connection {
-        $config = $c->get(ConfigInterface::class);
-        $stuConfig = $c->get(StuConfigInterface::class);
-
-        //use sqlite database
-        if ($stuConfig->getDbSettings()->useSqlite()) {
-            $dsnParser = new DsnParser(['sqlite' => 'pdo_sqlite']);
-            $connectionParams = $dsnParser
-                ->parse($stuConfig->getDbSettings()->getSqliteDsn());
-
-            return DriverManager::getConnection($connectionParams);
-        }
-
-        $configuration = null;
-        if ($stuConfig->getDebugSettings()->getSqlLoggingSettings()->isActive()) {
-            $logger = $c->get(SqlLogger::class);
-            $configuration = new Configuration();
-            $configuration->setMiddlewares([new Middleware($logger)]);
-        }
-
-        return DriverManager::getConnection([
-            'driver' => 'pdo_pgsql',
-            'user' => $config->get('db.user'),
-            'password' => $config->get('db.pass'),
-            'dbname' => $config->get('db.database'),
-            'host'  => $config->get('db.host'),
-            'charset' => 'utf8',
-        ], $configuration);
     },
     GameControllerInterface::class => autowire(GameController::class)
         ->constructorParameter('tutorialProvider', autowire(TutorialProvider::class)),

@@ -25,9 +25,7 @@ final class AddKnPostToPlot implements ActionControllerInterface
 
     public const int MAXIMUM_APPLICATION_TIME = TimeConstants::TWO_DAYS_IN_SECONDS;
 
-    public function __construct(private RpgPlotRepositoryInterface $rpgPlotRepository, private KnPostRepositoryInterface $knPostRepository, private KnPostToPlotApplicationRepositoryInterface $knPostToPlotApplicationRepository, private PrivateMessageSenderInterface $privateMessageSender)
-    {
-    }
+    public function __construct(private RpgPlotRepositoryInterface $rpgPlotRepository, private KnPostRepositoryInterface $knPostRepository, private KnPostToPlotApplicationRepositoryInterface $knPostToPlotApplicationRepository, private PrivateMessageSenderInterface $privateMessageSender) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -82,7 +80,7 @@ final class AddKnPostToPlot implements ActionControllerInterface
                 );
 
                 $href = sprintf(
-                    'comm.php?%s=1&id=%d',
+                    'comm.php?%s=1&knid=%d',
                     ShowSingleKn::VIEW_IDENTIFIER,
                     $post->getId()
                 );

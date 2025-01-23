@@ -1,0 +1,44 @@
+<html lang="de">
+
+<head>
+  <script src="/static/js/default.js"></script>
+</head>
+
+<body>
+  <div class="ajaxwin">
+        <table class="tcal">
+      <tr>
+        <th onmouseover="switch_drag_on();" onmouseout="switch_drag_off();">Energietransfer</th>
+        <th style="width: 18px;">
+          <a href="javascript:void(0);" onclick="closeAjaxWindow();" onmouseover="cp('ajaxclose','buttons/x2');" onmouseout="cp('ajaxclose','buttons/x1');">
+            <img src="/assets/buttons/x1.png" name="ajaxclose" title="Fenster schlie&Atilde;&#159;en">
+          </a>
+        </th>
+      </tr>
+    </table>
+        <form action="ship.php" method="post">
+  <input type="hidden" name="id" value="42">
+  <input type="hidden" name="target" value="43">
+  <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
+  <table class="tcal">
+    <tr>
+      <td>Ziel: <span>Mighty AP</span>
+</td>
+    </tr>
+    <tr>
+      <td>Verf&Atilde;&frac14;gbare Energie: 107/108</td>
+    </tr>
+    <tr>
+      <td>
+        <img src="assets/buttons/e_trans2.png" title="Energietransfer">
+        <input type="text" size="4" name="ecount" id="etransfer_value">
+        <input type="submit" class="button" value="transferieren" name="B_ETRANSFER" id="etransfer_button">
+        <input type="button" class="button" value="max" name="B_MAX_ETRANSFER" onclick="document.getElementById('etransfer_value').value = '107'; document.getElementById('etransfer_button').click()">
+      </td>
+    </tr>
+  </table>
+</form>
+      </div>
+  </body>
+
+</html>

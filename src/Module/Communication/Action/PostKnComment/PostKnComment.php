@@ -21,9 +21,7 @@ final class PostKnComment implements ActionControllerInterface
     public const string ACTION_IDENTIFIER = 'B_POST_COMMENT';
     public const int CHARACTER_LIMIT = 250;
 
-    public function __construct(private PostKnCommentRequestInterface $postKnCommentRequest, private KnCommentRepositoryInterface $knCommentRepository, private KnPostRepositoryInterface $knPostRepository, private PrivateMessageSenderInterface $privateMessageSender)
-    {
-    }
+    public function __construct(private PostKnCommentRequestInterface $postKnCommentRequest, private KnCommentRepositoryInterface $knCommentRepository, private KnPostRepositoryInterface $knPostRepository, private PrivateMessageSenderInterface $privateMessageSender) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -31,7 +29,7 @@ final class PostKnComment implements ActionControllerInterface
         $game->setView(ShowKnComments::VIEW_IDENTIFIER);
 
         /** @var KnPostInterface $post */
-        $post = $this->knPostRepository->find($this->postKnCommentRequest->getPostId());
+        $post = $this->knPostRepository->find($this->postKnCommentRequest->getKnId());
 
         if ($post === null) {
             return;
@@ -66,7 +64,7 @@ final class PostKnComment implements ActionControllerInterface
             );
 
             $href = sprintf(
-                _('comm.php?%s=1&id=%d'),
+                _('comm.php?%s=1&knid=%d'),
                 ShowSingleKn::VIEW_IDENTIFIER,
                 $post->getId()
             );
@@ -99,7 +97,7 @@ final class PostKnComment implements ActionControllerInterface
                 );
 
                 $href = sprintf(
-                    _('comm.php?%s=1&id=%d'),
+                    _('comm.php?%s=1&knid=%d'),
                     ShowSingleKn::VIEW_IDENTIFIER,
                     $post->getId()
                 );

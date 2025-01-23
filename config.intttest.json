@@ -1,6 +1,0 @@
-{
-  "db": {
-    "useSqlite": true,
-    "sqliteDsn": "sqlite:///inttest.sqlite"
-  }
-}

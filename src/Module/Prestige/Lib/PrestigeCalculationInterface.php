@@ -2,15 +2,15 @@
 
 namespace Stu\Module\Prestige\Lib;
 
-use Stu\Module\Ship\Lib\Battle\Party\BattlePartyInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 
 interface PrestigeCalculationInterface
 {
-    public function getPrestigeOfSpacecraftOrFleet(ShipWrapperInterface|ShipInterface $spacecraft): int;
+    public function getPrestigeOfSpacecraftOrFleet(SpacecraftWrapperInterface|SpacecraftInterface $spacecraft): int;
 
-    public function targetHasPositivePrestige(ShipInterface $target): bool;
+    public function targetHasPositivePrestige(SpacecraftInterface $target): bool;
 
     public function getPrestigeOfBattleParty(BattlePartyInterface $battleParty): int;
 }

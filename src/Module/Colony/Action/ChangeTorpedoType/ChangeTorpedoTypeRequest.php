@@ -14,6 +14,6 @@ final class ChangeTorpedoTypeRequest implements ChangeTorpedoTypeRequestInterfac
     #[Override]
     public function getTorpedoId(): int
     {
-        return $this->queryParameter('torpid')->int()->required();
+        return $this->parameter('torpid')->int()->required();
     }
 }

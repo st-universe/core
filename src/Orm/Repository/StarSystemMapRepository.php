@@ -10,7 +10,7 @@ use Override;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\StarSystemInterface;
@@ -45,8 +45,20 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
     }
 
     #[Override]
+    public function getByBoundaries(PanelBoundaries $boundaries): array
+    {
+        return $this->getByCoordinateRange(
+            $boundaries->getParentId(),
+            $boundaries->getMinX(),
+            $boundaries->getMaxX(),
+            $boundaries->getMinY(),
+            $boundaries->getMaxY()
+        );
+    }
+
+    #[Override]
     public function getByCoordinateRange(
-        StarSystemInterface $starSystem,
+        int $starSystemId,
         int $startSx,
         int $endSx,
         int $startSy,
@@ -66,7 +78,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
                 )
             )
             ->setParameters([
-                'starSystemId' => $starSystem,
+                'starSystemId' => $starSystemId,
                 'startSx' => $startSx,
                 'endSx' => $endSx,
                 'startSy' => $startSy,
@@ -97,22 +109,22 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
     }
 
     #[Override]
-    public function getShipCountLayerData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
+    public function getSpacecraftCountLayerData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
     {
         return $this->getEntityManager()->createNativeQuery(
             'SELECT sm.id, sm.sx as x, sm.sy AS y,
-                (SELECT count(DISTINCT b.id) FROM stu_ships b
+                (SELECT count(DISTINCT b.id) FROM stu_spacecraft b
                     WHERE sm.id = b.location_id
                     AND NOT EXISTS (SELECT ss.id
-                                        FROM stu_ship_system ss
-                                        WHERE b.id = ss.ship_id
+                                        FROM stu_spacecraft_system ss
+                                        WHERE b.id = ss.spacecraft_id
                                         AND ss.system_type = :cloakSystemId
-                                        AND ss.mode > 1)) AS shipcount,
-                (SELECT count(DISTINCT c.id) FROM stu_ships c
+                                        AND ss.mode > 1)) AS spacecraftcount,
+                (SELECT count(DISTINCT c.id) FROM stu_spacecraft c
                     WHERE sm.id = c.location_id
                     AND EXISTS (SELECT ss2.id
-                                        FROM stu_ship_system ss2
-                                        WHERE c.id = ss2.ship_id
+                                        FROM stu_spacecraft_system ss2
+                                        WHERE c.id = ss2.spacecraft_id
                                         AND ss2.system_type = :cloakSystemId
                                         AND ss2.mode > 1)) AS cloakcount
             FROM stu_sys_map sm
@@ -126,7 +138,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
             'yStart' => $boundaries->getMinY(),
             'yEnd' => $boundaries->getMaxY(),
             'systemId' => $boundaries->getParentId(),
-            'cloakSystemId' => ShipSystemTypeEnum::SYSTEM_CLOAK->value
+            'cloakSystemId' => SpacecraftSystemTypeEnum::CLOAK->value
         ])->getResult();
     }
 
@@ -135,7 +147,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
     {
         return $this->getEntityManager()->createNativeQuery(
             'SELECT sm.sx as x, sm.sy AS y,
-            (SELECT COUNT(cfd) > 0
+            (SELECT COUNT(*) > 0
                 FROM stu_colonies col
                 JOIN stu_colonies_fielddata cfd
                 ON col.id = cfd.colonies_id
@@ -166,6 +178,26 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
     {
         return $this->getEntityManager()->createNativeQuery(
             'SELECT sm.sx AS x, sm.sy AS y
+            FROM stu_sys_map sm
+            WHERE sm.systems_id = :systemId
+            AND sm.sx BETWEEN :xStart AND :xEnd
+            AND sm.sy BETWEEN :yStart AND :yEnd',
+            $rsm
+        )->setParameters([
+            'xStart' => $boundaries->getMinX(),
+            'xEnd' => $boundaries->getMaxX(),
+            'yStart' => $boundaries->getMinY(),
+            'yEnd' => $boundaries->getMaxY(),
+            'systemId' => $boundaries->getParentId()
+        ])->getResult();
+    }
+
+    #[Override]
+    public function getAnomalyData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
+    {
+        return $this->getEntityManager()->createNativeQuery(
+            'SELECT sm.sx AS x, sm.sy AS y,
+                (SELECT array_to_string(array(SELECT a.anomaly_type_id FROM stu_anomaly a WHERE a.location_id = sm.id), \',\')) as anomalytypes
             FROM stu_sys_map sm
             WHERE sm.systems_id = :systemId
             AND sm.sx BETWEEN :xStart AND :xEnd

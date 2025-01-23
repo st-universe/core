@@ -1,0 +1,393 @@
+{% macro control_right(wrapper, constructionProgressWrapper, possibleStations, moduleSelectors, userLayers) %}
+
+{% set SPACECRAFT = wrapper.get %}
+{% set spacecraftId = SPACECRAFT.getId %}
+{% set reactor = wrapper.getReactorWrapper %}
+
+{% if reactor %}
+<table class="tcal">
+    <tr>
+        <th colspan="3">
+            <img src="/assets/buttons/{{ reactor.get.getIcon }}" />
+            <span>Reaktor + Antrieb</span>
+        </th>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <img src="/assets/buttons/{{ reactor.get.getIcon }}"
+                title="{{ reactor.get.getSystemType.getDescription }}" />
+            <span style="{{ reactor.getReactorLoadStyle }}">{{ reactor.getLoad }}/{{ reactor.getCapacity }}</span>
+            <input type="text" size="3" name="reactorload" id="reactorload" value="1"
+                onkeydown="event.key == 'Enter' && $('loadreactorbutton').click();" />
+            <input type="submit" class="button" name="B_LOAD_REACTOR" value="aufladen" id="loadreactorbutton" />
+            <input type="button" class="button" value="max"
+                onClick="$('reactorload').value = 9999; $('loadreactorbutton').click()" />
+        </td>
+        <td style="width: 15%;">
+            {% if SPACECRAFT.isFleetLeader %}
+            <span><input type="checkbox" name="fleet_reactor" />
+                Flotte</span>
+            {% endif %}
+        </td>
+    </tr>
+    {% if SPACECRAFT.hasWarpDrive %}
+    {% set epssystem = wrapper.getEpsSystemData %}
+    {% set warpdriveSplit = wrapper.getWarpDriveSystemData.getWarpDriveSplit %}
+    {% set autoCarryOver = wrapper.getWarpDriveSystemData.getAutoCarryOver %}
+
+    <tr>
+        <td style="width: 60%;"><img src="/assets/buttons/wkp2.png" style="width: 20px;"
+                title="Zuwachs zum Warpdrive" />
+            <span id="calculatedWarpDrive"></span>
+            <input type="range" min="0" max="100" value="{{ warpdriveSplit }}" id="warpdriveSplit"
+                onchange="saveWarpCoreSplit({{ spacecraftId }});" oninput="updateReactorValues();">
+            <img src="/assets/buttons/battp2.png" style="width: 20px;" title="Zuwachs zum EPS" />
+            <span id="calculatedEPS"></span>
+        </td>
+        <td>
+            <div style="display: inline-block;" title="Überschüssige Energie wird in anderen Speicher übertragen">
+                {% set checked = autoCarryOver ? 'checked="true"' : '' %}
+                <img src="/assets/buttons/transfer.png" style="height:20px;" />
+                <input type="checkbox" id="autoCarryOver" {{ checked }}
+                    onchange="saveWarpCoreSplit({{ spacecraftId }}); updateReactorValues();" />
+            </div>
+        </td>
+        <td style="width: 15%;">
+            {% if SPACECRAFT.isFleetLeader %}
+            <span><input type="checkbox" id="fleetSplit" onchange="saveWarpCoreSplit({{ spacecraftId }});" />
+                Flotte</span>
+            {% else %}
+            <input type="checkbox" id="fleetSplit" style="display: none;" />
+            {% endif %}
+        </td>
+    </tr>
+
+
+    {% if SPACECRAFT.isWarpPossible %}
+    {% include 'html/spacecraft/system/system.twig' with {'name': 'WARPDRIVE'} %}
+    {% include 'html/spacecraft/system/system.twig' with {'name': 'WARPDRIVE_BOOSTER'} %}
+    {% endif %}
+    {% endif %}
+    {% include 'html/spacecraft/system/system.twig' with {'name': 'TRANSWARP_COIL'} %}
+</table>
+{% endif %}
+{% set eps = wrapper.getEpsSystemData %}
+{% if eps and eps.getMaxBattery > 0 %}
+<table class="tcal">
+    <tr>
+        <th colspan="3">
+            <img src="/assets/buttons/batt.png" title="Ersatzbatterie" /> Ersatzbatterie
+            {{ eps.getBattery }} / {{ eps.getMaxBattery }}
+        </th>
+    </tr>
+    <tr>
+        {% if eps.isEBattUseable %}
+        <td style="width: 60%;">
+            Einheiten
+            <input type="text" size="5" name="ebattload" id="ebattload"
+                onkeydown="event.key == 'Enter' && $('unloadBatteryButton').click()" />
+            <input type="submit" class="button" name="B_USE_BATTERY" value="entladen" id="unloadBatteryButton" />
+            <input type="button" class="button"
+                onclick="$('ebattload').value = 99999999; $('unloadBatteryButton').click();" value="max" />
+        </td>
+        {% else %}
+        <td style="width: 60%;">
+            Gesperrt bis {{ eps.getBatteryCooldown|stuDateTime }}
+        </td>
+        {% endif %}
+        <td>
+            {% if SPACECRAFT.isStation %}
+            {% set checked = eps.reloadBattery ? 'checked="true"' : '' %}
+            <input type="checkbox" {{ checked }}
+                onchange="actionToInnerContent('B_TOGGLE_BATT_RELOAD', 'id={{ spacecraftId }}&sstr={{ SESSIONSTRING }}');" />
+            reload <img title="Ersatzbatterie wird vom Reaktor geladen" src="/assets/buttons/info2.png"
+                style="height:16px;" />
+            {% endif %}
+        </td>
+        <td style="width: 15%;">
+            {% if SPACECRAFT.isFleetLeader %}
+            <span><input type="checkbox" name="fleet_batt" />
+                Flotte</span>
+            {% endif %}
+        </td>
+    </tr>
+</table>
+{% endif %}
+{% if constructionProgressWrapper %}
+<table class="tcal">
+    <tr>
+        {% if constructionProgressWrapper.isUnderConstruction %}
+        <th colspan="2"><img src="/assets/buttons/rep2.png" style="height: 20px;" /> Baufortschritt</th>
+        {% elseif constructionProgressWrapper.isScrapped %}
+        <th colspan="2"><img src="/assets/buttons/rep2.png" style="height: 20px;" /> Demontagefortschritt</th>
+        {% endif %}
+    </tr>
+    <tr>
+        <td style="width: 70%;">Verbleibende Ticks:</td>
+        <td style="width: 30%; text-align: center;">{{ constructionProgressWrapper.getRemainingTicks }}</td>
+    </tr>
+    <tr>
+        <td style="width: 70%;">Benötigte angedockte Workbees:</td>
+        <td style="width: 30%; text-align: center; color: {{ constructionProgressWrapper.getWorkbeeColor }};">{{
+            constructionProgressWrapper.getDockedWorkbeeCount }}/{{ constructionProgressWrapper.getNeededWorkbeeCount }}
+        </td>
+    </tr>
+</table>
+{% elseif SPACECRAFT.isConstruction %}
+<table class="tcal">
+    <tr>
+        <th colspan="4"><img src="/assets/buttons/rep2.png" style="height: 20px;" />&nbsp;Erforschte Stationstypen
+        </th>
+    </tr>
+    {% if possibleStations %}
+    {% for data in possibleStations %}
+    <tr>
+        <td style="width: 30%;">
+            {{ data.getRump.getName }}
+        </td>
+        <td style="width: 30%;">
+            <a href="javascript:void(0);" onclick="showStationCosts(this, {{ data.getId }})">
+                <span>Baukosten</span>
+            </a>
+        </td>
+        <td style="width: 30%;">
+            <a href="javascript:void(0);" onclick="showStationInformation(this, {{ data.getId }})">
+                <span>Informationen</span>
+            </a>
+        </td>
+        <td style="width: 10%;">
+            <div class="radio">
+                <input type="radio" value="{{ data.getId }}" name="plan_select"
+                    onchange="showStationModuleSelector({{ data.getRumpId }});" />
+            </div>
+        </td>
+    </tr>
+    {% endfor %}
+    <tr>
+        <th colspan="4">Auswahl der Spezialmodule</th>
+    </tr>
+    <tr>
+        <td colspan="4">
+            {% for selector in moduleSelectors %}
+            {% set id = selector.getRump.getId %}
+            <div id="selector_{{ id }}" style="display: none;">
+                {% autoescape false %}
+                {{ selector.render }}
+                {% endautoescape %}
+            </div>
+            {% endfor %}
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="4">
+            <div style="width: 100%; text-align: center;">
+                <input type="submit" class="button" name="B_BUILD_STATION" value="Stationsbau beginnen" />
+            </div>
+        </td>
+    </tr>
+    {% else %}
+    <tr>
+        <td colspan="4">keine Einträge</td>
+    </tr>
+    {% endif %}
+</table>
+{% endif %}
+{% if SPACECRAFT.isTractoring or SPACECRAFT.isTractored %}
+<table class="tcal">
+    <tr>
+        <th colspan="2"><img src="/assets/buttons/trak.png" title="Traktorstrahl" />
+            Traktorstrahl</th>
+    </tr>
+    <tr>
+        {% if SPACECRAFT.isTractoring %}
+        <td colspan="2">
+            Gerichtet auf: {{ SPACECRAFT.getTractoredShip.getName|bbcode }}
+        </td>
+        {% else %}
+        <td colspan="2">
+            Gehalten von: {{ SPACECRAFT.getTractoringSpacecraft.getName|bbcode }}
+        </td>
+        {% endif %}
+    </tr>
+    <tr>
+        <td>
+            {% if SPACECRAFT.isTractoring %}
+            {% if SPACECRAFT.isStation and not SPACECRAFT.getTractoredShip.isDestroyed %}
+            <a href="javascript:void(0);"
+                onClick="actionToInnerContent('B_DOCK_TRACTORED', 'id={{ spacecraftId }}&sstr={{ SESSIONSTRING }}');"
+                onmouseover="cp('docktractored','buttons/dock2')" onmouseout="cp('docktractored','buttons/dock1')">
+                <img src="/assets/buttons/dock1.png" name="docktractored" title="Gehaltenes Schiff andocken" />
+            </a>
+            {% endif %}
+            <img src="/assets/ships/{{ SPACECRAFT.getTractoredShip.getRump.getId }}.png" />
+            {% else %}
+            <img src="/assets/ships/{{ SPACECRAFT.getTractoringSpacecraft.getRump.getId }}.png" />
+            {% endif %}
+        </td>
+        <td>
+            {% if SPACECRAFT.isTractoring %}
+            <input type="submit" class="button" name="B_DEACTIVATE_TRACTOR" value="deaktivieren" />
+            {% elseif SPACECRAFT.isDeflectorHealthy %}
+            <input type="submit" class="button" name="B_ESCAPE_TRAKTOR" value="Fluchtversuch" />
+            {% endif %}
+        </td>
+    </tr>
+</table>
+{% endif %}
+{% include 'html/spacecraft/system/system.twig' with {'name': 'TRACKER'} %}
+<br />
+{% if SPACECRAFT.getFleet %}
+{{ _self.fleetInfo(wrapper) }}
+{% endif %}
+{% endmacro %}
+
+{% macro fleetInfo(wrapper) %}
+{% from 'html/shipmacros.twig' import shipimagenameastitle %}
+{% from 'html/macros.twig' import onClickSpacecraft %}
+
+{% set ship = wrapper.get %}
+{% set fleet = ship.getFleet %}
+
+{% if not ship.isFleetLeader %}
+<table class="tcal">
+    <tr>
+        <th>
+            <div style="display: inline-block;width: 80%;">
+                <a {{ onClickSpacecraft(fleet.getLeadShip) }}>
+                    <img src="/assets/buttons/fleet.png" title="zum Führungsschiff wechseln" />
+                    <span>zum Führungsschiff wechseln</span></a>
+            </div>
+        </th>
+    </tr>
+</table>
+{% elseif fleet.getShipCount > 1 %}
+<table class="tcal">
+    <tr>
+        <th colspan="3">
+            <div>
+                <div style="display: inline-block;width: 80%;">
+                    <img src="/assets/buttons/fleet.png" title="Flottenstatus" />
+                    <span>Flottenstatus</span>
+                </div>
+                <div style="display: inline-block;" title="Schiffe gehen nicht verloren">
+                    <span>
+                        {% if ship.getFleet.isFleetFixed %}
+                        <input style="display: none;" type="submit" class="button" name="B_CHANGE_FLEET_FIXATION"
+                            id="changefixationbutton" /><input type="checkbox" name="fleetfixed" checked="true"
+                            onchange="$('changefixationbutton').click();" />
+                        {% else %}
+                        <input style="display: none;" type="submit" class="button" name="B_CHANGE_FLEET_FIXATION"
+                            id="changefixationbutton" /><input type="checkbox" name="fleetfixed"
+                            onchange="$('changefixationbutton').click();" />
+                        {% endif %}
+                        fixiert
+                        <img src="/assets/buttons/info2.png" style="height:16px;" /></span>
+                </div>
+            </div>
+        </th>
+    </tr>
+    {% for fleetShipWrapper in wrapper.getFleetWrapper.getShipWrappers %}
+    {% set fleetShip = fleetShipWrapper.get %}
+    {% if fleetShip.getId != ship.getId %}
+    <tr>
+        <td style="background-color: #000000 ! important">
+            <a {{ onClickSpacecraft(fleetShip) }} onmouseover="openStorageInit(this, {{ fleetShip.getId }});"
+                onmouseout="closeStorage();">
+                {{ shipimagenameastitle(fleetShip) }}
+            </a>
+        </td>
+        <td style="background-color: #000000 ! important">
+            <div style="width: 100%; display: grid; grid-template-columns: 100%;">
+                <div>
+                    <div style="width: 25%; float: left; padding-right: 3px;">
+                        <table class="tcal">
+                            <tr>
+                                <th>
+                                    <img src="/assets/buttons/modul_1.png" title="Hülle" />
+                                </th>
+                                <td style="vertical-align: middle; text-align: center;">
+                                    {% autoescape false %}
+                                    {{ fleetShipWrapper.getHullSystemData.getHullStatusBar }}
+                                    {% endautoescape %}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    {% set shields = fleetShipWrapper.getShieldSystemData %}
+                    {% if shields %}
+                    <div style="width: 25%; float: left; padding-right: 3px;">
+                        <table class="tcal">
+                            <tr>
+                                <th>
+                                    <img src="/assets/buttons/modul_2.png" title="Schilde" />
+                                </th>
+                                <td style="text-align: center; vertical-align: middle;">
+                                    {% autoescape false %}
+                                    {{ shields.getShieldStatusBar }}
+                                    {% endautoescape %}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    {% endif %}
+                    {% set eps = fleetShipWrapper.getEpsSystemData %}
+                    {% if eps %}
+                    <div style="width: 25%; float: left; padding-right: 3px;">
+                        <table class="tcal">
+                            <tr>
+                                <th>
+                                    <img src="/assets/buttons/modul_8.png" title="Energie" />
+                                </th>
+                                <td style="vertical-align: middle; text-align: center;">
+                                    {% autoescape false %}
+                                    {{ eps.getEpsStatusBar }}
+                                    {% endautoescape %}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    {% endif %}
+                    {% set warpdrive = fleetShipWrapper.getWarpDriveSystemData %}
+                    {% if warpdrive %}
+                    <div style="width: 25%; float: left;">
+                        <table class="tcal">
+                            <tr>
+                                <th>
+                                    <img src="/assets/buttons/modul_11.png" style="width: 20px;" title="Warpdrive" />
+                                </th>
+                                <td style="vertical-align: middle; text-align: center;">
+                                    {% autoescape false %}
+                                    {{ warpdrive.getWarpDriveStatusBar }}
+                                    {% endautoescape %}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    {% endif %}
+                </div>
+                {% set damagedSystems = fleetShipWrapper.getDamagedSystems %}
+                {% if damagedSystems %}
+                <div style="padding-top: 5px;">
+                    {% for sys in damagedSystems %}
+                    <img title="{{ sys.getName }}: {{ sys.getStatus }}%" style="width: 20px;"
+                        class="{{ sys.getCssClass }}" src="/assets/system/{{ sys.getSystemType.value }}.png" />
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </td>
+        <td>
+            <a href="?B_FLEET_LEADER=1&id={{ ship.getId }}&target={{ fleetShip.getId }}"
+                onmouseover="cp('fleet_{{ fleetShip.getId }}','buttons/fl_flag2')"
+                onmouseout="cp('fleet_{{ fleetShip.getId }}','buttons/fl_flag1')">
+                <img src="/assets/buttons/fl_flag1.png" name="fleet_{{ fleetShip.getId }}"
+                    title="Flottenführung wechseln" />
+            </a>
+        </td>
+    </tr>
+    {% endif %}
+    {% endfor %}
+</table>
+{% endif %}
+{% endmacro %}

@@ -186,6 +186,8 @@ interface UserInterface
 
     public function isShowPirateHistoryEntrys(): bool;
 
+    public function isInboxMessengerStyle(): bool;
+
     public function getPirateWrath(): ?PirateWrathInterface;
 
     public function setPirateWrath(?PirateWrathInterface $wrath): UserInterface;
@@ -196,4 +198,13 @@ interface UserInterface
      * @return Collection<int, UserTutorialInterface>
      */
     public function getTutorials(): Collection;
+
+    /**
+     * @return iterable<WormholeRestriction>
+     */
+    public function getWormholeRestrictions(): iterable;
+
+    public function getReferer(): ?UserRefererInterface;
+
+    public function setReferer(?UserRefererInterface $referer): UserInterface;
 }

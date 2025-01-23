@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\ConstructionProgress;
 use Stu\Orm\Entity\ConstructionProgressInterface;
+use Stu\Orm\Entity\StationInterface;
 
 /**
  * @extends EntityRepository<ConstructionProgress>
@@ -15,17 +16,17 @@ use Stu\Orm\Entity\ConstructionProgressInterface;
 final class ConstructionProgressRepository extends EntityRepository implements ConstructionProgressRepositoryInterface
 {
     #[Override]
-    public function getByShip(int $shipId): ?ConstructionProgressInterface
+    public function getByStation(StationInterface $station): ?ConstructionProgressInterface
     {
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
                     'SELECT cp FROM %s cp
-                    WHERE cp.ship_id = :shipId',
+                    WHERE cp.station = :station',
                     ConstructionProgress::class
                 )
             )
-            ->setParameters(['shipId' => $shipId])
+            ->setParameter('station', $station)
             ->getOneOrNullResult();
     }
 

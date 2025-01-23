@@ -11,14 +11,19 @@ use Stu\Orm\Entity\DatabaseUserInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ColonyClassRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
+use Stu\Orm\Repository\StationRepositoryInterface;
 
 final class DatabaseCategoryEntryWrapper implements DatabaseCategoryEntryWrapperInterface
 {
-    public function __construct(private DatabaseUserRepositoryInterface $databaseUserRepository, private DatabaseEntryInterface $databaseEntry, private StarSystemRepositoryInterface $starSystemRepository, private ShipRepositoryInterface $shipRepository, private ColonyClassRepositoryInterface $colonyClassRepository, private UserInterface $user)
-    {
-    }
+    public function __construct(
+        private DatabaseUserRepositoryInterface $databaseUserRepository,
+        private DatabaseEntryInterface $databaseEntry,
+        private StarSystemRepositoryInterface $starSystemRepository,
+        private StationRepositoryInterface $stationRepository,
+        private ColonyClassRepositoryInterface $colonyClassRepository,
+        private UserInterface $user
+    ) {}
 
     private ?bool $wasEntryDiscovered = null;
 
@@ -33,7 +38,7 @@ final class DatabaseCategoryEntryWrapper implements DatabaseCategoryEntryWrapper
     {
         return match ($this->databaseEntry->getCategory()->getId()) {
             DatabaseCategoryTypeEnum::DATABASE_CATEGORY_STARSYSTEM => $this->starSystemRepository->find($this->databaseEntry->getObjectId()),
-            DatabaseCategoryTypeEnum::DATABASE_CATEGORY_TRADEPOST => $this->shipRepository->find($this->databaseEntry->getObjectId()),
+            DatabaseCategoryTypeEnum::DATABASE_CATEGORY_TRADEPOST => $this->stationRepository->find($this->databaseEntry->getObjectId()),
             DatabaseCategoryTypeEnum::DATABASE_CATEGORY_COLONY_CLASS => $this->colonyClassRepository->find($this->databaseEntry->getObjectId()),
             default => null,
         };

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:stu="stu" lang="de">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="theme-color" content="#121220">
+    <script src="/static/js/prototype.js"></script>
+    <script src="/static/js/scriptaculous/scriptaculous.js"></script>
+    <script src="/static/js/admin.js"></script>
+    <script src="/static/js/starmap.js"></script>
+    <script src="/static/js/default.js"></script>
+    <title>Karteneditor</title>
+    <script>
+        var gfx_path = '/assets';
+    </script>
+    <script src="/static/js/overlib.js"></script>
+    <script src="/static/js/drag.js"></script>
+    <script src="/static/js/overlib_exclusive.js"></script>
+    <link rel="STYLESHEET" type="text/css" href="/static/css/schwarz.css">
+    <link rel="STYLESHEET" type="text/css" href="/static/css/stu.css">
+    <link rel="shortcut icon" href="/assets/favicon.ico">
+</head>
+
+<body onload="startUp();">
+    <div id="overDiv">...</div>
+    <div class="container">
+        <div class="header">
+            <div onclick="goToUrl('/maindesk.php'); return false;" class="header_box header_box_user border_box action">
+                <img style="width: 30px; height: 30px;" src="/assets/buttons/b_from1.png" title="Zur&uuml;ck zu Spielmodus">
+                <br>
+                <span style="color: orange; font-size: 150%;">Klick f&uuml;hrt zur&uuml;ck aufs Maindesk</span>
+            </div>
+            <div class="header_box header_box_logout border_box action" onclick="goToUrl('game.php?B_LOGOUT=1')" onmouseover="cp('header_menu_logout','navigation/menu_logout1', 'png')" onmouseout="cp('header_menu_logout','navigation/menu_logout0', 'png')">
+                <div>
+                    <img style="width: 40px; height: 40px;" id="header_menu_logout" src="/assets/navigation/menu_logout0.png" title="Logout">
+                    <div style="margin-top: 5px">Logout</div>
+                </div>
+            </div>
+                        <div class="header_box header_box_help border_box action" onclick="openNewTab('https://wiki.change.me')" onmouseover="cp('header_menu_docu','navigation/menu_doku1', 'png')" onmouseout="cp('header_menu_docu','navigation/menu_doku0', 'png')">
+                <div>
+                    <img style="width: 40px; height: 40px;" id="header_menu_docu" src="/assets/navigation/menu_doku0.png" title="Wiki">
+                    <div style="margin-top: 5px">Wiki</div>
+                </div>
+            </div>
+                                    <div class="header_box header_box_help border_box action" onclick="openNewTab('https://board.change.me')" onmouseover="cp('header_menu_board','navigation/menu_scripts1', 'png')" onmouseout="cp('header_menu_board','navigation/menu_scripts0', 'png')">
+                <div>
+                    <img style="width: 40px; height: 40px;" id="header_menu_board" src="/assets/navigation/menu_scripts0.png" title="Forum">
+                    <div style="margin-top: 5px">Forum</div>
+                </div>
+            </div>
+                        <div class="header_box header_box_settings border_box action" onclick="goToUrl('options.php')" onmouseover="cp('header_menu_settings','navigation/menu_option1', 'png')" onmouseout="cp('header_menu_settings','navigation/menu_option0', 'png')">
+                <div>
+                    <img style="width: 40px; height: 40px;" id="header_menu_settings" src="/assets/navigation/menu_option0.png" title="Einstellungen">
+                    <div style="margin-top: 5px">Einstellungen</div>
+                </div>
+            </div>
+            <div class="headerBottom"> </div>
+        </div>
+        <div style="margin-top: 80px;">
+            <div class="sidebar">
+                                <div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/admin/?SHOW_PLAYER_LIST=1'; }" onmouseover="cp('nav_item_ally','navigation/menu_ally1', 'png')" onmouseout="cp('nav_item_ally','navigation/menu_ally0', 'png')">
+    <a class="navitem_link" href="/admin/?SHOW_PLAYER_LIST=1">
+        <img class="navitem_img" src="/assets/navigation/menu_ally0.png" id="nav_item_ally" title="Spielerliste">
+        <div class="navitem_title">Spielerliste</div>
+    </a>
+</div>
+
+<div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/admin/?SHOW_MASS_MAIL=1'; }" onmouseover="cp('nav_item_msg','navigation/menu_msg1', 'png')" onmouseout="cp('nav_item_msg','navigation/menu_msg0', 'png')">
+    <a class="navitem_link" href="/admin/?SHOW_MASS_MAIL=1">
+        <img class="navitem_img" src="/assets/navigation/menu_msg0.png" id="nav_item_msg" title="Nachrichten">
+        <div class="navitem_title">Nachrichten</div>
+    </a>
+</div>
+
+<div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/admin/?SHOW_MAP_EDITOR=1'; }" onmouseover="cp('nav_item_map','navigation/menu_map1', 'png')" onmouseout="cp('nav_item_map','navigation/menu_map0', 'png')">
+    <a class="navitem_link" href="/admin/?SHOW_MAP_EDITOR=1">
+        <img class="navitem_img" src="/assets/navigation/menu_map0.png" id="nav_item_map" title="Karteneditor">
+        <div class="navitem_title">Karteneditor</div>
+    </a>
+</div>
+
+<div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/admin/?SHOW_COLONY_SANDBOX=1'; }" onmouseover="cp('nav_item_sandbox','navigation/menu_sandbox1', 'png')" onmouseout="cp('nav_item_sandbox','navigation/menu_sandbox0', 'png')">
+    <a class="navitem_link" href="/admin/?SHOW_COLONY_SANDBOX=1">
+        <img class="navitem_img" src="/assets/navigation/menu_sandbox0.png" id="nav_item_sandbox" title="Kolonie-Sandbox">
+        <div class="navitem_title">Kolonie-Sandbox</div>
+    </a>
+</div>
+
+<div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/admin/?SHOW_TICKS=1'; }" onmouseover="cp('nav_item_ticks','navigation/menu_ticks1', 'png')" onmouseout="cp('nav_item_ticks','navigation/menu_ticks0', 'png')">
+    <a class="navitem_link" href="/admin/?SHOW_TICKS=1">
+        <img class="navitem_img" src="/assets/navigation/menu_ticks0.png" id="nav_item_ticks" title="Ticks">
+        <div class="navitem_title">Ticks</div>
+    </a>
+</div>
+
+<div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/admin/?SHOW_SCRIPTS=1'; }" onmouseover="cp('nav_item_scripts','navigation/menu_scripts1', 'png')" onmouseout="cp('nav_item_scripts','navigation/menu_scripts0', 'png')">
+    <a class="navitem_link" href="/admin/?SHOW_SCRIPTS=1">
+        <img class="navitem_img" src="/assets/navigation/menu_scripts0.png" id="nav_item_scripts" title="Skripte">
+        <div class="navitem_title">Skripte</div>
+    </a>
+</div>
+
+
+            </div>
+            <div id="innerContent" class="innerContent">
+                <div class="box">
+    <div class="box_title" style="text-align: left">/
+                <a href="/admin/?SHOW_MAP_EDITOR=1">
+            Karteneditor
+        </a>
+                    </div>
+</div>
+<br>
+<div id="result" style="display: none;">..</div>
+<div>
+	<select onchange="window.location.href='/admin/?SHOW_MAP_EDITOR=1&amp;layerid=' + this.value">
+						<option value="1">Cragganmore Verwerfung</option>
+								<option value="2" selected>Tullamore Trench</option>
+					</select>
+</div>
+<br>
+<table class="tcal">
+	<tr>
+		<th>x|y</th>
+						<th>20</th>
+			</tr>
+		<tr>
+						<th style="width: 30px;">20</th>
+				<td>
+			<a href="/admin/?SHOW_EDIT_MAP_SECTION=1&amp;section=1&amp;layerid=2">
+				1</a>
+		</td>
+			</tr>
+	</table>
+<br>
+<table class="tcal">
+	<tr>
+		<th>Sternensysteme</th>
+	</tr>
+		<tr>
+		<td>
+						<div><a href="/admin/?SHOW_SYSTEM=1&amp;systemid=252">Stempor'Arr</a></div>
+					</td>
+	</tr>
+</table>
+            </div>
+            <div class="footer">
+                                Rendered in 4.203s - Memory usage: 42.77Mb
+            </div>
+        </div>
+    </div>
+    </body>
+
+</html>

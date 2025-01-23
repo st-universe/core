@@ -1,0 +1,8 @@
+{% set colonyClassId = entity.getColonyClassId %}
+{% if ownsEntity %}
+<a href="colony.php?SHOW_COLONY=1&id={{ entity.getId }}&target={{ sourceShipId }}">
+    <img src="assets/planets/{{ colonyClassId }}.png" />
+</a>
+{% else %}
+<img src="assets/planets/{{ colonyClassId }}.png" />
+{% endif %}

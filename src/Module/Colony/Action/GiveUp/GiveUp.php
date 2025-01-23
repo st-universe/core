@@ -8,11 +8,11 @@ use Override;
 use request;
 use Stu\Component\Colony\ColonyTypeEnum;
 use Stu\Exception\AccessViolation;
+use Stu\Lib\Component\ComponentRegistrationInterface;
 use Stu\Module\Colony\Lib\ColonyResetterInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Game\Lib\Component\ComponentEnum;
-use Stu\Module\Game\Lib\Component\ComponentLoaderInterface;
+use Stu\Module\Game\Component\GameComponentEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -21,9 +21,13 @@ final class GiveUp implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_GIVEUP_COLONY';
 
-    public function __construct(private GiveUpRequestInterface $giveupRequest, private ColonyRepositoryInterface $colonyRepository, private ColonyResetterInterface $colonyResetter, private UserRepositoryInterface $userRepository, private ComponentLoaderInterface $componentLoader)
-    {
-    }
+    public function __construct(
+        private GiveUpRequestInterface $giveupRequest,
+        private ColonyRepositoryInterface $colonyRepository,
+        private ColonyResetterInterface $colonyResetter,
+        private UserRepositoryInterface $userRepository,
+        private ComponentRegistrationInterface $componentRegistration
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -58,7 +62,7 @@ final class GiveUp implements ActionControllerInterface
             $this->userRepository->save($user);
         }
 
-        $this->componentLoader->addComponentUpdate(ComponentEnum::COLONIES_NAVLET);
+        $this->componentRegistration->addComponentUpdate(GameComponentEnum::COLONIES);
 
         $game->addInformation(_('Die Kolonie wurde aufgegeben'));
     }

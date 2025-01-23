@@ -9,7 +9,7 @@ use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Module\Station\Lib\StationUiFactoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 
@@ -18,7 +18,7 @@ final class ShowSystemSensorScan implements ViewControllerInterface
     public const string VIEW_IDENTIFIER = 'SHOW_SYSTEM_SENSOR_SCAN';
 
     public function __construct(
-        private ShipLoaderInterface $shipLoader,
+        private StationLoaderInterface $stationLoader,
         private MapRepositoryInterface $mapRepository,
         private StationUiFactoryInterface $stationUiFactory,
         private LoggerUtilFactoryInterface $loggerUtilFactory
@@ -29,15 +29,15 @@ final class ShowSystemSensorScan implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $ship = $this->shipLoader->getByIdAndUser(
+        $ship = $this->stationLoader->getByIdAndUser(
             request::indInt('id'),
             $userId,
             true,
             false
         );
 
-        $cx = request::getIntFatal('cx');
-        $cy = request::getIntFatal('cy');
+        $cx = request::getIntFatal('x');
+        $cy = request::getIntFatal('y');
 
 
         $field = $ship->getLocation();

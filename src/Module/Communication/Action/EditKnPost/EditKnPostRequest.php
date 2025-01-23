@@ -12,22 +12,22 @@ final class EditKnPostRequest implements EditKnPostRequestInterface
     use CustomControllerHelperTrait;
 
     #[Override]
-    public function getPostId(): int
+    public function getKnId(): int
     {
-        return $this->queryParameter('knid')->int()->required();
+        return $this->parameter('knid')->int()->required();
     }
 
     #[Override]
     public function getPlotId(): int
     {
-        return $this->queryParameter('plotid')->int()->defaultsTo(0);
+        return $this->parameter('plotid')->int()->defaultsTo(0);
     }
 
     #[Override]
     public function getText(): string
     {
         return $this->tidyString(
-            $this->queryParameter('text')->string()->trim()->required()
+            $this->parameter('text')->string()->trim()->required()
         );
     }
 
@@ -35,13 +35,13 @@ final class EditKnPostRequest implements EditKnPostRequestInterface
     public function getTitle(): string
     {
         return $this->tidyString(
-            $this->queryParameter('title')->string()->trim()->defaultsToIfEmpty('')
+            $this->parameter('title')->string()->trim()->defaultsToIfEmpty('')
         );
     }
 
     #[Override]
     public function getCharacterIds(): string
     {
-        return $this->queryParameter('characterids')->string()->trim()->required();
+        return $this->parameter('characterids')->string()->trim()->required();
     }
 }

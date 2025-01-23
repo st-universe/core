@@ -1,120 +1,121 @@
-
-  <div class="box">
-    <div class="box_title">Menü</div>
-    <div class="box_body">
+<div class="box">
+  <div class="box_title">Menü</div>
+  <div class="box_body">
+    <table class="tcal">
+      <tr>
+        <td style="width: 33%" class="selected" id="menubroadcast">
+          <a style="display: block;" href="javascript:void(0);" onclick="switchMenuToBroadcast()">Broadcast</a>
+        </td>
+        <td style="width: 33%" id="menulogbook">
+          <a style="display: block;" href="javascript:void(0);" onclick="switchMenuToLogbook()">Logbuch</a>
+        </td>
+        <td style="width: 33%" id="menuemergency">
+          <a style="display: block;" href="javascript:void(0);" onclick="switchMenuToEmergency()">Notruf</a>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+<div class="box" id="broadcast" style="width: 500px;">
+  <div class="box_title">Broadcast</div>
+  <div class="box_body">
+    <form method="post" action="{{ SHIP.getType.getModuleView.getPhpPage }}">
+      <input type="hidden" name="id" value="{{ SHIP.getId }}" />
       <table class="tcal">
         <tr>
-          <td style="width: 33%" class="selected" id="menubroadcast">
-            <a style="display: block;" href="javascript:void(0);" onclick="switchMenuToBroadcast()">Broadcast</a>
-          </td>
-          <td style="width: 33%" id="menulogbook">
-            <a style="display: block;" href="javascript:void(0);" onclick="switchMenuToLogbook()">Logbuch</a>
-          </td>
-          <td style="width: 33%" id="menuemergency">
-            <a style="display: block;" href="javascript:void(0);" onclick="switchMenuToEmergency()">Notruf</a>
-          </td>
+          <th>Sende Broadcast an alle Kolonien und Stationen im Umkreis von einem Feld</th>
+        </tr>
+        <tr>
+          <td><textarea name="text" style="width: 100%; height: 300px;">{{ TEMPLATETEXT }}</textarea></td>
+        </tr>
+        <tr>
+          <td><input type="submit" name="B_SEND_BROADCAST" class="button" value="Broadcast senden" /></td>
         </tr>
       </table>
-    </div>
+    </form>
   </div>
-  <div class="box" id="broadcast" style="width: 500px;">
-    <div class="box_title">Broadcast</div>
-    <div class="box_body">
-      <form method="post" action="ship.php">
-        <input type="hidden" name="id" value="{{ SHIP.getId }}" />
+</div>
+<div class="box" id="logbook" style="width: 500px; display: none;">
+  <div class="box_title">Logbuch</div>
+  <div class="box_body">
+    <form method="post" action="{{ SHIP.getType.getModuleView.getPhpPage }}">
+      <input type="hidden" name="id" value="{{ SHIP.getId }}" />
+      <div id="writelog" style="display: none;">
         <table class="tcal">
           <tr>
-            <th>Sende Broadcast an alle Kolonien und Stationen im Umkreis von einem Feld</th>
+            <th colspan="2">Kommentar schreiben</th>
           </tr>
           <tr>
-            <td><textarea name="text" style="width: 100%; height: 300px;">{{ TEMPLATETEXT }}</textarea></td>
-          </tr>
-          <tr>
-            <td><input type="submit" name="B_SEND_BROADCAST" class="button" value="Broadcast senden" /></td>
-          </tr>
-        </table>
-      </form>
-    </div>
-  </div>
-  <div class="box" id="logbook" style="width: 500px; display: none;">
-    <div class="box_title">Logbuch</div>
-    <div class="box_body">
-      <form method="post" action="ship.php">
-        <input type="hidden" name="id" value="{{ SHIP.getId }}" />
-        <div id="writelog" style="display: none;">
-          <table class="tcal">
-            <tr>
-              <th colspan="2">Kommentar schreiben</th>
-            </tr>
-            <tr>
-              <td colspan="2">
-                <textarea style="width: 100%; height: 100px;" name="log"></textarea>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="2" style="text-align: right;">
-                <input type="submit" class="button" name="B_ADD_SHIP_LOG" value="Eintrag erstellen" />
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div style="width: 100%; text-align: right;">
-          <input type="button" class="button" value="Logeintrag schreiben" onclick="Element.hide(this.parentNode);Element.show($('writelog'))" />
-        </div>
-        <br />
-        {% for DATA in SHIP.getLogbook %}
-          <table class="tcal">
-            <tr>
-              <th style="width: 120px; text-align: center;">{{ DATA.getDate|date('Y-m-d H:i:s') }}</th>
-            </tr>
-            <tr>
-              <td>{{ DATA.getText|nl2br|bbcode }}</td>
-            </tr>
-          </table>
-          {% if not loop.last %}
-            <br />
-          {% endif %}
-        {% endfor %}
-        {% if not SHIP.getLogbook %}
-          <div class="divhead" style="text-align: center;">Keine Logbucheinträge vorhanden</div>
-        {% endif %}
-      </form>
-    </div>
-  </div>
-  <div class="box" id="emergency" style="width: 500px; display: none;">
-    <div class="box_title">Notruf</div>
-    <div class="box_body">
-      <form method="post" action="ship.php">
-        <input type="hidden" name="id" value="{{ SHIP.getId }}" />
-        <table class="tcal" {% if SHIP.getIsInEmergency %}style="display: none;"{% endif %}>
-          <tr>
-            <th colspan="2">Sende Notrufsignal</th>
-          </tr>
-          <tr>
-            <td colspan="2"><textarea id="emergencytext" name="text" style="width: 100%; height: 300px;"></textarea></td>
-          </tr>
-          <tr>
-            <td style="width: 200px">
-              <span id="emergencyTextLength">0</span>/<span>{{ EMERGENCYTEXTLIMIT }}</span> Zeichen
+            <td colspan="2">
+              <textarea style="width: 100%; height: 100px;" name="log"></textarea>
             </td>
-            <td><input id="startEmergencyButton" type="submit" name="B_START_EMERGENCY" class="button" value="Notruf senden" /></td>
+          </tr>
+          <tr>
+            <td colspan="2" style="text-align: right;">
+              <input type="submit" class="button" name="B_ADD_SHIP_LOG" value="Eintrag erstellen" />
+            </td>
           </tr>
         </table>
-        <table class="tcal" {% if not SHIP.getIsInEmergency  %}style="display: none;"{% endif %}>
-          <tr>
-            <th>Aktuelles Notrufsignal</th>
-          </tr>
-          <tr>
-            <td>{{ EMERGENCYTEXT }}</td>
-          </tr>
-          <tr>
-            <td><input type="submit" name="B_STOP_EMERGENCY" class="button" value="Notruf beenden" /></td>
-          </tr>
-        </table>
-      </form>
-    </div>
+      </div>
+      <div style="width: 100%; text-align: right;">
+        <input type="button" class="button" value="Logeintrag schreiben"
+          onclick="Element.hide(this.parentNode);Element.show($('writelog'))" />
+      </div>
+      <br />
+      {% for DATA in SHIP.getLogbook %}
+      <table class="tcal">
+        <tr>
+          <th style="width: 120px; text-align: center;">{{ DATA.getDate|date('Y-m-d H:i:s') }}</th>
+        </tr>
+        <tr>
+          <td>{{ DATA.getText|nl2br|bbcode }}</td>
+        </tr>
+      </table>
+      {% if not loop.last %}
+      <br />
+      {% endif %}
+      {% endfor %}
+      {% if not SHIP.getLogbook %}
+      <div class="divhead" style="text-align: center;">Keine Logbucheinträge vorhanden</div>
+      {% endif %}
+    </form>
   </div>
-  <script>
+</div>
+<div class="box" id="emergency" style="width: 500px; display: none;">
+  <div class="box_title">Notruf</div>
+  <div class="box_body">
+    <form method="post" action="{{ SHIP.getType.getModuleView.getPhpPage }}">
+      <input type="hidden" name="id" value="{{ SHIP.getId }}" />
+      <table class="tcal" {% if SHIP.isInEmergency %}style="display: none;" {% endif %}>
+        <tr>
+          <th colspan="2">Sende Notrufsignal</th>
+        </tr>
+        <tr>
+          <td colspan="2"><textarea id="emergencytext" name="text" style="width: 100%; height: 300px;"></textarea></td>
+        </tr>
+        <tr>
+          <td style="width: 200px">
+            <span id="emergencyTextLength">0</span>/<span>{{ EMERGENCYTEXTLIMIT }}</span> Zeichen
+          </td>
+          <td><input id="startEmergencyButton" type="submit" name="B_START_EMERGENCY" class="button"
+              value="Notruf senden" /></td>
+        </tr>
+      </table>
+      <table class="tcal" {% if not SHIP.isInEmergency %}style="display: none;" {% endif %}>
+        <tr>
+          <th>Aktuelles Notrufsignal</th>
+        </tr>
+        <tr>
+          <td>{{ EMERGENCYTEXT }}</td>
+        </tr>
+        <tr>
+          <td><input type="submit" name="B_STOP_EMERGENCY" class="button" value="Notruf beenden" /></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>
+<script>
     document.getElementById('emergencytext').addEventListener(
       "keyup",
       function () {

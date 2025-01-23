@@ -17,7 +17,7 @@
 		{% set noteId = note.getId %}
 		<tr>
 			<td>
-				<a href="notes.php?SHOW_NOTE=1&note={{ noteId }}">{{ note.getTitle }}</a>
+				<a href="notes.php?SHOW_NOTE=1&noteid={{ noteId }}">{{ note.getTitle }}</a>
 			</td>
 			<td style="text-align: center;">{{ note.getDate|stuDateTime }}</td>
 			<td style="width: 20px;">

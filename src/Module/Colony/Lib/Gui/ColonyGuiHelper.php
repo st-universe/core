@@ -5,20 +5,16 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Lib\Gui;
 
 use Override;
-use RuntimeException;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
-use Stu\Module\Colony\Lib\Gui\Component\GuiComponentProviderInterface;
+use Stu\Lib\Component\ComponentRegistrationInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ColonySandboxInterface;
 
 final class ColonyGuiHelper implements ColonyGuiHelperInterface
 {
-    /** @param array<int, GuiComponentProviderInterface> $guiComponentProviders */
-    public function __construct(private array $guiComponentProviders)
-    {
-    }
+    public function __construct(private ComponentRegistrationInterface $componentRegistration) {}
 
     #[Override]
     public function registerMenuComponents(
@@ -27,8 +23,8 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
         GameControllerInterface $game
     ): void {
 
-        foreach ($menu->getNecessaryGuiComponents() as $component) {
-            $this->processComponent($component, $host, $game);
+        foreach ($menu->getNecessaryGuiComponents() as $componentEnum) {
+            $this->componentRegistration->registerComponent($componentEnum, $host);
         }
 
         $game->setTemplateVar('HOST', $host);
@@ -50,21 +46,8 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
         GameControllerInterface $game,
         array $guiComponents
     ): void {
-        foreach ($guiComponents as $component) {
-            $this->processComponent($component, $host, $game);
+        foreach ($guiComponents as $componentEnum) {
+            $this->componentRegistration->registerComponent($componentEnum, $host);
         }
-    }
-
-    private function processComponent(
-        GuiComponentEnum $guiComponent,
-        PlanetFieldHostInterface $host,
-        GameControllerInterface $game,
-    ): void {
-        if (!array_key_exists($guiComponent->value, $this->guiComponentProviders)) {
-            throw new RuntimeException(sprintf('guiComponentProvider with follwing id does not exist: %d', $guiComponent->value));
-        }
-
-        $componentProvider = $this->guiComponentProviders[$guiComponent->value];
-        $componentProvider->setTemplateVariables($host, $game);
     }
 }

@@ -7,6 +7,7 @@ namespace Stu\Module\Communication\View\ShowSearchResult;
 use Override;
 use Stu\Component\Communication\Kn\KnFactoryInterface;
 use Stu\Component\Communication\Kn\KnItemInterface;
+use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -17,9 +18,7 @@ final class ShowPostIdSearchResult implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_POSTID_SEARCH';
 
-    public function __construct(private ShowSearchResultRequestInterface $showSearchResultRequest, private KnPostRepositoryInterface $knPostRepository, private KnFactoryInterface $knFactory)
-    {
-    }
+    public function __construct(private ShowSearchResultRequestInterface $showSearchResultRequest, private KnPostRepositoryInterface $knPostRepository, private KnFactoryInterface $knFactory) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -49,12 +48,14 @@ final class ShowPostIdSearchResult implements ViewControllerInterface
         $game->setTemplateVar(
             'KN_POSTINGS',
             array_map(
-                fn (KnPostInterface $knPost): KnItemInterface => $this->knFactory->createKnItem(
+                fn(KnPostInterface $knPost): KnItemInterface => $this->knFactory->createKnItem(
                     $knPost,
                     $user
                 ),
                 [$post]
             )
         );
+
+        $game->addExecuteJS("initTranslations();", GameEnum::JS_EXECUTION_AFTER_RENDER);
     }
 }

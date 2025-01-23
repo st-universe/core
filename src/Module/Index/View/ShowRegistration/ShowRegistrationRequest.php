@@ -14,6 +14,6 @@ final class ShowRegistrationRequest implements ShowRegistrationRequestInterface
     #[Override]
     public function getToken(): string
     {
-        return $this->queryParameter('token')->string()->defaultsToIfEmpty('');
+        return $this->parameter('token')->string()->defaultsToIfEmpty('');
     }
 }

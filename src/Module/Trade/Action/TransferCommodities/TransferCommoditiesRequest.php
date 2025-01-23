@@ -14,18 +14,18 @@ final class TransferCommoditiesRequest implements TransferCommoditiesRequestInte
     #[Override]
     public function getStorageId(): int
     {
-        return $this->queryParameter('storid')->int()->required();
+        return $this->parameter('storid')->int()->required();
     }
 
     #[Override]
     public function getAmount(): int
     {
-        return $this->queryParameter('count')->int()->defaultsTo(0);
+        return $this->parameter('count')->int()->defaultsTo(0);
     }
 
     #[Override]
     public function getDestinationTradePostId(): int
     {
-        return $this->queryParameter('target')->int()->defaultsTo(-1);
+        return $this->parameter('target')->int()->defaultsTo(-1);
     }
 }

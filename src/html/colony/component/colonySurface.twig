@@ -1,10 +1,10 @@
-{% set style = 'margin: 1px;; width: 42px;; height: 42px;;' %}
+{% set style = 'margin: 1px; width: 42px; height: 42px;' %}
 <div style="{{ SURFACE.getSurfaceTileStyle }}">
     {% for field in SURFACE.getSurface %}
     {% set fieldId = field.getId %}
     {% set fieldType = field.getFieldType %}
     {% set fieldCssClass = field.getCssClass %}
-    {% set dayNightPrefix = field.getDayNightPrefix %}
+    {% set dayNightPrefix = getDayNightPrefix(field) %}
 
     <div style="{{ style }}" class="{{ fieldCssClass }}">
         {% if field.hasBuilding %}

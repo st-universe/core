@@ -236,7 +236,7 @@ class KnPostArchiv implements KnPostArchivInterface
     public function getUrl(): string
     {
         return sprintf(
-            '/comm.php?%s=1&id=%d',
+            '/comm.php?%s=1&knid=%d',
             ShowSingleKn::VIEW_IDENTIFIER,
             $this->getId()
         );

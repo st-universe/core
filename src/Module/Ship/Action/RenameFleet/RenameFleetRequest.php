@@ -14,12 +14,12 @@ final class RenameFleetRequest implements RenameFleetRequestInterface
     #[Override]
     public function getFleetId(): int
     {
-        return $this->queryParameter('fleetid')->int()->required();
+        return $this->parameter('fleetid')->int()->required();
     }
 
     #[Override]
     public function getNewName(): string
     {
-        return trim(strip_tags($this->queryParameter('fleetname')->string()->defaultsToIfEmpty('')));
+        return trim(strip_tags($this->parameter('fleetname')->string()->defaultsToIfEmpty('')));
     }
 }

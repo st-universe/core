@@ -12,16 +12,13 @@ use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
-final class BuildmenuProvider implements GuiComponentProviderInterface
+final class BuildmenuProvider implements PlanetFieldHostComponentInterface
 {
-    public function __construct(private BuildingRepositoryInterface $buildingRepository, private PlanetFieldRepositoryInterface $planetFieldRepository)
-    {
-    }
+    public function __construct(private BuildingRepositoryInterface $buildingRepository, private PlanetFieldRepositoryInterface $planetFieldRepository) {}
 
-    /** @param ColonyInterface&PlanetFieldHostInterface $host */
     #[Override]
     public function setTemplateVariables(
-        PlanetFieldHostInterface $host,
+        $entity,
         GameControllerInterface $game
     ): void {
 
@@ -36,7 +33,7 @@ final class BuildmenuProvider implements GuiComponentProviderInterface
 
             $menus[$id]['name'] = BuildMenuEnum::getDescription($id);
             $menus[$id]['buildings'] = $this->buildingRepository->getBuildmenuBuildings(
-                $host,
+                $entity,
                 $game->getUser()->getId(),
                 $id,
                 0,

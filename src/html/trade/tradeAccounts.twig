@@ -1,8 +1,8 @@
 {% block body %}
-{% from 'html/shipmacros.twig' import shipImageWithoutWarp %}
+{% from 'html/shipmacros.twig' import spacecraftImageWithoutWarp %}
 <script src="{{ JAVASCRIPTPATH }}/js/trade.js"></script>
 {% for data in ACCOUNTS %}
-{% set ship = data.getShip %}
+{% set station = data.getStation %}
 <form action="trade.php" method="post">
 	<table class="tcal">
 		<tr>
@@ -21,7 +21,7 @@
 		</tr>
 		<tr>
 			<td rowspan="6">
-				{{ shipImageWithoutWarp(ship) }}
+				{{ spacecraftImageWithoutWarp(station) }}
 			</td>
 			<td rowspan="6" style="width: 30%;">
 				<div style="font-weight: bold">
@@ -29,7 +29,7 @@
 				</div>
 				{% for stor in data.getStorage %}
 				<div style="float: left; width: 100px;">
-					<a href="javascript:void(0);" onclick="showTradeOfferMenu({{ stor.getId }})"
+					<a href="javascript:void(0);" onclick="showTradeOfferMenu({{ stor.getId }});"
 						style="display: block; padding: 4px;" class="tradebutton">
 						<img src="assets/commodities/{{ stor.getCommodity.getId }}.png"
 							title="{{ stor.getCommodity.getName }}" /> {{ stor.getAmount }}
@@ -44,7 +44,7 @@
 				{% for stor in data.getOfferStorage %}
 				<div style="float: left; width: 100px;">
 					<a href="javascript:void(0);"
-						onclick="showTradeOfferByCommodity({{ data.getId }}, {{ stor.commodity_id }})"
+						onclick="showTradeOfferByCommodity({{ data.getId }}, {{ stor.commodity_id }});"
 						style="display: block; padding: 4px;" class="tradebutton">
 						<img src="assets/commodities/{{ stor.commodity_id }}.png" title="{{ stor.commodity_name }}" />
 						{{ stor.amount }}
@@ -53,8 +53,8 @@
 				{% endfor %}
 			</td>
 			<td class="darkbg" style="clear: both; width: 200px;">Standort</td>
-			<td style="width: 200px;">{{ ship.getSectorString }} <a href="javascript:void(0);"
-					onclick="openShiplist({{ data.getId }})"><img src="assets/navigation/menu_ships0.png"
+			<td style="width: 200px;">{{ station.getSectorString }} <a href="javascript:void(0);"
+					onclick="openShiplist({{ data.getId }});"><img src="assets/navigation/menu_ships0.png"
 						style="width: 20px;" title="Schiffe vor Ort anzeigen." /></a></td>
 
 		</tr>

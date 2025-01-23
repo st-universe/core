@@ -1,0 +1,117 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body>
+<div class="box">
+    <div class="box_title" style="text-align: left">/
+                <a href="colony.php">
+            Kolonien
+        </a>
+                    </div>
+</div>
+<br>
+<div id="result" style="display: none;">..</div>
+
+<table id="colonylist" class="tcal">
+	<tr>
+		<th id="headlinecolonyimage" style="width: 120px;"></th>
+		<th id="headlinecolonyname">Name</th>
+		<th id="headlinecolonysignature">Signaturen</th>
+		<th id="headlinecolonycrew" title="aktuell/maximal (in Ausbildung)">Crewman
+			<img src="assets/buttons/info2.png" style="height:16px;">
+		</th>
+		<th id="headlinecolonypopulation" title="aktuell/maximal (Zuwanderung)">Bev&ouml;lkerung
+			<img src="assets/buttons/info2.png" style="height:16px;">
+		</th>
+		<th id="headlinecolonyenergy">Energie</th>
+		<th id="headlinecolonystorage">Lager</th>
+	</tr>
+			<tr class="row">
+		<td id="colonyimage" style="text-align: center;">
+			<a href="/colony.php?SHOW_COLONY=1&amp;id=42" onclick="if(event.button === 0) { switchInnerContent('SHOW_COLONY', 'Stempor&amp;#039;Arr 4', 'id=42', '/colony.php'); event.preventDefault(); }">
+				<img src="/assets/planets/201.png">
+			</a>
+		</td>
+		<td id="colonyname" style="vertical-align: middle;">
+						<a href="/colony.php?SHOW_COLONY=1&amp;id=42" onclick="if(event.button === 0) { switchInnerContent('SHOW_COLONY', 'Stempor&amp;#039;Arr 4', 'id=42', '/colony.php'); event.preventDefault(); }" style="font-size: 120%">
+												Stempor'Arr 4
+			</a>
+			<div>
+				<img src="assets/map/systemtypes/1060.png" title="Roter Zwerg" style="width: 15px; height: 15px;">
+				7|11
+				(Stempor'Arr-System 7|8)
+			</div>
+		</td>
+		<td id="colonysignature" style="vertical-align: middle;">
+						<span>0</span>
+					</td>
+		<td id="colonycrew" style="vertical-align: middle;">0/<span style="color: red;">10</span>
+			(0)</td>
+		<td id="colonypopulation" style="vertical-align: middle;">
+			<img src="assets/bev/bev_used_5_1.png">
+			84/84 (0)
+		</td>
+		<td id="colonyenergy" style="vertical-align: middle;">
+						<img src="/assets/bars/balken.png" style="background-color: #aaaa00;height: 12px; width: 50px;" title="Energieproduktion">
+						96/96 (+16)
+		</td>
+		<td id="colonystorage" style="vertical-align: middle;">
+						<img alt="Lager" src="/assets/bars/balken.png" style="background-color: #00aa00;height: 12px; width:35px;" title="Lager: 701/1000"><img alt="Lager" src="/assets/bars/balken.png" style="background-color: #777777;height: 12px; width:15px;" title="Lager: 701/1000">
+						701/1000
+			(0)<br>
+					</td>
+	</tr>
+	</table>
+<br>
+<div style="float: left; width: 49%;">
+	<div style="float: left; margin-bottom: 10px; width: 100%;">
+			</div>
+	<div style="float: top; width: 100%;">
+			</div>
+</div>
+<div style="float: right; margin-left: 10px; width: 30%;">
+		<div id="productionlist">
+		<table class="tcal">
+			<tr>
+				<th>Ware</th>
+				<th>Gesamtproduktion</th>
+			</tr>
+					</table>
+	</div>
+	</div>
+<div style="float: right; width: 20%;">
+		<div id="modulelist">
+		<table class="tcal" style="text-align: center;">
+			<tr>
+				<th colspan="3">Modulproduktion</th>
+			</tr>
+			<tr>
+				<th>Modul</th>
+				<th>Ort</th>
+				<th>Menge</th>
+			</tr>
+						<tr class="row">
+				<td style="vertical-align: middle;">
+					<img src="assets/commodities/10101.png" title="Monotanium-H&uuml;llenpanzerung (Klasse 1)">
+				</td>
+				<td style="vertical-align: middle;">
+										<a href="/colony.php?SHOW_COLONY=1&amp;id=42" onclick="if(event.button === 0) { switchInnerContent('SHOW_COLONY', 'Stempor&amp;#039;Arr 4', 'id=42', '/colony.php'); event.preventDefault(); }">
+						<img src="/assets/planets/201.png">
+					</a>
+				</td>
+				<td style="vertical-align: middle;">
+					1
+				</td>
+			</tr>
+					</table>
+	</div>
+	</div>
+<div class="footer">
+    Rendered in 4.203s - Memory usage: 42.77Mb
+</div>
+
+</body>
+</html>

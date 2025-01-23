@@ -32,7 +32,8 @@ final class SpacecraftEmergencyRepository extends EntityRepository implements Sp
     public function getByShipId(int $shipId): ?SpacecraftEmergencyInterface
     {
         return $this->findOneBy([
-            'ship_id' => $shipId, 'deleted' => null
+            'spacecraft_id' => $shipId,
+            'deleted' => null
         ]);
     }
 

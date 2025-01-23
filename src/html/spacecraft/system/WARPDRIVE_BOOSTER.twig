@@ -1,0 +1,13 @@
+<tr>
+    <td colspan="3">
+        {% set cooldown = systemWrapper.get.getCooldown %}
+        {% if cooldown %}
+        <img src="/assets/buttons/gebact1.png" />
+        Warpantrieb Boost hat Cooldown bis {{ cooldown|stuDateTime }}
+        {% else %}
+        <img src="/assets/buttons/gebact2.png" title="Warpantrieb Boost" />
+        <input type="button" class="button" value="Warpantrieb Boost"
+            onClick="actionToInnerContent('B_WARPDRIVE_BOOST', 'id={{ SPACECRAFT.getId }}&sstr={{ SESSIONSTRING }}');" />
+        {% endif %}
+    </td>
+</tr>

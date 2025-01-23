@@ -1,0 +1,147 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body>
+<div class="box">
+    <div class="box_title" style="text-align: left">/
+                <a href="comm.php">
+            KommNet
+        </a>
+                <span> / </span>
+                        <a href="comm.php?SHOW_PLOTLIST=1">
+            Plots
+        </a>
+                <span> / </span>
+                        <a href="comm.php?SHOW_PLOT=1&amp;plotid=9">
+            The Plot Title
+        </a>
+                    </div>
+</div>
+<br>
+<div id="result" style="display: none;">..</div>
+
+<form action="comm.php" method="post">
+    <input type="hidden" name="SHOW_PLOT" value="1">
+  <input type="hidden" name="plotid" value="9">
+  <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
+  <div style="display: grid; grid-template-columns: auto 550px; grid-gap: 30px; width: 100%;">
+    <div>
+      <table>
+    <tr>
+                <td>
+            <a href="?SHOW_PLOT=1&amp;plotid=9&amp;mark=0" class="pages selected">
+                1</a>
+        </td>
+            </tr>
+</table>
+<br>
+<div style="overflow: hidden; text-overflow: ellipsis">
+    <div id="kn_post_42" class="box">
+        <div class="box_title" style="padding-top: 5px; padding-bottom: 5px; font-size: 110%;">
+                        Username
+                    </div>
+        <div class="box_body" style="margin: 0; padding: 0;">
+            <div class="knGrid">
+                <div class="knGridText">
+                    <div style="padding: 10px;">
+                                                <span class="knh1">The Plot Title</span>
+                        <span>(<a href="?SHOW_PLOT=1&amp;plotid=9" target="_blank">
+                                Zum Plot</a>)</span>
+                                                <br>
+                                                                                                <span class="knh2">Dies ist der KN Titel</span>
+                                                <br>
+                        <br>
+                        <span class="translatable-content" style="overflow-wrap: break-word; word-break: break-word;">
+                                                        Dies ist ein Post im Kommunikationsnetzwerk
+                                                    </span>
+                    </div>
+                </div>
+                <div class="knGridUser">
+                    <div class="segment">
+                                                <div class="negative">
+                            21.07.2394 11:30
+                        </div>
+                                            </div>
+                    <div class="segment">
+                                                <div class="knUserAvatar">
+                            <div class="userAvatar">
+    <a href="/userprofile.php?uid=101">
+                <img src="/assets/rassen//1kn.png" title="Siedler 101">
+            </a>
+</div>
+
+                        </div>
+                        <a href="?SHOW_SINGLE_KN=1&amp;knid=42" title="Beitrag-ID">42</a>
+                        <br>
+                    </div>
+                                        <div class="segment">
+                                                <a href="?mark=0&amp;markid=42&amp;B_SET_KNMARK=1" onmouseover="cp('mark42','buttons/lese2', 'png')" onmouseout="cp('mark42','buttons/lese1', 'png')">
+                            <img src="/assets/buttons/lese1.png" title="Lesezeichen setzen" name="mark42">
+                        </a>
+                                                                    </div>
+                </div>
+                <div class="knGridRating">
+                                        <div class="segment" id="kn_rating_42">
+                                                                                                <div style="display: inline-block">
+                                                        <img alt="Bewertung" src="/assets/bars/balken.png" style="background-color: #aaaa00;height: 12px; width:50px;" title="Bewertung: 14/14">
+                                                    </div>
+                                                                    </div>
+                    <div class="segment">
+                        <a href="javascript:void(0);" onclick="showKnComments(42);">1
+                            <span>Kommentare</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+</div>
+<br>
+<table>
+    <tr>
+                <td>
+            <a href="?SHOW_PLOT=1&amp;plotid=9&amp;mark=0" class="pages selected">
+                1</a>
+        </td>
+            </tr>
+</table>
+    </div>
+    <div>
+      <div class="divhead">Beschreibung</div>
+      <div class="divbody">
+                The Plot description
+              </div>
+      <br>
+      <div class="divhead">Status</div>
+      <div class="divbody">
+                <div>
+          <div>
+            Plot l&auml;uft seit 21.07.2394
+          </div>
+                    <div style="padding-top: 15px">
+            <input type="submit" value="Plot beenden" name="B_END_PLOT">
+          </div>
+          <div style="padding-top: 30px">
+            Spieler-ID <input type="text" name="memid" style="width: 50px;"> <input type="submit" value="Hinzuf&uuml;gen" name="B_ADD_PLOTMEMBER">
+          </div>
+          <div style="padding-top: 30px">
+            Beitrag-ID <input type="text" name="addknid" style="width: 50px;"> <input type="submit" value="Hinzuf&uuml;gen" name="B_APPLY_POST_TO_PLOT">
+          </div>
+                  </div>
+              </div>
+      <br>
+      <div class="divhead">Schreiber</div>
+      <div class="divbody">
+              </div>
+    </div>
+  </div>
+</form>
+<div class="footer">
+    Rendered in 4.203s - Memory usage: 42.77Mb
+</div>
+
+</body>
+</html>

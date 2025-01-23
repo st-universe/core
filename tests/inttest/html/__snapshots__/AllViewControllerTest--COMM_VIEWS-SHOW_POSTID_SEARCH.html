@@ -1,0 +1,71 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body>
+<div class="box">
+    <div class="box_title" style="text-align: left">/
+                <a href="comm.php">
+            KommNet
+        </a>
+                    </div>
+</div>
+<br>
+<div id="result">
+    <table class="use">
+        <tr>
+            <th>Meldung</th>
+        </tr>
+        <tr>
+            <td>
+                                <div>
+                    Bitte eine Beitrag-ID angeben!
+                </div>
+                                            </td>
+        </tr>
+    </table>
+</div>
+<br>
+<div style="width: 75%; float: left; margin-right: 1%">
+    <div class="divhead">Meldung</div>
+<div class="divbody">Keine Beitr&auml;ge vorhanden</div>
+</div>
+<div style="width: 24%; float: left">
+    <br>
+  <div class="box">
+    <div class="box_title">Suche</div>
+    <div class="box_body">
+      <form method="post" action="comm.php" name="knsearchform">
+        <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
+        <ul>
+          <li>
+            <input type="text" name="search" style="width: 150px;" onkeypress="return event.keyCode != 13;">
+          </li>
+          <li>
+            <a href="javascript:void(0);" onclick="searchKn('SHOW_USER_SEARCH');" class="linkbutton">
+              nach Spieler-ID suchen
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0);" onclick="searchKn('SHOW_POSTID_SEARCH');" class="linkbutton">
+              nach Beitrag-ID suchen
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0);" onclick="searchKn('SHOW_POST_SEARCH');" class="linkbutton">
+              nach Text suchen
+            </a>
+          </li>
+        </ul>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="footer">
+    Rendered in 4.203s - Memory usage: 42.77Mb
+</div>
+
+</body>
+</html>

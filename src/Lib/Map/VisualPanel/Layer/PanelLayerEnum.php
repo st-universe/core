@@ -11,6 +11,7 @@ enum PanelLayerEnum: int
     case MAP = 3;
     case COLONY_SHIELD = 4;
     case SUBSPACE_SIGNATURES = 5;
-    case SHIP_COUNT = 6;
+    case SPACECRAFT_COUNT = 6;
     case BORDER = 7;
+    case ANOMALIES = 8;
 }

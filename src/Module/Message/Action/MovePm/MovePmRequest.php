@@ -14,7 +14,7 @@ final class MovePmRequest implements MovePmRequestInterface
     #[Override]
     public function getPmId(): int
     {
-        return $this->queryParameter('move_pm')->int()->required();
+        return $this->parameter('move_pm')->int()->required();
     }
 
     #[Override]

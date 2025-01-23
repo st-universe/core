@@ -6,36 +6,44 @@ namespace Stu\Module\Station\Action\BuildStation;
 
 use Override;
 use request;
-use Stu\Component\Ship\ShipModuleTypeEnum;
-use Stu\Component\Ship\ShipStateEnum;
-use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
+use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
+use Stu\Component\Spacecraft\SpacecraftStateEnum;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Component\Station\StationEnum;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
+use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Orm\Entity\ModuleInterface;
-use Stu\Orm\Entity\ShipBuildplanInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\ShipRumpInterface;
+use Stu\Orm\Entity\SpacecraftBuildplanInterface;
+use Stu\Orm\Entity\SpacecraftRumpInterface;
+use Stu\Orm\Entity\StationInterface;
 use Stu\Orm\Repository\ConstructionProgressModuleRepositoryInterface;
 use Stu\Orm\Repository\ConstructionProgressRepositoryInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class BuildStation implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_BUILD_STATION';
 
-    public function __construct(private StationUtilityInterface $stationUtility, private ShipLoaderInterface $shipLoader, private ShipRepositoryInterface $shipRepository, private ModuleRepositoryInterface $moduleRepository, private ShipStorageManagerInterface $shipStorageManager, private ConstructionProgressRepositoryInterface $constructionProgressRepository, private ConstructionProgressModuleRepositoryInterface $constructionProgressModuleRepository) {}
+    public function __construct(
+        private StationUtilityInterface $stationUtility,
+        private StationLoaderInterface $stationLoader,
+        private SpacecraftRepositoryInterface $spacecraftRepository,
+        private ModuleRepositoryInterface $moduleRepository,
+        private StorageManagerInterface $storageManager,
+        private ConstructionProgressRepositoryInterface $constructionProgressRepository,
+        private ConstructionProgressModuleRepositoryInterface $constructionProgressModuleRepository
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $game->setView(ShowShip::VIEW_IDENTIFIER);
+        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $ship = $this->shipLoader->getByIdAndUser(
+        $station = $this->stationLoader->getByIdAndUser(
             request::indInt('id'),
             $game->getUser()->getId()
         );
@@ -58,25 +66,25 @@ final class BuildStation implements ActionControllerInterface
 
         // check if the limit is reached
         $limit = StationEnum::BUILDABLE_LIMITS_PER_ROLE[$rump->getRoleId()];
-        if ($this->shipRepository->getAmountByUserAndRump($userId, $rump->getId()) >= $limit) {
+        if ($this->spacecraftRepository->getAmountByUserAndRump($userId, $rump->getId()) >= $limit) {
             $game->addInformation(sprintf(_('Es können nur %d %s errichtet werden'), $limit, $rump->getName()));
             return;
         }
 
         // check if the location is allowed
         $location = StationEnum::BUILDABLE_LOCATIONS_PER_ROLE[$rump->getRoleId()];
-        if (!$this->locationAllowed($ship, $location)) {
+        if (!$this->locationAllowed($station, $location)) {
             $game->addInformation(sprintf(_('Stationen vom Typ %s können nur %s errichtet werden'), $rump->getName(), $location));
             return;
         }
 
         // check if enough workbees
-        if (!$this->stationUtility->hasEnoughDockedWorkbees($ship, $rump)) {
+        if (!$this->stationUtility->hasEnoughDockedWorkbees($station, $rump)) {
             $game->addInformation('Nicht genügend Workbees angedockt');
             return;
         }
 
-        $availableMods = $this->getSpecialModules($ship, $rump);
+        $availableMods = $this->getSpecialModules($station, $rump);
 
         // check if special modules allowed
         $wantedSpecialModuleIds = request::postArray('mod_9');
@@ -92,13 +100,13 @@ final class BuildStation implements ActionControllerInterface
         }
 
         // try to consume needed commodities
-        if (!$this->consumeNeededModules($ship, $plan, $wantedSpecialModules)) {
+        if (!$this->consumeNeededModules($station, $plan, $wantedSpecialModules)) {
             $game->addInformation('Nicht alle erforderlichen Module geladen');
             return;
         }
 
         // transform construction
-        $this->startTransformation($ship, $plan, $wantedSpecialModules);
+        $this->startTransformation($station, $plan, $wantedSpecialModules);
 
         $game->addInformation(sprintf(
             _('%s befindet sich nun im Bau. Fertigstellung bestenfalls in %d Ticks'),
@@ -107,18 +115,18 @@ final class BuildStation implements ActionControllerInterface
         ));
     }
 
-    private function locationAllowed(ShipInterface $ship, string $location): bool
+    private function locationAllowed(StationInterface $station, string $location): bool
     {
         if ($location === StationEnum::BUILDABLE_EVERYWHERE) {
             return true;
         }
 
-        $inSystem = $ship->getSystem();
+        $inSystem = $station->getSystem();
         if ($inSystem && $location === StationEnum::BUILDABLE_INSIDE_SYSTEM) {
             return true;
         }
 
-        $overSystem = $ship->isOverSystem();
+        $overSystem = $station->isOverSystem();
         if ($overSystem && ($location === StationEnum::BUILDABLE_OVER_SYSTEM
             ||  $location === StationEnum::BUILDABLE_OUTSIDE_SYSTEM)) {
             return true;
@@ -132,27 +140,27 @@ final class BuildStation implements ActionControllerInterface
      * @param array<ModuleInterface> $wantedSpecialModules
      */
     private function startTransformation(
-        ShipInterface $ship,
-        ShipBuildplanInterface $plan,
+        StationInterface $station,
+        SpacecraftBuildplanInterface $plan,
         array $wantedSpecialModules
     ): void {
         $rump = $plan->getRump();
 
-        $ship->setName(sprintf('%s in Bau', $rump->getName()));
-        $ship->setHuell(intdiv($rump->getBaseHull(), 2));
-        $ship->setMaxHuell($rump->getBaseHull());
-        $ship->setRump($rump);
-        $ship->setBuildplan($plan);
-        $ship->setState(ShipStateEnum::SHIP_STATE_UNDER_CONSTRUCTION);
+        $station->setName(sprintf('%s in Bau', $rump->getName()));
+        $station->setHuell(intdiv($rump->getBaseHull(), 2));
+        $station->setMaxHuell($rump->getBaseHull());
+        $station->setRump($rump);
+        $station->setBuildplan($plan);
+        $station->setState(SpacecraftStateEnum::SHIP_STATE_UNDER_CONSTRUCTION);
 
-        $this->shipRepository->save($ship);
+        $this->spacecraftRepository->save($station);
 
-        $progress = $this->constructionProgressRepository->getByShip($ship->getId());
+        $progress = $this->constructionProgressRepository->getByStation($station);
 
         if ($progress === null) {
             $progress = $this->constructionProgressRepository->prototype();
         }
-        $progress->setShip($ship);
+        $progress->setStation($station);
         $progress->setRemainingTicks($rump->getBuildtime());
 
         $this->constructionProgressRepository->save($progress);
@@ -183,7 +191,7 @@ final class BuildStation implements ActionControllerInterface
     /**
      * @return array<ModuleInterface>
      */
-    private function getSpecialModules(ShipInterface $ship, ShipRumpInterface $rump): array
+    private function getSpecialModules(StationInterface $station, SpacecraftRumpInterface $rump): array
     {
         $shipRumpRole = $rump->getShipRumpRole();
         if ($shipRumpRole === null) {
@@ -191,8 +199,8 @@ final class BuildStation implements ActionControllerInterface
         }
 
         return $this->moduleRepository->getBySpecialTypeAndRump(
-            $ship,
-            ShipModuleTypeEnum::SPECIAL,
+            $station,
+            SpacecraftModuleTypeEnum::SPECIAL,
             $rump->getId()
         );
     }
@@ -201,22 +209,22 @@ final class BuildStation implements ActionControllerInterface
      * @param array<ModuleInterface> $wantedSpecialModules
      */
     public function consumeNeededModules(
-        ShipInterface $ship,
-        ShipBuildplanInterface $plan,
+        StationInterface $station,
+        SpacecraftBuildplanInterface $plan,
         array $wantedSpecialModules
     ): bool {
         // check if everything is available in required numbers
         foreach ($plan->getModules() as $buildplanModule) {
             $commodity = $buildplanModule->getModule()->getCommodity();
 
-            $stor = $ship->getStorage()[$commodity->getId()];
+            $stor = $station->getStorage()[$commodity->getId()];
 
             if ($stor === null || $stor->getAmount() < $buildplanModule->getModuleCount()) {
                 return false;
             }
         }
         foreach ($wantedSpecialModules as $mod) {
-            $stor = $ship->getStorage()[$mod->getCommodity()->getId()];
+            $stor = $station->getStorage()[$mod->getCommodity()->getId()];
 
             if ($stor === null) {
                 return false;
@@ -227,10 +235,10 @@ final class BuildStation implements ActionControllerInterface
         foreach ($plan->getModules() as $buildplanModule) {
             $commodity = $buildplanModule->getModule()->getCommodity();
 
-            $this->shipStorageManager->lowerStorage($ship, $commodity, $buildplanModule->getModuleCount());
+            $this->storageManager->lowerStorage($station, $commodity, $buildplanModule->getModuleCount());
         }
         foreach ($wantedSpecialModules as $mod) {
-            $this->shipStorageManager->lowerStorage($ship, $mod->getCommodity(), 1);
+            $this->storageManager->lowerStorage($station, $mod->getCommodity(), 1);
         }
 
         return true;

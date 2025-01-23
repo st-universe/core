@@ -6,5 +6,5 @@ namespace Stu;
 
 interface TestDataInterface
 {
-    public function insertTestData(): int;
+    public function insertTestData(): Object;
 }

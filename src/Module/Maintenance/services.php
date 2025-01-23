@@ -22,7 +22,7 @@ return [
     OldTradeLicenseDeletion::class => autowire(OldTradeLicenseDeletion::class),
     OldTradeOffersDeletion::class => autowire(OldTradeOffersDeletion::class),
     TopFlightsReward::class => autowire(TopFlightsReward::class),
-    'maintenance_handler' => [
+    MaintenanceHandlerInterface::class => [
         get(DatabaseBackup::class),
         get(IdleUserWarning::class),
         get(IdleUserDeletion::class),
@@ -33,6 +33,7 @@ return [
         get(CorruptFleetDeletion::class),
         get(OldFlightSignatureDeletion::class),
         get(ColonyCorrectorHandler::class),
+        get(SpacecraftCorrectorHandler::class),
         get(EmptyPlotDeletion::class),
         get(OldTradeLicenseDeletion::class),
         get(TopFlightsReward::class),

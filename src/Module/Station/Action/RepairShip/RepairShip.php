@@ -6,24 +6,31 @@ namespace Stu\Module\Station\Action\RepairShip;
 
 use Override;
 use request;
-use Stu\Component\Ship\ShipStateEnum;
+use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Module\Station\Lib\StationLoaderInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Station\View\ShowShipRepair\ShowShipRepair;
+use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\StationShipRepairRepositoryInterface;
 
 final class RepairShip implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_REPAIR_SHIP';
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private StationUtilityInterface $stationUtility, private StationShipRepairRepositoryInterface $stationShipRepairRepository, private ShipWrapperFactoryInterface $shipWrapperFactory, private PrivateMessageSenderInterface $privateMessageSender)
-    {
-    }
+    public function __construct(
+        private StationLoaderInterface $stationLoader,
+        private ShipRepositoryInterface $shipRepository,
+        private StationUtilityInterface $stationUtility,
+        private StationShipRepairRepositoryInterface $stationShipRepairRepository,
+        private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
+        private PrivateMessageSenderInterface $privateMessageSender
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -35,7 +42,7 @@ final class RepairShip implements ActionControllerInterface
         $stationId = request::indInt('id');
         $shipId = request::getIntFatal('ship_id');
 
-        $wrappers = $this->shipLoader->getWrappersBySourceAndUserAndTarget(
+        $wrappers = $this->stationLoader->getWrappersBySourceAndUserAndTarget(
             $stationId,
             $userId,
             $shipId
@@ -49,6 +56,9 @@ final class RepairShip implements ActionControllerInterface
             return;
         }
         $ship = $targetWrapper->get();
+        if (!$ship instanceof ShipInterface) {
+            return;
+        }
 
         if (!$this->stationUtility->canRepairShips($station)) {
             return;
@@ -57,7 +67,7 @@ final class RepairShip implements ActionControllerInterface
         /**@var array<int, ShipWrapperInterface> */
         $repairableShiplist = [];
         foreach ($station->getDockedShips() as $dockedShip) {
-            $wrapper = $this->shipWrapperFactory->wrapShip($dockedShip);
+            $wrapper = $this->spacecraftWrapperFactory->wrapShip($dockedShip);
             if (
                 !$wrapper->canBeRepaired() || $dockedShip->isUnderRepair()
             ) {
@@ -71,7 +81,7 @@ final class RepairShip implements ActionControllerInterface
             return;
         }
 
-        if ($ship->getState() === ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING) {
+        if ($ship->getState() === SpacecraftStateEnum::SHIP_STATE_ASTRO_FINALIZING) {
             $game->addInformation(_('Das Schiff kartographiert derzeit und kann daher nicht repariert werden.'));
             return;
         }
@@ -81,9 +91,9 @@ final class RepairShip implements ActionControllerInterface
         $obj->setShip($ship);
         $this->stationShipRepairRepository->save($obj);
 
-        $ship->setState(ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE);
+        $ship->setState(SpacecraftStateEnum::SHIP_STATE_REPAIR_PASSIVE);
 
-        $this->shipLoader->save($ship);
+        $this->shipRepository->save($ship);
 
         $jobs = $this->stationShipRepairRepository->getByStation(
             $station->getId(),

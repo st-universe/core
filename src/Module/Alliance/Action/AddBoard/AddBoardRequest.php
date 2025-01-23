@@ -15,7 +15,7 @@ final class AddBoardRequest implements AddBoardRequestInterface
     public function getBoardName(): string
     {
         return $this->tidyString(
-            $this->queryParameter('board')->string()->defaultsToIfEmpty('')
+            $this->parameter('board')->string()->defaultsToIfEmpty('')
         );
     }
 }

@@ -7,9 +7,10 @@ namespace Stu\Module\Ship\Lib;
 use Override;
 use RuntimeException;
 use Stu\Component\Ship\AstronomicalMappingEnum;
-use Stu\Component\Ship\ShipStateEnum;
+use Stu\Component\Spacecraft\SpacecraftStateEnum;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\AstronomicalEntryInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\AstroEntryRepositoryInterface;
 
@@ -18,11 +19,15 @@ final class AstroEntryLib implements AstroEntryLibInterface
     public function __construct(private AstroEntryRepositoryInterface $astroEntryRepository) {}
 
     #[Override]
-    public function cancelAstroFinalizing(ShipWrapperInterface $wrapper): void
+    public function cancelAstroFinalizing(SpacecraftWrapperInterface $wrapper): void
     {
+        if (!$wrapper instanceof ShipWrapperInterface) {
+            return;
+        }
+
         $ship = $wrapper->get();
 
-        $ship->setState(ShipStateEnum::SHIP_STATE_NONE);
+        $ship->setState(SpacecraftStateEnum::SHIP_STATE_NONE);
         $astroLab = $wrapper->getAstroLaboratorySystemData();
         if ($astroLab === null) {
             throw new RuntimeException('this should not happen');
@@ -44,7 +49,7 @@ final class AstroEntryLib implements AstroEntryLibInterface
     {
         $ship = $wrapper->get();
 
-        $ship->setState(ShipStateEnum::SHIP_STATE_NONE);
+        $ship->setState(SpacecraftStateEnum::SHIP_STATE_NONE);
 
         $astroLab = $wrapper->getAstroLaboratorySystemData();
         if ($astroLab === null) {
@@ -63,21 +68,21 @@ final class AstroEntryLib implements AstroEntryLibInterface
     }
 
     #[Override]
-    public function getAstroEntryByShipLocation(ShipInterface $ship, bool $showOverSystem = true): ?AstronomicalEntryInterface
+    public function getAstroEntryByShipLocation(SpacecraftInterface $spacecraft, bool $showOverSystem = true): ?AstronomicalEntryInterface
     {
-        $user = $ship->getUser();
-        $system = $ship->getSystem();
+        $user = $spacecraft->getUser();
+        $system = $spacecraft->getSystem();
 
         if ($system !== null) {
             return $this->getAstroEntryForUser($system, $user);
         }
 
-        $overSystem = $ship->isOverSystem();
+        $overSystem = $spacecraft->isOverSystem();
         if ($overSystem !== null && $showOverSystem) {
             return $this->getAstroEntryForUser($overSystem, $user);
         }
 
-        $mapRegion = $ship->getMapRegion();
+        $mapRegion = $spacecraft->getMapRegion();
         if ($mapRegion !== null) {
             return $this->getAstroEntryForUser($mapRegion, $user);
         }

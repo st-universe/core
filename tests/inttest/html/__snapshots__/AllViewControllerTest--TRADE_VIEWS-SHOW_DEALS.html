@@ -1,0 +1,83 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body>
+<div class="box">
+    <div class="box_title" style="text-align: left">/
+                <a href="trade.php">
+            Handel
+        </a>
+                <span> / </span>
+                        <a href="trade.php?SHOW_DEALS=1">
+            Deals
+        </a>
+                    </div>
+</div>
+<br>
+<div id="result" style="display: none;">..</div>
+<div style="display: flex;">
+    <div class="divbody" style="width: 65%; border-style: none!important">
+        <img style="float:right" src="assets/buttons/rom.png">
+        Willkommen, gesch&auml;tzer Kunde! Mir ist zu Ohren gekommen, dass dieser Sektor &uuml;ber gro&szlig;e Reicht&uuml;mer
+        verf&uuml;gt. Und meine Ohren t&auml;uschen sich nie. Ich habe daher besondere Angebote speziell f&uuml;r Sie
+        vorbereitet. Die hier angebotenen Schiffsdesigns wurden von f&auml;higen Ferengi-Ingenieuren modifiziert. Sie
+        machen daher garantiert ein gutes Gesch&auml;ft. Auf gute Profite!
+        <br>
+        <br>
+        <p style="text-align:center"><b>Gro&szlig;er Nagus Rom </b></p>
+    </div>
+    <div style="width: 33%;">
+        <form method="post" action="trade.php" id="pirateProtectionForm">
+            Du m&ouml;chtest also dass ich dir dabei helfe die Kazon Piraten vom Leib zu halten? F&uuml;r eine faire Gegenleistung
+            k&ouml;nnen wir garantiert eine Vereinbarung mit den Kazon f&uuml;r dich treffen. Wieviel Prestige bietest du an?
+            <br>
+            <input type="text" size="7" name="prestige" id="prestigeInput" oninput="calculatePirateProtectionDates(1000, 1732214228);">
+            <br>
+            <span id="pirateProtectionDates"></span>
+
+                        <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
+
+        </form>
+    </div>
+
+</div>
+
+<br>
+<div class="box">
+    <div class="box_title">Deals</div>
+    <div class="box_body">
+        <table class="tcal">
+                        <tr>
+                <td colspan="6">Keine Deals vorhanden</td>
+            </tr>
+                    </table>
+    </div>
+</div>
+<br>
+<div class="box">
+    <div class="box_title">Auktionen</div>
+    <div class="box_body">
+        <table class="tcal">
+                        <tr>
+                <td colspan="6">Keine Auktionen vorhanden</td>
+            </tr>
+                    </table>
+    </div>
+</div>
+<br>
+<div class="box">
+    <div class="box_title">Beendete Auktionen</div>
+    <div class="box_body">
+        
+            </div>
+</div>
+
+<div class="footer">
+    Rendered in 4.203s - Memory usage: 42.77Mb
+</div>
+
+</body>
+</html>

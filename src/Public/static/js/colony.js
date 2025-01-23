@@ -80,8 +80,8 @@ function openBuildingInfo(buildingId) {
 	closeAjaxWindow();
 	elt = 'buildinginfo';
 	openPJsWin(elt);
-	ajax_update(elt, createHostUri('SHOW_BUILDING', '&bid=' + buildingId));
-	ajax_update('colsurface', createHostUri('SHOW_SURFACE', '&bid=' + buildingId));
+	ajax_update(elt, createHostUri('SHOW_BUILDING', '&buildingid=' + buildingId));
+	ajax_update('COLONY_SURFACE', createHostUri('SHOW_SURFACE', '&buildingid=' + buildingId));
 	buildmode = 1;
 	selectedbuilding = buildingId;
 
@@ -91,7 +91,7 @@ function openBuildingInfo(buildingId) {
 }
 
 function closeBuildingInfo() {
-	ajax_update('colsurface', createHostUri('SHOW_SURFACE'));
+	ajax_update('COLONY_SURFACE', createHostUri('SHOW_SURFACE'));
 	buildmode = 0;
 	selectedbuilding = 0;
 }
@@ -163,7 +163,7 @@ function buildOnField(action, fieldId, buildingId) {
 		bid = selectedbuilding;
 	}
 
-	performActionAndUpdateResult(action, `fid=${fieldId}&bid=${bid}`);
+	performActionAndUpdateResult(action, `fid=${fieldId}&buildingid=${bid}`);
 }
 
 function terraformOnField(fieldId, terraformId) {
@@ -194,10 +194,7 @@ function performActionAndUpdateResult(action, params) {
 }
 
 function refreshHost() {
-	ajax_update('colsurface', createHostUri('SHOW_SURFACE', '&bid=' + selectedbuilding));
-	ajax_update('colonyeps', createHostUri('SHOW_EPSBAR_AJAX'));
-	ajax_update('colonyshields', createHostUri('SHOW_SHIELDBAR_AJAX'));
-	ajax_update('colonystorage', createHostUri('SHOW_STORAGE_AJAX'));
+	ajax_update('COLONY_SURFACE', createHostUri('SHOW_SURFACE', '&buildingid=' + selectedbuilding));
 
 	//reload info submenu if selected
 	if (colonySubMenu == 2) {
@@ -221,20 +218,6 @@ function getOrbitShipList(colonyId) {
 	ajax_update(elt, 'colony.php?id=' + colonyId + '&SHOW_ORBIT_SHIPLIST=1');
 }
 
-function showBToSWindow() {
-	var shipid = $('selshipid').value;
-	elt = 'beam'
-	openPJsWin(elt, 1);
-	ajax_update(elt, 'colony.php?id=' + colonyid + '&SHOW_BEAMTO=1&target=' + shipid);
-}
-
-function showBFromSWindow() {
-	var shipid = $('selshipid').value;
-	elt = 'beam'
-	openPJsWin(elt, 1);
-	ajax_update(elt, 'colony.php?id=' + colonyid + '&SHOW_BEAMFROM=1&target=' + shipid);
-}
-
 function showColonySectorScanWindow(id) {
 	closeAjaxWindow();
 	openPJsWin('elt', 1);
@@ -245,16 +228,6 @@ function showPodLocationWindow() {
 	elt = 'podlocations';
 	openPJsWin(elt, 1);
 	ajax_update(elt, 'colony.php?SHOW_PODS_LOCATIONS=1');
-}
-
-function triggerBeamToShip() {
-	var shipid = $('selshipid').value;
-	ajax_update(elt, 'colony.php?id=' + colonyid + '&SHOW_BEAMTO=1&target=' + shipid);
-}
-
-function triggerBeamFromShip() {
-	var shipid = $('selshipid').value;
-	ajax_update(elt, 'colony.php?id=' + colonyid + '&SHOW_BEAMFROM=1&target=' + shipid);
 }
 
 function toggleMaxEmpty(elem, max) {
@@ -295,9 +268,9 @@ function scrollBuildmenuByMouse(menu, delta) {
 currentTab = false;
 function showModuleSelector(obj, type) {
 	$('module_select_tabs').select('div').each(function (tab) {
-		Element.removeClassName(tab, 'module_select_base_selected');
+		Element.removeClassName(tab, 'module_selector_current');
 	});
-	Element.addClassName(obj, 'module_select_base_selected');
+	Element.addClassName(obj, 'module_selector_current');
 	if (currentTab) {
 		currentTab.hide();
 	}
@@ -315,25 +288,26 @@ function toggleTorpedoInfo(module_crew) {
 
 function replaceTabImage(type, moduleId, commodityId, module_crew, amount) {
 
+	tabElement = $('module_tab_' + type);
+	Element.removeClassName(tabElement, 'module_selector_unselected');
+	Element.removeClassName(tabElement, 'module_selector_skipped');
+
 	if (moduleId == 0) {
 		$('tab_image_mod_' + type).src = 'assets/buttons/modul_' + type + '.png';
 		$('module_type_' + type).innerHTML = '';
+		Element.addClassName(tabElement, 'module_selector_skipped');
 		updateCrewCount(type, 0);
 	} else {
-		if (amount > 0) {
-			Element.removeClassName($('module_tab_' + type), 'module_select_base_mandatory');
+		if (amount < 1) {
+			Element.addClassName(tabElement, 'module_selector_unselected');
 		}
 		$('tab_image_mod_' + type).src = 'assets/commodities/' + commodityId + '.png';
 		$('module_type_' + type).innerHTML = $(moduleId + '_content').innerHTML;
 		$('module_type_' + type).show();
 		updateCrewCount(type, module_crew);
 	}
-	if (amount > 0) {
-		enableShipBuildButton();
-	}
-	else {
-		checkCrewCount();
-	}
+
+	enableShipBuildButton();
 }
 var disabledSlots = new Set();
 function toggleSpecialModuleDisplay(type, module_id, module_crew, amount) {
@@ -380,12 +354,7 @@ function toggleSpecialModuleDisplay(type, module_id, module_crew, amount) {
 	$('module_type_' + type).innerHTML = innerHTML;
 	$('module_type_' + type).show();
 
-	if (amount > 0) {
-		enableShipBuildButton();
-	}
-	else {
-		checkCrewCount();
-	}
+	enableShipBuildButton();
 }
 var maxCrew;
 var baseCrew;
@@ -425,20 +394,25 @@ function checkCrewCount() {
 	}
 }
 function enableShipBuildButton() {
-	if (!checkCrewCount()) {
-		return;
+
+	if (isShipBuildPossible()) {
+		Form.Element.enable('buildbutton');
+		new Effect.Highlight($('buildbutton'));
+	} else {
+		Form.Element.disable('buildbutton');
 	}
-	mandatory = false;
+}
+function isShipBuildPossible() {
+	if (!checkCrewCount()) {
+		return false;
+	}
+	unselected = false;
 	$('module_select_tabs').select('div').each(function (tab) {
-		if (Element.hasClassName(tab, 'module_select_base_mandatory')) {
-			mandatory = true;
+		if (Element.hasClassName(tab, 'module_selector_unselected')) {
+			unselected = true;
 		}
 	});
-	if (mandatory) {
-		return;
-	}
-	Form.Element.enable('buildbutton');
-	new Effect.Highlight($('buildbutton'));
+	return !unselected;
 }
 function cancelModuleQueueEntries(module_id) {
 	ajaxPostUpdate(
@@ -473,7 +447,7 @@ function showGiveUpWindow(target) {
 function getCommodityLocations(commodityId) {
 	closeAjaxWindow();
 	openPJsWin('elt', 1);
-	ajax_update('elt', 'database.php?commodityId=' + commodityId + '&SHOW_COMMODITIES_LOCATIONS=1');
+	ajax_update('elt', 'database.php?commodityid=' + commodityId + '&SHOW_COMMODITIES_LOCATIONS=1');
 }
 
 var colonyMapX = null;
@@ -505,7 +479,7 @@ function showTelescopeScan(cx, cy) {
 	openPJsWin('elt', 1);
 
 	if (calculateScanCost(cx, cy) <= parseInt($('current_energy').innerHTML)) {
-		ajax_update('elt', 'colony.php?SHOW_TELESCOPE_SCAN=1&id=' + colonyid + '&cx=' + cx + '&cy=' + cy);
+		ajax_update('elt', 'colony.php?SHOW_TELESCOPE_SCAN=1&id=' + colonyid + '&x=' + cx + '&y=' + cy);
 	}
 
 	//refresh current colony eps

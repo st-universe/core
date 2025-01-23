@@ -2,13 +2,11 @@
 
 namespace Stu\Lib\ModuleScreen;
 
-use Stu\Orm\Entity\BuildplanModuleInterface;
+use Stu\Orm\Entity\ModuleInterface;
 
 class ModuleScreenTab
 {
-    public function __construct(private ModuleSelectorInterface $moduleSelector)
-    {
-    }
+    public function __construct(private ModuleSelectorInterface $moduleSelector) {}
 
     public function getTabTitle(): string
     {
@@ -17,18 +15,32 @@ class ModuleScreenTab
 
     public function getCssClass(): string
     {
-        $class = 'module_select_base';
+        $class = 'module_selector';
+
+        if ($this->moduleSelector->getAvailableModules() === []) {
+            return $class;
+        }
+
+        if ($this->moduleSelector->allowEmptySlot()) {
+
+            if ($this->moduleSelector->isEmptySlot()) {
+                $class .= ' module_selector_skipped';
+            } elseif (!$this->moduleSelector->hasSelectedModule()) {
+                $class .= ' module_selector_unselected';
+            }
+        }
+
         if ($this->moduleSelector->isMandatory()) {
             if (!$this->moduleSelector->hasSelectedModule()) {
-                $class .= ' module_select_base_mandatory';
+                $class .= ' module_selector_unselected';
             } else {
-                /** @var BuildplanModuleInterface $mod */
-                $mod = current($this->moduleSelector->getBuildplan()->getModulesByType($this->moduleSelector->getModuleType()));
-                $commodityId = $mod->getModule()->getCommodityId();
+                /** @var ModuleInterface $mod */
+                $mod = $this->moduleSelector->getBuildplan()->getModulesByType($this->moduleSelector->getModuleType())->first();
+                $commodityId = $mod->getCommodityId();
 
                 $stor = $this->moduleSelector->getHost()->getStorage()[$commodityId] ?? null;
                 if ($stor === null) {
-                    $class .= ' module_select_base_mandatory';
+                    $class .= ' module_selector_unselected';
                 }
             }
         }

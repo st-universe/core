@@ -14,14 +14,12 @@ final class ShowUserLock implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_USER_LOCK';
 
-    public function __construct(private UserLockRepositoryInterface $userLockRepository)
-    {
-    }
+    public function __construct(private UserLockRepositoryInterface $userLockRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $userIdToLock = request::getIntFatal('uid');
+        $userIdToLock = request::getIntFatal('id');
 
         $game->setPageTitle(_('User-Lock setzen'));
         $game->setMacroInAjaxWindow('html/admin/userLock.twig');

@@ -22,7 +22,7 @@ final class SubspaceLayerRenderer implements LayerRendererInterface
         }
 
         return sprintf(
-            '<img src="/assets/subspace/generated/%s.png" class="lssSubspaceOverShield"
+            '<img src="/assets/subspace/generated/%s.png" class="visualPanelLayer"
                 style="z-index: %d; %s" />',
             $subspaceCode,
             PanelLayerEnum::SUBSPACE_SIGNATURES->value,

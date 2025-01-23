@@ -6,20 +6,23 @@ namespace Stu\Component\Crew;
 
 use Override;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
-use Stu\Component\Ship\ShipRumpEnum;
+use Stu\Component\Spacecraft\SpacecraftRumpEnum;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
-use Stu\Orm\Repository\ShipCrewRepositoryInterface;
+use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 
 /**
  * Provides methods to retrieve the crew counts
  */
 final class CrewCountRetriever implements CrewCountRetrieverInterface
 {
-    public function __construct(private CrewRepositoryInterface $crewRepository, private ShipCrewRepositoryInterface $shipCrewRepository, private CrewLimitCalculatorInterface $crewLimitCalculator, private CrewTrainingRepositoryInterface $crewTrainingRepository)
-    {
-    }
+    public function __construct(
+        private CrewRepositoryInterface $crewRepository,
+        private CrewAssignmentRepositoryInterface $shipCrewRepository,
+        private CrewLimitCalculatorInterface $crewLimitCalculator,
+        private CrewTrainingRepositoryInterface $crewTrainingRepository
+    ) {}
 
     #[Override]
     public function getDebrisAndTradePostsCount(UserInterface $user): int
@@ -27,7 +30,7 @@ final class CrewCountRetriever implements CrewCountRetrieverInterface
         $count = $this->crewRepository
             ->getAmountByUserAndShipRumpCategory(
                 $user,
-                ShipRumpEnum::SHIP_CATEGORY_ESCAPE_PODS
+                SpacecraftRumpEnum::SHIP_CATEGORY_ESCAPE_PODS
             );
 
         return $count + $this->shipCrewRepository->getAmountByUserAtTradeposts($user);

@@ -15,7 +15,7 @@ final class CreateKnPlotRequest implements CreateKnPlotRequestInterface
     public function getText(): string
     {
         return $this->tidyString(
-            $this->queryParameter('description')->string()->trim()->required()
+            $this->parameter('description')->string()->trim()->required()
         );
     }
 
@@ -23,7 +23,7 @@ final class CreateKnPlotRequest implements CreateKnPlotRequestInterface
     public function getTitle(): string
     {
         return $this->tidyString(
-            $this->queryParameter('title')->string()->trim()->required()
+            $this->parameter('title')->string()->trim()->required()
         );
     }
 }

@@ -7,17 +7,16 @@ namespace Stu\Module\Station\View\ShowSensorScan;
 use Override;
 use request;
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
-use Stu\Component\Ship\Nbs\NbsUtilityInterface;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Spacecraft\Nbs\NbsUtilityInterface;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\SignatureWrapper;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 final class ShowSensorScan implements ViewControllerInterface
@@ -35,8 +34,7 @@ final class ShowSensorScan implements ViewControllerInterface
     private array $fadedSignaturesCloaked = [];
 
     public function __construct(
-        private ShipLoaderInterface $shipLoader,
-        private ShipRepositoryInterface $shipRepository,
+        private StationLoaderInterface $stationLoader,
         private MapRepositoryInterface $mapRepository,
         private StarSystemMapRepositoryInterface $starSystemMapRepository,
         private FlightSignatureRepositoryInterface $flightSignatureRepository,
@@ -53,15 +51,15 @@ final class ShowSensorScan implements ViewControllerInterface
 
         //$this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
 
-        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
+        $wrapper = $this->stationLoader->getWrapperByIdAndUser(
             request::indInt('id'),
             $userId,
             true
         );
         $station = $wrapper->get();
 
-        $cx = request::getIntFatal('cx');
-        $cy = request::getIntFatal('cy');
+        $cx = request::getIntFatal('x');
+        $cy = request::getIntFatal('y');
 
         if (!$station->getLss()) {
             return;
@@ -75,7 +73,7 @@ final class ShowSensorScan implements ViewControllerInterface
             return;
         }
 
-        $sysid = request::getIntFatal('sysid');
+        $sysid = request::getIntFatal('systemid');
 
         $this->loggerUtil->log(sprintf('cx: %d, cy: %d, sysid: %d', $cx, $cy, $sysid));
 
@@ -121,10 +119,10 @@ final class ShowSensorScan implements ViewControllerInterface
         $game->setTemplateFile('html/station/sensorScan.twig');
 
         $epsSystem->lowerEps(self::ENERGY_COST_SECTOR_SCAN)->update();
-        $this->shipRepository->save($station);
+        $this->stationLoader->save($station);
 
         //$tachyonActive = $this->nbsUtility->isTachyonActive($ship);
-        $tachyonActive = $station->getSystemState(ShipSystemTypeEnum::SYSTEM_TACHYON_SCANNER);
+        $tachyonActive = $station->getSystemState(SpacecraftSystemTypeEnum::TACHYON_SCANNER);
 
         if ($sysid !== 0) {
             $this->loggerUtil->log('system!');

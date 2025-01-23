@@ -7,7 +7,7 @@ namespace Stu\Module\Database\Lib;
 use Override;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -16,9 +16,13 @@ use Stu\Orm\Repository\UserRepositoryInterface;
  */
 final class DatabaseUiFactory implements DatabaseUiFactoryInterface
 {
-    public function __construct(private CommodityRepositoryInterface $commodityRepository, private ShipRepositoryInterface $shipRepository, private ColonyRepositoryInterface $colonyRepository, private UserRepositoryInterface $userRepository, private TradePostRepositoryInterface $tradePostRepository)
-    {
-    }
+    public function __construct(
+        private CommodityRepositoryInterface $commodityRepository,
+        private SpacecraftRepositoryInterface $spacecraftRepository,
+        private ColonyRepositoryInterface $colonyRepository,
+        private UserRepositoryInterface $userRepository,
+        private TradePostRepositoryInterface $tradePostRepository
+    ) {}
 
     #[Override]
     public function createStorageWrapper(
@@ -28,7 +32,7 @@ final class DatabaseUiFactory implements DatabaseUiFactoryInterface
     ): StorageWrapper {
         return new StorageWrapper(
             $this->commodityRepository,
-            $this->shipRepository,
+            $this->spacecraftRepository,
             $this->colonyRepository,
             $this->tradePostRepository,
             $commodityId,

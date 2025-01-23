@@ -191,10 +191,29 @@ function updateAndSaveTutorialStep(updateId, saveId, isForward) {
 const originalFunctions = {};
 function updateTutorialStep(stepId, isForward = true) {
   const currentStep = tutorialSteps[stepId];
-  const elementIds = currentStep.elementIds;
+  let elementIdList = currentStep.elementIds;
+  let minCount = 0;
   const innerUpdate = currentStep.innerUpdate;
-  const elements = elementIds.map((id) => document.getElementById(id));
   const innerContentElement = document.getElementById("innerContent");
+
+  if (elementIdList[0].startsWith("min_")) {
+    minCount = parseInt(elementIdList[0].split("_")[1], 10);
+    elementIdList = elementIdList.slice(1);
+  }
+
+  const elementIds = elementIdList;
+
+  let elementsList = elementIds.map((id) => document.getElementById(id));
+
+  const nonNullCount = elementsList.filter(
+    (element) => element !== null
+  ).length;
+
+  if (minCount > 0 && nonNullCount >= minCount) {
+    elementsList = elementsList.filter((element) => element !== null);
+  }
+
+  const elements = elementsList;
 
   const lastStep =
     tutorialSteps[isForward ? currentStep.previousid : currentStep.nextid];

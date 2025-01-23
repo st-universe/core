@@ -6,6 +6,7 @@ namespace Stu\Module\Communication\View\ShowSingleKn;
 
 use Override;
 use Stu\Component\Communication\Kn\KnFactoryInterface;
+use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -15,15 +16,17 @@ final class ShowSingleKn implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_SINGLE_KN';
 
-    public function __construct(private ShowSingleKnRequestInterface $showSingleKnRequest, private KnPostRepositoryInterface $knPostRepository, private KnFactoryInterface $knFactory)
-    {
-    }
+    public function __construct(
+        private ShowSingleKnRequestInterface $showSingleKnRequest,
+        private KnPostRepositoryInterface $knPostRepository,
+        private KnFactoryInterface $knFactory
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
-        $post = $this->knPostRepository->find($this->showSingleKnRequest->getPostId());
+        $post = $this->knPostRepository->find($this->showSingleKnRequest->getKnId());
 
         $game->setPageTitle(_('Kommunikationsnetzwerk'));
         $game->setViewTemplate(ModuleViewEnum::COMMUNICATION->getTemplate());
@@ -40,5 +43,6 @@ final class ShowSingleKn implements ViewControllerInterface
         }
 
         $game->setTemplateVar('KN_POSTINGS', $knPostings);
+        $game->addExecuteJS("initTranslations();", GameEnum::JS_EXECUTION_AFTER_RENDER);
     }
 }

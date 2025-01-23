@@ -14,12 +14,12 @@ final class DealsTakeOfferRequest implements DealsTakeOfferRequestInterface
     #[Override]
     public function getDealId(): int
     {
-        return $this->queryParameter('dealid')->int()->required();
+        return $this->parameter('dealid')->int()->required();
     }
 
     #[Override]
     public function getAmount(): int
     {
-        return $this->queryParameter('amount')->int()->defaultsTo(0);
+        return $this->parameter('amount')->int()->defaultsTo(0);
     }
 }

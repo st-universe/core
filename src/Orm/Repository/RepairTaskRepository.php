@@ -41,7 +41,7 @@ final class RepairTaskRepository extends EntityRepository implements RepairTaskR
     public function getByShip(int $shipId): ?ShipInterface
     {
         return $this->findOneBy([
-            'ship_id' => $shipId
+            'spacecraft_id' => $shipId
         ]);
     }
 
@@ -50,7 +50,7 @@ final class RepairTaskRepository extends EntityRepository implements RepairTaskR
     {
         $q = $this->getEntityManager()->createQuery(
             sprintf(
-                'delete from %s t where t.ship_id = :shipId',
+                'delete from %s t where t.spacecraft_id = :shipId',
                 RepairTask::class
             )
         );

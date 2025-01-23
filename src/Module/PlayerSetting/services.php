@@ -36,7 +36,7 @@ return [
     ChangeEmailRequestInterface::class => autowire(ChangeEmailRequest::class),
     ChangeDescriptionRequestInterface::class => autowire(ChangeDescriptionRequest::class),
     ChangeUserSettingInterface::class => autowire(ChangeUserSetting::class),
-    'PLAYER_SETTING_ACTIONS' => [
+    'OPTIONS_ACTIONS' => [
         ChangeUserName::ACTION_IDENTIFIER => autowire(ChangeUserName::class),
         ChangePassword::ACTION_IDENTIFIER => autowire(ChangePassword::class),
         ChangeEmail::ACTION_IDENTIFIER => autowire(ChangeEmail::class),
@@ -49,7 +49,7 @@ return [
         DeleteAccount::ACTION_IDENTIFIER => autowire(DeleteAccount::class),
         DeleteTutorials::ACTION_IDENTIFIER => autowire(DeleteTutorials::class),
     ],
-    'PLAYER_SETTING_VIEWS' => [
+    'OPTIONS_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
     ]
 ];

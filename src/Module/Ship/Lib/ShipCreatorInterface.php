@@ -2,16 +2,16 @@
 
 namespace Stu\Module\Ship\Lib;
 
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\ConstructionProgressInterface;
+use Stu\Module\Spacecraft\Lib\Creation\SpacecraftConfiguratorInterface;
 
 interface ShipCreatorInterface
 {
+    /**
+     * @return SpacecraftConfiguratorInterface<ShipWrapperInterface>
+     */
     public function createBy(
         int $userId,
-        int $shipRumpId,
-        int $shipBuildplanId,
-        ?ColonyInterface $colony = null,
-        ?ConstructionProgressInterface $progress = null
-    ): ShipConfiguratorInterface;
+        int $rumpId,
+        int $buildplanId
+    ): SpacecraftConfiguratorInterface;
 }

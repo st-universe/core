@@ -7,8 +7,8 @@ namespace Stu\Module\Colony\View\ShowModuleFab;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ModuleCostInterface;
 use Stu\Orm\Entity\ModuleInterface;
-use Stu\Orm\Entity\ShipBuildplanInterface;
-use Stu\Orm\Entity\ShipRumpInterface;
+use Stu\Orm\Entity\SpacecraftBuildplanInterface;
+use Stu\Orm\Entity\SpacecraftRumpInterface;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
 
 final class ModuleFabricationListItem
@@ -83,14 +83,14 @@ final class ModuleFabricationListItem
         return $result->getAmount();
     }
 
-    public function addRump(ShipRumpInterface $shipRump): void
+    public function addRump(SpacecraftRumpInterface $shipRump): void
     {
         if (!in_array($shipRump->getId(), $this->rump_ids)) {
             $this->rump_ids[] = $shipRump->getId();
         }
     }
 
-    public function addBuildplan(ShipBuildplanInterface $buildplan): void
+    public function addBuildplan(SpacecraftBuildplanInterface $buildplan): void
     {
         if (!in_array($buildplan->getId(), $this->buildplan_ids)) {
             $this->buildplan_ids[] = $buildplan->getId();

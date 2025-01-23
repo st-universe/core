@@ -1,0 +1,74 @@
+<html lang="de">
+
+<head>
+  <script src="/static/js/default.js"></script>
+</head>
+
+<body>
+  <div class="ajaxwin">
+        <table class="tcal">
+      <tr>
+        <th onmouseover="switch_drag_on();" onmouseout="switch_drag_off();">Forschung: Testforschung</th>
+        <th style="width: 18px;">
+          <a href="javascript:void(0);" onclick="closeAjaxWindow();" onmouseover="cp('ajaxclose','buttons/x2');" onmouseout="cp('ajaxclose','buttons/x1');">
+            <img src="/assets/buttons/x1.png" name="ajaxclose" title="Fenster schlie&Atilde;&#159;en">
+          </a>
+        </th>
+      </tr>
+    </table>
+        <div id="researchdetails" style="width: 610px;">
+	<table class="tcal">
+						<tr>
+			<td rowspan="2" style="width: 110px; height: 110px">
+				<img src="assets/research/42.png">
+			</td>
+			<td id="researchdescription">
+								Wissen ist Macht.
+								<br>
+				<br>
+															</td>
+		</tr>
+
+		<tr>
+			<td>
+				<div id="researchproduction">
+					<table class="tcal">
+						<tr>
+							<td class="darkbg">Punkte</td>
+														<td class="darkbg">
+								Ben&Atilde;&para;tigte Ware / Effekt
+							</td>
+													</tr>
+						<tr>
+							<td>0</td>
+														<td>
+								<img src="assets/commodities/2.png">
+								Baumaterial
+							</td>
+													</tr>
+					</table>
+				</div>
+			</td>
+		</tr>
+
+		<tr>
+			<td colspan="3" style="text-align: center;">
+<a style="color: aqua;" href="https://wiki.change.me/index.php?title=Forschung:Testforschung">Wiki-Seite</a>
+			</td>
+		</tr>
+
+		
+	</table>
+		<div>
+		<br>
+						<div id="beginresearch" class="fabutton_blue">
+			<a href="javascript:void(0);" class="fabutton fabutton_blue" onclick="actionToInnerContent('B_DO_RESEARCH', 'id=42&amp;sstr=MOCKED_SESSIONSTRING');">
+				Erforschen
+			</a>
+		</div>
+	</div>
+			</div>
+      </div>
+  </body>
+
+</html>

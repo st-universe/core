@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping\Table;
 use Override;
 use Stu\Orm\Repository\DatabaseEntryRepository;
 
-#[Table(name: 'stu_database_entrys', options: ['engine' => 'InnoDB'])]
+#[Table(name: 'stu_database_entrys')]
 #[Index(name: 'database_entry_category_id_idx', columns: ['category_id'])]
 #[Entity(repositoryClass: DatabaseEntryRepository::class)]
 class DatabaseEntry implements DatabaseEntryInterface

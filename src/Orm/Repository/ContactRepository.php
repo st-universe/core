@@ -9,6 +9,7 @@ use Override;
 use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Orm\Entity\Contact;
 use Stu\Orm\Entity\ContactInterface;
+use Stu\Orm\Entity\UserInterface;
 
 /**
  * @extends EntityRepository<Contact>
@@ -48,20 +49,20 @@ final class ContactRepository extends EntityRepository implements ContactReposit
     }
 
     #[Override]
-    public function getOrderedByUser(int $userId): array
+    public function getOrderedByUser(UserInterface $user): array
     {
         return $this->findBy(
-            ['user_id' => $userId],
+            ['user_id' => $user->getId()],
             ['recipient' => 'asc'],
         );
     }
 
     #[Override]
-    public function getRemoteOrderedByUser(int $userId): array
+    public function getRemoteOrderedByUser(UserInterface $user): array
     {
         return $this->findBy(
             [
-                'recipient' => $userId,
+                'recipient' => $user->getId(),
                 'mode' => [ContactListModeEnum::FRIEND->value, ContactListModeEnum::ENEMY->value],
             ],
             [

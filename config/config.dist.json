@@ -1,0 +1,119 @@
+{
+  "db": {
+    "useSqlite": true,
+    "sqliteDsn": "sqlite:///:memory:",
+    "host": "change.me",
+    "port": 3306,
+    "user": "change",
+    "pass": "me",
+    "database": "change_me",
+    "backup_dir": "change/me",
+    "backup_cycle_time": 2592000,
+    "proxy_namespace": "Stu\\Orm\\Proxy"
+  },
+  "mq": {
+    "host": "stu-mq",
+    "port": 5672,
+    "user": "mq",
+    "pass": "mq",
+    "vhost": "/",
+    "debug": {
+      "log_path": "/path/to/log",
+      "log_level": 500
+    }
+  },
+  "cache": {
+    "useRedis": false,
+    "redis_socket": "/path/to/redis.sock",
+    "redis_host": "localhost",
+    "redis_port": 6379
+  },
+  "debug": {
+    "debug_mode": true,
+    "logfile_path": "pathtodebug.log",
+    "loglevel": 7,
+    "logging": {
+      "log_dir": "pathtologfiles",
+      "game_request_logging_adapter": "logfile"
+    },
+    "sqlLogging": {
+      "isActive": false,
+      "logDirectory": "/path/to/logfiles"
+    }
+  },
+  "security": {
+    "cors_sites": "http://change.me"
+  },
+  "game": {
+    "webroot": "/path/to/webroot/src/Public",
+    "temp_dir": "/tmp",
+    "base_url": "https://change.me",
+    "version": "dev",
+    "language": "de_DE",
+    "user_avatar_path": "avatare/user/",
+    "alliance_avatar_path": "avatare/alliance/",
+    "hash_method": "sha256",
+    "invitation": {
+      "tokens_per_user": 2,
+      "ttl": 86400
+    },
+    "registration": {
+      "enabled": false,
+      "sms_code_verification": {
+        "enabled": false,
+        "email_to_sms_mail_domain": "pro.vider",
+        "email_to_sms_token": "optionalToken",
+        "email_sender_address": "foo@bar.de"
+      }
+    },
+    "email": {
+      "transportDsn": "sendmail://default",
+      "senderAddress": "some@e.mail"
+    },
+    "admins": [
+      101,
+      102
+    ],
+    "admin": {
+      "id": 101,
+      "username": "adminuser",
+      "email": "admin@example.com",
+      "faction": 1
+    },
+    "colony": {
+      "tick_worker": 1
+    },
+    "map": {
+      "encryptionKey": "the key to encrypt map data"
+    },
+    "pirates": {
+      "doPirateTick": true,
+      "logfilePath": "pathToRotatingPirate.log"
+    },
+    "useSemaphores": false,
+    "imprint": {
+      "name": "Max Mustermann",
+      "address": "123 Fake street",
+      "zip": "0815",
+      "city": "Musterhausen",
+      "country": "Mustercountry",
+      "email": "max@example.com"
+    }
+  },
+  "reset": {
+    "delay_in_seconds": 10
+  },
+  "board": {
+    "base_url": "https://board.change.me"
+  },
+  "wiki": {
+    "base_url": "https://wiki.change.me"
+  },
+  "discord": {
+    "url": "https://chat.change.me"
+  },
+  "partner_sites": {
+    "banner_path": "sites/",
+    "items": []
+  }
+}

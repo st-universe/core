@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Override;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Orm\Repository\RepairTaskRepository;
 
 #[Table(name: 'stu_repair_task')]
@@ -28,13 +28,13 @@ class RepairTask implements RepairTaskInterface
     private int $user_id = 0;
 
     #[Column(type: 'integer')]
-    private int $ship_id = 0;
+    private int $spacecraft_id = 0;
 
     #[Column(type: 'integer')]
     private int $finish_time = 0;
 
-    #[Column(type: 'integer', enumType: ShipSystemTypeEnum::class)]
-    private ShipSystemTypeEnum $system_type = ShipSystemTypeEnum::SYSTEM_HULL;
+    #[Column(type: 'integer', enumType: SpacecraftSystemTypeEnum::class)]
+    private SpacecraftSystemTypeEnum $system_type = SpacecraftSystemTypeEnum::HULL;
 
     #[Column(type: 'integer')]
     private int $healing_percentage = 0;
@@ -43,9 +43,9 @@ class RepairTask implements RepairTaskInterface
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
-    #[ManyToOne(targetEntity: 'Ship')]
-    #[JoinColumn(name: 'ship_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ShipInterface $ship;
+    #[ManyToOne(targetEntity: 'Spacecraft')]
+    #[JoinColumn(name: 'spacecraft_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    private SpacecraftInterface $spacecraft;
 
     #[Override]
     public function getId(): int
@@ -73,15 +73,15 @@ class RepairTask implements RepairTaskInterface
     }
 
     #[Override]
-    public function getShip(): ShipInterface
+    public function getSpacecraft(): SpacecraftInterface
     {
-        return $this->ship;
+        return $this->spacecraft;
     }
 
     #[Override]
-    public function setShip(ShipInterface $ship): RepairTaskInterface
+    public function setSpacecraft(SpacecraftInterface $spacecraft): RepairTaskInterface
     {
-        $this->ship = $ship;
+        $this->spacecraft = $spacecraft;
         return $this;
     }
 
@@ -93,13 +93,13 @@ class RepairTask implements RepairTaskInterface
     }
 
     #[Override]
-    public function getSystemType(): ShipSystemTypeEnum
+    public function getSystemType(): SpacecraftSystemTypeEnum
     {
         return $this->system_type;
     }
 
     #[Override]
-    public function setSystemType(ShipSystemTypeEnum $type): RepairTaskInterface
+    public function setSystemType(SpacecraftSystemTypeEnum $type): RepairTaskInterface
     {
         $this->system_type = $type;
         return $this;

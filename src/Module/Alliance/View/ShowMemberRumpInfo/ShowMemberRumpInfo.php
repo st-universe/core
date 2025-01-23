@@ -10,27 +10,33 @@ use request;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
-use Stu\Orm\Repository\ShipRumpRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
+use Stu\Orm\Repository\StationRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ShowMemberRumpInfo implements ViewControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string VIEW_IDENTIFIER = 'SHOW_MEMBER_RUMP_INFO';
 
-    public function __construct(private AllianceActionManagerInterface $allianceActionManager, private UserRepositoryInterface $userRepository, private ShipRumpRepositoryInterface $shipRumpRepository, private Parser $bbcodeParser, private ShipRepositoryInterface $shipRepository, private ShipWrapperFactoryInterface $shipWrapperFactory) {}
+    public function __construct(
+        private AllianceActionManagerInterface $allianceActionManager,
+        private UserRepositoryInterface $userRepository,
+        private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository,
+        private Parser $bbcodeParser,
+        private StationRepositoryInterface $stationRepository,
+        private ShipRepositoryInterface $shipRepository,
+        private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
 
-        $memberId = request::getIntFatal('uid');
-        $rumpId = request::getIntFatal('rid');
+        $memberId = request::getIntFatal('userid');
+        $rumpId = request::getIntFatal('rumpid');
 
         $member = $this->userRepository->find($memberId);
         if ($member === null) {
@@ -46,7 +52,7 @@ final class ShowMemberRumpInfo implements ViewControllerInterface
             return;
         }
 
-        $rump = $this->shipRumpRepository->find($rumpId);
+        $rump = $this->spacecraftRumpRepository->find($rumpId);
 
         if ($rump === null) {
             return;
@@ -56,8 +62,11 @@ final class ShowMemberRumpInfo implements ViewControllerInterface
         $game->setPageTitle(sprintf(_('%s von Mitglied %s'), $rump->getName(), $memberNameAsText));
         $game->setMacroInAjaxWindow('html/alliance/alliancememberrumpinfo.twig');
 
-        $ships = $this->shipRepository->getByUserAndRump($memberId, $rumpId);
+        $spacecrafts = array_merge(
+            $this->stationRepository->getByUserAndRump($member, $rump),
+            $this->shipRepository->getByUserAndRump($member, $rump)
+        );
 
-        $game->setTemplateVar('WRAPPERS', $this->shipWrapperFactory->wrapShips($ships));
+        $game->setTemplateVar('WRAPPERS', $this->spacecraftWrapperFactory->wrapSpacecrafts($spacecrafts));
     }
 }

@@ -11,12 +11,10 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Doctrine\ORM\Mapping\UniqueConstraint;
 use Override;
 use Stu\Orm\Repository\DatabaseUserRepository;
 
-#[Table(name: 'stu_database_user', options: ['engine' => 'InnoDB'])]
-#[UniqueConstraint(name: 'entry_user_idx', columns: ['database_id', 'user_id'])]
+#[Table(name: 'stu_database_user')]
 #[Entity(repositoryClass: DatabaseUserRepository::class)]
 class DatabaseUser implements DatabaseUserInterface
 {

@@ -14,18 +14,18 @@ final class TopicRequest implements TopicRequestInterface
     #[Override]
     public function getBoardId(): int
     {
-        return $this->queryParameter('bid')->int()->required();
+        return $this->parameter('boardid')->int()->required();
     }
 
     #[Override]
     public function getTopicId(): int
     {
-        return $this->queryParameter('tid')->int()->required();
+        return $this->parameter('topicid')->int()->required();
     }
 
     #[Override]
     public function getPageMark(): int
     {
-        return $this->queryParameter('mark')->int()->defaultsTo(0);
+        return $this->parameter('mark')->int()->defaultsTo(0);
     }
 }

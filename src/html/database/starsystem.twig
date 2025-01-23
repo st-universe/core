@@ -18,7 +18,8 @@
                         {% endautoescape %}
                     </span>
                     {% if field.showPm %}
-                    <a href="javascript:void(0);" onclick="openPmWindow({{ USER.getId }}, {{ field.colony.getId }},1,5)"
+                    <a href="javascript:void(0);"
+                        onclick="openPmWindow({{ USER.getId }}, {{ field.colony.getId }},1,5);"
                         title="Nachricht an {{ field.colony.getUser.getName|bbcode2txt }} verfassen"><img
                             class="lssColoShield" src="assets/map/pm.png" style="z-index: 3;" /></a>
                     {% endif %}

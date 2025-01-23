@@ -14,12 +14,12 @@ final class ShowWritePmRequest implements ShowWritePmRequestInterface
     #[Override]
     public function getRecipientId(): int
     {
-        return $this->queryParameter('recipient')->int()->defaultsTo(0);
+        return $this->parameter('recipient')->int()->defaultsTo(0);
     }
 
     #[Override]
     public function getReplyPmId(): int
     {
-        return $this->queryParameter('reply')->int()->defaultsTo(0);
+        return $this->parameter('reply')->int()->defaultsTo(0);
     }
 }

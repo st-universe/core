@@ -7,18 +7,20 @@ namespace Stu\Module\Ship\Action\Transwarp;
 use Override;
 use request;
 use RuntimeException;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
-use Stu\Module\Ship\Action\MoveShip\AbstractDirectedMovement;
-use Stu\Module\Ship\Action\MoveShip\MoveShipRequestInterface;
-use Stu\Module\Ship\Lib\Movement\Route\FlightRouteFactoryInterface;
-use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
-use Stu\Module\Ship\Lib\Movement\Route\RandomSystemEntryInterface;
-use Stu\Module\Ship\Lib\Movement\ShipMoverInterface;
-use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteFactoryInterface;
+use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
+use Stu\Module\Spacecraft\Lib\Movement\Route\RandomSystemEntryInterface;
+use Stu\Module\Spacecraft\Lib\Movement\ShipMoverInterface;
+use Stu\Module\Spacecraft\Action\MoveShip\AbstractDirectedMovement;
+use Stu\Module\Spacecraft\Action\MoveShip\MoveShipRequestInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\MapInterface;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserLayerInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 
@@ -28,9 +30,10 @@ final class Transwarp extends AbstractDirectedMovement
 
     private MapInterface $destination;
 
+    /** @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader */
     public function __construct(
         MoveShipRequestInterface $moveShipRequest,
-        ShipLoaderInterface $shipLoader,
+        SpacecraftLoaderInterface $spacecraftLoader,
         ShipMoverInterface $shipMover,
         FlightRouteFactoryInterface $flightRouteFactory,
         RandomSystemEntryInterface $randomSystemEntry,
@@ -39,7 +42,7 @@ final class Transwarp extends AbstractDirectedMovement
     ) {
         parent::__construct(
             $moveShipRequest,
-            $shipLoader,
+            $spacecraftLoader,
             $shipMover,
             $flightRouteFactory,
             $randomSystemEntry,
@@ -48,7 +51,7 @@ final class Transwarp extends AbstractDirectedMovement
     }
 
     #[Override]
-    protected function isSanityCheckFaultyConcrete(ShipWrapperInterface $wrapper, GameControllerInterface $game): bool
+    protected function isSanityCheckFaultyConcrete(SpacecraftWrapperInterface $wrapper, GameControllerInterface $game): bool
     {
         $layerId = request::postIntFatal('transwarplayer');
 
@@ -59,7 +62,7 @@ final class Transwarp extends AbstractDirectedMovement
             return true;
         }
 
-        if ($wrapper->get()->getTranswarpCooldown() !== null) {
+        if ($wrapper->get()->getSpacecraftSystem(SpacecraftSystemTypeEnum::TRANSWARP_COIL)->getCooldown() !== null) {
             return true;
         }
 
@@ -89,8 +92,12 @@ final class Transwarp extends AbstractDirectedMovement
             return true;
         }
 
-        if ($ship->getFleet() !== null) {
-            $game->addInformation(_('Transwarpflug nicht möglich wenn Teil einer Flotte'));
+        if (
+            $ship instanceof ShipInterface
+            && $ship->getFleet() !== null
+            && $ship->getFleet()->getShipCount() > 1
+        ) {
+            $game->addInformation('Transwarpflug nicht möglich wenn Teil einer Flotte');
             return true;
         }
 
@@ -120,7 +127,7 @@ final class Transwarp extends AbstractDirectedMovement
     }
 
     #[Override]
-    protected function getFlightRoute(ShipWrapperInterface $wrapper): FlightRouteInterface
+    protected function getFlightRoute(SpacecraftWrapperInterface $wrapper): FlightRouteInterface
     {
         return $this->flightRouteFactory->getRouteForMapDestination($this->destination, true);
     }

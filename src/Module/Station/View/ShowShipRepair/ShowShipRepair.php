@@ -9,24 +9,28 @@ use request;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
-use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Station\Lib\StationLoaderInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
+use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
+use Stu\Orm\Entity\ShipInterface;
 
 final class ShowShipRepair implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_SHIP_REPAIR';
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private StationUtilityInterface $stationUtility, private ShipWrapperFactoryInterface $shipWrapperFactory)
-    {
-    }
+    public function __construct(
+        private StationLoaderInterface $stationLoader,
+        private StationUtilityInterface $stationUtility,
+        private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
 
-        $station = $this->shipLoader->getByIdAndUser(
+        $station = $this->stationLoader->getByIdAndUser(
             request::indInt('id'),
             $userId,
             false,
@@ -37,25 +41,19 @@ final class ShowShipRepair implements ViewControllerInterface
             return;
         }
 
-        $repairableShips = [];
-        foreach ($station->getDockedShips() as $ship) {
-            $wrapper = $this->shipWrapperFactory->wrapShip($ship);
-            if (
-                !$wrapper->canBeRepaired() || $ship->isUnderRepair()
-            ) {
-                continue;
-            }
-            $repairableShips[$ship->getId()] = $wrapper;
-        }
+        $repairableShipWrappers = $station->getDockedShips()
+            ->filter(fn(ShipInterface $ship): bool => !$ship->isUnderRepair())
+            ->map(fn(ShipInterface $ship): ShipWrapperInterface => $this->spacecraftWrapperFactory->wrapShip($ship))
+            ->filter(fn(ShipWrapperInterface $wrapper): bool => $wrapper->canBeRepaired());
 
         $game->appendNavigationPart(
             'station.php',
-            _('Stationen')
+            'Stationen'
         );
         $game->appendNavigationPart(
             sprintf(
                 '?%s=1&id=%d',
-                ShowShip::VIEW_IDENTIFIER,
+                ShowSpacecraft::VIEW_IDENTIFIER,
                 $station->getId()
             ),
             $station->getName()
@@ -66,11 +64,11 @@ final class ShowShipRepair implements ViewControllerInterface
                 self::VIEW_IDENTIFIER,
                 $station->getId()
             ),
-            _('Schiffreparatur')
+            'Schiffreparatur'
         );
         $game->setViewTemplate('html/station/shipRepair.twig');
 
-        $game->setTemplateVar('REPAIRABLE_SHIP_LIST', $repairableShips);
+        $game->setTemplateVar('REPAIRABLE_SHIP_WRAPPERS', $repairableShipWrappers);
         $game->setTemplateVar('STATION', $station);
     }
 }

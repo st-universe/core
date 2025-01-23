@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Stu\Module\Tick;
 
 use Psr\Container\ContainerInterface;
+use Stu\Lib\Pirate\Behaviour\PirateBehaviourInterface;
 use Stu\Lib\Pirate\Component\PirateFlight;
 use Stu\Lib\Pirate\Component\PirateFlightInterface;
 use Stu\Lib\Pirate\PirateCreation;
 use Stu\Lib\Pirate\PirateCreationInterface;
+use Stu\Module\Maintenance\MaintenanceHandlerInterface;
 use Stu\Module\Tick\Colony\ColonyTick;
 use Stu\Module\Tick\Colony\ColonyTickInterface;
 use Stu\Module\Tick\Colony\ColonyTickManager;
@@ -27,21 +29,22 @@ use Stu\Module\Tick\Process\FinishShipBuildJobs;
 use Stu\Module\Tick\Process\FinishShipRetrofitJobs;
 use Stu\Module\Tick\Process\FinishTerraformingJobs;
 use Stu\Module\Tick\Process\FinishTholianWebs;
+use Stu\Module\Tick\Process\ProcessTickHandlerInterface;
 use Stu\Module\Tick\Process\ProcessTickRunner;
 use Stu\Module\Tick\Process\RepairTaskJobs;
 use Stu\Module\Tick\Process\ShieldRegeneration;
-use Stu\Module\Tick\Ship\ManagerComponent\AnomalyCreationCheck;
-use Stu\Module\Tick\Ship\ManagerComponent\AnomalyProcessing;
-use Stu\Module\Tick\Ship\ManagerComponent\CrewLimitations;
-use Stu\Module\Tick\Ship\ManagerComponent\EscapePodHandling;
-use Stu\Module\Tick\Ship\ManagerComponent\LowerHull;
-use Stu\Module\Tick\Ship\ManagerComponent\NpcShipHandling;
-use Stu\Module\Tick\Ship\ManagerComponent\RepairActions;
-use Stu\Module\Tick\Ship\ShipTick;
-use Stu\Module\Tick\Ship\ShipTickInterface;
-use Stu\Module\Tick\Ship\ShipTickManager;
-use Stu\Module\Tick\Ship\ShipTickManagerInterface;
-use Stu\Module\Tick\Ship\ShipTickRunner;
+use Stu\Module\Tick\Spacecraft\ManagerComponent\AnomalyCreationCheck;
+use Stu\Module\Tick\Spacecraft\ManagerComponent\AnomalyProcessing;
+use Stu\Module\Tick\Spacecraft\ManagerComponent\CrewLimitations;
+use Stu\Module\Tick\Spacecraft\ManagerComponent\EscapePodHandling;
+use Stu\Module\Tick\Spacecraft\ManagerComponent\LowerHull;
+use Stu\Module\Tick\Spacecraft\ManagerComponent\NpcShipHandling;
+use Stu\Module\Tick\Spacecraft\ManagerComponent\RepairActions;
+use Stu\Module\Tick\Spacecraft\SpacecraftTick;
+use Stu\Module\Tick\Spacecraft\SpacecraftTickInterface;
+use Stu\Module\Tick\Spacecraft\SpacecraftTickManager;
+use Stu\Module\Tick\Spacecraft\SpacecraftTickManagerInterface;
+use Stu\Module\Tick\Spacecraft\SpacecraftTickRunner;
 
 use function DI\autowire;
 use function DI\create;
@@ -54,8 +57,8 @@ return [
             [autowire(AdvanceResearch::class)]
         ),
     ColonyTickManagerInterface::class => autowire(ColonyTickManager::class),
-    ShipTickInterface::class => autowire(ShipTick::class),
-    ShipTickManagerInterface::class => autowire(ShipTickManager::class)
+    SpacecraftTickInterface::class => autowire(SpacecraftTick::class),
+    SpacecraftTickManagerInterface::class => autowire(SpacecraftTickManager::class)
         ->constructorParameter(
             'components',
             [
@@ -63,7 +66,7 @@ return [
                 autowire(CrewLimitations::class),
                 autowire(EscapePodHandling::class),
                 autowire(RepairActions::class),
-                autowire(ShipTick::class),
+                autowire(SpacecraftTick::class),
                 autowire(NpcShipHandling::class),
                 autowire(LowerHull::class),
                 autowire(AnomalyCreationCheck::class),
@@ -71,7 +74,7 @@ return [
         ),
     TickManagerInterface::class => autowire(TickManager::class),
     LockManagerInterface::class => autowire(LockManager::class),
-    'process_tick_handler' => [
+    ProcessTickHandlerInterface::class => [
         autowire(FinishBuildJobs::class),
         autowire(FinishShipBuildJobs::class),
         autowire(FinishShipRetrofitJobs::class),
@@ -81,19 +84,20 @@ return [
         autowire(FinishTholianWebs::class)
     ],
     TransactionTickRunnerInterface::class => autowire(TransactionTickRunner::class),
-    MaintenanceTickRunnerFactoryInterface::class => autowire(MaintenanceTickRunnerFactory::class),
+    MaintenanceTickRunnerFactoryInterface::class => autowire(MaintenanceTickRunnerFactory::class)
+        ->constructorParameter('handlerList', get(MaintenanceHandlerInterface::class)),
     MaintenanceTickRunner::class => fn(ContainerInterface $dic): TickRunnerInterface => $dic
         ->get(MaintenanceTickRunnerFactoryInterface::class)
-        ->createMaintenanceTickRunner($dic->get('maintenance_handler')),
+        ->createMaintenanceTickRunner(),
     ProcessTickRunner::class => create(ProcessTickRunner::class)
         ->constructor(
             get(TransactionTickRunnerInterface::class),
-            get('process_tick_handler')
+            get(ProcessTickHandlerInterface::class)
         ),
-    ShipTickRunner::class => autowire(),
+    SpacecraftTickRunner::class => autowire(),
     PirateTickInterface::class => autowire(PirateTick::class)->constructorParameter(
         'behaviours',
-        get('pirateBehaviours')
+        get(PirateBehaviourInterface::class)
     ),
     PirateCreationInterface::class => autowire(PirateCreation::class),
     PirateFlightInterface::class => autowire(PirateFlight::class),

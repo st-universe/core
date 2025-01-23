@@ -18,13 +18,13 @@
                 {% if topic.getSticky %}
                 <img src="assets/buttons/board_important.png" title="Wichtig" />
                 {% endif %}
-                <a href="alliance.php?SHOW_TOPIC=1&bid={{ topic.getBoardId }}&tid={{ topic.getId }}&mark=0">{{
+                <a href="alliance.php?SHOW_TOPIC=1&boardid={{ topic.getBoardId }}&topicid={{ topic.getId }}&mark=0">{{
                     topic.getName|raw }}</a>
             </div>
             {% if PAGES %}
             <div style="white-space: nowrap;text-align: right;display: table-cell">
                 {% for page in PAGES %}
-                <a href="?SHOW_TOPIC=1&bid={{ topic.getBoardId }}&tid={{ topic.getId }}&mark={{ page }}"
+                <a href="?SHOW_TOPIC=1&boardid={{ topic.getBoardId }}&topicid={{ topic.getId }}&mark={{ page }}"
                     class="pages">{{ loop.index }}</a>
                 {% endfor %}
             </div>
@@ -53,5 +53,5 @@
 </table>
 <br />
 {% endif %}
-<a href="alliance.php?SHOW_NEW_TOPIC=1&bid={{ BOARD_ID }}" class="linkbutton">Thema erstellen</a>
+<a href="alliance.php?SHOW_NEW_TOPIC=1&boardid={{ BOARD_ID }}" class="linkbutton">Thema erstellen</a>
 {% endblock %}

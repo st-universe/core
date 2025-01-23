@@ -3,16 +3,16 @@
 namespace Stu\Lib\Pirate\Component;
 
 use Override;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
-use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
-use Stu\Module\Ship\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
-use Stu\Module\Ship\Lib\Battle\ShipAttackCoreInterface;
+use Stu\Module\Spacecraft\Lib\ActivatorDeactivatorHelperInterface;
+use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
+use Stu\Module\Spacecraft\Lib\Battle\SpacecraftAttackCoreInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
-use Stu\Module\Ship\Lib\Interaction\InterceptShipCoreInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Module\Spacecraft\Lib\Interaction\InterceptShipCoreInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 
@@ -22,8 +22,8 @@ class PirateAttack implements PirateAttackInterface
 
     public function __construct(
         private InterceptShipCoreInterface $interceptShipCore,
-        private ShipAttackCoreInterface $shipAttackCore,
-        private ShipWrapperFactoryInterface $shipWrapperFactory,
+        private SpacecraftAttackCoreInterface $spacecraftAttackCore,
+        private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
         private ActivatorDeactivatorHelperInterface $helper,
         private AlertReactionFacadeInterface $alertReactionFacade,
         LoggerUtilFactoryInterface $loggerUtilFactory
@@ -35,7 +35,7 @@ class PirateAttack implements PirateAttackInterface
     public function attackShip(FleetWrapperInterface $fleetWrapper, ShipInterface $target): void
     {
         $leadWrapper = $fleetWrapper->getLeadWrapper();
-        $targetWrapper = $this->shipWrapperFactory->wrapShip($target);
+        $targetWrapper = $this->spacecraftWrapperFactory->wrapShip($target);
 
         $this->interceptIfNeccessary($leadWrapper, $targetWrapper);
 
@@ -56,7 +56,7 @@ class PirateAttack implements PirateAttackInterface
 
         $this->logger->logf('    attacking target with shipId: %d', $target->getId());
 
-        $this->shipAttackCore->attack(
+        $this->spacecraftAttackCore->attack(
             $leadWrapper,
             $targetWrapper,
             $isFleetFight,
@@ -86,7 +86,7 @@ class PirateAttack implements PirateAttackInterface
 
         if ($this->helper->deactivateFleet(
             $wrapper,
-            ShipSystemTypeEnum::SYSTEM_WARPDRIVE,
+            SpacecraftSystemTypeEnum::WARPDRIVE,
             $informationWrapper
         )) {
             $this->logger->log('    deactivated warp');

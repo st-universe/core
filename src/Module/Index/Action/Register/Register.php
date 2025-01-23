@@ -17,9 +17,7 @@ final class Register implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_SEND_REGISTRATION';
 
-    public function __construct(private RegisterRequestInterface $registerRequest, private FactionRepositoryInterface $factionRepository, private PlayerCreatorInterface $playerCreator, private ConfigInterface $config)
-    {
-    }
+    public function __construct(private RegisterRequestInterface $registerRequest, private FactionRepositoryInterface $factionRepository, private PlayerCreatorInterface $playerCreator, private ConfigInterface $config) {}
 
     /**
      * @todo add registration without sms
@@ -51,6 +49,7 @@ final class Register implements ActionControllerInterface
 
         $loginname = trim(mb_strtolower($this->registerRequest->getLoginName()));
         $email = trim(mb_strtolower($this->registerRequest->getEmailAddress()));
+        $referer = $this->registerRequest->getReferer();
 
         $countryCode = $this->registerRequest->getCountryCode();
         $mobile = $this->registerRequest->getMobileNumber();
@@ -70,7 +69,8 @@ final class Register implements ActionControllerInterface
             $loginname,
             $email,
             $faction['faction'],
-            $mobileNumber
+            $mobileNumber,
+            $referer
         );
 
         $game->setView(ShowFinishRegistration::VIEW_IDENTIFIER);

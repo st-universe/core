@@ -9,7 +9,7 @@ use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Template\StatusBarColorEnum;
 use Stu\Module\Template\StatusBarFactoryInterface;
@@ -35,7 +35,7 @@ final class ShowField implements ViewControllerInterface
         private TerraformingRepositoryInterface $terraformingRepository,
         private BuildingUpgradeRepositoryInterface $buildingUpgradeRepository,
         private ColonyTerraformingRepositoryInterface $colonyTerraformingRepository,
-        private ShipWrapperFactoryInterface $shipWrapperFactory,
+        private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
         private StatusBarFactoryInterface $statusBarFactory
     ) {}
 
@@ -72,7 +72,7 @@ final class ShowField implements ViewControllerInterface
             $game->setTemplateVar('SHIP_RETROFIT_PROGRESS', $this->colonyShipQueueRepository->getByColonyAndMode($host->getId(), 2));
 
             $shipRepairProgress = array_map(
-                fn(ColonyShipRepairInterface $repair): ShipWrapperInterface => $this->shipWrapperFactory->wrapShip($repair->getShip()),
+                fn(ColonyShipRepairInterface $repair): ShipWrapperInterface => $this->spacecraftWrapperFactory->wrapShip($repair->getShip()),
                 $this->colonyShipRepairRepository->getByColonyField(
                     $host->getId(),
                     $field->getFieldId()

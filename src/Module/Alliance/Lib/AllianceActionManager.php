@@ -8,7 +8,7 @@ use Noodlehaus\ConfigInterface;
 use Override;
 use RuntimeException;
 use Stu\Component\Alliance\AllianceEnum;
-use Stu\Component\Ship\ShipEnum;
+use Stu\Component\Station\Dock\DockTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\AllianceInterface;
@@ -21,9 +21,14 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class AllianceActionManager implements AllianceActionManagerInterface
 {
-    public function __construct(private AllianceJobRepositoryInterface $allianceJobRepository, private AllianceRepositoryInterface $allianceRepository, private DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository, private PrivateMessageSenderInterface $privateMessageSender, private UserRepositoryInterface $userRepository, private ConfigInterface $config)
-    {
-    }
+    public function __construct(
+        private AllianceJobRepositoryInterface $allianceJobRepository,
+        private AllianceRepositoryInterface $allianceRepository,
+        private DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository,
+        private PrivateMessageSenderInterface $privateMessageSender,
+        private UserRepositoryInterface $userRepository,
+        private ConfigInterface $config
+    ) {}
 
     #[Override]
     public function setJobForUser(int $allianceId, int $userId, int $jobTypeId): void
@@ -47,14 +52,9 @@ final class AllianceActionManager implements AllianceActionManagerInterface
     }
 
     #[Override]
-    public function delete(int $allianceId, bool $sendMesage = true): void
+    public function delete(AllianceInterface $alliance, bool $sendMesage = true): void
     {
-        $alliance = $this->allianceRepository->find($allianceId);
-        if ($alliance === null) {
-            return;
-        }
-
-        $this->dockingPrivilegeRepository->truncateByTypeAndTarget(ShipEnum::DOCK_PRIVILEGE_ALLIANCE, $allianceId);
+        $this->dockingPrivilegeRepository->truncateByTypeAndTarget(DockTypeEnum::ALLIANCE, $alliance->getId());
 
         $text = sprintf(_('Die Allianz %s wurde aufgelöst'), $alliance->getName());
 
@@ -82,6 +82,10 @@ final class AllianceActionManager implements AllianceActionManagerInterface
             if ($result === false) {
                 throw new RuntimeException('alliance avatar could not be deleted');
             }
+        }
+
+        foreach ($alliance->getJobs() as $job) {
+            $this->allianceJobRepository->delete($job);
         }
 
         $this->allianceRepository->delete($alliance);
@@ -115,7 +119,7 @@ final class AllianceActionManager implements AllianceActionManagerInterface
         /** @var AllianceJobInterface[] $jobList */
         $jobList = array_filter(
             $this->allianceJobRepository->getByAlliance($allianceId),
-            static fn (AllianceJobInterface $job): bool => $job->getType() !== AllianceEnum::ALLIANCE_JOBS_PENDING
+            static fn(AllianceJobInterface $job): bool => $job->getType() !== AllianceEnum::ALLIANCE_JOBS_PENDING
         );
 
         foreach ($jobList as $job) {

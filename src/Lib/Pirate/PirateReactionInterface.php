@@ -3,20 +3,20 @@
 namespace Stu\Lib\Pirate;
 
 use Stu\Orm\Entity\FleetInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 
 interface PirateReactionInterface
 {
     public function checkForPirateReaction(
-        ShipInterface $target,
+        SpacecraftInterface $target,
         PirateReactionTriggerEnum $reactionTrigger,
-        ShipInterface $triggerShip
+        SpacecraftInterface $triggerSpacecraft
     ): bool;
 
     public function react(
         FleetInterface $fleet,
         PirateReactionTriggerEnum $reactionTrigger,
-        ShipInterface $triggerShip,
+        SpacecraftInterface $triggerSpacecraft,
         PirateReactionMetadata $reactionMetadata
     ): void;
 }

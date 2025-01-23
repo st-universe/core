@@ -1,0 +1,79 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body>
+<div class="box">
+    <div class="box_title" style="text-align: left">/
+                <a href="history.php">
+            Ereignisse
+        </a>
+                    </div>
+</div>
+<br>
+<div id="result" style="display: none;">..</div>
+<form method="post" action="history.php">
+	<input type="hidden" name="htype" value="1">
+	<table class="use">
+		<tr>
+			<th colspan="5">Typ</th>
+			<th>Anzahl</th>
+			<th>Suchbegriff</th>
+			<th></th>
+		</tr>
+		<tr>
+									<td style="width: 150px; vertical-align: middle; text-align: center;" class="selected">
+				<a href="?htype=1&amp;hcount=50" class="historybutton">
+					Schiffe (0)
+				</a>
+			</td>
+									<td style="width: 150px; vertical-align: middle; text-align: center;" class="">
+				<a href="?htype=2&amp;hcount=50" class="historybutton">
+					Station (0)
+				</a>
+			</td>
+									<td style="width: 150px; vertical-align: middle; text-align: center;" class="">
+				<a href="?htype=3&amp;hcount=50" class="historybutton">
+					Kolonie (0)
+				</a>
+			</td>
+									<td style="width: 150px; vertical-align: middle; text-align: center;" class="">
+				<a href="?htype=4&amp;hcount=50" class="historybutton">
+					Diplomatie (0)
+				</a>
+			</td>
+									<td style="width: 150px; vertical-align: middle; text-align: center;" class="">
+				<a href="?htype=5&amp;hcount=50" class="historybutton">
+					Sonstiges (0)
+				</a>
+			</td>
+						<td>
+				<input type="text" size="3" name="hcount" value="50">
+			</td>
+			<td>
+				<input type="text" size="10" name="hsearch" value="">
+			</td>
+			<td>
+				<input type="submit" class="button" value="Aktualisieren">
+			</td>
+		</tr>
+	</table>
+	<br>
+	<table class="tcal">
+		<tr>
+			<th>Eintrag</th>
+			<th>Datum</th>
+		</tr>
+				<tr>
+			<td colspan="2">Keine Eintr&auml;ge vorhanden</td>
+		</tr>
+			</table>
+</form>
+<div class="footer">
+    Rendered in 4.203s - Memory usage: 42.77Mb
+</div>
+
+</body>
+</html>

@@ -12,13 +12,14 @@ use Override;
 #[MappedSuperclass]
 class AbstractData implements CellDataInterface
 {
-    public function __construct(#[Id]
+    public function __construct(
+        #[Id]
         #[Column(type: 'integer')]
-        private int $x, #[Id]
+        private int $x,
+        #[Id]
         #[Column(type: 'integer')]
-        private int $y)
-    {
-    }
+        private int $y
+    ) {}
 
     #[Override]
     public function getPosX(): int

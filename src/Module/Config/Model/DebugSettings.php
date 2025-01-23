@@ -3,7 +3,6 @@
 namespace Stu\Module\Config\Model;
 
 use Override;
-use Stu\Module\Config\StuConfigSettingEnum;
 
 final class DebugSettings extends AbstractSettings implements DebugSettingsInterface
 {
@@ -32,6 +31,6 @@ final class DebugSettings extends AbstractSettings implements DebugSettingsInter
     #[Override]
     public function getSqlLoggingSettings(): SqlLoggingSettingsInterface
     {
-        return $this->settingsCache->getSettings(StuConfigSettingEnum::SQL_LOGGING, $this);
+        return $this->settingsCache->getSettings(SqlLoggingSettingsInterface::class, $this);
     }
 }

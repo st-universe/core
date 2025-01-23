@@ -1,9 +1,9 @@
 <table class="tcal">
-    {% set rump = THIS.getRump %}
-    {% set type = THIS.getModuleType.value %}
-    {% set allowMultiple = THIS.allowMultiple %}
-    <input type="hidden" name="module_level_{{ type }}" value="{{ THIS.getModuleTypeLevel }}" />
-    {% if THIS.getAvailableModules %}
+    {% set rump = SELECTOR.getRump %}
+    {% set type = SELECTOR.getModuleType.value %}
+    {% set allowMultiple = SELECTOR.allowMultiple %}
+    <input type="hidden" name="module_level_{{ type }}" value="{{ SELECTOR.getModuleTypeLevel }}" />
+    {% if SELECTOR.getAvailableModules %}
     <tr>
         {% set colspan = allowMultiple ? 2 : 3 %}
         <th colspan="{{ colspan }}">Modulbezeichnung</th>
@@ -11,7 +11,7 @@
         <th>lagernd</th>
         <th>Auswirkungen</th>
     </tr>
-    {% if THIS.allowEmptySlot %}
+    {% if SELECTOR.allowEmptySlot %}
     <tr>
         <td></td>
         {% set colspan = allowMultiple ? 4 : 5 %}
@@ -21,7 +21,7 @@
         </td>
     </tr>
     {% endif %}
-    {% for moduleSelectorEntry in THIS.getAvailableModules %}
+    {% for moduleSelectorEntry in SELECTOR.getAvailableModules %}
     {% set module = moduleSelectorEntry.getModule %}
     {% set moduleId = module.getId %}
     {% set commodityId = module.getCommodityId %}
@@ -32,7 +32,7 @@
         {% endif %}
         <td style="width: 50px;">
             {% if allowMultiple %}
-            <input class="specialModuleRadio" type="checkbox" {{ checked }}  name="mod_{{ type }}[]"
+            <input class="specialModuleRadio" type="checkbox" {{ checked }} name="mod_{{ type }}[]"
                 value="{{ moduleId }}"
                 onchange="toggleSpecialModuleDisplay({{ type }}, {{ moduleId }}, {{ module.getCrew }}, {{ moduleSelectorEntry.getStoredAmount }});" />
             {% else %}

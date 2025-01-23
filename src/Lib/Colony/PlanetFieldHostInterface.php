@@ -6,16 +6,19 @@ namespace Stu\Lib\Colony;
 
 use Doctrine\Common\Collections\Collection;
 use Stu\Component\Colony\ColonyMenuEnum;
+use Stu\Lib\Component\EntityWithComponentsInterface;
 use Stu\Orm\Entity\ColonyClassInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Entity\UserInterface;
 
-interface PlanetFieldHostInterface
+interface PlanetFieldHostInterface extends EntityWithComponentsInterface
 {
     public const HOST_TYPE_COLONY = 1;
     public const HOST_TYPE_SANDBOX = 2;
 
     public function getId(): int;
+
+    public function getName(): string;
 
     public function getUser(): UserInterface;
 

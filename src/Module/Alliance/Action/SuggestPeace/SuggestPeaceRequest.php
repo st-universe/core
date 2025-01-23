@@ -14,6 +14,6 @@ final class SuggestPeaceRequest implements SuggestPeaceRequestInterface
     #[Override]
     public function getRelationId(): int
     {
-        return $this->queryParameter('al')->int()->required();
+        return $this->parameter('al')->int()->required();
     }
 }

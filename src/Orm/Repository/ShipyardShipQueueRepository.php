@@ -48,37 +48,37 @@ final class ShipyardShipQueueRepository extends EntityRepository implements Ship
     public function getByShipyard(int $stationId): array
     {
         return $this->findBy([
-            'ship_id' => $stationId
+            'station_id' => $stationId
         ]);
     }
 
     #[Override]
-    public function getAmountByShipyard(int $shipId): int
+    public function getAmountByShipyard(int $stationId): int
     {
         return $this->count([
-            'ship_id' => $shipId
+            'station_id' => $stationId
         ]);
     }
 
     #[Override]
-    public function stopQueueByShipyard(int $shipId): void
+    public function stopQueueByShipyard(int $stationId): void
     {
         $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'UPDATE %s sq SET sq.stop_date = :time WHERE sq.ship_id = :shipId',
+                    'UPDATE %s sq SET sq.stop_date = :time WHERE sq.station_id = :stationId',
                     ShipyardShipQueue::class
                 )
             )
             ->setParameters([
                 'time' => time(),
-                'shipId' => $shipId
+                'stationId' => $stationId
             ])
             ->execute();
     }
 
     #[Override]
-    public function restartQueueByShipyard(int $shipId): void
+    public function restartQueueByShipyard(int $stationId): void
     {
         $this->getEntityManager()
             ->createQuery(
@@ -86,14 +86,14 @@ final class ShipyardShipQueueRepository extends EntityRepository implements Ship
                     'UPDATE %s sq
                     SET sq.finish_date = (:time - sq.stop_date + sq.finish_date), sq.stop_date = :stopDate
                     WHERE sq.stop_date != 0
-                    AND sq.ship_id = :shipId',
+                    AND sq.station_id = :stationId',
                     ShipyardShipQueue::class
                 )
             )
             ->setParameters([
                 'stopDate' => 0,
                 'time' => time(),
-                'shipId' => $shipId
+                'stationId' => $stationId
             ])
             ->execute();
     }

@@ -6,6 +6,8 @@ namespace Stu\Lib\Request;
 
 use MPScholten\RequestParser\BaseControllerHelperTrait;
 use MPScholten\RequestParser\Config;
+use MPScholten\RequestParser\TypeParser;
+use request;
 
 trait CustomControllerHelperTrait
 {
@@ -13,8 +15,10 @@ trait CustomControllerHelperTrait
 
     public function __construct()
     {
-        $request = $_SERVER['REQUEST_METHOD'] === 'GET' ? $_GET : $_POST;
-        $this->initRequestParser($request);
+        if (array_key_exists('REQUEST_METHOD', $_SERVER)) {
+            $request = $_SERVER['REQUEST_METHOD'] === 'GET' ? $_GET : $_POST;
+            $this->initRequestParser($request);
+        }
     }
 
     /**
@@ -35,5 +39,14 @@ trait CustomControllerHelperTrait
                 strip_tags($string)
             )
         );
+    }
+
+    protected function parameter(string $name): TypeParser
+    {
+        if (request::isMocked()) {
+            $this->initRequestParser(request::getvars());
+        }
+
+        return $this->queryParameter($name);
     }
 }

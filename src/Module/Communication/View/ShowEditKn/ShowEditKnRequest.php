@@ -12,8 +12,8 @@ final class ShowEditKnRequest implements ShowEditKnRequestInterface
     use CustomControllerHelperTrait;
 
     #[Override]
-    public function getPostId(): int
+    public function getKnId(): int
     {
-        return $this->queryParameter('knid')->int()->required();
+        return $this->parameter('knid')->int()->required();
     }
 }

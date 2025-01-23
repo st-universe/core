@@ -9,7 +9,7 @@ use RuntimeException;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
-use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
@@ -43,7 +43,7 @@ final class ColonyTick implements ColonyTickInterface
         private ModuleQueueRepositoryInterface $moduleQueueRepository,
         private PlanetFieldRepositoryInterface $planetFieldRepository,
         private PrivateMessageSenderInterface $privateMessageSender,
-        private ColonyStorageManagerInterface $colonyStorageManager,
+        private StorageManagerInterface $storageManager,
         private ColonyRepositoryInterface $colonyRepository,
         private BuildingManagerInterface $buildingManager,
         private ColonyDepositMiningRepositoryInterface $colonyDepositMiningRepository,
@@ -325,7 +325,7 @@ final class ColonyTick implements ColonyTickInterface
 
                 if ($commodity->isSaveable()) {
                     // STANDARD
-                    $this->colonyStorageManager->lowerStorage(
+                    $this->storageManager->lowerStorage(
                         $colony,
                         $this->commodityCache->get($commodityId),
                         $amount
@@ -362,7 +362,7 @@ final class ColonyTick implements ColonyTickInterface
                 break;
             }
             if ($sum + $obj->getProduction() > $colony->getMaxStorage()) {
-                $this->colonyStorageManager->upperStorage(
+                $this->storageManager->upperStorage(
                     $colony,
                     $commodity,
                     $colony->getMaxStorage() - $sum
@@ -373,7 +373,7 @@ final class ColonyTick implements ColonyTickInterface
                 break;
             }
             $startTimeM = microtime(true);
-            $this->colonyStorageManager->upperStorage(
+            $this->storageManager->upperStorage(
                 $colony,
                 $commodity,
                 $obj->getProduction()
@@ -444,7 +444,7 @@ final class ColonyTick implements ColonyTickInterface
             }
 
             if ($this->colonyFunctionManager->hasActiveFunction($colony, $buildingFunction, false)) {
-                $this->colonyStorageManager->upperStorage(
+                $this->storageManager->upperStorage(
                     $colony,
                     $queue->getModule()->getCommodity(),
                     $queue->getAmount()

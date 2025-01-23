@@ -14,18 +14,18 @@ final class ChangePasswordRequest implements ChangePasswordRequestInterface
     #[Override]
     public function getCurrentPassword(): string
     {
-        return $this->queryParameter('oldpass')->string()->defaultsToIfEmpty('');
+        return $this->parameter('oldpass')->string()->defaultsToIfEmpty('');
     }
 
     #[Override]
     public function getNewPassword(): string
     {
-        return $this->queryParameter('pass')->string()->defaultsToIfEmpty('');
+        return $this->parameter('pass')->string()->defaultsToIfEmpty('');
     }
 
     #[Override]
     public function getNewPasswordReEntered(): string
     {
-        return $this->queryParameter('pass2')->string()->defaultsToIfEmpty('');
+        return $this->parameter('pass2')->string()->defaultsToIfEmpty('');
     }
 }
