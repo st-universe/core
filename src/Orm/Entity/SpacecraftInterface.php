@@ -140,13 +140,7 @@ interface SpacecraftInterface extends
 
     public function setBaseDamage(int $baseDamage): SpacecraftInterface;
 
-    /** @deprecated */
-    public function getSensorRange(): int;
-
     public function getTractorPayload(): int;
-
-    /** @deprecated */
-    public function getShieldRegenerationTimer(): int;
 
     public function getState(): SpacecraftStateEnum;
 
