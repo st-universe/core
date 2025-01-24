@@ -22,14 +22,14 @@ final class RefactorRunner
             $shieldSystemData = $wrapper->getShieldSystemData();
             if ($shieldSystemData !== null) {
                 $shieldSystemData
-                    ->setShieldRegenerationTimer($spacecraft->getShieldRegenerationTimer())
+                    //->setShieldRegenerationTimer($spacecraft->getShieldRegenerationTimer())
                     ->update();
             }
 
             $shieldSystemData = $wrapper->getLssSystemData();
             if ($shieldSystemData !== null) {
                 $shieldSystemData
-                    ->setSensorRange($spacecraft->getSensorRange())
+                    //->setSensorRange($spacecraft->getSensorRange())
                     ->update();
             }
         }

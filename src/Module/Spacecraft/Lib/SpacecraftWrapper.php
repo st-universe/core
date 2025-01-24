@@ -181,12 +181,13 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
     public function getSensorRange(): int
     {
         $lssSystemData = $this->getLssSystemData();
+        if ($lssSystemData === null) {
+            return 0;
+        }
 
-        return $lssSystemData !== null
-            ? $lssSystemData->getSensorRange()
-            : 0;
+        return (int) (ceil($lssSystemData->getSensorRange()
+            * $this->get()->getSpacecraftSystem(SpacecraftSystemTypeEnum::LSS)->getStatus() / 100));
     }
-
 
     #[Override]
     public function getShieldRegenerationRate(): int

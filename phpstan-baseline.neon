@@ -28,18 +28,6 @@ parameters:
 			path: src/Component/Logging/services.php
 
 		-
-			message: '#^Call to deprecated method getSensorRange\(\) of interface Stu\\Orm\\Entity\\SpacecraftInterface\.$#'
-			identifier: method.deprecated
-			count: 1
-			path: src/Component/Refactor/RefactorRunner.php
-
-		-
-			message: '#^Call to deprecated method getShieldRegenerationTimer\(\) of interface Stu\\Orm\\Entity\\SpacecraftInterface\.$#'
-			identifier: method.deprecated
-			count: 1
-			path: src/Component/Refactor/RefactorRunner.php
-
-		-
 			message: '#^Cannot call method getEps\(\) on Stu\\Component\\Spacecraft\\System\\Data\\EpsSystemData\|null\.$#'
 			identifier: method.nonObject
 			count: 1

@@ -110,12 +110,6 @@ abstract class Spacecraft implements SpacecraftInterface
     #[Column(type: 'smallint', length: 4)]
     private int $base_damage = 0;
 
-    #[Column(type: 'smallint', length: 3)]
-    private int $sensor_range = 0;
-
-    #[Column(type: 'integer')]
-    private int $shield_regeneration_timer = 0;
-
     #[Column(type: 'smallint', enumType: SpacecraftStateEnum::class)]
     private SpacecraftStateEnum $state = SpacecraftStateEnum::SHIP_STATE_NONE;
 
@@ -590,20 +584,6 @@ abstract class Spacecraft implements SpacecraftInterface
     }
 
     /**
-     * proportional to sensor system status
-     */
-    #[Override]
-    public function getSensorRange(): int
-    {
-        if (!$this->hasSpacecraftSystem(SpacecraftSystemTypeEnum::LSS)) {
-            return $this->sensor_range;
-        }
-
-        return (int) (ceil($this->sensor_range
-            * $this->getSpacecraftSystem(SpacecraftSystemTypeEnum::LSS)->getStatus() / 100));
-    }
-
-    /**
      * proportional to tractor beam system status
      */
     #[Override]
@@ -615,12 +595,6 @@ abstract class Spacecraft implements SpacecraftInterface
 
         return (int) (ceil($this->getRump()->getTractorPayload()
             * $this->getSpacecraftSystem(SpacecraftSystemTypeEnum::TRACTOR_BEAM)->getStatus() / 100));
-    }
-
-    #[Override]
-    public function getShieldRegenerationTimer(): int
-    {
-        return $this->shield_regeneration_timer;
     }
 
     #[Override]
