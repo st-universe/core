@@ -22,22 +22,28 @@ final class ShieldRegeneration implements ProcessTickHandlerInterface
     public function work(): void
     {
         $time = time();
-        $result = $this->spacecraftRepository->getSuitableForShieldRegeneration($time - self::SHIELD_REGENERATION_TIME);
+        $regenerationThreshold = $time - self::SHIELD_REGENERATION_TIME;
         $processedCount = 0;
-        foreach ($result as $spacecraft) {
-            $processedCount++;
+        foreach ($this->spacecraftRepository->getSuitableForShieldRegeneration() as $spacecraft) {
 
+            //AND CAST(ss.data::jsonb->>\'shieldRegenerationTimer\' AS INTEGER) <= :regenerationThreshold
             $wrapper = $this->spacecraftWrapperFactory->wrapSpacecraft($spacecraft);
+            $shieldSystemData = $wrapper->getShieldSystemData();
+            if ($shieldSystemData === null) {
+                throw new RuntimeException('this should hot happen');
+            }
+
+            if ($shieldSystemData->shieldRegenerationTimer > $regenerationThreshold) {
+                continue;
+            }
+
+            $processedCount++;
             $rate = $wrapper->getShieldRegenerationRate();
             if ($spacecraft->getShield() + $rate > $spacecraft->getMaxShield()) {
                 $rate = $spacecraft->getMaxShield() - $spacecraft->getShield();
             }
             $spacecraft->setShield($spacecraft->getShield() + $rate);
 
-            $shieldSystemData = $wrapper->getShieldSystemData();
-            if ($shieldSystemData === null) {
-                throw new RuntimeException('this should hot happen');
-            }
             $shieldSystemData->setShieldRegenerationTimer($time)->update();
 
             $this->spacecraftRepository->save($spacecraft);
