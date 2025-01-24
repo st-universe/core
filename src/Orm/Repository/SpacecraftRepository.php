@@ -93,7 +93,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
     }
 
     #[Override]
-    public function getSuitableForShieldRegeneration(int $regenerationThreshold): array
+    public function getSuitableForShieldRegeneration(): array
     {
         return $this->getEntityManager()->createQuery(
             sprintf(
@@ -105,7 +105,6 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
                 WHERE ss.system_type = :shieldType
                 AND ss.mode < :modeOn
                 AND s.schilde < s.max_schilde
-                AND CAST(ss.data::jsonb->>\'shieldRegenerationTimer\' AS INTEGER) <= :regenerationThreshold
                 AND (SELECT count(sc.id) FROM %s sc WHERE s.id = sc.spacecraft_id) >= bp.crew
                 AND NOT EXISTS (SELECT a FROM %s a
                                 WHERE a.location_id = s.location_id
@@ -120,7 +119,6 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
         )->setParameters([
             'shieldType' => SpacecraftSystemTypeEnum::SHIELDS->value,
             'modeOn' => SpacecraftSystemModeEnum::MODE_ON->value,
-            'regenerationThreshold' => $regenerationThreshold,
             'anomalyTypes' => [AnomalyTypeEnum::SUBSPACE_ELLIPSE, AnomalyTypeEnum::ION_STORM]
         ])->getResult();
     }
