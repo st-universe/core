@@ -24,7 +24,7 @@ class IonStormMovement
 
         $children = $root->getChildren()->toArray();
         foreach ($children as $child) {
-            $this->moveChild($child, $vertical, $horizontal, $locationPool);
+            $this->moveChild($child, $horizontal, $vertical, $locationPool);
         }
 
         if ($ionStormData->movementType === IonStormMovementType::VARIABLE) {
