@@ -83,7 +83,7 @@ class StateIconAndTitle
         ) {
             $miningqueue = $spacecraft->getMiningQueue();
             $module = $spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::BUSSARD_COLLECTOR)->getModule();
-            $gathercount = 0;
+
             if ($miningqueue !== null) {
                 $locationmining = $miningqueue->getLocationMining();
                 if ($module !== null) {
