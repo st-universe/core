@@ -57,8 +57,8 @@ final class ShowWritePm implements ViewControllerInterface
                     $game->getUser()
                 ),
                 $this->privateMessageRepository->getOrderedCorrepondence(
-                    $reply->getSenderId(),
                     $reply->getRecipientId(),
+                    $reply->getSenderId(),
                     [PrivateMessageFolderTypeEnum::SPECIAL_MAIN->value, PrivateMessageFolderTypeEnum::DEFAULT_OWN->value],
                     $user->isInboxMessengerStyle() ? self::CORRESPONDENCE_LIMIT_MESSENGER : self::CORRESPONDENCE_LIMIT_CLASSIC
                 )
