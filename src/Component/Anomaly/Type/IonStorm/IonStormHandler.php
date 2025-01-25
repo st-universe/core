@@ -237,7 +237,7 @@ final class IonStormHandler implements AnomalyHandlerInterface
 
         $damageWrapper
             ->setCrit(random_int(0, 20) === 0)
-            ->setHullDamageFactor(max(0, 100 - $hull->getLevel() * ($hasIonStormReduction ? 20 : 10)))
+            ->setHullDamageFactor(max(0, 100 - $hull->getLevel() * ($hasIonStormReduction ? 16 : 8)))
             ->setShieldDamageFactor(100 - $shieldLevel * 10)
             ->setTargetSystemTypes([
                 SpacecraftSystemTypeEnum::DEFLECTOR,
