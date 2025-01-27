@@ -24,9 +24,7 @@ final class CreatePrestigeLog implements CreatePrestigeLogInterface
     #[Override]
     public function createLog(int $amount, string $description, UserInterface $user, int $date): void
     {
-        if ($user->getId() >= UserEnum::USER_FIRST_ID) {
-            $this->createLogIntern($amount, $description, $user, $date);
-        }
+        $this->createLogIntern($amount, $description, $user, $date);
     }
 
     #[Override]
@@ -45,6 +43,10 @@ final class CreatePrestigeLog implements CreatePrestigeLogInterface
 
     private function createLogIntern(int $amount, string $description, UserInterface $user, int $date): void
     {
+        if ($user->getId() < UserEnum::USER_FIRST_ID) {
+            return;
+        }
+
         $prestigeLog = $this->prestigeLogRepository->prototype();
         $prestigeLog->setUserId($user->getId());
         $prestigeLog->setAmount($amount);
