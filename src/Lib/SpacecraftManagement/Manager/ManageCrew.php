@@ -11,7 +11,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderInterface;
-use Stu\Module\Spacecraft\Lib\Auxiliary\ShipShutdownInterface;
+use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftShutdownInterface;
 use Stu\Module\Spacecraft\Lib\Crew\SpacecraftLeaverInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Spacecraft\Lib\ActivatorDeactivatorHelperInterface;
@@ -26,7 +26,7 @@ class ManageCrew implements ManagerInterface
         private SpacecraftCrewCalculatorInterface $shipCrewCalculator,
         private SpacecraftSystemManagerInterface $spacecraftSystemManager,
         private TroopTransferUtilityInterface $troopTransferUtility,
-        private ShipShutdownInterface $shipShutdown,
+        private SpacecraftShutdownInterface $spacecraftShutdown,
         private SpacecraftLeaverInterface $spacecraftLeaver,
         private ActivatorDeactivatorHelperInterface $helper
     ) {}
@@ -181,7 +181,7 @@ class ManageCrew implements ManagerInterface
         );
 
         if ($removedCrew === $ownCrewCount) {
-            $this->shipShutdown->shutdown($wrapper);
+            $this->spacecraftShutdown->shutdown($wrapper);
         }
     }
 

@@ -19,7 +19,7 @@ use Stu\Orm\Entity\StationInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\StuTestCase;
 
-class ShipShutdownTest extends StuTestCase
+class SpacecraftShutdownTest extends StuTestCase
 {
     /** @var MockInterface&SpacecraftRepositoryInterface */
     private $spacecraftRepository;
@@ -32,7 +32,7 @@ class ShipShutdownTest extends StuTestCase
     /** @var MockInterface&ShipUndockingInterface */
     private $shipUndocking;
 
-    private ShipShutdownInterface $subject;
+    private SpacecraftShutdownInterface $subject;
 
     #[Override]
     public function setUp(): void
@@ -44,7 +44,7 @@ class ShipShutdownTest extends StuTestCase
         $this->spacecraftStateChanger = $this->mock(SpacecraftStateChangerInterface::class);
         $this->shipUndocking = $this->mock(ShipUndockingInterface::class);
 
-        $this->subject = new ShipShutdown(
+        $this->subject = new SpacecraftShutdown(
             $this->spacecraftRepository,
             $this->spacecraftSystemManager,
             $this->leaveFleet,

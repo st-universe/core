@@ -20,7 +20,7 @@ use Stu\Lib\Transfer\EntityWithStorageInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Spacecraft\Lib\ActivatorDeactivatorHelperInterface;
-use Stu\Module\Spacecraft\Lib\Auxiliary\ShipShutdownInterface;
+use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftShutdownInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -43,7 +43,7 @@ class SpacecraftStorageEntityWrapper implements StorageEntityWrapperInterface
         private ActivatorDeactivatorHelperInterface $activatorDeactivatorHelper,
         private SpacecraftSystemManagerInterface $spacecraftSystemManager,
         private SpacecraftCrewCalculatorInterface $shipCrewCalculator,
-        private ShipShutdownInterface $shipShutdown,
+        private SpacecraftShutdownInterface $spacecraftShutdown,
         private PrivateMessageSenderInterface $privateMessageSender,
         private SpacecraftWrapperInterface $spacecraftWrapper
     ) {
@@ -322,7 +322,7 @@ class SpacecraftStorageEntityWrapper implements StorageEntityWrapperInterface
     {
         // no crew left, so shut down
         if ($this->spacecraft->getCrewCount() === 0) {
-            $this->shipShutdown->shutdown($this->spacecraftWrapper);
+            $this->spacecraftShutdown->shutdown($this->spacecraftWrapper);
             return;
         }
 
