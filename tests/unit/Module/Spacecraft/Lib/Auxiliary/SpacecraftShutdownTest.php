@@ -72,7 +72,7 @@ class SpacecraftShutdownTest extends StuTestCase
         $ship->shouldReceive('getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(SpacecraftStateEnum::SHIP_STATE_ASTRO_FINALIZING);
+            ->andReturn(SpacecraftStateEnum::ASTRO_FINALIZING);
 
         $ship->shouldReceive('setAlertStateGreen')
             ->withNoArgs()
@@ -89,7 +89,7 @@ class SpacecraftShutdownTest extends StuTestCase
         }
 
         $this->spacecraftStateChanger->shouldReceive('changeState')
-            ->with($wrapper, SpacecraftStateEnum::SHIP_STATE_NONE)
+            ->with($wrapper, SpacecraftStateEnum::NONE)
             ->once();
 
         $this->spacecraftRepository->shouldReceive('save')
@@ -117,7 +117,7 @@ class SpacecraftShutdownTest extends StuTestCase
         $station->shouldReceive('getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(SpacecraftStateEnum::SHIP_STATE_ASTRO_FINALIZING);
+            ->andReturn(SpacecraftStateEnum::ASTRO_FINALIZING);
 
         $station->shouldReceive('setAlertStateGreen')
             ->withNoArgs()
@@ -132,7 +132,7 @@ class SpacecraftShutdownTest extends StuTestCase
             ->once();
 
         $this->spacecraftStateChanger->shouldReceive('changeState')
-            ->with($wrapper, SpacecraftStateEnum::SHIP_STATE_NONE)
+            ->with($wrapper, SpacecraftStateEnum::NONE)
             ->once();
 
         $this->spacecraftRepository->shouldReceive('save')
@@ -159,7 +159,7 @@ class SpacecraftShutdownTest extends StuTestCase
         $station->shouldReceive('getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(SpacecraftStateEnum::SHIP_STATE_RETROFIT);
+            ->andReturn(SpacecraftStateEnum::RETROFIT);
 
         $station->shouldReceive('setAlertStateGreen')
             ->withNoArgs()

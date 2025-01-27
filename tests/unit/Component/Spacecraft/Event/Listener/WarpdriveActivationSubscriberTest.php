@@ -75,7 +75,7 @@ class WarpdriveActivationSubscriberTest extends StuTestCase
             ->andReturn(null);
 
         $this->spacecraftStateChanger->shouldReceive('changeState')
-            ->with($this->wrapper, SpacecraftStateEnum::SHIP_STATE_NONE)
+            ->with($this->wrapper, SpacecraftStateEnum::NONE)
             ->once();
 
         $this->shipUndocking->shouldReceive('undockAllDocked')
@@ -107,7 +107,7 @@ class WarpdriveActivationSubscriberTest extends StuTestCase
             ->andReturn($traktoredShip);
 
         $this->spacecraftStateChanger->shouldReceive('changeState')
-            ->with($this->wrapper, SpacecraftStateEnum::SHIP_STATE_NONE)
+            ->with($this->wrapper, SpacecraftStateEnum::NONE)
             ->once();
 
         $this->shipUndocking->shouldReceive('undockAllDocked')
@@ -144,10 +144,10 @@ class WarpdriveActivationSubscriberTest extends StuTestCase
             ->andReturn($traktoredShip);
 
         $this->spacecraftStateChanger->shouldReceive('changeState')
-            ->with($this->wrapper, SpacecraftStateEnum::SHIP_STATE_NONE)
+            ->with($this->wrapper, SpacecraftStateEnum::NONE)
             ->once();
         $this->spacecraftStateChanger->shouldReceive('changeState')
-            ->with($traktoredShipWrapper, SpacecraftStateEnum::SHIP_STATE_NONE)
+            ->with($traktoredShipWrapper, SpacecraftStateEnum::NONE)
             ->once();
 
         $this->shipUndocking->shouldReceive('undockAllDocked')

@@ -88,7 +88,7 @@ class TholianWebConsequenceTest extends StuTestCase
         $this->ship->shouldReceive('getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(SpacecraftStateEnum::SHIP_STATE_NONE);
+            ->andReturn(SpacecraftStateEnum::NONE);
         $this->ship->shouldReceive('getHoldingWeb')
             ->withNoArgs()
             ->once()
@@ -128,7 +128,7 @@ class TholianWebConsequenceTest extends StuTestCase
         $this->ship->shouldReceive('getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(SpacecraftStateEnum::SHIP_STATE_NONE);
+            ->andReturn(SpacecraftStateEnum::NONE);
         $this->ship->shouldReceive('getHoldingWeb')
             ->withNoArgs()
             ->once()
@@ -172,7 +172,7 @@ class TholianWebConsequenceTest extends StuTestCase
         $this->ship->shouldReceive('getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(SpacecraftStateEnum::SHIP_STATE_NONE);
+            ->andReturn(SpacecraftStateEnum::NONE);
         $this->ship->shouldReceive('getName')
             ->withNoArgs()
             ->once()
@@ -228,7 +228,7 @@ class TholianWebConsequenceTest extends StuTestCase
         $this->ship->shouldReceive('getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(SpacecraftStateEnum::SHIP_STATE_WEB_SPINNING);
+            ->andReturn(SpacecraftStateEnum::WEB_SPINNING);
         $this->ship->shouldReceive('getName')
             ->withNoArgs()
             ->once()

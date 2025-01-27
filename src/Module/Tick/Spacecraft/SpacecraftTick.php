@@ -101,7 +101,7 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
 
         $startTime = microtime(true);
         // repair station
-        if ($wrapper instanceof StationWrapperInterface && $spacecraft->getState() === SpacecraftStateEnum::SHIP_STATE_REPAIR_PASSIVE) {
+        if ($wrapper instanceof StationWrapperInterface && $spacecraft->getState() === SpacecraftStateEnum::REPAIR_PASSIVE) {
             $this->doRepairStation($wrapper);
         }
         $this->potentialLog($spacecraft, "marker1", $startTime);
@@ -355,7 +355,7 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
             return false;
         }
 
-        $isUnderConstruction = $station->getState() === SpacecraftStateEnum::SHIP_STATE_UNDER_CONSTRUCTION;
+        $isUnderConstruction = $station->getState() === SpacecraftStateEnum::UNDER_CONSTRUCTION;
 
         if (!$this->stationUtility->hasEnoughDockedWorkbees($station, $station->getRump())) {
             $neededWorkbees = $isUnderConstruction ? $station->getRump()->getNeededWorkbees() :
@@ -450,7 +450,7 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
 
         if (!$wrapper->canBeRepaired()) {
             $station->setHuell($station->getMaxHull());
-            $station->setState(SpacecraftStateEnum::SHIP_STATE_NONE);
+            $station->setState(SpacecraftStateEnum::NONE);
 
             $shipOwnerMessage = sprintf(
                 "Die Reparatur der %s wurde in Sektor %s fertiggestellt",
@@ -506,7 +506,7 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
         $this->potentialLog($ship, "marker11.1", $startTime);
 
         if (
-            $ship->getState() === SpacecraftStateEnum::SHIP_STATE_ASTRO_FINALIZING
+            $ship->getState() === SpacecraftStateEnum::ASTRO_FINALIZING
             && $databaseEntry !== null
             && $astroLab !== null
             && $this->game->getCurrentRound()->getTurn() >= ($astroLab->getAstroStartTurn() + AstronomicalMappingEnum::TURNS_TO_FINISH)

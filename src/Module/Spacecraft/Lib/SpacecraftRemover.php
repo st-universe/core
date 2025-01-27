@@ -49,7 +49,7 @@ final class SpacecraftRemover implements SpacecraftRemoverInterface
         $wrapper = $this->spacecraftWrapperFactory->wrapSpacecraft($spacecraft);
 
         $this->spacecraftShutdown->shutdown($wrapper, true);
-        $this->spacecraftStateChanger->changeState($wrapper, SpacecraftStateEnum::SHIP_STATE_NONE);
+        $this->spacecraftStateChanger->changeState($wrapper, SpacecraftStateEnum::NONE);
 
         //both sides have to be cleared, foreign key violation
         if ($spacecraft->isTractoring()) {

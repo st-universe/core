@@ -111,7 +111,7 @@ abstract class Spacecraft implements SpacecraftInterface
     private int $base_damage = 0;
 
     #[Column(type: 'smallint', enumType: SpacecraftStateEnum::class)]
-    private SpacecraftStateEnum $state = SpacecraftStateEnum::SHIP_STATE_NONE;
+    private SpacecraftStateEnum $state = SpacecraftStateEnum::NONE;
 
     #[Column(type: 'integer')]
     private int $location_id = 0;
@@ -626,8 +626,8 @@ abstract class Spacecraft implements SpacecraftInterface
     #[Override]
     public function isUnderRepair(): bool
     {
-        return $this->getState() === SpacecraftStateEnum::SHIP_STATE_REPAIR_ACTIVE
-            || $this->getState() === SpacecraftStateEnum::SHIP_STATE_REPAIR_PASSIVE;
+        return $this->getState() === SpacecraftStateEnum::REPAIR_ACTIVE
+            || $this->getState() === SpacecraftStateEnum::REPAIR_PASSIVE;
     }
 
     #[Override]

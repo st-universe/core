@@ -110,7 +110,7 @@ class LongRangeScannerShipSystemTest extends StuTestCase
         $this->ship->shouldReceive('getState')
             ->with()
             ->once()
-            ->andReturn(SpacecraftStateEnum::SHIP_STATE_ASTRO_FINALIZING);
+            ->andReturn(SpacecraftStateEnum::ASTRO_FINALIZING);
         $this->astroEntryLib->shouldReceive('cancelAstroFinalizing')
             ->with($this->wrapper)
             ->once();
@@ -166,7 +166,7 @@ class LongRangeScannerShipSystemTest extends StuTestCase
         $this->ship->shouldReceive('getState')
             ->with()
             ->once()
-            ->andReturn(SpacecraftStateEnum::SHIP_STATE_ASTRO_FINALIZING);
+            ->andReturn(SpacecraftStateEnum::ASTRO_FINALIZING);
         $this->astroEntryLib->shouldReceive('cancelAstroFinalizing')
             ->with($this->wrapper)
             ->once();

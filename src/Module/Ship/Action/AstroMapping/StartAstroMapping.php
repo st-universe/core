@@ -84,7 +84,7 @@ final class StartAstroMapping implements ActionControllerInterface
         $this->astroEntryRepository->save($entry);
 
         $epsSystem->lowerEps(AstroLaboratoryShipSystem::FINALIZING_ENERGY_COST)->update();
-        $ship->setState(SpacecraftStateEnum::SHIP_STATE_ASTRO_FINALIZING);
+        $ship->setState(SpacecraftStateEnum::ASTRO_FINALIZING);
 
         $astroLab = $wrapper->getAstroLaboratorySystemData();
         if ($astroLab === null) {

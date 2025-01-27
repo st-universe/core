@@ -340,7 +340,7 @@ final class RepairUtil implements RepairUtilInterface
             }
         }
 
-        $spacecraft->setState(SpacecraftStateEnum::SHIP_STATE_NONE);
+        $spacecraft->setState(SpacecraftStateEnum::NONE);
 
         return $result;
     }

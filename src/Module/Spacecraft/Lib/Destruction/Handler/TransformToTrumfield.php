@@ -64,7 +64,7 @@ class TransformToTrumfield implements SpacecraftDestructionHandlerInterface
             $this->storageRepository->delete($storage);
         }
 
-        $this->spacecraftStateChanger->changeState($destroyedSpacecraftWrapper, SpacecraftStateEnum::SHIP_STATE_DESTROYED);
+        $this->spacecraftStateChanger->changeState($destroyedSpacecraftWrapper, SpacecraftStateEnum::DESTROYED);
 
         // delete ship systems
         foreach ($spacecraft->getSystems() as $system) {

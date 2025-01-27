@@ -63,7 +63,7 @@ class StateIconAndTitleTest extends StuTestCase
         $this->ship->shouldReceive('getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(SpacecraftStateEnum::SHIP_STATE_REPAIR_ACTIVE);
+            ->andReturn(SpacecraftStateEnum::REPAIR_ACTIVE);
         $this->ship->shouldReceive('isStation')
             ->withNoArgs()
             ->once()
@@ -89,7 +89,7 @@ class StateIconAndTitleTest extends StuTestCase
         $this->ship->shouldReceive('getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(SpacecraftStateEnum::SHIP_STATE_REPAIR_PASSIVE);
+            ->andReturn(SpacecraftStateEnum::REPAIR_PASSIVE);
         $this->ship->shouldReceive('isStation')
             ->withNoArgs()
             ->once()
@@ -118,7 +118,7 @@ class StateIconAndTitleTest extends StuTestCase
         $this->ship->shouldReceive('getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(SpacecraftStateEnum::SHIP_STATE_ASTRO_FINALIZING);
+            ->andReturn(SpacecraftStateEnum::ASTRO_FINALIZING);
         $astroLab->shouldReceive('getAstroStartTurn')
             ->withNoArgs()
             ->once()
@@ -142,7 +142,7 @@ class StateIconAndTitleTest extends StuTestCase
         $this->ship->shouldReceive('getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(SpacecraftStateEnum::SHIP_STATE_ACTIVE_TAKEOVER);
+            ->andReturn(SpacecraftStateEnum::ACTIVE_TAKEOVER);
         $this->ship->shouldReceive('getTakeoverActive')
             ->withNoArgs()
             ->once()
@@ -187,7 +187,7 @@ class StateIconAndTitleTest extends StuTestCase
         $this->ship->shouldReceive('getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(SpacecraftStateEnum::SHIP_STATE_NONE);
+            ->andReturn(SpacecraftStateEnum::NONE);
         $this->ship->shouldReceive('getTakeoverActive')
             ->withNoArgs()
             ->once()

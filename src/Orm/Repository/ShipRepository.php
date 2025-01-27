@@ -95,7 +95,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             )
         )->setParameters([
             'location' => $fleetLeader->getLocation(),
-            'state' => SpacecraftStateEnum::SHIP_STATE_RETROFIT,
+            'state' => SpacecraftStateEnum::RETROFIT,
             'user' => $fleetLeader->getUser()
         ])->getResult();
     }

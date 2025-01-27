@@ -76,7 +76,7 @@ final class CloakShipSystem extends AbstractSpacecraftSystemType implements Spac
         if ($spacecraft instanceof ShipInterface) {
             $spacecraft->setDockedTo(null);
         }
-        $this->spacecraftStateChanger->changeState($wrapper, SpacecraftStateEnum::SHIP_STATE_NONE);
+        $this->spacecraftStateChanger->changeState($wrapper, SpacecraftStateEnum::NONE);
 
         if ($spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::ASTRO_LABORATORY)) {
             $spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::ASTRO_LABORATORY)->setMode(SpacecraftSystemModeEnum::MODE_OFF);

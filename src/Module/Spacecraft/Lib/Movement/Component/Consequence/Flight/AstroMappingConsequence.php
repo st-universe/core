@@ -36,7 +36,7 @@ class AstroMappingConsequence extends AbstractFlightConsequence implements Fligh
 
         $ship = $wrapper->get();
 
-        if ($ship->getState() === SpacecraftStateEnum::SHIP_STATE_ASTRO_FINALIZING) {
+        if ($ship->getState() === SpacecraftStateEnum::ASTRO_FINALIZING) {
             $message = $this->messageFactory->createMessage(
                 null,
                 $ship->getUser()->getId(),
