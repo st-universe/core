@@ -17,4 +17,16 @@ enum SpacecraftStateEnum: int
     case SHIP_STATE_ACTIVE_TAKEOVER = 8;
     case SHIP_STATE_GATHER_RESOURCES = 9;
     case SHIP_STATE_RETROFIT = 10;
+
+    public function isActiveState(): bool
+    {
+        return match ($this) {
+            self::SHIP_STATE_NONE,
+            self::SHIP_STATE_REPAIR_PASSIVE,
+            self::SHIP_STATE_UNDER_CONSTRUCTION,
+            self::SHIP_STATE_UNDER_SCRAPPING,
+            self::SHIP_STATE_RETROFIT => false,
+            default => true
+        };
+    }
 }

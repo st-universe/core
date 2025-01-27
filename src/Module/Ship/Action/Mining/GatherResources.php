@@ -69,7 +69,7 @@ final class GatherResources implements ActionControllerInterface
                 $this->miningQueueRepository->truncateByShipId($ship->getId());
                 $game->addInformation("Es werden keine Ressourcen mehr gesammelt");
             }
-            $this->spacecraftStateChanger->changeShipState($wrapper, SpacecraftStateEnum::SHIP_STATE_NONE);
+            $this->spacecraftStateChanger->changeState($wrapper, SpacecraftStateEnum::SHIP_STATE_NONE);
             return;
         } else {
 
@@ -89,7 +89,7 @@ final class GatherResources implements ActionControllerInterface
                     $this->miningQueueRepository->truncateByShipId($ship->getId());
                 }
             }
-            $this->spacecraftStateChanger->changeShipState($wrapper, SpacecraftStateEnum::SHIP_STATE_GATHER_RESOURCES);
+            $this->spacecraftStateChanger->changeState($wrapper, SpacecraftStateEnum::SHIP_STATE_GATHER_RESOURCES);
 
 
             $miningqueue = $this->miningQueueRepository->prototype();

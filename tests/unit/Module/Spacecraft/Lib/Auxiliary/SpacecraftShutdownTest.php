@@ -72,7 +72,7 @@ class SpacecraftShutdownTest extends StuTestCase
         $ship->shouldReceive('getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(SpacecraftStateEnum::SHIP_STATE_NONE);
+            ->andReturn(SpacecraftStateEnum::SHIP_STATE_ASTRO_FINALIZING);
 
         $ship->shouldReceive('setAlertStateGreen')
             ->withNoArgs()
@@ -88,7 +88,7 @@ class SpacecraftShutdownTest extends StuTestCase
                 ->once();
         }
 
-        $this->spacecraftStateChanger->shouldReceive('changeShipState')
+        $this->spacecraftStateChanger->shouldReceive('changeState')
             ->with($wrapper, SpacecraftStateEnum::SHIP_STATE_NONE)
             ->once();
 
@@ -117,7 +117,7 @@ class SpacecraftShutdownTest extends StuTestCase
         $station->shouldReceive('getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(SpacecraftStateEnum::SHIP_STATE_NONE);
+            ->andReturn(SpacecraftStateEnum::SHIP_STATE_ASTRO_FINALIZING);
 
         $station->shouldReceive('setAlertStateGreen')
             ->withNoArgs()
@@ -131,7 +131,7 @@ class SpacecraftShutdownTest extends StuTestCase
             ->with($station)
             ->once();
 
-        $this->spacecraftStateChanger->shouldReceive('changeShipState')
+        $this->spacecraftStateChanger->shouldReceive('changeState')
             ->with($wrapper, SpacecraftStateEnum::SHIP_STATE_NONE)
             ->once();
 
@@ -144,5 +144,39 @@ class SpacecraftShutdownTest extends StuTestCase
         } else {
             $this->subject->shutdown($wrapper);
         }
+    }
+
+    public function testShutdownExpectNoStateChangeWhenPassiveState(): void
+    {
+        $wrapper = $this->mock(StationWrapperInterface::class);
+        $station = $this->mock(StationInterface::class);
+
+        $wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($station);
+
+        $station->shouldReceive('getState')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(SpacecraftStateEnum::SHIP_STATE_RETROFIT);
+
+        $station->shouldReceive('setAlertStateGreen')
+            ->withNoArgs()
+            ->once();
+
+        $this->spacecraftSystemManager->shouldReceive('deactivateAll')
+            ->with($wrapper)
+            ->once();
+
+        $this->shipUndocking->shouldReceive('undockAllDocked')
+            ->with($station)
+            ->once();
+
+        $this->spacecraftRepository->shouldReceive('save')
+            ->with($station)
+            ->once();
+
+        $this->subject->shutdown($wrapper);
     }
 }

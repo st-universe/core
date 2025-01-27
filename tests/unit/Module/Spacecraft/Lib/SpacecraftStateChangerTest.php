@@ -87,7 +87,7 @@ class SpacecraftStateChangerTest extends StuTestCase
             ->once()
             ->andReturn(SpacecraftStateEnum::SHIP_STATE_DESTROYED);
 
-        $this->subject->changeShipState($this->wrapper, SpacecraftStateEnum::SHIP_STATE_NONE);
+        $this->subject->changeState($this->wrapper, SpacecraftStateEnum::SHIP_STATE_NONE);
     }
 
     public function testChangeShipStateExpectNothingWhenStateUnchanged(): void
@@ -97,7 +97,7 @@ class SpacecraftStateChangerTest extends StuTestCase
             ->once()
             ->andReturn(SpacecraftStateEnum::SHIP_STATE_NONE);
 
-        $this->subject->changeShipState($this->wrapper, SpacecraftStateEnum::SHIP_STATE_NONE);
+        $this->subject->changeState($this->wrapper, SpacecraftStateEnum::SHIP_STATE_NONE);
     }
 
     public function testChangeShipStateExpectRepairCanceling(): void
@@ -122,7 +122,7 @@ class SpacecraftStateChangerTest extends StuTestCase
             ->with($this->ship)
             ->once();
 
-        $this->subject->changeShipState($this->wrapper, SpacecraftStateEnum::SHIP_STATE_NONE);
+        $this->subject->changeState($this->wrapper, SpacecraftStateEnum::SHIP_STATE_NONE);
     }
 
     public function testChangeShipStateExpectAstroCanceling(): void
@@ -148,7 +148,7 @@ class SpacecraftStateChangerTest extends StuTestCase
             ->with($this->ship)
             ->once();
 
-        $this->subject->changeShipState($this->wrapper, SpacecraftStateEnum::SHIP_STATE_NONE);
+        $this->subject->changeState($this->wrapper, SpacecraftStateEnum::SHIP_STATE_NONE);
     }
 
     public function testChangeShipStateExpectWebRelease(): void
@@ -174,7 +174,7 @@ class SpacecraftStateChangerTest extends StuTestCase
             ->with($this->ship)
             ->once();
 
-        $this->subject->changeShipState($this->wrapper, SpacecraftStateEnum::SHIP_STATE_NONE);
+        $this->subject->changeState($this->wrapper, SpacecraftStateEnum::SHIP_STATE_NONE);
     }
 
 
