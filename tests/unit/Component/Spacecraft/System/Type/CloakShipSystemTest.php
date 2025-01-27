@@ -178,7 +178,7 @@ class CloakShipSystemTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(true);
-        $this->spacecraftStateChanger->shouldReceive('changeShipState')
+        $this->spacecraftStateChanger->shouldReceive('changeState')
             ->with($this->wrapper, SpacecraftStateEnum::SHIP_STATE_NONE)
             ->once();
 

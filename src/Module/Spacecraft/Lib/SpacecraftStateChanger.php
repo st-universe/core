@@ -32,7 +32,7 @@ final class SpacecraftStateChanger implements SpacecraftStateChangerInterface
     ) {}
 
     #[Override]
-    public function changeShipState(SpacecraftWrapperInterface $wrapper, SpacecraftStateEnum $newState): void
+    public function changeState(SpacecraftWrapperInterface $wrapper, SpacecraftStateEnum $newState): void
     {
         $ship = $wrapper->get();
         $currentState = $ship->getState();

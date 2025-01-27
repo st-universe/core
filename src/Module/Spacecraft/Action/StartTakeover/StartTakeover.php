@@ -131,7 +131,7 @@ final class StartTakeover implements ActionControllerInterface
             return;
         }
 
-        $this->spacecraftStateChanger->changeShipState($wrapper, SpacecraftStateEnum::SHIP_STATE_ACTIVE_TAKEOVER);
+        $this->spacecraftStateChanger->changeState($wrapper, SpacecraftStateEnum::SHIP_STATE_ACTIVE_TAKEOVER);
         $this->shipTakeoverManager->startTakeover($spacecraft, $target, $neededPrestige);
 
         $game->addInformationf(
