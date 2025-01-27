@@ -11,8 +11,8 @@ use Stu\Exception\SpacecraftDoesNotExistException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\NPC\View\ShowTools\ShowTools;
-use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Orm\Repository\ColonyRepository;
+use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\NPCLogRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -21,8 +21,8 @@ final class CommodityCheat implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_COMMODITY_CHEAT';
 
-
-    public function __construct(private ShipLoaderInterface $shipLoader, private StorageManagerInterface $storageManager, private CommodityRepositoryInterface $commodityRepository, private NPCLogRepositoryInterface $npcLogRepository, private ColonyRepositoryInterface $colonyRepository) {}
+    /** @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader */
+    public function __construct(private SpacecraftLoaderInterface $spacecraftLoader, private StorageManagerInterface $storageManager, private CommodityRepositoryInterface $commodityRepository, private NPCLogRepositoryInterface $npcLogRepository, private ColonyRepositoryInterface $colonyRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -38,28 +38,28 @@ final class CommodityCheat implements ActionControllerInterface
             return;
         }
 
-        if (!request::getVarByMethod(request::postvars(), 'shipid') && !request::getVarByMethod(request::postvars(), 'colonyid')) {
-            $game->addInformation("Weder Schiff noch Kolonie ausgewählt");
+        if (!request::getVarByMethod(request::postvars(), 'spacecraftid') && !request::getVarByMethod(request::postvars(), 'colonyid')) {
+            $game->addInformation("Es wurde weder Spacecraft noch Kolonie ausgewählt");
             return;
         } else {
-            $shipId = request::postInt('shipid');
+            $spacecraftId = request::postInt('spacecraftid');
             $colonyId = request::postInt('colonyid');
             $commodityId = request::postInt('commodityid');
             $amount = request::postInt('amount');
             $reason = request::postString('reason');
 
-            if ($shipId != null && $colonyId != null) {
-                $game->addInformation("Es dürfen nicht Schiff und Kolonie gleichzeitig ausgewählt sein");
+            if ($spacecraftId != null && $colonyId != null) {
+                $game->addInformation("Es dürfen nicht Spacecraft und Kolonie gleichzeitig ausgewählt sein");
                 return;
             }
 
-            if ($shipId != null) {
-                $wrapper = $this->shipLoader->find($shipId);
+            if ($spacecraftId != null) {
+                $wrapper = $this->spacecraftLoader->find($spacecraftId);
 
                 if ($wrapper === null) {
-                    throw new SpacecraftDoesNotExistException(_('Ship does not exist!'));
+                    throw new SpacecraftDoesNotExistException(_('Spacecraft does not exist!'));
                 }
-                $ship = $wrapper->get();
+                $spacecraft = $wrapper->get();
             }
 
             if ($colonyId != null) {
@@ -85,19 +85,19 @@ final class CommodityCheat implements ActionControllerInterface
                 return;
             }
 
-            if ($shipId != null) {
+            if ($spacecraftId != null) {
                 $this->storageManager->upperStorage(
-                    $ship,
+                    $spacecraft,
                     $commodity,
                     $amount
                 );
                 $text = sprintf(
-                    '%s hat dem Schiff %s (%d) von Spieler %s (%d) %d %s hinzugefügt. Grund: %s',
+                    '%s hat dem Spacecraft %s (%d) von Spieler %s (%d) %d %s hinzugefügt. Grund: %s',
                     $user->getName(),
-                    $ship->getName(),
-                    $ship->getId(),
-                    $ship->getUser()->getName(),
-                    $ship->getUser()->getId(),
+                    $spacecraft->getName(),
+                    $spacecraft->getId(),
+                    $spacecraft->getUser()->getName(),
+                    $spacecraft->getUser()->getId(),
                     $amount,
                     $commodity->getName(),
                     $reason
