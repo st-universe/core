@@ -46,8 +46,11 @@ class PrivateMessageListItem implements PrivateMessageListItemInterface
         if ($this->message->getNew() === false) {
             return false;
         }
-        $this->message->setNew(false);
-        $this->privateMessageRepository->save($this->message, true);
+
+        if ($this->message->getRecipient() === $this->currentUser) {
+            $this->message->setNew(false);
+            $this->privateMessageRepository->save($this->message, true);
+        }
 
         return true;
     }
