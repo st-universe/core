@@ -38,7 +38,11 @@ final class ShipShutdown implements ShipShutdownInterface
         if ($spacecraft instanceof StationInterface) {
             $this->shipUndocking->undockAllDocked($spacecraft);
         }
-        $this->spacecraftStateChanger->changeShipState($wrapper, SpacecraftStateEnum::SHIP_STATE_NONE);
+
+        $currentState = $spacecraft->getState();
+        if ($currentState != SpacecraftStateEnum::SHIP_STATE_RETROFIT && $currentState != SpacecraftStateEnum::SHIP_STATE_REPAIR_PASSIVE) {
+            $this->spacecraftStateChanger->changeShipState($wrapper, SpacecraftStateEnum::SHIP_STATE_NONE);
+        }
 
         $spacecraft->setAlertStateGreen();
         $this->spacecraftRepository->save($spacecraft);
