@@ -165,6 +165,7 @@ class CrewAssignment implements CrewAssignmentInterface
     #[Override]
     public function setSpacecraft(?SpacecraftInterface $spacecraft): CrewAssignmentInterface
     {
+        $this->spacecraft_id = null;
         $this->spacecraft = $spacecraft;
         return $this;
     }
