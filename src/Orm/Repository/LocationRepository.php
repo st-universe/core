@@ -161,7 +161,7 @@ class LocationRepository extends EntityRepository implements LocationRepositoryI
                 'rumpCategory' => SpacecraftRumpEnum::SHIP_CATEGORY_STATION,
                 'firstUserId' => UserEnum::USER_FIRST_ID,
                 'mode' => SpacecraftSystemModeEnum::MODE_OFF->value,
-                'state' => SpacecraftStateEnum::SHIP_STATE_UNDER_CONSTRUCTION,
+                'state' => SpacecraftStateEnum::UNDER_CONSTRUCTION,
                 'systemwarp' => SpacecraftSystemTypeEnum::WARPDRIVE
             ])
             ->getResult();

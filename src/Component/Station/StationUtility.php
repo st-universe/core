@@ -125,11 +125,11 @@ final class StationUtility implements StationUtilityInterface
         }
 
         switch ($station->getState()) {
-            case SpacecraftStateEnum::SHIP_STATE_UNDER_CONSTRUCTION:
+            case SpacecraftStateEnum::UNDER_CONSTRUCTION:
                 return $rump->getNeededWorkbees();
-            case SpacecraftStateEnum::SHIP_STATE_UNDER_SCRAPPING:
+            case SpacecraftStateEnum::UNDER_SCRAPPING:
                 return (int)ceil($rump->getNeededWorkbees() / 2);
-            case SpacecraftStateEnum::SHIP_STATE_REPAIR_PASSIVE:
+            case SpacecraftStateEnum::REPAIR_PASSIVE:
                 return (int)ceil($rump->getNeededWorkbees() / 5);
             default:
                 throw new RuntimeException(sprintf(
@@ -225,7 +225,7 @@ final class StationUtility implements StationUtilityInterface
             throw new RuntimeException(sprintf('construction rump with id %d not found', $rumpId));
         }
 
-        $station->setState(SpacecraftStateEnum::SHIP_STATE_UNDER_CONSTRUCTION);
+        $station->setState(SpacecraftStateEnum::UNDER_CONSTRUCTION);
         $station->setBuildplan(null);
         $station->setRump($rump);
         $station->setName($rump->getName());

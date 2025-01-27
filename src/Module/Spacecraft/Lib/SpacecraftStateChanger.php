@@ -39,7 +39,7 @@ final class SpacecraftStateChanger implements SpacecraftStateChangerInterface
 
         //nothing to do
         if (
-            $currentState === SpacecraftStateEnum::SHIP_STATE_DESTROYED
+            $currentState === SpacecraftStateEnum::DESTROYED
             || $currentState === $newState
         ) {
             return;
@@ -48,19 +48,19 @@ final class SpacecraftStateChanger implements SpacecraftStateChangerInterface
         //repair stuff
         if ($ship->isUnderRepair()) {
             $this->cancelRepair->cancelRepair($ship);
-        } elseif ($currentState === SpacecraftStateEnum::SHIP_STATE_ASTRO_FINALIZING) {
+        } elseif ($currentState === SpacecraftStateEnum::ASTRO_FINALIZING) {
             $this->astroEntryLib->cancelAstroFinalizing($wrapper);
-        } elseif ($currentState === SpacecraftStateEnum::SHIP_STATE_RETROFIT && $ship instanceof ShipInterface) {
+        } elseif ($currentState === SpacecraftStateEnum::RETROFIT && $ship instanceof ShipInterface) {
             $this->cancelRetrofit->cancelRetrofit($ship);
-        } elseif ($currentState === SpacecraftStateEnum::SHIP_STATE_WEB_SPINNING && $wrapper instanceof ShipWrapperInterface) {
+        } elseif ($currentState === SpacecraftStateEnum::WEB_SPINNING && $wrapper instanceof ShipWrapperInterface) {
             $this->tholianWebUtil->releaseWebHelper($wrapper);
-        } elseif ($currentState === SpacecraftStateEnum::SHIP_STATE_ACTIVE_TAKEOVER) {
+        } elseif ($currentState === SpacecraftStateEnum::ACTIVE_TAKEOVER) {
             $this->shipTakeoverManager->cancelTakeover(
                 $ship->getTakeoverActive(),
                 null,
                 true
             );
-        } elseif ($currentState === SpacecraftStateEnum::SHIP_STATE_GATHER_RESOURCES && $wrapper instanceof ShipWrapperInterface) {
+        } elseif ($currentState === SpacecraftStateEnum::GATHER_RESOURCES && $wrapper instanceof ShipWrapperInterface) {
             $this->cancelMining->cancelMining($wrapper);
         }
 

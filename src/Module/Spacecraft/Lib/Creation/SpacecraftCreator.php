@@ -70,7 +70,7 @@ final class SpacecraftCreator implements SpacecraftCreatorInterface
         $spacecraft->setUser($user);
         $spacecraft->setBuildplan($buildplan);
         $spacecraft->setRump($rump);
-        $spacecraft->setState(SpacecraftStateEnum::SHIP_STATE_NONE);
+        $spacecraft->setState(SpacecraftStateEnum::NONE);
 
         //create ship systems
         $this->spacecraftSystemCreation->createShipSystemsByModuleList(

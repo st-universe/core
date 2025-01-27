@@ -73,7 +73,7 @@ class StationWrapperTest extends StuTestCase
         $this->station->shouldReceive('getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(SpacecraftStateEnum::SHIP_STATE_UNDER_CONSTRUCTION);
+            ->andReturn(SpacecraftStateEnum::UNDER_CONSTRUCTION);
 
         $result = $this->subject->canBeScrapped();
 
@@ -85,7 +85,7 @@ class StationWrapperTest extends StuTestCase
         $this->station->shouldReceive('getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(SpacecraftStateEnum::SHIP_STATE_UNDER_SCRAPPING);
+            ->andReturn(SpacecraftStateEnum::UNDER_SCRAPPING);
 
         $result = $this->subject->canBeScrapped();
 

@@ -20,7 +20,7 @@ final class CancelRetrofit implements CancelRetrofitInterface
     public function cancelRetrofit(ShipInterface $ship): bool
     {
         $state = $ship->getState();
-        if ($state === SpacecraftStateEnum::SHIP_STATE_RETROFIT) {
+        if ($state === SpacecraftStateEnum::RETROFIT) {
             $this->setStateNoneAndSave($ship);
 
             $this->colonyShipQueueRepository->truncateByShip($ship->getId());
@@ -33,7 +33,7 @@ final class CancelRetrofit implements CancelRetrofitInterface
 
     private function setStateNoneAndSave(ShipInterface $ship): void
     {
-        $ship->setState(SpacecraftStateEnum::SHIP_STATE_NONE);
+        $ship->setState(SpacecraftStateEnum::NONE);
         $this->shipRepository->save($ship);
     }
 }

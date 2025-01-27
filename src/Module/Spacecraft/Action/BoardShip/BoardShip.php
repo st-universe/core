@@ -168,7 +168,7 @@ final class BoardShip implements ActionControllerInterface
 
         $messages->add($message);
 
-        $this->spacecraftStateChanger->changeState($targetWrapper, SpacecraftStateEnum::SHIP_STATE_NONE);
+        $this->spacecraftStateChanger->changeState($targetWrapper, SpacecraftStateEnum::NONE);
 
         $this->createPrestigeLog->createLog(
             -$neededPrestige,

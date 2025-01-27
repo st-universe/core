@@ -59,7 +59,7 @@ final class UnsupportTholianWeb implements ActionControllerInterface
         if (!$ship->isWebEmitterHealthy()) {
             throw new SanityCheckException('emitter not healthy', self::ACTION_IDENTIFIER);
         }
-        if ($ship->getState() !== SpacecraftStateEnum::SHIP_STATE_WEB_SPINNING) {
+        if ($ship->getState() !== SpacecraftStateEnum::WEB_SPINNING) {
             throw new SanityCheckException('ship state is not web spinning', self::ACTION_IDENTIFIER);
         }
 

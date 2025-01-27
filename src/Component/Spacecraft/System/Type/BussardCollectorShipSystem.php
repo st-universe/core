@@ -81,7 +81,7 @@ class BussardCollectorShipSystem extends AbstractSpacecraftSystemType implements
         if ($spacecraft instanceof ShipInterface) {
             $spacecraft->setDockedTo(null);
         }
-        $this->spacecraftStateChanger->changeState($wrapper, SpacecraftStateEnum::SHIP_STATE_NONE);
+        $this->spacecraftStateChanger->changeState($wrapper, SpacecraftStateEnum::NONE);
 
         if ($spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::SHIELDS)) {
             $spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::SHIELDS)->setMode(SpacecraftSystemModeEnum::MODE_OFF);

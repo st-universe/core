@@ -44,7 +44,7 @@ class TholianWebConsequence extends AbstractFlightConsequence implements FlightS
         $messages->add($message);
 
         //web spinning
-        if ($ship->getState() === SpacecraftStateEnum::SHIP_STATE_WEB_SPINNING) {
+        if ($ship->getState() === SpacecraftStateEnum::WEB_SPINNING) {
             $this->tholianWebUtil->releaseWebHelper($wrapper);
 
             $message->add(sprintf('Die %s hat die Unterstützung des Energienetzes abgebrochen', $ship->getName()));

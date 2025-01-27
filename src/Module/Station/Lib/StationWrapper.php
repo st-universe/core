@@ -64,7 +64,7 @@ class StationWrapper extends SpacecraftWrapper implements StationWrapperInterfac
     {
         $station = $this->get();
 
-        return $station->getState() !== SpacecraftStateEnum::SHIP_STATE_UNDER_SCRAPPING;
+        return $station->getState() !== SpacecraftStateEnum::UNDER_SCRAPPING;
     }
 
     #[Override]

@@ -168,7 +168,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
             $this->spacecraftSystemManager->deactivate($targetWrapper, SpacecraftSystemTypeEnum::TRACTOR_BEAM, true); //forced active deactivation
         }
 
-        $this->spacecraftStateChanger->changeState($targetWrapper, SpacecraftStateEnum::SHIP_STATE_NONE);
+        $this->spacecraftStateChanger->changeState($targetWrapper, SpacecraftStateEnum::NONE);
 
         $target->setDockedTo(null);
         $ship->setTractoredShip($target);

@@ -47,7 +47,7 @@ final class Scrapping implements ActionControllerInterface
             $userId
         );
 
-        if ($station->getState() === SpacecraftStateEnum::SHIP_STATE_UNDER_SCRAPPING) {
+        if ($station->getState() === SpacecraftStateEnum::UNDER_SCRAPPING) {
             return;
         }
 
@@ -89,7 +89,7 @@ final class Scrapping implements ActionControllerInterface
 
     private function startScrapping(StationInterface $station): void
     {
-        $station->setState(SpacecraftStateEnum::SHIP_STATE_UNDER_SCRAPPING);
+        $station->setState(SpacecraftStateEnum::UNDER_SCRAPPING);
 
         //setup scrapping progress
         $progress = $this->constructionProgressRepository->getByStation($station);

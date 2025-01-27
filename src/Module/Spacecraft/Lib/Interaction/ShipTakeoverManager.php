@@ -350,7 +350,7 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
         $sourceShip = $takeover->getSourceSpacecraft();
         $sourceShip
             ->setTakeoverActive(null)
-            ->setState(SpacecraftStateEnum::SHIP_STATE_NONE);
+            ->setState(SpacecraftStateEnum::NONE);
 
         $takeover->getTargetSpacecraft()->setTakeoverPassive(null);
 

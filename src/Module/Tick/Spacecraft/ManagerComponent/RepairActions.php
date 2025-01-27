@@ -165,7 +165,7 @@ final class RepairActions implements ManagerComponentInterface
             $repairFinished = true;
 
             $ship->setHuell($ship->getMaxHull());
-            $ship->setState(SpacecraftStateEnum::SHIP_STATE_NONE);
+            $ship->setState(SpacecraftStateEnum::NONE);
 
             $this->sendPrivateMessages($ship, $entity);
         }

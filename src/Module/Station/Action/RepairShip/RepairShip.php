@@ -81,7 +81,7 @@ final class RepairShip implements ActionControllerInterface
             return;
         }
 
-        if ($ship->getState() === SpacecraftStateEnum::SHIP_STATE_ASTRO_FINALIZING) {
+        if ($ship->getState() === SpacecraftStateEnum::ASTRO_FINALIZING) {
             $game->addInformation(_('Das Schiff kartographiert derzeit und kann daher nicht repariert werden.'));
             return;
         }
@@ -91,7 +91,7 @@ final class RepairShip implements ActionControllerInterface
         $obj->setShip($ship);
         $this->stationShipRepairRepository->save($obj);
 
-        $ship->setState(SpacecraftStateEnum::SHIP_STATE_REPAIR_PASSIVE);
+        $ship->setState(SpacecraftStateEnum::REPAIR_PASSIVE);
 
         $this->shipRepository->save($ship);
 

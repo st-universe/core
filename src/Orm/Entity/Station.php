@@ -129,8 +129,8 @@ class Station extends Spacecraft implements StationInterface
     #[Override]
     public function getDockingSlotCount(): int
     {
-        return ($this->getState() === SpacecraftStateEnum::SHIP_STATE_UNDER_CONSTRUCTION)
-            || ($this->getState() === SpacecraftStateEnum::SHIP_STATE_UNDER_SCRAPPING)
+        return ($this->getState() === SpacecraftStateEnum::UNDER_CONSTRUCTION)
+            || ($this->getState() === SpacecraftStateEnum::UNDER_SCRAPPING)
             ? 50 : $this->getRump()->getDockingSlots();
     }
 

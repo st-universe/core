@@ -70,7 +70,7 @@ class Ship extends Spacecraft implements ShipInterface
     #[Override]
     public function isUnderRetrofit(): bool
     {
-        return $this->getState() === SpacecraftStateEnum::SHIP_STATE_RETROFIT;
+        return $this->getState() === SpacecraftStateEnum::RETROFIT;
     }
 
     #[Override]

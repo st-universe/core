@@ -179,7 +179,7 @@ class CloakShipSystemTest extends StuTestCase
             ->once()
             ->andReturn(true);
         $this->spacecraftStateChanger->shouldReceive('changeState')
-            ->with($this->wrapper, SpacecraftStateEnum::SHIP_STATE_NONE)
+            ->with($this->wrapper, SpacecraftStateEnum::NONE)
             ->once();
 
         //SYSTEMS TO SHUTDOWN

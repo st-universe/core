@@ -266,7 +266,7 @@ class ShieldShipSystemTest extends StuTestCase
             ->once();
 
         $this->spacecraftStateChanger->shouldReceive('changeState')
-            ->with($this->wrapper, SpacecraftStateEnum::SHIP_STATE_NONE)
+            ->with($this->wrapper, SpacecraftStateEnum::NONE)
             ->once();
 
         $this->system->activate($this->wrapper, $managerMock);

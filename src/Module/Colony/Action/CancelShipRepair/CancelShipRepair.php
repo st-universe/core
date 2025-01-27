@@ -39,7 +39,7 @@ final class CancelShipRepair implements ActionControllerInterface
         $ship = $obj->getShip();
         $colony = $obj->getColony();
 
-        if ($ship->getState() !== SpacecraftStateEnum::SHIP_STATE_REPAIR_PASSIVE) {
+        if ($ship->getState() !== SpacecraftStateEnum::REPAIR_PASSIVE) {
             return;
         }
 

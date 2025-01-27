@@ -85,9 +85,9 @@ class SpacecraftStateChangerTest extends StuTestCase
         $this->ship->shouldReceive('getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(SpacecraftStateEnum::SHIP_STATE_DESTROYED);
+            ->andReturn(SpacecraftStateEnum::DESTROYED);
 
-        $this->subject->changeState($this->wrapper, SpacecraftStateEnum::SHIP_STATE_NONE);
+        $this->subject->changeState($this->wrapper, SpacecraftStateEnum::NONE);
     }
 
     public function testChangeShipStateExpectNothingWhenStateUnchanged(): void
@@ -95,16 +95,16 @@ class SpacecraftStateChangerTest extends StuTestCase
         $this->ship->shouldReceive('getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(SpacecraftStateEnum::SHIP_STATE_NONE);
+            ->andReturn(SpacecraftStateEnum::NONE);
 
-        $this->subject->changeState($this->wrapper, SpacecraftStateEnum::SHIP_STATE_NONE);
+        $this->subject->changeState($this->wrapper, SpacecraftStateEnum::NONE);
     }
 
     public function testChangeShipStateExpectRepairCanceling(): void
     {
         $this->ship->shouldReceive('getState')
             ->withNoArgs()
-            ->andReturn(SpacecraftStateEnum::SHIP_STATE_UNDER_SCRAPPING);
+            ->andReturn(SpacecraftStateEnum::UNDER_SCRAPPING);
         $this->ship->shouldReceive('isUnderRepair')
             ->withNoArgs()
             ->once()
@@ -115,14 +115,14 @@ class SpacecraftStateChangerTest extends StuTestCase
             ->once();
 
         $this->ship->shouldReceive('setState')
-            ->with(SpacecraftStateEnum::SHIP_STATE_NONE)
+            ->with(SpacecraftStateEnum::NONE)
             ->once();
 
         $this->spacecraftRepository->shouldReceive('save')
             ->with($this->ship)
             ->once();
 
-        $this->subject->changeState($this->wrapper, SpacecraftStateEnum::SHIP_STATE_NONE);
+        $this->subject->changeState($this->wrapper, SpacecraftStateEnum::NONE);
     }
 
     public function testChangeShipStateExpectAstroCanceling(): void
@@ -130,7 +130,7 @@ class SpacecraftStateChangerTest extends StuTestCase
         $this->ship->shouldReceive('getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(SpacecraftStateEnum::SHIP_STATE_ASTRO_FINALIZING);
+            ->andReturn(SpacecraftStateEnum::ASTRO_FINALIZING);
         $this->ship->shouldReceive('isUnderRepair')
             ->withNoArgs()
             ->once()
@@ -141,14 +141,14 @@ class SpacecraftStateChangerTest extends StuTestCase
             ->once();
 
         $this->ship->shouldReceive('setState')
-            ->with(SpacecraftStateEnum::SHIP_STATE_NONE)
+            ->with(SpacecraftStateEnum::NONE)
             ->once();
 
         $this->spacecraftRepository->shouldReceive('save')
             ->with($this->ship)
             ->once();
 
-        $this->subject->changeState($this->wrapper, SpacecraftStateEnum::SHIP_STATE_NONE);
+        $this->subject->changeState($this->wrapper, SpacecraftStateEnum::NONE);
     }
 
     public function testChangeShipStateExpectWebRelease(): void
@@ -156,7 +156,7 @@ class SpacecraftStateChangerTest extends StuTestCase
         $this->ship->shouldReceive('getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(SpacecraftStateEnum::SHIP_STATE_WEB_SPINNING);
+            ->andReturn(SpacecraftStateEnum::WEB_SPINNING);
         $this->ship->shouldReceive('isUnderRepair')
             ->withNoArgs()
             ->once()
@@ -167,14 +167,14 @@ class SpacecraftStateChangerTest extends StuTestCase
             ->once();
 
         $this->ship->shouldReceive('setState')
-            ->with(SpacecraftStateEnum::SHIP_STATE_NONE)
+            ->with(SpacecraftStateEnum::NONE)
             ->once();
 
         $this->spacecraftRepository->shouldReceive('save')
             ->with($this->ship)
             ->once();
 
-        $this->subject->changeState($this->wrapper, SpacecraftStateEnum::SHIP_STATE_NONE);
+        $this->subject->changeState($this->wrapper, SpacecraftStateEnum::NONE);
     }
 
 

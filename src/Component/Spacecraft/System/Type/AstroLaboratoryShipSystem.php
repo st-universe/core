@@ -52,7 +52,7 @@ final class AstroLaboratoryShipSystem extends AbstractSpacecraftSystemType imple
     public function deactivate(SpacecraftWrapperInterface $wrapper): void
     {
         $spacecraft = $wrapper->get();
-        if ($spacecraft->getState() === SpacecraftStateEnum::SHIP_STATE_ASTRO_FINALIZING) {
+        if ($spacecraft->getState() === SpacecraftStateEnum::ASTRO_FINALIZING) {
             $this->astroEntryLib->cancelAstroFinalizing($wrapper);
         }
 
@@ -64,7 +64,7 @@ final class AstroLaboratoryShipSystem extends AbstractSpacecraftSystemType imple
     {
         $spacecraft = $wrapper->get();
         if (
-            $spacecraft->getState() === SpacecraftStateEnum::SHIP_STATE_ASTRO_FINALIZING
+            $spacecraft->getState() === SpacecraftStateEnum::ASTRO_FINALIZING
             && $wrapper instanceof ShipWrapperInterface
         ) {
             $this->astroEntryLib->cancelAstroFinalizing($wrapper);

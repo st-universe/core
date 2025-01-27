@@ -149,8 +149,8 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
                 CrewAssignment::class
             )
         )->setParameters([
-            'underConstruction' => SpacecraftStateEnum::SHIP_STATE_UNDER_CONSTRUCTION,
-            'scrapping' => SpacecraftStateEnum::SHIP_STATE_UNDER_SCRAPPING,
+            'underConstruction' => SpacecraftStateEnum::UNDER_CONSTRUCTION,
+            'scrapping' => SpacecraftStateEnum::UNDER_SCRAPPING,
             'vacationThreshold' => time() - UserEnum::VACATION_DELAY_IN_SECONDS,
             'firstUserId' => UserEnum::USER_FIRST_ID,
             'false' => false
