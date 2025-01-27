@@ -73,9 +73,9 @@ final class StartBlocking implements ActionControllerInterface
         }
 
         if (
-            $this->colonyFunctionManager->hasActiveFunction($currentColony, BuildingFunctionEnum::BUILDING_FUNCTION_ENERGY_PHALANX)
-            || $this->colonyFunctionManager->hasActiveFunction($currentColony, BuildingFunctionEnum::BUILDING_FUNCTION_PARTICLE_PHALANX)
-            || $this->colonyFunctionManager->hasActiveFunction($currentColony, BuildingFunctionEnum::BUILDING_FUNCTION_ANTI_PARTICLE)
+            $this->colonyFunctionManager->hasActiveFunction($currentColony, BuildingFunctionEnum::ENERGY_PHALANX)
+            || $this->colonyFunctionManager->hasActiveFunction($currentColony, BuildingFunctionEnum::PARTICLE_PHALANX)
+            || $this->colonyFunctionManager->hasActiveFunction($currentColony, BuildingFunctionEnum::ANTI_PARTICLE)
         ) {
             $game->addInformation(_('Aktion nicht möglich, die Kolonie verfügt über aktive Orbitalverteidigung'));
             return;

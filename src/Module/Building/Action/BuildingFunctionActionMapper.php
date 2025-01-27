@@ -26,26 +26,26 @@ final class BuildingFunctionActionMapper implements BuildingFunctionActionMapper
     private function getBuildingActionHandlerClass(BuildingFunctionEnum $buildingFunction): ?string
     {
         return match ($buildingFunction) {
-            BuildingFunctionEnum::BUILDING_FUNCTION_ACADEMY => Academy::class,
+            BuildingFunctionEnum::ACADEMY => Academy::class,
             //SHIPYARDS
-            BuildingFunctionEnum::BUILDING_FUNCTION_FIGHTER_SHIPYARD,
-            BuildingFunctionEnum::BUILDING_FUNCTION_ESCORT_SHIPYARD,
-            BuildingFunctionEnum::BUILDING_FUNCTION_FRIGATE_SHIPYARD,
-            BuildingFunctionEnum::BUILDING_FUNCTION_CRUISER_SHIPYARD,
-            BuildingFunctionEnum::BUILDING_FUNCTION_DESTROYER_SHIPYARD,
+            BuildingFunctionEnum::FIGHTER_SHIPYARD,
+            BuildingFunctionEnum::ESCORT_SHIPYARD,
+            BuildingFunctionEnum::FRIGATE_SHIPYARD,
+            BuildingFunctionEnum::CRUISER_SHIPYARD,
+            BuildingFunctionEnum::DESTROYER_SHIPYARD,
             //SHIELDS
-            BuildingFunctionEnum::BUILDING_FUNCTION_SHIELD_BATTERY => ShieldBattery::class,
-            BuildingFunctionEnum::BUILDING_FUNCTION_SHIELD_GENERATOR => ShieldGenerator::class,
+            BuildingFunctionEnum::SHIELD_BATTERY => ShieldBattery::class,
+            BuildingFunctionEnum::SHIELD_GENERATOR => ShieldGenerator::class,
             //MODULE FABS
-            BuildingFunctionEnum::BUILDING_FUNCTION_MODULEFAB_TYPE1_LVL1,
-            BuildingFunctionEnum::BUILDING_FUNCTION_MODULEFAB_TYPE1_LVL2,
-            BuildingFunctionEnum::BUILDING_FUNCTION_MODULEFAB_TYPE1_LVL3,
-            BuildingFunctionEnum::BUILDING_FUNCTION_MODULEFAB_TYPE2_LVL1,
-            BuildingFunctionEnum::BUILDING_FUNCTION_MODULEFAB_TYPE2_LVL2,
-            BuildingFunctionEnum::BUILDING_FUNCTION_MODULEFAB_TYPE2_LVL3,
-            BuildingFunctionEnum::BUILDING_FUNCTION_MODULEFAB_TYPE3_LVL1,
-            BuildingFunctionEnum::BUILDING_FUNCTION_MODULEFAB_TYPE3_LVL2,
-            BuildingFunctionEnum::BUILDING_FUNCTION_MODULEFAB_TYPE3_LVL3  => ModuleFab::class,
+            BuildingFunctionEnum::MODULEFAB_TYPE1_LVL1,
+            BuildingFunctionEnum::MODULEFAB_TYPE1_LVL2,
+            BuildingFunctionEnum::MODULEFAB_TYPE1_LVL3,
+            BuildingFunctionEnum::MODULEFAB_TYPE2_LVL1,
+            BuildingFunctionEnum::MODULEFAB_TYPE2_LVL2,
+            BuildingFunctionEnum::MODULEFAB_TYPE2_LVL3,
+            BuildingFunctionEnum::MODULEFAB_TYPE3_LVL1,
+            BuildingFunctionEnum::MODULEFAB_TYPE3_LVL2,
+            BuildingFunctionEnum::MODULEFAB_TYPE3_LVL3  => ModuleFab::class,
             default => null
         };
     }

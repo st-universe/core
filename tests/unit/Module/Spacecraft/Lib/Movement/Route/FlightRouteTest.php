@@ -94,7 +94,7 @@ class FlightRouteTest extends StuTestCase
         $this->subject->stepForward();
 
         $this->assertTrue($this->subject->isDestinationArrived());
-        $this->assertEquals(RouteModeEnum::ROUTE_MODE_SYSTEM_EXIT, $this->subject->getRouteMode());
+        $this->assertEquals(RouteModeEnum::SYSTEM_EXIT, $this->subject->getRouteMode());
     }
 
     public function testSetDestinationExpectOneMapWaypointWhenTranswarp(): void
@@ -130,7 +130,7 @@ class FlightRouteTest extends StuTestCase
         $this->subject->stepForward();
 
         $this->assertTrue($this->subject->isDestinationArrived());
-        $this->assertEquals(RouteModeEnum::ROUTE_MODE_TRANSWARP, $this->subject->getRouteMode());
+        $this->assertEquals(RouteModeEnum::TRANSWARP, $this->subject->getRouteMode());
     }
 
     public function testSetDestinationExpectOneSystemMapWaypoint(): void
@@ -166,7 +166,7 @@ class FlightRouteTest extends StuTestCase
         $this->subject->stepForward();
 
         $this->assertTrue($this->subject->isDestinationArrived());
-        $this->assertEquals(RouteModeEnum::ROUTE_MODE_SYSTEM_ENTRY, $this->subject->getRouteMode());
+        $this->assertEquals(RouteModeEnum::SYSTEM_ENTRY, $this->subject->getRouteMode());
     }
 
     public function testSetDestinationViaWormholeExpectSystemMapAsWaypointWhenEntry(): void
@@ -206,7 +206,7 @@ class FlightRouteTest extends StuTestCase
         $this->subject->stepForward();
 
         $this->assertTrue($this->subject->isDestinationArrived());
-        $this->assertEquals(RouteModeEnum::ROUTE_MODE_WORMHOLE_ENTRY, $this->subject->getRouteMode());
+        $this->assertEquals(RouteModeEnum::WORMHOLE_ENTRY, $this->subject->getRouteMode());
     }
 
     public function testSetDestinationViaWormholeExpectSystemMapAsWaypointWhenExit(): void
@@ -246,7 +246,7 @@ class FlightRouteTest extends StuTestCase
         $this->subject->stepForward();
 
         $this->assertTrue($this->subject->isDestinationArrived());
-        $this->assertEquals(RouteModeEnum::ROUTE_MODE_WORMHOLE_EXIT, $this->subject->getRouteMode());
+        $this->assertEquals(RouteModeEnum::WORMHOLE_EXIT, $this->subject->getRouteMode());
     }
 
     public function testSetDestinationViaCoordinatesExpectValidationOnlyWhenStartEqualsDestination(): void
@@ -320,7 +320,7 @@ class FlightRouteTest extends StuTestCase
         $this->subject->stepForward();
 
         $this->assertTrue($this->subject->isDestinationArrived());
-        $this->assertEquals(RouteModeEnum::ROUTE_MODE_FLIGHT, $this->subject->getRouteMode());
+        $this->assertEquals(RouteModeEnum::FLIGHT, $this->subject->getRouteMode());
 
         $this->subject->stepForward();
     }

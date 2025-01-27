@@ -32,9 +32,9 @@ class ColonyScanPanel extends AbstractVisualPanel
     {
         $range = 1;
 
-        if ($this->colonyFunctionManager->hasFunction($this->colony, BuildingFunctionEnum::BUILDING_FUNCTION_SUBSPACE_TELESCOPE)) {
+        if ($this->colonyFunctionManager->hasFunction($this->colony, BuildingFunctionEnum::SUBSPACE_TELESCOPE)) {
             $range = 3;
-        } elseif ($this->colonyFunctionManager->hasFunction($this->colony, BuildingFunctionEnum::BUILDING_FUNCTION_COLONY_CENTRAL)) {
+        } elseif ($this->colonyFunctionManager->hasFunction($this->colony, BuildingFunctionEnum::COLONY_CENTRAL)) {
             $range = 2;
         }
 
@@ -44,7 +44,7 @@ class ColonyScanPanel extends AbstractVisualPanel
     #[Override]
     protected function loadLayers(): void
     {
-        $showCloaked = $this->colonyFunctionManager->hasFunction($this->colony, BuildingFunctionEnum::BUILDING_FUNCTION_COLONY_CENTRAL);
+        $showCloaked = $this->colonyFunctionManager->hasFunction($this->colony, BuildingFunctionEnum::COLONY_CENTRAL);
 
         $panelLayerCreation = $this->panelLayerCreation
             ->addShipCountLayer($showCloaked, null, SpacecraftCountLayerTypeEnum::ALL, 0)
@@ -52,10 +52,10 @@ class ColonyScanPanel extends AbstractVisualPanel
             ->addAnomalyLayer()
             ->addColonyShieldLayer();
 
-        if ($this->colonyFunctionManager->hasFunction($this->colony, BuildingFunctionEnum::BUILDING_FUNCTION_SUBSPACE_TELESCOPE)) {
+        if ($this->colonyFunctionManager->hasFunction($this->colony, BuildingFunctionEnum::SUBSPACE_TELESCOPE)) {
             $panelLayerCreation->addSubspaceLayer($this->colony->getUser()->getId(), SubspaceLayerTypeEnum::IGNORE_USER);
         }
-        if ($this->colonyFunctionManager->hasFunction($this->colony, BuildingFunctionEnum::BUILDING_FUNCTION_SUBSPACE_TELESCOPE)) {
+        if ($this->colonyFunctionManager->hasFunction($this->colony, BuildingFunctionEnum::SUBSPACE_TELESCOPE)) {
             $panelLayerCreation->addSubspaceLayer($this->colony->getUser()->getId(), SubspaceLayerTypeEnum::IGNORE_USER);
         }
 

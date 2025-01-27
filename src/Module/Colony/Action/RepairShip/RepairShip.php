@@ -133,7 +133,7 @@ final class RepairShip implements ActionControllerInterface
 
         $wrapper = $repairableShipWrappers[$target->getId()];
         $ticks = $wrapper->getRepairDuration();
-        $isRepairStationBonus = $this->colonyFunctionManager->hasActiveFunction($colony, BuildingFunctionEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD);
+        $isRepairStationBonus = $this->colonyFunctionManager->hasActiveFunction($colony, BuildingFunctionEnum::REPAIR_SHIPYARD);
         if ($isRepairStationBonus) {
             $ticks = ceil($ticks * 0.5);
         }

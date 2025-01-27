@@ -44,7 +44,7 @@ class EpsConsequence extends AbstractFlightConsequence implements FlightStartCon
 
     private function getEpsNeededForFlight(FlightRouteInterface $flightRoute, SpacecraftInterface $ship): int
     {
-        if ($flightRoute->getRouteMode() !== RouteModeEnum::ROUTE_MODE_FLIGHT) {
+        if ($flightRoute->getRouteMode() !== RouteModeEnum::FLIGHT) {
             return 0;
         }
 

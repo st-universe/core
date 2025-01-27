@@ -51,7 +51,7 @@ class ColonyShipQueue implements ColonyShipQueueInterface
     private int $stop_date = 0;
 
     #[Column(type: 'smallint', enumType: BuildingFunctionEnum::class)]
-    private BuildingFunctionEnum $building_function_id = BuildingFunctionEnum::BUILDING_FUNCTION_BASE_CAMP;
+    private BuildingFunctionEnum $building_function_id = BuildingFunctionEnum::BASE_CAMP;
 
     #[Column(type: 'integer', nullable: true)]
     private ?int $mode = null;

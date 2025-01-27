@@ -23,7 +23,7 @@ final class FlightRoute implements FlightRouteInterface
     //Members
     private bool $isTraversing = false;
 
-    private RouteModeEnum $routeMode = RouteModeEnum::ROUTE_MODE_FLIGHT;
+    private RouteModeEnum $routeMode = RouteModeEnum::FLIGHT;
 
     private LocationInterface $current;
 
@@ -57,12 +57,12 @@ final class FlightRoute implements FlightRouteInterface
 
         if ($destination instanceof MapInterface) {
             if ($isTranswarp) {
-                $this->routeMode = RouteModeEnum::ROUTE_MODE_TRANSWARP;
+                $this->routeMode = RouteModeEnum::TRANSWARP;
             } else {
-                $this->routeMode = RouteModeEnum::ROUTE_MODE_SYSTEM_EXIT;
+                $this->routeMode = RouteModeEnum::SYSTEM_EXIT;
             }
         } else {
-            $this->routeMode = RouteModeEnum::ROUTE_MODE_SYSTEM_ENTRY;
+            $this->routeMode = RouteModeEnum::SYSTEM_ENTRY;
         }
 
         return $this;
@@ -74,10 +74,10 @@ final class FlightRoute implements FlightRouteInterface
         $this->wormholeEntry = $wormholeEntry;
         if ($isEntry) {
             $this->waypoints->add($wormholeEntry->getSystemMap());
-            $this->routeMode = RouteModeEnum::ROUTE_MODE_WORMHOLE_ENTRY;
+            $this->routeMode = RouteModeEnum::WORMHOLE_ENTRY;
         } else {
             $this->waypoints->add($wormholeEntry->getMap());
-            $this->routeMode = RouteModeEnum::ROUTE_MODE_WORMHOLE_EXIT;
+            $this->routeMode = RouteModeEnum::WORMHOLE_EXIT;
         }
 
         return $this;
@@ -192,13 +192,13 @@ final class FlightRoute implements FlightRouteInterface
         $routeMode = $this->routeMode;
 
         if (
-            $routeMode === RouteModeEnum::ROUTE_MODE_SYSTEM_ENTRY
-            || $routeMode === RouteModeEnum::ROUTE_MODE_WORMHOLE_ENTRY
+            $routeMode === RouteModeEnum::SYSTEM_ENTRY
+            || $routeMode === RouteModeEnum::WORMHOLE_ENTRY
         ) {
             return true;
         }
 
-        return $routeMode === RouteModeEnum::ROUTE_MODE_FLIGHT
+        return $routeMode === RouteModeEnum::FLIGHT
             && $this->getNextWaypoint() instanceof StarSystemMapInterface;
     }
 
@@ -208,20 +208,20 @@ final class FlightRoute implements FlightRouteInterface
         $routeMode = $this->routeMode;
 
         if (
-            $routeMode === RouteModeEnum::ROUTE_MODE_SYSTEM_EXIT
-            || $routeMode === RouteModeEnum::ROUTE_MODE_TRANSWARP
+            $routeMode === RouteModeEnum::SYSTEM_EXIT
+            || $routeMode === RouteModeEnum::TRANSWARP
         ) {
             return true;
         }
 
-        return $routeMode === RouteModeEnum::ROUTE_MODE_FLIGHT
+        return $routeMode === RouteModeEnum::FLIGHT
             && $this->getNextWaypoint() instanceof MapInterface;
     }
 
     #[Override]
     public function isTranswarpCoilNeeded(): bool
     {
-        return $this->routeMode === RouteModeEnum::ROUTE_MODE_TRANSWARP;
+        return $this->routeMode === RouteModeEnum::TRANSWARP;
     }
 
     #[Override]

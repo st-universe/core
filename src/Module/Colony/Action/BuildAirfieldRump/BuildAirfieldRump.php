@@ -45,7 +45,7 @@ final class BuildAirfieldRump implements ActionControllerInterface
 
         $availableShipRumps = $this->spacecraftRumpRepository->getBuildableByUserAndBuildingFunction(
             $userId,
-            BuildingFunctionEnum::BUILDING_FUNCTION_AIRFIELD
+            BuildingFunctionEnum::AIRFIELD
         );
 
         if (!array_key_exists($rumpId, $availableShipRumps)) {

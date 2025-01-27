@@ -73,7 +73,7 @@ abstract class Spacecraft implements SpacecraftInterface
     private SpacecraftAlertStateEnum $alvl = SpacecraftAlertStateEnum::ALERT_GREEN;
 
     #[Column(type: 'smallint', length: 1, enumType: SpacecraftLssModeEnum::class)]
-    private SpacecraftLssModeEnum $lss_mode = SpacecraftLssModeEnum::LSS_NORMAL;
+    private SpacecraftLssModeEnum $lss_mode = SpacecraftLssModeEnum::NORMAL;
 
     #[Column(type: 'integer', length: 6)]
     private int $huelle = 0;

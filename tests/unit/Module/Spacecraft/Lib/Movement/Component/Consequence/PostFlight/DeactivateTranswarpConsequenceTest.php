@@ -110,7 +110,7 @@ class DeactivateTranswarpConsequenceTest extends StuTestCase
         $this->flightRoute->shouldReceive('getRouteMode')
             ->withNoArgs()
             ->once()
-            ->andReturn(RouteModeEnum::ROUTE_MODE_FLIGHT);
+            ->andReturn(RouteModeEnum::FLIGHT);
 
         $this->subject->trigger(
             $this->wrapper,
@@ -140,7 +140,7 @@ class DeactivateTranswarpConsequenceTest extends StuTestCase
         $this->flightRoute->shouldReceive('getRouteMode')
             ->withNoArgs()
             ->once()
-            ->andReturn(RouteModeEnum::ROUTE_MODE_TRANSWARP);
+            ->andReturn(RouteModeEnum::TRANSWARP);
 
         $this->spacecraftSystemManager->shouldReceive('deactivate')
             ->with($this->wrapper, SpacecraftSystemTypeEnum::TRANSWARP_COIL, true)

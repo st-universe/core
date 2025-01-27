@@ -57,7 +57,7 @@ class BorderLayerRendererTest extends StuTestCase
 
         $ship->shouldReceive('getLssMode')
             ->withNoArgs()
-            ->andReturn(SpacecraftLssModeEnum::LSS_NORMAL);
+            ->andReturn(SpacecraftLssModeEnum::NORMAL);
 
         if ($shipX !== null) {
             $ship->shouldReceive('getPosX')
@@ -115,7 +115,7 @@ class BorderLayerRendererTest extends StuTestCase
 
         $ship->shouldReceive('getLssMode')
             ->withNoArgs()
-            ->andReturn(SpacecraftLssModeEnum::LSS_BORDER);
+            ->andReturn(SpacecraftLssModeEnum::BORDER);
 
         $subject = new BorderLayerRenderer($ship, null);
         $result = $subject->render($borderData, $this->panel);
