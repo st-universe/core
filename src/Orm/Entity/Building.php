@@ -384,18 +384,18 @@ class Building implements BuildingInterface
     #[Override]
     public function isRemovable(): bool
     {
-        return !$this->getFunctions()->containsKey(BuildingFunctionEnum::BUILDING_FUNCTION_COLONY_CENTRAL->value)
-            && !$this->getFunctions()->containsKey(BuildingFunctionEnum::BUILDING_FUNCTION_BASE_CAMP->value);
+        return !$this->getFunctions()->containsKey(BuildingFunctionEnum::COLONY_CENTRAL->value)
+            && !$this->getFunctions()->containsKey(BuildingFunctionEnum::BASE_CAMP->value);
     }
 
     #[Override]
     public function getShieldCapacity(): ?int
     {
-        if ($this->getFunctions()->containsKey(BuildingFunctionEnum::BUILDING_FUNCTION_SHIELD_GENERATOR->value) === true) {
+        if ($this->getFunctions()->containsKey(BuildingFunctionEnum::SHIELD_GENERATOR->value) === true) {
             return BuildingEnum::SHIELD_GENERATOR_CAPACITY;
         }
 
-        if ($this->getFunctions()->containsKey(BuildingFunctionEnum::BUILDING_FUNCTION_SHIELD_BATTERY->value) === true) {
+        if ($this->getFunctions()->containsKey(BuildingFunctionEnum::SHIELD_BATTERY->value) === true) {
             return BuildingEnum::SHIELD_BATTERY_CAPACITY;
         }
         return null;

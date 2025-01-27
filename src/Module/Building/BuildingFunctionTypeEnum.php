@@ -15,15 +15,15 @@ final class BuildingFunctionTypeEnum
     public static function getModuleFabOptions(): array
     {
         return [
-            BuildingFunctionEnum::BUILDING_FUNCTION_MODULEFAB_TYPE1_LVL1,
-            BuildingFunctionEnum::BUILDING_FUNCTION_MODULEFAB_TYPE1_LVL2,
-            BuildingFunctionEnum::BUILDING_FUNCTION_MODULEFAB_TYPE1_LVL3,
-            BuildingFunctionEnum::BUILDING_FUNCTION_MODULEFAB_TYPE2_LVL1,
-            BuildingFunctionEnum::BUILDING_FUNCTION_MODULEFAB_TYPE2_LVL2,
-            BuildingFunctionEnum::BUILDING_FUNCTION_MODULEFAB_TYPE2_LVL3,
-            BuildingFunctionEnum::BUILDING_FUNCTION_MODULEFAB_TYPE3_LVL1,
-            BuildingFunctionEnum::BUILDING_FUNCTION_MODULEFAB_TYPE3_LVL2,
-            BuildingFunctionEnum::BUILDING_FUNCTION_MODULEFAB_TYPE3_LVL3,
+            BuildingFunctionEnum::MODULEFAB_TYPE1_LVL1,
+            BuildingFunctionEnum::MODULEFAB_TYPE1_LVL2,
+            BuildingFunctionEnum::MODULEFAB_TYPE1_LVL3,
+            BuildingFunctionEnum::MODULEFAB_TYPE2_LVL1,
+            BuildingFunctionEnum::MODULEFAB_TYPE2_LVL2,
+            BuildingFunctionEnum::MODULEFAB_TYPE2_LVL3,
+            BuildingFunctionEnum::MODULEFAB_TYPE3_LVL1,
+            BuildingFunctionEnum::MODULEFAB_TYPE3_LVL2,
+            BuildingFunctionEnum::MODULEFAB_TYPE3_LVL3,
         ];
     }
 
@@ -33,11 +33,11 @@ final class BuildingFunctionTypeEnum
     public static function getShipyardOptions(): array
     {
         return [
-            BuildingFunctionEnum::BUILDING_FUNCTION_FIGHTER_SHIPYARD,
-            BuildingFunctionEnum::BUILDING_FUNCTION_ESCORT_SHIPYARD,
-            BuildingFunctionEnum::BUILDING_FUNCTION_FRIGATE_SHIPYARD,
-            BuildingFunctionEnum::BUILDING_FUNCTION_CRUISER_SHIPYARD,
-            BuildingFunctionEnum::BUILDING_FUNCTION_DESTROYER_SHIPYARD
+            BuildingFunctionEnum::FIGHTER_SHIPYARD,
+            BuildingFunctionEnum::ESCORT_SHIPYARD,
+            BuildingFunctionEnum::FRIGATE_SHIPYARD,
+            BuildingFunctionEnum::CRUISER_SHIPYARD,
+            BuildingFunctionEnum::DESTROYER_SHIPYARD
         ];
     }
 

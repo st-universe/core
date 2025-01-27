@@ -32,7 +32,7 @@ class ColonyFunctionManagerTest extends StuTestCase
     {
         $colony = $this->mock(ColonyInterface::class);
 
-        $function = BuildingFunctionEnum::BUILDING_FUNCTION_BASE_CAMP;
+        $function = BuildingFunctionEnum::BASE_CAMP;
 
         $this->planetFieldRepository->shouldReceive('getCountByColonyAndBuildingFunctionAndState')
             ->with($colony, [$function], [ColonyFunctionManager::STATE_ENABLED])
@@ -48,7 +48,7 @@ class ColonyFunctionManagerTest extends StuTestCase
     {
         $colony = $this->mock(ColonyInterface::class);
 
-        $function = BuildingFunctionEnum::BUILDING_FUNCTION_BASE_CAMP;
+        $function = BuildingFunctionEnum::BASE_CAMP;
         $colonyId = 21;
 
         $colony->shouldReceive('getId')
@@ -73,7 +73,7 @@ class ColonyFunctionManagerTest extends StuTestCase
     {
         $colony = $this->mock(ColonyInterface::class);
 
-        $function = BuildingFunctionEnum::BUILDING_FUNCTION_BASE_CAMP;
+        $function = BuildingFunctionEnum::BASE_CAMP;
 
         $this->planetFieldRepository->shouldReceive('getCountByColonyAndBuildingFunctionAndState')
             ->with($colony, [$function], [ColonyFunctionManager::STATE_DISABLED, ColonyFunctionManager::STATE_ENABLED])

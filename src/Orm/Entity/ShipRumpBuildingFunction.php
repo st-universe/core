@@ -29,7 +29,7 @@ class ShipRumpBuildingFunction implements ShipRumpBuildingFunctionInterface
     private int $rump_id = 0;
 
     #[Column(type: 'integer', enumType: BuildingFunctionEnum::class)]
-    private BuildingFunctionEnum $building_function = BuildingFunctionEnum::BUILDING_FUNCTION_BASE_CAMP;
+    private BuildingFunctionEnum $building_function = BuildingFunctionEnum::BASE_CAMP;
 
     #[Override]
     public function getId(): int

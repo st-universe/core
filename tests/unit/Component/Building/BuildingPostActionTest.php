@@ -38,7 +38,7 @@ class BuildingPostActionTest extends StuTestCase
         $function = $this->mock(BuildingFunctionInterface::class);
         $buildingActionHandler = $this->mock(BuildingActionHandlerInterface::class);
 
-        $buildingFunction = BuildingFunctionEnum::BUILDING_FUNCTION_SHIELD_BATTERY;
+        $buildingFunction = BuildingFunctionEnum::SHIELD_BATTERY;
 
         $building->shouldReceive('getFunctions')
             ->withNoArgs()
@@ -69,7 +69,7 @@ class BuildingPostActionTest extends StuTestCase
         $function = $this->mock(BuildingFunctionInterface::class);
         $buildingActionHandler = $this->mock(BuildingActionHandlerInterface::class);
 
-        $buildingFunction = BuildingFunctionEnum::BUILDING_FUNCTION_SHIELD_BATTERY;
+        $buildingFunction = BuildingFunctionEnum::SHIELD_BATTERY;
 
         $building->shouldReceive('getFunctions')
             ->withNoArgs()

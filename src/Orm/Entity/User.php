@@ -662,7 +662,7 @@ class User implements UserInterface
             return UserRpgBehaviorEnum::from((int)$setting->getValue());
         }
 
-        return UserRpgBehaviorEnum::RPG_BEHAVIOR_NOT_SET;
+        return UserRpgBehaviorEnum::NOT_SET;
     }
 
     #[Override]

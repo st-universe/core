@@ -23,7 +23,7 @@ final class SetLSSModeBorder implements ActionControllerInterface
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $this->helper->setLssMode(request::indInt('id'), SpacecraftLssModeEnum::LSS_BORDER, $game);
+        $this->helper->setLssMode(request::indInt('id'), SpacecraftLssModeEnum::BORDER, $game);
     }
 
     #[Override]

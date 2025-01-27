@@ -17,37 +17,37 @@ final class BuildingFunctionWrapper implements BuildingFunctionWrapperInterface
     #[Override]
     public function isTorpedoFab(): bool
     {
-        return $this->hasFunction(BuildingFunctionEnum::BUILDING_FUNCTION_TORPEDO_FAB);
+        return $this->hasFunction(BuildingFunctionEnum::TORPEDO_FAB);
     }
 
     #[Override]
     public function isAirfield(): bool
     {
-        return $this->hasFunction(BuildingFunctionEnum::BUILDING_FUNCTION_AIRFIELD);
+        return $this->hasFunction(BuildingFunctionEnum::AIRFIELD);
     }
 
     #[Override]
     public function isFighterShipyard(): bool
     {
-        return $this->hasFunction(BuildingFunctionEnum::BUILDING_FUNCTION_FIGHTER_SHIPYARD);
+        return $this->hasFunction(BuildingFunctionEnum::FIGHTER_SHIPYARD);
     }
 
     #[Override]
     public function isAcademy(): bool
     {
-        return $this->hasFunction(BuildingFunctionEnum::BUILDING_FUNCTION_ACADEMY);
+        return $this->hasFunction(BuildingFunctionEnum::ACADEMY);
     }
 
     #[Override]
     public function isFabHall(): bool
     {
-        return $this->hasFunction(BuildingFunctionEnum::BUILDING_FUNCTION_FABRICATION_HALL);
+        return $this->hasFunction(BuildingFunctionEnum::FABRICATION_HALL);
     }
 
     #[Override]
     public function isTechCenter(): bool
     {
-        return $this->hasFunction(BuildingFunctionEnum::BUILDING_FUNCTION_TECH_CENTER);
+        return $this->hasFunction(BuildingFunctionEnum::TECH_CENTER);
     }
 
     #[Override]
@@ -86,13 +86,13 @@ final class BuildingFunctionWrapper implements BuildingFunctionWrapperInterface
     #[Override]
     public function isWarehouse(): bool
     {
-        return $this->hasFunction(BuildingFunctionEnum::BUILDING_FUNCTION_WAREHOUSE);
+        return $this->hasFunction(BuildingFunctionEnum::WAREHOUSE);
     }
 
     #[Override]
     public function isSubspaceTelescope(): bool
     {
-        return $this->hasFunction(BuildingFunctionEnum::BUILDING_FUNCTION_SUBSPACE_TELESCOPE);
+        return $this->hasFunction(BuildingFunctionEnum::SUBSPACE_TELESCOPE);
     }
 
     #[Override]
@@ -110,7 +110,7 @@ final class BuildingFunctionWrapper implements BuildingFunctionWrapperInterface
     public function getFabHallBuildingFunctionId(): ?int
     {
         foreach ($this->buildingfunctions as $func) {
-            if ($func->getFunction() === BuildingFunctionEnum::BUILDING_FUNCTION_FABRICATION_HALL) {
+            if ($func->getFunction() === BuildingFunctionEnum::FABRICATION_HALL) {
                 return $func->getId();
             }
         }
@@ -121,7 +121,7 @@ final class BuildingFunctionWrapper implements BuildingFunctionWrapperInterface
     public function getTechCenterBuildingFunctionId(): ?int
     {
         foreach ($this->buildingfunctions as $func) {
-            if ($func->getFunction() === BuildingFunctionEnum::BUILDING_FUNCTION_TECH_CENTER) {
+            if ($func->getFunction() === BuildingFunctionEnum::TECH_CENTER) {
                 return $func->getId();
             }
         }
@@ -132,7 +132,7 @@ final class BuildingFunctionWrapper implements BuildingFunctionWrapperInterface
     public function getSubspaceTelescopeBuildingFunctionId(): ?int
     {
         foreach ($this->buildingfunctions as $func) {
-            if ($func->getFunction() === BuildingFunctionEnum::BUILDING_FUNCTION_SUBSPACE_TELESCOPE) {
+            if ($func->getFunction() === BuildingFunctionEnum::SUBSPACE_TELESCOPE) {
                 return $func->getId();
             }
         }

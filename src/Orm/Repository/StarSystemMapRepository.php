@@ -168,7 +168,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
             'yEnd' => $boundaries->getMaxY(),
             'systemId' => $boundaries->getParentId(),
             'active' => 1,
-            'shieldBuilding' => BuildingFunctionEnum::BUILDING_FUNCTION_SHIELD_GENERATOR
+            'shieldBuilding' => BuildingFunctionEnum::SHIELD_GENERATOR
         ])->getResult();
     }
 

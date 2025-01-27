@@ -42,12 +42,12 @@ final class ColonyShieldingManager implements ColonyShieldingManagerInterface
 
             $functions = $building->getFunctions();
 
-            if ($functions->containsKey(BuildingFunctionEnum::BUILDING_FUNCTION_SHIELD_GENERATOR->value)) {
+            if ($functions->containsKey(BuildingFunctionEnum::SHIELD_GENERATOR->value)) {
                 $shields += BuildingEnum::SHIELD_GENERATOR_CAPACITY;
                 $shieldState = true;
             }
 
-            if ($functions->containsKey(BuildingFunctionEnum::BUILDING_FUNCTION_SHIELD_BATTERY->value)) {
+            if ($functions->containsKey(BuildingFunctionEnum::SHIELD_BATTERY->value)) {
                 $shields += BuildingEnum::SHIELD_BATTERY_CAPACITY;
             }
         }
@@ -62,7 +62,7 @@ final class ColonyShieldingManager implements ColonyShieldingManagerInterface
     {
         return $this->colonyFunctionManager->hasFunction(
             $this->host,
-            BuildingFunctionEnum::BUILDING_FUNCTION_SHIELD_GENERATOR
+            BuildingFunctionEnum::SHIELD_GENERATOR
         );
     }
 
@@ -75,7 +75,7 @@ final class ColonyShieldingManager implements ColonyShieldingManagerInterface
     #[Override]
     public function isShieldingEnabled(): bool
     {
-        return $this->colonyFunctionManager->hasActiveFunction($this->host, BuildingFunctionEnum::BUILDING_FUNCTION_SHIELD_GENERATOR)
+        return $this->colonyFunctionManager->hasActiveFunction($this->host, BuildingFunctionEnum::SHIELD_GENERATOR)
             && ($this->host instanceof ColonyInterface ? $this->host->getShields() > 0 : true);
     }
 }

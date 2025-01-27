@@ -61,8 +61,8 @@ final class ShowModuleFab implements ViewControllerInterface
         );
 
         $template = match ($func->getFunction()) {
-            BuildingFunctionEnum::BUILDING_FUNCTION_FABRICATION_HALL => ColonyMenuEnum::MENU_FAB_HALL->getTemplate(),
-            BuildingFunctionEnum::BUILDING_FUNCTION_TECH_CENTER => ColonyMenuEnum::MENU_TECH_CENTER->getTemplate(),
+            BuildingFunctionEnum::FABRICATION_HALL => ColonyMenuEnum::MENU_FAB_HALL->getTemplate(),
+            BuildingFunctionEnum::TECH_CENTER => ColonyMenuEnum::MENU_TECH_CENTER->getTemplate(),
             default => ColonyMenuEnum::MENU_MODULEFAB->getTemplate(),
         };
 

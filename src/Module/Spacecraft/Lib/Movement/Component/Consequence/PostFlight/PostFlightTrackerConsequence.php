@@ -33,7 +33,7 @@ class PostFlightTrackerConsequence extends AbstractFlightConsequence implements 
         MessageCollectionInterface $messages
     ): void {
 
-        if ($flightRoute->getRouteMode() !== RouteModeEnum::ROUTE_MODE_WORMHOLE_ENTRY) {
+        if ($flightRoute->getRouteMode() !== RouteModeEnum::WORMHOLE_ENTRY) {
             return;
         }
 

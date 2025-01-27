@@ -22,7 +22,7 @@ final class FighterShipyardProvider implements PlanetFieldHostComponentInterface
             'BUILDABLE_SHIPS',
             $this->spacecraftRumpRepository->getBuildableByUserAndBuildingFunction(
                 $game->getUser()->getId(),
-                BuildingFunctionEnum::BUILDING_FUNCTION_FIGHTER_SHIPYARD
+                BuildingFunctionEnum::FIGHTER_SHIPYARD
             )
         );
     }
