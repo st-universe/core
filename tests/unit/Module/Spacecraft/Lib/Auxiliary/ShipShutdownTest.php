@@ -69,6 +69,11 @@ class ShipShutdownTest extends StuTestCase
             ->once()
             ->andReturn($ship);
 
+        $ship->shouldReceive('getState')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(SpacecraftStateEnum::SHIP_STATE_NONE);
+
         $ship->shouldReceive('setAlertStateGreen')
             ->withNoArgs()
             ->once();
@@ -108,6 +113,11 @@ class ShipShutdownTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($station);
+
+        $station->shouldReceive('getState')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(SpacecraftStateEnum::SHIP_STATE_NONE);
 
         $station->shouldReceive('setAlertStateGreen')
             ->withNoArgs()
