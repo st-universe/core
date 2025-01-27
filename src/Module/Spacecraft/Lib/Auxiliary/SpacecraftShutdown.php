@@ -15,7 +15,7 @@ use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StationInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
-final class ShipShutdown implements ShipShutdownInterface
+final class SpacecraftShutdown implements SpacecraftShutdownInterface
 {
     public function __construct(
         private SpacecraftRepositoryInterface $spacecraftRepository,

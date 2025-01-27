@@ -15,7 +15,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderInterface;
-use Stu\Module\Spacecraft\Lib\Auxiliary\ShipShutdownInterface;
+use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftShutdownInterface;
 use Stu\Module\Spacecraft\Lib\Crew\SpacecraftLeaverInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Spacecraft\Lib\ActivatorDeactivatorHelperInterface;
@@ -40,8 +40,8 @@ class ManageCrewTest extends StuTestCase
     /** @var MockInterface&TroopTransferUtilityInterface */
     private MockInterface $troopTransferUtility;
 
-    /** @var MockInterface&ShipShutdownInterface */
-    private MockInterface $shipShutdown;
+    /** @var MockInterface&SpacecraftShutdownInterface */
+    private MockInterface $spacecraftShutdown;
 
     /** @var MockInterface&SpacecraftLeaverInterface */
     private MockInterface $spacecraftLeaver;
@@ -74,7 +74,7 @@ class ManageCrewTest extends StuTestCase
         $this->shipCrewCalculator = $this->mock(SpacecraftCrewCalculatorInterface::class);
         $this->spacecraftSystemManager = $this->mock(SpacecraftSystemManagerInterface::class);
         $this->troopTransferUtility = $this->mock(TroopTransferUtilityInterface::class);
-        $this->shipShutdown = $this->mock(ShipShutdownInterface::class);
+        $this->spacecraftShutdown = $this->mock(SpacecraftShutdownInterface::class);
         $this->spacecraftLeaver = $this->mock(SpacecraftLeaverInterface::class);
         $this->helper = $this->mock(ActivatorDeactivatorHelperInterface::class);
 
@@ -88,7 +88,7 @@ class ManageCrewTest extends StuTestCase
             $this->shipCrewCalculator,
             $this->spacecraftSystemManager,
             $this->troopTransferUtility,
-            $this->shipShutdown,
+            $this->spacecraftShutdown,
             $this->spacecraftLeaver,
             $this->helper
         );
@@ -712,7 +712,7 @@ class ManageCrewTest extends StuTestCase
             ->once()
             ->andReturn('Foreigner');
 
-        $this->shipShutdown->shouldReceive('shutdown')
+        $this->spacecraftShutdown->shouldReceive('shutdown')
             ->with($this->wrapper)
             ->once();
 

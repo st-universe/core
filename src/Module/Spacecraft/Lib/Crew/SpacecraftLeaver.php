@@ -9,7 +9,7 @@ use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftRumpEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Spacecraft\Lib\Auxiliary\ShipShutdownInterface;
+use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftShutdownInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\CrewAssignmentInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
@@ -26,7 +26,7 @@ final class SpacecraftLeaver implements SpacecraftLeaverInterface
         private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository,
         private CrewRepositoryInterface $crewRepository,
         private LaunchEscapePodsInterface $launchEscapePods,
-        private ShipShutdownInterface $shipShutdown,
+        private SpacecraftShutdownInterface $spacecraftShutdown,
         private PrivateMessageSenderInterface $privateMessageSender
     ) {}
 
@@ -34,7 +34,7 @@ final class SpacecraftLeaver implements SpacecraftLeaverInterface
     public function evacuate(SpacecraftWrapperInterface $wrapper): string
     {
         $ship = $wrapper->get();
-        $this->shipShutdown->shutdown($wrapper);
+        $this->spacecraftShutdown->shutdown($wrapper);
 
         if ($ship->getRump()->isEscapePods()) {
             $this->letCrewDie($ship);
