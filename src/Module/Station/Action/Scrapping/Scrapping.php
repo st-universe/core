@@ -15,9 +15,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftRemoverInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
-use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Entity\StationInterface;
-use Stu\Orm\Repository\ConstructionProgressModuleRepositoryInterface;
 use Stu\Orm\Repository\ConstructionProgressRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
 use Stu\Orm\Repository\StationRepositoryInterface;
@@ -32,7 +30,6 @@ final class Scrapping implements ActionControllerInterface
         private StationRepositoryInterface $stationRepository,
         private SpacecraftSystemRepositoryInterface $shipSystemRepository,
         private ConstructionProgressRepositoryInterface $constructionProgressRepository,
-        private ConstructionProgressModuleRepositoryInterface $constructionProgressModuleRepository,
         private SpacecraftRemoverInterface $spacecraftRemover,
         private TradePostRepositoryInterface $tradePostRepository
     ) {}
@@ -100,22 +97,6 @@ final class Scrapping implements ActionControllerInterface
 
         $this->constructionProgressRepository->save($progress);
 
-        $this->constructionProgressModuleRepository->truncateByProgress($progress->getId());
-
-        $intactModules = $this->retrieveSomeIntactModules($station);
-
-        foreach ($intactModules as $mod) {
-            [$module, $count] = $mod;
-
-            for ($i = 0; $i < $count; $i++) {
-                $progressModule = $this->constructionProgressModuleRepository->prototype();
-                $progressModule->setConstructionProgress($progress);
-                $progressModule->setModule($module);
-
-                $this->constructionProgressModuleRepository->save($progressModule);
-            }
-        }
-
         //remove ship systems
         $this->shipSystemRepository->truncateByShip($station->getId());
         $station->getSystems()->clear();
@@ -131,47 +112,6 @@ final class Scrapping implements ActionControllerInterface
         }
 
         $this->stationRepository->save($station);
-    }
-
-    /**
-     * @return array<int, array{0: ModuleInterface, 1: int}>
-     */
-    private function retrieveSomeIntactModules(StationInterface $station): array
-    {
-        $intactModules = [];
-
-        $plan = $station->getBuildplan();
-        if ($plan === null) {
-            return $intactModules;
-        }
-
-        $modules = $plan->getModules();
-
-        foreach ($station->getSystems() as $system) {
-            if (
-                $system->getModule() !== null
-                && $system->getStatus() === 100
-            ) {
-                $module = $system->getModule();
-
-                if (!array_key_exists($module->getId(), $intactModules)) {
-                    $buildplanModule = $modules->get($module->getId());
-
-                    $count = $buildplanModule === null ? 1 : $buildplanModule->getModuleCount();
-
-                    $intactModules[$module->getId()] = [$module, $count];
-                }
-            }
-        }
-
-        //retrieve 50% of all intact modules
-        $recycleCount = (int) ceil(count($intactModules) / 2);
-        for ($i = 1; $i <= $recycleCount; $i++) {
-            [$module, $count] = $intactModules[array_rand($intactModules)];
-            unset($intactModules[$module->getId()]);
-        }
-
-        return $intactModules;
     }
 
     #[Override]
