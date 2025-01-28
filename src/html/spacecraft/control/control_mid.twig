@@ -214,6 +214,7 @@ canColonize, closestAnomalyDistance) %}
             {% endif %}
             {% set mapRegion = location.getMapRegion %}
             {% if mapRegion %}
+            </br>
             <a href="javascript:void(0);" onclick="showRegionInfo({{ mapRegion.getId }})"
                 onmouseover="cp('mapRegionButton','buttons/info2')" onmouseout="cp('mapRegionButton','buttons/info1')">
                 <img src="/assets/buttons/info1.png" name="mapRegionButton" />
@@ -221,7 +222,7 @@ canColonize, closestAnomalyDistance) %}
             </a>
             {% endif %}
             {% if location.getInfluenceArea and location.getInfluenceArea.getStation %}
-            {{ _self.influenceArea(location.getInfluenceArea.getStation.getUser, ship) }}
+            {{ _self.influenceArea(location.getInfluenceArea.getStation.getUser, SPACECRAFT) }}
             {% endif %}
             {% set anomalies = location.getAnomalies %}
             {% if anomalies|length > 0 %}
@@ -422,8 +423,8 @@ canColonize, closestAnomalyDistance) %}
 {% set target = astroStateWrapper.isSystem ? SPACECRAFT.getSystem : SPACECRAFT.getMapRegion %}
 {% set shipAstroState = SPACECRAFT.getAstroState %}
 {% if astroStateWrapper.isPlannable %}
-<br />
 {% if shipAstroState and target %}
+<br />
 <a href="javascript:void(0);"
     onClick="actionToInnerContent('B_PLAN_ASTRO', 'id={{ shipId }}&sstr={{ SESSIONSTRING }}');"
     onmouseover="cp('astroButton','buttons/map2')" onmouseout="cp('astroButton','buttons/map1')">
@@ -482,12 +483,13 @@ canColonize, closestAnomalyDistance) %}
 {% endmacro %}
 
 
-{% macro influenceArea(user, ship) %}
+{% macro influenceArea(user, spacecraft) %}
 {% from 'html/macros.twig' import userAvatar %}
 {% from 'html/alliancemacros.twig' import alliance_avatar %}
 {% set alliance = user.getAlliance %}
-{% set location = SPACECRAFT.getLocation %}
+{% set location = spacecraft.getLocation %}
 {% if alliance %}
+</br>
 <a href="alliance.php?id={{ alliance.getId }}">
     <div class="shipTerritoryView">
         {{ alliance_avatar(alliance) }}
@@ -503,9 +505,9 @@ canColonize, closestAnomalyDistance) %}
     {{ userAvatar(user) }}
     <a href="userprofile.php?uid={{ user.getId }}">
         {% if location.getAdministratedRegion %}
-        <span>Territorium des Siedlers {{ user.getName|bbcode }}</span>
-        {% else %}
         <span>Einflussbereich des Siedlers {{ user.getName|bbcode }}</span>
+        {% else %}
+        <span>Territorium des Siedlers {{ user.getName|bbcode }}</span>
         {% endif %}
     </a>
 </div>
