@@ -2,6 +2,7 @@
 
 namespace Stu\Component\Station;
 
+use Stu\Lib\Information\InformationInterface;
 use Stu\Orm\Entity\ConstructionProgressInterface;
 use Stu\Orm\Entity\SpacecraftBuildplanInterface;
 use Stu\Orm\Entity\SpacecraftRumpInterface;
@@ -31,7 +32,7 @@ interface StationUtilityInterface
 
     public function finishStation(ConstructionProgressInterface $progress): void;
 
-    public function finishScrapping(ConstructionProgressInterface $progress): void;
+    public function finishScrapping(ConstructionProgressInterface $progress, InformationInterface $information): void;
 
     public function canManageShips(StationInterface $station): bool;
 
