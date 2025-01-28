@@ -6,11 +6,16 @@ namespace Stu\Component\Station;
 
 use Override;
 use RuntimeException;
+use Stu\Component\Spacecraft\Module\ModuleRecyclingInterface;
 use Stu\Component\Spacecraft\SpacecraftRumpEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
+use Stu\Lib\Information\InformationFactoryInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Action\BuildConstruction\BuildConstruction;
 use Stu\Module\Station\Lib\Creation\StationCreatorInterface;
 use Stu\Orm\Entity\ConstructionProgressInterface;
@@ -41,6 +46,9 @@ final class StationUtility implements StationUtilityInterface
         private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository,
         private TradePostRepositoryInterface $tradePostRepository,
         private TradeLicenseRepositoryInterface $tradeLicenseRepository,
+        private ModuleRecyclingInterface $moduleRecycling,
+        private InformationFactoryInterface $informationFactory,
+        private PrivateMessageSenderInterface $privateMessageSender,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
@@ -217,6 +225,23 @@ final class StationUtility implements StationUtilityInterface
     public function finishScrapping(ConstructionProgressInterface $progress): void
     {
         $station = $progress->getStation();
+        $informationWrapper = $this->informationFactory->createInformationWrapper();
+
+        // salvage modules
+        $this->moduleRecycling->retrieveSomeModules($station, $station, $informationWrapper);
+
+        // salvage special modules
+        foreach ($progress->getSpecialModules() as $progressModule) {
+
+            $module = $progressModule->getModule();
+            $informationWrapper->addInformationf('Folgendes Modul konnte recycelt werden: %s', $module->getName());
+
+            $this->storageManager->upperStorage(
+                $station,
+                $module->getCommodity(),
+                1
+            );
+        }
 
         // transform to construction
         $rumpId = $station->getUser()->getFactionId() + SpacecraftRumpEnum::SHIP_RUMP_BASE_ID_CONSTRUCTION;
@@ -234,21 +259,20 @@ final class StationUtility implements StationUtilityInterface
 
         $this->stationRepository->save($station);
 
-        // salvage modules
-        foreach ($progress->getSpecialModules() as $progressModule) {
-            $this->storageManager->upperStorage(
-                $station,
-                $progressModule->getModule()->getCommodity(),
-                1
-            );
-        }
-
         // delete progress modules
         $this->constructionProgressModuleRepository->truncateByProgress($progress->getId());
 
         // set progress finished
         $progress->setRemainingTicks(0);
         $this->constructionProgressRepository->save($progress);
+
+        $this->privateMessageSender->send(
+            UserEnum::USER_NOONE,
+            $station->getUser()->getId(),
+            $informationWrapper,
+            PrivateMessageFolderTypeEnum::SPECIAL_STATION,
+            $station->getHref()
+        );
     }
 
     #[Override]
