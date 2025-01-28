@@ -328,15 +328,21 @@ class SpacecraftStorageEntityWrapper implements StorageEntityWrapperInterface
 
         if ($foreignCrewChangeAmount !== 0) {
 
-            $isOn = $this->troopTransferUtility->foreignerCount($this->spacecraft) > 0;
+            $hasForeigners = $this->troopTransferUtility->foreignerCount($this->spacecraft) > 0;
             if (
-                !$isOn
+                !$hasForeigners
                 && $this->spacecraft->getSystemState(SpacecraftSystemTypeEnum::UPLINK)
             ) {
                 $this->spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::UPLINK)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
             }
+            if (
+                $hasForeigners
+                && !$this->spacecraft->getSystemState(SpacecraftSystemTypeEnum::UPLINK)
+            ) {
+                $this->spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::UPLINK)->setMode(SpacecraftSystemModeEnum::MODE_ON);
+            }
 
-            $this->sendUplinkMessage($foreignCrewChangeAmount, $isOn, $other);
+            $this->sendUplinkMessage($foreignCrewChangeAmount, $hasForeigners, $other);
         }
 
         if (
