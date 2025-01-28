@@ -93,9 +93,6 @@ class InterceptShipCoreTest extends StuTestCase
             ->withNoArgs()
             ->andReturn('SHIP');
 
-        $this->target->shouldReceive('getHref')
-            ->withNoArgs()
-            ->andReturn('HREF777');
         $this->target->shouldReceive('getUser->getId')
             ->withNoArgs()
             ->once()
@@ -159,7 +156,7 @@ class InterceptShipCoreTest extends StuTestCase
                 $targetUserId,
                 'Die TARGET wurde von der SHIP abgefangen',
                 PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
-                'HREF777'
+                $this->target
             )
             ->once();
 

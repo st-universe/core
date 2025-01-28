@@ -309,7 +309,5 @@ interface SpacecraftInterface extends
 
     public function setIsInEmergency(bool $inEmergency): SpacecraftInterface;
 
-    public function getHref(): string;
-
     public function __toString(): string;
 }

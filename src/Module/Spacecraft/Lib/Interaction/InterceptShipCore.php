@@ -62,7 +62,7 @@ final class InterceptShipCore implements InterceptShipCoreInterface
             $target->getUser()->getId(),
             $pm,
             PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
-            $target->getHref()
+            $target
         );
 
         $fleetWrapper = $wrapper->getFleetWrapper();

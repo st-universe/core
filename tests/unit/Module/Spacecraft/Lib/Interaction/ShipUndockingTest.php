@@ -92,9 +92,6 @@ class ShipUndockingTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn('SHIP1');
-        $ship1->shouldReceive('getHref')
-            ->withNoArgs()
-            ->andReturn('HREF66');
 
         $ship2->shouldReceive('setDockedTo')
             ->with(null)
@@ -107,9 +104,6 @@ class ShipUndockingTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn('SHIP2');
-        $ship2->shouldReceive('getHref')
-            ->withNoArgs()
-            ->andReturn('HREF77');
 
         $this->cancelRepair->shouldReceive('cancelRepair')
             ->with($ship1)
@@ -138,7 +132,7 @@ class ShipUndockingTest extends StuTestCase
                 666,
                 'Die SHIP1 wurde von der STATION abgedockt',
                 PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
-                'HREF66'
+                $ship1
             )
             ->once();
         $this->privateMessageSender->shouldReceive('send')
@@ -147,7 +141,7 @@ class ShipUndockingTest extends StuTestCase
                 777,
                 'Die SHIP2 wurde von der STATION abgedockt',
                 PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
-                'HREF77'
+                $ship2
             )
             ->once();
 

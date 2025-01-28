@@ -46,7 +46,7 @@ class ClearTractoringBeam implements SpacecraftDestructionHandlerInterface
                     $destroyedSpacecraftWrapper->get()->getName()
                 ),
                 $tractoringShip->getType()->getMessageFolderType(),
-                $tractoringShip->getHref()
+                $tractoringShip
             );
         }
     }

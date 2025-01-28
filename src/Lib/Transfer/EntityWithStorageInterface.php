@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Lib\Transfer;
 
 use Doctrine\Common\Collections\Collection;
+use Stu\Lib\General\EntityWithHrefInterface;
 use Stu\Lib\Interaction\EntityWithInteractionCheckInterface;
 use Stu\Module\Spacecraft\Lib\Crew\EntityWithCrewAssignmentsInterface;
 use Stu\Orm\Entity\MapInterface;
@@ -14,7 +15,8 @@ use Stu\Orm\Entity\UserInterface;
 
 interface EntityWithStorageInterface extends
     EntityWithCrewAssignmentsInterface,
-    EntityWithInteractionCheckInterface
+    EntityWithInteractionCheckInterface,
+    EntityWithHrefInterface
 {
     public function getId(): int;
 
@@ -33,6 +35,4 @@ interface EntityWithStorageInterface extends
     public function getLocation(): MapInterface|StarSystemMapInterface;
 
     public function getTransferEntityType(): TransferEntityTypeEnum;
-
-    public function getHref(): string;
 }

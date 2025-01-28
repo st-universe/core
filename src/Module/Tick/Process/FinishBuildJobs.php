@@ -6,7 +6,6 @@ namespace Stu\Module\Tick\Process;
 
 use Override;
 use Stu\Component\Building\BuildingManagerInterface;
-use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -15,9 +14,7 @@ use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class FinishBuildJobs implements ProcessTickHandlerInterface
 {
-    public function __construct(private PlanetFieldRepositoryInterface $planetFieldRepository, private PrivateMessageSenderInterface $privateMessageSender, private BuildingManagerInterface $buildingManager)
-    {
-    }
+    public function __construct(private PlanetFieldRepositoryInterface $planetFieldRepository, private PrivateMessageSenderInterface $privateMessageSender, private BuildingManagerInterface $buildingManager) {}
 
     #[Override]
     public function work(): void
@@ -38,14 +35,12 @@ final class FinishBuildJobs implements ProcessTickHandlerInterface
                 $activationDetails ?? ''
             );
 
-            $href = sprintf('colony.php?%s=1&id=%d', ShowColony::VIEW_IDENTIFIER, $host->getId());
-
             $this->privateMessageSender->send(
                 UserEnum::USER_NOONE,
                 $host->getUserId(),
                 $txt,
                 PrivateMessageFolderTypeEnum::SPECIAL_COLONY,
-                $href
+                $host
             );
         }
     }

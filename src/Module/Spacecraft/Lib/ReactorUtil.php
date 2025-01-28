@@ -127,7 +127,7 @@ final class ReactorUtil implements ReactorUtilInterface
                     $loadUnits
                 ),
                 PrivateMessageFolderTypeEnum::SPECIAL_TRADE,
-                $spacecraft->getHref()
+                $spacecraft
             );
         }
 

@@ -3,8 +3,9 @@
 namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\Collection;
+use Stu\Lib\General\EntityWithHrefInterface;
 
-interface KnPostInterface
+interface KnPostInterface extends EntityWithHrefInterface
 {
     public function getId(): int;
 

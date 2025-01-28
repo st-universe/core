@@ -12,7 +12,6 @@ use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
-use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Commodity\Lib\CommodityCacheInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -493,14 +492,12 @@ final class ColonyTick implements ColonyTickInterface
             $text .= $msg . "\n";
         }
 
-        $href = sprintf(_('colony.php?%s=1&id=%d'), ShowColony::VIEW_IDENTIFIER, $colony->getId());
-
         $this->privateMessageSender->send(
             UserEnum::USER_NOONE,
             $colony->getUserId(),
             $text,
             PrivateMessageFolderTypeEnum::SPECIAL_COLONY,
-            $href
+            $colony
         );
 
         $this->msg = [];

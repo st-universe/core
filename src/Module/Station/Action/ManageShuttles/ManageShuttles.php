@@ -142,7 +142,7 @@ final class ManageShuttles implements ActionControllerInterface
                 $ship->getUser()->getId(),
                 $pm,
                 PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
-                $ship->getHref()
+                $ship
             );
         }
     }
