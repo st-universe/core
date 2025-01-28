@@ -323,10 +323,6 @@ class ManageBatteryTest extends StuTestCase
         $this->ship->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($userMock);
-        $this->ship->shouldReceive('getHref')
-            ->withNoArgs()
-            ->once()
-            ->andReturn('HREF555');
 
         $this->ship->shouldReceive('getShieldState')
             ->withNoArgs()
@@ -388,7 +384,7 @@ class ManageBatteryTest extends StuTestCase
                 $this->shipUserId,
                 'Die providerName lädt in Sektor SECTOR die Batterie der name um 37 Einheiten',
                 PrivateMessageFolderTypeEnum::SPECIAL_TRADE,
-                'HREF555'
+                $this->ship
             )
             ->once();
 
@@ -413,10 +409,6 @@ class ManageBatteryTest extends StuTestCase
         $this->ship->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn($this->shipId);
-        $this->ship->shouldReceive('getHref')
-            ->withNoArgs()
-            ->once()
-            ->andReturn('HREF555');
 
         $this->ship->shouldReceive('getName')
             ->withNoArgs()
@@ -485,7 +477,7 @@ class ManageBatteryTest extends StuTestCase
                 $this->shipUserId,
                 'Die providerName lädt in Sektor SECTOR die Batterie der name um 22 Einheiten',
                 PrivateMessageFolderTypeEnum::SPECIAL_TRADE,
-                'HREF555'
+                $this->ship
             )
             ->once();
 
@@ -521,10 +513,6 @@ class ManageBatteryTest extends StuTestCase
         $this->ship->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($userMock);
-        $this->ship->shouldReceive('getHref')
-            ->withNoArgs()
-            ->once()
-            ->andReturn('HREF555');
 
         $this->ship->shouldReceive('getShieldState')
             ->withNoArgs()
@@ -580,7 +568,7 @@ class ManageBatteryTest extends StuTestCase
                 $this->shipUserId,
                 'Die providerName lädt in Sektor SECTOR die Batterie der name um 20 Einheiten',
                 PrivateMessageFolderTypeEnum::SPECIAL_TRADE,
-                'HREF555'
+                $this->ship
             )
             ->once();
 
@@ -608,10 +596,6 @@ class ManageBatteryTest extends StuTestCase
         $this->ship->shouldReceive('getName')
             ->withNoArgs()
             ->andReturn('name');
-        $this->ship->shouldReceive('getHref')
-            ->withNoArgs()
-            ->once()
-            ->andReturn('HREF555');
 
         $userMock = $this->mock(UserInterface::class);
         $userMock->shouldReceive('getId')
@@ -676,7 +660,7 @@ class ManageBatteryTest extends StuTestCase
                 $this->shipUserId,
                 'Die providerName lädt in Sektor SECTOR die Batterie der name um 12 Einheiten',
                 PrivateMessageFolderTypeEnum::SPECIAL_TRADE,
-                'HREF555'
+                $this->ship
             )
             ->once();
 

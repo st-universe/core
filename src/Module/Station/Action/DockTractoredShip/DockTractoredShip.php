@@ -94,7 +94,7 @@ final class DockTractoredShip implements ActionControllerInterface
                 $station->getName()
             ),
             PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
-            $tractoredShip->getHref()
+            $tractoredShip
         );
     }
 

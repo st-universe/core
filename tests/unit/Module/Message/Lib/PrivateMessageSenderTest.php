@@ -7,6 +7,7 @@ namespace Stu\Module\Message\Lib;
 use JBBCode\Parser;
 use Mockery\MockInterface;
 use Override;
+use Stu\Lib\General\EntityWithHrefInterface;
 use Stu\Lib\Mail\MailFactoryInterface;
 use Stu\Lib\Mail\StuMailInterface;
 use Stu\Module\Control\StuTime;
@@ -73,6 +74,7 @@ class PrivateMessageSenderTest extends StuTestCase
     {
         $sender = $this->mock(UserInterface::class);
         $recipient = $this->mock(UserInterface::class);
+        $hrefEntity = $this->mock(EntityWithHrefInterface::class);
 
         $recipientfolder = $this->mock(PrivateMessageFolderInterface::class);
         $senderOutboxFolder = $this->mock(PrivateMessageFolderInterface::class);
@@ -138,6 +140,11 @@ class PrivateMessageSenderTest extends StuTestCase
             ->with('foobar')
             ->once();
 
+        $hrefEntity->shouldReceive('getHref')
+            ->withNoArgs()
+            ->once()
+            ->andReturn('href');
+
         $recipientpm->shouldReceive('setHref')
             ->with('href')
             ->once();
@@ -177,7 +184,7 @@ class PrivateMessageSenderTest extends StuTestCase
             ->with($outboxPm)
             ->once();
 
-        $this->messageSender->send(2, 3, 'foobar', PrivateMessageFolderTypeEnum::SPECIAL_STATION, 'href');
+        $this->messageSender->send(2, 3, 'foobar', PrivateMessageFolderTypeEnum::SPECIAL_STATION, $hrefEntity);
     }
 
     public function testSendWithEmailNotificationAndAlreadyRead(): void

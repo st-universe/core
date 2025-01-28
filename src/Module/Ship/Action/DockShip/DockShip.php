@@ -101,7 +101,7 @@ final class DockShip implements ActionControllerInterface
                     $target->getName()
                 ),
                 PrivateMessageFolderTypeEnum::SPECIAL_STATION,
-                $target->getHref()
+                $target
             );
 
             $game->addInformation('Das Andocken wurde verweigert');
@@ -149,7 +149,7 @@ final class DockShip implements ActionControllerInterface
             $target->getUser()->getId(),
             'Die ' . $ship->getName() . ' hat an der ' . $target->getName() . ' angedockt',
             PrivateMessageFolderTypeEnum::SPECIAL_STATION,
-            $target->getHref(),
+            $target,
             $this->isAutoReadOnDock($target)
         );
         $game->addInformation('Andockvorgang abgeschlossen');
@@ -225,7 +225,7 @@ final class DockShip implements ActionControllerInterface
             $target->getUser()->getId(),
             'Die Flotte ' . $fleetWrapper->get()->getName() . ' hat an der ' . $target->getName() . ' angedockt',
             PrivateMessageFolderTypeEnum::SPECIAL_STATION,
-            $target->getHref(),
+            $target,
             $this->isAutoReadOnDock($target)
         );
         $game->addInformationMerge($msg);

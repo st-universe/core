@@ -271,7 +271,7 @@ final class StationUtility implements StationUtilityInterface
             $station->getUser()->getId(),
             $informationWrapper,
             PrivateMessageFolderTypeEnum::SPECIAL_STATION,
-            $station->getHref()
+            $station
         );
     }
 

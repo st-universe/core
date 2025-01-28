@@ -6,7 +6,6 @@ namespace Stu\Module\Communication\Action\AddKnPost;
 
 use Override;
 use Stu\Module\Communication\Lib\NewKnPostNotificatorInterface;
-use Stu\Module\Communication\View\ShowSingleKn\ShowSingleKn;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameController;
 use Stu\Module\Control\GameControllerInterface;
@@ -154,18 +153,12 @@ final class AddKnPost implements ActionControllerInterface
                     $post->getTitle()
                 );
 
-                $href = sprintf(
-                    'comm.php?%s=1&knid=%d',
-                    ShowSingleKn::VIEW_IDENTIFIER,
-                    $post->getId()
-                );
-
                 $this->privateMessageSender->send(
                     UserEnum::USER_NOONE,
                     $ownerId,
                     $text,
                     PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,
-                    $href
+                    $post
                 );
             }
         }

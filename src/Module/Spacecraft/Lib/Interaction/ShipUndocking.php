@@ -40,7 +40,7 @@ final class ShipUndocking implements ShipUndockingInterface
                 $station->getName()
             ),
             PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
-            $dockedShip->getHref()
+            $dockedShip
         );
     }
 

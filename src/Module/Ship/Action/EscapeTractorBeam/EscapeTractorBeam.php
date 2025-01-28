@@ -126,7 +126,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
             $tractoringShip->getUser()->getId(),
             sprintf(_('Bei dem Fluchtversuch der %s wurde der Traktorstrahl der %s in Sektor %s zerstört'), $ship->getName(), $tractoringShip->getName(), $ship->getSectorString()),
             $tractoringShip->getType()->getMessageFolderType(),
-            $tractoringShip->getHref()
+            $tractoringShip
         );
 
         $game->addInformation(_('Der Fluchtversuch ist gelungen'));
@@ -155,7 +155,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
             $tractoringSpacecraft->getUser()->getId(),
             sprintf(_('Der Fluchtversuch der %s ist gescheitert'), $ship->getName()),
             $tractoringSpacecraft->getType()->getMessageFolderType(),
-            $tractoringSpacecraft->getHref()
+            $tractoringSpacecraft
         );
     }
 
@@ -193,7 +193,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
                 $otherUserId,
                 sprintf(_('Der Fluchtversuch der %s ist gescheitert'), $shipName),
                 PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
-                $tractoringSpacecraft->getHref()
+                $tractoringSpacecraft
             );
         }
     }

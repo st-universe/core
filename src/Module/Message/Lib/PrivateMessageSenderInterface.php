@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Message\Lib;
 
+use Stu\Lib\General\EntityWithHrefInterface;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Orm\Entity\UserInterface;
 
@@ -12,7 +13,7 @@ interface PrivateMessageSenderInterface
         int $recipientId,
         string|InformationWrapper $information,
         PrivateMessageFolderTypeEnum $folderType = PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,
-        ?string $href = null,
+        null|string|EntityWithHrefInterface $href = null,
         bool $isRead = false
     ): void;
 

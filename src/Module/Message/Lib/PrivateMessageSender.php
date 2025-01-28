@@ -8,6 +8,7 @@ use InvalidArgumentException;
 use JBBCode\Parser;
 use Override;
 use RuntimeException;
+use Stu\Lib\General\EntityWithHrefInterface;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Lib\Mail\MailFactoryInterface;
 use Stu\Module\Control\StuTime;
@@ -43,7 +44,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
         int $recipientId,
         string|InformationWrapper $information,
         PrivateMessageFolderTypeEnum $folderType = PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,
-        ?string $href = null,
+        null|string|EntityWithHrefInterface $href = null,
         bool $isRead = false
     ): void {
         if ($senderId === $recipientId) {
@@ -77,7 +78,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
             $time,
             $folderType,
             $text,
-            $href,
+            $this->getHref($href),
             !$isRead
         );
 
@@ -100,6 +101,15 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
                 $pm
             );
         }
+    }
+
+    private function getHref(null|string|EntityWithHrefInterface $href): ?string
+    {
+        if ($href instanceof EntityWithHrefInterface) {
+            return $href->getHref();
+        }
+
+        return $href !== null ? $href : null;
     }
 
     #[Override]

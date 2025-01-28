@@ -180,7 +180,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
             $target->getUser()->getId(),
             "Die " . $targetName . " wurde in Sektor " . $ship->getSectorString() . " vom Traktorstrahl der " . $shipName . " erfasst",
             PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
-            $target->getHref()
+            $target
         );
         $game->addInformationf("Der Traktorstrahl wurde auf die %s gerichtet", $targetName);
 

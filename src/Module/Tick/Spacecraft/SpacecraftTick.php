@@ -741,7 +741,7 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
             $ship->getUser()->getId(),
             $text,
             $ship->getType()->getMessageFolderType(),
-            $ship->getHref()
+            $ship
         );
 
         $this->msg = [];
