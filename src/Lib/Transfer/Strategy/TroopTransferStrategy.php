@@ -78,6 +78,7 @@ class TroopTransferStrategy implements TransferStrategyInterface
 
         if ($amount < 1) {
             $information->addInformation('Es konnten keine Crewman transferiert werden');
+            return;
         }
 
         if (!$source->checkCrewStorage($amount, $isUnload, $information)) {
@@ -97,14 +98,12 @@ class TroopTransferStrategy implements TransferStrategyInterface
             $this->troopTransferUtility->assignCrew($crewAssignment, $destination->get());
         }
 
-        $information->addInformation(
-            sprintf(
-                _('Die %s hat %d Crewman %s der %s transferiert'),
-                $source->getName(),
-                $amount,
-                $isUnload ? 'zu' : 'von',
-                $target->getName()
-            )
+        $information->addInformationf(
+            'Die %s hat %d Crewman %s der %s transferiert.',
+            $source->getName(),
+            $amount,
+            $isUnload ? 'zu' : 'von',
+            $target->getName()
         );
 
         $foreignCrewChangeAmount = $source->getUser() !== $target->getUser()

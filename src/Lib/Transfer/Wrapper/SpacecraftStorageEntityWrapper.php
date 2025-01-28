@@ -17,8 +17,6 @@ use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Lib\Pirate\PirateReactionTriggerEnum;
 use Stu\Lib\Transfer\CommodityTransferInterface;
 use Stu\Lib\Transfer\EntityWithStorageInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
-use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Spacecraft\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftShutdownInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
@@ -44,7 +42,6 @@ class SpacecraftStorageEntityWrapper implements StorageEntityWrapperInterface
         private SpacecraftSystemManagerInterface $spacecraftSystemManager,
         private SpacecraftCrewCalculatorInterface $shipCrewCalculator,
         private SpacecraftShutdownInterface $spacecraftShutdown,
-        private PrivateMessageSenderInterface $privateMessageSender,
         private SpacecraftWrapperInterface $spacecraftWrapper
     ) {
         $this->spacecraft = $spacecraftWrapper->get();
@@ -342,7 +339,7 @@ class SpacecraftStorageEntityWrapper implements StorageEntityWrapperInterface
                 $this->spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::UPLINK)->setMode(SpacecraftSystemModeEnum::MODE_ON);
             }
 
-            $this->sendUplinkMessage($foreignCrewChangeAmount, $hasForeigners, $other);
+            $this->sendUplinkMessage($hasForeigners, $information);
         }
 
         if (
@@ -371,23 +368,11 @@ class SpacecraftStorageEntityWrapper implements StorageEntityWrapperInterface
         }
     }
 
-    private function sendUplinkMessage(int $foreignCrewChangeAmount, bool $isOn, StorageEntityWrapperInterface $other): void
+    private function sendUplinkMessage(bool $isOn, InformationInterface $information): void
     {
-        $msg = sprintf(
-            _('Die %s von Spieler %s hat 1 Crewman %s deiner Station %s gebeamt. Der Uplink ist %s'),
-            $other->getName(),
-            $other->getUser()->getName(),
-            $foreignCrewChangeAmount > 0 ? 'zu' : 'von',
-            $this->spacecraft->getName(),
+        $information->addInformationf(
+            'Der Uplink ist %s.',
             $isOn ? 'aktiviert' : 'deaktiviert'
-        );
-
-        $this->privateMessageSender->send(
-            $other->getUser()->getId(),
-            $this->spacecraft->getUser()->getId(),
-            $msg,
-            PrivateMessageFolderTypeEnum::SPECIAL_STATION,
-            $this->spacecraft->getHref()
         );
     }
 
