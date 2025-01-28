@@ -8,9 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Override;
 use Stu\Component\Spacecraft\Module\ModuleRecyclingInterface;
-use Stu\Lib\Information\InformationFactoryInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
-use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Station\Lib\Creation\StationCreatorInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StationInterface;
@@ -45,10 +43,6 @@ class StationUtilityTest extends StuTestCase
     private $tradeLicenseRepository;
     /** @var ModuleRecyclingInterface&MockInterface */
     private $moduleRecycling;
-    /** @var InformationFactoryInterface&MockInterface */
-    private $informationFactory;
-    /** @var PrivateMessageSenderInterface&MockInterface */
-    private $privateMessageSender;
 
     private StationUtilityInterface $subject;
 
@@ -65,8 +59,6 @@ class StationUtilityTest extends StuTestCase
         $this->tradePostRepository = $this->mock(TradePostRepositoryInterface::class);
         $this->tradeLicenseRepository = $this->mock(TradeLicenseRepositoryInterface::class);
         $this->moduleRecycling = $this->mock(ModuleRecyclingInterface::class);
-        $this->informationFactory = $this->mock(InformationFactoryInterface::class);
-        $this->privateMessageSender = $this->mock(PrivateMessageSenderInterface::class);
 
         $this->subject = new StationUtility(
             $this->spacecraftBuildplanRepository,
@@ -79,8 +71,6 @@ class StationUtilityTest extends StuTestCase
             $this->tradePostRepository,
             $this->tradeLicenseRepository,
             $this->moduleRecycling,
-            $this->informationFactory,
-            $this->privateMessageSender,
             $this->initLoggerUtil()
         );
     }
