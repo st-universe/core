@@ -25,11 +25,7 @@
 					<tr>
 						<th style="width: 30px;">/\</th>
 						{% for mapItem in TOP_PREVIEW_ROW %}
-						<td class="starmap" id="{{ mapItem.getMap.getCx }}_{{ mapItem.getMap.getCy }}">
-							<div class="lssobj" style="padding: 0px !important; width: 30px; height: 30px;">
-								<img src="/assets/map/{{ mapItem.getMapGraphicPath }}" />
-							</div>
-						</td>
+						{% include 'html/admin/mapeditor_location.twig' %}
 						{% endfor %}
 					</tr>
 				</table>
@@ -50,12 +46,7 @@
 					{% for row in LEFT_PREVIEW_ROW %}
 					<tr>
 						{% for mapItem in row.getFields %}
-						{% set map = mapItem.getMap %}
-						<td class="starmap" id="{{ map.getCx }}_{{ map.getCy }}">
-							<div class="lssobj" style="padding: 0px !important; width: 30px; height: 30px;">
-								<img src="/assets/map/{{ mapItem.getMapGraphicPath }}" />
-							</div>
-						</td>
+						{% include 'html/admin/mapeditor_location.twig' %}
 						{% endfor %}
 					</tr>
 					{% endfor %}
@@ -75,20 +66,7 @@
 					<tr>
 						<th>{{ yrow.getRow }}</th>
 						{% for mapItem in yrow.getFields %}
-						{% set map = mapItem.getMap %}
-						{% set passable = map.getFieldType.getPassable ? 1 : 0 %}
-						<td class="starmap" data-passable="{{ passable }}" data-region="{{ map.getRegionId }}"
-							data-admin-region="{{ map.getAdminRegionId }}"
-							data-system-type-id="{{ map.getSystemTypeId }}" id="{{ map.getCx }}_{{ map.getCy }}"
-							data-influence-area="{{map.getInfluenceAreaId}}">
-							<div class="lssobj" style="cursor: pointer ! important;"
-								onmouseover="toggleMapfieldType(this)" onmouseout="toggleMapfieldType(this)">
-								<div class="divbody" style="padding: 0px !important; width: 30px; height: 30px;"
-									onclick="updateField(this,{{ map.getId }});">
-									<img src="/assets/map/{{ mapItem.getMapGraphicPath }}" />
-								</div>
-							</div>
-						</td>
+						{% include 'html/admin/mapeditor_location.twig' %}
 						{% endfor %}
 					</tr>
 					{% endfor %}
@@ -102,12 +80,7 @@
 					{% for row in RIGHT_PREVIEW_ROW %}
 					<tr>
 						{% for mapItem in row.getFields %}
-						{% set map = mapItem.getMap %}
-						<td class="starmap" id="{{ map.getCx }}_{{ map.getCy }}">
-							<div class="lssobj" style="padding: 0px !important; width: 30px; height: 30px;">
-								<img src="/assets/map/{{ mapItem.getMapGraphicPath }}" />
-							</div>
-						</td>
+						{% include 'html/admin/mapeditor_location.twig' %}
 						{% endfor %}
 					</tr>
 					{% endfor %}
@@ -128,11 +101,7 @@
 					<tr>
 						<th style="width: 30px;">\/</th>
 						{% for mapItem in BOTTOM_PREVIEW_ROW %}
-						<td class="starmap" id="{{ mapItem.getMap.getCx }}_{{ mapItem.getMap.getCy }}">
-							<div class="lssobj" style="padding: 0px !important; width: 30px; height: 30px;">
-								<img src="/assets/map/{{ mapItem.getMapGraphicPath }}" />
-							</div>
-						</td>
+						{% include 'html/admin/mapeditor_location.twig' %}
 						{% endfor %}
 					</tr>
 				</table>
