@@ -5,16 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Message\Lib;
 
 use InvalidArgumentException;
-use JBBCode\Parser;
 use Override;
-use RuntimeException;
 use Stu\Lib\General\EntityWithHrefInterface;
 use Stu\Lib\Information\InformationWrapper;
-use Stu\Lib\Mail\MailFactoryInterface;
 use Stu\Module\Control\StuTime;
-use Stu\Module\Logging\LoggerEnum;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\PrivateMessageInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -24,19 +18,13 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class PrivateMessageSender implements PrivateMessageSenderInterface
 {
-    private LoggerUtilInterface $loggerUtil;
-
     public function __construct(
         private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
         private PrivateMessageRepositoryInterface $privateMessageRepository,
         private UserRepositoryInterface $userRepository,
-        private MailFactoryInterface $mailFactory,
-        private Parser $bbcodeParser,
-        private StuTime $stuTime,
-        LoggerUtilFactoryInterface $loggerUtilFactory
-    ) {
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
-    }
+        private EmailNotificationSenderInterface $emailNotificationSender,
+        private StuTime $stuTime
+    ) {}
 
     #[Override]
     public function send(
@@ -81,13 +69,6 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
             $this->getHref($href),
             !$isRead
         );
-
-        if (
-            $folderType === PrivateMessageFolderTypeEnum::SPECIAL_MAIN
-            && $recipient->isEmailNotification()
-        ) {
-            $this->sendEmailNotification($sender->getName(), $text, $recipient);
-        }
 
         if ($senderId != UserEnum::USER_NOONE) {
             $this->createPrivateMessage(
@@ -165,6 +146,13 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
             throw new InvalidArgumentException(sprintf('Folder with user_id %d and category %d does not exist', $recipient->getId(), $folderType->value));
         }
 
+        if (
+            $folderType === PrivateMessageFolderTypeEnum::SPECIAL_MAIN
+            && $recipient->isEmailNotification()
+        ) {
+            $this->emailNotificationSender->sendNotification($sender->getName(), $text, $recipient);
+        }
+
         $pm = $this->privateMessageRepository->prototype();
         $pm->setDate($time);
         $pm->setCategory($folder);
@@ -180,24 +168,5 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
         $this->privateMessageRepository->save($pm);
 
         return $pm;
-    }
-
-    private function sendEmailNotification(string $senderName, string $message, UserInterface $user): void
-    {
-        $mail = $this->mailFactory->createStuMail()
-            ->withDefaultSender()
-            ->addTo($user->getEmail())
-            ->setSubject(sprintf(
-                'Neue Privatnachricht von Spieler %s',
-                $this->bbcodeParser->parse($senderName)->getAsText()
-            ))
-            ->setBody($message);
-
-        try {
-            $mail->send();
-        } catch (RuntimeException $e) {
-            $this->loggerUtil->init("mail", LoggerEnum::LEVEL_ERROR);
-            $this->loggerUtil->log($e->getMessage());
-        }
     }
 }

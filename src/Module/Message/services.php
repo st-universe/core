@@ -52,6 +52,8 @@ use Stu\Module\Message\Action\WritePm\WritePmRequest;
 use Stu\Module\Message\Action\WritePm\WritePmRequestInterface;
 use Stu\Module\Message\Lib\DistributedMessageSender;
 use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
+use Stu\Module\Message\Lib\EmailNotificationSender;
+use Stu\Module\Message\Lib\EmailNotificationSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageSender;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageUiFactory;
@@ -78,6 +80,7 @@ use function DI\autowire;
 
 return [
     DistributedMessageSenderInterface::class => autowire(DistributedMessageSender::class),
+    EmailNotificationSenderInterface::class => autowire(EmailNotificationSender::class),
     PrivateMessageSenderInterface::class => autowire(PrivateMessageSender::class),
     ShowWritePmRequestInterface::class => autowire(ShowWritePmRequest::class),
     ShowEditCategoryRequestInterface::class => autowire(ShowEditCategoryRequest::class),
