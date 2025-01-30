@@ -73,8 +73,9 @@
 						<th>{{ yrow.getRow }}</th>
 						{% for mapItem in yrow.getFields %}
 						{% set map = mapItem.getMap %}
-						<td class="starmap" data-passable="{{ map.getFieldType.getPassableAsInt }}"
-							data-region="{{ map.getRegionId }}" data-admin-region="{{ map.getAdminRegionId }}"
+						{% set passable = map.getFieldType.getPassable ? 1 : 0 %}
+						<td class="starmap" data-passable="{{ passable }}" data-region="{{ map.getRegionId }}"
+							data-admin-region="{{ map.getAdminRegionId }}"
 							data-system-type-id="{{ map.getSystemTypeId }}" id="{{ map.getCx }}_{{ map.getCy }}"
 							data-influence-area="{{map.getInfluenceAreaId}}">
 							<div class="lssobj" style="cursor: pointer ! important;"

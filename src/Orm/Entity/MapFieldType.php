@@ -201,12 +201,6 @@ class MapFieldType implements MapFieldTypeInterface
     }
 
     #[Override]
-    public function getPassableAsInt(): int
-    {
-        return $this->passable ? 1 : 0;
-    }
-
-    #[Override]
     public function getColonyClass(): ?ColonyClassInterface
     {
         return $this->colonyClass;
