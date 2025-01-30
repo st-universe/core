@@ -26,7 +26,9 @@
 						<th style="width: 30px;">/\</th>
 						{% for mapItem in TOP_PREVIEW_ROW %}
 						<td class="starmap" id="{{ mapItem.getMap.getCx }}_{{ mapItem.getMap.getCy }}">
-							<div class="lssobj"><img src="/assets/map/{{ mapItem.getMapGraphicPath }}" /></div>
+							<div class="lssobj" style="padding: 0px !important; width: 30px; height: 30px;">
+								<img src="/assets/map/{{ mapItem.getMapGraphicPath }}" />
+							</div>
 						</td>
 						{% endfor %}
 					</tr>
@@ -50,7 +52,8 @@
 						{% for mapItem in row.getFields %}
 						{% set map = mapItem.getMap %}
 						<td class="starmap" id="{{ map.getCx }}_{{ map.getCy }}">
-							<div class="lssobj"><img src="/assets/map/{{ mapItem.getMapGraphicPath }}" />
+							<div class="lssobj" style="padding: 0px !important; width: 30px; height: 30px;">
+								<img src="/assets/map/{{ mapItem.getMapGraphicPath }}" />
 							</div>
 						</td>
 						{% endfor %}
@@ -80,8 +83,7 @@
 							data-influence-area="{{map.getInfluenceAreaId}}">
 							<div class="lssobj" style="cursor: pointer ! important;"
 								onmouseover="toggleMapfieldType(this)" onmouseout="toggleMapfieldType(this)">
-								<div class="divbody"
-									style="/*! position: absolute; */ /*! top: 0; */ /*! left: 0; */ padding: 0px !important; width: 30px; height: 30px;"
+								<div class="divbody" style="padding: 0px !important; width: 30px; height: 30px;"
 									onclick="updateField(this,{{ map.getId }});">
 									<img src="/assets/map/{{ mapItem.getMapGraphicPath }}" />
 								</div>
@@ -102,7 +104,8 @@
 						{% for mapItem in row.getFields %}
 						{% set map = mapItem.getMap %}
 						<td class="starmap" id="{{ map.getCx }}_{{ map.getCy }}">
-							<div class="lssobj"><img src="/assets/map/{{ mapItem.getMapGraphicPath }}" />
+							<div class="lssobj" style="padding: 0px !important; width: 30px; height: 30px;">
+								<img src="/assets/map/{{ mapItem.getMapGraphicPath }}" />
 							</div>
 						</td>
 						{% endfor %}
@@ -126,7 +129,9 @@
 						<th style="width: 30px;">\/</th>
 						{% for mapItem in BOTTOM_PREVIEW_ROW %}
 						<td class="starmap" id="{{ mapItem.getMap.getCx }}_{{ mapItem.getMap.getCy }}">
-							<div class="lssobj"><img src="/assets/map/{{ mapItem.getMapGraphicPath }}" /></div>
+							<div class="lssobj" style="padding: 0px !important; width: 30px; height: 30px;">
+								<img src="/assets/map/{{ mapItem.getMapGraphicPath }}" />
+							</div>
 						</td>
 						{% endfor %}
 					</tr>
