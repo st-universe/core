@@ -6,13 +6,14 @@ namespace Stu\Module\Ship\Action\TrackShip;
 
 use Override;
 use request;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
+use Stu\Lib\Interaction\InteractionCheckerBuilderFactoryInterface;
+use Stu\Lib\Interaction\InteractionCheckType;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
-use Stu\Module\Ship\Lib\Interaction\InteractionChecker;
+use Stu\Module\Spacecraft\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 
 final class TrackShip implements ActionControllerInterface
 {
@@ -20,14 +21,16 @@ final class TrackShip implements ActionControllerInterface
 
     private const int MAXIMUM_TICKS = 70;
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private ActivatorDeactivatorHelperInterface $helper)
-    {
-    }
+    public function __construct(
+        private ShipLoaderInterface $shipLoader,
+        private ActivatorDeactivatorHelperInterface $helper,
+        private InteractionCheckerBuilderFactoryInterface $interactionCheckerBuilderFactory
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $game->setView(ShowShip::VIEW_IDENTIFIER);
+        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         $userId = $game->getUser()->getId();
 
@@ -45,24 +48,28 @@ final class TrackShip implements ActionControllerInterface
         if ($targetWrapper === null) {
             return;
         }
+
         $target = $targetWrapper->get();
-
         $ship = $wrapper->get();
-        if (!$ship->hasEnoughCrew($game)) {
-            return;
-        }
 
-        if ($target->getShieldState()) {
-            $game->addInformation(_("Das Ziel hat die Schilde aktiviert"));
-            return;
-        }
-
-        if (!InteractionChecker::canInteractWith($ship, $target, $game, true)) {
+        if (!$this->interactionCheckerBuilderFactory
+            ->createInteractionChecker()
+            ->setSource($ship)
+            ->setTarget($target)
+            ->setCheckTypes([
+                InteractionCheckType::EXPECT_SOURCE_SUFFICIENT_CREW,
+                InteractionCheckType::EXPECT_SOURCE_UNSHIELDED,
+                InteractionCheckType::EXPECT_SOURCE_UNCLOAKED,
+                InteractionCheckType::EXPECT_SOURCE_UNWARPED,
+                InteractionCheckType::EXPECT_TARGET_UNWARPED,
+                InteractionCheckType::EXPECT_TARGET_UNCLOAKED,
+                InteractionCheckType::EXPECT_TARGET_UNSHIELDED
+            ])
+            ->check($game)) {
             return;
         }
 
         $tracker = $wrapper->getTrackerSystemData();
-
         if ($tracker === null || $tracker->targetId !== null) {
             return;
         }
@@ -73,33 +80,15 @@ final class TrackShip implements ActionControllerInterface
             return;
         }
 
-        if ($ship->getCloakState()) {
-            $game->addInformation(_("Die Tarnung ist aktiviert"));
-            return;
-        }
-        if ($ship->isWarped()) {
-            $game->addInformation("Schiff befindet sich im Warp");
-            return;
-        }
-
-        if ($target->isDestroyed()) {
-            return;
-        }
-        if ($target->isWarped()) {
-            $game->addInformationf('Die %s befindet sich im Warp', $target->getName());
-            return;
-        }
-
         // activate system
-        if (!$this->helper->activate($wrapper, ShipSystemTypeEnum::SYSTEM_TRACKER, $game)) {
-            $game->setView(ShowShip::VIEW_IDENTIFIER);
+        if (!$this->helper->activate($wrapper, SpacecraftSystemTypeEnum::TRACKER, $game)) {
+            $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
             return;
         }
 
         $tracker->setTarget($target->getId())
             ->setRemainingTicks(self::MAXIMUM_TICKS)
             ->update();
-
 
         $game->addInformation(sprintf(_('Die %s ist nun mit einem verborgenen Tracker markiert'), $target->getName()));
     }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Admin\Action;
 
 use Override;
-use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
+use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Module\Admin\View\Scripts\ShowScripts;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -14,8 +14,8 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\BuildplanModuleInterface;
 use Stu\Orm\Entity\ModuleInterface;
-use Stu\Orm\Entity\ShipBuildplanInterface;
-use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
+use Stu\Orm\Entity\SpacecraftBuildplanInterface;
+use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 
 final class RecalculateBuildplanCrewUsage implements ActionControllerInterface
 {
@@ -24,8 +24,8 @@ final class RecalculateBuildplanCrewUsage implements ActionControllerInterface
     private LoggerUtilInterface $logger;
 
     public function __construct(
-        private ShipBuildplanRepositoryInterface $shipBuildplanRepository,
-        private ShipCrewCalculatorInterface $shipCrewCalculator,
+        private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository,
+        private SpacecraftCrewCalculatorInterface $shipCrewCalculator,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->logger = $loggerUtilFactory->getLoggerUtil();
@@ -46,14 +46,14 @@ final class RecalculateBuildplanCrewUsage implements ActionControllerInterface
 
         $updatedBuildplans = 0;
 
-        foreach ($this->shipBuildplanRepository->findAll() as $buildplan) {
+        foreach ($this->spacecraftBuildplanRepository->findAll() as $buildplan) {
             if ($buildplan->getUser()->isNpc()) {
                 continue;
             }
 
             $actualCrewUsage = $this->shipCrewCalculator->getCrewUsage(
                 array_map(
-                    fn (BuildplanModuleInterface $buildplanModule): ModuleInterface => $buildplanModule->getModule(),
+                    fn(BuildplanModuleInterface $buildplanModule): ModuleInterface => $buildplanModule->getModule(),
                     $buildplan->getModules()->toArray()
                 ),
                 $buildplan->getRump(),
@@ -69,12 +69,12 @@ final class RecalculateBuildplanCrewUsage implements ActionControllerInterface
         $game->addInformationf("Es wurden %d Baupläne aktualisiert", $updatedBuildplans);
     }
 
-    private function updateBuildplanCrew(ShipBuildplanInterface $buildplan, int $crewUsage): void
+    private function updateBuildplanCrew(SpacecraftBuildplanInterface $buildplan, int $crewUsage): void
     {
         $oldCrewUsage = $buildplan->getCrew();
 
         $buildplan->setCrew($crewUsage);
-        $this->shipBuildplanRepository->save($buildplan);
+        $this->spacecraftBuildplanRepository->save($buildplan);
 
         $this->logger->log(sprintf(
             'updated buildplan "%s" (userId %d) from %d to %d crew',

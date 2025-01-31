@@ -12,7 +12,7 @@ use Stu\StuTestCase;
 
 class SubspaceLayerRendererTest extends StuTestCase
 {
-    /** @var MockInterface|AbstractVisualPanel */
+    /** @var MockInterface&AbstractVisualPanel */
     private MockInterface $panel;
 
     private LayerRendererInterface $subject;
@@ -76,7 +76,7 @@ class SubspaceLayerRendererTest extends StuTestCase
         $result = $this->subject->render($mapData, $this->panel);
 
         $this->assertEquals(
-            '<img src="/assets/subspace/generated/1234.png" class="lssSubspaceOverShield"
+            '<img src="/assets/subspace/generated/1234.png" class="visualPanelLayer"
                 style="z-index: 5; H+W;" />',
             $result
         );
@@ -107,7 +107,7 @@ class SubspaceLayerRendererTest extends StuTestCase
         $result = $this->subject->render($mapData, $this->panel);
 
         $this->assertEquals(
-            '<img src="/assets/subspace/generated/2345.png" class="lssSubspaceOverShield"
+            '<img src="/assets/subspace/generated/2345.png" class="visualPanelLayer"
                 style="z-index: 5; H+W;" />',
             $result
         );

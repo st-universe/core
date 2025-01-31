@@ -11,16 +11,14 @@ use Stu\Exception\AccessViolation;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 
 final class ShowShiplistFleet implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_SHIPLIST_FLEET';
 
-    public function __construct(private FleetRepositoryInterface $fleetRepository, private ShipWrapperFactoryInterface $shipWrapperFactory, private SessionInterface $session)
-    {
-    }
+    public function __construct(private FleetRepositoryInterface $fleetRepository, private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory, private SessionInterface $session) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -41,7 +39,7 @@ final class ShowShiplistFleet implements ViewControllerInterface
 
         $game->showMacro('html/shiplistFleetform.twig');
 
-        $game->setTemplateVar('FLEETWRAPPER', $this->shipWrapperFactory->wrapFleet($fleet));
+        $game->setTemplateVar('FLEETWRAPPER', $this->spacecraftWrapperFactory->wrapFleet($fleet));
         $game->setTemplateVar('MAX_CREW_PER_FLEET', GameEnum::CREW_PER_FLEET);
     }
 }

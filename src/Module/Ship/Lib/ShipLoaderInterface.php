@@ -2,6 +2,8 @@
 
 namespace Stu\Module\Ship\Lib;
 
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\SourceAndTargetWrappersInterface;
 use Stu\Orm\Entity\ShipInterface;
 
 interface ShipLoaderInterface
@@ -20,6 +22,7 @@ interface ShipLoaderInterface
         bool $checkForEntityLock = true
     ): ShipWrapperInterface;
 
+    /** @return SourceAndTargetWrappersInterface<ShipWrapperInterface> */
     public function getWrappersBySourceAndUserAndTarget(
         int $shipId,
         int $userId,

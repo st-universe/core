@@ -20,6 +20,6 @@ final class ShowShuttleManagementRequest implements ShowShuttleManagementRequest
     #[Override]
     public function getShipId(): int
     {
-        return $this->parameter('shipid')->int()->required();
+        return $this->parameter('shuttletarget')->int()->required();
     }
 }

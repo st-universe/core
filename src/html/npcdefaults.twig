@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:stu="stu">
-<html lang="de">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:stu="stu" lang="de">
 
 <head>
     <meta charset="utf-8" />
@@ -25,17 +24,11 @@
     <div id="overDiv">...</div>
     <div class="container">
         <div class="header">
-            <div id="navlet_user">
-                {% include 'html/game/component/userNavlet.twig' %}
-            </div>
-            <div id="navlet_pm">
-                {% include 'html/game/component/pmNavlet.twig' %}
-            </div>
-            <div id="navlet_research">
-                {% include 'html/game/component/researchNavlet.twig' %}
-            </div>
-            <div id="navlet_colonies">
-                {% include 'html/game/component/coloniesNavlet.twig' %}
+            <div onclick="goToUrl('/maindesk.php'); return false;" class="header_box header_box_user border_box action">
+                <img style="width: 30px; height: 30px;" src="/assets/buttons/b_from1.png"
+                    title="Zurück zu Spielmodus" />
+                <br />
+                <span style="color: orange; font-size: 150%;">Klick führt zurück aufs Maindesk</span>
             </div>
             <div class="header_box header_box_logout border_box action" onclick="goToUrl('game.php?B_LOGOUT=1')"
                 onmouseover="cp('header_menu_logout','navigation/menu_logout1', 'png')"
@@ -81,13 +74,8 @@
         </div>
         <div style="margin-top: 80px;">
             <div class="sidebar">
-                <div style="width: 100%; padding-left: 12px; padding-right: 10px">
-                    {% from 'html/macros.twig' import npcnavigation %}
-                    {{ npcnavigation() }}
-                    <div id="navlet_servertime">
-                        {% include 'html/game/component/serverTimeAndVersion.twig' %}
-                    </div>
-                </div>
+                {% from 'html/macros.twig' import npcnavigation %}
+                {{ npcnavigation() }}
             </div>
             <div id="innerContent" class="innerContent">
                 {% block body %}

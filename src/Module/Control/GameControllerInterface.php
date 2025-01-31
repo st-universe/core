@@ -31,6 +31,7 @@ interface GameControllerInterface extends InformationInterface
 
     public function getMacro(): string;
 
+    /** @param array<string> $info */
     public function addInformationMerge(array $info): void;
 
     public function addInformationWrapper(?InformationWrapper $informations, bool $isHead = false): void;
@@ -78,8 +79,6 @@ interface GameControllerInterface extends InformationInterface
     public function redirectTo(string $href): void;
 
     public function getCurrentRound(): GameTurnInterface;
-
-    public function getJavascriptPath(): string;
 
     public function checkDatabaseItem(?int $databaseEntryId): void;
 

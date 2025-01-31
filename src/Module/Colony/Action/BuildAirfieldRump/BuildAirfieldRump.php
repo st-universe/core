@@ -6,16 +6,17 @@ namespace Stu\Module\Colony\Action\BuildAirfieldRump;
 
 use Override;
 use request;
+use RuntimeException;
 use Stu\Component\Building\BuildingFunctionEnum;
-use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\ShipRumpInterface;
+use Stu\Orm\Entity\SpacecraftRumpInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
-use Stu\Orm\Repository\ShipRumpRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 
 final class BuildAirfieldRump implements ActionControllerInterface
 {
@@ -23,8 +24,8 @@ final class BuildAirfieldRump implements ActionControllerInterface
 
     public function __construct(
         private ColonyLoaderInterface $colonyLoader,
-        private ShipRumpRepositoryInterface $shipRumpRepository,
-        private ColonyStorageManagerInterface $colonyStorageManager,
+        private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository,
+        private StorageManagerInterface $storageManager,
         private ColonyRepositoryInterface $colonyRepository
     ) {}
 
@@ -42,7 +43,7 @@ final class BuildAirfieldRump implements ActionControllerInterface
 
         $rumpId = request::postInt('buildrump');
 
-        $availableShipRumps = $this->shipRumpRepository->getBuildableByUserAndBuildingFunction(
+        $availableShipRumps = $this->spacecraftRumpRepository->getBuildableByUserAndBuildingFunction(
             $userId,
             BuildingFunctionEnum::BUILDING_FUNCTION_AIRFIELD
         );
@@ -51,7 +52,7 @@ final class BuildAirfieldRump implements ActionControllerInterface
             return;
         }
 
-        $rump = $this->shipRumpRepository->find($rumpId);
+        $rump = $this->spacecraftRumpRepository->find($rumpId);
 
         $wantedAmount = request::postIntFatal('amount');
         $amount = 0;
@@ -69,7 +70,7 @@ final class BuildAirfieldRump implements ActionControllerInterface
     }
 
     private function produceShip(
-        ShipRumpInterface $rump,
+        SpacecraftRumpInterface $rump,
         ColonyInterface $colony,
         GameControllerInterface $game
     ): bool {
@@ -105,11 +106,16 @@ final class BuildAirfieldRump implements ActionControllerInterface
             }
         }
         foreach ($rump->getBuildingCosts() as $cost) {
-            $this->colonyStorageManager->lowerStorage($colony, $cost->getCommodity(), $cost->getAmount());
+            $this->storageManager->lowerStorage($colony, $cost->getCommodity(), $cost->getAmount());
         }
         $colony->lowerEps($rump->getEpsCost());
 
-        $this->colonyStorageManager->upperStorage($colony, $rump->getCommodity(), 1);
+        $commodity = $rump->getCommodity();
+        if ($commodity === null) {
+            throw new RuntimeException(sprintf('rumpId %d does not have commodity', $rump->getId()));
+        }
+
+        $this->storageManager->upperStorage($colony, $commodity, 1);
 
         return true;
     }

@@ -9,13 +9,13 @@ use Mockery\MockInterface;
 use Override;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
-use Stu\Orm\Repository\ShipCrewRepositoryInterface;
+use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 use Stu\StuTestCase;
 
 class CrewDeletionHandlerTest extends StuTestCase
 {
     /**
-     * @var null|MockInterface|ShipCrewRepositoryInterface
+     * @var null|MockInterface|CrewAssignmentRepositoryInterface
      */
     private $shipCrewRepository;
 
@@ -29,7 +29,7 @@ class CrewDeletionHandlerTest extends StuTestCase
     #[Override]
     public function setUp(): void
     {
-        $this->shipCrewRepository = $this->mock(ShipCrewRepositoryInterface::class);
+        $this->shipCrewRepository = $this->mock(CrewAssignmentRepositoryInterface::class);
         $this->crewRepository = $this->mock(CrewRepositoryInterface::class);
 
         $this->handler = new CrewDeletionHandler(

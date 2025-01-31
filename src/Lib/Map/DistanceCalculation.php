@@ -6,33 +6,33 @@ namespace Stu\Lib\Map;
 
 use Override;
 use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 
 class DistanceCalculation implements DistanceCalculationInterface
 {
     #[Override]
-    public function shipToShipDistance(ShipInterface $ship, ShipInterface $station): int
+    public function shipToShipDistance(SpacecraftInterface $one, SpacecraftInterface $other): int
     {
 
         return $this->calculateAbsoluteDistance(
-            $ship->getSystem(),
-            $station->getSystem(),
-            $ship->getPosX(),
-            $ship->getPosY(),
-            $station->getPosX(),
-            $station->getPosY()
+            $one->getSystem(),
+            $other->getSystem(),
+            $one->getPosX(),
+            $one->getPosY(),
+            $other->getPosX(),
+            $other->getPosY()
         );
     }
 
     #[Override]
-    public function shipToColonyDistance(ShipInterface $ship, ColonyInterface $colony): int
+    public function spacecraftToColonyDistance(SpacecraftInterface $spacecraft, ColonyInterface $colony): int
     {
         return $this->calculateAbsoluteDistance(
-            $ship->getSystem(),
+            $spacecraft->getSystem(),
             $colony->getSystem(),
-            $ship->getPosX(),
-            $ship->getPosY(),
+            $spacecraft->getPosX(),
+            $spacecraft->getPosY(),
             $colony->getSx(),
             $colony->getSy()
         );

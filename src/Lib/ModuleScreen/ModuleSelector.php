@@ -7,15 +7,15 @@ namespace Stu\Lib\ModuleScreen;
 use InvalidArgumentException;
 use Override;
 use RuntimeException;
-use Stu\Component\Ship\ShipModuleTypeEnum;
+use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Lib\ModuleScreen\Addon\ModuleSelectorAddonInterface;
 use Stu\Module\Twig\TwigPageInterface;
 use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\ShipBuildplanInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\ShipRumpInterface;
+use Stu\Orm\Entity\SpacecraftBuildplanInterface;
+use Stu\Orm\Entity\SpacecraftRumpInterface;
 use Stu\Orm\Entity\ShipRumpModuleLevelInterface;
 use Stu\Orm\Entity\ShipRumpRoleInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
@@ -29,7 +29,17 @@ class ModuleSelector implements ModuleSelectorInterface
     private ?array $moduleSelectorEntries = null;
     private ?ShipRumpModuleLevelInterface $shipRumpModuleLevel = null;
 
-    public function __construct(private ModuleRepositoryInterface $moduleRepository, private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository, private TwigPageInterface $twigPage, private ShipModuleTypeEnum $moduleType, private ColonyInterface|ShipInterface $host, private ShipRumpInterface $rump, private UserInterface $user, private ?ModuleSelectorAddonInterface $addon, private ?ShipBuildplanInterface $buildplan = null) {}
+    public function __construct(
+        private ModuleRepositoryInterface $moduleRepository,
+        private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository,
+        private TwigPageInterface $twigPage,
+        private SpacecraftModuleTypeEnum $moduleType,
+        private ColonyInterface|SpacecraftInterface $host,
+        private SpacecraftRumpInterface $rump,
+        private UserInterface $user,
+        private ?ModuleSelectorAddonInterface $addon,
+        private ?SpacecraftBuildplanInterface $buildplan = null
+    ) {}
 
     #[Override]
     public function isMandatory(): bool
@@ -69,7 +79,7 @@ class ModuleSelector implements ModuleSelectorInterface
     }
 
     #[Override]
-    public function getModuleType(): ShipModuleTypeEnum
+    public function getModuleType(): SpacecraftModuleTypeEnum
     {
         return $this->moduleType;
     }
@@ -78,6 +88,14 @@ class ModuleSelector implements ModuleSelectorInterface
     public function allowEmptySlot(): bool
     {
         return !$this->isSpecial() && !$this->isMandatory();
+    }
+
+    #[Override]
+    public function isEmptySlot(): bool
+    {
+        return $this->allowEmptySlot()
+            && $this->buildplan !== null
+            && !$this->hasSelectedModule();
     }
 
     #[Override]
@@ -93,7 +111,7 @@ class ModuleSelector implements ModuleSelectorInterface
     }
 
     #[Override]
-    public function getRump(): ShipRumpInterface
+    public function getRump(): SpacecraftRumpInterface
     {
         return $this->rump;
     }
@@ -174,13 +192,13 @@ class ModuleSelector implements ModuleSelectorInterface
     }
 
     #[Override]
-    public function getHost(): ColonyInterface|ShipInterface
+    public function getHost(): ColonyInterface|SpacecraftInterface
     {
         return $this->host;
     }
 
     #[Override]
-    public function getBuildplan(): ?ShipBuildplanInterface
+    public function getBuildplan(): ?SpacecraftBuildplanInterface
     {
         return $this->buildplan;
     }

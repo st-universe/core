@@ -8,92 +8,39 @@ use Override;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
-use Stu\Module\Ship\View\ShowShip\ShowShip;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Module\Station\Lib\StationLoaderInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
+use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 
 final class ShowShipManagement implements ViewControllerInterface
 {
-    public const string VIEW_IDENTIFIER = 'SHOW_SHIP_MANAGEMENT';
+    public const string VIEW_IDENTIFIER = 'SHOW_SPACECRAFT_MANAGEMENT';
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private ShowShipManagementRequestInterface $showShipManagementRequest, private ShipWrapperFactoryInterface $shipWrapperFactory, private StationUtilityInterface $stationUtility)
-    {
-    }
+    public function __construct(
+        private StationLoaderInterface $stationLoader,
+        private ShowShipManagementRequestInterface $showShipManagementRequest,
+        private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
+        private StationUtilityInterface $stationUtility
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
 
-        $station = $this->shipLoader->getByIdAndUser(
+        $station = $this->stationLoader->getByIdAndUser(
             $this->showShipManagementRequest->getStationId(),
             $userId,
             false,
             false
         );
 
-        if (!$station->isBase()) {
-            return;
-        }
-
         if (!$this->stationUtility->canManageShips($station)) {
             return;
         }
 
-        $shipList = $station->getDockedShips();
-
-        $groupedList = [];
-
-        foreach ($shipList as $ship) {
-            if ($ship === $station) {
-                continue;
-            }
-            if ($ship->isWarped()) {
-                continue;
-            }
-            $fleetId = $ship->getFleetId() ?? 0;
-
-            $fleet = $groupedList[$fleetId] ?? null;
-            if ($fleet === null) {
-                $groupedList[$fleetId] = [];
-            }
-
-            $groupedList[$fleetId][] = $ship;
-        }
-
-        $list = [];
-
-        foreach ($groupedList as $fleetId => $shipList) {
-            usort(
-                $shipList,
-                function (ShipInterface $a, ShipInterface $b): int {
-                    if ($b->isFleetLeader() === $a->isFleetLeader()) {
-                        $catA = $a->getRump()->getCategoryId();
-                        $catB = $b->getRump()->getCategoryId();
-                        if ($catB === $catA) {
-                            $roleA = $a->getRump()->getRoleId();
-                            $roleB = $b->getRump()->getRoleId();
-                            if ($roleB === $roleA) {
-                                if ($b->getRumpId() === $a->getRumpId()) {
-                                    return $a->getName() <=> $b->getName();
-                                }
-
-                                return $b->getRumpId() <=> $a->getRumpId();
-                            }
-
-                            return $roleB <=> $roleA;
-                        }
-                        return $catB <=> $catA;
-                    }
-                    return $b->isFleetLeader() <=> $a->isFleetLeader();
-                }
-            );
-
-            $fleetWrapper = $this->shipWrapperFactory->wrapShipsAsFleet($shipList, $fleetId === 0);
-            $key = sprintf('%d.%d', $fleetWrapper->get()->getSort(), $fleetWrapper->get()->getUser()->getId());
-            $list[$key] = $fleetWrapper;
-        }
+        $dockedShips = $station->getDockedShips();
+        $groups = $this->spacecraftWrapperFactory->wrapSpacecraftsAsGroups($dockedShips);
 
         $game->appendNavigationPart(
             'station.php',
@@ -102,7 +49,7 @@ final class ShowShipManagement implements ViewControllerInterface
         $game->appendNavigationPart(
             sprintf(
                 '?%s=1&id=%s',
-                ShowShip::VIEW_IDENTIFIER,
+                ShowSpacecraft::VIEW_IDENTIFIER,
                 $station->getId()
             ),
             $station->getName()
@@ -119,6 +66,6 @@ final class ShowShipManagement implements ViewControllerInterface
         $game->setViewTemplate('html/station/shipManagement.twig');
 
         $game->setTemplateVar('MANAGER_ID', $station->getId());
-        $game->setTemplateVar('FLEET_WRAPPERS', $list);
+        $game->setTemplateVar('SPACECRAFT_GROUPS', $groups);
     }
 }

@@ -1,0 +1,112 @@
+<html lang="de">
+
+<head>
+  <script src="/static/js/default.js"></script>
+</head>
+
+<body>
+  <div class="ajaxwin">
+        <table class="tcal">
+      <tr>
+        <th onmouseover="switch_drag_on();" onmouseout="switch_drag_off();">Crew zu Schiff transferieren</th>
+        <th style="width: 18px;">
+          <a href="javascript:void(0);" onclick="closeAjaxWindow();" onmouseover="cp('ajaxclose','buttons/x2');" onmouseout="cp('ajaxclose','buttons/x1');">
+            <img src="/assets/buttons/x1.png" name="ajaxclose" title="Fenster schlie&Atilde;&#159;en">
+          </a>
+        </th>
+      </tr>
+    </table>
+        <form action="station.php" method="post">
+    <input type="hidden" name="id" value="43">
+    <input type="hidden" name="source_type" value="station">
+    <input type="hidden" name="target" value="42">
+    <input type="hidden" name="target_type" value="ship">
+    <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
+    <input type="hidden" name="transfer_type" value="2">
+    <input type="hidden" name="is_unload" value="1">
+
+    <table class="tcal" style="width: 425px;">
+        
+        <tr>
+    
+                        <td colspan="3">
+                <a href="javascript:void(0);" onclick="showTransfer(43, 'station', 42, 'ship', 1, 1, true);" onmouseover="cp('commoditybeamtrigger','buttons/lager_2');" onmouseout="cp('commoditybeamtrigger','buttons/lager_1');">
+            <img src="assets/buttons/lager_1.png" name="commoditybeamtrigger" title="Waren beamen">
+        </a>
+                                <div id="torpedoTransferMessage" style="display: none;">Torpedotransfer nur zu befreundeten Schiffen</div>
+    </td>
+    </tr>
+        <tr>
+            <td colspan="3">Ziel: Aerie</td>
+        </tr>
+        <tr>
+                    </tr>
+        <tr>
+            <td colspan="3">
+                Kapazit&Atilde;&curren;t pro 1 Energie: 25
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="width: 100%;">
+                <table class="tcal">
+        <tr>
+        <td>Aktuelle Crewanzahl des Ziels: 11</td>
+    </tr>
+    <tr>
+        <td>Minimalcrew des Ziels: 11</td>
+    </tr>
+    <tr>
+        <td>Maximalcrew des Ziels: 18</td>
+    </tr>
+        <tr>
+        <td>
+            <input type="range" name="crewcount" id="crew_transfer_slider" min="0" max="0" value="0" oninput="crewTransferCount.innerText = this.value;">
+            <span style="display: inline-block; min-width: 30px;" id="crewTransferCount">0</span>
+            <img src="/assets/buttons/crew.png" title="Crew">
+        </td>
+    </tr>
+</table>
+            </td>
+            <td rowspan="2" style="height: 100%;">
+                                                                                                                                                
+                <table style="width: 100%; height: 100%;">
+    <tr>
+        <td style="text-align: center;">
+                            <a href="?SHOW_SPACECRAFT=1&amp;id=43">
+    <img src="assets/ships/10053.png">
+</a>
+                <br>
+                                
+                                        </td>
+    </tr>
+    <tr>
+                                                                <td style="text-align: center; height: 10%;">
+            <a href="javascript:void(0);" onclick="showTransfer(43, 'station', 42, 'ship', 2, 0, true);" title="Richtung wechseln" onmouseover="cp('beamtrigger','buttons/b_down2');" onmouseout="cp('beamtrigger','buttons/b_down1');">
+                <img src="assets/buttons/b_down1.png" name="beamtrigger">
+            </a>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">
+                            <a href="?SHOW_SPACECRAFT=1&amp;id=42">
+    <img src="assets/ships/6501.png">
+</a>
+                <br>
+                                
+                                        </td>
+    </tr>
+</table>
+            </td>
+        </tr>
+        <tr style="text-align: right;">
+            <td>
+    <input type="submit" class="button" value="Beamen" name="B_TRANSFER" id="crew_transfer_button">
+    <input type="button" class="button" value="max" onclick="$('crew_transfer_slider').value = '0'; $('crew_transfer_button').click()">
+</td>
+        </tr>
+    </table>
+</form>
+      </div>
+  </body>
+
+</html>

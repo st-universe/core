@@ -7,13 +7,13 @@ namespace Stu\Module\Message\Lib;
 use Mockery\MockInterface;
 use Override;
 use Stu\Lib\Information\InformationWrapper;
-use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
+use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\StuTestCase;
 
 class DistributedMessageSenderTest extends StuTestCase
 {
     /**
-     * @var MockInterface|PrivateMessageSenderInterface
+     * @var MockInterface&PrivateMessageSenderInterface
      */
     private PrivateMessageSenderInterface $privateMessageSender;
 

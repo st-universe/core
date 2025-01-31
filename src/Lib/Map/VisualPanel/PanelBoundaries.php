@@ -57,6 +57,22 @@ final class PanelBoundaries
         return $this->parent instanceof LayerInterface;
     }
 
+    public function extendBy(LocationInterface $location): void
+    {
+        $this->minX = min($this->minX, $location->getX());
+        $this->maxX = max($this->maxX, $location->getX());
+        $this->minY = min($this->minY, $location->getY());
+        $this->maxY = max($this->maxY, $location->getY());
+    }
+
+    public function stretch(int $amount): void
+    {
+        $this->minX -= $amount;
+        $this->maxX += $amount;
+        $this->minY -= $amount;
+        $this->maxY += $amount;
+    }
+
     /**
      * @param array{minx: int, maxx: int, miny: int, maxy: int} $array
      */

@@ -1,0 +1,13 @@
+{% if systemWrapper.isHealthy %}
+{% set description = systemWrapper.getDescription %}
+{% set icon = systemWrapper.getIcon %}
+<tr>
+    <td title="{{ description }} Einstellungen" colspan="2">
+        <a href="javascript:void(0);" onclick="showSystemSettingsWindow('{{ name }}');"
+            onmouseover="cp('{{ name }}','buttons/{{ icon }}_2')" onmouseout="cp('{{ name }}','buttons/{{ icon }}_1')">
+            <img style="width: 20px;" src="/assets/buttons/{{ icon }}_1.png" name="{{ name }}" />
+            {{ description }} Einstellungen
+        </a>
+    </td>
+</tr>
+{% endif %}

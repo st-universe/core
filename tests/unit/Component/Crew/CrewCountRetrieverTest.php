@@ -7,11 +7,11 @@ namespace Stu\Component\Crew;
 use Mockery\MockInterface;
 use Override;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
-use Stu\Component\Ship\ShipRumpEnum;
+use Stu\Component\Spacecraft\SpacecraftRumpEnum;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
-use Stu\Orm\Repository\ShipCrewRepositoryInterface;
+use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 use Stu\StuTestCase;
 
 class CrewCountRetrieverTest extends StuTestCase
@@ -19,7 +19,7 @@ class CrewCountRetrieverTest extends StuTestCase
     /** @var MockInterface&CrewRepositoryInterface */
     private MockInterface $crewRepository;
 
-    /** @var MockInterface&ShipCrewRepositoryInterface */
+    /** @var MockInterface&CrewAssignmentRepositoryInterface */
     private MockInterface $shipCrewRepository;
 
     /** @var MockInterface&CrewTrainingRepositoryInterface */
@@ -34,7 +34,7 @@ class CrewCountRetrieverTest extends StuTestCase
     protected function setUp(): void
     {
         $this->crewRepository = $this->mock(CrewRepositoryInterface::class);
-        $this->shipCrewRepository = $this->mock(ShipCrewRepositoryInterface::class);
+        $this->shipCrewRepository = $this->mock(CrewAssignmentRepositoryInterface::class);
         $this->crewTrainigRepository = $this->mock(CrewTrainingRepositoryInterface::class);
         $this->crewLimitCalculator = $this->mock(CrewLimitCalculatorInterface::class);
 
@@ -54,7 +54,7 @@ class CrewCountRetrieverTest extends StuTestCase
         $amount_debris = 42;
 
         $this->crewRepository->shouldReceive('getAmountByUserAndShipRumpCategory')
-            ->with($user, ShipRumpEnum::SHIP_CATEGORY_ESCAPE_PODS)
+            ->with($user, SpacecraftRumpEnum::SHIP_CATEGORY_ESCAPE_PODS)
             ->once()
             ->andReturn($amount_debris);
 

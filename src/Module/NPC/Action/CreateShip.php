@@ -11,7 +11,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
-use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 use Stu\Module\NPC\View\ShowShipCreator\ShowShipCreator;
 use Stu\Orm\Repository\NPCLogRepositoryInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
@@ -24,7 +24,7 @@ final class CreateShip implements ActionControllerInterface
     public function __construct(
         private ShipCreatorInterface $shipCreator,
         private MapRepositoryInterface $mapRepository,
-        private ShipBuildplanRepositoryInterface $buildplanRepository,
+        private SpacecraftBuildplanRepositoryInterface $buildplanRepository,
         private NPCLogRepositoryInterface $npcLogRepository,
         private LayerRepositoryInterface $layerRepository,
         private UserRepositoryInterface $userRepository
@@ -81,7 +81,7 @@ final class CreateShip implements ActionControllerInterface
         }
 
         $moduleNames = [];
-        foreach ($buildplan->getModules() as $module) {
+        foreach ($buildplan->getModulesOrdered() as $module) {
             $moduleNames[] = $module->getModule()->getName();
         }
 

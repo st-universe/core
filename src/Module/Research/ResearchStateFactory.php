@@ -6,7 +6,7 @@ namespace Stu\Module\Research;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
-use Stu\Component\Ship\System\ShipSystemManagerInterface;
+use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Module\Award\Lib\CreateUserAwardInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
@@ -18,9 +18,7 @@ use Stu\Orm\Repository\ShipRumpUserRepositoryInterface;
 
 final class ResearchStateFactory implements ResearchStateFactoryInterface
 {
-    public function __construct(private ResearchedRepositoryInterface $researchedRepository, private ShipRumpUserRepositoryInterface $shipRumpUserRepository, private PrivateMessageSenderInterface $privateMessageSender, private CreateDatabaseEntryInterface $createDatabaseEntry, private CrewCreatorInterface $crewCreator, private ShipCreatorInterface $shipCreator, private ShipRepositoryInterface $shipRepository, private ShipSystemManagerInterface $shipSystemManager, private CreateUserAwardInterface $createUserAward, private EntityManagerInterface $entityManager)
-    {
-    }
+    public function __construct(private ResearchedRepositoryInterface $researchedRepository, private ShipRumpUserRepositoryInterface $shipRumpUserRepository, private PrivateMessageSenderInterface $privateMessageSender, private CreateDatabaseEntryInterface $createDatabaseEntry, private CrewCreatorInterface $crewCreator, private ShipCreatorInterface $shipCreator, private ShipRepositoryInterface $shipRepository, private SpacecraftSystemManagerInterface $spacecraftSystemManager, private CreateUserAwardInterface $createUserAward, private EntityManagerInterface $entityManager) {}
 
     #[Override]
     public function createResearchState(): ResearchStateInterface
@@ -33,7 +31,7 @@ final class ResearchStateFactory implements ResearchStateFactoryInterface
             $this->crewCreator,
             $this->shipCreator,
             $this->shipRepository,
-            $this->shipSystemManager,
+            $this->spacecraftSystemManager,
             $this->createUserAward,
             $this->entityManager,
         );

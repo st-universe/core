@@ -1,143 +1,143 @@
-  {% if TARGETWRAPPER %}
-    {% set TARGETSHIP = TARGETWRAPPER.get %}
-    <div class="box">
-      <div class="box_body">
-        <table class="tcal">
-          <tr>
-            <td style="width: 50%" class="selected" id="menuScanDetails">
-              <a style="display: block;" href="javascript:void(0);" onclick="switchScanToDetails()">Details</a>
-            </td>
-            <td style="width: 50%" id="menuScanLogbook">
-              <a style="display: block;" href="javascript:void(0);" onclick="switchScanToLogbook()">Logbuch</a>
-            </td>
-          </tr>
-        </table>
-      </div>
-    </div>
-    <div id="scandetails" style="width: 500px;">
-      {% if not TARGETSHIP.isDestroyed %}
-        {% set TARGETSHIP_EPS = TARGETWRAPPER.getEpsSystemData %}
-        {% if SHIP.isMatrixScannerHealthy() and not SHIP.getCloakState() %}
-          <table class="tcal">
-            <tr>
-              <th colspan="2">Details</th>
-            </tr>
-            <tr>
-              <td>Lebenszeichen</td>
-              <td>{{ TARGETSHIP.getCrewCount }}</td>
-            </tr>
-            <tr>
-              <td>Alarmstufe</td>
-              <td style="text-align: center;">
-                <img src="assets/buttons/alert{{ TARGETSHIP.getAlertState.value }}_1.png" title="Alarmstufe" />
-              </td>
-            </tr>
-            <tr>
-              <td>Schilde</td>
-              <td>{{ SHIELD_PERCENTAGE }}%</td>
-            </tr>
-            {% if TARGETSHIP_EPS %}
-              <tr>
-                <td>Energie</td>
-                <td>{{ TARGETSHIP_EPS.getEps }}</td>
-              </tr>
-              <tr>
-                <td>Ersatzbatterie</td>
-                <td>{{ TARGETSHIP_EPS.getBattery }}</td>
-              </tr>
-            {% endif %}
-            {% if REACTOR_PERCENTAGE %}
-              <tr>
-                <td>Reaktor</td>
-                <td>{{ REACTOR_PERCENTAGE }}%</td>
-              </tr>
-            {% endif %}
-            {% if TARGETSHIP.getBuildplan %}
-              <tr>
-                <td>Verbaute Module</td>
-                <td>
-                  {% for MOD in TARGETSHIP.getModules %}
-                    <img style="margin-right: 5px;" src="assets/commodities/{{ MOD.getCommodityId }}.png" title="{{ MOD.getName }}" />
-                  {% endfor %}
-                </td>
-              </tr>
-            {% endif %}
-          </table>
-        {% endif %}
-        <br />
-        <form action="ship.php" method="post">
-          <input type="hidden" name="id" value="{{ SHIP.getId }}" />
-          <br />
-          {% if not TARGETSHIP.getRump.isTrumfield %}
-            <table class="tcal">
-              <tr>
-                <th>Systemzustand</th>
-              </tr>
-              <tr>
-                <td style="width: 450px;">
-                  <div style="float: left;">
-                    {% for DATA in TARGETSHIP.getSystems %}
-                      <img title="{{ DATA.getName }}" class="{{ DATA.getCssClass }}" src="assets/system/{{ DATA.getSystemType.value }}.png" />
-                      {{ DATA.getStatus }}%
-                    {% endfor %}
-                  </div>
-                </td>
-              </tr>
-            </table>
-          {% endif %}
-          {% if TARGETSHIP.hasEscapePods %}
-            <table class="tcal">
-              <tr>
-                <th>Rettungskapseln</th>
-              </tr>
-              <tr>
-                <td style="width: 450px;">
-                  <span>Es befinden sich {{ TARGETSHIP.getCrewCount }} Crewman in den Rettungskapseln</span><br /><br />
-                  <input type="hidden" name="target" value="{{ TARGETSHIP.getId }}" />
-                  <input type="submit" style="cursor: pointer;" name="B_SALVAGE_EPODS" value="Rettungskapseln bergen" />
-                </td>
-              </tr>
-            </table>
-          {% endif %}
-          {% if TRADE_POST_CREW_COUNT %}
-            <table class="tcal">
-              <tr>
-                <th>Eigene Crew bergen</th>
-              </tr>
-              <tr>
-                <td style="width: 450px;">
-                  <span>Es befinden sich {{ TRADE_POST_CREW_COUNT }} eigene Crewman an Bord des Handelsposten</span><br /><br />
-                  <input type="hidden" name="target" value="{{ TARGETSHIP.getId }}" />
-                  <input type="submit" style="cursor: pointer;" name="B_SALVAGE_CREW" value="Crew bergen" />
-                </td>
-              </tr>
-            </table>
-          {% endif %}
-        </form>
-      {% else %}
-        <span>Ziel ist zerstört</span>
-      {% endif %}
-    </div>
-    <div class="box" id="scanlogbook" style="width: 500px; display: none;">
-      <div class="box_title">Logbuch</div>
-      <div class="box_body">
-        {% set TARGET = TARGETWRAPPER.get %}
-        {% for DATA in TARGET.getLogbook %}
-          <table class="tcal">
-            <tr>
-              <th style="width: 120px; text-align: center;">{{ DATA.getDate|date('Y-m-d H:i:s') }}</th>
-            </tr>
-            <tr>
-              <td>{{ DATA.getText|nl2br|bbcode }}</td>
-            </tr>
-          </table>
-          {% if not loop.last %}
-            <br />
-          {% endif %}
+{% if TARGETWRAPPER %}
+{% set TARGETSHIP = TARGETWRAPPER.get %}
+<div class="box">
+  <div class="box_body">
+    <table class="tcal">
+      <tr>
+        <td style="width: 50%" class="selected" id="menuScanDetails">
+          <a style="display: block;" href="javascript:void(0);" onclick="switchScanToDetails();">Details</a>
+        </td>
+        <td style="width: 50%" id="menuScanLogbook">
+          <a style="display: block;" href="javascript:void(0);" onclick="switchScanToLogbook();">Logbuch</a>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+<div id="scandetails" style="width: 500px;">
+  {% if not TARGETSHIP.isDestroyed %}
+  {% set TARGETSHIP_EPS = TARGETWRAPPER.getEpsSystemData %}
+  {% if SHIP.isMatrixScannerHealthy() and not SHIP.isCloaked() %}
+  <table class="tcal">
+    <tr>
+      <th colspan="2">Details</th>
+    </tr>
+    <tr>
+      <td>Lebenszeichen</td>
+      <td>{{ TARGETSHIP.getCrewCount }}</td>
+    </tr>
+    <tr>
+      <td>Alarmstufe</td>
+      <td style="text-align: center;">
+        <img src="assets/buttons/alert{{ TARGETSHIP.getAlertState.value }}_1.png" title="Alarmstufe" />
+      </td>
+    </tr>
+    <tr>
+      <td>Schilde</td>
+      <td>{{ SHIELD_PERCENTAGE }}%</td>
+    </tr>
+    {% if TARGETSHIP_EPS %}
+    <tr>
+      <td>Energie</td>
+      <td>{{ TARGETSHIP_EPS.getEps }}</td>
+    </tr>
+    <tr>
+      <td>Ersatzbatterie</td>
+      <td>{{ TARGETSHIP_EPS.getBattery }}</td>
+    </tr>
+    {% endif %}
+    {% if REACTOR_PERCENTAGE %}
+    <tr>
+      <td>Reaktor</td>
+      <td>{{ REACTOR_PERCENTAGE }}%</td>
+    </tr>
+    {% endif %}
+    {% if TARGETSHIP.getBuildplan %}
+    <tr>
+      <td>Verbaute Module</td>
+      <td>
+        {% for MOD in TARGETSHIP.getModules %}
+        <img style="margin-right: 5px;" src="assets/commodities/{{ MOD.getCommodityId }}.png"
+          title="{{ MOD.getName }}" />
         {% endfor %}
-        {% if TARGET.getLogbook is empty %}
-          <div class="divhead" style="text-align: center;">Keine Logbucheinträge vorhanden</div>
-        {% endif %}
-      </div>
-    </div>
+      </td>
+    </tr>
+    {% endif %}
+  </table>
   {% endif %}
+  <br />
+  <form action="{{ SHIP.getType.getModuleView.getPhpPage }}" method="post">
+    <input type="hidden" name="id" value="{{ SHIP.getId }}" />
+    <br />
+    <table class="tcal">
+      <tr>
+        <th>Systemzustand</th>
+      </tr>
+      <tr>
+        <td style="width: 450px;">
+          <div style="float: left;">
+            {% for DATA in TARGETSHIP.getSystems %}
+            <img title="{{ DATA.getName }}" class="{{ DATA.getCssClass }}"
+              src="assets/system/{{ DATA.getSystemType.value }}.png" />
+            {{ DATA.getStatus }}%
+            {% endfor %}
+          </div>
+        </td>
+      </tr>
+    </table>
+    {% if TARGETSHIP.hasEscapePods %}
+    <table class="tcal">
+      <tr>
+        <th>Rettungskapseln</th>
+      </tr>
+      <tr>
+        <td style="width: 450px;">
+          <span>Es befinden sich {{ TARGETSHIP.getCrewCount }} Crewman in den Rettungskapseln</span><br /><br />
+          <input type="hidden" name="target" value="{{ TARGETSHIP.getId }}" />
+          <input type="submit" style="cursor: pointer;" name="B_SALVAGE_EPODS" value="Rettungskapseln bergen" />
+        </td>
+      </tr>
+    </table>
+    {% endif %}
+    {% if TRADE_POST_CREW_COUNT %}
+    <table class="tcal">
+      <tr>
+        <th>Eigene Crew bergen</th>
+      </tr>
+      <tr>
+        <td style="width: 450px;">
+          <span>Es befinden sich {{ TRADE_POST_CREW_COUNT }} eigene Crewman an Bord des Handelsposten</span><br /><br />
+          <input type="hidden" name="target" value="{{ TARGETSHIP.getId }}" />
+          <input type="submit" style="cursor: pointer;" name="B_SALVAGE_CREW" value="Crew bergen" />
+        </td>
+      </tr>
+    </table>
+    {% endif %}
+  </form>
+  {% else %}
+  <span>Ziel ist zerstört</span>
+  {% endif %}
+</div>
+<div class="box" id="scanlogbook" style="width: 500px; display: none;">
+  <div class="box_title">Logbuch</div>
+  <div class="box_body">
+    {% set TARGET = TARGETWRAPPER.get %}
+    {% for DATA in TARGET.getLogbook %}
+    <table class="tcal">
+      <tr>
+        <th style="width: 120px; text-align: center;">{{ DATA.getDate|date('Y-m-d H:i:s') }}</th>
+      </tr>
+      <tr>
+        <td>{{ DATA.getText|nl2br|bbcode }}</td>
+      </tr>
+    </table>
+    {% if not loop.last %}
+    <br />
+    {% endif %}
+    {% endfor %}
+    {% if TARGET.getLogbook is empty %}
+    <div class="divhead" style="text-align: center;">Keine Logbucheinträge vorhanden</div>
+    {% endif %}
+  </div>
+</div>
+{% endif %}

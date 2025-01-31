@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:stu="stu">
+
+<body>
+<input type="hidden" name="B_TRANSFER_TO_ACCOUNT" value="1">
+<table class="tcal">
+  <tr>
+    <th>Waren auf dem Schiff</th>
+  </tr>
+  <tr>
+    <td>
+      <input type="hidden" name="commodities[]" value="8">
+<div style="float: left; width: 50%;">
+    <table style="width: 100%;">
+    <tr>
+        <td style="width: 20px;">
+            <img src="/assets/commodities/8.png" onclick="this.up('tr').down('.commodityAmount').value=42" style="cursor: pointer;" title="Dilithium">
+        </td>
+        <td style="width: 60px; vertical-align: middle;">
+            42
+        </td>
+        <td>
+            <input type="text" size="3" name="count[]" class="commodityAmount">
+        </td>
+    </tr>
+</table>
+
+</div>
+<input type="hidden" name="commodities[]" value="21">
+<div style="float: right; width: 50%;">
+    <table style="width: 100%;">
+    <tr>
+        <td style="width: 20px;">
+            <img src="/assets/commodities/21.png" onclick="this.up('tr').down('.commodityAmount').value=99" style="cursor: pointer;" title="Duranium">
+        </td>
+        <td style="width: 60px; vertical-align: middle;">
+            99
+        </td>
+        <td>
+            <input type="text" size="3" name="count[]" class="commodityAmount">
+        </td>
+    </tr>
+</table>
+
+</div>
+<br style="clear: both;">
+
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

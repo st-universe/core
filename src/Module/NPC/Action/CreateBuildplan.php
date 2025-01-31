@@ -8,17 +8,17 @@ use Override;
 use Doctrine\ORM\EntityManagerInterface;
 use RuntimeException;
 use request;
-use Stu\Component\Ship\Buildplan\BuildplanSignatureCreationInterface;
-use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
+use Stu\Component\Spacecraft\Buildplan\BuildplanSignatureCreationInterface;
+use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
-use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
-use Stu\Orm\Repository\ShipRumpRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
-use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
+use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
 use Stu\Module\NPC\View\ShowBuildplanCreator\ShowBuildplanCreator;
 use Stu\Orm\Repository\NPCLogRepositoryInterface;
 
@@ -28,13 +28,13 @@ final class CreateBuildplan implements ActionControllerInterface
 
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private ShipRumpRepositoryInterface $shipRumpRepository,
+        private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository,
         private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository,
         private ModuleRepositoryInterface $moduleRepository,
-        private ShipBuildplanRepositoryInterface $buildplanRepository,
+        private SpacecraftBuildplanRepositoryInterface $buildplanRepository,
         private BuildplanModuleRepositoryInterface $buildplanModuleRepository,
         private UserRepositoryInterface $userRepository,
-        private ShipCrewCalculatorInterface $shipCrewCalculator,
+        private SpacecraftCrewCalculatorInterface $shipCrewCalculator,
         private BuildplanSignatureCreationInterface $buildplanSignatureCreation,
         private NPCLogRepositoryInterface $npcLogRepository
     ) {}
@@ -53,7 +53,7 @@ final class CreateBuildplan implements ActionControllerInterface
             return;
         }
 
-        $rump = $this->shipRumpRepository->find($rumpId);
+        $rump = $this->spacecraftRumpRepository->find($rumpId);
         if ($rump === null) {
             throw new RuntimeException(sprintf('rumpId %d does not exist!', $rumpId));
         }

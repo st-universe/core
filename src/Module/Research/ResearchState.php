@@ -6,8 +6,8 @@ namespace Stu\Module\Research;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
-use Stu\Component\Ship\System\ShipSystemManagerInterface;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Award\Lib\CreateUserAwardInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
@@ -15,6 +15,7 @@ use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ResearchedInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -22,7 +23,7 @@ use Stu\Orm\Repository\ShipRumpUserRepositoryInterface;
 
 final class ResearchState implements ResearchStateInterface
 {
-    public function __construct(private ResearchedRepositoryInterface $researchedRepository, private ShipRumpUserRepositoryInterface $shipRumpUserRepository, private PrivateMessageSenderInterface $privateMessageSender, private CreateDatabaseEntryInterface $createDatabaseEntry, private CrewCreatorInterface $crewCreator, private ShipCreatorInterface $shipCreator, private ShipRepositoryInterface $shipRepository, private ShipSystemManagerInterface $shipSystemManager, private CreateUserAwardInterface $createUserAward, private EntityManagerInterface $entityManager) {}
+    public function __construct(private ResearchedRepositoryInterface $researchedRepository, private ShipRumpUserRepositoryInterface $shipRumpUserRepository, private PrivateMessageSenderInterface $privateMessageSender, private CreateDatabaseEntryInterface $createDatabaseEntry, private CrewCreatorInterface $crewCreator, private ShipCreatorInterface $shipCreator, private ShipRepositoryInterface $shipRepository, private SpacecraftSystemManagerInterface $spacecraftSystemManager, private CreateUserAwardInterface $createUserAward, private EntityManagerInterface $entityManager) {}
 
     #[Override]
     public function advance(ResearchedInterface $state, int $amount): int
@@ -65,22 +66,24 @@ final class ResearchState implements ResearchStateInterface
             return;
         }
 
-        $userColonies = $state->getUser()->getColonies()->toArray();
+        $userColonies = $state->getUser()->getColonies();
 
-        if ($userColonies === []) {
+        if ($userColonies->isEmpty()) {
             return;
         }
 
         $userId = $state->getUser()->getId();
         $plan = $state->getResearch()->getRewardBuildplan();
-        $colony = current($userColonies);
-        $wrapper = $this->shipCreator->createBy($userId, $plan->getRump()->getId(), $plan->getId(), $colony)
+        /** @var ColonyInterface */
+        $colony = $userColonies->first();
+        $wrapper = $this->shipCreator->createBy($userId, $plan->getRump()->getId(), $plan->getId())
+            ->setLocation($colony->getStarsystemMap())
             ->maxOutSystems()
             ->finishConfiguration();
         $ship = $wrapper->get();
 
         if ($plan->getCrew() > 0) {
-            $this->shipSystemManager->activate($wrapper, ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT, true);
+            $this->spacecraftSystemManager->activate($wrapper, SpacecraftSystemTypeEnum::LIFE_SUPPORT, true);
         }
 
         $this->shipRepository->save($ship);
@@ -89,7 +92,7 @@ final class ResearchState implements ResearchStateInterface
             $this->crewCreator->create($userId, $colony);
         }
         $this->entityManager->flush(); //TODO really neccessary?
-        $this->crewCreator->createShipCrew($ship, $colony);
+        $this->crewCreator->createCrewAssignment($ship, $colony);
 
         $txt = sprintf(_("Als Belohnung für den Abschluss der Forschung wurde dir ein Schiff vom Typ %s überstellt"), $plan->getRump()->getName());
 
@@ -103,16 +106,16 @@ final class ResearchState implements ResearchStateInterface
 
     private function createShipRumpEntries(ResearchedInterface $state): void
     {
-        $shipRumpId = $state->getResearch()->getRumpId();
-        if ($shipRumpId === 0) {
+        $rumpId = $state->getResearch()->getRumpId();
+        if ($rumpId === 0) {
             return;
         }
-        if ($this->shipRumpUserRepository->isAvailableForUser($shipRumpId, $state->getUserId()) === true) {
+        if ($this->shipRumpUserRepository->isAvailableForUser($rumpId, $state->getUserId()) === true) {
             return;
         }
         $entry = $this->shipRumpUserRepository->prototype();
         $entry->setUser($state->getUser());
-        $entry->setShipRumpId($shipRumpId);
+        $entry->setRumpId($rumpId);
 
         $this->shipRumpUserRepository->save($entry);
     }

@@ -12,6 +12,8 @@ interface AnomalyCreationInterface
 {
     public function create(
         AnomalyTypeEnum $type,
-        LocationInterface $location
+        ?LocationInterface $location,
+        ?AnomalyInterface $parent = null,
+        ?Object $dataObject = null
     ): AnomalyInterface;
 }

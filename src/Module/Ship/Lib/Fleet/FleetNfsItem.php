@@ -6,26 +6,30 @@ namespace Stu\Module\Ship\Lib\Fleet;
 
 use RuntimeException;
 use Stu\Lib\SessionInterface;
-use Stu\Module\Ship\Lib\ShipNfsItem;
-use Stu\Module\Ship\Lib\ShipNfsIterator;
+use Stu\Module\Spacecraft\Lib\SpacecraftNfsItem;
+use Stu\Module\Spacecraft\Lib\SpacecraftNfsIterator;
 use Stu\Module\Ship\Lib\TFleetShipItemInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 
 final class FleetNfsItem
 {
     /** @param array<TFleetShipItemInterface> $ships */
-    public function __construct(private array $ships, private ShipInterface $currentShip, private ?SessionInterface $session, private int $userId)
-    {
-    }
+    public function __construct(
+        private array $ships,
+        private SpacecraftInterface $currentSpacecraft,
+        private ?SessionInterface $session,
+        private int $userId
+    ) {}
 
     public function isHidden(): bool
     {
         return $this->session !== null && $this->session->hasSessionValue('hiddenfleets', $this->getId());
     }
 
-    public function getVisibleShips(): ShipNfsIterator
+    public function getVisibleShips(): SpacecraftNfsIterator
     {
-        return new ShipNfsIterator($this->ships, $this->userId);
+        return new SpacecraftNfsIterator($this->ships, $this->userId);
     }
 
     public function getVisibleShipsCount(): int
@@ -35,7 +39,7 @@ final class FleetNfsItem
 
     public function isFleetOfCurrentShip(): bool
     {
-        $currentFleet = $this->currentShip->getFleet();
+        $currentFleet = $this->currentSpacecraft instanceof ShipInterface ? $this->currentSpacecraft->getFleet() : null;
         if ($currentFleet === null) {
             throw new RuntimeException('should not happen');
         }
@@ -45,7 +49,7 @@ final class FleetNfsItem
 
     public function showManagement(): bool
     {
-        return $this->currentShip->getUser()->getId() === $this->getUserId();
+        return $this->currentSpacecraft->getUser()->getId() === $this->getUserId();
     }
 
     public function getName(): string
@@ -58,9 +62,9 @@ final class FleetNfsItem
         return $this->ships[0]->getFleetId() ?? 0;
     }
 
-    public function getLeadShip(): ShipNfsItem
+    public function getLeadShip(): SpacecraftNfsItem
     {
-        return new ShipNfsItem($this->ships[0], $this->userId);
+        return new SpacecraftNfsItem($this->ships[0], $this->userId);
     }
 
     public function getUserId(): int

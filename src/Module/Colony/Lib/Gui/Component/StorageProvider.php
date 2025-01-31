@@ -11,26 +11,24 @@ use Stu\Module\Commodity\Lib\CommodityCacheInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\ColonyInterface;
 
-final class StorageProvider implements GuiComponentProviderInterface
+final class StorageProvider implements PlanetFieldHostComponentInterface
 {
-    public function __construct(private ColonyLibFactoryInterface $colonyLibFactory, private CommodityCacheInterface $commodityCache)
-    {
-    }
+    public function __construct(private ColonyLibFactoryInterface $colonyLibFactory, private CommodityCacheInterface $commodityCache) {}
 
     #[Override]
     public function setTemplateVariables(
-        PlanetFieldHostInterface $host,
+        $entity,
         GameControllerInterface $game
     ): void {
         $commodities = $this->commodityCache->getAll(CommodityTypeEnum::COMMODITY_TYPE_STANDARD);
 
-        $prod = $this->colonyLibFactory->createColonyCommodityProduction($host)->getProduction();
+        $prod = $this->colonyLibFactory->createColonyCommodityProduction($entity)->getProduction();
         $game->setTemplateVar(
             'PRODUCTION_SUM',
             $this->colonyLibFactory->createColonyProductionSumReducer()->reduce($prod)
         );
 
-        $stor = $host instanceof ColonyInterface ? $host->getStorage() : new ArrayCollection();
+        $stor = $entity instanceof ColonyInterface ? $entity->getStorage() : new ArrayCollection();
         $storage = [];
         foreach ($commodities as $value) {
             $commodityId = $value->getId();
@@ -46,9 +44,9 @@ final class StorageProvider implements GuiComponentProviderInterface
         }
 
         $game->setTemplateVar('STORAGE', $storage);
-        $game->setTemplateVar('STORAGE_SUM', $this->getStorageSum($host));
-        $game->setTemplateVar('STORAGE_SUM_PERCENT', $this->getStorageSumPercent($host));
-        $game->setTemplateVar('MAX_STORAGE', $host->getMaxStorage());
+        $game->setTemplateVar('STORAGE_SUM', $this->getStorageSum($entity));
+        $game->setTemplateVar('STORAGE_SUM_PERCENT', $this->getStorageSumPercent($entity));
+        $game->setTemplateVar('MAX_STORAGE', $entity->getMaxStorage());
     }
 
     private function getStorageSum(PlanetFieldHostInterface $host): int

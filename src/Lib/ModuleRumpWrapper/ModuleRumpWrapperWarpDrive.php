@@ -6,9 +6,9 @@ namespace Stu\Lib\ModuleRumpWrapper;
 
 use Override;
 use RuntimeException;
-use Stu\Component\Ship\ShipModuleTypeEnum;
-use Stu\Module\Ship\Lib\ModuleValueCalculator;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
+use Stu\Module\Spacecraft\Lib\ModuleValueCalculator;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\ModuleInterface;
 
 final class ModuleRumpWrapperWarpDrive extends ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
@@ -29,22 +29,29 @@ final class ModuleRumpWrapperWarpDrive extends ModuleRumpWrapperBase implements 
     }
 
     #[Override]
-    public function getSecondValue(?ModuleInterface $module = null): ?int
+    public function getModuleType(): SpacecraftModuleTypeEnum
     {
-        return null;
+        return SpacecraftModuleTypeEnum::WARPDRIVE;
     }
 
     #[Override]
-    public function getModuleType(): ShipModuleTypeEnum
+    public function initialize(SpacecraftWrapperInterface $wrapper): ModuleRumpWrapperInterface
     {
-        return ShipModuleTypeEnum::WARPDRIVE;
+        $systemData = $wrapper->getWarpDriveSystemData();
+        if ($systemData === null) {
+            throw new RuntimeException('this should not happen');
+        }
+
+        $systemData
+            ->setAutoCarryOver($wrapper->get()->getUser()->getWarpsplitAutoCarryoverDefault())
+            ->update();
+
+        return $this;
     }
 
     #[Override]
-    public function apply(ShipWrapperInterface $wrapper): void
+    public function apply(SpacecraftWrapperInterface $wrapper): void
     {
-        $ship = $wrapper->get();
-
         $systemData = $wrapper->getWarpDriveSystemData();
         if ($systemData === null) {
             throw new RuntimeException('this should not happen');
@@ -56,8 +63,6 @@ final class ModuleRumpWrapperWarpDrive extends ModuleRumpWrapperBase implements 
 
         $systemData
             ->setMaxWarpDrive($this->getValue())
-            ->setWarpDriveSplit(100)
-            ->setAutoCarryOver($ship->getUser()->getWarpsplitAutoCarryoverDefault())
             ->update();
     }
 }

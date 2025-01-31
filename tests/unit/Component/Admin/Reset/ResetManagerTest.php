@@ -115,6 +115,8 @@ class ResetManagerTest extends StuTestCase
         $this->stuConfig = $this->mock(StuConfigInterface::class);
         $this->entityManager = $this->mock(EntityManagerInterface::class);
         $this->connection = $this->mock(Connection::class);
+        $this->userReset = $this->mock(UserResetInterface::class);
+
 
         $this->interactor = new Interactor(null, vfsStream::url('tmpDir') . '/foo');
 
@@ -157,6 +159,11 @@ class ResetManagerTest extends StuTestCase
         $this->storageReset->shouldReceive('deleteAllStorages')
             ->withNoArgs()
             ->once();
+
+        $this->userReset->shouldReceive('deleteAllUserReferers')
+            ->withNoArgs()
+            ->once();
+
 
         $this->crewReset->shouldReceive('deleteAllCrew')
             ->withNoArgs()

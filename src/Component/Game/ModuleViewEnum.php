@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Component\Game;
 
+use RuntimeException;
+use Stu\Lib\Component\ComponentEnumInterface;
+use Stu\Module\Colony\Component\ColonyComponentEnum;
+use Stu\Module\Game\Component\GameComponentEnum;
+
 enum ModuleViewEnum: string
 {
     case INDEX = 'index';
@@ -79,5 +84,16 @@ enum ModuleViewEnum: string
             self::ADMIN => 'not needed',
             self::NPC => 'not needed'
         };
+    }
+
+    public function getComponentEnum(string $value): ComponentEnumInterface
+    {
+        $result =  match ($this) {
+            self::GAME => GameComponentEnum::tryFrom($value),
+            self::COLONY => ColonyComponentEnum::tryFrom($value),
+            default => throw new RuntimeException('no components in this module view')
+        };
+
+        return $result ?? GameComponentEnum::OUTDATED;
     }
 }

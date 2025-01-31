@@ -114,7 +114,7 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
 
         return sprintf(
             '%s%s',
-            $tradepost !== null && !$tradepost->isNpcTradepost() ? 'tradepost' : '',
+            $tradepost !== null ? 'tradepost' : '',
             $this->exploreableStarMap->getMapped() ? 'mapped' : ''
         );
     }
@@ -157,7 +157,7 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
         if ($borderType === null) {
             if ($this->exploreableStarMap->getAdminRegion() === null && $this->exploreableStarMap->getInfluenceArea() !== null) {
                 $influenceArea = $this->exploreableStarMap->getInfluenceArea();
-                $base = $influenceArea->getBase();
+                $base = $influenceArea->getStation();
                 if ($base !== null) {
                     $user = $base->getUser();
                     $ally = $user->getAlliance();

@@ -10,16 +10,14 @@ use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
-use Stu\Orm\Repository\ShipRumpRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 
 /**
  * Service class for wrapping alliance members for UI purposes
  */
 final class ManagementListItem
 {
-    public function __construct(private AllianceJobRepositoryInterface $allianceJobRepository, private ShipRumpRepositoryInterface $shipRumpRepository, private AllianceInterface $alliance, private UserInterface $user, private int $currentUserId, private CrewLimitCalculatorInterface $crewLimitCalculator, private CrewCountRetrieverInterface $crewCountRetriever)
-    {
-    }
+    public function __construct(private AllianceJobRepositoryInterface $allianceJobRepository, private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository, private AllianceInterface $alliance, private UserInterface $user, private int $currentUserId, private CrewLimitCalculatorInterface $crewLimitCalculator, private CrewCountRetrieverInterface $crewCountRetriever) {}
 
     /**
      * Return the user's id
@@ -92,7 +90,7 @@ final class ManagementListItem
      */
     public function getShipRumpList(): iterable
     {
-        return $this->shipRumpRepository->getGroupedInfoByUser($this->user);
+        return $this->spacecraftRumpRepository->getGroupedInfoByUser($this->user);
     }
 
     /**

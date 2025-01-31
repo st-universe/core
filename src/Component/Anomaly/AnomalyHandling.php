@@ -7,6 +7,8 @@ namespace Stu\Component\Anomaly;
 use Override;
 use RuntimeException;
 use Stu\Component\Anomaly\Type\AnomalyHandlerInterface;
+use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\AnomalyInterface;
 use Stu\Orm\Repository\AnomalyRepositoryInterface;
 
@@ -18,23 +20,16 @@ final class AnomalyHandling implements AnomalyHandlingInterface
     public function __construct(
         private AnomalyRepositoryInterface $anomalyRepository,
         private array $handlerList
-    ) {
-    }
+    ) {}
 
     #[Override]
     public function processExistingAnomalies(): void
     {
-        foreach ($this->anomalyRepository->findAllActive() as $anomaly) {
-            $type = $anomaly->getAnomalyType()->getId();
+        foreach ($this->anomalyRepository->findAllRoot() as $root) {
 
-            if (!array_key_exists($type, $this->handlerList)) {
-                throw new RuntimeException(sprintf('no handler defined for type: %d', $type));
-            }
-
-            $handler = $this->handlerList[$type];
-
-            $handler->handleShipTick($anomaly);
-            $this->decreaseLifespan($anomaly, $handler);
+            $handler = $this->getHandler($root);
+            $handler->handleSpacecraftTick($root);
+            $this->decreaseLifespan($root, $handler);
         }
     }
 
@@ -46,14 +41,39 @@ final class AnomalyHandling implements AnomalyHandlingInterface
         }
     }
 
+    #[Override]
+    public function handleIncomingSpacecraft(SpacecraftWrapperInterface $wrapper, MessageCollectionInterface $messages): void
+    {
+        foreach ($wrapper->get()->getLocation()->getAnomalies() as $anomaly) {
+            $this->getHandler($anomaly)->handleIncomingSpacecraft($wrapper, $anomaly, $messages);
+        }
+    }
+
     private function decreaseLifespan(AnomalyInterface $anomaly, AnomalyHandlerInterface $handler): void
     {
         $remainingTicks = $anomaly->getRemainingTicks();
 
-        if ($remainingTicks === 1) {
+        if ($remainingTicks <= 1) {
             $handler->letAnomalyDisappear($anomaly);
+            $this->anomalyRepository->delete($anomaly);
+        } else {
+            $anomaly->changeRemainingTicks(-1);
+            $this->anomalyRepository->save($anomaly);
         }
-        $anomaly->setRemainingTicks($remainingTicks - 1);
-        $this->anomalyRepository->save($anomaly);
+
+        foreach ($anomaly->getChildren() as $child) {
+            $this->decreaseLifespan($child, $handler);
+        }
+    }
+
+    private function getHandler(AnomalyInterface $anomaly): AnomalyHandlerInterface
+    {
+        $type = $anomaly->getAnomalyType()->getId();
+
+        if (!array_key_exists($type, $this->handlerList)) {
+            throw new RuntimeException(sprintf('no handler defined for type: %d', $type));
+        }
+
+        return $this->handlerList[$type];
     }
 }

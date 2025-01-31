@@ -17,8 +17,7 @@ final class SubspaceDataProviderFactory implements SubspaceDataProviderFactoryIn
         private LocationRepositoryInterface $locationRepository,
         private MapRepositoryInterface $mapRepository,
         private StarSystemMapRepositoryInterface $starSystemMapRepository
-    ) {
-    }
+    ) {}
 
     #[Override]
     public function getDataProvider(int $id, SubspaceLayerTypeEnum $type): AbstractPanelLayerDataProvider
@@ -32,7 +31,7 @@ final class SubspaceDataProviderFactory implements SubspaceDataProviderFactoryIn
                 return new AllianceSubspaceDataProvider($id, $this->locationRepository, $this->mapRepository, $this->starSystemMapRepository);
             case SubspaceLayerTypeEnum::USER_ONLY:
                 return new UserSubspaceDataProvider($id, $this->locationRepository, $this->mapRepository, $this->starSystemMapRepository);
-            case SubspaceLayerTypeEnum::SHIP_ONLY:
+            case SubspaceLayerTypeEnum::SPACECRAFT_ONLY:
                 return new ShipSubspaceDataProvider($id, $this->locationRepository, $this->mapRepository, $this->starSystemMapRepository);
         }
 

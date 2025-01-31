@@ -8,44 +8,46 @@ use Override;
 use request;
 use RuntimeException;
 use Stu\Component\Game\ModuleViewEnum;
-use Stu\Component\Ship\ShipRumpEnum;
-use Stu\Component\Ship\ShipStateEnum;
+use Stu\Component\Spacecraft\SpacecraftRumpEnum;
+use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\Lib\ShipRemoverInterface;
-use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Module\Station\Lib\StationLoaderInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftRemoverInterface;
+use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Orm\Entity\ModuleInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\StationInterface;
 use Stu\Orm\Repository\ConstructionProgressModuleRepositoryInterface;
 use Stu\Orm\Repository\ConstructionProgressRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
-use Stu\Orm\Repository\ShipSystemRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
+use Stu\Orm\Repository\StationRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 final class Scrapping implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_SCRAP';
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private ShipRepositoryInterface $shipRepository, private ShipSystemRepositoryInterface $shipSystemRepository, private ConstructionProgressRepositoryInterface $constructionProgressRepository, private ConstructionProgressModuleRepositoryInterface $constructionProgressModuleRepository, private ShipRemoverInterface $shipRemover, private TradePostRepositoryInterface $tradePostRepository)
-    {
-    }
+    public function __construct(
+        private StationLoaderInterface $stationLoader,
+        private StationRepositoryInterface $stationRepository,
+        private SpacecraftSystemRepositoryInterface $shipSystemRepository,
+        private ConstructionProgressRepositoryInterface $constructionProgressRepository,
+        private ConstructionProgressModuleRepositoryInterface $constructionProgressModuleRepository,
+        private SpacecraftRemoverInterface $spacecraftRemover,
+        private TradePostRepositoryInterface $tradePostRepository
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
 
-        $station = $this->shipLoader->getByIdAndUser(
+        $station = $this->stationLoader->getByIdAndUser(
             request::indInt('id'),
             $userId
         );
 
-        if (!$station->isBase()) {
-            return;
-        }
-
-        if ($station->getState() === ShipStateEnum::SHIP_STATE_UNDER_SCRAPPING) {
+        if ($station->getState() === SpacecraftStateEnum::SHIP_STATE_UNDER_SCRAPPING) {
             return;
         }
 
@@ -60,9 +62,15 @@ final class Scrapping implements ActionControllerInterface
             return;
         }
 
-        if ($station->getRump()->getCategoryId() === ShipRumpEnum::SHIP_CATEGORY_CONSTRUCTION) {
+        if ($station->getRump()->getCategoryId() === SpacecraftRumpEnum::SHIP_CATEGORY_CONSTRUCTION) {
+
             $game->setView(ModuleViewEnum::STATION);
-            $this->shipRemover->remove($station);
+
+            $progress = $station->getConstructionProgress();
+            if ($progress !== null) {
+                $this->constructionProgressRepository->delete($progress);
+            }
+            $this->spacecraftRemover->remove($station);
             $game->addInformation(_('Konstrukt wurde entfernt'));
             return;
         }
@@ -72,19 +80,19 @@ final class Scrapping implements ActionControllerInterface
             return;
         }
 
-        $game->setView(ShowShip::VIEW_IDENTIFIER);
+        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         $this->startScrapping($station);
 
         $game->addInformation(_('Das Demontieren hat begonnen'));
     }
 
-    private function startScrapping(ShipInterface $station): void
+    private function startScrapping(StationInterface $station): void
     {
-        $station->setState(ShipStateEnum::SHIP_STATE_UNDER_SCRAPPING);
+        $station->setState(SpacecraftStateEnum::SHIP_STATE_UNDER_SCRAPPING);
 
         //setup scrapping progress
-        $progress = $this->constructionProgressRepository->getByShip($station->getId());
+        $progress = $this->constructionProgressRepository->getByStation($station);
         if ($progress === null) {
             throw new RuntimeException(sprintf('station with id %d does not have construction progess', $station->getId()));
         }
@@ -122,13 +130,13 @@ final class Scrapping implements ActionControllerInterface
             $station->setTradePost(null);
         }
 
-        $this->shipRepository->save($station);
+        $this->stationRepository->save($station);
     }
 
     /**
      * @return array<int, array{0: ModuleInterface, 1: int}>
      */
-    private function retrieveSomeIntactModules(ShipInterface $station): array
+    private function retrieveSomeIntactModules(StationInterface $station): array
     {
         $intactModules = [];
 

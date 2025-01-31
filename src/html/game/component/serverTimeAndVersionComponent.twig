@@ -1,0 +1,8 @@
+<div class="border_box navigation_item_servertime">
+    {% if GAMETURN and GAME_VERSION %}
+    <img title="Serverzeit" style="width: 15px; height: 15px;" src="/assets/buttons/time.png" />
+    <span id="servertime" style="display: none;">{{ stuDate('M, d Y G:i:s') }}</span>
+    <span>Runde: {{ GAMETURN }}</span><br />
+    <span>Version: <a href="{{ FORUM }}/viewforum.php?f=12">{{ GAME_VERSION }}</a></span><br />
+    {% endif %}
+</div>

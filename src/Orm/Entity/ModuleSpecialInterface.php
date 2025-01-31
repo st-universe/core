@@ -2,6 +2,8 @@
 
 namespace Stu\Orm\Entity;
 
+use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
+
 interface ModuleSpecialInterface
 {
     public function getId(): int;
@@ -10,9 +12,9 @@ interface ModuleSpecialInterface
 
     public function setModuleId(int $moduleId): ModuleSpecialInterface;
 
-    public function getSpecialId(): int;
+    public function getSpecialId(): ModuleSpecialAbilityEnum;
 
-    public function setSpecialId(int $specialId): ModuleSpecialInterface;
+    public function setSpecialId(ModuleSpecialAbilityEnum $specialId): ModuleSpecialInterface;
 
     public function getName(): string;
 }

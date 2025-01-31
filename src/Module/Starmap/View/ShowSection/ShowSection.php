@@ -7,6 +7,7 @@ namespace Stu\Module\Starmap\View\ShowSection;
 use Override;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Map\DirectionEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -19,9 +20,7 @@ final class ShowSection implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_SECTION';
 
-    public function __construct(private ShowSectionRequestInterface $showSectionRequest, private StarmapUiFactoryInterface $starmapUiFactory, private LayerRepositoryInterface $layerRepository)
-    {
-    }
+    public function __construct(private ShowSectionRequestInterface $showSectionRequest, private StarmapUiFactoryInterface $starmapUiFactory, private LayerRepositoryInterface $layerRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -46,12 +45,13 @@ final class ShowSection implements ViewControllerInterface
         $game->setPageTitle(_('Sektion anzeigen'));
 
         $helper = $this->starmapUiFactory->createMapSectionHelper();
+        $directionValue = $this->showSectionRequest->getDirection();
         $newSection = $helper->setTemplateVars(
             $game,
             $layer,
             $section,
             false,
-            $this->showSectionRequest->getDirection()
+            $directionValue !== null ? DirectionEnum::from($directionValue) : null
         );
 
         $game->appendNavigationPart(

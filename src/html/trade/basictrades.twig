@@ -9,12 +9,12 @@
 {% for data in ACCOUNTS %}
 <table class="tcal">
     <tr>
-        <th colspan="7">{{ data.getShip.getName|bbcode }}</th>
+        <th colspan="7">{{ data.getStation.getName|bbcode }}</th>
     </tr>
     <tr>
         <td rowspan="5" colspan="4" style="width: 66%;">
-            {% from 'html/shipmacros.twig' import shipimagewithoutwarp %}
-            {{ shipimagewithoutwarp(data.getShip) }}
+            {% from 'html/shipmacros.twig' import spacecraftImagewithoutwarp %}
+            {{ spacecraftImagewithoutwarp(data.getStation) }}
         </td>
         <th title="auf diesem Warenposten lagernd">lagernd <img src="assets/buttons/info2.png" style="height:16px;" />
         </th>
@@ -56,7 +56,7 @@
             (<span>{{ data.getStorageCapacity }}</span> pro Siedler)
         </td>
         <td class="darkbg" style="clear: both; width: 200px;">Standort</td>
-        <td style="width: 200px;">{{ data.getShip.getSectorString }}</td>
+        <td style="width: 200px;">{{ data.getStation.getSectorString }}</td>
     </tr>
 </table>
 {% endfor %}

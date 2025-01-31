@@ -7,10 +7,10 @@ namespace Stu\Module\Research\Action\CancelResearch;
 use Mockery\MockInterface;
 use Override;
 use request;
+use Stu\Lib\Component\ComponentRegistrationInterface;
 use Stu\Module\Control\GameController;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Game\Lib\Component\ComponentEnum;
-use Stu\Module\Game\Lib\Component\ComponentLoaderInterface;
+use Stu\Module\Game\Component\GameComponentEnum;
 use Stu\Orm\Entity\ResearchedInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
@@ -20,8 +20,8 @@ class CancelResearchTest extends StuTestCase
 {
     /** @var MockInterface&ResearchedRepositoryInterface */
     private $researchedRepository;
-    /** @var MockInterface&ComponentLoaderInterface */
-    private $componentLoader;
+    /** @var MockInterface&ComponentRegistrationInterface */
+    private $componentRegistration;
 
     private CancelResearch $subject;
 
@@ -29,11 +29,11 @@ class CancelResearchTest extends StuTestCase
     protected function setUp(): void
     {
         $this->researchedRepository = $this->mock(ResearchedRepositoryInterface::class);
-        $this->componentLoader = $this->mock(ComponentLoaderInterface::class);
+        $this->componentRegistration = $this->mock(ComponentRegistrationInterface::class);
 
         $this->subject = new CancelResearch(
             $this->researchedRepository,
-            $this->componentLoader
+            $this->componentRegistration
         );
     }
 
@@ -92,8 +92,8 @@ class CancelResearchTest extends StuTestCase
             ->with(GameController::DEFAULT_VIEW)
             ->once();
 
-        $this->componentLoader->shouldReceive('addComponentUpdate')
-            ->with(ComponentEnum::RESEARCH_NAVLET)
+        $this->componentRegistration->shouldReceive('addComponentUpdate')
+            ->with(GameComponentEnum::RESEARCH)
             ->once();
 
         $this->subject->handle($game);

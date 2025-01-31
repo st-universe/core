@@ -7,23 +7,21 @@ namespace Stu\Module\Ship\Action\FleetDeactivateWarp;
 use Override;
 use request;
 use RuntimeException;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
-use Stu\Module\Ship\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
+use Stu\Module\Spacecraft\Lib\ActivatorDeactivatorHelperInterface;
+use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Orm\Entity\ShipInterface;
 
 final class FleetDeactivateWarp implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_FLEET_DEACTIVATE_WARP';
 
-    public function __construct(private ActivatorDeactivatorHelperInterface $helper, private ShipLoaderInterface $shipLoader, private AlertReactionFacadeInterface $alertReactionFacade)
-    {
-    }
+    public function __construct(private ActivatorDeactivatorHelperInterface $helper, private ShipLoaderInterface $shipLoader, private AlertReactionFacadeInterface $alertReactionFacade) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -35,7 +33,7 @@ final class FleetDeactivateWarp implements ActionControllerInterface
 
         $success =  $this->helper->deactivateFleet(
             $wrapper,
-            ShipSystemTypeEnum::SYSTEM_WARPDRIVE,
+            SpacecraftSystemTypeEnum::WARPDRIVE,
             $game
         );
 
@@ -56,7 +54,7 @@ final class FleetDeactivateWarp implements ActionControllerInterface
             }
         }
 
-        $game->setView(ShowShip::VIEW_IDENTIFIER);
+        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
     }
 
     /** @return array<int, array{0: ShipInterface, 1: ShipWrapperInterface}> */

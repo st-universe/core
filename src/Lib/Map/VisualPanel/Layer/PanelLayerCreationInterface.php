@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Stu\Lib\Map\VisualPanel\Layer;
 
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
-use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Shipcount\ShipcountLayerTypeEnum;
+use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Spacecraftcount\SpacecraftCountLayerTypeEnum;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace\SubspaceLayerTypeEnum;
 use Stu\Orm\Entity\LayerInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 
 interface PanelLayerCreationInterface
 {
@@ -20,12 +20,14 @@ interface PanelLayerCreationInterface
 
     public function addSubspaceLayer(int $id, SubspaceLayerTypeEnum $type): PanelLayerCreationInterface;
 
-    public function addBorderLayer(?ShipInterface $currentShip, ?bool $isOnShipLevel): PanelLayerCreationInterface;
+    public function addBorderLayer(?SpacecraftInterface $currentSpacecraft, ?bool $isOnShipLevel): PanelLayerCreationInterface;
+
+    public function addAnomalyLayer(): PanelLayerCreationInterface;
 
     public function addShipCountLayer(
         bool $showCloakedEverywhere,
-        ?ShipInterface $currentShip,
-        ShipcountLayerTypeEnum $type,
+        ?SpacecraftInterface $currentSpacecraft,
+        SpacecraftCountLayerTypeEnum $type,
         int $id
     ): PanelLayerCreationInterface;
 

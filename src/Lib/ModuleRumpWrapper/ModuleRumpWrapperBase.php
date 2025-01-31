@@ -5,22 +5,21 @@ declare(strict_types=1);
 namespace Stu\Lib\ModuleRumpWrapper;
 
 use Override;
-use Stu\Component\Ship\ShipModuleTypeEnum;
-use Stu\Orm\Entity\BuildplanModuleInterface;
+use RuntimeException;
+use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\ModuleInterface;
-use Stu\Orm\Entity\ShipBuildplanInterface;
-use Stu\Orm\Entity\ShipRumpInterface;
+use Stu\Orm\Entity\SpacecraftBuildplanInterface;
+use Stu\Orm\Entity\SpacecraftRumpInterface;
 
 abstract class ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
 {
     /** @var null|array<int, ModuleInterface> */
     private ?array $modules = null;
 
-    public function __construct(protected ShipRumpInterface $rump, private ?ShipBuildplanInterface $buildplan)
-    {
-    }
+    public function __construct(protected SpacecraftRumpInterface $rump, private ?SpacecraftBuildplanInterface $buildplan) {}
 
-    abstract public function getModuleType(): ShipModuleTypeEnum;
+    abstract public function getModuleType(): SpacecraftModuleTypeEnum;
 
     #[Override]
     public function getModule(): iterable
@@ -30,14 +29,25 @@ abstract class ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
             if ($buildplan === null) {
                 $this->modules = [];
             } else {
-                $this->modules = array_map(
-                    fn (BuildplanModuleInterface $buildplanModule): ModuleInterface
-                    => $buildplanModule->getModule(),
-                    $buildplan->getModulesByType($this->getModuleType())
-                );
+                $this->modules = $buildplan
+                    ->getModulesByType($this->getModuleType())
+                    ->toArray();
             }
         }
 
         return $this->modules;
+    }
+
+    #[Override]
+    public function getSecondValue(?ModuleInterface $module = null): int
+    {
+        throw new RuntimeException(sprintf('not implemented for moduleType: %s', $this->getModuleType()->name));
+    }
+
+    #[Override]
+    public function initialize(SpacecraftWrapperInterface $wrapper): ModuleRumpWrapperInterface
+    {
+        //override if neccessary
+        return $this;
     }
 }

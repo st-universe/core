@@ -1,0 +1,115 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body>
+<div class="box">
+    <div class="box_title" style="text-align: left">/
+                <a href="colony.php">
+            Kolonien
+        </a>
+                <span> / </span>
+                        <a href="?SHOW_COLONY=1&amp;id=42">
+            Stempor'Arr 4
+        </a>
+                <span> / </span>
+                        <a href="?SHOW_SPACECRAFT_MANAGEMENT=1&amp;id=42">
+            Orbitalmanagement
+        </a>
+                    </div>
+</div>
+<br>
+<div id="result" style="display: none;">..</div>
+<form action="colony.php" method="post" name="colmanform">
+  
+<input type="hidden" name="id" value="42">
+<input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
+<input type="hidden" name="SHOW_SPACECRAFT_MANAGEMENT" value="1">
+<table class="tcal">
+  <tr>
+    <th>Klasse</th>
+    <th>Name</th>
+    <th>Crew</th>
+    <th>Batterie</th>
+    <th>Warpkern</th>
+    <th>Torpedo-Transfer</th>
+    <th>Shuttle-Transfer</th>
+  </tr>
+    <tr>
+    <td colspan="7">
+      <strong><span style="color: #760505">The FLEET</span></strong>
+            <span> von </span>
+      Siedler 101
+          </td>
+  </tr>
+          <tr class="row">
+    <td>
+      <input type="hidden" name="spacecrafts[]" value="77">
+            <a href="/ship.php?SHOW_SPACECRAFT=1&amp;id=77" onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Aerie Zwo',
+'id=77',
+'ship.php'); event.preventDefault();}
+updateSelectedSpacecraftId('77');">
+        <img src="assets/ships/6501.png" title="Aerie">
+      </a>
+          </td>
+        <td>
+      <a href="/ship.php?SHOW_SPACECRAFT=1&amp;id=77" onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Aerie Zwo',
+'id=77',
+'ship.php'); event.preventDefault();}
+updateSelectedSpacecraftId('77');">Aerie Zwo</a>
+    </td>
+            <td>
+    </td>
+    <td>
+                </td>
+    <td>
+                </td>
+    <td>
+          </td>
+    <td>
+          </td>
+      </tr>
+      <tr>
+    <td colspan="7">
+      Einzelschiffe
+          </td>
+  </tr>
+          <tr class="row">
+    <td>
+      <input type="hidden" name="spacecrafts[]" value="78">
+            <a href="/ship.php?SHOW_SPACECRAFT=1&amp;id=78" onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Aerie Three',
+'id=78',
+'ship.php'); event.preventDefault();}
+updateSelectedSpacecraftId('78');">
+        <img src="assets/ships/6501.png" title="Aerie">
+      </a>
+          </td>
+        <td>
+      <a href="/ship.php?SHOW_SPACECRAFT=1&amp;id=78" onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Aerie Three',
+'id=78',
+'ship.php'); event.preventDefault();}
+updateSelectedSpacecraftId('78');">Aerie Three</a>
+    </td>
+            <td>
+    </td>
+    <td>
+                </td>
+    <td>
+                </td>
+    <td>
+          </td>
+    <td>
+          </td>
+      </tr>
+    </table>
+<br>
+<input type="submit" style="cursor: pointer" name="B_MANAGE_SPACECRAFTS" value="Ausf&uuml;hren">
+</form>
+<div class="footer">
+    Rendered in 4.203s - Memory usage: 42.77Mb
+</div>
+
+</body>
+</html>

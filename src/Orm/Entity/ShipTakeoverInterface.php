@@ -6,13 +6,13 @@ interface ShipTakeoverInterface
 {
     public function getId(): int;
 
-    public function setSourceShip(ShipInterface $ship): ShipTakeoverInterface;
+    public function setSourceSpacecraft(SpacecraftInterface $spacecraft): ShipTakeoverInterface;
 
-    public function getSourceShip(): ShipInterface;
+    public function getSourceSpacecraft(): SpacecraftInterface;
 
-    public function setTargetShip(ShipInterface $ship): ShipTakeoverInterface;
+    public function setTargetSpacecraft(SpacecraftInterface $spacecraft): ShipTakeoverInterface;
 
-    public function getTargetShip(): ShipInterface;
+    public function getTargetSpacecraft(): SpacecraftInterface;
 
     public function getStartTurn(): int;
 

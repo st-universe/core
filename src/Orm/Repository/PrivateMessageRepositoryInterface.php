@@ -43,9 +43,7 @@ interface PrivateMessageRepositoryInterface extends ObjectRepository
      */
     public function getByReceiver(UserInterface $user): array;
 
-    /**
-     * @return array<PrivateMessageInterface>
-     */
+    /** @return array<PrivateMessageInterface> */
     public function getByUserAndFolder(
         int $userId,
         int $folderId,
@@ -53,11 +51,18 @@ interface PrivateMessageRepositoryInterface extends ObjectRepository
         int $limit
     ): array;
 
+    /** @return array<PrivateMessageInterface> */
+    public function getConversations(UserInterface $user): array;
+
     public function getAmountByFolder(PrivateMessageFolderInterface $privateMessageFolder): int;
 
     public function getNewAmountByFolder(PrivateMessageFolderInterface $privateMessageFolder): int;
 
+    public function getNewAmountByFolderAndSender(PrivateMessageFolderInterface $privateMessageFolder, UserInterface $sender): int;
+
     public function setDeleteTimestampByFolder(int $folderId, int $timestamp): void;
+
+    public function hasRecentMessage(UserInterface $user): bool;
 
     public function unsetAllInboxReferences(): void;
 

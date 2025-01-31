@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\Lib;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Override;
+use Stu\Module\Spacecraft\Lib\TSpacecraftItem;
 
 #[Entity]
 class TFleetShipItem extends TSpacecraftItem implements TFleetShipItemInterface

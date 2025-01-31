@@ -27,11 +27,11 @@ interface ShipyardShipQueueRepositoryInterface extends ObjectRepository
      */
     public function getByUser(int $userId): array;
 
-    public function getAmountByShipyard(int $shipId): int;
+    public function getAmountByShipyard(int $stationId): int;
 
-    public function stopQueueByShipyard(int $shipId): void;
+    public function stopQueueByShipyard(int $stationId): void;
 
-    public function restartQueueByShipyard(int $shipId): void;
+    public function restartQueueByShipyard(int $stationId): void;
 
     /**
      * @return array<ShipyardShipQueueInterface>

@@ -10,16 +10,15 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
-use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
+use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use Override;
 use Stu\Orm\Repository\ConstructionProgressRepository;
 
 #[Table(name: 'stu_construction_progress')]
-#[Index(name: 'construction_progress_ship_idx', columns: ['ship_id'])]
 #[Entity(repositoryClass: ConstructionProgressRepository::class)]
 class ConstructionProgress implements ConstructionProgressInterface
 {
@@ -29,7 +28,7 @@ class ConstructionProgress implements ConstructionProgressInterface
     private int $id;
 
     #[Column(type: 'integer')]
-    private int $ship_id = 0;
+    private int $station_id = 0;
 
     #[Column(type: 'integer')]
     private int $remaining_ticks = 0;
@@ -37,12 +36,13 @@ class ConstructionProgress implements ConstructionProgressInterface
     /**
      * @var ArrayCollection<int, ConstructionProgressModuleInterface>
      */
-    #[OneToMany(targetEntity: 'ConstructionProgressModule', mappedBy: 'progress')]
+    #[OneToMany(targetEntity: 'ConstructionProgressModule', mappedBy: 'progress', indexBy: 'module_id')]
+    #[OrderBy(['module_id' => 'ASC'])]
     private Collection $specialModules;
 
-    #[OneToOne(targetEntity: 'Ship')]
-    #[JoinColumn(name: 'ship_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ShipInterface $ship;
+    #[OneToOne(targetEntity: 'Station')]
+    #[JoinColumn(name: 'station_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    private StationInterface $station;
 
     public function __construct()
     {
@@ -56,15 +56,15 @@ class ConstructionProgress implements ConstructionProgressInterface
     }
 
     #[Override]
-    public function getShip(): ShipInterface
+    public function getStation(): StationInterface
     {
-        return $this->ship;
+        return $this->station;
     }
 
     #[Override]
-    public function setShip(ShipInterface $ship): ConstructionProgressInterface
+    public function setStation(StationInterface $station): ConstructionProgressInterface
     {
-        $this->ship = $ship;
+        $this->station = $station;
 
         return $this;
     }
@@ -92,6 +92,6 @@ class ConstructionProgress implements ConstructionProgressInterface
     #[Override]
     public function __toString(): string
     {
-        return sprintf('constructionProgress, shipId: %d', $this->ship_id);
+        return sprintf('constructionProgress, stationId: %d', $this->station_id);
     }
 }

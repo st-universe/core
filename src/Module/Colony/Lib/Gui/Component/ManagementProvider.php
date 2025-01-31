@@ -6,92 +6,93 @@ use Override;
 use request;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
-use Stu\Component\Colony\OrbitShipListRetrieverInterface;
+use Stu\Component\Colony\OrbitShipWrappersRetrieverInterface;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Database\View\Category\Wrapper\DatabaseCategoryWrapperFactoryInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Entity\ColonyDepositMiningInterface;
 use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Repository\StationRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
-final class ManagementProvider implements GuiComponentProviderInterface
+final class ManagementProvider implements PlanetFieldHostComponentInterface
 {
     public function __construct(
+        private StationRepositoryInterface $stationRepository,
         private TorpedoTypeRepositoryInterface $torpedoTypeRepository,
         private DatabaseCategoryWrapperFactoryInterface $databaseCategoryWrapperFactory,
-        private OrbitShipListRetrieverInterface $orbitShipListRetriever,
+        private OrbitShipWrappersRetrieverInterface $orbitShipWrappersRetriever,
         private ColonyFunctionManagerInterface $colonyFunctionManager,
-        private ShipWrapperFactoryInterface $shipWrapperFactory,
         private ColonyLibFactoryInterface $colonyLibFactory,
+        private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
         private StuTime $stuTime
     ) {}
 
     #[Override]
     public function setTemplateVariables(
-        PlanetFieldHostInterface $host,
+        $entity,
         GameControllerInterface $game
     ): void {
 
-        if (!$host instanceof ColonyInterface) {
+        if (!$entity instanceof ColonyInterface) {
             return;
         }
 
-        $systemDatabaseEntry = $host->getSystem()->getDatabaseEntry();
+        $systemDatabaseEntry = $entity->getSystem()->getDatabaseEntry();
         if ($systemDatabaseEntry !== null) {
             $starsystem = $this->databaseCategoryWrapperFactory->createDatabaseCategoryEntryWrapper($systemDatabaseEntry, $game->getUser());
             $game->setTemplateVar('STARSYSTEM_ENTRY_TAL', $starsystem);
         }
 
-        $firstOrbitShip = null;
+        $firstOrbitShipWrapper = null;
 
-        $shipList = $this->orbitShipListRetriever->retrieve($host);
-        if ($shipList !== []) {
-            // if selected, return the current target
-            $target = request::postInt('target');
+        $targetId = request::indInt('target');
+        $groups = $this->orbitShipWrappersRetriever->retrieve($entity);
 
-            if ($target !== 0) {
-                foreach ($shipList as $fleet) {
-                    foreach ($fleet['ships'] as $idx => $ship) {
-                        if ($idx == $target) {
-                            $firstOrbitShip = $ship;
-                        }
+        if ($targetId !== 0) {
+            foreach ($groups as $group) {
+                foreach ($group->getWrappers() as $wrapper) {
+                    if ($wrapper->get()->getId() === $targetId) {
+                        $firstOrbitShipWrapper = $wrapper;
                     }
                 }
             }
-            if ($firstOrbitShip === null) {
-                $firstOrbitShip = current(current($shipList)['ships']);
-            }
+        }
+        if ($firstOrbitShipWrapper === null) {
+            $firstGroup = $groups->first();
+            $firstOrbitShipWrapper = $firstGroup ? $firstGroup->getWrappers()->first() : null;
         }
 
         $game->setTemplateVar(
             'POPULATION_CALCULATOR',
-            $this->colonyLibFactory->createColonyPopulationCalculator($host)
+            $this->colonyLibFactory->createColonyPopulationCalculator($entity)
         );
 
-        $game->setTemplateVar(
-            'FIRST_ORBIT_SHIP',
-            $firstOrbitShip ? $this->shipWrapperFactory->wrapShip($firstOrbitShip) : null
-        );
+        $station = $this->stationRepository->getStationOnLocation($entity->getLocation());
+        if ($station !== null) {
+            $game->setTemplateVar('ORBIT_STATION_WRAPPER', $this->spacecraftWrapperFactory->wrapStation($station));
+        }
+        $game->setTemplateVar('FIRST_ORBIT_SPACECRAFT', $firstOrbitShipWrapper);
 
-        $particlePhalanx = $this->colonyFunctionManager->hasFunction($host, BuildingFunctionEnum::BUILDING_FUNCTION_PARTICLE_PHALANX);
+        $particlePhalanx = $this->colonyFunctionManager->hasFunction($entity, BuildingFunctionEnum::BUILDING_FUNCTION_PARTICLE_PHALANX);
         $game->setTemplateVar(
             'BUILDABLE_TORPEDO_TYPES',
             $particlePhalanx ? $this->torpedoTypeRepository->getForUser($game->getUser()->getId()) : null
         );
 
-        $shieldingManager = $this->colonyLibFactory->createColonyShieldingManager($host);
+        $shieldingManager = $this->colonyLibFactory->createColonyShieldingManager($entity);
         $game->setTemplateVar('SHIELDING_MANAGER', $shieldingManager);
-        $game->setTemplateVar('DEPOSIT_MININGS', $this->getUserDepositMinings($host));
-        $game->setTemplateVar('VISUAL_PANEL', $this->colonyLibFactory->createColonyScanPanel($host));
+        $game->setTemplateVar('DEPOSIT_MININGS', $this->getUserDepositMinings($entity));
+        $game->setTemplateVar('VISUAL_PANEL', $this->colonyLibFactory->createColonyScanPanel($entity));
 
         $timestamp = $this->stuTime->time();
-        $game->setTemplateVar('COLONY_TIME_HOUR', $host->getColonyTimeHour($timestamp));
-        $game->setTemplateVar('COLONY_TIME_MINUTE', $host->getColonyTimeMinute($timestamp));
-        $game->setTemplateVar('COLONY_DAY_TIME_PREFIX', $host->getDayTimePrefix($timestamp));
-        $game->setTemplateVar('COLONY_DAY_TIME_NAME', $host->getDayTimeName($timestamp));
+        $game->setTemplateVar('COLONY_TIME_HOUR', $entity->getColonyTimeHour($timestamp));
+        $game->setTemplateVar('COLONY_TIME_MINUTE', $entity->getColonyTimeMinute($timestamp));
+        $game->setTemplateVar('COLONY_DAY_TIME_PREFIX', $entity->getDayTimePrefix($timestamp));
+        $game->setTemplateVar('COLONY_DAY_TIME_NAME', $entity->getDayTimeName($timestamp));
     }
 
     /**

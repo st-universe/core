@@ -8,13 +8,13 @@ use Override;
 use request;
 use RuntimeException;
 use Stu\Component\Ship\AstronomicalMappingEnum;
-use Stu\Component\Ship\ShipStateEnum;
-use Stu\Component\Ship\System\Type\AstroLaboratoryShipSystem;
+use Stu\Component\Spacecraft\SpacecraftStateEnum;
+use Stu\Component\Spacecraft\System\Type\AstroLaboratoryShipSystem;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Orm\Repository\AstroEntryRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -32,7 +32,7 @@ final class StartAstroMapping implements ActionControllerInterface
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $game->setView(ShowShip::VIEW_IDENTIFIER);
+        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         $userId = $game->getUser()->getId();
 
@@ -84,7 +84,7 @@ final class StartAstroMapping implements ActionControllerInterface
         $this->astroEntryRepository->save($entry);
 
         $epsSystem->lowerEps(AstroLaboratoryShipSystem::FINALIZING_ENERGY_COST)->update();
-        $ship->setState(ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING);
+        $ship->setState(SpacecraftStateEnum::SHIP_STATE_ASTRO_FINALIZING);
 
         $astroLab = $wrapper->getAstroLaboratorySystemData();
         if ($astroLab === null) {
@@ -93,7 +93,7 @@ final class StartAstroMapping implements ActionControllerInterface
         $astroLab->setAstroStartTurn($game->getCurrentRound()->getTurn())->update();
         $this->shipRepository->save($ship);
 
-        $game->setView(ShowShip::VIEW_IDENTIFIER);
+        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
         $game->addInformation(sprintf(_("Die Kartographierung %s wird finalisiert"), $message));
     }
 

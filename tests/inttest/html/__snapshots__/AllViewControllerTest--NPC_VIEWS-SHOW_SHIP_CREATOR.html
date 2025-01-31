@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:stu="stu">
-
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:stu="stu" lang="de">
 
 <head>
     <meta charset="utf-8">
@@ -19,61 +18,16 @@
     <link rel="STYLESHEET" type="text/css" href="/static/css/schwarz.css">
     <link rel="STYLESHEET" type="text/css" href="/static/css/stu.css">
     <link rel="shortcut icon" href="/assets/favicon.ico">
-
-
 </head>
+
 <body onload="startUp();">
     <div id="overDiv">...</div>
     <div class="container">
         <div class="header">
-            <div id="navlet_user">
-                <div class="header_box header_box_user border_box action" onclick="goToUrl('/maindesk.php'); return false;">
-    <div style="margin: 5px">
-        <div class="user_box_grid">
-            <div class="user_box_avatar" onclick="event.stopPropagation();">
-                                <div class="userAvatar">
-    <a href="/userprofile.php?uid=101">
-                <img src="/assets/rassen//1kn.png" title="Siedler 101">
-            </a>
-</div>
-
-            </div>
-            <div class="user_box_avatar_mobile">
-                                <div class="userAvatar">
-    <a href="/userprofile.php?uid=101">
-                <img src="/assets/rassen//1kn.png" title="Siedler 101">
-            </a>
-</div>
-
-            </div>
-            <div class="user_box_details">
-                <div class="userBoxDetailName">
-                    Siedler 101
-                </div>
-                <span>ID:</span> 101<span>,
-                    Prestige:</span> <br>
-
-                <a href="javascript:void(0);" onclick="event.stopPropagation(); openNotes()" title="Notizzettel &ouml;ffnen" onmouseover="cp('headerNotiz','buttons/notiz2')" onmouseout="cp('headerNotiz','buttons/notiz1')">
-                    <img src="/assets/buttons/notiz1.png" name="headerNotiz">
-                </a>
-                <a href="javascript:void(0);" onclick="event.stopPropagation(); switchInnerContent('WRITE_PM', 'Neue private Nachricht', null, '/pm.php');" onmouseover="cp('writePm','buttons/msg2')" onmouseout="cp('writePm','buttons/msg1')">
-                    <img src="/assets/buttons/msg1.png" name="writePm" title="Neue Nachricht schreiben">
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
-            </div>
-            <div id="navlet_pm">
-                <div class="header_box header_box_pm border_box">
-    </div>
-            </div>
-            <div id="navlet_research">
-                            </div>
-            <div id="navlet_colonies">
-                
-<div class="header_box header_box_col border_box">
-    </div>
+            <div onclick="goToUrl('/maindesk.php'); return false;" class="header_box header_box_user border_box action">
+                <img style="width: 30px; height: 30px;" src="/assets/buttons/b_from1.png" title="Zur&uuml;ck zu Spielmodus">
+                <br>
+                <span style="color: orange; font-size: 150%;">Klick f&uuml;hrt zur&uuml;ck aufs Maindesk</span>
             </div>
             <div class="header_box header_box_logout border_box action" onclick="goToUrl('game.php?B_LOGOUT=1')" onmouseover="cp('header_menu_logout','navigation/menu_logout1', 'png')" onmouseout="cp('header_menu_logout','navigation/menu_logout0', 'png')">
                 <div>
@@ -103,8 +57,7 @@
         </div>
         <div style="margin-top: 80px;">
             <div class="sidebar">
-                <div style="width: 100%; padding-left: 12px; padding-right: 10px">
-                                        <div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/npc/?SHOW_TOOLS=1'; }" onmouseover="cp('nav_item_scripts','navigation/menu_scripts1', 'png')" onmouseout="cp('nav_item_scripts','navigation/menu_scripts0', 'png')">
+                                <div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/npc/?SHOW_TOOLS=1'; }" onmouseover="cp('nav_item_scripts','navigation/menu_scripts1', 'png')" onmouseout="cp('nav_item_scripts','navigation/menu_scripts0', 'png')">
     <a class="navitem_link" href="/npc/?SHOW_TOOLS=1">
         <img class="navitem_img" src="/assets/navigation/menu_scripts0.png" id="nav_item_scripts" title="NPC Tools">
         <div class="navitem_title">NPC Tools</div>
@@ -119,16 +72,6 @@
 </div>
 
 
-                    <div id="navlet_servertime">
-                        <div class="border_box navigation_item_servertime">
-    <img title="Serverzeit" style="width: 15px; height: 15px;" src="/assets/buttons/time.png">
-    <span id="servertime" style="display: none;">Nov, 21 2024 14:30:45</span>
-    <span>Runde: <br>
-        <span>Version: <a href="https://board.change.me/viewforum.php?f=12"></a></span><br>
-</span>
-</div>
-                    </div>
-                </div>
             </div>
             <div id="innerContent" class="innerContent">
                 <div class="box">
@@ -142,18 +85,18 @@
 <div id="result" style="display: none;">..</div>
 
 <div>
-    <h2>Spieler ausw&auml;hlen</h2>
-            <div><a href="?SHOW_SHIP_CREATOR=1&amp;userId=10"><strong><span style="color: #6699CC">Vereinte F&ouml;deration der Planeten</span></strong> (10)</a></div>
-            <div><a href="?SHOW_SHIP_CREATOR=1&amp;userId=11"><strong><span style="color: #055415">Romulanisches Sternenimperium</span> </strong> (11)</a></div>
-            <div><a href="?SHOW_SHIP_CREATOR=1&amp;userId=12"><strong><span style="color: #760505">Klingonisches Reich</span></strong> (12)</a></div>
-            <div><a href="?SHOW_SHIP_CREATOR=1&amp;userId=13"><strong><span style="color: #999900">Cardassianische Union</span></strong> (13)</a></div>
-            <div><a href="?SHOW_SHIP_CREATOR=1&amp;userId=14"><span style="color: #FF8000"><strong>Ferengi Allianz</strong></span> (14)</a></div>
-            <div><a href="?SHOW_SHIP_CREATOR=1&amp;userId=15"><strong><span style="color: 552222">Pakled</span></strong> (NPC) (15)</a></div>
-            <div><a href="?SHOW_SHIP_CREATOR=1&amp;userId=17"><strong><span style="color: #9b734d">Kazon</span></strong> (KI-NPC) (17)</a></div>
-            <div><a href="?SHOW_SHIP_CREATOR=1&amp;userId=19"><strong><span style="color: #006400">Borg Kollektiv</span></strong> (19)</a></div>
-            <div><a href="?SHOW_SHIP_CREATOR=1&amp;userId=101">Siedler 101 (101)</a></div>
-            <div><a href="?SHOW_SHIP_CREATOR=1&amp;userId=102">Siedler 102 (102)</a></div>
-    </div>
+        <h2>Spieler ausw&auml;hlen</h2>
+        <div><a href="?SHOW_SHIP_CREATOR=1&amp;userId=10"><strong><span style="color: #6699CC">Vereinte F&ouml;deration der Planeten</span></strong> (10)</a></div>
+        <div><a href="?SHOW_SHIP_CREATOR=1&amp;userId=11"><strong><span style="color: #055415">Romulanisches Sternenimperium</span> </strong> (11)</a></div>
+        <div><a href="?SHOW_SHIP_CREATOR=1&amp;userId=12"><strong><span style="color: #760505">Klingonisches Reich</span></strong> (12)</a></div>
+        <div><a href="?SHOW_SHIP_CREATOR=1&amp;userId=13"><strong><span style="color: #999900">Cardassianische Union</span></strong> (13)</a></div>
+        <div><a href="?SHOW_SHIP_CREATOR=1&amp;userId=14"><span style="color: #FF8000"><strong>Ferengi Allianz</strong></span> (14)</a></div>
+        <div><a href="?SHOW_SHIP_CREATOR=1&amp;userId=15"><strong><span style="color: 552222">Pakled</span></strong> (NPC) (15)</a></div>
+        <div><a href="?SHOW_SHIP_CREATOR=1&amp;userId=17"><strong><span style="color: #9b734d">Kazon</span></strong> (KI-NPC) (17)</a></div>
+        <div><a href="?SHOW_SHIP_CREATOR=1&amp;userId=19"><strong><span style="color: #006400">Borg Kollektiv</span></strong> (19)</a></div>
+        <div><a href="?SHOW_SHIP_CREATOR=1&amp;userId=101">Siedler 101 (101)</a></div>
+        <div><a href="?SHOW_SHIP_CREATOR=1&amp;userId=102">Siedler 102 (102)</a></div>
+        </div>
             </div>
         </div>
     </div>

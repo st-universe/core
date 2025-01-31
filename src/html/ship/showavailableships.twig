@@ -1,4 +1,4 @@
-{% from 'html/shipmacros.twig' import shipimagewithoutwarp %}
+{% from 'html/shipmacros.twig' import spacecraftImagewithoutwarp %}
 <form action="ship.php" method="post">
     <input type="hidden" name="fleetid" value="{{ FLEET.getId }}" />
     <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
@@ -9,7 +9,7 @@
             {% for ship in AVAILABLE_SHIPS %}
                 <tr>
                     <td style="{{ ship.getHoldingWebBackgroundStyle }}" class="shiplistshipimage">
-                        {{ shipimagewithoutwarp(ship) }}
+                        {{ spacecraftImagewithoutwarp(ship) }}
                     </td>
                     <td>
                         <input type="checkbox" class="chosenShipsCheckbox" name="chosen[]" value="{{ ship.getId }}" />

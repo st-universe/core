@@ -40,10 +40,13 @@ final class Init
             $builder->addDefinitions(__DIR__ . '/../Component/Logging/services.php');
             $builder->addDefinitions(__DIR__ . '/../Component/Map/services.php');
             $builder->addDefinitions(__DIR__ . '/../Component/Player/services.php');
+            $builder->addDefinitions(__DIR__ . '/../Component/Refactor/services.php');
             $builder->addDefinitions(__DIR__ . '/../Component/Ship/services.php');
+            $builder->addDefinitions(__DIR__ . '/../Component/Spacecraft/services.php');
             $builder->addDefinitions(__DIR__ . '/../Component/Station/services.php');
             $builder->addDefinitions(__DIR__ . '/../Component/StarSystem/services.php');
             $builder->addDefinitions(__DIR__ . '/../Lib/services.php');
+            $builder->addDefinitions(__DIR__ . '/../Lib/Pirate/services.php');
             $builder->addDefinitions(__DIR__ . '/../Module/Admin/services.php');
             $builder->addDefinitions(__DIR__ . '/../Module/Alliance/services.php');
             $builder->addDefinitions(__DIR__ . '/../Module/Award/services.php');
@@ -68,6 +71,7 @@ final class Init
             $builder->addDefinitions(__DIR__ . '/../Module/Prestige/services.php');
             $builder->addDefinitions(__DIR__ . '/../Module/Research/services.php');
             $builder->addDefinitions(__DIR__ . '/../Module/Ship/services.php');
+            $builder->addDefinitions(__DIR__ . '/../Module/Spacecraft/services.php');
             $builder->addDefinitions(__DIR__ . '/../Module/Starmap/services.php');
             $builder->addDefinitions(__DIR__ . '/../Module/Station/services.php');
             $builder->addDefinitions(__DIR__ . '/../Module/Template/services.php');
@@ -75,6 +79,7 @@ final class Init
             $builder->addDefinitions(__DIR__ . '/../Module/Trade/services.php');
             $builder->addDefinitions(__DIR__ . '/../Module/Twig/services.php');
             $builder->addDefinitions(__DIR__ . '/../Orm/Repository/services.php');
+            $builder->addDefinitions(__DIR__ . '/../Orm/Transaction/services.php');
 
             static::$CONTAINER = $builder->build();
         }

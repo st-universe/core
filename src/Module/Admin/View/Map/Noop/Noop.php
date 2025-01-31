@@ -10,11 +10,11 @@ use Stu\Module\Control\ViewControllerInterface;
 
 final class Noop implements ViewControllerInterface
 {
-    public const string VIEW_IDENTIFIER = 'NOOP';
+	public const string VIEW_IDENTIFIER = 'NOOP';
 
-    #[Override]
-    public function handle(GameControllerInterface $game): void
-    {
-        $game->showMacro('../html/noop.twig');
-    }
+	#[Override]
+	public function handle(GameControllerInterface $game): void
+	{
+		$game->showMacro('html/empty.twig');
+	}
 }

@@ -11,8 +11,8 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Module\Station\Lib\StationLoaderInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 
 final class ShowShuttleManagement implements ViewControllerInterface
 {
@@ -22,8 +22,8 @@ final class ShowShuttleManagement implements ViewControllerInterface
 
     public function __construct(
         private ShowShuttleManagementRequestInterface $request,
-        private ShipLoaderInterface $shipLoader,
-        private ShipWrapperFactoryInterface $shipWrapperFactory,
+        private StationLoaderInterface $stationLoader,
+        private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
@@ -35,7 +35,7 @@ final class ShowShuttleManagement implements ViewControllerInterface
         $stationId = $this->request->getStationId();
         $shipId = $this->request->getShipId();
 
-        $wrappers = $this->shipLoader->getWrappersBySourceAndUserAndTarget(
+        $wrappers = $this->stationLoader->getWrappersBySourceAndUserAndTarget(
             $stationId,
             $game->getUser()->getId(),
             $shipId,
@@ -85,7 +85,7 @@ final class ShowShuttleManagement implements ViewControllerInterface
         }
 
         $game->setTemplateVar('MODULE_VIEW', ModuleViewEnum::STATION);
-        $game->setTemplateVar('WRAPPER', $this->shipWrapperFactory->wrapShip($ship));
+        $game->setTemplateVar('WRAPPER', $this->spacecraftWrapperFactory->wrapSpacecraft($ship));
         $game->setTemplateVar('MANAGER', $station);
         $game->setTemplateVar('CURRENTLY_STORED', $currentlyStored);
         $game->setTemplateVar('AVAILABLE_SHUTTLES', $shuttles);

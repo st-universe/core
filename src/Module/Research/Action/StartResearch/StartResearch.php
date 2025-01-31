@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Stu\Module\Research\Action\StartResearch;
 
 use Override;
+use Stu\Lib\Component\ComponentRegistrationInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameController;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Game\Lib\Component\ComponentEnum;
-use Stu\Module\Game\Lib\Component\ComponentLoaderInterface;
+use Stu\Module\Game\Component\GameComponentEnum;
 use Stu\Module\Research\TechlistRetrieverInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 
@@ -21,7 +21,7 @@ final class StartResearch implements ActionControllerInterface
         private ResearchedRepositoryInterface $researchedRepository,
         private TechlistRetrieverInterface $techlistRetriever,
         private StartResearchRequestInterface $startResearchRequest,
-        private ComponentLoaderInterface $componentLoader
+        private ComponentRegistrationInterface $componentRegistration
     ) {}
 
     #[Override]
@@ -56,7 +56,7 @@ final class StartResearch implements ActionControllerInterface
 
         $game->setView(GameController::DEFAULT_VIEW);
 
-        $this->componentLoader->addComponentUpdate(ComponentEnum::RESEARCH_NAVLET);
+        $this->componentRegistration->addComponentUpdate(GameComponentEnum::RESEARCH);
     }
 
     #[Override]

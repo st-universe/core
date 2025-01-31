@@ -8,7 +8,7 @@ use Override;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
-use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Shipcount\ShipcountLayerTypeEnum;
+use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Spacecraftcount\SpacecraftCountLayerTypeEnum;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace\SubspaceLayerTypeEnum;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreationInterface;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
@@ -47,8 +47,9 @@ class ColonyScanPanel extends AbstractVisualPanel
         $showCloaked = $this->colonyFunctionManager->hasFunction($this->colony, BuildingFunctionEnum::BUILDING_FUNCTION_COLONY_CENTRAL);
 
         $panelLayerCreation = $this->panelLayerCreation
-            ->addShipCountLayer($showCloaked, null, ShipcountLayerTypeEnum::ALL, 0)
+            ->addShipCountLayer($showCloaked, null, SpacecraftCountLayerTypeEnum::ALL, 0)
             ->addSystemLayer()
+            ->addAnomalyLayer()
             ->addColonyShieldLayer();
 
         if ($this->colonyFunctionManager->hasFunction($this->colony, BuildingFunctionEnum::BUILDING_FUNCTION_SUBSPACE_TELESCOPE)) {

@@ -1,14 +1,14 @@
-{% from 'html/shipmacros.twig' import shipImageWithoutWarp %}
+{% from 'html/shipmacros.twig' import spacecraftImageWithoutWarp %}
 
 <br />
 <table class="tcal">
-    {% set ship = TRADE_POST_INFO.getShip %}
+    {% set ship = TRADE_POST_INFO.getStation %}
     <tr>
-        <th colspan="3">{{ TRADE_POST_INFO.getShip.getName|bbcode }}</th>
+        <th colspan="3">{{ TRADE_POST_INFO.getStation.getName|bbcode }}</th>
     </tr>
     <tr>
         <td rowspan="5">
-            {{ shipImageWithoutWarp(ship) }}
+            {{ spacecraftImageWithoutWarp(ship) }}
         </td>
         <th>Standort</th>
         <td>{{ ship.getSectorString }}</td>

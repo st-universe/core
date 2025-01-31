@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\Lib;
 
-use Stu\Component\Ship\ShipEnum;
+use Stu\Component\Station\Dock\DockModeEnum;
+use Stu\Component\Station\Dock\DockTypeEnum;
 use Stu\Orm\Entity\DockingPrivilegeInterface;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
@@ -13,9 +14,13 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class DockingPrivilegeItem
 {
-    public function __construct(private UserRepositoryInterface $userRepository, private AllianceRepositoryInterface $allianceRepository, private FactionRepositoryInterface $factionRepository, private ShipRepositoryInterface $shipRepository, private DockingPrivilegeInterface $dockingPrivilege)
-    {
-    }
+    public function __construct(
+        private UserRepositoryInterface $userRepository,
+        private AllianceRepositoryInterface $allianceRepository,
+        private FactionRepositoryInterface $factionRepository,
+        private ShipRepositoryInterface $shipRepository,
+        private DockingPrivilegeInterface $dockingPrivilege
+    ) {}
 
     public function getId(): int
     {
@@ -25,38 +30,36 @@ final class DockingPrivilegeItem
     public function getTargetName(): string
     {
         switch ($this->dockingPrivilege->getPrivilegeType()) {
-            case ShipEnum::DOCK_PRIVILEGE_USER:
+            case DockTypeEnum::USER:
                 $user = $this->userRepository->find($this->dockingPrivilege->getTargetId());
                 return $user === null
                     ? 'nicht mehr vorhanden'
                     : $user->getName();
-            case ShipEnum::DOCK_PRIVILEGE_ALLIANCE:
+            case DockTypeEnum::ALLIANCE:
                 $ally = $this->allianceRepository->find($this->dockingPrivilege->getTargetId());
                 return $ally === null
                     ? 'nicht mehr vorhanden'
                     : $ally->getName();
-            case ShipEnum::DOCK_PRIVILEGE_FACTION:
+            case DockTypeEnum::FACTION:
                 $faction = $this->factionRepository->find($this->dockingPrivilege->getTargetId());
                 return $faction === null
                     ? 'nicht mehr vorhanden' :
                     $faction->getName();
+            case DockTypeEnum::SHIP:
+                $ship = $this->shipRepository->find($this->dockingPrivilege->getTargetId());
+                return $ship === null
+                    ? 'nicht mehr vorhanden'
+                    : $ship->getName();
         }
-        $ship = $this->shipRepository->find($this->dockingPrivilege->getTargetId());
-        return $ship === null
-            ? 'nicht mehr vorhanden'
-            : $ship->getName();
     }
 
     public function getPrivilegeModeString(): string
     {
-        if ($this->dockingPrivilege->getPrivilegeMode() == ShipEnum::DOCK_PRIVILEGE_MODE_ALLOW) {
-            return 'Erlaubt';
-        }
-        return 'Verboten';
+        return $this->dockingPrivilege->getPrivilegeMode()->getDescription();
     }
 
     public function isDockingAllowed(): bool
     {
-        return $this->dockingPrivilege->getPrivilegeMode() == ShipEnum::DOCK_PRIVILEGE_MODE_ALLOW;
+        return $this->dockingPrivilege->getPrivilegeMode() == DockModeEnum::ALLOW;
     }
 }

@@ -9,24 +9,22 @@ use request;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\View\Noop\Noop;
+use Stu\Module\Station\Lib\StationLoaderInterface;
+use Stu\Module\Spacecraft\View\Noop\Noop;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 final class ToggleDockPmAutoRead implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_DOCK_PM_AUTO_READ';
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private TradePostRepositoryInterface $tradePostRepository)
-    {
-    }
+    public function __construct(private StationLoaderInterface $stationLoader, private TradePostRepositoryInterface $tradePostRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(Noop::VIEW_IDENTIFIER);
 
-        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
+        $wrapper = $this->stationLoader->getWrapperByIdAndUser(
             request::indInt('id'),
             $game->getUser()->getId()
         );

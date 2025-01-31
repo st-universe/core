@@ -40,6 +40,8 @@ div.sidebar {
   border-right: 1px solid #4b4b4b;
   left: 0;
   position: fixed;
+  padding-left: 12px;
+  padding-right: 10px;
 }
 
 div.footer {
@@ -392,6 +394,18 @@ div.arrow:hover {
   text-decoration: blink;
 }
 
+.unreadPmCount {
+  margin-left: auto;
+  margin-right: auto;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  border-radius: 50%;
+  color: #fff;
+  text-align: center;
+  background: #07d362
+}
+
 .sibutton {
   text-align: center;
   width: 16px;
@@ -463,6 +477,12 @@ div.lssobj {
   top: -50%;
 }
 
+.shipImgOverlayText {
+  position: relative;
+  text-align: center;
+  color: white;
+}
+
 .centered {
   position: absolute;
   top: 50%;
@@ -473,13 +493,13 @@ div.lssobj {
 
 .indexedGraphics {
   position: absolute;
-  top: 0;
+  margin-top: -20px;
   left: 0;
 }
 
 .indexedGraphicsShips {
   position: absolute;
-  top: 100%;
+  margin-top: -5px;
 }
 
 .lssColoShield {
@@ -489,7 +509,7 @@ div.lssobj {
   z-index: 1;
 }
 
-.lssSubspaceOverShield {
+.visualPanelLayer {
   position: absolute;
   top: 0;
   left: 0;
@@ -808,20 +828,24 @@ table.crew_6 {
   background-color: #4a4a4a ! important;
 }
 
-div.module_select_base {
+div.module_selector {
   height: 40px;
   cursor: pointer;
   padding: 3px;
 }
 
-div.module_select_base_selected {
+div.module_selector_current {
   background-color: var(--color-28) ! important;
   color: var(--color-30);
   font-weight: bold;
 }
 
-div.module_select_base_mandatory {
+div.module_selector_unselected {
   background-color: #FF00003B ! important;
+}
+
+div.module_selector_skipped {
+  background-color: #ebc51e6b ! important;
 }
 
 #recaptcha_response_field {
@@ -891,6 +915,10 @@ div.top_box {
   border-radius: 3px 3px 3px 3px;
 }
 
+div.navigation_item.first-navigation-item {
+  margin-top: 0;
+}
+
 div.navigation_item {
   text-align: center;
   height: 6.2vh;
@@ -898,9 +926,10 @@ div.navigation_item {
   margin-top: 0.6vh;
   color: var(--color-23);
   vertical-align: middle;
-  font-size: 80% ! important;
+  font-size: 80% !important;
   cursor: pointer;
   background-color: var(--color-24);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 div.navitem_title {
@@ -942,7 +971,8 @@ div.header_box_settings:hover,
 div.header_box_col:hover,
 div.header_box_user:hover {
   background-color: var(--color-31);
-  color: var(--color-56) ! important;
+  color: var(--color-56) !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 div.header_box_logout:hover {
@@ -965,6 +995,7 @@ div.header_box {
 div.header_box_user {
   width: 300px;
   margin: 5px 0 0 10px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 div.header_box_pm {
@@ -973,6 +1004,7 @@ div.header_box_pm {
 
 div.header_box_col {
   margin: 5px 0 0 15px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 div.header_box_research {
@@ -980,6 +1012,7 @@ div.header_box_research {
   text-align: center;
   margin: 5px 0 0 15px;
   padding: 5px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 div.header_box_logout {
@@ -989,6 +1022,7 @@ div.header_box_logout {
   background-color: var(--color-26);
   text-align: center;
   width: 70px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 div.header_box_help {
@@ -997,6 +1031,7 @@ div.header_box_help {
   float: right;
   text-align: center;
   width: 70px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 div.header_box_settings {
@@ -1004,6 +1039,7 @@ div.header_box_settings {
   padding: 5px;
   float: right;
   text-align: center;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 div.border_box p {
@@ -1349,6 +1385,12 @@ div.pmGrid {
   grid-template-rows: auto auto
 }
 
+div.pmGridMessenger {
+  display: grid;
+  grid-template-columns: 200px auto;
+  grid-template-rows: auto auto
+}
+
 div.knGridText {
   grid-row-start: span 2;
   background-color: var(--color-33);
@@ -1498,6 +1540,8 @@ div.header {
   grid-column: 1 / span 2;
   top: 0;
   position: fixed;
+  border-left: 2px solid var(--color-50);
+  margin-left: -2px;
 }
 
 div.headerBottom {
@@ -1554,6 +1598,12 @@ td.populationValue {
 
 td.populationValue img {
   vertical-align: middle;
+}
+
+div.orbitInfoContainer {
+  display: grid;
+  grid-template-columns: 32% auto;
+  column-gap: 2%;
 }
 
 div.colonyInfoContainer {

@@ -7,13 +7,11 @@ namespace Stu\Component\Player\Deletion\Handler;
 use Override;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
-use Stu\Orm\Repository\ShipCrewRepositoryInterface;
+use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 
 final class CrewDeletionHandler implements PlayerDeletionHandlerInterface
 {
-    public function __construct(private ShipCrewRepositoryInterface $shipCrewRepository, private CrewRepositoryInterface $crewRepository)
-    {
-    }
+    public function __construct(private CrewAssignmentRepositoryInterface $shipCrewRepository, private CrewRepositoryInterface $crewRepository) {}
 
     #[Override]
     public function delete(UserInterface $user): void

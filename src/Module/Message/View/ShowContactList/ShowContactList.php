@@ -14,24 +14,22 @@ final class ShowContactList implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_CONTACTLIST';
 
-    public function __construct(private ContactRepositoryInterface $contactRepository)
-    {
-    }
+    public function __construct(private ContactRepositoryInterface $contactRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $userId = $game->getUser()->getId();
+        $user = $game->getUser();
 
         $game->setViewTemplate('html/user/contactList.twig');
         $game->appendNavigationPart(
             sprintf('pm.php?%s=1', self::VIEW_IDENTIFIER),
-            _('Kontaktliste')
+            'Kontaktliste'
         );
-        $game->setPageTitle(_('Kontaktliste'));
+        $game->setPageTitle('Kontaktliste');
 
-        $game->setTemplateVar('CONTACT_LIST', $this->contactRepository->getOrderedByUser($userId));
-        $game->setTemplateVar('REMOTE_CONTACTS', $this->contactRepository->getRemoteOrderedByUser($userId));
+        $game->setTemplateVar('CONTACT_LIST', $this->contactRepository->getOrderedByUser($user));
+        $game->setTemplateVar('REMOTE_CONTACTS', $this->contactRepository->getRemoteOrderedByUser($user));
         $game->setTemplateVar('CONTACT_LIST_MODES', ContactListModeEnum::cases());
     }
 }

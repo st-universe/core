@@ -1,27 +1,13 @@
-{% from 'html/macros.twig' import commoditySelection %}
+{% from 'html/macros.twig' import commoditySelectorList %}
+
 <input type="hidden" name="B_TRANSFER_TO_ACCOUNT" value="1" />
-  <table class="tcal">
-    <tr>
-      <th>Waren auf dem Schiff</th>
-    </tr>
-    <tr>
-      <td>
-        {% if SHIP.getBeamableStorage %}
-          {% for stor in SHIP.getBeamableStorage %}
-            <input type="hidden" name="commodities[]" value="{{ stor.getCommodity.getId }}" />
-            {% if not loop.index is odd %}
-              <div style="float: right; width: 50%;">
-                {{ commoditySelection(stor.getCommodity.getName, stor.getCommodity.getId, stor.getAmount) }}
-              </div>
-            {% else %}
-              <div style="float: left; width: 50%;">
-                {{ commoditySelection(stor.getCommodity.getName, stor.getCommodity.getId, stor.getAmount) }}
-              </div>
-            {% endif %}
-          {% endfor %}
-        {% else %}
-          Keine Waren vorhanden
-        {% endif %}
-      </td>
-    </tr>
-  </table>
+<table class="tcal">
+  <tr>
+    <th>Waren auf dem Schiff</th>
+  </tr>
+  <tr>
+    <td>
+      {{ commoditySelectorList(SHIP.getBeamableStorage) }}
+    </td>
+  </tr>
+</table>

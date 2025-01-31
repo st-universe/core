@@ -6,6 +6,7 @@ namespace Stu\Module\Communication\View\ShowSingleKn;
 
 use Override;
 use Stu\Component\Communication\Kn\KnFactoryInterface;
+use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -42,5 +43,6 @@ final class ShowSingleKn implements ViewControllerInterface
         }
 
         $game->setTemplateVar('KN_POSTINGS', $knPostings);
+        $game->addExecuteJS("initTranslations();", GameEnum::JS_EXECUTION_AFTER_RENDER);
     }
 }

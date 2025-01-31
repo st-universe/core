@@ -14,10 +14,10 @@ use Stu\Orm\Entity\ShipRumpSpecial;
 final class ShipRumpSpecialRepository extends EntityRepository implements ShipRumpSpecialRepositoryInterface
 {
     #[Override]
-    public function getByShipRump(int $shipRumpId): array
+    public function getByShipRump(int $rumpId): array
     {
         return $this->findBy([
-            'rumps_id' => $shipRumpId
+            'rump_id' => $rumpId
         ]);
     }
 }

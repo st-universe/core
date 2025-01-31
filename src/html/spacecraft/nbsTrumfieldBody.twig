@@ -1,0 +1,24 @@
+{% from 'html/shipmacros.twig' import trumfieldImage %}
+
+{% set trumfieldId = trumfield.getId %}
+{% set sourceId = WRAPPER.get.getId %}
+{% set sourceEntityType = WRAPPER.get.getTransferEntityType.value %}
+{% set targetEntityType = trumfield.getTransferEntityType.value %}
+<td style="width: 30px; text-align: center;"></td>
+<td style="width: 120px;">
+  <div style="float:left; margin-right:4px;">
+    <a href="javascript:void(0);"
+      onclick="showTransfer({{ sourceId }}, '{{sourceEntityType}}', {{ trumfieldId }}, '{{ targetEntityType }}', 1, false);"
+      onmouseover="cp('bfr_{{ trumfieldId }}','buttons/b_up2')"
+      onmouseout="cp('bfr_{{ trumfieldId }}','buttons/b_up1')">
+      <img src="/assets/buttons/b_up1.png" name="bfr_{{ trumfieldId }}" title="Vom Trümmerfeld hochbeamen" />
+    </a>
+  </div>
+</td>
+<td style="width: 200px; background-color: #000000 !important;">
+  {{ trumfieldImage(trumfield) }}
+</td>
+<td></td>
+<td>Trümmerfeld</td>
+<td style="width: 160px;">{{ trumfield.getHull }}</td>
+<td></td>

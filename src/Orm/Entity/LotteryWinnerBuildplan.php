@@ -29,9 +29,12 @@ class LotteryWinnerBuildplan implements LotteryWinnerBuildplanInterface
     #[Column(type: 'integer')]
     private int $chance;
 
-    #[ManyToOne(targetEntity: 'ShipBuildplan')]
+    #[Column(type: 'integer', nullable: true)]
+    private ?int $faction_id = null;
+
+    #[ManyToOne(targetEntity: 'SpacecraftBuildplan')]
     #[JoinColumn(name: 'buildplan_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ShipBuildplanInterface $buildplan;
+    private SpacecraftBuildplanInterface $buildplan;
 
     #[Override]
     public function getId(): int
@@ -40,7 +43,7 @@ class LotteryWinnerBuildplan implements LotteryWinnerBuildplanInterface
     }
 
     #[Override]
-    public function getBuildplan(): ShipBuildplanInterface
+    public function getBuildplan(): SpacecraftBuildplanInterface
     {
         return $this->buildplan;
     }
@@ -49,5 +52,11 @@ class LotteryWinnerBuildplan implements LotteryWinnerBuildplanInterface
     public function getChance(): int
     {
         return $this->chance;
+    }
+
+    #[Override]
+    public function getFactionId(): ?int
+    {
+        return $this->faction_id;
     }
 }

@@ -19,9 +19,11 @@ final class ShowCommoditiesLocations implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_COMMODITIES_LOCATIONS';
 
-    public function __construct(private StorageRepositoryInterface $storageRepository, private ShowCommoditiesLocationsRequestInterface $showCommoditiesLocationsRequest, private DatabaseUiFactoryInterface $databaseUiFactory)
-    {
-    }
+    public function __construct(
+        private StorageRepositoryInterface $storageRepository,
+        private ShowCommoditiesLocationsRequestInterface $showCommoditiesLocationsRequest,
+        private DatabaseUiFactoryInterface $databaseUiFactory
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -33,20 +35,20 @@ final class ShowCommoditiesLocations implements ViewControllerInterface
         $game->setMacroInAjaxWindow('html/database/commodityLocations.twig');
 
         $game->setTemplateVar(
-            'SHIP_LOCATIONS',
+            'SPACECRAFT_LOCATIONS',
             array_map(
-                fn (array $data): StorageWrapper => $this->databaseUiFactory->createStorageWrapper(
+                fn(array $data): StorageWrapper => $this->databaseUiFactory->createStorageWrapper(
                     $data['commodity_id'],
                     $data['amount'],
-                    $data['ships_id']
+                    $data['spacecraft_id']
                 ),
-                $this->storageRepository->getShipStorageByUserAndCommodity($user, $commodityId)
+                $this->storageRepository->getSpacecraftStorageByUserAndCommodity($user, $commodityId)
             )
         );
         $game->setTemplateVar(
             'COLONY_LOCATIONS',
             array_map(
-                fn (array $data): StorageWrapper => $this->databaseUiFactory->createStorageWrapper(
+                fn(array $data): StorageWrapper => $this->databaseUiFactory->createStorageWrapper(
                     $data['commodity_id'],
                     $data['amount'],
                     $data['colonies_id']
@@ -57,7 +59,7 @@ final class ShowCommoditiesLocations implements ViewControllerInterface
         $game->setTemplateVar(
             'POST_LOCATIONS',
             array_map(
-                fn (StorageInterface $storage): StorageWrapper => $this->databaseUiFactory->createStorageWrapper(
+                fn(StorageInterface $storage): StorageWrapper => $this->databaseUiFactory->createStorageWrapper(
                     $storage->getCommodityId(),
                     $storage->getAmount(),
                     $storage->getTradePost()->getId()
@@ -68,7 +70,7 @@ final class ShowCommoditiesLocations implements ViewControllerInterface
         $game->setTemplateVar(
             'OFFER_LOCATIONS',
             array_map(
-                fn (array $data): StorageWrapper => $this->databaseUiFactory->createStorageWrapper(
+                fn(array $data): StorageWrapper => $this->databaseUiFactory->createStorageWrapper(
                     $data['commodity_id'],
                     $data['amount'],
                     $data['posts_id']
@@ -79,10 +81,10 @@ final class ShowCommoditiesLocations implements ViewControllerInterface
         $game->setTemplateVar(
             'TORPEDO_LOCATIONS',
             array_map(
-                fn (array $data): StorageWrapper => $this->databaseUiFactory->createStorageWrapper(
+                fn(array $data): StorageWrapper => $this->databaseUiFactory->createStorageWrapper(
                     $data['commodity_id'],
                     $data['amount'],
-                    $data['ship_id']
+                    $data['spacecraft_id']
                 ),
                 $this->storageRepository->getTorpdeoStorageByUserAndCommodity($user, $commodityId)
             )

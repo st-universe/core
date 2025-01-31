@@ -9,19 +9,20 @@ use RuntimeException;
 use Stu\Component\Map\EncodedMapInterface;
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\PanelLayerDataProviderInterface;
-use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Shipcount\ShipcountDataProviderFactoryInterface;
-use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Shipcount\ShipcountLayerTypeEnum;
+use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Spacecraftcount\SpacecraftCountDataProviderFactoryInterface;
+use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Spacecraftcount\SpacecraftCountLayerTypeEnum;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace\SubspaceDataProviderFactoryInterface;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace\SubspaceLayerTypeEnum;
+use Stu\Lib\Map\VisualPanel\Layer\Render\AnomalyLayerRenderer;
 use Stu\Lib\Map\VisualPanel\Layer\Render\BorderLayerRenderer;
 use Stu\Lib\Map\VisualPanel\Layer\Render\ColonyShieldLayerRenderer;
 use Stu\Lib\Map\VisualPanel\Layer\Render\LayerRendererInterface;
 use Stu\Lib\Map\VisualPanel\Layer\Render\MapLayerRenderer;
-use Stu\Lib\Map\VisualPanel\Layer\Render\ShipCountLayerRenderer;
+use Stu\Lib\Map\VisualPanel\Layer\Render\SpacecraftCountLayerRenderer;
 use Stu\Lib\Map\VisualPanel\Layer\Render\SubspaceLayerRenderer;
 use Stu\Lib\Map\VisualPanel\Layer\Render\SystemLayerRenderer;
 use Stu\Orm\Entity\LayerInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 
 final class PanelLayerCreation implements PanelLayerCreationInterface
 {
@@ -31,10 +32,16 @@ final class PanelLayerCreation implements PanelLayerCreationInterface
     /** @var array<int, LayerRendererInterface> */
     private array $layers = [];
 
+    /** @var array<int> */
+    public static array $skippedLayers = [];
+
     /** @param array<int, PanelLayerDataProviderInterface> $dataProviders */
-    public function __construct(private EncodedMapInterface $encodedMap, private ShipcountDataProviderFactoryInterface $shipcountDataProviderFactory, private SubspaceDataProviderFactoryInterface $subspaceDataProviderFactory, private array $dataProviders)
-    {
-    }
+    public function __construct(
+        private EncodedMapInterface $encodedMap,
+        private SpacecraftCountDataProviderFactoryInterface $shipcountDataProviderFactory,
+        private SubspaceDataProviderFactoryInterface $subspaceDataProviderFactory,
+        private array $dataProviders
+    ) {}
 
     #[Override]
     public function addSystemLayer(): PanelLayerCreationInterface
@@ -72,20 +79,28 @@ final class PanelLayerCreation implements PanelLayerCreationInterface
     #[Override]
     public function addShipCountLayer(
         bool $showCloakedEverywhere,
-        ?ShipInterface $currentShip,
-        ShipcountLayerTypeEnum $type,
+        ?SpacecraftInterface $currentSpacecraft,
+        SpacecraftCountLayerTypeEnum $type,
         int $id
     ): PanelLayerCreationInterface {
-        $this->layers[PanelLayerEnum::SHIP_COUNT->value] = new ShipCountLayerRenderer($showCloakedEverywhere, $currentShip);
-        $this->specialDataProviders[PanelLayerEnum::SHIP_COUNT->value] = $this->shipcountDataProviderFactory->getDataProvider($id, $type);
+        $this->layers[PanelLayerEnum::SPACECRAFT_COUNT->value] = new SpacecraftCountLayerRenderer($showCloakedEverywhere, $currentSpacecraft);
+        $this->specialDataProviders[PanelLayerEnum::SPACECRAFT_COUNT->value] = $this->shipcountDataProviderFactory->getDataProvider($id, $type);
 
         return $this;
     }
 
     #[Override]
-    public function addBorderLayer(?ShipInterface $currentShip, ?bool $isOnShipLevel): PanelLayerCreationInterface
+    public function addBorderLayer(?SpacecraftInterface $currentSpacecraft, ?bool $isOnShipLevel): PanelLayerCreationInterface
     {
-        $this->layers[PanelLayerEnum::BORDER->value] = new BorderLayerRenderer($currentShip, $isOnShipLevel);
+        $this->layers[PanelLayerEnum::BORDER->value] = new BorderLayerRenderer($currentSpacecraft, $isOnShipLevel);
+
+        return $this;
+    }
+
+    #[Override]
+    public function addAnomalyLayer(): PanelLayerCreationInterface
+    {
+        $this->layers[PanelLayerEnum::ANOMALIES->value] = new AnomalyLayerRenderer();
 
         return $this;
     }
@@ -105,9 +120,12 @@ final class PanelLayerCreation implements PanelLayerCreationInterface
         $result = new PanelLayers($panel);
 
         foreach ($layers as $layerType => $renderer) {
-            $result->addLayer(PanelLayerEnum::from($layerType), new PanelLayer($this->getDataProvider($layerType)->loadData(
-                $panel->getBoundaries()
-            ), $renderer));
+
+            if (!in_array($layerType, self::$skippedLayers)) {
+                $result->addLayer(PanelLayerEnum::from($layerType), new PanelLayer($this->getDataProvider($layerType)->loadData(
+                    $panel->getBoundaries()
+                ), $renderer));
+            }
         }
 
         return $result;

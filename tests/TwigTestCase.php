@@ -24,15 +24,16 @@ use Spatie\Snapshots\MatchesSnapshots;
 use Stu\Config\ConfigStageEnum;
 use Stu\Config\Init;
 use Stu\Config\StuContainer;
+use Stu\Lib\Component\ComponentRegistrationInterface;
 use Stu\Lib\Session\SessionStringFactoryInterface;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Control\BenchmarkResultInterface;
+use Stu\Module\Control\ComponentSetupInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\Render\GameTwigRendererInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Game\Lib\Component\ComponentLoaderInterface;
 use Stu\Module\Twig\TwigHelper;
 use Stu\Module\Twig\TwigPageInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -43,39 +44,54 @@ abstract class TwigTestCase extends StuTestCase
 {
     use MatchesSnapshots;
 
-    private static string $INTTEST_MIGRATIONS_CONFIG_PATH = 'config/migrations/inttest.php';
+    private const string INTTEST_MIGRATIONS_CONFIG_PATH = 'config/migrations/inttest.php';
 
     private static bool $isSchemaCreated = false;
+    private static bool $isMocksSetup = false;
+    private static bool $isTemplateEngineSetup = false;
     private static ?StuContainer $INTTEST_CONTAINER = null;
+    private static ?TestSession $testSession = null;
 
     #[Override]
     public function setUp(): void
     {
-        $this->initializeSchema();
-
-        $dic = $this->getContainer();
-
-        $dic->get(GameControllerInterface::class)->resetGameData();
-        $dic->get(TwigPageInterface::class)->resetVariables();
-        $dic->get(ComponentLoaderInterface::class)->resetComponents();
+        $this->initializeSchemaAndTestdata();
+        $this->setupMocks();
+        $this->setupTemplateEngine();
     }
 
-    protected abstract function getViewControllerClass(): string;
+    #[Override]
+    public function tearDown(): void
+    {
+        $dic = $this->getContainer();
+        $dic->get(GameControllerInterface::class)->resetGameData();
+        $dic->get(TwigPageInterface::class)->resetVariables();
+        $dic->get(ComponentRegistrationInterface::class)->resetComponents();
+    }
 
-    /** @param array<string, mixed> $requestVars*/
-    protected function renderSnapshot(array $requestVars, ViewControllerInterface $viewController = null): void
+    public static function tearDownAfterClass(): void
+    {
+        StuMocks::get()->reset();
+    }
+
+    /** 
+     * @param class-string<ViewControllerInterface>|ViewControllerInterface $viewController
+     * @param array<string, mixed> $requestVars 
+     */
+    protected function renderSnapshot(int $userId, string|ViewControllerInterface $viewController, array $requestVars): void
     {
         $dic = $this->getContainer();
 
+        self::$testSession->setUser($userId);
         request::setMockVars($requestVars);
 
         $game = $dic->get(GameControllerInterface::class);
-        $twigRenderer = $dic->get(GameTwigRendererInterface::class);
-        $subject = $viewController ?? $dic->get($this->getViewControllerClass());
+        $subject = $viewController instanceof ViewControllerInterface ? $viewController : $dic->get($viewController);
 
-        // execute ViewController and render
+        // execute ViewController setup components and render
         $subject->handle($game);
-        $renderResult = $twigRenderer->render($game, $game->getUser());
+        $dic->get(ComponentSetupInterface::class)->setup($game);
+        $renderResult = $dic->get(GameTwigRendererInterface::class)->render($game, $game->getUser());
 
         $this->assertMatchesHtmlSnapshot($renderResult);
     }
@@ -99,29 +115,41 @@ abstract class TwigTestCase extends StuTestCase
         $this->runCommandWithDependecyFactory(ExecuteCommand::class, new StringInput($inputString));
     }
 
-    private function initializeSchema(): void
+    private function initializeSchemaAndTestdata(): void
     {
         if (!self::$isSchemaCreated) {
 
             //$this->createInitialDiff();
             //$this->forceSchemaUpdate($dic);
 
-            $dic = $this->getContainer();
-
-            $this->initializeTestData()
-                ->setupServiceMocks($dic)
-                ->setupTemplateEngine($dic);
+            $this->initializeTestData();
 
             self::$isSchemaCreated = true;
         }
     }
 
-    private function setupServiceMocks(StuContainer $dic): TwigTestCase
+    private function setupMocks(): void
     {
-        $sessionMock = $this->mock(SessionInterface::class);
-        $sessionMock->shouldReceive('getUser')
-            ->zeroOrMoreTimes()
-            ->andReturn($dic->get(UserRepositoryInterface::class)->find(101));
+        if (!self::$isMocksSetup) {
+
+            $this->setupTestSession();
+            $this->setupServiceMocks();
+            self::$isMocksSetup = true;
+        }
+    }
+
+    private function setupTestSession(): void
+    {
+        if (self::$testSession === null) {
+            $dic = $this->getContainer();
+            self::$testSession = new TestSession($dic->get(UserRepositoryInterface::class));
+            $dic->setAdditionalService(SessionInterface::class, self::$testSession);
+        }
+    }
+
+    private function setupServiceMocks(): TwigTestCase
+    {
+        $dic = $this->getContainer();
 
         $sessionStringFactoryMock = $this->mock(SessionStringFactoryInterface::class);
         $sessionStringFactoryMock->shouldReceive('createSessionString')
@@ -162,29 +190,30 @@ abstract class TwigTestCase extends StuTestCase
                 'memoryPeakUsage' => '42.77Mb'
             ]);
 
-        $dic->setAdditionalService(SessionInterface::class, $sessionMock);
-        $dic->setAdditionalService(SessionStringFactoryInterface::class, $sessionStringFactoryMock);
-        $dic->setAdditionalService(StuRandom::class, $stuRandomMock);
-        $dic->setAdditionalService(StuTime::class, $stuTimeMock);
-        $dic->setAdditionalService(BenchmarkResultInterface::class, $benchmarkResultMock);
+        $dic
+            ->setAdditionalService(SessionStringFactoryInterface::class, $sessionStringFactoryMock)
+            ->setAdditionalService(StuRandom::class, $stuRandomMock)
+            ->setAdditionalService(StuTime::class, $stuTimeMock)
+            ->setAdditionalService(BenchmarkResultInterface::class, $benchmarkResultMock);
 
         return $this;
     }
 
-    private function setupTemplateEngine(ContainerInterface $dic): TwigTestCase
+    private function setupTemplateEngine(): void
     {
-        $twigHelper = $dic->get(TwigHelper::class);
-        $twigHelper->registerFiltersAndFunctions();
-        $twigHelper->registerGlobalVariables();
-
-        return $this;
+        if (!self::$isTemplateEngineSetup) {
+            $twigHelper = $this->getContainer()->get(TwigHelper::class);
+            $twigHelper->registerFiltersAndFunctions();
+            $twigHelper->registerGlobalVariables();
+            self::$isTemplateEngineSetup = true;
+        }
     }
 
     private function createInitialDiff(): void
     {
         $this->runCommandWithDependecyFactory(
             DiffCommand::class,
-            new StringInput(sprintf("diff --configuration=\"%s\" --from-empty-schema", self::$INTTEST_MIGRATIONS_CONFIG_PATH))
+            new StringInput(sprintf("diff --configuration=\"%s\" --from-empty-schema", self::INTTEST_MIGRATIONS_CONFIG_PATH))
         );
     }
 
@@ -212,7 +241,7 @@ abstract class TwigTestCase extends StuTestCase
             MigrateCommand::class,
             new StringInput(sprintf(
                 "migrate --configuration=\"%s\" --all-or-nothing --allow-no-migration --no-interaction --quiet", // -vv",
-                self::$INTTEST_MIGRATIONS_CONFIG_PATH
+                self::INTTEST_MIGRATIONS_CONFIG_PATH
             ))
         );
 
@@ -227,7 +256,7 @@ abstract class TwigTestCase extends StuTestCase
         $entityManager->wrapInTransaction(function (EntityManagerInterface $entityManager) use ($command, $input) {
 
             $entityManagerProvider = new SingleManagerProvider($entityManager);
-            $config = new PhpFile(self::$INTTEST_MIGRATIONS_CONFIG_PATH);
+            $config = new PhpFile(self::INTTEST_MIGRATIONS_CONFIG_PATH);
             $dependencyFactory = DependencyFactory::fromEntityManager(
                 $config,
                 new ExistingEntityManager($entityManager)

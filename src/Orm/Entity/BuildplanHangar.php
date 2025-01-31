@@ -41,13 +41,13 @@ class BuildplanHangar implements BuildplanHangarInterface
     #[JoinColumn(name: 'default_torpedo_type_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?TorpedoTypeInterface $defaultTorpedoType = null;
 
-    #[ManyToOne(targetEntity: 'ShipBuildplan')]
+    #[ManyToOne(targetEntity: 'SpacecraftBuildplan')]
     #[JoinColumn(name: 'buildplan_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ShipBuildplanInterface $buildplan;
+    private SpacecraftBuildplanInterface $buildplan;
 
-    #[ManyToOne(targetEntity: 'ShipRump', inversedBy: 'startHangar')]
+    #[ManyToOne(targetEntity: 'SpacecraftRump', inversedBy: 'startHangar')]
     #[JoinColumn(name: 'rump_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ShipRumpInterface $shipRump;
+    private SpacecraftRumpInterface $spacecraftRump;
 
     #[Override]
     public function getId(): int
@@ -90,7 +90,7 @@ class BuildplanHangar implements BuildplanHangarInterface
     }
 
     #[Override]
-    public function getBuildplan(): ShipBuildplanInterface
+    public function getBuildplan(): SpacecraftBuildplanInterface
     {
         return $this->buildplan;
     }

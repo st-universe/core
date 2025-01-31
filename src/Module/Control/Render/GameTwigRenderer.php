@@ -7,8 +7,8 @@ namespace Stu\Module\Control\Render;
 use Noodlehaus\ConfigInterface;
 use Override;
 use Stu\Component\Game\GameEnum;
+use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Game\Lib\Component\ComponentLoaderInterface;
 use Stu\Module\Twig\TwigPageInterface;
 use Stu\Orm\Entity\UserInterface;
 
@@ -19,10 +19,12 @@ use Stu\Orm\Entity\UserInterface;
  */
 final class GameTwigRenderer implements GameTwigRendererInterface
 {
+    private const string GAME_VERSION_DEV = 'dev';
+
     public function __construct(
         private TwigPageInterface $twigPage,
         private ConfigInterface $config,
-        private ComponentLoaderInterface $componentLoader
+        private StuConfigInterface $stuConfig
     ) {}
 
     #[Override]
@@ -31,8 +33,6 @@ final class GameTwigRenderer implements GameTwigRendererInterface
         ?UserInterface $user
     ): string {
 
-        $this->componentLoader->loadComponentUpdates($game);
-        $this->componentLoader->loadRegisteredComponents($game);
         $this->setGameVariables($game);
         $this->setUserVariables($user);
 
@@ -54,7 +54,7 @@ final class GameTwigRenderer implements GameTwigRendererInterface
         $this->twigPage->setVar('EXECUTEJSBEFORERENDER', $game->getExecuteJS(GameEnum::JS_EXECUTION_BEFORE_RENDER));
         $this->twigPage->setVar('EXECUTEJSAFTERRENDER', $game->getExecuteJS(GameEnum::JS_EXECUTION_AFTER_RENDER));
         $this->twigPage->setVar('EXECUTEJSAJAXUPDATE', $game->getExecuteJS(GameEnum::JS_EXECUTION_AJAX_UPDATE));
-        $this->twigPage->setVar('JAVASCRIPTPATH', $game->getJavascriptPath(), true);
+        $this->twigPage->setVar('JAVASCRIPTPATH', $this->getJavascriptPath(), true);
         $this->twigPage->setVar('ISNPC', $game->isNpc());
         $this->twigPage->setVar('ISADMIN', $game->isAdmin());
         $this->twigPage->setVar('BENCHMARK', $game->getBenchmarkResult());
@@ -76,9 +76,21 @@ final class GameTwigRenderer implements GameTwigRendererInterface
                 $user->getName(),
                 $user->getFactionId(),
                 $user->getCss(),
-                $user->hasStationsNavigation(),
-                $user->getDeals()
+                $user->hasStationsNavigation()
             ));
         }
+    }
+
+    private function getJavascriptPath(): string
+    {
+        $gameVersion = $this->stuConfig->getGameSettings()->getVersion();
+        if ($gameVersion === self::GAME_VERSION_DEV) {
+            return '/static';
+        }
+
+        return sprintf(
+            '/version_%s/static',
+            $gameVersion
+        );
     }
 }

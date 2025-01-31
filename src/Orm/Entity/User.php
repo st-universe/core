@@ -101,7 +101,7 @@ class User implements UserInterface
     #[Column(type: 'integer')]
     private int $prestige = 0;
 
-    #[Column(type: 'boolean', options: ['default' => false])]
+    #[Column(type: 'boolean')]
     private bool $deals = false;
 
     #[Column(type: 'integer', nullable: true)]
@@ -176,7 +176,7 @@ class User implements UserInterface
     private $sessiondataUnserialized;
 
     /**
-     * @var Collection<int, WormholeRestriction>
+     * @var ArrayCollection<int, WormholeRestriction>
      */
     #[OneToMany(targetEntity: 'WormholeRestriction', mappedBy: 'user')]
     private Collection $wormholeRestrictions;
@@ -785,6 +785,17 @@ class User implements UserInterface
     public function isShowPirateHistoryEntrys(): bool
     {
         $setting = $this->getSettings()->get(UserSettingEnum::SHOW_PIRATE_HISTORY_ENTRYS->value);
+        if ($setting !== null) {
+            return (bool)$setting->getValue();
+        }
+
+        return false;
+    }
+
+    #[Override]
+    public function isInboxMessengerStyle(): bool
+    {
+        $setting = $this->getSettings()->get(UserSettingEnum::INBOX_MESSENGER_STYLE->value);
         if ($setting !== null) {
             return (bool)$setting->getValue();
         }

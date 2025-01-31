@@ -14,11 +14,11 @@ use Stu\StuTestCase;
 
 class KnFactoryTest extends StuTestCase
 {
-    /** @var MockInterface|KnBbCodeParser */
+    /** @var MockInterface&KnBbCodeParser */
     private $bbcodeParser;
-    /** @var MockInterface|KnCommentRepositoryInterface */
+    /** @var MockInterface&KnCommentRepositoryInterface */
     private $knCommentRepository;
-    /** @var MockInterface|StatusBarFactoryInterface */
+    /** @var MockInterface&StatusBarFactoryInterface */
     private $statusBarFactory;
 
     private KnFactoryInterface $factory;

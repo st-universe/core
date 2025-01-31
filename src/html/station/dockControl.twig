@@ -1,11 +1,20 @@
 <br />
-{% if SHIP.getTradePost %}
-{% set checked = SHIP.getTradePost.isDockPmAutoRead ? 'checked="true"' : '' %}
-<input type="checkbox" {{ checked }} onchange="toggleDockPmAutoRead('{{ SESSIONSTRING }}');" />
-Andocken ignorieren <img title="Andockbenachrichtigungen werden automatisch als gelesen markiert"
-    src="/assets/buttons/info2.png" style="height:16px;" />
-{% endif %}
+{% if STATION.getDockedShipCount > 0 %}
+<div>
+    <input type="button" class="button" value="Alle Schiffe abdocken"
+        onClick="actionToInnerContent('B_UNDOCK_ALL_SHIPS', 'id={{ STATION.getId }}&sstr={{ SESSIONSTRING }}');" />
+</div>
 <br />
+{% endif %}
+{% if STATION.getTradePost %}
+{% set checked = STATION.getTradePost.isDockPmAutoRead ? 'checked="true"' : '' %}
+<div>
+    <input type="checkbox" {{ checked }} onchange="toggleDockPmAutoRead('{{ SESSIONSTRING }}');" />
+    Andocken ignorieren <img title="Andockbenachrichtigungen werden automatisch als gelesen markiert"
+        src="/assets/buttons/info2.png" style="height:16px;" />
+</div>
+<br />
+{% endif %}
 <div id="dockprivilegelist">
     {% include 'html/station/dockPrivileges.twig' %}
 </div>

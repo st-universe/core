@@ -19,9 +19,7 @@ class YRow
     /** @var null|array<MapItem>|array<MapData> */
     protected $fields;
 
-    public function __construct(private MapRepositoryInterface $mapRepository, private StarSystemMapRepositoryInterface $systemMapRepository, private EncodedMapInterface $encodedMap, protected ?LayerInterface $layer, protected int $row, protected int $minx, protected int $maxx, protected int|StarSystemInterface $system)
-    {
-    }
+    public function __construct(private MapRepositoryInterface $mapRepository, private StarSystemMapRepositoryInterface $systemMapRepository, private EncodedMapInterface $encodedMap, protected ?LayerInterface $layer, protected int $row, protected int $minx, protected int $maxx, protected int|StarSystemInterface $system) {}
 
     /**
      * @return array<MapItem>|array<MapData>
@@ -62,13 +60,10 @@ class YRow
             $this->fields = [];
 
             if ($this->system instanceof StarSystemInterface) {
-                $this->fields = array_map(
-                    fn (StarSystemMapInterface $systemMap): MapData => $this->mapSystemMapToMapData($systemMap),
-                    array_filter(
-                        $this->system->getFields()->toArray(),
-                        fn (StarSystemMapInterface $systemMap): bool => $systemMap->getSy() === $this->row
-                    )
-                );
+                $this->fields = $this->system->getFields()
+                    ->filter(fn(StarSystemMapInterface $systemMap): bool => $systemMap->getSy() === $this->row)
+                    ->map(fn(StarSystemMapInterface $systemMap): MapData => $this->mapSystemMapToMapData($systemMap))
+                    ->toArray();
             } else {
 
                 for ($i = $this->minx; $i <= $this->maxx; $i++) {

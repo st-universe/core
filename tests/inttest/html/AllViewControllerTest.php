@@ -8,14 +8,17 @@ use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use ReflectionClass;
 use Stu\Config\Init;
+use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreation;
+use Stu\Lib\Map\VisualPanel\Layer\PanelLayerEnum;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Game\Component\GameComponentEnum;
+use Stu\StuMocks;
 use Stu\TwigTestCase;
 
 class AllViewControllerTest extends TwigTestCase
 {
     private const array CURRENTLY_UNSUPPORTED_MODULES = [
-        'TRADE_VIEWS',                              // needs tradepost
-        'STATION_VIEWS'                             // needs station
+        'STATION_VIEWS'                             // has own test case
     ];
 
     private const array CURRENTLY_UNSUPPORTED_KEYS = [
@@ -28,11 +31,9 @@ class AllViewControllerTest extends TwigTestCase
         'ALLIANCE_VIEWS-CREATE_ALLIANCE',
         'ALLIANCE_VIEWS-SHOW_DIPLOMATIC_RELATIONS',
         'ALLIANCE_VIEWS-SHOW_EDIT_ALLY_POST',
-        'COLONY_VIEWS-SHOW_BEAMFROM',               // needs ship in orbit
-        'COLONY_VIEWS-SHOW_BEAMTO',                 // needs ship in orbit
         'COLONY_VIEWS-SHOW_MODULE_CANCEL',          // needs $module = $game->getViewContext(ViewContextTypeEnum::MODULE);
         'COLONY_VIEWS-SHOW_PODS_LOCATIONS',
-        'COLONY_VIEWS-SHOW_SHUTTLE_MANAGEMENT',     // needs ship with shuttle module in orbit
+        'COLONY_VIEWS-SHOW_SPACECRAFTSTORAGE',      // duplication of SPACECRAFT_VIEWS-SHOW_SPACECRAFTSTORAGE
         'COLONY_VIEWS-SHOW_SUBSPACE_TELESCOPE',     // needs corresponding building on colony
         'COLONY_VIEWS-SHOW_TELESCOPE_SCAN',         // needs corresponding building on colony
         'DATABASE_VIEWS-SHOW_SATISFIED_WORKER',
@@ -42,32 +43,35 @@ class AllViewControllerTest extends TwigTestCase
         'GAME_VIEWS-SHOW_COMPONENT',                // make separate tests for each ComponentEnum
         'GAME_VIEWS-SHOW_INNER_CONTENT',            // make separate tests for each ModuleViewEnum
         'MAINDESK_VIEWS-SHOW_COLONYLIST',           // needs uncolonized user
-        'MESSAGE_VIEWS-SHOW_CONTACT_MODESWITCH',
-        'PLAYER_PROFILE_VIEWS-SHOW_SURFACE',        // needs surface scan test data
-        'SHIP_VIEWS-SHOW_AGGREGATION_SYSTEM_AJAX',  // needs corresponding system
+        'PM_VIEWS-SHOW_CONTACT_MODESWITCH',
+        'USERPROFILE_VIEWS-SHOW_SURFACE',           // needs surface scan test data
         'SHIP_VIEWS-SHOW_ASTRO_ENTRY',              // needs astro entry
-        'SHIP_VIEWS-SHOW_AVAILABLE_SHIPS',          // needs fleet and ships on location
         'SHIP_VIEWS-SHOW_BUSSARD_COLLECTOR_AJAX',   // needs corresponding ship system
         'SHIP_VIEWS-SHOW_COLONIZATION',             // needs colonizer ship over free colony
-        'SHIP_VIEWS-SHOW_COLONY_SCAN',              // needs ship over colony with matrix scanner
-        'SHIP_VIEWS-SHOW_ETRANSFER',                // needs ship on same location
-        'SHIP_VIEWS-SHOW_RENAME_CREW',
-        'SHIP_VIEWS-SHOW_SCAN',                     // needs ship on same location
-        'SHIP_VIEWS-SHOW_TRANSFER',                 // needs ship or colony on same location
-        'SHIP_VIEWS-SHOW_SHIP',                     // has own test case
-        'SHIP_VIEWS-SHOW_SHIPLIST_FLEET',           // needs fleet
-        'SHIP_VIEWS-SHOW_TRADEMENU',
-        'SHIP_VIEWS-SHOW_TRADEMENU_CHOOSE_PAYMENT', // needs tradepost
-        'SHIP_VIEWS-SHOW_TRADEMENU_TRANSFER',       // needs tradepost on ship location
-        'SHIP_VIEWS-SHOW_WEBEMITTER_AJAX',          // needs web emitter module
+        'SPACECRAFT_VIEWS-SHOW_COLONY_SCAN',        // needs ship over colony with matrix scanner
+        'SPACECRAFT_VIEWS-SHOW_RENAME_CREW',
+        'SPACECRAFT_VIEWS-SHOW_SCAN',               // needs ship on same location
+        'SPACECRAFT_VIEWS-SHOW_SECTOR_SCAN',        // not idempotent, because it creates prestige log
+        'SPACECRAFT_VIEWS-SHOW_SPACECRAFT',         // has own test case
+        'SPACECRAFT_VIEWS-SHOW_SYSTEM_SETTINGS_AJAX',  // has own test case
+        'SPACECRAFT_VIEWS-SHOW_TRANSFER',           // has own test case
+        'TRADE_VIEWS-SHOW_OFFER_MENU',
+        'TRADE_VIEWS-SHOW_OFFER_MENU_TRANSFER',
+        'TRADE_VIEWS-SHOW_OFFER_MENU_NEW_OFFER',
+        'TRADE_VIEWS-SHOW_TAKE_OFFER',
+        'TRADE_VIEWS-SHOW_TRADEPOST_INFO',          // DEAD LOCK
     ];
 
     private string $snapshotKey = '';
 
-    #[Override]
-    protected function getViewControllerClass(): string
+    public static function setUpBeforeClass(): void
     {
-        return 'PROVIDED_BY_DATA_PROVIDER';
+        StuMocks::get()->registerStubbedComponent(GameComponentEnum::COLONIES)
+            ->registerStubbedComponent(GameComponentEnum::NAVIGATION)
+            ->registerStubbedComponent(GameComponentEnum::PM)
+            ->registerStubbedComponent(GameComponentEnum::RESEARCH)
+            ->registerStubbedComponent(GameComponentEnum::SERVERTIME_AND_VERSION)
+            ->registerStubbedComponent(GameComponentEnum::USER);
     }
 
     #[Override]
@@ -85,7 +89,7 @@ class AllViewControllerTest extends TwigTestCase
         return $definedImplementations
             ->map(fn(ViewControllerInterface $viewController): array => [$definedImplementations->indexOf($viewController)])
             //->filter(fn(array $array): bool => $array[0] === 'SHIP_VIEWS-SHOW_ANALYSE_BUOY')
-            ->filter(fn(array $array): bool => !str_ends_with($array[0], '-DEFAULT_VIEW') || str_starts_with($array[0], 'NPC_VIEWS') || str_starts_with($array[0], 'ADMIN_VIEWS'))
+            ->filter(fn(array $array): bool => !str_ends_with($array[0], '-DEFAULT_VIEW')) // got its own test: DefaultViewsControllerTest.php
             ->filter(fn(array $array): bool => !in_array($array[0], self::CURRENTLY_UNSUPPORTED_KEYS))
             ->filter(fn(array $array): bool => array_filter(self::CURRENTLY_UNSUPPORTED_MODULES, fn(string $unsupportedModule) => str_starts_with($array[0], $unsupportedModule)) == [])
             ->toArray();
@@ -94,12 +98,15 @@ class AllViewControllerTest extends TwigTestCase
     #[DataProvider('getAllViewControllerDataProvider')]
     public function testHandle(string $key): void
     {
+        PanelLayerCreation::$skippedLayers[] = PanelLayerEnum::ANOMALIES->value;
+
         $this->snapshotKey = $key;
 
         $this->renderSnapshot(
-            $this->getGeneralRequestVariables(),
+            101,
             Init::getContainer()
-                ->getDefinedImplementationsOf(ViewControllerInterface::class, true)->get($key)
+                ->getDefinedImplementationsOf(ViewControllerInterface::class, true)->get($key),
+            $this->getGeneralRequestVariables()
         );
     }
 
@@ -107,6 +114,7 @@ class AllViewControllerTest extends TwigTestCase
     {
         return [
             'id' => 42,
+            'target' => 43,
             'userid' => 101,
             'factionid' => 1,
             'layerid' => 2,
@@ -115,19 +123,23 @@ class AllViewControllerTest extends TwigTestCase
             'x' => 5,
             'y' => 5,
             'hosttype' => 1,
-            'commodityId' => 21,
+            'commodityid' => 21,
             'noteid' => 42,
             'regionid' => 134,
+            'switch' => 1,
 
             // SHIP
             'rumpid' => 6501,
             'planid' => 2324,
             'shipid' => 42,
+            'fleetid' => 77,
+            'buoyid' => 42,
 
             // COLONY
             'fid' => 26,
             'func' => 87,
             'buildingid' => 82010100,
+            'shuttletarget' => 77,
 
             // MAP
             'macro' => 'html/map/starmapSectionTable.twig',
@@ -149,7 +161,12 @@ class AllViewControllerTest extends TwigTestCase
 
             // DATABASE
             'ent' => 6501001,
-            'cat' => 1
+            'cat' => 1,
+
+            // TRADE
+            'postid' => '2',
+            'mode' => 'to',
+            'network' => '101'
         ];
     }
 }

@@ -8,6 +8,7 @@ use Mockery\MockInterface;
 use Override;
 use RuntimeException;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
+use Stu\Component\Anomaly\Type\IonStorm\IonStormData;
 use Stu\Orm\Entity\AnomalyInterface;
 use Stu\Orm\Entity\AnomalyTypeInterface;
 use Stu\Orm\Entity\MapInterface;
@@ -51,11 +52,16 @@ class AnomalyCreationTest extends StuTestCase
         $this->subject->create(AnomalyTypeEnum::SUBSPACE_ELLIPSE, $this->mock(MapInterface::class));
     }
 
-    public function testCreateExpectNewEntityWithMapLocation(): void
+    public function testCreateExpectNewEntityWithMapLocationAndDataObject(): void
     {
         $anomaly = $this->mock(AnomalyInterface::class);
         $anomalyType = $this->mock(AnomalyTypeInterface::class);
         $map = $this->mock(MapInterface::class);
+        $dataObject = new IonStormData(42, 17);
+
+        $map->shouldReceive('addAnomaly')
+            ->with($anomaly)
+            ->once();
 
         $anomalyType->shouldReceive('getLifespanInTicks')
             ->withNoArgs()
@@ -64,12 +70,18 @@ class AnomalyCreationTest extends StuTestCase
 
         $anomaly->shouldReceive('setAnomalyType')
             ->with($anomalyType)
-            ->once();
+            ->once()
+            ->andReturnSelf();
         $anomaly->shouldReceive('setRemainingTicks')
             ->with(123)
-            ->once();
+            ->once()
+            ->andReturnSelf();
         $anomaly->shouldReceive('setLocation')
             ->with($map)
+            ->once()
+            ->andReturnSelf();
+        $anomaly->shouldReceive('setData')
+            ->with('{"directionInDegrees":42,"velocity":17,"movementType":1}')
             ->once();
 
         $this->anomalyTypeRepository->shouldReceive('find')
@@ -85,7 +97,7 @@ class AnomalyCreationTest extends StuTestCase
             ->with($anomaly)
             ->once();
 
-        $result = $this->subject->create(AnomalyTypeEnum::SUBSPACE_ELLIPSE, $map);
+        $result = $this->subject->create(AnomalyTypeEnum::SUBSPACE_ELLIPSE, $map, null, $dataObject);
 
         $this->assertSame($anomaly, $result);
     }
@@ -93,6 +105,7 @@ class AnomalyCreationTest extends StuTestCase
     public function testCreateExpectNewEntityWithStarsystemMapLocation(): void
     {
         $anomaly = $this->mock(AnomalyInterface::class);
+        $parent = $this->mock(AnomalyInterface::class);
         $anomalyType = $this->mock(AnomalyTypeInterface::class);
         $map = $this->mock(StarSystemMapInterface::class);
 
@@ -101,14 +114,32 @@ class AnomalyCreationTest extends StuTestCase
             ->once()
             ->andReturn(123);
 
+        $map->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(123456);
+        $map->shouldReceive('addAnomaly')
+            ->with($anomaly)
+            ->once();
+
+        $parent->shouldReceive('getChildren->set')
+            ->with(123456, $anomaly)
+            ->once();
+
         $anomaly->shouldReceive('setAnomalyType')
             ->with($anomalyType)
-            ->once();
+            ->once()
+            ->andReturnSelf();
         $anomaly->shouldReceive('setRemainingTicks')
             ->with(123)
-            ->once();
+            ->once()
+            ->andReturnSelf();
         $anomaly->shouldReceive('setLocation')
             ->with($map)
+            ->once()
+            ->andReturnSelf();
+        $anomaly->shouldReceive('setParent')
+            ->with($parent)
             ->once();
 
         $this->anomalyTypeRepository->shouldReceive('find')
@@ -124,7 +155,7 @@ class AnomalyCreationTest extends StuTestCase
             ->with($anomaly)
             ->once();
 
-        $result = $this->subject->create(AnomalyTypeEnum::SUBSPACE_ELLIPSE, $map);
+        $result = $this->subject->create(AnomalyTypeEnum::SUBSPACE_ELLIPSE, $map, $parent);
 
         $this->assertSame($anomaly, $result);
     }

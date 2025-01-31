@@ -12,7 +12,7 @@ use Stu\Component\Cli\MaintenanceTickCommand;
 use Stu\Component\Cli\ManagerTickCommand;
 use Stu\Component\Cli\PirateTickCommand;
 use Stu\Component\Cli\ProcessTickCommand;
-use Stu\Component\Cli\ShipTickCommand;
+use Stu\Component\Cli\SpacecraftTickCommand;
 use Stu\Component\Cli\UserCreateCommand;
 use Stu\Component\Cli\RefactorCommand;
 use Stu\Config\Init;
@@ -56,7 +56,7 @@ $app->add($dic->get(UserCreateCommand::class));
 
 // tick
 $app->add($dic->get(ColonyTickCommand::class));
-$app->add($dic->get(ShipTickCommand::class));
+$app->add($dic->get(SpacecraftTickCommand::class));
 $app->add(new MaintenanceTickCommand($dic));
 $app->add($dic->get(ProcessTickCommand::class));
 $app->add(new ManagerTickCommand($dic));

@@ -8,7 +8,7 @@
     {% if OWNFINISHEDWEB %}
     <tr>
       <th colspan="2">
-        Eigenes Netz bei {{ OWNFINISHEDWEB.getWebShip.getSectorString }}
+        Eigenes Netz bei {{ OWNFINISHEDWEB.getSectorString }}
       </th>
     </tr>
     <tr>
@@ -57,8 +57,8 @@
               {% for ship in AVAILABLE_SHIPS %}
               <tr>
                 <td style="{{ ship.getHoldingWebBackgroundStyle }}" class="shiplistshipimage">
-                  {% from 'html/shipmacros.twig' import shipImageWithoutWarp %}
-                  {{ shipImageWithoutWarp(ship) }}
+                  {% from 'html/shipmacros.twig' import spacecraftImageWithoutWarp %}
+                  {{ spacecraftImageWithoutWarp(ship) }}
                 </td>
                 <td>
                   <input type="checkbox" class="chosenShipsCheckbox" name="chosen[]" value="{{ ship.getId }}" />

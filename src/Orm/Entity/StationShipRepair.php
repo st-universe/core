@@ -29,9 +29,9 @@ class StationShipRepair implements StationShipRepairInterface
     #[Column(type: 'integer')]
     private int $ship_id;
 
-    #[ManyToOne(targetEntity: 'Ship')]
+    #[ManyToOne(targetEntity: 'Station')]
     #[JoinColumn(name: 'station_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ShipInterface $station;
+    private StationInterface $station;
 
     #[ManyToOne(targetEntity: 'Ship')]
     #[JoinColumn(name: 'ship_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
@@ -56,13 +56,13 @@ class StationShipRepair implements StationShipRepairInterface
     }
 
     #[Override]
-    public function getStation(): ShipInterface
+    public function getStation(): StationInterface
     {
         return $this->station;
     }
 
     #[Override]
-    public function setStation(ShipInterface $station): StationShipRepairInterface
+    public function setStation(StationInterface $station): StationShipRepairInterface
     {
         $this->station = $station;
         return $this;

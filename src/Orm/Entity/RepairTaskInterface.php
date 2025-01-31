@@ -2,7 +2,7 @@
 
 namespace Stu\Orm\Entity;
 
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 
 interface RepairTaskInterface
 {
@@ -14,15 +14,15 @@ interface RepairTaskInterface
 
     public function setUser(UserInterface $user): RepairTaskInterface;
 
-    public function getShip(): ShipInterface;
+    public function getSpacecraft(): SpacecraftInterface;
 
-    public function setShip(ShipInterface $ship): RepairTaskInterface;
+    public function setSpacecraft(SpacecraftInterface $spacecraft): RepairTaskInterface;
 
     public function setFinishTime(int $finishTime): RepairTaskInterface;
 
-    public function getSystemType(): ShipSystemTypeEnum;
+    public function getSystemType(): SpacecraftSystemTypeEnum;
 
-    public function setSystemType(ShipSystemTypeEnum $type): RepairTaskInterface;
+    public function setSystemType(SpacecraftSystemTypeEnum $type): RepairTaskInterface;
 
     public function getHealingPercentage(): int;
 

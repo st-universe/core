@@ -25,7 +25,10 @@ final class VersionTestUserSetting extends AbstractMigration
                        (1, \'css_color_sheet\', \'schwarz\'),
                        (3, \'default_view\', \'maindesk\'),
                        (3, \'show_pm_read_receipt\', \'1\'),
-                       (3, \'css_color_sheet\', \'schwarz\');
+                       (3, \'css_color_sheet\', \'schwarz\'),
+                       (102,\'inbox_messenger_style\',\'1\'),
+                       (14,\'show_pm_read_receipt\',\'1\'),
+                       (102,\'show_pm_read_receipt\',\'1\');
         ');
     }
 }

@@ -7,6 +7,7 @@ use JBBCode\Parser;
 use Noodlehaus\ConfigInterface;
 use RuntimeException;
 use Stu\Lib\Mail\MailFactoryInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -91,22 +92,41 @@ final class IdleUserWarning implements MaintenanceHandlerInterface
         foreach ($list as $player) {
             $playerName = $this->bbCodeParser->parse($player->getName())->getAsText();
 
-            $mail = $this->mailFactory->createStuMail()
-                ->withDefaultSender()
-                ->addTo($player->getEmail())
-                ->setSubject(_('Star Trek Universe - Löschung wegen Inaktvität'))
-                ->setBody(
-                    sprintf(
-                        "Hallo %s.\n\n
+            if ($player->getDeletionMark() == UserEnum::DELETION_CONFIRMED) {
+                $mail = $this->mailFactory->createStuMail()
+                    ->withDefaultSender()
+                    ->addTo($player->getEmail())
+                    ->setSubject(_('Star Trek Universe - Löschung des Accounts'))
+                    ->setBody(
+                        sprintf(
+                            "Hallo %s.\n\n
+            Du bekommst diese eMail, da dein Account in Star Trek Universe manuell zum löschen markiert wurde.\n\n
+            Daher wurde dein Account nun gelöscht.\n\n
+            Wir würden uns freuen dich bei uns bald wieder zu sehen!\n\n
+            Das Star Trek Universe Team\n
+            %s",
+                            $playerName,
+                            $this->configs->get('game.base_url'),
+                        )
+                    );
+            } else {
+                $mail = $this->mailFactory->createStuMail()
+                    ->withDefaultSender()
+                    ->addTo($player->getEmail())
+                    ->setSubject(_('Star Trek Universe - Löschung wegen Inaktvität'))
+                    ->setBody(
+                        sprintf(
+                            "Hallo %s.\n\n
             Du bekommst diese eMail, da Du seit längerem in Star Trek Universe inaktiv bist.\n\n
             Daher wurde dein Account nun gelöscht.\n\n
             Wir würden uns freuen dich bei uns bald wieder zu sehen!\n\n
             Das Star Trek Universe Team\n
             %s",
-                        $playerName,
-                        $this->configs->get('game.base_url'),
-                    )
-                );
+                            $playerName,
+                            $this->configs->get('game.base_url'),
+                        )
+                    );
+            }
             try {
                 $mail->send();
                 $notifiedEmails[] = $player->getEmail();

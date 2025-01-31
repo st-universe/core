@@ -34,7 +34,7 @@ class Research implements ResearchInterface
     private int $sort;
 
     #[Column(type: 'integer')]
-    private int $rumps_id;
+    private int $rump_id;
 
     /**
      * @var int[]|null
@@ -67,9 +67,9 @@ class Research implements ResearchInterface
     #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $commodity;
 
-    #[ManyToOne(targetEntity: 'ShipBuildplan')]
+    #[ManyToOne(targetEntity: 'SpacecraftBuildplan')]
     #[JoinColumn(name: 'reward_buildplan_id', referencedColumnName: 'id')]
-    private ?ShipBuildplanInterface $rewardBuildplan = null;
+    private ?SpacecraftBuildplanInterface $rewardBuildplan = null;
 
     #[ManyToOne(targetEntity: 'Award')]
     #[JoinColumn(name: 'award_id', referencedColumnName: 'id')]
@@ -126,15 +126,7 @@ class Research implements ResearchInterface
     #[Override]
     public function getRumpId(): int
     {
-        return $this->rumps_id;
-    }
-
-    #[Override]
-    public function setRumpId(int $rumpId): ResearchInterface
-    {
-        $this->rumps_id = $rumpId;
-
-        return $this;
+        return $this->rump_id;
     }
 
     #[Override]
@@ -213,7 +205,7 @@ class Research implements ResearchInterface
     }
 
     #[Override]
-    public function getRewardBuildplan(): ?ShipBuildplanInterface
+    public function getRewardBuildplan(): ?SpacecraftBuildplanInterface
     {
         return $this->rewardBuildplan;
     }

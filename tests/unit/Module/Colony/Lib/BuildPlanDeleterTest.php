@@ -6,16 +6,16 @@ namespace Stu\Module\Colony\Lib;
 
 use Mockery\MockInterface;
 use Override;
-use Stu\Orm\Entity\ShipBuildplanInterface;
+use Stu\Orm\Entity\SpacecraftBuildplanInterface;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
-use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 use Stu\StuTestCase;
 
 class BuildPlanDeleterTest extends StuTestCase
 {
-    /** @var MockInterface&ShipBuildplanRepositoryInterface */
-    private MockInterface $shipBuildplanRepository;
+    /** @var MockInterface&SpacecraftBuildplanRepositoryInterface */
+    private MockInterface $spacecraftBuildplanRepository;
 
     /** @var MockInterface&BuildplanModuleRepositoryInterface */
     private MockInterface $buildplanModuleRepository;
@@ -28,12 +28,12 @@ class BuildPlanDeleterTest extends StuTestCase
     #[Override]
     protected function setUp(): void
     {
-        $this->shipBuildplanRepository = $this->mock(ShipBuildplanRepositoryInterface::class);
+        $this->spacecraftBuildplanRepository = $this->mock(SpacecraftBuildplanRepositoryInterface::class);
         $this->buildplanModuleRepository = $this->mock(BuildplanModuleRepositoryInterface::class);
         $this->colonyShipQueueRepository = $this->mock(ColonyShipQueueRepositoryInterface::class);
 
         $this->subject = new BuildPlanDeleter(
-            $this->shipBuildplanRepository,
+            $this->spacecraftBuildplanRepository,
             $this->buildplanModuleRepository,
             $this->colonyShipQueueRepository
         );
@@ -41,11 +41,11 @@ class BuildPlanDeleterTest extends StuTestCase
 
     public function testDeleteDeletes(): void
     {
-        $shipBuildPlan = $this->mock(ShipBuildplanInterface::class);
+        $spacecraftBuildplan = $this->mock(SpacecraftBuildplanInterface::class);
 
         $planId = 666;
 
-        $shipBuildPlan->shouldReceive('getId')
+        $spacecraftBuildplan->shouldReceive('getId')
             ->withNoArgs()
             ->once()
             ->andReturn($planId);
@@ -54,24 +54,24 @@ class BuildPlanDeleterTest extends StuTestCase
             ->with($planId)
             ->once();
 
-        $this->shipBuildplanRepository->shouldReceive('delete')
-            ->with($shipBuildPlan)
+        $this->spacecraftBuildplanRepository->shouldReceive('delete')
+            ->with($spacecraftBuildplan)
             ->once();
 
-        $this->subject->delete($shipBuildPlan);
+        $this->subject->delete($spacecraftBuildplan);
     }
 
     public function testIsDeletableReturnsFalseIfShipsExist(): void
     {
-        $shipBuildPlan = $this->mock(ShipBuildplanInterface::class);
+        $spacecraftBuildplan = $this->mock(SpacecraftBuildplanInterface::class);
 
         $planId = 666;
 
-        $shipBuildPlan->shouldReceive('getId')
+        $spacecraftBuildplan->shouldReceive('getId')
             ->withNoArgs()
             ->once()
             ->andReturn($planId);
-        $shipBuildPlan->shouldReceive('getShipCount')
+        $spacecraftBuildplan->shouldReceive('getSpacecraftCount')
             ->withNoArgs()
             ->once()
             ->andReturn(42);
@@ -82,21 +82,21 @@ class BuildPlanDeleterTest extends StuTestCase
             ->andReturn(0);
 
         static::assertFalse(
-            $this->subject->isDeletable($shipBuildPlan)
+            $this->subject->isDeletable($spacecraftBuildplan)
         );
     }
 
     public function testIsDeletableReturnsFalseIfQueuedShipsExist(): void
     {
-        $shipBuildPlan = $this->mock(ShipBuildplanInterface::class);
+        $spacecraftBuildplan = $this->mock(SpacecraftBuildplanInterface::class);
 
         $planId = 666;
 
-        $shipBuildPlan->shouldReceive('getId')
+        $spacecraftBuildplan->shouldReceive('getId')
             ->withNoArgs()
             ->once()
             ->andReturn($planId);
-        $shipBuildPlan->shouldReceive('getShipCount')
+        $spacecraftBuildplan->shouldReceive('getSpacecraftCount')
             ->withNoArgs()
             ->once()
             ->andReturn(0);
@@ -107,21 +107,21 @@ class BuildPlanDeleterTest extends StuTestCase
             ->andReturn(42);
 
         static::assertFalse(
-            $this->subject->isDeletable($shipBuildPlan)
+            $this->subject->isDeletable($spacecraftBuildplan)
         );
     }
 
     public function testIsDeletableReturnsTrueIfDeletable(): void
     {
-        $shipBuildPlan = $this->mock(ShipBuildplanInterface::class);
+        $spacecraftBuildplan = $this->mock(SpacecraftBuildplanInterface::class);
 
         $planId = 666;
 
-        $shipBuildPlan->shouldReceive('getId')
+        $spacecraftBuildplan->shouldReceive('getId')
             ->withNoArgs()
             ->once()
             ->andReturn($planId);
-        $shipBuildPlan->shouldReceive('getShipCount')
+        $spacecraftBuildplan->shouldReceive('getSpacecraftCount')
             ->withNoArgs()
             ->once()
             ->andReturn(0);
@@ -132,7 +132,7 @@ class BuildPlanDeleterTest extends StuTestCase
             ->andReturn(0);
 
         static::assertTrue(
-            $this->subject->isDeletable($shipBuildPlan)
+            $this->subject->isDeletable($spacecraftBuildplan)
         );
     }
 }

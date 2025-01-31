@@ -8,28 +8,28 @@ use Override;
 use request;
 use RuntimeException;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
-use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
-use Stu\Component\Ship\Buildplan\BuildplanSignatureCreationInterface;
-use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
-use Stu\Component\Ship\ShipModuleTypeEnum;
-use Stu\Component\Ship\ShipStateEnum;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
+use Stu\Component\Spacecraft\Buildplan\BuildplanSignatureCreationInterface;
+use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
+use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
+use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Colony\View\ShowModuleScreen\ShowModuleScreen;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
+use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
-use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpBuildingFunctionRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
-use Stu\Orm\Repository\ShipRumpRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 
 final class RetrofitShip implements ActionControllerInterface
 {
@@ -41,13 +41,13 @@ final class RetrofitShip implements ActionControllerInterface
         private ColonyLoaderInterface $colonyLoader,
         private BuildplanModuleRepositoryInterface $buildplanModuleRepository,
         private ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository,
-        private ShipBuildplanRepositoryInterface $shipBuildplanRepository,
+        private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository,
         private ModuleRepositoryInterface $moduleRepository,
         private ColonyShipQueueRepositoryInterface $colonyShipQueueRepository,
-        private ShipRumpRepositoryInterface $shipRumpRepository,
-        private ColonyStorageManagerInterface $colonyStorageManager,
+        private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository,
+        private StorageManagerInterface $storageManager,
         private ColonyLibFactoryInterface $colonyLibFactory,
-        private ShipCrewCalculatorInterface $shipCrewCalculator,
+        private SpacecraftCrewCalculatorInterface $shipCrewCalculator,
         private ColonyRepositoryInterface $colonyRepository,
         private ShipRepositoryInterface $shipRepository,
         private BuildplanSignatureCreationInterface $buildplanSignatureCreation
@@ -67,7 +67,7 @@ final class RetrofitShip implements ActionControllerInterface
 
         $colonyId = $colony->getId();
 
-        $rump = $this->shipRumpRepository->find(request::indInt('rumpid'));
+        $rump = $this->spacecraftRumpRepository->find(request::indInt('rumpid'));
         if ($rump === null) {
             return;
         }
@@ -132,16 +132,18 @@ final class RetrofitShip implements ActionControllerInterface
 
         /** @var array<int, ModuleInterface> */
         $modules = [];
+
+        /** @var array<int, array<int, ModuleInterface>> */
         $oldModulesOfType = [];
 
-        foreach (ShipModuleTypeEnum::getModuleSelectorOrder() as $moduleType) {
+        foreach (SpacecraftModuleTypeEnum::getModuleSelectorOrder() as $moduleType) {
             $value = $moduleType->value;
             $module = request::postArray('mod_' . $value);
 
-            $oldModulesOfType[$value] = $this->buildplanModuleRepository->getByBuildplanAndModuleType($oldplan->getId(), $value);
+            $oldModulesOfType[$value] = $oldplan->getModulesByType($moduleType)->toArray();
 
             if (
-                $moduleType != ShipModuleTypeEnum::SPECIAL
+                $moduleType != SpacecraftModuleTypeEnum::SPECIAL
                 && $moduleLevels->{'getModuleMandatory' . $value}()
                 && count($module) == 0
             ) {
@@ -196,10 +198,9 @@ final class RetrofitShip implements ActionControllerInterface
         $storage = $colony->getStorage();
         $modulesToLower = [];
         foreach ($modules as $module) {
-            $isNewModule = !array_filter($oldModulesOfType[$module->getType()->value], function ($bpm) use ($module): bool {
-                return $bpm->getModule()->getId() === $module->getId();
+            $isNewModule = !array_filter($oldModulesOfType[$module->getType()->value], function (ModuleInterface $oldModule) use ($module): bool {
+                return $oldModule->getId() === $module->getId();
             });
-
 
             if ($isNewModule) {
                 if (!$storage->containsKey($module->getCommodityId())) {
@@ -222,14 +223,14 @@ final class RetrofitShip implements ActionControllerInterface
 
 
         foreach ($modulesToLower as $module) {
-            $this->colonyStorageManager->lowerStorage($colony, $module->getCommodity(), 1);
+            $this->storageManager->lowerStorage($colony, $module->getCommodity(), 1);
         }
 
         $game->setView(ShowColony::VIEW_IDENTIFIER);
 
 
         $signature = $this->buildplanSignatureCreation->createSignature($modules, $crewUsage);
-        $plan = $this->shipBuildplanRepository->getByUserShipRumpAndSignature($userId, $rump->getId(), $signature);
+        $plan = $this->spacecraftBuildplanRepository->getByUserShipRumpAndSignature($userId, $rump->getId(), $signature);
         if ($plan == $oldplan) {
             $game->addInformation(_('Es wurden keine Änderungen ausgewählt'));
             return;
@@ -256,7 +257,7 @@ final class RetrofitShip implements ActionControllerInterface
                 _('Lege neuen Bauplan an: %s'),
                 $planname
             );
-            $plan = $this->shipBuildplanRepository->prototype();
+            $plan = $this->spacecraftBuildplanRepository->prototype();
             $plan->setUser($game->getUser());
             $plan->setRump($rump);
             $plan->setName($planname);
@@ -264,7 +265,7 @@ final class RetrofitShip implements ActionControllerInterface
             $plan->setBuildtime($rump->getBuildtime());
             $plan->setCrew($crewUsage);
 
-            $this->shipBuildplanRepository->save($plan);
+            $this->spacecraftBuildplanRepository->save($plan);
 
             foreach ($modules as $obj) {
                 $mod = $this->buildplanModuleRepository->prototype();
@@ -286,7 +287,7 @@ final class RetrofitShip implements ActionControllerInterface
         $queue->setColony($colony);
         $queue->setUserId($userId);
         $queue->setRump($rump);
-        $queue->setShipBuildplan($plan);
+        $queue->setSpacecraftBuildplan($plan);
         $queue->setBuildtime($plan->getBuildtime());
         $queue->setFinishDate(time() + $plan->getBuildtime());
         $queue->setBuildingFunction($building_function->getBuildingFunction());
@@ -298,7 +299,7 @@ final class RetrofitShip implements ActionControllerInterface
         $this->colonyRepository->save($colony);
         $this->colonyShipQueueRepository->save($queue);
 
-        $ship->setState(ShipStateEnum::SHIP_STATE_RETROFIT);
+        $ship->setState(SpacecraftStateEnum::SHIP_STATE_RETROFIT);
 
         $this->shipRepository->save($ship);
 

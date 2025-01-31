@@ -24,9 +24,9 @@ interface StorageInterface
 
     public function setColony(ColonyInterface $colony): StorageInterface;
 
-    public function getShip(): ?ShipInterface;
+    public function getSpacecraft(): ?SpacecraftInterface;
 
-    public function setShip(ShipInterface $ship): StorageInterface;
+    public function setSpacecraft(?SpacecraftInterface $spacecraft): StorageInterface;
 
     public function getTorpedoStorage(): ?TorpedoStorageInterface;
 
@@ -39,4 +39,6 @@ interface StorageInterface
     public function getTradeOffer(): ?TradeOfferInterface;
 
     public function setTradeOffer(TradeOfferInterface $tradeOffer): StorageInterface;
+
+    public function setTrumfield(TrumfieldInterface $trumfield): StorageInterface;
 }

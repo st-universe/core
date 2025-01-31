@@ -22,17 +22,17 @@ use Stu\StuTestCase;
 
 class PrivateMessageSenderTest extends StuTestCase
 {
-    /** @var MockInterface|PrivateMessageFolderRepositoryInterface */
+    /** @var MockInterface&PrivateMessageFolderRepositoryInterface */
     private $messageFolderRepository;
-    /** @var MockInterface|PrivateMessageRepositoryInterface */
+    /** @var MockInterface&PrivateMessageRepositoryInterface */
     private $messageRepository;
-    /** @var MockInterface|UserRepositoryInterface */
+    /** @var MockInterface&UserRepositoryInterface */
     private $userRepository;
-    /** @var MockInterface|MailFactoryInterface */
+    /** @var MockInterface&MailFactoryInterface */
     private $mailFactory;
-    /** @var MockInterface|Parser */
+    /** @var MockInterface&Parser */
     private $parser;
-    /** @var MockInterface|StuTime */
+    /** @var MockInterface&StuTime */
     private $stuTime;
 
     private PrivateMessageSenderInterface $messageSender;

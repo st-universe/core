@@ -8,26 +8,26 @@ use Override;
 use request;
 use RuntimeException;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
-use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
-use Stu\Component\Ship\Buildplan\BuildplanSignatureCreationInterface;
-use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
-use Stu\Component\Ship\ShipModuleTypeEnum;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
+use Stu\Component\Spacecraft\Buildplan\BuildplanSignatureCreationInterface;
+use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
+use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Colony\View\ShowModuleScreen\ShowModuleScreen;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
+use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
-use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpBuildingFunctionRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
-use Stu\Orm\Repository\ShipRumpRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 
 final class BuildShip implements ActionControllerInterface
 {
@@ -39,13 +39,13 @@ final class BuildShip implements ActionControllerInterface
         private ColonyLoaderInterface $colonyLoader,
         private BuildplanModuleRepositoryInterface $buildplanModuleRepository,
         private ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository,
-        private ShipBuildplanRepositoryInterface $shipBuildplanRepository,
+        private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository,
         private ModuleRepositoryInterface $moduleRepository,
         private ColonyShipQueueRepositoryInterface $colonyShipQueueRepository,
-        private ShipRumpRepositoryInterface $shipRumpRepository,
-        private ColonyStorageManagerInterface $colonyStorageManager,
+        private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository,
+        private StorageManagerInterface $storageManager,
         private ColonyLibFactoryInterface $colonyLibFactory,
-        private ShipCrewCalculatorInterface $shipCrewCalculator,
+        private SpacecraftCrewCalculatorInterface $shipCrewCalculator,
         private BuildplanSignatureCreationInterface $buildplanSignatureCreation,
         private ColonyRepositoryInterface $colonyRepository
     ) {}
@@ -64,7 +64,7 @@ final class BuildShip implements ActionControllerInterface
 
         $colonyId = $colony->getId();
 
-        $rump = $this->shipRumpRepository->find(request::indInt('rumpid'));
+        $rump = $this->spacecraftRumpRepository->find(request::indInt('rumpid'));
         if ($rump === null) {
             return;
         }
@@ -110,13 +110,13 @@ final class BuildShip implements ActionControllerInterface
         /** @var array<int, ModuleInterface> */
         $modules = [];
 
-        foreach (ShipModuleTypeEnum::getModuleSelectorOrder() as $moduleType) {
+        foreach (SpacecraftModuleTypeEnum::getModuleSelectorOrder() as $moduleType) {
 
             $value = $moduleType->value;
             $module = request::postArray('mod_' . $value);
 
             if (
-                $moduleType != ShipModuleTypeEnum::SPECIAL
+                $moduleType != SpacecraftModuleTypeEnum::SPECIAL
                 && $moduleLevels->{'getModuleMandatory' . $value}()
                 && count($module) == 0
             ) {
@@ -184,11 +184,11 @@ final class BuildShip implements ActionControllerInterface
             }
         }
         foreach ($modules as $module) {
-            $this->colonyStorageManager->lowerStorage($colony, $module->getCommodity(), 1);
+            $this->storageManager->lowerStorage($colony, $module->getCommodity(), 1);
         }
         $game->setView(ShowColony::VIEW_IDENTIFIER);
         $signature = $this->buildplanSignatureCreation->createSignature($modules, $crewUsage);
-        $plan = $this->shipBuildplanRepository->getByUserShipRumpAndSignature($userId, $rump->getId(), $signature);
+        $plan = $this->spacecraftBuildplanRepository->getByUserShipRumpAndSignature($userId, $rump->getId(), $signature);
         if ($plan === null) {
             $plannameFromRequest = request::indString('buildplanname');
             if (
@@ -208,7 +208,7 @@ final class BuildShip implements ActionControllerInterface
                 _('Lege neuen Bauplan an: %s'),
                 $planname
             );
-            $plan = $this->shipBuildplanRepository->prototype();
+            $plan = $this->spacecraftBuildplanRepository->prototype();
             $plan->setUser($game->getUser());
             $plan->setRump($rump);
             $plan->setName($planname);
@@ -216,7 +216,7 @@ final class BuildShip implements ActionControllerInterface
             $plan->setBuildtime($rump->getBuildtime());
             $plan->setCrew($crewUsage);
 
-            $this->shipBuildplanRepository->save($plan);
+            $this->spacecraftBuildplanRepository->save($plan);
 
             foreach ($modules as $obj) {
                 $mod = $this->buildplanModuleRepository->prototype();
@@ -229,7 +229,7 @@ final class BuildShip implements ActionControllerInterface
             }
         } else {
             $game->addInformationf(
-                _('Benutze verfügbaren Bauplan: %s'),
+                'Benutze verfügbaren Bauplan: %s',
                 $plan->getName()
             );
         }
@@ -237,7 +237,7 @@ final class BuildShip implements ActionControllerInterface
         $queue->setColony($colony);
         $queue->setUserId($userId);
         $queue->setRump($rump);
-        $queue->setShipBuildplan($plan);
+        $queue->setSpacecraftBuildplan($plan);
         $queue->setBuildtime($plan->getBuildtime());
         $queue->setFinishDate(time() + $plan->getBuildtime());
         $queue->setBuildingFunction($building_function->getBuildingFunction());

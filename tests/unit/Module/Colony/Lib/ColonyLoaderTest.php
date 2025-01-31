@@ -18,17 +18,17 @@ use Stu\StuTestCase;
 class ColonyLoaderTest extends StuTestCase
 {
     /**
-     * @var MockInterface|null|ColonyRepositoryInterface
+     * @var MockInterface&null|ColonyRepositoryInterface
      */
     private $colonyRepository;
 
     /**
-     * @var MockInterface|null|LockManagerInterface
+     * @var MockInterface&null|LockManagerInterface
      */
     private $lockManager;
 
     /**
-     * @var MockInterface|null|ColonyInterface
+     * @var MockInterface&null|ColonyInterface
      */
     private $colony;
 

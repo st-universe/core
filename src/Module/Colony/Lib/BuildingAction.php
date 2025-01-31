@@ -6,7 +6,7 @@ namespace Stu\Module\Colony\Lib;
 
 use Override;
 use Stu\Component\Building\BuildingManagerInterface;
-use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ColonySandboxInterface;
@@ -14,9 +14,7 @@ use Stu\Orm\Entity\PlanetFieldInterface;
 
 final class BuildingAction implements BuildingActionInterface
 {
-    public function __construct(private ColonyStorageManagerInterface $colonyStorageManager, private BuildingManagerInterface $buildingManager)
-    {
-    }
+    public function __construct(private StorageManagerInterface $storageManager, private BuildingManagerInterface $buildingManager) {}
 
     #[Override]
     public function activate(PlanetFieldInterface $field, GameControllerInterface $game): void
@@ -126,7 +124,7 @@ final class BuildingAction implements BuildingActionInterface
                 $game->addInformation(_('[b][color=#ff2626]Keine weiteren Lagerkapazitäten vorhanden![/color][/b]'));
                 break;
             }
-            $this->colonyStorageManager->upperStorage($host, $value->getCommodity(), $amount);
+            $this->storageManager->upperStorage($host, $value->getCommodity(), $amount);
 
             $game->addInformationf('%d %s', $amount, $value->getCommodity()->getName());
         }

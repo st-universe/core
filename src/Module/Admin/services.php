@@ -18,6 +18,9 @@ use Stu\Module\Admin\Action\Map\EditBorder\EditBorderRequestInterface;
 use Stu\Module\Admin\Action\Map\EditField\EditField;
 use Stu\Module\Admin\Action\Map\EditField\EditFieldRequest;
 use Stu\Module\Admin\Action\Map\EditField\EditFieldRequestInterface;
+use Stu\Module\Admin\Action\Map\EditInfluenceArea\EditInfluenceArea;
+use Stu\Module\Admin\Action\Map\EditInfluenceArea\EditInfluenceAreaRequest;
+use Stu\Module\Admin\Action\Map\EditInfluenceArea\EditInfluenceAreaRequestInterface;
 use Stu\Module\Admin\Action\Map\EditPassable\EditPassable;
 use Stu\Module\Admin\Action\Map\EditPassable\EditPassableRequest;
 use Stu\Module\Admin\Action\Map\EditPassable\EditPassableRequestInterface;
@@ -43,7 +46,7 @@ use Stu\Module\Admin\Action\Ticks\Colony\ManualColonyTickRequestInterface;
 use Stu\Module\Admin\Action\Ticks\DoColonyCorrection;
 use Stu\Module\Admin\Action\Ticks\DoManualMaintenance;
 use Stu\Module\Admin\Action\Ticks\DoManualProcessTick;
-use Stu\Module\Admin\Action\Ticks\DoManualShipTick;
+use Stu\Module\Admin\Action\Ticks\DoManualSpacecraftTick;
 use Stu\Module\Admin\Action\UnlockUser;
 use Stu\Module\Admin\View\Map\EditSection\EditSection;
 use Stu\Module\Admin\View\Map\Noop\Noop;
@@ -78,6 +81,7 @@ return [
     EditSystemFieldRequestInterface::class => autowire(EditSystemFieldRequest::class),
     EditRegionRequestInterface::class => autowire(EditRegionRequest::class),
     EditAdminRegionRequestInterface::class => autowire(EditAdminRegionRequest::class),
+    EditInfluenceAreaRequestInterface::class => autowire(EditInfluenceAreaRequest::class),
     EditPassableRequestInterface::class => autowire(EditPassableRequest::class),
     EditBorderRequestInterface::class => autowire(EditBorderRequest::class),
     ManualColonyTickRequestInterface::class => autowire(ManualColonyTickRequest::class),
@@ -87,6 +91,7 @@ return [
         EditSystemField::ACTION_IDENTIFIER => autowire(EditSystemField::class),
         EditRegion::ACTION_IDENTIFIER => autowire(EditRegion::class),
         EditAdminRegion::ACTION_IDENTIFIER => autowire(EditAdminRegion::class),
+        EditInfluenceArea::ACTION_IDENTIFIER => autowire(EditInfluenceArea::class),
         EditPassable::ACTION_IDENTIFIER => autowire(EditPassable::class),
         EditBorder::ACTION_IDENTIFIER => autowire(EditBorder::class),
         DoColonyCorrection::ACTION_IDENTIFIER => autowire(DoColonyCorrection::class),
@@ -96,7 +101,7 @@ return [
                 'handlerList',
                 get(MaintenanceHandlerInterface::class)
             ),
-        DoManualShipTick::ACTION_IDENTIFIER => autowire(DoManualShipTick::class),
+        DoManualSpacecraftTick::ACTION_IDENTIFIER => autowire(DoManualSpacecraftTick::class),
         DoManualProcessTick::ACTION_IDENTIFIER => autowire(DoManualProcessTick::class)
             ->constructorParameter(
                 'tickHandler',

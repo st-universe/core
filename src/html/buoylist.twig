@@ -12,7 +12,7 @@
     {% for buoy in BUOYS %}
     <tr>
         <td style="height:1px; width:1px;" class="shiplistshipimage">
-            <a class="imgOverlayText">
+            <a class="shipImgOverlayText">
                 {% set factonid = buoy.getUser.getFaction.getId %}
 
                 {% set imagesrc = 'assets/ships/buoy/' ~ factonid ~ '.png' %}

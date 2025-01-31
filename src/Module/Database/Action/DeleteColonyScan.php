@@ -8,7 +8,7 @@ use Override;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Ship\View\Noop\Noop;
+use Stu\Module\Spacecraft\View\Noop\Noop;
 use Stu\Orm\Repository\ColonyScanRepositoryInterface;
 
 final class DeleteColonyScan implements ActionControllerInterface
@@ -17,8 +17,7 @@ final class DeleteColonyScan implements ActionControllerInterface
 
     public function __construct(
         private ColonyScanRepositoryInterface $colonyScanRepository
-    ) {
-    }
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void

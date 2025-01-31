@@ -12,8 +12,6 @@ interface ShipRumpModuleLevelInterface
 
     public function getRumpId(): int;
 
-    public function setRumpId(int $shipRumpId): ShipRumpModuleLevelInterface;
-
     public function getModuleLevel1(): int;
 
     public function setModuleLevel1(int $moduleLevel1): ShipRumpModuleLevelInterface;

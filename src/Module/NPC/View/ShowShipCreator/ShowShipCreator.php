@@ -8,12 +8,12 @@ use Override;
 use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
-use Stu\Orm\Repository\ShipRumpRepositoryInterface;
-use Stu\Orm\Entity\ShipBuildplanInterface;
+use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
+use Stu\Orm\Entity\SpacecraftBuildplanInterface;
 
 
 
@@ -22,11 +22,11 @@ final class ShowShipCreator implements ViewControllerInterface
     public const string VIEW_IDENTIFIER = 'SHOW_SHIP_CREATOR';
 
     public function __construct(
-        private ShipBuildplanRepositoryInterface $shipBuildplanRepository,
+        private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository,
         private UserRepositoryInterface $userRepository,
         private LayerRepositoryInterface $layerRepository,
         private TorpedoTypeRepositoryInterface $torpedoTypeRepository,
-        private ShipRumpRepositoryInterface $shipRumpRepository
+        private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository
     ) {}
 
     #[Override]
@@ -45,12 +45,12 @@ final class ShowShipCreator implements ViewControllerInterface
             $game->setTemplateVar('SELECTED_USER', $selectedUser);
 
             if ($buildplanId > 0) {
-                $buildplan = $this->shipBuildplanRepository->find($buildplanId);
+                $buildplan = $this->spacecraftBuildplanRepository->find($buildplanId);
                 if ($buildplan !== null) {
 
                     $rump = $buildplan->getRump();
 
-                    $allRumps = iterator_to_array($this->shipRumpRepository->getList());
+                    $allRumps = iterator_to_array($this->spacecraftRumpRepository->getList());
                     $filteredRumps = array_filter($allRumps, fn($rump) => $rump->getNpcBuildable() === true);
 
                     $isRumpInFiltered = false;
@@ -73,8 +73,8 @@ final class ShowShipCreator implements ViewControllerInterface
                     $game->setTemplateVar('LAYERS', $this->layerRepository->findAll());
                 }
             } else {
-                $allRumps = iterator_to_array($this->shipRumpRepository->getList());
-                $allBuildplans = $this->shipBuildplanRepository->getByUser($userId);
+                $allRumps = iterator_to_array($this->spacecraftRumpRepository->getList());
+                $allBuildplans = $this->spacecraftBuildplanRepository->getByUser($userId);
                 $filteredBuildplans = array_filter($allBuildplans, function ($buildplan) use ($allRumps) {
                     $rump = $buildplan->getRump();
                     foreach ($allRumps as $rumpItem) {
@@ -106,8 +106,8 @@ final class ShowShipCreator implements ViewControllerInterface
         }
     }
 
-    private function isDeletable(ShipBuildplanInterface $buildplan): bool
+    private function isDeletable(SpacecraftBuildplanInterface $buildplan): bool
     {
-        return $buildplan->getShipCount() === 0;
+        return $buildplan->getSpacecraftCount() === 0;
     }
 }

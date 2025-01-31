@@ -24,15 +24,6 @@ final class BuildplanModuleRepository extends EntityRepository implements Buildp
     }
 
     #[Override]
-    public function getByBuildplanAndModuleType(int $buildplanId, int $moduleType): array
-    {
-        return $this->findBy([
-            'buildplan_id' => $buildplanId,
-            'module_type' => $moduleType
-        ]);
-    }
-
-    #[Override]
     public function prototype(): BuildplanModuleInterface
     {
         return new BuildplanModule();

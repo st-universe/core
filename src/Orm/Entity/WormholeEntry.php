@@ -58,7 +58,7 @@ class WormholeEntry implements WormholeEntryInterface
     private StarSystemMapInterface $systemMap;
 
     /**
-     * @var Collection<int, WormholeRestriction>
+     * @var ArrayCollection<int, WormholeRestriction>
      */
     #[OneToMany(targetEntity: 'WormholeRestriction', mappedBy: 'wormholeEntry')]
     private Collection $restrictions;

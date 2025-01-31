@@ -17,8 +17,7 @@ use Stu\Exception\RelocationGameStateException;
 use Stu\Exception\ResetGameStateException;
 use Stu\Exception\SanityCheckException;
 use Stu\Exception\SessionInvalidException;
-use Stu\Exception\ShipDoesNotExistException;
-use Stu\Exception\ShipIsDestroyedException;
+use Stu\Exception\SpacecraftDoesNotExistException;
 use Stu\Exception\UnallowedUplinkOperation;
 use Stu\Lib\AccountNotVerifiedException;
 use Stu\Lib\Information\InformationInterface;
@@ -54,11 +53,7 @@ use Ubench;
 
 final class GameController implements GameControllerInterface
 {
-    /** @var string */
     public const string DEFAULT_VIEW = 'DEFAULT_VIEW';
-
-    /** @var string */
-    private const string GAME_VERSION_DEV = 'dev';
 
     private GameData $gameData;
 
@@ -74,6 +69,7 @@ final class GameController implements GameControllerInterface
         private GameConfigRepositoryInterface $gameConfigRepository,
         private EntityManagerInterface $entityManager,
         private UserRepositoryInterface $userRepository,
+        private ComponentSetupInterface $componentSetup,
         private Ubench $benchmark,
         private CreateDatabaseEntryInterface $createDatabaseEntry,
         private GameRequestRepositoryInterface $gameRequestRepository,
@@ -361,20 +357,6 @@ final class GameController implements GameControllerInterface
     }
 
     #[Override]
-    public function getJavascriptPath(): string
-    {
-        $gameVersion = $this->stuConfig->getGameSettings()->getVersion();
-        if ($gameVersion === self::GAME_VERSION_DEV) {
-            return '/static';
-        }
-
-        return sprintf(
-            '/version_%s/static',
-            $gameVersion
-        );
-    }
-
-    #[Override]
     public function checkDatabaseItem(?int $databaseEntryId): void
     {
         if (
@@ -532,30 +514,27 @@ final class GameController implements GameControllerInterface
                 $this->setTemplateVar('REASON', $e->getMessage());
             }
         } catch (MaintenanceGameStateException) {
-            $this->setPageTitle(_('Wartungsmodus'));
+            $this->setPageTitle('Wartungsmodus');
             $this->setTemplateFile('html/index/maintenance.twig');
         } catch (ResetGameStateException) {
-            $this->setPageTitle(_('Resetmodus'));
+            $this->setPageTitle('Resetmodus');
             $this->setTemplateFile('html/index/gameReset.twig');
         } catch (RelocationGameStateException) {
-            $this->setPageTitle(_('Umzugsmodus'));
+            $this->setPageTitle('Umzugsmodus');
             $this->setTemplateFile('html/index/relocation.twig');
-        } catch (ShipDoesNotExistException) {
-            $this->addInformation(_('Dieses Schiff existiert nicht!'));
-            $this->setViewTemplate('html/ship/ship.twig');
-        } catch (ShipIsDestroyedException) {
-            $this->addInformation('Dieses Schiff wurde zerstört!');
-            $this->setViewTemplate('html/ship/ship.twig');
+        } catch (SpacecraftDoesNotExistException $e) {
+            $this->addInformation($e->getMessage());
+            $this->setViewTemplate('html/empty.twig');
         } catch (ItemNotFoundException) {
             $this->addInformation('Das angeforderte Item wurde nicht gefunden');
-            $this->setTemplateFile('html/notFound.twig');
+            $this->setViewTemplate('html/empty.twig');
         } catch (UnallowedUplinkOperation) {
             $this->addInformation('Diese Aktion ist per Uplink nicht möglich!');
 
-            if (request::isAjaxRequest()) {
+            if (request::isAjaxRequest() && !request::has('switch')) {
                 $this->setMacroInAjaxWindow('html/systeminformation.twig');
             } else {
-                $this->setViewTemplate('html/ship/ship.twig');
+                $this->setViewTemplate('html/empty.twig');
             }
         }
 
@@ -572,11 +551,11 @@ final class GameController implements GameControllerInterface
             ? $this->getUser()
             : null;
 
+        $this->componentSetup->setup($this);
+
         // RENDER!
         $startTime = hrtime(true);
-
         $renderResult = $this->gameTwigRenderer->render($this, $user);
-
         $renderMs = hrtime(true) - $startTime;
 
         ob_start();

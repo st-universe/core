@@ -10,13 +10,12 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
 use Stu\Lib\Map\VisualPanel\Layer\Data\MapData;
 use Stu\StuTestCase;
-use tidy;
 
 class SystemLayerRendererTest extends StuTestCase
 {
     private LayerRendererInterface $subject;
 
-    /** @var MockInterface|AbstractVisualPanel */
+    /** @var MockInterface&AbstractVisualPanel */
     private MockInterface $panel;
 
     #[Override]
@@ -74,7 +73,7 @@ class SystemLayerRendererTest extends StuTestCase
 
         $expected = '<img src="/assets/map/starmap/0201.png"
                         style="z-index: 1; H+W; opacity:1;" />
-            <img src="/assets/map/3.png" class="lssSubspaceOverShield"
+            <img src="/assets/map/3.png" class="visualPanelLayer"
                         style="z-index: 2; H+W; opacity:2;" />';
 
         $this->assertEquals(

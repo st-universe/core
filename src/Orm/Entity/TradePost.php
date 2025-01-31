@@ -23,7 +23,7 @@ use Stu\Orm\Repository\TradePostRepository;
 
 #[Table(name: 'stu_trade_posts')]
 #[Index(name: 'trade_network_idx', columns: ['trade_network'])]
-#[Index(name: 'trade_post_ship_idx', columns: ['ship_id'])]
+#[Index(name: 'trade_post_station_idx', columns: ['station_id'])]
 #[Entity(repositoryClass: TradePostRepository::class)]
 class TradePost implements TradePostInterface
 {
@@ -42,7 +42,7 @@ class TradePost implements TradePostInterface
     private string $description = '';
 
     #[Column(type: 'integer')]
-    private int $ship_id = 0;
+    private int $station_id = 0;
 
     #[Column(type: 'smallint')]
     private int $trade_network = 0;
@@ -70,14 +70,14 @@ class TradePost implements TradePostInterface
     #[OrderBy(['id' => 'DESC'])]
     private Collection $licenseInfos;
 
-    #[OneToOne(targetEntity: 'Ship', inversedBy: 'tradePost')]
-    #[JoinColumn(name: 'ship_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ShipInterface $ship;
+    #[OneToOne(targetEntity: 'Station', inversedBy: 'tradePost')]
+    #[JoinColumn(name: 'station_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    private StationInterface $station;
 
     /**
-     * @var Collection<int, ShipCrewInterface>
+     * @var ArrayCollection<int, CrewAssignmentInterface>
      */
-    #[OneToMany(targetEntity: 'ShipCrew', mappedBy: 'tradepost')]
+    #[OneToMany(targetEntity: 'CrewAssignment', mappedBy: 'tradepost')]
     private Collection $crewAssignments;
 
     public function __construct()
@@ -141,17 +141,9 @@ class TradePost implements TradePostInterface
     }
 
     #[Override]
-    public function getShipId(): int
+    public function getStationId(): int
     {
-        return $this->ship_id;
-    }
-
-    #[Override]
-    public function setShipId(int $shipId): TradePostInterface
-    {
-        $this->ship_id = $shipId;
-
-        return $this;
+        return $this->station_id;
     }
 
     #[Override]
@@ -234,15 +226,15 @@ class TradePost implements TradePostInterface
     }
 
     #[Override]
-    public function getShip(): ShipInterface
+    public function getStation(): StationInterface
     {
-        return $this->ship;
+        return $this->station;
     }
 
     #[Override]
-    public function setShip(ShipInterface $ship): TradePostInterface
+    public function setStation(StationInterface $station): TradePostInterface
     {
-        $this->ship = $ship;
+        $this->station = $station;
 
         return $this;
     }

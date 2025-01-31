@@ -1,8 +1,8 @@
-{% from 'html/macros.twig' import onClickShip %}
+{% from 'html/macros.twig' import onClickSpacecraft %}
 
 <input type="hidden" name="id" value="{{ MANAGER_ID }}" />
 <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
-<input type="hidden" name="SHOW_SHIP_MANAGEMENT" value="1" />
+<input type="hidden" name="SHOW_SPACECRAFT_MANAGEMENT" value="1" />
 <table class="tcal">
   <tr>
     <th>Klasse</th>
@@ -13,35 +13,34 @@
     <th>Torpedo-Transfer</th>
     <th>Shuttle-Transfer</th>
   </tr>
-  {% for fleetwrapper in FLEET_WRAPPERS %}
-  {% set fleet = fleetwrapper.get %}
+  {% for group in SPACECRAFT_GROUPS %}
   <tr>
     <td colspan="7">
-      {{ fleet.getName|bbcode }}
-      {% if fleetwrapper.isForeignFleet %}
+      {{ group.getName|bbcode }}
+      {% if group.getUser %}
       <span> von </span>
-      {{ fleet.getUser.getName|bbcode }}
+      {{ group.getUser.getName|bbcode }}
       {% endif %}
     </td>
   </tr>
-  {% for wrapper in fleetwrapper.getShipWrappers %}
+  {% for wrapper in group.getWrappers %}
   {% set ship = wrapper.get %}
   {% set shipId = ship.getId %}
   {% set rumpId = ship.getRumpId %}
   <tr class="row">
     <td>
-      <input type="hidden" name="ships[]" value="{{ ship.getId }}" />
-      {% if wrapper.isOwnedByCurrentUser %}
-      <a {{ onClickShip(ship) }}>
+      <input type="hidden" name="spacecrafts[]" value="{{ ship.getId }}" />
+      {% if wrapper.isSelectable %}
+      <a {{ onClickSpacecraft(ship) }}>
         <img src="assets/ships/{{ rumpId }}.png" title="{{ ship.getRumpName }}" />
       </a>
       {% else %}
       <img src="assets/ships/{{ rumpId }}.png" title="{{ ship.getRumpName }}" />
       {% endif %}
     </td>
-    {% if wrapper.isOwnedByCurrentUser %}
+    {% if wrapper.isSelectable %}
     <td>
-      <a {{ onClickShip(ship) }}>{{ ship.getName|bbcode }}</a>
+      <a {{ onClickSpacecraft(ship) }}>{{ ship.getName|bbcode }}</a>
     </td>
     {% else %}
     <td>{{ ship.getName|bbcode }}</td>
@@ -55,7 +54,7 @@
         <img class="center" onclick="this.up('div').down('input').value={{ eps.getMaxBattery }}"
           src="assets/buttons/batt.png" title="Ersatzbatterie" />
         <input type="text" size="3" name="batt[{{ shipId }}]" />
-        {% if wrapper.isOwnedByCurrentUser %}
+        {% if wrapper.isSelectable %}
         {{ eps.getBattery }}/{{ eps.getMaxBattery }}
         {% endif %}
       </div>
@@ -68,7 +67,7 @@
         <img class="center" onclick="this.up('div').down('input').value={{ reactor.getCapacity }}"
           src="assets/buttons/{{ reactor.get.getIcon }}" title="Reaktorladung" />
         <input type="text" size="3" name="reactor[{{ shipId }}]" />
-        {% if wrapper.isOwnedByCurrentUser %}
+        {% if wrapper.isSelectable %}
         <span style="{{ reactor.getReactorLoadStyle }}">{{ reactor.getLoad }}/{{ reactor.getCapacity }}</span>
         {% endif %}
       </div>
@@ -84,7 +83,7 @@
         <img class="center" onclick="this.up('div').down('input').value={{ ship.getMaxTorpedos }}"
           src="assets/buttons/torp.png" title="Torpedos" />
         {% endif %}
-        {% if wrapper.isOwnedByCurrentUser %}
+        {% if wrapper.isSelectable %}
         <input type="text" size="3" name="torp[{{ shipId }}]" value="{{ ship.getTorpedoCount }}" />
         <span>Max.</span> {{ ship.getMaxTorpedos }}
         {% else %}
@@ -124,4 +123,4 @@
   {% endfor %}
 </table>
 <br />
-<input type="submit" style="cursor: pointer" name="B_MANAGE_SHIPS" value="Ausführen" />
+<input type="submit" style="cursor: pointer" name="B_MANAGE_SPACECRAFTS" value="Ausführen" />

@@ -2,6 +2,9 @@
 
 namespace Stu\Orm\Entity;
 
+use Stu\Component\Station\Dock\DockModeEnum;
+use Stu\Component\Station\Dock\DockTypeEnum;
+
 interface DockingPrivilegeInterface
 {
     public function getId(): int;
@@ -10,15 +13,15 @@ interface DockingPrivilegeInterface
 
     public function setTargetId(int $targetId): DockingPrivilegeInterface;
 
-    public function getPrivilegeType(): int;
+    public function getPrivilegeType(): DockTypeEnum;
 
-    public function setPrivilegeType(int $privilegeType): DockingPrivilegeInterface;
+    public function setPrivilegeType(DockTypeEnum $privilegeType): DockingPrivilegeInterface;
 
-    public function getPrivilegeMode(): int;
+    public function getPrivilegeMode(): DockModeEnum;
 
-    public function setPrivilegeMode(int $privilegeMode): DockingPrivilegeInterface;
+    public function setPrivilegeMode(DockModeEnum $privilegeMode): DockingPrivilegeInterface;
 
-    public function getShip(): ShipInterface;
+    public function getStation(): StationInterface;
 
-    public function setShip(ShipInterface $ship): DockingPrivilegeInterface;
+    public function setStation(StationInterface $station): DockingPrivilegeInterface;
 }

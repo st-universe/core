@@ -5,40 +5,40 @@ declare(strict_types=1);
 namespace Stu\Module\Tick\Process;
 
 use Override;
-use Stu\Component\Ship\Repair\RepairUtilInterface;
+use Stu\Component\Spacecraft\Repair\RepairUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\RepairTaskRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class RepairTaskJobs implements ProcessTickHandlerInterface
 {
-    public function __construct(private RepairTaskRepositoryInterface $repairTaskRepository, private ShipRepositoryInterface $shipRepository, private RepairUtilInterface $repairUtil, private PrivateMessageSenderInterface $privateMessageSender)
-    {
-    }
+    public function __construct(
+        private RepairTaskRepositoryInterface $repairTaskRepository,
+        private SpacecraftRepositoryInterface $spacecraftRepository,
+        private RepairUtilInterface $repairUtil,
+        private PrivateMessageSenderInterface $privateMessageSender
+    ) {}
 
     #[Override]
     public function work(): void
     {
         $result = $this->repairTaskRepository->getFinishedRepairTasks();
         foreach ($result as $repairTask) {
-            $ship = $repairTask->getShip();
+            $spacecraft = $repairTask->getSpacecraft();
 
-            $href = sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $ship->getId());
-
-            if (!$ship->hasEnoughCrew()) {
+            if (!$spacecraft->hasEnoughCrew()) {
                 $this->privateMessageSender->send(
                     UserEnum::USER_NOONE,
-                    $ship->getUser()->getId(),
+                    $spacecraft->getUser()->getId(),
                     sprintf(
                         _('Ungenügend Crew auf der %s vorhanden, daher wurde die Reparatur des Systems %s abgebrochen'),
-                        $ship->getName(),
+                        $spacecraft->getName(),
                         $repairTask->getSystemType()->getDescription()
                     ),
                     PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
-                    $href
+                    $spacecraft->getHref()
                 );
 
                 $this->repairTaskRepository->delete($repairTask);
@@ -46,13 +46,13 @@ final class RepairTaskJobs implements ProcessTickHandlerInterface
                 continue;
             }
 
-            $isSuccess = $this->repairUtil->selfRepair($ship, $repairTask);
-            $this->shipRepository->save($ship);
+            $isSuccess = $this->repairUtil->selfRepair($spacecraft, $repairTask);
+            $this->spacecraftRepository->save($spacecraft);
 
             if ($isSuccess) {
                 $msg = sprintf(
                     _('Die Crew der %s hat das System %s auf %d %% reparieren können'),
-                    $ship->getName(),
+                    $spacecraft->getName(),
                     $repairTask->getSystemType()->getDescription(),
                     $repairTask->getHealingPercentage()
                 );
@@ -60,16 +60,16 @@ final class RepairTaskJobs implements ProcessTickHandlerInterface
                 $msg = sprintf(
                     _('Der Reparaturversuch des Systems %s an Bord der %s brachte keine Besserung'),
                     $repairTask->getSystemType()->getDescription(),
-                    $ship->getName()
+                    $spacecraft->getName()
                 );
             }
 
             $this->privateMessageSender->send(
                 UserEnum::USER_NOONE,
-                $ship->getUser()->getId(),
+                $spacecraft->getUser()->getId(),
                 $msg,
                 PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
-                $href
+                $spacecraft->getHref()
             );
         }
     }

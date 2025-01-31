@@ -16,6 +16,7 @@ use Stu\Orm\Repository\UserIpTableRepositoryInterface;
 use Stu\Orm\Repository\UserProfileVisitorRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\Orm\Repository\UserSettingRepositoryInterface;
+use Stu\Orm\Repository\UserRefererRepositoryInterface;
 
 final class UserReset implements UserResetInterface
 {
@@ -30,7 +31,8 @@ final class UserReset implements UserResetInterface
         private UserIpTableRepositoryInterface $userIpTableRepository,
         private UserProfileVisitorRepositoryInterface $userProfileVisitorRepository,
         private  PirateWrathRepositoryInterface $pirateWrathRepository,
-        private EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
+        private UserRefererRepositoryInterface $userRefererRepository
     ) {
         $this->blockedUserRepository = $blockedUserRepository;
         $this->databaseUserRepository = $databaseUserRepository;
@@ -42,6 +44,7 @@ final class UserReset implements UserResetInterface
         $this->userIpTableRepository = $userIpTableRepository;
         $this->userProfileVisitorRepository = $userProfileVisitorRepository;
         $this->entityManager = $entityManager;
+        $this->userRefererRepository = $userRefererRepository;
     }
 
     #[Override]
@@ -147,6 +150,14 @@ final class UserReset implements UserResetInterface
         echo "  - delete all pirate wrath entries\n";
 
         $this->pirateWrathRepository->truncateAllEntries();
+
+        $this->entityManager->flush();
+    }
+
+    public function deleteAllUserReferers(): void
+    {
+        echo "  - delete all user referers\n";
+        $this->userRefererRepository->truncateAll();
 
         $this->entityManager->flush();
     }

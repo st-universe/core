@@ -8,7 +8,6 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
-use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
@@ -16,7 +15,6 @@ use Override;
 use Stu\Orm\Repository\SpacecraftEmergencyRepository;
 
 #[Table(name: 'stu_spacecraft_emergency')]
-#[Index(name: 'spacecraft_emergency_ship_idx', columns: ['ship_id'])]
 #[Entity(repositoryClass: SpacecraftEmergencyRepository::class)]
 class SpacecraftEmergency implements SpacecraftEmergencyInterface
 {
@@ -26,7 +24,7 @@ class SpacecraftEmergency implements SpacecraftEmergencyInterface
     private int $id;
 
     #[Column(type: 'integer')]
-    private int $ship_id = 0;
+    private int $spacecraft_id = 0;
 
     #[Column(type: 'text')]
     private string $text = '';
@@ -37,9 +35,9 @@ class SpacecraftEmergency implements SpacecraftEmergencyInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $deleted = null;
 
-    #[ManyToOne(targetEntity: 'Ship')]
-    #[JoinColumn(name: 'ship_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ShipInterface $ship;
+    #[ManyToOne(targetEntity: 'Spacecraft')]
+    #[JoinColumn(name: 'spacecraft_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    private SpacecraftInterface $spacecraft;
 
     #[Override]
     public function getId(): int
@@ -48,15 +46,15 @@ class SpacecraftEmergency implements SpacecraftEmergencyInterface
     }
 
     #[Override]
-    public function getShip(): ShipInterface
+    public function getSpacecraft(): SpacecraftInterface
     {
-        return $this->ship;
+        return $this->spacecraft;
     }
 
     #[Override]
-    public function setShip(ShipInterface $ship): SpacecraftEmergencyInterface
+    public function setSpacecraft(SpacecraftInterface $spacecraft): SpacecraftEmergencyInterface
     {
-        $this->ship = $ship;
+        $this->spacecraft = $spacecraft;
 
         return $this;
     }

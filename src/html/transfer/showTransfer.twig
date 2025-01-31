@@ -1,0 +1,69 @@
+<form action="{{ TRANSFER_INFO.getSourceType.value }}.php" method="post">
+    <input type="hidden" name="id" value="{{ SOURCE.getId }}" />
+    <input type="hidden" name="source_type" value="{{ TRANSFER_INFO.getSourceType.value }}" />
+    <input type="hidden" name="target" value="{{ TARGET.getId }}" />
+    <input type="hidden" name="target_type" value="{{ TRANSFER_INFO.getTargetType.value }}" />
+    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+    <input type="hidden" name="transfer_type" value="{{ TRANSFER_INFO.getTransferType.value }}" />
+    <input type="hidden" name="is_unload" value="{{ TRANSFER_INFO.isUnload ? 1 : 0 }}" />
+
+    <table class="tcal" style="width: 425px;">
+        {% set targetId = TARGET.getId %}
+
+        {% include "html/transfer/transferTypeSelection.twig" %}
+        <tr>
+            <td colspan="3">Ziel: {{ TRANSFER_INFO.getTargetWrapper.getName|bbcode }}</td>
+        </tr>
+        <tr>
+            {% if SHOW_SHIELD_FREQUENCY %}
+            <td>Schildfrequenz:</td>
+            <td colspan="2">
+                <input type="text" size="5" name="frequency" /> MHz
+            </td>
+            {% endif %}
+        </tr>
+        <tr>
+            <td colspan="3">
+                Kapazität pro 1 Energie: {{ TRANSFER_INFO.getBeamFactor }}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="width: 100%;">
+                {% include TRANSFER_INFO.getTransferType.getGoodsTemplate %}
+            </td>
+            <td rowspan="2" style="height: 100%;">
+                {% set isSourceAbove = TRANSFER_INFO.isSourceAbove %}
+                {% set aboveSourceType = isSourceAbove ? TRANSFER_INFO.getSourceType : TRANSFER_INFO.getTargetType %}
+                {% set belowSourceType = isSourceAbove ? TRANSFER_INFO.getTargetType : TRANSFER_INFO.getSourceType %}
+                {% set aboveEntity = isSourceAbove ? SOURCE : TARGET %}
+                {% set belowEntity = isSourceAbove ? TARGET : SOURCE %}
+                {% set ownsAbove = isSourceAbove ? true : OWNS_TARGET %}
+                {% set ownsBelow = isSourceAbove ? OWNS_TARGET : true %}
+                {% set aboveStorageBar = isSourceAbove ? SOURCE_STORAGE_BAR : TARGET_STORAGE_BAR %}
+                {% set belowStorageBar = isSourceAbove ? TARGET_STORAGE_BAR : SOURCE_STORAGE_BAR %}
+
+                {% embed "html/transfer/directionSelection.twig" %}
+                {% block above %}
+                {% include 'html/transfer/entity/' ~ aboveSourceType.value ~ 'Entity.twig' with
+                {'entity': aboveEntity, 'ownsEntity' : ownsAbove} %}
+                <br />
+                {% autoescape false %}
+                {{ aboveStorageBar }}
+                {% endautoescape %}
+                {% endblock %}
+                {% block below %}
+                {% include 'html/transfer/entity/' ~ belowSourceType.value ~ 'Entity.twig' with
+                {'entity': belowEntity, 'ownsEntity' : ownsBelow} %}
+                <br />
+                {% autoescape false %}
+                {{ belowStorageBar }}
+                {% endautoescape %}
+                {% endblock %}
+                {% endembed %}
+            </td>
+        </tr>
+        <tr style="text-align: right;">
+            {% include TRANSFER_INFO.getTransferType.getActionsTemplate %}
+        </tr>
+    </table>
+</form>

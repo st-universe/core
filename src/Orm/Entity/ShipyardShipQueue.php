@@ -27,7 +27,7 @@ class ShipyardShipQueue implements ShipyardShipQueueInterface
     private int $id;
 
     #[Column(type: 'integer')]
-    private int $ship_id = 0;
+    private int $station_id = 0;
 
     #[Column(type: 'integer')]
     private int $user_id = 0;
@@ -47,17 +47,17 @@ class ShipyardShipQueue implements ShipyardShipQueueInterface
     #[Column(type: 'integer')]
     private int $stop_date = 0;
 
-    #[ManyToOne(targetEntity: 'ShipBuildplan')]
+    #[ManyToOne(targetEntity: 'SpacecraftBuildplan')]
     #[JoinColumn(name: 'buildplan_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ShipBuildplanInterface $shipBuildplan;
+    private SpacecraftBuildplanInterface $spacecraftBuildplan;
 
-    #[ManyToOne(targetEntity: 'ShipRump')]
+    #[ManyToOne(targetEntity: 'SpacecraftRump')]
     #[JoinColumn(name: 'rump_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ShipRumpInterface $shipRump;
+    private SpacecraftRumpInterface $spacecraftRump;
 
-    #[ManyToOne(targetEntity: 'Ship')]
-    #[JoinColumn(name: 'ship_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ShipInterface $ship;
+    #[ManyToOne(targetEntity: 'Station')]
+    #[JoinColumn(name: 'station_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    private StationInterface $station;
 
     #[Override]
     public function getId(): int
@@ -66,15 +66,15 @@ class ShipyardShipQueue implements ShipyardShipQueueInterface
     }
 
     #[Override]
-    public function getShip(): ShipInterface
+    public function getStation(): StationInterface
     {
-        return $this->ship;
+        return $this->station;
     }
 
     #[Override]
-    public function setShip(ShipInterface $ship): ShipyardShipQueueInterface
+    public function setStation(StationInterface $station): ShipyardShipQueueInterface
     {
-        $this->ship = $ship;
+        $this->station = $station;
         return $this;
     }
 
@@ -96,14 +96,6 @@ class ShipyardShipQueue implements ShipyardShipQueueInterface
     public function getRumpId(): int
     {
         return $this->rump_id;
-    }
-
-    #[Override]
-    public function setRumpId(int $shipRumpId): ShipyardShipQueueInterface
-    {
-        $this->rump_id = $shipRumpId;
-
-        return $this;
     }
 
     #[Override]
@@ -149,29 +141,29 @@ class ShipyardShipQueue implements ShipyardShipQueueInterface
     }
 
     #[Override]
-    public function getRump(): ShipRumpInterface
+    public function getRump(): SpacecraftRumpInterface
     {
-        return $this->shipRump;
+        return $this->spacecraftRump;
     }
 
     #[Override]
-    public function setRump(ShipRumpInterface $shipRump): ShipyardShipQueueInterface
+    public function setRump(SpacecraftRumpInterface $spacecraftRump): ShipyardShipQueueInterface
     {
-        $this->shipRump = $shipRump;
+        $this->spacecraftRump = $spacecraftRump;
 
         return $this;
     }
 
     #[Override]
-    public function getShipBuildplan(): ShipBuildplanInterface
+    public function getSpacecraftBuildplan(): SpacecraftBuildplanInterface
     {
-        return $this->shipBuildplan;
+        return $this->spacecraftBuildplan;
     }
 
     #[Override]
-    public function setShipBuildplan(ShipBuildplanInterface $shipBuildplan): ShipyardShipQueueInterface
+    public function setSpacecraftBuildplan(SpacecraftBuildplanInterface $spacecraftBuildplan): ShipyardShipQueueInterface
     {
-        $this->shipBuildplan = $shipBuildplan;
+        $this->spacecraftBuildplan = $spacecraftBuildplan;
 
         return $this;
     }

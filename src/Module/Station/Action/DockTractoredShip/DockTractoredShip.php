@@ -7,33 +7,37 @@ namespace Stu\Module\Station\Action\DockTractoredShip;
 use Override;
 use request;
 use Stu\Component\Ship\ShipEnum;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
-use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Module\Spacecraft\Lib\ActivatorDeactivatorHelperInterface;
+use Stu\Module\Station\Lib\StationLoaderInterface;
+use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
+use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class DockTractoredShip implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_DOCK_TRACTORED';
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private PrivateMessageSenderInterface $privateMessageSender, private ActivatorDeactivatorHelperInterface $helper)
-    {
-    }
+    public function __construct(
+        private StationLoaderInterface $stationLoader,
+        private SpacecraftRepositoryInterface $spacecraftRepository,
+        private PrivateMessageSenderInterface $privateMessageSender,
+        private ActivatorDeactivatorHelperInterface $helper
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $game->setView(ShowShip::VIEW_IDENTIFIER);
+        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         $userId = $game->getUser()->getId();
 
         $stationId = request::getIntFatal('id');
 
-        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
+        $wrapper = $this->stationLoader->getWrapperByIdAndUser(
             $stationId,
             $userId
         );
@@ -45,9 +49,6 @@ final class DockTractoredShip implements ActionControllerInterface
         if ($tractoredShip === null) {
             return;
         }
-        if (!$station->isBase()) {
-            return;
-        }
         if (!$station->hasEnoughCrew($game)) {
             return;
         }
@@ -55,7 +56,7 @@ final class DockTractoredShip implements ActionControllerInterface
         //check for energy
         $epsSystem = $wrapper->getEpsSystemData();
         if ($epsSystem === null || $epsSystem->getEps() < ShipEnum::SYSTEM_ECOST_DOCK) {
-            $game->addInformation('Zum Andocken wird 1 Energie benötigt');
+            $game->addInformationf('Zum Andocken wird %d Energie benötigt', ShipEnum::SYSTEM_ECOST_DOCK);
             return;
         }
         //check for free dock slots
@@ -65,25 +66,24 @@ final class DockTractoredShip implements ActionControllerInterface
         }
         // check for fleet state
         if ($tractoredShip->getFleet() !== null && $tractoredShip->getFleet()->getShipCount() > 1) {
-            $game->addInformation(_("Aktion nicht möglich. Das Ziel befindet sich in einer FLotte."));
+            $game->addInformation("Aktion nicht möglich. Das Ziel befindet sich in einer Flotte.");
             return;
         }
         // check for alert green
         if (!$tractoredShip->isAlertGreen()) {
-            $game->addInformation(_("Aktion nicht möglich. Das Ziel ist nicht auf Alarm grün."));
+            $game->addInformation("Aktion nicht möglich. Das Ziel ist nicht auf Alarm Grün.");
             return;
         }
 
         $epsSystem->lowerEps(1)->update();
         $tractoredShip->setDockedTo($station);
+        $station->getDockedShips()->set($tractoredShip->getId(), $tractoredShip);
 
-        $this->shipLoader->save($station);
-        $this->shipLoader->save($tractoredShip);
+        $this->stationLoader->save($station);
+        $this->spacecraftRepository->save($tractoredShip);
 
         $game->addInformation('Andockvorgang abgeschlossen');
-        $this->helper->deactivate($stationId, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, $game);
-
-        $href = sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $tractoredShip->getId());
+        $this->helper->deactivate($stationId, SpacecraftSystemTypeEnum::TRACTOR_BEAM, $game);
 
         $this->privateMessageSender->send(
             $userId,
@@ -94,7 +94,7 @@ final class DockTractoredShip implements ActionControllerInterface
                 $station->getName()
             ),
             PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
-            $href
+            $tractoredShip->getHref()
         );
     }
 

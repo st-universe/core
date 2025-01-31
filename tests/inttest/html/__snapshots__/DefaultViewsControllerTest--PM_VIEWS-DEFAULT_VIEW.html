@@ -1,0 +1,227 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body>
+<div class="box">
+    <div class="box_title" style="text-align: left">/
+                <a href="pm.php">
+            Nachrichten
+        </a>
+                <span> / </span>
+                        <a href="pm.php?pmcat=4778">
+            Ordner: Pers&ouml;nlich
+        </a>
+                    </div>
+</div>
+<br>
+<div id="result" style="display: none;">..</div>
+
+<form action="pm.php" method="post" name="pmlist" id="pmlist">
+  <input type="hidden" id="formaction" value="1">
+  <input type="hidden" name="move_pm" id="move_pm" value="0">
+  <input type="hidden" name="deletion_mark" id="deletion_mark" value="">
+  <input type="hidden" name="pmcat" id="pmcat" value="4778">
+  <div style="float: left; width: 75%;">
+    <table>
+    <tr>
+                <td>
+            <a href="?pmcat=4778&amp;mark=6" class="pages">
+                &gt;
+            </a>
+        </td>
+                <td>
+            <a href="?pmcat=4778&amp;mark=-6" class="pages">
+                &gt;&gt;
+            </a>
+        </td>
+            </tr>
+</table>
+    <br>
+        <table>
+    <tr>
+                <td>
+            <a href="?pmcat=4778&amp;mark=6" class="pages">
+                &gt;
+            </a>
+        </td>
+                <td>
+            <a href="?pmcat=4778&amp;mark=-6" class="pages">
+                &gt;&gt;
+            </a>
+        </td>
+            </tr>
+</table>
+    
+  </div>
+</form>
+<div style="float: left; width: 24%; margin-left: 1%">
+    <table class="tcal">
+    <tr>
+        <th>Aktionen</th>
+    </tr>
+    <tr>
+        <td>
+            <span style="color: #cecece">&gt;</span> <a href="javascript:void(0);" onclick="switchInnerContent('WRITE_PM', 'Neue private Nachricht');">
+                Nachricht verfassen</a>
+                        <div>
+                <br>
+                <span style="color: #cecece">&gt;</span> <a href="javascript:void(0);" onclick="markAllPMs();">Alle
+                    selektieren</a><br>
+                <span style="color: #cecece">&gt;</span> <a href="javascript:void(0);" onclick="unMarkAllPMs();">Alle
+                    deselektieren</a>
+                <br><br>
+                <span style="color: #cecece">&gt;</span> <a href="javascript:void(0);" onclick="deleteAllMarkedPMs();">Alle
+                    selektierten l&ouml;schen</a>
+                <br><br>
+                <span style="color: #cecece">&gt;</span> <a href="?B_DELETE_ALL_PMS=1&amp;pmcat=4778&amp;sstr=MOCKED_SESSIONSTRING">Ordner leeren</a>
+            </div>
+                    </td>
+    </tr>
+</table>
+<br>
+<div class="box">
+    <div class="box_title">Kontakte</div>
+    <div class="box_body">
+        <ul>
+            <li>
+                <span style="color: #cecece">&gt;</span> <a href="javascript:void(0);" onclick="switchInnerContent('SHOW_CONTACTLIST', 'Kontaktliste');">
+                    Alle Kontakte</a>
+            </li>
+            <li>
+                <span style="color: #cecece">&gt;</span> <a href="?SHOW_IGNORELIST=1">Ignorierte Siedler</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<br>
+<div class="box">
+    <div class="box_title">Notizen</div>
+    <div class="box_body">
+        <ul>
+            <li>
+                <a href="javascript:void(0);" onclick="event.stopPropagation(); openNotes()" title="Notizzettel &ouml;ffnen" onmouseover="cp('headerNotiz','buttons/notiz2')" onmouseout="cp('headerNotiz','buttons/notiz1')">
+                    <img src="/assets/buttons/notiz1.png" name="headerNotiz">
+                    Notizzettel &ouml;ffnen</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<br>
+<table class="tcal">
+    <tr>
+        <th>Ordner</th>
+    </tr>
+    <tr>
+        <td>
+            <ul id="catlist" class="pm_categories">
+                <li id="item_4778" style="width: 100%; display: block;">
+    <div class="iblock" style="width: 90%">
+        <span style="color: #cecece; cursor: move;">&gt;</span>
+                <a href="?pmcat=4778" style="color: #c2b942;">Pers&ouml;nlich</a>
+                (0/0)
+    </div>
+    <div class="iblock right" style="width: 8%">
+        <a href="javascript:void(0);" onclick="showPMCategoryWindow(4778);" onmouseover="cp('catedit4778','buttons/knedit2', 'png')" onmouseout="cp('catedit4778','buttons/knedit1', 'png')">
+            <img src="assets/buttons/knedit1.png" title="Editieren" name="catedit4778">
+        </a>
+    </div>
+</li>
+<li id="item_4779" style="width: 100%; display: block;">
+    <div class="iblock" style="width: 90%">
+        <span style="color: #cecece; cursor: move;">&gt;</span>
+                <a href="?pmcat=4779">Schiffe</a>
+                (0/0)
+    </div>
+    <div class="iblock right" style="width: 8%">
+        <a href="javascript:void(0);" onclick="showPMCategoryWindow(4779);" onmouseover="cp('catedit4779','buttons/knedit2', 'png')" onmouseout="cp('catedit4779','buttons/knedit1', 'png')">
+            <img src="assets/buttons/knedit1.png" title="Editieren" name="catedit4779">
+        </a>
+    </div>
+</li>
+<li id="item_4780" style="width: 100%; display: block;">
+    <div class="iblock" style="width: 90%">
+        <span style="color: #cecece; cursor: move;">&gt;</span>
+                <a href="?pmcat=4780">Kolonien</a>
+                (0/0)
+    </div>
+    <div class="iblock right" style="width: 8%">
+        <a href="javascript:void(0);" onclick="showPMCategoryWindow(4780);" onmouseover="cp('catedit4780','buttons/knedit2', 'png')" onmouseout="cp('catedit4780','buttons/knedit1', 'png')">
+            <img src="assets/buttons/knedit1.png" title="Editieren" name="catedit4780">
+        </a>
+    </div>
+</li>
+<li id="item_4781" style="width: 100%; display: block;">
+    <div class="iblock" style="width: 90%">
+        <span style="color: #cecece; cursor: move;">&gt;</span>
+                <a href="?pmcat=4781">Handel</a>
+                (0/0)
+    </div>
+    <div class="iblock right" style="width: 8%">
+        <a href="javascript:void(0);" onclick="showPMCategoryWindow(4781);" onmouseover="cp('catedit4781','buttons/knedit2', 'png')" onmouseout="cp('catedit4781','buttons/knedit1', 'png')">
+            <img src="assets/buttons/knedit1.png" title="Editieren" name="catedit4781">
+        </a>
+    </div>
+</li>
+<li id="item_4782" style="width: 100%; display: block;">
+    <div class="iblock" style="width: 90%">
+        <span style="color: #cecece; cursor: move;">&gt;</span>
+                <a href="?pmcat=4782">Systemmeldungen</a>
+                (0/0)
+    </div>
+    <div class="iblock right" style="width: 8%">
+        <a href="javascript:void(0);" onclick="showPMCategoryWindow(4782);" onmouseover="cp('catedit4782','buttons/knedit2', 'png')" onmouseout="cp('catedit4782','buttons/knedit1', 'png')">
+            <img src="assets/buttons/knedit1.png" title="Editieren" name="catedit4782">
+        </a>
+    </div>
+</li>
+<li id="item_4783" style="width: 100%; display: block;">
+    <div class="iblock" style="width: 90%">
+        <span style="color: #cecece; cursor: move;">&gt;</span>
+                <a href="?pmcat=4783">Postausgang</a>
+                (0/0)
+    </div>
+    <div class="iblock right" style="width: 8%">
+        <a href="javascript:void(0);" onclick="showPMCategoryWindow(4783);" onmouseover="cp('catedit4783','buttons/knedit2', 'png')" onmouseout="cp('catedit4783','buttons/knedit1', 'png')">
+            <img src="assets/buttons/knedit1.png" title="Editieren" name="catedit4783">
+        </a>
+    </div>
+</li>
+<li id="item_4784" style="width: 100%; display: block;">
+    <div class="iblock" style="width: 90%">
+        <span style="color: #cecece; cursor: move;">&gt;</span>
+                <a href="?pmcat=4784">Stationen</a>
+                (0/0)
+    </div>
+    <div class="iblock right" style="width: 8%">
+        <a href="javascript:void(0);" onclick="showPMCategoryWindow(4784);" onmouseover="cp('catedit4784','buttons/knedit2', 'png')" onmouseout="cp('catedit4784','buttons/knedit1', 'png')">
+            <img src="assets/buttons/knedit1.png" title="Editieren" name="catedit4784">
+        </a>
+    </div>
+</li>
+            </ul>
+            <script defer>
+    Sortable.create('catlist', {
+      tag: 'li',
+      onUpdate: updateCategoryOrder,
+    });
+</script>
+            <br style="clear: both;"><br>
+            <span style="color: #cecece;">&gt;</span> <a href="javascript:void(0);" onclick="openNewCatWindow();">
+                Neuer Ordner</a>
+        </td>
+    </tr>
+</table>
+</div>
+<div class="footer">
+    Rendered in 4.203s - Memory usage: 42.77Mb
+</div>
+<script>
+            initTranslations();
+                updateComponent('GAME_PM_NAVLET', '/game.php?SHOW_COMPONENT=1&component=GAME_PM_NAVLET');
+        </script>
+
+</body>
+</html>

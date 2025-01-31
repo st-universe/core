@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\Table;
 use Override;
-use Stu\Component\Ship\ShipModuleTypeEnum;
+use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepository;
 
 #[Table(name: 'stu_rumps_module_level')]
@@ -157,14 +157,6 @@ class ShipRumpModuleLevel implements ShipRumpModuleLevelInterface
     public function getRumpId(): int
     {
         return $this->rump_id;
-    }
-
-    #[Override]
-    public function setRumpId(int $shipRumpId): ShipRumpModuleLevelInterface
-    {
-        $this->rump_id = $shipRumpId;
-
-        return $this;
     }
 
     #[Override]
@@ -733,11 +725,11 @@ class ShipRumpModuleLevel implements ShipRumpModuleLevelInterface
     {
         return array_reduce(
             array_map(
-                fn (ShipModuleTypeEnum $type): string =>
+                fn(SpacecraftModuleTypeEnum $type): string =>
                 sprintf('getModuleMandatory%d', $type->value),
-                array_filter(ShipModuleTypeEnum::cases(), fn (ShipModuleTypeEnum $type): bool => !$type->isSpecialSystemType())
+                array_filter(SpacecraftModuleTypeEnum::cases(), fn(SpacecraftModuleTypeEnum $type): bool => !$type->isSpecialSystemType())
             ),
-            fn (int $value, string $method): int => $value + $this->$method() ? 1 : 0,
+            fn(int $value, string $method): int => $value + $this->$method() ? 1 : 0,
             0
         );
     }

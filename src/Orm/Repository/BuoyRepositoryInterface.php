@@ -8,6 +8,8 @@ use Stu\Orm\Entity\BuoyInterface;
 
 /**
  * @extends ObjectRepository<Buoy>
+ * 
+ * @method null|BuoyInterface find(integer $id)
  */
 interface BuoyRepositoryInterface extends ObjectRepository
 {

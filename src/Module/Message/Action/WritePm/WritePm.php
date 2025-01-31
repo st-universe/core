@@ -11,16 +11,18 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Repository\IgnoreListRepositoryInterface;
-use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class WritePm implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_WRITE_PM';
 
-    public function __construct(private WritePmRequestInterface $writePmRequest, private IgnoreListRepositoryInterface $ignoreListRepository, private PrivateMessageRepositoryInterface $privateMessageRepository, private PrivateMessageSenderInterface $privateMessageSender, private UserRepositoryInterface $userRepository)
-    {
-    }
+    public function __construct(
+        private WritePmRequestInterface $writePmRequest,
+        private IgnoreListRepositoryInterface $ignoreListRepository,
+        private PrivateMessageSenderInterface $privateMessageSender,
+        private UserRepositoryInterface $userRepository
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -50,16 +52,7 @@ final class WritePm implements ActionControllerInterface
 
         $this->privateMessageSender->send($userId, $recipient->getId(), $text, PrivateMessageFolderTypeEnum::SPECIAL_MAIN);
 
-        $replyPm = $this->privateMessageRepository->find($this->writePmRequest->getReplyPmId());
-
-        if ($replyPm && $replyPm->getRecipientId() === $userId) {
-            $replyPm->setReplied(true);
-
-            $this->privateMessageRepository->save($replyPm);
-        }
-
         $game->addInformation(_('Die Nachricht wurde abgeschickt'));
-
         $game->setView(ModuleViewEnum::PM);
     }
 

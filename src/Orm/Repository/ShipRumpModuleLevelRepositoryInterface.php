@@ -11,5 +11,5 @@ use Stu\Orm\Entity\ShipRumpModuleLevelInterface;
  */
 interface ShipRumpModuleLevelRepositoryInterface extends ObjectRepository
 {
-    public function getByShipRump(int $shipRumpId): ?ShipRumpModuleLevelInterface;
+    public function getByShipRump(int $rumpId): ?ShipRumpModuleLevelInterface;
 }

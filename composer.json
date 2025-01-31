@@ -30,8 +30,8 @@
     "ext-iconv": "*",
     "ext-intl": "*",
     "ext-json": "*",
-    "ext-mysqli": "*",
     "ext-pcntl": "*",
+    "ext-pdo_sqlite": "*",
     "ext-redis": "*",
     "ext-sockets": "*",
     "ext-sysvsem": "*",
@@ -56,7 +56,8 @@
     "monolog/monolog": "^3",
     "mpscholten/request-parser": "^1.5",
     "php-di/php-di": "^7",
-    "st-universe/planet-generator": "dev-feature/update_phpstan_to_v2",
+    "sebastian/diff": "^6.0",
+    "st-universe/planet-generator": "dev-master",
     "st-universe/starsystem-generator": "dev-master",
     "symfony/mailer": "^7.1.5",
     "twig/twig": "^3.6"
@@ -74,7 +75,7 @@
     "phpstan/phpstan-mockery": "^2.0",
     "phpstan/phpstan-phpunit": "^2.0",
     "phpunit/phpunit": "^11.2.6",
-    "rector/rector": "2.0.0-rc2",
+    "rector/rector": "^2.0",
     "spatie/phpunit-snapshot-assertions": "^5.1",
     "st-universe/assets": "dev-master"
   },
@@ -101,7 +102,8 @@
   ],
   "scripts": {
     "orm:proxies": "./bin/doctrine orm:generate-proxies",
-    "tests": "@php vendor/bin/phpunit tests",
+    "unittests": "@php vendor/bin/phpunit --testsuite 'STU unit'",
+    "integrationtests": "@php vendor/bin/phpunit --testsuite 'STU integration'",
     "stan": "phpstan",
     "rector:dry": "rector process -n",
     "coverage": "XDEBUG_MODE=coverage ./vendor/bin/phpunit --coverage-html build/coverage tests",
@@ -109,10 +111,18 @@
     "cs:fix": "php-cs-fixer fix",
     "security:check": "@php vendor/bin/security-checker security:check ./composer.lock",
     "qa": [
+      "@composer qaStage1",
+      "@composer qaStage2"
+    ],
+    "qaStage1": [
       "@composer orm:proxies",
-      "@composer tests",
+      "@composer unittests",
       "@composer stan",
       "@composer security:check"
+    ],
+    "qaStage2": [
+      "@composer orm:proxies",
+      "@composer integrationtests"
     ],
     "gen:assets": [
       "@php src/Public/assets/generator/building_generator/gen.php",
@@ -123,7 +133,9 @@
     ]
   },
   "scripts-descriptions": {
-    "qa": "Executes alle qa related action",
+    "qa": "Executes all qa related actions",
+    "qaStage1": "Executes basic qa related actions",
+    "qaStage2": "Executes integrative qa related actions",
     "gen:assets": "Generates asset images",
     "gen:baseline": "Generates the phpstan baseline"
   },
