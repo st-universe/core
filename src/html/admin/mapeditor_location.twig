@@ -1,13 +1,13 @@
 {% set map = mapItem.getMap %}
-{% set passable = map.getFieldType.getPassable ? 1 : 0 %}
-<td class="starmap" data-passable="{{ passable }}" data-region="{{ map.getRegionId }}"
-    data-admin-region="{{ map.getAdminRegionId }}" data-system-type-id="{{ map.getSystemTypeId }}"
-    id="{{ map.getCx }}_{{ map.getCy }}" data-influence-area="{{map.getInfluenceAreaId}}">
-    <div class="lssobj" style="cursor: pointer ! important;" onmouseover="toggleMapfieldType(this)"
+{% set fieldType = map.getFieldType %}
+{% set passable = fieldType.getPassable ? 1 : 0 %}
+<td class="starmap" id="{{ map.getCx }}_{{ map.getCy }}" data-passable="{{ passable }}"
+    data-region="{{ map.getRegionId }}" data-admin-region="{{ map.getAdminRegionId }}"
+    data-system-type-id="{{ map.getSystemTypeId }}" data-influence-area="{{map.getInfluenceAreaId}}"
+    data-effects="{{ fieldType.getEffectsAsString }}">
+    <div class="divbody lssobj" style="cursor: pointer ! important; padding: 0px !important; width: 30px; height: 30px;"
+        onclick="updateField(this,{{ map.getId }});" onmouseover="toggleMapfieldType(this)"
         onmouseout="toggleMapfieldType(this)">
-        <div class="divbody" style="padding: 0px !important; width: 30px; height: 30px;"
-            onclick="updateField(this,{{ map.getId }});">
-            <img src="/assets/map/{{ mapItem.getMapGraphicPath }}" />
-        </div>
+        <img src="/assets/map/{{ mapItem.getMapGraphicPath }}" />
     </div>
 </td>

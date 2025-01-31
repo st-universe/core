@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250124215956 extends AbstractMigration
+final class Version20250130172650 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -267,7 +267,7 @@ final class Version20250124215956 extends AbstractMigration
         $this->addSql('CREATE INDEX map_bordertype_idx ON stu_map (bordertype_id)');
         $this->addSql('CREATE INDEX map_admin_region_idx ON stu_map (admin_region_id)');
         $this->addSql('CREATE TABLE stu_map_bordertypes (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, faction_id INTEGER NOT NULL, color VARCHAR(255) NOT NULL, description VARCHAR(255) NOT NULL)');
-        $this->addSql('CREATE TABLE stu_map_ftypes (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, type INTEGER NOT NULL, is_system BOOLEAN NOT NULL, ecost SMALLINT NOT NULL, name VARCHAR(255) NOT NULL, colonies_classes_id INTEGER DEFAULT NULL, damage SMALLINT NOT NULL, x_damage SMALLINT NOT NULL, x_damage_system SMALLINT DEFAULT NULL, x_damage_type SMALLINT DEFAULT NULL, "view" BOOLEAN NOT NULL, passable BOOLEAN NOT NULL, CONSTRAINT FK_3D24A6CE9106126 FOREIGN KEY (colonies_classes_id) REFERENCES stu_colonies_classes (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE stu_map_ftypes (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, type INTEGER NOT NULL, is_system BOOLEAN NOT NULL, ecost SMALLINT NOT NULL, name VARCHAR(255) NOT NULL, colonies_classes_id INTEGER DEFAULT NULL, damage SMALLINT NOT NULL, x_damage SMALLINT NOT NULL, x_damage_system SMALLINT DEFAULT NULL, x_damage_type SMALLINT DEFAULT NULL, "view" BOOLEAN NOT NULL, passable BOOLEAN NOT NULL, consequences CLOB DEFAULT NULL, CONSTRAINT FK_3D24A6CE9106126 FOREIGN KEY (colonies_classes_id) REFERENCES stu_colonies_classes (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_3D24A6CE9106126 ON stu_map_ftypes (colonies_classes_id)');
         $this->addSql('CREATE INDEX map_ftypes_type_idx ON stu_map_ftypes (type)');
         $this->addSql('CREATE TABLE stu_map_regions (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, description VARCHAR(255) NOT NULL, database_id INTEGER DEFAULT NULL, CONSTRAINT FK_3CCEB5C5F0AA09DB FOREIGN KEY (database_id) REFERENCES stu_database_entrys (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
