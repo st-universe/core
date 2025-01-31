@@ -375,10 +375,7 @@ function fieldEventSelector(type) {
 	fieldevent = type;
 
 	cells.forEach(function (cell) {
-		var overlay = cell.querySelector(".overlay");
-		if (overlay) {
-			overlay.remove();
-		}
+		removeOverlay(cell);
 	});
 
 	if (type === 0) {
@@ -390,17 +387,7 @@ function fieldEventSelector(type) {
 			var regionValue = cell.getAttribute("data-region");
 
 			if (regionValue > 1) {
-				var divbody = cell.querySelector(".divbody");
-				var overlay = document.createElement("div");
-				overlay.className = "overlay";
-				overlay.style.position = "absolute";
-				overlay.style.top = 0;
-				overlay.style.left = 0;
-				overlay.style.width = "100%";
-				overlay.style.height = "100%";
-				overlay.style.backgroundColor = "rgba(255, 0, 0, 0.5)";
-				divbody.style.position = "relative";
-				divbody.appendChild(overlay);
+				createOverlay(cell, "rgba(255, 0, 0, 0.5)");
 			}
 		});
 	}
@@ -410,17 +397,7 @@ function fieldEventSelector(type) {
 			var regionValue = cell.getAttribute("data-admin-region");
 
 			if (regionValue > 1) {
-				var divbody = cell.querySelector(".divbody");
-				var overlay = document.createElement("div");
-				overlay.className = "overlay";
-				overlay.style.position = "absolute";
-				overlay.style.top = 0;
-				overlay.style.left = 0;
-				overlay.style.width = "100%";
-				overlay.style.height = "100%";
-				overlay.style.backgroundColor = "rgba(0, 0, 255, 0.5)";
-				divbody.style.position = "relative";
-				divbody.appendChild(overlay);
+				createOverlay(cell, "rgba(0, 0, 255, 0.5)");
 			}
 		});
 	}
@@ -430,17 +407,7 @@ function fieldEventSelector(type) {
 			var regionValue = cell.getAttribute("data-system-type-id");
 
 			if (regionValue > 1) {
-				var divbody = cell.querySelector(".divbody");
-				var overlay = document.createElement("div");
-				overlay.className = "overlay";
-				overlay.style.position = "absolute";
-				overlay.style.top = 0;
-				overlay.style.left = 0;
-				overlay.style.width = "100%";
-				overlay.style.height = "100%";
-				overlay.style.backgroundColor = "rgba(255, 255, 0, 0.5)";
-				divbody.style.position = "relative";
-				divbody.appendChild(overlay);
+				createOverlay(cell, "rgba(255, 255, 0, 0.5)");
 			}
 		});
 	}
@@ -450,17 +417,7 @@ function fieldEventSelector(type) {
 			var regionValue = cell.getAttribute("data-passable");
 
 			if (regionValue == 0) {
-				var divbody = cell.querySelector(".divbody");
-				var overlay = document.createElement("div");
-				overlay.className = "overlay";
-				overlay.style.position = "absolute";
-				overlay.style.top = 0;
-				overlay.style.left = 0;
-				overlay.style.width = "100%";
-				overlay.style.height = "100%";
-				overlay.style.backgroundColor = "rgba(255, 255, 0, 0.5)";
-				divbody.style.position = "relative";
-				divbody.appendChild(overlay);
+				createOverlay(cell, "rgba(255, 255, 0, 0.5)");
 			}
 		});
 	}
@@ -470,17 +427,7 @@ function fieldEventSelector(type) {
 			var regionValue = cell.getAttribute("data-influence-area");
 
 			if (regionValue) {
-				var divbody = cell.querySelector(".divbody");
-				var overlay = document.createElement("div");
-				overlay.className = "overlay";
-				overlay.style.position = "absolute";
-				overlay.style.top = 0;
-				overlay.style.left = 0;
-				overlay.style.width = "100%";
-				overlay.style.height = "100%";
-				overlay.style.backgroundColor = getRandomColorForNumber(regionValue);
-				divbody.style.position = "relative";
-				divbody.appendChild(overlay);
+				overlay = createOverlay(cell, getRandomColorForNumber(regionValue));
 
 				var span = document.createElement("span");
 				span.className = "influence-id";
@@ -495,7 +442,44 @@ function fieldEventSelector(type) {
 			}
 		});
 	}
+
+	if (type === 6) {
+		cells.forEach(function (cell) {
+			var effectsValue = cell.getAttribute("data-effects");
+
+			if (effectsValue) {
+				overlay = createOverlay(cell, "rgba(255, 174, 0, 0.5)");
+				overlay.parentNode.parentNode.title = effectsValue;
+			}
+		});
+	}
 }
+
+function createOverlay(cell, backgroundColor) {
+	removeOverlay(cell);
+
+	var divbody = cell.querySelector(".divbody");
+	var overlay = document.createElement("div");
+	overlay.className = "overlay";
+	overlay.style.position = "absolute";
+	overlay.style.top = 0;
+	overlay.style.left = 0;
+	overlay.style.width = "100%";
+	overlay.style.height = "100%";
+	overlay.style.backgroundColor = backgroundColor;
+	divbody.style.position = "relative";
+	divbody.appendChild(overlay);
+
+	return overlay;
+}
+
+function removeOverlay(cell) {
+	var overlay = cell.querySelector(".overlay");
+	if (overlay) {
+		overlay.remove();
+	}
+}
+
 function hashNumberToColor(number) {
 	const hash = number * 2654435761 % 2 ** 32;
 	const r = (hash & 0xFF0000) >> 16;
@@ -580,6 +564,27 @@ function selectArea(id) {
 	}
 	areaid = id;
 }
+
+var selectedEffects = new Set();
+function selectEffects() {
+	selectedEffects.clear();
+
+	const checkboxes = document.querySelectorAll('input[name="effects[]"]:checked');
+
+	Array.from(checkboxes)
+		.forEach(checkbox => selectedEffects.add(checkbox.value));
+
+	$('reseteffects').checked = false;
+}
+function resetEffects() {
+	selectedEffects.clear();
+
+	document
+		.querySelectorAll('input[name="effects[]"]:checked')
+		.forEach(checkbox => checkbox.checked = false);
+}
+
+
 function toggleMapfieldType(obj) {
 	if (selectedFieldType == 0) {
 		return;
@@ -596,13 +601,15 @@ function toggleMapfieldType(obj) {
 }
 function updateField(obj, fieldid) {
 	if (
-		selectedFieldType == 0 &&
-		selectedSystemType == 0 &&
-		selectedRegion == 0 &&
-		adminregionselector == 0 &&
-		passableselector == 0 &&
-		borderselector == 0 &&
-		areaid == 0
+		selectedFieldType == 0
+		&& selectedSystemType == 0
+		&& selectedRegion == 0
+		&& adminregionselector == 0
+		&& passableselector == 0
+		&& borderselector == 0
+		&& areaid == 0
+		&& selectedEffects == null
+		&& $('reseteffects').checked == false
 	) {
 		alert(
 			"Es wurde weder ein Systemtyp, Region, AdminRegion, Border, Passiebarkeit noch ein Feldtyp ausgewählt"
@@ -665,8 +672,8 @@ function updateField(obj, fieldid) {
 				span.style.left = "50%";
 				span.style.transform = "translate(-50%, -50%)";
 				span.style.color = "white";
-				span.style.fontWeight = "bold";
 				span.innerText = areaid;
+				span.style.fontWeight = "bold";
 				overlay.appendChild(span);
 			}
 		}
@@ -702,6 +709,30 @@ function updateField(obj, fieldid) {
 			"/admin/?B_EDIT_BORDER=1&field=" + fieldid + "&border=" + borderselector
 		);
 		obj.parentNode.style.border = "1px solid".bordercolor;
+	}
+	if (selectedEffects.size > 0) {
+
+		const joined = [...selectedEffects].join('&effects[]=');
+
+		ajax_update(
+			false,
+			`/admin/?B_EDIT_EFFECTS=1&field=${fieldid}&effects[]=${joined}`
+		);
+
+		if (fieldevent == 6) {
+			obj.parentNode.title = [...selectedEffects].join('\n');
+			createOverlay(obj.parentNode, "rgba(255, 174, 0, 0.5)");
+		}
+	}
+	if ($('reseteffects').checked) {
+		ajax_update(
+			false,
+			`/admin/?B_RESET_EFFECTS=1&field=${fieldid}`
+		);
+		if (fieldevent == 6) {
+			obj.parentNode.removeAttribute('title');
+			removeOverlay(obj.parentNode);
+		}
 	}
 }
 function setNewFieldType(obj, fieldid) {

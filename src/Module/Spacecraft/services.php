@@ -196,6 +196,7 @@ use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\Flight\WarpdriveCon
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight\AnomalyConsequence;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight\DeactivateTranswarpConsequence;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight\DeflectorConsequence;
+use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight\FieldTypeEffectConsequence;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight\PostFlightAstroMappingConsequence;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight\PostFlightConsequenceInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight\PostFlightDirectionConsequence;
@@ -337,6 +338,7 @@ return [
         autowire(PostFlightTrackerConsequence::class),
         autowire(PostFlightTractorConsequence::class),
         autowire(DeflectorConsequence::class),
+        autowire(FieldTypeEffectConsequence::class),
         autowire(AnomalyConsequence::class)
     ],
     FlightRouteFactoryInterface::class => autowire(FlightRouteFactory::class)

@@ -9,6 +9,7 @@ use RuntimeException;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Map\DirectionEnum;
 use Stu\Component\Map\MapEnum;
+use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Starmap\Lib\StarmapUiFactoryInterface;
@@ -106,7 +107,7 @@ final class EditSection implements ViewControllerInterface
 		$game->setTemplateVar('POSSIBLE_ADMIN_REGION', $possibleAdminRegion);
 		$game->setTemplateVar('FIELDS_PER_SECTION', MapEnum::FIELDS_PER_SECTION);
 		$game->setTemplateVar('POSSIBLE_AREAS', $possibleArea);
-
+		$game->setTemplateVar('POSSIBLE_EFFECTS', FieldTypeEffectEnum::cases());
 
 		$game->addExecuteJS(sprintf(
 			"registerNavKeys('/admin/', '%s', '', true);",

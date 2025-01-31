@@ -15,6 +15,7 @@ use Stu\Module\Admin\Action\Map\EditAdminRegion\EditAdminRegionRequestInterface;
 use Stu\Module\Admin\Action\Map\EditBorder\EditBorder;
 use Stu\Module\Admin\Action\Map\EditBorder\EditBorderRequest;
 use Stu\Module\Admin\Action\Map\EditBorder\EditBorderRequestInterface;
+use Stu\Module\Admin\Action\Map\EditEffects\EditEffects;
 use Stu\Module\Admin\Action\Map\EditField\EditField;
 use Stu\Module\Admin\Action\Map\EditField\EditFieldRequest;
 use Stu\Module\Admin\Action\Map\EditField\EditFieldRequestInterface;
@@ -35,6 +36,7 @@ use Stu\Module\Admin\Action\Map\EditSystemType\EditSystemTypeRequest;
 use Stu\Module\Admin\Action\Map\EditSystemType\EditSystemTypeRequestInterface;
 use Stu\Module\Admin\Action\Map\GenerateEmptySystems\GenerateEmptySystems;
 use Stu\Module\Admin\Action\Map\RegenerateSystem\RegenerateSystem;
+use Stu\Module\Admin\Action\Map\ResetEffects\ResetEffects;
 use Stu\Module\Admin\Action\RecalculateBuildplanCrewUsage;
 use Stu\Module\Admin\Action\ResetCaches;
 use Stu\Module\Admin\Action\Sandbox\CreateSandbox;
@@ -86,6 +88,7 @@ return [
     EditBorderRequestInterface::class => autowire(EditBorderRequest::class),
     ManualColonyTickRequestInterface::class => autowire(ManualColonyTickRequest::class),
     'ADMIN_ACTIONS' => [
+        EditEffects::ACTION_IDENTIFIER => autowire(EditEffects::class),
         EditField::ACTION_IDENTIFIER => autowire(EditField::class),
         EditSystemType::ACTION_IDENTIFIER => autowire(EditSystemType::class),
         EditSystemField::ACTION_IDENTIFIER => autowire(EditSystemField::class),
@@ -94,6 +97,7 @@ return [
         EditInfluenceArea::ACTION_IDENTIFIER => autowire(EditInfluenceArea::class),
         EditPassable::ACTION_IDENTIFIER => autowire(EditPassable::class),
         EditBorder::ACTION_IDENTIFIER => autowire(EditBorder::class),
+        ResetEffects::ACTION_IDENTIFIER => autowire(ResetEffects::class),
         DoColonyCorrection::ACTION_IDENTIFIER => autowire(DoColonyCorrection::class),
         ManualColonyTick::ACTION_IDENTIFIER => autowire(ManualColonyTick::class),
         DoManualMaintenance::ACTION_IDENTIFIER => autowire(DoManualMaintenance::class)
