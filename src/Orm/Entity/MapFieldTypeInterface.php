@@ -49,10 +49,12 @@ interface MapFieldTypeInterface
     public function getColonyClass(): ?ColonyClassInterface;
 
     /** @return array<FieldTypeEffectEnum> */
-    public function getEffects(): ?array;
+    public function getEffects(): array;
 
     /** @param null|array<FieldTypeEffectEnum> $consequences */
     public function setEffects(?array $consequences): MapFieldTypeInterface;
+
+    public function hasEffect(FieldTypeEffectEnum $effect): bool;
 
     public function getEffectsAsString(): ?string;
 }

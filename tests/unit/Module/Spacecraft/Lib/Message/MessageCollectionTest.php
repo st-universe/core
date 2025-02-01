@@ -4,18 +4,26 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Message;
 
+use Mockery\MockInterface;
 use Override;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\StuTestCase;
 
 class MessageCollectionTest extends StuTestCase
 {
+    /** @var MockInterface&MessageFactoryInterface */
+    private $messageFactory;
+
     private MessageCollectionInterface $subject;
 
     #[Override]
     public function setUp(): void
     {
-        $this->subject = new MessageCollection();
+        $this->messageFactory = $this->mock(MessageFactoryInterface::class);
+
+        $this->subject = new MessageCollection(
+            $this->messageFactory
+        );
     }
 
     public function testGetRecipientIds(): void

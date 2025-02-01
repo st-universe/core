@@ -9,7 +9,6 @@ use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
-use Stu\Module\Spacecraft\Lib\Message\MessageCollection;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\ConditionCheckResult;
@@ -38,7 +37,7 @@ final class ShipMover implements ShipMoverInterface
         FlightRouteInterface $flightRoute
     ): MessageCollectionInterface {
 
-        $messages = new MessageCollection();
+        $messages = $this->messageFactory->createMessageCollection();
 
         $leadSpacecraft = $leadWrapper->get();
         $leadSpacecraftName = $leadSpacecraft->getName();
@@ -111,7 +110,7 @@ final class ShipMover implements ShipMoverInterface
             // nächstes Feld nicht passierbar
             if (!$nextWaypoint->getFieldType()->getPassable()) {
                 $flightRoute->abortFlight();
-                $this->addInformation('Das nächste Feld kann nicht passiert werden', $messages);
+                $messages->addInformation('Das nächste Feld kann nicht passiert werden');
                 break;
             }
 
@@ -127,7 +126,7 @@ final class ShipMover implements ShipMoverInterface
 
             if (!$conditionCheckResult->isFlightPossible()) {
                 $flightRoute->abortFlight();
-                $this->addInformation('Der Weiterflug wurde aus folgenden Gründen abgebrochen:', $messages);
+                $messages->addInformation('Der Weiterflug wurde aus folgenden Gründen abgebrochen:');
                 $this->addInformationMerge($conditionCheckResult->getInformations(), $messages);
                 break;
             }
@@ -155,7 +154,7 @@ final class ShipMover implements ShipMoverInterface
 
             if ($this->areAllShipsDestroyed($activeWrappers)) {
                 $flightRoute->abortFlight();
-                $this->addInformation('Es wurden alle Schiffe zerstört', $messages);
+                $messages->addInformation('Es wurden alle Schiffe zerstört');
             }
         }
 
@@ -261,7 +260,7 @@ final class ShipMover implements ShipMoverInterface
     {
         if ($hasToLeaveFleet && $ship instanceof ShipInterface) {
             if ($this->leaveFleet->leaveFleet($ship)) {
-                $this->addInformation(sprintf('Die %s hat die Flotte verlassen', $ship->getName()), $messages);
+                $messages->addInformation(sprintf('Die %s hat die Flotte verlassen', $ship->getName()));
             }
         }
     }
@@ -333,14 +332,14 @@ final class ShipMover implements ShipMoverInterface
 
         //add info about anomalies
         foreach ($leadWrapper->get()->getLocation()->getAnomalies() as $anomaly) {
-            $this->addInformation(sprintf(
+            $messages->addInformation(sprintf(
                 '[b][color=yellow]In diesem Sektor befindet sich eine %s-Anomalie[/color][/b]',
                 $anomaly->getAnomalyType()->getName()
-            ), $messages);
+            ));
         }
         // add info about buyos
         foreach ($leadWrapper->get()->getLocation()->getBuoys() as $buoy) {
-            $this->addInformation(sprintf('[b][color=yellow]Boje entdeckt: [/color][/b]%s', $buoy->getText()), $messages);
+            $messages->addInformation(sprintf('[b][color=yellow]Boje entdeckt: [/color][/b]%s', $buoy->getText()));
         }
     }
 
@@ -350,11 +349,6 @@ final class ShipMover implements ShipMoverInterface
     private function areAllShipsDestroyed(Collection $wrappers): bool
     {
         return !$wrappers->exists(fn(int $key, SpacecraftWrapperInterface $wrapper): bool => !$wrapper->get()->isDestroyed());
-    }
-
-    private function addInformation(string $value, MessageCollectionInterface $messages): void
-    {
-        $this->addInformationMerge([$value], $messages);
     }
 
     /**
