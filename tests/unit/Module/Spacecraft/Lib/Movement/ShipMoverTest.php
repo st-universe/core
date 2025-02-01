@@ -17,6 +17,7 @@ use Stu\Module\Spacecraft\Lib\Movement\ShipMovementInformationAdderInterface;
 use Stu\Module\Spacecraft\Lib\Movement\ShipMover;
 use Stu\Module\Spacecraft\Lib\Movement\ShipMoverInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
@@ -66,6 +67,8 @@ class ShipMoverTest extends StuTestCase
         $flightRoute = $this->mock(FlightRouteInterface::class);
         $map = $this->mock(MapInterface::class);
         $conditionCheckResult = $this->mock(ConditionCheckResult::class);
+        $messageCollection = $this->mock(MessageCollectionInterface::class);
+        $failureMessage = $this->mock(MessageInterface::class);
 
         $ship->shouldReceive('getName')
             ->withNoArgs()
@@ -128,15 +131,20 @@ class ShipMoverTest extends StuTestCase
             ->once()
             ->andReturn($conditionCheckResult);
 
-        $this->messageFactory->shouldReceive('createMessage')
-            ->with(UserEnum::USER_NOONE, null, ['Der Weiterflug wurde aus folgenden Gründen abgebrochen:'])
+        $this->messageFactory->shouldReceive('createMessageCollection')
+            ->withNoArgs()
             ->once()
-            ->andReturn($this->mock(MessageInterface::class));
+            ->andReturn($messageCollection);
+        $messageCollection->shouldReceive('addInformation')
+            ->with('Der Weiterflug wurde aus folgenden Gründen abgebrochen:')
+            ->once();
+        $messageCollection->shouldReceive('add')
+            ->with($failureMessage)
+            ->once();
         $this->messageFactory->shouldReceive('createMessage')
             ->with(UserEnum::USER_NOONE, null, ['FAILURE'])
             ->once()
-            ->andReturn($this->mock(MessageInterface::class));
-
+            ->andReturn($failureMessage);
 
         $this->subject->checkAndMove($wrapper, $flightRoute);
     }

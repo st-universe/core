@@ -357,7 +357,7 @@ class FlightRouteTest extends StuTestCase
     {
         $dic = Init::getContainer();
 
-        $this->assertEquals(7, count(get(PostFlightConsequenceInterface::class)->resolve($dic)));
+        $this->assertEquals(8, count(get(PostFlightConsequenceInterface::class)->resolve($dic)));
     }
 
     public function testhasSpecialDamageOnFieldExpectFalseIfWaypointsWithoutSpecialDamage(): void

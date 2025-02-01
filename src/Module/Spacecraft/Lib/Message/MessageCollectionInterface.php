@@ -8,6 +8,11 @@ interface MessageCollectionInterface
 {
     public function add(MessageInterface $msg): void;
 
+    public function addInformation(
+        string $text,
+        ?int $recipient = null
+    ): MessageInterface;
+
     /**
      * @return array<int>
      */

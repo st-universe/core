@@ -69,8 +69,8 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
 
         $spacecrafts = $location->getSpacecrafts();
 
-        $messagesForShips = new MessageCollection();
-        $messagesForBases = new MessageCollection();
+        $messagesForShips = $this->messageFactory->createMessageCollection();
+        $messagesForBases = $this->messageFactory->createMessageCollection();
 
         $intro = $this->messageFactory->createMessage(
             UserEnum::USER_NOONE,

@@ -159,7 +159,7 @@ final class BoardShip implements ActionControllerInterface
         $combatGroupAttacker = $this->closeCombatUtil->getCombatGroup($spacecraft);
         $combatGroupDefender = $this->closeCombatUtil->getCombatGroup($target);
 
-        $messages = new MessageCollection();
+        $messages = $this->messageFactory->createMessageCollection();
         $message = $this->messageFactory->createMessage($userId, $targetUserId, [sprintf(
             'Die %s entsendet ein Enterkommando auf die %s',
             $spacecraft->getName(),

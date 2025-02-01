@@ -4,29 +4,32 @@ declare(strict_types=1);
 
 namespace Stu\Component\Spacecraft\System\Type;
 
+use Mockery\MockInterface;
 use Override;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
+use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftStateChangerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Orm\Entity\MapFieldTypeInterface;
+use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\SpacecraftSystemInterface;
 use Stu\StuTestCase;
 
 class CloakShipSystemTest extends StuTestCase
 {
-    private CloakShipSystem $system;
-
-    /**
-     * @var null|MockInterface|SpacecraftStateChangerInterface
-     */
+    /** @var MockInterface&SpacecraftStateChangerInterface */
     private $spacecraftStateChanger;
+    /** @var MockInterface&ShipInterface */
+    private $ship;
+    /** @var MockInterface&ShipWrapperInterface */
+    private $wrapper;
 
-    private ShipInterface $ship;
-    private ShipWrapperInterface $wrapper;
+    private CloakShipSystem $system;
 
     #[Override]
     public function setUp(): void
@@ -79,8 +82,66 @@ class CloakShipSystemTest extends StuTestCase
         $this->assertEquals('das Schiff von einem Traktorstrahl gehalten wird', $reason);
     }
 
+    public function testCheckActivationConditionsReturnsFalseIfEffectExistent(): void
+    {
+        $map = $this->mock(MapInterface::class);
+        $mapFieldType = $this->mock(MapFieldTypeInterface::class);
+
+        $this->ship->shouldReceive('isTractoring')
+            ->withNoArgs()
+            ->once()
+            ->andReturnFalse();
+        $this->ship->shouldReceive('isTractored')
+            ->withNoArgs()
+            ->once()
+            ->andReturnFalse();
+        $this->ship->shouldReceive('getLocation')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($map);
+
+        $map->shouldReceive('getFieldType')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($mapFieldType);
+
+        $mapFieldType->shouldReceive('hasEffect')
+            ->with(FieldTypeEffectEnum::CLOAK_UNUSEABLE)
+            ->once()
+            ->andReturn(true);
+        $mapFieldType->shouldReceive('getName')
+            ->withNoArgs()
+            ->once()
+            ->andReturn('NEBEL');
+
+        $reason = '';
+        $this->assertFalse(
+            $this->system->checkActivationConditions($this->wrapper, $reason)
+        );
+
+        $this->assertEquals('"NEBEL" es verhindert', $reason);
+    }
+
     public function testCheckActivationConditionsReturnsFalseIfSubspaceActive(): void
     {
+        $map = $this->mock(MapInterface::class);
+        $mapFieldType = $this->mock(MapFieldTypeInterface::class);
+
+        $this->ship->shouldReceive('getLocation')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($map);
+
+        $map->shouldReceive('getFieldType')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($mapFieldType);
+
+        $mapFieldType->shouldReceive('hasEffect')
+            ->with(FieldTypeEffectEnum::CLOAK_UNUSEABLE)
+            ->once()
+            ->andReturn(false);
+
         $this->ship->shouldReceive('isTractoring')
             ->withNoArgs()
             ->once()
@@ -104,6 +165,24 @@ class CloakShipSystemTest extends StuTestCase
 
     public function testCheckActivationConditionsReturnsFalseIfAlertRed(): void
     {
+        $map = $this->mock(MapInterface::class);
+        $mapFieldType = $this->mock(MapFieldTypeInterface::class);
+
+        $this->ship->shouldReceive('getLocation')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($map);
+
+        $map->shouldReceive('getFieldType')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($mapFieldType);
+
+        $mapFieldType->shouldReceive('hasEffect')
+            ->with(FieldTypeEffectEnum::CLOAK_UNUSEABLE)
+            ->once()
+            ->andReturn(false);
+
         $this->ship->shouldReceive('isTractoring')
             ->withNoArgs()
             ->once()
@@ -131,6 +210,24 @@ class CloakShipSystemTest extends StuTestCase
 
     public function testCheckActivationConditionsReturnsTrueIfActivateable(): void
     {
+        $map = $this->mock(MapInterface::class);
+        $mapFieldType = $this->mock(MapFieldTypeInterface::class);
+
+        $this->ship->shouldReceive('getLocation')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($map);
+
+        $map->shouldReceive('getFieldType')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($mapFieldType);
+
+        $mapFieldType->shouldReceive('hasEffect')
+            ->with(FieldTypeEffectEnum::CLOAK_UNUSEABLE)
+            ->once()
+            ->andReturn(false);
+
         $this->ship->shouldReceive('isTractoring')
             ->withNoArgs()
             ->once()

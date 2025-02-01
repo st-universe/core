@@ -4,8 +4,18 @@ declare(strict_types=1);
 
 namespace Stu\Component\Map;
 
+use Stu\Component\Map\Effects\EffectHandling;
+use Stu\Component\Map\Effects\EffectHandlingInterface;
+use Stu\Component\Map\Effects\Type\CloakUnuseableEffectHandler;
+use Stu\Lib\Map\FieldTypeEffectEnum;
+
 use function DI\autowire;
 
 return [
+    EffectHandlingInterface::class => autowire(EffectHandling::class)
+        ->constructorParameter(
+            'handlerList',
+            [FieldTypeEffectEnum::CLOAK_UNUSEABLE->value => autowire(CloakUnuseableEffectHandler::class)]
+        ),
     EncodedMapInterface::class => autowire(EncodedMap::class),
 ];

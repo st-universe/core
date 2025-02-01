@@ -59,7 +59,7 @@ class MapFieldType implements MapFieldTypeInterface
     #[Column(type: 'boolean')]
     private bool $passable = false;
 
-    /** @var null|array<FieldTypeEffectEnum> */
+    /** @var null|array<FieldTypeEffectEnum>|array<string> */
     #[Column(type: 'json', nullable: true)]
     private ?array $effects = null;
 
@@ -212,9 +212,12 @@ class MapFieldType implements MapFieldTypeInterface
     }
 
     #[Override]
-    public function getEffects(): ?array
+    public function getEffects(): array
     {
-        return $this->effects;
+        return array_map(
+            fn(mixed $effect): FieldTypeEffectEnum => $effect instanceof FieldTypeEffectEnum ? $effect : FieldTypeEffectEnum::from($effect),
+            $this->effects ?? []
+        );
     }
 
     #[Override]
@@ -226,12 +229,18 @@ class MapFieldType implements MapFieldTypeInterface
     }
 
     #[Override]
+    public function hasEffect(FieldTypeEffectEnum $effect): bool
+    {
+        return in_array($effect, $this->getEffects());
+    }
+
+    #[Override]
     public function getEffectsAsString(): ?string
     {
         if ($this->effects === null) {
             return null;
         }
 
-        return implode("\n", $this->effects);
+        return implode("\n", array_map(fn(FieldTypeEffectEnum $effect): string => $effect->value, $this->getEffects()));
     }
 }
