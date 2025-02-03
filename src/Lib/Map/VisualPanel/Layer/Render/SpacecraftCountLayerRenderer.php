@@ -34,8 +34,17 @@ final class SpacecraftCountLayerRenderer implements LayerRendererInterface
 
     private function getDisplayCount(SpacecraftCountData $data): ?string
     {
-        if ($data->getSpacecraftCount() > 0) {
-            return (string) $data->getSpacecraftCount();
+        if ($data->isDubious()) {
+            return "!";
+        }
+
+        if (!$data->isEnabled()) {
+            return null;
+        }
+
+        $spacecraftCount = $data->getSpacecraftCount();
+        if ($spacecraftCount > 0) {
+            return (string) $spacecraftCount;
         }
         if ($data->hasCloakedShips()) {
             if ($this->showCloakedEverywhere) {

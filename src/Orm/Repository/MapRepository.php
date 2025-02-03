@@ -251,11 +251,15 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                                         FROM stu_spacecraft_system ss2
                                         WHERE c.id = ss2.spacecraft_id
                                         AND ss2.system_type = :cloakSystemId
-                                        AND ss2.mode > 1)) AS cloakcount
+                                        AND ss2.mode > 1)) AS cloakcount,
+                (SELECT mft.effects FROM stu_map_ftypes mft
+                WHERE l.field_id = mft.id) as effects
             FROM stu_location l
+            JOIN stu_map m
+            ON l.id = m.id
             WHERE l.cx BETWEEN :xStart AND :xEnd AND l.cy BETWEEN :yStart AND :yEnd
             AND l.layer_id = :layerId
-            GROUP BY layer_id, x, y',
+            GROUP BY layer_id, x, y, field_id',
             $rsm
         )->setParameters([
             'xStart' => $boundaries->getMinX(),

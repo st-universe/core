@@ -111,12 +111,7 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
             $result += $this->spacecraftSystemManager->getEnergyConsumption($shipSystem->getSystemType());
         }
 
-        if ($this->spacecraft->getAlertState() == SpacecraftAlertStateEnum::ALERT_YELLOW) {
-            $result += SpacecraftStateChangerInterface::ALERT_YELLOW_EPS_USAGE;
-        }
-        if ($this->spacecraft->getAlertState() == SpacecraftAlertStateEnum::ALERT_RED) {
-            $result += SpacecraftStateChangerInterface::ALERT_RED_EPS_USAGE;
-        }
+        $result += $this->spacecraft->getAlertState()->getEpsUsage();
 
         return $result;
     }

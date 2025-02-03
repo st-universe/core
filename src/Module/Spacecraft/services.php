@@ -240,6 +240,7 @@ use Stu\Module\Spacecraft\Lib\Torpedo\ClearTorpedo;
 use Stu\Module\Spacecraft\Lib\Torpedo\ClearTorpedoInterface;
 use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManager;
 use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
+use Stu\Module\Spacecraft\Lib\Ui\PanelLayerConfiguration;
 use Stu\Module\Spacecraft\Lib\Ui\ShipUiFactory;
 use Stu\Module\Spacecraft\Lib\Ui\ShipUiFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Ui\StateIconAndTitle;
@@ -362,7 +363,8 @@ return [
         SpacecraftTypeEnum::SHIP->value => autowire(ShipShowStrategy::class),
         SpacecraftTypeEnum::STATION->value => autowire(StationShowStrategy::class)
     ],
-    ShipUiFactoryInterface::class => autowire(ShipUiFactory::class),
+    ShipUiFactoryInterface::class => autowire(ShipUiFactory::class)
+        ->constructorParameter('panelLayerConfiguration', autowire(PanelLayerConfiguration::class)),
     SpacecraftDestructionInterface::class => autowire(SpacecraftDestruction::class)
         ->constructorParameter(
             'destructionHandlers',

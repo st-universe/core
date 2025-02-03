@@ -10,28 +10,26 @@ use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreationInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Repository\UserMapRepositoryInterface;
 use Stu\StuTestCase;
 
 class ShipUiFactoryTest extends StuTestCase
 {
-    /** @var MockInterface&UserMapRepositoryInterface */
-    private MockInterface $userMapRepository;
-
     /** @var MockInterface&PanelLayerCreationInterface */
-    private MockInterface $panelLayerCreation;
+    private $panelLayerCreation;
+    /** @var MockInterface&PanelLayerConfiguration */
+    private $panelLayerConfiguration;
 
     private ShipUiFactory $subject;
 
     #[Override]
     protected function setUp(): void
     {
-        $this->userMapRepository = $this->mock(UserMapRepositoryInterface::class);
         $this->panelLayerCreation = $this->mock(PanelLayerCreationInterface::class);
+        $this->panelLayerConfiguration = $this->mock(PanelLayerConfiguration::class);
 
         $this->subject = new ShipUiFactory(
-            $this->userMapRepository,
-            $this->panelLayerCreation
+            $this->panelLayerCreation,
+            $this->panelLayerConfiguration
         );
     }
 

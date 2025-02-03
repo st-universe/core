@@ -25,7 +25,9 @@ final class EffectHandling implements EffectHandlingInterface
     public function handleSpacecraftTick(SpacecraftWrapperInterface $wrapper, InformationInterface $information): void
     {
         foreach ($wrapper->get()->getLocation()->getFieldType()->getEffects() as $effect) {
-            $this->getHandler($effect)->handleSpacecraftTick($wrapper, $information);
+            if ($effect->hasHandler()) {
+                $this->getHandler($effect)->handleSpacecraftTick($wrapper, $information);
+            }
         }
     }
 
@@ -33,7 +35,9 @@ final class EffectHandling implements EffectHandlingInterface
     public function handleIncomingSpacecraft(SpacecraftWrapperInterface $wrapper, MessageCollectionInterface $messages): void
     {
         foreach ($wrapper->get()->getLocation()->getFieldType()->getEffects() as $effect) {
-            $this->getHandler($effect)->handleIncomingSpacecraft($wrapper, $messages);
+            if ($effect->hasHandler()) {
+                $this->getHandler($effect)->handleIncomingSpacecraft($wrapper, $messages);
+            }
         }
     }
 
