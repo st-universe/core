@@ -9,7 +9,6 @@ use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreationInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Repository\UserMapRepositoryInterface;
 
 /**
  * Creates ship and ui related items
@@ -17,8 +16,8 @@ use Stu\Orm\Repository\UserMapRepositoryInterface;
 final class ShipUiFactory implements ShipUiFactoryInterface
 {
     public function __construct(
-        private UserMapRepositoryInterface $userMapRepository,
-        private PanelLayerCreationInterface $panelLayerCreation
+        private PanelLayerCreationInterface $panelLayerCreation,
+        private PanelLayerConfiguration $panelLayerConfiguration
     ) {}
 
     #[Override]
@@ -30,7 +29,7 @@ final class ShipUiFactory implements ShipUiFactoryInterface
     ): VisualNavPanel {
         return new VisualNavPanel(
             $this->panelLayerCreation,
-            $this->userMapRepository,
+            $this->panelLayerConfiguration,
             $wrapper,
             $user,
             $loggerUtil,

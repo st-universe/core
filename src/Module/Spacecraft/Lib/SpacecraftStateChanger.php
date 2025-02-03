@@ -86,16 +86,16 @@ final class SpacecraftStateChanger implements SpacecraftStateChangerInterface
 
         //check if enough energy
         if (
-            $alertState == SpacecraftAlertStateEnum::ALERT_YELLOW
-            && $currentAlertState == SpacecraftAlertStateEnum::ALERT_GREEN
+            $alertState === SpacecraftAlertStateEnum::ALERT_YELLOW
+            && $currentAlertState === SpacecraftAlertStateEnum::ALERT_GREEN
         ) {
-            $this->consumeEnergyForAlertChange($wrapper, SpacecraftStateChangerInterface::ALERT_YELLOW_EPS_USAGE);
+            $this->consumeEnergyForAlertChange($wrapper, $alertState->getEpsUsage());
         }
         if (
-            $alertState == SpacecraftAlertStateEnum::ALERT_RED
+            $alertState === SpacecraftAlertStateEnum::ALERT_RED
             && $currentAlertState !== SpacecraftAlertStateEnum::ALERT_RED
         ) {
-            $this->consumeEnergyForAlertChange($wrapper, SpacecraftStateChangerInterface::ALERT_RED_EPS_USAGE);
+            $this->consumeEnergyForAlertChange($wrapper, $alertState->getEpsUsage());
         }
 
         // cancel repair if not on alert green

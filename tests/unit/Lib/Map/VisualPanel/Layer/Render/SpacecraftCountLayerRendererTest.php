@@ -23,10 +23,54 @@ class SpacecraftCountLayerRendererTest extends StuTestCase
         $this->panel = mock(AbstractVisualPanel::class);
     }
 
+    public function testRenderExpectExclamationMarkWhenDubiousEffect(): void
+    {
+        $mapData = $this->mock(SpacecraftCountData::class);
+
+        $mapData->shouldReceive('isDubious')
+            ->withNoArgs()
+            ->andReturn(true);
+
+        $this->panel->shouldReceive('getFontSize')
+            ->withNoArgs()
+            ->once()
+            ->andReturn('FONTSIZE;');
+
+        $subject = new SpacecraftCountLayerRenderer(false, null);
+
+        $result = $subject->render($mapData, $this->panel);
+
+        $this->assertEquals('<div style="FONTSIZE; z-index: 6;" class="centered">!</div>', $result);
+    }
+
+    public function testRenderExpectNullWhenDisabled(): void
+    {
+        $mapData = $this->mock(SpacecraftCountData::class);
+
+        $mapData->shouldReceive('isDubious')
+            ->withNoArgs()
+            ->andReturn(false);
+        $mapData->shouldReceive('isEnabled')
+            ->withNoArgs()
+            ->andReturn(false);
+
+        $subject = new SpacecraftCountLayerRenderer(false, null);
+
+        $result = $subject->render($mapData, $this->panel);
+
+        $this->assertEquals('', $result);
+    }
+
     public function testRenderExpectShipCount(): void
     {
         $mapData = $this->mock(SpacecraftCountData::class);
 
+        $mapData->shouldReceive('isDubious')
+            ->withNoArgs()
+            ->andReturn(false);
+        $mapData->shouldReceive('isEnabled')
+            ->withNoArgs()
+            ->andReturn(true);
         $mapData->shouldReceive('getSpacecraftCount')
             ->withNoArgs()
             ->andReturn(1);
@@ -47,6 +91,12 @@ class SpacecraftCountLayerRendererTest extends StuTestCase
     {
         $mapData = $this->mock(SpacecraftCountData::class);
 
+        $mapData->shouldReceive('isDubious')
+            ->withNoArgs()
+            ->andReturn(false);
+        $mapData->shouldReceive('isEnabled')
+            ->withNoArgs()
+            ->andReturn(true);
         $mapData->shouldReceive('getSpacecraftCount')
             ->withNoArgs()
             ->andReturn(0);
@@ -70,6 +120,12 @@ class SpacecraftCountLayerRendererTest extends StuTestCase
     {
         $mapData = $this->mock(SpacecraftCountData::class);
 
+        $mapData->shouldReceive('isDubious')
+            ->withNoArgs()
+            ->andReturn(false);
+        $mapData->shouldReceive('isEnabled')
+            ->withNoArgs()
+            ->andReturn(true);
         $mapData->shouldReceive('getSpacecraftCount')
             ->withNoArgs()
             ->andReturn(0);
@@ -89,6 +145,12 @@ class SpacecraftCountLayerRendererTest extends StuTestCase
         $mapData = $this->mock(SpacecraftCountData::class);
         $ship = $this->mock(ShipInterface::class);
 
+        $mapData->shouldReceive('isDubious')
+            ->withNoArgs()
+            ->andReturn(false);
+        $mapData->shouldReceive('isEnabled')
+            ->withNoArgs()
+            ->andReturn(true);
         $mapData->shouldReceive('getSpacecraftCount')
             ->withNoArgs()
             ->andReturn(0);
@@ -164,6 +226,12 @@ class SpacecraftCountLayerRendererTest extends StuTestCase
         $mapData = $this->mock(SpacecraftCountData::class);
         $ship = $this->mock(ShipInterface::class);
 
+        $mapData->shouldReceive('isDubious')
+            ->withNoArgs()
+            ->andReturn(false);
+        $mapData->shouldReceive('isEnabled')
+            ->withNoArgs()
+            ->andReturn(true);
         $mapData->shouldReceive('getSpacecraftCount')
             ->withNoArgs()
             ->andReturn(0);

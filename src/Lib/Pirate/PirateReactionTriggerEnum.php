@@ -76,7 +76,7 @@ enum PirateReactionTriggerEnum: int
             ],
             self::ON_SUPPORT_CALL => [
                 PirateBehaviourEnum::RAGE->value => 100,
-                PirateBehaviourEnum::CALL_FOR_SUPPORT->value => 10
+                PirateBehaviourEnum::CALL_FOR_SUPPORT->value => 15
             ],
             self::ON_RAGE => [
                 PirateBehaviourEnum::RAGE->value => 50,
