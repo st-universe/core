@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Map\Effects;
 
+use Closure;
 use Override;
 use RuntimeException;
 use Stu\Component\Map\Effects\Type\EffectHandlerInterface;
@@ -11,6 +12,7 @@ use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Orm\Entity\LocationInterface;
 
 final class EffectHandling implements EffectHandlingInterface
 {
@@ -24,19 +26,32 @@ final class EffectHandling implements EffectHandlingInterface
     #[Override]
     public function handleSpacecraftTick(SpacecraftWrapperInterface $wrapper, InformationInterface $information): void
     {
-        foreach ($wrapper->get()->getLocation()->getFieldType()->getEffects() as $effect) {
-            if ($effect->hasHandler()) {
-                $this->getHandler($effect)->handleSpacecraftTick($wrapper, $information);
-            }
-        }
+        $this->walkEffects($wrapper->get()->getLocation(), function (EffectHandlerInterface $handler) use ($wrapper, $information): void {
+            $handler->handleSpacecraftTick($wrapper, $information);
+        });
+    }
+
+    #[Override]
+    public function addFlightInformationForActiveEffects(LocationInterface $location, MessageCollectionInterface $messages): void
+    {
+        $this->walkEffects($location, function (EffectHandlerInterface $handler) use ($location, $messages): void {
+            $handler->addFlightInformation($location, $messages);
+        });
     }
 
     #[Override]
     public function handleIncomingSpacecraft(SpacecraftWrapperInterface $wrapper, MessageCollectionInterface $messages): void
     {
-        foreach ($wrapper->get()->getLocation()->getFieldType()->getEffects() as $effect) {
+        $this->walkEffects($wrapper->get()->getLocation(), function (EffectHandlerInterface $handler) use ($wrapper, $messages): void {
+            $handler->handleIncomingSpacecraft($wrapper, $messages);
+        });
+    }
+
+    private function walkEffects(LocationInterface $location, callable $func): void
+    {
+        foreach ($location->getFieldType()->getEffects() as $effect) {
             if ($effect->hasHandler()) {
-                $this->getHandler($effect)->handleIncomingSpacecraft($wrapper, $messages);
+                $func($this->getHandler($effect));
             }
         }
     }

@@ -82,6 +82,19 @@ final class ShipMovementInformationAdder implements ShipMovementInformationAdder
             default:
                 throw new InvalidArgumentException(sprintf('route mode %d does not exist', $routeMode));
         }
+
+        $fieldType = $spacecraft->getLocation()->getFieldType();
+        foreach ($fieldType->getEffects() as $effect) {
+
+            $fieldType = $spacecraft->getLocation()->getFieldType();
+            $flightDestinationInfo = $effect->getFlightDestinationInfo($fieldType);
+            if ($flightDestinationInfo !== null) {
+                $messages->addInformation(
+                    sprintf("[color=yellow]%s[/color]", $flightDestinationInfo),
+                    $spacecraft->getUser()->getId()
+                );
+            }
+        }
     }
 
     #[Override]

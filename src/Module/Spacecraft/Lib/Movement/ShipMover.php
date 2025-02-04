@@ -5,10 +5,12 @@ namespace Stu\Module\Spacecraft\Lib\Movement;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Override;
+use Stu\Component\Map\Effects\EffectHandlingInterface;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\ConditionCheckResult;
@@ -28,6 +30,7 @@ final class ShipMover implements ShipMoverInterface
         private PreFlightConditionsCheckInterface $preFlightConditionsCheck,
         private LeaveFleetInterface $leaveFleet,
         private AlertReactionFacadeInterface $alertReactionFacade,
+        private EffectHandlingInterface $effectHandling,
         private MessageFactoryInterface $messageFactory
     ) {}
 
@@ -133,6 +136,9 @@ final class ShipMover implements ShipMoverInterface
 
             $this->addInformationMerge($conditionCheckResult->getInformations(), $messages);
 
+            $this->effectHandling->addFlightInformationForActiveEffects($flightRoute->getNextWaypoint(), $messages);
+
+            /** @var array<array{0: SpacecraftInterface, 1: ShipWrapperInterface}> */
             $movedTractoredShipWrappers = [];
 
             // move every possible ship by one field
@@ -142,6 +148,7 @@ final class ShipMover implements ShipMoverInterface
                 $conditionCheckResult,
                 $hasToLeaveFleet,
                 $hasTravelled,
+                $movedTractoredShipWrappers,
                 $messages
             );
 
@@ -163,6 +170,7 @@ final class ShipMover implements ShipMoverInterface
 
     /**
      * @param Collection<int, SpacecraftWrapperInterface> $activeWrappers
+     * @param array<array{0: SpacecraftInterface, 1: ShipWrapperInterface}> $movedTractoredShipWrappers
      */
     private function moveShipsByOneField(
         Collection $activeWrappers,
@@ -170,6 +178,7 @@ final class ShipMover implements ShipMoverInterface
         ConditionCheckResult $conditionCheckResult,
         bool $hasToLeaveFleet,
         bool &$hasTravelled,
+        array &$movedTractoredShipWrappers,
         MessageCollectionInterface $messages
     ): void {
 
@@ -203,7 +212,7 @@ final class ShipMover implements ShipMoverInterface
         $flightRoute->stepForward();
     }
 
-    /** @param array<array{0: ShipInterface, 1: SpacecraftWrapperInterface}> $movedTractoredShipWrappers */
+    /** @param array<array{0: SpacecraftInterface, 1: ShipWrapperInterface}> $movedTractoredShipWrappers */
     private function alertReactionCheck(
         SpacecraftWrapperInterface $leadWrapper,
         array $movedTractoredShipWrappers,
@@ -217,13 +226,13 @@ final class ShipMover implements ShipMoverInterface
         }
 
         // alert red check for tractored ships
-        foreach ($movedTractoredShipWrappers as [$tractoringShip, $tractoredShipWrapper]) {
-            if (!$tractoringShip->isDestroyed()) {
+        foreach ($movedTractoredShipWrappers as [$tractoringSpacecraft, $tractoredShipWrapper]) {
+            if (!$tractoringSpacecraft->isDestroyed()) {
                 $alertRedInformations = new InformationWrapper();
                 $this->alertReactionFacade->doItAll(
                     $tractoredShipWrapper,
                     $alertRedInformations,
-                    $tractoringShip
+                    $tractoringSpacecraft
                 );
 
                 if (!$alertRedInformations->isEmpty()) {
