@@ -54,7 +54,7 @@ enum FieldTypeEffectEnum: string
             self::EVADE_CHANCE_INTERFERENCE => 'Beeinträchtigung der Manövrierbarkeit',
             self::ENERGY_WEAPON_BUFF => 'Steigerung des Energiewaffenschadens',
             self::ENERGY_WEAPON_NERF => 'Minderung des Energiewaffenschadens',
-            self::REGENERATION_CHANCE => 'Geringe Change auf energetischen Bonus'
+            self::REGENERATION_CHANCE => 'Geringe Chance auf energetischen Bonus'
         };
     }
 
@@ -65,14 +65,20 @@ enum FieldTypeEffectEnum: string
         return match ($this) {
             self::LSS_MALFUNCTION => sprintf("Interferenz im Subraum durch %s detektiert<br>
             Langstreckensensoren liefern keine verwertbaren Daten", $fieldTypeName),
-            self::NO_SPACECRAFT_COUNT => 'PROSA FROM HUX AND HIS TECHNOBABBEL',
-            self::DUBIOUS_SPACECRAFT_COUNT => 'PROSA FROM HUX AND HIS TECHNOBABBEL',
-            self::NO_SUBSPACE_LINES => 'PROSA FROM HUX AND HIS TECHNOBABBEL',
-            self::LSS_BLOCKADE => 'PROSA FROM HUX AND HIS TECHNOBABBEL',
-            self::HIT_CHANCE_INTERFERENCE => 'PROSA FROM HUX AND HIS TECHNOBABBEL',
-            self::EVADE_CHANCE_INTERFERENCE => 'PROSA FROM HUX AND HIS TECHNOBABBEL',
-            self::ENERGY_WEAPON_BUFF => 'PROSA FROM HUX AND HIS TECHNOBABBEL',
-            self::ENERGY_WEAPON_NERF => 'PROSA FROM HUX AND HIS TECHNOBABBEL',
+            self::NO_SPACECRAFT_COUNT => sprintf('Subraumresonanzfeld durch %s stört die Phasenvarianz der Langstreckensensoren<br>
+            Signaturanzeige ist nicht verfügbar', $fieldTypeName),
+            self::DUBIOUS_SPACECRAFT_COUNT => sprintf('Unbekannte Interferenzmuster überlagern durch %s die Emissionssignale<br>
+            Signaturanzeige wird verzerrt', $fieldTypeName),
+            self::NO_SUBSPACE_LINES => sprintf('Subraumresonanzdichte blockiert durch %s die Erfassung von Bewegungsmustern <br>
+            Subraumspuren bleiben verborgen', $fieldTypeName),
+            self::LSS_BLOCKADE => sprintf('Der durch %s erzeugte Dichtegradient absorbiert Sensorimpulse im umgebenden Raum<b>
+            Langstreckensensoren erfassen keine externen Kontakte', $fieldTypeName),
+            self::HIT_CHANCE_INTERFERENCE => sprintf('Disruptive Fluktuationen durch %s in der Zielerfassungssensorik<br>
+            Trefferchance verringert sich', $fieldTypeName),
+            self::EVADE_CHANCE_INTERFERENCE => sprintf('Asymmetrische Feldverzerrungen durch %s beeinträchtig die Navigationssensoren<br>
+            Manövrierbarkeit verringert sich', $fieldTypeName),
+            self::ENERGY_WEAPON_BUFF => sprintf('Kohärenzverstärkung durch %s verstärkt den Energiewaffenoutput', $fieldTypeName),
+            self::ENERGY_WEAPON_NERF => sprintf('Dekohärenz durch %s verstärkt den Energiewaffenoutput', $fieldTypeName),
             default => null
         };
     }

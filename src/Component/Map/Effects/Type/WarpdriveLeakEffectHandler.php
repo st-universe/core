@@ -23,7 +23,7 @@ class WarpdriveLeakEffectHandler implements EffectHandlerInterface
     {
         $messages->addInformation(
             sprintf(
-                "[color=yellow]Fluktuationen im Warpplasmaleitungssystem durch %s in Sektor %s festgestellt.[/color]",
+                "[color=yellow]Fluktuationen im Warpplasmaleitungssystem durch %s in Sektor %s festgestellt[/color]",
                 $location->getFieldType()->getName(),
                 $location->getSectorString()
             )
@@ -52,8 +52,8 @@ class WarpdriveLeakEffectHandler implements EffectHandlerInterface
 
         $messages->addInformation(
             sprintf(
-                "[color=yellow]Fluktuationen im Warpplasmaleitungssystem durch %s festgestellt<br>Warpantriebs-Leckage verursacht Kapazitätsverlust von %s Cochrane[/color]",
-                $spacecraft->getLocation()->getFieldType()->getName(),
+                "%s: [color=yellow]Warpantriebs-Leckage verursacht Kapazitätsverlust von %s Cochrane[/color]",
+                $spacecraft->getName(),
                 $loss
             ),
             $wrapper->get()->getUser()->getId()
