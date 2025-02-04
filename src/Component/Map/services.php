@@ -19,7 +19,6 @@ return [
             'handlerList',
             [
                 FieldTypeEffectEnum::CLOAK_UNUSEABLE->value => autowire(CloakUnuseableEffectHandler::class),
-                FieldTypeEffectEnum::LSS_MALFUNCTION->value => autowire(LSSMalfunctionEffectHandler::class),
                 FieldTypeEffectEnum::WARPDRIVE_LEAK->value => autowire(WarpdriveLeakEffectHandler::class)
             ]
         ),

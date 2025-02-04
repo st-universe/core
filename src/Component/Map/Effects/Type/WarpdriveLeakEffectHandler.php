@@ -4,17 +4,33 @@ declare(strict_types=1);
 
 namespace Stu\Component\Map\Effects\Type;
 
+use Override;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Orm\Entity\LocationInterface;
 
 class WarpdriveLeakEffectHandler implements EffectHandlerInterface
 {
+    #[Override]
     public function handleSpacecraftTick(SpacecraftWrapperInterface $wrapper, InformationInterface $information): void
     {
         // not needed
     }
 
+    #[Override]
+    public function addFlightInformation(LocationInterface $location, MessageCollectionInterface $messages): void
+    {
+        $messages->addInformation(
+            sprintf(
+                "[color=yellow]Fluktuationen im Warpplasmaleitungssystem durch %s in Sektor %s festgestellt.[/color]",
+                $location->getFieldType()->getName(),
+                $location->getSectorString()
+            )
+        );
+    }
+
+    #[Override]
     public function handleIncomingSpacecraft(SpacecraftWrapperInterface $wrapper, MessageCollectionInterface $messages): void
     {
         $spacecraft = $wrapper->get();
