@@ -23,13 +23,43 @@ class SpacecraftCountLayerRendererTest extends StuTestCase
         $this->panel = mock(AbstractVisualPanel::class);
     }
 
-    public function testRenderExpectExclamationMarkWhenDubiousEffect(): void
+    public function testRenderExpectNothingWhenDubiousEffectButNoSignatures(): void
     {
         $mapData = $this->mock(SpacecraftCountData::class);
 
+        $mapData->shouldReceive('isEnabled')
+            ->withNoArgs()
+            ->andReturn(true);
         $mapData->shouldReceive('isDubious')
             ->withNoArgs()
             ->andReturn(true);
+        $mapData->shouldReceive('getSpacecraftCount')
+            ->withNoArgs()
+            ->andReturn(0);
+        $mapData->shouldReceive('hasCloakedShips')
+            ->withNoArgs()
+            ->andReturn(false);
+
+        $subject = new SpacecraftCountLayerRenderer(false, null);
+
+        $result = $subject->render($mapData, $this->panel);
+
+        $this->assertEquals('', $result);
+    }
+
+    public function testRenderExpectExclamationMarkWhenDubiousEffectAndSignatures(): void
+    {
+        $mapData = $this->mock(SpacecraftCountData::class);
+
+        $mapData->shouldReceive('isEnabled')
+            ->withNoArgs()
+            ->andReturn(true);
+        $mapData->shouldReceive('isDubious')
+            ->withNoArgs()
+            ->andReturn(true);
+        $mapData->shouldReceive('getSpacecraftCount')
+            ->withNoArgs()
+            ->andReturn(42);
 
         $this->panel->shouldReceive('getFontSize')
             ->withNoArgs()
@@ -87,13 +117,24 @@ class SpacecraftCountLayerRendererTest extends StuTestCase
         $this->assertEquals('<div style="FONTSIZE; z-index: 6;" class="centered">1</div>', $result);
     }
 
-    public function testRenderExpectCloakedInfoWhenSet(): void
+    public static function dubiousAndCloakedSignDataProvider(): array
     {
+        return [
+            [false, '?'],
+            [true, '!'],
+        ];
+    }
+
+    #[DataProvider('dubiousAndCloakedSignDataProvider')]
+    public function testRenderExpectCloakedInfoWhenSet(
+        bool $isDubious,
+        string $expectedSign
+    ): void {
         $mapData = $this->mock(SpacecraftCountData::class);
 
         $mapData->shouldReceive('isDubious')
             ->withNoArgs()
-            ->andReturn(false);
+            ->andReturn($isDubious);
         $mapData->shouldReceive('isEnabled')
             ->withNoArgs()
             ->andReturn(true);
@@ -113,7 +154,7 @@ class SpacecraftCountLayerRendererTest extends StuTestCase
 
         $result = $subject->render($mapData, $this->panel);
 
-        $this->assertEquals('<div style="FONTSIZE; z-index: 6;" class="centered">?</div>', $result);
+        $this->assertEquals(sprintf('<div style="FONTSIZE; z-index: 6;" class="centered">%s</div>', $expectedSign), $result);
     }
 
     public function testRenderExpectNoCloakedInfoWhenNotSet(): void
@@ -217,7 +258,7 @@ class SpacecraftCountLayerRendererTest extends StuTestCase
     }
 
     #[DataProvider('parameterDataProvider')]
-    public function testRenderExpectNoCloakedInfoWhenTachyonInRange(
+    public function testRenderExpectCloakedInfoWhenTachyonInRange(
         bool $isStation,
         int $shipX,
         int $shipY,
