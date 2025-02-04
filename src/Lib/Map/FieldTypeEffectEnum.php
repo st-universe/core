@@ -15,7 +15,6 @@ enum FieldTypeEffectEnum: string
     public function hasHandler(): bool
     {
         return match ($this) {
-            self::LSS_MALFUNCTION => false,
             self::NO_SPACECRAFT_COUNT => false,
             self::DUBIOUS_SPACECRAFT_COUNT => false,
             default => true

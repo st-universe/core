@@ -29,7 +29,7 @@ class CloakUnuseableEffectHandler implements EffectHandlerInterface
             $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::CLOAK, true);
 
             $messages->addInformation(
-                sprintf("[color=yellow]Tarnung durch %s ausgefallen.[/color]", $spacecraft->getLocation()->getFieldType()->getName()),
+                sprintf("[color=yellow]Ionische Dispersion durch %s hat die Phasenmodulation des Tarnsystems gestört<br>Tarnsystem ausgefallen[/color]", $spacecraft->getLocation()->getFieldType()->getName()),
                 $wrapper->get()->getUser()->getId()
             );
         }

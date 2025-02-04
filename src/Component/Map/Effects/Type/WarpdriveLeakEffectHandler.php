@@ -35,7 +35,11 @@ class WarpdriveLeakEffectHandler implements EffectHandlerInterface
         $warpdrive->lowerWarpDrive($loss)->update();
 
         $messages->addInformation(
-            sprintf("[color=yellow]Leck im Warpantrieb durch %s. (Verlust: %d)[/color]", $spacecraft->getLocation()->getFieldType()->getName(), $loss),
+            sprintf(
+                "[color=yellow]Fluktuationen im Warpplasmaleitungssystem durch %s festgestellt<br>Warpantriebs-Leckage verursacht Kapazitätsverlust von %s Cochrane[/color]",
+                $spacecraft->getLocation()->getFieldType()->getName(),
+                $loss
+            ),
             $wrapper->get()->getUser()->getId()
         );
     }
