@@ -20,4 +20,15 @@ enum FieldTypeEffectEnum: string
             default => true
         };
     }
+
+    public function getDescription(): string
+    {
+        return match ($this) {
+            self::CLOAK_UNUSEABLE => 'Ausfall der Tarnung',
+            self::WARPDRIVE_LEAK => 'Leck am Warpantrieb',
+            self::LSS_MALFUNCTION => 'Störung der Langstreckensensoren',
+            self::NO_SPACECRAFT_COUNT => 'Versteckte Signaturen',
+            self::DUBIOUS_SPACECRAFT_COUNT => 'Verschleierung der Signaturen'
+        };
+    }
 }

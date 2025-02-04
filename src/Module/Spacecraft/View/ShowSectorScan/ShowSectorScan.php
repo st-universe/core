@@ -61,7 +61,7 @@ final class ShowSectorScan implements ViewControllerInterface
             return;
         }
 
-        $game->setMacroInAjaxWindow('html/ship/sectorscan.twig');
+        $game->setMacroInAjaxWindow('html/spacecraft/sectorScan.twig');
 
         $epsSystem->lowerEps(1)->update();
 

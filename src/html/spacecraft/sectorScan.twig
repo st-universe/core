@@ -1,0 +1,127 @@
+<table class="tcal">
+    {% set fieldType = SHIP.getLocation.getFieldType %}
+    <tr>
+        <td rowspan="2" style="width: 30px; vertical-align: top;">
+            <img src="assets/map/{{ MAP_PATH }}" />
+        </td>
+        <th>{{ fieldType.getName }}</th>
+    </tr>
+    <tr>
+        <td>
+            <table style="background-color: #000000 ! important;">
+                <tr>
+                    <td>Energiekosten:</td>
+                    <td>{{ fieldType.getEnergyCosts }}</td>
+                </tr>
+                <tr>
+                    <td>Schaden:</td>
+                    <td>{{ fieldType.getSpecialDamage }}
+                        ({{ fieldType.getDamage }})
+                        <img src="/assets/buttons/info2.png" style="height:16px;"
+                            title="Direkter Einflugschaden (Schaden bei Deflektorausfall)">
+                    </td>
+                </tr>
+                {% set effects = fieldType.getEffects %}
+                {% if effects %}
+                <tr>
+                    <td>Effekte:</td>
+                    <td>
+                        {% for effect in effects %}
+                        {{ effect.getDescription }}
+                        <br />
+                        {% endfor %}
+                    </td>
+                </tr>
+                {% endif %}
+            </table>
+        </td>
+    </tr>
+</table>
+{% if SIGNATURES %}
+<table class="tcal">
+    <tr>
+        <th colspan="3">Signaturen</th>
+    </tr>
+    <tr>
+        <th>Rumpf</th>
+        <th>Schiffsname</th>
+        <th>Alter</th>
+    </tr>
+    {% for sig in SIGNATURES %}
+    <tr>
+        <td>
+            {% if sig.getRump %}
+            <img src="assets/ships/{{ sig.getRump.getId }}.png" title="{{ sig.getRump.getName }}" />
+            {% else %}
+            <span>?</span>
+            {% endif %}
+        </td>
+        <td>
+            {% if sig.getShipName %}
+            {{ sig.getShipName|bbcode }}
+            {% else %}
+            <span>?</span>
+            {% endif %}
+        </td>
+        <td>{{ sig.getAge|formatSeconds }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+{% if OTHER_SIG_COUNT or OTHER_CLOAKED_COUNT %}
+<table class="tcal">
+    <tr>
+        <th colspan="2">verblasste Signaturen</th>
+    </tr>
+    {% if OTHER_SIG_COUNT %}
+    <tr>
+        <td>ungetarnt:</td>
+        <td>{{ OTHER_SIG_COUNT }}</td>
+    </tr>
+    {% endif %}
+    {% if OTHER_CLOAKED_COUNT %}
+    <tr>
+        <td>getarnt:</td>
+        <td>{{ OTHER_CLOAKED_COUNT }}</td>
+    </tr>
+    {% endif %}
+</table>
+{% endif %}
+{% if BUOYS|length > 0 %}
+<table class="tcal">
+    <tr>
+        <th colspan="4">Bojen</th>
+    </tr>
+    {% for buoy in BUOYS %}
+    <tr>
+        <td
+            style="background-image: url('assets/buttons/warp_1.png'); background-position: center; background-repeat: no-repeat;">
+            <img src="assets/ships/buoy/{{ buoy.getUser.getFaction.getId }}.png" title="Boje"
+                style="display: block; margin-left: auto; margin-right: auto;" />
+        </td>
+        <td style="width:80%;">
+            {{ buoy.getText|bbcode }}
+        </td>
+        <td>
+            <a href="javascript:void(0);"
+                onclick="actionToInnerContent('B_TAKE_BUOY', 'id={{ SHIP.getId }}&buoyid={{ buoy.getId }}&sstr={{ SESSIONSTRING }}');"
+                onmouseover="this.getElementsByTagName('img')[0].src='assets/buttons/take_buoy_2.png';"
+                onmouseout="this.getElementsByTagName('img')[0].src='assets/buttons/take_buoy_1.png';">
+                <img src="assets/buttons/take_buoy_1.png" title="Boje aufbringen" />
+            </a>
+        </td>
+        <td>
+            <a href="javascript:void(0);" onclick="analysebuoy({{ buoy.getId }});"
+                onmouseover="this.getElementsByTagName('img')[0].src='assets/buttons/analyse_buoy_2.png';"
+                onmouseout="this.getElementsByTagName('img')[0].src='assets/buttons/analyse_buoy_1.png';"
+                title="Boje Analysieren" class="fabutton">
+                <img src="assets/buttons/analyse_buoy_1.png" style="cursor: pointer;" />
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+<script>
+    appendJsAsync('{{ JAVASCRIPTPATH }}/js/buoy.js');
+</script>
