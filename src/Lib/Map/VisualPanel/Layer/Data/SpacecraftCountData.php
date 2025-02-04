@@ -16,10 +16,6 @@ class SpacecraftCountData extends AbstractData
     #[Column(type: 'integer')]
     private int $cloakcount = 0;
 
-    /** @var null|array<string> */
-    #[Column(type: 'json', nullable: true)]
-    private ?array $effects = null;
-
     public function getSpacecraftCount(): int
     {
         return $this->spacecraftcount;
