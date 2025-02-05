@@ -239,7 +239,7 @@
           <small>Spielstatus</small>
         </div>
         <div class="sidebar_box_content">
-          <div id="gamestate_{{ GAME_STATS.gameState }}" class="mt-2 bg-success text-white p-1 rounded text-center">
+          <div id="gamestate_{{ GAME_STATS.gameState }}" class="mt-2 p-1 rounded text-center">
             {{ GAME_STATS.gameStateTextual }}
           </div>
         </div>
@@ -250,7 +250,7 @@
                         {{ USER.getName | bbcode }}
                         {% endautoescape %}
                         <br /><br />
-                        <a href="/maindesk.php" class="linkbutton">Zum Maindesk</a>
+                        <a href="/maindesk.php" class="btn-stu btn-stu-w w-100" role="button">Zum Maindesk</a>
                     </div>
                     {% else %}
 

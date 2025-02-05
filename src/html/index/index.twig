@@ -9,7 +9,7 @@
                                 {{ USER.getName | bbcode }}
                             {% endautoescape %}
                             <br /><br />
-                            <a href="/maindesk.php" class="linkbutton">Zum Maindesk</a>
+                            <a href="/maindesk.php" class="btn-stu btn-stu-w w-100" role="button">Zum Maindesk</a>
                         </div>
                     {% else %}
                 <div class="mainbar_box_header mt-4"><small>Star Trek Universe - Login</small></div>
@@ -52,7 +52,9 @@
                 <div class="mainbar_box_content">
                     <div class="p-2">
                         
-                        <div id="gamestate_1" class="mt-2 mb-2 text-white bg-success p-1 rounded text-center">Online</div>
+                       <div id="gamestate_{{ GAME_STATS.gameState }}" class="mt-2 p-1 rounded text-center">
+                            {{ GAME_STATS.gameStateTextual }}
+                        </div>
 
                     <div class="row">
                         
@@ -64,9 +66,9 @@
                 <div class="mainbar_box_content">
                     <div class="p-3">
                     
-                        <i class="fa-solid fa-user"></i></i> Spieler: 139<br />
-                        <i class="fa-solid fa-user text-success"></i></i> Online: 17<br />
-                        <i class="fa-solid fa-clock"></i> Runde: 2042<br />
+                        <i class="fa-solid fa-user"></i></i> Spieler: {{ GAME_STATS.player }}<br />
+                        <i class="fa-solid fa-user text-success"></i></i> Online: {{ GAME_STATS.playeronline }}<br />
+                        <i class="fa-solid fa-clock"></i> Runde: {{ GAME_STATS.currentTurn }}<br />
                     
 
                     <div class="row">
