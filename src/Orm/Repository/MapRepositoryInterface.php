@@ -64,6 +64,15 @@ interface MapRepositoryInterface extends ObjectRepository
     /** @return array<CellDataInterface> */
     public function getSpacecraftCountLayerData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
 
+    /** @return array<CellDataInterface> */
+    public function getAllianceSpacecraftCountLayerData(PanelBoundaries $boundaries, int $allianceId, ResultSetMapping $rsm): array;
+
+    /** @return array<CellDataInterface> */
+    public function getUserSpacecraftCountLayerData(PanelBoundaries $boundaries, int $userId, ResultSetMapping $rsm): array;
+
+    /** @return array<CellDataInterface> */
+    public function getSpacecraftCountLayerDataForSpacecraft(PanelBoundaries $boundaries, int $spacecraftId, ResultSetMapping $rsm): array;
+
     /**
      * @return array<ExploreableStarMapInterface>
      */
