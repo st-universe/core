@@ -214,22 +214,15 @@ function regVarCheck(vari, value) {
   return varcheck;
 }
 function updateMobileValue() {
-  var countryCode = document.getElementById("countryCodeSelect").value;
-  var mobileNumber = document.getElementById("mobile").value;
+  const countryCode = document.getElementById("countryCodeSelect").value;
+  const mobileNumber = document.getElementById("mobile").value.trim();
+  const combinedMobileValue = document.getElementById("combinedMobileValue");
 
-  mobileNumber = mobileNumber.replace(/\s+/g, "");
-
-  var prefixesToRemove = ["+49", "+43", "+41"];
-  for (var i = 0; i < prefixesToRemove.length; i++) {
-    if (mobileNumber.startsWith(prefixesToRemove[i])) {
-      mobileNumber = mobileNumber.substring(prefixesToRemove[i].length);
-      break;
-    }
-  }
-  mobileNumber = mobileNumber.replace(/^0+/, "");
-
-  var combinedValue = countryCode + mobileNumber;
-  document.getElementById("combinedMobileValue").textContent = combinedValue;
+  if (mobileNumber) {
+      combinedMobileValue.textContent = `${countryCode} ${mobileNumber}`;
+  } else {
+      combinedMobileValue.textContent = ""; 
+}
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -243,9 +236,9 @@ document.addEventListener("DOMContentLoaded", function () {
     (currentDate >= startHoliday && currentDate <= new Date(year, 11, 31)) ||
     (currentDate >= new Date(year + 1, 0, 1) && currentDate <= endHoliday)
   ) {
-    bannerImg.src = "/assets/main/banner_x_mas.png";
+    bannerImg.src = "/assets/main/banner_x_mas.PNG";
   } else {
-    bannerImg.src = "/assets/main/banner.png";
+    bannerImg.src = "/assets/main/banner.PNG";
   }
 });
 
@@ -259,3 +252,42 @@ function debounce(func, wait) {
     timeout = setTimeout(() => func.apply(context, args), wait);
   };
 }
+
+
+document.querySelectorAll('.btn-header-link').forEach((button) => {
+  button.addEventListener('click', function (e) {
+    e.preventDefault(); // Verhindert das Standardverhalten des Links
+
+    const targetSelector = button.getAttribute('data-target');
+    const target = document.querySelector(targetSelector);
+
+    if (target) {
+      // Toggle the "show" class on the target element
+      if (target.classList.contains('show')) {
+        target.classList.remove('show');
+        button.classList.add('collapsed');
+        button.setAttribute('aria-expanded', 'false');
+      } else {
+        // Schließe andere geöffnete Panels (falls data-parent definiert ist)
+        const parentSelector = target.getAttribute('data-parent');
+        if (parentSelector) {
+          document.querySelectorAll(`${parentSelector} .collapse.show`).forEach((openCollapse) => {
+            openCollapse.classList.remove('show');
+            const relatedButton = document.querySelector(
+              `[data-target="#${openCollapse.id}"]`
+            );
+            if (relatedButton) {
+              relatedButton.classList.add('collapsed');
+              relatedButton.setAttribute('aria-expanded', 'false');
+            }
+          });
+        }
+        // Öffne das aktuelle Panel
+        target.classList.add('show');
+        button.classList.remove('collapsed');
+        button.setAttribute('aria-expanded', 'true');
+      }
+    }
+  });
+});
+
