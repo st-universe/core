@@ -13,7 +13,7 @@ use Stu\Orm\Entity\SpacecraftInterface;
 class ConditionCheckResult
 {
     /** @var array<int> */
-    private array $blockedShipIds = [];
+    private array $blockedSpacecraftIds = [];
 
     private bool $isLeaderBlocked = false;
 
@@ -29,8 +29,8 @@ class ConditionCheckResult
 
     public function addBlockedShip(SpacecraftInterface $spacecraft, string $reason): void
     {
-        if ($this->isNotBlocked($spacecraft)) {
-            $this->blockedShipIds[] = $spacecraft->getId();
+        if (!$this->isBlocked($spacecraft)) {
+            $this->blockedSpacecraftIds[] = $spacecraft->getId();
             $this->informations->addInformation($reason);
 
             if ($this->isLeaderBlocked($spacecraft)) {
@@ -60,12 +60,18 @@ class ConditionCheckResult
             return false;
         }
 
-        return !$this->isFixedFleetMode || $this->blockedShipIds === [];
+        return !$this->isFixedFleetMode || $this->blockedSpacecraftIds === [];
     }
 
-    public function isNotBlocked(SpacecraftInterface $spacecraft): bool
+    /** @return array<int> */
+    public function getBlockedIds(): array
     {
-        return !in_array($spacecraft->getId(), $this->blockedShipIds);
+        return $this->blockedSpacecraftIds;
+    }
+
+    public function isBlocked(SpacecraftInterface $spacecraft): bool
+    {
+        return in_array($spacecraft->getId(), $this->blockedSpacecraftIds);
     }
 
     /** @return array<string> */

@@ -6,7 +6,6 @@ namespace Stu\Module\Spacecraft\Lib\Movement\Route;
 
 use Mockery\MockInterface;
 use Override;
-use Stu\Component\Map\Effects\EffectHandlingInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
@@ -36,8 +35,6 @@ class ShipMoverTest extends StuTestCase
     private $leaveFleet;
     /** @var MockInterface&AlertReactionFacadeInterface */
     private $alertReactionFacade;
-    /** @var MockInterface&EffectHandlingInterface */
-    private $effectHandling;
     /** @var MockInterface&MessageFactoryInterface */
     private $messageFactory;
 
@@ -51,7 +48,6 @@ class ShipMoverTest extends StuTestCase
         $this->preFlightConditionsCheck = $this->mock(PreFlightConditionsCheckInterface::class);
         $this->leaveFleet = $this->mock(LeaveFleetInterface::class);
         $this->alertReactionFacade = $this->mock(AlertReactionFacadeInterface::class);
-        $this->effectHandling = $this->mock(EffectHandlingInterface::class);
         $this->messageFactory = $this->mock(MessageFactoryInterface::class);
 
         $this->subject = new ShipMover(
@@ -60,7 +56,6 @@ class ShipMoverTest extends StuTestCase
             $this->preFlightConditionsCheck,
             $this->leaveFleet,
             $this->alertReactionFacade,
-            $this->effectHandling,
             $this->messageFactory
         );
     }
