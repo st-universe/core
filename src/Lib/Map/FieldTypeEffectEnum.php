@@ -14,10 +14,10 @@ enum FieldTypeEffectEnum: string
     case NO_SPACECRAFT_COUNT = 'NO_SPACECRAFT_COUNT'; // don't ever show signature info
     case DUBIOUS_SPACECRAFT_COUNT = 'DUBIOUS_SPACECRAFT_COUNT'; // always show '!" sign, if at least one signature
     case NO_SUBSPACE_LINES = 'NO_SUBSPACE_LINES';
+    case NFS_MALFUNCTION_COOLDOWN = 'NFS_MALFUNCTION_COOLDOWN';
 
         //TODO: following not yet implemented
     case LSS_BLOCKADE = 'LSS_BLOCKADE';
-    case NFS_MALFUNCTION_COOLDOWN = 'NFS_MALFUNCTION_COOLDOWN';
     case SHIELD_MALFUNCTION = 'SHIELD_MALFUNCTION';
     case REACTOR_LEAK = 'REACTOR_LEAK';
     case EPS_LEAK = 'EPS_LEAK';
@@ -31,7 +31,8 @@ enum FieldTypeEffectEnum: string
     {
         return match ($this) {
             self::CLOAK_UNUSEABLE,
-            self::WARPDRIVE_LEAK => true,
+            self::WARPDRIVE_LEAK,
+            self::NFS_MALFUNCTION_COOLDOWN => true,
             default => false
         };
     }

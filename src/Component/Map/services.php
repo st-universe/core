@@ -8,6 +8,7 @@ use Stu\Component\Map\Effects\EffectHandling;
 use Stu\Component\Map\Effects\EffectHandlingInterface;
 use Stu\Component\Map\Effects\Type\CloakUnuseableEffectHandler;
 use Stu\Component\Map\Effects\Type\LSSMalfunctionEffectHandler;
+use Stu\Component\Map\Effects\Type\NfsMalfunctionCooldownEffectHandler;
 use Stu\Component\Map\Effects\Type\WarpdriveLeakEffectHandler;
 use Stu\Lib\Map\FieldTypeEffectEnum;
 
@@ -19,7 +20,8 @@ return [
             'handlerList',
             [
                 FieldTypeEffectEnum::CLOAK_UNUSEABLE->value => autowire(CloakUnuseableEffectHandler::class),
-                FieldTypeEffectEnum::WARPDRIVE_LEAK->value => autowire(WarpdriveLeakEffectHandler::class)
+                FieldTypeEffectEnum::WARPDRIVE_LEAK->value => autowire(WarpdriveLeakEffectHandler::class),
+                FieldTypeEffectEnum::NFS_MALFUNCTION_COOLDOWN->value => autowire(NfsMalfunctionCooldownEffectHandler::class)
             ]
         ),
     EncodedMapInterface::class => autowire(EncodedMap::class),

@@ -36,9 +36,24 @@ class EnterWaypointTest extends StuTestCase
         );
     }
 
+    public function testEnterNextWaypointExpectNothingWhenSpacecraftIsNull(): void
+    {
+        $waypoint = $this->mock(MapInterface::class);
+
+        $waypoint->shouldNotHaveBeenCalled();
+
+        $this->subject->enterNextWaypoint(
+            null,
+            false,
+            $waypoint,
+            null
+        );
+    }
+
     public function testEnterNextWaypointExpectLocationUpdateWhenOnMap(): void
     {
         $ship = $this->mock(ShipInterface::class);
+        $tractoredShip = $this->mock(ShipInterface::class);
         $waypoint = $this->mock(MapInterface::class);
 
         $ship->shouldReceive('setLocation')
@@ -48,9 +63,28 @@ class EnterWaypointTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(42);
+        $ship->shouldReceive('getTractoredShip')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($tractoredShip);
+
+        $tractoredShip->shouldReceive('setLocation')
+            ->with($waypoint)
+            ->once();
+        $tractoredShip->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(43);
+        $tractoredShip->shouldReceive('getTractoredShip')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(null);
 
         $waypoint->shouldReceive('getSpacecrafts->set')
             ->with(42, $ship)
+            ->once();
+        $waypoint->shouldReceive('getSpacecrafts->set')
+            ->with(43, $tractoredShip)
             ->once();
 
         $this->subject->enterNextWaypoint(
@@ -74,6 +108,10 @@ class EnterWaypointTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(1234);
+        $ship->shouldReceive('getTractoredShip')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(null);
 
         $waypoint->shouldReceive('getSpacecrafts->set')
             ->with(1234, $ship)
@@ -112,6 +150,10 @@ class EnterWaypointTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(1234);
+        $ship->shouldReceive('getTractoredShip')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(null);
 
         $waypoint->shouldReceive('getSpacecrafts->set')
             ->with(1234, $ship)
@@ -120,31 +162,6 @@ class EnterWaypointTest extends StuTestCase
         $this->subject->enterNextWaypoint(
             $ship,
             false,
-            $waypoint,
-            null
-        );
-    }
-
-    public function testEnterNextWaypointExpectFlightDirectionUpdateAndSignatureCreationWhenTraversing(): void
-    {
-        $ship = $this->mock(ShipInterface::class);
-        $waypoint = $this->mock(StarSystemMapInterface::class);
-
-        $ship->shouldReceive('setLocation')
-            ->with($waypoint)
-            ->once();
-        $ship->shouldReceive('getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(1234);
-
-        $waypoint->shouldReceive('getSpacecrafts->set')
-            ->with(1234, $ship)
-            ->once();
-
-        $this->subject->enterNextWaypoint(
-            $ship,
-            true,
             $waypoint,
             null
         );

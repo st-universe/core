@@ -5,7 +5,6 @@ namespace Stu\Module\Spacecraft\Lib\Movement;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Override;
-use Stu\Component\Map\Effects\EffectHandlingInterface;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
@@ -30,7 +29,6 @@ final class ShipMover implements ShipMoverInterface
         private PreFlightConditionsCheckInterface $preFlightConditionsCheck,
         private LeaveFleetInterface $leaveFleet,
         private AlertReactionFacadeInterface $alertReactionFacade,
-        private EffectHandlingInterface $effectHandling,
         private MessageFactoryInterface $messageFactory
     ) {}
 
@@ -100,8 +98,8 @@ final class ShipMover implements ShipMoverInterface
     ): bool {
 
         $hasTravelled = false;
+        $leadSpacecraft = $leadWrapper->get();
         $fleetWrapper = $leadWrapper->getFleetWrapper();
-        $hasToLeaveFleet = $fleetWrapper !== null && !$isFleetMode;
 
         $isFixedFleetMode = $isFleetMode
             && $fleetWrapper !== null
@@ -134,9 +132,16 @@ final class ShipMover implements ShipMoverInterface
                 break;
             }
 
-            $this->addInformationMerge($conditionCheckResult->getInformations(), $messages);
+            foreach ($conditionCheckResult->getBlockedIds() as $spacecraftId) {
+                $wrappers->remove($spacecraftId);
+            }
 
-            $this->effectHandling->addFlightInformationForActiveEffects($flightRoute->getNextWaypoint(), $messages);
+            $hasToLeaveFleet = $leadWrapper->getFleetWrapper() !== null && !$isFleetMode;
+            if ($hasToLeaveFleet) {
+                $this->leaveFleet($leadSpacecraft, $messages);
+            }
+
+            $this->addInformationMerge($conditionCheckResult->getInformations(), $messages);
 
             /** @var array<array{0: SpacecraftInterface, 1: ShipWrapperInterface}> */
             $movedTractoredShipWrappers = [];
@@ -145,12 +150,10 @@ final class ShipMover implements ShipMoverInterface
             $this->moveShipsByOneField(
                 $activeWrappers,
                 $flightRoute,
-                $conditionCheckResult,
-                $hasToLeaveFleet,
-                $hasTravelled,
                 $movedTractoredShipWrappers,
                 $messages
             );
+            $hasTravelled = true;
 
             // alert reaction check
             $this->alertReactionCheck(
@@ -175,41 +178,22 @@ final class ShipMover implements ShipMoverInterface
     private function moveShipsByOneField(
         Collection $activeWrappers,
         FlightRouteInterface $flightRoute,
-        ConditionCheckResult $conditionCheckResult,
-        bool $hasToLeaveFleet,
-        bool &$hasTravelled,
         array &$movedTractoredShipWrappers,
         MessageCollectionInterface $messages
     ): void {
 
+        $flightRoute->enterNextWaypoint(
+            $activeWrappers,
+            $messages
+        );
+
         foreach ($activeWrappers as $wrapper) {
 
-            $ship = $wrapper->get();
-
-            if ($conditionCheckResult->isNotBlocked($ship)) {
-
-                $this->leaveFleetIfNotFleetLeader($ship, $hasToLeaveFleet, $messages);
-
-                $flightRoute->enterNextWaypoint(
-                    $wrapper,
-                    $messages
-                );
-
-                $tractoredShipWrapper = $wrapper->getTractoredShipWrapper();
-                if ($tractoredShipWrapper !== null) {
-                    $flightRoute->enterNextWaypoint(
-                        $tractoredShipWrapper,
-                        $messages
-                    );
-
-                    $movedTractoredShipWrappers[] = [$wrapper->get(), $tractoredShipWrapper];
-                }
-
-                $hasTravelled = true;
+            $tractoredShipWrapper = $wrapper->getTractoredShipWrapper();
+            if ($tractoredShipWrapper !== null) {
+                $movedTractoredShipWrappers[] = [$wrapper->get(), $tractoredShipWrapper];
             }
         }
-
-        $flightRoute->stepForward();
     }
 
     /** @param array<array{0: SpacecraftInterface, 1: ShipWrapperInterface}> $movedTractoredShipWrappers */
@@ -265,9 +249,9 @@ final class ShipMover implements ShipMoverInterface
         return $tractoredShips;
     }
 
-    private function leaveFleetIfNotFleetLeader(SpacecraftInterface $ship, bool $hasToLeaveFleet, MessageCollectionInterface $messages): void
+    private function leaveFleet(SpacecraftInterface $ship, MessageCollectionInterface $messages): void
     {
-        if ($hasToLeaveFleet && $ship instanceof ShipInterface) {
+        if ($ship instanceof ShipInterface) {
             if ($this->leaveFleet->leaveFleet($ship)) {
                 $messages->addInformation(sprintf('Die %s hat die Flotte verlassen', $ship->getName()));
             }
