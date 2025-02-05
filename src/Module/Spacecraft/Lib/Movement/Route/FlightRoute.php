@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Override;
 use RuntimeException;
+use Stu\Component\Map\Effects\EffectHandlingInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\FlightConsequenceInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -42,6 +43,7 @@ final class FlightRoute implements FlightRouteInterface
         private CheckDestinationInterface $checkDestination,
         private LoadWaypointsInterface $loadWaypoints,
         private EnterWaypointInterface $enterWaypoint,
+        private EffectHandlingInterface $effectHandling,
         private array $flightConsequences,
         private array $postFlightConsequences,
     ) {
@@ -114,8 +116,7 @@ final class FlightRoute implements FlightRouteInterface
         return $this->waypoints->first();
     }
 
-    #[Override]
-    public function stepForward(): void
+    private function stepForward(): void
     {
         $first =  $this->waypoints->first();
 
@@ -135,23 +136,50 @@ final class FlightRoute implements FlightRouteInterface
 
     #[Override]
     public function enterNextWaypoint(
-        SpacecraftWrapperInterface $wrapper,
+        Collection $wrappers,
         MessageCollectionInterface $messages
     ): void {
 
         // flight consequences
-        $this->walkConsequences($this->flightConsequences, $wrapper, $messages);
-
-        // enter waypoint
-        $this->enterWaypoint->enterNextWaypoint(
-            $wrapper->get(),
-            $this->isTraversing,
-            $this->getNextWaypoint(),
-            $this->wormholeEntry
+        $this->walkWrappers(
+            $wrappers,
+            function (SpacecraftWrapperInterface $wrapper) use ($messages): void {
+                $this->walkConsequences($this->flightConsequences, $wrapper, $messages);
+            }
         );
 
+        // enter waypoint
+        $this->walkWrappers(
+            $wrappers,
+            function (SpacecraftWrapperInterface $wrapper): void {
+                $this->enterWaypoint->enterNextWaypoint(
+                    $wrapper->get(),
+                    $this->isTraversing,
+                    $this->getNextWaypoint(),
+                    $this->wormholeEntry
+                );
+            }
+        );
+
+        $this->effectHandling->addFlightInformationForActiveEffects($this->getNextWaypoint(), $messages);
+
         // post flight consequences
-        $this->walkConsequences($this->postFlightConsequences, $wrapper, $messages);
+        $this->walkWrappers(
+            $wrappers,
+            function (SpacecraftWrapperInterface $wrapper) use ($messages): void {
+                $this->walkConsequences($this->postFlightConsequences, $wrapper, $messages);
+            }
+        );
+
+        $this->stepForward();
+    }
+
+    /** @param Collection<int, SpacecraftWrapperInterface> $wrappers */
+    private function walkWrappers(Collection $wrappers, callable $func): void
+    {
+        foreach ($wrappers as $wrapper) {
+            $func($wrapper);
+        }
     }
 
     /**
@@ -159,13 +187,20 @@ final class FlightRoute implements FlightRouteInterface
      */
     private function walkConsequences(
         array $consequences,
-        SpacecraftWrapperInterface $wrapper,
+        ?SpacecraftWrapperInterface $wrapper,
         MessageCollectionInterface $messages
     ): void {
+
+        if ($wrapper === null) {
+            return;
+        }
+
         array_walk(
             $consequences,
             fn(FlightConsequenceInterface $consequence) => $consequence->trigger($wrapper, $this, $messages)
         );
+
+        $this->walkConsequences($consequences, $wrapper->getTractoredShipWrapper(), $messages);
     }
 
     #[Override]
