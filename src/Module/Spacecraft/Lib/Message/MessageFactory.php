@@ -24,6 +24,6 @@ class MessageFactory implements MessageFactoryInterface
     #[Override]
     public function createMessageCollection(): MessageCollectionInterface
     {
-        return new MessageCollection();
+        return new MessageCollection($this);
     }
 }

@@ -129,7 +129,7 @@ final class AttackBuilding implements ActionControllerInterface
         // ORBITAL DEFENSE
         $count = $this->colonyFunctionManager->getBuildingWithFunctionCount(
             $colony,
-            BuildingFunctionEnum::BUILDING_FUNCTION_ENERGY_PHALANX,
+            BuildingFunctionEnum::ENERGY_PHALANX,
             [ColonyFunctionManager::STATE_ENABLED]
         );
         $defendingPhalanx =  $this->attackerProviderFactory->getEnergyPhalanxAttacker($colony);
@@ -151,7 +151,7 @@ final class AttackBuilding implements ActionControllerInterface
 
         $count = $this->colonyFunctionManager->getBuildingWithFunctionCount(
             $colony,
-            BuildingFunctionEnum::BUILDING_FUNCTION_PARTICLE_PHALANX,
+            BuildingFunctionEnum::PARTICLE_PHALANX,
             [ColonyFunctionManager::STATE_ENABLED]
         );
         $defendingPhalanx = $this->attackerProviderFactory->getProjectilePhalanxAttacker($colony);
@@ -174,7 +174,7 @@ final class AttackBuilding implements ActionControllerInterface
         $isOrbitField = $this->planetFieldTypeRetriever->isOrbitField($field);
         $count = $this->colonyFunctionManager->getBuildingWithFunctionCount(
             $colony,
-            BuildingFunctionEnum::BUILDING_FUNCTION_ANTI_PARTICLE,
+            BuildingFunctionEnum::ANTI_PARTICLE,
             [ColonyFunctionManager::STATE_ENABLED]
         ) * 6;
 

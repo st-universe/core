@@ -4,7 +4,7 @@ namespace Stu\Module\Spacecraft\Lib\Auxiliary;
 
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 
-interface ShipShutdownInterface
+interface SpacecraftShutdownInterface
 {
     public function shutdown(SpacecraftWrapperInterface $wrapper, bool $doLeaveFleet = false): void;
 }

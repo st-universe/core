@@ -97,8 +97,8 @@ use Stu\Module\Spacecraft\View\ShowSpacecraft\SpacecraftTypeShowStragegyInterfac
 use Stu\Module\Station\View\ShowStation\StationShowStrategy;
 use Stu\Module\Spacecraft\Lib\ActivatorDeactivatorHelper;
 use Stu\Module\Spacecraft\Lib\ActivatorDeactivatorHelperInterface;
-use Stu\Module\Spacecraft\Lib\Auxiliary\ShipShutdown;
-use Stu\Module\Spacecraft\Lib\Auxiliary\ShipShutdownInterface;
+use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftShutdown;
+use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftShutdownInterface;
 use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertDetection;
 use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertDetectionInterface;
 use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertedShipInformation;
@@ -196,6 +196,7 @@ use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\Flight\WarpdriveCon
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight\AnomalyConsequence;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight\DeactivateTranswarpConsequence;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight\DeflectorConsequence;
+use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight\FieldTypeEffectConsequence;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight\PostFlightAstroMappingConsequence;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight\PostFlightConsequenceInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight\PostFlightDirectionConsequence;
@@ -239,6 +240,7 @@ use Stu\Module\Spacecraft\Lib\Torpedo\ClearTorpedo;
 use Stu\Module\Spacecraft\Lib\Torpedo\ClearTorpedoInterface;
 use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManager;
 use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
+use Stu\Module\Spacecraft\Lib\Ui\PanelLayerConfiguration;
 use Stu\Module\Spacecraft\Lib\Ui\ShipUiFactory;
 use Stu\Module\Spacecraft\Lib\Ui\ShipUiFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Ui\StateIconAndTitle;
@@ -280,7 +282,7 @@ return [
     TroopTransferUtilityInterface::class => autowire(TroopTransferUtility::class),
     SpacecraftRemoverInterface::class => autowire(SpacecraftRemover::class),
     ShipUndockingInterface::class => autowire(ShipUndocking::class),
-    ShipShutdownInterface::class => autowire(ShipShutdown::class),
+    SpacecraftShutdownInterface::class => autowire(SpacecraftShutdown::class),
     ThreatReactionInterface::class => autowire(ThreatReaction::class),
     CloseCombatUtilInterface::class => autowire(CloseCombatUtil::class),
     BoardShipUtilInterface::class => autowire(BoardShipUtil::class),
@@ -337,6 +339,7 @@ return [
         autowire(PostFlightTrackerConsequence::class),
         autowire(PostFlightTractorConsequence::class),
         autowire(DeflectorConsequence::class),
+        autowire(FieldTypeEffectConsequence::class),
         autowire(AnomalyConsequence::class)
     ],
     FlightRouteFactoryInterface::class => autowire(FlightRouteFactory::class)
@@ -360,7 +363,8 @@ return [
         SpacecraftTypeEnum::SHIP->value => autowire(ShipShowStrategy::class),
         SpacecraftTypeEnum::STATION->value => autowire(StationShowStrategy::class)
     ],
-    ShipUiFactoryInterface::class => autowire(ShipUiFactory::class),
+    ShipUiFactoryInterface::class => autowire(ShipUiFactory::class)
+        ->constructorParameter('panelLayerConfiguration', autowire(PanelLayerConfiguration::class)),
     SpacecraftDestructionInterface::class => autowire(SpacecraftDestruction::class)
         ->constructorParameter(
             'destructionHandlers',

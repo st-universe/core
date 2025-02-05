@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Ui;
 
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\UserInterface;
 
 /**
@@ -14,7 +14,7 @@ use Stu\Orm\Entity\UserInterface;
 interface ShipUiFactoryInterface
 {
     public function createVisualNavPanel(
-        SpacecraftInterface $currentSpacecraft,
+        SpacecraftWrapperInterface $wrapper,
         UserInterface $user,
         LoggerUtilInterface $loggerUtil,
         bool $tachyonFresh

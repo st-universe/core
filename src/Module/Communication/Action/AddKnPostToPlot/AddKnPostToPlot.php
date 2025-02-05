@@ -7,7 +7,6 @@ namespace Stu\Module\Communication\Action\AddKnPostToPlot;
 use Override;
 use request;
 use Stu\Component\Game\TimeConstants;
-use Stu\Module\Communication\View\ShowSingleKn\ShowSingleKn;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -79,18 +78,12 @@ final class AddKnPostToPlot implements ActionControllerInterface
                     $plot->getTitle()
                 );
 
-                $href = sprintf(
-                    'comm.php?%s=1&knid=%d',
-                    ShowSingleKn::VIEW_IDENTIFIER,
-                    $post->getId()
-                );
-
                 $this->privateMessageSender->send(
                     UserEnum::USER_NOONE,
                     $user->getId(),
                     $text,
                     PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,
-                    $href
+                    $post
                 );
             }
         }

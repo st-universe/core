@@ -4,7 +4,7 @@ namespace Stu\Module\Spacecraft\Lib\CloseCombat;
 
 use Override;
 use Stu\Module\Control\StuRandom;
-use Stu\Module\Spacecraft\Lib\Auxiliary\ShipShutdownInterface;
+use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftShutdownInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -18,7 +18,7 @@ class BoardShipUtil implements BoardShipUtilInterface
         private CrewRepositoryInterface $crewRepository,
         private CrewAssignmentRepositoryInterface $crewAssignmentRepository,
         private CloseCombatUtilInterface $closeCombatUtil,
-        private ShipShutdownInterface $shipShutdown,
+        private SpacecraftShutdownInterface $spacecraftShutdown,
         private MessageFactoryInterface $messageFactory,
         private StuRandom $stuRandom
     ) {}
@@ -80,7 +80,7 @@ class BoardShipUtil implements BoardShipUtilInterface
         $this->crewAssignmentRepository->delete($killedCrewAssignment);
 
         if ($ship->getCrewAssignments()->isEmpty()) {
-            $this->shipShutdown->shutdown($wrapper, true);
+            $this->spacecraftShutdown->shutdown($wrapper, true);
         }
 
         return $killedCrewAssignment;

@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Override;
+use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Orm\Repository\MapFieldTypeRepository;
 
 #[Table(name: 'stu_map_ftypes')]
@@ -57,6 +58,10 @@ class MapFieldType implements MapFieldTypeInterface
 
     #[Column(type: 'boolean')]
     private bool $passable = false;
+
+    /** @var null|array<FieldTypeEffectEnum>|array<string> */
+    #[Column(type: 'json', nullable: true)]
+    private ?array $effects = null;
 
     #[ManyToOne(targetEntity: 'ColonyClass')]
     #[JoinColumn(name: 'colonies_classes_id', referencedColumnName: 'id')]
@@ -201,14 +206,41 @@ class MapFieldType implements MapFieldTypeInterface
     }
 
     #[Override]
-    public function getPassableAsInt(): int
-    {
-        return $this->passable ? 1 : 0;
-    }
-
-    #[Override]
     public function getColonyClass(): ?ColonyClassInterface
     {
         return $this->colonyClass;
+    }
+
+    #[Override]
+    public function getEffects(): array
+    {
+        return array_map(
+            fn(mixed $effect): FieldTypeEffectEnum => $effect instanceof FieldTypeEffectEnum ? $effect : FieldTypeEffectEnum::from($effect),
+            $this->effects ?? []
+        );
+    }
+
+    #[Override]
+    public function setEffects(?array $effects): MapFieldTypeInterface
+    {
+        $this->effects = $effects;
+
+        return $this;
+    }
+
+    #[Override]
+    public function hasEffect(FieldTypeEffectEnum $effect): bool
+    {
+        return in_array($effect, $this->getEffects());
+    }
+
+    #[Override]
+    public function getEffectsAsString(): ?string
+    {
+        if ($this->effects === null) {
+            return null;
+        }
+
+        return implode("\n", array_map(fn(FieldTypeEffectEnum $effect): string => $effect->value, $this->getEffects()));
     }
 }

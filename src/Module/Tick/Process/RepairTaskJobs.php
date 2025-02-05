@@ -38,7 +38,7 @@ final class RepairTaskJobs implements ProcessTickHandlerInterface
                         $repairTask->getSystemType()->getDescription()
                     ),
                     PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
-                    $spacecraft->getHref()
+                    $spacecraft
                 );
 
                 $this->repairTaskRepository->delete($repairTask);
@@ -69,7 +69,7 @@ final class RepairTaskJobs implements ProcessTickHandlerInterface
                 $spacecraft->getUser()->getId(),
                 $msg,
                 PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
-                $spacecraft->getHref()
+                $spacecraft
             );
         }
     }

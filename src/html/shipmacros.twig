@@ -304,7 +304,8 @@
     {% endif %}
     {% if nbsItem.isSelectable and nbsItem.isShuttle and SPACECRAFT.hasFreeShuttleSpace %}
     <div style="float:left; margin-right:4px;">
-        <a href="?B_STORE_SHUTTLE=1&id={{ spacecraftId }}&target={{ targetId }}&sstr={{ SESSIONSTRING }}"
+        <a href="javascript:void(0);"
+            onClick="actionToInnerContent('B_STORE_SHUTTLE', 'id={{ spacecraftId }}&target={{ targetId }}&sstr={{ SESSIONSTRING }}');"
             onmouseover="cp('store_{{ targetId }}','buttons/landshuttle2', 'png')"
             onmouseout="cp('store_{{ targetId }}','buttons/landshuttle1', 'png')">
             <img src="/assets/buttons/landshuttle1.png" name="store_{{ targetId }}" title="Shuttle aufsammeln" />

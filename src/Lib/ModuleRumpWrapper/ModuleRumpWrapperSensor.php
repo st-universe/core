@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Lib\ModuleRumpWrapper;
 
 use Override;
+use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Module\Spacecraft\Lib\ModuleValueCalculator;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -36,6 +37,10 @@ final class ModuleRumpWrapperSensor extends ModuleRumpWrapperBase implements Mod
     #[Override]
     public function apply(SpacecraftWrapperInterface $wrapper): void
     {
-        $wrapper->get()->setSensorRange($this->getValue());
+        $lssSystemData = $wrapper->getLssSystemData();
+        if ($lssSystemData === null) {
+            throw new RuntimeException('this should not happen');
+        }
+        $lssSystemData->setSensorRange($this->getValue())->update();
     }
 }

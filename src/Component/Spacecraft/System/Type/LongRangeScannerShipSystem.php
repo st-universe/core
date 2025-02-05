@@ -51,7 +51,7 @@ final class LongRangeScannerShipSystem extends AbstractSpacecraftSystemType impl
         if ($spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::ASTRO_LABORATORY)) {
             $spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::ASTRO_LABORATORY)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
 
-            if ($spacecraft->getState() === SpacecraftStateEnum::SHIP_STATE_ASTRO_FINALIZING) {
+            if ($spacecraft->getState() === SpacecraftStateEnum::ASTRO_FINALIZING) {
                 $this->astroEntryLib->cancelAstroFinalizing($wrapper);
             }
         }
@@ -64,7 +64,7 @@ final class LongRangeScannerShipSystem extends AbstractSpacecraftSystemType impl
         if ($spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::ASTRO_LABORATORY)) {
             $spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::ASTRO_LABORATORY)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
 
-            if ($spacecraft->getState() === SpacecraftStateEnum::SHIP_STATE_ASTRO_FINALIZING) {
+            if ($spacecraft->getState() === SpacecraftStateEnum::ASTRO_FINALIZING) {
                 $this->astroEntryLib->cancelAstroFinalizing($wrapper);
             }
         }

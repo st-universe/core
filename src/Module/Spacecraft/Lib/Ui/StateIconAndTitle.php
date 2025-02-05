@@ -28,16 +28,16 @@ class StateIconAndTitle
         $spacecraft = $wrapper->get();
         $state = $spacecraft->getState();
 
-        if ($state === SpacecraftStateEnum::SHIP_STATE_RETROFIT) {
+        if ($state === SpacecraftStateEnum::RETROFIT) {
             return ['buttons/konstr1', 'Schiff wird umgerüstet'];
         }
 
-        if ($state === SpacecraftStateEnum::SHIP_STATE_REPAIR_ACTIVE) {
+        if ($state === SpacecraftStateEnum::REPAIR_ACTIVE) {
             $isStation = $spacecraft->isStation();
             return ['buttons/rep2', sprintf('%s repariert die Station', $isStation ? 'Stationscrew' : 'Schiffscrew')];
         }
 
-        if ($state === SpacecraftStateEnum::SHIP_STATE_REPAIR_PASSIVE) {
+        if ($state === SpacecraftStateEnum::REPAIR_PASSIVE) {
             $isStation = $spacecraft->isStation();
             $repairDuration = $wrapper->getRepairDuration();
             return ['buttons/rep2', sprintf('%s wird repariert (noch %d Runden)', $isStation ? 'Station' : 'Schiff', $repairDuration)];
@@ -45,7 +45,7 @@ class StateIconAndTitle
 
         $astroLab = $wrapper instanceof ShipWrapperInterface ? $wrapper->getAstroLaboratorySystemData() : null;
         if (
-            $state === SpacecraftStateEnum::SHIP_STATE_ASTRO_FINALIZING
+            $state === SpacecraftStateEnum::ASTRO_FINALIZING
             && $astroLab !== null
         ) {
             return ['buttons/map1', sprintf(
@@ -56,7 +56,7 @@ class StateIconAndTitle
 
         $takeover = $spacecraft->getTakeoverActive();
         if (
-            $state === SpacecraftStateEnum::SHIP_STATE_ACTIVE_TAKEOVER
+            $state === SpacecraftStateEnum::ACTIVE_TAKEOVER
             && $takeover !== null
         ) {
             $targetNamePlainText = $this->bbCodeParser->parse($takeover->getTargetSpacecraft()->getName())->getAsText();
@@ -78,12 +78,12 @@ class StateIconAndTitle
         }
 
         if (
-            $state === SpacecraftStateEnum::SHIP_STATE_GATHER_RESOURCES
+            $state === SpacecraftStateEnum::GATHER_RESOURCES
             && $spacecraft instanceof ShipInterface
         ) {
             $miningqueue = $spacecraft->getMiningQueue();
             $module = $spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::BUSSARD_COLLECTOR)->getModule();
-            $gathercount = 0;
+
             if ($miningqueue !== null) {
                 $locationmining = $miningqueue->getLocationMining();
                 if ($module !== null) {

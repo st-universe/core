@@ -10,6 +10,7 @@ use Override;
 use Stu\Component\Game\TimeConstants;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonyClass;
 use Stu\Orm\Entity\ColonyInterface;
@@ -17,7 +18,6 @@ use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\MapRegionSettlement;
 use Stu\Orm\Entity\PirateWrath;
-use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystem;
 use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Entity\StarSystemMapInterface;
@@ -269,15 +269,15 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
     }
 
     #[Override]
-    public function getPirateTargets(ShipInterface $ship): array
+    public function getPirateTargets(SpacecraftWrapperInterface $wrapper): array
     {
-        $layer = $ship->getLayer();
+        $layer = $wrapper->get()->getLayer();
         if ($layer === null) {
             return [];
         }
 
-        $location = $ship->getLocation();
-        $range = $ship->getSensorRange() * 2;
+        $location = $wrapper->get()->getLocation();
+        $range = $wrapper->getSensorRange() * 2;
 
         return $this->getEntityManager()->createQuery(
             sprintf(

@@ -13,9 +13,8 @@ use Stu\Lib\Transfer\CommodityTransferInterface;
 use Stu\Lib\Transfer\EntityWithStorageInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
-use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Spacecraft\Lib\ActivatorDeactivatorHelperInterface;
-use Stu\Module\Spacecraft\Lib\Auxiliary\ShipShutdownInterface;
+use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftShutdownInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
@@ -38,8 +37,7 @@ class StorageEntityWrapperFactory implements StorageEntityWrapperFactoryInterfac
         private ActivatorDeactivatorHelperInterface $activatorDeactivatorHelper,
         private SpacecraftSystemManagerInterface $spacecraftSystemManager,
         private SpacecraftCrewCalculatorInterface $shipCrewCalculator,
-        private ShipShutdownInterface $shipShutdown,
-        private PrivateMessageSenderInterface $privateMessageSender,
+        private SpacecraftShutdownInterface $spacecraftShutdown,
         private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory
     ) {}
 
@@ -64,8 +62,7 @@ class StorageEntityWrapperFactory implements StorageEntityWrapperFactoryInterfac
                 $this->activatorDeactivatorHelper,
                 $this->spacecraftSystemManager,
                 $this->shipCrewCalculator,
-                $this->shipShutdown,
-                $this->privateMessageSender,
+                $this->spacecraftShutdown,
                 $this->spacecraftWrapperFactory->wrapSpacecraft($entity)
             );
         }

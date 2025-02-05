@@ -32,6 +32,7 @@ use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\AnomalyInterface;
 use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Repository\AnomalyRepositoryInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\LocationRepositoryInterface;
@@ -230,14 +231,12 @@ final class IonStormHandler implements AnomalyHandlerInterface
             (int)ceil($this->stuRandom->rand(1, $damagePercentage, true) * $wrapper->get()->getMaxHull() / 100)
         );
 
-        $hull = $spacecraft->getModules()[SpacecraftModuleTypeEnum::HULL->value];
-        $hasIonStormReduction = $hull->hasSpecial(ModuleSpecialAbilityEnum::ION_STORM_DAMAGE_REDUCTION);
         $shield = $spacecraft->getSystems()[SpacecraftSystemTypeEnum::SHIELDS->value] ?? null;
         $shieldLevel = $shield !== null ? $shield->determineSystemLevel() : 0;
 
         $damageWrapper
             ->setCrit(random_int(0, 20) === 0)
-            ->setHullDamageFactor(max(0, 100 - $hull->getLevel() * ($hasIonStormReduction ? 20 : 10)))
+            ->setHullDamageFactor($this->getHullDamageFactor($spacecraft))
             ->setShieldDamageFactor(100 - $shieldLevel * 10)
             ->setTargetSystemTypes([
                 SpacecraftSystemTypeEnum::DEFLECTOR,
@@ -258,5 +257,17 @@ final class IonStormHandler implements AnomalyHandlerInterface
                 $informations
             );
         }
+    }
+
+    private function getHullDamageFactor(SpacecraftInterface $spacecraft): int
+    {
+        $hull = $spacecraft->getModules()[SpacecraftModuleTypeEnum::HULL->value] ?? null;
+        if ($hull === null) {
+            return 100;
+        }
+
+        $hasIonStormReduction = $hull->hasSpecial(ModuleSpecialAbilityEnum::ION_STORM_DAMAGE_REDUCTION);
+
+        return max(0, 100 - $hull->getLevel() * ($hasIonStormReduction ? 16 : 8));
     }
 }

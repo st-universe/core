@@ -16,6 +16,10 @@ final class SubspaceLayerRenderer implements LayerRendererInterface
     #[Override]
     public function render(CellDataInterface $data, PanelAttributesInterface $panel): string
     {
+        if ($data->isDisabled()) {
+            return '';
+        }
+
         $subspaceCode = $this->getSubspaceCode($data);
         if ($subspaceCode === null) {
             return '';

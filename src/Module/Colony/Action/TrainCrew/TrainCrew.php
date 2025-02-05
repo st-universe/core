@@ -70,7 +70,7 @@ final class TrainCrew implements ActionControllerInterface
         if ($count <= 0) {
             return;
         }
-        if (!$this->colonyFunctionManager->hasActiveFunction($colony, BuildingFunctionEnum::BUILDING_FUNCTION_ACADEMY)) {
+        if (!$this->colonyFunctionManager->hasActiveFunction($colony, BuildingFunctionEnum::ACADEMY)) {
             $game->addInformation(_('Es befindet sich keine aktivierte Akademie auf diesen Planeten'));
             return;
         }

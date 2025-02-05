@@ -10,16 +10,19 @@ use Stu\Module\Template\StatusBarColorEnum;
 
 class ShieldSystemData extends AbstractSystemData
 {
-    #[Override]
-    public function update(): void
-    {
-        //nothing to do here
-    }
+    public int $shieldRegenerationTimer = 0;
 
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
         return SpacecraftSystemTypeEnum::SHIELDS;
+    }
+
+    public function setShieldRegenerationTimer(int $timestamp): ShieldSystemData
+    {
+        $this->shieldRegenerationTimer = $timestamp;
+
+        return $this;
     }
 
     public function getShieldStatusBar(): string

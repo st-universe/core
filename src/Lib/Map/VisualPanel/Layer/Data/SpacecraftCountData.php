@@ -6,6 +6,7 @@ namespace Stu\Lib\Map\VisualPanel\Layer\Data;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
+use Stu\Lib\Map\FieldTypeEffectEnum;
 
 #[Entity]
 class SpacecraftCountData extends AbstractData
@@ -23,5 +24,17 @@ class SpacecraftCountData extends AbstractData
     public function hasCloakedShips(): bool
     {
         return $this->cloakcount > 0;
+    }
+
+    public function isEnabled(): bool
+    {
+        return $this->effects === null
+            || !in_array(FieldTypeEffectEnum::NO_SPACECRAFT_COUNT->value, $this->effects);
+    }
+
+    public function isDubious(): bool
+    {
+        return $this->effects !== null
+            && in_array(FieldTypeEffectEnum::DUBIOUS_SPACECRAFT_COUNT->value, $this->effects);
     }
 }

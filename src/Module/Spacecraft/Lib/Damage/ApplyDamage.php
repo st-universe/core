@@ -117,7 +117,12 @@ final class ApplyDamage implements ApplyDamageInterface
             $informations->addInformation("- Schildschaden: " . $damage . " - Status: " . $ship->getShield());
         }
 
-        $ship->setShieldRegenerationTimer(time());
+        $shieldSystemData = $wrapper->getShieldSystemData();
+        if ($shieldSystemData === null) {
+            throw new RuntimeException('this should not happen');
+        }
+
+        $shieldSystemData->setShieldRegenerationTimer(time())->update();
     }
 
     #[Override]

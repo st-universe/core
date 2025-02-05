@@ -210,7 +210,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
         $this->ship->shouldReceive('getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(SpacecraftStateEnum::SHIP_STATE_NONE);
+            ->andReturn(SpacecraftStateEnum::NONE);
 
         $user->shouldReceive('getId')
             ->withNoArgs()
@@ -313,7 +313,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
         $this->ship->shouldReceive('getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(SpacecraftStateEnum::SHIP_STATE_NONE);
+            ->andReturn(SpacecraftStateEnum::NONE);
         $this->ship->shouldReceive('getSectorString')
             ->withNoArgs()
             ->once()
@@ -422,10 +422,10 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
         $this->ship->shouldReceive('getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(SpacecraftStateEnum::SHIP_STATE_ASTRO_FINALIZING);
+            ->andReturn(SpacecraftStateEnum::ASTRO_FINALIZING);
 
         $this->ship->shouldReceive('setState')
-            ->with(SpacecraftStateEnum::SHIP_STATE_NONE)
+            ->with(SpacecraftStateEnum::NONE)
             ->once();
 
         $map->shouldReceive('getId')

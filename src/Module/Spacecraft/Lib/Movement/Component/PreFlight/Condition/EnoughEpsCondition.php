@@ -89,7 +89,7 @@ class EnoughEpsCondition implements PreFlightConditionInterface
 
     private function getEpsNeededForFlight(FlightRouteInterface $flightRoute, SpacecraftInterface $spacecraft): int
     {
-        if ($flightRoute->getRouteMode() !== RouteModeEnum::ROUTE_MODE_FLIGHT) {
+        if ($flightRoute->getRouteMode() !== RouteModeEnum::FLIGHT) {
             return 0;
         }
 

@@ -39,8 +39,8 @@ final class PrivateMessageRepository extends EntityRepository implements Private
 
     #[Override]
     public function getOrderedCorrepondence(
-        int $senderUserId,
-        int $recipientUserId,
+        int $userId,
+        int $otherUserId,
         array $specialIds,
         int $limit
     ): array {
@@ -50,18 +50,21 @@ final class PrivateMessageRepository extends EntityRepository implements Private
                     'SELECT pm FROM %s pm
                     JOIN %s pmf
                     WITH pm.cat_id = pmf.id
-                    WHERE ((pm.send_user = :sendUserId AND pm.recip_user = :recipUserId) OR
-                        (pm.send_user = :recipUserId AND pm.recip_user = :sendUserId))
+                    WHERE ( (pm.send_user = :userId
+                                AND pm.recip_user = :otherUserId)
+                            OR
+                            (pm.send_user = :otherUserId
+                                AND pm.recip_user = :userId
+                                AND pm.deleted IS NULL))
                     AND pmf.special in (:specialIds)
-                    AND pm.deleted IS NULL
                     ORDER BY pm.date DESC',
                     PrivateMessage::class,
                     PrivateMessageFolder::class
                 )
             )
             ->setParameters([
-                'sendUserId' => $senderUserId,
-                'recipUserId' => $recipientUserId,
+                'userId' => $userId,
+                'otherUserId' => $otherUserId,
                 'specialIds' => $specialIds
             ])
             ->setMaxResults($limit)

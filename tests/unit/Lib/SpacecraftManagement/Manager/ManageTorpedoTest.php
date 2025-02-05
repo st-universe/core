@@ -479,10 +479,6 @@ class ManageTorpedoTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn('SECTOR');
-        $this->ship->shouldReceive('getHref')
-            ->withNoArgs()
-            ->once()
-            ->andReturn('HREF555');
 
         $this->shipTorpedoManager->shouldReceive('changeTorpedo')
             ->with($this->wrapper, 3)
@@ -494,7 +490,7 @@ class ManageTorpedoTest extends StuTestCase
                 777,
                 'Die providername hat in Sektor SECTOR 3 torpedoname auf die name transferiert',
                 PrivateMessageFolderTypeEnum::SPECIAL_TRADE,
-                'HREF555'
+                $this->ship
             )
             ->once();
 
@@ -575,10 +571,6 @@ class ManageTorpedoTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn('SECTOR');
-        $this->ship->shouldReceive('getHref')
-            ->withNoArgs()
-            ->once()
-            ->andReturn('HREF555');
 
         $this->shipTorpedoManager->shouldReceive('changeTorpedo')
             ->with($this->wrapper, 5, $this->torpedoType)
@@ -590,7 +582,7 @@ class ManageTorpedoTest extends StuTestCase
                 777,
                 'Die providername hat in Sektor SECTOR 5 torpedoname auf die name transferiert',
                 PrivateMessageFolderTypeEnum::SPECIAL_TRADE,
-                'HREF555'
+                $this->ship
             )
             ->once();
 

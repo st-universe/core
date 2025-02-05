@@ -168,7 +168,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
             $this->spacecraftSystemManager->deactivate($targetWrapper, SpacecraftSystemTypeEnum::TRACTOR_BEAM, true); //forced active deactivation
         }
 
-        $this->spacecraftStateChanger->changeShipState($targetWrapper, SpacecraftStateEnum::SHIP_STATE_NONE);
+        $this->spacecraftStateChanger->changeState($targetWrapper, SpacecraftStateEnum::NONE);
 
         $target->setDockedTo(null);
         $ship->setTractoredShip($target);
@@ -180,7 +180,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
             $target->getUser()->getId(),
             "Die " . $targetName . " wurde in Sektor " . $ship->getSectorString() . " vom Traktorstrahl der " . $shipName . " erfasst",
             PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
-            $target->getHref()
+            $target
         );
         $game->addInformationf("Der Traktorstrahl wurde auf die %s gerichtet", $targetName);
 

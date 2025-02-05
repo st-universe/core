@@ -6,7 +6,6 @@ namespace Stu\Module\Communication\Action\PostKnComment;
 
 use Override;
 use Stu\Module\Communication\View\ShowKnComments\ShowKnComments;
-use Stu\Module\Communication\View\ShowSingleKn\ShowSingleKn;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -63,21 +62,14 @@ final class PostKnComment implements ActionControllerInterface
                 $post->getId()
             );
 
-            $href = sprintf(
-                _('comm.php?%s=1&knid=%d'),
-                ShowSingleKn::VIEW_IDENTIFIER,
-                $post->getId()
-            );
-
             $this->privateMessageSender->send(
                 UserEnum::USER_NOONE,
                 $post->getUserId(),
                 $text,
                 PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,
-                $href
+                $post
             );
         }
-
 
         // send notifications to other commentators
         foreach ($post->getComments() as $comment) {
@@ -96,18 +88,12 @@ final class PostKnComment implements ActionControllerInterface
                     $post->getId()
                 );
 
-                $href = sprintf(
-                    _('comm.php?%s=1&knid=%d'),
-                    ShowSingleKn::VIEW_IDENTIFIER,
-                    $post->getId()
-                );
-
                 $this->privateMessageSender->send(
                     UserEnum::USER_NOONE,
                     $commentatorId,
                     $text,
                     PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,
-                    $href
+                    $post
                 );
             }
         }

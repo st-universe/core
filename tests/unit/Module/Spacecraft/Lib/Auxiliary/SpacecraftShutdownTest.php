@@ -19,7 +19,7 @@ use Stu\Orm\Entity\StationInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\StuTestCase;
 
-class ShipShutdownTest extends StuTestCase
+class SpacecraftShutdownTest extends StuTestCase
 {
     /** @var MockInterface&SpacecraftRepositoryInterface */
     private $spacecraftRepository;
@@ -32,7 +32,7 @@ class ShipShutdownTest extends StuTestCase
     /** @var MockInterface&ShipUndockingInterface */
     private $shipUndocking;
 
-    private ShipShutdownInterface $subject;
+    private SpacecraftShutdownInterface $subject;
 
     #[Override]
     public function setUp(): void
@@ -44,7 +44,7 @@ class ShipShutdownTest extends StuTestCase
         $this->spacecraftStateChanger = $this->mock(SpacecraftStateChangerInterface::class);
         $this->shipUndocking = $this->mock(ShipUndockingInterface::class);
 
-        $this->subject = new ShipShutdown(
+        $this->subject = new SpacecraftShutdown(
             $this->spacecraftRepository,
             $this->spacecraftSystemManager,
             $this->leaveFleet,
@@ -69,6 +69,11 @@ class ShipShutdownTest extends StuTestCase
             ->once()
             ->andReturn($ship);
 
+        $ship->shouldReceive('getState')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(SpacecraftStateEnum::ASTRO_FINALIZING);
+
         $ship->shouldReceive('setAlertStateGreen')
             ->withNoArgs()
             ->once();
@@ -83,8 +88,8 @@ class ShipShutdownTest extends StuTestCase
                 ->once();
         }
 
-        $this->spacecraftStateChanger->shouldReceive('changeShipState')
-            ->with($wrapper, SpacecraftStateEnum::SHIP_STATE_NONE)
+        $this->spacecraftStateChanger->shouldReceive('changeState')
+            ->with($wrapper, SpacecraftStateEnum::NONE)
             ->once();
 
         $this->spacecraftRepository->shouldReceive('save')
@@ -109,6 +114,11 @@ class ShipShutdownTest extends StuTestCase
             ->once()
             ->andReturn($station);
 
+        $station->shouldReceive('getState')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(SpacecraftStateEnum::ASTRO_FINALIZING);
+
         $station->shouldReceive('setAlertStateGreen')
             ->withNoArgs()
             ->once();
@@ -121,8 +131,8 @@ class ShipShutdownTest extends StuTestCase
             ->with($station)
             ->once();
 
-        $this->spacecraftStateChanger->shouldReceive('changeShipState')
-            ->with($wrapper, SpacecraftStateEnum::SHIP_STATE_NONE)
+        $this->spacecraftStateChanger->shouldReceive('changeState')
+            ->with($wrapper, SpacecraftStateEnum::NONE)
             ->once();
 
         $this->spacecraftRepository->shouldReceive('save')
@@ -134,5 +144,39 @@ class ShipShutdownTest extends StuTestCase
         } else {
             $this->subject->shutdown($wrapper);
         }
+    }
+
+    public function testShutdownExpectNoStateChangeWhenPassiveState(): void
+    {
+        $wrapper = $this->mock(StationWrapperInterface::class);
+        $station = $this->mock(StationInterface::class);
+
+        $wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($station);
+
+        $station->shouldReceive('getState')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(SpacecraftStateEnum::RETROFIT);
+
+        $station->shouldReceive('setAlertStateGreen')
+            ->withNoArgs()
+            ->once();
+
+        $this->spacecraftSystemManager->shouldReceive('deactivateAll')
+            ->with($wrapper)
+            ->once();
+
+        $this->shipUndocking->shouldReceive('undockAllDocked')
+            ->with($station)
+            ->once();
+
+        $this->spacecraftRepository->shouldReceive('save')
+            ->with($station)
+            ->once();
+
+        $this->subject->shutdown($wrapper);
     }
 }

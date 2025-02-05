@@ -50,7 +50,7 @@ class AttackShipBehaviour implements PirateBehaviourInterface
 
         $this->logger->log(sprintf('    piratePrestige %d', $piratePrestige));
 
-        $targets = $this->shipRepository->getPirateTargets($leadShip);
+        $targets = $this->shipRepository->getPirateTargets($leadWrapper);
 
         $this->logger->log(sprintf('    %d targets in reach', count($targets)));
 

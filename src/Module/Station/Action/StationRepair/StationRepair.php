@@ -48,7 +48,7 @@ final class StationRepair implements ActionControllerInterface
             return;
         }
 
-        $station->setState(SpacecraftStateEnum::SHIP_STATE_REPAIR_PASSIVE);
+        $station->setState(SpacecraftStateEnum::REPAIR_PASSIVE);
 
         $this->stationLoader->save($station);
 

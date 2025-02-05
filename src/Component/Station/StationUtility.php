@@ -6,8 +6,10 @@ namespace Stu\Component\Station;
 
 use Override;
 use RuntimeException;
+use Stu\Component\Spacecraft\Module\ModuleRecyclingInterface;
 use Stu\Component\Spacecraft\SpacecraftRumpEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
+use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -41,6 +43,7 @@ final class StationUtility implements StationUtilityInterface
         private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository,
         private TradePostRepositoryInterface $tradePostRepository,
         private TradeLicenseRepositoryInterface $tradeLicenseRepository,
+        private ModuleRecyclingInterface $moduleRecycling,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
@@ -125,11 +128,11 @@ final class StationUtility implements StationUtilityInterface
         }
 
         switch ($station->getState()) {
-            case SpacecraftStateEnum::SHIP_STATE_UNDER_CONSTRUCTION:
+            case SpacecraftStateEnum::UNDER_CONSTRUCTION:
                 return $rump->getNeededWorkbees();
-            case SpacecraftStateEnum::SHIP_STATE_UNDER_SCRAPPING:
+            case SpacecraftStateEnum::UNDER_SCRAPPING:
                 return (int)ceil($rump->getNeededWorkbees() / 2);
-            case SpacecraftStateEnum::SHIP_STATE_REPAIR_PASSIVE:
+            case SpacecraftStateEnum::REPAIR_PASSIVE:
                 return (int)ceil($rump->getNeededWorkbees() / 5);
             default:
                 throw new RuntimeException(sprintf(
@@ -214,9 +217,26 @@ final class StationUtility implements StationUtilityInterface
     }
 
     #[Override]
-    public function finishScrapping(ConstructionProgressInterface $progress): void
+    public function finishScrapping(ConstructionProgressInterface $progress, InformationInterface $information): void
     {
         $station = $progress->getStation();
+
+        // salvage modules
+        $information->addInformation("Folgende Module konnten recycelt werden:\n");
+        $this->moduleRecycling->retrieveSomeModules($station, $station, $information);
+
+        // salvage special modules
+        foreach ($progress->getSpecialModules() as $progressModule) {
+
+            $module = $progressModule->getModule();
+            $information->addInformationf('%s, Anzahl: 1', $module->getName());
+
+            $this->storageManager->upperStorage(
+                $station,
+                $module->getCommodity(),
+                1
+            );
+        }
 
         // transform to construction
         $rumpId = $station->getUser()->getFactionId() + SpacecraftRumpEnum::SHIP_RUMP_BASE_ID_CONSTRUCTION;
@@ -225,7 +245,7 @@ final class StationUtility implements StationUtilityInterface
             throw new RuntimeException(sprintf('construction rump with id %d not found', $rumpId));
         }
 
-        $station->setState(SpacecraftStateEnum::SHIP_STATE_UNDER_CONSTRUCTION);
+        $station->setState(SpacecraftStateEnum::UNDER_CONSTRUCTION);
         $station->setBuildplan(null);
         $station->setRump($rump);
         $station->setName($rump->getName());
@@ -233,15 +253,6 @@ final class StationUtility implements StationUtilityInterface
         $station->setMaxHuell($rump->getBaseHull());
 
         $this->stationRepository->save($station);
-
-        // salvage modules
-        foreach ($progress->getSpecialModules() as $progressModule) {
-            $this->storageManager->upperStorage(
-                $station,
-                $progressModule->getModule()->getCommodity(),
-                1
-            );
-        }
 
         // delete progress modules
         $this->constructionProgressModuleRepository->truncateByProgress($progress->getId());

@@ -185,9 +185,6 @@ class ShipTakeoverManagerTest extends StuTestCase
         $this->target->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn(77);
-        $this->target->shouldReceive('getHref')
-            ->withNoArgs()
-            ->andReturn('HREF77');
         $this->target->shouldReceive('getFleet')
             ->withNoArgs()
             ->andReturn($isTargetInFleet ? $this->mock(FleetInterface::class) : null);
@@ -239,7 +236,7 @@ class ShipTakeoverManagerTest extends StuTestCase
                 777,
                 $expectedMessage,
                 PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
-                'HREF77'
+                $this->target
             )
             ->once();
 
@@ -286,18 +283,12 @@ class ShipTakeoverManagerTest extends StuTestCase
         $this->ship->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn(1);
-        $this->ship->shouldReceive('getHref')
-            ->withNoArgs()
-            ->andReturn('HREF1');
         $this->ship->shouldReceive('getUser->getId')
             ->withNoArgs()
             ->andReturn(666);
         $this->target->shouldReceive('getName')
             ->withNoArgs()
             ->andReturn('TARGET');
-        $this->target->shouldReceive('getHref')
-            ->withNoArgs()
-            ->andReturn('HREF2');
         $this->target->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn(2);
@@ -316,7 +307,7 @@ class ShipTakeoverManagerTest extends StuTestCase
                 777,
                 'Die Übernahme der TARGET durch die SHIP erfolgt in 1 Runde(n).',
                 PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
-                'HREF2'
+                $this->target
             )
             ->once();
         $this->privateMessageSender->shouldReceive('send')
@@ -325,7 +316,7 @@ class ShipTakeoverManagerTest extends StuTestCase
                 666,
                 'Die Übernahme der TARGET durch die SHIP erfolgt in 1 Runde(n).',
                 PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
-                'HREF1'
+                $this->ship
             )
             ->once();
 
@@ -383,9 +374,6 @@ class ShipTakeoverManagerTest extends StuTestCase
         $this->ship->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn(1);
-        $this->ship->shouldReceive('getHref')
-            ->withNoArgs()
-            ->andReturn('HREF1');
         $this->ship->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($user);
@@ -393,7 +381,7 @@ class ShipTakeoverManagerTest extends StuTestCase
             ->with(null)
             ->andReturnSelf();
         $this->ship->shouldReceive('setState')
-            ->with(SpacecraftStateEnum::SHIP_STATE_NONE)
+            ->with(SpacecraftStateEnum::NONE)
             ->once();
         $user->shouldReceive('getId')
             ->withNoArgs()
@@ -408,9 +396,6 @@ class ShipTakeoverManagerTest extends StuTestCase
         $this->target->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn(2);
-        $this->target->shouldReceive('getHref')
-            ->withNoArgs()
-            ->andReturn('HREF2');
         $this->target->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($targetUser);
@@ -448,7 +433,7 @@ class ShipTakeoverManagerTest extends StuTestCase
                 777,
                 'Die Übernahme der TARGET wurde abgebrochen',
                 PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
-                'HREF2'
+                $this->target
             )
             ->once();
         $this->privateMessageSender->shouldReceive('send')
@@ -457,7 +442,7 @@ class ShipTakeoverManagerTest extends StuTestCase
                 666,
                 'Die Übernahme der TARGET wurde abgebrochen',
                 PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
-                'HREF1'
+                $this->ship
             )
             ->once();
 
@@ -486,9 +471,6 @@ class ShipTakeoverManagerTest extends StuTestCase
         $this->ship->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn(1);
-        $this->ship->shouldReceive('getHref')
-            ->withNoArgs()
-            ->andReturn('HREF1');
         $this->ship->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($user);
@@ -496,7 +478,7 @@ class ShipTakeoverManagerTest extends StuTestCase
             ->with(null)
             ->andReturnSelf();
         $this->ship->shouldReceive('setState')
-            ->with(SpacecraftStateEnum::SHIP_STATE_NONE)
+            ->with(SpacecraftStateEnum::NONE)
             ->once();
         $user->shouldReceive('getId')
             ->withNoArgs()
@@ -511,9 +493,6 @@ class ShipTakeoverManagerTest extends StuTestCase
         $this->target->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn(2);
-        $this->target->shouldReceive('getHref')
-            ->withNoArgs()
-            ->andReturn('HREF2');
         $this->target->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($targetUser);
@@ -554,7 +533,7 @@ class ShipTakeoverManagerTest extends StuTestCase
                     'CAUSE'
                 ),
                 PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
-                'HREF2'
+                $this->target
             )
             ->once();
         $this->privateMessageSender->shouldReceive('send')
@@ -566,7 +545,7 @@ class ShipTakeoverManagerTest extends StuTestCase
                     'CAUSE'
                 ),
                 PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
-                'HREF1'
+                $this->ship
             )
             ->once();
 
@@ -603,7 +582,7 @@ class ShipTakeoverManagerTest extends StuTestCase
             ->with(null)
             ->andReturnSelf();
         $this->ship->shouldReceive('setState')
-            ->with(SpacecraftStateEnum::SHIP_STATE_NONE)
+            ->with(SpacecraftStateEnum::NONE)
             ->once();
         $user->shouldReceive('getId')
             ->withNoArgs()
@@ -618,9 +597,6 @@ class ShipTakeoverManagerTest extends StuTestCase
         $this->target->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn(2);
-        $this->target->shouldReceive('getHref')
-            ->withNoArgs()
-            ->andReturn('HREF');
         $this->target->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($targetUser);
@@ -705,7 +681,7 @@ class ShipTakeoverManagerTest extends StuTestCase
                 666,
                 'Die TARGET von Spieler TARGETUSER wurde übernommen',
                 PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
-                'HREF'
+                $this->target
             )
             ->once();
 

@@ -67,7 +67,7 @@ final class ShieldShipSystem extends AbstractSpacecraftSystemType implements Spa
     public function activate(SpacecraftWrapperInterface $wrapper, SpacecraftSystemManagerInterface $manager): void
     {
         $spacecraft = $wrapper->get();
-        $this->spacecraftStateChanger->changeShipState($wrapper, SpacecraftStateEnum::SHIP_STATE_NONE);
+        $this->spacecraftStateChanger->changeState($wrapper, SpacecraftStateEnum::NONE);
         $spacecraft->getSpacecraftSystem($this->getSystemType())->setMode(SpacecraftSystemModeEnum::MODE_ON);
 
         if ($spacecraft instanceof ShipInterface) {

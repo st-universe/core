@@ -6,7 +6,6 @@ namespace Stu\Module\Communication\Action\ApplyKnPostToPlot;
 
 use Override;
 use request;
-use Stu\Module\Communication\View\ShowSingleKn\ShowSingleKn;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -106,18 +105,12 @@ final class ApplyKnPostToPlot implements ActionControllerInterface
                     $plot->getTitle()
                 );
 
-                $href = sprintf(
-                    _('comm.php?%s=1&knid=%d'),
-                    ShowSingleKn::VIEW_IDENTIFIER,
-                    $post->getId()
-                );
-
                 $this->privateMessageSender->send(
                     UserEnum::USER_NOONE,
                     $user->getId(),
                     $text,
                     PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,
-                    $href
+                    $post
                 );
             }
         }

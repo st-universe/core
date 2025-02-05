@@ -37,7 +37,7 @@ final class ActivateShields implements ActionControllerInterface
 
         $fields = $this->planetFieldRepository->getByColonyAndBuildingFunction(
             $colony->getId(),
-            [BuildingFunctionEnum::BUILDING_FUNCTION_SHIELD_GENERATOR->value]
+            [BuildingFunctionEnum::SHIELD_GENERATOR->value]
         );
 
         if (count($fields) !== 1) {

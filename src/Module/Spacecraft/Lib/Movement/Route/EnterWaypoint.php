@@ -20,11 +20,15 @@ final class EnterWaypoint implements EnterWaypointInterface
 
     #[Override]
     public function enterNextWaypoint(
-        SpacecraftInterface $spacecraft,
+        ?SpacecraftInterface $spacecraft,
         bool $isTraversing,
         LocationInterface $waypoint,
         ?WormholeEntryInterface $wormholeEntry
     ): void {
+
+        if ($spacecraft === null) {
+            return;
+        }
 
         $spacecraft->setLocation($waypoint);
         $waypoint->getSpacecrafts()->set($spacecraft->getId(), $spacecraft);
@@ -33,5 +37,7 @@ final class EnterWaypoint implements EnterWaypointInterface
             $wormholeEntry->setLastUsed($this->stuTime->time());
             $this->wormholeEntryRepository->save($wormholeEntry);
         }
+
+        $this->enterNextWaypoint($spacecraft->getTractoredShip(), $isTraversing, $waypoint, $wormholeEntry);
     }
 }

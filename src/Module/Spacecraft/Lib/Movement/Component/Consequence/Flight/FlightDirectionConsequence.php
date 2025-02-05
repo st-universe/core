@@ -34,7 +34,7 @@ class FlightDirectionConsequence extends AbstractFlightConsequence implements Fl
         $ship = $wrapper->get();
 
         //leaving star system
-        if ($flightRoute->getRouteMode() === RouteModeEnum::ROUTE_MODE_SYSTEM_EXIT) {
+        if ($flightRoute->getRouteMode() === RouteModeEnum::SYSTEM_EXIT) {
             $oldWaypoint = $ship->getLocation();
             if (!$oldWaypoint instanceof StarSystemMapInterface) {
                 throw new RuntimeException('this should not happen');

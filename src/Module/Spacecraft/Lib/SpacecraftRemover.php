@@ -9,7 +9,7 @@ use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Module\Spacecraft\Lib\Auxiliary\ShipShutdownInterface;
+use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftShutdownInterface;
 use Stu\Module\Spacecraft\Lib\Torpedo\ClearTorpedoInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
@@ -31,7 +31,7 @@ final class SpacecraftRemover implements SpacecraftRemoverInterface
         private ClearTorpedoInterface $clearTorpedo,
         private SpacecraftStateChangerInterface $spacecraftStateChanger,
         private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
-        private ShipShutdownInterface $shipShutdown,
+        private SpacecraftShutdownInterface $spacecraftShutdown,
     ) {}
 
     private function resetTrackerDevices(int $shipId): void
@@ -48,8 +48,8 @@ final class SpacecraftRemover implements SpacecraftRemoverInterface
     {
         $wrapper = $this->spacecraftWrapperFactory->wrapSpacecraft($spacecraft);
 
-        $this->shipShutdown->shutdown($wrapper, true);
-        $this->spacecraftStateChanger->changeShipState($wrapper, SpacecraftStateEnum::SHIP_STATE_NONE);
+        $this->spacecraftShutdown->shutdown($wrapper, true);
+        $this->spacecraftStateChanger->changeState($wrapper, SpacecraftStateEnum::NONE);
 
         //both sides have to be cleared, foreign key violation
         if ($spacecraft->isTractoring()) {

@@ -3,9 +3,9 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Entity\UserInterface;
 
@@ -53,7 +53,7 @@ interface ColonyRepositoryInterface extends ObjectRepository
     /**
      * @return array<ColonyInterface>
      */
-    public function getPirateTargets(ShipInterface $ship): array;
+    public function getPirateTargets(SpacecraftWrapperInterface $wrapper): array;
 
     /**
      * @return array<array{user_id: int, commodity_id: int, sum: int}>

@@ -82,7 +82,7 @@ class PostFlightTrackerConsequenceTest extends StuTestCase
         $this->flightRoute->shouldReceive('getRouteMode')
             ->withNoArgs()
             ->once()
-            ->andReturn(RouteModeEnum::ROUTE_MODE_SYSTEM_EXIT);
+            ->andReturn(RouteModeEnum::SYSTEM_EXIT);
 
         $this->subject->trigger(
             $this->wrapper,
@@ -103,7 +103,7 @@ class PostFlightTrackerConsequenceTest extends StuTestCase
         $this->flightRoute->shouldReceive('getRouteMode')
             ->withNoArgs()
             ->once()
-            ->andReturn(RouteModeEnum::ROUTE_MODE_WORMHOLE_ENTRY);
+            ->andReturn(RouteModeEnum::WORMHOLE_ENTRY);
 
 
         $this->trackerDeviceManager->shouldReceive('deactivateTrackerIfActive')

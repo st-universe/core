@@ -10,15 +10,29 @@ use Stu\Module\PlayerSetting\Lib\UserEnum;
 
 final class MessageCollection implements MessageCollectionInterface
 {
-    /**
-     * @var MessageInterface[]
-     */
+    /** @var MessageInterface[] */
     private array $messages = [];
+
+    public function __construct(private MessageFactoryInterface $messageFactory) {}
 
     #[Override]
     public function add(MessageInterface $msg): void
     {
         $this->messages[] = $msg;
+    }
+
+    #[Override]
+    public function addInformation(string $text, ?int $recipient = null): MessageInterface
+    {
+        $message = $this->messageFactory->createMessage(
+            UserEnum::USER_NOONE,
+            $recipient,
+            [$text]
+        );
+
+        $this->add($message);
+
+        return $message;
     }
 
     #[Override]

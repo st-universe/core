@@ -37,7 +37,7 @@ interface SpacecraftRepositoryInterface extends ObjectRepository
     /**
      * @return array<SpacecraftInterface>
      */
-    public function getSuitableForShieldRegeneration(int $regenerationThreshold): array;
+    public function getSuitableForShieldRegeneration(): array;
 
     /**
      * @return array<SpacecraftInterface>

@@ -23,7 +23,7 @@ final class SetLSSModeNormal implements ActionControllerInterface
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $this->helper->setLssMode(request::indInt('id'), SpacecraftLssModeEnum::LSS_NORMAL, $game);
+        $this->helper->setLssMode(request::indInt('id'), SpacecraftLssModeEnum::NORMAL, $game);
     }
 
     #[Override]

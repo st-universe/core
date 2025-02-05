@@ -505,7 +505,7 @@ class BuildingManagerTest extends StuTestCase
         $storage = 44;
         $currentEps = 33;
         $eps = 22;
-        $buildingFunction = BuildingFunctionEnum::BUILDING_FUNCTION_SHIELD_BATTERY;
+        $buildingFunction = BuildingFunctionEnum::SHIELD_BATTERY;
 
         $field->shouldReceive('getBuilding')
             ->withNoArgs()
@@ -595,7 +595,7 @@ class BuildingManagerTest extends StuTestCase
         $storage = 44;
         $currentEps = 33;
         $eps = 22;
-        $buildingFunction = BuildingFunctionEnum::BUILDING_FUNCTION_SHIELD_BATTERY;
+        $buildingFunction = BuildingFunctionEnum::SHIELD_BATTERY;
         $buildingWorkers = 123;
 
         $field->shouldReceive('getBuilding')
@@ -726,7 +726,7 @@ class BuildingManagerTest extends StuTestCase
         $storage = 44;
         $currentEps = 33;
         $eps = 22;
-        $buildingFunction = BuildingFunctionEnum::BUILDING_FUNCTION_SHIELD_BATTERY;
+        $buildingFunction = BuildingFunctionEnum::SHIELD_BATTERY;
         $buildingWorkers = 123;
 
         $field->shouldReceive('getBuilding')

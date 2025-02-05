@@ -29,7 +29,7 @@ final class SpacecraftSpacecraftCountDataProvider extends AbstractShipcountDataP
     #[Override]
     protected function provideDataForMap(PanelBoundaries $boundaries): array
     {
-        return $this->locationRepository->getSpacecraftCountLayerDataForSpacecraft($boundaries, $this->spacecraftId, $this->createResultSetMapping());
+        return $this->mapRepository->getSpacecraftCountLayerDataForSpacecraft($boundaries, $this->spacecraftId, $this->createResultSetMapping());
     }
 
     #[Override]

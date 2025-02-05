@@ -80,7 +80,7 @@ final class Selfrepair implements ActionControllerInterface
             return;
         }
 
-        if ($ship->getState() == SpacecraftStateEnum::SHIP_STATE_ASTRO_FINALIZING) {
+        if ($ship->getState() == SpacecraftStateEnum::ASTRO_FINALIZING) {
             $game->addInformation(_('Das Schiff kartographiert derzeit und kann daher nicht repariert werden.'));
             return;
         }
@@ -93,7 +93,7 @@ final class Selfrepair implements ActionControllerInterface
                 return;
             }
 
-            $ship->setState(SpacecraftStateEnum::SHIP_STATE_REPAIR_ACTIVE);
+            $ship->setState(SpacecraftStateEnum::REPAIR_ACTIVE);
 
             $freeEngineerCount = $this->repairUtil->determineFreeEngineerCount($ship);
             $duration = RepairTaskConstants::STANDARD_REPAIR_DURATION * (1 - $freeEngineerCount / 10);

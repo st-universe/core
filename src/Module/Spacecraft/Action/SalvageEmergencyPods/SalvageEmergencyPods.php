@@ -16,8 +16,11 @@ use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
-use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftRemoverInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
@@ -27,8 +30,9 @@ final class SalvageEmergencyPods implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_SALVAGE_EPODS';
 
+    /** @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader */
     public function __construct(
-        private ShipLoaderInterface $shipLoader,
+        private SpacecraftLoaderInterface $spacecraftLoader,
         private CrewAssignmentRepositoryInterface $shipCrewRepository,
         private TradePostRepositoryInterface $tradePostRepository,
         private PrivateMessageSenderInterface $privateMessageSender,
@@ -36,6 +40,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         private CancelRepairInterface $cancelRepair,
         private TransferToClosestLocation $transferToClosestLocation,
         private CancelRetrofitInterface $cancelRetrofit,
+        private SpacecraftRemoverInterface $spacecraftRemover,
         private InteractionCheckerBuilderFactoryInterface $interactionCheckerBuilderFactory
     ) {}
 
@@ -46,14 +51,14 @@ final class SalvageEmergencyPods implements ActionControllerInterface
 
         $userId = $game->getUser()->getId();
 
-        $wrappers = $this->shipLoader->getWrappersBySourceAndUserAndTarget(
+        $wrappers = $this->spacecraftLoader->getWrappersBySourceAndUserAndTarget(
             request::postIntFatal('id'),
             $userId,
             request::postIntFatal('target'),
         );
 
         $wrapper = $wrappers->getSource();
-        $ship = $wrapper->get();
+        $spacecraft = $wrapper->get();
         $targetWrapper = $wrappers->getTarget();
         if ($targetWrapper === null) {
             return;
@@ -62,7 +67,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
 
         if (!$this->interactionCheckerBuilderFactory
             ->createInteractionChecker()
-            ->setSource($ship)
+            ->setSource($spacecraft)
             ->setTarget($target)
             ->setCheckTypes([
                 InteractionCheckType::EXPECT_SOURCE_SUFFICIENT_CREW,
@@ -71,10 +76,6 @@ final class SalvageEmergencyPods implements ActionControllerInterface
                 InteractionCheckType::EXPECT_SOURCE_UNWARPED
             ])
             ->check($game)) {
-            return;
-        }
-
-        if (!$ship->hasEnoughCrew($game)) {
             return;
         }
 
@@ -87,44 +88,35 @@ final class SalvageEmergencyPods implements ActionControllerInterface
             $game->addInformationf('Zum Bergen der Rettungskapseln wird %d Energie benötigt', 1);
             return;
         }
-        if ($this->cancelRepair->cancelRepair($ship)) {
+        if ($this->cancelRepair->cancelRepair($spacecraft)) {
             $game->addInformation("Die Reparatur wurde abgebrochen");
         }
-        if ($this->cancelRetrofit->cancelRetrofit($ship)) {
+        if ($spacecraft instanceof ShipInterface && $this->cancelRetrofit->cancelRetrofit($spacecraft)) {
             $game->addInformation("Die Umrüstung wurde abgebrochen");
         }
-
-
 
         $crewmanPerUser = $this->determineCrewmanPerUser($target);
         if ($crewmanPerUser === []) {
             return;
         }
 
-        $closestTradepost = $this->tradePostRepository->getClosestNpcTradePost($ship->getLocation());
+        $closestTradepost = $this->tradePostRepository->getClosestNpcTradePost($spacecraft->getLocation());
         if ($closestTradepost === null) {
             $game->addInformation('Kein Handelposten in der Nähe, an den die Crew überstellt werden könnte');
             return;
         }
 
         //send PMs to crew owners
-        $this->sendPMsToCrewOwners($crewmanPerUser, $ship, $target, $closestTradepost, $game);
+        $this->sendPMsToCrewOwners($crewmanPerUser, $spacecraft, $target, $closestTradepost, $game);
 
-        /**
-         * TODO
-         //remove entity if crew was on escape pods
-         if ($target->getRump()->isEscapePods())
-         {
-             echo "- removeEscapePodEntity\n";
-             $this->spacecraftRemover->remove($target);
-            } else
-            {
-            }
-         */
+        //remove entity if crew was on escape pods
+        if ($target->getRump()->isEscapePods()) {
+            $this->spacecraftRemover->remove($target);
+        }
 
         $epsSystem->lowerEps(1)->update();
 
-        $this->shipLoader->save($ship);
+        $this->spacecraftLoader->save($spacecraft);
     }
 
     /**

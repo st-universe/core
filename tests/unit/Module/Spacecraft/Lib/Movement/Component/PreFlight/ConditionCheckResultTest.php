@@ -52,7 +52,7 @@ class ConditionCheckResultTest extends StuTestCase
 
         $subject->addBlockedShip($ship, 'REASON');
 
-        $this->assertFalse($subject->isNotBlocked($ship));
+        $this->assertTrue($subject->isBlocked($ship));
         $this->assertFalse($subject->isFlightPossible());
         $this->assertEquals(['REASON'], $subject->getInformations());
     }
@@ -95,12 +95,12 @@ class ConditionCheckResultTest extends StuTestCase
 
         $subject = new ConditionCheckResult($this->leaveFleet, $this->leader, false);
 
-        $this->assertTrue($subject->isNotBlocked($ship));
+        $this->assertFalse($subject->isBlocked($ship));
 
         $subject->addBlockedShip($ship, 'REASON');
         $subject->addBlockedShip($ship, 'REASON');
 
-        $this->assertFalse($subject->isNotBlocked($ship));
+        $this->assertTrue($subject->isBlocked($ship));
         $this->assertTrue($subject->isFlightPossible());
         $this->assertEquals(['REASON', 'Die SHIP hat die Flotte verlassen (22|33)'], $subject->getInformations());
     }
@@ -137,13 +137,13 @@ class ConditionCheckResultTest extends StuTestCase
 
         $subject = new ConditionCheckResult($this->leaveFleet, $this->leader, false);
 
-        $this->assertTrue($subject->isNotBlocked($ship));
+        $this->assertFalse($subject->isBlocked($ship));
 
         $subject->addBlockedShip($leaderShip, 'LEADER_REASON');
         $subject->addBlockedShip($ship, 'REASON');
         $subject->addBlockedShip($ship, 'REASON');
 
-        $this->assertFalse($subject->isNotBlocked($ship));
+        $this->assertTrue($subject->isBlocked($ship));
         $this->assertFalse($subject->isFlightPossible());
         $this->assertEquals(['LEADER_REASON', 'REASON'], $subject->getInformations());
     }
@@ -171,12 +171,12 @@ class ConditionCheckResultTest extends StuTestCase
 
         $subject = new ConditionCheckResult($this->leaveFleet, $this->leader, false);
 
-        $this->assertTrue($subject->isNotBlocked($ship));
+        $this->assertFalse($subject->isBlocked($ship));
 
         $subject->addBlockedShip($ship, 'REASON');
         $subject->addBlockedShip($ship, 'REASON');
 
-        $this->assertFalse($subject->isNotBlocked($ship));
+        $this->assertTrue($subject->isBlocked($ship));
         $this->assertFalse($subject->isFlightPossible());
         $this->assertEquals(['REASON'], $subject->getInformations());
     }
@@ -195,11 +195,11 @@ class ConditionCheckResultTest extends StuTestCase
 
         $subject = new ConditionCheckResult($this->leaveFleet, $this->leader, false);
 
-        $this->assertTrue($subject->isNotBlocked($ship));
+        $this->assertFalse($subject->isBlocked($ship));
 
         $subject->addBlockedShip($ship, 'REASON');
 
-        $this->assertFalse($subject->isNotBlocked($ship));
+        $this->assertTrue($subject->isBlocked($ship));
         $this->assertFalse($subject->isFlightPossible());
         $this->assertEquals(['REASON'], $subject->getInformations());
     }
@@ -226,11 +226,11 @@ class ConditionCheckResultTest extends StuTestCase
 
         $subject = new ConditionCheckResult($this->leaveFleet, $this->leader, false);
 
-        $this->assertTrue($subject->isNotBlocked($ship));
+        $this->assertFalse($subject->isBlocked($ship));
 
         $subject->addBlockedShip($ship, 'REASON');
 
-        $this->assertFalse($subject->isNotBlocked($ship));
+        $this->assertTrue($subject->isBlocked($ship));
         $this->assertFalse($subject->isFlightPossible());
         $this->assertEquals(['REASON'], $subject->getInformations());
     }
@@ -258,11 +258,11 @@ class ConditionCheckResultTest extends StuTestCase
 
         $subject = new ConditionCheckResult($this->leaveFleet, $this->leader, false);
 
-        $this->assertTrue($subject->isNotBlocked($ship));
+        $this->assertFalse($subject->isBlocked($ship));
 
         $subject->addBlockedShip($ship, 'REASON');
 
-        $this->assertFalse($subject->isNotBlocked($ship));
+        $this->assertTrue($subject->isBlocked($ship));
         $this->assertFalse($subject->isFlightPossible());
         $this->assertEquals(['REASON'], $subject->getInformations());
     }

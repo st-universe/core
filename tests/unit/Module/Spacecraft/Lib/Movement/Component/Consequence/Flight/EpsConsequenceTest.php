@@ -84,14 +84,14 @@ class EpsConsequenceTest extends StuTestCase
     public static function provideTriggerData(): array
     {
         return [
-            [RouteModeEnum::ROUTE_MODE_SYSTEM_ENTRY],
-            [RouteModeEnum::ROUTE_MODE_SYSTEM_EXIT],
-            [RouteModeEnum::ROUTE_MODE_WORMHOLE_ENTRY],
-            [RouteModeEnum::ROUTE_MODE_WORMHOLE_EXIT],
-            [RouteModeEnum::ROUTE_MODE_TRANSWARP],
-            [RouteModeEnum::ROUTE_MODE_FLIGHT, MapInterface::class],
-            [RouteModeEnum::ROUTE_MODE_FLIGHT, StarSystemMapInterface::class, 2, null, 2],
-            [RouteModeEnum::ROUTE_MODE_FLIGHT, StarSystemMapInterface::class, 2, 3, 5]
+            [RouteModeEnum::SYSTEM_ENTRY],
+            [RouteModeEnum::SYSTEM_EXIT],
+            [RouteModeEnum::WORMHOLE_ENTRY],
+            [RouteModeEnum::WORMHOLE_EXIT],
+            [RouteModeEnum::TRANSWARP],
+            [RouteModeEnum::FLIGHT, MapInterface::class],
+            [RouteModeEnum::FLIGHT, StarSystemMapInterface::class, 2, null, 2],
+            [RouteModeEnum::FLIGHT, StarSystemMapInterface::class, 2, 3, 5]
         ];
     }
 
@@ -125,7 +125,7 @@ class EpsConsequenceTest extends StuTestCase
             ->once()
             ->andReturn($routeMode);
 
-        if ($routeMode === RouteModeEnum::ROUTE_MODE_FLIGHT) {
+        if ($routeMode === RouteModeEnum::FLIGHT) {
             $this->flightRoute->shouldReceive('getNextWaypoint')
                 ->withNoArgs()
                 ->once()

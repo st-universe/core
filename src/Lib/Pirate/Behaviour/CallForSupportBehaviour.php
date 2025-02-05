@@ -17,6 +17,7 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -53,7 +54,7 @@ class CallForSupportBehaviour implements PirateBehaviourInterface
         $leadWrapper = $fleet->getLeadWrapper();
         $leadShip = $leadWrapper->get();
 
-        $supportFleet = $this->getSupportFleet($leadShip, $reactionMetadata);
+        $supportFleet = $this->getSupportFleet($leadWrapper, $reactionMetadata);
 
         if ($supportFleet === null) {
             return PirateBehaviourEnum::SEARCH_FRIEND;
@@ -69,9 +70,10 @@ class CallForSupportBehaviour implements PirateBehaviourInterface
         return null;
     }
 
-    private function getSupportFleet(ShipInterface $leadShip, PirateReactionMetadata $reactionMetadata): ?FleetInterface
+    private function getSupportFleet(ShipWrapperInterface $leadWrapper, PirateReactionMetadata $reactionMetadata): ?FleetInterface
     {
-        $friends = $this->shipRepository->getPirateFriends($leadShip);
+        $leadShip = $leadWrapper->get();
+        $friends = $this->shipRepository->getPirateFriends($leadWrapper);
 
         $filteredFriends = array_filter(
             $friends,

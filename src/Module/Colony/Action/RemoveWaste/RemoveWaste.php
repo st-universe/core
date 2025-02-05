@@ -44,7 +44,7 @@ final class RemoveWaste implements ActionControllerInterface
 
         if ($this->planetFieldRepository->getCountByColonyAndBuildingFunctionAndState(
             $colony,
-            [BuildingFunctionEnum::BUILDING_FUNCTION_WAREHOUSE],
+            [BuildingFunctionEnum::WAREHOUSE],
             [0, 1]
         ) === 0) {
             return;
