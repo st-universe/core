@@ -1,49 +1,228 @@
 {% extends "html/index/indexDefaults.twig" %}
 
 {% block body %}
-<div style="width: 100%;">
-	<h3>Willkommen in den Weiten von Star Trek Universe.</h3>
-	Star Trek Universe ist ein kostenloses, rundenbasiertes Online-Strategiespiel mit vielen Rollenspielelementen. Es befindet sich aktuell in seiner dritten Version.
-	<br />
-	<br />
-	Bist Du neu hier?<br />
-	- <a href="?SHOW_REGISTRATION=1">Registrierung</a><br />
-	- <a href="{{ WIKI }}/index.php?title=Spielregeln" target="_blank">Regeln</a><br />
-	- <a href="?SHOW_HELP=1">Hilfe</a>
-</div>
-<br />
-<div style="width: 100%;">
-	<h3>Aktuelles</h3>
-</div>
-{% if SYSTEM_NEWS %}
-{% for data in SYSTEM_NEWS %}
-<div style="background-color: #121212; padding: 5px; margin-bottom: 10px;">
-	<div style="font-weight: bold;">
-		{% autoescape false %}
-		{{ data.getSubject }}
-		{% endautoescape %}
-	</div>
-	<div style="font-size: 80%; color: #686868;">vom {{ data.getDate|stuDateTime }}</div>
-	<br />
-	<div>
-		{% autoescape false %}
-		{{ data.getText|nl2br }}
-		{% endautoescape %}
-	</div>
-	{% if data.getLinks %}
-	<div>
-		<br />
-		<div style="font-size: 80%; color: #686868;">Links</div>
-		<ul style="margin: 0; padding: 0; padding-left: 5px; list-style-type: none;">
-			{% for link in data.getLinks %}
-			<li>
-				- <a href="{{ link }}" target="_blank">{{ link }}</a>
-			</li>
-			{% endfor %}
-		</ul>
-	</div>
-	{% endif %}
-</div>
-{% endfor %}
-{% endif %}
+<div class="d-lg-none">
+                    {% if USER %}
+                        <div class="mainbar_box_header mt-4">Willkommen zurück</div>
+                        <div class="mainbar_box_content">
+                            {% autoescape false %}
+                                {{ USER.getName | bbcode }}
+                            {% endautoescape %}
+                            <br /><br />
+                            <a href="/maindesk.php" class="linkbutton">Zum Maindesk</a>
+                        </div>
+                    {% else %}
+                <div class="mainbar_box_header mt-4"><small>Star Trek Universe - Login</small></div>
+                <div class="mainbar_box_content">
+                    <div class="p-2">
+                        {% if LOGIN_ERROR %} 
+                            <div>
+                                <span style="color: red;">{{ LOGIN_ERROR }}</span>
+                            </div>
+                        {% endif %}
+                        <form action="/index.php" method="post" id="defaultform">
+                            <div class="form-group mt-2  mb-2">
+                                <label for="login">Siedler:
+                                <span class="tooltip-container">
+        		                    <span class="info-icon"></span>
+        			                    <div class="tooltip-box">
+          			                        Loginname oder Spieler-ID
+        			                    </div>
+      			                </span>
+                                </label>
+                                <input type="text" id="login" class="form-control" name="login" />
+                            </div>
+                            <div class="form-group">
+                                <label for="pass">Passwort:</label>
+                                <input type="password" id="pass" class="form-control" name="pass" />
+                            </div>
+                            <div class="registration_box_content text-center mt-4">
+                                <button type="submit" class="btn-stu w-100 mt-2">Login</button>
+                                <p class="mt-3"></p><div class="text-center"><a href="/?SHOW_LOST_PASSWORD=1">Passwort vergessen?</a> | <a href="?SHOW_HELP=1">Registrieren</a></p></div>
+                        </div>
+                        </form>
+                        <div class="row">
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                </div>
+
+                <div class="mainbar_box_header mt-4"><small>Spielstatus</small></div>
+                <div class="mainbar_box_content">
+                    <div class="p-2 mb-2">
+                        <div id="gamestate_{{ GAME_STATS.gameState }}" class="mt-2 p-1 rounded text-center">
+                            {{ GAME_STATS.gameStateTextual }}
+                        </div>
+                    <div class="row">    
+                </div></div></div>
+            
+                <div class="mainbar_box_header mt-4"><small>Live Statistik</small></div>
+                <div class="mainbar_box_content">
+                    <div class="p-3">
+                        <i class="fa-solid fa-user"></i> Spieler: {{ GAME_STATS.player }}<br />
+                        <i class="fa-solid fa-user text-success"></i> Online: {{ GAME_STATS.playeronline }}<br />
+                        <i class="fa-solid fa-clock"></i> Runde: {{ GAME_STATS.currentTurn }}<br />
+                    <div class="row">
+                        
+                </div></div></div>
+
+                <div class="mainbar_box_header mt-4"><small>Discord</small></div>
+                <div class="mainbar_box_content">
+                    <div class="p-3">
+                        <div class="iframe-container-mobile mt-2">
+                            <iframe src="https://discord.com/widget?id=486609699870081026&theme=dark" class="custom-iframe"></iframe>
+                        </div>
+                        <a href="https://discord.gg/NK3fCdx" target="_blank" class="btn-stu btn-stu-d mt-3 mb-2">
+                            Zum STU Discord Server
+                        </a>
+                        <div class="row">
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+                <div class=" mb-4">
+                <div class="mainbar_box_header mt-4"><small>Star Trek Universe - das Online-Strategiespiel</small></div>
+                <div class="mainbar_box_content">
+                <div class="p-3">
+                        
+                    <h3 class="mb-0 text-center">Willkommen in den Weiten von Star Trek Universe.</h3>
+                    <p class="mt-0 text-center">- Keine Werbung, keine Premiumfeatures, kein Pay to Win -</p>
+                    <p class="mt-3 text-center"> Erlebe epische Weltraumabenteuer in einem kostenlosen, rundenbasierten Star Trek Strategiespiel voller Rollenspielelemente! Du entscheidest ob du Föderation, Klingone, Ferengi, Cardassianer oder Romulaner bist. Du hast die Wahl wer und was du sein willst! </p>
+                    <div class="ml-1 mr-1 d-none d-md-flex">
+
+                        <div class="row ">
+                            <div class="col-3 gallery">
+                                <img class="w-100" src="/assets/main/stu-maindesk.jpg" alt="Screenshot Maindesk Star Trek Stuniverse" data-toggle="modal" data-target="#pic1Modal">
+                            </div>
+                            <div class="modal" id="pic1Modal" tabindex="-1" aria-labelledby="pic1ModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" style="max-width: 60%;">
+                                <div class="modal-content text-center">
+                                    <img class="img-fluid" src="/assets/main/stu-maindesk.jpg" alt="Screenshot Maindesk Star Trek Stuniverse">
+                                    <div class="p-3">
+                                    Der Maindesk von Star Trek Universe. Hier siehst du die neusten Role Play (RP) Beiträge im Kommnet oder Nachrichten deiner Allianzmitglieder im eigenen Forum. Aber auch aktuellsten Ereignisse in der Tullamore Trench, dem Sektor wo Star Trek Universe spielt.
+                                    </div>
+                                <div class="modal-footer justify-content-between">
+                                    <button type="button" class="btn-stu" data-dismiss="modal" data-toggle="modal" data-target="#pic4Modal"><i class="fa-solid fa-left-long"></i></button>
+                                    <button type="button" class="btn-stu" data-dismiss="modal">Schliessen</button>
+                                    <button type="button" class="btn-stu" data-dismiss="modal" data-toggle="modal" data-target="#pic2Modal"><i class="fa-solid fa-right-long"></i></button>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+
+                            <div class="col-3 gallery">
+                                <img class="w-100" src="/assets/main/stu-kolonie.jpg" alt="Screenshot Ansicht Kolonie von Star Trek Stuniverse" data-toggle="modal" data-target="#pic2Modal">
+                            </div>
+                            <div class="modal" id="pic2Modal" tabindex="-1" aria-labelledby="pic2ModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" style="max-width: 60%;">
+                                <div class="modal-content text-center">
+                                    <img class="img-fluid" src="/assets/main/stu-kolonie.jpg" alt="Screenshot Ansicht Kolonie von Star Trek Stuniverse">
+                                     <div class="p-3">
+                                    In Star Trek Universe gibt es keine festen Bauslots. Du entscheidest selber was du auf deinen Kolonien baust und produzierst. Jeder Planet hat seinen eigenen Tag-Nacht-Zyklus. Mit fortschreitender Forschung hast du immer mehr Möglichkeiten mit neuen Gebäuden.
+                                    </div>
+                                <div class="modal-footer justify-content-between">
+                                    <button type="button" class="btn-stu" data-dismiss="modal" data-toggle="modal" data-target="#pic1Modal"><i class="fa-solid fa-left-long"></i></button>
+                                    <button type="button" class="btn-stu" data-dismiss="modal">Schliessen</button>
+                                    <button type="button" class="btn-stu" data-dismiss="modal" data-toggle="modal" data-target="#pic3Modal"><i class="fa-solid fa-right-long"></i></button>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+
+                             <div class="col-3 gallery">
+                                <img class="w-100" src="/assets/main/stu-schiff.jpg" alt="Screenshot Ansicht Schiffs-Hud von Star Trek Stuniverse" data-toggle="modal" data-target="#pic3Modal">
+                            </div>
+                            <div class="modal" id="pic3Modal" tabindex="-1" aria-labelledby="pic3ModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" style="max-width: 60%;">
+                                <div class="modal-content text-center">
+                                    <img class="img-fluid" src="/assets/main/stu-schiff.jpg" alt="Screenshot Ansicht Schiffs-Hud von Star Trek Stuniverse">
+                                    <div class="p-3">
+                                    Auch die Schiffe in Star Trek Universe können dank Micromangament personalisiert werden. Kein Schiff gleicht dem anderen Dank Modulbauweise. Du bestimmst selbst welche Alarmstufe welches Schiff hat. Ob Waffen und Schilde aktiviert sind oder Sensoren deaktiviert.
+                                    </div>
+                                <div class="modal-footer justify-content-between">
+                                    <button type="button" class="btn-stu" data-dismiss="modal" data-toggle="modal" data-target="#pic2Modal"><i class="fa-solid fa-left-long"></i></button>
+                                    <button type="button" class="btn-stu" data-dismiss="modal">Schliessen</button>
+                                    <button type="button" class="btn-stu" data-dismiss="modal" data-toggle="modal" data-target="#pic4Modal"><i class="fa-solid fa-right-long"></i></button>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+
+                             <div class="col-3 gallery">
+                                <img class="w-100" src="/assets/main/stu-komnet.jpg" alt="Screenshot Ansicht RPG Möglichkeit von Star Trek Stuniverse" data-toggle="modal" data-target="#pic4Modal">
+                            </div>
+                            <div class="modal" id="pic4Modal" tabindex="-1" aria-labelledby="pic4ModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" style="max-width: 60%;">
+                                <div class="modal-content text-center">
+                                    <img class="img-fluid" src="/assets/main/stu-komnet.jpg" alt="Screenshot RPG Möglichkeit von Star Trek Stuniverse">
+                                    <div class="p-3">
+                                   Es gibt viel Rollenspielelemente in Star Trek Universe. Das Kommnet ist eines davon, wo du Geschichten schreiben kannst. Aber auch Schiff zu Schiff Kommunikation ist möglich. RP Logbucheinträge für jedes Schiff was jeder andere Spieler lesen kann und vieles mehr.
+                                    </div>
+                                <div class="modal-footer justify-content-between">
+                                    <button type="button" class="btn-stu" data-dismiss="modal" data-toggle="modal" data-target="#pic3Modal"><i class="fa-solid fa-left-long"></i></button>
+                                    <button type="button" class="btn-stu" data-dismiss="modal">Schliessen</button>
+                                    <button type="button" class="btn-stu" data-dismiss="modal" data-toggle="modal" data-target="#pic1Modal"><i class="fa-solid fa-right-long"></i></button>
+                                    
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div> 
+                    </div>
+                    
+                    <p class="mt-3 text-center">Besiedel Planeten, Monde und Asteoriden. Baue deine Flotte, erforsche das Unbekannte und schreibe deine eigene Star Trek Geschichte!</p>
+                      
+                    <div class="registration_box_content text-center mt-4">
+                      <p>Bist Du neu hier?</p>
+                      <a href="/index.php?SHOW_REGISTRATION=1" class="btn-stu btn-stu-w" role="button">
+                        Registrierung
+                      </a>
+                      <p class="mt-3"><a href="{{ WIKI }}/index.php?title=Spielregeln" target="_blank">Regeln</a> | <a href="?SHOW_HELP=1">Hilfe</a> | <a href="https://discord.gg/NK3fCdx">Discord</a></p>
+                    </div>
+
+                    <div class="row">
+                        
+                </div>
+                </div>
+                </div>
+                </div>
+
+                <!-- News Sektion -->
+                <div class="mainbar_box_header mt-4" id="aktuelles">
+                    <small>Aktuelles</small>
+                </div>
+
+                <div class="mainbar_box_content">
+                    {% if SYSTEM_NEWS %}
+                        {% for data in SYSTEM_NEWS %}
+                            <div class="mt-3 ml-3 mr-3 mb-3 p-3 news_box_content">
+                                <strong>
+                                    {% autoescape false %}
+                                        {{ data.getSubject }}
+                                    {% endautoescape %}
+                                </strong>
+                                <div class="mb-3" style="font-size: 80%; color: #686868;">
+                                    vom {{ data.getDate|stuDateTime }}
+                                </div>
+                                <p>
+                                    {% autoescape false %}
+                                        {{ data.getText|nl2br }}
+                                    {% endautoescape %}
+                                </p>
+                                {% if data.getLinks %}
+                                    <p>
+                                        <div style="font-size: 80%; color: #686868;">Links</div>
+                                        {% for link in data.getLinks %}
+                                            - <a href="{{ link }}" target="_blank">{{ link }}</a><br>
+                                        {% endfor %}
+                                    </p>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-center">Keine aktuellen Nachrichten verfügbar.</p>
+                    {% endif %}
+                         
 {% endblock %}
