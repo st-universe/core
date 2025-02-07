@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Override;
 use RuntimeException;
+use Stu\Component\Map\Effects\EffectHandlingInterface;
 use Stu\Config\Init;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\Flight\FlightStartConsequenceInterface;
@@ -30,16 +31,18 @@ use function DI\get;
 class FlightRouteTest extends StuTestCase
 {
     /** @var MockInterface&CheckDestinationInterface */
-    private MockInterface $checkDestination;
-
+    private $checkDestination;
     /** @var MockInterface&LoadWaypointsInterface */
-    private MockInterface $loadWaypoints;
-
+    private $loadWaypoints;
     /** @var MockInterface&EnterWaypointInterface */
-    private MockInterface $enterWaypoint;
+    private $enterWaypoint;
+    /** @var MockInterface&EffectHandlingInterface */
+    private $effectHandling;
 
     /** @var MockInterface&FlightConsequenceInterface */
     private $flightConsequence;
+    /** @var MockInterface&FlightConsequenceInterface */
+    private $postFlightConsequence;
 
     private FlightRouteInterface $subject;
 
@@ -49,15 +52,18 @@ class FlightRouteTest extends StuTestCase
         $this->checkDestination = $this->mock(CheckDestinationInterface::class);
         $this->loadWaypoints = $this->mock(LoadWaypointsInterface::class);
         $this->enterWaypoint = $this->mock(EnterWaypointInterface::class);
+        $this->effectHandling = $this->mock(EffectHandlingInterface::class);
 
         $this->flightConsequence = $this->mock(FlightConsequenceInterface::class);
+        $this->postFlightConsequence = $this->mock(FlightConsequenceInterface::class);
 
         $this->subject = new FlightRoute(
             $this->checkDestination,
             $this->loadWaypoints,
             $this->enterWaypoint,
+            $this->effectHandling,
             [$this->flightConsequence],
-            [$this->flightConsequence]
+            [$this->postFlightConsequence]
         );
     }
 
@@ -65,7 +71,9 @@ class FlightRouteTest extends StuTestCase
     {
         $map = $this->mock(MapInterface::class);
         $ship = $this->mock(ShipInterface::class);
+        $tractoredShip = $this->mock(ShipInterface::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
+        $tractoredShipWrapper = $this->mock(ShipWrapperInterface::class);
         $messages = $this->mock(MessageCollectionInterface::class);
 
         $this->subject->setDestination($map, false);
@@ -84,14 +92,35 @@ class FlightRouteTest extends StuTestCase
         $wrapper->shouldReceive('get')
             ->withNoArgs()
             ->andReturn($ship);
+        $wrapper->shouldReceive('getTractoredShipWrapper')
+            ->withNoArgs()
+            ->andReturn($tractoredShipWrapper);
+
+        $tractoredShipWrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($tractoredShip);
+        $tractoredShipWrapper->shouldReceive('getTractoredShipWrapper')
+            ->withNoArgs()
+            ->andReturnNull();
 
         $this->flightConsequence->shouldReceive('trigger')
             ->with($wrapper, $this->subject, $messages)
-            ->twice();
+            ->once();
+        $this->postFlightConsequence->shouldReceive('trigger')
+            ->with($wrapper, $this->subject, $messages)
+            ->once();
+        $this->flightConsequence->shouldReceive('trigger')
+            ->with($tractoredShipWrapper, $this->subject, $messages)
+            ->once();
+        $this->postFlightConsequence->shouldReceive('trigger')
+            ->with($tractoredShipWrapper, $this->subject, $messages)
+            ->once();
 
-        $this->subject->enterNextWaypoint($wrapper, $messages);
+        $this->effectHandling->shouldReceive('addFlightInformationForActiveEffects')
+            ->with($map, $messages)
+            ->once();
 
-        $this->subject->stepForward();
+        $this->subject->enterNextWaypoint(new ArrayCollection([$wrapper]), $messages);
 
         $this->assertTrue($this->subject->isDestinationArrived());
         $this->assertEquals(RouteModeEnum::SYSTEM_EXIT, $this->subject->getRouteMode());
@@ -120,14 +149,22 @@ class FlightRouteTest extends StuTestCase
         $wrapper->shouldReceive('get')
             ->withNoArgs()
             ->andReturn($ship);
+        $wrapper->shouldReceive('getTractoredShipWrapper')
+            ->withNoArgs()
+            ->andReturnNull();
 
         $this->flightConsequence->shouldReceive('trigger')
             ->with($wrapper, $this->subject, $messages)
-            ->twice();
+            ->once();
+        $this->postFlightConsequence->shouldReceive('trigger')
+            ->with($wrapper, $this->subject, $messages)
+            ->once();
 
-        $this->subject->enterNextWaypoint($wrapper, $messages);
+        $this->effectHandling->shouldReceive('addFlightInformationForActiveEffects')
+            ->with($map, $messages)
+            ->once();
 
-        $this->subject->stepForward();
+        $this->subject->enterNextWaypoint(new ArrayCollection([$wrapper]), $messages);
 
         $this->assertTrue($this->subject->isDestinationArrived());
         $this->assertEquals(RouteModeEnum::TRANSWARP, $this->subject->getRouteMode());
@@ -156,14 +193,22 @@ class FlightRouteTest extends StuTestCase
         $wrapper->shouldReceive('get')
             ->withNoArgs()
             ->andReturn($ship);
+        $wrapper->shouldReceive('getTractoredShipWrapper')
+            ->withNoArgs()
+            ->andReturnNull();
 
         $this->flightConsequence->shouldReceive('trigger')
             ->with($wrapper, $this->subject, $messages)
-            ->twice();
+            ->once();
+        $this->postFlightConsequence->shouldReceive('trigger')
+            ->with($wrapper, $this->subject, $messages)
+            ->once();
 
-        $this->subject->enterNextWaypoint($wrapper, $messages);
+        $this->effectHandling->shouldReceive('addFlightInformationForActiveEffects')
+            ->with($map, $messages)
+            ->once();
 
-        $this->subject->stepForward();
+        $this->subject->enterNextWaypoint(new ArrayCollection([$wrapper]), $messages);
 
         $this->assertTrue($this->subject->isDestinationArrived());
         $this->assertEquals(RouteModeEnum::SYSTEM_ENTRY, $this->subject->getRouteMode());
@@ -185,6 +230,9 @@ class FlightRouteTest extends StuTestCase
         $wrapper->shouldReceive('get')
             ->withNoArgs()
             ->andReturn($ship);
+        $wrapper->shouldReceive('getTractoredShipWrapper')
+            ->withNoArgs()
+            ->andReturnNull();
 
         $this->subject->setDestinationViaWormhole($wormholeEntry, true);
 
@@ -199,11 +247,16 @@ class FlightRouteTest extends StuTestCase
 
         $this->flightConsequence->shouldReceive('trigger')
             ->with($wrapper, $this->subject, $messages)
-            ->twice();
+            ->once();
+        $this->postFlightConsequence->shouldReceive('trigger')
+            ->with($wrapper, $this->subject, $messages)
+            ->once();
 
-        $this->subject->enterNextWaypoint($wrapper, $messages);
+        $this->effectHandling->shouldReceive('addFlightInformationForActiveEffects')
+            ->with($systemMap, $messages)
+            ->once();
 
-        $this->subject->stepForward();
+        $this->subject->enterNextWaypoint(new ArrayCollection([$wrapper]), $messages);
 
         $this->assertTrue($this->subject->isDestinationArrived());
         $this->assertEquals(RouteModeEnum::WORMHOLE_ENTRY, $this->subject->getRouteMode());
@@ -225,6 +278,10 @@ class FlightRouteTest extends StuTestCase
         $wrapper->shouldReceive('get')
             ->withNoArgs()
             ->andReturn($ship);
+        $wrapper->shouldReceive('getTractoredShipWrapper')
+            ->withNoArgs()
+            ->andReturnNull();
+
 
         $this->subject->setDestinationViaWormhole($wormholeEntry, false);
 
@@ -239,11 +296,16 @@ class FlightRouteTest extends StuTestCase
 
         $this->flightConsequence->shouldReceive('trigger')
             ->with($wrapper, $this->subject, $messages)
-            ->twice();
+            ->once();
+        $this->postFlightConsequence->shouldReceive('trigger')
+            ->with($wrapper, $this->subject, $messages)
+            ->once();
 
-        $this->subject->enterNextWaypoint($wrapper, $messages);
+        $this->effectHandling->shouldReceive('addFlightInformationForActiveEffects')
+            ->with($map, $messages)
+            ->once();
 
-        $this->subject->stepForward();
+        $this->subject->enterNextWaypoint(new ArrayCollection([$wrapper]), $messages);
 
         $this->assertTrue($this->subject->isDestinationArrived());
         $this->assertEquals(RouteModeEnum::WORMHOLE_EXIT, $this->subject->getRouteMode());
@@ -288,6 +350,9 @@ class FlightRouteTest extends StuTestCase
         $wrapper->shouldReceive('get')
             ->withNoArgs()
             ->andReturn($ship);
+        $wrapper->shouldReceive('getTractoredShipWrapper')
+            ->withNoArgs()
+            ->andReturnNull();
 
         $this->checkDestination->shouldReceive('validate')
             ->with($ship, 42, 5)
@@ -309,20 +374,19 @@ class FlightRouteTest extends StuTestCase
 
         $this->flightConsequence->shouldReceive('trigger')
             ->with($wrapper, $this->subject, $messages)
-            ->twice();
+            ->once();
+        $this->postFlightConsequence->shouldReceive('trigger')
+            ->with($wrapper, $this->subject, $messages)
+            ->once();
 
-        $this->subject->enterNextWaypoint($wrapper, $messages);
+        $this->effectHandling->shouldReceive('addFlightInformationForActiveEffects')
+            ->with($first, $messages)
+            ->once();
 
-        $this->subject->stepForward();
-
+        $this->subject->enterNextWaypoint(new ArrayCollection([$wrapper]), $messages);
         $this->assertEquals($destination, $this->subject->getNextWaypoint());
-
-        $this->subject->stepForward();
-
-        $this->assertTrue($this->subject->isDestinationArrived());
+        $this->assertFalse($this->subject->isDestinationArrived());
         $this->assertEquals(RouteModeEnum::FLIGHT, $this->subject->getRouteMode());
-
-        $this->subject->stepForward();
     }
 
     public function testGetNextWaypointExpectExceptionWhenWaypointsEmpty(): void

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Movement\Route;
 
 use Override;
+use Stu\Component\Map\Effects\EffectHandlingInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\FlightConsequenceInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
@@ -17,7 +18,14 @@ final class FlightRouteFactory implements FlightRouteFactoryInterface
      * @param array<string, FlightConsequenceInterface> $flightConsequences
      * @param array<string, FlightConsequenceInterface> $postFlightConsequences
      */
-    public function __construct(private CheckDestinationInterface $checkDestination, private LoadWaypointsInterface $loadWaypoints, private EnterWaypoint $enterWaypoint, private array $flightConsequences, private array $postFlightConsequences) {}
+    public function __construct(
+        private CheckDestinationInterface $checkDestination,
+        private LoadWaypointsInterface $loadWaypoints,
+        private EnterWaypoint $enterWaypoint,
+        private EffectHandlingInterface $effectHandling,
+        private array $flightConsequences,
+        private array $postFlightConsequences
+    ) {}
 
     #[Override]
     public function getRouteForMapDestination(
@@ -45,6 +53,7 @@ final class FlightRouteFactory implements FlightRouteFactoryInterface
             $this->checkDestination,
             $this->loadWaypoints,
             $this->enterWaypoint,
+            $this->effectHandling,
             $this->flightConsequences,
             $this->postFlightConsequences
         );

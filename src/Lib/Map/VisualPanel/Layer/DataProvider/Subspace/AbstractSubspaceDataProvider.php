@@ -24,5 +24,6 @@ abstract class AbstractSubspaceDataProvider extends AbstractPanelLayerDataProvid
         $rsm->addFieldResult('d', 'd2c', 'd2c');
         $rsm->addFieldResult('d', 'd3c', 'd3c');
         $rsm->addFieldResult('d', 'd4c', 'd4c');
+        $rsm->addFieldResult('d', 'effects', 'effects');
     }
 }

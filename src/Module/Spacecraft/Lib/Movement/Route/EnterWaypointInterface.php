@@ -11,7 +11,7 @@ use Stu\Orm\Entity\WormholeEntryInterface;
 interface EnterWaypointInterface
 {
     public function enterNextWaypoint(
-        SpacecraftInterface $spacecraft,
+        ?SpacecraftInterface $spacecraft,
         bool $isTraversing,
         LocationInterface $waypoint,
         ?WormholeEntryInterface $wormholeEntry

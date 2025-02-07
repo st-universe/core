@@ -12,13 +12,16 @@ use Override;
 #[MappedSuperclass]
 class AbstractData implements CellDataInterface
 {
+    /** @param null|array<string> $effects */
     public function __construct(
         #[Id]
         #[Column(type: 'integer')]
         private int $x,
         #[Id]
         #[Column(type: 'integer')]
-        private int $y
+        private int $y,
+        #[Column(type: 'json', nullable: true)]
+        protected ?array $effects = null
     ) {}
 
     #[Override]

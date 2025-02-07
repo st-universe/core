@@ -56,7 +56,7 @@ interface StarSystemMapRepositoryInterface extends ObjectRepository
     public function getAnomalyData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
 
     /** @return array<CellDataInterface> */
-    public function getIgnoringSubspaceLayerData(PanelBoundaries $boundaries, int $ignoreId, ResultSetMapping $rsm): array;
+    public function getIgnoringSubspaceLayerData(PanelBoundaries $boundaries, int $ignoreUserId, ResultSetMapping $rsm): array;
 
     /**
      * @return array<int>

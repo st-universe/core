@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Movement\Route;
 
+use Doctrine\Common\Collections\Collection;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\LocationInterface;
@@ -34,12 +35,13 @@ interface FlightRouteInterface
 
     public function getNextWaypoint(): LocationInterface;
 
-    public function stepForward(): void;
-
     public function abortFlight(): void;
 
+    /**
+     * @param Collection<int, SpacecraftWrapperInterface> $wrappers
+     */
     public function enterNextWaypoint(
-        SpacecraftWrapperInterface $wrapper,
+        Collection $wrappers,
         MessageCollectionInterface $messages
     ): void;
 
