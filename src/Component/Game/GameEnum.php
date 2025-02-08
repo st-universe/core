@@ -9,6 +9,7 @@ final class GameEnum
     //game states
     public const int CONFIG_GAMESTATE = 1;
     public const int CONFIG_GAMESTATE_VALUE_ONLINE = 1;
+    public const int CONFIG_GAMESTATE_VALUE_TICK = 2;
     public const int CONFIG_GAMESTATE_VALUE_MAINTENANCE = 3;
     public const int CONFIG_GAMESTATE_VALUE_RELOCATION = 4;
     public const int CONFIG_GAMESTATE_VALUE_RESET = 5;
@@ -37,6 +38,7 @@ final class GameEnum
     {
         return match ($stateId) {
             GameEnum::CONFIG_GAMESTATE_VALUE_ONLINE => 'Online',
+            GameEnum::CONFIG_GAMESTATE_VALUE_TICK => 'Tick',
             GameEnum::CONFIG_GAMESTATE_VALUE_MAINTENANCE => 'Wartung',
             GameEnum::CONFIG_GAMESTATE_VALUE_RESET => 'Reset',
             GameEnum::CONFIG_GAMESTATE_VALUE_RELOCATION => 'Umzug',
