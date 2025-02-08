@@ -1,120 +1,427 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:stu="stu" lang="de">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:stu="stu">
+
 
 <head>
-    <meta charset="utf-8">
-    <meta name="theme-color" content="#000000">
-    <title>Partnerseiten - Star Trek Universe</title>
-    <link rel="shortcut icon" href="/assets/favicon.ico">
-    <link rel="stylesheet" type="text/css" href="/static/css/main.css">
-    <meta name="description" content="Star Trek Universe - Ein Star Trek Browsergame">
-    <meta name="keywords" content="star trek, star, trek, spiel, browsergame, rollenspiel, rpg, online">
-    <meta name="author" content="Wolverine">
-    <meta name="robots" content="index">
-    <meta name="robots" content="follow">
-    <meta name="publisher" content="Wolverine">
-    <meta name="language" content="de">
-    <meta name="Copyright" content="Wolverine">
-    <meta name="Page-Topic" content="star trek, star, trek, rollenspiel, online, rpg, spiel, browsergame">
-    <script src="/static/js/prototype.js"></script>
-    <script src="/static/js/scriptaculous/scriptaculous.js"></script>
-    <script src="/static/js/main.js"></script>
+<meta charset="utf-8">
+<meta name="theme-color" content="#000000">
+<title>Partnerseiten - Star Trek Universe</title>
+<link rel="shortcut icon" href="/assets/favicon.ico">
+<link rel="stylesheet" type="text/css" href="/static/css/stuweb.css">
+<meta charset="UTF-8">
+<meta name="robots" content="index, follow">
+<meta name="language" content="de">
+<meta name="description" content="Star Trek Universe ist ein kostenloses, rundenbasiertes Online-Strategiespiel mit Rollenspielelementen, angesiedelt im Star-Trek-Universum.">
+<meta name="keywords" content="Star Trek, Online-Strategiespiel, Rollenspiel, kostenlos, Science-Fiction, STU, Browsergame, Stuniverse">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.6/dist/umd/popper.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+
+<script type="application/ld+json">
+{
+"@context": "https://schema.org",
+"@type": "WebPage",
+"name": "Star Trek Universe",
+    "publisher": {
+    "@type": "Organization",
+    "name": "Hux"
+},
+    "author": {
+    "@type": "Person",
+    "name": "Treknerd - M. Behrendt"
+},
+"contributors": [
+{
+    "@type": "Person",
+    "name": "Hux",
+    "role": "Programmer"
+},
+{
+    "@type": "Person",
+    "name": "g5bot",
+    "role": "Programmer"
+},
+{
+    "@type": "Person",
+    "name": "Treknerd - M. Behrendt",
+    "role": "Programmer"
+}
+]
+}
+</script>
+
+
+
 </head>
+<body onload="if (document.getElementById('login')) document.getElementById('login').focus(); updateBannerImage();">
 
-<body onload="if ($('login')) $('login').focus(); updateBannerImage();">
-    <div style="width: 100%">
-        <div style="margin: auto;">
-            <div id="banner">
-                <img id="bannerImg" style="width: 75%" src="" border="0" title="Star Trek Universe">
+  <div class="container text-center my-4">
+    <div id="banner">
+      <picture>
+        <source media="(max-width: 768px)" srcset="">
+        <img id="bannerImg" src="" border="0" title="Star Trek Universe">
+      </source></picture>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mb-4">
+        <div class="mainbar_nav_box_header">
+          <small>Navigation</small>
+        </div>
+
+        <div class="nav_box_content d-none d-lg-flex flex-wrap justify-content-around link-container">
+          <a href="/index.php" class="link-box">Hauptseite</a>
+          <a href="/index.php?SHOW_REGISTRATION=1" class="link-box">Registrieren</a>
+          <a href="/index.php?SHOW_HELP=1" class="link-box">Hilfe</a>
+          <a href="/index.php?SHOW_INFOS=1" class="link-box">Impressum</a>
+          <a href="#" class="link-box" data-toggle="modal" data-target="#forumModal">Forum</a>
+          <a href="#" class="link-box" data-toggle="modal" data-target="#discordModal">Chat</a>
+          <a href="#" class="link-box" data-toggle="modal" data-target="#logModal">Changelog</a>
+          <a href="/index.php?SHOW_PARTNER_SITES=1" class="link-box">Partnerseiten</a>
+        </div>
+
+        <div class="modal fade" id="discordModal" tabindex="-1" aria-labelledby="discordModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content text-center">
+              <h5 class="modal-title pt-3" id="discordModalLabel">ACHTUNG!</h5>
+              <div class="modal-body">
+                Du bist dabei, die Seite zu verlassen und zum Discord-Server weitergeleitet zu werden. M&ouml;chtest du fortfahren?
+              </div>
+              <div class="modal-footer justify-content-center">
+                <a href="https://discord.gg/NK3fCdx" class="btn-stu">
+                  Ja, ich will zum Discord!
+                </a>
+                <button type="button" class="btn-stu" data-dismiss="modal">Abbrechen</button>
+              </div>
             </div>
-            <div style="width: 1160px; margin: auto;">
-                <div style="width: 880px; float: left;">
-                    <div class="mainbar_box_header">Navigation</div>
+          </div>
+        </div>
 
-                    <div class="mainbar_box_content topnav">
-                        <a href="/index.php">Hauptseite</a>
-                        <a href="/index.php?SHOW_REGISTRATION=1">Registrieren</a>
-                        <a href="/index.php?SHOW_HELP=1">Hilfe</a>
-                        <a href="/index.php?SHOW_INFOS=1">Impressum</a>
-                        <a href="https://board.change.me" target="_blank">Forum</a>
-                        <a href="https://chat.change.me" target="_blank">Chat</a>
-                        <a href="https://board.change.me/viewforum.php?f=12" target="_blank">Changelog</a>
-                        <a href="/index.php?SHOW_PARTNER_SITES=1">Partnerseiten</a>
-                    </div>
-                    <br>
-                    <div class="mainbar_box_header">Partnerseiten - Star Trek Universe</div>
-                    <div class="mainbar_box_content mainbar_box_content_border">
-                        <div style="margin: 5px">
-                            <div style="width: 100%;">
-	<h3>Unsere Partnerseiten</h3>
-	<br><br>
-</div>
-<!-- DSi Bannertausch Code Anfang -->
-<table border="0" width="400" bgcolor="#000080" cellspacing="0" cellpadding="0" align="center">
-	<tr>
-		<td width="100%" colspan="2"><a href="http://www.startrek-index.de/banner/bx_click.php?id=1973" target="_blank"><img border="0" src="http://www.startrek-index.de/banner/bx_show.php?id=1973" width="400" height="40" alt="Mitglied beim DSi Bannertausch"></a></td>
-	</tr>
-	<tr>
-		<td width="50%">
-			<a href="http://www.startrek-index.de/banner/" style="font-family: Verdana; font-size: 7pt; color: #fff;" target="_blank">Mitglied beim DSi
-				Bannertausch</a>
-		</td>
-		<td width="50%" bgcolor="#003399" align="right">
-			<a href="http://www.startrek-index.de/banner/bx_report.php?id=1973" style="font-family: Verdana; font-size: 7pt; color: #fff;" target="_blank">Kein Banner zu sehen?
-				Hier klicken!</a>
-		</td>
-	</tr>
-</table>
-<!-- DSi Bannertausch Code Ende -->
-                        </div>
-                    </div>
+        <div class="modal fade" id="forumModal" tabindex="-1" aria-labelledby="forumModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content text-center">
+              <h5 class="modal-title pt-3" id="forumModalLabel">ACHTUNG!</h5>
+              <div class="modal-body">
+                Du bist dabei, die Seite zu verlassen und zum Forum weitergeleitet zu werden. M&ouml;chtest du fortfahren?
+              </div>
+              <div class="modal-footer justify-content-center">
+                <a href="https://forum.stuniverse.de" class="btn-stu">
+                  Ja, ich will zum Forum!
+                </a>
+                <button type="button" class="btn-stu" data-dismiss="modal">Abbrechen</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal fade" id="logModal" tabindex="-1" aria-labelledby="logModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content text-center">
+              <h5 class="modal-title pt-3" id="logModalLabel">ACHTUNG!</h5>
+              <div class="modal-body">
+                Du bist dabei, die Seite zu verlassen und zum Changelog im weitergeleitet zu werden. M&ouml;chtest du fortfahren?
+              </div>
+              <div class="modal-footer justify-content-center">
+                <a href="https://forum.stuniverse.de/viewforum.php?f=12" class="btn-stu">
+                  Ja, ich will zum Changelog!
+                </a>
+                <button type="button" class="btn-stu" data-dismiss="modal">Abbrechen</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-lg-none">
+          <div class="row">
+
+            <div class="col-7 pr-0">
+              <div class="nav_box_content">
+                <div class="dropdown" data-bs-auto-close="outside">
+                  <button class="btn btn-secondary dropdown-toggle w-100" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">... Hauptmen&uuml; &ouml;ffnen ...</button>
+    
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="/index.php">Hauptseite</a>
+                    <a class="dropdown-item" href="/index.php?SHOW_REGISTRATION=1">Registrieren</a>
+                    <a class="dropdown-item" href="/index.php?SHOW_HELP=1">Hilfe</a>
+                    <a href="#" class="dropdown-item" data-toggle="modal" data-target="#forumModal">Forum</a>
+                    <a href="#" class="dropdown-item" data-toggle="modal" data-target="#discordModal">Chat</a>
+                     <a href="#" class="dropdown-item" data-toggle="modal" data-target="#logModal">Changelog</a>
+                    <a class="dropdown-item" href="/index.php?SHOW_PARTNER_SITES=1">Partnerseiten</a>
+                  </div>
                 </div>
+              </div>
 
-                <div style="float: left; width: 250px; position: relative;">
-                    <div class="sidebar_box_header">Spielstatus</div>
-                    <div class="sidebar_box_content">
-                        <div id="gamestate_1">Online</div>
-                    </div>
-                    <br>
-                                        <div class="sidebar_box_header">Willkommen zur&uuml;ck</div>
+               <div class="modal fade" id="discordModal-m" tabindex="-1" aria-labelledby="discordModal-mLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content text-center">
+              <h5 class="modal-title pt-3" id="discordModal-mLabel">ACHTUNG!</h5>
+              <div class="modal-body">
+                Du bist dabei, die Seite zu verlassen und zum Discord-Server weitergeleitet zu werden. M&ouml;chtest du fortfahren?
+              </div>
+              <div class="modal-footer justify-content-center">
+                <a href="https://discord.gg/NK3fCdx" class="btn-stu">
+                  Ja, ich will zum Discord!
+                </a>
+                <button type="button" class="btn-stu" data-dismiss="modal">Abbrechen</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal fade" id="forumModal-m" tabindex="-1" aria-labelledby="forumModal-mLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content text-center">
+              <h5 class="modal-title pt-3" id="forumModal-mLabel">ACHTUNG!</h5>
+              <div class="modal-body">
+                Du bist dabei, die Seite zu verlassen und zum Forum weitergeleitet zu werden. M&ouml;chtest du fortfahren?
+              </div>
+              <div class="modal-footer justify-content-center">
+                <a href="https://forum.stuniverse.de" class="btn-stu">
+                  Ja, ich will zum Forum!
+                </a>
+                <button type="button" class="btn-stu" data-dismiss="modal">Abbrechen</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal fade" id="logModal-m" tabindex="-1" aria-labelledby="logModal-mLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content text-center">
+              <h5 class="modal-title pt-3" id="logModal-mLabel">ACHTUNG!</h5>
+              <div class="modal-body">
+                Du bist dabei, die Seite zu verlassen und zum Changelog im weitergeleitet zu werden. M&ouml;chtest du fortfahren?
+              </div>
+              <div class="modal-footer justify-content-center">
+                <a href="https://forum.stuniverse.de/viewforum.php?f=12" class="btn-stu">
+                  Ja, ich will zum Changelog!
+                </a>
+                <button type="button" class="btn-stu" data-dismiss="modal">Abbrechen</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+            </div>
+
+            <div class="col-5 pl-0">
+              <div class="nav_box_content">
+                
+                  <a class="btn btn-secondary w-100" type="button" id="dropdownMenuButton2" aria-haspopup="true" aria-expanded="false" href="/login">... zum Login ...</a>
+                  
+                  
+                
+              </div>
+            </div>
+          </div>
+
+    </div>
+<div class="mainbar_box_header mt-4"><small>Unsere Partnerseiten</small></div>
+<div class="mainbar_box_content">
+<div class="p-3">
+
+			
+<!-- Anschauung Partnersites
+    <div class="registration_box_content mt-2">
+        <div class="row">
+            <div class="col-2">
+			  <a href="https://nicotintel.de" target="_blank">
+                <img src="/assets/main/stu-new-age.png" class="stu-partner" alt="" title="">
+			  </a>
+            </div>
+            <div class="col">
+                <div>
+                    <h5>New Age RPG</h5>
+                    Star Trek & Stargate Rollenspiel Community mit Forum und Discord. 
+					<br />
+					<a href="https://nicotintel.de" target="_blank"><i class="fa-solid fa-square-arrow-up-right"></i> zur Website</a>
+                     
+                </div>
+            </div>
+		</div>           
+    </div>
+
+	<div class="registration_box_content mt-2">
+        <div class="row">
+            <div class="col-2">
+			  <a href="https://nicotintel.de" target="_blank">
+                <img src="/assets/main/stu-hux.png" class="stu-partner" alt="" title="">
+			  </a>
+            </div>
+            <div class="col">
+                <div>
+                    <h5>Hux's Blog</h5>
+                    Neben Star Trek Universe bloggt Hux auch hier und da mal.
+					<br />
+					<a href="https://nicotintel.de" target="_blank"><i class="fa-solid fa-square-arrow-up-right"></i> zur Website</a>
+                     
+                </div>
+            </div>
+		</div>           
+    </div>
+
+	 <div class="registration_box_content mt-2">
+        <div class="row">
+            <div class="col-2">
+			  <a href="https://nicotintel.de" target="_blank">
+                <img src="/assets/main/stu-treknerd.png" class="stu-partner" alt="" title="">
+			  </a>
+            </div>
+            <div class="col">
+                <div>
+                    <h5>Treknerd</h5>
+                    Deutschsprachiger Youtubekanal mit Fakten und Theorien zu Star Trek.
+					<br />
+					<a href="https://nicotintel.de" target="_blank"><i class="fa-solid fa-square-arrow-up-right"></i> zur Website</a>
+                     
+                </div>
+            </div>
+		</div>           
+    </div>
+
+	<div class="registration_box_content mt-2">
+        <div class="row">
+            <div class="col-2">
+			  <a href="https://nicotintel.de" target="_blank">
+                <img src="/assets/main/stu-kollektiv.png" class="stu-partner" alt="" title="">
+			  </a>
+            </div>
+            <div class="col">
+                <div>
+                    <h5>Trek Kollektiv</h5>
+                    Eine Discord-Community voller Star Trek Fans und Rollenspiel-Events.
+					<br />
+					<a href="https://nicotintel.de" target="_blank"><i class="fa-solid fa-square-arrow-up-right"></i> zur Website</a>
+                     
+                </div>
+            </div>
+		</div>           
+    </div>
+	-->
+</div>
+
+
+<!-- DSi Bannertausch Code Anfang -->
+
+	<div class="row justify-content-center pb-4">
+		<div class="col-7">
+			<div class="text-center text-white py-1 stu-border">
+				<a href="http://www.startrek-index.de/banner/bx_click.php?id=1973" target="_blank">
+					<img src="http://www.startrek-index.de/banner/bx_show.php?id=1973" class="img-fluid" alt="Mitglied beim DSi Bannertausch">
+				</a>
+			</div>
+			<div class="d-flex justify-content-between stu-bg-dark text-white pt-1 pb-1 pl-3 pr-3 text-center">
+				<a href="http://www.startrek-index.de/banner/" class="text-white small" target="_blank">
+					<small>Mitglied beim DSi Bannertausch</small>
+				</a>
+				<a href="http://www.startrek-index.de/banner/bx_report.php?id=1973" class="text-white small" target="_blank">
+					<small>Kein Banner zu sehen? Hier klicken!</small>
+				</a>
+			</div>
+		</div>
+	</div>
+
+
+
+<!-- DSi Bannertausch Code Ende -->
+            
+          <div class="row">
+          </div>
+
+        </div>
+      </div>
+
+      <div class="col-lg-4 d-none d-lg-block">
+        <div class="sidebar_box_header">
+          <small>Spielstatus</small>
+        </div>
+        <div class="sidebar_box_content">
+          <div id="gamestate_1" class="mt-2 p-1 rounded text-center">
+            Online
+          </div>
+        </div>
+                            <div class="sidebar_box_header mt-4">Willkommen zur&uuml;ck</div>
                     <div class="sidebar_box_content">
                                                 Siedler 101
                                                 <br><br>
-                        <a href="/maindesk.php" class="linkbutton">Zum Maindesk</a>
+                        <a href="/maindesk.php" class="btn-stu btn-stu-d mt-3 mb-2">Zum Maindesk</a>
                     </div>
-                                        <br>
-                    <div class="sidebar_box_header">Statistiken</div>
-                    <div class="sidebar_box_content">
-                        Spieler: 2<br>
-                        Online: 0<br>
-                        Runde: 1<br>
-                    </div>
-                    <br>
-                    <div class="sidebar_box_header">Links</div>
-                    <div class="sidebar_box_content">
-                        <a href="https://www.v2.6.stuniverse.de" target="_blank">STU V2.6</a><br>
-                        <a href="https://nicotintel.de" target="_blank">
-                            <img src="/assets/buttons/blog.png">
-                            <span>Hux's Blog</span>
-                        </a><br>
-                        <a href="https://www.facebook.com/groups/185062741732" target="_blank">Facebook</a><br>
-                    </div>
-                    <br>
-                    <iframe src="https://discord.com/widget?id=486609699870081026&amp;theme=dark" width="230" height="400" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
-                    <br>
-                    <br>
-                    <div class="sidebar_box_header">Copyright</div>
-                    <div class="sidebar_box_content">
-                        Star Trek is a registered trademark of Paramount Pictures.<br><br>
-                        This site is a fan project and therefor strictly non-profit.<br>
-                        No copyright infringement is intended.<br>
-                        &copy; 2001 - now STU-Team
-                    </div>
-                </div>
-            </div>
-
+                          <div class="sidebar_box_header mt-4">
+        <small>Live Statistiken</small>
+      </div>
+      <div class="sidebar_box_content">
+        <div class="mt-2">
+          <i class="fa-solid fa-user"></i> Spieler: 2<br>
+          <i class="fa-solid fa-user text-success"></i> Online: 0<br>
+          <i class="fa-solid fa-clock"></i> Runde: 1<br>
         </div>
-    </div>
-</body>
+      </div>
 
+      <div class="sidebar_box_header mt-4">
+        <small>Links</small>
+      </div>
+      <div class="sidebar_box_content">
+        <div class="mt-2">
+          <a href="https://www.v2.6.stuniverse.de" target="_blank"><i class="fa-solid fa-square-arrow-up-right"></i> STU V2.6</a><br>
+          <a href="https://nicotintel.de" target="_blank"><i class="fa-solid fa-square-arrow-up-right"></i> Hux's Blog</a><br>
+          <a href="https://www.facebook.com/groups/185062741732" target="_blank"><i class="fa-solid fa-square-arrow-up-right"></i> Facebook</a><br>
+        </div>
+      </div>
+    
+      <div class="sidebar_box_header  mt-4">
+        <small>Discord</small>
+      </div>
+      <div class="sidebar_box_content">
+        <div class="iframe-container mt-2">
+          <iframe src="https://discord.com/widget?id=486609699870081026&amp;theme=dark" class="custom-iframe"></iframe>
+        </div>
+        <a href="https://discord.gg/NK3fCdx" target="_blank" class="btn-stu btn-stu-d mt-3 mb-2">Zum STU Discord Server</a>
+      </div>
+    
+      <div class="sidebar_box_header mt-4"><small>Copyright</small></div>
+        <div class="sidebar_box_content mb-4">
+          <p class="mt-2">Star Trek is a registered trademark of Paramount Pictures.</p>
+          <p>This site is a fan project and there fore strictly non-profit. No copyright infringement is intended.</p>
+          <p class="mb-2">&copy; 2001 - now STU-Team</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-lg-none">
+    <div class="container pb-3">
+      <div class="mainbar_box_header">
+        <small>Copyright</small>
+      </div>
+      <div class="mainbar_box_content">
+        <div class="p-2">
+          <p class="mt-2">Star Trek is a registered trademark of Paramount Pictures.</p>
+          <p>This site is a fan project and there fore strictly non-profit. No copyright infringement is intended.</p>
+          <p class="mb-2">&copy; 2001 - now STU-Team</p>
+</div>
+        </div>
+      </div>
+    </div>
+
+<script>
+  window.addEventListener('load', function() {
+    if (window.innerWidth < 992) {  
+        window.scrollTo(0, 0);  
+    }
+  });
+</script>
+
+<script src="/static/js/prototype.js"></script>
+<script src="/static/js/scriptaculous/scriptaculous.js"></script>
+<script src="/static/js/main.js"></script>
+</body>
 </html>
