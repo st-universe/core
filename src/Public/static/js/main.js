@@ -1,12 +1,20 @@
 var faction = 0;
 var varcheck = 0;
+
 function toggleFaction(fid) {
-  if (faction != 0) {
+  if (faction === fid) {
+    // Falls dieselbe Fraktion erneut geklickt wird -> schließen und zurücksetzen
     Effect.SlideUp("facinfo_" + faction);
+    faction = 0;
+  } else {
+    if (faction !== 0) {
+      Effect.SlideUp("facinfo_" + faction);
+    }
+    Effect.SlideDown("facinfo_" + fid);
+    faction = fid;
   }
-  Effect.SlideDown("facinfo_" + fid);
-  faction = fid;
 }
+
 function selectFaction(faction_id) {
   $("ch_faction").innerHTML = $("fachead_" + faction_id).innerHTML;
   $("factionid").value = faction_id;

@@ -551,9 +551,10 @@ body {
 	  
 	  .dropdown-item {
 		color: #c2b942 !important; /* Textfarbe */
+		background-color: #121212  !important;/* Hintergrundfarbe */
 	  }
 	  
 	  .dropdown-item:hover {
-		background-color: #2d3243; /* Hintergrundfarbe beim Hover */
+		background-color: #2d3243 !important; /* Hintergrundfarbe beim Hover */
 		color: #121212 !important; /* Textfarbe beim Hover */
 	  }

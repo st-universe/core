@@ -214,12 +214,11 @@
 
             <div class="col-5 pl-0">
               <div class="nav_box_content">
-                <div class="dropdown">
-                  <button class="btn btn-secondary w-100" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">... zum Login ...</button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                    <a class="dropdown-item" href="/login">Login</a>
-                  </div>
-                </div>
+                
+                  <a class="btn btn-secondary w-100" type="button" id="dropdownMenuButton2" aria-haspopup="true" aria-expanded="false" href="/login">... zum Login ...</a>
+                  
+                  
+                
               </div>
             </div>
           </div>
@@ -250,7 +249,7 @@
                         {{ USER.getName | bbcode }}
                         {% endautoescape %}
                         <br /><br />
-                        <a href="/maindesk.php" class="linkbutton">Zum Maindesk</a>
+                        <a href="/maindesk.php" class="btn-stu btn-stu-d mt-3 mb-2">Zum Maindesk</a>
                     </div>
                     {% else %}
 
