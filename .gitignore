@@ -1,6 +1,7 @@
 data/Makefile
 src/Public/avatare
 src/Public/sites
+src/html/index/meta.twig
 *.po~
 docu/de/_build/*
 vendor
