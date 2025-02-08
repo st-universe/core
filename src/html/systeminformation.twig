@@ -1,22 +1,17 @@
 <div id="result">
-    <table class="use">
-        <tr>
-            <th>Meldung</th>
-        </tr>
-        <tr>
-            <td>
+     <div class="registration_box_content mt-2">
+            ❗ Meldung ❗
+      <br /><br />
                 {% for info in INFORMATION %}
-                <div>
+              
                     {{ info|bbcode }}
-                </div>
+              
                 {% endfor %}
                 {% if TARGET_LINK %}
                 <a href="{{ TARGET_LINK.getUrl }}" class="linkbutton">
                     {{ TARGET_LINK.getTitle }}
                 </a>
                 {% endif %}
-            </td>
-        </tr>
-    </table>
-</div>
+            
+</div></div>
 <br />

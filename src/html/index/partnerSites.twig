@@ -1,39 +1,134 @@
 {% extends "html/index/indexDefaults.twig" %}
 
 {% block body %}
-<div style="width: 100%;">
-	<h3>Unsere Partnerseiten</h3>
-	<br /><br />
 </div>
-{% for site in PARTNERSITES %}
-<div style="width: 100%;">
-	<h4>{{ site.name }}</h4>
-	<div>{{ site.description }}</div>
-	<a href="{{ site.url }}">
-		<img src="{{ site.banner_path }}" alt="{{ site.name }}" title="{{ site.name }}" />
-	</a>
-	<br />
+<div class="mainbar_box_header mt-4"><small>Unsere Partnerseiten</small></div>
+<div class="mainbar_box_content">
+<div class="p-3">
+
+		{% for site in PARTNERSITES %}
+	<div class="registration_box_content mt-2">
+        <div class="row">
+            <div class="col-2">
+			  <a href="{{ site.url }}" target="_blank">
+				<img src="{{ site.banner_path }}" class="card-img-top" alt="{{ site.name }}" title="{{ site.name }}">
+				  </a>
+            </div>
+            <div class="col">
+                <div>
+                    <h5>{{ site.name }}</h5>
+					{{ site.description }}
+					<br />
+					<a href="{{ site.url }}" target="_blank"><i class="fa-solid fa-square-arrow-up-right"></i> zur Website</a>
+                     
+                </div>
+            </div>
+		</div>           
+    </div>			
+		{% endfor %}
+	
+<!-- Anschauung Partnersites
+    <div class="registration_box_content mt-2">
+        <div class="row">
+            <div class="col-2">
+			  <a href="https://nicotintel.de" target="_blank">
+                <img src="/assets/main/stu-new-age.png" class="stu-partner" alt="{{ site.name }}" title="{{ site.name }}">
+			  </a>
+            </div>
+            <div class="col">
+                <div>
+                    <h5>New Age RPG</h5>
+                    Star Trek & Stargate Rollenspiel Community mit Forum und Discord. 
+					<br />
+					<a href="https://nicotintel.de" target="_blank"><i class="fa-solid fa-square-arrow-up-right"></i> zur Website</a>
+                     
+                </div>
+            </div>
+		</div>           
+    </div>
+
+	<div class="registration_box_content mt-2">
+        <div class="row">
+            <div class="col-2">
+			  <a href="https://nicotintel.de" target="_blank">
+                <img src="/assets/main/stu-hux.png" class="stu-partner" alt="{{ site.name }}" title="{{ site.name }}">
+			  </a>
+            </div>
+            <div class="col">
+                <div>
+                    <h5>Hux's Blog</h5>
+                    Neben Star Trek Universe bloggt Hux auch hier und da mal.
+					<br />
+					<a href="https://nicotintel.de" target="_blank"><i class="fa-solid fa-square-arrow-up-right"></i> zur Website</a>
+                     
+                </div>
+            </div>
+		</div>           
+    </div>
+
+	 <div class="registration_box_content mt-2">
+        <div class="row">
+            <div class="col-2">
+			  <a href="https://nicotintel.de" target="_blank">
+                <img src="/assets/main/stu-treknerd.png" class="stu-partner" alt="{{ site.name }}" title="{{ site.name }}">
+			  </a>
+            </div>
+            <div class="col">
+                <div>
+                    <h5>Treknerd</h5>
+                    Deutschsprachiger Youtubekanal mit Fakten und Theorien zu Star Trek.
+					<br />
+					<a href="https://nicotintel.de" target="_blank"><i class="fa-solid fa-square-arrow-up-right"></i> zur Website</a>
+                     
+                </div>
+            </div>
+		</div>           
+    </div>
+
+	<div class="registration_box_content mt-2">
+        <div class="row">
+            <div class="col-2">
+			  <a href="https://nicotintel.de" target="_blank">
+                <img src="/assets/main/stu-kollektiv.png" class="stu-partner" alt="{{ site.name }}" title="{{ site.name }}">
+			  </a>
+            </div>
+            <div class="col">
+                <div>
+                    <h5>Trek Kollektiv</h5>
+                    Eine Discord-Community voller Star Trek Fans und Rollenspiel-Events.
+					<br />
+					<a href="https://nicotintel.de" target="_blank"><i class="fa-solid fa-square-arrow-up-right"></i> zur Website</a>
+                     
+                </div>
+            </div>
+		</div>           
+    </div>
+	-->
 </div>
-{% endfor %}
+
+
 <!-- DSi Bannertausch Code Anfang -->
-<table border="0" width="400" bgcolor="#000080" cellspacing="0" cellpadding="0" align="center">
-	<tr>
-		<td width="100%" colspan="2"><a href="http://www.startrek-index.de/banner/bx_click.php?id=1973"
-				target="_blank"><img border="0" src="http://www.startrek-index.de/banner/bx_show.php?id=1973"
-					width="400" height="40" alt="Mitglied beim DSi Bannertausch" /></a></td>
-	</tr>
-	<tr>
-		<td width="50%">
-			<a href="http://www.startrek-index.de/banner/" style="font-family: Verdana; font-size: 7pt; color: #fff;"
-				target="_blank">Mitglied beim DSi
-				Bannertausch</a>
-		</td>
-		<td width="50%" bgcolor="#003399" align="right">
-			<a href="http://www.startrek-index.de/banner/bx_report.php?id=1973"
-				style="font-family: Verdana; font-size: 7pt; color: #fff;" target="_blank">Kein Banner zu sehen?
-				Hier klicken!</a>
-		</td>
-	</tr>
-</table>
+
+	<div class="row justify-content-center pb-4">
+		<div class="col-7">
+			<div class="text-center text-white py-1 stu-border">
+				<a href="http://www.startrek-index.de/banner/bx_click.php?id=1973" target="_blank">
+					<img src="http://www.startrek-index.de/banner/bx_show.php?id=1973" 
+						class="img-fluid" alt="Mitglied beim DSi Bannertausch" />
+				</a>
+			</div>
+			<div class="d-flex justify-content-between stu-bg-dark text-white pt-1 pb-1 pl-3 pr-3 text-center">
+				<a href="http://www.startrek-index.de/banner/" class="text-white small" target="_blank">
+					<small>Mitglied beim DSi Bannertausch</small>
+				</a>
+				<a href="http://www.startrek-index.de/banner/bx_report.php?id=1973" class="text-white small" target="_blank">
+					<small>Kein Banner zu sehen? Hier klicken!</small>
+				</a>
+			</div>
+		</div>
+	</div>
+
+
+
 <!-- DSi Bannertausch Code Ende -->
 {% endblock %}

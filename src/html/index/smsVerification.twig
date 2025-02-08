@@ -1,24 +1,26 @@
 {% extends "html/index/indexDefaults.twig" %}
 
 {% block body %}
+</div>
+<div class="mainbar_box_header mt-4">
+  <small>Status Freischaltung - Star Trek Universe</small>
+</div>
+<div class="mainbar_box_content">
+  <div class="p-3">
 <form method="post" action="maindesk.php">
+<div class="p-3 text-center">
 	<input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
-	<table class="use" style="width: 600px">
-		<tr>
+	
 			{% if REASON %}
-			<th colspan="2">{{ REASON }}</th>
+				{{ REASON }}
 			{% else %}
-			<th colspan="2">Account wurde noch nicht freigeschaltet</th>
+				Account wurde noch nicht freigeschaltet
 			{% endif %}
-		</tr>
-		<tr>
-			<td>SMS-Verifikation Code:</td>
-			<td><input type="text" style="width: 150px" name="smscode" /></td>
-		</tr>
-		<tr>
-			<td colspan="2"><input type="submit" name="B_SMS_VERIFICATION" value="Account verifizieren"
-					class="button" /></td>
-		</tr>
-	</table>
-</form>
+		<br /><br />
+			SMS-Verifikation Code:
+		<input type="text" class="form-control smsverification mx-auto" name="smscode" placeholder="XxXxX" />
+		<input type="submit" class="btn-stu mt-3" name="B_SMS_VERIFICATION" value="Account verifizieren" class="button" />
+		
+</div>	
+</form></div>
 {% endblock %}
