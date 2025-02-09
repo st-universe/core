@@ -63,7 +63,7 @@ final class SpacecraftLeaver implements SpacecraftLeaverInterface
         $crewList = $spacecraft->getCrewAssignments();
         foreach ($crewList as $shipCrew) {
             $shipCrew->setSpacecraft($pods);
-            $shipCrew->setSlot(null);
+            $shipCrew->setPosition(null);
             $this->shipCrewRepository->save($shipCrew);
         }
     }

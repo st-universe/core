@@ -2,17 +2,23 @@
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Stu\Component\Crew\CrewGenderEnum;
+use Stu\Component\Crew\CrewPositionEnum;
+use Stu\Component\Crew\Skill\CrewSkillLevelEnum;
+
 interface CrewInterface
 {
     public function getId(): int;
 
-    public function getType(): int;
+    public function getRank(): CrewSkillLevelEnum;
 
-    public function setType(int $type): CrewInterface;
+    public function setRank(CrewSkillLevelEnum $rank): CrewInterface;
 
-    public function getGender(): int;
+    public function getGender(): CrewGenderEnum;
 
-    public function setGender(int $gender): CrewInterface;
+    public function setGender(CrewGenderEnum $gender): CrewInterface;
 
     public function getName(): string;
 
@@ -26,11 +32,14 @@ interface CrewInterface
 
     public function setRaceId(int $raceId): CrewInterface;
 
-    public function getGenderShort(): string;
-
-    public function getTypeDescription(): string;
-
     public function getRace(): CrewRaceInterface;
 
     public function setRace(CrewRaceInterface $crewRace): CrewInterface;
+
+    /**
+     * @return ArrayCollection<int, CrewSkillInterface>
+     */
+    public function getSkills(): Collection;
+
+    public function isSkilledAt(CrewPositionEnum $position): bool;
 }

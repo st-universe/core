@@ -101,31 +101,31 @@
                 <td class="darkbg"><strong>Rang</strong></td>
             </tr>
             {% for data in SHIP.getCrewAssignments %}
+            {% set id = data.getCrew.getId %}
             {% set crew = data.getCrew %}
-            {% set crewId = data.getId %}
             <tr>
                 <td>
                     <img
-                        src="assets/crew/{{ crew.getRace.getGfxPath }}/{{ crew.getGenderShort }}/1_{{ crew.getType }}.png" />
+                        src="assets/crew/{{ crew.getRace.getGfxPath }}/{{ crew.getGender.getShort }}/1_{{ data.getPosition.value }}.png" />
                     {% if data.getCrew.getUser != SHIP.getUser %}
                     <span style="vertical-align: top; color:red; cursor: default;"
                         title="von {{ data.getCrew.getUser.getName|bbcode2txt }}">*</span>
-                    <a href="?B_DUMP_CREWMAN=1&id={{ SHIP.getId }}&scid={{ crewId }}&sstr={{ SESSIONSTRING }}"
-                        onmouseover="cp('dump_{{ crewId }}','buttons/x2')"
-                        onmouseout="cp('dump_{{ crewId }}','buttons/x1')">
-                        <img src="/assets/buttons/x2.png" name="dump_{{ crewId }}" title="Crewman entfernen" />
+                    <a href="?B_DUMP_CREWMAN=1&id={{ SHIP.getId }}&scid={{ id }}&sstr={{ SESSIONSTRING }}"
+                        onmouseover="cp('dump_{{ id }}','buttons/x2')" onmouseout="cp('dump_{{ id }}','buttons/x1')">
+                        <img src="/assets/buttons/x2.png" name="dump_{{ id }}" title="Crewman entfernen" />
                     </a>
                     {% endif %}
                 </td>
                 <td>
-                    <div>{{ data.getPosition }}</div>
+                    <div>{{ data.getPosition.getDescription }}</div>
                 </td>
                 <td style="vertical-align: middle;">
                     {% set CREW = crew %}
                     {% include 'html/ship/crew/crewSlot.twig' %}
                 </td>
-                <td>
-                    <div>{{ data.getCrew.getTypeDescription }}</div>
+                <td style="cursor: pointer;"
+                    onclick="switchInnerContent('SHOW_CREWMAN_DETAILS', 'Crewman Details', 'id={{ id }}');">
+                    <div>{{ crew.getRank.getDescription }}</div>
                 </td>
             </tr>
             {% endfor %}

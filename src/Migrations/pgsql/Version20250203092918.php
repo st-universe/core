@@ -16,7 +16,6 @@ final class Version20250203092918 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER INDEX ship_crew_spacecraft_idx RENAME TO IDX_4793ED241C6AF6FD');
         $this->addSql('ALTER INDEX ship_crew_colony_idx RENAME TO IDX_4793ED2496ADBADE');
         $this->addSql('ALTER INDEX ship_crew_tradepost_idx RENAME TO IDX_4793ED248B935ABD');

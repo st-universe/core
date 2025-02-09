@@ -12,6 +12,7 @@ use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Spacecraft\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\LocationInterface;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
@@ -114,15 +115,16 @@ class SpacecraftConfigurator implements SpacecraftConfiguratorInterface
     }
 
     #[Override]
-    public function createCrew(?int $amount = null): SpacecraftConfiguratorInterface
+    public function createCrew(?int $amount = null, ?ColonyInterface $colony = null): SpacecraftConfiguratorInterface
     {
+        //TODO consolidate roles and stuff like in CrewCreator
         $ship = $this->wrapper->get();
 
         $buildplan = $ship->getBuildplan();
         if ($buildplan !== null) {
             $crewAmount = $amount !== null && $amount >= 0 ? $amount : $buildplan->getCrew();
             for ($j = 1; $j <= $crewAmount; $j++) {
-                $crewAssignment = $this->crewCreator->create($ship->getUser()->getId());
+                $crewAssignment = $this->crewCreator->create($ship->getUser(), $colony);
                 $crewAssignment->setSpacecraft($ship);
                 $this->shipCrewRepository->save($crewAssignment);
 
@@ -135,6 +137,8 @@ class SpacecraftConfigurator implements SpacecraftConfiguratorInterface
 
         return $this;
     }
+
+    //TODO public function transferCrewFromCOlony...
 
     #[Override]
     public function setAlertState(SpacecraftAlertStateEnum $alertState): SpacecraftConfiguratorInterface

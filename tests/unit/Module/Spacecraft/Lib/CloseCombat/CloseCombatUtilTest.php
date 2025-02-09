@@ -7,8 +7,7 @@ namespace Stu\Module\Spacecraft\Lib\CloseCombat;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Override;
-use Stu\Component\Crew\CrewEnum;
-use Stu\Orm\Entity\CrewInterface;
+use Stu\Component\Crew\CrewPositionEnum;
 use Stu\Orm\Entity\FactionInterface;
 use Stu\Orm\Entity\CrewAssignmentInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -68,12 +67,6 @@ class CloseCombatUtilTest extends StuTestCase
         $shipCrew4 = $this->mock(CrewAssignmentInterface::class);
         $shipCrew5 = $this->mock(CrewAssignmentInterface::class);
         $shipCrew6 = $this->mock(CrewAssignmentInterface::class);
-        $crew1 = $this->mock(CrewInterface::class);
-        $crew2 = $this->mock(CrewInterface::class);
-        $crew3 = $this->mock(CrewInterface::class);
-        $crew4 = $this->mock(CrewInterface::class);
-        $crew5 = $this->mock(CrewInterface::class);
-        $crew6 = $this->mock(CrewInterface::class);
 
         $crewList = new ArrayCollection([
             $shipCrew4,
@@ -84,43 +77,24 @@ class CloseCombatUtilTest extends StuTestCase
             $shipCrew6
         ]);
 
-        $shipCrew1->shouldReceive('getCrew')
+        $shipCrew1->shouldReceive('getFightCapability')
             ->withNoArgs()
-            ->andReturn($crew1);
-        $shipCrew2->shouldReceive('getCrew')
+            ->andReturn(CrewPositionEnum::NAVIGATION->getFightCapability());
+        $shipCrew2->shouldReceive('getFightCapability')
             ->withNoArgs()
-            ->andReturn($crew2);
-        $shipCrew3->shouldReceive('getCrew')
+            ->andReturn(CrewPositionEnum::SECURITY->getFightCapability());
+        $shipCrew3->shouldReceive('getFightCapability')
             ->withNoArgs()
-            ->andReturn($crew3);
-        $shipCrew4->shouldReceive('getCrew')
+            ->andReturn(CrewPositionEnum::CAPTAIN->getFightCapability());
+        $shipCrew4->shouldReceive('getFightCapability')
             ->withNoArgs()
-            ->andReturn($crew4);
-        $shipCrew5->shouldReceive('getCrew')
+            ->andReturn(CrewPositionEnum::SCIENCE->getFightCapability());
+        $shipCrew5->shouldReceive('getFightCapability')
             ->withNoArgs()
-            ->andReturn($crew5);
-        $shipCrew6->shouldReceive('getCrew')
+            ->andReturn(CrewPositionEnum::SCIENCE->getFightCapability());
+        $shipCrew6->shouldReceive('getFightCapability')
             ->withNoArgs()
-            ->andReturn($crew6);
-
-        $crew1->shouldReceive('getType')
-            ->withNoArgs()
-            ->andReturn(CrewEnum::CREW_TYPE_NAVIGATION);
-        $crew2->shouldReceive('getType')
-            ->withNoArgs()
-            ->andReturn(CrewEnum::CREW_TYPE_SECURITY);
-        $crew3->shouldReceive('getType')
-            ->withNoArgs()
-            ->andReturn(CrewEnum::CREW_TYPE_CAPTAIN);
-        $crew4->shouldReceive('getType')
-            ->withNoArgs()
-            ->andReturn(CrewEnum::CREW_TYPE_SCIENCE);
-        $crew5->shouldReceive('getType')
-            ->withNoArgs()
-            ->andReturn(CrewEnum::CREW_TYPE_SCIENCE);
-        $crew6->shouldReceive('getType')
-            ->withNoArgs()
-            ->andReturn(CrewEnum::CREW_TYPE_SCIENCE);
+            ->andReturn(CrewPositionEnum::SCIENCE->getFightCapability());
 
         $this->ship->shouldReceive('getCrewAssignments')
             ->withNoArgs()
@@ -139,24 +113,14 @@ class CloseCombatUtilTest extends StuTestCase
     {
         $shipCrew1 = $this->mock(CrewAssignmentInterface::class);
         $shipCrew2 = $this->mock(CrewAssignmentInterface::class);
-        $crew1 = $this->mock(CrewInterface::class);
-        $crew2 = $this->mock(CrewInterface::class);
         $faction = $this->mock(FactionInterface::class);
 
-        $shipCrew1->shouldReceive('getCrew')
+        $shipCrew1->shouldReceive('getFightCapability')
             ->withNoArgs()
-            ->andReturn($crew1);
-        $shipCrew2->shouldReceive('getCrew')
+            ->andReturn(CrewPositionEnum::CAPTAIN->getFightCapability());
+        $shipCrew2->shouldReceive('getFightCapability')
             ->withNoArgs()
-            ->andReturn($crew2);
-        $crew1->shouldReceive('getType')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(CrewEnum::CREW_TYPE_CAPTAIN);
-        $crew2->shouldReceive('getType')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(CrewEnum::CREW_TYPE_NAVIGATION);
+            ->andReturn(CrewPositionEnum::NAVIGATION->getFightCapability());
 
         $faction->shouldReceive('getCloseCombatScore')
             ->withNoArgs()
