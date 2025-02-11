@@ -11,11 +11,13 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Spacecraft\Lib\Interaction\ShipUndockingInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftRemoverInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\StationInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ConstructionProgressRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
+use Stu\Orm\Repository\MiningQueueRepositoryInterface;
 
 final class SpacecraftDeletionHandler implements PlayerDeletionHandlerInterface
 {
@@ -26,7 +28,8 @@ final class SpacecraftDeletionHandler implements PlayerDeletionHandlerInterface
         private SpacecraftSystemManagerInterface $spacecraftSystemManager,
         private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
         private ShipUndockingInterface $shipUndocking,
-        private EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
+        private MiningQueueRepositoryInterface $miningQueueRepository
     ) {}
 
     #[Override]
@@ -48,6 +51,9 @@ final class SpacecraftDeletionHandler implements PlayerDeletionHandlerInterface
             }
 
             $this->unsetTractor($spacecraft);
+            if ($spacecraft instanceof ShipInterface) {
+                $this->deleteMiningQueue($spacecraft);
+            }
             $this->spacecraftRemover->remove($spacecraft, true);
         }
     }
@@ -82,5 +88,13 @@ final class SpacecraftDeletionHandler implements PlayerDeletionHandlerInterface
             SpacecraftSystemTypeEnum::TRACTOR_BEAM,
             true
         );
+    }
+
+    private function deleteMiningQueue(ShipInterface $spacecraft): void
+    {
+        $miningqueue = $spacecraft->getMiningQueue();
+        if ($miningqueue !== null) {
+            $this->miningQueueRepository->delete($miningqueue);
+        }
     }
 }
