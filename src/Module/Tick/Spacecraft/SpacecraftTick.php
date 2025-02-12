@@ -647,12 +647,13 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
             $locationmining->setActualAmount($newAmount);
 
             $this->locationMiningRepository->save($locationmining);
-
-            $this->storageManager->upperStorage(
-                $ship,
-                $locationmining->getCommodity(),
-                $gathercount
-            );
+            if ($gathercount > 0) {
+                $this->storageManager->upperStorage(
+                    $ship,
+                    $locationmining->getCommodity(),
+                    $gathercount
+                );
+            }
         }
     }
 
