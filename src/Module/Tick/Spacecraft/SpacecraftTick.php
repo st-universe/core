@@ -264,7 +264,7 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
         $this->potentialLog($spacecraft, "marker13", $startTime);
 
         $startTime = microtime(true);
-        $this->doBussardCollectorStuff($wrapper);
+        $this->doBussardCollectorStuff($wrapper, $informationWrapper);
         $this->potentialLog($spacecraft, "marker15", $startTime);
 
         $startTime = microtime(true);
@@ -606,7 +606,7 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
         }
     }
 
-    private function doBussardCollectorStuff(SpacecraftWrapperInterface $wrapper): void
+    private function doBussardCollectorStuff(SpacecraftWrapperInterface $wrapper, InformationWrapper $informationWrapper): void
     {
         if (!$wrapper instanceof ShipWrapperInterface) {
             return;
@@ -640,6 +640,13 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
             $newAmount = $actualAmount - $gathercount;
             if ($gathercount > 0 && $locationmining->getDepletedAt() !== null) {
                 $locationmining->setDepletedAt(null);
+
+                $informationWrapper->addInformationf(
+                    'Es sind keine %s bei den Koordinaten %s|%s vorhanden!',
+                    $locationmining->getCommodity()->getName(),
+                    (string)$locationmining->getLocation()->getCx(),
+                    (string)$locationmining->getLocation()->getCy()
+                );
             }
             if ($newAmount == 0 && $actualAmount > 0) {
                 $locationmining->setDepletedAt(time());
@@ -647,6 +654,10 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
             $locationmining->setActualAmount($newAmount);
 
             $this->locationMiningRepository->save($locationmining);
+            if ($gathercount + $ship->getStorageSum() >= $ship->getMaxStorage()) {
+                $informationWrapper->addInformationf('Der Lagerraum des Schiffes wurde beim Sammeln von %s voll!', $locationmining->getCommodity()->getName());
+            }
+
             if ($gathercount > 0) {
                 $this->storageManager->upperStorage(
                     $ship,
