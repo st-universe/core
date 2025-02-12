@@ -15,10 +15,10 @@ enum FieldTypeEffectEnum: string
     case DUBIOUS_SPACECRAFT_COUNT = 'DUBIOUS_SPACECRAFT_COUNT'; // always show '!" sign, if at least one signature
     case NO_SUBSPACE_LINES = 'NO_SUBSPACE_LINES';
     case NFS_MALFUNCTION_COOLDOWN = 'NFS_MALFUNCTION_COOLDOWN';
+    case SHIELD_MALFUNCTION = 'SHIELD_MALFUNCTION';
 
         //TODO: following not yet implemented
     case LSS_BLOCKADE = 'LSS_BLOCKADE';
-    case SHIELD_MALFUNCTION = 'SHIELD_MALFUNCTION';
     case REACTOR_LEAK = 'REACTOR_LEAK';
     case EPS_LEAK = 'EPS_LEAK';
     case HIT_CHANCE_INTERFERENCE = 'HIT_CHANCE_INTERFERENCE';
@@ -26,13 +26,16 @@ enum FieldTypeEffectEnum: string
     case ENERGY_WEAPON_BUFF = 'ENERGY_WEAPON_BUFF';
     case ENERGY_WEAPON_NERF = 'ENERGY_WEAPON_NERF';
     case REGENERATION_CHANCE = 'REGENERATION_CHANCE'; // small chance to regenerate warpdrive, eps, shields or reactor
+    case NO_ANOMALIES = 'NO_ANOMALIES';
+    case NO_PIRATES = 'NO_PIRATES';
 
     public function hasHandler(): bool
     {
         return match ($this) {
             self::CLOAK_UNUSEABLE,
             self::WARPDRIVE_LEAK,
-            self::NFS_MALFUNCTION_COOLDOWN => true,
+            self::NFS_MALFUNCTION_COOLDOWN,
+            self::SHIELD_MALFUNCTION => true,
             default => false
         };
     }
@@ -55,7 +58,9 @@ enum FieldTypeEffectEnum: string
             self::EVADE_CHANCE_INTERFERENCE => 'Beeinträchtigung der Manövrierbarkeit',
             self::ENERGY_WEAPON_BUFF => 'Steigerung des Energiewaffenschadens',
             self::ENERGY_WEAPON_NERF => 'Minderung des Energiewaffenschadens',
-            self::REGENERATION_CHANCE => 'Geringe Chance auf energetischen Bonus'
+            self::REGENERATION_CHANCE => 'Geringe Chance auf energetischen Bonus',
+            self::NO_ANOMALIES => 'Anomalie-freie Zone',
+            self::NO_PIRATES => 'No-Go-Area für die Kazon'
         };
     }
 

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Map\Effects;
 
-use Closure;
 use Override;
 use RuntimeException;
 use Stu\Component\Map\Effects\Type\EffectHandlerInterface;

@@ -5,6 +5,7 @@ namespace Stu\Module\Tick\Spacecraft;
 use Override;
 use RuntimeException;
 use Stu\Component\Faction\FactionEnum;
+use Stu\Component\Map\Effects\EffectHandlingInterface;
 use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Spacecraft\Repair\RepairUtilInterface;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
@@ -53,6 +54,7 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
         private PrivateMessageSenderInterface $privateMessageSender,
         private SpacecraftRepositoryInterface $spacecraftRepository,
         private SpacecraftSystemManagerInterface $spacecraftSystemManager,
+        private EffectHandlingInterface $effectHandlingInterface,
         private SpacecraftLeaverInterface $spacecraftLeaver,
         private GameControllerInterface $game,
         private AstroEntryLibInterface $astroEntryLib,
@@ -95,6 +97,10 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
         $spacecraft = $wrapper->get();
 
         $startTime = microtime(true);
+        $this->effectHandlingInterface->handleSpacecraftTick($wrapper, $informationWrapper);
+        $this->potentialLog($spacecraft, "marker0.1", $startTime);
+
+        $startTime = microtime(true);
 
         // do construction stuff
         if ($spacecraft instanceof StationInterface && $this->doConstructionStuff($spacecraft, $informationWrapper)) {
@@ -102,7 +108,7 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
             return;
         }
 
-        $this->potentialLog($spacecraft, "marker0", $startTime);
+        $this->potentialLog($spacecraft, "marker0.2", $startTime);
 
 
         $startTime = microtime(true);

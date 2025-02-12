@@ -13,7 +13,6 @@ use Stu\Component\Spacecraft\SpacecraftTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Module\Ship\Lib\TFleetShipItem;
 use Stu\Module\Ship\Lib\TShipItem;
 use Stu\Module\Spacecraft\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Orm\Entity\Anomaly;

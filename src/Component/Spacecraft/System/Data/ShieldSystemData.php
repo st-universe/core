@@ -18,6 +18,11 @@ class ShieldSystemData extends AbstractSystemData
         return SpacecraftSystemTypeEnum::SHIELDS;
     }
 
+    public function getShieldRegenerationTimer(): int
+    {
+        return $this->shieldRegenerationTimer;
+    }
+
     public function setShieldRegenerationTimer(int $timestamp): ShieldSystemData
     {
         $this->shieldRegenerationTimer = $timestamp;

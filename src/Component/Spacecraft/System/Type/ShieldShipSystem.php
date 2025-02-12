@@ -11,6 +11,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeInterface;
+use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftStateChangerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -50,12 +51,20 @@ final class ShieldShipSystem extends AbstractSpacecraftSystemType implements Spa
             return false;
         }
 
-        if ($spacecraft->getLocation()->hasAnomaly(AnomalyTypeEnum::SUBSPACE_ELLIPSE)) {
+        $location = $spacecraft->getLocation();
+
+        $fieldType = $location->getFieldType();
+        if ($location->getFieldType()->hasEffect(FieldTypeEffectEnum::SHIELD_MALFUNCTION)) {
+            $reason = sprintf('"%s" es verhindert', $fieldType->getName());
+            return false;
+        }
+
+        if ($location->hasAnomaly(AnomalyTypeEnum::SUBSPACE_ELLIPSE)) {
             $reason = _('in diesem Sektor eine Subraumellipse vorhanden ist');
             return false;
         }
 
-        if ($spacecraft->getLocation()->hasAnomaly(AnomalyTypeEnum::ION_STORM)) {
+        if ($location->hasAnomaly(AnomalyTypeEnum::ION_STORM)) {
             $reason = _('in diesem Sektor ein Ionensturm tobt');
             return false;
         }
