@@ -640,16 +640,15 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
             $newAmount = $actualAmount - $gathercount;
             if ($gathercount > 0 && $locationmining->getDepletedAt() !== null) {
                 $locationmining->setDepletedAt(null);
-
+            }
+            if ($newAmount == 0 && $actualAmount > 0) {
+                $locationmining->setDepletedAt(time());
                 $informationWrapper->addInformationf(
                     'Es sind keine %s bei den Koordinaten %s|%s vorhanden!',
                     $locationmining->getCommodity()->getName(),
                     (string)$locationmining->getLocation()->getCx(),
                     (string)$locationmining->getLocation()->getCy()
                 );
-            }
-            if ($newAmount == 0 && $actualAmount > 0) {
-                $locationmining->setDepletedAt(time());
             }
             $locationmining->setActualAmount($newAmount);
 
