@@ -7,6 +7,7 @@ use Override;
 use RuntimeException;
 use Stu\Component\Map\MapEnum;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
+use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -183,11 +184,14 @@ class PirateCreation implements PirateCreationInterface
         $defaultLayer = $this->layerRepository->getDefaultLayer();
 
         do {
-            $result = $this->mapRepository->getRandomPassableUnoccupiedWithoutDamage($defaultLayer);
-        } while (in_array($result->getAdminRegionId(), self::FORBIDDEN_ADMIN_AREAS));
+            $map = $this->mapRepository->getRandomPassableUnoccupiedWithoutDamage($defaultLayer);
+        } while (
+            in_array($map->getAdminRegionId(), self::FORBIDDEN_ADMIN_AREAS)
+            && $map->getFieldType()->hasEffect(FieldTypeEffectEnum::NO_PIRATES)
+        );
 
-        $this->logger->log(sprintf('    randomMapLocation: %s', $result->getSectorString()));
+        $this->logger->log(sprintf('    randomMapLocation: %s', $map->getSectorString()));
 
-        return $result;
+        return $map;
     }
 }

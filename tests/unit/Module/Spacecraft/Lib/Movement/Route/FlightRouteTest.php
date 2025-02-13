@@ -10,6 +10,7 @@ use Override;
 use RuntimeException;
 use Stu\Component\Map\Effects\EffectHandlingInterface;
 use Stu\Config\Init;
+use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\Flight\FlightStartConsequenceInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\FlightConsequenceInterface;
@@ -25,9 +26,6 @@ use Stu\StuTestCase;
 
 use function DI\get;
 
-/**
- * Avoid global settings to cause trouble within other tests
- */
 class FlightRouteTest extends StuTestCase
 {
     /** @var MockInterface&CheckDestinationInterface */
@@ -424,7 +422,7 @@ class FlightRouteTest extends StuTestCase
         $this->assertEquals(8, count(get(PostFlightConsequenceInterface::class)->resolve($dic)));
     }
 
-    public function testhasSpecialDamageOnFieldExpectFalseIfWaypointsWithoutSpecialDamage(): void
+    public function testHasSpecialDamageOnFieldExpectFalseIfWaypointsWithoutSpecialDamage(): void
     {
         $start = $this->mock(MapInterface::class);
         $destination = $this->mock(MapInterface::class);
@@ -464,7 +462,7 @@ class FlightRouteTest extends StuTestCase
         $this->assertFalse($result);
     }
 
-    public function testhasSpecialDamageOnFieldExpectTrueIfWaypointWithSpecialDamage(): void
+    public function testHasSpecialDamageOnFieldExpectTrueIfWaypointWithSpecialDamage(): void
     {
         $start = $this->mock(MapInterface::class);
         $first = $this->mock(MapInterface::class);
@@ -502,6 +500,88 @@ class FlightRouteTest extends StuTestCase
         $this->subject->setDestinationViaCoordinates($ship, 42, 5);
 
         $result = $this->subject->hasSpecialDamageOnField();
+
+        $this->assertTrue($result);
+    }
+
+    public function testHasEffectOnRouteExpectFalseIfNoEffect(): void
+    {
+        $start = $this->mock(MapInterface::class);
+        $destination = $this->mock(MapInterface::class);
+        $wrapper = $this->mock(ShipWrapperInterface::class);
+        $ship = $this->mock(ShipInterface::class);
+        $waypoints = new ArrayCollection();
+
+        $waypoints->add($destination);
+
+        $ship->shouldReceive('getLocation')
+            ->withNoArgs()
+            ->andReturn($start);
+
+        $wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($ship);
+
+        $destination->shouldReceive('getFieldType->hasEffect')
+            ->with(FieldTypeEffectEnum::NO_PIRATES)
+            ->once()
+            ->andReturn(false);
+
+        $this->checkDestination->shouldReceive('validate')
+            ->with($ship, 42, 5)
+            ->once()
+            ->andReturn($destination);
+
+        $this->loadWaypoints->shouldReceive('load')
+            ->with($start, $destination)
+            ->once()
+            ->andReturn($waypoints);
+
+        $this->subject->setDestinationViaCoordinates($ship, 42, 5);
+
+        $result = $this->subject->hasEffectOnRoute(FieldTypeEffectEnum::NO_PIRATES);
+
+        $this->assertFalse($result);
+    }
+
+    public function testHasEffectOnRouteExpectTrueIfEffectExistent(): void
+    {
+        $start = $this->mock(MapInterface::class);
+        $first = $this->mock(MapInterface::class);
+        $destination = $this->mock(MapInterface::class);
+        $wrapper = $this->mock(ShipWrapperInterface::class);
+        $ship = $this->mock(ShipInterface::class);
+        $waypoints = new ArrayCollection();
+
+        $waypoints->add($first);
+        $waypoints->add($destination);
+
+        $ship->shouldReceive('getLocation')
+            ->withNoArgs()
+            ->andReturn($start);
+
+        $wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($ship);
+
+        $first->shouldReceive('getFieldType->hasEffect')
+            ->with(FieldTypeEffectEnum::NO_PIRATES)
+            ->once()
+            ->andReturn(true);
+
+        $this->checkDestination->shouldReceive('validate')
+            ->with($ship, 42, 5)
+            ->once()
+            ->andReturn($destination);
+
+        $this->loadWaypoints->shouldReceive('load')
+            ->with($start, $destination)
+            ->once()
+            ->andReturn($waypoints);
+
+        $this->subject->setDestinationViaCoordinates($ship, 42, 5);
+
+        $result = $this->subject->hasEffectOnRoute(FieldTypeEffectEnum::NO_PIRATES);
 
         $this->assertTrue($result);
     }

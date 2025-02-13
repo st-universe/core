@@ -6,6 +6,7 @@ namespace Stu\Lib\Pirate\Component;
 
 use Mockery\MockInterface;
 use Override;
+use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Lib\Pirate\PirateCreation;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
@@ -77,6 +78,10 @@ class SafeFlightRouteTest extends StuTestCase
 
         $flightRoute->shouldReceive('hasSpecialDamageOnField')
             ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+        $flightRoute->shouldReceive('hasEffectOnRoute')
+            ->with(FieldTypeEffectEnum::NO_PIRATES)
             ->once()
             ->andReturn(false);
         $flightRoute->shouldReceive('isDestinationInAdminRegion')

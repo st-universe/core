@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Override;
 use RuntimeException;
 use Stu\Component\Map\Effects\EffectHandlingInterface;
+use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\FlightConsequenceInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -264,6 +265,18 @@ final class FlightRoute implements FlightRouteInterface
     {
         foreach ($this->waypoints as $waypoint) {
             if ($waypoint->getFieldType()->getSpecialDamage() > 0) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    #[Override]
+    public function hasEffectOnRoute(FieldTypeEffectEnum $effect): bool
+    {
+        foreach ($this->waypoints as $waypoint) {
+            if ($waypoint->getFieldType()->hasEffect($effect)) {
                 return true;
             }
         }
