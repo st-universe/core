@@ -8,26 +8,31 @@ use Stu\Orm\Entity\MapFieldTypeInterface;
 
 enum FieldTypeEffectEnum: string
 {
-    case CLOAK_UNUSEABLE = 'CLOAK_UNUSEABLE';
+        // leaks
     case WARPDRIVE_LEAK = 'WARPDRIVE_LEAK';
+    case REACTOR_LEAK = 'REACTOR_LEAK';
+    case EPS_LEAK = 'EPS_LEAK';
+
+        // malfunction    
+    case CLOAK_UNUSEABLE = 'CLOAK_UNUSEABLE';
+    case NFS_MALFUNCTION_COOLDOWN = 'NFS_MALFUNCTION_COOLDOWN';
     case LSS_MALFUNCTION = 'LSS_MALFUNCTION';
+    case SHIELD_MALFUNCTION = 'SHIELD_MALFUNCTION';
     case NO_SPACECRAFT_COUNT = 'NO_SPACECRAFT_COUNT'; // don't ever show signature info
     case DUBIOUS_SPACECRAFT_COUNT = 'DUBIOUS_SPACECRAFT_COUNT'; // always show '!" sign, if at least one signature
     case NO_SUBSPACE_LINES = 'NO_SUBSPACE_LINES';
-    case NFS_MALFUNCTION_COOLDOWN = 'NFS_MALFUNCTION_COOLDOWN';
-    case SHIELD_MALFUNCTION = 'SHIELD_MALFUNCTION';
+
+        // other
+    case NO_PIRATES = 'NO_PIRATES';
 
         //TODO: following not yet implemented
     case LSS_BLOCKADE = 'LSS_BLOCKADE';
-    case REACTOR_LEAK = 'REACTOR_LEAK';
-    case EPS_LEAK = 'EPS_LEAK';
     case HIT_CHANCE_INTERFERENCE = 'HIT_CHANCE_INTERFERENCE';
     case EVADE_CHANCE_INTERFERENCE = 'EVADE_CHANCE_INTERFERENCE';
     case ENERGY_WEAPON_BUFF = 'ENERGY_WEAPON_BUFF';
     case ENERGY_WEAPON_NERF = 'ENERGY_WEAPON_NERF';
     case REGENERATION_CHANCE = 'REGENERATION_CHANCE'; // small chance to regenerate warpdrive, eps, shields or reactor
     case NO_ANOMALIES = 'NO_ANOMALIES';
-    case NO_PIRATES = 'NO_PIRATES';
 
     public function hasHandler(): bool
     {
@@ -35,7 +40,9 @@ enum FieldTypeEffectEnum: string
             self::CLOAK_UNUSEABLE,
             self::WARPDRIVE_LEAK,
             self::NFS_MALFUNCTION_COOLDOWN,
-            self::SHIELD_MALFUNCTION => true,
+            self::SHIELD_MALFUNCTION,
+            self::REACTOR_LEAK,
+            self::EPS_LEAK => true,
             default => false
         };
     }
