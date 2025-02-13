@@ -12,7 +12,6 @@ use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
-use Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\ConditionCheckResult;
 use Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\PreFlightConditionsCheckInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -105,6 +104,8 @@ final class ShipMover implements ShipMoverInterface
             && $fleetWrapper !== null
             && $fleetWrapper->get()->isFleetFixed();
 
+        $activeWrappers = new ArrayCollection($wrappers->toArray());
+
         while (!$flightRoute->isDestinationArrived()) {
             $nextWaypoint = $flightRoute->getNextWaypoint();
 
@@ -115,7 +116,7 @@ final class ShipMover implements ShipMoverInterface
                 break;
             }
 
-            $activeWrappers = $wrappers->filter(fn(SpacecraftWrapperInterface $wrapper): bool => !$wrapper->get()->isDestroyed());
+            $activeWrappers = $activeWrappers->filter(fn(SpacecraftWrapperInterface $wrapper): bool => !$wrapper->get()->isDestroyed());
 
             // check all flight pre conditions
             $conditionCheckResult = $this->preFlightConditionsCheck->checkPreconditions(
@@ -133,7 +134,7 @@ final class ShipMover implements ShipMoverInterface
             }
 
             foreach ($conditionCheckResult->getBlockedIds() as $spacecraftId) {
-                $wrappers->remove($spacecraftId);
+                $activeWrappers->remove($spacecraftId);
             }
 
             $hasToLeaveFleet = $leadWrapper->getFleetWrapper() !== null && !$isFleetMode;
@@ -211,7 +212,7 @@ final class ShipMover implements ShipMoverInterface
 
         // alert red check for tractored ships
         foreach ($movedTractoredShipWrappers as [$tractoringSpacecraft, $tractoredShipWrapper]) {
-            if (!$tractoringSpacecraft->isDestroyed()) {
+            if (!$tractoredShipWrapper->get()->isDestroyed()) {
                 $alertRedInformations = new InformationWrapper();
                 $this->alertReactionFacade->doItAll(
                     $tractoredShipWrapper,
@@ -323,15 +324,17 @@ final class ShipMover implements ShipMoverInterface
             );
         }
 
+        $finalDestination = $leadWrapper->get()->getLocation();
+
         //add info about anomalies
-        foreach ($leadWrapper->get()->getLocation()->getAnomalies() as $anomaly) {
+        foreach ($finalDestination->getAnomalies() as $anomaly) {
             $messages->addInformation(sprintf(
                 '[b][color=yellow]In diesem Sektor befindet sich eine %s-Anomalie[/color][/b]',
                 $anomaly->getAnomalyType()->getName()
             ));
         }
         // add info about buyos
-        foreach ($leadWrapper->get()->getLocation()->getBuoys() as $buoy) {
+        foreach ($finalDestination->getBuoys() as $buoy) {
             $messages->addInformation(sprintf('[b][color=yellow]Boje entdeckt: [/color][/b]%s', $buoy->getText()));
         }
     }
