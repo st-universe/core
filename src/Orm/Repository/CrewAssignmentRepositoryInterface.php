@@ -25,11 +25,6 @@ interface CrewAssignmentRepositoryInterface extends ObjectRepository
      */
     public function getByShip(int $shipId): array;
 
-    /**
-     * @return list<CrewAssignmentInterface>
-     */
-    public function getByShipAndSlot(int $shipId, int $slotId): array;
-
     //VIA LOCATION
     /**
      * @return list<CrewAssignmentInterface>

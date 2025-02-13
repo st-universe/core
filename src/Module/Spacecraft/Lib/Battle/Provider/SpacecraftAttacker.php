@@ -89,7 +89,7 @@ class SpacecraftAttacker extends AbstractEnergyAttacker implements ProjectileAtt
         return $this->get()->getUser()->getId();
     }
 
-    private function get(): SpacecraftInterface
+    public function get(): SpacecraftInterface
     {
         return $this->wrapper->get();
     }

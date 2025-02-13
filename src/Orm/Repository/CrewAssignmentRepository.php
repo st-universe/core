@@ -47,17 +47,8 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
     {
         return $this->findBy(
             ['spacecraft_id' => $shipId],
-            ['slot' => 'asc']
+            ['position' => 'asc']
         );
-    }
-
-    #[Override]
-    public function getByShipAndSlot(int $shipId, int $slotId): array
-    {
-        return $this->findBy([
-            'spacecraft_id' => $shipId,
-            'slot' => $slotId
-        ]);
     }
 
     /**

@@ -76,7 +76,7 @@ class EscapePodHandling implements ManagerComponentInterface
 
             $count++;
             $crewAssignment->setSpacecraft(null);
-            $crewAssignment->setSlot(null);
+            $crewAssignment->setPosition(null);
             $crewAssignment->setColony($colony);
             $escapePod->getCrewAssignments()->removeElement($crewAssignment);
             $colony->getCrewAssignments()->add($crewAssignment);

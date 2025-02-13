@@ -153,6 +153,7 @@ use Stu\Module\Spacecraft\Lib\Destruction\Handler\CancelTakeover;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\ClearTractoringBeam;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\ColonizationShipCheck;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\CrewEvacuation;
+use Stu\Module\Spacecraft\Lib\Destruction\Handler\EnhanceDestroyingCrew;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\HistoryEntryCreation;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\LeaveIntactModules;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\PrestigeGain;
@@ -244,6 +245,7 @@ use Stu\Module\Spacecraft\Lib\Ui\PanelLayerConfiguration;
 use Stu\Module\Spacecraft\Lib\Ui\ShipUiFactory;
 use Stu\Module\Spacecraft\Lib\Ui\ShipUiFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Ui\StateIconAndTitle;
+use Stu\Module\Spacecraft\View\ShowCrewmanDetails\ShowCrewmanDetails;
 use Stu\Module\Spacecraft\View\ShowSystemSettings\AggregrationSystemSettings;
 use Stu\Module\Spacecraft\View\ShowSystemSettings\BussardCollectorSystemSettings;
 use Stu\Module\Spacecraft\View\ShowSystemSettings\ShowSystemSettings;
@@ -376,6 +378,7 @@ return [
                 autowire(LeaveIntactModules::class),
                 autowire(ClearTractoringBeam::class),
                 autowire(ColonizationShipCheck::class),
+                autowire(EnhanceDestroyingCrew::class),
                 autowire(PrestigeGain::class),
                 autowire(ResetTrackerDevices::class),
                 autowire(TradepostDestruction::class),
@@ -457,6 +460,7 @@ return [
         ShowAlertLevel::VIEW_IDENTIFIER => autowire(ShowAlertLevel::class),
         ShowAnalyseBuoy::VIEW_IDENTIFIER => autowire(ShowAnalyseBuoy::class),
         ShowColonyScan::VIEW_IDENTIFIER => autowire(ShowColonyScan::class),
+        ShowCrewmanDetails::VIEW_IDENTIFIER => autowire(ShowCrewmanDetails::class),
         ShowEpsTransfer::VIEW_IDENTIFIER => autowire(ShowEpsTransfer::class),
         ShowInformation::VIEW_IDENTIFIER => autowire(ShowInformation::class),
         ShowRegionInfo::VIEW_IDENTIFIER => autowire(ShowRegionInfo::class),

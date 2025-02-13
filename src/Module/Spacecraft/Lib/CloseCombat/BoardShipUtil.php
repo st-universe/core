@@ -53,7 +53,7 @@ class BoardShipUtil implements BoardShipUtilInterface
         $message = $this->messageFactory->createMessage($ship->getUser()->getId(), $killedCrewAssignment->getUser()->getId());
         $message->add(sprintf(
             '%s %s des Spielers %s von der %s wurde im Kampf getötet.',
-            $killedCrewAssignment->getCrew()->getTypeDescription(),
+            $killedCrewAssignment->getCrew()->getRank()->getDescription(),
             $killedCrewAssignment->getCrew()->getName(),
             $isDeathOnDefenderSide ? $target->getUser()->getName() : $ship->getUser()->getName(),
             $isDeathOnDefenderSide ? $target->getName() : $ship->getName()
