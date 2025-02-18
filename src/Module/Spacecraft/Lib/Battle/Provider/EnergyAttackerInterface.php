@@ -12,17 +12,11 @@ interface EnergyAttackerInterface extends AttackerInterface
 
     public function getPhaserState(): bool;
 
-    public function hasSufficientEnergy(int $amount): bool;
-
     public function getFiringMode(): int;
 
     public function getWeapon(): WeaponInterface;
 
     public function getWeaponDamage(bool $isCritical): int;
-
-    public function reduceEps(int $amount): void;
-
-    public function getHitChance(): int;
 
     public function getPhaserShieldDamageFactor(): int;
 

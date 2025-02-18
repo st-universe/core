@@ -48,6 +48,7 @@ class IonStormMovement
         if (
             $newLocation === null
             || $newLocation->hasAnomaly(AnomalyTypeEnum::ION_STORM)
+            || $newLocation->isAnomalyForbidden()
         ) {
             $this->anomalyRepository->delete($child);
             return;

@@ -84,7 +84,11 @@ class IonStormMovementTest extends StuTestCase
         $root->shouldReceive('getChildren')
             ->withNoArgs()
             ->once()
-            ->andReturn(new ArrayCollection([$child, $childOnBorder, $child2]));
+            ->andReturn(new ArrayCollection([
+                $child,
+                $childOnBorder,
+                $child2
+            ]));
 
         $child->shouldReceive('getLocation')
             ->withNoArgs()
@@ -141,6 +145,10 @@ class IonStormMovementTest extends StuTestCase
             ->with(AnomalyTypeEnum::ION_STORM)
             ->once()
             ->andReturn(false);
+        $newLocation->shouldReceive('isAnomalyForbidden')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
         $newLocation->shouldReceive('addAnomaly')
             ->with($child)
             ->once();
@@ -164,6 +172,58 @@ class IonStormMovementTest extends StuTestCase
             ->once();
         $this->anomalyRepository->shouldReceive('delete')
             ->with($childOnBorder)
+            ->once();
+
+        $this->subject->moveStorm($root, $ionStormData, $locationPool);
+    }
+
+    public function testMoveStormExpectDeletionWhenTargetLocationForbidden(): void
+    {
+        $root = $this->mock(AnomalyInterface::class);
+        $childWithForbiddenTarget = $this->mock(AnomalyInterface::class);
+        $childWithForbiddenTargetLocation = $this->mock(LocationInterface::class);
+        $forbiddenLocation = $this->mock(LocationInterface::class);
+        $locationPool = $this->mock(LocationPool::class);
+
+        $ionStormData = new IonStormData(45, 4, IonStormMovementType::STATIC);
+
+        $root->shouldReceive('getChildren')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(new ArrayCollection([
+                $childWithForbiddenTarget
+            ]));
+
+        $childWithForbiddenTarget->shouldReceive('getLocation')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($childWithForbiddenTargetLocation);
+
+        $childWithForbiddenTargetLocation->shouldReceive('getX')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(7);
+        $childWithForbiddenTargetLocation->shouldReceive('getY')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(8);
+
+        $locationPool->shouldReceive('getLocation')
+            ->with(10, 11)
+            ->once()
+            ->andReturn($forbiddenLocation);
+
+        $forbiddenLocation->shouldReceive('hasAnomaly')
+            ->with(AnomalyTypeEnum::ION_STORM)
+            ->once()
+            ->andReturn(false);
+        $forbiddenLocation->shouldReceive('isAnomalyForbidden')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+
+        $this->anomalyRepository->shouldReceive('delete')
+            ->with($childWithForbiddenTarget)
             ->once();
 
         $this->subject->moveStorm($root, $ionStormData, $locationPool);

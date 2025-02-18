@@ -7,6 +7,7 @@ namespace Stu\Module\Spacecraft\Lib\Battle\Provider;
 use Override;
 use RuntimeException;
 use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\LocationInterface;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 
@@ -110,5 +111,11 @@ final class EnergyPhalanx extends AbstractEnergyAttacker
     public function getPhaserHullDamageFactor(): int
     {
         return 100;
+    }
+
+    #[Override]
+    public function getLocation(): LocationInterface
+    {
+        return $this->colony->getLocation();
     }
 }

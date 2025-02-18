@@ -66,4 +66,6 @@ interface LocationInterface
      * @return Collection<int, LocationMiningInterface>
      */
     public function getLocationMinings(): Collection;
+
+    public function isAnomalyForbidden(): bool;
 }

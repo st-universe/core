@@ -74,7 +74,10 @@ final class IonStormHandler implements AnomalyHandlerInterface
         while ($missing > 0) {
 
             $randomLocation = $this->locationRepository->getRandomLocation();
-            if (!$randomLocation->hasAnomaly(AnomalyTypeEnum::ION_STORM)) {
+            if (
+                !$randomLocation->hasAnomaly(AnomalyTypeEnum::ION_STORM)
+                && !$randomLocation->isAnomalyForbidden()
+            ) {
                 $missing--;
                 $root = $this->anomalyCreation->create(
                     AnomalyTypeEnum::ION_STORM,

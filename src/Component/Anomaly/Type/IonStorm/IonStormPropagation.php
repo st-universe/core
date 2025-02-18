@@ -60,6 +60,10 @@ class IonStormPropagation
         $neighbours = $locationPool->getNeighbours($location);
         $location = $neighbours[array_rand($neighbours)];
 
+        if ($location->isAnomalyForbidden()) {
+            return;
+        }
+
         $existingIonStorm = $location->getAnomaly(AnomalyTypeEnum::ION_STORM);
         if ($existingIonStorm === null) {
 
