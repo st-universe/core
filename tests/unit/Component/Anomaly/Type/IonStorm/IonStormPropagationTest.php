@@ -64,16 +64,19 @@ class IonStormPropagationTest extends StuTestCase
         $child1 = $this->mock(AnomalyInterface::class);
         $child2WithIonStormOnNeighbour = $this->mock(AnomalyInterface::class);
         $child3LowOnTicks = $this->mock(AnomalyInterface::class);
+        $child4WithForbiddenNeighbour = $this->mock(AnomalyInterface::class);
         $existingIonStorm = $this->mock(AnomalyInterface::class);
         $locationChild1 = $this->mock(LocationInterface::class);
         $locationChild2 = $this->mock(LocationInterface::class);
+        $locationChild4 = $this->mock(LocationInterface::class);
         $locationWithoutStorm = $this->mock(LocationInterface::class);
         $locationWithIonStorm = $this->mock(LocationInterface::class);
+        $locationWithForbiddenEffect = $this->mock(LocationInterface::class);
 
         $this->stuRandom->shouldReceive('rand')
             ->with(1, 3)
-            ->times(3)
-            ->andReturn(3, 1, 2);
+            ->times(4)
+            ->andReturn(3, 1, 2, 3);
         $this->stuRandom->shouldReceive('rand')
             ->with(10, 90)
             ->once()
@@ -91,6 +94,10 @@ class IonStormPropagationTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($locationChild2);
+        $child4WithForbiddenNeighbour->shouldReceive('getLocation')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($locationChild4);
 
         $root->shouldReceive('getChildren')
             ->withNoArgs()
@@ -98,7 +105,8 @@ class IonStormPropagationTest extends StuTestCase
             ->andReturn(new ArrayCollection([
                 $child1,
                 $child2WithIonStormOnNeighbour,
-                $child3LowOnTicks
+                $child3LowOnTicks,
+                $child4WithForbiddenNeighbour
             ]));
 
         $locationPool->shouldReceive('getNeighbours')
@@ -109,6 +117,10 @@ class IonStormPropagationTest extends StuTestCase
             ->with($locationChild2)
             ->once()
             ->andReturn([$locationWithIonStorm]);
+        $locationPool->shouldReceive('getNeighbours')
+            ->with($locationChild4)
+            ->once()
+            ->andReturn([$locationWithForbiddenEffect]);
 
         $locationWithoutStorm->shouldReceive('getAnomaly')
             ->with(AnomalyTypeEnum::ION_STORM)
@@ -119,6 +131,19 @@ class IonStormPropagationTest extends StuTestCase
             ->once()
             ->andReturn($existingIonStorm);
 
+        $locationWithoutStorm->shouldReceive('isAnomalyForbidden')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+        $locationWithForbiddenEffect->shouldReceive('isAnomalyForbidden')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+        $locationWithIonStorm->shouldReceive('isAnomalyForbidden')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+
         $this->anomalyCreation->shouldReceive('create')
             ->with(AnomalyTypeEnum::ION_STORM, $locationWithoutStorm, $root)
             ->once()
@@ -126,8 +151,8 @@ class IonStormPropagationTest extends StuTestCase
 
         $root->shouldReceive('getRemainingTicks')
             ->withNoArgs()
-            ->times(4)
-            ->andReturn(34, 33, 33, 33);
+            ->times(5)
+            ->andReturn(34, 33, 33, 33, 33);
         $child1->shouldReceive('getRemainingTicks')
             ->withNoArgs()
             ->twice()
@@ -140,6 +165,10 @@ class IonStormPropagationTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(9);
+        $child4WithForbiddenNeighbour->shouldReceive('getRemainingTicks')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(10);
 
         $root->shouldReceive('changeRemainingTicks')
             ->with(-1)
