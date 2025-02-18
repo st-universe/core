@@ -297,7 +297,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     public function getUserSpacecraftCountLayerData(PanelBoundaries $boundaries, int $userId, ResultSetMapping $rsm): array
     {
         return $this->getEntityManager()->createNativeQuery(
-            'SELECT l.cx as x, l.cy as y, mft.effects as effects,
+            'SELECT l.cx as x, l.cy as y,
             (SELECT count(distinct s.id)
                 FROM stu_spacecraft s
                 JOIN stu_location spl
@@ -309,8 +309,6 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             FROM stu_map m
             JOIN stu_location l
             ON m.id = l.id
-            JOIN stu_map_ftypes mft
-            ON l.field_id = mft.id
             WHERE l.cx BETWEEN :xStart AND :xEnd
             AND l.cy BETWEEN :yStart AND :yEnd
             AND l.layer_id = :layerId',
@@ -329,7 +327,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     public function getAllianceSpacecraftCountLayerData(PanelBoundaries $boundaries, int $allianceId, ResultSetMapping $rsm): array
     {
         return $this->getEntityManager()->createNativeQuery(
-            'SELECT l.cx as x, l.cy as y, mft.effects as effects,
+            'SELECT l.cx as x, l.cy as y,
              (SELECT count(distinct s.id)
                     FROM stu_spacecraft s
                     JOIN stu_location spl
@@ -343,8 +341,6 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             FROM stu_map m
             JOIN stu_location l
             ON m.id = l.id
-            JOIN stu_map_ftypes mft
-            ON l.field_id = mft.id
             WHERE l.cx BETWEEN :xStart AND :xEnd
             AND l.cy BETWEEN :yStart AND :yEnd
             AND l.layer_id = :layerId',
@@ -363,7 +359,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     public function getSpacecraftCountLayerDataForSpacecraft(PanelBoundaries $boundaries, int $spacecraftId, ResultSetMapping $rsm): array
     {
         return $this->getEntityManager()->createNativeQuery(
-            'SELECT l.cx as x, l.cy as y, mft.effects as effects,
+            'SELECT l.cx as x, l.cy as y,
             (SELECT count(distinct s.id)
                 FROM stu_spacecraft s
                 JOIN stu_location spl
@@ -375,8 +371,6 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             FROM stu_map m
             JOIN stu_location l
             ON m.id = l.id
-            JOIN stu_map_ftypes mft
-            ON l.field_id = mft.id
             WHERE l.cx BETWEEN :xStart AND :xEnd
             AND l.cy BETWEEN :yStart AND :yEnd
             AND l.layer_id = :layerId',
@@ -628,7 +622,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     public function getUserSubspaceLayerData(PanelBoundaries $boundaries, int $userId, ResultSetMapping $rsm): array
     {
         return $this->getEntityManager()->createNativeQuery(
-            'SELECT l.cx as x, l.cy as y, mft.effects as effects,
+            'SELECT l.cx as x, l.cy as y,
             (SELECT count(distinct fs1.ship_id) from stu_flight_sig fs1
                 WHERE fs1.location_id = l.id
                 AND fs1.user_id = :userId
@@ -646,8 +640,6 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                 AND fs4.user_id = :userId
                 AND (fs4.from_direction = 4 OR fs4.to_direction = 4)) as d4c 
             FROM stu_location l
-            JOIN stu_map_ftypes mft
-            ON l.field_id = mft.id
             WHERE l.cx BETWEEN :xStart AND :xEnd
             AND l.cy BETWEEN :yStart AND :yEnd
             AND l.layer_id = :layerId',
@@ -666,7 +658,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     public function getShipSubspaceLayerData(PanelBoundaries $boundaries, int $shipId, ResultSetMapping $rsm): array
     {
         return $this->getEntityManager()->createNativeQuery(
-            'SELECT l.cx as x, l.cy as y, mft.effects as effects,
+            'SELECT l.cx as x, l.cy as y,
             (SELECT count(distinct fs1.ship_id) from stu_flight_sig fs1
                 WHERE fs1.location_id = l.id
                 AND fs1.ship_id = :shipId
@@ -684,8 +676,6 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                 AND fs4.ship_id = :shipId
                 AND (fs4.from_direction = 4 OR fs4.to_direction = 4)) as d4c 
             FROM stu_location l
-            JOIN stu_map_ftypes mft
-            ON l.field_id = mft.id
             WHERE l.cx BETWEEN :xStart AND :xEnd
             AND l.cy BETWEEN :yStart AND :yEnd
             AND l.layer_id = :layerId',
@@ -704,7 +694,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     public function getAllianceSubspaceLayerData(PanelBoundaries $boundaries, int $allianceId, ResultSetMapping $rsm): array
     {
         return $this->getEntityManager()->createNativeQuery(
-            'SELECT l.id, l.cx as x, l.cy as y, mft.effects as effects,
+            'SELECT l.id, l.cx as x, l.cy as y,
             (SELECT count(distinct fs1.ship_id) from stu_flight_sig fs1
                 JOIN stu_user u1 ON fs1.user_id = u1.id
                 WHERE fs1.location_id = l.id
@@ -726,8 +716,6 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                 AND u4.allys_id = :allyId
                 AND (fs4.from_direction = 4 OR fs4.to_direction = 4)) as d4c 
             FROM stu_location l
-            JOIN stu_map_ftypes mft
-            ON l.field_id = mft.id
             WHERE l.cx BETWEEN :xStart AND :xEnd
             AND l.cy BETWEEN :yStart AND :yEnd
             AND l.layer_id = :layerId',
