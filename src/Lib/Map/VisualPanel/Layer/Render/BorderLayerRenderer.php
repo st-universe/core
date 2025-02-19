@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Lib\Map\VisualPanel\Layer\Render;
 
 use Override;
+use Stu\Component\Spacecraft\SpacecraftLssModeEnum;
 use Stu\Lib\Map\VisualPanel\Layer\Data\BorderData;
 use Stu\Lib\Map\VisualPanel\Layer\Data\CellDataInterface;
 use Stu\Lib\Map\VisualPanel\PanelAttributesInterface;
@@ -42,19 +43,33 @@ final class BorderLayerRenderer implements LayerRendererInterface
         if (
             $this->currentSpacecraft->getLssMode()->isBorderMode()
         ) {
-            $factionColor = $data->getFactionColor();
-            if ($factionColor !== null && $factionColor !== '' && $factionColor !== '0') {
-                return $factionColor;
-            }
+            if ($this->currentSpacecraft->getLSSMode() === SpacecraftLssModeEnum::BORDER) {
+                $factionColor = $data->getFactionColor();
+                if ($factionColor !== null && $factionColor !== '' && $factionColor !== '0') {
+                    return $factionColor;
+                }
 
-            $allyColor = $data->getAllyColor();
-            if ($allyColor !== null && $allyColor !== '' && $allyColor !== '0') {
-                return $allyColor;
-            }
+                $allyColor = $data->getAllyColor();
+                if ($allyColor !== null && $allyColor !== '' && $allyColor !== '0') {
+                    return $allyColor;
+                }
 
-            $userColor = $data->getUserColor();
-            if ($userColor !== null && $userColor !== '' && $userColor !== '0') {
-                return $userColor;
+                $userColor = $data->getUserColor();
+                if ($userColor !== null && $userColor !== '' && $userColor !== '0') {
+                    return $userColor;
+                }
+            }
+            if ($this->currentSpacecraft->getLSSMode() === SpacecraftLssModeEnum::IMPASSABLE) {
+                $impassablecolor = $data->getImpassableColor();
+                if ($impassablecolor != true) {
+                    return '#730505';
+                }
+            }
+            if ($this->currentSpacecraft->getLSSMode() === SpacecraftLssModeEnum::CARTOGRAPHING) {
+                $cartographingcolor = $data->getCartographingColor();
+                if ($cartographingcolor != false) {
+                    return '#730505';
+                }
             }
         }
 

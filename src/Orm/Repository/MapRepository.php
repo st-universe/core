@@ -17,6 +17,7 @@ use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\MapInterface;
+use Stu\Orm\Entity\UserInterface;
 
 /**
  * @extends EntityRepository<Map>
@@ -163,7 +164,56 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     }
 
     #[Override]
-    public function getBorderData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
+    public function getNormalBorderData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
+    {
+        return $this->getEntityManager()->createNativeQuery(
+            'SELECT l.cx AS x, l.cy AS y
+            FROM stu_map m
+            JOIN stu_location l
+            ON m.id = l.id
+            WHERE l.cx BETWEEN :xStart AND :xEnd
+            AND l.cy BETWEEN :yStart AND :yEnd
+            AND l.layer_id = :layerId',
+            $rsm
+        )->setParameters([
+            'xStart' => $boundaries->getMinX(),
+            'xEnd' => $boundaries->getMaxX(),
+            'yStart' => $boundaries->getMinY(),
+            'yEnd' => $boundaries->getMaxY(),
+            'layerId' => $boundaries->getParentId()
+        ])->getResult();
+    }
+
+    #[Override]
+    public function getCartographingData(PanelBoundaries $boundaries, ResultSetMapping $rsm, string $locations): array
+    {
+
+        return $this->getEntityManager()->createNativeQuery(
+            'SELECT DISTINCT 
+                l.cx AS x, 
+                l.cy AS y, 
+                CASE 
+                    WHEN POSITION(l.id::TEXT IN :fieldIds) > 0 THEN TRUE ELSE FALSE
+                END AS cartographing
+            FROM stu_location l
+            WHERE l.cx BETWEEN :xStart AND :xEnd
+              AND l.cy BETWEEN :yStart AND :yEnd
+              AND l.layer_id = :layerId
+            ORDER BY cartographing DESC',
+            $rsm
+        )->setParameters([
+            'xStart' => $boundaries->getMinX(),
+            'xEnd' => $boundaries->getMaxX(),
+            'yStart' => $boundaries->getMinY(),
+            'yEnd' => $boundaries->getMaxY(),
+            'layerId' => $boundaries->getParentId(),
+            'fieldIds' => $locations
+        ])->getResult();
+    }
+
+
+    #[Override]
+    public function getRegionBorderData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
     {
         return $this->getEntityManager()->createNativeQuery(
             'SELECT l.cx AS x, l.cy AS y,
@@ -202,6 +252,44 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             'rgbCodeSetting' => UserSettingEnum::RGB_CODE->value
         ])->getResult();
     }
+
+    #[Override]
+    public function getImpassableBorderData(PanelBoundaries $boundaries, Userinterface $user, ResultSetMapping $rsm): array
+    {
+        return $this->getEntityManager()->createNativeQuery(
+            'SELECT DISTINCT 
+                l.cx AS x, 
+                l.cy AS y,
+                CASE 
+                    WHEN mf.passable = FALSE 
+                         AND EXISTS (
+                            SELECT 1 
+                            FROM stu_database_user du
+                            JOIN stu_database_entrys de ON du.database_id = de.id
+                            WHERE du.user_id = :userId
+                            AND de.id = r.database_id
+                         ) 
+                    THEN FALSE
+                    ELSE TRUE
+                END AS impassable
+            FROM stu_location l
+            LEFT JOIN stu_map_ftypes mf ON l.field_id = mf.id
+            LEFT JOIN stu_map m ON l.id = m.id
+            LEFT JOIN stu_map_regions r ON m.region_id = r.id
+            WHERE l.cx BETWEEN :xStart AND :xEnd
+              AND l.cy BETWEEN :yStart AND :yEnd
+              AND l.layer_id = :layerId',
+            $rsm
+        )->setParameters([
+            'xStart' => $boundaries->getMinX(),
+            'xEnd' => $boundaries->getMaxX(),
+            'yStart' => $boundaries->getMinY(),
+            'yEnd' => $boundaries->getMaxY(),
+            'layerId' => $boundaries->getParentId(),
+            'userId' => $user->getId()
+        ])->getResult();
+    }
+
 
     #[Override]
     public function getAnomalyData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array

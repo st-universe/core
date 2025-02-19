@@ -396,4 +396,15 @@ function showSystemSettingsWindow(name) {
   openWindow('elt', 1, 300);
   ajax_update('elt', `?SHOW_SYSTEM_SETTINGS_AJAX=1&id=${spacecraftid}&system=${name}`);
 }
+function showLSSFilter() {
+  elt = 'lssmode';
+  openPJsWin(elt, 1);
+  ajax_update(elt, '?SHOW_LSS_FILTER=1&id=' + spacecraftid);
+}
 
+function selectLssMode(mode) {
+  actionToInnerContent(
+    "B_SET_LSS_MODE",
+    `id=${spacecraftid}&mode=${mode}&sstr=${sstr}`
+  );
+}

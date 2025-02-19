@@ -1,0 +1,8 @@
+<div id="lss-mode-container">
+    {% for mode in LSS_MODES %}
+    <div class="lss-mode-row {% if SPACECRAFT.getLssMode == mode %}active{% endif %}"
+        onclick="selectLssMode({{ mode.value }})">
+        {{ mode.getDescription }}
+    </div>
+    {% endfor %}
+</div>

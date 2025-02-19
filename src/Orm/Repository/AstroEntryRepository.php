@@ -58,4 +58,13 @@ final class AstroEntryRepository extends EntityRepository implements AstroEntryR
             ['user_id' => $user->getId()]
         );
     }
+
+    /** @return array<AstronomicalEntryInterface> */
+    #[Override]
+    public function getByUserAndState(UserInterface $user, int $state): array
+    {
+        return $this->findBy(
+            ['user_id' => $user->getId(), 'state' => $state]
+        );
+    }
 }
