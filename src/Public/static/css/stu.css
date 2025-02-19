@@ -1987,3 +1987,24 @@ div.userAvatar img {
     display: block;
   }
 }
+
+
+.lss-mode-row {
+  padding: 10px;
+  margin: 5px;
+  cursor: pointer;
+  border: 1px solid var(--color-37);
+  border-radius: 4px;
+  transition: background-color 0.3s;
+  color: var(--color-6);
+}
+
+.lss-mode-row:hover {
+  background-color: var(--color-16);
+  border-color: var(--color-46);
+}
+
+.lss-mode-row.active {
+  background-color: var(--color-37);
+  border-color: var(--color-46);
+}

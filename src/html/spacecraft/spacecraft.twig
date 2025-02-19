@@ -152,19 +152,10 @@
 					onmouseover="cp('shipcom','buttons/msg2');" onmouseout="cp('shipcom','buttons/msg1');">
 					<img src="/assets/buttons/msg1.png" title="Kommunikation" name="shipcom" />
 				</a>
-				{% if SPACECRAFT.getLssMode.isBorderMode %}
-				<a href="?B_SET_LSS_NORMAL=1&id={{ spacecraftId }}&sstr={{ SESSIONSTRING }}"
+				<a href="javascript:void(0);" onclick="showLSSFilter();"
 					onmouseover="cp('actlss','buttons/lss_button2');" onmouseout="cp('actlss','buttons/lss_button1');">
-					<img src="/assets/buttons/lss_button1.png" title="Territoriale Grenzansicht deaktivieren"
-						name="actlss" />
+					<img src="/assets/buttons/lss_button1.png" title="LSS Filtermenü öffnen" name="actlss" />
 				</a>
-				{% else %}
-				<a href="?B_SET_LSS_BORDER=1&id={{ spacecraftId }}&sstr={{ SESSIONSTRING }}"
-					onmouseover="cp('actlss','buttons/lss_button1');" onmouseout="cp('actlss','buttons/lss_button3');">
-					<img src="/assets/buttons/lss_button3.png" title="Territoriale Grenzansicht aktivieren"
-						name="actlss" />
-				</a>
-				{% endif %}
 				{% if IS_MAP_BUTTON_VISIBLE %}
 				<a href="javascript:void(0);" onclick="openStarMap(this,{{ spacecraftId }});"
 					onmouseover="cp('shimap','buttons/map2');" onmouseout="cp('shimap','buttons/map1');">

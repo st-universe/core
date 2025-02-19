@@ -176,9 +176,8 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
         ])->getResult();
     }
 
-
     #[Override]
-    public function getBorderData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
+    public function getNormalBorderData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
     {
         return $this->getEntityManager()->createNativeQuery(
             'SELECT sm.sx AS x, sm.sy AS y
@@ -195,6 +194,73 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
             'systemId' => $boundaries->getParentId()
         ])->getResult();
     }
+
+    #[Override]
+    public function getRegionBorderData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
+    {
+        return $this->getEntityManager()->createNativeQuery(
+            'SELECT sm.sx AS x, sm.sy AS y
+            FROM stu_sys_map sm
+            WHERE sm.systems_id = :systemId
+            AND sm.sx BETWEEN :xStart AND :xEnd
+            AND sm.sy BETWEEN :yStart AND :yEnd',
+            $rsm
+        )->setParameters([
+            'xStart' => $boundaries->getMinX(),
+            'xEnd' => $boundaries->getMaxX(),
+            'yStart' => $boundaries->getMinY(),
+            'yEnd' => $boundaries->getMaxY(),
+            'systemId' => $boundaries->getParentId()
+        ])->getResult();
+    }
+
+    // TODO: Show impassable only for cartographed systems. 
+    // Currently, it does not display any impassable areas.
+    #[Override]
+    public function getImpassableBorderData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
+    {
+        return $this->getEntityManager()->createNativeQuery(
+            'SELECT sm.sx AS x, sm.sy AS y, TRUE AS impassable
+            FROM stu_sys_map sm
+            WHERE sm.systems_id = :systemId
+            AND sm.sx BETWEEN :xStart AND :xEnd
+            AND sm.sy BETWEEN :yStart AND :yEnd',
+            $rsm
+        )->setParameters([
+            'xStart' => $boundaries->getMinX(),
+            'xEnd' => $boundaries->getMaxX(),
+            'yStart' => $boundaries->getMinY(),
+            'yEnd' => $boundaries->getMaxY(),
+            'systemId' => $boundaries->getParentId()
+        ])->getResult();
+    }
+
+    #[Override]
+    public function getCartographingData(PanelBoundaries $boundaries, ResultSetMapping $rsm, string $locations): array
+    {
+        return $this->getEntityManager()->createNativeQuery(
+            'SELECT DISTINCT 
+                sm.sx AS x, 
+                sm.sy AS y, 
+                CASE 
+                    WHEN POSITION(sm.id::TEXT IN :fieldIds) > 0 THEN TRUE ELSE FALSE
+                END AS cartographing
+            FROM stu_sys_map sm
+            WHERE sm.sx BETWEEN :xStart AND :xEnd
+              AND sm.sy BETWEEN :yStart AND :yEnd
+              AND sm.systems_id = :systemId
+            ORDER BY cartographing DESC',
+            $rsm
+        )->setParameters([
+            'xStart' => $boundaries->getMinX(),
+            'xEnd' => $boundaries->getMaxX(),
+            'yStart' => $boundaries->getMinY(),
+            'yEnd' => $boundaries->getMaxY(),
+            'systemId' => $boundaries->getParentId(),
+            'fieldIds' => $locations
+        ])->getResult();
+    }
+
 
     #[Override]
     public function getAnomalyData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array

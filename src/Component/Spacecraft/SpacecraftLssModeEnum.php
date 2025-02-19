@@ -8,12 +8,16 @@ enum SpacecraftLssModeEnum: int
 {
     case NORMAL = 1;
     case BORDER = 2;
+    case IMPASSABLE = 3;
+    case CARTOGRAPHING = 4;
 
     public function getDescription(): string
     {
         return match ($this) {
-            self::NORMAL => "Territorialansicht deaktivieren",
-            self::BORDER => "Territorialansicht aktivieren"
+            self::NORMAL => "LSS Filter deaktivieren",
+            self::BORDER => "Territorialansicht",
+            self::IMPASSABLE => "Unpassierbarkeitsansicht",
+            self::CARTOGRAPHING => "Kartographieansicht"
         };
     }
 
@@ -21,7 +25,9 @@ enum SpacecraftLssModeEnum: int
     {
         return match ($this) {
             self::NORMAL => false,
-            self::BORDER => true
+            self::BORDER => true,
+            self::IMPASSABLE => true,
+            self::CARTOGRAPHING => true
         };
     }
 }

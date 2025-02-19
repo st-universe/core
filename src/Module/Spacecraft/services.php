@@ -49,7 +49,7 @@ use Stu\Module\Spacecraft\Action\Selfrepair\Selfrepair;
 use Stu\Module\Spacecraft\Action\SendBroadcast\SendBroadcast;
 use Stu\Module\Spacecraft\Action\SetGreenAlert\SetGreenAlert;
 use Stu\Module\Spacecraft\Action\SetLSSModeBorder\SetLSSModeBorder;
-use Stu\Module\Spacecraft\Action\SetLSSModeNormal\SetLSSModeNormal;
+use Stu\Module\Spacecraft\Action\SetLSSMode\SetLSSMode;
 use Stu\Module\Spacecraft\Action\SetRedAlert\SetRedAlert;
 use Stu\Module\Spacecraft\Action\SetYellowAlert\SetYellowAlert;
 use Stu\Module\Spacecraft\Action\Shutdown\Shutdown;
@@ -83,6 +83,7 @@ use Stu\Module\Spacecraft\View\ShowAnalyseBuoy\ShowAnalyseBuoy;
 use Stu\Module\Spacecraft\View\ShowColonyScan\ShowColonyScan;
 use Stu\Module\Spacecraft\View\ShowEpsTransfer\ShowEpsTransfer;
 use Stu\Module\Spacecraft\View\ShowInformation\ShowInformation;
+use Stu\Module\Spacecraft\View\ShowLSSFilter\ShowLSSFilter;
 use Stu\Module\Spacecraft\View\ShowRegionInfo\ShowRegionInfo;
 use Stu\Module\Spacecraft\View\ShowRenameCrew\ShowRenameCrew;
 use Stu\Module\Spacecraft\View\ShowRepairOptions\ShowRepairOptions;
@@ -395,7 +396,7 @@ return [
         Selfrepair::ACTION_IDENTIFIER => autowire(Selfrepair::class),
         SendBroadcast::ACTION_IDENTIFIER => autowire(SendBroadcast::class),
         SetLSSModeBorder::ACTION_IDENTIFIER => autowire(SetLSSModeBorder::class),
-        SetLSSModeNormal::ACTION_IDENTIFIER => autowire(SetLSSModeNormal::class),
+        SetLSSMode::ACTION_IDENTIFIER => autowire(SetLSSMode::class),
         BoardShip::ACTION_IDENTIFIER => autowire(BoardShip::class),
         StartTakeover::ACTION_IDENTIFIER => autowire(StartTakeover::class),
         StopTakeover::ACTION_IDENTIFIER => autowire(StopTakeover::class),
@@ -459,6 +460,7 @@ return [
         ShowColonyScan::VIEW_IDENTIFIER => autowire(ShowColonyScan::class),
         ShowEpsTransfer::VIEW_IDENTIFIER => autowire(ShowEpsTransfer::class),
         ShowInformation::VIEW_IDENTIFIER => autowire(ShowInformation::class),
+        ShowLSSFilter::VIEW_IDENTIFIER => autowire(ShowLSSFilter::class),
         ShowRegionInfo::VIEW_IDENTIFIER => autowire(ShowRegionInfo::class),
         ShowRenameCrew::VIEW_IDENTIFIER => autowire(ShowRenameCrew::class),
         ShowRepairOptions::VIEW_IDENTIFIER => autowire(ShowRepairOptions::class),
