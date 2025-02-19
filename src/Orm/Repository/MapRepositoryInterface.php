@@ -10,6 +10,7 @@ use Stu\Module\Starmap\Lib\ExploreableStarMapInterface;
 use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\MapInterface;
+use Stu\Orm\Entity\UserInterface;
 
 /**
  * @extends ObjectRepository<Map>
@@ -56,7 +57,16 @@ interface MapRepositoryInterface extends ObjectRepository
     public function getMapLayerData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
 
     /** @return array<CellDataInterface> */
-    public function getBorderData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
+    public function getNormalBorderData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
+
+    /** @return array<CellDataInterface> */
+    public function getCartographingData(PanelBoundaries $boundaries, ResultSetMapping $rsm, string $locations): array;
+
+    /** @return array<CellDataInterface> */
+    public function getRegionBorderData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
+
+    /** @return array<CellDataInterface> */
+    public function getImpassableBorderData(PanelBoundaries $boundaries, Userinterface $user, ResultSetMapping $rsm): array;
 
     /** @return array<CellDataInterface> */
     public function getAnomalyData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;

@@ -16,6 +16,12 @@ class BorderData extends AbstractData
     private ?string $usercolor = null;
     #[Column(type: 'string', nullable: true)]
     private ?string $factioncolor = null;
+    #[Column(type: 'string', nullable: true)]
+    private ?string $impassable = null;
+    #[Column(type: 'string', nullable: true)]
+    private ?string $normal = null;
+    #[Column(type: 'string', nullable: true)]
+    private ?string $cartographing = null;
 
     public function getAllyColor(): ?string
     {
@@ -30,5 +36,20 @@ class BorderData extends AbstractData
     public function getUserColor(): ?string
     {
         return $this->usercolor;
+    }
+
+    public function getImpassableColor(): ?string
+    {
+        return $this->impassable;
+    }
+
+    public function getNormalColor(): ?string
+    {
+        return $this->normal;
+    }
+
+    public function getCartographingColor(): ?string
+    {
+        return $this->cartographing;
     }
 }

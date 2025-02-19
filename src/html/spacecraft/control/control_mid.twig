@@ -441,11 +441,9 @@ canColonize, closestAnomalyDistance) %}
 <br />
 {% if SPACECRAFT.getAstroState %}
 {% set isSystem = astroStateWrapper.isSystem ? 1 : 0 %}
-<a href="javascript:void(0);" onclick="showAstroEntryWindow({{ isSystem }})"
-    onmouseover="cp('astroButton','buttons/map1')" onmouseout="cp('astroButton','buttons/map2')">
-    <img src="/assets/buttons/map2.png" name="astroButton" />
-    <span>Messpunkte ansehen ({{ astroStateWrapper.getType }})</span>
-</a>
+<img src="/assets/buttons/map2.png" name="astroButton" />
+<span>Verbleibende Messpunkte: {{ astroStateWrapper.getMeasurepointsLeft }} </span>
+
 {% else %}
 <img src="/assets/buttons/map2.png" />
 <span>Kartographierung ist geplant ({{ astroStateWrapper.getType }})</span>
