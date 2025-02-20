@@ -24,12 +24,10 @@ class EpsLeakEffectHandler implements EffectHandlerInterface
     #[Override]
     public function addFlightInformation(LocationInterface $location, MessageCollectionInterface $messages): void
     {
-        $messages->addInformation(
-            sprintf(
-                "[color=yellow]Energetische Disruption durch %s in Sektor %s kann den Plasmastrom von EPS-Systemen absorbieren[/color]",
-                $location->getFieldType()->getName(),
-                $location->getSectorString()
-            )
+        $messages->addInformationf(
+            "[color=yellow]Energetische Disruption durch %s in Sektor %s kann den Plasmastrom von EPS-Systemen absorbieren[/color]",
+            $location->getFieldType()->getName(),
+            $location->getSectorString()
         );
     }
 
@@ -58,7 +56,7 @@ class EpsLeakEffectHandler implements EffectHandlerInterface
 
         $epsSystemData->lowerEps($loss)->update();
 
-        $messages->addInformation(
+        $messages->addMessageBy(
             sprintf(
                 "%s: [color=yellow]%d Energie wird abgeleitet[/color]",
                 $spacecraft->getName(),

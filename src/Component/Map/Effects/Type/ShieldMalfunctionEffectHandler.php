@@ -33,12 +33,10 @@ class ShieldMalfunctionEffectHandler implements EffectHandlerInterface
     #[Override]
     public function addFlightInformation(LocationInterface $location, MessageCollectionInterface $messages): void
     {
-        $messages->addInformation(
-            sprintf(
-                "[color=yellow]Partikelinterferenz durch %s in Sektor %s sorgt für Destabilisierung des Schildgitters[/color]",
-                $location->getFieldType()->getName(),
-                $location->getSectorString()
-            )
+        $messages->addInformationf(
+            "[color=yellow]Partikelinterferenz durch %s in Sektor %s sorgt für Destabilisierung des Schildgitters[/color]",
+            $location->getFieldType()->getName(),
+            $location->getSectorString()
         );
     }
 
@@ -60,7 +58,7 @@ class ShieldMalfunctionEffectHandler implements EffectHandlerInterface
             return;
         }
 
-        $messages->addInformation(
+        $messages->addMessageBy(
             sprintf(
                 "%s: [color=yellow]%s[/color]",
                 $spacecraft->getName(),

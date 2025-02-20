@@ -34,12 +34,10 @@ class NfsMalfunctionCooldownEffectHandler implements EffectHandlerInterface
     #[Override]
     public function addFlightInformation(LocationInterface $location, MessageCollectionInterface $messages): void
     {
-        $messages->addInformation(
-            sprintf(
-                "[color=yellow]Subraumverzerrungen durch %s induzieren Rückkopplung in den Nahbereichsensoren in Sektor %s[/color]",
-                $location->getFieldType()->getName(),
-                $location->getSectorString()
-            )
+        $messages->addInformationf(
+            "[color=yellow]Subraumverzerrungen durch %s induzieren Rückkopplung in den Nahbereichsensoren in Sektor %s[/color]",
+            $location->getFieldType()->getName(),
+            $location->getSectorString()
         );
     }
 
@@ -64,7 +62,7 @@ class NfsMalfunctionCooldownEffectHandler implements EffectHandlerInterface
             $shutdownText = 'ausgefallen und ';
         }
 
-        $messages->addInformation(
+        $messages->addMessageBy(
             sprintf(
                 "%s: [color=yellow]%s %sin Rekalibrierungsphase[/color]",
                 $spacecraft->getName(),
