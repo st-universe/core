@@ -24,12 +24,10 @@ class ReactorLeakEffectHandler implements EffectHandlerInterface
     #[Override]
     public function addFlightInformation(LocationInterface $location, MessageCollectionInterface $messages): void
     {
-        $messages->addInformation(
-            sprintf(
-                "[color=yellow]Partikelanomalie durch %s kann in Sektor %s hochenergetische Reaktor-Plasmaströme aus der Reaktorkernmatrix extrahieren[/color]",
-                $location->getFieldType()->getName(),
-                $location->getSectorString()
-            )
+        $messages->addInformationf(
+            "[color=yellow]Partikelanomalie durch %s kann in Sektor %s hochenergetische Reaktor-Plasmaströme aus der Reaktorkernmatrix extrahieren[/color]",
+            $location->getFieldType()->getName(),
+            $location->getSectorString()
         );
     }
 
@@ -58,7 +56,7 @@ class ReactorLeakEffectHandler implements EffectHandlerInterface
 
         $reactorWrapper->changeLoad(-$loss);
 
-        $messages->addInformation(
+        $messages->addMessageBy(
             sprintf(
                 "%s: [color=yellow]Reaktorladung sinkt signifikant um %d Einheiten[/color]",
                 $spacecraft->getName(),

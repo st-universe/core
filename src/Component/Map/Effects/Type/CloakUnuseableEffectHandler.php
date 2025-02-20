@@ -27,12 +27,10 @@ class CloakUnuseableEffectHandler implements EffectHandlerInterface
     #[Override]
     public function addFlightInformation(LocationInterface $location, MessageCollectionInterface $messages): void
     {
-        $messages->addInformation(
-            sprintf(
-                "[color=yellow]Ionische Dispersion durch %s stört die Phasenmodulation von Tarnsystemen in Sektor %s[/color]",
-                $location->getFieldType()->getName(),
-                $location->getSectorString()
-            )
+        $messages->addInformationf(
+            "[color=yellow]Ionische Dispersion durch %s stört die Phasenmodulation von Tarnsystemen in Sektor %s[/color]",
+            $location->getFieldType()->getName(),
+            $location->getSectorString()
         );
     }
 
@@ -44,7 +42,7 @@ class CloakUnuseableEffectHandler implements EffectHandlerInterface
 
             $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::CLOAK, true);
 
-            $messages->addInformation(
+            $messages->addMessageBy(
                 sprintf("%s: [color=yellow]Tarnsystem ausgefallen[/color]", $spacecraft->getName()),
                 $wrapper->get()->getUser()->getId()
             );
