@@ -254,7 +254,7 @@ final class ShipMover implements ShipMoverInterface
     {
         if ($ship instanceof ShipInterface) {
             if ($this->leaveFleet->leaveFleet($ship)) {
-                $messages->addInformation(sprintf('Die %s hat die Flotte verlassen', $ship->getName()));
+                $messages->addInformationf('Die %s hat die Flotte verlassen', $ship->getName());
             }
         }
     }
@@ -328,14 +328,14 @@ final class ShipMover implements ShipMoverInterface
 
         //add info about anomalies
         foreach ($finalDestination->getAnomalies() as $anomaly) {
-            $messages->addInformation(sprintf(
+            $messages->addInformationf(
                 '[b][color=yellow]In diesem Sektor befindet sich eine %s-Anomalie[/color][/b]',
                 $anomaly->getAnomalyType()->getName()
-            ));
+            );
         }
         // add info about buyos
         foreach ($finalDestination->getBuoys() as $buoy) {
-            $messages->addInformation(sprintf('[b][color=yellow]Boje entdeckt: [/color][/b]%s', $buoy->getText()));
+            $messages->addInformationf('[b][color=yellow]Boje entdeckt: [/color][/b]%s', $buoy->getText());
         }
     }
 

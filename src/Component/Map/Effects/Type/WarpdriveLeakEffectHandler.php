@@ -21,12 +21,10 @@ class WarpdriveLeakEffectHandler implements EffectHandlerInterface
     #[Override]
     public function addFlightInformation(LocationInterface $location, MessageCollectionInterface $messages): void
     {
-        $messages->addInformation(
-            sprintf(
-                "[color=yellow]Fluktuationen im Warpplasmaleitungssystem durch %s in Sektor %s festgestellt[/color]",
-                $location->getFieldType()->getName(),
-                $location->getSectorString()
-            )
+        $messages->addInformationf(
+            "[color=yellow]Fluktuationen im Warpplasmaleitungssystem durch %s in Sektor %s festgestellt[/color]",
+            $location->getFieldType()->getName(),
+            $location->getSectorString()
         );
     }
 
@@ -50,7 +48,7 @@ class WarpdriveLeakEffectHandler implements EffectHandlerInterface
 
         $warpdrive->lowerWarpDrive($loss)->update();
 
-        $messages->addInformation(
+        $messages->addMessageBy(
             sprintf(
                 "%s: [color=yellow]Warpantriebs-Leckage verursacht Kapazitätsverlust von %s Cochrane[/color]",
                 $spacecraft->getName(),
