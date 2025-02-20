@@ -805,7 +805,7 @@ function openBoardSettings(obj, bid) {
 	ajax_update(elt, "alliance.php?SHOW_BOARD_SETTINGS=1&boardid=" + bid);
 }
 function openPmWindow(fromId, toId, fromType, toType) {
-	elt = "pmwindow";
+	elt = "elt";
 	openWindowPosition(elt, 1, 600, 90, 60);
 	ajax_update(
 		elt,
