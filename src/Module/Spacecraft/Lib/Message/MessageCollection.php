@@ -19,7 +19,7 @@ final class MessageCollection implements MessageCollectionInterface
     #[Override]
     public function add(MessageInterface $msg): void
     {
-        if ($msg->isEmpty()) {
+        if ($msg != null) {
             $this->messages[] = $msg;
         }
     }
