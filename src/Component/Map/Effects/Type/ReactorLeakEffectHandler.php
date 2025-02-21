@@ -54,7 +54,7 @@ class ReactorLeakEffectHandler implements EffectHandlerInterface
             return;
         }
 
-        $reactorWrapper->changeLoad($loss);
+        $reactorWrapper->changeLoad(-$loss);
 
         $messages->addMessageBy(
             sprintf(
