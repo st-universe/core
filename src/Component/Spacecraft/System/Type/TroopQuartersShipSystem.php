@@ -27,7 +27,7 @@ final class TroopQuartersShipSystem extends AbstractSpacecraftSystemType impleme
     public function handleDestruction(SpacecraftWrapperInterface $wrapper): void
     {
         foreach ($wrapper->get()->getCrewAssignments() as $crewAssignment) {
-            if ($crewAssignment->getSlot() === null) {
+            if ($crewAssignment->getPosition() === null) {
                 $this->crewRepository->delete($crewAssignment->getCrew());
             }
         }

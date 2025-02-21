@@ -7,6 +7,8 @@ namespace Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight;
 use Mockery;
 use Mockery\MockInterface;
 use Override;
+use Stu\Component\Crew\Skill\CrewEnhancementInterface;
+use Stu\Component\Crew\Skill\SkillEnhancementEnum;
 use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\Data\AstroLaboratorySystemData;
@@ -24,6 +26,7 @@ use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\AstroEntryRepositoryInterface;
+use Stu\StuMocks;
 use Stu\StuTestCase;
 
 class PostFlightAstroMappingConsequenceTest extends StuTestCase
@@ -32,6 +35,8 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
     private $astroEntryRepository;
     /** @var MockInterface&AstroEntryLibInterface */
     private $astroEntryLib;
+    /** @var MockInterface&CrewEnhancementInterface */
+    private $crewEnhancement;
     /** @var MockInterface&CreatePrestigeLogInterface */
     private $createPrestigeLog;
     /** @var MockInterface&MessageFactoryInterface */
@@ -53,12 +58,15 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
     {
         $this->astroEntryRepository = $this->mock(AstroEntryRepositoryInterface::class);
         $this->astroEntryLib = $this->mock(AstroEntryLibInterface::class);
+        $this->crewEnhancement = $this->mock(CrewEnhancementInterface::class);
         $this->createPrestigeLog = $this->mock(CreatePrestigeLogInterface::class);
         $this->messageFactory = $this->mock(MessageFactoryInterface::class);
 
         $this->ship = $this->mock(ShipInterface::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
         $this->flightRoute = $this->mock(FlightRouteInterface::class);
+
+        StuMocks::get()->mockService(CrewEnhancementInterface::class, $this->crewEnhancement);
 
         $this->wrapper->shouldReceive('get')
             ->zeroOrMoreTimes()
@@ -70,6 +78,12 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
             $this->createPrestigeLog,
             $this->messageFactory
         );
+    }
+
+    #[Override]
+    protected function tearDown(): void
+    {
+        StuMocks::get()->reset();
     }
 
     public function testTriggerExpectNothingWhenShipDestroyed(): void
@@ -139,7 +153,6 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
 
     public function testTriggerExpectNothingWhenNoAstroEntryPresent(): void
     {
-
         $messages = $this->mock(MessageCollectionInterface::class);
 
         $this->ship->shouldReceive('isDestroyed')
@@ -252,6 +265,10 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
             )
             ->once();
 
+        $this->crewEnhancement->shouldReceive('addExpertise')
+            ->with($this->ship, SkillEnhancementEnum::REACH_ASTRO_WAYPOINT, 100)
+            ->once();
+
         $messages->shouldReceive('add')
             ->with($message)
             ->once();
@@ -275,7 +292,6 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
 
     public function testTriggerExpectMeasured(): void
     {
-
         $map = $this->mock(MapInterface::class);
         $user = $this->mock(UserInterface::class);
         $messages = $this->mock(MessageCollectionInterface::class);
@@ -361,6 +377,9 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
             )
             ->once();
 
+        $this->crewEnhancement->shouldReceive('addExpertise')
+            ->with($this->ship, SkillEnhancementEnum::REACH_ASTRO_WAYPOINT, 100)
+            ->once();
 
         $messages->shouldReceive('add')
             ->with($message)
