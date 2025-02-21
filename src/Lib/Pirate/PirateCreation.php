@@ -187,7 +187,7 @@ class PirateCreation implements PirateCreationInterface
             $map = $this->mapRepository->getRandomPassableUnoccupiedWithoutDamage($defaultLayer);
         } while (
             in_array($map->getAdminRegionId(), self::FORBIDDEN_ADMIN_AREAS)
-            && $map->getFieldType()->hasEffect(FieldTypeEffectEnum::NO_PIRATES)
+            || $map->getFieldType()->hasEffect(FieldTypeEffectEnum::NO_PIRATES)
         );
 
         $this->logger->log(sprintf('    randomMapLocation: %s', $map->getSectorString()));
