@@ -7,5 +7,5 @@ use Doctrine\ORM\EntityManagerInterface;
 
 interface EntityManagerFactoryInterface
 {
-    public function createEntityManager(Connection $connection = null): EntityManagerInterface;
+    public function createEntityManager(?Connection $connection = null): EntityManagerInterface;
 }

@@ -18,19 +18,19 @@ use Stu\StuTestCase;
 class AllianceDescriptionRendererTest extends StuTestCase
 {
     /** @var MockInterface&ParserWithImageInterface */
-    private MockInterface $parserWithImage;
+    private $parserWithImage;
 
     /** @var MockInterface&AllianceRelationRendererInterface */
-    private MockInterface $allianceRelationRenderer;
+    private $allianceRelationRenderer;
 
     /** @var MockInterface&AllianceRelationRepositoryInterface */
-    private MockInterface $allianceRelationRepository;
+    private $allianceRelationRepository;
 
     /** @var MockInterface&AllianceInterface */
-    private MockInterface $alliance;
+    private $alliance;
 
     /** @var MockInterface&ConfigInterface */
-    private MockInterface $config;
+    private $config;
 
     private AllianceDescriptionRenderer $subject;
 
