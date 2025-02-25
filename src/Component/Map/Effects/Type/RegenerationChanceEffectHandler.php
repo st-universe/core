@@ -66,6 +66,7 @@ class RegenerationChanceEffectHandler implements EffectHandlerInterface
         if ($gain !== null) {
             $information->addInformationf(
                 "%s: [color=green]%s wird um %s aufgeladen[/color]",
+                $wrapper->get()->getName(),
                 $moduleType->getSystemType()->getDescription(),
                 $gain
             );
