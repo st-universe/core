@@ -115,4 +115,21 @@ class ReopeningEntityManagerTest extends StuTestCase
 
         $this->subject->beginTransaction();
     }
+
+    public function testRollbackWhenTransactionIsActive(): void
+    {
+        $this->wrapped->shouldReceive('clear')
+            ->withNoArgs()
+            ->once();
+        $this->wrapped->shouldReceive('rollback')
+            ->withNoArgs()
+            ->once();
+
+        $this->wrapped->shouldReceive('getConnection->isTransactionActive')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+
+        $this->subject->rollback();
+    }
 }
