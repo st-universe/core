@@ -75,6 +75,8 @@ class ReopeningEntityManager extends EntityManagerDecorator
     public function rollback(): void
     {
         if ($this->wrapped->getConnection()->isTransactionActive()) {
+            $this->logger->log('CLEAR_UNIT_OF_WORK');
+            $this->wrapped->clear();
             $this->logger->log('ROLLBACK_TRANSACTION');
             $this->wrapped->rollback();
         }
