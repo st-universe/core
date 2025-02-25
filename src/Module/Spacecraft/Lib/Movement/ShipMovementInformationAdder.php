@@ -89,7 +89,7 @@ final class ShipMovementInformationAdder implements ShipMovementInformationAdder
             $fieldType = $spacecraft->getLocation()->getFieldType();
             $flightDestinationInfo = $effect->getFlightDestinationInfo($fieldType);
             if ($flightDestinationInfo !== null) {
-                $messages->addMessageBy(
+                $messages->addInformation(
                     sprintf("[color=yellow]%s[/color]", $flightDestinationInfo),
                     $spacecraft->getUser()->getId()
                 );

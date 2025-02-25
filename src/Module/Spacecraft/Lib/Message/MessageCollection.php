@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Message;
 
 use Override;
-use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 
@@ -19,13 +18,11 @@ final class MessageCollection implements MessageCollectionInterface
     #[Override]
     public function add(MessageInterface $msg): void
     {
-        if (!$msg->isEmpty()) {
-            $this->messages[] = $msg;
-        }
+        $this->messages[] = $msg;
     }
 
     #[Override]
-    public function addMessageBy(string $text, ?int $recipient = null): MessageInterface
+    public function addInformation(string $text, ?int $recipient = null): MessageInterface
     {
         $message = $this->messageFactory->createMessage(
             UserEnum::USER_NOONE,
@@ -36,24 +33,6 @@ final class MessageCollection implements MessageCollectionInterface
         $this->add($message);
 
         return $message;
-    }
-
-    #[Override]
-    public function addInformation(?string $information): InformationInterface
-    {
-        if ($information !== null) {
-            $this->addMessageBy($information);
-        }
-
-        return $this;
-    }
-
-    #[Override]
-    public function addInformationf(string $information, ...$args): InformationInterface
-    {
-        $this->addMessageBy(vsprintf($information, $args));
-
-        return $this;
     }
 
     #[Override]
