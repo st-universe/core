@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Tick\Process;
 
 use Override;
-use RuntimeException;
 use Stu\Component\Game\TimeConstants;
 use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Module\Control\StuTime;
@@ -38,7 +37,7 @@ final class ShieldRegeneration implements ProcessTickHandlerInterface
             $wrapper = $this->spacecraftWrapperFactory->wrapSpacecraft($spacecraft);
             $shieldSystemData = $wrapper->getShieldSystemData();
             if ($shieldSystemData === null) {
-                throw new RuntimeException('this should hot happen');
+                continue;
             }
 
             if ($shieldSystemData->getShieldRegenerationTimer() > $regenerationThreshold) {
