@@ -51,10 +51,20 @@ class NfsMalfunctionCooldownEffectHandler implements EffectHandlerInterface
             return;
         }
 
-        $system->setCooldown($this->stuTime->time() + $this->stuRandom->rand(
+        $cooldown = $this->stuTime->time() + $this->stuRandom->rand(
             TimeConstants::TEN_MINUTES_IN_SECONDS,
             2 * TimeConstants::TEN_MINUTES_IN_SECONDS
-        ));
+        );
+
+        $actualCooldown = $system->getCooldown();
+        if (
+            $actualCooldown !== null
+            && $actualCooldown > $cooldown
+        ) {
+            return;
+        }
+
+        $system->setCooldown($cooldown);
 
         $shutdownText = '';
         if ($spacecraft->getSystemState(self::SYSTEM_TYPE)) {
