@@ -58,8 +58,11 @@ interface StarSystemMapRepositoryInterface extends ObjectRepository
     /** @return array<CellDataInterface> */
     public function getImpassableBorderData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
 
-    /** @return array<CellDataInterface> */
-    public function getCartographingData(PanelBoundaries $boundaries, ResultSetMapping $rsm, string $locations): array;
+    /**
+     * @param array<int> $locations
+     * @return array<CellDataInterface> 
+     */
+    public function getCartographingData(PanelBoundaries $boundaries, ResultSetMapping $rsm, array $locations): array;
 
     /** @return array<CellDataInterface> */
     public function getAnomalyData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;

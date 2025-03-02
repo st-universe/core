@@ -42,7 +42,7 @@ final class CartographyBorderDataProvider extends AbstractBorderDataProvider
         return $this->mapRepository->getCartographingData(
             $boundaries,
             $this->createResultSetMapping(),
-            $this->createLocationString()
+            $this->createLocationArray()
         );
     }
 
@@ -51,12 +51,14 @@ final class CartographyBorderDataProvider extends AbstractBorderDataProvider
         return $this->starSystemMapRepository->getCartographingData(
             $boundaries,
             $this->createResultSetMapping(),
-            $this->createLocationString()
+            $this->createLocationArray()
         );
     }
 
-
-    private function createLocationString(): string
+    /**
+     * @return array<int>
+     */
+    private function createLocationArray(): array
     {
         $astroEntries = $this->astroEntryRepository->getByUserAndState(
             $this->currentSpacecraft->getUser(),
@@ -71,6 +73,6 @@ final class CartographyBorderDataProvider extends AbstractBorderDataProvider
             }
         }
 
-        return '(' . implode(',', $locations) . ')';
+        return $locations;
     }
 }
