@@ -185,21 +185,21 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     }
 
     #[Override]
-    public function getCartographingData(PanelBoundaries $boundaries, ResultSetMapping $rsm, string $locations): array
+    public function getCartographingData(PanelBoundaries $boundaries, ResultSetMapping $rsm, array $locations): array
     {
 
         return $this->getEntityManager()->createNativeQuery(
             'SELECT DISTINCT 
-                l.cx AS x, 
-                l.cy AS y, 
-                CASE 
-                    WHEN POSITION(l.id::TEXT IN :fieldIds) > 0 THEN TRUE ELSE FALSE
-                END AS cartographing
-            FROM stu_location l
-            WHERE l.cx BETWEEN :xStart AND :xEnd
-              AND l.cy BETWEEN :yStart AND :yEnd
-              AND l.layer_id = :layerId
-            ORDER BY cartographing DESC',
+                    l.cx AS x, 
+                    l.cy AS y, 
+                    CASE 
+                        WHEN l.id IN (:fieldIds) THEN TRUE ELSE FALSE
+                    END AS cartographing
+                FROM stu_location l
+                WHERE l.cx BETWEEN :xStart AND :xEnd
+                AND l.cy BETWEEN :yStart AND :yEnd
+                AND l.layer_id = :layerId
+                ORDER BY cartographing DESC',
             $rsm
         )->setParameters([
             'xStart' => $boundaries->getMinX(),

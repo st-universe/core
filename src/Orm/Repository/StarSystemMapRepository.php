@@ -236,19 +236,19 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
     }
 
     #[Override]
-    public function getCartographingData(PanelBoundaries $boundaries, ResultSetMapping $rsm, string $locations): array
+    public function getCartographingData(PanelBoundaries $boundaries, ResultSetMapping $rsm, array $locations): array
     {
         return $this->getEntityManager()->createNativeQuery(
             'SELECT DISTINCT 
                 sm.sx AS x, 
                 sm.sy AS y, 
                 CASE 
-                    WHEN POSITION(sm.id::TEXT IN :fieldIds) > 0 THEN TRUE ELSE FALSE
+                    WHEN sm.id IN (:fieldIds) THEN TRUE ELSE FALSE
                 END AS cartographing
             FROM stu_sys_map sm
             WHERE sm.sx BETWEEN :xStart AND :xEnd
-              AND sm.sy BETWEEN :yStart AND :yEnd
-              AND sm.systems_id = :systemId
+            AND sm.sy BETWEEN :yStart AND :yEnd
+            AND sm.systems_id = :systemId
             ORDER BY cartographing DESC',
             $rsm
         )->setParameters([

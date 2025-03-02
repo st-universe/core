@@ -59,8 +59,11 @@ interface MapRepositoryInterface extends ObjectRepository
     /** @return array<CellDataInterface> */
     public function getNormalBorderData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
 
-    /** @return array<CellDataInterface> */
-    public function getCartographingData(PanelBoundaries $boundaries, ResultSetMapping $rsm, string $locations): array;
+    /**
+     * @param array<int> $locations
+     * @return array<CellDataInterface>
+     */
+    public function getCartographingData(PanelBoundaries $boundaries, ResultSetMapping $rsm, array $locations): array;
 
     /** @return array<CellDataInterface> */
     public function getRegionBorderData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
