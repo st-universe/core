@@ -113,7 +113,7 @@ final class DatabaseUserRepository extends EntityRepository implements DatabaseU
     }
 
     #[Override]
-    public function hasUserCompletedCategory(int $userId, int $categoryId, int $finishedDatabaseEntryId = 0): bool
+    public function hasUserCompletedCategory(int $userId, int $categoryId, ?int $ignoredDatabaseEntryId = null): bool
     {
         return (int) $this->getEntityManager()
             ->createQuery(
@@ -121,7 +121,7 @@ final class DatabaseUserRepository extends EntityRepository implements DatabaseU
                     'SELECT count(de.id)
                     FROM %s de
                     WHERE de.category_id = :categoryId
-                    AND de.id != :finishedDatabaseEntryId
+                    AND de.id != :ignoredDatabaseEntryId
                     AND NOT EXISTS
                         (SELECT du.id
                         FROM %s du
@@ -134,7 +134,7 @@ final class DatabaseUserRepository extends EntityRepository implements DatabaseU
             ->setParameters([
                 'userId' => $userId,
                 'categoryId' => $categoryId,
-                'finishedDatabaseEntryId' => $finishedDatabaseEntryId
+                'ignoredDatabaseEntryId' => $ignoredDatabaseEntryId ?? 0
             ])
             ->getSingleScalarResult() == 0;
     }
