@@ -20,8 +20,7 @@ final class CreateDatabaseEntry implements CreateDatabaseEntryInterface
         private DatabaseUserRepositoryInterface $databaseUserRepository,
         private CreatePrestigeLogInterface $createPrestigeLog,
         private CreateUserAwardInterface $createUserAward
-    ) {
-    }
+    ) {}
 
     #[Override]
     public function createDatabaseEntryForUser(UserInterface $user, int $databaseEntryId): ?DatabaseEntryInterface
@@ -53,14 +52,17 @@ final class CreateDatabaseEntry implements CreateDatabaseEntryInterface
             //create prestige log
             $this->createPrestigeLog->createLogForDatabaseEntry($databaseEntry, $user, $userEntry->getDate());
 
-            $this->checkForCompletion($user, $databaseEntry->getCategory(), $databaseEntryId);
+            $this->checkForCategoryCompletion($user, $databaseEntry->getCategory(), $databaseEntryId);
         }
 
         return $databaseEntry;
     }
 
-    private function checkForCompletion(UserInterface $user, DatabaseCategoryInterface $category, int $databaseEntryId): void
-    {
+    public function checkForCategoryCompletion(
+        UserInterface $user,
+        DatabaseCategoryInterface $category,
+        ?int $ignoredDatabaseEntryId = null
+    ): void {
         //check if an award is configured for this category
         if ($category->getAward() === null) {
             return;
@@ -68,7 +70,7 @@ final class CreateDatabaseEntry implements CreateDatabaseEntryInterface
 
         $award = $category->getAward();
 
-        if ($this->databaseUserRepository->hasUserCompletedCategory($user->getId(), $category->getId(), $databaseEntryId)) {
+        if ($this->databaseUserRepository->hasUserCompletedCategory($user->getId(), $category->getId(), $ignoredDatabaseEntryId)) {
             $this->createUserAward->createAwardForUser($user, $award);
         }
     }
