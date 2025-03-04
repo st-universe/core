@@ -46,6 +46,10 @@ interface MapFieldTypeInterface
 
     public function setPassable(bool $passable): MapFieldTypeInterface;
 
+    public function getComplementaryColor(): ?string;
+
+    public function setComplementaryColor(?string $complementaryColor): MapFieldTypeInterface;
+
     public function getColonyClass(): ?ColonyClassInterface;
 
     /** @return array<FieldTypeEffectEnum> */

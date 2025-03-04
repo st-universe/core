@@ -22,6 +22,8 @@ class BorderData extends AbstractData
     private ?string $normal = null;
     #[Column(type: 'string', nullable: true)]
     private ?string $cartographing = null;
+    #[Column(type: 'string', nullable: true)]
+    private ?string $complementary_color = null;
 
     public function getAllyColor(): ?string
     {
@@ -38,7 +40,7 @@ class BorderData extends AbstractData
         return $this->usercolor;
     }
 
-    public function getImpassableColor(): ?string
+    public function getImpassable(): ?string
     {
         return $this->impassable;
     }
@@ -48,8 +50,13 @@ class BorderData extends AbstractData
         return $this->normal;
     }
 
-    public function getCartographingColor(): ?string
+    public function getCartographing(): ?string
     {
         return $this->cartographing;
+    }
+
+    public function getComplementaryColor(): ?string
+    {
+        return $this->complementary_color;
     }
 }

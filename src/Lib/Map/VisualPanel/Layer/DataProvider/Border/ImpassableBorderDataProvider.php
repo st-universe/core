@@ -31,6 +31,7 @@ final class ImpassableBorderDataProvider extends AbstractBorderDataProvider
     protected function addFieldResults(ResultSetMapping $rsm): void
     {
         $rsm->addFieldResult('d', 'impassable', 'impassable');
+        $rsm->addFieldResult('d', 'complementary_color', 'complementary_color');
     }
 
     #[Override]

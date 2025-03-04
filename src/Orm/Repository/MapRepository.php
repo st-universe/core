@@ -194,7 +194,8 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                     l.cy AS y, 
                     CASE 
                         WHEN l.id IN (:fieldIds) THEN TRUE ELSE FALSE
-                    END AS cartographing
+                    END AS cartographing,
+                    (SELECT mft.complementary_color FROM stu_map_ftypes mft where mft.id = l.field_id) AS complementary_color
                 FROM stu_location l
                 WHERE l.cx BETWEEN :xStart AND :xEnd
                 AND l.cy BETWEEN :yStart AND :yEnd
@@ -271,7 +272,8 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                          ) 
                     THEN FALSE
                     ELSE TRUE
-                END AS impassable
+                END AS impassable,
+                    (SELECT mft.complementary_color FROM stu_map_ftypes mft where mft.id = l.field_id) AS complementary_color
             FROM stu_location l
             LEFT JOIN stu_map_ftypes mf ON l.field_id = mf.id
             LEFT JOIN stu_map m ON l.id = m.id

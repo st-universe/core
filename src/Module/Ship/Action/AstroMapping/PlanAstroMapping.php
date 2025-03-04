@@ -8,10 +8,12 @@ use Override;
 use request;
 
 use Stu\Component\Ship\AstronomicalMappingEnum;
+use Stu\Component\Spacecraft\SpacecraftLssModeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Spacecraft\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Orm\Entity\AstronomicalEntryInterface;
 use Stu\Orm\Entity\LocationInterface;
@@ -32,7 +34,8 @@ final class PlanAstroMapping implements ActionControllerInterface
         private StarSystemMapRepositoryInterface $starSystemMapRepository,
         private MapRepositoryInterface $mapRepository,
         private AstroEntryRepositoryInterface $astroEntryRepository,
-        private AstroEntryLibInterface $astroEntryLib
+        private AstroEntryLibInterface $astroEntryLib,
+        private ActivatorDeactivatorHelperInterface $helper
     ) {}
 
     #[Override]
@@ -75,6 +78,10 @@ final class PlanAstroMapping implements ActionControllerInterface
         $this->obtainMeasurementFields($system, $mapRegion, $astroEntry, $location);
 
         $this->astroEntryRepository->save($astroEntry);
+
+        if ($ship->getLSSMode() !== SpacecraftLssModeEnum::CARTOGRAPHING) {
+            $this->helper->setLssMode($ship->getId(), SpacecraftLssModeEnum::CARTOGRAPHING, $game);
+        }
 
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
         $game->addInformation("Kartographie-Messpunkte wurden ermittelt");
