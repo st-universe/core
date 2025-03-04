@@ -76,7 +76,9 @@ final class ResearchState implements ResearchStateInterface
         $plan = $state->getResearch()->getRewardBuildplan();
         /** @var ColonyInterface */
         $colony = $userColonies->first();
-        $wrapper = $this->shipCreator->createBy($userId, $plan->getRump()->getId(), $plan->getId())
+
+        $wrapper = $this->shipCreator
+            ->createBy($userId, $plan->getRump()->getId(), $plan->getId())
             ->setLocation($colony->getStarsystemMap())
             ->maxOutSystems()
             ->finishConfiguration();
@@ -89,10 +91,10 @@ final class ResearchState implements ResearchStateInterface
         $this->shipRepository->save($ship);
 
         for ($j = 1; $j <= $plan->getCrew(); $j++) {
-            $this->crewCreator->create($userId, $colony);
+            $this->crewCreator->create($state->getUser(), $colony);
         }
         $this->entityManager->flush(); //TODO really neccessary?
-        $this->crewCreator->createCrewAssignment($ship, $colony);
+        $this->crewCreator->createCrewAssignments($ship, $colony);
 
         $txt = sprintf(_("Als Belohnung für den Abschluss der Forschung wurde dir ein Schiff vom Typ %s überstellt"), $plan->getRump()->getName());
 
