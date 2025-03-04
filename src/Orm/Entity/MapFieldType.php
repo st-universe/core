@@ -59,6 +59,9 @@ class MapFieldType implements MapFieldTypeInterface
     #[Column(type: 'boolean')]
     private bool $passable = false;
 
+    #[Column(type: 'string', nullable: true)]
+    private ?string $complementary_color = '';
+
     /** @var null|array<FieldTypeEffectEnum>|array<string> */
     #[Column(type: 'json', nullable: true)]
     private ?array $effects = null;
@@ -202,6 +205,19 @@ class MapFieldType implements MapFieldTypeInterface
     {
         $this->passable = $passable;
 
+        return $this;
+    }
+
+    #[Override]
+    public function getComplementaryColor(): ?string
+    {
+        return $this->complementary_color;
+    }
+
+    #[Override]
+    public function setComplementaryColor(?string $complementaryColor): MapFieldTypeInterface
+    {
+        $this->complementary_color = $complementaryColor;
         return $this;
     }
 

@@ -220,7 +220,8 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
     public function getImpassableBorderData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
     {
         return $this->getEntityManager()->createNativeQuery(
-            'SELECT sm.sx AS x, sm.sy AS y, TRUE AS impassable
+            'SELECT sm.sx AS x, sm.sy AS y, TRUE AS impassable,
+                    (SELECT mft.complementary_color FROM stu_map_ftypes mft JOIN stu_location l on l.id = sm.id where mft.id = l.field_id) AS complementary_color
             FROM stu_sys_map sm
             WHERE sm.systems_id = :systemId
             AND sm.sx BETWEEN :xStart AND :xEnd
@@ -244,7 +245,8 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
                 sm.sy AS y, 
                 CASE 
                     WHEN sm.id IN (:fieldIds) THEN TRUE ELSE FALSE
-                END AS cartographing
+                END AS cartographing,
+                    (SELECT mft.complementary_color FROM stu_map_ftypes mft JOIN stu_location l on l.id = sm.id where mft.id = l.field_id) AS complementary_color
             FROM stu_sys_map sm
             WHERE sm.sx BETWEEN :xStart AND :xEnd
             AND sm.sy BETWEEN :yStart AND :yEnd

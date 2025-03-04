@@ -60,15 +60,23 @@ final class BorderLayerRenderer implements LayerRendererInterface
                 }
             }
             if ($this->currentSpacecraft->getLSSMode() === SpacecraftLssModeEnum::IMPASSABLE) {
-                $impassablecolor = $data->getImpassableColor();
+                $impassablecolor = $data->getImpassable();
                 if ($impassablecolor != true) {
-                    return '#730505';
+                    if ($data->getComplementaryColor() !== null && $data->getComplementaryColor() !== '' && $data->getComplementaryColor() !== '0') {
+                        return $data->getComplementaryColor();
+                    } else {
+                        return '#730505';
+                    }
                 }
             }
             if ($this->currentSpacecraft->getLSSMode() === SpacecraftLssModeEnum::CARTOGRAPHING) {
-                $cartographingcolor = $data->getCartographingColor();
+                $cartographingcolor = $data->getCartographing();
                 if ($cartographingcolor != false) {
-                    return '#730505';
+                    if ($data->getComplementaryColor() !== null && $data->getComplementaryColor() !== '' && $data->getComplementaryColor() !== '0') {
+                        return $data->getComplementaryColor();
+                    } else {
+                        return '#730505';
+                    }
                 }
             }
         }

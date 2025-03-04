@@ -22,5 +22,6 @@ abstract class AbstractBorderDataProvider extends AbstractPanelLayerDataProvider
     {
         $rsm->addFieldResult('d', 'impassable', 'impassable');
         $rsm->addFieldResult('d', 'cartographing', 'cartographing');
+        $rsm->addFieldResult('d', 'complementary_color', 'complementary_color');
     }
 }

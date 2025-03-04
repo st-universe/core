@@ -35,6 +35,7 @@ final class CartographyBorderDataProvider extends AbstractBorderDataProvider
     protected function addFieldResults(ResultSetMapping $rsm): void
     {
         $rsm->addFieldResult('d', 'cartographing', 'cartographing');
+        $rsm->addFieldResult('d', 'complementary_color', 'complementary_color');
     }
 
     protected function provideDataForMap(PanelBoundaries $boundaries): array
