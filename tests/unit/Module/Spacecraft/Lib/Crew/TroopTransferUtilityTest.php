@@ -212,7 +212,7 @@ class TroopTransferUtilityTest extends StuTestCase
             ->with($target)
             ->once()
             ->andReturnSelf();
-        $shipCrew->shouldReceive('setSlot')
+        $shipCrew->shouldReceive('setPosition')
             ->with(null)
             ->once();
 
@@ -251,7 +251,7 @@ class TroopTransferUtilityTest extends StuTestCase
             ->with($target)
             ->once()
             ->andReturnSelf();
-        $shipCrew->shouldReceive('setSlot')
+        $shipCrew->shouldReceive('setPosition')
             ->with(null)
             ->once();
 

@@ -124,7 +124,7 @@ final class StartAirfieldShip implements ActionControllerInterface
         $wrapper = $shipConfigurator->finishConfiguration();
         $ship = $wrapper->get();
 
-        $this->crewCreator->createCrewAssignment($ship, $colony);
+        $this->crewCreator->createCrewAssignments($ship, $colony);
 
         $defaultTorpedoType = $hangar->getDefaultTorpedoType();
         if ($defaultTorpedoType !== null && $storage->containsKey($defaultTorpedoType->getCommodityId())) {
