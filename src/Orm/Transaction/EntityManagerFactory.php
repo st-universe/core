@@ -14,7 +14,7 @@ class EntityManagerFactory implements EntityManagerFactoryInterface
         private Configuration $configuration
     ) {}
 
-    public function createEntityManager(Connection $connection = null): EntityManagerInterface
+    public function createEntityManager(?Connection $connection = null): EntityManagerInterface
     {
         return new EntityManager(
             $connection ?? $this->connectionFactory->createConnection(),
