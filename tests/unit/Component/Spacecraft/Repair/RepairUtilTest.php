@@ -176,7 +176,7 @@ class RepairUtilTest extends StuTestCase
             ->andReturn($colony);
 
         $this->colonyFunctionManager->shouldReceive('hasActiveFunction')
-            ->with($colony, BuildingFunctionEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD)
+            ->with($colony, BuildingFunctionEnum::REPAIR_SHIPYARD)
             ->once()
             ->andReturnFalse();
 
@@ -221,7 +221,7 @@ class RepairUtilTest extends StuTestCase
             ->andReturn($colony);
 
         $this->colonyFunctionManager->shouldReceive('hasActiveFunction')
-            ->with($colony, BuildingFunctionEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD)
+            ->with($colony, BuildingFunctionEnum::REPAIR_SHIPYARD)
             ->once()
             ->andReturnTrue();
 
@@ -265,7 +265,7 @@ class RepairUtilTest extends StuTestCase
         $colony = $this->mock(ColonyInterface::class);
 
         $this->colonyFunctionManager->shouldReceive('hasActiveFunction')
-            ->with($colony, BuildingFunctionEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD)
+            ->with($colony, BuildingFunctionEnum::REPAIR_SHIPYARD)
             ->once()
             ->andReturnFalse();
 
@@ -292,7 +292,7 @@ class RepairUtilTest extends StuTestCase
         $colony = $this->mock(ColonyInterface::class);
 
         $this->colonyFunctionManager->shouldReceive('hasActiveFunction')
-            ->with($colony, BuildingFunctionEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD)
+            ->with($colony, BuildingFunctionEnum::REPAIR_SHIPYARD)
             ->once()
             ->andReturnTrue();
 

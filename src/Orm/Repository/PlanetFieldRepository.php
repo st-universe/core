@@ -327,8 +327,8 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
             $rsm
         )->setParameters([
             'hostId' => $host->getId(),
-            'shieldGenerator' => BuildingFunctionEnum::BUILDING_FUNCTION_SHIELD_GENERATOR->value,
-            'shieldBattery' => BuildingFunctionEnum::BUILDING_FUNCTION_SHIELD_BATTERY->value,
+            'shieldGenerator' => BuildingFunctionEnum::SHIELD_GENERATOR->value,
+            'shieldBattery' => BuildingFunctionEnum::SHIELD_BATTERY->value,
             'generatorCapacity' => BuildingEnum::SHIELD_GENERATOR_CAPACITY,
             'batteryCapacity' => BuildingEnum::SHIELD_BATTERY_CAPACITY
         ])->getSingleScalarResult();

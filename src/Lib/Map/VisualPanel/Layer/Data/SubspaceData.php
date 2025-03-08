@@ -6,6 +6,7 @@ namespace Stu\Lib\Map\VisualPanel\Layer\Data;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
+use Stu\Lib\Map\FieldTypeEffectEnum;
 
 #[Entity]
 class SubspaceData extends AbstractData
@@ -37,5 +38,11 @@ class SubspaceData extends AbstractData
     public function getDirection4Count(): int
     {
         return $this->d4c;
+    }
+
+    public function isDisabled(): bool
+    {
+        return $this->effects !== null
+            && in_array(FieldTypeEffectEnum::NO_SUBSPACE_LINES->value, $this->effects);
     }
 }

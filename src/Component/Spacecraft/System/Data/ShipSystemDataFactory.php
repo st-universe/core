@@ -97,6 +97,11 @@ final class ShipSystemDataFactory implements ShipSystemDataFactoryInterface
                     $this->shipSystemRepository,
                     $this->statusBarFactory
                 );
+            case SpacecraftSystemTypeEnum::LSS:
+                return  new LssSystemData(
+                    $this->shipSystemRepository,
+                    $this->statusBarFactory
+                );
         }
 
         throw new InvalidSystemException(sprintf('no system data present for systemType: %d', $systemType->value));

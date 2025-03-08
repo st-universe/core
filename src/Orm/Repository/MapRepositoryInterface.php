@@ -10,6 +10,7 @@ use Stu\Module\Starmap\Lib\ExploreableStarMapInterface;
 use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\MapInterface;
+use Stu\Orm\Entity\UserInterface;
 
 /**
  * @extends ObjectRepository<Map>
@@ -56,13 +57,34 @@ interface MapRepositoryInterface extends ObjectRepository
     public function getMapLayerData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
 
     /** @return array<CellDataInterface> */
-    public function getBorderData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
+    public function getNormalBorderData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
+
+    /**
+     * @param array<int> $locations
+     * @return array<CellDataInterface>
+     */
+    public function getCartographingData(PanelBoundaries $boundaries, ResultSetMapping $rsm, array $locations): array;
+
+    /** @return array<CellDataInterface> */
+    public function getRegionBorderData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
+
+    /** @return array<CellDataInterface> */
+    public function getImpassableBorderData(PanelBoundaries $boundaries, Userinterface $user, ResultSetMapping $rsm): array;
 
     /** @return array<CellDataInterface> */
     public function getAnomalyData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
 
     /** @return array<CellDataInterface> */
     public function getSpacecraftCountLayerData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
+
+    /** @return array<CellDataInterface> */
+    public function getAllianceSpacecraftCountLayerData(PanelBoundaries $boundaries, int $allianceId, ResultSetMapping $rsm): array;
+
+    /** @return array<CellDataInterface> */
+    public function getUserSpacecraftCountLayerData(PanelBoundaries $boundaries, int $userId, ResultSetMapping $rsm): array;
+
+    /** @return array<CellDataInterface> */
+    public function getSpacecraftCountLayerDataForSpacecraft(PanelBoundaries $boundaries, int $spacecraftId, ResultSetMapping $rsm): array;
 
     /**
      * @return array<ExploreableStarMapInterface>
@@ -93,7 +115,7 @@ interface MapRepositoryInterface extends ObjectRepository
     public function getSubspaceLayerData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
 
     /** @return array<CellDataInterface> */
-    public function getIgnoringSubspaceLayerData(PanelBoundaries $boundaries, int $ignoreId, ResultSetMapping $rsm): array;
+    public function getIgnoringSubspaceLayerData(PanelBoundaries $boundaries, int $ignoreUserId, ResultSetMapping $rsm): array;
 
     /** @return array<CellDataInterface> */
     public function getAllianceSubspaceLayerData(PanelBoundaries $boundaries, int $allianceId, ResultSetMapping $rsm): array;

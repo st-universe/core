@@ -32,7 +32,7 @@ class ShipyardTest extends StuTestCase
     public function testDestructTruncatesQueue(): void
     {
         $colony = $this->mock(ColonyInterface::class);
-        $buildingFunction = BuildingFunctionEnum::BUILDING_FUNCTION_SHIELD_BATTERY;
+        $buildingFunction = BuildingFunctionEnum::SHIELD_BATTERY;
 
         $this->colonyShipQueueRepository->shouldReceive('truncateByColonyAndBuildingFunction')
             ->with($colony, $buildingFunction)
@@ -44,7 +44,7 @@ class ShipyardTest extends StuTestCase
     public function testDeactivateStopsBuildProcesses(): void
     {
         $colony = Mockery::mock(ColonyInterface::class);
-        $buildingFunction = BuildingFunctionEnum::BUILDING_FUNCTION_SHIELD_BATTERY;
+        $buildingFunction = BuildingFunctionEnum::SHIELD_BATTERY;
 
         $colony->shouldReceive('getId')
             ->withNoArgs()
@@ -61,7 +61,7 @@ class ShipyardTest extends StuTestCase
     public function testActivateRestartsBuildProcesses(): void
     {
         $colony = Mockery::mock(ColonyInterface::class);
-        $buildingFunction = BuildingFunctionEnum::BUILDING_FUNCTION_SHIELD_BATTERY;
+        $buildingFunction = BuildingFunctionEnum::SHIELD_BATTERY;
 
         $colony->shouldReceive('getId')
             ->withNoArgs()

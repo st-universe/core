@@ -4,14 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Lib;
 
-use JBBCode\Parser;
 use Mockery\MockInterface;
 use Override;
-use Stu\Lib\Mail\MailFactoryInterface;
-use Stu\Lib\Mail\StuMailInterface;
+use Stu\Lib\General\EntityWithHrefInterface;
 use Stu\Module\Control\StuTime;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\PrivateMessageFolderInterface;
 use Stu\Orm\Entity\PrivateMessageInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -28,10 +24,8 @@ class PrivateMessageSenderTest extends StuTestCase
     private $messageRepository;
     /** @var MockInterface&UserRepositoryInterface */
     private $userRepository;
-    /** @var MockInterface&MailFactoryInterface */
-    private $mailFactory;
-    /** @var MockInterface&Parser */
-    private $parser;
+    /** @var MockInterface&EmailNotificationSenderInterface */
+    private $emailNotificationSender;
     /** @var MockInterface&StuTime */
     private $stuTime;
 
@@ -43,29 +37,15 @@ class PrivateMessageSenderTest extends StuTestCase
         $this->messageFolderRepository = $this->mock(PrivateMessageFolderRepositoryInterface::class);
         $this->messageRepository = $this->mock(PrivateMessageRepositoryInterface::class);
         $this->userRepository = $this->mock(UserRepositoryInterface::class);
-        $this->mailFactory = $this->mock(MailFactoryInterface::class);
-        $this->parser = $this->mock(Parser::class);
+        $this->emailNotificationSender = $this->mock(EmailNotificationSenderInterface::class);
         $this->stuTime = $this->mock(StuTime::class);
-
-        $loggerUtil = $this->mock(LoggerUtilInterface::class);
-        $loggerUtilFactory = $this->mock(LoggerUtilFactoryInterface::class);
-
-        $loggerUtilFactory->shouldReceive('getLoggerUtil')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($loggerUtil);
-        $loggerUtil->shouldReceive('log')
-            ->withSomeOfArgs()
-            ->zeroOrMoreTimes();
 
         $this->messageSender = new PrivateMessageSender(
             $this->messageFolderRepository,
             $this->messageRepository,
             $this->userRepository,
-            $this->mailFactory,
-            $this->parser,
-            $this->stuTime,
-            $loggerUtilFactory
+            $this->emailNotificationSender,
+            $this->stuTime
         );
     }
 
@@ -73,6 +53,7 @@ class PrivateMessageSenderTest extends StuTestCase
     {
         $sender = $this->mock(UserInterface::class);
         $recipient = $this->mock(UserInterface::class);
+        $hrefEntity = $this->mock(EntityWithHrefInterface::class);
 
         $recipientfolder = $this->mock(PrivateMessageFolderInterface::class);
         $senderOutboxFolder = $this->mock(PrivateMessageFolderInterface::class);
@@ -138,6 +119,11 @@ class PrivateMessageSenderTest extends StuTestCase
             ->with('foobar')
             ->once();
 
+        $hrefEntity->shouldReceive('getHref')
+            ->withNoArgs()
+            ->once()
+            ->andReturn('href');
+
         $recipientpm->shouldReceive('setHref')
             ->with('href')
             ->once();
@@ -177,7 +163,7 @@ class PrivateMessageSenderTest extends StuTestCase
             ->with($outboxPm)
             ->once();
 
-        $this->messageSender->send(2, 3, 'foobar', PrivateMessageFolderTypeEnum::SPECIAL_STATION, 'href');
+        $this->messageSender->send(2, 3, 'foobar', PrivateMessageFolderTypeEnum::SPECIAL_STATION, $hrefEntity);
     }
 
     public function testSendWithEmailNotificationAndAlreadyRead(): void
@@ -208,10 +194,6 @@ class PrivateMessageSenderTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(true);
-        $recipient->shouldReceive('getEmail')
-            ->withNoArgs()
-            ->once()
-            ->andReturn("e@mail.de");
 
         $this->userRepository->shouldReceive('find')
             ->with(2)
@@ -294,40 +276,8 @@ class PrivateMessageSenderTest extends StuTestCase
             ->with($recipientpm)
             ->once();
 
-        $parser = $this->mock(Parser::class);
-        $this->parser->shouldReceive('parse')
-            ->with('[b]SENDER[/b]')
-            ->once()
-            ->andReturn($parser);
-        $parser->shouldReceive('getAsText')
-            ->withNoArgs()
-            ->once()
-            ->andReturn('Sender');
-
-        $message = $this->mock(StuMailInterface::class);
-        $this->mailFactory->shouldReceive('createStuMail')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($message);
-
-        $message->shouldReceive('addTo')
-            ->with('e@mail.de')
-            ->once()
-            ->andReturnSelf();
-        $message->shouldReceive('setSubject')
-            ->with('Neue Privatnachricht von Spieler Sender')
-            ->once()
-            ->andReturnSelf();
-        $message->shouldReceive('withDefaultSender')
-            ->withNoArgs()
-            ->once()
-            ->andReturnSelf();
-        $message->shouldReceive('setBody')
-            ->with('foobar')
-            ->once()
-            ->andReturnSelf();
-        $message->shouldReceive('send')
-            ->withNoArgs()
+        $this->emailNotificationSender->shouldReceive('sendNotification')
+            ->with('[b]SENDER[/b]', 'foobar', $recipient)
             ->once();
 
         $this->messageRepository->shouldReceive('save')
@@ -377,6 +327,20 @@ class PrivateMessageSenderTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(2);
+
+        $recipient1->shouldReceive('isEmailNotification')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+        $recipient2->shouldReceive('isEmailNotification')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+
+        $sender->shouldReceive('getName')
+            ->withNoArgs()
+            ->once()
+            ->andReturn('[b]SENDER[/b]');
 
         $this->messageFolderRepository->shouldReceive('getByUserAndSpecial')
             ->with(1, PrivateMessageFolderTypeEnum::SPECIAL_MAIN)
@@ -484,6 +448,10 @@ class PrivateMessageSenderTest extends StuTestCase
             ->once();
         $this->messageRepository->shouldReceive('save')
             ->with($outboxPm)
+            ->once();
+
+        $this->emailNotificationSender->shouldReceive('sendNotification')
+            ->with('[b]SENDER[/b]', 'foobar', $recipient1)
             ->once();
 
         $this->messageSender->sendBroadcast($sender, [$recipient1, $recipient2], 'foobar');

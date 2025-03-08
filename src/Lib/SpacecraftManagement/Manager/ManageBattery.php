@@ -106,7 +106,7 @@ class ManageBattery implements ManagerInterface
                 $load
             ),
             PrivateMessageFolderTypeEnum::SPECIAL_TRADE,
-            $spacecraft->getHref()
+            $spacecraft
         );
     }
 }

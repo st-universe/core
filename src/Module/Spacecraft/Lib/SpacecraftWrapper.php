@@ -14,6 +14,7 @@ use Stu\Component\Spacecraft\System\Data\AbstractSystemData;
 use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Component\Spacecraft\System\Data\FusionCoreSystemData;
 use Stu\Component\Spacecraft\System\Data\HullSystemData;
+use Stu\Component\Spacecraft\System\Data\LssSystemData;
 use Stu\Component\Spacecraft\System\Data\ProjectileLauncherSystemData;
 use Stu\Component\Spacecraft\System\Data\ShieldSystemData;
 use Stu\Component\Spacecraft\System\Data\SingularityCoreSystemData;
@@ -110,12 +111,7 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
             $result += $this->spacecraftSystemManager->getEnergyConsumption($shipSystem->getSystemType());
         }
 
-        if ($this->spacecraft->getAlertState() == SpacecraftAlertStateEnum::ALERT_YELLOW) {
-            $result += SpacecraftStateChangerInterface::ALERT_YELLOW_EPS_USAGE;
-        }
-        if ($this->spacecraft->getAlertState() == SpacecraftAlertStateEnum::ALERT_RED) {
-            $result += SpacecraftStateChangerInterface::ALERT_RED_EPS_USAGE;
-        }
+        $result += $this->spacecraft->getAlertState()->getEpsUsage();
 
         return $result;
     }
@@ -174,6 +170,26 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
         $this->epsUsage = $this->reloadEpsUsage();
 
         return $msg;
+    }
+
+    #[Override]
+    public function getSensorRange(): int
+    {
+        $lssSystemData = $this->getLssSystemData();
+        if ($lssSystemData === null) {
+            return 0;
+        }
+
+        return (int) (ceil($lssSystemData->getSensorRange()
+            * $this->get()->getSpacecraftSystem(SpacecraftSystemTypeEnum::LSS)->getStatus() / 100));
+    }
+
+    #[Override]
+    public function getShieldRegenerationRate(): int
+    {
+        $regenerationPercentage = $this->get()->isSystemHealthy(SpacecraftSystemTypeEnum::SHIELDS) ? 10 : 0;
+
+        return (int) ceil(($this->get()->getMaxShield() / 100) * $regenerationPercentage);
     }
 
     /**
@@ -360,6 +376,15 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
         return $this->getSpecificShipSystem(
             SpacecraftSystemTypeEnum::EPS,
             EpsSystemData::class
+        );
+    }
+
+    #[Override]
+    public function getLssSystemData(): ?LssSystemData
+    {
+        return $this->getSpecificShipSystem(
+            SpacecraftSystemTypeEnum::LSS,
+            LssSystemData::class
         );
     }
 

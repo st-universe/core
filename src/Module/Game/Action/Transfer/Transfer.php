@@ -103,7 +103,7 @@ final class Transfer implements ActionControllerInterface
             $transferInformation->getTargetWrapper()->getUser()->getId(),
             $informations->getInformationsAsString(),
             PrivateMessageFolderTypeEnum::SPECIAL_TRADE,
-            $target->getHref()
+            $target
         );
 
         $game->addInformationWrapper($informations);

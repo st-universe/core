@@ -32,14 +32,14 @@ final class SpacecraftStateChanger implements SpacecraftStateChangerInterface
     ) {}
 
     #[Override]
-    public function changeShipState(SpacecraftWrapperInterface $wrapper, SpacecraftStateEnum $newState): void
+    public function changeState(SpacecraftWrapperInterface $wrapper, SpacecraftStateEnum $newState): void
     {
         $ship = $wrapper->get();
         $currentState = $ship->getState();
 
         //nothing to do
         if (
-            $currentState === SpacecraftStateEnum::SHIP_STATE_DESTROYED
+            $currentState === SpacecraftStateEnum::DESTROYED
             || $currentState === $newState
         ) {
             return;
@@ -48,19 +48,19 @@ final class SpacecraftStateChanger implements SpacecraftStateChangerInterface
         //repair stuff
         if ($ship->isUnderRepair()) {
             $this->cancelRepair->cancelRepair($ship);
-        } elseif ($currentState === SpacecraftStateEnum::SHIP_STATE_ASTRO_FINALIZING) {
+        } elseif ($currentState === SpacecraftStateEnum::ASTRO_FINALIZING) {
             $this->astroEntryLib->cancelAstroFinalizing($wrapper);
-        } elseif ($currentState === SpacecraftStateEnum::SHIP_STATE_RETROFIT && $ship instanceof ShipInterface) {
+        } elseif ($currentState === SpacecraftStateEnum::RETROFIT && $ship instanceof ShipInterface) {
             $this->cancelRetrofit->cancelRetrofit($ship);
-        } elseif ($currentState === SpacecraftStateEnum::SHIP_STATE_WEB_SPINNING && $wrapper instanceof ShipWrapperInterface) {
+        } elseif ($currentState === SpacecraftStateEnum::WEB_SPINNING && $wrapper instanceof ShipWrapperInterface) {
             $this->tholianWebUtil->releaseWebHelper($wrapper);
-        } elseif ($currentState === SpacecraftStateEnum::SHIP_STATE_ACTIVE_TAKEOVER) {
+        } elseif ($currentState === SpacecraftStateEnum::ACTIVE_TAKEOVER) {
             $this->shipTakeoverManager->cancelTakeover(
                 $ship->getTakeoverActive(),
                 null,
                 true
             );
-        } elseif ($currentState === SpacecraftStateEnum::SHIP_STATE_GATHER_RESOURCES && $wrapper instanceof ShipWrapperInterface) {
+        } elseif ($currentState === SpacecraftStateEnum::GATHER_RESOURCES && $wrapper instanceof ShipWrapperInterface) {
             $this->cancelMining->cancelMining($wrapper);
         }
 
@@ -86,16 +86,16 @@ final class SpacecraftStateChanger implements SpacecraftStateChangerInterface
 
         //check if enough energy
         if (
-            $alertState == SpacecraftAlertStateEnum::ALERT_YELLOW
-            && $currentAlertState == SpacecraftAlertStateEnum::ALERT_GREEN
+            $alertState === SpacecraftAlertStateEnum::ALERT_YELLOW
+            && $currentAlertState === SpacecraftAlertStateEnum::ALERT_GREEN
         ) {
-            $this->consumeEnergyForAlertChange($wrapper, SpacecraftStateChangerInterface::ALERT_YELLOW_EPS_USAGE);
+            $this->consumeEnergyForAlertChange($wrapper, $alertState->getEpsUsage());
         }
         if (
-            $alertState == SpacecraftAlertStateEnum::ALERT_RED
+            $alertState === SpacecraftAlertStateEnum::ALERT_RED
             && $currentAlertState !== SpacecraftAlertStateEnum::ALERT_RED
         ) {
-            $this->consumeEnergyForAlertChange($wrapper, SpacecraftStateChangerInterface::ALERT_RED_EPS_USAGE);
+            $this->consumeEnergyForAlertChange($wrapper, $alertState->getEpsUsage());
         }
 
         // cancel repair if not on alert green

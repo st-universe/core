@@ -1,15 +1,39 @@
 <table class="tcal">
+    {% set fieldType = SHIP.getLocation.getFieldType %}
     <tr>
         <td rowspan="2" style="width: 30px; vertical-align: top;">
             <img src="assets/map/{{ MAP_PATH }}" />
         </td>
-        <th>{{ SHIP.getLocation.getFieldType.getName }}</th>
+        <th>{{ fieldType.getName }}</th>
     </tr>
     <tr>
         <td>
-            Energiekosten: {{ SHIP.getLocation.getFieldType.getEnergyCosts }}<br />
-            Schaden: {{ SHIP.getLocation.getFieldType.getSpecialDamage }} ({{
-            SHIP.getLocation.getFieldType.getDamage }})
+            <table style="background-color: #000000 ! important;">
+                <tr>
+                    <td>Energiekosten:</td>
+                    <td>{{ fieldType.getEnergyCosts }}</td>
+                </tr>
+                <tr>
+                    <td>Schaden:</td>
+                    <td>{{ fieldType.getSpecialDamage }}
+                        ({{ fieldType.getDamage }})
+                        <img src="/assets/buttons/info2.png" style="height:16px;"
+                            title="Direkter Einflugschaden (Schaden bei Deflektorausfall)">
+                    </td>
+                </tr>
+                {% set effects = fieldType.getEffects %}
+                {% if effects %}
+                <tr>
+                    <td>Effekte:</td>
+                    <td>
+                        {% for effect in effects %}
+                        {{ effect.getDescription }}
+                        <br />
+                        {% endfor %}
+                    </td>
+                </tr>
+                {% endif %}
+            </table>
         </td>
     </tr>
 </table>

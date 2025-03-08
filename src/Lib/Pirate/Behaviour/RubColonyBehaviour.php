@@ -54,7 +54,7 @@ class RubColonyBehaviour implements PirateBehaviourInterface
         $leadWrapper = $fleet->getLeadWrapper();
         $leadShip = $leadWrapper->get();
 
-        $targets = $this->colonyRepository->getPirateTargets($leadShip);
+        $targets = $this->colonyRepository->getPirateTargets($leadWrapper);
         if ($targets === []) {
             $this->logger->log('    no colony targets in reach');
             return PirateBehaviourEnum::FLY;

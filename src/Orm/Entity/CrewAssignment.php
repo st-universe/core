@@ -8,7 +8,6 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
-use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
@@ -18,13 +17,8 @@ use Stu\Component\Crew\CrewEnum;
 use Stu\Module\Spacecraft\Lib\Crew\EntityWithCrewAssignmentsInterface;
 use Stu\Orm\Repository\CrewAssignmentRepository;
 
-//TODO RENAME to CrewAssignment, indices, repo and stuff
 #[Table(name: 'stu_crew_assign')]
-#[Index(name: 'ship_crew_colony_idx', columns: ['colony_id'])]
-#[Index(name: 'ship_crew_spacecraft_idx', columns: ['spacecraft_id'])]
-#[Index(name: 'ship_crew_tradepost_idx', columns: ['tradepost_id'])]
-#[Index(name: 'ship_crew_user_idx', columns: ['user_id'])]
-#[UniqueConstraint(name: 'ship_crew_crew_idx', columns: ['crew_id'])]
+#[UniqueConstraint(name: 'crew_assign_crew_idx', columns: ['crew_id'])]
 #[Entity(repositoryClass: CrewAssignmentRepository::class)]
 class CrewAssignment implements CrewAssignmentInterface
 {
@@ -165,6 +159,7 @@ class CrewAssignment implements CrewAssignmentInterface
     #[Override]
     public function setSpacecraft(?SpacecraftInterface $spacecraft): CrewAssignmentInterface
     {
+        $this->spacecraft_id = null;
         $this->spacecraft = $spacecraft;
         return $this;
     }

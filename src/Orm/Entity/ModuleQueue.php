@@ -36,7 +36,7 @@ class ModuleQueue implements ModuleQueueInterface
     private int $count = 0;
 
     #[Column(type: 'integer', enumType: BuildingFunctionEnum::class)]
-    private BuildingFunctionEnum $buildingfunction = BuildingFunctionEnum::BUILDING_FUNCTION_BASE_CAMP;
+    private BuildingFunctionEnum $buildingfunction = BuildingFunctionEnum::BASE_CAMP;
 
     #[ManyToOne(targetEntity: 'Module')]
     #[JoinColumn(name: 'module_id', referencedColumnName: 'id', onDelete: 'CASCADE')]

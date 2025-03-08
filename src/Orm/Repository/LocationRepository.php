@@ -11,7 +11,6 @@ use Stu\Component\Spacecraft\SpacecraftRumpEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
-use Stu\Lib\Map\VisualPanel\PanelBoundaries;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\Location;
@@ -22,81 +21,6 @@ use Stu\Orm\Entity\LocationInterface;
  */
 class LocationRepository extends EntityRepository implements LocationRepositoryInterface
 {
-    #[Override]
-    public function getAllianceSpacecraftCountLayerData(PanelBoundaries $boundaries, int $allianceId, ResultSetMapping $rsm): array
-    {
-        return $this->getEntityManager()->createNativeQuery(
-            'SELECT l.cx as x, l.cy as y,
-             (SELECT count(distinct s.id)
-                    FROM stu_spacecraft s
-                    JOIN stu_user u ON s.user_id = u.id
-                    WHERE s.location_id = l.id
-                    AND u.allys_id = :allyId) as spacecraftcount
-            FROM stu_location l
-            WHERE l.cx BETWEEN :xStart AND :xEnd
-            AND l.cy BETWEEN :yStart AND :yEnd
-            AND l.layer_id = :layerId',
-            $rsm
-        )->setParameters([
-            'xStart' => $boundaries->getMinX(),
-            'xEnd' => $boundaries->getMaxX(),
-            'yStart' => $boundaries->getMinY(),
-            'yEnd' => $boundaries->getMaxY(),
-            'layerId' => $boundaries->getParentId(),
-            'allyId' => $allianceId
-        ])->getResult();
-    }
-
-    #[Override]
-    public function getSpacecraftCountLayerDataForSpacecraft(PanelBoundaries $boundaries, int $spacecraftId, ResultSetMapping $rsm): array
-    {
-        return $this->getEntityManager()->createNativeQuery(
-            'SELECT l.cx as x, l.cy as y,
-            (SELECT count(distinct s.id)
-                FROM stu_spacecraft s
-                WHERE s.location_id = l.id
-                AND s.id = :spacecraftId) as spacecraftcount
-            FROM stu_location l
-            WHERE l.cx BETWEEN :xStart AND :xEnd
-            AND l.cy BETWEEN :yStart AND :yEnd
-            AND l.layer_id = :layerId
-            GROUP BY l.cy, l.cx, l.id',
-            $rsm
-        )->setParameters([
-            'xStart' => $boundaries->getMinX(),
-            'xEnd' => $boundaries->getMaxX(),
-            'yStart' => $boundaries->getMinY(),
-            'yEnd' => $boundaries->getMaxY(),
-            'layerId' => $boundaries->getParentId(),
-            'spacecraftId' => $spacecraftId
-        ])->getResult();
-    }
-
-    #[Override]
-    public function getUserSpacecraftCountLayerData(PanelBoundaries $boundaries, int $userId, ResultSetMapping $rsm): array
-    {
-        return $this->getEntityManager()->createNativeQuery(
-            'SELECT l.cx as x, l.cy as y,
-            (SELECT count(distinct s.id)
-                FROM stu_spacecraft s
-                WHERE s.location_id = l.id
-                AND s.user_id = :userId) as spacecraftcount
-            FROM stu_location l
-            WHERE l.cx BETWEEN :xStart AND :xEnd
-            AND l.cy BETWEEN :yStart AND :yEnd
-            AND l.layer_id = :layerId
-            GROUP BY l.cy, l.cx, l.id',
-            $rsm
-        )->setParameters([
-            'xStart' => $boundaries->getMinX(),
-            'xEnd' => $boundaries->getMaxX(),
-            'yStart' => $boundaries->getMinY(),
-            'yEnd' => $boundaries->getMaxY(),
-            'layerId' => $boundaries->getParentId(),
-            'userId' => $userId
-        ])->getResult();
-    }
-
     #[Override]
     public function getForSubspaceEllipseCreation(): array
     {
@@ -161,7 +85,7 @@ class LocationRepository extends EntityRepository implements LocationRepositoryI
                 'rumpCategory' => SpacecraftRumpEnum::SHIP_CATEGORY_STATION,
                 'firstUserId' => UserEnum::USER_FIRST_ID,
                 'mode' => SpacecraftSystemModeEnum::MODE_OFF->value,
-                'state' => SpacecraftStateEnum::SHIP_STATE_UNDER_CONSTRUCTION,
+                'state' => SpacecraftStateEnum::UNDER_CONSTRUCTION,
                 'systemwarp' => SpacecraftSystemTypeEnum::WARPDRIVE
             ])
             ->getResult();

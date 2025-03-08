@@ -25,7 +25,7 @@ final class AirfieldProvider implements PlanetFieldHostComponentInterface
             'BUILDABLE_SHIPS',
             $this->spacecraftRumpRepository->getBuildableByUserAndBuildingFunction(
                 $game->getUser()->getId(),
-                BuildingFunctionEnum::BUILDING_FUNCTION_AIRFIELD
+                BuildingFunctionEnum::AIRFIELD
             )
         );
     }

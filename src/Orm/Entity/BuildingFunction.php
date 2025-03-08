@@ -31,7 +31,7 @@ class BuildingFunction implements BuildingFunctionInterface
     private int $buildings_id = 0;
 
     #[Column(type: 'smallint', enumType: BuildingFunctionEnum::class)]
-    private BuildingFunctionEnum $function = BuildingFunctionEnum::BUILDING_FUNCTION_COLONY_CENTRAL;
+    private BuildingFunctionEnum $function = BuildingFunctionEnum::COLONY_CENTRAL;
 
     /**
      * @var BuildingInterface

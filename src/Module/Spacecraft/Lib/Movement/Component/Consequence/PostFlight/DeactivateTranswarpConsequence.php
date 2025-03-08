@@ -37,7 +37,7 @@ class DeactivateTranswarpConsequence extends AbstractFlightConsequence implement
             return;
         }
 
-        if ($flightRoute->getRouteMode() === RouteModeEnum::ROUTE_MODE_TRANSWARP) {
+        if ($flightRoute->getRouteMode() === RouteModeEnum::TRANSWARP) {
             $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::TRANSWARP_COIL, true);
         }
     }

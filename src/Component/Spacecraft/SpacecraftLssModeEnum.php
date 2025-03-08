@@ -6,22 +6,28 @@ namespace Stu\Component\Spacecraft;
 
 enum SpacecraftLssModeEnum: int
 {
-    case LSS_NORMAL = 1;
-    case LSS_BORDER = 2;
+    case NORMAL = 1;
+    case BORDER = 2;
+    case IMPASSABLE = 3;
+    case CARTOGRAPHING = 4;
 
     public function getDescription(): string
     {
         return match ($this) {
-            self::LSS_NORMAL => "Territorialansicht deaktivieren",
-            self::LSS_BORDER => "Territorialansicht aktivieren"
+            self::NORMAL => "LSS Filter deaktivieren",
+            self::BORDER => "Territorialansicht",
+            self::IMPASSABLE => "Unpassierbarkeitsansicht",
+            self::CARTOGRAPHING => "Kartographieansicht"
         };
     }
 
     public function isBorderMode(): bool
     {
         return match ($this) {
-            self::LSS_NORMAL => false,
-            self::LSS_BORDER => true
+            self::NORMAL => false,
+            self::BORDER => true,
+            self::IMPASSABLE => true,
+            self::CARTOGRAPHING => true
         };
     }
 }

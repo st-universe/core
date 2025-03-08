@@ -53,7 +53,7 @@ class CancelRepairTest extends StuTestCase
         $this->ship->shouldReceive('getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(SpacecraftStateEnum::SHIP_STATE_NONE);
+            ->andReturn(SpacecraftStateEnum::NONE);
 
         $result = $this->cancelRepair->cancelRepair($this->ship);
 
@@ -65,13 +65,13 @@ class CancelRepairTest extends StuTestCase
         $this->ship->shouldReceive('getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(SpacecraftStateEnum::SHIP_STATE_REPAIR_PASSIVE);
+            ->andReturn(SpacecraftStateEnum::REPAIR_PASSIVE);
         $this->ship->shouldReceive('getId')
             ->withNoArgs()
             ->twice()
             ->andReturn(42);
         $this->ship->shouldReceive('setState')
-            ->with(SpacecraftStateEnum::SHIP_STATE_NONE)
+            ->with(SpacecraftStateEnum::NONE)
             ->once();
         $this->spacecraftRepo->shouldReceive('save')
             ->with($this->ship)
@@ -93,13 +93,13 @@ class CancelRepairTest extends StuTestCase
         $this->ship->shouldReceive('getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(SpacecraftStateEnum::SHIP_STATE_REPAIR_ACTIVE);
+            ->andReturn(SpacecraftStateEnum::REPAIR_ACTIVE);
         $this->ship->shouldReceive('getId')
             ->withNoArgs()
             ->once()
             ->andReturn(42);
         $this->ship->shouldReceive('setState')
-            ->with(SpacecraftStateEnum::SHIP_STATE_NONE)
+            ->with(SpacecraftStateEnum::NONE)
             ->once();
         $this->spacecraftRepo->shouldReceive('save')
             ->with($this->ship)

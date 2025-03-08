@@ -14,6 +14,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\TFleetShipItem;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\LocationInterface;
 use Stu\Orm\Entity\MapInterface;
@@ -94,7 +95,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             )
         )->setParameters([
             'location' => $fleetLeader->getLocation(),
-            'state' => SpacecraftStateEnum::SHIP_STATE_RETROFIT,
+            'state' => SpacecraftStateEnum::RETROFIT,
             'user' => $fleetLeader->getUser()
         ])->getResult();
     }
@@ -249,15 +250,15 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     }
 
     #[Override]
-    public function getPirateTargets(ShipInterface $ship): array
+    public function getPirateTargets(SpacecraftWrapperInterface $wrapper): array
     {
-        $layer = $ship->getLayer();
+        $layer = $wrapper->get()->getLayer();
         if ($layer === null) {
             return [];
         }
 
-        $location = $ship->getLocation();
-        $range = $ship->getSensorRange() * 2;
+        $location = $wrapper->get()->getLocation();
+        $range = $wrapper->getSensorRange() * 2;
 
         return $this->getEntityManager()->createQuery(
             sprintf(
@@ -301,15 +302,15 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     }
 
     #[Override]
-    public function getPirateFriends(ShipInterface $ship): array
+    public function getPirateFriends(SpacecraftWrapperInterface $wrapper): array
     {
-        $layer = $ship->getLayer();
+        $layer = $wrapper->get()->getLayer();
         if ($layer === null) {
             return [];
         }
 
-        $location = $ship->getLocation();
-        $range = $ship->getSensorRange() * 3;
+        $location = $wrapper->get()->getLocation();
+        $range = $wrapper->getSensorRange() * 3;
 
         return $this->getEntityManager()->createQuery(
             sprintf(
@@ -331,7 +332,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 'minY' => $location->getCy() - $range,
                 'maxY' => $location->getCy() + $range,
                 'layerId' => $layer->getId(),
-                'shipId' => $ship->getId(),
+                'shipId' => $wrapper->get()->getId(),
                 'kazonUserId' => UserEnum::USER_NPC_KAZON
             ])
             ->getResult();

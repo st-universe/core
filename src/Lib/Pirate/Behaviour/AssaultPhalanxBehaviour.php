@@ -58,7 +58,7 @@ class AssaultPhalanxBehaviour implements PirateBehaviourInterface
         $leadWrapper = $fleet->getLeadWrapper();
         $leadShip = $leadWrapper->get();
 
-        $targets = $this->stationRepository->getPiratePhalanxTargets($leadShip);
+        $targets = $this->stationRepository->getPiratePhalanxTargets($leadWrapper);
 
         $this->logger->log(sprintf('    %d targets in reach', count($targets)));
 

@@ -29,31 +29,32 @@ final class ShowSystemSensorScan implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $ship = $this->stationLoader->getByIdAndUser(
+        $wrapper = $this->stationLoader->getWrapperByIdAndUser(
             request::indInt('id'),
             $userId,
             true,
             false
         );
+        $station = $wrapper->get();
 
         $cx = request::getIntFatal('x');
         $cy = request::getIntFatal('y');
 
 
-        $field = $ship->getLocation();
+        $field = $station->getLocation();
         $shipCx = $field->getCx();
         $shipCy = $field->getCy();
 
         if (
-            $cx < $shipCx - $ship->getSensorRange()
-            || $cx > $shipCx + $ship->getSensorRange()
-            || $cy < $shipCy - $ship->getSensorRange()
-            || $cy > $shipCy + $ship->getSensorRange()
+            $cx < $shipCx - $wrapper->getSensorRange()
+            || $cx > $shipCx + $wrapper->getSensorRange()
+            || $cy < $shipCy - $wrapper->getSensorRange()
+            || $cy > $shipCy + $wrapper->getSensorRange()
         ) {
             return;
         }
 
-        $mapField = $this->mapRepository->getByCoordinates($ship->getLayer(), $cx, $cy);
+        $mapField = $this->mapRepository->getByCoordinates($station->getLayer(), $cx, $cy);
 
         $game->showMacro('html/visualPanel/panel.twig');
 
@@ -66,17 +67,17 @@ final class ShowSystemSensorScan implements ViewControllerInterface
             return;
         }
 
-        if (!$ship->getLss()) {
+        if (!$station->getLss()) {
             return;
         }
 
         $game->setTemplateVar('VISUAL_PANEL', $this->stationUiFactory->createSystemScanPanel(
-            $ship,
+            $station,
             $game->getUser(),
             $this->loggerUtilFactory->getLoggerUtil(),
             $system
         ));
 
-        $game->setTemplateVar('SHIP', $ship);
+        $game->setTemplateVar('SHIP', $station);
     }
 }

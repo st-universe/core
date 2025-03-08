@@ -10,6 +10,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Orm\Entity\LocationInterface;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\TorpedoTypeInterface;
@@ -19,8 +20,10 @@ class SpacecraftAttacker extends AbstractEnergyAttacker implements ProjectileAtt
     public function __construct(
         private SpacecraftWrapperInterface $wrapper,
         private ShipTorpedoManagerInterface $shipTorpedoManager,
-        private StuRandom $stuRandom
-    ) {}
+        StuRandom $stuRandom
+    ) {
+        parent::__construct($stuRandom);
+    }
 
     #[Override]
     public function getPhaserVolleys(): int
@@ -171,5 +174,11 @@ class SpacecraftAttacker extends AbstractEnergyAttacker implements ProjectileAtt
         $damage = random_int($basedamage - $variance, $basedamage + $variance);
 
         return $isCritical ? $damage * 2 : $damage;
+    }
+
+    #[Override]
+    public function getLocation(): LocationInterface
+    {
+        return $this->get()->getLocation();
     }
 }

@@ -112,7 +112,7 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
                 self::TURNS_TO_TAKEOVER
             ),
             PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
-            $target->getHref()
+            $target
         );
     }
 
@@ -159,7 +159,7 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
                 $remainingTurns
             ),
             PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
-            $linked->getHref()
+            $linked
         );
     }
 
@@ -248,7 +248,7 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
                 $cause ?? ''
             ),
             PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
-            $linked->getHref()
+            $linked
         );
     }
 
@@ -341,7 +341,7 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
             $to->getId(),
             $message,
             PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
-            $addHref ? $takeover->getTargetSpacecraft()->getHref() : null
+            $addHref ? $takeover->getTargetSpacecraft() : null
         );
     }
 
@@ -350,7 +350,7 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
         $sourceShip = $takeover->getSourceSpacecraft();
         $sourceShip
             ->setTakeoverActive(null)
-            ->setState(SpacecraftStateEnum::SHIP_STATE_NONE);
+            ->setState(SpacecraftStateEnum::NONE);
 
         $takeover->getTargetSpacecraft()->setTakeoverPassive(null);
 

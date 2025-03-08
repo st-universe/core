@@ -77,7 +77,7 @@ class FlightDirectionConsequenceTest extends StuTestCase
         $this->flightRoute->shouldReceive('getRouteMode')
             ->withNoArgs()
             ->once()
-            ->andReturn(RouteModeEnum::ROUTE_MODE_FLIGHT);
+            ->andReturn(RouteModeEnum::FLIGHT);
 
         $this->subject->trigger(
             $this->wrapper,
@@ -106,7 +106,7 @@ class FlightDirectionConsequenceTest extends StuTestCase
         $this->flightRoute->shouldReceive('getRouteMode')
             ->withNoArgs()
             ->once()
-            ->andReturn(RouteModeEnum::ROUTE_MODE_SYSTEM_EXIT);
+            ->andReturn(RouteModeEnum::SYSTEM_EXIT);
 
         $this->subject->trigger(
             $this->wrapper,
@@ -132,7 +132,7 @@ class FlightDirectionConsequenceTest extends StuTestCase
         $this->flightRoute->shouldReceive('getRouteMode')
             ->withNoArgs()
             ->once()
-            ->andReturn(RouteModeEnum::ROUTE_MODE_SYSTEM_EXIT);
+            ->andReturn(RouteModeEnum::SYSTEM_EXIT);
 
         $this->updateFlightDirection->shouldReceive('updateWhenSystemExit')
             ->with($this->ship, $oldWaypoint)

@@ -6,9 +6,7 @@ use Stu\Component\Ship\AstronomicalMappingEnum;
 
 class AstroStateWrapper
 {
-    public function __construct(private int $state, private ?int $turnsLeft, private bool $isSystem)
-    {
-    }
+    public function __construct(private int $state, private ?int $turnsLeft, private bool $isSystem, private ?int $measurementpointsleft) {}
 
     public function isPlannable(): bool
     {
@@ -33,6 +31,10 @@ class AstroStateWrapper
     public function getTurnsLeft(): ?int
     {
         return $this->turnsLeft;
+    }
+    public function getMeasurepointsLeft(): ?int
+    {
+        return $this->measurementpointsleft;
     }
 
     public function isSystem(): bool

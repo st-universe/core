@@ -100,7 +100,7 @@ class EnoughEpsConditionTest extends StuTestCase
             ->andReturn($isTranswarpNeeded);
         $this->flightRoute->shouldReceive('getRouteMode')
             ->withNoArgs()
-            ->andReturn(RouteModeEnum::ROUTE_MODE_SYSTEM_EXIT);
+            ->andReturn(RouteModeEnum::SYSTEM_EXIT);
 
         $epsSystemData->shouldReceive('getEps')
             ->withNoArgs()
@@ -148,7 +148,7 @@ class EnoughEpsConditionTest extends StuTestCase
             ->andReturn($isTranswarpNeeded);
         $this->flightRoute->shouldReceive('getRouteMode')
             ->withNoArgs()
-            ->andReturn(RouteModeEnum::ROUTE_MODE_SYSTEM_EXIT);
+            ->andReturn(RouteModeEnum::SYSTEM_EXIT);
 
         $this->subject->check($this->wrapper, $this->flightRoute, $this->conditionCheckResult);
     }
@@ -156,15 +156,15 @@ class EnoughEpsConditionTest extends StuTestCase
     public static function provideCheckFlightCostForRouteModeData(): array
     {
         return [
-            [RouteModeEnum::ROUTE_MODE_SYSTEM_ENTRY],
-            [RouteModeEnum::ROUTE_MODE_SYSTEM_EXIT],
-            [RouteModeEnum::ROUTE_MODE_WORMHOLE_ENTRY],
-            [RouteModeEnum::ROUTE_MODE_WORMHOLE_EXIT],
-            [RouteModeEnum::ROUTE_MODE_TRANSWARP],
-            [RouteModeEnum::ROUTE_MODE_FLIGHT, MapInterface::class],
-            [RouteModeEnum::ROUTE_MODE_FLIGHT, StarSystemMapInterface::class, false],
-            [RouteModeEnum::ROUTE_MODE_FLIGHT, StarSystemMapInterface::class, true, 2, null, 2],
-            [RouteModeEnum::ROUTE_MODE_FLIGHT, StarSystemMapInterface::class, true, 2, 3, 5]
+            [RouteModeEnum::SYSTEM_ENTRY],
+            [RouteModeEnum::SYSTEM_EXIT],
+            [RouteModeEnum::WORMHOLE_ENTRY],
+            [RouteModeEnum::WORMHOLE_EXIT],
+            [RouteModeEnum::TRANSWARP],
+            [RouteModeEnum::FLIGHT, MapInterface::class],
+            [RouteModeEnum::FLIGHT, StarSystemMapInterface::class, false],
+            [RouteModeEnum::FLIGHT, StarSystemMapInterface::class, true, 2, null, 2],
+            [RouteModeEnum::FLIGHT, StarSystemMapInterface::class, true, 2, 3, 5]
         ];
     }
 
@@ -207,7 +207,7 @@ class EnoughEpsConditionTest extends StuTestCase
             ->once()
             ->andReturn($routeMode);
 
-        if ($routeMode === RouteModeEnum::ROUTE_MODE_FLIGHT) {
+        if ($routeMode === RouteModeEnum::FLIGHT) {
             $this->flightRoute->shouldReceive('getNextWaypoint')
                 ->withNoArgs()
                 ->once()
@@ -285,7 +285,7 @@ class EnoughEpsConditionTest extends StuTestCase
             ->andReturn(false);
         $this->flightRoute->shouldReceive('getRouteMode')
             ->withNoArgs()
-            ->andReturn(RouteModeEnum::ROUTE_MODE_SYSTEM_EXIT);
+            ->andReturn(RouteModeEnum::SYSTEM_EXIT);
 
         $epsSystemData->shouldReceive('getEps')
             ->withNoArgs()
@@ -339,7 +339,7 @@ class EnoughEpsConditionTest extends StuTestCase
             ->andReturn(false);
         $this->flightRoute->shouldReceive('getRouteMode')
             ->withNoArgs()
-            ->andReturn(RouteModeEnum::ROUTE_MODE_SYSTEM_EXIT);
+            ->andReturn(RouteModeEnum::SYSTEM_EXIT);
 
         $epsSystemData->shouldReceive('getEps')
             ->withNoArgs()

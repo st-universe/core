@@ -140,15 +140,7 @@ interface SpacecraftInterface extends
 
     public function setBaseDamage(int $baseDamage): SpacecraftInterface;
 
-    public function getSensorRange(): int;
-
-    public function setSensorRange(int $sensorRange): SpacecraftInterface;
-
     public function getTractorPayload(): int;
-
-    public function getShieldRegenerationTimer(): int;
-
-    public function setShieldRegenerationTimer(int $shieldRegenerationTimer): SpacecraftInterface;
 
     public function getState(): SpacecraftStateEnum;
 
@@ -257,8 +249,6 @@ interface SpacecraftInterface extends
 
     public function getHoldingWebBackgroundStyle(): string;
 
-    public function getShieldRegenerationRate(): int;
-
     public function canIntercept(): bool;
 
     public function canMove(): bool;
@@ -318,8 +308,6 @@ interface SpacecraftInterface extends
     public function isInEmergency(): bool;
 
     public function setIsInEmergency(bool $inEmergency): SpacecraftInterface;
-
-    public function getHref(): string;
 
     public function __toString(): string;
 }

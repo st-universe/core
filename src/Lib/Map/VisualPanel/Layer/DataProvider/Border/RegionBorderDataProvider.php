@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Stu\Lib\Map\VisualPanel\Layer\DataProvider;
+namespace Stu\Lib\Map\VisualPanel\Layer\DataProvider\Border;
 
 use Doctrine\ORM\Query\ResultSetMapping;
 use Override;
 use Stu\Lib\Map\VisualPanel\Layer\Data\BorderData;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
 
-final class BorderDataProvider extends AbstractPanelLayerDataProvider
+final class RegionBorderDataProvider extends AbstractBorderDataProvider
 {
     #[Override]
     protected function getDataClassString(): string
@@ -28,12 +28,12 @@ final class BorderDataProvider extends AbstractPanelLayerDataProvider
     #[Override]
     protected function provideDataForMap(PanelBoundaries $boundaries): array
     {
-        return $this->mapRepository->getBorderData($boundaries, $this->createResultSetMapping());
+        return $this->mapRepository->getRegionBorderData($boundaries, $this->createResultSetMapping());
     }
 
     #[Override]
     protected function provideDataForSystemMap(PanelBoundaries $boundaries): array
     {
-        return $this->starSystemMapRepository->getBorderData($boundaries, $this->createResultSetMapping());
+        return $this->starSystemMapRepository->getRegionBorderData($boundaries, $this->createResultSetMapping());
     }
 }

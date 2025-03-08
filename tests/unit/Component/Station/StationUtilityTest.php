@@ -7,6 +7,7 @@ namespace Stu\Component\Station;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Override;
+use Stu\Component\Spacecraft\Module\ModuleRecyclingInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Station\Lib\Creation\StationCreatorInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -40,6 +41,8 @@ class StationUtilityTest extends StuTestCase
     private $tradePostRepository;
     /** @var TradeLicenseRepositoryInterface&MockInterface */
     private $tradeLicenseRepository;
+    /** @var ModuleRecyclingInterface&MockInterface */
+    private $moduleRecycling;
 
     private StationUtilityInterface $subject;
 
@@ -55,6 +58,7 @@ class StationUtilityTest extends StuTestCase
         $this->spacecraftRumpRepository = $this->mock(SpacecraftRumpRepositoryInterface::class);
         $this->tradePostRepository = $this->mock(TradePostRepositoryInterface::class);
         $this->tradeLicenseRepository = $this->mock(TradeLicenseRepositoryInterface::class);
+        $this->moduleRecycling = $this->mock(ModuleRecyclingInterface::class);
 
         $this->subject = new StationUtility(
             $this->spacecraftBuildplanRepository,
@@ -66,6 +70,7 @@ class StationUtilityTest extends StuTestCase
             $this->spacecraftRumpRepository,
             $this->tradePostRepository,
             $this->tradeLicenseRepository,
+            $this->moduleRecycling,
             $this->initLoggerUtil()
         );
     }

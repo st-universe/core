@@ -216,7 +216,7 @@ class ManageTorpedo implements ManagerInterface
                 $spacecraft->getName()
             ),
             PrivateMessageFolderTypeEnum::SPECIAL_TRADE,
-            $spacecraft->getHref()
+            $spacecraft
         );
     }
 }

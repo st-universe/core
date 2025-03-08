@@ -30,7 +30,7 @@ class WarpdriveConsequence extends AbstractFlightConsequence implements FlightSt
     ): void {
 
         $routeMode = $flightRoute->getRouteMode();
-        if ($routeMode !== RouteModeEnum::ROUTE_MODE_FLIGHT) {
+        if ($routeMode !== RouteModeEnum::FLIGHT) {
             return;
         }
 

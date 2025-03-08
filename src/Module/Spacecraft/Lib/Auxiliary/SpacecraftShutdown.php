@@ -15,7 +15,7 @@ use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StationInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
-final class ShipShutdown implements ShipShutdownInterface
+final class SpacecraftShutdown implements SpacecraftShutdownInterface
 {
     public function __construct(
         private SpacecraftRepositoryInterface $spacecraftRepository,
@@ -38,7 +38,9 @@ final class ShipShutdown implements ShipShutdownInterface
         if ($spacecraft instanceof StationInterface) {
             $this->shipUndocking->undockAllDocked($spacecraft);
         }
-        $this->spacecraftStateChanger->changeShipState($wrapper, SpacecraftStateEnum::SHIP_STATE_NONE);
+        if ($spacecraft->getState()->isActiveState()) {
+            $this->spacecraftStateChanger->changeState($wrapper, SpacecraftStateEnum::NONE);
+        }
 
         $spacecraft->setAlertStateGreen();
         $this->spacecraftRepository->save($spacecraft);

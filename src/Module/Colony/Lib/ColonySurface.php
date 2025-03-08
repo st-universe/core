@@ -160,7 +160,7 @@ final class ColonySurface implements ColonySurfaceInterface
     {
         return $this->planetFieldRepository->getCountByColonyAndBuildingFunctionAndState(
             $this->host,
-            [BuildingFunctionEnum::BUILDING_FUNCTION_AIRFIELD],
+            [BuildingFunctionEnum::AIRFIELD],
             [0, 1]
         ) > 0;
     }

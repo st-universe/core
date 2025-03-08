@@ -26,14 +26,14 @@ final class CancelRepair implements CancelRepairInterface
     public function cancelRepair(SpacecraftInterface $ship): bool
     {
         $state = $ship->getState();
-        if ($state === SpacecraftStateEnum::SHIP_STATE_REPAIR_PASSIVE) {
+        if ($state === SpacecraftStateEnum::REPAIR_PASSIVE) {
             $this->setStateNoneAndSave($ship);
 
             $this->colonyShipRepairRepository->truncateByShipId($ship->getId());
             $this->stationShipRepairRepository->truncateByShipId($ship->getId());
 
             return true;
-        } elseif ($state === SpacecraftStateEnum::SHIP_STATE_REPAIR_ACTIVE) {
+        } elseif ($state === SpacecraftStateEnum::REPAIR_ACTIVE) {
             $this->setStateNoneAndSave($ship);
 
             $this->repairTaskRepository->truncateByShipId($ship->getId());
@@ -46,7 +46,7 @@ final class CancelRepair implements CancelRepairInterface
 
     private function setStateNoneAndSave(SpacecraftInterface $ship): void
     {
-        $ship->setState(SpacecraftStateEnum::SHIP_STATE_NONE);
+        $ship->setState(SpacecraftStateEnum::NONE);
         $this->spacecraftRepository->save($ship);
     }
 }

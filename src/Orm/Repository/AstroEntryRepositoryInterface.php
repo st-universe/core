@@ -27,4 +27,9 @@ interface AstroEntryRepositoryInterface extends ObjectRepository
      * @return array<AstronomicalEntryInterface>
      */
     public function getByUser(UserInterface $user): array;
+
+    /**
+     * @return array<AstronomicalEntryInterface>
+     */
+    public function getByUserAndState(UserInterface $user, int $state): array;
 }

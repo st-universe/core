@@ -17,12 +17,12 @@ class ConstructionProgressWrapper
 
     public function isUnderConstruction(): bool
     {
-        return $this->station->getState() == SpacecraftStateEnum::SHIP_STATE_UNDER_CONSTRUCTION;
+        return $this->station->getState() == SpacecraftStateEnum::UNDER_CONSTRUCTION;
     }
 
     public function isScrapped(): bool
     {
-        return $this->station->getState() == SpacecraftStateEnum::SHIP_STATE_UNDER_SCRAPPING;
+        return $this->station->getState() == SpacecraftStateEnum::UNDER_SCRAPPING;
     }
 
     public function getRemainingTicks(): int

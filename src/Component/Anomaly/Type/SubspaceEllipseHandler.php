@@ -16,7 +16,6 @@ use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Spacecraft\Lib\Damage\ApplyDamageInterface;
-use Stu\Module\Spacecraft\Lib\Message\MessageCollection;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
@@ -48,6 +47,11 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
         $subspaceEllipses = [];
 
         foreach ($this->locationRepository->getForSubspaceEllipseCreation() as $location) {
+
+            if ($location->isAnomalyForbidden()) {
+                continue;
+            }
+
             $subspaceEllipses[] = $this->anomalyCreation->create(
                 AnomalyTypeEnum::SUBSPACE_ELLIPSE,
                 $location
@@ -69,8 +73,8 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
 
         $spacecrafts = $location->getSpacecrafts();
 
-        $messagesForShips = new MessageCollection();
-        $messagesForBases = new MessageCollection();
+        $messagesForShips = $this->messageFactory->createMessageCollection();
+        $messagesForBases = $this->messageFactory->createMessageCollection();
 
         $intro = $this->messageFactory->createMessage(
             UserEnum::USER_NOONE,

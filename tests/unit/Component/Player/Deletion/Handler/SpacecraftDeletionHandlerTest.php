@@ -20,6 +20,7 @@ use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ConstructionProgressRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
+use Stu\Orm\Repository\MiningQueueRepositoryInterface;
 use Stu\StuTestCase;
 
 class SpacecraftDeletionHandlerTest extends StuTestCase
@@ -38,6 +39,8 @@ class SpacecraftDeletionHandlerTest extends StuTestCase
     private $shipUndocking;
     /** @var MockInterface&EntityManagerInterface */
     private $entityManager;
+    /** @var MockInterface&MiningQueueRepositoryInterface */
+    private $miningQueueRepository;
 
     private PlayerDeletionHandlerInterface $handler;
 
@@ -51,6 +54,7 @@ class SpacecraftDeletionHandlerTest extends StuTestCase
         $this->spacecraftWrapperFactory = $this->mock(SpacecraftWrapperFactoryInterface::class);
         $this->shipUndocking = $this->mock(ShipUndockingInterface::class);
         $this->entityManager = $this->mock(EntityManagerInterface::class);
+        $this->miningQueueRepository = $this->mock(MiningQueueRepositoryInterface::class);
 
         $this->handler = new SpacecraftDeletionHandler(
             $this->spacecraftRepository,
@@ -59,7 +63,8 @@ class SpacecraftDeletionHandlerTest extends StuTestCase
             $this->spacecraftSystemManager,
             $this->spacecraftWrapperFactory,
             $this->shipUndocking,
-            $this->entityManager
+            $this->entityManager,
+            $this->miningQueueRepository
         );
     }
 
@@ -153,6 +158,12 @@ class SpacecraftDeletionHandlerTest extends StuTestCase
         $this->constructionProgressRepository->shouldReceive('delete')
             ->with($constructionProgress)
             ->once();
+
+        $ship->shouldReceive('getMiningQueue')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(null);
+
 
         $this->handler->delete($user);
     }

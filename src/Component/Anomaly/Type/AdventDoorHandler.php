@@ -65,7 +65,13 @@ final class AdventDoorHandler implements AnomalyHandlerInterface
     {
         $layer = $this->layerRepository->getDefaultLayer();
 
-        return $this->mapRepository->getRandomPassableUnoccupiedWithoutDamage($layer);
+        while (true) {
+            $map = $this->mapRepository->getRandomPassableUnoccupiedWithoutDamage($layer);
+
+            if (!$map->isAnomalyForbidden()) {
+                return $map;
+            }
+        }
     }
 
     #[Override]

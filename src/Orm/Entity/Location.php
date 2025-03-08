@@ -21,6 +21,7 @@ use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use Override;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
+use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Orm\Repository\LocationRepository;
 
 #[Table(name: 'stu_location')]
@@ -228,5 +229,11 @@ abstract class Location implements LocationInterface
     public function getLocationMinings(): Collection
     {
         return $this->locationMinings;
+    }
+
+    #[Override]
+    public function isAnomalyForbidden(): bool
+    {
+        return $this->getFieldType()->hasEffect(FieldTypeEffectEnum::NO_ANOMALIES);
     }
 }

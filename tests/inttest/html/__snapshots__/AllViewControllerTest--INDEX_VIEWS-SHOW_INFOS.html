@@ -1,51 +1,225 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:stu="stu" lang="de">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:stu="stu">
+
 
 <head>
-    <meta charset="utf-8">
-    <meta name="theme-color" content="#000000">
-    <title>Impressum - Star Trek Universe</title>
-    <link rel="shortcut icon" href="/assets/favicon.ico">
-    <link rel="stylesheet" type="text/css" href="/static/css/main.css">
-    <meta name="description" content="Star Trek Universe - Ein Star Trek Browsergame">
-    <meta name="keywords" content="star trek, star, trek, spiel, browsergame, rollenspiel, rpg, online">
-    <meta name="author" content="Wolverine">
-    <meta name="robots" content="index">
-    <meta name="robots" content="follow">
-    <meta name="publisher" content="Wolverine">
-    <meta name="language" content="de">
-    <meta name="Copyright" content="Wolverine">
-    <meta name="Page-Topic" content="star trek, star, trek, rollenspiel, online, rpg, spiel, browsergame">
-    <script src="/static/js/prototype.js"></script>
-    <script src="/static/js/scriptaculous/scriptaculous.js"></script>
-    <script src="/static/js/main.js"></script>
+  <meta charset="utf-8">
+  <meta name="theme-color" content="#000000">
+  <title>Impressum - Star Trek Universe</title>
+  <link rel="shortcut icon" href="/assets/favicon.ico">
+  <link rel="stylesheet" type="text/css" href="/static/css/stuweb.css">
+  <meta charset="UTF-8">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="de">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.6/dist/umd/popper.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+  <meta name="description" content="">
+<meta name="keywords" content="">
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "",
+    "publisher": {
+        "@type": "Organization",
+        "name": ""
+    },
+    "author": {
+        "@type": "Person",
+        "name": ""
+    },
+    "contributors": []
+}
+</script>
+
+
 </head>
+<body onload="if (document.getElementById('login')) document.getElementById('login').focus(); updateBannerImage();">
 
-<body onload="if ($('login')) $('login').focus(); updateBannerImage();">
-    <div style="width: 100%">
-        <div style="margin: auto;">
-            <div id="banner">
-                <img id="bannerImg" style="width: 75%" src="" border="0" title="Star Trek Universe">
+  <div class="container text-center my-4">
+    <div id="banner">
+      <picture>
+        <source media="(max-width: 768px)" srcset="">
+        <img id="bannerImg" src="" border="0" title="Star Trek Universe">
+      </source></picture>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mb-4">
+        <div class="mainbar_nav_box_header">
+          <small>Navigation</small>
+        </div>
+
+        <div class="nav_box_content d-none d-lg-flex flex-wrap justify-content-around link-container">
+          <a href="/index.php" class="link-box">Hauptseite</a>
+          <a href="/index.php?SHOW_REGISTRATION=1" class="link-box">Registrieren</a>
+          <a href="/index.php?SHOW_HELP=1" class="link-box">Hilfe</a>
+          <a href="/index.php?SHOW_INFOS=1" class="link-box">Impressum</a>
+          <a href="#" class="link-box" data-toggle="modal" data-target="#forumModal">Forum</a>
+          <a href="#" class="link-box" data-toggle="modal" data-target="#discordModal">Chat</a>
+          <a href="#" class="link-box" data-toggle="modal" data-target="#logModal">Changelog</a>
+          <a href="/index.php?SHOW_PARTNER_SITES=1" class="link-box">Partnerseiten</a>
+        </div>
+
+        <div class="modal fade" id="discordModal" tabindex="-1" aria-labelledby="discordModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content text-center">
+              <h5 class="modal-title pt-3" id="discordModalLabel">ACHTUNG!</h5>
+              <div class="modal-body">
+                Du bist dabei, die Seite zu verlassen und zum Discord-Server weitergeleitet zu werden. M&ouml;chtest du
+                fortfahren?
+              </div>
+              <div class="modal-footer justify-content-center">
+                <a href="https://discord.gg/NK3fCdx" class="btn-stu">
+                  Ja, ich will zum Discord!
+                </a>
+                <button type="button" class="btn-stu" data-dismiss="modal">Abbrechen</button>
+              </div>
             </div>
-            <div style="width: 1160px; margin: auto;">
-                <div style="width: 880px; float: left;">
-                    <div class="mainbar_box_header">Navigation</div>
+          </div>
+        </div>
 
-                    <div class="mainbar_box_content topnav">
-                        <a href="/index.php">Hauptseite</a>
-                        <a href="/index.php?SHOW_REGISTRATION=1">Registrieren</a>
-                        <a href="/index.php?SHOW_HELP=1">Hilfe</a>
-                        <a href="/index.php?SHOW_INFOS=1">Impressum</a>
-                        <a href="https://board.change.me" target="_blank">Forum</a>
-                        <a href="https://chat.change.me" target="_blank">Chat</a>
-                        <a href="https://board.change.me/viewforum.php?f=12" target="_blank">Changelog</a>
-                        <a href="/index.php?SHOW_PARTNER_SITES=1">Partnerseiten</a>
+        <div class="modal fade" id="forumModal" tabindex="-1" aria-labelledby="forumModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content text-center">
+              <h5 class="modal-title pt-3" id="forumModalLabel">ACHTUNG!</h5>
+              <div class="modal-body">
+                Du bist dabei, die Seite zu verlassen und zum Forum weitergeleitet zu werden. M&ouml;chtest du fortfahren?
+              </div>
+              <div class="modal-footer justify-content-center">
+                <a href="https://forum.stuniverse.de" class="btn-stu">
+                  Ja, ich will zum Forum!
+                </a>
+                <button type="button" class="btn-stu" data-dismiss="modal">Abbrechen</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal fade" id="logModal" tabindex="-1" aria-labelledby="logModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content text-center">
+              <h5 class="modal-title pt-3" id="logModalLabel">ACHTUNG!</h5>
+              <div class="modal-body">
+                Du bist dabei, die Seite zu verlassen und zum Changelog im weitergeleitet zu werden. M&ouml;chtest du
+                fortfahren?
+              </div>
+              <div class="modal-footer justify-content-center">
+                <a href="https://forum.stuniverse.de/viewforum.php?f=12" class="btn-stu">
+                  Ja, ich will zum Changelog!
+                </a>
+                <button type="button" class="btn-stu" data-dismiss="modal">Abbrechen</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-lg-none">
+          <div class="row">
+
+            <div class="col-7 pr-0">
+              <div class="nav_box_content">
+                <div class="dropdown" data-bs-auto-close="outside">
+                  <button class="btn btn-secondary dropdown-toggle w-100" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">... Hauptmen&uuml; &ouml;ffnen ...</button>
+
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="/index.php">Hauptseite</a>
+                    <a class="dropdown-item" href="/index.php?SHOW_REGISTRATION=1">Registrieren</a>
+                    <a class="dropdown-item" href="/index.php?SHOW_HELP=1">Hilfe</a>
+                    <a href="#" class="dropdown-item" data-toggle="modal" data-target="#forumModal">Forum</a>
+                    <a href="#" class="dropdown-item" data-toggle="modal" data-target="#discordModal">Chat</a>
+                    <a href="#" class="dropdown-item" data-toggle="modal" data-target="#logModal">Changelog</a>
+                    <a class="dropdown-item" href="/index.php?SHOW_PARTNER_SITES=1">Partnerseiten</a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="modal fade" id="discordModal-m" tabindex="-1" aria-labelledby="discordModal-mLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content text-center">
+                    <h5 class="modal-title pt-3" id="discordModal-mLabel">ACHTUNG!</h5>
+                    <div class="modal-body">
+                      Du bist dabei, die Seite zu verlassen und zum Discord-Server weitergeleitet zu werden. M&ouml;chtest du
+                      fortfahren?
                     </div>
-                    <br>
-                    <div class="mainbar_box_header">Impressum - Star Trek Universe</div>
-                    <div class="mainbar_box_content mainbar_box_content_border">
-                        <div style="margin: 5px">
-                            <div style="width: 100%;">
+                    <div class="modal-footer justify-content-center">
+                      <a href="https://discord.gg/NK3fCdx" class="btn-stu">
+                        Ja, ich will zum Discord!
+                      </a>
+                      <button type="button" class="btn-stu" data-dismiss="modal">Abbrechen</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="modal fade" id="forumModal-m" tabindex="-1" aria-labelledby="forumModal-mLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content text-center">
+                    <h5 class="modal-title pt-3" id="forumModal-mLabel">ACHTUNG!</h5>
+                    <div class="modal-body">
+                      Du bist dabei, die Seite zu verlassen und zum Forum weitergeleitet zu werden. M&ouml;chtest du
+                      fortfahren?
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                      <a href="https://forum.stuniverse.de" class="btn-stu">
+                        Ja, ich will zum Forum!
+                      </a>
+                      <button type="button" class="btn-stu" data-dismiss="modal">Abbrechen</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="modal fade" id="logModal-m" tabindex="-1" aria-labelledby="logModal-mLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content text-center">
+                    <h5 class="modal-title pt-3" id="logModal-mLabel">ACHTUNG!</h5>
+                    <div class="modal-body">
+                      Du bist dabei, die Seite zu verlassen und zum Changelog im weitergeleitet zu werden. M&ouml;chtest du
+                      fortfahren?
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                      <a href="https://forum.stuniverse.de/viewforum.php?f=12" class="btn-stu">
+                        Ja, ich will zum Changelog!
+                      </a>
+                      <button type="button" class="btn-stu" data-dismiss="modal">Abbrechen</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
+
+            <div class="col-5 pl-0">
+              <div class="nav_box_content">
+
+                <a class="btn btn-secondary w-100" type="button" id="dropdownMenuButton2" aria-haspopup="true" aria-expanded="false" href="/index.php">zum Login</a>
+
+
+
+              </div>
+            </div>
+          </div>
+
+          </div>
+<div class="mainbar_box_header mt-4"><small>Impressum - Star Trek Universe</small></div>
+                <div class="mainbar_box_content">
+	<div class="p-3">
+
+
+
+
   <h3>Verantwortlich nach &sect;5 TMG</h3>
   Max Mustermann<br>
   123 Fake street<br>
@@ -54,38 +228,33 @@
   max@example.com
   <br>
   
-</div>
-<div style="width: 100%;">
+<br>
   <h4>Hinweis</h4>
   Dieses Spiel ist ein Fan-Projekt und nicht profitorientiert.<br>
   Bitte beachtet dazu auch den Copyright Hinweis.
-</div>
-<div>
+<br><br><br>
   <h3>Datenschutzerkl&auml;rung</h3>
-  <div>
     Bitte lies Dir diese Datenschutzerkl&auml;rung aufmerksam durch. Diese erl&auml;utert explizit wie wir mit
     personenbezogenen Daten, die uns von Dir &uuml;bermittelt worden sind, umgehen.<br>
     Wenn Du unter 16 Jahre alt bist, darfst Du uns deine personenbezogenen Daten nur mit ausdr&uuml;cklicher Zustimmung
     durch rechtliche Vertreter*innen &uuml;bermitteln. Wir behalten uns das Recht vor, die Bedingungen unserer
     Datenschutzerkl&auml;rung von Zeit zu Zeit anzupassen. Wenn wir grundlegende &Auml;nderungen vornehmen, werden wir Dich
     mittels einer Ank&uuml;ndigung auf unserer Website informieren, bevor die &Auml;nderung in Kraft tritt.
-  </div>
+<br><br>
   <h4>
     Was sind personenbezogen Daten?
   </h4>
-  <div>
     "Personenbezogen Daten? umfasst alle Informationen, die sich auf eine identifizierte oder identifizierbare
     nat&uuml;rliche Person beziehen (wie Name, Adresse, Telefonnummer, Mobilnummer, E-Mail-Adresse) und Informationen zu
     Standort und/oder Aktivit&auml;ten dieser Person, wie Informationen zu deren Nutzung des Service oder IP-Adresse,
     wenn diese direkt mit pers&ouml;nlich identifizierbaren Daten verkn&uuml;pft sind.
-  </div>
+<br><br>
   <h4>
     Welche personenbezogenen Daten sammeln wir?
   </h4>
   <h5>
     Aktive Sammlung
   </h5>
-  <div>
     Personenbezogene Daten k&ouml;nnen auf vielf&auml;ltige Weise gesammelt werden, wenn Du unsere Website (www.stuniverse.de)
     (im folgenden STU genannt) besuchst oder nutzt. Zum Beispiel k&ouml;nnen wir Deinen Benutzernamen, die E-Mail-Adresse
     oder andere Kontakt- und demografische Informationen sammeln, wenn du dich registrierst und ein Konto
@@ -109,19 +278,17 @@
     erforderlich ist, wird Deine Einwilligung zu einer solchen Verarbeitung erbeten. Von Zeit zu Zeit k&ouml;nnen wir die
     erforderlichen Daten zur Registrierung oder hinsichtlich bestimmter Funktionen oder Services ver&auml;ndern, und
     daher erhebt diese Liste keinen Anspruch auf Vollst&auml;ndigkeit.
-  </div>
+  <br><br>
   <h5>
     Protokolldateien
   </h5>
-  <div>
     Wenn Du STU nutzt, werden einige Daten auch automatisch gesammelt, beispielsweise Deine
     Internetprotokoll-(IP)-Adresse, Dein Betriebssystem, der Typ Deines Browsers oder Mobilger&auml;tes sowie die
     Sprache, die Zugriffszeiten, die Adresse einer verweisenden Website und Deine Aktivit&auml;t auf unserer Seite.
-  </div>
+<br><br>
   <h4>
     Tracking-Technologien
   </h4>
-  <div>
     Durch die Nutzung von STU stimmt Du zu, dass wir automatisch bestimmte Daten durch die Verwendung von &bdquo;Cookies&ldquo;
     oder Tracking-Technologien sammeln, um Trends zu analysieren, die Website zu verwalten und die Bewegungen der
     Nutzer auf der Website zu kontrollieren. Benutzer k&ouml;nnen die Verwendung von Cookies auf individueller
@@ -137,11 +304,10 @@
     Mobilger&auml;tes hinzu. Weiterf&uuml;hrende Informationen &uuml;ber die Verwendung von Cookies und Z&auml;hlpixel findest Du in
     unserer Cookie-Richtlinie. Weiterf&uuml;hrende Informationen zur &Auml;nderung der Cookie-Einstellungen in Deinem Browser
     findest Du unter www.allaboutcookies.org.
-  </div>
+<br><br>
   <h4>
     Zu welchen anderen Zwecken verwenden wir personenbezogene Daten?
   </h4>
-  <div>
     Generell nutzen wir die personenbezogenen Daten, die wir sammeln, um Anfragen zu verarbeiten, um die von Dir
     angeforderten Informationen bereitzustellen, und zu dem Zweck, zu dem die Daten bereitgestellt wurden. Zum
     Beispiel k&ouml;nnen wir die Daten, die wir sammeln, folgenderma&szlig;en verwenden:
@@ -160,11 +326,10 @@
     Wenn Du uns personenbezogene Daten von Dritten &uuml;bermittelst, musst Du sicherstellen, dass Du zuvor deren
     Einwilligung eingeholt hast. In einem solchen Fall oder falls andere uns Deine Daten &uuml;bermitteln, werden wir
     diese Daten nur f&uuml;r den spezifischen Zweck nutzen, zu dem sie uns zur Verf&uuml;gung gestellt wurden.
-  </div>
+<br><br>
   <h4>
     Teilen wir personenbezogene Daten?
   </h4>
-  <div>
     Wir verwenden personenbezogenen Daten ausschlie&szlig;lich in der Weise, wie in dieser Datenschutzerkl&auml;rung erl&auml;utert.
     Wir verkaufen oder handeln keine personenbezogenen Daten &uuml;ber unsere Besucher oder Nutzer an Dritte/mit Dritten.
     Wir k&ouml;nnen personenbezogene Daten erlangen, offenlegen oder aufbewahren, einschlie&szlig;lich des Inhalts Deiner
@@ -185,11 +350,10 @@
     verbleiben und das gilt auch, wenn andere Benutzer diese Informationen kopiert oder gespeichert haben. In
     einigen F&auml;llen sind wir ggf. nicht in der Lage, Deine personenbezogenen Daten zu l&ouml;schen, und in einem solchen
     Fall werden wir Dich entsprechend dar&uuml;ber und &uuml;ber die Gr&uuml;nde daf&uuml;r informieren.
-  </div>
+<br><br>
   <h4>
     Welche Schritte ergreifen wir, um Deine personenbezogenen Daten online zu sch&uuml;tzen?
   </h4>
-  <div>
     STU ist bestrebt, alle erforderlichen Vorkehrungen zu treffen, um die personenbezogenen Daten, die wir sammeln,
     zu sch&uuml;tzen und zu sichern.<br>Wir haben physikalische, elektronische und betriebliche Verfahren
     implementiert, die den unautorisierten Zugriff, Verlust oder Missbrauch verhindern sollen.
@@ -217,20 +381,18 @@
     Dort, wo die Verarbeitung auf Deine Einwilligung basiert, hast Du das Recht, Deine Einwilligung jederzeit zu
     widerrufen.
     <br>Dar&uuml;ber hinaus hast Du das Recht zur Beschwerde bei der &uuml;bergeordneten Stelle.
-  </div>
+<br><br>
   <h4>
     Datenspeicherung
-  </h4>
-  <div>
+  </h4>&gt;
     Deine Registrierungsdaten und alle Spieldaten, die aus der Aktivit&auml;t Deines Kontos generiert werden, werden so
     lange aufbewahrt, wie Dein Konto aktiv ist oder bis STU den Betrieb einstellt. Wenn Du dich entscheidest, Dein
     Konto zu schlie&szlig;en, werden Deine Daten zum Zeitpunkt des Schlie&szlig;ens des Kontos anonymisiert und zwei (2) Jahre
     lang aufbewahrt.
-  </div>
+<br><br>
   <h4>
     Sicherheit
   </h4>
-  <div>
     Wir befolgen die allgemein akzeptierten Standards zum Schutz von personenbezogenen Daten, die uns &uuml;bermittelt
     werden, sowohl w&auml;hrend der &Uuml;bertragung als auch dann, wenn wir sie erhalten. Allerdings ist kein Verfahren zur
     &Uuml;bertragung &uuml;ber das Internet und keine Methode der elektronischen Speicherung zu 100 % sicher. Deshalb k&ouml;nnen
@@ -241,65 +403,107 @@
     Speicherung und Verarbeitung Deiner Daten in der Art und Weise, wie dies in dieser Richtlinie beschrieben wird.
     B&uuml;rgerInnen aus der Europ&auml;ischen Union oder Schweiz mit Fragen oder Beschwerden hinsichtlich dieser
     Datenschutzerkl&auml;rung sollten sich zuerst an uns wenden.
-  </div>
+<br><br>
   <h4>
     Kontakt
   </h4>
-  <div>
     Falls Du Fragen, Bedenken oder Anmerkungen hinsichtlich dieser Richtlinie hast, kontaktieren uns bitte per
     E-Mail an die im Impressum genannte Adresse.
     <br><br>Stand 09.05.2022
+ 
   </div>
-</div>
-                        </div>
-                    </div>
-                </div>
 
-                <div style="float: left; width: 250px; position: relative;">
-                    <div class="sidebar_box_header">Spielstatus</div>
-                    <div class="sidebar_box_content">
-                        <div id="gamestate_1">Online</div>
-                    </div>
-                    <br>
-                                        <div class="sidebar_box_header">Willkommen zur&uuml;ck</div>
-                    <div class="sidebar_box_content">
-                                                Siedler 101
-                                                <br><br>
-                        <a href="/maindesk.php" class="linkbutton">Zum Maindesk</a>
-                    </div>
-                                        <br>
-                    <div class="sidebar_box_header">Statistiken</div>
-                    <div class="sidebar_box_content">
-                        Spieler: 2<br>
-                        Online: 0<br>
-                        Runde: 1<br>
-                    </div>
-                    <br>
-                    <div class="sidebar_box_header">Links</div>
-                    <div class="sidebar_box_content">
-                        <a href="https://www.v2.6.stuniverse.de" target="_blank">STU V2.6</a><br>
-                        <a href="https://nicotintel.de" target="_blank">
-                            <img src="/assets/buttons/blog.png">
-                            <span>Hux's Blog</span>
-                        </a><br>
-                        <a href="https://www.facebook.com/groups/185062741732" target="_blank">Facebook</a><br>
-                    </div>
-                    <br>
-                    <iframe src="https://discord.com/widget?id=486609699870081026&amp;theme=dark" width="230" height="400" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
-                    <br>
-                    <br>
-                    <div class="sidebar_box_header">Copyright</div>
-                    <div class="sidebar_box_content">
-                        Star Trek is a registered trademark of Paramount Pictures.<br><br>
-                        This site is a fan project and therefor strictly non-profit.<br>
-                        No copyright infringement is intended.<br>
-                        &copy; 2001 - now STU-Team
-                    </div>
-                </div>
-            </div>
+          <div class="row">
+          </div>
 
         </div>
-    </div>
-</body>
+      </div>
 
+      <div class="col-lg-4 d-none d-lg-block">
+        <div class="sidebar_box_header">
+          <small>Spielstatus</small>
+        </div>
+        <div class="sidebar_box_content">
+          <div id="gamestate_1" class="mt-2 p-1 rounded text-center">
+            Online
+          </div>
+        </div>
+                <div class="sidebar_box_header mt-4">Willkommen zur&uuml;ck</div>
+        <div class="sidebar_box_content">
+                    Siedler 101
+                    <br>
+          <a href="/maindesk.php" class="btn-stu btn-stu-d mt-3 mb-2">Zum Maindesk</a>
+        </div>
+                <div class="sidebar_box_header mt-4">
+          <small>Live Statistiken</small>
+        </div>
+        <div class="sidebar_box_content">
+          <div class="mt-2">
+            <i class="fa-solid fa-user"></i> Spieler: 2<br>
+            <i class="fa-solid fa-user text-success"></i> Online: 0<br>
+            <i class="fa-solid fa-clock"></i> Runde: 1<br>
+          </div>
+        </div>
+
+        <div class="sidebar_box_header mt-4">
+          <small>Links</small>
+        </div>
+        <div class="sidebar_box_content">
+          <div class="mt-2">
+            <a href="https://github.com/st-universe/core" target="_blank"><i class="fa-solid fa-square-arrow-up-right"></i> GitHub</a><br>
+            <a href="https://www.v2.6.stuniverse.de" target="_blank"><i class="fa-solid fa-square-arrow-up-right"></i>
+              STU V2.6</a><br>
+            <a href="https://nicotintel.de" target="_blank"><i class="fa-solid fa-square-arrow-up-right"></i> Hux's
+              Blog</a><br>
+          </div>
+        </div>
+
+        <div class="sidebar_box_header  mt-4">
+          <small>Discord</small>
+        </div>
+        <div class="sidebar_box_content">
+          <div class="iframe-container mt-2">
+            <iframe src="https://discord.com/widget?id=486609699870081026&amp;theme=dark" class="custom-iframe"></iframe>
+          </div>
+          <a href="https://discord.gg/NK3fCdx" target="_blank" class="btn-stu btn-stu-d mt-3 mb-2">Zum STU Discord
+            Server</a>
+        </div>
+
+        <div class="sidebar_box_header mt-4"><small>Copyright</small></div>
+        <div class="sidebar_box_content mb-4">
+          <p class="mt-2">Star Trek is a registered trademark of Paramount Pictures.</p>
+          <p>This site is a fan project and there fore strictly non-profit. No copyright infringement is intended.</p>
+          <p class="mb-2">&copy; 2001 - now STU-Team</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-lg-none">
+    <div class="container pb-3">
+      <div class="mainbar_box_header">
+        <small>Copyright</small>
+      </div>
+      <div class="mainbar_box_content">
+        <div class="p-2">
+          <p class="mt-2">Star Trek is a registered trademark of Paramount Pictures.</p>
+          <p>This site is a fan project and there fore strictly non-profit. No copyright infringement is intended.</p>
+          <p class="mb-2">&copy; 2001 - now STU-Team</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    window.addEventListener('load', function () {
+      if (window.innerWidth < 992) {
+        window.scrollTo(0, 0);
+      }
+    });
+  </script>
+
+  <script src="/static/js/prototype.js"></script>
+  <script src="/static/js/scriptaculous/scriptaculous.js"></script>
+  <script src="/static/js/main.js"></script>
+</body>
 </html>

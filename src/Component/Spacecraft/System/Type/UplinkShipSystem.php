@@ -25,12 +25,32 @@ final class UplinkShipSystem extends AbstractSpacecraftSystemType implements Spa
     {
         $spacecraft = $wrapper->get();
 
+        $minOwnCrew = 0;
+        $buildplan = $spacecraft->getBuildplan();
+        if ($buildplan) {
+            $minOwnCrew = $buildplan->getCrew();
+        }
         if (!$this->hasForeignCrew($spacecraft)) {
             $reason = _('keine fremde Crew an Bord ist');
             return false;
         }
+        if ($this->getOwnCrewCount($spacecraft) < $minOwnCrew) {
+            $reason = sprintf(_('mindestens %d eigene Crewmitglieder benötigt werden'), $minOwnCrew);
+            return false;
+        }
 
         return true;
+    }
+
+    private function getOwnCrewCount(SpacecraftInterface $spacecraft): int
+    {
+        $count = 0;
+        foreach ($spacecraft->getCrewAssignments() as $spacecraftCrew) {
+            if ($spacecraftCrew->getCrew()->getUser() === $spacecraft->getUser()) {
+                $count++;
+            }
+        }
+        return $count;
     }
 
     private function hasForeignCrew(SpacecraftInterface $spacecraft): bool

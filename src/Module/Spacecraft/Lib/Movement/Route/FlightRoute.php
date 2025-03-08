@@ -8,6 +8,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Override;
 use RuntimeException;
+use Stu\Component\Map\Effects\EffectHandlingInterface;
+use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\FlightConsequenceInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -23,7 +25,7 @@ final class FlightRoute implements FlightRouteInterface
     //Members
     private bool $isTraversing = false;
 
-    private RouteModeEnum $routeMode = RouteModeEnum::ROUTE_MODE_FLIGHT;
+    private RouteModeEnum $routeMode = RouteModeEnum::FLIGHT;
 
     private LocationInterface $current;
 
@@ -42,6 +44,7 @@ final class FlightRoute implements FlightRouteInterface
         private CheckDestinationInterface $checkDestination,
         private LoadWaypointsInterface $loadWaypoints,
         private EnterWaypointInterface $enterWaypoint,
+        private EffectHandlingInterface $effectHandling,
         private array $flightConsequences,
         private array $postFlightConsequences,
     ) {
@@ -57,12 +60,12 @@ final class FlightRoute implements FlightRouteInterface
 
         if ($destination instanceof MapInterface) {
             if ($isTranswarp) {
-                $this->routeMode = RouteModeEnum::ROUTE_MODE_TRANSWARP;
+                $this->routeMode = RouteModeEnum::TRANSWARP;
             } else {
-                $this->routeMode = RouteModeEnum::ROUTE_MODE_SYSTEM_EXIT;
+                $this->routeMode = RouteModeEnum::SYSTEM_EXIT;
             }
         } else {
-            $this->routeMode = RouteModeEnum::ROUTE_MODE_SYSTEM_ENTRY;
+            $this->routeMode = RouteModeEnum::SYSTEM_ENTRY;
         }
 
         return $this;
@@ -74,10 +77,10 @@ final class FlightRoute implements FlightRouteInterface
         $this->wormholeEntry = $wormholeEntry;
         if ($isEntry) {
             $this->waypoints->add($wormholeEntry->getSystemMap());
-            $this->routeMode = RouteModeEnum::ROUTE_MODE_WORMHOLE_ENTRY;
+            $this->routeMode = RouteModeEnum::WORMHOLE_ENTRY;
         } else {
             $this->waypoints->add($wormholeEntry->getMap());
-            $this->routeMode = RouteModeEnum::ROUTE_MODE_WORMHOLE_EXIT;
+            $this->routeMode = RouteModeEnum::WORMHOLE_EXIT;
         }
 
         return $this;
@@ -114,8 +117,7 @@ final class FlightRoute implements FlightRouteInterface
         return $this->waypoints->first();
     }
 
-    #[Override]
-    public function stepForward(): void
+    private function stepForward(): void
     {
         $first =  $this->waypoints->first();
 
@@ -135,23 +137,50 @@ final class FlightRoute implements FlightRouteInterface
 
     #[Override]
     public function enterNextWaypoint(
-        SpacecraftWrapperInterface $wrapper,
+        Collection $wrappers,
         MessageCollectionInterface $messages
     ): void {
 
         // flight consequences
-        $this->walkConsequences($this->flightConsequences, $wrapper, $messages);
-
-        // enter waypoint
-        $this->enterWaypoint->enterNextWaypoint(
-            $wrapper->get(),
-            $this->isTraversing,
-            $this->getNextWaypoint(),
-            $this->wormholeEntry
+        $this->walkWrappers(
+            $wrappers,
+            function (SpacecraftWrapperInterface $wrapper) use ($messages): void {
+                $this->walkConsequences($this->flightConsequences, $wrapper, $messages);
+            }
         );
 
+        // enter waypoint
+        $this->walkWrappers(
+            $wrappers,
+            function (SpacecraftWrapperInterface $wrapper): void {
+                $this->enterWaypoint->enterNextWaypoint(
+                    $wrapper->get(),
+                    $this->isTraversing,
+                    $this->getNextWaypoint(),
+                    $this->wormholeEntry
+                );
+            }
+        );
+
+        $this->effectHandling->addFlightInformationForActiveEffects($this->getNextWaypoint(), $messages);
+
         // post flight consequences
-        $this->walkConsequences($this->postFlightConsequences, $wrapper, $messages);
+        $this->walkWrappers(
+            $wrappers,
+            function (SpacecraftWrapperInterface $wrapper) use ($messages): void {
+                $this->walkConsequences($this->postFlightConsequences, $wrapper, $messages);
+            }
+        );
+
+        $this->stepForward();
+    }
+
+    /** @param Collection<int, SpacecraftWrapperInterface> $wrappers */
+    private function walkWrappers(Collection $wrappers, callable $func): void
+    {
+        foreach ($wrappers as $wrapper) {
+            $func($wrapper);
+        }
     }
 
     /**
@@ -159,13 +188,20 @@ final class FlightRoute implements FlightRouteInterface
      */
     private function walkConsequences(
         array $consequences,
-        SpacecraftWrapperInterface $wrapper,
+        ?SpacecraftWrapperInterface $wrapper,
         MessageCollectionInterface $messages
     ): void {
+
+        if ($wrapper === null) {
+            return;
+        }
+
         array_walk(
             $consequences,
             fn(FlightConsequenceInterface $consequence) => $consequence->trigger($wrapper, $this, $messages)
         );
+
+        $this->walkConsequences($consequences, $wrapper->getTractoredShipWrapper(), $messages);
     }
 
     #[Override]
@@ -192,13 +228,13 @@ final class FlightRoute implements FlightRouteInterface
         $routeMode = $this->routeMode;
 
         if (
-            $routeMode === RouteModeEnum::ROUTE_MODE_SYSTEM_ENTRY
-            || $routeMode === RouteModeEnum::ROUTE_MODE_WORMHOLE_ENTRY
+            $routeMode === RouteModeEnum::SYSTEM_ENTRY
+            || $routeMode === RouteModeEnum::WORMHOLE_ENTRY
         ) {
             return true;
         }
 
-        return $routeMode === RouteModeEnum::ROUTE_MODE_FLIGHT
+        return $routeMode === RouteModeEnum::FLIGHT
             && $this->getNextWaypoint() instanceof StarSystemMapInterface;
     }
 
@@ -208,20 +244,20 @@ final class FlightRoute implements FlightRouteInterface
         $routeMode = $this->routeMode;
 
         if (
-            $routeMode === RouteModeEnum::ROUTE_MODE_SYSTEM_EXIT
-            || $routeMode === RouteModeEnum::ROUTE_MODE_TRANSWARP
+            $routeMode === RouteModeEnum::SYSTEM_EXIT
+            || $routeMode === RouteModeEnum::TRANSWARP
         ) {
             return true;
         }
 
-        return $routeMode === RouteModeEnum::ROUTE_MODE_FLIGHT
+        return $routeMode === RouteModeEnum::FLIGHT
             && $this->getNextWaypoint() instanceof MapInterface;
     }
 
     #[Override]
     public function isTranswarpCoilNeeded(): bool
     {
-        return $this->routeMode === RouteModeEnum::ROUTE_MODE_TRANSWARP;
+        return $this->routeMode === RouteModeEnum::TRANSWARP;
     }
 
     #[Override]
@@ -229,6 +265,18 @@ final class FlightRoute implements FlightRouteInterface
     {
         foreach ($this->waypoints as $waypoint) {
             if ($waypoint->getFieldType()->getSpecialDamage() > 0) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    #[Override]
+    public function hasEffectOnRoute(FieldTypeEffectEnum $effect): bool
+    {
+        foreach ($this->waypoints as $waypoint) {
+            if ($waypoint->getFieldType()->hasEffect($effect)) {
                 return true;
             }
         }

@@ -60,8 +60,11 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
                 $target->getName()
             ));
 
+            $hitChance = $this->getHitChance($attacker);
+            $evadeChance = $this->getEvadeChance($target);
+
             if (
-                $attacker->getHitChance() * (100 - $target->getEvadeChance()) < $this->stuRandom->rand(1, 10000)
+                $hitChance * (100 - $evadeChance) < $this->stuRandom->rand(1, 10000)
             ) {
                 $message->add("Die " . $target->getName() . " wurde verfehlt");
                 continue;
@@ -126,7 +129,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
             ));
 
             if (
-                $attacker->getHitChance() < random_int(1, 100)
+                $this->getHitChance($attacker) < random_int(1, 100)
             ) {
                 $informations->addInformation(_("Das Gebäude wurde verfehlt"));
                 continue;

@@ -11,8 +11,10 @@ use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
+use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftStateChangerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Orm\Entity\MapFieldTypeInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\SpacecraftSystemInterface;
@@ -125,9 +127,10 @@ class ShieldShipSystemTest extends StuTestCase
         $this->assertEquals('die Schildemitter erschöpft sind', $reason);
     }
 
-    public function testCheckActivationConditionsReturnsFalseIfSubspaceEllipseIsExistent(): void
+    public function testCheckActivationConditionsReturnsFalseIfShieldMalfunctionEffect(): void
     {
         $location = $this->mock(MapInterface::class);
+        $fieldType = $this->mock(MapFieldTypeInterface::class);
 
         $this->ship->shouldReceive('isCloaked')
             ->withNoArgs()
@@ -148,6 +151,60 @@ class ShieldShipSystemTest extends StuTestCase
         $this->ship->shouldReceive('getLocation')
             ->withNoArgs()
             ->andReturn($location);
+
+        $location->shouldReceive('getFieldType')
+            ->withNoArgs()
+            ->andReturn($fieldType);
+
+        $fieldType->shouldReceive('hasEffect')
+            ->with(FieldTypeEffectEnum::SHIELD_MALFUNCTION)
+            ->once()
+            ->andReturn(true);
+        $fieldType->shouldReceive('getName')
+            ->withNoArgs()
+            ->once()
+            ->andReturn('NEBEL');
+
+        $reason = '';
+        $this->assertFalse(
+            $this->system->checkActivationConditions($this->wrapper, $reason)
+        );
+        $this->assertEquals('"NEBEL" es verhindert', $reason);
+    }
+
+    public function testCheckActivationConditionsReturnsFalseIfSubspaceEllipseIsExistent(): void
+    {
+        $location = $this->mock(MapInterface::class);
+        $fieldType = $this->mock(MapFieldTypeInterface::class);
+
+        $this->ship->shouldReceive('isCloaked')
+            ->withNoArgs()
+            ->once()
+            ->andReturnFalse();
+        $this->ship->shouldReceive('isTractoring')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+        $this->ship->shouldReceive('isTractored')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+        $this->ship->shouldReceive('getShield')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(42);
+        $this->ship->shouldReceive('getLocation')
+            ->withNoArgs()
+            ->andReturn($location);
+
+        $location->shouldReceive('getFieldType')
+            ->withNoArgs()
+            ->andReturn($fieldType);
+
+        $fieldType->shouldReceive('hasEffect')
+            ->with(FieldTypeEffectEnum::SHIELD_MALFUNCTION)
+            ->once()
+            ->andReturn(false);
 
         $location->shouldReceive('hasAnomaly')
             ->with(AnomalyTypeEnum::SUBSPACE_ELLIPSE)
@@ -164,6 +221,7 @@ class ShieldShipSystemTest extends StuTestCase
     public function testCheckActivationConditionsReturnsFalseIfIonStormIsExistent(): void
     {
         $location = $this->mock(MapInterface::class);
+        $fieldType = $this->mock(MapFieldTypeInterface::class);
 
         $this->ship->shouldReceive('isCloaked')
             ->withNoArgs()
@@ -184,6 +242,15 @@ class ShieldShipSystemTest extends StuTestCase
         $this->ship->shouldReceive('getLocation')
             ->withNoArgs()
             ->andReturn($location);
+
+        $location->shouldReceive('getFieldType')
+            ->withNoArgs()
+            ->andReturn($fieldType);
+
+        $fieldType->shouldReceive('hasEffect')
+            ->with(FieldTypeEffectEnum::SHIELD_MALFUNCTION)
+            ->once()
+            ->andReturn(false);
 
         $location->shouldReceive('hasAnomaly')
             ->with(AnomalyTypeEnum::SUBSPACE_ELLIPSE)
@@ -204,6 +271,7 @@ class ShieldShipSystemTest extends StuTestCase
     public function testCheckActivationConditionsReturnsTrueIfActivateable(): void
     {
         $location = $this->mock(MapInterface::class);
+        $fieldType = $this->mock(MapFieldTypeInterface::class);
 
         $this->ship->shouldReceive('isCloaked')
             ->withNoArgs()
@@ -224,6 +292,15 @@ class ShieldShipSystemTest extends StuTestCase
         $this->ship->shouldReceive('getLocation')
             ->withNoArgs()
             ->andReturn($location);
+
+        $location->shouldReceive('getFieldType')
+            ->withNoArgs()
+            ->andReturn($fieldType);
+
+        $fieldType->shouldReceive('hasEffect')
+            ->with(FieldTypeEffectEnum::SHIELD_MALFUNCTION)
+            ->once()
+            ->andReturn(false);
 
         $location->shouldReceive('hasAnomaly')
             ->with(AnomalyTypeEnum::SUBSPACE_ELLIPSE)
@@ -265,8 +342,8 @@ class ShieldShipSystemTest extends StuTestCase
             ->with(SpacecraftSystemModeEnum::MODE_ON)
             ->once();
 
-        $this->spacecraftStateChanger->shouldReceive('changeShipState')
-            ->with($this->wrapper, SpacecraftStateEnum::SHIP_STATE_NONE)
+        $this->spacecraftStateChanger->shouldReceive('changeState')
+            ->with($this->wrapper, SpacecraftStateEnum::NONE)
             ->once();
 
         $this->system->activate($this->wrapper, $managerMock);

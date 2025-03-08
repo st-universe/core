@@ -5,7 +5,7 @@ namespace Stu\Module\Spacecraft\Lib\Destruction\Handler;
 use Override;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Lib\Information\InformationInterface;
-use Stu\Module\Spacecraft\Lib\Auxiliary\ShipShutdownInterface;
+use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftShutdownInterface;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestroyerInterface;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionCauseEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftStateChangerInterface;
@@ -25,7 +25,7 @@ class TransformToTrumfield implements SpacecraftDestructionHandlerInterface
         private SpacecraftSystemRepositoryInterface $shipSystemRepository,
         private StorageRepositoryInterface $storageRepository,
         private UserRepositoryInterface $userRepository,
-        private ShipShutdownInterface $shipShutdown,
+        private SpacecraftShutdownInterface $spacecraftShutdown,
         private SpacecraftStateChangerInterface $spacecraftStateChanger,
         private ClearTorpedoInterface $clearTorpedo,
         private ConstructionProgressRepositoryInterface $constructionProgressRepository,
@@ -42,7 +42,7 @@ class TransformToTrumfield implements SpacecraftDestructionHandlerInterface
         $nobody = $this->userRepository->getFallbackUser();
         $spacecraft = $destroyedSpacecraftWrapper->get();
 
-        $this->shipShutdown->shutdown($destroyedSpacecraftWrapper, true);
+        $this->spacecraftShutdown->shutdown($destroyedSpacecraftWrapper, true);
         $spacecraft->setIsDestroyed(true);
 
         // create trumfield entity
@@ -64,7 +64,7 @@ class TransformToTrumfield implements SpacecraftDestructionHandlerInterface
             $this->storageRepository->delete($storage);
         }
 
-        $this->spacecraftStateChanger->changeShipState($destroyedSpacecraftWrapper, SpacecraftStateEnum::SHIP_STATE_DESTROYED);
+        $this->spacecraftStateChanger->changeState($destroyedSpacecraftWrapper, SpacecraftStateEnum::DESTROYED);
 
         // delete ship systems
         foreach ($spacecraft->getSystems() as $system) {

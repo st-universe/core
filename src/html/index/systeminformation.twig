@@ -1,0 +1,18 @@
+<div id="result">
+    <div class="registration_box_content mt-2">
+        Meldung
+        <br /><br />
+        {% for info in INFORMATION %}
+
+        {{ info|bbcode }}
+
+        {% endfor %}
+        {% if TARGET_LINK %}
+        <a href="{{ TARGET_LINK.getUrl }}" class="linkbutton">
+            {{ TARGET_LINK.getTitle }}
+        </a>
+        {% endif %}
+
+    </div>
+</div>
+<br />

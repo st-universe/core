@@ -34,7 +34,7 @@ final class WarpdriveActivationSubscriber
         $wrapper = $event->getWrapper();
         $spacecraft = $wrapper->get();
 
-        $this->spacecraftStateChanger->changeShipState($wrapper, SpacecraftStateEnum::SHIP_STATE_NONE);
+        $this->spacecraftStateChanger->changeState($wrapper, SpacecraftStateEnum::NONE);
         if ($spacecraft instanceof StationInterface) {
             $this->shipUndocking->undockAllDocked($spacecraft);
         }
@@ -44,7 +44,7 @@ final class WarpdriveActivationSubscriber
             $tractoredShipWrapper !== null
             && $this->tractorMassPayloadUtil->tryToTow($wrapper, $tractoredShipWrapper->get(), $this->game)
         ) {
-            $this->spacecraftStateChanger->changeShipState($tractoredShipWrapper, SpacecraftStateEnum::SHIP_STATE_NONE);
+            $this->spacecraftStateChanger->changeState($tractoredShipWrapper, SpacecraftStateEnum::NONE);
         }
     }
 }

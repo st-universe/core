@@ -44,8 +44,8 @@ final class RepairActions implements ManagerComponentInterface
             $buildingFunction = $queue->getBuildingFunction();
 
             if (
-                $buildingFunction === BuildingFunctionEnum::BUILDING_FUNCTION_FABRICATION_HALL ||
-                $buildingFunction === BuildingFunctionEnum::BUILDING_FUNCTION_TECH_CENTER
+                $buildingFunction === BuildingFunctionEnum::FABRICATION_HALL ||
+                $buildingFunction === BuildingFunctionEnum::TECH_CENTER
             ) {
                 $colony = $queue->getColony();
 
@@ -102,7 +102,7 @@ final class RepairActions implements ManagerComponentInterface
                 $usedShipyards[$colony->getId()] = [];
             }
 
-            $isRepairStationBonus = $this->colonyFunctionManager->hasActiveFunction($colony, BuildingFunctionEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD);
+            $isRepairStationBonus = $this->colonyFunctionManager->hasActiveFunction($colony, BuildingFunctionEnum::REPAIR_SHIPYARD);
 
             //already repaired a ship on this colony field, max is one without repair station
             if (
@@ -165,7 +165,7 @@ final class RepairActions implements ManagerComponentInterface
             $repairFinished = true;
 
             $ship->setHuell($ship->getMaxHull());
-            $ship->setState(SpacecraftStateEnum::SHIP_STATE_NONE);
+            $ship->setState(SpacecraftStateEnum::NONE);
 
             $this->sendPrivateMessages($ship, $entity);
         }

@@ -51,15 +51,15 @@ class EnoughWarpdriveConditionTest extends StuTestCase
     public static function provideCheckWarpdriveWhenEnoughWarpdriveData(): array
     {
         return [
-            [RouteModeEnum::ROUTE_MODE_SYSTEM_ENTRY],
-            [RouteModeEnum::ROUTE_MODE_SYSTEM_EXIT],
-            [RouteModeEnum::ROUTE_MODE_WORMHOLE_ENTRY],
-            [RouteModeEnum::ROUTE_MODE_WORMHOLE_EXIT],
-            [RouteModeEnum::ROUTE_MODE_TRANSWARP],
-            [RouteModeEnum::ROUTE_MODE_FLIGHT, StarSystemMapInterface::class],
-            [RouteModeEnum::ROUTE_MODE_FLIGHT, MapInterface::class, false],
-            [RouteModeEnum::ROUTE_MODE_FLIGHT, MapInterface::class, true, false, 1],
-            [RouteModeEnum::ROUTE_MODE_FLIGHT, MapInterface::class, true, true, 3]
+            [RouteModeEnum::SYSTEM_ENTRY],
+            [RouteModeEnum::SYSTEM_EXIT],
+            [RouteModeEnum::WORMHOLE_ENTRY],
+            [RouteModeEnum::WORMHOLE_EXIT],
+            [RouteModeEnum::TRANSWARP],
+            [RouteModeEnum::FLIGHT, StarSystemMapInterface::class],
+            [RouteModeEnum::FLIGHT, MapInterface::class, false],
+            [RouteModeEnum::FLIGHT, MapInterface::class, true, false, 1],
+            [RouteModeEnum::FLIGHT, MapInterface::class, true, true, 3]
         ];
     }
 
@@ -89,7 +89,7 @@ class EnoughWarpdriveConditionTest extends StuTestCase
             ->once()
             ->andReturn($routeMode);
 
-        if ($routeMode === RouteModeEnum::ROUTE_MODE_FLIGHT) {
+        if ($routeMode === RouteModeEnum::FLIGHT) {
             $this->flightRoute->shouldReceive('getNextWaypoint')
                 ->withNoArgs()
                 ->once()
@@ -112,15 +112,15 @@ class EnoughWarpdriveConditionTest extends StuTestCase
     public static function provideCheckWarpdriveWhenNotEnoughWarpdriveData(): array
     {
         return [
-            [RouteModeEnum::ROUTE_MODE_SYSTEM_ENTRY],
-            [RouteModeEnum::ROUTE_MODE_SYSTEM_EXIT],
-            [RouteModeEnum::ROUTE_MODE_WORMHOLE_ENTRY],
-            [RouteModeEnum::ROUTE_MODE_WORMHOLE_EXIT],
-            [RouteModeEnum::ROUTE_MODE_TRANSWARP],
-            [RouteModeEnum::ROUTE_MODE_FLIGHT, StarSystemMapInterface::class],
-            [RouteModeEnum::ROUTE_MODE_FLIGHT, MapInterface::class, false],
-            [RouteModeEnum::ROUTE_MODE_FLIGHT, MapInterface::class, true, false, 1],
-            [RouteModeEnum::ROUTE_MODE_FLIGHT, MapInterface::class, true, true, 3]
+            [RouteModeEnum::SYSTEM_ENTRY],
+            [RouteModeEnum::SYSTEM_EXIT],
+            [RouteModeEnum::WORMHOLE_ENTRY],
+            [RouteModeEnum::WORMHOLE_EXIT],
+            [RouteModeEnum::TRANSWARP],
+            [RouteModeEnum::FLIGHT, StarSystemMapInterface::class],
+            [RouteModeEnum::FLIGHT, MapInterface::class, false],
+            [RouteModeEnum::FLIGHT, MapInterface::class, true, false, 1],
+            [RouteModeEnum::FLIGHT, MapInterface::class, true, true, 3]
         ];
     }
 
@@ -154,7 +154,7 @@ class EnoughWarpdriveConditionTest extends StuTestCase
             ->once()
             ->andReturn($routeMode);
 
-        if ($routeMode === RouteModeEnum::ROUTE_MODE_FLIGHT) {
+        if ($routeMode === RouteModeEnum::FLIGHT) {
             $this->flightRoute->shouldReceive('getNextWaypoint')
                 ->withNoArgs()
                 ->once()

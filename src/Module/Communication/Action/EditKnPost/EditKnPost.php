@@ -6,7 +6,6 @@ namespace Stu\Module\Communication\Action\EditKnPost;
 
 use Override;
 use Stu\Exception\AccessViolation;
-use Stu\Module\Communication\View\ShowSingleKn\ShowSingleKn;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -75,7 +74,6 @@ final class EditKnPost implements ActionControllerInterface
         }
 
 
-        $href = sprintf('comm.php?%s=1&knid=%d', ShowSingleKn::VIEW_IDENTIFIER, $post->getId());
         $currentCharacterEntities = $this->knCharactersRepository->findBy(['knPost' => $post]);
         $currentCharacterIds = array_map(fn(KnCharacterInterface $character): int => $character->getUserCharacter()->getId(), $currentCharacterEntities);
 
@@ -118,7 +116,7 @@ final class EditKnPost implements ActionControllerInterface
                 $ownerId,
                 $text,
                 PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,
-                $href
+                $post
             );
         }
 
@@ -134,7 +132,7 @@ final class EditKnPost implements ActionControllerInterface
                 $ownerId,
                 $text,
                 PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,
-                $href
+                $post
             );
         }
 

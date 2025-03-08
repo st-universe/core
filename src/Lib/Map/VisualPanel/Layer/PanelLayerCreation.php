@@ -9,6 +9,7 @@ use RuntimeException;
 use Stu\Component\Map\EncodedMapInterface;
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\PanelLayerDataProviderInterface;
+use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Border\BorderDataProviderFactoryInterface;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Spacecraftcount\SpacecraftCountDataProviderFactoryInterface;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Spacecraftcount\SpacecraftCountLayerTypeEnum;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace\SubspaceDataProviderFactoryInterface;
@@ -38,6 +39,7 @@ final class PanelLayerCreation implements PanelLayerCreationInterface
     /** @param array<int, PanelLayerDataProviderInterface> $dataProviders */
     public function __construct(
         private EncodedMapInterface $encodedMap,
+        private BorderDataProviderFactoryInterface $borderDataProviderFactory,
         private SpacecraftCountDataProviderFactoryInterface $shipcountDataProviderFactory,
         private SubspaceDataProviderFactoryInterface $subspaceDataProviderFactory,
         private array $dataProviders
@@ -93,6 +95,7 @@ final class PanelLayerCreation implements PanelLayerCreationInterface
     public function addBorderLayer(?SpacecraftInterface $currentSpacecraft, ?bool $isOnShipLevel): PanelLayerCreationInterface
     {
         $this->layers[PanelLayerEnum::BORDER->value] = new BorderLayerRenderer($currentSpacecraft, $isOnShipLevel);
+        $this->specialDataProviders[PanelLayerEnum::BORDER->value] = $this->borderDataProviderFactory->getDataProvider($currentSpacecraft, $isOnShipLevel);
 
         return $this;
     }

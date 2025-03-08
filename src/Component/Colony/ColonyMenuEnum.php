@@ -52,14 +52,14 @@ enum ColonyMenuEnum: int
     public static function getFor(mixed $value): ColonyMenuEnum
     {
         if ($value === null) {
-            return ColonyMenuEnum::MENU_MAINSCREEN;
+            return self::MENU_MAINSCREEN;
         }
 
         if ($value instanceof self) {
             return $value;
         }
 
-        return self::tryFrom($value) ?? ColonyMenuEnum::MENU_MAINSCREEN;
+        return self::tryFrom($value) ?? self::MENU_MAINSCREEN;
     }
 
     public static function getMenuClass(ColonyMenuEnum $currentMenu, int $value): string
@@ -76,17 +76,17 @@ enum ColonyMenuEnum: int
     public function getNeededBuildingFunction(): ?array
     {
         return match ($this) {
-            self::MENU_AIRFIELD => [BuildingFunctionEnum::BUILDING_FUNCTION_AIRFIELD],
+            self::MENU_AIRFIELD => [BuildingFunctionEnum::AIRFIELD],
             self::MENU_MODULEFAB => BuildingFunctionTypeEnum::getModuleFabOptions(),
             self::MENU_SHIPYARD => BuildingFunctionTypeEnum::getShipyardOptions(),
             self::MENU_BUILDPLANS => BuildingFunctionTypeEnum::getShipyardOptions(),
-            self::MENU_FIGHTER_SHIPYARD => [BuildingFunctionEnum::BUILDING_FUNCTION_FIGHTER_SHIPYARD],
-            self::MENU_TORPEDOFAB => [BuildingFunctionEnum::BUILDING_FUNCTION_TORPEDO_FAB],
-            self::MENU_ACADEMY => [BuildingFunctionEnum::BUILDING_FUNCTION_ACADEMY],
-            self::MENU_WASTE => [BuildingFunctionEnum::BUILDING_FUNCTION_WAREHOUSE],
-            self::MENU_FAB_HALL => [BuildingFunctionEnum::BUILDING_FUNCTION_FABRICATION_HALL],
-            self::MENU_TECH_CENTER => [BuildingFunctionEnum::BUILDING_FUNCTION_TECH_CENTER],
-            self::MENU_SUBSPACE_TELESCOPE => [BuildingFunctionEnum::BUILDING_FUNCTION_SUBSPACE_TELESCOPE],
+            self::MENU_FIGHTER_SHIPYARD => [BuildingFunctionEnum::FIGHTER_SHIPYARD],
+            self::MENU_TORPEDOFAB => [BuildingFunctionEnum::TORPEDO_FAB],
+            self::MENU_ACADEMY => [BuildingFunctionEnum::ACADEMY],
+            self::MENU_WASTE => [BuildingFunctionEnum::WAREHOUSE],
+            self::MENU_FAB_HALL => [BuildingFunctionEnum::FABRICATION_HALL],
+            self::MENU_TECH_CENTER => [BuildingFunctionEnum::TECH_CENTER],
+            self::MENU_SUBSPACE_TELESCOPE => [BuildingFunctionEnum::SUBSPACE_TELESCOPE],
             self::MENU_SHIP_DISASSEMBLY => BuildingFunctionTypeEnum::getShipyardOptions(),
             self::MENU_SHIP_REPAIR => BuildingFunctionTypeEnum::getShipyardOptions(),
             self::MENU_SHIP_RETROFIT => BuildingFunctionTypeEnum::getShipyardOptions(),

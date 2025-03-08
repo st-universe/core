@@ -2,11 +2,17 @@
 
 namespace Stu\Module\Spacecraft\Lib\Message;
 
+use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Information\InformationWrapper;
 
-interface MessageCollectionInterface
+interface MessageCollectionInterface extends InformationInterface
 {
     public function add(MessageInterface $msg): void;
+
+    public function addMessageBy(
+        string $text,
+        ?int $recipient = null
+    ): MessageInterface;
 
     /**
      * @return array<int>

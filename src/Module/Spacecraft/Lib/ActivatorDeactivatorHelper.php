@@ -261,7 +261,6 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         return true;
     }
 
-    #[Override]
     public function setLssMode(
         int $shipId,
         SpacecraftLssModeEnum $lssMode,
@@ -278,11 +277,12 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         $this->spacecraftRepository->save($ship);
 
         if ($lssMode->isBorderMode()) {
-            $game->addInformation("Territoriale Grenzanzeige aktiviert");
+            $game->addInformationf("%s für die Langstreckensensoren aktiviert", $lssMode->getDescription());
         } else {
-            $game->addInformation("Territoriale Grenzanzeige deaktiviert");
+            $game->addInformation("Filter für Langstreckensensoren wurde deaktiviert");
         }
     }
+
 
     #[Override]
     public function setAlertState(

@@ -5,6 +5,7 @@ namespace Stu\Module\Tick\Spacecraft;
 use Override;
 use RuntimeException;
 use Stu\Component\Faction\FactionEnum;
+use Stu\Component\Map\Effects\EffectHandlingInterface;
 use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Spacecraft\Repair\RepairUtilInterface;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
@@ -14,6 +15,8 @@ use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Station\StationUtilityInterface;
+use Stu\Lib\Information\InformationFactoryInterface;
+use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
@@ -46,16 +49,12 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
 {
     private LoggerUtilInterface $loggerUtil;
 
-    /**
-     * @var array<string>
-     */
-    private array $msg = [];
-
     public function __construct(
         private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
         private PrivateMessageSenderInterface $privateMessageSender,
         private SpacecraftRepositoryInterface $spacecraftRepository,
         private SpacecraftSystemManagerInterface $spacecraftSystemManager,
+        private EffectHandlingInterface $effectHandlingInterface,
         private SpacecraftLeaverInterface $spacecraftLeaver,
         private GameControllerInterface $game,
         private AstroEntryLibInterface $astroEntryLib,
@@ -69,6 +68,7 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
         private LocationMiningRepositoryInterface $locationMiningRepository,
         private CommodityRepositoryInterface $commodityRepository,
         private StorageRepositoryInterface $storageRepository,
+        private InformationFactoryInterface $informationFactory,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil(true);
@@ -85,33 +85,44 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
     #[Override]
     public function workSpacecraft(SpacecraftWrapperInterface $wrapper): void
     {
+        $informationWrapper = $this->informationFactory->createInformationWrapper();
+
+        $this->workSpacecraftInternal($wrapper, $informationWrapper);
+
+        $this->sendMessage($wrapper->get(), $informationWrapper);
+    }
+
+    private function workSpacecraftInternal(SpacecraftWrapperInterface $wrapper, InformationWrapper $informationWrapper): void
+    {
         $spacecraft = $wrapper->get();
+
+        $startTime = microtime(true);
+        $this->effectHandlingInterface->handleSpacecraftTick($wrapper, $informationWrapper);
+        $this->potentialLog($spacecraft, "marker0.1", $startTime);
 
         $startTime = microtime(true);
 
         // do construction stuff
-        if ($spacecraft instanceof StationInterface && $this->doConstructionStuff($spacecraft)) {
+        if ($spacecraft instanceof StationInterface && $this->doConstructionStuff($spacecraft, $informationWrapper)) {
             $this->spacecraftRepository->save($spacecraft);
-            $this->sendMessages($spacecraft);
             return;
         }
 
-        $this->potentialLog($spacecraft, "marker0", $startTime);
+        $this->potentialLog($spacecraft, "marker0.2", $startTime);
 
 
         $startTime = microtime(true);
         // repair station
-        if ($wrapper instanceof StationWrapperInterface && $spacecraft->getState() === SpacecraftStateEnum::SHIP_STATE_REPAIR_PASSIVE) {
-            $this->doRepairStation($wrapper);
+        if ($wrapper instanceof StationWrapperInterface && $spacecraft->getState() === SpacecraftStateEnum::REPAIR_PASSIVE) {
+            $this->doRepairStation($wrapper, $informationWrapper);
         }
         $this->potentialLog($spacecraft, "marker1", $startTime);
 
         $startTime = microtime(true);
         // leave ship
         if ($spacecraft->getCrewCount() > 0 && !$spacecraft->isSystemHealthy(SpacecraftSystemTypeEnum::LIFE_SUPPORT)) {
-            $this->msg[] = _('Die Lebenserhaltung ist ausgefallen:');
-            $this->msg[] = $this->spacecraftLeaver->evacuate($wrapper);
-            $this->sendMessages($spacecraft);
+            $informationWrapper->addInformation('Die Lebenserhaltung ist ausgefallen:');
+            $informationWrapper->addInformation($this->spacecraftLeaver->evacuate($wrapper));
             $this->potentialLog($spacecraft, "marker2", $startTime);
             return;
         }
@@ -129,7 +140,7 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
 
         // not enough crew
         if (!$hasEnoughCrew) {
-            $this->msg[] = _('Zu wenig Crew an Bord, Schiff ist nicht voll funktionsfähig! Systeme werden deaktiviert!');
+            $informationWrapper->addInformation('Zu wenig Crew an Bord, Schiff ist nicht voll funktionsfähig! Systeme werden deaktiviert!');
 
             //deactivate all systems except life support
             foreach ($this->spacecraftSystemManager->getActiveSystems($spacecraft) as $system) {
@@ -168,8 +179,8 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
                 $reduce = (int)min($malus, $alertUsage);
 
                 $spacecraft->setAlertState(SpacecraftAlertStateEnum::from($preState->value - $reduce));
-                $this->msg[] = sprintf(
-                    _('Wechsel von %s auf %s wegen Energiemangel'),
+                $informationWrapper->addInformationf(
+                    'Wechsel von %s auf %s wegen Energiemangel',
                     $preState->getDescription(),
                     $spacecraft->getAlertState()->getDescription()
                 );
@@ -195,12 +206,11 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
                     $this->spacecraftSystemManager->deactivate($wrapper, $system->getSystemType(), true);
 
                     $wrapper->lowerEpsUsage($energyConsumption);
-                    $this->msg[] = $system->getSystemType()->getDescription() . ' deaktiviert wegen Energiemangel';
+                    $informationWrapper->addInformationf('%s deaktiviert wegen Energiemangel', $system->getSystemType()->getDescription());
 
                     if ($spacecraft->getCrewCount() > 0 && $system->getSystemType() == SpacecraftSystemTypeEnum::LIFE_SUPPORT) {
-                        $this->msg[] = _('Die Lebenserhaltung ist ausgefallen:');
-                        $this->msg[] = $this->spacecraftLeaver->evacuate($wrapper);
-                        $this->sendMessages($spacecraft);
+                        $informationWrapper->addInformation('Die Lebenserhaltung ist ausgefallen:');
+                        $informationWrapper->addInformation($this->spacecraftLeaver->evacuate($wrapper));
                         return;
                     }
                 }
@@ -247,7 +257,7 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
         $this->potentialLog($spacecraft, "marker10", $startTime);
 
         $startTime = microtime(true);
-        $this->checkForFinishedAstroMapping($wrapper);
+        $this->checkForFinishedAstroMapping($wrapper, $informationWrapper);
         $this->potentialLog($spacecraft, "marker11", $startTime);
 
         //update tracker status
@@ -260,15 +270,11 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
         $this->potentialLog($spacecraft, "marker13", $startTime);
 
         $startTime = microtime(true);
-        $this->sendMessages($spacecraft);
-        $this->potentialLog($spacecraft, "marker14", $startTime);
-
-        $startTime = microtime(true);
-        $this->doBussardCollectorStuff($wrapper);
+        $this->doBussardCollectorStuff($wrapper, $informationWrapper);
         $this->potentialLog($spacecraft, "marker15", $startTime);
 
         $startTime = microtime(true);
-        $this->doAggregationSystemStuff($wrapper);
+        $this->doAggregationSystemStuff($wrapper, $informationWrapper);
         $this->potentialLog($spacecraft, "marker16", $startTime);
     }
 
@@ -344,7 +350,7 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
         return $effectiveWarpdriveProduction * $wrapper->get()->getRump()->getFlightECost();
     }
 
-    private function doConstructionStuff(StationInterface $station): bool
+    private function doConstructionStuff(StationInterface $station, InformationWrapper $informationWrapper): bool
     {
         $progress =  $station->getConstructionProgress();
         if ($progress === null) {
@@ -355,16 +361,16 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
             return false;
         }
 
-        $isUnderConstruction = $station->getState() === SpacecraftStateEnum::SHIP_STATE_UNDER_CONSTRUCTION;
+        $isUnderConstruction = $station->getState() === SpacecraftStateEnum::UNDER_CONSTRUCTION;
 
         if (!$this->stationUtility->hasEnoughDockedWorkbees($station, $station->getRump())) {
             $neededWorkbees = $isUnderConstruction ? $station->getRump()->getNeededWorkbees() :
                 (int)ceil($station->getRump()->getNeededWorkbees() / 2);
 
-            $this->msg[] = sprintf(
-                _('Nicht genügend Workbees (%d/%d) angedockt um %s weiterführen zu können'),
+            $informationWrapper->addInformationf(
+                'Nicht genügend Workbees (%d/%d) angedockt um %s weiterführen zu können',
                 $this->stationUtility->getDockedWorkbeeCount($station),
-                $neededWorkbees,
+                $neededWorkbees ?? 0,
                 $isUnderConstruction ? 'den Bau' : 'die Demontage'
             );
             return true;
@@ -377,18 +383,19 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
         }
 
         if ($progress->getRemainingTicks() === 1) {
-            if ($isUnderConstruction) {
-                $this->stationUtility->finishStation($progress);
-            } else {
-                $this->stationUtility->finishScrapping($progress);
-            }
 
-            $this->msg[] = sprintf(
-                _('%s: %s bei %s fertiggestellt'),
+            $informationWrapper->addInformationf(
+                '%s: %s bei %s fertiggestellt',
                 $station->getRump()->getName(),
                 $isUnderConstruction ? 'Bau' : 'Demontage',
                 $station->getSectorString()
             );
+
+            if ($isUnderConstruction) {
+                $this->stationUtility->finishStation($progress);
+            } else {
+                $this->stationUtility->finishScrapping($progress, $informationWrapper);
+            }
         } else {
             $this->stationUtility->reduceRemainingTicks($progress);
         }
@@ -396,15 +403,15 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
         return true;
     }
 
-    private function doRepairStation(StationWrapperInterface $wrapper): void
+    private function doRepairStation(StationWrapperInterface $wrapper, InformationWrapper $informationWrapper): void
     {
         $station = $wrapper->get();
 
         if (!$this->stationUtility->hasEnoughDockedWorkbees($station, $station->getRump())) {
             $neededWorkbees = (int)ceil($station->getRump()->getNeededWorkbees() / 5);
 
-            $this->msg[] = sprintf(
-                _('Nicht genügend Workbees (%d/%d) angedockt um die Reparatur weiterführen zu können'),
+            $informationWrapper->addInformationf(
+                'Nicht genügend Workbees (%d/%d) angedockt um die Reparatur weiterführen zu können',
                 $this->stationUtility->getDockedWorkbeeCount($station),
                 $neededWorkbees
             );
@@ -450,7 +457,7 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
 
         if (!$wrapper->canBeRepaired()) {
             $station->setHuell($station->getMaxHull());
-            $station->setState(SpacecraftStateEnum::SHIP_STATE_NONE);
+            $station->setState(SpacecraftStateEnum::NONE);
 
             $shipOwnerMessage = sprintf(
                 "Die Reparatur der %s wurde in Sektor %s fertiggestellt",
@@ -488,7 +495,7 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
         }
     }
 
-    private function checkForFinishedAstroMapping(SpacecraftWrapperInterface $wrapper): void
+    private function checkForFinishedAstroMapping(SpacecraftWrapperInterface $wrapper, InformationWrapper $informationWrapper): void
     {
         if (!$wrapper instanceof ShipWrapperInterface) {
             return;
@@ -499,6 +506,7 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
         $startTime = microtime(true);
 
         /** @var null|DatabaseEntryInterface $databaseEntry */
+        /** @var string $message */
         [$message, $databaseEntry] = $this->getDatabaseEntryForShipLocation($ship);
 
         $astroLab = $wrapper->getAstroLaboratorySystemData();
@@ -506,7 +514,7 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
         $this->potentialLog($ship, "marker11.1", $startTime);
 
         if (
-            $ship->getState() === SpacecraftStateEnum::SHIP_STATE_ASTRO_FINALIZING
+            $ship->getState() === SpacecraftStateEnum::ASTRO_FINALIZING
             && $databaseEntry !== null
             && $astroLab !== null
             && $this->game->getCurrentRound()->getTurn() >= ($astroLab->getAstroStartTurn() + AstronomicalMappingEnum::TURNS_TO_FINISH)
@@ -516,8 +524,8 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
             $this->astroEntryLib->finish($wrapper);
             $this->potentialLog($ship, "marker11.2", $startTime);
 
-            $this->msg[] = sprintf(
-                _('Die Kartographierung %s wurde vollendet'),
+            $informationWrapper->addInformationf(
+                'Die Kartographierung %s wurde vollendet',
                 $message
             );
 
@@ -534,8 +542,8 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
                 $entry = $this->createDatabaseEntry->createDatabaseEntryForUser($ship->getUser(), $databaseEntryId);
 
                 if ($entry !== null) {
-                    $this->msg[] = sprintf(
-                        _('Neuer Datenbankeintrag: %s (+%d Punkte)'),
+                    $informationWrapper->addInformationf(
+                        'Neuer Datenbankeintrag: %s (+%d Punkte)',
                         $entry->getDescription(),
                         $entry->getCategory()->getPoints()
                     );
@@ -604,7 +612,7 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
         }
     }
 
-    private function doBussardCollectorStuff(SpacecraftWrapperInterface $wrapper): void
+    private function doBussardCollectorStuff(SpacecraftWrapperInterface $wrapper, InformationWrapper $informationWrapper): void
     {
         if (!$wrapper instanceof ShipWrapperInterface) {
             return;
@@ -641,20 +649,31 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
             }
             if ($newAmount == 0 && $actualAmount > 0) {
                 $locationmining->setDepletedAt(time());
+                $informationWrapper->addInformationf(
+                    'Es sind keine %s bei den Koordinaten %s|%s vorhanden!',
+                    $locationmining->getCommodity()->getName(),
+                    (string)$locationmining->getLocation()->getCx(),
+                    (string)$locationmining->getLocation()->getCy()
+                );
             }
             $locationmining->setActualAmount($newAmount);
 
             $this->locationMiningRepository->save($locationmining);
+            if ($gathercount + $ship->getStorageSum() >= $ship->getMaxStorage()) {
+                $informationWrapper->addInformationf('Der Lagerraum des Schiffes wurde beim Sammeln von %s voll!', $locationmining->getCommodity()->getName());
+            }
 
-            $this->storageManager->upperStorage(
-                $ship,
-                $locationmining->getCommodity(),
-                $gathercount
-            );
+            if ($gathercount > 0) {
+                $this->storageManager->upperStorage(
+                    $ship,
+                    $locationmining->getCommodity(),
+                    $gathercount
+                );
+            }
         }
     }
 
-    private function doAggregationSystemStuff(SpacecraftWrapperInterface $wrapper): void
+    private function doAggregationSystemStuff(SpacecraftWrapperInterface $wrapper, InformationWrapper $informationWrapper): void
     {
         if (!$wrapper instanceof StationWrapperInterface) {
             return;
@@ -698,8 +717,7 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
                         'spacecraft' => $station
                     ]);
                     if (!$storage && $usedCommodity) {
-                        $this->msg[] = sprintf('Es ist kein %s vorhanden!', $usedCommodity->getName());
-                        $this->sendMessages($station);
+                        $informationWrapper->addInformationf('Es ist kein %s vorhanden!', $usedCommodity->getName());
                     }
 
                     if ($storage && $producedCommodity && $usedCommodity) {
@@ -715,8 +733,7 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
                                 $producedAmount
                             );
                         } else {
-                            $this->msg[] = sprintf('Nicht genügend %s vorhanden!', $usedCommodity->getName());
-                            $this->sendMessages($station);
+                            $informationWrapper->addInformationf('Nicht genügend %s vorhanden!', $usedCommodity->getName());
                         }
                     }
                 }
@@ -726,24 +743,20 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
 
 
 
-    private function sendMessages(SpacecraftInterface $ship): void
+    private function sendMessage(SpacecraftInterface $ship, InformationWrapper $informationWrapper): void
     {
-        if ($this->msg === []) {
+        if ($informationWrapper->isEmpty()) {
             return;
         }
-        $text = "Tickreport der " . $ship->getName() . "\n";
-        foreach ($this->msg as $msg) {
-            $text .= $msg . "\n";
-        }
+
+        $text = sprintf("Tickreport der %s\n%s", $ship->getName(), $informationWrapper->getInformationsAsString());
 
         $this->privateMessageSender->send(
             UserEnum::USER_NOONE,
             $ship->getUser()->getId(),
             $text,
             $ship->getType()->getMessageFolderType(),
-            $ship->getHref()
+            $ship
         );
-
-        $this->msg = [];
     }
 }

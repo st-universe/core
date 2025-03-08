@@ -11,12 +11,6 @@ use Stu\Module\Template\StatusBarColorEnum;
 class HullSystemData extends AbstractSystemData
 {
     #[Override]
-    public function update(): void
-    {
-        //nothing to do here
-    }
-
-    #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
         return SpacecraftSystemTypeEnum::HULL;

@@ -8,10 +8,12 @@ use RuntimeException;
 use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Lib\Information\InformationInterface;
+use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Spacecraft\Lib\Battle\Provider\AttackerInterface;
 use Stu\Module\Spacecraft\Lib\Damage\ApplyDamageInterface;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestroyerInterface;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionCauseEnum;
@@ -57,6 +59,26 @@ abstract class AbstractWeaponPhase
             $destructionCause,
             $message
         );
+    }
+
+    protected function getHitChance(AttackerInterface $attacker): int
+    {
+        $hitChance = $attacker->getHitChance();
+
+        return
+            $attacker->getLocation()->getFieldType()->hasEffect(FieldTypeEffectEnum::HIT_CHANCE_INTERFERENCE)
+            ? (int)ceil($hitChance / 100 * $this->stuRandom->rand(15, 60, true, 30))
+            : $hitChance;
+    }
+
+    protected function getEvadeChance(SpacecraftInterface $target): int
+    {
+        $evadeChance = $target->getEvadeChance();
+
+        return
+            $target->getLocation()->getFieldType()->hasEffect(FieldTypeEffectEnum::EVADE_CHANCE_INTERFERENCE)
+            ? (int)ceil($evadeChance / 100 * $this->stuRandom->rand(15, 60, true, 30))
+            : $evadeChance;
     }
 
     protected function getModule(SpacecraftInterface $ship, SpacecraftModuleTypeEnum $moduleType): ?ModuleInterface

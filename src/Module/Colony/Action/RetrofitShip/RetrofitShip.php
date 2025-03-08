@@ -299,7 +299,7 @@ final class RetrofitShip implements ActionControllerInterface
         $this->colonyRepository->save($colony);
         $this->colonyShipQueueRepository->save($queue);
 
-        $ship->setState(SpacecraftStateEnum::SHIP_STATE_RETROFIT);
+        $ship->setState(SpacecraftStateEnum::RETROFIT);
 
         $this->shipRepository->save($ship);
 

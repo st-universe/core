@@ -25,10 +25,28 @@ class SubspaceLayerRendererTest extends StuTestCase
         $this->subject = new SubspaceLayerRenderer();
     }
 
+    public function testRenderExpectEmptyStringIfSubspaceDisabled(): void
+    {
+        $mapData = $this->mock(SubspaceData::class);
+
+        $mapData->shouldReceive('isDisabled')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+
+        $result = $this->subject->render($mapData, $this->panel);
+
+        $this->assertEquals('', $result);
+    }
+
     public function testRenderExpectEmptyStringIfNoCodeAvailable(): void
     {
-        $mapData = mock(SubspaceData::class);
+        $mapData = $this->mock(SubspaceData::class);
 
+        $mapData->shouldReceive('isDisabled')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
         $mapData->shouldReceive('getDirection1Count')
             ->withNoArgs()
             ->once()
@@ -53,8 +71,12 @@ class SubspaceLayerRendererTest extends StuTestCase
 
     public function testRenderExpectRenderWhenCodeAvailable1(): void
     {
-        $mapData = mock(SubspaceData::class);
+        $mapData = $this->mock(SubspaceData::class);
 
+        $mapData->shouldReceive('isDisabled')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
         $mapData->shouldReceive('getDirection1Count')
             ->withNoArgs()
             ->andReturn(1);
@@ -84,8 +106,12 @@ class SubspaceLayerRendererTest extends StuTestCase
 
     public function testRenderExpectRenderWhenCodeAvailable2(): void
     {
-        $mapData = mock(SubspaceData::class);
+        $mapData = $this->mock(SubspaceData::class);
 
+        $mapData->shouldReceive('isDisabled')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
         $mapData->shouldReceive('getDirection1Count')
             ->withNoArgs()
             ->andReturn(2);

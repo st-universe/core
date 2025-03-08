@@ -7,6 +7,7 @@ namespace Stu\Module\Spacecraft\Lib\Battle\Provider;
 use Override;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\LocationInterface;
 use Stu\Orm\Entity\TorpedoTypeInterface;
 
 final class ProjectilePhalanx implements ProjectileAttackerInterface
@@ -119,5 +120,11 @@ final class ProjectilePhalanx implements ProjectileAttackerInterface
         $damage = random_int($basedamage - $variance, $basedamage + $variance);
 
         return $isCritical ? $damage * 2 : $damage;
+    }
+
+    #[Override]
+    public function getLocation(): LocationInterface
+    {
+        return $this->colony->getLocation();
     }
 }

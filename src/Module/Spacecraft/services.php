@@ -49,7 +49,7 @@ use Stu\Module\Spacecraft\Action\Selfrepair\Selfrepair;
 use Stu\Module\Spacecraft\Action\SendBroadcast\SendBroadcast;
 use Stu\Module\Spacecraft\Action\SetGreenAlert\SetGreenAlert;
 use Stu\Module\Spacecraft\Action\SetLSSModeBorder\SetLSSModeBorder;
-use Stu\Module\Spacecraft\Action\SetLSSModeNormal\SetLSSModeNormal;
+use Stu\Module\Spacecraft\Action\SetLSSMode\SetLSSMode;
 use Stu\Module\Spacecraft\Action\SetRedAlert\SetRedAlert;
 use Stu\Module\Spacecraft\Action\SetYellowAlert\SetYellowAlert;
 use Stu\Module\Spacecraft\Action\Shutdown\Shutdown;
@@ -83,6 +83,7 @@ use Stu\Module\Spacecraft\View\ShowAnalyseBuoy\ShowAnalyseBuoy;
 use Stu\Module\Spacecraft\View\ShowColonyScan\ShowColonyScan;
 use Stu\Module\Spacecraft\View\ShowEpsTransfer\ShowEpsTransfer;
 use Stu\Module\Spacecraft\View\ShowInformation\ShowInformation;
+use Stu\Module\Spacecraft\View\ShowLSSFilter\ShowLSSFilter;
 use Stu\Module\Spacecraft\View\ShowRegionInfo\ShowRegionInfo;
 use Stu\Module\Spacecraft\View\ShowRenameCrew\ShowRenameCrew;
 use Stu\Module\Spacecraft\View\ShowRepairOptions\ShowRepairOptions;
@@ -97,8 +98,8 @@ use Stu\Module\Spacecraft\View\ShowSpacecraft\SpacecraftTypeShowStragegyInterfac
 use Stu\Module\Station\View\ShowStation\StationShowStrategy;
 use Stu\Module\Spacecraft\Lib\ActivatorDeactivatorHelper;
 use Stu\Module\Spacecraft\Lib\ActivatorDeactivatorHelperInterface;
-use Stu\Module\Spacecraft\Lib\Auxiliary\ShipShutdown;
-use Stu\Module\Spacecraft\Lib\Auxiliary\ShipShutdownInterface;
+use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftShutdown;
+use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftShutdownInterface;
 use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertDetection;
 use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertDetectionInterface;
 use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertedShipInformation;
@@ -196,6 +197,7 @@ use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\Flight\WarpdriveCon
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight\AnomalyConsequence;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight\DeactivateTranswarpConsequence;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight\DeflectorConsequence;
+use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight\FieldTypeEffectConsequence;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight\PostFlightAstroMappingConsequence;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight\PostFlightConsequenceInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight\PostFlightDirectionConsequence;
@@ -239,6 +241,7 @@ use Stu\Module\Spacecraft\Lib\Torpedo\ClearTorpedo;
 use Stu\Module\Spacecraft\Lib\Torpedo\ClearTorpedoInterface;
 use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManager;
 use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
+use Stu\Module\Spacecraft\Lib\Ui\PanelLayerConfiguration;
 use Stu\Module\Spacecraft\Lib\Ui\ShipUiFactory;
 use Stu\Module\Spacecraft\Lib\Ui\ShipUiFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Ui\StateIconAndTitle;
@@ -280,7 +283,7 @@ return [
     TroopTransferUtilityInterface::class => autowire(TroopTransferUtility::class),
     SpacecraftRemoverInterface::class => autowire(SpacecraftRemover::class),
     ShipUndockingInterface::class => autowire(ShipUndocking::class),
-    ShipShutdownInterface::class => autowire(ShipShutdown::class),
+    SpacecraftShutdownInterface::class => autowire(SpacecraftShutdown::class),
     ThreatReactionInterface::class => autowire(ThreatReaction::class),
     CloseCombatUtilInterface::class => autowire(CloseCombatUtil::class),
     BoardShipUtilInterface::class => autowire(BoardShipUtil::class),
@@ -337,6 +340,7 @@ return [
         autowire(PostFlightTrackerConsequence::class),
         autowire(PostFlightTractorConsequence::class),
         autowire(DeflectorConsequence::class),
+        autowire(FieldTypeEffectConsequence::class),
         autowire(AnomalyConsequence::class)
     ],
     FlightRouteFactoryInterface::class => autowire(FlightRouteFactory::class)
@@ -360,7 +364,8 @@ return [
         SpacecraftTypeEnum::SHIP->value => autowire(ShipShowStrategy::class),
         SpacecraftTypeEnum::STATION->value => autowire(StationShowStrategy::class)
     ],
-    ShipUiFactoryInterface::class => autowire(ShipUiFactory::class),
+    ShipUiFactoryInterface::class => autowire(ShipUiFactory::class)
+        ->constructorParameter('panelLayerConfiguration', autowire(PanelLayerConfiguration::class)),
     SpacecraftDestructionInterface::class => autowire(SpacecraftDestruction::class)
         ->constructorParameter(
             'destructionHandlers',
@@ -391,7 +396,7 @@ return [
         Selfrepair::ACTION_IDENTIFIER => autowire(Selfrepair::class),
         SendBroadcast::ACTION_IDENTIFIER => autowire(SendBroadcast::class),
         SetLSSModeBorder::ACTION_IDENTIFIER => autowire(SetLSSModeBorder::class),
-        SetLSSModeNormal::ACTION_IDENTIFIER => autowire(SetLSSModeNormal::class),
+        SetLSSMode::ACTION_IDENTIFIER => autowire(SetLSSMode::class),
         BoardShip::ACTION_IDENTIFIER => autowire(BoardShip::class),
         StartTakeover::ACTION_IDENTIFIER => autowire(StartTakeover::class),
         StopTakeover::ACTION_IDENTIFIER => autowire(StopTakeover::class),
@@ -455,6 +460,7 @@ return [
         ShowColonyScan::VIEW_IDENTIFIER => autowire(ShowColonyScan::class),
         ShowEpsTransfer::VIEW_IDENTIFIER => autowire(ShowEpsTransfer::class),
         ShowInformation::VIEW_IDENTIFIER => autowire(ShowInformation::class),
+        ShowLSSFilter::VIEW_IDENTIFIER => autowire(ShowLSSFilter::class),
         ShowRegionInfo::VIEW_IDENTIFIER => autowire(ShowRegionInfo::class),
         ShowRenameCrew::VIEW_IDENTIFIER => autowire(ShowRenameCrew::class),
         ShowRepairOptions::VIEW_IDENTIFIER => autowire(ShowRepairOptions::class),

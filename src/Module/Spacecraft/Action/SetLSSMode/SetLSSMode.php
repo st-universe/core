@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Spacecraft\Action\SetLSSModeNormal;
+namespace Stu\Module\Spacecraft\Action\SetLSSMode;
 
 use Override;
 use request;
@@ -12,9 +12,9 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 
-final class SetLSSModeNormal implements ActionControllerInterface
+final class SetLSSMode implements ActionControllerInterface
 {
-    public const string ACTION_IDENTIFIER = 'B_SET_LSS_NORMAL';
+    public const string ACTION_IDENTIFIER = 'B_SET_LSS_MODE';
 
     public function __construct(private ActivatorDeactivatorHelperInterface $helper) {}
 
@@ -23,7 +23,15 @@ final class SetLSSModeNormal implements ActionControllerInterface
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $this->helper->setLssMode(request::indInt('id'), SpacecraftLssModeEnum::LSS_NORMAL, $game);
+        $modeInt = request::indInt('mode');
+
+        if (!SpacecraftLssModeEnum::tryFrom($modeInt)) {
+            return;
+        }
+
+        $mode = SpacecraftLssModeEnum::from($modeInt);
+
+        $this->helper->setLssMode(request::indInt('id'), $mode, $game);
     }
 
     #[Override]

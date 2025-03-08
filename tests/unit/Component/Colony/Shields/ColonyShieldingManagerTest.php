@@ -44,7 +44,7 @@ class ColonyShieldingManagerTest extends StuTestCase
         $this->colonyFunctionManager->shouldReceive('hasFunction')
             ->with(
                 $this->colony,
-                BuildingFunctionEnum::BUILDING_FUNCTION_SHIELD_GENERATOR
+                BuildingFunctionEnum::SHIELD_GENERATOR
             )
             ->once()
             ->andReturnTrue();
@@ -74,7 +74,7 @@ class ColonyShieldingManagerTest extends StuTestCase
         $this->colonyFunctionManager->shouldReceive('hasActiveFunction')
             ->with(
                 $this->colony,
-                BuildingFunctionEnum::BUILDING_FUNCTION_SHIELD_GENERATOR
+                BuildingFunctionEnum::SHIELD_GENERATOR
             )
             ->once()
             ->andReturnFalse();
@@ -89,7 +89,7 @@ class ColonyShieldingManagerTest extends StuTestCase
         $this->colonyFunctionManager->shouldReceive('hasActiveFunction')
             ->with(
                 $this->colony,
-                BuildingFunctionEnum::BUILDING_FUNCTION_SHIELD_GENERATOR
+                BuildingFunctionEnum::SHIELD_GENERATOR
             )
             ->once()
             ->andReturnTrue();
@@ -109,7 +109,7 @@ class ColonyShieldingManagerTest extends StuTestCase
         $this->colonyFunctionManager->shouldReceive('hasActiveFunction')
             ->with(
                 $this->colony,
-                BuildingFunctionEnum::BUILDING_FUNCTION_SHIELD_GENERATOR
+                BuildingFunctionEnum::SHIELD_GENERATOR
             )
             ->once()
             ->andReturnTrue();

@@ -91,7 +91,7 @@ final class SupportTholianWeb implements ActionControllerInterface
         $currentSpinnerSystems = $this->shipSystemRepository->getWebConstructingShipSystems($web->getId());
 
         $emitter->setWebUnderConstructionId($web->getId())->update();
-        $this->spacecraftStateChanger->changeShipState($wrapper, SpacecraftStateEnum::SHIP_STATE_WEB_SPINNING);
+        $this->spacecraftStateChanger->changeState($wrapper, SpacecraftStateEnum::WEB_SPINNING);
 
         $finishedTime = $this->tholianWebUtil->updateWebFinishTime($web, 1);
         if ($finishedTime === null) {

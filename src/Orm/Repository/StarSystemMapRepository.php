@@ -126,11 +126,15 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
                                         FROM stu_spacecraft_system ss2
                                         WHERE c.id = ss2.spacecraft_id
                                         AND ss2.system_type = :cloakSystemId
-                                        AND ss2.mode > 1)) AS cloakcount
+                                        AND ss2.mode > 1)) AS cloakcount,
+                (SELECT mft.effects FROM stu_map_ftypes mft
+                WHERE l.field_id = mft.id) as effects
             FROM stu_sys_map sm
+            JOIN stu_location l
+            ON sm.id = l.id
             WHERE sm.sx BETWEEN :xStart AND :xEnd AND sm.sy BETWEEN :yStart AND :yEnd
             AND sm.systems_id = :systemId
-            GROUP BY sm.id, sm.sy, sm.sx',
+            GROUP BY sm.id, sm.sy, sm.sx, l.field_id',
             $rsm
         )->setParameters([
             'xStart' => $boundaries->getMinX(),
@@ -168,13 +172,12 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
             'yEnd' => $boundaries->getMaxY(),
             'systemId' => $boundaries->getParentId(),
             'active' => 1,
-            'shieldBuilding' => BuildingFunctionEnum::BUILDING_FUNCTION_SHIELD_GENERATOR
+            'shieldBuilding' => BuildingFunctionEnum::SHIELD_GENERATOR
         ])->getResult();
     }
 
-
     #[Override]
-    public function getBorderData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
+    public function getNormalBorderData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
     {
         return $this->getEntityManager()->createNativeQuery(
             'SELECT sm.sx AS x, sm.sy AS y
@@ -191,6 +194,75 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
             'systemId' => $boundaries->getParentId()
         ])->getResult();
     }
+
+    #[Override]
+    public function getRegionBorderData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
+    {
+        return $this->getEntityManager()->createNativeQuery(
+            'SELECT sm.sx AS x, sm.sy AS y
+            FROM stu_sys_map sm
+            WHERE sm.systems_id = :systemId
+            AND sm.sx BETWEEN :xStart AND :xEnd
+            AND sm.sy BETWEEN :yStart AND :yEnd',
+            $rsm
+        )->setParameters([
+            'xStart' => $boundaries->getMinX(),
+            'xEnd' => $boundaries->getMaxX(),
+            'yStart' => $boundaries->getMinY(),
+            'yEnd' => $boundaries->getMaxY(),
+            'systemId' => $boundaries->getParentId()
+        ])->getResult();
+    }
+
+    // TODO: Show impassable only for cartographed systems. 
+    // Currently, it does not display any impassable areas.
+    #[Override]
+    public function getImpassableBorderData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
+    {
+        return $this->getEntityManager()->createNativeQuery(
+            'SELECT sm.sx AS x, sm.sy AS y, TRUE AS impassable,
+                    (SELECT mft.complementary_color FROM stu_map_ftypes mft JOIN stu_location l on l.id = sm.id where mft.id = l.field_id) AS complementary_color
+            FROM stu_sys_map sm
+            WHERE sm.systems_id = :systemId
+            AND sm.sx BETWEEN :xStart AND :xEnd
+            AND sm.sy BETWEEN :yStart AND :yEnd',
+            $rsm
+        )->setParameters([
+            'xStart' => $boundaries->getMinX(),
+            'xEnd' => $boundaries->getMaxX(),
+            'yStart' => $boundaries->getMinY(),
+            'yEnd' => $boundaries->getMaxY(),
+            'systemId' => $boundaries->getParentId()
+        ])->getResult();
+    }
+
+    #[Override]
+    public function getCartographingData(PanelBoundaries $boundaries, ResultSetMapping $rsm, array $locations): array
+    {
+        return $this->getEntityManager()->createNativeQuery(
+            'SELECT DISTINCT 
+                sm.sx AS x, 
+                sm.sy AS y, 
+                CASE 
+                    WHEN sm.id IN (:fieldIds) THEN TRUE ELSE FALSE
+                END AS cartographing,
+                    (SELECT mft.complementary_color FROM stu_map_ftypes mft JOIN stu_location l on l.id = sm.id where mft.id = l.field_id) AS complementary_color
+            FROM stu_sys_map sm
+            WHERE sm.sx BETWEEN :xStart AND :xEnd
+            AND sm.sy BETWEEN :yStart AND :yEnd
+            AND sm.systems_id = :systemId
+            ORDER BY cartographing DESC',
+            $rsm
+        )->setParameters([
+            'xStart' => $boundaries->getMinX(),
+            'xEnd' => $boundaries->getMaxX(),
+            'yStart' => $boundaries->getMinY(),
+            'yEnd' => $boundaries->getMaxY(),
+            'systemId' => $boundaries->getParentId(),
+            'fieldIds' => $locations
+        ])->getResult();
+    }
+
 
     #[Override]
     public function getAnomalyData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
@@ -213,46 +285,48 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
     }
 
     #[Override]
-    public function getIgnoringSubspaceLayerData(PanelBoundaries $boundaries, int $ignoreId, ResultSetMapping $rsm): array
+    public function getIgnoringSubspaceLayerData(PanelBoundaries $boundaries, int $ignoreUserId, ResultSetMapping $rsm): array
     {
         $maxAge = time() - FlightSignatureVisibilityEnum::SIG_VISIBILITY_UNCLOAKED;
 
         return $this->getEntityManager()->createNativeQuery(
-            sprintf(
-                'SELECT sm.sx as x, sm.sy AS y,
+            'SELECT sm.sx as x, sm.sy AS y, mft.effects as effects,
                 (select count(distinct fs1.ship_id) from stu_flight_sig fs1
                 where fs1.location_id = sm.id
-                AND fs1.user_id != %1$d
+                AND fs1.user_id != :ignoreUserId
                 AND (fs1.from_direction = 1 OR fs1.to_direction = 1)
-                AND fs1.time > %2$d) as d1c,
+                AND fs1.time > :timeThreshold) as d1c,
                 (select count(distinct fs2.ship_id) from stu_flight_sig fs2
                 where fs2.location_id = sm.id
-                AND fs2.user_id != %1$d
+                AND fs2.user_id != :ignoreUserId
                 AND (fs2.from_direction = 2 OR fs2.to_direction = 2)
-                AND fs2.time > %2$d) as d2c,
+                AND fs2.time > :timeThreshold) as d2c,
                 (select count(distinct fs3.ship_id) from stu_flight_sig fs3
                 where fs3.location_id = sm.id
-                AND fs3.user_id != %1$d
+                AND fs3.user_id != :ignoreUserId
                 AND (fs3.from_direction = 3 OR fs3.to_direction = 3)
-                AND fs3.time > %2$d) as d3c,
+                AND fs3.time > :timeThreshold) as d3c,
                 (select count(distinct fs4.ship_id) from stu_flight_sig fs4
                 where fs4.location_id = sm.id
-                AND fs4.user_id != %1$d
+                AND fs4.user_id != :ignoreUserId
                 AND (fs4.from_direction = 4 OR fs4.to_direction = 4)
-                AND fs4.time > %2$d) as d4c 
+                AND fs4.time > :timeThreshold) as d4c 
                 FROM stu_sys_map sm
+                JOIN stu_location l
+                ON sm.id = l.id
+                JOIN stu_map_ftypes mft
+                ON l.field_id = mft.id
                 WHERE sm.systems_id = :systemId
                 AND sm.sx BETWEEN :xStart AND :xEnd AND sm.sy BETWEEN :yStart AND :yEnd',
-                $ignoreId,
-                $maxAge
-            ),
             $rsm
         )->setParameters([
             'xStart' => $boundaries->getMinX(),
             'xEnd' => $boundaries->getMaxX(),
             'yStart' => $boundaries->getMinY(),
             'yEnd' => $boundaries->getMaxY(),
-            'systemId' => $boundaries->getParentId()
+            'systemId' => $boundaries->getParentId(),
+            'ignoreUserId' => $ignoreUserId,
+            'timeThreshold' => $maxAge
         ])->getResult();
     }
 

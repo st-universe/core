@@ -89,7 +89,7 @@ final class ShowScan implements ViewControllerInterface
                 $target->getSectorString()
             ),
             $target->getType()->getMessageFolderType(),
-            $target->getHref()
+            $target
         );
 
         $game->setTemplateVar('TARGETWRAPPER', $targetWrapper);

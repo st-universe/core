@@ -11,6 +11,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeInterface;
+use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftStateChangerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -37,6 +38,12 @@ final class CloakShipSystem extends AbstractSpacecraftSystemType implements Spac
 
         if ($spacecraft instanceof ShipInterface && $spacecraft->isTractored()) {
             $reason = _('das Schiff von einem Traktorstrahl gehalten wird');
+            return false;
+        }
+
+        $fieldType = $wrapper->get()->getLocation()->getFieldType();
+        if ($fieldType->hasEffect(FieldTypeEffectEnum::CLOAK_UNUSEABLE)) {
+            $reason = sprintf('"%s" es verhindert', $fieldType->getName());
             return false;
         }
 
@@ -76,7 +83,7 @@ final class CloakShipSystem extends AbstractSpacecraftSystemType implements Spac
         if ($spacecraft instanceof ShipInterface) {
             $spacecraft->setDockedTo(null);
         }
-        $this->spacecraftStateChanger->changeShipState($wrapper, SpacecraftStateEnum::SHIP_STATE_NONE);
+        $this->spacecraftStateChanger->changeState($wrapper, SpacecraftStateEnum::NONE);
 
         if ($spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::ASTRO_LABORATORY)) {
             $spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::ASTRO_LABORATORY)->setMode(SpacecraftSystemModeEnum::MODE_OFF);

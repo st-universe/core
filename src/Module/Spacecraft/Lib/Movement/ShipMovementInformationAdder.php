@@ -30,14 +30,14 @@ final class ShipMovementInformationAdder implements ShipMovementInformationAdder
         $messages->add($message);
 
         switch ($routeMode) {
-            case RouteModeEnum::ROUTE_MODE_FLIGHT:
+            case RouteModeEnum::FLIGHT:
                 $message->add(sprintf(
                     _('Die %s fliegt in Sektor %s ein'),
                     $name,
                     $spacecraft->getSectorString()
                 ));
                 break;
-            case RouteModeEnum::ROUTE_MODE_SYSTEM_ENTRY:
+            case RouteModeEnum::SYSTEM_ENTRY:
                 $system = $spacecraft->getSystem();
 
                 if ($system === null) {
@@ -50,13 +50,13 @@ final class ShipMovementInformationAdder implements ShipMovementInformationAdder
                     $system->getName()
                 ));
                 break;
-            case RouteModeEnum::ROUTE_MODE_SYSTEM_EXIT:
+            case RouteModeEnum::SYSTEM_EXIT:
                 $message->add(sprintf(
                     _('Die %s hat das Sternsystem verlassen'),
                     $name,
                 ));
                 break;
-            case RouteModeEnum::ROUTE_MODE_WORMHOLE_ENTRY:
+            case RouteModeEnum::WORMHOLE_ENTRY:
                 $system = $spacecraft->getSystem();
 
                 if ($system === null) {
@@ -69,10 +69,10 @@ final class ShipMovementInformationAdder implements ShipMovementInformationAdder
                     $system->getName()
                 ));
                 break;
-            case RouteModeEnum::ROUTE_MODE_WORMHOLE_EXIT:
+            case RouteModeEnum::WORMHOLE_EXIT:
                 $message->add($isFleetMode ? 'Die Flotte hat das Wurmloch verlassen' : 'Das Wurmloch wurde verlassen');
                 break;
-            case RouteModeEnum::ROUTE_MODE_TRANSWARP:
+            case RouteModeEnum::TRANSWARP:
                 $message->add(sprintf(
                     _('Die %s verlässt den Transwarpkanal in Sektor %s'),
                     $name,
@@ -81,6 +81,19 @@ final class ShipMovementInformationAdder implements ShipMovementInformationAdder
                 break;
             default:
                 throw new InvalidArgumentException(sprintf('route mode %d does not exist', $routeMode));
+        }
+
+        $fieldType = $spacecraft->getLocation()->getFieldType();
+        foreach ($fieldType->getEffects() as $effect) {
+
+            $fieldType = $spacecraft->getLocation()->getFieldType();
+            $flightDestinationInfo = $effect->getFlightDestinationInfo($fieldType);
+            if ($flightDestinationInfo !== null) {
+                $messages->addMessageBy(
+                    sprintf("[color=yellow]%s[/color]", $flightDestinationInfo),
+                    $spacecraft->getUser()->getId()
+                );
+            }
         }
     }
 
@@ -100,14 +113,14 @@ final class ShipMovementInformationAdder implements ShipMovementInformationAdder
         $messages->add($message);
 
         switch ($routeMode) {
-            case RouteModeEnum::ROUTE_MODE_FLIGHT:
+            case RouteModeEnum::FLIGHT:
                 $message->add(sprintf(
                     _('Beim Einflug in Sektor %s wurde die %s zerstört'),
                     $spacecraft->getSectorString(),
                     $name
                 ));
                 break;
-            case RouteModeEnum::ROUTE_MODE_SYSTEM_ENTRY:
+            case RouteModeEnum::SYSTEM_ENTRY:
                 $system = $spacecraft->getSystem();
 
                 if ($system === null) {
@@ -120,13 +133,13 @@ final class ShipMovementInformationAdder implements ShipMovementInformationAdder
                     $name
                 ));
                 break;
-            case RouteModeEnum::ROUTE_MODE_SYSTEM_EXIT:
+            case RouteModeEnum::SYSTEM_EXIT:
                 $message->add(sprintf(
                     _('Beim Verlassen des Sternsystem wurde die %s zerstört'),
                     $name
                 ));
                 break;
-            case RouteModeEnum::ROUTE_MODE_WORMHOLE_ENTRY:
+            case RouteModeEnum::WORMHOLE_ENTRY:
                 $system = $spacecraft->getSystem();
 
                 if ($system === null) {
@@ -138,7 +151,7 @@ final class ShipMovementInformationAdder implements ShipMovementInformationAdder
                     $name
                 ));
                 break;
-            case RouteModeEnum::ROUTE_MODE_WORMHOLE_EXIT:
+            case RouteModeEnum::WORMHOLE_EXIT:
                 $message->add(
                     sprintf(
                         _('Beim Verlassen des Wurmlochs wurde die %s zerstört'),
@@ -146,7 +159,7 @@ final class ShipMovementInformationAdder implements ShipMovementInformationAdder
                     )
                 );
                 break;
-            case RouteModeEnum::ROUTE_MODE_TRANSWARP:
+            case RouteModeEnum::TRANSWARP:
                 $message->add(
                     sprintf(
                         _('Beim Verlassen des Transwarpkanals wurde die %s zerstört'),
@@ -177,23 +190,23 @@ final class ShipMovementInformationAdder implements ShipMovementInformationAdder
         $sectorString = $spacecraft->getSectorString();
 
         switch ($routeMode) {
-            case RouteModeEnum::ROUTE_MODE_FLIGHT:
+            case RouteModeEnum::FLIGHT:
                 $message->add(sprintf(
                     _('Die %s wurde via Traktorstrahl bis %s mitgezogen'),
                     $tractoredShipName,
                     $sectorString
                 ));
                 break;
-            case RouteModeEnum::ROUTE_MODE_SYSTEM_ENTRY:
+            case RouteModeEnum::SYSTEM_ENTRY:
                 $message->add(sprintf(_('Die %s wurde mit in das System gezogen'), $tractoredShipName));
                 break;
-            case RouteModeEnum::ROUTE_MODE_SYSTEM_EXIT:
+            case RouteModeEnum::SYSTEM_EXIT:
                 $message->add(sprintf(_('Die %s wurde mit aus dem System gezogen'), $tractoredShipName));
                 break;
-            case RouteModeEnum::ROUTE_MODE_WORMHOLE_ENTRY:
+            case RouteModeEnum::WORMHOLE_ENTRY:
                 $message->add(sprintf(_('Die %s wurde mit in das Wurmloch gezogen'), $tractoredShipName));
                 break;
-            case RouteModeEnum::ROUTE_MODE_WORMHOLE_EXIT:
+            case RouteModeEnum::WORMHOLE_EXIT:
                 $message->add(sprintf(_('Die %s wurde mit aus dem Wurmloch gezogen'), $tractoredShipName));
                 break;
             default:

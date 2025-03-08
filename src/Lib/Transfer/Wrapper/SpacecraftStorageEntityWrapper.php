@@ -17,10 +17,8 @@ use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Lib\Pirate\PirateReactionTriggerEnum;
 use Stu\Lib\Transfer\CommodityTransferInterface;
 use Stu\Lib\Transfer\EntityWithStorageInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
-use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Spacecraft\Lib\ActivatorDeactivatorHelperInterface;
-use Stu\Module\Spacecraft\Lib\Auxiliary\ShipShutdownInterface;
+use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftShutdownInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -43,8 +41,7 @@ class SpacecraftStorageEntityWrapper implements StorageEntityWrapperInterface
         private ActivatorDeactivatorHelperInterface $activatorDeactivatorHelper,
         private SpacecraftSystemManagerInterface $spacecraftSystemManager,
         private SpacecraftCrewCalculatorInterface $shipCrewCalculator,
-        private ShipShutdownInterface $shipShutdown,
-        private PrivateMessageSenderInterface $privateMessageSender,
+        private SpacecraftShutdownInterface $spacecraftShutdown,
         private SpacecraftWrapperInterface $spacecraftWrapper
     ) {
         $this->spacecraft = $spacecraftWrapper->get();
@@ -322,21 +319,36 @@ class SpacecraftStorageEntityWrapper implements StorageEntityWrapperInterface
     {
         // no crew left, so shut down
         if ($this->spacecraft->getCrewCount() === 0) {
-            $this->shipShutdown->shutdown($this->spacecraftWrapper);
+            $this->spacecraftShutdown->shutdown($this->spacecraftWrapper);
             return;
         }
 
         if ($foreignCrewChangeAmount !== 0) {
 
-            $isOn = $this->troopTransferUtility->foreignerCount($this->spacecraft) > 0;
+            $ownCrew = $this->getOwnCrewCount($this->spacecraft);
+            $minOwnCrew = 0;
+            $buildplan = $this->spacecraft->getBuildplan();
+            if ($buildplan) {
+                $minOwnCrew = $buildplan->getCrew();
+            }
+
+            $hasForeigners = $this->troopTransferUtility->foreignerCount($this->spacecraft) > 0;
             if (
-                !$isOn
+                !$hasForeigners
                 && $this->spacecraft->getSystemState(SpacecraftSystemTypeEnum::UPLINK)
             ) {
                 $this->spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::UPLINK)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
             }
+            if (
+                $hasForeigners
+                && !$this->spacecraft->getSystemState(SpacecraftSystemTypeEnum::UPLINK)
+            ) {
+                if ($ownCrew >= $minOwnCrew) {
+                    $this->spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::UPLINK)->setMode(SpacecraftSystemModeEnum::MODE_ON);
+                }
+            }
 
-            $this->sendUplinkMessage($foreignCrewChangeAmount, $isOn, $other);
+            $this->sendUplinkMessage($hasForeigners, $information, $this->spacecraft->getSystemState(SpacecraftSystemTypeEnum::UPLINK), $ownCrew >= $minOwnCrew);
         }
 
         if (
@@ -365,24 +377,31 @@ class SpacecraftStorageEntityWrapper implements StorageEntityWrapperInterface
         }
     }
 
-    private function sendUplinkMessage(int $foreignCrewChangeAmount, bool $isOn, StorageEntityWrapperInterface $other): void
+    private function sendUplinkMessage(bool $hasForeigners, InformationInterface $information, bool $state, bool $enoughOwnCrew): void
     {
-        $msg = sprintf(
-            _('Die %s von Spieler %s hat 1 Crewman %s deiner Station %s gebeamt. Der Uplink ist %s'),
-            $other->getName(),
-            $other->getUser()->getName(),
-            $foreignCrewChangeAmount > 0 ? 'zu' : 'von',
-            $this->spacecraft->getName(),
-            $isOn ? 'aktiviert' : 'deaktiviert'
-        );
+        if (!$hasForeigners) {
+            $information->addInformationf(
+                'Der Uplink ist %s',
+                $state ? 'aktiviert' : 'deaktiviert'
+            );
+        } else {
+            $information->addInformationf(
+                'Der Uplink %s%s',
+                $state ? 'ist aktiviert' : 'bleibt deaktiviert',
+                $enoughOwnCrew ? '' : '. Es befindet sich nicht ausreichend Crew des Besitzers an Bord'
+            );
+        }
+    }
 
-        $this->privateMessageSender->send(
-            $other->getUser()->getId(),
-            $this->spacecraft->getUser()->getId(),
-            $msg,
-            PrivateMessageFolderTypeEnum::SPECIAL_STATION,
-            $this->spacecraft->getHref()
-        );
+    private function getOwnCrewCount(SpacecraftInterface $spacecraft): int
+    {
+        $count = 0;
+        foreach ($spacecraft->getCrewAssignments() as $spacecraftCrew) {
+            if ($spacecraftCrew->getCrew()->getUser() === $spacecraft->getUser()) {
+                $count++;
+            }
+        }
+        return $count;
     }
 
     // TORPEDOS

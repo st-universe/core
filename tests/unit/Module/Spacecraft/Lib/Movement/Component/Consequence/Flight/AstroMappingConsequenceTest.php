@@ -82,7 +82,7 @@ class AstroMappingConsequenceTest extends StuTestCase
         $this->ship->shouldReceive('getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(SpacecraftStateEnum::SHIP_STATE_NONE);
+            ->andReturn(SpacecraftStateEnum::NONE);
 
         $this->subject->trigger(
             $this->wrapper,
@@ -103,7 +103,7 @@ class AstroMappingConsequenceTest extends StuTestCase
         $this->ship->shouldReceive('getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(SpacecraftStateEnum::SHIP_STATE_ASTRO_FINALIZING);
+            ->andReturn(SpacecraftStateEnum::ASTRO_FINALIZING);
         $this->ship->shouldReceive('getUser->getId')
             ->withNoArgs()
             ->once()

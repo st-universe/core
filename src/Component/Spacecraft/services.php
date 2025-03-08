@@ -9,6 +9,8 @@ use Stu\Component\Spacecraft\Buildplan\BuildplanSignatureCreationInterface;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculator;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Component\Spacecraft\Event\Listener\WarpdriveActivationSubscriber;
+use Stu\Component\Spacecraft\Module\ModuleRecycling;
+use Stu\Component\Spacecraft\Module\ModuleRecyclingInterface;
 use Stu\Component\Spacecraft\Nbs\NbsUtility;
 use Stu\Component\Spacecraft\Nbs\NbsUtilityInterface;
 use Stu\Component\Spacecraft\Repair\CancelRepair;
@@ -111,6 +113,7 @@ return [
         ],
         autowire(StuTime::class)
     ),
+    ModuleRecyclingInterface::class => autowire(ModuleRecycling::class),
     SpacecraftCrewCalculatorInterface::class => autowire(SpacecraftCrewCalculator::class),
     BuildplanSignatureCreationInterface::class => autowire(BuildplanSignatureCreation::class),
     SpacecraftSystemWrapperFactoryInterface::class => autowire(SpacecraftSystemWrapperFactory::class),

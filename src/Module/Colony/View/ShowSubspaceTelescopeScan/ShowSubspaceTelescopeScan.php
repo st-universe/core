@@ -47,7 +47,7 @@ final class ShowSubspaceTelescopeScan implements ViewControllerInterface
             $userId
         );
 
-        if (!$this->colonyFunctionManager->hasFunction($colony, BuildingFunctionEnum::BUILDING_FUNCTION_SUBSPACE_TELESCOPE)) {
+        if (!$this->colonyFunctionManager->hasFunction($colony, BuildingFunctionEnum::SUBSPACE_TELESCOPE)) {
             return;
         }
 

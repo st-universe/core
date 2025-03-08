@@ -3,6 +3,7 @@
 namespace Stu\Lib\Pirate\Behaviour;
 
 use Override;
+use RuntimeException;
 use Stu\Lib\Pirate\Component\Coordinate;
 use Stu\Lib\Pirate\Component\PirateFlightInterface;
 use Stu\Lib\Pirate\Component\SafeFlightRouteInterface;
@@ -15,8 +16,8 @@ use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\LocationInterface;
-use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
 
@@ -61,7 +62,7 @@ class FlyBehaviour implements PirateBehaviourInterface
 
         $flightRoute = $this->safeFlightRoute->getSafeFlightRoute(
             $leadShip,
-            fn(): Coordinate => $this->getCoordinate($leadShip, $currentLocation)
+            fn(): Coordinate => $this->getCoordinate($leadWrapper, $currentLocation)
         );
         if ($flightRoute === null) {
             $this->logger->log('    no safe flight route found');
@@ -77,11 +78,12 @@ class FlyBehaviour implements PirateBehaviourInterface
     }
 
     private function getCoordinate(
-        ShipInterface $leadShip,
+        SpacecraftWrapperInterface $leadWrapper,
         LocationInterface $currentLocation
     ): Coordinate {
+
         $isInXDirection = $this->stuRandom->rand(0, 1) === 0;
-        $maxFields = $leadShip->getSensorRange() * 2;
+        $maxFields = $leadWrapper->getSensorRange() * 2;
 
         return new Coordinate(
             $isInXDirection ? $currentLocation->getX() + $this->stuRandom->rand(-$maxFields, $maxFields) : $currentLocation->getX(),

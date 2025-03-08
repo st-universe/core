@@ -2,6 +2,8 @@
 
 namespace Stu\Orm\Entity;
 
+use Stu\Lib\Map\FieldTypeEffectEnum;
+
 interface MapFieldTypeInterface
 {
     public function getId(): int;
@@ -44,7 +46,19 @@ interface MapFieldTypeInterface
 
     public function setPassable(bool $passable): MapFieldTypeInterface;
 
-    public function getPassableAsInt(): int;
+    public function getComplementaryColor(): ?string;
+
+    public function setComplementaryColor(?string $complementaryColor): MapFieldTypeInterface;
 
     public function getColonyClass(): ?ColonyClassInterface;
+
+    /** @return array<FieldTypeEffectEnum> */
+    public function getEffects(): array;
+
+    /** @param null|array<FieldTypeEffectEnum> $consequences */
+    public function setEffects(?array $consequences): MapFieldTypeInterface;
+
+    public function hasEffect(FieldTypeEffectEnum $effect): bool;
+
+    public function getEffectsAsString(): ?string;
 }

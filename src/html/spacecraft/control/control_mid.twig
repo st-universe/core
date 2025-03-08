@@ -214,6 +214,7 @@ canColonize, closestAnomalyDistance) %}
             {% endif %}
             {% set mapRegion = location.getMapRegion %}
             {% if mapRegion %}
+            </br>
             <a href="javascript:void(0);" onclick="showRegionInfo({{ mapRegion.getId }})"
                 onmouseover="cp('mapRegionButton','buttons/info2')" onmouseout="cp('mapRegionButton','buttons/info1')">
                 <img src="/assets/buttons/info1.png" name="mapRegionButton" />
@@ -221,7 +222,7 @@ canColonize, closestAnomalyDistance) %}
             </a>
             {% endif %}
             {% if location.getInfluenceArea and location.getInfluenceArea.getStation %}
-            {{ _self.influenceArea(location.getInfluenceArea.getStation.getUser, ship) }}
+            {{ _self.influenceArea(location.getInfluenceArea.getStation.getUser, SPACECRAFT) }}
             {% endif %}
             {% set anomalies = location.getAnomalies %}
             {% if anomalies|length > 0 %}
@@ -231,8 +232,7 @@ canColonize, closestAnomalyDistance) %}
             {% endfor %}
             {% elseif SPACECRAFT.getLss and closestAnomalyDistance %}
             <br />
-            <span
-                style="border: 2px solid {{ gradientColor(closestAnomalyDistance, SPACECRAFT.getSensorRange * 2, 1) }}"
+            <span style="border: 2px solid {{ gradientColor(closestAnomalyDistance, wrapper.getSensorRange * 2, 1) }}"
                 title="Es wurde eine Anomalie in der Nähe detektiert">Anomalie in der Nähe</span>
             {% endif %}
         </td>
@@ -423,8 +423,8 @@ canColonize, closestAnomalyDistance) %}
 {% set target = astroStateWrapper.isSystem ? SPACECRAFT.getSystem : SPACECRAFT.getMapRegion %}
 {% set shipAstroState = SPACECRAFT.getAstroState %}
 {% if astroStateWrapper.isPlannable %}
-<br />
 {% if shipAstroState and target %}
+<br />
 <a href="javascript:void(0);"
     onClick="actionToInnerContent('B_PLAN_ASTRO', 'id={{ shipId }}&sstr={{ SESSIONSTRING }}');"
     onmouseover="cp('astroButton','buttons/map2')" onmouseout="cp('astroButton','buttons/map1')">
@@ -441,11 +441,9 @@ canColonize, closestAnomalyDistance) %}
 <br />
 {% if SPACECRAFT.getAstroState %}
 {% set isSystem = astroStateWrapper.isSystem ? 1 : 0 %}
-<a href="javascript:void(0);" onclick="showAstroEntryWindow({{ isSystem }})"
-    onmouseover="cp('astroButton','buttons/map1')" onmouseout="cp('astroButton','buttons/map2')">
-    <img src="/assets/buttons/map2.png" name="astroButton" />
-    <span>Messpunkte ansehen ({{ astroStateWrapper.getType }})</span>
-</a>
+<img src="/assets/buttons/map2.png" name="astroButton" />
+<span>Verbleibende Messpunkte: {{ astroStateWrapper.getMeasurepointsLeft }} </span>
+
 {% else %}
 <img src="/assets/buttons/map2.png" />
 <span>Kartographierung ist geplant ({{ astroStateWrapper.getType }})</span>
@@ -483,12 +481,13 @@ canColonize, closestAnomalyDistance) %}
 {% endmacro %}
 
 
-{% macro influenceArea(user, ship) %}
+{% macro influenceArea(user, spacecraft) %}
 {% from 'html/macros.twig' import userAvatar %}
 {% from 'html/alliancemacros.twig' import alliance_avatar %}
 {% set alliance = user.getAlliance %}
-{% set location = SPACECRAFT.getLocation %}
+{% set location = spacecraft.getLocation %}
 {% if alliance %}
+</br>
 <a href="alliance.php?id={{ alliance.getId }}">
     <div class="shipTerritoryView">
         {{ alliance_avatar(alliance) }}
@@ -504,9 +503,9 @@ canColonize, closestAnomalyDistance) %}
     {{ userAvatar(user) }}
     <a href="userprofile.php?uid={{ user.getId }}">
         {% if location.getAdministratedRegion %}
-        <span>Territorium des Siedlers {{ user.getName|bbcode }}</span>
-        {% else %}
         <span>Einflussbereich des Siedlers {{ user.getName|bbcode }}</span>
+        {% else %}
+        <span>Territorium des Siedlers {{ user.getName|bbcode }}</span>
         {% endif %}
     </a>
 </div>

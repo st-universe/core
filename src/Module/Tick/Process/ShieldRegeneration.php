@@ -5,34 +5,61 @@ declare(strict_types=1);
 namespace Stu\Module\Tick\Process;
 
 use Override;
+use Stu\Component\Game\TimeConstants;
+use Stu\Lib\Map\FieldTypeEffectEnum;
+use Stu\Module\Control\StuTime;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class ShieldRegeneration implements ProcessTickHandlerInterface
 {
-    private const int SHIELD_REGENERATION_TIME = 900;
+    public const int SHIELD_REGENERATION_TIME = TimeConstants::FIFTEEN_MINUTES_IN_SECONDS;
 
-    public function __construct(private SpacecraftRepositoryInterface $spacecraftRepository) {}
+    /** @var array<FieldTypeEffectEnum> */
+    public const array PREVENTING_FIELD_TYPE_EFFECTS = [
+        FieldTypeEffectEnum::SHIELD_MALFUNCTION
+    ];
+
+    public function __construct(
+        private SpacecraftRepositoryInterface $spacecraftRepository,
+        private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
+        private StuTime $stuTime
+    ) {}
 
     #[Override]
     public function work(): void
     {
-        $time = time();
-        $result = $this->spacecraftRepository->getSuitableForShieldRegeneration($time - self::SHIELD_REGENERATION_TIME);
-        $processedCount = 0;
-        foreach ($result as $obj) {
-            $processedCount++;
+        $time = $this->stuTime->time();
+        $regenerationThreshold = $time - self::SHIELD_REGENERATION_TIME;
 
-            $rate = $obj->getShieldRegenerationRate();
-            if ($obj->getShield() + $rate > $obj->getMaxShield()) {
-                $rate = $obj->getMaxShield() - $obj->getShield();
+        foreach ($this->spacecraftRepository->getSuitableForShieldRegeneration() as $spacecraft) {
+
+            $wrapper = $this->spacecraftWrapperFactory->wrapSpacecraft($spacecraft);
+            $shieldSystemData = $wrapper->getShieldSystemData();
+            if ($shieldSystemData === null) {
+                continue;
             }
-            $obj->setShield($obj->getShield() + $rate);
-            $obj->setShieldRegenerationTimer($time);
 
-            $this->spacecraftRepository->save($obj);
+            if ($shieldSystemData->getShieldRegenerationTimer() > $regenerationThreshold) {
+                continue;
+            }
+
+            $fieldType = $spacecraft->getLocation()->getFieldType();
+            foreach (self::PREVENTING_FIELD_TYPE_EFFECTS as $effect) {
+                if ($fieldType->hasEffect($effect)) {
+                    continue 2;
+                }
+            }
+
+            $rate = $wrapper->getShieldRegenerationRate();
+            if ($spacecraft->getShield() + $rate > $spacecraft->getMaxShield()) {
+                $rate = $spacecraft->getMaxShield() - $spacecraft->getShield();
+            }
+            $spacecraft->setShield($spacecraft->getShield() + $rate);
+
+            $shieldSystemData->setShieldRegenerationTimer($time)->update();
+
+            $this->spacecraftRepository->save($spacecraft);
         }
-
-        //$this->loggerUtil->init('shield', LoggerEnum::LEVEL_ERROR);
-        //$this->loggerUtil->log(sprintf('shieldRegenDuration:%d s, processedCount: %d', time() - $time, $processedCount));
     }
 }

@@ -3,16 +3,17 @@
 {% block body %}
 {% include 'html/breadcrumb.twig' %}
 <div>
-	<img src="/assets/buttons/alert0.png" title="deselect" style="cursor: pointer;" onclick="fieldEventSelector(0)" />
-	<img src="/assets/buttons/alert1.png" title="region id" style="cursor: pointer;" onclick="fieldEventSelector(1)" />
+	<img src="/assets/buttons/alert0.png" title="deselect" style="cursor: pointer;" onclick="fieldEventSelector(0);" />
+	<img src="/assets/buttons/alert1.png" title="region id" style="cursor: pointer;" onclick="fieldEventSelector(1);" />
 	<img src="/assets/buttons/alert2.png" title="admin region id" style="cursor: pointer;"
 		onclick="fieldEventSelector(2)" />
 	<img src="/assets/buttons/alert3.png" title="system type id" style="cursor: pointer;"
 		onclick="fieldEventSelector(3)" />
-	<img src="/assets/buttons/block1.png" title="passable" style="cursor: pointer;" onclick="fieldEventSelector(4)" />
-	<img src="/assets/buttons/lss_button1.png" title="Area" style="cursor: pointer;" onclick="fieldEventSelector(5)" />
+	<img src="/assets/buttons/block1.png" title="passable" style="cursor: pointer;" onclick="fieldEventSelector(4);" />
+	<img src="/assets/buttons/lss_button1.png" title="Area" style="cursor: pointer;" onclick="fieldEventSelector(5);" />
+	<img src="/assets/buttons/stern2.png" title="Effects" style="cursor: pointer;" onclick="fieldEventSelector(6);" />
 	<span>Transparenz: </span><input type="range" id="transparencySlider" min="0" max="1" step="0.1" value="0.5"
-		onchange="updateTransparency(this.value)" style="margin-left: 20px;">
+		onchange="updateTransparency(this.value)" style="margin-left: 20px;" />
 </div>
 <div style="float: left">
 	<table cellpadding="0" cellspacing="0">
@@ -25,9 +26,7 @@
 					<tr>
 						<th style="width: 30px;">/\</th>
 						{% for mapItem in TOP_PREVIEW_ROW %}
-						<td class="starmap" id="{{ mapItem.getMap.getCx }}_{{ mapItem.getMap.getCy }}">
-							<div class="lssobj"><img src="/assets/map/{{ mapItem.getMapGraphicPath }}" /></div>
-						</td>
+						{% include 'html/admin/mapeditor_location.twig' %}
 						{% endfor %}
 					</tr>
 				</table>
@@ -48,11 +47,7 @@
 					{% for row in LEFT_PREVIEW_ROW %}
 					<tr>
 						{% for mapItem in row.getFields %}
-						{% set map = mapItem.getMap %}
-						<td class="starmap" id="{{ map.getCx }}_{{ map.getCy }}">
-							<div class="lssobj"><img src="/assets/map/{{ mapItem.getMapGraphicPath }}" />
-							</div>
-						</td>
+						{% include 'html/admin/mapeditor_location.twig' %}
 						{% endfor %}
 					</tr>
 					{% endfor %}
@@ -72,20 +67,7 @@
 					<tr>
 						<th>{{ yrow.getRow }}</th>
 						{% for mapItem in yrow.getFields %}
-						{% set map = mapItem.getMap %}
-						<td class="starmap" data-passable="{{ map.getFieldType.getPassableAsInt }}"
-							data-region="{{ map.getRegionId }}" data-admin-region="{{ map.getAdminRegionId }}"
-							data-system-type-id="{{ map.getSystemTypeId }}" id="{{ map.getCx }}_{{ map.getCy }}"
-							data-influence-area="{{map.getInfluenceAreaId}}">
-							<div class="lssobj" style="cursor: pointer ! important;"
-								onmouseover="toggleMapfieldType(this)" onmouseout="toggleMapfieldType(this)">
-								<div class="divbody"
-									style="/*! position: absolute; */ /*! top: 0; */ /*! left: 0; */ padding: 0px !important; width: 30px; height: 30px;"
-									onclick="updateField(this,{{ map.getId }});">
-									<img src="/assets/map/{{ mapItem.getMapGraphicPath }}" />
-								</div>
-							</div>
-						</td>
+						{% include 'html/admin/mapeditor_location.twig' %}
 						{% endfor %}
 					</tr>
 					{% endfor %}
@@ -99,11 +81,7 @@
 					{% for row in RIGHT_PREVIEW_ROW %}
 					<tr>
 						{% for mapItem in row.getFields %}
-						{% set map = mapItem.getMap %}
-						<td class="starmap" id="{{ map.getCx }}_{{ map.getCy }}">
-							<div class="lssobj"><img src="/assets/map/{{ mapItem.getMapGraphicPath }}" />
-							</div>
-						</td>
+						{% include 'html/admin/mapeditor_location.twig' %}
 						{% endfor %}
 					</tr>
 					{% endfor %}
@@ -124,9 +102,7 @@
 					<tr>
 						<th style="width: 30px;">\/</th>
 						{% for mapItem in BOTTOM_PREVIEW_ROW %}
-						<td class="starmap" id="{{ mapItem.getMap.getCx }}_{{ mapItem.getMap.getCy }}">
-							<div class="lssobj"><img src="/assets/map/{{ mapItem.getMapGraphicPath }}" /></div>
-						</td>
+						{% include 'html/admin/mapeditor_location.twig' %}
 						{% endfor %}
 					</tr>
 				</table>
@@ -138,32 +114,34 @@
 	</table>
 </div>
 <div style="margin-left: 10px; width: 100px; float: left">
-	<table class="tcal">
-		<tr>
-			<td style="text-align: center" colspan="3">
-				<a id="navup" href="javascript:void(0);" onclick="refreshMapSection(4, true);"
-					style="display: block;">/\</a>
-			</td>
-		</tr>
-		<tr>
-			<td> <a id="navleft" href="javascript:void(0);" onclick="refreshMapSection(1, true);"
-					style="display: block;">&lt;</a></td>
-			<td id="sectionid" style="text-align: center;">runtime</td>
-			<td style="text-align: right;">
-				<a id="navright" href="javascript:void(0);" onclick="refreshMapSection(3, true);"
-					style="display: block;">&gt;</a>
-			</td>
-		</tr>
-		<tr>
-			<td style="text-align: center" colspan="3">
-				<a id="navdown" href="javascript:void(0);" onclick="refreshMapSection(2, true);"
-					style="display: block;">\/</a>
-			</td>
-		</tr>
-	</table>
-	<img src="/assets/buttons/selfdes2.png" title="Deselekt" style="cursor: pointer;"
-		onclick="selectMapFieldType(0); selectSystemType(0); selectRegion(0, 'Keins'); selectAdminRegion(0, 'Keins'); selectPassable(0); selectBorder(0, 'Keins')" />
-	<br />
+	<div>
+		<table class="tcal">
+			<tr>
+				<td style="text-align: center" colspan="3">
+					<a id="navup" href="javascript:void(0);" onclick="refreshMapSection(4, true);"
+						style="display: block;">/\</a>
+				</td>
+			</tr>
+			<tr>
+				<td> <a id="navleft" href="javascript:void(0);" onclick="refreshMapSection(1, true);"
+						style="display: block;">&lt;</a></td>
+				<td id="sectionid" style="text-align: center;">runtime</td>
+				<td style="text-align: right;">
+					<a id="navright" href="javascript:void(0);" onclick="refreshMapSection(3, true);"
+						style="display: block;">&gt;</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="text-align: center" colspan="3">
+					<a id="navdown" href="javascript:void(0);" onclick="refreshMapSection(2, true);"
+						style="display: block;">\/</a>
+				</td>
+			</tr>
+		</table>
+		<img src="/assets/buttons/selfdes2.png" title="Deselekt" style="cursor: pointer;"
+			onclick="selectMapFieldType(0); selectSystemType(0); selectRegion(0, 'Keins'); selectAdminRegion(0, 'Keins'); selectPassable(0); selectBorder(0, 'Keins')" />
+	</div>
+
 	<div onclick="togglePanel('fieldtypeselectorPanel')"
 		style="cursor: pointer; padding: 10px; border: 1px solid #575757; width: 250px;">Map Feld</div>
 	<div id="fieldtypeselectorPanel" style="display: none; padding: 10px; border: 1px solid #575757; width: 250px;">
@@ -228,231 +206,221 @@
 		</div>
 	</div>
 
-
-
 	<div onclick="togglePanel('systemtypeselectorPanel')"
 		style="cursor: pointer; padding: 10px; border: 1px solid #575757; width: 650px;">System Type
 	</div>
 	<div id="systemtypeselectorPanel" style="display: none; padding: 10px; border: 1px solid #575757; width: 650px;">
 		<div class="divbody" style="width: 630px;">
+			<div class="divhead">Gewähltes Feld</div>
+			<div class="divbody" id="systemtypeselector">Keins</div>
+			<br />
 			<table class="use">
-				<div style="width: 150px; float: left">
-					<div class="divhead">Gewähltes Feld</div>
-					<div class="divbody" id="systemtypeselector">Keins</div>
-					<br />
-					<table class="use">
-						<tr>
-							<td style="vertical-align: top;">
-								{% for data in POSSIBLE_FIELD_TYPES.row_0 %}
-								<div>
-									<img data-src="/assets/map/systemtypes/{{ data.getId }}.png"
-										style="cursor: pointer;" title="{{ data.getDescription }}"
-										onclick="selectSystemType('{{ data.getId }}')" />
-								</div>
-								{% endfor %}
-							</td>
-							<td style="vertical-align: top;">
-								{% for data in POSSIBLE_FIELD_TYPES.row_1 %}
-								<div>
-									<img data-src="/assets/map/systemtypes/{{ data.getId }}.png"
-										style="cursor: pointer;" title="{{ data.getDescription }}"
-										onclick="selectSystemType('{{ data.getId }}')" />
-								</div>
-								{% endfor %}
-							</td>
-							<td style="vertical-align: top;">
-								{% for data in POSSIBLE_FIELD_TYPES.row_2 %}
-								<div>
-									<img data-src="/assets/map/systemtypes/{{ data.getId }}.png"
-										style="cursor: pointer;" title="{{ data.getDescription }}"
-										onclick="selectSystemType('{{ data.getId }}')" />
-								</div>
-								{% endfor %}
-							</td>
-							<td style="vertical-align: top;">
-								{% for data in POSSIBLE_FIELD_TYPES.row_3 %}
-								<div>
-									<img data-src="/assets/map/systemtypes/{{ data.getId }}.png"
-										style="cursor: pointer; ;" title="{{ data.getDescription }}"
-										onclick="selectSystemType('{{ data.getId }}')" />
-								</div>
-								{% endfor %}
-							</td>
-							<td style="vertical-align: top;">
-								{% for data in POSSIBLE_FIELD_TYPES.row_4 %}
-								<div>
-									<img data-src="/assets/map/systemtypes/{{ data.getId }}.png"
-										style="cursor: pointer; " title="{{ data.getDescription }}"
-										onclick="selectSystemType('{{ data.getId }}')" />
-								</div>
-								{% endfor %}
-							</td>
-							<td style="vertical-align: top;">
-								{% for data in POSSIBLE_FIELD_TYPES.row_5 %}
-								<div>
-									<img data-src="/assets/map/systemtypes/{{ data.getId }}.png"
-										style="cursor: pointer;" title="{{ data.getDescription }}"
-										onclick="selectSystemType('{{ data.getId }}')" />
-								</div>
-								{% endfor %}
-							</td>
-						</tr>
-					</table>
-				</div>
+				<tr>
+					<td style="vertical-align: top;">
+						{% for data in POSSIBLE_FIELD_TYPES.row_0 %}
+						<div>
+							<img data-src="/assets/map/systemtypes/{{ data.getId }}.png" style="cursor: pointer;"
+								title="{{ data.getDescription }}" onclick="selectSystemType('{{ data.getId }}')" />
+						</div>
+						{% endfor %}
+					</td>
+					<td style="vertical-align: top;">
+						{% for data in POSSIBLE_FIELD_TYPES.row_1 %}
+						<div>
+							<img data-src="/assets/map/systemtypes/{{ data.getId }}.png" style="cursor: pointer;"
+								title="{{ data.getDescription }}" onclick="selectSystemType('{{ data.getId }}')" />
+						</div>
+						{% endfor %}
+					</td>
+					<td style="vertical-align: top;">
+						{% for data in POSSIBLE_FIELD_TYPES.row_2 %}
+						<div>
+							<img data-src="/assets/map/systemtypes/{{ data.getId }}.png" style="cursor: pointer;"
+								title="{{ data.getDescription }}" onclick="selectSystemType('{{ data.getId }}')" />
+						</div>
+						{% endfor %}
+					</td>
+					<td style="vertical-align: top;">
+						{% for data in POSSIBLE_FIELD_TYPES.row_3 %}
+						<div>
+							<img data-src="/assets/map/systemtypes/{{ data.getId }}.png" style="cursor: pointer; ;"
+								title="{{ data.getDescription }}" onclick="selectSystemType('{{ data.getId }}')" />
+						</div>
+						{% endfor %}
+					</td>
+					<td style="vertical-align: top;">
+						{% for data in POSSIBLE_FIELD_TYPES.row_4 %}
+						<div>
+							<img data-src="/assets/map/systemtypes/{{ data.getId }}.png" style="cursor: pointer; "
+								title="{{ data.getDescription }}" onclick="selectSystemType('{{ data.getId }}')" />
+						</div>
+						{% endfor %}
+					</td>
+					<td style="vertical-align: top;">
+						{% for data in POSSIBLE_FIELD_TYPES.row_5 %}
+						<div>
+							<img data-src="/assets/map/systemtypes/{{ data.getId }}.png" style="cursor: pointer;"
+								title="{{ data.getDescription }}" onclick="selectSystemType('{{ data.getId }}')" />
+						</div>
+						{% endfor %}
+					</td>
+				</tr>
 			</table>
 		</div>
-		<div onclick="togglePanel('regionselectorPanel')"
-			style="cursor: pointer; padding: 10px; border: 1px solid #575757; width: 250px;">Region Type
+	</div>
+
+	<div onclick="togglePanel('regionselectorPanel')"
+		style="cursor: pointer; padding: 10px; border: 1px solid #575757; width: 250px;">Region Type
+	</div>
+	<div id="regionselectorPanel" style="display: none; padding: 10px; border: 1px solid #575757; width: 250px;">
+		<div class="divbody" style="width: 230px;">
+			<div class="divhead">Gewählte Region</div>
+			<div class="divbody" id="regionselector">Keins</div>
+			<br />
+			<table class="use">
+				<tr>
+					<td style="vertical-align: top;">
+						{% for data in POSSIBLE_REGION.row_0 %}
+						<div>
+							<span style="cursor: pointer;" title="{{ data.getDescription }}"
+								onclick="selectRegion('{{ data.getId }}','{{ data.getDescription}}')">{{
+								data.getDescription}}</span>
+						</div>
+						{% endfor %}
+					</td>
+				</tr>
+			</table>
 		</div>
-		<div id="regionselectorPanel" style="display: none; padding: 10px; border: 1px solid #575757; width: 250px;">
-			<div class="divbody" style="width: 230px;">
-				<table class="use">
-					<div style="width: 150px; float: left">
-						<div class="divhead">Gewählte Region</div>
-						<div class="divbody" id="regionselector">Keins</div>
+	</div>
+
+	<div onclick="togglePanel('adminregionselectorPanel')"
+		style="cursor: pointer; padding: 10px; border: 1px solid #575757; width: 250px;">Admin Region
+		Type
+	</div>
+	<div id="adminregionselectorPanel" style="display: none; padding: 10px; border: 1px solid #575757; width: 250px;">
+		<div class="divbody" style="width: 230px;">
+			<div class="divhead">Gewählte Admin Region</div>
+			<div class="divbody" id="adminregionselector">Keins</div>
+			<br />
+			<table class="use">
+				<tr>
+					<td style="vertical-align: top;">
+						{% for data in POSSIBLE_ADMIN_REGION.row_0 %}
+						<div>
+							<span style="cursor: pointer;" title="{{ data.getDescription }}"
+								onclick="selectAdminRegion('{{ data.getId }}','{{ data.getDescription}}')">{{
+								data.getDescription}}</span>
+						</div>
+						{% endfor %}
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+
+	<div onclick="togglePanel('passableselectorPanel')"
+		style="cursor: pointer; padding: 10px; border: 1px solid #575757; width: 250px;">Passable
+		Selector
+	</div>
+	<div id="passableselectorPanel" style="display: none; padding: 10px; border: 1px solid #575757; width: 250px;">
+		<div class="divbody" style="width: 230px;">
+			<div class="divhead">Passable Selector</div>
+			<div class="divbody" id="passable">Keins</div>
+			<br />
+			<table class="use">
+				<tr>
+					<td style="vertical-align: top;">
+						<div>
+							<span style="cursor: pointer;" onclick="selectPassable(1)">True</span>
+						</div>
 						<br />
-						<table class="use">
-							<tr>
-								<td style="vertical-align: top;">
-									{% for data in POSSIBLE_REGION.row_0 %}
-									<div>
-										<span style="cursor: pointer;" title="{{ data.getDescription }}"
-											onclick="selectRegion('{{ data.getId }}','{{ data.getDescription}}')">{{
-											data.getDescription}}</span>
-									</div>
-									{% endfor %}
-								</td>
-							</tr>
-						</table>
-					</div>
+						<div>
+							<span style="cursor: pointer;" onclick="selectPassable(2)">False</span>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+
+	<div onclick="togglePanel('borderselectorPanel')"
+		style="cursor: pointer; padding: 10px; border: 1px solid #575757; width: 250px;">Border
+		Type
+	</div>
+	<div id="borderselectorPanel" style="display: none; padding: 10px; border: 1px solid #575757; width: 250px;">
+		<div class="divbody" style="width: 230px;">
+			<div class="divhead">Gewählte Border</div>
+			<div class="divbody" id="borderselector">Keins</div>
+			<br />
+			<table class="use">
+				<tr>
+					<td style="vertical-align: top;">
+						{% for data in POSSIBLE_BORDER.row_0 %}
+						<div>
+							<span style="cursor: pointer;" title="{{ data.getDescription }}"
+								onclick="selectBorder('{{ data.getId }}','{{ data.getDescription}}','{{ data.getColor}}')">{{
+								data.getDescription}}</span>
+						</div>
+						{% endfor %}
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+
+	<div onclick="togglePanel('areaselectorPanel')"
+		style="cursor: pointer; padding: 10px; border: 1px solid #575757; width: 820px;">Area
+		Selector
+	</div>
+	<div id="areaselectorPanel" style="display: none; padding: 10px; border: 1px solid #575757; width: 820px;">
+		<div class="divbody" style="width: 800px;">
+			<div class="divhead">Gewählte Area</div>
+			<div class="divbody" id="areaselector">Keins</div>
+			<br />
+			<table class="use">
+				{% set count = 0 %}
+				<tr>
+					{% for data in POSSIBLE_AREAS.row_0 %}
+					<td style="vertical-align: top;">
+						<span style="cursor: pointer;" title="{{ data }}" onclick="selectArea({{ data}})">{{
+							data }}
+						</span>
+					</td>
+					{% set count = count + 1 %}
+					{% if count == 25 %}
+				</tr>
+				<tr>
+					{% set count = 0 %}
+					{% endif %}
+					{% endfor %}
+				</tr>
+			</table>
+		</div>
+	</div>
+
+	<div onclick="togglePanel('effectsselectorPanel');"
+		style="cursor: pointer; padding: 10px; border: 1px solid #575757; width: 350px;">
+		Field Effects
+	</div>
+	<div id="effectsselectorPanel" style="display: none; padding: 10px; border: 1px solid #575757; width: 350px;">
+		<div class="divbody" style="width: 300px;">
+			<div class="divhead">Chosen Effects</div>
+			<div class="divbody" id="effectsselector">
+				<table class="use">
+					{% for effect in POSSIBLE_EFFECTS %}
+					<tr>
+						<td>
+							<input type="checkbox" name="effects[]" value="{{ effect.value }}"
+								onchange="selectEffects();">{{effect.value}}</input>
+						</td>
+					</tr>
+					{% endfor %}
 				</table>
 			</div>
-			<div onclick="togglePanel('adminregionselectorPanel')"
-				style="cursor: pointer; padding: 10px; border: 1px solid #575757; width: 250px;">Admin Region
-				Type
-			</div>
-			<div id="adminregionselectorPanel"
-				style="display: none; padding: 10px; border: 1px solid #575757; width: 250px;">
-				<div class="divbody" style="width: 230px;">
-					<table class="use">
-						<div style="width: 150px; float: left">
-							<div class="divhead">Gewählte Admin Region</div>
-							<div class="divbody" id="adminregionselector">Keins</div>
-							<br />
-							<table class="use">
-								<tr>
-									<td style="vertical-align: top;">
-										{% for data in POSSIBLE_ADMIN_REGION.row_0 %}
-										<div>
-											<span style="cursor: pointer;" title="{{ data.getDescription }}"
-												onclick="selectAdminRegion('{{ data.getId }}','{{ data.getDescription}}')">{{
-												data.getDescription}}</span>
-										</div>
-										{% endfor %}
-									</td>
-								</tr>
-							</table>
-						</div>
-					</table>
-				</div>
-				<div onclick="togglePanel('passableselectorPanel')"
-					style="cursor: pointer; padding: 10px; border: 1px solid #575757; width: 250px;">Passable
-					Selector
-				</div>
-				<div id="passableselectorPanel"
-					style="display: none; padding: 10px; border: 1px solid #575757; width: 250px;">
-					<div class="divbody" style="width: 230px;">
-						<table class="use">
-							<div style="width: 150px; float: left">
-								<div class="divhead">Passable Selector</div>
-								<div class="divbody" id="passable">Keins</div>
-								<br />
-								<table class="use">
-									<tr>
-										<td style="vertical-align: top;">
-											<div>
-												<span style="cursor: pointer;" onclick="selectPassable(1)">True</span>
-											</div>
-											<br />
-											<div>
-												<span style="cursor: pointer;" onclick="selectPassable(2)">False</span>
-											</div>
-										</td>
-									</tr>
-								</table>
-							</div>
-						</table>
-					</div>
-					<div onclick="togglePanel('borderselectorPanel')"
-						style="cursor: pointer; padding: 10px; border: 1px solid #575757; width: 250px;">Border
-						Type
-					</div>
-					<div id="borderselectorPanel"
-						style="display: none; padding: 10px; border: 1px solid #575757; width: 250px;">
-						<div class="divbody" style="width: 230px;">
-							<table class="use">
-								<div style="width: 150px; float: left">
-									<div class="divhead">Gewählte Border</div>
-									<div class="divbody" id="borderselector">Keins</div>
-									<br />
-									<table class="use">
-										<tr>
-											<td style="vertical-align: top;">
-												{% for data in POSSIBLE_BORDER.row_0 %}
-												<div>
-													<span style="cursor: pointer;" title="{{ data.getDescription }}"
-														onclick="selectBorder('{{ data.getId }}','{{ data.getDescription}}','{{ data.getColor}}')">{{
-														data.getDescription}}</span>
-												</div>
-												{% endfor %}
-											</td>
-										</tr>
-									</table>
-								</div>
-							</table>
-						</div>
-
-						<div onclick="togglePanel('areaselectorPanel')"
-							style="cursor: pointer; padding: 10px; border: 1px solid #575757; width: 820px;">Area
-							Selector
-						</div>
-						<div id="areaselectorPanel"
-							style="display: none; padding: 10px; border: 1px solid #575757; width: 820px;">
-							<div class="divbody" style="width: 800px;">
-								<table class="use">
-									<div style="width: 150px; float: left">
-										<div class="divhead">Gewählte Area</div>
-										<div class="divbody" id="areaselector">Keins</div>
-										<br />
-										<table class="use">
-											{% set count = 0 %}
-											<tr>
-												{% for data in POSSIBLE_AREAS.row_0 %}
-												<td style="vertical-align: top;">
-													<span style="cursor: pointer;" title="{{ data }}"
-														onclick="selectArea({{ data}})">{{ data }}
-
-													</span>
-												</td>
-												{% set count = count + 1 %}
-												{% if count == 25 %}
-											</tr>
-											<tr>
-												{% set count = 0 %}
-												{% endif %}
-												{% endfor %}
-											</tr>
-										</table>
-									</div>
-								</table>
-							</div>
-						</div>
-
-
-
-
-					</div>
-				</div>
+		</div>
+		<div class="divbody" style="width: 300px;">
+			<div class="divbody" id="effectsselector">
+				<input type="radio" id="reseteffects" onchange="resetEffects();">Reset Effects</input>
 			</div>
 		</div>
 	</div>

@@ -64,8 +64,14 @@ class ShipShowStrategy implements SpacecraftTypeShowStragegyInterface
         if ($state === AstronomicalMappingEnum::FINISHING && $astroEntry !== null) {
             $turnsLeft = AstronomicalMappingEnum::TURNS_TO_FINISH - ($game->getCurrentRound()->getTurn() - $astroEntry->getAstroStartTurn());
         }
+        $measurementpointsleft = null;
+        if ($state === AstronomicalMappingEnum::PLANNED && $astroEntry !== null) {
+            $fieldIds = unserialize($astroEntry->getFieldIds());
+            $measurementpointsleft = is_array($fieldIds) ? count($fieldIds) : 0;
+        }
 
-        $wrapper = new AstroStateWrapper($state, $turnsLeft, $isSystem);
+
+        $wrapper = new AstroStateWrapper($state, $turnsLeft, $isSystem, $measurementpointsleft);
 
         return $wrapper;
     }

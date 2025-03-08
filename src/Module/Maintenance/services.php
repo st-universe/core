@@ -8,9 +8,10 @@ use function DI\autowire;
 use function DI\get;
 
 return [
-    CreateInterstellarMedia::class => autowire(CreateInterstellarMedia::class),
     ColonyCorrectorHandler::class => autowire(ColonyCorrectorHandler::class),
     CorruptFleetDeletion::class => autowire(CorruptFleetDeletion::class),
+    CreateInterstellarMedia::class => autowire(CreateInterstellarMedia::class),
+    CreateMissingUserAwards::class => autowire(CreateMissingUserAwards::class),
     DatabaseBackup::class => autowire(DatabaseBackup::class),
     EmptyPlotDeletion::class => autowire(EmptyPlotDeletion::class),
     EndLotteryPeriod::class => autowire(EndLotteryPeriod::class),
@@ -28,6 +29,7 @@ return [
         get(IdleUserDeletion::class),
         get(CreateInterstellarMedia::class),
         get(MapCycle::class),
+        get(CreateMissingUserAwards::class),
         get(OldTachyonScanDeletion::class),
         get(OldTradeOffersDeletion::class),
         get(CorruptFleetDeletion::class),

@@ -3,8 +3,8 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\LayerInterface;
-use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystem;
 use Stu\Orm\Entity\StarSystemInterface;
 
@@ -38,5 +38,5 @@ interface StarSystemRepositoryInterface extends ObjectRepository
     /**
      * @return array<StarSystemInterface>
      */
-    public function getPirateHides(ShipInterface $ship): array;
+    public function getPirateHides(SpacecraftWrapperInterface $wrapper): array;
 }

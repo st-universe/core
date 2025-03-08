@@ -50,13 +50,25 @@ interface StarSystemMapRepositoryInterface extends ObjectRepository
     public function getColonyShieldData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
 
     /** @return array<CellDataInterface> */
-    public function getBorderData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
+    public function getNormalBorderData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
+
+    /** @return array<CellDataInterface> */
+    public function getRegionBorderData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
+
+    /** @return array<CellDataInterface> */
+    public function getImpassableBorderData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
+
+    /**
+     * @param array<int> $locations
+     * @return array<CellDataInterface> 
+     */
+    public function getCartographingData(PanelBoundaries $boundaries, ResultSetMapping $rsm, array $locations): array;
 
     /** @return array<CellDataInterface> */
     public function getAnomalyData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
 
     /** @return array<CellDataInterface> */
-    public function getIgnoringSubspaceLayerData(PanelBoundaries $boundaries, int $ignoreId, ResultSetMapping $rsm): array;
+    public function getIgnoringSubspaceLayerData(PanelBoundaries $boundaries, int $ignoreUserId, ResultSetMapping $rsm): array;
 
     /**
      * @return array<int>

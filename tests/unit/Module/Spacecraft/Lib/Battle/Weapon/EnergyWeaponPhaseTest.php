@@ -8,6 +8,7 @@ use Mockery;
 use Mockery\MockInterface;
 use Override;
 use Stu\Component\Building\BuildingManagerInterface;
+use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyInterface;
@@ -20,6 +21,7 @@ use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\SpacecraftRumpInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -85,6 +87,7 @@ class EnergyWeaponPhaseTest extends StuTestCase
         $targetPool = $this->mock(BattlePartyInterface::class);
         $messages = $this->mock(MessageCollectionInterface::class);
         $message = $this->mock(MessageInterface::class);
+        $location = $this->mock(MapInterface::class);
 
         $targetId = 42;
 
@@ -135,6 +138,16 @@ class EnergyWeaponPhaseTest extends StuTestCase
         $attacker->shouldReceive('getPhaserHullDamageFactor')
             ->withNoArgs()
             ->andReturn(100);
+        $attacker->shouldReceive('getLocation')
+            ->withNoArgs()
+            ->andReturn($location);
+
+        $location->shouldReceive('getFieldType->hasEffect')
+            ->with(FieldTypeEffectEnum::HIT_CHANCE_INTERFERENCE)
+            ->andReturn(false);
+        $location->shouldReceive('getFieldType->hasEffect')
+            ->with(FieldTypeEffectEnum::EVADE_CHANCE_INTERFERENCE)
+            ->andReturn(false);
 
         $user->shouldReceive('getId')
             ->withNoArgs()
@@ -174,6 +187,9 @@ class EnergyWeaponPhaseTest extends StuTestCase
         $target->shouldReceive('getSectorString')
             ->withNoArgs()
             ->andReturn("SECTOR");
+        $target->shouldReceive('getLocation')
+            ->withNoArgs()
+            ->andReturn($location);
 
         $targetRump->shouldReceive('getName')
             ->withNoArgs()
