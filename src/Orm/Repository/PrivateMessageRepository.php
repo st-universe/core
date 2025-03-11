@@ -184,9 +184,9 @@ final class PrivateMessageRepository extends EntityRepository implements Private
                 AND pm.deleted IS NULL
                 AND  NOT EXISTS (SELECT pm2.id FROM %1$s pm2
                                     WHERE pm2.send_user = pm.send_user
-                                    AND pm2.cat_id = pm.cat_id 
+                                    AND pm2.cat_id = :out
                                     AND pm2.recip_user = pm.recip_user 
-                                    AND pm2.date > pm.date)
+                                    AND pm2.date < pm.date)
                 ORDER BY pm.id DESC',
                 PrivateMessage::class,
                 PrivateMessageFolder::class
