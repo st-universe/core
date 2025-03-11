@@ -24,6 +24,10 @@ final class PlayerRelationDeterminator implements PlayerRelationDeterminatorInte
             return false;
         }
 
+        if ($user === $otherUser) {
+            return true;
+        }
+
         $friendRelation = $this->friendDeterminator->isFriend($user, $otherUser);
         if ($friendRelation->isDominant()) {
             return true;
