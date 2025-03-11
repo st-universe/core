@@ -41,6 +41,13 @@ class PlayerRelationDeterminatorTest extends StuTestCase
         $this->opponent = $this->mock(UserInterface::class);
     }
 
+    public function testIsFriendExpectTrueIfSameUser(): void
+    {
+        $this->assertTrue(
+            $this->subject->isFriend($this->user, $this->user)
+        );
+    }
+
     public static function provideIsFriendData(): array
     {
         return [
