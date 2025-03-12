@@ -11,6 +11,7 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -119,13 +120,7 @@ class PirateReaction implements PirateReactionInterface
 
     private function canAnyoneFire(FleetWrapperInterface $fleetWrapper): bool
     {
-        foreach ($fleetWrapper->getShipWrappers() as $wrapper) {
-            if ($wrapper->canFire()) {
-                return true;
-            }
-        }
-
-        return false;
+        return $fleetWrapper->getShipWrappers()->exists(fn(int $key, ShipWrapperInterface $wrapper): bool => $wrapper->canFire());
     }
 
     private function getRandomBehaviourType(PirateReactionTriggerEnum $reactionTrigger): PirateBehaviourEnum
