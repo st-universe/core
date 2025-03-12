@@ -157,11 +157,13 @@ final class ShipMover implements ShipMoverInterface
             $hasTravelled = true;
 
             // alert reaction check
-            $this->alertReactionCheck(
-                $leadWrapper,
-                $movedTractoredShipWrappers,
-                $messages
-            );
+            if (!$this->areAllShipsDestroyed($activeWrappers)) {
+                $this->alertReactionCheck(
+                    $leadWrapper,
+                    $movedTractoredShipWrappers,
+                    $messages
+                );
+            }
 
             if ($this->areAllShipsDestroyed($activeWrappers)) {
                 $flightRoute->abortFlight();

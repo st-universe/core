@@ -304,4 +304,127 @@ class ShipMoverTest extends StuTestCase
 
         $this->subject->checkAndMove($wrapper, $flightRoute);
     }
+
+    public function testCheckAndMoveExpectNoAlertCheckIfDestroyedOnEntrance(): void
+    {
+        $ship = $this->mock(ShipInterface::class);
+        $wrapper = $this->mock(ShipWrapperInterface::class);
+        $flightRoute = $this->mock(FlightRouteInterface::class);
+        $map = $this->mock(MapInterface::class);
+        $conditionCheckResult = $this->mock(ConditionCheckResult::class);
+        $messageCollection = $this->mock(MessageCollectionInterface::class);
+        $emptyMessage = $this->mock(MessageInterface::class);
+
+        $shipId = 12345;
+
+        $ship->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($shipId);
+        $ship->shouldReceive('getName')
+            ->withNoArgs()
+            ->once()
+            ->andReturn("SHIP");
+        $ship->shouldReceive('isFleetLeader')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+        $ship->shouldReceive('getTractoredShip')
+            ->withNoArgs()
+            ->andReturn(null);
+        $ship->shouldReceive('isDestroyed')
+            ->withNoArgs()
+            ->times(5)
+            ->andReturn(false, true, true, true, true);
+        $ship->shouldReceive('getLocation')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($map);
+
+        $map->shouldReceive('getAnomalies')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(new ArrayCollection());
+        $map->shouldReceive('getBuoys')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(new ArrayCollection());
+
+        $wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($ship);
+        $wrapper->shouldReceive('getFleetWrapper')
+            ->withNoArgs()
+            ->andReturn(null);
+        $wrapper->shouldReceive('getTractoredShipWrapper')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(null);
+
+        $map->shouldReceive('getFieldType->getPassable')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+
+        $flightRoute->shouldReceive('isDestinationArrived')
+            ->withNoArgs()
+            ->times(2)
+            ->andReturn(false, true);
+        $flightRoute->shouldReceive('getNextWaypoint')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($map);
+        $flightRoute->shouldReceive('enterNextWaypoint')
+            ->with(
+                Mockery::on(fn(ArrayCollection $coll) => $coll->toArray() === [$shipId => $wrapper]),
+                $messageCollection
+            )
+            ->once();
+        $flightRoute->shouldReceive('getRouteMode')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(RouteModeEnum::FLIGHT);
+        $flightRoute->shouldReceive('abortFlight')
+            ->withNoArgs()
+            ->once();
+
+        $conditionCheckResult->shouldReceive('isFlightPossible')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+        $conditionCheckResult->shouldReceive('getBlockedIds')
+            ->withNoArgs()
+            ->once()
+            ->andReturn([]);
+        $conditionCheckResult->shouldReceive('getInformations')
+            ->withNoArgs()
+            ->once()
+            ->andReturn([]);
+
+        $this->preFlightConditionsCheck->shouldReceive('checkPreconditions')
+            ->with($wrapper, [$shipId => $wrapper], $flightRoute, false)
+            ->once()
+            ->andReturn($conditionCheckResult);
+
+        $this->messageFactory->shouldReceive('createMessageCollection')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($messageCollection);
+        $messageCollection->shouldReceive('add')
+            ->with($emptyMessage)
+            ->once();
+        $messageCollection->shouldReceive('addInformation')
+            ->with('Es wurden alle Schiffe zerstört')
+            ->once();
+        $this->messageFactory->shouldReceive('createMessage')
+            ->with(UserEnum::USER_NOONE, null, [])
+            ->once()
+            ->andReturn($emptyMessage);
+
+        $this->shipMovementInformationAdder->shouldReceive('reachedDestinationDestroyed')
+            ->with($ship, 'SHIP', false, RouteModeEnum::FLIGHT, $messageCollection)
+            ->once();
+
+        $this->subject->checkAndMove($wrapper, $flightRoute);
+    }
 }
