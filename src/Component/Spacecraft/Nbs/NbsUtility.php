@@ -64,7 +64,9 @@ final class NbsUtility implements NbsUtilityInterface
                 $game->getUser()->getId()
             );
 
-            $trumfieldNbs = $spacecraft->getLocation()->getTrumfields()->toArray();
+            $trumfieldNbs = $field !== null
+                ? $field->getTrumfields()->toArray()
+                : $spacecraft->getLocation()->getTrumfields()->toArray();
 
             $game->setTemplateVar(
                 'HAS_NBS',
