@@ -192,7 +192,7 @@ abstract class Spacecraft implements SpacecraftInterface
     public function getId(): int
     {
         if ($this->id === null) {
-            throw new RuntimeException('entity not yet persisted');
+            throw new RuntimeException(sprintf('entity "%s" not yet persisted', $this->getName()));
         }
 
         return $this->id;
