@@ -72,7 +72,17 @@ class PirateReaction implements PirateReactionInterface
             return;
         }
 
+        $fleetWrapper = $this->spacecraftWrapperFactory->wrapFleet($fleet);
+
         $behaviourType = $this->getRandomBehaviourType($reactionTrigger);
+        if (
+            $behaviourType->needsWeapons()
+            && !$this->canAnyoneFire($fleetWrapper)
+        ) {
+            $this->logger->logf('pirateFleet %s cant fire, no reaction triggered', $fleet->getName());
+            return;
+        }
+
         $this->logger->log(sprintf(
             'pirateFleetId %d reacts on %s from "%s" (%d) with %s',
             $fleet->getId(),
@@ -86,7 +96,6 @@ class PirateReaction implements PirateReactionInterface
             return;
         }
 
-        $fleetWrapper = $this->spacecraftWrapperFactory->wrapFleet($fleet);
 
         $alternativeBehaviour = $this->action($behaviourType, $fleetWrapper, $reactionMetadata, $triggerSpacecraft);
         if (
@@ -106,6 +115,17 @@ class PirateReaction implements PirateReactionInterface
         }
 
         $this->action(PirateBehaviourEnum::DEACTIVATE_SHIELDS, $fleetWrapper, $reactionMetadata, null);
+    }
+
+    private function canAnyoneFire(FleetWrapperInterface $fleetWrapper): bool
+    {
+        foreach ($fleetWrapper->getShipWrappers() as $wrapper) {
+            if ($wrapper->canFire()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function getRandomBehaviourType(PirateReactionTriggerEnum $reactionTrigger): PirateBehaviourEnum

@@ -4,7 +4,7 @@ namespace Stu\Lib\Pirate;
 
 enum PirateBehaviourEnum: int
 {
-        // passive
+    // passive
     case DO_NOTHING = 0;
     case FLY = 1;
     case HIDE = 2;
@@ -35,6 +35,15 @@ enum PirateBehaviourEnum: int
             self::GO_ALERT_RED => 0,
             self::SEARCH_FRIEND => 0,
             self::DEACTIVATE_SHIELDS => 0
+        };
+    }
+
+    public function needsWeapons(): bool
+    {
+        return match ($this) {
+            self::ATTACK_SHIP,
+            self::RAGE => true,
+            default => false
         };
     }
 
