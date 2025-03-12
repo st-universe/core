@@ -40,6 +40,7 @@ class SystemScanPanel extends AbstractVisualPanel
         $panelLayerCreation = $this->panelLayerCreation
             ->addShipCountLayer($this->currentSpacecraft->getTachyonState(), null, SpacecraftCountLayerTypeEnum::ALL, 0)
             ->addBorderLayer($this->currentSpacecraft, $this->system === $this->currentSpacecraft->getSystem())
+            ->addAnomalyLayer()
             ->addSystemLayer()
             ->addColonyShieldLayer();
 
