@@ -29,19 +29,18 @@ final class BorderDataProviderFactory implements BorderDataProviderFactoryInterf
 
         if ($currentSpacecraft != null) {
 
-            switch ($currentSpacecraft->getLssMode()) {
-                case SpacecraftLssModeEnum::NORMAL:
-                    return new NormalBorderDataProvider($this->locationRepository, $this->mapRepository, $this->starSystemMapRepository);
-                case SpacecraftLssModeEnum::BORDER:
-                    return new RegionBorderDataProvider($this->locationRepository, $this->mapRepository, $this->starSystemMapRepository);
-                case SpacecraftLssModeEnum::IMPASSABLE:
-                    return new ImpassableBorderDataProvider($currentSpacecraft, $this->mapRepository, $this->starSystemMapRepository);
-                case SpacecraftLssModeEnum::CARTOGRAPHING:
-                    return new CartographyBorderDataProvider($currentSpacecraft, $this->mapRepository, $this->starSystemMapRepository, $this->astroEntryRepository);
-            }
+            return match ($currentSpacecraft->getLssMode()) {
+                SpacecraftLssModeEnum::NORMAL =>
+                new NormalBorderDataProvider($this->locationRepository, $this->mapRepository, $this->starSystemMapRepository),
+                SpacecraftLssModeEnum::BORDER =>
+                new RegionBorderDataProvider($this->locationRepository, $this->mapRepository, $this->starSystemMapRepository),
+                SpacecraftLssModeEnum::IMPASSABLE =>
+                new ImpassableBorderDataProvider($currentSpacecraft, $this->mapRepository, $this->starSystemMapRepository),
+                SpacecraftLssModeEnum::CARTOGRAPHING =>
+                new CartographyBorderDataProvider($currentSpacecraft, $this->mapRepository, $this->starSystemMapRepository, $this->astroEntryRepository)
+            };
+        } else {
+            return new NormalBorderDataProvider($this->locationRepository, $this->mapRepository, $this->starSystemMapRepository);
         }
-
-
-        throw new RuntimeException(sprintf('border type is not supported'));
     }
 }
