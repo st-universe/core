@@ -11,19 +11,18 @@ use Stu\Component\Communication\Kn\KnItemInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\KnPostInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 
 final class CommunicationProvider implements ViewComponentProviderInterface
 {
-    public function __construct(private KnPostRepositoryInterface $knPostRepository, private KnFactoryInterface $knFactory)
-    {
-    }
+    public function __construct(private KnPostRepositoryInterface $knPostRepository, private KnFactoryInterface $knFactory) {}
 
     #[Override]
     public function setTemplateVariables(GameControllerInterface $game): void
     {
         $user = $game->getUser();
-        $userKnMark = $user->getKNMark();
+        $userKnMark = $user->getKnMark();
 
         $newKnPostCount = $this->knPostRepository->getAmountSince($userKnMark);
         $knPostCount = $this->knPostRepository->getAmount();
@@ -36,9 +35,8 @@ final class CommunicationProvider implements ViewComponentProviderInterface
         if ($mark % GameEnum::KN_PER_SITE != 0 || $mark < 0) {
             $mark = 0;
         }
-
         if (request::getInt('user_mark') !== 0) {
-            $mark = (int) floor($newKnPostCount / GameEnum::KN_PER_SITE) * GameEnum::KN_PER_SITE;
+            $mark = (int) floor(($newKnPostCount - 1) / GameEnum::KN_PER_SITE) * GameEnum::KN_PER_SITE;
         }
 
         $maxpage = ceil($knPostCount / GameEnum::KN_PER_SITE);
@@ -63,7 +61,8 @@ final class CommunicationProvider implements ViewComponentProviderInterface
             $knNavigation[] = ["page" => ">>", "mark" => $maxpage * GameEnum::KN_PER_SITE - GameEnum::KN_PER_SITE, "cssclass" => "pages"];
         }
 
-        $markedPostId = request::getInt('markedPost');
+
+        $markedPostId = $this->getMarkedKnId($user);
 
         $game->setTemplateVar(
             'KN_POSTINGS',
@@ -85,9 +84,23 @@ final class CommunicationProvider implements ViewComponentProviderInterface
         $game->setTemplateVar('KN_START', $knStart);
         $game->setTemplateVar('KN_OFFSET', $mark);
         $game->setTemplateVar('NEW_KN_POSTING_COUNT', $newKnPostCount);
-        $game->setTemplateVar('USER_KN_MARK', $userKnMark);
         $game->setTemplateVar('KN_NAVIGATION', $knNavigation);
 
         $game->addExecuteJS("initTranslations();", GameEnum::JS_EXECUTION_AFTER_RENDER);
+    }
+
+    private function getMarkedKnId(UserInterface $user): ?int
+    {
+        $markedPostId = request::getInt('markedPost');
+        if ($markedPostId !== 0) {
+            return $markedPostId;
+        }
+
+        $newerKnPosts = $this->knPostRepository->getNewerThenMark($user->getKnMark());
+        if ($newerKnPosts !== []) {
+            return $newerKnPosts[0]->getId();
+        }
+
+        return null;
     }
 }
