@@ -95,21 +95,20 @@ final class TractorBeamShipSystem extends AbstractSpacecraftSystemType implement
 
         $spacecraft->getSpacecraftSystem($this->getSystemType())->setMode(SpacecraftSystemModeEnum::MODE_OFF);
 
-        if ($spacecraft->isTractoring()) {
-            $traktor = $spacecraft->getTractoredShip();
+        $tractoredShip = $spacecraft->getTractoredShip();
+        if ($tractoredShip !== null) {
 
             $spacecraft->setTractoredShip(null);
+            $tractoredShip->setTractoringSpacecraft(null);
             $this->spacecraftRepository->save($spacecraft);
             $this->entityManager->flush();
 
-            if ($traktor !== null) {
-                $this->privateMessageSender->send(
-                    $spacecraft->getUser()->getId(),
-                    $traktor->getUser()->getId(),
-                    sprintf(_('Der auf die %s gerichtete Traktorstrahl wurde in Sektor %s deaktiviert'), $traktor->getName(), $spacecraft->getSectorString()),
-                    PrivateMessageFolderTypeEnum::SPECIAL_SHIP
-                );
-            }
+            $this->privateMessageSender->send(
+                $spacecraft->getUser()->getId(),
+                $tractoredShip->getUser()->getId(),
+                sprintf(_('Der auf die %s gerichtete Traktorstrahl wurde in Sektor %s deaktiviert'), $tractoredShip->getName(), $spacecraft->getSectorString()),
+                PrivateMessageFolderTypeEnum::SPECIAL_SHIP
+            );
         }
     }
 
