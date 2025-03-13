@@ -36,7 +36,7 @@ final class CommunicationProvider implements ViewComponentProviderInterface
             $mark = 0;
         }
         if (request::getInt('user_mark') !== 0) {
-            $mark = (int) floor(($newKnPostCount - 1) / GameEnum::KN_PER_SITE) * GameEnum::KN_PER_SITE;
+            $mark = max(0, (int) floor(($newKnPostCount - 1) / GameEnum::KN_PER_SITE) * GameEnum::KN_PER_SITE);
         }
 
         $maxpage = ceil($knPostCount / GameEnum::KN_PER_SITE);
