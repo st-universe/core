@@ -46,12 +46,16 @@ final class MaindeskProvider implements ViewComponentProviderInterface
             $user->getState() === UserEnum::USER_STATE_COLONIZATION_SHIP
         );
 
-        $newAmount = $this->knPostRepository->getAmountSince($user->getKNMark());
+        $newAmount = $this->knPostRepository->getAmountSince($user->getKnMark());
 
         $game->setTemplateVar(
             'NEW_KN_POSTING_COUNT',
             $newAmount
         );
+        $newKnPostings = $this->knPostRepository->getNewerThenMark($user->getKnMark());
+        if ($newKnPostings !== []) {
+            $game->setTemplateVar('MARKED_KN_ID', $newKnPostings[0]->getId());
+        }
         $game->setTemplateVar(
             'NEW_KN_POSTINGS',
             array_map(
@@ -64,7 +68,7 @@ final class MaindeskProvider implements ViewComponentProviderInterface
                     $knItem->setMark(((int)floor($newAmount / GameEnum::KN_PER_SITE)) * 6);
                     return $knItem;
                 },
-                $this->knPostRepository->getNewerThenMark($user->getKNMark())
+                $newKnPostings
             )
         );
         $game->setTemplateVar(
