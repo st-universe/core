@@ -57,7 +57,7 @@ $app->add($dic->get(UserCreateCommand::class));
 // tick
 $app->add($dic->get(ColonyTickCommand::class));
 $app->add($dic->get(SpacecraftTickCommand::class));
-$app->add(new MaintenanceTickCommand($dic));
+$app->add($dic->get(MaintenanceTickCommand::class));
 $app->add($dic->get(ProcessTickCommand::class));
 $app->add(new ManagerTickCommand($dic));
 $app->add($dic->get(PirateTickCommand::class));
