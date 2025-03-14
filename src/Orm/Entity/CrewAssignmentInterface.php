@@ -2,6 +2,7 @@
 
 namespace Stu\Orm\Entity;
 
+use Stu\Component\Crew\CrewPositionEnum;
 use Stu\Module\Spacecraft\Lib\Crew\EntityWithCrewAssignmentsInterface;
 
 interface CrewAssignmentInterface
@@ -10,11 +11,9 @@ interface CrewAssignmentInterface
 
     public function getCrewId(): int;
 
-    public function getSlot(): ?int;
+    public function getPosition(): ?CrewPositionEnum;
 
-    public function setSlot(?int $slot): CrewAssignmentInterface;
-
-    public function getPosition(): string;
+    public function setPosition(?CrewPositionEnum $position): CrewAssignmentInterface;
 
     public function getUserId(): int;
 
@@ -41,6 +40,8 @@ interface CrewAssignmentInterface
     public function getTradepost(): ?TradePostInterface;
 
     public function setTradepost(?TradePostInterface $tradepost): CrewAssignmentInterface;
+
+    public function getFightCapability(): int;
 
     public function clearAssignment(): CrewAssignmentInterface;
 
