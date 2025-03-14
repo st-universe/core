@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Cli;
 
 use Ahc\Cli\Input\Command;
-use Psr\Container\ContainerInterface;
 use Stu\Module\Tick\Maintenance\MaintenanceTickRunner;
 
 /**
@@ -14,7 +13,7 @@ use Stu\Module\Tick\Maintenance\MaintenanceTickRunner;
 final class MaintenanceTickCommand extends Command
 {
     public function __construct(
-        private ContainerInterface $dic
+        private readonly MaintenanceTickRunner $tickRunner,
     ) {
         parent::__construct(
             'tick:maintenance',
@@ -29,8 +28,7 @@ final class MaintenanceTickCommand extends Command
 
     public function execute(): void
     {
-        $tickRunner = $this->dic->get(MaintenanceTickRunner::class);
-        $tickRunner->run(1, 1);
+        $this->tickRunner->run(1, 1);
 
         $this->io()->ok(
             'Maintenance tick has been executed',

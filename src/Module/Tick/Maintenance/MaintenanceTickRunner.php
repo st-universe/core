@@ -13,7 +13,7 @@ use Stu\Orm\Repository\GameConfigRepositoryInterface;
 /**
  * Executes maintenance tasks like db backup and such
  */
-final class MaintenanceTickRunner implements TickRunnerInterface
+class MaintenanceTickRunner implements TickRunnerInterface
 {
     private const string TICK_DESCRIPTION = "maintenancetick";
 
@@ -21,10 +21,10 @@ final class MaintenanceTickRunner implements TickRunnerInterface
      * @param array<MaintenanceHandlerInterface> $handlerList
      */
     public function __construct(
-        private GameConfigRepositoryInterface $gameConfigRepository,
-        private TransactionTickRunnerInterface $transactionTickRunner,
-        private Connection $connection,
-        private array $handlerList
+        private readonly GameConfigRepositoryInterface $gameConfigRepository,
+        private readonly TransactionTickRunnerInterface $transactionTickRunner,
+        private readonly Connection $connection,
+        private readonly array $handlerList
     ) {
     }
 

@@ -7,34 +7,29 @@ namespace Stu\Component\Cli;
 use Ahc\Cli\Application;
 use Mockery\MockInterface;
 use Override;
-use Psr\Container\ContainerInterface;
 use Stu\CliInteractorHelper;
 use Stu\Module\Tick\Maintenance\MaintenanceTickRunner;
-use Stu\Module\Tick\TickRunnerInterface;
 use Stu\StuTestCase;
 
 class MaintenanceTickCommandTest extends StuTestCase
 {
-    /** @var MockInterface&ContainerInterface */
-    private MockInterface $dic;
+    /** @var MockInterface&MaintenanceTickRunner */
+    private MockInterface $tickRunner;
 
     private MaintenanceTickCommand $subject;
 
     #[Override]
     protected function setUp(): void
     {
-        $this->dic = $this->mock(ContainerInterface::class);
+        $this->tickRunner = $this->mock(MaintenanceTickRunner::class);
 
-        $this->subject = new MaintenanceTickCommand(
-            $this->dic
-        );
+        $this->subject = new MaintenanceTickCommand($this->tickRunner);
     }
 
     public function testExecuteExecutes(): void
     {
         $app = $this->mock(Application::class);
         $interactor = $this->mock(CliInteractorHelper::class);
-        $tickRunner = $this->mock(TickRunnerInterface::class);
 
         $this->subject->bind($app);
 
@@ -50,12 +45,7 @@ class MaintenanceTickCommandTest extends StuTestCase
             )
             ->once();
 
-        $this->dic->shouldReceive('get')
-            ->with(MaintenanceTickRunner::class)
-            ->once()
-            ->andReturn($tickRunner);
-
-        $tickRunner->shouldReceive('run')
+        $this->tickRunner->shouldReceive('run')
             ->with(1, 1)
             ->once();
 
