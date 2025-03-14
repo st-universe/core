@@ -12,7 +12,7 @@ final class Version20250304213810_Field_Type_Complementary_Color extends Abstrac
 {
     public function getDescription(): string
     {
-        return 'Adds complementary color to field types';;
+        return 'Adds complementary color to field types';
     }
 
     public function up(Schema $schema): void

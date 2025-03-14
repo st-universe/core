@@ -193,40 +193,42 @@
     {% endif %}
 </table>
 {% endif %}
-{% if SPACECRAFT.isTractoring or SPACECRAFT.isTractored %}
+{% set tractoredShip = SPACECRAFT.getTractoredShip %}
+{% set tractoringSpacecraft = SPACECRAFT.getTractoringSpacecraft %}
+{% if tractoredShip or tractoringSpacecraft %}
 <table class="tcal">
     <tr>
         <th colspan="2"><img src="/assets/buttons/trak.png" title="Traktorstrahl" />
             Traktorstrahl</th>
     </tr>
     <tr>
-        {% if SPACECRAFT.isTractoring %}
+        {% if tractoredShip %}
         <td colspan="2">
-            Gerichtet auf: {{ SPACECRAFT.getTractoredShip.getName|bbcode }}
+            Gerichtet auf: {{ tractoredShip.getName|bbcode }}
         </td>
         {% else %}
         <td colspan="2">
-            Gehalten von: {{ SPACECRAFT.getTractoringSpacecraft.getName|bbcode }}
+            Gehalten von: {{ tractoringSpacecraft.getName|bbcode }}
         </td>
         {% endif %}
     </tr>
     <tr>
         <td>
-            {% if SPACECRAFT.isTractoring %}
-            {% if SPACECRAFT.isStation and not SPACECRAFT.getTractoredShip.isDestroyed %}
+            {% if tractoredShip %}
+            {% if SPACECRAFT.isStation %}
             <a href="javascript:void(0);"
                 onClick="actionToInnerContent('B_DOCK_TRACTORED', 'id={{ spacecraftId }}&sstr={{ SESSIONSTRING }}');"
                 onmouseover="cp('docktractored','buttons/dock2')" onmouseout="cp('docktractored','buttons/dock1')">
                 <img src="/assets/buttons/dock1.png" name="docktractored" title="Gehaltenes Schiff andocken" />
             </a>
             {% endif %}
-            <img src="/assets/ships/{{ SPACECRAFT.getTractoredShip.getRump.getId }}.png" />
+            <img src="/assets/ships/{{ tractoredShip.getRump.getId }}.png" />
             {% else %}
-            <img src="/assets/ships/{{ SPACECRAFT.getTractoringSpacecraft.getRump.getId }}.png" />
+            <img src="/assets/ships/{{ tractoringSpacecraft.getRump.getId }}.png" />
             {% endif %}
         </td>
         <td>
-            {% if SPACECRAFT.isTractoring %}
+            {% if tractoredShip %}
             <input type="submit" class="button" name="B_DEACTIVATE_TRACTOR" value="deaktivieren" />
             {% elseif SPACECRAFT.isDeflectorHealthy %}
             <input type="submit" class="button" name="B_ESCAPE_TRAKTOR" value="Fluchtversuch" />
