@@ -41,7 +41,7 @@ final class VersionTestBuildplansModules extends AbstractMigration
                        (22226, 689,6,11904,NULL,3);
                        (22227, 689,8,10835,NULL,3);
                        (22228, 689,10,10604,NULL,3);
-                       (22229, 689,7,10735,NULL,3);;
+                       (22229, 689,7,10735,NULL,3);
         ');
     }
 }
