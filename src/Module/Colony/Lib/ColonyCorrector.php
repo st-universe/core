@@ -12,7 +12,7 @@ use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 
-final class ColonyCorrector implements ColonyCorrectorInterface
+readonly class ColonyCorrector implements ColonyCorrectorInterface
 {
     private LoggerUtilInterface $loggerUtil;
 
