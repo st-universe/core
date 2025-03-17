@@ -12,13 +12,13 @@ use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 
-readonly class ColonyCorrector implements ColonyCorrectorInterface
+class ColonyCorrector implements ColonyCorrectorInterface
 {
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
-        private ColonyRepositoryInterface $colonyRepository,
-        private EntityManagerInterface $entityManager,
+        private readonly ColonyRepositoryInterface $colonyRepository,
+        private readonly EntityManagerInterface $entityManager,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
