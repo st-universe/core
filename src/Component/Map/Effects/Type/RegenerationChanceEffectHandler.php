@@ -123,7 +123,7 @@ class RegenerationChanceEffectHandler implements EffectHandlerInterface
             )
         );
 
-        $reactorWrapper->changeLoad(-$gain);
+        $reactorWrapper->changeLoad($gain);
 
         return $gain;
     }
