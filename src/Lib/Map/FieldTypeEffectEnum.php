@@ -8,7 +8,7 @@ use Stu\Orm\Entity\MapFieldTypeInterface;
 
 enum FieldTypeEffectEnum: string
 {
-        // leaks
+    // leaks
     case WARPDRIVE_LEAK = 'WARPDRIVE_LEAK';
     case REACTOR_LEAK = 'REACTOR_LEAK';
     case EPS_LEAK = 'EPS_LEAK';
@@ -96,7 +96,7 @@ enum FieldTypeEffectEnum: string
             self::EVADE_CHANCE_INTERFERENCE => sprintf('Asymmetrische Feldverzerrungen durch %s beeinträchtig die Navigationssensoren<br>
             Manövrierbarkeit verringert sich', $fieldTypeName),
             self::ENERGY_WEAPON_BUFF => sprintf('Kohärenzverstärkung durch %s verstärkt den Energiewaffenoutput', $fieldTypeName),
-            self::ENERGY_WEAPON_NERF => sprintf('Dekohärenz durch %s verstärkt den Energiewaffenoutput', $fieldTypeName),
+            self::ENERGY_WEAPON_NERF => sprintf('Dekohärenz durch %s verringert den Energiewaffenoutput', $fieldTypeName),
             default => null
         };
     }
