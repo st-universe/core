@@ -52,7 +52,7 @@ enum FieldTypeEffectEnum: string
         };
     }
 
-    public function getDescription(): string
+    public function getDescription(): ?string
     {
         return match ($this) {
             self::CLOAK_UNUSEABLE => 'Ausfall der Tarnung',
@@ -71,8 +71,7 @@ enum FieldTypeEffectEnum: string
             self::ENERGY_WEAPON_BUFF => 'Steigerung des Energiewaffenschadens',
             self::ENERGY_WEAPON_NERF => 'Minderung des Energiewaffenschadens',
             self::REGENERATION_CHANCE => 'Geringe Chance auf energetischen Bonus',
-            self::NO_ANOMALIES => 'Anomalie-freie Zone',
-            self::NO_PIRATES => 'No-Go-Area für die Kazon'
+            default => null
         };
     }
 
