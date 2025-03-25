@@ -725,8 +725,7 @@ class FightLibTest extends StuTestCase
         int $defendersCount,
         bool $expectedIsFleet
     ): void {
-
-        /** @var SpacecraftWrapperInterface|FleetWrapperInterface */
+        /** @var FleetWrapperInterface|ShipWrapperInterface */
         $wrapper = $this->mock($className);
         $factory = $this->mock(BattlePartyFactoryInterface::class);
         $targetWrapper = $this->mock(ShipWrapperInterface::class);
