@@ -29,7 +29,7 @@ final class MaintenanceTickRunnerFactory implements MaintenanceTickRunnerFactory
      */
     #[Override]
     public function createMaintenanceTickRunner(
-        array $handlerList = null
+        ?array $handlerList = null
     ): TickRunnerInterface {
         return new MaintenanceTickRunner(
             $this->gameConfigRepository,

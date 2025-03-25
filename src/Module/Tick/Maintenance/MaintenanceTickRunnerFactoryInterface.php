@@ -13,6 +13,6 @@ interface MaintenanceTickRunnerFactoryInterface
      * @param array<MaintenanceHandlerInterface> $handlerList
      */
     public function createMaintenanceTickRunner(
-        array $handlerList = null
+        ?array $handlerList = null
     ): TickRunnerInterface;
 }
