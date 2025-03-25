@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\Action\CreateLicense;
 
 use Override;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Trade\View\ShowAccounts\ShowAccounts;
@@ -32,11 +32,11 @@ final class CreateLicense implements ActionControllerInterface
 
         $tradepost = $this->tradePostRepository->find($posts_id);
         if ($tradepost === null) {
-            throw new AccessViolation(sprintf("Tradepost with ID %d not existent! Fool: %d", $posts_id, $user->getId()));
+            throw new AccessViolationException(sprintf("Tradepost with ID %d not existent! Fool: %d", $posts_id, $user->getId()));
         }
         $tradepost_user = $tradepost->getStation()->getUser();
         if ($tradepost_user !== $user) {
-            throw new AccessViolation(sprintf("Tradepost belongs to other user! Fool: %d", $user->getId()));
+            throw new AccessViolationException(sprintf("Tradepost belongs to other user! Fool: %d", $user->getId()));
         }
 
         $commodityId = $this->createLicenseRequest->getWantedLicensecommodityId();

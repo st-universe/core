@@ -6,7 +6,7 @@ namespace Stu\Module\Maindesk\View\ShowColonyList;
 
 use Override;
 use Stu\Component\Game\ModuleEnum;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ViewContext;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -27,7 +27,7 @@ final class ShowColonyList implements ViewControllerInterface, ViewWithTutorialI
         $state = $user->getState();
 
         if ($state !== UserEnum::USER_STATE_UNCOLONIZED) {
-            throw new AccessViolation(sprintf(
+            throw new AccessViolationException(sprintf(
                 _('User is not uncolonized, but tried to enter first-colony-list. Fool: %d, State: %d'),
                 $user->getId(),
                 $state

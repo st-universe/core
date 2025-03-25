@@ -6,7 +6,7 @@ namespace Stu\Module\Spacecraft\Action\RenameCrew;
 
 use Override;
 use request;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
@@ -41,7 +41,7 @@ final class RenameCrew implements ActionControllerInterface
         $crew = $this->crewRepository->find($crew_id);
 
         if ($crew === null || $crew->getUser()->getId() !== $userId) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $name = $this->renameCrewRequest->getName($crew->getId());

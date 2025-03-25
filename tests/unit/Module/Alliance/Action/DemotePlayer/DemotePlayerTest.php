@@ -6,7 +6,7 @@ namespace Stu\Module\Alliance\Action\DemotePlayer;
 
 use Mockery\MockInterface;
 use Override;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\View\Management\Management;
 use Stu\Module\Control\GameControllerInterface;
@@ -73,7 +73,7 @@ class DemotePlayerTest extends StuTestCase
 
     public function testHandleErrorsOnMissingPrivileges(): void
     {
-        static::expectException(AccessViolation::class);
+        static::expectException(AccessViolationException::class);
 
         $this->createBasicExpectation();
 
@@ -87,7 +87,7 @@ class DemotePlayerTest extends StuTestCase
 
     public function testHandleErrorsIfUserWasNotFound(): void
     {
-        static::expectException(AccessViolation::class);
+        static::expectException(AccessViolationException::class);
 
         $this->createBasicExpectation();
 
@@ -106,7 +106,7 @@ class DemotePlayerTest extends StuTestCase
 
     public function testHandleErrorsIfPlayerIdIsSameAsUser(): void
     {
-        static::expectException(AccessViolation::class);
+        static::expectException(AccessViolationException::class);
 
         $player = $this->mock(UserInterface::class);
 
@@ -132,7 +132,7 @@ class DemotePlayerTest extends StuTestCase
 
     public function testHandleErrorsIfPlayerIsNotInAlliance(): void
     {
-        static::expectException(AccessViolation::class);
+        static::expectException(AccessViolationException::class);
 
         $player = $this->mock(UserInterface::class);
 

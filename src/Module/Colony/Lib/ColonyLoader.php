@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Lib;
 
 use Override;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Exception\EntityLockedException;
 use Stu\Module\Tick\Lock\LockManagerInterface;
 use Stu\Module\Tick\Lock\LockTypeEnum;
@@ -24,7 +24,7 @@ final class ColonyLoader implements ColonyLoaderInterface
         $colony = $this->loadInternal($colonyId, $checkForEntityLock);
 
         if ($colony->getUserId() !== $userId) {
-            throw new AccessViolation(sprintf("Colony owned by another user (%d)! Fool: %d", $colony->getUserId(), $userId));
+            throw new AccessViolationException(sprintf("Colony owned by another user (%d)! Fool: %d", $colony->getUserId(), $userId));
         }
 
         return $colony;
@@ -44,7 +44,7 @@ final class ColonyLoader implements ColonyLoaderInterface
 
         $colony = $this->colonyRepository->find($colonyId);
         if ($colony === null) {
-            throw new AccessViolation("Colony not existent!");
+            throw new AccessViolationException("Colony not existent!");
         }
 
         return $colony;

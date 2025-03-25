@@ -6,7 +6,7 @@ namespace Stu\Module\Alliance\View\Relations;
 
 use Override;
 use Stu\Component\Alliance\AllianceEnum;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceRelationItem;
 use Stu\Module\Control\GameControllerInterface;
@@ -32,13 +32,13 @@ final class Relations implements ViewControllerInterface
         $alliance = $user->getAlliance();
 
         if ($alliance === null) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $allianceId = $alliance->getId();
 
         if (!$this->allianceActionManager->mayManageForeignRelations($alliance, $user)) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $result = $this->allianceRelationRepository->getByAlliance($allianceId);

@@ -6,7 +6,7 @@ namespace Stu\Module\Trade\Action\TakeOffer;
 
 use Override;
 use Stu\Component\Game\ModuleEnum;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContextTypeEnum;
@@ -49,7 +49,7 @@ final class TakeOffer implements ActionControllerInterface
         }
 
         if (!$this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, $selectedOffer->getTradePost()->getId())) {
-            throw new AccessViolation(sprintf(
+            throw new AccessViolationException(sprintf(
                 _('UserId %d does not have trade license on tradePostId %d'),
                 $userId,
                 $selectedOffer->getTradePost()->getId()

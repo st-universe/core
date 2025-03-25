@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Communication\View\ShowEditKn;
 
 use Override;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Communication\Action\EditKnPost\EditKnPost;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuTime;
@@ -34,11 +34,11 @@ final class ShowEditKn implements ViewControllerInterface
         $post = $this->knPostRepository->find($this->showEditKnRequest->getKnId());
 
         if ($post === null) {
-            throw new AccessViolation(sprintf(_('UserId %d tried to edit non-existing kn post'), $game->getUser()->getId()));
+            throw new AccessViolationException(sprintf(_('UserId %d tried to edit non-existing kn post'), $game->getUser()->getId()));
         }
 
         if ($post->getUserId() !== $game->getUser()->getId() && !$game->isAdmin()) {
-            throw new AccessViolation(sprintf(_('UserId %d tried to edit foreign kn post'), $game->getUser()->getId()));
+            throw new AccessViolationException(sprintf(_('UserId %d tried to edit foreign kn post'), $game->getUser()->getId()));
         }
 
         $game->setViewTemplate('html/communication/editKn.twig');

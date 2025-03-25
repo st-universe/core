@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\View\Create;
 
 use Override;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 
@@ -22,7 +22,7 @@ final class Create implements ViewControllerInterface
         $user = $game->getUser();
 
         if ($user->getAlliance() !== null) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $game->setPageTitle(_('Allianz gründen'));

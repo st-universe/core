@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Communication\Action\EditKnPost;
 
 use Override;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -36,7 +36,7 @@ final class EditKnPost implements ActionControllerInterface
         /** @var KnPostInterface $post */
         $post = $this->knPostRepository->find($this->editKnPostRequest->getKnId());
         if ($post === null || ($post->getUserId() !== $userId && !$game->isAdmin())) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
         if ($post->getDate() < time() - self::EDIT_TIME && !$game->isAdmin()) {
             $game->addInformation(_('Dieser Beitrag kann nicht editiert werden'));

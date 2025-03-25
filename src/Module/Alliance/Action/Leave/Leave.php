@@ -7,7 +7,7 @@ namespace Stu\Module\Alliance\Action\Leave;
 use Override;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Game\ModuleEnum;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -36,7 +36,7 @@ final class Leave implements ActionControllerInterface
         );
 
         if ($foundJob->getUserId() === $userId) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $this->allianceJobRepository->truncateByUser($userId);

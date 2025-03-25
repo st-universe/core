@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\View\TopicSettings;
 
 use Override;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
@@ -29,7 +29,7 @@ final class TopicSettings implements ViewControllerInterface
 
         $topic = $this->allianceBoardTopicRepository->find($topicId);
         if ($topic === null || $topic->getAllianceId() !== $alliance->getId()) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $game->setPageTitle(_('Thema bearbeiten'));

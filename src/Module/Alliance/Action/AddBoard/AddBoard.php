@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\AddBoard;
 
 use Override;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\View\Boards\Boards;
 use Stu\Module\Control\ActionControllerInterface;
@@ -28,7 +28,7 @@ final class AddBoard implements ActionControllerInterface
     }
 
     /**
-     * @throws AccessViolation
+     * @throws AccessViolationException
      */
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -38,12 +38,12 @@ final class AddBoard implements ActionControllerInterface
 
         // throw if user has no alliance
         if ($alliance === null) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         // throw if user may not edit alliance
         if (!$this->allianceActionManager->mayEdit($alliance, $user)) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $game->setView(Boards::VIEW_IDENTIFIER);

@@ -7,7 +7,7 @@ namespace Stu\Module\Alliance\Action\DeclineOffer;
 use Override;
 use request;
 use Stu\Component\Alliance\AllianceEnum;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -31,13 +31,13 @@ final class DeclineOffer implements ActionControllerInterface
         $alliance = $user->getAlliance();
 
         if ($alliance === null) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $allianceId = $alliance->getId();
 
         if (!$this->allianceActionManager->mayManageForeignRelations($alliance, $user)) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $relation = $this->allianceRelationRepository->find(request::getIntFatal('al'));

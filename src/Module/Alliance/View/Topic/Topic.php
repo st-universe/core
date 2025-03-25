@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\View\Topic;
 
 use Override;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -34,7 +34,7 @@ final class Topic implements ViewControllerInterface
         $alliance = $game->getUser()->getAlliance();
 
         if ($alliance === null) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $topicId = $this->topicRequest->getTopicId();
@@ -43,11 +43,11 @@ final class Topic implements ViewControllerInterface
         /** @var AllianceBoardTopicInterface $topic */
         $topic = $this->allianceBoardTopicRepository->find($topicId);
         if ($topic === null) {
-            throw new AccessViolation(sprintf(_('userId %d tried to access non-existent topicId %d'), $userId, $topicId));
+            throw new AccessViolationException(sprintf(_('userId %d tried to access non-existent topicId %d'), $userId, $topicId));
         }
 
         if ($topic->getAllianceId() !== $allianceId) {
-            throw new AccessViolation(sprintf(_('userId %d tried to access topic of foreign ally, topicId %d'), $userId, $topicId));
+            throw new AccessViolationException(sprintf(_('userId %d tried to access topic of foreign ally, topicId %d'), $userId, $topicId));
         }
 
         $boardId = $topic->getBoardId();

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\View\NewTopic;
 
 use Override;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\AllianceBoardInterface;
@@ -28,7 +28,7 @@ final class NewTopic implements ViewControllerInterface
         /** @var AllianceBoardInterface $board */
         $board = $this->allianceBoardRepository->find($this->newTopicRequest->getBoardId());
         if ($board === null || $board->getAllianceId() !== $alliance->getId()) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $boardId = $board->getId();

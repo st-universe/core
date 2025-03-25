@@ -8,7 +8,7 @@ use JBBCode\Parser;
 use Override;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Alliance\AllianceSettingsEnum;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Lib\CleanTextUtils;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\View\Edit\Edit;
@@ -37,11 +37,11 @@ final class EditDetails implements ActionControllerInterface
         $allianceId = $alliance->getId();
 
         if ($alliance === null) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         if (!$this->allianceActionManager->mayEdit($alliance, $game->getUser())) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $name = $this->editDetailsRequest->getName();

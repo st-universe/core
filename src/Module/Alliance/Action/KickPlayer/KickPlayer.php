@@ -6,7 +6,7 @@ namespace Stu\Module\Alliance\Action\KickPlayer;
 
 use Override;
 use Stu\Component\Alliance\AllianceEnum;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\View\Management\Management;
 use Stu\Module\Control\ActionControllerInterface;
@@ -35,7 +35,7 @@ final class KickPlayer implements ActionControllerInterface
         $alliance = $user->getAlliance();
 
         if ($alliance === null) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $allianceId = $alliance->getId();
@@ -43,13 +43,13 @@ final class KickPlayer implements ActionControllerInterface
         $playerId = $this->kickPlayerRequest->getPlayerId();
 
         if (!$this->allianceActionManager->mayEdit($alliance, $user)) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $player = $this->userRepository->find($playerId);
 
         if ($player === null || $player->getAlliance() !== $alliance) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $alliance->getMembers()->removeElement($player);

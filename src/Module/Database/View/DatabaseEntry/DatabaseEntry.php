@@ -8,7 +8,7 @@ use Override;
 use Stu\Component\Database\DatabaseEntryTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Lib\Map\VisualPanel\Layer\Data\MapData;
 use Stu\Lib\Map\VisualPanel\Layer\Render\SystemLayerRenderer;
 use Stu\Lib\Map\VisualPanel\PanelAttributesInterface;
@@ -56,7 +56,7 @@ final class DatabaseEntry implements ViewControllerInterface
         $categoryId = $this->databaseEntryRequest->getCategoryId();
 
         if (!$this->databaseUserRepository->exists($userId, $entryId)) {
-            throw new AccessViolation(sprintf(_('userId %d tried to open databaseEntryId %d, but has not discovered it yet!'), $userId, $entryId));
+            throw new AccessViolationException(sprintf(_('userId %d tried to open databaseEntryId %d, but has not discovered it yet!'), $userId, $entryId));
         }
 
         /**

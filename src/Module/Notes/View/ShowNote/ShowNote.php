@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Notes\View\ShowNote;
 
 use Override;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\NoteRepositoryInterface;
@@ -23,7 +23,7 @@ final class ShowNote implements ViewControllerInterface
     {
         $note = $this->noteRepository->find($this->showNoteRequest->getNoteId());
         if ($note->getUserId() !== $game->getUser()->getId()) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $game->setPageTitle(sprintf(_('Notiz: %s'), $note->getTitle()));

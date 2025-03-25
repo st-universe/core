@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\View\Board;
 
 use Override;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -25,7 +25,7 @@ final class Board implements ViewControllerInterface
         $alliance = $game->getUser()->getAlliance();
 
         if ($alliance === null) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $allianceId = $alliance->getId();
@@ -34,7 +34,7 @@ final class Board implements ViewControllerInterface
         $board = $this->allianceBoardRepository->find($this->boardRequest->getBoardId());
 
         if ($board === null || $board->getAllianceId() !== $allianceId) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $boardId = $board->getId();

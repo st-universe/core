@@ -6,7 +6,7 @@ namespace Stu\Module\Ship\Action\JoinFleet;
 
 use request;
 use Stu\Component\Game\GameEnum;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -34,7 +34,7 @@ abstract class AbstractJoinFleet
         $fleet = $this->fleetRepository->find($fleetId);
 
         if ($fleet === null || $fleet->getUserId() !== $game->getUser()->getId()) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         if ($ship->getFleet() !== null) {

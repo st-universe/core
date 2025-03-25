@@ -6,7 +6,7 @@ namespace Stu\Module\Trade\Action\DealsTakeAuction;
 
 use Override;
 use Stu\Component\Trade\TradeEnum;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuTime;
@@ -61,7 +61,7 @@ final class DealsTakeAuction implements ActionControllerInterface
 
 
         if (!$this->tradeLicenseRepository->hasFergLicense($userId)) {
-            throw new AccessViolation(sprintf(
+            throw new AccessViolationException(sprintf(
                 _('UserId %d does not have license for Deals'),
                 $userId
             ));
