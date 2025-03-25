@@ -7,7 +7,7 @@ namespace Stu\Module\Colony\Lib;
 use Mockery;
 use Mockery\MockInterface;
 use Override;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Exception\EntityLockedException;
 use Stu\Module\Tick\Lock\LockManagerInterface;
 use Stu\Module\Tick\Lock\LockTypeEnum;
@@ -68,7 +68,7 @@ class ColonyLoaderTest extends StuTestCase
     public function testLoadWithOwnerValidationExpectErrorWhenColonyNotExistent(): void
     {
         static::expectExceptionMessage("Colony not existent!");
-        static::expectException(AccessViolation::class);
+        static::expectException(AccessViolationException::class);
 
         $this->lockManager->shouldReceive('isLocked')
             ->with($this->colonyId, LockTypeEnum::COLONY_GROUP)
@@ -103,7 +103,7 @@ class ColonyLoaderTest extends StuTestCase
     public function testLoadWithOwnerValidationExpectErrorWhenForeignColony(): void
     {
         static::expectExceptionMessage("Colony owned by another user (666)! Fool: 5");
-        static::expectException(AccessViolation::class);
+        static::expectException(AccessViolationException::class);
 
         $this->lockManager->shouldReceive('isLocked')
             ->with($this->colonyId, LockTypeEnum::COLONY_GROUP)

@@ -8,7 +8,7 @@ use Exception;
 use Noodlehaus\ConfigInterface;
 use Override;
 use RuntimeException;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\View\Edit\Edit;
 use Stu\Module\Control\ActionControllerInterface;
@@ -33,11 +33,11 @@ final class ChangeAvatar implements ActionControllerInterface
         $alliance = $user->getAlliance();
 
         if ($alliance === null) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         if (!$this->allianceActionManager->mayEdit($alliance, $user)) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $game->setView(Edit::VIEW_IDENTIFIER);

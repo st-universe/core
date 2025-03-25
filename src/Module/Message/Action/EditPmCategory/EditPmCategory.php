@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Message\Action\EditPmCategory;
 
 use Override;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\View\ShowPmCategoryList\ShowPmCategoryList;
@@ -31,7 +31,7 @@ final class EditPmCategory implements ActionControllerInterface
 
         $cat = $this->privateMessageFolderRepository->find($this->editPmCategoryRequest->getCategoryId());
         if ($cat === null || $cat->getUserId() !== $game->getUser()->getId()) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $cat->setDescription($name);

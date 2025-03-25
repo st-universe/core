@@ -10,7 +10,7 @@ use RuntimeException;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Logging\GameRequest\GameRequestSaverInterface;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Exception\EntityLockedException;
 use Stu\Exception\MaintenanceGameStateException;
 use Stu\Exception\RelocationGameStateException;
@@ -244,7 +244,7 @@ final class GameController implements GameControllerInterface
         $user = $this->session->getUser();
 
         if ($user === null) {
-            throw new AccessViolation('User not set');
+            throw new AccessViolationException('User not set');
         }
         return $user;
     }

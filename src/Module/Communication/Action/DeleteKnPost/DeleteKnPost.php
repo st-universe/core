@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Communication\Action\DeleteKnPost;
 
 use Override;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Communication\Action\EditKnPost\EditKnPost;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -26,7 +26,7 @@ final class DeleteKnPost implements ActionControllerInterface
         /** @var KnPostInterface $post */
         $post = $this->knPostRepository->find($this->deleteKnPostRequest->getKnId());
         if ($post === null || $post->getUserId() !== $userId) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
         if ($post->getDate() < time() - EditKnPost::EDIT_TIME) {
             $game->addInformation(_('Dieser Beitrag kann nicht editiert werden'));

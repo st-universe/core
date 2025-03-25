@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\View\ShowShoutBox;
 
 use Override;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
@@ -25,7 +25,7 @@ final class ShowShoutBox implements ViewControllerInterface
         $tradeNetworkId = $this->showShoutBoxRequest->getTradeNetworkId();
 
         if (!$this->tradeLicenseRepository->hasLicenseByUserAndNetwork($game->getUser()->getId(), $tradeNetworkId)) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $game->setMacroInAjaxWindow('html/trade/shoutbox.twig');

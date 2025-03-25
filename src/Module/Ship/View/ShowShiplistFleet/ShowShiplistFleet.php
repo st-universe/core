@@ -7,7 +7,7 @@ namespace Stu\Module\Ship\View\ShowShiplistFleet;
 use Override;
 use request;
 use Stu\Component\Game\GameEnum;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -33,7 +33,7 @@ final class ShowShiplistFleet implements ViewControllerInterface
         }
 
         if ($fleet->getUser() !== $game->getUser()) {
-            throw new AccessViolation(sprintf('tried to refresh foreign fleet, idiot: %d', $userId));
+            throw new AccessViolationException(sprintf('tried to refresh foreign fleet, idiot: %d', $userId));
         }
         $fleet->setHiddenStyle($this->session->hasSessionValue('hiddenshiplistfleets', $fleetId) ? 'display: none' : '');
 

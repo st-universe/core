@@ -7,7 +7,7 @@ namespace Stu\Module\Colony\View\ShowModuleScreen;
 use Override;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
@@ -43,7 +43,7 @@ final class ShowModuleScreen implements ViewControllerInterface
         $rump = $this->spacecraftRumpRepository->find($this->showModuleScreenRequest->getRumpId());
 
         if ($rump === null || !array_key_exists($rump->getId(), $this->spacecraftRumpRepository->getBuildableByUser($userId))) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $buildplanHangar = $this->buildplanHangarRepository->getByRump($rump->getId());

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\RenameBuildplan;
 
 use Override;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Lib\CleanTextUtils;
 use Stu\Module\Colony\View\ShowModuleScreenBuildplan\ShowModuleScreenBuildplan;
 use Stu\Module\Control\ActionControllerInterface;
@@ -50,7 +50,7 @@ final class RenameBuildplan implements ActionControllerInterface
 
         $plan = $this->spacecraftBuildplanRepository->find($this->renameBuildplanRequest->getId());
         if ($plan === null || $plan->getUserId() !== $userId) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $plan->setName($newName);

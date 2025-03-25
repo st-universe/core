@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\PriorizeFleet;
 
 use Override;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
@@ -23,7 +23,7 @@ final class PriorizeFleet implements ActionControllerInterface
     {
         $fleet = $this->fleetRepository->find($this->priorizeFleetRequest->getFleetId());
         if ($fleet === null || $fleet->getUser() !== $game->getUser()) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $fleet->setSort($this->fleetRepository->getHighestSortByUser($game->getUser()->getId()));

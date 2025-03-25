@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Notes\Action\SaveNote;
 
 use Override;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameController;
 use Stu\Module\Control\GameControllerInterface;
@@ -30,7 +30,7 @@ final class SaveNote implements ActionControllerInterface
         } else {
             $note = $this->noteRepository->find($noteId);
             if ($note->getUserId() !== $userId) {
-                throw new AccessViolation();
+                throw new AccessViolationException();
             }
         }
 

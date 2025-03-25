@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\RenameBoard;
 
 use Override;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\View\Boards\Boards;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -33,7 +33,7 @@ final class RenameBoard implements ActionControllerInterface
         /** @var AllianceBoardInterface $board */
         $board = $this->allianceBoardRepository->find($this->renameBoardRequest->getBoardId());
         if ($board === null || $board->getAllianceId() !== $alliance->getId()) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $game->setView(Boards::VIEW_IDENTIFIER);

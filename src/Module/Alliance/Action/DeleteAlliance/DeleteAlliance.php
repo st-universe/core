@@ -7,7 +7,7 @@ namespace Stu\Module\Alliance\Action\DeleteAlliance;
 use Override;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Game\ModuleEnum;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -42,7 +42,7 @@ final class DeleteAlliance implements ActionControllerInterface
         );
 
         if ($jobFounder === null) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $jobSuccessor = $this->allianceJobRepository->getSingleResultByAllianceAndType(
@@ -54,7 +54,7 @@ final class DeleteAlliance implements ActionControllerInterface
             $jobFounder->getUser() !== $user
             && ($jobSuccessor === null || $jobSuccessor->getUser() !== $user)
         ) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $this->allianceActionManager->delete($jobFounder->getAlliance());

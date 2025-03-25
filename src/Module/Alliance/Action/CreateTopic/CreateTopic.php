@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\CreateTopic;
 
 use Override;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\View\Board\Board;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -49,7 +49,7 @@ final class CreateTopic implements ActionControllerInterface
         /** @var AllianceBoardInterface $board */
         $board = $this->allianceBoardRepository->find($this->createTopicRequest->getBoardId());
         if ($board === null || $board->getAllianceId() !== $alliance->getId()) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $date = time();

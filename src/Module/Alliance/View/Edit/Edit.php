@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\View\Edit;
 
 use Override;
-use Stu\Exception\AccessViolation;
 use Stu\Component\Alliance\AllianceSettingsEnum;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -27,11 +27,11 @@ final class Edit implements ViewControllerInterface
         $alliance = $game->getUser()->getAlliance();
 
         if ($alliance === null) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         if (!$this->allianceActionManager->mayEdit($alliance, $game->getUser())) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $game->setPageTitle(_('Allianz editieren'));

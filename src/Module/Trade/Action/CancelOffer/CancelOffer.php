@@ -6,7 +6,7 @@ namespace Stu\Module\Trade\Action\CancelOffer;
 
 use Override;
 use Stu\Component\Game\ModuleEnum;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContextTypeEnum;
@@ -35,7 +35,7 @@ final class CancelOffer implements ActionControllerInterface
         $offer = $this->tradeOfferRepository->find($offerId);
 
         if ($offer->getUserId() !== $userId) {
-            new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $this->tradeLibFactory->createTradePostStorageManager(

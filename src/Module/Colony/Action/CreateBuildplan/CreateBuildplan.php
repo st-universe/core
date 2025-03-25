@@ -12,7 +12,7 @@ use RuntimeException;
 use Stu\Component\Spacecraft\Buildplan\BuildplanSignatureCreationInterface;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Lib\CleanTextUtils;
 use Stu\Module\Colony\View\ShowModuleScreen\ShowModuleScreen;
 use Stu\Module\Colony\View\ShowModuleScreenBuildplan\ShowModuleScreenBuildplan;
@@ -64,7 +64,7 @@ final class CreateBuildplan implements ActionControllerInterface
         }
 
         if (!array_key_exists($rump->getId(), $this->spacecraftRumpRepository->getBuildableByUser($userId))) {
-            throw new AccessViolation(sprintf(
+            throw new AccessViolationException(sprintf(
                 'userId %d tried to create a buildplan with rump %s, but has not researched the rump',
                 $userId,
                 $rump->getName()

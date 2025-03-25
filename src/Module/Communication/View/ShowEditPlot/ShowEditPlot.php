@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Communication\View\ShowEditPlot;
 
 use Override;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\RpgPlotInterface;
@@ -25,7 +25,7 @@ final class ShowEditPlot implements ViewControllerInterface
         /** @var RpgPlotInterface $plot */
         $plot = $this->rpgPlotRepository->find($this->showEditPlotRequest->getPlotId());
         if ($plot === null || $plot->getUserId() !== $game->getUser()->getId()) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $game->setViewTemplate('html/communication/plot/editPlot.twig');

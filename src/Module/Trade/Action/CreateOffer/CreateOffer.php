@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\Action\CreateOffer;
 
 use Override;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -40,7 +40,7 @@ final class CreateOffer implements ActionControllerInterface
             return;
         }
         if ($storage->getUserId() !== $userId) {
-            throw new AccessViolation(sprintf("Storage belongs to other user! Fool: %d", $userId));
+            throw new AccessViolationException(sprintf("Storage belongs to other user! Fool: %d", $userId));
         }
 
         $tradePost = $storage->getTradePost();

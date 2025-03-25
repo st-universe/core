@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\View\BoardSettings;
 
 use Override;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\AllianceBoardRepositoryInterface;
@@ -28,7 +28,7 @@ final class BoardSettings implements ViewControllerInterface
 
         $board = $this->allianceBoardRepository->find($this->boardSettingsRequest->getBoardId());
         if ($board === null || $board->getAllianceId() !== $alliance->getId()) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $game->setPageTitle(_('Forum bearbeiten'));

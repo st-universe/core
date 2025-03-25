@@ -6,7 +6,7 @@ namespace Stu\Module\NPC\Action;
 
 use Override;
 use request;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Lib\CleanTextUtils;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -52,7 +52,7 @@ final class RenameBuildplan implements ActionControllerInterface
 
         $plan = $this->spacecraftBuildplanRepository->find($buildplanId);
         if ($plan === null || $plan->getUserId() !== $userId) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $oldName = $plan->getName();

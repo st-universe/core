@@ -7,7 +7,7 @@ namespace Stu\Module\Alliance\Action\PromotePlayer;
 use Override;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Game\ModuleEnum;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\View\Management\Management;
 use Stu\Module\Control\ActionControllerInterface;
@@ -33,13 +33,13 @@ final class PromotePlayer implements ActionControllerInterface
         $alliance = $user->getAlliance();
 
         if ($alliance === null) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $allianceId = $alliance->getId();
 
         if (!$this->allianceActionManager->mayEdit($alliance, $user)) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $playerId = $this->promotePlayerRequest->getPlayerId();
@@ -47,7 +47,7 @@ final class PromotePlayer implements ActionControllerInterface
         $player = $this->userRepository->find($playerId);
 
         if ($player === null || $player->getAlliance() !== $alliance) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $type = $this->promotePlayerRequest->getPromotionType();
@@ -58,11 +58,11 @@ final class PromotePlayer implements ActionControllerInterface
         ];
 
         if (!in_array($type, $availablePromotions)) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         if ($alliance->getFounder()->getUserId() === $playerId) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $this->allianceJobRepository->truncateByUser($playerId);
@@ -78,7 +78,7 @@ final class PromotePlayer implements ActionControllerInterface
                     AllianceEnum::ALLIANCE_JOBS_FOUNDER
                 );
                 if ($founderJob->getUserId() !== $userId) {
-                    throw new AccessViolation();
+                    throw new AccessViolationException();
                 }
                 $this->allianceActionManager->setJobForUser(
                     $allianceId,
@@ -93,7 +93,7 @@ final class PromotePlayer implements ActionControllerInterface
                 break;
             case AllianceEnum::ALLIANCE_JOBS_SUCCESSOR:
                 if ($userId === $playerId) {
-                    throw new AccessViolation();
+                    throw new AccessViolationException();
                 }
 
                 $this->allianceActionManager->setJobForUser(
@@ -109,7 +109,7 @@ final class PromotePlayer implements ActionControllerInterface
                 break;
             case AllianceEnum::ALLIANCE_JOBS_DIPLOMATIC:
                 if ($userId === $playerId) {
-                    throw new AccessViolation();
+                    throw new AccessViolationException();
                 }
 
                 $this->allianceActionManager->setJobForUser(

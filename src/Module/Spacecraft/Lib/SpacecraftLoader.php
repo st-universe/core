@@ -8,7 +8,7 @@ use Override;
 use RuntimeException;
 use Stu\Component\Game\SemaphoreConstants;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Exception\EntityLockedException;
 use Stu\Exception\SpacecraftDoesNotExistException;
 use Stu\Exception\UnallowedUplinkOperation;
@@ -132,7 +132,7 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
                     throw new UnallowedUplinkOperation(_('Owner is on vacation!'));
                 }
             } else {
-                throw new AccessViolation(sprintf("Spacecraft owned by another user (%d)! Fool: %d", $spacecraft->getUser()->getId(), $userId));
+                throw new AccessViolationException(sprintf("Spacecraft owned by another user (%d)! Fool: %d", $spacecraft->getUser()->getId(), $userId));
             }
         }
     }

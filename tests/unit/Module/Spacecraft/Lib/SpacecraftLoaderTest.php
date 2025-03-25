@@ -8,7 +8,7 @@ use Mockery\MockInterface;
 use Override;
 use Stu\Component\Game\SemaphoreConstants;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Exception\EntityLockedException;
 use Stu\Exception\SpacecraftDoesNotExistException;
 use Stu\Exception\UnallowedUplinkOperation;
@@ -108,7 +108,7 @@ class SpacecraftLoaderTest extends StuTestCase
 
     public function testGetByIdAndUserAwaitExceptionIfShipBelongsToOtherUser(): void
     {
-        $this->expectException(AccessViolation::class);
+        $this->expectException(AccessViolationException::class);
 
         $this->lockManager->shouldReceive('isLocked')
             ->with($this->spacecraftId, LockTypeEnum::SHIP_GROUP)
