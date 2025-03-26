@@ -39,9 +39,14 @@ final class RemoveWaste implements ActionControllerInterface
 
         $spacecraft = $this->spaceCraftLoader->getByIdAndUser(request::getIntFatal('id'), $userId);
 
-        $commodities = request::postArrayFatal('commodity');
+        $commodities = request::postArray('commodity') ?? [];
 
         $reason = request::postString('reason');
+
+        if (!$commodities) {
+            $game->addInformation(_('Es wurden keine Waren ausgewählt'));
+            return;
+        }
 
 
         if ($game->getUser()->isNpc()) {
