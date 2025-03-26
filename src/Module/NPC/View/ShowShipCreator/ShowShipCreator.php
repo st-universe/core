@@ -39,6 +39,11 @@ final class ShowShipCreator implements ViewControllerInterface
         $game->appendNavigationPart('/npc/index.php?SHOW_SHIP_CREATOR=1', 'Schiff erstellen');
         $game->setPageTitle('Schiff erstellen');
 
+        $npcList = iterator_to_array($this->userRepository->getNpcList());
+        $nonNpcList = iterator_to_array($this->userRepository->getNonNpcList());
+        $allUsers = array_merge($npcList, $nonNpcList);
+        $game->setTemplateVar('ALL_USERS', $allUsers);
+
         if ($userId > 0) {
             $selectedUser = $this->userRepository->find($userId);
             $game->setTemplateVar('USER_ID', $userId);
@@ -98,11 +103,6 @@ final class ShowShipCreator implements ViewControllerInterface
                 $game->setTemplateVar('BUILDPLANS', $filteredBuildplans);
                 $game->setTemplateVar('DELETABLE_BUILDPLANS', array_filter($filteredBuildplans, fn($buildplan) => $this->isDeletable($buildplan)));
             }
-        } else {
-            $npcList = iterator_to_array($this->userRepository->getNpcList());
-            $nonNpcList = iterator_to_array($this->userRepository->getNonNpcList());
-            $allUsers = array_merge($npcList, $nonNpcList);
-            $game->setTemplateVar('ALL_USERS', $allUsers);
         }
     }
 
