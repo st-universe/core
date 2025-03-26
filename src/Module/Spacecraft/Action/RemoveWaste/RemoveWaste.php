@@ -39,7 +39,7 @@ final class RemoveWaste implements ActionControllerInterface
 
         $spacecraft = $this->spaceCraftLoader->getByIdAndUser(request::getIntFatal('id'), $userId);
 
-        $commodities = request::postArray('commodity') ?? [];
+        $commodities = request::postArray('commodity');
 
         $reason = request::postString('reason');
 
