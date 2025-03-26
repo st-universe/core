@@ -1,0 +1,43 @@
+<form action="{{ FORM_ACTION }}" method="post">
+    <input type="hidden" name="id" value="{{ SPACECRAFT.getId }}" />
+    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+    {% block containment %}
+    <div>
+        <table class="use" style="width: 433px;">
+            {% for stor in SPACECRAFT.getStorage %}
+            <tr class"row">
+                <td style="vertical-align: middle;">
+                    <div style="display: table-cell; width: 55px;">
+                        <img src="/assets/commodities/{{ stor.getCommodity.getId }}.png"
+                            title="{{ stor.getCommodity.getName }}" />
+                    </div>
+                    <div style="display: table-cell; width: 40px; vertical-align:middle;">
+                        {{ stor.getAmount }}
+                    </div>
+                    <div style="display: table-cell; vertical-align: middle">
+                        {{ stor.getCommodity.getName }}</div>
+                </td>
+                <td style="vertical-align: middle; text-align: center;">
+                    <input type="text" size="2" name="commodity[{{ stor.getCommodity.getId }}]"
+                        onkeydown="event.key == 'Enter' && $('removewastebutton').click()" />
+                </td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td>
+                    {% if SPACECRAFT.getUser.isNpc %}
+                    <div style="margin: 10px 0;">
+                        <label for="reason">Grund:</label>
+                        <input type="text" id="reason" name="reason" size="20">
+                    </div>
+                    {% endif %}
+                </td>
+                <td>
+                    <input type="submit" style="cursor: pointer;" id="removewastebutton" name="B_REMOVE_WASTE"
+                        value="Waren entsorgen" />
+                </td>
+            </tr>
+        </table>
+    </div>
+    {% endblock %}
+</form>

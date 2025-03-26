@@ -55,6 +55,7 @@ class AllViewControllerTest extends TwigTestCase
         'SPACECRAFT_VIEWS-SHOW_SPACECRAFT',         // has own test case
         'SPACECRAFT_VIEWS-SHOW_SYSTEM_SETTINGS_AJAX',  // has own test case
         'SPACECRAFT_VIEWS-SHOW_TRANSFER',           // has own test case
+        'SPACECRAFT_VIEWS-SHOW_WASTEMENU',
         'TRADE_VIEWS-SHOW_OFFER_MENU',
         'TRADE_VIEWS-SHOW_OFFER_MENU_TRANSFER',
         'TRADE_VIEWS-SHOW_OFFER_MENU_NEW_OFFER',
