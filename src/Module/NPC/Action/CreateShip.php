@@ -48,6 +48,7 @@ final class CreateShip implements ActionControllerInterface
         $cy = request::postIntFatal('cy');
         $reason = request::postString('reason');
         $torpedoTypeId = request::postInt('torpedoTypeId');
+        $crewAmount = request::postInt('crew_input');
 
         if ($reason === '') {
             $game->addInformation("Grund fehlt");
@@ -90,7 +91,7 @@ final class CreateShip implements ActionControllerInterface
                 ->createBy($userId, $buildplan->getRump()->getId(), $buildplan->getId())
                 ->setLocation($field)
                 ->maxOutSystems()
-                ->createCrew();
+                ->createCrew($crewAmount);
 
             if ($torpedoTypeId > 0) {
                 $creator->setTorpedo($torpedoTypeId);
@@ -100,7 +101,7 @@ final class CreateShip implements ActionControllerInterface
         }
 
         $logText = sprintf(
-            '%s hat für Spieler %s (%d) %dx %s erstellt. Module: %s, Position: %s|%d|%d, Grund: %s',
+            '%s hat für Spieler %s (%d) %dx %s erstellt. Module: %s, Position: %s (%d|%d), Crew: %d Grund: %s',
             $game->getUser()->getName(),
             $user->getName(),
             $userId,
@@ -110,6 +111,7 @@ final class CreateShip implements ActionControllerInterface
             $layer->getName(),
             $cx,
             $cy,
+            $crewAmount,
             $reason
         );
         if ($game->getUser()->isNpc()) {

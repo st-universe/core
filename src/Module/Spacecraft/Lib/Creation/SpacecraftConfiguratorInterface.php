@@ -27,7 +27,7 @@ interface SpacecraftConfiguratorInterface
     public function loadWarpdrive(int $percentage): SpacecraftConfiguratorInterface;
 
     /** @return SpacecraftConfiguratorInterface<T> */
-    public function createCrew(): SpacecraftConfiguratorInterface;
+    public function createCrew(?int $amount = null): SpacecraftConfiguratorInterface;
 
     /** @return SpacecraftConfiguratorInterface<T> */
     public function setAlertState(SpacecraftAlertStateEnum $alertState): SpacecraftConfiguratorInterface;

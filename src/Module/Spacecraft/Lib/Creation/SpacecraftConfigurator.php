@@ -114,13 +114,17 @@ class SpacecraftConfigurator implements SpacecraftConfiguratorInterface
     }
 
     #[Override]
-    public function createCrew(): SpacecraftConfiguratorInterface
+    public function createCrew(?int $amount = null): SpacecraftConfiguratorInterface
     {
         $ship = $this->wrapper->get();
 
         $buildplan = $ship->getBuildplan();
         if ($buildplan !== null) {
-            $crewAmount = $buildplan->getCrew();
+            if ($amount !== null && $amount >= 0) {
+                $crewAmount = $amount;
+            } else {
+                $crewAmount = $buildplan->getCrew();
+            }
             for ($j = 1; $j <= $crewAmount; $j++) {
                 $crewAssignment = $this->crewCreator->create($ship->getUser()->getId());
                 $crewAssignment->setSpacecraft($ship);

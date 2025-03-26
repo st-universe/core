@@ -97,6 +97,13 @@
         </div>
 
         <div style="margin: 10px 0;">
+            <label for="crew_input">Crew:</label>
+            <input type="number" id="crew_input" name="crew_input" min="0" value="{{ SELECTED_BUILDPLAN.getCrew }}">
+            <span>Mindestcrew für dieses Schiff: {{
+                SELECTED_BUILDPLAN.getCrew }}</span>
+        </div>
+
+        <div style="margin: 10px 0;">
             <label for="reason">Grund:</label>
             <input type="text" id="reason" name="reason" size="20">
         </div>
