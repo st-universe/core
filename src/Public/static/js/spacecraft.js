@@ -139,6 +139,14 @@ function openTradeMenu(postid) {
     "?SHOW_TRADEMENU=1&id=" + spacecraftid + "&postid=" + postid
   );
 }
+function openWasteMenu() {
+  closeAjaxWindow();
+  openPJsWin("elt", 1);
+  ajax_update(
+    "elt",
+    "?SHOW_WASTEMENU=1&id=" + spacecraftid
+  );
+}
 function switchTransferFromAccount(postid) {
   ajax_update(
     "trademenutransfer",

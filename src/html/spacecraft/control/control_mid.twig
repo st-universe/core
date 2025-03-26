@@ -41,6 +41,17 @@ canColonize, closestAnomalyDistance) %}
         </td>
     </tr>
     {% endif %}
+    {% if SPACECRAFT.isStation and SPACECRAFT.getUser.isNPC %}
+    <tr>
+        <td colspan="2">
+            <a href="javascript:void(0);" onclick="openWasteMenu();" onmouseover="cp('waste','buttons/repli')"
+                onmouseout="cp('waste','buttons/repli2')">
+                <img src="/assets/buttons/repli2.png" title="Müllverbrennung" name="waste" />
+                Müllverbrennung
+            </a>
+        </td>
+    </tr>
+    {% endif %}
     {% set tradePost = SPACECRAFT.getTradePost %}
     {% if tradePost %}
     <tr>
