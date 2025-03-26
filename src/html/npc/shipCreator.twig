@@ -5,7 +5,7 @@
 
 <div>
     {% if not USER_ID %}
-    <h2>Spieler auswählen</h2>
+    <h2>Bauplan von Spieler auswählen</h2>
     {% for user in ALL_USERS %}
     <div><a href="?SHOW_SHIP_CREATOR=1&userId={{ user.getId }}">{{ user.getName|bbcode }} ({{ user.getId }})</a></div>
     {% endfor %}
@@ -53,63 +53,142 @@
 
     </div>
     {% else %}
-    <h2>Schiff erstellen: {{ SELECTED_BUILDPLAN.getName }}</h2>
-    <form action="/npc/index.php" method="post">
-        <input type="hidden" name="userId" value="{{ USER_ID }}">
-        <input type="hidden" name="buildplanId" value="{{ SELECTED_BUILDPLAN.getId }}">
+    <div style="display: flex; flex-wrap: wrap;">
+        <div
+            style="flex: 1; min-width: 300px; padding: 20px; background-color: #1e1e1e; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+            <h2 style="color: #4CAF50; margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 10px;">
+                Schiff erstellen: {{ SELECTED_BUILDPLAN.getName }}
+            </h2>
 
-        {% if TORPEDO_TYPES|length > 0 %}
-        <div class="torpedo-selection" style="margin: 10px 0;">
-            <h3>Torpedos</h3>
-            <div>
-                <input type="radio" name="torpedoTypeId" value="0" checked />Keine Torpedos
+            <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                <div style="flex: 0 0 120px; margin-right: 15px;">
+                    <img src="/assets/ships/{{ SELECTED_BUILDPLAN.getRump.getId }}.png"
+                        style="max-width: 100%; border-radius: 5px; border: 1px solid #444;"
+                        alt="{{ SELECTED_BUILDPLAN.getName }}">
+                </div>
+                <div style="flex: 1;">
+                    <div style="margin-bottom: 8px;">
+                        <span style="color: #888;">Von Spieler:</span>
+                        <span style="color: #ddd; font-weight: bold;">{{ SELECTED_BUILDPLAN.getUser.getName|bbcode }}
+                            ({{ SELECTED_BUILDPLAN.getUser.getId }})</span>
+                    </div>
+                    <div style="margin-bottom: 8px;">
+                        <span style="color: #888;">Für Spieler:</span>
+                        <span style="color: #ddd; font-weight: bold;">{{ SELECTED_USER.getName|bbcode }} ({{
+                            SELECTED_USER.getId }})</span>
+                    </div>
+                    <div style="margin-bottom: 8px;">
+                        <span style="color: #888;">Rumpf:</span>
+                        <span style="color: #ddd;">{{ SELECTED_BUILDPLAN.getRump.getName }}</span>
+                    </div>
+                    <div style="margin-bottom: 8px;">
+                        <span style="color: #888;">Mindestcrew:</span>
+                        <span style="color: #ddd;">{{ SELECTED_BUILDPLAN.getCrew }}</span>
+                    </div>
+                </div>
             </div>
-            {% for torpedo in TORPEDO_TYPES %}
+
+            <div style="background-color: #252525; padding: 10px; border-radius: 5px; margin-bottom: 15px;">
+                <div style="font-weight: bold; margin-bottom: 8px; color: #aaa;">Module:</div>
+                <div style="display: flex; flex-wrap: wrap;">
+                    {% for module in SELECTED_BUILDPLAN.getModulesOrdered %}
+                    <div
+                        style="margin: 3px; position: relative; background-color: #333; border-radius: 4px; padding: 2px;">
+                        <img src="/assets/commodities/{{ module.getModule.getCommodityId }}.png"
+                            title="{{ module.getModule.getName }}" style="width: 32px; height: 32px;" />
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <form action="/npc/index.php" method="post"
+                style="background-color: #252525; padding: 15px; border-radius: 5px;">
+                <input type="hidden" name="userId" value="{{ USER_ID }}">
+                <input type="hidden" name="buildplanId" value="{{ SELECTED_BUILDPLAN.getId }}">
+
+                {% if TORPEDO_TYPES|length > 0 %}
+                <div style="margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 10px;">
+                    <h3 style="color: #4CAF50; margin-bottom: 10px;">Torpedos</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 5px;">
+                        <div style="padding: 5px;">
+                            <input type="radio" name="torpedoTypeId" value="0" id="torpedo_0" checked
+                                style="margin-right: 5px;" />
+                            <label for="torpedo_0" style="color: #ddd;">Keine Torpedos</label>
+                        </div>
+                        {% for torpedo in TORPEDO_TYPES %}
+                        <div style="padding: 5px;">
+                            <input type="radio" name="torpedoTypeId" id="torpedo_{{ torpedo.getId }}"
+                                value="{{ torpedo.getId }}" style="margin-right: 5px;" />
+                            <label for="torpedo_{{ torpedo.getId }}" style="color: #ddd;">{{ torpedo.getName }}</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                    <div style="grid-column: 1 / 3;">
+                        <label for="layer" style="display: block; margin-bottom: 5px; color: #aaa;">Layer:</label>
+                        <select name="layer" id="layer"
+                            style="width: 100%; padding: 8px; background-color: #333; color: #ddd; border: 1px solid #444; border-radius: 4px;">
+                            {% for layer in LAYERS %}
+                            <option value="{{ layer.getId }}" {% if layer.getId==2 %}selected{% endif %}>{{
+                                layer.getName }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="cx" style="display: block; margin-bottom: 5px; color: #aaa;">X-Koordinate:</label>
+                        <input type="number" id="cx" name="cx" required
+                            style="width: 100%; padding: 8px; background-color: #333; color: #ddd; border: 1px solid #444; border-radius: 4px;">
+                    </div>
+
+                    <div>
+                        <label for="cy" style="display: block; margin-bottom: 5px; color: #aaa;">Y-Koordinate:</label>
+                        <input type="number" id="cy" name="cy" required
+                            style="width: 100%; padding: 8px; background-color: #333; color: #ddd; border: 1px solid #444; border-radius: 4px;">
+                    </div>
+
+                    <div>
+                        <label for="shipcount" style="display: block; margin-bottom: 5px; color: #aaa;">Anzahl
+                            Schiffe:</label>
+                        <input type="number" id="shipcount" name="shipcount" value="1" min="1"
+                            style="width: 100%; padding: 8px; background-color: #333; color: #ddd; border: 1px solid #444; border-radius: 4px;">
+                    </div>
+
+                    <div>
+                        <label for="crew_input" style="display: block; margin-bottom: 5px; color: #aaa;">Crew:</label>
+                        <input type="number" id="crew_input" name="crew_input" min="0"
+                            value="{{ SELECTED_BUILDPLAN.getCrew }}"
+                            style="width: 100%; padding: 8px; background-color: #333; color: #ddd; border: 1px solid #444; border-radius: 4px;">
+                    </div>
+
+                    <div style="grid-column: 1 / 3;">
+                        <label for="reason" style="display: block; margin-bottom: 5px; color: #aaa;">Grund:</label>
+                        <input type="text" id="reason" name="reason"
+                            style="width: 100%; padding: 8px; background-color: #333; color: #ddd; border: 1px solid #444; border-radius: 4px;">
+                    </div>
+                </div>
+
+                <input type="submit" name="B_CREATE_SHIP" value="Schiff(e) erstellen"
+                    style="width: 100%; padding: 10px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; transition: background-color 0.3s;"
+                    onmouseover="this.style.backgroundColor='#3e8e41'"
+                    onmouseout="this.style.backgroundColor='#4CAF50'" />
+            </form>
+        </div>
+
+        <div style="flex: 1; min-width: 300px; border-left: 1px solid #444; padding-left: 20px;">
+            <h2>Bauplan für anderen Spieler wählen:</h2>
+            {% for user in ALL_USERS %}
             <div>
-                <input type="radio" name="torpedoTypeId" value="{{ torpedo.getId }}" />
-                {{ torpedo.getName }}
+                <a href="?SHOW_SHIP_CREATOR=1&userId={{ user.getId }}&buildplanId={{ SELECTED_BUILDPLAN.getId }}">{{
+                    user.getName|bbcode }} ({{ user.getId }})</a>
             </div>
             {% endfor %}
         </div>
-        {% endif %}
-
-        <div style="margin: 10px 0;">
-            <label for="layer">Layer:</label>
-            <select name="layer" id="layer">
-                {% for layer in LAYERS %}
-                <option value="{{ layer.getId }}" {% if layer.getId==2 %}selected{% endif %}>{{ layer.getName }}
-                </option>
-                {% endfor %}
-            </select>
-        </div>
-
-        <div style="margin: 10px 0;">
-            <label for="cx">X-Koordinate:</label>
-            <input type="number" id="cx" name="cx" required>
-
-            <label for="cy">Y-Koordinate:</label>
-            <input type="number" id="cy" name="cy" required>
-        </div>
-
-        <div style="margin: 10px 0;">
-            <label for="shipcount">Anzahl Schiffe:</label>
-            <input type="number" id="shipcount" name="shipcount" value="1" min="1">
-        </div>
-
-        <div style="margin: 10px 0;">
-            <label for="crew_input">Crew:</label>
-            <input type="number" id="crew_input" name="crew_input" min="0" value="{{ SELECTED_BUILDPLAN.getCrew }}">
-            <span>Mindestcrew für dieses Schiff: {{
-                SELECTED_BUILDPLAN.getCrew }}</span>
-        </div>
-
-        <div style="margin: 10px 0;">
-            <label for="reason">Grund:</label>
-            <input type="text" id="reason" name="reason" size="20">
-        </div>
-
-        <input type="submit" name="B_CREATE_SHIP" value="Schiff(e) erstellen" />
-    </form>
+    </div>
     {% endif %}
 </div>
 {% endblock %}
