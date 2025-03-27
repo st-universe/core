@@ -130,6 +130,10 @@ final class IonStormHandler implements AnomalyHandlerInterface
 
             foreach ($location->getSpacecrafts() as $spacecraft) {
 
+                if ($spacecraft->getUser()->isVacationRequestOldEnough()) {
+                    continue;
+                }
+
                 $userId = $spacecraft->getUser()->getId();
                 $informations = $this->informationFactory->createInformationWrapper();
                 $informations->addInformationf("Die %s in Sektor %s befindet sich in einem gefährlichen Ionensturm.\n", $spacecraft->getName(), $location->getSectorString());
