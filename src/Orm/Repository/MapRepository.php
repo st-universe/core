@@ -565,6 +565,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                 WHERE m.region_id = :regionId
                 AND mf.passable = :true
                 AND m.id != :loc
+                AND m.effects NOT LIKE "%NO_MEASUREPOINT%"
                 ORDER BY RANDOM()',
                 $rsm
             )
