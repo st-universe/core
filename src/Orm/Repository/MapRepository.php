@@ -563,7 +563,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                 JOIN stu_map_ftypes mf
                 ON l.field_id = mf.id
                 WHERE m.region_id = :regionId
-                AND (mf.passable = :true OR NOT (mf.effects::jsonb ? :noMeasurePoint))
+                AND (mf.passable = :true OR NOT (mf.effects::jsonb ?  \'NO_MEASUREPOINT\'))
                 AND m.id != :loc
                 ORDER BY RANDOM()',
                 $rsm
@@ -571,8 +571,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             ->setParameters([
                 'regionId' => $regionId,
                 'loc' => $location,
-                'true' => true,
-                'noMeasurePoint' => 'NO_MEASUREPOINT'
+                'true' => true
             ])
             ->getResult();
 
