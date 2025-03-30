@@ -563,9 +563,9 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                 JOIN stu_map_ftypes mf
                 ON l.field_id = mf.id
                 WHERE m.region_id = :regionId
-                AND mf.passable = :true
+                AND (mf.passable = :true
+                OR mf.effects NOT LIKE "%NO_MEASUREPOINT%")
                 AND m.id != :loc
-                AND m.effects NOT LIKE "%NO_MEASUREPOINT%"
                 ORDER BY RANDOM()',
                 $rsm
             )
