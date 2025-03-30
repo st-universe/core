@@ -557,15 +557,21 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
 
         $mapIdResultSet = $this->getEntityManager()
             ->createNativeQuery(
-                'SELECT m.id FROM stu_map m
-                JOIN stu_location l
-                ON m.id = l.id
-                JOIN stu_map_ftypes mf
-                ON l.field_id = mf.id
+                "SELECT m.id
+                FROM stu_map m
+                JOIN stu_location l ON m.id = l.id
+                JOIN stu_map_ftypes mf ON l.field_id = mf.id
                 WHERE m.region_id = :regionId
-                AND (mf.passable = :true OR NOT (mf.effects::jsonb ?  \'NO_MEASUREPOINT\'))
+                AND 
+                    mf.passable = :true
+                    AND NOT EXISTS (
+                        SELECT 1
+                        FROM jsonb_array_elements_text(mf.effects::jsonb) AS elem
+                        WHERE elem = 'NO_MEASUREPOINT'
+                    
+                )
                 AND m.id != :loc
-                ORDER BY RANDOM()',
+                ORDER BY RANDOM()",
                 $rsm
             )
             ->setParameters([
