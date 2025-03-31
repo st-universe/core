@@ -96,7 +96,7 @@
 				{{ SPACECRAFT.getHull }}/{{ SPACECRAFT.getMaxHull }}
 			</td>
 			<td style="text-align: center;">
-				{% if SPACECRAFT.getShieldState %}
+				{% if SPACECRAFT.isShielded %}
 				<span class="activeshield">{{ SPACECRAFT.getShield }}/{{ SPACECRAFT.getMaxShield }}</span>
 				{% else %}
 				<span>{{ SPACECRAFT.getShield }}/{{ SPACECRAFT.getMaxShield }}</span>

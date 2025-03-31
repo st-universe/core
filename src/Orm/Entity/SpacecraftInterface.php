@@ -96,7 +96,7 @@ interface SpacecraftInterface extends
 
     public function getHealthPercentage(): float;
 
-    public function getShieldState(): bool;
+    public function isShielded(): bool;
 
     public function getNbs(): bool;
 

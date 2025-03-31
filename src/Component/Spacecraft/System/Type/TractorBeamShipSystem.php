@@ -41,7 +41,7 @@ final class TractorBeamShipSystem extends AbstractSpacecraftSystemType implement
             return false;
         }
 
-        if ($spacecraft->getShieldState()) {
+        if ($spacecraft->isShielded()) {
             $reason = _('die Schilde aktiviert sind');
             return false;
         }
@@ -125,7 +125,7 @@ final class TractorBeamShipSystem extends AbstractSpacecraftSystemType implement
     {
         return !($spacecraft->isStation()
             || $spacecraft->isCloaked()
-            || $spacecraft->getShieldState()
+            || $spacecraft->isShielded()
             || $spacecraft->isWarped());
     }
 }

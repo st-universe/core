@@ -43,7 +43,7 @@ class ManageBattery implements ManagerInterface
             return $msg;
         }
 
-        if ($ship->getShieldState() && !$this->playerRelationDeterminator->isFriend($ship->getUser(), $managerProvider->getUser())) {
+        if ($ship->isShielded() && !$this->playerRelationDeterminator->isFriend($ship->getUser(), $managerProvider->getUser())) {
             $msg[] = sprintf(
                 _('%s: Batterie konnte wegen aktivierter Schilde nicht aufgeladen werden.'),
                 $ship->getName()

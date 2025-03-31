@@ -30,7 +30,7 @@
 {% else %}
 <td style="width: 160px;">
   {{ ship.getHull }}/{{ ship.getMaxHull }}
-  {% if ship.getShieldState %}
+  {% if ship.isShielded %}
   (<span class="activeshield">{{ ship.getShield }}</span>)
   {% endif %}
 </td>

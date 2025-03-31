@@ -395,7 +395,7 @@
 {% else %}
 <td style="width: 160px;">
     {{ nbsItem.getHull }}/{{ nbsItem.getMaxHull }}
-    {% if nbsItem.getShieldState %}
+    {% if nbsItem.isShielded %}
     (<span class="activeshield">{{ nbsItem.getShield }}</span>)
     {% endif %}
 </td>

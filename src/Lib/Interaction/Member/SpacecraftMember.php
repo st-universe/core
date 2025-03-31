@@ -36,7 +36,7 @@ class SpacecraftMember implements InteractionMemberInterface
 
         if (
             $shouldCheck(InteractionCheckType::EXPECT_SOURCE_UNSHIELDED)
-            && $this->spacecraft->getShieldState()
+            && $this->spacecraft->isShielded()
         ) {
             return InteractionCheckType::EXPECT_SOURCE_UNSHIELDED;
         }
@@ -86,7 +86,7 @@ class SpacecraftMember implements InteractionMemberInterface
 
         if (
             $shouldCheck(InteractionCheckType::EXPECT_TARGET_UNSHIELDED)
-            && $this->spacecraft->getShieldState() && !$isFriend
+            && $this->spacecraft->isShielded() && !$isFriend
         ) {
             return InteractionCheckType::EXPECT_TARGET_UNSHIELDED;
         }

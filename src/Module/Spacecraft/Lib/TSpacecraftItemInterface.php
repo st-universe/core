@@ -20,7 +20,7 @@ interface TSpacecraftItemInterface
 
     public function isCloaked(): int;
 
-    public function getShieldState(): int;
+    public function isShielded(): int;
 
     public function getUplinkState(): int;
 

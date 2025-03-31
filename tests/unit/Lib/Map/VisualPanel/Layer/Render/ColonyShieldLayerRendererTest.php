@@ -29,7 +29,7 @@ class ColonyShieldLayerRendererTest extends StuTestCase
     {
         $mapData = $this->mock(ColonyShieldData::class);
 
-        $mapData->shouldReceive('getShieldState')
+        $mapData->shouldReceive('isShielded')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -43,7 +43,7 @@ class ColonyShieldLayerRendererTest extends StuTestCase
     {
         $mapData = $this->mock(ColonyShieldData::class);
 
-        $mapData->shouldReceive('getShieldState')
+        $mapData->shouldReceive('isShielded')
             ->withNoArgs()
             ->once()
             ->andReturn(true);

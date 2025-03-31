@@ -82,7 +82,7 @@ final class StartShuttle implements ActionControllerInterface
             $game->addInformation("Schiff befindet sich im Warp");
             return;
         }
-        if ($ship->getShieldState()) {
+        if ($ship->isShielded()) {
             $game->addInformation(_("Die Schilde sind aktiviert"));
             return;
         }

@@ -160,7 +160,7 @@ final class FightLib implements FightLibInterface
 
         return !(User::isUserNpc($object->getUserId())
             || $object->isCloaked()
-            || $object->getShieldState()
+            || $object->isShielded()
             || $object->isWarped());
     }
 

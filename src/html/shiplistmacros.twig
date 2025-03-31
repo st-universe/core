@@ -71,7 +71,7 @@
         <span style="{{ ship.getHullColorStyle }}">{{ ship.getHull }}</span>/{{ ship.getMaxHull }}
     </td>
     <td id="shipshields">
-        {% if ship.getShieldState %}
+        {% if ship.isShielded %}
         <span class="activeshield">{{ ship.getShield }}/{{ ship.getMaxShield }}</span>
         {% else %}
         <span>{{ ship.getShield }}/{{ ship.getMaxShield }}</span>

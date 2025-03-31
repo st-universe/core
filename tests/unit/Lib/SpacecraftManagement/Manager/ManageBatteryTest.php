@@ -179,7 +179,7 @@ class ManageBatteryTest extends StuTestCase
         $this->ship->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($this->mock(UserInterface::class));
-        $this->ship->shouldReceive('getShieldState')
+        $this->ship->shouldReceive('isShielded')
             ->withNoArgs()
             ->andReturn(true);
         $this->ship->shouldReceive('getName')
@@ -219,7 +219,7 @@ class ManageBatteryTest extends StuTestCase
         $this->ship->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($this->mock(UserInterface::class));
-        $this->ship->shouldReceive('getShieldState')
+        $this->ship->shouldReceive('isShielded')
             ->withNoArgs()
             ->andReturn(false);
 
@@ -261,7 +261,7 @@ class ManageBatteryTest extends StuTestCase
         $this->ship->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($this->mock(UserInterface::class));
-        $this->ship->shouldReceive('getShieldState')
+        $this->ship->shouldReceive('isShielded')
             ->withNoArgs()
             ->andReturn(false);
 
@@ -324,7 +324,7 @@ class ManageBatteryTest extends StuTestCase
             ->withNoArgs()
             ->andReturn($userMock);
 
-        $this->ship->shouldReceive('getShieldState')
+        $this->ship->shouldReceive('isShielded')
             ->withNoArgs()
             ->andReturn(true);
 
@@ -423,7 +423,7 @@ class ManageBatteryTest extends StuTestCase
             ->withNoArgs()
             ->andReturn($userMock);
 
-        $this->ship->shouldReceive('getShieldState')
+        $this->ship->shouldReceive('isShielded')
             ->withNoArgs()
             ->andReturn(false);
 
@@ -514,7 +514,7 @@ class ManageBatteryTest extends StuTestCase
             ->withNoArgs()
             ->andReturn($userMock);
 
-        $this->ship->shouldReceive('getShieldState')
+        $this->ship->shouldReceive('isShielded')
             ->withNoArgs()
             ->andReturn(false);
 
@@ -606,7 +606,7 @@ class ManageBatteryTest extends StuTestCase
             ->withNoArgs()
             ->andReturn($userMock);
 
-        $this->ship->shouldReceive('getShieldState')
+        $this->ship->shouldReceive('isShielded')
             ->withNoArgs()
             ->andReturn(false);
 

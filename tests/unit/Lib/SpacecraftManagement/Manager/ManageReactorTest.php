@@ -185,7 +185,7 @@ class ManageReactorTest extends StuTestCase
         $this->ship->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($userMock);
-        $this->ship->shouldReceive('getShieldState')
+        $this->ship->shouldReceive('isShielded')
             ->withNoArgs()
             ->andReturn(true);
 
@@ -274,7 +274,7 @@ class ManageReactorTest extends StuTestCase
         $this->ship->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($userMock);
-        $this->ship->shouldReceive('getShieldState')
+        $this->ship->shouldReceive('isShielded')
             ->withNoArgs()
             ->andReturn(true);
 
@@ -353,7 +353,7 @@ class ManageReactorTest extends StuTestCase
         $this->ship->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($userMock);
-        $this->ship->shouldReceive('getShieldState')
+        $this->ship->shouldReceive('isShielded')
             ->withNoArgs()
             ->andReturn(false);
 
@@ -399,7 +399,7 @@ class ManageReactorTest extends StuTestCase
         $this->ship->shouldReceive('getName')
             ->withNoArgs()
             ->andReturn('name');
-        $this->ship->shouldReceive('getShieldState')
+        $this->ship->shouldReceive('isShielded')
             ->withNoArgs()
             ->andReturn(false);
 

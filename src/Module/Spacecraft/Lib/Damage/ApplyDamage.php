@@ -40,7 +40,7 @@ final class ApplyDamage implements ApplyDamageInterface
 
         $ship = $shipWrapper->get();
 
-        if ($ship->getShieldState()) {
+        if ($ship->isShielded()) {
 
             if ($damageWrapper->isShieldPenetration()) {
                 $informations->addInformationf('- Projektil hat Schilde durchdrungen!');

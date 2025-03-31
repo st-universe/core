@@ -118,7 +118,7 @@ abstract class TSpacecraftItem implements TSpacecraftItemInterface
     }
 
     #[Override]
-    public function getShieldState(): int
+    public function isShielded(): int
     {
         return $this->shield_state ?? 0;
     }
