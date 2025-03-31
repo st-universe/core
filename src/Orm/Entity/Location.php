@@ -153,6 +153,13 @@ abstract class Location implements LocationInterface
     }
 
     #[Override]
+    public function getSpacecraftsWithoutVacation(): Collection
+    {
+        return $this->spacecrafts
+            ->filter(fn(SpacecraftInterface $spacecraft): bool => !$spacecraft->getUser()->isVacationRequestOldEnough());
+    }
+
+    #[Override]
     public function getTrumfields(): Collection
     {
         return $this->trumfields;

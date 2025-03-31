@@ -71,7 +71,7 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
             throw new RuntimeException('this should not happen');
         }
 
-        $spacecrafts = $location->getSpacecrafts();
+        $spacecrafts = $location->getSpacecraftsWithoutVacation();
 
         $messagesForShips = $this->messageFactory->createMessageCollection();
         $messagesForBases = $this->messageFactory->createMessageCollection();
@@ -85,10 +85,6 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
         $messagesForBases->add($intro);
 
         foreach ($spacecrafts as $spacecraft) {
-
-            if ($spacecraft->getUser()->isVacationRequestOldEnough()) {
-                continue;
-            }
 
             if (!$spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::SHIELDS)) {
                 continue;

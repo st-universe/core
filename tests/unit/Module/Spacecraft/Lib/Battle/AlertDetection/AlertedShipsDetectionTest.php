@@ -39,32 +39,10 @@ class AlertedShipsDetectionTest extends StuTestCase
 
     public function testGetAlertedShipsOnLocationExpectEmptyCollectionWhenNoShipsOnLocation(): void
     {
-        $this->location->shouldReceive('getSpacecrafts')
+        $this->location->shouldReceive('getSpacecraftsWithoutVacation')
             ->withNoArgs()
             ->once()
             ->andReturn(new ArrayCollection());
-
-        $result = $this->subject->getAlertedShipsOnLocation(
-            $this->location,
-            $this->mock(UserInterface::class)
-        );
-
-        $this->assertTrue($result->isEmpty());
-    }
-
-    public function testGetAlertedShipsOnLocationExpectEmptyCollectionWhenUserOnVacation(): void
-    {
-        $ship = $this->mock(ShipInterface::class);
-
-        $this->location->shouldReceive('getSpacecrafts')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(new ArrayCollection([$ship]));
-
-        $ship->shouldReceive('getUser->isVacationRequestOldEnough')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(true);
 
         $result = $this->subject->getAlertedShipsOnLocation(
             $this->location,
@@ -79,7 +57,7 @@ class AlertedShipsDetectionTest extends StuTestCase
         $ship = $this->mock(ShipInterface::class);
         $user = $this->mock(UserInterface::class);
 
-        $this->location->shouldReceive('getSpacecrafts')
+        $this->location->shouldReceive('getSpacecraftsWithoutVacation')
             ->withNoArgs()
             ->once()
             ->andReturn(new ArrayCollection([$ship]));
@@ -87,11 +65,6 @@ class AlertedShipsDetectionTest extends StuTestCase
         $ship->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($user);
-
-        $user->shouldReceive('isVacationRequestOldEnough')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(false);
 
         $result = $this->subject->getAlertedShipsOnLocation(
             $this->location,
@@ -106,7 +79,7 @@ class AlertedShipsDetectionTest extends StuTestCase
         $ship = $this->mock(ShipInterface::class);
         $user = $this->mock(UserInterface::class);
 
-        $this->location->shouldReceive('getSpacecrafts')
+        $this->location->shouldReceive('getSpacecraftsWithoutVacation')
             ->withNoArgs()
             ->once()
             ->andReturn(new ArrayCollection([$ship]));
@@ -121,11 +94,6 @@ class AlertedShipsDetectionTest extends StuTestCase
             ->withNoArgs()
             ->andReturn($this->mock(FleetInterface::class));
 
-        $user->shouldReceive('isVacationRequestOldEnough')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(false);
-
         $result = $this->subject->getAlertedShipsOnLocation(
             $this->location,
             $this->mock(UserInterface::class)
@@ -139,7 +107,7 @@ class AlertedShipsDetectionTest extends StuTestCase
         $ship = $this->mock(ShipInterface::class);
         $user = $this->mock(UserInterface::class);
 
-        $this->location->shouldReceive('getSpacecrafts')
+        $this->location->shouldReceive('getSpacecraftsWithoutVacation')
             ->withNoArgs()
             ->once()
             ->andReturn(new ArrayCollection([$ship]));
@@ -154,11 +122,6 @@ class AlertedShipsDetectionTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(true);
 
-        $user->shouldReceive('isVacationRequestOldEnough')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(false);
-
         $result = $this->subject->getAlertedShipsOnLocation(
             $this->location,
             $this->mock(UserInterface::class)
@@ -172,7 +135,7 @@ class AlertedShipsDetectionTest extends StuTestCase
         $ship = $this->mock(ShipInterface::class);
         $user = $this->mock(UserInterface::class);
 
-        $this->location->shouldReceive('getSpacecrafts')
+        $this->location->shouldReceive('getSpacecraftsWithoutVacation')
             ->withNoArgs()
             ->once()
             ->andReturn(new ArrayCollection([$ship]));
@@ -190,11 +153,6 @@ class AlertedShipsDetectionTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(true);
 
-        $user->shouldReceive('isVacationRequestOldEnough')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(false);
-
         $result = $this->subject->getAlertedShipsOnLocation(
             $this->location,
             $this->mock(UserInterface::class)
@@ -208,7 +166,7 @@ class AlertedShipsDetectionTest extends StuTestCase
         $ship = $this->mock(ShipInterface::class);
         $user = $this->mock(UserInterface::class);
 
-        $this->location->shouldReceive('getSpacecrafts')
+        $this->location->shouldReceive('getSpacecraftsWithoutVacation')
             ->withNoArgs()
             ->once()
             ->andReturn(new ArrayCollection([$ship]));
@@ -228,11 +186,6 @@ class AlertedShipsDetectionTest extends StuTestCase
         $ship->shouldReceive('isCloaked')
             ->withNoArgs()
             ->andReturn(true);
-
-        $user->shouldReceive('isVacationRequestOldEnough')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(false);
 
         $result = $this->subject->getAlertedShipsOnLocation(
             $this->location,
@@ -248,7 +201,7 @@ class AlertedShipsDetectionTest extends StuTestCase
         $user = $this->mock(UserInterface::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
 
-        $this->location->shouldReceive('getSpacecrafts')
+        $this->location->shouldReceive('getSpacecraftsWithoutVacation')
             ->withNoArgs()
             ->once()
             ->andReturn(new ArrayCollection([$ship]));
@@ -267,11 +220,6 @@ class AlertedShipsDetectionTest extends StuTestCase
             ->andReturn(false);
         $ship->shouldReceive('isCloaked')
             ->withNoArgs()
-            ->andReturn(false);
-
-        $user->shouldReceive('isVacationRequestOldEnough')
-            ->withNoArgs()
-            ->once()
             ->andReturn(false);
 
         $this->spacecraftWrapperFactory->shouldReceive('wrapSpacecraft')
@@ -294,7 +242,7 @@ class AlertedShipsDetectionTest extends StuTestCase
         $user = $this->mock(UserInterface::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
 
-        $this->location->shouldReceive('getSpacecrafts')
+        $this->location->shouldReceive('getSpacecraftsWithoutVacation')
             ->withNoArgs()
             ->once()
             ->andReturn(new ArrayCollection([$ship]));
@@ -316,11 +264,6 @@ class AlertedShipsDetectionTest extends StuTestCase
             ->andReturn(false);
         $ship->shouldReceive('isCloaked')
             ->withNoArgs()
-            ->andReturn(false);
-
-        $user->shouldReceive('isVacationRequestOldEnough')
-            ->withNoArgs()
-            ->once()
             ->andReturn(false);
 
         $this->spacecraftWrapperFactory->shouldReceive('wrapSpacecraft')

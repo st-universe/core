@@ -22,10 +22,10 @@ class AlertedShipsDetection implements AlertedShipsDetectionInterface
         LocationInterface $location,
         UserInterface $user
     ): Collection {
-        return $location->getSpacecrafts()
+        return $location->getSpacecraftsWithoutVacation()
             ->filter(
-                fn(SpacecraftInterface $spacecraft): bool => !$spacecraft->getUser()->isVacationRequestOldEnough()
-                    && $spacecraft->getUser() !== $user
+                fn(SpacecraftInterface $spacecraft): bool =>
+                $spacecraft->getUser() !== $user
                     && ($spacecraft->getFleet() === null || !$spacecraft instanceof ShipInterface || $spacecraft->isFleetLeader())
                     && !$spacecraft->isAlertGreen()
                     && !$spacecraft->isWarped()
