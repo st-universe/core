@@ -183,7 +183,8 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
                 sprintf(
                     'SELECT m FROM %s m WHERE m.id IN (
                         SELECT ms.module_id FROM %s ms WHERE ms.special_id IN (:specialTypeIds)
-                    )',
+                    )
+                    AND m.type = 9',
                     Module::class,
                     ModuleSpecial::class
                 )
