@@ -128,11 +128,7 @@ final class IonStormHandler implements AnomalyHandlerInterface
                 throw new RuntimeException('this should not happen');
             }
 
-            foreach ($location->getSpacecrafts() as $spacecraft) {
-
-                if ($spacecraft->getUser()->isVacationRequestOldEnough()) {
-                    continue;
-                }
+            foreach ($location->getSpacecraftsWithoutVacation() as $spacecraft) {
 
                 $userId = $spacecraft->getUser()->getId();
                 $informations = $this->informationFactory->createInformationWrapper();
