@@ -45,8 +45,23 @@ final class CreateBuildplan implements ActionControllerInterface
         $game->setView(ShowBuildplanCreator::VIEW_IDENTIFIER);
         $userId = request::postIntFatal('userId');
         $rumpId = request::postIntFatal('rumpId');
-        $moduleList = request::postArray('mod');
-        $moduleSpecialList = request::postArray('special_mod');
+        $modInput = request::postArray('mod');
+        $moduleList = [];
+
+        foreach ($modInput as $typeId => $moduleId) {
+            if (is_numeric($moduleId) && (int)$moduleId > 0) {
+                $moduleList[] = (int)$moduleId;
+            }
+        }
+
+        $specialModInput = request::postArray('special_mod');
+        $moduleSpecialList = [];
+
+        foreach ($specialModInput as $key => $moduleId) {
+            if (is_numeric($moduleId) && (int)$moduleId > 0) {
+                $moduleSpecialList[] = (int)$moduleId;
+            }
+        }
 
         if (!$game->isAdmin() && !$game->isNpc()) {
             $game->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin/NPC![/color][/b]'));

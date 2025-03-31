@@ -4,63 +4,79 @@
 {% include 'html/breadcrumb.twig' %}
 
 <div>
-{% if not USER_ID %}
+    {% if not USER_ID %}
     <h2>Spieler und Rumpf auswählen</h2>
-{% for user in ALL_USERS %}
-    <div><a href="?SHOW_BUILDPLAN_CREATOR=1&userId={{ user.getId }}">{{ user.getName|bbcode }} ({{ user.getId }})</a></div>
-{% endfor %}
+    {% for user in ALL_USERS %}
+    <div><a href="?SHOW_BUILDPLAN_CREATOR=1&userId={{ user.getId }}">{{ user.getName|bbcode }} ({{ user.getId }})</a>
+    </div>
+    {% endfor %}
 
-{% elseif not RUMP_ID %}
+    {% elseif not RUMP_ID %}
     <h2>Rumpf auswählen für {{ SELECTED_USER.getName |bbcode }} ({{SELECTED_USER.getId}})</h2>
     <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px;">
         {% for rump in SHIP_RUMPS|sort((a, b) => a.getId() <=> b.getId()) %}
             <div style="border: 1px solid #444; padding: 5px; text-align: center;">
                 <a href="?SHOW_BUILDPLAN_CREATOR=1&userId={{ USER_ID }}&rumpId={{ rump.getId }}">
-                    <img src="/assets/ships/{{ rump.getId }}.png" /><br/>
+                    <img src="/assets/ships/{{ rump.getId }}.png" /><br />
                     {{ rump.getName }}
                 </a>
             </div>
-        {% endfor %}
+            {% endfor %}
     </div>
 
-{% else %}
+    {% else %}
     <h2>Module auswählen</h2>
     <form action="/npc/index.php" method="post">
         <input type="hidden" name="userId" value="{{ USER_ID }}">
         <input type="hidden" name="rumpId" value="{{ RUMP_ID }}">
-        
+
         {% for moduleType in MODULE_TYPES %}
-            <div class="module-section">
-                <h3>{{ moduleType.getDescription }}</h3>
-                {% for module in AVAILABLE_MODULES[moduleType.value] %}
-                    <div>
-                        <input type="radio" name="mod[{{ moduleType.value }}]" value="{{ module.getId }}" />
-                        {{ module.getName }}
-                    </div>
-                {% endfor %}
+        <div class="module-section">
+            <h3>{{ moduleType.getDescription }}</h3>
+            {% if not MANDATORY_MODULES[moduleType.value] %}
+            <div>
+                <input type="radio" name="mod[{{ moduleType.value }}]" value="0" checked />
+                Kein Modul
             </div>
+            </br>
+            {% endif %}
+            {% for module in AVAILABLE_MODULES[moduleType.value] %}
+            <div>
+                <input type="radio" name="mod[{{ moduleType.value }}]" value="{{ module.getId }}" {% if
+                    MANDATORY_MODULES[moduleType.value] and loop.first %}checked{% endif %} />
+                {{ module.getName }}
+            </div>
+            {% endfor %}
+        </div>
+        </br>
         {% endfor %}
+
+
+
+
+
 
         <div class="special-modules">
             <h3>Spezialmodule</h3>
             {% for module in SPECIAL_MODULES %}
-                <div>
-                    <input type="checkbox" name="special_mod[{{ module.getId }}]" value="{{ module.getId }}" />
-                    {{ module.getName }}
-                </div>
+            <div>
+                <input type="checkbox" name="special_mod[{{ module.getId }}]" value="{{ module.getId }}" />
+                {{ module.getName }}
+            </div>
             {% endfor %}
         </div>
         <div style="margin: 10px 0;">
-    <label for="crew_input">Benötigte Crew:</label>
-    <input type="number" id="crew_input" name="crew_input" min="0"> <span>Info: Kein Eintrag bedeutet, dass der Standardwert errechnet wird.</span>
-</div>
-<div style="margin: 10px 0;">
-    <label for="reason">Grund:</label>
-    <input type="text" id="reason" name="reason" size="20">
-</div>
+            <label for="crew_input">Benötigte Crew:</label>
+            <input type="number" id="crew_input" name="crew_input" min="0"> <span>Info: Kein Eintrag bedeutet, dass der
+                Standardwert errechnet wird.</span>
+        </div>
+        <div style="margin: 10px 0;">
+            <label for="reason">Grund:</label>
+            <input type="text" id="reason" name="reason" size="20">
+        </div>
 
         <input type="submit" name="B_CREATE_BUILDPLAN" value="Bauplan erstellen" />
     </form>
-{% endif %}
+    {% endif %}
 </div>
 {% endblock %}
