@@ -84,7 +84,7 @@ final class DockShip implements ActionControllerInterface
             return;
         }
 
-        if ($target->getShieldState()) {
+        if ($target->isShielded()) {
             $game->addInformation(_("Aktion nicht möglich. Die Station hat die Schilde aktiviert"));
             return;
         }

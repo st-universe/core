@@ -42,7 +42,7 @@ class ManageReactor implements ManagerInterface
             return [];
         }
 
-        if ($ship->getShieldState() && !$this->playerRelationDeterminator->isFriend($ship->getUser(), $managerProvider->getUser())) {
+        if ($ship->isShielded() && !$this->playerRelationDeterminator->isFriend($ship->getUser(), $managerProvider->getUser())) {
             $msg[] = sprintf(
                 _('%s: Warpkern konnte wegen aktivierter Schilde nicht aufgeladen werden.'),
                 $ship->getName()

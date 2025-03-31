@@ -62,6 +62,11 @@ class BussardCollectorShipSystem extends AbstractSpacecraftSystemType implements
             return false;
         }
 
+        if ($spacecraft->isShielded()) {
+            $reason = _('die Schilde aktiviert sind');
+            return false;
+        }
+
         if ($spacecraft->isCloaked()) {
             $reason = _('das Schiff getarnt ist');
             return false;
@@ -82,10 +87,6 @@ class BussardCollectorShipSystem extends AbstractSpacecraftSystemType implements
             $spacecraft->setDockedTo(null);
         }
         $this->spacecraftStateChanger->changeState($wrapper, SpacecraftStateEnum::NONE);
-
-        if ($spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::SHIELDS)) {
-            $spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::SHIELDS)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
-        }
 
         $spacecraft->getSpacecraftSystem($this->getSystemType())->setMode(SpacecraftSystemModeEnum::MODE_ON);
     }

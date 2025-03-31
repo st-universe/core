@@ -16,7 +16,7 @@ final class ColonyShieldLayerRenderer implements LayerRendererInterface
     #[Override]
     public function render(CellDataInterface $data, PanelAttributesInterface $panel): string
     {
-        if (!$data->getShieldState()) {
+        if (!$data->isShielded()) {
             return '';
         }
 

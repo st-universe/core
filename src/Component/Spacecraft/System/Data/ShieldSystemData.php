@@ -36,7 +36,7 @@ class ShieldSystemData extends AbstractSystemData
             _('Schilde'),
             $this->spacecraft->getShield(),
             $this->spacecraft->getMaxShield(),
-            $this->spacecraft->getShieldState() ? StatusBarColorEnum::STATUSBAR_SHIELD_ON : StatusBarColorEnum::STATUSBAR_SHIELD_OFF
+            $this->spacecraft->isShielded() ? StatusBarColorEnum::STATUSBAR_SHIELD_ON : StatusBarColorEnum::STATUSBAR_SHIELD_OFF
         )
             ->render();
     }
@@ -47,7 +47,7 @@ class ShieldSystemData extends AbstractSystemData
             _('Schilde'),
             $this->spacecraft->getShield(),
             $this->spacecraft->getMaxShield(),
-            $this->spacecraft->getShieldState() ? StatusBarColorEnum::STATUSBAR_SHIELD_ON : StatusBarColorEnum::STATUSBAR_SHIELD_OFF
+            $this->spacecraft->isShielded() ? StatusBarColorEnum::STATUSBAR_SHIELD_ON : StatusBarColorEnum::STATUSBAR_SHIELD_OFF
         )
             ->setSizeModifier(1.6)
             ->render();

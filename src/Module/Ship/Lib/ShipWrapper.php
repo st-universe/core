@@ -107,7 +107,7 @@ final class ShipWrapper extends SpacecraftWrapper implements ShipWrapperInterfac
             return false;
         }
 
-        if ($this->spacecraft->getShieldState()) {
+        if ($this->spacecraft->isShielded()) {
             return false;
         }
 

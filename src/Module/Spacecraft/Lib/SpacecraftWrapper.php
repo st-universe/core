@@ -237,7 +237,7 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
             return false;
         }
 
-        if ($this->spacecraft->getShieldState()) {
+        if ($this->spacecraft->isShielded()) {
             return false;
         }
 

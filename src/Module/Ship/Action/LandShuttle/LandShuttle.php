@@ -80,7 +80,7 @@ final class LandShuttle implements ActionControllerInterface
             return;
         }
 
-        if ($target->getShieldState()) {
+        if ($target->isShielded()) {
             $game->addInformation(_("Das Ziel hat die Schilde aktiviert"));
             return;
         }

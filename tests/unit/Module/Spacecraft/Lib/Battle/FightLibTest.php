@@ -858,7 +858,7 @@ class FightLibTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(false);
-        $ship->shouldReceive('getShieldState')
+        $ship->shouldReceive('isShielded')
             ->withNoArgs()
             ->once()
             ->andReturn(true);
@@ -886,7 +886,7 @@ class FightLibTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(false);
-        $ship->shouldReceive('getShieldState')
+        $ship->shouldReceive('isShielded')
             ->withNoArgs()
             ->once()
             ->andReturn(false);

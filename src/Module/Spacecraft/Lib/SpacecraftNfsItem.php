@@ -42,9 +42,9 @@ class SpacecraftNfsItem
     {
         return $this->item->getShield();
     }
-    public function getShieldState(): bool
+    public function isShielded(): bool
     {
-        return $this->item->getShieldState() > SpacecraftSystemModeEnum::MODE_OFF->value;
+        return $this->item->isShielded() > SpacecraftSystemModeEnum::MODE_OFF->value;
     }
     public function isCloaked(): bool
     {

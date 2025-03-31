@@ -416,7 +416,7 @@ abstract class Spacecraft implements SpacecraftInterface
     }
 
     #[Override]
-    public function getShieldState(): bool
+    public function isShielded(): bool
     {
         return $this->getSystemState(SpacecraftSystemTypeEnum::SHIELDS);
     }

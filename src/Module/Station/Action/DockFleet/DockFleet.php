@@ -83,7 +83,7 @@ final class DockFleet implements ActionControllerInterface
             return;
         }
 
-        if ($station->getShieldState()) {
+        if ($station->isShielded()) {
             $game->addInformation(_("Aktion nicht möglich. Die Station hat die Schilde aktiviert"));
             return;
         }

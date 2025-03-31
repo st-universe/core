@@ -159,7 +159,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
         }
 
 
-        if ($target->getShieldState()) {
+        if ($target->isShielded()) {
             $game->addInformation("Die " . $targetName . " kann aufgrund der aktiven Schilde nicht erfasst werden");
             $this->abort($wrapper, $game);
             return;

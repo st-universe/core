@@ -13,7 +13,7 @@ class ColonyShieldData extends AbstractData
     #[Column(type: 'boolean')]
     private bool $shieldstate = false;
 
-    public function getShieldState(): bool
+    public function isShielded(): bool
     {
         return $this->shieldstate;
     }
