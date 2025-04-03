@@ -172,6 +172,31 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
     }
 
     #[Override]
+    public function getNPCAdminList(
+        string $sortField,
+        string $sortOrder,
+        ?int $limit,
+        int $offset
+    ): array {
+        $query = $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT u FROM %s u WHERE u.id IN (10, 11, 12, 13, 14, 15, 16, 17, 19, 101, 102) ORDER BY u.%s %s',
+                    User::class,
+                    $sortField,
+                    $sortOrder
+                )
+            )
+            ->setFirstResult($offset);
+
+        if ($limit !== null) {
+            $query->setMaxResults($limit);
+        }
+
+        return $query->getResult();
+    }
+
+    #[Override]
     public function getFriendsByUserAndAlliance(UserInterface $user, ?AllianceInterface $alliance): iterable
     {
         $allianceId = $alliance === null

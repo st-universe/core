@@ -67,6 +67,16 @@ interface UserRepositoryInterface extends ObjectRepository
     /**
      * @return array<UserInterface>
      */
+    public function getNPCAdminList(
+        string $sortField,
+        string $sortOrder,
+        ?int $limit,
+        int $offset
+    ): array;
+
+    /**
+     * @return array<UserInterface>
+     */
     public function getFriendsByUserAndAlliance(UserInterface $user, ?AllianceInterface $alliance): iterable;
 
     /**
