@@ -38,6 +38,9 @@ use Stu\Module\Database\View\ShowCommoditiesLocations\ShowCommoditiesLocationsRe
 use Stu\Module\Database\View\ShowPrestigeLog\ShowPrestigeLog;
 use Stu\Module\Database\View\ShowStatistics\ShowStatistics;
 use Stu\Module\Database\View\TradePostActivity\TradePostActivity;
+use Stu\Module\Database\View\NPCList\NPCList;
+use Stu\Module\Database\View\NPCList\NPCListRequest;
+use Stu\Module\Database\View\NPCList\NPCListRequestInterface;
 use Stu\Module\Database\View\UserList\UserList;
 use Stu\Module\Database\View\UserList\UserListRequest;
 use Stu\Module\Database\View\UserList\UserListRequestInterface;
@@ -53,6 +56,7 @@ return [
     ShowColonySurfaceRequestInterface::class => autowire(ShowColonySurfaceRequest::class),
     ShowCommoditiesLocationsRequestInterface::class => autowire(ShowCommoditiesLocationsRequest::class),
     UserListRequestInterface::class => autowire(UserListRequest::class),
+    NPCListRequestInterface::class => autowire(NPCListRequest::class),
     'DATABASE_ACTIONS' => [
         DeleteColonyScan::ACTION_IDENTIFIER => autowire(DeleteColonyScan::class)
     ],
@@ -76,7 +80,8 @@ return [
         ShowPrestigeLog::VIEW_IDENTIFIER => autowire(ShowPrestigeLog::class),
         ShowStatistics::VIEW_IDENTIFIER => autowire(ShowStatistics::class),
         TradePostActivity::VIEW_IDENTIFIER => autowire(TradePostActivity::class),
-        UserList::VIEW_IDENTIFIER => autowire(UserList::class)
+        UserList::VIEW_IDENTIFIER => autowire(UserList::class),
+        NPCList::VIEW_IDENTIFIER => autowire(NPCList::class)
     ],
     DatabaseUiFactoryInterface::class => autowire(DatabaseUiFactory::class),
 ];

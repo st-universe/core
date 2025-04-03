@@ -1,0 +1,10 @@
+<table class="use">
+    <tr>
+        {% for item in USER_LIST_NAVIGATION %}
+        <td>
+            <a href="?SHOW_NPCLIST=1&mark={{ item.mark }}&order={{ ORDER_BY }}&way={{ SORT_ORDER }}"
+                class="{{ item.cssclass }}">{{ item.page }}</a>
+        </td>
+        {% endfor %}
+    </tr>
+</table>

@@ -1,0 +1,86 @@
+{% from 'html/macros.twig' import userAvatar, userInfo, userProfile, pmWindow %}
+
+<div>
+    <div style="width: 620px; float:left;">
+        <div class="divhead">Sortierung</div>
+        <div class="divbody">
+            <div class="userListSortItem">
+                <a href="javascript:void(0);"
+                    onclick="switchInnerContent('SHOW_NPCLIST', '', 'mark={{ PAGINATION }}&order=fac&way=up');"><img
+                        src="assets/buttons/pup.png" /></a>
+                <span>Fraktion</span>
+                <a href="javascript:void(0);"
+                    onclick="switchInnerContent('SHOW_NPCLIST', '', 'mark={{ PAGINATION }}&order=fac&way=down');"><img
+                        src="assets/buttons/pdown.png" /></a>
+            </div>
+            <div class="userListSortItem">
+                <a href="javascript:void(0);"
+                    onclick="switchInnerContent('SHOW_NPCLIST', '', 'mark={{ PAGINATION }}&order=id&way=up');"><img
+                        src="assets/buttons/pup.png" /></a>
+                <span>Id</span>
+                <a href="javascript:void(0);"
+                    onclick="switchInnerContent('SHOW_NPCLIST', '', 'mark={{ PAGINATION }}&order=id&way=down');"><img
+                        src="assets/buttons/pdown.png" /></a>
+            </div>
+            <div class="userListSortItem">
+                <a href="javascript:void(0);"
+                    onclick="switchInnerContent('SHOW_NPCLIST', '', 'mark={{ PAGINATION }}&order=alliance&way=up');"><img
+                        src="assets/buttons/pup.png" /></a>
+                <span>Allianz</span>
+                <a href="javascript:void(0);"
+                    onclick="switchInnerContent('SHOW_NPCLIST', '', 'mark={{ PAGINATION }}&order=alliance&way=down');"><img
+                        src="assets/buttons/pdown.png" /></a>
+            </div>
+        </div>
+    </div>
+    <div style="width: 340px; padding-left: 10px; overflow: hidden;">
+        <div class="divhead">Suche</div>
+        <div class="divbody">
+            <form method="post" action="database.php">
+                <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+                <table>
+                    <tr>
+                        <td><input type="text" name="search" style="width: 150px;" value="{{ SEARCH }}" /></td>
+                        <td><input type="submit" class="button" value="nach Name/ID suchen" name="SHOW_NPCLIST" />
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
+<br />
+{% include 'html/database/npcListNavigation.twig' %}
+<br />
+<div class="userList">
+    {% for data in LIST %}
+    <div class="userListItem">
+        <div class="userListItemAvatar">
+            {{ userAvatar(data) }}
+        </div>
+        <div>
+            <div class="userListItemName">
+                <a href="userprofile.php?uid={{ data.getId }}">
+                    {{ userInfo(data) }}
+                </a>
+            </div>
+            <div class="userListItemAllianceName">
+                {% if data.getAlliance %}
+                <a href="alliance.php?id={{ data.getAlliance.getId }}">
+                    {{ data.getAlliance.getName|bbcode }}
+                </a>
+                {% else %}
+                <span>-</span>
+                {% endif %}
+            </div>
+            <div class="userListItemButtons">
+                <img src="assets/rassen/{{ data.getFactionId }}s.png" />
+                {{ userProfile(data.getId) }}
+                {{ pmWindow(USER, data.getId) }}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<br />
+{% include 'html/database/npcListNavigation.twig' %}
