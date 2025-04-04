@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 use Ahc\Cli\IO\Interactor;
 use Doctrine\ORM\EntityManagerInterface;
+use Stu\Component\Cli\ColonyCorrectionCommand;
 use Stu\Component\Cli\ColonyTickCommand;
 use Stu\Component\Cli\GameResetCommand;
 use Stu\Component\Cli\GenerateEmptySystemsCommand;
@@ -50,6 +51,9 @@ $logo = <<<LOGO
     LOGO;
 
 $app->logo($logo);
+
+// Colony
+$app->add($dic->get(ColonyCorrectionCommand::class));
 
 // user
 $app->add($dic->get(UserCreateCommand::class));
