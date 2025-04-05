@@ -35,6 +35,7 @@ enum FieldTypeEffectEnum: string
     case NO_PIRATES = 'NO_PIRATES';
     case NO_ANOMALIES = 'NO_ANOMALIES';
     case NO_MEASUREPOINT = 'NO_MEASUREPOINT';
+    case NO_STATION_CONSTRUCTION = 'NO_STATION_CONSTRUCTION';
 
         //TODO: following not yet implemented
     case LSS_BLOCKADE = 'LSS_BLOCKADE';
