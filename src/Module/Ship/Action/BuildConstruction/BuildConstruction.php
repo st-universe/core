@@ -16,6 +16,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Station\Dock\DockModeEnum;
 use Stu\Component\Station\Dock\DockTypeEnum;
 use Stu\Component\Station\StationEnum;
+use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -84,6 +85,11 @@ final class BuildConstruction implements ActionControllerInterface
         }
 
         if (!$ship->hasEnoughCrew($game)) {
+            return;
+        }
+
+        if ($ship->getLocation()->getFieldType()->hasEffect(FieldTypeEffectEnum::NO_STATION_CONSTRUCTION)) {
+            $game->addInformation(_('In diesem Sektor kann keine Station errichtet werden'));
             return;
         }
 
