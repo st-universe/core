@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight;
 
 use Override;
-use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
+use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\Condition\PreFlightConditionInterface;
+use Stu\Module\Spacecraft\Lib\Movement\FlightCompany;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 
@@ -15,20 +16,23 @@ class PreFlightConditionsCheck implements PreFlightConditionsCheckInterface
     /**
      * @param array<string, PreFlightConditionInterface> $conditions
      */
-    public function __construct(private LeaveFleetInterface $leaveFleet, private array $conditions) {}
+    public function __construct(
+        private ConditionCheckResultFactoryInterface $conditionCheckResultFactory,
+        private array $conditions
+    ) {}
 
     #[Override]
     public function checkPreconditions(
-        SpacecraftWrapperInterface $leader,
-        array $wrappers,
+        FlightCompany $flightCompany,
         FlightRouteInterface $flightRoute,
-        bool $isFixedFleetMode
+        MessageCollectionInterface $messages
     ): ConditionCheckResult {
-        $conditionCheckResult = new ConditionCheckResult(
-            $this->leaveFleet,
-            $leader,
-            $isFixedFleetMode
+
+        $conditionCheckResult = $this->conditionCheckResultFactory->create(
+            $flightCompany
         );
+
+        $wrappers = $flightCompany->getActiveMembers()->toArray();
 
         array_walk(
             $this->conditions,
@@ -43,6 +47,12 @@ class PreFlightConditionsCheck implements PreFlightConditionsCheckInterface
                 );
             }
         );
+
+        if (!$conditionCheckResult->isFlightPossible()) {
+            $messages->addInformation('Der Weiterflug wurde aus folgenden Gründen abgebrochen:');
+        }
+
+        $messages->addMessageBy($conditionCheckResult->getInformations());
 
         return $conditionCheckResult;
     }

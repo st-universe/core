@@ -6,7 +6,7 @@ namespace Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight;
 
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
-use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Module\Spacecraft\Lib\Movement\FlightCompany;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
 
@@ -21,8 +21,7 @@ class ConditionCheckResult
 
     public function __construct(
         private LeaveFleetInterface $leaveFleet,
-        private SpacecraftWrapperInterface $leader,
-        private bool $isFixedFleetMode
+        private FlightCompany $flightCompany
     ) {
         $this->informations = new InformationWrapper();
     }
@@ -33,25 +32,17 @@ class ConditionCheckResult
             $this->blockedSpacecraftIds[] = $spacecraft->getId();
             $this->informations->addInformation($reason);
 
-            if ($this->isLeaderBlocked($spacecraft)) {
+            $isLeader = $spacecraft === $this->flightCompany->getLeader();
+            if ($isLeader) {
                 $this->isLeaderBlocked = true;
             } elseif (
                 $spacecraft instanceof ShipInterface
-                && !$this->isFixedFleetMode
+                && !$this->flightCompany->isFixedFleetMode()
                 && !$this->isLeaderBlocked
-                && $spacecraft !== $this->leader->get()
             ) {
                 $this->leaveFleet($spacecraft);
             }
         }
-    }
-
-    private function isLeaderBlocked(SpacecraftInterface $spacecraft): bool
-    {
-        return !$spacecraft instanceof ShipInterface
-            || $spacecraft->isFleetLeader()
-            || $spacecraft->getFleet() === null
-            || $spacecraft === $this->leader->get();
     }
 
     public function isFlightPossible(): bool
@@ -60,7 +51,7 @@ class ConditionCheckResult
             return false;
         }
 
-        return !$this->isFixedFleetMode || $this->blockedSpacecraftIds === [];
+        return !$this->flightCompany->isFixedFleetMode() || $this->blockedSpacecraftIds === [];
     }
 
     /** @return array<int> */

@@ -9,8 +9,9 @@ interface MessageCollectionInterface extends InformationInterface
 {
     public function add(MessageInterface $msg): void;
 
+    /** @param string|array<string> $text */
     public function addMessageBy(
-        string $text,
+        string|array $text,
         ?int $recipient = null
     ): MessageInterface;
 
