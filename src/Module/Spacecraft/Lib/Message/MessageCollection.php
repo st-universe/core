@@ -23,12 +23,12 @@ final class MessageCollection implements MessageCollectionInterface
     }
 
     #[Override]
-    public function addMessageBy(string $text, ?int $recipient = null): MessageInterface
+    public function addMessageBy(string|array $text, ?int $recipient = null): MessageInterface
     {
         $message = $this->messageFactory->createMessage(
             UserEnum::USER_NOONE,
             $recipient,
-            [$text]
+            is_array($text) ? $text : [$text]
         );
 
         $this->add($message);

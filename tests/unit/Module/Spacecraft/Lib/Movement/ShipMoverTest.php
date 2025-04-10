@@ -5,22 +5,19 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Movement\Route;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Mockery;
 use Mockery\MockInterface;
 use Override;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
-use Stu\Module\Spacecraft\Lib\Message\MessageInterface;
-use Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\ConditionCheckResult;
-use Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\PreFlightConditionsCheckInterface;
 use Stu\Module\Spacecraft\Lib\Movement\ShipMovementInformationAdderInterface;
 use Stu\Module\Spacecraft\Lib\Movement\ShipMover;
 use Stu\Module\Spacecraft\Lib\Movement\ShipMoverInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
+use Stu\Module\Spacecraft\Lib\Movement\FlightCompany;
+use Stu\Module\Spacecraft\Lib\Movement\FlightCompanyFactory;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
@@ -30,10 +27,10 @@ class ShipMoverTest extends StuTestCase
 {
     /** @var MockInterface&SpacecraftRepositoryInterface */
     private $spaceRepository;
+    /** @var MockInterface&FlightCompanyFactory */
+    private $flightCompanyFactory;
     /** @var MockInterface&ShipMovementInformationAdderInterface */
     private $shipMovementInformationAdder;
-    /** @var MockInterface&PreFlightConditionsCheckInterface */
-    private $preFlightConditionsCheck;
     /** @var MockInterface&LeaveFleetInterface */
     private $leaveFleet;
     /** @var MockInterface&AlertReactionFacadeInterface */
@@ -47,65 +44,58 @@ class ShipMoverTest extends StuTestCase
     protected function setUp(): void
     {
         $this->spaceRepository = $this->mock(SpacecraftRepositoryInterface::class);
+        $this->flightCompanyFactory = $this->mock(FlightCompanyFactory::class);
         $this->shipMovementInformationAdder = $this->mock(ShipMovementInformationAdderInterface::class);
-        $this->preFlightConditionsCheck = $this->mock(PreFlightConditionsCheckInterface::class);
         $this->leaveFleet = $this->mock(LeaveFleetInterface::class);
         $this->alertReactionFacade = $this->mock(AlertReactionFacadeInterface::class);
         $this->messageFactory = $this->mock(MessageFactoryInterface::class);
 
         $this->subject = new ShipMover(
             $this->spaceRepository,
+            $this->flightCompanyFactory,
             $this->shipMovementInformationAdder,
-            $this->preFlightConditionsCheck,
             $this->leaveFleet,
             $this->alertReactionFacade,
             $this->messageFactory
         );
     }
 
-    public function testCheckAndMove(): void
+    public function testCheckAndMoveExpectAbortionWhenFlightNotPossible(): void
     {
+        $flightCompany = $this->mock(FlightCompany::class);
         $ship = $this->mock(ShipInterface::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $flightRoute = $this->mock(FlightRouteInterface::class);
         $map = $this->mock(MapInterface::class);
-        $conditionCheckResult = $this->mock(ConditionCheckResult::class);
         $messageCollection = $this->mock(MessageCollectionInterface::class);
-        $failureMessage = $this->mock(MessageInterface::class);
 
-        $ship->shouldReceive('getName')
-            ->withNoArgs()
-            ->once()
-            ->andReturn("SHIP");
-        $ship->shouldReceive('isFleetLeader')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(false);
         $ship->shouldReceive('getTractoredShip')
             ->withNoArgs()
             ->once()
             ->andReturn(null);
-        $ship->shouldReceive('isDestroyed')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(false);
-        $ship->shouldReceive('getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(12345);
 
         $wrapper->shouldReceive('get')
             ->withNoArgs()
             ->andReturn($ship);
-        $wrapper->shouldReceive('getFleetWrapper')
-            ->withNoArgs()
-            ->twice()
-            ->andReturn(null);
 
         $map->shouldReceive('getFieldType->getPassable')
             ->withNoArgs()
             ->once()
             ->andReturn(true);
+
+        $this->flightCompanyFactory->shouldReceive('create')
+            ->with($wrapper)
+            ->once()
+            ->andReturn($flightCompany);
+
+        $flightCompany->shouldReceive('getActiveMembers')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(new ArrayCollection([$wrapper]));
+        $flightCompany->shouldReceive('isFlightPossible')
+            ->with($flightRoute, $messageCollection)
+            ->once()
+            ->andReturn(false);
 
         $flightRoute->shouldReceive('isDestinationArrived')
             ->withNoArgs()
@@ -119,41 +109,17 @@ class ShipMoverTest extends StuTestCase
             ->withNoArgs()
             ->once();
 
-        $conditionCheckResult->shouldReceive('isFlightPossible')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(false);
-        $conditionCheckResult->shouldReceive('getInformations')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(['FAILURE']);
-
-
-        $this->preFlightConditionsCheck->shouldReceive('checkPreconditions')
-            ->with($wrapper, [12345 => $wrapper], $flightRoute, false)
-            ->once()
-            ->andReturn($conditionCheckResult);
-
         $this->messageFactory->shouldReceive('createMessageCollection')
             ->withNoArgs()
             ->once()
             ->andReturn($messageCollection);
-        $messageCollection->shouldReceive('addInformation')
-            ->with('Der Weiterflug wurde aus folgenden Gründen abgebrochen:')
-            ->once();
-        $messageCollection->shouldReceive('add')
-            ->with($failureMessage)
-            ->once();
-        $this->messageFactory->shouldReceive('createMessage')
-            ->with(UserEnum::USER_NOONE, null, ['FAILURE'])
-            ->once()
-            ->andReturn($failureMessage);
 
         $this->subject->checkAndMove($wrapper, $flightRoute);
     }
 
     public function testCheckAndMoveExpectLossOfEmptyShipIfNotFixed(): void
     {
+        $flightCompany = $this->mock(FlightCompany::class);
         $ship = $this->mock(ShipInterface::class);
         $lostShip = $this->mock(ShipInterface::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
@@ -162,19 +128,39 @@ class ShipMoverTest extends StuTestCase
         $flightRoute = $this->mock(FlightRouteInterface::class);
         $map1 = $this->mock(MapInterface::class);
         $map2 = $this->mock(MapInterface::class);
-        $conditionCheckResult = $this->mock(ConditionCheckResult::class);
         $messageCollection = $this->mock(MessageCollectionInterface::class);
-        $lostMessage = $this->mock(MessageInterface::class);
-        $emptyMessage = $this->mock(MessageInterface::class);
+
+        $flightCompany->shouldReceive('isFleetMode')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+        $flightCompany->shouldReceive('getLeader')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($ship);
+        $flightCompany->shouldReceive('getLeadWrapper')
+            ->withNoArgs()
+            ->andReturn($wrapper);
+        $flightCompany->shouldReceive('isFlightPossible')
+            ->with($flightRoute, $messageCollection)
+            ->twice()
+            ->andReturn(true);
+        $flightCompany->shouldReceive('hasToLeaveFleet')
+            ->withNoArgs()
+            ->andReturn(false);
+        $flightCompany->shouldReceive('getActiveMembers')
+            ->withNoArgs()
+            ->times(5)
+            ->andReturn(new ArrayCollection([$wrapper]));
+        $flightCompany->shouldReceive('isEmpty')
+            ->withNoArgs()
+            ->times(5)
+            ->andReturn(false);
 
         $ship->shouldReceive('getName')
             ->withNoArgs()
             ->once()
             ->andReturn("SHIP");
-        $ship->shouldReceive('isFleetLeader')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(true);
         $ship->shouldReceive('getTractoredShip')
             ->withNoArgs()
             ->andReturn(null);
@@ -207,9 +193,6 @@ class ShipMoverTest extends StuTestCase
         $lostWrapper->shouldReceive('get')
             ->withNoArgs()
             ->andReturn($lostShip);
-        $wrapper->shouldReceive('getFleetWrapper')
-            ->withNoArgs()
-            ->andReturn($fleetWrapper);
         $wrapper->shouldReceive('getTractoredShipWrapper')
             ->withNoArgs()
             ->twice()
@@ -231,6 +214,11 @@ class ShipMoverTest extends StuTestCase
             ->once()
             ->andReturn(true);
 
+        $this->flightCompanyFactory->shouldReceive('create')
+            ->with($wrapper)
+            ->once()
+            ->andReturn($flightCompany);
+
         $flightRoute->shouldReceive('isDestinationArrived')
             ->withNoArgs()
             ->times(3)
@@ -240,62 +228,23 @@ class ShipMoverTest extends StuTestCase
             ->twice()
             ->andReturn($map1, $map2);
         $flightRoute->shouldReceive('enterNextWaypoint')
-            ->with(Mockery::on(fn(ArrayCollection $coll) => $coll->toArray() === [12345 => $wrapper]), $messageCollection)
+            ->with($flightCompany, $messageCollection)
             ->twice();
         $flightRoute->shouldReceive('getRouteMode')
             ->withNoArgs()
             ->once()
             ->andReturn(RouteModeEnum::FLIGHT);
 
-        $conditionCheckResult->shouldReceive('isFlightPossible')
-            ->withNoArgs()
-            ->twice()
-            ->andReturn(true);
-        $conditionCheckResult->shouldReceive('getBlockedIds')
-            ->withNoArgs()
-            ->twice()
-            ->andReturn([424242], []);
-        $conditionCheckResult->shouldReceive('getInformations')
-            ->withNoArgs()
-            ->twice()
-            ->andReturn(['LOST 424242'], []);
-
-        $this->preFlightConditionsCheck->shouldReceive('checkPreconditions')
-            ->with($wrapper, [12345 => $wrapper, 424242 => $lostWrapper], $flightRoute, false)
-            ->once()
-            ->andReturn($conditionCheckResult);
-        $this->preFlightConditionsCheck->shouldReceive('checkPreconditions')
-            ->with($wrapper, [12345 => $wrapper], $flightRoute, false)
-            ->once()
-            ->andReturn($conditionCheckResult);
-
         $this->messageFactory->shouldReceive('createMessageCollection')
             ->withNoArgs()
             ->once()
             ->andReturn($messageCollection);
-        $messageCollection->shouldReceive('add')
-            ->with($lostMessage)
-            ->once();
-        $messageCollection->shouldReceive('add')
-            ->with($emptyMessage)
-            ->once();
-        $this->messageFactory->shouldReceive('createMessage')
-            ->with(UserEnum::USER_NOONE, null, ['LOST 424242'])
-            ->once()
-            ->andReturn($lostMessage);
-        $this->messageFactory->shouldReceive('createMessage')
-            ->with(UserEnum::USER_NOONE, null, [])
-            ->once()
-            ->andReturn($emptyMessage);
 
         $this->alertReactionFacade->shouldReceive('doItAll')
             ->twice();
 
         $this->spaceRepository->shouldReceive('save')
             ->with($ship)
-            ->once();
-        $this->spaceRepository->shouldReceive('save')
-            ->with($lostShip)
             ->once();
 
         $this->shipMovementInformationAdder->shouldReceive('reachedDestination')
@@ -307,35 +256,52 @@ class ShipMoverTest extends StuTestCase
 
     public function testCheckAndMoveExpectNoAlertCheckIfDestroyedOnEntrance(): void
     {
+        $flightCompany = $this->mock(FlightCompany::class);
         $ship = $this->mock(ShipInterface::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $flightRoute = $this->mock(FlightRouteInterface::class);
         $map = $this->mock(MapInterface::class);
-        $conditionCheckResult = $this->mock(ConditionCheckResult::class);
         $messageCollection = $this->mock(MessageCollectionInterface::class);
-        $emptyMessage = $this->mock(MessageInterface::class);
 
-        $shipId = 12345;
-
-        $ship->shouldReceive('getId')
+        $flightCompany->shouldReceive('isFleetMode')
             ->withNoArgs()
             ->once()
-            ->andReturn($shipId);
+            ->andReturn(false);
+        $flightCompany->shouldReceive('getLeader')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($ship);
+        $flightCompany->shouldReceive('getLeadWrapper')
+            ->withNoArgs()
+            ->andReturn($wrapper);
+        $flightCompany->shouldReceive('isFlightPossible')
+            ->with($flightRoute, $messageCollection)
+            ->once()
+            ->andReturn(true);
+        $flightCompany->shouldReceive('hasToLeaveFleet')
+            ->withNoArgs()
+            ->andReturn(false);
+        $flightCompany->shouldReceive('getActiveMembers')
+            ->withNoArgs()
+            ->times(4)
+            ->andReturn(
+                new ArrayCollection([$wrapper]), //initTractoredShips
+                new ArrayCollection([$wrapper]), //moveShipsByOneField
+                new ArrayCollection(), //saveShips
+                new ArrayCollection() //postFlightInformations
+            );
+        $flightCompany->shouldReceive('isEmpty')
+            ->withNoArgs()
+            ->times(3)
+            ->andReturn(true);
+
         $ship->shouldReceive('getName')
             ->withNoArgs()
             ->once()
             ->andReturn("SHIP");
-        $ship->shouldReceive('isFleetLeader')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(false);
         $ship->shouldReceive('getTractoredShip')
             ->withNoArgs()
             ->andReturn(null);
-        $ship->shouldReceive('isDestroyed')
-            ->withNoArgs()
-            ->times(5)
-            ->andReturn(false, true, true, true, true);
         $ship->shouldReceive('getLocation')
             ->withNoArgs()
             ->once()
@@ -353,9 +319,6 @@ class ShipMoverTest extends StuTestCase
         $wrapper->shouldReceive('get')
             ->withNoArgs()
             ->andReturn($ship);
-        $wrapper->shouldReceive('getFleetWrapper')
-            ->withNoArgs()
-            ->andReturn(null);
         $wrapper->shouldReceive('getTractoredShipWrapper')
             ->withNoArgs()
             ->once()
@@ -365,6 +328,11 @@ class ShipMoverTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(true);
+
+        $this->flightCompanyFactory->shouldReceive('create')
+            ->with($wrapper)
+            ->once()
+            ->andReturn($flightCompany);
 
         $flightRoute->shouldReceive('isDestinationArrived')
             ->withNoArgs()
@@ -376,7 +344,7 @@ class ShipMoverTest extends StuTestCase
             ->andReturn($map);
         $flightRoute->shouldReceive('enterNextWaypoint')
             ->with(
-                Mockery::on(fn(ArrayCollection $coll) => $coll->toArray() === [$shipId => $wrapper]),
+                $flightCompany,
                 $messageCollection
             )
             ->once();
@@ -388,38 +356,13 @@ class ShipMoverTest extends StuTestCase
             ->withNoArgs()
             ->once();
 
-        $conditionCheckResult->shouldReceive('isFlightPossible')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(true);
-        $conditionCheckResult->shouldReceive('getBlockedIds')
-            ->withNoArgs()
-            ->once()
-            ->andReturn([]);
-        $conditionCheckResult->shouldReceive('getInformations')
-            ->withNoArgs()
-            ->once()
-            ->andReturn([]);
-
-        $this->preFlightConditionsCheck->shouldReceive('checkPreconditions')
-            ->with($wrapper, [$shipId => $wrapper], $flightRoute, false)
-            ->once()
-            ->andReturn($conditionCheckResult);
-
         $this->messageFactory->shouldReceive('createMessageCollection')
             ->withNoArgs()
             ->once()
             ->andReturn($messageCollection);
-        $messageCollection->shouldReceive('add')
-            ->with($emptyMessage)
-            ->once();
         $messageCollection->shouldReceive('addInformation')
             ->with('Es wurden alle Schiffe zerstört')
             ->once();
-        $this->messageFactory->shouldReceive('createMessage')
-            ->with(UserEnum::USER_NOONE, null, [])
-            ->once()
-            ->andReturn($emptyMessage);
 
         $this->shipMovementInformationAdder->shouldReceive('reachedDestinationDestroyed')
             ->with($ship, 'SHIP', false, RouteModeEnum::FLIGHT, $messageCollection)

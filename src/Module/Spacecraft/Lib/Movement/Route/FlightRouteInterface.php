@@ -7,6 +7,7 @@ namespace Stu\Module\Spacecraft\Lib\Movement\Route;
 use Doctrine\Common\Collections\Collection;
 use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
+use Stu\Module\Spacecraft\Lib\Movement\FlightCompany;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\LocationInterface;
 use Stu\Orm\Entity\MapInterface;
@@ -38,11 +39,8 @@ interface FlightRouteInterface
 
     public function abortFlight(): void;
 
-    /**
-     * @param Collection<int, SpacecraftWrapperInterface> $wrappers
-     */
     public function enterNextWaypoint(
-        Collection $wrappers,
+        FlightCompany $flightCompany,
         MessageCollectionInterface $messages
     ): void;
 

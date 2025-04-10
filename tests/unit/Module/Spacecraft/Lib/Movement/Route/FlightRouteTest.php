@@ -16,6 +16,7 @@ use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\Flight\FlightStartC
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\FlightConsequenceInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight\PostFlightConsequenceInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\Movement\FlightCompany;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
@@ -67,6 +68,7 @@ class FlightRouteTest extends StuTestCase
 
     public function testSetDestinationExpectOneMapWaypointWhenNotTranswarp(): void
     {
+        $flightCompany = $this->mock(FlightCompany::class);
         $map = $this->mock(MapInterface::class);
         $ship = $this->mock(ShipInterface::class);
         $tractoredShip = $this->mock(ShipInterface::class);
@@ -77,6 +79,11 @@ class FlightRouteTest extends StuTestCase
         $this->subject->setDestination($map, false);
 
         $this->assertSame($map, $this->subject->getNextWaypoint());
+
+        $flightCompany->shouldReceive('getActiveMembers')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(new ArrayCollection([$wrapper]));
 
         $this->enterWaypoint->shouldReceive('enterNextWaypoint')
             ->with(
@@ -118,7 +125,7 @@ class FlightRouteTest extends StuTestCase
             ->with($map, $messages)
             ->once();
 
-        $this->subject->enterNextWaypoint(new ArrayCollection([$wrapper]), $messages);
+        $this->subject->enterNextWaypoint($flightCompany, $messages);
 
         $this->assertTrue($this->subject->isDestinationArrived());
         $this->assertEquals(RouteModeEnum::SYSTEM_EXIT, $this->subject->getRouteMode());
@@ -126,6 +133,7 @@ class FlightRouteTest extends StuTestCase
 
     public function testSetDestinationExpectOneMapWaypointWhenTranswarp(): void
     {
+        $flightCompany = $this->mock(FlightCompany::class);
         $map = $this->mock(MapInterface::class);
         $ship = $this->mock(ShipInterface::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
@@ -135,6 +143,11 @@ class FlightRouteTest extends StuTestCase
 
         $this->assertSame($map, $this->subject->getNextWaypoint());
 
+        $flightCompany->shouldReceive('getActiveMembers')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(new ArrayCollection([$wrapper]));
+
         $this->enterWaypoint->shouldReceive('enterNextWaypoint')
             ->with(
                 $ship,
@@ -162,7 +175,7 @@ class FlightRouteTest extends StuTestCase
             ->with($map, $messages)
             ->once();
 
-        $this->subject->enterNextWaypoint(new ArrayCollection([$wrapper]), $messages);
+        $this->subject->enterNextWaypoint($flightCompany, $messages);
 
         $this->assertTrue($this->subject->isDestinationArrived());
         $this->assertEquals(RouteModeEnum::TRANSWARP, $this->subject->getRouteMode());
@@ -170,6 +183,7 @@ class FlightRouteTest extends StuTestCase
 
     public function testSetDestinationExpectOneSystemMapWaypoint(): void
     {
+        $flightCompany = $this->mock(FlightCompany::class);
         $map = $this->mock(StarSystemMapInterface::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $ship = $this->mock(ShipInterface::class);
@@ -179,6 +193,11 @@ class FlightRouteTest extends StuTestCase
 
         $this->assertSame($map, $this->subject->getNextWaypoint());
 
+        $flightCompany->shouldReceive('getActiveMembers')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(new ArrayCollection([$wrapper]));
+
         $this->enterWaypoint->shouldReceive('enterNextWaypoint')
             ->with(
                 $ship,
@@ -206,7 +225,7 @@ class FlightRouteTest extends StuTestCase
             ->with($map, $messages)
             ->once();
 
-        $this->subject->enterNextWaypoint(new ArrayCollection([$wrapper]), $messages);
+        $this->subject->enterNextWaypoint($flightCompany, $messages);
 
         $this->assertTrue($this->subject->isDestinationArrived());
         $this->assertEquals(RouteModeEnum::SYSTEM_ENTRY, $this->subject->getRouteMode());
@@ -214,11 +233,17 @@ class FlightRouteTest extends StuTestCase
 
     public function testSetDestinationViaWormholeExpectSystemMapAsWaypointWhenEntry(): void
     {
+        $flightCompany = $this->mock(FlightCompany::class);
         $wormholeEntry = $this->mock(WormholeEntryInterface::class);
         $systemMap = $this->mock(StarSystemMapInterface::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $ship = $this->mock(ShipInterface::class);
         $messages = $this->mock(MessageCollectionInterface::class);
+
+        $flightCompany->shouldReceive('getActiveMembers')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(new ArrayCollection([$wrapper]));
 
         $wormholeEntry->shouldReceive('getSystemMap')
             ->withNoArgs()
@@ -254,7 +279,7 @@ class FlightRouteTest extends StuTestCase
             ->with($systemMap, $messages)
             ->once();
 
-        $this->subject->enterNextWaypoint(new ArrayCollection([$wrapper]), $messages);
+        $this->subject->enterNextWaypoint($flightCompany, $messages);
 
         $this->assertTrue($this->subject->isDestinationArrived());
         $this->assertEquals(RouteModeEnum::WORMHOLE_ENTRY, $this->subject->getRouteMode());
@@ -262,11 +287,17 @@ class FlightRouteTest extends StuTestCase
 
     public function testSetDestinationViaWormholeExpectSystemMapAsWaypointWhenExit(): void
     {
+        $flightCompany = $this->mock(FlightCompany::class);
         $wormholeEntry = $this->mock(WormholeEntryInterface::class);
         $map = $this->mock(MapInterface::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $ship = $this->mock(ShipInterface::class);
         $messages = $this->mock(MessageCollectionInterface::class);
+
+        $flightCompany->shouldReceive('getActiveMembers')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(new ArrayCollection([$wrapper]));
 
         $wormholeEntry->shouldReceive('getMap')
             ->withNoArgs()
@@ -303,7 +334,7 @@ class FlightRouteTest extends StuTestCase
             ->with($map, $messages)
             ->once();
 
-        $this->subject->enterNextWaypoint(new ArrayCollection([$wrapper]), $messages);
+        $this->subject->enterNextWaypoint($flightCompany, $messages);
 
         $this->assertTrue($this->subject->isDestinationArrived());
         $this->assertEquals(RouteModeEnum::WORMHOLE_EXIT, $this->subject->getRouteMode());
@@ -330,6 +361,7 @@ class FlightRouteTest extends StuTestCase
 
     public function testSetDestinationViaCoordinatesExpectValidationAndWaypointLoading(): void
     {
+        $flightCompany = $this->mock(FlightCompany::class);
         $start = $this->mock(MapInterface::class);
         $first = $this->mock(MapInterface::class);
         $destination = $this->mock(MapInterface::class);
@@ -340,6 +372,11 @@ class FlightRouteTest extends StuTestCase
 
         $waypoints->add($first);
         $waypoints->add($destination);
+
+        $flightCompany->shouldReceive('getActiveMembers')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(new ArrayCollection([$wrapper]));
 
         $ship->shouldReceive('getLocation')
             ->withNoArgs()
@@ -381,7 +418,7 @@ class FlightRouteTest extends StuTestCase
             ->with($first, $messages)
             ->once();
 
-        $this->subject->enterNextWaypoint(new ArrayCollection([$wrapper]), $messages);
+        $this->subject->enterNextWaypoint($flightCompany, $messages);
         $this->assertEquals($destination, $this->subject->getNextWaypoint());
         $this->assertFalse($this->subject->isDestinationArrived());
         $this->assertEquals(RouteModeEnum::FLIGHT, $this->subject->getRouteMode());
