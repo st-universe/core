@@ -12,6 +12,7 @@ use Stu\Component\Map\Effects\EffectHandlingInterface;
 use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\FlightConsequenceInterface;
+use Stu\Module\Spacecraft\Lib\Movement\FlightCompany;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\LocationInterface;
 use Stu\Orm\Entity\MapInterface;
@@ -137,9 +138,11 @@ final class FlightRoute implements FlightRouteInterface
 
     #[Override]
     public function enterNextWaypoint(
-        Collection $wrappers,
+        FlightCompany $flightCompany,
         MessageCollectionInterface $messages
     ): void {
+
+        $wrappers = $flightCompany->getActiveMembers();
 
         // flight consequences
         $this->walkWrappers(

@@ -213,6 +213,8 @@ use Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\Condition\DriveActiva
 use Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\Condition\EnoughEpsCondition;
 use Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\Condition\EnoughWarpdriveCondition;
 use Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\Condition\PreFlightConditionInterface;
+use Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\ConditionCheckResultFactory;
+use Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\ConditionCheckResultFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\PreFlightConditionsCheck;
 use Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\PreFlightConditionsCheckInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Component\UpdateFlightDirection;
@@ -315,6 +317,7 @@ return [
         autowire(EnoughEpsCondition::class),
         autowire(EnoughWarpdriveCondition::class)
     ],
+    ConditionCheckResultFactoryInterface::class => autowire(ConditionCheckResultFactory::class),
     PreFlightConditionsCheckInterface::class => autowire(PreFlightConditionsCheck::class)
         ->constructorParameter(
             'conditions',
