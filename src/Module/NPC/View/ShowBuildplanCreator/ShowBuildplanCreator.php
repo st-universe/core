@@ -88,6 +88,9 @@ final class ShowBuildplanCreator implements ViewControllerInterface
                 $game->setTemplateVar('MODULE_TYPES', $moduleTypes);
 
                 $mod_level = $this->shipRumpModuleLevelRepository->getByShipRump($rump->getId());
+                if ($mod_level === null) {
+                    throw new RuntimeException(sprintf('no module level for rumpId: %d', $rump->getId()));
+                }
 
                 $availableModules = [];
                 $mandatoryModules = [];

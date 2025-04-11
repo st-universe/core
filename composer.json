@@ -40,7 +40,7 @@
     "amenadiel/jpgraph": "^4",
     "cache/array-adapter": "^1.0",
     "cache/redis-adapter": "^1.0",
-    "crell/tukio": "^1.4",
+    "crell/tukio": "^2",
     "crunzphp/crunz": "^3.4",
     "devster/ubench": "^2",
     "doctrine/annotations": "^2.0",

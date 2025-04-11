@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\Table;
 use Override;
+use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepository;
 
@@ -605,6 +606,30 @@ class ShipRumpModuleLevel implements ShipRumpModuleLevelInterface
         $this->module_level_8_max = $moduleLevel8Max;
 
         return $this;
+    }
+
+    #[Override]
+    public function getModuleLevel9(): int
+    {
+        throw new RuntimeException('this should not be called!');
+    }
+
+    #[Override]
+    public function getModuleMandatory9(): bool
+    {
+        throw new RuntimeException('this should not be called!');
+    }
+
+    #[Override]
+    public function getModuleLevel9Min(): int
+    {
+        throw new RuntimeException('this should not be called!');
+    }
+
+    #[Override]
+    public function getModuleLevel9Max(): int
+    {
+        throw new RuntimeException('this should not be called!');
     }
 
     #[Override]

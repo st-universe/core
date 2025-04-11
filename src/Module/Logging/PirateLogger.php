@@ -8,6 +8,7 @@ use JBBCode\Parser;
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Logger;
 use Override;
+use RuntimeException;
 use Stu\Module\Config\StuConfigInterface;
 
 final class PirateLogger implements PirateLoggerInterface
@@ -33,6 +34,10 @@ final class PirateLogger implements PirateLoggerInterface
     #[Override]
     public function log(string $message): void
     {
+        if ($this->logger === null) {
+            throw new RuntimeException('logger has not been initialized');
+        }
+
         $method = LoggerEnum::LEVEL_METHODS[LoggerEnum::LEVEL_INFO];
         $this->logger->$method(
             $this->parser->parse($message)->getAsText()

@@ -89,6 +89,13 @@ final class CrewCreator implements CrewCreatorInterface
                 $spacecraft->getRump()->getShipRumpCategory()->getId(),
                 $spacecraft->getRump()->getShipRumpRole()->getId()
             );
+            if ($config === null) {
+                throw new RuntimeException(sprintf(
+                    'no rump category role crew for rumpCategoryId: %d, rumpRoleId: %d',
+                    $spacecraft->getRump()->getShipRumpCategory()->getId(),
+                    $spacecraft->getRump()->getShipRumpRole()->getId()
+                ));
+            }
 
             while ($crewToSetup > 0 && ($crewType == CrewEnum::CREW_TYPE_CREWMAN || $createdcount <= $config->$slot())) {
                 $createdcount++;

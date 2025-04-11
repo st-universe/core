@@ -129,6 +129,9 @@ final class RetrofitShip implements ActionControllerInterface
         }
 
         $moduleLevels = $this->shipRumpModuleLevelRepository->getByShipRump($rump->getId());
+        if ($moduleLevels === null) {
+            throw new RuntimeException(sprintf('no module level for rumpId: %d', $rump->getId()));
+        }
 
         /** @var array<int, ModuleInterface> */
         $modules = [];

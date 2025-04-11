@@ -858,7 +858,7 @@ parameters:
 		-
 			message: '#^Cannot call method getId\(\) on Stu\\Orm\\Entity\\ShipRumpRoleInterface\|null\.$#'
 			identifier: method.nonObject
-			count: 1
+			count: 2
 			path: src/Module/Crew/Lib/CrewCreator.php
 
 		-
@@ -1088,6 +1088,18 @@ parameters:
 			identifier: booleanAnd.leftAlwaysTrue
 			count: 1
 			path: src/Module/Message/Lib/PrivateMessageListItem.php
+
+		-
+			message: '#^Result of && is always false\.$#'
+			identifier: booleanAnd.alwaysFalse
+			count: 1
+			path: src/Module/NPC/View/ShowBuildplanCreator/ShowBuildplanCreator.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between bool and 0 will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: src/Module/NPC/View/ShowBuildplanCreator/ShowBuildplanCreator.php
 
 		-
 			message: '#^Strict comparison using \=\=\= between Stu\\Orm\\Entity\\NoteInterface and null will always evaluate to false\.$#'

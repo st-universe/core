@@ -7,6 +7,7 @@ namespace Stu\Module\Logging;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Override;
+use RuntimeException;
 use Stu\Module\Config\StuConfigInterface;
 
 final class LoggerUtil implements LoggerUtilInterface
@@ -17,9 +18,7 @@ final class LoggerUtil implements LoggerUtilInterface
 
     private bool $doLog = false;
 
-    public function __construct(private StuConfigInterface $stuConfig)
-    {
-    }
+    public function __construct(private StuConfigInterface $stuConfig) {}
 
     #[Override]
     public function init(string $channel = 'stu', int $level = LoggerEnum::LEVEL_INFO): void
@@ -55,6 +54,10 @@ final class LoggerUtil implements LoggerUtilInterface
     public function log(string $message): void
     {
         if ($this->doLog) {
+            if ($this->logger === null) {
+                throw new RuntimeException('logger has not been initialized');
+            }
+
             $method = LoggerEnum::LEVEL_METHODS[$this->level];
             $this->logger->$method($message);
         }
