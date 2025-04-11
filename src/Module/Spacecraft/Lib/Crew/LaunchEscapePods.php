@@ -10,7 +10,6 @@ use RuntimeException;
 use Stu\Component\Map\DirectionEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpEnum;
 use Stu\Module\Spacecraft\Lib\Creation\SpacecraftFactoryInterface;
-use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
@@ -101,7 +100,7 @@ final class LaunchEscapePods implements LaunchEscapePodsInterface
     /**
      * @return array<int>
      */
-    private function fly2(ShipInterface $pods): array
+    private function fly2(SpacecraftInterface $pods): array
     {
         return [$pods->getPosX(), $pods->getPosY() - 1];
     }
@@ -110,7 +109,7 @@ final class LaunchEscapePods implements LaunchEscapePodsInterface
     /**
      * @return array<int>
      */
-    private function fly4(ShipInterface $pods): array
+    private function fly4(SpacecraftInterface $pods): array
     {
         return [$pods->getPosX(), $pods->getPosY() + 1];
     }
@@ -119,7 +118,7 @@ final class LaunchEscapePods implements LaunchEscapePodsInterface
     /**
      * @return array<int>
      */
-    private function fly3(ShipInterface $pods): array
+    private function fly3(SpacecraftInterface $pods): array
     {
         return [$pods->getPosX() - 1, $pods->getPosY()];
     }
@@ -128,7 +127,7 @@ final class LaunchEscapePods implements LaunchEscapePodsInterface
     /**
      * @return array<int>
      */
-    private function fly1(ShipInterface $pods): array
+    private function fly1(SpacecraftInterface $pods): array
     {
         return [$pods->getPosX() + 1, $pods->getPosY()];
     }

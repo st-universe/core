@@ -47,7 +47,7 @@ class ModuleSelector implements ModuleSelectorInterface
         if ($this->isSpecial()) {
             return false;
         }
-        $moduleLevels = $this->shipRumpModuleLevelRepository->getByShipRump($this->rump->getId());
+        $moduleLevels = $this->getShipRumpModuleLevel();
 
         return $moduleLevels->{'getModuleMandatory' . $this->getModuleType()->value}() > 0;
     }
@@ -142,9 +142,8 @@ class ModuleSelector implements ModuleSelectorInterface
                     $this->getRump()->getId()
                 );
             } elseif ($this->getHost() instanceof ColonyInterface) {
-                $mod_level = $this->shipRumpModuleLevelRepository->getByShipRump(
-                    $this->getRump()->getId()
-                );
+                $mod_level = $this->getShipRumpModuleLevel();
+
                 $min_level = $mod_level->{'getModuleLevel' . $this->getModuleType()->value . 'Min'}();
                 $max_level = $mod_level->{'getModuleLevel' . $this->getModuleType()->value . 'Max'}();
                 $modules = $this->moduleRepository->getByTypeColonyAndLevel(
