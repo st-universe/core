@@ -13,6 +13,8 @@ use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 
 final class Conversation extends PrivateMessageListItem
 {
+    private const MAX_PREVIEW_CHARS = 200;
+
     public function __construct(
         private PrivateMessageInterface $message,
         private int $unreadPmCount,
@@ -42,13 +44,16 @@ final class Conversation extends PrivateMessageListItem
 
     public function getLastHeadline(): string
     {
+        $isCutOff = strlen($this->message->getText()) > self::MAX_PREVIEW_CHARS;
+
         return sprintf(
-            '%s%s',
+            '%s%s%s',
             $this->message->getInboxPm() === null ? sprintf(
                 '%s: ',
                 $this->getOtherUser()->getName()
             ) : '',
-            substr($this->message->getText(), 0, 200)
+            substr($this->message->getText(), 0, self::MAX_PREVIEW_CHARS),
+            $isCutOff ? '...' : ''
         );
     }
 
