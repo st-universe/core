@@ -107,4 +107,10 @@ class BuildplanHangar implements BuildplanHangarInterface
     {
         return $this->start_energy_costs;
     }
+
+    #[Override]
+    public function getRumpId(): int
+    {
+        return $this->rump_id;
+    }
 }

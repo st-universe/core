@@ -21,4 +21,6 @@ interface BuildplanHangarInterface
     public function setStartEnergyCosts(int $startEnergyCosts): BuildplanHangarInterface;
 
     public function getStartEnergyCosts(): int;
+
+    public function getRumpId(): int;
 }
