@@ -247,7 +247,7 @@ final class ShipMover implements ShipMoverInterface
         $isFleetMode = $flightCompany->isFleetMode();
 
         //add destination info
-        if ($flightCompany->isEmpty()) {
+        if ($flightCompany->isEverybodyDestroyed()) {
             $this->shipMovementInformationAdder->reachedDestinationDestroyed(
                 $leadSpacecraft,
                 $leadSpacecraftName,

@@ -154,7 +154,11 @@ class ShipMoverTest extends StuTestCase
             ->andReturn(new ArrayCollection([$wrapper]));
         $flightCompany->shouldReceive('isEmpty')
             ->withNoArgs()
-            ->times(5)
+            ->times(4)
+            ->andReturn(false);
+        $flightCompany->shouldReceive('isEverybodyDestroyed')
+            ->withNoArgs()
+            ->once()
             ->andReturn(false);
 
         $ship->shouldReceive('getName')
@@ -292,7 +296,11 @@ class ShipMoverTest extends StuTestCase
             );
         $flightCompany->shouldReceive('isEmpty')
             ->withNoArgs()
-            ->times(3)
+            ->twice()
+            ->andReturn(true);
+        $flightCompany->shouldReceive('isEverybodyDestroyed')
+            ->withNoArgs()
+            ->once()
             ->andReturn(true);
 
         $ship->shouldReceive('getName')
