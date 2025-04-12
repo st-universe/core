@@ -126,6 +126,53 @@ class FlightCompanyTest extends StuTestCase
         $this->assertTrue($result);
     }
 
+    public function testIsEverybodyDestroyedExpectTrueWhenEverybodyDestroyed(): void
+    {
+        $wrapper = $this->mock(SpacecraftWrapperInterface::class);
+        $members = new ArrayCollection([$wrapper]);
+
+        $classToTest = new FlightCompany(
+            $wrapper,
+            $members,
+            $this->preFlightConditionsCheck
+        );
+
+        $wrapper->shouldReceive('get->isDestroyed')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+
+        $result = $classToTest->isEverybodyDestroyed();
+
+        $this->assertTrue($result);
+    }
+
+    public function testIsEverybodyDestroyedExpectFalseWhenNotEverybodyDestroyed(): void
+    {
+        $wrapper = $this->mock(SpacecraftWrapperInterface::class);
+        $wrapper2 = $this->mock(SpacecraftWrapperInterface::class);
+        $members = new ArrayCollection([$wrapper, $wrapper2]);
+
+        $classToTest = new FlightCompany(
+            $wrapper,
+            $members,
+            $this->preFlightConditionsCheck
+        );
+
+        $wrapper->shouldReceive('get->isDestroyed')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+        $wrapper2->shouldReceive('get->isDestroyed')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+
+        $result = $classToTest->isEverybodyDestroyed();
+
+        $this->assertFalse($result);
+    }
+
     public function testIsFleetModeExpectFalseWhenSubjectIsSpacecraft(): void
     {
         $wrapper = $this->mock(SpacecraftWrapperInterface::class);
