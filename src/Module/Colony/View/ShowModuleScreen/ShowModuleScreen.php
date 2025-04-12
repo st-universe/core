@@ -13,6 +13,7 @@ use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Repository\BuildplanHangarRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 
 final class ShowModuleScreen implements ViewControllerInterface
@@ -24,7 +25,8 @@ final class ShowModuleScreen implements ViewControllerInterface
         private ShowModuleScreenRequestInterface $showModuleScreenRequest,
         private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository,
         private SpacecraftCrewCalculatorInterface $shipCrewCalculator,
-        private ColonyLibFactoryInterface $colonyLibFactory
+        private ColonyLibFactoryInterface $colonyLibFactory,
+        private BuildplanHangarRepositoryInterface $buildplanHangarRepository
     ) {}
 
     #[Override]
@@ -41,6 +43,11 @@ final class ShowModuleScreen implements ViewControllerInterface
         $rump = $this->spacecraftRumpRepository->find($this->showModuleScreenRequest->getRumpId());
 
         if ($rump === null || !array_key_exists($rump->getId(), $this->spacecraftRumpRepository->getBuildableByUser($userId))) {
+            throw new AccessViolation();
+        }
+
+        $buildplanHangar = $this->buildplanHangarRepository->getByRump($rump->getId());
+        if ($buildplanHangar !== null) {
             throw new AccessViolation();
         }
 
