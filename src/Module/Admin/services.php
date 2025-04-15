@@ -39,7 +39,6 @@ use Stu\Module\Admin\Action\Map\RegenerateSystem\RegenerateSystem;
 use Stu\Module\Admin\Action\Map\ResetEffects\ResetEffects;
 use Stu\Module\Admin\Action\RecalculateBuildplanCrewUsage;
 use Stu\Module\Admin\Action\ResetCaches;
-use Stu\Module\Admin\Action\Sandbox\CreateSandbox;
 use Stu\Module\Admin\Action\SendMassMail;
 use Stu\Module\Admin\Action\StartMirrorWorld;
 use Stu\Module\Admin\Action\Ticks\Colony\ManualColonyTick;
@@ -63,8 +62,6 @@ use Stu\Module\Admin\View\MassMail\MassMail;
 use Stu\Module\Admin\View\Overview\Overview;
 use Stu\Module\Admin\View\Playerlist\Playerlist;
 use Stu\Module\Admin\View\ResearchTree\ShowResearchTree;
-use Stu\Module\Admin\View\Sandbox\ShowColonySandbox;
-use Stu\Module\Admin\View\Sandbox\ShowNewSandbox;
 use Stu\Module\Admin\View\Scripts\ShowScripts;
 use Stu\Module\Admin\View\ShowSignatures\ShowSignatures;
 use Stu\Module\Admin\View\ShowUserLock\ShowUserLock;
@@ -122,7 +119,6 @@ return [
         CreateMissingUserWards::ACTION_IDENTIFIER => autowire(CreateMissingUserWards::class),
         GenerateEmptySystems::ACTION_IDENTIFIER => autowire(GenerateEmptySystems::class),
         RegenerateSystem::ACTION_IDENTIFIER => autowire(RegenerateSystem::class),
-        CreateSandbox::ACTION_IDENTIFIER => autowire(CreateSandbox::class),
         RecalculateBuildplanCrewUsage::ACTION_IDENTIFIER => autowire(RecalculateBuildplanCrewUsage::class)
     ],
     'ADMIN_VIEWS' => [
@@ -140,8 +136,6 @@ return [
         ShowSignatures::VIEW_IDENTIFIER => autowire(ShowSignatures::class),
         ShowResearchTree::VIEW_IDENTIFIER => autowire(ShowResearchTree::class),
         MassMail::VIEW_IDENTIFIER => autowire(MassMail::class),
-        ShowUserLock::VIEW_IDENTIFIER => autowire(ShowUserLock::class),
-        ShowColonySandbox::VIEW_IDENTIFIER => autowire(ShowColonySandbox::class),
-        ShowNewSandbox::VIEW_IDENTIFIER => autowire(ShowNewSandbox::class)
+        ShowUserLock::VIEW_IDENTIFIER => autowire(ShowUserLock::class)
     ]
 ];

@@ -20,9 +20,7 @@ Init::run(function (ContainerInterface $dic): void {
     $em->beginTransaction();
 
     $dic->get(GameControllerInterface::class)->main(
-        ModuleViewEnum::RESEARCH,
-        $dic->get('RESEARCH_ACTIONS'),
-        $dic->get('RESEARCH_VIEWS')
+        ModuleViewEnum::RESEARCH
     );
 
     $em->commit();

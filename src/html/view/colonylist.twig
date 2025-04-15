@@ -1,10 +1,18 @@
 {% from 'html/macros.twig' import onClickColony %}
 
 {% if COLONY_LIST %}
+{% if isFeatureGranted(USER.getId, 'COLONY_SANDBOX') %}
+<div style="text-align: center; margin-top: 10px;" class="fabutton">
+	<a href="javascript:void(0);" onclick="switchInnerContent('SHOW_COLONY_SANDBOX', 'Kolonie-Sandbox');"
+		class="fabutton">
+		Kolonie Sandbox öffnen</a>
+</div>
+</br>
+{% endif %}
 <table id="colonylist" class="tcal">
 	<tr>
 		<th id="headlinecolonyimage" style="width: 120px;"></th>
-		<th id="headlinecolonyname" >Name</th>
+		<th id="headlinecolonyname">Name</th>
 		<th id="headlinecolonysignature">Signaturen</th>
 		<th id="headlinecolonycrew" title="aktuell/maximal (in Ausbildung)">Crewman
 			<img src="assets/buttons/info2.png" style="height:16px;" />
@@ -83,7 +91,7 @@
 </table>
 <br />
 <div style="float: left; width: 49%;">
-	<div  style="float: left; margin-bottom: 10px; width: 100%;">
+	<div style="float: left; margin-bottom: 10px; width: 100%;">
 		{% if BUILDINGJOB_LIST %}
 		<div id="buildinglist">
 			<table class="tcal">
@@ -104,12 +112,12 @@
 					<td style="vertical-align: middle">
 						{{ data.getBuilding.getName }} - Fertigstellung:
 						{{ data.getBuildtime|stuDateTime }}
-					</br>
-					{% if data.getActivateAfterBuild %}
-					<span style="color: #4fc202; font-size:80%;">Wird nach dem Bau aktiviert</span>
-					{% else %}
-					<span style="color: #ce0000; font-size:80%;">Wird nach dem Bau deaktiviert</span>
-					{% endif %}
+						</br>
+						{% if data.getActivateAfterBuild %}
+						<span style="color: #4fc202; font-size:80%;">Wird nach dem Bau aktiviert</span>
+						{% else %}
+						<span style="color: #ce0000; font-size:80%;">Wird nach dem Bau deaktiviert</span>
+						{% endif %}
 					</td>
 				</tr>
 				{% endfor %}
@@ -177,7 +185,7 @@
 	</div>
 	{% endif %}
 </div>
-<div  style="float: right; width: 20%;">
+<div style="float: right; width: 20%;">
 	{% if MODULE_LIST %}
 	<div id="modulelist">
 		<table class="tcal" style="text-align: center;">

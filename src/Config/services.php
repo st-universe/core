@@ -32,6 +32,8 @@ use Stu\Module\Config\Model\SettingsFactory;
 use Stu\Module\Config\Model\SettingsFactoryInterface;
 use Stu\Module\Config\StuConfig;
 use Stu\Module\Config\StuConfigInterface;
+use Stu\Module\Control\AccessCheck;
+use Stu\Module\Control\ControllerDiscovery;
 use Stu\Module\Control\GameController;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Game\Lib\TutorialProvider;
@@ -83,6 +85,7 @@ return [
         );
     },
     GameControllerInterface::class => autowire(GameController::class)
+        ->constructorParameter('controllerDiscovery', autowire(ControllerDiscovery::class))
         ->constructorParameter('tutorialProvider', autowire(TutorialProvider::class)),
     Parser::class => function (): Parser {
         $parser = new Parser();

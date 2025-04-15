@@ -22,8 +22,6 @@ Init::run(function (ContainerInterface $dic): void {
 
     $dic->get(GameControllerInterface::class)->main(
         ModuleViewEnum::NPC,
-        array_merge($dic->get('NPC_ACTIONS'), $dic->get('COLONY_ACTIONS')),
-        array_merge($dic->get('COLONY_VIEWS'), $dic->get('NPC_VIEWS')),
         true,
         false,
         true

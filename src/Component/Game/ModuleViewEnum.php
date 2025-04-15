@@ -9,6 +9,7 @@ use Stu\Lib\Component\ComponentEnumInterface;
 use Stu\Module\Colony\Component\ColonyComponentEnum;
 use Stu\Module\Game\Component\GameComponentEnum;
 
+//TODO rename to ModuleEnum
 enum ModuleViewEnum: string
 {
     case INDEX = 'index';
@@ -27,7 +28,7 @@ enum ModuleViewEnum: string
     case HISTORY = 'history';
     case MAP = 'starmap';
     case OPTIONS = 'options';
-    case PROFILE = 'userprofile';
+    case USERPROFILE = 'userprofile';
     case ADMIN = 'admin';
     case NPC = 'npc';
 
@@ -55,7 +56,7 @@ enum ModuleViewEnum: string
             self::MAP => 'Karte',
             self::NOTES => 'Notizen',
             self::OPTIONS => 'Optionen',
-            self::PROFILE => 'Spielerprofil',
+            self::USERPROFILE => 'Spielerprofil',
             self::ADMIN => 'Adminbereich',
             self::NPC => 'NPC'
         };
@@ -80,7 +81,7 @@ enum ModuleViewEnum: string
             self::MAP => 'html/view/map.twig',
             self::NOTES => 'not needed',
             self::OPTIONS => 'html/view/options.twig',
-            self::PROFILE => 'html/view/userprofile.twig',
+            self::USERPROFILE => 'html/view/userprofile.twig',
             self::ADMIN => 'not needed',
             self::NPC => 'not needed'
         };
@@ -95,5 +96,14 @@ enum ModuleViewEnum: string
         };
 
         return $result ?? GameComponentEnum::OUTDATED;
+    }
+
+    public function getCommonModule(): ?string
+    {
+        return match ($this) {
+            self::SHIP,
+            self::STATION => 'SPACECRAFT',
+            default => null
+        };
     }
 }

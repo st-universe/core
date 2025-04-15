@@ -20,9 +20,7 @@ Init::run(function (ContainerInterface $dic): void {
     $em->beginTransaction();
 
     $dic->get(GameControllerInterface::class)->main(
-        ModuleViewEnum::PROFILE,
-        $dic->get('USERPROFILE_ACTIONS'),
-        $dic->get('USERPROFILE_VIEWS')
+        ModuleViewEnum::PROFILE
     );
 
     $em->commit();

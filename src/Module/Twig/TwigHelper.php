@@ -18,6 +18,8 @@ use Stu\Lib\ModuleScreen\GradientColorInterface;
 use Stu\Module\Colony\Lib\ColonyEpsProductionPreviewWrapper;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\ColonyProductionPreviewWrapper;
+use Stu\Module\Control\AccessCheckInterface;
+use Stu\Module\Control\AccessGrantedFeatureEnum;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Spacecraft\Lib\Battle\FightLibInterface;
@@ -43,6 +45,7 @@ class TwigHelper
         private SpacecraftSystemWrapperFactoryInterface $spacecraftSystemWrapperFactory,
         private GradientColorInterface $gradientColor,
         private TemplateHelperInterface $templateHelper,
+        private AccessCheckInterface $accessCheck,
         private StuTime $stuTime,
         private StuRandom $stuRandom
     ) {}
@@ -171,5 +174,8 @@ class TwigHelper
             => $this->spacecraftSystemWrapperFactory->create($spacecraft, SpacecraftSystemTypeEnum::getByName($name))
         );
         $this->environment->addFunction($hasSpacecraftSystemByNameFunction);
+
+        $dayNightPrefixFunction = new TwigFunction('isFeatureGranted', fn(int $userId, string $feature): bool => $this->accessCheck->isFeatureGranted($userId, AccessGrantedFeatureEnum::from($feature)));
+        $this->environment->addFunction($dayNightPrefixFunction);
     }
 }

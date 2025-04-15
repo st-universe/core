@@ -20,9 +20,7 @@ Init::run(function (ContainerInterface $dic): void {
     $em->beginTransaction();
 
     $dic->get(GameControllerInterface::class)->main(
-        ModuleViewEnum::TRADE,
-        $dic->get('TRADE_ACTIONS'),
-        $dic->get('TRADE_VIEWS')
+        ModuleViewEnum::TRADE
     );
 
     $em->commit();

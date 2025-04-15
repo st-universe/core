@@ -665,3 +665,17 @@ function showModuleLevel(module) {
 	const level = module.getAttribute('data-module-level');
 	document.getElementById(`module-level-${type}-${level}`).style.display = 'block';
 }
+
+function showNewSandboxWindow() {
+	elt = 'elt'
+	openPJsWin(elt, 1);
+	ajax_update(elt, '?SHOW_NEW_SANDBOX=1');
+}
+
+function createNewSandbox(sstr) {
+
+	let colonyId = document.getElementById('colony-id').value;
+	let name = document.getElementById('sandbox-name').value;
+
+	actionToInnerContent('B_CREATE_SANDBOX', `cid=${colonyId}&name=${name}&sstr=${sstr}`);
+}

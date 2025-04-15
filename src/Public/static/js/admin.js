@@ -20,9 +20,3 @@ function registerSystemEditorNavKeys(previousId, currentId, nextId) {
 		}
 	});
 }
-
-function showNewSandboxWindow() {
-	elt = 'elt'
-	openPJsWin(elt, 1);
-	ajax_update(elt, '/admin/?SHOW_NEW_SANDBOX=1?');
-}

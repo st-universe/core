@@ -10,6 +10,7 @@ use Stu\Module\Control\Render\GameTwigRendererInterface;
 use function DI\autowire;
 
 return [
+    AccessCheckInterface::class => autowire(AccessCheck::class),
     SemaphoreUtilInterface::class => autowire(SemaphoreUtil::class),
     StuTime::class => autowire(StuTime::class),
     StuRandom::class => autowire(StuRandom::class),

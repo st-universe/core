@@ -20,9 +20,7 @@ Init::run(function (ContainerInterface $dic): void {
     $em->beginTransaction();
 
     $dic->get(GameControllerInterface::class)->main(
-        ModuleViewEnum::ALLIANCE,
-        $dic->get('ALLIANCE_ACTIONS'),
-        $dic->get('ALLIANCE_VIEWS')
+        ModuleViewEnum::ALLIANCE
     );
 
     $em->commit();

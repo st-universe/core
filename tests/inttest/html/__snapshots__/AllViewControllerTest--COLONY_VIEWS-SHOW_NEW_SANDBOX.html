@@ -1,0 +1,50 @@
+<html lang="de">
+
+<head>
+  <script src="/static/js/default.js"></script>
+</head>
+
+<body>
+  <div class="ajaxwin">
+        <table class="tcal">
+      <tr>
+        <th onmouseover="switch_drag_on();" onmouseout="switch_drag_off();">Neue Sandbox erstellen</th>
+        <th style="width: 18px;">
+          <a href="javascript:void(0);" onclick="closeAjaxWindow();" onmouseover="cp('ajaxclose','buttons/x2');" onmouseout="cp('ajaxclose','buttons/x1');">
+            <img src="/assets/buttons/x1.png" name="ajaxclose" title="Fenster schlie&Atilde;&#159;en">
+          </a>
+        </th>
+      </tr>
+    </table>
+        <div>
+    <form action="colony.php" method="post" onkeydown="return event.key != 'Enter';">
+        <table class="tcal">
+            <tr>
+                <th>Sandbox f&Atilde;&frac14;r folgende Kolonie</th>
+                <td>
+                    <select id="colony-id">
+                                                <option value="42">Stempor'Arr 4 7|11 (Stempor'Arr-System)</option>
+                                            </select>
+                </td>
+            </tr>
+            <tr>
+                <th>Name der Sandbox</th>
+                <td>
+                    <input type="text" style="width: 250px" id="sandbox-name" value="SANDBOX 21 Nov 2024">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: center;">
+                    <div style="text-align: center; margin-top: 10px;" class="fabutton">
+                        <a href="javascript:void(0);" onclick="createNewSandbox('MOCKED_SESSIONSTRING');" class="fabutton">
+                            Sandbox erstellen</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+      </div>
+  </body>
+
+</html>

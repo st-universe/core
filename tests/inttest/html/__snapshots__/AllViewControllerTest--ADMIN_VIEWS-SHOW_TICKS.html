@@ -30,7 +30,7 @@
                 <br>
                 <span style="color: orange; font-size: 150%;">Klick f&uuml;hrt zur&uuml;ck aufs Maindesk</span>
             </div>
-            <div class="header_box header_box_logout border_box action" onclick="goToUrl('game.php?B_LOGOUT=1')" onmouseover="cp('header_menu_logout','navigation/menu_logout1', 'png')" onmouseout="cp('header_menu_logout','navigation/menu_logout0', 'png')">
+            <div class="header_box header_box_logout border_box action" onclick="goToUrl('/game.php?B_LOGOUT=1')" onmouseover="cp('header_menu_logout','navigation/menu_logout1', 'png')" onmouseout="cp('header_menu_logout','navigation/menu_logout0', 'png')">
                 <div>
                     <img style="width: 40px; height: 40px;" id="header_menu_logout" src="/assets/navigation/menu_logout0.png" title="Logout">
                     <div style="margin-top: 5px">Logout</div>
@@ -76,13 +76,6 @@
     <a class="navitem_link" href="/admin/?SHOW_MAP_EDITOR=1">
         <img class="navitem_img" src="/assets/navigation/menu_map0.png" id="nav_item_map" title="Karteneditor">
         <div class="navitem_title">Karteneditor</div>
-    </a>
-</div>
-
-<div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/admin/?SHOW_COLONY_SANDBOX=1'; }" onmouseover="cp('nav_item_sandbox','navigation/menu_sandbox1', 'png')" onmouseout="cp('nav_item_sandbox','navigation/menu_sandbox0', 'png')">
-    <a class="navitem_link" href="/admin/?SHOW_COLONY_SANDBOX=1">
-        <img class="navitem_img" src="/assets/navigation/menu_sandbox0.png" id="nav_item_sandbox" title="Kolonie-Sandbox">
-        <div class="navitem_title">Kolonie-Sandbox</div>
     </a>
 </div>
 

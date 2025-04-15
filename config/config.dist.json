@@ -80,6 +80,14 @@
       "email": "admin@example.com",
       "faction": 1
     },
+    "grantedFeatures": [
+      {
+        "feature": "EXAMPLE_FEATURE",
+        "userIds": [
+          42424242
+        ]
+      }
+    ],
     "colony": {
       "tick_worker": 1
     },

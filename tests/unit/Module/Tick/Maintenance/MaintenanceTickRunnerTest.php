@@ -23,7 +23,7 @@ class MaintenanceTickRunnerTest extends StuTestCase
     /** @var MockInterface&TransactionTickRunnerInterface */
     private MockInterface $transactionTickRunner;
 
-    /** @var MockInterface&TransactionTickRunnerInterface */
+    /** @var MockInterface&Connection */
     private MockInterface $connection;
 
     /** @var MockInterface&MaintenanceHandlerInterface */

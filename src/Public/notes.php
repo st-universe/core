@@ -20,9 +20,7 @@ Init::run(function (ContainerInterface $dic): void {
     $em->beginTransaction();
 
     $dic->get(GameControllerInterface::class)->main(
-        ModuleViewEnum::NOTES,
-        $dic->get('NOTES_ACTIONS'),
-        $dic->get('NOTES_VIEWS')
+        ModuleViewEnum::NOTES
     );
 
     $em->commit();

@@ -22,8 +22,6 @@ Init::run(function (ContainerInterface $dic): void {
 
     $dic->get(GameControllerInterface::class)->main(
         ModuleViewEnum::ADMIN,
-        array_merge($dic->get('ADMIN_ACTIONS'), $dic->get('COLONY_ACTIONS')),
-        array_merge($dic->get('COLONY_VIEWS'), $dic->get('ADMIN_VIEWS')),
         true,
         true
     );
