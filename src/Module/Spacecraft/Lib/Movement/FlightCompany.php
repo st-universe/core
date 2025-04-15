@@ -46,7 +46,9 @@ class FlightCompany
 
     public function isEverybodyDestroyed(): bool
     {
-        return !$this->members->exists(fn(int $key, SpacecraftWrapperInterface $wrapper): bool => !$wrapper->get()->isDestroyed());
+        return
+            !$this->members->isEmpty()
+            && !$this->members->exists(fn(int $key, SpacecraftWrapperInterface $wrapper): bool => !$wrapper->get()->isDestroyed());
     }
 
     public function isFleetMode(): bool
