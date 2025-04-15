@@ -1,14 +1,7 @@
 {% from 'html/macros.twig' import onClickColony %}
 
 {% if COLONY_LIST %}
-{% if isFeatureGranted(USER.getId, 'COLONY_SANDBOX') %}
-<div style="text-align: center; margin-top: 10px;" class="fabutton">
-	<a href="javascript:void(0);" onclick="switchInnerContent('SHOW_COLONY_SANDBOX', 'Kolonie-Sandbox');"
-		class="fabutton">
-		Kolonie Sandbox öffnen</a>
-</div>
-</br>
-{% endif %}
+
 <table id="colonylist" class="tcal">
 	<tr>
 		<th id="headlinecolonyimage" style="width: 120px;"></th>
@@ -217,7 +210,16 @@
 		</table>
 	</div>
 	{% endif %}
+
 </div>
+{% if isFeatureGranted(USER.getId, 'COLONY_SANDBOX') %}
+<div style="text-align: center; margin-top: 10px; width: 200px" class="fabutton">
+	<a href="javascript:void(0);" onclick="switchInnerContent('SHOW_COLONY_SANDBOX', 'Kolonie-Sandbox');"
+		class="fabutton">
+		Kolonie Sandbox öffnen</a>
+</div>
+</br>
+{% endif %}
 {% else %}
 <table id="nocolony">
 	<tr>
