@@ -13,7 +13,7 @@ use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Component\Spacecraft\Nbs\NbsUtilityInterface;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Config\Init;
 use Stu\Lib\Map\NavPanel\NavPanel;
@@ -57,7 +57,7 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
         private SessionInterface $session,
         private LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->viewContext = new ViewContext(ModuleViewEnum::SHIP, self::VIEW_IDENTIFIER);
+        $this->viewContext = new ViewContext(ModuleEnum::SHIP, self::VIEW_IDENTIFIER);
         $this->loggerUtil = $this->loggerUtilFactory->getLoggerUtil();
     }
 

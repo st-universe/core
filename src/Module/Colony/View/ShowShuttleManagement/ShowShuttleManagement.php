@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowShuttleManagement;
 
 use Override;
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\Lib\ShuttleManagementItem;
@@ -80,7 +80,7 @@ final class ShowShuttleManagement implements ViewControllerInterface
             }
         }
 
-        $game->setTemplateVar('MODULE_VIEW', ModuleViewEnum::COLONY);
+        $game->setTemplateVar('MODULE_VIEW', ModuleEnum::COLONY);
         $game->setTemplateVar('WRAPPER', $this->spacecraftWrapperFactory->wrapShip($ship));
         $game->setTemplateVar('MANAGER', $colony);
         $game->setTemplateVar('CURRENTLY_STORED', $currentlyStored);

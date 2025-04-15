@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Html\Spacecraft;
 
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Config\Init;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\TwigTestCase;
@@ -18,7 +18,7 @@ class ShowMessengerStyleInboxTest extends TwigTestCase
             Init::getContainer()
                 ->getDefinedImplementationsOf(ViewControllerInterface::class, true)->get('PM_VIEWS-DEFAULT_VIEW'),
             [
-                'view' => ModuleViewEnum::PM->value,
+                'view' => ModuleEnum::PM->value,
                 'switch' => 1
             ]
         );

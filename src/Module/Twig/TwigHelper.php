@@ -8,7 +8,7 @@ use JBBCode\Parser;
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Building\NameAbbreviations;
 use Stu\Component\Colony\ColonyMenuEnum;
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemWrapper;
@@ -153,7 +153,7 @@ class TwigHelper
         $getColonyMenuClassFunction = new TwigFunction('getColonyMenuClass', fn(ColonyMenuEnum $currentMenu, int $value): string => ColonyMenuEnum::getMenuClass($currentMenu, $value));
         $this->environment->addFunction($getColonyMenuClassFunction);
 
-        $getViewFunction = new TwigFunction('getView', fn(string $value): ModuleViewEnum => ModuleViewEnum::from($value));
+        $getViewFunction = new TwigFunction('getView', fn(string $value): ModuleEnum => ModuleEnum::from($value));
         $this->environment->addFunction($getViewFunction);
 
         $getUniqIdFunction = new TwigFunction('getUniqId', fn(): string => $this->stuRandom->uniqid());

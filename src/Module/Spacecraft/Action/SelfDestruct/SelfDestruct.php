@@ -6,7 +6,7 @@ namespace Stu\Module\Spacecraft\Action\SelfDestruct;
 
 use Override;
 use request;
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -68,7 +68,7 @@ final class SelfDestruct implements ActionControllerInterface
             return;
         }
 
-        $game->setView(ModuleViewEnum::SHIP);
+        $game->setView(ModuleEnum::SHIP);
 
         $tractoredShipWrapperToTriggerAlertRed = ($ship->isTractoring() && $ship->getWarpDriveState()) ? $wrapper->getTractoredShipWrapper() : null;
 

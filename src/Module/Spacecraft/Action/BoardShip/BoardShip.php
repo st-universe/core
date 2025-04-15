@@ -6,7 +6,7 @@ namespace Stu\Module\Spacecraft\Action\BoardShip;
 
 use Override;
 use request;
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Lib\Interaction\InteractionCheckerBuilderFactoryInterface;
@@ -152,7 +152,7 @@ final class BoardShip implements ActionControllerInterface
         );
 
         if ($spacecraft->isDestroyed()) {
-            $game->setView(ModuleViewEnum::SHIP);
+            $game->setView(ModuleEnum::SHIP);
             return;
         }
 

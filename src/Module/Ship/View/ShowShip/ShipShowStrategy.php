@@ -7,7 +7,7 @@ namespace Stu\Module\Ship\View\ShowShip;
 use Override;
 use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Module\Control\ViewContext;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -98,6 +98,6 @@ class ShipShowStrategy implements SpacecraftTypeShowStragegyInterface
     #[Override]
     public function getViewContext(): ViewContext
     {
-        return new ViewContext(ModuleViewEnum::SHIP, ShowSpacecraft::VIEW_IDENTIFIER);
+        return new ViewContext(ModuleEnum::SHIP, ShowSpacecraft::VIEW_IDENTIFIER);
     }
 }

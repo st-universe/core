@@ -11,7 +11,7 @@ use Stu\Component\Spacecraft\SpacecraftRumpEnum;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Module\Control\ViewContext;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -151,6 +151,6 @@ final class StationShowStrategy implements SpacecraftTypeShowStragegyInterface
     #[Override]
     public function getViewContext(): ViewContext
     {
-        return new ViewContext(ModuleViewEnum::STATION, ShowSpacecraft::VIEW_IDENTIFIER);
+        return new ViewContext(ModuleEnum::STATION, ShowSpacecraft::VIEW_IDENTIFIER);
     }
 }

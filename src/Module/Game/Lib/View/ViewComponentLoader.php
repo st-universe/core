@@ -6,7 +6,7 @@ namespace Stu\Module\Game\Lib\View;
 
 use Override;
 use RuntimeException;
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Game\Lib\View\Provider\ViewComponentProviderInterface;
 
@@ -17,7 +17,7 @@ final class ViewComponentLoader implements ViewComponentLoaderInterface
 
     #[Override]
     public function registerViewComponents(
-        ModuleViewEnum $view,
+        ModuleEnum $view,
         GameControllerInterface $game
     ): void {
 

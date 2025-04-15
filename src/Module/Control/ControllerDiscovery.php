@@ -2,7 +2,7 @@
 
 namespace Stu\Module\Control;
 
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Config\Init;
 
 class ControllerDiscovery
@@ -10,7 +10,7 @@ class ControllerDiscovery
     /**
      * @return array<string, ControllerInterface>
      */
-    public function getControllers(ModuleViewEnum $module, bool $isViewController): array
+    public function getControllers(ModuleEnum $module, bool $isViewController): array
     {
         $controllers = Init::getContainer()->get($this->getContainerIdentifier($module->name, $isViewController));
 

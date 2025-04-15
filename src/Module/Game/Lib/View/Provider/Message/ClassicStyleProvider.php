@@ -7,7 +7,7 @@ namespace Stu\Module\Game\Lib\View\Provider\Message;
 use Override;
 use request;
 use RuntimeException;
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Game\Lib\View\Provider\ViewComponentProviderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -81,7 +81,7 @@ final class ClassicStyleProvider implements ViewComponentProviderInterface
         }
 
         $game->appendNavigationPart(
-            sprintf('%s?pmcat=%d', ModuleViewEnum::PM->getPhpPage(), $category->getId()),
+            sprintf('%s?pmcat=%d', ModuleEnum::PM->getPhpPage(), $category->getId()),
             sprintf(_('Ordner: %s'), $category->getDescription())
         );
 

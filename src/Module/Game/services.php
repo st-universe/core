@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game;
 
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Module\Control\GameController;
 use Stu\Module\Game\Action\Logout\Logout;
 use Stu\Module\Game\Action\SwitchView\SwitchView;
@@ -55,20 +55,20 @@ return [
     ViewComponentLoaderInterface::class => autowire(ViewComponentLoader::class)->constructorParameter(
         'viewComponentProviders',
         [
-            ModuleViewEnum::MAINDESK->value => autowire(MaindeskProvider::class),
-            ModuleViewEnum::COLONY->value => autowire(ColonyListProvider::class),
-            ModuleViewEnum::SHIP->value => autowire(ShipListProvider::class),
-            ModuleViewEnum::STATION->value => autowire(StationProvider::class),
-            ModuleViewEnum::COMMUNICATION->value => autowire(CommunicationProvider::class),
-            ModuleViewEnum::PM->value => autowire(MessageProvider::class),
-            ModuleViewEnum::RESEARCH->value => autowire(ResearchProvider::class),
-            ModuleViewEnum::TRADE->value => autowire(TradeProvider::class),
-            ModuleViewEnum::ALLIANCE->value => autowire(AllianceProvider::class),
-            ModuleViewEnum::DATABASE->value => autowire(DatabaseProvider::class),
-            ModuleViewEnum::HISTORY->value => autowire(HistoryProvider::class),
-            ModuleViewEnum::STARMAP->value => autowire(MapProvider::class),
-            ModuleViewEnum::OPTIONS->value => autowire(PlayerSettingsProvider::class),
-            ModuleViewEnum::USERPROFILE->value => autowire(UserProfileProvider::class),
+            ModuleEnum::MAINDESK->value => autowire(MaindeskProvider::class),
+            ModuleEnum::COLONY->value => autowire(ColonyListProvider::class),
+            ModuleEnum::SHIP->value => autowire(ShipListProvider::class),
+            ModuleEnum::STATION->value => autowire(StationProvider::class),
+            ModuleEnum::COMMUNICATION->value => autowire(CommunicationProvider::class),
+            ModuleEnum::PM->value => autowire(MessageProvider::class),
+            ModuleEnum::RESEARCH->value => autowire(ResearchProvider::class),
+            ModuleEnum::TRADE->value => autowire(TradeProvider::class),
+            ModuleEnum::ALLIANCE->value => autowire(AllianceProvider::class),
+            ModuleEnum::DATABASE->value => autowire(DatabaseProvider::class),
+            ModuleEnum::HISTORY->value => autowire(HistoryProvider::class),
+            ModuleEnum::STARMAP->value => autowire(MapProvider::class),
+            ModuleEnum::OPTIONS->value => autowire(PlayerSettingsProvider::class),
+            ModuleEnum::USERPROFILE->value => autowire(UserProfileProvider::class),
         ]
     ),
     ShowTransfer::class => autowire(ShowTransfer::class),

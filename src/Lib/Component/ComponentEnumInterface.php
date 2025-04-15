@@ -2,11 +2,11 @@
 
 namespace Stu\Lib\Component;
 
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 
 interface ComponentEnumInterface
 {
-    public function getModuleView(): ModuleViewEnum;
+    public function getModuleView(): ModuleEnum;
 
     public function getTemplate(): string;
 

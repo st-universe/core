@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
 use Override;
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Orm\Repository\TutorialStepRepository;
 
 #[Table(name: 'stu_tutorial_step')]
@@ -26,8 +26,8 @@ class TutorialStep implements TutorialStepInterface
     #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    #[Column(type: 'string', length: 50, enumType: ModuleViewEnum::class)]
-    private ModuleViewEnum $module;
+    #[Column(type: 'string', length: 50, enumType: ModuleEnum::class)]
+    private ModuleEnum $module;
 
     #[Column(type: 'string', length: 100)]
     private string $view = '';
@@ -64,13 +64,13 @@ class TutorialStep implements TutorialStepInterface
     }
 
     #[Override]
-    public function getModule(): ModuleViewEnum
+    public function getModule(): ModuleEnum
     {
         return $this->module;
     }
 
     #[Override]
-    public function setModule(ModuleViewEnum $module): void
+    public function setModule(ModuleEnum $module): void
     {
         $this->module = $module;
     }

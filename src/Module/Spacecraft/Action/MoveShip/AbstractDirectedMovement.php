@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Action\MoveShip;
 
 use Override;
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
@@ -68,7 +68,7 @@ abstract class AbstractDirectedMovement implements ActionControllerInterface
 
 
         if ($ship->isDestroyed()) {
-            $game->setView(ModuleViewEnum::SHIP);
+            $game->setView(ModuleEnum::SHIP);
         }
     }
 

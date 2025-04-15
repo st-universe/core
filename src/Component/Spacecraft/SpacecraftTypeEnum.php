@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Spacecraft;
 
 use RuntimeException;
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 
@@ -33,11 +33,11 @@ enum SpacecraftTypeEnum: string
         };
     }
 
-    public function getModuleView(): ?ModuleViewEnum
+    public function getModuleView(): ?ModuleEnum
     {
         return match ($this) {
-            self::SHIP => ModuleViewEnum::SHIP,
-            self::STATION => ModuleViewEnum::STATION,
+            self::SHIP => ModuleEnum::SHIP,
+            self::STATION => ModuleEnum::STATION,
             default => null
         };
     }

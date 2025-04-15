@@ -8,7 +8,7 @@ use Override;
 use Stu\Component\Communication\Kn\KnFactoryInterface;
 use Stu\Component\Communication\Kn\KnItemInterface;
 use Stu\Component\Game\GameEnum;
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\KnPostInterface;
@@ -25,7 +25,7 @@ final class ShowUserSearchResult implements ViewControllerInterface
     {
         $user = $game->getUser();
 
-        $game->setViewTemplate(ModuleViewEnum::COMMUNICATION->getTemplate());
+        $game->setViewTemplate(ModuleEnum::COMMUNICATION->getTemplate());
         $game->appendNavigationPart('comm.php', _('KommNet'));
 
         if ($this->showSearchResultRequest->getSearchId() == 0) {

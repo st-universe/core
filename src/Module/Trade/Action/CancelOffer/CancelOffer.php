@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\Action\CancelOffer;
 
 use Override;
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -19,14 +19,12 @@ final class CancelOffer implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_CANCEL_OFFER';
 
-    public function __construct(private CancelOfferRequestInterface $cancelOfferRequest, private TradeLibFactoryInterface $tradeLibFactory, private TradeOfferRepositoryInterface $tradeOfferRepository, private StorageRepositoryInterface $storageRepository)
-    {
-    }
+    public function __construct(private CancelOfferRequestInterface $cancelOfferRequest, private TradeLibFactoryInterface $tradeLibFactory, private TradeOfferRepositoryInterface $tradeOfferRepository, private StorageRepositoryInterface $storageRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $viewIdentifier = $this->cancelOfferRequest->getView() ?? ModuleViewEnum::TRADE;
+        $viewIdentifier = $this->cancelOfferRequest->getView() ?? ModuleEnum::TRADE;
         $game->setView($viewIdentifier);
         $game->setViewContext(ViewContextTypeEnum::FILTER_ACTIVE, true);
 

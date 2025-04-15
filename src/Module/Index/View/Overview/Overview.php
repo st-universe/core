@@ -6,7 +6,7 @@ namespace Stu\Module\Index\View\Overview;
 
 use Noodlehaus\ConfigInterface;
 use Override;
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Index\News\NewsFactoryInterface;
 use Stu\Component\Index\News\NewsItemInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -16,20 +16,18 @@ use Stu\Orm\Repository\NewsRepositoryInterface;
 
 final class Overview implements ViewControllerInterface
 {
-    public function __construct(private NewsRepositoryInterface $newsRepository, private NewsFactoryInterface $newsFactory, private ConfigInterface $config)
-    {
-    }
+    public function __construct(private NewsRepositoryInterface $newsRepository, private NewsFactoryInterface $newsFactory, private ConfigInterface $config) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $game->setPageTitle(ModuleViewEnum::INDEX->getTitle());
-        $game->setTemplateFile(ModuleViewEnum::INDEX->getTemplate());
+        $game->setPageTitle(ModuleEnum::INDEX->getTitle());
+        $game->setTemplateFile(ModuleEnum::INDEX->getTemplate());
 
         $game->setTemplateVar(
             'SYSTEM_NEWS',
             array_map(
-                fn (NewsInterface $news): NewsItemInterface => $this->newsFactory->createNewsItem(
+                fn(NewsInterface $news): NewsItemInterface => $this->newsFactory->createNewsItem(
                     $news
                 ),
                 $this->newsRepository->getRecent(5)

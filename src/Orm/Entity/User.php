@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use Override;
 use Stu\Component\Game\GameEnum;
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Map\MapEnum;
 use Stu\Component\Player\UserAwardEnum;
 use Stu\Component\Player\UserCssClassEnum;
@@ -644,14 +644,14 @@ class User implements UserInterface
     }
 
     #[Override]
-    public function getDefaultView(): ModuleViewEnum
+    public function getDefaultView(): ModuleEnum
     {
         $setting = $this->getSettings()->get(UserSettingEnum::DEFAULT_VIEW->value);
         if ($setting !== null) {
-            return ModuleViewEnum::from($setting->getValue());
+            return ModuleEnum::from($setting->getValue());
         }
 
-        return ModuleViewEnum::MAINDESK;
+        return ModuleEnum::MAINDESK;
     }
 
     #[Override]

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Game\Lib;
 
 use Override;
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Lib\Component\ComponentRegistrationInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Game\Component\GameComponentEnum;
@@ -17,7 +17,7 @@ final class GameSetup implements GameSetupInterface
     #[Override]
     public function setTemplateAndComponents(string $viewTemplate, GameControllerInterface $game): void
     {
-        $game->setTemplateFile(ModuleViewEnum::GAME->getTemplate());
+        $game->setTemplateFile(ModuleEnum::GAME->getTemplate());
         $game->setTemplateVar('VIEW_TEMPLATE', $viewTemplate);
 
         $this->registerComponents();

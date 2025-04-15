@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Maindesk\View\ShowColonyList;
 
 use Override;
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ViewContext;
 use Stu\Module\Control\GameControllerInterface;
@@ -51,6 +51,6 @@ final class ShowColonyList implements ViewControllerInterface, ViewWithTutorialI
     #[Override]
     public function getViewContext(): ViewContext
     {
-        return new ViewContext(ModuleViewEnum::MAINDESK, self::VIEW_IDENTIFIER);
+        return new ViewContext(ModuleEnum::MAINDESK, self::VIEW_IDENTIFIER);
     }
 }

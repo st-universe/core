@@ -7,7 +7,7 @@ namespace Stu\Module\Game\Action\SwitchView;
 use Mockery\MockInterface;
 use Override;
 use request;
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Exception\InvalidParamException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -41,7 +41,7 @@ class SwitchViewTest extends StuTestCase
 
     public function testHandleExpectExceptionWhenViewUnknown(): void
     {
-        static::expectExceptionMessage('"foobar" is not a valid backing value for enum Stu\Component\Game\ModuleViewEnum');
+        static::expectExceptionMessage('"foobar" is not a valid backing value for enum Stu\Component\Game\ModuleEnum');
         static::expectException(ValueError::class);
 
         request::setMockVars(['view' => 'foobar']);
@@ -51,13 +51,13 @@ class SwitchViewTest extends StuTestCase
 
     public function testHandleExpectCorrectViewAndContext(): void
     {
-        request::setMockVars(['view' => ModuleViewEnum::MAINDESK->value]);
+        request::setMockVars(['view' => ModuleEnum::MAINDESK->value]);
 
         $this->game->shouldReceive('setView')
             ->with(ShowInnerContent::VIEW_IDENTIFIER)
             ->once();
         $this->game->shouldReceive('setViewContext')
-            ->with(ViewContextTypeEnum::MODULE_VIEW, ModuleViewEnum::MAINDESK)
+            ->with(ViewContextTypeEnum::MODULE_VIEW, ModuleEnum::MAINDESK)
             ->once();
 
         $this->subject->handle($this->game);

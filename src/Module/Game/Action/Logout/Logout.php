@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Game\Action\Logout;
 
 use Override;
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -26,7 +26,7 @@ final class Logout implements ActionControllerInterface
             $this->session->logout();
         }
 
-        $game->redirectTo(sprintf('/%s.php', ModuleViewEnum::INDEX->value));
+        $game->redirectTo(sprintf('/%s.php', ModuleEnum::INDEX->value));
     }
 
     #[Override]

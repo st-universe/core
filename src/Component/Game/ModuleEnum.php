@@ -9,8 +9,7 @@ use Stu\Lib\Component\ComponentEnumInterface;
 use Stu\Module\Colony\Component\ColonyComponentEnum;
 use Stu\Module\Game\Component\GameComponentEnum;
 
-//TODO rename to ModuleEnum
-enum ModuleViewEnum: string
+enum ModuleEnum: string
 {
     case INDEX = 'index';
     case GAME = 'game';
