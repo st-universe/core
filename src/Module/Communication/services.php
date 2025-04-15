@@ -98,7 +98,7 @@ return [
     EndKnPlotRequestInterface::class => autowire(EndKnPlotRequest::class),
     ShowSingleKnRequestInterface::class => autowire(ShowSingleKnRequest::class),
     ShowSearchResultRequestInterface::class => autowire(ShowSearchResultRequest::class),
-    'COMM_ACTIONS' => [
+    'COMMUNICATION_ACTIONS' => [
         SetKnMark::ACTION_IDENTIFIER => autowire(SetKnMark::class),
         AddKnPost::ACTION_IDENTIFIER => autowire(AddKnPost::class)
             ->constructorParameter(
@@ -119,7 +119,7 @@ return [
         RateKnPost::ACTION_IDENTIFIER => autowire(RateKnPost::class),
         KnPostPreview::ACTION_IDENTIFIER => autowire(KnPostPreview::class)
     ],
-    'COMM_VIEWS' => [
+    'COMMUNICATION_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
         ShowKnCharacter::VIEW_IDENTIFIER => autowire(ShowKnCharacter::class),
         ShowKnComments::VIEW_IDENTIFIER => autowire(ShowKnComments::class),
