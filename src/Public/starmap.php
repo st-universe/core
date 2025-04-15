@@ -20,7 +20,7 @@ Init::run(function (ContainerInterface $dic): void {
     $em->beginTransaction();
 
     $dic->get(GameControllerInterface::class)->main(
-        ModuleViewEnum::MAP
+        ModuleViewEnum::STARMAP
     );
 
     $em->commit();

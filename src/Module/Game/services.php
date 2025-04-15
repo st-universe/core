@@ -66,7 +66,7 @@ return [
             ModuleViewEnum::ALLIANCE->value => autowire(AllianceProvider::class),
             ModuleViewEnum::DATABASE->value => autowire(DatabaseProvider::class),
             ModuleViewEnum::HISTORY->value => autowire(HistoryProvider::class),
-            ModuleViewEnum::MAP->value => autowire(MapProvider::class),
+            ModuleViewEnum::STARMAP->value => autowire(MapProvider::class),
             ModuleViewEnum::OPTIONS->value => autowire(PlayerSettingsProvider::class),
             ModuleViewEnum::USERPROFILE->value => autowire(UserProfileProvider::class),
         ]

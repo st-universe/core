@@ -29,6 +29,6 @@ class ModuleViewEnumTest extends StuTestCase
         static::expectException(RuntimeException::class);
         static::expectExceptionMessage('no components in this module view');
 
-        ModuleViewEnum::MAP->getComponentEnum('WRONG');
+        ModuleViewEnum::STARMAP->getComponentEnum('WRONG');
     }
 }
