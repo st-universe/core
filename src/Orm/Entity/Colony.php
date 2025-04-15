@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use Override;
 use Stu\Component\Colony\ColonyMenuEnum;
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Game\TimeConstants;
 use Stu\Lib\Colony\PlanetFieldHostTypeEnum;
 use Stu\Lib\Transfer\CommodityTransfer;
@@ -789,7 +789,7 @@ class Colony implements ColonyInterface
     {
         return sprintf(
             '%s?%s=1&id=%d',
-            ModuleViewEnum::COLONY->getPhpPage(),
+            ModuleEnum::COLONY->getPhpPage(),
             ShowColony::VIEW_IDENTIFIER,
             $this->getId()
         );

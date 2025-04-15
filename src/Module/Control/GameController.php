@@ -8,7 +8,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use request;
 use RuntimeException;
 use Stu\Component\Game\GameEnum;
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Logging\GameRequest\GameRequestSaverInterface;
 use Stu\Exception\AccessViolation;
 use Stu\Exception\EntityLockedException;
@@ -92,9 +92,9 @@ final class GameController implements GameControllerInterface
     }
 
     #[Override]
-    public function setView(ModuleViewEnum|string $view): void
+    public function setView(ModuleEnum|string $view): void
     {
-        if ($view instanceof ModuleViewEnum) {
+        if ($view instanceof ModuleEnum) {
             $this->setViewContext(ViewContextTypeEnum::MODULE_VIEW, $view);
         } else {
             $this->setViewContext(ViewContextTypeEnum::VIEW, $view);
@@ -435,7 +435,7 @@ final class GameController implements GameControllerInterface
 
     #[Override]
     public function main(
-        ModuleViewEnum $module,
+        ModuleEnum $module,
         bool $session_check = true,
         bool $admin_check = false,
         bool $npc_check = false,
@@ -452,14 +452,14 @@ final class GameController implements GameControllerInterface
                 $this->session->checkLoginCookie();
             }
 
-            if ($module === ModuleViewEnum::NPC) {
+            if ($module === ModuleEnum::NPC) {
                 if (!$this->isNpc() && !$this->isAdmin()) {
                     header('Location: /');
                     exit;
                 }
             }
 
-            if ($module === ModuleViewEnum::ADMIN) {
+            if ($module === ModuleEnum::ADMIN) {
                 if (!$this->isAdmin()) {
                     header('Location: /');
                     exit;
@@ -647,7 +647,7 @@ final class GameController implements GameControllerInterface
         $this->eventDispatcher->dispatch($event);
     }
 
-    private function executeCallback(ModuleViewEnum $module, GameRequestInterface $gameRequest): void
+    private function executeCallback(ModuleEnum $module, GameRequestInterface $gameRequest): void
     {
         $actions = $this->controllerDiscovery->getControllers($module, false);
 
@@ -674,7 +674,7 @@ final class GameController implements GameControllerInterface
         }
     }
 
-    private function executeView(ModuleViewEnum $module, GameRequestInterface $gameRequest): void
+    private function executeView(ModuleEnum $module, GameRequestInterface $gameRequest): void
     {
         $viewFromContext = $this->getViewContext(ViewContextTypeEnum::VIEW);
 

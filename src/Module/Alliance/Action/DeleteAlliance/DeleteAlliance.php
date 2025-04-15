@@ -6,7 +6,7 @@ namespace Stu\Module\Alliance\Action\DeleteAlliance;
 
 use Override;
 use Stu\Component\Alliance\AllianceEnum;
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -34,7 +34,7 @@ final class DeleteAlliance implements ActionControllerInterface
         $alliance = $user->getAlliance();
         $allianceId = $alliance->getId();
 
-        $game->setView(ModuleViewEnum::ALLIANCE);
+        $game->setView(ModuleEnum::ALLIANCE);
 
         $jobFounder = $this->allianceJobRepository->getSingleResultByAllianceAndType(
             $allianceId,

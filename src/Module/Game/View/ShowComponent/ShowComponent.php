@@ -7,7 +7,7 @@ namespace Stu\Module\Game\View\ShowComponent;
 use Override;
 use request;
 use RuntimeException;
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Lib\Component\ComponentEnumInterface;
 use Stu\Lib\Component\ComponentRegistrationInterface;
@@ -29,7 +29,7 @@ final class ShowComponent implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $exploded = explode('_', request::getStringFatal('component'), 2);
-        $moduleView = ModuleViewEnum::tryFrom(strtolower($exploded[0]));
+        $moduleView = ModuleEnum::tryFrom(strtolower($exploded[0]));
         $componentEnum = $this->getComponentEnum($moduleView, $exploded);
 
         $this->componentRegistration->registerComponent($componentEnum, $this->getEntity($moduleView, $game));
@@ -37,7 +37,7 @@ final class ShowComponent implements ViewControllerInterface
     }
 
     /** @param array<string> $exploded */
-    private function getComponentEnum(?ModuleViewEnum $moduleView, array $exploded): ComponentEnumInterface
+    private function getComponentEnum(?ModuleEnum $moduleView, array $exploded): ComponentEnumInterface
     {
         if (
             $moduleView === null
@@ -49,7 +49,7 @@ final class ShowComponent implements ViewControllerInterface
         return $moduleView->getComponentEnum($exploded[1]);
     }
 
-    private function getEntity(?ModuleViewEnum $moduleView, GameControllerInterface $game): ?EntityWithComponentsInterface
+    private function getEntity(?ModuleEnum $moduleView, GameControllerInterface $game): ?EntityWithComponentsInterface
     {
         if ($moduleView === null) {
             return null;
@@ -61,7 +61,7 @@ final class ShowComponent implements ViewControllerInterface
         }
 
         return match ($moduleView) {
-            ModuleViewEnum::COLONY => $this->planetFieldHostProvider->loadHostViaRequestParameters($game->getUser(), false),
+            ModuleEnum::COLONY => $this->planetFieldHostProvider->loadHostViaRequestParameters($game->getUser(), false),
             default => throw new RuntimeException(sprintf('module view %s is not supported', $moduleView->value))
         };
     }

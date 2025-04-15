@@ -10,7 +10,7 @@ use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Component\Game\GameEnum;
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Map\MapEnum;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\Lib\Gui\ColonyGuiHelperInterface;
@@ -57,7 +57,7 @@ final class ShowSubspaceTelescope implements ViewControllerInterface
 
         $game->addExecuteJS(sprintf(
             "registerNavKeys('%s.php', '%s', '%s');",
-            ModuleViewEnum::MAP->value,
+            ModuleEnum::STARMAP->value,
             RefreshSection::VIEW_IDENTIFIER,
             'html/colony/telescopeSectionTable.twig'
         ), GameEnum::JS_EXECUTION_AJAX_UPDATE);

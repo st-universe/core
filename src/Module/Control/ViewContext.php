@@ -2,16 +2,16 @@
 
 namespace Stu\Module\Control;
 
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 
 class ViewContext
 {
     public function __construct(
-        private ModuleViewEnum $moduleView,
+        private ModuleEnum $moduleView,
         private String $viewIdentifier
     ) {}
 
-    public function getModule(): ModuleViewEnum
+    public function getModule(): ModuleEnum
     {
         return $this->moduleView;
     }

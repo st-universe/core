@@ -7,7 +7,7 @@ namespace Stu\Module\Starmap\View\ShowByPosition;
 use Override;
 use request;
 use Stu\Component\Game\GameEnum;
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -54,7 +54,7 @@ final class ShowByPosition implements ViewControllerInterface
 
         $game->addExecuteJS(sprintf(
             "registerNavKeys('%s.php', '%s', '%s');",
-            ModuleViewEnum::MAP->value,
+            ModuleEnum::STARMAP->value,
             RefreshSection::VIEW_IDENTIFIER,
             'html/map/starmapSectionTable.twig'
         ), GameEnum::JS_EXECUTION_AJAX_UPDATE);

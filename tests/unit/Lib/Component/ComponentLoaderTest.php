@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Override;
 use Stu\Component\Game\GameEnum;
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Module\Colony\Component\ColonyComponentEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Game\Component\GameComponentEnum;
@@ -170,11 +170,11 @@ class ComponentLoaderTest extends StuTestCase
         $componentEnumWithVars->shouldReceive('getModuleView')
             ->withNoArgs()
             ->once()
-            ->andReturn(ModuleViewEnum::GAME);
+            ->andReturn(ModuleEnum::GAME);
         $componentEnumWithEntity->shouldReceive('getModuleView')
             ->withNoArgs()
             ->once()
-            ->andReturn(ModuleViewEnum::COLONY);
+            ->andReturn(ModuleEnum::COLONY);
 
         $componentEnumWithVars->shouldReceive('getValue')
             ->withNoArgs()

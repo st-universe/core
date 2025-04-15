@@ -6,7 +6,7 @@ namespace Stu\Module\Colony\View\ShowColony;
 
 use Override;
 use Stu\Component\Colony\ColonyMenuEnum;
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Lib\Colony\PlanetFieldHostTypeEnum;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\Lib\Gui\ColonyGuiHelperInterface;
@@ -81,6 +81,6 @@ final class ShowColony implements ViewControllerInterface, ViewWithTutorialInter
     #[Override]
     public function getViewContext(): ViewContext
     {
-        return new ViewContext(ModuleViewEnum::COLONY, self::VIEW_IDENTIFIER);
+        return new ViewContext(ModuleEnum::COLONY, self::VIEW_IDENTIFIER);
     }
 }

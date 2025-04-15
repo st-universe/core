@@ -9,7 +9,7 @@ use request;
 use Stu\Component\Alliance\AllianceDescriptionRendererInterface;
 use Stu\Component\Alliance\AllianceUserApplicationCheckerInterface;
 use Stu\Component\Game\GameEnum;
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceListItem;
 use Stu\Module\Alliance\Lib\AllianceMemberWrapper;
@@ -22,9 +22,7 @@ use Stu\Orm\Repository\AllianceRepositoryInterface;
 
 final class AllianceProvider implements ViewComponentProviderInterface
 {
-    public function __construct(private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager, private AllianceRepositoryInterface $allianceRepository, private AllianceUserApplicationCheckerInterface $allianceUserApplicationChecker, private AllianceDescriptionRendererInterface $allianceDescriptionRenderer, private AllianceUiFactoryInterface $allianceUiFactory)
-    {
-    }
+    public function __construct(private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager, private AllianceRepositoryInterface $allianceRepository, private AllianceUserApplicationCheckerInterface $allianceUserApplicationChecker, private AllianceDescriptionRendererInterface $allianceDescriptionRenderer, private AllianceUiFactoryInterface $allianceUiFactory) {}
 
     #[Override]
     public function setTemplateVariables(GameControllerInterface $game): void
@@ -63,7 +61,7 @@ final class AllianceProvider implements ViewComponentProviderInterface
 
         $game->appendNavigationPart(sprintf(
             '%s?id=%d',
-            ModuleViewEnum::ALLIANCE->getPhpPage(),
+            ModuleEnum::ALLIANCE->getPhpPage(),
             $alliance->getId()
         ), _('Allianz anzeigen'));
 
@@ -102,7 +100,7 @@ final class AllianceProvider implements ViewComponentProviderInterface
         $game->setTemplateVar(
             'MEMBERS',
             $alliance->getMembers()->map(
-                fn (UserInterface $user): AllianceMemberWrapper => $this->allianceUiFactory->createAllianceMemberWrapper($user, $alliance)
+                fn(UserInterface $user): AllianceMemberWrapper => $this->allianceUiFactory->createAllianceMemberWrapper($user, $alliance)
             )
         );
     }
@@ -111,21 +109,21 @@ final class AllianceProvider implements ViewComponentProviderInterface
     {
         $game->appendNavigationPart(sprintf(
             '%s?showlist=1',
-            ModuleViewEnum::ALLIANCE->getPhpPage()
+            ModuleEnum::ALLIANCE->getPhpPage()
         ), _('Allianzliste'));
 
         $game->setTemplateVar('SHOW_ALLIANCE_LIST', true);
         $game->setTemplateVar(
             'ALLIANCE_LIST_OPEN',
             array_map(
-                fn (AllianceInterface $alliance): AllianceListItem => $this->allianceUiFactory->createAllianceListItem($alliance),
+                fn(AllianceInterface $alliance): AllianceListItem => $this->allianceUiFactory->createAllianceListItem($alliance),
                 $this->allianceRepository->findByApplicationState(true)
             )
         );
         $game->setTemplateVar(
             'ALLIANCE_LIST_CLOSED',
             array_map(
-                fn (AllianceInterface $alliance): AllianceListItem => $this->allianceUiFactory->createAllianceListItem($alliance),
+                fn(AllianceInterface $alliance): AllianceListItem => $this->allianceUiFactory->createAllianceListItem($alliance),
                 $this->allianceRepository->findByApplicationState(false)
             )
         );

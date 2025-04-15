@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Game\Lib\View\Provider;
 
 use Override;
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Player\UserCssClassEnum;
 use Stu\Component\Player\UserRpgBehaviorEnum;
 use Stu\Module\Control\GameControllerInterface;
@@ -22,16 +22,16 @@ final class PlayerSettingsProvider implements ViewComponentProviderInterface
             _('Optionen')
         );
 
-        $filteredViews = array_filter(ModuleViewEnum::cases(), function (ModuleViewEnum $case) use ($game): bool {
+        $filteredViews = array_filter(ModuleEnum::cases(), function (ModuleEnum $case) use ($game): bool {
 
-            if (in_array($case, [ModuleViewEnum::GAME, ModuleViewEnum::INDEX, ModuleViewEnum::NOTES])) {
+            if (in_array($case, [ModuleEnum::GAME, ModuleEnum::INDEX, ModuleEnum::NOTES])) {
                 return false;
             }
 
-            if ($case === ModuleViewEnum::ADMIN && !$game->isAdmin()) {
+            if ($case === ModuleEnum::ADMIN && !$game->isAdmin()) {
                 return false;
             }
-            return !($case === ModuleViewEnum::NPC && !$game->isNpc());
+            return !($case === ModuleEnum::NPC && !$game->isNpc());
         });
 
         $game->setTemplateVar('REAL_USER', $user);

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\Action\TakeOffer;
 
 use Override;
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -23,9 +23,7 @@ final class TakeOffer implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_TAKE_OFFER';
 
-    public function __construct(private TakeOfferRequestInterface $takeOfferRequest, private TradeLibFactoryInterface $tradeLibFactory, private TradeOfferRepositoryInterface $tradeOfferRepository, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private PrivateMessageSenderInterface $privateMessageSender, private TradeTransactionRepositoryInterface $tradeTransactionRepository, private StorageRepositoryInterface $storageRepository)
-    {
-    }
+    public function __construct(private TakeOfferRequestInterface $takeOfferRequest, private TradeLibFactoryInterface $tradeLibFactory, private TradeOfferRepositoryInterface $tradeOfferRepository, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private PrivateMessageSenderInterface $privateMessageSender, private TradeTransactionRepositoryInterface $tradeTransactionRepository, private StorageRepositoryInterface $storageRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -143,7 +141,7 @@ final class TakeOffer implements ActionControllerInterface
 
         $game->addInformation(sprintf(_('Das Angebot wurde %d mal angenommen'), $amount));
 
-        $game->setView(ModuleViewEnum::TRADE);
+        $game->setView(ModuleEnum::TRADE);
         $game->setViewContext(ViewContextTypeEnum::FILTER_ACTIVE, true);
 
         $this->privateMessageSender->send(

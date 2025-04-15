@@ -7,7 +7,7 @@ namespace Stu\Module\Spacecraft\Action\MoveShip;
 use Mockery\MockInterface;
 use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
@@ -603,7 +603,7 @@ class DirectedMovementTest extends StuTestCase
             ->with(ShowSpacecraft::VIEW_IDENTIFIER)
             ->once();
         $game->shouldReceive('setView')
-            ->with(ModuleViewEnum::SHIP)
+            ->with(ModuleEnum::SHIP)
             ->once();
 
         $subject->handle($game);

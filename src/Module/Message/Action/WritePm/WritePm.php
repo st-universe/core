@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Message\Action\WritePm;
 
 use Override;
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -53,7 +53,7 @@ final class WritePm implements ActionControllerInterface
         $this->privateMessageSender->send($userId, $recipient->getId(), $text, PrivateMessageFolderTypeEnum::SPECIAL_MAIN);
 
         $game->addInformation(_('Die Nachricht wurde abgeschickt'));
-        $game->setView(ModuleViewEnum::PM);
+        $game->setView(ModuleEnum::PM);
     }
 
     #[Override]

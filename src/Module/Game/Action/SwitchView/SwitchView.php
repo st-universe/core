@@ -6,7 +6,7 @@ namespace Stu\Module\Game\Action\SwitchView;
 
 use Override;
 use request;
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContextTypeEnum;
@@ -19,7 +19,7 @@ final class SwitchView implements ActionControllerInterface
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $moduleView = ModuleViewEnum::from(request::getStringFatal('view'));
+        $moduleView = ModuleEnum::from(request::getStringFatal('view'));
 
         $game->setView(ShowInnerContent::VIEW_IDENTIFIER);
         $game->setViewContext(ViewContextTypeEnum::MODULE_VIEW, $moduleView);

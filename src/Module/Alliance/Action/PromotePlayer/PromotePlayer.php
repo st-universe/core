@@ -6,7 +6,7 @@ namespace Stu\Module\Alliance\Action\PromotePlayer;
 
 use Override;
 use Stu\Component\Alliance\AllianceEnum;
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\View\Management\Management;
@@ -23,9 +23,7 @@ final class PromotePlayer implements ActionControllerInterface
      */
     public const string ACTION_IDENTIFIER = 'B_PROMOTE_USER';
 
-    public function __construct(private PromotePlayerRequestInterface $promotePlayerRequest, private AllianceJobRepositoryInterface $allianceJobRepository, private AllianceActionManagerInterface $allianceActionManager, private PrivateMessageSenderInterface $privateMessageSender, private UserRepositoryInterface $userRepository)
-    {
-    }
+    public function __construct(private PromotePlayerRequestInterface $promotePlayerRequest, private AllianceJobRepositoryInterface $allianceJobRepository, private AllianceActionManagerInterface $allianceActionManager, private PrivateMessageSenderInterface $privateMessageSender, private UserRepositoryInterface $userRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -91,7 +89,7 @@ final class PromotePlayer implements ActionControllerInterface
                     _('Du wurdest zum neuen Präsidenten der Allianz %s ernannt'),
                     $alliance->getName()
                 );
-                $view = ModuleViewEnum::ALLIANCE;
+                $view = ModuleEnum::ALLIANCE;
                 break;
             case AllianceEnum::ALLIANCE_JOBS_SUCCESSOR:
                 if ($userId === $playerId) {

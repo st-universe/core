@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Game\Component;
 
 use Override;
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Lib\Component\ComponentEnumInterface;
 
 enum GameComponentEnum: string implements ComponentEnumInterface
@@ -20,9 +20,9 @@ enum GameComponentEnum: string implements ComponentEnumInterface
     case OUTDATED = 'OUTDATED';
 
     #[Override]
-    public function getModuleView(): ModuleViewEnum
+    public function getModuleView(): ModuleEnum
     {
-        return ModuleViewEnum::GAME;
+        return ModuleEnum::GAME;
     }
 
     #[Override]

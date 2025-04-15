@@ -8,7 +8,7 @@ use Override;
 use request;
 
 use Stu\Component\Game\GameEnum;
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Trade\TradeEnum;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -25,9 +25,7 @@ final class SearchOffer implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_TRADE_SEARCH_OFFER';
 
-    public function __construct(private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradeOfferRepositoryInterface $tradeOfferRepository, private CommodityRepositoryInterface $commodityRepository, private SessionInterface $session)
-    {
-    }
+    public function __construct(private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradeOfferRepositoryInterface $tradeOfferRepository, private CommodityRepositoryInterface $commodityRepository, private SessionInterface $session) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -43,7 +41,7 @@ final class SearchOffer implements ActionControllerInterface
             _('Handel')
         );
 
-        $game->setView(ModuleViewEnum::TRADE);
+        $game->setView(ModuleEnum::TRADE);
         $game->setViewContext(ViewContextTypeEnum::FILTER_ACTIVE, true);
 
         $game->setTemplateVar('POST_ID', request::postIntFatal('pid'));
@@ -68,7 +66,7 @@ final class SearchOffer implements ActionControllerInterface
         $game->setTemplateVar(
             'OFFER_LIST',
             array_map(
-                fn (TradeOfferInterface $tradeOffer): TradeOfferItemInterface => new TradeOfferItem($tradeOffer, $user),
+                fn(TradeOfferInterface $tradeOffer): TradeOfferItemInterface => new TradeOfferItem($tradeOffer, $user),
                 $this->tradeOfferRepository->getByUserLicenses($userId, $commodityId, $postId, TradeEnum::FILTER_COMMODITY_IN_OFFER)
             )
         );

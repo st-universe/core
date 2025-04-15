@@ -7,7 +7,7 @@ namespace Stu\Module\Game\Lib\View;
 use Mockery\MockInterface;
 use Override;
 use RuntimeException;
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Game\Lib\View\Provider\ViewComponentProviderInterface;
 use Stu\StuTestCase;
@@ -28,7 +28,7 @@ class ViewComponentLoaderTest extends StuTestCase
         $this->componentProvider = $this->mock(ViewComponentProviderInterface::class);
         $this->game = $this->mock(GameControllerInterface::class);
 
-        $this->subject = new ViewComponentLoader([ModuleViewEnum::MAINDESK->value => $this->componentProvider]);
+        $this->subject = new ViewComponentLoader([ModuleEnum::MAINDESK->value => $this->componentProvider]);
     }
 
     public function testRegisterViewComponentsExpectExceptionIfProviderMissing(): void
@@ -36,7 +36,7 @@ class ViewComponentLoaderTest extends StuTestCase
         static::expectExceptionMessage('viewComponentProvider with follwing id does not exist: colony');
         static::expectException(RuntimeException::class);
 
-        $this->subject->registerViewComponents(ModuleViewEnum::COLONY, $this->game);
+        $this->subject->registerViewComponents(ModuleEnum::COLONY, $this->game);
     }
 
     public function testRegisterViewComponentsExpectSettingOfTemplateVariables(): void
@@ -46,9 +46,9 @@ class ViewComponentLoaderTest extends StuTestCase
             ->once();
 
         $this->game->shouldReceive('appendNavigationPart')
-            ->with(ModuleViewEnum::MAINDESK->getPhpPage(), ModuleViewEnum::MAINDESK->getTitle())
+            ->with(ModuleEnum::MAINDESK->getPhpPage(), ModuleEnum::MAINDESK->getTitle())
             ->once();
 
-        $this->subject->registerViewComponents(ModuleViewEnum::MAINDESK, $this->game);
+        $this->subject->registerViewComponents(ModuleEnum::MAINDESK, $this->game);
     }
 }

@@ -41,7 +41,7 @@ class AllViewControllerTest extends TwigTestCase
         'DATABASE_VIEWS-SHOW_SURFACE',              // needs surface scan test data
         'DATABASE_VIEWS-SHOW_TOP_RPG',              // sql in getRpgVotesTop10 not compatible with sqlite?
         'GAME_VIEWS-SHOW_COMPONENT',                // make separate tests for each ComponentEnum
-        'GAME_VIEWS-SHOW_INNER_CONTENT',            // make separate tests for each ModuleViewEnum
+        'GAME_VIEWS-SHOW_INNER_CONTENT',            // make separate tests for each ModuleEnum
         'MAINDESK_VIEWS-SHOW_COLONYLIST',           // needs uncolonized user
         'PM_VIEWS-SHOW_CONTACT_MODESWITCH',
         'USERPROFILE_VIEWS-SHOW_SURFACE',           // needs surface scan test data

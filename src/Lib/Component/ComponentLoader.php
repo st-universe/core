@@ -7,7 +7,7 @@ namespace Stu\Lib\Component;
 use Override;
 use RuntimeException;
 use Stu\Component\Game\GameEnum;
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Config\Init;
 use Stu\Lib\Component\ComponentInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -63,7 +63,7 @@ final class ComponentLoader implements ComponentLoaderInterface
         $game->addExecuteJS(sprintf(
             "updateComponent('%s', '/%s?%s=1&component=%s%s'%s);",
             $id,
-            ModuleViewEnum::GAME->getPhpPage(),
+            ModuleEnum::GAME->getPhpPage(),
             ShowComponent::VIEW_IDENTIFIER,
             $id,
             $componentUpdate->getComponentParameters() ?? '',

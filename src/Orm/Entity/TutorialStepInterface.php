@@ -2,15 +2,15 @@
 
 namespace Stu\Orm\Entity;
 
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 
 interface TutorialStepInterface
 {
     public function getId(): int;
 
-    public function getModule(): ModuleViewEnum;
+    public function getModule(): ModuleEnum;
 
-    public function setModule(ModuleViewEnum $module): void;
+    public function setModule(ModuleEnum $module): void;
 
     public function getView(): string;
 

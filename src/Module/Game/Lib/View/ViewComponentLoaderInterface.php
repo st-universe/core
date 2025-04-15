@@ -2,13 +2,13 @@
 
 namespace Stu\Module\Game\Lib\View;
 
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Module\Control\GameControllerInterface;
 
 interface ViewComponentLoaderInterface
 {
     public function registerViewComponents(
-        ModuleViewEnum $view,
+        ModuleEnum $view,
         GameControllerInterface $game
     ): void;
 }

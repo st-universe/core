@@ -6,7 +6,7 @@ namespace Stu\Module\Alliance\Action\Leave;
 
 use Override;
 use Stu\Component\Alliance\AllianceEnum;
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -21,9 +21,7 @@ final class Leave implements ActionControllerInterface
      */
     public const string ACTION_IDENTIFIER = 'B_LEAVE_ALLIANCE';
 
-    public function __construct(private AllianceJobRepositoryInterface $allianceJobRepository, private PrivateMessageSenderInterface $privateMessageSender, private UserRepositoryInterface $userRepository)
-    {
-    }
+    public function __construct(private AllianceJobRepositoryInterface $allianceJobRepository, private PrivateMessageSenderInterface $privateMessageSender, private UserRepositoryInterface $userRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -57,7 +55,7 @@ final class Leave implements ActionControllerInterface
             $this->privateMessageSender->send($userId, $alliance->getSuccessor()->getUserId(), $text);
         }
 
-        $game->setView(ModuleViewEnum::ALLIANCE);
+        $game->setView(ModuleEnum::ALLIANCE);
 
         $game->addInformation(_('Du hast die Allianz verlassen'));
     }

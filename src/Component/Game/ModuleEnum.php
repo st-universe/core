@@ -9,8 +9,7 @@ use Stu\Lib\Component\ComponentEnumInterface;
 use Stu\Module\Colony\Component\ColonyComponentEnum;
 use Stu\Module\Game\Component\GameComponentEnum;
 
-//TODO rename to ModuleEnum
-enum ModuleViewEnum: string
+enum ModuleEnum: string
 {
     case INDEX = 'index';
     case GAME = 'game';
@@ -26,7 +25,7 @@ enum ModuleViewEnum: string
     case ALLIANCE = 'alliance';
     case DATABASE = 'database';
     case HISTORY = 'history';
-    case MAP = 'starmap';
+    case STARMAP = 'starmap';
     case OPTIONS = 'options';
     case USERPROFILE = 'userprofile';
     case ADMIN = 'admin';
@@ -53,7 +52,7 @@ enum ModuleViewEnum: string
             self::ALLIANCE => 'Allianz',
             self::DATABASE => 'Datenbank',
             self::HISTORY => 'Ereignisse',
-            self::MAP => 'Karte',
+            self::STARMAP => 'Karte',
             self::NOTES => 'Notizen',
             self::OPTIONS => 'Optionen',
             self::USERPROFILE => 'Spielerprofil',
@@ -78,7 +77,7 @@ enum ModuleViewEnum: string
             self::ALLIANCE => 'html/view/alliance.twig',
             self::DATABASE => 'html/view/database.twig',
             self::HISTORY => 'html/view/history.twig',
-            self::MAP => 'html/view/map.twig',
+            self::STARMAP => 'html/view/map.twig',
             self::NOTES => 'not needed',
             self::OPTIONS => 'html/view/options.twig',
             self::USERPROFILE => 'html/view/userprofile.twig',

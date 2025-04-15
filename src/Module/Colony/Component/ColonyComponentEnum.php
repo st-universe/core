@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Component;
 
 use Override;
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Lib\Component\ComponentEnumInterface;
 
 enum ColonyComponentEnum: string implements ComponentEnumInterface
 {
-        // mainscreen
+    // mainscreen
     case SHIELDING = 'SHIELDING';
     case EPS_BAR = 'EPS_BAR';
     case SURFACE = 'SURFACE';
@@ -36,9 +36,9 @@ enum ColonyComponentEnum: string implements ComponentEnumInterface
     case SHIP_RETROFIT = 'SHIP_RETROFIT';
 
     #[Override]
-    public function getModuleView(): ModuleViewEnum
+    public function getModuleView(): ModuleEnum
     {
-        return ModuleViewEnum::COLONY;
+        return ModuleEnum::COLONY;
     }
 
     #[Override]

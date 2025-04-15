@@ -17,7 +17,7 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use Override;
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Module\Communication\View\ShowSingleKn\ShowSingleKn;
 use Stu\Orm\Repository\KnPostRepository;
 
@@ -264,7 +264,7 @@ class KnPost implements KnPostInterface
     {
         return sprintf(
             '%s?%s=1&knid=%d',
-            ModuleViewEnum::COMMUNICATION->getPhpPage(),
+            ModuleEnum::COMMUNICATION->getPhpPage(),
             ShowSingleKn::VIEW_IDENTIFIER,
             $this->getId()
         );

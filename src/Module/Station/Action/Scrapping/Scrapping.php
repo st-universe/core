@@ -7,7 +7,7 @@ namespace Stu\Module\Station\Action\Scrapping;
 use Override;
 use request;
 use RuntimeException;
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Module\Control\ActionControllerInterface;
@@ -61,7 +61,7 @@ final class Scrapping implements ActionControllerInterface
 
         if ($station->getRump()->getCategoryId() === SpacecraftRumpEnum::SHIP_CATEGORY_CONSTRUCTION) {
 
-            $game->setView(ModuleViewEnum::STATION);
+            $game->setView(ModuleEnum::STATION);
 
             $progress = $station->getConstructionProgress();
             if ($progress !== null) {

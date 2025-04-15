@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Game\View\ShowInnerContent;
 
 use Override;
-use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContext;
 use Stu\Module\Control\ViewContextTypeEnum;
@@ -18,14 +18,14 @@ final class ShowInnerContent implements ViewControllerInterface, ViewWithTutoria
 {
     public const string VIEW_IDENTIFIER = 'SHOW_INNER_CONTENT';
 
-    private ModuleViewEnum $moduleView;
+    private ModuleEnum $moduleView;
 
     public function __construct(private ViewComponentLoaderInterface $viewComponentLoader) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        /** @var ModuleViewEnum  */
+        /** @var ModuleEnum  */
         $view = $game->getViewContext(ViewContextTypeEnum::MODULE_VIEW);
 
         $this->moduleView = $view;
