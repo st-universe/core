@@ -16,9 +16,7 @@ final class SwitchContactMode implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_CHANGE_CONTACTMODE';
 
-    public function __construct(private SwitchContactModeRequestInterface $switchContactModeRequest, private ContactRepositoryInterface $contactRepository, private PrivateMessageSenderInterface $privateMessageSender)
-    {
-    }
+    public function __construct(private SwitchContactModeRequestInterface $switchContactModeRequest, private ContactRepositoryInterface $contactRepository, private PrivateMessageSenderInterface $privateMessageSender) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -37,35 +35,31 @@ final class SwitchContactMode implements ActionControllerInterface
         if ($mode === null) {
             return;
         }
-        if ($mode !== $contact->getMode() && $mode == ContactListModeEnum::ENEMY) {
+        if ($mode !== $contact->getMode()) {
             $this->privateMessageSender->send(
                 $userId,
                 $contact->getRecipientId(),
-                _('Der Siedler betrachtet Dich von nun an als Feind')
+                sprintf('Der Siedler betrachtet Dich von nun an als %s', $mode->getTitle())
             );
             $obj = $this->contactRepository->getByUserAndOpponent(
-                $contact->getRecipientId(),
-                $userId
+                $userId,
+                $contact->getRecipientId()
             );
             if ($obj !== null) {
-                if (!$obj->isEnemy()) {
-                    $obj->setMode(ContactListModeEnum::ENEMY);
 
-                    $this->contactRepository->save($obj);
-                }
+                $obj->setMode($mode);
+
+                $this->contactRepository->save($obj);
             } else {
                 $obj = $this->contactRepository->prototype();
                 $obj->setUser($contact->getRecipient());
                 $obj->setRecipient($game->getUser());
-                $obj->setMode(ContactListModeEnum::ENEMY);
+                $obj->setMode($mode);
                 $obj->setDate(time());
 
                 $this->contactRepository->save($obj);
             }
         }
-        $contact->setMode($mode);
-
-        $this->contactRepository->save($contact);
 
         $game->setTemplateVar('contact', $contact);
     }
