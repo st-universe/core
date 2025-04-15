@@ -1,0 +1,22 @@
+<a href="javascript:void(0);" onclick="showNewSandboxWindow();">
+	Neue Sandbox erstellen
+</a>
+<br />
+<div>
+	<select onchange="window.location.href='?SHOW_COLONY_SANDBOX=1&hosttype=2&id=' + this.value">
+		<option value="">------------------</option>
+		{% for sandbox in SANDBOXES %}
+		{% if sandbox.getId == HOST.getId %}
+		<option value="{{ sandbox.getId }}" selected="1">{{ sandbox.getName }}</option>
+		{% else %}
+		<option value="{{ sandbox.getId }}">{{ sandbox.getName }}</option>
+		{% endif %}
+		{% endfor %}
+	</select>
+</div>
+<br />
+{% if HOST %}
+<div id="colonymenu">
+	{% include SELECTED_COLONY_MENU_TEMPLATE %}
+</div>
+{% endif %}

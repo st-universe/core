@@ -8,7 +8,7 @@
 
     <div style="{{ style }}" class="{{ fieldCssClass }}">
         {% if field.hasBuilding %}
-        {% set buildingId = field.getBuildingId %}
+        {% set buildingId = field.getBuilding.getId %}
         {% set buildingType = field.getBuilding.getBuildingType %}
         {% set buildingName = field.getBuilding.getName %}
 

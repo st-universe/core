@@ -20,9 +20,7 @@ Init::run(function (ContainerInterface $dic): void {
     $em->beginTransaction();
 
     $dic->get(GameControllerInterface::class)->main(
-        ModuleViewEnum::MAINDESK,
-        $dic->get('MAINDESK_ACTIONS'),
-        $dic->get('MAINDESK_VIEWS')
+        ModuleViewEnum::MAINDESK
     );
 
     $em->commit();

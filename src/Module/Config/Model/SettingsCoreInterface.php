@@ -21,7 +21,7 @@ interface SettingsCoreInterface
     /**
      * @param string[]|null $default
      *
-     * @return array<string>
+     * @return array<mixed>
      */
     public function getArrayConfigValue(string $setting, ?array $default = null): array;
 }

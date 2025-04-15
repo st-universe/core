@@ -19,7 +19,7 @@ use Override;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Lib\Colony\PlanetFieldHostTypeEnum;
-use Stu\Module\Admin\View\Sandbox\ShowColonySandbox;
+use Stu\Module\Colony\View\Sandbox\ShowColonySandbox;
 use Stu\Orm\Repository\ColonySandboxRepository;
 
 #[Table(name: 'stu_colony_sandbox')]

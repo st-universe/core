@@ -68,7 +68,7 @@ return [
             ModuleViewEnum::HISTORY->value => autowire(HistoryProvider::class),
             ModuleViewEnum::MAP->value => autowire(MapProvider::class),
             ModuleViewEnum::OPTIONS->value => autowire(PlayerSettingsProvider::class),
-            ModuleViewEnum::PROFILE->value => autowire(UserProfileProvider::class),
+            ModuleViewEnum::USERPROFILE->value => autowire(UserProfileProvider::class),
         ]
     ),
     ShowTransfer::class => autowire(ShowTransfer::class),

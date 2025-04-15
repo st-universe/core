@@ -21,6 +21,11 @@ interface GameSettingsInterface
 
     public function getEmailSettings(): EmailSettingsInterface;
 
+    /**
+     * @return array<array{feature: string, userIds: array<int>}>
+     */
+    public function getGrantedFeatures(): array;
+
     public function getMapSettings(): MapSettingsInterface;
 
     public function getPirateSettings(): PirateSettingsInterface;

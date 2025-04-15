@@ -21,8 +21,6 @@ Init::run(function (ContainerInterface $dic): void {
 
     $dic->get(GameControllerInterface::class)->main(
         ModuleViewEnum::INDEX,
-        $dic->get('INDEX_ACTIONS'),
-        $dic->get('INDEX_VIEWS'),
         false
     );
 

@@ -8,6 +8,7 @@ use Stu\Module\Config\StuConfigException;
 final class GameSettings extends AbstractSettings implements GameSettingsInterface
 {
     private const string SETTING_ADMINS = 'admins';
+    private const string SETTING_GRANTED_FEATURES = 'grantedFeatures';
     private const string SETTING_TEMP_DIR = 'temp_dir';
     private const string SETTING_USE_SEMAPHORES = 'useSemaphores';
     private const string SETTING_VERSION = 'version';
@@ -35,6 +36,12 @@ final class GameSettings extends AbstractSettings implements GameSettingsInterfa
     public function getEmailSettings(): EmailSettingsInterface
     {
         return $this->settingsCache->getSettings(EmailSettingsInterface::class, $this);
+    }
+
+    #[Override]
+    public function getGrantedFeatures(): array
+    {
+        return $this->settingsCore->getArrayConfigValue(self::SETTING_GRANTED_FEATURES, []);
     }
 
     #[Override]

@@ -20,9 +20,7 @@ Init::run(function (ContainerInterface $dic): void {
     $em->beginTransaction();
 
     $dic->get(GameControllerInterface::class)->main(
-        ModuleViewEnum::HISTORY,
-        $dic->get('HISTORY_ACTIONS'),
-        $dic->get('HISTORY_VIEWS')
+        ModuleViewEnum::HISTORY
     );
 
     $em->commit();

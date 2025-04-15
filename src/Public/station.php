@@ -20,9 +20,7 @@ Init::run(function (ContainerInterface $dic): void {
     $em->beginTransaction();
 
     $dic->get(GameControllerInterface::class)->main(
-        ModuleViewEnum::STATION,
-        array_merge($dic->get('SPACECRAFT_ACTIONS'), $dic->get('STATION_ACTIONS')),
-        array_merge($dic->get('SPACECRAFT_VIEWS'), $dic->get('STATION_VIEWS'))
+        ModuleViewEnum::STATION
     );
 
     $em->commit();

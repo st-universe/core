@@ -47,6 +47,7 @@ use Stu\Module\Colony\Action\RenameBuildplan\RenameBuildplanRequestInterface;
 use Stu\Module\Colony\Action\RepairBuilding\RepairBuilding;
 use Stu\Module\Colony\Action\RepairShip\RepairShip;
 use Stu\Module\Colony\Action\RetrofitShip\RetrofitShip;
+use Stu\Module\Colony\Action\Sandbox\CreateSandbox;
 use Stu\Module\Colony\Action\ScrollBuildMenu\ScrollBuildMenu;
 use Stu\Module\Colony\Action\SetPopulationLimit\SetPopulationLimit;
 use Stu\Module\Colony\Action\StartAirfieldShip\StartAirfieldShip;
@@ -99,6 +100,8 @@ use Stu\Module\Colony\Lib\PlanetColonizationInterface;
 use Stu\Module\Colony\Lib\PlanetFieldTypeRetriever;
 use Stu\Module\Colony\Lib\PlanetFieldTypeRetrieverInterface;
 use Stu\Module\Colony\View\RefreshColonyEps\RefreshColonyEps;
+use Stu\Module\Colony\View\Sandbox\ShowColonySandbox;
+use Stu\Module\Colony\View\Sandbox\ShowNewSandbox;
 use Stu\Module\Colony\View\ShowAcademy\ShowAcademy;
 use Stu\Module\Colony\View\ShowAcademy\ShowAcademyRequest;
 use Stu\Module\Colony\View\ShowAcademy\ShowAcademyRequestInterface;
@@ -259,7 +262,8 @@ return [
         RenameBuildplan::ACTION_IDENTIFIER => autowire(RenameBuildplan::class),
         RemoveWaste::ACTION_IDENTIFIER => autowire(RemoveWaste::class),
         RetrofitShip::ACTION_IDENTIFIER => autowire(RetrofitShip::class),
-        Transfer::ACTION_IDENTIFIER => get(Transfer::class)
+        Transfer::ACTION_IDENTIFIER => get(Transfer::class),
+        CreateSandbox::ACTION_IDENTIFIER => get(CreateSandbox::class)
     ],
     'COLONY_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
@@ -300,7 +304,9 @@ return [
         ShowSubspaceTelescope::VIEW_IDENTIFIER => autowire(ShowSubspaceTelescope::class),
         ShowSubspaceTelescopeScan::VIEW_IDENTIFIER => autowire(ShowSubspaceTelescopeScan::class),
         ShowTransfer::VIEW_IDENTIFIER => get(ShowTransfer::class),
-        RefreshColonyEps::VIEW_IDENTIFIER => autowire(RefreshColonyEps::class)
+        RefreshColonyEps::VIEW_IDENTIFIER => autowire(RefreshColonyEps::class),
+        ShowColonySandbox::VIEW_IDENTIFIER => autowire(ShowColonySandbox::class),
+        ShowNewSandbox::VIEW_IDENTIFIER => autowire(ShowNewSandbox::class)
     ],
     'COLONY_COMPONENTS' =>
     [

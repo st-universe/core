@@ -1,0 +1,32 @@
+{# needs following variables: COLONIES, SANDBOX_NAME #}
+<div>
+    <form action="colony.php" method="post" onkeydown="return event.key != 'Enter';">
+        <table class="tcal">
+            <tr>
+                <th>Sandbox für folgende Kolonie</th>
+                <td>
+                    <select id="colony-id">
+                        {% for colony in SANDBOX_LIST %}
+                        <option value="{{ colony.getId }}">{{ colony.getNameAndSectorString|bbcode2txt }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th>Name der Sandbox</th>
+                <td>
+                    <input type="text" style="width: 250px" id="sandbox-name" value="{{ SANDBOX_NAME }}" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: center;">
+                    <div style="text-align: center; margin-top: 10px;" class="fabutton">
+                        <a href="javascript:void(0);" onclick="createNewSandbox('{{ SESSIONSTRING }}');"
+                            class="fabutton">
+                            Sandbox erstellen</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>

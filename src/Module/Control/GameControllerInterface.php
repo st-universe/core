@@ -93,14 +93,8 @@ interface GameControllerInterface extends InformationInterface
 
     public function getGameRequestId(): string;
 
-    /**
-     * @param array<string, ActionControllerInterface> $actions
-     * @param array<string, ViewControllerInterface> $views
-     */
     public function main(
         ModuleViewEnum $view,
-        array $actions,
-        array $views,
         bool $session_check = true,
         bool $admin_check = false,
         bool $npc_check = false
