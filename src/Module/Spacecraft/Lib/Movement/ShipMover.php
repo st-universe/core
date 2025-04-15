@@ -113,7 +113,6 @@ final class ShipMover implements ShipMoverInterface
 
             if ($flightCompany->isEmpty()) {
                 $flightRoute->abortFlight();
-                $messages->addInformation('Es wurden alle Schiffe zerstört');
             }
         }
 

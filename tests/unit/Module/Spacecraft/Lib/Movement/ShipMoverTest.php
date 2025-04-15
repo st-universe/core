@@ -368,9 +368,6 @@ class ShipMoverTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($messageCollection);
-        $messageCollection->shouldReceive('addInformation')
-            ->with('Es wurden alle Schiffe zerstört')
-            ->once();
 
         $this->shipMovementInformationAdder->shouldReceive('reachedDestinationDestroyed')
             ->with($ship, 'SHIP', false, RouteModeEnum::FLIGHT, $messageCollection)
