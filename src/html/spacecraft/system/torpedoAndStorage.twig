@@ -20,4 +20,10 @@
 <tr>
     {% include 'html/spacecraft/system/torpedoDisplay.twig' %}
 </tr>
+{% else %}
+{% if SPACECRAFT.getTorpedo %}
+<tr>
+    {% include 'html/spacecraft/system/torpedoDisplay.twig' %}
+</tr>
+{% endif %}
 {% endif %}
