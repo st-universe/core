@@ -102,12 +102,20 @@ class Building implements BuildingInterface
     #[OneToMany(targetEntity: 'PlanetFieldTypeBuilding', mappedBy: 'building', indexBy: 'type')]
     private Collection $possibleFieldTypes;
 
+    /**
+     * @var ArrayCollection<int, ColonyClassRestrictionInterface>
+     */
+    #[OneToMany(mappedBy: 'building', targetEntity: ColonyClassRestriction::class)]
+    private Collection $restrictions;
+
+
     public function __construct()
     {
         $this->costs = new ArrayCollection();
         $this->functions = new ArrayCollection();
         $this->commodities = new ArrayCollection();
         $this->possibleFieldTypes = new ArrayCollection();
+        $this->restrictions = new ArrayCollection();
     }
 
     #[Override]
@@ -399,5 +407,13 @@ class Building implements BuildingInterface
             return BuildingEnum::SHIELD_BATTERY_CAPACITY;
         }
         return null;
+    }
+
+    /**
+     * @return Collection<int, ColonyClassRestrictionInterface>
+     */
+    public function getRestrictions(): Collection
+    {
+        return $this->restrictions;
     }
 }

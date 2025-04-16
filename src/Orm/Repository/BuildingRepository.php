@@ -10,6 +10,7 @@ use Stu\Component\Colony\ColonyEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\BuildingCommodity;
+use Stu\Orm\Entity\ColonyClassRestriction;
 use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Entity\PlanetFieldTypeBuilding;
 use Stu\Orm\Entity\Researched;
@@ -27,7 +28,8 @@ final class BuildingRepository extends EntityRepository implements BuildingRepos
         int $buildMenu,
         int $offset,
         ?int $commodityId = null,
-        ?int $fieldType = null
+        ?int $fieldType = null,
+        ?int $colonyClass = null
     ): array {
 
         $commodityFilter = $commodityId === null ? '' : sprintf(
@@ -54,7 +56,11 @@ final class BuildingRepository extends EntityRepository implements BuildingRepos
                             SELECT fb.buildings_id FROM %s fb WHERE fb.type IN (
                                 SELECT fd.type_id FROM %s fd WHERE fd.%s = :hostId
                             )
-                        ))
+                        )
+                        AND b.id NOT IN (
+                            SELECT ccr.building_id FROM %s ccr WHERE ccr.colony_class_id = :colonyClass
+                        )
+                    )
                     %s %s
                     ORDER BY b.name',
                     Building::class,
@@ -62,6 +68,7 @@ final class BuildingRepository extends EntityRepository implements BuildingRepos
                     PlanetFieldTypeBuilding::class,
                     PlanetField::class,
                     $host->getPlanetFieldHostColumnIdentifier(),
+                    ColonyClassRestriction::class,
                     $commodityFilter,
                     $fieldTypeFilter
                 )
@@ -73,7 +80,8 @@ final class BuildingRepository extends EntityRepository implements BuildingRepos
                 'viewState' => 1,
                 'buildMenu' => $buildMenu,
                 'userId' => $userId,
-                'hostId' => $host->getId()
+                'hostId' => $host->getId(),
+                'colonyClass' => $colonyClass
             ])
             ->getResult();
     }

@@ -21,7 +21,8 @@ final class BuildmenuProvider implements PlanetFieldHostComponentInterface
         $entity,
         GameControllerInterface $game
     ): void {
-
+        $colonyClass = $entity instanceof ColonyInterface ? $entity->getColonyClass() : null;
+        $colonyClassId = $colonyClass !== null ? $colonyClass->getId() : null;
         $fieldType = $this->getFieldType();
         if ($fieldType !== null) {
             $game->addExecuteJS(sprintf('fieldType = %d;', $fieldType), GameEnum::JS_EXECUTION_AJAX_UPDATE);
@@ -38,7 +39,8 @@ final class BuildmenuProvider implements PlanetFieldHostComponentInterface
                 $id,
                 0,
                 request::has('cid') ? request::getIntFatal('cid') : null,
-                $fieldType
+                $fieldType,
+                $colonyClassId
             );
         }
 
