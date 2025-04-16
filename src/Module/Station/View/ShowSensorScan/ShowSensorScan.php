@@ -18,6 +18,7 @@ use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
+use Stu\Component\Map\EncodedMapInterface;
 
 final class ShowSensorScan implements ViewControllerInterface
 {
@@ -39,6 +40,7 @@ final class ShowSensorScan implements ViewControllerInterface
         private StarSystemMapRepositoryInterface $starSystemMapRepository,
         private FlightSignatureRepositoryInterface $flightSignatureRepository,
         private NbsUtilityInterface $nbsUtility,
+        private EncodedMapInterface $encodedMap,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
@@ -114,6 +116,18 @@ final class ShowSensorScan implements ViewControllerInterface
         if ($mapField === null) {
             return;
         }
+
+        if ($station->getLayer()) {
+            $encodedMapPath = $this->encodedMap->getEncodedMapPath(
+                $mapField->getFieldType()->getId(),
+                $station->getLayer()
+            );
+
+            $game->setTemplateVar('MAPFIELDPATH', $encodedMapPath);
+        } else {
+            $game->setTemplateVar('MAPFIELDPATH', "1.png");
+        }
+
 
         $game->setPageTitle(sprintf(_('Sensor Scan %d|%d'), $cx, $cy));
         $game->setTemplateFile('html/station/sensorScan.twig');
