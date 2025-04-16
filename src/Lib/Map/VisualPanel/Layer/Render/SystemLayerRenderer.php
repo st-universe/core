@@ -28,7 +28,7 @@ final class SystemLayerRenderer implements LayerRendererInterface
     private function getBackgroundImage(MapData $data, PanelAttributesInterface $panel): string
     {
         return sprintf(
-            '<img src="/assets/map/starmap/%s.png"
+            '<img src="/assets/map/starmap/%s.png" class="visualPanelLayer"
                         style="z-index: %d; %s opacity:1;" />',
             $this->getSystemBackgroundId($data),
             PanelLayerEnum::BACKGROUND->value,
