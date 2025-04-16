@@ -36,4 +36,9 @@ interface TerraformingInterface
      * @return Collection<int, TerraformingCostInterface>
      */
     public function getCosts(): Collection;
+
+    /**
+     * @return Collection<int, ColonyClassRestrictionInterface>
+     */
+    public function getRestrictions(): Collection;
 }

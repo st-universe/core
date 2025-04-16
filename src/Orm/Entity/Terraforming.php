@@ -52,9 +52,17 @@ class Terraforming implements TerraformingInterface
     #[OneToMany(targetEntity: 'TerraformingCost', mappedBy: 'terraforming')]
     private Collection $costs;
 
+    /**
+     * @var ArrayCollection<int, ColonyClassRestrictionInterface>
+     */
+    #[OneToMany(mappedBy: 'terraforming', targetEntity: ColonyClassRestriction::class)]
+    private Collection $restrictions;
+
+
     public function __construct()
     {
         $this->costs = new ArrayCollection();
+        $this->restrictions = new ArrayCollection();
     }
 
     #[Override]
@@ -150,5 +158,13 @@ class Terraforming implements TerraformingInterface
     public function getCosts(): Collection
     {
         return $this->costs;
+    }
+
+    /**
+     * @return Collection<int, ColonyClassRestrictionInterface>
+     */
+    public function getRestrictions(): Collection
+    {
+        return $this->restrictions;
     }
 }

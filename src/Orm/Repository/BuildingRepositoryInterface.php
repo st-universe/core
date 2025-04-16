@@ -24,7 +24,8 @@ interface BuildingRepositoryInterface extends ObjectRepository
         int $buildMenu,
         int $offset,
         ?int $commodityId = null,
-        ?int $fieldType = null
+        ?int $fieldType = null,
+        ?int $colonyClass = null
     ): array;
 
     /** @return array<BuildingInterface> */

@@ -68,9 +68,17 @@ class ColonyClass implements ColonyClassInterface
     #[OneToMany(targetEntity: 'ColonyClassDeposit', mappedBy: 'colonyClass', indexBy: 'commodity_id')]
     private Collection $colonyClassDeposits;
 
+    /**
+     * @var ArrayCollection<int, ColonyClassRestrictionInterface>
+     */
+    #[OneToMany(mappedBy: 'colonyClass', targetEntity: ColonyClassRestriction::class)]
+    private Collection $restrictions;
+
+
     public function __construct()
     {
         $this->colonyClassDeposits = new ArrayCollection();
+        $this->restrictions = new ArrayCollection();
     }
 
     #[Override]
@@ -225,5 +233,11 @@ class ColonyClass implements ColonyClassInterface
         $this->max_rot = $rotation;
 
         return $this;
+    }
+
+    #[Override]
+    public function getRestrictions(): Collection
+    {
+        return $this->restrictions;
     }
 }

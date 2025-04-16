@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250304213824 extends AbstractMigration
+final class Version20250416113051 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -141,6 +141,10 @@ final class Version20250304213824 extends AbstractMigration
         $this->addSql('CREATE TABLE stu_colony_class_deposit (colony_class_id INTEGER NOT NULL, commodity_id INTEGER NOT NULL, min_amount INTEGER NOT NULL, max_amount INTEGER NOT NULL, PRIMARY KEY(colony_class_id, commodity_id), CONSTRAINT FK_A843E75CBA61CECC FOREIGN KEY (colony_class_id) REFERENCES stu_colonies_classes (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_A843E75CB4ACC212 FOREIGN KEY (commodity_id) REFERENCES stu_commodity (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_A843E75CBA61CECC ON stu_colony_class_deposit (colony_class_id)');
         $this->addSql('CREATE INDEX IDX_A843E75CB4ACC212 ON stu_colony_class_deposit (commodity_id)');
+        $this->addSql('CREATE TABLE stu_colony_class_restriction (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, colony_class_id INTEGER NOT NULL, terraforming_id INTEGER DEFAULT NULL, building_id INTEGER DEFAULT NULL, CONSTRAINT FK_CEF73D7ABA61CECC FOREIGN KEY (colony_class_id) REFERENCES stu_colonies_classes (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_CEF73D7ABD31079C FOREIGN KEY (terraforming_id) REFERENCES stu_terraforming (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_CEF73D7A4D2A7E12 FOREIGN KEY (building_id) REFERENCES stu_buildings (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE INDEX IDX_CEF73D7ABA61CECC ON stu_colony_class_restriction (colony_class_id)');
+        $this->addSql('CREATE INDEX IDX_CEF73D7ABD31079C ON stu_colony_class_restriction (terraforming_id)');
+        $this->addSql('CREATE INDEX IDX_CEF73D7A4D2A7E12 ON stu_colony_class_restriction (building_id)');
         $this->addSql('CREATE TABLE stu_colony_deposit_mining (user_id INTEGER NOT NULL, colony_id INTEGER NOT NULL, commodity_id INTEGER NOT NULL, amount_left INTEGER NOT NULL, PRIMARY KEY(user_id, colony_id, commodity_id), CONSTRAINT FK_BD7DF1EAA76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_BD7DF1EA96ADBADE FOREIGN KEY (colony_id) REFERENCES stu_colonies (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_BD7DF1EAB4ACC212 FOREIGN KEY (commodity_id) REFERENCES stu_commodity (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_BD7DF1EAA76ED395 ON stu_colony_deposit_mining (user_id)');
         $this->addSql('CREATE INDEX IDX_BD7DF1EA96ADBADE ON stu_colony_deposit_mining (colony_id)');
@@ -592,6 +596,7 @@ final class Version20250304213824 extends AbstractMigration
         $this->addSql('DROP TABLE stu_colonies_shiprepair');
         $this->addSql('DROP TABLE stu_colonies_terraforming');
         $this->addSql('DROP TABLE stu_colony_class_deposit');
+        $this->addSql('DROP TABLE stu_colony_class_restriction');
         $this->addSql('DROP TABLE stu_colony_deposit_mining');
         $this->addSql('DROP TABLE stu_colony_fieldtype');
         $this->addSql('DROP TABLE stu_colony_sandbox');

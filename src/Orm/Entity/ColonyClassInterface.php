@@ -57,4 +57,9 @@ interface ColonyClassInterface
     public function getMaxRotation(): int;
 
     public function setMaxRotation(int $rotation): ColonyClassInterface;
+
+    /**
+     * @return Collection<int, ColonyClassRestrictionInterface>
+     */
+    public function getRestrictions(): Collection;
 }

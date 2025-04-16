@@ -103,4 +103,9 @@ interface BuildingInterface
     public function isRemovable(): bool;
 
     public function getShieldCapacity(): ?int;
+
+    /**
+     * @return Collection<int, ColonyClassRestrictionInterface>
+     */
+    public function getRestrictions(): Collection;
 }

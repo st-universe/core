@@ -16,5 +16,5 @@ interface TerraformingRepositoryInterface extends ObjectRepository
     /**
      * @return array<TerraformingInterface>
      */
-    public function getBySourceFieldTypeAndUser(int $sourceFieldTypeId, int $userId): array;
+    public function getBySourceFieldTypeAndUser(int $sourceFieldTypeId, int $userId, int $colonyClassId): array;
 }

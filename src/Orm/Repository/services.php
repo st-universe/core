@@ -34,6 +34,7 @@ use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonyClass;
 use Stu\Orm\Entity\ColonyClassDeposit;
 use Stu\Orm\Entity\ColonyClassResearch;
+use Stu\Orm\Entity\ColonyClassRestriction;
 use Stu\Orm\Entity\ColonyDepositMining;
 use Stu\Orm\Entity\ColonySandbox;
 use Stu\Orm\Entity\ColonyScan;
@@ -191,6 +192,7 @@ return [
     ConstructionProgressModuleRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(ConstructionProgressModule::class),
     ContactRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(Contact::class),
     ColonyClassDepositRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(ColonyClassDeposit::class),
+    ColonyClassRestrictionRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(ColonyClassRestriction::class),
     ColonyDepositMiningRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(ColonyDepositMining::class),
     ColonyShipRepairRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(ColonyShipRepair::class),
     ColonyShipQueueRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(ColonyShipQueue::class),
