@@ -32,7 +32,8 @@
                     </a>
                     <a href="javascript:void(0);"
                         onclick="showTransfer({{ COLONY.getId }}, 'colony', {{ stationId }}, '{{ station.getTransferEntityType.value }}', 1, 1);"
-                        onmouseover="cp('beamtostation','buttons/b_up2')" onmouseout="cp('beamtostation','buttons/b_up1')">
+                        onmouseover="cp('beamtostation','buttons/b_up2')"
+                        onmouseout="cp('beamtostation','buttons/b_up1')">
                         <img src="/assets/buttons/b_up1.png" name="beamtostation" title="Zu Station beamen" />
                     </a>
                 </div>
@@ -170,7 +171,7 @@
     <div class="box">
         <div class="box_title">Schilde + Orbitalverteidigung</div>
         <div class="box_body">
-            <table class="tcal">
+            <table class="tcal" style="width: 100%; table-layout: fixed;">
                 {% if SHIELDING_MANAGER.hasShielding %}
                 {% set ShieldoverlibText = "<table class='tcal' style='width:250px'>
                     <tr>
@@ -186,58 +187,77 @@
                     </tr>
                 </table>" %}
                 <tr>
-                    <td>Schildstärke: <input type="text" size="4" name="load" id="loadshield_value"
-                            onkeydown="event.key == 'Enter' &&  $('loadshield_button').click()" />
-                        <input type="submit" class="button" value="laden" name="B_LOAD_SHIELDS"
-                            id="loadshield_button" />
-                        <input type="button" class="button" value="max"
-                            onclick="$('loadshield_value').value = '{{ SHIELDING_MANAGER.getMaxShielding }}'; $('loadshield_button').click()" />
+                    <td
+                        style="width: 40%; white-space: normal; hyphens: auto; overflow-wrap: break-word; word-break: normal;">
+                        Schildstärke:</td>
+                    <td style="width: 60%;">
+                        <div style="display: flex; flex-wrap: wrap; gap: 5px; align-items: center; max-width: 100%;">
+                            <input type="text" size="4" name="load" id="loadshield_value"
+                                onkeydown="event.key == 'Enter' &&  $('loadshield_button').click()" />
+                            <input type="submit" class="button" value="laden" name="B_LOAD_SHIELDS"
+                                id="loadshield_button" />
+                            <input type="button" class="button" value="max"
+                                onclick="$('loadshield_value').value = '{{ SHIELDING_MANAGER.getMaxShielding }}'; $('loadshield_button').click()" />
+                        </div>
                     </td>
-                    <td>
-                        {% if SHIELDING_MANAGER.isShieldingEnabled %}
-                        <a href="?B_DEACTIVATE_SHIELDS=1&id={{ COLONY.getId }}&sstr={{ SESSIONSTRING }}"
-                            onmouseover="cp('shields','buttons/shldac2')" onmouseout="cp('shields','buttons/shldac1')">
-                            <img src="/assets/buttons/shldac1.png" name="shields" /> Deaktivieren
-                        </a>
-                        {% else %}
-                        <a href="?B_ACTIVATE_SHIELDS=1&id={{ COLONY.getId }}&sstr={{ SESSIONSTRING }}"
-                            onmouseover="cp('shields','buttons/shldac1')" onmouseout="cp('shields','buttons/shldac2')">
-                            <img src="/assets/buttons/shldac2.png" name="shields" /> Aktivieren
-                        </a>
-                        {% endif %}
-                        <a href="https://wiki.stuniverse.de/index.php?title=Schildgenerator" target="_blank"
-                            onmouseover="return overlib('{{ ShieldoverlibText|e('js') }}', CAPTION, '',  CLOSETEXT, 'X', CLOSECOLOR, '#8897cf', TEXTCOLOR, '#000000', CELLPAD, 4);"
-                            onmouseout="return nd();"><img src="/assets/buttons/info2.png" style="height:16px;" /></a>
-                        </th>
-                </tr>
-                </td>
                 </tr>
                 <tr>
-                    <td>Schildfrequenz in MHz (max. 6 Stellen):</td>
+                    <td style="white-space: normal; hyphens: auto; overflow-wrap: break-word; word-break: normal;">
+                        Schildstatus:</td>
                     <td>
-                        <input type="text" size="5" name="frequency" value="{{ COLONY.getShieldFrequency }}"
-                            onkeydown="event.key == 'Enter' &&  $('changeFrequencyButton').click()" />
-                        <input type="submit" class="button" name="B_CHANGE_FREQUENCY" value="ändern"
-                            id="changeFrequencyButton" />
+                        <div style="display: flex; flex-wrap: wrap; gap: 5px; align-items: center; max-width: 100%;">
+                            {% if SHIELDING_MANAGER.isShieldingEnabled %}
+                            <a href="?B_DEACTIVATE_SHIELDS=1&id={{ COLONY.getId }}&sstr={{ SESSIONSTRING }}"
+                                onmouseover="cp('shields','buttons/shldac2')"
+                                onmouseout="cp('shields','buttons/shldac1')">
+                                <img src="/assets/buttons/shldac1.png" name="shields" /> Deaktivieren
+                            </a>
+                            {% else %}
+                            <a href="?B_ACTIVATE_SHIELDS=1&id={{ COLONY.getId }}&sstr={{ SESSIONSTRING }}"
+                                onmouseover="cp('shields','buttons/shldac1')"
+                                onmouseout="cp('shields','buttons/shldac2')">
+                                <img src="/assets/buttons/shldac2.png" name="shields" /> Aktivieren
+                            </a>
+                            {% endif %}
+                            <a href="https://wiki.stuniverse.de/index.php?title=Schildgenerator" target="_blank"
+                                onmouseover="return overlib('{{ ShieldoverlibText|e('js') }}', CAPTION, '',  CLOSETEXT, 'X', CLOSECOLOR, '#8897cf', TEXTCOLOR, '#000000', CELLPAD, 4);"
+                                onmouseout="return nd();"><img src="/assets/buttons/info2.png"
+                                    style="height:16px;" /></a>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="white-space: normal; hyphens: auto; overflow-wrap: break-word; word-break: normal;">
+                        Schildfrequenz in MHz (max. 6 Stellen):</td>
+                    <td>
+                        <div style="display: flex; flex-wrap: wrap; gap: 5px; align-items: center; max-width: 100%;">
+                            <input type="text" size="5" name="frequency" value="{{ COLONY.getShieldFrequency }}"
+                                onkeydown="event.key == 'Enter' &&  $('changeFrequencyButton').click()" />
+                            <input type="submit" class="button" name="B_CHANGE_FREQUENCY" value="ändern"
+                                id="changeFrequencyButton" />
+                        </div>
                     </td>
                 </tr>
                 {% endif %}
                 {% if BUILDABLE_TORPEDO_TYPES %}
                 <tr>
-                    <td>Torpedo-Sorte für Orbitalverteidigung</td>
+                    <td style="white-space: normal; hyphens: auto; overflow-wrap: break-word; word-break: normal;">
+                        Torpedo-Sorte für Orbitalverteidigung</td>
                     <td>
-                        <select name="torpid">
-                            <option value="0">----------------------</option>
-                            {% for data in BUILDABLE_TORPEDO_TYPES %}
-                            {% if COLONY.getTorpedo and (COLONY.getTorpedo.getId == data.getId) %}
-                            <option value="{{ data.getId }}" selected="1">{{ data.getName }}</option>
-                            {% else %}
-                            <option value="{{ data.getId }}">{{ data.getName }}</option>
-                            {% endif %}
-                            {% endfor %}
-                        </select>
-                        <input type="submit" class="button" value="ändern" name="B_CHANGE_TORPS"
-                            id="changetorps_button" />
+                        <div style="display: flex; flex-wrap: wrap; gap: 5px; align-items: center; max-width: 100%;">
+                            <select name="torpid" style="max-width: 100%;">
+                                <option value="0">----------------------</option>
+                                {% for data in BUILDABLE_TORPEDO_TYPES %}
+                                {% if COLONY.getTorpedo and (COLONY.getTorpedo.getId == data.getId) %}
+                                <option value="{{ data.getId }}" selected="1">{{ data.getName }}</option>
+                                {% else %}
+                                <option value="{{ data.getId }}">{{ data.getName }}</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                            <input type="submit" class="button" value="ändern" name="B_CHANGE_TORPS"
+                                id="changetorps_button" />
+                        </div>
                     </td>
                 </tr>
                 {% endif %}
