@@ -57,9 +57,9 @@ final class BuildingRepository extends EntityRepository implements BuildingRepos
                                 SELECT fd.type_id FROM %s fd WHERE fd.%s = :hostId
                             )
                         )
-                        AND b.id NOT IN (
+                        AND NOT EXISTS (
                             SELECT ccr.building_id FROM %s ccr WHERE ccr.colony_class_id = :colonyClass
-                        )
+                            AND ccr.building_id = b.id)
                     )
                     %s %s
                     ORDER BY b.name',
