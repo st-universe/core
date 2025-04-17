@@ -75,9 +75,8 @@
         <span class="activeshield">{{ ship.getShield }}/{{ ship.getMaxShield }}</span>
         {% else %}
         <span>{{ ship.getShield }}/{{ ship.getMaxShield }}</span>
-        {% endif %}
-        (+{{ wrapper.getShieldRegenerationRate }})
-    </td>
+        {% if ship.getShield < ship.getMaxShield %} (+{{ wrapper.getShieldRegenerationRate }}) {% endif %} {% endif %}
+            </td>
     <td id="shipenergy">
         <table>
             {% set reactor = wrapper.getReactorWrapper %}

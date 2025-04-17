@@ -100,10 +100,9 @@
 				<span class="activeshield">{{ SPACECRAFT.getShield }}/{{ SPACECRAFT.getMaxShield }}</span>
 				{% else %}
 				<span>{{ SPACECRAFT.getShield }}/{{ SPACECRAFT.getMaxShield }}</span>
-				{% endif %}
-				(+{{ WRAPPER.getShieldRegenerationRate }})
-			</td>
-			{% if SPACECRAFT.hasWarpdrive %}
+				{% if SPACECRAFT.getShield < SPACECRAFT.getMaxShield %} (+{{ WRAPPER.getShieldRegenerationRate }}) {%
+					endif %} {% endif %} </td>
+					{% if SPACECRAFT.hasWarpdrive %}
 			<td style="text-align: center;">
 				{% set warpdrivesystem = WRAPPER.getWarpDriveSystemData %}
 				{{ warpdrivesystem.getWarpDrive }}/{{ warpdrivesystem.getMaxWarpDrive }}
