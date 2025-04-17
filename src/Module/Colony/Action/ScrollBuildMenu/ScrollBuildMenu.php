@@ -13,14 +13,13 @@ use Stu\Module\Colony\View\ShowBuildMenuPart\ShowBuildMenuPart;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
+use Stu\Orm\Entity\ColonyInterface;
 
 final class ScrollBuildMenu implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_SCROLL_BUILDMENU';
 
-    public function __construct(private PlanetFieldHostProviderInterface $planetFieldHostProvider, private BuildingRepositoryInterface $buildingRepository)
-    {
-    }
+    public function __construct(private PlanetFieldHostProviderInterface $planetFieldHostProvider, private BuildingRepositoryInterface $buildingRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -28,6 +27,8 @@ final class ScrollBuildMenu implements ActionControllerInterface
         $userId = $game->getUser()->getId();
 
         $host = $this->planetFieldHostProvider->loadHostViaRequestParameters($game->getUser(), false);
+        $colonyClass = $host instanceof ColonyInterface ? $host->getColonyClass() : null;
+        $colonyClassId = $colonyClass !== null ? $colonyClass->getId() : null;
 
         $menu = request::getIntFatal('menu');
         $offset = request::getInt('offset');
@@ -48,7 +49,8 @@ final class ScrollBuildMenu implements ActionControllerInterface
             $menu,
             $offset,
             null,
-            $fieldType
+            $fieldType,
+            $colonyClassId
         );
         if ($ret === []) {
             $offset = max(0, $offset - ColonyEnum::BUILDMENU_SCROLLOFFSET);
@@ -58,7 +60,8 @@ final class ScrollBuildMenu implements ActionControllerInterface
                 $menu,
                 $offset,
                 null,
-                $fieldType
+                $fieldType,
+                $colonyClassId
             );
         }
         $game->setTemplateVar('menu', ['buildings' => $ret, 'name' => BuildMenuEnum::getDescription($menu)]);
