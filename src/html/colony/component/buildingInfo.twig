@@ -1,10 +1,12 @@
-{% set display = 'block' %}
-{% set preview_id = 'building_preview_default' %}
-{% set building = buildingdata %}
-{% include 'html/colony/component/buildingPreview.twig' %}
-{% for buildingalt in ALTERNATIVE_BUILDINGS %}
-{% set display = 'none' %}
-{% set preview_id = 'building_preview_' ~ buildingalt.getFieldType %}
-{% set building = buildingalt.getAlternativeBuilding %}
-{% include 'html/colony/component/buildingPreview.twig' %}
-{% endfor %}
+<div id="buildingpreview">
+    {% set display = 'block' %}
+    {% set preview_id = 'building_preview_default' %}
+    {% set building = buildingdata %}
+    {% include 'html/colony/component/buildingPreview.twig' %}
+    {% for buildingalt in ALTERNATIVE_BUILDINGS %}
+    {% set display = 'none' %}
+    {% set preview_id = 'building_preview_' ~ buildingalt.getFieldType %}
+    {% set building = buildingalt.getAlternativeBuilding %}
+    {% include 'html/colony/component/buildingPreview.twig' %}
+    {% endfor %}
+</div>
