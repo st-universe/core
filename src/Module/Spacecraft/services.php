@@ -38,6 +38,7 @@ use Stu\Module\Spacecraft\Action\MoveShip\MoveShipRequestInterface;
 use Stu\Module\Spacecraft\Action\MoveShip\MoveShipRight;
 use Stu\Module\Spacecraft\Action\MoveShip\MoveShipUp;
 use Stu\Module\Spacecraft\Action\OpenAdventDoor\OpenAdventDoor;
+use Stu\Module\Spacecraft\Action\OpenEasterEgg\OpenEasterEgg;
 use Stu\Module\Spacecraft\Action\RemoveWaste\RemoveWaste;
 use Stu\Module\Spacecraft\Action\RenameCrew\RenameCrew;
 use Stu\Module\Spacecraft\Action\RenameCrew\RenameCrewRequest;
@@ -398,6 +399,7 @@ return [
         AddShipLog::ACTION_IDENTIFIER => autowire(AddShipLog::class),
         DumpForeignCrewman::ACTION_IDENTIFIER => autowire(DumpForeignCrewman::class),
         OpenAdventDoor::ACTION_IDENTIFIER => autowire(OpenAdventDoor::class),
+        OpenEasterEgg::ACTION_IDENTIFIER => autowire(OpenEasterEgg::class),
         Selfrepair::ACTION_IDENTIFIER => autowire(Selfrepair::class),
         SendBroadcast::ACTION_IDENTIFIER => autowire(SendBroadcast::class),
         SetLSSModeBorder::ACTION_IDENTIFIER => autowire(SetLSSModeBorder::class),
