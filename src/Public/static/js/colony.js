@@ -359,7 +359,11 @@ function toggleSpecialModuleDisplay(type, module_id, module_crew, amount) {
 var maxCrew;
 var baseCrew;
 var specialSlots;
+function resetCrewType() {
+	crew_type = new Hash();
+}
 function setFixValues(base_crew, max_crew, special_slots) {
+	resetCrewType();
 	baseCrew = base_crew;
 	maxCrew = max_crew;
 	specialSlots = special_slots;
