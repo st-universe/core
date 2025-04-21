@@ -171,7 +171,18 @@ function openWindow(elt, exclusive, width) {
 		}
 	}
 }
-function openWindowPosition(elt, exclusive, width, posx, posy) {
+function openWindowPosition(elt, exclusive, width, posx, posy, relative = true) {
+
+	var useX = posx;
+	var useY = posy;
+	if (relative) {
+		var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+		var scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+
+		useX = posx - scrollLeft;
+		useY = posy - scrollTop;
+	}
+
 	if (width) {
 		if (exclusive) {
 			return overlib(
@@ -179,9 +190,9 @@ function openWindowPosition(elt, exclusive, width, posx, posy) {
 				WIDTH,
 				width,
 				RELX,
-				posx,
+				useX,
 				RELY,
-				posy,
+				useY,
 				BGCOLOR,
 				"#8897cf",
 				FGCOLOR,
@@ -206,9 +217,9 @@ function openWindowPosition(elt, exclusive, width, posx, posy) {
 				WIDTH,
 				width,
 				RELX,
-				posx,
+				useX,
 				RELY,
-				posy,
+				useY,
 				BGCOLOR,
 				"#8897cf",
 				FGCOLOR,
@@ -234,9 +245,9 @@ function openWindowPosition(elt, exclusive, width, posx, posy) {
 				BGCOLOR,
 				"#8897cf",
 				RELX,
-				posx,
+				useX,
 				RELY,
-				posy,
+				useY,
 				TEXTCOLOR,
 				"#8897cf",
 				FGCOLOR,
@@ -259,9 +270,9 @@ function openWindowPosition(elt, exclusive, width, posx, posy) {
 				BGCOLOR,
 				"#8897cf",
 				RELX,
-				posx,
+				useX,
 				RELY,
-				posy,
+				useY,
 				TEXTCOLOR,
 				"#8897cf",
 				FGCOLOR,
@@ -280,7 +291,6 @@ function openWindowPosition(elt, exclusive, width, posx, posy) {
 		}
 	}
 }
-
 function ignoreUser(obj, userid) {
 	ajax_update(obj, "/pm.php?B_IGNORE_USER=1&SHOW_IGNORE=1&recid=" + userid);
 }
@@ -806,7 +816,7 @@ function openBoardSettings(obj, bid) {
 }
 function openPmWindow(fromId, toId, fromType, toType) {
 	elt = "elt";
-	openWindowPosition(elt, 1, 600, 90, 60);
+	openWindowPosition(elt, 1, 600, 90, 60, false);
 	ajax_update(
 		elt,
 		"/pm.php?SHOW_WRITE_QUICKPM=1&fromid=" +
