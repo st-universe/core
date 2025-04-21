@@ -1,12 +1,21 @@
 <table class="tcal" style="width: 40vw;">
     {% set fieldId = FIELD.getId %}
     <tr>
+        {% if IS_FIGHTER_SHIPYARD %}
+        <td class="colonymenu {{ getColonyMenuClass(CURRENT_MENU, 9) }}">
+            <a class="colmenubutton" href="javascript:void(0);"
+                onclick="switchColonySubmenu(10, null, {{ FUNC.getId }}, {{ fieldId }});">
+                <span>Schiffbau</span>
+            </a>
+        </td>
+        {% else %}
         <td class="colonymenu {{ getColonyMenuClass(CURRENT_MENU, 9) }}">
             <a class="colmenubutton" href="javascript:void(0);"
                 onclick="switchColonySubmenu(8, null, {{ FUNC.getId }}, {{ fieldId }});">
                 <span>Schiffbau</span>
             </a>
         </td>
+        {% endif %}
         <td class="colonymenu {{ getColonyMenuClass(CURRENT_MENU, 18) }}">
             <a class="colmenubutton" href="javascript:void(0);"
                 onclick="switchColonySubmenu(18, null, {{ FUNC.getId }}, {{ fieldId }});">
