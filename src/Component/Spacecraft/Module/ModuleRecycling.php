@@ -69,7 +69,7 @@ class ModuleRecycling implements ModuleRecyclingInterface
         }
 
         $maxStorage = $entity->getMaxStorage();
-
+        $recycledModules = [];
         foreach ($recycledModuleChances as [$module, $amount, $recyclingChance]) {
 
             if ($entity->getStorageSum() >= $maxStorage) {
@@ -87,7 +87,15 @@ class ModuleRecycling implements ModuleRecyclingInterface
                 $amount
             );
 
-            $information->addInformationf('Folgendes Modul konnte recycelt werden: %s, Anzahl: %d', $module->getName(), $amount);
+            $recycledModules[] = ['module' => $module, 'amount' => $amount];
+        }
+        if (count($recycledModules) > 0) {
+            $information->addInformation("\nFolgende Module konnten recycelt werden:");
+            foreach ($recycledModules as $recycled) {
+                $information->addInformationf('%s, Anzahl: %d', $recycled['module']->getName(), $recycled['amount']);
+            }
+        } else {
+            $information->addInformation("\nEs konnten keine Module recycelt werden.");
         }
     }
 }

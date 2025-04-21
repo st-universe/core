@@ -222,20 +222,29 @@ final class StationUtility implements StationUtilityInterface
         $station = $progress->getStation();
 
         // salvage modules
-        $information->addInformation("Folgende Module konnten recycelt werden:\n");
         $this->moduleRecycling->retrieveSomeModules($station, $station, $information);
 
         // salvage special modules
-        foreach ($progress->getSpecialModules() as $progressModule) {
+        $specialModules = $progress->getSpecialModules();
+        $recycledSpecialModules = [];
 
+        foreach ($specialModules as $progressModule) {
             $module = $progressModule->getModule();
-            $information->addInformationf('%s, Anzahl: 1', $module->getName());
 
             $this->storageManager->upperStorage(
                 $station,
                 $module->getCommodity(),
                 1
             );
+
+            $recycledSpecialModules[] = $module;
+        }
+
+        if (count($recycledSpecialModules) > 0) {
+            $information->addInformation("\nFolgende Spezialmodule wurden recycelt:");
+            foreach ($recycledSpecialModules as $module) {
+                $information->addInformationf('%s, Anzahl: 1', $module->getName());
+            }
         }
 
         // transform to construction
