@@ -33,9 +33,7 @@ trait CustomControllerHelperTrait
     protected function tidyString(string $string): string
     {
         return trim(
-            str_replace(
-                ['<', '>', '&gt;', '&lt;'],
-                '',
+            htmlspecialchars(
                 strip_tags($string)
             )
         );
