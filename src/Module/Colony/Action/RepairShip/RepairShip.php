@@ -138,18 +138,24 @@ final class RepairShip implements ActionControllerInterface
             $ticks = ceil($ticks * 0.5);
         }
 
-        $game->addInformationf('Das Schiff wird repariert. Fertigstellung in %d Runden', $ticks);
+        if (!$field->isActive()) {
+            $activemsg = ', nach aktivierung der Werft';
+        } else {
+            $activemsg = '';
+        }
+        $game->addInformationf('Das Schiff wird repariert. Fertigstellung in %d Runden%s', $ticks, $activemsg);
 
         $this->privateMessageSender->send(
             $userId,
             $target->getUser()->getId(),
             sprintf(
-                "Die %s wird in Sektor %s bei der Kolonie %s des Spielers %s repariert. Fertigstellung in %d Runden.",
+                "Die %s wird in Sektor %s bei der Kolonie %s des Spielers %s repariert. Fertigstellung in %d Runden%s",
                 $target->getName(),
                 $target->getSectorString(),
                 $colony->getName(),
                 $colony->getUser()->getName(),
-                $ticks
+                $ticks,
+                $activemsg
             ),
             PrivateMessageFolderTypeEnum::SPECIAL_SHIP
         );
