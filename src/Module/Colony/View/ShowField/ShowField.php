@@ -67,7 +67,6 @@ final class ShowField implements ViewControllerInterface
 
         if ($host instanceof ColonyInterface) {
             $game->setTemplateVar('COLONY', $host);
-            $game->setTemplateVar('FORM_ACTION', 'colony.php');
             $game->setTemplateVar('SHIP_BUILD_PROGRESS', $this->colonyShipQueueRepository->getByColonyAndMode($host->getId(), 1));
             $game->setTemplateVar('SHIP_RETROFIT_PROGRESS', $this->colonyShipQueueRepository->getByColonyAndMode($host->getId(), 2));
 
@@ -104,10 +103,7 @@ final class ShowField implements ViewControllerInterface
                 'TERRAFORMING_STATE',
                 $terraFormingState
             );
-        } else {
-            $game->setTemplateVar('FORM_ACTION', '/admin/index.php');
         }
-
 
         $game->setPageTitle(sprintf('Feld %d - Informationen', $field->getFieldId()));
         $game->setMacroInAjaxWindow('html/colony/component/fieldAction.twig');
