@@ -29,7 +29,7 @@ class TransferInformationFactory implements TransferInformationFactoryInterface
 
         $source = $this->transferEntityLoader->loadEntity($sourceId, $sourceType, $checkForEntityLock, $user);
         $target = $this->transferEntityLoader->loadEntity($targetId, $targetType, $checkForEntityLock);
-        $isFriend = $this->playerRelationDeterminator->isFriend($source->getUser(), $target->getUser());
+        $isFriend = $this->playerRelationDeterminator->isFriend($target->getUser(), $source->getUser());
 
         return new TransferInformation(
             $currentType,

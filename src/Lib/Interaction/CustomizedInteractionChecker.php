@@ -61,7 +61,7 @@ class CustomizedInteractionChecker implements CustomizedInteractionCheckerInterf
             return false;
         }
 
-        $isFriend = $this->playerRelationDeterminator->isFriend($this->source->getUser(), $this->target->getUser());
+        $isFriend = $this->playerRelationDeterminator->isFriend($this->target->getUser(), $this->source->getUser());
         $refused = $this->target->canBeAccessedFrom(
             $this->source,
             $isFriend,
