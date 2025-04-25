@@ -13,7 +13,7 @@
 {{ navigation_item('Datenbank', 'database', 'data') }}
 {{ navigation_item('Ereignisse', 'history', 'history') }}
 {{ navigation_item('Karte', 'starmap', 'map') }}
-{% if ISNPC or ISADMIN %}
+{% if IS_NPC or IS_ADMIN %}
 {% set linkid = 'nav_item_ticks' %}
 <div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/npc'; }"
     onmouseover="cp('{{ linkid }}','navigation/menu_ticks1', 'png')"
@@ -24,7 +24,7 @@
     </a>
 </div>
 {% endif %}
-{% if ISADMIN %}
+{% if IS_ADMIN %}
 {% set linkid = 'nav_item_ticks' %}
 <div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/admin'; }"
     onmouseover="cp('{{ linkid }}','navigation/menu_ticks1', 'png')"
