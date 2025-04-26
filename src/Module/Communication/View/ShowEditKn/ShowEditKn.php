@@ -37,14 +37,14 @@ final class ShowEditKn implements ViewControllerInterface
             throw new AccessViolation(sprintf(_('UserId %d tried to edit non-existing kn post'), $game->getUser()->getId()));
         }
 
-        if ($post->getUserId() !== $game->getUser()->getId()) {
+        if ($post->getUserId() !== $game->getUser()->getId() && !$game->isAdmin()) {
             throw new AccessViolation(sprintf(_('UserId %d tried to edit foreign kn post'), $game->getUser()->getId()));
         }
 
         $game->setViewTemplate('html/communication/editKn.twig');
         $game->appendNavigationPart('comm.php', _('KommNet'));
 
-        if ($post->getDate() < $this->stuTime->time() - EditKnPost::EDIT_TIME) {
+        if ($post->getDate() < $this->stuTime->time() - EditKnPost::EDIT_TIME && !$game->isAdmin()) {
             $game->addInformation(sprintf(_('Die Zeit zum Editieren ist abgelaufen (%d Sekunden)'), EditKnPost::EDIT_TIME));
         } else {
             $game->appendNavigationPart(

@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250416113051 extends AbstractMigration
+final class Version20250426100234 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -227,7 +227,7 @@ final class Version20250416113051 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_B58C18ECA76ED395 ON stu_ignorelist (user_id)');
         $this->addSql('CREATE INDEX IDX_B58C18EC6804FB49 ON stu_ignorelist (recipient)');
         $this->addSql('CREATE INDEX user_recipient_idx ON stu_ignorelist (user_id, recipient)');
-        $this->addSql('CREATE TABLE stu_kn (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, titel VARCHAR(255) DEFAULT NULL, text CLOB NOT NULL, date INTEGER NOT NULL, username VARCHAR(255) NOT NULL, user_id INTEGER DEFAULT NULL, del_user_id INTEGER DEFAULT NULL, lastedit INTEGER NOT NULL, plot_id INTEGER DEFAULT NULL, ratings CLOB NOT NULL, CONSTRAINT FK_27245FD3680D0B01 FOREIGN KEY (plot_id) REFERENCES stu_plots (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_27245FD3A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE stu_kn (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, titel VARCHAR(255) DEFAULT NULL, text CLOB NOT NULL, date INTEGER NOT NULL, username VARCHAR(255) NOT NULL, user_id INTEGER DEFAULT NULL, del_user_id INTEGER DEFAULT NULL, lastedit INTEGER NOT NULL, plot_id INTEGER DEFAULT NULL, deleted INTEGER DEFAULT NULL, ratings CLOB NOT NULL, CONSTRAINT FK_27245FD3680D0B01 FOREIGN KEY (plot_id) REFERENCES stu_plots (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_27245FD3A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX plot_idx ON stu_kn (plot_id)');
         $this->addSql('CREATE INDEX kn_post_date_idx ON stu_kn (date)');
         $this->addSql('CREATE INDEX kn_post_user_idx ON stu_kn (user_id)');

@@ -26,7 +26,7 @@ final class ShowSingleKn implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
-        $post = $this->knPostRepository->find($this->showSingleKnRequest->getKnId());
+        $post = $this->knPostRepository->findActiveById($this->showSingleKnRequest->getKnId());
 
         $game->setPageTitle(_('Kommunikationsnetzwerk'));
         $game->setViewTemplate(ModuleEnum::COMMUNICATION->getTemplate());
