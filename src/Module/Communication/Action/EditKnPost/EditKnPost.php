@@ -35,10 +35,10 @@ final class EditKnPost implements ActionControllerInterface
 
         /** @var KnPostInterface $post */
         $post = $this->knPostRepository->find($this->editKnPostRequest->getKnId());
-        if ($post === null || $post->getUserId() !== $userId) {
+        if ($post === null || ($post->getUserId() !== $userId && !$game->isAdmin())) {
             throw new AccessViolation();
         }
-        if ($post->getDate() < time() - self::EDIT_TIME) {
+        if ($post->getDate() < time() - self::EDIT_TIME && !$game->isAdmin()) {
             $game->addInformation(_('Dieser Beitrag kann nicht editiert werden'));
             return;
         }
@@ -164,6 +164,16 @@ final class EditKnPost implements ActionControllerInterface
         $post->setEditDate(time());
 
         $this->knPostRepository->save($post);
+
+        if ($game->isAdmin() && $game->getUser() != $post->getUser()) {
+            $this->privateMessageSender->send(
+                UserEnum::USER_NOONE,
+                $post->getUser()->getId(),
+                sprintf(_('Der Beitrag "%s" mit der ID %d wurde von Admin %s bearbeitet'), $post->getTitle(), $post->getId(), $game->getUser()->getName()),
+                PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,
+                $post
+            );
+        }
 
         $game->addInformation(_('Der Beitrag wurde editiert'));
     }

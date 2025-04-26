@@ -97,6 +97,19 @@
                             <img src="/assets/buttons/x1.png" title="Beitrag löschen" name="x{{ postId }}" />
                         </a>
                         {% endif %}
+                        {% if IS_ADMIN %}
+                        <a href="?EDIT_KN=1&knid={{ postId }}"
+                            onmouseover="cp('edit{{ postId }}','buttons/knedit1', 'png')"
+                            onmouseout="cp('edit{{ postId }}','buttons/knedit2', 'png')">
+                            <img src="/assets/buttons/knedit2.png" title="Admin Beitrag editieren"
+                                name="edit{{ postId }}" />
+                        </a>
+                        <a href="javascript:void(0);" onclick="showAdminDelete({{ postId }});"
+                            onmouseover="cp('x{{ postId }}','buttons/x1', 'png')"
+                            onmouseout="cp('x{{ postId }}','buttons/x2', 'png')">
+                            <img src="/assets/buttons/x2.png" title="Admin Beitrag löschen" name="x{{ postId }}" />
+                        </a>
+                        {% endif %}
                         {% for knCharacter in post.getCharacters %}
                         {% set character = knCharacter.getUserCharacter %}
                         <div class="character-name" style="cursor: pointer;"

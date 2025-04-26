@@ -33,7 +33,8 @@ final class DeleteKnPost implements ActionControllerInterface
             return;
         }
 
-        $this->knPostRepository->delete($post);
+        $post->setDeleted(time());
+        $this->knPostRepository->save($post);
 
         $game->addInformation(_('Der Beitrag wurde gelöscht'));
     }
