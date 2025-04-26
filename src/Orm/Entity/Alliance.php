@@ -57,6 +57,13 @@ class Alliance implements AllianceInterface
     private ?FactionInterface $faction = null;
 
     /**
+     * @var ArrayCollection<int, AllianceSettingsInterface>
+     */
+    #[OneToMany(targetEntity: 'AllianceSettings', mappedBy: 'alliance')]
+    private Collection $settings;
+
+
+    /**
      * @var ArrayCollection<int, UserInterface>
      */
     #[OneToMany(targetEntity: 'User', mappedBy: 'alliance')]
@@ -73,6 +80,7 @@ class Alliance implements AllianceInterface
     {
         $this->members = new ArrayCollection();
         $this->jobs = new ArrayCollection();
+        $this->settings = new ArrayCollection();
     }
 
     #[Override]
@@ -252,5 +260,11 @@ class Alliance implements AllianceInterface
     {
         $text = $this->getDescription();
         return strpos($text, '[translate]') !== false && strpos($text, '[/translate]') !== false;
+    }
+
+    #[Override]
+    public function getSettings(): Collection
+    {
+        return $this->settings;
     }
 }

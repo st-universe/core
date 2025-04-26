@@ -50,20 +50,20 @@
       <div class="allianceMinister alliancePresident">
         {{ userAvatar(founderUser) }}
         <div class="namePresident">{{ founderUser.getName|bbcode }}</div>
-        <div class="jobDescription">Präsident</div>
+        <div class="jobDescription">{{ FOUNDER_DESCRIPTION }}</div>
       </div>
       {% if successor %}
       <div class="allianceMinister">
         {{ userAvatar(successor.getUser) }}
         <div class="name">{{ successor.getUser.getName|bbcode }}</div>
-        <div class="jobDescription">Vize-Präsident</div>
+        <div class="jobDescription">{{ SUCCESSOR_DESCRIPTION }}</div>
       </div>
       {% endif %}
       {% if diplomatic %}
       <div class="allianceMinister">
         {{ userAvatar(diplomatic.getUser) }}
         <div class="name">{{ diplomatic.getUser.getName|bbcode }}</div>
-        <div class="jobDescription">Außenminister</div>
+        <div class="jobDescription">{{ DIPLOMATIC_DESCRIPTION }}</div>
       </div>
       {% endif %}
     </div>

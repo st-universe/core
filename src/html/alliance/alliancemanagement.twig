@@ -57,13 +57,13 @@
             <div id="promote{{ data.getId }}"
                 style="border-top: 1px solid #262323; margin-top: 10px; padding-top: 10px; display: none;">
                 <a href="alliance.php?B_PROMOTE_USER=1&type={{ ALLIANCE_JOB_DIPLOMATIC }}&uid={{ data.getId }}&sstr={{ SESSIONSTRING }}"
-                    class="linkbutton">Außenminister</a><br /><br />
+                    class="linkbutton">{{ DIPLOMATIC_DESCRIPTION }}</a><br /><br />
                 <a href="alliance.php?B_PROMOTE_USER=1&type={{ ALLIANCE_JOB_SUCCESSOR }}&uid={{ data.getId }}&sstr={{ SESSIONSTRING }}"
-                    class="linkbutton">Vize-Präsident</a>
+                    class="linkbutton">{{ SUCCESSOR_DESCRIPTION }}</a>
                 {% if USER_IS_FOUNDER %}
                 <br /><br />
                 <a href="alliance.php?B_PROMOTE_USER=1&type={{ ALLIANCE_JOB_FOUNDER }}&uid={{ data.getId }}&sstr={{ SESSIONSTRING }}"
-                    class="linkbutton">Präsident</a>
+                    class="linkbutton">{{ FOUNDER_DESCRIPTION }}</a>
                 {% endif %}
             </div>
             {% if data.canBeDemoted %}

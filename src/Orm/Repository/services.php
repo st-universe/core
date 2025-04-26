@@ -13,6 +13,7 @@ use Stu\Orm\Entity\AllianceBoardPost;
 use Stu\Orm\Entity\AllianceBoardTopic;
 use Stu\Orm\Entity\AllianceJob;
 use Stu\Orm\Entity\AllianceRelation;
+use Stu\Orm\Entity\AllianceSettings;
 use Stu\Orm\Entity\Anomaly;
 use Stu\Orm\Entity\AnomalyType;
 use Stu\Orm\Entity\AstronomicalEntry;
@@ -169,6 +170,7 @@ return [
     AllianceBoardTopicRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(AllianceBoardTopic::class),
     AllianceJobRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(AllianceJob::class),
     AllianceRelationRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(AllianceRelation::class),
+    AllianceSettingsRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(AllianceSettings::class),
     AnomalyTypeRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(AnomalyType::class),
     AnomalyRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(Anomaly::class),
     AwardRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(Award::class),

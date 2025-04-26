@@ -10,12 +10,14 @@ use Stu\Component\Alliance\AllianceDescriptionRendererInterface;
 use Stu\Component\Alliance\AllianceUserApplicationCheckerInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\ModuleEnum;
+use Stu\Component\Alliance\AllianceSettingsEnum;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceListItem;
 use Stu\Module\Alliance\Lib\AllianceMemberWrapper;
 use Stu\Module\Alliance\Lib\AllianceUiFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\AllianceInterface;
+use Stu\Orm\Entity\AllianceSettingsInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
@@ -57,6 +59,7 @@ final class AllianceProvider implements ViewComponentProviderInterface
         $result = $this->allianceRelationRepository->getActiveByAlliance($allianceId);
         $userIsFounder = $alliance->getFounder()->getUser() === $user;
         $isInAlliance = $alliance === $game->getUser()->getAlliance();
+        $settings = $alliance->getSettings();
 
 
         $game->appendNavigationPart(sprintf(
@@ -102,6 +105,40 @@ final class AllianceProvider implements ViewComponentProviderInterface
             $alliance->getMembers()->map(
                 fn(UserInterface $user): AllianceMemberWrapper => $this->allianceUiFactory->createAllianceMemberWrapper($user, $alliance)
             )
+        );
+
+        $founderDescription = $alliance->getSettings()->filter(
+            function (AllianceSettingsInterface $setting) {
+                return $setting->getSetting() === AllianceSettingsEnum::ALLIANCE_FOUNDER_DESCRIPTION;
+            }
+        )->first();
+
+        $successorDescription = $alliance->getSettings()->filter(
+            function (AllianceSettingsInterface $setting) {
+                return $setting->getSetting() === AllianceSettingsEnum::ALLIANCE_SUCCESSOR_DESCRIPTION;
+            }
+        )->first();
+
+        $diplomatDescription = $alliance->getSettings()->filter(
+            function (AllianceSettingsInterface $setting) {
+                return $setting->getSetting() === AllianceSettingsEnum::ALLIANCE_DIPLOMATIC_DESCRIPTION;
+            }
+        )->first();
+
+
+        $game->setTemplateVar(
+            'FOUNDER_DESCRIPTION',
+            $founderDescription !== false ? $founderDescription->getValue() : 'Präsident'
+        );
+
+        $game->setTemplateVar(
+            'SUCCESSOR_DESCRIPTION',
+            $successorDescription !== false ? $successorDescription->getValue() : 'Vize-Präsident'
+        );
+
+        $game->setTemplateVar(
+            'DIPLOMATIC_DESCRIPTION',
+            $diplomatDescription !== false ? $diplomatDescription->getValue() : 'Außenminister'
         );
     }
 
