@@ -137,6 +137,13 @@ final class BuildOnField implements ActionControllerInterface
             }
 
             $this->buildingAction->remove($field, $game);
+
+            $game->addExecuteJS('refreshHost();');
+
+            $this->componentRegistration
+                ->addComponentUpdate(ColonyComponentEnum::SHIELDING, $host)
+                ->addComponentUpdate(ColonyComponentEnum::EPS_BAR, $host)
+                ->addComponentUpdate(ColonyComponentEnum::STORAGE, $host);
         }
 
         if ($host instanceof ColonyInterface && !$this->doColonyChecksAndConsume($field, $building, $host, $game)) {
