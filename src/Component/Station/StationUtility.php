@@ -6,11 +6,11 @@ namespace Stu\Component\Station;
 
 use Override;
 use RuntimeException;
-use Stu\Component\Spacecraft\Module\ModuleRecyclingInterface;
 use Stu\Component\Spacecraft\SpacecraftRumpEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
+use Stu\Module\Control\StuRandom;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Action\BuildConstruction\BuildConstruction;
@@ -43,11 +43,12 @@ final class StationUtility implements StationUtilityInterface
         private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository,
         private TradePostRepositoryInterface $tradePostRepository,
         private TradeLicenseRepositoryInterface $tradeLicenseRepository,
-        private ModuleRecyclingInterface $moduleRecycling,
+        private StuRandom $stuRandom,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
+
 
     public static function canShipBuildConstruction(ShipInterface $ship): bool
     {
@@ -221,29 +222,46 @@ final class StationUtility implements StationUtilityInterface
     {
         $station = $progress->getStation();
 
-        // salvage modules
-        $this->moduleRecycling->retrieveSomeModules($station, $station, $information);
+        $buildplan = $station->getBuildplan();
+        if ($buildplan === null) {
+            return;
+        }
 
-        // salvage special modules
+        $buildplanModules = $buildplan->getModules();
         $specialModules = $progress->getSpecialModules();
-        $recycledSpecialModules = [];
+        $recycledModules = [];
 
         foreach ($specialModules as $progressModule) {
             $module = $progressModule->getModule();
+            $moduleId = $module->getId();
+
+            $amount = 1;
+
+            foreach ($buildplanModules as $buildplanModule) {
+                if ($buildplanModule->getModuleId() === $moduleId) {
+                    $moduleCount = $buildplanModule->getModuleCount();
+                    $amount = $this->stuRandom->rand(1, $moduleCount);
+                    break;
+                }
+            }
 
             $this->storageManager->upperStorage(
                 $station,
                 $module->getCommodity(),
-                1
+                $amount
             );
 
-            $recycledSpecialModules[] = $module;
+            $recycledModules[] = ['module' => $module, 'amount' => $amount];
         }
 
-        if (count($recycledSpecialModules) > 0) {
-            $information->addInformation("\nFolgende Spezialmodule wurden recycelt:");
-            foreach ($recycledSpecialModules as $module) {
-                $information->addInformationf('%s, Anzahl: 1', $module->getName());
+        if (count($recycledModules) > 0) {
+            $information->addInformation("\nFolgende Module wurden recycelt:");
+            foreach ($recycledModules as $recycled) {
+                $information->addInformationf(
+                    '%s, Anzahl: %d',
+                    $recycled['module']->getName(),
+                    $recycled['amount']
+                );
             }
         }
 
