@@ -10,6 +10,7 @@ use RuntimeException;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
+use Stu\Module\Control\StuRandom;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Station\Lib\StationLoaderInterface;
@@ -20,6 +21,8 @@ use Stu\Orm\Repository\ConstructionProgressRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
 use Stu\Orm\Repository\StationRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
+use Stu\Orm\Repository\ConstructionProgressModuleRepositoryInterface;
+
 
 final class Scrapping implements ActionControllerInterface
 {
@@ -31,7 +34,9 @@ final class Scrapping implements ActionControllerInterface
         private SpacecraftSystemRepositoryInterface $shipSystemRepository,
         private ConstructionProgressRepositoryInterface $constructionProgressRepository,
         private SpacecraftRemoverInterface $spacecraftRemover,
-        private TradePostRepositoryInterface $tradePostRepository
+        private TradePostRepositoryInterface $tradePostRepository,
+        private ConstructionProgressModuleRepositoryInterface $constructionProgressModuleRepository,
+        private StuRandom $random
     ) {}
 
     #[Override]
@@ -96,6 +101,30 @@ final class Scrapping implements ActionControllerInterface
         $progress->setRemainingTicks((int)ceil($station->getRump()->getBuildtime() / 2));
 
         $this->constructionProgressRepository->save($progress);
+
+        //scrapping modules stuff
+        $this->constructionProgressModuleRepository->truncateByProgress($progress->getId());
+        $recycledModules = [];
+        $recyclingChance = 50;
+
+        foreach ($station->getSystems() as $system) {
+            $module = $system->getModule();
+            if ($module !== null) {
+                $chance = (int)ceil($recyclingChance * $system->getStatus() / 100);
+
+                if ($this->random->rand(1, 100) <= $chance) {
+                    $recycledModules[] = $module;
+                }
+            }
+        }
+
+        foreach ($recycledModules as $module) {
+            $constructionProgressModule = $this->constructionProgressModuleRepository->prototype();
+            $constructionProgressModule->setConstructionProgress($progress);
+            $constructionProgressModule->setModule($module);
+
+            $this->constructionProgressModuleRepository->save($constructionProgressModule);
+        }
 
         //remove ship systems
         $this->shipSystemRepository->truncateByShip($station->getId());

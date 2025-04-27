@@ -113,12 +113,27 @@ class Station extends Spacecraft implements StationInterface
             return [];
         }
 
-        return parent::getModules() +
-            $constructionProgress
+        $parentModules = parent::getModules();
+        $parentModuleIds = array_map(
+            fn(ModuleInterface $module): int => $module->getId(),
+            $parentModules
+        );
+
+        $specialModules = $constructionProgress
             ->getSpecialModules()
-            ->map(fn(ConstructionProgressModuleInterface $progressModule): ModuleInterface => $progressModule->getModule())
+            ->filter(
+                fn(ConstructionProgressModuleInterface $progressModule): bool =>
+                !in_array($progressModule->getModule()->getId(), $parentModuleIds)
+            )
+            ->map(
+                fn(ConstructionProgressModuleInterface $progressModule): ModuleInterface =>
+                $progressModule->getModule()
+            )
             ->toArray();
+
+        return $parentModules + $specialModules;
     }
+
 
     #[Override]
     public function getDockPrivileges(): Collection
