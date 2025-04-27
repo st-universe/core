@@ -162,6 +162,8 @@ interface SpacecraftRumpInterface
 
     public function isShipyard(): bool;
 
+    public function isStation(): bool;
+
     public function isWorkbee(): bool;
 
     /**

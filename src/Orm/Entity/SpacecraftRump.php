@@ -710,6 +710,12 @@ class SpacecraftRump implements SpacecraftRumpInterface
     }
 
     #[Override]
+    public function isStation(): bool
+    {
+        return $this->getCategoryId() === SpacecraftRumpEnum::SHIP_CATEGORY_STATION;
+    }
+
+    #[Override]
     public function isWorkbee(): bool
     {
         $commodity = $this->getCommodity();
