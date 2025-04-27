@@ -97,9 +97,10 @@ final class ShowBuildplanCreator implements ViewControllerInterface
 
                 foreach ($moduleTypes as $moduleType) {
                     $moduleTypeId = $moduleType->value;
+
                     if (
-                        $mod_level->{'getModuleLevel' . $moduleTypeId}() === 0
-                        && $mod_level->{'getModuleMandatory' . $moduleTypeId}() === 0
+                        $mod_level->{'getModuleLevel' . $moduleTypeId}() == 0
+                        && $mod_level->{'getModuleMandatory' . $moduleTypeId}() == 0
                     ) {
                         continue;
                     }
@@ -125,8 +126,6 @@ final class ShowBuildplanCreator implements ViewControllerInterface
                     });
 
                     $availableModules[$moduleTypeId] = $modules;
-
-
 
                     $mandatoryModules[$moduleTypeId] = $mod_level->{'getModuleMandatory' . $moduleTypeId}() > 0;
                 }
