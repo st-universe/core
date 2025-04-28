@@ -20,9 +20,16 @@ class SpacecraftAttacker extends AbstractEnergyAttacker implements ProjectileAtt
     public function __construct(
         private SpacecraftWrapperInterface $wrapper,
         private ShipTorpedoManagerInterface $shipTorpedoManager,
+        private bool $isAttackingShieldsOnly,
         StuRandom $stuRandom
     ) {
         parent::__construct($stuRandom);
+    }
+
+    #[Override]
+    public function isAvoidingHullHits(SpacecraftInterface $target): bool
+    {
+        return $this->isAttackingShieldsOnly && !$target->isShielded();
     }
 
     #[Override]

@@ -132,7 +132,7 @@ final class AttackBuilding implements ActionControllerInterface
             BuildingFunctionEnum::ENERGY_PHALANX,
             [ColonyFunctionManager::STATE_ENABLED]
         );
-        $defendingPhalanx =  $this->attackerProviderFactory->getEnergyPhalanxAttacker($colony);
+        $defendingPhalanx =  $this->attackerProviderFactory->createEnergyPhalanxAttacker($colony);
 
         $messageCollection = $this->messageFactory->createMessageCollection();
 
@@ -154,7 +154,7 @@ final class AttackBuilding implements ActionControllerInterface
             BuildingFunctionEnum::PARTICLE_PHALANX,
             [ColonyFunctionManager::STATE_ENABLED]
         );
-        $defendingPhalanx = $this->attackerProviderFactory->getProjectilePhalanxAttacker($colony);
+        $defendingPhalanx = $this->attackerProviderFactory->createProjectilePhalanxAttacker($colony);
 
         for ($i = 0; $i < $count; $i++) {
             if ($incomingBattleParty->isDefeated()) {
@@ -181,7 +181,7 @@ final class AttackBuilding implements ActionControllerInterface
 
         /** @var ShipWrapperInterface $attackerWrapper*/
         foreach ($incomingBattleParty->getActiveMembers(true, true) as $attackerWrapper) {
-            $spacecraftAttacker = $this->attackerProviderFactory->getSpacecraftAttacker($attackerWrapper);
+            $spacecraftAttacker = $this->attackerProviderFactory->createSpacecraftAttacker($attackerWrapper);
 
             if ($isOrbitField) {
                 $informations->addInformationWrapper($this->energyWeaponPhase->fireAtBuilding($spacecraftAttacker, $field, $isOrbitField));

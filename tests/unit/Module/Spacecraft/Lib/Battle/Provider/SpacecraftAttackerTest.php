@@ -49,6 +49,7 @@ class SpacecraftAttackerTest extends StuTestCase
         $this->subject = new SpacecraftAttacker(
             $this->wrapper,
             $this->shipTorpedoManager,
+            false,
             $this->stuRandom
         );
     }

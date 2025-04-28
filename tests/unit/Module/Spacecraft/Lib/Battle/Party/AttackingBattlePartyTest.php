@@ -49,11 +49,12 @@ class AttackingBattlePartyTest extends StuTestCase
             ->zeroOrMoreTimes()
             ->andReturn(false);
 
-        $subject = new AttackingBattleParty($wrapper);
+        $subject = new AttackingBattleParty($wrapper, true);
 
         $members = $subject->getActiveMembers();
 
         $this->assertEquals([123 => $wrapper], $members->toArray());
+        $this->assertTrue($subject->isAttackingShieldsOnly());
     }
 
     public function testGetActiveMembersExpectSingleWhenNotFleetLeader(): void
@@ -93,11 +94,12 @@ class AttackingBattlePartyTest extends StuTestCase
             ->zeroOrMoreTimes()
             ->andReturn(false);
 
-        $subject = new AttackingBattleParty($wrapper);
+        $subject = new AttackingBattleParty($wrapper, false);
 
         $members = $subject->getActiveMembers();
 
         $this->assertEquals([123 => $wrapper], $members->toArray());
+        $this->assertFalse($subject->isAttackingShieldsOnly());
     }
 
     public function testGetActiveMembersExpectFleet(): void
@@ -148,7 +150,7 @@ class AttackingBattlePartyTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(false);
 
-        $subject = new AttackingBattleParty($wrapper);
+        $subject = new AttackingBattleParty($wrapper, true);
 
         $members = $subject->getActiveMembers();
 
@@ -209,7 +211,7 @@ class AttackingBattlePartyTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(false);
 
-        $subject = new AttackingBattleParty($fleetWrapper);
+        $subject = new AttackingBattleParty($fleetWrapper, false);
 
         $members = $subject->getActiveMembers();
 

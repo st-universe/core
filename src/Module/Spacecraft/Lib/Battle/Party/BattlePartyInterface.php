@@ -23,5 +23,7 @@ interface BattlePartyInterface extends Countable
 
     public function isStation(): bool;
 
+    public function isAttackingShieldsOnly(): bool;
+
     public function getPrivateMessageType(): PrivateMessageFolderTypeEnum;
 }

@@ -95,7 +95,7 @@ final class AttackSpacecraft implements ActionControllerInterface
         $isFleetFight = false;
         $informations = new InformationWrapper();
 
-        $this->spacecraftAttackCore->attack($wrapper, $targetWrapper, $isFleetFight, $informations);
+        $this->spacecraftAttackCore->attack($wrapper, $targetWrapper, false, $isFleetFight, $informations);
 
         $this->pirateReaction->checkForPirateReaction(
             $target,

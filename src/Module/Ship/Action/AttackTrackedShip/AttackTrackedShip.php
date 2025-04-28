@@ -98,6 +98,7 @@ final class AttackTrackedShip implements ActionControllerInterface
         [$attacker, $defender, $fleet] = $this->fightLib->getAttackersAndDefenders(
             $wrapper,
             $targetWrapper,
+            false,
             $this->battlePartyFactory
         );
 
