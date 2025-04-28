@@ -36,7 +36,7 @@ final class EntryCreator implements EntryCreatorInterface
         $this->createEntry($type, $text, $sourceUserId, $targetUser->getId());
     }
 
-    private function createEntry(
+    public function createEntry(
         HistoryTypeEnum $type,
         string $text,
         int $sourceUserId,

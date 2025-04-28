@@ -28,6 +28,34 @@
 </form>
 
 <div style="margin-top: 20px;">
+    <h2>History Tools</h2>
+    <br>
+    <form action="/npc/index.php" method="post" name="toolsform" id="toolsform">
+        <div>
+            <h2>History Eintrag erstellen</h2>
+            Text: <input type="text" size="100" name="historytext" id="historytext" />
+            <br>
+            <br>
+            Kategorie: <select name="historytype" id="historyTypeSelect" style="width:10%;">
+                {% for type in HISTORY_TYPES %}
+                <option value="{{ type.id }}">
+                    {{ type.name }}
+                </option>
+                {% endfor %}
+            </select>
+            <br>
+            <br>
+            Grund: <input type="text" size="20" name="reason" id="reason" />
+            <br>
+            <br>
+            <input type="submit" class="button" name="B_CREATE_HISTORY_ENTRY" value="History Eintrag erstellen"
+                id="createhistorybutton" />
+        </div>
+    </form>
+    <br>
+</div>
+
+<div style="margin-top: 20px;">
     <h2>Schiff Tools</h2>
     <br>
     <form action="/npc/index.php" method="post" name="toolsform" id="toolsform">

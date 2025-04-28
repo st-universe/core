@@ -8,24 +8,31 @@ use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
+use Stu\Component\History\HistoryTypeEnum;
 
 final class ShowTools implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_TOOLS';
 
-    public function __construct(private CommodityRepositoryInterface $commodityRepository)
-    {
-    }
+    public function __construct(private CommodityRepositoryInterface $commodityRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-
         $commodityList = $this->commodityRepository->getTradeableNPC();
+
+        $historyTypes = [];
+        foreach (HistoryTypeEnum::cases() as $type) {
+            $historyTypes[] = [
+                'id' => $type->value,
+                'name' => $type->getName()
+            ];
+        }
 
         $game->setTemplateFile('html/npc/tools.twig');
         $game->appendNavigationPart('/npc/?SHOW_TOOLS=1', _('Tools'));
         $game->setPageTitle(_('Tools'));
         $game->setTemplateVar('SELECTABLE_COMMODITIES', $commodityList);
+        $game->setTemplateVar('HISTORY_TYPES', $historyTypes);
     }
 }

@@ -6,17 +6,13 @@ namespace Stu\Module\NPC\Action;
 
 use Override;
 use request;
-use Stu\Lib\Transfer\Storage\StorageManagerInterface;
-use Stu\Exception\SpacecraftDoesNotExistException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\NPC\View\ShowTools\ShowTools;
 use Stu\Module\Spacecraft\Lib\SpacecraftRemoverInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\NPCLogRepositoryInterface;
-use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
@@ -26,7 +22,7 @@ final class DeleteSpacecraft implements ActionControllerInterface
     public const string ACTION_IDENTIFIER = 'B_DELETE_SPACECRAFT';
 
     /** @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader */
-    public function __construct(private SpacecraftLoaderInterface $spacecraftLoader, private StorageManagerInterface $storageManager, private CommodityRepositoryInterface $commodityRepository, private NPCLogRepositoryInterface $npcLogRepository, private ColonyRepositoryInterface $colonyRepository, private SpacecraftRemoverInterface $spacecraftRemover, private CrewRepositoryInterface $crewRepository, private CrewAssignmentRepositoryInterface $shipCrewRepository) {}
+    public function __construct(private SpacecraftLoaderInterface $spacecraftLoader, private NPCLogRepositoryInterface $npcLogRepository, private SpacecraftRemoverInterface $spacecraftRemover, private CrewRepositoryInterface $crewRepository, private CrewAssignmentRepositoryInterface $shipCrewRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -52,13 +48,11 @@ final class DeleteSpacecraft implements ActionControllerInterface
                 return;
             }
 
-            // Überprüfen, ob die Eingabe nur Zahlen, Kommas und Leerzeichen enthält
             if (!preg_match('/^[\d\s,]+$/', $spacecraftIdInput)) {
                 $game->addInformation("Die Spacecraft-ID darf nur Zahlen, Kommas und Leerzeichen enthalten");
                 return;
             }
 
-            // Teile die Eingabe in einzelne IDs auf
             $spacecraftIds = array_filter(
                 array_map(
                     'trim',
