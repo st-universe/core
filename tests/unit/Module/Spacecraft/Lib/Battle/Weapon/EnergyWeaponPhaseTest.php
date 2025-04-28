@@ -9,6 +9,7 @@ use Mockery\MockInterface;
 use Override;
 use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Lib\Map\FieldTypeEffectEnum;
+use Stu\Module\Colony\Lib\Damage\ApplyBuildingDamageInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyInterface;
@@ -40,6 +41,8 @@ class EnergyWeaponPhaseTest extends StuTestCase
     protected $entryCreator;
     /** @var MockInterface&ApplyDamageInterface */
     protected $applyDamage;
+    /** @var MockInterface&ApplyBuildingDamageInterface */
+    protected $applyBuildingDamage;
     /** @var MockInterface&BuildingManagerInterface */
     protected $buildingManager;
     /** @var MockInterface&SpacecraftDestructionInterface */
@@ -58,6 +61,7 @@ class EnergyWeaponPhaseTest extends StuTestCase
         $this->weaponRepository = $this->mock(WeaponRepositoryInterface::class);
         $this->entryCreator = $this->mock(EntryCreatorInterface::class);
         $this->applyDamage = $this->mock(ApplyDamageInterface::class);
+        $this->applyBuildingDamage = $this->mock(ApplyBuildingDamageInterface::class);
         $this->buildingManager = $this->mock(BuildingManagerInterface::class);
         $this->stuRandom = $this->mock(StuRandom::class);
         $this->messageFactory = $this->mock(MessageFactoryInterface::class);
@@ -67,6 +71,7 @@ class EnergyWeaponPhaseTest extends StuTestCase
             $this->userRepository,
             $this->entryCreator,
             $this->applyDamage,
+            $this->applyBuildingDamage,
             $this->buildingManager,
             $this->stuRandom,
             $this->messageFactory,

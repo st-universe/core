@@ -146,7 +146,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
             $damage_wrapper->setIsPhaserDamage(true);
 
 
-            $informations->addInformationWrapper($this->applyDamage->damageBuilding($damage_wrapper, $target, $isOrbitField));
+            $informations->addInformationWrapper($this->applyBuildingDamage->damageBuilding($damage_wrapper, $target, $isOrbitField));
 
             if ($target->getIntegrity() === 0) {
                 $this->entryCreator->addEntry(
