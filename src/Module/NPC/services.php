@@ -13,6 +13,7 @@ use Stu\Module\NPC\Action\CreateBuildplan;
 use Stu\Module\NPC\View\ShowBuildplanCreator\ShowBuildplanCreator;
 use Stu\Module\NPC\Action\CreateShip;
 use Stu\Module\NPC\Action\DeleteBuildplan;
+use Stu\Module\NPC\Action\DeleteSpacecraft;
 use Stu\Module\NPC\View\ShowShipCreator\ShowShipCreator;
 use Stu\Module\NPC\Action\RenameBuildplan;
 
@@ -24,7 +25,8 @@ return [
         CreateBuildplan::ACTION_IDENTIFIER => autowire(CreateBuildplan::class),
         CreateShip::ACTION_IDENTIFIER => autowire(CreateShip::class),
         DeleteBuildplan::ACTION_IDENTIFIER => autowire(DeleteBuildplan::class),
-        RenameBuildplan::ACTION_IDENTIFIER => autowire(RenameBuildplan::class)
+        RenameBuildplan::ACTION_IDENTIFIER => autowire(RenameBuildplan::class),
+        DeleteSpacecraft::ACTION_IDENTIFIER => autowire(DeleteSpacecraft::class)
     ],
     'NPC_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
