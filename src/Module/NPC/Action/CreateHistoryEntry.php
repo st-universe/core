@@ -54,7 +54,7 @@ final class CreateHistoryEntry implements ActionControllerInterface
             return;
         }
 
-        if ($historyText === '') {
+        if ($historyText === '' || !$historyText) {
             $game->addInformation("Es wurde kein Text ausgewählt");
             return;
         }
