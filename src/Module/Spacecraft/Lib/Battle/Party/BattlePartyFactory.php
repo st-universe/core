@@ -40,9 +40,10 @@ class BattlePartyFactory implements BattlePartyFactoryInterface
 
     #[Override]
     public function createAttackingBattleParty(
-        SpacecraftWrapperInterface|FleetWrapperInterface $wrapper
+        SpacecraftWrapperInterface|FleetWrapperInterface $wrapper,
+        bool $isAttackingShieldsOnly
     ): AttackingBattleParty {
-        return new AttackingBattleParty($wrapper);
+        return new AttackingBattleParty($wrapper, $isAttackingShieldsOnly);
     }
 
     #[Override]

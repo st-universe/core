@@ -146,6 +146,9 @@ class EnergyWeaponPhaseTest extends StuTestCase
         $attacker->shouldReceive('getLocation')
             ->withNoArgs()
             ->andReturn($location);
+        $attacker->shouldReceive('isAvoidingHullHits')
+            ->with($target)
+            ->andReturn(false);
 
         $location->shouldReceive('getFieldType->hasEffect')
             ->with(FieldTypeEffectEnum::HIT_CHANCE_INTERFERENCE)
@@ -256,6 +259,78 @@ class EnergyWeaponPhaseTest extends StuTestCase
             ->with(888)
             ->once()
             ->andReturn($user);
+
+        $this->subject->fire($attacker, $targetPool, SpacecraftAttackCauseEnum::SHIP_FIGHT, $messages);
+    }
+
+    public function testFireExpectNoShotIfAttackerAvoidsHittingHull(): void
+    {
+        $attacker = $this->mock(EnergyAttackerInterface::class);
+        $target = $this->mock(ShipInterface::class);
+        $targetWrapper = $this->mock(ShipWrapperInterface::class);
+        $weapon = $this->mock(WeaponInterface::class);
+        $targetPool = $this->mock(BattlePartyInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
+
+        $targetId = 42;
+
+        $targetPool->shouldReceive('getRandomActiveMember')
+            ->withNoArgs()
+            ->twice()
+            ->andReturn($targetWrapper);
+        $targetPool->shouldReceive('isDefeated')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+
+        $attacker->shouldReceive('getPhaserVolleys')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(2);
+        $attacker->shouldReceive('getPhaserState')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+        $attacker->shouldReceive('hasSufficientEnergy')
+            ->with(1)
+            ->andReturn(true);
+        $attacker->shouldReceive('getWeapon')
+            ->withNoArgs()
+            ->andReturn($weapon);
+        $attacker->shouldReceive('getFiringMode')
+            ->withNoArgs()
+            ->andReturn(1);
+        $attacker->shouldReceive('reduceEps')
+            ->with(1)
+            ->once();
+        $attacker->shouldReceive('getName')
+            ->withNoArgs()
+            ->andReturn("ATTACKER");
+        $attacker->shouldReceive('getHitChance')
+            ->withNoArgs()
+            ->andReturn(100);
+        $attacker->shouldReceive('isAvoidingHullHits')
+            ->with($target)
+            ->andReturn(true);
+
+        $targetWrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($target);
+
+        $target->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn($targetId);
+
+        $weapon->shouldReceive('getFiringMode')
+            ->withNoArgs()
+            ->andReturn(1);
+
+        $this->stuRandom->shouldReceive('rand')
+            ->with(1, 100)
+            ->andReturn(0);
+        $this->stuRandom->shouldReceive('rand')
+            ->with(1, 10000)
+            ->andReturn(0);
 
         $this->subject->fire($attacker, $targetPool, SpacecraftAttackCauseEnum::SHIP_FIGHT, $messages);
     }

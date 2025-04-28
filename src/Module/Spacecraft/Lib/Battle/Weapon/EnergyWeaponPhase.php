@@ -52,6 +52,10 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
 
             $target = $targetWrapper->get();
 
+            if ($attacker->isAvoidingHullHits($target)) {
+                break;
+            }
+
             $message = $this->messageFactory->createMessage($attacker->getUserId(), $target->getUser()->getId());
             $messages->add($message);
 

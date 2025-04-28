@@ -45,6 +45,10 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
                 break;
             }
 
+            if ($attacker->isAvoidingHullHits($target)) {
+                break;
+            }
+
             $isCritical = $this->isCritical($torpedo, $target->isCloaked());
             $netDamage = $attacker->getProjectileWeaponDamage($isCritical);
 

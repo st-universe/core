@@ -9,7 +9,7 @@ use Stu\Orm\Entity\ColonyInterface;
 
 interface AttackerProviderFactoryInterface
 {
-    public function getSpacecraftAttacker(SpacecraftWrapperInterface $wrapper): SpacecraftAttacker;
-    public function getEnergyPhalanxAttacker(ColonyInterface $colony): EnergyAttackerInterface;
-    public function getProjectilePhalanxAttacker(ColonyInterface $colony): ProjectileAttackerInterface;
+    public function createSpacecraftAttacker(SpacecraftWrapperInterface $wrapper, bool $isAttackingShieldsOnly = false): SpacecraftAttacker;
+    public function createEnergyPhalanxAttacker(ColonyInterface $colony): EnergyAttackerInterface;
+    public function createProjectilePhalanxAttacker(ColonyInterface $colony): ProjectileAttackerInterface;
 }

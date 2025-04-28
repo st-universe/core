@@ -725,6 +725,8 @@ class FightLibTest extends StuTestCase
         int $defendersCount,
         bool $expectedIsFleet
     ): void {
+
+        /** @var SpacecraftWrapperInterface|FleetWrapperInterface */
         $wrapper = $this->mock($className);
         $factory = $this->mock(BattlePartyFactoryInterface::class);
         $targetWrapper = $this->mock(ShipWrapperInterface::class);
@@ -732,7 +734,7 @@ class FightLibTest extends StuTestCase
         $attackedParty = $this->mock(AttackedBattleParty::class);
 
         $factory->shouldReceive('createAttackingBattleParty')
-            ->with($wrapper)
+            ->with($wrapper, false)
             ->once()
             ->andReturn($attackingParty);
         $factory->shouldReceive('createAttackedBattleParty')
@@ -753,7 +755,7 @@ class FightLibTest extends StuTestCase
             $attackers,
             $defenders,
             $isFleetFight
-        ] = $this->subject->getAttackersAndDefenders($wrapper, $targetWrapper, $factory);
+        ] = $this->subject->getAttackersAndDefenders($wrapper, $targetWrapper, false, $factory);
 
         $this->assertEquals($attackingParty, $attackers);
         $this->assertEquals($attackedParty, $defenders);

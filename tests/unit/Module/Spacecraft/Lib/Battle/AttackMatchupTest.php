@@ -170,8 +170,6 @@ class AttackMatchupTest extends StuTestCase
         $defenders = $this->mock(RoundBasedBattleParty::class);
         $defenderBattleParty = $this->mock(BattlePartyInterface::class);
 
-        $randomAttacker = $this->mock(ShipWrapperInterface::class);
-
         $attackers->shouldReceive('isDone')
             ->withNoArgs()
             ->andReturn(false);
@@ -181,19 +179,11 @@ class AttackMatchupTest extends StuTestCase
             ->andReturn(false);
 
         if ($randomNumber === 1) {
-            $attackers->shouldReceive('getRandomUnused')
-                ->withNoArgs()
-                ->once()
-                ->andReturn($randomAttacker);
             $defenders->shouldReceive('get')
                 ->withNoArgs()
                 ->once()
                 ->andReturn($defenderBattleParty);
         } else {
-            $defenders->shouldReceive('getRandomUnused')
-                ->withNoArgs()
-                ->once()
-                ->andReturn($randomAttacker);
             $attackers->shouldReceive('get')
                 ->withNoArgs()
                 ->once()

@@ -200,7 +200,7 @@ class ThreatReactionTest extends StuTestCase
             ->andReturn(false);
 
         $this->battlePartyFactory->shouldReceive('createAttackingBattleParty')
-            ->with($this->targetWrapper)
+            ->with($this->targetWrapper, false)
             ->once()
             ->andReturn($attackingBattleParty);
         $this->battlePartyFactory->shouldReceive('createSingletonBattleParty')
@@ -276,7 +276,7 @@ class ThreatReactionTest extends StuTestCase
             ->andReturn(false);
 
         $this->battlePartyFactory->shouldReceive('createAttackingBattleParty')
-            ->with($this->targetWrapper)
+            ->with($this->targetWrapper, false)
             ->once()
             ->andReturn($attackingBattleParty);
         $this->battlePartyFactory->shouldReceive('createSingletonBattleParty')

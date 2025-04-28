@@ -11,7 +11,6 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Battle\SpacecraftAttackCycleInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 
 final class ThreatReaction implements ThreatReactionInterface
@@ -48,7 +47,7 @@ final class ThreatReaction implements ThreatReactionInterface
 
         $cause = $interaction->getInteractionText($wrapper, $targetWrapper);
 
-        $attackingBattleParty = $this->battlePartyFactory->createAttackingBattleParty($targetWrapper);
+        $attackingBattleParty = $this->battlePartyFactory->createAttackingBattleParty($targetWrapper, false);
 
         $messageCollection = $this->spacecraftAttackCycle->cycle(
             $attackingBattleParty,
