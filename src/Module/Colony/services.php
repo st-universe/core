@@ -72,6 +72,8 @@ use Stu\Module\Colony\Lib\ColonyResetter;
 use Stu\Module\Colony\Lib\ColonyResetterInterface;
 use Stu\Module\Colony\Lib\CommodityConsumption;
 use Stu\Module\Colony\Lib\CommodityConsumptionInterface;
+use Stu\Module\Colony\Lib\Damage\ApplyBuildingDamage;
+use Stu\Module\Colony\Lib\Damage\ApplyBuildingDamageInterface;
 use Stu\Module\Colony\Lib\Gui\ColonyGuiHelper;
 use Stu\Module\Colony\Lib\Gui\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\Gui\Component\AcademyProvider;
@@ -185,6 +187,7 @@ use function DI\autowire;
 use function DI\get;
 
 return [
+    ApplyBuildingDamageInterface::class => autowire(ApplyBuildingDamage::class),
     BuildingActionInterface::class => autowire(BuildingAction::class),
     BuildingMassActionConfigurationInterface::class => autowire(BuildingMassActionConfiguration::class),
     CancelShipRepairRequestInterface::class => autowire(CancelShipRepairRequest::class),

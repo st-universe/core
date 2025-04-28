@@ -9,6 +9,7 @@ use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Map\FieldTypeEffectEnum;
+use Stu\Module\Colony\Lib\Damage\ApplyBuildingDamageInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -33,6 +34,7 @@ abstract class AbstractWeaponPhase
         private UserRepositoryInterface $userRepository,
         protected EntryCreatorInterface $entryCreator,
         protected ApplyDamageInterface $applyDamage,
+        protected ApplyBuildingDamageInterface $applyBuildingDamage,
         protected BuildingManagerInterface $buildingManager,
         protected StuRandom $stuRandom,
         protected MessageFactoryInterface $messageFactory,
