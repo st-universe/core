@@ -9,7 +9,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Control\StuRandom;
-use Stu\Module\Spacecraft\Lib\Damage\ApplyDamageInterface;
+use Stu\Module\Spacecraft\Lib\Damage\SystemDamageInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -20,7 +20,7 @@ final class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
     public const float POSSIBLE_DAMAGE_THRESHOLD = 0.9;
 
     public function __construct(
-        private ApplyDamageInterface $applyDamage,
+        private SystemDamageInterface $systemDamage,
         private SpacecraftSystemManagerInterface $spacecraftSystemManager,
         private StuRandom $stuRandom,
         private MessageFactoryInterface $messageFactory
@@ -97,7 +97,7 @@ final class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
 
             $message = $this->messageFactory->createMessage();
 
-            if ($this->applyDamage->damageShipSystem($wrapper, $system, $this->stuRandom->rand(5, 25), $message)) {
+            if ($this->systemDamage->damageShipSystem($wrapper, $system, $this->stuRandom->rand(5, 25), $message)) {
                 //tractor destroyed
                 $message->addInformation(sprintf(
                     _('Traktoremitter der %s wurde zerstört. Die %s wird nicht weiter gezogen'),

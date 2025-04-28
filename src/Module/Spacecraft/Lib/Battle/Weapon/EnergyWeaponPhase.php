@@ -30,6 +30,8 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
         MessageCollectionInterface $messages
     ): void {
 
+        $targetWrapper = null;
+
         $phaserVolleys = $attacker->getPhaserVolleys();
         for ($i = 1; $i <= $phaserVolleys; $i++) {
             if ($targetPool->isDefeated()) {
@@ -43,7 +45,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
 
             $attacker->reduceEps($this->getEnergyWeaponEnergyCosts());
 
-            $targetWrapper = $targetPool->getRandomActiveMember();
+            $targetWrapper = $targetWrapper ?? $targetPool->getRandomActiveMember();
             if ($attacker->getFiringMode() === self::FIRINGMODE_RANDOM) {
                 $targetWrapper = $targetPool->getRandomActiveMember();
             }

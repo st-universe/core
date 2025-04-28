@@ -38,19 +38,19 @@ final class SpacecraftLeaver implements SpacecraftLeaverInterface
 
         if ($ship->getRump()->isEscapePods()) {
             $this->letCrewDie($ship);
-            return _('Die Rettungskapseln wurden zerstört, die Crew ist daher verstorben!');
+            return '-- Die Rettungskapseln wurden zerstört, die Crew ist daher verstorben!';
         }
 
         $podRump = $this->spacecraftRumpRepository->find($ship->getUser()->getFactionId() + SpacecraftRumpEnum::SHIP_RUMP_BASE_ID_ESCAPE_PODS);
 
         if ($podRump === null || $ship->getUser()->isNpc()) {
             $this->letCrewDie($ship);
-            return _('Keine Rettungskapseln vorhanden, die Crew ist daher verstorben!');
+            return '-- Keine Rettungskapseln vorhanden, die Crew ist daher verstorben!';
         }
 
         $this->escapeIntoPods($ship);
 
-        return _('Die Crew hat das Schiff in den Rettungskapseln verlassen!');
+        return '-- Die Crew hat das Schiff in den Rettungskapseln verlassen!';
     }
 
     private function escapeIntoPods(SpacecraftInterface $spacecraft): void
