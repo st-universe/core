@@ -153,6 +153,8 @@ use Stu\Module\Spacecraft\Lib\Damage\ApplyDamage;
 use Stu\Module\Spacecraft\Lib\Damage\ApplyDamageInterface;
 use Stu\Module\Spacecraft\Lib\Damage\ApplyFieldDamage;
 use Stu\Module\Spacecraft\Lib\Damage\ApplyFieldDamageInterface;
+use Stu\Module\Spacecraft\Lib\Damage\SystemDamage;
+use Stu\Module\Spacecraft\Lib\Damage\SystemDamageInterface;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\CancelTakeover;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\ClearTractoringBeam;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\ColonizationShipCheck;
@@ -267,6 +269,7 @@ return [
     ModuleValueCalculatorInterface::class => autowire(ModuleValueCalculator::class),
     InteractionCheckerInterface::class => autowire(InteractionChecker::class),
     ApplyDamageInterface::class => autowire(ApplyDamage::class),
+    SystemDamageInterface::class => autowire(SystemDamage::class),
     ApplyFieldDamageInterface::class => autowire(ApplyFieldDamage::class),
     EnergyWeaponPhaseInterface::class => autowire(EnergyWeaponPhase::class),
     FightLibInterface::class => autowire(FightLib::class),

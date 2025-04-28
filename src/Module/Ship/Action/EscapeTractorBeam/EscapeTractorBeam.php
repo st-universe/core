@@ -20,6 +20,7 @@ use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionCauseEnum;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\Damage\SystemDamageInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
@@ -32,6 +33,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
     public function __construct(
         private ShipLoaderInterface $shipLoader,
         private ApplyDamageInterface $applyDamage,
+        private SystemDamageInterface $systemDamage,
         private SpacecraftRepositoryInterface $spacecraftRepository,
         private PrivateMessageSenderInterface $privateMessageSender,
         private SpacecraftDestructionInterface $spacecraftDestruction,
@@ -146,7 +148,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
 
         $ship = $wrapper->get();
         $system = $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::DEFLECTOR);
-        $this->applyDamage->damageShipSystem($wrapper, $system, random_int(5, 25), $informations);
+        $this->systemDamage->damageShipSystem($wrapper, $system, random_int(5, 25), $informations);
 
         $game->addInformationWrapper($informations);
 

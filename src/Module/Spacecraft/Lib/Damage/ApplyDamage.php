@@ -7,25 +7,24 @@ namespace Stu\Module\Spacecraft\Lib\Damage;
 use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
-use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Damage\DamageModeEnum;
 use Stu\Lib\Damage\DamageWrapper;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\SpacecraftSystemInterface;
 
-//TODO unit tests and move to Lib/Damage
+//TODO unit tests
 final class ApplyDamage implements ApplyDamageInterface
 {
     public function __construct(
-        private SpacecraftSystemManagerInterface $spacecraftSystemManager
+        private SpacecraftSystemManagerInterface $spacecraftSystemManager,
+        private SystemDamageInterface $systemDamage
     ) {}
 
     #[Override]
     public function damage(
         DamageWrapper $damageWrapper,
-        SpacecraftWrapperInterface $shipWrapper,
+        SpacecraftWrapperInterface $wrapper,
         InformationInterface $informations
     ): void {
 
@@ -33,14 +32,14 @@ final class ApplyDamage implements ApplyDamageInterface
             throw new RuntimeException('this should not happen');
         }
 
-        $ship = $shipWrapper->get();
+        $spacecraft = $wrapper->get();
 
-        if ($ship->isShielded()) {
+        if ($spacecraft->isShielded()) {
 
             if ($damageWrapper->isShieldPenetration()) {
                 $informations->addInformationf('- Projektil hat Schilde durchdrungen!');
             } else {
-                $this->damageShields($shipWrapper, $damageWrapper, $informations);
+                $this->damageShields($wrapper, $damageWrapper, $informations);
             }
         }
         if ($damageWrapper->getNetDamage() <= 0) {
@@ -48,68 +47,40 @@ final class ApplyDamage implements ApplyDamageInterface
         }
 
         $disablemessage = false;
-        $damage = (int) $damageWrapper->getDamageRelative($ship, DamageModeEnum::HULL);
-        if ($ship->getSystemState(SpacecraftSystemTypeEnum::RPG_MODULE) && $ship->getHull() - $damage < round($ship->getMaxHull() / 100 * 10)) {
-            $damage = (int) round($ship->getHull() - $ship->getMaxHull() / 100 * 10);
+        $damage = (int) $damageWrapper->getDamageRelative($spacecraft, DamageModeEnum::HULL);
+        if ($spacecraft->getSystemState(SpacecraftSystemTypeEnum::RPG_MODULE) && $spacecraft->getHull() - $damage < round($spacecraft->getMaxHull() / 100 * 10)) {
+            $damage = (int) round($spacecraft->getHull() - $spacecraft->getMaxHull() / 100 * 10);
             $disablemessage = _('-- Das Schiff wurde kampfunfähig gemacht');
-            $ship->setDisabled(true);
+            $spacecraft->setDisabled(true);
         }
-        if ($ship->getHull() > $damage) {
-            if ($damageWrapper->isCrit()) {
-                $systemName = $this->destroyRandomShipSystem($shipWrapper, $damageWrapper);
-
-                if ($systemName !== null) {
-                    $informations->addInformation("- Kritischer Hüllen-Treffer zerstört System: " . $systemName);
-                }
-            }
-            $huelleVorher = $ship->getHull();
-            $ship->setHuell($huelleVorher - $damage);
-            $informations->addInformation("- Hüllenschaden: " . $damage . " - Status: " . $ship->getHull());
-
-            if (!$this->checkForDamagedShipSystems(
-                $shipWrapper,
-                $damageWrapper,
-                $huelleVorher,
-                $informations
-            )) {
-                $this->damageRandomShipSystem(
-                    $shipWrapper,
-                    $damageWrapper,
-                    $informations,
-                    (int)ceil((100 * $damage * random_int(1, 5)) / $ship->getMaxHull())
-                );
-            }
+        if ($spacecraft->getHull() > $damage) {
+            $this->damageHull($wrapper, $damageWrapper, $damage, $informations);
 
             if ($disablemessage) {
                 $informations->addInformation($disablemessage);
             }
+        } else {
 
-            if ($ship->isDestroyed()) {
-                $informations->addInformation("-- Das Schiff wurde zerstört!");
-            }
-
-            return;
+            $informations->addInformation("-- Das Schiff wurde zerstört!");
+            $spacecraft->setIsDestroyed(true);
         }
-        $informations->addInformation("- Hüllenschaden: " . $damage);
-        $informations->addInformation("-- Das Schiff wurde zerstört!");
-        $ship->setIsDestroyed(true);
     }
 
     private function damageShields(SpacecraftWrapperInterface $wrapper, DamageWrapper $damageWrapper, InformationInterface $informations): void
     {
-        $ship = $wrapper->get();
+        $spacecraft = $wrapper->get();
 
-        $damage = (int) $damageWrapper->getDamageRelative($ship, DamageModeEnum::SHIELDS);
-        if ($damage >= $ship->getShield()) {
-            $informations->addInformation("- Schildschaden: " . $ship->getShield());
+        $damage = (int) $damageWrapper->getDamageRelative($spacecraft, DamageModeEnum::SHIELDS);
+        if ($damage >= $spacecraft->getShield()) {
+            $informations->addInformation("- Schildschaden: " . $spacecraft->getShield());
             $informations->addInformation("-- Schilde brechen zusammen!");
 
             $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::SHIELDS);
 
-            $ship->setShield(0);
+            $spacecraft->setShield(0);
         } else {
-            $ship->setShield($ship->getShield() - $damage);
-            $informations->addInformation("- Schildschaden: " . $damage . " - Status: " . $ship->getShield());
+            $spacecraft->setShield($spacecraft->getShield() - $damage);
+            $informations->addInformation("- Schildschaden: " . $damage . " - Status: " . $spacecraft->getShield());
         }
 
         $shieldSystemData = $wrapper->getShieldSystemData();
@@ -120,92 +91,33 @@ final class ApplyDamage implements ApplyDamageInterface
         $shieldSystemData->setShieldRegenerationTimer(time())->update();
     }
 
-    private function checkForDamagedShipSystems(
-        SpacecraftWrapperInterface $wrapper,
-        DamageWrapper $damageWrapper,
-        int $huelleVorher,
-        InformationInterface $informations
-    ): bool {
-        $ship = $wrapper->get();
-        $systemsToDamage = ceil($huelleVorher * 6 / $ship->getMaxHull()) -
-            ceil($ship->getHull() * 6 / $ship->getMaxHull());
-
-        if ($systemsToDamage == 0) {
-            return false;
-        }
-
-        for ($i = 1; $i <= $systemsToDamage; $i++) {
-            $this->damageRandomShipSystem($wrapper, $damageWrapper, $informations);
-        }
-
-        return true;
-    }
-
-    private function destroyRandomShipSystem(SpacecraftWrapperInterface $wrapper, DamageWrapper $damageWrapper): ?string
+    private function damageHull(SpacecraftWrapperInterface $wrapper, DamageWrapper $damageWrapper, int $damage, InformationInterface $informations): void
     {
-        $healthySystems = $this->getHealthySystems($wrapper, $damageWrapper);
-        shuffle($healthySystems);
+        $spacecraft = $wrapper->get();
 
-        if ($healthySystems === []) {
-            return null;
+        if ($damageWrapper->isCrit()) {
+            $systemName = $this->systemDamage->destroyRandomShipSystem($wrapper, $damageWrapper);
+
+            if ($systemName !== null) {
+                $informations->addInformationf("- Kritischer Hüllen-Treffer zerstört System: %s", $systemName);
+            }
         }
-        $system = $healthySystems[0];
-        $system->setStatus(0);
-        $system->setMode(SpacecraftSystemModeEnum::MODE_OFF);
-        $this->spacecraftSystemManager->handleDestroyedSystem($wrapper, $healthySystems[0]->getSystemType());
+        $huelleVorher = $spacecraft->getHull();
+        $spacecraft->setHuell($huelleVorher - $damage);
+        $informations->addInformationf("- Hüllenschaden: %d - Status: %d", $damage, $spacecraft->getHull());
 
-        return $healthySystems[0]->getSystemType()->getDescription();
-    }
-
-    private function damageRandomShipSystem(
-        SpacecraftWrapperInterface $wrapper,
-        DamageWrapper $damageWrapper,
-        InformationInterface $informations,
-        ?int $percent = null
-    ): void {
-        $healthySystems = $this->getHealthySystems($wrapper, $damageWrapper);
-        shuffle($healthySystems);
-
-        if ($healthySystems !== []) {
-            $system = $healthySystems[0];
-
-            $this->damageShipSystem($wrapper, $system, $percent ?? random_int(1, 70), $informations);
-        }
-    }
-
-    /** @return array<SpacecraftSystemInterface>  */
-    private function getHealthySystems(SpacecraftWrapperInterface $wrapper, DamageWrapper $damageWrapper): array
-    {
-        return $wrapper->get()->getSystems()
-            ->filter(fn(SpacecraftSystemInterface $system): bool => $damageWrapper->canDamageSystem($system->getSystemType()))
-            ->filter(fn(SpacecraftSystemInterface $system): bool => $system->getStatus() > 0)
-            ->filter(fn(SpacecraftSystemInterface $system): bool => $system->getSystemType()->canBeDamaged())
-            ->toArray();
-    }
-
-    #[Override]
-    public function damageShipSystem(
-        SpacecraftWrapperInterface $wrapper,
-        SpacecraftSystemInterface $system,
-        int $dmg,
-        InformationInterface $informations
-    ): bool {
-        $status = $system->getStatus();
-        $systemName = $system->getSystemType()->getDescription();
-
-        if ($status > $dmg) {
-            $system->setStatus($status - $dmg);
-            $this->spacecraftSystemManager->handleDamagedSystem($wrapper, $system->getSystemType());
-            $informations->addInformation("- Folgendes System wurde beschädigt: " . $systemName);
-
-            return false;
-        } else {
-            $system->setStatus(0);
-            $system->setMode(SpacecraftSystemModeEnum::MODE_OFF);
-            $this->spacecraftSystemManager->handleDestroyedSystem($wrapper, $system->getSystemType());
-            $informations->addInformation("- Der Schaden zerstört folgendes System: " . $systemName);
-
-            return true;
+        if (!$this->systemDamage->checkForDamagedShipSystems(
+            $wrapper,
+            $damageWrapper,
+            $huelleVorher,
+            $informations
+        )) {
+            $this->systemDamage->damageRandomShipSystem(
+                $wrapper,
+                $damageWrapper,
+                $informations,
+                (int)ceil((100 * $damage * random_int(1, 5)) / $spacecraft->getMaxHull())
+            );
         }
     }
 }
