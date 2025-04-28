@@ -43,6 +43,9 @@ final class DeleteSpacecraft implements ActionControllerInterface
             $spacecraftIdInput = request::postString('spacecraftid');
             $reason = request::postString('reason');
 
+            $spacecraftIdInput = $spacecraftIdInput === false ? '' : $spacecraftIdInput;
+            $reason = $reason === false ? '' : $reason;
+
             if ($game->getUser()->isNpc() && $reason === '') {
                 $game->addInformation("Grund fehlt");
                 return;
