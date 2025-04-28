@@ -1090,6 +1090,16 @@
 <div style="margin-top: 20px;">
     <h2>Schiff Tools</h2>
     <br>
+    <form action="/npc/index.php" method="post" name="toolsform" id="toolsform">
+        <div>
+            <h2>Schiffe l&ouml;schen</h2>
+            Spacecraft IDs: <input type="text" size="20" name="spacecraftid" id="spacecraftid">
+            Grund: <input type="text" size="20" name="reason" id="reason">
+            <input type="submit" class="button" name="B_DELETE_SPACECRAFT" value="Schiff(e) l&ouml;schen" id="deleteshipbutton">
+            (Trennung mit Komma erm&ouml;glicht l&ouml;schen mehrerer Spacecrafts)
+        </div>
+    </form>
+    <br>
     <form action="/npc/index.php" method="get" style="display: inline;">
         <input type="hidden" name="SHOW_BUILDPLAN_CREATOR" value="1">
         <input type="submit" class="button" value="Bauplan erstellen">
