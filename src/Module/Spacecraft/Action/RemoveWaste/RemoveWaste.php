@@ -18,7 +18,7 @@ use Stu\Orm\Repository\NPCLogRepositoryInterface;
 
 final class RemoveWaste implements ActionControllerInterface
 {
-    public const string ACTION_IDENTIFIER = 'B_REMOVE_WASTE';
+    public const string ACTION_IDENTIFIER = 'B_REMOVE_WASTE_SPACECRAFT';
 
     /**
      * @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spaceCraftLoader
