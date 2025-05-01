@@ -1,4 +1,4 @@
-<form action="colony.php" method="post">
+<form action="{{ SHIP.getType.getModuleView.getPhpPage }}" method="post">
     <input type="hidden" name="id" value="{{ SPACECRAFT.getId }}" />
     <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
     {% block containment %}
