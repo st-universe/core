@@ -62,6 +62,10 @@ class StatusBar implements StatusBarInterface
     #[Override]
     public function render(): string
     {
+        if ($this->maxValue === 0 && $this->value === 0) {
+            return $this->getStatusBar(StatusBarColorEnum::STATUSBAR_GREY, 50);
+        }
+
         $pro = $this->maxValue === 0 ? 100 : max(0, @round((100 / $this->maxValue) * min($this->value, $this->maxValue)));
         $bar = $this->getStatusBar(
             $this->color,
