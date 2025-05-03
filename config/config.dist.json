@@ -49,7 +49,6 @@
     "temp_dir": "/tmp",
     "base_url": "https://change.me",
     "version": "dev",
-    "language": "de_DE",
     "user_avatar_path": "avatare/user/",
     "alliance_avatar_path": "avatare/alliance/",
     "hash_method": "sha256",
