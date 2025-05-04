@@ -35,7 +35,7 @@ class ColonyFunctionManagerTest extends StuTestCase
         $function = BuildingFunctionEnum::BASE_CAMP;
 
         $this->planetFieldRepository->shouldReceive('getCountByColonyAndBuildingFunctionAndState')
-            ->with($colony, [$function], [ColonyFunctionManager::STATE_ENABLED])
+            ->with($colony, [$function], [ColonyFunctionManager::STATE_ENABLED], [])
             ->once()
             ->andReturn(42);
 
@@ -57,12 +57,12 @@ class ColonyFunctionManagerTest extends StuTestCase
             ->andReturn($colonyId);
 
         $this->planetFieldRepository->shouldReceive('getCountByColonyAndBuildingFunctionAndState')
-            ->with($colony, [$function], [ColonyFunctionManager::STATE_ENABLED])
+            ->with($colony, [$function], [ColonyFunctionManager::STATE_ENABLED], [42])
             ->once()
             ->andReturn(0);
 
         static::assertFalse(
-            $this->subject->hasActiveFunction($colony, $function)
+            $this->subject->hasActiveFunction($colony, $function, true, [42])
         );
         static::assertFalse(
             $this->subject->hasActiveFunction($colony, $function)
@@ -76,7 +76,7 @@ class ColonyFunctionManagerTest extends StuTestCase
         $function = BuildingFunctionEnum::BASE_CAMP;
 
         $this->planetFieldRepository->shouldReceive('getCountByColonyAndBuildingFunctionAndState')
-            ->with($colony, [$function], [ColonyFunctionManager::STATE_DISABLED, ColonyFunctionManager::STATE_ENABLED])
+            ->with($colony, [$function], [ColonyFunctionManager::STATE_DISABLED, ColonyFunctionManager::STATE_ENABLED], [])
             ->once()
             ->andReturn(42);
 
