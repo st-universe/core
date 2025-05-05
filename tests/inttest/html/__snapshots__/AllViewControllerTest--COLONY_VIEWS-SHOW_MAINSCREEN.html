@@ -1236,10 +1236,10 @@
     <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
     <div style="width: 40vw;">
         <div class="">
-                <div id="shipinorbit" class="box">
+                <div id="shipinorbit" class="box" style="max-width: 100%; overflow-x: auto;">
             <div class="box_title">Schiffe im Orbit</div>
             <div class="box_body">
-                <ul id="shipselector">
+                <ul id="shipselector" style="max-width: 100%;">
                                                             
 <li>
   <table class="use" style="width: 100%;" onmouseover="shipSelectorHover(this);" onmouseout="shipSelectorHoverEnd(this);" onclick="shipSelectorChoose(this);">
@@ -1252,14 +1252,14 @@ updateSelectedSpacecraftId('77');"></a>
                 Aerie Zwo | Siedler 101
       </td>
     </tr>
-    <tr>
-      <td style="width: 20px; vertical-align: middle;">
+    <tr style="display: flex; flex-wrap: wrap; width: 100%;">
+      <td style="width: auto; min-width: 20px; vertical-align: middle; padding: 5px;">
               </td>
-      <td style="width: 120px; vertical-align: middle;">
+      <td style="width: 100px; vertical-align: middle;">
         <img src="/assets/ships/6501.png" title="Aerie">
 
       </td>
-      <td style="width: 150px;">
+      <td style="width: auto; min-width: 60px;  padding: 2px;">
         <table class="tcal">
           <tr>
             <th style="width: 20px; text-align: center;">
@@ -1271,15 +1271,17 @@ updateSelectedSpacecraftId('77');"></a>
           </tr>
         </table>
       </td>
-            <td style="width: 150px;">
+            <td style="width: auto; min-width: 60px; padding: 2px;">
                       </td>
-      <td style="width: 150px;">
+      <td style="width: auto; min-width: 60px; padding: 2px;">
                       </td>
-          </tr>
-  </table>
+      <td style="width: auto; min-width: 60px; padding: 2px;">
+                      </td>
+    </tr>
+
+      </table>
   <input type="hidden" id="selshipid" value="77">
-</li>
-                                    </ul>
+</li>                                    </ul>
                                                 <div style="width: 100%;">
                     <br>
                     <a href="javascript:void(0);" onclick="showTransfer(42, 'colony', document.getElementById('selshipid').value, 'ship', 1, 0);" onmouseover="cp('beamfrom','buttons/b_down2')" onmouseout="cp('beamfrom','buttons/b_down1')"><img src="/assets/buttons/b_down1.png" name="beamfrom" title="Von Schiff beamen"></a>
