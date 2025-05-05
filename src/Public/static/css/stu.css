@@ -2008,3 +2008,35 @@ div.userAvatar img {
   background-color: var(--color-37);
   border-color: var(--color-46);
 }
+
+div.plot-container {
+  display: grid;
+  grid-template-columns: auto 550px;
+  grid-gap: 30px;
+  width: 100%;
+}
+
+div.plot-details {
+  order: 2;
+}
+
+div.plot-kn {
+  order: 1;
+}
+
+@media (max-width: 1024px) {
+  div.plot-container {
+    display: flex;
+    flex-direction: column;
+    grid-gap: 0;
+  }
+
+  div.plot-details {
+    order: 1;
+    margin-bottom: 30px;
+  }
+
+  div.plot-kn {
+    order: 2;
+  }
+}

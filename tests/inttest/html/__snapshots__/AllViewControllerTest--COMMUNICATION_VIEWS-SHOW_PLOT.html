@@ -22,13 +22,12 @@
 </div>
 <br>
 <div id="result" style="display: none;">..</div>
-
 <form action="comm.php" method="post">
     <input type="hidden" name="SHOW_PLOT" value="1">
   <input type="hidden" name="plotid" value="9">
   <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
-  <div style="display: grid; grid-template-columns: auto 550px; grid-gap: 30px; width: 100%;">
-    <div>
+  <div class="plot-container">
+    <div class="plot-kn">
       <table>
     <tr>
                 <td>
@@ -109,7 +108,7 @@
             </tr>
 </table>
     </div>
-    <div>
+    <div class="plot-details">
       <div class="divhead">Beschreibung</div>
       <div class="divbody">
                 The Plot description
