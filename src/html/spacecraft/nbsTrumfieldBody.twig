@@ -6,6 +6,7 @@
 {% set targetEntityType = trumfield.getTransferEntityType.value %}
 <td style="width: 30px; text-align: center;"></td>
 <td style="width: 120px;">
+  {% if SPACECRAFT.displayNbsActions %}
   <div style="float:left; margin-right:4px;">
     <a href="javascript:void(0);"
       onclick="showTransfer({{ sourceId }}, '{{sourceEntityType}}', {{ trumfieldId }}, '{{ targetEntityType }}', 1, false);"
@@ -14,6 +15,7 @@
       <img src="/assets/buttons/b_up1.png" name="bfr_{{ trumfieldId }}" title="Vom Trümmerfeld hochbeamen" />
     </a>
   </div>
+  {% endif %}
 </td>
 <td style="width: 200px; background-color: #000000 !important;">
   {{ trumfieldImage(trumfield) }}
