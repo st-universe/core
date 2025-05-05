@@ -1,15 +1,14 @@
 {% from 'html/macros.twig' import userAvatar, pmWindow %}
-
 <form action="comm.php" method="post">
   {% set navigationMacro = 'plotNavigation' %}
   <input type="hidden" name="SHOW_PLOT" value="1" />
   <input type="hidden" name="plotid" value="{{ PLOT.getId }}" />
   <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
-  <div style="display: grid; grid-template-columns: auto 550px; grid-gap: 30px; width: 100%;">
-    <div>
+  <div class="plot-container">
+    <div class="plot-kn">
       {% include 'html/communication/kn.twig' %}
     </div>
-    <div>
+    <div class="plot-details">
       <div class="divhead">Beschreibung</div>
       <div class="divbody">
         {% autoescape false %}
