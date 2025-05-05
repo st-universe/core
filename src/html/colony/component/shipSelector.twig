@@ -15,8 +15,8 @@
         {{ ship.getName|bbcode }} | {{ ship.getUserName|bbcode }}
       </td>
     </tr>
-    <tr>
-      <td style="width: 20px; vertical-align: middle;">
+    <tr style="display: flex; flex-wrap: wrap; width: 100%;">
+      <td style="width: auto; min-width: 20px; vertical-align: middle; padding: 5px;">
         {% if STATION %}
         <a href="javascript:void(0);"
           onClick="actionToInnerContent('B_UNDOCK_SHIP', 'id={{ STATION.getId }}&target={{ shipId }}&sstr={{ SESSIONSTRING }}');">
@@ -24,10 +24,10 @@
         </a>
         {% endif %}
       </td>
-      <td style="width: 120px; vertical-align: middle;">
+      <td style="width: 100px; vertical-align: middle;">
         {{ spacecraftImageWithoutWarp(ship) }}
       </td>
-      <td style="width: 150px;">
+      <td style="width: auto; min-width: 60px;  padding: 2px;">
         <table class="tcal">
           <tr>
             <th style="width: 20px; text-align: center;">
@@ -44,10 +44,10 @@
       {% if ship.isDestroyed %}
       <td colspan="2"></td>
       {% else %}
-      <td style="width: 150px;">
+      <td style="width: auto; min-width: 60px; padding: 2px;">
         {% set shields = wrapper.getShieldSystemData %}
         {% if shields %}
-        <table class="tcal">
+        <table class="tcal" style="width: 100%;">
           <tr>
             <th style="width: 20px; text-align: center;">
               <img src="/assets/buttons/modul_2.png" title="Schilde" />
@@ -61,10 +61,10 @@
         </table>
         {% endif %}
       </td>
-      <td style="width: 150px;">
+      <td style="width: auto; min-width: 60px; padding: 2px;">
         {% set eps = wrapper.getEpsSystemData %}
         {% if eps %}
-        <table class="tcal">
+        <table class="tcal" style="width: 100%;">
           <tr>
             <th style="text-align: center; width: 20px;">
               <img src="/assets/buttons/modul_8.png" title="EPS" />
@@ -78,8 +78,26 @@
         </table>
         {% endif %}
       </td>
-      {% endif %}
+      <td style="width: auto; min-width: 60px; padding: 2px;">
+        {% set warpdrive = wrapper.getWarpDriveSystemData %}
+        {% if warpdrive %}
+        <table class="tcal" style="width: 100%;">
+          <tr>
+            <th style="text-align: center; width: 20px;">
+              <img src="/assets/buttons/modul_11.png" title="EPS" />
+            </th>
+            <td style="vertical-align: middle; text-align: center;">
+              {% autoescape false %}
+              {{ warpdrive.getWarpDriveStatusBar }}
+              {% endautoescape %}
+            </td>
+          </tr>
+        </table>
+        {% endif %}
+      </td>
     </tr>
+
+    {% endif %}
   </table>
   <input type="hidden" id="selshipid" value="{{ shipId }}" />
 </li>
