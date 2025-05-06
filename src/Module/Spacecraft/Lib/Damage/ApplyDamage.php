@@ -60,7 +60,7 @@ final class ApplyDamage implements ApplyDamageInterface
                 $informations->addInformation($disablemessage);
             }
         } else {
-
+            $informations->addInformation("- Hüllenschaden: " . $damage);
             $informations->addInformation("-- Das Schiff wurde zerstört!");
             $spacecraft->setIsDestroyed(true);
         }
