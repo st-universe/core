@@ -91,48 +91,53 @@ class AssaultPhalanxBehaviour implements PirateBehaviourInterface
         $closestPhalanx = current($filteredTargets);
         $phalanxWrapper = $this->spacecraftWrapperFactory->wrapStation($closestPhalanx);
 
-        if ($this->pirateNavigation->navigateToTarget($fleet, $closestPhalanx->getLocation())) {
+        if (!$this->pirateNavigation->navigateToTarget($fleet, $closestPhalanx->getLocation())) {
+            return null;
+        }
 
-            // take down shields only
-            while ($closestPhalanx->isShielded()) {
-                $this->spacecraftAttackCore->attack($leadWrapper, $phalanxWrapper, true, $isFleetFight, $informations);
-            }
+        // take down shields only
+        while ($closestPhalanx->isShielded()) {
+            $this->spacecraftAttackCore->attack($leadWrapper, $phalanxWrapper, true, $isFleetFight, $informations);
+        }
 
-            $boardingWrapper = $this->getBoardingPirateWrapper($fleet);
-            $boardingShip = $boardingWrapper->get();
+        if ($closestPhalanx->isDestroyed()) {
+            return null;
+        }
 
-            $this->spacecraftSystemManager->deactivate($boardingWrapper, SpacecraftSystemTypeEnum::SHIELDS, true);
+        $boardingWrapper = $this->getBoardingPirateWrapper($fleet);
+        $boardingShip = $boardingWrapper->get();
 
-            $combatGroupAttacker = $this->closeCombatUtil->getCombatGroup($boardingShip);
-            $combatGroupDefender = $this->closeCombatUtil->getCombatGroup($closestPhalanx);
+        $this->spacecraftSystemManager->deactivate($boardingWrapper, SpacecraftSystemTypeEnum::SHIELDS, true);
 
-            $messages = $this->messageFactory->createMessageCollection();
-            $message = $this->messageFactory->createMessage(UserEnum::USER_NPC_KAZON, $closestPhalanx->getUser()->getId(), [sprintf(
-                'Das Piratenschiff %s entsendet ein Enterkommando auf die %s',
-                $boardingShip->getName(),
-                $closestPhalanx->getName()
-            )]);
+        $combatGroupAttacker = $this->closeCombatUtil->getCombatGroup($boardingShip);
+        $combatGroupDefender = $this->closeCombatUtil->getCombatGroup($closestPhalanx);
 
-            $messages->add($message);
+        $messages = $this->messageFactory->createMessageCollection();
+        $message = $this->messageFactory->createMessage(UserEnum::USER_NPC_KAZON, $closestPhalanx->getUser()->getId(), [sprintf(
+            'Das Piratenschiff %s entsendet ein Enterkommando auf die %s',
+            $boardingShip->getName(),
+            $closestPhalanx->getName()
+        )]);
 
-            while (!empty($combatGroupAttacker) && !empty($combatGroupDefender)) {
+        $messages->add($message);
 
-                $this->logger->logf('    %d vs %d', count($combatGroupAttacker), count($combatGroupDefender));
+        while (!empty($combatGroupAttacker) && !empty($combatGroupDefender)) {
 
-                $this->boardShip->cycleKillRound(
-                    $combatGroupAttacker,
-                    $combatGroupDefender,
-                    $boardingWrapper,
-                    $phalanxWrapper,
-                    $messages
-                );
-            }
+            $this->logger->logf('    %d vs %d', count($combatGroupAttacker), count($combatGroupDefender));
 
-            $this->sendPms(
-                $closestPhalanx->getSectorString(),
+            $this->boardShip->cycleKillRound(
+                $combatGroupAttacker,
+                $combatGroupDefender,
+                $boardingWrapper,
+                $phalanxWrapper,
                 $messages
             );
         }
+
+        $this->sendPms(
+            $closestPhalanx->getSectorString(),
+            $messages
+        );
 
         return null;
     }
