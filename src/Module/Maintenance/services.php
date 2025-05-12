@@ -25,6 +25,7 @@ return [
     TopFlightsReward::class => autowire(TopFlightsReward::class),
     MaintenanceHandlerInterface::class => [
         get(DatabaseBackup::class),
+        get(SpacecraftCorrectorHandler::class),
         get(IdleUserWarning::class),
         get(IdleUserDeletion::class),
         get(CreateInterstellarMedia::class),
@@ -35,7 +36,6 @@ return [
         get(CorruptFleetDeletion::class),
         get(OldFlightSignatureDeletion::class),
         get(ColonyCorrectorHandler::class),
-        get(SpacecraftCorrectorHandler::class),
         get(EmptyPlotDeletion::class),
         get(OldTradeLicenseDeletion::class),
         get(TopFlightsReward::class),
