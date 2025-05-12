@@ -35,7 +35,7 @@ return [
         get(CorruptFleetDeletion::class),
         get(OldFlightSignatureDeletion::class),
         get(ColonyCorrectorHandler::class),
-        get(SpacecraftCorrectorHandler::class),
+        //get(SpacecraftCorrectorHandler::class),
         get(EmptyPlotDeletion::class),
         get(OldTradeLicenseDeletion::class),
         get(TopFlightsReward::class),
