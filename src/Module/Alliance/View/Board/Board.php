@@ -25,14 +25,12 @@ final class Board implements ViewControllerInterface
         $alliance = $game->getUser()->getAlliance();
 
         if ($alliance === null) {
-            throw new AccessViolationException();
+            throw new AccessViolationException("user not in alliance");
         }
 
         $allianceId = $alliance->getId();
 
-        /** @var AllianceBoardInterface $board */
         $board = $this->allianceBoardRepository->find($this->boardRequest->getBoardId());
-
         if ($board === null || $board->getAllianceId() !== $allianceId) {
             throw new AccessViolationException();
         }

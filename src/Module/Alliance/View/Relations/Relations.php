@@ -32,7 +32,7 @@ final class Relations implements ViewControllerInterface
         $alliance = $user->getAlliance();
 
         if ($alliance === null) {
-            throw new AccessViolationException();
+            throw new AccessViolationException("user not in alliance");
         }
 
         $allianceId = $alliance->getId();

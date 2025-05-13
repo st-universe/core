@@ -25,6 +25,9 @@ final class BoardSettings implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();
+        if ($alliance === null) {
+            throw new AccessViolationException("user not in alliance");
+        }
 
         $board = $this->allianceBoardRepository->find($this->boardSettingsRequest->getBoardId());
         if ($board === null || $board->getAllianceId() !== $alliance->getId()) {

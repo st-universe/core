@@ -287,7 +287,7 @@ class PlanetField implements PlanetFieldInterface
         $sandbox = $this->sandbox;
 
         if ($colony === null && $sandbox === null) {
-            throw new RuntimeException('this should not happen');
+            throw new RuntimeException('Both colony and sandbox are null. Ensure one is set before calling getHost().');
         }
 
         return $colony ?? $sandbox;
