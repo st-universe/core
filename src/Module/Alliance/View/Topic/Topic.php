@@ -34,7 +34,7 @@ final class Topic implements ViewControllerInterface
         $alliance = $game->getUser()->getAlliance();
 
         if ($alliance === null) {
-            throw new AccessViolationException();
+            throw new AccessViolationException("user not in alliance");
         }
 
         $topicId = $this->topicRequest->getTopicId();

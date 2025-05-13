@@ -24,6 +24,10 @@ final class NewPost implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();
+        if ($alliance === null) {
+            throw new AccessViolationException("user not in alliance");
+        }
+
         $boardId = $this->newPostRequest->getBoardId();
         $topicId = $this->newPostRequest->getTopicId();
         $allianceId = $alliance->getId();

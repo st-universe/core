@@ -25,9 +25,8 @@ final class Edit implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();
-
         if ($alliance === null) {
-            throw new AccessViolationException();
+            throw new AccessViolationException("user not in alliance");
         }
 
         if (!$this->allianceActionManager->mayEdit($alliance, $game->getUser())) {
