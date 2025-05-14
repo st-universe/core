@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250426182427 extends AbstractMigration
+final class Version20250514184135 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -28,7 +28,7 @@ final class Version20250426182427 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_31F4A412A76ED395 ON stu_alliance_posts (user_id)');
         $this->addSql('CREATE INDEX topic_date_idx ON stu_alliance_posts (topic_id, date)');
         $this->addSql('CREATE INDEX board_date_idx ON stu_alliance_posts (board_id, date)');
-        $this->addSql('CREATE TABLE stu_alliance_settings (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, alliance_id INTEGER NOT NULL, setting VARCHAR(255) NOT NULL, value VARCHAR(255) NOT NULL, CONSTRAINT FK_39FF05F710A0EA3F FOREIGN KEY (alliance_id) REFERENCES stu_alliances (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE stu_alliance_settings (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, alliance_id INTEGER NOT NULL, setting VARCHAR(255) NOT NULL, value VARCHAR(255) NOT NULL, CONSTRAINT FK_39FF05F710A0EA3F FOREIGN KEY (alliance_id) REFERENCES stu_alliances (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_39FF05F710A0EA3F ON stu_alliance_settings (alliance_id)');
         $this->addSql('CREATE TABLE stu_alliance_topics (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, board_id INTEGER NOT NULL, alliance_id INTEGER NOT NULL, name VARCHAR(255) NOT NULL, last_post_date INTEGER NOT NULL, user_id INTEGER NOT NULL, sticky BOOLEAN NOT NULL, CONSTRAINT FK_3F9E856DE7EC5785 FOREIGN KEY (board_id) REFERENCES stu_alliance_boards (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_3F9E856D10A0EA3F FOREIGN KEY (alliance_id) REFERENCES stu_alliances (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_3F9E856DA76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_3F9E856DE7EC5785 ON stu_alliance_topics (board_id)');
@@ -559,7 +559,7 @@ final class Version20250426182427 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_D68CF8C953C55F64 ON stu_wormhole_entry (map_id)');
         $this->addSql('CREATE INDEX IDX_D68CF8C9D0952FA5 ON stu_wormhole_entry (system_id)');
         $this->addSql('CREATE INDEX IDX_D68CF8C9434BEAA5 ON stu_wormhole_entry (system_map_id)');
-        $this->addSql('CREATE TABLE stu_wormhole_restrictions (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, mode INTEGER DEFAULT NULL, wormhole_entry_id INTEGER DEFAULT NULL, user_id INTEGER DEFAULT NULL, CONSTRAINT FK_76C7B8E0BE56147A FOREIGN KEY (wormhole_entry_id) REFERENCES stu_wormhole_entry (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_76C7B8E0A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE stu_wormhole_restrictions (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, mode INTEGER DEFAULT NULL, wormhole_entry_id INTEGER DEFAULT NULL, user_id INTEGER DEFAULT NULL, CONSTRAINT FK_76C7B8E0BE56147A FOREIGN KEY (wormhole_entry_id) REFERENCES stu_wormhole_entry (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_76C7B8E0A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_76C7B8E0BE56147A ON stu_wormhole_restrictions (wormhole_entry_id)');
         $this->addSql('CREATE INDEX IDX_76C7B8E0A76ED395 ON stu_wormhole_restrictions (user_id)');
     }
