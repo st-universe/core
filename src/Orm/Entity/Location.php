@@ -153,6 +153,13 @@ abstract class Location implements LocationInterface
     }
 
     #[Override]
+    public function getSpacecraftsWithoutCloak(): Collection
+    {
+        return $this->spacecrafts
+            ->filter(fn(SpacecraftInterface $spacecraft): bool => !$spacecraft->hasCloak());
+    }
+
+    #[Override]
     public function getSpacecraftsWithoutVacation(): Collection
     {
         return $this->spacecrafts
