@@ -33,7 +33,7 @@ class AllianceSettings implements AllianceSettingsInterface
     private string $value = '';
 
     #[ManyToOne(targetEntity: 'Alliance')]
-    #[JoinColumn(name: 'alliance_id', referencedColumnName: 'id')]
+    #[JoinColumn(name: 'alliance_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private AllianceInterface $alliance;
 
     #[Override]
