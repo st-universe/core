@@ -106,6 +106,14 @@ class Station extends Spacecraft implements StationInterface
     }
 
     #[Override]
+    public function resetConstructionProgress(): StationInterface
+    {
+        $this->constructionProgress = null;
+
+        return $this;
+    }
+
+    #[Override]
     public function getModules(): array
     {
         $constructionProgress = $this->getConstructionProgress();

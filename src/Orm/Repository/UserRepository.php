@@ -57,10 +57,10 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         int $idleTimeThreshold,
         int $idleTimeVacationThreshold,
         array $ignoreIds
-    ): iterable {
+    ): array {
         return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT u FROM %s u
+                'SELECT u FROM %s u INDEX BY u.id
                  WHERE u.id > :firstUserId
                  AND u.id NOT IN (:ignoreIds)
                  AND u.delmark != :deletionForbidden
@@ -86,10 +86,10 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
     #[Override]
     public function getIdleRegistrations(
         int $idleTimeThreshold
-    ): iterable {
+    ): array {
         return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT u FROM %s u
+                'SELECT u FROM %s u INDEX BY u.id
                  WHERE (u.state = :newUser OR u.state = :smsVerification)
                  AND u.creation < :idleTimeThreshold',
                 User::class

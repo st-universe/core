@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Deletion\Handler;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Mockery;
 use Mockery\MockInterface;
 use Override;
@@ -14,15 +15,12 @@ use Stu\StuTestCase;
 
 class CrewDeletionHandlerTest extends StuTestCase
 {
-    /**
-     * @var null|MockInterface|CrewAssignmentRepositoryInterface
-     */
+    /** @var MockInterface&CrewAssignmentRepositoryInterface */
     private $shipCrewRepository;
-
-    /**
-     * @var null|MockInterface|CrewRepositoryInterface
-     */
+    /** @var MockInterface&CrewRepositoryInterface */
     private $crewRepository;
+    /** @var MockInterface&EntityManagerInterface */
+    private $entityManager;
 
     private PlayerDeletionHandlerInterface $handler;
 
@@ -31,10 +29,12 @@ class CrewDeletionHandlerTest extends StuTestCase
     {
         $this->shipCrewRepository = $this->mock(CrewAssignmentRepositoryInterface::class);
         $this->crewRepository = $this->mock(CrewRepositoryInterface::class);
+        $this->entityManager = $this->mock(EntityManagerInterface::class);
 
         $this->handler = new CrewDeletionHandler(
             $this->shipCrewRepository,
-            $this->crewRepository
+            $this->crewRepository,
+            $this->entityManager
         );
     }
 
@@ -53,6 +53,10 @@ class CrewDeletionHandlerTest extends StuTestCase
 
         $this->crewRepository->shouldReceive('truncateByUser')
             ->with(42)
+            ->once();
+
+        $this->entityManager->shouldReceive('flush')
+            ->withNoArgs()
             ->once();
 
         $this->handler->delete($user);
