@@ -48,7 +48,7 @@ final class ShowModuleScreen implements ViewControllerInterface
 
         $buildplanHangar = $this->buildplanHangarRepository->getByRump($rump->getId());
         if ($buildplanHangar !== null) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $moduleSelectors = [];

@@ -20,27 +20,27 @@ use Stu\StuTestCase;
 class PlayerDeletionTest extends StuTestCase
 {
     /**
-     * @var null|MockInterface|UserRepositoryInterface
+     * @var MockInterface|UserRepositoryInterface
      */
     private $userRepository;
 
     /**
-     * @var null|MockInterface|StuConfigInterface
+     * @var MockInterface|StuConfigInterface
      */
     private $config;
 
     /**
-     * @var null|MockInterface|LoggerUtilInterface
+     * @var MockInterface|LoggerUtilInterface
      */
     private $loggerUtil;
 
     /**
-     * @var null|MockInterface|Parser
+     * @var MockInterface|Parser
      */
     private $bbCodeParser;
 
     /**
-     * @var null|MockInterface|PlayerDeletionHandlerInterface
+     * @var MockInterface|PlayerDeletionHandlerInterface
      */
     private $deletionHandler;
 
@@ -81,10 +81,10 @@ class PlayerDeletionTest extends StuTestCase
 
         $this->userRepository->shouldReceive('getIdleRegistrations')
             ->with(
-                Mockery::on(fn ($value): bool => $value === time() - PlayerDeletion::USER_IDLE_REGISTRATION)
+                Mockery::on(fn($value): bool => $value === time() - PlayerDeletion::USER_IDLE_REGISTRATION)
             )
             ->once()
-            ->andReturn([$idlePlayer]);
+            ->andReturn([111 => $idlePlayer]);
 
         $this->config->shouldReceive('getGameSettings->getAdminIds')
             ->withNoArgs()
@@ -92,14 +92,14 @@ class PlayerDeletionTest extends StuTestCase
 
         $this->userRepository->shouldReceive('getDeleteable')
             ->with(
-                Mockery::on(fn ($value): bool => $value === time() - PlayerDeletion::USER_IDLE_TIME),
-                Mockery::on(fn ($value): bool => $value === time() - PlayerDeletion::USER_IDLE_TIME_VACATION),
+                Mockery::on(fn($value): bool => $value === time() - PlayerDeletion::USER_IDLE_TIME),
+                Mockery::on(fn($value): bool => $value === time() - PlayerDeletion::USER_IDLE_TIME_VACATION),
                 [101]
             )
             ->once()
-            ->andReturn([$player]);
+            ->andReturn([222 => $player]);
 
-        $deletedPlayers = [1 => $idlePlayer, 2 => $player];
+        $deletedPlayers = [111 => $idlePlayer, 222 => $player];
 
         foreach ($deletedPlayers as $key => $player) {
             $player->shouldReceive('getId')

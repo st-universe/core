@@ -9,7 +9,6 @@ use Override;
 use Stu\Lib\General\EntityWithHrefInterface;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\StuTime;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\PrivateMessageInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
@@ -18,6 +17,9 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class PrivateMessageSender implements PrivateMessageSenderInterface
 {
+    /** @var array<int> */
+    public static array $blockedUserIds = [];
+
     public function __construct(
         private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
         private PrivateMessageRepositoryInterface $privateMessageRepository,
@@ -46,14 +48,15 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
             return;
         }
 
+        if (in_array($recipientId, self::$blockedUserIds)) {
+            return;
+        }
+
         $text = $information instanceof InformationWrapper ? $information->getInformationsAsString() : $information;
 
-        $recipient = $this->userRepository->find($recipientId);
-        $sender = $this->userRepository->find($senderId);
+        $sender = $this->getSender($senderId);
 
-        if ($sender === null) {
-            throw new InvalidArgumentException(sprintf('Sender with id %d does not exist', $senderId));
-        }
+        $recipient = $this->userRepository->find($recipientId);
         if ($recipient === null) {
             throw new InvalidArgumentException(sprintf('Recipient with id %d does not exist', $recipientId));
         }
@@ -70,7 +73,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
             !$isRead
         );
 
-        if ($senderId != UserEnum::USER_NOONE) {
+        if ($sender->isContactable()) {
             $this->createPrivateMessage(
                 $recipient,
                 $sender,
@@ -84,13 +87,25 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
         }
     }
 
-    private function getHref(null|string|EntityWithHrefInterface $href): ?string
+    private function getSender(int $senderId): UserInterface
     {
-        if ($href instanceof EntityWithHrefInterface) {
-            return $href->getHref();
+        if (in_array($senderId, self::$blockedUserIds)) {
+            return $this->userRepository->getFallbackUser();
         }
 
-        return $href !== null ? $href : null;
+        $sender = $this->userRepository->find($senderId);
+        if ($sender === null) {
+            throw new InvalidArgumentException(sprintf('Sender with id %d does not exist', $senderId));
+        }
+
+        return $sender;
+    }
+
+    private function getHref(null|string|EntityWithHrefInterface $href): ?string
+    {
+        return $href instanceof EntityWithHrefInterface
+            ? $href->getHref()
+            : $href;
     }
 
     #[Override]
@@ -153,17 +168,15 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
             $this->emailNotificationSender->sendNotification($sender->getName(), $text, $recipient);
         }
 
-        $pm = $this->privateMessageRepository->prototype();
-        $pm->setDate($time);
-        $pm->setCategory($folder);
-        $pm->setText($text);
-        $pm->setHref($href);
-        $pm->setRecipient($recipient);
-        $pm->setSender($sender);
-        $pm->setNew($new);
-        if ($inboxPm !== null) {
-            $pm->setInboxPm($inboxPm);
-        }
+        $pm = $this->privateMessageRepository->prototype()
+            ->setDate($time)
+            ->setCategory($folder)
+            ->setText($text)
+            ->setHref($href)
+            ->setRecipient($recipient)
+            ->setSender($sender)
+            ->setNew($new)
+            ->setInboxPm($inboxPm);
 
         $this->privateMessageRepository->save($pm);
 

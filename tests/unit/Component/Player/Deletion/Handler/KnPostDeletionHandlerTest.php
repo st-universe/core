@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Component\Player\Deletion\Handler;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Mockery\MockInterface;
 use Override;
 use Stu\Component\Player\Deletion\Handler\KnPostDeletionHandler;
@@ -16,10 +17,11 @@ use Stu\StuTestCase;
 class KnPostDeletionHandlerTest extends StuTestCase
 {
     /** @var MockInterface&KnPostRepositoryInterface */
-    private MockInterface $knPostRepository;
-
+    private $knPostRepository;
     /** @var MockInterface&UserRepositoryInterface */
-    private MockInterface $userRepository;
+    private $userRepository;
+    /** @var MockInterface&EntityManagerInterface */
+    private $entityManager;
 
     private KnPostDeletionHandler $subject;
 
@@ -28,10 +30,12 @@ class KnPostDeletionHandlerTest extends StuTestCase
     {
         $this->knPostRepository = $this->mock(KnPostRepositoryInterface::class);
         $this->userRepository = $this->mock(UserRepositoryInterface::class);
+        $this->entityManager = $this->mock(EntityManagerInterface::class);
 
         $this->subject = new KnPostDeletionHandler(
             $this->knPostRepository,
             $this->userRepository,
+            $this->entityManager
         );
     }
 
@@ -72,6 +76,10 @@ class KnPostDeletionHandlerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($userName);
+
+        $this->entityManager->shouldReceive('detach')
+            ->with($knPost)
+            ->once();
 
         $this->subject->delete($user);
     }

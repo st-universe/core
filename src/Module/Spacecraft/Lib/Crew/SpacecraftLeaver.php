@@ -69,34 +69,35 @@ final class SpacecraftLeaver implements SpacecraftLeaverInterface
     }
 
     #[Override]
-    public function dumpCrewman(CrewAssignmentInterface $shipCrew, string $message): string
+    public function dumpCrewman(CrewAssignmentInterface $crewAssignment, string $message): string
     {
-        $ship = $shipCrew->getSpacecraft();
-        if ($ship === null) {
+        $spacecraft = $crewAssignment->getSpacecraft();
+        if ($spacecraft === null) {
             throw new RuntimeException('can only dump crewman on ship');
         }
 
         //create pods entity
-        $pods = $this->launchEscapePods->launch($ship);
+        $pods = $this->launchEscapePods->launch($spacecraft);
 
         if ($pods == null) {
-            $crew = $shipCrew->getCrew();
-            $this->shipCrewRepository->delete($shipCrew);
+            $crew = $crewAssignment->getCrew();
+            $this->shipCrewRepository->delete($crewAssignment);
             $this->crewRepository->delete($crew);
 
             $survivalMessage = _('Der Crewman wurde exekutiert!');
         } else {
 
             //transfer crewman into pods
-            $shipCrew->setSpacecraft($pods);
-            $this->shipCrewRepository->save($shipCrew);
+            $crewAssignment->setSpacecraft($pods);
+            $spacecraft->getCrewAssignments()->removeElement($crewAssignment);
+            $this->shipCrewRepository->save($crewAssignment);
 
             $survivalMessage = _('Der Crewman hat das Schiff in einer Rettungskapsel verlassen!');
         }
 
         $this->sendPmToOwner(
-            $ship->getUser(),
-            $shipCrew->getUser(),
+            $spacecraft->getUser(),
+            $crewAssignment->getUser(),
             $message,
             $survivalMessage
         );

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Communication\Action\AdminDeleteKnPost;
 
 use Override;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\KnPostInterface;
@@ -24,14 +24,14 @@ final class AdminDeleteKnPost implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         if (!$game->isAdmin()) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
         $admin = $game->getUser();
 
         /** @var KnPostInterface|null $post */
         $post = $this->knPostRepository->find($this->deleteKnPostRequest->getKnId());
         if (!$post) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
 
