@@ -207,4 +207,9 @@ interface UserInterface
     public function getReferer(): ?UserRefererInterface;
 
     public function setReferer(?UserRefererInterface $referer): UserInterface;
+
+    /**
+     * @return Collection<int, CrewAssignmentInterface>
+     */
+    public function getCrewAssignments(): Collection;
 }

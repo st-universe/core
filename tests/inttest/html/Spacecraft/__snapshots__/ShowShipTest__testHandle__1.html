@@ -86,6 +86,12 @@
             <div style="margin-top: 5px">0</div>
                     </div>
     </a>
+            <a href="pm.php?pmcat=4784">
+        <div style="width: 30px; height: 100%; margin: 7px 5px 7px 5px; text-align: center; float: left" class="action">
+                                    <img src="/assets/buttons/pmnavlet_7_0.png" width="30" height="30" id="newpm7" title="Stationen" onmouseover="cp(this.id,'buttons/pmnavlet_7_1', 'png')" onmouseout="cp(this.id,'buttons/pmnavlet_7_0', 'png')">
+            <div style="margin-top: 5px">0</div>
+                    </div>
+    </a>
             <a href="pm.php?pmcat=4780">
         <div style="width: 30px; height: 100%; margin: 7px 5px 7px 5px; text-align: center; float: left" class="action">
                                     <img src="/assets/buttons/pmnavlet_3_0.png" width="30" height="30" id="newpm3" title="Kolonien" onmouseover="cp(this.id,'buttons/pmnavlet_3_1', 'png')" onmouseout="cp(this.id,'buttons/pmnavlet_3_0', 'png')">
@@ -172,6 +178,13 @@
     <div class="navigation_item border_box " onmouseover="cp('nav_item_ships','navigation/menu_ships1', 'png')" onmouseout="cp('nav_item_ships','navigation/menu_ships0', 'png')">
         <img class="navitem_img" src="/assets/navigation/menu_ships0.png" id="nav_item_ships" title="Schiffe">
         <div class="navitem_title">Schiffe</div>
+    </div>
+</a>
+
+<a class="navitem_link" href="station.php" onclick="if(event.button === 0) { switchView('station', 'Stationen', 'station.php'); event.preventDefault(); }">
+    <div class="navigation_item border_box " onmouseover="cp('nav_item_station','navigation/menu_station1', 'png')" onmouseout="cp('nav_item_station','navigation/menu_station0', 'png')">
+        <img class="navitem_img" src="/assets/navigation/menu_station0.png" id="nav_item_station" title="Stationen">
+        <div class="navitem_title">Stationen</div>
     </div>
 </a>
 
