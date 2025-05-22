@@ -4,6 +4,7 @@ namespace Stu\Module\Spacecraft\Lib\Battle\AlertDetection;
 
 use Doctrine\Common\Collections\Collection;
 use Override;
+use Stu\Component\Game\TimeConstants;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Module\Control\StuTime;
@@ -11,6 +12,7 @@ use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\UserInterface;
 
+//TODO convert conditions to implementations of SkipConditionInterface
 class SkipDetection implements SkipDetectionInterface
 {
     public function __construct(
@@ -62,6 +64,7 @@ class SkipDetection implements SkipDetectionInterface
         if ($holdingWeb !== null && $holdingWeb->isFinished()) {
             return true;
         }
+
         return $this->skipDueToPirateProtection(
             $incomingShipUser,
             $alertedSpacecraft
@@ -73,12 +76,19 @@ class SkipDetection implements SkipDetectionInterface
         SpacecraftInterface $alertedSpacecraft
     ): bool {
 
+        $time = $this->stuTime->time();
+
+        //pirates don't attack new players
+        if ($incomingShipUser->getCreationDate() > $time - TimeConstants::EIGHT_WEEKS_IN_SECONDS) {
+            return true;
+        }
+
         //pirates don't attack if user is protected
         $pirateWrath = $incomingShipUser->getPirateWrath();
         if (
             $alertedSpacecraft->getUserId() === UserEnum::USER_NPC_KAZON
             && $pirateWrath !== null
-            && $pirateWrath->getProtectionTimeout() > $this->stuTime->time()
+            && $pirateWrath->getProtectionTimeout() > $time
         ) {
             return true;
         }
@@ -87,6 +97,6 @@ class SkipDetection implements SkipDetectionInterface
         $pirateWrath = $alertedSpacecraft->getUser()->getPirateWrath();
         return $incomingShipUser->getId() === UserEnum::USER_NPC_KAZON
             && $pirateWrath !== null
-            && $pirateWrath->getProtectionTimeout() > $this->stuTime->time();
+            && $pirateWrath->getProtectionTimeout() > $time;
     }
 }
