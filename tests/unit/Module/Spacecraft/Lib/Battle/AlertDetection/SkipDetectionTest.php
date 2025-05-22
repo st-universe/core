@@ -261,6 +261,62 @@ class SkipDetectionTest extends StuTestCase
         $this->assertEmpty($usersToInformAboutTrojanHorse);
     }
 
+    public function testIsSkippedExpectTrueWhenAlertIsPirateAndNewUser(): void
+    {
+        $usersToInformAboutTrojanHorse = new ArrayCollection();
+        $alertUser = $this->mock(UserInterface::class);
+        $incomingShipUser = $this->mock(UserInterface::class);
+        $unfinishedWeb = $this->mock(TholianWebInterface::class);
+
+        $incomingShipUser->shouldReceive('getCreationDate')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(1);
+
+        $this->stuTime->shouldReceive('time')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(4_838_400);
+
+        $this->incomingShip->shouldReceive('getUser')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($incomingShipUser);
+
+        $this->alertedShip->shouldReceive('getUser')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($alertUser);
+        $this->alertedShip->shouldReceive('getAlertState')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(SpacecraftAlertStateEnum::ALERT_RED);
+        $this->alertedShip->shouldReceive('getHoldingWeb')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($unfinishedWeb);
+
+        $unfinishedWeb->shouldReceive('isFinished')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+
+        $this->playerRelationDeterminator->shouldReceive('isFriend')
+            ->with($alertUser, $incomingShipUser)
+            ->once()
+            ->andReturn(false);
+
+        $result = $this->subject->isSkipped(
+            $this->incomingShip,
+            $this->alertedShip,
+            null,
+            $usersToInformAboutTrojanHorse
+        );
+
+        $this->assertTrue($result);
+        $this->assertEmpty($usersToInformAboutTrojanHorse);
+    }
+
     public function testIsSkippedExpectTrueWhenAlertIsPirateAndProtectionExists(): void
     {
         $usersToInformAboutTrojanHorse = new ArrayCollection();
@@ -269,6 +325,10 @@ class SkipDetectionTest extends StuTestCase
         $unfinishedWeb = $this->mock(TholianWebInterface::class);
         $pirateWrath = $this->mock(PirateWrathInterface::class);
 
+        $incomingShipUser->shouldReceive('getCreationDate')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(161_642);
         $incomingShipUser->shouldReceive('getPirateWrath')
             ->withNoArgs()
             ->once()
@@ -277,11 +337,11 @@ class SkipDetectionTest extends StuTestCase
         $pirateWrath->shouldReceive('getProtectionTimeout')
             ->withNoArgs()
             ->once()
-            ->andReturn(43);
+            ->andReturn(5_000_043);
         $this->stuTime->shouldReceive('time')
             ->withNoArgs()
             ->once()
-            ->andReturn(42);
+            ->andReturn(5_000_042);
 
         $this->incomingShip->shouldReceive('getUser')
             ->withNoArgs()
@@ -334,6 +394,10 @@ class SkipDetectionTest extends StuTestCase
         $unfinishedWeb = $this->mock(TholianWebInterface::class);
         $pirateWrath = $this->mock(PirateWrathInterface::class);
 
+        $incomingShipUser->shouldReceive('getCreationDate')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(161_642);
         $incomingShipUser->shouldReceive('getPirateWrath')
             ->withNoArgs()
             ->once()
@@ -351,11 +415,11 @@ class SkipDetectionTest extends StuTestCase
         $pirateWrath->shouldReceive('getProtectionTimeout')
             ->withNoArgs()
             ->once()
-            ->andReturn(43);
+            ->andReturn(5_000_043);
         $this->stuTime->shouldReceive('time')
             ->withNoArgs()
             ->once()
-            ->andReturn(42);
+            ->andReturn(5_000_042);
 
         $this->incomingShip->shouldReceive('getUser')
             ->withNoArgs()
@@ -406,6 +470,10 @@ class SkipDetectionTest extends StuTestCase
         $unfinishedWeb = $this->mock(TholianWebInterface::class);
         $pirateWrath = $this->mock(PirateWrathInterface::class);
 
+        $incomingShipUser->shouldReceive('getCreationDate')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(161_642);
         $incomingShipUser->shouldReceive('getPirateWrath')
             ->withNoArgs()
             ->once()
@@ -423,11 +491,11 @@ class SkipDetectionTest extends StuTestCase
         $pirateWrath->shouldReceive('getProtectionTimeout')
             ->withNoArgs()
             ->once()
-            ->andReturn(42);
+            ->andReturn(5_000_042);
         $this->stuTime->shouldReceive('time')
             ->withNoArgs()
             ->once()
-            ->andReturn(42);
+            ->andReturn(5_000_042);
 
         $this->incomingShip->shouldReceive('getUser')
             ->withNoArgs()
@@ -477,6 +545,10 @@ class SkipDetectionTest extends StuTestCase
         $incomingShipUser = $this->mock(UserInterface::class);
         $unfinishedWeb = $this->mock(TholianWebInterface::class);
 
+        $incomingShipUser->shouldReceive('getCreationDate')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(161_642);
         $incomingShipUser->shouldReceive('getPirateWrath')
             ->withNoArgs()
             ->once()
@@ -490,6 +562,11 @@ class SkipDetectionTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(null);
+
+        $this->stuTime->shouldReceive('time')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(5_000_042);
 
         $this->incomingShip->shouldReceive('getUser')
             ->withNoArgs()
@@ -540,6 +617,10 @@ class SkipDetectionTest extends StuTestCase
         $unfinishedWeb = $this->mock(TholianWebInterface::class);
         $pirateWrath = $this->mock(PirateWrathInterface::class);
 
+        $incomingShipUser->shouldReceive('getCreationDate')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(161_642);
         $incomingShipUser->shouldReceive('getPirateWrath')
             ->withNoArgs()
             ->once()
@@ -557,11 +638,11 @@ class SkipDetectionTest extends StuTestCase
         $pirateWrath->shouldReceive('getProtectionTimeout')
             ->withNoArgs()
             ->once()
-            ->andReturn(42);
+            ->andReturn(5_000_042);
         $this->stuTime->shouldReceive('time')
             ->withNoArgs()
             ->once()
-            ->andReturn(42);
+            ->andReturn(5_000_042);
 
         $this->incomingShip->shouldReceive('getUser')
             ->withNoArgs()
@@ -611,6 +692,10 @@ class SkipDetectionTest extends StuTestCase
         $incomingShipUser = $this->mock(UserInterface::class);
         $unfinishedWeb = $this->mock(TholianWebInterface::class);
 
+        $incomingShipUser->shouldReceive('getCreationDate')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(161_642);
         $incomingShipUser->shouldReceive('getPirateWrath')
             ->withNoArgs()
             ->once()
@@ -624,6 +709,11 @@ class SkipDetectionTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(null);
+
+        $this->stuTime->shouldReceive('time')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(5_000_042);
 
         $this->incomingShip->shouldReceive('getUser')
             ->withNoArgs()
@@ -672,6 +762,10 @@ class SkipDetectionTest extends StuTestCase
         $alertUser = $this->mock(UserInterface::class);
         $incomingShipUser = $this->mock(UserInterface::class);
 
+        $incomingShipUser->shouldReceive('getCreationDate')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(161_642);
         $incomingShipUser->shouldReceive('getPirateWrath')
             ->withNoArgs()
             ->once()
@@ -685,6 +779,11 @@ class SkipDetectionTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(null);
+
+        $this->stuTime->shouldReceive('time')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(5_000_042);
 
         $this->incomingShip->shouldReceive('getUser')
             ->withNoArgs()
