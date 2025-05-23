@@ -105,9 +105,13 @@ final class EditKnPost implements ActionControllerInterface
 
 
         foreach ($charactersAddedMapping as $ownerId => $characterNames) {
+
+            $isSingleCharacter = count($characterNames) === 1;
             $charList = implode(', ', $characterNames);
             $text = sprintf(
-                'Deine Charaktere %s wurden zu einem KN Post hinzugefügt. Titel des Posts: "%s"',
+                $isSingleCharacter
+                    ? 'Dein Charakter %s wurde zu einem KN Post hinzugefügt. Titel des Posts: "%s".'
+                    : 'Deine Charaktere %s wurden zu einem KN Post hinzugefügt. Titel des Posts: "%s".',
                 $charList,
                 $post->getTitle()
             );
