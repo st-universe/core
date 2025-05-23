@@ -220,4 +220,14 @@ class GameTurnStats implements GameTurnStatsInterface
 
         return $this;
     }
+
+    #[Override]
+    public function __toString(): string
+    {
+        return sprintf(
+            'id: %s, turnId: %s',
+            $this->id,
+            $this->turn_id
+        );
+    }
 }
