@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\UniqueConstraint;
 use Override;
@@ -48,7 +49,7 @@ class CrewAssignment implements CrewAssignmentInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $repair_task_id = null;
 
-    #[ManyToOne(targetEntity: 'Crew')]
+    #[OneToOne(targetEntity: 'Crew')]
     #[JoinColumn(name: 'crew_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CrewInterface $crew;
 
