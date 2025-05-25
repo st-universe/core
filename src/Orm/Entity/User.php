@@ -742,7 +742,7 @@ class User implements UserInterface
     }
 
     #[Override]
-    public function hasStationsNavigation(): bool
+    public function hasStationsPmCategory(): bool
     {
         if ($this->isNpc()) {
             return true;
