@@ -14,6 +14,8 @@ use Stu\Orm\Entity\CrewAssignmentInterface;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Crew;
+use Stu\Orm\Entity\Station;
 
 /**
  * @extends EntityRepository<CrewAssignment>
@@ -259,5 +261,26 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
             )
             ->setParameter('userId', $userId)
             ->execute();
+    }
+
+    #[Override]
+    public function hasCrewOnForeignStation(UserInterface $user): bool
+    {
+        return (int) $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT COUNT(ca.id)
+                 FROM %s ca
+                 JOIN %s c WITH ca.crew_id = c.id
+                 JOIN %s st WITH ca.spacecraft_id = st.id
+                 WHERE c.user_id = :user
+                 AND st.user_id != :user',
+                    CrewAssignment::class,
+                    Crew::class,
+                    Station::class
+                )
+            )
+            ->setParameter('user', $user->getId())
+            ->getSingleScalarResult() > 0;
     }
 }

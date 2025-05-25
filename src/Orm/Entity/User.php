@@ -184,12 +184,6 @@ class User implements UserInterface
     #[OneToOne(targetEntity: 'UserReferer', mappedBy: 'user')]
     private ?UserRefererInterface $referer = null;
 
-    /**
-     * @var ArrayCollection<int, CrewAssignmentInterface>
-     */
-    #[OneToMany(targetEntity: 'CrewAssignment', mappedBy: 'user', indexBy: 'id')]
-    private Collection $crewAssignments;
-
 
     public function __construct()
     {
@@ -202,7 +196,6 @@ class User implements UserInterface
         $this->colonyScans = new ArrayCollection();
         $this->tutorials = new ArrayCollection();
         $this->wormholeRestrictions = new ArrayCollection();
-        $this->crewAssignments = new ArrayCollection();
     }
 
     #[Override]
@@ -748,15 +741,6 @@ class User implements UserInterface
         return $this->awards->containsKey($awardId) === true;
     }
 
-    /**
-     * @return Collection<int, CrewAssignmentInterface>
-     */
-    #[Override]
-    public function getCrewAssignments(): Collection
-    {
-        return $this->crewAssignments;
-    }
-
     #[Override]
     public function hasStationsNavigation(): bool
     {
@@ -764,20 +748,8 @@ class User implements UserInterface
             return true;
         }
 
-        if ($this->hasAward(UserAwardEnum::RESEARCHED_STATIONS)) {
-            return true;
-        }
-
-        foreach ($this->getCrewAssignments() as $crewAssignment) {
-            $spacecraft = $crewAssignment->getSpacecraft();
-            if ($spacecraft !== null && $spacecraft->isStation()) {
-                return true;
-            }
-        }
-
-        return false;
+        return $this->hasAward(UserAwardEnum::RESEARCHED_STATIONS);
     }
-
 
     public static function isUserNpc(int $userId): bool
     {
