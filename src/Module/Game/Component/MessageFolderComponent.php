@@ -40,7 +40,7 @@ final class MessageFolderComponent implements ComponentInterface
         foreach ($pmFolder as $folderType) {
             if (
                 $folderType === PrivateMessageFolderTypeEnum::SPECIAL_STATION
-                && !$user->hasStationsNavigation()
+                && !$user->hasStationsPmCategory()
             ) {
                 continue;
             }

@@ -176,7 +176,7 @@ interface UserInterface
 
     public function hasAward(int $awardId): bool;
 
-    public function hasStationsNavigation(): bool;
+    public function hasStationsPmCategory(): bool;
 
     public function isNpc(): bool;
 
