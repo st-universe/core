@@ -27,4 +27,8 @@ interface HistoryInterface
     public function getTargetUserId(): ?int;
 
     public function setTargetUserId(int $userId): HistoryInterface;
+
+    public function getLocation(): ?LocationInterface;
+
+    public function setLocation(?LocationInterface $location): HistoryInterface;
 }

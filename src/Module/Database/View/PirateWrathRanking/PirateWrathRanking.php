@@ -19,7 +19,13 @@ final class PirateWrathRanking implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_TOP_PIRATE_WRATH';
 
-    public function __construct(private DatabaseUiFactoryInterface $databaseUiFactory, private PirateWrathRepositoryInterface $pirateWrathRepository, private GradientColorInterface $gradientColor, private UserRepositoryInterface $userRepository, private HistoryRepositoryInterface $historyRepository) {}
+    public function __construct(
+        private DatabaseUiFactoryInterface $databaseUiFactory,
+        private PirateWrathRepositoryInterface $pirateWrathRepository,
+        private GradientColorInterface $gradientColor,
+        private UserRepositoryInterface $userRepository,
+        private HistoryRepositoryInterface $historyRepository
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
