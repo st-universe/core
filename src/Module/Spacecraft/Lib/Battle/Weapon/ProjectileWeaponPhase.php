@@ -12,6 +12,7 @@ use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Provider\ProjectileAttackerInterface;
 use Stu\Module\Spacecraft\Lib\Battle\SpacecraftAttackCauseEnum;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\TorpedoTypeInterface;
@@ -98,7 +99,13 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
         bool $isOrbitField,
         int &$antiParticleCount
     ): InformationWrapper {
+
         $informations = new InformationWrapper();
+
+        $host = $target->getHost();
+        if (!$host instanceof ColonyInterface) {
+            return $informations;
+        }
 
         $building = $target->getBuilding();
         if ($building === null) {
@@ -152,11 +159,11 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
                     sprintf(
                         _('Das Gebäude %s auf Kolonie %s wurde von der %s zerstört'),
                         $building->getName(),
-                        $target->getHost()->getName(),
+                        $host->getName(),
                         $attacker->getName()
                     ),
                     $attacker->getUserId(),
-                    $target->getHost()
+                    $host
                 );
 
                 $this->buildingManager->remove($target);
