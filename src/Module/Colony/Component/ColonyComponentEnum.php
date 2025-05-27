@@ -49,21 +49,7 @@ enum ColonyComponentEnum: string implements ComponentEnumInterface
             self::EPS_BAR => 'html/colony/component/colonyEps.twig',
             self::SURFACE => 'html/colony/component/colonySurface.twig',
             self::STORAGE => 'html/colony/component/colonyStorage.twig',
-            self::MANAGEMENT => '',
-            self::EFFECTS => '',
-            self::BUILD_MENUES => '',
-            self::SOCIAL => '',
-            self::BUILDING_MANAGEMENT => '',
-            self::ACADEMY => '',
-            self::AIRFIELD => '',
-            self::MODULE_FAB => '',
-            self::TORPEDO_FAB => '',
-            self::SHIPYARD => '',
-            self::FIGHTER_SHIPYARD => '',
-            self::SHIP_BUILDPLANS => '',
-            self::SHIP_REPAIR => '',
-            self::SHIP_DISASSEMBLY => '',
-            self::SHIP_RETROFIT => ''
+            default => ''
         };
     }
 

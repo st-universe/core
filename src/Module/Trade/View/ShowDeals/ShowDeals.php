@@ -38,9 +38,7 @@ final class ShowDeals implements ViewControllerInterface
         $game->setPageTitle(_('/ Handel / Deals des Großen Nagus'));
         $game->setViewTemplate('html/trade/deals.twig');
 
-        if ($game->getUser()->getDeals() === true) {
-            $game->getUser()->setDeals(false);
-        }
+        $game->getUser()->setDeals(false);
 
         $hasLicense = $this->tradeLicenseRepository->hasFergLicense($userId);
 

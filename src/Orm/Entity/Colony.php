@@ -165,6 +165,9 @@ class Colony implements ColonyInterface
     #[OrderBy(['commodity_id' => 'ASC'])]
     private Collection $depositMinings;
 
+    /** @var array<int, int> */
+    private array $twilightZones = [];
+
     public function __construct()
     {
         $this->planetFields = new ArrayCollection();
@@ -400,6 +403,10 @@ class Colony implements ColonyInterface
     #[Override]
     public function getTwilightZone(int $timestamp): int
     {
+        if (array_key_exists($timestamp, $this->twilightZones)) {
+            return $this->twilightZones[$timestamp];
+        }
+
         $twilightZone = 0;
 
         $width = $this->getSurfaceWidth();
@@ -426,6 +433,8 @@ class Colony implements ColonyInterface
         if ($this->getDayTimePrefix($timestamp) == 4) {
             $twilightZone = 0;
         }
+
+        $this->twilightZones[$timestamp] = $twilightZone;
 
         return $twilightZone;
     }
