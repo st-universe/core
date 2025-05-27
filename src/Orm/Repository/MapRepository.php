@@ -826,18 +826,22 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
         ])->getResult();
     }
 
-    public function getUniqueInfluenceAreaIds(): array
+    public function getUniqueInfluenceAreaIds(int $layerId): array
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('influence_area_id', 'influence_area_id', 'integer');
 
         $query = $this->getEntityManager()->createNativeQuery(
-            'SELECT DISTINCT influence_area_id
-             FROM stu_map
-             WHERE influence_area_id IS NOT NULL
-             ORDER BY influence_area_id ASC',
+            'SELECT DISTINCT m.influence_area_id
+            FROM stu_map m
+            JOIN stu_location l ON m.id = l.id
+            WHERE m.influence_area_id IS NOT NULL
+            AND l.layer_id = :layerId
+            ORDER BY m.influence_area_id ASC',
             $rsm
-        );
+        )->setParameters([
+            'layerId' => $layerId
+        ]);
 
         return array_map('intval', array_column($query->getResult(), 'influence_area_id'));
     }
