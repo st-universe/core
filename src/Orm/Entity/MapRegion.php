@@ -32,6 +32,9 @@ class MapRegion implements MapRegionInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $database_id = 0;
 
+    #[Column(type: 'string', nullable: true)]
+    private ?string $layers = null;
+
     #[ManyToOne(targetEntity: 'DatabaseEntry')]
     #[JoinColumn(name: 'database_id', referencedColumnName: 'id')]
     private ?DatabaseEntryInterface $databaseEntry = null;
@@ -83,5 +86,19 @@ class MapRegion implements MapRegionInterface
     public function getAstronomicalEntries(): Collection
     {
         return $this->astronomicalEntries;
+    }
+
+    #[Override]
+    public function getLayers(): ?string
+    {
+        return $this->layers;
+    }
+
+    #[Override]
+    public function setLayers(?string $layers): MapRegionInterface
+    {
+        $this->layers = $layers;
+
+        return $this;
     }
 }
