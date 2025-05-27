@@ -6,7 +6,6 @@ namespace Stu\Config;
 
 use DI\Container;
 use DI\Definition\ArrayDefinition;
-use DI\Definition\Definition;
 use DI\Definition\FactoryDefinition;
 use DI\Definition\Source\MutableDefinitionSource;
 use DI\DependencyException;
@@ -22,7 +21,7 @@ class StuContainer extends Container
 {
     private MutableDefinitionSource $definitionSource;
 
-    /** @var array<string, Definition> */
+    /** @var array<string, mixed> */
     private ?array $definitions = null;
 
     /** @var Collection<string, Collection<int|string, mixed>> */
@@ -137,7 +136,7 @@ class StuContainer extends Container
         return $services;
     }
 
-    /** @return array<string, Definition> */
+    /** @return array<string, mixed> */
     private function getDefinitions(): array
     {
         if ($this->definitions === null) {

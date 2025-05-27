@@ -20,7 +20,7 @@ parameters:
 
 		-
 			message: '''
-				#^Fetching class constant class of deprecated class Stu\\Component\\Logging\\GameRequest\\Adapter\\DatabaseAdapter\:
+				#^Access to constant on deprecated class Stu\\Component\\Logging\\GameRequest\\Adapter\\DatabaseAdapter\:
 				Use LogfileAdapter$#
 			'''
 			identifier: classConstant.deprecatedClass
@@ -1763,7 +1763,7 @@ parameters:
 
 		-
 			message: '''
-				#^Fetching class constant class of deprecated class Stu\\Orm\\Repository\\GameRequestRepository\:
+				#^Access to constant on deprecated class Stu\\Orm\\Repository\\GameRequestRepository\:
 				Use logfile logging$#
 			'''
 			identifier: classConstant.deprecatedClass
