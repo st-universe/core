@@ -113,7 +113,7 @@ final class DatabaseUserRepository extends EntityRepository implements DatabaseU
     }
 
     #[Override]
-    public function hasUserCompletedCategory(int $userId, int $categoryId, ?int $ignoredDatabaseEntryId = null): bool
+    public function hasUserCompletedCategoryAndLayer(int $userId, int $categoryId, ?int $ignoredDatabaseEntryId = null, ?int $layerId = null): bool
     {
         return (int) $this->getEntityManager()
             ->createQuery(
@@ -122,6 +122,7 @@ final class DatabaseUserRepository extends EntityRepository implements DatabaseU
                     FROM %s de
                     WHERE de.category_id = :categoryId
                     AND de.id != :ignoredDatabaseEntryId
+                    AND de.layer_id = :layerId
                     AND NOT EXISTS
                         (SELECT du.id
                         FROM %s du
@@ -134,7 +135,8 @@ final class DatabaseUserRepository extends EntityRepository implements DatabaseU
             ->setParameters([
                 'userId' => $userId,
                 'categoryId' => $categoryId,
-                'ignoredDatabaseEntryId' => $ignoredDatabaseEntryId ?? 0
+                'ignoredDatabaseEntryId' => $ignoredDatabaseEntryId ?? 0,
+                'layerId' => $layerId ?? null
             ])
             ->getSingleScalarResult() == 0;
     }
