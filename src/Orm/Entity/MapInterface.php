@@ -18,6 +18,8 @@ interface MapInterface extends LocationInterface
 
     public function getBordertypeId(): ?int;
 
+    public function getBorderColor(): string;
+
     public function setBordertypeId(?int $bordertype_id): MapInterface;
 
     public function getRegionId(): ?int;
