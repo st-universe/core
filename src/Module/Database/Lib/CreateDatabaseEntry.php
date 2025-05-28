@@ -52,7 +52,7 @@ final class CreateDatabaseEntry implements CreateDatabaseEntryInterface
             //create prestige log
             $this->createPrestigeLog->createLogForDatabaseEntry($databaseEntry, $user, $userEntry->getDate());
 
-            $this->checkForCategoryCompletion($user, $databaseEntry->getCategory(), $databaseEntryId);
+            $this->checkForCategoryCompletion($user, $databaseEntry->getCategory(), $databaseEntryId, $databaseEntry->getLayerId());
         }
 
         return $databaseEntry;
@@ -61,7 +61,8 @@ final class CreateDatabaseEntry implements CreateDatabaseEntryInterface
     public function checkForCategoryCompletion(
         UserInterface $user,
         DatabaseCategoryInterface $category,
-        ?int $ignoredDatabaseEntryId = null
+        ?int $ignoredDatabaseEntryId = null,
+        ?int $layerId = null
     ): void {
         //check if an award is configured for this category
         if ($category->getAward() === null) {
@@ -70,7 +71,7 @@ final class CreateDatabaseEntry implements CreateDatabaseEntryInterface
 
         $award = $category->getAward();
 
-        if ($this->databaseUserRepository->hasUserCompletedCategory($user->getId(), $category->getId(), $ignoredDatabaseEntryId)) {
+        if ($this->databaseUserRepository->hasUserCompletedCategoryAndLayer($user->getId(), $category->getId(), $ignoredDatabaseEntryId, $layerId)) {
             $this->createUserAward->createAwardForUser($user, $award);
         }
     }
