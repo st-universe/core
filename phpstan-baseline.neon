@@ -262,24 +262,6 @@ parameters:
 			path: src/Module/Admin/Action/StartMirrorWorld.php
 
 		-
-			message: '#^Offset 0 might not exist on array\{int\|null, int\|null, int\|null\}\|null\.$#'
-			identifier: offsetAccess.notFound
-			count: 1
-			path: src/Module/Admin/View/Map/ShowMapOverall.php
-
-		-
-			message: '#^Offset 1 might not exist on array\{int\|null, int\|null, int\|null\}\|null\.$#'
-			identifier: offsetAccess.notFound
-			count: 1
-			path: src/Module/Admin/View/Map/ShowMapOverall.php
-
-		-
-			message: '#^Offset 2 might not exist on array\{int\|null, int\|null, int\|null\}\|null\.$#'
-			identifier: offsetAccess.notFound
-			count: 1
-			path: src/Module/Admin/View/Map/ShowMapOverall.php
-
-		-
 			message: '#^Parameter \#2 \$src_image of function imagecopyresized expects GdImage, GdImage\|false given\.$#'
 			identifier: argument.type
 			count: 1

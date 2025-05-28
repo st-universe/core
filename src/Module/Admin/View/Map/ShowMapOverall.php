@@ -7,11 +7,14 @@ namespace Stu\Module\Admin\View\Map;
 use Override;
 use request;
 use RuntimeException;
+use Stu\Component\Map\EncodedMapInterface;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
+use Stu\Orm\Entity\LayerInterface;
+
 
 final class ShowMapOverall implements ViewControllerInterface
 {
@@ -20,7 +23,8 @@ final class ShowMapOverall implements ViewControllerInterface
     public function __construct(
         private MapRepositoryInterface $mapRepository,
         private LayerRepositoryInterface $layerRepository,
-        private StuConfigInterface $config
+        private StuConfigInterface $config,
+        private EncodedMapInterface $encodedMap
     ) {}
 
     #[Override]
@@ -50,8 +54,6 @@ final class ShowMapOverall implements ViewControllerInterface
         $cury = 0;
         $curx = 0;
 
-        $webrootWithoutPublic = str_replace("/Public", "", $this->config->getGameSettings()->getWebroot());
-
         foreach ($this->mapRepository->getAllOrdered($layerId) as $data) {
             if ($startY !== $data->getCy()) {
                 $startY = $data->getCy();
@@ -61,14 +63,19 @@ final class ShowMapOverall implements ViewControllerInterface
             $borderType = $data->getMapBorderType();
             if ($borderType !== null) {
                 $var = $borderType->getColor();
-                $arr = sscanf($var, '#%2x%2x%2x');
-                $red = $arr[0];
-                $green = $arr[1];
-                $blue = $arr[2];
+
+                if (!preg_match('/^#([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$/', $var, $matches)) {
+                    throw new RuntimeException(sprintf('Invalid color format: %s', $var));
+                }
+
+                $red = (int) hexdec($matches[1]);
+                $green = (int) hexdec($matches[2]);
+                $blue = (int) hexdec($matches[3]);
+
                 if (
-                    !$red || $red < 0 || $red > 255
-                    || !$green || $green < 0 || $green > 255
-                    || !$blue || $blue < 0 || $blue > 255
+                    $red < 0 || $red > 255
+                    || $green < 0 || $green > 255
+                    || $blue < 0 || $blue > 255
                 ) {
                     throw new RuntimeException(sprintf('rgb range exception, red: %d, green: %d, blue: %d', $red, $green, $blue));
                 }
@@ -83,15 +90,26 @@ final class ShowMapOverall implements ViewControllerInterface
                 continue;
             }
 
-            $types[$data->getFieldId()] = imagecreatefrompng(
-                $webrootWithoutPublic . '/../../assets/map/' . $layer->getId() . "/" . $data->getFieldType()->getType() . '.png'
-            );
+            $imagePath = $this->getMapGraphicPath($layer, $data->getFieldType()->getType());
+            $types[$data->getFieldId()] = imagecreatefrompng($imagePath);
             imagecopyresized($img, $types[$data->getFieldId()], $curx, $cury, 0, 0, 15, 15, 30, 30);
             $curx += 15;
         }
+
         header("Content-type: image/png");
         imagepng($img);
         imagedestroy($img);
         exit;
+    }
+
+    private function getMapGraphicPath(LayerInterface $layer, int $fieldType): string
+    {
+        $webrootWithoutPublic = str_replace("/Public", "", $this->config->getGameSettings()->getWebroot());
+
+        if ($layer->isEncoded()) {
+            return $webrootWithoutPublic . '/../../assets/map/' . $this->encodedMap->getEncodedMapPath($fieldType, $layer);
+        }
+
+        return $webrootWithoutPublic . '/../../assets/map/' . $layer->getId() . "/" . $fieldType . '.png';
     }
 }
