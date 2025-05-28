@@ -463,12 +463,28 @@ function fieldEventSelector(type) {
 			}
 		});
 	}
+
+	if (type === 7) {
+		cells.forEach(function (cell) {
+			var borderValue = cell.getAttribute("data-border");
+
+			if (borderValue) {
+				overlay = createOverlay(cell, borderValue);
+				overlay.parentNode.parentNode.title = borderValue;
+			}
+		});
+	}
 }
 
 function createOverlay(cell, backgroundColor) {
 	removeOverlay(cell);
 
-	var divbody = cell.querySelector(".divbody");
+	var divbody = cell.classList.contains('starmap') ?
+		cell.querySelector(".divbody") :
+		cell.querySelector(".divbody");
+
+	if (!divbody) return null;
+
 	var overlay = document.createElement("div");
 	overlay.className = "overlay";
 	overlay.style.position = "absolute";
@@ -484,11 +500,15 @@ function createOverlay(cell, backgroundColor) {
 }
 
 function removeOverlay(cell) {
-	var overlay = cell.querySelector(".overlay");
+	var overlay = cell.classList.contains('starmap') ?
+		cell.querySelector(".overlay") :
+		cell.querySelector(".overlay");
+
 	if (overlay) {
 		overlay.remove();
 	}
 }
+
 
 function hashNumberToColor(number) {
 	const hash = number * 2654435761 % 2 ** 32;
@@ -626,14 +646,17 @@ function updateField(obj, fieldid) {
 		);
 		return;
 	}
+
+	var parentTd = obj.parentNode;
+
 	if (selectedFieldType != 0) {
 		ajax_update(
 			false,
 			"/admin/?B_EDIT_FIELD=1&field=" + fieldid + "&type=" + selectedFieldType
 		);
-		obj.parentNode.style.backgroundImage =
+		obj.style.backgroundImage =
 			"url(" + gfx_path + "/map/" + selectedFieldType + ".png)";
-		tmpfield = obj.parentNode.style.backgroundImage;
+		tmpfield = obj.style.backgroundImage;
 	}
 	if (selectedSystemType != 0) {
 		ajax_update(
@@ -643,8 +666,9 @@ function updateField(obj, fieldid) {
 			"&type=" +
 			selectedSystemType
 		);
+		parentTd.setAttribute("data-system-type-id", selectedSystemType);
 		if (fieldevent == 3) {
-			obj.parentNode.style.backgroundColor = "rgba(255, 255, 0, 0.5)";
+			createOverlay(parentTd, "rgba(255, 255, 0, 0.5)");
 		}
 	}
 	if (selectedRegion != 0) {
@@ -652,8 +676,9 @@ function updateField(obj, fieldid) {
 			false,
 			"/admin/?B_EDIT_REGION=1&field=" + fieldid + "&region=" + selectedRegion
 		);
+		parentTd.setAttribute("data-region", selectedRegion);
 		if (fieldevent == 1) {
-			obj.parentNode.style.backgroundColor = "rgba(255, 0, 0, 0.5)";
+			createOverlay(parentTd, "rgba(255, 0, 0, 0.5)");
 		}
 	}
 	if (areaid != 0) {
@@ -661,29 +686,27 @@ function updateField(obj, fieldid) {
 			false,
 			"/admin/?B_EDIT_INFLUENCE_AREA=1&field=" + fieldid + "&area=" + areaid
 		);
+		parentTd.setAttribute("data-influence-area", areaid);
 
 		if (fieldevent == 5) {
-			var divbody = obj.parentNode;
-			var span = divbody.querySelector(".influence-id");
+			var overlay = createOverlay(parentTd, getRandomColorForNumber(areaid));
 
-			var overlay = divbody.querySelector(".overlay");
-			if (overlay) {
-				console.log('areaid', areaid);
-				overlay.style.backgroundColor = getRandomColorForNumber(areaid);
+			var existingSpan = obj.querySelector(".influence-id");
+			if (existingSpan) {
+				existingSpan.remove();
 			}
 
-			if (span) {
-				span.innerText = areaid;
-			} else {
-				span = document.createElement("span");
-				span.className = "influence-id";
-				span.style.position = "absolute";
-				span.style.top = "50%";
-				span.style.left = "50%";
-				span.style.transform = "translate(-50%, -50%)";
-				span.style.color = "white";
-				span.innerText = areaid;
-				span.style.fontWeight = "bold";
+			var span = document.createElement("span");
+			span.className = "influence-id";
+			span.style.position = "absolute";
+			span.style.top = "50%";
+			span.style.left = "50%";
+			span.style.transform = "translate(-50%, -50%)";
+			span.style.color = "white";
+			span.style.fontWeight = "bold";
+			span.innerText = areaid;
+
+			if (overlay) {
 				overlay.appendChild(span);
 			}
 		}
@@ -697,8 +720,9 @@ function updateField(obj, fieldid) {
 			"&adminregion=" +
 			adminregionselector
 		);
+		parentTd.setAttribute("data-admin-region", adminregionselector);
 		if (fieldevent == 2) {
-			obj.parentNode.style.backgroundColor = "rgba(0, 0, 255, 0.5)";
+			createOverlay(parentTd, "rgba(0, 0, 255, 0.5)");
 		}
 	}
 	if (passableselector != 0) {
@@ -709,8 +733,10 @@ function updateField(obj, fieldid) {
 			"&passable=" +
 			passableselector
 		);
-		if (fieldevent == 4) {
-			obj.parentNode.style.backgroundColor = "rgba(255, 255, 0, 0.5)";
+		var passableValue = passableselector == 1 ? 1 : 0;
+		parentTd.setAttribute("data-passable", passableValue);
+		if (fieldevent == 4 && passableValue == 0) {
+			createOverlay(parentTd, "rgba(255, 255, 0, 0.5)");
 		}
 	}
 	if (borderselector != 0) {
@@ -718,7 +744,9 @@ function updateField(obj, fieldid) {
 			false,
 			"/admin/?B_EDIT_BORDER=1&field=" + fieldid + "&border=" + borderselector
 		);
-		obj.parentNode.style.border = "1px solid".bordercolor;
+		if (fieldevent == 7) {
+			createOverlay(parentTd, bordercolor);
+		}
 	}
 	if (selectedEffects.size > 0) {
 
@@ -728,10 +756,11 @@ function updateField(obj, fieldid) {
 			false,
 			`/admin/?B_EDIT_EFFECTS=1&field=${fieldid}&effects[]=${joined}`
 		);
+		parentTd.setAttribute("data-effects", [...selectedEffects].join(','));
 
 		if (fieldevent == 6) {
-			obj.parentNode.title = [...selectedEffects].join('\n');
-			createOverlay(obj.parentNode, "rgba(255, 174, 0, 0.5)");
+			parentTd.title = [...selectedEffects].join('\n');
+			createOverlay(parentTd, "rgba(255, 174, 0, 0.5)");
 		}
 	}
 	if ($('reseteffects').checked) {
@@ -739,12 +768,14 @@ function updateField(obj, fieldid) {
 			false,
 			`/admin/?B_RESET_EFFECTS=1&field=${fieldid}`
 		);
+		parentTd.setAttribute("data-effects", "");
 		if (fieldevent == 6) {
-			obj.parentNode.removeAttribute('title');
-			removeOverlay(obj.parentNode);
+			parentTd.removeAttribute('title');
+			removeOverlay(parentTd);
 		}
 	}
 }
+
 function setNewFieldType(obj, fieldid) {
 	if (selectedFieldType == 0 && selectedSystemType == 0) {
 		alert("Es wurde weder ein Systemtyp noch ein Feldtyp ausgewählt");

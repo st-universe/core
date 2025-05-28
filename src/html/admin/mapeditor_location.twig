@@ -4,7 +4,7 @@
 <td class="starmap" id="{{ map.getCx }}_{{ map.getCy }}" data-passable="{{ passable }}"
     data-region="{{ map.getRegionId }}" data-admin-region="{{ map.getAdminRegionId }}"
     data-system-type-id="{{ map.getSystemTypeId }}" data-influence-area="{{map.getInfluenceAreaId}}"
-    data-effects="{{ fieldType.getEffectsAsString }}">
+    data-effects="{{ fieldType.getEffectsAsString }}" data-border="{{ map.getBorderColor}}">
     <div class="divbody lssobj" style="cursor: pointer ! important; padding: 0px !important; width: 30px; height: 30px;"
         onclick="updateField(this,{{ map.getId }});" onmouseover="toggleMapfieldType(this)"
         onmouseout="toggleMapfieldType(this)">
