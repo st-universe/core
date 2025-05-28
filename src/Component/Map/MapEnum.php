@@ -12,6 +12,7 @@ final class MapEnum
     //LAYERS
     public const int LAYER_ID_CRAGGANMORE = 1;
     public const int LAYER_ID_TULLAMORE = 2;
+    public const int LAYER_ID_WALKER = 3;
 
     //SECTIONS
     public const int FIELDS_PER_SECTION = 20;
