@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Crew;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use RuntimeException;
 use Stu\Component\Map\DirectionEnum;
@@ -26,8 +25,7 @@ final class LaunchEscapePods implements LaunchEscapePodsInterface
         private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository,
         private StarSystemMapRepositoryInterface $starSystemMapRepository,
         private MapRepositoryInterface $mapRepository,
-        private SpacecraftFactoryInterface $spacecraftFactory,
-        private EntityManagerInterface $entityManager
+        private SpacecraftFactoryInterface $spacecraftFactory
     ) {}
 
     #[Override]
@@ -54,7 +52,7 @@ final class LaunchEscapePods implements LaunchEscapePodsInterface
         $this->returnToSafety($pods, $spacecraft);
 
         $this->spacecraftRepository->save($pods);
-        $this->entityManager->flush(); //TODO really neccessary?
+        //$this->entityManager->flush(); //TODO really neccessary?
 
         return $pods;
     }

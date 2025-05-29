@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Tick;
 
 use Psr\Container\ContainerInterface;
+use Stu\Component\Map\Effects\EffectHandlingInterface;
 use Stu\Lib\Pirate\Behaviour\PirateBehaviourInterface;
 use Stu\Lib\Pirate\Component\PirateFlight;
 use Stu\Lib\Pirate\Component\PirateFlightInterface;
@@ -33,6 +34,17 @@ use Stu\Module\Tick\Process\ProcessTickHandlerInterface;
 use Stu\Module\Tick\Process\ProcessTickRunner;
 use Stu\Module\Tick\Process\RepairTaskJobs;
 use Stu\Module\Tick\Process\ShieldRegeneration;
+use Stu\Module\Tick\Spacecraft\Handler\AggregationSystemHandler;
+use Stu\Module\Tick\Spacecraft\Handler\BussardCollectorHandler;
+use Stu\Module\Tick\Spacecraft\Handler\EnergyConsumeHandler;
+use Stu\Module\Tick\Spacecraft\Handler\EpsSystemCheckHandler;
+use Stu\Module\Tick\Spacecraft\Handler\FinishedAstroMappingHandler;
+use Stu\Module\Tick\Spacecraft\Handler\FinishedTakeoverHandler;
+use Stu\Module\Tick\Spacecraft\Handler\LifeSupportCheckHandler;
+use Stu\Module\Tick\Spacecraft\Handler\StationConstructionHandler;
+use Stu\Module\Tick\Spacecraft\Handler\StationPassiveRepairHandler;
+use Stu\Module\Tick\Spacecraft\Handler\SystemDeactivationHandler;
+use Stu\Module\Tick\Spacecraft\Handler\TrackerDeviceHandler;
 use Stu\Module\Tick\Spacecraft\ManagerComponent\AnomalyCreationCheck;
 use Stu\Module\Tick\Spacecraft\ManagerComponent\AnomalyProcessing;
 use Stu\Module\Tick\Spacecraft\ManagerComponent\CrewLimitations;
@@ -57,7 +69,24 @@ return [
             [autowire(AdvanceResearch::class)]
         ),
     ColonyTickManagerInterface::class => autowire(ColonyTickManager::class),
-    SpacecraftTickInterface::class => autowire(SpacecraftTick::class),
+    SpacecraftTickInterface::class => autowire(SpacecraftTick::class)
+        ->constructorParameter(
+            'handlers',
+            [
+                get(EffectHandlingInterface::class),
+                autowire(StationConstructionHandler::class),
+                autowire(StationPassiveRepairHandler::class),
+                autowire(LifeSupportCheckHandler::class),
+                autowire(EpsSystemCheckHandler::class),
+                autowire(SystemDeactivationHandler::class),
+                autowire(EnergyConsumeHandler::class),
+                autowire(FinishedTakeoverHandler::class),
+                autowire(FinishedAstroMappingHandler::class),
+                autowire(TrackerDeviceHandler::class),
+                autowire(BussardCollectorHandler::class),
+                autowire(AggregationSystemHandler::class),
+            ]
+        ),
     SpacecraftTickManagerInterface::class => autowire(SpacecraftTickManager::class)
         ->constructorParameter(
             'components',
@@ -66,7 +95,7 @@ return [
                 autowire(CrewLimitations::class),
                 autowire(EscapePodHandling::class),
                 autowire(RepairActions::class),
-                autowire(SpacecraftTick::class),
+                get(SpacecraftTickInterface::class),
                 autowire(NpcShipHandling::class),
                 autowire(LowerHull::class),
                 autowire(AnomalyCreationCheck::class),
