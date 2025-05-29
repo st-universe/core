@@ -7,6 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
+use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\SpacecraftSystem;
 use Stu\Orm\Entity\SpacecraftSystemInterface;
 
@@ -101,6 +102,25 @@ final class SpacecraftSystemRepository extends EntityRepository implements Space
                 'target' => sprintf('%%"ownedWebId":%d%%', $webId)
             ])
             ->getOneOrNullResult();
+    }
+
+    #[Override]
+    public function isSystemHealthy(SpacecraftInterface $spacecraft, SpacecraftSystemTypeEnum $type): bool
+    {
+        return (int)$this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT ss.status FROM %s ss
+                    WHERE ss.system_type = :systemType
+                    AND ss.spacecraft = :spacecraft',
+                    SpacecraftSystem::class
+                )
+            )
+            ->setParameters([
+                'systemType' => $type->value,
+                'spacecraft' => $spacecraft
+            ])
+            ->getSingleScalarResult() > 0;
     }
 
     #[Override]

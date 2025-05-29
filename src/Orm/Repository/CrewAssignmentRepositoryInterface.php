@@ -5,6 +5,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\CrewAssignment;
 use Stu\Orm\Entity\CrewAssignmentInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\UserInterface;
 
 /**
@@ -19,6 +20,8 @@ interface CrewAssignmentRepositoryInterface extends ObjectRepository
     public function save(CrewAssignmentInterface $post): void;
 
     public function delete(CrewAssignmentInterface $post): void;
+
+    public function getAmountBySpacecraft(SpacecraftInterface $spacecraft): int;
 
     /**
      * @return list<CrewAssignmentInterface>
