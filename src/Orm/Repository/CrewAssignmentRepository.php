@@ -15,6 +15,7 @@ use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Entity\Crew;
+use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\Station;
 
 /**
@@ -42,6 +43,14 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
         $em = $this->getEntityManager();
 
         $em->remove($post);
+    }
+
+    #[Override]
+    public function getAmountBySpacecraft(SpacecraftInterface $spacecraft): int
+    {
+        return $this->count([
+            'spacecraft' => $spacecraft
+        ]);
     }
 
     #[Override]
