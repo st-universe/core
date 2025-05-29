@@ -775,6 +775,54 @@ function updateField(obj, fieldid) {
 		}
 	}
 }
+var isDragging = false;
+var draggedFields = new Set();
+
+function handleMouseDown(obj, fieldid, event) {
+	event.preventDefault();
+	isDragging = false;
+	draggedFields.clear();
+	draggedFields.add(fieldid);
+	obj.parentNode.style.outline = "2px solid #4caf50";
+}
+
+
+function handleMouseEnter(obj, fieldid) {
+	if (event.buttons === 1) {
+		isDragging = true;
+		draggedFields.add(fieldid);
+		obj.parentNode.style.outline = "2px solid #4caf50";
+	}
+}
+
+function handleFieldClick(obj, fieldid) {
+	if (isDragging && draggedFields.size > 1) {
+		return;
+	} else {
+		updateField(obj, fieldid);
+	}
+}
+
+function clearDragSelection() {
+	if (isDragging && draggedFields.size > 1) {
+		if (confirm(`${draggedFields.size} Felder aktualisieren?`)) {
+			draggedFields.forEach(fid => {
+				var field = document.querySelector(`[onclick*="${fid}"]`);
+				if (field) {
+					updateField(field, fid);
+				}
+			});
+		}
+	}
+
+	document.querySelectorAll('.starmap').forEach(field => {
+		field.style.outline = "";
+	});
+	draggedFields.clear();
+	isDragging = false;
+}
+
+document.addEventListener('mouseup', clearDragSelection);
 
 function setNewFieldType(obj, fieldid) {
 	if (selectedFieldType == 0 && selectedSystemType == 0) {
