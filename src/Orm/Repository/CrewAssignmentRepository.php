@@ -54,6 +54,12 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
     }
 
     #[Override]
+    public function hasEnoughCrew(SpacecraftInterface $spacecraft): bool
+    {
+        return $this->getAmountBySpacecraft($spacecraft) >= $spacecraft->getNeededCrewCount();
+    }
+
+    #[Override]
     public function getByShip(int $shipId): array
     {
         return $this->findBy(

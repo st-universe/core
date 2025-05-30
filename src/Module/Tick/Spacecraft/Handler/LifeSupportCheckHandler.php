@@ -29,7 +29,7 @@ class LifeSupportCheckHandler implements SpacecraftTickHandlerInterface
 
         // leave spacecraft
         if (
-            $this->crewAssignmentRepository->getAmountBySpacecraft($spacecraft)
+            $this->crewAssignmentRepository->getAmountBySpacecraft($spacecraft) > 0
             && !$this->spacecraftSystemRepository->isSystemHealthy($spacecraft, SpacecraftSystemTypeEnum::LIFE_SUPPORT)
         ) {
             $information->addInformation('Die Lebenserhaltung ist ausgefallen:');

@@ -14,12 +14,14 @@ use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Tick\Spacecraft\SpacecraftTickFinishedException;
 use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\SpacecraftSystemInterface;
+use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 
 class EnergyConsumeHandler implements SpacecraftTickHandlerInterface
 {
     public function __construct(
-        private SpacecraftSystemManagerInterface $spacecraftSystemManager,
-        private SpacecraftLeaverInterface $spacecraftLeaver
+        private readonly CrewAssignmentRepositoryInterface $crewAssignmentRepository,
+        private readonly SpacecraftSystemManagerInterface $spacecraftSystemManager,
+        private readonly SpacecraftLeaverInterface $spacecraftLeaver
     ) {}
 
     #[Override]
@@ -29,7 +31,7 @@ class EnergyConsumeHandler implements SpacecraftTickHandlerInterface
     ): void {
 
         $spacecraft = $wrapper->get();
-        $hasEnoughCrew = $spacecraft->hasEnoughCrew();
+        $hasEnoughCrew = $this->crewAssignmentRepository->hasEnoughCrew($spacecraft);
 
         $reactorUsageForWarpdrive = $this->loadWarpdrive(
             $wrapper,
