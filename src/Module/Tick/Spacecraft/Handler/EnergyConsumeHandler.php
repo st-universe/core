@@ -156,11 +156,13 @@ class EnergyConsumeHandler implements SpacecraftTickHandlerInterface
             $newEps = $eps->getMaxEps();
         }
 
+        $usedEnergy = $wrapper->getEpsUsage() + $batteryReload + ($newEps - $eps->getEps()) + $reactorUsageForWarpdrive;
+
         $eps->setEps($newEps)
             ->setBattery($eps->getBattery() + $batteryReload)
             ->update();
 
-        return $wrapper->getEpsUsage() + $batteryReload + ($newEps - $eps->getEps()) + $reactorUsageForWarpdrive;
+        return $usedEnergy;
     }
 
     private function loadWarpdrive(SpacecraftWrapperInterface $wrapper, bool $hasEnoughCrew): int
