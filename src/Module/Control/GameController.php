@@ -25,6 +25,7 @@ use Stu\Lib\Information\InformationWrapper;
 use Stu\Lib\LoginException;
 use Stu\Lib\Session\SessionStringFactoryInterface;
 use Stu\Lib\Session\SessionInterface;
+use Stu\Lib\Session\SessionLoginInterface;
 use Stu\Lib\UserLockedException;
 use Stu\Lib\UuidGeneratorInterface;
 use Stu\Module\Config\StuConfigInterface;
@@ -63,6 +64,7 @@ final class GameController implements GameControllerInterface
         private ControllerDiscovery $controllerDiscovery,
         private AccessCheckInterface $accessCheck,
         private SessionInterface $session,
+        private SessionLoginInterface $sessionLogin,
         private SessionStringRepositoryInterface $sessionStringRepository,
         private TwigPageInterface $twigPage,
         private DatabaseUserRepositoryInterface $databaseUserRepository,
@@ -449,7 +451,7 @@ final class GameController implements GameControllerInterface
             $this->session->createSession($session_check);
 
             if ($session_check === false) {
-                $this->session->checkLoginCookie();
+                $this->sessionLogin->checkLoginCookie();
             }
 
             if ($module === ModuleEnum::NPC) {

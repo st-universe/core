@@ -22,8 +22,6 @@ use Stu\Component\Cache\CacheProviderInterface;
 use Stu\Component\Logging\Sql\SqlLogger;
 use Stu\Lib\ParserWithImage;
 use Stu\Lib\ParserWithImageInterface;
-use Stu\Lib\Session\Session;
-use Stu\Lib\Session\SessionInterface;
 use Stu\Lib\StuBbCodeDefinitionSet;
 use Stu\Lib\StuBbCodeWithImageDefinitionSet;
 use Stu\Module\Config\Model\SettingsCache;
@@ -32,7 +30,6 @@ use Stu\Module\Config\Model\SettingsFactory;
 use Stu\Module\Config\Model\SettingsFactoryInterface;
 use Stu\Module\Config\StuConfig;
 use Stu\Module\Config\StuConfigInterface;
-use Stu\Module\Control\AccessCheck;
 use Stu\Module\Control\ControllerDiscovery;
 use Stu\Module\Control\GameController;
 use Stu\Module\Control\GameControllerInterface;
@@ -64,7 +61,6 @@ return [
             return new ArrayCachePool();
         }
     },
-    SessionInterface::class => autowire(Session::class),
     SqlLogger::class => function (StuConfigInterface $stuConfig): SqlLogger {
         $logger = new Logger(
             'SqlLogger',

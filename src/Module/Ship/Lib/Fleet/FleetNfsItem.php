@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib\Fleet;
 
 use RuntimeException;
-use Stu\Lib\Session\SessionInterface;
+use Stu\Lib\Session\SessionStorageInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftNfsItem;
 use Stu\Module\Spacecraft\Lib\SpacecraftNfsIterator;
 use Stu\Module\Ship\Lib\TFleetShipItemInterface;
@@ -18,13 +18,13 @@ final class FleetNfsItem
     public function __construct(
         private array $ships,
         private SpacecraftInterface $currentSpacecraft,
-        private ?SessionInterface $session,
+        private ?SessionStorageInterface $sessionStorage,
         private int $userId
     ) {}
 
     public function isHidden(): bool
     {
-        return $this->session !== null && $this->session->hasSessionValue('hiddenfleets', $this->getId());
+        return $this->sessionStorage !== null && $this->sessionStorage->hasSessionValue('hiddenfleets', $this->getId());
     }
 
     public function getVisibleShips(): SpacecraftNfsIterator

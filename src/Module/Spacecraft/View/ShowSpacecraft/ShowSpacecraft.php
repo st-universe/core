@@ -11,12 +11,12 @@ use Stu\Component\Game\GameEnum;
 use Stu\Component\Player\ColonizationCheckerInterface;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Component\Spacecraft\Nbs\NbsUtilityInterface;
-use Stu\Lib\Session\SessionInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Config\Init;
 use Stu\Lib\Map\NavPanel\NavPanel;
+use Stu\Lib\Session\SessionStorageInterface;
 use Stu\Module\Control\ViewContext;
 use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Control\ViewControllerInterface;
@@ -46,15 +46,15 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
      * @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader
      */
     public function __construct(
-        private SpacecraftLoaderInterface $spacecraftLoader,
-        private UserLayerRepositoryInterface $userLayerRepository,
-        private AnomalyRepositoryInterface $anomalyRepository,
-        private DatabaseCategoryWrapperFactoryInterface $databaseCategoryWrapperFactory,
-        private NbsUtilityInterface $nbsUtility,
-        private ShipUiFactoryInterface $shipUiFactory,
-        private SpacecraftCrewCalculatorInterface $shipCrewCalculator,
-        private ColonizationCheckerInterface $colonizationChecker,
-        private SessionInterface $session,
+        private readonly SpacecraftLoaderInterface $spacecraftLoader,
+        private readonly UserLayerRepositoryInterface $userLayerRepository,
+        private readonly AnomalyRepositoryInterface $anomalyRepository,
+        private readonly DatabaseCategoryWrapperFactoryInterface $databaseCategoryWrapperFactory,
+        private readonly NbsUtilityInterface $nbsUtility,
+        private readonly ShipUiFactoryInterface $shipUiFactory,
+        private readonly SpacecraftCrewCalculatorInterface $shipCrewCalculator,
+        private readonly ColonizationCheckerInterface $colonizationChecker,
+        private readonly SessionStorageInterface $sessionStorage,
         private LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->viewContext = new ViewContext(ModuleEnum::SHIP, self::VIEW_IDENTIFIER);
@@ -136,7 +136,7 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
             $game->setTemplateVar('NAV_PANEL', new NavPanel($spacecraft));
         }
 
-        $this->nbsUtility->setNbsTemplateVars($spacecraft, $game, $this->session, $tachyonActive);
+        $this->nbsUtility->setNbsTemplateVars($spacecraft, $game, $this->sessionStorage, $tachyonActive);
 
         $game->setTemplateVar('TACHYON_ACTIVE', $tachyonActive);
         $game->setTemplateVar('CAN_COLONIZE', $canColonize);

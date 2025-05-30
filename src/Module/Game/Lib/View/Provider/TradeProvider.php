@@ -7,7 +7,7 @@ namespace Stu\Module\Game\Lib\View\Provider;
 use Override;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Trade\TradeEnum;
-use Stu\Lib\Session\SessionInterface;
+use Stu\Lib\Session\SessionStorageInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Trade\Lib\TradeOfferItem;
@@ -19,7 +19,12 @@ use Stu\Orm\Repository\TradeOfferRepositoryInterface;
 
 final class TradeProvider implements ViewComponentProviderInterface
 {
-    public function __construct(private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradeOfferRepositoryInterface $tradeOfferRepository, private CommodityRepositoryInterface $commodityRepository, private SessionInterface $session) {}
+    public function __construct(
+        private readonly TradeLicenseRepositoryInterface $tradeLicenseRepository,
+        private readonly TradeOfferRepositoryInterface $tradeOfferRepository,
+        private readonly CommodityRepositoryInterface $commodityRepository,
+        private readonly SessionStorageInterface $sessionStorage
+    ) {}
 
     #[Override]
     public function setTemplateVariables(GameControllerInterface $game): void
@@ -33,19 +38,19 @@ final class TradeProvider implements ViewComponentProviderInterface
         $postId = null;
         $dir = TradeEnum::FILTER_COMMODITY_IN_BOTH;
         if ($isFilterActive) {
-            if ($this->session->getSessionValue('trade_filter_cid')) {
-                $commodityId = $this->session->getSessionValue('trade_filter_cid');
+            if ($this->sessionStorage->getSessionValue('trade_filter_cid')) {
+                $commodityId = $this->sessionStorage->getSessionValue('trade_filter_cid');
             }
-            if ($this->session->getSessionValue('trade_filter_pid')) {
-                $postId = $this->session->getSessionValue('trade_filter_pid');
+            if ($this->sessionStorage->getSessionValue('trade_filter_pid')) {
+                $postId = $this->sessionStorage->getSessionValue('trade_filter_pid');
             }
-            if ($this->session->getSessionValue('trade_filter_dir')) {
-                $dir = $this->session->getSessionValue('trade_filter_dir');
+            if ($this->sessionStorage->getSessionValue('trade_filter_dir')) {
+                $dir = $this->sessionStorage->getSessionValue('trade_filter_dir');
             }
         } else {
-            $this->session->deleteSessionData('trade_filter_cid');
-            $this->session->deleteSessionData('trade_filter_pid');
-            $this->session->deleteSessionData('trade_filter_dir');
+            $this->sessionStorage->deleteSessionData('trade_filter_cid');
+            $this->sessionStorage->deleteSessionData('trade_filter_pid');
+            $this->sessionStorage->deleteSessionData('trade_filter_dir');
         }
 
         $game->setTemplateVar('COMMODITY_ID', $commodityId ?? 0);

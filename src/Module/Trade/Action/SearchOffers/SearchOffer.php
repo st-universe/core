@@ -10,7 +10,7 @@ use request;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Trade\TradeEnum;
-use Stu\Lib\Session\SessionInterface;
+use Stu\Lib\Session\SessionStorageInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContextTypeEnum;
@@ -25,7 +25,12 @@ final class SearchOffer implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_TRADE_SEARCH_OFFER';
 
-    public function __construct(private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradeOfferRepositoryInterface $tradeOfferRepository, private CommodityRepositoryInterface $commodityRepository, private SessionInterface $session) {}
+    public function __construct(
+        private readonly TradeLicenseRepositoryInterface $tradeLicenseRepository,
+        private readonly TradeOfferRepositoryInterface $tradeOfferRepository,
+        private readonly CommodityRepositoryInterface $commodityRepository,
+        private readonly SessionStorageInterface $sessionStorage
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -47,13 +52,13 @@ final class SearchOffer implements ActionControllerInterface
         $game->setTemplateVar('POST_ID', request::postIntFatal('pid'));
         $game->setTemplateVar('COMMODITY_ID', $commodityId);
 
-        $this->session->deleteSessionData('trade_filter_cid');
-        $this->session->deleteSessionData('trade_filter_pid');
-        $this->session->deleteSessionData('trade_filter_dir');
+        $this->sessionStorage->deleteSessionData('trade_filter_cid');
+        $this->sessionStorage->deleteSessionData('trade_filter_pid');
+        $this->sessionStorage->deleteSessionData('trade_filter_dir');
 
-        $this->session->storeSessionData('trade_filter_cid', $commodityId, true);
-        $this->session->storeSessionData('trade_filter_pid', $postId, true);
-        $this->session->storeSessionData('trade_filter_dir', TradeEnum::FILTER_COMMODITY_IN_OFFER, true);
+        $this->sessionStorage->storeSessionData('trade_filter_cid', $commodityId, true);
+        $this->sessionStorage->storeSessionData('trade_filter_pid', $postId, true);
+        $this->sessionStorage->storeSessionData('trade_filter_dir', TradeEnum::FILTER_COMMODITY_IN_OFFER, true);
 
         $tradeLicenses = $this->tradeLicenseRepository->getByUser($userId);
         $game->setTemplateVar('TRADE_LICENSES', $tradeLicenses);

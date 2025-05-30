@@ -82,7 +82,7 @@ abstract class TwigTestCase extends StuTestCase
     {
         $dic = $this->getContainer();
 
-        self::$testSession->setUser($userId);
+        self::$testSession->setUserById($userId);
         request::setMockVars($requestVars);
 
         $game = $dic->get(GameControllerInterface::class);
