@@ -6,7 +6,7 @@ namespace Stu\Module\Game\Lib\View\Provider;
 
 use Override;
 use Stu\Component\Game\GameEnum;
-use Stu\Lib\Session\SessionInterface;
+use Stu\Lib\Session\SessionStorageInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Repository\BuoyRepositoryInterface;
@@ -16,11 +16,11 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 final class ShipListProvider implements ViewComponentProviderInterface
 {
     public function __construct(
-        private FleetRepositoryInterface $fleetRepository,
-        private ShipRepositoryInterface $shipRepository,
-        private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
-        private BuoyRepositoryInterface $buoyRepository,
-        private SessionInterface $session
+        private readonly FleetRepositoryInterface $fleetRepository,
+        private readonly ShipRepositoryInterface $shipRepository,
+        private readonly SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
+        private readonly BuoyRepositoryInterface $buoyRepository,
+        private readonly SessionStorageInterface $sessionStorage
     ) {}
 
     #[Override]
@@ -33,7 +33,7 @@ final class ShipListProvider implements ViewComponentProviderInterface
         $buoys = $this->buoyRepository->findByUserId($userId);
 
         foreach ($fleets as $fleet) {
-            $fleet->setHiddenStyle($this->session->hasSessionValue('hiddenshiplistfleets', $fleet->getId()) ? 'display: none' : '');
+            $fleet->setHiddenStyle($this->sessionStorage->hasSessionValue('hiddenshiplistfleets', $fleet->getId()) ? 'display: none' : '');
         }
 
         $game->setTemplateVar('MAX_CREW_PER_FLEET', GameEnum::CREW_PER_FLEET);
