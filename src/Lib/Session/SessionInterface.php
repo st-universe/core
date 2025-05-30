@@ -16,25 +16,13 @@ interface SessionInterface
 
     public function logout(?UserInterface $user = null): void;
 
-    /**
-     * @param string $key
-     */
-    public function storeSessionData($key, mixed $value, bool $isSingleValue = false): void;
+    public function storeSessionData(string $key, mixed $value, bool $isSingleValue = false): void;
 
-    /**
-     * @param string $key
-     */
-    public function deleteSessionData($key, mixed $value = null): void;
+    public function deleteSessionData(string $key, mixed $value = null): void;
 
-    /**
-     * @param string $key
-     */
-    public function hasSessionValue($key, mixed $value): bool;
+    public function hasSessionValue(string $key, mixed $value): bool;
 
-    /**
-     * @param string $key
-     */
-    public function getSessionValue($key);
+    public function getSessionValue(string $key): mixed;
 
     public function login(string $login, string $password): bool;
 }
