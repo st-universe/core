@@ -79,6 +79,15 @@ final class Session implements SessionInterface
         return $this->user;
     }
 
+    private function getUserMandatory(): UserInterface
+    {
+        if ($this->user === null) {
+            throw new SessionInvalidException("No user logged in");
+        }
+
+        return $this->user;
+    }
+
     #[Override]
     public function login(string $login, string $password): bool
     {
@@ -194,14 +203,17 @@ final class Session implements SessionInterface
 
     private function destroySession(?UserInterface $user = null): void
     {
-        if ($this->user !== null || $user !== null) {
-            $userToTruncate = $user ?? $this->user;
+        $userToTruncate = $user ?? $this->user;
+        if ($userToTruncate !== null) {
             $this->sessionStringRepository->truncate($userToTruncate);
         }
 
         if ($user === null) {
             $this->destroyLoginCookies();
-            setcookie(session_name(), '', ['expires' => time() - 42000]);
+            $sessionName = session_name();
+            if ($sessionName) {
+                setcookie($sessionName, '', ['expires' => time() - 42000]);
+            }
             if (@session_destroy() === false) {
                 throw new RuntimeException('The session could not be destroyed');
             }
@@ -212,7 +224,7 @@ final class Session implements SessionInterface
 
     private function destroyLoginCookies(): void
     {
-        setcookie('sstr', 0);
+        setcookie('sstr');
     }
 
     #[Override]
@@ -281,8 +293,12 @@ final class Session implements SessionInterface
 
         $this->userRepository->save($user);
 
+        $sessionId = session_id();
+        if (!$sessionId) {
+            throw new SessionInvalidException("Session Id not set");
+        }
 
-        $ipTableEntry = $this->userIpTableRepository->findBySessionId(session_id());
+        $ipTableEntry = $this->userIpTableRepository->findBySessionId($sessionId);
         if ($ipTableEntry !== null) {
             $ipTableEntry->setEndDate(new DateTime());
 
@@ -298,11 +314,12 @@ final class Session implements SessionInterface
      * @api
      */
     #[Override]
-    public function storeSessionData($key, $value, bool $isSingleValue = false): void
+    public function storeSessionData(string|int $key, mixed $value, bool $isSingleValue = false): void
     {
         $stored = false;
+        $user = $this->getUserMandatory();
 
-        $data = $this->user->getSessionDataUnserialized();
+        $data = $user->getSessionDataUnserialized();
         if (!array_key_exists($key, $data)) {
             if ($isSingleValue) {
                 $data[$key] = $value;
@@ -317,8 +334,8 @@ final class Session implements SessionInterface
         }
 
         if ($stored) {
-            $this->user->setSessionData(serialize($data));
-            $this->userRepository->save($this->user);
+            $user->setSessionData(serialize($data));
+            $this->userRepository->save($user);
         }
     }
 
@@ -326,9 +343,11 @@ final class Session implements SessionInterface
      * @api
      */
     #[Override]
-    public function deleteSessionData($key, $value = null): void
+    public function deleteSessionData(string $key, mixed $value = null): void
     {
-        $data = $this->user->getSessionDataUnserialized();
+        $user = $this->getUserMandatory();
+
+        $data = $user->getSessionDataUnserialized();
         if (!array_key_exists($key, $data)) {
             return;
         }
@@ -340,17 +359,17 @@ final class Session implements SessionInterface
             }
             unset($data[$key][$value]);
         }
-        $this->user->setSessionData(serialize($data));
-        $this->userRepository->save($this->user);
+        $user->setSessionData(serialize($data));
+        $this->userRepository->save($user);
     }
 
     /**
      * @api
      */
     #[Override]
-    public function hasSessionValue($key, $value): bool
+    public function hasSessionValue(string $key, mixed $value): bool
     {
-        $data = $this->user->getSessionDataUnserialized();
+        $data = $this->getUserMandatory()->getSessionDataUnserialized();
         if (!array_key_exists($key, $data)) {
             return false;
         }
@@ -361,9 +380,9 @@ final class Session implements SessionInterface
      * @api
      */
     #[Override]
-    public function getSessionValue($key)
+    public function getSessionValue(string $key): mixed
     {
-        $data = $this->user->getSessionDataUnserialized();
+        $data = $this->getUserMandatory()->getSessionDataUnserialized();
         if (!array_key_exists($key, $data)) {
             return false;
         }
