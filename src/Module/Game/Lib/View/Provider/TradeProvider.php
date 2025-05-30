@@ -7,7 +7,7 @@ namespace Stu\Module\Game\Lib\View\Provider;
 use Override;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Trade\TradeEnum;
-use Stu\Lib\SessionInterface;
+use Stu\Lib\Session\SessionInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Trade\Lib\TradeOfferItem;
@@ -19,9 +19,7 @@ use Stu\Orm\Repository\TradeOfferRepositoryInterface;
 
 final class TradeProvider implements ViewComponentProviderInterface
 {
-    public function __construct(private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradeOfferRepositoryInterface $tradeOfferRepository, private CommodityRepositoryInterface $commodityRepository, private SessionInterface $session)
-    {
-    }
+    public function __construct(private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradeOfferRepositoryInterface $tradeOfferRepository, private CommodityRepositoryInterface $commodityRepository, private SessionInterface $session) {}
 
     #[Override]
     public function setTemplateVariables(GameControllerInterface $game): void
@@ -64,7 +62,7 @@ final class TradeProvider implements ViewComponentProviderInterface
         $game->setTemplateVar(
             'OFFER_LIST',
             array_map(
-                fn (TradeOfferInterface $tradeOffer): TradeOfferItemInterface => new TradeOfferItem($tradeOffer, $user),
+                fn(TradeOfferInterface $tradeOffer): TradeOfferItemInterface => new TradeOfferItem($tradeOffer, $user),
                 $this->tradeOfferRepository->getByUserLicenses($userId, $commodityId, $postId, $dir)
             )
         );

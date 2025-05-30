@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Lib;
+namespace Stu\Lib\Session;
 
 use Stu\Orm\Entity\UserInterface;
 

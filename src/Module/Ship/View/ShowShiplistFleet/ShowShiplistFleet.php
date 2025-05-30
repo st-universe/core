@@ -8,7 +8,7 @@ use Override;
 use request;
 use Stu\Component\Game\GameEnum;
 use Stu\Exception\AccessViolationException;
-use Stu\Lib\SessionInterface;
+use Stu\Lib\Session\SessionInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;

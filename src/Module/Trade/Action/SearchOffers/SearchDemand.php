@@ -10,7 +10,7 @@ use request;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Trade\TradeEnum;
-use Stu\Lib\SessionInterface;
+use Stu\Lib\Session\SessionInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContextTypeEnum;

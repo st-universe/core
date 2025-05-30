@@ -2,7 +2,7 @@
 
 namespace Stu\Component\Spacecraft\Nbs;
 
-use Stu\Lib\SessionInterface;
+use Stu\Lib\Session\SessionInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\SpacecraftInterface;

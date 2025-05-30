@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu;
 
-use Stu\Lib\SessionInterface;
+use Stu\Lib\Session\SessionInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 

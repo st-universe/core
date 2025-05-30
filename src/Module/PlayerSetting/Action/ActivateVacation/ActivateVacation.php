@@ -7,7 +7,7 @@ namespace Stu\Module\PlayerSetting\Action\ActivateVacation;
 use Override;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Game\TimeConstants;
-use Stu\Lib\SessionInterface;
+use Stu\Lib\Session\SessionInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
