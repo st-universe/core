@@ -115,30 +115,38 @@ final class DatabaseUserRepository extends EntityRepository implements DatabaseU
     #[Override]
     public function hasUserCompletedCategoryAndLayer(int $userId, int $categoryId, ?int $ignoredDatabaseEntryId = null, ?int $layerId = null): bool
     {
-        return (int) $this->getEntityManager()
+        $layerCondition = $layerId === null ? 'de.layer_id IS NULL' : 'de.layer_id = :layerId';
+
+        $query = $this->getEntityManager()
             ->createQuery(
                 sprintf(
                     'SELECT count(de.id)
-                    FROM %s de
-                    WHERE de.category_id = :categoryId
-                    AND de.id != :ignoredDatabaseEntryId
-                    AND de.layer_id = :layerId
-                    AND NOT EXISTS
-                        (SELECT du.id
-                        FROM %s du
-                        WHERE du.database_id = de.id
-                        AND du.user_id = :userId)',
+                FROM %s de
+                WHERE de.category_id = :categoryId
+                AND de.id != :ignoredDatabaseEntryId
+                AND %s
+                AND NOT EXISTS
+                    (SELECT du.id
+                    FROM %s du
+                    WHERE du.database_id = de.id
+                    AND du.user_id = :userId)',
                     DatabaseEntry::class,
+                    $layerCondition,
                     DatabaseUser::class
                 )
-            )
-            ->setParameters([
-                'userId' => $userId,
-                'categoryId' => $categoryId,
-                'ignoredDatabaseEntryId' => $ignoredDatabaseEntryId ?? 0,
-                'layerId' => $layerId ?? null
-            ])
-            ->getSingleScalarResult() == 0;
+            );
+
+        $parameters = [
+            'userId' => $userId,
+            'categoryId' => $categoryId,
+            'ignoredDatabaseEntryId' => $ignoredDatabaseEntryId ?? 0,
+        ];
+
+        if ($layerId !== null) {
+            $parameters['layerId'] = $layerId;
+        }
+
+        return $query->setParameters($parameters)->getSingleScalarResult() == 0;
     }
 
     #[Override]
