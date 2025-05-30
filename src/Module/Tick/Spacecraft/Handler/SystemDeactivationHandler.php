@@ -7,11 +7,13 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 
 class SystemDeactivationHandler implements SpacecraftTickHandlerInterface
 {
     public function __construct(
-        private SpacecraftSystemManagerInterface $spacecraftSystemManager
+        private SpacecraftSystemManagerInterface $spacecraftSystemManager,
+        private readonly CrewAssignmentRepositoryInterface $crewAssignmentRepository
     ) {}
 
     #[Override]
@@ -21,7 +23,7 @@ class SystemDeactivationHandler implements SpacecraftTickHandlerInterface
     ): void {
 
         $spacecraft = $wrapper->get();
-        $hasEnoughCrew = $spacecraft->hasEnoughCrew();
+        $hasEnoughCrew = $this->crewAssignmentRepository->hasEnoughCrew($spacecraft);
 
         // not enough crew
         if (!$hasEnoughCrew) {

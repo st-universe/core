@@ -49,7 +49,10 @@ class TestSession implements SessionInterface
         return false;
     }
 
-    public function getSessionValue($key) {}
+    public function getSessionValue(string $key): mixed
+    {
+        return true;
+    }
 
     public function login(string $login, string $password): bool
     {
