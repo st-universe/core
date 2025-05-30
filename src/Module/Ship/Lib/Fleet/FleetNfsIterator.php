@@ -6,7 +6,7 @@ namespace Stu\Module\Ship\Lib\Fleet;
 
 use Iterator;
 use Override;
-use Stu\Lib\SessionInterface;
+use Stu\Lib\Session\SessionInterface;
 use Stu\Module\Ship\Lib\TFleetShipItemInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
 

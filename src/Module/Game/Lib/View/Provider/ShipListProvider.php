@@ -6,7 +6,7 @@ namespace Stu\Module\Game\Lib\View\Provider;
 
 use Override;
 use Stu\Component\Game\GameEnum;
-use Stu\Lib\SessionInterface;
+use Stu\Lib\Session\SessionInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Repository\BuoyRepositoryInterface;

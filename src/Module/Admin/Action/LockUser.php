@@ -6,7 +6,7 @@ namespace Stu\Module\Admin\Action;
 
 use Override;
 use request;
-use Stu\Lib\SessionInterface;
+use Stu\Lib\Session\SessionInterface;
 use Stu\Module\Admin\View\Playerlist\Playerlist;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;

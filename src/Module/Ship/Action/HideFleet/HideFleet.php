@@ -6,7 +6,7 @@ namespace Stu\Module\Ship\Action\HideFleet;
 
 use Override;
 use request;
-use Stu\Lib\SessionInterface;
+use Stu\Lib\Session\SessionInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\View\Noop\Noop;

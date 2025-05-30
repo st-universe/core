@@ -1,12 +1,14 @@
 <?php
 
-namespace Stu\Lib;
+namespace Stu\Lib\Session;
 
 use DateTime;
 use Override;
 use RuntimeException;
 use Stu\Component\Game\TimeConstants;
 use Stu\Exception\SessionInvalidException;
+use Stu\Lib\LoginException;
+use Stu\Lib\UserLockedException;
 use Stu\Module\Control\StuHashInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;

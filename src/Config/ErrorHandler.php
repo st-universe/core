@@ -8,7 +8,7 @@ use Doctrine\DBAL\Connection;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Stu\Component\Logging\GameRequest\GameRequestSaverInterface;
-use Stu\Lib\SessionInterface;
+use Stu\Lib\Session\SessionInterface;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Throwable;
@@ -22,9 +22,7 @@ use Whoops\Util\Misc;
  */
 final class ErrorHandler
 {
-    public function __construct(private Connection $database, private GameRequestSaverInterface $gameRequestSaver, private GameControllerInterface $game, private StuConfigInterface $stuConfig, private SessionInterface $session)
-    {
-    }
+    public function __construct(private Connection $database, private GameRequestSaverInterface $gameRequestSaver, private GameControllerInterface $game, private StuConfigInterface $stuConfig, private SessionInterface $session) {}
 
     public function register(bool $registerErrorHandlers): void
     {

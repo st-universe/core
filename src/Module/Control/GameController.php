@@ -24,7 +24,7 @@ use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Lib\LoginException;
 use Stu\Lib\Session\SessionStringFactoryInterface;
-use Stu\Lib\SessionInterface;
+use Stu\Lib\Session\SessionInterface;
 use Stu\Lib\UserLockedException;
 use Stu\Lib\UuidGeneratorInterface;
 use Stu\Module\Config\StuConfigInterface;

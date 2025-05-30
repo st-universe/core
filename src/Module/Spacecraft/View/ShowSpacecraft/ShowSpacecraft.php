@@ -11,7 +11,7 @@ use Stu\Component\Game\GameEnum;
 use Stu\Component\Player\ColonizationCheckerInterface;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Component\Spacecraft\Nbs\NbsUtilityInterface;
-use Stu\Lib\SessionInterface;
+use Stu\Lib\Session\SessionInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;

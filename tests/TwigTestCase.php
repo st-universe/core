@@ -26,7 +26,7 @@ use Stu\Config\Init;
 use Stu\Config\StuContainer;
 use Stu\Lib\Component\ComponentRegistrationInterface;
 use Stu\Lib\Session\SessionStringFactoryInterface;
-use Stu\Lib\SessionInterface;
+use Stu\Lib\Session\SessionInterface;
 use Stu\Module\Control\BenchmarkResultInterface;
 use Stu\Module\Control\ComponentSetupInterface;
 use Stu\Module\Control\GameControllerInterface;

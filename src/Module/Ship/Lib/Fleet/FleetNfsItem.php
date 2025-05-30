@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib\Fleet;
 
 use RuntimeException;
-use Stu\Lib\SessionInterface;
+use Stu\Lib\Session\SessionInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftNfsItem;
 use Stu\Module\Spacecraft\Lib\SpacecraftNfsIterator;
 use Stu\Module\Ship\Lib\TFleetShipItemInterface;
