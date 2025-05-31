@@ -46,23 +46,15 @@ use Stu\Component\Player\Relation\EnemyDeterminator;
 use Stu\Component\Player\Relation\FriendDeterminator;
 use Stu\Component\Player\Relation\PlayerRelationDeterminator;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
-use Stu\Module\Config\StuConfigInterface;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Orm\Repository\UserRepositoryInterface;
 
 use function DI\autowire;
-use function DI\create;
-use function DI\get;
 
 return [
     ColonyLimitCalculatorInterface::class => autowire(ColonyLimitCalculator::class),
     ColonizationCheckerInterface::class => autowire(ColonizationChecker::class),
     RequestDeletionConfirmationInterface::class => autowire(RequestDeletionConfirmation::class),
-    PlayerDeletionInterface::class => create(PlayerDeletion::class)->constructor(
-        get(UserRepositoryInterface::class),
-        get(StuConfigInterface::class),
-        get(LoggerUtilFactoryInterface::class),
-        get(Parser::class),
+    PlayerDeletionInterface::class => autowire(PlayerDeletion::class)->constructorParameter(
+        'deletionHandlers',
         [
             autowire(PirateWrathDeletionHandler::class),
             autowire(AllianceDeletionHandler::class),
