@@ -71,8 +71,18 @@ final class CreateDatabaseEntry implements CreateDatabaseEntryInterface
 
         $award = $category->getAward();
 
-        if ($this->databaseUserRepository->hasUserCompletedCategoryAndLayer($user->getId(), $category->getId(), $ignoredDatabaseEntryId, $layerId)) {
-            $this->createUserAward->createAwardForUser($user, $award);
+        if ($ignoredDatabaseEntryId === null && $layerId === null) {
+            $layerIds = $this->databaseEntryRepository->getDistinctLayerIdsByCategory($category->getId());
+
+            foreach ($layerIds as $currentLayerId) {
+                if ($this->databaseUserRepository->hasUserCompletedCategoryAndLayer($user->getId(), $category->getId(), null, $currentLayerId)) {
+                    $this->createUserAward->createAwardForUser($user, $award);
+                }
+            }
+        } else {
+            if ($this->databaseUserRepository->hasUserCompletedCategoryAndLayer($user->getId(), $category->getId(), $ignoredDatabaseEntryId, $layerId)) {
+                $this->createUserAward->createAwardForUser($user, $award);
+            }
         }
     }
 }

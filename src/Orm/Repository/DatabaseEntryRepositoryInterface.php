@@ -38,4 +38,9 @@ interface DatabaseEntryRepositoryInterface extends ObjectRepository
     public function prototype(): DatabaseEntryInterface;
 
     public function save(DatabaseEntryInterface $entry): void;
+
+    /**
+     * @return array<int|null>
+     */
+    public function getDistinctLayerIdsByCategory(int $categoryId): array;
 }
