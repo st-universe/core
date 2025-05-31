@@ -45,7 +45,6 @@
     {% else %}
     <td>{{ ship.getName|bbcode }}</td>
     {% endif %}
-    {% if not ship.isDestroyed %}
     {% include 'html/ship/management/crewManagement.twig' %}
     <td>
       {% set eps = wrapper.getEpsSystemData %}
@@ -117,7 +116,6 @@
       {% endif %}
       {% endif %}
     </td>
-    {% endif %}
   </tr>
   {% endfor %}
   {% endfor %}

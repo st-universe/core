@@ -53,6 +53,8 @@ interface SpacecraftWrapperInterface
 
     public function canFire(): bool;
 
+    public function canMan(): bool;
+
     public function getRepairDuration(): int;
 
     public function getRepairDurationPreview(): int;

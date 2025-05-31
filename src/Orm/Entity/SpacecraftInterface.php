@@ -299,8 +299,6 @@ interface SpacecraftInterface extends
 
     public function hasStoredBuoy(): bool;
 
-    public function canMan(): bool;
-
     public function hasCrewmanOfUser(int $userId): bool;
 
     public function getHullColorStyle(): string;

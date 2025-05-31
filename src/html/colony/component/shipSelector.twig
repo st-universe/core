@@ -41,9 +41,6 @@
           </tr>
         </table>
       </td>
-      {% if ship.isDestroyed %}
-      <td colspan="2"></td>
-      {% else %}
       <td style="width: auto; min-width: 60px; padding: 2px;">
         {% set shields = wrapper.getShieldSystemData %}
         {% if shields %}
@@ -96,8 +93,6 @@
         {% endif %}
       </td>
     </tr>
-
-    {% endif %}
   </table>
   <input type="hidden" id="selshipid" value="{{ shipId }}" />
 </li>
