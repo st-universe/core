@@ -20,6 +20,7 @@ use Stu\Module\Spacecraft\Lib\SourceAndTargetWrappersInterface;
 use Stu\Module\Tick\Lock\LockManagerInterface;
 use Stu\Module\Tick\Lock\LockTypeEnum;
 use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 /**
@@ -29,6 +30,7 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
 {
     public function __construct(
         private SpacecraftRepositoryInterface $spacecraftRepository,
+        private CrewAssignmentRepositoryInterface $crewAssignmentRepository,
         private SemaphoreUtilInterface $semaphoreUtil,
         private GameControllerInterface $game,
         private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
@@ -121,7 +123,7 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
     private function checkviolations(SpacecraftInterface $spacecraft, int $userId, bool $allowUplink): void
     {
         if ($spacecraft->getUser()->getId() !== $userId) {
-            if ($spacecraft->hasCrewmanOfUser($userId)) {
+            if ($this->crewAssignmentRepository->hasCrewmanOfUser($spacecraft, $userId)) {
                 if (!$allowUplink) {
                     throw new UnallowedUplinkOperation(_('This Operation is not allowed via uplink!'));
                 }
