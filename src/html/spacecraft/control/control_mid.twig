@@ -1,5 +1,5 @@
 {% macro control_mid(wrapper, astroStateSystem, astroStateRegion, isTachyonActive, starSystemEntryTal, currentColony,
-canColonize, closestAnomalyDistance) %}
+canColonize, closestAnomalyDistance, storedShuttleCount) %}
 
 {% from 'html/macros.twig' import onClickSpacecraft %}
 
@@ -23,12 +23,13 @@ canColonize, closestAnomalyDistance) %}
     {% include 'html/spacecraft/system/system.twig' with {'name': 'TACHYON_SCANNER'} %}
     {% include 'html/spacecraft/system/system.twig' with {'name': 'UPLINK'} %}
     {% include 'html/spacecraft/system/system.twig' with {'name': 'RPG_MODULE'} %}
-    {% if SPACECRAFT.hasShuttleRamp and SPACECRAFT.getStoredShuttles %}
-    {% set defaultId = SPACECRAFT.getStoredShuttles[0].getId %}
+    {% set storedShuttles = SPACECRAFT.getStoredShuttles %}
+    {% if SPACECRAFT.hasShuttleRamp and storedShuttles %}
+    {% set defaultId = storedShuttles.first.getId %}
     <tr>
         <td>
             <select name="shid" onchange="cp('shuttle','commodities/' + this.value, 'png')">
-                {% for data in SPACECRAFT.getStoredShuttles %}
+                {% for data in storedShuttles %}
                 <option value="{{ data.getId }}">{{ data.getName }}
                 </option>
                 {% endfor %}
@@ -37,7 +38,7 @@ canColonize, closestAnomalyDistance) %}
             <input type="submit" class="button" name="B_START_SHUTTLE" value="Shuttle starten" />
         </td>
         <td>
-            {{ SPACECRAFT.getStoredShuttleCount }} / {{ SPACECRAFT.getRump.getShuttleSlots }} geladen
+            {{ storedShuttleCount }} / {{ SPACECRAFT.getRump.getShuttleSlots }} geladen
         </td>
     </tr>
     {% endif %}

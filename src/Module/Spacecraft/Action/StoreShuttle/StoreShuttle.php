@@ -11,7 +11,7 @@ use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Interaction\InteractionCheckerBuilderFactoryInterface;
 use Stu\Lib\Interaction\InteractionCheckType;
-use Stu\Lib\Trait\SpacecraftHasFreeShuttleSpaceTrait;
+use Stu\Lib\Trait\SpacecraftShuttleSpaceTrait;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
@@ -23,7 +23,7 @@ use Stu\Orm\Entity\SpacecraftInterface;
 
 final class StoreShuttle implements ActionControllerInterface
 {
-    use SpacecraftHasFreeShuttleSpaceTrait;
+    use SpacecraftShuttleSpaceTrait;
 
     public const string ACTION_IDENTIFIER = 'B_STORE_SHUTTLE';
 

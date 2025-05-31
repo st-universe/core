@@ -13,7 +13,6 @@ use Stu\Lib\Interaction\EntityWithInteractionCheckInterface;
 use Stu\Lib\Map\EntityWithLocationInterface;
 use Stu\Lib\Transfer\EntityWithStorageInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Spacecraft\Lib\Crew\EntityWithCrewAssignmentsInterface;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestroyerInterface;
 
@@ -285,15 +284,8 @@ interface SpacecraftInterface extends
 
     public function getMaxTorpedos(): int;
 
-    /** @return array<int, CommodityInterface> */
-    public function getStoredShuttles(): array;
-
-    public function getStoredShuttleCount(): int;
-
-    /**
-     * @return CommodityInterface[]
-     */
-    public function getStoredBuoy(): array;
+    /** @return Collection<int, CommodityInterface> */
+    public function getStoredShuttles(): Collection;
 
     public function hasStoredBuoy(): bool;
 
