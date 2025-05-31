@@ -285,8 +285,6 @@ interface SpacecraftInterface extends
 
     public function getMaxTorpedos(): int;
 
-    public function hasFreeShuttleSpace(?LoggerUtilInterface $loggerUtil): bool;
-
     /** @return array<int, CommodityInterface> */
     public function getStoredShuttles(): array;
 

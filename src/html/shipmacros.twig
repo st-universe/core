@@ -49,7 +49,7 @@
     onload="adjustCellHeight(this); adjustCellWidth(this);" />
 {% endmacro %}
 
-{% macro nbsblock(WRAPPER, hasNbs, cloakNbs, stationNbs, fleetNbs, shipNbs, trumfieldNbs) %}
+{% macro nbsblock(WRAPPER, hasNbs, cloakNbs, stationNbs, fleetNbs, shipNbs, trumfieldNbs, hasFreeShuttleSpace) %}
 {% from 'html/macros.twig' import onClickSpacecraft %}
 {% set SPACECRAFT = WRAPPER.get %}
 {% if not hasNbs and not cloakNbs %}
@@ -76,7 +76,7 @@
     </tr>
     {% for station in stationNbs %}
     <tr class="row">
-        {{ _self.nbslist_body(WRAPPER, station) }}
+        {{ _self.nbslist_body(WRAPPER, station, hasFreeShuttleSpace) }}
     </tr>
     {% endfor %}
     {% endif %}
@@ -143,7 +143,7 @@
     {% for nbsItem in data.getVisibleShips %}
     {% set style = data.isHidden ? 'display: none;' : '' %}
     <tr class="row fleet{{ data.getId }}" style="{{ style }}">
-        {{ _self.nbslist_body(WRAPPER, nbsItem) }}
+        {{ _self.nbslist_body(WRAPPER, nbsItem, hasFreeShuttleSpace) }}
     </tr>
     {% endfor %}
     {% endfor %}
@@ -155,7 +155,7 @@
     </tr>
     {% for nbsItem in shipNbs %}
     <tr class="row">
-        {{ _self.nbslist_body(WRAPPER, nbsItem) }}
+        {{ _self.nbslist_body(WRAPPER, nbsItem, hasFreeShuttleSpace) }}
     </tr>
     {% endfor %}
     {% endif %}
@@ -187,7 +187,7 @@
 </tr>
 {% endmacro %}
 
-{% macro nbslist_body(WRAPPER, nbsItem) %}
+{% macro nbslist_body(WRAPPER, nbsItem, hasFreeShuttleSpace) %}
 {% from 'html/macros.twig' import onClickSpacecraft %}
 {% set SPACECRAFT = WRAPPER.get %}
 {% set spacecraftId = SPACECRAFT.getId %}
@@ -302,7 +302,7 @@
     {% endif %}
     {% endif %}
     {% endif %}
-    {% if nbsItem.isSelectable and nbsItem.isShuttle and SPACECRAFT.hasFreeShuttleSpace %}
+    {% if nbsItem.isSelectable and nbsItem.isShuttle and hasFreeShuttleSpace %}
     <div style="float:left; margin-right:4px;">
         <a href="javascript:void(0);"
             onClick="actionToInnerContent('B_STORE_SHUTTLE', 'id={{ spacecraftId }}&target={{ targetId }}&sstr={{ SESSIONSTRING }}');"

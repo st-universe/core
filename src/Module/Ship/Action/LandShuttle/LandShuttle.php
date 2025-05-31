@@ -9,6 +9,7 @@ use Override;
 use request;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
+use Stu\Lib\Trait\SpacecraftHasFreeShuttleSpaceTrait;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
@@ -22,6 +23,8 @@ use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class LandShuttle implements ActionControllerInterface
 {
+    use SpacecraftHasFreeShuttleSpaceTrait;
+
     public const string ACTION_IDENTIFIER = 'B_LAND_SHUTTLE';
 
     public function __construct(
@@ -98,7 +101,7 @@ final class LandShuttle implements ActionControllerInterface
         }
 
         // check if shuttle slot available
-        if (!$target->hasFreeShuttleSpace(null)) {
+        if (!$this->hasFreeShuttleSpace($target)) {
             $game->addInformation(_("Die Shuttle-Rampe des Zieles ist belegt"));
             return;
         }

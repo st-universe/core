@@ -11,10 +11,9 @@ use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Interaction\InteractionCheckerBuilderFactoryInterface;
 use Stu\Lib\Interaction\InteractionCheckType;
+use Stu\Lib\Trait\SpacecraftHasFreeShuttleSpaceTrait;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftRemoverInterface;
@@ -24,9 +23,9 @@ use Stu\Orm\Entity\SpacecraftInterface;
 
 final class StoreShuttle implements ActionControllerInterface
 {
-    public const string ACTION_IDENTIFIER = 'B_STORE_SHUTTLE';
+    use SpacecraftHasFreeShuttleSpaceTrait;
 
-    private LoggerUtilInterface $loggerUtil;
+    public const string ACTION_IDENTIFIER = 'B_STORE_SHUTTLE';
 
     /** @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader */
     public function __construct(
@@ -35,11 +34,8 @@ final class StoreShuttle implements ActionControllerInterface
         private EntityManagerInterface $entityManager,
         private TroopTransferUtilityInterface $troopTransferUtility,
         private SpacecraftRemoverInterface $spacecraftRemover,
-        private InteractionCheckerBuilderFactoryInterface $interactionCheckerBuilderFactory,
-        LoggerUtilFactoryInterface $loggerUtilFactory
-    ) {
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
-    }
+        private InteractionCheckerBuilderFactoryInterface $interactionCheckerBuilderFactory
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -102,7 +98,7 @@ final class StoreShuttle implements ActionControllerInterface
         }
 
         // check if shuttle slot available
-        if (!$spacecraft->hasFreeShuttleSpace($this->loggerUtil)) {
+        if (!$this->hasFreeShuttleSpace($spacecraft)) {
             $game->addInformation(_("Die Shuttle-Rampe ist belegt"));
             return;
         }

@@ -34,7 +34,6 @@ use Stu\Component\Spacecraft\System\Type\TorpedoStorageShipSystem;
 use Stu\Component\Spacecraft\System\Type\TractorBeamShipSystem;
 use Stu\Lib\Transfer\CommodityTransfer;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Spacecraft\Lib\Battle\FightLib;
 use Stu\Orm\Repository\SpacecraftRepository;
 
@@ -1189,17 +1188,6 @@ abstract class Spacecraft implements SpacecraftInterface
         return $this->getRump()->getBaseTorpedoStorage()
             + ($this->isSystemHealthy(SpacecraftSystemTypeEnum::TORPEDO_STORAGE)
                 ? TorpedoStorageShipSystem::TORPEDO_CAPACITY : 0);
-    }
-
-    #[Override]
-    public function hasFreeShuttleSpace(?LoggerUtilInterface $loggerUtil = null): bool
-    {
-        if ($loggerUtil !== null) {
-            $loggerUtil->log(sprintf('rumpShuttleSlots: %d', $this->getRump()->getShuttleSlots()));
-            $loggerUtil->log(sprintf('storedShuttleCount: %d', $this->getStoredShuttleCount()));
-        }
-        return $this->hasSpacecraftSystem(SpacecraftSystemTypeEnum::SHUTTLE_RAMP)
-            && $this->getRump()->getShuttleSlots() - $this->getStoredShuttleCount() > 0;
     }
 
     #[Override]

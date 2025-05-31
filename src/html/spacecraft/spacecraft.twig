@@ -310,7 +310,8 @@
 </table>
 {% endif %}
 {% if SPACECRAFT.getNbs %}
-{{ nbsblock(WRAPPER, HAS_NBS, CLOAK_NBS, STATION_NBS, FLEET_NBS, SPACECRAFT_NBS, TRUMFIELD_NBS) }}
+{{ nbsblock(WRAPPER, HAS_NBS, CLOAK_NBS, STATION_NBS, FLEET_NBS, SPACECRAFT_NBS, TRUMFIELD_NBS, HAS_FREE_SHUTTLE_SPACE)
+}}
 {% endif %}
 <br />
 {% include 'html/spacecraft/spacecraftStorage.twig' %}
