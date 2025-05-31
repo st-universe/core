@@ -16,21 +16,21 @@ final class VersionTestDatabaseCategories extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('INSERT INTO stu_database_categories (id, description, type, sort, points, prestige, award_id)
-                VALUES (1, \'Schiffsrümpfe\', 1, 0, 1, 5, NULL),
-                       (8, \'Forschung\', 8, 5, 1, 10, NULL),
-                       (9, \'Stationsrümpfe\', 1, 1, 1, 5, NULL),
-                       (2, \'RPG-Schiffe\', 2, 2, 2, 100, NULL),
-                       (7, \'Sternensysteme\', 7, 3, 1, 10, 15),
-                       (5, \'Planetentypen\', 7, 1, 1, 5, 20),
-                       (6, \'Sternensystemtypen\', 7, 2, 2, 5, 21),
-                       (4, \'Regionen\', 3, 4, 2, 5, 22),
-                       (10, \'Planetentypenunused\', 0, 0, 0, 0, NULL),
-                       (11, \'Sternensystemtypenunused\', 0, 0, 0, 0, NULL),
-                       (12, \'Regionunused\', 0, 0, 0, 0, NULL),
-                       (3, \'Handelsposten\', 3, 3, 1, 5, 23),
-                       (13, \'sternensystemeunused\', 0, 0, 0, 0, NULL),
-                       (14, \'unused\', 0, 0, 0, 0, NULL);
+        $this->addSql('INSERT INTO stu_database_categories (id, description, type, sort, points, prestige)
+                VALUES (1, \'Schiffsrümpfe\', 1, 0, 1, 5),
+                       (8, \'Forschung\', 8, 5, 1, 10),
+                       (9, \'Stationsrümpfe\', 1, 1, 1, 5),
+                       (2, \'RPG-Schiffe\', 2, 2, 2, 100),
+                       (7, \'Sternensysteme\', 7, 3, 1, 10),
+                       (5, \'Planetentypen\', 7, 1, 1, 5),
+                       (6, \'Sternensystemtypen\', 7, 2, 2, 5),
+                       (4, \'Regionen\', 3, 4, 2, 5),
+                       (10, \'Planetentypenunused\', 0, 0, 0, 0),
+                       (11, \'Sternensystemtypenunused\', 0, 0, 0, 0),
+                       (12, \'Regionunused\', 0, 0, 0, 0),
+                       (3, \'Handelsposten\', 3, 3, 1, 5),
+                       (13, \'sternensystemeunused\', 0, 0, 0, 0),
+                       (14, \'unused\', 0, 0, 0, 0);
         ');
     }
 }

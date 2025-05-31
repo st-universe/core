@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250528165718 extends AbstractMigration
+final class Version20250531083845 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -501,10 +501,16 @@ final class Version20250528165718 extends AbstractMigration
             CREATE INDEX crew_training_user_idx ON stu_crew_training (user_id)
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE TABLE stu_database_categories (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, description VARCHAR(255) NOT NULL, points INTEGER NOT NULL, type INTEGER NOT NULL, sort INTEGER NOT NULL, prestige INTEGER NOT NULL, award_id INTEGER DEFAULT NULL, CONSTRAINT FK_CDA2EA6C3D5282CF FOREIGN KEY (award_id) REFERENCES stu_award (id) NOT DEFERRABLE INITIALLY IMMEDIATE)
+            CREATE TABLE stu_database_categories (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, description VARCHAR(255) NOT NULL, points INTEGER NOT NULL, type INTEGER NOT NULL, sort INTEGER NOT NULL, prestige INTEGER NOT NULL)
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE INDEX IDX_CDA2EA6C3D5282CF ON stu_database_categories (award_id)
+            CREATE TABLE stu_database_category_awards (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, category_id INTEGER NOT NULL, layer_id INTEGER DEFAULT NULL, award_id INTEGER DEFAULT NULL, CONSTRAINT FK_EEBC1A0512469DE2 FOREIGN KEY (category_id) REFERENCES stu_database_categories (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_EEBC1A053D5282CF FOREIGN KEY (award_id) REFERENCES stu_award (id) NOT DEFERRABLE INITIALLY IMMEDIATE)
+        SQL);
+        $this->addSql(<<<'SQL'
+            CREATE INDEX IDX_EEBC1A0512469DE2 ON stu_database_category_awards (category_id)
+        SQL);
+        $this->addSql(<<<'SQL'
+            CREATE INDEX IDX_EEBC1A053D5282CF ON stu_database_category_awards (award_id)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE TABLE stu_database_entrys (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, description VARCHAR(255) NOT NULL, data CLOB NOT NULL, category_id INTEGER NOT NULL, type INTEGER NOT NULL, sort INTEGER NOT NULL, object_id INTEGER NOT NULL, layer_id INTEGER DEFAULT NULL, CONSTRAINT FK_4D14EE9A8CDE5729 FOREIGN KEY (type) REFERENCES stu_database_types (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_4D14EE9A12469DE2 FOREIGN KEY (category_id) REFERENCES stu_database_categories (id) NOT DEFERRABLE INITIALLY IMMEDIATE)
@@ -1788,6 +1794,9 @@ final class Version20250528165718 extends AbstractMigration
         SQL);
         $this->addSql(<<<'SQL'
             DROP TABLE stu_database_categories
+        SQL);
+        $this->addSql(<<<'SQL'
+            DROP TABLE stu_database_category_awards
         SQL);
         $this->addSql(<<<'SQL'
             DROP TABLE stu_database_entrys

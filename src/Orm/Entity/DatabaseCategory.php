@@ -10,8 +10,6 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
-use Doctrine\ORM\Mapping\JoinColumn;
-use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
@@ -42,9 +40,6 @@ class DatabaseCategory implements DatabaseCategoryInterface
     #[Column(type: 'integer')]
     private int $prestige;
 
-    #[Column(type: 'integer', nullable: true)]
-    private ?int $award_id = null;
-
     /**
      * @var ArrayCollection<int, DatabaseEntryInterface>
      */
@@ -52,13 +47,16 @@ class DatabaseCategory implements DatabaseCategoryInterface
     #[OrderBy(['sort' => 'ASC'])]
     private Collection $entries;
 
-    #[ManyToOne(targetEntity: 'Award')]
-    #[JoinColumn(name: 'award_id', referencedColumnName: 'id')]
-    private ?AwardInterface $award = null;
+    /**
+     * @var ArrayCollection<int, DatabaseCategoryAwardInterface>
+     */
+    #[OneToMany(targetEntity: DatabaseCategoryAward::class, mappedBy: 'category')]
+    private Collection $categoryAwards;
 
     public function __construct()
     {
         $this->entries = new ArrayCollection();
+        $this->categoryAwards = new ArrayCollection();
     }
 
     #[Override]
@@ -71,7 +69,6 @@ class DatabaseCategory implements DatabaseCategoryInterface
     public function setDescription(string $description): DatabaseCategoryInterface
     {
         $this->description = $description;
-
         return $this;
     }
 
@@ -85,7 +82,6 @@ class DatabaseCategory implements DatabaseCategoryInterface
     public function setPoints(int $points): DatabaseCategoryInterface
     {
         $this->points = $points;
-
         return $this;
     }
 
@@ -99,7 +95,6 @@ class DatabaseCategory implements DatabaseCategoryInterface
     public function setType(int $type): DatabaseCategoryInterface
     {
         $this->type = $type;
-
         return $this;
     }
 
@@ -113,7 +108,6 @@ class DatabaseCategory implements DatabaseCategoryInterface
     public function setSort(int $sort): DatabaseCategoryInterface
     {
         $this->sort = $sort;
-
         return $this;
     }
 
@@ -130,14 +124,14 @@ class DatabaseCategory implements DatabaseCategoryInterface
     }
 
     #[Override]
-    public function getAward(): ?AwardInterface
-    {
-        return $this->award;
-    }
-
-    #[Override]
     public function getEntries(): array
     {
         return $this->entries->toArray();
+    }
+
+    #[Override]
+    public function getCategoryAwards(): array
+    {
+        return $this->categoryAwards->toArray();
     }
 }
