@@ -25,6 +25,8 @@ interface CrewAssignmentRepositoryInterface extends ObjectRepository
 
     public function hasEnoughCrew(SpacecraftInterface $spacecraft): bool;
 
+    public function hasCrewmanOfUser(SpacecraftInterface $spacecraft, int $userId): bool;
+
     /**
      * @return list<CrewAssignmentInterface>
      */

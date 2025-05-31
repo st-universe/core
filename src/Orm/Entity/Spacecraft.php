@@ -1255,18 +1255,6 @@ abstract class Spacecraft implements SpacecraftInterface
     }
 
     #[Override]
-    public function hasCrewmanOfUser(int $userId): bool
-    {
-        foreach ($this->getCrewAssignments() as $shipCrew) {
-            if ($shipCrew->getCrew()->getUser()->getId() === $userId) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    #[Override]
     public function getHref(): string
     {
         $moduleView = $this->getType()->getModuleView();

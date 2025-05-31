@@ -60,6 +60,29 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
     }
 
     #[Override]
+    public function hasCrewmanOfUser(SpacecraftInterface $spacecraft, int $userId): bool
+    {
+        return (int)$this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT count(ca)
+                    FROM %s ca
+                    JOIN %s c
+                    WITH ca.crew = c
+                    WHERE c.user_id = :userId
+                    AND ca.spacecraft = :spacecraft',
+                    CrewAssignment::class,
+                    Crew::class
+                )
+            )
+            ->setParameters([
+                'userId' => $userId,
+                'spacecraft' => $spacecraft
+            ])
+            ->getSingleScalarResult() > 0;
+    }
+
+    #[Override]
     public function getByShip(int $shipId): array
     {
         return $this->findBy(
