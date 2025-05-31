@@ -1191,55 +1191,18 @@ abstract class Spacecraft implements SpacecraftInterface
     }
 
     #[Override]
-    public function getStoredShuttles(): array
+    public function getStoredShuttles(): Collection
     {
-        $shuttles = [];
-
-        foreach ($this->getStorage() as $stor) {
-            if ($stor->getCommodity()->isShuttle()) {
-                $shuttles[] = $stor->getCommodity();
-            }
-        }
-
-        return $shuttles;
+        return $this->getStorage()
+            ->map(fn(StorageInterface $storage): CommodityInterface => $storage->getCommodity())
+            ->filter(fn(CommodityInterface $commodity): bool => $commodity->isShuttle());
     }
-
-    #[Override]
-    public function getStoredShuttleCount(): int
-    {
-        $count = 0;
-
-        foreach ($this->getStorage() as $stor) {
-            if ($stor->getCommodity()->isShuttle()) {
-                $count += $stor->getAmount();
-            }
-        }
-
-        return $count;
-    }
-
-    /**
-     * @return CommodityInterface[]
-     */
-    #[Override]
-    public function getStoredBuoy(): array
-    {
-        $buoy = [];
-
-        foreach ($this->getStorage() as $stor) {
-            if ($stor->getCommodity()->isBouy()) {
-                $buoy[] = $stor->getCommodity();
-            }
-        }
-
-        return $buoy;
-    }
-
 
     #[Override]
     public function hasStoredBuoy(): bool
     {
-        return $this->getStoredBuoy() !== [];
+        return $this->getStorage()
+            ->exists(fn(int $key, StorageInterface $storage): bool => $storage->getCommodity()->isBouy());
     }
 
     #[Override]

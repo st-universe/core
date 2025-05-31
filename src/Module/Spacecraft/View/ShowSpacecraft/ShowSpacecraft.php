@@ -17,7 +17,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Config\Init;
 use Stu\Lib\Map\NavPanel\NavPanel;
 use Stu\Lib\Session\SessionStorageInterface;
-use Stu\Lib\Trait\SpacecraftHasFreeShuttleSpaceTrait;
+use Stu\Lib\Trait\SpacecraftShuttleSpaceTrait;
 use Stu\Module\Control\ViewContext;
 use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Control\ViewControllerInterface;
@@ -37,7 +37,7 @@ use Stu\Orm\Repository\UserLayerRepositoryInterface;
 
 final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialInterface
 {
-    use SpacecraftHasFreeShuttleSpaceTrait;
+    use SpacecraftShuttleSpaceTrait;
 
     public const string VIEW_IDENTIFIER = 'SHOW_SPACECRAFT';
 
@@ -147,6 +147,7 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
         $game->setTemplateVar('CURRENT_COLONY', $colony);
         $game->setTemplateVar('CLOSEST_ANOMALY_DISTANCE', $this->anomalyRepository->getClosestAnomalyDistance($wrapper));
         $game->setTemplateVar('HAS_FREE_SHUTTLE_SPACE', $this->hasFreeShuttleSpace($spacecraft));
+        $game->setTemplateVar('STORED_SHUTTLE_COUNT', $this->getStoredShuttleCount($spacecraft));
 
         $userLayers = $user->getUserLayers();
         if ($spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::TRANSWARP_COIL)) {
