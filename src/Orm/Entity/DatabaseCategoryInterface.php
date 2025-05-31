@@ -24,12 +24,17 @@ interface DatabaseCategoryInterface
 
     public function getPrestige(): int;
 
-    public function getAward(): ?AwardInterface;
-
     /**
      * Returns a list of associated database entries
      *
      * @return array<int, DatabaseEntryInterface>
      */
     public function getEntries(): array;
+
+    /**
+     * Returns a list of associated category awards
+     *
+     * @return array<int, DatabaseCategoryAwardInterface>
+     */
+    public function getCategoryAwards(): array;
 }

@@ -50,6 +50,7 @@ use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\CrewRace;
 use Stu\Orm\Entity\CrewTraining;
 use Stu\Orm\Entity\DatabaseCategory;
+use Stu\Orm\Entity\DatabaseCategoryAward;
 use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\DatabaseType;
 use Stu\Orm\Entity\DatabaseUser;
@@ -203,6 +204,7 @@ return [
     CrewRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(Crew::class),
     CrewTrainingRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(CrewTraining::class),
     DatabaseCategoryRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(DatabaseCategory::class),
+    DatabaseCategoryAwardRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(DatabaseCategoryAward::class),
     DatabaseEntryRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(DatabaseEntry::class),
     DatabaseTypeRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(DatabaseType::class),
     DatabaseUserRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(DatabaseUser::class),
