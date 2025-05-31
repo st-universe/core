@@ -137,4 +137,20 @@ final class DatabaseEntryRepository extends EntityRepository implements Database
 
         $em->persist($entry);
     }
+
+    /**
+     * @return array<int|null>
+     */
+    public function getDistinctLayerIdsByCategory(int $categoryId): array
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT DISTINCT d.layer_id FROM %s d WHERE d.category_id = :categoryId',
+                    DatabaseEntry::class
+                )
+            )
+            ->setParameter('categoryId', $categoryId)
+            ->getSingleColumnResult();
+    }
 }
