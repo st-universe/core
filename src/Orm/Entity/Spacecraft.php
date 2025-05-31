@@ -1255,16 +1255,6 @@ abstract class Spacecraft implements SpacecraftInterface
     }
 
     #[Override]
-    public function canMan(): bool
-    {
-        $buildplan = $this->getBuildplan();
-
-        return $buildplan !== null
-            && $buildplan->getCrew() > 0
-            && $this->hasSpacecraftSystem(SpacecraftSystemTypeEnum::LIFE_SUPPORT);
-    }
-
-    #[Override]
     public function hasCrewmanOfUser(int $userId): bool
     {
         foreach ($this->getCrewAssignments() as $shipCrew) {

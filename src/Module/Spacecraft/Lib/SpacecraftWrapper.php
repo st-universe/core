@@ -277,6 +277,16 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
     }
 
     #[Override]
+    public function canMan(): bool
+    {
+        $buildplan = $this->spacecraft->getBuildplan();
+
+        return $buildplan !== null
+            && $buildplan->getCrew() > 0
+            && $this->spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::LIFE_SUPPORT);
+    }
+
+    #[Override]
     public function getRepairDuration(): int
     {
         return $this->repairUtil->getRepairDuration($this);

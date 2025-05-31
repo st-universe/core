@@ -15,7 +15,6 @@
   </div>
 </div>
 <div id="scandetails" style="width: 500px;">
-  {% if not TARGETSHIP.isDestroyed %}
   {% set TARGETSHIP_EPS = TARGETWRAPPER.getEpsSystemData %}
   {% if SHIP.isMatrixScannerHealthy() and not SHIP.isCloaked() %}
   <table class="tcal">
@@ -114,9 +113,6 @@
     </table>
     {% endif %}
   </form>
-  {% else %}
-  <span>Ziel ist zerstört</span>
-  {% endif %}
 </div>
 <div class="box" id="scanlogbook" style="width: 500px; display: none;">
   <div class="box_title">Logbuch</div>
