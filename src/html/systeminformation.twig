@@ -5,11 +5,27 @@
         </tr>
         <tr>
             <td>
-                {% for info in INFORMATION %}
-                <div>
-                    {{ info|bbcode }}
+                {% if INFORMATION|length > 6 %}
+                <input type="checkbox" id="toggle-info" style="display: none;" />
+                {% endif %}
+
+                <div class="information-container">
+                    {% for info in INFORMATION %}
+                    <div class="information-item{% if loop.index > 6 %} hidden-info{% endif %}">
+                        {{ info|bbcode }}
+                    </div>
+                    {% endfor %}
+
+                    {% if INFORMATION|length > 6 %}
+                    <div style="margin-top: 10px; padding: 5px 0;">
+                        <label for="toggle-info" class="linkbutton toggle-label">
+                            <span class="show-text">Mehr anzeigen ({{ INFORMATION|length - 6 }} weitere)</span>
+                            <span class="hide-text" style="display: none;">Weniger anzeigen</span>
+                        </label>
+                    </div>
+                    {% endif %}
                 </div>
-                {% endfor %}
+
                 {% if TARGET_LINK %}
                 <a href="{{ TARGET_LINK.getUrl }}" class="linkbutton">
                     {{ TARGET_LINK.getTitle }}
@@ -19,4 +35,5 @@
         </tr>
     </table>
 </div>
+
 <br />
