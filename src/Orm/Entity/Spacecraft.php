@@ -31,10 +31,16 @@ use Stu\Component\Spacecraft\SpacecraftLssModeEnum;
 use Stu\Component\Spacecraft\SpacecraftTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\Type\TorpedoStorageShipSystem;
-use Stu\Component\Spacecraft\System\Type\TractorBeamShipSystem;
-use Stu\Lib\Transfer\CommodityTransfer;
-use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Spacecraft\Lib\Battle\FightLib;
+use Stu\Component\Spacecraft\Trait\HasSpacecraftSystemTrait;
+use Stu\Component\Spacecraft\Trait\SpacecraftCrewTrait;
+use Stu\Component\Spacecraft\Trait\SpacecraftEvadeChanceTrait;
+use Stu\Component\Spacecraft\Trait\SpacecraftHitChanceTrait;
+use Stu\Component\Spacecraft\Trait\SpacecraftInteractionTrait;
+use Stu\Component\Spacecraft\Trait\SpacecraftLocationTrait;
+use Stu\Component\Spacecraft\Trait\SpacecraftShieldsTrait;
+use Stu\Component\Spacecraft\Trait\SpacecraftStorageTrait;
+use Stu\Component\Spacecraft\Trait\SpacecraftSystemHealthTrait;
+use Stu\Component\Spacecraft\Trait\SpacecraftSystemStateTrait;
 use Stu\Orm\Repository\SpacecraftRepository;
 
 #[Table(name: 'stu_spacecraft')]
@@ -48,6 +54,17 @@ use Stu\Orm\Repository\SpacecraftRepository;
 ])]
 abstract class Spacecraft implements SpacecraftInterface
 {
+    use SpacecraftSystemStateTrait;
+    use HasSpacecraftSystemTrait;
+    use SpacecraftSystemHealthTrait;
+    use SpacecraftShieldsTrait;
+    use SpacecraftHitChanceTrait;
+    use SpacecraftEvadeChanceTrait;
+    use SpacecraftCrewTrait;
+    use SpacecraftLocationTrait;
+    use SpacecraftStorageTrait;
+    use SpacecraftInteractionTrait;
+
     #[Id]
     #[Column(type: 'integer')]
     #[GeneratedValue(strategy: 'IDENTITY')]
@@ -216,12 +233,6 @@ abstract class Spacecraft implements SpacecraftInterface
     }
 
     #[Override]
-    public function getLayer(): ?LayerInterface
-    {
-        return $this->getLocation()->getLayer();
-    }
-
-    #[Override]
     public function getFlightDirection(): ?DirectionEnum
     {
         return $this->direction;
@@ -280,38 +291,6 @@ abstract class Spacecraft implements SpacecraftInterface
     }
 
     #[Override]
-    public function isSystemHealthy(SpacecraftSystemTypeEnum $type): bool
-    {
-        if (!$this->hasSpacecraftSystem($type)) {
-            return false;
-        }
-
-        return $this->getSpacecraftSystem($type)->isHealthy();
-    }
-
-    #[Override]
-    public function getSystemState(SpacecraftSystemTypeEnum $type): bool
-    {
-        if (!$this->hasSpacecraftSystem($type)) {
-            return false;
-        }
-
-        return $this->getSpacecraftSystem($type)->getMode()->isActivated();
-    }
-
-    #[Override]
-    public function getImpulseState(): bool
-    {
-        return $this->getSystemState(SpacecraftSystemTypeEnum::IMPULSEDRIVE);
-    }
-
-    #[Override]
-    public function getWarpDriveState(): bool
-    {
-        return $this->getSystemState(SpacecraftSystemTypeEnum::WARPDRIVE);
-    }
-
-    #[Override]
     public function isWarped(): bool
     {
         return $this->getWarpDriveState();
@@ -321,30 +300,6 @@ abstract class Spacecraft implements SpacecraftInterface
     public function isHeldByTholianWeb(): bool
     {
         return $this->getHoldingWeb() !== null;
-    }
-
-    #[Override]
-    public function isCloaked(): bool
-    {
-        return $this->getSystemState(SpacecraftSystemTypeEnum::CLOAK);
-    }
-
-    #[Override]
-    public function getTachyonState(): bool
-    {
-        return $this->getSystemState(SpacecraftSystemTypeEnum::TACHYON_SCANNER);
-    }
-
-    #[Override]
-    public function getSubspaceState(): bool
-    {
-        return $this->getSystemState(SpacecraftSystemTypeEnum::SUBSPACE_SCANNER);
-    }
-
-    #[Override]
-    public function getRPGModuleState(): bool
-    {
-        return $this->getSystemState(SpacecraftSystemTypeEnum::RPG_MODULE);
     }
 
     #[Override]
@@ -386,20 +341,6 @@ abstract class Spacecraft implements SpacecraftInterface
         return $this;
     }
 
-    /**
-     * proportional to shield system status
-     */
-    #[Override]
-    public function getMaxShield(bool $isTheoretical = false): int
-    {
-        if ($isTheoretical || !$this->hasSpacecraftSystem(SpacecraftSystemTypeEnum::SHIELDS)) {
-            return $this->max_schilde;
-        }
-
-        return (int) (ceil($this->max_schilde
-            * $this->getSpacecraftSystem(SpacecraftSystemTypeEnum::SHIELDS)->getStatus() / 100));
-    }
-
     #[Override]
     public function setMaxShield(int $maxShields): SpacecraftInterface
     {
@@ -415,39 +356,9 @@ abstract class Spacecraft implements SpacecraftInterface
     }
 
     #[Override]
-    public function isShielded(): bool
-    {
-        return $this->getSystemState(SpacecraftSystemTypeEnum::SHIELDS);
-    }
-
-    #[Override]
-    public function getNbs(): bool
-    {
-        return $this->getSystemState(SpacecraftSystemTypeEnum::NBS);
-    }
-
-    #[Override]
-    public function getLss(): bool
-    {
-        return $this->getSystemState(SpacecraftSystemTypeEnum::LSS);
-    }
-
-    #[Override]
-    public function getPhaserState(): bool
-    {
-        return $this->getSystemState(SpacecraftSystemTypeEnum::PHASER);
-    }
-
-    #[Override]
     public function isAlertGreen(): bool
     {
         return $this->getAlertState() === SpacecraftAlertStateEnum::ALERT_GREEN;
-    }
-
-    #[Override]
-    public function getTorpedoState(): bool
-    {
-        return $this->getSystemState(SpacecraftSystemTypeEnum::TORPEDO);
     }
 
     #[Override]
@@ -517,41 +428,11 @@ abstract class Spacecraft implements SpacecraftInterface
         return $this;
     }
 
-
-
-    /**
-     * proportional to computer system status
-     */
-    #[Override]
-    public function getHitChance(): int
-    {
-        if (!$this->hasSpacecraftSystem(SpacecraftSystemTypeEnum::COMPUTER)) {
-            return $this->hit_chance;
-        }
-
-        return (int) (ceil($this->hit_chance
-            * $this->getSpacecraftSystem(SpacecraftSystemTypeEnum::COMPUTER)->getStatus() / 100));
-    }
-
     #[Override]
     public function setHitChance(int $hitChance): SpacecraftInterface
     {
         $this->hit_chance = $hitChance;
         return $this;
-    }
-
-    /**
-     * proportional to impulsedrive system status
-     */
-    #[Override]
-    public function getEvadeChance(): int
-    {
-        if (!$this->hasSpacecraftSystem(SpacecraftSystemTypeEnum::IMPULSEDRIVE)) {
-            return $this->evade_chance;
-        }
-
-        return (int) (ceil($this->evade_chance
-            * $this->getSpacecraftSystem(SpacecraftSystemTypeEnum::IMPULSEDRIVE)->getStatus() / 100));
     }
 
     #[Override]
@@ -636,66 +517,6 @@ abstract class Spacecraft implements SpacecraftInterface
     }
 
     #[Override]
-    public function getPosX(): int
-    {
-        return $this->location->getX();
-    }
-
-    #[Override]
-    public function getPosY(): int
-    {
-        return $this->location->getY();
-    }
-
-    #[Override]
-    public function getCrewCount(): int
-    {
-        return $this->getCrewAssignments()->count();
-    }
-
-    #[Override]
-    public function getNeededCrewCount(): int
-    {
-        $buildplan = $this->getBuildplan();
-        if ($buildplan === null) {
-            return 0;
-        }
-
-        return $buildplan->getCrew();
-    }
-
-    #[Override]
-    public function getExcessCrewCount(): int
-    {
-        return $this->getCrewCount() - $this->getNeededCrewCount();
-    }
-
-    #[Override]
-    public function hasEnoughCrew(?GameControllerInterface $game = null): bool
-    {
-        $buildplan = $this->getBuildplan();
-
-        if ($buildplan === null) {
-            if ($game !== null) {
-                $game->addInformation(_("Keine Crew vorhanden"));
-            }
-            return false;
-        }
-
-        $result = $buildplan->getCrew() <= 0
-            || $this->getCrewCount() >= $buildplan->getCrew();
-
-        if (!$result && $game !== null) {
-            $game->addInformationf(
-                _("Es werden %d Crewmitglieder benötigt"),
-                $buildplan->getCrew()
-            );
-        }
-
-        return $result;
-    }
-
-    #[Override]
     public function getUser(): UserInterface
     {
         return $this->user;
@@ -706,12 +527,6 @@ abstract class Spacecraft implements SpacecraftInterface
     {
         $this->user = $user;
         return $this;
-    }
-
-    #[Override]
-    public function getSystem(): ?StarSystemInterface
-    {
-        return $this->getStarsystemMap() !== null ? $this->getStarsystemMap()->getSystem() : null;
     }
 
     #[Override]
@@ -734,56 +549,9 @@ abstract class Spacecraft implements SpacecraftInterface
     }
 
     #[Override]
-    public function isDeflectorHealthy(): bool
-    {
-        return $this->isSystemHealthy(SpacecraftSystemTypeEnum::DEFLECTOR);
-    }
-
-    #[Override]
-    public function isMatrixScannerHealthy(): bool
-    {
-        return $this->isSystemHealthy(SpacecraftSystemTypeEnum::MATRIX_SCANNER);
-    }
-
-    #[Override]
-    public function isTorpedoStorageHealthy(): bool
-    {
-        return $this->isSystemHealthy(SpacecraftSystemTypeEnum::TORPEDO_STORAGE);
-    }
-
-    #[Override]
-    public function isShuttleRampHealthy(): bool
-    {
-        return $this->isSystemHealthy(SpacecraftSystemTypeEnum::SHUTTLE_RAMP);
-    }
-
-    #[Override]
-    public function isWebEmitterHealthy(): bool
-    {
-        return $this->isSystemHealthy(SpacecraftSystemTypeEnum::THOLIAN_WEB);
-    }
-
-    #[Override]
     public function isTractoring(): bool
     {
         return $this->getTractoredShip() !== null;
-    }
-
-    #[Override]
-    public function isOverColony(): ?ColonyInterface
-    {
-        return $this->getStarsystemMap() !== null ? $this->getStarsystemMap()->getColony() : null;
-    }
-
-    #[Override]
-    public function isOverSystem(): ?StarSystemInterface
-    {
-        $location = $this->getLocation();
-        if ($location instanceof StarSystemMapInterface) {
-            return null;
-        }
-
-        return $location->getSystem();
     }
 
     #[Override]
@@ -822,6 +590,19 @@ abstract class Spacecraft implements SpacecraftInterface
     }
 
     #[Override]
+    public function getLocation(): MapInterface|StarSystemMapInterface
+    {
+        if (
+            $this->location instanceof MapInterface
+            || $this->location instanceof StarSystemMapInterface
+        ) {
+            return $this->location;
+        }
+
+        throw new RuntimeException('unknown type');
+    }
+
+    #[Override]
     public function getLogbook(): Collection
     {
         return $this->logbook;
@@ -856,57 +637,6 @@ abstract class Spacecraft implements SpacecraftInterface
     }
 
     #[Override]
-    public function getStorageSum(): int
-    {
-        return array_reduce(
-            $this->getStorage()->getValues(),
-            fn(int $sum, StorageInterface $storage): int => $sum + $storage->getAmount(),
-            0
-        );
-    }
-
-    #[Override]
-    public function getMaxStorage(): int
-    {
-        return $this->getRump()->getStorage();
-    }
-
-    #[Override]
-    public function getBeamableStorage(): Collection
-    {
-        return CommodityTransfer::excludeNonBeamable($this->storage);
-    }
-
-    #[Override]
-    public function getMap(): ?MapInterface
-    {
-        if ($this->location instanceof MapInterface) {
-            return $this->location;
-        }
-        if ($this->location instanceof StarSystemMapInterface) {
-            return $this->location->getSystem()->getMap();
-        }
-
-        return null;
-    }
-
-    #[Override]
-    public function getMapRegion(): ?MapRegionInterface
-    {
-        $systemMap = $this->getStarsystemMap();
-        if ($systemMap !== null) {
-            return null;
-        }
-
-        $map = $this->getMap();
-        if ($map === null) {
-            return null;
-        }
-
-        return $map->getMapRegion();
-    }
-
-    #[Override]
     public function setLocation(LocationInterface $location): SpacecraftInterface
     {
         $this->location = $location;
@@ -915,38 +645,9 @@ abstract class Spacecraft implements SpacecraftInterface
     }
 
     #[Override]
-    public function getStarsystemMap(): ?StarSystemMapInterface
-    {
-        if ($this->location instanceof StarSystemMapInterface) {
-            return $this->location;
-        }
-
-        return null;
-    }
-
-    #[Override]
-    public function getLocation(): MapInterface|StarSystemMapInterface
-    {
-        if (
-            $this->location instanceof MapInterface
-            || $this->location instanceof StarSystemMapInterface
-        ) {
-            return $this->location;
-        }
-
-        throw new RuntimeException('unknown type');
-    }
-
-    #[Override]
     public function getBeamFactor(): int
     {
         return $this->getRump()->getBeamFactor();
-    }
-
-    #[Override]
-    public function getSectorString(): string
-    {
-        return $this->getLocation()->getSectorString();
     }
 
     #[Override]
@@ -969,46 +670,10 @@ abstract class Spacecraft implements SpacecraftInterface
     }
 
     #[Override]
-    public function hasSpacecraftSystem(SpacecraftSystemTypeEnum $type): bool
-    {
-        return $this->getSystems()->containsKey($type->value);
-    }
-
-    #[Override]
-    public function getSpacecraftSystem(SpacecraftSystemTypeEnum $type): SpacecraftSystemInterface
-    {
-        $system = $this->getSystems()->get($type->value);
-        if ($system === null) {
-            throw new RuntimeException(sprintf('system type %d does not exist on ship', $type->value));
-        }
-
-        return $system;
-    }
-
-    #[Override]
     public function displayNbsActions(): bool
     {
         return !$this->isCloaked()
             && !$this->isWarped();
-    }
-
-    #[Override]
-    public function isTractorbeamPossible(): bool
-    {
-        return TractorBeamShipSystem::isTractorBeamPossible($this);
-    }
-
-    #[Override]
-    public function isBoardingPossible(): bool
-    {
-        return FightLib::isBoardingPossible($this);
-    }
-
-    #[Override]
-    public function isInterceptable(): bool
-    {
-        //TODO can tractored ships be intercepted?!
-        return $this->getWarpDriveState();
     }
 
     #[Override]
@@ -1074,27 +739,6 @@ abstract class Spacecraft implements SpacecraftInterface
     }
 
     #[Override]
-    public function canIntercept(): bool
-    {
-        return $this->isSystemHealthy(SpacecraftSystemTypeEnum::WARPDRIVE)
-            && !$this->isTractoring()
-            && (!$this instanceof ShipInterface || !$this->isTractored());
-    }
-
-    #[Override]
-    public function canMove(): bool
-    {
-        return $this->hasSpacecraftSystem(SpacecraftSystemTypeEnum::WARPDRIVE)
-            || $this->hasSpacecraftSystem(SpacecraftSystemTypeEnum::IMPULSEDRIVE);
-    }
-
-    #[Override]
-    public function hasActiveWeapon(): bool
-    {
-        return $this->getPhaserState() || $this->getTorpedoState();
-    }
-
-    #[Override]
     public function hasEscapePods(): bool
     {
         return $this->getRump()->isEscapePods() && $this->getCrewCount() > 0;
@@ -1133,76 +777,11 @@ abstract class Spacecraft implements SpacecraftInterface
     }
 
     #[Override]
-    public function hasPhaser(): bool
-    {
-        return $this->hasSpacecraftSystem(SpacecraftSystemTypeEnum::PHASER);
-    }
-
-    #[Override]
-    public function hasTorpedo(): bool
-    {
-        return $this->hasSpacecraftSystem(SpacecraftSystemTypeEnum::TORPEDO);
-    }
-
-    #[Override]
-    public function hasCloak(): bool
-    {
-        return $this->hasSpacecraftSystem(SpacecraftSystemTypeEnum::CLOAK);
-    }
-
-    #[Override]
-    public function hasShuttleRamp(): bool
-    {
-        return $this->hasSpacecraftSystem(SpacecraftSystemTypeEnum::SHUTTLE_RAMP);
-    }
-
-    #[Override]
-    public function hasWarpdrive(): bool
-    {
-        return $this->hasSpacecraftSystem(SpacecraftSystemTypeEnum::WARPDRIVE);
-    }
-
-    #[Override]
-    public function hasReactor(): bool
-    {
-        return $this->hasSpacecraftSystem(SpacecraftSystemTypeEnum::WARPCORE) ||
-            $this->hasSpacecraftSystem(SpacecraftSystemTypeEnum::FUSION_REACTOR) ||
-            $this->hasSpacecraftSystem(SpacecraftSystemTypeEnum::SINGULARITY_REACTOR);
-    }
-
-    #[Override]
-    public function hasNbsLss(): bool
-    {
-        return $this->hasSpacecraftSystem(SpacecraftSystemTypeEnum::LSS);
-    }
-
-    #[Override]
-    public function hasUplink(): bool
-    {
-        return $this->hasSpacecraftSystem(SpacecraftSystemTypeEnum::UPLINK);
-    }
-
-    #[Override]
     public function getMaxTorpedos(): int
     {
         return $this->getRump()->getBaseTorpedoStorage()
             + ($this->isSystemHealthy(SpacecraftSystemTypeEnum::TORPEDO_STORAGE)
                 ? TorpedoStorageShipSystem::TORPEDO_CAPACITY : 0);
-    }
-
-    #[Override]
-    public function getStoredShuttles(): Collection
-    {
-        return $this->getStorage()
-            ->map(fn(StorageInterface $storage): CommodityInterface => $storage->getCommodity())
-            ->filter(fn(CommodityInterface $commodity): bool => $commodity->isShuttle());
-    }
-
-    #[Override]
-    public function hasStoredBuoy(): bool
-    {
-        return $this->getStorage()
-            ->exists(fn(int $key, StorageInterface $storage): bool => $storage->getCommodity()->isBouy());
     }
 
     #[Override]
