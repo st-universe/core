@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250531083845 extends AbstractMigration
+final class Version20250602202724 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -621,7 +621,7 @@ final class Version20250531083845 extends AbstractMigration
             CREATE INDEX game_request_idx ON stu_game_request (user_id, "action", "view")
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE TABLE stu_game_turn_stats (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, turn_id INTEGER NOT NULL, user_count INTEGER NOT NULL, logins_24h INTEGER NOT NULL, inactive_count INTEGER NOT NULL, vacation_count INTEGER NOT NULL, ship_count INTEGER NOT NULL, ship_count_manned INTEGER NOT NULL, ship_count_npc INTEGER NOT NULL, kn_count INTEGER NOT NULL, flight_sig_24h INTEGER NOT NULL, flight_sig_system_24h INTEGER NOT NULL, CONSTRAINT FK_D3ABA4DB1F4F9889 FOREIGN KEY (turn_id) REFERENCES stu_game_turns (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)
+            CREATE TABLE stu_game_turn_stats (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, turn_id INTEGER NOT NULL, user_count INTEGER NOT NULL, logins_24h INTEGER NOT NULL, inactive_count INTEGER NOT NULL, vacation_count INTEGER NOT NULL, ship_count INTEGER NOT NULL, ship_count_manned INTEGER NOT NULL, ship_count_npc INTEGER NOT NULL, kn_count INTEGER NOT NULL, flight_sig_24h INTEGER NOT NULL, flight_sig_system_24h INTEGER NOT NULL, new_pm_count INTEGER NOT NULL, CONSTRAINT FK_D3ABA4DB1F4F9889 FOREIGN KEY (turn_id) REFERENCES stu_game_turns (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE UNIQUE INDEX UNIQ_D3ABA4DB1F4F9889 ON stu_game_turn_stats (turn_id)
@@ -1003,6 +1003,9 @@ final class Version20250531083845 extends AbstractMigration
         SQL);
         $this->addSql(<<<'SQL'
             CREATE INDEX correspondence ON stu_pms (recip_user, send_user)
+        SQL);
+        $this->addSql(<<<'SQL'
+            CREATE INDEX pm_date_idx ON stu_pms (date)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE TABLE stu_prestige_log (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, amount INTEGER NOT NULL, description CLOB NOT NULL, date INTEGER NOT NULL)

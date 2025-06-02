@@ -1378,18 +1378,6 @@ parameters:
 			path: src/Module/Tick/TickManager.php
 
 		-
-			message: '#^Parameter \#1 \$turn of method Stu\\Module\\Tick\\TickManager\:\:endTurn\(\) expects Stu\\Orm\\Entity\\GameTurnInterface, Stu\\Orm\\Entity\\GameTurnInterface\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Module/Tick/TickManager.php
-
-		-
-			message: '#^Parameter \#1 \$turn of method Stu\\Module\\Tick\\TickManager\:\:startTurn\(\) expects Stu\\Orm\\Entity\\GameTurnInterface, Stu\\Orm\\Entity\\GameTurnInterface\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Module/Tick/TickManager.php
-
-		-
 			message: '#^Parameter \#1 \$tradePost of method Stu\\Module\\Trade\\Lib\\TradeLibFactoryInterface\:\:createTradePostStorageManager\(\) expects Stu\\Orm\\Entity\\TradePostInterface, Stu\\Orm\\Entity\\TradePostInterface\|null given\.$#'
 			identifier: argument.type
 			count: 1

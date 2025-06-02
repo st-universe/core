@@ -49,4 +49,8 @@ interface GameTurnStatsInterface
     public function getFlightSigSystem24h(): ?int;
 
     public function setFlightSigSystem24h(int $flightSigSystem24h): GameTurnStatsInterface;
+
+    public function getNewPmCount(): int;
+
+    public function setNewPmCount(int $newPmCount): GameTurnStatsInterface;
 }
