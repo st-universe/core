@@ -47,14 +47,13 @@ return static function (RectorConfig $rectorConfig): void {
         //DoctrineSetList::ANNOTATIONS_TO_ATTRIBUTES //last 2023-12-13
     ]);
 
-    /** last 2024-11-14 - partial of php80 to php84
+    /** last 2025-06-03 - partial of php80 to php84
     $rectorConfig->rules([
         AddOverrideAttributeToOverriddenMethodsRector::class,
         AddTypeToConstRector::class,
         RemoveUnusedVariableInCatchRector::class,
         ClassPropertyAssignToConstructorPromotionRector::class,
         ChangeSwitchToMatchRector::class,
-        MixedTypeRector::class,
         FinalPrivateToPrivateVisibilityRector::class,
         MyCLabsClassToEnumRector::class
     ]); */

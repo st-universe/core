@@ -15,7 +15,7 @@ use Stu\Orm\Repository\NPCLogRepositoryInterface;
 
 final class RenameBuildplan implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_CHANGE_BUILDPLAN_NAME';
+    public const string ACTION_IDENTIFIER = 'B_CHANGE_BUILDPLAN_NAME';
 
     public function __construct(
         private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository,

@@ -8,19 +8,11 @@ use Stu\Module\Control\StuRandom;
 
 class IonStormData
 {
-    public int $directionInDegrees;
-    public int $velocity;
-    public IonStormMovementType $movementType;
-
     public function __construct(
-        int $directionInDegrees = 0,
-        int $velocity = 0,
-        IonStormMovementType $movementType = IonStormMovementType::STATIC
-    ) {
-        $this->directionInDegrees = $directionInDegrees;
-        $this->velocity = $velocity;
-        $this->movementType = $movementType;
-    }
+        public int $directionInDegrees = 0,
+        public int $velocity = 0,
+        public IonStormMovementType $movementType = IonStormMovementType::STATIC
+    ) {}
 
     public function getHorizontalMovement(): int
     {

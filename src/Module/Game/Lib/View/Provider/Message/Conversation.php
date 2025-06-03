@@ -13,7 +13,7 @@ use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 
 final class Conversation extends PrivateMessageListItem
 {
-    private const MAX_PREVIEW_CHARS = 200;
+    private const int MAX_PREVIEW_CHARS = 200;
 
     public function __construct(
         private PrivateMessageInterface $message,

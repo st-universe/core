@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Config;
 
+use Override;
 use DI\Container;
 use DI\Definition\ArrayDefinition;
 use DI\Definition\FactoryDefinition;
@@ -55,6 +56,7 @@ class StuContainer extends Container
      * @throws DependencyException Error while resolving the entry.
      * @throws NotFoundException No entry found for the given name.
      */
+    #[Override]
     public function get(string $id): mixed
     {
         $service = $this->additionalServices->get($id);

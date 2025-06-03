@@ -10,16 +10,13 @@ use Doctrine\ORM\Mapping\Entity;
 #[Entity]
 class AnomalyData extends AbstractData
 {
-    #[Column(type: 'string', nullable: true)]
-    private ?string $anomalytypes = null;
-
     public function __construct(
         int $x,
         int $y,
-        ?string $anomalytypes = null
+        #[Column(type: 'string', nullable: true)]
+        private ?string $anomalytypes = null
     ) {
         parent::__construct($x, $y);
-        $this->anomalytypes = $anomalytypes;
     }
 
     /** @return null|array<string> */

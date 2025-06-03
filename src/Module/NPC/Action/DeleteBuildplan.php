@@ -13,7 +13,7 @@ use Stu\Orm\Repository\NPCLogRepositoryInterface;
 
 final class DeleteBuildplan implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_DELETE_BUILDPLAN';
+    public const string ACTION_IDENTIFIER = 'B_DELETE_BUILDPLAN';
 
     public function __construct(
         private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository,
