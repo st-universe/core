@@ -61,7 +61,6 @@ final class AllianceProvider implements ViewComponentProviderInterface
         $isInAlliance = $alliance === $game->getUser()->getAlliance();
         $settings = $alliance->getSettings();
 
-
         $game->appendNavigationPart(sprintf(
             '%s?id=%d',
             ModuleEnum::ALLIANCE->getPhpPage(),
@@ -107,19 +106,19 @@ final class AllianceProvider implements ViewComponentProviderInterface
             )
         );
 
-        $founderDescription = $alliance->getSettings()->filter(
+        $founderDescription = $settings->filter(
             function (AllianceSettingsInterface $setting) {
                 return $setting->getSetting() === AllianceSettingsEnum::ALLIANCE_FOUNDER_DESCRIPTION;
             }
         )->first();
 
-        $successorDescription = $alliance->getSettings()->filter(
+        $successorDescription = $settings->filter(
             function (AllianceSettingsInterface $setting) {
                 return $setting->getSetting() === AllianceSettingsEnum::ALLIANCE_SUCCESSOR_DESCRIPTION;
             }
         )->first();
 
-        $diplomatDescription = $alliance->getSettings()->filter(
+        $diplomatDescription = $settings->filter(
             function (AllianceSettingsInterface $setting) {
                 return $setting->getSetting() === AllianceSettingsEnum::ALLIANCE_DIPLOMATIC_DESCRIPTION;
             }

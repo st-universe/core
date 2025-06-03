@@ -14,9 +14,6 @@ use Stu\Orm\Entity\AllianceSettingsInterface;
 
 final class Edit implements ViewControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string VIEW_IDENTIFIER = 'EDIT_ALLIANCE';
 
     public function __construct(private AllianceActionManagerInterface $allianceActionManager) {}

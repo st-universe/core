@@ -15,9 +15,6 @@ use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 
 final class DeclineOffer implements ActionControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string ACTION_IDENTIFIER = 'B_DECLINE_OFFER';
 
     public function __construct(private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager)

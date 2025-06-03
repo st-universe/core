@@ -13,9 +13,6 @@ use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
 final class NewPost implements ViewControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string VIEW_IDENTIFIER = 'SHOW_NEW_POST';
 
     public function __construct(private NewPostRequestInterface $newPostRequest, private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository) {}

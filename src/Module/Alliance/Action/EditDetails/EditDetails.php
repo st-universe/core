@@ -22,9 +22,6 @@ use Stu\Orm\Repository\AllianceSettingsRepositoryInterface;
 
 final class EditDetails implements ActionControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string ACTION_IDENTIFIER = 'B_UPDATE_ALLIANCE';
 
     public function __construct(private EditDetailsRequestInterface $editDetailsRequest, private Parser $bbcodeParser, private AllianceJobRepositoryInterface $allianceJobRepository, private AllianceActionManagerInterface $allianceActionManager, private PrivateMessageSenderInterface $privateMessageSender, private AllianceRepositoryInterface $allianceRepository, private AllianceSettingsRepositoryInterface $allianceSettingsRepository) {}

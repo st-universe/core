@@ -16,9 +16,6 @@ use Stu\Orm\Repository\AllianceRepositoryInterface;
 
 final class Relations implements ViewControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string VIEW_IDENTIFIER = 'SHOW_RELATIONS';
 
     public function __construct(private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager, private AllianceRepositoryInterface $allianceRepository)

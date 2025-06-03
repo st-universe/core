@@ -14,9 +14,6 @@ use Stu\Orm\Repository\AllianceBoardRepositoryInterface;
 
 final class RenameBoard implements ActionControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string ACTION_IDENTIFIER = 'B_RENAME_BOARD';
 
     public function __construct(private RenameBoardRequestInterface $renameBoardRequest, private AllianceBoardRepositoryInterface $allianceBoardRepository)

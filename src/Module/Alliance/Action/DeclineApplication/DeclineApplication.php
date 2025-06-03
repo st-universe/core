@@ -16,9 +16,6 @@ use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 
 final class DeclineApplication implements ActionControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string ACTION_IDENTIFIER = 'B_DECLINE_APPLICATION';
 
     public function __construct(private DeclineApplicationRequestInterface $declineApplicationRequest, private AllianceJobRepositoryInterface $allianceJobRepository, private AllianceActionManagerInterface $allianceActionManager, private PrivateMessageSenderInterface $privateMessageSender)

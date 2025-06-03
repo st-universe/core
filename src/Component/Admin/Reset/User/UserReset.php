@@ -20,31 +20,8 @@ use Stu\Orm\Repository\UserRefererRepositoryInterface;
 
 final class UserReset implements UserResetInterface
 {
-    public function __construct(
-        private BlockedUserRepositoryInterface $blockedUserRepository,
-        private DatabaseUserRepositoryInterface $databaseUserRepository,
-        private NoteRepositoryInterface $noteRepository,
-        private PrestigeLogRepositoryInterface $prestigeLogRepository,
-        private UserRepositoryInterface $userRepository,
-        private UserSettingRepositoryInterface $userSettingRepository,
-        private UserInvitationRepositoryInterface $userInvitationRepository,
-        private UserIpTableRepositoryInterface $userIpTableRepository,
-        private UserProfileVisitorRepositoryInterface $userProfileVisitorRepository,
-        private  PirateWrathRepositoryInterface $pirateWrathRepository,
-        private EntityManagerInterface $entityManager,
-        private UserRefererRepositoryInterface $userRefererRepository
-    ) {
-        $this->blockedUserRepository = $blockedUserRepository;
-        $this->databaseUserRepository = $databaseUserRepository;
-        $this->noteRepository = $noteRepository;
-        $this->prestigeLogRepository = $prestigeLogRepository;
-        $this->userRepository = $userRepository;
-        $this->userSettingRepository = $userSettingRepository;
-        $this->userInvitationRepository = $userInvitationRepository;
-        $this->userIpTableRepository = $userIpTableRepository;
-        $this->userProfileVisitorRepository = $userProfileVisitorRepository;
-        $this->entityManager = $entityManager;
-        $this->userRefererRepository = $userRefererRepository;
+    public function __construct(private BlockedUserRepositoryInterface $blockedUserRepository, private DatabaseUserRepositoryInterface $databaseUserRepository, private NoteRepositoryInterface $noteRepository, private PrestigeLogRepositoryInterface $prestigeLogRepository, private UserRepositoryInterface $userRepository, private UserSettingRepositoryInterface $userSettingRepository, private UserInvitationRepositoryInterface $userInvitationRepository, private UserIpTableRepositoryInterface $userIpTableRepository, private UserProfileVisitorRepositoryInterface $userProfileVisitorRepository, private  PirateWrathRepositoryInterface $pirateWrathRepository, private EntityManagerInterface $entityManager, private UserRefererRepositoryInterface $userRefererRepository)
+    {
     }
 
     #[Override]

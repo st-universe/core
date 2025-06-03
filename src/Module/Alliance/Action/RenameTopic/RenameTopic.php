@@ -13,9 +13,6 @@ use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
 final class RenameTopic implements ActionControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string ACTION_IDENTIFIER = 'B_RENAME_TOPIC';
 
     public function __construct(private RenameTopicRequestInterface $renameTopicRequest, private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository)

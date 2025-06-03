@@ -14,9 +14,6 @@ use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
 final class DeleteTopic implements ActionControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string ACTION_IDENTIFIER = 'B_DELETE_TOPIC';
 
     public function __construct(private DeleteTopicRequestInterface $deleteTopicRequest, private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository)

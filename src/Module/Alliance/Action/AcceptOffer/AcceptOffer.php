@@ -15,9 +15,6 @@ use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 
 final class AcceptOffer implements ActionControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string ACTION_IDENTIFIER = 'B_ACCEPT_OFFER';
 
     public function __construct(private AcceptOfferRequestInterface $acceptOfferRequest, private EntryCreatorInterface $entryCreator, private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager)

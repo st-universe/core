@@ -81,7 +81,7 @@ class EnergyConsumeHandler implements SpacecraftTickHandlerInterface
 
         if ($alertUsage > 0) {
             $preState = $spacecraft->getAlertState();
-            $reduce = (int)min($malus, $alertUsage);
+            $reduce = min($malus, $alertUsage);
 
             $spacecraft->setAlertState(SpacecraftAlertStateEnum::from($preState->value - $reduce));
             $information->addInformationf(

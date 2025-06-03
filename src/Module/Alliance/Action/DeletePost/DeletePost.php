@@ -17,9 +17,6 @@ use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
 final class DeletePost implements ActionControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string ACTION_IDENTIFIER = 'B_DEL_POSTING';
 
     public function __construct(private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository, private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository)

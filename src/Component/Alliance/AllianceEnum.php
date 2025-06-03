@@ -6,54 +6,24 @@ namespace Stu\Component\Alliance;
 
 final class AllianceEnum
 {
-    /**
-     * @var int
-     */
     public const int ALLIANCE_JOBS_FOUNDER = 1;
 
-    /**
-     * @var int
-     */
     public const int ALLIANCE_JOBS_SUCCESSOR = 2;
 
-    /**
-     * @var int
-     */
     public const int ALLIANCE_JOBS_DIPLOMATIC = 3;
 
-    /**
-     * @var int
-     */
     public const int ALLIANCE_JOBS_PENDING = 4;
 
-    /**
-     * @var int
-     */
     public const int ALLIANCE_RELATION_WAR = 1;
 
-    /**
-     * @var int
-     */
     public const int ALLIANCE_RELATION_PEACE = 2;
 
-    /**
-     * @var int
-     */
     public const int ALLIANCE_RELATION_FRIENDS = 3;
 
-    /**
-     * @var int
-     */
     public const int ALLIANCE_RELATION_ALLIED = 4;
 
-    /**
-     * @var int
-     */
     public const int ALLIANCE_RELATION_TRADE = 5;
 
-    /**
-     * @var int
-     */
     public const int ALLIANCE_RELATION_VASSAL = 6;
 
     /** @var list<int> */

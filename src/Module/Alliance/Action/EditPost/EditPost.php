@@ -14,9 +14,6 @@ use Stu\Orm\Repository\AllianceBoardPostRepositoryInterface;
 
 final class EditPost implements ActionControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string ACTION_IDENTIFIER = 'B_EDIT_POSTING';
 
     public function __construct(private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository)

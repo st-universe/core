@@ -18,9 +18,6 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class AcceptApplication implements ActionControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string ACTION_IDENTIFIER = 'B_ACCEPT_APPLICATION';
 
     public function __construct(private AcceptApplicationRequestInterface $acceptApplicationRequest, private AllianceJobRepositoryInterface $allianceJobRepository, private AllianceActionManagerInterface $allianceActionManager, private PrivateMessageSenderInterface $privateMessageSender, private UserRepositoryInterface $userRepository)

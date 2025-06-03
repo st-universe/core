@@ -11,9 +11,6 @@ use Stu\Module\Control\ViewControllerInterface;
 
 final class Create implements ViewControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string VIEW_IDENTIFIER = 'CREATE_ALLIANCE';
 
     #[Override]

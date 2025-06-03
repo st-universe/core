@@ -13,9 +13,6 @@ use Stu\Orm\Repository\AllianceBoardPostRepositoryInterface;
 
 final class ShowEditPost implements ViewControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string VIEW_IDENTIFIER = 'SHOW_EDIT_ALLY_POST';
 
     public function __construct(private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository) {}

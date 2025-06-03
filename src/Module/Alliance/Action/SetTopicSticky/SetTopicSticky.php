@@ -14,9 +14,6 @@ use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
 final class SetTopicSticky implements ActionControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string ACTION_IDENTIFIER = 'B_SET_STICKY';
 
     public function __construct(private SetTopicStickyRequestInterface $setTopicStickyRequest, private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository)

@@ -19,7 +19,6 @@ use Throwable;
  */
 final class PirateTickRunner implements TickRunnerInterface
 {
-    /** @var int */
     private const int ATTEMPTS = 5;
 
     private const string TICK_DESCRIPTION = "piratetick";

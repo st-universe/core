@@ -17,9 +17,6 @@ use Stu\Orm\Entity\AllianceSettingsInterface;
 
 final class Management implements ViewControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string VIEW_IDENTIFIER = 'SHOW_MANAGEMENT';
 
     public function __construct(private UserRepositoryInterface $userRepository, private AllianceActionManagerInterface $allianceActionManager, private AllianceUiFactoryInterface $allianceUiFactory) {}

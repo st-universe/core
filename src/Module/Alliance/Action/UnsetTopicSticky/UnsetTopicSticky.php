@@ -14,9 +14,6 @@ use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
 final class UnsetTopicSticky implements ActionControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string ACTION_IDENTIFIER = 'B_UNSET_STICKY';
 
     public function __construct(private UnsetTopicStickyRequestInterface $unsetTopicStickyRequest, private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository)
