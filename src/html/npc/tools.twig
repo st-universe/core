@@ -48,6 +48,19 @@
             Grund: <input type="text" size="20" name="reason" id="reason" />
             <br>
             <br>
+            X: <input type="text" size="5" name="x" id="x" />
+            Y: <input type="text" size="5" name="y" id="y" />
+            Layer: <select name="layer" id="layerSelect" style="width:10%;">
+                {% for layer in LAYERS %}
+                {% if loop.first %}
+                <option value="{{ layer.getId }}" selected="1">{{ layer.getName }}</option>
+                {% else %}
+                <option value="{{ layer.getId }}">{{ layer.getName }}</option>
+                {% endif %}
+                {% endfor %}
+            </select> (Nicht zwingend nötig, aber wünschenswert (Nur Warp-Map Koordinaten angeben))
+            <br>
+            <br>
             <input type="submit" class="button" name="B_CREATE_HISTORY_ENTRY" value="History Eintrag erstellen"
                 id="createhistorybutton" />
         </div>
