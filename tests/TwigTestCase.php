@@ -253,7 +253,7 @@ abstract class TwigTestCase extends StuTestCase
         $dic = $this->getContainer();
         $entityManager = $dic->get(EntityManagerInterface::class);
 
-        $entityManager->wrapInTransaction(function (EntityManagerInterface $entityManager) use ($command, $input) {
+        $entityManager->wrapInTransaction(function (EntityManagerInterface $entityManager) use ($command, $input): void {
 
             $entityManagerProvider = new SingleManagerProvider($entityManager);
             $config = new PhpFile(self::INTTEST_MIGRATIONS_CONFIG_PATH);

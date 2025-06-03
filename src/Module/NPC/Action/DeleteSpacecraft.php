@@ -61,7 +61,7 @@ final class DeleteSpacecraft implements ActionControllerInterface
                     'trim',
                     explode(',', $spacecraftIdInput)
                 ),
-                function ($id) {
+                function ($id): bool {
                     return is_numeric($id) && $id > 0;
                 }
             );

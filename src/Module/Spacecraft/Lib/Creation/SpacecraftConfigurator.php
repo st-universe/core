@@ -193,7 +193,7 @@ class SpacecraftConfigurator implements SpacecraftConfiguratorInterface
     }
 
     #[Override]
-    public function finishConfiguration()
+    public function finishConfiguration(): SpacecraftWrapperInterface
     {
         $this->spacecraftRepository->save($this->wrapper->get());
 

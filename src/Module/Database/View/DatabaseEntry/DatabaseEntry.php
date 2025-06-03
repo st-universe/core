@@ -128,7 +128,7 @@ final class DatabaseEntry implements ViewControllerInterface
                         $game->setTemplateVar('MODS', $mods);
 
                         $energymodule = $mods->filter(
-                            fn($mod) => $mod->getModule()->getType() === SpacecraftModuleTypeEnum::EPS
+                            fn($mod): bool => $mod->getModule()->getType() === SpacecraftModuleTypeEnum::EPS
                         )->first();
 
                         if ($energymodule !== false) {
@@ -143,7 +143,7 @@ final class DatabaseEntry implements ViewControllerInterface
 
 
                         $sensormodule = $mods->filter(
-                            fn($mod) => $mod->getModule()->getType() === SpacecraftModuleTypeEnum::SENSOR
+                            fn($mod): bool => $mod->getModule()->getType() === SpacecraftModuleTypeEnum::SENSOR
                         )->first();
 
                         if ($sensormodule !== false) {

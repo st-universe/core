@@ -74,11 +74,11 @@ class AggregrationSystemSettings implements SystemSettingsProviderInterface
             }
         }
 
-        $mode1Commodities = array_filter($mode1Commodities, function ($entry) use ($userId): bool {
+        $mode1Commodities = array_filter($mode1Commodities, function (array $entry) use ($userId): bool {
             return $entry[1] !== null && $this->buildingCommodityRepository->canProduceCommodity($userId, $entry[1]->getId());
         });
 
-        $mode2Commodities = array_filter($mode2Commodities, function ($entry) use ($userId): bool {
+        $mode2Commodities = array_filter($mode2Commodities, function (array $entry) use ($userId): bool {
             return $entry[1] !== null && $this->buildingCommodityRepository->canProduceCommodity($userId, $entry[1]->getId());
         });
 
