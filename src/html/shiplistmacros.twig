@@ -3,7 +3,7 @@
     <th style="width: 140px;">Klasse</th>
     <th>Name</th>
     <th style="width: 30px;"></th>
-    <th style="width: 70px;" title="im System (außerhalb)">x|y <img src="/assets/buttons/info2.png"
+    <th style="width: 95px;" title="im System (außerhalb)">x|y <img src="/assets/buttons/info2.png"
             style="height:16px;" /></th>
     <th style="width: 100px;" title="aktuell/maximal">Hülle <img src="/assets/buttons/info2.png" style="height:16px;" />
     </th>
@@ -54,17 +54,36 @@
     </td>
     {% set system = ship.getSystem %}
     {% if system %}
-    <td id="shipposition" align="center">
-        {{ ship.getPosX }}|{{ ship.getPosY }}<br />
-        {% if not system.isWormhole %}
-        ({{ system.getCx }}|{{ system.getCy }})
-        {% else %}
-        <img src="/assets/buttons/wormh2.png" title="befindet sich im Wurmloch '{{ ship.getSystem.getName }}'" />
-        {% endif %}
+    <td id="shipposition" style="position: relative;">
+        <div style="display: flex; align-items: flex-start; gap: 4px;">
+            {% if not ship.getFleet %}
+            <img src="/assets/buttons/layer_{{ ship.getLocation.getLayer.getId }}.png"
+                title="{{ ship.getLocation.getLayer.getName }}" style="flex-shrink: 0;" />
+            {% endif %}
+            <div style="flex: 1; text-align: center;">
+                <div>{{ ship.getPosX }}|{{ ship.getPosY }}</div>
+                <div style="margin-top: 1px;">
+                    {% if not system.isWormhole %}
+                    ({{ system.getCx }}|{{ system.getCy }})
+                    {% else %}
+                    <img src="/assets/buttons/wormh2.png"
+                        title="befindet sich im Wurmloch '{{ ship.getSystem.getName }}'" />
+                    {% endif %}
+                </div>
+            </div>
+        </div>
     </td>
     {% else %}
-    <td id="shipposition" align="center">
-        ({{ ship.getMap.getCx }}|{{ ship.getMap.getCy }})
+    <td id="shipposition" style="position: relative;">
+        <div style="display: flex; align-items: flex-start; gap: 4px;">
+            {% if not ship.getFleet %}
+            <img src="/assets/buttons/layer_{{ ship.getLocation.getLayer.getId }}.png"
+                title="{{ ship.getLocation.getLayer.getName }}" style="flex-shrink: 0;" />
+            {% endif %}
+            <div style="flex: 1; text-align: center;">
+                ({{ ship.getMap.getCx }}|{{ ship.getMap.getCy }})
+            </div>
+        </div>
     </td>
     {% endif %}
     <td id="shiphull">

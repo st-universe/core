@@ -4,7 +4,13 @@
         {% if RECENT_HISTORY %}
         {% for item in RECENT_HISTORY %}
         <div class="list">
-            <div style="width: 80%" class="iblock">
+            <div style="21px" class="iblock">
+                {% if item.getLocation %}
+                <img src="/assets/buttons/layer_{{ item.getLocation.getLayer.getId }}.png"
+                    title="{{ item.getLocation.getLayer.getName }}" />
+                {% endif %}
+            </div>
+            <div style="width: 79%" class="iblock">
                 {{ item.getText|bbcode }}
             </div>
             <div style="width: 19%" class="iblock">{{ item.getDate|stuDateTime }}</div>
