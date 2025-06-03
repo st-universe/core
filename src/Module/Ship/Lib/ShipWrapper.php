@@ -65,7 +65,7 @@ final class ShipWrapper extends SpacecraftWrapper implements ShipWrapperInterfac
     #[Override]
     public function getFleetWrapper(): ?FleetWrapperInterface
     {
-        $fleet = $this->get()->getFleet();
+        $fleet = $this->spacecraft->getFleet();
         if ($fleet === null) {
             return null;
         }
