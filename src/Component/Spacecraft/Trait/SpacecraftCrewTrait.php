@@ -8,7 +8,7 @@ use Stu\Module\Control\GameControllerInterface;
 trait SpacecraftCrewTrait
 {
     use SpacecraftTrait;
-    use HasSpacecraftSystemTrait;
+    use SpacecraftSystemExistenceTrait;
 
     public function getNeededCrewCount(): int
     {

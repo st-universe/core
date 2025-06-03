@@ -7,7 +7,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 trait SpacecraftSystemHealthTrait
 {
     use SpacecraftTrait;
-    use HasSpacecraftSystemTrait;
+    use SpacecraftSystemExistenceTrait;
 
     public function isSystemHealthy(SpacecraftSystemTypeEnum $type): bool
     {

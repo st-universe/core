@@ -7,7 +7,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 trait SpacecraftSystemStateTrait
 {
     use SpacecraftTrait;
-    use HasSpacecraftSystemTrait;
+    use SpacecraftSystemExistenceTrait;
 
     public function isShielded(): bool
     {

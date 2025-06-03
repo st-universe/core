@@ -4,7 +4,7 @@ namespace Stu\Component\Spacecraft\Trait;
 
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 
-trait HasSpacecraftSystemTrait
+trait SpacecraftSystemExistenceTrait
 {
     use SpacecraftTrait;
 
