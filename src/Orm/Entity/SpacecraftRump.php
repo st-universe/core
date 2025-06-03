@@ -329,13 +329,6 @@ class SpacecraftRump implements SpacecraftRumpInterface
     }
 
     #[Override]
-    public function setBaseDamage(int $baseDamage): SpacecraftRumpInterface
-    {
-        $this->base_damage = $baseDamage;
-        return $this;
-    }
-
-    #[Override]
     public function getBaseSensorRange(): int
     {
         return $this->base_sensor_range;

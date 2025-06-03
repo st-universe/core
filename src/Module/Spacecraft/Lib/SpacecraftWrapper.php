@@ -11,6 +11,7 @@ use RuntimeException;
 use Stu\Component\Spacecraft\Repair\RepairUtilInterface;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Component\Spacecraft\System\Data\AbstractSystemData;
+use Stu\Component\Spacecraft\System\Data\EnergyWeaponSystemData;
 use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Component\Spacecraft\System\Data\FusionCoreSystemData;
 use Stu\Component\Spacecraft\System\Data\HullSystemData;
@@ -402,6 +403,15 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
         return $this->getSpecificShipSystem(
             SpacecraftSystemTypeEnum::LSS,
             LssSystemData::class
+        );
+    }
+
+    #[Override]
+    public function getEnergyWeaponSystemData(): ?EnergyWeaponSystemData
+    {
+        return $this->getSpecificShipSystem(
+            SpacecraftSystemTypeEnum::PHASER,
+            EnergyWeaponSystemData::class
         );
     }
 

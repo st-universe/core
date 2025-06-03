@@ -82,6 +82,11 @@ final class ShipSystemDataFactory implements ShipSystemDataFactoryInterface
                     $this->shipSystemRepository,
                     $this->statusBarFactory
                 );
+            case SpacecraftSystemTypeEnum::PHASER:
+                return  new EnergyWeaponSystemData(
+                    $this->shipSystemRepository,
+                    $this->statusBarFactory
+                );
             case SpacecraftSystemTypeEnum::TORPEDO:
                 return  new ProjectileLauncherSystemData(
                     $this->shipSystemRepository,

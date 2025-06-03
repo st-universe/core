@@ -50,8 +50,6 @@ interface SpacecraftRumpInterface
 
     public function getBaseDamage(): int;
 
-    public function setBaseDamage(int $baseDamage): SpacecraftRumpInterface;
-
     public function getBaseSensorRange(): int;
 
     public function setBaseSensorRange(int $baseSensorRange): SpacecraftRumpInterface;

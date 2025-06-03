@@ -3,6 +3,7 @@
 {% set shields = WRAPPER.getShieldSystemData %}
 {% set eps = WRAPPER.getEpsSystemData %}
 {% set lss = WRAPPER.getLssSystemData %}
+{% set energyWeapon = WRAPPER.getEnergyWeaponSystemData %}
 {% set reactor = WRAPPER.getReactorWrapper %}
 {% set launcher = WRAPPER.getProjectileLauncherSystemData %}
 <br />
@@ -150,7 +151,9 @@
             <span>Raumschiffmasse: {{ SHIP.getRump.getTractorMass|numberWithThousandSeperator }}</span><br />
             <span>Traktortraglast: {{ SHIP.getTractorPayload|numberWithThousandSeperator }}</span><br />
             <span>Energiewaffensalven: {{ SHIP.getRump.getPhaserVolleys }}</span><br />
-            <span>Energiewaffenbasisschaden: {{ SHIP.getBaseDamage }}</span><br />
+            {% if energyWeapon %}
+            <span>Energiewaffenbasisschaden: {{ energyWeapon.getBaseDamage }}</span><br />
+            {% endif %}
             <span>Torpedolevel: {{ SHIP.getRump.getTorpedoLevel }}</span><br />
             <span>Torpedosalven: {{ SHIP.getRump.getTorpedoVolleys }}</span><br />
             {% if launcher %}
