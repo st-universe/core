@@ -17,9 +17,6 @@ use Stu\Orm\Repository\AllianceRepositoryInterface;
 
 final class CreateRelation implements ActionControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string ACTION_IDENTIFIER = 'B_NEW_RELATION';
 
     public function __construct(private CreateRelationRequestInterface $createRelationRequest, private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager, private AllianceRepositoryInterface $allianceRepository)

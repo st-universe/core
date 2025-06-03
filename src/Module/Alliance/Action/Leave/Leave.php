@@ -16,9 +16,6 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class Leave implements ActionControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string ACTION_IDENTIFIER = 'B_LEAVE_ALLIANCE';
 
     public function __construct(private AllianceJobRepositoryInterface $allianceJobRepository, private PrivateMessageSenderInterface $privateMessageSender, private UserRepositoryInterface $userRepository) {}

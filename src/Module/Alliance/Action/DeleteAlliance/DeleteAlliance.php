@@ -16,9 +16,6 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class DeleteAlliance implements ActionControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string ACTION_IDENTIFIER = 'B_DELETE_ALLIANCE';
 
     public function __construct(

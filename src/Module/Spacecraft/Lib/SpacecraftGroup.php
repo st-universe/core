@@ -67,8 +67,8 @@ class SpacecraftGroup implements SpacecraftGroupInterface
                     $fleetAid = $fleetA !== null ? $fleetA->getId() : 0;
                     $fleetBid = $fleetB !== null ? $fleetB->getId() : 0;
                     if ($fleetBid === $fleetAid) {
-                        $aIsFleetLeader = $a instanceof ShipInterface ? $a->isFleetLeader() : false;
-                        $bIsFleetLeader = $b instanceof ShipInterface ? $b->isFleetLeader() : false;
+                        $aIsFleetLeader = $a instanceof ShipInterface && $a->isFleetLeader();
+                        $bIsFleetLeader = $b instanceof ShipInterface && $b->isFleetLeader();
                         if ($bIsFleetLeader === $aIsFleetLeader) {
                             $catA = $a->getRump()->getCategoryId();
                             $catB = $b->getRump()->getCategoryId();

@@ -48,7 +48,7 @@ final class CreateBuildplan implements ActionControllerInterface
         $modInput = request::postArray('mod');
         $moduleList = [];
 
-        foreach ($modInput as $typeId => $moduleId) {
+        foreach ($modInput as $moduleId) {
             if (is_numeric($moduleId) && (int)$moduleId > 0) {
                 $moduleList[] = (int)$moduleId;
             }
@@ -57,7 +57,7 @@ final class CreateBuildplan implements ActionControllerInterface
         $specialModInput = request::postArray('special_mod');
         $moduleSpecialList = [];
 
-        foreach ($specialModInput as $key => $moduleId) {
+        foreach ($specialModInput as $moduleId) {
             if (is_numeric($moduleId) && (int)$moduleId > 0) {
                 $moduleSpecialList[] = (int)$moduleId;
             }

@@ -13,9 +13,6 @@ use Stu\Orm\Repository\AllianceBoardRepositoryInterface;
 
 final class Boards implements ViewControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string VIEW_IDENTIFIER = 'SHOW_BOARDS';
 
     public function __construct(private AllianceBoardRepositoryInterface $allianceBoardRepository, private AllianceActionManagerInterface $allianceActionManager)

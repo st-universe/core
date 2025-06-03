@@ -23,8 +23,5 @@ interface AllianceSettingsRepositoryInterface extends ObjectRepository
 
     public function delete(AllianceSettingsInterface $post): void;
 
-    /**
-     * @return null|AllianceSettingsInterface
-     */
     public function findByAllianceAndSetting(AllianceInterface $alliance, string $setting): ?AllianceSettingsInterface;
 }

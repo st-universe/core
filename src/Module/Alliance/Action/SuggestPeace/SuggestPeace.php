@@ -14,9 +14,6 @@ use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 
 final class SuggestPeace implements ActionControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string ACTION_IDENTIFIER = 'B_SUGGEST_PEACE';
 
     public function __construct(private SuggestPeaceRequestInterface $suggestPeaceRequest, private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager)

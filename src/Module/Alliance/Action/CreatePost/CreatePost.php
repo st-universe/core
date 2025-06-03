@@ -16,9 +16,6 @@ use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
 final class CreatePost implements ActionControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string ACTION_IDENTIFIER = 'B_CREATE_POSTING';
 
     public function __construct(private CreatePostRequestInterface $createPostRequest, private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository, private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository)

@@ -16,9 +16,6 @@ use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
 final class CreateTopic implements ActionControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string ACTION_IDENTIFIER = 'B_CREATE_TOPIC';
 
     public function __construct(private CreateTopicRequestInterface $createTopicRequest, private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository, private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository, private AllianceBoardRepositoryInterface $allianceBoardRepository)

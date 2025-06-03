@@ -12,9 +12,6 @@ use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
 final class TopicSettings implements ViewControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string VIEW_IDENTIFIER = 'SHOW_TOPIC_SETTINGS';
 
     public function __construct(private TopicSettingsRequestInterface $topicSettingsRequest, private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository)

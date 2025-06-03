@@ -18,9 +18,6 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class KickPlayer implements ActionControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string ACTION_IDENTIFIER = 'B_KICK_USER';
 
     public function __construct(private KickPlayerRequestInterface $kickPlayerRequest, private AllianceJobRepositoryInterface $allianceJobRepository, private AllianceActionManagerInterface $allianceActionManager, private PrivateMessageSenderInterface $privateMessageSender, private UserRepositoryInterface $userRepository)

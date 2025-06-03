@@ -14,9 +14,6 @@ use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 
 final class Applications implements ViewControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string VIEW_IDENTIFIER = 'SHOW_APPLICATIONS';
 
     public function __construct(private AllianceActionManagerInterface $allianceActionManager, private AllianceJobRepositoryInterface $allianceJobRepository)

@@ -12,9 +12,6 @@ use Stu\Orm\Repository\AllianceBoardRepositoryInterface;
 
 final class BoardSettings implements ViewControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string VIEW_IDENTIFIER = 'SHOW_BOARD_SETTINGS';
 
     public function __construct(private BoardSettingsRequestInterface $boardSettingsRequest, private AllianceBoardRepositoryInterface $allianceBoardRepository)

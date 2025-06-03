@@ -31,9 +31,6 @@ interface SpacecraftBuildplanRepositoryInterface extends ObjectRepository
      */
     public function getStationBuildplansByUser(int $userId): array;
 
-    /**
-     * @return SpacecraftBuildplanInterface|null
-     */
     public function getStationBuildplanByRump(int $rumpId): ?SpacecraftBuildplanInterface;
 
     /**

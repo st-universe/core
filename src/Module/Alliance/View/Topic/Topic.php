@@ -15,14 +15,8 @@ use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
 final class Topic implements ViewControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string VIEW_IDENTIFIER = 'SHOW_TOPIC';
 
-    /**
-     * @var int
-     */
     public const int ALLIANCEBOARDLIMITER = 20;
 
     public function __construct(private TopicRequestInterface $topicRequest, private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository, private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository, private AllianceActionManagerInterface $allianceActionManager) {}

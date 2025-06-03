@@ -111,9 +111,7 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
             $result += $this->spacecraftSystemManager->getEnergyConsumption($shipSystem->getSystemType());
         }
 
-        $result += $this->spacecraft->getAlertState()->getEpsUsage();
-
-        return $result;
+        return $result + $this->spacecraft->getAlertState()->getEpsUsage();
     }
 
     public function getReactorUsage(): int

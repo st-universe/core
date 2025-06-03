@@ -14,9 +14,6 @@ use Stu\Orm\Repository\AllianceBoardRepositoryInterface;
 
 final class DeleteBoard implements ActionControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string ACTION_IDENTIFIER = 'B_DELETE_BOARD';
 
     public function __construct(private DeleteBoardRequestInterface $deleteBoardRequest, private AllianceBoardRepositoryInterface $allianceBoardRepository)

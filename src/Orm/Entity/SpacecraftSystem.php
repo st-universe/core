@@ -218,9 +218,7 @@ class SpacecraftSystem implements SpacecraftSystemInterface
     #[Override]
     public function hasSpecial(ModuleSpecialAbilityEnum $ability): bool
     {
-        return $this->module !== null
-            ? $this->module->hasSpecial($ability)
-            : false;
+        return $this->module !== null && $this->module->hasSpecial($ability);
     }
 
     #[Override]

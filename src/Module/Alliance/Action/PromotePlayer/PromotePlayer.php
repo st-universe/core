@@ -18,9 +18,6 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class PromotePlayer implements ActionControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string ACTION_IDENTIFIER = 'B_PROMOTE_USER';
 
     public function __construct(private PromotePlayerRequestInterface $promotePlayerRequest, private AllianceJobRepositoryInterface $allianceJobRepository, private AllianceActionManagerInterface $allianceActionManager, private PrivateMessageSenderInterface $privateMessageSender, private UserRepositoryInterface $userRepository) {}

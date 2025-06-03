@@ -17,10 +17,8 @@ use Stu\Orm\Repository\AllianceBoardRepositoryInterface;
  */
 final class AddBoard implements ActionControllerInterface
 {
-    /** @var string */
     public const string ACTION_IDENTIFIER = 'B_ADD_BOARD';
 
-    /** @var int */
     private const int NAME_LENGTH_CONSTRAINT = 5;
 
     public function __construct(private AddBoardRequestInterface $addBoardRequest, private AllianceBoardRepositoryInterface $allianceBoardRepository, private AllianceActionManagerInterface $allianceActionManager)
