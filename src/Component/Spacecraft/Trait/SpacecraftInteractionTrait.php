@@ -10,7 +10,7 @@ use Stu\Orm\Entity\ShipInterface;
 trait SpacecraftInteractionTrait
 {
     use SpacecraftTrait;
-    use HasSpacecraftSystemTrait;
+    use SpacecraftSystemExistenceTrait;
     use SpacecraftSystemHealthTrait;
 
     public function isTractorbeamPossible(): bool

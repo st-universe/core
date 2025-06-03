@@ -7,7 +7,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 trait SpacecraftEvadeChanceTrait
 {
     use SpacecraftTrait;
-    use HasSpacecraftSystemTrait;
+    use SpacecraftSystemExistenceTrait;
 
     /**
      * proportional to impulsedrive system status

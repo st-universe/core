@@ -110,19 +110,6 @@ class Map extends Location implements MapInterface
     }
 
     #[Override]
-    public function getSystemsId(): ?int
-    {
-        return $this->systems_id;
-    }
-
-    #[Override]
-    public function setSystemsId(?int $systems_id): MapInterface
-    {
-        $this->systems_id = $systems_id;
-        return $this;
-    }
-
-    #[Override]
     public function getSystemTypeId(): ?int
     {
         return $this->system_type_id;

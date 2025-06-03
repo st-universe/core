@@ -21,26 +21,28 @@ use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use Override;
 use RuntimeException;
-use Stu\Component\Game\TimeConstants;
 use Stu\Component\Map\DirectionEnum;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
-use Stu\Component\Spacecraft\SpacecraftRumpEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\SpacecraftLssModeEnum;
 use Stu\Component\Spacecraft\SpacecraftTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
-use Stu\Component\Spacecraft\System\Type\TorpedoStorageShipSystem;
-use Stu\Component\Spacecraft\Trait\HasSpacecraftSystemTrait;
+use Stu\Component\Spacecraft\Trait\SpacecraftSystemExistenceTrait;
+use Stu\Component\Spacecraft\Trait\SpacecrafCharacteristicsTrait;
 use Stu\Component\Spacecraft\Trait\SpacecraftCrewTrait;
 use Stu\Component\Spacecraft\Trait\SpacecraftEvadeChanceTrait;
 use Stu\Component\Spacecraft\Trait\SpacecraftHitChanceTrait;
+use Stu\Component\Spacecraft\Trait\SpacecraftHoldingWebTrait;
+use Stu\Component\Spacecraft\Trait\SpacecraftHullColorStyleTrait;
 use Stu\Component\Spacecraft\Trait\SpacecraftInteractionTrait;
 use Stu\Component\Spacecraft\Trait\SpacecraftLocationTrait;
 use Stu\Component\Spacecraft\Trait\SpacecraftShieldsTrait;
+use Stu\Component\Spacecraft\Trait\SpacecraftStateTrait;
 use Stu\Component\Spacecraft\Trait\SpacecraftStorageTrait;
 use Stu\Component\Spacecraft\Trait\SpacecraftSystemHealthTrait;
 use Stu\Component\Spacecraft\Trait\SpacecraftSystemStateTrait;
+use Stu\Component\Spacecraft\Trait\SpacecraftTorpedoTrait;
 use Stu\Orm\Repository\SpacecraftRepository;
 
 #[Table(name: 'stu_spacecraft')]
@@ -55,7 +57,7 @@ use Stu\Orm\Repository\SpacecraftRepository;
 abstract class Spacecraft implements SpacecraftInterface
 {
     use SpacecraftSystemStateTrait;
-    use HasSpacecraftSystemTrait;
+    use SpacecraftSystemExistenceTrait;
     use SpacecraftSystemHealthTrait;
     use SpacecraftShieldsTrait;
     use SpacecraftHitChanceTrait;
@@ -64,6 +66,11 @@ abstract class Spacecraft implements SpacecraftInterface
     use SpacecraftLocationTrait;
     use SpacecraftStorageTrait;
     use SpacecraftInteractionTrait;
+    use SpacecraftHoldingWebTrait;
+    use SpacecraftHullColorStyleTrait;
+    use SpacecraftTorpedoTrait;
+    use SpacecrafCharacteristicsTrait;
+    use SpacecraftStateTrait;
 
     #[Id]
     #[Column(type: 'integer')]
@@ -227,12 +234,6 @@ abstract class Spacecraft implements SpacecraftInterface
     }
 
     #[Override]
-    public function getSystemsId(): ?int
-    {
-        return $this->getSystem() !== null ? $this->getSystem()->getId() : null;
-    }
-
-    #[Override]
     public function getFlightDirection(): ?DirectionEnum
     {
         return $this->direction;
@@ -285,24 +286,6 @@ abstract class Spacecraft implements SpacecraftInterface
     }
 
     #[Override]
-    public function setAlertStateGreen(): SpacecraftInterface
-    {
-        return $this->setAlertState(SpacecraftAlertStateEnum::ALERT_GREEN);
-    }
-
-    #[Override]
-    public function isWarped(): bool
-    {
-        return $this->getWarpDriveState();
-    }
-
-    #[Override]
-    public function isHeldByTholianWeb(): bool
-    {
-        return $this->getHoldingWeb() !== null;
-    }
-
-    #[Override]
     public function getHull(): int
     {
         return $this->huelle;
@@ -346,47 +329,6 @@ abstract class Spacecraft implements SpacecraftInterface
     {
         $this->max_schilde = $maxShields;
         return $this;
-    }
-
-    #[Override]
-    public function getHealthPercentage(): float
-    {
-        return ($this->getHull() + $this->getShield())
-            / ($this->getMaxHull() + $this->getMaxShield(true)) * 100;
-    }
-
-    #[Override]
-    public function isAlertGreen(): bool
-    {
-        return $this->getAlertState() === SpacecraftAlertStateEnum::ALERT_GREEN;
-    }
-
-    #[Override]
-    public function getTorpedoCount(): int
-    {
-        if ($this->getTorpedoStorage() === null) {
-            return 0;
-        }
-
-        return $this->getTorpedoStorage()->getStorage()->getAmount();
-    }
-
-    #[Override]
-    public function isStation(): bool
-    {
-        return $this instanceof StationInterface;
-    }
-
-    #[Override]
-    public function isShuttle(): bool
-    {
-        return $this->getRump()->getCategoryId() === SpacecraftRumpEnum::SHIP_CATEGORY_SHUTTLE;
-    }
-
-    #[Override]
-    public function isConstruction(): bool
-    {
-        return $this->getRump()->getCategoryId() === SpacecraftRumpEnum::SHIP_CATEGORY_CONSTRUCTION;
     }
 
     #[Override]
@@ -504,13 +446,6 @@ abstract class Spacecraft implements SpacecraftInterface
     }
 
     #[Override]
-    public function isUnderRepair(): bool
-    {
-        return $this->getState() === SpacecraftStateEnum::REPAIR_ACTIVE
-            || $this->getState() === SpacecraftStateEnum::REPAIR_PASSIVE;
-    }
-
-    #[Override]
     public function getCrewAssignments(): Collection
     {
         return $this->crew;
@@ -546,28 +481,6 @@ abstract class Spacecraft implements SpacecraftInterface
         }
 
         return $modules;
-    }
-
-    #[Override]
-    public function isTractoring(): bool
-    {
-        return $this->getTractoredShip() !== null;
-    }
-
-    #[Override]
-    public function isWarpPossible(): bool
-    {
-        return $this->hasSpacecraftSystem(SpacecraftSystemTypeEnum::WARPDRIVE) && $this->getSystem() === null;
-    }
-
-    #[Override]
-    public function getTorpedo(): ?TorpedoTypeInterface
-    {
-        if ($this->getTorpedoStorage() === null) {
-            return null;
-        }
-
-        return $this->getTorpedoStorage()->getTorpedo();
     }
 
     #[Override]
@@ -670,13 +583,6 @@ abstract class Spacecraft implements SpacecraftInterface
     }
 
     #[Override]
-    public function displayNbsActions(): bool
-    {
-        return !$this->isCloaked()
-            && !$this->isWarped();
-    }
-
-    #[Override]
     public function getTractoredShip(): ?ShipInterface
     {
         return $this->tractoredShip;
@@ -701,47 +607,6 @@ abstract class Spacecraft implements SpacecraftInterface
         $this->holdingWeb = $web;
 
         return $this;
-    }
-
-    #[Override]
-    public function getHoldingWebBackgroundStyle(): string
-    {
-        if ($this->getHoldingWeb() === null) {
-            return '';
-        }
-
-        if ($this->getHoldingWeb()->isFinished()) {
-            $icon =  'web.png';
-        } else {
-            $closeTofinish = $this->getHoldingWeb()->getFinishedTime() - time() < TimeConstants::ONE_HOUR_IN_SECONDS;
-
-            $icon = $closeTofinish ? 'web_u.png' : 'web_u2.png';
-        }
-
-        return sprintf('src="assets/buttons/%s"; class="indexedGraphics" style="z-index: 5;"', $icon);
-    }
-
-    public function getHoldingWebImageStyle(): string
-    {
-        if ($this->getHoldingWeb() === null) {
-            return '';
-        }
-
-        if ($this->getHoldingWeb()->isFinished()) {
-            $icon =  'webfill.png';
-        } else {
-            $closeTofinish = $this->getHoldingWeb()->getFinishedTime() - time() < TimeConstants::ONE_HOUR_IN_SECONDS;
-
-            $icon = $closeTofinish ? 'web_ufill.png' : 'web_ufill2.png';
-        }
-
-        return $icon;
-    }
-
-    #[Override]
-    public function hasEscapePods(): bool
-    {
-        return $this->getRump()->isEscapePods() && $this->getCrewCount() > 0;
     }
 
     #[Override]
@@ -774,14 +639,6 @@ abstract class Spacecraft implements SpacecraftInterface
     {
         $this->rump = $shipRump;
         return $this;
-    }
-
-    #[Override]
-    public function getMaxTorpedos(): int
-    {
-        return $this->getRump()->getBaseTorpedoStorage()
-            + ($this->isSystemHealthy(SpacecraftSystemTypeEnum::TORPEDO_STORAGE)
-                ? TorpedoStorageShipSystem::TORPEDO_CAPACITY : 0);
     }
 
     #[Override]
@@ -819,37 +676,5 @@ abstract class Spacecraft implements SpacecraftInterface
         }
 
         return $this->getName();
-    }
-
-    #[Override]
-    public function getHullColorStyle(): string
-    {
-        return $this->getColorStyle($this->getHull(), $this->getMaxHull());
-    }
-
-    private function getColorStyle(int $actual, int $max): string
-    {
-        // full
-        if ($actual === $max) {
-            return '';
-        }
-
-        // less than 100% - green
-        if ($actual / $max > 0.75) {
-            return 'color: #19c100;';
-        }
-
-        // less than 75% - yellow
-        if ($actual / $max > 0.50) {
-            return 'color: #f4e932;';
-        }
-
-        // less than 50% - orange
-        if ($actual / $max > 0.25) {
-            return 'color: #f48b28;';
-        }
-
-        // less than 25% - red
-        return 'color: #ff3c3c;';
     }
 }

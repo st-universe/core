@@ -35,8 +35,6 @@ interface SpacecraftInterface extends
 
     public function getType(): SpacecraftTypeEnum;
 
-    public function getSystemsId(): ?int;
-
     public function getLayer(): ?LayerInterface;
 
     public function getFlightDirection(): ?DirectionEnum;
