@@ -71,11 +71,9 @@ final class CommodityCheat implements ActionControllerInterface
                 return;
             }
 
-            if ($game->getUser()->isNpc()) {
-                if ($reason === '') {
-                    $game->addInformation("Grund fehlt");
-                    return;
-                }
+            if ($game->getUser()->isNpc() && $reason === '') {
+                $game->addInformation("Grund fehlt");
+                return;
             }
 
             $commodity = $this->commodityRepository->find($commodityId);

@@ -103,7 +103,7 @@ final class ShipWrapper extends SpacecraftWrapper implements ShipWrapperInterfac
             return false;
         }
 
-        if ($this->spacecraft->getFleet()) {
+        if ($this->spacecraft->getFleet() !== null) {
             return false;
         }
 

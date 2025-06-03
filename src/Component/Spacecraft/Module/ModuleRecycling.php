@@ -41,15 +41,14 @@ class ModuleRecycling implements ModuleRecyclingInterface
         foreach ($spacecraft->getSystems() as $system) {
 
             $module = $system->getModule();
-            if ($module !== null) {
-                if (!array_key_exists($module->getId(), $recycledModuleChances)) {
-
-                    $buildplanModule = $buildplanModules->get($module->getId());
-                    $amount = $buildplanModule === null ? 1 : $buildplanModule->getModuleCount();
-                    $chance = (int)ceil($recyclingChance * $system->getStatus() / 100);
-
-                    $recycledModuleChances[$module->getId()] = [$module, $amount, $chance];
-                }
+            if (
+                $module !== null
+                && !array_key_exists($module->getId(), $recycledModuleChances)
+            ) {
+                $buildplanModule = $buildplanModules->get($module->getId());
+                $amount = $buildplanModule === null ? 1 : $buildplanModule->getModuleCount();
+                $chance = (int)ceil($recyclingChance * $system->getStatus() / 100);
+                $recycledModuleChances[$module->getId()] = [$module, $amount, $chance];
             }
         }
 

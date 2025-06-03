@@ -146,7 +146,7 @@ final class EditKnPost implements ActionControllerInterface
                     'knPost' => $post->getId(),
                     'userCharacters' => $currentCharacterId
                 ]);
-                if ($entityToRemove) {
+                if ($entityToRemove !== null) {
                     $this->knCharactersRepository->delete($entityToRemove);
                 }
             }

@@ -26,13 +26,9 @@ abstract class ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
     {
         if ($this->modules === null) {
             $buildplan = $this->buildplan;
-            if ($buildplan === null) {
-                $this->modules = [];
-            } else {
-                $this->modules = $buildplan
-                    ->getModulesByType($this->getModuleType())
-                    ->toArray();
-            }
+            $this->modules = $buildplan === null
+                ? []
+                : $buildplan->getModulesByType($this->getModuleType())->toArray();
         }
 
         return $this->modules;

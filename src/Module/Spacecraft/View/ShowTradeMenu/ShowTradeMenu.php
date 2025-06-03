@@ -69,11 +69,7 @@ final class ShowTradeMenu implements ViewControllerInterface
         if ($licenseInfo !== null) {
             $commodityId = $licenseInfo->getCommodityId();
             $commodity = $this->commodityRepository->find($commodityId);
-            if ($commodity !== null) {
-                $commodityName = $commodity->getName();
-            } else {
-                $commodityName = '';
-            }
+            $commodityName = $commodity !== null ? $commodity->getName() : '';
             $licensecost = $licenseInfo->getAmount();
             $licensedays = $licenseInfo->getDays();
         } else {

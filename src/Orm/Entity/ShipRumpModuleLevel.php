@@ -754,7 +754,7 @@ class ShipRumpModuleLevel implements ShipRumpModuleLevelInterface
                 sprintf('getModuleMandatory%d', $type->value),
                 array_filter(SpacecraftModuleTypeEnum::cases(), fn(SpacecraftModuleTypeEnum $type): bool => !$type->isSpecialSystemType())
             ),
-            fn(int $value, string $method): int => $value + $this->$method() ? 1 : 0,
+            fn(int $value, string $method): int => $value + $this->$method() !== 0 ? 1 : 0,
             0
         );
     }

@@ -182,7 +182,7 @@ final class BoardShip implements ActionControllerInterface
             time()
         );
 
-        while (!empty($combatGroupAttacker) && !empty($combatGroupDefender)) {
+        while ($combatGroupAttacker !== [] && $combatGroupDefender !== []) {
             $this->boardShip->cycleKillRound(
                 $combatGroupAttacker,
                 $combatGroupDefender,
@@ -195,7 +195,7 @@ final class BoardShip implements ActionControllerInterface
         $message = $this->messageFactory->createMessage($userId, $targetUserId);
         $messages->add($message);
 
-        if (empty($combatGroupAttacker)) {
+        if ($combatGroupAttacker === []) {
             $message->add('Der Enterversuch ist gescheitert');
         } elseif ($target->getCrewAssignments()->isEmpty()) {
             $message->add(sprintf(
