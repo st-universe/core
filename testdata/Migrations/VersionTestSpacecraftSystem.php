@@ -24,7 +24,7 @@ final class VersionTestSpacecraftSystem extends AbstractMigration
                        (19, 42, 2, 10403, 100, 1, NULL, NULL),
                        (20, 42, 3, 10502, 100, 1, NULL, \'{"output":54,"load":810}\'),
                        (21, 42, 4, 11902, 100, 1, NULL, NULL),
-                       (22, 42, 5, 10702, 100, 1, NULL, NULL),
+                       (22, 42, 5, 10702, 100, 1, NULL, \'{"baseDamage":43}\'),
                        (24, 42, 9, NULL, 100, 2, NULL, NULL),
                        (25, 42, 10, 10912, 100, 1, NULL, \'{"wd":57,"maxwd":58,"split":100,"autoCarryOver":0}\'),
                        (18, 42, 1, 10302, 100, 1, NULL, \'{"eps":107,"maxEps":108,"maxBattery":36,"battery":36,"batteryCooldown":0,"reloadBattery":0}\'),

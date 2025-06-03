@@ -74,7 +74,9 @@ class SpacecraftAttacker extends AbstractEnergyAttacker implements ProjectileAtt
     #[Override]
     public function getEnergyWeaponBaseDamage(): int
     {
-        return $this->get()->getBaseDamage();
+        $energyWeapon = $this->wrapper->getEnergyWeaponSystemData();
+
+        return $energyWeapon === null ? 0 : $energyWeapon->getBaseDamage();
     }
 
     #[Override]

@@ -3,6 +3,7 @@
 namespace Stu\Module\Spacecraft\Lib;
 
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
+use Stu\Component\Spacecraft\System\Data\EnergyWeaponSystemData;
 use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Component\Spacecraft\System\Data\HullSystemData;
 use Stu\Component\Spacecraft\System\Data\LssSystemData;
@@ -87,6 +88,8 @@ interface SpacecraftWrapperInterface
     public function getEpsSystemData(): ?EpsSystemData;
 
     public function getLssSystemData(): ?LssSystemData;
+
+    public function getEnergyWeaponSystemData(): ?EnergyWeaponSystemData;
 
     public function getWarpDriveSystemData(): ?WarpDriveSystemData;
 

@@ -133,10 +133,6 @@ interface SpacecraftInterface extends
 
     public function setEvadeChance(int $evadeChance): SpacecraftInterface;
 
-    public function getBaseDamage(): int;
-
-    public function setBaseDamage(int $baseDamage): SpacecraftInterface;
-
     public function getTractorPayload(): int;
 
     public function getState(): SpacecraftStateEnum;

@@ -130,9 +130,6 @@ abstract class Spacecraft implements SpacecraftInterface
     #[Column(type: 'smallint', length: 3)]
     private int $evade_chance = 0;
 
-    #[Column(type: 'smallint', length: 4)]
-    private int $base_damage = 0;
-
     #[Column(type: 'smallint', enumType: SpacecraftStateEnum::class)]
     private SpacecraftStateEnum $state = SpacecraftStateEnum::NONE;
 
@@ -381,27 +378,6 @@ abstract class Spacecraft implements SpacecraftInterface
     public function setEvadeChance(int $evadeChance): SpacecraftInterface
     {
         $this->evade_chance = $evadeChance;
-        return $this;
-    }
-
-    /**
-     * proportional to energy weapon system status
-     */
-    #[Override]
-    public function getBaseDamage(): int
-    {
-        if (!$this->hasSpacecraftSystem(SpacecraftSystemTypeEnum::PHASER)) {
-            return $this->base_damage;
-        }
-
-        return (int) (ceil($this->base_damage
-            * $this->getSpacecraftSystem(SpacecraftSystemTypeEnum::PHASER)->getStatus() / 100));
-    }
-
-    #[Override]
-    public function setBaseDamage(int $baseDamage): SpacecraftInterface
-    {
-        $this->base_damage = $baseDamage;
         return $this;
     }
 
@@ -662,7 +638,7 @@ abstract class Spacecraft implements SpacecraftInterface
     {
         if ($this->id !== null) {
             return sprintf(
-                "id: %d, name: %s,\nhull: %d/%d, shields %d/%d,\nevadeChance: %d, hitChance: %d, baseDamage: %d",
+                "id: %d, name: %s,\nhull: %d/%d, shields %d/%d,\nevadeChance: %d, hitChance: %d",
                 $this->getId(),
                 $this->getName(),
                 $this->huelle,
@@ -670,8 +646,7 @@ abstract class Spacecraft implements SpacecraftInterface
                 $this->schilde,
                 $this->max_schilde,
                 $this->evade_chance,
-                $this->hit_chance,
-                $this->base_damage
+                $this->hit_chance
             );
         }
 
