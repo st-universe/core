@@ -123,7 +123,7 @@ final class DatabaseEntry implements ViewControllerInterface
 
                     $plan = $this->spacecraftBuildplanRepository->getStationBuildplanByRump($rump->getId());
                     $game->setTemplateVar('PLAN', $plan);
-                    if ($plan) {
+                    if ($plan !== null) {
                         $mods = $plan->getModulesOrdered();
                         $game->setTemplateVar('MODS', $mods);
 

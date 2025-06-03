@@ -196,10 +196,8 @@ final class ShipMover implements ShipMoverInterface
 
     private function leaveFleet(SpacecraftInterface $ship, MessageCollectionInterface $messages): void
     {
-        if ($ship instanceof ShipInterface) {
-            if ($this->leaveFleet->leaveFleet($ship)) {
-                $messages->addInformationf('Die %s hat die Flotte verlassen', $ship->getName());
-            }
+        if ($ship instanceof ShipInterface && $this->leaveFleet->leaveFleet($ship)) {
+            $messages->addInformationf('Die %s hat die Flotte verlassen', $ship->getName());
         }
     }
 

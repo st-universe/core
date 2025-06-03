@@ -66,7 +66,7 @@ final class DeleteSpacecraft implements ActionControllerInterface
                 }
             );
 
-            if (empty($spacecraftIds)) {
+            if ($spacecraftIds === []) {
                 $game->addInformation("Es wurden keine gültigen Spacecraft-IDs gefunden");
                 return;
             }

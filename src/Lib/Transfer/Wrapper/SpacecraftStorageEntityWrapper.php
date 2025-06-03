@@ -328,7 +328,7 @@ class SpacecraftStorageEntityWrapper implements StorageEntityWrapperInterface
             $ownCrew = $this->getOwnCrewCount($this->spacecraft);
             $minOwnCrew = 0;
             $buildplan = $this->spacecraft->getBuildplan();
-            if ($buildplan) {
+            if ($buildplan !== null) {
                 $minOwnCrew = $buildplan->getCrew();
             }
 
@@ -342,10 +342,9 @@ class SpacecraftStorageEntityWrapper implements StorageEntityWrapperInterface
             if (
                 $hasForeigners
                 && !$this->spacecraft->getSystemState(SpacecraftSystemTypeEnum::UPLINK)
+                && $ownCrew >= $minOwnCrew
             ) {
-                if ($ownCrew >= $minOwnCrew) {
-                    $this->spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::UPLINK)->setMode(SpacecraftSystemModeEnum::MODE_ON);
-                }
+                $this->spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::UPLINK)->setMode(SpacecraftSystemModeEnum::MODE_ON);
             }
 
             $this->sendUplinkMessage($hasForeigners, $information, $this->spacecraft->getSystemState(SpacecraftSystemTypeEnum::UPLINK), $ownCrew >= $minOwnCrew);

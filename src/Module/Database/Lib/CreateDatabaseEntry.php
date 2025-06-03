@@ -67,7 +67,6 @@ final class CreateDatabaseEntry implements CreateDatabaseEntryInterface
     ): void {
         if ($ignoredDatabaseEntryId === null && $layerId === null) {
             $layerIds = $this->databaseEntryRepository->getDistinctLayerIdsByCategory($category->getId());
-
             foreach ($layerIds as $currentLayerId) {
                 if ($this->databaseUserRepository->hasUserCompletedCategoryAndLayer($user->getId(), $category->getId(), null, $currentLayerId)) {
                     $categoryAward = $this->databaseCategoryAwardRepository->findByCategoryIdAndLayerId($category->getId(), $currentLayerId);
@@ -77,13 +76,10 @@ final class CreateDatabaseEntry implements CreateDatabaseEntryInterface
                     }
                 }
             }
-        } else {
-            if ($this->databaseUserRepository->hasUserCompletedCategoryAndLayer($user->getId(), $category->getId(), $ignoredDatabaseEntryId, $layerId)) {
-                $categoryAward = $this->databaseCategoryAwardRepository->findByCategoryIdAndLayerId($category->getId(), $layerId);
-
-                if ($categoryAward !== null && $categoryAward->getAward() !== null) {
-                    $this->createUserAward->createAwardForUser($user, $categoryAward->getAward());
-                }
+        } elseif ($this->databaseUserRepository->hasUserCompletedCategoryAndLayer($user->getId(), $category->getId(), $ignoredDatabaseEntryId, $layerId)) {
+            $categoryAward = $this->databaseCategoryAwardRepository->findByCategoryIdAndLayerId($category->getId(), $layerId);
+            if ($categoryAward !== null && $categoryAward->getAward() !== null) {
+                $this->createUserAward->createAwardForUser($user, $categoryAward->getAward());
             }
         }
     }

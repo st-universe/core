@@ -121,7 +121,7 @@ class AssaultPhalanxBehaviour implements PirateBehaviourInterface
 
         $messages->add($message);
 
-        while (!empty($combatGroupAttacker) && !empty($combatGroupDefender)) {
+        while ($combatGroupAttacker !== [] && $combatGroupDefender !== []) {
 
             $this->logger->logf('    %d vs %d', count($combatGroupAttacker), count($combatGroupDefender));
 

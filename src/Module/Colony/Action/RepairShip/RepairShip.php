@@ -138,11 +138,7 @@ final class RepairShip implements ActionControllerInterface
             $ticks = ceil($ticks * 0.5);
         }
 
-        if (!$field->isActive()) {
-            $activemsg = ', nach aktivierung der Werft';
-        } else {
-            $activemsg = '';
-        }
+        $activemsg = $field->isActive() ? '' : ', nach aktivierung der Werft';
         $game->addInformationf('Das Schiff wird repariert. Fertigstellung in %d Runden%s', $ticks, $activemsg);
 
         $this->privateMessageSender->send(

@@ -115,7 +115,7 @@ final class Transfer implements ActionControllerInterface
             $transferInformation->getSourceType(),
             $transferInformation->getTargetType()->getAllowedTransferSources()
         )) {
-            throw new SanityCheckException(sprintf('unallowed transfer source!'));
+            throw new SanityCheckException('unallowed transfer source!');
         }
 
         switch ($transferInformation->getTransferType()) {

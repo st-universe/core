@@ -81,7 +81,7 @@ class StuRandom
             $value = random_int($min, $max);
             $probability = exp(-0.5 * (($value - $usedMean) / $stdDeviation) ** 2);
 
-            if ($skewness) {
+            if ($skewness !== 0.0) {
                 $skewFactor = 1 + $skewness * (($value - $usedMean) / ($max - $min));
                 $probability *= max(0, $skewFactor);
             }
