@@ -48,19 +48,19 @@ final class Edit implements ViewControllerInterface
         );
 
         $founderDescription = $alliance->getSettings()->filter(
-            function (AllianceSettingsInterface $setting) {
+            function (AllianceSettingsInterface $setting): bool {
                 return $setting->getSetting() === AllianceSettingsEnum::ALLIANCE_FOUNDER_DESCRIPTION;
             }
         )->first();
 
         $successorDescription = $alliance->getSettings()->filter(
-            function (AllianceSettingsInterface $setting) {
+            function (AllianceSettingsInterface $setting): bool {
                 return $setting->getSetting() === AllianceSettingsEnum::ALLIANCE_SUCCESSOR_DESCRIPTION;
             }
         )->first();
 
         $diplomatDescription = $alliance->getSettings()->filter(
-            function (AllianceSettingsInterface $setting) {
+            function (AllianceSettingsInterface $setting): bool {
                 return $setting->getSetting() === AllianceSettingsEnum::ALLIANCE_DIPLOMATIC_DESCRIPTION;
             }
         )->first();

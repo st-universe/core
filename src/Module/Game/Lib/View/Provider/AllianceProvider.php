@@ -107,19 +107,19 @@ final class AllianceProvider implements ViewComponentProviderInterface
         );
 
         $founderDescription = $settings->filter(
-            function (AllianceSettingsInterface $setting) {
+            function (AllianceSettingsInterface $setting): bool {
                 return $setting->getSetting() === AllianceSettingsEnum::ALLIANCE_FOUNDER_DESCRIPTION;
             }
         )->first();
 
         $successorDescription = $settings->filter(
-            function (AllianceSettingsInterface $setting) {
+            function (AllianceSettingsInterface $setting): bool {
                 return $setting->getSetting() === AllianceSettingsEnum::ALLIANCE_SUCCESSOR_DESCRIPTION;
             }
         )->first();
 
         $diplomatDescription = $settings->filter(
-            function (AllianceSettingsInterface $setting) {
+            function (AllianceSettingsInterface $setting): bool {
                 return $setting->getSetting() === AllianceSettingsEnum::ALLIANCE_DIPLOMATIC_DESCRIPTION;
             }
         )->first();

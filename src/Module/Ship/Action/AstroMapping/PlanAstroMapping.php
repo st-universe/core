@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\AstroMapping;
 
+use Stu\Orm\Entity\MapInterface;
+use Stu\Orm\Entity\StarSystemMapInterface;
 use Override;
 use request;
 
@@ -92,7 +94,7 @@ final class PlanAstroMapping implements ActionControllerInterface
         ?StarSystemInterface $system,
         ?MapRegionInterface $mapRegion,
         AstronomicalEntryInterface $entry,
-        Locationinterface $location
+        MapInterface|StarSystemMapInterface $location
     ): void {
         if ($system !== null) {
             $entry->setSystem($system);

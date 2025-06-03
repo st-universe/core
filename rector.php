@@ -41,7 +41,7 @@ return static function (RectorConfig $rectorConfig): void {
         //SetList::CODING_STYLE,
         //SetList::DEAD_CODE,           //last 2025-06-03
         //SetList::PRIVATIZATION,       //last 2025-06-03
-        //SetList::TYPE_DECLARATION,    //last 2024-11-14
+        //SetList::TYPE_DECLARATION,    //last 2025-06-03
         //LevelSetList::UP_TO_PHP_74,   //last 2024-07-03
         //LevelSetList::UP_TO_PHP_84,
         //DoctrineSetList::ANNOTATIONS_TO_ATTRIBUTES //last 2023-12-13

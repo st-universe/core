@@ -56,7 +56,7 @@ final class ShowShipCreator implements ViewControllerInterface
                     $rump = $buildplan->getRump();
 
                     $allRumps = iterator_to_array($this->spacecraftRumpRepository->getList());
-                    $filteredRumps = array_filter($allRumps, fn($rump) => $rump->getNpcBuildable() === true);
+                    $filteredRumps = array_filter($allRumps, fn($rump): bool => $rump->getNpcBuildable() === true);
 
                     $isRumpInFiltered = false;
                     foreach ($filteredRumps as $filteredRump) {
@@ -80,7 +80,7 @@ final class ShowShipCreator implements ViewControllerInterface
             } else {
                 $allRumps = iterator_to_array($this->spacecraftRumpRepository->getList());
                 $allBuildplans = $this->spacecraftBuildplanRepository->getByUser($userId);
-                $filteredBuildplans = array_filter($allBuildplans, function ($buildplan) use ($allRumps) {
+                $filteredBuildplans = array_filter($allBuildplans, function ($buildplan) use ($allRumps): bool {
                     $rump = $buildplan->getRump();
                     foreach ($allRumps as $rumpItem) {
                         if ($rumpItem->getId() === $rump->getId()  && $rumpItem->getNpcBuildable() === true) {
@@ -90,7 +90,7 @@ final class ShowShipCreator implements ViewControllerInterface
                     return false;
                 });
 
-                $filteredBuildplans = array_filter($allBuildplans, function ($buildplan) use ($allRumps) {
+                $filteredBuildplans = array_filter($allBuildplans, function ($buildplan) use ($allRumps): bool {
                     $rump = $buildplan->getRump();
                     foreach ($allRumps as $rumpItem) {
                         if ($rumpItem->getId() === $rump->getId() && $rumpItem->getNpcBuildable() === true) {
@@ -101,7 +101,7 @@ final class ShowShipCreator implements ViewControllerInterface
                 });
 
                 $game->setTemplateVar('BUILDPLANS', $filteredBuildplans);
-                $game->setTemplateVar('DELETABLE_BUILDPLANS', array_filter($filteredBuildplans, fn($buildplan) => $this->isDeletable($buildplan)));
+                $game->setTemplateVar('DELETABLE_BUILDPLANS', array_filter($filteredBuildplans, fn($buildplan): bool => $this->isDeletable($buildplan)));
             }
         }
     }

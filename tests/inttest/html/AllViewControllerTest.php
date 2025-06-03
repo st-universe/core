@@ -93,7 +93,7 @@ class AllViewControllerTest extends TwigTestCase
             //->filter(fn(array $array): bool => $array[0] === 'SHIP_VIEWS-SHOW_ANALYSE_BUOY')
             ->filter(fn(array $array): bool => !str_ends_with($array[0], '-DEFAULT_VIEW')) // got its own test: DefaultViewsControllerTest.php
             ->filter(fn(array $array): bool => !in_array($array[0], self::CURRENTLY_UNSUPPORTED_KEYS))
-            ->filter(fn(array $array): bool => array_filter(self::CURRENTLY_UNSUPPORTED_MODULES, fn(string $unsupportedModule) => str_starts_with($array[0], $unsupportedModule)) == [])
+            ->filter(fn(array $array): bool => array_filter(self::CURRENTLY_UNSUPPORTED_MODULES, fn(string $unsupportedModule): bool => str_starts_with($array[0], $unsupportedModule)) == [])
             ->toArray();
     }
 
