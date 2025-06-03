@@ -56,7 +56,8 @@
         </tr>
     </table>
     <table style="{{ fleet.getHiddenStyle }}" class="tcal" id="fleetbody_{{ fleetid }}">
-        {{ shiplist_header() }}
+        {% set isFleetHeader = true %}
+        {{ shiplist_header(isFleetHeader) }}
         {% for wrapper in FLEETWRAPPER.getShipWrappers %}
         {{ shiplist_body(wrapper) }}
         {% endfor %}

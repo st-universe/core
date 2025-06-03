@@ -1,8 +1,13 @@
-{% macro shiplist_header() %}
+{% macro shiplist_header(isFleetHeader) %}
 <tr>
     <th style="width: 140px;">Klasse</th>
     <th>Name</th>
+    {% if not isFleetHeader %}
     <th style="width: 30px;"></th>
+    <th style="width: 30px;"></th>
+    {% else %}
+    <th style="width: 60px;"></th>
+    {% endif %}
     <th style="width: 95px;" title="im System (außerhalb)">x|y <img src="/assets/buttons/info2.png"
             style="height:16px;" /></th>
     <th style="width: 100px;" title="aktuell/maximal">Hülle <img src="/assets/buttons/info2.png" style="height:16px;" />
@@ -52,14 +57,15 @@
     <td id="shipalarmstate" style="text-align: center;">
         <img src="/assets/buttons/alert{{ ship.getAlertState.value }}_1.png" title="Alarmstufe" />
     </td>
+    {% if not ship.getFleet %}<td>
+        <img src="/assets/buttons/layer_{{ ship.getLocation.getLayer.getId }}.png"
+            title="{{ ship.getLocation.getLayer.getName }}" style="flex-shrink: 0;" />
+        {% endif %}
+    </td>
     {% set system = ship.getSystem %}
     {% if system %}
     <td id="shipposition" style="position: relative;">
         <div style="display: flex; align-items: flex-start; gap: 4px;">
-            {% if not ship.getFleet %}
-            <img src="/assets/buttons/layer_{{ ship.getLocation.getLayer.getId }}.png"
-                title="{{ ship.getLocation.getLayer.getName }}" style="flex-shrink: 0;" />
-            {% endif %}
             <div style="flex: 1; text-align: center;">
                 <div>{{ ship.getPosX }}|{{ ship.getPosY }}</div>
                 <div style="margin-top: 1px;">
@@ -76,10 +82,6 @@
     {% else %}
     <td id="shipposition" style="position: relative;">
         <div style="display: flex; align-items: flex-start; gap: 4px;">
-            {% if not ship.getFleet %}
-            <img src="/assets/buttons/layer_{{ ship.getLocation.getLayer.getId }}.png"
-                title="{{ ship.getLocation.getLayer.getName }}" style="flex-shrink: 0;" />
-            {% endif %}
             <div style="flex: 1; text-align: center;">
                 ({{ ship.getMap.getCx }}|{{ ship.getMap.getCy }})
             </div>
