@@ -21,7 +21,7 @@ use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 final class ShowTradeMenu implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_TRADEMENU';
+    public const string VIEW_IDENTIFIER = 'SHOW_TRADEMENU';
 
     /**
      * @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spaceCraftLoader

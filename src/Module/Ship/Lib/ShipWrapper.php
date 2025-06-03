@@ -56,6 +56,7 @@ final class ShipWrapper extends SpacecraftWrapper implements ShipWrapperInterfac
         );
     }
 
+    #[Override]
     public function get(): ShipInterface
     {
         return $this->spacecraft;

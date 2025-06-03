@@ -49,6 +49,7 @@ class PrivateMessageSenderTest extends StuTestCase
         );
     }
 
+    #[Override]
     public function tearDown(): void
     {
         parent::tearDown();
