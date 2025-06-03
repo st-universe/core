@@ -25,4 +25,6 @@ interface LocationRepositoryInterface extends ObjectRepository
     public function getRumpCategoryInfo(LayerInterface $layer, int $cx, int $cy): array;
 
     public function getRandomLocation(): LocationInterface;
+
+    public function getByCoordinates(int $x, int $y, int $layerId): ?LocationInterface;
 }

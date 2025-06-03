@@ -175,4 +175,14 @@ class LocationRepository extends EntityRepository implements LocationRepositoryI
 
         return $location;
     }
+
+    #[Override]
+    public function getByCoordinates(int $x, int $y, int $layerId): ?LocationInterface
+    {
+        return $this->findOneBy([
+            'cx' => $x,
+            'cy' => $y,
+            'layer_id' => $layerId
+        ]);
+    }
 }
