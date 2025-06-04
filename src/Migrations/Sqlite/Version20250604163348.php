@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250603172259 extends AbstractMigration
+final class Version20250604163348 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -717,7 +717,7 @@ final class Version20250603172259 extends AbstractMigration
             CREATE INDEX IDX_F342AF3C680D0B01 ON stu_kn_plot_application (plot_id)
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE TABLE stu_layer (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL, width INTEGER NOT NULL, height INTEGER NOT NULL, is_hidden BOOLEAN NOT NULL, is_finished BOOLEAN DEFAULT NULL, is_encoded BOOLEAN DEFAULT NULL, award_id INTEGER DEFAULT NULL, CONSTRAINT FK_664CE77D3D5282CF FOREIGN KEY (award_id) REFERENCES stu_award (id) NOT DEFERRABLE INITIALLY IMMEDIATE)
+            CREATE TABLE stu_layer (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL, width INTEGER NOT NULL, height INTEGER NOT NULL, is_hidden BOOLEAN NOT NULL, is_finished BOOLEAN DEFAULT NULL, is_encoded BOOLEAN DEFAULT NULL, award_id INTEGER DEFAULT NULL, description CLOB DEFAULT NULL, is_colonizable BOOLEAN DEFAULT NULL, is_noobzone BOOLEAN DEFAULT NULL, CONSTRAINT FK_664CE77D3D5282CF FOREIGN KEY (award_id) REFERENCES stu_award (id) NOT DEFERRABLE INITIALLY IMMEDIATE)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE INDEX IDX_664CE77D3D5282CF ON stu_layer (award_id)
