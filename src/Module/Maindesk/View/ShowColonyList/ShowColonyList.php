@@ -12,6 +12,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Control\ViewWithTutorialInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class ShowColonyList implements ViewControllerInterface, ViewWithTutorialInterface
@@ -43,11 +44,55 @@ final class ShowColonyList implements ViewControllerInterface, ViewWithTutorialI
             _('Kolonie gründen')
         );
 
-        $game->setTemplateVar(
-            'FREE_PLANET_LIST',
-            $this->colonyRepository->getStartingByFaction($user->getFactionId())
-        );
+        $freePlanets = $this->colonyRepository->getStartingByFaction($user->getFactionId());
+        $groupedPlanets = $this->groupPlanetsByLayerAndRegion($freePlanets);
+
+        $game->setTemplateVar('GROUPED_PLANETS', $groupedPlanets);
     }
+
+    /**
+     * @param array<ColonyInterface> $planets
+     * @return array<int, array{layer_name: string, layer_description: string|null, regions: array<int, array{region_name: string, planets: array<ColonyInterface>}>}>
+     */
+    private function groupPlanetsByLayerAndRegion(array $planets): array
+    {
+        $grouped = [];
+
+        foreach ($planets as $planet) {
+            $system = $planet->getSystem();
+            $layer = $system->getLayer();
+            $map = $system->getMap();
+            $adminRegion = $map?->getAdministratedRegion();
+
+            $layerId = $layer?->getId() ?? 0;
+            $layerName = $layer?->getName() ?? 'Unbekannte Ebene';
+            $layerDescription = $layer?->getDescription();
+            $regionId = $adminRegion?->getId() ?? 0;
+            $regionName = $adminRegion?->getDescription() ?? 'Unbekannte Region';
+
+            if (!isset($grouped[$layerId])) {
+                $grouped[$layerId] = [
+                    'layer_name' => $layerName,
+                    'layer_description' => $layerDescription,
+                    'regions' => []
+                ];
+            }
+
+            if (!isset($grouped[$layerId]['regions'][$regionId])) {
+                $grouped[$layerId]['regions'][$regionId] = [
+                    'region_name' => $regionName,
+                    'planets' => []
+                ];
+            }
+
+            $grouped[$layerId]['regions'][$regionId]['planets'][] = $planet;
+        }
+
+        ksort($grouped);
+
+        return $grouped;
+    }
+
     #[Override]
     public function getViewContext(): ViewContext
     {

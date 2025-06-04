@@ -14,6 +14,7 @@ use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonyClass;
 use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Layer;
 use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\MapRegionSettlement;
@@ -86,13 +87,15 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                     ) AND sm.systems_id IN (
                         SELECT m.systems_id FROM %s m WHERE m.systems_id > 0 AND m.admin_region_id IN (
                             SELECT mrs.region_id from %s mrs WHERE mrs.faction_id = :factionId
-                        )
+                        ) AND m.id IN (SELECT l.id FROM %s l WHERE l.layer_id IN (SELECT ly.id FROM %s ly WHERE ly.is_colonizable = true))
                     )',
                     Colony::class,
                     StarSystemMap::class,
                     ColonyClass::class,
                     Map::class,
-                    MapRegionSettlement::class
+                    MapRegionSettlement::class,
+                    Location::class,
+                    Layer::class
                 )
             )
             ->setParameters([

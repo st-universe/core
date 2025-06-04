@@ -19,6 +19,9 @@ final class ShowColonization implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_COLONIZATION';
 
+    //5 months
+    public const int USER_COLONIZATION_TIME = 12_960_000;
+
     public function __construct(private ShipLoaderInterface $shipLoader, private ColonyLibFactoryInterface $colonyLibFactory, private ColonyRepositoryInterface $colonyRepository, private ColonizationCheckerInterface $colonizationChecker) {}
 
     #[Override]
@@ -33,12 +36,33 @@ final class ShowColonization implements ViewControllerInterface
             false
         );
 
+        $game->setPageTitle("Kolonie gründen");
+        $game->setMacroInAjaxWindow('');
+
         $colony = $this->colonyRepository->getByPosition(
             $ship->getStarsystemMap()
         );
 
         if ($colony === null) {
             return;
+        }
+
+        $layer = $colony->getSystem()->getLayer();
+        $userColonies = $this->colonyRepository->findBy(['user_id' => $userId]);
+        $colocount = count($userColonies);
+
+
+        if ($layer) {
+            if ($layer->isNoobzone()) {
+                if ($game->getUser()->getCreationDate() < time() - self::USER_COLONIZATION_TIME) {
+                    $game->addInformation(sprintf(_('Im %s kann man nur eine Kolonie gründen <br>solang das Siedlerpatent nicht älter als 5 Monate ist. <br>Such dir eine Kolonie in einem anderen Sektor'), $layer->getName()));
+                    return;
+                }
+                if ($colocount >= 4) {
+                    $game->addInformation(sprintf(_('Im %s können nur maximal 4 Kolonien gegründet werden.<br>Such dir eine Kolonie in einem anderen Sektor'), $layer->getName()));
+                    return;
+                }
+            }
         }
 
         if ($ship->getRump()->hasSpecialAbility(ShipRumpSpecialAbilityEnum::COLONIZE)) {

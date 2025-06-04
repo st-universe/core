@@ -45,6 +45,15 @@ class Layer implements LayerInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $award_id = null;
 
+    #[Column(type: 'text', nullable: true)]
+    private ?string $description = null;
+
+    #[Column(type: 'boolean', nullable: true)]
+    private ?bool $is_colonizable = null;
+
+    #[Column(type: 'boolean', nullable: true)]
+    private ?bool $is_noobzone = null;
+
     #[ManyToOne(targetEntity: 'Award')]
     #[JoinColumn(name: 'award_id', referencedColumnName: 'id')]
     private ?AwardInterface $award = null;
@@ -104,6 +113,40 @@ class Layer implements LayerInterface
     public function getAward(): ?AwardInterface
     {
         return $this->award;
+    }
+
+    #[Override]
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    #[Override]
+    public function setDescription(?string $description): LayerInterface
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    #[Override]
+    public function isColonizable(): bool
+    {
+        if ($this->is_colonizable === null) {
+            return false;
+        }
+
+        return $this->is_colonizable;
+    }
+
+    #[Override]
+    public function isNoobzone(): bool
+    {
+        if ($this->is_noobzone === null) {
+            return false;
+        }
+
+        return $this->is_noobzone;
     }
 
     #[Override]
