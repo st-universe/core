@@ -25,6 +25,7 @@ use Stu\Module\Control\ViewWithTutorialInterface;
 use Stu\Module\Database\View\Category\Wrapper\DatabaseCategoryWrapperFactoryInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Spacecraft\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Module\Spacecraft\Lib\Ui\ShipUiFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
@@ -34,6 +35,7 @@ use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\AnomalyRepositoryInterface;
 use Stu\Orm\Repository\UserLayerRepositoryInterface;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialInterface
 {
@@ -54,6 +56,7 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
         private readonly AnomalyRepositoryInterface $anomalyRepository,
         private readonly DatabaseCategoryWrapperFactoryInterface $databaseCategoryWrapperFactory,
         private readonly NbsUtilityInterface $nbsUtility,
+        private readonly ColonyRepositoryInterface $colonyRepository,
         private readonly ShipUiFactoryInterface $shipUiFactory,
         private readonly SpacecraftCrewCalculatorInterface $shipCrewCalculator,
         private readonly ColonizationCheckerInterface $colonizationChecker,
@@ -148,6 +151,9 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
         $game->setTemplateVar('CLOSEST_ANOMALY_DISTANCE', $this->anomalyRepository->getClosestAnomalyDistance($wrapper));
         $game->setTemplateVar('HAS_FREE_SHUTTLE_SPACE', $this->hasFreeShuttleSpace($spacecraft));
         $game->setTemplateVar('STORED_SHUTTLE_COUNT', $this->getStoredShuttleCount($spacecraft));
+        if ($game->getUser()->getState() === UserEnum::USER_STATE_COLONIZATION_SHIP) {
+            $game->setTemplateVar('CLOSEST_COLONIZABLE_DISTANCE', $this->colonyRepository->getClosestColonizableColonyDistance($wrapper));
+        }
 
         $userLayers = $user->getUserLayers();
         if ($spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::TRANSWARP_COIL)) {

@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Doctrine\ORM\NoResultException;
 use Override;
 use Stu\Component\Game\TimeConstants;
 use Stu\Module\Commodity\CommodityTypeEnum;
@@ -15,13 +16,16 @@ use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonyClass;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\Layer;
+use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\MapRegionSettlement;
 use Stu\Orm\Entity\PirateWrath;
 use Stu\Orm\Entity\StarSystem;
 use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Entity\StarSystemMapInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserInterface;
 
@@ -87,7 +91,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                     ) AND sm.systems_id IN (
                         SELECT m.systems_id FROM %s m WHERE m.systems_id > 0 AND m.admin_region_id IN (
                             SELECT mrs.region_id from %s mrs WHERE mrs.faction_id = :factionId
-                        ) AND m.id IN (SELECT l.id FROM %s l WHERE l.layer_id IN (SELECT ly.id FROM %s ly WHERE ly.is_colonizable = true))
+                        ) AND m.id IN (SELECT l.id FROM %s l WHERE l.layer_id IN (SELECT ly.id FROM %s ly WHERE ly.is_colonizable = :true))
                     )',
                     Colony::class,
                     StarSystemMap::class,
@@ -101,7 +105,8 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
             ->setParameters([
                 'allowStart' => 1,
                 'userId' => UserEnum::USER_NOONE,
-                'factionId' => $factionId
+                'factionId' => $factionId,
+                'true' => true
             ])
             ->getResult();
     }
@@ -328,5 +333,123 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                 'currentTime' => time()
             ])
             ->getResult();
+    }
+
+    #[Override]
+    public function getClosestColonizableColonyDistance(SpacecraftWrapperInterface $wrapper): ?int
+    {
+        $spacecraft = $wrapper->get();
+        $location = $spacecraft->getLocation();
+
+        if ($location instanceof StarSystemMapInterface) {
+            return $this->getClosestColonizableColonyInSystem($spacecraft);
+        } else {
+            return $this->getClosestSystemWithColonizableColonies($spacecraft);
+        }
+    }
+
+    private function getClosestColonizableColonyInSystem(SpacecraftInterface $spacecraft): ?int
+    {
+        $systemMap = $spacecraft->getStarsystemMap();
+        if ($systemMap === null) {
+            return null;
+        }
+
+        $currentColony = $systemMap->getColony();
+        if (
+            $currentColony !== null &&
+            $currentColony->getUserId() === UserEnum::USER_NOONE &&
+            $currentColony->getColonyClass()->getAllowStart()
+        ) {
+            return null;
+        }
+
+        try {
+            $result = $this->getEntityManager()->createQuery(
+                sprintf(
+                    'SELECT MIN(ABS(sm.sx - :sx) + ABS(sm.sy - :sy)) as distance
+                FROM %s c
+                JOIN %s sm
+                WITH c.starsystem_map_id = sm.id
+                JOIN %s cc
+                WITH c.colonies_classes_id = cc.id
+                WHERE c.user_id = :nooneUserId
+                AND cc.allow_start = :allowStart
+                AND sm.systems_id = :systemId
+                AND sm.id != :currentMapId',
+                    Colony::class,
+                    StarSystemMap::class,
+                    ColonyClass::class
+                )
+            )
+                ->setParameters([
+                    'sx' => $systemMap->getSx(),
+                    'sy' => $systemMap->getSy(),
+                    'systemId' => $systemMap->getSystemId(),
+                    'currentMapId' => $systemMap->getId(),
+                    'nooneUserId' => UserEnum::USER_NOONE,
+                    'allowStart' => true
+                ])
+                ->getSingleScalarResult();
+
+            return $result > 0 ? (int)$result : null;
+        } catch (NoResultException) {
+            return null;
+        }
+    }
+
+
+    private function getClosestSystemWithColonizableColonies(SpacecraftInterface $spacecraft): ?int
+    {
+        $currentLocation = $spacecraft->getLocation();
+        $currentX = $currentLocation->getCx();
+        $currentY = $currentLocation->getCy();
+        $currentLayer = $currentLocation->getLayer();
+
+        if ($currentLayer === null) {
+            return null;
+        }
+
+        $currentLayerId = $currentLayer->getId();
+
+        try {
+            $result = $this->getEntityManager()->createQuery(
+                sprintf(
+                    'SELECT MIN(ABS(l.cx - :currentX) + ABS(l.cy - :currentY)) as distance
+                FROM %s c
+                JOIN %s sm
+                WITH c.starsystem_map_id = sm.id
+                JOIN %s s
+                WITH sm.systems_id = s.id
+                JOIN %s m
+                WITH s.id = m.systems_id
+                JOIN %s l
+                WITH m.id = l.id
+                JOIN %s cc
+                WITH c.colonies_classes_id = cc.id
+                WHERE c.user_id = :nooneUserId
+                AND cc.allow_start = :allowStart
+                AND l.layer_id = :currentLayerId',
+                    Colony::class,
+                    StarSystemMap::class,
+                    StarSystem::class,
+                    Map::class,
+                    Location::class,
+                    ColonyClass::class
+                )
+            )
+                ->setParameters([
+                    'currentX' => $currentX,
+                    'currentY' => $currentY,
+                    'currentLayerId' => $currentLayerId,
+                    'nooneUserId' => UserEnum::USER_NOONE,
+                    'allowStart' => true
+                ])
+                ->getSingleScalarResult();
+
+            return $result > 0 ? (int)$result : null;
+        } catch (NoResultException) {
+            return null;
+        }
     }
 }

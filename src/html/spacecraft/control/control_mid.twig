@@ -1,5 +1,5 @@
 {% macro control_mid(wrapper, astroStateSystem, astroStateRegion, isTachyonActive, starSystemEntryTal, currentColony,
-canColonize, closestAnomalyDistance, storedShuttleCount) %}
+canColonize, closestAnomalyDistance, storedShuttleCount, closescolonydistance) %}
 
 {% from 'html/macros.twig' import onClickSpacecraft %}
 
@@ -246,6 +246,17 @@ canColonize, closestAnomalyDistance, storedShuttleCount) %}
             <br />
             <span style="border: 2px solid {{ gradientColor(closestAnomalyDistance, wrapper.getSensorRange * 2, 1) }}"
                 title="Es wurde eine Anomalie in der Nähe detektiert">Anomalie in der Nähe</span>
+            {% endif %}
+            {% if SPACECRAFT.getLss and closescolonydistance %}
+            <br />
+            <span style="border: 2px solid {{ gradientColor(closescolonydistance, 1, wrapper.getSensorRange * 2) }}"
+                title="Es wurde eine kolonisierbare Kolonie in der Nähe detektiert">
+                {% if SPACECRAFT.getSystem %}
+                Kolonisierbare Kolonie in {{ closescolonydistance }} Feldern
+                {% else %}
+                System mit Kolonie in {{ closescolonydistance }} Feldern
+                {% endif %}
+            </span>
             {% endif %}
         </td>
         {% if starSystem %}
