@@ -323,11 +323,7 @@ class SpacecraftAttackerTest extends StuTestCase
 
     public function testGetHitChance(): void
     {
-        $this->wrapper->shouldReceive('get')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->ship);
-        $this->ship->shouldReceive('getHitChance')
+        $this->wrapper->shouldReceive('getComputerSystemDataMandatory->getHitChance')
             ->withNoArgs()
             ->once()
             ->andReturn(5);

@@ -121,7 +121,7 @@ class PostFlightDirectionConsequenceTest extends StuTestCase
             ->andReturn($newWaypoint);
 
         $this->updateFlightDirection->shouldReceive('updateWhenTraversing')
-            ->with($oldWaypoint, $newWaypoint, $this->ship)
+            ->with($oldWaypoint, $newWaypoint, $this->wrapper)
             ->once()
             ->andReturn(DirectionEnum::TOP);
 
@@ -161,7 +161,7 @@ class PostFlightDirectionConsequenceTest extends StuTestCase
             ->andReturn($newWaypoint);
 
         $this->updateFlightDirection->shouldReceive('updateWhenTraversing')
-            ->with($oldWaypoint, $newWaypoint, $this->ship)
+            ->with($oldWaypoint, $newWaypoint, $this->wrapper)
             ->once()
             ->andReturn(DirectionEnum::TOP);
 

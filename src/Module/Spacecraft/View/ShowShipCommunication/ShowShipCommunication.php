@@ -30,33 +30,39 @@ final class ShowShipCommunication implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $ship = $this->spacecraftLoader->getByIdAndUser(
+        $wrapper = $this->spacecraftLoader->getWrapperByIdAndUser(
             request::indInt('id'),
             $userId,
             false,
             false
         );
 
+        $spacecraft = $wrapper->get();
+
         $game->setPageTitle(_('Schiffskommunikation'));
         $game->setMacroInAjaxWindow('html/ship/shipcommunication.twig');
 
-        $game->setTemplateVar('SHIP', $ship);
+        $game->setTemplateVar('WRAPPER', $wrapper);
+        $game->setTemplateVar('SHIP', $spacecraft);
         $game->setTemplateVar(
             'TEMPLATETEXT',
             sprintf(
                 'Die %s in Sektor %s sendet folgende Broadcast Nachricht:',
-                $this->bbCodeParser->parse($ship->getName())->getAsText(),
-                $ship->getSectorString()
+                $this->bbCodeParser->parse($spacecraft->getName())->getAsText(),
+                $spacecraft->getSectorString()
             )
         );
 
-        if ($ship->isInEmergency()) {
-            $emergency = $this->spacecraftEmergencyRepository->getByShipId($ship->getId());
+        if ($spacecraft->hasComputer()) {
 
-            if ($emergency !== null) {
-                $game->setTemplateVar('EMERGENCYTEXT', $emergency->getText());
+            if ($wrapper->getComputerSystemDataMandatory()->isInEmergency()) {
+                $emergency = $this->spacecraftEmergencyRepository->getByShipId($spacecraft->getId());
+
+                if ($emergency !== null) {
+                    $game->setTemplateVar('EMERGENCYTEXT', $emergency->getText());
+                }
             }
+            $game->setTemplateVar('EMERGENCYTEXTLIMIT', StartEmergency::CHARACTER_LIMIT);
         }
-        $game->setTemplateVar('EMERGENCYTEXTLIMIT', StartEmergency::CHARACTER_LIMIT);
     }
 }

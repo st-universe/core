@@ -3,8 +3,6 @@
 namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\Collection;
-use Stu\Component\Map\DirectionEnum;
-use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\SpacecraftLssModeEnum;
 use Stu\Component\Spacecraft\SpacecraftTypeEnum;
@@ -37,10 +35,6 @@ interface SpacecraftInterface extends
 
     public function getLayer(): ?LayerInterface;
 
-    public function getFlightDirection(): ?DirectionEnum;
-
-    public function setFlightDirection(DirectionEnum $direction): SpacecraftInterface;
-
     public function getName(): string;
 
     public function setName(string $name): SpacecraftInterface;
@@ -48,12 +42,6 @@ interface SpacecraftInterface extends
     public function getLssMode(): SpacecraftLssModeEnum;
 
     public function setLssMode(SpacecraftLssModeEnum $lssMode): SpacecraftInterface;
-
-    public function getAlertState(): SpacecraftAlertStateEnum;
-
-    public function setAlertState(SpacecraftAlertStateEnum $alertState): SpacecraftInterface;
-
-    public function setAlertStateGreen(): SpacecraftInterface;
 
     public function isSystemHealthy(SpacecraftSystemTypeEnum $type): bool;
 
@@ -101,8 +89,6 @@ interface SpacecraftInterface extends
 
     public function getPhaserState(): bool;
 
-    public function isAlertGreen(): bool;
-
     public function getTorpedoState(): bool;
 
     public function getTorpedoCount(): int;
@@ -124,14 +110,6 @@ interface SpacecraftInterface extends
     public function isDisabled(): bool;
 
     public function setDisabled(bool $isDisabled): SpacecraftInterface;
-
-    public function getHitChance(): int;
-
-    public function setHitChance(int $hitChance): SpacecraftInterface;
-
-    public function getEvadeChance(): int;
-
-    public function setEvadeChance(int $evadeChance): SpacecraftInterface;
 
     public function getTractorPayload(): int;
 
@@ -260,6 +238,8 @@ interface SpacecraftInterface extends
 
     public function getRumpName(): string;
 
+    public function hasComputer(): bool;
+
     public function hasPhaser(): bool;
 
     public function hasTorpedo(): bool;
@@ -284,10 +264,6 @@ interface SpacecraftInterface extends
     public function hasStoredBuoy(): bool;
 
     public function getHullColorStyle(): string;
-
-    public function isInEmergency(): bool;
-
-    public function setIsInEmergency(bool $inEmergency): SpacecraftInterface;
 
     public function __toString(): string;
 }

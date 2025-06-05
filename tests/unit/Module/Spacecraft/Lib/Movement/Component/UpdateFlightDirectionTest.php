@@ -8,8 +8,8 @@ use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use RuntimeException;
 use Stu\Component\Map\DirectionEnum;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\ShipInterface;
 use Stu\StuTestCase;
 
 class UpdateFlightDirectionTest extends StuTestCase
@@ -47,7 +47,7 @@ class UpdateFlightDirectionTest extends StuTestCase
         bool $expectException,
         ?DirectionEnum $expectedFlightDirection
     ): void {
-        $ship = $this->mock(ShipInterface::class);
+        $wrapper = $this->mock(SpacecraftWrapperInterface::class);
         $oldWaypoint = $this->mock(MapInterface::class);
         $waypoint = $this->mock(MapInterface::class);
 
@@ -73,12 +73,12 @@ class UpdateFlightDirectionTest extends StuTestCase
             static::expectExceptionMessage('this should not happen');
             static::expectException(RuntimeException::class);
         } else {
-            $ship->shouldReceive('setFlightDirection')
+            $wrapper->shouldReceive('getComputerSystemDataMandatory->setFlightDirection')
                 ->with($expectedFlightDirection)
                 ->once();
         }
 
-        $result = $this->subject->updateWhenTraversing($oldWaypoint, $waypoint, $ship);
+        $result = $this->subject->updateWhenTraversing($oldWaypoint, $waypoint, $wrapper);
 
         if (!$expectException) {
             $this->assertEquals($expectedFlightDirection, $result);

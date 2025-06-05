@@ -164,6 +164,9 @@ class EnergyWeaponPhaseTest extends StuTestCase
         $targetWrapper->shouldReceive('get')
             ->withNoArgs()
             ->andReturn($target);
+        $targetWrapper->shouldReceive('getComputerSystemDataMandatory->getEvadeChance')
+            ->withNoArgs()
+            ->andReturn(0);
 
         $target->shouldReceive('getId')
             ->withNoArgs()
@@ -177,9 +180,6 @@ class EnergyWeaponPhaseTest extends StuTestCase
         $target->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($targetUser);
-        $target->shouldReceive('getEvadeChance')
-            ->withNoArgs()
-            ->andReturn(0);
         $target->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->andReturn(true);
@@ -198,6 +198,9 @@ class EnergyWeaponPhaseTest extends StuTestCase
         $target->shouldReceive('getLocation')
             ->withNoArgs()
             ->andReturn($location);
+        $target->shouldReceive('hasComputer')
+            ->withNoArgs()
+            ->andReturn(true);
 
         $targetRump->shouldReceive('getName')
             ->withNoArgs()

@@ -75,19 +75,18 @@ class EnergyConsumeHandler implements SpacecraftTickHandlerInterface
         int $availableEps,
         InformationInterface $information
     ): void {
-        $spacecraft = $wrapper->get();
         $malus = $wrapper->getEpsUsage() - $availableEps;
-        $alertUsage = $spacecraft->getAlertState()->value - 1;
+        $alertUsage = $wrapper->getAlertState()->value - 1;
 
         if ($alertUsage > 0) {
-            $preState = $spacecraft->getAlertState();
+            $preState = $wrapper->getAlertState();
             $reduce = min($malus, $alertUsage);
 
-            $spacecraft->setAlertState(SpacecraftAlertStateEnum::from($preState->value - $reduce));
+            $wrapper->setAlertState(SpacecraftAlertStateEnum::from($preState->value - $reduce));
             $information->addInformationf(
                 'Wechsel von %s auf %s wegen Energiemangel',
                 $preState->getDescription(),
-                $spacecraft->getAlertState()->getDescription()
+                $wrapper->getAlertState()->getDescription()
             );
         }
     }

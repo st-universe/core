@@ -81,12 +81,14 @@
     </form>
   </div>
 </div>
+{% if SHIP.hasComputer %}
 <div class="box" id="emergency" style="width: 500px; display: none;">
+  {% set isInEmergency = WRAPPER.getComputerSystemData.isInEmergency %}
   <div class="box_title">Notruf</div>
   <div class="box_body">
     <form method="post" action="{{ SHIP.getType.getModuleView.getPhpPage }}">
       <input type="hidden" name="id" value="{{ SHIP.getId }}" />
-      <table class="tcal" {% if SHIP.isInEmergency %}style="display: none;" {% endif %}>
+      <table class="tcal" {% if isInEmergency %}style="display: none;" {% endif %}>
         <tr>
           <th colspan="2">Sende Notrufsignal</th>
         </tr>
@@ -101,7 +103,7 @@
               value="Notruf senden" /></td>
         </tr>
       </table>
-      <table class="tcal" {% if not SHIP.isInEmergency %}style="display: none;" {% endif %}>
+      <table class="tcal" {% if not isInEmergency %}style="display: none;" {% endif %}>
         <tr>
           <th>Aktuelles Notrufsignal</th>
         </tr>
@@ -115,6 +117,7 @@
     </form>
   </div>
 </div>
+{% endif %}
 <script>
     document.getElementById('emergencytext').addEventListener(
       "keyup",

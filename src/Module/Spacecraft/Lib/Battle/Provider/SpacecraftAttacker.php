@@ -109,7 +109,7 @@ class SpacecraftAttacker extends AbstractEnergyAttacker implements ProjectileAtt
     #[Override]
     public function getHitChance(): int
     {
-        return $this->get()->getHitChance();
+        return $this->wrapper->getComputerSystemDataMandatory()->getHitChance();
     }
 
     #[Override]

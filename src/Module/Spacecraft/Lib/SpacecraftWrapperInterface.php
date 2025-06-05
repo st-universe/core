@@ -3,6 +3,7 @@
 namespace Stu\Module\Spacecraft\Lib;
 
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
+use Stu\Component\Spacecraft\System\Data\ComputerSystemData;
 use Stu\Component\Spacecraft\System\Data\EnergyWeaponSystemData;
 use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Component\Spacecraft\System\Data\HullSystemData;
@@ -35,7 +36,11 @@ interface SpacecraftWrapperInterface
 
     public function lowerEpsUsage(int $value): void;
 
+    public function getAlertState(): SpacecraftAlertStateEnum;
+
     public function setAlertState(SpacecraftAlertStateEnum $alertState): ?string;
+
+    public function isUnalerted(): bool;
 
     public function getSensorRange(): int;
 
@@ -86,6 +91,9 @@ interface SpacecraftWrapperInterface
     public function getShieldSystemData(): ?ShieldSystemData;
 
     public function getEpsSystemData(): ?EpsSystemData;
+
+    /** The consumer of this method has to be sure that spacecraft.hasComputer returns true */
+    public function getComputerSystemDataMandatory(): ComputerSystemData;
 
     public function getLssSystemData(): ?LssSystemData;
 

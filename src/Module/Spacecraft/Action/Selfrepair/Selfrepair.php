@@ -43,7 +43,7 @@ final class Selfrepair implements ActionControllerInterface
 
         $ship = $wrapper->get();
 
-        if (!$ship->isAlertGreen()) {
+        if (!$wrapper->isUnalerted()) {
             return;
         }
 

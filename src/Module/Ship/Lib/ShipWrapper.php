@@ -100,7 +100,7 @@ final class ShipWrapper extends SpacecraftWrapper implements ShipWrapperInterfac
     #[Override]
     public function canBeRetrofitted(): bool
     {
-        if ($this->spacecraft->getAlertState() !== SpacecraftAlertStateEnum::ALERT_GREEN) {
+        if (!$this->isUnalerted()) {
             return false;
         }
 

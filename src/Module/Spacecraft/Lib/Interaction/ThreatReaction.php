@@ -31,7 +31,7 @@ final class ThreatReaction implements ThreatReactionInterface
     ): bool {
 
         $target = $targetWrapper->get();
-        if ($target->getAlertState() === SpacecraftAlertStateEnum::ALERT_GREEN) {
+        if ($targetWrapper->isUnalerted()) {
             return false;
         }
 

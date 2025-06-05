@@ -28,6 +28,7 @@ class Ship extends Spacecraft implements ShipInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $docked_to_id = null;
 
+    // TODO: redundant? could just compare this with fleet->leader
     #[Column(type: 'boolean')]
     private bool $is_fleet_leader = false;
 

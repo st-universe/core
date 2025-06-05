@@ -40,13 +40,11 @@ class AlertDetection implements AlertDetectionInterface
 
         foreach ($alertedWrappers as $alertedWrapper) {
 
-            $alertedShip = $alertedWrapper->get();
-
-            if ($this->skipDetection->isSkipped($incomingSpacecraft, $alertedShip, $tractoringSpacecraft, $usersToInformAboutTrojanHorse)) {
+            if ($this->skipDetection->isSkipped($incomingSpacecraft, $alertedWrapper, $tractoringSpacecraft, $usersToInformAboutTrojanHorse)) {
                 continue;
             }
 
-            $battleParties[$alertedShip->getId()] = $this->battlePartyFactory->createAlertStateBattleParty($alertedWrapper);
+            $battleParties[$alertedWrapper->get()->getId()] = $this->battlePartyFactory->createAlertStateBattleParty($alertedWrapper);
         }
 
         $this->trojanHorseNotifier->informUsersAboutTrojanHorse(

@@ -21,17 +21,15 @@ final class AlertLevelBasedReaction implements AlertLevelBasedReactionInterface
     #[Override]
     public function react(SpacecraftWrapperInterface $wrapper, InformationInterface $informations): void
     {
-        $ship = $wrapper->get();
-
         if ($this->changeFromGreenToYellow($wrapper, $informations)) {
             return;
         }
 
-        if ($ship->getAlertState() === SpacecraftAlertStateEnum::ALERT_YELLOW && $this->doAlertYellowReactions($wrapper, $informations)) {
+        if ($wrapper->getAlertState() === SpacecraftAlertStateEnum::ALERT_YELLOW && $this->doAlertYellowReactions($wrapper, $informations)) {
             return;
         }
 
-        if ($ship->getAlertState() === SpacecraftAlertStateEnum::ALERT_RED) {
+        if ($wrapper->getAlertState() === SpacecraftAlertStateEnum::ALERT_RED) {
             if ($this->doAlertYellowReactions($wrapper, $informations)) {
                 return;
             }
@@ -41,9 +39,7 @@ final class AlertLevelBasedReaction implements AlertLevelBasedReactionInterface
 
     private function changeFromGreenToYellow(SpacecraftWrapperInterface $wrapper, InformationInterface $informations): bool
     {
-        $ship = $wrapper->get();
-
-        if ($ship->getAlertState() == SpacecraftAlertStateEnum::ALERT_GREEN) {
+        if ($wrapper->getAlertState() == SpacecraftAlertStateEnum::ALERT_GREEN) {
             try {
                 $alertMsg = $wrapper->setAlertState(SpacecraftAlertStateEnum::ALERT_YELLOW);
                 $informations->addInformation("- Erhöhung der Alarmstufe wurde durchgeführt, Grün -> Gelb");

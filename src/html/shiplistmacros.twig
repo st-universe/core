@@ -55,7 +55,9 @@
         </a>
     </td>
     <td id="shipalarmstate" style="text-align: center;">
-        <img src="/assets/buttons/alert{{ ship.getAlertState.value }}_1.png" title="Alarmstufe" />
+        {% if ship.hasComputer %}
+        <img src="/assets/buttons/alert{{ wrapper.getAlertState.value }}_1.png" title="Alarmstufe" />
+        {% endif %}
     </td>
     {% if not ship.getFleet %}<td>
         <img src="/assets/buttons/layer_{{ ship.getLocation.getLayer.getId }}.png"

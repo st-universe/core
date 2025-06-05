@@ -102,34 +102,6 @@ class AlertedShipsDetectionTest extends StuTestCase
         $this->assertTrue($result->isEmpty());
     }
 
-    public function testGetAlertedShipsOnLocationExpectEmptyCollectionWhenAlertGreen(): void
-    {
-        $ship = $this->mock(ShipInterface::class);
-        $user = $this->mock(UserInterface::class);
-
-        $this->location->shouldReceive('getSpacecraftsWithoutVacation')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(new ArrayCollection([$ship]));
-
-        $ship->shouldReceive('getUser')
-            ->withNoArgs()
-            ->andReturn($user);
-        $ship->shouldReceive('getFleet')
-            ->withNoArgs()
-            ->andReturn(null);
-        $ship->shouldReceive('isAlertGreen')
-            ->withNoArgs()
-            ->andReturn(true);
-
-        $result = $this->subject->getAlertedShipsOnLocation(
-            $this->location,
-            $this->mock(UserInterface::class)
-        );
-
-        $this->assertTrue($result->isEmpty());
-    }
-
     public function testGetAlertedShipsOnLocationExpectEmptyCollectionWhenWarped(): void
     {
         $ship = $this->mock(ShipInterface::class);
@@ -146,12 +118,12 @@ class AlertedShipsDetectionTest extends StuTestCase
         $ship->shouldReceive('getFleet')
             ->withNoArgs()
             ->andReturn(null);
-        $ship->shouldReceive('isAlertGreen')
-            ->withNoArgs()
-            ->andReturn(false);
         $ship->shouldReceive('isWarped')
             ->withNoArgs()
             ->andReturn(true);
+        $ship->shouldReceive('isCloaked')
+            ->withNoArgs()
+            ->andReturn(false);
 
         $result = $this->subject->getAlertedShipsOnLocation(
             $this->location,
@@ -177,15 +149,52 @@ class AlertedShipsDetectionTest extends StuTestCase
         $ship->shouldReceive('getFleet')
             ->withNoArgs()
             ->andReturn(null);
-        $ship->shouldReceive('isAlertGreen')
-            ->withNoArgs()
-            ->andReturn(false);
         $ship->shouldReceive('isWarped')
             ->withNoArgs()
             ->andReturn(false);
         $ship->shouldReceive('isCloaked')
             ->withNoArgs()
             ->andReturn(true);
+
+        $result = $this->subject->getAlertedShipsOnLocation(
+            $this->location,
+            $this->mock(UserInterface::class)
+        );
+
+        $this->assertTrue($result->isEmpty());
+    }
+
+    public function testGetAlertedShipsOnLocationExpectEmptyCollectionWhenAlertGreen(): void
+    {
+        $ship = $this->mock(ShipInterface::class);
+        $user = $this->mock(UserInterface::class);
+        $wrapper = $this->mock(ShipWrapperInterface::class);
+
+        $this->location->shouldReceive('getSpacecraftsWithoutVacation')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(new ArrayCollection([$ship]));
+
+        $ship->shouldReceive('getUser')
+            ->withNoArgs()
+            ->andReturn($user);
+        $ship->shouldReceive('getFleet')
+            ->withNoArgs()
+            ->andReturn(null);
+        $ship->shouldReceive('isWarped')
+            ->withNoArgs()
+            ->andReturn(false);
+        $ship->shouldReceive('isCloaked')
+            ->withNoArgs()
+            ->andReturn(false);
+        $wrapper->shouldReceive('isUnalerted')
+            ->withNoArgs()
+            ->andReturn(true);
+
+        $this->spacecraftWrapperFactory->shouldReceive('wrapSpacecraft')
+            ->with($ship)
+            ->once()
+            ->andReturn($wrapper);
 
         $result = $this->subject->getAlertedShipsOnLocation(
             $this->location,
@@ -212,7 +221,7 @@ class AlertedShipsDetectionTest extends StuTestCase
         $ship->shouldReceive('getFleet')
             ->withNoArgs()
             ->andReturn(null);
-        $ship->shouldReceive('isAlertGreen')
+        $wrapper->shouldReceive('isUnalerted')
             ->withNoArgs()
             ->andReturn(false);
         $ship->shouldReceive('isWarped')
@@ -256,7 +265,7 @@ class AlertedShipsDetectionTest extends StuTestCase
         $ship->shouldReceive('getFleet')
             ->withNoArgs()
             ->andReturn(null);
-        $ship->shouldReceive('isAlertGreen')
+        $wrapper->shouldReceive('isUnalerted')
             ->withNoArgs()
             ->andReturn(false);
         $ship->shouldReceive('isWarped')

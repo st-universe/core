@@ -39,7 +39,7 @@ final class StationRepair implements ActionControllerInterface
             return;
         }
 
-        if (!$station->isAlertGreen()) {
+        if (!$wrapper->isUnalerted()) {
             return;
         }
 

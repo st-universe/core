@@ -9,6 +9,7 @@ use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Module\Control\StuTime;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\UserInterface;
 
@@ -23,16 +24,18 @@ class SkipDetection implements SkipDetectionInterface
     #[Override]
     public function isSkipped(
         SpacecraftInterface $incomingSpacecraft,
-        SpacecraftInterface $alertedSpacecraft,
+        SpacecraftWrapperInterface $alertedWrapper,
         ?SpacecraftInterface $tractoringSpacecraft,
         Collection $usersToInformAboutTrojanHorse
     ): bool {
+
+        $alertedSpacecraft = $alertedWrapper->get();
         $alertUser = $alertedSpacecraft->getUser();
         $incomingShipUser = $incomingSpacecraft->getUser();
 
         //alert yellow only attacks if incoming is foe
         if (
-            $alertedSpacecraft->getAlertState() === SpacecraftAlertStateEnum::ALERT_YELLOW
+            $alertedWrapper->getAlertState() === SpacecraftAlertStateEnum::ALERT_YELLOW
             && !$this->playerRelationDeterminator->isEnemy($alertUser, $incomingShipUser)
         ) {
             return true;

@@ -73,10 +73,10 @@ class SpacecraftShutdownTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftStateEnum::ASTRO_FINALIZING);
-
-        $ship->shouldReceive('setAlertStateGreen')
+        $ship->shouldReceive('hasComputer')
             ->withNoArgs()
-            ->once();
+            ->once()
+            ->andReturn(false);
 
         $this->spacecraftSystemManager->shouldReceive('deactivateAll')
             ->with($wrapper)
@@ -113,15 +113,18 @@ class SpacecraftShutdownTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($station);
+        $wrapper->shouldReceive('getComputerSystemDataMandatory->setAlertStateGreen')
+            ->withNoArgs()
+            ->once();
 
         $station->shouldReceive('getState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftStateEnum::ASTRO_FINALIZING);
-
-        $station->shouldReceive('setAlertStateGreen')
+        $station->shouldReceive('hasComputer')
             ->withNoArgs()
-            ->once();
+            ->once()
+            ->andReturn(true);
 
         $this->spacecraftSystemManager->shouldReceive('deactivateAll')
             ->with($wrapper)
@@ -160,10 +163,10 @@ class SpacecraftShutdownTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftStateEnum::RETROFIT);
-
-        $station->shouldReceive('setAlertStateGreen')
+        $station->shouldReceive('hasComputer')
             ->withNoArgs()
-            ->once();
+            ->once()
+            ->andReturn(false);
 
         $this->spacecraftSystemManager->shouldReceive('deactivateAll')
             ->with($wrapper)

@@ -21,8 +21,6 @@ use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use Override;
 use RuntimeException;
-use Stu\Component\Map\DirectionEnum;
-use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\SpacecraftLssModeEnum;
@@ -31,8 +29,6 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\Trait\SpacecraftSystemExistenceTrait;
 use Stu\Component\Spacecraft\Trait\SpacecrafCharacteristicsTrait;
 use Stu\Component\Spacecraft\Trait\SpacecraftCrewTrait;
-use Stu\Component\Spacecraft\Trait\SpacecraftEvadeChanceTrait;
-use Stu\Component\Spacecraft\Trait\SpacecraftHitChanceTrait;
 use Stu\Component\Spacecraft\Trait\SpacecraftHoldingWebTrait;
 use Stu\Component\Spacecraft\Trait\SpacecraftHullColorStyleTrait;
 use Stu\Component\Spacecraft\Trait\SpacecraftInteractionTrait;
@@ -60,8 +56,6 @@ abstract class Spacecraft implements SpacecraftInterface
     use SpacecraftSystemExistenceTrait;
     use SpacecraftSystemHealthTrait;
     use SpacecraftShieldsTrait;
-    use SpacecraftHitChanceTrait;
-    use SpacecraftEvadeChanceTrait;
     use SpacecraftCrewTrait;
     use SpacecraftLocationTrait;
     use SpacecraftStorageTrait;
@@ -86,14 +80,8 @@ abstract class Spacecraft implements SpacecraftInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $plan_id = null;
 
-    #[Column(type: 'smallint', length: 1, enumType: DirectionEnum::class, nullable: true)]
-    private ?DirectionEnum $direction = null;
-
     #[Column(type: 'string')]
     private string $name = '';
-
-    #[Column(type: 'smallint', length: 1, enumType: SpacecraftAlertStateEnum::class)]
-    private SpacecraftAlertStateEnum $alvl = SpacecraftAlertStateEnum::ALERT_GREEN;
 
     #[Column(type: 'smallint', length: 1, enumType: SpacecraftLssModeEnum::class)]
     private SpacecraftLssModeEnum $lss_mode = SpacecraftLssModeEnum::NORMAL;
@@ -124,20 +112,11 @@ abstract class Spacecraft implements SpacecraftInterface
     #[Column(type: 'boolean')]
     private bool $disabled = false;
 
-    #[Column(type: 'smallint', length: 3)]
-    private int $hit_chance = 0;
-
-    #[Column(type: 'smallint', length: 3)]
-    private int $evade_chance = 0;
-
     #[Column(type: 'smallint', enumType: SpacecraftStateEnum::class)]
     private SpacecraftStateEnum $state = SpacecraftStateEnum::NONE;
 
     #[Column(type: 'integer')]
     private int $location_id = 0;
-
-    #[Column(type: 'boolean')]
-    private bool $in_emergency = false;
 
     #[OneToOne(targetEntity: 'Ship')]
     #[JoinColumn(name: 'tractored_ship_id', referencedColumnName: 'id')]
@@ -231,19 +210,6 @@ abstract class Spacecraft implements SpacecraftInterface
     }
 
     #[Override]
-    public function getFlightDirection(): ?DirectionEnum
-    {
-        return $this->direction;
-    }
-
-    #[Override]
-    public function setFlightDirection(DirectionEnum $direction): SpacecraftInterface
-    {
-        $this->direction = $direction;
-        return $this;
-    }
-
-    #[Override]
     public function getName(): string
     {
         return $this->name;
@@ -266,19 +232,6 @@ abstract class Spacecraft implements SpacecraftInterface
     public function setLssMode(SpacecraftLssModeEnum $lssMode): SpacecraftInterface
     {
         $this->lss_mode = $lssMode;
-        return $this;
-    }
-
-    #[Override]
-    public function getAlertState(): SpacecraftAlertStateEnum
-    {
-        return $this->alvl;
-    }
-
-    #[Override]
-    public function setAlertState(SpacecraftAlertStateEnum $state): SpacecraftInterface
-    {
-        $this->alvl = $state;
         return $this;
     }
 
@@ -367,20 +320,6 @@ abstract class Spacecraft implements SpacecraftInterface
         return $this;
     }
 
-    #[Override]
-    public function setHitChance(int $hitChance): SpacecraftInterface
-    {
-        $this->hit_chance = $hitChance;
-        return $this;
-    }
-
-    #[Override]
-    public function setEvadeChance(int $evadeChance): SpacecraftInterface
-    {
-        $this->evade_chance = $evadeChance;
-        return $this;
-    }
-
     /**
      * proportional to tractor beam system status
      */
@@ -405,19 +344,6 @@ abstract class Spacecraft implements SpacecraftInterface
     public function setState(SpacecraftStateEnum $state): SpacecraftInterface
     {
         $this->state = $state;
-        return $this;
-    }
-
-    #[Override]
-    public function isInEmergency(): bool
-    {
-        return $this->in_emergency;
-    }
-
-    #[Override]
-    public function setIsInEmergency(bool $inEmergency): SpacecraftInterface
-    {
-        $this->in_emergency = $inEmergency;
         return $this;
     }
 
@@ -638,15 +564,13 @@ abstract class Spacecraft implements SpacecraftInterface
     {
         if ($this->id !== null) {
             return sprintf(
-                "id: %d, name: %s,\nhull: %d/%d, shields %d/%d,\nevadeChance: %d, hitChance: %d",
+                "id: %d, name: %s,\nhull: %d/%d, shields %d/%d",
                 $this->getId(),
                 $this->getName(),
                 $this->huelle,
                 $this->max_huelle,
                 $this->schilde,
-                $this->max_schilde,
-                $this->evade_chance,
-                $this->hit_chance
+                $this->max_schilde
             );
         }
 

@@ -2,10 +2,8 @@
 
 namespace Stu\Component\Spacecraft\Trait;
 
-use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
-use Stu\Orm\Entity\SpacecraftInterface;
 
 trait SpacecraftStateTrait
 {
@@ -15,11 +13,6 @@ trait SpacecraftStateTrait
     public function isWarped(): bool
     {
         return $this->getThis()->getWarpDriveState();
-    }
-
-    public function isAlertGreen(): bool
-    {
-        return $this->getThis()->getAlertState() === SpacecraftAlertStateEnum::ALERT_GREEN;
     }
 
     public function isUnderRepair(): bool
@@ -43,11 +36,6 @@ trait SpacecraftStateTrait
     public function isWarpPossible(): bool
     {
         return $this->hasSpacecraftSystem(SpacecraftSystemTypeEnum::WARPDRIVE) && $this->getSystem() === null;
-    }
-
-    public function setAlertStateGreen(): SpacecraftInterface
-    {
-        return $this->getThis()->setAlertState(SpacecraftAlertStateEnum::ALERT_GREEN);
     }
 
     public function displayNbsActions(): bool

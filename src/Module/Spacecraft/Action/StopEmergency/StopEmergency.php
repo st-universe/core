@@ -40,11 +40,11 @@ final class StopEmergency implements ActionControllerInterface
 
         $ship = $wrapper->get();
 
-        if (!$ship->isInEmergency()) {
+        if (!$wrapper->getComputerSystemDataMandatory()->isInEmergency()) {
             return;
         }
 
-        $ship->setIsInEmergency(false);
+        $wrapper->getComputerSystemDataMandatory()->setIsInEmergency(false);
 
         $emergency = $this->spacecraftEmergencyRepository->getByShipId($ship->getId());
 

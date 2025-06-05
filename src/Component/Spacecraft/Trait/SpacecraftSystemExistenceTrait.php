@@ -13,6 +13,11 @@ trait SpacecraftSystemExistenceTrait
         return $this->getThis()->getSystems()->containsKey($type->value);
     }
 
+    public function hasComputer(): bool
+    {
+        return $this->hasSpacecraftSystem(SpacecraftSystemTypeEnum::COMPUTER);
+    }
+
     public function hasPhaser(): bool
     {
         return $this->hasSpacecraftSystem(SpacecraftSystemTypeEnum::PHASER);

@@ -2,6 +2,7 @@
 {% set hull = WRAPPER.getHullSystemData %}
 {% set shields = WRAPPER.getShieldSystemData %}
 {% set eps = WRAPPER.getEpsSystemData %}
+{% set computer = WRAPPER.getComputerSystemDataMandatory %}
 {% set lss = WRAPPER.getLssSystemData %}
 {% set energyWeapon = WRAPPER.getEnergyWeaponSystemData %}
 {% set reactor = WRAPPER.getReactorWrapper %}
@@ -135,8 +136,8 @@
             <span>{{ eps.getMaxBattery }}</span>
             {% endif %}
             <br />
-            <span>Trefferchance (eff.): {{ SHIP.getHitChance }}%</span><br />
-            <span>Ausweichchance (eff.): {{ SHIP.getEvadeChance }}%</span><br />
+            <span>Trefferchance (eff.): {{ computer.getHitChance }}%</span><br />
+            <span>Ausweichchance (eff.): {{ computer.getEvadeChance }}%</span><br />
             <span>Schildregeneration: {{ WRAPPER.getShieldRegenerationRate }}</span><br />
             {% if reactor %}
             <span>Reaktorleistung: {{ reactor.get.getTheoreticalReactorOutput }}</span><br />

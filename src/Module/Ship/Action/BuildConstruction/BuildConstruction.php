@@ -288,7 +288,6 @@ final class BuildConstruction implements ActionControllerInterface
         $construction->setName($rump->getName());
         $construction->setHuell($rump->getBaseHull());
         $construction->setMaxHuell($rump->getBaseHull());
-        $construction->setAlertStateGreen();
         $construction->setState(SpacecraftStateEnum::UNDER_CONSTRUCTION);
 
         $construction->setLocation($ship->getLocation());
