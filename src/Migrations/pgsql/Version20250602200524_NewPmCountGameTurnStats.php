@@ -40,7 +40,7 @@ final class Version20250602200524_NewPmCountGameTurnStats extends AbstractMigrat
             )
         SQL);
         $this->addSql(<<<'SQL'
-            ALTER TABLE stu_game_turn_stats ALTER new_pm_count DROP NOT NULL
+            ALTER TABLE stu_game_turn_stats ALTER new_pm_count SET NOT NULL
         SQL);
     }
 
