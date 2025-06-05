@@ -49,7 +49,7 @@ final class UpdateFlightDirection implements UpdateFlightDirectionInterface
             throw new RuntimeException('this should not happen');
         }
 
-        $wrapper->getComputerSystemDataMandatory()->setFlightDirection($flightDirection);
+        $wrapper->getComputerSystemDataMandatory()->setFlightDirection($flightDirection)->update();
 
         return $flightDirection;
     }
@@ -73,6 +73,6 @@ final class UpdateFlightDirection implements UpdateFlightDirectionInterface
             $flightDirection = DirectionEnum::RIGHT;
         }
 
-        $wrapper->getComputerSystemDataMandatory()->setFlightDirection($flightDirection);
+        $wrapper->getComputerSystemDataMandatory()->setFlightDirection($flightDirection)->update();
     }
 }

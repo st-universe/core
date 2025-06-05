@@ -116,7 +116,7 @@ final class SpacecraftStateChanger implements SpacecraftStateChangerInterface
         }
 
         // now change
-        $wrapper->getComputerSystemDataMandatory()->setAlertState($alertState);
+        $wrapper->getComputerSystemDataMandatory()->setAlertState($alertState)->update();
 
         return $msg;
     }

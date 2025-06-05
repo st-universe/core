@@ -11,6 +11,7 @@ use Stu\Component\Spacecraft\Repair\CancelRepairInterface;
 use Stu\Component\Ship\Retrofit\CancelRetrofitInterface;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
+use Stu\Component\Spacecraft\System\Data\ComputerSystemData;
 use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Component\Spacecraft\System\Exception\InsufficientEnergyException;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
@@ -210,6 +211,8 @@ class SpacecraftStateChangerTest extends StuTestCase
 
     public function testChangeAlertStateExpectNothingWhenChangedToGreen(): void
     {
+        $computer = $this->mock(ComputerSystemData::class);
+
         $this->ship->shouldReceive('hasComputer')
             ->withNoArgs()
             ->once()
@@ -220,6 +223,11 @@ class SpacecraftStateChangerTest extends StuTestCase
             ->andReturn(SpacecraftAlertStateEnum::ALERT_YELLOW);
         $this->wrapper->shouldReceive('getComputerSystemDataMandatory->setAlertState')
             ->with(SpacecraftAlertStateEnum::ALERT_GREEN)
+            ->once()
+            ->andReturn($computer);
+
+        $computer->shouldReceive('update')
+            ->withNoArgs()
             ->once();
 
         $msg = $this->subject->changeAlertState($this->wrapper, SpacecraftAlertStateEnum::ALERT_GREEN);
@@ -252,6 +260,7 @@ class SpacecraftStateChangerTest extends StuTestCase
     public function testChangeAlertStateExpectChangeToYellow(): void
     {
         $epsSystemData = $this->mock(EpsSystemData::class);
+        $computer = $this->mock(ComputerSystemData::class);
 
         $epsSystemData->shouldReceive('getEps')
             ->withNoArgs()
@@ -276,6 +285,11 @@ class SpacecraftStateChangerTest extends StuTestCase
             ->andReturn(SpacecraftAlertStateEnum::ALERT_GREEN);
         $this->wrapper->shouldReceive('getComputerSystemDataMandatory->setAlertState')
             ->with(SpacecraftAlertStateEnum::ALERT_YELLOW)
+            ->once()
+            ->andReturn($computer);
+
+        $computer->shouldReceive('update')
+            ->withNoArgs()
             ->once();
 
         $this->wrapper->shouldReceive('getEpsSystemData')
@@ -328,6 +342,7 @@ class SpacecraftStateChangerTest extends StuTestCase
     public function testChangeAlertStateExpectChangeToRed(): void
     {
         $epsSystemData = $this->mock(EpsSystemData::class);
+        $computer = $this->mock(ComputerSystemData::class);
 
         $epsSystemData->shouldReceive('getEps')
             ->withNoArgs()
@@ -352,6 +367,11 @@ class SpacecraftStateChangerTest extends StuTestCase
             ->andReturn(SpacecraftAlertStateEnum::ALERT_GREEN);
         $this->wrapper->shouldReceive('getComputerSystemDataMandatory->setAlertState')
             ->with(SpacecraftAlertStateEnum::ALERT_RED)
+            ->once()
+            ->andReturn($computer);
+
+        $computer->shouldReceive('update')
+            ->withNoArgs()
             ->once();
 
         $this->wrapper->shouldReceive('getEpsSystemData')

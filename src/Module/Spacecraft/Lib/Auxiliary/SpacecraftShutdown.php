@@ -43,7 +43,7 @@ final class SpacecraftShutdown implements SpacecraftShutdownInterface
         }
 
         if ($spacecraft->hasComputer()) {
-            $wrapper->getComputerSystemDataMandatory()->setAlertStateGreen();
+            $wrapper->getComputerSystemDataMandatory()->setAlertStateGreen()->update();
         }
         $this->spacecraftRepository->save($spacecraft);
     }

@@ -7,6 +7,7 @@ namespace Stu\Module\Spacecraft\Action\StartEmergency;
 use Mockery;
 use Mockery\MockInterface;
 use Override;
+use Stu\Component\Spacecraft\System\Data\ComputerSystemData;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
@@ -152,6 +153,7 @@ class StartEmergencyTest extends StuTestCase
         $ship = $this->mock(ShipInterface::class);
         $shipWrapper = $this->mock(ShipWrapperInterface::class);
         $emergency = $this->mock(SpacecraftEmergencyInterface::class);
+        $computer = $this->mock(ComputerSystemData::class);
 
         $shipId = 666;
         $userId = 42;
@@ -215,9 +217,14 @@ class StartEmergencyTest extends StuTestCase
             ->with(Mockery::type('int'))
             ->once();
 
+        $computer->shouldReceive('update')
+            ->withNoArgs()
+            ->once();
+
         $shipWrapper->shouldReceive('getComputerSystemDataMandatory->setIsInEmergency')
             ->with(true)
-            ->once();
+            ->once()
+            ->andReturn($computer);
 
         $this->subject->handle($game);
     }
