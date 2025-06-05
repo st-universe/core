@@ -3,17 +3,18 @@
     <div class="box_body">
         {% if RECENT_HISTORY %}
         {% for item in RECENT_HISTORY %}
-        <div class="list">
-            <div style="21px" class="iblock">
+        <div class="list" style="display: flex; align-items: flex-start; width: 100%;">
+            <div style="flex: 0 0 auto; margin-right: 8px;" class="iblock">
                 {% if item.getLocation %}
                 <img src="/assets/buttons/layer_{{ item.getLocation.getLayer.getId }}.png"
                     title="{{ item.getLocation.getLayer.getName }}" />
                 {% endif %}
             </div>
-            <div style="width: 79%" class="iblock">
+            <div style="flex: 1 1 auto; margin-right: 8px; word-wrap: break-word; overflow-wrap: break-word;"
+                class="iblock">
                 {{ item.getText|bbcode }}
             </div>
-            <div style="width: 19%" class="iblock">{{ item.getDate|stuDateTime }}</div>
+            <div style="flex: 0 0 auto; white-space: nowrap;" class="iblock">{{ item.getDate|stuDateTime }}</div>
         </div>
         {% endfor %}
         {% else %}
