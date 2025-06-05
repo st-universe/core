@@ -57,7 +57,7 @@ final class StartEmergency implements ActionControllerInterface
         $emergency->setText($text);
         $emergency->setDate(time());
         $this->spacecraftEmergencyRepository->save($emergency);
-        $wrapper->getComputerSystemDataMandatory()->setIsInEmergency(true);
+        $wrapper->getComputerSystemDataMandatory()->setIsInEmergency(true)->update();
 
         $game->addInformation('Das Notrufsignal wurde gestartet');
     }

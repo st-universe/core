@@ -52,7 +52,7 @@ final class Shutdown implements ActionControllerInterface
         }
 
         //set alert to green
-        $wrapper->getComputerSystemDataMandatory()->setAlertStateGreen();
+        $wrapper->getComputerSystemDataMandatory()->setAlertStateGreen()->update();
 
         $game->addInformation(_("Der Energieverbrauch wurde auf ein Minimum reduziert"));
 

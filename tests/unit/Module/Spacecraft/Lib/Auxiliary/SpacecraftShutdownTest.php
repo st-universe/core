@@ -8,6 +8,7 @@ use Mockery\MockInterface;
 use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
+use Stu\Component\Spacecraft\System\Data\ComputerSystemData;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\ShipUndockingInterface;
@@ -108,12 +109,18 @@ class SpacecraftShutdownTest extends StuTestCase
     {
         $wrapper = $this->mock(StationWrapperInterface::class);
         $station = $this->mock(StationInterface::class);
+        $computer = $this->mock(ComputerSystemData::class);
 
         $wrapper->shouldReceive('get')
             ->withNoArgs()
             ->once()
             ->andReturn($station);
         $wrapper->shouldReceive('getComputerSystemDataMandatory->setAlertStateGreen')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($computer);
+
+        $computer->shouldReceive('update')
             ->withNoArgs()
             ->once();
 

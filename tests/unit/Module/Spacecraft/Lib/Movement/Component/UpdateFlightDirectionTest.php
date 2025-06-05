@@ -8,6 +8,7 @@ use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use RuntimeException;
 use Stu\Component\Map\DirectionEnum;
+use Stu\Component\Spacecraft\System\Data\ComputerSystemData;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\StuTestCase;
@@ -50,6 +51,7 @@ class UpdateFlightDirectionTest extends StuTestCase
         $wrapper = $this->mock(SpacecraftWrapperInterface::class);
         $oldWaypoint = $this->mock(MapInterface::class);
         $waypoint = $this->mock(MapInterface::class);
+        $computer = $this->mock(ComputerSystemData::class);
 
         $oldWaypoint->shouldReceive('getX')
             ->withNoArgs()
@@ -75,6 +77,10 @@ class UpdateFlightDirectionTest extends StuTestCase
         } else {
             $wrapper->shouldReceive('getComputerSystemDataMandatory->setFlightDirection')
                 ->with($expectedFlightDirection)
+                ->once()
+                ->andReturn($computer);
+            $computer->shouldReceive('update')
+                ->withNoArgs()
                 ->once();
         }
 
