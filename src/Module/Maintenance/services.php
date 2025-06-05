@@ -23,6 +23,7 @@ return [
     OldTradeLicenseDeletion::class => autowire(OldTradeLicenseDeletion::class),
     OldTradeOffersDeletion::class => autowire(OldTradeOffersDeletion::class),
     TopFlightsReward::class => autowire(TopFlightsReward::class),
+    UserInformation::class => autowire(UserInformation::class),
     MaintenanceHandlerInterface::class => [
         get(DatabaseBackup::class),
         get(IdleUserWarning::class),
@@ -41,6 +42,7 @@ return [
         get(TopFlightsReward::class),
         get(EndLotteryPeriod::class),
         get(PirateWrathDecreaser::class),
+        get(UserInformation::class),
         get(GameRequestCleanUp::class)
     ]
 ];
