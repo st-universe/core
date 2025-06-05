@@ -7,6 +7,7 @@ namespace Stu\Module\Tick\Spacecraft\ManagerComponent;
 use InvalidArgumentException;
 use Override;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
+use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -178,7 +179,6 @@ final class CrewLimitations implements ManagerComponentInterface
     private function letCrewQuit(int $randomShipId, int $userId): int
     {
         $randomShip = $this->spacecraftRepository->find($randomShipId);
-
         if ($randomShip === null) {
             throw new InvalidArgumentException('randomShipId should exist');
         }
@@ -187,7 +187,7 @@ final class CrewLimitations implements ManagerComponentInterface
         $doAlertRedCheck = $randomShip->getWarpDriveState() || $randomShip->isCloaked();
         //deactivate ship
         $this->spacecraftSystemManager->deactivateAll($wrapper);
-        $randomShip->setAlertStateGreen();
+        $wrapper->setAlertState(SpacecraftAlertStateEnum::ALERT_GREEN);
 
         $this->spacecraftRepository->save($randomShip);
 

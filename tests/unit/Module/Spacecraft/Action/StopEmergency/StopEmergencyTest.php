@@ -85,7 +85,7 @@ class StopEmergencyTest extends StuTestCase
             ->once()
             ->andReturn($shipId);
 
-        $ship->shouldReceive('isInEmergency')
+        $shipWrapper->shouldReceive('getComputerSystemDataMandatory->isInEmergency')
             ->withNoArgs()
             ->once()
             ->andReturnFalse();
@@ -137,12 +137,12 @@ class StopEmergencyTest extends StuTestCase
             ->once()
             ->andReturn($shipId);
 
-        $ship->shouldReceive('isInEmergency')
+        $shipWrapper->shouldReceive('getComputerSystemDataMandatory->isInEmergency')
             ->withNoArgs()
             ->once()
             ->andReturnTrue();
 
-        $ship->shouldReceive('setIsInEmergency')
+        $shipWrapper->shouldReceive('getComputerSystemDataMandatory->setIsInEmergency')
             ->with(false)
             ->once();
 

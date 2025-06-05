@@ -7,8 +7,8 @@ namespace Stu\Module\Spacecraft\Lib\Movement\Component;
 use Override;
 use RuntimeException;
 use Stu\Component\Map\DirectionEnum;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\LocationInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
 
 final class UpdateFlightDirection implements UpdateFlightDirectionInterface
@@ -17,7 +17,7 @@ final class UpdateFlightDirection implements UpdateFlightDirectionInterface
     public function updateWhenTraversing(
         LocationInterface $oldWaypoint,
         LocationInterface $waypoint,
-        SpacecraftInterface $ship
+        SpacecraftWrapperInterface $wrapper
     ): DirectionEnum {
 
         $startX = $oldWaypoint->getX();
@@ -49,13 +49,13 @@ final class UpdateFlightDirection implements UpdateFlightDirectionInterface
             throw new RuntimeException('this should not happen');
         }
 
-        $ship->setFlightDirection($flightDirection);
+        $wrapper->getComputerSystemDataMandatory()->setFlightDirection($flightDirection);
 
         return $flightDirection;
     }
 
     #[Override]
-    public function updateWhenSystemExit(SpacecraftInterface $ship, StarSystemMapInterface $starsystemMap): void
+    public function updateWhenSystemExit(SpacecraftWrapperInterface $wrapper, StarSystemMapInterface $starsystemMap): void
     {
         $system = $starsystemMap->getSystem();
 
@@ -73,6 +73,6 @@ final class UpdateFlightDirection implements UpdateFlightDirectionInterface
             $flightDirection = DirectionEnum::RIGHT;
         }
 
-        $ship->setFlightDirection($flightDirection);
+        $wrapper->getComputerSystemDataMandatory()->setFlightDirection($flightDirection);
     }
 }

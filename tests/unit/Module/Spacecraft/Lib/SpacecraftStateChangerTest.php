@@ -182,7 +182,7 @@ class SpacecraftStateChangerTest extends StuTestCase
 
     public function testChangeAlertStateExpectNothingWhenAlertStateUnchanged(): void
     {
-        $this->ship->shouldReceive('getAlertState')
+        $this->wrapper->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_GREEN);
@@ -192,13 +192,33 @@ class SpacecraftStateChangerTest extends StuTestCase
         $this->assertNull($msg);
     }
 
-    public function testChangeAlertStateExpectNothingWhenChangedToGreen(): void
+    public function testChangeAlertStateExpectNothingWhenNoComputerInstalled(): void
     {
-        $this->ship->shouldReceive('getAlertState')
+        $this->ship->shouldReceive('hasComputer')
+            ->withNoArgs()
+            ->once()
+            ->andReturnFalse();
+        $this->wrapper->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_YELLOW);
-        $this->ship->shouldReceive('setAlertState')
+
+        $msg = $this->subject->changeAlertState($this->wrapper, SpacecraftAlertStateEnum::ALERT_GREEN);
+
+        $this->assertNull($msg);
+    }
+
+    public function testChangeAlertStateExpectNothingWhenChangedToGreen(): void
+    {
+        $this->ship->shouldReceive('hasComputer')
+            ->withNoArgs()
+            ->once()
+            ->andReturnTrue();
+        $this->wrapper->shouldReceive('getAlertState')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(SpacecraftAlertStateEnum::ALERT_YELLOW);
+        $this->wrapper->shouldReceive('getComputerSystemDataMandatory->setAlertState')
             ->with(SpacecraftAlertStateEnum::ALERT_GREEN)
             ->once();
 
@@ -211,7 +231,12 @@ class SpacecraftStateChangerTest extends StuTestCase
     {
         static::expectException(InsufficientEnergyException::class);
 
-        $this->ship->shouldReceive('getAlertState')
+        $this->ship->shouldReceive('hasComputer')
+            ->withNoArgs()
+            ->once()
+            ->andReturnTrue();
+
+        $this->wrapper->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_GREEN);
@@ -240,11 +265,16 @@ class SpacecraftStateChangerTest extends StuTestCase
             ->withNoArgs()
             ->once();
 
-        $this->ship->shouldReceive('getAlertState')
+        $this->ship->shouldReceive('hasComputer')
+            ->withNoArgs()
+            ->once()
+            ->andReturnTrue();
+
+        $this->wrapper->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_GREEN);
-        $this->ship->shouldReceive('setAlertState')
+        $this->wrapper->shouldReceive('getComputerSystemDataMandatory->setAlertState')
             ->with(SpacecraftAlertStateEnum::ALERT_YELLOW)
             ->once();
 
@@ -278,11 +308,15 @@ class SpacecraftStateChangerTest extends StuTestCase
             ->once()
             ->andReturn(1);
 
-        $this->ship->shouldReceive('getAlertState')
+        $this->ship->shouldReceive('hasComputer')
+            ->withNoArgs()
+            ->once()
+            ->andReturnTrue();
+
+        $this->wrapper->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_GREEN);
-
         $this->wrapper->shouldReceive('getEpsSystemData')
             ->withNoArgs()
             ->once()
@@ -307,11 +341,16 @@ class SpacecraftStateChangerTest extends StuTestCase
             ->withNoArgs()
             ->once();
 
-        $this->ship->shouldReceive('getAlertState')
+        $this->ship->shouldReceive('hasComputer')
+            ->withNoArgs()
+            ->once()
+            ->andReturnTrue();
+
+        $this->wrapper->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_GREEN);
-        $this->ship->shouldReceive('setAlertState')
+        $this->wrapper->shouldReceive('getComputerSystemDataMandatory->setAlertState')
             ->with(SpacecraftAlertStateEnum::ALERT_RED)
             ->once();
 

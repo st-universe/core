@@ -73,14 +73,15 @@ final class SpacecraftStateChanger implements SpacecraftStateChangerInterface
         SpacecraftWrapperInterface $wrapper,
         SpacecraftAlertStateEnum $alertState
     ): ?string {
-        $ship = $wrapper->get();
 
-        $msg = null;
-
-        $currentAlertState = $ship->getAlertState();
+        $currentAlertState = $wrapper->getAlertState();
 
         //nothing to do
         if ($currentAlertState === $alertState) {
+            return null;
+        }
+
+        if (!$wrapper->get()->hasComputer()) {
             return null;
         }
 
@@ -98,6 +99,9 @@ final class SpacecraftStateChanger implements SpacecraftStateChangerInterface
             $this->consumeEnergyForAlertChange($wrapper, $alertState->getEpsUsage());
         }
 
+        $msg = null;
+        $ship = $wrapper->get();
+
         // cancel repair if not on alert green
         if ($alertState !== SpacecraftAlertStateEnum::ALERT_GREEN && $this->cancelRepair->cancelRepair($ship)) {
             $msg = _('Die Reparatur wurde abgebrochen');
@@ -112,7 +116,7 @@ final class SpacecraftStateChanger implements SpacecraftStateChangerInterface
         }
 
         // now change
-        $ship->setAlertState($alertState);
+        $wrapper->getComputerSystemDataMandatory()->setAlertState($alertState);
 
         return $msg;
     }

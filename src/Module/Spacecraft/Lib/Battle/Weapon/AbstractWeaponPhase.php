@@ -73,14 +73,21 @@ abstract class AbstractWeaponPhase
             : $hitChance;
     }
 
-    protected function getEvadeChance(SpacecraftInterface $target): int
+    protected function getEvadeChance(SpacecraftWrapperInterface $wrapper): int
     {
-        $evadeChance = $target->getEvadeChance();
+        if (!$wrapper->get()->hasComputer()) {
+            return 0;
+        }
 
-        return
-            $target->getLocation()->getFieldType()->hasEffect(FieldTypeEffectEnum::EVADE_CHANCE_INTERFERENCE)
-            ? (int)ceil($evadeChance / 100 * $this->stuRandom->rand(15, 60, true, 30))
-            : $evadeChance;
+        $evadeChance = $wrapper->getComputerSystemDataMandatory()->getEvadeChance();
+
+        if ($wrapper->get()->getLocation()->getFieldType()->hasEffect(FieldTypeEffectEnum::EVADE_CHANCE_INTERFERENCE)) {
+            $malus = (int)abs($evadeChance / 100 * $this->stuRandom->rand(40, 85, true, 30));
+
+            return $evadeChance - $malus;
+        }
+
+        return $evadeChance;
     }
 
     protected function getModule(SpacecraftInterface $ship, SpacecraftModuleTypeEnum $moduleType): ?ModuleInterface

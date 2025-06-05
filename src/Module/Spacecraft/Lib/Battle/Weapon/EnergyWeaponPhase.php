@@ -68,7 +68,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
             ));
 
             $hitChance = $this->getHitChance($attacker);
-            $evadeChance = $this->getEvadeChance($target);
+            $evadeChance = $this->getEvadeChance($targetWrapper);
 
             if (
                 $hitChance * (100 - $evadeChance) < $this->stuRandom->rand(1, 10000)

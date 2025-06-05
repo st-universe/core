@@ -135,7 +135,7 @@ class FlightDirectionConsequenceTest extends StuTestCase
             ->andReturn(RouteModeEnum::SYSTEM_EXIT);
 
         $this->updateFlightDirection->shouldReceive('updateWhenSystemExit')
-            ->with($this->ship, $oldWaypoint)
+            ->with($this->wrapper, $oldWaypoint)
             ->once();
 
         $this->subject->trigger(

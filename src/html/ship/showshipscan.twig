@@ -25,12 +25,14 @@
       <td>Lebenszeichen</td>
       <td>{{ TARGETSHIP.getCrewCount }}</td>
     </tr>
+    {% if TARGETSHIP.hasComputer %}
     <tr>
       <td>Alarmstufe</td>
       <td style="text-align: center;">
-        <img src="assets/buttons/alert{{ TARGETSHIP.getAlertState.value }}_1.png" title="Alarmstufe" />
+        <img src="assets/buttons/alert{{ TARGETWRAPPER.getAlertState.value }}_1.png" title="Alarmstufe" />
       </td>
     </tr>
+    {% endif %}
     <tr>
       <td>Schilde</td>
       <td>{{ SHIELD_PERCENTAGE }}%</td>

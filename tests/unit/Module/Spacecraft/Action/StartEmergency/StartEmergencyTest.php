@@ -80,7 +80,7 @@ class StartEmergencyTest extends StuTestCase
             ->once()
             ->andReturn($ship);
 
-        $ship->shouldReceive('isInEmergency')
+        $shipWrapper->shouldReceive('getComputerSystemDataMandatory->isInEmergency')
             ->withNoArgs()
             ->once()
             ->andReturnTrue();
@@ -137,7 +137,7 @@ class StartEmergencyTest extends StuTestCase
             ->once()
             ->andReturn($ship);
 
-        $ship->shouldReceive('isInEmergency')
+        $shipWrapper->shouldReceive('getComputerSystemDataMandatory->isInEmergency')
             ->withNoArgs()
             ->once()
             ->andReturnFalse();
@@ -192,7 +192,7 @@ class StartEmergencyTest extends StuTestCase
             ->once()
             ->andReturn($ship);
 
-        $ship->shouldReceive('isInEmergency')
+        $shipWrapper->shouldReceive('getComputerSystemDataMandatory->isInEmergency')
             ->withNoArgs()
             ->once()
             ->andReturnFalse();
@@ -215,7 +215,7 @@ class StartEmergencyTest extends StuTestCase
             ->with(Mockery::type('int'))
             ->once();
 
-        $ship->shouldReceive('setIsInEmergency')
+        $shipWrapper->shouldReceive('getComputerSystemDataMandatory->setIsInEmergency')
             ->with(true)
             ->once();
 

@@ -23,8 +23,8 @@ canColonize, closestAnomalyDistance, storedShuttleCount, closescolonydistance) %
     {% include 'html/spacecraft/system/system.twig' with {'name': 'TACHYON_SCANNER'} %}
     {% include 'html/spacecraft/system/system.twig' with {'name': 'UPLINK'} %}
     {% include 'html/spacecraft/system/system.twig' with {'name': 'RPG_MODULE'} %}
+    {% if SPACECRAFT.hasShuttleRamp and storedShuttleCount > 0 %}
     {% set storedShuttles = SPACECRAFT.getStoredShuttles %}
-    {% if SPACECRAFT.hasShuttleRamp and storedShuttles %}
     {% set defaultId = storedShuttles.first.getId %}
     <tr>
         <td>

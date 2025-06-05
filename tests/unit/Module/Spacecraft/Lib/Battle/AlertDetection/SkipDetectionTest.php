@@ -11,6 +11,7 @@ use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Module\Control\StuTime;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\PirateWrathInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\TholianWebInterface;
@@ -26,6 +27,8 @@ class SkipDetectionTest extends StuTestCase
 
     /** @var MockInterface&ShipInterface */
     private $incomingShip;
+    /** @var MockInterface&SpacecraftWrapperInterface */
+    private $alertedWrapper;
     /** @var MockInterface&ShipInterface */
     private $alertedShip;
 
@@ -38,7 +41,13 @@ class SkipDetectionTest extends StuTestCase
         $this->stuTime = $this->mock(StuTime::class);
 
         $this->incomingShip = $this->mock(ShipInterface::class);
+        $this->alertedWrapper = $this->mock(SpacecraftWrapperInterface::class);
         $this->alertedShip = $this->mock(ShipInterface::class);
+
+        $this->alertedWrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->zeroOrMoreTimes()
+            ->andReturn($this->alertedShip);
 
         $this->subject = new SkipDetection(
             $this->playerRelationDeterminator,
@@ -61,7 +70,7 @@ class SkipDetectionTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($alertUser);
-        $this->alertedShip->shouldReceive('getAlertState')
+        $this->alertedWrapper->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_YELLOW);
@@ -73,7 +82,7 @@ class SkipDetectionTest extends StuTestCase
 
         $result = $this->subject->isSkipped(
             $this->incomingShip,
-            $this->alertedShip,
+            $this->alertedWrapper,
             null,
             $usersToInformAboutTrojanHorse
         );
@@ -100,7 +109,7 @@ class SkipDetectionTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($alertUser);
-        $this->alertedShip->shouldReceive('getAlertState')
+        $this->alertedWrapper->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_RED);
@@ -121,7 +130,7 @@ class SkipDetectionTest extends StuTestCase
 
         $result = $this->subject->isSkipped(
             $this->incomingShip,
-            $this->alertedShip,
+            $this->alertedWrapper,
             $tractoringShip,
             $usersToInformAboutTrojanHorse
         );
@@ -149,7 +158,7 @@ class SkipDetectionTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($alertUser);
-        $this->alertedShip->shouldReceive('getAlertState')
+        $this->alertedWrapper->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_RED);
@@ -166,7 +175,7 @@ class SkipDetectionTest extends StuTestCase
 
         $result = $this->subject->isSkipped(
             $this->incomingShip,
-            $this->alertedShip,
+            $this->alertedWrapper,
             $tractoringShip,
             $usersToInformAboutTrojanHorse
         );
@@ -190,7 +199,7 @@ class SkipDetectionTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($alertUser);
-        $this->alertedShip->shouldReceive('getAlertState')
+        $this->alertedWrapper->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_RED);
@@ -202,7 +211,7 @@ class SkipDetectionTest extends StuTestCase
 
         $result = $this->subject->isSkipped(
             $this->incomingShip,
-            $this->alertedShip,
+            $this->alertedWrapper,
             null,
             $usersToInformAboutTrojanHorse
         );
@@ -227,7 +236,7 @@ class SkipDetectionTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($alertUser);
-        $this->alertedShip->shouldReceive('getAlertState')
+        $this->alertedWrapper->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_YELLOW);
@@ -252,7 +261,7 @@ class SkipDetectionTest extends StuTestCase
 
         $result = $this->subject->isSkipped(
             $this->incomingShip,
-            $this->alertedShip,
+            $this->alertedWrapper,
             null,
             $usersToInformAboutTrojanHorse
         );
@@ -287,7 +296,7 @@ class SkipDetectionTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($alertUser);
-        $this->alertedShip->shouldReceive('getAlertState')
+        $this->alertedWrapper->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_RED);
@@ -308,7 +317,7 @@ class SkipDetectionTest extends StuTestCase
 
         $result = $this->subject->isSkipped(
             $this->incomingShip,
-            $this->alertedShip,
+            $this->alertedWrapper,
             null,
             $usersToInformAboutTrojanHorse
         );
@@ -352,7 +361,7 @@ class SkipDetectionTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($alertUser);
-        $this->alertedShip->shouldReceive('getAlertState')
+        $this->alertedWrapper->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_RED);
@@ -377,7 +386,7 @@ class SkipDetectionTest extends StuTestCase
 
         $result = $this->subject->isSkipped(
             $this->incomingShip,
-            $this->alertedShip,
+            $this->alertedWrapper,
             null,
             $usersToInformAboutTrojanHorse
         );
@@ -428,7 +437,7 @@ class SkipDetectionTest extends StuTestCase
         $this->alertedShip->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($alertUser);
-        $this->alertedShip->shouldReceive('getAlertState')
+        $this->alertedWrapper->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_RED);
@@ -453,7 +462,7 @@ class SkipDetectionTest extends StuTestCase
 
         $result = $this->subject->isSkipped(
             $this->incomingShip,
-            $this->alertedShip,
+            $this->alertedWrapper,
             null,
             $usersToInformAboutTrojanHorse
         );
@@ -504,7 +513,7 @@ class SkipDetectionTest extends StuTestCase
         $this->alertedShip->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($alertUser);
-        $this->alertedShip->shouldReceive('getAlertState')
+        $this->alertedWrapper->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_RED);
@@ -529,7 +538,7 @@ class SkipDetectionTest extends StuTestCase
 
         $result = $this->subject->isSkipped(
             $this->incomingShip,
-            $this->alertedShip,
+            $this->alertedWrapper,
             null,
             $usersToInformAboutTrojanHorse
         );
@@ -575,7 +584,7 @@ class SkipDetectionTest extends StuTestCase
         $this->alertedShip->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($alertUser);
-        $this->alertedShip->shouldReceive('getAlertState')
+        $this->alertedWrapper->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_RED);
@@ -600,7 +609,7 @@ class SkipDetectionTest extends StuTestCase
 
         $result = $this->subject->isSkipped(
             $this->incomingShip,
-            $this->alertedShip,
+            $this->alertedWrapper,
             null,
             $usersToInformAboutTrojanHorse
         );
@@ -651,7 +660,7 @@ class SkipDetectionTest extends StuTestCase
         $this->alertedShip->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($alertUser);
-        $this->alertedShip->shouldReceive('getAlertState')
+        $this->alertedWrapper->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_RED);
@@ -676,7 +685,7 @@ class SkipDetectionTest extends StuTestCase
 
         $result = $this->subject->isSkipped(
             $this->incomingShip,
-            $this->alertedShip,
+            $this->alertedWrapper,
             null,
             $usersToInformAboutTrojanHorse
         );
@@ -722,7 +731,7 @@ class SkipDetectionTest extends StuTestCase
         $this->alertedShip->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($alertUser);
-        $this->alertedShip->shouldReceive('getAlertState')
+        $this->alertedWrapper->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_RED);
@@ -747,7 +756,7 @@ class SkipDetectionTest extends StuTestCase
 
         $result = $this->subject->isSkipped(
             $this->incomingShip,
-            $this->alertedShip,
+            $this->alertedWrapper,
             null,
             $usersToInformAboutTrojanHorse
         );
@@ -792,7 +801,7 @@ class SkipDetectionTest extends StuTestCase
         $this->alertedShip->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($alertUser);
-        $this->alertedShip->shouldReceive('getAlertState')
+        $this->alertedWrapper->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_RED);
@@ -812,7 +821,7 @@ class SkipDetectionTest extends StuTestCase
 
         $result = $this->subject->isSkipped(
             $this->incomingShip,
-            $this->alertedShip,
+            $this->alertedWrapper,
             null,
             $usersToInformAboutTrojanHorse
         );

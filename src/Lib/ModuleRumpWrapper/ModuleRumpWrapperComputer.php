@@ -36,6 +36,6 @@ final class ModuleRumpWrapperComputer extends ModuleRumpWrapperBase implements M
     #[Override]
     public function apply(SpacecraftWrapperInterface $wrapper): void
     {
-        $wrapper->get()->setHitChance($this->getValue());
+        $wrapper->getComputerSystemDataMandatory()->setHitChance($this->getValue())->update();
     }
 }

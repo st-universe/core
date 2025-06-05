@@ -43,10 +43,10 @@ final class DockTractoredShip implements ActionControllerInterface
         );
         $station = $wrapper->get();
 
-        $tractoredShip = $station->getTractoredShip();
+        $tractoredShipWrapper = $wrapper->getTractoredShipWrapper();
 
         // sanity checks
-        if ($tractoredShip === null) {
+        if ($tractoredShipWrapper === null) {
             return;
         }
         if (!$station->hasEnoughCrew($game)) {
@@ -64,13 +64,16 @@ final class DockTractoredShip implements ActionControllerInterface
             $game->addInformation('Zur Zeit sind alle Dockplätze belegt');
             return;
         }
+
+        $tractoredShip = $tractoredShipWrapper->get();
+
         // check for fleet state
         if ($tractoredShip->getFleet() !== null && $tractoredShip->getFleet()->getShipCount() > 1) {
             $game->addInformation("Aktion nicht möglich. Das Ziel befindet sich in einer Flotte.");
             return;
         }
         // check for alert green
-        if (!$tractoredShip->isAlertGreen()) {
+        if (!$tractoredShipWrapper->isUnalerted()) {
             $game->addInformation("Aktion nicht möglich. Das Ziel ist nicht auf Alarm Grün.");
             return;
         }

@@ -127,7 +127,7 @@ class PirateNavigation implements PirateNavigationInterface
 
     private function enterSystem(ShipWrapperInterface $wrapper, StarSystemInterface $system): bool
     {
-        $destination = $this->randomSystemEntry->getRandomEntryPoint($wrapper->get(), $system);
+        $destination = $this->randomSystemEntry->getRandomEntryPoint($wrapper, $system);
 
         $flightRoute = $this->flightRouteFactory->getRouteForMapDestination(
             $destination

@@ -11,6 +11,7 @@ use RuntimeException;
 use Stu\Component\Spacecraft\Repair\RepairUtilInterface;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Component\Spacecraft\System\Data\AbstractSystemData;
+use Stu\Component\Spacecraft\System\Data\ComputerSystemData;
 use Stu\Component\Spacecraft\System\Data\EnergyWeaponSystemData;
 use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Component\Spacecraft\System\Data\FusionCoreSystemData;
@@ -112,7 +113,9 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
             $result += $this->spacecraftSystemManager->getEnergyConsumption($shipSystem->getSystemType());
         }
 
-        return $result + $this->spacecraft->getAlertState()->getEpsUsage();
+        return $this->get()->hasComputer()
+            ? $result + $this->getComputerSystemDataMandatory()->getAlertState()->getEpsUsage()
+            : $result;
     }
 
     public function getReactorUsage(): int
@@ -163,12 +166,25 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
     }
 
     #[Override]
+    public function getAlertState(): SpacecraftAlertStateEnum
+    {
+        return $this->getComputerSystemDataMandatory()->getAlertState();
+    }
+
+    #[Override]
     public function setAlertState(SpacecraftAlertStateEnum $alertState): ?string
     {
         $msg = $this->spacecraftStateChanger->changeAlertState($this, $alertState);
         $this->epsUsage = $this->reloadEpsUsage();
 
         return $msg;
+    }
+
+    #[Override]
+    public function isUnalerted(): bool
+    {
+        return !$this->spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::COMPUTER)
+            || $this->getComputerSystemDataMandatory()->isAlertGreen();
     }
 
     #[Override]
@@ -241,7 +257,7 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
     #[Override]
     public function canBeRepaired(): bool
     {
-        if ($this->spacecraft->getAlertState() !== SpacecraftAlertStateEnum::ALERT_GREEN) {
+        if (!$this->isUnalerted()) {
             return false;
         }
 
@@ -395,6 +411,20 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
             SpacecraftSystemTypeEnum::EPS,
             EpsSystemData::class
         );
+    }
+
+    #[Override]
+    public function getComputerSystemDataMandatory(): ComputerSystemData
+    {
+        $computer = $this->getSpecificShipSystem(
+            SpacecraftSystemTypeEnum::COMPUTER,
+            ComputerSystemData::class
+        );
+        if ($computer === null) {
+            throw new SystemNotFoundException('no computer installed?');
+        }
+
+        return $computer;
     }
 
     #[Override]

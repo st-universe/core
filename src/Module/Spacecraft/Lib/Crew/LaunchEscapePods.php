@@ -9,6 +9,7 @@ use RuntimeException;
 use Stu\Component\Map\DirectionEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpEnum;
 use Stu\Module\Spacecraft\Lib\Creation\SpacecraftFactoryInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
@@ -20,12 +21,13 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 final class LaunchEscapePods implements LaunchEscapePodsInterface
 {
     public function __construct(
-        private SpacecraftRepositoryInterface $spacecraftRepository,
-        private UserRepositoryInterface $userRepository,
-        private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository,
-        private StarSystemMapRepositoryInterface $starSystemMapRepository,
-        private MapRepositoryInterface $mapRepository,
-        private SpacecraftFactoryInterface $spacecraftFactory
+        private readonly SpacecraftRepositoryInterface $spacecraftRepository,
+        private readonly UserRepositoryInterface $userRepository,
+        private readonly SpacecraftRumpRepositoryInterface $spacecraftRumpRepository,
+        private readonly StarSystemMapRepositoryInterface $starSystemMapRepository,
+        private readonly MapRepositoryInterface $mapRepository,
+        private readonly SpacecraftFactoryInterface $spacecraftFactory,
+        private readonly SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory
     ) {}
 
     #[Override]
@@ -44,7 +46,6 @@ final class LaunchEscapePods implements LaunchEscapePodsInterface
         $pods->setName(sprintf(_('Rettungskapseln von (%d)'), $spacecraft->getId()));
         $pods->setHuell(1);
         $pods->setMaxHuell(1);
-        $pods->setAlertStateGreen();
 
         $pods->setLocation($spacecraft->getLocation());
 
@@ -62,8 +63,8 @@ final class LaunchEscapePods implements LaunchEscapePodsInterface
         $field = $pods->getLocation();
 
         if ($field->getFieldType()->getSpecialDamage() !== 0) {
-            $flightDirection = $spacecraft->getFlightDirection();
-            if ($flightDirection === null) {
+            $flightDirection = $this->spacecraftWrapperFactory->wrapSpacecraft($spacecraft)->getComputerSystemDataMandatory()->getFlightDirection();
+            while ($flightDirection === DirectionEnum::NON) {
                 $flightDirection = DirectionEnum::from(random_int(1, 4));
             }
             $met = 'fly' . $flightDirection->value;

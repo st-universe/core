@@ -105,8 +105,6 @@ final class SpacecraftCreator implements SpacecraftCreatorInterface
             $spacecraft->setName($spacecraft->getRump()->getName());
         }
 
-        $spacecraft->setAlertStateGreen();
-
         $this->spacecraftRepository->save($spacecraft);
 
         return $this->spacecraftConfiguratorFactory->createSpacecraftConfigurator($wrapper);

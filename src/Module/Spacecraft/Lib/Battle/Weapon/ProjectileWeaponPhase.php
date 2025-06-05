@@ -65,8 +65,9 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
 
             $message->add("Die " . $attacker->getName() . " feuert einen " . $torpedoName . " auf die " . $target->getName());
 
-            $hitchance = $attacker->getHitChance();
-            if ($hitchance * (100 - $target->getEvadeChance()) < random_int(1, 10000)) {
+            $hitchance = $this->getHitChance($attacker);
+            $evadeChance = $this->getEvadeChance($targetWrapper);
+            if ($hitchance * (100 - $evadeChance) < random_int(1, 10000)) {
                 $message->add("Die " . $target->getName() . " wurde verfehlt");
                 continue;
             }

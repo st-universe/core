@@ -56,7 +56,7 @@ class AlertLevelBasedReactionTest extends StuTestCase
 
     public function testReactExpectChangeToYellowWhenGreen(): void
     {
-        $this->ship->shouldReceive('getAlertState')
+        $this->wrapper->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_GREEN);
@@ -77,7 +77,7 @@ class AlertLevelBasedReactionTest extends StuTestCase
 
     public function testReactExpectUncloakWhenYellowAndCloaked(): void
     {
-        $this->ship->shouldReceive('getAlertState')
+        $this->wrapper->shouldReceive('getAlertState')
             ->withNoArgs()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_YELLOW);
         $this->ship->shouldReceive('isCloaked')
@@ -98,7 +98,7 @@ class AlertLevelBasedReactionTest extends StuTestCase
 
     public function testReactExpectShieldsNbsAndPhaserActivationWhenNotCloaked(): void
     {
-        $this->ship->shouldReceive('getAlertState')
+        $this->wrapper->shouldReceive('getAlertState')
             ->withNoArgs()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_YELLOW);
         $this->ship->shouldReceive('isCloaked')
@@ -139,7 +139,7 @@ class AlertLevelBasedReactionTest extends StuTestCase
 
     public function testReactExpectNoShieldActivationWhenTractoring(): void
     {
-        $this->ship->shouldReceive('getAlertState')
+        $this->wrapper->shouldReceive('getAlertState')
             ->withNoArgs()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_YELLOW);
         $this->ship->shouldReceive('isCloaked')
@@ -173,7 +173,7 @@ class AlertLevelBasedReactionTest extends StuTestCase
 
     public function testReactExpectNoShieldActivationWhenTractored(): void
     {
-        $this->ship->shouldReceive('getAlertState')
+        $this->wrapper->shouldReceive('getAlertState')
             ->withNoArgs()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_YELLOW);
         $this->ship->shouldReceive('isCloaked')
@@ -211,7 +211,7 @@ class AlertLevelBasedReactionTest extends StuTestCase
 
     public function testReactExpectNothingWhenErrorsOnActivation(): void
     {
-        $this->ship->shouldReceive('getAlertState')
+        $this->wrapper->shouldReceive('getAlertState')
             ->withNoArgs()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_YELLOW);
         $this->ship->shouldReceive('isCloaked')
@@ -245,7 +245,7 @@ class AlertLevelBasedReactionTest extends StuTestCase
 
     public function testReactExpectShieldsNbsPhaserAndTorpedoActivation(): void
     {
-        $this->ship->shouldReceive('getAlertState')
+        $this->wrapper->shouldReceive('getAlertState')
             ->withNoArgs()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_RED);
         $this->ship->shouldReceive('isCloaked')

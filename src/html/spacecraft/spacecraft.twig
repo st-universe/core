@@ -85,9 +85,11 @@
 				</a>
 			</td>
 			<td style="text-align: center;">
+				{% if SPACECRAFT.hasComputer %}
 				<a href="javascript:void(0);" onclick="showALvlWindow();"><img
-						src="/assets/buttons/alert{{ SPACECRAFT.getAlertState.value }}.png" title="Alarmstufe"
+						src="/assets/buttons/alert{{ WRAPPER.getAlertState.value }}.png" title="Alarmstufe"
 						name="setalvl" /></a>
+				{% endif %}
 			</td>
 			<td style="text-align: center;">
 				{{ SPACECRAFT.getPosX }}|{{ SPACECRAFT.getPosY }}
