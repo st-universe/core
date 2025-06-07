@@ -58,6 +58,8 @@ use Stu\Module\Message\Lib\PrivateMessageSender;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageUiFactory;
 use Stu\Module\Message\Lib\PrivateMessageUiFactoryInterface;
+use Stu\Module\Message\Lib\SendWelcomeMessage;
+use Stu\Module\Message\Lib\SendWelcomeMessageInterface;
 use Stu\Module\Message\View\Noop\Noop;
 use Stu\Module\Message\View\ShowContactList\ShowContactList;
 use Stu\Module\Message\View\ShowContactMode\ShowContactMode;
@@ -99,6 +101,7 @@ return [
     MovePmRequestInterface::class => autowire(MovePmRequest::class),
     WritePmRequestInterface::class => autowire(WritePmRequest::class),
     EditContactCommentRequestInterface::class => autowire(EditContactCommentRequest::class),
+    SendWelcomeMessageInterface::class => autowire(SendWelcomeMessage::class),
     'PM_ACTIONS' => [
         SwitchContactMode::ACTION_IDENTIFIER => autowire(SwitchContactMode::class),
         AddContact::ACTION_IDENTIFIER => autowire(AddContact::class),
