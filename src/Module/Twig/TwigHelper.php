@@ -159,11 +159,14 @@ class TwigHelper
         $getUniqIdFunction = new TwigFunction('getUniqId', fn(): string => $this->stuRandom->uniqid());
         $this->environment->addFunction($getUniqIdFunction);
 
-        $gradientColorFunction = new TwigFunction('gradientColor', fn(int $value, int $lowest, int $highest): string => $this->gradientColor->calculateGradientColor(min($value, $highest), $lowest, $highest));
+        $gradientColorFunction = new TwigFunction('gradientColor', fn(int $value, int $lowest, int $highest): string => $this->gradientColor->calculateGradientColor($value, $lowest, $highest));
         $this->environment->addFunction($gradientColorFunction);
 
-        $gradientColorFunction = new TwigFunction('stuDate', fn(string $format): string => $this->stuTime->date($format));
-        $this->environment->addFunction($gradientColorFunction);
+        $gradientColorOverLimitFunction = new TwigFunction('gradientColorOverLimit', fn(int $value, int $lowest, int $highest): string => $this->gradientColor->calculateGradientColor(min($value, $highest), $lowest, $highest));
+        $this->environment->addFunction($gradientColorOverLimitFunction);
+
+        $stuDateFunction = new TwigFunction('stuDate', fn(string $format): string => $this->stuTime->date($format));
+        $this->environment->addFunction($stuDateFunction);
 
         $dayNightPrefixFunction = new TwigFunction('getDayNightPrefix', fn(PlanetFieldInterface $field): string => $field->getDayNightPrefix($this->stuTime->time()));
         $this->environment->addFunction($dayNightPrefixFunction);

@@ -56,6 +56,9 @@ class Faction implements FactionInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $positive_effect_secondary_commodity_id = null;
 
+    #[Column(type: 'text', nullable: true)]
+    private ?string $welcome_message = '';
+
     //TODO survivor_rate to escape pods
     #[ManyToOne(targetEntity: 'Research')]
     #[JoinColumn(name: 'start_research_id', referencedColumnName: 'id')]
@@ -205,5 +208,19 @@ class Faction implements FactionInterface
     public function getSecondaryEffectCommodity(): ?CommodityInterface
     {
         return $this->secondaryEffectCommodity;
+    }
+
+    #[Override]
+    public function getWelcomeMessage(): ?string
+    {
+        return $this->welcome_message;
+    }
+
+    #[Override]
+    public function setWelcomeMessage(string $welcome_message): FactionInterface
+    {
+        $this->welcome_message = $welcome_message;
+
+        return $this;
     }
 }
