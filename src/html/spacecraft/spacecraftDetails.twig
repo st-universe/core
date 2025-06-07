@@ -2,7 +2,9 @@
 {% set hull = WRAPPER.getHullSystemData %}
 {% set shields = WRAPPER.getShieldSystemData %}
 {% set eps = WRAPPER.getEpsSystemData %}
+{% if SHIP.hasComputer %}
 {% set computer = WRAPPER.getComputerSystemDataMandatory %}
+{% endif %}
 {% set lss = WRAPPER.getLssSystemData %}
 {% set energyWeapon = WRAPPER.getEnergyWeaponSystemData %}
 {% set reactor = WRAPPER.getReactorWrapper %}
