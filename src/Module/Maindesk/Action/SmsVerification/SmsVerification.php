@@ -13,6 +13,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuHashInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Message\Lib\SendWelcomeMessageInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Trade\Lib\LotteryFacadeInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -27,6 +28,7 @@ final class SmsVerification implements ActionControllerInterface
         private UserRepositoryInterface $userRepository,
         private LotteryFacadeInterface $lotteryFacade,
         private StuHashInterface $stuHash,
+        private SendWelcomeMessageInterface $sendWelcomeMessage,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
@@ -61,6 +63,8 @@ final class SmsVerification implements ActionControllerInterface
         );
 
         $this->lotteryFacade->createLotteryTicket($user, true);
+
+        $this->sendWelcomeMessage->sendWelcomeMessage($user);
 
         $game->setView(GameController::DEFAULT_VIEW);
 
