@@ -1,0 +1,48 @@
+{% extends "html/npcdefaults.twig" %}
+{% from 'html/macros.twig' import translationSwitcher %}
+
+{% block body %}
+{% include 'html/breadcrumb.twig' %}
+
+<h1>Fraktion Einstellungen</h1>
+
+<div style="display: grid; grid-template-columns: 50% 50%; grid-gap: 20px;">
+    <div>
+        <form action="/npc/index.php" method="post" name="settingsform" id="settingsform">
+            <div>
+                <h2>Willkommensnachricht bearbeiten</h2>
+                <textarea name="welcomemessage" id="welcomemessage" rows="15"
+                    style="width: 100%;">{{ FACTION.getWelcomeMessage ?? '' }}</textarea>
+                <br><br>
+                <input type="submit" class="button" name="B_SAVE_WELCOME_MESSAGE" value="Speichern"
+                    id="savewelcomemessagebutton" />
+            </div>
+        </form>
+    </div>
+
+    <div>
+        {% if FACTION.getWelcomeMessage %}
+        <h2>Aktuelle Willkommensnachricht</h2>
+        <table class="tcal">
+            <tr>
+                {{ translationSwitcher(HAS_TRANSLATION, 'welcomeMessage', 'Nachricht übersetzen') }}
+            </tr>
+        </table>
+        <table class="tcal">
+            <tr>
+                <td style="vertical-align: top;">
+                    <span id="welcomeMessage" class="translatable-content">
+                        {% autoescape false %}
+                        {{ FACTION.getWelcomeMessage|bbcode|nl2br }}
+                        {% endautoescape %}
+                    </span>
+                </td>
+            </tr>
+        </table>
+        {% else %}
+        <h2>Aktuelle Willkommensnachricht</h2>
+        <p>Keine Willkommensnachricht vorhanden.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

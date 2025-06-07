@@ -8,7 +8,7 @@
     <script src="/static/js/scriptaculous/scriptaculous.js"></script>
     <script src="/static/js/starmap.js"></script>
     <script src="/static/js/default.js"></script>
-    <title>Bauplan erstellen</title>
+    <title>Settings</title>
     <script>
         var gfx_path = '/assets';
     </script>
@@ -83,51 +83,39 @@
             <div id="innerContent" class="innerContent">
                 <div class="box">
     <div class="box_title" style="text-align: left">/
-                <a href="/npc/index.php?SHOW_BUILDPLAN_CREATOR=1">
-            Bauplan erstellen
+                <a href="/npc/?SHOW_NPC_SETTINGS=1">
+            Settings
         </a>
                     </div>
 </div>
 <br>
 <div id="result" style="display: none;">..</div>
 
-<div>
-        <h2>Spieler und Rumpf ausw&auml;hlen</h2>
-        <div>
-<a href="?SHOW_BUILDPLAN_CREATOR=1&amp;userId=10"><strong><span style="color: #6699CC">Vereinte F&ouml;deration der Planeten</span></strong> (10)</a>
+<h1>Fraktion Einstellungen</h1>
+
+<div style="display: grid; grid-template-columns: 50% 50%; grid-gap: 20px;">
+    <div>
+        <form action="/npc/index.php" method="post" name="settingsform" id="settingsform">
+            <div>
+                <h2>Willkommensnachricht bearbeiten</h2>
+                <textarea name="welcomemessage" id="welcomemessage" rows="15" style="width: 100%;"></textarea>
+                <br><br>
+                <input type="submit" class="button" name="B_SAVE_WELCOME_MESSAGE" value="Speichern" id="savewelcomemessagebutton">
+            </div>
+        </form>
     </div>
-        <div>
-<a href="?SHOW_BUILDPLAN_CREATOR=1&amp;userId=11"><strong><span style="color: #055415">Romulanisches Sternenimperium</span> </strong> (11)</a>
-    </div>
-        <div>
-<a href="?SHOW_BUILDPLAN_CREATOR=1&amp;userId=12"><strong><span style="color: #760505">Klingonisches Reich</span></strong> (12)</a>
-    </div>
-        <div>
-<a href="?SHOW_BUILDPLAN_CREATOR=1&amp;userId=13"><strong><span style="color: #999900">Cardassianische Union</span></strong> (13)</a>
-    </div>
-        <div>
-<a href="?SHOW_BUILDPLAN_CREATOR=1&amp;userId=14"><span style="color: #FF8000"><strong>Ferengi Allianz</strong></span> (14)</a>
-    </div>
-        <div>
-<a href="?SHOW_BUILDPLAN_CREATOR=1&amp;userId=15"><strong><span style="color: 552222">Pakled</span></strong> (NPC) (15)</a>
-    </div>
-        <div>
-<a href="?SHOW_BUILDPLAN_CREATOR=1&amp;userId=17"><strong><span style="color: #9b734d">Kazon</span></strong> (KI-NPC) (17)</a>
-    </div>
-        <div>
-<a href="?SHOW_BUILDPLAN_CREATOR=1&amp;userId=19"><strong><span style="color: #006400">Borg Kollektiv</span></strong> (19)</a>
-    </div>
-        <div>
-<a href="?SHOW_BUILDPLAN_CREATOR=1&amp;userId=101">Siedler 101 (101)</a>
-    </div>
-        <div>
-<a href="?SHOW_BUILDPLAN_CREATOR=1&amp;userId=102">Siedler 102 (102)</a>
-    </div>
-    
-    </div>
+
+    <div>
+                <h2>Aktuelle Willkommensnachricht</h2>
+        <p>Keine Willkommensnachricht vorhanden.</p>
+            </div>
+</div>
             </div>
         </div>
     </div>
-    </body>
+    <script>
+            initTranslations();
+        </script>
+</body>
 
 </html>

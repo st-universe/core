@@ -249,7 +249,8 @@ canColonize, closestAnomalyDistance, storedShuttleCount, closescolonydistance) %
             {% endif %}
             {% if SPACECRAFT.getLss and closescolonydistance %}
             <br />
-            <span style="border: 2px solid {{ gradientColor(closescolonydistance, 1, wrapper.getSensorRange * 2) }}"
+            <span
+                style="border: 2px solid {{ gradientColorOverLimit(closescolonydistance, 1, wrapper.getSensorRange * 2) }}"
                 title="Es wurde eine kolonisierbare Kolonie in der Nähe detektiert">
                 {% if SPACECRAFT.getSystem %}
                 Kolonisierbare Kolonie in {{ closescolonydistance }} Feldern

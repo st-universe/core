@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250605061701 extends AbstractMigration
+final class Version20250606155107 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -552,7 +552,7 @@ final class Version20250605061701 extends AbstractMigration
             CREATE INDEX dockingrights_station_idx ON stu_dockingrights (station_id)
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE TABLE stu_factions (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL, description CLOB NOT NULL, darker_color VARCHAR(255) NOT NULL, chooseable BOOLEAN NOT NULL, player_limit INTEGER NOT NULL, start_building_id INTEGER NOT NULL, start_research_id INTEGER DEFAULT NULL, start_map_id INTEGER DEFAULT NULL, close_combat_score INTEGER DEFAULT NULL, positive_effect_primary_commodity_id INTEGER DEFAULT NULL, positive_effect_secondary_commodity_id INTEGER DEFAULT NULL, CONSTRAINT FK_55D1F3CC237EF159 FOREIGN KEY (start_research_id) REFERENCES stu_research (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_55D1F3CC990AC8F4 FOREIGN KEY (start_map_id) REFERENCES stu_map (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_55D1F3CCFDE04DC5 FOREIGN KEY (positive_effect_primary_commodity_id) REFERENCES stu_commodity (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_55D1F3CC5840AFBB FOREIGN KEY (positive_effect_secondary_commodity_id) REFERENCES stu_commodity (id) NOT DEFERRABLE INITIALLY IMMEDIATE)
+            CREATE TABLE stu_factions (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL, description CLOB NOT NULL, darker_color VARCHAR(255) NOT NULL, chooseable BOOLEAN NOT NULL, player_limit INTEGER NOT NULL, start_building_id INTEGER NOT NULL, start_research_id INTEGER DEFAULT NULL, start_map_id INTEGER DEFAULT NULL, close_combat_score INTEGER DEFAULT NULL, positive_effect_primary_commodity_id INTEGER DEFAULT NULL, positive_effect_secondary_commodity_id INTEGER DEFAULT NULL, welcome_message CLOB DEFAULT NULL, CONSTRAINT FK_55D1F3CC237EF159 FOREIGN KEY (start_research_id) REFERENCES stu_research (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_55D1F3CC990AC8F4 FOREIGN KEY (start_map_id) REFERENCES stu_map (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_55D1F3CCFDE04DC5 FOREIGN KEY (positive_effect_primary_commodity_id) REFERENCES stu_commodity (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_55D1F3CC5840AFBB FOREIGN KEY (positive_effect_secondary_commodity_id) REFERENCES stu_commodity (id) NOT DEFERRABLE INITIALLY IMMEDIATE)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE INDEX IDX_55D1F3CC237EF159 ON stu_factions (start_research_id)
