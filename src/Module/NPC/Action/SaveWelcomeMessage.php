@@ -35,6 +35,11 @@ final class SaveWelcomeMessage implements ActionControllerInterface
         $factionId = $user->getFactionId();
         $welcomeMessage = request::postString('welcomemessage');
 
+
+        if ($welcomeMessage === false) {
+            $welcomeMessage = '';
+        }
+
         $faction = $this->factionRepository->find($factionId);
         if ($faction === null) {
             throw new AccessViolationException();
