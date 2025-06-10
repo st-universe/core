@@ -1,7 +1,9 @@
 <div id="lss-mode-container">
+    {% set lss = WRAPPER.getLssSystemData %}
     {% for mode in LSS_MODES %}
-    <div class="lss-mode-row {% if SPACECRAFT.getLssMode == mode %}active{% endif %}"
-        onclick="selectLssMode({{ mode.value }})">
+    {% set active = lss.getMode == mode ? 'active' : '' %}
+    <div class="lss-mode-row {{ active }}"
+        onclick="selectLssMode({{ mode.value }});">
         {{ mode.getDescription }}
     </div>
     {% endfor %}

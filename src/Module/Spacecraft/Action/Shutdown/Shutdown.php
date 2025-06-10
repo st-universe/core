@@ -65,7 +65,7 @@ final class Shutdown implements ActionControllerInterface
                 $this->alertReactionFacade->doItAll($traktoredShipWrapper, $game, $ship);
             }
 
-            if ($ship->isDestroyed()) {
+            if ($ship->getCondition()->isDestroyed()) {
                 return;
             }
         }

@@ -152,7 +152,7 @@ final class IonStormHandler implements AnomalyHandlerInterface
                     $userId,
                     $informations,
                     $spacecraft->getType()->getMessageFolderType(),
-                    $spacecraft->isDestroyed() ? null : $spacecraft->getHref()
+                    $spacecraft->getCondition()->isDestroyed() ? null : $spacecraft->getHref()
                 );
             }
         }
@@ -251,7 +251,7 @@ final class IonStormHandler implements AnomalyHandlerInterface
 
         $this->applyDamage->damage($damageWrapper, $wrapper, $informations);
 
-        if ($spacecraft->isDestroyed()) {
+        if ($spacecraft->getCondition()->isDestroyed()) {
 
             $this->spacecraftDestruction->destroy(
                 $anomaly,

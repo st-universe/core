@@ -84,10 +84,8 @@ class RepairUtilTest extends StuTestCase
 
         $this->ship->shouldReceive('getMaxHull')
             ->withNoArgs()->once()->andReturn(100);
-        $this->ship->shouldReceive('getHull')
+        $this->ship->shouldReceive('getCondition->getHull')
             ->withNoArgs()->once()->andReturn(100);
-        $this->ship->shouldReceive('getRepairRate')
-            ->withNoArgs()->once()->andReturn(10);
 
         $this->ship->shouldReceive('getId')
             ->withNoArgs()->once()->andReturn(42);
@@ -106,11 +104,9 @@ class RepairUtilTest extends StuTestCase
             ->withNoArgs()->once()->andReturn([]);
 
         $this->ship->shouldReceive('getMaxHull')
-            ->withNoArgs()->once()->andReturn(100);
-        $this->ship->shouldReceive('getHull')
-            ->withNoArgs()->once()->andReturn(79);
-        $this->ship->shouldReceive('getRepairRate')
-            ->withNoArgs()->once()->andReturn(10);
+            ->withNoArgs()->once()->andReturn(1000);
+        $this->ship->shouldReceive('getCondition->getHull')
+            ->withNoArgs()->once()->andReturn(790);
 
         $this->ship->shouldReceive('getId')
             ->withNoArgs()->once()->andReturn(42);
@@ -133,10 +129,8 @@ class RepairUtilTest extends StuTestCase
 
         $this->ship->shouldReceive('getMaxHull')
             ->withNoArgs()->once()->andReturn(100);
-        $this->ship->shouldReceive('getHull')
+        $this->ship->shouldReceive('getCondition->getHull')
             ->withNoArgs()->once()->andReturn(100);
-        $this->ship->shouldReceive('getRepairRate')
-            ->withNoArgs()->once()->andReturn(10);
 
         $this->ship->shouldReceive('getId')
             ->withNoArgs()->once()->andReturn(42);
@@ -152,11 +146,9 @@ class RepairUtilTest extends StuTestCase
     public function testGetRepairDurationWithDamagedSystemsAndInactiveRepairStation(): void
     {
         $this->ship->shouldReceive('getMaxHull')
-            ->withNoArgs()->once()->andReturn(100);
-        $this->ship->shouldReceive('getHull')
-            ->withNoArgs()->once()->andReturn(60);
-        $this->ship->shouldReceive('getRepairRate')
-            ->withNoArgs()->once()->andReturn(10);
+            ->withNoArgs()->once()->andReturn(1000);
+        $this->ship->shouldReceive('getCondition->getHull')
+            ->withNoArgs()->once()->andReturn(600);
 
         $this->wrapper->shouldReceive('getDamagedSystems')
             ->withNoArgs()->once()->andReturn([]);
@@ -201,11 +193,9 @@ class RepairUtilTest extends StuTestCase
             ]);
 
         $this->ship->shouldReceive('getMaxHull')
-            ->withNoArgs()->once()->andReturn(100);
-        $this->ship->shouldReceive('getHull')
-            ->withNoArgs()->once()->andReturn(80);
-        $this->ship->shouldReceive('getRepairRate')
-            ->withNoArgs()->once()->andReturn(10);
+            ->withNoArgs()->once()->andReturn(1000);
+        $this->ship->shouldReceive('getCondition->getHull')
+            ->withNoArgs()->once()->andReturn(800);
 
         $this->ship->shouldReceive('getId')
             ->withNoArgs()->once()->andReturn(42);
@@ -233,11 +223,9 @@ class RepairUtilTest extends StuTestCase
     public function testGetRepairDurationPreviewWithDamagedHullAndNotOverColony(): void
     {
         $this->ship->shouldReceive('getMaxHull')
-            ->withNoArgs()->once()->andReturn(100);
-        $this->ship->shouldReceive('getHull')
-            ->withNoArgs()->once()->andReturn(60);
-        $this->ship->shouldReceive('getRepairRate')
-            ->withNoArgs()->once()->andReturn(10);
+            ->withNoArgs()->once()->andReturn(1000);
+        $this->ship->shouldReceive('getCondition->getHull')
+            ->withNoArgs()->once()->andReturn(600);
 
         $this->wrapper->shouldReceive('getDamagedSystems')
             ->withNoArgs()->once()->andReturn([]);
@@ -253,11 +241,9 @@ class RepairUtilTest extends StuTestCase
     public function testGetRepairDurationPreviewWithDamagedHullAndOverColonyWithInactiveRepairStation(): void
     {
         $this->ship->shouldReceive('getMaxHull')
-            ->withNoArgs()->once()->andReturn(100);
-        $this->ship->shouldReceive('getHull')
-            ->withNoArgs()->once()->andReturn(60);
-        $this->ship->shouldReceive('getRepairRate')
-            ->withNoArgs()->once()->andReturn(10);
+            ->withNoArgs()->once()->andReturn(1000);
+        $this->ship->shouldReceive('getCondition->getHull')
+            ->withNoArgs()->once()->andReturn(600);
 
         $this->wrapper->shouldReceive('getDamagedSystems')
             ->withNoArgs()->once()->andReturn([]);
@@ -280,11 +266,9 @@ class RepairUtilTest extends StuTestCase
     public function testGetRepairDurationPreviewWithDamagedHullAndOverColonyWithActiveRepairStation(): void
     {
         $this->ship->shouldReceive('getMaxHull')
-            ->withNoArgs()->once()->andReturn(100);
-        $this->ship->shouldReceive('getHull')
-            ->withNoArgs()->once()->andReturn(50);
-        $this->ship->shouldReceive('getRepairRate')
-            ->withNoArgs()->once()->andReturn(10);
+            ->withNoArgs()->once()->andReturn(1000);
+        $this->ship->shouldReceive('getCondition->getHull')
+            ->withNoArgs()->once()->andReturn(500);
 
         $this->wrapper->shouldReceive('getDamagedSystems')
             ->withNoArgs()->once()->andReturn([]);

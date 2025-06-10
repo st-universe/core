@@ -69,12 +69,12 @@ final class SpacecraftAttackCore implements SpacecraftAttackCoreInterface
 
         if ($isActiveTractorShipWarped) {
             //Alarm-Rot check for ship
-            if (!$ship->isDestroyed()) {
+            if (!$ship->getCondition()->isDestroyed()) {
                 $this->alertReactionFacade->doItAll($wrapper, $informations);
             }
 
             //Alarm-Rot check for traktor ship
-            if (!$target->isDestroyed()) {
+            if (!$target->getCondition()->isDestroyed()) {
                 $this->alertReactionFacade->doItAll($targetWrapper, $informations);
             }
         }

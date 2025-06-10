@@ -60,7 +60,7 @@ class TholianWebConsequenceTest extends StuTestCase
     {
         $messages = $this->mock(MessageCollectionInterface::class);
 
-        $this->ship->shouldReceive('isDestroyed')
+        $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(true);
@@ -77,7 +77,7 @@ class TholianWebConsequenceTest extends StuTestCase
         $messages = $this->mock(MessageCollectionInterface::class);
         $message = $this->mock(MessageInterface::class);
 
-        $this->ship->shouldReceive('isDestroyed')
+        $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -117,7 +117,7 @@ class TholianWebConsequenceTest extends StuTestCase
         $web = $this->mock(TholianWebInterface::class);
         $message = $this->mock(MessageInterface::class);
 
-        $this->ship->shouldReceive('isDestroyed')
+        $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -161,7 +161,7 @@ class TholianWebConsequenceTest extends StuTestCase
         $web = $this->mock(TholianWebInterface::class);
         $message = $this->mock(MessageInterface::class);
 
-        $this->ship->shouldReceive('isDestroyed')
+        $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -217,7 +217,7 @@ class TholianWebConsequenceTest extends StuTestCase
         $messages = $this->mock(MessageCollectionInterface::class);
         $message = $this->mock(MessageInterface::class);
 
-        $this->ship->shouldReceive('isDestroyed')
+        $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);

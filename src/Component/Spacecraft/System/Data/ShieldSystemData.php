@@ -34,7 +34,7 @@ class ShieldSystemData extends AbstractSystemData
     {
         return $this->getStatusBar(
             _('Schilde'),
-            $this->spacecraft->getShield(),
+            $this->spacecraft->getCondition()->getShield(),
             $this->spacecraft->getMaxShield(),
             $this->spacecraft->isShielded() ? StatusBarColorEnum::STATUSBAR_SHIELD_ON : StatusBarColorEnum::STATUSBAR_SHIELD_OFF
         )
@@ -45,7 +45,7 @@ class ShieldSystemData extends AbstractSystemData
     {
         return $this->getStatusBar(
             _('Schilde'),
-            $this->spacecraft->getShield(),
+            $this->spacecraft->getCondition()->getShield(),
             $this->spacecraft->getMaxShield(),
             $this->spacecraft->isShielded() ? StatusBarColorEnum::STATUSBAR_SHIELD_ON : StatusBarColorEnum::STATUSBAR_SHIELD_OFF
         )

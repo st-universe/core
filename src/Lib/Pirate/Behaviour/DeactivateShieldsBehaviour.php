@@ -24,7 +24,7 @@ class DeactivateShieldsBehaviour implements PirateBehaviourInterface
 
         foreach ($fleetWrapper->getShipWrappers() as $wrapper) {
             $ship = $wrapper->get();
-            if ($ship->getShield() === $ship->getMaxShield()) {
+            if ($ship->getCondition()->getShield() === $ship->getMaxShield()) {
                 continue;
             }
 

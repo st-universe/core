@@ -19,7 +19,7 @@ abstract class AbstractFlightConsequence implements FlightConsequenceInterface
         MessageCollectionInterface $messages
     ): void {
 
-        if ($wrapper->get()->isDestroyed()) {
+        if ($wrapper->get()->getCondition()->isDestroyed()) {
             return;
         }
 

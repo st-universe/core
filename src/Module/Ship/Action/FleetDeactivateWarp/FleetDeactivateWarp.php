@@ -49,7 +49,7 @@ final class FleetDeactivateWarp implements ActionControllerInterface
                 $this->alertReactionFacade->doItAll($tractoredShipWrapper, $game, $tractoringShipWrapper);
             }
 
-            if ($ship->isDestroyed()) {
+            if ($ship->getCondition()->isDestroyed()) {
                 return;
             }
         }

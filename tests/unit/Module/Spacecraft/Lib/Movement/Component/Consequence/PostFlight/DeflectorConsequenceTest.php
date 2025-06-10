@@ -56,7 +56,7 @@ class DeflectorConsequenceTest extends StuTestCase
     {
         $messages = $this->mock(MessageCollectionInterface::class);
 
-        $this->ship->shouldReceive('isDestroyed')
+        $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(true);
@@ -72,7 +72,7 @@ class DeflectorConsequenceTest extends StuTestCase
     {
         $messages = $this->mock(MessageCollectionInterface::class);
 
-        $this->ship->shouldReceive('isDestroyed')
+        $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -94,7 +94,7 @@ class DeflectorConsequenceTest extends StuTestCase
         $fieldType = $this->mock(MapFieldTypeInterface::class);
         $waypoint = $this->mock(MapInterface::class);
 
-        $this->ship->shouldReceive('isDestroyed')
+        $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -134,7 +134,7 @@ class DeflectorConsequenceTest extends StuTestCase
         $fieldType = $this->mock(MapFieldTypeInterface::class);
         $waypoint = $this->mock(MapInterface::class);
 
-        $this->ship->shouldReceive('isDestroyed')
+        $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->twice()
             ->andReturn(false, true);
@@ -193,7 +193,7 @@ class DeflectorConsequenceTest extends StuTestCase
         $fieldType = $this->mock(MapFieldTypeInterface::class);
         $waypoint = $this->mock(MapInterface::class);
 
-        $this->ship->shouldReceive('isDestroyed')
+        $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->twice()
             ->andReturn(false, false);
@@ -256,7 +256,7 @@ class DeflectorConsequenceTest extends StuTestCase
         $fieldType = $this->mock(MapFieldTypeInterface::class);
         $waypoint = $this->mock(MapInterface::class);
 
-        $this->ship->shouldReceive('isDestroyed')
+        $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -316,7 +316,7 @@ class DeflectorConsequenceTest extends StuTestCase
         $fieldType = $this->mock(MapFieldTypeInterface::class);
         $waypoint = $this->mock(MapInterface::class);
 
-        $this->ship->shouldReceive('isDestroyed')
+        $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -383,7 +383,7 @@ class DeflectorConsequenceTest extends StuTestCase
         $epsSystem = $this->mock(EpsSystemData::class);
         $waypoint = $this->mock(MapInterface::class);
 
-        $this->ship->shouldReceive('isDestroyed')
+        $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -462,7 +462,7 @@ class DeflectorConsequenceTest extends StuTestCase
         $epsSystem = $this->mock(EpsSystemData::class);
         $waypoint = $this->mock(MapInterface::class);
 
-        $this->ship->shouldReceive('isDestroyed')
+        $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);

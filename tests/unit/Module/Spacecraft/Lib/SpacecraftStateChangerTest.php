@@ -105,17 +105,13 @@ class SpacecraftStateChangerTest extends StuTestCase
     {
         $this->ship->shouldReceive('getState')
             ->withNoArgs()
-            ->andReturn(SpacecraftStateEnum::UNDER_SCRAPPING);
-        $this->ship->shouldReceive('isUnderRepair')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(true);
+            ->andReturn(SpacecraftStateEnum::REPAIR_ACTIVE);
 
         $this->cancelRepair->shouldReceive('cancelRepair')
             ->with($this->ship)
             ->once();
 
-        $this->ship->shouldReceive('setState')
+        $this->ship->shouldReceive('getCondition->setState')
             ->with(SpacecraftStateEnum::NONE)
             ->once();
 
@@ -132,16 +128,12 @@ class SpacecraftStateChangerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftStateEnum::ASTRO_FINALIZING);
-        $this->ship->shouldReceive('isUnderRepair')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(false);
 
         $this->astroEntryLib->shouldReceive('cancelAstroFinalizing')
             ->with($this->wrapper)
             ->once();
 
-        $this->ship->shouldReceive('setState')
+        $this->ship->shouldReceive('getCondition->setState')
             ->with(SpacecraftStateEnum::NONE)
             ->once();
 
@@ -158,16 +150,12 @@ class SpacecraftStateChangerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftStateEnum::WEB_SPINNING);
-        $this->ship->shouldReceive('isUnderRepair')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(false);
 
         $this->tholianWebUtil->shouldReceive('releaseWebHelper')
             ->with($this->wrapper)
             ->once();
 
-        $this->ship->shouldReceive('setState')
+        $this->ship->shouldReceive('getCondition->setState')
             ->with(SpacecraftStateEnum::NONE)
             ->once();
 

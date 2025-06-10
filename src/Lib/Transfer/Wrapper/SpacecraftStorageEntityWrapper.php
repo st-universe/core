@@ -93,7 +93,7 @@ class SpacecraftStorageEntityWrapper implements StorageEntityWrapperInterface
     #[Override]
     public function getBeamFactor(): int
     {
-        return $this->spacecraft->getBeamFactor();
+        return $this->spacecraft->getRump()->getBeamFactor();
     }
 
     #[Override]

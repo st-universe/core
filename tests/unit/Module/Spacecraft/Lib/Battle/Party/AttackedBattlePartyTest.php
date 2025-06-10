@@ -41,11 +41,11 @@ class AttackedBattlePartyTest extends StuTestCase
         $this->wrapper->shouldReceive('get->getId')
             ->withNoArgs()
             ->andReturn(456);
-        $this->wrapper->shouldReceive('get->isDestroyed')
+        $this->wrapper->shouldReceive('get->getCondition->isDestroyed')
             ->withNoArgs()
             ->zeroOrMoreTimes()
             ->andReturn(false);
-        $this->wrapper->shouldReceive('get->isDisabled')
+        $this->wrapper->shouldReceive('get->getCondition->isDisabled')
             ->withNoArgs()
             ->zeroOrMoreTimes()
             ->andReturn(false);
@@ -129,11 +129,11 @@ class AttackedBattlePartyTest extends StuTestCase
         $dockedToUser->shouldReceive('isNpc')
             ->withNoArgs()
             ->andReturn(false);
-        $dockedToStation->shouldReceive('isDestroyed')
+        $dockedToStation->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->zeroOrMoreTimes()
             ->andReturn(false);
-        $dockedToStation->shouldReceive('isDisabled')
+        $dockedToStation->shouldReceive('getCondition->isDisabled')
             ->withNoArgs()
             ->zeroOrMoreTimes()
             ->andReturn(false);
@@ -175,11 +175,11 @@ class AttackedBattlePartyTest extends StuTestCase
         $dockedToUser->shouldReceive('isNpc')
             ->withNoArgs()
             ->andReturn(false);
-        $dockedToStation->shouldReceive('isDestroyed')
+        $dockedToStation->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->zeroOrMoreTimes()
             ->andReturn(false);
-        $dockedToStation->shouldReceive('isDisabled')
+        $dockedToStation->shouldReceive('getCondition->isDisabled')
             ->withNoArgs()
             ->zeroOrMoreTimes()
             ->andReturn(false);
@@ -269,10 +269,10 @@ class AttackedBattlePartyTest extends StuTestCase
         $secondShip->shouldReceive('isCloaked')
             ->withNoArgs()
             ->andReturn(false);
-        $secondShip->shouldReceive('isDestroyed')
+        $secondShip->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->andReturn(false);
-        $secondShip->shouldReceive('isDisabled')
+        $secondShip->shouldReceive('getCondition->isDisabled')
             ->withNoArgs()
             ->andReturn(false);
 
@@ -289,11 +289,11 @@ class AttackedBattlePartyTest extends StuTestCase
         $dockedToUser->shouldReceive('isNpc')
             ->withNoArgs()
             ->andReturn(false);
-        $dockedToStation->shouldReceive('isDestroyed')
+        $dockedToStation->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->zeroOrMoreTimes()
             ->andReturn(false);
-        $dockedToStation->shouldReceive('isDisabled')
+        $dockedToStation->shouldReceive('getCondition->isDisabled')
             ->withNoArgs()
             ->zeroOrMoreTimes()
             ->andReturn(false);
@@ -343,10 +343,10 @@ class AttackedBattlePartyTest extends StuTestCase
         $secondShip->shouldReceive('isCloaked')
             ->withNoArgs()
             ->andReturn(true);
-        $secondShip->shouldReceive('isDestroyed')
+        $secondShip->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->andReturn(false);
-        $secondShip->shouldReceive('isDisabled')
+        $secondShip->shouldReceive('getCondition->isDisabled')
             ->withNoArgs()
             ->andReturn(false);
 

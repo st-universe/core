@@ -61,7 +61,7 @@ class StationConstructionHandler implements SpacecraftTickHandlerInterface
         if ($isUnderConstruction) {
             // raise hull
             $increase = (int)ceil($station->getMaxHull() / (2 * $station->getRump()->getBuildtime()));
-            $station->setHuell($station->getHull() + $increase);
+            $station->getCondition()->changeHull($increase);
         }
 
         if ($progress->getRemainingTicks() === 1) {

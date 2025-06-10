@@ -108,7 +108,7 @@ class SpacecraftConfigurator implements SpacecraftConfiguratorInterface
 
         $ship = $this->wrapper->get();
 
-        $ship->setShield($ship->getMaxShield());
+        $ship->getCondition()->setShield($ship->getMaxShield());
 
         return $this;
     }

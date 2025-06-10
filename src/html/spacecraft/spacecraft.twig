@@ -31,6 +31,7 @@
 {% endif %}
 {% set SPACECRAFT = WRAPPER.get %}
 {% set spacecraftId = SPACECRAFT.getId %}
+{% set condition = SPACECRAFT.getCondition %}
 <form action="{{ SPACECRAFT.getType.getModuleView.getPhpPage }}" method="post" name="shipform" id="shipform"
 	onkeydown="return event.key != 'Enter';">
 	<input type="hidden" name="id" value="{{ spacecraftId }}" />
@@ -95,14 +96,14 @@
 				{{ SPACECRAFT.getPosX }}|{{ SPACECRAFT.getPosY }}
 			</td>
 			<td style="text-align: center;">
-				{{ SPACECRAFT.getHull }}/{{ SPACECRAFT.getMaxHull }}
+				{{ condition.getHull }}/{{ SPACECRAFT.getMaxHull }}
 			</td>
 			<td style="text-align: center;">
 				{% if SPACECRAFT.isShielded %}
-				<span class="activeshield">{{ SPACECRAFT.getShield }}/{{ SPACECRAFT.getMaxShield }}</span>
+				<span class="activeshield">{{ condition.getShield }}/{{ SPACECRAFT.getMaxShield }}</span>
 				{% else %}
-				<span>{{ SPACECRAFT.getShield }}/{{ SPACECRAFT.getMaxShield }}</span>
-				{% if SPACECRAFT.getShield < SPACECRAFT.getMaxShield %} (+{{ WRAPPER.getShieldRegenerationRate }}) {%
+				<span>{{ condition.getShield }}/{{ SPACECRAFT.getMaxShield }}</span>
+				{% if condition.getShield < SPACECRAFT.getMaxShield %} (+{{ WRAPPER.getShieldRegenerationRate }}) {%
 					endif %} {% endif %} </td>
 					{% if SPACECRAFT.hasWarpdrive %}
 			<td style="text-align: center;">
@@ -153,10 +154,12 @@
 					onmouseover="cp('shipcom','buttons/msg2');" onmouseout="cp('shipcom','buttons/msg1');">
 					<img src="/assets/buttons/msg1.png" title="Kommunikation" name="shipcom" />
 				</a>
+				{% if SPACECRAFT.hasLss %}
 				<a href="javascript:void(0);" onclick="showLSSFilter();"
 					onmouseover="cp('actlss','buttons/lss_button2');" onmouseout="cp('actlss','buttons/lss_button1');">
 					<img src="/assets/buttons/lss_button1.png" title="LSS Filtermenü öffnen" name="actlss" />
 				</a>
+				{% endif %}
 				{% if IS_MAP_BUTTON_VISIBLE %}
 				<a href="javascript:void(0);" onclick="openStarMap(this,{{ spacecraftId }});"
 					onmouseover="cp('shimap','buttons/map2');" onmouseout="cp('shimap','buttons/map1');">
@@ -297,7 +300,7 @@
 	</table>
 	<br />
 </form>
-{% if SPACECRAFT.hasNbsLss %}
+{% if SPACECRAFT.hasNbs %}
 <table class="tcal">
 	<tr>
 		<th>

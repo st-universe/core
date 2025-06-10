@@ -69,7 +69,7 @@ final class RepairShip implements ActionControllerInterface
         foreach ($station->getDockedShips() as $dockedShip) {
             $wrapper = $this->spacecraftWrapperFactory->wrapShip($dockedShip);
             if (
-                !$wrapper->canBeRepaired() || $dockedShip->isUnderRepair()
+                !$wrapper->canBeRepaired() || $dockedShip->getCondition()->isUnderRepair()
             ) {
                 continue;
             }
@@ -91,7 +91,7 @@ final class RepairShip implements ActionControllerInterface
         $obj->setShip($ship);
         $this->stationShipRepairRepository->save($obj);
 
-        $ship->setState(SpacecraftStateEnum::REPAIR_PASSIVE);
+        $ship->getCondition()->setState(SpacecraftStateEnum::REPAIR_PASSIVE);
 
         $this->shipRepository->save($ship);
 

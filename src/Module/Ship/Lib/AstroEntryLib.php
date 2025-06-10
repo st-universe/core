@@ -27,7 +27,7 @@ final class AstroEntryLib implements AstroEntryLibInterface
 
         $ship = $wrapper->get();
 
-        $ship->setState(SpacecraftStateEnum::NONE);
+        $ship->getCondition()->setState(SpacecraftStateEnum::NONE);
         $astroLab = $wrapper->getAstroLaboratorySystemData();
         if ($astroLab === null) {
             throw new RuntimeException('this should not happen');
@@ -49,7 +49,7 @@ final class AstroEntryLib implements AstroEntryLibInterface
     {
         $ship = $wrapper->get();
 
-        $ship->setState(SpacecraftStateEnum::NONE);
+        $ship->getCondition()->setState(SpacecraftStateEnum::NONE);
 
         $astroLab = $wrapper->getAstroLaboratorySystemData();
         if ($astroLab === null) {

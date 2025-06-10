@@ -14,7 +14,7 @@ class ShipTest extends StuTestCase
     #[Override]
     public function setUp(): void
     {
-        $this->subject = new Ship();
+        $this->subject = new Ship($this->mock(SpacecraftCondition::class));
     }
 
     public function testsetLocationWhenMap(): void

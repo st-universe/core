@@ -54,7 +54,7 @@ class DeactivateTranswarpConsequenceTest extends StuTestCase
     {
         $messages = $this->mock(MessageCollectionInterface::class);
 
-        $this->ship->shouldReceive('isDestroyed')
+        $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(true);
@@ -70,7 +70,7 @@ class DeactivateTranswarpConsequenceTest extends StuTestCase
     {
         $messages = $this->mock(MessageCollectionInterface::class);
 
-        $this->ship->shouldReceive('isDestroyed')
+        $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -93,7 +93,7 @@ class DeactivateTranswarpConsequenceTest extends StuTestCase
     {
         $messages = $this->mock(MessageCollectionInterface::class);
 
-        $this->ship->shouldReceive('isDestroyed')
+        $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -123,7 +123,7 @@ class DeactivateTranswarpConsequenceTest extends StuTestCase
     {
         $messages = $this->mock(MessageCollectionInterface::class);
 
-        $this->ship->shouldReceive('isDestroyed')
+        $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);

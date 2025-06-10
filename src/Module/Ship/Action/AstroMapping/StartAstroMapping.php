@@ -60,7 +60,7 @@ final class StartAstroMapping implements ActionControllerInterface
             return;
         }
 
-        if ($ship->isUnderRepair()) {
+        if ($ship->getCondition()->isUnderRepair()) {
             $game->addInformation(_('Kartographieren nicht möglich. Das Schiff wird derzeit repariert.'));
             return;
         }
@@ -84,7 +84,7 @@ final class StartAstroMapping implements ActionControllerInterface
         $this->astroEntryRepository->save($entry);
 
         $epsSystem->lowerEps(AstroLaboratoryShipSystem::FINALIZING_ENERGY_COST)->update();
-        $ship->setState(SpacecraftStateEnum::ASTRO_FINALIZING);
+        $ship->getCondition()->setState(SpacecraftStateEnum::ASTRO_FINALIZING);
 
         $astroLab = $wrapper->getAstroLaboratorySystemData();
         if ($astroLab === null) {

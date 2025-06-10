@@ -7,6 +7,7 @@ namespace Stu\Lib\Map\VisualPanel\Layer;
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Spacecraftcount\SpacecraftCountLayerTypeEnum;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace\SubspaceLayerTypeEnum;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
 
@@ -20,7 +21,7 @@ interface PanelLayerCreationInterface
 
     public function addSubspaceLayer(int $id, SubspaceLayerTypeEnum $type): PanelLayerCreationInterface;
 
-    public function addBorderLayer(?SpacecraftInterface $currentSpacecraft, ?bool $isOnShipLevel): PanelLayerCreationInterface;
+    public function addBorderLayer(?SpacecraftWrapperInterface $currentWrapper, ?bool $isOnShipLevel): PanelLayerCreationInterface;
 
     public function addAnomalyLayer(): PanelLayerCreationInterface;
 

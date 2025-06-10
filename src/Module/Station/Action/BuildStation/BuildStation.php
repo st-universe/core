@@ -147,11 +147,11 @@ final class BuildStation implements ActionControllerInterface
         $rump = $plan->getRump();
 
         $station->setName(sprintf('%s in Bau', $rump->getName()));
-        $station->setHuell(intdiv($rump->getBaseHull(), 2));
         $station->setMaxHuell($rump->getBaseHull());
         $station->setRump($rump);
         $station->setBuildplan($plan);
-        $station->setState(SpacecraftStateEnum::UNDER_CONSTRUCTION);
+        $station->getCondition()->setHull(intdiv($rump->getBaseHull(), 2));
+        $station->getCondition()->setState(SpacecraftStateEnum::UNDER_CONSTRUCTION);
 
         $this->spacecraftRepository->save($station);
 

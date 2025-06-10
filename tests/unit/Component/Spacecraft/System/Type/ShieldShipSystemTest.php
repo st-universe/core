@@ -115,7 +115,7 @@ class ShieldShipSystemTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(false);
-        $this->ship->shouldReceive('getShield')
+        $this->ship->shouldReceive('getCondition->getShield')
             ->withNoArgs()
             ->once()
             ->andReturn(0);
@@ -144,7 +144,7 @@ class ShieldShipSystemTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(false);
-        $this->ship->shouldReceive('getShield')
+        $this->ship->shouldReceive('getCondition->getShield')
             ->withNoArgs()
             ->once()
             ->andReturn(42);
@@ -189,7 +189,7 @@ class ShieldShipSystemTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(false);
-        $this->ship->shouldReceive('getShield')
+        $this->ship->shouldReceive('getCondition->getShield')
             ->withNoArgs()
             ->once()
             ->andReturn(42);
@@ -235,7 +235,7 @@ class ShieldShipSystemTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(false);
-        $this->ship->shouldReceive('getShield')
+        $this->ship->shouldReceive('getCondition->getShield')
             ->withNoArgs()
             ->once()
             ->andReturn(42);
@@ -285,7 +285,7 @@ class ShieldShipSystemTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(false);
-        $this->ship->shouldReceive('getShield')
+        $this->ship->shouldReceive('getCondition->getShield')
             ->withNoArgs()
             ->once()
             ->andReturn(1);

@@ -51,7 +51,7 @@ final class Category implements ViewControllerInterface
             )
         );
         //only layers, that are known by user
-        $layers = $this->layerRepository->getKnownByUser($game->getUser()->getId());
+        $layers = $this->layerRepository->getKnownByUser($game->getUser());
 
         if ($layers === []) {
             return;

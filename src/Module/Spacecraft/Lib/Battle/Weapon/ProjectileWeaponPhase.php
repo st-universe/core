@@ -82,7 +82,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
 
             $this->applyDamage->damage($damage_wrapper, $targetWrapper, $message);
 
-            if ($target->isDestroyed()) {
+            if ($target->getCondition()->isDestroyed()) {
                 $this->checkForSpacecraftDestruction(
                     $attacker,
                     $targetWrapper,

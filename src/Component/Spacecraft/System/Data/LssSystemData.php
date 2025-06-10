@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace Stu\Component\Spacecraft\System\Data;
 
 use Override;
+use Stu\Component\Spacecraft\SpacecraftLssModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 
 class LssSystemData extends AbstractSystemData
 {
     public int $sensorRange  = 0;
+    public SpacecraftLssModeEnum $mode = SpacecraftLssModeEnum::NORMAL;
 
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
@@ -26,6 +28,17 @@ class LssSystemData extends AbstractSystemData
     {
         $this->sensorRange = $sensorRange;
 
+        return $this;
+    }
+
+    public function getMode(): SpacecraftLssModeEnum
+    {
+        return $this->mode;
+    }
+
+    public function setMode(SpacecraftLssModeEnum $lssMode): LssSystemData
+    {
+        $this->mode = $lssMode;
         return $this;
     }
 }

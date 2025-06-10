@@ -29,9 +29,9 @@ class TholianWeb extends Spacecraft implements TholianWebInterface
     #[OneToMany(targetEntity: 'Spacecraft', mappedBy: 'holdingWeb')]
     private Collection $capturedSpacecrafts;
 
-    public function __construct()
+    public function __construct(SpacecraftConditionInterface $spacecraftCondition)
     {
-        parent::__construct();
+        parent::__construct($spacecraftCondition);
         $this->capturedSpacecrafts = new ArrayCollection();
     }
 

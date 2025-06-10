@@ -7,6 +7,7 @@
     </tr>
     {% for wrapper in shipRepairProgress %}
     {% set ship = wrapper.get %}
+    {% set condition = wrapper.getCondition %}
     {% set shipId = ship.getId %}
     <tr style="height: 50px" class="row">
         <td style="text-align: center; vertical-align: middle;">
@@ -17,7 +18,7 @@
         </td>
         <td style="text-align: center; vertical-align: middle">
             <img src="/assets/buttons/modul_1.png" title="Hülle" style="width: 12px; height: 12px;" />
-            {{ ship.getHull }}/{{ ship.getMaxHull }}
+            {{ condition.getHull }}/{{ ship.getMaxHull }}
         </td>
         <td style="text-align: center; vertical-align: middle">
             {% for sys in wrapper.getDamagedSystems %}

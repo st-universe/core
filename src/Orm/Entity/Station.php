@@ -53,9 +53,9 @@ class Station extends Spacecraft implements StationInterface
     #[JoinColumn(name: 'influence_area_id', referencedColumnName: 'id')]
     private ?StarSystemInterface $influenceArea = null;
 
-    public function __construct()
+    public function __construct(SpacecraftConditionInterface $condition)
     {
-        parent::__construct();
+        parent::__construct($condition);
         $this->dockedShips = new ArrayCollection();
         $this->dockingPrivileges = new ArrayCollection();
     }
@@ -152,8 +152,10 @@ class Station extends Spacecraft implements StationInterface
     #[Override]
     public function getDockingSlotCount(): int
     {
-        return ($this->getState() === SpacecraftStateEnum::UNDER_CONSTRUCTION)
-            || ($this->getState() === SpacecraftStateEnum::UNDER_SCRAPPING)
+        $state = $this->getCondition()->getState();
+
+        return ($state === SpacecraftStateEnum::UNDER_CONSTRUCTION)
+            || ($state === SpacecraftStateEnum::UNDER_SCRAPPING)
             ? 50 : $this->getRump()->getDockingSlots();
     }
 
