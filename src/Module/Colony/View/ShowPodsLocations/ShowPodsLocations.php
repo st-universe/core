@@ -19,10 +19,10 @@ final class ShowPodsLocations implements ViewControllerInterface
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $userId = $game->getUser()->getId();
+        $user = $game->getUser();
 
-        $pods = $this->shipRepository->getEscapePodsByCrewOwner($userId);
-        $crewAssignmentsAtTradeposts = $this->shipCrewRepository->getOrphanedSummaryByUserAtTradeposts($userId);
+        $pods = $this->shipRepository->getEscapePodsByCrewOwner($user);
+        $crewAssignmentsAtTradeposts = $this->shipCrewRepository->getOrphanedSummaryByUserAtTradeposts($user->getId());
 
         $game->setPageTitle("Rettungskapsel/Tradeposts Scan");
         $game->setMacroInAjaxWindow('html/colony/component/orphanedcrewlocations.twig');

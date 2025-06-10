@@ -151,7 +151,7 @@ final class BoardShip implements ActionControllerInterface
             ShipInteractionEnum::BOARD_SHIP
         );
 
-        if ($spacecraft->isDestroyed()) {
+        if ($spacecraft->getCondition()->isDestroyed()) {
             $game->setView(ModuleEnum::SHIP);
             return;
         }

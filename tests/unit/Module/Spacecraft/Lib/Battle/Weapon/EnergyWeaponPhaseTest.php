@@ -180,7 +180,7 @@ class EnergyWeaponPhaseTest extends StuTestCase
         $target->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($targetUser);
-        $target->shouldReceive('isDestroyed')
+        $target->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->andReturn(true);
         $target->shouldReceive('isStation')

@@ -91,7 +91,8 @@ final class Scrapping implements ActionControllerInterface
 
     private function startScrapping(StationInterface $station): void
     {
-        $station->setState(SpacecraftStateEnum::UNDER_SCRAPPING);
+        $condition = $station->getCondition();
+        $condition->setState(SpacecraftStateEnum::UNDER_SCRAPPING);
 
         //setup scrapping progress
         $progress = $this->constructionProgressRepository->getByStation($station);
@@ -131,7 +132,7 @@ final class Scrapping implements ActionControllerInterface
         $station->getSystems()->clear();
 
         //clear system values
-        $station->setShield(0);
+        $condition->setShield(0);
         $station->setMaxShield(0);
 
         //delete trade post stuff

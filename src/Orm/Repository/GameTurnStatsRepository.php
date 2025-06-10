@@ -65,7 +65,7 @@ final class GameTurnStatsRepository extends EntityRepository implements GameTurn
             sprintf(
                 'SELECT count(s) FROM %s s
                 JOIN %s r WITH s.rump_id = r.id
-                WHERE r.base_crew <= (SELECT count(sc) FROM %s sc WHERE sc.spacecraft_id = s.id)
+                WHERE r.base_crew <= (SELECT count(sc) FROM %s sc WHERE sc.spacecraft = s)
                 AND s.user_id != :noOne',
                 Spacecraft::class,
                 SpacecraftRump::class,

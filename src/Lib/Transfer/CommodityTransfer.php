@@ -106,7 +106,7 @@ final class CommodityTransfer implements CommodityTransferInterface
     private function getBeamFactor(SpacecraftWrapperInterface|ColonyInterface $subject): int
     {
         if ($subject instanceof SpacecraftWrapperInterface) {
-            return $subject->get()->getBeamFactor();
+            return $subject->get()->getRump()->getBeamFactor();
         }
 
         return $subject->getBeamFactor();

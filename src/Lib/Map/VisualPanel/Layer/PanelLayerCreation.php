@@ -22,6 +22,7 @@ use Stu\Lib\Map\VisualPanel\Layer\Render\MapLayerRenderer;
 use Stu\Lib\Map\VisualPanel\Layer\Render\SpacecraftCountLayerRenderer;
 use Stu\Lib\Map\VisualPanel\Layer\Render\SubspaceLayerRenderer;
 use Stu\Lib\Map\VisualPanel\Layer\Render\SystemLayerRenderer;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
 
@@ -92,10 +93,10 @@ final class PanelLayerCreation implements PanelLayerCreationInterface
     }
 
     #[Override]
-    public function addBorderLayer(?SpacecraftInterface $currentSpacecraft, ?bool $isOnShipLevel): PanelLayerCreationInterface
+    public function addBorderLayer(?SpacecraftWrapperInterface $currentWrapper, ?bool $isOnShipLevel): PanelLayerCreationInterface
     {
-        $this->layers[PanelLayerEnum::BORDER->value] = new BorderLayerRenderer($currentSpacecraft, $isOnShipLevel);
-        $this->specialDataProviders[PanelLayerEnum::BORDER->value] = $this->borderDataProviderFactory->getDataProvider($currentSpacecraft, $isOnShipLevel);
+        $this->layers[PanelLayerEnum::BORDER->value] = new BorderLayerRenderer($currentWrapper, $isOnShipLevel);
+        $this->specialDataProviders[PanelLayerEnum::BORDER->value] = $this->borderDataProviderFactory->getDataProvider($currentWrapper, $isOnShipLevel);
 
         return $this;
     }

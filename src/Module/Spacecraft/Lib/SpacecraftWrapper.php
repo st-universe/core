@@ -204,7 +204,7 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
     {
         $regenerationPercentage = $this->get()->isSystemHealthy(SpacecraftSystemTypeEnum::SHIELDS) ? 10 : 0;
 
-        $shield = $this->get()->getShield();
+        $shield = $this->get()->getCondition()->getShield();
         $maxshield = $this->get()->getMaxShield();
 
         $result = (int) ceil(($maxshield / 100) * $regenerationPercentage);
@@ -273,7 +273,7 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
             return true;
         }
 
-        return $this->spacecraft->getHull() < $this->spacecraft->getMaxHull();
+        return $this->spacecraft->getCondition()->getHull() < $this->spacecraft->getMaxHull();
     }
 
     #[Override]

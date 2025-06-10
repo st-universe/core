@@ -4,7 +4,6 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\Collection;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
-use Stu\Component\Spacecraft\SpacecraftLssModeEnum;
 use Stu\Component\Spacecraft\SpacecraftTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Interaction\EntityWithInteractionCheckInterface;
@@ -23,6 +22,8 @@ interface SpacecraftInterface extends
 {
     public function getId(): int;
 
+    public function getCondition(): SpacecraftConditionInterface;
+
     public function getUserId(): int;
 
     public function getUser(): UserInterface;
@@ -38,10 +39,6 @@ interface SpacecraftInterface extends
     public function getName(): string;
 
     public function setName(string $name): SpacecraftInterface;
-
-    public function getLssMode(): SpacecraftLssModeEnum;
-
-    public function setLssMode(SpacecraftLssModeEnum $lssMode): SpacecraftInterface;
 
     public function isSystemHealthy(SpacecraftSystemTypeEnum $type): bool;
 
@@ -63,17 +60,9 @@ interface SpacecraftInterface extends
 
     public function getRPGModuleState(): bool;
 
-    public function getHull(): int;
-
-    public function setHuell(int $hull): SpacecraftInterface;
-
     public function getMaxHull(): int;
 
     public function setMaxHuell(int $maxHull): SpacecraftInterface;
-
-    public function getShield(): int;
-
-    public function setShield(int $schilde): SpacecraftInterface;
 
     public function getMaxShield(bool $isTheoretical = false): int;
 
@@ -102,22 +91,6 @@ interface SpacecraftInterface extends
     public function getDatabaseId(): ?int;
 
     public function setDatabaseId(?int $databaseEntryId): SpacecraftInterface;
-
-    public function isDestroyed(): bool;
-
-    public function setIsDestroyed(bool $isDestroyed): SpacecraftInterface;
-
-    public function isDisabled(): bool;
-
-    public function setDisabled(bool $isDisabled): SpacecraftInterface;
-
-    public function getTractorPayload(): int;
-
-    public function getState(): SpacecraftStateEnum;
-
-    public function setState(SpacecraftStateEnum $state): SpacecraftInterface;
-
-    public function isUnderRepair(): bool;
 
     public function getPosX(): int;
 
@@ -185,8 +158,6 @@ interface SpacecraftInterface extends
 
     public function getLocation(): MapInterface|StarSystemMapInterface;
 
-    public function getBeamFactor(): int;
-
     public function getSectorString(): string;
 
     public function getBuildplan(): ?SpacecraftBuildplanInterface;
@@ -228,8 +199,6 @@ interface SpacecraftInterface extends
 
     public function hasEscapePods(): bool;
 
-    public function getRepairRate(): int;
-
     public function getRump(): SpacecraftRumpInterface;
 
     public function setRump(SpacecraftRumpInterface $shipRump): SpacecraftInterface;
@@ -252,7 +221,9 @@ interface SpacecraftInterface extends
 
     public function hasReactor(): bool;
 
-    public function hasNbsLss(): bool;
+    public function hasNbs(): bool;
+
+    public function hasLss(): bool;
 
     public function hasUplink(): bool;
 
@@ -264,6 +235,8 @@ interface SpacecraftInterface extends
     public function hasStoredBuoy(): bool;
 
     public function getHullColorStyle(): string;
+
+    public function getState(): SpacecraftStateEnum;
 
     public function __toString(): string;
 }

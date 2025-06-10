@@ -68,7 +68,7 @@ class TractorConsequenceTest extends StuTestCase
     {
         $messages = $this->mock(MessageCollectionInterface::class);
 
-        $this->ship->shouldReceive('isDestroyed')
+        $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(true);
@@ -86,7 +86,7 @@ class TractorConsequenceTest extends StuTestCase
         $tractoredShip = $this->mock(ShipInterface::class);
         $message = $this->mock(MessageInterface::class);
 
-        $this->ship->shouldReceive('isDestroyed')
+        $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -122,7 +122,7 @@ class TractorConsequenceTest extends StuTestCase
         $tractoredShip = $this->mock(ShipInterface::class);
         $message = $this->mock(MessageInterface::class);
 
-        $this->ship->shouldReceive('isDestroyed')
+        $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);

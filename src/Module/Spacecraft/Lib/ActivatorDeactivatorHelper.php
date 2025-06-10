@@ -266,15 +266,13 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         SpacecraftLssModeEnum $lssMode,
         GameControllerInterface $game
     ): void {
-        $userId = $game->getUser()->getId();
 
-        $ship = $this->spacecraftLoader->getByIdAndUser(
-            $shipId,
-            $userId
-        );
+        $lss = $this->getTargetWrapper($shipId, true)->getLssSystemData();
+        if ($lss === null) {
+            throw new RuntimeException('this should not happen!');
+        }
 
-        $ship->setLssMode($lssMode);
-        $this->spacecraftRepository->save($ship);
+        $lss->setMode($lssMode)->update();
 
         if ($lssMode->isBorderMode()) {
             $game->addInformationf("%s für die Langstreckensensoren aktiviert", $lssMode->getDescription());

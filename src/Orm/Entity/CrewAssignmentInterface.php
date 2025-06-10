@@ -6,17 +6,11 @@ use Stu\Module\Spacecraft\Lib\Crew\EntityWithCrewAssignmentsInterface;
 
 interface CrewAssignmentInterface
 {
-    public function getId(): int;
-
-    public function getCrewId(): int;
-
     public function getSlot(): ?int;
 
     public function setSlot(?int $slot): CrewAssignmentInterface;
 
     public function getPosition(): string;
-
-    public function getUserId(): int;
 
     public function getUser(): UserInterface;
 

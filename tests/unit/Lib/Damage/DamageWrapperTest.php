@@ -45,7 +45,7 @@ class DamageWrapperTest extends StuTestCase
     ): void {
         $target = $this->mock(ShipInterface::class);
 
-        $target->shouldReceive('getShield')
+        $target->shouldReceive('getCondition->getShield')
             ->withNoArgs()
             ->andReturn($targetShields);
 

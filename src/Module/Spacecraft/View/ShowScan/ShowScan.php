@@ -116,7 +116,7 @@ final class ShowScan implements ViewControllerInterface
     {
         return $target->getMaxShield() === 0
             ? 0
-            : (int)ceil($target->getShield() / $target->getMaxShield() * 100);
+            : (int)ceil($target->getCondition()->getShield() / $target->getMaxShield() * 100);
     }
 
     private function calculateReactorPercentage(SpacecraftWrapperInterface $wrapper): ?int

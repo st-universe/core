@@ -33,7 +33,7 @@ final class CancelRetrofit implements CancelRetrofitInterface
 
     private function setStateNoneAndSave(ShipInterface $ship): void
     {
-        $ship->setState(SpacecraftStateEnum::NONE);
+        $ship->getCondition()->setState(SpacecraftStateEnum::NONE);
         $this->shipRepository->save($ship);
     }
 }

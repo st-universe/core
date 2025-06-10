@@ -41,11 +41,11 @@ class AlertStateBattlePartyTest extends StuTestCase
         $ship->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($user);
-        $ship->shouldReceive('isDestroyed')
+        $ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->zeroOrMoreTimes()
             ->andReturn(false);
-        $ship->shouldReceive('isDisabled')
+        $ship->shouldReceive('getCondition->isDisabled')
             ->withNoArgs()
             ->zeroOrMoreTimes()
             ->andReturn(false);
@@ -83,11 +83,11 @@ class AlertStateBattlePartyTest extends StuTestCase
         $ship->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn(123);
-        $ship->shouldReceive('isDestroyed')
+        $ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->zeroOrMoreTimes()
             ->andReturn(false);
-        $ship->shouldReceive('isDisabled')
+        $ship->shouldReceive('getCondition->isDisabled')
             ->withNoArgs()
             ->zeroOrMoreTimes()
             ->andReturn(false);

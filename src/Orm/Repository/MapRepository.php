@@ -505,7 +505,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                 JOIN stu_location l
                 ON m.id = l.id
                 LEFT JOIN stu_user_map um
-                    ON um.cy = l.cy AND um.cx = l.cx AND um.user_id = :userId AND um.layer_id = l.layer_id
+                    ON um.cx = l.cx AND um.cy = l.cy AND um.user_id = :userId AND um.layer_id = l.layer_id
                 LEFT JOIN stu_systems sys
                     ON m.systems_id = sys.id
                 LEFT JOIN stu_database_user dbu

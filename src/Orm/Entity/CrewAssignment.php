@@ -6,52 +6,27 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
-use Doctrine\ORM\Mapping\UniqueConstraint;
 use Override;
 use Stu\Component\Crew\CrewEnum;
 use Stu\Module\Spacecraft\Lib\Crew\EntityWithCrewAssignmentsInterface;
 use Stu\Orm\Repository\CrewAssignmentRepository;
 
 #[Table(name: 'stu_crew_assign')]
-#[UniqueConstraint(name: 'crew_assign_crew_idx', columns: ['crew_id'])]
 #[Entity(repositoryClass: CrewAssignmentRepository::class)]
 class CrewAssignment implements CrewAssignmentInterface
 {
     #[Id]
-    #[Column(type: 'integer')]
-    #[GeneratedValue(strategy: 'IDENTITY')]
-    private int $id;
-
-    #[Column(type: 'integer', nullable: true)]
-    private ?int $spacecraft_id = 0;
-
-    #[Column(type: 'integer', nullable: true)]
-    private ?int $colony_id = null;
-
-    #[Column(type: 'integer', nullable: true)]
-    private ?int $tradepost_id = null;
-
-    #[Column(type: 'integer')]
-    private int $crew_id = 0;
-
-    #[Column(type: 'smallint', nullable: true)]
-    private ?int $slot = null;
-
-    #[Column(type: 'integer')]
-    private int $user_id = 0;
-
-    #[Column(type: 'integer', nullable: true)]
-    private ?int $repair_task_id = null;
-
     #[OneToOne(targetEntity: 'Crew')]
     #[JoinColumn(name: 'crew_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CrewInterface $crew;
+
+    #[Column(type: 'smallint', nullable: true)]
+    private ?int $slot = null;
 
     #[ManyToOne(targetEntity: 'Spacecraft')]
     #[JoinColumn(name: 'spacecraft_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
@@ -66,24 +41,12 @@ class CrewAssignment implements CrewAssignmentInterface
     private ?TradePostInterface $tradepost = null;
 
     #[ManyToOne(targetEntity: 'User')]
-    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
     #[ManyToOne(targetEntity: 'RepairTask')]
     #[JoinColumn(name: 'repair_task_id', referencedColumnName: 'id')]
     private ?RepairTaskInterface $repairTask = null;
-
-    #[Override]
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    #[Override]
-    public function getCrewId(): int
-    {
-        return $this->crew_id;
-    }
 
     #[Override]
     public function getSlot(): ?int
@@ -103,12 +66,6 @@ class CrewAssignment implements CrewAssignmentInterface
     public function getPosition(): string
     {
         return CrewEnum::getDescription($this->getSlot());
-    }
-
-    #[Override]
-    public function getUserId(): int
-    {
-        return $this->user_id;
     }
 
     #[Override]
@@ -160,7 +117,6 @@ class CrewAssignment implements CrewAssignmentInterface
     #[Override]
     public function setSpacecraft(?SpacecraftInterface $spacecraft): CrewAssignmentInterface
     {
-        $this->spacecraft_id = null;
         $this->spacecraft = $spacecraft;
         return $this;
     }

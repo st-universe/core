@@ -23,13 +23,12 @@ use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
-use Stu\Component\Spacecraft\SpacecraftLssModeEnum;
 use Stu\Component\Spacecraft\SpacecraftTypeEnum;
-use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\Trait\SpacecraftSystemExistenceTrait;
 use Stu\Component\Spacecraft\Trait\SpacecrafCharacteristicsTrait;
 use Stu\Component\Spacecraft\Trait\SpacecraftCrewTrait;
 use Stu\Component\Spacecraft\Trait\SpacecraftHoldingWebTrait;
+use Stu\Component\Spacecraft\Trait\SpacecraftHrefTrait;
 use Stu\Component\Spacecraft\Trait\SpacecraftHullColorStyleTrait;
 use Stu\Component\Spacecraft\Trait\SpacecraftInteractionTrait;
 use Stu\Component\Spacecraft\Trait\SpacecraftLocationTrait;
@@ -65,6 +64,7 @@ abstract class Spacecraft implements SpacecraftInterface
     use SpacecraftTorpedoTrait;
     use SpacecrafCharacteristicsTrait;
     use SpacecraftStateTrait;
+    use SpacecraftHrefTrait;
 
     #[Id]
     #[Column(type: 'integer')]
@@ -83,17 +83,8 @@ abstract class Spacecraft implements SpacecraftInterface
     #[Column(type: 'string')]
     private string $name = '';
 
-    #[Column(type: 'smallint', length: 1, enumType: SpacecraftLssModeEnum::class)]
-    private SpacecraftLssModeEnum $lss_mode = SpacecraftLssModeEnum::NORMAL;
-
-    #[Column(type: 'integer', length: 6)]
-    private int $huelle = 0;
-
     #[Column(type: 'integer', length: 6)]
     private int $max_huelle = 0;
-
-    #[Column(type: 'integer', length: 6)]
-    private int $schilde = 0;
 
     #[Column(type: 'integer', length: 6)]
     private int $max_schilde = 0;
@@ -107,16 +98,11 @@ abstract class Spacecraft implements SpacecraftInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $database_id = null;
 
-    private bool $is_destroyed = false;
-
-    #[Column(type: 'boolean')]
-    private bool $disabled = false;
-
-    #[Column(type: 'smallint', enumType: SpacecraftStateEnum::class)]
-    private SpacecraftStateEnum $state = SpacecraftStateEnum::NONE;
-
     #[Column(type: 'integer')]
     private int $location_id = 0;
+
+    #[OneToOne(targetEntity: 'SpacecraftCondition', mappedBy: 'spacecraft', cascade: ['all'])]
+    private SpacecraftConditionInterface $condition;
 
     #[OneToOne(targetEntity: 'Ship')]
     #[JoinColumn(name: 'tractored_ship_id', referencedColumnName: 'id')]
@@ -133,8 +119,8 @@ abstract class Spacecraft implements SpacecraftInterface
     /**
      * @var ArrayCollection<int, CrewAssignmentInterface>
      */
-    #[OneToMany(targetEntity: 'CrewAssignment', mappedBy: 'spacecraft', indexBy: 'id')]
-    #[OrderBy(['id' => 'ASC'])]
+    #[OneToMany(targetEntity: 'CrewAssignment', mappedBy: 'spacecraft', indexBy: 'crew_id')]
+    #[OrderBy(['crew' => 'ASC'])]
     private Collection $crew;
 
     #[OneToOne(targetEntity: 'TorpedoStorage', mappedBy: 'spacecraft')]
@@ -179,12 +165,14 @@ abstract class Spacecraft implements SpacecraftInterface
     #[OneToOne(targetEntity: 'ShipTakeover', mappedBy: 'target')]
     private ?ShipTakeoverInterface $takeoverPassive = null;
 
-    public function __construct()
+    public function __construct(SpacecraftConditionInterface $condition)
     {
         $this->crew = new ArrayCollection();
         $this->systems = new ArrayCollection();
         $this->storage = new ArrayCollection();
         $this->logbook = new ArrayCollection();
+
+        $this->condition = $condition;
     }
 
     #[Override]
@@ -195,6 +183,12 @@ abstract class Spacecraft implements SpacecraftInterface
         }
 
         return $this->id;
+    }
+
+    #[Override]
+    public function getCondition(): SpacecraftConditionInterface
+    {
+        return $this->condition;
     }
 
     #[Override]
@@ -223,32 +217,6 @@ abstract class Spacecraft implements SpacecraftInterface
     }
 
     #[Override]
-    public function getLssMode(): SpacecraftLssModeEnum
-    {
-        return $this->lss_mode;
-    }
-
-    #[Override]
-    public function setLssMode(SpacecraftLssModeEnum $lssMode): SpacecraftInterface
-    {
-        $this->lss_mode = $lssMode;
-        return $this;
-    }
-
-    #[Override]
-    public function getHull(): int
-    {
-        return $this->huelle;
-    }
-
-    #[Override]
-    public function setHuell(int $hull): SpacecraftInterface
-    {
-        $this->huelle = $hull;
-        return $this;
-    }
-
-    #[Override]
     public function getMaxHull(): int
     {
         return $this->max_huelle;
@@ -258,19 +226,6 @@ abstract class Spacecraft implements SpacecraftInterface
     public function setMaxHuell(int $maxHull): SpacecraftInterface
     {
         $this->max_huelle = $maxHull;
-        return $this;
-    }
-
-    #[Override]
-    public function getShield(): int
-    {
-        return $this->schilde;
-    }
-
-    #[Override]
-    public function setShield(int $schilde): SpacecraftInterface
-    {
-        $this->schilde = $schilde;
         return $this;
     }
 
@@ -291,59 +246,6 @@ abstract class Spacecraft implements SpacecraftInterface
     public function setDatabaseId(?int $databaseEntryId): SpacecraftInterface
     {
         $this->database_id = $databaseEntryId;
-        return $this;
-    }
-
-    #[Override]
-    public function isDestroyed(): bool
-    {
-        return $this->is_destroyed;
-    }
-
-    #[Override]
-    public function setIsDestroyed(bool $isDestroyed): SpacecraftInterface
-    {
-        $this->is_destroyed = $isDestroyed;
-        return $this;
-    }
-
-    #[Override]
-    public function isDisabled(): bool
-    {
-        return $this->disabled;
-    }
-
-    #[Override]
-    public function setDisabled(bool $isDisabled): SpacecraftInterface
-    {
-        $this->disabled = $isDisabled;
-        return $this;
-    }
-
-    /**
-     * proportional to tractor beam system status
-     */
-    #[Override]
-    public function getTractorPayload(): int
-    {
-        if (!$this->hasSpacecraftSystem(SpacecraftSystemTypeEnum::TRACTOR_BEAM)) {
-            return 0;
-        }
-
-        return (int) (ceil($this->getRump()->getTractorPayload()
-            * $this->getSpacecraftSystem(SpacecraftSystemTypeEnum::TRACTOR_BEAM)->getStatus() / 100));
-    }
-
-    #[Override]
-    public function getState(): SpacecraftStateEnum
-    {
-        return $this->state;
-    }
-
-    #[Override]
-    public function setState(SpacecraftStateEnum $state): SpacecraftInterface
-    {
-        $this->state = $state;
         return $this;
     }
 
@@ -460,12 +362,6 @@ abstract class Spacecraft implements SpacecraftInterface
     }
 
     #[Override]
-    public function getBeamFactor(): int
-    {
-        return $this->getRump()->getBeamFactor();
-    }
-
-    #[Override]
     public function getBuildplan(): ?SpacecraftBuildplanInterface
     {
         return $this->buildplan;
@@ -512,13 +408,6 @@ abstract class Spacecraft implements SpacecraftInterface
     }
 
     #[Override]
-    public function getRepairRate(): int
-    {
-        // @todo
-        return 100;
-    }
-
-    #[Override]
     public function getRump(): SpacecraftRumpInterface
     {
         return $this->rump;
@@ -544,19 +433,9 @@ abstract class Spacecraft implements SpacecraftInterface
     }
 
     #[Override]
-    public function getHref(): string
+    public function getState(): SpacecraftStateEnum
     {
-        $moduleView = $this->getType()->getModuleView();
-        if ($moduleView === null) {
-            return '';
-        }
-
-        return sprintf(
-            '%s?%s=1&id=%d',
-            $moduleView->getPhpPage(),
-            $this->getType()->getViewIdentifier(),
-            $this->getId()
-        );
+        return $this->condition->getState();
     }
 
     #[Override]
@@ -564,13 +443,9 @@ abstract class Spacecraft implements SpacecraftInterface
     {
         if ($this->id !== null) {
             return sprintf(
-                "id: %d, name: %s,\nhull: %d/%d, shields %d/%d",
+                "id: %d, name: %s",
                 $this->getId(),
-                $this->getName(),
-                $this->huelle,
-                $this->max_huelle,
-                $this->schilde,
-                $this->max_schilde
+                $this->getName()
             );
         }
 

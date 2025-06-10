@@ -10,6 +10,7 @@
     </tr>
     {% set targetWrapper = tracker.getTargetWrapper %}
     {% set targetShip = targetWrapper.get %}
+    {% set targetCondition = targetShip.getCondition %}
     <tr>
         <td colspan="3">
             Markiert: {{ targetShip.getName|bbcode }}
@@ -48,7 +49,7 @@
                                 {% endautoescape %}
                             </td>
                             <td style="text-align: center; width: 60px;">
-                                {{ targetShip.getHull }}
+                                {{ targetCondition.getHull }}
                             </td>
                         </tr>
                     </table>
@@ -67,7 +68,7 @@
                                 {% endautoescape %}
                             </td>
                             <td style="text-align: center; width: 60px;">
-                                {{ targetShip.getShield }}
+                                {{ targetCondition.getShield }}
                             </td>
                         </tr>
                     </table>

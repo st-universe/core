@@ -40,7 +40,7 @@ final class FinishShipRetrofitJobs implements ProcessTickHandlerInterface
                 );
                 $this->colonyShipQueueRepository->delete($obj);
 
-                $ship->setState(SpacecraftStateEnum::NONE);
+                $ship->getCondition()->setState(SpacecraftStateEnum::NONE);
 
                 $this->shipRepository->save($ship);
             }

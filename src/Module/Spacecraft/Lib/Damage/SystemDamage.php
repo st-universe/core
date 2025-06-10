@@ -28,7 +28,7 @@ final class SystemDamage implements SystemDamageInterface
     ): bool {
         $ship = $wrapper->get();
         $systemsToDamage = ceil($huelleVorher * 6 / $ship->getMaxHull()) -
-            ceil($ship->getHull() * 6 / $ship->getMaxHull());
+            ceil($ship->getCondition()->getHull() * 6 / $ship->getMaxHull());
 
         if ($systemsToDamage == 0) {
             return false;

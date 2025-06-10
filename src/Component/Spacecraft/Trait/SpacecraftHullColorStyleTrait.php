@@ -9,7 +9,7 @@ trait SpacecraftHullColorStyleTrait
     public function getHullColorStyle(): string
     {
         return $this->getColorStyle(
-            $this->getThis()->getHull(),
+            $this->getThis()->getCondition()->getHull(),
             $this->getThis()->getMaxHull()
         );
     }

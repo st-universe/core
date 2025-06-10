@@ -51,8 +51,8 @@ abstract class AbstractBattleParty implements BattlePartyInterface
         }
 
         return $this->members->filter(
-            fn(SpacecraftWrapperInterface $wrapper): bool => !$wrapper->get()->isDestroyed()
-                && (!$filterDisabled || !$wrapper->get()->isDisabled())
+            fn(SpacecraftWrapperInterface $wrapper): bool => !$wrapper->get()->getCondition()->isDestroyed()
+                && (!$filterDisabled || !$wrapper->get()->getCondition()->isDisabled())
                 && (!$canFire || $wrapper->canFire())
         );
     }

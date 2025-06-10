@@ -12,7 +12,7 @@ use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreationInterface;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
 use Stu\Lib\Map\VisualPanel\SystemScanPanelEntry;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\UserInterface;
 
@@ -20,7 +20,7 @@ class SystemScanPanel extends AbstractVisualPanel
 {
     public function __construct(
         PanelLayerCreationInterface $panelLayerCreation,
-        private SpacecraftInterface $currentSpacecraft,
+        private SpacecraftWrapperInterface $currentWrapper,
         private StarSystemInterface $system,
         private UserInterface $user,
         LoggerUtilInterface $loggerUtil
@@ -37,14 +37,16 @@ class SystemScanPanel extends AbstractVisualPanel
     #[Override]
     protected function loadLayers(): void
     {
+        $currentSpacecraft = $this->currentWrapper->get();
+
         $panelLayerCreation = $this->panelLayerCreation
-            ->addShipCountLayer($this->currentSpacecraft->getTachyonState(), null, SpacecraftCountLayerTypeEnum::ALL, 0)
-            ->addBorderLayer($this->currentSpacecraft, $this->system === $this->currentSpacecraft->getSystem())
+            ->addShipCountLayer($currentSpacecraft->getTachyonState(), null, SpacecraftCountLayerTypeEnum::ALL, 0)
+            ->addBorderLayer($this->currentWrapper, $this->system === $currentSpacecraft->getSystem())
             ->addAnomalyLayer()
             ->addSystemLayer()
             ->addColonyShieldLayer();
 
-        if ($this->currentSpacecraft->getSubspaceState()) {
+        if ($currentSpacecraft->getSubspaceState()) {
             $panelLayerCreation->addSubspaceLayer($this->user->getId(), SubspaceLayerTypeEnum::IGNORE_USER);
         }
 

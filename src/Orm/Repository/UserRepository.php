@@ -229,7 +229,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
                 AND u.id > :firstUserId
                 AND (EXISTS (SELECT us
                             FROM %s us
-                            WHERE us.user_id = u.id
+                            WHERE us.user = u
                             AND us.setting = :showOnlineStateSetting
                             AND us.value = :showOnlineState)
                     OR u.id IN (

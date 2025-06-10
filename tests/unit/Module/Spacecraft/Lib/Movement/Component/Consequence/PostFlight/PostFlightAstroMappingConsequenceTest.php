@@ -76,7 +76,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
     {
         $messages = $this->mock(MessageCollectionInterface::class);
 
-        $this->ship->shouldReceive('isDestroyed')
+        $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(true);
@@ -92,7 +92,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
     {
         $messages = $this->mock(MessageCollectionInterface::class);
 
-        $this->ship->shouldReceive('isDestroyed')
+        $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -113,7 +113,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
 
         $messages = $this->mock(MessageCollectionInterface::class);
 
-        $this->ship->shouldReceive('isDestroyed')
+        $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -142,7 +142,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
 
         $messages = $this->mock(MessageCollectionInterface::class);
 
-        $this->ship->shouldReceive('isDestroyed')
+        $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -181,7 +181,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
             ->once()
             ->andReturn($astroLab);
 
-        $this->ship->shouldReceive('isDestroyed')
+        $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -288,7 +288,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
             ->once()
             ->andReturn($astroLab);
 
-        $this->ship->shouldReceive('isDestroyed')
+        $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -397,7 +397,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
             ->once()
             ->andReturn($astroLab);
 
-        $this->ship->shouldReceive('isDestroyed')
+        $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -424,7 +424,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
             ->once()
             ->andReturn(SpacecraftStateEnum::ASTRO_FINALIZING);
 
-        $this->ship->shouldReceive('setState')
+        $this->ship->shouldReceive('getCondition->setState')
             ->with(SpacecraftStateEnum::NONE)
             ->once();
 

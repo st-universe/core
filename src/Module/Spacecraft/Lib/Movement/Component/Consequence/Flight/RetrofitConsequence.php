@@ -39,7 +39,7 @@ class RetrofitConsequence extends AbstractFlightConsequence implements FlightSta
 
         $ship = $wrapper->get();
 
-        if ($ship->isUnderRetrofit()) {
+        if ($ship->getCondition()->isUnderRetrofit()) {
             $message = $this->messageFactory->createMessage(null, $ship->getUser()->getId());
             $messages->add($message);
             $this->cancelRetrofit->cancelRetrofit($ship);

@@ -100,7 +100,7 @@ class AssaultPhalanxBehaviour implements PirateBehaviourInterface
             $this->spacecraftAttackCore->attack($leadWrapper, $phalanxWrapper, true, $isFleetFight, $informations);
         }
 
-        if ($closestPhalanx->isDestroyed()) {
+        if ($closestPhalanx->getCondition()->isDestroyed()) {
             return null;
         }
 

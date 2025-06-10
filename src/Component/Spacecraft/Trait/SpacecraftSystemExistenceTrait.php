@@ -50,7 +50,12 @@ trait SpacecraftSystemExistenceTrait
             $this->hasSpacecraftSystem(SpacecraftSystemTypeEnum::SINGULARITY_REACTOR);
     }
 
-    public function hasNbsLss(): bool
+    public function hasNbs(): bool
+    {
+        return $this->hasSpacecraftSystem(SpacecraftSystemTypeEnum::NBS);
+    }
+
+    public function hasLss(): bool
     {
         return $this->hasSpacecraftSystem(SpacecraftSystemTypeEnum::LSS);
     }

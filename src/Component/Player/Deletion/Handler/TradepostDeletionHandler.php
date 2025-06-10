@@ -64,7 +64,7 @@ final class TradepostDeletionHandler implements PlayerDeletionHandlerInterface
 
             $station->setUser($fallbackUser);
             $station->setName('Verlassener Handelsposten');
-            $station->setDisabled(true);
+            $station->getCondition()->setDisabled(true);
             $this->spacecraftRepository->save($station);
 
             //change torpedo owner

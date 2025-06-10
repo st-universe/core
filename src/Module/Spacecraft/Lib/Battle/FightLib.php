@@ -38,7 +38,7 @@ final class FightLib implements FightLibInterface
         $spacecraft = $wrapper->get();
 
         if (
-            $spacecraft->isDestroyed()
+            $spacecraft->getCondition()->isDestroyed()
             || $spacecraft->getRump()->isEscapePods()
         ) {
             return;

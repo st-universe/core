@@ -25,6 +25,7 @@ use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\SpacecraftRumpInterface;
 use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\SpacecraftCondition;
 use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Entity\Storage;
@@ -85,13 +86,16 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 'SELECT s FROM %s s
                 JOIN %s sp
                 WITH s.id = sp.id
+                JOIN %s sc
+                WITH sp = sc.spacecraft
                 WHERE sp.location = :location
                 AND s.fleet_id IS NULL
                 AND sp.user = :user
-                AND sp.state != :state
+                AND sc.state != :state
                 ORDER BY sp.rump_id ASC, sp.name ASC',
                 Ship::class,
-                Spacecraft::class
+                Spacecraft::class,
+                SpacecraftCondition::class
             )
         )->setParameters([
             'location' => $fleetLeader->getLocation(),
@@ -141,7 +145,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     }
 
     #[Override]
-    public function getEscapePodsByCrewOwner(int $userId): array
+    public function getEscapePodsByCrewOwner(UserInterface $user): array
     {
         return $this->getEntityManager()->createQuery(
             sprintf(
@@ -149,16 +153,16 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 LEFT JOIN %s sr
                 WITH s.rump_id = sr.id
                 LEFT JOIN %s sc
-                WITH sc.spacecraft_id = s.id
+                WITH sc.spacecraft = s
                 WHERE sr.category_id = :categoryId
-                AND sc.user_id = :userId',
+                AND sc.user = :user',
                 Ship::class,
                 SpacecraftRump::class,
                 CrewAssignment::class
             )
         )->setParameters([
             'categoryId' => SpacecraftRumpEnum::SHIP_CATEGORY_ESCAPE_PODS,
-            'userId' => $userId
+            'user' => $user
         ])->getResult();
     }
 
@@ -184,13 +188,15 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                     f.blocked_colony_id is not null as isblocking, s.id as shipid, sp.rump_id as rumpid,
                     ss.mode as warpstate, twd.mode as tractorwarpstate, COALESCE(ss2.mode,0) as cloakstate, ss3.mode as shieldstate,
                     COALESCE(ss4.status,0) as uplinkstate, sp.type as spacecrafttype, sp.name as shipname,
-                    sp.huelle as hull, sp.max_huelle as maxhull, sp.schilde as shield, sp.holding_web_id as webid, tw.finished_time as webfinishtime,
+                    sc.hull as hull, sp.max_huelle as maxhull, sc.shield as shield, sp.holding_web_id as webid, tw.finished_time as webfinishtime,
                     u.id as userid, u.username, r.category_id as rumpcategoryid, r.name as rumpname, r.role_id as rumproleid,
                     (SELECT count(*) > 0 FROM stu_ship_log sl WHERE sl.spacecraft_id = s.id AND sl.is_private = :false) as haslogbook,
                     (SELECT count(*) > 0 FROM stu_crew_assign ca WHERE ca.spacecraft_id = s.id) as hascrew
                 FROM stu_ship s
                 JOIN stu_spacecraft sp
                 ON s.id = sp.id
+                JOIN stu_spacecraft_condition sc
+                ON sp.id = sc.spacecraft_id
                 LEFT JOIN stu_spacecraft_system ss
                 ON s.id = ss.spacecraft_id
                 AND ss.system_type = :warpdriveType
