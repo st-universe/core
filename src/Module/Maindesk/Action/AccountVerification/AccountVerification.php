@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Maindesk\Action\SmsVerification;
+namespace Stu\Module\Maindesk\Action\AccountVerification;
 
 use Override;
 use request;
@@ -10,6 +10,7 @@ use Stu\Lib\AccountNotVerifiedException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameController;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\NoAccessCheckControllerInterface;
 use Stu\Module\Control\StuHashInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -18,9 +19,11 @@ use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Trade\Lib\LotteryFacadeInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
-final class SmsVerification implements ActionControllerInterface
+final class AccountVerification implements
+    ActionControllerInterface,
+    NoAccessCheckControllerInterface
 {
-    public const string ACTION_IDENTIFIER = 'B_SMS_VERIFICATION';
+    public const string ACTION_IDENTIFIER = 'B_ACCOUNT_VERIFICATION';
 
     private LoggerUtilInterface $loggerUtil;
 
@@ -37,25 +40,42 @@ final class SmsVerification implements ActionControllerInterface
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
+
         $user = $game->getUser();
 
-        if ($user->getState() !== UserEnum::USER_STATE_SMS_VERIFICATION) {
-            $this->loggerUtil->log('W');
+        if ($user->getState() !== UserEnum::USER_STATE_ACCOUNT_VERIFICATION) {
+            $this->loggerUtil->log('User State ist nicht ACCOUNT_VERIFICATION');
             return;
         }
 
-        $smsCode = request::postStringFatal('smscode');
-        if ($smsCode !== $user->getSmsCode()) {
-            $this->loggerUtil->log('X');
-            throw new AccountNotVerifiedException('Code ungültig, bitte erneut versuchen');
+        $emailCode = request::postStringFatal('emailcode');
+
+        $activationData = $user->getId() . substr($user->getLogin(), 0, 3) . substr($user->getEmail(), 0, 3);
+        $hash = hash('sha256', $activationData);
+        $expectedEmailCode = strrev(substr($hash, -6));
+
+        if ($emailCode !== $expectedEmailCode) {
+            $this->loggerUtil->log('E-Mail-Code ungültig');
+            throw new AccountNotVerifiedException('E-Mail-Code ungültig, bitte erneut versuchen');
         }
-        $this->loggerUtil->log('Y');
+
+        if ($user->getMobile() !== null) {
+            $smsCode = request::postStringFatal('smscode');
+            if ($smsCode !== $user->getSmsCode()) {
+                $this->loggerUtil->log('SMS-Code ungültig');
+                throw new AccountNotVerifiedException('SMS-Code ungültig, bitte erneut versuchen');
+            }
+        }
+
+        $this->loggerUtil->log('Account wird freigeschaltet');
 
         $user->setState(UserEnum::USER_STATE_UNCOLONIZED);
-        $user->setMobile($this->stuHash->hash($user->getMobile()));
+        if ($user->getMobile() !== null) {
+            $user->setMobile($this->stuHash->hash($user->getMobile()));
+        }
         $this->userRepository->save($user);
 
-        $this->loggerUtil->log('Z');
+        $this->loggerUtil->log('Account wurde freigeschaltet');
 
         $game->setTemplateVar(
             'DISPLAY_FIRST_COLONY_DIALOGUE',

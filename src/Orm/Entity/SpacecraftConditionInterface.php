@@ -8,7 +8,7 @@ use Stu\Component\Spacecraft\SpacecraftStateEnum;
 
 interface SpacecraftConditionInterface
 {
-    public function setSpacecraft(SpacecraftInterface $spacecraft): SpacecraftConditionInterface;
+    public function getSpacecraft(): SpacecraftInterface;
 
     public function getHull(): int;
 

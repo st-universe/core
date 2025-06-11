@@ -18,14 +18,13 @@ final class RegistrationEmailSender implements RegistrationEmailSenderInterface
     ) {}
 
     #[Override]
-    public function send(UserInterface $player, string $password): void
+    public function send(UserInterface $player, string $activationCode): void
     {
         $body = <<<EOT
             Hallo %s\n\n
-            Vielen Dank für Deine Anmeldung bei Star Trek Universe. Du kannst Dich nun mit folgendem Passwort und Deinem gewählten Loginnamen einloggen.\n\n
-            Login:  %s\n
-            Passwort:  %s\n\n
-            Bitte ändere das Passwort und auch Deinen Spielernamen gleich nach Deinem ersten Login.\n
+            Vielen Dank für Deine Anmeldung bei Star Trek Universe. Um Deinen Account zu aktivieren, verwende bitte folgenden Aktivierungscode:\n\n
+            Aktivierungscode: %s\n\n
+            Gib diesen Code auf der Aktivierungsseite ein, um Deinen Account freizuschalten.\n
             Und nun wünschen wir Dir viel Spaß!\n\n
             Das STU-Team\n\n
             %s
@@ -34,13 +33,12 @@ final class RegistrationEmailSender implements RegistrationEmailSenderInterface
         $mail = $this->mailFactory->createStuMail()
             ->withDefaultSender()
             ->addTo($player->getEmail())
-            ->setSubject(_('Star Trek Universe - Anmeldung'))
+            ->setSubject(_('Star Trek Universe - Account aktivieren'))
             ->setBody(
                 sprintf(
                     $body,
                     $player->getLogin(),
-                    $player->getLogin(),
-                    $password,
+                    $activationCode,
                     $this->config->get('game.base_url')
                 )
             );

@@ -24,6 +24,8 @@ interface SpacecraftInterface extends
 
     public function getCondition(): SpacecraftConditionInterface;
 
+    public function setCondition(SpacecraftConditionInterface $condition): SpacecraftInterface;
+
     public function getUserId(): int;
 
     public function getUser(): UserInterface;

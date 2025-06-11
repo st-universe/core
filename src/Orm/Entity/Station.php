@@ -53,9 +53,9 @@ class Station extends Spacecraft implements StationInterface
     #[JoinColumn(name: 'influence_area_id', referencedColumnName: 'id')]
     private ?StarSystemInterface $influenceArea = null;
 
-    public function __construct(SpacecraftConditionInterface $condition)
+    public function __construct()
     {
-        parent::__construct($condition);
+        parent::__construct();
         $this->dockedShips = new ArrayCollection();
         $this->dockingPrivileges = new ArrayCollection();
     }

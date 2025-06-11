@@ -40,12 +40,15 @@ class SpacecraftCondition implements SpacecraftConditionInterface
     // transitive fields
     private bool $is_destroyed = false;
 
-    #[Override]
-    public function setSpacecraft(SpacecraftInterface $spacecraft): SpacecraftConditionInterface
+    public function __construct(SpacecraftInterface $spacecraft)
     {
         $this->spacecraft = $spacecraft;
+    }
 
-        return $this;
+    #[Override]
+    public function getSpacecraft(): SpacecraftInterface
+    {
+        return $this->spacecraft;
     }
 
     #[Override]

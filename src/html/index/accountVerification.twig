@@ -1,0 +1,165 @@
+{% extends "html/index/indexDefaults.twig" %}
+
+{% block body %}
+</div>
+<div class="mainbar_box_header mt-4">
+	<small>Account Verifikation - Star Trek Universe</small>
+</div>
+<div class="mainbar_box_content">
+	<div class="p-3">
+		<form method="post" action="maindesk.php">
+			<div class="p-3 text-center">
+				<input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+
+				{% if REASON %}
+				{{ REASON }}
+				{% else %}
+				Bitte gib den E-Mail-Verifikationscode ein{% if HAS_MOBILE %} und den SMS-Verifikationscode{% endif %}
+				{% endif %}
+
+				<br /><br />
+				E-Mail-Verifikation Code:
+				<input type="text" class="form-control smsverification mx-auto mb-3" name="emailcode"
+					placeholder="XxXxXx" />
+
+				{% if HAS_MOBILE %}
+				SMS-Verifikation Code:
+				<input type="text" class="form-control smsverification mx-auto" name="smscode" placeholder="XxXxX" />
+				{% endif %}
+				<input type="submit" class="btn-stu mt-3" name="B_ACCOUNT_VERIFICATION" value="Account verifizieren" />
+			</div>
+		</form>
+
+		<form method="post" action="maindesk.php">
+			<input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+
+			<div class="email-help-section">
+				<div class="email-help-header" onclick="toggleEmailHelp()">
+					Keine E-Mail erhalten? <span style="float: right;">▼</span>
+				</div>
+				<div id="emailHelpContent" class="email-help-content">
+					<p>Deine registrierte E-Mail-Adresse:</p>
+					<div class="masked-email">{{ maskEmail(MAIL) }}</div>
+
+					<div class="mb-3">
+						<label for="emailUpdate" class="form-label">
+							An folgende E-Mail erneut senden (und ggf. die Adresse aktualisieren):
+						</label>
+						<input type="text" class="form-control" name="email" id="emailUpdate"
+							onblur="debouncedCheckEmailUpdate(this)" />
+
+						<div id="emailUpdateStatus" class="email-status" style="display: none;"></div>
+					</div>
+
+					<div class="text-center">
+						<input type="submit" name="B_EMAIL_MANAGEMENT" value="E-Mail erneut versenden"
+							id="emailUpdateButton" class="btn-stu mt-3" />
+					</div>
+				</div>
+			</div>
+		</form>
+
+		{% if HAS_MOBILE %}
+		<form method="post" action="maindesk.php">
+			<input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+
+			<div class="email-help-section">
+				<div class="email-help-header" onclick="toggleSmsHelp()">
+					Keine SMS erhalten? <span style="float: right;">▼</span>
+				</div>
+				<div id="smsHelpContent" class="email-help-content">
+					<p>Deine registrierte Mobilnummer:</p>
+					<div class="masked-email">{{ maskMobile(MOBILE) }}</div>
+
+					{% if SMS_ATTEMPTS_LEFT > 0 %}
+					<div class="mb-3">
+						<label for="mobileUpdate" class="form-label">
+							An folgende Nummer erneut senden (und ggf. die Nummer aktualisieren):
+						</label>
+						<div class="input-group">
+							<select id="countryCodeSelectUpdate" name="countrycode" class="form-select stu-select"
+								onchange="updateMobileValueUpdate()">
+								<option value="+49" selected>(DE) +49</option>
+								<option value="+43">(AT) +43</option>
+								<option value="+41">(CH) +41</option>
+							</select>
+							<input type="tel" class="form-control" name="mobile" id="mobileUpdate"
+								onblur="debouncedCheckMobileUpdate(this)" oninput="updateMobileValueUpdate()" />
+						</div>
+
+						<div id="mobileUpdateStatus" class="email-status" style="display: none;"></div>
+						<small class="form-text">Deine Nummer: <span id="combinedMobileValueUpdate"></span></small>
+						<small class="form-text">Verbleibende SMS-Versuche: {{ SMS_ATTEMPTS_LEFT }}</small>
+					</div>
+
+					<div class="text-center">
+						<input type="submit" name="B_SMS_MANAGEMENT" value="SMS erneut versenden" id="smsUpdateButton"
+							class="btn-stu mt-3" />
+					</div>
+					{% else %}
+					<div class="support-info-box">
+						<h6 style="color: #c2b942; margin-bottom: 15px;">⚠️ Alle SMS-Versuche aufgebraucht</h6>
+						<p>Du hast alle verfügbaren SMS-Versuche verwendet. Bitte wende dich an unseren Support:</p>
+
+						<div class="mb-3">
+							<strong style="color: #c2b942;">📧 E-Mail Support:</strong><br>
+							<span style="color: #8897cf;">Kontaktiere unseren Administrator:</span><br>
+							<a href="mailto:hux@stuniverse.de" class="btn-stu mt-2" style="display: inline-block;">
+								hux@stuniverse.de
+							</a>
+						</div>
+
+						<div class="mb-3">
+							<strong style="color: #c2b942;">💬 Discord Server:</strong><br>
+							<span style="color: #8897cf;">Erhalte schnelle Hilfe von der Community:</span><br>
+							<a href="https://discord.gg/NK3fCdx" target="_blank" class="btn-stu mt-2"
+								style="display: inline-block;">
+								STU Discord Server
+							</a>
+						</div>
+					</div>
+					{% endif %}
+
+
+				</div>
+			</div>
+		</form>
+		{% endif %}
+
+		<div class="email-help-section">
+			<div class="email-help-header" onclick="toggleSupportHelp()">
+				Weitere Hilfe benötigt? <span style="float: right;">▼</span>
+			</div>
+			<div id="supportHelpContent" class="email-help-content">
+				<div class="support-info-box">
+					<h6 style="color: #c2b942; margin-bottom: 15px;">Brauchst du weitere Unterstützung?</h6>
+					<p>Falls du weiterhin Probleme mit der Account-Verifizierung hast, stehen dir folgende Möglichkeiten
+						zur Verfügung:</p>
+
+					<div class="mb-3">
+						<strong style="color: #c2b942;">📧 E-Mail Support:</strong><br>
+						<span style="color: #8897cf;">Wende dich direkt an unseren Administrator:</span><br>
+						<a href="mailto:hux@stuniverse.de" class="btn-stu mt-2" style="display: inline-block;">
+							hux@stuniverse.de
+						</a>
+					</div>
+
+					<div class="mb-3">
+						<strong style="color: #c2b942;">💬 Discord Server:</strong><br>
+						<span style="color: #8897cf;">Tritt unserem Discord Server bei und erhalte schnelle Hilfe von
+							der Community:</span><br>
+						<a href="https://discord.gg/NK3fCdx" target="_blank" class="btn-stu mt-2"
+							style="display: inline-block;">
+							STU Discord Server
+						</a>
+					</div>
+
+					<small style="color: #8897cf; opacity: 0.8;">
+						Bitte gib bei deiner Anfrage deinen Benutzernamen und eine Beschreibung des Problems an.
+					</small>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	{% endblock %}
