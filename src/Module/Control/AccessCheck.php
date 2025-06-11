@@ -3,8 +3,9 @@
 namespace Stu\Module\Control;
 
 use Override;
-use Stu\Config\Init;
+use Stu\Lib\AccountNotVerifiedException;
 use Stu\Module\Config\StuConfigInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 
 class AccessCheck implements AccessCheckInterface
 {
@@ -18,24 +19,32 @@ class AccessCheck implements AccessCheckInterface
         GameControllerInterface $game
     ): bool {
 
+        if ($controller instanceof NoAccessCheckControllerInterface) {
+            return true;
+        }
+
+        if ($game->hasUser() && $game->getUser()->getState() === UserEnum::USER_STATE_ACCOUNT_VERIFICATION) {
+            throw new AccountNotVerifiedException();
+        }
+
         if (!$controller instanceof AccessCheckControllerInterface) {
             return true;
         }
 
         $feature = $controller->getFeatureIdentifier();
-        if ($this->isFeatureGranted($game->getUser()->getId(), $feature)) {
+        if ($this->isFeatureGranted($game->getUser()->getId(), $feature, $game)) {
             return true;
         }
 
-        $game->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist nicht berechtigt![/color][/b]'));
+        $game->addInformation('[b][color=#ff2626]Aktion nicht möglich, Spieler ist nicht berechtigt![/color][/b]');
 
         return false;
     }
 
     #[Override]
-    public function isFeatureGranted(int $userId, AccessGrantedFeatureEnum $feature): bool
+    public function isFeatureGranted(int $userId, AccessGrantedFeatureEnum $feature, GameControllerInterface $game): bool
     {
-        if (Init::getContainer()->get(GameControllerInterface::class)->isAdmin()) {
+        if ($game->isAdmin()) {
             return true;
         }
 

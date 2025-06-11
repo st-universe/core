@@ -37,7 +37,6 @@ use Stu\Module\Game\Lib\TutorialProvider;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Twig\TwigPageInterface;
 use Stu\Orm\Entity\GameConfigInterface;
 use Stu\Orm\Entity\GameRequestInterface;
@@ -464,7 +463,8 @@ final class GameController implements GameControllerInterface
                 exit;
             }
 
-            $this->checkUserAndGameState($gameRequest);
+            $this->checkUserLock($gameRequest);
+            $this->checkGameState();
 
             // log action & view and time they took
             $startTime = hrtime(true);
@@ -507,10 +507,16 @@ final class GameController implements GameControllerInterface
             $this->setTemplateVar('LOGIN_ERROR', $e->getMessage());
             $this->setTemplateVar('REASON', $e->getDetails());
         } catch (AccountNotVerifiedException $e) {
-            $this->setTemplateFile('html/index/smsVerification.twig');
+            $this->setTemplateFile('html/index/accountVerification.twig');
             if ($e->getMessage() !== '') {
                 $this->setTemplateVar('REASON', $e->getMessage());
             }
+            $user = $this->getUser();
+            $this->setTemplateVar('HAS_MOBILE', $user->getMobile() !== null);
+            $this->setTemplateVar('USER', $user);
+            $this->setTemplateVar('MAIL', $user->getEmail());
+            $this->setTemplateVar('MOBILE', $user->getMobile());
+            $this->setTemplateVar('SMS_ATTEMPTS_LEFT', 3 - $user->getSmsSended());
         } catch (MaintenanceGameStateException) {
             $this->setPageTitle('Wartungsmodus');
             $this->setTemplateFile('html/index/maintenance.twig');
@@ -566,7 +572,7 @@ final class GameController implements GameControllerInterface
         $this->gameRequestSaver->save($gameRequest);
     }
 
-    private function checkUserAndGameState(GameRequestInterface $gameRequest): void
+    private function checkUserLock(GameRequestInterface $gameRequest): void
     {
         if ($this->hasUser()) {
             $user = $this->getUser();
@@ -581,22 +587,23 @@ final class GameController implements GameControllerInterface
                     sprintf(_('Dein Spieleraccount ist noch für %d Ticks gesperrt. Begründung: %s'), $userLock->getRemainingTicks(), $userLock->getReason())
                 );
             }
-            if (!request::postString('smscode') && $this->getUser()->getState() === UserEnum::USER_STATE_SMS_VERIFICATION) {
-                throw new AccountNotVerifiedException();
-            }
-            $gameState = $this->getGameState();
+        }
+    }
 
-            if ($gameState === GameEnum::CONFIG_GAMESTATE_VALUE_MAINTENANCE && !$this->isAdmin()) {
-                throw new MaintenanceGameStateException();
-            }
+    private function checkGameState(): void
+    {
+        $gameState = $this->getGameState();
 
-            if ($gameState === GameEnum::CONFIG_GAMESTATE_VALUE_RESET) {
-                throw new ResetGameStateException();
-            }
+        if ($gameState === GameEnum::CONFIG_GAMESTATE_VALUE_MAINTENANCE && !$this->isAdmin()) {
+            throw new MaintenanceGameStateException();
+        }
 
-            if ($gameState === GameEnum::CONFIG_GAMESTATE_VALUE_RELOCATION) {
-                throw new RelocationGameStateException();
-            }
+        if ($gameState === GameEnum::CONFIG_GAMESTATE_VALUE_RESET) {
+            throw new ResetGameStateException();
+        }
+
+        if ($gameState === GameEnum::CONFIG_GAMESTATE_VALUE_RELOCATION) {
+            throw new RelocationGameStateException();
         }
     }
 
@@ -650,26 +657,32 @@ final class GameController implements GameControllerInterface
         $actions = $this->controllerDiscovery->getControllers($module, false);
 
         foreach ($actions as $actionIdentifier => $controller) {
-            if (request::has($actionIdentifier)) {
-                $gameRequest->setAction($actionIdentifier);
-
-                if (
-                    $controller instanceof ActionControllerInterface
-                    && $controller->performSessionCheck() === true
-                    && !request::isPost() && !$this->sessionStringRepository->isValid(
-                        (string)request::indString('sstr'),
-                        $this->getUser()->getId()
-                    )
-                ) {
-                    return;
-                }
-
-                if ($this->accessCheck->checkUserAccess($controller, $this)) {
-                    $controller->handle($this);
-                    $this->entityManager->flush();
-                }
+            if (!request::has($actionIdentifier)) {
+                continue;
             }
+
+            $gameRequest->setAction($actionIdentifier);
+
+            if ($this->isSessionInvalid($controller)) {
+                return;
+            }
+
+            if ($this->accessCheck->checkUserAccess($controller, $this)) {
+                $controller->handle($this);
+                $this->entityManager->flush();
+            }
+            break;
         }
+    }
+
+    private function isSessionInvalid(ControllerInterface $controller): bool
+    {
+        return $controller instanceof ActionControllerInterface
+            && $controller->performSessionCheck() === true
+            && !$this->sessionStringRepository->isValid(
+                (string)request::indString('sstr'),
+                $this->getUser()->getId()
+            );
     }
 
     private function executeView(ModuleEnum $module, GameRequestInterface $gameRequest): void
@@ -680,7 +693,7 @@ final class GameController implements GameControllerInterface
 
         foreach ($views as $viewIdentifier => $controller) {
             if (
-                request::indString($viewIdentifier) !== false
+                request::has($viewIdentifier)
                 || $viewIdentifier === $viewFromContext
             ) {
                 $gameRequest->setView($viewIdentifier);
@@ -689,12 +702,16 @@ final class GameController implements GameControllerInterface
                     $this->handleView($controller);
                     return;
                 }
+                break;
             }
         }
 
         $view = $views[self::DEFAULT_VIEW] ?? null;
 
-        if ($view !== null) {
+        if (
+            $view !== null
+            && $this->accessCheck->checkUserAccess($view, $this)
+        ) {
             $this->handleView($view);
         }
     }

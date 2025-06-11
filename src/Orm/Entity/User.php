@@ -107,6 +107,9 @@ class User implements UserInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $last_boarding = null;
 
+    #[Column(type: 'integer', nullable: true, options: ['default' => 1])]
+    private ?int $sms_sended = 1;
+
     #[ManyToOne(targetEntity: 'Alliance', inversedBy: 'members')]
     #[JoinColumn(name: 'allys_id', referencedColumnName: 'id')]
     private ?AllianceInterface $alliance = null;
@@ -881,6 +884,19 @@ class User implements UserInterface
     public function setReferer(?UserRefererInterface $referer): UserInterface
     {
         $this->referer = $referer;
+        return $this;
+    }
+
+    #[Override]
+    public function getSmsSended(): int
+    {
+        return $this->sms_sended ?? 1;
+    }
+
+    #[Override]
+    public function setSmsSended(int $smsSended): UserInterface
+    {
+        $this->sms_sended = $smsSended;
         return $this;
     }
 }

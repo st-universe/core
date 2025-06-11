@@ -862,12 +862,6 @@ parameters:
 			path: src/Module/Database/View/UserList/UserList.php
 
 		-
-			message: '#^Parameter \#1 \$data of method Stu\\Module\\Control\\StuHashInterface\:\:hash\(\) expects string, string\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Module/Maindesk/Action/SmsVerification/SmsVerification.php
-
-		-
 			message: '#^Cannot call method close\(\) on Directory\|false\.$#'
 			identifier: method.nonObject
 			count: 1

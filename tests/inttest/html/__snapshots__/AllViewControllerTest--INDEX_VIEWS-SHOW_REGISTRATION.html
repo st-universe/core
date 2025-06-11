@@ -214,70 +214,115 @@
 
           </div>
 <div class="mainbar_box_header mt-4">
-  <small>Registrierung - Star Trek Universe</small>
+	<small>Registrierung - Star Trek Universe</small>
 </div>
 <div class="mainbar_box_content">
-  <div class="p-3">
-	<div class="row">
-      
-      <div class="col-lg-2 d-none d-lg-block">
-	  </div>
-	     <div class="col-12 col-lg-8">
-      <form action="/index.php" method="post" onsubmit="checkSubmit(); return false;" id="registerform" class="mb-3">
-        
-    	  <input type="hidden" name="factionid" id="factionid" value="0">
-
-    	  <div class="mb-3">
-       		<label for="loginname" class="form-label">
-		  	  <span id="loginerror" style="display: none;">&#10060;</span>
-              <span id="loginok" style="display: none;">&#10004;&#65039;</span>
-		  	  Loginname
-			</label>
-        	<div class="d-flex align-items-center">
-              <input type="text" class="form-control me-2" name="loginname" id="loginname" onblur="checkLogin(this, this.value)">   
-        	</div>
-        	<div id="logindup" class="text-warning" style="display: none;">
-			  Dieser Loginname ist bereits registriert
-			</div>
-        	<small class="form-text">Minimum 6 Buchstaben/Zahlen</small>
-   		  </div>
-
-          <div class="mb-3">
-        	<label for="email" class="form-label">
-		  	  <span id="emailerror" class="text-danger pr-1" style="display: none;">&#10060;</span>
-          	  <span id="emailok" class="text-success pr-1" style="display: none;">&#10004;&#65039;</span>
-		  	  E-Mail Adresse
-			</label>
-        	<div class="d-flex align-items-center">
-              <input type="email" class="form-control me-2" name="email" id="email" onblur="checkEmail(this, this.value);">
-            </div>
-        	<div id="emaildup" class="text-warning" style="display: none;">
-			  Diese E-Mailadresse ist bereits registriert
-			</div>
-            <div id="emailblk" class="text-warning" style="display: none;">
-			  Diese E-Mailadresse ist blockiert
-			</div>
-    	  </div>
-
-    	  
-   		</form>
-</div>
-        <div class="col-lg-2 d-none d-lg-block">
-		</div>
-	  </div>
-
-	  <div class="registration_box_content mt-2">
+	<div class="p-3">
 		<div class="row">
-    	  <div class="col-lg-2 d-none d-lg-block">
+
+			<div class="col-lg-2 d-none d-lg-block">
+			</div>
+			<div class="col-12 col-lg-8">
+				<form action="/index.php" method="post" onsubmit="checkSubmit(); return false;" id="registerform" class="mb-3">
+
+					<input type="hidden" name="factionid" id="factionid" value="0">
+
+					<div class="mb-3">
+						<label for="loginname" class="form-label">
+							<span id="loginerror" style="display: none;">&#10060;</span>
+							<span id="loginok" style="display: none;">&#10004;&#65039;</span>
+							Loginname
+						</label>
+						<div class="d-flex align-items-center">
+							<input type="text" class="form-control me-2" name="loginname" id="loginname" onblur="checkLogin(this, this.value)">
+						</div>
+						<div id="logindup" class="text-warning" style="display: none;">
+							Dieser Loginname ist bereits registriert
+						</div>
+						<small class="form-text">Minimum 6 Buchstaben/Zahlen</small>
+					</div>
+
+					<div class="mb-3">
+						<label for="email" class="form-label">
+							<span id="emailerror" class="text-danger pr-1" style="display: none;">&#10060;</span>
+							<span id="emailok" class="text-success pr-1" style="display: none;">&#10004;&#65039;</span>
+							E-Mail Adresse
+						</label>
+						<div class="d-flex align-items-center">
+							<input type="email" class="form-control me-2" name="email" id="email" onblur="checkEmail(this, this.value);">
+						</div>
+						<div id="emaildup" class="text-warning" style="display: none;">
+							Diese E-Mailadresse ist bereits registriert
+						</div>
+						<div id="emailblk" class="text-warning" style="display: none;">
+							Diese E-Mailadresse ist blockiert
+						</div>
+					</div>
+
+					<div class="mb-3">
+						<label for="password" class="form-label">
+							<span id="passworderror" class="text-danger pr-1" style="display: none;">&#10060;</span>
+							<span id="passwordok" class="text-success pr-1" style="display: none;">&#10004;&#65039;</span>
+							Passwort
+						</label>
+						<div class="input-group">
+							<input type="password" class="form-control" name="password" id="password" oninput="checkPassword(this.value)">
+							<button type="button" class="btn-stu" onclick="togglePasswordVisibility('password', 'passwordToggle')">
+								<span id="passwordToggle">&#128065;&#65039;</span>
+							</button>
+						</div>
+						<div id="passwordRequirements" class="password-requirements" style="display: none;">
+							<div id="req-length" class="requirement">
+								<span class="req-icon">&#10060;</span> Mindestens 6 Zeichen
+							</div>
+							<div id="req-uppercase" class="requirement">
+								<span class="req-icon">&#10060;</span> Ein Gro&szlig;buchstabe
+							</div>
+							<div id="req-lowercase" class="requirement">
+								<span class="req-icon">&#10060;</span> Ein Kleinbuchstabe
+							</div>
+							<div id="req-special" class="requirement">
+								<span class="req-icon">&#10060;</span> Ein Sonderzeichen
+							</div>
+						</div>
+					</div>
+
+					<div class="mb-3">
+						<label for="password2" class="form-label">
+							<span id="password2error" class="text-danger pr-1" style="display: none;">&#10060;</span>
+							<span id="password2ok" class="text-success pr-1" style="display: none;">&#10004;&#65039;</span>
+							Passwort wiederholen
+						</label>
+						<div class="input-group">
+							<input type="password" class="form-control" name="password2" id="password2" oninput="checkPasswordMatch()">
+							<button type="button" class="btn-stu" onclick="togglePasswordVisibility('password2', 'password2Toggle')">
+								<span id="password2Toggle">&#128065;&#65039;</span>
+							</button>
+						</div>
+						<div id="passwordMatch" class="requirement" style="display: none;">
+							<span id="match-icon" class="req-icon">&#10060;</span> Passw&ouml;rter stimmen &uuml;berein
+						</div>
+					</div>
+
+					
+			</form>
+</div>
+			<div class="col-lg-2 d-none d-lg-block">
+			</div>
 		</div>
-    
-	    <div class="col-12 col-lg-8">
-          <div class="mb-3">
-        	<label class="form-label">
-			  Fraktion w&auml;hlen
-			</label>
-        	                              <div class="stu-border mb-2 p-2" style="background-color: #0d2029; cursor: pointer;" onclick="toggleFaction(1); selectFaction(1);">
-                  <div id="fachead_1">
+
+		<div class="registration_box_content mt-2">
+			<div class="row">
+				<div class="col-lg-2 d-none d-lg-block">
+				</div>
+
+				<div class="col-12 col-lg-8">
+					<div class="mb-3">
+						<label class="form-label">
+							Fraktion w&auml;hlen
+						</label>
+																		<div class="stu-border mb-2 p-2" style="background-color: #0d2029; cursor: pointer;" onclick="toggleFaction(1); selectFaction(1);">
+							<div id="fachead_1">
     <img src="assets/rassen/1s.png"> <strong>Vereinte F&ouml;deration der Planeten</strong>
         (2/50)
     </div>
@@ -287,9 +332,9 @@
                         Sie hat mehr Schiffsr&uuml;mpfe zur Auswahl als die anderen spielbaren Rassen.
                         Der Schwerpunkt liegt auf der Forschung, aber F&ouml;derationssiedler k&ouml;nnen sich auch im Kampf behaupten.
 </div>
-                </div>
-        	                              <div class="stu-border mb-2 p-2" style="background-color: #0d2000; cursor: pointer;" onclick="toggleFaction(2); selectFaction(2);">
-                  <div id="fachead_2">
+						</div>
+																		<div class="stu-border mb-2 p-2" style="background-color: #0d2000; cursor: pointer;" onclick="toggleFaction(2); selectFaction(2);">
+							<div id="fachead_2">
     <img src="assets/rassen/2s.png"> <strong>Romulanisches Imperium</strong>
         (0/50)
     </div>
@@ -299,9 +344,9 @@
                         Wer dieses Volk ausw&auml;hlt kann Tarnvorrichtungen in seine Schiffe einbauen.
                         Dar&uuml;ber hinaus sind die Romulaner die einzige Rasse, die die hochwertigsten Torpedowerfer benutzen kann.
 </div>
-                </div>
-        	                              <div class="stu-border mb-2 p-2" style="background-color: #2f0300; cursor: pointer;" onclick="toggleFaction(3); selectFaction(3);">
-                  <div id="fachead_3">
+						</div>
+																		<div class="stu-border mb-2 p-2" style="background-color: #2f0300; cursor: pointer;" onclick="toggleFaction(3); selectFaction(3);">
+							<div id="fachead_3">
     <img src="assets/rassen/3s.png"> <strong>Klingonisches Imperium</strong>
         (0/50)
     </div>
@@ -310,9 +355,9 @@
     Die Klingonen sind ein kriegerisches Volk aus dem Betaquadranten.
                         Wer dieses Volk spielt, verf&uuml;gt &uuml;ber eine Auswahl an effektiven Kampfschiffen und kann Tarnvorrichtungen benutzen.
 </div>
-                </div>
-        	                              <div class="stu-border mb-2 p-2" style="background-color: #402e00; cursor: pointer;" onclick="toggleFaction(4); selectFaction(4);">
-                  <div id="fachead_4">
+						</div>
+																		<div class="stu-border mb-2 p-2" style="background-color: #402e00; cursor: pointer;" onclick="toggleFaction(4); selectFaction(4);">
+							<div id="fachead_4">
     <img src="assets/rassen/4s.png"> <strong>Cardassianische Union</strong>
         (0/50)
     </div>
@@ -320,9 +365,9 @@
         <br>
     Schon wieder eine Station weniger :-(
 </div>
-                </div>
-        	                              <div class="stu-border mb-2 p-2" style="background-color: #402100; cursor: pointer;" onclick="toggleFaction(5); selectFaction(5);">
-                  <div id="fachead_5">
+						</div>
+																		<div class="stu-border mb-2 p-2" style="background-color: #402100; cursor: pointer;" onclick="toggleFaction(5); selectFaction(5);">
+							<div id="fachead_5">
     <img src="assets/rassen/5s.png"> <strong>Ferengi Allianz</strong>
         (0/50)
     </div>
@@ -331,66 +376,61 @@
     Die Ferengi sind eine Kultur skrupelloser Kapitalisten, die selbst ihre eigene Gro&szlig;mutter verkaufen w&uuml;rden, wenn sie Latinum daf&uuml;r bek&auml;men.
                         In STU haben sie Schiffe mit hoher Ladekapazit&auml;t und k&ouml;nnen Tachyonscanner einsetzen, um getarnte Schiffe aufzusp&uuml;ren.
 </div>
-                </div>
-        	          </div>
-    	  <div class="mb-2">
-            <label class="form-label">
-			  Gew&auml;hlte Fraktion
-			</label>
-        	<div id="ch_faction" class="stu-border-faction p-2">Keine</div>
-        	<div id="factionerror" class="text-danger" style="display: none;">Es wurde keine Fraktion gew&auml;hlt</div>
-    	  </div>
+						</div>
+											</div>
+					<div class="mb-2">
+						<label class="form-label">
+							Gew&auml;hlte Fraktion
+						</label>
+						<div id="ch_faction" class="stu-border-faction p-2">Keine</div>
+						<div id="factionerror" class="text-danger" style="display: none;">Es wurde keine Fraktion
+							gew&auml;hlt</div>
+					</div>
+				</div>
+
+				<div class="col-lg-2 d-none d-lg-block">
+				</div>
+			</div>
 		</div>
 
-		<div class="col-lg-2 d-none d-lg-block">
+		<div class="row">
+			<div class="col-lg-2 d-none d-lg-block">
+			</div>
+
+			<div class="col-12 col-lg-8">
+				<div class="mb-3 pt-3">
+					<label for="referer" class="form-label">
+						Wie bist du auf STU gesto&szlig;en?
+					</label>
+					<input type="text" class="form-control" name="referer" id="referer">
+				</div>
+
+				<div class="mb-3">
+					<div class="form-check">
+						<input class="form-check-input" type="checkbox" id="asb" name="asb" onblur="checkEmail(this, this.value);" onclick="$('#asberror').hide()">
+						<label class="form-check-label" for="asb">
+							Ich habe die <a href="https://wiki.change.me/index.php?title=Spielregeln" target="_blank" class="text-decoration-underline">Spielregeln</a> und den
+							<a href="/?SHOW_INFOS=1" target="_blank" class="text-decoration-underline">Datenschutzhinweis</a> gelesen und bin damit
+							einverstanden.
+						</label>
+					</div>
+					<div id="asberror" class="text-danger" style="display: none;">
+						Die Spielregeln/der Datenschutzhinweis wurde(n) nicht akzeptiert
+					</div>
+				</div>
+
+								<div class="text-center pb-3">
+					<button type="submit" name="B_SEND_REGISTRATION" value="Registrieren" class="btn-stu w-50">Registrieren</button>
+				</div>
+							</div>
+			
+
+			<div class="col-lg-2 d-none d-lg-block"></div>
 		</div>
-	  </div>
-    </div>
 
-	<div class="row">
-      <div class="col-lg-2 d-none d-lg-block">
-	  </div>
-    
-	  <div class="col-12 col-lg-8">
-	    <div class="mb-3 pt-3">
-          <label for="referer" class="form-label">
-		    Wie bist du auf STU gesto&szlig;en?
-		  </label>
-          <input type="text" class="form-control" name="referer" id="referer">
-        </div>
+	</div>
 
-    	<div class="mb-3">
-		  <div class="form-check">
-    	    <input class="form-check-input" type="checkbox" id="asb" name="asb" onblur="checkEmail(this, this.value);" onclick="$('#asberror').hide()">
-            <label class="form-check-label" for="asb">
-              Ich habe die <a href="https://wiki.change.me/index.php?title=Spielregeln" target="_blank" class="text-decoration-underline">Spielregeln</a> und den
-              <a href="/?SHOW_INFOS=1" target="_blank" class="text-decoration-underline">Datenschutzhinweis</a> gelesen und bin damit einverstanden.
-            </label>
-          </div>
-		  <div id="asberror" class="text-danger" style="display: none;">
-		    Die Spielregeln/der Datenschutzhinweis wurde(n) nicht akzeptiert
-		  </div>
-		</div>
-
-    	    	  <div class="text-center pb-3">
-        	<button type="submit" name="B_SEND_REGISTRATION" value="Registrieren" class="btn-stu w-50">Registrieren</button>
-    	  </div>
-    	      </div>
 	
-	
-    <div class="col-lg-2 d-none d-lg-block"></div>
-</div>
-
-
-
-
-
- 
-
-
-</div>
-                
-
           <div class="row">
           </div>
 

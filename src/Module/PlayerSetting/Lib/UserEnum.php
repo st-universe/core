@@ -23,7 +23,7 @@ final class UserEnum
     public const int USER_STATE_NEW = 0;
     public const int USER_STATE_UNCOLONIZED = 1;
     public const int USER_STATE_ACTIVE = 2;
-    public const int USER_STATE_SMS_VERIFICATION = 3;
+    public const int USER_STATE_ACCOUNT_VERIFICATION = 3;
     public const int USER_STATE_COLONIZATION_SHIP = 4;
 
 
@@ -42,7 +42,7 @@ final class UserEnum
             self::USER_STATE_NEW => _("NEU"),
             self::USER_STATE_UNCOLONIZED => _("OHNE KOLONIEN"),
             self::USER_STATE_ACTIVE => _("AKTIV"),
-            self::USER_STATE_SMS_VERIFICATION => _("SMS VERIFIKATION"),
+            self::USER_STATE_ACCOUNT_VERIFICATION => _("ACCOUNT VERIFIKATION"),
             self::USER_STATE_COLONIZATION_SHIP => _("KOLONISATIONS SCHIFF"),
             default => '',
         };

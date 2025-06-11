@@ -14,17 +14,13 @@ class SpacecraftFactory implements SpacecraftFactoryInterface
 {
     public function create(SpacecraftRumpInterface $rump): SpacecraftInterface
     {
-        $type = $rump->getShipRumpCategory()->getType();
-
-        $condition = new SpacecraftCondition();
-
-        $spacecraft = match ($type) {
-            SpacecraftTypeEnum::SHIP => new Ship($condition),
-            SpacecraftTypeEnum::STATION => new Station($condition),
-            SpacecraftTypeEnum::THOLIAN_WEB => new TholianWeb($condition)
+        $spacecraft = match ($rump->getShipRumpCategory()->getType()) {
+            SpacecraftTypeEnum::SHIP => new Ship(),
+            SpacecraftTypeEnum::STATION => new Station(),
+            SpacecraftTypeEnum::THOLIAN_WEB => new TholianWeb()
         };
 
-        $condition->setSpacecraft($spacecraft);
+        $spacecraft->setCondition(new SpacecraftCondition($spacecraft));
 
         return $spacecraft;
     }

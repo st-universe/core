@@ -165,14 +165,12 @@ abstract class Spacecraft implements SpacecraftInterface
     #[OneToOne(targetEntity: 'ShipTakeover', mappedBy: 'target')]
     private ?ShipTakeoverInterface $takeoverPassive = null;
 
-    public function __construct(SpacecraftConditionInterface $condition)
+    public function __construct()
     {
         $this->crew = new ArrayCollection();
         $this->systems = new ArrayCollection();
         $this->storage = new ArrayCollection();
         $this->logbook = new ArrayCollection();
-
-        $this->condition = $condition;
     }
 
     #[Override]
@@ -189,6 +187,14 @@ abstract class Spacecraft implements SpacecraftInterface
     public function getCondition(): SpacecraftConditionInterface
     {
         return $this->condition;
+    }
+
+    #[Override]
+    public function setCondition(SpacecraftConditionInterface $condition): SpacecraftInterface
+    {
+        $this->condition = $condition;
+
+        return $this;
     }
 
     #[Override]
