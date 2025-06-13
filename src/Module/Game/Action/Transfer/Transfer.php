@@ -20,6 +20,7 @@ use Stu\Lib\Transfer\TransferEntityTypeEnum;
 use Stu\Lib\Transfer\TransferTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\TargetLink;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 
@@ -105,6 +106,13 @@ final class Transfer implements ActionControllerInterface
             PrivateMessageFolderTypeEnum::SPECIAL_TRADE,
             $target
         );
+
+        if ($target->getUser() === $source->getUser()) {
+            $game->setTargetLink(new TargetLink(
+                $target->getHref(),
+                sprintf('Zu Ziel-%s wechseln', $target->getTransferEntityType()->getName())
+            ));
+        }
 
         $game->addInformationWrapper($informations);
     }
