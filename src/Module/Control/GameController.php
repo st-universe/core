@@ -46,7 +46,6 @@ use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\GameConfigRepositoryInterface;
 use Stu\Orm\Repository\GameRequestRepositoryInterface;
 use Stu\Orm\Repository\GameTurnRepositoryInterface;
-use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use SysvSemaphore;
 use Ubench;
@@ -64,7 +63,6 @@ final class GameController implements GameControllerInterface
         private AccessCheckInterface $accessCheck,
         private SessionInterface $session,
         private SessionLoginInterface $sessionLogin,
-        private SessionStringRepositoryInterface $sessionStringRepository,
         private TwigPageInterface $twigPage,
         private DatabaseUserRepositoryInterface $databaseUserRepository,
         private StuConfigInterface $stuConfig,
@@ -663,26 +661,12 @@ final class GameController implements GameControllerInterface
 
             $gameRequest->setAction($actionIdentifier);
 
-            if ($this->isSessionInvalid($controller)) {
-                return;
-            }
-
             if ($this->accessCheck->checkUserAccess($controller, $this)) {
                 $controller->handle($this);
                 $this->entityManager->flush();
             }
             break;
         }
-    }
-
-    private function isSessionInvalid(ControllerInterface $controller): bool
-    {
-        return $controller instanceof ActionControllerInterface
-            && $controller->performSessionCheck() === true
-            && !$this->sessionStringRepository->isValid(
-                (string)request::indString('sstr'),
-                $this->getUser()->getId()
-            );
     }
 
     private function executeView(ModuleEnum $module, GameRequestInterface $gameRequest): void

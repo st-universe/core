@@ -3,14 +3,17 @@
 namespace Stu\Module\Control;
 
 use Override;
+use request;
 use Stu\Lib\AccountNotVerifiedException;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Orm\Repository\SessionStringRepositoryInterface;
 
 class AccessCheck implements AccessCheckInterface
 {
     public function __construct(
-        private StuConfigInterface $stuConfig
+        private readonly SessionStringRepositoryInterface $sessionStringRepository,
+        private readonly StuConfigInterface $stuConfig
     ) {}
 
     #[Override]
@@ -23,8 +26,13 @@ class AccessCheck implements AccessCheckInterface
             return true;
         }
 
-        if ($game->hasUser() && $game->getUser()->getState() === UserEnum::USER_STATE_ACCOUNT_VERIFICATION) {
+        $hasUser = $game->hasUser();
+        if ($hasUser && $game->getUser()->getState() === UserEnum::USER_STATE_ACCOUNT_VERIFICATION) {
             throw new AccountNotVerifiedException();
+        }
+
+        if (!$this->isSessionValid($controller, $hasUser, $game)) {
+            return false;
         }
 
         if (!$controller instanceof AccessCheckControllerInterface) {
@@ -32,13 +40,42 @@ class AccessCheck implements AccessCheckInterface
         }
 
         $feature = $controller->getFeatureIdentifier();
-        if ($this->isFeatureGranted($game->getUser()->getId(), $feature, $game)) {
+        if ($hasUser && $this->isFeatureGranted($game->getUser()->getId(), $feature, $game)) {
             return true;
         }
 
         $game->addInformation('[b][color=#ff2626]Aktion nicht möglich, Spieler ist nicht berechtigt![/color][/b]');
 
         return false;
+    }
+
+    private function isSessionValid(
+        ControllerInterface $controller,
+        bool $hasUser,
+        GameControllerInterface $game
+    ): bool {
+
+        if (!$controller instanceof ActionControllerInterface) {
+            return true;
+        }
+
+        if (!$controller->performSessionCheck()) {
+            return true;
+        }
+
+        $sessionString = request::indString('sstr');
+        if (!$sessionString) {
+            return false;
+        }
+
+        if (!$hasUser) {
+            return false;
+        }
+
+        return $this->sessionStringRepository->isValid(
+            $sessionString,
+            $game->getUser()->getId()
+        );
     }
 
     #[Override]
