@@ -4,18 +4,23 @@ declare(strict_types=1);
 
 namespace Stu\Module\Control;
 
+use Mockery;
 use Mockery\MockInterface;
 use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
+use request;
 use Stu\Lib\AccountNotVerifiedException;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use Stu\StuTestCase;
 
 class AccessCheckTest extends StuTestCase
 {
+    private MockInterface&SessionStringRepositoryInterface $sessionStringRepository;
     private MockInterface&StuConfigInterface $stuConfig;
+
     private MockInterface&GameControllerInterface $game;
 
     private AccessCheckInterface $subject;
@@ -23,10 +28,15 @@ class AccessCheckTest extends StuTestCase
     #[Override]
     public function setUp(): void
     {
+        $this->sessionStringRepository = $this->mock(SessionStringRepositoryInterface::class);
         $this->stuConfig = $this->mock(StuConfigInterface::class);
+
         $this->game = $this->mock(GameControllerInterface::class);
 
-        $this->subject = new AccessCheck($this->stuConfig);
+        $this->subject = new AccessCheck(
+            $this->sessionStringRepository,
+            $this->stuConfig
+        );
     }
 
     public function testCheckUserAccessExpectTrueWhenNoAccessCheckController(): void
@@ -95,7 +105,6 @@ class AccessCheckTest extends StuTestCase
 
         $this->game->shouldReceive('hasUser')
             ->withNoArgs()
-            ->once()
             ->andReturn(true);
         $this->game->shouldReceive('getUser')
             ->withNoArgs()
@@ -131,7 +140,6 @@ class AccessCheckTest extends StuTestCase
 
         $this->game->shouldReceive('hasUser')
             ->withNoArgs()
-            ->once()
             ->andReturn(true);
         $this->game->shouldReceive('getUser')
             ->withNoArgs()
@@ -184,7 +192,6 @@ class AccessCheckTest extends StuTestCase
 
         $this->game->shouldReceive('hasUser')
             ->withNoArgs()
-            ->once()
             ->andReturn(true);
         $this->game->shouldReceive('getUser')
             ->withNoArgs()
@@ -205,5 +212,62 @@ class AccessCheckTest extends StuTestCase
         $result = $this->subject->checkUserAccess($controller, $this->game);
 
         $this->assertFalse($result);
+    }
+
+    public static function providerActionControllerData(): array
+    {
+        return [
+            [false, 'SESSION_STRING', Mockery::mock(UserInterface::class), true],
+            [true, 'SESSION_STRING', Mockery::mock(UserInterface::class), true],
+            [true, null, Mockery::mock(UserInterface::class), false],
+            [true, 'SESSION_STRING', null, false],
+            [true, null, null, false],
+            [false, null, null, true],
+        ];
+    }
+
+    /** @param null|UserInterface|MockInterface $user*/
+    #[DataProvider('providerActionControllerData')]
+    public function testCheckUserAccessForActionControllers(
+        bool $performSessionCheck,
+        ?string $sstr,
+        ?UserInterface $user,
+        bool $expectedResult
+    ): void {
+        $controller = $this->mock(ActionControllerInterface::class);
+
+        if ($sstr !== null) {
+            request::setMockVars(['sstr' => $sstr]);
+        }
+
+        $controller->shouldReceive('performSessionCheck')
+            ->withNoArgs()
+            ->andReturn($performSessionCheck);
+
+        if ($user !== null) {
+            $user->shouldReceive('getState')
+                ->withNoArgs()
+                ->once()
+                ->andReturn(UserEnum::USER_STATE_ACTIVE);
+            $user->shouldReceive('getId')
+                ->withNoArgs()
+                ->andReturn(42);
+        }
+
+        $this->game->shouldReceive('hasUser')
+            ->withNoArgs()
+            ->andReturn($user !== null);
+        $this->game->shouldReceive('getUser')
+            ->withNoArgs()
+            ->andReturn($user);
+
+        $this->sessionStringRepository->shouldReceive('isValid')
+            ->with($sstr, 42)
+            ->zeroOrMoreTimes()
+            ->andReturn($expectedResult);
+
+        $result = $this->subject->checkUserAccess($controller, $this->game);
+
+        $this->assertEquals($expectedResult, $result);
     }
 }
