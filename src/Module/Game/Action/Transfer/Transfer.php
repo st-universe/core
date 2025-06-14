@@ -23,15 +23,23 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\TargetLink;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Repository\NPCLogRepositoryInterface;
+use Stu\Orm\Repository\MapRepositoryInterface;
+
 
 final class Transfer implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_TRANSFER';
 
+    public const int INACTIV_TIME = 60 * 60 * 48; // 48 hours
+
     public function __construct(
         private PrivateMessageSenderInterface $privateMessageSender,
         private TransferInformationFactoryInterface $transferInformationFactory,
-        private InteractionCheckerBuilderFactoryInterface $interactionCheckerBuilderFactory
+        private InteractionCheckerBuilderFactoryInterface $interactionCheckerBuilderFactory,
+        private NPCLogRepositoryInterface $npcLogRepository,
+        private MapRepositoryInterface $mapRepository
     ) {}
 
     #[Override]
@@ -99,6 +107,31 @@ final class Transfer implements ActionControllerInterface
             $informations
         );
 
+        if ($transferInformation->getTargetType() === TransferEntityTypeEnum::COLONY && !$isUnload) {
+            $targetEntity = $transferInformation->getTargetWrapper()->get();
+            if ($targetEntity instanceof ColonyInterface) {
+                $targetUser = $target->getUser();
+                $sourceUser = $source->getUser();
+                if ($targetUser !== null && $sourceUser !== null && $this->mapRepository->isAdminRegionUserRegion($target->getLocation()->getId(), $targetUser->getFactionId())) {
+                    $userstring = $sourceUser->getName() . '(' . $sourceUser->getId() . ') -> ' . $targetUser->getName() . '(' . $targetUser->getId() . ')';
+                    if ($targetUser->getLastaction() < time() - self::INACTIV_TIME) {
+                        $lastactivestring = ' | Lastaction: ' . date('d.m.Y H:i:s', $targetUser->getLastaction());
+                    } else {
+                        $lastactivestring = '';
+                    }
+                    $text = $informations->getInformationsAsString() . ' | ' . $userstring . ' | ' . $target->getLocation()->getSectorString() . $lastactivestring;
+
+                    $this->createEntry(
+                        $text,
+                        $sourceUser->getId(),
+                        $targetUser->getFactionId()
+                    );
+                }
+            }
+        }
+
+
+
         $this->privateMessageSender->send(
             $transferInformation->getSourceWrapper()->getUser()->getId(),
             $transferInformation->getTargetWrapper()->getUser()->getId(),
@@ -162,6 +195,20 @@ final class Transfer implements ActionControllerInterface
         }
 
         return $transferStrategy;
+    }
+
+    private function createEntry(
+        string $text,
+        int $UserId,
+        int $factionId
+    ): void {
+        $entry = $this->npcLogRepository->prototype();
+        $entry->setText($text);
+        $entry->setSourceUserId($UserId);
+        $entry->setDate(time());
+        $entry->setFactionId($factionId);
+
+        $this->npcLogRepository->save($entry);
     }
 
     #[Override]
