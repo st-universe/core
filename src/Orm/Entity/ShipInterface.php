@@ -8,8 +8,6 @@ interface ShipInterface extends SpacecraftInterface
 
     public function setFleetId(?int $fleetId): ShipInterface;
 
-    public function isUnderRetrofit(): bool;
-
     public function getIsFleetLeader(): bool;
 
     public function setIsFleetLeader(bool $isFleetLeader): ShipInterface;

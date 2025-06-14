@@ -33,12 +33,14 @@ class LocationRepository extends EntityRepository implements LocationRepositoryI
                 'SELECT location_id, descriminator FROM (
                     SELECT coalesce(sum(r1.tractor_mass) / 10, 0)
                             + coalesce(sum(r2.tractor_mass), 0)
-                            + coalesce((SELECT count(ca.id)
+                            + coalesce((SELECT count(ca.crew_id)
                                             FROM stu_crew_assign ca
                                             JOIN stu_spacecraft s
                                             ON ca.spacecraft_id = s.id
+                                            JOIN stu_spacecraft_condition sc
+                                            ON s.id = sc.spacecraft_id
                                             WHERE s.user_id >= :firstUserId
-                                            AND s.state != :state
+                                            AND sc.state != :state
                                             AND s.location_id = l.id
                                             AND NOT EXISTS (SELECT ss.id
                                                             FROM stu_spacecraft_system ss
@@ -49,8 +51,10 @@ class LocationRepository extends EntityRepository implements LocationRepositoryI
                                             FROM stu_spacecraft_system ss
                                             JOIN stu_spacecraft s
                                             ON ss.spacecraft_id = s.id
+                                            JOIN stu_spacecraft_condition sc
+                                            ON s.id = sc.spacecraft_id
                                             WHERE s.user_id >= :firstUserId
-                                            AND s.state != :state
+                                            AND sc.state != :state
                                             AND NOT EXISTS (SELECT ss.id
                                                             FROM stu_spacecraft_system ss
                                                             WHERE ss.spacecraft_id = s.id
@@ -63,6 +67,8 @@ class LocationRepository extends EntityRepository implements LocationRepositoryI
                         FROM stu_location l
                         JOIN stu_spacecraft s
                         ON s.location_id = l.id
+                        JOIN stu_spacecraft_condition sc
+                        ON s.id = sc.spacecraft_id
                         LEFT JOIN stu_rump r1
                         ON s.rump_id = r1.id
                         and r1.category_id = :rumpCategory
@@ -70,7 +76,7 @@ class LocationRepository extends EntityRepository implements LocationRepositoryI
                         ON s.rump_id = r2.id
                         AND r2.category_id != :rumpCategory
                         WHERE s.user_id >= :firstUserId
-                        AND s.state != :state
+                        AND sc.state != :state
                         AND NOT EXISTS (SELECT ss.id
                                         FROM stu_spacecraft_system ss
                                         WHERE ss.spacecraft_id = s.id

@@ -89,7 +89,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
 
             $this->applyDamage->damage($damage_wrapper, $targetWrapper, $message);
 
-            if ($target->isDestroyed()) {
+            if ($target->getCondition()->isDestroyed()) {
 
                 $this->checkForSpacecraftDestruction(
                     $attacker,

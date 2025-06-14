@@ -11,7 +11,6 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
 use Override;
-use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\SpacecraftTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Station\StationUtility;
@@ -28,7 +27,7 @@ class Ship extends Spacecraft implements ShipInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $docked_to_id = null;
 
-    // TODO: redundant? could just compare this with fleet->leader
+    // used for sorting
     #[Column(type: 'boolean')]
     private bool $is_fleet_leader = false;
 
@@ -66,12 +65,6 @@ class Ship extends Spacecraft implements ShipInterface
     {
         $this->fleet_id = $fleetId;
         return $this;
-    }
-
-    #[Override]
-    public function isUnderRetrofit(): bool
-    {
-        return $this->getState() === SpacecraftStateEnum::RETROFIT;
     }
 
     #[Override]

@@ -42,7 +42,7 @@ final class CancelMining implements CancelMiningInterface
 
     private function setStateNoneAndSave(ShipInterface $ship): void
     {
-        $ship->setState(SpacecraftStateEnum::NONE);
+        $ship->getCondition()->setState(SpacecraftStateEnum::NONE);
         $this->shipRepository->save($ship);
     }
 }

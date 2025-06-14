@@ -380,7 +380,7 @@ class ShipTakeoverManagerTest extends StuTestCase
         $this->ship->shouldReceive('setTakeoverActive')
             ->with(null)
             ->andReturnSelf();
-        $this->ship->shouldReceive('setState')
+        $this->ship->shouldReceive('getCondition->setState')
             ->with(SpacecraftStateEnum::NONE)
             ->once();
         $user->shouldReceive('getId')
@@ -477,7 +477,7 @@ class ShipTakeoverManagerTest extends StuTestCase
         $this->ship->shouldReceive('setTakeoverActive')
             ->with(null)
             ->andReturnSelf();
-        $this->ship->shouldReceive('setState')
+        $this->ship->shouldReceive('getCondition->setState')
             ->with(SpacecraftStateEnum::NONE)
             ->once();
         $user->shouldReceive('getId')
@@ -581,7 +581,7 @@ class ShipTakeoverManagerTest extends StuTestCase
         $this->ship->shouldReceive('setTakeoverActive')
             ->with(null)
             ->andReturnSelf();
-        $this->ship->shouldReceive('setState')
+        $this->ship->shouldReceive('getCondition->setState')
             ->with(SpacecraftStateEnum::NONE)
             ->once();
         $user->shouldReceive('getId')

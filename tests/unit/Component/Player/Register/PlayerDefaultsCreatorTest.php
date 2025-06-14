@@ -21,7 +21,6 @@ use Stu\Orm\Entity\UserTutorialInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
-use Stu\Orm\Repository\ResearchRepositoryInterface;
 use Stu\Orm\Repository\UserLayerRepositoryInterface;
 use Stu\Orm\Repository\UserTutorialRepositoryInterface;
 use Stu\Orm\Repository\TutorialStepRepositoryInterface;
@@ -174,27 +173,11 @@ class PlayerDefaultsCreatorTest extends MockeryTestCase
             ->once()
             ->andReturn($userTutorial);
 
-        $user->shouldReceive('getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(42);
-
-        $tutorialStep->shouldReceive('getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(1);
-
         $userTutorial->shouldReceive('setUser')
             ->with($user)
             ->once();
         $userTutorial->shouldReceive('setTutorialStep')
             ->with($tutorialStep)
-            ->once();
-        $userTutorial->shouldReceive('setUserId')
-            ->with(42)
-            ->once();
-        $userTutorial->shouldReceive('setTutorialStepId')
-            ->with(1)
             ->once();
 
         $this->userTutorialRepository->shouldReceive('save')

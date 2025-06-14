@@ -95,7 +95,7 @@ final class AttackBuilding implements ActionControllerInterface
             $game->addInformation(_('Keine Energie vorhanden'));
             return;
         }
-        if ($ship->isDisabled()) {
+        if ($ship->getCondition()->isDisabled()) {
             $game->addInformation(_('Das Schiff ist kampfunfähig'));
             return;
         }
@@ -212,7 +212,7 @@ final class AttackBuilding implements ActionControllerInterface
             PrivateMessageFolderTypeEnum::SPECIAL_COLONY
         );
 
-        if ($ship->isDestroyed()) {
+        if ($ship->getCondition()->isDestroyed()) {
             $game->addInformationWrapper($informations);
             return;
         }

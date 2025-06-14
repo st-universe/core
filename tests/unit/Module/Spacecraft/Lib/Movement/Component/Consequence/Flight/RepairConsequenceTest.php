@@ -58,7 +58,7 @@ class RepairConsequenceTest extends StuTestCase
     {
         $messages = $this->mock(MessageCollectionInterface::class);
 
-        $this->ship->shouldReceive('isDestroyed')
+        $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(true);
@@ -74,11 +74,11 @@ class RepairConsequenceTest extends StuTestCase
     {
         $messages = $this->mock(MessageCollectionInterface::class);
 
-        $this->ship->shouldReceive('isDestroyed')
+        $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
-        $this->ship->shouldReceive('isUnderRepair')
+        $this->ship->shouldReceive('getCondition->isUnderRepair')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -95,11 +95,11 @@ class RepairConsequenceTest extends StuTestCase
         $messages = $this->mock(MessageCollectionInterface::class);
         $message = $this->mock(MessageInterface::class);
 
-        $this->ship->shouldReceive('isDestroyed')
+        $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
-        $this->ship->shouldReceive('isUnderRepair')
+        $this->ship->shouldReceive('getCondition->isUnderRepair')
             ->withNoArgs()
             ->once()
             ->andReturn(true);

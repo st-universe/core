@@ -171,10 +171,10 @@ class ShipMoverTest extends StuTestCase
         $lostShip->shouldReceive('getTractoredShip')
             ->withNoArgs()
             ->andReturn(null);
-        $ship->shouldReceive('isDestroyed')
+        $ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->andReturn(false);
-        $lostShip->shouldReceive('isDestroyed')
+        $lostShip->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->andReturn(false);
         $ship->shouldReceive('getLocation')

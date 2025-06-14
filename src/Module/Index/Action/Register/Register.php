@@ -65,13 +65,28 @@ final class Register implements ActionControllerInterface
         if ($mobileNumber === '') {
             return;
         }
+        $password = trim($this->registerRequest->getPassword());
+        $passwordReEntered = $this->registerRequest->getPasswordReEntered();
+
+        if ($password === '') {
+            return;
+        }
+        if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9]).{6,}$/', $password)) {
+            return;
+        }
+        if ($password !== $passwordReEntered) {
+            return;
+        }
+
         $this->playerCreator->createWithMobileNumber(
             $loginname,
             $email,
             $faction['faction'],
             $mobileNumber,
+            $password,
             $referer
         );
+
 
         $game->setView(ShowFinishRegistration::VIEW_IDENTIFIER);
     }

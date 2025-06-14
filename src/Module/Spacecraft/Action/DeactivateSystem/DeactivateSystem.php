@@ -54,7 +54,7 @@ final class DeactivateSystem implements ActionControllerInterface
                 $this->alertReactionFacade->doItAll($traktoredShipWrapper, $game, $spacecraft);
             }
 
-            if ($spacecraft->isDestroyed()) {
+            if ($spacecraft->getCondition()->isDestroyed()) {
                 return;
             }
         }

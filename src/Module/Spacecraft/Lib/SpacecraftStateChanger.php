@@ -46,7 +46,7 @@ final class SpacecraftStateChanger implements SpacecraftStateChangerInterface
         }
 
         //repair stuff
-        if ($ship->isUnderRepair()) {
+        if ($currentState->isRepairState()) {
             $this->cancelRepair->cancelRepair($ship);
         } elseif ($currentState === SpacecraftStateEnum::ASTRO_FINALIZING) {
             $this->astroEntryLib->cancelAstroFinalizing($wrapper);
@@ -64,7 +64,7 @@ final class SpacecraftStateChanger implements SpacecraftStateChangerInterface
             $this->cancelMining->cancelMining($wrapper);
         }
 
-        $ship->setState($newState);
+        $ship->getCondition()->setState($newState);
         $this->spacecraftRepository->save($ship);
     }
 

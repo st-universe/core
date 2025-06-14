@@ -84,7 +84,7 @@ class FightLibTest extends StuTestCase
     {
         $informations = $this->mock(InformationInterface::class);
 
-        $this->ship->shouldReceive('isDestroyed')
+        $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(true);
@@ -96,7 +96,7 @@ class FightLibTest extends StuTestCase
     {
         $informations = $this->mock(InformationInterface::class);
 
-        $this->ship->shouldReceive('isDestroyed')
+        $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -116,7 +116,7 @@ class FightLibTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(false);
-        $this->ship->shouldReceive('isDestroyed')
+        $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -132,7 +132,7 @@ class FightLibTest extends StuTestCase
     {
         $informations = $this->mock(InformationInterface::class);
 
-        $this->ship->shouldReceive('isDestroyed')
+        $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -157,7 +157,7 @@ class FightLibTest extends StuTestCase
         $informations = $this->mock(InformationInterface::class);
         $informationWrapper = $this->mock(InformationWrapper::class);
 
-        $this->ship->shouldReceive('isDestroyed')
+        $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -233,7 +233,7 @@ class FightLibTest extends StuTestCase
         $informationWrapper = $this->mock(InformationWrapper::class);
         $informations = $this->mock(InformationInterface::class);
 
-        $this->ship->shouldReceive('isDestroyed')
+        $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);

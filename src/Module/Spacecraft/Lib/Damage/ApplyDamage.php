@@ -48,12 +48,13 @@ final class ApplyDamage implements ApplyDamageInterface
 
         $disablemessage = false;
         $damage = (int) $damageWrapper->getDamageRelative($spacecraft, DamageModeEnum::HULL);
-        if ($spacecraft->getSystemState(SpacecraftSystemTypeEnum::RPG_MODULE) && $spacecraft->getHull() - $damage < round($spacecraft->getMaxHull() / 100 * 10)) {
-            $damage = (int) round($spacecraft->getHull() - $spacecraft->getMaxHull() / 100 * 10);
+        $hull = $spacecraft->getCondition()->getHull();
+        if ($spacecraft->getSystemState(SpacecraftSystemTypeEnum::RPG_MODULE) && $hull - $damage < round($spacecraft->getMaxHull() / 100 * 10)) {
+            $damage = (int) round($hull - $spacecraft->getMaxHull() / 100 * 10);
             $disablemessage = _('-- Das Schiff wurde kampfunfähig gemacht');
-            $spacecraft->setDisabled(true);
+            $spacecraft->getCondition()->setDisabled(true);
         }
-        if ($spacecraft->getHull() > $damage) {
+        if ($hull > $damage) {
             $this->damageHull($wrapper, $damageWrapper, $damage, $informations);
 
             if ($disablemessage) {
@@ -62,25 +63,26 @@ final class ApplyDamage implements ApplyDamageInterface
         } else {
             $informations->addInformation("- Hüllenschaden: " . $damage);
             $informations->addInformation("-- Das Schiff wurde zerstört!");
-            $spacecraft->setIsDestroyed(true);
+            $spacecraft->getCondition()->setIsDestroyed(true);
         }
     }
 
     private function damageShields(SpacecraftWrapperInterface $wrapper, DamageWrapper $damageWrapper, InformationInterface $informations): void
     {
         $spacecraft = $wrapper->get();
+        $condition = $spacecraft->getCondition();
 
         $damage = (int) $damageWrapper->getDamageRelative($spacecraft, DamageModeEnum::SHIELDS);
-        if ($damage >= $spacecraft->getShield()) {
-            $informations->addInformation("- Schildschaden: " . $spacecraft->getShield());
+        if ($damage >= $condition->getShield()) {
+            $informations->addInformation("- Schildschaden: " . $condition->getShield());
             $informations->addInformation("-- Schilde brechen zusammen!");
 
             $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::SHIELDS);
 
-            $spacecraft->setShield(0);
+            $condition->setShield(0);
         } else {
-            $spacecraft->setShield($spacecraft->getShield() - $damage);
-            $informations->addInformation("- Schildschaden: " . $damage . " - Status: " . $spacecraft->getShield());
+            $condition->setShield($condition->getShield() - $damage);
+            $informations->addInformation("- Schildschaden: " . $damage . " - Status: " . $condition->getShield());
         }
 
         $shieldSystemData = $wrapper->getShieldSystemData();
@@ -94,6 +96,7 @@ final class ApplyDamage implements ApplyDamageInterface
     private function damageHull(SpacecraftWrapperInterface $wrapper, DamageWrapper $damageWrapper, int $damage, InformationInterface $informations): void
     {
         $spacecraft = $wrapper->get();
+        $condition = $spacecraft->getCondition();
 
         if ($damageWrapper->isCrit()) {
             $systemName = $this->systemDamage->destroyRandomShipSystem($wrapper, $damageWrapper);
@@ -102,9 +105,9 @@ final class ApplyDamage implements ApplyDamageInterface
                 $informations->addInformationf("- Kritischer Hüllen-Treffer zerstört System: %s", $systemName);
             }
         }
-        $huelleVorher = $spacecraft->getHull();
-        $spacecraft->setHuell($huelleVorher - $damage);
-        $informations->addInformationf("- Hüllenschaden: %d - Status: %d", $damage, $spacecraft->getHull());
+        $huelleVorher = $condition->getHull();
+        $condition->changeHull(-$damage);
+        $informations->addInformationf("- Hüllenschaden: %d - Status: %d", $damage, $condition->getHull());
 
         if (!$this->systemDamage->checkForDamagedShipSystems(
             $wrapper,

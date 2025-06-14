@@ -135,7 +135,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
             );
         }
 
-        if ($ship->isDestroyed()) {
+        if ($ship->getCondition()->isDestroyed()) {
             return;
         }
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
@@ -145,7 +145,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
             $game->addInformation("Der Traktorstrahl wurde bei dem Angriff zerstört");
             return;
         }
-        if ($target->isDestroyed()) {
+        if ($target->getCondition()->isDestroyed()) {
             $game->addInformation("Das Ziel wurde bei dem Angriff zerstört");
             $this->abort($wrapper, $game);
             return;

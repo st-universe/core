@@ -78,7 +78,7 @@ class CallForSupportBehaviour implements PirateBehaviourInterface
         $filteredFriends = array_filter(
             $friends,
             fn(ShipInterface $friend): bool =>
-            !$friend->isDestroyed()
+            !$friend->getCondition()->isDestroyed()
                 && $friend->isFleetLeader()
                 && $friend->getLocation() !== $leadShip->getLocation()
         );

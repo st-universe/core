@@ -20,12 +20,12 @@ final class TutorialStepRepository extends EntityRepository implements TutorialS
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT ts FROM %s ts INDEX BY ts.id
-                    WHERE EXISTS (SELECT ut FROM %s ut
-                                    JOIN %1$s ts2
-                                    WITH ts2.id = ut.tutorial_step_id
-                                    WHERE ut.user = :user
-                                    AND ts2.module = :module
-                                    AND ts.view = :view)',
+                WHERE EXISTS (SELECT ut FROM %s ut
+                                JOIN %1$s ts2
+                                WITH ts2.id = ut.tutorialStep
+                                WHERE ut.user = :user
+                                AND ts2.module = :module
+                                AND ts.view = :view)',
                 TutorialStep::class,
                 UserTutorial::class
             )
@@ -35,6 +35,7 @@ final class TutorialStepRepository extends EntityRepository implements TutorialS
             'view' => $viewContext->getViewIdentifier(),
         ])->getResult();
     }
+
 
     #[Override]
     public function findAllFirstSteps(): array

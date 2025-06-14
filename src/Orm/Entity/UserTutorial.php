@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
@@ -18,17 +17,11 @@ use Stu\Orm\Repository\UserTutorialRepository;
 class UserTutorial implements UserTutorialInterface
 {
     #[Id]
-    #[Column(type: 'integer')]
-    private int $user_id;
-
-    #[Id]
-    #[Column(type: 'integer')]
-    private int $tutorial_step_id;
-
     #[ManyToOne(targetEntity: 'User', inversedBy: 'tutorials')]
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
+    #[Id]
     #[ManyToOne(targetEntity: 'TutorialStep')]
     #[JoinColumn(name: 'tutorial_step_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private TutorialStepInterface $tutorialStep;
@@ -57,17 +50,5 @@ class UserTutorial implements UserTutorialInterface
     {
         $this->tutorialStep = $tutorialStep;
         return $this;
-    }
-
-    #[Override]
-    public function setUserId(int $userId): void
-    {
-        $this->user_id = $userId;
-    }
-
-    #[Override]
-    public function setTutorialStepId(int $stepId): void
-    {
-        $this->tutorial_step_id = $stepId;
     }
 }

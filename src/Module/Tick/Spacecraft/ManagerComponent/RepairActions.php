@@ -7,6 +7,7 @@ namespace Stu\Module\Tick\Spacecraft\ManagerComponent;
 use Override;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
+use Stu\Component\Spacecraft\Repair\RepairUtil;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Component\Spacecraft\Repair\RepairUtilInterface;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
@@ -61,7 +62,8 @@ final class RepairActions implements ManagerComponentInterface
                         UserEnum::USER_NOONE,
                         $colony->getUser()->getId(),
                         sprintf(
-                            _('Es wurden %d %s hergestellt'),
+                            "Tickreport der Kolonie %s\nEs wurden %d %s hergestellt",
+                            $colony->getName(),
                             $queue->getAmount(),
                             $queue->getModule()->getName()
                         ),
@@ -165,8 +167,8 @@ final class RepairActions implements ManagerComponentInterface
         if (!$wrapper->canBeRepaired()) {
             $repairFinished = true;
 
-            $ship->setHuell($ship->getMaxHull());
-            $ship->setState(SpacecraftStateEnum::NONE);
+            $ship->getCondition()->setHull($ship->getMaxHull());
+            $ship->getCondition()->setState(SpacecraftStateEnum::NONE);
 
             $this->sendPrivateMessages($ship, $entity);
         }
@@ -177,10 +179,12 @@ final class RepairActions implements ManagerComponentInterface
 
     private function repairHull(ShipInterface $ship, bool $isRepairStationBonus): void
     {
-        $hullRepairRate = $isRepairStationBonus ? $ship->getRepairRate() * 2 : $ship->getRepairRate();
-        $ship->setHuell($ship->getHull() + $hullRepairRate);
-        if ($ship->getHull() > $ship->getMaxHull()) {
-            $ship->setHuell($ship->getMaxHull());
+        $condition = $ship->getCondition();
+        $hullRepairRate = $isRepairStationBonus ? RepairUtil::REPAIR_RATE_PER_TICK * 2 : RepairUtil::REPAIR_RATE_PER_TICK;
+
+        $condition->changeHull($hullRepairRate);
+        if ($condition->getHull() > $ship->getMaxHull()) {
+            $condition->setHull($ship->getMaxHull());
         }
     }
 

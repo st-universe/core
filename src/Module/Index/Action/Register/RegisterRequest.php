@@ -24,6 +24,18 @@ final class RegisterRequest implements RegisterRequestInterface
     }
 
     #[Override]
+    public function getPassword(): string
+    {
+        return $this->parameter('password')->string()->defaultsToIfEmpty('');
+    }
+
+    #[Override]
+    public function getPasswordReEntered(): string
+    {
+        return $this->parameter('password2')->string()->defaultsToIfEmpty('');
+    }
+
+    #[Override]
     public function getMobileNumber(): string
     {
         return trim($this->parameter('mobile')->string()->defaultsToIfEmpty(''));

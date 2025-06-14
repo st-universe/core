@@ -21,6 +21,7 @@ use Stu\Orm\Entity\CrewAssignment;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipRumpSpecial;
 use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\SpacecraftCondition;
 use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\SpacecraftSystem;
 use Stu\Orm\Entity\StarSystemMapInterface;
@@ -97,19 +98,22 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT s FROM %s s
+                JOIN %s sc
+                WITH s = sc.spacecraft
                 JOIN %s ss
                 WITH s.id = ss.spacecraft_id
                 JOIN %s bp
                 WITH s.plan_id = bp.id
                 WHERE ss.system_type = :shieldType
                 AND ss.mode < :modeOn
-                AND s.schilde < s.max_schilde
-                AND (SELECT count(sc.id) FROM %s sc WHERE s.id = sc.spacecraft_id) >= bp.crew
+                AND sc.shield < s.max_schilde
+                AND (SELECT count(ca.crew) FROM %s ca WHERE s = ca.spacecraft) >= bp.crew
                 AND NOT EXISTS (SELECT a FROM %s a
                                 WHERE a.location_id = s.location_id
                                 AND a.anomaly_type_id in (:anomalyTypes)
                                 AND a.remaining_ticks > 0)',
                 Spacecraft::class,
+                SpacecraftCondition::class,
                 SpacecraftSystem::class,
                 SpacecraftBuildplan::class,
                 CrewAssignment::class,
@@ -129,20 +133,23 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
             sprintf(
                 'SELECT s
                 FROM %s s
+                JOIN %s sc
+                WITH s = sc.spacecraft
                 JOIN %s p
                 WITH s.plan_id = p.id
                 JOIN %s u
                 WITH s.user_id = u.id
                 WHERE s.user_id > :firstUserId
-                AND (   ((SELECT count(sc.id)
-                        FROM %s sc
-                        WHERE sc.spacecraft_id = s.id) > 0)
+                AND (   ((SELECT count(ca.crew)
+                        FROM %s ca
+                        WHERE ca.spacecraft = s) > 0)
                     OR
-                        (s.state IN (:scrapping, :underConstruction))
+                        (sc.state IN (:scrapping, :underConstruction))
                     OR
                         (p.crew = 0))
                 AND (u.vac_active = :false OR u.vac_request_date > :vacationThreshold)',
                 Spacecraft::class,
+                SpacecraftCondition::class,
                 SpacecraftBuildplan::class,
                 User::class,
                 CrewAssignment::class
@@ -211,12 +218,14 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
             sprintf(
                 'SELECT sp.id as shipid, s.fleet_id as fleetid, sp.rump_id as rumpid , ss.mode as warpstate,
                     twd.mode as tractorwarpstate, COALESCE(ss2.mode,0) as cloakstate, ss3.mode as shieldstate, COALESCE(ss4.status,0) as uplinkstate,
-                    sp.type as spacecrafttype, sp.name as shipname, sp.huelle as hull, sp.max_huelle as maxhull,
-                    sp.schilde as shield, sp.holding_web_id as webid, tw.finished_time as webfinishtime, u.id as userid, u.username,
+                    sp.type as spacecrafttype, sp.name as shipname, sc.hull as hull, sp.max_huelle as maxhull,
+                    sc.shield as shield, sp.holding_web_id as webid, tw.finished_time as webfinishtime, u.id as userid, u.username,
                     r.category_id as rumpcategoryid, r.name as rumpname, r.role_id as rumproleid,
                     (SELECT count(*) > 0 FROM stu_ship_log sl WHERE sl.spacecraft_id = sp.id AND sl.is_private = :false) as haslogbook,
                     (SELECT count(*) > 0 FROM stu_crew_assign ca WHERE ca.spacecraft_id = sp.id) as hascrew
                 FROM stu_spacecraft sp
+                JOIN stu_spacecraft_condition sc
+                ON sp.id = sc.spacecraft_id
                 LEFT JOIN stu_ship s
                 ON s.id = sp.id
                 LEFT JOIN stu_spacecraft_system ss
@@ -266,7 +275,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
     }
 
     #[Override]
-    public function getRandomSpacecraftIdWithCrewByUser(int $userId): ?int
+    public function getRandomSpacecraftWithCrewByUser(int $userId): ?SpacecraftInterface
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('id', 'id', 'integer');
@@ -275,9 +284,9 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
             ->createNativeQuery(
                 'SELECT s.id as id FROM stu_spacecraft s
                 WHERE s.user_id = :userId
-                AND EXISTS (SELECT sc.id
-                            FROM stu_crew_assign sc
-                            WHERE s.id = sc.spacecraft_id)
+                AND EXISTS (SELECT ca
+                            FROM stu_crew_assign ca
+                            WHERE s.id = ca.spacecraft_id)
                 ORDER BY RANDOM()
                 LIMIT 1',
                 $rsm
@@ -287,7 +296,9 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
             ])
             ->getOneOrNullResult();
 
-        return $result != null ? $result['id'] : null;
+        return $result != null
+            ? $this->findOneBy(['id' => $result['id']])
+            : null;
     }
 
     #[Override]

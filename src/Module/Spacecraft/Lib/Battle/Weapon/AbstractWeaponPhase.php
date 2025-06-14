@@ -51,7 +51,7 @@ abstract class AbstractWeaponPhase
         InformationInterface $message
     ): void {
 
-        if (!$targetWrapper->get()->isDestroyed()) {
+        if (!$targetWrapper->get()->getCondition()->isDestroyed()) {
             return;
         }
 

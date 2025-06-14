@@ -106,7 +106,7 @@ class DirectedMovementTest extends StuTestCase
             ->once()
             ->andReturn($fieldCount);
 
-        $ship->shouldReceive('isDestroyed')
+        $ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturnFalse();
@@ -529,7 +529,7 @@ class DirectedMovementTest extends StuTestCase
             ->once()
             ->andReturn($fieldCount);
 
-        $ship->shouldReceive('isDestroyed')
+        $ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturnTrue();
@@ -651,7 +651,7 @@ class DirectedMovementTest extends StuTestCase
             ->once()
             ->andReturn($destY);
 
-        $ship->shouldReceive('isDestroyed')
+        $ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturnFalse();

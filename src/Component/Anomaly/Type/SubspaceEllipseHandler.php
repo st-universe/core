@@ -91,10 +91,11 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
             }
 
             $shieldSystem = $spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::SHIELDS);
+            $condition = $spacecraft->getCondition();
 
             if (
-                $spacecraft->getShield() === 0
-                && $shieldSystem->getStatus() === 0
+                $condition->getShield() === 0
+                && !$shieldSystem->isHealthy()
             ) {
                 continue;
             }
@@ -106,8 +107,8 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
                 $shieldSystem->setMode(SpacecraftSystemModeEnum::MODE_OFF);
             }
 
-            if ($spacecraft->getShield() > 0) {
-                $spacecraft->setShield(0);
+            if ($condition->getShield() > 0) {
+                $condition->setShield(0);
                 $message->add('- die Schilde wurden entladen');
             }
 

@@ -46,7 +46,7 @@ final class CancelRepair implements CancelRepairInterface
 
     private function setStateNoneAndSave(SpacecraftInterface $ship): void
     {
-        $ship->setState(SpacecraftStateEnum::NONE);
+        $ship->getCondition()->setState(SpacecraftStateEnum::NONE);
         $this->spacecraftRepository->save($ship);
     }
 }

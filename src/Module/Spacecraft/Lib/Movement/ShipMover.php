@@ -158,7 +158,7 @@ final class ShipMover implements ShipMoverInterface
 
         // alert red check for tractored ships
         foreach ($movedTractoredShipWrappers as [$tractoringSpacecraft, $tractoredShipWrapper]) {
-            if (!$tractoredShipWrapper->get()->isDestroyed()) {
+            if (!$tractoredShipWrapper->get()->getCondition()->isDestroyed()) {
                 $alertRedInformations = new InformationWrapper();
                 $this->alertReactionFacade->doItAll(
                     $tractoredShipWrapper,

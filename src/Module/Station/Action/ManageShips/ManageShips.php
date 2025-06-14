@@ -99,9 +99,6 @@ final class ManageShips implements ActionControllerInterface
         if (!$this->interactionChecker->checkPosition($station, $ship)) {
             return [];
         }
-        if ($ship->isDestroyed()) {
-            return [];
-        }
 
         $wrapper = $this->spacecraftWrapperFactory->wrapSpacecraft($ship);
 

@@ -76,7 +76,7 @@ final class CancelTholianWeb implements ActionControllerInterface
         }
         $emitter->setOwnedWebId(null)->update();
 
-        $ship->setState(SpacecraftStateEnum::NONE);
+        $ship->getCondition()->setState(SpacecraftStateEnum::NONE);
         $this->shipLoader->save($ship);
 
         $game->addInformation("Der Aufbau des Energienetz wurde abgebrochen");

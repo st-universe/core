@@ -207,4 +207,8 @@ interface UserInterface
     public function getReferer(): ?UserRefererInterface;
 
     public function setReferer(?UserRefererInterface $referer): UserInterface;
+
+    public function getSmsSended(): int;
+
+    public function setSmsSended(int $smsSended): UserInterface;
 }

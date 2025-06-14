@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Spacecraft\ManagerComponent;
 
-use InvalidArgumentException;
 use Override;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
@@ -15,6 +14,8 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
@@ -48,7 +49,7 @@ final class CrewLimitations implements ManagerComponentInterface
             $userId = $user->getId();
 
             $crewLimit = $this->crewLimitCalculator->getGlobalCrewLimit($user);
-            $crewOnColonies = $this->shipCrewRepository->getAmountByUserOnColonies($user->getId());
+            $crewOnColonies = $this->shipCrewRepository->getAmountByUserOnColonies($user);
             $crewOnShips = $this->shipCrewRepository->getAmountByUserOnShips($user);
             $crewAtTradeposts = $this->shipCrewRepository->getAmountByUserAtTradeposts($user);
 
@@ -56,25 +57,25 @@ final class CrewLimitations implements ManagerComponentInterface
 
             //mutiny order: colonies, ships, tradeposts, escape pods
             if ($crewToQuit > 0 && $crewOnColonies > 0) {
-                $crewToQuit -= $this->letColonyAssignmentsQuit($userId, $crewToQuit);
+                $crewToQuit -= $this->letColonyAssignmentsQuit($user, $crewToQuit);
             }
             if ($crewToQuit > 0 && $crewOnShips > 0) {
                 $crewToQuit -= $this->letShipAssignmentsQuit($userId, $crewToQuit);
             }
             if ($crewToQuit > 0 && $crewAtTradeposts > 0) {
-                $crewToQuit -= $this->letTradepostAssignmentsQuit($userId, $crewToQuit);
+                $crewToQuit -= $this->letTradepostAssignmentsQuit($user, $crewToQuit);
             }
             if ($crewToQuit > 0) {
-                $this->letEscapePodAssignmentsQuit($userId, $crewToQuit);
+                $this->letEscapePodAssignmentsQuit($user, $crewToQuit);
             }
         }
     }
 
-    private function letColonyAssignmentsQuit(int $userId, int $crewToQuit): int
+    private function letColonyAssignmentsQuit(UserInterface $user, int $crewToQuit): int
     {
         $amount = 0;
 
-        foreach ($this->shipCrewRepository->getByUserAtColonies($userId) as $crewAssignment) {
+        foreach ($this->shipCrewRepository->getByUserAtColonies($user) as $crewAssignment) {
             if ($amount === $crewToQuit) {
                 break;
             }
@@ -87,7 +88,7 @@ final class CrewLimitations implements ManagerComponentInterface
             $msg = sprintf(_('Wegen Überschreitung des globalen Crewlimits haben %d Crewman ihren Dienst auf deinen Kolonien quittiert'), $amount);
             $this->privateMessageSender->send(
                 UserEnum::USER_NOONE,
-                $userId,
+                $user->getId(),
                 $msg,
                 PrivateMessageFolderTypeEnum::SPECIAL_COLONY
             );
@@ -96,11 +97,11 @@ final class CrewLimitations implements ManagerComponentInterface
         return $amount;
     }
 
-    private function letTradepostAssignmentsQuit(int $userId, int $crewToQuit): int
+    private function letTradepostAssignmentsQuit(UserInterface $user, int $crewToQuit): int
     {
         $amount = 0;
 
-        foreach ($this->shipCrewRepository->getByUserAtTradeposts($userId) as $crewAssignment) {
+        foreach ($this->shipCrewRepository->getByUserAtTradeposts($user) as $crewAssignment) {
             if ($amount === $crewToQuit) {
                 break;
             }
@@ -113,7 +114,7 @@ final class CrewLimitations implements ManagerComponentInterface
             $msg = sprintf(_('Wegen Überschreitung des globalen Crewlimits haben %d deiner Crewman auf Handelsposten ihren Dienst quittiert'), $amount);
             $this->privateMessageSender->send(
                 UserEnum::USER_NOONE,
-                $userId,
+                $user->getId(),
                 $msg,
                 PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM
             );
@@ -122,11 +123,11 @@ final class CrewLimitations implements ManagerComponentInterface
         return $amount;
     }
 
-    private function letEscapePodAssignmentsQuit(int $userId, int $crewToQuit): int
+    private function letEscapePodAssignmentsQuit(UserInterface $user, int $crewToQuit): int
     {
         $amount = 0;
 
-        foreach ($this->shipCrewRepository->getByUserOnEscapePods($userId) as $crewAssignment) {
+        foreach ($this->shipCrewRepository->getByUserOnEscapePods($user) as $crewAssignment) {
             if ($amount === $crewToQuit) {
                 break;
             }
@@ -139,7 +140,7 @@ final class CrewLimitations implements ManagerComponentInterface
             $msg = sprintf(_('Wegen Überschreitung des globalen Crewlimits haben %d deiner Crewman auf Fluchtkapseln ihren Dienst quittiert'), $amount);
             $this->privateMessageSender->send(
                 UserEnum::USER_NOONE,
-                $userId,
+                $user->getId(),
                 $msg,
                 PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM
             );
@@ -156,59 +157,54 @@ final class CrewLimitations implements ManagerComponentInterface
         $wipedShipIds = [];
 
         while ($amount < $crewToQuit) {
-            $randomShipId = $this->spacecraftRepository->getRandomSpacecraftIdWithCrewByUser($userId);
+            $randomSpacecraft = $this->spacecraftRepository->getRandomSpacecraftWithCrewByUser($userId);
 
             //if no more ships available
-            if ($randomShipId === null) {
+            if ($randomSpacecraft === null) {
                 break;
             }
 
             //if ship already wiped, go to next
-            if (in_array($randomShipId, $wipedShipIds)) {
+            if (in_array($randomSpacecraft->getId(), $wipedShipIds)) {
                 continue;
             }
 
             //wipe ship crew
-            $wipedShipsIds[] = $randomShipId;
-            $amount += $this->letCrewQuit($randomShipId, $userId);
+            $wipedShipsIds[] = $randomSpacecraft->getId();
+            $amount += $this->letCrewQuit($randomSpacecraft, $userId);
         }
 
         return $amount;
     }
 
-    private function letCrewQuit(int $randomShipId, int $userId): int
+    private function letCrewQuit(SpacecraftInterface $randomSpacecraft, int $userId): int
     {
-        $randomShip = $this->spacecraftRepository->find($randomShipId);
-        if ($randomShip === null) {
-            throw new InvalidArgumentException('randomShipId should exist');
-        }
-
-        $wrapper = $this->spacecraftWrapperFactory->wrapSpacecraft($randomShip);
-        $doAlertRedCheck = $randomShip->getWarpDriveState() || $randomShip->isCloaked();
+        $wrapper = $this->spacecraftWrapperFactory->wrapSpacecraft($randomSpacecraft);
+        $doAlertRedCheck = $randomSpacecraft->getWarpDriveState() || $randomSpacecraft->isCloaked();
         //deactivate ship
         $this->spacecraftSystemManager->deactivateAll($wrapper);
         $wrapper->setAlertState(SpacecraftAlertStateEnum::ALERT_GREEN);
 
-        $this->spacecraftRepository->save($randomShip);
+        $this->spacecraftRepository->save($randomSpacecraft);
 
         $crewArray = [];
-        foreach ($randomShip->getCrewAssignments() as $shipCrew) {
+        foreach ($randomSpacecraft->getCrewAssignments() as $shipCrew) {
             $crewArray[] = $shipCrew->getCrew();
         }
-        $randomShip->getCrewAssignments()->clear();
+        $randomSpacecraft->getCrewAssignments()->clear();
 
         //remove crew
-        $this->shipCrewRepository->truncateByShip($randomShipId);
+        $this->shipCrewRepository->truncateBySpacecraft($randomSpacecraft);
         foreach ($crewArray as $crew) {
             $this->crewRepository->delete($crew);
         }
 
-        $msg = sprintf(_('Wegen Überschreitung des globalen Crewlimits hat die Crew der %s gemeutert und das Schiff verlassen'), $randomShip->getName());
+        $msg = sprintf(_('Wegen Überschreitung des globalen Crewlimits hat die Crew der %s gemeutert und das Schiff verlassen'), $randomSpacecraft->getName());
         $this->privateMessageSender->send(
             UserEnum::USER_NOONE,
             $userId,
             $msg,
-            $randomShip->isStation() ? PrivateMessageFolderTypeEnum::SPECIAL_STATION : PrivateMessageFolderTypeEnum::SPECIAL_SHIP
+            $randomSpacecraft->isStation() ? PrivateMessageFolderTypeEnum::SPECIAL_STATION : PrivateMessageFolderTypeEnum::SPECIAL_SHIP
         );
 
         //do alert red stuff

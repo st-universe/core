@@ -2,7 +2,6 @@
 
 namespace Stu\Component\Spacecraft\Trait;
 
-use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 
 trait SpacecraftStateTrait
@@ -15,16 +14,12 @@ trait SpacecraftStateTrait
         return $this->getThis()->getWarpDriveState();
     }
 
-    public function isUnderRepair(): bool
-    {
-        return $this->getThis()->getState() === SpacecraftStateEnum::REPAIR_ACTIVE
-            || $this->getThis()->getState() === SpacecraftStateEnum::REPAIR_PASSIVE;
-    }
-
     public function getHealthPercentage(): float
     {
         $self = $this->getThis();
-        return ($self->getHull() + $self->getShield())
+        $condition = $self->getCondition();
+
+        return ($condition->getHull() + $condition->getShield())
             / ($self->getMaxHull() + $self->getMaxShield(true)) * 100;
     }
 

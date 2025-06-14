@@ -61,11 +61,11 @@ final class UserTutorialRepository extends EntityRepository implements UserTutor
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT ut FROM %s ut
-                    JOIN %s ts
-                    WITH ts.id = ut.tutorial_step_id
-                    WHERE ut.user = :user
-                    AND ts.module = :module
-                    AND ts.view = :view',
+                JOIN %s ts
+                WITH ts.id = ut.tutorialStep
+                WHERE ut.user = :user
+                AND ts.module = :module
+                AND ts.view = :view',
                 UserTutorial::class,
                 TutorialStep::class
             )

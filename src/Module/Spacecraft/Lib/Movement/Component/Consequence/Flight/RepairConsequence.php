@@ -34,7 +34,7 @@ class RepairConsequence extends AbstractFlightConsequence implements FlightStart
 
         $ship = $wrapper->get();
 
-        if ($ship->isUnderRepair()) {
+        if ($ship->getCondition()->isUnderRepair()) {
             $message = $this->messageFactory->createMessage(null, $ship->getUser()->getId());
             $messages->add($message);
             $this->cancelRepair->cancelRepair($ship);

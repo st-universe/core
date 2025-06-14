@@ -202,7 +202,7 @@ class Fleet implements FleetInterface
     {
         return array_reduce(
             $this->shiplist->toArray(),
-            fn (int $sum, ShipInterface $ship): int => $sum + ($ship->isDestroyed() ? 0 : $ship->getBuildplan()->getCrew()),
+            fn(int $sum, ShipInterface $ship): int => $sum + ($ship->getCondition()->isDestroyed() ? 0 : $ship->getBuildplan()->getCrew()),
             0
         );
     }

@@ -30,6 +30,7 @@
 {% macro shiplist_body(wrapper) %}
 {% from 'html/macros.twig' import onClickSpacecraft %}
 {% set ship = wrapper.get %}
+{% set condition = ship.getCondition %}
 {% set shipId = ship.getId %}
 {% set epssystem = wrapper.getEpsSystemData %}
 <tr>
@@ -91,14 +92,14 @@
     </td>
     {% endif %}
     <td id="shiphull">
-        <span style="{{ ship.getHullColorStyle }}">{{ ship.getHull }}</span>/{{ ship.getMaxHull }}
+        <span style="{{ ship.getHullColorStyle }}">{{ condition.getHull }}</span>/{{ ship.getMaxHull }}
     </td>
     <td id="shipshields">
         {% if ship.isShielded %}
-        <span class="activeshield">{{ ship.getShield }}/{{ ship.getMaxShield }}</span>
+        <span class="activeshield">{{ condition.getShield }}/{{ ship.getMaxShield }}</span>
         {% else %}
-        <span>{{ ship.getShield }}/{{ ship.getMaxShield }}</span>
-        {% if ship.getShield < ship.getMaxShield %} (+{{ wrapper.getShieldRegenerationRate }}) {% endif %} {% endif %}
+        <span>{{ condition.getShield }}/{{ ship.getMaxShield }}</span>
+        {% if condition.getShield < ship.getMaxShield %} (+{{ wrapper.getShieldRegenerationRate }}) {% endif %} {% endif %}
             </td>
     <td id="shipenergy">
         <table>

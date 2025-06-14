@@ -18,21 +18,15 @@ use Stu\Orm\Repository\UserLayerRepository;
 #[Entity(repositoryClass: UserLayerRepository::class)]
 class UserLayer implements UserLayerInterface
 {
-    #[Id]
-    #[Column(type: 'integer')]
-    private int $user_id;
-
-    #[Id]
-    #[Column(type: 'integer')]
-    private int $layer_id;
-
     #[Column(type: 'smallint')]
     private int $map_type = MapEnum::MAPTYPE_INSERT;
 
+    #[Id]
     #[ManyToOne(targetEntity: 'User')]
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
+    #[Id]
     #[ManyToOne(targetEntity: 'Layer')]
     #[JoinColumn(name: 'layer_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private LayerInterface $layer;
@@ -47,7 +41,6 @@ class UserLayer implements UserLayerInterface
     public function setUser(UserInterface $user): UserLayerInterface
     {
         $this->user = $user;
-        $this->user_id = $user->getId();
 
         return $this;
     }
@@ -62,7 +55,6 @@ class UserLayer implements UserLayerInterface
     public function setLayer(LayerInterface $layer): UserLayerInterface
     {
         $this->layer = $layer;
-        $this->layer_id = $layer->getId();
 
         return $this;
     }

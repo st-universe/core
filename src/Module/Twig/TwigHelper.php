@@ -20,6 +20,7 @@ use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\ColonyProductionPreviewWrapper;
 use Stu\Module\Control\AccessCheckInterface;
 use Stu\Module\Control\AccessGrantedFeatureEnum;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Spacecraft\Lib\Battle\FightLibInterface;
@@ -36,18 +37,19 @@ use Twig\TwigFunction;
 class TwigHelper
 {
     public function __construct(
-        private Environment $environment,
-        private Parser $parser,
-        private ConfigInterface $config,
-        private FightLibInterface $fightLib,
-        private ColonyLibFactoryInterface $colonyLibFactory,
-        private SpacecraftCrewCalculatorInterface $shipCrewCalculator,
-        private SpacecraftSystemWrapperFactoryInterface $spacecraftSystemWrapperFactory,
-        private GradientColorInterface $gradientColor,
-        private TemplateHelperInterface $templateHelper,
-        private AccessCheckInterface $accessCheck,
-        private StuTime $stuTime,
-        private StuRandom $stuRandom
+        private readonly GameControllerInterface $game,
+        private readonly Environment $environment,
+        private readonly Parser $parser,
+        private readonly ConfigInterface $config,
+        private readonly FightLibInterface $fightLib,
+        private readonly ColonyLibFactoryInterface $colonyLibFactory,
+        private readonly SpacecraftCrewCalculatorInterface $shipCrewCalculator,
+        private readonly SpacecraftSystemWrapperFactoryInterface $spacecraftSystemWrapperFactory,
+        private readonly GradientColorInterface $gradientColor,
+        private readonly TemplateHelperInterface $templateHelper,
+        private readonly AccessCheckInterface $accessCheck,
+        private readonly StuTime $stuTime,
+        private readonly StuRandom $stuRandom
     ) {}
 
     public function registerGlobalVariables(): void
@@ -171,6 +173,12 @@ class TwigHelper
         $dayNightPrefixFunction = new TwigFunction('getDayNightPrefix', fn(PlanetFieldInterface $field): string => $field->getDayNightPrefix($this->stuTime->time()));
         $this->environment->addFunction($dayNightPrefixFunction);
 
+        $maskEmailFunction = new TwigFunction('maskEmail', fn(string $email): string => $this->maskEmail($email));
+        $this->environment->addFunction($maskEmailFunction);
+
+        $maskMobileFunction = new TwigFunction('maskMobile', fn(?string $mobile): string => $this->maskMobile($mobile));
+        $this->environment->addFunction($maskMobileFunction);
+
         $hasSpacecraftSystemByNameFunction = new TwigFunction(
             'getSpacecraftSystemWrapper',
             fn(SpacecraftInterface $spacecraft, string $name): ?SpacecraftSystemWrapper
@@ -178,7 +186,49 @@ class TwigHelper
         );
         $this->environment->addFunction($hasSpacecraftSystemByNameFunction);
 
-        $dayNightPrefixFunction = new TwigFunction('isFeatureGranted', fn(int $userId, string $feature): bool => $this->accessCheck->isFeatureGranted($userId, AccessGrantedFeatureEnum::from($feature)));
-        $this->environment->addFunction($dayNightPrefixFunction);
+        $isFeatureGrantedFunction = new TwigFunction('isFeatureGranted', fn(int $userId, string $feature): bool => $this->accessCheck->isFeatureGranted($userId, AccessGrantedFeatureEnum::from($feature), $this->game));
+        $this->environment->addFunction($isFeatureGrantedFunction);
+    }
+
+    private function maskEmail(string $email): string
+    {
+        if (!$email || strpos($email, '@') === false) {
+            return '';
+        }
+
+        $parts = explode('@', $email);
+        $localPart = $parts[0];
+        $domain = $parts[1];
+
+        if (strlen($localPart) <= 2) {
+            return $localPart[0] . '*@' . $domain;
+        }
+
+        return $localPart[0] . str_repeat('*', strlen($localPart) - 2) . $localPart[strlen($localPart) - 1] . '@' . $domain;
+    }
+
+    private function maskMobile(?string $mobile): string
+    {
+        if ($mobile === null || strlen($mobile) < 8) {
+            return '';
+        }
+
+        $displayMobile = $mobile;
+        if (strpos($mobile, '0049') === 0) {
+            $displayMobile = '+49' . substr($mobile, 4);
+        } elseif (strpos($mobile, '0043') === 0) {
+            $displayMobile = '+43' . substr($mobile, 4);
+        } elseif (strpos($mobile, '0041') === 0) {
+            $displayMobile = '+41' . substr($mobile, 4);
+        }
+
+        if (strlen($displayMobile) > 8) {
+            $start = substr($displayMobile, 0, 6);
+            $end = substr($displayMobile, -2);
+            $middle = str_repeat('*', strlen($displayMobile) - 8);
+            return $start . $middle . $end;
+        }
+
+        return $displayMobile;
     }
 }

@@ -1,6 +1,7 @@
 <table class="tcal">
     {% for wrapper in WRAPPERS %}
     {% set ship = wrapper.get %}
+    {% set condition = ship.getCondition %}
     <tr>
         <td>
             <img src="/assets/buttons/layer_{{ ship.getLocation.getLayer.getId }}.png"
@@ -21,7 +22,7 @@
                                 {% endautoescape %}
                             </td>
                             <td style="text-align: center; width: 60px;">
-                                {{ ship.getHull }}
+                                {{ condition.getHull }}
                             </td>
                         </tr>
                     </table>
@@ -40,7 +41,7 @@
                                 {% endautoescape %}
                             </td>
                             <td style="text-align: center; width: 60px;">
-                                {{ ship.getShield }}
+                                {{ condition.getShield }}
                             </td>
                         </tr>
                     </table>

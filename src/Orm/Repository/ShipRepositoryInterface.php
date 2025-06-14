@@ -62,7 +62,7 @@ interface ShipRepositoryInterface extends ObjectRepository
     /**
      * @return array<ShipInterface>
      */
-    public function getEscapePodsByCrewOwner(int $userId): array;
+    public function getEscapePodsByCrewOwner(UserInterface $user): array;
 
     /**
      * @return array<TFleetShipItemInterface>

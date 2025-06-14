@@ -18,16 +18,13 @@ use Stu\Orm\Repository\PirateWrathRepository;
 #[Entity(repositoryClass: PirateWrathRepository::class)]
 class PirateWrath implements PirateWrathInterface
 {
-    #[Id]
-    #[Column(type: 'integer')]
-    private int $user_id;
-
     #[Column(type: 'integer')]
     private int $wrath = PirateWrathManager::DEFAULT_WRATH;
 
     #[Column(type: 'integer', nullable: true)]
     private ?int $protection_timeout = null;
 
+    #[Id]
     #[OneToOne(targetEntity: 'User', inversedBy: 'pirateWrath')]
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
@@ -42,7 +39,6 @@ class PirateWrath implements PirateWrathInterface
     public function setUser(UserInterface $user): PirateWrathInterface
     {
         $this->user = $user;
-        $this->user_id = $user->getId();
 
         return $this;
     }

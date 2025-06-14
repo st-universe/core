@@ -17,24 +17,18 @@ use Stu\Orm\Repository\ColonyClassDepositRepository;
 #[Entity(repositoryClass: ColonyClassDepositRepository::class)]
 class ColonyClassDeposit implements ColonyClassDepositInterface
 {
-    #[Id]
-    #[Column(type: 'integer')]
-    private int $colony_class_id;
-
-    #[Id]
-    #[Column(type: 'integer')]
-    private int $commodity_id;
-
     #[Column(type: 'integer')]
     private int $min_amount = 0;
 
     #[Column(type: 'integer')]
     private int $max_amount = 0;
 
+    #[Id]
     #[ManyToOne(targetEntity: 'ColonyClass')]
     #[JoinColumn(name: 'colony_class_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ColonyClassInterface $colonyClass;
 
+    #[Id]
     #[ManyToOne(targetEntity: 'Commodity')]
     #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $commodity;

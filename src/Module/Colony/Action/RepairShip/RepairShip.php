@@ -84,7 +84,7 @@ final class RepairShip implements ActionControllerInterface
 
             foreach ($group->getWrappers() as $wrapper) {
                 $ship = $wrapper->get();
-                if (!$wrapper->canBeRepaired() || $ship->isUnderRepair()) {
+                if (!$wrapper->canBeRepaired() || $ship->getCondition()->isUnderRepair()) {
                     continue;
                 }
                 foreach ($this->shipRumpBuildingFunctionRepository->getByShipRump($ship->getRump()) as $rump_rel) {
@@ -117,7 +117,7 @@ final class RepairShip implements ActionControllerInterface
         $obj->setFieldId($field->getFieldId());
         $this->colonyShipRepairRepository->save($obj);
 
-        $target->setState(SpacecraftStateEnum::REPAIR_PASSIVE);
+        $target->getCondition()->setState(SpacecraftStateEnum::REPAIR_PASSIVE);
 
         $this->shipRepository->save($target);
 

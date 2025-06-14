@@ -8,6 +8,7 @@
     <script src="/static/js/scriptaculous/scriptaculous.js"></script>
     <script src="/static/js/starmap.js"></script>
     <script src="/static/js/default.js"></script>
+    <script src="/static/js/npc.js"></script>
     <title>NPC Log</title>
     <script>
         var gfx_path = '/assets';
@@ -90,9 +91,27 @@
 </div>
 <br>
 <div id="result" style="display: none;">..</div>
-<div class="tcal">
-            <p>Keine Logs vorhanden</p>
-    </div>
+<div class="tcal" id="npcLogContainer" data-normal-logs="" data-faction-logs="">
+
+    <div style="margin-bottom: 15px;">
+        <a href="#" onclick="switchNpcLog('normal'); return false;" id="npcLogBtn" class="linkbutton" style="background-color: #3c3c3c;">NPC Log</a>
+            </div>
+
+    <h3 id="logTitle">NPC Log</h3>
+
+    <table id="logTable" style="display: none;">
+        <thead>
+            <tr>
+                <th>Text</th>
+                <th style="width:120px">Datum</th>
+            </tr>
+        </thead>
+        <tbody id="logTableBody">
+                    </tbody>
+    </table>
+
+    <p id="noLogsMessage">Keine NPC-Logs vorhanden</p>
+</div>
             </div>
         </div>
     </div>

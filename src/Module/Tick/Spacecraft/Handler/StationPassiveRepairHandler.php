@@ -3,6 +3,7 @@
 namespace Stu\Module\Tick\Spacecraft\Handler;
 
 use Override;
+use Stu\Component\Spacecraft\Repair\RepairUtil;
 use Stu\Component\Spacecraft\Repair\RepairUtilInterface;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
@@ -62,9 +63,10 @@ class StationPassiveRepairHandler implements SpacecraftTickHandlerInterface
         }
 
         //repair hull
-        $station->setHuell($station->getHull() + $station->getRepairRate());
-        if ($station->getHull() > $station->getMaxHull()) {
-            $station->setHuell($station->getMaxHull());
+        $condition = $station->getCondition();
+        $condition->changeHull(RepairUtil::REPAIR_RATE_PER_TICK);
+        if ($condition->getHull() > $station->getMaxHull()) {
+            $condition->setHull($station->getMaxHull());
         }
 
         //repair station systems
@@ -92,8 +94,8 @@ class StationPassiveRepairHandler implements SpacecraftTickHandlerInterface
         $this->repairUtil->consumeSpareParts($neededParts, $station);
 
         if (!$wrapper->canBeRepaired()) {
-            $station->setHuell($station->getMaxHull());
-            $station->setState(SpacecraftStateEnum::NONE);
+            $condition->setHull($station->getMaxHull());
+            $condition->setState(SpacecraftStateEnum::NONE);
 
             $shipOwnerMessage = sprintf(
                 "Die Reparatur der %s wurde in Sektor %s fertiggestellt",

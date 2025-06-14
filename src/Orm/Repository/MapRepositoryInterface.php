@@ -128,4 +128,6 @@ interface MapRepositoryInterface extends ObjectRepository
 
     /** @return array<int> */
     public function getUniqueInfluenceAreaIds(int $layerId): array;
+
+    public function isAdminRegionUserRegion(int $locationId, int $factionId): bool;
 }

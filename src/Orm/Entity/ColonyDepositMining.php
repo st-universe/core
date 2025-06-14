@@ -18,31 +18,25 @@ use Stu\Orm\Repository\ColonyDepositMiningRepository;
 class ColonyDepositMining implements ColonyDepositMiningInterface
 {
     #[Id]
-    #[Column(type: 'integer')]
-    private int $user_id;
+    #[ManyToOne(targetEntity: 'User')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    private UserInterface $user;
 
     #[Id]
-    #[Column(type: 'integer')]
-    private int $colony_id;
+    #[ManyToOne(targetEntity: 'Colony')]
+    #[JoinColumn(name: 'colony_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    private ColonyInterface $colony;
 
     #[Id]
+    #[ManyToOne(targetEntity: 'Commodity')]
+    #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    private CommodityInterface $commodity;
+
     #[Column(type: 'integer')]
     private int $commodity_id;
 
     #[Column(type: 'integer')]
     private int $amount_left;
-
-    #[ManyToOne(targetEntity: 'User')]
-    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $user;
-
-    #[ManyToOne(targetEntity: 'Colony')]
-    #[JoinColumn(name: 'colony_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ColonyInterface $colony;
-
-    #[ManyToOne(targetEntity: 'Commodity')]
-    #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private CommodityInterface $commodity;
 
     #[Override]
     public function getUser(): UserInterface
@@ -54,7 +48,6 @@ class ColonyDepositMining implements ColonyDepositMiningInterface
     public function setUser(UserInterface $user): ColonyDepositMiningInterface
     {
         $this->user = $user;
-        $this->user_id = $user->getId();
 
         return $this;
     }
@@ -69,7 +62,6 @@ class ColonyDepositMining implements ColonyDepositMiningInterface
     public function setColony(ColonyInterface $colony): ColonyDepositMiningInterface
     {
         $this->colony = $colony;
-        $this->colony_id = $colony->getId();
 
         return $this;
     }
@@ -84,7 +76,6 @@ class ColonyDepositMining implements ColonyDepositMiningInterface
     public function setCommodity(CommodityInterface $commodity): ColonyDepositMiningInterface
     {
         $this->commodity = $commodity;
-        $this->commodity_id = $commodity->getId();
 
         return $this;
     }

@@ -69,13 +69,15 @@ return [
             [autowire(AdvanceResearch::class)]
         ),
     ColonyTickManagerInterface::class => autowire(ColonyTickManager::class),
+    StationConstructionHandler::class => autowire(StationConstructionHandler::class),
+    StationPassiveRepairHandler::class => autowire(StationPassiveRepairHandler::class),
     SpacecraftTickInterface::class => autowire(SpacecraftTick::class)
         ->constructorParameter(
             'handlers',
             [
                 get(EffectHandlingInterface::class),
-                autowire(StationConstructionHandler::class),
-                autowire(StationPassiveRepairHandler::class),
+                get(StationConstructionHandler::class),
+                get(StationPassiveRepairHandler::class),
                 autowire(LifeSupportCheckHandler::class),
                 autowire(EpsSystemCheckHandler::class),
                 autowire(SystemDeactivationHandler::class),

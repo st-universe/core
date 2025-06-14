@@ -17,6 +17,7 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Damage\SystemDamageInterface;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\SpacecraftSystemInterface;
 use Stu\StuTestCase;
 
@@ -62,12 +63,19 @@ class TractorMassPayloadUtilTest extends StuTestCase
             ->zeroOrMoreTimes()
             ->andReturn($this->ship);
 
-        $this->subject = new TractorMassPayloadUtil(
+        $this->subject = new class(
             $this->systemDamage,
             $this->spacecraftSystemManager,
             $this->stuRandom,
             $this->messageFactory
-        );
+        ) extends TractorMassPayloadUtil {
+
+            #[Override]
+            protected function getTractorPayload(SpacecraftInterface $spacecraft): int
+            {
+                return $spacecraft->getRump()->getTractorPayload();
+            }
+        };
     }
 
 
@@ -115,7 +123,7 @@ class TractorMassPayloadUtilTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($this->mock(FleetInterface::class));
-        $this->ship->shouldReceive('getTractorPayload')
+        $this->ship->shouldReceive('getRump->getTractorPayload')
             ->withNoArgs()
             ->once()
             ->andReturn(42);
@@ -169,7 +177,7 @@ class TractorMassPayloadUtilTest extends StuTestCase
             ->once()
             ->andReturn($fleet);
 
-        $this->ship->shouldReceive('getTractorPayload')
+        $this->ship->shouldReceive('getRump->getTractorPayload')
             ->withNoArgs()
             ->once()
             ->andReturn(42);
@@ -188,7 +196,7 @@ class TractorMassPayloadUtilTest extends StuTestCase
     {
         $messages = $this->mock(MessageCollectionInterface::class);
 
-        $this->ship->shouldReceive('getTractorPayload')
+        $this->ship->shouldReceive('getRump->getTractorPayload')
             ->withNoArgs()
             ->once()
             ->andReturn(100);
@@ -205,7 +213,7 @@ class TractorMassPayloadUtilTest extends StuTestCase
     {
         $messages = $this->mock(MessageCollectionInterface::class);
 
-        $this->ship->shouldReceive('getTractorPayload')
+        $this->ship->shouldReceive('getRump->getTractorPayload')
             ->withNoArgs()
             ->once()
             ->andReturn(100);
@@ -231,7 +239,7 @@ class TractorMassPayloadUtilTest extends StuTestCase
 
         $damage = 7;
 
-        $this->ship->shouldReceive('getTractorPayload')
+        $this->ship->shouldReceive('getRump->getTractorPayload')
             ->withNoArgs()
             ->once()
             ->andReturn(100);
@@ -292,7 +300,7 @@ class TractorMassPayloadUtilTest extends StuTestCase
 
         $damage = 7;
 
-        $this->ship->shouldReceive('getTractorPayload')
+        $this->ship->shouldReceive('getRump->getTractorPayload')
             ->withNoArgs()
             ->once()
             ->andReturn(100);

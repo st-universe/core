@@ -272,12 +272,12 @@ final class StationUtility implements StationUtilityInterface
             throw new RuntimeException(sprintf('construction rump with id %d not found', $rumpId));
         }
 
-        $station->setState(SpacecraftStateEnum::UNDER_CONSTRUCTION);
         $station->setBuildplan(null);
         $station->setRump($rump);
         $station->setName($rump->getName());
-        $station->setHuell($rump->getBaseHull());
         $station->setMaxHuell($rump->getBaseHull());
+        $station->getCondition()->setHull($rump->getBaseHull());
+        $station->getCondition()->setState(SpacecraftStateEnum::UNDER_CONSTRUCTION);
 
         $this->stationRepository->save($station);
 
