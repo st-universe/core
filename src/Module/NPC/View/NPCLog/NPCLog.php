@@ -13,9 +13,7 @@ final class NPCLog implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_NPC_LOG';
 
-    public function __construct(private NPCLogRepositoryInterface $npclogRepository)
-    {
-    }
+    public function __construct(private NPCLogRepositoryInterface $npclogRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -28,13 +26,21 @@ final class NPCLog implements ViewControllerInterface
             _('NPC Log')
         );
 
-        $logs = $this->npclogRepository->findBy([], ['id' => 'DESC'], 100);
+        $normalLogs = $this->npclogRepository->findBy(
+            ['faction_id' => null],
+            ['id' => 'DESC'],
+            100
+        );
+
+        $factionLogs = $this->npclogRepository->findBy(
+            ['faction_id' => $game->getUser()->getFactionId()],
+            ['id' => 'DESC'],
+            100
+        );
 
         $game->setTemplateFile('html/npc/npclog.twig');
         $game->setPageTitle(_('NPC Log'));
-        $game->setTemplateVar(
-            'LIST',
-            $logs
-        );
+        $game->setTemplateVar('NORMAL_LOGS', $normalLogs);
+        $game->setTemplateVar('FACTION_LOGS', $factionLogs);
     }
 }

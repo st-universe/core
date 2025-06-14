@@ -2,26 +2,38 @@
 
 {% block body %}
 {% include 'html/breadcrumb.twig' %}
-<div class="tcal">
-    {% if LIST|length > 0 %}
-        <table>
-            <thead>
-                <tr>
-                    <th>Text</th>
-                    <th style="width:120px">Datum</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for listEntry in LIST %}
-                    <tr>
-                        <td>{{ listEntry.getText()|bbcode }}</td>
-                        <td>{{ listEntry.getDate()|stuDateTime }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <p>Keine Logs vorhanden</p>
-    {% endif %}
+<div class="tcal" id="npcLogContainer"
+    data-normal-logs="{% for listEntry in NORMAL_LOGS %}<tr><td>{{ listEntry.getText()|bbcode|e('html_attr') }}</td><td>{{ listEntry.getDate()|stuDateTime }}</td></tr>{% endfor %}"
+    data-faction-logs="{% for listEntry in FACTION_LOGS %}<tr><td>{{ listEntry.getText()|bbcode|e('html_attr') }}</td><td>{{ listEntry.getDate()|stuDateTime }}</td></tr>{% endfor %}">
+
+    <div style="margin-bottom: 15px;">
+        <a href="#" onclick="switchNpcLog('normal'); return false;" id="npcLogBtn" class="linkbutton"
+            style="background-color: #3c3c3c;">NPC Log</a>
+        {% if FACTION_LOGS|length > 0 %}
+        <a href="#" onclick="switchNpcLog('faction'); return false;" id="factionLogBtn"
+            class="linkbutton">Fraktions-Log</a>
+        {% endif %}
+    </div>
+
+    <h3 id="logTitle">NPC Log</h3>
+
+    <table id="logTable" {% if NORMAL_LOGS|length==0 %}style="display: none;" {% endif %}>
+        <thead>
+            <tr>
+                <th>Text</th>
+                <th style="width:120px">Datum</th>
+            </tr>
+        </thead>
+        <tbody id="logTableBody">
+            {% for listEntry in NORMAL_LOGS %}
+            <tr>
+                <td>{{ listEntry.getText()|bbcode }}</td>
+                <td>{{ listEntry.getDate()|stuDateTime }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <p id="noLogsMessage" {% if NORMAL_LOGS|length> 0 %}style="display: none;"{% endif %}>Keine NPC-Logs vorhanden</p>
 </div>
 {% endblock %}

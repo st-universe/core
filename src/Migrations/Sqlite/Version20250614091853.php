@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250613142059 extends AbstractMigration
+final class Version20250614091853 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -891,7 +891,7 @@ final class Version20250613142059 extends AbstractMigration
             CREATE INDEX note_user_idx ON stu_notes (user_id)
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE TABLE stu_npc_log (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, text CLOB NOT NULL, date INTEGER NOT NULL, source_user_id INTEGER DEFAULT NULL)
+            CREATE TABLE stu_npc_log (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, text CLOB NOT NULL, date INTEGER NOT NULL, source_user_id INTEGER DEFAULT NULL, faction_id INTEGER DEFAULT NULL)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE TABLE stu_opened_advent_door (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, day INTEGER NOT NULL, year INTEGER NOT NULL, time INTEGER NOT NULL)

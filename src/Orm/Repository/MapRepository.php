@@ -18,6 +18,9 @@ use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\MapRegionSettlement;
+use Stu\Orm\Entity\StarSystemMap;
+
 
 /**
  * @extends EntityRepository<Map>
@@ -844,5 +847,31 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
         ]);
 
         return array_map('intval', array_column($query->getResult(), 'influence_area_id'));
+    }
+
+    #[Override]
+    public function isAdminRegionUserRegion(int $locationId, int $factionId): bool
+    {
+        $result = $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT COUNT(mrs.id) FROM %s m
+            JOIN %s ssm WITH m.systems_id = ssm.systems_id
+            JOIN %s mrs WITH m.admin_region_id = mrs.region_id
+            WHERE ssm.id = :locationId
+            AND mrs.faction_id = :factionId
+            AND m.admin_region_id IS NOT NULL',
+                    Map::class,
+                    StarSystemMap::class,
+                    MapRegionSettlement::class
+                )
+            )
+            ->setParameters([
+                'locationId' => $locationId,
+                'factionId' => $factionId
+            ])
+            ->getSingleScalarResult();
+
+        return $result > 0;
     }
 }
