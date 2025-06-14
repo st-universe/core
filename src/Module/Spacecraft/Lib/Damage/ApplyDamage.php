@@ -99,12 +99,9 @@ final class ApplyDamage implements ApplyDamageInterface
         $condition = $spacecraft->getCondition();
 
         if ($damageWrapper->isCrit()) {
-            $systemName = $this->systemDamage->destroyRandomShipSystem($wrapper, $damageWrapper);
-
-            if ($systemName !== null) {
-                $informations->addInformationf("- Kritischer Hüllen-Treffer zerstört System: %s", $systemName);
-            }
+            $this->handleCriticalHit($wrapper, $damageWrapper, $informations);
         }
+
         $huelleVorher = $condition->getHull();
         $condition->changeHull(-$damage);
         $informations->addInformationf("- Hüllenschaden: %d - Status: %d", $damage, $condition->getHull());
@@ -121,6 +118,33 @@ final class ApplyDamage implements ApplyDamageInterface
                 $informations,
                 (int)ceil((100 * $damage * random_int(1, 5)) / $spacecraft->getMaxHull())
             );
+        }
+    }
+
+    private function handleCriticalHit(SpacecraftWrapperInterface $wrapper, DamageWrapper $damageWrapper, InformationInterface $informations): void
+    {
+        $spacecraft = $wrapper->get();
+        $currentHull = $spacecraft->getCondition()->getHull();
+        $maxHull = $spacecraft->getMaxHull();
+        $hullPercentage = ($currentHull / $maxHull) * 100;
+
+        if ($hullPercentage > 50) {
+            $criticalDamage = random_int(30, 60);
+            $this->systemDamage->damageRandomShipSystem($wrapper, $damageWrapper, $informations, $criticalDamage);
+            $informations->addInformationf("- Kritischer Hüllen-Treffer verursacht %d%% Systemschaden", $criticalDamage);
+        } else {
+            $destructionChance = (50 - $hullPercentage) / 50;
+
+            if (random_int(1, 100) <= ($destructionChance * 100)) {
+                $systemName = $this->systemDamage->destroyRandomShipSystem($wrapper, $damageWrapper);
+                if ($systemName !== null) {
+                    $informations->addInformationf("- Kritischer Hüllen-Treffer zerstört System: %s", $systemName);
+                }
+            } else {
+                $criticalDamage = random_int(50, 90);
+                $this->systemDamage->damageRandomShipSystem($wrapper, $damageWrapper, $informations, $criticalDamage);
+                $informations->addInformationf("- Kritischer Hüllen-Treffer verursacht %d%% Systemschaden", $criticalDamage);
+            }
         }
     }
 }
