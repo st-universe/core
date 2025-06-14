@@ -8,6 +8,7 @@ use Override;
 use request;
 use RuntimeException;
 use Stu\Config\Init;
+use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Exception\SanityCheckException;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Lib\Interaction\InteractionCheckerBuilderFactoryInterface;
@@ -39,7 +40,8 @@ final class Transfer implements ActionControllerInterface
         private TransferInformationFactoryInterface $transferInformationFactory,
         private InteractionCheckerBuilderFactoryInterface $interactionCheckerBuilderFactory,
         private NPCLogRepositoryInterface $npcLogRepository,
-        private MapRepositoryInterface $mapRepository
+        private MapRepositoryInterface $mapRepository,
+        private PlayerRelationDeterminatorInterface $playerRelationDeterminator
     ) {}
 
     #[Override]
@@ -107,7 +109,7 @@ final class Transfer implements ActionControllerInterface
             $informations
         );
 
-        if ($transferInformation->getTargetType() === TransferEntityTypeEnum::COLONY && !$isUnload) {
+        if ($transferInformation->getTargetType() === TransferEntityTypeEnum::COLONY && !$isUnload && !$this->playerRelationDeterminator->isFriend($target->getUser(), $source->getUser())) {
             $targetEntity = $transferInformation->getTargetWrapper()->get();
             if ($targetEntity instanceof ColonyInterface) {
                 $targetUser = $target->getUser();
