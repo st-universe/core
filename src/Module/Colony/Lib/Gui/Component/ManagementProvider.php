@@ -15,20 +15,22 @@ use Stu\Module\Database\View\Category\Wrapper\DatabaseCategoryWrapperFactoryInte
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Entity\ColonyDepositMiningInterface;
 use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Repository\ColonyDepositMiningRepositoryInterface;
 use Stu\Orm\Repository\StationRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 final class ManagementProvider implements PlanetFieldHostComponentInterface
 {
     public function __construct(
-        private StationRepositoryInterface $stationRepository,
-        private TorpedoTypeRepositoryInterface $torpedoTypeRepository,
-        private DatabaseCategoryWrapperFactoryInterface $databaseCategoryWrapperFactory,
-        private OrbitShipWrappersRetrieverInterface $orbitShipWrappersRetriever,
-        private ColonyFunctionManagerInterface $colonyFunctionManager,
-        private ColonyLibFactoryInterface $colonyLibFactory,
-        private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
-        private StuTime $stuTime
+        private readonly StationRepositoryInterface $stationRepository,
+        private readonly TorpedoTypeRepositoryInterface $torpedoTypeRepository,
+        private readonly ColonyDepositMiningRepositoryInterface $colonyDepositMiningRepository,
+        private readonly DatabaseCategoryWrapperFactoryInterface $databaseCategoryWrapperFactory,
+        private readonly OrbitShipWrappersRetrieverInterface $orbitShipWrappersRetriever,
+        private readonly ColonyFunctionManagerInterface $colonyFunctionManager,
+        private readonly ColonyLibFactoryInterface $colonyLibFactory,
+        private readonly SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
+        private readonly StuTime $stuTime
     ) {}
 
     #[Override]
@@ -107,15 +109,15 @@ final class ManagementProvider implements PlanetFieldHostComponentInterface
             return $result;
         }
 
-        foreach ($host->getDepositMinings() as $deposit) {
-            if ($deposit->getUser() === $host->getUser()) {
-                $prod = $production[$deposit->getCommodity()->getId()] ?? null;
+        $depositMinings = $this->colonyDepositMiningRepository->getCurrentUserDepositMinings($host);
 
-                $result[$deposit->getCommodity()->getId()] = [
-                    'deposit' => $deposit,
-                    'currentlyMined' => $prod === null ? 0 : $prod->getProduction()
-                ];
-            }
+        foreach ($depositMinings as $deposit) {
+            $prod = $production[$deposit->getCommodity()->getId()] ?? null;
+
+            $result[$deposit->getCommodity()->getId()] = [
+                'deposit' => $deposit,
+                'currentlyMined' => $prod === null ? 0 : $prod->getProduction()
+            ];
         }
 
         return $result;

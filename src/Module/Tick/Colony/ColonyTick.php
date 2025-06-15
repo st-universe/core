@@ -41,11 +41,11 @@ final class ColonyTick implements ColonyTickInterface
     public function __construct(
         private ModuleQueueRepositoryInterface $moduleQueueRepository,
         private PlanetFieldRepositoryInterface $planetFieldRepository,
+        private ColonyRepositoryInterface $colonyRepository,
+        private ColonyDepositMiningRepositoryInterface $colonyDepositMiningRepository,
         private PrivateMessageSenderInterface $privateMessageSender,
         private StorageManagerInterface $storageManager,
-        private ColonyRepositoryInterface $colonyRepository,
         private BuildingManagerInterface $buildingManager,
-        private ColonyDepositMiningRepositoryInterface $colonyDepositMiningRepository,
         private ColonyLibFactoryInterface $colonyLibFactory,
         private ColonyFunctionManagerInterface $colonyFunctionManager,
         private CommodityCacheInterface $commodityCache,
@@ -149,7 +149,7 @@ final class ColonyTick implements ColonyTickInterface
 
             $commodityId = $pro->getCommodityId();
 
-            $depositMining = $colony->getUserDepositMinings()[$commodityId] ?? null;
+            $depositMining = $this->colonyDepositMiningRepository->getCurrentUserDepositMinings($colony)[$commodityId] ?? null;
             if ($depositMining !== null && $depositMining->isEnoughLeft(abs($pro->getProduction()))) {
                 continue;
             }
@@ -337,7 +337,7 @@ final class ColonyTick implements ColonyTickInterface
                     $sum -= $amount;
                 } else {
                     // EFFECTS
-                    $depositMining = $colony->getUserDepositMinings()[$commodityId];
+                    $depositMining = $this->colonyDepositMiningRepository->getCurrentUserDepositMinings($colony)[$commodityId];
 
                     $depositMining->setAmountLeft($depositMining->getAmountLeft() - $amount);
                     $this->colonyDepositMiningRepository->save($depositMining);
