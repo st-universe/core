@@ -11,7 +11,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Exception\EntityLockedException;
 use Stu\Exception\SpacecraftDoesNotExistException;
-use Stu\Exception\UnallowedUplinkOperation;
+use Stu\Exception\UnallowedUplinkOperationException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\SemaphoreUtilInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
@@ -136,7 +136,7 @@ class SpacecraftLoaderTest extends StuTestCase
 
     public function testGetByIdAndUserAwaitExceptionIfOperationUnallowedWithUplink(): void
     {
-        $this->expectException(UnallowedUplinkOperation::class);
+        $this->expectException(UnallowedUplinkOperationException::class);
 
         $this->lockManager->shouldReceive('isLocked')
             ->with($this->spacecraftId, LockTypeEnum::SHIP_GROUP)
@@ -159,7 +159,7 @@ class SpacecraftLoaderTest extends StuTestCase
 
     public function testGetByIdAndUserAwaitExceptionIfUplinkOffline(): void
     {
-        $this->expectException(UnallowedUplinkOperation::class);
+        $this->expectException(UnallowedUplinkOperationException::class);
 
         $this->lockManager->shouldReceive('isLocked')
             ->with($this->spacecraftId, LockTypeEnum::SHIP_GROUP)
@@ -186,7 +186,7 @@ class SpacecraftLoaderTest extends StuTestCase
 
     public function testGetByIdAndUserAwaitExceptionIfOwnerOnVacation(): void
     {
-        $this->expectException(UnallowedUplinkOperation::class);
+        $this->expectException(UnallowedUplinkOperationException::class);
 
         $this->lockManager->shouldReceive('isLocked')
             ->with($this->spacecraftId, LockTypeEnum::SHIP_GROUP)

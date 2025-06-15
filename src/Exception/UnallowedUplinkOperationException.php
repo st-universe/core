@@ -6,4 +6,4 @@ namespace Stu\Exception;
 
 use Stu\Module\Control\Router\FallbackRouteException;
 
-final class SpacecraftDoesNotExistException extends FallbackRouteException {}
+final class UnallowedUplinkOperationException extends FallbackRouteException {}

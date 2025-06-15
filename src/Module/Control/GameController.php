@@ -17,26 +17,21 @@ use Stu\Exception\RelocationGameStateException;
 use Stu\Exception\ResetGameStateException;
 use Stu\Exception\SanityCheckException;
 use Stu\Exception\SessionInvalidException;
-use Stu\Exception\SpacecraftDoesNotExistException;
-use Stu\Exception\UnallowedUplinkOperation;
-use Stu\Lib\AccountNotVerifiedException;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Information\InformationWrapper;
-use Stu\Lib\LoginException;
 use Stu\Lib\Session\SessionStringFactoryInterface;
 use Stu\Lib\Session\SessionInterface;
 use Stu\Lib\Session\SessionLoginInterface;
 use Stu\Lib\UserLockedException;
 use Stu\Lib\UuidGeneratorInterface;
 use Stu\Module\Config\StuConfigInterface;
-use Stu\Module\Control\Exception\ItemNotFoundException;
 use Stu\Module\Control\Render\GameTwigRendererInterface;
+use Stu\Module\Control\Router\FallbackRouteException;
+use Stu\Module\Control\Router\FallbackRouterInterface;
 use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
 use Stu\Module\Game\Lib\GameSetupInterface;
 use Stu\Module\Game\Lib\TutorialProvider;
-use Stu\Module\Logging\LoggerEnum;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Logging\StuLogger;
 use Stu\Module\Twig\TwigPageInterface;
 use Stu\Orm\Entity\GameConfigInterface;
 use Stu\Orm\Entity\GameRequestInterface;
@@ -56,37 +51,32 @@ final class GameController implements GameControllerInterface
 
     private GameData $gameData;
 
-    private LoggerUtilInterface $loggerUtil;
-
     public function __construct(
-        private ControllerDiscovery $controllerDiscovery,
-        private AccessCheckInterface $accessCheck,
-        private SessionInterface $session,
-        private SessionLoginInterface $sessionLogin,
-        private TwigPageInterface $twigPage,
-        private DatabaseUserRepositoryInterface $databaseUserRepository,
-        private StuConfigInterface $stuConfig,
-        private GameTurnRepositoryInterface $gameTurnRepository,
-        private GameConfigRepositoryInterface $gameConfigRepository,
-        private EntityManagerInterface $entityManager,
-        private UserRepositoryInterface $userRepository,
-        private ComponentSetupInterface $componentSetup,
-        private Ubench $benchmark,
-        private CreateDatabaseEntryInterface $createDatabaseEntry,
-        private GameRequestRepositoryInterface $gameRequestRepository,
-        private GameTwigRendererInterface $gameTwigRenderer,
-        private UuidGeneratorInterface $uuidGenerator,
-        private EventDispatcherInterface $eventDispatcher,
-        private GameRequestSaverInterface $gameRequestSaver,
-        private GameSetupInterface $gameSetup,
-        private TutorialProvider $tutorialProvider,
-        private SessionStringFactoryInterface $sessionStringFactory,
-        private BenchmarkResultInterface $benchmarkResult,
-        LoggerUtilFactoryInterface $loggerUtilFactory
+        private readonly ControllerDiscovery $controllerDiscovery,
+        private readonly AccessCheckInterface $accessCheck,
+        private readonly SessionInterface $session,
+        private readonly SessionLoginInterface $sessionLogin,
+        private readonly TwigPageInterface $twigPage,
+        private readonly DatabaseUserRepositoryInterface $databaseUserRepository,
+        private readonly StuConfigInterface $stuConfig,
+        private readonly GameTurnRepositoryInterface $gameTurnRepository,
+        private readonly GameConfigRepositoryInterface $gameConfigRepository,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly UserRepositoryInterface $userRepository,
+        private readonly ComponentSetupInterface $componentSetup,
+        private readonly Ubench $benchmark,
+        private readonly CreateDatabaseEntryInterface $createDatabaseEntry,
+        private readonly GameRequestRepositoryInterface $gameRequestRepository,
+        private readonly GameTwigRendererInterface $gameTwigRenderer,
+        private readonly FallbackRouterInterface $fallbackRouter,
+        private readonly UuidGeneratorInterface $uuidGenerator,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly GameRequestSaverInterface $gameRequestSaver,
+        private readonly GameSetupInterface $gameSetup,
+        private readonly TutorialProvider $tutorialProvider,
+        private readonly SessionStringFactoryInterface $sessionStringFactory,
+        private readonly BenchmarkResultInterface $benchmarkResult
     ) {
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
-        //$this->loggerUtil->init('game', LoggerEnum::LEVEL_ERROR);
-
         $this->gameData = new GameData();
     }
 
@@ -137,8 +127,6 @@ final class GameController implements GameControllerInterface
     #[Override]
     public function setTemplateFile(string $template): void
     {
-        $this->loggerUtil->log(sprintf('setTemplateFile: %s', $template));
-
         $this->twigPage->setTemplate($template);
     }
 
@@ -153,8 +141,6 @@ final class GameController implements GameControllerInterface
     #[Override]
     public function showMacro(string $macro): void
     {
-        $this->loggerUtil->log(sprintf('showMacro: %s', $macro));
-
         $this->gameData->macro = $macro;
 
         $this->setTemplateFile('html/ajaxempty.twig');
@@ -322,15 +308,12 @@ final class GameController implements GameControllerInterface
         switch ($when) {
             case GameEnum::JS_EXECUTION_BEFORE_RENDER:
                 $this->gameData->execjs[$when][] = $value;
-                $this->loggerUtil->log(sprintf('before: %s', $value));
                 break;
             case GameEnum::JS_EXECUTION_AFTER_RENDER:
                 $this->gameData->execjs[$when][] = $value;
-                $this->loggerUtil->log(sprintf('after: %s', $value));
                 break;
             case GameEnum::JS_EXECUTION_AJAX_UPDATE:
                 $this->gameData->execjs[$when][] = $value;
-                $this->loggerUtil->log(sprintf('update: %s', $value));
                 break;
         }
     }
@@ -497,56 +480,15 @@ final class GameController implements GameControllerInterface
                 header('Location: /');
             }
             return;
-        } catch (LoginException $e) {
-            $this->setTemplateVar('LOGIN_ERROR', $e->getMessage());
-            $this->setTemplateFile('html/index/index.twig');
-        } catch (UserLockedException $e) {
-            $this->setTemplateFile('html/index/accountLocked.twig');
-            $this->setTemplateVar('LOGIN_ERROR', $e->getMessage());
-            $this->setTemplateVar('REASON', $e->getDetails());
-        } catch (AccountNotVerifiedException $e) {
-            $this->setTemplateFile('html/index/accountVerification.twig');
-            if ($e->getMessage() !== '') {
-                $this->setTemplateVar('REASON', $e->getMessage());
-            }
-            $user = $this->getUser();
-            $this->setTemplateVar('HAS_MOBILE', $user->getMobile() !== null);
-            $this->setTemplateVar('USER', $user);
-            $this->setTemplateVar('MAIL', $user->getEmail());
-            $this->setTemplateVar('MOBILE', $user->getMobile());
-            $this->setTemplateVar('SMS_ATTEMPTS_LEFT', 3 - $user->getSmsSended());
-        } catch (MaintenanceGameStateException) {
-            $this->setPageTitle('Wartungsmodus');
-            $this->setTemplateFile('html/index/maintenance.twig');
-        } catch (ResetGameStateException) {
-            $this->setPageTitle('Resetmodus');
-            $this->setTemplateFile('html/index/gameReset.twig');
-        } catch (RelocationGameStateException) {
-            $this->setPageTitle('Umzugsmodus');
-            $this->setTemplateFile('html/index/relocation.twig');
-        } catch (SpacecraftDoesNotExistException $e) {
-            $this->addInformation($e->getMessage());
-            $this->setViewTemplate('html/empty.twig');
-        } catch (ItemNotFoundException) {
-            $this->addInformation('Das angeforderte Item wurde nicht gefunden');
-            $this->setViewTemplate('html/empty.twig');
-        } catch (UnallowedUplinkOperation) {
-            $this->addInformation('Diese Aktion ist per Uplink nicht möglich!');
-
-            if (request::isAjaxRequest() && !request::has('switch')) {
-                $this->setMacroInAjaxWindow('html/systeminformation.twig');
-            } else {
-                $this->setViewTemplate('html/empty.twig');
-            }
+        } catch (FallbackRouteException $e) {
+            $this->fallbackRouter->showFallbackSite($e, $this);
         }
 
         $isTemplateSet = $this->twigPage->isTemplateSet();
 
         if (!$isTemplateSet) {
-            $this->loggerUtil->init('template', LoggerEnum::LEVEL_ERROR);
-            $this->loggerUtil->log(sprintf('NO TEMPLATE FILE SPECIFIED, Method: %s', request::isPost() ? 'POST' : 'GET'));
-            $this->loggerUtil->log(print_r(request::isPost() ? request::postvars() : request::getvars(), true));
-            $this->loggerUtil->init('stu');
+            StuLogger::logf('NO TEMPLATE FILE SPECIFIED, Method: %s', request::isPost() ? 'POST' : 'GET');
+            StuLogger::log(print_r(request::isPost() ? request::postvars() : request::getvars(), true));
         }
 
         $user = $this->hasUser()
@@ -747,7 +689,6 @@ final class GameController implements GameControllerInterface
     #[Override]
     public function getBenchmarkResult(): array
     {
-        $this->loggerUtil->log(sprintf('getBenchmarkResult, timestamp: %F', microtime(true)));
         $this->benchmark->end();
 
         return $this->benchmarkResult->getResult($this->benchmark);
