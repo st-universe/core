@@ -665,16 +665,10 @@ final class GameController implements GameControllerInterface
                 'player' => $this->userRepository->getActiveAmount(),
                 'playeronline' => $this->userRepository->getActiveAmountRecentlyOnline(time() - 300),
                 'gameState' => $this->getGameState(),
-                'gameStateTextual' => $this->getGameStateTextual()
+                'gameStateTextual' => GameEnum::gameStateTypeToDescription($this->getGameState())
             ];
         }
         return $this->gameData->gameStats;
-    }
-
-    #[Override]
-    public function getGameStateTextual(): string
-    {
-        return GameEnum::gameStateTypeToDescription($this->getGameState());
     }
 
     #[Override]

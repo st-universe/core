@@ -3,6 +3,7 @@
 {% block body %}
 {% include 'html/breadcrumb.twig' %}
 <form action="/npc/index.php" method="post" name="toolsform" id="toolsform">
+    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
     <div>
         <h2>Waren Tool</h2>
         Spacecraft ID: <input type="text" size="5" name="spacecraftid" id="spacecraftid" />
@@ -31,6 +32,7 @@
     <h2>History Tools</h2>
     <br>
     <form action="/npc/index.php" method="post" name="toolsform" id="toolsform">
+        <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
         <div>
             <h2>History Eintrag erstellen</h2>
             Text: <input type="text" size="100" name="historytext" id="historytext" />
@@ -72,6 +74,7 @@
     <h2>Schiff Tools</h2>
     <br>
     <form action="/npc/index.php" method="post" name="toolsform" id="toolsform">
+        <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
         <div>
             <h2>Schiffe löschen</h2>
             Spacecraft IDs: <input type="text" size="20" name="spacecraftid" id="spacecraftid" />
