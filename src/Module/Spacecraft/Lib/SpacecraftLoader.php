@@ -11,7 +11,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Exception\EntityLockedException;
 use Stu\Exception\SpacecraftDoesNotExistException;
-use Stu\Exception\UnallowedUplinkOperation;
+use Stu\Exception\UnallowedUplinkOperationException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\SemaphoreUtilInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
@@ -125,13 +125,13 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
         if ($spacecraft->getUser()->getId() !== $userId) {
             if ($this->crewAssignmentRepository->hasCrewmanOfUser($spacecraft, $userId)) {
                 if (!$allowUplink) {
-                    throw new UnallowedUplinkOperation(_('This Operation is not allowed via uplink!'));
+                    throw new UnallowedUplinkOperationException(_('This Operation is not allowed via uplink!'));
                 }
                 if (!$spacecraft->getSystemState(SpacecraftSystemTypeEnum::UPLINK)) {
-                    throw new UnallowedUplinkOperation(_('Uplink is not activated!'));
+                    throw new UnallowedUplinkOperationException(_('Uplink is not activated!'));
                 }
                 if ($spacecraft->getUser()->isVacationRequestOldEnough()) {
-                    throw new UnallowedUplinkOperation(_('Owner is on vacation!'));
+                    throw new UnallowedUplinkOperationException(_('Owner is on vacation!'));
                 }
             } else {
                 throw new AccessViolationException(sprintf("Spacecraft owned by another user (%d)! Fool: %d", $spacecraft->getUser()->getId(), $userId));
