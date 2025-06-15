@@ -167,7 +167,7 @@ function buildOnField(action, fieldId, buildingId) {
 }
 
 function terraformOnField(fieldId, terraformId) {
-	performActionAndUpdateResult('B_TERRAFORM', `fid=${fieldId}&tfid=${terraformId}`);
+	performActionAndUpdateResult('B_TERRAFORM', `fid=${fieldId}&tfid=${terraformId}&sstr=${sstr}`);
 }
 
 function removeOnField(fieldId) {
