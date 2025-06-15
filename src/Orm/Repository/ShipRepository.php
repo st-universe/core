@@ -274,7 +274,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 JOIN %s u
                 WITH s.user_id = u.id
                 LEFT JOIN %s w
-                WITH u.id = w.user_id
+                WITH u = w.user
                 WHERE l.layer_id = :layerId
                 AND l.cx BETWEEN :minX AND :maxX
                 AND l.cy BETWEEN :minY AND :maxY
