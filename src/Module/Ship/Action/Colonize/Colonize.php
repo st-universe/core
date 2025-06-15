@@ -37,20 +37,20 @@ final class Colonize implements ActionControllerInterface
     public const string ACTION_IDENTIFIER = 'B_COLONIZE';
 
     public function __construct(
-        private ShipLoaderInterface $shipLoader,
         private ShipRumpColonizationBuildingRepositoryInterface $shipRumpColonizationBuildingRepository,
         private BuildingRepositoryInterface $buildingRepository,
         private PlanetFieldRepositoryInterface $planetFieldRepository,
-        private PlanetColonizationInterface $planetColonization,
         private ColonyRepositoryInterface $colonyRepository,
-        private StorageManagerInterface $storageManager,
         private CommodityRepositoryInterface $commodityRepository,
+        private ColonyDepositMiningRepositoryInterface $colonyDepositMiningRepository,
+        private UserRepositoryInterface $userRepository,
+        private ShipLoaderInterface $shipLoader,
+        private PlanetColonizationInterface $planetColonization,
+        private StorageManagerInterface $storageManager,
         private SpacecraftRemoverInterface $spacecraftRemover,
         private InteractionCheckerInterface $interactionChecker,
         private ColonizationCheckerInterface $colonizationChecker,
-        private TroopTransferUtilityInterface $troopTransferUtility,
-        private ColonyDepositMiningRepositoryInterface $colonyDepositMiningRepository,
-        private UserRepositoryInterface $userRepository
+        private TroopTransferUtilityInterface $troopTransferUtility
     ) {}
 
     #[Override]
@@ -175,7 +175,7 @@ final class Colonize implements ActionControllerInterface
     private function createUserDepositMinings(ColonyInterface $colony): void
     {
         $deposits = $colony->getColonyClass()->getColonyClassDeposits();
-        $userMinings = $colony->getUserDepositMinings();
+        $userMinings = $this->colonyDepositMiningRepository->getCurrentUserDepositMinings($colony);
 
         foreach ($deposits as $deposit) {
             //check if user already mined this commodity on this colony
