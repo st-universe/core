@@ -59,13 +59,11 @@ final class SplitReactorOutput implements ActionControllerInterface
                 }
             }
             $this->addGameInfo(true, $warpsplit, $autoCarryOver, $game);
-            $game->addExecuteJS(sprintf("refreshHost('%s');", $game->getSessionString()));
             return;
         }
 
         $this->setValues($systemData, $warpsplit, $autoCarryOver);
         $this->addGameInfo(false, $warpsplit, $autoCarryOver, $game);
-        $game->addExecuteJS(sprintf("refreshHost('%s');", $game->getSessionString()));
     }
 
     private function setValues(WarpDriveSystemData $systemData, int $split, bool $autoCarryOver): void
@@ -89,6 +87,6 @@ final class SplitReactorOutput implements ActionControllerInterface
     #[Override]
     public function performSessionCheck(): bool
     {
-        return true;
+        return false;
     }
 }
