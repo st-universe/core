@@ -64,6 +64,7 @@ final class SplitReactorOutput implements ActionControllerInterface
 
         $this->setValues($systemData, $warpsplit, $autoCarryOver);
         $this->addGameInfo(false, $warpsplit, $autoCarryOver, $game);
+        $game->addExecuteJS(sprintf("refreshHost('%s');", $game->getSessionString()));
     }
 
     private function setValues(WarpDriveSystemData $systemData, int $split, bool $autoCarryOver): void
