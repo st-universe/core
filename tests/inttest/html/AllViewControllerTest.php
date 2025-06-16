@@ -129,6 +129,7 @@ class AllViewControllerTest extends TwigTestCase
             'noteid' => 42,
             'regionid' => 134,
             'switch' => 1,
+            'TOKEN' => 'MY_TOKEN',
 
             // SHIP
             'rumpid' => 6501,

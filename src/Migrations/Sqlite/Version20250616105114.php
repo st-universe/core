@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250614091853 extends AbstractMigration
+final class Version20250616105114 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -1506,7 +1506,7 @@ final class Version20250614091853 extends AbstractMigration
             CREATE INDEX tutorial_view_idx ON stu_tutorial_step (module, "view")
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE TABLE stu_user (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, username VARCHAR(255) NOT NULL, login VARCHAR(20) NOT NULL, pass VARCHAR(255) NOT NULL, sms_code VARCHAR(6) DEFAULT NULL, email VARCHAR(200) NOT NULL, mobile VARCHAR(255) DEFAULT NULL, allys_id INTEGER DEFAULT NULL, race INTEGER NOT NULL, state SMALLINT NOT NULL, lastaction INTEGER NOT NULL, creation INTEGER NOT NULL, kn_lez INTEGER NOT NULL, delmark SMALLINT NOT NULL, vac_active BOOLEAN NOT NULL, vac_request_date INTEGER NOT NULL, description CLOB NOT NULL, tick SMALLINT NOT NULL, maptype SMALLINT DEFAULT NULL, sessiondata CLOB NOT NULL, password_token VARCHAR(255) NOT NULL, prestige INTEGER NOT NULL, deals BOOLEAN NOT NULL, last_boarding INTEGER DEFAULT NULL, sms_sended INTEGER DEFAULT 1, CONSTRAINT FK_12A1701F5E0B0712 FOREIGN KEY (allys_id) REFERENCES stu_alliances (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_12A1701FDA6FBBAF FOREIGN KEY (race) REFERENCES stu_factions (id) NOT DEFERRABLE INITIALLY IMMEDIATE)
+            CREATE TABLE stu_user (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, username VARCHAR(255) NOT NULL, allys_id INTEGER DEFAULT NULL, race INTEGER NOT NULL, state SMALLINT NOT NULL, lastaction INTEGER NOT NULL, kn_lez INTEGER NOT NULL, vac_active BOOLEAN NOT NULL, vac_request_date INTEGER NOT NULL, description CLOB NOT NULL, maptype SMALLINT DEFAULT NULL, sessiondata CLOB NOT NULL, prestige INTEGER NOT NULL, deals BOOLEAN NOT NULL, last_boarding INTEGER DEFAULT NULL, CONSTRAINT FK_12A1701F5E0B0712 FOREIGN KEY (allys_id) REFERENCES stu_alliances (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_12A1701FDA6FBBAF FOREIGN KEY (race) REFERENCES stu_factions (id) NOT DEFERRABLE INITIALLY IMMEDIATE)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE INDEX IDX_12A1701FDA6FBBAF ON stu_user (race)
@@ -1593,10 +1593,13 @@ final class Version20250614091853 extends AbstractMigration
             CREATE INDEX user_profile_visitor_user_idx ON stu_user_profile_visitors (user_id)
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE TABLE stu_user_referer (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, referer CLOB NOT NULL, user_id INTEGER NOT NULL, CONSTRAINT FK_A00722FDA76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)
+            CREATE TABLE stu_user_referer (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, referer CLOB NOT NULL, user_id INTEGER NOT NULL, CONSTRAINT FK_A00722FDA76ED395 FOREIGN KEY (user_id) REFERENCES stu_user_registration (user_id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE UNIQUE INDEX UNIQ_A00722FDA76ED395 ON stu_user_referer (user_id)
+        SQL);
+        $this->addSql(<<<'SQL'
+            CREATE TABLE stu_user_registration (login VARCHAR(20) NOT NULL, pass VARCHAR(255) NOT NULL, sms_code VARCHAR(6) DEFAULT NULL, email VARCHAR(200) NOT NULL, mobile VARCHAR(255) DEFAULT NULL, creation INTEGER NOT NULL, delmark SMALLINT NOT NULL, password_token VARCHAR(255) NOT NULL, sms_sended INTEGER DEFAULT 1, user_id INTEGER NOT NULL, PRIMARY KEY(user_id), CONSTRAINT FK_9C660348A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE TABLE stu_user_setting (setting VARCHAR(255) NOT NULL, value VARCHAR(255) NOT NULL, user_id INTEGER NOT NULL, PRIMARY KEY(user_id, setting), CONSTRAINT FK_6AAFACE0A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)
@@ -2142,6 +2145,9 @@ final class Version20250614091853 extends AbstractMigration
         SQL);
         $this->addSql(<<<'SQL'
             DROP TABLE stu_user_referer
+        SQL);
+        $this->addSql(<<<'SQL'
+            DROP TABLE stu_user_registration
         SQL);
         $this->addSql(<<<'SQL'
             DROP TABLE stu_user_setting

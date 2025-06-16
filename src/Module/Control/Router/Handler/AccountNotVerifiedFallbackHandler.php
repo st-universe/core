@@ -14,10 +14,12 @@ class AccountNotVerifiedFallbackHandler implements FallbackHandlerInterface
             $game->setTemplateVar('REASON', $e->getMessage());
         }
         $user = $game->getUser();
-        $game->setTemplateVar('HAS_MOBILE', $user->getMobile() !== null);
+        $registration = $user->getRegistration();
+
+        $game->setTemplateVar('HAS_MOBILE', $registration->getMobile() !== null);
         $game->setTemplateVar('USER', $user);
-        $game->setTemplateVar('MAIL', $user->getEmail());
-        $game->setTemplateVar('MOBILE', $user->getMobile());
-        $game->setTemplateVar('SMS_ATTEMPTS_LEFT', 3 - $user->getSmsSended());
+        $game->setTemplateVar('MAIL', $registration->getEmail());
+        $game->setTemplateVar('MOBILE', $registration->getMobile());
+        $game->setTemplateVar('SMS_ATTEMPTS_LEFT', 3 - $registration->getSmsSended());
     }
 }

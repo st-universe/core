@@ -15,6 +15,7 @@ use Stu\Component\Player\Register\Exception\PlayerDuplicateException;
 use Stu\Module\Control\StuHashInterface;
 use Stu\Orm\Entity\FactionInterface;
 use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\UserRegistrationInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\Orm\Repository\UserRefererRepositoryInterface;
 
@@ -131,6 +132,7 @@ class PlayerCreatorTest extends MockeryTestCase
         $password = 'snafu';
 
         $user = Mockery::mock(UserInterface::class);
+        $registration = Mockery::mock(UserRegistrationInterface::class);
         $faction = Mockery::mock(FactionInterface::class);
 
         $this->userRepository->shouldReceive('save')
@@ -141,11 +143,15 @@ class PlayerCreatorTest extends MockeryTestCase
             ->once()
             ->andReturn($user);
 
-        $user->shouldReceive('setLogin')
+        $user->shouldReceive('getRegistration')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($registration);
+        $registration->shouldReceive('setLogin')
             ->with($loginname)
             ->once()
             ->andReturnSelf();
-        $user->shouldReceive('setEmail')
+        $registration->shouldReceive('setEmail')
             ->with($email)
             ->once()
             ->andReturnSelf();
@@ -157,15 +163,11 @@ class PlayerCreatorTest extends MockeryTestCase
             ->with(sprintf('Siedler %d', $user_id))
             ->once()
             ->andReturnSelf();
-        $user->shouldReceive('setTick')
-            ->with(1)
-            ->once()
-            ->andReturnSelf();
-        $user->shouldReceive('setCreationDate')
+        $registration->shouldReceive('setCreationDate')
             ->with(Mockery::type('int'))
             ->once()
             ->andReturnSelf();
-        $user->shouldReceive('setPassword')
+        $registration->shouldReceive('setPassword')
             ->with(Mockery::on(fn(string $passwordParam): bool => password_verify($password, $passwordParam)))
             ->once()
             ->andReturnSelf();

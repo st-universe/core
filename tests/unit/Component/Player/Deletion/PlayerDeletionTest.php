@@ -106,7 +106,7 @@ class PlayerDeletionTest extends StuTestCase
                 ->withNoArgs()
                 ->once()
                 ->andReturn('foo' . $key);
-            $player->shouldReceive('getDeletionMark')
+            $player->shouldReceive('getRegistration->getDeletionMark')
                 ->withNoArgs()
                 ->once()
                 ->andReturn(666);
@@ -153,7 +153,7 @@ class PlayerDeletionTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn('foo1');
-        $player->shouldReceive('getDeletionMark')
+        $player->shouldReceive('getRegistration->getDeletionMark')
             ->withNoArgs()
             ->once()
             ->andReturn(666);

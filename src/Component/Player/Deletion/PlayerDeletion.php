@@ -83,7 +83,7 @@ final class PlayerDeletion implements PlayerDeletionInterface
     {
         $userId = $user->getId();
         $name = $this->bbCodeParser->parse($user->getName())->getAsText();
-        $delmark = $user->getDeletionMark();
+        $delmark = $user->getRegistration()->getDeletionMark();
 
         $this->loggerUtil->log(sprintf('deleting userId: %d', $userId));
 

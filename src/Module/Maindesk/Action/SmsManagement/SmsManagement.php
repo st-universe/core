@@ -54,23 +54,25 @@ final class SmsManagement implements
             return;
         }
 
-        if ($user->getMobile() === null) {
+        $registration = $user->getRegistration();
+
+        if ($registration->getMobile() === null) {
             throw new AccountNotVerifiedException('Keine Mobilnummer für SMS-Versand hinterlegt');
         }
 
-        if ($user->getSmsSended() >= 3) {
+        if ($registration->getSmsSended() >= 3) {
             throw new AccountNotVerifiedException('Alle SMS-Versuche sind aufgebraucht. Bitte kontaktiere den Support.');
         }
 
         $newMobile = $this->processMobileInput($mobileInput, $countryCode);
-        $currentMobile = $user->getMobile();
+        $currentMobile = $registration->getMobile();
 
         if ($newMobile === '') {
             throw new AccountNotVerifiedException('Bitte gib eine Mobilnummer ein');
         }
 
         if ($newMobile === $currentMobile) {
-            $this->resendSmsCode($user, $game);
+            $this->resendSmsCode($user);
             return;
         }
 
@@ -100,18 +102,19 @@ final class SmsManagement implements
         return $processedMobile;
     }
 
-    private function resendSmsCode(UserInterface $user, GameControllerInterface $game): void
+    private function resendSmsCode(UserInterface $user): void
     {
+        $registration = $user->getRegistration();
         $randomHash = substr(md5(uniqid((string) random_int(0, mt_getrandmax()), true)), 16, 6);
 
-        $user->setSmsCode($randomHash);
-        $user->setSmsSended($user->getSmsSended() + 1);
+        $registration->setSmsCode($randomHash);
+        $registration->setSmsSended($registration->getSmsSended() + 1);
         $this->userRepository->save($user);
         $this->entityManager->flush();
 
         $this->smsVerificationCodeSender->send($user, $randomHash);
 
-        $mobile = $user->getMobile();
+        $mobile = $registration->getMobile();
         if ($mobile !== null) {
             throw new AccountNotVerifiedException('Der SMS-Verifikationscode wurde erneut an ' . $this->maskMobile($mobile) . ' versendet');
         }
@@ -138,15 +141,17 @@ final class SmsManagement implements
             throw new AccountNotVerifiedException('Diese Mobilnummer ist blockiert');
         }
 
-        $user->setMobile($newMobile);
-        $user->setSmsSended($user->getSmsSended() + 1);
+        $registration = $user->getRegistration();
+
+        $registration->setMobile($newMobile);
+        $registration->setSmsSended($registration->getSmsSended() + 1);
         $this->userRepository->save($user);
         $this->entityManager->flush();
 
         $this->loggerUtil->log('Mobilnummer wurde gespeichert: ' . $newMobile);
 
         $randomHash = substr(md5(uniqid((string) random_int(0, mt_getrandmax()), true)), 16, 6);
-        $user->setSmsCode($randomHash);
+        $registration->setSmsCode($randomHash);
         $this->userRepository->save($user);
         $this->entityManager->flush();
 

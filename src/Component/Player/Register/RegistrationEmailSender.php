@@ -32,12 +32,12 @@ final class RegistrationEmailSender implements RegistrationEmailSenderInterface
 
         $mail = $this->mailFactory->createStuMail()
             ->withDefaultSender()
-            ->addTo($player->getEmail())
+            ->addTo($player->getRegistration()->getEmail())
             ->setSubject(_('Star Trek Universe - Account aktivieren'))
             ->setBody(
                 sprintf(
                     $body,
-                    $player->getLogin(),
+                    $player->getRegistration()->getLogin(),
                     $activationCode,
                     $this->config->get('game.base_url')
                 )

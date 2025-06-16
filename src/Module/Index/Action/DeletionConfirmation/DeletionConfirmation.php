@@ -14,9 +14,10 @@ final class DeletionConfirmation implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'CONFIRM_ACCOUNT_DELETION';
 
-    public function __construct(private DeletionConfirmationRequestInterface $deletionConfirmationRequest, private UserRepositoryInterface $userRepository)
-    {
-    }
+    public function __construct(
+        private DeletionConfirmationRequestInterface $deletionConfirmationRequest,
+        private UserRepositoryInterface $userRepository
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -24,13 +25,17 @@ final class DeletionConfirmation implements ActionControllerInterface
         $token = $this->deletionConfirmationRequest->getToken();
 
         $user = $this->userRepository->getByResetToken($token);
-
-        if ($user === null || $user->getDeletionMark() !== UserEnum::DELETION_REQUESTED) {
+        if ($user === null) {
             return;
         }
 
-        $user->setPasswordToken('');
-        $user->setDeletionMark(UserEnum::DELETION_CONFIRMED);
+        $registration = $user->getRegistration();
+        if ($registration->getDeletionMark() !== UserEnum::DELETION_REQUESTED) {
+            return;
+        }
+
+        $registration->setPasswordToken('');
+        $registration->setDeletionMark(UserEnum::DELETION_CONFIRMED);
 
         $this->userRepository->save($user);
 

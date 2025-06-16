@@ -23,17 +23,16 @@ class LocalPlayerCreator extends PlayerCreator
         ?string $smsCode = null,
         ?string $referrer = null
     ): UserInterface {
+
         $player = $this->userRepository->prototype();
-        $player->setLogin($loginName);
-        $player->setEmail($emailAddress);
+        $player->setUsername(sprintf('Siedler %d', $player->getId()));
         $player->setFaction($faction);
 
-        $this->userRepository->save($player);
-
-        $player->setUsername(sprintf('Siedler %d', $player->getId()));
-        $player->setTick(1);
-        $player->setCreationDate(time());
-        $player->setPassword(password_hash($password, PASSWORD_DEFAULT));
+        $registration = $player->getRegistration();
+        $registration->setLogin($loginName);
+        $registration->setEmail($emailAddress);
+        $registration->setCreationDate(time());
+        $registration->setPassword(password_hash($password, PASSWORD_DEFAULT));
 
         $this->userRepository->save($player);
 

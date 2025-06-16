@@ -11,6 +11,7 @@ use Override;
 use Stu\Module\Control\StuHashInterface;
 use Stu\Orm\Entity\FactionInterface;
 use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\UserRegistrationInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\Orm\Repository\UserRefererRepositoryInterface;
 use Stu\StuTestCase;
@@ -71,6 +72,7 @@ class LocalPlayerCreatorTest extends StuTestCase
 
         $faction = $this->mock(FactionInterface::class);
         $user = $this->mock(UserInterface::class);
+        $registration = $this->mock(UserRegistrationInterface::class);
 
         $this->userRepository->shouldReceive('prototype')
             ->withNoArgs()
@@ -78,12 +80,16 @@ class LocalPlayerCreatorTest extends StuTestCase
             ->andReturn($user);
         $this->userRepository->shouldReceive('save')
             ->with($user)
-            ->twice();
+            ->once();
 
-        $user->shouldReceive('setLogin')
+        $user->shouldReceive('getRegistration')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($registration);
+        $registration->shouldReceive('setLogin')
             ->with($loginName)
             ->once();
-        $user->shouldReceive('setEmail')
+        $registration->shouldReceive('setEmail')
             ->with($emailAddress)
             ->once();
         $user->shouldReceive('setFaction')
@@ -94,13 +100,10 @@ class LocalPlayerCreatorTest extends StuTestCase
                 sprintf('Siedler %d', $userId)
             )
             ->once();
-        $user->shouldReceive('setTick')
-            ->with(1)
-            ->once();
-        $user->shouldReceive('setCreationDate')
+        $registration->shouldReceive('setCreationDate')
             ->with(Mockery::type('int'))
             ->once();
-        $user->shouldReceive('setPassword')
+        $registration->shouldReceive('setPassword')
             ->with(Mockery::on(fn(string $passwordHash): bool => password_verify($password, $passwordHash)))
             ->once();
         $user->shouldReceive('getId')

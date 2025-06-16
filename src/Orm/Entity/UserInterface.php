@@ -10,29 +10,13 @@ interface UserInterface
 {
     public function getId(): int;
 
+    public function getRegistration(): UserRegistrationInterface;
+
+    public function setRegistration(UserRegistrationInterface $registration): UserInterface;
+
     public function getName(): string;
 
     public function setUsername(string $user): UserInterface;
-
-    public function getLogin(): string;
-
-    public function setLogin(string $login): UserInterface;
-
-    public function getPassword(): string;
-
-    public function setPassword(string $password): UserInterface;
-
-    public function getSmsCode(): ?string;
-
-    public function setSmsCode(?string $code): UserInterface;
-
-    public function getEmail(): string;
-
-    public function setEmail(string $email): UserInterface;
-
-    public function getMobile(): ?string;
-
-    public function setMobile(?string $mobile): UserInterface;
 
     public function getRgbCode(): string;
 
@@ -72,17 +56,9 @@ interface UserInterface
 
     public function setLastaction(int $lastaction): UserInterface;
 
-    public function getCreationDate(): int;
-
-    public function setCreationDate(int $creationDate): UserInterface;
-
     public function getKnMark(): int;
 
     public function setKnMark(int $knMark): UserInterface;
-
-    public function getDeletionMark(): int;
-
-    public function setDeletionMark(int $deletionMark): UserInterface;
 
     public function isVacationMode(): bool;
 
@@ -118,10 +94,6 @@ interface UserInterface
 
     public function getWarpsplitAutoCarryoverDefault(): bool;
 
-    public function getTick(): int;
-
-    public function setTick(int $tick): UserInterface;
-
     /**
      * @return Collection<int, UserLayerInterface>
      */
@@ -149,10 +121,6 @@ interface UserInterface
     public function getSessiondata(): string;
 
     public function setSessiondata(string $sessiondata): UserInterface;
-
-    public function getPasswordToken(): string;
-
-    public function setPasswordToken(string $password_token): UserInterface;
 
     public function getPrestige(): int;
 
@@ -203,12 +171,4 @@ interface UserInterface
      * @return iterable<WormholeRestriction>
      */
     public function getWormholeRestrictions(): iterable;
-
-    public function getReferer(): ?UserRefererInterface;
-
-    public function setReferer(?UserRefererInterface $referer): UserInterface;
-
-    public function getSmsSended(): int;
-
-    public function setSmsSended(int $smsSended): UserInterface;
 }

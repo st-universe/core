@@ -56,11 +56,12 @@ final class IdleUserWarning implements MaintenanceHandlerInterface
             time() - self::USER_IDLE_REGISTRATION
         );
         foreach ($list as $player) {
+            $registration = $player->getRegistration();
             $playerName = $this->bbCodeParser->parse($player->getName())->getAsText();
 
             $mail = $this->mailFactory->createStuMail()
                 ->withDefaultSender()
-                ->addTo($player->getEmail())
+                ->addTo($registration->getEmail())
                 ->setSubject(_('Star Trek Universe - Löschung wegen Nichtaktivierung'))
                 ->setBody(
                     sprintf(
@@ -76,7 +77,7 @@ final class IdleUserWarning implements MaintenanceHandlerInterface
                 );
             try {
                 $mail->send();
-                $notifiedEmails[] = $player->getEmail();
+                $notifiedEmails[] = $registration->getEmail();
             } catch (RuntimeException $e) {
                 $this->loggerUtil->init("mail", LoggerEnum::LEVEL_ERROR);
                 $this->loggerUtil->log($e->getMessage());
@@ -90,12 +91,13 @@ final class IdleUserWarning implements MaintenanceHandlerInterface
             $this->config->getGameSettings()->getAdminIds()
         );
         foreach ($list as $player) {
+            $registration = $player->getRegistration();
             $playerName = $this->bbCodeParser->parse($player->getName())->getAsText();
 
-            if ($player->getDeletionMark() == UserEnum::DELETION_CONFIRMED) {
+            if ($registration->getDeletionMark() == UserEnum::DELETION_CONFIRMED) {
                 $mail = $this->mailFactory->createStuMail()
                     ->withDefaultSender()
-                    ->addTo($player->getEmail())
+                    ->addTo($registration->getEmail())
                     ->setSubject(_('Star Trek Universe - Löschung des Accounts'))
                     ->setBody(
                         sprintf(
@@ -112,7 +114,7 @@ final class IdleUserWarning implements MaintenanceHandlerInterface
             } else {
                 $mail = $this->mailFactory->createStuMail()
                     ->withDefaultSender()
-                    ->addTo($player->getEmail())
+                    ->addTo($registration->getEmail())
                     ->setSubject(_('Star Trek Universe - Löschung wegen Inaktvität'))
                     ->setBody(
                         sprintf(
@@ -129,7 +131,7 @@ final class IdleUserWarning implements MaintenanceHandlerInterface
             }
             try {
                 $mail->send();
-                $notifiedEmails[] = $player->getEmail();
+                $notifiedEmails[] = $registration->getEmail();
             } catch (RuntimeException $e) {
                 $this->loggerUtil->init("mail", LoggerEnum::LEVEL_ERROR);
                 $this->loggerUtil->log($e->getMessage());
@@ -141,14 +143,17 @@ final class IdleUserWarning implements MaintenanceHandlerInterface
             time() - self::USER_IDLE_ONE_DAY
         );
         foreach ($list as $player) {
-            if (in_array($player->getEmail(), $notifiedEmails)) {
+
+            $registration = $player->getRegistration();
+            if (in_array($registration->getEmail(), $notifiedEmails)) {
                 continue;
             }
+
             $playerName = $this->bbCodeParser->parse($player->getName())->getAsText();
 
             $mail = $this->mailFactory->createStuMail()
                 ->withDefaultSender()
-                ->addTo($player->getEmail())
+                ->addTo($registration->getEmail())
                 ->setSubject(_('Star Trek Universe - Löschung wegen Nichtaktivierung in 24h'))
                 ->setBody(
                     sprintf(
@@ -164,7 +169,7 @@ final class IdleUserWarning implements MaintenanceHandlerInterface
                 );
             try {
                 $mail->send();
-                $notifiedEmails[] = $player->getEmail();
+                $notifiedEmails[] = $registration->getEmail();
             } catch (RuntimeException $e) {
                 $this->loggerUtil->init("mail", LoggerEnum::LEVEL_ERROR);
                 $this->loggerUtil->log($e->getMessage());
@@ -178,7 +183,8 @@ final class IdleUserWarning implements MaintenanceHandlerInterface
             $this->config->getGameSettings()->getAdminIds()
         );
         foreach ($list as $player) {
-            if (in_array($player->getEmail(), $notifiedEmails)) {
+            $registration = $player->getRegistration();
+            if (in_array($registration->getEmail(), $notifiedEmails)) {
                 continue;
             }
             $playerName = $this->bbCodeParser->parse($player->getName())->getAsText();
@@ -203,7 +209,7 @@ final class IdleUserWarning implements MaintenanceHandlerInterface
             if ($time > 0) {
                 $mail = $this->mailFactory->createStuMail()
                     ->withDefaultSender()
-                    ->addTo($player->getEmail())
+                    ->addTo($registration->getEmail())
                     ->setSubject(sprintf('Star Trek Universe - Löschung wegen Inaktvität in %d Stunden', $time))
                     ->setBody(
                         sprintf(
