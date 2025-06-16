@@ -39,7 +39,7 @@ final class RemoveBuilding implements ActionControllerInterface
 
         $this->buildingAction->remove($field, $game);
 
-        $game->addExecuteJS('refreshHost();');
+        $game->addExecuteJS(sprintf("refreshHost('%s');", $game->getSessionString()));
 
         $host = $field->getHost();
 
