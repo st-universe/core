@@ -107,6 +107,9 @@ class PlayerCreator implements PlayerCreatorInterface
     ): UserInterface {
 
         $player = $this->userRepository->prototype();
+        $this->userRepository->save($player);
+        $this->entityManager->flush();
+
         $player->setFaction($faction);
         $player->setUsername('Siedler ' . $player->getId());
 
