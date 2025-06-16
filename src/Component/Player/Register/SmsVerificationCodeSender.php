@@ -28,7 +28,7 @@ final class SmsVerificationCodeSender implements SmsVerificationCodeSenderInterf
 
         $mail = $this->mailFactory->createStuMail()
             ->setFrom($this->config->get('game.registration.sms_code_verification.email_sender_address'))
-            ->addTo(sprintf('%s@%s', $player->getMobile(), $this->config->get('game.registration.sms_code_verification.email_to_sms_mail_domain')))
+            ->addTo(sprintf('%s@%s', $player->getRegistration()->getMobile(), $this->config->get('game.registration.sms_code_verification.email_to_sms_mail_domain')))
             ->setBody(sprintf($body, $code));
 
         $token = $this->config->get('game.registration.sms_code_verification.email_to_sms_token');

@@ -277,7 +277,7 @@ class SkipDetectionTest extends StuTestCase
         $incomingShipUser = $this->mock(UserInterface::class);
         $unfinishedWeb = $this->mock(TholianWebInterface::class);
 
-        $incomingShipUser->shouldReceive('getCreationDate')
+        $incomingShipUser->shouldReceive('getRegistration->getCreationDate')
             ->withNoArgs()
             ->once()
             ->andReturn(1);
@@ -334,7 +334,7 @@ class SkipDetectionTest extends StuTestCase
         $unfinishedWeb = $this->mock(TholianWebInterface::class);
         $pirateWrath = $this->mock(PirateWrathInterface::class);
 
-        $incomingShipUser->shouldReceive('getCreationDate')
+        $incomingShipUser->shouldReceive('getRegistration->getCreationDate')
             ->withNoArgs()
             ->once()
             ->andReturn(161_642);
@@ -403,7 +403,7 @@ class SkipDetectionTest extends StuTestCase
         $unfinishedWeb = $this->mock(TholianWebInterface::class);
         $pirateWrath = $this->mock(PirateWrathInterface::class);
 
-        $incomingShipUser->shouldReceive('getCreationDate')
+        $incomingShipUser->shouldReceive('getRegistration->getCreationDate')
             ->withNoArgs()
             ->once()
             ->andReturn(161_642);
@@ -479,7 +479,7 @@ class SkipDetectionTest extends StuTestCase
         $unfinishedWeb = $this->mock(TholianWebInterface::class);
         $pirateWrath = $this->mock(PirateWrathInterface::class);
 
-        $incomingShipUser->shouldReceive('getCreationDate')
+        $incomingShipUser->shouldReceive('getRegistration->getCreationDate')
             ->withNoArgs()
             ->once()
             ->andReturn(161_642);
@@ -554,7 +554,7 @@ class SkipDetectionTest extends StuTestCase
         $incomingShipUser = $this->mock(UserInterface::class);
         $unfinishedWeb = $this->mock(TholianWebInterface::class);
 
-        $incomingShipUser->shouldReceive('getCreationDate')
+        $incomingShipUser->shouldReceive('getRegistration->getCreationDate')
             ->withNoArgs()
             ->once()
             ->andReturn(161_642);
@@ -626,7 +626,7 @@ class SkipDetectionTest extends StuTestCase
         $unfinishedWeb = $this->mock(TholianWebInterface::class);
         $pirateWrath = $this->mock(PirateWrathInterface::class);
 
-        $incomingShipUser->shouldReceive('getCreationDate')
+        $incomingShipUser->shouldReceive('getRegistration->getCreationDate')
             ->withNoArgs()
             ->once()
             ->andReturn(161_642);
@@ -701,7 +701,7 @@ class SkipDetectionTest extends StuTestCase
         $incomingShipUser = $this->mock(UserInterface::class);
         $unfinishedWeb = $this->mock(TholianWebInterface::class);
 
-        $incomingShipUser->shouldReceive('getCreationDate')
+        $incomingShipUser->shouldReceive('getRegistration->getCreationDate')
             ->withNoArgs()
             ->once()
             ->andReturn(161_642);
@@ -771,7 +771,7 @@ class SkipDetectionTest extends StuTestCase
         $alertUser = $this->mock(UserInterface::class);
         $incomingShipUser = $this->mock(UserInterface::class);
 
-        $incomingShipUser->shouldReceive('getCreationDate')
+        $incomingShipUser->shouldReceive('getRegistration->getCreationDate')
             ->withNoArgs()
             ->once()
             ->andReturn(161_642);

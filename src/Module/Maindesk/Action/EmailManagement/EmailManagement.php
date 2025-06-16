@@ -48,33 +48,35 @@ final class EmailManagement implements
             return;
         }
 
+        $registration = $user->getRegistration();
         $newEmail = trim(mb_strtolower($emailInput ?: ''));
-        $currentEmail = $user->getEmail();
+        $currentEmail = $registration->getEmail();
 
         if ($newEmail === '') {
             throw new AccountNotVerifiedException('Bitte gib eine E-Mail-Adresse ein');
         }
 
         if ($newEmail === $currentEmail) {
-            $this->resendActivationEmail($user, $game);
+            $this->resendActivationEmail($user);
             return;
         }
 
-        $this->updateEmailAndSend($user, $newEmail, $game);
+        $this->updateEmailAndSend($user, $newEmail);
     }
 
-    private function resendActivationEmail(UserInterface $user, GameControllerInterface $game): void
+    private function resendActivationEmail(UserInterface $user): void
     {
-        $activationData = $user->getId() . substr($user->getLogin(), 0, 3) . substr($user->getEmail(), 0, 3);
+        $registration = $user->getRegistration();
+        $activationData = $user->getId() . substr($registration->getLogin(), 0, 3) . substr($registration->getEmail(), 0, 3);
         $hash = hash('sha256', $activationData);
         $activationCode = strrev(substr($hash, -6));
 
         $this->registrationEmailSender->send($user, $activationCode);
 
-        throw new AccountNotVerifiedException('Die Aktivierungs-E-Mail wurde erneut an ' . $user->getEmail() . ' versendet');
+        throw new AccountNotVerifiedException('Die Aktivierungs-E-Mail wurde erneut an ' . $registration->getEmail() . ' versendet');
     }
 
-    private function updateEmailAndSend(UserInterface $user, string $newEmail, GameControllerInterface $game): void
+    private function updateEmailAndSend(UserInterface $user, string $newEmail): void
     {
         if (!filter_var($newEmail, FILTER_VALIDATE_EMAIL)) {
             throw new AccountNotVerifiedException('Ungültige E-Mail-Adresse');
@@ -89,13 +91,14 @@ final class EmailManagement implements
             throw new AccountNotVerifiedException('Diese E-Mail-Adresse ist bereits registriert');
         }
 
-        $user->setEmail($newEmail);
+        $registration = $user->getRegistration();
+        $registration->setEmail($newEmail);
         $this->userRepository->save($user);
         $this->entityManager->flush();
 
         $this->loggerUtil->log('E-Mail wurde gespeichert: ' . $newEmail);
 
-        $activationData = $user->getId() . substr($user->getLogin(), 0, 3) . substr($newEmail, 0, 3);
+        $activationData = $user->getId() . substr($registration->getLogin(), 0, 3) . substr($newEmail, 0, 3);
         $hash = hash('sha256', $activationData);
         $activationCode = strrev(substr($hash, -6));
 

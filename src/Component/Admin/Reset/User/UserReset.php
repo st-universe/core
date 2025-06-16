@@ -20,9 +20,7 @@ use Stu\Orm\Repository\UserRefererRepositoryInterface;
 
 final class UserReset implements UserResetInterface
 {
-    public function __construct(private BlockedUserRepositoryInterface $blockedUserRepository, private DatabaseUserRepositoryInterface $databaseUserRepository, private NoteRepositoryInterface $noteRepository, private PrestigeLogRepositoryInterface $prestigeLogRepository, private UserRepositoryInterface $userRepository, private UserSettingRepositoryInterface $userSettingRepository, private UserInvitationRepositoryInterface $userInvitationRepository, private UserIpTableRepositoryInterface $userIpTableRepository, private UserProfileVisitorRepositoryInterface $userProfileVisitorRepository, private  PirateWrathRepositoryInterface $pirateWrathRepository, private EntityManagerInterface $entityManager, private UserRefererRepositoryInterface $userRefererRepository)
-    {
-    }
+    public function __construct(private BlockedUserRepositoryInterface $blockedUserRepository, private DatabaseUserRepositoryInterface $databaseUserRepository, private NoteRepositoryInterface $noteRepository, private PrestigeLogRepositoryInterface $prestigeLogRepository, private UserRepositoryInterface $userRepository, private UserSettingRepositoryInterface $userSettingRepository, private UserInvitationRepositoryInterface $userInvitationRepository, private UserIpTableRepositoryInterface $userIpTableRepository, private UserProfileVisitorRepositoryInterface $userProfileVisitorRepository, private  PirateWrathRepositoryInterface $pirateWrathRepository, private EntityManagerInterface $entityManager, private UserRefererRepositoryInterface $userRefererRepository) {}
 
     #[Override]
     public function archiveBlockedUsers(): void
@@ -75,13 +73,13 @@ final class UserReset implements UserResetInterface
         $time = time();
 
         foreach ($this->userRepository->getNpcList() as $npc) {
-            $npc->setPassword('');
-            $npc->setCreationDate($time);
             $npc->setLastaction($time);
             $npc->setKnMark(0);
             $npc->setDescription('');
             $npc->setPrestige(0);
             $npc->setSessiondata('');
+            $npc->getRegistration()->setPassword('');
+            $npc->getRegistration()->setCreationDate($time);
 
             $this->userRepository->save($npc);
 

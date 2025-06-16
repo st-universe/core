@@ -34,7 +34,7 @@ final class UserInformation implements MaintenanceHandlerInterface
         $fiveMonthsPlusOneDayAgo = $currentTime - self::FIVE_MONTHS_IN_SECONDS - self::ONE_DAY_IN_SECONDS;
 
         foreach ($this->userRepository->getNonNpcList() as $user) {
-            $creationTime = $user->getCreationDate();
+            $creationTime = $user->getRegistration()->getCreationDate();
 
             if ($creationTime <= $fourMonthsAgo && $creationTime > $fourMonthsPlusOneDayAgo) {
                 $noobzoneLayerNames = $this->getNoobzoneLayerNames($user);

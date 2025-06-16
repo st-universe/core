@@ -82,7 +82,7 @@ class SkipDetection implements SkipDetectionInterface
         $time = $this->stuTime->time();
 
         //pirates don't attack new players
-        if ($incomingShipUser->getCreationDate() > $time - TimeConstants::EIGHT_WEEKS_IN_SECONDS) {
+        if ($incomingShipUser->getRegistration()->getCreationDate() > $time - TimeConstants::EIGHT_WEEKS_IN_SECONDS) {
             return true;
         }
 

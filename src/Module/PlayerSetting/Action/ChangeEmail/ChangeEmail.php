@@ -15,9 +15,7 @@ final class ChangeEmail implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_CHANGE_EMAIL';
 
-    public function __construct(private ChangeEmailRequestInterface $changeEmailRequest, private UserRepositoryInterface $userRepository, private BlockedUserRepositoryInterface $blockedUserRepository, private StuHashInterface $stuHash)
-    {
-    }
+    public function __construct(private ChangeEmailRequestInterface $changeEmailRequest, private UserRepositoryInterface $userRepository, private BlockedUserRepositoryInterface $blockedUserRepository, private StuHashInterface $stuHash) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -39,7 +37,7 @@ final class ChangeEmail implements ActionControllerInterface
 
         $user = $game->getUser();
 
-        $user->setEmail($value);
+        $user->getRegistration()->setEmail($value);
 
         $this->userRepository->save($user);
 

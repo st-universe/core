@@ -51,7 +51,7 @@ class EmailNotificationSenderTest extends StuTestCase
         $user = $this->mock(UserInterface::class);
         $parser = $this->mock(Parser::class);
 
-        $user->shouldReceive('getEmail')
+        $user->shouldReceive('getRegistration->getEmail')
             ->withNoArgs()
             ->once()
             ->andReturn('e@mail.de');

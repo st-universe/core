@@ -49,8 +49,9 @@ final class AccountVerification implements
         }
 
         $emailCode = request::postStringFatal('emailcode');
+        $registration = $user->getRegistration();
 
-        $activationData = $user->getId() . substr($user->getLogin(), 0, 3) . substr($user->getEmail(), 0, 3);
+        $activationData = $user->getId() . substr($registration->getLogin(), 0, 3) . substr($registration->getEmail(), 0, 3);
         $hash = hash('sha256', $activationData);
         $expectedEmailCode = strrev(substr($hash, -6));
 
@@ -59,9 +60,9 @@ final class AccountVerification implements
             throw new AccountNotVerifiedException('E-Mail-Code ungültig, bitte erneut versuchen');
         }
 
-        if ($user->getMobile() !== null) {
+        if ($registration->getMobile() !== null) {
             $smsCode = request::postStringFatal('smscode');
-            if ($smsCode !== $user->getSmsCode()) {
+            if ($smsCode !== $registration->getSmsCode()) {
                 $this->loggerUtil->log('SMS-Code ungültig');
                 throw new AccountNotVerifiedException('SMS-Code ungültig, bitte erneut versuchen');
             }
@@ -70,8 +71,8 @@ final class AccountVerification implements
         $this->loggerUtil->log('Account wird freigeschaltet');
 
         $user->setState(UserEnum::USER_STATE_UNCOLONIZED);
-        if ($user->getMobile() !== null) {
-            $user->setMobile($this->stuHash->hash($user->getMobile()));
+        if ($registration->getMobile() !== null) {
+            $registration->setMobile($this->stuHash->hash($registration->getMobile()));
         }
         $this->userRepository->save($user);
 

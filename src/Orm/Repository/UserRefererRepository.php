@@ -47,15 +47,4 @@ final class UserRefererRepository extends EntityRepository implements UserRefere
             )
         )->execute();
     }
-
-    /**
-     * @return UserRefererInterface[]
-     */
-    #[Override]
-    public function getByUser(UserInterface $user): array
-    {
-        return $this->findBy(
-            ['user' => $user->getId()]
-        );
-    }
 }

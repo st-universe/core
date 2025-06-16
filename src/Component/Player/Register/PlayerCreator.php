@@ -14,6 +14,7 @@ use Stu\Module\Control\StuHashInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\FactionInterface;
 use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\UserRegistrationInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\Orm\Repository\UserRefererRepositoryInterface;
 
@@ -102,18 +103,19 @@ class PlayerCreator implements PlayerCreatorInterface
         ?string $smsCode = null,
         ?string $referer = null
     ): UserInterface {
+
         $player = $this->userRepository->prototype();
-        $player->setLogin($loginName);
-        $player->setEmail($emailAddress);
         $player->setFaction($faction);
+        $player->setUsername('Siedler ' . $player->getId());
+
+        $registration = $player->getRegistration();
+        $registration->setLogin($loginName);
+        $registration->setEmail($emailAddress);
+        $registration->setCreationDate(time());
+        $registration->setPassword(password_hash($password, PASSWORD_DEFAULT));
 
         $this->userRepository->save($player);
         $this->entityManager->flush();
-
-        $player->setUsername('Siedler ' . $player->getId());
-        $player->setTick(1);
-        $player->setCreationDate(time());
-        $player->setPassword(password_hash($password, PASSWORD_DEFAULT));
 
         // Generate email activation code
         $activationData = $player->getId() . substr($loginName, 0, 3) . substr($emailAddress, 0, 3);
@@ -124,13 +126,13 @@ class PlayerCreator implements PlayerCreatorInterface
 
         // set player state to awaiting sms code if mobile provided
         if ($mobile !== null) {
-            $player->setMobile($mobile);
-            $player->setSmsCode($smsCode);
+            $registration->setMobile($mobile);
+            $registration->setSmsCode($smsCode);
             $player->setState(UserEnum::USER_STATE_ACCOUNT_VERIFICATION);
         }
 
         if ($referer !== null) {
-            $this->saveReferer($player, $referer);
+            $this->saveReferer($registration, $referer);
         }
 
         $this->userRepository->save($player);
@@ -141,7 +143,7 @@ class PlayerCreator implements PlayerCreatorInterface
         return $player;
     }
 
-    private function saveReferer(UserInterface $user, ?string $referer): void
+    private function saveReferer(UserRegistrationInterface $registration, ?string $referer): void
     {
         if ($referer !== null) {
 
@@ -149,7 +151,7 @@ class PlayerCreator implements PlayerCreatorInterface
             $sanitizedReferer = $sanitizedReferer !== null ? substr($sanitizedReferer, 0, 2000) : '';
 
             $userReferer = $this->userRefererRepository->prototype();
-            $userReferer->setUser($user);
+            $userReferer->setUserRegistration($registration);
             $userReferer->setReferer($sanitizedReferer);
 
             $this->userRefererRepository->save($userReferer);

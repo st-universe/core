@@ -91,14 +91,15 @@ final class SessionLogin implements SessionLoginInterface
 
     private function checkPassword(UserInterface $user, string $password): void
     {
-        $password_hash = $user->getPassword();
+        $registration = $user->getRegistration();
+        $passwordHash = $registration->getPassword();
 
-        if (!password_verify($password, $password_hash)) {
+        if (!password_verify($password, $passwordHash)) {
             throw new LoginException(_('Login oder Passwort inkorrekt'));
         }
 
-        if (password_needs_rehash($password_hash, PASSWORD_DEFAULT)) {
-            $user->setPassword(password_hash($password, PASSWORD_DEFAULT));
+        if (password_needs_rehash($passwordHash, PASSWORD_DEFAULT)) {
+            $registration->setPassword(password_hash($password, PASSWORD_DEFAULT));
 
             $this->userRepository->save($user);
         }
@@ -115,7 +116,7 @@ final class SessionLogin implements SessionLoginInterface
                 sprintf(_('Dein Spieleraccount ist noch für %d Ticks gesperrt. Begründung: %s'), $userLock->getRemainingTicks(), $userLock->getReason())
             );
         }
-        if ($user->getDeletionMark() === UserEnum::DELETION_CONFIRMED) {
+        if ($user->getRegistration()->getDeletionMark() === UserEnum::DELETION_CONFIRMED) {
             throw new LoginException(_('Dein Spieleraccount ist zur Löschung vorgesehen'));
         }
     }
@@ -149,7 +150,7 @@ final class SessionLogin implements SessionLoginInterface
 
     private function buildCookieString(UserInterface $user): string
     {
-        return $this->stuHash->hash(($user->getId() . $user->getEMail() . $user->getCreationDate()));
+        return $this->stuHash->hash(($user->getId() . $user->getRegistration()->getEMail() . $user->getRegistration()->getCreationDate()));
     }
 
     private function destroyLoginCookies(): void
@@ -178,7 +179,7 @@ final class SessionLogin implements SessionLoginInterface
         if ($user->isLocked()) {
             throw new SessionInvalidException("Gesperrt");
         }
-        if ($user->getDeletionMark() === UserEnum::DELETION_CONFIRMED) {
+        if ($user->getRegistration()->getDeletionMark() === UserEnum::DELETION_CONFIRMED) {
             throw new SessionInvalidException("Löschung");
         }
         if ($user->isVacationMode() === true) {

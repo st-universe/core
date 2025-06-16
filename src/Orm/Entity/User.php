@@ -41,21 +41,6 @@ class User implements UserInterface
     #[Column(type: 'string')]
     private string $username = '';
 
-    #[Column(type: 'string', length: 20)]
-    private string $login = '';
-
-    #[Column(type: 'string', length: 255)]
-    private string $pass = '';
-
-    #[Column(type: 'string', length: 6, nullable: true)]
-    private ?string $sms_code = null;
-
-    #[Column(type: 'string', length: 200)]
-    private string $email = '';
-
-    #[Column(type: 'string', length: 255, nullable: true)]
-    private ?string $mobile = null;
-
     #[Column(type: 'integer', nullable: true)]
     private ?int $allys_id = null;
 
@@ -69,13 +54,7 @@ class User implements UserInterface
     private int $lastaction = 0;
 
     #[Column(type: 'integer')]
-    private int $creation = 0;
-
-    #[Column(type: 'integer')]
     private int $kn_lez = 0;
-
-    #[Column(type: 'smallint')]
-    private int $delmark = 0;
 
     #[Column(type: 'boolean')]
     private bool $vac_active = false;
@@ -86,17 +65,11 @@ class User implements UserInterface
     #[Column(type: 'text')]
     private string $description = '';
 
-    #[Column(type: 'smallint')]
-    private int $tick = 1;
-
     #[Column(type: 'smallint', nullable: true)]
     private ?int $maptype = MapEnum::MAPTYPE_INSERT;
 
     #[Column(type: 'text')]
     private string $sessiondata = '';
-
-    #[Column(type: 'string', length: 255)]
-    private string $password_token = '';
 
     #[Column(type: 'integer')]
     private int $prestige = 0;
@@ -107,8 +80,8 @@ class User implements UserInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $last_boarding = null;
 
-    #[Column(type: 'integer', nullable: true, options: ['default' => 1])]
-    private ?int $sms_sended = 1;
+    #[OneToOne(targetEntity: 'UserRegistration', mappedBy: 'user', cascade: ['all'])]
+    private UserRegistrationInterface $registration;
 
     #[ManyToOne(targetEntity: 'Alliance', inversedBy: 'members')]
     #[JoinColumn(name: 'allys_id', referencedColumnName: 'id')]
@@ -184,10 +157,6 @@ class User implements UserInterface
     #[OneToMany(targetEntity: 'WormholeRestriction', mappedBy: 'user')]
     private Collection $wormholeRestrictions;
 
-    #[OneToOne(targetEntity: 'UserReferer', mappedBy: 'user')]
-    private ?UserRefererInterface $referer = null;
-
-
     public function __construct()
     {
         $this->awards = new ArrayCollection();
@@ -208,6 +177,20 @@ class User implements UserInterface
     }
 
     #[Override]
+    public function getRegistration(): UserRegistrationInterface
+    {
+        return $this->registration;
+    }
+
+    #[Override]
+    public function setRegistration(UserRegistrationInterface $registration): UserInterface
+    {
+        $this->registration = $registration;
+
+        return $this;
+    }
+
+    #[Override]
     public function getName(): string
     {
         //if UMODE active, add info to user name
@@ -221,71 +204,6 @@ class User implements UserInterface
     public function setUsername(string $username): UserInterface
     {
         $this->username = $username;
-        return $this;
-    }
-
-    #[Override]
-    public function getLogin(): string
-    {
-        return $this->login;
-    }
-
-    #[Override]
-    public function setLogin(string $login): UserInterface
-    {
-        $this->login = $login;
-        return $this;
-    }
-
-    #[Override]
-    public function getPassword(): string
-    {
-        return $this->pass;
-    }
-
-    #[Override]
-    public function setPassword(string $password): UserInterface
-    {
-        $this->pass = $password;
-        return $this;
-    }
-
-    #[Override]
-    public function getSmsCode(): ?string
-    {
-        return $this->sms_code;
-    }
-
-    #[Override]
-    public function setSmsCode(?string $code): UserInterface
-    {
-        $this->sms_code = $code;
-        return $this;
-    }
-
-    #[Override]
-    public function getEmail(): string
-    {
-        return $this->email;
-    }
-
-    #[Override]
-    public function setEmail(string $email): UserInterface
-    {
-        $this->email = $email;
-        return $this;
-    }
-
-    #[Override]
-    public function getMobile(): ?string
-    {
-        return $this->mobile;
-    }
-
-    #[Override]
-    public function setMobile(?string $mobile): UserInterface
-    {
-        $this->mobile = $mobile;
         return $this;
     }
 
@@ -419,19 +337,6 @@ class User implements UserInterface
     }
 
     #[Override]
-    public function getCreationDate(): int
-    {
-        return $this->creation;
-    }
-
-    #[Override]
-    public function setCreationDate(int $creationDate): UserInterface
-    {
-        $this->creation = $creationDate;
-        return $this;
-    }
-
-    #[Override]
     public function getKnMark(): int
     {
         return $this->kn_lez;
@@ -441,19 +346,6 @@ class User implements UserInterface
     public function setKnMark(int $knMark): UserInterface
     {
         $this->kn_lez = $knMark;
-        return $this;
-    }
-
-    #[Override]
-    public function getDeletionMark(): int
-    {
-        return $this->delmark;
-    }
-
-    #[Override]
-    public function setDeletionMark(int $deletionMark): UserInterface
-    {
-        $this->delmark = $deletionMark;
         return $this;
     }
 
@@ -570,19 +462,6 @@ class User implements UserInterface
     }
 
     #[Override]
-    public function getTick(): int
-    {
-        return $this->tick;
-    }
-
-    #[Override]
-    public function setTick(int $tick): UserInterface
-    {
-        $this->tick = $tick;
-        return $this;
-    }
-
-    #[Override]
     public function getUserLayers(): Collection
     {
         return $this->userLayers;
@@ -617,19 +496,6 @@ class User implements UserInterface
     {
         $this->sessiondata = $sessiondata;
         $this->sessiondataUnserialized = null;
-        return $this;
-    }
-
-    #[Override]
-    public function getPasswordToken(): string
-    {
-        return $this->password_token;
-    }
-
-    #[Override]
-    public function setPasswordToken(string $password_token): UserInterface
-    {
-        $this->password_token = $password_token;
         return $this;
     }
 
@@ -872,31 +738,5 @@ class User implements UserInterface
     public function getWormholeRestrictions(): iterable
     {
         return $this->wormholeRestrictions;
-    }
-
-    #[Override]
-    public function getReferer(): ?UserRefererInterface
-    {
-        return $this->referer;
-    }
-
-    #[Override]
-    public function setReferer(?UserRefererInterface $referer): UserInterface
-    {
-        $this->referer = $referer;
-        return $this;
-    }
-
-    #[Override]
-    public function getSmsSended(): int
-    {
-        return $this->sms_sended ?? 1;
-    }
-
-    #[Override]
-    public function setSmsSended(int $smsSended): UserInterface
-    {
-        $this->sms_sended = $smsSended;
-        return $this;
     }
 }

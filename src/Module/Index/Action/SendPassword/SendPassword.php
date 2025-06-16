@@ -43,14 +43,16 @@ final class SendPassword implements ActionControllerInterface
             return;
         }
 
-        $token = $this->stuHash->hash(time() . $user->getLogin());
-        $user->setPasswordToken($token);
+        $registration = $user->getRegistration();
+
+        $token = $this->stuHash->hash(time() . $registration->getLogin());
+        $registration->setPasswordToken($token);
 
         $this->userRepository->save($user);
 
         $mail = $this->mailFactory->createStuMail()
             ->withDefaultSender()
-            ->addTo($user->getEmail())
+            ->addTo($registration->getEmail())
             ->setSubject(_('Star Trek Universe - Password vergessen'))
             ->setBody(
                 sprintf(

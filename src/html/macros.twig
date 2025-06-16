@@ -42,7 +42,7 @@
         <a href="alliance.php?id={{ data.getAlliance.getId }}">{{ data.getAlliance.getName|bbcode }}</a>
         {% endif %}
         <br />
-        Spielt seit: {{ data.getCreationDate|stuDateTime }}
+        Spielt seit: {{ data.getRegistration.getCreationDate|stuDateTime }}
     </div>
     <div style="float: left; width: 15px; text-align: right;">
         {{ _self.pmWindow(USER, data.getId) }}
