@@ -155,6 +155,10 @@ class PlayerCreatorTest extends MockeryTestCase
             ->with($email)
             ->once()
             ->andReturnSelf();
+        $registration->shouldReceive('setEmailCode')
+            ->with(null)
+            ->once()
+            ->andReturnSelf();
         $user->shouldReceive('setFaction')
             ->with($faction)
             ->once()
@@ -177,7 +181,7 @@ class PlayerCreatorTest extends MockeryTestCase
             ->andReturnSelf();
         $user->shouldReceive('getId')
             ->withNoArgs()
-            ->twice()
+            ->once()
             ->andReturn($user_id);
 
         $this->playerDefaultsCreator->shouldReceive('createDefault')
@@ -186,7 +190,7 @@ class PlayerCreatorTest extends MockeryTestCase
 
         $this->registrationEmailSender->shouldReceive('send')
             ->with($user, Mockery::type('string'))
-            ->once();
+            ->never();
 
         $this->entityManager->shouldReceive('flush')
             ->withNoArgs()

@@ -48,6 +48,9 @@ class UserRegistration implements UserRegistrationInterface
     #[Column(type: 'integer', nullable: true, options: ['default' => 1])]
     private ?int $sms_sended = 1;
 
+    #[Column(type: 'string', length: 6, nullable: true)]
+    private ?string $email_code = null;
+
     #[OneToOne(targetEntity: 'UserReferer', mappedBy: 'userRegistration')]
     private ?UserRefererInterface $referer = null;
 
@@ -183,6 +186,19 @@ class UserRegistration implements UserRegistrationInterface
     public function setSmsSended(int $smsSended): UserRegistrationInterface
     {
         $this->sms_sended = $smsSended;
+        return $this;
+    }
+
+    #[Override]
+    public function getEmailCode(): ?string
+    {
+        return $this->email_code;
+    }
+
+    #[Override]
+    public function setEmailCode(?string $emailCode): UserRegistrationInterface
+    {
+        $this->email_code = $emailCode;
         return $this;
     }
 }

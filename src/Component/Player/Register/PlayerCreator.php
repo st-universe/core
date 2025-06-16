@@ -45,7 +45,8 @@ class PlayerCreator implements PlayerCreatorInterface
         $mobileWithDoubleZero = str_replace('+', '00', $mobile);
         $this->checkForException($loginName, $emailAddress, $mobileWithDoubleZero);
 
-        $randomHash = substr(md5(uniqid((string) random_int(0, mt_getrandmax()), true)), 16, 6);
+        $randomSmsHash = substr(md5(uniqid((string) random_int(0, mt_getrandmax()), true)), 16, 6);
+        $randomEmailHash = substr(md5(uniqid((string) random_int(0, mt_getrandmax()), true)), 16, 6);
 
         $player = $this->createPlayer(
             $loginName,
@@ -53,13 +54,13 @@ class PlayerCreator implements PlayerCreatorInterface
             $faction,
             $password,
             $mobileWithDoubleZero,
-            $randomHash,
+            $randomSmsHash,
+            $randomEmailHash,
             $referer
         );
 
-        $this->smsVerificationCodeSender->send($player, $randomHash);
+        $this->smsVerificationCodeSender->send($player, $randomSmsHash);
     }
-
 
     private function checkForException(string $loginName, string $emailAddress, ?string $mobile = null): void
     {
@@ -101,6 +102,7 @@ class PlayerCreator implements PlayerCreatorInterface
         string $password,
         ?string $mobile = null,
         ?string $smsCode = null,
+        ?string $emailCode = null,
         ?string $referer = null
     ): UserInterface {
 
@@ -113,14 +115,10 @@ class PlayerCreator implements PlayerCreatorInterface
         $registration->setEmail($emailAddress);
         $registration->setCreationDate(time());
         $registration->setPassword(password_hash($password, PASSWORD_DEFAULT));
-
+        $registration->setEmailCode($emailCode);
         $this->userRepository->save($player);
         $this->entityManager->flush();
 
-        // Generate email activation code
-        $activationData = $player->getId() . substr($loginName, 0, 3) . substr($emailAddress, 0, 3);
-        $hash = hash('sha256', $activationData);
-        $activationCode = strrev(substr($hash, -6));
 
         $player->setState(UserEnum::USER_STATE_ACCOUNT_VERIFICATION);
 
@@ -138,7 +136,9 @@ class PlayerCreator implements PlayerCreatorInterface
         $this->userRepository->save($player);
 
         $this->playerDefaultsCreator->createDefault($player);
-        $this->registrationEmailSender->send($player, $activationCode);
+        if ($emailCode) {
+            $this->registrationEmailSender->send($player, $emailCode);
+        }
 
         return $player;
     }

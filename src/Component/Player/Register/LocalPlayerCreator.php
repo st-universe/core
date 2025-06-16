@@ -21,6 +21,7 @@ class LocalPlayerCreator extends PlayerCreator
         string $password,
         ?string $mobile = null,
         ?string $smsCode = null,
+        ?string $emailCode = null,
         ?string $referrer = null
     ): UserInterface {
 
