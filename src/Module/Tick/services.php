@@ -17,6 +17,8 @@ use Stu\Module\Tick\Colony\ColonyTickInterface;
 use Stu\Module\Tick\Colony\ColonyTickManager;
 use Stu\Module\Tick\Colony\ColonyTickManagerInterface;
 use Stu\Module\Tick\Colony\Component\AdvanceResearch;
+use Stu\Module\Tick\Colony\Component\ProceedMigration;
+use Stu\Module\Tick\Colony\Component\ProceedStorage;
 use Stu\Module\Tick\Lock\LockManager;
 use Stu\Module\Tick\Lock\LockManagerInterface;
 use Stu\Module\Tick\Maintenance\MaintenanceTickRunner;
@@ -66,7 +68,11 @@ return [
     ColonyTickInterface::class => autowire(ColonyTick::class)
         ->constructorParameter(
             'components',
-            [autowire(AdvanceResearch::class)]
+            [
+                autowire(AdvanceResearch::class),
+                autowire(ProceedStorage::class),
+                autowire(ProceedMigration::class)
+            ]
         ),
     ColonyTickManagerInterface::class => autowire(ColonyTickManager::class),
     StationConstructionHandler::class => autowire(StationConstructionHandler::class),
