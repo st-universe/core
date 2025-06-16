@@ -193,7 +193,8 @@ function performActionAndUpdateResult(action, params) {
 	});
 }
 
-function refreshHost() {
+function refreshHost(sessionString) {
+	sstr = sessionString;
 	ajax_update('COLONY_SURFACE', createHostUri('SHOW_SURFACE', '&buildingid=' + selectedbuilding));
 
 	//reload info submenu if selected

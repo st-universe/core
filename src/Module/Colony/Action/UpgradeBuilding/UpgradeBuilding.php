@@ -97,7 +97,7 @@ final class UpgradeBuilding implements ActionControllerInterface
         $field->setBuilding($building);
         $field->setActivateAfterBuild($isActive);
 
-        $game->addExecuteJS('refreshHost();');
+        $game->addExecuteJS(sprintf("refreshHost('%s');", $game->getSessionString()));
 
         $this->componentRegistration
             ->addComponentUpdate(ColonyComponentEnum::SHIELDING, $host)
