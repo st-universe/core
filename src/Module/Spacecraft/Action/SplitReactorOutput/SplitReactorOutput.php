@@ -59,6 +59,7 @@ final class SplitReactorOutput implements ActionControllerInterface
                 }
             }
             $this->addGameInfo(true, $warpsplit, $autoCarryOver, $game);
+            $game->addExecuteJS(sprintf("refreshHost('%s');", $game->getSessionString()));
             return;
         }
 
