@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250616105114 extends AbstractMigration
+final class Version20250616184805 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -1599,7 +1599,7 @@ final class Version20250616105114 extends AbstractMigration
             CREATE UNIQUE INDEX UNIQ_A00722FDA76ED395 ON stu_user_referer (user_id)
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE TABLE stu_user_registration (login VARCHAR(20) NOT NULL, pass VARCHAR(255) NOT NULL, sms_code VARCHAR(6) DEFAULT NULL, email VARCHAR(200) NOT NULL, mobile VARCHAR(255) DEFAULT NULL, creation INTEGER NOT NULL, delmark SMALLINT NOT NULL, password_token VARCHAR(255) NOT NULL, sms_sended INTEGER DEFAULT 1, user_id INTEGER NOT NULL, PRIMARY KEY(user_id), CONSTRAINT FK_9C660348A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)
+            CREATE TABLE stu_user_registration (login VARCHAR(20) NOT NULL, pass VARCHAR(255) NOT NULL, sms_code VARCHAR(6) DEFAULT NULL, email VARCHAR(200) NOT NULL, mobile VARCHAR(255) DEFAULT NULL, creation INTEGER NOT NULL, delmark SMALLINT NOT NULL, password_token VARCHAR(255) NOT NULL, sms_sended INTEGER DEFAULT 1, email_code VARCHAR(6) DEFAULT NULL, user_id INTEGER NOT NULL, PRIMARY KEY(user_id), CONSTRAINT FK_9C660348A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE TABLE stu_user_setting (setting VARCHAR(255) NOT NULL, value VARCHAR(255) NOT NULL, user_id INTEGER NOT NULL, PRIMARY KEY(user_id, setting), CONSTRAINT FK_6AAFACE0A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)

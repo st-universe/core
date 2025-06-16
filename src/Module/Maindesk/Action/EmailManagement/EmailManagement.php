@@ -67,11 +67,10 @@ final class EmailManagement implements
     private function resendActivationEmail(UserInterface $user): void
     {
         $registration = $user->getRegistration();
-        $activationData = $user->getId() . substr($registration->getLogin(), 0, 3) . substr($registration->getEmail(), 0, 3);
-        $hash = hash('sha256', $activationData);
-        $activationCode = strrev(substr($hash, -6));
+        $randomEmailHash = substr(md5(uniqid((string) random_int(0, mt_getrandmax()), true)), 16, 6);
+        $registration->setEmailCode($randomEmailHash);
 
-        $this->registrationEmailSender->send($user, $activationCode);
+        $this->registrationEmailSender->send($user, $randomEmailHash);
 
         throw new AccountNotVerifiedException('Die Aktivierungs-E-Mail wurde erneut an ' . $registration->getEmail() . ' versendet');
     }
@@ -91,18 +90,18 @@ final class EmailManagement implements
             throw new AccountNotVerifiedException('Diese E-Mail-Adresse ist bereits registriert');
         }
 
+        $randomEmailHash = substr(md5(uniqid((string) random_int(0, mt_getrandmax()), true)), 16, 6);
+
         $registration = $user->getRegistration();
         $registration->setEmail($newEmail);
+        $registration->setEmailCode($randomEmailHash);
         $this->userRepository->save($user);
         $this->entityManager->flush();
 
         $this->loggerUtil->log('E-Mail wurde gespeichert: ' . $newEmail);
 
-        $activationData = $user->getId() . substr($registration->getLogin(), 0, 3) . substr($newEmail, 0, 3);
-        $hash = hash('sha256', $activationData);
-        $activationCode = strrev(substr($hash, -6));
 
-        $this->registrationEmailSender->send($user, $activationCode);
+        $this->registrationEmailSender->send($user, $randomEmailHash);
 
         throw new AccountNotVerifiedException('E-Mail-Adresse wurde auf ' . $newEmail . ' aktualisiert und eine neue Aktivierungs-E-Mail wurde versendet');
     }

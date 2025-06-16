@@ -43,4 +43,8 @@ interface UserRegistrationInterface
     public function getSmsSended(): int;
 
     public function setSmsSended(int $smsSended): UserRegistrationInterface;
+
+    public function getEmailCode(): ?string;
+
+    public function setEmailCode(?string $emailCode): UserRegistrationInterface;
 }
