@@ -7,7 +7,7 @@
     </tr>
     {% for wrapper in shipRepairProgress %}
     {% set ship = wrapper.get %}
-    {% set condition = wrapper.getCondition %}
+    {% set condition = ship.getCondition %}
     {% set shipId = ship.getId %}
     <tr style="height: 50px" class="row">
         <td style="text-align: center; vertical-align: middle;">
