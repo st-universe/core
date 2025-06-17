@@ -64,7 +64,7 @@ interface CrewAssignmentRepositoryInterface extends ObjectRepository
 
     public function truncateBySpacecraft(SpacecraftInterface $spacecraft): void;
 
-    public function truncateByUser(int $userId): void;
+    public function truncateByUser(UserInterface $user): void;
 
     public function hasCrewOnForeignStation(UserInterface $user): bool;
 }

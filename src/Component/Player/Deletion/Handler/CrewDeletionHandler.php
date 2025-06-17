@@ -13,7 +13,7 @@ use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 final class CrewDeletionHandler implements PlayerDeletionHandlerInterface
 {
     public function __construct(
-        private CrewAssignmentRepositoryInterface $shipCrewRepository,
+        private CrewAssignmentRepositoryInterface $crewAssignmentRepository,
         private CrewRepositoryInterface $crewRepository,
         private EntityManagerInterface $entityManager
     ) {}
@@ -21,7 +21,7 @@ final class CrewDeletionHandler implements PlayerDeletionHandlerInterface
     #[Override]
     public function delete(UserInterface $user): void
     {
-        $this->shipCrewRepository->truncateByUser($user->getId());
+        $this->crewAssignmentRepository->truncateByUser($user);
         $this->crewRepository->truncateByUser($user->getId());
 
         $this->entityManager->flush();
