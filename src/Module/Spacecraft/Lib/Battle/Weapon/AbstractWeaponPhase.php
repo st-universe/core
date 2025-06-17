@@ -9,7 +9,6 @@ use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Map\FieldTypeEffectEnum;
-use Stu\Module\Colony\Lib\Damage\ApplyBuildingDamageInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -34,7 +33,6 @@ abstract class AbstractWeaponPhase
         private UserRepositoryInterface $userRepository,
         protected EntryCreatorInterface $entryCreator,
         protected ApplyDamageInterface $applyDamage,
-        protected ApplyBuildingDamageInterface $applyBuildingDamage,
         protected BuildingManagerInterface $buildingManager,
         protected StuRandom $stuRandom,
         protected MessageFactoryInterface $messageFactory,
@@ -51,7 +49,7 @@ abstract class AbstractWeaponPhase
         InformationInterface $message
     ): void {
 
-        if (!$targetWrapper->get()->getCondition()->isDestroyed()) {
+        if (!$targetWrapper->get()->isDestroyed()) {
             return;
         }
 
@@ -73,21 +71,14 @@ abstract class AbstractWeaponPhase
             : $hitChance;
     }
 
-    protected function getEvadeChance(SpacecraftWrapperInterface $wrapper): int
+    protected function getEvadeChance(SpacecraftInterface $target): int
     {
-        if (!$wrapper->get()->hasComputer()) {
-            return 0;
-        }
+        $evadeChance = $target->getEvadeChance();
 
-        $evadeChance = $wrapper->getComputerSystemDataMandatory()->getEvadeChance();
-
-        if ($wrapper->get()->getLocation()->getFieldType()->hasEffect(FieldTypeEffectEnum::EVADE_CHANCE_INTERFERENCE)) {
-            $malus = (int)abs($evadeChance / 100 * $this->stuRandom->rand(40, 85, true, 30));
-
-            return $evadeChance - $malus;
-        }
-
-        return $evadeChance;
+        return
+            $target->getLocation()->getFieldType()->hasEffect(FieldTypeEffectEnum::EVADE_CHANCE_INTERFERENCE)
+            ? (int)ceil($evadeChance / 100 * $this->stuRandom->rand(15, 60, true, 30))
+            : $evadeChance;
     }
 
     protected function getModule(SpacecraftInterface $ship, SpacecraftModuleTypeEnum $moduleType): ?ModuleInterface

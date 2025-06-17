@@ -34,11 +34,7 @@ class StateIconAndTitle
 
         if ($state === SpacecraftStateEnum::REPAIR_ACTIVE) {
             $isStation = $spacecraft->isStation();
-            return ['buttons/rep2', sprintf(
-                '%s repariert %s',
-                $isStation ? 'Stationscrew' : 'Schiffscrew',
-                $isStation ? 'die Station' : 'das Schiff',
-            )];
+            return ['buttons/rep2', sprintf('%s repariert die Station', $isStation ? 'Stationscrew' : 'Schiffscrew')];
         }
 
         if ($state === SpacecraftStateEnum::REPAIR_PASSIVE) {

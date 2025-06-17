@@ -8,7 +8,7 @@ use Exception;
 use Noodlehaus\ConfigInterface;
 use Override;
 use RuntimeException;
-use Stu\Exception\AccessViolationException;
+use Stu\Exception\AccessViolation;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\View\Edit\Edit;
 use Stu\Module\Control\ActionControllerInterface;
@@ -17,6 +17,9 @@ use Stu\Orm\Repository\AllianceRepositoryInterface;
 
 final class ChangeAvatar implements ActionControllerInterface
 {
+    /**
+     * @var string
+     */
     public const string ACTION_IDENTIFIER = 'B_CHANGE_AVATAR';
 
     public function __construct(private AllianceActionManagerInterface $allianceActionManager, private AllianceRepositoryInterface $allianceRepository, private ConfigInterface $config)
@@ -30,11 +33,11 @@ final class ChangeAvatar implements ActionControllerInterface
         $alliance = $user->getAlliance();
 
         if ($alliance === null) {
-            throw new AccessViolationException();
+            throw new AccessViolation();
         }
 
         if (!$this->allianceActionManager->mayEdit($alliance, $user)) {
-            throw new AccessViolationException();
+            throw new AccessViolation();
         }
 
         $game->setView(Edit::VIEW_IDENTIFIER);

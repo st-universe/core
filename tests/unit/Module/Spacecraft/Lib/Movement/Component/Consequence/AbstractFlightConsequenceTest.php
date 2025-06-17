@@ -94,7 +94,7 @@ class AbstractFlightConsequenceTest extends StuTestCase
             ->withNoArgs()
             ->zeroOrMoreTimes()
             ->andReturn($ship);
-        $ship->shouldReceive('getCondition->isDestroyed')
+        $ship->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn($isDestroyed);
@@ -179,7 +179,7 @@ class AbstractFlightConsequenceTest extends StuTestCase
             }
         };
 
-        $wrapper->shouldReceive('get->getCondition->isDestroyed')
+        $wrapper->shouldReceive('get->isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn($isDestroyed);

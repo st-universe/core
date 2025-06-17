@@ -3,6 +3,7 @@
 namespace Stu\Lib\Interaction;
 
 use Override;
+use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Interaction\Member\InteractionMemberInterface;
 
@@ -13,6 +14,10 @@ class CustomizedInteractionChecker implements CustomizedInteractionCheckerInterf
 
     /** @var array<InteractionCheckType> */
     private array $checkTypes;
+
+    public function __construct(
+        private PlayerRelationDeterminatorInterface $playerRelationDeterminator
+    ) {}
 
     public function setSource(InteractionMemberInterface $source): void
     {
@@ -56,8 +61,10 @@ class CustomizedInteractionChecker implements CustomizedInteractionCheckerInterf
             return false;
         }
 
+        $isFriend = $this->playerRelationDeterminator->isFriend($this->source->getUser(), $this->target->getUser());
         $refused = $this->target->canBeAccessedFrom(
             $this->source,
+            $isFriend,
             fn(InteractionCheckType $checkType): bool => $this->shouldCheck($checkType)
         );
         if ($refused !== null) {

@@ -35,7 +35,7 @@ final class FleetDeactivateCloak implements ActionControllerInterface
         //Alarm-Rot check
         $this->alertReactionFacade->doItAll($wrapper, $game);
 
-        if ($wrapper->get()->getCondition()->isDestroyed()) {
+        if ($wrapper->get()->isDestroyed()) {
             return;
         }
 

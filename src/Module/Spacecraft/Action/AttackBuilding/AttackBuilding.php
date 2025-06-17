@@ -95,7 +95,7 @@ final class AttackBuilding implements ActionControllerInterface
             $game->addInformation(_('Keine Energie vorhanden'));
             return;
         }
-        if ($ship->getCondition()->isDisabled()) {
+        if ($ship->isDisabled()) {
             $game->addInformation(_('Das Schiff ist kampfunfähig'));
             return;
         }
@@ -132,7 +132,7 @@ final class AttackBuilding implements ActionControllerInterface
             BuildingFunctionEnum::ENERGY_PHALANX,
             [ColonyFunctionManager::STATE_ENABLED]
         );
-        $defendingPhalanx =  $this->attackerProviderFactory->createEnergyPhalanxAttacker($colony);
+        $defendingPhalanx =  $this->attackerProviderFactory->getEnergyPhalanxAttacker($colony);
 
         $messageCollection = $this->messageFactory->createMessageCollection();
 
@@ -154,7 +154,7 @@ final class AttackBuilding implements ActionControllerInterface
             BuildingFunctionEnum::PARTICLE_PHALANX,
             [ColonyFunctionManager::STATE_ENABLED]
         );
-        $defendingPhalanx = $this->attackerProviderFactory->createProjectilePhalanxAttacker($colony);
+        $defendingPhalanx = $this->attackerProviderFactory->getProjectilePhalanxAttacker($colony);
 
         for ($i = 0; $i < $count; $i++) {
             if ($incomingBattleParty->isDefeated()) {
@@ -181,7 +181,7 @@ final class AttackBuilding implements ActionControllerInterface
 
         /** @var ShipWrapperInterface $attackerWrapper*/
         foreach ($incomingBattleParty->getActiveMembers(true, true) as $attackerWrapper) {
-            $spacecraftAttacker = $this->attackerProviderFactory->createSpacecraftAttacker($attackerWrapper);
+            $spacecraftAttacker = $this->attackerProviderFactory->getSpacecraftAttacker($attackerWrapper);
 
             if ($isOrbitField) {
                 $informations->addInformationWrapper($this->energyWeaponPhase->fireAtBuilding($spacecraftAttacker, $field, $isOrbitField));
@@ -212,7 +212,7 @@ final class AttackBuilding implements ActionControllerInterface
             PrivateMessageFolderTypeEnum::SPECIAL_COLONY
         );
 
-        if ($ship->getCondition()->isDestroyed()) {
+        if ($ship->isDestroyed()) {
             $game->addInformationWrapper($informations);
             return;
         }

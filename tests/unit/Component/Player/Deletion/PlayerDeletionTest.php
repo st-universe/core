@@ -10,7 +10,6 @@ use Mockery\MockInterface;
 use Override;
 use Stu\Component\Player\Deletion\Handler\PlayerDeletionHandlerInterface;
 use Stu\Module\Config\StuConfigInterface;
-use Stu\Module\Control\StuTime;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -20,17 +19,29 @@ use Stu\StuTestCase;
 
 class PlayerDeletionTest extends StuTestCase
 {
-    /** @var MockInterface&UserRepositoryInterface */
+    /**
+     * @var null|MockInterface|UserRepositoryInterface
+     */
     private $userRepository;
-    /** @var MockInterface&StuConfigInterface */
+
+    /**
+     * @var null|MockInterface|StuConfigInterface
+     */
     private $config;
-    /** @var MockInterface&Parser */
-    private $bbCodeParser;
-    /** @var MockInterface&StuTime */
-    private $stuTime;
-    /** @var MockInterface&LoggerUtilInterface */
+
+    /**
+     * @var null|MockInterface|LoggerUtilInterface
+     */
     private $loggerUtil;
-    /** @var MockInterface&PlayerDeletionHandlerInterface */
+
+    /**
+     * @var null|MockInterface|Parser
+     */
+    private $bbCodeParser;
+
+    /**
+     * @var null|MockInterface|PlayerDeletionHandlerInterface
+     */
     private $deletionHandler;
 
     private PlayerDeletionInterface $playerDeletion;
@@ -40,10 +51,9 @@ class PlayerDeletionTest extends StuTestCase
     {
         $this->userRepository = $this->mock(UserRepositoryInterface::class);
         $this->config = $this->mock(StuConfigInterface::class);
-        $this->bbCodeParser = $this->mock(Parser::class);
-        $this->stuTime = $this->mock(StuTime::class);
-        $this->deletionHandler = $this->mock(PlayerDeletionHandlerInterface::class);
         $this->loggerUtil = $this->mock(LoggerUtilInterface::class);
+        $this->bbCodeParser = $this->mock(Parser::class);
+        $this->deletionHandler = $this->mock(PlayerDeletionHandlerInterface::class);
 
         $loggerUtilFactory = $this->mock(LoggerUtilFactoryInterface::class);
         $loggerUtilFactory->shouldReceive('getLoggerUtil')
@@ -54,10 +64,9 @@ class PlayerDeletionTest extends StuTestCase
         $this->playerDeletion = new PlayerDeletion(
             $this->userRepository,
             $this->config,
+            $loggerUtilFactory,
             $this->bbCodeParser,
-            $this->stuTime,
-            [$this->deletionHandler],
-            $loggerUtilFactory
+            [$this->deletionHandler]
         );
     }
 
@@ -66,21 +75,16 @@ class PlayerDeletionTest extends StuTestCase
         $idlePlayer = $this->mock(UserInterface::class);
         $player = $this->mock(UserInterface::class);
 
-        $this->stuTime->shouldReceive('time')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(4242424242);
-
         $this->loggerUtil->shouldReceive('init')
             ->with('DEL', LoggerEnum::LEVEL_ERROR)
             ->once();
 
         $this->userRepository->shouldReceive('getIdleRegistrations')
             ->with(
-                Mockery::on(fn($value): bool => $value === 4242424242 - PlayerDeletion::USER_IDLE_REGISTRATION)
+                Mockery::on(fn ($value): bool => $value === time() - PlayerDeletion::USER_IDLE_REGISTRATION)
             )
             ->once()
-            ->andReturn([111 => $idlePlayer]);
+            ->andReturn([$idlePlayer]);
 
         $this->config->shouldReceive('getGameSettings->getAdminIds')
             ->withNoArgs()
@@ -88,14 +92,14 @@ class PlayerDeletionTest extends StuTestCase
 
         $this->userRepository->shouldReceive('getDeleteable')
             ->with(
-                Mockery::on(fn($value): bool => $value === 4242424242 - PlayerDeletion::USER_IDLE_TIME),
-                Mockery::on(fn($value): bool => $value === 4242424242 - PlayerDeletion::USER_IDLE_TIME_VACATION),
+                Mockery::on(fn ($value): bool => $value === time() - PlayerDeletion::USER_IDLE_TIME),
+                Mockery::on(fn ($value): bool => $value === time() - PlayerDeletion::USER_IDLE_TIME_VACATION),
                 [101]
             )
             ->once()
-            ->andReturn([222 => $player]);
+            ->andReturn([$player]);
 
-        $deletedPlayers = [111 => $idlePlayer, 222 => $player];
+        $deletedPlayers = [1 => $idlePlayer, 2 => $player];
 
         foreach ($deletedPlayers as $key => $player) {
             $player->shouldReceive('getId')
@@ -106,7 +110,7 @@ class PlayerDeletionTest extends StuTestCase
                 ->withNoArgs()
                 ->once()
                 ->andReturn('foo' . $key);
-            $player->shouldReceive('getRegistration->getDeletionMark')
+            $player->shouldReceive('getDeletionMark')
                 ->withNoArgs()
                 ->once()
                 ->andReturn(666);
@@ -153,7 +157,7 @@ class PlayerDeletionTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn('foo1');
-        $player->shouldReceive('getRegistration->getDeletionMark')
+        $player->shouldReceive('getDeletionMark')
             ->withNoArgs()
             ->once()
             ->andReturn(666);

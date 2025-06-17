@@ -6,7 +6,7 @@ namespace Stu\Module\Trade\View\ShowShiplist;
 
 use Override;
 use request;
-use Stu\Exception\AccessViolationException;
+use Stu\Exception\AccessViolation;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -30,7 +30,7 @@ final class ShowShiplist implements ViewControllerInterface
         $license = $this->tradeLicenseRepository->getLatestActiveLicenseByUserAndTradePost($userId, $tradePostId);
 
         if ($license === null) {
-            throw new AccessViolationException();
+            throw new AccessViolation();
         }
 
         $station = $license->getTradePost()->getStation();

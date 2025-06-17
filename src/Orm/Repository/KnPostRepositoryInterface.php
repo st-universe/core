@@ -61,6 +61,4 @@ interface KnPostRepositoryInterface extends ObjectRepository
     public function getRpgVotesTop10(): array;
 
     public function getRpgVotesOfUser(UserInterface $user): ?int;
-
-    public function findActiveById(int $id): ?KnPostInterface;
 }

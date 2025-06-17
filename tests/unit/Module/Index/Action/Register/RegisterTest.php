@@ -19,22 +19,22 @@ class RegisterTest extends StuTestCase
 {
     private Register $subject;
 
-    /** @var MockInterface&RegisterRequestInterface */
+    /** @var RegisterRequestInterface&MockInterface&MockInterface */
     private MockInterface $registerRequest;
 
-    /** @var MockInterface&FactionRepositoryInterface */
+    /** @var FactionRepositoryInterface&MockInterface&MockInterface */
     private MockInterface $factionRepository;
 
-    /** @var MockInterface&PlayerCreatorInterface */
+    /** @var PlayerCreatorInterface&MockInterface&MockInterface */
     private MockInterface $playerCreator;
 
-    /** @var MockInterface&ConfigInterface */
+    /** @var ConfigInterface&MockInterface */
     private MockInterface $config;
 
-    /** @var MockInterface&GameControllerInterface */
+    /** @var GameControllerInterface&MockInterface&MockInterface */
     private MockInterface $game;
 
-    /** @var MockInterface&FactionInterface */
+    /** @var FactionInterface&MockInterface&MockInterface */
     private MockInterface $faction;
 
     #[Override]
@@ -116,10 +116,12 @@ class RegisterTest extends StuTestCase
     {
         $factionId = 4;
         $mobileNumber = ' 12345 ';
-        $password = 'ValidPass1!';
 
         $this->config->shouldReceive('get')
             ->with('game.registration.enabled')
+            ->andReturn(true);
+        $this->config->shouldReceive('get')
+            ->with('game.registration.sms_code_verification.enabled')
             ->andReturn(true);
 
         $this->registerRequest->shouldReceive('getFactionId')
@@ -146,14 +148,6 @@ class RegisterTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(null);
-        $this->registerRequest->shouldReceive('getPassword')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($password);
-        $this->registerRequest->shouldReceive('getPasswordReEntered')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($password);
 
         $this->factionRepository->shouldReceive('getPlayableFactionsPlayerCount')
             ->withNoArgs()
@@ -166,7 +160,7 @@ class RegisterTest extends StuTestCase
             ->andReturn(2);
 
         $this->playerCreator->shouldReceive('createWithMobileNumber')
-            ->with('login', 'email', $this->faction, '+4912345', $password, null)
+            ->with('login', 'email', $this->faction, '+4912345', null)
             ->once()
             ->andThrow(new LoginNameInvalidException());
 
@@ -175,7 +169,8 @@ class RegisterTest extends StuTestCase
         $this->subject->handle($this->game);
     }
 
-    public function testHandleDoNothingIfMobileNumberIsEmpty(): void
+
+    public function testHandleDoeaNothingIfMobileNumberIsEmpty(): void
     {
         $factionId = 4;
 
@@ -206,10 +201,6 @@ class RegisterTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn('');
-        $this->registerRequest->shouldReceive('getReferer')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(null);
 
         $this->factionRepository->shouldReceive('getPlayableFactionsPlayerCount')
             ->withNoArgs()
@@ -221,176 +212,10 @@ class RegisterTest extends StuTestCase
             ->once()
             ->andReturn(2);
 
-        $this->subject->handle($this->game);
-    }
-
-    public function testHandleDoNothingIfPasswordIsEmpty(): void
-    {
-        $factionId = 4;
-        $mobileNumber = ' 12345 ';
-
-        $this->config->shouldReceive('get')
-            ->with('game.registration.enabled')
-            ->andReturn(true);
-
-        $this->registerRequest->shouldReceive('getFactionId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($factionId);
-        $this->registerRequest->shouldReceive('getLoginName')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(' LOGIN ');
-        $this->registerRequest->shouldReceive('getEmailAddress')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(' EMAIL ');
-        $this->registerRequest->shouldReceive('getMobileNumber')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($mobileNumber);
-        $this->registerRequest->shouldReceive('getCountryCode')
-            ->withNoArgs()
-            ->once()
-            ->andReturn('+49');
         $this->registerRequest->shouldReceive('getReferer')
             ->withNoArgs()
             ->once()
             ->andReturn(null);
-        $this->registerRequest->shouldReceive('getPassword')
-            ->withNoArgs()
-            ->once()
-            ->andReturn('');
-
-        $this->factionRepository->shouldReceive('getPlayableFactionsPlayerCount')
-            ->withNoArgs()
-            ->once()
-            ->andReturn([$factionId => ['faction' => $this->faction, 'count' => 1]]);
-
-        $this->faction->shouldReceive('getPlayerLimit')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(2);
-
-        $this->registerRequest->shouldReceive('getPasswordReEntered')
-            ->withNoArgs()
-            ->once()
-            ->andReturn('');
-
-        $this->subject->handle($this->game);
-    }
-
-    public function testHandleDoNothingIfPasswordIsInvalid(): void
-    {
-        $factionId = 4;
-        $mobileNumber = ' 12345 ';
-        $invalidPassword = 'weak';
-
-        $this->config->shouldReceive('get')
-            ->with('game.registration.enabled')
-            ->andReturn(true);
-
-        $this->registerRequest->shouldReceive('getFactionId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($factionId);
-        $this->registerRequest->shouldReceive('getLoginName')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(' LOGIN ');
-        $this->registerRequest->shouldReceive('getEmailAddress')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(' EMAIL ');
-        $this->registerRequest->shouldReceive('getMobileNumber')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($mobileNumber);
-        $this->registerRequest->shouldReceive('getCountryCode')
-            ->withNoArgs()
-            ->once()
-            ->andReturn('+49');
-        $this->registerRequest->shouldReceive('getReferer')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(null);
-        $this->registerRequest->shouldReceive('getPassword')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($invalidPassword);
-
-        $this->factionRepository->shouldReceive('getPlayableFactionsPlayerCount')
-            ->withNoArgs()
-            ->once()
-            ->andReturn([$factionId => ['faction' => $this->faction, 'count' => 1]]);
-
-        $this->faction->shouldReceive('getPlayerLimit')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(2);
-
-        $this->registerRequest->shouldReceive('getPasswordReEntered')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($invalidPassword);
-
-
-        $this->subject->handle($this->game);
-    }
-
-    public function testHandleDoNothingIfPasswordsDoNotMatch(): void
-    {
-        $factionId = 4;
-        $mobileNumber = ' 12345 ';
-        $password = 'ValidPass1!';
-        $differentPassword = 'DifferentPass1!';
-
-        $this->config->shouldReceive('get')
-            ->with('game.registration.enabled')
-            ->andReturn(true);
-
-        $this->registerRequest->shouldReceive('getFactionId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($factionId);
-        $this->registerRequest->shouldReceive('getLoginName')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(' LOGIN ');
-        $this->registerRequest->shouldReceive('getEmailAddress')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(' EMAIL ');
-        $this->registerRequest->shouldReceive('getMobileNumber')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($mobileNumber);
-        $this->registerRequest->shouldReceive('getCountryCode')
-            ->withNoArgs()
-            ->once()
-            ->andReturn('+49');
-        $this->registerRequest->shouldReceive('getReferer')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(null);
-        $this->registerRequest->shouldReceive('getPassword')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($password);
-        $this->registerRequest->shouldReceive('getPasswordReEntered')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($differentPassword);
-
-        $this->factionRepository->shouldReceive('getPlayableFactionsPlayerCount')
-            ->withNoArgs()
-            ->once()
-            ->andReturn([$factionId => ['faction' => $this->faction, 'count' => 1]]);
-
-        $this->faction->shouldReceive('getPlayerLimit')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(2);
 
         $this->subject->handle($this->game);
     }
@@ -399,10 +224,12 @@ class RegisterTest extends StuTestCase
     {
         $factionId = 123;
         $mobileNumber = ' 12345';
-        $password = 'ValidPass1!';
 
         $this->config->shouldReceive('get')
             ->with('game.registration.enabled')
+            ->andReturn(true);
+        $this->config->shouldReceive('get')
+            ->with('game.registration.sms_code_verification.enabled')
             ->andReturn(true);
 
         $this->registerRequest->shouldReceive('getFactionId')
@@ -429,14 +256,6 @@ class RegisterTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(null);
-        $this->registerRequest->shouldReceive('getPassword')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($password);
-        $this->registerRequest->shouldReceive('getPasswordReEntered')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($password);
 
         $this->factionRepository->shouldReceive('getPlayableFactionsPlayerCount')
             ->withNoArgs()
@@ -453,8 +272,9 @@ class RegisterTest extends StuTestCase
             ->once();
 
         $this->playerCreator->shouldReceive('createWithMobileNumber')
-            ->with('login', 'email', $this->faction, '+4912345', $password, null)
+            ->with('login', 'email', $this->faction, '+4912345', null)
             ->once();
+
         $this->subject->handle($this->game);
     }
 

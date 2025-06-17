@@ -8,7 +8,7 @@ use InvalidArgumentException;
 use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftRumpEnum;
-use Stu\Exception\AccessViolationException;
+use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -33,7 +33,7 @@ final class ColonizationShip implements ActionControllerInterface
         $user = $game->getUser();
 
         if ($user->getState() !== 1) {
-            throw new AccessViolationException();
+            throw new AccessViolation();
         }
 
         $faction = $user->getFaction();

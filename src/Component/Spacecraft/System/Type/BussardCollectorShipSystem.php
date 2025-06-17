@@ -46,10 +46,11 @@ class BussardCollectorShipSystem extends AbstractSpacecraftSystemType implements
             }
         }
 
-        if ($wrapper->getAlertState() == SpacecraftAlertStateEnum::ALERT_RED) {
+        if ($spacecraft->getAlertState() == SpacecraftAlertStateEnum::ALERT_RED) {
             $reason = _('die Alarmstufe Rot ist');
             return false;
         }
+
 
         if ($spacecraft->getWarpDriveState()) {
             $reason = _('das Schiff im Warpantrieb ist');

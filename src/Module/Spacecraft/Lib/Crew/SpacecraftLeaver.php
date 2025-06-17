@@ -38,19 +38,19 @@ final class SpacecraftLeaver implements SpacecraftLeaverInterface
 
         if ($ship->getRump()->isEscapePods()) {
             $this->letCrewDie($ship);
-            return '-- Die Rettungskapseln wurden zerstört, die Crew ist daher verstorben!';
+            return _('Die Rettungskapseln wurden zerstört, die Crew ist daher verstorben!');
         }
 
         $podRump = $this->spacecraftRumpRepository->find($ship->getUser()->getFactionId() + SpacecraftRumpEnum::SHIP_RUMP_BASE_ID_ESCAPE_PODS);
 
         if ($podRump === null || $ship->getUser()->isNpc()) {
             $this->letCrewDie($ship);
-            return '-- Keine Rettungskapseln vorhanden, die Crew ist daher verstorben!';
+            return _('Keine Rettungskapseln vorhanden, die Crew ist daher verstorben!');
         }
 
         $this->escapeIntoPods($ship);
 
-        return '-- Die Crew hat das Schiff in den Rettungskapseln verlassen!';
+        return _('Die Crew hat das Schiff in den Rettungskapseln verlassen!');
     }
 
     private function escapeIntoPods(SpacecraftInterface $spacecraft): void
@@ -69,35 +69,34 @@ final class SpacecraftLeaver implements SpacecraftLeaverInterface
     }
 
     #[Override]
-    public function dumpCrewman(CrewAssignmentInterface $crewAssignment, string $message): string
+    public function dumpCrewman(CrewAssignmentInterface $shipCrew, string $message): string
     {
-        $spacecraft = $crewAssignment->getSpacecraft();
-        if ($spacecraft === null) {
+        $ship = $shipCrew->getSpacecraft();
+        if ($ship === null) {
             throw new RuntimeException('can only dump crewman on ship');
         }
 
         //create pods entity
-        $pods = $this->launchEscapePods->launch($spacecraft);
+        $pods = $this->launchEscapePods->launch($ship);
 
         if ($pods == null) {
-            $crew = $crewAssignment->getCrew();
-            $this->shipCrewRepository->delete($crewAssignment);
+            $crew = $shipCrew->getCrew();
+            $this->shipCrewRepository->delete($shipCrew);
             $this->crewRepository->delete($crew);
 
             $survivalMessage = _('Der Crewman wurde exekutiert!');
         } else {
 
             //transfer crewman into pods
-            $crewAssignment->setSpacecraft($pods);
-            $spacecraft->getCrewAssignments()->removeElement($crewAssignment);
-            $this->shipCrewRepository->save($crewAssignment);
+            $shipCrew->setSpacecraft($pods);
+            $this->shipCrewRepository->save($shipCrew);
 
             $survivalMessage = _('Der Crewman hat das Schiff in einer Rettungskapsel verlassen!');
         }
 
         $this->sendPmToOwner(
-            $spacecraft->getUser(),
-            $crewAssignment->getUser(),
+            $ship->getUser(),
+            $shipCrew->getUser(),
             $message,
             $survivalMessage
         );

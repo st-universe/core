@@ -158,8 +158,12 @@ class Colony implements ColonyInterface
     #[OneToMany(targetEntity: 'CrewTraining', mappedBy: 'colony')]
     private Collection $crewTrainings;
 
-    /** @var array<int, int> */
-    private array $twilightZones = [];
+    /**
+     * @var ArrayCollection<int, ColonyDepositMiningInterface>
+     */
+    #[OneToMany(targetEntity: 'ColonyDepositMining', mappedBy: 'colony')]
+    #[OrderBy(['commodity_id' => 'ASC'])]
+    private Collection $depositMinings;
 
     public function __construct()
     {
@@ -169,6 +173,7 @@ class Colony implements ColonyInterface
         $this->blockers = new ArrayCollection();
         $this->crewAssignments = new ArrayCollection();
         $this->crewTrainings = new ArrayCollection();
+        $this->depositMinings = new ArrayCollection();
     }
 
     #[Override]
@@ -395,10 +400,6 @@ class Colony implements ColonyInterface
     #[Override]
     public function getTwilightZone(int $timestamp): int
     {
-        if (array_key_exists($timestamp, $this->twilightZones)) {
-            return $this->twilightZones[$timestamp];
-        }
-
         $twilightZone = 0;
 
         $width = $this->getSurfaceWidth();
@@ -425,8 +426,6 @@ class Colony implements ColonyInterface
         if ($this->getDayTimePrefix($timestamp) == 4) {
             $twilightZone = 0;
         }
-
-        $this->twilightZones[$timestamp] = $twilightZone;
 
         return $twilightZone;
     }
@@ -675,6 +674,20 @@ class Colony implements ColonyInterface
     }
 
     #[Override]
+    public function getUserDepositMinings(): array
+    {
+        $result = [];
+
+        foreach ($this->depositMinings as $deposit) {
+            if ($deposit->getUser() === $this->getUser()) {
+                $result[$deposit->getCommodity()->getId()] = $deposit;
+            }
+        }
+
+        return $result;
+    }
+
+    #[Override]
     public function isFree(): bool
     {
         return $this->getUserId() === UserEnum::USER_NOONE;
@@ -721,6 +734,12 @@ class Colony implements ColonyInterface
     public function getSectorString(): string
     {
         return $this->getStarsystemMap()->getSectorString();
+    }
+
+    #[Override]
+    public function getDepositMinings(): Collection
+    {
+        return $this->depositMinings;
     }
 
     #[Override]

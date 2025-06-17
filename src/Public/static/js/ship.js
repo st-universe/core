@@ -67,8 +67,7 @@ function joinFleetInShiplist(fleetid) {
 		parameters: {
 			'B_JOIN_FLEET': 1,
 			'fleetid': fleetid,
-			'chosen[]': chosenShipIdArray,
-			'sstr': $('sstrajax').value
+			'chosen[]': chosenShipIdArray
 		},
 		evalScripts: true,
 		onSuccess: function (transport) {

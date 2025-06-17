@@ -13,7 +13,6 @@ use Stu\Orm\Entity\AllianceBoardPost;
 use Stu\Orm\Entity\AllianceBoardTopic;
 use Stu\Orm\Entity\AllianceJob;
 use Stu\Orm\Entity\AllianceRelation;
-use Stu\Orm\Entity\AllianceSettings;
 use Stu\Orm\Entity\Anomaly;
 use Stu\Orm\Entity\AnomalyType;
 use Stu\Orm\Entity\AstronomicalEntry;
@@ -50,7 +49,6 @@ use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\CrewRace;
 use Stu\Orm\Entity\CrewTraining;
 use Stu\Orm\Entity\DatabaseCategory;
-use Stu\Orm\Entity\DatabaseCategoryAward;
 use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\DatabaseType;
 use Stu\Orm\Entity\DatabaseUser;
@@ -171,7 +169,6 @@ return [
     AllianceBoardTopicRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(AllianceBoardTopic::class),
     AllianceJobRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(AllianceJob::class),
     AllianceRelationRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(AllianceRelation::class),
-    AllianceSettingsRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(AllianceSettings::class),
     AnomalyTypeRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(AnomalyType::class),
     AnomalyRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(Anomaly::class),
     AwardRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(Award::class),
@@ -204,7 +201,6 @@ return [
     CrewRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(Crew::class),
     CrewTrainingRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(CrewTraining::class),
     DatabaseCategoryRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(DatabaseCategory::class),
-    DatabaseCategoryAwardRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(DatabaseCategoryAward::class),
     DatabaseEntryRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(DatabaseEntry::class),
     DatabaseTypeRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(DatabaseType::class),
     DatabaseUserRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(DatabaseUser::class),

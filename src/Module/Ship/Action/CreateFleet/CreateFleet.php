@@ -29,7 +29,7 @@ final class CreateFleet implements ActionControllerInterface
         if ($spacecraft->getFleetId()) {
             return;
         }
-        if ($spacecraft->getCondition()->isUnderRetrofit()) {
+        if ($spacecraft->isUnderRetrofit()) {
             $game->addInformation(_('Aktion nicht möglich, da das Schiff umgerüstet wird.'));
             return;
         }

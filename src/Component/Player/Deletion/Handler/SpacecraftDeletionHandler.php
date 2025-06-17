@@ -63,7 +63,6 @@ final class SpacecraftDeletionHandler implements PlayerDeletionHandlerInterface
         $progress = $station->getConstructionProgress();
         if ($progress !== null) {
             $this->constructionProgressRepository->delete($progress);
-            $station->resetConstructionProgress();
         }
     }
 

@@ -9,17 +9,13 @@ use Stu\Component\Spacecraft\SpacecraftLssModeEnum;
 use Stu\Lib\Map\VisualPanel\Layer\Data\BorderData;
 use Stu\Lib\Map\VisualPanel\Layer\Data\CellDataInterface;
 use Stu\Lib\Map\VisualPanel\PanelAttributesInterface;
-use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
 
 final class BorderLayerRenderer implements LayerRendererInterface
 {
     public const string DEFAULT_BORDER_COLOR = '#2d2d2d';
 
-    public function __construct(
-        private ?SpacecraftWrapperInterface $currentWrapper,
-        private ?bool $isOnShipLevel
-    ) {}
+    public function __construct(private ?SpacecraftInterface $currentSpacecraft, private ?bool $isOnShipLevel) {}
 
     /** @param BorderData $data */
     #[Override]
@@ -33,20 +29,21 @@ final class BorderLayerRenderer implements LayerRendererInterface
 
     public function getBorderColor(BorderData $data): string
     {
-        if ($this->currentWrapper === null) {
+        if ($this->currentSpacecraft === null) {
+
             return self::DEFAULT_BORDER_COLOR;
         }
 
         // current position gets grey border
-        if ($this->isCurrentShipPosition($data, $this->currentWrapper->get())) {
+        if ($this->isCurrentShipPosition($data, $this->currentSpacecraft)) {
             return '#9b9b9b';
         }
 
-        $lss = $this->currentWrapper->getLssSystemData();
-
         // hierarchy based border style
-        if ($lss !== null && $lss->getMode()->isBorderMode()) {
-            if ($lss->getMode() === SpacecraftLssModeEnum::BORDER) {
+        if (
+            $this->currentSpacecraft->getLssMode()->isBorderMode()
+        ) {
+            if ($this->currentSpacecraft->getLSSMode() === SpacecraftLssModeEnum::BORDER) {
                 $factionColor = $data->getFactionColor();
                 if ($factionColor !== null && $factionColor !== '' && $factionColor !== '0') {
                     return $factionColor;
@@ -62,7 +59,7 @@ final class BorderLayerRenderer implements LayerRendererInterface
                     return $userColor;
                 }
             }
-            if ($lss->getMode() === SpacecraftLssModeEnum::IMPASSABLE) {
+            if ($this->currentSpacecraft->getLSSMode() === SpacecraftLssModeEnum::IMPASSABLE) {
                 $impassablecolor = $data->getImpassable();
                 if ($impassablecolor != true) {
                     if ($data->getComplementaryColor() !== null && $data->getComplementaryColor() !== '' && $data->getComplementaryColor() !== '0') {
@@ -72,7 +69,7 @@ final class BorderLayerRenderer implements LayerRendererInterface
                     }
                 }
             }
-            if ($lss->getMode() === SpacecraftLssModeEnum::CARTOGRAPHING) {
+            if ($this->currentSpacecraft->getLSSMode() === SpacecraftLssModeEnum::CARTOGRAPHING) {
                 $cartographingcolor = $data->getCartographing();
                 if ($cartographingcolor != false) {
                     if ($data->getComplementaryColor() !== null && $data->getComplementaryColor() !== '' && $data->getComplementaryColor() !== '0') {

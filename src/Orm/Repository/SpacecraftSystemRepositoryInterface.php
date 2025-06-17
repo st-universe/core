@@ -3,8 +3,6 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
-use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
-use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\SpacecraftSystem;
 use Stu\Orm\Entity\SpacecraftSystemInterface;
 
@@ -35,8 +33,6 @@ interface SpacecraftSystemRepositoryInterface extends ObjectRepository
     public function getWebConstructingShipSystems(int $webId): array;
 
     public function getWebOwningShipSystem(int $webId): ?SpacecraftSystemInterface;
-
-    public function isSystemHealthy(SpacecraftInterface $spacecraft, SpacecraftSystemTypeEnum $type): bool;
 
     public function truncateByShip(int $shipId): void;
 }

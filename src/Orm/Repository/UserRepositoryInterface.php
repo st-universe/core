@@ -26,20 +26,20 @@ interface UserRepositoryInterface extends ObjectRepository
     /**
      * @param array<int> $ignoreIds
      *
-     * @return array<int, UserInterface>
+     * @return array<UserInterface>
      */
     public function getDeleteable(
         int $idleTimeThreshold,
         int $idleTimeVacationThreshold,
         array $ignoreIds
-    ): array;
+    ): iterable;
 
     /**
-     * @return array<int, UserInterface>
+     * @return array<UserInterface>
      */
     public function getIdleRegistrations(
         int $idleTimeThreshold
-    ): array;
+    ): iterable;
 
     public function getByEmail(string $email): ?UserInterface;
 

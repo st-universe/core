@@ -33,7 +33,7 @@ final class ShowOrbitManagement implements ViewControllerInterface
         );
 
         $spacecraftGroups = $this->spacecraftWrapperFactory
-            ->wrapSpacecraftsAsGroups($colony->getStarsystemMap()->getSpacecraftsWithoutCloak());
+            ->wrapSpacecraftsAsGroups($colony->getStarsystemMap()->getSpacecrafts());
 
         $game->appendNavigationPart(
             'colony.php',

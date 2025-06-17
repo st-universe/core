@@ -52,11 +52,10 @@ final class ShieldRegeneration implements ProcessTickHandlerInterface
             }
 
             $rate = $wrapper->getShieldRegenerationRate();
-            $condition = $spacecraft->getCondition();
-            if ($condition->getShield() + $rate > $spacecraft->getMaxShield()) {
-                $rate = $spacecraft->getMaxShield() - $condition->getShield();
+            if ($spacecraft->getShield() + $rate > $spacecraft->getMaxShield()) {
+                $rate = $spacecraft->getMaxShield() - $spacecraft->getShield();
             }
-            $condition->changeShield($rate);
+            $spacecraft->setShield($spacecraft->getShield() + $rate);
 
             $shieldSystemData->setShieldRegenerationTimer($time)->update();
 

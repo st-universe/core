@@ -9,7 +9,6 @@ use Mockery\MockInterface;
 use Override;
 use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Lib\Map\FieldTypeEffectEnum;
-use Stu\Module\Colony\Lib\Damage\ApplyBuildingDamageInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyInterface;
@@ -41,8 +40,6 @@ class EnergyWeaponPhaseTest extends StuTestCase
     protected $entryCreator;
     /** @var MockInterface&ApplyDamageInterface */
     protected $applyDamage;
-    /** @var MockInterface&ApplyBuildingDamageInterface */
-    protected $applyBuildingDamage;
     /** @var MockInterface&BuildingManagerInterface */
     protected $buildingManager;
     /** @var MockInterface&SpacecraftDestructionInterface */
@@ -61,7 +58,6 @@ class EnergyWeaponPhaseTest extends StuTestCase
         $this->weaponRepository = $this->mock(WeaponRepositoryInterface::class);
         $this->entryCreator = $this->mock(EntryCreatorInterface::class);
         $this->applyDamage = $this->mock(ApplyDamageInterface::class);
-        $this->applyBuildingDamage = $this->mock(ApplyBuildingDamageInterface::class);
         $this->buildingManager = $this->mock(BuildingManagerInterface::class);
         $this->stuRandom = $this->mock(StuRandom::class);
         $this->messageFactory = $this->mock(MessageFactoryInterface::class);
@@ -71,7 +67,6 @@ class EnergyWeaponPhaseTest extends StuTestCase
             $this->userRepository,
             $this->entryCreator,
             $this->applyDamage,
-            $this->applyBuildingDamage,
             $this->buildingManager,
             $this->stuRandom,
             $this->messageFactory,
@@ -146,9 +141,6 @@ class EnergyWeaponPhaseTest extends StuTestCase
         $attacker->shouldReceive('getLocation')
             ->withNoArgs()
             ->andReturn($location);
-        $attacker->shouldReceive('isAvoidingHullHits')
-            ->with($target)
-            ->andReturn(false);
 
         $location->shouldReceive('getFieldType->hasEffect')
             ->with(FieldTypeEffectEnum::HIT_CHANCE_INTERFERENCE)
@@ -164,9 +156,6 @@ class EnergyWeaponPhaseTest extends StuTestCase
         $targetWrapper->shouldReceive('get')
             ->withNoArgs()
             ->andReturn($target);
-        $targetWrapper->shouldReceive('getComputerSystemDataMandatory->getEvadeChance')
-            ->withNoArgs()
-            ->andReturn(0);
 
         $target->shouldReceive('getId')
             ->withNoArgs()
@@ -180,7 +169,10 @@ class EnergyWeaponPhaseTest extends StuTestCase
         $target->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($targetUser);
-        $target->shouldReceive('getCondition->isDestroyed')
+        $target->shouldReceive('getEvadeChance')
+            ->withNoArgs()
+            ->andReturn(0);
+        $target->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->andReturn(true);
         $target->shouldReceive('isStation')
@@ -198,9 +190,6 @@ class EnergyWeaponPhaseTest extends StuTestCase
         $target->shouldReceive('getLocation')
             ->withNoArgs()
             ->andReturn($location);
-        $target->shouldReceive('hasComputer')
-            ->withNoArgs()
-            ->andReturn(true);
 
         $targetRump->shouldReceive('getName')
             ->withNoArgs()
@@ -262,78 +251,6 @@ class EnergyWeaponPhaseTest extends StuTestCase
             ->with(888)
             ->once()
             ->andReturn($user);
-
-        $this->subject->fire($attacker, $targetPool, SpacecraftAttackCauseEnum::SHIP_FIGHT, $messages);
-    }
-
-    public function testFireExpectNoShotIfAttackerAvoidsHittingHull(): void
-    {
-        $attacker = $this->mock(EnergyAttackerInterface::class);
-        $target = $this->mock(ShipInterface::class);
-        $targetWrapper = $this->mock(ShipWrapperInterface::class);
-        $weapon = $this->mock(WeaponInterface::class);
-        $targetPool = $this->mock(BattlePartyInterface::class);
-        $messages = $this->mock(MessageCollectionInterface::class);
-
-        $targetId = 42;
-
-        $targetPool->shouldReceive('getRandomActiveMember')
-            ->withNoArgs()
-            ->twice()
-            ->andReturn($targetWrapper);
-        $targetPool->shouldReceive('isDefeated')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(false);
-
-        $attacker->shouldReceive('getPhaserVolleys')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(2);
-        $attacker->shouldReceive('getPhaserState')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(true);
-        $attacker->shouldReceive('hasSufficientEnergy')
-            ->with(1)
-            ->andReturn(true);
-        $attacker->shouldReceive('getWeapon')
-            ->withNoArgs()
-            ->andReturn($weapon);
-        $attacker->shouldReceive('getFiringMode')
-            ->withNoArgs()
-            ->andReturn(1);
-        $attacker->shouldReceive('reduceEps')
-            ->with(1)
-            ->once();
-        $attacker->shouldReceive('getName')
-            ->withNoArgs()
-            ->andReturn("ATTACKER");
-        $attacker->shouldReceive('getHitChance')
-            ->withNoArgs()
-            ->andReturn(100);
-        $attacker->shouldReceive('isAvoidingHullHits')
-            ->with($target)
-            ->andReturn(true);
-
-        $targetWrapper->shouldReceive('get')
-            ->withNoArgs()
-            ->andReturn($target);
-
-        $target->shouldReceive('getId')
-            ->withNoArgs()
-            ->andReturn($targetId);
-
-        $weapon->shouldReceive('getFiringMode')
-            ->withNoArgs()
-            ->andReturn(1);
-
-        $this->stuRandom->shouldReceive('rand')
-            ->with(1, 100)
-            ->andReturn(0);
-        $this->stuRandom->shouldReceive('rand')
-            ->with(1, 10000)
-            ->andReturn(0);
 
         $this->subject->fire($attacker, $targetPool, SpacecraftAttackCauseEnum::SHIP_FIGHT, $messages);
     }

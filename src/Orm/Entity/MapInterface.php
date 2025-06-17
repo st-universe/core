@@ -4,6 +4,10 @@ namespace Stu\Orm\Entity;
 
 interface MapInterface extends LocationInterface
 {
+    public function getSystemsId(): ?int;
+
+    public function setSystemsId(?int $systems_id): MapInterface;
+
     public function getSystemTypeId(): ?int;
 
     public function setSystemTypeId(?int $system_type_id): MapInterface;
@@ -13,8 +17,6 @@ interface MapInterface extends LocationInterface
     public function setInfluenceAreaId(?int $influenceAreaId): MapInterface;
 
     public function getBordertypeId(): ?int;
-
-    public function getBorderColor(): string;
 
     public function setBordertypeId(?int $bordertype_id): MapInterface;
 

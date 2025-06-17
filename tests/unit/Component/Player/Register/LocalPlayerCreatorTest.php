@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Stu\Component\Player\Register;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Hackzilla\PasswordGenerator\Generator\PasswordGeneratorInterface;
 use Mockery;
 use Mockery\MockInterface;
 use Override;
 use Stu\Module\Control\StuHashInterface;
 use Stu\Orm\Entity\FactionInterface;
 use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Entity\UserRegistrationInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\Orm\Repository\UserRefererRepositoryInterface;
 use Stu\StuTestCase;
@@ -33,6 +33,9 @@ class LocalPlayerCreatorTest extends StuTestCase
     /** @var MockInterface&StuHashInterface */
     private MockInterface $stuHash;
 
+    /** @var MockInterface&PasswordGeneratorInterface */
+    private MockInterface $passwordGenerator;
+
     /** @var MockInterface&EntityManagerInterface */
     private MockInterface $entityManager;
 
@@ -49,6 +52,7 @@ class LocalPlayerCreatorTest extends StuTestCase
         $this->registrationEmailSender = $this->mock(RegistrationEmailSenderInterface::class);
         $this->smsVerificationCodeSender = $this->mock(SmsVerificationCodeSenderInterface::class);
         $this->stuHash = $this->mock(StuHashInterface::class);
+        $this->passwordGenerator = $this->mock(PasswordGeneratorInterface::class);
         $this->entityManager = $this->mock(EntityManagerInterface::class);
         $this->userRefererRepository = $this->mock(UserRefererRepositoryInterface::class);
 
@@ -58,6 +62,7 @@ class LocalPlayerCreatorTest extends StuTestCase
             $this->registrationEmailSender,
             $this->smsVerificationCodeSender,
             $this->stuHash,
+            $this->passwordGenerator,
             $this->entityManager,
             $this->userRefererRepository
         );
@@ -72,7 +77,6 @@ class LocalPlayerCreatorTest extends StuTestCase
 
         $faction = $this->mock(FactionInterface::class);
         $user = $this->mock(UserInterface::class);
-        $registration = $this->mock(UserRegistrationInterface::class);
 
         $this->userRepository->shouldReceive('prototype')
             ->withNoArgs()
@@ -80,16 +84,12 @@ class LocalPlayerCreatorTest extends StuTestCase
             ->andReturn($user);
         $this->userRepository->shouldReceive('save')
             ->with($user)
-            ->once();
+            ->twice();
 
-        $user->shouldReceive('getRegistration')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($registration);
-        $registration->shouldReceive('setLogin')
+        $user->shouldReceive('setLogin')
             ->with($loginName)
             ->once();
-        $registration->shouldReceive('setEmail')
+        $user->shouldReceive('setEmail')
             ->with($emailAddress)
             ->once();
         $user->shouldReceive('setFaction')
@@ -100,10 +100,13 @@ class LocalPlayerCreatorTest extends StuTestCase
                 sprintf('Siedler %d', $userId)
             )
             ->once();
-        $registration->shouldReceive('setCreationDate')
+        $user->shouldReceive('setTick')
+            ->with(1)
+            ->once();
+        $user->shouldReceive('setCreationDate')
             ->with(Mockery::type('int'))
             ->once();
-        $registration->shouldReceive('setPassword')
+        $user->shouldReceive('setPassword')
             ->with(Mockery::on(fn(string $passwordHash): bool => password_verify($password, $passwordHash)))
             ->once();
         $user->shouldReceive('getId')

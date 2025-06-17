@@ -329,6 +329,13 @@ class SpacecraftRump implements SpacecraftRumpInterface
     }
 
     #[Override]
+    public function setBaseDamage(int $baseDamage): SpacecraftRumpInterface
+    {
+        $this->base_damage = $baseDamage;
+        return $this;
+    }
+
+    #[Override]
     public function getBaseSensorRange(): int
     {
         return $this->base_sensor_range;
@@ -700,12 +707,6 @@ class SpacecraftRump implements SpacecraftRumpInterface
     {
         return $this->getCategoryId() === SpacecraftRumpEnum::SHIP_CATEGORY_STATION
             && $this->getRoleId() === SpacecraftRumpEnum::SHIP_ROLE_SHIPYARD;
-    }
-
-    #[Override]
-    public function isStation(): bool
-    {
-        return $this->getCategoryId() === SpacecraftRumpEnum::SHIP_CATEGORY_STATION;
     }
 
     #[Override]

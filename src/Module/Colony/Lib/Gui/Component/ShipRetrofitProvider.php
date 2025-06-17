@@ -51,7 +51,7 @@ final class ShipRetrofitProvider implements PlanetFieldHostComponentInterface
 
                 $ship = $wrapper->get();
                 if (
-                    !$wrapper->canBeRetrofitted() || $ship->getCondition()->isUnderRetrofit()
+                    !$wrapper->canBeRetrofitted() || $ship->isUnderRetrofit()
                 ) {
                     continue;
                 }

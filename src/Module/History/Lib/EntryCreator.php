@@ -6,10 +6,8 @@ namespace Stu\Module\History\Lib;
 
 use Override;
 use Stu\Component\History\HistoryTypeEnum;
-use Stu\Lib\Map\EntityWithLocationInterface;
+use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Orm\Entity\AllianceInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\LocationInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Repository\HistoryRepositoryInterface;
 
@@ -21,13 +19,13 @@ final class EntryCreator implements EntryCreatorInterface
     public function addEntry(
         string $text,
         int $sourceUserId,
-        SpacecraftInterface|ColonyInterface|AllianceInterface $target
+        SpacecraftInterface|PlanetFieldHostInterface|AllianceInterface $target
     ): void {
 
         if ($target instanceof SpacecraftInterface) {
             $type = $target->isStation() ? HistoryTypeEnum::STATION : HistoryTypeEnum::SHIP;
             $targetUser = $target->getUser();
-        } elseif ($target instanceof ColonyInterface) {
+        } elseif ($target instanceof PlanetFieldHostInterface) {
             $type = HistoryTypeEnum::COLONY;
             $targetUser = $target->getUser();
         } else {
@@ -35,26 +33,14 @@ final class EntryCreator implements EntryCreatorInterface
             $targetUser = $target->getFounder()->getUser();
         }
 
-        $location = $target instanceof EntityWithLocationInterface
-            ? $target->getLocation()
-            : null;
-
-        $this->createEntry(
-            $type,
-            $text,
-            $sourceUserId,
-            $targetUser->getId(),
-            $location
-        );
+        $this->createEntry($type, $text, $sourceUserId, $targetUser->getId());
     }
 
-    #[Override]
-    public function createEntry(
+    private function createEntry(
         HistoryTypeEnum $type,
         string $text,
         int $sourceUserId,
-        int $targetUserId,
-        ?LocationInterface $location = null
+        int $targetUserId
     ): void {
         $entry = $this->historyRepository->prototype();
         $entry->setText($text);
@@ -62,7 +48,6 @@ final class EntryCreator implements EntryCreatorInterface
         $entry->setTargetUserId($targetUserId);
         $entry->setDate(time());
         $entry->setType($type);
-        $entry->setLocation($location);
 
         $this->historyRepository->save($entry);
     }

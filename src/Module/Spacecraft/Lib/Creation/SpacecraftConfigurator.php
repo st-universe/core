@@ -108,7 +108,7 @@ class SpacecraftConfigurator implements SpacecraftConfiguratorInterface
 
         $ship = $this->wrapper->get();
 
-        $ship->getCondition()->setShield($ship->getMaxShield());
+        $ship->setShield($ship->getMaxShield());
 
         return $this;
     }
@@ -120,7 +120,11 @@ class SpacecraftConfigurator implements SpacecraftConfiguratorInterface
 
         $buildplan = $ship->getBuildplan();
         if ($buildplan !== null) {
-            $crewAmount = $amount !== null && $amount >= 0 ? $amount : $buildplan->getCrew();
+            if ($amount !== null && $amount >= 0) {
+                $crewAmount = $amount;
+            } else {
+                $crewAmount = $buildplan->getCrew();
+            }
             for ($j = 1; $j <= $crewAmount; $j++) {
                 $crewAssignment = $this->crewCreator->create($ship->getUser()->getId());
                 $crewAssignment->setSpacecraft($ship);
@@ -128,6 +132,7 @@ class SpacecraftConfigurator implements SpacecraftConfiguratorInterface
 
                 $ship->getCrewAssignments()->add($crewAssignment);
             }
+
             if ($crewAmount > 0) {
                 $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::LIFE_SUPPORT)->setMode(SpacecraftSystemModeEnum::MODE_ALWAYS_ON);
             }
@@ -193,7 +198,7 @@ class SpacecraftConfigurator implements SpacecraftConfiguratorInterface
     }
 
     #[Override]
-    public function finishConfiguration(): SpacecraftWrapperInterface
+    public function finishConfiguration()
     {
         $this->spacecraftRepository->save($this->wrapper->get());
 

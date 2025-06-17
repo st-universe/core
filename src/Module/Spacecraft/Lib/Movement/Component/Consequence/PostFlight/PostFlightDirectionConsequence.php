@@ -15,10 +15,7 @@ use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 
 class PostFlightDirectionConsequence extends AbstractFlightConsequence implements PostFlightConsequenceInterface
 {
-    public function __construct(
-        private readonly FlightSignatureCreatorInterface $flightSignatureCreator,
-        private readonly UpdateFlightDirectionInterface $updateFlightDirection
-    ) {}
+    public function __construct(private FlightSignatureCreatorInterface $flightSignatureCreator, private UpdateFlightDirectionInterface $updateFlightDirection) {}
 
     #[Override]
     protected function skipWhenTractored(): bool
@@ -33,6 +30,8 @@ class PostFlightDirectionConsequence extends AbstractFlightConsequence implement
         MessageCollectionInterface $messages
     ): void {
 
+        $ship = $wrapper->get();
+
         if ($flightRoute->isTraversing()) {
 
             $oldWaypoint = $flightRoute->getCurrentWaypoint();
@@ -41,7 +40,7 @@ class PostFlightDirectionConsequence extends AbstractFlightConsequence implement
             $flightDirection = $this->updateFlightDirection->updateWhenTraversing(
                 $oldWaypoint,
                 $waypoint,
-                $wrapper
+                $ship
             );
 
             //create flight signatures
@@ -50,7 +49,7 @@ class PostFlightDirectionConsequence extends AbstractFlightConsequence implement
                 || !$wrapper->get()->isTractored()
             ) {
                 $this->flightSignatureCreator->createSignatures(
-                    $wrapper->get(),
+                    $ship,
                     $flightDirection,
                     $oldWaypoint,
                     $waypoint,

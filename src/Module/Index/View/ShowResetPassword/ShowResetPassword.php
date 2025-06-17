@@ -14,10 +14,9 @@ final class ShowResetPassword implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_RESET_PASSWORD';
 
-    public function __construct(
-        private ShowResetPasswordRequestInterface $showResetPasswordRequest,
-        private UserRepositoryInterface $userRepository
-    ) {}
+    public function __construct(private ShowResetPasswordRequestInterface $showResetPasswordRequest, private UserRepositoryInterface $userRepository)
+    {
+    }
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -31,6 +30,6 @@ final class ShowResetPassword implements ViewControllerInterface
         }
         $game->setTemplateFile('html/index/resetPassword.twig');
         $game->setPageTitle(_('Password zurücksetzen - Star Trek Universe'));
-        $game->setTemplateVar('TOKEN', $user->getRegistration()->getPasswordToken());
+        $game->setTemplateVar('TOKEN', $user->getPasswordToken());
     }
 }

@@ -30,7 +30,6 @@ interface FightLibInterface
     public function getAttackersAndDefenders(
         SpacecraftWrapperInterface|FleetWrapperInterface $wrapper,
         SpacecraftWrapperInterface $target,
-        bool $isAttackingShieldsOnly,
         BattlePartyFactoryInterface $battlePartyFactory
     ): array;
 

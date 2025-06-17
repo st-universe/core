@@ -84,7 +84,7 @@ final class AttackTrackedShip implements ActionControllerInterface
             $game->addInformation(_('Keine Energie vorhanden'));
             return;
         }
-        if ($spacecraft->getCondition()->isDisabled()) {
+        if ($spacecraft->isDisabled()) {
             $game->addInformation(_('Das Schiff ist kampfunfähig'));
             return;
         }
@@ -98,7 +98,6 @@ final class AttackTrackedShip implements ActionControllerInterface
         [$attacker, $defender, $fleet] = $this->fightLib->getAttackersAndDefenders(
             $wrapper,
             $targetWrapper,
-            false,
             $this->battlePartyFactory
         );
 
@@ -119,16 +118,16 @@ final class AttackTrackedShip implements ActionControllerInterface
         );
 
         //Alarm-Rot check for ship
-        if ($isShipWarped && !$spacecraft->getCondition()->isDestroyed()) {
+        if ($isShipWarped && !$spacecraft->isDestroyed()) {
             $this->alertReactionFacade->doItAll($wrapper, $informations);
         }
 
         //Alarm-Rot check for traktor ship
-        if ($isTargetWarped && !$target->getCondition()->isDestroyed()) {
+        if ($isTargetWarped && !$target->isDestroyed()) {
             $this->alertReactionFacade->doItAll($targetWrapper, $informations);
         }
 
-        if ($spacecraft->getCondition()->isDestroyed()) {
+        if ($spacecraft->isDestroyed()) {
             $game->addInformationWrapper($informations);
             return;
         }

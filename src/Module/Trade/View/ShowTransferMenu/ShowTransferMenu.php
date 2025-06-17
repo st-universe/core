@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\View\ShowTransferMenu;
 
 use Override;
-use Stu\Exception\AccessViolationException;
+use Stu\Exception\AccessViolation;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -29,12 +29,12 @@ final class ShowTransferMenu implements ViewControllerInterface
 
         $storage = $this->storageRepository->find($this->showTransferMenueRequest->getStorageId());
         if ($storage === null || $storage->getUserId() !== $userId) {
-            throw new AccessViolationException();
+            throw new AccessViolation();
         }
 
         $tradePost = $storage->getTradePost();
         if ($tradePost === null) {
-            throw new AccessViolationException();
+            throw new AccessViolation();
         }
 
         $tradeposts = $this->tradePostRepository->getByUserLicense($userId);

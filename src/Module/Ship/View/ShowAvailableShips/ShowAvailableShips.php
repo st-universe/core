@@ -6,7 +6,7 @@ namespace Stu\Module\Ship\View\ShowAvailableShips;
 
 use Override;
 use request;
-use Stu\Exception\AccessViolationException;
+use Stu\Exception\AccessViolation;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
@@ -28,7 +28,7 @@ final class ShowAvailableShips implements ViewControllerInterface
         $fleet = $this->fleetRepository->find(request::getIntFatal('fleetid'));
 
         if ($fleet === null || $fleet->getUserId() !== $user->getId()) {
-            throw new AccessViolationException();
+            throw new AccessViolation();
         }
 
         $game->setPageTitle(_('Schiff(e) hinzufügen'));

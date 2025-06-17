@@ -16,7 +16,6 @@ interface PlayerCreatorInterface
         string $emailAddress,
         FactionInterface $faction,
         string $mobile,
-        string $password,
         ?string $referer = null
     ): void;
 

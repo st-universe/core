@@ -5,7 +5,6 @@ namespace Stu\Orm\Repository;
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\Layer;
 use Stu\Orm\Entity\LayerInterface;
-use Stu\Orm\Entity\UserInterface;
 
 /**
  * @extends ObjectRepository<Layer>
@@ -28,7 +27,7 @@ interface LayerRepositoryInterface extends ObjectRepository
     /**
      * @return array<int, LayerInterface>
      */
-    public function getKnownByUser(UserInterface $user): array;
+    public function getKnownByUser(int $userId): array;
 
     public function getDefaultLayer(): LayerInterface;
 }

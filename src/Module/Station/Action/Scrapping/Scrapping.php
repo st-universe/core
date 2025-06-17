@@ -10,7 +10,6 @@ use RuntimeException;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
-use Stu\Module\Control\StuRandom;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Station\Lib\StationLoaderInterface;
@@ -21,8 +20,6 @@ use Stu\Orm\Repository\ConstructionProgressRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
 use Stu\Orm\Repository\StationRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
-use Stu\Orm\Repository\ConstructionProgressModuleRepositoryInterface;
-
 
 final class Scrapping implements ActionControllerInterface
 {
@@ -34,9 +31,7 @@ final class Scrapping implements ActionControllerInterface
         private SpacecraftSystemRepositoryInterface $shipSystemRepository,
         private ConstructionProgressRepositoryInterface $constructionProgressRepository,
         private SpacecraftRemoverInterface $spacecraftRemover,
-        private TradePostRepositoryInterface $tradePostRepository,
-        private ConstructionProgressModuleRepositoryInterface $constructionProgressModuleRepository,
-        private StuRandom $random
+        private TradePostRepositoryInterface $tradePostRepository
     ) {}
 
     #[Override]
@@ -91,8 +86,7 @@ final class Scrapping implements ActionControllerInterface
 
     private function startScrapping(StationInterface $station): void
     {
-        $condition = $station->getCondition();
-        $condition->setState(SpacecraftStateEnum::UNDER_SCRAPPING);
+        $station->setState(SpacecraftStateEnum::UNDER_SCRAPPING);
 
         //setup scrapping progress
         $progress = $this->constructionProgressRepository->getByStation($station);
@@ -103,36 +97,12 @@ final class Scrapping implements ActionControllerInterface
 
         $this->constructionProgressRepository->save($progress);
 
-        //scrapping modules stuff
-        $this->constructionProgressModuleRepository->truncateByProgress($progress->getId());
-        $recycledModules = [];
-        $recyclingChance = 50;
-
-        foreach ($station->getSystems() as $system) {
-            $module = $system->getModule();
-            if ($module !== null) {
-                $chance = (int)ceil($recyclingChance * $system->getStatus() / 100);
-
-                if ($this->random->rand(1, 100) <= $chance) {
-                    $recycledModules[] = $module;
-                }
-            }
-        }
-
-        foreach ($recycledModules as $module) {
-            $constructionProgressModule = $this->constructionProgressModuleRepository->prototype();
-            $constructionProgressModule->setConstructionProgress($progress);
-            $constructionProgressModule->setModule($module);
-
-            $this->constructionProgressModuleRepository->save($constructionProgressModule);
-        }
-
         //remove ship systems
         $this->shipSystemRepository->truncateByShip($station->getId());
         $station->getSystems()->clear();
 
         //clear system values
-        $condition->setShield(0);
+        $station->setShield(0);
         $station->setMaxShield(0);
 
         //delete trade post stuff

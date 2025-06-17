@@ -5,7 +5,6 @@ namespace Stu\Orm\Repository;
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\CrewAssignment;
 use Stu\Orm\Entity\CrewAssignmentInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\UserInterface;
 
 /**
@@ -21,34 +20,38 @@ interface CrewAssignmentRepositoryInterface extends ObjectRepository
 
     public function delete(CrewAssignmentInterface $post): void;
 
-    public function getAmountBySpacecraft(SpacecraftInterface $spacecraft): int;
+    /**
+     * @return list<CrewAssignmentInterface>
+     */
+    public function getByShip(int $shipId): array;
 
-    public function hasEnoughCrew(SpacecraftInterface $spacecraft): bool;
-
-    public function hasCrewmanOfUser(SpacecraftInterface $spacecraft, int $userId): bool;
+    /**
+     * @return list<CrewAssignmentInterface>
+     */
+    public function getByShipAndSlot(int $shipId, int $slotId): array;
 
     //VIA LOCATION
     /**
-     * @return array<CrewAssignmentInterface>
+     * @return list<CrewAssignmentInterface>
      */
-    public function getByUserAtColonies(UserInterface $user): array;
+    public function getByUserAtColonies(int $userId): array;
 
     /**
-     * @return array<CrewAssignmentInterface>
+     * @return list<CrewAssignmentInterface>
      */
-    public function getByUserOnEscapePods(UserInterface $user): array;
+    public function getByUserOnEscapePods(int $userId): array;
 
     /**
-     * @return array<CrewAssignmentInterface>
+     * @return list<CrewAssignmentInterface>
      */
-    public function getByUserAtTradeposts(UserInterface $user): array;
+    public function getByUserAtTradeposts(int $userId): array;
 
     //AMOUNT
     public function getAmountByUser(UserInterface $user): int;
 
     public function getAmountByUserAtTradeposts(UserInterface $user): int;
 
-    public function getAmountByUserOnColonies(UserInterface $user): int;
+    public function getAmountByUserOnColonies(int $userId): int;
 
     public function getAmountByUserOnShips(UserInterface $user): int;
 
@@ -62,9 +65,7 @@ interface CrewAssignmentRepositoryInterface extends ObjectRepository
      */
     public function getOrphanedSummaryByUserAtTradeposts(int $userId): array;
 
-    public function truncateBySpacecraft(SpacecraftInterface $spacecraft): void;
+    public function truncateByShip(int $shipId): void;
 
-    public function truncateByUser(UserInterface $user): void;
-
-    public function hasCrewOnForeignStation(UserInterface $user): bool;
+    public function truncateByUser(int $userId): void;
 }

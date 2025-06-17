@@ -50,7 +50,7 @@ class TakeoverConsequenceTest extends StuTestCase
     {
         $messages = $this->mock(MessageCollectionInterface::class);
 
-        $this->ship->shouldReceive('getCondition->isDestroyed')
+        $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(true);
@@ -66,7 +66,7 @@ class TakeoverConsequenceTest extends StuTestCase
     {
         $messages = $this->mock(MessageCollectionInterface::class);
 
-        $this->ship->shouldReceive('getCondition->isDestroyed')
+        $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);

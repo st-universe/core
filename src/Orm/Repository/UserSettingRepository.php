@@ -42,11 +42,11 @@ final class UserSettingRepository extends EntityRepository implements UserSettin
     {
         $this->getEntityManager()->createQuery(
             sprintf(
-                'DELETE FROM %s us WHERE us.user = :user',
+                'DELETE FROM %s us WHERE us.user_id = :userId',
                 UserSetting::class
             )
         )->setParameters([
-            'user' => $user,
+            'userId' => $user->getId(),
         ])->execute();
     }
 }

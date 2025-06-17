@@ -19,11 +19,13 @@ class StationCreator implements StationCreatorInterface
         ConstructionProgressInterface $progress
     ): SpacecraftConfiguratorInterface {
 
-        return $this->spacecraftCreator->createBy(
+        $configurator = $this->spacecraftCreator->createBy(
             $userId,
             $rumpId,
             $buildplanId,
             new StationCreationConfig($progress)
         );
+
+        return $configurator;
     }
 }

@@ -6,7 +6,7 @@ namespace Stu\Module\Index\Action\Login;
 
 use Override;
 use Stu\Lib\LoginException;
-use Stu\Lib\Session\SessionLoginInterface;
+use Stu\Lib\SessionInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 
@@ -14,10 +14,9 @@ final class Login implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_LOGIN';
 
-    public function __construct(
-        private LoginRequestInterface $loginRequest,
-        private SessionLoginInterface $sessionLogin
-    ) {}
+    public function __construct(private LoginRequestInterface $loginRequest, private SessionInterface $session)
+    {
+    }
 
     /**
      * @throws LoginException
@@ -25,7 +24,7 @@ final class Login implements ActionControllerInterface
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $success = $this->sessionLogin->login(
+        $success = $this->session->login(
             $this->loginRequest->getLoginName(),
             $this->loginRequest->getPassword()
         );

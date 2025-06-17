@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\View\ShowTakeOffer;
 
 use Override;
-use Stu\Exception\AccessViolationException;
+use Stu\Exception\AccessViolation;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
@@ -34,7 +34,7 @@ final class ShowTakeOffer implements ViewControllerInterface
             $userId,
             $selectedOffer->getTradePostId()
         )) {
-            throw new AccessViolationException(sprintf(
+            throw new AccessViolation(sprintf(
                 'userId %d does not have a license for tradePostId %d',
                 $userId,
                 $selectedOffer->getTradePostId()

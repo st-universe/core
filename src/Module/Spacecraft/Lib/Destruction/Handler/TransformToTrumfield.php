@@ -43,12 +43,12 @@ class TransformToTrumfield implements SpacecraftDestructionHandlerInterface
         $spacecraft = $destroyedSpacecraftWrapper->get();
 
         $this->spacecraftShutdown->shutdown($destroyedSpacecraftWrapper, true);
-        $spacecraft->getCondition()->setIsDestroyed(true);
+        $spacecraft->setIsDestroyed(true);
 
         // create trumfield entity
         $trumfield = $this->trumfieldRepository->prototype();
         $trumfield->setFormerRumpId($spacecraft->getRump()->getId());
-        $trumfield->setHull((int) ceil($spacecraft->getMaxHull() / 20));
+        $trumfield->setHuell((int) ceil($spacecraft->getMaxHull() / 20));
         $trumfield->setLocation($spacecraft->getLocation());
         $this->trumfieldRepository->save($trumfield);
 

@@ -100,9 +100,6 @@ class SpacecraftDeletionHandlerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($constructionProgress);
-        $stationWithProgress->shouldReceive('resetConstructionProgress')
-            ->withNoArgs()
-            ->once();
 
         $ship->shouldReceive('getTractoredShip')
             ->withNoArgs()

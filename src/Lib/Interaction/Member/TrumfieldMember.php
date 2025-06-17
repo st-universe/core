@@ -30,6 +30,7 @@ class TrumfieldMember implements InteractionMemberInterface
     #[Override]
     public function canBeAccessedFrom(
         InteractionMemberInterface $other,
+        bool $isFriend,
         callable $shouldCheck
     ): ?InteractionCheckType {
         return null;

@@ -23,11 +23,13 @@ final class ShipCreator implements ShipCreatorInterface
         int $buildplanId
     ): SpacecraftConfiguratorInterface {
 
-        return $this->spacecraftCreator->createBy(
+        $configurator = $this->spacecraftCreator->createBy(
             $userId,
             $rumpId,
             $buildplanId,
             new ShipCreationConfig($this->buildplanRepository, $buildplanId)
         );
+
+        return $configurator;
     }
 }

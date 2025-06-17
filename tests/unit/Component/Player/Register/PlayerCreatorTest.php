@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Stu\Component\Player\Register;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Hackzilla\PasswordGenerator\Generator\PasswordGeneratorInterface;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
+use Mockery\MockInterface;
 use Override;
 use Stu\Component\Player\Register\Exception\EmailAddressInvalidException;
 use Stu\Component\Player\Register\Exception\LoginNameInvalidException;
@@ -14,18 +16,50 @@ use Stu\Component\Player\Register\Exception\PlayerDuplicateException;
 use Stu\Module\Control\StuHashInterface;
 use Stu\Orm\Entity\FactionInterface;
 use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Entity\UserRegistrationInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\Orm\Repository\UserRefererRepositoryInterface;
 
 class PlayerCreatorTest extends MockeryTestCase
 {
+    //TOTEST createWithMobileNumber
+    /**
+     * @var null|MockInterface|UserRepositoryInterface
+     */
     private $userRepository;
+
+    /**
+     * @var null|MockInterface|PlayerDefaultsCreatorInterface
+     */
     private $playerDefaultsCreator;
+
+    /**
+     * @var null|MockInterface|RegistrationEmailSenderInterface
+     */
     private $registrationEmailSender;
+
+    /**
+     * @var null|MockInterface|SmsVerificationCodeSenderInterface
+     */
     private $smsVerificationCodeSender;
+
+    /**
+     * @var null|MockInterface|StuHashInterface
+     */
     private $stuHash;
+
+    /**
+     * @var null|MockInterface|PasswordGeneratorInterface
+     */
+    private $passwordGenerator;
+
+    /**
+     * @var null|MockInterface|EntityManagerInterface
+     */
     private $entityManager;
+
+    /**
+     * @var null|MockInterface|UserRefererRepositoryInterface
+     */
     private $userRefererRepository;
 
     private PlayerCreatorInterface $creator;
@@ -38,6 +72,7 @@ class PlayerCreatorTest extends MockeryTestCase
         $this->registrationEmailSender = Mockery::mock(RegistrationEmailSenderInterface::class);
         $this->smsVerificationCodeSender = Mockery::mock(SmsVerificationCodeSenderInterface::class);
         $this->stuHash = Mockery::mock(StuHashInterface::class);
+        $this->passwordGenerator = Mockery::mock(PasswordGeneratorInterface::class);
         $this->entityManager = Mockery::mock(EntityManagerInterface::class);
         $this->userRefererRepository = Mockery::mock(UserRefererRepositoryInterface::class);
 
@@ -47,6 +82,7 @@ class PlayerCreatorTest extends MockeryTestCase
             $this->registrationEmailSender,
             $this->smsVerificationCodeSender,
             $this->stuHash,
+            $this->passwordGenerator,
             $this->entityManager,
             $this->userRefererRepository
         );
@@ -60,8 +96,7 @@ class PlayerCreatorTest extends MockeryTestCase
             'meh',
             'lol',
             Mockery::mock(FactionInterface::class),
-            'mobile',
-            'password'
+            'mobile'
         );
     }
 
@@ -73,8 +108,7 @@ class PlayerCreatorTest extends MockeryTestCase
             'mehzomglol',
             'lol',
             Mockery::mock(FactionInterface::class),
-            'mobile',
-            'password'
+            'mobile'
         );
     }
 
@@ -93,8 +127,7 @@ class PlayerCreatorTest extends MockeryTestCase
             $loginname,
             'lol@example.com',
             Mockery::mock(FactionInterface::class),
-            'mobile',
-            'password'
+            'mobile'
         );
     }
 
@@ -118,8 +151,7 @@ class PlayerCreatorTest extends MockeryTestCase
             $loginname,
             $email,
             Mockery::mock(FactionInterface::class),
-            'mobile',
-            'password'
+            'mobile'
         );
     }
 
@@ -131,7 +163,6 @@ class PlayerCreatorTest extends MockeryTestCase
         $password = 'snafu';
 
         $user = Mockery::mock(UserInterface::class);
-        $registration = Mockery::mock(UserRegistrationInterface::class);
         $faction = Mockery::mock(FactionInterface::class);
 
         $this->userRepository->shouldReceive('save')
@@ -142,20 +173,12 @@ class PlayerCreatorTest extends MockeryTestCase
             ->once()
             ->andReturn($user);
 
-        $user->shouldReceive('getRegistration')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($registration);
-        $registration->shouldReceive('setLogin')
+        $user->shouldReceive('setLogin')
             ->with($loginname)
             ->once()
             ->andReturnSelf();
-        $registration->shouldReceive('setEmail')
+        $user->shouldReceive('setEmail')
             ->with($email)
-            ->once()
-            ->andReturnSelf();
-        $registration->shouldReceive('setEmailCode')
-            ->with(null)
             ->once()
             ->andReturnSelf();
         $user->shouldReceive('setFaction')
@@ -166,16 +189,16 @@ class PlayerCreatorTest extends MockeryTestCase
             ->with(sprintf('Siedler %d', $user_id))
             ->once()
             ->andReturnSelf();
-        $registration->shouldReceive('setCreationDate')
+        $user->shouldReceive('setTick')
+            ->with(1)
+            ->once()
+            ->andReturnSelf();
+        $user->shouldReceive('setCreationDate')
             ->with(Mockery::type('int'))
             ->once()
             ->andReturnSelf();
-        $registration->shouldReceive('setPassword')
+        $user->shouldReceive('setPassword')
             ->with(Mockery::on(fn(string $passwordParam): bool => password_verify($password, $passwordParam)))
-            ->once()
-            ->andReturnSelf();
-        $user->shouldReceive('setState')
-            ->with(Mockery::any())
             ->once()
             ->andReturnSelf();
         $user->shouldReceive('getId')
@@ -188,8 +211,8 @@ class PlayerCreatorTest extends MockeryTestCase
             ->once();
 
         $this->registrationEmailSender->shouldReceive('send')
-            ->with($user, Mockery::type('string'))
-            ->never();
+            ->with($user, $password)
+            ->once();
 
         $this->entityManager->shouldReceive('flush')
             ->withNoArgs()

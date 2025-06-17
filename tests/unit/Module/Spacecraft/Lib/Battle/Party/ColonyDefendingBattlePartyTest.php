@@ -41,11 +41,11 @@ class ColonyDefendingBattlePartyTest extends StuTestCase
         $ship->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($user);
-        $ship->shouldReceive('getCondition->isDestroyed')
+        $ship->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->zeroOrMoreTimes()
             ->andReturn(false);
-        $ship->shouldReceive('getCondition->isDisabled')
+        $ship->shouldReceive('isDisabled')
             ->withNoArgs()
             ->zeroOrMoreTimes()
             ->andReturn(false);
@@ -92,10 +92,10 @@ class ColonyDefendingBattlePartyTest extends StuTestCase
         $ship->shouldReceive('isCloaked')
             ->withNoArgs()
             ->andReturn(false);
-        $ship->shouldReceive('getCondition->isDestroyed')
+        $ship->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->andReturn(false);
-        $ship->shouldReceive('getCondition->isDisabled')
+        $ship->shouldReceive('isDisabled')
             ->withNoArgs()
             ->andReturn(false);
         $ship->shouldReceive('isStation')
@@ -104,10 +104,10 @@ class ColonyDefendingBattlePartyTest extends StuTestCase
         $ship2->shouldReceive('isCloaked')
             ->withNoArgs()
             ->andReturn(true);
-        $ship2->shouldReceive('getCondition->isDestroyed')
+        $ship2->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->andReturn(false);
-        $ship2->shouldReceive('getCondition->isDisabled')
+        $ship2->shouldReceive('isDisabled')
             ->withNoArgs()
             ->andReturn(false);
 

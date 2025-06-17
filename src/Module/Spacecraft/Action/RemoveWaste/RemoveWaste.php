@@ -18,7 +18,7 @@ use Stu\Orm\Repository\NPCLogRepositoryInterface;
 
 final class RemoveWaste implements ActionControllerInterface
 {
-    public const string ACTION_IDENTIFIER = 'B_REMOVE_WASTE_SPACECRAFT';
+    public const string ACTION_IDENTIFIER = 'B_REMOVE_WASTE';
 
     /**
      * @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spaceCraftLoader
@@ -43,15 +43,18 @@ final class RemoveWaste implements ActionControllerInterface
 
         $reason = request::postString('reason');
 
-        if ($commodities === []) {
+        if (!$commodities) {
             $game->addInformation(_('Es wurden keine Waren ausgewählt'));
             return;
         }
 
 
-        if ($game->getUser()->isNpc() && ($reason === '' || $reason == null)) {
-            $game->addInformation("Grund fehlt");
-            return;
+        if ($game->getUser()->isNpc()) {
+
+            if ($reason === '' || $reason == null) {
+                $game->addInformation("Grund fehlt");
+                return;
+            }
         }
 
         $storage = $spacecraft->getStorage();
@@ -75,8 +78,10 @@ final class RemoveWaste implements ActionControllerInterface
 
             $stor = $storage->get((int)$commodityId);
 
-            if ($stor && $count > $stor->getAmount()) {
-                $count = $stor->getAmount();
+            if ($stor) {
+                if ($count > $stor->getAmount()) {
+                    $count = $stor->getAmount();
+                }
             }
 
             $this->storageManager->lowerStorage($spacecraft, $commodity, $count);

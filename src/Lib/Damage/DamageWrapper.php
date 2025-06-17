@@ -172,7 +172,7 @@ class DamageWrapper
         $netDamage = $this->getNetDamage();
         $netDamage = $this->mindPirateWrath($netDamage);
 
-        $targetShields = $target->getCondition()->getShield();
+        $targetShields = $target->getShield();
 
         $grossModificator = $this->getShieldDamageFactor() / 100;
         if ($this->getIsPhaserDamage() === true) {

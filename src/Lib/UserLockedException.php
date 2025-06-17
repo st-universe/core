@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Lib;
 
-use Stu\Module\Control\Router\FallbackRouteException;
+use Stu\Exception\StuException;
 
-final class UserLockedException extends FallbackRouteException
+final class UserLockedException extends StuException
 {
     public function __construct(string $message, private string $details)
     {

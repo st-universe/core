@@ -23,7 +23,6 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Spacecraft\Lib\Creation\SpacecraftFactoryInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Orm\Entity\SpacecraftBuildplanInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -49,19 +48,18 @@ final class BuildConstruction implements ActionControllerInterface
     ];
 
     public function __construct(
-        private readonly SpacecraftRepositoryInterface $spacecraftRepository,
-        private readonly ShipRepositoryInterface $shipRepository,
-        private readonly StationRepositoryInterface $stationRepository,
-        private readonly ShipLoaderInterface $shipLoader,
-        private readonly ShipCreatorInterface $shipCreator,
-        private readonly SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository,
-        private readonly StorageManagerInterface $storageManager,
-        private readonly TroopTransferUtilityInterface $troopTransferUtility,
-        private readonly SpacecraftRumpRepositoryInterface $spacecraftRumpRepository,
-        private readonly ShipRumpUserRepositoryInterface $shipRumpUserRepository,
-        private readonly CommodityRepositoryInterface $commodityRepository,
-        private readonly DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository,
-        private readonly SpacecraftFactoryInterface $spacecraftFactory
+        private SpacecraftRepositoryInterface $spacecraftRepository,
+        private ShipRepositoryInterface $shipRepository,
+        private StationRepositoryInterface $stationRepository,
+        private ShipLoaderInterface $shipLoader,
+        private ShipCreatorInterface $shipCreator,
+        private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository,
+        private StorageManagerInterface $storageManager,
+        private TroopTransferUtilityInterface $troopTransferUtility,
+        private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository,
+        private ShipRumpUserRepositoryInterface $shipRumpUserRepository,
+        private CommodityRepositoryInterface $commodityRepository,
+        private DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository
     ) {}
 
     #[Override]
@@ -284,21 +282,18 @@ final class BuildConstruction implements ActionControllerInterface
             throw new RuntimeException('rump does not exist');
         }
 
-        $construction = $this->spacecraftFactory->create($rump);
-        if (!$construction instanceof StationInterface) {
-            throw new RuntimeException(sprintf('rumpId %d is not a station', $rumpId));
-        }
-
+        $construction = $this->stationRepository->prototype();
         $construction->setUser($ship->getUser());
         $construction->setRump($rump);
         $construction->setName($rump->getName());
+        $construction->setHuell($rump->getBaseHull());
         $construction->setMaxHuell($rump->getBaseHull());
-        $construction->getCondition()->setHull($rump->getBaseHull());
-        $construction->getCondition()->setState(SpacecraftStateEnum::UNDER_CONSTRUCTION);
+        $construction->setAlertStateGreen();
+        $construction->setState(SpacecraftStateEnum::UNDER_CONSTRUCTION);
 
         $construction->setLocation($ship->getLocation());
 
-        $this->spacecraftRepository->save($construction);
+        $this->stationRepository->save($construction);
 
         return $construction;
     }

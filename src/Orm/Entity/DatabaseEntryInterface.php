@@ -33,8 +33,4 @@ interface DatabaseEntryInterface
     public function getCategoryId(): int;
 
     public function getTypeId(): int;
-
-    public function getLayerId(): ?int;
-
-    public function setLayerId(?int $layerId): DatabaseEntryInterface;
 }

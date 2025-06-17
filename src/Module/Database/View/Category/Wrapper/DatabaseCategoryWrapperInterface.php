@@ -14,8 +14,6 @@ interface DatabaseCategoryWrapperInterface
 
     public function isCategoryRumpTypes(): bool;
 
-    public function isCategoryRegion(): bool;
-
     public function displayDefaultList(): bool;
 
     /** @return array<int, DatabaseCategoryEntryWrapperInterface> */

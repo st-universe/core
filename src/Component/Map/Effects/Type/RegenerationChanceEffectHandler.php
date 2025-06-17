@@ -57,10 +57,10 @@ class RegenerationChanceEffectHandler implements EffectHandlerInterface
         $percentage = $this->stuRandom->rand(1, 20, true, 5);
 
         $gain = match ($moduleType) {
-            SpacecraftModuleTypeEnum::EPS => $this->regenerateEPS($wrapper, $percentage),
-            SpacecraftModuleTypeEnum::SHIELDS => $this->regenerateSHIELDS($wrapper, $percentage),
-            SpacecraftModuleTypeEnum::REACTOR => $this->regenerateREACTOR($wrapper, $percentage),
-            SpacecraftModuleTypeEnum::WARPDRIVE => $this->regenerateWARPDRIVE($wrapper, $percentage)
+            SpacecraftModuleTypeEnum::EPS => $this->regenerateEPS($wrapper, $percentage, $information),
+            SpacecraftModuleTypeEnum::SHIELDS => $this->regenerateSHIELDS($wrapper, $percentage, $information),
+            SpacecraftModuleTypeEnum::REACTOR => $this->regenerateREACTOR($wrapper, $percentage, $information),
+            SpacecraftModuleTypeEnum::WARPDRIVE => $this->regenerateWARPDRIVE($wrapper, $percentage, $information)
         };
 
         if ($gain !== null) {
@@ -73,7 +73,7 @@ class RegenerationChanceEffectHandler implements EffectHandlerInterface
         }
     }
 
-    private function regenerateEPS(SpacecraftWrapperInterface $wrapper, int $percentage): ?int
+    private function regenerateEPS(SpacecraftWrapperInterface $wrapper, int $percentage, InformationInterface $information): ?int
     {
         $epsSystemData = $wrapper->getEpsSystemData();
         if ($epsSystemData === null) {
@@ -100,7 +100,7 @@ class RegenerationChanceEffectHandler implements EffectHandlerInterface
         return $gain;
     }
 
-    private function regenerateREACTOR(SpacecraftWrapperInterface $wrapper, int $percentage): ?int
+    private function regenerateREACTOR(SpacecraftWrapperInterface $wrapper, int $percentage, InformationInterface $information): ?int
     {
         $reactorWrapper = $wrapper->getReactorWrapper();
         if ($reactorWrapper === null) {
@@ -128,7 +128,7 @@ class RegenerationChanceEffectHandler implements EffectHandlerInterface
         return $gain;
     }
 
-    private function regenerateSHIELDS(SpacecraftWrapperInterface $wrapper, int $percentage): ?int
+    private function regenerateSHIELDS(SpacecraftWrapperInterface $wrapper, int $percentage, InformationInterface $information): ?int
     {
         $spacecraft = $wrapper->get();
         if (!$spacecraft->isSystemHealthy(SpacecraftSystemTypeEnum::SHIELDS)) {
@@ -136,10 +136,9 @@ class RegenerationChanceEffectHandler implements EffectHandlerInterface
         }
 
         $maxShields = $spacecraft->getMaxShield(true);
-        $condition = $spacecraft->getCondition();
 
         $gain = min(
-            $maxShields - $condition->getShield(),
+            $maxShields - $spacecraft->getShield(),
             $this->stuRandom->rand(
                 1,
                 (int)ceil($maxShields / 100 * $percentage),
@@ -148,12 +147,12 @@ class RegenerationChanceEffectHandler implements EffectHandlerInterface
             )
         );
 
-        $condition->changeShield($gain);
+        $spacecraft->setShield($spacecraft->getShield() + $gain);
 
         return $gain;
     }
 
-    private function regenerateWARPDRIVE(SpacecraftWrapperInterface $wrapper, int $percentage): ?int
+    private function regenerateWARPDRIVE(SpacecraftWrapperInterface $wrapper, int $percentage, InformationInterface $information): ?int
     {
         $warpdriveData = $wrapper->getWarpDriveSystemData();
         if ($warpdriveData === null) {

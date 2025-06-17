@@ -93,7 +93,7 @@ class SpacecraftStorageEntityWrapper implements StorageEntityWrapperInterface
     #[Override]
     public function getBeamFactor(): int
     {
-        return $this->spacecraft->getRump()->getBeamFactor();
+        return $this->spacecraft->getBeamFactor();
     }
 
     #[Override]
@@ -328,7 +328,7 @@ class SpacecraftStorageEntityWrapper implements StorageEntityWrapperInterface
             $ownCrew = $this->getOwnCrewCount($this->spacecraft);
             $minOwnCrew = 0;
             $buildplan = $this->spacecraft->getBuildplan();
-            if ($buildplan !== null) {
+            if ($buildplan) {
                 $minOwnCrew = $buildplan->getCrew();
             }
 
@@ -342,9 +342,10 @@ class SpacecraftStorageEntityWrapper implements StorageEntityWrapperInterface
             if (
                 $hasForeigners
                 && !$this->spacecraft->getSystemState(SpacecraftSystemTypeEnum::UPLINK)
-                && $ownCrew >= $minOwnCrew
             ) {
-                $this->spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::UPLINK)->setMode(SpacecraftSystemModeEnum::MODE_ON);
+                if ($ownCrew >= $minOwnCrew) {
+                    $this->spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::UPLINK)->setMode(SpacecraftSystemModeEnum::MODE_ON);
+                }
             }
 
             $this->sendUplinkMessage($hasForeigners, $information, $this->spacecraft->getSystemState(SpacecraftSystemTypeEnum::UPLINK), $ownCrew >= $minOwnCrew);

@@ -38,10 +38,9 @@ final class ResetPassword implements ActionControllerInterface
             throw new InvalidParamException();
         }
         $password = $this->passwordGenerator->generatePassword();
-        $registration = $user->getRegistration();
 
-        $registration->setPassword(password_hash($password, PASSWORD_DEFAULT));
-        $registration->setPasswordToken('');
+        $user->setPassword(password_hash($password, PASSWORD_DEFAULT));
+        $user->setPasswordToken('');
 
         $this->userRepository->save($user);
 
@@ -57,7 +56,7 @@ final class ResetPassword implements ActionControllerInterface
 
         $mail = $this->mailFactory->createStuMail()
             ->withDefaultSender()
-            ->addTo($registration->getEmail())
+            ->addTo($user->getEmail())
             ->setSubject(_('Star Trek Universe - Neues Passwort'))
             ->setBody(
                 sprintf(

@@ -6,20 +6,15 @@ namespace Stu\Module\Colony\Lib;
 
 use Override;
 use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Repository\ColonyDepositMiningRepositoryInterface;
 
 final class CommodityConsumption implements CommodityConsumptionInterface
 {
-    public function __construct(
-        private readonly ColonyDepositMiningRepositoryInterface $colonyDepositMiningRepository
-    ) {}
-
     #[Override]
     public function getConsumption(
         array $production,
         ColonyInterface $colony
     ): array {
-        $depositMinings = $this->colonyDepositMiningRepository->getCurrentUserDepositMinings($colony);
+        $depositMinings = $colony->getUserDepositMinings();
         $storages = $colony->getStorage();
         $ret = [];
         foreach ($production as $commodityId => $productionItem) {

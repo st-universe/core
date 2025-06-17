@@ -81,7 +81,7 @@ class ApplyFieldDamageTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(33);
-        $this->ship->shouldReceive('getCondition->isDestroyed')
+        $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -102,7 +102,7 @@ class ApplyFieldDamageTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(34);
-        $tractoredShip->shouldReceive('getCondition->isDestroyed')
+        $tractoredShip->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -180,7 +180,7 @@ class ApplyFieldDamageTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(1000);
-        $this->ship->shouldReceive('getCondition->isDestroyed')
+        $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(true);

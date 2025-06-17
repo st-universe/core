@@ -109,14 +109,6 @@ final class SpacecraftBuildplanRepository extends EntityRepository implements Sp
     }
 
     #[Override]
-    public function getStationBuildplanByRump(int $rumpId): ?SpacecraftBuildplanInterface
-    {
-        return $this->findOneBy([
-            'rump_id' => $rumpId
-        ]);
-    }
-
-    #[Override]
     public function getShipyardBuildplansByUser(int $userId): array
     {
         return $this->getEntityManager()

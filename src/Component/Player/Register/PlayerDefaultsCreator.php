@@ -89,6 +89,8 @@ final class PlayerDefaultsCreator implements PlayerDefaultsCreatorInterface
             $userTutorial = $this->userTutorialRepository->prototype();
             $userTutorial->setUser($player);
             $userTutorial->setTutorialStep($step);
+            $userTutorial->setUserId($player->getId());
+            $userTutorial->setTutorialStepId($step->getId());
 
             $this->userTutorialRepository->save($userTutorial);
         }

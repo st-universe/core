@@ -17,9 +17,7 @@ use Stu\Component\Player\Deletion\Handler\AllianceDeletionHandler;
 use Stu\Component\Player\Deletion\Handler\AstronomicalEntryDeletionHandler;
 use Stu\Component\Player\Deletion\Handler\ColonyDeletionHandler;
 use Stu\Component\Player\Deletion\Handler\CrewDeletionHandler;
-use Stu\Component\Player\Deletion\Handler\DockingPrivilegeDeletionHandler;
 use Stu\Component\Player\Deletion\Handler\FleetDeletionHandler;
-use Stu\Component\Player\Deletion\Handler\ForeignCrewDumpingHandler;
 use Stu\Component\Player\Deletion\Handler\KnPostDeletionHandler;
 use Stu\Component\Player\Deletion\Handler\PrivateMessageDeletionHandler;
 use Stu\Component\Player\Deletion\Handler\PirateWrathDeletionHandler;
@@ -29,7 +27,6 @@ use Stu\Component\Player\Deletion\Handler\SpacecraftDeletionHandler;
 use Stu\Component\Player\Deletion\Handler\TradepostDeletionHandler;
 use Stu\Component\Player\Deletion\Handler\UserDeletionHandler;
 use Stu\Component\Player\Deletion\Handler\RefererDeletionHandler;
-use Stu\Component\Player\Deletion\Handler\ShipTakeoverHandler;
 use Stu\Component\Player\Deletion\Handler\UserMapDeletionHandler;
 use Stu\Component\Player\Deletion\PlayerDeletion;
 use Stu\Component\Player\Deletion\PlayerDeletionInterface;
@@ -46,15 +43,23 @@ use Stu\Component\Player\Relation\EnemyDeterminator;
 use Stu\Component\Player\Relation\FriendDeterminator;
 use Stu\Component\Player\Relation\PlayerRelationDeterminator;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
+use Stu\Module\Config\StuConfigInterface;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 use function DI\autowire;
+use function DI\create;
+use function DI\get;
 
 return [
     ColonyLimitCalculatorInterface::class => autowire(ColonyLimitCalculator::class),
     ColonizationCheckerInterface::class => autowire(ColonizationChecker::class),
     RequestDeletionConfirmationInterface::class => autowire(RequestDeletionConfirmation::class),
-    PlayerDeletionInterface::class => autowire(PlayerDeletion::class)->constructorParameter(
-        'deletionHandlers',
+    PlayerDeletionInterface::class => create(PlayerDeletion::class)->constructor(
+        get(UserRepositoryInterface::class),
+        get(StuConfigInterface::class),
+        get(LoggerUtilFactoryInterface::class),
+        get(Parser::class),
         [
             autowire(PirateWrathDeletionHandler::class),
             autowire(AllianceDeletionHandler::class),
@@ -64,14 +69,11 @@ return [
             autowire(RpgPlotDeletionHandler::class),
             autowire(TradepostDeletionHandler::class),
             autowire(CrewDeletionHandler::class),
-            autowire(ForeignCrewDumpingHandler::class),
-            autowire(ShipTakeoverHandler::class),
             autowire(SpacecraftDeletionHandler::class),
             autowire(AstronomicalEntryDeletionHandler::class),
             autowire(FleetDeletionHandler::class),
             autowire(SpacecraftBuildplanDeletionHandler::class),
             autowire(RefererDeletionHandler::class),
-            autowire(DockingPrivilegeDeletionHandler::class),
             autowire(UserMapDeletionHandler::class),
             autowire(UserDeletionHandler::class)
         ]

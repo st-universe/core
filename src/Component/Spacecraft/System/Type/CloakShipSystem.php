@@ -52,7 +52,7 @@ final class CloakShipSystem extends AbstractSpacecraftSystemType implements Spac
             return false;
         }
 
-        if ($wrapper->getAlertState() == SpacecraftAlertStateEnum::ALERT_RED) {
+        if ($spacecraft->getAlertState() == SpacecraftAlertStateEnum::ALERT_RED) {
             $reason = _('die Alarmstufe Rot ist');
             return false;
         }

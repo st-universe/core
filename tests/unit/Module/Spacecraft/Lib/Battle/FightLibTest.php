@@ -84,7 +84,7 @@ class FightLibTest extends StuTestCase
     {
         $informations = $this->mock(InformationInterface::class);
 
-        $this->ship->shouldReceive('getCondition->isDestroyed')
+        $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(true);
@@ -96,7 +96,7 @@ class FightLibTest extends StuTestCase
     {
         $informations = $this->mock(InformationInterface::class);
 
-        $this->ship->shouldReceive('getCondition->isDestroyed')
+        $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -116,7 +116,7 @@ class FightLibTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(false);
-        $this->ship->shouldReceive('getCondition->isDestroyed')
+        $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -132,7 +132,7 @@ class FightLibTest extends StuTestCase
     {
         $informations = $this->mock(InformationInterface::class);
 
-        $this->ship->shouldReceive('getCondition->isDestroyed')
+        $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -157,7 +157,7 @@ class FightLibTest extends StuTestCase
         $informations = $this->mock(InformationInterface::class);
         $informationWrapper = $this->mock(InformationWrapper::class);
 
-        $this->ship->shouldReceive('getCondition->isDestroyed')
+        $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -233,7 +233,7 @@ class FightLibTest extends StuTestCase
         $informationWrapper = $this->mock(InformationWrapper::class);
         $informations = $this->mock(InformationInterface::class);
 
-        $this->ship->shouldReceive('getCondition->isDestroyed')
+        $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -725,7 +725,6 @@ class FightLibTest extends StuTestCase
         int $defendersCount,
         bool $expectedIsFleet
     ): void {
-        /** @var FleetWrapperInterface|ShipWrapperInterface */
         $wrapper = $this->mock($className);
         $factory = $this->mock(BattlePartyFactoryInterface::class);
         $targetWrapper = $this->mock(ShipWrapperInterface::class);
@@ -733,7 +732,7 @@ class FightLibTest extends StuTestCase
         $attackedParty = $this->mock(AttackedBattleParty::class);
 
         $factory->shouldReceive('createAttackingBattleParty')
-            ->with($wrapper, false)
+            ->with($wrapper)
             ->once()
             ->andReturn($attackingParty);
         $factory->shouldReceive('createAttackedBattleParty')
@@ -754,7 +753,7 @@ class FightLibTest extends StuTestCase
             $attackers,
             $defenders,
             $isFleetFight
-        ] = $this->subject->getAttackersAndDefenders($wrapper, $targetWrapper, false, $factory);
+        ] = $this->subject->getAttackersAndDefenders($wrapper, $targetWrapper, $factory);
 
         $this->assertEquals($attackingParty, $attackers);
         $this->assertEquals($attackedParty, $defenders);

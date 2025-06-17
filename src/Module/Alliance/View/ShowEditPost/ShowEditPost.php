@@ -6,13 +6,16 @@ namespace Stu\Module\Alliance\View\ShowEditPost;
 
 use Override;
 use request;
-use Stu\Exception\AccessViolationException;
+use Stu\Exception\AccessViolation;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\AllianceBoardPostRepositoryInterface;
 
 final class ShowEditPost implements ViewControllerInterface
 {
+    /**
+     * @var string
+     */
     public const string VIEW_IDENTIFIER = 'SHOW_EDIT_ALLY_POST';
 
     public function __construct(private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository) {}
@@ -30,7 +33,7 @@ final class ShowEditPost implements ViewControllerInterface
         $board = $post->getBoard();
         $topic = $post->getTopic();
         if ($board->getAllianceId() !== $alliance->getId()) {
-            throw new AccessViolationException();
+            throw new AccessViolation();
         }
 
         $game->setViewTemplate('html/alliance/editallypost.twig');

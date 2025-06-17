@@ -73,7 +73,7 @@ final class SendMassMail implements ActionControllerInterface
             $mail = $this->mailFactory->createStuMail();
 
             try {
-                $mail->addTo($user->getRegistration()->getEmail())
+                $mail->addTo($user->getEmail())
                     ->setSubject($subject)
                     ->withDefaultSender()
                     ->setBody($text)

@@ -3,7 +3,6 @@
 namespace Stu\Module\Tick;
 
 use Override;
-use RuntimeException;
 use Stu\Component\Game\TimeConstants;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -11,7 +10,6 @@ use Stu\Orm\Entity\GameTurnInterface;
 use Stu\Orm\Repository\GameTurnRepositoryInterface;
 use Stu\Orm\Repository\GameTurnStatsRepositoryInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
-use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 use Stu\Orm\Repository\UserLockRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -20,12 +18,11 @@ final class TickManager implements TickManagerInterface
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
-        private readonly GameTurnRepositoryInterface $gameTurnRepository,
-        private readonly UserLockRepositoryInterface $userLockRepository,
-        private readonly GameTurnStatsRepositoryInterface $gameTurnStatsRepository,
-        private readonly UserRepositoryInterface $userRepository,
-        private readonly KnPostRepositoryInterface $knPostRepository,
-        private readonly PrivateMessageRepositoryInterface $privateMessageRepository,
+        private GameTurnRepositoryInterface $gameTurnRepository,
+        private UserLockRepositoryInterface $userLockRepository,
+        private GameTurnStatsRepositoryInterface $gameTurnStatsRepository,
+        private UserRepositoryInterface $userRepository,
+        private KnPostRepositoryInterface $knPostRepository,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
@@ -34,15 +31,11 @@ final class TickManager implements TickManagerInterface
     #[Override]
     public function work(): void
     {
-        $oldTurn = $this->gameTurnRepository->getCurrent();
-        if ($oldTurn === null) {
-            throw new RuntimeException('no current turn existent');
-        }
-
-        $this->endTurn($oldTurn);
+        $turn = $this->gameTurnRepository->getCurrent();
+        $this->endTurn($turn);
         $this->reduceUserLocks();
-        $newTurn = $this->startTurn($oldTurn);
-        $this->createGameTurnStats($oldTurn, $newTurn);
+        $newTurn = $this->startTurn($turn);
+        $this->createGameTurnStats($newTurn);
     }
 
     private function endTurn(GameTurnInterface $turn): void
@@ -52,12 +45,12 @@ final class TickManager implements TickManagerInterface
         $this->gameTurnRepository->save($turn);
     }
 
-    private function startTurn(GameTurnInterface $oldTurn): GameTurnInterface
+    private function startTurn(GameTurnInterface $turn): GameTurnInterface
     {
         $obj = $this->gameTurnRepository->prototype();
         $obj->setStart(time());
         $obj->setEnd(0);
-        $obj->setTurn($oldTurn->getTurn() + 1);
+        $obj->setTurn($turn->getTurn() + 1);
 
         $this->gameTurnRepository->save($obj);
 
@@ -86,13 +79,13 @@ final class TickManager implements TickManagerInterface
         }
     }
 
-    private function createGameTurnStats(GameTurnInterface $oldTurn, GameTurnInterface $newTurn): void
+    private function createGameTurnStats(GameTurnInterface $turn): void
     {
         $stats = $this->gameTurnStatsRepository->prototype();
 
         $this->loggerUtil->log('setting stats values');
 
-        $stats->setTurn($newTurn);
+        $stats->setTurn($turn);
         $stats->setUserCount($this->userRepository->getActiveAmount());
         $stats->setLogins24h($this->userRepository->getActiveAmountRecentlyOnline(time() - TimeConstants::ONE_DAY_IN_SECONDS));
         $stats->setInactiveCount($this->userRepository->getInactiveAmount(14));
@@ -103,7 +96,6 @@ final class TickManager implements TickManagerInterface
         $stats->setKnCount($this->knPostRepository->getAmount());
         $stats->setFlightSig24h($this->gameTurnStatsRepository->getFlightSigs24h());
         $stats->setFlightSigSystem24h($this->gameTurnStatsRepository->getFlightSigsSystem24h());
-        $stats->setNewPmCount($this->privateMessageRepository->getAmountSince($oldTurn->getStart()));
 
         $this->gameTurnStatsRepository->save($stats);
         $this->loggerUtil->log('saved stats');

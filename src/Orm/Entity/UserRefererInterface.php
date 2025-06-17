@@ -7,9 +7,9 @@ interface UserRefererInterface
 
     public function getId(): int;
 
-    public function getUserRegistration(): UserRegistrationInterface;
+    public function getUser(): UserInterface;
 
-    public function setUserRegistration(UserRegistrationInterface $registration): UserRefererInterface;
+    public function setUser(UserInterface $user): UserRefererInterface;
 
     public function getReferer(): string;
 

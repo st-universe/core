@@ -113,40 +113,30 @@ final class DatabaseUserRepository extends EntityRepository implements DatabaseU
     }
 
     #[Override]
-    public function hasUserCompletedCategoryAndLayer(int $userId, int $categoryId, ?int $ignoredDatabaseEntryId = null, ?int $layerId = null): bool
+    public function hasUserCompletedCategory(int $userId, int $categoryId, ?int $ignoredDatabaseEntryId = null): bool
     {
-        $layerCondition = $layerId === null ? 'de.layer_id IS NULL' : 'de.layer_id = :layerId';
-
-        $query = $this->getEntityManager()
+        return (int) $this->getEntityManager()
             ->createQuery(
                 sprintf(
                     'SELECT count(de.id)
-                FROM %s de
-                WHERE de.category_id = :categoryId
-                AND de.id != :ignoredDatabaseEntryId
-                AND %s
-                AND NOT EXISTS
-                    (SELECT du.id
-                    FROM %s du
-                    WHERE du.database_id = de.id
-                    AND du.user_id = :userId)',
+                    FROM %s de
+                    WHERE de.category_id = :categoryId
+                    AND de.id != :ignoredDatabaseEntryId
+                    AND NOT EXISTS
+                        (SELECT du.id
+                        FROM %s du
+                        WHERE du.database_id = de.id
+                        AND du.user_id = :userId)',
                     DatabaseEntry::class,
-                    $layerCondition,
                     DatabaseUser::class
                 )
-            );
-
-        $parameters = [
-            'userId' => $userId,
-            'categoryId' => $categoryId,
-            'ignoredDatabaseEntryId' => $ignoredDatabaseEntryId ?? 0,
-        ];
-
-        if ($layerId !== null) {
-            $parameters['layerId'] = $layerId;
-        }
-
-        return $query->setParameters($parameters)->getSingleScalarResult() == 0;
+            )
+            ->setParameters([
+                'userId' => $userId,
+                'categoryId' => $categoryId,
+                'ignoredDatabaseEntryId' => $ignoredDatabaseEntryId ?? 0
+            ])
+            ->getSingleScalarResult() == 0;
     }
 
     #[Override]

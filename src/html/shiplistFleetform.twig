@@ -12,8 +12,6 @@
                     <tr>
                         <td style="width: 35%;">
                             <div style="display: table-cell;">
-                                <img src="/assets/buttons/layer_{{ fleet.getLeadShip.getLocation.getLayer.getId }}.png"
-                                    title="{{ fleet.getLeadShip.getLocation.getLayer.getName }}" />
                                 <a href="javascript:void(0);" onclick="toggleFleet({{ fleetid }});"
                                     title="zuklappen/aufklappen">
                                     <img src="/assets/buttons/fleet.png" />
@@ -56,8 +54,7 @@
         </tr>
     </table>
     <table style="{{ fleet.getHiddenStyle }}" class="tcal" id="fleetbody_{{ fleetid }}">
-        {% set isFleetHeader = true %}
-        {{ shiplist_header(isFleetHeader) }}
+        {{ shiplist_header() }}
         {% for wrapper in FLEETWRAPPER.getShipWrappers %}
         {{ shiplist_body(wrapper) }}
         {% endfor %}

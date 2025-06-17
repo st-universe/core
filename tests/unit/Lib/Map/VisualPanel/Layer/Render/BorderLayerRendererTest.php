@@ -8,17 +8,15 @@ use Mockery\MockInterface;
 use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Spacecraft\SpacecraftLssModeEnum;
-use Stu\Component\Spacecraft\System\Data\LssSystemData;
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
 use Stu\Lib\Map\VisualPanel\Layer\Data\BorderData;
-use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\StuTestCase;
 
 class BorderLayerRendererTest extends StuTestCase
 {
     /** @var MockInterface&AbstractVisualPanel */
-    private $panel;
+    private MockInterface $panel;
 
     #[Override]
     protected function setUp(): void
@@ -56,17 +54,8 @@ class BorderLayerRendererTest extends StuTestCase
     ): void {
         $borderData = $this->mock(BorderData::class);
         $ship = $this->mock(ShipInterface::class);
-        $wrapper = $this->mock(SpacecraftWrapperInterface::class);
-        $lss = $this->mock(LssSystemData::class);
 
-        $wrapper->shouldReceive('getLssSystemData')
-            ->withNoArgs()
-            ->andReturn($lss);
-        $wrapper->shouldReceive('get')
-            ->withNoArgs()
-            ->andReturn($ship);
-
-        $lss->shouldReceive('getMode')
+        $ship->shouldReceive('getLssMode')
             ->withNoArgs()
             ->andReturn(SpacecraftLssModeEnum::NORMAL);
 
@@ -88,7 +77,7 @@ class BorderLayerRendererTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(20);
 
-        $subject = new BorderLayerRenderer($wrapper, $isOnShipLevel);
+        $subject = new BorderLayerRenderer($ship, $isOnShipLevel);
         $result = $subject->render($borderData, $this->panel);
 
         $this->assertEquals($expected, $result);
@@ -113,16 +102,6 @@ class BorderLayerRendererTest extends StuTestCase
     ): void {
         $borderData = $this->mock(BorderData::class);
         $ship = $this->mock(ShipInterface::class);
-        $wrapper = $this->mock(SpacecraftWrapperInterface::class);
-        $lss = $this->mock(LssSystemData::class);
-
-        $wrapper->shouldReceive('getLssSystemData')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($lss);
-        $wrapper->shouldReceive('get')
-            ->withNoArgs()
-            ->andReturn($ship);
 
         $borderData->shouldReceive('getFactionColor')
             ->withNoArgs()
@@ -134,11 +113,11 @@ class BorderLayerRendererTest extends StuTestCase
             ->withNoArgs()
             ->andReturn($userColor);
 
-        $lss->shouldReceive('getMode')
+        $ship->shouldReceive('getLssMode')
             ->withNoArgs()
             ->andReturn(SpacecraftLssModeEnum::BORDER);
 
-        $subject = new BorderLayerRenderer($wrapper, null);
+        $subject = new BorderLayerRenderer($ship, null);
         $result = $subject->render($borderData, $this->panel);
 
         $this->assertEquals($expected, $result);

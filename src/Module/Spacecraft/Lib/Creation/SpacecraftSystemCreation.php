@@ -101,8 +101,10 @@ class SpacecraftSystemCreation implements SpacecraftSystemCreationInterface
                 $systems[$systemType->value] = $module;
             }
 
-            if ($module->getType() === SpacecraftModuleTypeEnum::SENSOR) {
-                $systems[SpacecraftSystemTypeEnum::NBS->value] = null;
+            switch ($module->getType()) {
+                case SpacecraftModuleTypeEnum::SENSOR:
+                    $systems[SpacecraftSystemTypeEnum::NBS->value] = null;
+                    break;
             }
         }
     }

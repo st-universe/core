@@ -6,21 +6,18 @@ namespace Stu\Component\Player\Deletion;
 
 use JBBCode\Parser;
 use Override;
-use Stu\Component\Game\TimeConstants;
 use Stu\Component\Player\Deletion\Handler\PlayerDeletionHandlerInterface;
 use Stu\Module\Config\StuConfigInterface;
-use Stu\Module\Control\StuTime;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\Message\Lib\PrivateMessageSender;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class PlayerDeletion implements PlayerDeletionInterface
 {
     //3 days
-    public const int USER_IDLE_REGISTRATION = 3 * TimeConstants::ONE_DAY_IN_SECONDS;
+    public const int USER_IDLE_REGISTRATION = 259200;
 
     //3 months
     public const int USER_IDLE_TIME = 7_905_600;
@@ -31,15 +28,14 @@ final class PlayerDeletion implements PlayerDeletionInterface
     private LoggerUtilInterface $loggerUtil;
 
     /**
-     * @param array<int, PlayerDeletionHandlerInterface> $deletionHandlers
+     * @param array<PlayerDeletionHandlerInterface> $deletionHandler
      */
     public function __construct(
-        private readonly UserRepositoryInterface $userRepository,
-        private readonly StuConfigInterface $config,
-        private readonly Parser $bbCodeParser,
-        private readonly StuTime $stuTime,
-        private array $deletionHandlers,
-        LoggerUtilFactoryInterface $loggerUtilFactory
+        private UserRepositoryInterface $userRepository,
+        private StuConfigInterface $config,
+        LoggerUtilFactoryInterface $loggerUtilFactory,
+        private Parser $bbCodeParser,
+        private array $deletionHandler
     ) {
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
@@ -49,24 +45,21 @@ final class PlayerDeletion implements PlayerDeletionInterface
     {
         $this->loggerUtil->init('DEL', LoggerEnum::LEVEL_ERROR);
 
-        $time = $this->stuTime->time();
-
-        //all accounts that have not been activated
-        $idleList = $this->userRepository->getIdleRegistrations(
-            $time - self::USER_IDLE_REGISTRATION
+        //delete all accounts that have not been activated
+        $list = $this->userRepository->getIdleRegistrations(
+            time() - self::USER_IDLE_REGISTRATION
         );
+        foreach ($list as $player) {
+            $this->delete($player);
+        }
 
-        //all other deleatable accounts
-        $deleatableList = $this->userRepository->getDeleteable(
-            $time - self::USER_IDLE_TIME,
-            $time - self::USER_IDLE_TIME_VACATION,
+        //delete all other deleatable accounts
+        $list = $this->userRepository->getDeleteable(
+            time() - self::USER_IDLE_TIME,
+            time() - self::USER_IDLE_TIME_VACATION,
             $this->config->getGameSettings()->getAdminIds()
         );
-
-        $combinedList = $idleList + $deleatableList;
-        PrivateMessageSender::$blockedUserIds = array_keys($combinedList);
-
-        foreach ($combinedList as $player) {
+        foreach ($list as $player) {
             $this->delete($player);
         }
     }
@@ -83,12 +76,12 @@ final class PlayerDeletion implements PlayerDeletionInterface
     {
         $userId = $user->getId();
         $name = $this->bbCodeParser->parse($user->getName())->getAsText();
-        $delmark = $user->getRegistration()->getDeletionMark();
+        $delmark = $user->getDeletionMark();
 
         $this->loggerUtil->log(sprintf('deleting userId: %d', $userId));
 
         array_walk(
-            $this->deletionHandlers,
+            $this->deletionHandler,
             function (PlayerDeletionHandlerInterface $handler) use ($user): void {
                 $handler->delete($user);
             }

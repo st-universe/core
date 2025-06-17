@@ -21,19 +21,19 @@ class LocalPlayerCreator extends PlayerCreator
         string $password,
         ?string $mobile = null,
         ?string $smsCode = null,
-        ?string $emailCode = null,
         ?string $referrer = null
     ): UserInterface {
-
         $player = $this->userRepository->prototype();
-        $player->setUsername(sprintf('Siedler %d', $player->getId()));
+        $player->setLogin($loginName);
+        $player->setEmail($emailAddress);
         $player->setFaction($faction);
 
-        $registration = $player->getRegistration();
-        $registration->setLogin($loginName);
-        $registration->setEmail($emailAddress);
-        $registration->setCreationDate(time());
-        $registration->setPassword(password_hash($password, PASSWORD_DEFAULT));
+        $this->userRepository->save($player);
+
+        $player->setUsername(sprintf('Siedler %d', $player->getId()));
+        $player->setTick(1);
+        $player->setCreationDate(time());
+        $player->setPassword(password_hash($password, PASSWORD_DEFAULT));
 
         $this->userRepository->save($player);
 

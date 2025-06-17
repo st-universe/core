@@ -22,8 +22,7 @@ interface BattlePartyFactoryInterface
     ): RoundBasedBattleParty;
 
     public function createAttackingBattleParty(
-        SpacecraftWrapperInterface|FleetWrapperInterface $wrapper,
-        bool $isAttackingShieldsOnly
+        SpacecraftWrapperInterface|FleetWrapperInterface $wrapper
     ): AttackingBattleParty;
 
     public function createAttackedBattleParty(

@@ -27,17 +27,20 @@ use Stu\StuTestCase;
 
 class NearFieldScannerShipSystemTest extends StuTestCase
 {
-    /** @var AstroEntryLibInterface&MockInterface */
+    private NearFieldScannerShipSystem $system;
+
+    /**
+     * @var AstroEntryLibInterface|MockInterface
+     */
     private $astroEntryLib;
-    /** @var TrackerDeviceManagerInterface|MockInterface */
+
+    /**
+     * @var TrackerDeviceManagerInterface|MockInterface
+     */
     private $trackerDeviceManager;
 
-    /** @var ShipInterface&MockInterface */
-    private $ship;
-    /** @var ShipWrapperInterface&MockInterface */
-    private $wrapper;
-
-    private NearFieldScannerShipSystem $system;
+    private ShipInterface $ship;
+    private ShipWrapperInterface $wrapper;
 
     #[Override]
     public function setUp(): void
@@ -87,7 +90,7 @@ class NearFieldScannerShipSystemTest extends StuTestCase
 
     public function testCheckDeactivationConditionsReturnsFalseIfAlertRed(): void
     {
-        $this->wrapper->shouldReceive('getAlertState')
+        $this->ship->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_RED);
@@ -109,7 +112,7 @@ class NearFieldScannerShipSystemTest extends StuTestCase
         );
         $trackerSystemData->setTarget(42);
 
-        $this->wrapper->shouldReceive('getAlertState')
+        $this->ship->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_YELLOW);
@@ -127,7 +130,7 @@ class NearFieldScannerShipSystemTest extends StuTestCase
 
     public function testCheckDeactivationConditionsReturnsTrueIfDeactivatable(): void
     {
-        $this->wrapper->shouldReceive('getAlertState')
+        $this->ship->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_YELLOW);

@@ -16,8 +16,14 @@ use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
  */
 final class AllianceDescriptionRenderer implements AllianceDescriptionRendererInterface
 {
+    /**
+     * @var int
+     */
     private const int RELATION_IMAGE_WIDTH = 600;
 
+    /**
+     * @var int
+     */
     private const int RELATION_IMAGE_HEIGHT = 700;
 
     public function __construct(

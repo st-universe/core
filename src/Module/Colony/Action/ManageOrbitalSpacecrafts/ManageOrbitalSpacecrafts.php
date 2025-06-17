@@ -90,6 +90,9 @@ final class ManageOrbitalSpacecrafts implements ActionControllerInterface
         if ($colony->getLocation() !== $spacecraft->getLocation()) {
             return [];
         }
+        if ($spacecraft->isDestroyed()) {
+            return [];
+        }
 
         $wrapper = $this->spacecraftWrapperFactory->wrapSpacecraft($spacecraft);
 

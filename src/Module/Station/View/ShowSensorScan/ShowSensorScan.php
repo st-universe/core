@@ -117,7 +117,7 @@ final class ShowSensorScan implements ViewControllerInterface
             return;
         }
 
-        if ($station->getLayer() !== null) {
+        if ($station->getLayer()) {
             $encodedMapPath = $this->encodedMap->getEncodedMapPath(
                 $mapField->getFieldType()->getId(),
                 $station->getLayer()

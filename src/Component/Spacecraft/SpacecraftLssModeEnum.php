@@ -25,7 +25,9 @@ enum SpacecraftLssModeEnum: int
     {
         return match ($this) {
             self::NORMAL => false,
-            default => true
+            self::BORDER => true,
+            self::IMPASSABLE => true,
+            self::CARTOGRAPHING => true
         };
     }
 }

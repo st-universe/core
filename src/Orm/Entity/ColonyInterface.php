@@ -132,6 +132,11 @@ interface ColonyInterface extends
 
     public function getCrewTrainingAmount(): int;
 
+    /**
+     * @return ColonyDepositMiningInterface[]
+     */
+    public function getUserDepositMinings(): array;
+
     public function isFree(): bool;
 
     public function setUser(UserInterface $user): ColonyInterface;
@@ -143,4 +148,9 @@ interface ColonyInterface extends
     public function upperEps(int $value): void;
 
     public function getSectorString(): string;
+
+    /**
+     * @return Collection<int, ColonyDepositMiningInterface>
+     */
+    public function getDepositMinings(): Collection;
 }

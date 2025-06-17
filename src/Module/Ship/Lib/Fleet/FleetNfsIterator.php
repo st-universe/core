@@ -6,7 +6,7 @@ namespace Stu\Module\Ship\Lib\Fleet;
 
 use Iterator;
 use Override;
-use Stu\Lib\Session\SessionStorageInterface;
+use Stu\Lib\SessionInterface;
 use Stu\Module\Ship\Lib\TFleetShipItemInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
 
@@ -27,7 +27,7 @@ final class FleetNfsIterator implements Iterator
     public function __construct(
         iterable $ships,
         private SpacecraftInterface $currentSpacecraft,
-        private ?SessionStorageInterface $sessionStorage,
+        private ?SessionInterface $session,
         private int $userId
     ) {
         $currentFleetId = null;
@@ -63,7 +63,7 @@ final class FleetNfsIterator implements Iterator
     #[Override]
     public function current(): FleetNfsItem
     {
-        return new FleetNfsItem($this->fleets[$this->position], $this->currentSpacecraft, $this->sessionStorage, $this->userId);
+        return new FleetNfsItem($this->fleets[$this->position], $this->currentSpacecraft, $this->session, $this->userId);
     }
 
     #[Override]

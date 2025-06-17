@@ -36,7 +36,7 @@ final class ShowPostIdSearchResult implements ViewControllerInterface
             return;
         }
 
-        $post = $this->knPostRepository->findActiveById($id);
+        $post = $this->knPostRepository->find($id);
 
         if ($post === null) {
             $game->setTemplateVar('KN_POSTINGS', null);

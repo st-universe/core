@@ -42,7 +42,7 @@ class PanelLayerConfiguration
 
         $panelLayerCreation
             ->addShipCountLayer($tachyonFresh, $spacecraft, SpacecraftCountLayerTypeEnum::ALL, 0)
-            ->addBorderLayer($wrapper, $isShipOnLevel)
+            ->addBorderLayer($wrapper->get(), $isShipOnLevel)
             ->addAnomalyLayer();
 
         if ($panelCenter instanceof MapInterface) {

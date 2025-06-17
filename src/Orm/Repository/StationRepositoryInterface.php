@@ -22,6 +22,8 @@ use Stu\Orm\Entity\UserInterface;
  */
 interface StationRepositoryInterface extends ObjectRepository
 {
+    public function prototype(): StationInterface;
+
     public function save(StationInterface $station): void;
 
     public function delete(StationInterface $station): void;

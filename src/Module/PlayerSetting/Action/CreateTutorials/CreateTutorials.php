@@ -30,6 +30,9 @@ final class CreateTutorials implements ActionControllerInterface
             $userTutorial->setUser($user);
             $userTutorial->setTutorialStep($step);
 
+            $userTutorial->setUserId($user->getId());
+            $userTutorial->setTutorialStepId($step->getId());
+
             $this->userTutorialRepository->save($userTutorial);
         }
 

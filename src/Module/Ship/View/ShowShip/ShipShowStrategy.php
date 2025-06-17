@@ -70,7 +70,10 @@ class ShipShowStrategy implements SpacecraftTypeShowStragegyInterface
             $measurementpointsleft = is_array($fieldIds) ? count($fieldIds) : 0;
         }
 
-        return new AstroStateWrapper($state, $turnsLeft, $isSystem, $measurementpointsleft);
+
+        $wrapper = new AstroStateWrapper($state, $turnsLeft, $isSystem, $measurementpointsleft);
+
+        return $wrapper;
     }
 
     private function getDatabaseEntryForShipLocation(ShipInterface $ship, bool $isSystem): ?DatabaseEntryInterface

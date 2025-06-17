@@ -11,8 +11,6 @@ use RuntimeException;
 use Stu\Component\Spacecraft\Repair\RepairUtilInterface;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Component\Spacecraft\System\Data\AbstractSystemData;
-use Stu\Component\Spacecraft\System\Data\ComputerSystemData;
-use Stu\Component\Spacecraft\System\Data\EnergyWeaponSystemData;
 use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Component\Spacecraft\System\Data\FusionCoreSystemData;
 use Stu\Component\Spacecraft\System\Data\HullSystemData;
@@ -113,9 +111,9 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
             $result += $this->spacecraftSystemManager->getEnergyConsumption($shipSystem->getSystemType());
         }
 
-        return $this->get()->hasComputer()
-            ? $result + $this->getComputerSystemDataMandatory()->getAlertState()->getEpsUsage()
-            : $result;
+        $result += $this->spacecraft->getAlertState()->getEpsUsage();
+
+        return $result;
     }
 
     public function getReactorUsage(): int
@@ -166,25 +164,12 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
     }
 
     #[Override]
-    public function getAlertState(): SpacecraftAlertStateEnum
-    {
-        return $this->getComputerSystemDataMandatory()->getAlertState();
-    }
-
-    #[Override]
     public function setAlertState(SpacecraftAlertStateEnum $alertState): ?string
     {
         $msg = $this->spacecraftStateChanger->changeAlertState($this, $alertState);
         $this->epsUsage = $this->reloadEpsUsage();
 
         return $msg;
-    }
-
-    #[Override]
-    public function isUnalerted(): bool
-    {
-        return !$this->spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::COMPUTER)
-            || $this->getComputerSystemDataMandatory()->isAlertGreen();
     }
 
     #[Override]
@@ -204,7 +189,7 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
     {
         $regenerationPercentage = $this->get()->isSystemHealthy(SpacecraftSystemTypeEnum::SHIELDS) ? 10 : 0;
 
-        $shield = $this->get()->getCondition()->getShield();
+        $shield = $this->get()->getShield();
         $maxshield = $this->get()->getMaxShield();
 
         $result = (int) ceil(($maxshield / 100) * $regenerationPercentage);
@@ -257,7 +242,7 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
     #[Override]
     public function canBeRepaired(): bool
     {
-        if (!$this->isUnalerted()) {
+        if ($this->spacecraft->getAlertState() !== SpacecraftAlertStateEnum::ALERT_GREEN) {
             return false;
         }
 
@@ -273,7 +258,7 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
             return true;
         }
 
-        return $this->spacecraft->getCondition()->getHull() < $this->spacecraft->getMaxHull();
+        return $this->spacecraft->getHull() < $this->spacecraft->getMaxHull();
     }
 
     #[Override]
@@ -289,16 +274,6 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
 
         $epsSystem = $this->getEpsSystemData();
         return $epsSystem !== null && $epsSystem->getEps() !== 0;
-    }
-
-    #[Override]
-    public function canMan(): bool
-    {
-        $buildplan = $this->spacecraft->getBuildplan();
-
-        return $buildplan !== null
-            && $buildplan->getCrew() > 0
-            && $this->spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::LIFE_SUPPORT);
     }
 
     #[Override]
@@ -414,34 +389,11 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
     }
 
     #[Override]
-    public function getComputerSystemDataMandatory(): ComputerSystemData
-    {
-        $computer = $this->getSpecificShipSystem(
-            SpacecraftSystemTypeEnum::COMPUTER,
-            ComputerSystemData::class
-        );
-        if ($computer === null) {
-            throw new SystemNotFoundException('no computer installed?');
-        }
-
-        return $computer;
-    }
-
-    #[Override]
     public function getLssSystemData(): ?LssSystemData
     {
         return $this->getSpecificShipSystem(
             SpacecraftSystemTypeEnum::LSS,
             LssSystemData::class
-        );
-    }
-
-    #[Override]
-    public function getEnergyWeaponSystemData(): ?EnergyWeaponSystemData
-    {
-        return $this->getSpecificShipSystem(
-            SpacecraftSystemTypeEnum::PHASER,
-            EnergyWeaponSystemData::class
         );
     }
 

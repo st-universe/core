@@ -7,8 +7,8 @@ namespace Stu\Module\Ship\View\ShowShiplistFleet;
 use Override;
 use request;
 use Stu\Component\Game\GameEnum;
-use Stu\Exception\AccessViolationException;
-use Stu\Lib\Session\SessionStorageInterface;
+use Stu\Exception\AccessViolation;
+use Stu\Lib\SessionInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
@@ -18,11 +18,7 @@ final class ShowShiplistFleet implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_SHIPLIST_FLEET';
 
-    public function __construct(
-        private readonly FleetRepositoryInterface $fleetRepository,
-        private readonly SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
-        private readonly SessionStorageInterface $sessionStorage
-    ) {}
+    public function __construct(private FleetRepositoryInterface $fleetRepository, private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory, private SessionInterface $session) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -37,9 +33,9 @@ final class ShowShiplistFleet implements ViewControllerInterface
         }
 
         if ($fleet->getUser() !== $game->getUser()) {
-            throw new AccessViolationException(sprintf('tried to refresh foreign fleet, idiot: %d', $userId));
+            throw new AccessViolation(sprintf('tried to refresh foreign fleet, idiot: %d', $userId));
         }
-        $fleet->setHiddenStyle($this->sessionStorage->hasSessionValue('hiddenshiplistfleets', $fleetId) ? 'display: none' : '');
+        $fleet->setHiddenStyle($this->session->hasSessionValue('hiddenshiplistfleets', $fleetId) ? 'display: none' : '');
 
         $game->showMacro('html/shiplistFleetform.twig');
 

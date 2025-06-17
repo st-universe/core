@@ -160,7 +160,7 @@ class ManageCrewTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($this->shipId);
-        $this->wrapper->shouldReceive('canMan')
+        $this->ship->shouldReceive('canMan')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -192,7 +192,7 @@ class ManageCrewTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($this->shipId);
-        $this->wrapper->shouldReceive('canMan')
+        $this->ship->shouldReceive('canMan')
             ->withNoArgs()
             ->once()
             ->andReturn(true);
@@ -226,7 +226,7 @@ class ManageCrewTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($this->shipId);
-        $this->wrapper->shouldReceive('canMan')
+        $this->ship->shouldReceive('canMan')
             ->withNoArgs()
             ->once()
             ->andReturn(true);
@@ -271,7 +271,7 @@ class ManageCrewTest extends StuTestCase
         $this->ship->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn($this->shipId);
-        $this->wrapper->shouldReceive('canMan')
+        $this->ship->shouldReceive('canMan')
             ->withNoArgs()
             ->once()
             ->andReturn(true);
@@ -325,7 +325,7 @@ class ManageCrewTest extends StuTestCase
         $this->ship->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn($this->shipId);
-        $this->wrapper->shouldReceive('canMan')
+        $this->ship->shouldReceive('canMan')
             ->withNoArgs()
             ->once()
             ->andReturn(true);
@@ -415,7 +415,7 @@ class ManageCrewTest extends StuTestCase
         $this->ship->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn($this->shipId);
-        $this->wrapper->shouldReceive('canMan')
+        $this->ship->shouldReceive('canMan')
             ->withNoArgs()
             ->once()
             ->andReturn(true);
@@ -505,7 +505,7 @@ class ManageCrewTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($this->user);
-        $this->wrapper->shouldReceive('canMan')
+        $this->ship->shouldReceive('canMan')
             ->withNoArgs()
             ->once()
             ->andReturn(true);
@@ -535,7 +535,7 @@ class ManageCrewTest extends StuTestCase
             ->once()
             ->andReturn('providerName');
 
-        $this->wrapper->shouldReceive('canMan')
+        $this->ship->shouldReceive('canMan')
             ->withNoArgs()
             ->once()
             ->andReturn(true);
@@ -603,7 +603,7 @@ class ManageCrewTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn('name');
-        $this->wrapper->shouldReceive('canMan')
+        $this->ship->shouldReceive('canMan')
             ->withNoArgs()
             ->once()
             ->andReturn(true);
@@ -661,7 +661,7 @@ class ManageCrewTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($this->mock(SpacecraftBuildplanInterface::class));
-        $this->wrapper->shouldReceive('canMan')
+        $this->ship->shouldReceive('canMan')
             ->withNoArgs()
             ->once()
             ->andReturn(true);

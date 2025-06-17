@@ -43,7 +43,7 @@ class LowerHull implements ManagerComponentInterface
                 $this->trumfieldRepository->delete($trumfield);
                 continue;
             }
-            $trumfield->setHull($trumfield->getHull() - $lower);
+            $trumfield->setHuell($trumfield->getHull() - $lower);
 
             $this->trumfieldRepository->save($trumfield);
         }
@@ -53,11 +53,10 @@ class LowerHull implements ManagerComponentInterface
     {
         foreach ($this->tradePostRepository->getByUser(UserEnum::USER_NOONE) as $tradepost) {
             $station = $tradepost->getStation();
-            $condition = $station->getCondition();
 
             $lower = (int)ceil($station->getMaxHull() / 100);
 
-            if ($condition->getHull() <= $lower) {
+            if ($station->getHull() <= $lower) {
                 $this->spacecraftDestruction->destroy(
                     null,
                     $this->spacecraftWrapperFactory->wrapStation($station),
@@ -67,7 +66,7 @@ class LowerHull implements ManagerComponentInterface
 
                 continue;
             }
-            $condition->changeHull(-$lower);
+            $station->setHuell($station->getHull() - $lower);
 
             $this->stationRepository->save($station);
         }
@@ -76,11 +75,8 @@ class LowerHull implements ManagerComponentInterface
     private function lowerStationConstructionHull(): void
     {
         foreach ($this->stationRepository->getStationConstructions() as $station) {
-
-            $condition = $station->getCondition();
             $lower = random_int(5, 15);
-
-            if ($condition->getHull() <= $lower) {
+            if ($station->getHull() <= $lower) {
                 $msg = sprintf(_('Dein Konstrukt bei %s war zu lange ungenutzt und ist daher zerfallen'), $station->getSectorString());
                 $this->privateMessageSender->send(
                     UserEnum::USER_NOONE,
@@ -92,7 +88,7 @@ class LowerHull implements ManagerComponentInterface
                 $this->spacecraftRemover->remove($station);
                 continue;
             }
-            $condition->changeHull(-$lower);
+            $station->setHuell($station->getHull() - $lower);
 
             $this->stationRepository->save($station);
         }

@@ -8,7 +8,6 @@ use Mockery\MockInterface;
 use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
-use Stu\Component\Spacecraft\System\Data\ComputerSystemData;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\ShipUndockingInterface;
@@ -74,10 +73,10 @@ class SpacecraftShutdownTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftStateEnum::ASTRO_FINALIZING);
-        $ship->shouldReceive('hasComputer')
+
+        $ship->shouldReceive('setAlertStateGreen')
             ->withNoArgs()
-            ->once()
-            ->andReturn(false);
+            ->once();
 
         $this->spacecraftSystemManager->shouldReceive('deactivateAll')
             ->with($wrapper)
@@ -109,29 +108,20 @@ class SpacecraftShutdownTest extends StuTestCase
     {
         $wrapper = $this->mock(StationWrapperInterface::class);
         $station = $this->mock(StationInterface::class);
-        $computer = $this->mock(ComputerSystemData::class);
 
         $wrapper->shouldReceive('get')
             ->withNoArgs()
             ->once()
             ->andReturn($station);
-        $wrapper->shouldReceive('getComputerSystemDataMandatory->setAlertStateGreen')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($computer);
-
-        $computer->shouldReceive('update')
-            ->withNoArgs()
-            ->once();
 
         $station->shouldReceive('getState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftStateEnum::ASTRO_FINALIZING);
-        $station->shouldReceive('hasComputer')
+
+        $station->shouldReceive('setAlertStateGreen')
             ->withNoArgs()
-            ->once()
-            ->andReturn(true);
+            ->once();
 
         $this->spacecraftSystemManager->shouldReceive('deactivateAll')
             ->with($wrapper)
@@ -170,10 +160,10 @@ class SpacecraftShutdownTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftStateEnum::RETROFIT);
-        $station->shouldReceive('hasComputer')
+
+        $station->shouldReceive('setAlertStateGreen')
             ->withNoArgs()
-            ->once()
-            ->andReturn(false);
+            ->once();
 
         $this->spacecraftSystemManager->shouldReceive('deactivateAll')
             ->with($wrapper)

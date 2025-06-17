@@ -58,9 +58,6 @@ class GameTurnStats implements GameTurnStatsInterface
     #[Column(type: 'integer')]
     private int $flight_sig_system_24h;
 
-    #[Column(type: 'integer')]
-    private int $new_pm_count;
-
     #[OneToOne(targetEntity: 'GameTurn')]
     #[JoinColumn(name: 'turn_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private GameTurnInterface $turn;
@@ -222,29 +219,5 @@ class GameTurnStats implements GameTurnStatsInterface
         $this->flight_sig_system_24h = $flightSigSystem24h;
 
         return $this;
-    }
-
-    #[Override]
-    public function getNewPmCount(): int
-    {
-        return $this->new_pm_count;
-    }
-
-    #[Override]
-    public function setNewPmCount(int $newPmCount): GameTurnStatsInterface
-    {
-        $this->new_pm_count = $newPmCount;
-
-        return $this;
-    }
-
-    #[Override]
-    public function __toString(): string
-    {
-        return sprintf(
-            'id: %s, turnId: %s',
-            $this->id,
-            $this->turn_id
-        );
     }
 }

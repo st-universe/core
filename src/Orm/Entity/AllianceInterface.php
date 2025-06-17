@@ -73,9 +73,4 @@ interface AllianceInterface
     public function getJobs(): Collection;
 
     public function hasTranslation(): bool;
-
-    /**
-     * @return Collection<int, AllianceSettingsInterface>
-     */
-    public function getSettings(): Collection;
 }

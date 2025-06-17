@@ -7,7 +7,6 @@ namespace Stu\Module\Tick\Colony\Component;
 use Mockery\MockInterface;
 use Override;
 use Stu\Lib\ColonyProduction\ColonyProduction;
-use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Research\ResearchStateFactoryInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ResearchedInterface;
@@ -17,11 +16,14 @@ use Stu\StuTestCase;
 
 class AdvanceResearchTest extends StuTestCase
 {
-    private MockInterface&ResearchedRepositoryInterface $researchedRepository;
-    private MockInterface&ResearchStateFactoryInterface $researchStateFactory;
+    /** @var MockInterface&ResearchedRepositoryInterface */
+    private MockInterface $researchedRepository;
 
-    private MockInterface&ColonyInterface $colony;
-    private MockInterface&InformationInterface $information;
+    /** @var MockInterface&ResearchStateFactoryInterface */
+    private MockInterface $researchStateFactory;
+
+    /** @var MockInterface&ColonyInterface */
+    private MockInterface $colony;
 
     private ColonyTickComponentInterface $subject;
 
@@ -32,7 +34,6 @@ class AdvanceResearchTest extends StuTestCase
         $this->researchStateFactory = $this->mock(ResearchStateFactoryInterface::class);
 
         $this->colony = $this->mock(ColonyInterface::class);
-        $this->information = $this->mock(InformationInterface::class);
 
         $this->subject = new AdvanceResearch(
             $this->researchedRepository,
@@ -56,7 +57,7 @@ class AdvanceResearchTest extends StuTestCase
             ->once()
             ->andReturn([]);
 
-        $this->subject->work($this->colony, $production, $this->information);
+        $this->subject->work($this->colony, $production);
     }
 
     public function testWorkExpectNothingWhenNeededCommodityNotProduced(): void
@@ -80,7 +81,7 @@ class AdvanceResearchTest extends StuTestCase
             ->once()
             ->andReturn([$researched]);
 
-        $this->subject->work($this->colony, $production, $this->information);
+        $this->subject->work($this->colony, $production);
     }
 
     public function testWorkExpectAdvanceOfOneResearch(): void
@@ -119,7 +120,7 @@ class AdvanceResearchTest extends StuTestCase
             ->with($researched, 5)
             ->once();
 
-        $this->subject->work($this->colony, $production, $this->information);
+        $this->subject->work($this->colony, $production);
     }
 
     public function testWorkExpectNoAdvanceOfSecondWhenNoRemainingPoints(): void
@@ -160,7 +161,7 @@ class AdvanceResearchTest extends StuTestCase
             ->once()
             ->andReturn(0);
 
-        $this->subject->work($this->colony, $production, $this->information);
+        $this->subject->work($this->colony, $production);
     }
 
     public function testWorkExpectNoAdvanceOfSecondWhenNotPresent(): void
@@ -200,7 +201,7 @@ class AdvanceResearchTest extends StuTestCase
             ->once()
             ->andReturn(1);
 
-        $this->subject->work($this->colony, $production, $this->information);
+        $this->subject->work($this->colony, $production);
     }
 
     public function testWorkExpectNoAdvanceOfSecondWhenOtherCommodity(): void
@@ -244,7 +245,7 @@ class AdvanceResearchTest extends StuTestCase
             ->once()
             ->andReturn(1);
 
-        $this->subject->work($this->colony, $production, $this->information);
+        $this->subject->work($this->colony, $production);
     }
 
     public function testWorkExpectAdvanceOfSecondWhenSameCommodity(): void
@@ -291,7 +292,7 @@ class AdvanceResearchTest extends StuTestCase
             ->with($researched2, 1)
             ->once();
 
-        $this->subject->work($this->colony, $production, $this->information);
+        $this->subject->work($this->colony, $production);
     }
 
     public function testWorkExpectAdvanceOfSameOnOtherColony(): void
@@ -345,8 +346,8 @@ class AdvanceResearchTest extends StuTestCase
             ->once()
             ->andReturn(0);
 
-        $this->subject->work($this->colony, $production, $this->information);
-        $this->subject->work($colony2, $production2, $this->information);
+        $this->subject->work($this->colony, $production);
+        $this->subject->work($colony2, $production2);
     }
 
     public function testWorkExpectAdvanceOfSecondOnOtherColony(): void
@@ -407,8 +408,8 @@ class AdvanceResearchTest extends StuTestCase
             ->once()
             ->andReturn(0);
 
-        $this->subject->work($this->colony, $production, $this->information);
-        $this->subject->work($colony2, $production2, $this->information);
+        $this->subject->work($this->colony, $production);
+        $this->subject->work($colony2, $production2);
     }
 
     public function testWorkExpectNoAdvanceOfSecondOnOtherColonyWhenOtherCommodity(): void
@@ -458,7 +459,7 @@ class AdvanceResearchTest extends StuTestCase
             ->once()
             ->andReturn(0);
 
-        $this->subject->work($this->colony, $production, $this->information);
-        $this->subject->work($colony2, $production2, $this->information);
+        $this->subject->work($this->colony, $production);
+        $this->subject->work($colony2, $production2);
     }
 }

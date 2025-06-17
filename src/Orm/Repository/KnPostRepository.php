@@ -45,7 +45,7 @@ final class KnPostRepository extends EntityRepository implements KnPostRepositor
     public function getBy(int $offset, int $limit): array
     {
         return $this->findBy(
-            ['deleted' => null],
+            [],
             ['date' => 'desc'],
             $limit,
             $offset
@@ -56,8 +56,8 @@ final class KnPostRepository extends EntityRepository implements KnPostRepositor
     public function getByUser(int $userId): array
     {
         return $this->findBy(
-            ['user_id' => $userId, 'deleted' => null],
-            ['date' => 'desc']
+            ['user_id' => $userId],
+            ['id' => 'desc']
         );
     }
 
@@ -65,7 +65,7 @@ final class KnPostRepository extends EntityRepository implements KnPostRepositor
     public function getByPlot(RpgPlotInterface $plot, ?int $offset, ?int $limit): array
     {
         return $this->findBy(
-            ['plot_id' => $plot, 'deleted' => null],
+            ['plot_id' => $plot],
             ['date' => 'desc'],
             $limit,
             $offset
@@ -75,15 +75,14 @@ final class KnPostRepository extends EntityRepository implements KnPostRepositor
     #[Override]
     public function getAmount(): int
     {
-        return $this->count(['deleted' => null]);
+        return $this->count([]);
     }
 
     #[Override]
     public function getAmountByPlot(int $plotId): int
     {
         return $this->count([
-            'plot_id' => $plotId,
-            'deleted' => null
+            'plot_id' => $plotId
         ]);
     }
 
@@ -93,7 +92,7 @@ final class KnPostRepository extends EntityRepository implements KnPostRepositor
         return (int) $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT COUNT(p.id) FROM %s p WHERE p.id > :postId AND p.deleted IS NULL',
+                    'SELECT COUNT(p.id) FROM %s p WHERE p.id > :postId',
                     KnPost::class
                 )
             )
@@ -107,7 +106,7 @@ final class KnPostRepository extends EntityRepository implements KnPostRepositor
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT p FROM %s p WHERE p.id > :postId AND p.deleted IS NULL ORDER BY p.id ASC',
+                    'SELECT p FROM %s p WHERE p.id > :postId ORDER BY p.id ASC',
                     KnPost::class
                 )
             )
@@ -123,8 +122,7 @@ final class KnPostRepository extends EntityRepository implements KnPostRepositor
             ->createQuery(
                 sprintf(
                     'SELECT p FROM %s p
-                    WHERE UPPER(p.text) like UPPER(:content) OR UPPER(p.titel) like UPPER(:content) 
-                    AND p.deleted IS NULL
+                    WHERE UPPER(p.text) like UPPER(:content) OR UPPER(p.titel) like UPPER(:content)
                     ORDER BY p.id DESC',
                     KnPost::class
                 )
@@ -157,7 +155,6 @@ final class KnPostRepository extends EntityRepository implements KnPostRepositor
             CROSS JOIN LATERAL json_each_text(kn.ratings)
             WHERE kn.user_id >= :firstUserId
             AND kn.ratings #>> '{}' != '[]'
-            AND kn.deleted IS NULL
             GROUP BY kn.user_id
             ORDER BY votes DESC
             LIMIT 10",
@@ -178,8 +175,7 @@ final class KnPostRepository extends EntityRepository implements KnPostRepositor
             FROM stu_kn kn
             CROSS JOIN LATERAL json_each_text(kn.ratings)
             WHERE kn.user_id = :userId
-            AND kn.ratings #>> '{}' != '[]'
-            AND kn.deleted IS NULL",
+            AND kn.ratings #>> '{}' != '[]'",
             $rsm
         )
             ->setParameter('userId', $user->getId())
@@ -190,14 +186,5 @@ final class KnPostRepository extends EntityRepository implements KnPostRepositor
         }
 
         return (int) $result;
-    }
-
-    #[Override]
-    public function findActiveById(int $id): ?KnPostInterface
-    {
-        return $this->findOneBy([
-            'id' => $id,
-            'deleted' => null
-        ]);
     }
 }

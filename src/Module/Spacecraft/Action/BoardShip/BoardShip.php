@@ -151,7 +151,7 @@ final class BoardShip implements ActionControllerInterface
             ShipInteractionEnum::BOARD_SHIP
         );
 
-        if ($spacecraft->getCondition()->isDestroyed()) {
+        if ($spacecraft->isDestroyed()) {
             $game->setView(ModuleEnum::SHIP);
             return;
         }
@@ -182,7 +182,7 @@ final class BoardShip implements ActionControllerInterface
             time()
         );
 
-        while ($combatGroupAttacker !== [] && $combatGroupDefender !== []) {
+        while (!empty($combatGroupAttacker) && !empty($combatGroupDefender)) {
             $this->boardShip->cycleKillRound(
                 $combatGroupAttacker,
                 $combatGroupDefender,
@@ -195,7 +195,7 @@ final class BoardShip implements ActionControllerInterface
         $message = $this->messageFactory->createMessage($userId, $targetUserId);
         $messages->add($message);
 
-        if ($combatGroupAttacker === []) {
+        if (empty($combatGroupAttacker)) {
             $message->add('Der Enterversuch ist gescheitert');
         } elseif ($target->getCrewAssignments()->isEmpty()) {
             $message->add(sprintf(

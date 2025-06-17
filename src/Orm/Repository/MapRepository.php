@@ -18,9 +18,6 @@ use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Entity\MapRegionSettlement;
-use Stu\Orm\Entity\StarSystemMap;
-
 
 /**
  * @extends EntityRepository<Map>
@@ -508,7 +505,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                 JOIN stu_location l
                 ON m.id = l.id
                 LEFT JOIN stu_user_map um
-                    ON um.cx = l.cx AND um.cy = l.cy AND um.user_id = :userId AND um.layer_id = l.layer_id
+                    ON um.cy = l.cy AND um.cx = l.cx AND um.user_id = :userId AND um.layer_id = l.layer_id
                 LEFT JOIN stu_systems sys
                     ON m.systems_id = sys.id
                 LEFT JOIN stu_database_user dbu
@@ -829,49 +826,19 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
         ])->getResult();
     }
 
-    public function getUniqueInfluenceAreaIds(int $layerId): array
+    public function getUniqueInfluenceAreaIds(): array
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('influence_area_id', 'influence_area_id', 'integer');
 
         $query = $this->getEntityManager()->createNativeQuery(
-            'SELECT DISTINCT m.influence_area_id
-            FROM stu_map m
-            JOIN stu_location l ON m.id = l.id
-            WHERE m.influence_area_id IS NOT NULL
-            AND l.layer_id = :layerId
-            ORDER BY m.influence_area_id ASC',
+            'SELECT DISTINCT influence_area_id
+             FROM stu_map
+             WHERE influence_area_id IS NOT NULL
+             ORDER BY influence_area_id ASC',
             $rsm
-        )->setParameters([
-            'layerId' => $layerId
-        ]);
+        );
 
         return array_map('intval', array_column($query->getResult(), 'influence_area_id'));
-    }
-
-    #[Override]
-    public function isAdminRegionUserRegion(int $locationId, int $factionId): bool
-    {
-        $result = $this->getEntityManager()
-            ->createQuery(
-                sprintf(
-                    'SELECT COUNT(mrs.id) FROM %s m
-            JOIN %s ssm WITH m.systems_id = ssm.systems_id
-            JOIN %s mrs WITH m.admin_region_id = mrs.region_id
-            WHERE ssm.id = :locationId
-            AND mrs.faction_id = :factionId
-            AND m.admin_region_id IS NOT NULL',
-                    Map::class,
-                    StarSystemMap::class,
-                    MapRegionSettlement::class
-                )
-            )
-            ->setParameters([
-                'locationId' => $locationId,
-                'factionId' => $factionId
-            ])
-            ->getSingleScalarResult();
-
-        return $result > 0;
     }
 }

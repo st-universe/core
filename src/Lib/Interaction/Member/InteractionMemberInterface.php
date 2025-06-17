@@ -18,6 +18,7 @@ interface InteractionMemberInterface extends EntityWithLocationInterface
     /** @param callable(InteractionCheckType):bool $shouldCheck */
     public function canBeAccessedFrom(
         InteractionMemberInterface $other,
+        bool $isFriend,
         callable $shouldCheck
     ): ?InteractionCheckType;
 

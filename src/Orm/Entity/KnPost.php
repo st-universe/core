@@ -57,10 +57,6 @@ class KnPost implements KnPostInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $plot_id = null;
 
-    #[Column(type: 'integer', nullable: true)]
-    private ?int $deleted = null;
-
-
     /**
      * @var array<mixed>
      */
@@ -243,21 +239,6 @@ class KnPost implements KnPostInterface
         $this->ratings = $ratings;
         return $this;
     }
-
-    #[Override]
-    public function getDeleted(): ?int
-    {
-        return $this->deleted;
-    }
-
-    #[Override]
-    public function setDeleted(?int $timestamp): KnPostInterface
-    {
-        $this->deleted = $timestamp;
-
-        return $this;
-    }
-
 
     #[Override]
     public function getUrl(): string

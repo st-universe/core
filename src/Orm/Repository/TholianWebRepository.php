@@ -16,6 +16,12 @@ use Stu\Orm\Entity\TholianWebInterface;
 final class TholianWebRepository extends EntityRepository implements TholianWebRepositoryInterface
 {
     #[Override]
+    public function prototype(): TholianWebInterface
+    {
+        return new TholianWeb();
+    }
+
+    #[Override]
     public function save(TholianWebInterface $web): void
     {
         $em = $this->getEntityManager();

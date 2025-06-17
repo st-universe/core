@@ -72,7 +72,7 @@ final class AttackSpacecraft implements ActionControllerInterface
             return;
         }
 
-        if ($target->getCondition()->isDestroyed()) {
+        if ($target->isDestroyed()) {
             $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
             $game->addInformation(_('Das Ziel ist bereits zerstört'));
             return;
@@ -95,7 +95,7 @@ final class AttackSpacecraft implements ActionControllerInterface
         $isFleetFight = false;
         $informations = new InformationWrapper();
 
-        $this->spacecraftAttackCore->attack($wrapper, $targetWrapper, false, $isFleetFight, $informations);
+        $this->spacecraftAttackCore->attack($wrapper, $targetWrapper, $isFleetFight, $informations);
 
         $this->pirateReaction->checkForPirateReaction(
             $target,
@@ -103,7 +103,7 @@ final class AttackSpacecraft implements ActionControllerInterface
             $spacecraft
         );
 
-        if ($spacecraft->getCondition()->isDestroyed()) {
+        if ($spacecraft->isDestroyed()) {
             $game->addInformationWrapper($informations);
             return;
         }

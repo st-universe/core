@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\UnsetTopicSticky;
 
 use Override;
-use Stu\Exception\AccessViolationException;
+use Stu\Exception\AccessViolation;
 use Stu\Module\Alliance\View\Topic\Topic;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -14,6 +14,9 @@ use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
 final class UnsetTopicSticky implements ActionControllerInterface
 {
+    /**
+     * @var string
+     */
     public const string ACTION_IDENTIFIER = 'B_UNSET_STICKY';
 
     public function __construct(private UnsetTopicStickyRequestInterface $unsetTopicStickyRequest, private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository)
@@ -28,7 +31,7 @@ final class UnsetTopicSticky implements ActionControllerInterface
         /** @var AllianceBoardTopicInterface $topic */
         $topic = $this->allianceBoardTopicRepository->find($this->unsetTopicStickyRequest->getTopicId());
         if ($topic === null || $topic->getAllianceId() !== $alliance->getId()) {
-            throw new AccessViolationException();
+            throw new AccessViolation();
         }
 
         $topic->setSticky(false);

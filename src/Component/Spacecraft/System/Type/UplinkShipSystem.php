@@ -27,7 +27,7 @@ final class UplinkShipSystem extends AbstractSpacecraftSystemType implements Spa
 
         $minOwnCrew = 0;
         $buildplan = $spacecraft->getBuildplan();
-        if ($buildplan !== null) {
+        if ($buildplan) {
             $minOwnCrew = $buildplan->getCrew();
         }
         if (!$this->hasForeignCrew($spacecraft)) {

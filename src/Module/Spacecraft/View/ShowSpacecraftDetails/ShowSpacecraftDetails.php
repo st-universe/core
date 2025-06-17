@@ -7,7 +7,6 @@ namespace Stu\Module\Spacecraft\View\ShowSpacecraftDetails;
 use Override;
 use request;
 use Stu\Component\Spacecraft\System\Type\UplinkShipSystem;
-use Stu\Lib\Trait\SpacecraftTractorPayloadTrait;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
@@ -16,8 +15,6 @@ use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 
 final class ShowSpacecraftDetails implements ViewControllerInterface
 {
-    use SpacecraftTractorPayloadTrait;
-
     public const string VIEW_IDENTIFIER = 'SHOW_SPACECRAFTDETAILS';
 
     /** @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader */
@@ -42,7 +39,6 @@ final class ShowSpacecraftDetails implements ViewControllerInterface
         $game->setMacroInAjaxWindow('html/spacecraft/spacecraftDetails.twig');
 
         $game->setTemplateVar('WRAPPER', $wrapper);
-        $game->setTemplateVar('TRACTOR_PAYLOAD', $this->getTractorPayload($wrapper->get()));
 
         $game->setTemplateVar('FOREIGNER_COUNT', $this->troopTransferUtility->foreignerCount($wrapper->get()));
         $game->setTemplateVar('MAX_FOREIGNERS', UplinkShipSystem::MAX_FOREIGNERS);

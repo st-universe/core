@@ -46,7 +46,6 @@
     "doctrine/annotations": "^2.0",
     "doctrine/migrations": "^3.8",
     "doctrine/orm": "^3.3",
-    "doctrine/persistence": "^4.0",
     "filp/whoops": "^2.5",
     "graphp/graphviz": "^0.2.1",
     "hackzilla/password-generator": "^1.4",
