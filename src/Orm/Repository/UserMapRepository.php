@@ -46,28 +46,6 @@ final class UserMapRepository extends EntityRepository implements UserMapReposit
     }
 
     #[Override]
-    public function deleteMapFieldsForUser(int $userId, int $layerId, int $cx, int $cy, int $range): void
-    {
-        $this->getEntityManager()->createQuery(
-            sprintf(
-                'DELETE FROM %s um
-                WHERE um.user_id = :userId
-                AND um.layer_id = :layerId
-                AND um.cx BETWEEN :startCx AND :endCx
-                AND um.cy BETWEEN :startCy AND :endCy',
-                UserMap::class
-            )
-        )->setParameters([
-            'userId' => $userId,
-            'layerId' => $layerId,
-            'startCx' => $cx - $range,
-            'endCx' => $cx + $range,
-            'startCy' => $cy - $range,
-            'endCy' => $cy + $range,
-        ])->execute();
-    }
-
-    #[Override]
     public function getAmountByUser(UserInterface $user, LayerInterface $layer): int
     {
         return (int)$this->getEntityManager()->createQuery(
@@ -85,16 +63,16 @@ final class UserMapRepository extends EntityRepository implements UserMapReposit
     }
 
     #[Override]
-    public function truncateByUser(int $userId): void
+    public function truncateByUser(UserInterface $user): void
     {
         $this->getEntityManager()->createQuery(
             sprintf(
                 'DELETE FROM %s um
-                WHERE um.user_id = :userId',
+                WHERE um.user = :user',
                 UserMap::class
             )
         )->setParameters([
-            'userId' => $userId
+            'user' => $user
         ])->execute();
     }
 
