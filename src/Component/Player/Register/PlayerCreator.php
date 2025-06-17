@@ -107,10 +107,11 @@ class PlayerCreator implements PlayerCreatorInterface
     ): UserInterface {
 
         $player = $this->userRepository->prototype();
+        $player->setFaction($faction);
+
         $this->userRepository->save($player);
         $this->entityManager->flush();
 
-        $player->setFaction($faction);
         $player->setUsername('Siedler ' . $player->getId());
 
         $registration = $player->getRegistration();
@@ -119,9 +120,6 @@ class PlayerCreator implements PlayerCreatorInterface
         $registration->setCreationDate(time());
         $registration->setPassword(password_hash($password, PASSWORD_DEFAULT));
         $registration->setEmailCode($emailCode);
-        $this->userRepository->save($player);
-        $this->entityManager->flush();
-
 
         $player->setState(UserEnum::USER_STATE_ACCOUNT_VERIFICATION);
 

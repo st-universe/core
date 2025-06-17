@@ -175,12 +175,15 @@ class RegisterTest extends StuTestCase
         $this->subject->handle($this->game);
     }
 
-    public function testHandleDoeaNothingIfMobileNumberIsEmpty(): void
+    public function testHandleDoNothingIfMobileNumberIsEmpty(): void
     {
         $factionId = 4;
 
         $this->config->shouldReceive('get')
             ->with('game.registration.enabled')
+            ->andReturn(true);
+        $this->config->shouldReceive('get')
+            ->with('game.registration.sms_code_verification.enabled')
             ->andReturn(true);
 
         $this->registerRequest->shouldReceive('getFactionId')
