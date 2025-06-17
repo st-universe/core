@@ -1,8 +1,7 @@
 build:
   nodes:
     analysis:
-      docker:
-        image: huxinator/php84-scrutinizer:latest
+      image: huxinator/php84-scrutinizer:latest
       environment:
         variables:
           XDEBUG_MODE: coverage
@@ -10,6 +9,10 @@ build:
         override:
           - php-scrutinizer-run
     coverage:
+      image: huxinator/php84-scrutinizer:latest
+      environment:
+        variables:
+          XDEBUG_MODE: coverage
       tests:
         override:
           - command: ./bin/doctrine orm:generate-proxies && XDEBUG_MODE=coverage ./vendor/bin/phpunit --coverage-clover build/coverage-clover.xml tests
@@ -30,8 +33,3 @@ filter:
 checks:
   php:
     code_rating: true
-build_failure_conditions:
-#  - 'elements.rating(<= D).exists'               # No classes/methods with a rating of D or worse
-  - 'elements.rating(<= D).new.exists'           # No new classes/methods with a rating of D or worse
-#  - 'project.metric_change("scrutinizer.test_coverage", < -0.10)'  # Code Coverage decreased from previous inspection by more than 10%
-    
