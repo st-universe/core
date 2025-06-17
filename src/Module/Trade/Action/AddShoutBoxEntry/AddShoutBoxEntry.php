@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\Action\AddShoutBoxEntry;
 
 use Override;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Trade\View\ShowShoutBoxList\ShowShoutBoxList;
@@ -28,7 +28,7 @@ final class AddShoutBoxEntry implements ActionControllerInterface
         $tradeNetworkId = $this->addShoutBoxEntryRequest->getTradeNetworkId();
 
         if (!$this->tradeLicenseRepository->hasLicenseByUserAndNetwork($userId, $tradeNetworkId)) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
         $msg = substr(strip_tags($msg), 0, 200);
         if (mb_strlen($msg) > 0) {

@@ -63,7 +63,6 @@ class SpacecraftMember implements InteractionMemberInterface
     #[Override]
     public function canBeAccessedFrom(
         InteractionMemberInterface $other,
-        bool $isFriend,
         callable $shouldCheck
     ): ?InteractionCheckType {
 
@@ -86,7 +85,7 @@ class SpacecraftMember implements InteractionMemberInterface
 
         if (
             $shouldCheck(InteractionCheckType::EXPECT_TARGET_UNSHIELDED)
-            && $this->spacecraft->isShielded() && !$isFriend
+            && $this->spacecraft->isShielded()
         ) {
             return InteractionCheckType::EXPECT_TARGET_UNSHIELDED;
         }

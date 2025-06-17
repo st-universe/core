@@ -27,7 +27,7 @@ final class EnergyWeaponShipSystem extends AbstractSpacecraftSystemType implemen
             return false;
         }
 
-        if ($ship->isAlertGreen()) {
+        if ($wrapper->isUnalerted()) {
             $reason = _('die Alarmstufe Grün ist');
             return false;
         }

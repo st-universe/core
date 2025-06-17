@@ -43,4 +43,8 @@ interface FactionInterface
     public function getPrimaryEffectCommodity(): ?CommodityInterface;
 
     public function getSecondaryEffectCommodity(): ?CommodityInterface;
+
+    public function getWelcomeMessage(): ?string;
+
+    public function setWelcomeMessage(string $welcome_message): FactionInterface;
 }

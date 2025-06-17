@@ -58,7 +58,7 @@ interface SpacecraftRepositoryInterface extends ObjectRepository
         MapInterface|StarSystemMapInterface|null $field = null
     ): array;
 
-    public function getRandomSpacecraftIdWithCrewByUser(int $userId): ?int;
+    public function getRandomSpacecraftWithCrewByUser(int $userId): ?SpacecraftInterface;
 
     /**
      * @return array<SpacecraftInterface>

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Spacecraft\System\Type;
 
+use Mockery\MockInterface;
 use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
@@ -15,10 +16,11 @@ use Stu\StuTestCase;
 
 class ProjectileWeaponShipSystemTest extends StuTestCase
 {
+    /** @var MockInterface&ShipWrapperInterface */
+    private $wrapper;
+    /** @var MockInterface&ShipInterface */
+    private $ship;
     private ProjectileWeaponShipSystem $system;
-
-    private ShipWrapperInterface $wrapper;
-    private ShipInterface $ship;
 
     #[Override]
     public function setUp(): void
@@ -79,7 +81,7 @@ class ProjectileWeaponShipSystemTest extends StuTestCase
             ->once()
             ->andReturn(false);
 
-        $this->ship->shouldReceive('isAlertGreen')
+        $this->wrapper->shouldReceive('isUnalerted')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -103,7 +105,7 @@ class ProjectileWeaponShipSystemTest extends StuTestCase
             ->once()
             ->andReturn(false);
 
-        $this->ship->shouldReceive('isAlertGreen')
+        $this->wrapper->shouldReceive('isUnalerted')
             ->withNoArgs()
             ->once()
             ->andReturn(true);

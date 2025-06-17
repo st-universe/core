@@ -19,7 +19,8 @@ abstract class AbstractBattleParty implements BattlePartyInterface
     private ?Collection $members = null;
 
     public function __construct(
-        protected SpacecraftWrapperInterface $leader
+        protected SpacecraftWrapperInterface $leader,
+        private bool $isAttackingShieldsOnly = false
     ) {
         $this->isStation = $leader->get()->isStation();
         $this->user = $leader->get()->getUser();
@@ -50,8 +51,8 @@ abstract class AbstractBattleParty implements BattlePartyInterface
         }
 
         return $this->members->filter(
-            fn(SpacecraftWrapperInterface $wrapper): bool => !$wrapper->get()->isDestroyed()
-                && (!$filterDisabled || !$wrapper->get()->isDisabled())
+            fn(SpacecraftWrapperInterface $wrapper): bool => !$wrapper->get()->getCondition()->isDestroyed()
+                && (!$filterDisabled || !$wrapper->get()->getCondition()->isDisabled())
                 && (!$canFire || $wrapper->canFire())
         );
     }
@@ -79,6 +80,12 @@ abstract class AbstractBattleParty implements BattlePartyInterface
     public function isStation(): bool
     {
         return $this->isStation;
+    }
+
+    #[Override]
+    public function isAttackingShieldsOnly(): bool
+    {
+        return $this->isAttackingShieldsOnly;
     }
 
     /**

@@ -92,7 +92,7 @@ final class AlertReactionFacade implements AlertReactionFacadeInterface
             $alertUserId,
             $pm,
             $alertedParty->isStation() ? PrivateMessageFolderTypeEnum::SPECIAL_STATION : PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
-            $alertLeader->isDestroyed() ? null : $alertLeader->getHref()
+            $alertLeader->getCondition()->isDestroyed() ? null : $alertLeader->getHref()
         );
         $pm = sprintf(
             _("Fremde Schiffe auf %s, Kampf in Sektor %s\n%s"),
@@ -107,7 +107,7 @@ final class AlertReactionFacade implements AlertReactionFacadeInterface
             PrivateMessageFolderTypeEnum::SPECIAL_SHIP
         );
 
-        if ($incomingLeader->isDestroyed()) {
+        if ($incomingLeader->getCondition()->isDestroyed()) {
             $fightInformations->dumpTo($informations);
             return;
         }

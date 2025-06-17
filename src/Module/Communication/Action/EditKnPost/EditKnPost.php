@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Communication\Action\EditKnPost;
 
 use Override;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -35,10 +35,10 @@ final class EditKnPost implements ActionControllerInterface
 
         /** @var KnPostInterface $post */
         $post = $this->knPostRepository->find($this->editKnPostRequest->getKnId());
-        if ($post === null || $post->getUserId() !== $userId) {
-            throw new AccessViolation();
+        if ($post === null || ($post->getUserId() !== $userId && !$game->isAdmin())) {
+            throw new AccessViolationException();
         }
-        if ($post->getDate() < time() - self::EDIT_TIME) {
+        if ($post->getDate() < time() - self::EDIT_TIME && !$game->isAdmin()) {
             $game->addInformation(_('Dieser Beitrag kann nicht editiert werden'));
             return;
         }
@@ -105,9 +105,13 @@ final class EditKnPost implements ActionControllerInterface
 
 
         foreach ($charactersAddedMapping as $ownerId => $characterNames) {
+
+            $isSingleCharacter = count($characterNames) === 1;
             $charList = implode(', ', $characterNames);
             $text = sprintf(
-                'Deine Charaktere %s wurden zu einem KN Post hinzugefügt. Titel des Posts: "%s"',
+                $isSingleCharacter
+                    ? 'Dein Charakter %s wurde zu einem KN Post hinzugefügt. Titel des Posts: "%s".'
+                    : 'Deine Charaktere %s wurden zu einem KN Post hinzugefügt. Titel des Posts: "%s".',
                 $charList,
                 $post->getTitle()
             );
@@ -142,7 +146,7 @@ final class EditKnPost implements ActionControllerInterface
                     'knPost' => $post->getId(),
                     'userCharacters' => $currentCharacterId
                 ]);
-                if ($entityToRemove) {
+                if ($entityToRemove !== null) {
                     $this->knCharactersRepository->delete($entityToRemove);
                 }
             }
@@ -164,6 +168,16 @@ final class EditKnPost implements ActionControllerInterface
         $post->setEditDate(time());
 
         $this->knPostRepository->save($post);
+
+        if ($game->isAdmin() && $game->getUser() != $post->getUser()) {
+            $this->privateMessageSender->send(
+                UserEnum::USER_NOONE,
+                $post->getUser()->getId(),
+                sprintf(_('Der Beitrag "%s" mit der ID %d wurde von Admin %s bearbeitet'), $post->getTitle(), $post->getId(), $game->getUser()->getName()),
+                PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,
+                $post
+            );
+        }
 
         $game->addInformation(_('Der Beitrag wurde editiert'));
     }

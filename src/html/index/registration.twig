@@ -3,162 +3,223 @@
 {% block body %}
 </div>
 <div class="mainbar_box_header mt-4">
-  <small>Registrierung - Star Trek Universe</small>
+	<small>Registrierung - Star Trek Universe</small>
 </div>
 <div class="mainbar_box_content">
-  <div class="p-3">
-	<div class="row">
-      
-      <div class="col-lg-2 d-none d-lg-block">
-	  </div>
-	     <div class="col-12 col-lg-8">
-      <form action="/index.php" method="post" onsubmit="checkSubmit({{ IS_SMS_REGISTRATION }}); return false;" id="registerform" class="mb-3">
-        
-    	  <input type="hidden" name="factionid" id="factionid" value="0" />
-
-    	  <div class="mb-3">
-       		<label for="loginname" class="form-label">
-		  	  <span id="loginerror" style="display: none;">❌</span>
-              <span id="loginok" style="display: none;">✔️</span>
-		  	  Loginname
-			</label>
-        	<div class="d-flex align-items-center">
-              <input type="text" class="form-control me-2" name="loginname" id="loginname" onblur="checkLogin(this, this.value)" />   
-        	</div>
-        	<div id="logindup" class="text-warning" style="display: none;">
-			  Dieser Loginname ist bereits registriert
-			</div>
-        	<small class="form-text">Minimum 6 Buchstaben/Zahlen</small>
-   		  </div>
-
-          <div class="mb-3">
-        	<label for="email" class="form-label">
-		  	  <span id="emailerror" class="text-danger pr-1" style="display: none;">❌</span>
-          	  <span id="emailok" class="text-success pr-1" style="display: none;">✔️</span>
-		  	  E-Mail Adresse
-			</label>
-        	<div class="d-flex align-items-center">
-              <input type="email" class="form-control me-2" name="email" id="email" onblur="checkEmail(this, this.value);" />
-            </div>
-        	<div id="emaildup" class="text-warning" style="display: none;">
-			  Diese E-Mailadresse ist bereits registriert
-			</div>
-            <div id="emailblk" class="text-warning" style="display: none;">
-			  Diese E-Mailadresse ist blockiert
-			</div>
-    	  </div>
-
-    	  {% if IS_SMS_REGISTRATION %}
-         	<div class="mb-1">
-        	  <label for="mobile" class="form-label">
-		  	    <span id="mobileerror" class="text-danger me-2" style="display: none;">❌</span>
-          	    <span id="mobileok" class="text-success" style="display: none;">✔️</span>
-		  	    Mobilfunknummer zur SMS Verifikation (DE/AT/CH) 
-				<span class="tooltip-container">
-        		  <span class="info-icon"></span>
-        			<div class="tooltip-box">
-          			  Nummer ohne führende Null eingeben! </br><small>z.B. 17655555, 1706666 oder 1501234567</small>
-        			</div>
-      			  </span>
-			  </label>
-        	  <div class="input-group">
-            	<select id="countryCodeSelect" name="countrycode" class="form-select stu-select" onchange="updateMobileValue()">
-                  <option value="+49" selected>(DE) +49</option>
-                  <option value="+43">(AT) +43</option>
-                  <option value="+41">(CH) +41</option>
-            	</select>
-            	<input type="tel" class="form-control" style="width: 100px;" name="mobile" id="mobile" oninput="debouncedCheckMobile(this, this.value); updateMobileValue()" />
-        	  </div>
-        	  <div id="mobiledup" class="text-warning" style="display: none;">Diese Mobilfunknummer ist bereits registriert</div>
-        	  <div id="mobileucp" class="text-warning" style="display: none;">Nur +49, +43 und +41 werden unterstützt (DE/AT/CH)</div>
-        	  <div id="mobileupd" class="text-warning" style="display: none;">Format ungültig, Beispiele bei Info-? beachten</div>
-        	  <div id="mobileblk" class="text-warning" style="display: none;">Diese Mobilfunknummer ist blockiert</div>
-        	  <small class="form-text">Deine Nummer: <span id="combinedMobileValue"></span></small>
-    		</div>
-    	  {% endif %}
-
-   		</div>
-        <div class="col-lg-2 d-none d-lg-block">
-		</div>
-	  </div>
-
-	  <div class="registration_box_content mt-2">
+	<div class="p-3">
 		<div class="row">
-    	  <div class="col-lg-2 d-none d-lg-block">
+
+			<div class="col-lg-2 d-none d-lg-block">
+			</div>
+			<div class="col-12 col-lg-8">
+				<form action="/index.php" method="post" onsubmit="checkSubmit({{ IS_SMS_REGISTRATION }}); return false;"
+					id="registerform" class="mb-3">
+
+					<input type="hidden" name="factionid" id="factionid" value="0" />
+
+					<div class="mb-3">
+						<label for="loginname" class="form-label">
+							<span id="loginerror" style="display: none;">❌</span>
+							<span id="loginok" style="display: none;">✔️</span>
+							Loginname
+						</label>
+						<div class="d-flex align-items-center">
+							<input type="text" class="form-control me-2" name="loginname" id="loginname"
+								onblur="checkLogin(this, this.value)" />
+						</div>
+						<div id="logindup" class="text-warning" style="display: none;">
+							Dieser Loginname ist bereits registriert
+						</div>
+						<small class="form-text">Minimum 6 Buchstaben/Zahlen</small>
+					</div>
+
+					<div class="mb-3">
+						<label for="email" class="form-label">
+							<span id="emailerror" class="text-danger pr-1" style="display: none;">❌</span>
+							<span id="emailok" class="text-success pr-1" style="display: none;">✔️</span>
+							E-Mail Adresse
+						</label>
+						<div class="d-flex align-items-center">
+							<input type="email" class="form-control me-2" name="email" id="email"
+								onblur="checkEmail(this, this.value);" />
+						</div>
+						<div id="emaildup" class="text-warning" style="display: none;">
+							Diese E-Mailadresse ist bereits registriert
+						</div>
+						<div id="emailblk" class="text-warning" style="display: none;">
+							Diese E-Mailadresse ist blockiert
+						</div>
+					</div>
+
+					<div class="mb-3">
+						<label for="password" class="form-label">
+							<span id="passworderror" class="text-danger pr-1" style="display: none;">❌</span>
+							<span id="passwordok" class="text-success pr-1" style="display: none;">✔️</span>
+							Passwort
+						</label>
+						<div class="input-group">
+							<input type="password" class="form-control" name="password" id="password"
+								oninput="checkPassword(this.value)" />
+							<button type="button" class="btn-stu"
+								onclick="togglePasswordVisibility('password', 'passwordToggle')">
+								<span id="passwordToggle">👁️</span>
+							</button>
+						</div>
+						<div id="passwordRequirements" class="password-requirements" style="display: none;">
+							<div id="req-length" class="requirement">
+								<span class="req-icon">❌</span> Mindestens 6 Zeichen
+							</div>
+							<div id="req-uppercase" class="requirement">
+								<span class="req-icon">❌</span> Ein Großbuchstabe
+							</div>
+							<div id="req-lowercase" class="requirement">
+								<span class="req-icon">❌</span> Ein Kleinbuchstabe
+							</div>
+							<div id="req-special" class="requirement">
+								<span class="req-icon">❌</span> Ein Sonderzeichen
+							</div>
+						</div>
+					</div>
+
+					<div class="mb-3">
+						<label for="password2" class="form-label">
+							<span id="password2error" class="text-danger pr-1" style="display: none;">❌</span>
+							<span id="password2ok" class="text-success pr-1" style="display: none;">✔️</span>
+							Passwort wiederholen
+						</label>
+						<div class="input-group">
+							<input type="password" class="form-control" name="password2" id="password2"
+								oninput="checkPasswordMatch()" />
+							<button type="button" class="btn-stu"
+								onclick="togglePasswordVisibility('password2', 'password2Toggle')">
+								<span id="password2Toggle">👁️</span>
+							</button>
+						</div>
+						<div id="passwordMatch" class="requirement" style="display: none;">
+							<span id="match-icon" class="req-icon">❌</span> Passwörter stimmen überein
+						</div>
+					</div>
+
+					{% if IS_SMS_REGISTRATION %}
+					<div class="mb-1">
+						<label for="mobile" class="form-label">
+							<span id="mobileerror" class="text-danger me-2" style="display: none;">❌</span>
+							<span id="mobileok" class="text-success" style="display: none;">✔️</span>
+							Mobilfunknummer zur SMS Verifikation (DE/AT/CH)
+							<span class="tooltip-container">
+								<span class="info-icon"></span>
+								<div class="tooltip-box">
+									Nummer ohne führende Null eingeben! </br><small>z.B. 17655555, 1706666 oder
+										1501234567</small>
+								</div>
+							</span>
+						</label>
+						<div class="input-group">
+							<select id="countryCodeSelect" name="countrycode" class="form-select stu-select"
+								onchange="updateMobileValue()">
+								<option value="+49" selected>(DE) +49</option>
+								<option value="+43">(AT) +43</option>
+								<option value="+41">(CH) +41</option>
+							</select>
+							<input type="tel" class="form-control" style="width: 100px;" name="mobile" id="mobile"
+								oninput="debouncedCheckMobile(this, this.value); updateMobileValue()" />
+						</div>
+						<div id="mobiledup" class="text-warning" style="display: none;">Diese Mobilfunknummer ist
+							bereits registriert</div>
+						<div id="mobileucp" class="text-warning" style="display: none;">Nur +49, +43 und +41 werden
+							unterstützt (DE/AT/CH)</div>
+						<div id="mobileupd" class="text-warning" style="display: none;">Format ungültig, Beispiele bei
+							Info-? beachten</div>
+						<div id="mobileblk" class="text-warning" style="display: none;">Diese Mobilfunknummer ist
+							blockiert</div>
+						<small class="form-text">Deine Nummer: <span id="combinedMobileValue"></span></small>
+					</div>
+					{% endif %}
+
+			</div>
+			<div class="col-lg-2 d-none d-lg-block">
+			</div>
 		</div>
-    
-	    <div class="col-12 col-lg-8">
-          <div class="mb-3">
-        	<label class="form-label">
-			  Fraktion wählen
-			</label>
-        	{% for faction in POSSIBLE_FACTIONS %}
-              {% set factionId = faction.getId %}
-                <div class="stu-border mb-2 p-2" style="background-color: {{ faction.getColor }}; cursor: pointer;" onclick="toggleFaction({{ factionId }}); selectFaction({{ factionId }});">
-                  {% include 'html/index/factionEntry.twig' %}
-                </div>
-        	{% endfor %}
-          </div>
-    	  <div class="mb-2">
-            <label class="form-label">
-			  Gewählte Fraktion
-			</label>
-        	<div id="ch_faction" class="stu-border-faction p-2">Keine</div>
-        	<div id="factionerror" class="text-danger" style="display: none;">Es wurde keine Fraktion gewählt</div>
-    	  </div>
+
+		<div class="registration_box_content mt-2">
+			<div class="row">
+				<div class="col-lg-2 d-none d-lg-block">
+				</div>
+
+				<div class="col-12 col-lg-8">
+					<div class="mb-3">
+						<label class="form-label">
+							Fraktion wählen
+						</label>
+						{% for faction in POSSIBLE_FACTIONS %}
+						{% set factionId = faction.getId %}
+						<div class="stu-border mb-2 p-2"
+							style="background-color: {{ faction.getColor }}; cursor: pointer;"
+							onclick="toggleFaction({{ factionId }}); selectFaction({{ factionId }});">
+							{% include 'html/index/factionEntry.twig' %}
+						</div>
+						{% endfor %}
+					</div>
+					<div class="mb-2">
+						<label class="form-label">
+							Gewählte Fraktion
+						</label>
+						<div id="ch_faction" class="stu-border-faction p-2">Keine</div>
+						<div id="factionerror" class="text-danger" style="display: none;">Es wurde keine Fraktion
+							gewählt</div>
+					</div>
+				</div>
+
+				<div class="col-lg-2 d-none d-lg-block">
+				</div>
+			</div>
 		</div>
 
-		<div class="col-lg-2 d-none d-lg-block">
+		<div class="row">
+			<div class="col-lg-2 d-none d-lg-block">
+			</div>
+
+			<div class="col-12 col-lg-8">
+				<div class="mb-3 pt-3">
+					<label for="referer" class="form-label">
+						Wie bist du auf STU gestoßen?
+					</label>
+					<input type="text" class="form-control" name="referer" id="referer" />
+				</div>
+
+				<div class="mb-3">
+					<div class="form-check">
+						<input class="form-check-input" type="checkbox" id="asb" name="asb"
+							onblur="checkEmail(this, this.value);" onclick="$('#asberror').hide()" />
+						<label class="form-check-label" for="asb">
+							Ich habe die <a href="{{ WIKI }}/index.php?title=Spielregeln" target="_blank"
+								class="text-decoration-underline">Spielregeln</a> und den
+							<a href="/?SHOW_INFOS=1" target="_blank"
+								class="text-decoration-underline">Datenschutzhinweis</a> gelesen und bin damit
+							einverstanden.
+						</label>
+					</div>
+					<div id="asberror" class="text-danger" style="display: none;">
+						Die Spielregeln/der Datenschutzhinweis wurde(n) nicht akzeptiert
+					</div>
+				</div>
+
+				{% if REGISTRATION_POSSIBLE %}
+				<div class="text-center pb-3">
+					<button type="submit" name="B_SEND_REGISTRATION" value="Registrieren"
+						class="btn-stu w-50">Registrieren</button>
+				</div>
+				{% else %}
+				<div class="alert alert-warning">
+					Im Moment sind leider keine weiteren Anmeldungen möglich.
+				</div>
+				{% endif %}
+			</div>
+			</form>
+
+			<div class="col-lg-2 d-none d-lg-block"></div>
 		</div>
-	  </div>
-    </div>
 
-	<div class="row">
-      <div class="col-lg-2 d-none d-lg-block">
-	  </div>
-    
-	  <div class="col-12 col-lg-8">
-	    <div class="mb-3 pt-3">
-          <label for="referer" class="form-label">
-		    Wie bist du auf STU gestoßen?
-		  </label>
-          <input type="text" class="form-control" name="referer" id="referer" />
-        </div>
+	</div>
 
-    	<div class="mb-3">
-		  <div class="form-check">
-    	    <input class="form-check-input" type="checkbox" id="asb" name="asb" onblur="checkEmail(this, this.value);"onclick="$('#asberror').hide()" />
-            <label class="form-check-label" for="asb">
-              Ich habe die <a href="{{ WIKI }}/index.php?title=Spielregeln" target="_blank" class="text-decoration-underline">Spielregeln</a> und den
-              <a href="/?SHOW_INFOS=1" target="_blank" class="text-decoration-underline">Datenschutzhinweis</a> gelesen und bin damit einverstanden.
-            </label>
-          </div>
-		  <div id="asberror" class="text-danger" style="display: none;">
-		    Die Spielregeln/der Datenschutzhinweis wurde(n) nicht akzeptiert
-		  </div>
-		</div>
-
-    	{% if REGISTRATION_POSSIBLE %}
-    	  <div class="text-center pb-3">
-        	<button type="submit" name="B_SEND_REGISTRATION" value="Registrieren" class="btn-stu w-50">Registrieren</button>
-    	  </div>
-    	{% else %}
-    	  <div class="alert alert-warning">
-		    Im Moment sind leider keine weiteren Anmeldungen möglich.
-		  </div>
-    	{% endif %}
-      </div>
-	</form>
-	
-    <div class="col-lg-2 d-none d-lg-block"></div></div>
-
-
-
-
-
- 
-
-
-</div>
-                
-{% endblock %}
+	{% endblock %}

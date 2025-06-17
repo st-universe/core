@@ -36,8 +36,8 @@ final class ModuleRumpWrapperShield extends ModuleRumpWrapperBase implements Mod
     #[Override]
     public function apply(SpacecraftWrapperInterface $wrapper): void
     {
-        if ($wrapper->get()->getShield() > $this->getValue()) {
-            $wrapper->get()->setShield($this->getValue());
+        if ($wrapper->get()->getCondition()->getShield() > $this->getValue()) {
+            $wrapper->get()->getCondition()->setShield($this->getValue());
         }
 
         $wrapper->get()->setMaxShield($this->getValue());

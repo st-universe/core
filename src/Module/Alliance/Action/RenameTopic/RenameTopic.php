@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\RenameTopic;
 
 use Override;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\View\Board\Board;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -13,9 +13,6 @@ use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
 final class RenameTopic implements ActionControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string ACTION_IDENTIFIER = 'B_RENAME_TOPIC';
 
     public function __construct(private RenameTopicRequestInterface $renameTopicRequest, private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository)
@@ -31,7 +28,7 @@ final class RenameTopic implements ActionControllerInterface
 
         $topic = $this->allianceBoardTopicRepository->find($this->renameTopicRequest->getTopicId());
         if ($topic === null || $topic->getAllianceId() !== $alliance->getId()) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $game->setView(Board::VIEW_IDENTIFIER);

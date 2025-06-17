@@ -27,6 +27,8 @@ use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
 //TODO unit tests
 final class RepairUtil implements RepairUtilInterface
 {
+    public const int REPAIR_RATE_PER_TICK = 100;
+
     public function __construct(
         private SpacecraftSystemRepositoryInterface $shipSystemRepository,
         private RepairTaskRepositoryInterface $repairTaskRepository,
@@ -55,7 +57,7 @@ final class RepairUtil implements RepairUtilInterface
     {
         $neededSpareParts = 0;
         $ship = $wrapper->get();
-        $hull = $ship->getHull();
+        $hull = $ship->getCondition()->getHull();
         $maxHull = $ship->getMaxHull();
 
         if ($hull < $maxHull) {
@@ -247,7 +249,7 @@ final class RepairUtil implements RepairUtilInterface
         $ship = $wrapper->get();
 
         //check for hull option
-        $hullPercentage = (int) ($ship->getHull() * 100 / $ship->getMaxHull());
+        $hullPercentage = (int) ($ship->getCondition()->getHull() * 100 / $ship->getMaxHull());
         if ($hullPercentage < RepairTaskConstants::BOTH_MAX) {
             $hullSystem = $this->shipSystemRepository->prototype();
             $hullSystem->setSystemType(SpacecraftSystemTypeEnum::HULL);
@@ -322,12 +324,12 @@ final class RepairUtil implements RepairUtilInterface
         $result = true;
 
         if ($systemType === SpacecraftSystemTypeEnum::HULL) {
-            $hullPercentage = (int) ($spacecraft->getHull() * 100 / $spacecraft->getMaxHull());
+            $hullPercentage = (int) ($spacecraft->getCondition()->getHull() * 100 / $spacecraft->getMaxHull());
 
             if ($hullPercentage > $percentage) {
                 $result = false;
             } else {
-                $spacecraft->setHuell((int)($spacecraft->getMaxHull() * $percentage / 100));
+                $spacecraft->getCondition()->setHull((int)($spacecraft->getMaxHull() * $percentage / 100));
             }
         } else {
             $system = $spacecraft->getSpacecraftSystem($systemType);
@@ -340,7 +342,7 @@ final class RepairUtil implements RepairUtilInterface
             }
         }
 
-        $spacecraft->setState(SpacecraftStateEnum::NONE);
+        $spacecraft->getCondition()->setState(SpacecraftStateEnum::NONE);
 
         return $result;
     }
@@ -396,7 +398,7 @@ final class RepairUtil implements RepairUtilInterface
     private function getRepairTicks(SpacecraftWrapperInterface $wrapper): int
     {
         $ship = $wrapper->get();
-        $ticks = (int) ceil(($ship->getMaxHull() - $ship->getHull()) / $ship->getRepairRate());
+        $ticks = (int) ceil(($ship->getMaxHull() - $ship->getCondition()->getHull()) / self::REPAIR_RATE_PER_TICK);
 
         return max($ticks, (int) ceil(count($wrapper->getDamagedSystems()) / 2));
     }

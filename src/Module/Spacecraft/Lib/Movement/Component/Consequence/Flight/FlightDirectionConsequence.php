@@ -31,16 +31,14 @@ class FlightDirectionConsequence extends AbstractFlightConsequence implements Fl
         MessageCollectionInterface $messages
     ): void {
 
-        $ship = $wrapper->get();
-
         //leaving star system
         if ($flightRoute->getRouteMode() === RouteModeEnum::SYSTEM_EXIT) {
-            $oldWaypoint = $ship->getLocation();
+            $oldWaypoint = $wrapper->get()->getLocation();
             if (!$oldWaypoint instanceof StarSystemMapInterface) {
                 throw new RuntimeException('this should not happen');
             }
 
-            $this->updateFlightDirection->updateWhenSystemExit($ship, $oldWaypoint);
+            $this->updateFlightDirection->updateWhenSystemExit($wrapper, $oldWaypoint);
         }
     }
 }

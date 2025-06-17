@@ -14,8 +14,6 @@ interface TorpedoTypeInterface
 
     public function getBaseDamage(): int;
 
-    public function setBaseDamage(int $baseDamage): TorpedoTypeInterface;
-
     public function getCriticalChance(): int;
 
     public function setCriticalChance(int $criticalChance): TorpedoTypeInterface;

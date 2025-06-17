@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\AcceptApplication;
 
 use Override;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\View\Applications\Applications;
 use Stu\Module\Control\ActionControllerInterface;
@@ -18,9 +18,6 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class AcceptApplication implements ActionControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string ACTION_IDENTIFIER = 'B_ACCEPT_APPLICATION';
 
     public function __construct(private AcceptApplicationRequestInterface $acceptApplicationRequest, private AllianceJobRepositoryInterface $allianceJobRepository, private AllianceActionManagerInterface $allianceActionManager, private PrivateMessageSenderInterface $privateMessageSender, private UserRepositoryInterface $userRepository)
@@ -37,16 +34,16 @@ final class AcceptApplication implements ActionControllerInterface
         $alliance = $game->getUser()->getAlliance();
 
         if ($alliance === null) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         if (!$this->allianceActionManager->mayEdit($alliance, $game->getUser())) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $appl = $this->allianceJobRepository->find($this->acceptApplicationRequest->getApplicationId());
         if ($appl === null || $appl->getAlliance()->getId() !== $alliance->getId()) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $applicant = $appl->getUser();

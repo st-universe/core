@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\Faction;
+use Stu\Orm\Entity\FactionInterface;
 use Stu\Orm\Entity\User;
 
 /**
@@ -45,5 +46,13 @@ final class FactionRepository extends EntityRepository implements FactionReposit
                 'firstUserId' => UserEnum::USER_FIRST_ID
             ])
             ->getResult();
+    }
+
+    #[Override]
+    public function save(FactionInterface $faction): void
+    {
+        $em = $this->getEntityManager();
+        $em->persist($faction);
+        $em->flush();
     }
 }

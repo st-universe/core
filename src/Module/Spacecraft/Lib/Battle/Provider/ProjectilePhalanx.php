@@ -8,6 +8,7 @@ use Override;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\LocationInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\TorpedoTypeInterface;
 
 final class ProjectilePhalanx implements ProjectileAttackerInterface
@@ -21,6 +22,12 @@ final class ProjectilePhalanx implements ProjectileAttackerInterface
     public function hasSufficientEnergy(int $amount): bool
     {
         return $this->getEps() >= $amount;
+    }
+
+    #[Override]
+    public function isAvoidingHullHits(SpacecraftInterface $target): bool
+    {
+        return false;
     }
 
     private function getEps(): int

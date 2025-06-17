@@ -45,7 +45,7 @@ class SearchFriendBehaviour implements PirateBehaviourInterface
         $filteredFriends = array_filter(
             $this->shipRepository->getPirateFriends($leadWrapper),
             fn(ShipInterface $friend): bool =>
-            !$friend->isDestroyed() && $friend->isFleetLeader()
+            !$friend->getCondition()->isDestroyed() && $friend->isFleetLeader()
         );
 
         $this->logger->logf('    number of friends in reach: %d', count($filteredFriends));

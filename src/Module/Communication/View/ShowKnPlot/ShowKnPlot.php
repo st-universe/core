@@ -18,9 +18,7 @@ final class ShowKnPlot implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_PLOT';
 
-    public function __construct(private ShowKnPlotRequestInterface $showKnPlotRequest, private KnPostRepositoryInterface $knPostRepository, private RpgPlotRepositoryInterface $rpgPlotRepository, private KnFactoryInterface $knFactory)
-    {
-    }
+    public function __construct(private ShowKnPlotRequestInterface $showKnPlotRequest, private KnPostRepositoryInterface $knPostRepository, private RpgPlotRepositoryInterface $rpgPlotRepository, private KnFactoryInterface $knFactory) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -77,13 +75,14 @@ final class ShowKnPlot implements ViewControllerInterface
         $game->setTemplateVar(
             'KN_POSTINGS',
             array_map(
-                fn (KnPostInterface $knPost): KnItemInterface => $this->knFactory->createKnItem(
+                fn(KnPostInterface $knPost): KnItemInterface => $this->knFactory->createKnItem(
                     $knPost,
                     $user
                 ),
                 $this->knPostRepository->getByPlot($plot, $mark, GameEnum::KN_PER_SITE)
             )
         );
+        $game->setTemplateVar('USER', $game->isAdmin());
         $game->setTemplateVar('KN_OFFSET', $mark);
         $game->setTemplateVar('KN_NAVIGATION', $knNavigation);
         $game->setTemplateVar('PLOT', $plot);
@@ -91,7 +90,7 @@ final class ShowKnPlot implements ViewControllerInterface
         $game->setTemplateVar(
             'POSTS',
             array_map(
-                fn (KnPostInterface $knPost): KnItemInterface => $this->knFactory->createKnItem(
+                fn(KnPostInterface $knPost): KnItemInterface => $this->knFactory->createKnItem(
                     $knPost,
                     $user
                 ),

@@ -15,8 +15,8 @@ final class EnterWormhole extends AbstractDirectedMovement
 {
     public const string ACTION_IDENTIFIER = 'B_ENTER_WORMHOLE';
 
-    private const MODE_ALLOWED = 1;
-    private const MODE_DENIED = 2;
+    private const int MODE_ALLOWED = 1;
+    private const int MODE_DENIED = 2;
 
     #[Override]
     protected function isSanityCheckFaultyConcrete(SpacecraftWrapperInterface $wrapper, GameControllerInterface $game): bool

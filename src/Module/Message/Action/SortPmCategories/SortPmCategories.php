@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Message\Action\SortPmCategories;
 
 use Override;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\View\Noop\Noop;
@@ -27,7 +27,7 @@ final class SortPmCategories implements ActionControllerInterface
         foreach ($this->sortPmCategoriesRequest->getCategoryIds() as $key => $value) {
             $cat = $this->privateMessageFolderRepository->find((int) $value);
             if ($cat === null || $cat->getUserId() !== $game->getUser()->getId()) {
-                throw new AccessViolation();
+                throw new AccessViolationException();
             }
             $cat->setSort((int) $key);
 

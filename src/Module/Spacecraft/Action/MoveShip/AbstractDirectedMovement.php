@@ -67,7 +67,7 @@ abstract class AbstractDirectedMovement implements ActionControllerInterface
         );
 
 
-        if ($ship->isDestroyed()) {
+        if ($ship->getCondition()->isDestroyed()) {
             $game->setView(ModuleEnum::SHIP);
         }
     }

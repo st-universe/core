@@ -24,7 +24,7 @@ final class ShipReset implements ShipResetInterface
     {
         echo "  - deactivate all tractor beams\n";
 
-        $this->entityManager->getConnection()->executeQuery('update stu_ship set tractored_ship_id = null');
+        $this->entityManager->getConnection()->executeQuery('update stu_spacecraft set tractored_ship_id = null');
 
         $this->entityManager->flush();
     }
@@ -34,7 +34,7 @@ final class ShipReset implements ShipResetInterface
     {
         echo "  - undock all ships\n";
 
-        $this->entityManager->getConnection()->executeQuery('update stu_ship set dock = null');
+        $this->entityManager->getConnection()->executeQuery('update stu_ship set docked_to_id = null');
 
         $this->entityManager->flush();
     }
@@ -64,7 +64,7 @@ final class ShipReset implements ShipResetInterface
     {
         echo "  - deleting all buildplans\n";
 
-        $this->entityManager->getConnection()->executeQuery('update stu_ship set plan_id = null');
+        $this->entityManager->getConnection()->executeQuery('update stu_spacecraft set plan_id = null');
 
         $this->spacecraftBuildplanRepository->truncateAllBuildplansExceptNoOne();
 

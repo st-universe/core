@@ -17,7 +17,12 @@ final class Register implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_SEND_REGISTRATION';
 
-    public function __construct(private RegisterRequestInterface $registerRequest, private FactionRepositoryInterface $factionRepository, private PlayerCreatorInterface $playerCreator, private ConfigInterface $config) {}
+    public function __construct(
+        private RegisterRequestInterface $registerRequest,
+        private FactionRepositoryInterface $factionRepository,
+        private PlayerCreatorInterface $playerCreator,
+        private ConfigInterface $config
+    ) {}
 
     /**
      * @todo add registration without sms
@@ -51,6 +56,50 @@ final class Register implements ActionControllerInterface
         $email = trim(mb_strtolower($this->registerRequest->getEmailAddress()));
         $referer = $this->registerRequest->getReferer();
 
+        $mobileNumber = $this->getMobileNumber();
+
+        if ($mobileNumber === null && $this->config->get('game.registration.sms_code_verification.enabled')) {
+            return;
+        }
+        $password = trim($this->registerRequest->getPassword());
+        $passwordReEntered = $this->registerRequest->getPasswordReEntered();
+
+        if ($password === '') {
+            return;
+        }
+        if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9]).{6,}$/', $password)) {
+            return;
+        }
+        if ($password !== $passwordReEntered) {
+            return;
+        }
+
+        if ($mobileNumber !== null) {
+            $this->playerCreator->createWithMobileNumber(
+                $loginname,
+                $email,
+                $faction['faction'],
+                $mobileNumber,
+                $password,
+                $referer
+            );
+        } else {
+            $this->playerCreator->createPlayer(
+                $loginname,
+                $email,
+                $faction['faction'],
+                $password,
+                null,
+                null,
+                $referer
+            );
+        }
+
+        $game->setView(ShowFinishRegistration::VIEW_IDENTIFIER);
+    }
+
+    private function getMobileNumber(): ?string
+    {
         $countryCode = $this->registerRequest->getCountryCode();
         $mobile = $this->registerRequest->getMobileNumber();
 
@@ -62,18 +111,7 @@ final class Register implements ActionControllerInterface
 
         $mobileNumber  = $countryCode . $mobile;
 
-        if ($mobileNumber === '') {
-            return;
-        }
-        $this->playerCreator->createWithMobileNumber(
-            $loginname,
-            $email,
-            $faction['faction'],
-            $mobileNumber,
-            $referer
-        );
-
-        $game->setView(ShowFinishRegistration::VIEW_IDENTIFIER);
+        return $mobileNumber === '' ? null : $mobileNumber;
     }
 
     #[Override]

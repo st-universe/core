@@ -21,9 +21,7 @@ final class CartographyBorderDataProvider extends AbstractBorderDataProvider
         protected MapRepositoryInterface $mapRepository,
         protected StarSystemMapRepositoryInterface $starSystemMapRepository,
         private AstroEntryRepositoryInterface $astroEntryRepository
-    ) {
-        $this->astroEntryRepository = $astroEntryRepository;
-    }
+    ) {}
 
     #[Override]
     protected function getDataClassString(): string

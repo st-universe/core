@@ -6,7 +6,7 @@ namespace Stu\Module\Game\Action\Logout;
 
 use Mockery\MockInterface;
 use Override;
-use Stu\Lib\SessionInterface;
+use Stu\Lib\Session\SessionInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\StuTestCase;
 

@@ -30,10 +30,10 @@ final class UserMapRepository extends EntityRepository implements UserMapReposit
                 AND l.cy BETWEEN %d AND %d
                 AND l.layer_id = %d
                 AND NOT EXISTS (SELECT * FROM stu_user_map um
-                                WHERE um.user_id = %d
-                                AND um.layer_id = l.layer_id
-                                AND um.cx = l.cx
-                                AND um.cy = l.cy)',
+                                WHERE um.cx = l.cx
+                                AND um.cy = l.cy
+                                AND um.user_id = %d
+                                AND um.layer_id = l.layer_id)',
                 $userId,
                 $cx - $range,
                 $cx + $range,
@@ -46,55 +46,33 @@ final class UserMapRepository extends EntityRepository implements UserMapReposit
     }
 
     #[Override]
-    public function deleteMapFieldsForUser(int $userId, int $layerId, int $cx, int $cy, int $range): void
-    {
-        $this->getEntityManager()->createQuery(
-            sprintf(
-                'DELETE FROM %s um
-                WHERE um.user_id = :userId
-                AND um.layer_id = :layerId
-                AND um.cx BETWEEN :startCx AND :endCx
-                AND um.cy BETWEEN :startCy AND :endCy',
-                UserMap::class
-            )
-        )->setParameters([
-            'userId' => $userId,
-            'layerId' => $layerId,
-            'startCx' => $cx - $range,
-            'endCx' => $cx + $range,
-            'startCy' => $cy - $range,
-            'endCy' => $cy + $range,
-        ])->execute();
-    }
-
-    #[Override]
     public function getAmountByUser(UserInterface $user, LayerInterface $layer): int
     {
         return (int)$this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT COUNT(um)
                 FROM %s um
-                WHERE um.user_id = :userId
-                AND um.layer_id = :layerId',
+                WHERE um.user = :user
+                AND um.layer = :layer',
                 UserMap::class
             )
         )->setParameters([
-            'userId' => $user->getId(),
-            'layerId' => $layer->getId()
+            'user' => $user,
+            'layer' => $layer
         ])->getSingleScalarResult();
     }
 
     #[Override]
-    public function truncateByUser(int $userId): void
+    public function truncateByUser(UserInterface $user): void
     {
         $this->getEntityManager()->createQuery(
             sprintf(
                 'DELETE FROM %s um
-                WHERE um.user_id = :userId',
+                WHERE um.user = :user',
                 UserMap::class
             )
         )->setParameters([
-            'userId' => $userId
+            'user' => $user
         ])->execute();
     }
 

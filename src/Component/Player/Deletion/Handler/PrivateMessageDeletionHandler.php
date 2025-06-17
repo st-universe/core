@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Deletion\Handler;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Override;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
-use Stu\Orm\Repository\UserRepositoryInterface;
 
 /**
  * Updates the sending user to the fallback one on user deletion
@@ -15,41 +15,40 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 final class PrivateMessageDeletionHandler implements PlayerDeletionHandlerInterface
 {
     public function __construct(
-        private UserRepositoryInterface $userRepository,
-        private PrivateMessageRepositoryInterface $privateMessageRepository,
-    ) {
-    }
+        private EntityManagerInterface $entityManager
+    ) {}
 
     #[Override]
     public function delete(UserInterface $user): void
     {
-        $nobody = $this->userRepository->getFallbackUser();
+        $this->setFallbackUserByDeletedSender($user);
+        $this->unsetInboxReference($user);
 
-        $this->setFallbackUserByDeletedSender($user, $nobody);
-        $this->unsetInboxReference($user, $nobody);
+        $this->entityManager->flush();
     }
 
-    private function setFallbackUserByDeletedSender(UserInterface $user, UserInterface $nobody): void
+    private function setFallbackUserByDeletedSender(UserInterface $user): void
     {
-        foreach ($this->privateMessageRepository->getBySender($user) as $pm) {
-            $pm->setSender($nobody);
-
-            $this->privateMessageRepository->save($pm);
-        }
+        $this->entityManager->getConnection()->executeStatement(
+            'UPDATE stu_pms SET send_user = :nobodyId
+            WHERE send_user = :userId',
+            [
+                'nobodyId' => UserEnum::USER_NOONE,
+                'userId' => $user->getId(),
+            ]
+        );
     }
 
-    private function unsetInboxReference(UserInterface $user, UserInterface $nobody): void
+    private function unsetInboxReference(UserInterface $user): void
     {
-        foreach ($this->privateMessageRepository->getByReceiver($user) as $pm) {
-
-            $pm->setRecipient($nobody);
-            $this->privateMessageRepository->save($pm);
-
-            $outboxPm = $pm->getOutboxPm();
-            if ($outboxPm !== null) {
-                $outboxPm->setInboxPm(null);
-                $this->privateMessageRepository->save($outboxPm);
-            }
-        }
+        $this->entityManager->getConnection()->executeStatement(
+            'UPDATE stu_pms outbox SET inbox_pm_id = NULL
+            WHERE EXISTS (SELECT * FROM stu_pms inbox
+                        WHERE inbox.id = outbox.inbox_pm_id
+                        AND inbox.recip_user = :userId)',
+            [
+                'userId' => $user->getId(),
+            ]
+        );
     }
 }

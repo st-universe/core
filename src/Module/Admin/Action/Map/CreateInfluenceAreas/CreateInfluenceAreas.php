@@ -102,7 +102,7 @@ final class CreateInfluenceAreas implements ActionControllerInterface
                     break;
                 }
 
-                if (empty($spreaderPerSystem)) {
+                if ($spreaderPerSystem === []) {
                     unset($this->spreader[$influenceId]);
                 }
             }

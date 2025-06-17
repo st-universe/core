@@ -22,9 +22,9 @@ class UserReferer implements UserRefererInterface
     #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    #[OneToOne(targetEntity: 'User', inversedBy: 'referer')]
-    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
-    private UserInterface $user;
+    #[OneToOne(targetEntity: 'UserRegistration', inversedBy: 'referer')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'user_id', nullable: false, onDelete: 'CASCADE')]
+    private UserRegistrationInterface $userRegistration;
 
     #[Column(type: 'text')]
     private string $referer;
@@ -36,15 +36,15 @@ class UserReferer implements UserRefererInterface
     }
 
     #[Override]
-    public function getUser(): UserInterface
+    public function getUserRegistration(): UserRegistrationInterface
     {
-        return $this->user;
+        return $this->userRegistration;
     }
 
     #[Override]
-    public function setUser(UserInterface $user): UserRefererInterface
+    public function setUserRegistration(UserRegistrationInterface $registration): UserRefererInterface
     {
-        $this->user = $user;
+        $this->userRegistration = $registration;
         return $this;
     }
 

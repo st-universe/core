@@ -29,6 +29,7 @@
     <form action="/npc/index.php" method="post">
         <input type="hidden" name="userId" value="{{ USER_ID }}">
         <input type="hidden" name="rumpId" value="{{ RUMP_ID }}">
+        <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
 
         {% for moduleType in MODULE_TYPES %}
         <div class="module-section">

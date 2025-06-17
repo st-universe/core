@@ -55,7 +55,7 @@ class AttackerProviderFactoryTest extends StuTestCase
     {
         $wrapper = $this->mock(ShipWrapperInterface::class);
 
-        $spacecraftAttacker = $this->subject->getSpacecraftAttacker($wrapper);
+        $spacecraftAttacker = $this->subject->createSpacecraftAttacker($wrapper);
 
         $this->assertNotNull($spacecraftAttacker);
     }
@@ -64,7 +64,7 @@ class AttackerProviderFactoryTest extends StuTestCase
     {
         $colony = $this->mock(ColonyInterface::class);
 
-        $attacker = $this->subject->getEnergyPhalanxAttacker($colony);
+        $attacker = $this->subject->createEnergyPhalanxAttacker($colony);
 
         $this->assertNotNull($attacker);
     }
@@ -73,7 +73,7 @@ class AttackerProviderFactoryTest extends StuTestCase
     {
         $colony = $this->mock(ColonyInterface::class);
 
-        $attacker = $this->subject->getProjectilePhalanxAttacker($colony);
+        $attacker = $this->subject->createProjectilePhalanxAttacker($colony);
 
         $this->assertNotNull($attacker);
     }

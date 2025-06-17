@@ -141,3 +141,9 @@ function showKnCharacter(characterId) {
 	ajax_update(elt, "comm.php?SHOW_KN_CHARACTER=1&character=" + characterId);
 
 }
+
+function showAdminDelete(postid) {
+	var elt = 'admindelete';
+	openWindow(elt, 1, 450);
+	ajax_update(elt, "comm.php?SHOW_ADMIN_DELETE_POST=1&postid=" + postid);
+}

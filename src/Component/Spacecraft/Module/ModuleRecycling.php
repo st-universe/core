@@ -41,15 +41,14 @@ class ModuleRecycling implements ModuleRecyclingInterface
         foreach ($spacecraft->getSystems() as $system) {
 
             $module = $system->getModule();
-            if ($module !== null) {
-                if (!array_key_exists($module->getId(), $recycledModuleChances)) {
-
-                    $buildplanModule = $buildplanModules->get($module->getId());
-                    $amount = $buildplanModule === null ? 1 : $buildplanModule->getModuleCount();
-                    $chance = (int)ceil($recyclingChance * $system->getStatus() / 100);
-
-                    $recycledModuleChances[$module->getId()] = [$module, $amount, $chance];
-                }
+            if (
+                $module !== null
+                && !array_key_exists($module->getId(), $recycledModuleChances)
+            ) {
+                $buildplanModule = $buildplanModules->get($module->getId());
+                $amount = $buildplanModule === null ? 1 : $buildplanModule->getModuleCount();
+                $chance = (int)ceil($recyclingChance * $system->getStatus() / 100);
+                $recycledModuleChances[$module->getId()] = [$module, $amount, $chance];
             }
         }
 
@@ -69,7 +68,7 @@ class ModuleRecycling implements ModuleRecyclingInterface
         }
 
         $maxStorage = $entity->getMaxStorage();
-
+        $recycledModules = [];
         foreach ($recycledModuleChances as [$module, $amount, $recyclingChance]) {
 
             if ($entity->getStorageSum() >= $maxStorage) {
@@ -87,7 +86,15 @@ class ModuleRecycling implements ModuleRecyclingInterface
                 $amount
             );
 
-            $information->addInformationf('Folgendes Modul konnte recycelt werden: %s, Anzahl: %d', $module->getName(), $amount);
+            $recycledModules[] = ['module' => $module, 'amount' => $amount];
+        }
+        if (count($recycledModules) > 0) {
+            $information->addInformation("\nFolgende Module konnten recycelt werden:");
+            foreach ($recycledModules as $recycled) {
+                $information->addInformationf('%s, Anzahl: %d', $recycled['module']->getName(), $recycled['amount']);
+            }
+        } else {
+            $information->addInformation("\nEs konnten keine Module recycelt werden.");
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Stu\Module\Alliance\Action\Signup;
 use Override;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Alliance\AllianceUserApplicationCheckerInterface;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -16,9 +16,6 @@ use Stu\Orm\Repository\AllianceRepositoryInterface;
 
 final class Signup implements ActionControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string ACTION_IDENTIFIER = 'B_SIGNUP_ALLIANCE';
 
     public function __construct(private SignupRequestInterface $signupRequest, private AllianceJobRepositoryInterface $allianceJobRepository, private AllianceRepositoryInterface $allianceRepository, private PrivateMessageSenderInterface $privateMessageSender, private AllianceUserApplicationCheckerInterface $allianceUserApplicationChecker)
@@ -37,7 +34,7 @@ final class Signup implements ActionControllerInterface
         }
 
         if (!$this->allianceUserApplicationChecker->mayApply($user, $alliance)) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $obj = $this->allianceJobRepository->prototype();

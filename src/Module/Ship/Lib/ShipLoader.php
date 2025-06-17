@@ -73,15 +73,13 @@ final class ShipLoader implements ShipLoaderInterface
         bool $checkForEntityLock = true
     ): SourceAndTargetWrappersInterface {
 
-        $wrappers = $this->spacecraftLoader->getWrappersBySourceAndUserAndTarget(
+        return $this->spacecraftLoader->getWrappersBySourceAndUserAndTarget(
             $shipId,
             $userId,
             $targetId,
             $allowUplink,
             $checkForEntityLock
         );
-
-        return $wrappers;
     }
 
     #[Override]

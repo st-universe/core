@@ -40,10 +40,10 @@
             </div>
         </div>
         {% endif %}
-        <div id="shipinorbit" class="box">
+        <div id="shipinorbit" class="box" style="max-width: 100%; overflow-x: auto;">
             <div class="box_title">Schiffe im Orbit</div>
             <div class="box_body">
-                <ul id="shipselector">
+                <ul id="shipselector" style="max-width: 100%;">
                     {% if FIRST_ORBIT_SPACECRAFT %}
                     {% set wrapper = FIRST_ORBIT_SPACECRAFT %}
                     {% include 'html/colony/component/shipSelector.twig' %}

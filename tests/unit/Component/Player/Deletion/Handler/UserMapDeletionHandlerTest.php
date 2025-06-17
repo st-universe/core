@@ -46,17 +46,13 @@ class UserMapDeletionHandlerTest extends StuTestCase
         $userLayer = Mockery::mock(UserLayerInterface::class);
         $userLayers = new ArrayCollection([$userLayer]);
 
-        $user->shouldReceive('getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(42);
         $user->shouldReceive('getUserLayers')
             ->withNoArgs()
             ->once()
             ->andReturn($userLayers);
 
         $this->userMapRepository->shouldReceive('truncateByUser')
-            ->with(42)
+            ->with($user)
             ->once();
 
         $this->userLayerRepository->shouldReceive('delete')

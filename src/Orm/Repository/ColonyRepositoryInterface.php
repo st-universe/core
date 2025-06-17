@@ -69,4 +69,6 @@ interface ColonyRepositoryInterface extends ObjectRepository
      * @return array<array{user_id: int, satisfied: int}>
      */
     public function getSatisfiedWorkerTop10(): array;
+
+    public function getClosestColonizableColonyDistance(SpacecraftWrapperInterface $wrapper): ?int;
 }

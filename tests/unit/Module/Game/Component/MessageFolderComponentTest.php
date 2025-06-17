@@ -74,7 +74,7 @@ class MessageFolderComponentTest extends StuTestCase
         $user->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn($userId);
-        $user->shouldReceive('hasStationsNavigation')
+        $user->shouldReceive('hasStationsPmCategory')
             ->withNoArgs()
             ->once()
             ->andReturnFalse();
@@ -134,7 +134,7 @@ class MessageFolderComponentTest extends StuTestCase
         $user->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn($userId);
-        $user->shouldReceive('hasStationsNavigation')
+        $user->shouldReceive('hasStationsPmCategory')
             ->withNoArgs()
             ->once()
             ->andReturnTrue();

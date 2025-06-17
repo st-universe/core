@@ -6,7 +6,7 @@ namespace Stu\Module\Alliance\Action\CancelContract;
 
 use Override;
 use Stu\Component\Alliance\AllianceEnum;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -15,9 +15,6 @@ use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 
 final class CancelContract implements ActionControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string ACTION_IDENTIFIER = 'B_CANCEL_CONTRACT';
 
     public function __construct(private CancelContractRequestInterface $cancelContractRequest, private EntryCreatorInterface $entryCreator, private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager)
@@ -31,7 +28,7 @@ final class CancelContract implements ActionControllerInterface
         $alliance = $user->getAlliance();
 
         if ($alliance === null) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $allianceId = $alliance->getId();
@@ -39,7 +36,7 @@ final class CancelContract implements ActionControllerInterface
         $relation = $this->allianceRelationRepository->find($this->cancelContractRequest->getRelationId());
 
         if (!$this->allianceActionManager->mayManageForeignRelations($alliance, $user)) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         if ($relation === null || ($relation->getOpponentId() !== $allianceId && $relation->getAllianceId() !== $allianceId)) {

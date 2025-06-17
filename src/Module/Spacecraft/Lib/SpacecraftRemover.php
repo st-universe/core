@@ -74,7 +74,7 @@ final class SpacecraftRemover implements SpacecraftRemoverInterface
                 $crewArray[] = $shipCrew->getCrew();
             }
 
-            $this->shipCrewRepository->truncateByShip($spacecraft->getId());
+            $this->shipCrewRepository->truncateBySpacecraft($spacecraft);
 
             foreach ($crewArray as $crew) {
                 $this->crewRepository->delete($crew);

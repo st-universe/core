@@ -6,7 +6,7 @@ namespace Stu\Module\Alliance\Action\AddBoard;
 
 use Mockery\MockInterface;
 use Override;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\View\Boards\Boards;
 use Stu\Module\Control\GameControllerInterface;
@@ -45,7 +45,7 @@ class AddBoardTest extends StuTestCase
 
     public function testHandleThrowsIfUserHasNoAlliance(): void
     {
-        static::expectException(AccessViolation::class);
+        static::expectException(AccessViolationException::class);
 
         $game = $this->mock(GameControllerInterface::class);
 
@@ -59,7 +59,7 @@ class AddBoardTest extends StuTestCase
 
     public function testHandleThrowsIfUserMayNotEditAlliance(): void
     {
-        static::expectException(AccessViolation::class);
+        static::expectException(AccessViolationException::class);
 
         $user = $this->mock(UserInterface::class);
         $game = $this->mock(GameControllerInterface::class);

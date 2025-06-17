@@ -29,4 +29,13 @@ enum SpacecraftStateEnum: int
             default => true
         };
     }
+
+    public function isRepairState(): bool
+    {
+        return match ($this) {
+            self::REPAIR_ACTIVE,
+            self::REPAIR_PASSIVE => true,
+            default => false
+        };
+    }
 }

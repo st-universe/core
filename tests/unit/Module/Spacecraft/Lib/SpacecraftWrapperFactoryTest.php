@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib;
 
+use Stu\Orm\Entity\SpacecraftInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Override;
@@ -264,13 +265,13 @@ class SpacecraftWrapperFactoryTest extends StuTestCase
         $this->assertEquals([
             0 => $shipSolo1,
             1 => $stationSolo2
-        ], $group1->getWrappers()->map(fn(SpacecraftWrapperInterface $wrapper) => $wrapper->get())->toArray());
+        ], $group1->getWrappers()->map(fn(SpacecraftWrapperInterface $wrapper): SpacecraftInterface => $wrapper->get())->toArray());
         $this->assertEquals([
             0 => $shipFleetLowSort2,
             1 => $shipFleetLowSort1
-        ], $group2->getWrappers()->map(fn(SpacecraftWrapperInterface $wrapper) => $wrapper->get())->toArray());
+        ], $group2->getWrappers()->map(fn(SpacecraftWrapperInterface $wrapper): SpacecraftInterface => $wrapper->get())->toArray());
         $this->assertEquals([
             0 => $shipFleetHighSort
-        ], $group3->getWrappers()->map(fn(SpacecraftWrapperInterface $wrapper) => $wrapper->get())->toArray());
+        ], $group3->getWrappers()->map(fn(SpacecraftWrapperInterface $wrapper): SpacecraftInterface => $wrapper->get())->toArray());
     }
 }

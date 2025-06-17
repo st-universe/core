@@ -70,7 +70,7 @@ final class SpacecraftCreator implements SpacecraftCreatorInterface
         $spacecraft->setUser($user);
         $spacecraft->setBuildplan($buildplan);
         $spacecraft->setRump($rump);
-        $spacecraft->setState(SpacecraftStateEnum::NONE);
+        $spacecraft->getCondition()->setState(SpacecraftStateEnum::NONE);
 
         //create ship systems
         $this->spacecraftSystemCreation->createShipSystemsByModuleList(
@@ -104,8 +104,6 @@ final class SpacecraftCreator implements SpacecraftCreatorInterface
         if ($spacecraft->getName() === '' || $spacecraft->getName() === sprintf('%s in Bau', $spacecraft->getRump()->getName())) {
             $spacecraft->setName($spacecraft->getRump()->getName());
         }
-
-        $spacecraft->setAlertStateGreen();
 
         $this->spacecraftRepository->save($spacecraft);
 

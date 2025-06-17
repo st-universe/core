@@ -10,6 +10,7 @@ use Stu\Orm\Entity\DatabaseEntryInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ColonyClassRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
+use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
 use Stu\Orm\Repository\StationRepositoryInterface;
 
@@ -19,18 +20,22 @@ final class DatabaseCategoryWrapperFactory implements DatabaseCategoryWrapperFac
         private DatabaseUserRepositoryInterface $databaseUserRepository,
         private StarSystemRepositoryInterface $starSystemRepository,
         private ColonyClassRepositoryInterface $colonyClassRepositoryInterface,
-        private StationRepositoryInterface $stationRepository
+        private StationRepositoryInterface $stationRepository,
+        private DatabaseEntryRepositoryInterface $databaseEntryRepository
     ) {}
 
     #[Override]
     public function createDatabaseCategoryWrapper(
         DatabaseCategoryInterface $databaseCategory,
-        UserInterface $user
+        UserInterface $user,
+        ?int $layer = null
     ): DatabaseCategoryWrapperInterface {
         return new DatabaseCategoryWrapper(
             $this,
             $databaseCategory,
-            $user
+            $user,
+            $this->databaseEntryRepository,
+            $layer
         );
     }
 

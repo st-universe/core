@@ -1,4 +1,4 @@
-<form action="{{ FORM_ACTION }}" method="post">
+<form action="{{ SHIP.getType.getModuleView.getPhpPage }}" method="post">
     <input type="hidden" name="id" value="{{ SPACECRAFT.getId }}" />
     <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
     {% block containment %}
@@ -33,8 +33,8 @@
                     {% endif %}
                 </td>
                 <td>
-                    <input type="submit" style="cursor: pointer;" id="removewastebutton" name="B_REMOVE_WASTE"
-                        value="Waren entsorgen" />
+                    <input type="submit" style="cursor: pointer;" id="removewastebutton"
+                        name="B_REMOVE_WASTE_SPACECRAFT" value="Waren entsorgen" />
                 </td>
             </tr>
         </table>

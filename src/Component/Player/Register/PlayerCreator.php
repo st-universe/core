@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Player\Register;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Hackzilla\PasswordGenerator\Generator\PasswordGeneratorInterface;
 use Override;
 use Stu\Component\Player\Register\Exception\EmailAddressInvalidException;
 use Stu\Component\Player\Register\Exception\LoginNameInvalidException;
@@ -15,6 +14,7 @@ use Stu\Module\Control\StuHashInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\FactionInterface;
 use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\UserRegistrationInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\Orm\Repository\UserRefererRepositoryInterface;
 
@@ -23,7 +23,15 @@ use Stu\Orm\Repository\UserRefererRepositoryInterface;
  */
 class PlayerCreator implements PlayerCreatorInterface
 {
-    public function __construct(protected UserRepositoryInterface $userRepository, protected PlayerDefaultsCreatorInterface $playerDefaultsCreator, private RegistrationEmailSenderInterface $registrationEmailSender, private SmsVerificationCodeSenderInterface $smsVerificationCodeSender, private StuHashInterface $stuHash, private PasswordGeneratorInterface $passwordGenerator, private EntityManagerInterface $entityManager, private UserRefererRepositoryInterface $userRefererRepository) {}
+    public function __construct(
+        protected UserRepositoryInterface $userRepository,
+        protected PlayerDefaultsCreatorInterface $playerDefaultsCreator,
+        private RegistrationEmailSenderInterface $registrationEmailSender,
+        private SmsVerificationCodeSenderInterface $smsVerificationCodeSender,
+        private StuHashInterface $stuHash,
+        private EntityManagerInterface $entityManager,
+        private UserRefererRepositoryInterface $userRefererRepository
+    ) {}
 
     #[Override]
     public function createWithMobileNumber(
@@ -31,24 +39,27 @@ class PlayerCreator implements PlayerCreatorInterface
         string $emailAddress,
         FactionInterface $faction,
         string $mobile,
+        string $password,
         ?string $referer = null
     ): void {
         $mobileWithDoubleZero = str_replace('+', '00', $mobile);
         $this->checkForException($loginName, $emailAddress, $mobileWithDoubleZero);
 
-        $randomHash = substr(md5(uniqid((string) random_int(0, mt_getrandmax()), true)), 16, 6);
+        $randomSmsHash = substr(md5(uniqid((string) random_int(0, mt_getrandmax()), true)), 16, 6);
+        $randomEmailHash = substr(md5(uniqid((string) random_int(0, mt_getrandmax()), true)), 16, 6);
 
         $player = $this->createPlayer(
             $loginName,
             $emailAddress,
             $faction,
-            $this->passwordGenerator->generatePassword(),
+            $password,
             $mobileWithDoubleZero,
-            $randomHash,
+            $randomSmsHash,
+            $randomEmailHash,
             $referer
         );
 
-        $this->smsVerificationCodeSender->send($player, $randomHash);
+        $this->smsVerificationCodeSender->send($player, $randomSmsHash);
     }
 
     private function checkForException(string $loginName, string $emailAddress, ?string $mobile = null): void
@@ -91,40 +102,49 @@ class PlayerCreator implements PlayerCreatorInterface
         string $password,
         ?string $mobile = null,
         ?string $smsCode = null,
+        ?string $emailCode = null,
         ?string $referer = null
     ): UserInterface {
+
         $player = $this->userRepository->prototype();
-        $player->setLogin($loginName);
-        $player->setEmail($emailAddress);
         $player->setFaction($faction);
 
         $this->userRepository->save($player);
         $this->entityManager->flush();
 
         $player->setUsername('Siedler ' . $player->getId());
-        $player->setTick(1);
-        $player->setCreationDate(time());
-        $player->setPassword(password_hash($password, PASSWORD_DEFAULT));
 
-        // set player state to awaiting sms code
+        $registration = $player->getRegistration();
+        $registration->setLogin($loginName);
+        $registration->setEmail($emailAddress);
+        $registration->setCreationDate(time());
+        $registration->setPassword(password_hash($password, PASSWORD_DEFAULT));
+        $registration->setEmailCode($emailCode);
+
+        $player->setState(UserEnum::USER_STATE_ACCOUNT_VERIFICATION);
+
+        // set player state to awaiting sms code if mobile provided
         if ($mobile !== null) {
-            $player->setMobile($mobile);
-            $player->setSmsCode($smsCode);
-            $player->setState(UserEnum::USER_STATE_SMS_VERIFICATION);
+            $registration->setMobile($mobile);
+            $registration->setSmsCode($smsCode);
+            $player->setState(UserEnum::USER_STATE_ACCOUNT_VERIFICATION);
         }
 
         if ($referer !== null) {
-            $this->saveReferer($player, $referer);
+            $this->saveReferer($registration, $referer);
         }
 
         $this->userRepository->save($player);
 
         $this->playerDefaultsCreator->createDefault($player);
-        $this->registrationEmailSender->send($player, $password);
+        if ($emailCode) {
+            $this->registrationEmailSender->send($player, $emailCode);
+        }
 
         return $player;
     }
-    private function saveReferer(UserInterface $user, ?string $referer): void
+
+    private function saveReferer(UserRegistrationInterface $registration, ?string $referer): void
     {
         if ($referer !== null) {
 
@@ -132,7 +152,7 @@ class PlayerCreator implements PlayerCreatorInterface
             $sanitizedReferer = $sanitizedReferer !== null ? substr($sanitizedReferer, 0, 2000) : '';
 
             $userReferer = $this->userRefererRepository->prototype();
-            $userReferer->setUser($user);
+            $userReferer->setUserRegistration($registration);
             $userReferer->setReferer($sanitizedReferer);
 
             $this->userRefererRepository->save($userReferer);

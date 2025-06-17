@@ -15,6 +15,7 @@ use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Entity\Contact;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\UserRegistration;
 use Stu\Orm\Entity\UserSetting;
 
 /**
@@ -25,7 +26,10 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
     #[Override]
     public function prototype(): UserInterface
     {
-        return new User();
+        $user = new User();
+        $user->setRegistration(new UserRegistration($user));
+
+        return $user;
     }
 
     #[Override]
@@ -47,9 +51,19 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
     #[Override]
     public function getByResetToken(string $resetToken): ?UserInterface
     {
-        return $this->findOneBy([
-            'password_token' => $resetToken,
-        ]);
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT u FROM %s u
+                    JOIN %s ur
+                    WITH u = ur.user
+                    WHERE ur.password_token = :token',
+                    User::class,
+                    UserRegistration::class
+                )
+            )
+            ->setParameter('token', $resetToken)
+            ->getOneOrNullResult();
     }
 
     #[Override]
@@ -57,19 +71,22 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         int $idleTimeThreshold,
         int $idleTimeVacationThreshold,
         array $ignoreIds
-    ): iterable {
+    ): array {
         return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT u FROM %s u
+                'SELECT u FROM %s u INDEX BY u.id
+                JOIN %s ur
+                WITH u = ur.user
                  WHERE u.id > :firstUserId
                  AND u.id NOT IN (:ignoreIds)
-                 AND u.delmark != :deletionForbidden
-                 AND (u.delmark = :deletionMark
+                 AND ur.delmark != :deletionForbidden
+                 AND (ur.delmark = :deletionMark
                         OR (u.vac_active = :false AND u.lastaction > 0 AND u.lastaction < :idleTimeThreshold)
                         OR (u.vac_active = :true AND u.lastaction > 0 AND u.lastaction < :idleTimeVacationThreshold)
                     )
                  ORDER BY u.id ASC',
-                User::class
+                User::class,
+                UserRegistration::class
             )
         )->setParameters([
             'idleTimeThreshold' => $idleTimeThreshold,
@@ -86,27 +103,40 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
     #[Override]
     public function getIdleRegistrations(
         int $idleTimeThreshold
-    ): iterable {
+    ): array {
         return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT u FROM %s u
-                 WHERE (u.state = :newUser OR u.state = :smsVerification)
-                 AND u.creation < :idleTimeThreshold',
-                User::class
+                'SELECT u FROM %s u INDEX BY u.id
+                JOIN %s ur
+                WITH u = ur.user
+                 WHERE (u.state = :newUser OR u.state = :accountVerification)
+                 AND ur.creation < :idleTimeThreshold',
+                User::class,
+                UserRegistration::class
             )
         )->setParameters([
             'idleTimeThreshold' => $idleTimeThreshold,
             'newUser' => UserEnum::USER_STATE_NEW,
-            'smsVerification' => UserEnum::USER_STATE_SMS_VERIFICATION
+            'accountVerification' => UserEnum::USER_STATE_ACCOUNT_VERIFICATION
         ])->getResult();
     }
 
     #[Override]
     public function getByEmail(string $email): ?UserInterface
     {
-        return $this->findOneBy([
-            'email' => $email
-        ]);
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT u FROM %s u
+                    JOIN %s ur
+                    WITH u = ur.user
+                    WHERE ur.email = :email',
+                    User::class,
+                    UserRegistration::class
+                )
+            )
+            ->setParameter('email', $email)
+            ->getOneOrNullResult();
     }
 
     #[Override]
@@ -115,9 +145,12 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT u FROM %s u
-                WHERE u.mobile = :mobile
-                OR u.mobile = :mobileHash',
-                User::class
+                    JOIN %s ur
+                    WITH u = ur.user
+                    WHERE ur.mobile = :mobile
+                    OR ur.mobile = :mobileHash',
+                User::class,
+                UserRegistration::class
             )
         )->setParameters([
             'mobile' => $mobile,
@@ -128,9 +161,19 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
     #[Override]
     public function getByLogin(string $loginName): ?UserInterface
     {
-        return $this->findOneBy([
-            'login' => $loginName
-        ]);
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT u FROM %s u
+                        JOIN %s ur
+                        WITH u = ur.user
+                        WHERE ur.login = :login',
+                    User::class,
+                    UserRegistration::class
+                )
+            )
+            ->setParameter('login', $loginName)
+            ->getOneOrNullResult();
     }
 
     #[Override]
@@ -229,7 +272,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
                 AND u.id > :firstUserId
                 AND (EXISTS (SELECT us
                             FROM %s us
-                            WHERE us.user_id = u.id
+                            WHERE us.user = u
                             AND us.setting = :showOnlineStateSetting
                             AND us.value = :showOnlineState)
                     OR u.id IN (

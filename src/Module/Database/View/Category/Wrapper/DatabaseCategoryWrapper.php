@@ -9,12 +9,17 @@ use Stu\Component\Database\DatabaseCategoryTypeEnum;
 use Stu\Orm\Entity\DatabaseCategoryInterface;
 use Stu\Orm\Entity\DatabaseEntryInterface;
 use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
 
 final class DatabaseCategoryWrapper implements DatabaseCategoryWrapperInterface
 {
-    public function __construct(private DatabaseCategoryWrapperFactoryInterface $databaseCategoryWrapperFactory, private DatabaseCategoryInterface $databaseCategory, private UserInterface $user)
-    {
-    }
+    public function __construct(
+        private DatabaseCategoryWrapperFactoryInterface $databaseCategoryWrapperFactory,
+        private DatabaseCategoryInterface $databaseCategory,
+        private UserInterface $user,
+        private DatabaseEntryRepositoryInterface $databaseEntryRepository,
+        private ?int $layer = null
+    ) {}
 
     #[Override]
     public function isCategoryStarSystemTypes(): bool
@@ -48,21 +53,48 @@ final class DatabaseCategoryWrapper implements DatabaseCategoryWrapperInterface
     }
 
     #[Override]
+    public function isCategoryRegion(): bool
+    {
+        return $this->databaseCategory->getId() == DatabaseCategoryTypeEnum::DATABASE_CATEGORY_REGION;
+    }
+
+    #[Override]
     public function displayDefaultList(): bool
     {
         return !$this->isCategoryStarSystems()
             && !$this->isCategoryTradePosts()
             && !$this->isCategoryStarSystemTypes()
             && !$this->isCategoryRumpTypes()
-            && !$this->isCategoryColonyClasses();
+            && !$this->isCategoryColonyClasses()
+            && !$this->isCategoryRegion();
     }
 
     #[Override]
     public function getEntries(): array
     {
+        if ($this->isCategoryStarSystems()) {
+            $entries = $this->databaseEntryRepository->getStarSystemEntriesByLayer(
+                $this->databaseCategory->getId(),
+                $this->layer
+            );
+        } elseif ($this->isCategoryRegion()) {
+            $entries = $this->databaseEntryRepository->getRegionEntriesByLayer(
+                $this->databaseCategory->getId(),
+                $this->layer
+            );
+        } elseif ($this->isCategoryTradePosts()) {
+            $entries = $this->databaseEntryRepository->getTradePostEntriesByLayer(
+                $this->databaseCategory->getId(),
+                $this->layer
+            );
+        } else {
+            $entries = $this->databaseCategory->getEntries();
+        }
+
         return array_map(
-            fn (DatabaseEntryInterface $entry): DatabaseCategoryEntryWrapperInterface => $this->databaseCategoryWrapperFactory->createDatabaseCategoryEntryWrapper($entry, $this->user),
-            $this->databaseCategory->getEntries()
+            fn(DatabaseEntryInterface $entry): DatabaseCategoryEntryWrapperInterface =>
+            $this->databaseCategoryWrapperFactory->createDatabaseCategoryEntryWrapper($entry, $this->user),
+            $entries
         );
     }
 

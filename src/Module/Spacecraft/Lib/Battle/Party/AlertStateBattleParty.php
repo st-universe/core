@@ -19,7 +19,7 @@ class AlertStateBattleParty extends AbstractBattleParty implements AlertedBattle
     ) {
         parent::__construct($leader);
 
-        $this->leaderAlertState = $leader->get()->getAlertState();
+        $this->leaderAlertState = $leader->getAlertState();
     }
 
     #[Override]
@@ -36,7 +36,7 @@ class AlertStateBattleParty extends AbstractBattleParty implements AlertedBattle
             return $fleet->getShipWrappers()
                 ->filter(fn(SpacecraftWrapperInterface $wrapper): bool => !$wrapper->get()->isCloaked()
                     && !$wrapper->get()->isWarped()
-                    && $wrapper->get()->getAlertState()->isAtLeast($this->leaderAlertState));
+                    && $wrapper->getAlertState()->isAtLeast($this->leaderAlertState));
         }
     }
 

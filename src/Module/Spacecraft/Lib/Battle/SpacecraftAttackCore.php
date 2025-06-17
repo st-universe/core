@@ -37,6 +37,7 @@ final class SpacecraftAttackCore implements SpacecraftAttackCoreInterface
     public function attack(
         SpacecraftWrapperInterface|FleetWrapperInterface $sourceWrapper,
         SpacecraftWrapperInterface $targetWrapper,
+        bool $isAttackingShieldsOnly,
         bool &$isFleetFight,
         InformationWrapper $informations
     ): void {
@@ -51,7 +52,8 @@ final class SpacecraftAttackCore implements SpacecraftAttackCoreInterface
 
         [$attacker, $defender, $isFleetFight, $attackCause] = $this->getAttackersAndDefenders(
             $wrapper,
-            $targetWrapper
+            $targetWrapper,
+            $isAttackingShieldsOnly
         );
 
         $messageCollection = $this->spacecraftAttackCycle->cycle($attacker, $defender, $attackCause);
@@ -67,12 +69,12 @@ final class SpacecraftAttackCore implements SpacecraftAttackCoreInterface
 
         if ($isActiveTractorShipWarped) {
             //Alarm-Rot check for ship
-            if (!$ship->isDestroyed()) {
+            if (!$ship->getCondition()->isDestroyed()) {
                 $this->alertReactionFacade->doItAll($wrapper, $informations);
             }
 
             //Alarm-Rot check for traktor ship
-            if (!$target->isDestroyed()) {
+            if (!$target->getCondition()->isDestroyed()) {
                 $this->alertReactionFacade->doItAll($targetWrapper, $informations);
             }
         }
@@ -115,12 +117,20 @@ final class SpacecraftAttackCore implements SpacecraftAttackCoreInterface
     /**
      * @return array{0: AttackingBattleParty, 1: BattlePartyInterface, 2: bool, 3: SpacecraftAttackCauseEnum}
      */
-    private function getAttackersAndDefenders(SpacecraftWrapperInterface|FleetWrapperInterface $wrapper, SpacecraftWrapperInterface $targetWrapper): array
-    {
+    private function getAttackersAndDefenders(
+        SpacecraftWrapperInterface|FleetWrapperInterface $wrapper,
+        SpacecraftWrapperInterface $targetWrapper,
+        bool $isAttackingShieldsOnly
+    ): array {
         $attackCause = SpacecraftAttackCauseEnum::SHIP_FIGHT;
         $ship = $wrapper instanceof SpacecraftWrapperInterface ? $wrapper->get() : $wrapper->get()->getLeadShip();
 
-        [$attacker, $defender, $isFleetFight] = $this->fightLib->getAttackersAndDefenders($wrapper, $targetWrapper, $this->battlePartyFactory);
+        [$attacker, $defender, $isFleetFight] = $this->fightLib->getAttackersAndDefenders(
+            $wrapper,
+            $targetWrapper,
+            $isAttackingShieldsOnly,
+            $this->battlePartyFactory
+        );
 
         $isTargetOutsideFinishedWeb = $this->tholianWebUtil->isTargetOutsideFinishedTholianWeb($ship, $targetWrapper->get());
 

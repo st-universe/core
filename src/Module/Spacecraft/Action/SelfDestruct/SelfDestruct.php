@@ -101,7 +101,7 @@ final class SelfDestruct implements ActionControllerInterface
 
     private function createNegativePrestigeLog(int $prestigeAmount, string $rumpName, UserInterface $user): void
     {
-        $amount = -(int)abs($prestigeAmount);
+        $amount = -abs($prestigeAmount);
 
         $description = sprintf(
             '[b][color=red]%d[/color][/b] Prestige erhalten für die Selbstzerstörung von: %s',

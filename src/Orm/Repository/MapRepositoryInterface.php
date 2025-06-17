@@ -127,5 +127,7 @@ interface MapRepositoryInterface extends ObjectRepository
     public function getShipSubspaceLayerData(PanelBoundaries $boundaries, int $shipId, ResultSetMapping $rsm): array;
 
     /** @return array<int> */
-    public function getUniqueInfluenceAreaIds(): array;
+    public function getUniqueInfluenceAreaIds(int $layerId): array;
+
+    public function isAdminRegionUserRegion(int $locationId, int $factionId): bool;
 }

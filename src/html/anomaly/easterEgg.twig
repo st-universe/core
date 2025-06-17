@@ -1,0 +1,12 @@
+<a href="javascript:void(0);"
+    onClick="actionToInnerContent('B_EASTER_EGG', 'id={{ spacecraftId }}&target={{ anomaly.getId }}&sstr={{ SESSIONSTRING }}');"
+    title="Osterei erhalten">
+    {% set name =
+    '🐰[b][color=orange]O[/color][color=green]s[/color][color=#e359c7]t[/color][color=yellow]e[/color][color=#6ac0ce]r[/color][color=white]
+    E[/color][color=red]i[/color][/b]
+    🥚🎁' %}
+    <img src="/assets/anomalies/easter/easter.png" name="{{ anomaly.getAnomalyType.getName }}" />
+    {% autoescape false %}
+    {{ name|bbcode }}
+    {% endautoescape %}
+</a>

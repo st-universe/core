@@ -84,7 +84,7 @@ final class RepairShip implements ActionControllerInterface
 
             foreach ($group->getWrappers() as $wrapper) {
                 $ship = $wrapper->get();
-                if (!$wrapper->canBeRepaired() || $ship->isUnderRepair()) {
+                if (!$wrapper->canBeRepaired() || $ship->getCondition()->isUnderRepair()) {
                     continue;
                 }
                 foreach ($this->shipRumpBuildingFunctionRepository->getByShipRump($ship->getRump()) as $rump_rel) {
@@ -117,7 +117,7 @@ final class RepairShip implements ActionControllerInterface
         $obj->setFieldId($field->getFieldId());
         $this->colonyShipRepairRepository->save($obj);
 
-        $target->setState(SpacecraftStateEnum::REPAIR_PASSIVE);
+        $target->getCondition()->setState(SpacecraftStateEnum::REPAIR_PASSIVE);
 
         $this->shipRepository->save($target);
 
@@ -138,18 +138,20 @@ final class RepairShip implements ActionControllerInterface
             $ticks = ceil($ticks * 0.5);
         }
 
-        $game->addInformationf('Das Schiff wird repariert. Fertigstellung in %d Runden', $ticks);
+        $activemsg = $field->isActive() ? '' : ', nach aktivierung der Werft';
+        $game->addInformationf('Das Schiff wird repariert. Fertigstellung in %d Runden%s', $ticks, $activemsg);
 
         $this->privateMessageSender->send(
             $userId,
             $target->getUser()->getId(),
             sprintf(
-                "Die %s wird in Sektor %s bei der Kolonie %s des Spielers %s repariert. Fertigstellung in %d Runden.",
+                "Die %s wird in Sektor %s bei der Kolonie %s des Spielers %s repariert. Fertigstellung in %d Runden%s",
                 $target->getName(),
                 $target->getSectorString(),
                 $colony->getName(),
                 $colony->getUser()->getName(),
-                $ticks
+                $ticks,
+                $activemsg
             ),
             PrivateMessageFolderTypeEnum::SPECIAL_SHIP
         );

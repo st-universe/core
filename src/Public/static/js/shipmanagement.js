@@ -55,7 +55,7 @@ function openShuttleManagement(obj, ship, entity) {
 	closeAjaxWindow();
 
 	var pos = findObject(obj);
-	openWindowPosition('elt', 1, 200, pos[0] - 200, pos[1]);
+	openWindowPosition('elt', 1, 200, pos[0] - 100, pos[1]);
 	ajax_update('elt', `?SHOW_SHUTTLE_MANAGEMENT=1&id=${entity}&shuttletarget=${ship}`);
 }
 

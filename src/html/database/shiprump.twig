@@ -1,4 +1,5 @@
 {% if not RUMP.getIsNpc %}
+{% if not RUMP.isStation %}
 <table class="tcal">
     <tr>
         <th colspan="2">Rumpfdetails</th>
@@ -86,4 +87,106 @@
         <td>{{ RUMP.getBuildTime|formatSeconds }}</td>
     </tr>
 </table>
+{% else %}
+<table class="tcal">
+    <tr>
+        <th colspan="2">Rumpfdetails</th>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <img src="assets/ships/{{ RUMP.getId }}.png" title="{{ RUMP.getName }}" />
+        </td>
+    </tr>
+    <tr>
+        <td class="darkbg">Fraktion</td>
+        <td>
+            <img src="assets/rassen/{{ RUMP.getFractionId }}s.png" />
+        </td>
+    </tr>
+    <tr>
+        <td class="darkbg">Kategorie</td>
+        <td>{{ RUMP.getShipRumpCategory.getName }}</td>
+    </tr>
+    <tr>
+        <td class="darkbg">Lagerraum</td>
+        <td>{{ RUMP.getStorage }}</td>
+    </tr>
+    <tr>
+        <td class="darkbg">Beamfaktor</td>
+        <td>{{ RUMP.getBeamFactor }}</td>
+    </tr>
+    <tr>
+        <td class="darkbg">Raumschiffmasse</td>
+        <td>{{ RUMP.getTractorMass|numberWithThousandSeperator }}</td>
+    </tr>
+    <tr>
+        <td class="darkbg">Traktortraglast</td>
+        <td>{{ RUMP.getTractorPayload|numberWithThousandSeperator }}</td>
+    </tr>
+    <tr>
+        <td class="darkbg">Energiewaffensalven</td>
+        <td>{{ RUMP.getPhaserVolleys }}</td>
+    </tr>
+    <tr>
+        <td class="darkbg">Torpedolevel</td>
+        <td>{{ RUMP.getTorpedoLevel }}</td>
+    </tr>
+    <tr>
+        <td class="darkbg">Torpedosalven</td>
+        <td>{{ RUMP.getTorpedoVolleys }}</td>
+    </tr>
+    <tr>
+        <td class="darkbg">Torpedokapazität</td>
+        <td>{{ RUMP.getBaseTorpedoStorage }}</td>
+    </tr>
+    <tr>
+        <td class="darkbg">Sensorreichweite</td>
+        <td>{{ SENSORRANGE }}</td>
+    </tr>
+    <tr>
+        <td class="darkbg">min. Crew</td>
+        <td>{{ PLAN.getCrew }}</td>
+    </tr>
+    <tr>
+        <td class="darkbg">max. Crew</td>
+        <td>{{ MAX_CREW_COUNT }}</td>
+    </tr>
+    <tr>
+        <td class="darkbg">EPS-Kapazität</td>
+        <td>{{ EPS }}</td>
+    </tr>
+    <tr>
+        <td class="darkbg">Benötigte Workbees</td>
+        <td>{{ PLAN.getRump.getNeededWorkbees }}</td>
+    </tr>
+    <tr>
+        <td class="darkbg">Baukosten</td>
+        <td>
+            <div>
+                <table class="tcal">
+                    <tr>
+                        <th>Modul</th>
+                        <th>Level</th>
+                        <th>Anzahl</th>
+                    </tr>
+                    {% for mod in MODS %}
+                    <tr style="text-align: center;">
+                        <td><img src="assets/commodities/{{ mod.getModule.getCommodity.getId }}.png"
+                                title="{{ mod.getModule.getName }}" /></td>
+                        <td>{{ mod.getModule.getLevel }}</td>
+                        <td>
+                            {{ mod.getModuleCount}}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td class="darkbg">Bauzeit</td>
+        <td>{{ PLAN.getRump.getBuildtime }} Ticks</td>
+    </tr>
+</table>
+{% endif %}
 {% endif %}

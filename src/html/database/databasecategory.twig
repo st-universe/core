@@ -1,7 +1,7 @@
 {% block body %}
 
 {% if CATEGORY.isCategoryStarSystems %}
-{{ _self.category_starsystems(CATEGORY) }}
+{{ _self.category_starsystems(CATEGORY, LAYERS, LAYERID) }}
 {% endif %}
 
 {% if CATEGORY.isCategoryStarSystemTypes %}
@@ -9,7 +9,7 @@
 {% endif %}
 
 {% if CATEGORY.isCategoryTradePosts %}
-{{ _self.category_tradeposts(CATEGORY) }}
+{{ _self.category_tradeposts(CATEGORY, LAYERS, LAYERID) }}
 {% endif %}
 
 {% if CATEGORY.isCategoryColonyClasses %}
@@ -18,6 +18,10 @@
 
 {% if CATEGORY.isCategoryRumpTypes %}
 {{ _self.category_rumptypes(CATEGORY) }}
+{% endif %}
+
+{% if CATEGORY.isCategoryRegion %}
+{{ _self.category_regions(CATEGORY, LAYERS, LAYERID) }}
 {% endif %}
 
 {% if CATEGORY.displayDefaultList %}
@@ -46,8 +50,25 @@
 {% endif %}
 {% endblock %}
 
-{% macro category_starsystems(CATEGORY) %}
+{% macro category_starsystems(CATEGORY, LAYERS, LAYERID) %}
+
 <table class="use">
+    {% if LAYERS %}
+    <div>
+        <select onchange="window.location.href='?SHOW_CATEGORY=1&cat=7&layerid=' + this.value">
+            {% for layer in LAYERS %}
+            {% if layer.getId == LAYERID %}
+            <option value="{{ layer.getId }}" selected="1">
+                {{ layer.getName }}</option>
+            {% else %}
+            <option value="{{ layer.getId }}">
+                {{ layer.getName }}</option>
+            {% endif %}
+            {% endfor %}
+        </select>
+    </div>
+    <br />
+    {% endif %}
     <tr>
         <th>System</th>
         <th>Koordinaten</th>
@@ -79,8 +100,24 @@
 </table>
 {% endmacro %}
 
-{% macro category_tradeposts(CATEGORY) %}
+{% macro category_tradeposts(CATEGORY, LAYERS, LAYERID) %}
 <table class="use">
+    {% if LAYERS %}
+    <div>
+        <select onchange="window.location.href='?SHOW_CATEGORY=1&cat=3&layerid=' + this.value">
+            {% for layer in LAYERS %}
+            {% if layer.getId == LAYERID %}
+            <option value="{{ layer.getId }}" selected="1">
+                {{ layer.getName }}</option>
+            {% else %}
+            <option value="{{ layer.getId }}">
+                {{ layer.getName }}</option>
+            {% endif %}
+            {% endfor %}
+        </select>
+    </div>
+    <br />
+    {% endif %}
     <tr>
         <th>Handelsposten</th>
         <th>Koordinaten</th>
@@ -209,4 +246,46 @@
     </tr>
     {% endfor %}
 </table>
+{% endmacro %}
+
+{% macro category_regions(CATEGORY, LAYERS, LAYERID) %}
+<table class="use">
+    {% if LAYERS %}
+    <div>
+        <select onchange="window.location.href='?SHOW_CATEGORY=1&cat=4&layerid=' + this.value">
+            {% for layer in LAYERS %}
+            {% if layer.getId == LAYERID %}
+            <option value="{{ layer.getId }}" selected="1">
+                {{ layer.getName }}</option>
+            {% else %}
+            <option value="{{ layer.getId }}">
+                {{ layer.getName }}</option>
+            {% endif %}
+            {% endfor %}
+        </select>
+    </div>
+    <br />
+    {% endif %}
+    <tr>
+        <th>Beschreibung</th>
+        <th>Entdeckung</th>
+    </tr>
+    {% for data in CATEGORY.getEntries %}
+    <tr class="row{{ loop.index is odd ? 'odd' : '' }}">
+        {% if data.wasDiscovered %}
+        <td>
+            <a href="javascript:void(0);"
+                onclick="switchInnerContent('SHOW_ENTRY', 'Systemkarte', 'cat={{ CATEGORY.getId }}&ent={{ data.getId }}', 'database.php');">
+                {{ data.getDescription }}
+            </a>
+        </td>
+        <td>{{ data.getDiscoveryDate|date('Y-m-d H:i:s') }}</td>
+        {% else %}
+        <td>???</td>
+        <td>---</td>
+        {% endif %}
+    </tr>
+    {% endfor %}
+</table>
+
 {% endmacro %}

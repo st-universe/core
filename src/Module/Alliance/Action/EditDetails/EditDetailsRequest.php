@@ -54,4 +54,28 @@ final class EditDetailsRequest implements EditDetailsRequestInterface
             $this->parameter('rgb')->string()->required()
         );
     }
+
+    #[Override]
+    public function getFounderDescription(): string
+    {
+        return $this->tidyString(
+            $this->parameter('founder_description')->string()->defaultsToIfEmpty('Präsident')
+        );
+    }
+
+    #[Override]
+    public function getSuccessorDescription(): string
+    {
+        return $this->tidyString(
+            $this->parameter('successor_description')->string()->defaultsToIfEmpty('Vize-Präsident')
+        );
+    }
+
+    #[Override]
+    public function getDiplomaticDescription(): string
+    {
+        return $this->tidyString(
+            $this->parameter('diplomatic_description')->string()->defaultsToIfEmpty('Außenminister')
+        );
+    }
 }

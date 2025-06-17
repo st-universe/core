@@ -18,9 +18,7 @@ final class ChangePassword implements ActionControllerInterface
      */
     public const string PASSWORD_REGEX = '/[a-zA-Z0-9]{6,20}/';
 
-    public function __construct(private ChangePasswordRequestInterface $changePasswordRequest, private UserRepositoryInterface $userRepository)
-    {
-    }
+    public function __construct(private ChangePasswordRequestInterface $changePasswordRequest, private UserRepositoryInterface $userRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -32,7 +30,7 @@ final class ChangePassword implements ActionControllerInterface
             $game->addInformation(_('Das alte Passwort wurde nicht angegeben'));
             return;
         }
-        if (!password_verify($currentPassword, $user->getPassword())) {
+        if (!password_verify($currentPassword, $user->getRegistration()->getPassword())) {
             $game->addInformation(_('Das alte Passwort ist falsch'));
             return;
         }
@@ -52,7 +50,7 @@ final class ChangePassword implements ActionControllerInterface
             $game->addInformation(_('Die eingegebenen Passwörter stimmen nicht überein'));
             return;
         }
-        $user->setPassword(password_hash($newPassword, PASSWORD_DEFAULT));
+        $user->getRegistration()->setPassword(password_hash($newPassword, PASSWORD_DEFAULT));
 
         $this->userRepository->save($user);
 

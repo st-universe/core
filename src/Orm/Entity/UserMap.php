@@ -18,14 +18,6 @@ class UserMap implements UserMapInterface
 {
     #[Id]
     #[Column(type: 'integer')]
-    private int $user_id = 0;
-
-    #[Id]
-    #[Column(type: 'integer')]
-    private int $layer_id = 0;
-
-    #[Id]
-    #[Column(type: 'integer')]
     private int $cx = 0;
 
     #[Id]
@@ -35,17 +27,13 @@ class UserMap implements UserMapInterface
     #[Column(type: 'integer')]
     private int $map_id = 0;
 
-    /**
-     * @var UserInterface
-     */
+    #[Id]
     #[ManyToOne(targetEntity: 'User')]
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private $user;
+    private UserInterface $user;
 
-    /**
-     * @var LayerInterface
-     */
+    #[Id]
     #[ManyToOne(targetEntity: 'Layer')]
     #[JoinColumn(name: 'layer_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private $layer;
+    private LayerInterface $layer;
 }

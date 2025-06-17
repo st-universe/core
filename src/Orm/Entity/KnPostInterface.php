@@ -45,6 +45,11 @@ interface KnPostInterface extends EntityWithHrefInterface
 
     public function setRpgPlot(?RpgPlotInterface $rpgPlot): KnPostInterface;
 
+    public function getDeleted(): ?int;
+
+    public function setDeleted(?int $timestamp): KnPostInterface;
+
+
     /**
      * @return Collection<int, KnCommentInterface>
      */

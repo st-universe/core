@@ -4,7 +4,8 @@
     <tr>
         <td colspan="11">Stationen</td>
     </tr>
-    {{ shiplist_header()}}
+    {% set isFleetHeader = false %}
+    {{ shiplist_header(isFleetHeader)}}
     {% for wrapper in STATIONS %}
     {{ shiplist_body(wrapper) }}
     {% endfor %}

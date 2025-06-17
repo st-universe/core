@@ -65,17 +65,19 @@
                         <div style="margin-bottom: 5px;">
                             <img src="/assets/commodities/{{ data.getCommodityId }}.png" /> {{ data.getName }}
                         </div>
-                        <div style="display: table-cell;">
-                            <img src="/assets/buttons/e_trans2.png" title="Energie" />
-                            {{ data.getEnergyCost }}
+                        <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px;">
+                            <div style="display: flex; align-items: center;">
+                                <img src="/assets/buttons/e_trans2.png" title="Energie" />
+                                <span style="margin-left: 4px;">{{ data.getEnergyCost }}</span>
+                            </div>
+                            {% for cost in data.getConstructionCosts %}
+                            <div style="display: flex; align-items: center;">
+                                <img src="/assets/commodities/{{ cost.getCommodity.getId }}.png"
+                                    title="{{ cost.getCommodity.getName }}" />
+                                <span style="margin-left: 4px;">{{ cost.getAmount }}</span>
+                            </div>
+                            {% endfor %}
                         </div>
-                        {% for cost in data.getConstructionCosts %}
-                        <div style="display: table-cell; padding-left: 4px;">
-                            <img src="/assets/commodities/{{ cost.getCommodity.getId }}.png"
-                                title="{{ cost.getCommodity.getName }}" />
-                        </div>
-                        <div style="display: table-cell; vertical-align: middle;">{{ cost.getAmount }}</div>
-                        {% endfor %}
                     </td>
                     <td id="module_{{ moduleId }}_action" class="responsive-hide"
                         style="vertical-align: middle; text-align: center;">

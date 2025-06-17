@@ -6,7 +6,7 @@ namespace Stu\Module\Spacecraft\View\ShowTradeMenuTransfer;
 
 use Override;
 use request;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
@@ -47,7 +47,7 @@ final class ShowTradeMenuTransfer implements ViewControllerInterface
         }
 
         if (!$this->interactionChecker->checkPosition($spacecraft, $tradepost->getStation())) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $game->setTemplateVar('TRADEPOST', $this->tradeLibFactory->createTradeAccountWrapper($tradepost, $userId));

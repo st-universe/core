@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\Action\PirateProtection;
 
 use Override;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Lib\Pirate\Component\PirateWrathManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -43,7 +43,7 @@ final class PirateProtection implements ActionControllerInterface
         }
 
         if (!$this->tradeLicenseRepository->hasFergLicense($userId)) {
-            throw new AccessViolation(sprintf(
+            throw new AccessViolationException(sprintf(
                 _('UserId %d does not have license for Pirate Protection'),
                 $userId
             ));

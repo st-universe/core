@@ -97,11 +97,13 @@ interface PlanetFieldRepositoryInterface extends ObjectRepository
     /**
      * @param array<BuildingFunctionEnum> $buildingFunctions
      * @param array<int> $state
+     * @param array<int> $ignoredFieldIds
      */
     public function getCountByColonyAndBuildingFunctionAndState(
         PlanetFieldHostInterface $host,
         array $buildingFunctions,
-        array $state
+        array $state,
+        array $ignoredFieldIds = []
     ): int;
 
     /**

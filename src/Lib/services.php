@@ -37,6 +37,14 @@ use Stu\Lib\ModuleScreen\Addon\ModuleSelectorAddonFactory;
 use Stu\Lib\ModuleScreen\Addon\ModuleSelectorAddonFactoryInterface;
 use Stu\Lib\ModuleScreen\GradientColor;
 use Stu\Lib\ModuleScreen\GradientColorInterface;
+use Stu\Lib\Session\Session;
+use Stu\Lib\Session\SessionDestruction;
+use Stu\Lib\Session\SessionDestructionInterface;
+use Stu\Lib\Session\SessionInterface;
+use Stu\Lib\Session\SessionLogin;
+use Stu\Lib\Session\SessionLoginInterface;
+use Stu\Lib\Session\SessionStorage;
+use Stu\Lib\Session\SessionStorageInterface;
 use Stu\Lib\Session\SessionStringFactory;
 use Stu\Lib\Session\SessionStringFactoryInterface;
 use Stu\Lib\SpacecraftManagement\HandleManagers;
@@ -74,6 +82,10 @@ return [
     ComponentRegistrationInterface::class => autowire(ComponentRegistration::class),
     ComponentLoaderInterface::class => autowire(ComponentLoader::class),
     SessionStringFactoryInterface::class => autowire(SessionStringFactory::class),
+    SessionDestructionInterface::class => autowire(SessionDestruction::class),
+    SessionInterface::class => autowire(Session::class),
+    SessionLoginInterface::class => autowire(SessionLogin::class),
+    SessionStorageInterface::class => autowire(SessionStorage::class),
     InformationFactoryInterface::class => autowire(InformationFactory::class),
     UuidGeneratorInterface::class => autowire(UuidGenerator::class),
     ManagerProviderFactoryInterface::class => autowire(ManagerProviderFactory::class),

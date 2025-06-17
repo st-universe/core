@@ -30,12 +30,18 @@
 	<br />
 	<table class="tcal">
 		<tr>
+			<th></th>
 			<th>Eintrag</th>
 			<th>Datum</th>
 		</tr>
 		{% if HISTORY %}
 		{% for entry in HISTORY %}
 		<tr class="row">
+			<td> {% if entry.getLocation %}
+				<img src="/assets/buttons/layer_{{ entry.getLocation.getLayer.getId }}.png"
+					title="{{ entry.getLocation.getLayer.getName }}" />
+				{% endif %}
+			</td>
 			<td>{{ entry.getText|bbcode }}</td>
 			<td>{{ entry.getDate|stuDateTime }}</td>
 		</tr>

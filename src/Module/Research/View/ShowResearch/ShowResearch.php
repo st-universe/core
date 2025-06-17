@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Research\View\ShowResearch;
 
 use Override;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Research\SelectedTechFactoryInterface;
@@ -31,7 +31,7 @@ final class ShowResearch implements ViewControllerInterface
             $result = $this->researchedRepository->getFor($researchId, $user->getId());
 
             if ($result === null) {
-                throw new AccessViolation();
+                throw new AccessViolationException();
             }
             $research = $result->getResearch();
         }

@@ -17,7 +17,7 @@ interface TrumfieldInterface extends
 
     public function getHull(): int;
 
-    public function setHuell(int $hull): TrumfieldInterface;
+    public function setHull(int $hull): TrumfieldInterface;
 
     public function getFormerRumpId(): int;
 

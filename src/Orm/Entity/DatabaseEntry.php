@@ -43,6 +43,9 @@ class DatabaseEntry implements DatabaseEntryInterface
     #[Column(type: 'integer')]
     private int $object_id;
 
+    #[Column(type: 'integer', nullable: true)]
+    private ?int $layer_id = null;
+
     #[ManyToOne(targetEntity: DatabaseType::class)]
     #[JoinColumn(name: 'type', referencedColumnName: 'id')]
     private DatabaseTypeInterface $type_object;
@@ -151,5 +154,19 @@ class DatabaseEntry implements DatabaseEntryInterface
     public function getTypeId(): int
     {
         return $this->type;
+    }
+
+    #[Override]
+    public function getLayerId(): ?int
+    {
+        return $this->layer_id;
+    }
+
+    #[Override]
+    public function setLayerId(?int $layerId): DatabaseEntryInterface
+    {
+        $this->layer_id = $layerId;
+
+        return $this;
     }
 }

@@ -1,9 +1,14 @@
-{% macro shiplist_header() %}
+{% macro shiplist_header(isFleetHeader) %}
 <tr>
     <th style="width: 140px;">Klasse</th>
     <th>Name</th>
+    {% if not isFleetHeader %}
     <th style="width: 30px;"></th>
-    <th style="width: 70px;" title="im System (außerhalb)">x|y <img src="/assets/buttons/info2.png"
+    <th style="width: 30px;"></th>
+    {% else %}
+    <th style="width: 60px;"></th>
+    {% endif %}
+    <th style="width: 95px;" title="im System (außerhalb)">x|y <img src="/assets/buttons/info2.png"
             style="height:16px;" /></th>
     <th style="width: 100px;" title="aktuell/maximal">Hülle <img src="/assets/buttons/info2.png" style="height:16px;" />
     </th>
@@ -25,6 +30,7 @@
 {% macro shiplist_body(wrapper) %}
 {% from 'html/macros.twig' import onClickSpacecraft %}
 {% set ship = wrapper.get %}
+{% set condition = ship.getCondition %}
 {% set shipId = ship.getId %}
 {% set epssystem = wrapper.getEpsSystemData %}
 <tr>
@@ -50,32 +56,50 @@
         </a>
     </td>
     <td id="shipalarmstate" style="text-align: center;">
-        <img src="/assets/buttons/alert{{ ship.getAlertState.value }}_1.png" title="Alarmstufe" />
+        {% if ship.hasComputer %}
+        <img src="/assets/buttons/alert{{ wrapper.getAlertState.value }}_1.png" title="Alarmstufe" />
+        {% endif %}
+    </td>
+    {% if not ship.getFleet %}<td>
+        <img src="/assets/buttons/layer_{{ ship.getLocation.getLayer.getId }}.png"
+            title="{{ ship.getLocation.getLayer.getName }}" style="flex-shrink: 0;" />
+        {% endif %}
     </td>
     {% set system = ship.getSystem %}
     {% if system %}
-    <td id="shipposition" align="center">
-        {{ ship.getPosX }}|{{ ship.getPosY }}<br />
-        {% if not system.isWormhole %}
-        ({{ system.getCx }}|{{ system.getCy }})
-        {% else %}
-        <img src="/assets/buttons/wormh2.png" title="befindet sich im Wurmloch '{{ ship.getSystem.getName }}'" />
-        {% endif %}
+    <td id="shipposition" style="position: relative;">
+        <div style="display: flex; align-items: flex-start; gap: 4px;">
+            <div style="flex: 1; text-align: center;">
+                <div>{{ ship.getPosX }}|{{ ship.getPosY }}</div>
+                <div style="margin-top: 1px;">
+                    {% if not system.isWormhole %}
+                    ({{ system.getCx }}|{{ system.getCy }})
+                    {% else %}
+                    <img src="/assets/buttons/wormh2.png"
+                        title="befindet sich im Wurmloch '{{ ship.getSystem.getName }}'" />
+                    {% endif %}
+                </div>
+            </div>
+        </div>
     </td>
     {% else %}
-    <td id="shipposition" align="center">
-        ({{ ship.getMap.getCx }}|{{ ship.getMap.getCy }})
+    <td id="shipposition" style="position: relative;">
+        <div style="display: flex; align-items: flex-start; gap: 4px;">
+            <div style="flex: 1; text-align: center;">
+                ({{ ship.getMap.getCx }}|{{ ship.getMap.getCy }})
+            </div>
+        </div>
     </td>
     {% endif %}
     <td id="shiphull">
-        <span style="{{ ship.getHullColorStyle }}">{{ ship.getHull }}</span>/{{ ship.getMaxHull }}
+        <span style="{{ ship.getHullColorStyle }}">{{ condition.getHull }}</span>/{{ ship.getMaxHull }}
     </td>
     <td id="shipshields">
         {% if ship.isShielded %}
-        <span class="activeshield">{{ ship.getShield }}/{{ ship.getMaxShield }}</span>
+        <span class="activeshield">{{ condition.getShield }}/{{ ship.getMaxShield }}</span>
         {% else %}
-        <span>{{ ship.getShield }}/{{ ship.getMaxShield }}</span>
-        {% if ship.getShield < ship.getMaxShield %} (+{{ wrapper.getShieldRegenerationRate }}) {% endif %} {% endif %}
+        <span>{{ condition.getShield }}/{{ ship.getMaxShield }}</span>
+        {% if condition.getShield < ship.getMaxShield %} (+{{ wrapper.getShieldRegenerationRate }}) {% endif %} {% endif %}
             </td>
     <td id="shipenergy">
         <table>

@@ -61,8 +61,6 @@ final class EffectHandling implements EffectHandlingInterface
             throw new RuntimeException(sprintf('no handler defined for type: %d', $effect->value));
         }
 
-        $handler = $this->handlerList[$effect->value];
-
-        return $handler;
+        return $this->handlerList[$effect->value];
     }
 }

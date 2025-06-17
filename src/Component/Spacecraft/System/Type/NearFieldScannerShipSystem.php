@@ -44,7 +44,7 @@ final class NearFieldScannerShipSystem extends AbstractSpacecraftSystemType impl
     #[Override]
     public function checkDeactivationConditions(SpacecraftWrapperInterface $wrapper, string &$reason): bool
     {
-        if ($wrapper->get()->getAlertState() === SpacecraftAlertStateEnum::ALERT_RED) {
+        if ($wrapper->getAlertState() === SpacecraftAlertStateEnum::ALERT_RED) {
             $reason = _('die Alarmstufe Rot ist');
             return false;
         }

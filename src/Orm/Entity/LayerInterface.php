@@ -20,6 +20,14 @@ interface LayerInterface
 
     public function getAward(): ?AwardInterface;
 
+    public function getDescription(): ?string;
+
+    public function setDescription(?string $description): LayerInterface;
+
+    public function isColonizable(): bool;
+
+    public function isNoobzone(): bool;
+
     public function getSectorsHorizontal(): int;
 
     public function getSectorsVertical(): int;

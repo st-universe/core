@@ -163,15 +163,15 @@ function buildOnField(action, fieldId, buildingId) {
 		bid = selectedbuilding;
 	}
 
-	performActionAndUpdateResult(action, `fid=${fieldId}&buildingid=${bid}`);
+	performActionAndUpdateResult(action, `fid=${fieldId}&buildingid=${bid}&sstr=${sstr}`);
 }
 
 function terraformOnField(fieldId, terraformId) {
-	performActionAndUpdateResult('B_TERRAFORM', `fid=${fieldId}&tfid=${terraformId}`);
+	performActionAndUpdateResult('B_TERRAFORM', `fid=${fieldId}&tfid=${terraformId}&sstr=${sstr}`);
 }
 
 function removeOnField(fieldId) {
-	performActionAndUpdateResult('B_REMOVE_BUILDING', `fid=${fieldId}`);
+	performActionAndUpdateResult('B_REMOVE_BUILDING', `fid=${fieldId}&sstr=${sstr}`);
 }
 
 function performActionAndUpdateResult(action, params) {
@@ -193,7 +193,8 @@ function performActionAndUpdateResult(action, params) {
 	});
 }
 
-function refreshHost() {
+function refreshHost(sessionString) {
+	sstr = sessionString;
 	ajax_update('COLONY_SURFACE', createHostUri('SHOW_SURFACE', '&buildingid=' + selectedbuilding));
 
 	//reload info submenu if selected
@@ -359,7 +360,11 @@ function toggleSpecialModuleDisplay(type, module_id, module_crew, amount) {
 var maxCrew;
 var baseCrew;
 var specialSlots;
+function resetCrewType() {
+	crew_type = new Hash();
+}
 function setFixValues(base_crew, max_crew, special_slots) {
+	resetCrewType();
 	baseCrew = base_crew;
 	maxCrew = max_crew;
 	specialSlots = special_slots;

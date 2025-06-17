@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\SpacecraftCondition;
 use Stu\Orm\Entity\UserInterface;
 use Stu\StuTestCase;
 
@@ -40,20 +41,21 @@ class AttackingBattlePartyTest extends StuTestCase
         $ship->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($user);
-        $ship->shouldReceive('isDestroyed')
+        $ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->zeroOrMoreTimes()
             ->andReturn(false);
-        $ship->shouldReceive('isDisabled')
+        $ship->shouldReceive('getCondition->isDisabled')
             ->withNoArgs()
             ->zeroOrMoreTimes()
             ->andReturn(false);
 
-        $subject = new AttackingBattleParty($wrapper);
+        $subject = new AttackingBattleParty($wrapper, true);
 
         $members = $subject->getActiveMembers();
 
         $this->assertEquals([123 => $wrapper], $members->toArray());
+        $this->assertTrue($subject->isAttackingShieldsOnly());
     }
 
     public function testGetActiveMembersExpectSingleWhenNotFleetLeader(): void
@@ -84,20 +86,21 @@ class AttackingBattlePartyTest extends StuTestCase
         $ship->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($user);
-        $ship->shouldReceive('isDestroyed')
+        $ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->zeroOrMoreTimes()
             ->andReturn(false);
-        $ship->shouldReceive('isDisabled')
+        $ship->shouldReceive('getCondition->isDisabled')
             ->withNoArgs()
             ->zeroOrMoreTimes()
             ->andReturn(false);
 
-        $subject = new AttackingBattleParty($wrapper);
+        $subject = new AttackingBattleParty($wrapper, false);
 
         $members = $subject->getActiveMembers();
 
         $this->assertEquals([123 => $wrapper], $members->toArray());
+        $this->assertFalse($subject->isAttackingShieldsOnly());
     }
 
     public function testGetActiveMembersExpectFleet(): void
@@ -108,6 +111,8 @@ class AttackingBattlePartyTest extends StuTestCase
         $ship2 = $this->mock(ShipInterface::class);
         $fleetWrapper = $this->mock(FleetWrapperInterface::class);
         $user = $this->mock(UserInterface::class);
+        $condition = $this->mock(SpacecraftCondition::class);
+        $condition2 = $this->mock(SpacecraftCondition::class);
 
         $wrapper->shouldReceive('get')
             ->withNoArgs()
@@ -125,6 +130,13 @@ class AttackingBattlePartyTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(true);
 
+        $ship->shouldReceive('getCondition')
+            ->withNoArgs()
+            ->andReturn($condition);
+        $ship2->shouldReceive('getCondition')
+            ->withNoArgs()
+            ->andReturn($condition2);
+
         $fleetWrapper->shouldReceive('getShipWrappers')
             ->withNoArgs()
             ->andReturn(new ArrayCollection([
@@ -132,23 +144,23 @@ class AttackingBattlePartyTest extends StuTestCase
                 34 => $wrapper2
             ]));
 
-        $ship->shouldReceive('isDestroyed')
+        $condition->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->andReturn(false);
-        $ship->shouldReceive('isDisabled')
+        $condition->shouldReceive('isDisabled')
             ->withNoArgs()
             ->andReturn(false);
         $ship->shouldReceive('isStation')
             ->withNoArgs()
             ->andReturn(false);
-        $ship2->shouldReceive('isDestroyed')
+        $condition2->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->andReturn(false);
-        $ship2->shouldReceive('isDisabled')
+        $condition2->shouldReceive('isDisabled')
             ->withNoArgs()
             ->andReturn(false);
 
-        $subject = new AttackingBattleParty($wrapper);
+        $subject = new AttackingBattleParty($wrapper, true);
 
         $members = $subject->getActiveMembers();
 
@@ -166,6 +178,8 @@ class AttackingBattlePartyTest extends StuTestCase
         $ship2 = $this->mock(ShipInterface::class);
         $fleetWrapper = $this->mock(FleetWrapperInterface::class);
         $user = $this->mock(UserInterface::class);
+        $condition = $this->mock(SpacecraftCondition::class);
+        $condition2 = $this->mock(SpacecraftCondition::class);
 
         $wrapper->shouldReceive('get')
             ->withNoArgs()
@@ -183,6 +197,13 @@ class AttackingBattlePartyTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(true);
 
+        $ship->shouldReceive('getCondition')
+            ->withNoArgs()
+            ->andReturn($condition);
+        $ship2->shouldReceive('getCondition')
+            ->withNoArgs()
+            ->andReturn($condition2);
+
         $fleetWrapper->shouldReceive('getLeadWrapper')
             ->withNoArgs()
             ->andReturn($wrapper);
@@ -193,23 +214,23 @@ class AttackingBattlePartyTest extends StuTestCase
                 34 => $wrapper2
             ]));
 
-        $ship->shouldReceive('isDestroyed')
+        $condition->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->andReturn(false);
         $ship->shouldReceive('isStation')
             ->withNoArgs()
             ->andReturn(false);
-        $ship->shouldReceive('isDisabled')
+        $condition->shouldReceive('isDisabled')
             ->withNoArgs()
             ->andReturn(false);
-        $ship2->shouldReceive('isDestroyed')
+        $condition2->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->andReturn(false);
-        $ship2->shouldReceive('isDisabled')
+        $condition2->shouldReceive('isDisabled')
             ->withNoArgs()
             ->andReturn(false);
 
-        $subject = new AttackingBattleParty($fleetWrapper);
+        $subject = new AttackingBattleParty($fleetWrapper, false);
 
         $members = $subject->getActiveMembers();
 

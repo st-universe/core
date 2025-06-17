@@ -56,6 +56,7 @@ final class ShipWrapper extends SpacecraftWrapper implements ShipWrapperInterfac
         );
     }
 
+    #[Override]
     public function get(): ShipInterface
     {
         return $this->spacecraft;
@@ -64,7 +65,7 @@ final class ShipWrapper extends SpacecraftWrapper implements ShipWrapperInterfac
     #[Override]
     public function getFleetWrapper(): ?FleetWrapperInterface
     {
-        $fleet = $this->get()->getFleet();
+        $fleet = $this->spacecraft->getFleet();
         if ($fleet === null) {
             return null;
         }
@@ -99,11 +100,11 @@ final class ShipWrapper extends SpacecraftWrapper implements ShipWrapperInterfac
     #[Override]
     public function canBeRetrofitted(): bool
     {
-        if ($this->spacecraft->getAlertState() !== SpacecraftAlertStateEnum::ALERT_GREEN) {
+        if (!$this->isUnalerted()) {
             return false;
         }
 
-        if ($this->spacecraft->getFleet()) {
+        if ($this->spacecraft->getFleet() !== null) {
             return false;
         }
 

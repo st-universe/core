@@ -6,7 +6,7 @@ namespace Stu\Module\Game\Action\Logout;
 
 use Override;
 use Stu\Component\Game\ModuleEnum;
-use Stu\Lib\SessionInterface;
+use Stu\Lib\Session\SessionInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 

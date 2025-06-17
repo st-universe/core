@@ -47,6 +47,12 @@ final class SwitchColonyMenu implements ActionControllerInterface
         if (BuildingFunctionTypeEnum::isBuildingFunctionMandatory($menu)) {
             $func = $this->buildingFunctionRepository->find(request::getIntFatal('func'));
             $game->setTemplateVar('FUNC', $func);
+
+            $isFighterShipyard = false;
+            if ($func !== null) {
+                $isFighterShipyard = $func->getFunction() === BuildingFunctionEnum::FIGHTER_SHIPYARD;
+            }
+            $game->setTemplateVar('IS_FIGHTER_SHIPYARD', $isFighterShipyard);
         }
     }
 

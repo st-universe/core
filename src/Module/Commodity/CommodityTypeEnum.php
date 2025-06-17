@@ -37,6 +37,7 @@ final class CommodityTypeEnum
     public const int COMMODITY_KELBONIUM_GAS = 72;
     public const int COMMODITY_DURANIUM = 21;
     public const int COMMODITY_LATINUM = 50;
+    public const int COMMODITY_EASTER_EGG = 73;
     public const int COMMODITY_SPARE_PART = 10001;
     public const int COMMODITY_SYSTEM_COMPONENT = 10002;
 

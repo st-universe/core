@@ -6,7 +6,7 @@ namespace Stu\Module\NPC\Action;
 
 use Override;
 use request;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Lib\CleanTextUtils;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -15,7 +15,7 @@ use Stu\Orm\Repository\NPCLogRepositoryInterface;
 
 final class RenameBuildplan implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_CHANGE_BUILDPLAN_NAME';
+    public const string ACTION_IDENTIFIER = 'B_CHANGE_BUILDPLAN_NAME';
 
     public function __construct(
         private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository,
@@ -52,7 +52,7 @@ final class RenameBuildplan implements ActionControllerInterface
 
         $plan = $this->spacecraftBuildplanRepository->find($buildplanId);
         if ($plan === null || $plan->getUserId() !== $userId) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $oldName = $plan->getName();

@@ -38,6 +38,7 @@ use Stu\Module\Spacecraft\Action\MoveShip\MoveShipRequestInterface;
 use Stu\Module\Spacecraft\Action\MoveShip\MoveShipRight;
 use Stu\Module\Spacecraft\Action\MoveShip\MoveShipUp;
 use Stu\Module\Spacecraft\Action\OpenAdventDoor\OpenAdventDoor;
+use Stu\Module\Spacecraft\Action\OpenEasterEgg\OpenEasterEgg;
 use Stu\Module\Spacecraft\Action\RemoveWaste\RemoveWaste;
 use Stu\Module\Spacecraft\Action\RenameCrew\RenameCrew;
 use Stu\Module\Spacecraft\Action\RenameCrew\RenameCrewRequest;
@@ -152,6 +153,8 @@ use Stu\Module\Spacecraft\Lib\Damage\ApplyDamage;
 use Stu\Module\Spacecraft\Lib\Damage\ApplyDamageInterface;
 use Stu\Module\Spacecraft\Lib\Damage\ApplyFieldDamage;
 use Stu\Module\Spacecraft\Lib\Damage\ApplyFieldDamageInterface;
+use Stu\Module\Spacecraft\Lib\Damage\SystemDamage;
+use Stu\Module\Spacecraft\Lib\Damage\SystemDamageInterface;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\CancelTakeover;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\ClearTractoringBeam;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\ColonizationShipCheck;
@@ -266,6 +269,7 @@ return [
     ModuleValueCalculatorInterface::class => autowire(ModuleValueCalculator::class),
     InteractionCheckerInterface::class => autowire(InteractionChecker::class),
     ApplyDamageInterface::class => autowire(ApplyDamage::class),
+    SystemDamageInterface::class => autowire(SystemDamage::class),
     ApplyFieldDamageInterface::class => autowire(ApplyFieldDamage::class),
     EnergyWeaponPhaseInterface::class => autowire(EnergyWeaponPhase::class),
     FightLibInterface::class => autowire(FightLib::class),
@@ -398,6 +402,7 @@ return [
         AddShipLog::ACTION_IDENTIFIER => autowire(AddShipLog::class),
         DumpForeignCrewman::ACTION_IDENTIFIER => autowire(DumpForeignCrewman::class),
         OpenAdventDoor::ACTION_IDENTIFIER => autowire(OpenAdventDoor::class),
+        OpenEasterEgg::ACTION_IDENTIFIER => autowire(OpenEasterEgg::class),
         Selfrepair::ACTION_IDENTIFIER => autowire(Selfrepair::class),
         SendBroadcast::ACTION_IDENTIFIER => autowire(SendBroadcast::class),
         SetLSSModeBorder::ACTION_IDENTIFIER => autowire(SetLSSModeBorder::class),

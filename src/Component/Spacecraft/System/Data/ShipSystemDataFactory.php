@@ -44,6 +44,11 @@ final class ShipSystemDataFactory implements ShipSystemDataFactoryInterface
                     $this->shipSystemRepository,
                     $this->statusBarFactory
                 );
+            case SpacecraftSystemTypeEnum::COMPUTER:
+                return  new ComputerSystemData(
+                    $this->shipSystemRepository,
+                    $this->statusBarFactory
+                );
             case SpacecraftSystemTypeEnum::TRACKER:
                 return  new TrackerSystemData(
                     $this->shipRepository,
@@ -79,6 +84,11 @@ final class ShipSystemDataFactory implements ShipSystemDataFactoryInterface
                 );
             case SpacecraftSystemTypeEnum::ASTRO_LABORATORY:
                 return  new AstroLaboratorySystemData(
+                    $this->shipSystemRepository,
+                    $this->statusBarFactory
+                );
+            case SpacecraftSystemTypeEnum::PHASER:
+                return  new EnergyWeaponSystemData(
                     $this->shipSystemRepository,
                     $this->statusBarFactory
                 );

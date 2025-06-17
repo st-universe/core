@@ -8,10 +8,10 @@ use Mockery\MockInterface;
 use Override;
 use Stu\Component\Game\SemaphoreConstants;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Exception\EntityLockedException;
 use Stu\Exception\SpacecraftDoesNotExistException;
-use Stu\Exception\UnallowedUplinkOperation;
+use Stu\Exception\UnallowedUplinkOperationException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\SemaphoreUtilInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
@@ -20,6 +20,7 @@ use Stu\Module\Tick\Lock\LockManagerInterface;
 use Stu\Module\Tick\Lock\LockTypeEnum;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -27,6 +28,8 @@ class SpacecraftLoaderTest extends StuTestCase
 {
     /** @var MockInterface&SpacecraftRepositoryInterface */
     private $spacecraftRepository;
+    /** @var MockInterface&CrewAssignmentRepositoryInterface */
+    private $crewAssignmentRepository;
     /** @var MockInterface&SemaphoreUtilInterface */
     private $semaphoreUtil;
     /** @var MockInterface&SpacecraftWrapperFactoryInterface */
@@ -53,6 +56,7 @@ class SpacecraftLoaderTest extends StuTestCase
         $this->spacecraft = $this->mock(SpacecraftInterface::class);
         $this->wrapper = $this->mock(SpacecraftWrapperInterface::class);
         $this->spacecraftRepository = $this->mock(SpacecraftRepositoryInterface::class);
+        $this->crewAssignmentRepository = $this->mock(CrewAssignmentRepositoryInterface::class);
         $this->semaphoreUtil = $this->mock(SemaphoreUtilInterface::class);
         $this->game = $this->mock(GameControllerInterface::class);
         $this->spacecraftWrapperFactory = $this->mock(SpacecraftWrapperFactoryInterface::class);
@@ -69,6 +73,7 @@ class SpacecraftLoaderTest extends StuTestCase
 
         $this->subject = new SpacecraftLoader(
             $this->spacecraftRepository,
+            $this->crewAssignmentRepository,
             $this->semaphoreUtil,
             $this->game,
             $this->spacecraftWrapperFactory,
@@ -108,7 +113,7 @@ class SpacecraftLoaderTest extends StuTestCase
 
     public function testGetByIdAndUserAwaitExceptionIfShipBelongsToOtherUser(): void
     {
-        $this->expectException(AccessViolation::class);
+        $this->expectException(AccessViolationException::class);
 
         $this->lockManager->shouldReceive('isLocked')
             ->with($this->spacecraftId, LockTypeEnum::SHIP_GROUP)
@@ -119,8 +124,8 @@ class SpacecraftLoaderTest extends StuTestCase
             ->with(5)
             ->once()
             ->andReturn($this->spacecraft);
-        $this->spacecraft->shouldReceive('hasCrewmanOfUser')
-            ->with(999)
+        $this->crewAssignmentRepository->shouldReceive('hasCrewmanOfUser')
+            ->with($this->spacecraft, 999)
             ->once()
             ->andReturn(false);
 
@@ -131,7 +136,7 @@ class SpacecraftLoaderTest extends StuTestCase
 
     public function testGetByIdAndUserAwaitExceptionIfOperationUnallowedWithUplink(): void
     {
-        $this->expectException(UnallowedUplinkOperation::class);
+        $this->expectException(UnallowedUplinkOperationException::class);
 
         $this->lockManager->shouldReceive('isLocked')
             ->with($this->spacecraftId, LockTypeEnum::SHIP_GROUP)
@@ -142,8 +147,8 @@ class SpacecraftLoaderTest extends StuTestCase
             ->with(5)
             ->once()
             ->andReturn($this->spacecraft);
-        $this->spacecraft->shouldReceive('hasCrewmanOfUser')
-            ->with(999)
+        $this->crewAssignmentRepository->shouldReceive('hasCrewmanOfUser')
+            ->with($this->spacecraft, 999)
             ->once()
             ->andReturn(true);
 
@@ -154,7 +159,7 @@ class SpacecraftLoaderTest extends StuTestCase
 
     public function testGetByIdAndUserAwaitExceptionIfUplinkOffline(): void
     {
-        $this->expectException(UnallowedUplinkOperation::class);
+        $this->expectException(UnallowedUplinkOperationException::class);
 
         $this->lockManager->shouldReceive('isLocked')
             ->with($this->spacecraftId, LockTypeEnum::SHIP_GROUP)
@@ -165,8 +170,8 @@ class SpacecraftLoaderTest extends StuTestCase
             ->with(5)
             ->once()
             ->andReturn($this->spacecraft);
-        $this->spacecraft->shouldReceive('hasCrewmanOfUser')
-            ->with(999)
+        $this->crewAssignmentRepository->shouldReceive('hasCrewmanOfUser')
+            ->with($this->spacecraft, 999)
             ->once()
             ->andReturn(true);
         $this->spacecraft->shouldReceive('getSystemState')
@@ -181,7 +186,7 @@ class SpacecraftLoaderTest extends StuTestCase
 
     public function testGetByIdAndUserAwaitExceptionIfOwnerOnVacation(): void
     {
-        $this->expectException(UnallowedUplinkOperation::class);
+        $this->expectException(UnallowedUplinkOperationException::class);
 
         $this->lockManager->shouldReceive('isLocked')
             ->with($this->spacecraftId, LockTypeEnum::SHIP_GROUP)
@@ -192,8 +197,8 @@ class SpacecraftLoaderTest extends StuTestCase
             ->with(5)
             ->once()
             ->andReturn($this->spacecraft);
-        $this->spacecraft->shouldReceive('hasCrewmanOfUser')
-            ->with(999)
+        $this->crewAssignmentRepository->shouldReceive('hasCrewmanOfUser')
+            ->with($this->spacecraft, 999)
             ->once()
             ->andReturn(true);
         $this->spacecraft->shouldReceive('getSystemState')

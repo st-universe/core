@@ -12,6 +12,7 @@ use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Provider\ProjectileAttackerInterface;
 use Stu\Module\Spacecraft\Lib\Battle\SpacecraftAttackCauseEnum;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\TorpedoTypeInterface;
@@ -45,6 +46,10 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
                 break;
             }
 
+            if ($attacker->isAvoidingHullHits($target)) {
+                break;
+            }
+
             $isCritical = $this->isCritical($torpedo, $target->isCloaked());
             $netDamage = $attacker->getProjectileWeaponDamage($isCritical);
 
@@ -60,8 +65,9 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
 
             $message->add("Die " . $attacker->getName() . " feuert einen " . $torpedoName . " auf die " . $target->getName());
 
-            $hitchance = $attacker->getHitChance();
-            if ($hitchance * (100 - $target->getEvadeChance()) < random_int(1, 10000)) {
+            $hitchance = $this->getHitChance($attacker);
+            $evadeChance = $this->getEvadeChance($targetWrapper);
+            if ($hitchance * (100 - $evadeChance) < random_int(1, 10000)) {
                 $message->add("Die " . $target->getName() . " wurde verfehlt");
                 continue;
             }
@@ -76,7 +82,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
 
             $this->applyDamage->damage($damage_wrapper, $targetWrapper, $message);
 
-            if ($target->isDestroyed()) {
+            if ($target->getCondition()->isDestroyed()) {
                 $this->checkForSpacecraftDestruction(
                     $attacker,
                     $targetWrapper,
@@ -94,7 +100,13 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
         bool $isOrbitField,
         int &$antiParticleCount
     ): InformationWrapper {
+
         $informations = new InformationWrapper();
+
+        $host = $target->getHost();
+        if (!$host instanceof ColonyInterface) {
+            return $informations;
+        }
 
         $building = $target->getBuilding();
         if ($building === null) {
@@ -141,18 +153,18 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
             $damage_wrapper->setHullDamageFactor($torpedo->getHullDamageFactor());
             $damage_wrapper->setIsTorpedoDamage(true);
 
-            $informations->addInformationWrapper($this->applyDamage->damageBuilding($damage_wrapper, $target, $isOrbitField));
+            $informations->addInformationWrapper($this->applyBuildingDamage->damageBuilding($damage_wrapper, $target, $isOrbitField));
 
             if ($target->getIntegrity() === 0) {
                 $this->entryCreator->addEntry(
                     sprintf(
                         _('Das Gebäude %s auf Kolonie %s wurde von der %s zerstört'),
                         $building->getName(),
-                        $target->getHost()->getName(),
+                        $host->getName(),
                         $attacker->getName()
                     ),
                     $attacker->getUserId(),
-                    $target->getHost()
+                    $host
                 );
 
                 $this->buildingManager->remove($target);

@@ -6,7 +6,7 @@ namespace Stu\Module\Alliance\Action\DeletePost;
 
 use Override;
 use request;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\View\Board\Board;
 use Stu\Module\Alliance\View\Topic\Topic;
 use Stu\Module\Control\ActionControllerInterface;
@@ -17,9 +17,6 @@ use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
 final class DeletePost implements ActionControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string ACTION_IDENTIFIER = 'B_DEL_POSTING';
 
     public function __construct(private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository, private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository)
@@ -38,7 +35,7 @@ final class DeletePost implements ActionControllerInterface
         }
 
         if ($post->getBoard()->getAllianceId() !== $alliance->getId()) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $postcount = $post->getTopic()->getPostCount();

@@ -2008,3 +2008,67 @@ div.userAvatar img {
   background-color: var(--color-37);
   border-color: var(--color-46);
 }
+
+div.plot-container {
+  display: grid;
+  grid-template-columns: auto 550px;
+  grid-gap: 30px;
+  width: 100%;
+}
+
+div.plot-details {
+  order: 2;
+}
+
+div.plot-kn {
+  order: 1;
+}
+
+@media (max-width: 1024px) {
+  div.plot-container {
+    display: flex;
+    flex-direction: column;
+    grid-gap: 0;
+  }
+
+  div.plot-details {
+    order: 1;
+    margin-bottom: 30px;
+  }
+
+  div.plot-kn {
+    order: 2;
+  }
+}
+
+.hidden-info {
+  display: none;
+}
+
+label.linkbutton {
+  text-align: center;
+  display: inline-block;
+  padding: 3px;
+  background-color: var(--color-34);
+  border: 1px solid var(--color-16);
+  color: var(--color-35);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+label.linkbutton:hover {
+  text-decoration: none;
+  background-color: #3c3c3c;
+}
+
+#toggle-info:checked~.information-container .hidden-info {
+  display: block;
+}
+
+#toggle-info:checked~.information-container .show-text {
+  display: none;
+}
+
+#toggle-info:checked~.information-container .hide-text {
+  display: inline !important;
+}

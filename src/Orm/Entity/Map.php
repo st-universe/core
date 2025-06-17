@@ -110,19 +110,6 @@ class Map extends Location implements MapInterface
     }
 
     #[Override]
-    public function getSystemsId(): ?int
-    {
-        return $this->systems_id;
-    }
-
-    #[Override]
-    public function setSystemsId(?int $systems_id): MapInterface
-    {
-        $this->systems_id = $systems_id;
-        return $this;
-    }
-
-    #[Override]
     public function getSystemTypeId(): ?int
     {
         return $this->system_type_id;
@@ -244,6 +231,15 @@ class Map extends Location implements MapInterface
             return '';
         }
         return 'border: 1px solid ' . $borderType->getColor();
+    }
+
+    public function getBorderColor(): string
+    {
+        $borderType = $this->getMapBorderType();
+        if ($borderType === null) {
+            return '';
+        }
+        return $borderType->getColor();
     }
 
     #[Override]

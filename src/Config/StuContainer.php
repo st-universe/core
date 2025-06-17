@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Config;
 
+use Override;
 use DI\Container;
 use DI\Definition\ArrayDefinition;
-use DI\Definition\Definition;
 use DI\Definition\FactoryDefinition;
 use DI\Definition\Source\MutableDefinitionSource;
 use DI\DependencyException;
@@ -22,7 +22,7 @@ class StuContainer extends Container
 {
     private MutableDefinitionSource $definitionSource;
 
-    /** @var array<string, Definition> */
+    /** @var array<string, mixed> */
     private ?array $definitions = null;
 
     /** @var Collection<string, Collection<int|string, mixed>> */
@@ -56,6 +56,7 @@ class StuContainer extends Container
      * @throws DependencyException Error while resolving the entry.
      * @throws NotFoundException No entry found for the given name.
      */
+    #[Override]
     public function get(string $id): mixed
     {
         $service = $this->additionalServices->get($id);
@@ -137,7 +138,7 @@ class StuContainer extends Container
         return $services;
     }
 
-    /** @return array<string, Definition> */
+    /** @return array<string, mixed> */
     private function getDefinitions(): array
     {
         if ($this->definitions === null) {

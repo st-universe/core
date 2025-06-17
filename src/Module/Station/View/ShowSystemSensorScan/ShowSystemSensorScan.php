@@ -72,7 +72,7 @@ final class ShowSystemSensorScan implements ViewControllerInterface
         }
 
         $game->setTemplateVar('VISUAL_PANEL', $this->stationUiFactory->createSystemScanPanel(
-            $station,
+            $wrapper,
             $game->getUser(),
             $this->loggerUtilFactory->getLoggerUtil(),
             $system

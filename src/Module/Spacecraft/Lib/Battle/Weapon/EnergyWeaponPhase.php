@@ -12,6 +12,7 @@ use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Provider\EnergyAttackerInterface;
 use Stu\Module\Spacecraft\Lib\Battle\SpacecraftAttackCauseEnum;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\WeaponInterface;
@@ -30,6 +31,8 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
         MessageCollectionInterface $messages
     ): void {
 
+        $targetWrapper = null;
+
         $phaserVolleys = $attacker->getPhaserVolleys();
         for ($i = 1; $i <= $phaserVolleys; $i++) {
             if ($targetPool->isDefeated()) {
@@ -43,12 +46,16 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
 
             $attacker->reduceEps($this->getEnergyWeaponEnergyCosts());
 
-            $targetWrapper = $targetPool->getRandomActiveMember();
+            $targetWrapper = $targetWrapper ?? $targetPool->getRandomActiveMember();
             if ($attacker->getFiringMode() === self::FIRINGMODE_RANDOM) {
                 $targetWrapper = $targetPool->getRandomActiveMember();
             }
 
             $target = $targetWrapper->get();
+
+            if ($attacker->isAvoidingHullHits($target)) {
+                break;
+            }
 
             $message = $this->messageFactory->createMessage($attacker->getUserId(), $target->getUser()->getId());
             $messages->add($message);
@@ -61,7 +68,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
             ));
 
             $hitChance = $this->getHitChance($attacker);
-            $evadeChance = $this->getEvadeChance($target);
+            $evadeChance = $this->getEvadeChance($targetWrapper);
 
             if (
                 $hitChance * (100 - $evadeChance) < $this->stuRandom->rand(1, 10000)
@@ -82,7 +89,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
 
             $this->applyDamage->damage($damage_wrapper, $targetWrapper, $message);
 
-            if ($target->isDestroyed()) {
+            if ($target->getCondition()->isDestroyed()) {
 
                 $this->checkForSpacecraftDestruction(
                     $attacker,
@@ -105,6 +112,11 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
         bool $isOrbitField
     ): InformationWrapper {
         $informations = new InformationWrapper();
+
+        $host = $target->getHost();
+        if (!$host instanceof ColonyInterface) {
+            return $informations;
+        }
 
         $building = $target->getBuilding();
         if ($building === null) {
@@ -146,18 +158,18 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
             $damage_wrapper->setIsPhaserDamage(true);
 
 
-            $informations->addInformationWrapper($this->applyDamage->damageBuilding($damage_wrapper, $target, $isOrbitField));
+            $informations->addInformationWrapper($this->applyBuildingDamage->damageBuilding($damage_wrapper, $target, $isOrbitField));
 
             if ($target->getIntegrity() === 0) {
                 $this->entryCreator->addEntry(
                     sprintf(
                         'Das Gebäude %s auf Kolonie %s wurde von der %s zerstört',
                         $building->getName(),
-                        $target->getHost()->getName(),
+                        $host->getName(),
                         $attacker->getName()
                     ),
                     $attacker->getUserId(),
-                    $target->getHost()
+                    $host
                 );
 
                 $this->buildingManager->remove($target);

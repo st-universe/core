@@ -15,4 +15,8 @@ interface MapRegionInterface extends EntityWithAstroEntryInterface
     public function getDatabaseEntry(): ?DatabaseEntryInterface;
 
     public function setDatabaseEntry(?DatabaseEntryInterface $databaseEntry): MapRegionInterface;
+
+    public function getLayers(): ?string;
+
+    public function setLayers(?string $layers): MapRegionInterface;
 }

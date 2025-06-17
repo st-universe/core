@@ -4,6 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Exception;
 
-final class RelocationGameStateException extends StuException
-{
-}
+use Stu\Module\Control\Router\FallbackRouteException;
+
+final class RelocationGameStateException extends FallbackRouteException {}

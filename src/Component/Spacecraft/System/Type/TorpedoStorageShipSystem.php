@@ -35,9 +35,10 @@ final class TorpedoStorageShipSystem extends AbstractSpacecraftSystemType implem
     #[Override]
     public function handleDestruction(SpacecraftWrapperInterface $wrapper): void
     {
-        $ship = $wrapper->get();
-        if ($ship->getTorpedoCount() > 0) {
-            $ship->setIsDestroyed(true);
+        //TODO destroy ship?
+        $spacecraft = $wrapper->get();
+        if ($spacecraft->getTorpedoCount() > 0) {
+            $spacecraft->getCondition()->setIsDestroyed(true);
         }
     }
 }

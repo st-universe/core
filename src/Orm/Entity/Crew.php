@@ -156,4 +156,10 @@ class Crew implements CrewInterface
 
         return $this;
     }
+
+    #[Override]
+    public function __toString(): string
+    {
+        return sprintf('crewId: %d', $this->getId());
+    }
 }

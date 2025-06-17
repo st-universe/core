@@ -15,9 +15,7 @@ final class GenerateEmptySystems implements GenerateEmptySystemsInterface
 {
     public const int BATCH_AMOUNT = 10;
 
-    public function __construct(private LayerRepositoryInterface $layerRepository, private MapRepositoryInterface $mapRepository, private NamesRepositoryInterface $namesRepository, private StarSystemCreationInterface $starSystemCreation)
-    {
-    }
+    public function __construct(private LayerRepositoryInterface $layerRepository, private MapRepositoryInterface $mapRepository, private NamesRepositoryInterface $namesRepository, private StarSystemCreationInterface $starSystemCreation) {}
 
     #[Override]
     public function generate(int $layerId, ?GameControllerInterface $game): int
@@ -42,6 +40,14 @@ final class GenerateEmptySystems implements GenerateEmptySystemsInterface
 
         foreach ($mapArray as $map) {
             if ($count === self::BATCH_AMOUNT) {
+                break;
+            }
+
+            if (!array_key_exists($count, $randomNames)) {
+                if ($game !== null) {
+                    $game->addInformation('Keine freien Systemnamen mehr verfügbar!');
+                }
+
                 break;
             }
 

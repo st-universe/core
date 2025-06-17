@@ -16,21 +16,15 @@ use Override;
 #[Entity()]
 class PirateSetupBuildplan implements PirateSetupBuildplanInterface
 {
-    #[Id]
-    #[Column(type: 'integer')]
-    private int $pirate_setup_id;
-
-    #[Id]
-    #[Column(type: 'integer')]
-    private int $buildplan_id;
-
     #[Column(type: 'integer')]
     private int $amount;
 
+    #[Id]
     #[ManyToOne(targetEntity: 'PirateSetup', inversedBy: 'setupBuildplans')]
     #[JoinColumn(name: 'pirate_setup_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private PirateSetupInterface $setup;
 
+    #[Id]
     #[ManyToOne(targetEntity: SpacecraftBuildplan::class)]
     #[JoinColumn(name: 'buildplan_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private SpacecraftBuildplanInterface $buildplan;

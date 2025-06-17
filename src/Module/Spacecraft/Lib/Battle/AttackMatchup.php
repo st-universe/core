@@ -49,7 +49,7 @@ final class AttackMatchup implements AttackMatchupInterface
         }
 
         return new Matchup(
-            $attackers->getRandomUnused(),
+            $attackers,
             $defenders->get()
         );
     }

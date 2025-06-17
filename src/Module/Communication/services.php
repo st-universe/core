@@ -12,6 +12,9 @@ use Stu\Module\Communication\Action\AddKnPost\AddKnPost;
 use Stu\Module\Communication\Action\AddKnPost\AddKnPostRequest;
 use Stu\Module\Communication\Action\AddKnPost\AddKnPostRequestInterface;
 use Stu\Module\Communication\Action\AddKnPostToPlot\AddKnPostToPlot;
+use Stu\Module\Communication\Action\AdminDeleteKnPost\AdminDeleteKnPost;
+use Stu\Module\Communication\Action\AdminDeleteKnPost\AdminDeleteKnPostRequest;
+use Stu\Module\Communication\Action\AdminDeleteKnPost\AdminDeleteKnPostRequestInterface;
 use Stu\Module\Communication\Action\ApplyKnPostToPlot\ApplyKnPostToPlot;
 use Stu\Module\Communication\Action\CreateKnPlot\CreateKnPlot;
 use Stu\Module\Communication\Action\CreateKnPlot\CreateKnPlotRequest;
@@ -45,6 +48,9 @@ use Stu\Module\Communication\Action\SetKnMark\SetKnMark;
 use Stu\Module\Communication\Action\SetKnMark\SetKnMarkRequest;
 use Stu\Module\Communication\Action\SetKnMark\SetKnMarkRequestInterface;
 use Stu\Module\Communication\Lib\NewKnPostNotificator;
+use Stu\Module\Communication\View\ShowAdminDeletePost\ShowAdminDeletePost;
+use Stu\Module\Communication\View\ShowAdminDeletePost\ShowAdminDeletePostRequest;
+use Stu\Module\Communication\View\ShowAdminDeletePost\ShowAdminDeletePostRequestInterface;
 use Stu\Module\Communication\View\ShowCreatePlot\ShowCreatePlot;
 use Stu\Module\Communication\View\ShowEditKn\ShowEditKn;
 use Stu\Module\Communication\View\ShowEditKn\ShowEditKnRequest;
@@ -80,6 +86,8 @@ use function DI\autowire;
 
 return [
     RateKnPostRequestInterface::class => autowire(RateKnPostRequest::class),
+    AdminDeleteKnPostRequestInterface::class => autowire(AdminDeleteKnPostRequest::class),
+    ShowAdminDeletePostRequestInterface::class => autowire(ShowAdminDeletePostRequest::class),
     SetKnMarkRequestInterface::class => autowire(SetKnMarkRequest::class),
     ShowKnCharacterRequestInterface::class => autowire(ShowKnCharacterRequest::class),
     ShowKnCommentsRequestInterface::class => autowire(ShowKnCommentsRequest::class),
@@ -100,6 +108,7 @@ return [
     ShowSearchResultRequestInterface::class => autowire(ShowSearchResultRequest::class),
     'COMMUNICATION_ACTIONS' => [
         SetKnMark::ACTION_IDENTIFIER => autowire(SetKnMark::class),
+        AdminDeleteKnPost::ACTION_IDENTIFIER => autowire(AdminDeleteKnPost::class),
         AddKnPost::ACTION_IDENTIFIER => autowire(AddKnPost::class)
             ->constructorParameter(
                 'newKnPostNotificator',
@@ -121,6 +130,7 @@ return [
     ],
     'COMMUNICATION_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
+        ShowAdminDeletePost::VIEW_IDENTIFIER => autowire(ShowAdminDeletePost::class),
         ShowKnCharacter::VIEW_IDENTIFIER => autowire(ShowKnCharacter::class),
         ShowKnComments::VIEW_IDENTIFIER => autowire(ShowKnComments::class),
         ShowKnPlot::VIEW_IDENTIFIER => autowire(ShowKnPlot::class),

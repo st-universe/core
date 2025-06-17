@@ -20,7 +20,7 @@ class HullSystemData extends AbstractSystemData
     {
         return $this->getStatusBar(
             _('Hülle'),
-            $this->spacecraft->getHull(),
+            $this->spacecraft->getCondition()->getHull(),
             $this->spacecraft->getMaxHull(),
             StatusBarColorEnum::STATUSBAR_GREEN
         )
@@ -31,7 +31,7 @@ class HullSystemData extends AbstractSystemData
     {
         return $this->getStatusBar(
             _('Hülle'),
-            $this->spacecraft->getHull(),
+            $this->spacecraft->getCondition()->getHull(),
             $this->spacecraft->getMaxHull(),
             StatusBarColorEnum::STATUSBAR_GREEN
         )

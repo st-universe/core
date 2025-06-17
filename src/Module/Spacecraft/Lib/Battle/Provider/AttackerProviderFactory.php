@@ -22,17 +22,18 @@ class AttackerProviderFactory implements AttackerProviderFactoryInterface
     ) {}
 
     #[Override]
-    public function getSpacecraftAttacker(SpacecraftWrapperInterface $wrapper): SpacecraftAttacker
+    public function createSpacecraftAttacker(SpacecraftWrapperInterface $wrapper, bool $isAttackingShieldsOnly = false): SpacecraftAttacker
     {
         return new SpacecraftAttacker(
             $wrapper,
             $this->shipTorpedoManager,
+            $isAttackingShieldsOnly,
             $this->stuRandom
         );
     }
 
     #[Override]
-    public function getEnergyPhalanxAttacker(ColonyInterface $colony): EnergyAttackerInterface
+    public function createEnergyPhalanxAttacker(ColonyInterface $colony): EnergyAttackerInterface
     {
         return new EnergyPhalanx(
             $colony,
@@ -41,7 +42,7 @@ class AttackerProviderFactory implements AttackerProviderFactoryInterface
     }
 
     #[Override]
-    public function getProjectilePhalanxAttacker(ColonyInterface $colony): ProjectileAttackerInterface
+    public function createProjectilePhalanxAttacker(ColonyInterface $colony): ProjectileAttackerInterface
     {
         return new ProjectilePhalanx(
             $colony,

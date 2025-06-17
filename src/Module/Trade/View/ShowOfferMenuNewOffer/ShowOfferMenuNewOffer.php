@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\View\ShowOfferMenuNewOffer;
 
 use Override;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -27,12 +27,12 @@ final class ShowOfferMenuNewOffer implements ViewControllerInterface
 
         $storage = $this->storageRepository->find($this->showOfferMenuNewOfferRequest->getStorageId());
         if ($storage === null || $storage->getUserId() !== $userId) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $tradepost = $storage->getTradePost();
         if ($tradepost === null) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $commodityList = $this->commodityRepository->getTradeable();

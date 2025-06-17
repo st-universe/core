@@ -20,7 +20,7 @@
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 
-  {% include exists ? 'html/index/meta.twig' : 'html/index/meta.dist.twig' %}
+  {% include ['html/index/meta.twig', 'html/index/meta.dist.twig'] %}
 
 </head>
 
@@ -278,6 +278,8 @@
           <div class="mt-2">
             <a href="https://github.com/st-universe/core" target="_blank"><i
                 class="fa-solid fa-square-arrow-up-right"></i> GitHub</a><br />
+            <a href="https://www.v1.5.stuniverse.de" target="_blank"><i class="fa-solid fa-square-arrow-up-right"></i>
+              STU V1.5</a><br />
             <a href="https://www.v2.6.stuniverse.de" target="_blank"><i class="fa-solid fa-square-arrow-up-right"></i>
               STU V2.6</a><br />
             <a href="https://nicotintel.de" target="_blank"><i class="fa-solid fa-square-arrow-up-right"></i> Hux's

@@ -26,12 +26,12 @@ class AlertStateBattlePartyTest extends StuTestCase
         $wrapper->shouldReceive('get')
             ->withNoArgs()
             ->andReturn($ship);
+        $wrapper->shouldReceive('getAlertState')
+            ->withNoArgs()
+            ->andReturn(SpacecraftAlertStateEnum::ALERT_YELLOW);
         $ship->shouldReceive('isStation')
             ->withNoArgs()
             ->andReturn(true);
-        $ship->shouldReceive('getAlertState')
-            ->withNoArgs()
-            ->andReturn(SpacecraftAlertStateEnum::ALERT_YELLOW);
         $ship->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn(123);
@@ -41,11 +41,11 @@ class AlertStateBattlePartyTest extends StuTestCase
         $ship->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($user);
-        $ship->shouldReceive('isDestroyed')
+        $ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->zeroOrMoreTimes()
             ->andReturn(false);
-        $ship->shouldReceive('isDisabled')
+        $ship->shouldReceive('getCondition->isDisabled')
             ->withNoArgs()
             ->zeroOrMoreTimes()
             ->andReturn(false);
@@ -77,14 +77,17 @@ class AlertStateBattlePartyTest extends StuTestCase
         $wrapperOk->shouldReceive('get')
             ->withNoArgs()
             ->andReturn($ship);
+        $wrapperOk->shouldReceive('getAlertState')
+            ->withNoArgs()
+            ->andReturn(SpacecraftAlertStateEnum::ALERT_RED);
         $ship->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn(123);
-        $ship->shouldReceive('isDestroyed')
+        $ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
             ->zeroOrMoreTimes()
             ->andReturn(false);
-        $ship->shouldReceive('isDisabled')
+        $ship->shouldReceive('getCondition->isDisabled')
             ->withNoArgs()
             ->zeroOrMoreTimes()
             ->andReturn(false);
@@ -100,9 +103,6 @@ class AlertStateBattlePartyTest extends StuTestCase
         $ship->shouldReceive('isWarped')
             ->withNoArgs()
             ->andReturn(false);
-        $ship->shouldReceive('getAlertState')
-            ->withNoArgs()
-            ->andReturn(SpacecraftAlertStateEnum::ALERT_RED);
         $ship->shouldReceive('isStation')
             ->withNoArgs()
             ->andReturn(false);
@@ -136,15 +136,15 @@ class AlertStateBattlePartyTest extends StuTestCase
         $wrapperLowAlert->shouldReceive('get')
             ->withNoArgs()
             ->andReturn($shipLowerAlert);
+        $wrapperLowAlert->shouldReceive('getAlertState')
+            ->withNoArgs()
+            ->andReturn(SpacecraftAlertStateEnum::ALERT_YELLOW);
         $shipLowerAlert->shouldReceive('isCloaked')
             ->withNoArgs()
             ->andReturn(false);
         $shipLowerAlert->shouldReceive('isWarped')
             ->withNoArgs()
             ->andReturn(false);
-        $shipLowerAlert->shouldReceive('getAlertState')
-            ->withNoArgs()
-            ->andReturn(SpacecraftAlertStateEnum::ALERT_YELLOW);
 
 
         $subject = new AlertStateBattleParty($wrapperOk);

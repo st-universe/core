@@ -15,10 +15,10 @@ final class RefererDeletionHandler implements PlayerDeletionHandlerInterface
     #[Override]
     public function delete(UserInterface $user): void
     {
-        $entries = $this->userRefererRepository->getByUser($user);
+        $userReferer = $user->getRegistration()->getReferer();
 
-        foreach ($entries as $entry) {
-            $this->userRefererRepository->delete($entry);
+        if ($userReferer !== null) {
+            $this->userRefererRepository->delete($userReferer);
         }
     }
 }

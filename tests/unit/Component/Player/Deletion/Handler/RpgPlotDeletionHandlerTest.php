@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Player\Deletion\Handler;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManagerInterface;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
@@ -20,12 +21,12 @@ class RpgPlotDeletionHandlerTest extends MockeryTestCase
 {
     /** @var MockInterface&RpgPlotMemberRepositoryInterface */
     private MockInterface $rpgPlotMemberRepository;
-
     /** @var MockInterface&RpgPlotRepositoryInterface */
     private MockInterface $rpgPlotRepository;
-
     /** @var MockInterface&UserRepositoryInterface */
     private MockInterface $userRepository;
+    /** @var MockInterface&EntityManagerInterface */
+    private MockInterface $entityManager;
 
     private RpgPlotDeletionHandler $handler;
 
@@ -35,11 +36,13 @@ class RpgPlotDeletionHandlerTest extends MockeryTestCase
         $this->rpgPlotMemberRepository = Mockery::mock(RpgPlotMemberRepositoryInterface::class);
         $this->rpgPlotRepository = Mockery::mock(RpgPlotRepositoryInterface::class);
         $this->userRepository = Mockery::mock(UserRepositoryInterface::class);
+        $this->entityManager = Mockery::mock(EntityManagerInterface::class);
 
         $this->handler = new RpgPlotDeletionHandler(
             $this->rpgPlotMemberRepository,
             $this->rpgPlotRepository,
-            $this->userRepository
+            $this->userRepository,
+            $this->entityManager
         );
     }
 
@@ -91,7 +94,21 @@ class RpgPlotDeletionHandlerTest extends MockeryTestCase
             ->once()
             ->andReturn($gameFallbackUser);
 
+        $this->entityManager->shouldReceive('flush')
+            ->withNoArgs()
+            ->once()
+            ->validateOrder();
+        $this->entityManager->shouldReceive('detach')
+            ->with($newRpgPlotMemberUser)
+            ->once()
+            ->validateOrder();
+        $this->entityManager->shouldReceive('detach')
+            ->with($rpgPlot)
+            ->once()
+            ->validateOrder();
+
         $this->handler->delete($user);
+        $this->assertTrue($members->isEmpty());
     }
 
     public function testDeleteSetsSystemUser(): void
@@ -130,6 +147,16 @@ class RpgPlotDeletionHandlerTest extends MockeryTestCase
             ->once()
             ->andReturn($gameFallbackUser);
 
+        $this->entityManager->shouldReceive('flush')
+            ->withNoArgs()
+            ->once()
+            ->validateOrder();
+        $this->entityManager->shouldReceive('detach')
+            ->with($rpgPlot)
+            ->once()
+            ->validateOrder();
+
         $this->handler->delete($user);
+        $this->assertTrue($members->isEmpty());
     }
 }

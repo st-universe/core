@@ -10,7 +10,8 @@ interface DatabaseCategoryWrapperFactoryInterface
 {
     public function createDatabaseCategoryWrapper(
         DatabaseCategoryInterface $databaseCategory,
-        UserInterface $user
+        UserInterface $user,
+        ?int $layer = null
     ): DatabaseCategoryWrapperInterface;
 
     public function createDatabaseCategoryEntryWrapper(

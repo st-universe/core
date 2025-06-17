@@ -10,8 +10,6 @@ use Stu\Module\Control\GameControllerInterface;
 
 final class NagusComponent implements ComponentInterface
 {
-    public function __construct() {}
-
     #[Override]
     public function setTemplateVariables(GameControllerInterface $game): void
     {

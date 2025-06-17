@@ -25,12 +25,12 @@ function showOfferMenuTransfer(storid) {
 }
 function showLicenseMenu(postId) {
 	var elt = 'tradelicensemenu';
-	openWindowPosition(elt, 1, 300, 90, 250, 400);
+	openWindowPosition(elt, 1, 300, 90, 250, 400, false);
 	ajax_update(elt, 'trade.php?SHOW_LICENSE_MENU=1&postid=' + postId);
 }
 function showLicenseInfo(postId) {
 	var elt = 'tradelicenseinfo';
-	openWindowPosition(elt, 1, 300, 90, 250);
+	openWindowPosition(elt, 1, 300, 90, 250, false);
 	ajax_update(elt, 'trade.php?SHOW_LICENSE_INFO=1&postid=' + postId);
 }
 function takeTradeOffer(offerid) {
@@ -46,19 +46,19 @@ function changeSearchTradepost(id) {
 }
 function showTradeLicenseList(obj, postId) {
 	var elt = 'licenselist';
-	openWindowPosition(elt, 1, 300, 300, 250);
+	openWindowPosition(elt, 1, 300, 300, 250, false);
 	ajax_update(elt, 'trade.php?SHOW_LICENSE_LIST=1&postid=' + postId);
 }
 function openShoutbox(networkid) {
 	var elt = 'shoutbox';
-	openWindowPosition(elt, 1, 800, 90, 60);
+	openWindowPosition(elt, 1, 800, 90, 60, false);
 	ajax_update(elt, 'trade.php?SHOW_SHOUTBOX=1&network=' + networkid);
 	setTimeout('refreshShoutbox()', 5000);
 	setTimeout('startKeyObserver()', 1000);
 }
 function openShiplist(tradepostid) {
 	var elt = 'shiplist';
-	openWindowPosition(elt, 1, 300, 300, 250);
+	openWindowPosition(elt, 1, 300, 300, 250, false);
 	ajax_update(elt, 'trade.php?SHOW_SHIPLIST=1&postid=' + tradepostid);
 }
 function startKeyObserver() {

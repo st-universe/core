@@ -70,7 +70,7 @@ class CancelRepairTest extends StuTestCase
             ->withNoArgs()
             ->twice()
             ->andReturn(42);
-        $this->ship->shouldReceive('setState')
+        $this->ship->shouldReceive('getCondition->setState')
             ->with(SpacecraftStateEnum::NONE)
             ->once();
         $this->spacecraftRepo->shouldReceive('save')
@@ -98,7 +98,7 @@ class CancelRepairTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(42);
-        $this->ship->shouldReceive('setState')
+        $this->ship->shouldReceive('getCondition->setState')
             ->with(SpacecraftStateEnum::NONE)
             ->once();
         $this->spacecraftRepo->shouldReceive('save')

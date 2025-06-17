@@ -11,10 +11,10 @@ use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;
+use Stu\Lib\Information\InformationFactoryInterface;
+use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Commodity\Lib\CommodityCacheInterface;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -30,60 +30,42 @@ use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class ColonyTick implements ColonyTickInterface
 {
-    private LoggerUtilInterface $loggerUtil;
-
-    /**
-     * @var array<string>
-     */
-    private array $msg = [];
+    private InformationWrapper $information;
 
     /** @param array<ColonyTickComponentInterface> $components */
     public function __construct(
-        private ModuleQueueRepositoryInterface $moduleQueueRepository,
-        private PlanetFieldRepositoryInterface $planetFieldRepository,
-        private PrivateMessageSenderInterface $privateMessageSender,
-        private StorageManagerInterface $storageManager,
-        private ColonyRepositoryInterface $colonyRepository,
-        private BuildingManagerInterface $buildingManager,
-        private ColonyDepositMiningRepositoryInterface $colonyDepositMiningRepository,
-        private ColonyLibFactoryInterface $colonyLibFactory,
-        private ColonyFunctionManagerInterface $colonyFunctionManager,
-        private CommodityCacheInterface $commodityCache,
-        LoggerUtilFactoryInterface $loggerUtilFactory,
-        private array $components
-    ) {
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
-    }
+        private readonly ModuleQueueRepositoryInterface $moduleQueueRepository,
+        private readonly PlanetFieldRepositoryInterface $planetFieldRepository,
+        private readonly ColonyRepositoryInterface $colonyRepository,
+        private readonly ColonyDepositMiningRepositoryInterface $colonyDepositMiningRepository,
+        private readonly PrivateMessageSenderInterface $privateMessageSender,
+        private readonly StorageManagerInterface $storageManager,
+        private readonly BuildingManagerInterface $buildingManager,
+        private readonly ColonyLibFactoryInterface $colonyLibFactory,
+        private readonly ColonyFunctionManagerInterface $colonyFunctionManager,
+        private readonly CommodityCacheInterface $commodityCache,
+        private readonly InformationFactoryInterface $informationFactory,
+        private readonly array $components
+    ) {}
 
     #[Override]
     public function work(ColonyInterface $colony): void
     {
-        $doLog = $this->loggerUtil->doLog();
-        if ($doLog) {
-            $startTime = microtime(true);
-        }
+        $this->information = $this->informationFactory->createInformationWrapper();
 
-        $this->mainLoop($colony);
+        $deactivatedFields = $this->mainLoop($colony);
 
         $this->colonyRepository->save($colony);
 
-        $this->proceedModules($colony);
+        $this->proceedModules($colony, $deactivatedFields);
         $this->sendMessages($colony);
-
-        if ($doLog) {
-            $endTime = microtime(true);
-            $this->loggerUtil->log(sprintf("Colony-Id: %6d, seconds: %F", $colony->getId(), $endTime - $startTime));
-        }
     }
 
-    private function mainLoop(ColonyInterface $colony): void
+    /**
+     * @return array<int>
+     */
+    private function mainLoop(ColonyInterface $colony): array
     {
-        $doLog = $this->loggerUtil->doLog();
-
-        if ($doLog) {
-            $startTime = microtime(true);
-        }
-
         $i = 1;
         $production = $this->colonyLibFactory->createColonyCommodityProduction($colony)->getProduction();
 
@@ -113,16 +95,11 @@ final class ColonyTick implements ColonyTickInterface
             )
         );
 
-        if ($doLog) {
-            $endTime = microtime(true);
-            $this->loggerUtil->log(sprintf("\tmainLoop, seconds: %F", $endTime - $startTime));
-        }
-
         foreach ($this->components as $component) {
-            $component->work($colony, $production);
+            $component->work($colony, $production, $this->information);
         }
 
-        $this->proceedStorage($colony, $production);
+        return $deactivatedFields;
     }
 
     /**
@@ -144,8 +121,8 @@ final class ColonyTick implements ColonyTickInterface
 
             $commodityId = $pro->getCommodityId();
 
-            $depositMining = $colony->getUserDepositMinings()[$commodityId] ?? null;
-            if ($depositMining !== null && $depositMining->isEnoughLeft((int) abs($pro->getProduction()))) {
+            $depositMining = $this->colonyDepositMiningRepository->getCurrentUserDepositMinings($colony)[$commodityId] ?? null;
+            if ($depositMining !== null && $depositMining->isEnoughLeft(abs($pro->getProduction()))) {
                 continue;
             }
 
@@ -230,7 +207,12 @@ final class ColonyTick implements ColonyTickInterface
 
         $this->mergeProduction($building->getCommodities(), $production);
 
-        $this->msg[] = $building->getName() . " auf Feld " . $field->getFieldId() . " deaktiviert (Mangel an " . $ext . ")";
+        $this->information->addInformationf(
+            "%s auf Feld %d deaktiviert (Mangel an %s)",
+            $building->getName(),
+            $field->getFieldId(),
+            $ext
+        );
     }
 
     /**
@@ -297,144 +279,14 @@ final class ColonyTick implements ColonyTickInterface
     }
 
     /**
-     * @param array<ColonyProduction> $production
+     * @param array<int> $deactivatedFields
      */
-    private function proceedStorage(
-        ColonyInterface $colony,
-        array $production
-    ): void {
-        $doLog = $this->loggerUtil->doLog();
-        if ($doLog) {
-            $startTime = microtime(true);
-        }
-
-        $sum = $colony->getStorageSum();
-
-        if ($doLog) {
-            $startTime = microtime(true);
-        }
-
-        //DECREASE
-        foreach ($production as $commodityId => $obj) {
-            $amount = $obj->getProduction();
-            $commodity = $this->commodityCache->get($commodityId);
-
-            if ($amount < 0) {
-                $amount = abs($amount);
-
-                if ($commodity->isSaveable()) {
-                    // STANDARD
-                    $this->storageManager->lowerStorage(
-                        $colony,
-                        $this->commodityCache->get($commodityId),
-                        $amount
-                    );
-                    $sum -= $amount;
-                } else {
-                    // EFFECTS
-                    $depositMining = $colony->getUserDepositMinings()[$commodityId];
-
-                    $depositMining->setAmountLeft($depositMining->getAmountLeft() - $amount);
-                    $this->colonyDepositMiningRepository->save($depositMining);
-                }
-            }
-        }
-        if ($doLog) {
-            $endTime = microtime(true);
-            $this->loggerUtil->log(sprintf("\tforeach1, seconds: %F", $endTime - $startTime));
-        }
-
-        if ($doLog) {
-            $startTime = microtime(true);
-        }
-        foreach ($production as $commodityId => $obj) {
-            $startTimeC = microtime(true);
-
-            $commodity = $this->commodityCache->get($commodityId);
-            if ($obj->getProduction() <= 0 || !$commodity->isSaveable()) {
-                continue;
-            }
-            if ($sum >= $colony->getMaxStorage()) {
-                if ($colony->getUser()->isStorageNotification()) {
-                    $this->msg[] = _('Das Lager der Kolonie ist voll');
-                }
-                break;
-            }
-            if ($sum + $obj->getProduction() > $colony->getMaxStorage()) {
-                $this->storageManager->upperStorage(
-                    $colony,
-                    $commodity,
-                    $colony->getMaxStorage() - $sum
-                );
-                if ($colony->getUser()->isStorageNotification()) {
-                    $this->msg[] = _('Das Lager der Kolonie ist voll');
-                }
-                break;
-            }
-            $startTimeM = microtime(true);
-            $this->storageManager->upperStorage(
-                $colony,
-                $commodity,
-                $obj->getProduction()
-            );
-            if ($doLog) {
-                $endTimeM = microtime(true);
-                $this->loggerUtil->log(sprintf("\t\t\tupper, seconds: %F", $endTimeM - $startTimeM));
-            }
-            $sum += $obj->getProduction();
-            if ($doLog) {
-                $endTimeC = microtime(true);
-                $this->loggerUtil->log(sprintf("\t\tcommodity: %s, seconds: %F", $commodity->getName(), $endTimeC - $startTimeC));
-            }
-        }
-        if ($doLog) {
-            $endTime = microtime(true);
-            $this->loggerUtil->log(sprintf("\tforeach2, seconds: %F", $endTime - $startTime));
-        }
-
-        if ($doLog) {
-            $startTime = microtime(true);
-        }
-
-        if ($doLog) {
-            $endTime = microtime(true);
-            $this->loggerUtil->log(sprintf("\tresearch, seconds: %F", $endTime - $startTime));
-        }
-
-        if ($colony->getPopulation() > $colony->getMaxBev()) {
-            $this->proceedEmigration($colony);
-            return;
-        }
-
-        if ($colony->getPopulationLimit() > 0 && $colony->getPopulation() > $colony->getPopulationLimit() && $colony->getWorkless()) {
-            if (($free = ($colony->getPopulationLimit() - $colony->getWorkers())) > 0) {
-                $this->msg[] = sprintf(
-                    _('Es sind %d Arbeitslose ausgewandert'),
-                    ($colony->getWorkless() - $free)
-                );
-                $colony->setWorkless($free);
-            } else {
-                $this->msg[] = _('Es sind alle Arbeitslosen ausgewandert');
-                $colony->setWorkless(0);
-            }
-        }
-        $this->proceedImmigration(
-            $colony,
-            $production
-        );
-
-        if ($doLog) {
-            $endTime = microtime(true);
-            $this->loggerUtil->log(sprintf("\tstorage, seconds: %F", $endTime - $startTime));
-        }
-    }
-
-    private function proceedModules(ColonyInterface $colony): void
+    private function proceedModules(ColonyInterface $colony, array $deactivatedFields): void
     {
         foreach ($this->moduleQueueRepository->getByColony($colony->getId()) as $queue) {
             $buildingFunction = $queue->getBuildingFunction();
 
-            //spare parts and system components are generated by ship tick manager, to avoid dead locks
+            //spare parts and system components are generated by spacecraft tick manager, to avoid dead locks
             if (
                 $buildingFunction === BuildingFunctionEnum::FABRICATION_HALL ||
                 $buildingFunction === BuildingFunctionEnum::TECH_CENTER
@@ -442,14 +294,14 @@ final class ColonyTick implements ColonyTickInterface
                 continue;
             }
 
-            if ($this->colonyFunctionManager->hasActiveFunction($colony, $buildingFunction, false)) {
+            if ($this->colonyFunctionManager->hasActiveFunction($colony, $buildingFunction, false, $deactivatedFields)) {
                 $this->storageManager->upperStorage(
                     $colony,
                     $queue->getModule()->getCommodity(),
                     $queue->getAmount()
                 );
 
-                $this->msg[] = sprintf(
+                $this->information->addInformationf(
                     _('Es wurden %d %s hergestellt'),
                     $queue->getAmount(),
                     $queue->getModule()->getName()
@@ -459,38 +311,17 @@ final class ColonyTick implements ColonyTickInterface
         }
     }
 
-    /**
-     * @param array<int, ColonyProduction> $production
-     */
-    private function proceedImmigration(
-        ColonyInterface $colony,
-        array $production
-    ): void {
-        // @todo
-        $colony->setWorkless(
-            $colony->getWorkless() +
-                $this->colonyLibFactory->createColonyPopulationCalculator($colony, $production)->getGrowth()
-        );
-    }
-
-    private function proceedEmigration(ColonyInterface $colony): void
-    {
-        if ($colony->getWorkless() !== 0) {
-            $bev = random_int(1, $colony->getWorkless());
-            $colony->setWorkless($colony->getWorkless() - $bev);
-            $this->msg[] = $bev . " Einwohner sind ausgewandert";
-        }
-    }
-
     private function sendMessages(ColonyInterface $colony): void
     {
-        if ($this->msg === []) {
+        if ($this->information->isEmpty()) {
             return;
         }
-        $text = "Tickreport der Kolonie " . $colony->getName() . "\n";
-        foreach ($this->msg as $msg) {
-            $text .= $msg . "\n";
-        }
+
+        $text = sprintf(
+            "Tickreport der Kolonie %s\n%s",
+            $colony->getName(),
+            $this->information->getInformationsAsString()
+        );
 
         $this->privateMessageSender->send(
             UserEnum::USER_NOONE,
@@ -500,7 +331,7 @@ final class ColonyTick implements ColonyTickInterface
             $colony
         );
 
-        $this->msg = [];
+        $this->information = $this->informationFactory->createInformationWrapper();
     }
 
     /**

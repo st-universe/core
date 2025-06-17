@@ -52,7 +52,7 @@ final class Shutdown implements ActionControllerInterface
         }
 
         //set alert to green
-        $ship->setAlertStateGreen();
+        $wrapper->getComputerSystemDataMandatory()->setAlertStateGreen()->update();
 
         $game->addInformation(_("Der Energieverbrauch wurde auf ein Minimum reduziert"));
 
@@ -65,7 +65,7 @@ final class Shutdown implements ActionControllerInterface
                 $this->alertReactionFacade->doItAll($traktoredShipWrapper, $game, $ship);
             }
 
-            if ($ship->isDestroyed()) {
+            if ($ship->getCondition()->isDestroyed()) {
                 return;
             }
         }

@@ -14,6 +14,9 @@ use Stu\Orm\Entity\CrewAssignmentInterface;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Crew;
+use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Station;
 
 /**
  * @extends EntityRepository<CrewAssignment>
@@ -43,21 +46,40 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
     }
 
     #[Override]
-    public function getByShip(int $shipId): array
+    public function getAmountBySpacecraft(SpacecraftInterface $spacecraft): int
     {
-        return $this->findBy(
-            ['spacecraft_id' => $shipId],
-            ['slot' => 'asc']
-        );
+        return $this->count([
+            'spacecraft' => $spacecraft
+        ]);
     }
 
     #[Override]
-    public function getByShipAndSlot(int $shipId, int $slotId): array
+    public function hasEnoughCrew(SpacecraftInterface $spacecraft): bool
     {
-        return $this->findBy([
-            'spacecraft_id' => $shipId,
-            'slot' => $slotId
-        ]);
+        return $this->getAmountBySpacecraft($spacecraft) >= $spacecraft->getNeededCrewCount();
+    }
+
+    #[Override]
+    public function hasCrewmanOfUser(SpacecraftInterface $spacecraft, int $userId): bool
+    {
+        return (int)$this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT count(ca.crew)
+                    FROM %s ca
+                    JOIN %s c
+                    WITH ca.crew = c
+                    WHERE c.user_id = :userId
+                    AND ca.spacecraft = :spacecraft',
+                    CrewAssignment::class,
+                    Crew::class
+                )
+            )
+            ->setParameters([
+                'userId' => $userId,
+                'spacecraft' => $spacecraft
+            ])
+            ->getSingleScalarResult() > 0;
     }
 
     /**
@@ -101,24 +123,24 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
     }
 
     #[Override]
-    public function getByUserAtColonies(int $userId): array
+    public function getByUserAtColonies(UserInterface $user): array
     {
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
                     'SELECT ca
                     FROM %s ca
-                    WHERE ca.user_id = :userId
-                    AND ca.colony_id IS NOT NULL',
+                    WHERE ca.user = :user
+                    AND ca.colony IS NOT NULL',
                     CrewAssignment::class
                 )
             )
-            ->setParameter('userId', $userId)
+            ->setParameter('user', $user)
             ->getResult();
     }
 
     #[Override]
-    public function getByUserOnEscapePods(int $userId): array
+    public function getByUserOnEscapePods(UserInterface $user): array
     {
         return $this->getEntityManager()
             ->createQuery(
@@ -126,10 +148,10 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
                     'SELECT ca
                     FROM %s ca
                     JOIN %s s
-                    WITH ca.spacecraft_id = s.id
+                    WITH ca.spacecraft = s
                     JOIN %s r
                     WITH s.rump_id = r.id
-                    WHERE ca.user_id = :userId
+                    WHERE ca.user = :user
                     AND r.category_id = :categoryId',
                     CrewAssignment::class,
                     Spacecraft::class,
@@ -137,41 +159,41 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
                 )
             )
             ->setParameters([
-                'userId' => $userId,
+                'user' => $user,
                 'categoryId' => SpacecraftRumpEnum::SHIP_CATEGORY_ESCAPE_PODS
             ])
             ->getResult();
     }
 
     #[Override]
-    public function getByUserAtTradeposts(int $userId): array
+    public function getByUserAtTradeposts(UserInterface $user): array
     {
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
                     'SELECT ca
                     FROM %s ca
-                    WHERE ca.user_id = :userId
-                    AND ca.tradepost_id IS NOT NULL',
+                    WHERE ca.user = :user
+                    AND ca.tradepost IS NOT NULL',
                     CrewAssignment::class
                 )
             )
-            ->setParameter('userId', $userId)
+            ->setParameter('user', $user)
             ->getResult();
     }
 
     #[Override]
-    public function getAmountByUserOnColonies(int $userId): int
+    public function getAmountByUserOnColonies(UserInterface $user): int
     {
         return (int)$this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT count(ca.id)
+                'SELECT count(ca.crew)
                 FROM %s ca
-                WHERE ca.user_id = :userId
-                AND ca.colony_id IS NOT NULL',
+                WHERE ca.user = :user
+                AND ca.colony IS NOT NULL',
                 CrewAssignment::class
             )
-        )->setParameter('userId', $userId)->getSingleScalarResult();
+        )->setParameter('user', $user)->getSingleScalarResult();
     }
 
     #[Override]
@@ -180,10 +202,10 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
         return (int)$this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT count(ca.id)
+                    'SELECT count(ca.crew)
                     FROM %s ca
                     WHERE ca.user = :user
-                    AND ca.spacecraft_id IS NOT NULL',
+                    AND ca.spacecraft IS NOT NULL',
                     CrewAssignment::class
                 )
             )
@@ -197,10 +219,10 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
         return (int)$this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT count(ca.id)
+                    'SELECT count(ca.crew)
                     FROM %s ca
                     WHERE ca.user = :user
-                    AND ca.tradepost_id IS NOT NULL',
+                    AND ca.tradepost IS NOT NULL',
                     CrewAssignment::class
                 )
             )
@@ -217,16 +239,15 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
         $rsm->addScalarResult('crewc', 'crewc', 'integer');
 
         return $this->getEntityManager()->createNativeQuery(
-            'SELECT sc.user_id, count(*) as crewc,
+            'SELECT ca.user_id, count(*) as crewc,
                 (SELECT race as factionid
                 FROM stu_user u
-                WHERE sc.user_id = u.id) as factionid
-            FROM stu_crew_assign sc
+                WHERE ca.user_id = u.id) as factionid
+            FROM stu_crew_assign ca
             JOIN stu_spacecraft s
-            ON sc.spacecraft_id = s.id
-            WHERE sc.user_id > :firstUserId
-            AND sc.user_id = s.user_id
-            GROUP BY sc.user_id
+            ON ca.spacecraft_id = s.id
+            WHERE ca.user_id >= :firstUserId
+            GROUP BY ca.user_id
             ORDER BY 2 DESC
             LIMIT 10',
             $rsm
@@ -235,30 +256,51 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
     }
 
     #[Override]
-    public function truncateByShip(int $shipId): void
+    public function truncateBySpacecraft(SpacecraftInterface $spacecraft): void
     {
         $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'DELETE FROM %s sc WHERE sc.spacecraft_id = :shipId',
+                    'DELETE FROM %s ca WHERE ca.spacecraft = :spacecraft',
                     CrewAssignment::class
                 )
             )
-            ->setParameter('shipId', $shipId)
+            ->setParameter('spacecraft', $spacecraft)
             ->execute();
     }
 
     #[Override]
-    public function truncateByUser(int $userId): void
+    public function truncateByUser(UserInterface $user): void
     {
         $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'DELETE FROM %s sc WHERE sc.user_id = :userId',
+                    'DELETE FROM %s ca WHERE ca.user = :user',
                     CrewAssignment::class
                 )
             )
-            ->setParameter('userId', $userId)
+            ->setParameter('user', $user)
             ->execute();
+    }
+
+    #[Override]
+    public function hasCrewOnForeignStation(UserInterface $user): bool
+    {
+        return (int) $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT COUNT(ca.crew)
+                        FROM %s ca
+                        JOIN %s c WITH ca.crew = c
+                        JOIN %s st WITH ca.spacecraft = st
+                        WHERE c.user_id = :user
+                        AND st.user_id != :user',
+                    CrewAssignment::class,
+                    Crew::class,
+                    Station::class
+                )
+            )
+            ->setParameter('user', $user->getId())
+            ->getSingleScalarResult() > 0;
     }
 }

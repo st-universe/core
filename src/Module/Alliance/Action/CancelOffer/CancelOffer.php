@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\CancelOffer;
 
 use Override;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -15,9 +15,6 @@ use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 
 final class CancelOffer implements ActionControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string ACTION_IDENTIFIER = 'B_CANCEL_OFFER';
 
     public function __construct(private CancelOfferRequestInterface $cancelOfferRequest, private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager, private PrivateMessageSenderInterface $privateMessageSender)
@@ -30,7 +27,7 @@ final class CancelOffer implements ActionControllerInterface
         $alliance = $game->getUser()->getAlliance();
 
         if ($alliance === null) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $allianceId = $alliance->getId();
@@ -38,7 +35,7 @@ final class CancelOffer implements ActionControllerInterface
         $relation = $this->allianceRelationRepository->find($this->cancelOfferRequest->getRelationId());
 
         if (!$this->allianceActionManager->mayManageForeignRelations($alliance, $game->getUser())) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         if ($relation === null || $relation->getAllianceId() !== $allianceId) {

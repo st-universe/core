@@ -9,6 +9,10 @@ final class UserEnum
     //NPC IDs
     public const int USER_NOONE = 1;
     public const int USER_FOREIGN_BUILDPLANS = 4;
+    public const int USER_NPC_FEDERATION = 10;
+    public const int USER_NPC_ROMULAN = 11;
+    public const int USER_NPC_KLINGON = 12;
+    public const int USER_NPC_CARDASSIAN = 13;
     public const int USER_NPC_FERG = 14;
     public const int USER_NPC_KAZON = 17;
 
@@ -19,7 +23,7 @@ final class UserEnum
     public const int USER_STATE_NEW = 0;
     public const int USER_STATE_UNCOLONIZED = 1;
     public const int USER_STATE_ACTIVE = 2;
-    public const int USER_STATE_SMS_VERIFICATION = 3;
+    public const int USER_STATE_ACCOUNT_VERIFICATION = 3;
     public const int USER_STATE_COLONIZATION_SHIP = 4;
 
 
@@ -38,7 +42,7 @@ final class UserEnum
             self::USER_STATE_NEW => _("NEU"),
             self::USER_STATE_UNCOLONIZED => _("OHNE KOLONIEN"),
             self::USER_STATE_ACTIVE => _("AKTIV"),
-            self::USER_STATE_SMS_VERIFICATION => _("SMS VERIFIKATION"),
+            self::USER_STATE_ACCOUNT_VERIFICATION => _("ACCOUNT VERIFIKATION"),
             self::USER_STATE_COLONIZATION_SHIP => _("KOLONISATIONS SCHIFF"),
             default => '',
         };

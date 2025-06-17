@@ -6,7 +6,6 @@ use Override;
 use SebastianBergmann\Diff\Differ;
 use SebastianBergmann\Diff\Output\DiffOnlyOutputBuilder;
 use Stu\Module\Logging\StuLogger;
-use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Entity\SpacecraftBuildplanInterface;
 use Stu\Orm\Entity\SpacecraftInterface;

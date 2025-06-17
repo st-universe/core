@@ -15,15 +15,10 @@ use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
  */
 final class DiplomaticRelations implements ViewControllerInterface
 {
-    /** @var int */
     private const int GRAPH_WIDTH = 800;
 
-    /** @var int */
     private const int GRAPH_HEIGHT = 700;
 
-    /**
-     * @var string
-     */
     public const string VIEW_IDENTIFIER = 'SHOW_DIPLOMATIC_RELATIONS';
 
     public function __construct(private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceRelationRendererInterface $allianceRelationRenderer)

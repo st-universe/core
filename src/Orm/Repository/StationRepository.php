@@ -33,18 +33,13 @@ use Stu\Orm\Entity\StationInterface;
 use Stu\Orm\Entity\TradePost;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\UserRegistration;
 
 /**
  * @extends EntityRepository<Station>
  */
 final class StationRepository extends EntityRepository implements StationRepositoryInterface
 {
-    #[Override]
-    public function prototype(): StationInterface
-    {
-        return new Station();
-    }
-
     #[Override]
     public function save(StationInterface $station): void
     {
@@ -140,10 +135,10 @@ final class StationRepository extends EntityRepository implements StationReposit
                 'SELECT s FROM %s s
                 JOIN %s sp
                 WITH s.id = sp.id
-                JOIN %s sc
-                WITH s.id = sc.spacecraft_id
+                JOIN %s ca
+                WITH s = ca.spacecraft
                 JOIN %s c
-                WITH sc.crew_id = c.id
+                WITH ca.crew = c
                 JOIN %s ss
                 WITH ss.spacecraft_id = s.id
                 JOIN %s u
@@ -207,12 +202,14 @@ final class StationRepository extends EntityRepository implements StationReposit
             sprintf(
                 'SELECT s.id as shipid, s.rump_id as rumpid , ss.mode as warpstate,
                     COALESCE(ss2.mode,0) as cloakstate, ss3.mode as shieldstate, COALESCE(ss4.status,0) as uplinkstate,
-                    s.type as spacecrafttype, s.name as shipname, s.huelle as hull, s.max_huelle as maxhull,
-                    s.schilde as shield, s.holding_web_id as webid, tw.finished_time as webfinishtime, u.id as userid, u.username,
+                    s.type as spacecrafttype, s.name as shipname, sc.hull as hull, s.max_huelle as maxhull,
+                    sc.shield as shield, s.holding_web_id as webid, tw.finished_time as webfinishtime, u.id as userid, u.username,
                     r.category_id as rumpcategoryid, r.name as rumpname, r.role_id as rumproleid,
                     (SELECT count(*) > 0 FROM stu_ship_log sl WHERE sl.spacecraft_id = s.id AND sl.is_private = :false) as haslogbook,
                     (SELECT count(*) > 0 FROM stu_crew_assign ca WHERE ca.spacecraft_id = s.id) as hascrew
                 FROM stu_spacecraft s
+                JOIN stu_spacecraft_condition sc
+                ON s.id = sc.spacecraft_id
                 JOIN stu_station st
                 ON s.id = st.id
                 LEFT JOIN stu_spacecraft_system ss
@@ -299,6 +296,7 @@ final class StationRepository extends EntityRepository implements StationReposit
                 JOIN %s r WITH s.rump = r
                 JOIN %s l WITH s.location = l
                 JOIN %s u WITH s.user = u
+                JOIN %s ur WITH ur.user = u
                 LEFT JOIN %s w WITH u = w.user
                 WHERE r.role_id = :phalanxRoleId
                 AND l.layer_id = :layerId
@@ -306,13 +304,14 @@ final class StationRepository extends EntityRepository implements StationReposit
                 AND l.cy BETWEEN :minY AND :maxY
                 AND u.id >= :firstUserId
                 AND u.state >= :stateActive
-                AND u.creation < :eightWeeksEarlier
+                AND ur.creation < :eightWeeksEarlier
                 AND (u.vac_active = :false OR u.vac_request_date > :vacationThreshold)
                 AND COALESCE(w.protection_timeout, 0) < :currentTime',
                 Station::class,
                 SpacecraftRump::class,
                 Location::class,
                 User::class,
+                UserRegistration::class,
                 PirateWrath::class
             )
         )

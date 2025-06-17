@@ -38,7 +38,7 @@ final class FightLib implements FightLibInterface
         $spacecraft = $wrapper->get();
 
         if (
-            $spacecraft->isDestroyed()
+            $spacecraft->getCondition()->isDestroyed()
             || $spacecraft->getRump()->isEscapePods()
         ) {
             return;
@@ -135,9 +135,10 @@ final class FightLib implements FightLibInterface
     public function getAttackersAndDefenders(
         SpacecraftWrapperInterface|FleetWrapperInterface $wrapper,
         SpacecraftWrapperInterface $targetWrapper,
+        bool $isAttackingShieldsOnly,
         BattlePartyFactoryInterface $battlePartyFactory
     ): array {
-        $attackers = $battlePartyFactory->createAttackingBattleParty($wrapper);
+        $attackers = $battlePartyFactory->createAttackingBattleParty($wrapper, $isAttackingShieldsOnly);
         $defenders = $battlePartyFactory->createAttackedBattleParty($targetWrapper);
 
         return [

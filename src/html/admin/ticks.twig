@@ -3,6 +3,7 @@
 {% block body %}
 {% include 'html/breadcrumb.twig' %}
 <form action="/admin/index.php" method="post" name="tickform" id="tickform">
+    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
     <div>
         Colony-ID:<input type="text" size="5" name="colonyid" id="colonyid" />, Group-ID:<input type="text" size="5"
             name="groupid" id="groupid" /><input type="submit" class="button" name="B_COLONY_TICK"

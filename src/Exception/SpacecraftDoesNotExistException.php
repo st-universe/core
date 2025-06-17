@@ -4,4 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Exception;
 
-final class SpacecraftDoesNotExistException extends StuException {}
+use Stu\Module\Control\Router\FallbackRouteException;
+
+final class SpacecraftDoesNotExistException extends FallbackRouteException {}

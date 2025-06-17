@@ -19,11 +19,15 @@ function addNewCharacterForm() {
         return;
     }
 
+    const addButton = document.getElementById('addCharacterButton');
+    const sessionString = addButton.getAttribute('data-sessionstring');
+
     const newCharacterForm = `
     <form id="new-character-form" class="tcal" style="width: 100%; margin-top: 3px;" enctype="multipart/form-data" method="POST">
         <tr class="character-content" style="display: table-row;">
             <td>
                 <div style="overflow: hidden;">
+                    <input type="hidden" name="sstr" value="${sessionString}" />
                     <input type="text" name="name" placeholder="Charaktername" required />
                     <input type="file" class="button" name="avatar" />
                     <textarea name="description" placeholder="Beschreibung" required></textarea>
@@ -37,7 +41,7 @@ function addNewCharacterForm() {
     document.getElementById('charactersContainer').insertAdjacentHTML('beforeend', newCharacterForm);
 }
 
-function toggleEditFormVisibility(characterId) {
+function toggleEditFormVisibility(characterId, sessionString) {
     const editForm = document.querySelector(`form.character-edit-form[data-character-id="${characterId}"]`);
     const characterContent = document.getElementById('character-' + characterId);
     if (editForm) {
@@ -45,15 +49,16 @@ function toggleEditFormVisibility(characterId) {
         characterContent.style.display = '';
     } else {
         characterContent.style.display = 'none';
-        createEditCharacterForm(characterId, characterContent.dataset.characterName, characterContent.dataset.characterDescription);
+        createEditCharacterForm(characterId, characterContent.dataset.characterName, characterContent.dataset.characterDescription, sessionString);
     }
 }
 
-function createEditCharacterForm(characterId, characterName, characterDescription) {
+function createEditCharacterForm(characterId, characterName, characterDescription, sessionString) {
     const formHtml = `
         <form class="character-edit-form" data-character-id="${characterId}" enctype="multipart/form-data" method="POST">
         <td>
         <div>
+            <input type="hidden" name="sstr" value="${sessionString}" />
             <input type="hidden" name="character_id" value="${characterId}" />
             <input type="text" name="name" placeholder="Charaktername" required value="${characterName}" />
             <input type="file" name="avatar" />
@@ -61,11 +66,10 @@ function createEditCharacterForm(characterId, characterName, characterDescriptio
             <input type="submit" value="Speichern" class="button" name="B_CHANGE_CHARACTER" />
         </div>
         </td>
-            </form>
+        </form>
     `;
     document.getElementById('charactersContainer').insertAdjacentHTML('beforeend', formHtml);
 }
-
 
 document.addEventListener('DOMContentLoaded', function () {
     toggleCharacterDetails();
@@ -78,11 +82,13 @@ document.addEventListener('DOMContentLoaded', function () {
     document.addEventListener('click', function (e) {
         if (e.target.classList.contains('edit-character-button')) {
             const characterId = e.target.getAttribute('data-character-id');
-            toggleEditFormVisibility(characterId);
+            const sessionString = e.target.getAttribute('data-sessionstring');
+            toggleEditFormVisibility(characterId, sessionString);
         }
 
         if (e.target.classList.contains('delete-character-button')) {
             const characterId = e.target.getAttribute('data-character-id');
+            const sessionString = e.target.getAttribute('data-sessionstring');
             const characterRow = document.querySelector(`tr.character-bar[data-character-id="${characterId}"]`);
             let deleteConfirmationRow = characterRow.nextElementSibling;
 
@@ -94,6 +100,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <td>
                             Möchtest du den Charakter wirklich löschen?
                             <form method="POST" enctype="multipart/form-data">
+                                <input type="hidden" name="sstr" value="${sessionString}">
                                 <input type="hidden" name="character_id" value="${characterId}">
                                 <input type="submit" value="Löschen" name="B_DELETE_CHARACTER" class="button">
                             </form>
@@ -105,8 +112,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+
 function showColonySurface(id) {
-	elt = 'colonysurface';
-	openPJsWin(elt, 1);
-	ajax_update(elt, 'userprofile.php?SHOW_SURFACE=1&id=' + id);
+    elt = 'colonysurface';
+    openPJsWin(elt, 1);
+    ajax_update(elt, 'userprofile.php?SHOW_SURFACE=1&id=' + id);
 }

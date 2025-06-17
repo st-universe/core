@@ -8,10 +8,15 @@ use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Commodity\Lib\CommodityCacheInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Repository\ColonyDepositMiningRepositoryInterface;
 
 final class EffectsProvider implements PlanetFieldHostComponentInterface
 {
-    public function __construct(private ColonyLibFactoryInterface $colonyLibFactory, private CommodityCacheInterface $commodityCache) {}
+    public function __construct(
+        private readonly ColonyDepositMiningRepositoryInterface $colonyDepositMiningRepository,
+        private readonly ColonyLibFactoryInterface $colonyLibFactory,
+        private readonly CommodityCacheInterface $commodityCache
+    ) {}
 
     #[Override]
     public function setTemplateVariables(
@@ -19,7 +24,8 @@ final class EffectsProvider implements PlanetFieldHostComponentInterface
         GameControllerInterface $game
     ): void {
         $commodities = $this->commodityCache->getAll(CommodityTypeEnum::COMMODITY_TYPE_EFFECT);
-        $depositMinings = $entity instanceof ColonyInterface ? $entity->getUserDepositMinings() : [];
+
+        $depositMinings = $entity instanceof ColonyInterface ? $this->colonyDepositMiningRepository->getCurrentUserDepositMinings($entity) : [];
         $prod = $this->colonyLibFactory->createColonyCommodityProduction($entity)->getProduction();
 
         $effects = [];

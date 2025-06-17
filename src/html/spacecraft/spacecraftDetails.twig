@@ -1,8 +1,13 @@
 {% set SHIP = WRAPPER.get %}
+{% set condition = SHIP.getCondition %}
 {% set hull = WRAPPER.getHullSystemData %}
 {% set shields = WRAPPER.getShieldSystemData %}
 {% set eps = WRAPPER.getEpsSystemData %}
+{% if SHIP.hasComputer %}
+{% set computer = WRAPPER.getComputerSystemDataMandatory %}
+{% endif %}
 {% set lss = WRAPPER.getLssSystemData %}
+{% set energyWeapon = WRAPPER.getEnergyWeaponSystemData %}
 {% set reactor = WRAPPER.getReactorWrapper %}
 {% set launcher = WRAPPER.getProjectileLauncherSystemData %}
 <br />
@@ -19,7 +24,7 @@
                     {% endautoescape %}
                 </td>
                 <td style="text-align: center; width: 60px;">
-                    {{ SHIP.getHull }}
+                    {{ condition.getHull }}
                 </td>
             </tr>
         </table>
@@ -37,7 +42,7 @@
                     {% endautoescape %}
                 </td>
                 <td style="text-align: center; width: 60px;">
-                    {{ SHIP.getShield }}
+                    {{ condition.getShield }}
                 </td>
             </tr>
         </table>
@@ -134,8 +139,8 @@
             <span>{{ eps.getMaxBattery }}</span>
             {% endif %}
             <br />
-            <span>Trefferchance (eff.): {{ SHIP.getHitChance }}%</span><br />
-            <span>Ausweichchance (eff.): {{ SHIP.getEvadeChance }}%</span><br />
+            <span>Trefferchance (eff.): {{ computer.getHitChance }}%</span><br />
+            <span>Ausweichchance (eff.): {{ computer.getEvadeChance }}%</span><br />
             <span>Schildregeneration: {{ WRAPPER.getShieldRegenerationRate }}</span><br />
             {% if reactor %}
             <span>Reaktorleistung: {{ reactor.get.getTheoreticalReactorOutput }}</span><br />
@@ -148,9 +153,11 @@
             {% endif %}
             <span>Beamfaktor: {{ SHIP.getRump.getBeamFactor }}</span><br />
             <span>Raumschiffmasse: {{ SHIP.getRump.getTractorMass|numberWithThousandSeperator }}</span><br />
-            <span>Traktortraglast: {{ SHIP.getTractorPayload|numberWithThousandSeperator }}</span><br />
+            <span>Traktortraglast: {{ TRACTOR_PAYLOAD|numberWithThousandSeperator }}</span><br />
             <span>Energiewaffensalven: {{ SHIP.getRump.getPhaserVolleys }}</span><br />
-            <span>Energiewaffenbasisschaden: {{ SHIP.getBaseDamage }}</span><br />
+            {% if energyWeapon %}
+            <span>Energiewaffenbasisschaden: {{ energyWeapon.getBaseDamage }}</span><br />
+            {% endif %}
             <span>Torpedolevel: {{ SHIP.getRump.getTorpedoLevel }}</span><br />
             <span>Torpedosalven: {{ SHIP.getRump.getTorpedoVolleys }}</span><br />
             {% if launcher %}

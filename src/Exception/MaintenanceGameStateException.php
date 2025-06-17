@@ -4,6 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Exception;
 
-final class MaintenanceGameStateException extends StuException
-{
-}
+use Stu\Module\Control\Router\FallbackRouteException;
+
+final class MaintenanceGameStateException extends FallbackRouteException {}

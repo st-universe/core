@@ -62,20 +62,22 @@ final class BlockUser implements ActionControllerInterface
             return;
         }
 
+        $registration = $userToBlock->getRegistration();
+
         //setup user block
         $blockedUser = $this->blockedUserRepository->prototype();
         $blockedUser->setId($userIdToBlock);
         $blockedUser->setTime(time());
-        $blockedUser->setEmailHash($this->stuHash->hash($userToBlock->getEmail()));
-        if ($userToBlock->getMobile() !== null) {
-            $alreadyHashed = strlen($userToBlock->getMobile()) >= 40;
+        $blockedUser->setEmailHash($this->stuHash->hash($registration->getEmail()));
+        if ($registration->getMobile() !== null) {
+            $alreadyHashed = strlen($registration->getMobile()) >= 40;
 
-            $blockedUser->setMobileHash($alreadyHashed ? $userToBlock->getMobile() : $this->stuHash->hash($userToBlock->getMobile()));
+            $blockedUser->setMobileHash($alreadyHashed ? $registration->getMobile() : $this->stuHash->hash($registration->getMobile()));
         }
         $this->blockedUserRepository->save($blockedUser);
 
         // mark user as deletable
-        $userToBlock->setDeletionMark(UserEnum::DELETION_CONFIRMED);
+        $registration->setDeletionMark(UserEnum::DELETION_CONFIRMED);
         $this->userRepository->save($userToBlock);
 
         $this->loggerUtil->log('E');

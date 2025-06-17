@@ -11,8 +11,4 @@ interface UserTutorialInterface
     public function getTutorialStep(): TutorialStepInterface;
 
     public function setTutorialStep(TutorialStepInterface $tutorialStep): UserTutorialInterface;
-
-    public function setUserId(int $userId): void;
-
-    public function setTutorialStepId(int $stepId): void;
 }

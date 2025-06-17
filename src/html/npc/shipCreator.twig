@@ -30,6 +30,7 @@
             {% if buildplan in DELETABLE_BUILDPLANS %}
             <form action="/npc/index.php" method="post">
                 <input type="hidden" name="planid" value="{{ buildplan.getId }}">
+                <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
                 <input type="submit" name="B_DELETE_BUILDPLAN" value="Löschen"
                     style="background-color: #ff2626; color: #fff; border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer;">
             </form>
@@ -44,6 +45,7 @@
             </div>
             <form action="/npc/index.php" method="post">
                 <input type="hidden" name="planid" value="{{ buildplan.getId }}">
+                <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
                 <input type="text" name="newName" value="{{ buildplan.getName }}" style="margin-bottom: 10px;">
                 <input type="submit" name="B_CHANGE_BUILDPLAN_NAME" value="Speichern"
                     style="background-color: #4CAF50; color: #fff; border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer;">
@@ -105,6 +107,7 @@
                 style="background-color: #252525; padding: 15px; border-radius: 5px;">
                 <input type="hidden" name="userId" value="{{ USER_ID }}">
                 <input type="hidden" name="buildplanId" value="{{ SELECTED_BUILDPLAN.getId }}">
+                <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
 
                 {% if TORPEDO_TYPES|length > 0 %}
                 <div style="margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 10px;">

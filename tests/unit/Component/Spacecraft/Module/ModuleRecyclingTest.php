@@ -171,12 +171,17 @@ class ModuleRecyclingTest extends StuTestCase
             ->with($this->entity, $commodityHealth50, 7)
             ->once();
 
+        $this->information->shouldReceive('addInformation')
+            ->with("\nFolgende Module konnten recycelt werden:")
+            ->once();
+
         $this->information->shouldReceive('addInformationf')
-            ->with('Folgendes Modul konnte recycelt werden: %s, Anzahl: %d', 'MODULE_100', 1)
+            ->with('%s, Anzahl: %d', 'MODULE_100', 1)
             ->once();
         $this->information->shouldReceive('addInformationf')
-            ->with('Folgendes Modul konnte recycelt werden: %s, Anzahl: %d', 'MODULE_50', 7)
+            ->with('%s, Anzahl: %d', 'MODULE_50', 7)
             ->once();
+
 
         $this->subject->retrieveSomeModules($this->spacecraft, $this->entity, $this->information);
     }
@@ -276,12 +281,17 @@ class ModuleRecyclingTest extends StuTestCase
             ->with($this->entity, $commodityCount11, 7)
             ->once();
 
+        $this->information->shouldReceive('addInformation')
+            ->with("\nFolgende Module konnten recycelt werden:")
+            ->once();
+
         $this->information->shouldReceive('addInformationf')
-            ->with('Folgendes Modul konnte recycelt werden: %s, Anzahl: %d', 'MODULE_1', 1)
+            ->with('%s, Anzahl: %d', 'MODULE_1', 1)
             ->once();
         $this->information->shouldReceive('addInformationf')
-            ->with('Folgendes Modul konnte recycelt werden: %s, Anzahl: %d', 'MODULE_11', 7)
+            ->with('%s, Anzahl: %d', 'MODULE_11', 7)
             ->once();
+
 
         $this->subject->retrieveSomeModules($this->spacecraft, $this->entity, $this->information, 25);
     }
@@ -335,6 +345,9 @@ class ModuleRecyclingTest extends StuTestCase
 
         $this->information->shouldReceive('addInformation')
             ->with('Kein Lagerraum frei um Module zu recyclen!')
+            ->once();
+        $this->information->shouldReceive('addInformation')
+            ->with("\nEs konnten keine Module recycelt werden.")
             ->once();
 
         $this->subject->retrieveSomeModules($this->spacecraft, $this->entity, $this->information);

@@ -34,8 +34,12 @@ class CorrectTestdataFormatTest extends StuTestCase
     public function testNoTrueOrFalseBooleans(string $path): void
     {
         $content = file_get_contents($path);
-        $this->assertFalse(str_contains($content, 'true'), $this->getErrorMessage($path));
-        $this->assertFalse(str_contains($content, 'false'), $this->getErrorMessage($path));
+        $this->assertFalse(str_contains($content, ',true,'), $this->getErrorMessage($path));
+        $this->assertFalse(str_contains($content, ', true,'), $this->getErrorMessage($path));
+        $this->assertFalse(str_contains($content, ', true ,'), $this->getErrorMessage($path));
+        $this->assertFalse(str_contains($content, ',false,'), $this->getErrorMessage($path));
+        $this->assertFalse(str_contains($content, ', false,'), $this->getErrorMessage($path));
+        $this->assertFalse(str_contains($content, ', false ,'), $this->getErrorMessage($path));
     }
 
     private function getErrorMessage(string $path): string

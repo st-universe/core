@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\Action\TransferCommodities;
 
 use Override;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -40,10 +40,10 @@ final class TransferCommodities implements ActionControllerInterface
         $storageId = $this->transferCommoditiesRequest->getStorageId();
         $selectedStorage = $this->storageRepository->find($storageId);
         if ($selectedStorage === null) {
-            throw new AccessViolation(sprintf(_('userId %d tried to transfer non-existent storageId %d'), $userId, $storageId));
+            throw new AccessViolationException(sprintf(_('userId %d tried to transfer non-existent storageId %d'), $userId, $storageId));
         }
         if ($selectedStorage->getUserId() !== $userId) {
-            throw new AccessViolation(sprintf(_('userId %d tried to transfer foreign storageId %d'), $userId, $storageId));
+            throw new AccessViolationException(sprintf(_('userId %d tried to transfer foreign storageId %d'), $userId, $storageId));
         }
 
         $tradepost = $selectedStorage->getTradePost();

@@ -59,8 +59,20 @@ final class EditSection implements ViewControllerInterface
 			if ($value->getId() < 100 && $value->getDatabaseEntry() === null) {
 				continue;
 			}
+
+			$regionLayers = $value->getLayers();
+			if ($regionLayers !== null) {
+				$layerIds = array_map('intval', explode(',', $regionLayers));
+
+				if (!in_array($layerId, $layerIds, true)) {
+					continue;
+				}
+			}
+
+
 			$possibleRegion['row_' . ($key % 1)][] = $value;
 		}
+
 
 		$possibleAdminRegion = ['row_0'];
 		foreach ($this->mapRegionRepository->findAll() as $key => $value) {
@@ -70,7 +82,7 @@ final class EditSection implements ViewControllerInterface
 			$possibleAdminRegion['row_' . ($key % 1)][] = $value;
 		}
 		$possibleArea = ['row_0' => [9999]];
-		foreach ($this->mapRepository->getUniqueInfluenceAreaIds() as $key => $value) {
+		foreach ($this->mapRepository->getUniqueInfluenceAreaIds($layerId) as $key => $value) {
 			$possibleArea['row_' . ($key % 1)][] = $value;
 		}
 

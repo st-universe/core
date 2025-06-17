@@ -9,6 +9,8 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Override;
 use Stu\Component\History\HistoryTypeEnum;
@@ -38,6 +40,13 @@ class History implements HistoryInterface
 
     #[Column(type: 'integer', nullable: true)]
     private ?int $target_user_id = 0;
+
+    #[Column(type: 'integer', nullable: true)]
+    private ?int $location_id = null;
+
+    #[ManyToOne(targetEntity: 'Location')]
+    #[JoinColumn(name: 'location_id', referencedColumnName: 'id')]
+    private ?LocationInterface $location;
 
     #[Override]
     public function getId(): int
@@ -111,6 +120,20 @@ class History implements HistoryInterface
     public function setTargetUserId(int $targetuserId): HistoryInterface
     {
         $this->target_user_id = $targetuserId;
+
+        return $this;
+    }
+
+    #[Override]
+    public function getLocation(): ?LocationInterface
+    {
+        return $this->location;
+    }
+
+    #[Override]
+    public function setLocation(?LocationInterface $location): HistoryInterface
+    {
+        $this->location = $location;
 
         return $this;
     }

@@ -6,7 +6,7 @@ namespace Stu\Module\Alliance\Action\AcceptOffer;
 
 use Override;
 use Stu\Component\Alliance\AllianceEnum;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -15,9 +15,6 @@ use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 
 final class AcceptOffer implements ActionControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string ACTION_IDENTIFIER = 'B_ACCEPT_OFFER';
 
     public function __construct(private AcceptOfferRequestInterface $acceptOfferRequest, private EntryCreatorInterface $entryCreator, private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager)
@@ -31,7 +28,7 @@ final class AcceptOffer implements ActionControllerInterface
         $alliance = $user->getAlliance();
 
         if ($alliance === null) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $userId = $user->getId();
@@ -40,7 +37,7 @@ final class AcceptOffer implements ActionControllerInterface
         $relation = $this->allianceRelationRepository->find($this->acceptOfferRequest->getRelationId());
 
         if (!$this->allianceActionManager->mayManageForeignRelations($alliance, $user)) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         if ($relation === null || $relation->getOpponentId() !== $allianceId) {

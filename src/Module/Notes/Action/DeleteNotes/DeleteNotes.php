@@ -6,7 +6,7 @@ namespace Stu\Module\Notes\Action\DeleteNotes;
 
 use Override;
 use request;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\NoteInterface;
@@ -41,7 +41,7 @@ final class DeleteNotes implements ActionControllerInterface
                 continue;
             }
             if ($obj->getUserId() !== $game->getUser()->getId()) {
-                throw new AccessViolation();
+                throw new AccessViolationException();
             }
             $this->noteRepository->delete($obj);
         }

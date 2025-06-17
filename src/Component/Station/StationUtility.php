@@ -6,11 +6,11 @@ namespace Stu\Component\Station;
 
 use Override;
 use RuntimeException;
-use Stu\Component\Spacecraft\Module\ModuleRecyclingInterface;
 use Stu\Component\Spacecraft\SpacecraftRumpEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
+use Stu\Module\Control\StuRandom;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Action\BuildConstruction\BuildConstruction;
@@ -43,11 +43,12 @@ final class StationUtility implements StationUtilityInterface
         private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository,
         private TradePostRepositoryInterface $tradePostRepository,
         private TradeLicenseRepositoryInterface $tradeLicenseRepository,
-        private ModuleRecyclingInterface $moduleRecycling,
+        private StuRandom $stuRandom,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
+
 
     public static function canShipBuildConstruction(ShipInterface $ship): bool
     {
@@ -221,21 +222,47 @@ final class StationUtility implements StationUtilityInterface
     {
         $station = $progress->getStation();
 
-        // salvage modules
-        $information->addInformation("Folgende Module konnten recycelt werden:\n");
-        $this->moduleRecycling->retrieveSomeModules($station, $station, $information);
+        $buildplan = $station->getBuildplan();
+        if ($buildplan === null) {
+            return;
+        }
 
-        // salvage special modules
-        foreach ($progress->getSpecialModules() as $progressModule) {
+        $buildplanModules = $buildplan->getModules();
+        $specialModules = $progress->getSpecialModules();
+        $recycledModules = [];
 
+        foreach ($specialModules as $progressModule) {
             $module = $progressModule->getModule();
-            $information->addInformationf('%s, Anzahl: 1', $module->getName());
+            $moduleId = $module->getId();
+
+            $amount = 1;
+
+            foreach ($buildplanModules as $buildplanModule) {
+                if ($buildplanModule->getModuleId() === $moduleId) {
+                    $moduleCount = $buildplanModule->getModuleCount();
+                    $amount = $this->stuRandom->rand(1, $moduleCount);
+                    break;
+                }
+            }
 
             $this->storageManager->upperStorage(
                 $station,
                 $module->getCommodity(),
-                1
+                $amount
             );
+
+            $recycledModules[] = ['module' => $module, 'amount' => $amount];
+        }
+
+        if (count($recycledModules) > 0) {
+            $information->addInformation("\nFolgende Module wurden recycelt:");
+            foreach ($recycledModules as $recycled) {
+                $information->addInformationf(
+                    '%s, Anzahl: %d',
+                    $recycled['module']->getName(),
+                    $recycled['amount']
+                );
+            }
         }
 
         // transform to construction
@@ -245,12 +272,12 @@ final class StationUtility implements StationUtilityInterface
             throw new RuntimeException(sprintf('construction rump with id %d not found', $rumpId));
         }
 
-        $station->setState(SpacecraftStateEnum::UNDER_CONSTRUCTION);
         $station->setBuildplan(null);
         $station->setRump($rump);
         $station->setName($rump->getName());
-        $station->setHuell($rump->getBaseHull());
         $station->setMaxHuell($rump->getBaseHull());
+        $station->getCondition()->setHull($rump->getBaseHull());
+        $station->getCondition()->setState(SpacecraftStateEnum::UNDER_CONSTRUCTION);
 
         $this->stationRepository->save($station);
 

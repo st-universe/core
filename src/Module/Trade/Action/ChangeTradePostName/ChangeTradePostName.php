@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\Action\ChangeTradePostName;
 
 use Override;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Lib\CleanTextUtils;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -48,7 +48,7 @@ final class ChangeTradePostName implements ActionControllerInterface
         $tradepost = $this->tradePostRepository->find($this->changeTradePostNameRequest->getTradePostId());
 
         if ($tradepost === null || $tradepost->getUserId() !== $game->getUser()->getId()) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $tradepost->setName($newName);

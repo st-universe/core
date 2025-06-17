@@ -15,7 +15,7 @@ use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 
 final class ShowWasteMenu implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_WASTEMENU';
+    public const string VIEW_IDENTIFIER = 'SHOW_WASTEMENU';
 
     /**
      * @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spaceCraftLoader

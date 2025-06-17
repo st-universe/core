@@ -48,13 +48,15 @@ final class CrewRepository extends EntityRepository implements CrewRepositoryInt
         return (int) $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT COUNT(c.id) FROM %s c WHERE c.user = :user AND c.id IN (
-                        SELECT sc.crew_id FROM %s sc WHERE sc.spacecraft_id IN (
-                            SELECT sp.id FROM %s sp WHERE sp.rump_id IN (
-                                SELECT sr.id FROM %s sr WHERE sr.category_id = :categoryId
-                            )
-                        )
-                    )',
+                    'SELECT COUNT(c.id) FROM %s c
+                    JOIN %s ca
+                    WITH ca.crew = c
+                    JOIN %s sp
+                    WITH ca.spacecraft = sp
+                    JOIN %s r
+                    WITH sp.rump = r
+                    WHERE c.user = :user
+                    AND r.category_id = :categoryId',
                     Crew::class,
                     CrewAssignment::class,
                     Spacecraft::class,

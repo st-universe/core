@@ -20,9 +20,16 @@ class SpacecraftAttacker extends AbstractEnergyAttacker implements ProjectileAtt
     public function __construct(
         private SpacecraftWrapperInterface $wrapper,
         private ShipTorpedoManagerInterface $shipTorpedoManager,
+        private bool $isAttackingShieldsOnly,
         StuRandom $stuRandom
     ) {
         parent::__construct($stuRandom);
+    }
+
+    #[Override]
+    public function isAvoidingHullHits(SpacecraftInterface $target): bool
+    {
+        return $this->isAttackingShieldsOnly && !$target->isShielded();
     }
 
     #[Override]
@@ -67,7 +74,9 @@ class SpacecraftAttacker extends AbstractEnergyAttacker implements ProjectileAtt
     #[Override]
     public function getEnergyWeaponBaseDamage(): int
     {
-        return $this->get()->getBaseDamage();
+        $energyWeapon = $this->wrapper->getEnergyWeaponSystemData();
+
+        return $energyWeapon === null ? 0 : $energyWeapon->getBaseDamage();
     }
 
     #[Override]
@@ -100,7 +109,7 @@ class SpacecraftAttacker extends AbstractEnergyAttacker implements ProjectileAtt
     #[Override]
     public function getHitChance(): int
     {
-        return $this->get()->getHitChance();
+        return $this->wrapper->getComputerSystemDataMandatory()->getHitChance();
     }
 
     #[Override]

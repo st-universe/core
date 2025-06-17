@@ -8,7 +8,7 @@ use Override;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Alliance\Event\DiplomaticRelationProposedEvent;
 use Stu\Component\Alliance\Event\WarDeclaredEvent;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -17,9 +17,6 @@ use Stu\Orm\Repository\AllianceRepositoryInterface;
 
 final class CreateRelation implements ActionControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string ACTION_IDENTIFIER = 'B_NEW_RELATION';
 
     public function __construct(private CreateRelationRequestInterface $createRelationRequest, private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager, private AllianceRepositoryInterface $allianceRepository)
@@ -32,14 +29,14 @@ final class CreateRelation implements ActionControllerInterface
         $alliance = $game->getUser()->getAlliance();
 
         if ($alliance === null) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $allianceId = $alliance->getId();
         $user = $game->getUser();
 
         if (!$this->allianceActionManager->mayManageForeignRelations($alliance, $user)) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $counterpartId = $this->createRelationRequest->getCounterpartId();

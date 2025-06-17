@@ -11,6 +11,7 @@ use Stu\Component\Spacecraft\Repair\CancelRepairInterface;
 use Stu\Component\Ship\Retrofit\CancelRetrofitInterface;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
+use Stu\Component\Spacecraft\System\Data\ComputerSystemData;
 use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Component\Spacecraft\System\Exception\InsufficientEnergyException;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
@@ -104,17 +105,13 @@ class SpacecraftStateChangerTest extends StuTestCase
     {
         $this->ship->shouldReceive('getState')
             ->withNoArgs()
-            ->andReturn(SpacecraftStateEnum::UNDER_SCRAPPING);
-        $this->ship->shouldReceive('isUnderRepair')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(true);
+            ->andReturn(SpacecraftStateEnum::REPAIR_ACTIVE);
 
         $this->cancelRepair->shouldReceive('cancelRepair')
             ->with($this->ship)
             ->once();
 
-        $this->ship->shouldReceive('setState')
+        $this->ship->shouldReceive('getCondition->setState')
             ->with(SpacecraftStateEnum::NONE)
             ->once();
 
@@ -131,16 +128,12 @@ class SpacecraftStateChangerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftStateEnum::ASTRO_FINALIZING);
-        $this->ship->shouldReceive('isUnderRepair')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(false);
 
         $this->astroEntryLib->shouldReceive('cancelAstroFinalizing')
             ->with($this->wrapper)
             ->once();
 
-        $this->ship->shouldReceive('setState')
+        $this->ship->shouldReceive('getCondition->setState')
             ->with(SpacecraftStateEnum::NONE)
             ->once();
 
@@ -157,16 +150,12 @@ class SpacecraftStateChangerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftStateEnum::WEB_SPINNING);
-        $this->ship->shouldReceive('isUnderRepair')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(false);
 
         $this->tholianWebUtil->shouldReceive('releaseWebHelper')
             ->with($this->wrapper)
             ->once();
 
-        $this->ship->shouldReceive('setState')
+        $this->ship->shouldReceive('getCondition->setState')
             ->with(SpacecraftStateEnum::NONE)
             ->once();
 
@@ -182,7 +171,7 @@ class SpacecraftStateChangerTest extends StuTestCase
 
     public function testChangeAlertStateExpectNothingWhenAlertStateUnchanged(): void
     {
-        $this->ship->shouldReceive('getAlertState')
+        $this->wrapper->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_GREEN);
@@ -192,14 +181,41 @@ class SpacecraftStateChangerTest extends StuTestCase
         $this->assertNull($msg);
     }
 
-    public function testChangeAlertStateExpectNothingWhenChangedToGreen(): void
+    public function testChangeAlertStateExpectNothingWhenNoComputerInstalled(): void
     {
-        $this->ship->shouldReceive('getAlertState')
+        $this->ship->shouldReceive('hasComputer')
+            ->withNoArgs()
+            ->once()
+            ->andReturnFalse();
+        $this->wrapper->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_YELLOW);
-        $this->ship->shouldReceive('setAlertState')
+
+        $msg = $this->subject->changeAlertState($this->wrapper, SpacecraftAlertStateEnum::ALERT_GREEN);
+
+        $this->assertNull($msg);
+    }
+
+    public function testChangeAlertStateExpectNothingWhenChangedToGreen(): void
+    {
+        $computer = $this->mock(ComputerSystemData::class);
+
+        $this->ship->shouldReceive('hasComputer')
+            ->withNoArgs()
+            ->once()
+            ->andReturnTrue();
+        $this->wrapper->shouldReceive('getAlertState')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(SpacecraftAlertStateEnum::ALERT_YELLOW);
+        $this->wrapper->shouldReceive('getComputerSystemDataMandatory->setAlertState')
             ->with(SpacecraftAlertStateEnum::ALERT_GREEN)
+            ->once()
+            ->andReturn($computer);
+
+        $computer->shouldReceive('update')
+            ->withNoArgs()
             ->once();
 
         $msg = $this->subject->changeAlertState($this->wrapper, SpacecraftAlertStateEnum::ALERT_GREEN);
@@ -211,7 +227,12 @@ class SpacecraftStateChangerTest extends StuTestCase
     {
         static::expectException(InsufficientEnergyException::class);
 
-        $this->ship->shouldReceive('getAlertState')
+        $this->ship->shouldReceive('hasComputer')
+            ->withNoArgs()
+            ->once()
+            ->andReturnTrue();
+
+        $this->wrapper->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_GREEN);
@@ -227,6 +248,7 @@ class SpacecraftStateChangerTest extends StuTestCase
     public function testChangeAlertStateExpectChangeToYellow(): void
     {
         $epsSystemData = $this->mock(EpsSystemData::class);
+        $computer = $this->mock(ComputerSystemData::class);
 
         $epsSystemData->shouldReceive('getEps')
             ->withNoArgs()
@@ -240,12 +262,22 @@ class SpacecraftStateChangerTest extends StuTestCase
             ->withNoArgs()
             ->once();
 
-        $this->ship->shouldReceive('getAlertState')
+        $this->ship->shouldReceive('hasComputer')
+            ->withNoArgs()
+            ->once()
+            ->andReturnTrue();
+
+        $this->wrapper->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_GREEN);
-        $this->ship->shouldReceive('setAlertState')
+        $this->wrapper->shouldReceive('getComputerSystemDataMandatory->setAlertState')
             ->with(SpacecraftAlertStateEnum::ALERT_YELLOW)
+            ->once()
+            ->andReturn($computer);
+
+        $computer->shouldReceive('update')
+            ->withNoArgs()
             ->once();
 
         $this->wrapper->shouldReceive('getEpsSystemData')
@@ -278,11 +310,15 @@ class SpacecraftStateChangerTest extends StuTestCase
             ->once()
             ->andReturn(1);
 
-        $this->ship->shouldReceive('getAlertState')
+        $this->ship->shouldReceive('hasComputer')
+            ->withNoArgs()
+            ->once()
+            ->andReturnTrue();
+
+        $this->wrapper->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_GREEN);
-
         $this->wrapper->shouldReceive('getEpsSystemData')
             ->withNoArgs()
             ->once()
@@ -294,6 +330,7 @@ class SpacecraftStateChangerTest extends StuTestCase
     public function testChangeAlertStateExpectChangeToRed(): void
     {
         $epsSystemData = $this->mock(EpsSystemData::class);
+        $computer = $this->mock(ComputerSystemData::class);
 
         $epsSystemData->shouldReceive('getEps')
             ->withNoArgs()
@@ -307,12 +344,22 @@ class SpacecraftStateChangerTest extends StuTestCase
             ->withNoArgs()
             ->once();
 
-        $this->ship->shouldReceive('getAlertState')
+        $this->ship->shouldReceive('hasComputer')
+            ->withNoArgs()
+            ->once()
+            ->andReturnTrue();
+
+        $this->wrapper->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_GREEN);
-        $this->ship->shouldReceive('setAlertState')
+        $this->wrapper->shouldReceive('getComputerSystemDataMandatory->setAlertState')
             ->with(SpacecraftAlertStateEnum::ALERT_RED)
+            ->once()
+            ->andReturn($computer);
+
+        $computer->shouldReceive('update')
+            ->withNoArgs()
             ->once();
 
         $this->wrapper->shouldReceive('getEpsSystemData')

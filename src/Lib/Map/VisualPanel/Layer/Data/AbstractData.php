@@ -12,25 +12,18 @@ use Override;
 #[MappedSuperclass]
 class AbstractData implements CellDataInterface
 {
-    #[Id]
-    #[Column(type: 'integer')]
-    private int $x;
-
-    #[Id]
-    #[Column(type: 'integer')]
-    private int $y;
-
     /** @var null|array<string> $effects */
     #[Column(type: 'json', nullable: true)]
     protected ?array $effects = null;
 
     public function __construct(
-        int $x,
-        int $y
-    ) {
-        $this->x = $x;
-        $this->y = $y;
-    }
+        #[Id]
+        #[Column(type: 'integer')]
+        private int $x,
+        #[Id]
+        #[Column(type: 'integer')]
+        private int $y
+    ) {}
 
     #[Override]
     public function getPosX(): int

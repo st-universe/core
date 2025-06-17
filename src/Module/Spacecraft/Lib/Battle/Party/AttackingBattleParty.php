@@ -5,18 +5,18 @@ namespace Stu\Module\Spacecraft\Lib\Battle\Party;
 use Doctrine\Common\Collections\Collection;
 use Override;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 
 class AttackingBattleParty extends AbstractBattleParty
 {
     public function __construct(
-        private SpacecraftWrapperInterface|FleetWrapperInterface $wrapper
+        private SpacecraftWrapperInterface|FleetWrapperInterface $wrapper,
+        bool $isAttackingShieldsOnly
     ) {
         $leader = $wrapper instanceof SpacecraftWrapperInterface ? $wrapper : $wrapper->getLeadWrapper();
 
-        parent::__construct($leader);
+        parent::__construct($leader, $isAttackingShieldsOnly);
     }
 
     #[Override]

@@ -27,14 +27,29 @@ final class FinishTutorial implements ActionControllerInterface
     {
         $game->setView(Noop::VIEW_IDENTIFIER);
 
-        $tutorial = $this->tutorialStepRepository->find(request::postIntFatal('stepId'));
-        if ($tutorial == null) {
+        $tutorialStep = $this->tutorialStepRepository->find(request::postIntFatal('stepId'));
+        if ($tutorialStep === null) {
             throw new RuntimeException('Current Tutorial not found');
         }
 
-        $userTutorial = $game->getUser()->getTutorials()->get($tutorial->getId());
-        if ($userTutorial != null) {
-            $this->userTutorialRepository->delete($userTutorial);
+        $user = $game->getUser();
+
+        $allStepsForView = $this->tutorialStepRepository->findBy([
+            'module' => $tutorialStep->getModule(),
+            'view' => $tutorialStep->getView()
+        ]);
+
+        if (empty($allStepsForView)) {
+            return;
+        }
+
+        $userTutorials = $user->getTutorials();
+
+        foreach ($allStepsForView as $step) {
+            $userTutorial = $userTutorials->get($step->getId());
+            if ($userTutorial !== null) {
+                $this->userTutorialRepository->delete($userTutorial);
+            }
         }
     }
 

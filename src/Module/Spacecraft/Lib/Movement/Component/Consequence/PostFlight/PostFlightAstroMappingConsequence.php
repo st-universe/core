@@ -94,7 +94,7 @@ class PostFlightAstroMappingConsequence extends AbstractFlightConsequence implem
             && $astroEntry->getState() === AstronomicalMappingEnum::FINISHING
             && $astroLab !== null
         ) {
-            $ship->setState(SpacecraftStateEnum::NONE);
+            $ship->getCondition()->setState(SpacecraftStateEnum::NONE);
             $astroLab->setAstroStartTurn(null)->update();
             $astroEntry->setState(AstronomicalMappingEnum::MEASURED);
             $astroEntry->setAstroStartTurn(null);

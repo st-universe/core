@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\View\NewPost;
 
 use Override;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\AllianceBoardTopicInterface;
@@ -13,9 +13,6 @@ use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
 final class NewPost implements ViewControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string VIEW_IDENTIFIER = 'SHOW_NEW_POST';
 
     public function __construct(private NewPostRequestInterface $newPostRequest, private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository) {}
@@ -24,6 +21,10 @@ final class NewPost implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();
+        if ($alliance === null) {
+            throw new AccessViolationException("user not in alliance");
+        }
+
         $boardId = $this->newPostRequest->getBoardId();
         $topicId = $this->newPostRequest->getTopicId();
         $allianceId = $alliance->getId();
@@ -31,7 +32,7 @@ final class NewPost implements ViewControllerInterface
         /** @var AllianceBoardTopicInterface $topic */
         $topic = $this->allianceBoardTopicRepository->find($topicId);
         if ($topic === null || $topic->getAllianceId() !== $allianceId) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $board = $topic->getBoard();

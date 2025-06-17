@@ -19,6 +19,7 @@ use Stu\Orm\Repository\PrivateMessageRepository;
 #[Table(name: 'stu_pms')]
 #[Index(name: 'recipient_folder_idx', columns: ['recip_user', 'cat_id'])]
 #[Index(name: 'correspondence', columns: ['recip_user', 'send_user'])]
+#[Index(name: 'pm_date_idx', columns: ['date'])]
 #[Entity(repositoryClass: PrivateMessageRepository::class)]
 class PrivateMessage implements PrivateMessageInterface
 {

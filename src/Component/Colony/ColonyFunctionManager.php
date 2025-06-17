@@ -28,12 +28,13 @@ final class ColonyFunctionManager implements ColonyFunctionManagerInterface
     public function hasActiveFunction(
         PlanetFieldHostInterface $host,
         BuildingFunctionEnum $function,
-        bool $useCache = true
+        bool $useCache = true,
+        array $ignoredFieldIds = []
     ): bool {
-        if ($useCache === false) {
-            return $this->hasBuildingWithFunction($host, $function, [self::STATE_ENABLED]);
-        }
-        return $this->hasActiveBuildingWithFunction($host, $function);
+
+        return $useCache
+            ? $this->hasActiveBuildingWithFunction($host, $function, $ignoredFieldIds)
+            : $this->hasBuildingWithFunction($host, $function, [self::STATE_ENABLED], $ignoredFieldIds);
     }
 
     #[Override]
@@ -48,31 +49,41 @@ final class ColonyFunctionManager implements ColonyFunctionManagerInterface
     public function getBuildingWithFunctionCount(
         PlanetFieldHostInterface $host,
         BuildingFunctionEnum $function,
-        array $states
+        array $states,
+        array $ignoredFieldIds = []
     ): int {
         return $this->planetFieldRepository->getCountByColonyAndBuildingFunctionAndState(
             $host,
             [$function],
-            $states
+            $states,
+            $ignoredFieldIds
         );
     }
 
     /**
      * @param array<int> $states
+     * @param array<int> $ignoredFieldIds
      */
-    private function hasBuildingWithFunction(PlanetFieldHostInterface $host, BuildingFunctionEnum $function, array $states): bool
-    {
+    private function hasBuildingWithFunction(
+        PlanetFieldHostInterface $host,
+        BuildingFunctionEnum $function,
+        array $states,
+        array $ignoredFieldIds = []
+    ): bool {
         return $this->getBuildingWithFunctionCount(
             $host,
             $function,
-            $states
+            $states,
+            $ignoredFieldIds
         ) > 0;
     }
 
     /**
      * Uses a very simple cache to avoid querying the same information over and over again
+     * 
+     * @param array<int> $ignoredFieldIds
      */
-    private function hasActiveBuildingWithFunction(PlanetFieldHostInterface $host, BuildingFunctionEnum $function): bool
+    private function hasActiveBuildingWithFunction(PlanetFieldHostInterface $host, BuildingFunctionEnum $function, array $ignoredFieldIds): bool
     {
         $hostId = $host->getId();
         $value = $function->value;
@@ -81,7 +92,7 @@ final class ColonyFunctionManager implements ColonyFunctionManagerInterface
             $this->hasActiveBuildingByColonyAndFunction[$hostId] = [];
         }
         if (!isset($this->hasActiveBuildingByColonyAndFunction[$hostId][$value])) {
-            $this->hasActiveBuildingByColonyAndFunction[$hostId][$value] = $this->hasBuildingWithFunction($host, $function, [self::STATE_ENABLED]);
+            $this->hasActiveBuildingByColonyAndFunction[$hostId][$value] = $this->hasBuildingWithFunction($host, $function, [self::STATE_ENABLED], $ignoredFieldIds);
         }
         return $this->hasActiveBuildingByColonyAndFunction[$hostId][$value];
     }

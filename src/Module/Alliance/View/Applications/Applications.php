@@ -6,7 +6,7 @@ namespace Stu\Module\Alliance\View\Applications;
 
 use Override;
 use Stu\Component\Alliance\AllianceEnum;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -14,9 +14,6 @@ use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 
 final class Applications implements ViewControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string VIEW_IDENTIFIER = 'SHOW_APPLICATIONS';
 
     public function __construct(private AllianceActionManagerInterface $allianceActionManager, private AllianceJobRepositoryInterface $allianceJobRepository)
@@ -29,11 +26,11 @@ final class Applications implements ViewControllerInterface
         $alliance = $game->getUser()->getAlliance();
 
         if ($alliance === null) {
-            throw new AccessViolation();
+            throw new AccessViolationException("user not in alliance");
         }
 
         if (!$this->allianceActionManager->mayEdit($alliance, $game->getUser())) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $game->setPageTitle(_('Allianz anzeigen'));

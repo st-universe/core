@@ -15,7 +15,7 @@ use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Module\Spacecraft\Lib\Damage\ApplyDamageInterface;
+use Stu\Module\Spacecraft\Lib\Damage\SystemDamageInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
@@ -34,7 +34,7 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
         private AnomalyCreationInterface $anomalyCreation,
         private SpacecraftRepositoryInterface $spacecraftRepository,
         private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
-        private ApplyDamageInterface $applyDamage,
+        private SystemDamageInterface $systemDamage,
         private PrivateMessageSenderInterface $privateMessageSender,
         private DistributedMessageSenderInterface $distributedMessageSender,
         private StuRandom $stuRandom,
@@ -91,10 +91,11 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
             }
 
             $shieldSystem = $spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::SHIELDS);
+            $condition = $spacecraft->getCondition();
 
             if (
-                $spacecraft->getShield() === 0
-                && $shieldSystem->getStatus() === 0
+                $condition->getShield() === 0
+                && !$shieldSystem->isHealthy()
             ) {
                 continue;
             }
@@ -106,8 +107,8 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
                 $shieldSystem->setMode(SpacecraftSystemModeEnum::MODE_OFF);
             }
 
-            if ($spacecraft->getShield() > 0) {
-                $spacecraft->setShield(0);
+            if ($condition->getShield() > 0) {
+                $condition->setShield(0);
                 $message->add('- die Schilde wurden entladen');
             }
 
@@ -115,7 +116,7 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
                 $wrapper = $this->spacecraftWrapperFactory->wrapSpacecraft($spacecraft);
 
                 $informations = new InformationWrapper();
-                $this->applyDamage->damageShipSystem(
+                $this->systemDamage->damageShipSystem(
                     $wrapper,
                     $shieldSystem,
                     $this->stuRandom->rand(1, 50, true),

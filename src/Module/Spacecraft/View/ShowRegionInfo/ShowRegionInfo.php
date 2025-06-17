@@ -7,7 +7,7 @@ namespace Stu\Module\Spacecraft\View\ShowRegionInfo;
 use Override;
 use request;
 use RuntimeException;
-use Stu\Exception\AccessViolation;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
@@ -44,7 +44,7 @@ final class ShowRegionInfo implements ViewControllerInterface
         $adminRegion = $mapField->getAdministratedRegion();
 
         if ($mapRegion === null && $adminRegion === null) {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         if ($mapRegion !== null && $mapRegion->getId() === $regionId) {
@@ -52,7 +52,7 @@ final class ShowRegionInfo implements ViewControllerInterface
         } elseif ($adminRegion !== null &&  $adminRegion->getId() === $regionId) {
             $region = $adminRegion;
         } else {
-            throw new AccessViolation();
+            throw new AccessViolationException();
         }
 
         $game->setMacroInAjaxWindow('html/ship/regioninfo.twig');

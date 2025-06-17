@@ -107,14 +107,6 @@ class TorpedoType implements TorpedoTypeInterface
     }
 
     #[Override]
-    public function setBaseDamage(int $baseDamage): TorpedoTypeInterface
-    {
-        $this->base_damage = $baseDamage;
-
-        return $this;
-    }
-
-    #[Override]
     public function getCriticalChance(): int
     {
         return $this->critical_chance;

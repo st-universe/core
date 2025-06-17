@@ -64,6 +64,8 @@ interface PrivateMessageRepositoryInterface extends ObjectRepository
 
     public function hasRecentMessage(UserInterface $user): bool;
 
+    public function getAmountSince(int $timestamp): int;
+
     public function unsetAllInboxReferences(): void;
 
     public function truncateAllPrivateMessages(): void;

@@ -7,6 +7,7 @@ namespace Stu\Module\Spacecraft\Lib\Battle\Provider;
 use Mockery\MockInterface;
 use Override;
 use RuntimeException;
+use Stu\Component\Spacecraft\System\Data\EnergyWeaponSystemData;
 use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\StuRandom;
@@ -49,6 +50,7 @@ class SpacecraftAttackerTest extends StuTestCase
         $this->subject = new SpacecraftAttacker(
             $this->wrapper,
             $this->shipTorpedoManager,
+            false,
             $this->stuRandom
         );
     }
@@ -179,12 +181,26 @@ class SpacecraftAttackerTest extends StuTestCase
         $this->subject->getWeaponModule();
     }
 
-    public function testGetEnergyWeaponBaseDamage(): void
+    public function testGetEnergyWeaponBaseDamageExpectZeroIfNoEnergyWeaponInstalled(): void
     {
-        $this->wrapper->shouldReceive('get')
+        $this->wrapper->shouldReceive('getEnergyWeaponSystemData')
             ->withNoArgs()
-            ->andReturn($this->ship);
-        $this->ship->shouldReceive('getBaseDamage')
+            ->andReturn(null);
+
+        $result = $this->subject->getEnergyWeaponBaseDamage();
+
+        $this->assertEquals(0, $result);
+    }
+
+    public function testGetEnergyWeaponBaseDamageExpectWeaponValueIfInstalled(): void
+    {
+        $energyWeapon = $this->mock(EnergyWeaponSystemData::class);
+
+        $this->wrapper->shouldReceive('getEnergyWeaponSystemData')
+            ->withNoArgs()
+            ->andReturn($energyWeapon);
+
+        $energyWeapon->shouldReceive('getBaseDamage')
             ->withNoArgs()
             ->once()
             ->andReturn(42);
@@ -307,11 +323,7 @@ class SpacecraftAttackerTest extends StuTestCase
 
     public function testGetHitChance(): void
     {
-        $this->wrapper->shouldReceive('get')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->ship);
-        $this->ship->shouldReceive('getHitChance')
+        $this->wrapper->shouldReceive('getComputerSystemDataMandatory->getHitChance')
             ->withNoArgs()
             ->once()
             ->andReturn(5);

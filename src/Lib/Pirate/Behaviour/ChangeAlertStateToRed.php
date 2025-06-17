@@ -19,10 +19,9 @@ class ChangeAlertStateToRed implements PirateBehaviourInterface
         PirateReactionMetadata $reactionMetadata,
         ?SpacecraftInterface $triggerSpacecraft
     ): ?PirateBehaviourEnum {
-        $fleet = $fleet->get();
 
-        foreach ($fleet->getShips() as $ship) {
-            $ship->setAlertState(SpacecraftAlertStateEnum::ALERT_RED);
+        foreach ($fleet->getShipWrappers() as $wrapper) {
+            $wrapper->setAlertState(SpacecraftAlertStateEnum::ALERT_RED);
         }
 
         return null;

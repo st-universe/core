@@ -34,7 +34,7 @@ final class EnterStarSystem extends AbstractDirectedMovement
             throw new RuntimeException('should not happen');
         }
 
-        $destination = $this->randomSystemEntry->getRandomEntryPoint($ship, $system);
+        $destination = $this->randomSystemEntry->getRandomEntryPoint($wrapper, $system);
 
         return $this->flightRouteFactory->getRouteForMapDestination($destination);
     }

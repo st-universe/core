@@ -5,7 +5,8 @@
     <tr>
         <td colspan="11">Einzelschiffe</td>
     </tr>
-    {{ shiplist_header() }}
+    {% set isFleetHeader = false %}
+    {{ shiplist_header(isFleetHeader) }}
     {% for wrapper in SINGLESHIPWRAPPERS %}
     {{ shiplist_body(wrapper) }}
     {% endfor %}

@@ -6,49 +6,22 @@ namespace Stu\Component\Crew;
 
 final class CrewEnum
 {
-    /**
-     * @var int
-     */
     public const int CREW_TYPE_COMMAND = 1;
 
-    /**
-     * @var int
-     */
     public const int CREW_TYPE_SECURITY = 2;
 
-    /**
-     * @var int
-     */
     public const int CREW_TYPE_SCIENCE = 3;
 
-    /**
-     * @var int
-     */
     public const int CREW_TYPE_TECHNICAL = 4;
 
-    /**
-     * @var int
-     */
     public const int CREW_TYPE_NAVIGATION = 5;
 
-    /**
-     * @var int
-     */
     public const int CREW_TYPE_CREWMAN = 6;
 
-    /**
-     * @var int
-     */
     public const int CREW_TYPE_CAPTAIN = 7;
 
-    /**
-     * @var int
-     */
     public const int CREW_GENDER_MALE = 1;
 
-    /**
-     * @var int
-     */
     public const int CREW_GENDER_FEMALE = 2;
 
     /**

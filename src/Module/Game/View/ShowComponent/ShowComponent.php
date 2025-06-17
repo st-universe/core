@@ -56,7 +56,7 @@ final class ShowComponent implements ViewControllerInterface
         }
 
         $entityId = request::getInt('id');
-        if (!$entityId) {
+        if ($entityId === 0) {
             return null;
         }
 
