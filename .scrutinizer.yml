@@ -1,11 +1,15 @@
 build:
+  image: default-bionic
+  environment:
+    php:
+      version: "8.4.7"
+      ini:
+        memory_limit: "-1"
+      pecl_extensions:
+        - redis
+    redis: true
   nodes:
     analysis:
-      docker:
-        image: huxinator/php84-scrutinizer:latest
-      environment:
-        variables:
-          XDEBUG_MODE: coverage
       tests:
         override:
           - php-scrutinizer-run
@@ -16,7 +20,6 @@ build:
             coverage:
               file: build/coverage-clover.xml
               format: clover
-
 filter:
   paths:
     - 'src/'
@@ -26,7 +29,6 @@ filter:
     - 'src/Public/assets/'
   dependency_paths:
     - 'vendor/'
-
 checks:
   php:
     code_rating: true
