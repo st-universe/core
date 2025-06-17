@@ -270,16 +270,16 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
     }
 
     #[Override]
-    public function truncateByUser(int $userId): void
+    public function truncateByUser(UserInterface $user): void
     {
         $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'DELETE FROM %s sc WHERE sc.user_id = :userId',
+                    'DELETE FROM %s ca WHERE ca.user = :user',
                     CrewAssignment::class
                 )
             )
-            ->setParameter('userId', $userId)
+            ->setParameter('user', $user)
             ->execute();
     }
 

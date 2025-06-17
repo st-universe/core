@@ -44,11 +44,10 @@ class CrewDeletionHandlerTest extends StuTestCase
 
         $user->shouldReceive('getId')
             ->withNoArgs()
-            ->twice()
             ->andReturn(42);
 
         $this->shipCrewRepository->shouldReceive('truncateByUser')
-            ->with(42)
+            ->with($user)
             ->once();
 
         $this->crewRepository->shouldReceive('truncateByUser')
