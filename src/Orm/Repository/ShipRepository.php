@@ -31,6 +31,7 @@ use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Entity\Storage;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\UserRegistration;
 
 /**
  * @extends EntityRepository<Ship>
@@ -272,7 +273,9 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 JOIN %s l
                 WITH s.location = l.id
                 JOIN %s u
-                WITH s.user_id = u.id
+                WITH s.user = u
+                JOIN %s ur
+                WITH ur.user = u
                 LEFT JOIN %s w
                 WITH u = w.user
                 WHERE l.layer_id = :layerId
@@ -281,12 +284,13 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 AND (s.fleet_id IS NULL OR s.is_fleet_leader = :true)
                 AND u.id >= :firstUserId
                 AND u.state >= :stateActive
-                AND u.creation < :eightWeeksEarlier
+                AND ur.creation < :eightWeeksEarlier
                 AND (u.vac_active = :false OR u.vac_request_date > :vacationThreshold)
                 AND COALESCE(w.protection_timeout, 0) < :currentTime',
                 Ship::class,
                 Location::class,
                 User::class,
+                UserRegistration::class,
                 PirateWrath::class
             )
         )

@@ -16,10 +16,8 @@ use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonyClass;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\Layer;
-use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Map;
-use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\MapRegionSettlement;
 use Stu\Orm\Entity\PirateWrath;
 use Stu\Orm\Entity\StarSystem;
@@ -28,6 +26,7 @@ use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\UserRegistration;
 
 /**
  * @extends EntityRepository<Colony>
@@ -299,7 +298,9 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                 JOIN %s l
                 WITH m.id = l.id
                 JOIN %s u
-                WITH c.user_id = u.id
+                WITH c.user = u
+                JOIN %s ur
+                WITH ur.user = u
                 LEFT JOIN %s w
                 WITH u = w.user
                 WHERE l.cx BETWEEN :minX AND :maxX
@@ -307,7 +308,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                 AND l.layer_id = :layer
                 AND u.id >= :firstUserId
                 AND u.state >= :stateActive
-                AND u.creation < :fourMonthEarlier
+                AND ur.creation < :fourMonthEarlier
                 AND (u.vac_active = :false OR u.vac_request_date > :vacationThreshold)
                 AND COALESCE(w.protection_timeout, 0) < :currentTime',
                 Colony::class,
@@ -316,6 +317,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                 Map::class,
                 Location::class,
                 User::class,
+                UserRegistration::class,
                 PirateWrath::class
             )
         )
