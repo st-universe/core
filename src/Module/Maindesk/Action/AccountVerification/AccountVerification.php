@@ -51,9 +51,7 @@ final class AccountVerification implements
         $emailCode = request::postStringFatal('emailcode');
         $registration = $user->getRegistration();
 
-        $activationData = $user->getId() . substr($registration->getLogin(), 0, 3) . substr($registration->getEmail(), 0, 3);
-        $hash = hash('sha256', $activationData);
-        $expectedEmailCode = strrev(substr($hash, -6));
+        $expectedEmailCode = $registration->getEmailCode();
 
         if ($emailCode !== $expectedEmailCode) {
             $this->loggerUtil->log('E-Mail-Code ungültig');
