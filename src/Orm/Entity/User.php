@@ -20,7 +20,6 @@ use Doctrine\ORM\Mapping\Table;
 use Override;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\ModuleEnum;
-use Stu\Component\Map\MapEnum;
 use Stu\Component\Player\UserAwardEnum;
 use Stu\Component\Player\UserCssClassEnum;
 use Stu\Component\Player\UserRpgBehaviorEnum;
@@ -64,9 +63,6 @@ class User implements UserInterface
 
     #[Column(type: 'text')]
     private string $description = '';
-
-    #[Column(type: 'smallint', nullable: true)]
-    private ?int $maptype = MapEnum::MAPTYPE_INSERT;
 
     #[Column(type: 'text')]
     private string $sessiondata = '';
