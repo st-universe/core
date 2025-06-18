@@ -91,6 +91,7 @@ use Stu\Orm\Entity\NPCLog;
 use Stu\Orm\Entity\OpenedAdventDoor;
 use Stu\Orm\Entity\PartnerSite;
 use Stu\Orm\Entity\PirateSetup;
+use Stu\Orm\Entity\PirateRound;
 use Stu\Orm\Entity\PirateWrath;
 use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Entity\PlanetFieldType;
@@ -159,6 +160,7 @@ use Stu\Orm\Entity\UserReferer;
 use Stu\Orm\Entity\UserSetting;
 use Stu\Orm\Entity\UserTag;
 use Stu\Orm\Entity\UserTutorial;
+use Stu\Orm\Entity\UserPirateRound;
 use Stu\Orm\Entity\Weapon;
 use Stu\Orm\Entity\WeaponShield;
 use Stu\Orm\Entity\WormholeEntry;
@@ -252,6 +254,7 @@ return [
     ColonyClassRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(ColonyClass::class),
     ColonyClassResearchRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(ColonyClassResearch::class),
     PirateSetupRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(PirateSetup::class),
+    PirateRoundRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(PirateRound::class),
     PirateWrathRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(PirateWrath::class),
     PrestigeLogRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(PrestigeLog::class),
     PrivateMessageRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(PrivateMessage::class),
@@ -313,6 +316,7 @@ return [
     UserInvitationRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserInvitation::class),
     UserMapRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserMap::class),
     UserProfileVisitorRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserProfileVisitor::class),
+    UserPirateRoundRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserPirateRound::class),
     UserRefererRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserReferer::class),
     UserSettingRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserSetting::class),
     UserTagRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserTag::class),

@@ -166,6 +166,7 @@ use Stu\Module\Spacecraft\Lib\Destruction\Handler\ResetTrackerDevices;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\TholianWebDestruction;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\TradepostDestruction;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\TransformToTrumfield;
+use Stu\Module\Spacecraft\Lib\Destruction\Handler\UpdatePirateRoundPrestige;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\UpdatePirateWrath;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestruction;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionInterface;
@@ -381,6 +382,7 @@ return [
             [
                 autowire(CrewEvacuation::class),
                 autowire(HistoryEntryCreation::class),
+                autowire(UpdatePirateRoundPrestige::class),
                 autowire(UpdatePirateWrath::class),
                 autowire(CancelTakeover::class),
                 autowire(LeaveIntactModules::class),
