@@ -7,6 +7,7 @@ namespace Stu\Module\Starmap\Lib;
 use JBBCode\Parser;
 use Override;
 use Stu\Component\Map\EncodedMapInterface;
+use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
@@ -17,7 +18,14 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
 
     private bool $hide = false;
 
-    public function __construct(private TradePostRepositoryInterface $tradePostRepository, private EncodedMapInterface $encodedMap, private Parser $bbCodeParser, private ExploreableStarMapInterface $exploreableStarMap, private LayerInterface $layer) {}
+    public function __construct(
+        private readonly TradePostRepositoryInterface $tradePostRepository,
+        private readonly UserSettingsProviderInterface $userSettingsProvider,
+        private readonly EncodedMapInterface $encodedMap,
+        private readonly Parser $bbCodeParser,
+        private readonly ExploreableStarMapInterface $exploreableStarMap,
+        private readonly LayerInterface $layer
+    ) {}
 
     #[Override]
     public function getCx(): int
@@ -162,10 +170,12 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
                     $user = $base->getUser();
                     $ally = $user->getAlliance();
 
+                    $userRgbCode = $this->userSettingsProvider->getRgbCode($user);
+
                     if ($ally !== null && strlen($ally->getRgbCode()) > 0) {
                         return 'border: 1px solid ' . $ally->getRgbCode();
-                    } elseif (strlen($user->getRgbCode()) > 0) {
-                        return 'border: 1px solid ' . $user->getRgbCode();
+                    } elseif (strlen($userRgbCode) > 0) {
+                        return 'border: 1px solid ' . $userRgbCode;
                     }
                 }
             }

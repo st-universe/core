@@ -6,12 +6,18 @@ namespace Stu\Module\Communication\View\ShowKnComments;
 
 use Noodlehaus\ConfigInterface;
 use Override;
+use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Orm\Entity\KnCommentInterface;
 use Stu\Orm\Entity\UserInterface;
 
 final class KnCommentWrapper implements KnCommentWrapperInterface
 {
-    public function __construct(private ConfigInterface $config, private KnCommentInterface $comment, private UserInterface $currentUser) {}
+    public function __construct(
+        private readonly ConfigInterface $config,
+        private readonly UserSettingsProviderInterface $userSettingsProvider,
+        private readonly KnCommentInterface $comment,
+        private readonly UserInterface $currentUser
+    ) {}
 
     #[Override]
     public function getId(): int
@@ -61,7 +67,9 @@ final class KnCommentWrapper implements KnCommentWrapperInterface
             return '';
         }
 
-        if ($this->comment->getUser()->getAvatar() === '') {
+        $userAvatar = $this->userSettingsProvider->getAvatar($this->comment->getUser());
+
+        if ($userAvatar === '') {
             return sprintf(
                 'assets/rassen/%skn.png',
                 $this->comment->getUser()->getFactionId()
@@ -71,7 +79,7 @@ final class KnCommentWrapper implements KnCommentWrapperInterface
             return sprintf(
                 '/%s/%s.png',
                 $this->config->get('game.user_avatar_path'),
-                $this->comment->getUser()->getAvatar()
+                $userAvatar
             );
         }
     }

@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\CreateFleet;
 
 use Override;
+use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 
 final class CreateFleet implements ActionControllerInterface
@@ -16,9 +16,10 @@ final class CreateFleet implements ActionControllerInterface
     public const string ACTION_IDENTIFIER = 'B_NEW_FLEET';
 
     public function __construct(
-        private CreateFleetRequestInterface $createFleetRequest,
-        private FleetRepositoryInterface $fleetRepository,
-        private ShipLoaderInterface $shipLoader
+        private readonly CreateFleetRequestInterface $createFleetRequest,
+        private readonly FleetRepositoryInterface $fleetRepository,
+        private readonly ShipLoaderInterface $shipLoader,
+        private readonly UserSettingsProviderInterface $userSettingsProvider
     ) {}
 
     #[Override]
@@ -52,7 +53,7 @@ final class CreateFleet implements ActionControllerInterface
         $fleet->setUser($game->getUser());
         $fleet->setName(_('Flotte'));
         $fleet->setSort($this->fleetRepository->getHighestSortByUser($game->getUser()->getId()));
-        $fleet->setIsFleetFixed($game->getUser()->getFleetFixedDefault());
+        $fleet->setIsFleetFixed($this->userSettingsProvider->getFleetFixedDefault($game->getUser()));
 
         $fleet->getShips()->add($spacecraft);
 

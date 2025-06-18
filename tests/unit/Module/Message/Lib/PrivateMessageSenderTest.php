@@ -6,6 +6,7 @@ namespace Stu\Module\Message\Lib;
 
 use Mockery\MockInterface;
 use Override;
+use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Lib\General\EntityWithHrefInterface;
 use Stu\Module\Control\StuTime;
 use Stu\Orm\Entity\PrivateMessageFolderInterface;
@@ -18,16 +19,12 @@ use Stu\StuTestCase;
 
 class PrivateMessageSenderTest extends StuTestCase
 {
-    /** @var MockInterface&PrivateMessageFolderRepositoryInterface */
-    private $messageFolderRepository;
-    /** @var MockInterface&PrivateMessageRepositoryInterface */
-    private $messageRepository;
-    /** @var MockInterface&UserRepositoryInterface */
-    private $userRepository;
-    /** @var MockInterface&EmailNotificationSenderInterface */
-    private $emailNotificationSender;
-    /** @var MockInterface&StuTime */
-    private $stuTime;
+    private MockInterface&PrivateMessageFolderRepositoryInterface $messageFolderRepository;
+    private MockInterface&PrivateMessageRepositoryInterface $messageRepository;
+    private MockInterface&UserRepositoryInterface $userRepository;
+    private MockInterface&EmailNotificationSenderInterface $emailNotificationSender;
+    private MockInterface&UserSettingsProviderInterface $userSettingsProvider;
+    private MockInterface&StuTime $stuTime;
 
     private PrivateMessageSenderInterface $messageSender;
 
@@ -38,6 +35,7 @@ class PrivateMessageSenderTest extends StuTestCase
         $this->messageRepository = $this->mock(PrivateMessageRepositoryInterface::class);
         $this->userRepository = $this->mock(UserRepositoryInterface::class);
         $this->emailNotificationSender = $this->mock(EmailNotificationSenderInterface::class);
+        $this->userSettingsProvider = $this->mock(UserSettingsProviderInterface::class);
         $this->stuTime = $this->mock(StuTime::class);
 
         $this->messageSender = new PrivateMessageSender(
@@ -45,6 +43,7 @@ class PrivateMessageSenderTest extends StuTestCase
             $this->messageRepository,
             $this->userRepository,
             $this->emailNotificationSender,
+            $this->userSettingsProvider,
             $this->stuTime
         );
     }
@@ -224,8 +223,8 @@ class PrivateMessageSenderTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(3);
-        $recipient->shouldReceive('isEmailNotification')
-            ->withNoArgs()
+        $this->userSettingsProvider->shouldReceive('isEmailNotification')
+            ->with($recipient)
             ->once()
             ->andReturn(true);
 
@@ -381,12 +380,12 @@ class PrivateMessageSenderTest extends StuTestCase
             ->once()
             ->andReturn(2);
 
-        $recipient1->shouldReceive('isEmailNotification')
-            ->withNoArgs()
+        $this->userSettingsProvider->shouldReceive('isEmailNotification')
+            ->with($recipient1)
             ->once()
             ->andReturn(true);
-        $recipient2->shouldReceive('isEmailNotification')
-            ->withNoArgs()
+        $this->userSettingsProvider->shouldReceive('isEmailNotification')
+            ->with($recipient2)
             ->once()
             ->andReturn(false);
 

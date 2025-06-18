@@ -1,0 +1,5 @@
+{% if setting.getCurrentValue %}
+<input type="checkbox" name="{{ setting.getParameterName }}" value="1" checked="true" />
+{% else %}
+<input type="checkbox" name="{{ setting.getParameterName }}" value="1" />
+{% endif %}

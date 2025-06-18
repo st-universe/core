@@ -3,6 +3,7 @@
 namespace Stu\Module\Game\Lib\View\Provider\Message;
 
 use Stu\Component\Game\TimeConstants;
+use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Game\Lib\View\Provider\ViewComponentProviderInterface;
@@ -13,9 +14,10 @@ use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 class MessengerStyleProvider implements ViewComponentProviderInterface
 {
     public function __construct(
-        private PrivateMessageRepositoryInterface $privateMessageRepository,
-        private ContactRepositoryInterface $contactRepository,
-        private StuTime $stuTime
+        private readonly PrivateMessageRepositoryInterface $privateMessageRepository,
+        private readonly ContactRepositoryInterface $contactRepository,
+        private readonly UserSettingsProviderInterface $userSettingsProvider,
+        private readonly StuTime $stuTime
     ) {}
 
     public function setTemplateVariables(GameControllerInterface $game): void
@@ -35,7 +37,8 @@ class MessengerStyleProvider implements ViewComponentProviderInterface
                     $this->determineDateString($message, $timestamp),
                     $user,
                     $this->privateMessageRepository,
-                    $this->contactRepository
+                    $this->contactRepository,
+                    $this->userSettingsProvider
                 );
             }
         }

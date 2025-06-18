@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Game\Lib\View\Provider\Message;
 
 use Override;
+use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Module\Message\Lib\PrivateMessageListItem;
 use Stu\Orm\Entity\PrivateMessageInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -21,11 +22,13 @@ final class Conversation extends PrivateMessageListItem
         private string $dateString,
         UserInterface $currentUser,
         PrivateMessageRepositoryInterface $privateMessageRepository,
-        ContactRepositoryInterface $contactRepository
+        ContactRepositoryInterface $contactRepository,
+        UserSettingsProviderInterface $userSettingsProvider
     ) {
         parent::__construct(
             $privateMessageRepository,
             $contactRepository,
+            $userSettingsProvider,
             $message,
             $currentUser
         );

@@ -8,6 +8,7 @@ use Override;
 use request;
 use RuntimeException;
 use Stu\Component\Game\ModuleEnum;
+use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Game\Lib\View\Provider\ViewComponentProviderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -22,9 +23,10 @@ final class ClassicStyleProvider implements ViewComponentProviderInterface
     private const int PMLIMITER = 6;
 
     public function __construct(
-        private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
-        private PrivateMessageRepositoryInterface $privateMessageRepository,
-        private ContactRepositoryInterface $contactRepository
+        private readonly PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
+        private readonly PrivateMessageRepositoryInterface $privateMessageRepository,
+        private readonly ContactRepositoryInterface $contactRepository,
+        private readonly UserSettingsProviderInterface $userSettingsProvider
     ) {}
 
     #[Override]
@@ -92,6 +94,7 @@ final class ClassicStyleProvider implements ViewComponentProviderInterface
                 fn(PrivateMessageInterface $message): PrivateMessageListItem => new PrivateMessageListItem(
                     $this->privateMessageRepository,
                     $this->contactRepository,
+                    $this->userSettingsProvider,
                     $message,
                     $game->getUser()
                 ),

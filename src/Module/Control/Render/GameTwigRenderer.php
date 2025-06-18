@@ -7,6 +7,7 @@ namespace Stu\Module\Control\Render;
 use Noodlehaus\ConfigInterface;
 use Override;
 use Stu\Component\Game\GameEnum;
+use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Component\Player\UserAwardEnum;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -19,10 +20,11 @@ final class GameTwigRenderer implements GameTwigRendererInterface
     private const string GAME_VERSION_DEV = 'dev';
 
     public function __construct(
-        private TwigPageInterface $twigPage,
-        private ConfigInterface $config,
-        private StuConfigInterface $stuConfig,
-        private CrewAssignmentRepositoryInterface $crewAssignmentRepository
+        private readonly TwigPageInterface $twigPage,
+        private readonly ConfigInterface $config,
+        private readonly StuConfigInterface $stuConfig,
+        private readonly CrewAssignmentRepositoryInterface $crewAssignmentRepository,
+        private readonly UserSettingsProviderInterface $userSettingsProvider
     ) {}
 
     #[Override]
@@ -70,10 +72,10 @@ final class GameTwigRenderer implements GameTwigRendererInterface
         } else {
             $this->twigPage->setVar('USER', new UserContainer(
                 $user->getId(),
-                $user->getAvatar(),
+                $this->userSettingsProvider->getAvatar($user),
                 $user->getName(),
                 $user->getFactionId(),
-                $user->getCss(),
+                $this->userSettingsProvider->getCss($user)->value,
                 $this->hasStationsNavigation($user)
             ));
         }

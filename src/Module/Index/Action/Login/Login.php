@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Index\Action\Login;
 
 use Override;
+use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Lib\LoginException;
 use Stu\Lib\Session\SessionLoginInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -15,8 +16,9 @@ final class Login implements ActionControllerInterface
     public const string ACTION_IDENTIFIER = 'B_LOGIN';
 
     public function __construct(
-        private LoginRequestInterface $loginRequest,
-        private SessionLoginInterface $sessionLogin
+        private readonly UserSettingsProviderInterface $userSettingsProvider,
+        private readonly LoginRequestInterface $loginRequest,
+        private readonly SessionLoginInterface $sessionLogin
     ) {}
 
     /**
@@ -31,7 +33,7 @@ final class Login implements ActionControllerInterface
         );
 
         if ($success) {
-            $view = $game->getUser()->getDefaultView();
+            $view = $this->userSettingsProvider->getDefaultView($game->getUser());
             $game->redirectTo(sprintf('/%s', $view->getPhpPage()));
         }
     }

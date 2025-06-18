@@ -9,6 +9,7 @@ use GdImage;
 use Noodlehaus\ConfigInterface;
 use Override;
 use RuntimeException;
+use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\PlayerSetting\Lib\ChangeUserSettingInterface;
@@ -18,9 +19,11 @@ final class ChangeAvatar implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_CHANGE_AVATAR';
 
-    public function __construct(private ChangeUserSettingInterface $changerUserSetting, private ConfigInterface $config)
-    {
-    }
+    public function __construct(
+        private readonly ChangeUserSettingInterface $changerUserSetting,
+        private readonly UserSettingsProviderInterface $userSettingsProvider,
+        private readonly ConfigInterface $config
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -41,7 +44,7 @@ final class ChangeAvatar implements ActionControllerInterface
 
         $user = $game->getUser();
 
-        $avatar = $user->getAvatar();
+        $avatar = $this->userSettingsProvider->getAvatar($user);
         if ($avatar !== '') {
             $path = sprintf(
                 '/%s/%s.png',

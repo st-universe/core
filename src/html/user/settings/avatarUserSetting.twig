@@ -1,0 +1,13 @@
+{% from 'html/macros.twig' import userAvatar %}
+
+{% set type = setting.getType %}
+<tr>
+    <td rowspan="3" style="vertical-align: top; width: 160px;">
+        {{ userAvatar(REAL_USER) }}
+    </td>
+    <td><input type="file" class="button" name="{{ setting.getParameterName }}" /> <input type="submit"
+            name="B_CHANGE_AVATAR" value="Hochladen" class="button" /></td>
+</tr>
+<tr>
+    <td style="height: 125px; vertical-align: top;">{{ type.getDescription }}</td>
+</tr>

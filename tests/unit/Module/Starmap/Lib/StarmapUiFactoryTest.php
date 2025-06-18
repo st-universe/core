@@ -8,6 +8,7 @@ use JBBCode\Parser;
 use Mockery\MockInterface;
 use Override;
 use Stu\Component\Map\EncodedMapInterface;
+use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
@@ -17,20 +18,12 @@ use Stu\StuTestCase;
 
 class StarmapUiFactoryTest extends StuTestCase
 {
-    /** @var MapRepositoryInterface&MockInterface */
-    private MockInterface $mapRepository;
-
-    /** @var StarSystemMapRepositoryInterface&MockInterface */
-    private MockInterface $starSystemMapRepository;
-
-    /** @var MockInterface&TradePostRepositoryInterface */
-    private MockInterface $tradePostRepository;
-
-    /** @var MockInterface&EncodedMapInterface */
-    private MockInterface $encodedMap;
-
-    /** @var MockInterface&Parser */
-    private MockInterface $bbCodeParser;
+    private MapRepositoryInterface&MockInterface $mapRepository;
+    private StarSystemMapRepositoryInterface&MockInterface $starSystemMapRepository;
+    private MockInterface&TradePostRepositoryInterface $tradePostRepository;
+    private MockInterface&UserSettingsProviderInterface $userSettingsProvider;
+    private MockInterface&EncodedMapInterface $encodedMap;
+    private MockInterface&Parser $bbCodeParser;
 
     private StarmapUiFactory $subject;
 
@@ -39,16 +32,18 @@ class StarmapUiFactoryTest extends StuTestCase
     {
         $this->mapRepository = $this->mock(MapRepositoryInterface::class);
         $this->tradePostRepository = $this->mock(TradePostRepositoryInterface::class);
-        $this->encodedMap = $this->mock(EncodedMapInterface::class);
         $this->starSystemMapRepository = $this->mock(StarSystemMapRepositoryInterface::class);
+        $this->userSettingsProvider = $this->mock(UserSettingsProviderInterface::class);
+        $this->encodedMap = $this->mock(EncodedMapInterface::class);
         $this->bbCodeParser = $this->mock(Parser::class);
 
         $this->subject = new StarmapUiFactory(
             $this->mapRepository,
             $this->tradePostRepository,
+            $this->starSystemMapRepository,
+            $this->userSettingsProvider,
             $this->encodedMap,
             $this->bbCodeParser,
-            $this->starSystemMapRepository,
             $this->initLoggerUtil()
         );
     }

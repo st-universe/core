@@ -6,6 +6,7 @@ namespace Stu\Module\Communication\View\ShowKnComments;
 
 use Noodlehaus\ConfigInterface;
 use Override;
+use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Module\Communication\Action\PostKnComment\PostKnComment;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -16,9 +17,12 @@ final class ShowKnComments implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_KN_COMMENTS';
 
-    public function __construct(private ShowKnCommentsRequestInterface $showKnCommentsRequest, private ConfigInterface $config, private KnPostRepositoryInterface $knPostRepository)
-    {
-    }
+    public function __construct(
+        private readonly KnPostRepositoryInterface $knPostRepository,
+        private readonly UserSettingsProviderInterface $userSettingsProvider,
+        private readonly ShowKnCommentsRequestInterface $showKnCommentsRequest,
+        private readonly ConfigInterface $config,
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -37,6 +41,7 @@ final class ShowKnComments implements ViewControllerInterface
             if (!$comment->isDeleted()) {
                 $list[] = new KnCommentWrapper(
                     $this->config,
+                    $this->userSettingsProvider,
                     $comment,
                     $user
                 );

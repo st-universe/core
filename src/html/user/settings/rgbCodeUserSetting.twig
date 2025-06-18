@@ -1,0 +1,10 @@
+{% set type = setting.getType %}
+<tr>
+    <td><input type="text" style="width: 250px;" name="{{ setting.getParameterName }}" class="text"
+            value="{{ setting.getCurrentValue }}" />
+        <input type="submit" name="B_CHANGE_USER_RGB" value="ändern" class="button" />
+    </td>
+</tr>
+<tr>
+    <td>{{ type.getDescription }}</td>
+</tr>
