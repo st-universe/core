@@ -2072,3 +2072,101 @@ label.linkbutton:hover {
 #toggle-info:checked~.information-container .hide-text {
   display: inline !important;
 }
+
+@keyframes frameGlow {
+  0% {
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3), inset 0 0 20px rgba(0, 255, 255, 0.1);
+  }
+
+  100% {
+    box-shadow: 0 0 40px rgba(0, 255, 255, 0.6), inset 0 0 30px rgba(0, 255, 255, 0.2);
+  }
+}
+
+@keyframes outerRing1 {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes outerRing2 {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes centerPulse {
+  0% {
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
+    border-color: rgba(0, 255, 255, 0.6);
+  }
+
+  100% {
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.8);
+    border-color: rgba(0, 255, 255, 1);
+  }
+}
+
+@keyframes scannerSweep {
+  0% {
+    transform: translate(-50%, -100%) rotate(0deg);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  90% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(-50%, -100%) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes errorPulse {
+  0% {
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.4);
+    border-color: rgba(255, 0, 0, 0.6);
+  }
+
+  100% {
+    box-shadow: 0 0 25px rgba(255, 0, 0, 0.8);
+    border-color: rgba(255, 0, 0, 1);
+  }
+}
+
+@keyframes progressShimmer {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes progressScan {
+  0% {
+    left: -100%;
+  }
+
+  50% {
+    left: 100%;
+  }
+
+  100% {
+    left: 100%;
+  }
+}

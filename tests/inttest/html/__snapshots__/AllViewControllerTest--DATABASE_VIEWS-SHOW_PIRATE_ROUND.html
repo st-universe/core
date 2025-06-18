@@ -1,0 +1,158 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body>
+<div class="box">
+    <div class="box_title" style="text-align: left">/
+                <a href="database.php">
+            Datenbank
+        </a>
+                <span> / </span>
+                        <a href="database.php?SHOW_PIRATE_ROUND=1">
+            Piraten-Runde
+        </a>
+                    </div>
+</div>
+<br>
+<div id="result">
+    <table class="use">
+        <tr>
+            <th>Meldung</th>
+        </tr>
+        <tr>
+            <td>
+                
+                <div class="information-container">
+                                        <div class="information-item">
+                        Keine Piraten-Runde gefunden
+                    </div>
+                    
+                                    </div>
+
+                            </td>
+        </tr>
+    </table>
+</div>
+
+<br>
+<div class="statisticsToplist">
+    <div>
+        <ul class="statistics">
+                    </ul>
+    </div>
+    <div>
+        <h1>Piraten-Runde</h1>
+
+        <div class="box" style="margin-bottom: 20px;">
+            <div class="box_title">Runden-Information</div>
+            <div class="box_body">
+                <p><strong>Start:</strong> 18.06.2025 22:25</p>
+                                <p><strong>Status:</strong> <span style="color: #00ff00;">Aktiv</span></p>
+                            </div>
+        </div>
+
+                <div class="box" style="margin-bottom: 20px;">
+            <div class="box_title">Deine Statistiken</div>
+            <div class="box_body">
+                <p>Du hast noch nicht an dieser Runde teilgenommen.</p>
+            </div>
+        </div>
+        
+        <div class="box" style="margin-bottom: 20px;">
+            <div class="box_title">Fraktions-Verteilung</div>
+            <div class="box_body" style="padding: 20px;">
+                <div id="factionChart" data-factions="null" data-max-prestige="0" data-actual-prestige="0" style="width: 400px; height: 400px; margin: 0 auto; position: relative;">
+                    <div id="chartFrame" style="
+                        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+                        border: 2px solid #00ffff; border-radius: 50%;
+                        box-shadow: 0 0 20px rgba(0, 255, 255, 0.3), inset 0 0 20px rgba(0, 255, 255, 0.1);
+                        animation: frameGlow 3s ease-in-out infinite alternate;
+                    "></div>
+
+                    <div style="
+                        position: absolute; top: -5px; left: -5px; width: calc(100% + 10px); height: calc(100% + 10px);
+                        border: 1px solid rgba(0, 255, 255, 0.4); border-radius: 50%;
+                        animation: outerRing1 4s linear infinite;
+                    "></div>
+
+                    <div style="
+                        position: absolute; top: -10px; left: -10px; width: calc(100% + 20px); height: calc(100% + 20px);
+                        border: 1px solid rgba(0, 255, 255, 0.2); border-radius: 50%;
+                        animation: outerRing2 6s linear infinite reverse;
+                    "></div>
+
+                    <div id="scannerLine" style="
+                        position: absolute; top: 50%; left: 50%; width: 2px; height: 180px;
+                        background: linear-gradient(to bottom, transparent 0%, rgba(0, 255, 255, 0.8) 50%, transparent 100%);
+                        transform-origin: bottom center; transform: translate(-50%, -100%); opacity: 0;
+                    "></div>
+
+                    <canvas id="pieChart" width="360" height="360" style="
+                        position: absolute; top: 20px; left: 20px; border-radius: 50%;
+                    "></canvas>
+
+                    <div id="centralDisplay" style="
+                        position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                        width: 80px; height: 80px; border: 2px solid rgba(0, 255, 255, 0.6); border-radius: 50%;
+                        background: radial-gradient(circle, rgba(0, 0, 0, 0.8) 0%, rgba(0, 50, 50, 0.3) 100%);
+                        display: flex; align-items: center; justify-content: center;
+                        font-size: 12px; color: #00ffff; text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+                        animation: centerPulse 2s ease-in-out infinite alternate;
+                        opacity: 1; transition: opacity 1s ease-out;
+                    ">
+                        <div style="text-align: center;">
+                            <div style="font-weight: bold;">SCAN</div>
+                            <div style="font-size: 10px;">AKTIV</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="chartTooltip" style="position: absolute; background: rgba(0, 0, 0, 0.9); border: 1px solid #00ffff; padding: 10px; border-radius: 5px; display: none; z-index: 1000; color: #fff; font-size: 12px; box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);">
+                </div>
+            </div>
+        </div>
+
+        <div class="box">
+                        <div class="box_title">Runden-Fortschritt</div>
+            <div class="box_body">
+                <div style="margin-bottom: 10px;">
+                    <span> Schiffe zerst&ouml;rt</span>
+                </div>
+                <div id="progressContainer" style="
+                width: 100%; height: 35px; 
+                background: linear-gradient(180deg, #1a1a1a 0%, #0d0d0d 50%, #000000 100%);
+                border: 2px solid #333333; border-radius: 8px; overflow: hidden; position: relative;
+                box-shadow: inset 0 0 10px rgba(0,0,0,0.8), 0 0 5px rgba(0,255,255,0.2);
+            ">
+                    <div id="progressBar" style="
+                    height: 100%; width: 0%; transition: width 2s ease-in-out;
+                    border-radius: 6px; position: relative; overflow: hidden;
+                "></div>
+                    <div style="
+                    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+                    color: #fff; font-weight: bold; z-index: 10; font-size: 14px;
+                ">
+                        <span id="progressText">0%</span>
+                    </div>
+                    <div style="
+                    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+                    background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 30%, transparent 70%, rgba(0,0,0,0.3) 100%);
+                    pointer-events: none;
+                "></div>
+                </div>
+            </div>
+                    </div>
+
+    </div>
+</div>
+
+
+<div class="footer">
+    Rendered in 4.203s - Memory usage: 42.77Mb
+</div>
+
+</body>
+</html>

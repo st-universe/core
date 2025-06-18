@@ -35,6 +35,7 @@ use Stu\Module\Database\View\ShowColonySurface\ShowColonySurfaceRequestInterface
 use Stu\Module\Database\View\ShowCommoditiesLocations\ShowCommoditiesLocations;
 use Stu\Module\Database\View\ShowCommoditiesLocations\ShowCommoditiesLocationsRequest;
 use Stu\Module\Database\View\ShowCommoditiesLocations\ShowCommoditiesLocationsRequestInterface;
+use Stu\Module\Database\View\ShowPirateRound\ShowPirateRound;
 use Stu\Module\Database\View\ShowPrestigeLog\ShowPrestigeLog;
 use Stu\Module\Database\View\ShowStatistics\ShowStatistics;
 use Stu\Module\Database\View\TradePostActivity\TradePostActivity;
@@ -78,6 +79,7 @@ return [
         ShowColonySurface::VIEW_IDENTIFIER => autowire(ShowColonySurface::class),
         ShowCommoditiesLocations::VIEW_IDENTIFIER => autowire(ShowCommoditiesLocations::class),
         ShowPrestigeLog::VIEW_IDENTIFIER => autowire(ShowPrestigeLog::class),
+        ShowPirateRound::VIEW_IDENTIFIER => autowire(ShowPirateRound::class),
         ShowStatistics::VIEW_IDENTIFIER => autowire(ShowStatistics::class),
         TradePostActivity::VIEW_IDENTIFIER => autowire(TradePostActivity::class),
         UserList::VIEW_IDENTIFIER => autowire(UserList::class),
