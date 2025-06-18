@@ -17,6 +17,25 @@ final class PirateRoundRepository extends EntityRepository implements PirateRoun
     #[Override]
     public function prototype(): PirateRoundInterface
     {
+        return new PirateRound();
+    }
+
+    #[Override]
+    public function save(PirateRoundInterface $pirateRound): void
+    {
+        $em = $this->getEntityManager();
+
+        $em->persist($pirateRound);
+    }
+
+    #[Override]
+    public function delete(PirateRoundInterface $pirateRound): void
+    {
+        $em = $this->getEntityManager();
+
+        $em->remove($pirateRound);
+    }
+
     #[Override]
     public function getCurrentActiveRound(): ?PirateRoundInterface
     {
