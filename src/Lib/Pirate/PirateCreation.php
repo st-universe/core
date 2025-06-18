@@ -17,20 +17,23 @@ use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\PirateSetupInterface;
+use Stu\Orm\Entity\PirateRoundInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\GameTurnRepositoryInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\NamesRepositoryInterface;
+use Stu\Orm\Repository\PirateRoundRepositoryInterface;
 use Stu\Orm\Repository\PirateSetupRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 class PirateCreation implements PirateCreationInterface
 {
-    public const MAX_PIRATE_FLEETS = 5;
+    public const MAX_PIRATE_FLEETS = 10;
     public const MAX_PIRATE_FLEETS_PER_TICK = 5;
+    public const MAX_PIRATE_FLEETS_PER_10MIN = 3;
 
     public const FORBIDDEN_ADMIN_AREAS = [
         MapEnum::ADMIN_REGION_SUPERPOWER_CENTRAL,
@@ -44,6 +47,7 @@ class PirateCreation implements PirateCreationInterface
         private ShipRepositoryInterface $shipRepository,
         private UserRepositoryInterface $userRepository,
         private PirateSetupRepositoryInterface $pirateSetupRepository,
+        private PirateRoundRepositoryInterface $pirateRoundRepository,
         private GameTurnRepositoryInterface $gameTurnRepository,
         private ShipCreatorInterface $shipCreator,
         private LayerRepositoryInterface $layerRepository,
@@ -60,20 +64,82 @@ class PirateCreation implements PirateCreationInterface
     #[Override]
     public function createPirateFleetsIfNeeded(): array
     {
-        $gameTurn = $this->game->getCurrentRound();
-        $pirateFleets = $this->fleetRepository->getByUser(UserEnum::USER_NPC_KAZON);
+        $currentRound = $this->pirateRoundRepository->getCurrentActiveRound();
 
-        $missingFleetAmount = min(
-            max(0, self::MAX_PIRATE_FLEETS_PER_TICK - $gameTurn->getPirateFleets()),
-            max(0, self::MAX_PIRATE_FLEETS - count($pirateFleets))
-        );
-
-        if ($missingFleetAmount > 0) {
-            $this->logger->logf('    creating %d new needed pirate fleets', $missingFleetAmount);
+        if ($currentRound === null) {
+            $this->logger->log('    Keine aktive Piratenrunde - keine neuen Flotten');
+            return [];
         }
 
-        for ($i = 0; $i < $missingFleetAmount; $i++) {
-            $this->logger->logf('  fleet nr. %d', $i);
+        if ($currentRound->getActualPrestige() <= 0) {
+            $this->logger->log('    Prestige auf 0 - keine neuen Piratenflotten');
+            return [];
+        }
+
+        $gameTurn = $this->game->getCurrentRound();
+        $pirateFleets = $this->fleetRepository->getByUser(UserEnum::USER_NPC_KAZON);
+        $currentFleetCount = count($pirateFleets);
+
+        $dynamicLimits = $this->calculateDynamicLimits($currentRound);
+
+        $this->logger->logf(
+            '    Dynamische Limits: Max=%d, PerTick=%d, Per10Min=%d',
+            $dynamicLimits['maxFleets'],
+            $dynamicLimits['maxPerTick'],
+            $dynamicLimits['maxPer10Min']
+        );
+
+        $missingFleetAmount = min(
+            max(0, $dynamicLimits['maxPerTick'] - $gameTurn->getPirateFleets()),
+            max(0, $dynamicLimits['maxFleets'] - $currentFleetCount)
+        );
+
+        if ($missingFleetAmount <= 0) {
+            $this->logger->logf(
+                '    Tick-Limit erreicht (%d/%d) oder max. Flotten erreicht (%d/%d)',
+                $gameTurn->getPirateFleets(),
+                $dynamicLimits['maxPerTick'],
+                $currentFleetCount,
+                $dynamicLimits['maxFleets']
+            );
+            return $pirateFleets;
+        }
+
+        $spawnProbability = $this->calculateSpawnProbability($currentRound);
+
+        $this->logger->logf(
+            '    Spawn-Wahrscheinlichkeit: %.2f%% (Prestige: %d/%d)',
+            $spawnProbability * 100,
+            $currentRound->getActualPrestige(),
+            $currentRound->getMaxPrestige()
+        );
+
+        $randomValue = $this->stuRandom->rand(1, 100);
+        $spawnThreshold = $spawnProbability * 100;
+
+        if ($randomValue > $spawnThreshold) {
+            $this->logger->logf(
+                '    Spawn-Wahrscheinlichkeit nicht erreicht (Random: %d, Threshold: %.2f)',
+                $randomValue,
+                $spawnThreshold
+            );
+            return $pirateFleets;
+        }
+
+
+        /** @var int<0, max> $maxNewFleets */
+        $maxNewFleets = min($dynamicLimits['maxPer10Min'], $missingFleetAmount);
+
+        if ($maxNewFleets <= 0) {
+            return $pirateFleets;
+        }
+
+        $fleetsToSpawn = $this->stuRandom->rand(1, $maxNewFleets);
+
+        $this->logger->logf('    Spawne %d neue Piratenflotten', $fleetsToSpawn);
+
+        for ($i = 0; $i < $fleetsToSpawn; $i++) {
+            $this->logger->logf('  Flotte Nr. %d', $i + 1);
             $pirateFleets[] = $this->createPirateFleet();
             $gameTurn->setPirateFleets($gameTurn->getPirateFleets() + 1);
         }
@@ -81,6 +147,72 @@ class PirateCreation implements PirateCreationInterface
         $this->gameTurnRepository->save($gameTurn);
 
         return $pirateFleets;
+    }
+
+    /**
+     * 
+     * @return array{maxFleets: int, maxPerTick: int, maxPer10Min: int}
+     */
+    private function calculateDynamicLimits(PirateRoundInterface $currentRound): array
+    {
+        $maxPrestige = $currentRound->getMaxPrestige();
+        $actualPrestige = $currentRound->getActualPrestige();
+
+        if ($maxPrestige <= 0) {
+            return [
+                'maxFleets' => 1,
+                'maxPerTick' => 1,
+                'maxPer10Min' => 1
+            ];
+        }
+
+        $consumedRatio = 1.0 - ($actualPrestige / $maxPrestige);
+        $scalingFactor = $this->calculateLimitScalingFactor($consumedRatio);
+
+        $this->logger->logf(
+            '    Prestige-Verbrauch: %.1f%%, Skalierungsfaktor: %.2f',
+            $consumedRatio * 100,
+            $scalingFactor
+        );
+
+        return [
+            'maxFleets' => max(1, (int) round(self::MAX_PIRATE_FLEETS * $scalingFactor)),
+            'maxPerTick' => max(1, (int) round(self::MAX_PIRATE_FLEETS_PER_TICK * $scalingFactor)),
+            'maxPer10Min' => max(1, (int) round(self::MAX_PIRATE_FLEETS_PER_10MIN * $scalingFactor))
+        ];
+    }
+
+    private function calculateLimitScalingFactor(float $consumedRatio): float
+    {
+        if ($consumedRatio <= 0.2) {
+            return 0.1 + (0.9 * ($consumedRatio / 0.2));
+        } elseif ($consumedRatio <= 0.7) {
+            return 1.0;
+        } else {
+            $remainingRatio = (1.0 - $consumedRatio) / 0.3;
+            return 0.25 + (0.75 * $remainingRatio);
+        }
+    }
+
+    private function calculateSpawnProbability(PirateRoundInterface $currentRound): float
+    {
+        $maxPrestige = $currentRound->getMaxPrestige();
+        $actualPrestige = $currentRound->getActualPrestige();
+
+        if ($maxPrestige <= 0) {
+            return 0.1;
+        }
+
+        $consumedRatio = 1.0 - ($actualPrestige / $maxPrestige);
+
+        if ($consumedRatio <= 0.2) {
+            return 0.15 + (0.55 * ($consumedRatio / 0.2));
+        } elseif ($consumedRatio <= 0.7) {
+            return 0.85;
+        } else {
+            $remainingRatio = (1.0 - $consumedRatio) / 0.3;
+            return 0.25 + (0.6 * $remainingRatio);
+        }
     }
 
     #[Override]

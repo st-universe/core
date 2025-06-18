@@ -24,6 +24,8 @@ use Stu\Lib\Pirate\Component\PirateFlight;
 use Stu\Lib\Pirate\Component\PirateFlightInterface;
 use Stu\Lib\Pirate\Component\PirateNavigation;
 use Stu\Lib\Pirate\Component\PirateNavigationInterface;
+use Stu\Lib\Pirate\Component\PirateRoundManager;
+use Stu\Lib\Pirate\Component\PirateRoundManagerInterface;
 use Stu\Lib\Pirate\Component\PirateWrathManager;
 use Stu\Lib\Pirate\Component\PirateWrathManagerInterface;
 use Stu\Lib\Pirate\Component\ReloadMinimalEps;
@@ -64,6 +66,7 @@ return [
     MoveOnLayerInterface::class => autowire(MoveOnLayer::class),
     PirateNavigationInterface::class => autowire(PirateNavigation::class),
     ReloadMinimalEpsInterface::class => autowire(ReloadMinimalEps::class),
+    PirateRoundManagerInterface::class => autowire(PirateRoundManager::class),
     PirateWrathManagerInterface::class => autowire(PirateWrathManager::class),
     PirateAttackInterface::class => autowire(PirateAttack::class),
     TrapDetectionInterface::class => autowire(TrapDetection::class)

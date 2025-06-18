@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250617124518 extends AbstractMigration
+final class Version20250618185937 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -900,6 +900,9 @@ final class Version20250617124518 extends AbstractMigration
             CREATE TABLE stu_partnersite (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL, url VARCHAR(255) NOT NULL, text CLOB NOT NULL, banner VARCHAR(200) NOT NULL)
         SQL);
         $this->addSql(<<<'SQL'
+            CREATE TABLE stu_pirate_round (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, start INTEGER NOT NULL, end_time INTEGER DEFAULT NULL, max_prestige INTEGER NOT NULL, actual_prestige INTEGER NOT NULL, faction_winner INTEGER DEFAULT NULL)
+        SQL);
+        $this->addSql(<<<'SQL'
             CREATE TABLE stu_pirate_setup (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(200) NOT NULL, probability_weight INTEGER NOT NULL)
         SQL);
         $this->addSql(<<<'SQL'
@@ -1584,6 +1587,15 @@ final class Version20250617124518 extends AbstractMigration
             CREATE INDEX IDX_C6E86038EA6EFDCD ON stu_user_map (layer_id)
         SQL);
         $this->addSql(<<<'SQL'
+            CREATE TABLE stu_user_pirate_round (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, pirate_round_id INTEGER NOT NULL, destroyed_ships INTEGER NOT NULL, prestige INTEGER NOT NULL, CONSTRAINT FK_3CECD0A8A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_3CECD0A88DA7A3A1 FOREIGN KEY (pirate_round_id) REFERENCES stu_pirate_round (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)
+        SQL);
+        $this->addSql(<<<'SQL'
+            CREATE INDEX IDX_3CECD0A8A76ED395 ON stu_user_pirate_round (user_id)
+        SQL);
+        $this->addSql(<<<'SQL'
+            CREATE INDEX IDX_3CECD0A88DA7A3A1 ON stu_user_pirate_round (pirate_round_id)
+        SQL);
+        $this->addSql(<<<'SQL'
             CREATE TABLE stu_user_profile_visitors (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, recipient INTEGER NOT NULL, date INTEGER NOT NULL, CONSTRAINT FK_DD0F4487A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_DD0F44876804FB49 FOREIGN KEY (recipient) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)
         SQL);
         $this->addSql(<<<'SQL'
@@ -1937,6 +1949,9 @@ final class Version20250617124518 extends AbstractMigration
             DROP TABLE stu_partnersite
         SQL);
         $this->addSql(<<<'SQL'
+            DROP TABLE stu_pirate_round
+        SQL);
+        $this->addSql(<<<'SQL'
             DROP TABLE stu_pirate_setup
         SQL);
         $this->addSql(<<<'SQL'
@@ -2139,6 +2154,9 @@ final class Version20250617124518 extends AbstractMigration
         SQL);
         $this->addSql(<<<'SQL'
             DROP TABLE stu_user_map
+        SQL);
+        $this->addSql(<<<'SQL'
+            DROP TABLE stu_user_pirate_round
         SQL);
         $this->addSql(<<<'SQL'
             DROP TABLE stu_user_profile_visitors
