@@ -111,6 +111,8 @@ interface GameControllerInterface extends InformationInterface
     /** @return array{currentTurn: int, player: int, playeronline: int, gameState: int, gameStateTextual: string} */
     public function getGameStats(): array;
 
+    public function getGameStateTextual(): string;
+
     public function resetGameData(): void;
 
     public function getBenchmarkResult(): array;

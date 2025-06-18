@@ -146,13 +146,9 @@ final class AddKnPost implements ActionControllerInterface
 
         foreach ($userCharactersMap as $ownerId => $characterNamesWithIds) {
             if ($ownerId !== $post->getUser()->getId()) {
-
-                $isSingleCharacter = count($characterNamesWithIds) === 1;
                 $charList = implode(', ', $characterNamesWithIds);
                 $text = sprintf(
-                    $isSingleCharacter
-                        ? 'Dein Charakter %s wurde zu einem KN Post hinzugefügt. Titel des Posts: "%s".'
-                        : 'Deine Charaktere %s wurden zu einem KN Post hinzugefügt. Titel des Posts: "%s".',
+                    'Deine Charaktere %s wurden zu einem KN Post hinzugefügt. Titel des Posts: "%s".',
                     $charList,
                     $post->getTitle()
                 );

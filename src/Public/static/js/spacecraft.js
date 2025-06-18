@@ -368,7 +368,7 @@ function saveWarpCoreSplit(shipId) {
   autoCarryOver = document.getElementById("autoCarryOver").checked ? 1 : 0;
   fleetSplit = document.getElementById("fleetSplit").checked ? 1 : 0;
 
-  params = `B_SPLIT_REACTOR_OUTPUT=1&id=${shipId}&value=${value}&fleet=${fleetSplit}&autocarryover=${autoCarryOver}&sstr=${sstr}`;
+  params = `B_SPLIT_REACTOR_OUTPUT=1&id=${shipId}&value=${value}&fleet=${fleetSplit}&autocarryover=${autoCarryOver}`;
 
   saveTimeout = setTimeout(function () {
     new Ajax.Updater("result", "station.php", {

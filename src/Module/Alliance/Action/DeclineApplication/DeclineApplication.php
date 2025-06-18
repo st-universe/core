@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\DeclineApplication;
 
 use Override;
-use Stu\Exception\AccessViolationException;
+use Stu\Exception\AccessViolation;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\View\Applications\Applications;
 use Stu\Module\Control\ActionControllerInterface;
@@ -16,6 +16,9 @@ use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 
 final class DeclineApplication implements ActionControllerInterface
 {
+    /**
+     * @var string
+     */
     public const string ACTION_IDENTIFIER = 'B_DECLINE_APPLICATION';
 
     public function __construct(private DeclineApplicationRequestInterface $declineApplicationRequest, private AllianceJobRepositoryInterface $allianceJobRepository, private AllianceActionManagerInterface $allianceActionManager, private PrivateMessageSenderInterface $privateMessageSender)
@@ -28,16 +31,16 @@ final class DeclineApplication implements ActionControllerInterface
         $alliance = $game->getUser()->getAlliance();
 
         if ($alliance === null) {
-            throw new AccessViolationException();
+            throw new AccessViolation();
         }
 
         if (!$this->allianceActionManager->mayEdit($alliance, $game->getUser())) {
-            throw new AccessViolationException();
+            throw new AccessViolation();
         }
 
         $appl = $this->allianceJobRepository->find($this->declineApplicationRequest->getApplicationId());
         if ($appl === null || $appl->getAlliance()->getId() !== $alliance->getId()) {
-            throw new AccessViolationException();
+            throw new AccessViolation();
         }
 
         $this->allianceJobRepository->delete($appl);

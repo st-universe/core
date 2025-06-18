@@ -26,7 +26,7 @@ use Stu\Config\Init;
 use Stu\Config\StuContainer;
 use Stu\Lib\Component\ComponentRegistrationInterface;
 use Stu\Lib\Session\SessionStringFactoryInterface;
-use Stu\Lib\Session\SessionInterface;
+use Stu\Lib\SessionInterface;
 use Stu\Module\Control\BenchmarkResultInterface;
 use Stu\Module\Control\ComponentSetupInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -82,7 +82,7 @@ abstract class TwigTestCase extends StuTestCase
     {
         $dic = $this->getContainer();
 
-        self::$testSession->setUserById($userId);
+        self::$testSession->setUser($userId);
         request::setMockVars($requestVars);
 
         $game = $dic->get(GameControllerInterface::class);
@@ -253,7 +253,7 @@ abstract class TwigTestCase extends StuTestCase
         $dic = $this->getContainer();
         $entityManager = $dic->get(EntityManagerInterface::class);
 
-        $entityManager->wrapInTransaction(function (EntityManagerInterface $entityManager) use ($command, $input): void {
+        $entityManager->wrapInTransaction(function (EntityManagerInterface $entityManager) use ($command, $input) {
 
             $entityManagerProvider = new SingleManagerProvider($entityManager);
             $config = new PhpFile(self::INTTEST_MIGRATIONS_CONFIG_PATH);

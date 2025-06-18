@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Lib;
 
-use Stu\Module\Control\Router\FallbackRouteException;
+use Exception;
 
-final class AccountNotVerifiedException extends FallbackRouteException {}
+final class AccountNotVerifiedException extends Exception
+{
+}

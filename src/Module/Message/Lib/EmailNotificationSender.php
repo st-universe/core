@@ -30,7 +30,7 @@ final class EmailNotificationSender implements EmailNotificationSenderInterface
     {
         $mail = $this->mailFactory->createStuMail()
             ->withDefaultSender()
-            ->addTo($user->getRegistration()->getEmail())
+            ->addTo($user->getEmail())
             ->setSubject(sprintf(
                 'Neue Privatnachricht von Spieler %s',
                 $this->bbcodeParser->parse($senderName)->getAsText()

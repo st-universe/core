@@ -32,7 +32,7 @@ final class ProjectileWeaponShipSystem extends AbstractSpacecraftSystemType impl
             return false;
         }
 
-        if ($wrapper->isUnalerted()) {
+        if ($spacecraft->isAlertGreen()) {
             $reason = _('die Alarmstufe Grün ist');
             return false;
         }

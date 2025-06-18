@@ -45,7 +45,9 @@ final class ShowStatistics implements ViewControllerInterface
     private int $minY;
     private int $maxY;
 
-    public function __construct(private GameTurnStatsRepositoryInterface $gameTurnStatsRepository, private ImageCreationInterface $imageCreation) {}
+    public function __construct(private GameTurnStatsRepositoryInterface $gameTurnStatsRepository, private ImageCreationInterface $imageCreation)
+    {
+    }
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -75,8 +77,7 @@ final class ShowStatistics implements ViewControllerInterface
             new GraphInfo('Geflogene Felder letzte 24h', [
                 new PlotInfo('getFlightSig24h'),
                 new PlotInfo('getFlightSigSystem24h', 'yellow', 'yellow@0.5', 'System')
-            ], true),
-            new GraphInfo('Erhaltene Privatnachrichten', [new PlotInfo('getNewPmCount')]),
+            ], true)
         ];
 
         $imageSources = $this->createImagesSources($graphInfos, $period);

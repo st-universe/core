@@ -43,7 +43,7 @@ final class ShowBuildplanCreator implements ViewControllerInterface
             $game->setTemplateVar('USER_ID', $userId);
             $game->setTemplateVar('SELECTED_USER', $selectedUser);
             $allRumps = iterator_to_array($this->spacecraftRumpRepository->getList());
-            $filteredRumps = array_filter($allRumps, fn($rump): bool => $rump->getNpcBuildable() === true);
+            $filteredRumps = array_filter($allRumps, fn($rump) => $rump->getNpcBuildable() === true);
 
             $game->setTemplateVar('SHIP_RUMPS', $filteredRumps);
 
@@ -97,10 +97,9 @@ final class ShowBuildplanCreator implements ViewControllerInterface
 
                 foreach ($moduleTypes as $moduleType) {
                     $moduleTypeId = $moduleType->value;
-
                     if (
-                        $mod_level->{'getModuleLevel' . $moduleTypeId}() == 0
-                        && $mod_level->{'getModuleMandatory' . $moduleTypeId}() == 0
+                        $mod_level->{'getModuleLevel' . $moduleTypeId}() === 0
+                        && $mod_level->{'getModuleMandatory' . $moduleTypeId}() === 0
                     ) {
                         continue;
                     }
@@ -121,11 +120,13 @@ final class ShowBuildplanCreator implements ViewControllerInterface
 
                     $modules = iterator_to_array($modules);
 
-                    usort($modules, function ($a, $b): int {
+                    usort($modules, function ($a, $b) {
                         return $a->getId() <=> $b->getId();
                     });
 
                     $availableModules[$moduleTypeId] = $modules;
+
+
 
                     $mandatoryModules[$moduleTypeId] = $mod_level->{'getModuleMandatory' . $moduleTypeId}() > 0;
                 }

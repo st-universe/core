@@ -73,13 +73,15 @@ final class StationLoader implements StationLoaderInterface
         bool $checkForEntityLock = true
     ): SourceAndTargetWrappersInterface {
 
-        return $this->spacecraftLoader->getWrappersBySourceAndUserAndTarget(
+        $wrappers = $this->spacecraftLoader->getWrappersBySourceAndUserAndTarget(
             $stationId,
             $userId,
             $targetId,
             $allowUplink,
             $checkForEntityLock
         );
+
+        return $wrappers;
     }
 
     #[Override]

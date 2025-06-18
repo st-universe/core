@@ -6,7 +6,7 @@ namespace Stu\Module\Alliance\View\Relations;
 
 use Override;
 use Stu\Component\Alliance\AllianceEnum;
-use Stu\Exception\AccessViolationException;
+use Stu\Exception\AccessViolation;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceRelationItem;
 use Stu\Module\Control\GameControllerInterface;
@@ -16,6 +16,9 @@ use Stu\Orm\Repository\AllianceRepositoryInterface;
 
 final class Relations implements ViewControllerInterface
 {
+    /**
+     * @var string
+     */
     public const string VIEW_IDENTIFIER = 'SHOW_RELATIONS';
 
     public function __construct(private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager, private AllianceRepositoryInterface $allianceRepository)
@@ -29,13 +32,13 @@ final class Relations implements ViewControllerInterface
         $alliance = $user->getAlliance();
 
         if ($alliance === null) {
-            throw new AccessViolationException("user not in alliance");
+            throw new AccessViolation();
         }
 
         $allianceId = $alliance->getId();
 
         if (!$this->allianceActionManager->mayManageForeignRelations($alliance, $user)) {
-            throw new AccessViolationException();
+            throw new AccessViolation();
         }
 
         $result = $this->allianceRelationRepository->getByAlliance($allianceId);

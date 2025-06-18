@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\View\Topic;
 
 use Override;
-use Stu\Exception\AccessViolationException;
+use Stu\Exception\AccessViolation;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -15,8 +15,14 @@ use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
 final class Topic implements ViewControllerInterface
 {
+    /**
+     * @var string
+     */
     public const string VIEW_IDENTIFIER = 'SHOW_TOPIC';
 
+    /**
+     * @var int
+     */
     public const int ALLIANCEBOARDLIMITER = 20;
 
     public function __construct(private TopicRequestInterface $topicRequest, private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository, private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository, private AllianceActionManagerInterface $allianceActionManager) {}
@@ -28,7 +34,7 @@ final class Topic implements ViewControllerInterface
         $alliance = $game->getUser()->getAlliance();
 
         if ($alliance === null) {
-            throw new AccessViolationException("user not in alliance");
+            throw new AccessViolation();
         }
 
         $topicId = $this->topicRequest->getTopicId();
@@ -37,11 +43,11 @@ final class Topic implements ViewControllerInterface
         /** @var AllianceBoardTopicInterface $topic */
         $topic = $this->allianceBoardTopicRepository->find($topicId);
         if ($topic === null) {
-            throw new AccessViolationException(sprintf(_('userId %d tried to access non-existent topicId %d'), $userId, $topicId));
+            throw new AccessViolation(sprintf(_('userId %d tried to access non-existent topicId %d'), $userId, $topicId));
         }
 
         if ($topic->getAllianceId() !== $allianceId) {
-            throw new AccessViolationException(sprintf(_('userId %d tried to access topic of foreign ally, topicId %d'), $userId, $topicId));
+            throw new AccessViolation(sprintf(_('userId %d tried to access topic of foreign ally, topicId %d'), $userId, $topicId));
         }
 
         $boardId = $topic->getBoardId();

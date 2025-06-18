@@ -36,14 +36,13 @@ final class ModuleRumpWrapperHull extends ModuleRumpWrapperBase implements Modul
     #[Override]
     public function apply(SpacecraftWrapperInterface $wrapper): void
     {
-        $condition = $wrapper->get()->getCondition();
-        $actualHull = $condition->getHull();
+        $actualHull = $wrapper->get()->getHull();
         $value = $this->getValue();
         if (
             $actualHull === 0
             || $actualHull > $value
         ) {
-            $condition->setHull($value);
+            $wrapper->get()->setHuell($value);
         }
 
         $wrapper->get()->setMaxHuell($value);

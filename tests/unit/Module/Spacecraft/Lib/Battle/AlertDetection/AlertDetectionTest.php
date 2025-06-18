@@ -120,13 +120,17 @@ class AlertDetectionTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($ship);
+        $wrapperToSkip->shouldReceive('get')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($shipToSkip);
 
         $this->skipDetection->shouldReceive('isSkipped')
-            ->with($this->incomingShip, $wrapper, $tractoringShip, Mockery::any())
+            ->with($this->incomingShip, $ship, $tractoringShip, Mockery::any())
             ->once()
             ->andReturn(false);
         $this->skipDetection->shouldReceive('isSkipped')
-            ->with($this->incomingShip, $wrapperToSkip, $tractoringShip, Mockery::any())
+            ->with($this->incomingShip, $shipToSkip, $tractoringShip, Mockery::any())
             ->once()
             ->andReturn(true);
 

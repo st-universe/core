@@ -12,7 +12,6 @@ interface SpacecraftAttackCoreInterface
     public function attack(
         SpacecraftWrapperInterface $wrapper,
         SpacecraftWrapperInterface $targetWrapper,
-        bool $isAttackingShieldsOnly,
         bool &$isFleetFight,
         InformationWrapper $informations
     ): void;

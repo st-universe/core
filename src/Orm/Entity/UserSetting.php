@@ -19,9 +19,8 @@ use Stu\Orm\Repository\UserSettingRepository;
 class UserSetting implements UserSettingInterface
 {
     #[Id]
-    #[ManyToOne(targetEntity: 'User')]
-    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $user;
+    #[Column(type: 'integer')]
+    private int $user_id;
 
     #[Id]
     #[Column(type: 'string', enumType: UserSettingEnum::class)]
@@ -30,10 +29,15 @@ class UserSetting implements UserSettingInterface
     #[Column(type: 'string')]
     private string $value = '';
 
+    #[ManyToOne(targetEntity: 'User')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    private UserInterface $user;
+
     #[Override]
     public function setUser(UserInterface $user): UserSettingInterface
     {
         $this->user = $user;
+        $this->user_id = $user->getId();
 
         return $this;
     }

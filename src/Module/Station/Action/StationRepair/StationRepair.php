@@ -39,16 +39,16 @@ final class StationRepair implements ActionControllerInterface
             return;
         }
 
-        if (!$wrapper->isUnalerted()) {
+        if (!$station->isAlertGreen()) {
             return;
         }
 
-        if ($station->getCondition()->isUnderRepair()) {
+        if ($station->isUnderRepair()) {
             $game->addInformation(_('Die Station wird bereits repariert.'));
             return;
         }
 
-        $station->getCondition()->setState(SpacecraftStateEnum::REPAIR_PASSIVE);
+        $station->setState(SpacecraftStateEnum::REPAIR_PASSIVE);
 
         $this->stationLoader->save($station);
 

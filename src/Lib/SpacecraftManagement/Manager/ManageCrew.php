@@ -48,7 +48,7 @@ class ManageCrew implements ManagerInterface
 
         if (
             isset($newCrewCountArray[$ship->getId()])
-            && $wrapper->canMan()
+            && $ship->canMan()
             && $buildplan !== null
             && $ship->getUser() === $user
         ) {

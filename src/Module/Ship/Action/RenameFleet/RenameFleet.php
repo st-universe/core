@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\RenameFleet;
 
 use Override;
-use Stu\Exception\AccessViolationException;
+use Stu\Exception\AccessViolation;
 use Stu\Lib\CleanTextUtils;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -48,7 +48,7 @@ final class RenameFleet implements ActionControllerInterface
         $fleet = $this->fleetRepository->find($this->renameFleetRequest->getFleetId());
 
         if ($fleet === null || $fleet->getUserId() !== $game->getUser()->getId()) {
-            throw new AccessViolationException();
+            throw new AccessViolation();
         }
 
         $fleet->setName($newName);

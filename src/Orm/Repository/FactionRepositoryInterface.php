@@ -25,6 +25,4 @@ interface FactionRepositoryInterface extends ObjectRepository
      * @return array<int, array{faction: FactionInterface, count: int}>
      */
     public function getPlayableFactionsPlayerCount(): array;
-
-    public function save(FactionInterface $faction): void;
 }

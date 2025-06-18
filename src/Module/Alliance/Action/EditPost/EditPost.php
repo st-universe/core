@@ -6,7 +6,7 @@ namespace Stu\Module\Alliance\Action\EditPost;
 
 use Override;
 use request;
-use Stu\Exception\AccessViolationException;
+use Stu\Exception\AccessViolation;
 use Stu\Module\Alliance\View\Topic\Topic;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -14,6 +14,9 @@ use Stu\Orm\Repository\AllianceBoardPostRepositoryInterface;
 
 final class EditPost implements ActionControllerInterface
 {
+    /**
+     * @var string
+     */
     public const string ACTION_IDENTIFIER = 'B_EDIT_POSTING';
 
     public function __construct(private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository)
@@ -31,7 +34,7 @@ final class EditPost implements ActionControllerInterface
         }
 
         if ($post->getBoard()->getAllianceId() !== $alliance->getId()) {
-            throw new AccessViolationException();
+            throw new AccessViolation();
         }
 
         $game->setView(Topic::VIEW_IDENTIFIER);

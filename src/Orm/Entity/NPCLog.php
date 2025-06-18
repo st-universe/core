@@ -30,9 +30,6 @@ class NPCLog implements NPCLogInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $source_user_id = 0;
 
-    #[Column(type: 'integer', nullable: true)]
-    private ?int $faction_id = null;
-
 
 
     #[Override]
@@ -79,20 +76,6 @@ class NPCLog implements NPCLogInterface
     public function setSourceUserId(int $sourceuserId): NPCLogInterface
     {
         $this->source_user_id = $sourceuserId;
-
-        return $this;
-    }
-
-    #[Override]
-    public function getFactionId(): ?int
-    {
-        return $this->faction_id;
-    }
-
-    #[Override]
-    public function setFactionId(?int $factionId): NPCLogInterface
-    {
-        $this->faction_id = $factionId;
 
         return $this;
     }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\DemotePlayer;
 
 use Override;
-use Stu\Exception\AccessViolationException;
+use Stu\Exception\AccessViolation;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\View\Management\Management;
 use Stu\Module\Control\ActionControllerInterface;
@@ -42,11 +42,11 @@ final class DemotePlayer implements ActionControllerInterface
         $playerId = $this->demotePlayerRequest->getPlayerId();
 
         if ($alliance === null) {
-            throw new AccessViolationException();
+            throw new AccessViolation();
         }
 
         if (!$this->allianceActionManager->mayEdit($alliance, $user)) {
-            throw new AccessViolationException();
+            throw new AccessViolation();
         }
 
         $player = $this->userRepository->find($playerId);
@@ -56,7 +56,7 @@ final class DemotePlayer implements ActionControllerInterface
             || $player->getId() === $userId
             || $player->getAlliance() !== $alliance
         ) {
-            throw new AccessViolationException();
+            throw new AccessViolation();
         }
 
         $this->allianceJobRepository->truncateByUser($playerId);

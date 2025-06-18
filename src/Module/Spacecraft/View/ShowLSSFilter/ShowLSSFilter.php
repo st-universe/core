@@ -15,7 +15,6 @@ use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 final class ShowLSSFilter implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_LSS_FILTER';
-
     /** @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader*/
     public function __construct(private SpacecraftLoaderInterface $spacecraftLoader) {}
 
@@ -24,7 +23,7 @@ final class ShowLSSFilter implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $wrapper = $this->spacecraftLoader->getWrapperByIdAndUser(
+        $spacecraft = $this->spacecraftLoader->getByIdAndUser(
             request::indInt('id'),
             $userId,
             false,
@@ -33,7 +32,7 @@ final class ShowLSSFilter implements ViewControllerInterface
 
         $game->setPageTitle(_('LSS Filter'));
         $game->setMacroInAjaxWindow('html/spacecraft/lssFilter.twig');
-        $game->setTemplateVar('WRAPPER', $wrapper);
+        $game->setTemplateVar('SPACECRAFT', $spacecraft);
         $game->setTemplateVar('LSS_MODES', SpacecraftLssModeEnum::cases());
     }
 }

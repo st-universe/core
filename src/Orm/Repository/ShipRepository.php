@@ -25,13 +25,11 @@ use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\SpacecraftRumpInterface;
 use Stu\Orm\Entity\Spacecraft;
-use Stu\Orm\Entity\SpacecraftCondition;
 use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Entity\Storage;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Entity\UserRegistration;
 
 /**
  * @extends EntityRepository<Ship>
@@ -87,16 +85,13 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 'SELECT s FROM %s s
                 JOIN %s sp
                 WITH s.id = sp.id
-                JOIN %s sc
-                WITH sp = sc.spacecraft
                 WHERE sp.location = :location
                 AND s.fleet_id IS NULL
                 AND sp.user = :user
-                AND sc.state != :state
+                AND sp.state != :state
                 ORDER BY sp.rump_id ASC, sp.name ASC',
                 Ship::class,
-                Spacecraft::class,
-                SpacecraftCondition::class
+                Spacecraft::class
             )
         )->setParameters([
             'location' => $fleetLeader->getLocation(),
@@ -146,7 +141,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     }
 
     #[Override]
-    public function getEscapePodsByCrewOwner(UserInterface $user): array
+    public function getEscapePodsByCrewOwner(int $userId): array
     {
         return $this->getEntityManager()->createQuery(
             sprintf(
@@ -154,16 +149,16 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 LEFT JOIN %s sr
                 WITH s.rump_id = sr.id
                 LEFT JOIN %s sc
-                WITH sc.spacecraft = s
+                WITH sc.spacecraft_id = s.id
                 WHERE sr.category_id = :categoryId
-                AND sc.user = :user',
+                AND sc.user_id = :userId',
                 Ship::class,
                 SpacecraftRump::class,
                 CrewAssignment::class
             )
         )->setParameters([
             'categoryId' => SpacecraftRumpEnum::SHIP_CATEGORY_ESCAPE_PODS,
-            'user' => $user
+            'userId' => $userId
         ])->getResult();
     }
 
@@ -189,15 +184,13 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                     f.blocked_colony_id is not null as isblocking, s.id as shipid, sp.rump_id as rumpid,
                     ss.mode as warpstate, twd.mode as tractorwarpstate, COALESCE(ss2.mode,0) as cloakstate, ss3.mode as shieldstate,
                     COALESCE(ss4.status,0) as uplinkstate, sp.type as spacecrafttype, sp.name as shipname,
-                    sc.hull as hull, sp.max_huelle as maxhull, sc.shield as shield, sp.holding_web_id as webid, tw.finished_time as webfinishtime,
+                    sp.huelle as hull, sp.max_huelle as maxhull, sp.schilde as shield, sp.holding_web_id as webid, tw.finished_time as webfinishtime,
                     u.id as userid, u.username, r.category_id as rumpcategoryid, r.name as rumpname, r.role_id as rumproleid,
                     (SELECT count(*) > 0 FROM stu_ship_log sl WHERE sl.spacecraft_id = s.id AND sl.is_private = :false) as haslogbook,
                     (SELECT count(*) > 0 FROM stu_crew_assign ca WHERE ca.spacecraft_id = s.id) as hascrew
                 FROM stu_ship s
                 JOIN stu_spacecraft sp
                 ON s.id = sp.id
-                JOIN stu_spacecraft_condition sc
-                ON sp.id = sc.spacecraft_id
                 LEFT JOIN stu_spacecraft_system ss
                 ON s.id = ss.spacecraft_id
                 AND ss.system_type = :warpdriveType
@@ -273,24 +266,21 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 JOIN %s l
                 WITH s.location = l.id
                 JOIN %s u
-                WITH s.user = u
-                JOIN %s ur
-                WITH ur.user = u
+                WITH s.user_id = u.id
                 LEFT JOIN %s w
-                WITH u = w.user
+                WITH u.id = w.user_id
                 WHERE l.layer_id = :layerId
                 AND l.cx BETWEEN :minX AND :maxX
                 AND l.cy BETWEEN :minY AND :maxY
                 AND (s.fleet_id IS NULL OR s.is_fleet_leader = :true)
                 AND u.id >= :firstUserId
                 AND u.state >= :stateActive
-                AND ur.creation < :eightWeeksEarlier
+                AND u.creation < :eightWeeksEarlier
                 AND (u.vac_active = :false OR u.vac_request_date > :vacationThreshold)
                 AND COALESCE(w.protection_timeout, 0) < :currentTime',
                 Ship::class,
                 Location::class,
                 User::class,
-                UserRegistration::class,
                 PirateWrath::class
             )
         )

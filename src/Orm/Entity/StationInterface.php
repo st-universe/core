@@ -12,8 +12,6 @@ interface StationInterface extends SpacecraftInterface
 
     public function getConstructionProgress(): ?ConstructionProgressInterface;
 
-    public function resetConstructionProgress(): StationInterface;
-
     public function getInfluenceArea(): ?StarSystemInterface;
 
     public function setInfluenceArea(?StarSystemInterface $influenceArea): StationInterface;

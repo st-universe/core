@@ -17,8 +17,4 @@ interface NPCLogInterface
     public function getSourceUserId(): ?int;
 
     public function setSourceUserId(int $userId): NPCLogInterface;
-
-    public function getFactionId(): ?int;
-
-    public function setFactionId(?int $factionId): NPCLogInterface;
 }

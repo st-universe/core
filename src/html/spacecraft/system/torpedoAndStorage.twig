@@ -1,6 +1,6 @@
 {% if SPACECRAFT.hasTorpedo %}
 <tr>
-    {% if wrapper.isUnalerted %}
+    {% if SPACECRAFT.isAlertGreen %}
     <td>
         <img src="/assets/buttons/act_torp2.png" name="acttorp" /> bei Alarmstufe
         deaktiviert

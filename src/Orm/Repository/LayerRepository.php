@@ -10,7 +10,6 @@ use RuntimeException;
 use Stu\Component\Map\MapEnum;
 use Stu\Orm\Entity\Layer;
 use Stu\Orm\Entity\LayerInterface;
-use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Entity\UserLayer;
 
 /**
@@ -56,7 +55,7 @@ final class LayerRepository extends EntityRepository implements LayerRepositoryI
     }
 
     #[Override]
-    public function getKnownByUser(UserInterface $user): array
+    public function getKnownByUser(int $userId): array
     {
         return $this->getEntityManager()
             ->createQuery(
@@ -64,14 +63,14 @@ final class LayerRepository extends EntityRepository implements LayerRepositoryI
                     'SELECT l
                     FROM %s l INDEX BY l.id
                     JOIN %s ul
-                    WITH ul.layer = l
-                    WHERE ul.user = :user
+                    WITH ul.layer_id = l.id
+                    WHERE ul.user_id = :userId
                     ORDER BY l.id ASC',
                     Layer::class,
                     UserLayer::class
                 )
             )
-            ->setParameter('user', $user)
+            ->setParameter('userId', $userId)
             ->getResult();
     }
 

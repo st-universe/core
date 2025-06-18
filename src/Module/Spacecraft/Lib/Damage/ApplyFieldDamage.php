@@ -81,7 +81,7 @@ final class ApplyFieldDamage implements ApplyFieldDamageInterface
             $message
         );
 
-        if ($ship->getCondition()->isDestroyed()) {
+        if ($ship->isDestroyed()) {
 
             $this->spacecraftDestruction->destroy(
                 null,

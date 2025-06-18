@@ -15,10 +15,4 @@ interface EditDetailsRequestInterface
     public function getAcceptApplications(): int;
 
     public function getRgbCode(): string;
-
-    public function getFounderDescription(): string;
-
-    public function getSuccessorDescription(): string;
-
-    public function getDiplomaticDescription(): string;
 }

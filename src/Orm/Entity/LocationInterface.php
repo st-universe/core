@@ -33,9 +33,6 @@ interface LocationInterface
     public function getSpacecrafts(): Collection;
 
     /** @return Collection<int, SpacecraftInterface> */
-    public function getSpacecraftsWithoutCloak(): Collection;
-
-    /** @return Collection<int, SpacecraftInterface> */
     public function getSpacecraftsWithoutVacation(): Collection;
 
     /** @return Collection<int, TrumfieldInterface> */

@@ -48,7 +48,7 @@ final class ShipRepairProvider implements PlanetFieldHostComponentInterface
             foreach ($group->getWrappers() as $wrapper) {
 
                 $ship = $wrapper->get();
-                if (!$wrapper->canBeRepaired() || $ship->getCondition()->isUnderRepair()) {
+                if (!$wrapper->canBeRepaired() || $ship->isUnderRepair()) {
                     continue;
                 }
                 foreach ($this->shipRumpBuildingFunctionRepository->getByShipRump($ship->getRump()) as $rump_rel) {

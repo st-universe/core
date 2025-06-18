@@ -9,7 +9,6 @@ use RuntimeException;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\LocationInterface;
 use Stu\Orm\Entity\ModuleInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 
 final class EnergyPhalanx extends AbstractEnergyAttacker
@@ -20,12 +19,6 @@ final class EnergyPhalanx extends AbstractEnergyAttacker
     public function hasSufficientEnergy(int $amount): bool
     {
         return $this->getEps() >= $amount;
-    }
-
-    #[Override]
-    public function isAvoidingHullHits(SpacecraftInterface $target): bool
-    {
-        return false;
     }
 
     #[Override]

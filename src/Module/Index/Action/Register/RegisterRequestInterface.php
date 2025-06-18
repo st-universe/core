@@ -8,10 +8,6 @@ interface RegisterRequestInterface
 
     public function getEmailAddress(): string;
 
-    public function getPassword(): string;
-
-    public function getPasswordReEntered(): string;
-
     public function getMobileNumber(): string;
 
     public function getCountryCode(): string;

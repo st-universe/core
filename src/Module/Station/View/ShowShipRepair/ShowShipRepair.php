@@ -42,7 +42,7 @@ final class ShowShipRepair implements ViewControllerInterface
         }
 
         $repairableShipWrappers = $station->getDockedShips()
-            ->filter(fn(ShipInterface $ship): bool => !$ship->getCondition()->isUnderRepair())
+            ->filter(fn(ShipInterface $ship): bool => !$ship->isUnderRepair())
             ->map(fn(ShipInterface $ship): ShipWrapperInterface => $this->spacecraftWrapperFactory->wrapShip($ship))
             ->filter(fn(ShipWrapperInterface $wrapper): bool => $wrapper->canBeRepaired());
 

@@ -7,8 +7,8 @@ namespace Stu\Module\Station\Lib;
 use Override;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreationInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\DockingPrivilegeInterface;
+use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
@@ -31,14 +31,14 @@ final class StationUiFactory implements StationUiFactoryInterface
 
     #[Override]
     public function createSystemScanPanel(
-        SpacecraftWrapperInterface $currentWrapper,
+        SpacecraftInterface $currentSpacecraft,
         UserInterface $user,
         LoggerUtilInterface $loggerUtil,
         StarSystemInterface $system
     ): SystemScanPanel {
         return new SystemScanPanel(
             $this->panelLayerCreation,
-            $currentWrapper,
+            $currentSpacecraft,
             $system,
             $user,
             $loggerUtil

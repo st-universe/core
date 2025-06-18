@@ -36,7 +36,7 @@ class AnomalyConsequenceTest extends StuTestCase
         $messages = $this->mock(MessageCollectionInterface::class);
         $flightRoute = $this->mock(FlightRouteInterface::class);
 
-        $wrapper->shouldReceive('get->getCondition->isDestroyed')
+        $wrapper->shouldReceive('get->isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);

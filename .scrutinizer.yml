@@ -1,8 +1,8 @@
 build:
-  image: default-bionic
+  image: default-jammy
   environment:
     php:
-      version: "8.3.1"
+      version: "8.4.7"
       ini:
         memory_limit: "-1"
       pecl_extensions:
@@ -32,8 +32,3 @@ filter:
 checks:
   php:
     code_rating: true
-build_failure_conditions:
-#  - 'elements.rating(<= D).exists'               # No classes/methods with a rating of D or worse
-  - 'elements.rating(<= D).new.exists'           # No new classes/methods with a rating of D or worse
-#  - 'project.metric_change("scrutinizer.test_coverage", < -0.10)'  # Code Coverage decreased from previous inspection by more than 10%
-    

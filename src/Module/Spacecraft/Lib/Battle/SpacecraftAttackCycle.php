@@ -56,10 +56,7 @@ final class SpacecraftAttackCycle implements SpacecraftAttackCycleInterface
             $targetBattleParty = $matchup->getDefenders();
             $firstStrike = false;
 
-            $spacecraftAttacker = $this->attackerProviderFactory->createSpacecraftAttacker(
-                $matchup->getAttacker(),
-                $matchup->isAttackingShieldsOnly()
-            );
+            $spacecraftAttacker = $this->attackerProviderFactory->getSpacecraftAttacker($matchup->getAttacker());
 
             $this->energyWeaponPhase->fire(
                 $spacecraftAttacker,

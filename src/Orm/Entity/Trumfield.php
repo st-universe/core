@@ -63,7 +63,7 @@ class Trumfield implements TrumfieldInterface
     }
 
     #[Override]
-    public function setHull(int $hull): TrumfieldInterface
+    public function setHuell(int $hull): TrumfieldInterface
     {
         $this->huelle = $hull;
         return $this;

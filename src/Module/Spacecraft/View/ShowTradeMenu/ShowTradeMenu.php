@@ -6,7 +6,7 @@ namespace Stu\Module\Spacecraft\View\ShowTradeMenu;
 
 use Override;
 use request;
-use Stu\Exception\AccessViolationException;
+use Stu\Exception\AccessViolation;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Control\ViewControllerInterface;
@@ -21,7 +21,7 @@ use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 final class ShowTradeMenu implements ViewControllerInterface
 {
-    public const string VIEW_IDENTIFIER = 'SHOW_TRADEMENU';
+    public const VIEW_IDENTIFIER = 'SHOW_TRADEMENU';
 
     /**
      * @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spaceCraftLoader
@@ -49,7 +49,7 @@ final class ShowTradeMenu implements ViewControllerInterface
         }
 
         if (!$this->interactionChecker->checkPosition($spacecraft, $tradepost->getStation())) {
-            throw new AccessViolationException();
+            throw new AccessViolation();
         }
 
         $game->setPageTitle(_('Handelstransfermenü'));
@@ -69,7 +69,11 @@ final class ShowTradeMenu implements ViewControllerInterface
         if ($licenseInfo !== null) {
             $commodityId = $licenseInfo->getCommodityId();
             $commodity = $this->commodityRepository->find($commodityId);
-            $commodityName = $commodity !== null ? $commodity->getName() : '';
+            if ($commodity !== null) {
+                $commodityName = $commodity->getName();
+            } else {
+                $commodityName = '';
+            }
             $licensecost = $licenseInfo->getAmount();
             $licensedays = $licenseInfo->getDays();
         } else {

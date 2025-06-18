@@ -11,7 +11,6 @@
 		onclick="fieldEventSelector(3)" />
 	<img src="/assets/buttons/block1.png" title="passable" style="cursor: pointer;" onclick="fieldEventSelector(4);" />
 	<img src="/assets/buttons/lss_button1.png" title="Area" style="cursor: pointer;" onclick="fieldEventSelector(5);" />
-	<img src="/assets/buttons/map1.png" title="Border" style="cursor: pointer;" onclick="fieldEventSelector(7);" />
 	<img src="/assets/buttons/stern2.png" title="Effects" style="cursor: pointer;" onclick="fieldEventSelector(6);" />
 	<span>Transparenz: </span><input type="range" id="transparencySlider" min="0" max="1" step="0.1" value="0.5"
 		onchange="updateTransparency(this.value)" style="margin-left: 20px;" />
@@ -218,7 +217,7 @@
 			<table class="use">
 				<tr>
 					<td style="vertical-align: top;">
-						{% for data in POSSIBLE_SYSTEM_TYPES.row_0 %}
+						{% for data in POSSIBLE_FIELD_TYPES.row_0 %}
 						<div>
 							<img data-src="/assets/map/systemtypes/{{ data.getId }}.png" style="cursor: pointer;"
 								title="{{ data.getDescription }}" onclick="selectSystemType('{{ data.getId }}')" />
@@ -226,7 +225,7 @@
 						{% endfor %}
 					</td>
 					<td style="vertical-align: top;">
-						{% for data in POSSIBLE_SYSTEM_TYPES.row_1 %}
+						{% for data in POSSIBLE_FIELD_TYPES.row_1 %}
 						<div>
 							<img data-src="/assets/map/systemtypes/{{ data.getId }}.png" style="cursor: pointer;"
 								title="{{ data.getDescription }}" onclick="selectSystemType('{{ data.getId }}')" />
@@ -234,7 +233,7 @@
 						{% endfor %}
 					</td>
 					<td style="vertical-align: top;">
-						{% for data in POSSIBLE_SYSTEM_TYPES.row_2 %}
+						{% for data in POSSIBLE_FIELD_TYPES.row_2 %}
 						<div>
 							<img data-src="/assets/map/systemtypes/{{ data.getId }}.png" style="cursor: pointer;"
 								title="{{ data.getDescription }}" onclick="selectSystemType('{{ data.getId }}')" />
@@ -242,7 +241,7 @@
 						{% endfor %}
 					</td>
 					<td style="vertical-align: top;">
-						{% for data in POSSIBLE_SYSTEM_TYPES.row_3 %}
+						{% for data in POSSIBLE_FIELD_TYPES.row_3 %}
 						<div>
 							<img data-src="/assets/map/systemtypes/{{ data.getId }}.png" style="cursor: pointer; ;"
 								title="{{ data.getDescription }}" onclick="selectSystemType('{{ data.getId }}')" />
@@ -250,7 +249,7 @@
 						{% endfor %}
 					</td>
 					<td style="vertical-align: top;">
-						{% for data in POSSIBLE_SYSTEM_TYPES.row_4 %}
+						{% for data in POSSIBLE_FIELD_TYPES.row_4 %}
 						<div>
 							<img data-src="/assets/map/systemtypes/{{ data.getId }}.png" style="cursor: pointer; "
 								title="{{ data.getDescription }}" onclick="selectSystemType('{{ data.getId }}')" />
@@ -258,7 +257,7 @@
 						{% endfor %}
 					</td>
 					<td style="vertical-align: top;">
-						{% for data in POSSIBLE_SYSTEM_TYPES.row_5 %}
+						{% for data in POSSIBLE_FIELD_TYPES.row_5 %}
 						<div>
 							<img data-src="/assets/map/systemtypes/{{ data.getId }}.png" style="cursor: pointer;"
 								title="{{ data.getDescription }}" onclick="selectSystemType('{{ data.getId }}')" />
@@ -361,8 +360,6 @@
 							<span style="cursor: pointer;" title="{{ data.getDescription }}"
 								onclick="selectBorder('{{ data.getId }}','{{ data.getDescription}}','{{ data.getColor}}')">{{
 								data.getDescription}}</span>
-							<span
-								style="display: inline-block; width: 15px; height: 15px; background-color: {{ data.getColor }}; margin-left: 5px; border: 1px solid #000; vertical-align: middle;"></span>
 						</div>
 						{% endfor %}
 					</td>

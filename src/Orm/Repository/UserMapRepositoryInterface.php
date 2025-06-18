@@ -15,9 +15,11 @@ interface UserMapRepositoryInterface extends ObjectRepository
 {
     public function insertMapFieldsForUser(int $userId, int $layerId, int $cx, int $cy, int $range): void;
 
+    public function deleteMapFieldsForUser(int $userId, int $layerId, int $cx, int $cy, int $range): void;
+
     public function getAmountByUser(UserInterface $user, LayerInterface $layer): int;
 
-    public function truncateByUser(UserInterface $user): void;
+    public function truncateByUser(int $userId): void;
 
     public function truncateByUserAndLayer(UserLayerInterface $userLayer): void;
 

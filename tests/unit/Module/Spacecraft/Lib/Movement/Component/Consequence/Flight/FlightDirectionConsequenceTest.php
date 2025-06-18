@@ -54,7 +54,7 @@ class FlightDirectionConsequenceTest extends StuTestCase
     {
         $messages = $this->mock(MessageCollectionInterface::class);
 
-        $this->ship->shouldReceive('getCondition->isDestroyed')
+        $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(true);
@@ -70,7 +70,7 @@ class FlightDirectionConsequenceTest extends StuTestCase
     {
         $messages = $this->mock(MessageCollectionInterface::class);
 
-        $this->ship->shouldReceive('getCondition->isDestroyed')
+        $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -94,7 +94,7 @@ class FlightDirectionConsequenceTest extends StuTestCase
         $messages = $this->mock(MessageCollectionInterface::class);
         $oldWaypoint = $this->mock(MapInterface::class);
 
-        $this->ship->shouldReceive('getCondition->isDestroyed')
+        $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -120,7 +120,7 @@ class FlightDirectionConsequenceTest extends StuTestCase
         $messages = $this->mock(MessageCollectionInterface::class);
         $oldWaypoint = $this->mock(StarSystemMapInterface::class);
 
-        $this->ship->shouldReceive('getCondition->isDestroyed')
+        $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -135,7 +135,7 @@ class FlightDirectionConsequenceTest extends StuTestCase
             ->andReturn(RouteModeEnum::SYSTEM_EXIT);
 
         $this->updateFlightDirection->shouldReceive('updateWhenSystemExit')
-            ->with($this->wrapper, $oldWaypoint)
+            ->with($this->ship, $oldWaypoint)
             ->once();
 
         $this->subject->trigger(

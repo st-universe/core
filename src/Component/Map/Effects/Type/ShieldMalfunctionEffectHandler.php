@@ -84,14 +84,14 @@ class ShieldMalfunctionEffectHandler implements EffectHandlerInterface
 
     private function depleteShieldEmitters(SpacecraftWrapperInterface $wrapper): ?int
     {
-        $shield = $wrapper->get()->getCondition()->getShield();
+        $shield = $wrapper->get()->getShield();
         if ($shield < 1) {
             return null;
         }
 
         $depletionAmount = $this->stuRandom->rand(1, $shield, true, (int)ceil($shield / 5));
 
-        $wrapper->get()->getCondition()->changeShield($depletionAmount);
+        $wrapper->get()->setShield($shield - $depletionAmount);
 
         return $depletionAmount;
     }

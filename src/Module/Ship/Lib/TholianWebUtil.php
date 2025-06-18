@@ -176,7 +176,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
         $wrapper->getSpacecraftSystemManager()->deactivate($wrapper, SpacecraftSystemTypeEnum::THOLIAN_WEB, true);
 
         $ship = $wrapper->get();
-        $ship->getCondition()->setState(SpacecraftStateEnum::NONE);
+        $ship->setState(SpacecraftStateEnum::NONE);
         $this->spacecraftRepository->save($ship);
 
         //update finish time last

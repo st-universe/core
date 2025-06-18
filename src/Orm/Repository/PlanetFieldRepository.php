@@ -263,15 +263,12 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
     public function getCountByColonyAndBuildingFunctionAndState(
         PlanetFieldHostInterface $host,
         array $buildingFunctions,
-        array $state,
-        array $ignoredFieldIds = []
+        array $state
     ): int {
         return (int) $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT COUNT(pf) FROM %s pf
-                WHERE pf.%s = :host
-                AND pf.field_id NOT IN(:ignoredIds)
-                AND pf.aktiv IN(:state) AND pf.buildings_id IN (
+                'SELECT COUNT(f) FROM %s f
+                WHERE f.%s = :host AND f.aktiv IN(:state) AND f.buildings_id IN (
                     SELECT bf.buildings_id FROM %s bf WHERE bf.function IN (:buildingFunctionIds)
                 )',
                 PlanetField::class,
@@ -280,7 +277,6 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
             )
         )->setParameters([
             'host' => $host,
-            'ignoredIds' => $ignoredFieldIds === [] ? [-1] : $ignoredFieldIds,
             'buildingFunctionIds' => array_map(fn(BuildingFunctionEnum $function): int => $function->value, $buildingFunctions),
             'state' => $state,
         ])->getSingleScalarResult();

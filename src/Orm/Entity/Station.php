@@ -106,14 +106,6 @@ class Station extends Spacecraft implements StationInterface
     }
 
     #[Override]
-    public function resetConstructionProgress(): StationInterface
-    {
-        $this->constructionProgress = null;
-
-        return $this;
-    }
-
-    #[Override]
     public function getModules(): array
     {
         $constructionProgress = $this->getConstructionProgress();
@@ -121,27 +113,12 @@ class Station extends Spacecraft implements StationInterface
             return [];
         }
 
-        $parentModules = parent::getModules();
-        $parentModuleIds = array_map(
-            fn(ModuleInterface $module): int => $module->getId(),
-            $parentModules
-        );
-
-        $specialModules = $constructionProgress
+        return parent::getModules() +
+            $constructionProgress
             ->getSpecialModules()
-            ->filter(
-                fn(ConstructionProgressModuleInterface $progressModule): bool =>
-                !in_array($progressModule->getModule()->getId(), $parentModuleIds)
-            )
-            ->map(
-                fn(ConstructionProgressModuleInterface $progressModule): ModuleInterface =>
-                $progressModule->getModule()
-            )
+            ->map(fn(ConstructionProgressModuleInterface $progressModule): ModuleInterface => $progressModule->getModule())
             ->toArray();
-
-        return $parentModules + $specialModules;
     }
-
 
     #[Override]
     public function getDockPrivileges(): Collection
@@ -152,10 +129,8 @@ class Station extends Spacecraft implements StationInterface
     #[Override]
     public function getDockingSlotCount(): int
     {
-        $state = $this->getCondition()->getState();
-
-        return ($state === SpacecraftStateEnum::UNDER_CONSTRUCTION)
-            || ($state === SpacecraftStateEnum::UNDER_SCRAPPING)
+        return ($this->getState() === SpacecraftStateEnum::UNDER_CONSTRUCTION)
+            || ($this->getState() === SpacecraftStateEnum::UNDER_SCRAPPING)
             ? 50 : $this->getRump()->getDockingSlots();
     }
 

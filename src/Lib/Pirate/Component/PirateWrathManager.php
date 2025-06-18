@@ -63,15 +63,6 @@ class PirateWrathManager implements PirateWrathManagerInterface
             $user->setPirateWrath($wrath);
         }
 
-        $timeout = $wrath->getProtectionTimeout();
-        $isProtected = $timeout !== null && $timeout > time();
-
-        if ($isProtected) {
-            // reset protection timeout
-            $this->makePiratesReallyAngry($wrath);
-            return;
-        }
-
         if ($wrath->getWrath() >= self::MAXIMUM_WRATH) {
             $this->logger->logf(
                 'MAXIMUM_WRATH = %d of user %d already reached',
@@ -85,14 +76,25 @@ class PirateWrathManager implements PirateWrathManagerInterface
         $currentWrath = $wrath->getWrath();
         $newWrath = min(self::MAXIMUM_WRATH, $currentWrath + $amount);
         $wrath->setWrath($newWrath);
-        $this->pirateWrathRepository->save($wrath);
 
-        $this->logger->logf(
-            'INCREASED wrath of user %d from %d to %d',
-            $user->getId(),
-            $currentWrath,
-            $wrath->getWrath()
-        );
+        // reset protection timeout
+        $timeout = $wrath->getProtectionTimeout();
+        if (
+            $timeout !== null
+            && $timeout > time()
+        ) {
+            $this->makePiratesReallyAngry($wrath);
+        } else {
+
+            $this->logger->logf(
+                'INCREASED wrath of user %d from %d to %d',
+                $user->getId(),
+                $currentWrath,
+                $wrath->getWrath()
+            );
+        }
+
+        $this->pirateWrathRepository->save($wrath);
     }
 
     private function makePiratesReallyAngry(PirateWrathInterface $wrath): void
@@ -106,7 +108,6 @@ class PirateWrathManager implements PirateWrathManagerInterface
         );
         $wrath->setProtectionTimeout(null);
         $wrath->setWrath(self::MAXIMUM_WRATH);
-        $this->pirateWrathRepository->save($wrath);
 
         $this->privateMessageSender->send(
             UserEnum::USER_NPC_KAZON,

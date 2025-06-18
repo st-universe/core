@@ -9,9 +9,5 @@ interface AccessCheckInterface
         GameControllerInterface $game
     ): bool;
 
-    public function isFeatureGranted(
-        int $userId,
-        AccessGrantedFeatureEnum $feature,
-        GameControllerInterface $game
-    ): bool;
+    public function isFeatureGranted(int $userId, AccessGrantedFeatureEnum $feature): bool;
 }

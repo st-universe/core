@@ -9,6 +9,7 @@ use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Lib\Component\ComponentRegistrationInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ColonySandboxInterface;
 
 final class ColonyGuiHelper implements ColonyGuiHelperInterface
@@ -29,10 +30,13 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
         $game->setTemplateVar('HOST', $host);
         $game->setTemplateVar('CURRENT_MENU', $menu);
 
+        if ($host instanceof ColonyInterface) {
+            $game->setTemplateVar('COLONY', $host);
+            $game->setTemplateVar('FORM_ACTION', 'colony.php');
+        }
         if ($host instanceof ColonySandboxInterface) {
             $game->setTemplateVar('COLONY', $host->getColony());
-        } else {
-            $game->setTemplateVar('COLONY', $host);
+            $game->setTemplateVar('FORM_ACTION', '/admin/index.php');
         }
     }
 

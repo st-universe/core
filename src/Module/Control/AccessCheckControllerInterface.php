@@ -2,7 +2,7 @@
 
 namespace Stu\Module\Control;
 
-interface AccessCheckControllerInterface extends ControllerInterface
+interface AccessCheckControllerInterface
 {
     public function getFeatureIdentifier(): AccessGrantedFeatureEnum;
 }

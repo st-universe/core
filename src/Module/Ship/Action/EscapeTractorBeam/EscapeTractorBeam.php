@@ -10,7 +10,6 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Damage\DamageWrapper;
 use Stu\Lib\Information\InformationWrapper;
-use Stu\Lib\Trait\SpacecraftTractorPayloadTrait;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -21,7 +20,6 @@ use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionCauseEnum;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Module\Spacecraft\Lib\Damage\SystemDamageInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
@@ -29,14 +27,11 @@ use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class EscapeTractorBeam implements ActionControllerInterface
 {
-    use SpacecraftTractorPayloadTrait;
-
     public const string ACTION_IDENTIFIER = 'B_ESCAPE_TRAKTOR';
 
     public function __construct(
         private ShipLoaderInterface $shipLoader,
         private ApplyDamageInterface $applyDamage,
-        private SystemDamageInterface $systemDamage,
         private SpacecraftRepositoryInterface $spacecraftRepository,
         private PrivateMessageSenderInterface $privateMessageSender,
         private SpacecraftDestructionInterface $spacecraftDestruction,
@@ -90,7 +85,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
 
         //parameters
         $ownMass = $ship->getRump()->getTractorMass();
-        $otherPayload = $this->getTractorPayload($tractoringShip);
+        $otherPayload = $tractoringShip->getTractorPayload();
         $ratio = $ownMass / $otherPayload;
 
         // probabilities
@@ -103,7 +98,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
             $this->sufferHullDamage($tractoringShip, $wrapper, $game);
         }
 
-        if ($ship->getCondition()->isDestroyed()) {
+        if ($ship->isDestroyed()) {
             return;
         }
 
@@ -151,7 +146,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
 
         $ship = $wrapper->get();
         $system = $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::DEFLECTOR);
-        $this->systemDamage->damageShipSystem($wrapper, $system, random_int(5, 25), $informations);
+        $this->applyDamage->damageShipSystem($wrapper, $system, random_int(5, 25), $informations);
 
         $game->addInformationWrapper($informations);
 
@@ -177,7 +172,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
 
         $this->applyDamage->damage(new DamageWrapper((int) ceil($ship->getMaxHull() * random_int(10, 25) / 100)), $wrapper, $game);
 
-        if ($ship->getCondition()->isDestroyed()) {
+        if ($ship->isDestroyed()) {
 
             $this->spacecraftDestruction->destroy(
                 $tractoringSpacecraft,

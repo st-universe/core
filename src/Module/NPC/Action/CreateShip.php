@@ -50,7 +50,7 @@ final class CreateShip implements ActionControllerInterface
         $torpedoTypeId = request::postInt('torpedoTypeId');
         $crewAmount = request::postInt('crew_input');
 
-        if ($game->getUser()->isNpc() && $reason === '') {
+        if ($reason === '') {
             $game->addInformation("Grund fehlt");
             return;
         }

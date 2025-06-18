@@ -21,7 +21,7 @@ final class RPGShipSystem extends AbstractSpacecraftSystemType implements Spacec
     public function deactivate(SpacecraftWrapperInterface $wrapper): void
     {
         parent::deactivate($wrapper);
-        $wrapper->get()->getCondition()->setDisabled(false);
+        $wrapper->get()->setDisabled(false);
     }
 
     #[Override]

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Tick;
 
 use Psr\Container\ContainerInterface;
-use Stu\Component\Map\Effects\EffectHandlingInterface;
 use Stu\Lib\Pirate\Behaviour\PirateBehaviourInterface;
 use Stu\Lib\Pirate\Component\PirateFlight;
 use Stu\Lib\Pirate\Component\PirateFlightInterface;
@@ -17,8 +16,6 @@ use Stu\Module\Tick\Colony\ColonyTickInterface;
 use Stu\Module\Tick\Colony\ColonyTickManager;
 use Stu\Module\Tick\Colony\ColonyTickManagerInterface;
 use Stu\Module\Tick\Colony\Component\AdvanceResearch;
-use Stu\Module\Tick\Colony\Component\ProceedMigration;
-use Stu\Module\Tick\Colony\Component\ProceedStorage;
 use Stu\Module\Tick\Lock\LockManager;
 use Stu\Module\Tick\Lock\LockManagerInterface;
 use Stu\Module\Tick\Maintenance\MaintenanceTickRunner;
@@ -36,17 +33,6 @@ use Stu\Module\Tick\Process\ProcessTickHandlerInterface;
 use Stu\Module\Tick\Process\ProcessTickRunner;
 use Stu\Module\Tick\Process\RepairTaskJobs;
 use Stu\Module\Tick\Process\ShieldRegeneration;
-use Stu\Module\Tick\Spacecraft\Handler\AggregationSystemHandler;
-use Stu\Module\Tick\Spacecraft\Handler\BussardCollectorHandler;
-use Stu\Module\Tick\Spacecraft\Handler\EnergyConsumeHandler;
-use Stu\Module\Tick\Spacecraft\Handler\EpsSystemCheckHandler;
-use Stu\Module\Tick\Spacecraft\Handler\FinishedAstroMappingHandler;
-use Stu\Module\Tick\Spacecraft\Handler\FinishedTakeoverHandler;
-use Stu\Module\Tick\Spacecraft\Handler\LifeSupportCheckHandler;
-use Stu\Module\Tick\Spacecraft\Handler\StationConstructionHandler;
-use Stu\Module\Tick\Spacecraft\Handler\StationPassiveRepairHandler;
-use Stu\Module\Tick\Spacecraft\Handler\SystemDeactivationHandler;
-use Stu\Module\Tick\Spacecraft\Handler\TrackerDeviceHandler;
 use Stu\Module\Tick\Spacecraft\ManagerComponent\AnomalyCreationCheck;
 use Stu\Module\Tick\Spacecraft\ManagerComponent\AnomalyProcessing;
 use Stu\Module\Tick\Spacecraft\ManagerComponent\CrewLimitations;
@@ -68,33 +54,10 @@ return [
     ColonyTickInterface::class => autowire(ColonyTick::class)
         ->constructorParameter(
             'components',
-            [
-                autowire(AdvanceResearch::class),
-                autowire(ProceedStorage::class),
-                autowire(ProceedMigration::class)
-            ]
+            [autowire(AdvanceResearch::class)]
         ),
     ColonyTickManagerInterface::class => autowire(ColonyTickManager::class),
-    StationConstructionHandler::class => autowire(StationConstructionHandler::class),
-    StationPassiveRepairHandler::class => autowire(StationPassiveRepairHandler::class),
-    SpacecraftTickInterface::class => autowire(SpacecraftTick::class)
-        ->constructorParameter(
-            'handlers',
-            [
-                get(EffectHandlingInterface::class),
-                get(StationConstructionHandler::class),
-                get(StationPassiveRepairHandler::class),
-                autowire(LifeSupportCheckHandler::class),
-                autowire(EpsSystemCheckHandler::class),
-                autowire(SystemDeactivationHandler::class),
-                autowire(EnergyConsumeHandler::class),
-                autowire(FinishedTakeoverHandler::class),
-                autowire(FinishedAstroMappingHandler::class),
-                autowire(TrackerDeviceHandler::class),
-                autowire(BussardCollectorHandler::class),
-                autowire(AggregationSystemHandler::class),
-            ]
-        ),
+    SpacecraftTickInterface::class => autowire(SpacecraftTick::class),
     SpacecraftTickManagerInterface::class => autowire(SpacecraftTickManager::class)
         ->constructorParameter(
             'components',
@@ -103,7 +66,7 @@ return [
                 autowire(CrewLimitations::class),
                 autowire(EscapePodHandling::class),
                 autowire(RepairActions::class),
-                get(SpacecraftTickInterface::class),
+                autowire(SpacecraftTick::class),
                 autowire(NpcShipHandling::class),
                 autowire(LowerHull::class),
                 autowire(AnomalyCreationCheck::class),

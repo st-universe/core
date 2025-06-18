@@ -13,13 +13,15 @@ use Stu\Orm\Repository\LayerRepositoryInterface;
 
 final class MapProvider implements ViewComponentProviderInterface
 {
-    public function __construct(private LayerRepositoryInterface $layerRepository) {}
+    public function __construct(private LayerRepositoryInterface $layerRepository)
+    {
+    }
 
     #[Override]
     public function setTemplateVariables(GameControllerInterface $game): void
     {
         //only layers, that are known by user
-        $layers = $this->layerRepository->getKnownByUser($game->getUser());
+        $layers = $this->layerRepository->getKnownByUser($game->getUser()->getId());
 
         if ($layers === []) {
             return;

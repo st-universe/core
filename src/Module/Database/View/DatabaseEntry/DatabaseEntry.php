@@ -6,9 +6,8 @@ namespace Stu\Module\Database\View\DatabaseEntry;
 
 use Override;
 use Stu\Component\Database\DatabaseEntryTypeEnum;
-use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
-use Stu\Exception\AccessViolationException;
+use Stu\Exception\AccessViolation;
 use Stu\Lib\Map\VisualPanel\Layer\Data\MapData;
 use Stu\Lib\Map\VisualPanel\Layer\Render\SystemLayerRenderer;
 use Stu\Lib\Map\VisualPanel\PanelAttributesInterface;
@@ -24,11 +23,9 @@ use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\MapRegionRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
-use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
 use Stu\PlanetGenerator\PlanetGeneratorInterface;
-
 
 final class DatabaseEntry implements ViewControllerInterface
 {
@@ -41,7 +38,6 @@ final class DatabaseEntry implements ViewControllerInterface
         private DatabaseUserRepositoryInterface $databaseUserRepository,
         private MapRegionRepositoryInterface $mapRegionRepository,
         private StarSystemRepositoryInterface $starSystemRepository,
-        private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository,
         private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository,
         private SpacecraftCrewCalculatorInterface $shipCrewCalculator,
         private ShipRepositoryInterface $shipRepository,
@@ -56,7 +52,7 @@ final class DatabaseEntry implements ViewControllerInterface
         $categoryId = $this->databaseEntryRequest->getCategoryId();
 
         if (!$this->databaseUserRepository->exists($userId, $entryId)) {
-            throw new AccessViolationException(sprintf(_('userId %d tried to open databaseEntryId %d, but has not discovered it yet!'), $userId, $entryId));
+            throw new AccessViolation(sprintf(_('userId %d tried to open databaseEntryId %d, but has not discovered it yet!'), $userId, $entryId));
         }
 
         /**
@@ -117,45 +113,6 @@ final class DatabaseEntry implements ViewControllerInterface
                 $rump = $this->spacecraftRumpRepository->find($entry_object_id);
                 if ($rump === null) {
                     return;
-                }
-
-                if ($rump->isStation()) {
-
-                    $plan = $this->spacecraftBuildplanRepository->getStationBuildplanByRump($rump->getId());
-                    $game->setTemplateVar('PLAN', $plan);
-                    if ($plan !== null) {
-                        $mods = $plan->getModulesOrdered();
-                        $game->setTemplateVar('MODS', $mods);
-
-                        $energymodule = $mods->filter(
-                            fn($mod): bool => $mod->getModule()->getType() === SpacecraftModuleTypeEnum::EPS
-                        )->first();
-
-                        if ($energymodule !== false) {
-                            $energyModule = $energymodule->getModule();
-                            $energy = $energyModule
-                                ->getType()
-                                ->getModuleRumpWrapperCallable()($rump, $plan)
-                                ->getValue($energyModule);
-
-                            $game->setTemplateVar('EPS', $energy);
-                        }
-
-
-                        $sensormodule = $mods->filter(
-                            fn($mod): bool => $mod->getModule()->getType() === SpacecraftModuleTypeEnum::SENSOR
-                        )->first();
-
-                        if ($sensormodule !== false) {
-                            $sensorModule = $sensormodule->getModule();
-                            $sensor = $sensorModule
-                                ->getType()
-                                ->getModuleRumpWrapperCallable()($rump, $plan)
-                                ->getValue($sensorModule);
-
-                            $game->setTemplateVar('SENSORRANGE', $sensor);
-                        }
-                    }
                 }
 
                 $game->setTemplateVar('RUMP', $rump);

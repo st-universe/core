@@ -195,7 +195,7 @@ class CloakShipSystemTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturnFalse();
-        $this->wrapper->shouldReceive('getAlertState')
+        $this->ship->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_RED);
@@ -240,7 +240,7 @@ class CloakShipSystemTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturnFalse();
-        $this->wrapper->shouldReceive('getAlertState')
+        $this->ship->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_YELLOW);

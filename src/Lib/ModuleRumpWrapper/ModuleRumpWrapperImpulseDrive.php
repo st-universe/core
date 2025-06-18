@@ -37,6 +37,6 @@ final class ModuleRumpWrapperImpulseDrive extends ModuleRumpWrapperBase implemen
     #[Override]
     public function apply(SpacecraftWrapperInterface $wrapper): void
     {
-        $wrapper->getComputerSystemDataMandatory()->setEvadeChance($this->getValue())->update();
+        $wrapper->get()->setEvadeChance($this->getValue());
     }
 }

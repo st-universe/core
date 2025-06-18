@@ -4,6 +4,7 @@ namespace Stu\Module\Colony\Lib\Gui\Component;
 
 use Override;
 use Stu\Component\Building\BuildingFunctionEnum;
+use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 

@@ -49,13 +49,6 @@ class PrivateMessageSenderTest extends StuTestCase
         );
     }
 
-    #[Override]
-    public function tearDown(): void
-    {
-        parent::tearDown();
-        PrivateMessageSender::$blockedUserIds = [];
-    }
-
     public function testSendWithoutEmailNotification(): void
     {
         $sender = $this->mock(UserInterface::class);
@@ -72,10 +65,6 @@ class PrivateMessageSenderTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(2);
-        $sender->shouldReceive('isContactable')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(true);
         $recipient->shouldReceive('getId')
             ->withNoArgs()
             ->once()
@@ -111,30 +100,24 @@ class PrivateMessageSenderTest extends StuTestCase
 
         $recipientpm->shouldReceive('setDate')
             ->with(42)
-            ->once()
-            ->andReturnSelf();
+            ->once();
         $outboxPm->shouldReceive('setDate')
             ->with(42)
-            ->once()
-            ->andReturnSelf();
+            ->once();
 
         $recipientpm->shouldReceive('setCategory')
             ->with($recipientfolder)
-            ->once()
-            ->andReturnSelf();
+            ->once();
         $outboxPm->shouldReceive('setCategory')
             ->with($senderOutboxFolder)
-            ->once()
-            ->andReturnSelf();
+            ->once();
 
         $recipientpm->shouldReceive('setText')
             ->with('foobar')
-            ->once()
-            ->andReturnSelf();
+            ->once();
         $outboxPm->shouldReceive('setText')
             ->with('foobar')
-            ->once()
-            ->andReturnSelf();
+            ->once();
 
         $hrefEntity->shouldReceive('getHref')
             ->withNoArgs()
@@ -143,48 +126,35 @@ class PrivateMessageSenderTest extends StuTestCase
 
         $recipientpm->shouldReceive('setHref')
             ->with('href')
-            ->once()
-            ->andReturnSelf();
+            ->once();
         $outboxPm->shouldReceive('setHref')
             ->with(null)
-            ->once()
-            ->andReturnSelf();
+            ->once();
 
         $recipientpm->shouldReceive('setRecipient')
             ->with($recipient)
-            ->once()
-            ->andReturnSelf();
+            ->once();
         $outboxPm->shouldReceive('setRecipient')
             ->with($sender)
-            ->once()
-            ->andReturnSelf();
+            ->once();
 
         $recipientpm->shouldReceive('setSender')
             ->with($sender)
-            ->once()
-            ->andReturnSelf();
+            ->once();
         $outboxPm->shouldReceive('setSender')
             ->with($recipient)
-            ->once()
-            ->andReturnSelf();
+            ->once();
 
         $recipientpm->shouldReceive('setNew')
             ->with(true)
-            ->once()
-            ->andReturnSelf();
+            ->once();
         $outboxPm->shouldReceive('setNew')
             ->with(false)
-            ->once()
-            ->andReturnSelf();
+            ->once();
 
-        $recipientpm->shouldReceive('setInboxPm')
-            ->with(null)
-            ->once()
-            ->andReturnSelf();
         $outboxPm->shouldReceive('setInboxPm')
             ->with($recipientpm)
-            ->once()
-            ->andReturnSelf();
+            ->once();
 
         $this->messageRepository->shouldReceive('save')
             ->with($recipientpm)
@@ -215,10 +185,6 @@ class PrivateMessageSenderTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn("[b]SENDER[/b]");
-        $sender->shouldReceive('isContactable')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(true);
 
         $recipient->shouldReceive('getId')
             ->withNoArgs()
@@ -259,75 +225,56 @@ class PrivateMessageSenderTest extends StuTestCase
 
         $recipientpm->shouldReceive('setDate')
             ->with(42)
-            ->once()
-            ->andReturnSelf();
+            ->once();
         $outboxPm->shouldReceive('setDate')
             ->with(42)
-            ->once()
-            ->andReturnSelf();
+            ->once();
 
         $recipientpm->shouldReceive('setCategory')
             ->with($recipientfolder)
-            ->once()
-            ->andReturnSelf();
+            ->once();
         $outboxPm->shouldReceive('setCategory')
             ->with($senderOutboxFolder)
-            ->once()
-            ->andReturnSelf();
+            ->once();
 
         $recipientpm->shouldReceive('setText')
             ->with('foobar')
-            ->once()
-            ->andReturnSelf();
+            ->once();
         $outboxPm->shouldReceive('setText')
             ->with('foobar')
-            ->once()
-            ->andReturnSelf();
+            ->once();
 
         $recipientpm->shouldReceive('setHref')
             ->with('href')
-            ->once()
-            ->andReturnSelf();
+            ->once();
         $outboxPm->shouldReceive('setHref')
             ->with(null)
-            ->once()
-            ->andReturnSelf();
+            ->once();
 
         $recipientpm->shouldReceive('setRecipient')
             ->with($recipient)
-            ->once()
-            ->andReturnSelf();
+            ->once();
         $outboxPm->shouldReceive('setRecipient')
             ->with($sender)
-            ->once()
-            ->andReturnSelf();
+            ->once();
 
         $recipientpm->shouldReceive('setSender')
             ->with($sender)
-            ->once()
-            ->andReturnSelf();
+            ->once();
         $outboxPm->shouldReceive('setSender')
             ->with($recipient)
-            ->once()
-            ->andReturnSelf();
+            ->once();
 
         $recipientpm->shouldReceive('setNew')
             ->with(false)
-            ->once()
-            ->andReturnSelf();
+            ->once();
         $outboxPm->shouldReceive('setNew')
             ->with(false)
-            ->once()
-            ->andReturnSelf();
+            ->once();
 
-        $recipientpm->shouldReceive('setInboxPm')
-            ->with(null)
-            ->once()
-            ->andReturnSelf();
         $outboxPm->shouldReceive('setInboxPm')
             ->with($recipientpm)
-            ->once()
-            ->andReturnSelf();
+            ->once();
 
         $this->emailNotificationSender->shouldReceive('sendNotification')
             ->with('[b]SENDER[/b]', 'foobar', $recipient)
@@ -420,68 +367,53 @@ class PrivateMessageSenderTest extends StuTestCase
 
         $recipient1pm->shouldReceive('setDate')
             ->with(42)
-            ->once()
-            ->andReturnSelf();
+            ->once();
         $recipient2pm->shouldReceive('setDate')
             ->with(42)
-            ->once()
-            ->andReturnSelf();
+            ->once();
         $outboxPm->shouldReceive('setDate')
             ->with(42)
-            ->once()
-            ->andReturnSelf();
+            ->once();
 
         $recipient1pm->shouldReceive('setCategory')
             ->with($recipient1folder)
-            ->once()
-            ->andReturnSelf();
+            ->once();
         $recipient2pm->shouldReceive('setCategory')
             ->with($recipient2folder)
-            ->once()
-            ->andReturnSelf();
+            ->once();
         $outboxPm->shouldReceive('setCategory')
             ->with($senderOutboxFolder)
-            ->once()
-            ->andReturnSelf();
+            ->once();
 
         $recipient1pm->shouldReceive('setText')
             ->with('foobar')
-            ->once()
-            ->andReturnSelf();
+            ->once();
         $recipient2pm->shouldReceive('setText')
             ->with('foobar')
-            ->once()
-            ->andReturnSelf();
+            ->once();
         $outboxPm->shouldReceive('setText')
             ->with('foobar')
-            ->once()
-            ->andReturnSelf();
+            ->once();
 
         $recipient1pm->shouldReceive('setHref')
             ->with(null)
-            ->once()
-            ->andReturnSelf();
+            ->once();
         $recipient2pm->shouldReceive('setHref')
             ->with(null)
-            ->once()
-            ->andReturnSelf();
+            ->once();
         $outboxPm->shouldReceive('setHref')
             ->with(null)
-            ->once()
-            ->andReturnSelf();
+            ->once();
 
         $recipient1pm->shouldReceive('setRecipient')
             ->with($recipient1)
-            ->once()
-            ->andReturnSelf();
+            ->once();
         $recipient2pm->shouldReceive('setRecipient')
             ->with($recipient2)
-            ->once()
-            ->andReturnSelf();
+            ->once();
         $outboxPm->shouldReceive('setRecipient')
             ->with($sender)
-            ->once()
-            ->andReturnSelf();
+            ->once();
 
         $this->userRepository->shouldReceive('getFallbackUser')
             ->withNoArgs()
@@ -490,42 +422,23 @@ class PrivateMessageSenderTest extends StuTestCase
 
         $recipient1pm->shouldReceive('setSender')
             ->with($sender)
-            ->once()
-            ->andReturnSelf();
+            ->once();
         $recipient2pm->shouldReceive('setSender')
             ->with($sender)
-            ->once()
-            ->andReturnSelf();
+            ->once();
         $outboxPm->shouldReceive('setSender')
             ->with($userNoOne)
-            ->once()
-            ->andReturnSelf();
+            ->once();
 
         $recipient1pm->shouldReceive('setNew')
             ->with(true)
-            ->once()
-            ->andReturnSelf();
+            ->once();
         $recipient2pm->shouldReceive('setNew')
             ->with(true)
-            ->once()
-            ->andReturnSelf();
+            ->once();
         $outboxPm->shouldReceive('setNew')
             ->with(false)
-            ->once()
-            ->andReturnSelf();
-
-        $recipient1pm->shouldReceive('setInboxPm')
-            ->with(null)
-            ->once()
-            ->andReturnSelf();
-        $recipient2pm->shouldReceive('setInboxPm')
-            ->with(null)
-            ->once()
-            ->andReturnSelf();
-        $outboxPm->shouldReceive('setInboxPm')
-            ->with(null)
-            ->once()
-            ->andReturnSelf();
+            ->once();
 
         $this->messageRepository->shouldReceive('save')
             ->with($recipient1pm)
@@ -542,98 +455,5 @@ class PrivateMessageSenderTest extends StuTestCase
             ->once();
 
         $this->messageSender->sendBroadcast($sender, [$recipient1, $recipient2], 'foobar');
-    }
-
-    public function testSendExpectNothingWhenRecipientIsBlocked(): void
-    {
-        $this->messageRepository->shouldNotHaveBeenCalled();
-        $this->messageFolderRepository->shouldNotHaveBeenCalled();
-        $this->userRepository->shouldNotHaveBeenCalled();
-
-        PrivateMessageSender::$blockedUserIds = [3];
-
-        $this->messageSender->send(2, 3, 'foobar');
-    }
-
-    public function testSendExpectNoOutboxWhenSenderIsBlocked(): void
-    {
-        $fallbackUser = $this->mock(UserInterface::class);
-        $recipient = $this->mock(UserInterface::class);
-        $folder = $this->mock(PrivateMessageFolderInterface::class);
-        $message = $this->mock(PrivateMessageInterface::class);
-
-        PrivateMessageSender::$blockedUserIds = [2];
-
-        $fallbackUser->shouldReceive('isContactable')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(false);
-
-        $recipient->shouldReceive('getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(3);
-
-        $this->userRepository->shouldReceive('getFallbackUser')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($fallbackUser);
-        $this->userRepository->shouldReceive('find')
-            ->with(3)
-            ->once()
-            ->andReturn($recipient);
-
-        $this->stuTime->shouldReceive('time')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(424242);
-
-        $this->messageFolderRepository->shouldReceive('getByUserAndSpecial')
-            ->with(3, PrivateMessageFolderTypeEnum::SPECIAL_STATION)
-            ->once()
-            ->andReturn($folder);
-
-        $this->messageRepository->shouldReceive('prototype')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($message);
-        $this->messageRepository->shouldReceive('save')
-            ->with($message)
-            ->once();
-
-        $message->shouldReceive('setDate')
-            ->with(424242)
-            ->once()
-            ->andReturnSelf();
-        $message->shouldReceive('setCategory')
-            ->with($folder)
-            ->once()
-            ->andReturnSelf();
-        $message->shouldReceive('setText')
-            ->with('foobar')
-            ->once()
-            ->andReturnSelf();
-        $message->shouldReceive('setHref')
-            ->with(null)
-            ->once()
-            ->andReturnSelf();
-        $message->shouldReceive('setRecipient')
-            ->with($recipient)
-            ->once()
-            ->andReturnSelf();
-        $message->shouldReceive('setSender')
-            ->with($fallbackUser)
-            ->once()
-            ->andReturnSelf();
-        $message->shouldReceive('setNew')
-            ->with(true)
-            ->once()
-            ->andReturnSelf();
-        $message->shouldReceive('setInboxPm')
-            ->with(null)
-            ->once()
-            ->andReturnSelf();
-
-        $this->messageSender->send(2, 3, 'foobar', PrivateMessageFolderTypeEnum::SPECIAL_STATION);
     }
 }

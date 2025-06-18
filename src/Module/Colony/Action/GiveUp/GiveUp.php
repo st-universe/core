@@ -7,7 +7,7 @@ namespace Stu\Module\Colony\Action\GiveUp;
 use Override;
 use request;
 use Stu\Component\Colony\ColonyTypeEnum;
-use Stu\Exception\AccessViolationException;
+use Stu\Exception\AccessViolation;
 use Stu\Lib\Component\ComponentRegistrationInterface;
 use Stu\Module\Colony\Lib\ColonyResetterInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -39,7 +39,7 @@ final class GiveUp implements ActionControllerInterface
         $colony = $this->colonyRepository->find($this->giveupRequest->getColonyId());
 
         if ($colony === null || $colony->getUserId() !== $userId) {
-            throw new AccessViolationException();
+            throw new AccessViolation();
         }
 
         $code = request::postString('giveupcode');

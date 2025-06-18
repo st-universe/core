@@ -87,6 +87,6 @@ final class SplitReactorOutput implements ActionControllerInterface
     #[Override]
     public function performSessionCheck(): bool
     {
-        return false;
+        return true;
     }
 }

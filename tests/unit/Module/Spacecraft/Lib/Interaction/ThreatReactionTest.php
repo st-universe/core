@@ -7,6 +7,7 @@ namespace Stu\Module\Spacecraft\Lib\Interaction;
 use Mockery\MockInterface;
 use Override;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
+use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -87,10 +88,10 @@ class ThreatReactionTest extends StuTestCase
 
     public function testReactToThreatExpectFalseWhenTargetAlertGreen(): void
     {
-        $this->targetWrapper->shouldReceive('isUnalerted')
+        $this->target->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
-            ->andReturn(true);
+            ->andReturn(SpacecraftAlertStateEnum::ALERT_GREEN);
 
         $result = $this->subject->reactToThreat(
             $this->wrapper,
@@ -110,10 +111,10 @@ class ThreatReactionTest extends StuTestCase
             ->once()
             ->andReturn($user);
 
-        $this->targetWrapper->shouldReceive('isUnalerted')
+        $this->target->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
-            ->andReturnFalse();
+            ->andReturn(SpacecraftAlertStateEnum::ALERT_YELLOW);
         $this->target->shouldReceive('getUser')
             ->withNoArgs()
             ->once()
@@ -138,10 +139,10 @@ class ThreatReactionTest extends StuTestCase
             ->once()
             ->andReturn($user);
 
-        $this->targetWrapper->shouldReceive('isUnalerted')
+        $this->target->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
-            ->andReturnFalse();
+            ->andReturn(SpacecraftAlertStateEnum::ALERT_YELLOW);
         $this->target->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($user2);
@@ -181,10 +182,10 @@ class ThreatReactionTest extends StuTestCase
             ->once()
             ->andReturn("SECTOR");
 
-        $this->targetWrapper->shouldReceive('isUnalerted')
+        $this->target->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
-            ->andReturnFalse();
+            ->andReturn(SpacecraftAlertStateEnum::ALERT_YELLOW);
         $this->target->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($user2);
@@ -199,7 +200,7 @@ class ThreatReactionTest extends StuTestCase
             ->andReturn(false);
 
         $this->battlePartyFactory->shouldReceive('createAttackingBattleParty')
-            ->with($this->targetWrapper, false)
+            ->with($this->targetWrapper)
             ->once()
             ->andReturn($attackingBattleParty);
         $this->battlePartyFactory->shouldReceive('createSingletonBattleParty')
@@ -257,10 +258,10 @@ class ThreatReactionTest extends StuTestCase
             ->once()
             ->andReturn(666);
 
-        $this->targetWrapper->shouldReceive('isUnalerted')
+        $this->target->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
-            ->andReturnFalse();
+            ->andReturn(SpacecraftAlertStateEnum::ALERT_YELLOW);
         $this->target->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($user2);
@@ -275,7 +276,7 @@ class ThreatReactionTest extends StuTestCase
             ->andReturn(false);
 
         $this->battlePartyFactory->shouldReceive('createAttackingBattleParty')
-            ->with($this->targetWrapper, false)
+            ->with($this->targetWrapper)
             ->once()
             ->andReturn($attackingBattleParty);
         $this->battlePartyFactory->shouldReceive('createSingletonBattleParty')

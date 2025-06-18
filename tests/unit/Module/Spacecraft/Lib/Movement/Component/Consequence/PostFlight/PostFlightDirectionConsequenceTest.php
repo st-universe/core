@@ -60,7 +60,7 @@ class PostFlightDirectionConsequenceTest extends StuTestCase
     {
         $messages = $this->mock(MessageCollectionInterface::class);
 
-        $this->ship->shouldReceive('getCondition->isDestroyed')
+        $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(true);
@@ -76,7 +76,7 @@ class PostFlightDirectionConsequenceTest extends StuTestCase
     {
         $messages = $this->mock(MessageCollectionInterface::class);
 
-        $this->ship->shouldReceive('getCondition->isDestroyed')
+        $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -98,7 +98,7 @@ class PostFlightDirectionConsequenceTest extends StuTestCase
         $oldWaypoint = $this->mock(MapInterface::class);
         $newWaypoint = $this->mock(MapInterface::class);
 
-        $this->ship->shouldReceive('getCondition->isDestroyed')
+        $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -121,7 +121,7 @@ class PostFlightDirectionConsequenceTest extends StuTestCase
             ->andReturn($newWaypoint);
 
         $this->updateFlightDirection->shouldReceive('updateWhenTraversing')
-            ->with($oldWaypoint, $newWaypoint, $this->wrapper)
+            ->with($oldWaypoint, $newWaypoint, $this->ship)
             ->once()
             ->andReturn(DirectionEnum::TOP);
 
@@ -138,7 +138,7 @@ class PostFlightDirectionConsequenceTest extends StuTestCase
         $oldWaypoint = $this->mock(MapInterface::class);
         $newWaypoint = $this->mock(MapInterface::class);
 
-        $this->ship->shouldReceive('getCondition->isDestroyed')
+        $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -161,7 +161,7 @@ class PostFlightDirectionConsequenceTest extends StuTestCase
             ->andReturn($newWaypoint);
 
         $this->updateFlightDirection->shouldReceive('updateWhenTraversing')
-            ->with($oldWaypoint, $newWaypoint, $this->wrapper)
+            ->with($oldWaypoint, $newWaypoint, $this->ship)
             ->once()
             ->andReturn(DirectionEnum::TOP);
 

@@ -76,7 +76,7 @@ final class PirateWrathRepository extends EntityRepository implements PirateWrat
     public function getByUser(UserInterface $user): array
     {
         return $this->findBy(
-            ['user' => $user]
+            ['user_id' => $user->getId()]
         );
     }
 }

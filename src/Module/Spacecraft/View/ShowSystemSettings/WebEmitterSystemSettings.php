@@ -66,12 +66,15 @@ class WebEmitterSystemSettings implements SystemSettingsProviderInterface
             } else {
                 $game->setTemplateVar('COOLDOWN', $emitter->getCooldown());
             }
-        } elseif (!$web->isFinished()) {
+        } else {
+
             //can help under construction?
             //fremdes Netz under construction da? -> dann button für Support
-            $game->setTemplateVar('CANHELP', true);
-        } else {
-            $game->setTemplateVar('OWNFINISHED', $web->getUser() === $user);
+            if (!$web->isFinished()) {
+                $game->setTemplateVar('CANHELP', true);
+            } else {
+                $game->setTemplateVar('OWNFINISHED', $web->getUser() === $user);
+            }
         }
     }
 }

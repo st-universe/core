@@ -7,7 +7,7 @@ namespace Stu\Module\Alliance\Action\DeleteAlliance;
 use Override;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Game\ModuleEnum;
-use Stu\Exception\AccessViolationException;
+use Stu\Exception\AccessViolation;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -16,6 +16,9 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class DeleteAlliance implements ActionControllerInterface
 {
+    /**
+     * @var string
+     */
     public const string ACTION_IDENTIFIER = 'B_DELETE_ALLIANCE';
 
     public function __construct(
@@ -39,7 +42,7 @@ final class DeleteAlliance implements ActionControllerInterface
         );
 
         if ($jobFounder === null) {
-            throw new AccessViolationException();
+            throw new AccessViolation();
         }
 
         $jobSuccessor = $this->allianceJobRepository->getSingleResultByAllianceAndType(
@@ -51,7 +54,7 @@ final class DeleteAlliance implements ActionControllerInterface
             $jobFounder->getUser() !== $user
             && ($jobSuccessor === null || $jobSuccessor->getUser() !== $user)
         ) {
-            throw new AccessViolationException();
+            throw new AccessViolation();
         }
 
         $this->allianceActionManager->delete($jobFounder->getAlliance());

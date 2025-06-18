@@ -8,22 +8,19 @@ use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Information\InformationInterface;
-use Stu\Lib\Trait\SpacecraftTractorPayloadTrait;
 use Stu\Module\Control\StuRandom;
-use Stu\Module\Spacecraft\Lib\Damage\SystemDamageInterface;
+use Stu\Module\Spacecraft\Lib\Damage\ApplyDamageInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 
-class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
+final class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
 {
-    use SpacecraftTractorPayloadTrait;
-
     public const float POSSIBLE_DAMAGE_THRESHOLD = 0.9;
 
     public function __construct(
-        private SystemDamageInterface $systemDamage,
+        private ApplyDamageInterface $applyDamage,
         private SpacecraftSystemManagerInterface $spacecraftSystemManager,
         private StuRandom $stuRandom,
         private MessageFactoryInterface $messageFactory
@@ -56,7 +53,7 @@ class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
         }
 
         $mass = $tractoredShip->getRump()->getTractorMass();
-        $payload = $this->getTractorPayload($spacecraft);
+        $payload = $spacecraft->getTractorPayload();
 
         // ship to heavy?
         if ($mass > $payload) {
@@ -81,7 +78,7 @@ class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
     ): bool {
         $ship = $wrapper->get();
         $mass = $tractoredShip->getRump()->getTractorMass();
-        $payload = $this->getTractorPayload($ship);
+        $payload = $ship->getTractorPayload();
 
         // damage tractor system if mass over 90% of max
         return $mass > self::POSSIBLE_DAMAGE_THRESHOLD * $payload;
@@ -100,7 +97,7 @@ class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
 
             $message = $this->messageFactory->createMessage();
 
-            if ($this->systemDamage->damageShipSystem($wrapper, $system, $this->stuRandom->rand(5, 25), $message)) {
+            if ($this->applyDamage->damageShipSystem($wrapper, $system, $this->stuRandom->rand(5, 25), $message)) {
                 //tractor destroyed
                 $message->addInformation(sprintf(
                     _('Traktoremitter der %s wurde zerstört. Die %s wird nicht weiter gezogen'),

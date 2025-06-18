@@ -7,13 +7,16 @@ namespace Stu\Module\Control\Render;
 use Noodlehaus\ConfigInterface;
 use Override;
 use Stu\Component\Game\GameEnum;
-use Stu\Component\Player\UserAwardEnum;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Twig\TwigPageInterface;
 use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 
+/**
+ * Executes the render chain for the site template
+ *
+ * Also registers a set of default variables for rendering
+ */
 final class GameTwigRenderer implements GameTwigRendererInterface
 {
     private const string GAME_VERSION_DEV = 'dev';
@@ -21,8 +24,7 @@ final class GameTwigRenderer implements GameTwigRendererInterface
     public function __construct(
         private TwigPageInterface $twigPage,
         private ConfigInterface $config,
-        private StuConfigInterface $stuConfig,
-        private CrewAssignmentRepositoryInterface $crewAssignmentRepository
+        private StuConfigInterface $stuConfig
     ) {}
 
     #[Override]
@@ -53,8 +55,8 @@ final class GameTwigRenderer implements GameTwigRendererInterface
         $this->twigPage->setVar('EXECUTEJSAFTERRENDER', $game->getExecuteJS(GameEnum::JS_EXECUTION_AFTER_RENDER));
         $this->twigPage->setVar('EXECUTEJSAJAXUPDATE', $game->getExecuteJS(GameEnum::JS_EXECUTION_AJAX_UPDATE));
         $this->twigPage->setVar('JAVASCRIPTPATH', $this->getJavascriptPath(), true);
-        $this->twigPage->setVar('IS_NPC', $game->isNpc());
-        $this->twigPage->setVar('IS_ADMIN', $game->isAdmin());
+        $this->twigPage->setVar('ISNPC', $game->isNpc());
+        $this->twigPage->setVar('ISADMIN', $game->isAdmin());
         $this->twigPage->setVar('BENCHMARK', $game->getBenchmarkResult());
         $this->twigPage->setVar('GAME_STATS', $game->getGameStats());
 
@@ -74,22 +76,9 @@ final class GameTwigRenderer implements GameTwigRendererInterface
                 $user->getName(),
                 $user->getFactionId(),
                 $user->getCss(),
-                $this->hasStationsNavigation($user)
+                $user->hasStationsNavigation()
             ));
         }
-    }
-
-    private function hasStationsNavigation(UserInterface $user): bool
-    {
-        if ($user->isNpc()) {
-            return true;
-        }
-
-        if ($user->hasAward(UserAwardEnum::RESEARCHED_STATIONS)) {
-            return true;
-        }
-
-        return $this->crewAssignmentRepository->hasCrewOnForeignStation($user);
     }
 
     private function getJavascriptPath(): string

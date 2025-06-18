@@ -48,7 +48,7 @@ class DeflectorConsequence extends AbstractFlightConsequence implements PostFlig
                 $messages
             );
 
-            if ($ship->getCondition()->isDestroyed()) {
+            if ($ship->isDestroyed()) {
                 return;
             }
         }

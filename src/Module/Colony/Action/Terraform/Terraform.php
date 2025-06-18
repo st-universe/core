@@ -85,7 +85,7 @@ final class Terraform implements ActionControllerInterface
             );
         }
 
-        $game->addExecuteJS(sprintf("refreshHost('%s');", $game->getSessionString()));
+        $game->addExecuteJS('refreshHost();');
 
         $this->componentRegistration
             ->addComponentUpdate(ColonyComponentEnum::SHIELDING, $host)

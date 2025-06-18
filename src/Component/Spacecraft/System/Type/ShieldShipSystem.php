@@ -46,7 +46,7 @@ final class ShieldShipSystem extends AbstractSpacecraftSystemType implements Spa
             return false;
         }
 
-        if ($spacecraft->getCondition()->getShield() === 0) {
+        if ($spacecraft->getShield() === 0) {
             $reason = _('die Schildemitter erschöpft sind');
             return false;
         }
@@ -87,15 +87,15 @@ final class ShieldShipSystem extends AbstractSpacecraftSystemType implements Spa
     #[Override]
     public function handleDestruction(SpacecraftWrapperInterface $wrapper): void
     {
-        $wrapper->get()->getCondition()->setShield(0);
+        $wrapper->get()->setShield(0);
     }
 
     #[Override]
     public function handleDamage(SpacecraftWrapperInterface $wrapper): void
     {
         $spacecraft = $wrapper->get();
-        if ($spacecraft->getCondition()->getShield() > $spacecraft->getMaxShield()) {
-            $spacecraft->getCondition()->setShield($spacecraft->getMaxShield());
+        if ($spacecraft->getShield() > $spacecraft->getMaxShield()) {
+            $spacecraft->setShield($spacecraft->getMaxShield());
         }
     }
 }

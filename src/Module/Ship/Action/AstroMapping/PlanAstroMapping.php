@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\AstroMapping;
 
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
 use Override;
 use request;
 
@@ -47,12 +45,13 @@ final class PlanAstroMapping implements ActionControllerInterface
 
         $userId = $game->getUser()->getId();
 
-        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
+        $ship = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
             $userId
         );
 
-        $ship = $wrapper->get();
+        $location = $ship->getLocation();
+
         $system = $ship->getSystem();
         $mapRegion = $ship->getMapRegion();
         if ($system === null && $mapRegion === null) {
@@ -76,13 +75,11 @@ final class PlanAstroMapping implements ActionControllerInterface
         $astroEntry = $this->astroEntryRepository->prototype();
         $astroEntry->setUser($game->getUser());
         $astroEntry->setState(AstronomicalMappingEnum::PLANNED);
-        $this->obtainMeasurementFields($system, $mapRegion, $astroEntry, $ship->getLocation());
+        $this->obtainMeasurementFields($system, $mapRegion, $astroEntry, $location);
 
         $this->astroEntryRepository->save($astroEntry);
 
-        $lss = $wrapper->getLssSystemData();
-
-        if ($lss !== null && $lss->getMode() !== SpacecraftLssModeEnum::CARTOGRAPHING) {
+        if ($ship->getLSSMode() !== SpacecraftLssModeEnum::CARTOGRAPHING) {
             $this->helper->setLssMode($ship->getId(), SpacecraftLssModeEnum::CARTOGRAPHING, $game);
         }
 
@@ -95,7 +92,7 @@ final class PlanAstroMapping implements ActionControllerInterface
         ?StarSystemInterface $system,
         ?MapRegionInterface $mapRegion,
         AstronomicalEntryInterface $entry,
-        MapInterface|StarSystemMapInterface $location
+        Locationinterface $location
     ): void {
         if ($system !== null) {
             $entry->setSystem($system);

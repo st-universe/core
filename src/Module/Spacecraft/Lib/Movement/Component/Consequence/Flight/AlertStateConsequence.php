@@ -6,6 +6,7 @@ namespace Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\Flight;
 
 use Override;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
+use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Spacecraft\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
@@ -44,7 +45,7 @@ class AlertStateConsequence extends AbstractFlightConsequence implements FlightS
         if (
             $shieldSystem === null
             || $shieldSystem->getMode()->isActivated()
-            || $wrapper->isUnalerted()
+            || !$spacecraft->getAlertState()->isAtLeast(SpacecraftAlertStateEnum::ALERT_YELLOW)
         ) {
             return;
         }

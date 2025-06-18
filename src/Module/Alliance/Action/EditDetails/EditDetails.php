@@ -7,8 +7,7 @@ namespace Stu\Module\Alliance\Action\EditDetails;
 use JBBCode\Parser;
 use Override;
 use Stu\Component\Alliance\AllianceEnum;
-use Stu\Component\Alliance\AllianceSettingsEnum;
-use Stu\Exception\AccessViolationException;
+use Stu\Exception\AccessViolation;
 use Stu\Lib\CleanTextUtils;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\View\Edit\Edit;
@@ -18,13 +17,17 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
-use Stu\Orm\Repository\AllianceSettingsRepositoryInterface;
 
 final class EditDetails implements ActionControllerInterface
 {
+    /**
+     * @var string
+     */
     public const string ACTION_IDENTIFIER = 'B_UPDATE_ALLIANCE';
 
-    public function __construct(private EditDetailsRequestInterface $editDetailsRequest, private Parser $bbcodeParser, private AllianceJobRepositoryInterface $allianceJobRepository, private AllianceActionManagerInterface $allianceActionManager, private PrivateMessageSenderInterface $privateMessageSender, private AllianceRepositoryInterface $allianceRepository, private AllianceSettingsRepositoryInterface $allianceSettingsRepository) {}
+    public function __construct(private EditDetailsRequestInterface $editDetailsRequest, private Parser $bbcodeParser, private AllianceJobRepositoryInterface $allianceJobRepository, private AllianceActionManagerInterface $allianceActionManager, private PrivateMessageSenderInterface $privateMessageSender, private AllianceRepositoryInterface $allianceRepository)
+    {
+    }
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -34,11 +37,11 @@ final class EditDetails implements ActionControllerInterface
         $allianceId = $alliance->getId();
 
         if ($alliance === null) {
-            throw new AccessViolationException();
+            throw new AccessViolation();
         }
 
         if (!$this->allianceActionManager->mayEdit($alliance, $game->getUser())) {
-            throw new AccessViolationException();
+            throw new AccessViolation();
         }
 
         $name = $this->editDetailsRequest->getName();
@@ -59,9 +62,6 @@ final class EditDetails implements ActionControllerInterface
         $homepage = $this->editDetailsRequest->getHomepage();
         $acceptApplications = $this->editDetailsRequest->getAcceptApplications();
         $rgbCode = $this->editDetailsRequest->getRgbCode();
-        $founderdescription = $this->editDetailsRequest->getFounderDescription();
-        $successordescription = $this->editDetailsRequest->getSuccessorDescription();
-        $diplomatdescription = $this->editDetailsRequest->getDiplomaticDescription();
 
         $game->setView(Edit::VIEW_IDENTIFIER);
 
@@ -114,60 +114,6 @@ final class EditDetails implements ActionControllerInterface
             }
 
             $alliance->setRgbCode($rgbCode);
-        }
-
-        if (strlen($founderdescription) > 2) {
-            $foundersetting = $this->allianceSettingsRepository->findByAllianceAndSetting(
-                $alliance,
-                AllianceSettingsEnum::ALLIANCE_FOUNDER_DESCRIPTION
-            );
-
-            if ($foundersetting === null) {
-                $foundersetting = $this->allianceSettingsRepository->prototype()
-                    ->setAlliance($alliance)
-                    ->setSetting(AllianceSettingsEnum::ALLIANCE_FOUNDER_DESCRIPTION);
-            }
-
-            $foundersetting->setValue($founderdescription);
-            $this->allianceSettingsRepository->save($foundersetting);
-        } else {
-            $game->addInformation(_('Die Beschreibung des Präsidenten muss mindestens 3 Zeichen lang sein'));
-        }
-
-        if (strlen($successordescription) > 2) {
-            $successorsetting = $this->allianceSettingsRepository->findByAllianceAndSetting(
-                $alliance,
-                AllianceSettingsEnum::ALLIANCE_SUCCESSOR_DESCRIPTION
-            );
-
-            if ($successorsetting === null) {
-                $successorsetting = $this->allianceSettingsRepository->prototype()
-                    ->setAlliance($alliance)
-                    ->setSetting(AllianceSettingsEnum::ALLIANCE_SUCCESSOR_DESCRIPTION);
-            }
-
-            $successorsetting->setValue($successordescription);
-            $this->allianceSettingsRepository->save($successorsetting);
-        } else {
-            $game->addInformation(_('Die Beschreibung des Vize-Präsidenten muss mindestens 3 Zeichen lang sein'));
-        }
-
-        if (strlen($diplomatdescription) > 2) {
-            $diplomatsetting = $this->allianceSettingsRepository->findByAllianceAndSetting(
-                $alliance,
-                AllianceSettingsEnum::ALLIANCE_DIPLOMATIC_DESCRIPTION
-            );
-
-            if ($diplomatsetting === null) {
-                $diplomatsetting = $this->allianceSettingsRepository->prototype()
-                    ->setAlliance($alliance)
-                    ->setSetting(AllianceSettingsEnum::ALLIANCE_DIPLOMATIC_DESCRIPTION);
-            }
-
-            $diplomatsetting->setValue($diplomatdescription);
-            $this->allianceSettingsRepository->save($diplomatsetting);
-        } else {
-            $game->addInformation(_('Die Beschreibung des Außenministers muss mindestens 3 Zeichen lang sein'));
         }
 
         $alliance->setName($name);

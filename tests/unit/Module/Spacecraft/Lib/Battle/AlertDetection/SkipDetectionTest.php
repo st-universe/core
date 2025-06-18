@@ -11,7 +11,6 @@ use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Module\Control\StuTime;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\PirateWrathInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\TholianWebInterface;
@@ -27,8 +26,6 @@ class SkipDetectionTest extends StuTestCase
 
     /** @var MockInterface&ShipInterface */
     private $incomingShip;
-    /** @var MockInterface&SpacecraftWrapperInterface */
-    private $alertedWrapper;
     /** @var MockInterface&ShipInterface */
     private $alertedShip;
 
@@ -41,13 +38,7 @@ class SkipDetectionTest extends StuTestCase
         $this->stuTime = $this->mock(StuTime::class);
 
         $this->incomingShip = $this->mock(ShipInterface::class);
-        $this->alertedWrapper = $this->mock(SpacecraftWrapperInterface::class);
         $this->alertedShip = $this->mock(ShipInterface::class);
-
-        $this->alertedWrapper->shouldReceive('get')
-            ->withNoArgs()
-            ->zeroOrMoreTimes()
-            ->andReturn($this->alertedShip);
 
         $this->subject = new SkipDetection(
             $this->playerRelationDeterminator,
@@ -70,7 +61,7 @@ class SkipDetectionTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($alertUser);
-        $this->alertedWrapper->shouldReceive('getAlertState')
+        $this->alertedShip->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_YELLOW);
@@ -82,7 +73,7 @@ class SkipDetectionTest extends StuTestCase
 
         $result = $this->subject->isSkipped(
             $this->incomingShip,
-            $this->alertedWrapper,
+            $this->alertedShip,
             null,
             $usersToInformAboutTrojanHorse
         );
@@ -109,7 +100,7 @@ class SkipDetectionTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($alertUser);
-        $this->alertedWrapper->shouldReceive('getAlertState')
+        $this->alertedShip->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_RED);
@@ -130,7 +121,7 @@ class SkipDetectionTest extends StuTestCase
 
         $result = $this->subject->isSkipped(
             $this->incomingShip,
-            $this->alertedWrapper,
+            $this->alertedShip,
             $tractoringShip,
             $usersToInformAboutTrojanHorse
         );
@@ -158,7 +149,7 @@ class SkipDetectionTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($alertUser);
-        $this->alertedWrapper->shouldReceive('getAlertState')
+        $this->alertedShip->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_RED);
@@ -175,7 +166,7 @@ class SkipDetectionTest extends StuTestCase
 
         $result = $this->subject->isSkipped(
             $this->incomingShip,
-            $this->alertedWrapper,
+            $this->alertedShip,
             $tractoringShip,
             $usersToInformAboutTrojanHorse
         );
@@ -199,7 +190,7 @@ class SkipDetectionTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($alertUser);
-        $this->alertedWrapper->shouldReceive('getAlertState')
+        $this->alertedShip->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_RED);
@@ -211,7 +202,7 @@ class SkipDetectionTest extends StuTestCase
 
         $result = $this->subject->isSkipped(
             $this->incomingShip,
-            $this->alertedWrapper,
+            $this->alertedShip,
             null,
             $usersToInformAboutTrojanHorse
         );
@@ -236,7 +227,7 @@ class SkipDetectionTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($alertUser);
-        $this->alertedWrapper->shouldReceive('getAlertState')
+        $this->alertedShip->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_YELLOW);
@@ -261,63 +252,7 @@ class SkipDetectionTest extends StuTestCase
 
         $result = $this->subject->isSkipped(
             $this->incomingShip,
-            $this->alertedWrapper,
-            null,
-            $usersToInformAboutTrojanHorse
-        );
-
-        $this->assertTrue($result);
-        $this->assertEmpty($usersToInformAboutTrojanHorse);
-    }
-
-    public function testIsSkippedExpectTrueWhenAlertIsPirateAndNewUser(): void
-    {
-        $usersToInformAboutTrojanHorse = new ArrayCollection();
-        $alertUser = $this->mock(UserInterface::class);
-        $incomingShipUser = $this->mock(UserInterface::class);
-        $unfinishedWeb = $this->mock(TholianWebInterface::class);
-
-        $incomingShipUser->shouldReceive('getRegistration->getCreationDate')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(1);
-
-        $this->stuTime->shouldReceive('time')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(4_838_400);
-
-        $this->incomingShip->shouldReceive('getUser')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($incomingShipUser);
-
-        $this->alertedShip->shouldReceive('getUser')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($alertUser);
-        $this->alertedWrapper->shouldReceive('getAlertState')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(SpacecraftAlertStateEnum::ALERT_RED);
-        $this->alertedShip->shouldReceive('getHoldingWeb')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($unfinishedWeb);
-
-        $unfinishedWeb->shouldReceive('isFinished')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(false);
-
-        $this->playerRelationDeterminator->shouldReceive('isFriend')
-            ->with($alertUser, $incomingShipUser)
-            ->once()
-            ->andReturn(false);
-
-        $result = $this->subject->isSkipped(
-            $this->incomingShip,
-            $this->alertedWrapper,
+            $this->alertedShip,
             null,
             $usersToInformAboutTrojanHorse
         );
@@ -334,10 +269,6 @@ class SkipDetectionTest extends StuTestCase
         $unfinishedWeb = $this->mock(TholianWebInterface::class);
         $pirateWrath = $this->mock(PirateWrathInterface::class);
 
-        $incomingShipUser->shouldReceive('getRegistration->getCreationDate')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(161_642);
         $incomingShipUser->shouldReceive('getPirateWrath')
             ->withNoArgs()
             ->once()
@@ -346,11 +277,11 @@ class SkipDetectionTest extends StuTestCase
         $pirateWrath->shouldReceive('getProtectionTimeout')
             ->withNoArgs()
             ->once()
-            ->andReturn(5_000_043);
+            ->andReturn(43);
         $this->stuTime->shouldReceive('time')
             ->withNoArgs()
             ->once()
-            ->andReturn(5_000_042);
+            ->andReturn(42);
 
         $this->incomingShip->shouldReceive('getUser')
             ->withNoArgs()
@@ -361,7 +292,7 @@ class SkipDetectionTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($alertUser);
-        $this->alertedWrapper->shouldReceive('getAlertState')
+        $this->alertedShip->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_RED);
@@ -386,7 +317,7 @@ class SkipDetectionTest extends StuTestCase
 
         $result = $this->subject->isSkipped(
             $this->incomingShip,
-            $this->alertedWrapper,
+            $this->alertedShip,
             null,
             $usersToInformAboutTrojanHorse
         );
@@ -403,10 +334,6 @@ class SkipDetectionTest extends StuTestCase
         $unfinishedWeb = $this->mock(TholianWebInterface::class);
         $pirateWrath = $this->mock(PirateWrathInterface::class);
 
-        $incomingShipUser->shouldReceive('getRegistration->getCreationDate')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(161_642);
         $incomingShipUser->shouldReceive('getPirateWrath')
             ->withNoArgs()
             ->once()
@@ -424,11 +351,11 @@ class SkipDetectionTest extends StuTestCase
         $pirateWrath->shouldReceive('getProtectionTimeout')
             ->withNoArgs()
             ->once()
-            ->andReturn(5_000_043);
+            ->andReturn(43);
         $this->stuTime->shouldReceive('time')
             ->withNoArgs()
             ->once()
-            ->andReturn(5_000_042);
+            ->andReturn(42);
 
         $this->incomingShip->shouldReceive('getUser')
             ->withNoArgs()
@@ -437,7 +364,7 @@ class SkipDetectionTest extends StuTestCase
         $this->alertedShip->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($alertUser);
-        $this->alertedWrapper->shouldReceive('getAlertState')
+        $this->alertedShip->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_RED);
@@ -462,7 +389,7 @@ class SkipDetectionTest extends StuTestCase
 
         $result = $this->subject->isSkipped(
             $this->incomingShip,
-            $this->alertedWrapper,
+            $this->alertedShip,
             null,
             $usersToInformAboutTrojanHorse
         );
@@ -479,10 +406,6 @@ class SkipDetectionTest extends StuTestCase
         $unfinishedWeb = $this->mock(TholianWebInterface::class);
         $pirateWrath = $this->mock(PirateWrathInterface::class);
 
-        $incomingShipUser->shouldReceive('getRegistration->getCreationDate')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(161_642);
         $incomingShipUser->shouldReceive('getPirateWrath')
             ->withNoArgs()
             ->once()
@@ -500,11 +423,11 @@ class SkipDetectionTest extends StuTestCase
         $pirateWrath->shouldReceive('getProtectionTimeout')
             ->withNoArgs()
             ->once()
-            ->andReturn(5_000_042);
+            ->andReturn(42);
         $this->stuTime->shouldReceive('time')
             ->withNoArgs()
             ->once()
-            ->andReturn(5_000_042);
+            ->andReturn(42);
 
         $this->incomingShip->shouldReceive('getUser')
             ->withNoArgs()
@@ -513,7 +436,7 @@ class SkipDetectionTest extends StuTestCase
         $this->alertedShip->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($alertUser);
-        $this->alertedWrapper->shouldReceive('getAlertState')
+        $this->alertedShip->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_RED);
@@ -538,7 +461,7 @@ class SkipDetectionTest extends StuTestCase
 
         $result = $this->subject->isSkipped(
             $this->incomingShip,
-            $this->alertedWrapper,
+            $this->alertedShip,
             null,
             $usersToInformAboutTrojanHorse
         );
@@ -554,10 +477,6 @@ class SkipDetectionTest extends StuTestCase
         $incomingShipUser = $this->mock(UserInterface::class);
         $unfinishedWeb = $this->mock(TholianWebInterface::class);
 
-        $incomingShipUser->shouldReceive('getRegistration->getCreationDate')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(161_642);
         $incomingShipUser->shouldReceive('getPirateWrath')
             ->withNoArgs()
             ->once()
@@ -572,11 +491,6 @@ class SkipDetectionTest extends StuTestCase
             ->once()
             ->andReturn(null);
 
-        $this->stuTime->shouldReceive('time')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(5_000_042);
-
         $this->incomingShip->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($incomingShipUser);
@@ -584,7 +498,7 @@ class SkipDetectionTest extends StuTestCase
         $this->alertedShip->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($alertUser);
-        $this->alertedWrapper->shouldReceive('getAlertState')
+        $this->alertedShip->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_RED);
@@ -609,7 +523,7 @@ class SkipDetectionTest extends StuTestCase
 
         $result = $this->subject->isSkipped(
             $this->incomingShip,
-            $this->alertedWrapper,
+            $this->alertedShip,
             null,
             $usersToInformAboutTrojanHorse
         );
@@ -626,10 +540,6 @@ class SkipDetectionTest extends StuTestCase
         $unfinishedWeb = $this->mock(TholianWebInterface::class);
         $pirateWrath = $this->mock(PirateWrathInterface::class);
 
-        $incomingShipUser->shouldReceive('getRegistration->getCreationDate')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(161_642);
         $incomingShipUser->shouldReceive('getPirateWrath')
             ->withNoArgs()
             ->once()
@@ -647,11 +557,11 @@ class SkipDetectionTest extends StuTestCase
         $pirateWrath->shouldReceive('getProtectionTimeout')
             ->withNoArgs()
             ->once()
-            ->andReturn(5_000_042);
+            ->andReturn(42);
         $this->stuTime->shouldReceive('time')
             ->withNoArgs()
             ->once()
-            ->andReturn(5_000_042);
+            ->andReturn(42);
 
         $this->incomingShip->shouldReceive('getUser')
             ->withNoArgs()
@@ -660,7 +570,7 @@ class SkipDetectionTest extends StuTestCase
         $this->alertedShip->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($alertUser);
-        $this->alertedWrapper->shouldReceive('getAlertState')
+        $this->alertedShip->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_RED);
@@ -685,7 +595,7 @@ class SkipDetectionTest extends StuTestCase
 
         $result = $this->subject->isSkipped(
             $this->incomingShip,
-            $this->alertedWrapper,
+            $this->alertedShip,
             null,
             $usersToInformAboutTrojanHorse
         );
@@ -701,10 +611,6 @@ class SkipDetectionTest extends StuTestCase
         $incomingShipUser = $this->mock(UserInterface::class);
         $unfinishedWeb = $this->mock(TholianWebInterface::class);
 
-        $incomingShipUser->shouldReceive('getRegistration->getCreationDate')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(161_642);
         $incomingShipUser->shouldReceive('getPirateWrath')
             ->withNoArgs()
             ->once()
@@ -719,11 +625,6 @@ class SkipDetectionTest extends StuTestCase
             ->once()
             ->andReturn(null);
 
-        $this->stuTime->shouldReceive('time')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(5_000_042);
-
         $this->incomingShip->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($incomingShipUser);
@@ -731,7 +632,7 @@ class SkipDetectionTest extends StuTestCase
         $this->alertedShip->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($alertUser);
-        $this->alertedWrapper->shouldReceive('getAlertState')
+        $this->alertedShip->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_RED);
@@ -756,7 +657,7 @@ class SkipDetectionTest extends StuTestCase
 
         $result = $this->subject->isSkipped(
             $this->incomingShip,
-            $this->alertedWrapper,
+            $this->alertedShip,
             null,
             $usersToInformAboutTrojanHorse
         );
@@ -771,10 +672,6 @@ class SkipDetectionTest extends StuTestCase
         $alertUser = $this->mock(UserInterface::class);
         $incomingShipUser = $this->mock(UserInterface::class);
 
-        $incomingShipUser->shouldReceive('getRegistration->getCreationDate')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(161_642);
         $incomingShipUser->shouldReceive('getPirateWrath')
             ->withNoArgs()
             ->once()
@@ -789,11 +686,6 @@ class SkipDetectionTest extends StuTestCase
             ->once()
             ->andReturn(null);
 
-        $this->stuTime->shouldReceive('time')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(5_000_042);
-
         $this->incomingShip->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($incomingShipUser);
@@ -801,7 +693,7 @@ class SkipDetectionTest extends StuTestCase
         $this->alertedShip->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($alertUser);
-        $this->alertedWrapper->shouldReceive('getAlertState')
+        $this->alertedShip->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftAlertStateEnum::ALERT_RED);
@@ -821,7 +713,7 @@ class SkipDetectionTest extends StuTestCase
 
         $result = $this->subject->isSkipped(
             $this->incomingShip,
-            $this->alertedWrapper,
+            $this->alertedShip,
             null,
             $usersToInformAboutTrojanHorse
         );

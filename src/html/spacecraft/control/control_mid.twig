@@ -1,5 +1,5 @@
 {% macro control_mid(wrapper, astroStateSystem, astroStateRegion, isTachyonActive, starSystemEntryTal, currentColony,
-canColonize, closestAnomalyDistance, storedShuttleCount, closescolonydistance) %}
+canColonize, closestAnomalyDistance) %}
 
 {% from 'html/macros.twig' import onClickSpacecraft %}
 
@@ -23,13 +23,12 @@ canColonize, closestAnomalyDistance, storedShuttleCount, closescolonydistance) %
     {% include 'html/spacecraft/system/system.twig' with {'name': 'TACHYON_SCANNER'} %}
     {% include 'html/spacecraft/system/system.twig' with {'name': 'UPLINK'} %}
     {% include 'html/spacecraft/system/system.twig' with {'name': 'RPG_MODULE'} %}
-    {% if SPACECRAFT.hasShuttleRamp and storedShuttleCount > 0 %}
-    {% set storedShuttles = SPACECRAFT.getStoredShuttles %}
-    {% set defaultId = storedShuttles.first.getId %}
+    {% if SPACECRAFT.hasShuttleRamp and SPACECRAFT.getStoredShuttles %}
+    {% set defaultId = SPACECRAFT.getStoredShuttles[0].getId %}
     <tr>
         <td>
             <select name="shid" onchange="cp('shuttle','commodities/' + this.value, 'png')">
-                {% for data in storedShuttles %}
+                {% for data in SPACECRAFT.getStoredShuttles %}
                 <option value="{{ data.getId }}">{{ data.getName }}
                 </option>
                 {% endfor %}
@@ -38,7 +37,7 @@ canColonize, closestAnomalyDistance, storedShuttleCount, closescolonydistance) %
             <input type="submit" class="button" name="B_START_SHUTTLE" value="Shuttle starten" />
         </td>
         <td>
-            {{ storedShuttleCount }} / {{ SPACECRAFT.getRump.getShuttleSlots }} geladen
+            {{ SPACECRAFT.getStoredShuttleCount }} / {{ SPACECRAFT.getRump.getShuttleSlots }} geladen
         </td>
     </tr>
     {% endif %}
@@ -246,18 +245,6 @@ canColonize, closestAnomalyDistance, storedShuttleCount, closescolonydistance) %
             <br />
             <span style="border: 2px solid {{ gradientColor(closestAnomalyDistance, wrapper.getSensorRange * 2, 1) }}"
                 title="Es wurde eine Anomalie in der Nähe detektiert">Anomalie in der Nähe</span>
-            {% endif %}
-            {% if SPACECRAFT.getLss and closescolonydistance %}
-            <br />
-            <span
-                style="border: 2px solid {{ gradientColorOverLimit(closescolonydistance, 1, wrapper.getSensorRange * 2) }}"
-                title="Es wurde eine kolonisierbare Kolonie in der Nähe detektiert">
-                {% if SPACECRAFT.getSystem %}
-                Kolonisierbare Kolonie in {{ closescolonydistance }} Feldern
-                {% else %}
-                System mit Kolonie in {{ closescolonydistance }} Feldern
-                {% endif %}
-            </span>
             {% endif %}
         </td>
         {% if starSystem %}

@@ -6,7 +6,6 @@ namespace Stu\Component\Map;
 
 enum DirectionEnum: int
 {
-    case NON = 0;
     case LEFT = 1;
     case BOTTOM = 2;
     case RIGHT = 3;
@@ -18,8 +17,7 @@ enum DirectionEnum: int
             self::LEFT => self::RIGHT,
             self::BOTTOM => self::TOP,
             self::RIGHT => self::LEFT,
-            self::TOP => self::BOTTOM,
-            self::NON => self::NON
+            self::TOP => self::BOTTOM
         };
     }
 }

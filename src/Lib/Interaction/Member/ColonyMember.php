@@ -35,6 +35,7 @@ class ColonyMember implements InteractionMemberInterface
     #[Override]
     public function canBeAccessedFrom(
         InteractionMemberInterface $other,
+        bool $isFriend,
         callable $shouldCheck
     ): ?InteractionCheckType {
 

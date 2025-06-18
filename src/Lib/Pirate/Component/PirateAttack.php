@@ -59,7 +59,6 @@ class PirateAttack implements PirateAttackInterface
         $this->spacecraftAttackCore->attack(
             $leadWrapper,
             $targetWrapper,
-            false,
             $isFleetFight,
             $informations
         );

@@ -23,11 +23,10 @@ final class RequestDeletionConfirmation implements RequestDeletionConfirmationIn
 
     public function request(UserInterface $user): void
     {
-        $registration = $user->getRegistration();
-        $token = $this->stuHash->hash(time() . $registration->getCreationDate());
+        $token = $this->stuHash->hash(time() . $user->getCreationDate());
 
-        $registration->setDeletionMark(UserEnum::DELETION_REQUESTED);
-        $registration->setPasswordToken($token);
+        $user->setDeletionMark(UserEnum::DELETION_REQUESTED);
+        $user->setPasswordToken($token);
 
         $body = <<<EOT
             Hallo\n\n
@@ -39,7 +38,7 @@ final class RequestDeletionConfirmation implements RequestDeletionConfirmationIn
 
         $mail = $this->mailFactory->createStuMail()
             ->withDefaultSender()
-            ->addTo($registration->getEmail())
+            ->addTo($user->getEmail())
             ->setSubject('Star Trek Universe - Accountlöschung')
             ->setBody(
                 sprintf(

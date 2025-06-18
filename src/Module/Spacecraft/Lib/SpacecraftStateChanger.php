@@ -46,7 +46,7 @@ final class SpacecraftStateChanger implements SpacecraftStateChangerInterface
         }
 
         //repair stuff
-        if ($currentState->isRepairState()) {
+        if ($ship->isUnderRepair()) {
             $this->cancelRepair->cancelRepair($ship);
         } elseif ($currentState === SpacecraftStateEnum::ASTRO_FINALIZING) {
             $this->astroEntryLib->cancelAstroFinalizing($wrapper);
@@ -64,7 +64,7 @@ final class SpacecraftStateChanger implements SpacecraftStateChangerInterface
             $this->cancelMining->cancelMining($wrapper);
         }
 
-        $ship->getCondition()->setState($newState);
+        $ship->setState($newState);
         $this->spacecraftRepository->save($ship);
     }
 
@@ -73,15 +73,14 @@ final class SpacecraftStateChanger implements SpacecraftStateChangerInterface
         SpacecraftWrapperInterface $wrapper,
         SpacecraftAlertStateEnum $alertState
     ): ?string {
+        $ship = $wrapper->get();
 
-        $currentAlertState = $wrapper->getAlertState();
+        $msg = null;
+
+        $currentAlertState = $ship->getAlertState();
 
         //nothing to do
         if ($currentAlertState === $alertState) {
-            return null;
-        }
-
-        if (!$wrapper->get()->hasComputer()) {
             return null;
         }
 
@@ -99,9 +98,6 @@ final class SpacecraftStateChanger implements SpacecraftStateChangerInterface
             $this->consumeEnergyForAlertChange($wrapper, $alertState->getEpsUsage());
         }
 
-        $msg = null;
-        $ship = $wrapper->get();
-
         // cancel repair if not on alert green
         if ($alertState !== SpacecraftAlertStateEnum::ALERT_GREEN && $this->cancelRepair->cancelRepair($ship)) {
             $msg = _('Die Reparatur wurde abgebrochen');
@@ -116,7 +112,7 @@ final class SpacecraftStateChanger implements SpacecraftStateChangerInterface
         }
 
         // now change
-        $wrapper->getComputerSystemDataMandatory()->setAlertState($alertState)->update();
+        $ship->setAlertState($alertState);
 
         return $msg;
     }

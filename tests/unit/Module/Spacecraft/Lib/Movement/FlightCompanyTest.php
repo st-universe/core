@@ -96,11 +96,11 @@ class FlightCompanyTest extends StuTestCase
             ->once()
             ->andReturn($destroyedSpacecraft);
 
-        $spacecraft->shouldReceive('getCondition->isDestroyed')
+        $spacecraft->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
-        $destroyedSpacecraft->shouldReceive('getCondition->isDestroyed')
+        $destroyedSpacecraft->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(true);
@@ -137,7 +137,7 @@ class FlightCompanyTest extends StuTestCase
             $this->preFlightConditionsCheck
         );
 
-        $wrapper->shouldReceive('get->getCondition->isDestroyed')
+        $wrapper->shouldReceive('get->isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(true);
@@ -159,11 +159,11 @@ class FlightCompanyTest extends StuTestCase
             $this->preFlightConditionsCheck
         );
 
-        $wrapper->shouldReceive('get->getCondition->isDestroyed')
+        $wrapper->shouldReceive('get->isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(true);
-        $wrapper2->shouldReceive('get->getCondition->isDestroyed')
+        $wrapper2->shouldReceive('get->isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -350,7 +350,7 @@ class FlightCompanyTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($spacecraft);
-        $spacecraft->shouldReceive('getCondition->isDestroyed')
+        $spacecraft->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);

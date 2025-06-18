@@ -52,7 +52,7 @@ class StateIconAndTitleTest extends StuTestCase
     public static function getStateIconAndTitleForActiveRepairProvider(): array
     {
         return [
-            [false, "Schiffscrew repariert das Schiff"],
+            [false, "Schiffscrew repariert die Station"],
             [true, "Stationscrew repariert die Station"],
         ];
     }

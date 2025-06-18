@@ -101,13 +101,9 @@ class SpacecraftAttackCycleTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($attacker);
-        $firstMatchup->shouldReceive('isAttackingShieldsOnly')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(true);
 
-        $this->attackerProviderFactory->shouldReceive('createSpacecraftAttacker')
-            ->with($attacker, true)
+        $this->attackerProviderFactory->shouldReceive('getSpacecraftAttacker')
+            ->with($attacker)
             ->once()
             ->andReturn($spacecraftAttacker);
 

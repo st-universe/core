@@ -4,16 +4,13 @@ namespace Stu\Module\Spacecraft\Lib\Battle\AlertDetection;
 
 use Doctrine\Common\Collections\Collection;
 use Override;
-use Stu\Component\Game\TimeConstants;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Module\Control\StuTime;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\UserInterface;
 
-//TODO convert conditions to implementations of SkipConditionInterface
 class SkipDetection implements SkipDetectionInterface
 {
     public function __construct(
@@ -24,18 +21,16 @@ class SkipDetection implements SkipDetectionInterface
     #[Override]
     public function isSkipped(
         SpacecraftInterface $incomingSpacecraft,
-        SpacecraftWrapperInterface $alertedWrapper,
+        SpacecraftInterface $alertedSpacecraft,
         ?SpacecraftInterface $tractoringSpacecraft,
         Collection $usersToInformAboutTrojanHorse
     ): bool {
-
-        $alertedSpacecraft = $alertedWrapper->get();
         $alertUser = $alertedSpacecraft->getUser();
         $incomingShipUser = $incomingSpacecraft->getUser();
 
         //alert yellow only attacks if incoming is foe
         if (
-            $alertedWrapper->getAlertState() === SpacecraftAlertStateEnum::ALERT_YELLOW
+            $alertedSpacecraft->getAlertState() === SpacecraftAlertStateEnum::ALERT_YELLOW
             && !$this->playerRelationDeterminator->isEnemy($alertUser, $incomingShipUser)
         ) {
             return true;
@@ -67,7 +62,6 @@ class SkipDetection implements SkipDetectionInterface
         if ($holdingWeb !== null && $holdingWeb->isFinished()) {
             return true;
         }
-
         return $this->skipDueToPirateProtection(
             $incomingShipUser,
             $alertedSpacecraft
@@ -79,19 +73,12 @@ class SkipDetection implements SkipDetectionInterface
         SpacecraftInterface $alertedSpacecraft
     ): bool {
 
-        $time = $this->stuTime->time();
-
-        //pirates don't attack new players
-        if ($incomingShipUser->getRegistration()->getCreationDate() > $time - TimeConstants::EIGHT_WEEKS_IN_SECONDS) {
-            return true;
-        }
-
         //pirates don't attack if user is protected
         $pirateWrath = $incomingShipUser->getPirateWrath();
         if (
             $alertedSpacecraft->getUserId() === UserEnum::USER_NPC_KAZON
             && $pirateWrath !== null
-            && $pirateWrath->getProtectionTimeout() > $time
+            && $pirateWrath->getProtectionTimeout() > $this->stuTime->time()
         ) {
             return true;
         }
@@ -100,6 +87,6 @@ class SkipDetection implements SkipDetectionInterface
         $pirateWrath = $alertedSpacecraft->getUser()->getPirateWrath();
         return $incomingShipUser->getId() === UserEnum::USER_NPC_KAZON
             && $pirateWrath !== null
-            && $pirateWrath->getProtectionTimeout() > $time;
+            && $pirateWrath->getProtectionTimeout() > $this->stuTime->time();
     }
 }

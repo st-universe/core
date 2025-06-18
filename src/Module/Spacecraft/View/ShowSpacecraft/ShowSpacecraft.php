@@ -11,13 +11,12 @@ use Stu\Component\Game\GameEnum;
 use Stu\Component\Player\ColonizationCheckerInterface;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Component\Spacecraft\Nbs\NbsUtilityInterface;
+use Stu\Lib\SessionInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Config\Init;
 use Stu\Lib\Map\NavPanel\NavPanel;
-use Stu\Lib\Session\SessionStorageInterface;
-use Stu\Lib\Trait\SpacecraftShuttleSpaceTrait;
 use Stu\Module\Control\ViewContext;
 use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Control\ViewControllerInterface;
@@ -25,7 +24,6 @@ use Stu\Module\Control\ViewWithTutorialInterface;
 use Stu\Module\Database\View\Category\Wrapper\DatabaseCategoryWrapperFactoryInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Spacecraft\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Module\Spacecraft\Lib\Ui\ShipUiFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
@@ -35,12 +33,9 @@ use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\AnomalyRepositoryInterface;
 use Stu\Orm\Repository\UserLayerRepositoryInterface;
-use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialInterface
 {
-    use SpacecraftShuttleSpaceTrait;
-
     public const string VIEW_IDENTIFIER = 'SHOW_SPACECRAFT';
 
     private ViewContext $viewContext;
@@ -51,16 +46,15 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
      * @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader
      */
     public function __construct(
-        private readonly SpacecraftLoaderInterface $spacecraftLoader,
-        private readonly UserLayerRepositoryInterface $userLayerRepository,
-        private readonly AnomalyRepositoryInterface $anomalyRepository,
-        private readonly DatabaseCategoryWrapperFactoryInterface $databaseCategoryWrapperFactory,
-        private readonly NbsUtilityInterface $nbsUtility,
-        private readonly ColonyRepositoryInterface $colonyRepository,
-        private readonly ShipUiFactoryInterface $shipUiFactory,
-        private readonly SpacecraftCrewCalculatorInterface $shipCrewCalculator,
-        private readonly ColonizationCheckerInterface $colonizationChecker,
-        private readonly SessionStorageInterface $sessionStorage,
+        private SpacecraftLoaderInterface $spacecraftLoader,
+        private UserLayerRepositoryInterface $userLayerRepository,
+        private AnomalyRepositoryInterface $anomalyRepository,
+        private DatabaseCategoryWrapperFactoryInterface $databaseCategoryWrapperFactory,
+        private NbsUtilityInterface $nbsUtility,
+        private ShipUiFactoryInterface $shipUiFactory,
+        private SpacecraftCrewCalculatorInterface $shipCrewCalculator,
+        private ColonizationCheckerInterface $colonizationChecker,
+        private SessionInterface $session,
         private LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->viewContext = new ViewContext(ModuleEnum::SHIP, self::VIEW_IDENTIFIER);
@@ -142,18 +136,13 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
             $game->setTemplateVar('NAV_PANEL', new NavPanel($spacecraft));
         }
 
-        $this->nbsUtility->setNbsTemplateVars($spacecraft, $game, $this->sessionStorage, $tachyonActive);
+        $this->nbsUtility->setNbsTemplateVars($spacecraft, $game, $this->session, $tachyonActive);
 
         $game->setTemplateVar('TACHYON_ACTIVE', $tachyonActive);
         $game->setTemplateVar('CAN_COLONIZE', $canColonize);
         $game->setTemplateVar('OWNS_CURRENT_COLONY', $ownsCurrentColony);
         $game->setTemplateVar('CURRENT_COLONY', $colony);
         $game->setTemplateVar('CLOSEST_ANOMALY_DISTANCE', $this->anomalyRepository->getClosestAnomalyDistance($wrapper));
-        $game->setTemplateVar('HAS_FREE_SHUTTLE_SPACE', $this->hasFreeShuttleSpace($spacecraft));
-        $game->setTemplateVar('STORED_SHUTTLE_COUNT', $this->getStoredShuttleCount($spacecraft));
-        if ($game->getUser()->getState() === UserEnum::USER_STATE_COLONIZATION_SHIP) {
-            $game->setTemplateVar('CLOSEST_COLONIZABLE_DISTANCE', $this->colonyRepository->getClosestColonizableColonyDistance($wrapper));
-        }
 
         $userLayers = $user->getUserLayers();
         if ($spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::TRANSWARP_COIL)) {

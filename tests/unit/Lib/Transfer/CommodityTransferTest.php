@@ -572,7 +572,7 @@ class CommodityTransferTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(new ArrayCollection([42 => $storage]));
-        $ship->shouldReceive('getRump->getBeamFactor')
+        $ship->shouldReceive('getBeamFactor')
             ->withNoArgs()
             ->andReturn(10);
         $ship->shouldReceive('getUser')

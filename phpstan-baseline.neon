@@ -20,7 +20,7 @@ parameters:
 
 		-
 			message: '''
-				#^Access to constant on deprecated class Stu\\Component\\Logging\\GameRequest\\Adapter\\DatabaseAdapter\:
+				#^Fetching class constant class of deprecated class Stu\\Component\\Logging\\GameRequest\\Adapter\\DatabaseAdapter\:
 				Use LogfileAdapter$#
 			'''
 			identifier: classConstant.deprecatedClass
@@ -118,6 +118,78 @@ parameters:
 			path: src/Lib/Request/CustomRequestParserFactory.php
 
 		-
+			message: '#^Cannot call method getSessionDataUnserialized\(\) on Stu\\Orm\\Entity\\UserInterface\|null\.$#'
+			identifier: method.nonObject
+			count: 4
+			path: src/Lib/Session.php
+
+		-
+			message: '#^Cannot call method setSessionData\(\) on Stu\\Orm\\Entity\\UserInterface\|null\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: src/Lib/Session.php
+
+		-
+			message: '#^Method Stu\\Lib\\Session\:\:deleteSessionData\(\) has parameter \$value with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Lib/Session.php
+
+		-
+			message: '#^Method Stu\\Lib\\Session\:\:getSessionValue\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Lib/Session.php
+
+		-
+			message: '#^Method Stu\\Lib\\Session\:\:hasSessionValue\(\) has parameter \$value with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Lib/Session.php
+
+		-
+			message: '#^Method Stu\\Lib\\Session\:\:storeSessionData\(\) has parameter \$value with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Lib/Session.php
+
+		-
+			message: '#^Parameter \#1 \$name of function setcookie expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Lib/Session.php
+
+		-
+			message: '#^Parameter \#1 \$post of method Stu\\Orm\\Repository\\UserRepositoryInterface\:\:save\(\) expects Stu\\Orm\\Entity\\UserInterface, Stu\\Orm\\Entity\\UserInterface\|null given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Lib/Session.php
+
+		-
+			message: '#^Parameter \#1 \$sessionId of method Stu\\Orm\\Repository\\UserIpTableRepositoryInterface\:\:findBySessionId\(\) expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Lib/Session.php
+
+		-
+			message: '#^Parameter \#1 \$user of method Stu\\Orm\\Repository\\SessionStringRepositoryInterface\:\:truncate\(\) expects Stu\\Orm\\Entity\\UserInterface, Stu\\Orm\\Entity\\UserInterface\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Lib/Session.php
+
+		-
+			message: '#^Parameter \#2 \$value of function setcookie expects string, int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Lib/Session.php
+
+		-
+			message: '#^Method Stu\\Lib\\SessionInterface\:\:getSessionValue\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Lib/SessionInterface.php
+
+		-
 			message: '#^Method Stu\\Lib\\SignatureWrapper\:\:__construct\(\) has parameter \$signature with no type specified\.$#'
 			identifier: missingType.parameter
 			count: 1
@@ -188,6 +260,24 @@ parameters:
 			identifier: method.nonObject
 			count: 1
 			path: src/Module/Admin/Action/StartMirrorWorld.php
+
+		-
+			message: '#^Offset 0 might not exist on array\{int\|null, int\|null, int\|null\}\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: src/Module/Admin/View/Map/ShowMapOverall.php
+
+		-
+			message: '#^Offset 1 might not exist on array\{int\|null, int\|null, int\|null\}\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: src/Module/Admin/View/Map/ShowMapOverall.php
+
+		-
+			message: '#^Offset 2 might not exist on array\{int\|null, int\|null, int\|null\}\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: src/Module/Admin/View/Map/ShowMapOverall.php
 
 		-
 			message: '#^Parameter \#2 \$src_image of function imagecopyresized expects GdImage, GdImage\|false given\.$#'
@@ -380,6 +470,24 @@ parameters:
 			identifier: missingType.iterableValue
 			count: 1
 			path: src/Module/Alliance/Lib/AllianceListItem.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between Stu\\Orm\\Entity\\AllianceBoardInterface and null will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: src/Module/Alliance/View/Board/Board.php
+
+		-
+			message: '#^Cannot call method getId\(\) on Stu\\Orm\\Entity\\AllianceInterface\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Module/Alliance/View/BoardSettings/BoardSettings.php
+
+		-
+			message: '#^Cannot call method getId\(\) on Stu\\Orm\\Entity\\AllianceInterface\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Module/Alliance/View/NewPost/NewPost.php
 
 		-
 			message: '#^Strict comparison using \=\=\= between Stu\\Orm\\Entity\\AllianceBoardTopicInterface and null will always evaluate to false\.$#'
@@ -862,6 +970,12 @@ parameters:
 			path: src/Module/Database/View/UserList/UserList.php
 
 		-
+			message: '#^Parameter \#1 \$data of method Stu\\Module\\Control\\StuHashInterface\:\:hash\(\) expects string, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Module/Maindesk/Action/SmsVerification/SmsVerification.php
+
+		-
 			message: '#^Cannot call method close\(\) on Directory\|false\.$#'
 			identifier: method.nonObject
 			count: 1
@@ -974,6 +1088,18 @@ parameters:
 			identifier: booleanAnd.leftAlwaysTrue
 			count: 1
 			path: src/Module/Message/Lib/PrivateMessageListItem.php
+
+		-
+			message: '#^Result of && is always false\.$#'
+			identifier: booleanAnd.alwaysFalse
+			count: 1
+			path: src/Module/NPC/View/ShowBuildplanCreator/ShowBuildplanCreator.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between bool and 0 will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: src/Module/NPC/View/ShowBuildplanCreator/ShowBuildplanCreator.php
 
 		-
 			message: '#^Strict comparison using \=\=\= between Stu\\Orm\\Entity\\NoteInterface and null will always evaluate to false\.$#'
@@ -1372,10 +1498,28 @@ parameters:
 			path: src/Module/Tick/TickManager.php
 
 		-
+			message: '#^Parameter \#1 \$turn of method Stu\\Module\\Tick\\TickManager\:\:endTurn\(\) expects Stu\\Orm\\Entity\\GameTurnInterface, Stu\\Orm\\Entity\\GameTurnInterface\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Module/Tick/TickManager.php
+
+		-
+			message: '#^Parameter \#1 \$turn of method Stu\\Module\\Tick\\TickManager\:\:startTurn\(\) expects Stu\\Orm\\Entity\\GameTurnInterface, Stu\\Orm\\Entity\\GameTurnInterface\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Module/Tick/TickManager.php
+
+		-
 			message: '#^Parameter \#1 \$tradePost of method Stu\\Module\\Trade\\Lib\\TradeLibFactoryInterface\:\:createTradePostStorageManager\(\) expects Stu\\Orm\\Entity\\TradePostInterface, Stu\\Orm\\Entity\\TradePostInterface\|null given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Module/Trade/Action/BuyLotteryTickets/BuyLotteryTickets.php
+
+		-
+			message: '#^Call to Stu\\Exception\\AccessViolation\:\:__construct\(\) on a separate line has no effect\.$#'
+			identifier: new.resultUnused
+			count: 1
+			path: src/Module/Trade/Action/CancelOffer/CancelOffer.php
 
 		-
 			message: '#^Strict comparison using \=\=\= between int\<1, max\> and null will always evaluate to false\.$#'
@@ -1655,7 +1799,7 @@ parameters:
 
 		-
 			message: '''
-				#^Access to constant on deprecated class Stu\\Orm\\Repository\\GameRequestRepository\:
+				#^Fetching class constant class of deprecated class Stu\\Orm\\Repository\\GameRequestRepository\:
 				Use logfile logging$#
 			'''
 			identifier: classConstant.deprecatedClass

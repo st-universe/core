@@ -37,11 +37,11 @@ class IncomingBattlePartyTest extends StuTestCase
         $ship->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($user);
-        $ship->shouldReceive('getCondition->isDestroyed')
+        $ship->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->zeroOrMoreTimes()
             ->andReturn(false);
-        $ship->shouldReceive('getCondition->isDisabled')
+        $ship->shouldReceive('isDisabled')
             ->withNoArgs()
             ->zeroOrMoreTimes()
             ->andReturn(false);
@@ -80,11 +80,11 @@ class IncomingBattlePartyTest extends StuTestCase
         $ship->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($user);
-        $ship->shouldReceive('getCondition->isDestroyed')
+        $ship->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->zeroOrMoreTimes()
             ->andReturn(false);
-        $ship->shouldReceive('getCondition->isDisabled')
+        $ship->shouldReceive('isDisabled')
             ->withNoArgs()
             ->zeroOrMoreTimes()
             ->andReturn(false);
@@ -129,11 +129,11 @@ class IncomingBattlePartyTest extends StuTestCase
         $ship->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($user);
-        $ship->shouldReceive('getCondition->isDestroyed')
+        $ship->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->zeroOrMoreTimes()
             ->andReturn(false);
-        $ship->shouldReceive('getCondition->isDisabled')
+        $ship->shouldReceive('isDisabled')
             ->withNoArgs()
             ->zeroOrMoreTimes()
             ->andReturn(false);
@@ -195,10 +195,10 @@ class IncomingBattlePartyTest extends StuTestCase
         $ship->shouldReceive('isWarped')
             ->withNoArgs()
             ->andReturn(false);
-        $ship->shouldReceive('getCondition->isDestroyed')
+        $ship->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->andReturn(false);
-        $ship->shouldReceive('getCondition->isDisabled')
+        $ship->shouldReceive('isDisabled')
             ->withNoArgs()
             ->andReturn(false);
         $ship->shouldReceive('isStation')

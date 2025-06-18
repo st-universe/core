@@ -148,7 +148,7 @@ final class PrivateMessageRepository extends EntityRepository implements Private
     #[Override]
     public function hasRecentMessage(UserInterface $user): bool
     {
-        return (int)$this->getEntityManager()->createQuery(
+        return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT count(pm.id)
                     FROM %s pm
@@ -198,29 +198,6 @@ final class PrivateMessageRepository extends EntityRepository implements Private
                 'out' => PrivateMessageFolderTypeEnum::SPECIAL_PMOUT
             ])
             ->getResult();
-    }
-
-    #[Override]
-    public function getAmountSince(int $timestamp): int
-    {
-
-        return (int)$this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT count(pm.id)
-                    FROM %s pm
-                    JOIN %s pmf
-                    WITH pm.category = pmf
-                    WHERE pm.date > :threshold
-                    AND pmf.special != :outbox',
-                PrivateMessage::class,
-                PrivateMessageFolder::class
-            )
-        )
-            ->setParameters([
-                'threshold' => $timestamp,
-                'outbox' => PrivateMessageFolderTypeEnum::SPECIAL_PMOUT
-            ])
-            ->getSingleScalarResult();
     }
 
     #[Override]

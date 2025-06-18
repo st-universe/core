@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Lib;
 
-use Stu\Module\Control\Router\FallbackRouteException;
+use Stu\Exception\StuException;
 
-final class LoginException extends FallbackRouteException {}
+final class LoginException extends StuException
+{
+}
