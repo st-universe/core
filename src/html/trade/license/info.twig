@@ -1,6 +1,7 @@
 <form method="post" action="trade.php">
     {% if LICENSEINFO %}
     <table class="tcal">
+        <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
         <input type="hidden" name="postid" value="{{ LICENSEINFO.getTradepost.getId }}" />
         <input type="hidden" name="renewlicense" value="1" />
         <tr>
