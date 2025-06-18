@@ -1,0 +1,12 @@
+{% set currentValue = setting.getCurrentValue %}
+<select name="{{ setting.getParameterName }}">
+    {% if setting.getType.isNullable %}
+    <option value="0">----------------------</option>
+    {% endif %}
+    {% for enum in setting.getPossibleValues %}
+    {% set selected = currentValue == enum ? 'selected="1"' : '' %}
+    <option value="{{ enum.value }}" {{ selected }}>
+        {{ enum.getTitle }}
+    </option>
+    {% endfor %}
+</select>

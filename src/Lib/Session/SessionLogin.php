@@ -5,6 +5,7 @@ namespace Stu\Lib\Session;
 use DateTime;
 use Override;
 use Stu\Component\Game\TimeConstants;
+use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Exception\SessionInvalidException;
 use Stu\Lib\LoginException;
 use Stu\Lib\UserLockedException;
@@ -19,12 +20,13 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 final class SessionLogin implements SessionLoginInterface
 {
     public function __construct(
-        private UserIpTableRepositoryInterface $userIpTableRepository,
-        private SessionStringRepositoryInterface $sessionStringRepository,
-        private UserRepositoryInterface $userRepository,
+        private readonly UserIpTableRepositoryInterface $userIpTableRepository,
+        private readonly SessionStringRepositoryInterface $sessionStringRepository,
+        private readonly UserRepositoryInterface $userRepository,
+        private readonly UserSettingsProviderInterface $userSettingsProvider,
         private readonly SessionInterface $session,
         private readonly SessionDestructionInterface $sessionDestruction,
-        private StuHashInterface $stuHash
+        private readonly StuHashInterface $stuHash
     ) {}
 
     /**
@@ -54,7 +56,7 @@ final class SessionLogin implements SessionLoginInterface
 
         $this->sessionStringRepository->truncate($user);
 
-        if (!$user->isSaveLogin()) {
+        if (!$this->userSettingsProvider->isSaveLogin($user)) {
             $cookieString = $this->buildCookieString($user);
             setcookie('sstr', $cookieString, ['expires' => time() + TimeConstants::TWO_DAYS_IN_SECONDS]);
         }

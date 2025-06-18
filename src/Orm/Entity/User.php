@@ -19,12 +19,8 @@ use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use Override;
 use Stu\Component\Game\GameEnum;
-use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Player\UserAwardEnum;
-use Stu\Component\Player\UserCssClassEnum;
-use Stu\Component\Player\UserRpgBehaviorEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Module\PlayerSetting\Lib\UserSettingEnum;
 use Stu\Orm\Repository\UserRepository;
 
 #[Table(name: 'stu_user')]
@@ -204,28 +200,6 @@ class User implements UserInterface
     }
 
     #[Override]
-    public function getRgbCode(): string
-    {
-        $setting = $this->getSettings()->get(UserSettingEnum::RGB_CODE->value);
-        if ($setting !== null) {
-            return $setting->getValue();
-        }
-
-        return '';
-    }
-
-    #[Override]
-    public function getCss(): string
-    {
-        $setting = $this->getSettings()->get(UserSettingEnum::CSS_COLOR_SHEET->value);
-        if ($setting !== null) {
-            return $setting->getValue();
-        }
-
-        return UserCssClassEnum::BLACK->value;
-    }
-
-    #[Override]
     public function getFactionId(): int
     {
         return $this->race;
@@ -298,28 +272,6 @@ class User implements UserInterface
     }
 
     #[Override]
-    public function getAvatar(): string
-    {
-        $setting = $this->getSettings()->get(UserSettingEnum::AVATAR->value);
-        if ($setting !== null) {
-            return $setting->getValue();
-        }
-
-        return '';
-    }
-
-    #[Override]
-    public function isEmailNotification(): bool
-    {
-        $setting = $this->getSettings()->get(UserSettingEnum::EMAIL_NOTIFICATION->value);
-        if ($setting !== null) {
-            return (bool)$setting->getValue();
-        }
-
-        return false;
-    }
-
-    #[Override]
     public function getLastaction(): int
     {
         return $this->lastaction;
@@ -379,17 +331,6 @@ class User implements UserInterface
     }
 
     #[Override]
-    public function isStorageNotification(): bool
-    {
-        $setting = $this->getSettings()->get(UserSettingEnum::STORAGE_NOTIFICATION->value);
-        if ($setting !== null) {
-            return (bool)$setting->getValue();
-        }
-
-        return false;
-    }
-
-    #[Override]
     public function getDescription(): string
     {
         return $this->description;
@@ -400,61 +341,6 @@ class User implements UserInterface
     {
         $this->description = $description;
         return $this;
-    }
-
-    #[Override]
-    public function isShowOnlineState(): bool
-    {
-        $setting = $this->getSettings()->get(UserSettingEnum::SHOW_ONLINE_STATUS->value);
-        if ($setting !== null) {
-            return (bool)$setting->getValue();
-        }
-
-        return false;
-    }
-
-    #[Override]
-    public function isShowPmReadReceipt(): bool
-    {
-        $setting = $this->getSettings()->get(UserSettingEnum::SHOW_PM_READ_RECEIPT->value);
-        if ($setting !== null) {
-            return (bool)$setting->getValue();
-        }
-
-        return false;
-    }
-
-    #[Override]
-    public function isSaveLogin(): bool
-    {
-        $setting = $this->getSettings()->get(UserSettingEnum::SAVE_LOGIN->value);
-        if ($setting !== null) {
-            return (bool)$setting->getValue();
-        }
-
-        return false;
-    }
-
-    #[Override]
-    public function getFleetFixedDefault(): bool
-    {
-        $setting = $this->getSettings()->get(UserSettingEnum::FLEET_FIXED_DEFAULT->value);
-        if ($setting !== null) {
-            return (bool)$setting->getValue();
-        }
-
-        return false;
-    }
-
-    #[Override]
-    public function getWarpsplitAutoCarryoverDefault(): bool
-    {
-        $setting = $this->getSettings()->get(UserSettingEnum::WARPSPLIT_AUTO_CARRYOVER_DEFAULT->value);
-        if ($setting !== null) {
-            return (bool)$setting->getValue();
-        }
-
-        return false;
     }
 
     #[Override]
@@ -506,28 +392,6 @@ class User implements UserInterface
     {
         $this->prestige = $prestige;
         return $this;
-    }
-
-    #[Override]
-    public function getDefaultView(): ModuleEnum
-    {
-        $setting = $this->getSettings()->get(UserSettingEnum::DEFAULT_VIEW->value);
-        if ($setting !== null) {
-            return ModuleEnum::from($setting->getValue());
-        }
-
-        return ModuleEnum::MAINDESK;
-    }
-
-    #[Override]
-    public function getRpgBehavior(): UserRpgBehaviorEnum
-    {
-        $setting = $this->getSettings()->get(UserSettingEnum::RPG_BEHAVIOR->value);
-        if ($setting !== null) {
-            return UserRpgBehaviorEnum::from((int)$setting->getValue());
-        }
-
-        return UserRpgBehaviorEnum::NOT_SET;
     }
 
     #[Override]
@@ -647,28 +511,6 @@ class User implements UserInterface
     }
 
     #[Override]
-    public function isShowPirateHistoryEntrys(): bool
-    {
-        $setting = $this->getSettings()->get(UserSettingEnum::SHOW_PIRATE_HISTORY_ENTRYS->value);
-        if ($setting !== null) {
-            return (bool)$setting->getValue();
-        }
-
-        return false;
-    }
-
-    #[Override]
-    public function isInboxMessengerStyle(): bool
-    {
-        $setting = $this->getSettings()->get(UserSettingEnum::INBOX_MESSENGER_STYLE->value);
-        if ($setting !== null) {
-            return (bool)$setting->getValue();
-        }
-
-        return false;
-    }
-
-    #[Override]
     public function getCharacters(): Collection
     {
         return $this->characters;
@@ -680,9 +522,7 @@ class User implements UserInterface
         return $this->colonyScans;
     }
 
-    /**
-     * @return Collection<int, BuoyInterface>
-     */
+    #[Override]
     public function getBuoys(): Collection
     {
         return $this->buoys;
@@ -718,9 +558,6 @@ class User implements UserInterface
         return $timeout > time();
     }
 
-    /**
-     * @return Collection<int, UserTutorialInterface>
-     */
     #[Override]
     public function getTutorials(): Collection
     {
@@ -728,10 +565,7 @@ class User implements UserInterface
     }
 
     #[Override]
-    /**
-     * @return Collection<int, WormholeRestriction>
-     */
-    public function getWormholeRestrictions(): iterable
+    public function getWormholeRestrictions(): Collection
     {
         return $this->wormholeRestrictions;
     }

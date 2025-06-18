@@ -14,7 +14,6 @@
 </div>
 <br>
 <div id="result" style="display: none;">..</div>
-
 <div class="optionsView">
     <form action="options.php" method="post">
         <table class="tcal">
@@ -87,50 +86,52 @@
         </table>
     </form>
     <br>
-    <form action="options.php" method="post" enctype="multipart/form-data">
+        <form action="options.php" method="post" enctype="multipart/form-data">
         <table class="tcal">
             <tr>
                 <th colspan="2">Avatar</th>
             </tr>
-            <tr>
-                <td rowspan="3" style="vertical-align: top; width: 160px;">
-                    <div class="userAvatar">
+            
+<tr>
+    <td rowspan="3" style="vertical-align: top; width: 160px;">
+        <div class="userAvatar">
     <a href="/userprofile.php?uid=101">
                 <img src="/assets/rassen//1kn.png" title="Siedler 101">
             </a>
 </div>
 
-                </td>
-                <td>
+    </td>
+    <td>
 <input type="file" class="button" name="avatar"> <input type="submit" name="B_CHANGE_AVATAR" value="Hochladen" class="button">
 </td>
-            </tr>
-            <tr>
-                <td style="height: 125px; vertical-align: top;">Hier kannst Du einen Avatar
-                    hochladen der in Deinem Profil angezeigt wird. Dieses Bild sollte
-                    150x150 Pixel gro&szlig; sein und im PNG-Format vorliegen.</td>
-            </tr>
+</tr>
+<tr>
+    <td style="height: 125px; vertical-align: top;">Hier kannst Du einen Avatar
+                            hochladen der in Deinem Profil angezeigt wird. Dieses Bild sollte
+                            150x150 Pixel gro&szlig; sein und im PNG-Format vorliegen.</td>
+</tr>
         </table>
     </form>
     <br>
-    <form action="options.php" method="post">
+        <form action="options.php" method="post">
         <table class="tcal">
             <tr>
-                <th>Territorialfarbe</th>
+                <th colspan="2">Territorialfarbe</th>
             </tr>
             <tr>
-                <td>
-<input type="text" style="width: 250px;" name="rgb_code" class="text" value=""> <input type="submit" name="B_CHANGE_USER_RGB" value="&auml;ndern" class="button">
-</td>
-            </tr>
-            <tr>
-                <td>Dieser RGB-Farbcode kennzeichnet Kartenfelder, die dem Spieler zugeordnet
-                    werden k&ouml;nnen. Beispiel: #9ab5ef</td>
-            </tr>
+    <td>
+<input type="text" style="width: 250px;" name="rgb_code" class="text" value="">
+        <input type="submit" name="B_CHANGE_USER_RGB" value="&auml;ndern" class="button">
+    </td>
+</tr>
+<tr>
+    <td>Dieser RGB-Farbcode kennzeichnet Kartenfelder, die dem Spieler zugeordnet
+                                werden k&ouml;nnen. Beispiel: #9ab5ef</td>
+</tr>
         </table>
     </form>
     <br>
-    <form action="options.php" method="post">
+        <form action="options.php" method="post">
         <table class="tcal">
             <tr>
                 <th>Siedlerbeschreibung</th>
@@ -149,186 +150,158 @@
     <form action="options.php" method="post">
         <table class="tcal">
             <th colspan="2">Accounteinstellungen</th>
-            <tr>
+                        <tr>
                 <td>
-                                        <input type="checkbox" name="email_notification" value="1">
-                                    </td>
-                <td>
-                    Emailbenachrichtigung bei privaten Nachrichten
-                </td>
+<input type="checkbox" name="email_notification" value="1">
+</td>
+                <td>Emailbenachrichtigung bei privaten Nachrichten</td>
             </tr>
-            <tr>
+                        <tr>
                 <td>
-                                        <input type="checkbox" name="save_login" value="1">
-                                    </td>
-                <td>
-                    Login nicht speichern (Ideal an fremden Computern)
-                </td>
+<input type="checkbox" name="save_login" value="1">
+</td>
+                <td>Login nicht speichern (Ideal an fremden Computern)</td>
             </tr>
-            <tr>
+                        <tr>
                 <td>
-                                        <input type="checkbox" name="storage_notification" value="1">
-                                    </td>
-                <td>
-                    Nachricht bei vollen Lagern zum Tick
-                </td>
+<input type="checkbox" name="storage_notification" value="1">
+</td>
+                <td>Nachricht bei vollen Lagern zum Tick</td>
             </tr>
-            <tr>
+                        <tr>
                 <td>
-                                        <input type="checkbox" name="show_online_status" value="1">
-                                    </td>
-                <td>
-                    Online Status &ouml;ffentlich
-                </td>
+<input type="checkbox" name="show_online_status" value="1">
+</td>
+                <td>Online Status &ouml;ffentlich</td>
             </tr>
-            <tr>
+                        <tr>
                 <td>
-                                        <input type="checkbox" name="show_pm_read_receipt" value="1">
-                                    </td>
-                <td>
-                    Lesebest&auml;tigungen bei PMs anzeigen (nur wenn sowohl Sender als auch
-                    Empf&auml;nger den Haken gesetzt haben)
-                </td>
+<input type="checkbox" name="show_pm_read_receipt" value="1">
+</td>
+                <td>Lesebest&auml;tigungen bei PMs anzeigen (nur wenn sowohl Sender als auch Empf&auml;nger den Haken gesetzt haben)</td>
             </tr>
-            <tr>
+                        <tr>
                 <td>
-                                        <input type="checkbox" name="fleet_fixed_default" value="1">
-                                    </td>
-                <td>
-                    Flotten standardm&auml;&szlig;ig fixieren, sodass keine Schiffe beim Flug verloren
-                    gehen k&ouml;nnen.
-                </td>
+<input type="checkbox" name="fleet_fixed_default" value="1">
+</td>
+                <td>Flotten standardm&auml;&szlig;ig fixieren, sodass keine Schiffe beim Flug verloren gehen k&ouml;nnen.</td>
             </tr>
-            <tr>
+                        <tr>
                 <td>
-                                        <input type="checkbox" name="warpsplit_auto_carryover_default" value="1">
-                                    </td>
-                <td>
-                    F&uuml;hrt dazu, dass &uuml;bersch&uuml;ssige Reaktorleistung bei Schiffen automatisch an die &uuml;brigen Systeme
-                    transferiert wird.
-                </td>
+<input type="checkbox" name="warpsplit_auto_carryover_default" value="1">
+</td>
+                <td>F&uuml;hrt dazu, dass &uuml;bersch&uuml;ssige Reaktorleistung bei Schiffen automatisch an die &uuml;brigen Systeme transferiert wird.</td>
             </tr>
-            <tr>
+                        <tr>
                 <td>
-                                        <input type="checkbox" name="show_pirate_history_entrys" value="1">
-                                    </td>
-                <td>
-                    Zeigt eintr&auml;ge in der History an die durch Interaktion mit dem
-                    Piraten NPC entstanden sind.
-                </td>
+<input type="checkbox" name="show_pirate_history_entrys" value="1">
+</td>
+                <td>Zeigt eintr&auml;ge in der History an die durch Interaktion mit dem Piraten NPC entstanden sind.</td>
             </tr>
-            <tr>
+                        <tr>
                 <td>
-                                        <input type="checkbox" name="inbox_messenger_style" value="1">
-                                    </td>
-                <td>
-                    Nachrichteneingang des "Pers&ouml;nlich"-Ordners ist wie bei einem Messenger nach Kontakten gruppiert.
-                </td>
+<input type="checkbox" name="inbox_messenger_style" value="1">
+</td>
+                <td>Nachrichteneingang des "Pers&ouml;nlich"-Ordners ist wie bei einem Messenger nach Kontakten gruppiert.</td>
             </tr>
-            <tr>
+                        <tr>
                 <td>
-                                        <select name="default_view">
-                        <option value="0">----------------------</option>
-                                                                        <option value="maindesk" selected>
-                            Maindesk
-                        </option>
-                                                                                                <option value="colony">
-                            Kolonien
-                        </option>
-                                                                                                <option value="ship">
-                            Schiffe
-                        </option>
-                                                                                                <option value="station">
-                            Stationen
-                        </option>
-                                                                                                <option value="comm">
-                            KommNet
-                        </option>
-                                                                                                <option value="pm">
-                            Nachrichten
-                        </option>
-                                                                                                <option value="research">
-                            Forschung
-                        </option>
-                                                                                                <option value="trade">
-                            Handel
-                        </option>
-                                                                                                <option value="alliance">
-                            Allianz
-                        </option>
-                                                                                                <option value="database">
-                            Datenbank
-                        </option>
-                                                                                                <option value="history">
-                            Ereignisse
-                        </option>
-                                                                                                <option value="starmap">
-                            Karte
-                        </option>
-                                                                                                <option value="options">
-                            Optionen
-                        </option>
-                                                                                                <option value="userprofile">
-                            Spielerprofil
-                        </option>
-                                                                    </select>
-                </td>
-                <td>
-                    Auswahl der Startseite, welche nach dem Login angezeigt werden soll.
-                </td>
+<select name="default_view">
+        <option value="0">----------------------</option>
+                <option value="maindesk" selected>
+        Maindesk
+    </option>
+            <option value="colony">
+        Kolonien
+    </option>
+            <option value="ship">
+        Schiffe
+    </option>
+            <option value="station">
+        Stationen
+    </option>
+            <option value="comm">
+        KommNet
+    </option>
+            <option value="pm">
+        Nachrichten
+    </option>
+            <option value="research">
+        Forschung
+    </option>
+            <option value="trade">
+        Handel
+    </option>
+            <option value="alliance">
+        Allianz
+    </option>
+            <option value="database">
+        Datenbank
+    </option>
+            <option value="history">
+        Ereignisse
+    </option>
+            <option value="starmap">
+        Karte
+    </option>
+            <option value="options">
+        Optionen
+    </option>
+            <option value="userprofile">
+        Spielerprofil
+    </option>
+    </select>
+</td>
+                <td>Auswahl der Startseite, welche nach dem Login angezeigt werden soll.</td>
             </tr>
-            <tr>
+                        <tr>
                 <td>
-                                        <select name="rpg_behavior">
-                                                                        <option value="0" selected>
-                            Der Spieler hat seine Rollenspieleinstellung nicht gesetzt
-                        </option>
-                                                                                                <option value="1">
-                            Der Spieler betreibt gerne Rollenspiel
-                        </option>
-                                                                                                <option value="2">
-                            Der Spieler betreibt gelegentlich Rollenspiel
-                        </option>
-                                                                                                <option value="3">
-                            Der Spieler betreibt ungern Rollenspiel
-                        </option>
-                                                                    </select>
-                </td>
-                <td>
-                    Information f&uuml;r andere Spieler ob man selbst gern Rollenspiel betreibt.
-                </td>
+<select name="rpg_behavior">
+                <option value="0" selected>
+        Der Spieler hat seine Rollenspieleinstellung nicht gesetzt
+    </option>
+            <option value="1">
+        Der Spieler betreibt gerne Rollenspiel
+    </option>
+            <option value="2">
+        Der Spieler betreibt gelegentlich Rollenspiel
+    </option>
+            <option value="3">
+        Der Spieler betreibt ungern Rollenspiel
+    </option>
+    </select>
+</td>
+                <td>Information f&uuml;r andere Spieler ob man selbst gern Rollenspiel betreibt.</td>
             </tr>
-            <tr>
+                        <tr>
                 <td>
-                    <select name="css_color_sheet">
-                                                                                                <option value="schwarz" selected>
-                            Schwarz
-                        </option>
-                                                                                                                        <option value="lila">
-                            Lila
-                        </option>
-                                                                                                                        <option value="gr&uuml;n">
-                            Gr&uuml;n
-                        </option>
-                                                                                                                        <option value="gelb">
-                            Gelb
-                        </option>
-                                                                                                                        <option value="rot">
-                            Rot
-                        </option>
-                                                                                                                        <option value="lcars">
-                            LCARS
-                        </option>
-                                                                                                                        <option value="orange">
-                            Orange
-                        </option>
-                                                                    </select>
-                </td>
-                <td>
-                    Auswahl der Interface-Farben.
-                </td>
+<select name="css_color_sheet">
+                <option value="schwarz" selected>
+        Schwarz
+    </option>
+            <option value="lila">
+        Lila
+    </option>
+            <option value="gr&uuml;n">
+        Gr&uuml;n
+    </option>
+            <option value="gelb">
+        Gelb
+    </option>
+            <option value="rot">
+        Rot
+    </option>
+            <option value="lcars">
+        LCARS
+    </option>
+            <option value="orange">
+        Orange
+    </option>
+    </select>
+</td>
+                <td>Auswahl der Interface-Farben.</td>
             </tr>
-            <tr>
+                        <tr>
                 <td>
                     <input type="submit" class="button" value="Tutorial Neustart" name="B_CREATE_TUTORIALS">
                 </td>

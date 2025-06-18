@@ -6,6 +6,7 @@ namespace Stu\Module\Message\Lib;
 
 use InvalidArgumentException;
 use Override;
+use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Lib\General\EntityWithHrefInterface;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\StuTime;
@@ -21,11 +22,12 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
     public static array $blockedUserIds = [];
 
     public function __construct(
-        private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
-        private PrivateMessageRepositoryInterface $privateMessageRepository,
-        private UserRepositoryInterface $userRepository,
-        private EmailNotificationSenderInterface $emailNotificationSender,
-        private StuTime $stuTime
+        private readonly PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
+        private readonly PrivateMessageRepositoryInterface $privateMessageRepository,
+        private readonly UserRepositoryInterface $userRepository,
+        private readonly EmailNotificationSenderInterface $emailNotificationSender,
+        private readonly UserSettingsProviderInterface $userSettingsProvider,
+        private readonly StuTime $stuTime
     ) {}
 
     #[Override]
@@ -163,7 +165,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
 
         if (
             $folderType === PrivateMessageFolderTypeEnum::SPECIAL_MAIN
-            && $recipient->isEmailNotification()
+            && $this->userSettingsProvider->isEmailNotification($recipient)
         ) {
             $this->emailNotificationSender->sendNotification($sender->getName(), $text, $recipient);
         }

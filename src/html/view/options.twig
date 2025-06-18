@@ -1,5 +1,3 @@
-{% from 'html/macros.twig' import userAvatar %}
-
 <div class="optionsView">
     <form action="options.php" method="post">
         <table class="tcal">
@@ -60,8 +58,8 @@
             </tr>
             <tr>
                 <td><input type="text" style="width: 250px;" name="email" class="text"
-                        value="{{ REAL_USER.getRegistration.getEmail }}" /> <input type="submit" name="B_CHANGE_EMAIL" value="ändern"
-                        class="button" /></td>
+                        value="{{ REAL_USER.getRegistration.getEmail }}" /> <input type="submit" name="B_CHANGE_EMAIL"
+                        value="ändern" class="button" /></td>
             </tr>
             <tr>
                 <td>Beachte bitte, dass diese Adresse gültig ist und benutze keine Wegwerf
@@ -71,43 +69,17 @@
         </table>
     </form>
     <br />
-    <form action="options.php" method="post" enctype="multipart/form-data">
+    {% for setting in DISTINCT_SETTING_WRAPPERS %}
+    <form action="options.php" method="post" {% if setting.encType %}enctype="{{ setting.getEnctype }}" {% endif %}>
         <table class="tcal">
             <tr>
-                <th colspan="2">Avatar</th>
+                <th colspan="2">{{ setting.getType.getTitle }}</th>
             </tr>
-            <tr>
-                <td rowspan="3" style="vertical-align: top; width: 160px;">
-                    {{ userAvatar(REAL_USER) }}
-                </td>
-                <td><input type="file" class="button" name="avatar" /> <input type="submit" name="B_CHANGE_AVATAR"
-                        value="Hochladen" class="button" /></td>
-            </tr>
-            <tr>
-                <td style="height: 125px; vertical-align: top;">Hier kannst Du einen Avatar
-                    hochladen der in Deinem Profil angezeigt wird. Dieses Bild sollte
-                    150x150 Pixel groß sein und im PNG-Format vorliegen.</td>
-            </tr>
+            {% include setting.getType.getTemplate %}
         </table>
     </form>
     <br />
-    <form action="options.php" method="post">
-        <table class="tcal">
-            <tr>
-                <th>Territorialfarbe</th>
-            </tr>
-            <tr>
-                <td><input type="text" style="width: 250px;" name="rgb_code" class="text"
-                        value="{{ REAL_USER.getRgbCode }}" /> <input type="submit" name="B_CHANGE_USER_RGB"
-                        value="ändern" class="button" /></td>
-            </tr>
-            <tr>
-                <td>Dieser RGB-Farbcode kennzeichnet Kartenfelder, die dem Spieler zugeordnet
-                    werden können. Beispiel: #9ab5ef</td>
-            </tr>
-        </table>
-    </form>
-    <br />
+    {% endfor %}
     <form action="options.php" method="post">
         <table class="tcal">
             <tr>
@@ -129,182 +101,12 @@
     <form action="options.php" method="post">
         <table class="tcal">
             <th colspan="2">Accounteinstellungen</th>
+            {% for setting in SETTING_WRAPPERS %}
             <tr>
-                <td>
-                    {% if REAL_USER.isEmailNotification %}
-                    <input type="checkbox" name="email_notification" value="1" checked="true" />
-                    {% else %}
-                    <input type="checkbox" name="email_notification" value="1" />
-                    {% endif %}
-                </td>
-                <td>
-                    Emailbenachrichtigung bei privaten Nachrichten
-                </td>
+                <td>{% include setting.getType.getTemplate %}</td>
+                <td>{{ setting.getType.getDescription }}</td>
             </tr>
-            <tr>
-                <td>
-                    {% if REAL_USER.isSaveLogin %}
-                    <input type="checkbox" name="save_login" value="1" checked="true" />
-                    {% else %}
-                    <input type="checkbox" name="save_login" value="1" />
-                    {% endif %}
-                </td>
-                <td>
-                    Login nicht speichern (Ideal an fremden Computern)
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    {% if REAL_USER.isStorageNotification %}
-                    <input type="checkbox" name="storage_notification" value="1" checked="true" />
-                    {% else %}
-                    <input type="checkbox" name="storage_notification" value="1" />
-                    {% endif %}
-                </td>
-                <td>
-                    Nachricht bei vollen Lagern zum Tick
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    {% if REAL_USER.isShowOnlineState %}
-                    <input type="checkbox" name="show_online_status" value="1" checked="true" />
-                    {% else %}
-                    <input type="checkbox" name="show_online_status" value="1" />
-                    {% endif %}
-                </td>
-                <td>
-                    Online Status öffentlich
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    {% if REAL_USER.isShowPmReadReceipt %}
-                    <input type="checkbox" name="show_pm_read_receipt" value="1" checked="true" />
-                    {% else %}
-                    <input type="checkbox" name="show_pm_read_receipt" value="1" />
-                    {% endif %}
-                </td>
-                <td>
-                    Lesebestätigungen bei PMs anzeigen (nur wenn sowohl Sender als auch
-                    Empfänger den Haken gesetzt haben)
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    {% if REAL_USER.getFleetFixedDefault %}
-                    <input type="checkbox" name="fleet_fixed_default" value="1" checked="true" />
-                    {% else %}
-                    <input type="checkbox" name="fleet_fixed_default" value="1" />
-                    {% endif %}
-                </td>
-                <td>
-                    Flotten standardmäßig fixieren, sodass keine Schiffe beim Flug verloren
-                    gehen können.
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    {% if REAL_USER.getWarpsplitAutoCarryoverDefault %}
-                    <input type="checkbox" name="warpsplit_auto_carryover_default" value="1" checked="true" />
-                    {% else %}
-                    <input type="checkbox" name="warpsplit_auto_carryover_default" value="1" />
-                    {% endif %}
-                </td>
-                <td>
-                    Führt dazu, dass überschüssige Reaktorleistung bei Schiffen automatisch an die übrigen Systeme
-                    transferiert wird.
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    {% if REAL_USER.isShowPirateHistoryEntrys %}
-                    <input type="checkbox" name="show_pirate_history_entrys" value="1" checked="true" />
-                    {% else %}
-                    <input type="checkbox" name="show_pirate_history_entrys" value="1" />
-                    {% endif %}
-                </td>
-                <td>
-                    Zeigt einträge in der History an die durch Interaktion mit dem
-                    Piraten NPC entstanden sind.
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    {% if REAL_USER.isInboxMessengerStyle %}
-                    <input type="checkbox" name="inbox_messenger_style" value="1" checked="true" />
-                    {% else %}
-                    <input type="checkbox" name="inbox_messenger_style" value="1" />
-                    {% endif %}
-                </td>
-                <td>
-                    Nachrichteneingang des "Persönlich"-Ordners ist wie bei einem Messenger nach Kontakten gruppiert.
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    {% set defaultView = REAL_USER.getDefaultView %}
-                    <select name="default_view">
-                        <option value="0">----------------------</option>
-                        {% for value in VIEWS %}
-                        {% if defaultView == value %}
-                        <option value="{{ value.value }}" selected="1">
-                            {{ value.getTitle }}
-                        </option>
-                        {% else %}
-                        <option value="{{ value.value }}">
-                            {{ value.getTitle }}
-                        </option>
-                        {% endif %}
-                        {% endfor %}
-                    </select>
-                </td>
-                <td>
-                    Auswahl der Startseite, welche nach dem Login angezeigt werden soll.
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    {% set rpgBehavior = REAL_USER.getRpgBehavior %}
-                    <select name="rpg_behavior">
-                        {% for value in RPG_BEHAVIOR_VALUES %}
-                        {% if rpgBehavior == value %}
-                        <option value="{{ value.value }}" selected="1">
-                            {{ value.getDescription }}
-                        </option>
-                        {% else %}
-                        <option value="{{ value.value }}">
-                            {{ value.getDescription }}
-                        </option>
-                        {% endif %}
-                        {% endfor %}
-                    </select>
-                </td>
-                <td>
-                    Information für andere Spieler ob man selbst gern Rollenspiel betreibt.
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <select name="css_color_sheet">
-                        {% for cssClass in CSS_VALUES %}
-                        {% set value = cssClass.value %}
-                        {% if REAL_USER.getCss == value %}
-                        <option value="{{ value }}" selected="1">
-                            {{ cssClass.getTitle }}
-                        </option>
-                        {% else %}
-                        <option value="{{ value }}">
-                            {{ cssClass.getTitle }}
-                        </option>
-                        {% endif %}
-                        {% endfor %}
-                    </select>
-                </td>
-                <td>
-                    Auswahl der Interface-Farben.
-                </td>
-            </tr>
+            {% endfor %}
             <tr>
                 <td>
                     <input type="submit" class="button" value="Tutorial Neustart" name="B_CREATE_TUTORIALS" />

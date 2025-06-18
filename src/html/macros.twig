@@ -1,8 +1,9 @@
 {% macro userAvatar(user) %}
+{% set avatar = getAvatar(user) %}
 <div class="userAvatar">
     <a href="/userprofile.php?uid={{ user.getId }}">
-        {% if user.getAvatar %}
-        <img src="/{{ ASSET_PATHS.user }}/{{ user.getAvatar }}.png" title="{{ user.getName|bbcode2txt }}" />
+        {% if avatar %}
+        <img src="/{{ ASSET_PATHS.user }}/{{ avatar }}.png" title="{{ user.getName|bbcode2txt }}" />
         {% else %}
         <img src="/{{ ASSET_PATHS.faction }}/{{ user.getFactionId }}kn.png" title="{{ user.getName|bbcode2txt }}" />
         {% endif %}
@@ -18,9 +19,10 @@
 {% endmacro %}
 
 {% macro userInfo(user) %}
+{% set rpgBehavior = getRpgBehavior(user) %}
 {{ user.getName|bbcode }} ({{ user.getId }})
-<img src="/assets/buttons/rpg{{ user.getRpgBehavior.value }}.png" title="{{ user.getRpgBehavior.getDescription }}" />
-{% if user.isShowOnlineState %}
+<img src="/assets/buttons/rpg{{ rpgBehavior.value }}.png" title="{{ rpgBehavior.getTitle }}" />
+{% if isShowOnlineState(user) %}
 {% if user.isOnline %}
 <img src="/assets/buttons/user_online.png" title="User ist online" />
 {% else %}

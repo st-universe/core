@@ -6,6 +6,7 @@ namespace Stu\Module\Message\View\ShowWritePm;
 
 use Override;
 use Stu\Component\Game\GameEnum;
+use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Lib\Component\ComponentRegistrationInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -28,12 +29,13 @@ final class ShowWritePm implements ViewControllerInterface
     private const int CORRESPONDENCE_LIMIT_MESSENGER = PHP_INT_MAX;
 
     public function __construct(
-        private ShowWritePmRequestInterface $showWritePmRequest,
-        private ContactRepositoryInterface $contactRepository,
-        private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
-        private PrivateMessageUiFactoryInterface $privateMessageUiFactory,
-        private PrivateMessageRepositoryInterface $privateMessageRepository,
-        private ComponentRegistrationInterface $componentRegistration
+        private readonly ShowWritePmRequestInterface $showWritePmRequest,
+        private readonly ContactRepositoryInterface $contactRepository,
+        private readonly PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
+        private readonly PrivateMessageUiFactoryInterface $privateMessageUiFactory,
+        private readonly PrivateMessageRepositoryInterface $privateMessageRepository,
+        private readonly ComponentRegistrationInterface $componentRegistration,
+        private readonly UserSettingsProviderInterface $userSettingsProvider
     ) {}
 
     #[Override]
@@ -49,10 +51,13 @@ final class ShowWritePm implements ViewControllerInterface
         } else {
             $reply = $pm;
 
+            $isInboxMessengerStyle = $this->userSettingsProvider->isInboxMessengerStyle($user);
+
             $correspondence = array_map(
                 fn(PrivateMessageInterface $message): PrivateMessageListItem => new PrivateMessageListItem(
                     $this->privateMessageRepository,
                     $this->contactRepository,
+                    $this->userSettingsProvider,
                     $message,
                     $game->getUser()
                 ),
@@ -60,7 +65,7 @@ final class ShowWritePm implements ViewControllerInterface
                     $reply->getRecipientId(),
                     $reply->getSenderId(),
                     [PrivateMessageFolderTypeEnum::SPECIAL_MAIN->value, PrivateMessageFolderTypeEnum::DEFAULT_OWN->value],
-                    $user->isInboxMessengerStyle() ? self::CORRESPONDENCE_LIMIT_MESSENGER : self::CORRESPONDENCE_LIMIT_CLASSIC
+                    $isInboxMessengerStyle ? self::CORRESPONDENCE_LIMIT_MESSENGER : self::CORRESPONDENCE_LIMIT_CLASSIC
                 )
             );
         }

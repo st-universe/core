@@ -8,6 +8,7 @@ use Override;
 use request;
 use RuntimeException;
 use Stu\Component\Image\ImageCreationInterface;
+use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\LayerInterface;
@@ -19,9 +20,10 @@ final class ShowMapInfluenceAreas implements ViewControllerInterface
 	public const string VIEW_IDENTIFIER = 'SHOW_INFLUENCE_AREAS';
 
 	public function __construct(
-		private MapRepositoryInterface $mapRepository,
-		private LayerRepositoryInterface $layerRepository,
-		private ImageCreationInterface $imageCreation
+		private readonly MapRepositoryInterface $mapRepository,
+		private readonly LayerRepositoryInterface $layerRepository,
+		private readonly ImageCreationInterface $imageCreation,
+		private readonly UserSettingsProviderInterface $userSettingsProvider
 	) {}
 
 	#[Override]
@@ -85,7 +87,9 @@ final class ShowMapInfluenceAreas implements ViewControllerInterface
 					if ($base !== null) {
 						$ally = $base->getUser()->getAlliance();
 
-						$rgbCode = ($ally !== null && $ally->getRgbCode() !== '') ? $ally->getRgbCode() : $base->getUser()->getRgbCode();
+						$rgbCode = ($ally !== null && $ally->getRgbCode() !== '')
+							? $ally->getRgbCode()
+							: $this->userSettingsProvider->getRgbCode($base->getUser());
 
 
 						if ($rgbCode !== '') {

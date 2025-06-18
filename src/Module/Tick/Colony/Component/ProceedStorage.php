@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Tick\Colony\Component;
 
+use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Commodity\Lib\CommodityCacheInterface;
@@ -13,7 +14,8 @@ class ProceedStorage implements ColonyTickComponentInterface
     public function __construct(
         private readonly ColonyDepositMiningRepositoryInterface $colonyDepositMiningRepository,
         private readonly CommodityCacheInterface $commodityCache,
-        private readonly StorageManagerInterface $storageManager
+        private readonly StorageManagerInterface $storageManager,
+        private readonly UserSettingsProviderInterface $userSettingsProvider
     ) {}
 
     public function work(ColonyInterface $colony, array &$production, InformationInterface $information): void
@@ -52,8 +54,10 @@ class ProceedStorage implements ColonyTickComponentInterface
             if ($obj->getProduction() <= 0 || !$commodity->isSaveable()) {
                 continue;
             }
+
+            $isStorageNotification = $this->userSettingsProvider->isStorageNotification($colony->getUser());
             if ($sum >= $colony->getMaxStorage()) {
-                if ($colony->getUser()->isStorageNotification()) {
+                if ($isStorageNotification) {
                     $information->addInformation('Das Lager der Kolonie ist voll');
                 }
                 break;
@@ -64,7 +68,7 @@ class ProceedStorage implements ColonyTickComponentInterface
                     $commodity,
                     $colony->getMaxStorage() - $sum
                 );
-                if ($colony->getUser()->isStorageNotification()) {
+                if ($isStorageNotification) {
                     $information->addInformation('Das Lager der Kolonie ist voll');
                 }
                 break;

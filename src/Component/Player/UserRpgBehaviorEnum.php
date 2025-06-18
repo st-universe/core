@@ -11,13 +11,13 @@ enum UserRpgBehaviorEnum: int
     case OPEN = 2;
     case NONE = 3;
 
-    public function getDescription(): string
+    public function getTitle(): string
     {
         return match ($this) {
-            self::NOT_SET =>  _("Der Spieler hat seine Rollenspieleinstellung nicht gesetzt"),
-            self::ACTIVE =>  _("Der Spieler betreibt gerne Rollenspiel"),
-            self::OPEN =>  _("Der Spieler betreibt gelegentlich Rollenspiel"),
-            self::NONE =>  _("Der Spieler betreibt ungern Rollenspiel")
+            self::NOT_SET =>  "Der Spieler hat seine Rollenspieleinstellung nicht gesetzt",
+            self::ACTIVE =>  "Der Spieler betreibt gerne Rollenspiel",
+            self::OPEN =>  "Der Spieler betreibt gelegentlich Rollenspiel",
+            self::NONE =>  "Der Spieler betreibt ungern Rollenspiel"
         };
     }
 }

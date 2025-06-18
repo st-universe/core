@@ -3,8 +3,6 @@
 namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\Collection;
-use Stu\Component\Game\ModuleEnum;
-use Stu\Component\Player\UserRpgBehaviorEnum;
 
 interface UserInterface
 {
@@ -18,15 +16,11 @@ interface UserInterface
 
     public function setUsername(string $user): UserInterface;
 
-    public function getRgbCode(): string;
-
     public function getFactionId(): int;
 
     public function setFaction(FactionInterface $faction): UserInterface;
 
     public function getFaction(): FactionInterface;
-
-    public function getCss(): string;
 
     /**
      * @return Collection<int, UserAwardInterface>
@@ -48,10 +42,6 @@ interface UserInterface
 
     public function setState(int $state): UserInterface;
 
-    public function getAvatar(): string;
-
-    public function isEmailNotification(): bool;
-
     public function getLastaction(): int;
 
     public function setLastaction(int $lastaction): UserInterface;
@@ -70,15 +60,9 @@ interface UserInterface
 
     public function isVacationRequestOldEnough(): bool;
 
-    public function isStorageNotification(): bool;
-
     public function getDescription(): string;
 
     public function setDescription(string $description): UserInterface;
-
-    public function isShowOnlineState(): bool;
-
-    public function isShowPmReadReceipt(): bool;
 
     public function getDeals(): bool;
 
@@ -87,12 +71,6 @@ interface UserInterface
     public function getLastBoarding(): ?int;
 
     public function setLastBoarding(int $time): UserInterface;
-
-    public function isSaveLogin(): bool;
-
-    public function getFleetFixedDefault(): bool;
-
-    public function getWarpsplitAutoCarryoverDefault(): bool;
 
     /**
      * @return Collection<int, UserLayerInterface>
@@ -118,6 +96,11 @@ interface UserInterface
      */
     public function getColonyScans(): Collection;
 
+    /**
+     * @return Collection<int, BuoyInterface>
+     */
+    public function getBuoys(): Collection;
+
     public function getSessiondata(): string;
 
     public function setSessiondata(string $sessiondata): UserInterface;
@@ -125,10 +108,6 @@ interface UserInterface
     public function getPrestige(): int;
 
     public function setPrestige(int $prestige): UserInterface;
-
-    public function getDefaultView(): ModuleEnum;
-
-    public function getRpgBehavior(): UserRpgBehaviorEnum;
 
     public function isOnline(): bool;
 
@@ -152,10 +131,6 @@ interface UserInterface
 
     public function hasTranslation(): bool;
 
-    public function isShowPirateHistoryEntrys(): bool;
-
-    public function isInboxMessengerStyle(): bool;
-
     public function getPirateWrath(): ?PirateWrathInterface;
 
     public function setPirateWrath(?PirateWrathInterface $wrath): UserInterface;
@@ -168,7 +143,7 @@ interface UserInterface
     public function getTutorials(): Collection;
 
     /**
-     * @return iterable<WormholeRestriction>
+     * @return Collection<int, WormholeRestriction>
      */
-    public function getWormholeRestrictions(): iterable;
+    public function getWormholeRestrictions(): Collection;
 }

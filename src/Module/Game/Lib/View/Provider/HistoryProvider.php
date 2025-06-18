@@ -10,6 +10,7 @@ use Stu\Component\History\HistoryTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\HistoryRepositoryInterface;
 use JBBCode\Parser;
+use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 
 final class HistoryProvider implements ViewComponentProviderInterface
 {
@@ -18,8 +19,9 @@ final class HistoryProvider implements ViewComponentProviderInterface
     private const int LIMIT = 50;
 
     public function __construct(
-        private HistoryRepositoryInterface $historyRepository,
-        private Parser $bbcodeParser
+        private readonly HistoryRepositoryInterface $historyRepository,
+        private readonly UserSettingsProviderInterface $userSettingsProvider,
+        private readonly Parser $bbcodeParser
     ) {}
 
     #[Override]
@@ -66,7 +68,7 @@ final class HistoryProvider implements ViewComponentProviderInterface
             $search
         );
 
-        $historyEntries = $user->isShowPirateHistoryEntrys()
+        $historyEntries = $this->userSettingsProvider->isShowPirateHistoryEntrys($user)
             ? $this->historyRepository->getByTypeAndSearch($type, $count)
             : $this->historyRepository->getByTypeAndSearchWithoutPirate($type, $count);
 

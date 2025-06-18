@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Player;
 
-use JBBCode\Parser;
 use Stu\Component\Player\ColonizationChecker;
 use Stu\Component\Player\ColonizationCheckerInterface;
 use Stu\Component\Player\ColonyLimitCalculator;
@@ -46,6 +45,8 @@ use Stu\Component\Player\Relation\EnemyDeterminator;
 use Stu\Component\Player\Relation\FriendDeterminator;
 use Stu\Component\Player\Relation\PlayerRelationDeterminator;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
+use Stu\Component\Player\Settings\UserSettingsProvider;
+use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 
 use function DI\autowire;
 
@@ -91,4 +92,5 @@ return [
             autowire(EnemyDeterminator::class)
         ),
     CrewLimitCalculatorInterface::class => autowire(CrewLimitCalculator::class),
+    UserSettingsProviderInterface::class => autowire(UserSettingsProvider::class)
 ];

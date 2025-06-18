@@ -7,32 +7,33 @@ namespace Stu\Module\Communication\View\ShowKnComments;
 use Mockery\MockInterface;
 use Noodlehaus\ConfigInterface;
 use Override;
+use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Orm\Entity\KnCommentInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\StuTestCase;
 
 class KnCommentWrapperTest extends StuTestCase
 {
-    /** @var MockInterface&KnCommentInterface */
-    private MockInterface $comment;
+    private MockInterface&ConfigInterface $config;
+    private MockInterface&UserSettingsProviderInterface $userSettingsProvider;
+    private MockInterface&KnCommentInterface $comment;
 
     /** @var MockInterface&UserInterface */
     private MockInterface $user;
-
-    /** @var MockInterface&ConfigInterface */
-    private MockInterface $config;
 
     private KnCommentWrapper $tal;
 
     #[Override]
     protected function setUp(): void
     {
+        $this->config = $this->mock(ConfigInterface::class);
+        $this->userSettingsProvider = $this->mock(UserSettingsProviderInterface::class);
         $this->comment = $this->mock(KnCommentInterface::class);
         $this->user = $this->mock(UserInterface::class);
-        $this->config = $this->mock(ConfigInterface::class);
 
         $this->tal = new KnCommentWrapper(
             $this->config,
+            $this->userSettingsProvider,
             $this->comment,
             $this->user
         );
@@ -163,6 +164,8 @@ class KnCommentWrapperTest extends StuTestCase
 
     public function testGetUserAvatarPathReturnsActualUserAvatarPath(): void
     {
+        $commentUser = $this->mock(UserInterface::class);
+
         $avatarPath = 'some-path';
         $basePath = 'some-base-path';
 
@@ -170,10 +173,13 @@ class KnCommentWrapperTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn('');
-
-        $this->comment->shouldReceive('getUser->getAvatar')
+        $this->comment->shouldReceive('getUser')
             ->withNoArgs()
-            ->times(2)
+            ->once()
+            ->andReturn($commentUser);
+
+        $this->userSettingsProvider->shouldReceive('getAvatar')
+            ->with($commentUser)
             ->andReturn($avatarPath);
 
         $this->config->shouldReceive('get')

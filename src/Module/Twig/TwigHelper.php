@@ -9,6 +9,8 @@ use Noodlehaus\ConfigInterface;
 use Stu\Component\Building\NameAbbreviations;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Component\Game\ModuleEnum;
+use Stu\Component\Player\Settings\UserSettingsProviderInterface;
+use Stu\Component\Player\UserRpgBehaviorEnum;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemWrapper;
@@ -21,6 +23,7 @@ use Stu\Module\Colony\Lib\ColonyProductionPreviewWrapper;
 use Stu\Module\Control\AccessCheckInterface;
 use Stu\Module\Control\AccessGrantedFeatureEnum;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Render\UserContainer;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Spacecraft\Lib\Battle\FightLibInterface;
@@ -30,6 +33,7 @@ use Stu\Orm\Entity\AnomalyInterface;
 use Stu\Orm\Entity\BuildingInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\UserInterface;
 use Twig\Environment;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -45,6 +49,7 @@ class TwigHelper
         private readonly ColonyLibFactoryInterface $colonyLibFactory,
         private readonly SpacecraftCrewCalculatorInterface $shipCrewCalculator,
         private readonly SpacecraftSystemWrapperFactoryInterface $spacecraftSystemWrapperFactory,
+        private readonly UserSettingsProviderInterface $userSettingsProvider,
         private readonly GradientColorInterface $gradientColor,
         private readonly TemplateHelperInterface $templateHelper,
         private readonly AccessCheckInterface $accessCheck,
@@ -188,6 +193,17 @@ class TwigHelper
 
         $isFeatureGrantedFunction = new TwigFunction('isFeatureGranted', fn(int $userId, string $feature): bool => $this->accessCheck->isFeatureGranted($userId, AccessGrantedFeatureEnum::from($feature), $this->game));
         $this->environment->addFunction($isFeatureGrantedFunction);
+
+        $getUserAvatarFunction = new TwigFunction('getAvatar', fn(UserInterface|UserContainer $user): string => $user instanceof UserContainer
+            ? $user->getAvatar()
+            : $this->userSettingsProvider->getAvatar($user));
+        $this->environment->addFunction($getUserAvatarFunction);
+
+        $getRpgBehaviorFunction = new TwigFunction('getRpgBehavior', fn(UserInterface $user): UserRpgBehaviorEnum => $this->userSettingsProvider->getRpgBehavior($user));
+        $this->environment->addFunction($getRpgBehaviorFunction);
+
+        $isShowOnlineStateFunction = new TwigFunction('isShowOnlineState', fn(UserInterface $user): bool => $this->userSettingsProvider->isShowOnlineState($user));
+        $this->environment->addFunction($isShowOnlineStateFunction);
     }
 
     private function maskEmail(string $email): string

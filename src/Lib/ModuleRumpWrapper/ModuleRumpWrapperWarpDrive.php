@@ -6,7 +6,9 @@ namespace Stu\Lib\ModuleRumpWrapper;
 
 use Override;
 use RuntimeException;
+use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
+use Stu\Config\Init;
 use Stu\Module\Spacecraft\Lib\ModuleValueCalculator;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\ModuleInterface;
@@ -42,8 +44,11 @@ final class ModuleRumpWrapperWarpDrive extends ModuleRumpWrapperBase implements 
             throw new RuntimeException('this should not happen');
         }
 
+        $userSettingsProvider = Init::getContainer()->get(UserSettingsProviderInterface::class);
+        $isAutoCarryOver = $userSettingsProvider->getWarpsplitAutoCarryoverDefault($wrapper->get()->getUser());
+
         $systemData
-            ->setAutoCarryOver($wrapper->get()->getUser()->getWarpsplitAutoCarryoverDefault())
+            ->setAutoCarryOver($isAutoCarryOver)
             ->update();
 
         return $this;

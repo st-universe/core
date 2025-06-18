@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Message\Lib;
 
 use Override;
+use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\ContactInterface;
 use Stu\Orm\Entity\PrivateMessageInterface;
@@ -19,10 +20,11 @@ class PrivateMessageListItem implements PrivateMessageListItemInterface
     private ?ContactInterface $sendercontact = null;
 
     public function __construct(
-        private PrivateMessageRepositoryInterface $privateMessageRepository,
-        private ContactRepositoryInterface $contactRepository,
-        private PrivateMessageInterface $message,
-        private UserInterface $currentUser
+        private readonly PrivateMessageRepositoryInterface $privateMessageRepository,
+        private readonly ContactRepositoryInterface $contactRepository,
+        private readonly UserSettingsProviderInterface $userSettingsProvider,
+        private readonly PrivateMessageInterface $message,
+        private readonly UserInterface $currentUser
     ) {}
 
     #[Override]
@@ -64,8 +66,8 @@ class PrivateMessageListItem implements PrivateMessageListItemInterface
         }
 
         if (
-            !$this->message->getSender()->isShowPmReadReceipt()
-            || !$this->message->getRecipient()->isShowPmReadReceipt()
+            !$this->userSettingsProvider->isShowPmReadReceipt($this->getSender())
+            || !$this->userSettingsProvider->isShowPmReadReceipt($this->message->getRecipient())
         ) {
             return false;
         }

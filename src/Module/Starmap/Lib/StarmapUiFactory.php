@@ -7,6 +7,7 @@ namespace Stu\Module\Starmap\Lib;
 use JBBCode\Parser;
 use Override;
 use Stu\Component\Map\EncodedMapInterface;
+use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\StarSystemInterface;
@@ -20,9 +21,15 @@ use Stu\Orm\Repository\TradePostRepositoryInterface;
  */
 final class StarmapUiFactory implements StarmapUiFactoryInterface
 {
-    public function __construct(private MapRepositoryInterface $mapRepository, private TradePostRepositoryInterface $tradePostRepository, private EncodedMapInterface $encodedMap, private Parser $parser, private StarSystemMapRepositoryInterface $starSystemMapRepository, private LoggerUtilFactoryInterface $loggerUtilFactory)
-    {
-    }
+    public function __construct(
+        private readonly MapRepositoryInterface $mapRepository,
+        private readonly TradePostRepositoryInterface $tradePostRepository,
+        private readonly StarSystemMapRepositoryInterface $starSystemMapRepository,
+        private readonly UserSettingsProviderInterface $userSettingsProvider,
+        private readonly EncodedMapInterface $encodedMap,
+        private readonly Parser $parser,
+        private readonly LoggerUtilFactoryInterface $loggerUtilFactory
+    ) {}
 
     #[Override]
     public function createMapSectionHelper(): MapSectionHelper
@@ -83,6 +90,7 @@ final class StarmapUiFactory implements StarmapUiFactoryInterface
     ): ExplorableStarMapItem {
         return new ExplorableStarMapItem(
             $this->tradePostRepository,
+            $this->userSettingsProvider,
             $this->encodedMap,
             $this->parser,
             $exploreableStarMap,

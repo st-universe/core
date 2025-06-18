@@ -13,6 +13,7 @@ use Stu\Component\Game\GameEnum;
 use Stu\Component\Player\ColonyLimitCalculatorInterface;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
+use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Spacecraft\Lib\EmergencyWrapper;
@@ -28,7 +29,22 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class MaindeskProvider implements ViewComponentProviderInterface
 {
-    public function __construct(private HistoryRepositoryInterface $historyRepository, private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository, private UserProfileVisitorRepositoryInterface $userProfileVisitorRepository, private KnPostRepositoryInterface $knPostRepository, private ColonyShipQueueRepositoryInterface $colonyShipQueueRepository, private ShipyardShipQueueRepositoryInterface $shipyardShipQueueRepository, private UserRepositoryInterface $userRepository, private SpacecraftEmergencyRepositoryInterface $spacecraftEmergencyRepository, private KnFactoryInterface $knFactory, private ColonyLimitCalculatorInterface $colonyLimitCalculator, private PlayerRelationDeterminatorInterface $playerRelationDeterminator, private CrewLimitCalculatorInterface $crewLimitCalculator, private CrewCountRetrieverInterface $crewCountRetriever) {}
+    public function __construct(
+        private readonly HistoryRepositoryInterface $historyRepository,
+        private readonly AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository,
+        private readonly UserProfileVisitorRepositoryInterface $userProfileVisitorRepository,
+        private readonly KnPostRepositoryInterface $knPostRepository,
+        private readonly ColonyShipQueueRepositoryInterface $colonyShipQueueRepository,
+        private readonly ShipyardShipQueueRepositoryInterface $shipyardShipQueueRepository,
+        private readonly UserRepositoryInterface $userRepository,
+        private readonly SpacecraftEmergencyRepositoryInterface $spacecraftEmergencyRepository,
+        private readonly UserSettingsProviderInterface $userSettingsProvider,
+        private readonly KnFactoryInterface $knFactory,
+        private readonly ColonyLimitCalculatorInterface $colonyLimitCalculator,
+        private readonly PlayerRelationDeterminatorInterface $playerRelationDeterminator,
+        private readonly CrewLimitCalculatorInterface $crewLimitCalculator,
+        private readonly CrewCountRetrieverInterface $crewCountRetriever
+    ) {}
 
     #[Override]
     public function setTemplateVariables(GameControllerInterface $game): void
@@ -98,7 +114,7 @@ final class MaindeskProvider implements ViewComponentProviderInterface
             );
         }
 
-        if ($user->isShowPirateHistoryEntrys()) {
+        if ($this->userSettingsProvider->isShowPirateHistoryEntrys($user)) {
             $game->setTemplateVar('RECENT_HISTORY', $this->historyRepository->getRecent());
         } else {
             $game->setTemplateVar('RECENT_HISTORY', $this->historyRepository->getRecentWithoutPirate());
