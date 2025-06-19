@@ -91,7 +91,7 @@ class ShieldMalfunctionEffectHandler implements EffectHandlerInterface
 
         $depletionAmount = $this->stuRandom->rand(1, $shield, true, (int)ceil($shield / 5));
 
-        $wrapper->get()->getCondition()->changeShield($depletionAmount);
+        $wrapper->get()->getCondition()->changeShield(-$depletionAmount);
 
         return $depletionAmount;
     }
