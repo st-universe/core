@@ -19,19 +19,15 @@ use Stu\StuTestCase;
 
 class DockConsequenceTest extends StuTestCase
 {
-    /** @var MockInterface&MessageFactoryInterface */
-    private $messageFactory;
+    private MockInterface&MessageFactoryInterface $messageFactory;
 
     private FlightConsequenceInterface $subject;
 
-    /** @var MockInterface&ShipInterface */
-    private MockInterface $ship;
+    private MockInterface&ShipInterface $ship;
 
-    /** @var MockInterface&ShipWrapperInterface */
-    private MockInterface $wrapper;
+    private MockInterface&ShipWrapperInterface $wrapper;
 
-    /** @var MockInterface&FlightRouteInterface */
-    private MockInterface $flightRoute;
+    private MockInterface&FlightRouteInterface $flightRoute;
 
     #[Override]
     protected function setUp(): void

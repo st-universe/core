@@ -23,26 +23,16 @@ use Stu\StuTestCase;
 
 class StationUtilityTest extends StuTestCase
 {
-    /** @var SpacecraftBuildplanRepositoryInterface&MockInterface */
-    private $spacecraftBuildplanRepository;
-    /** @var ConstructionProgressRepositoryInterface&MockInterface */
-    private $constructionProgressRepository;
-    /** @var ConstructionProgressModuleRepositoryInterface&MockInterface */
-    private $constructionProgressModuleRepository;
-    /** @var StationCreatorInterface&MockInterface */
-    private $stationCreator;
-    /** @var StationRepositoryInterface&MockInterface */
-    private $stationRepository;
-    /** @var StorageManagerInterface&MockInterface */
-    private $storageManager;
-    /** @var SpacecraftRumpRepositoryInterface&MockInterface */
-    private $spacecraftRumpRepository;
-    /** @var TradePostRepositoryInterface&MockInterface */
-    private $tradePostRepository;
-    /** @var TradeLicenseRepositoryInterface&MockInterface */
-    private $tradeLicenseRepository;
-    /** @var StuRandom&MockInterface */
-    private $stuRandom;
+    private SpacecraftBuildplanRepositoryInterface&MockInterface $spacecraftBuildplanRepository;
+    private ConstructionProgressRepositoryInterface&MockInterface $constructionProgressRepository;
+    private ConstructionProgressModuleRepositoryInterface&MockInterface $constructionProgressModuleRepository;
+    private StationCreatorInterface&MockInterface $stationCreator;
+    private StationRepositoryInterface&MockInterface $stationRepository;
+    private StorageManagerInterface&MockInterface $storageManager;
+    private SpacecraftRumpRepositoryInterface&MockInterface $spacecraftRumpRepository;
+    private TradePostRepositoryInterface&MockInterface $tradePostRepository;
+    private TradeLicenseRepositoryInterface&MockInterface $tradeLicenseRepository;
+    private StuRandom&MockInterface $stuRandom;
 
     private StationUtilityInterface $subject;
 

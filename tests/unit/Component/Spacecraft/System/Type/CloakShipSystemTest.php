@@ -22,12 +22,9 @@ use Stu\StuTestCase;
 
 class CloakShipSystemTest extends StuTestCase
 {
-    /** @var MockInterface&SpacecraftStateChangerInterface */
-    private $spacecraftStateChanger;
-    /** @var MockInterface&ShipInterface */
-    private $ship;
-    /** @var MockInterface&ShipWrapperInterface */
-    private $wrapper;
+    private MockInterface&SpacecraftStateChangerInterface $spacecraftStateChanger;
+    private MockInterface&ShipInterface $ship;
+    private MockInterface&ShipWrapperInterface $wrapper;
 
     private CloakShipSystem $system;
 

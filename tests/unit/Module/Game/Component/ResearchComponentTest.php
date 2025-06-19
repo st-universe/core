@@ -20,14 +20,10 @@ use Stu\StuTestCase;
 
 class ResearchComponentTest extends StuTestCase
 {
-    /** @var ResearchedRepositoryInterface&MockInterface  */
-    private $researchedRepository;
-    /** @var StatusBarFactoryInterface&MockInterface */
-    private $statusBarFactory;
-    /** @var MockInterface&BuildingCommodityRepositoryInterface */
-    private $buildingCommodityRepository;
-    /** @var MockInterface&TechlistRetrieverInterface */
-    private $techlistRetriever;
+    private ResearchedRepositoryInterface&MockInterface $researchedRepository;
+    private StatusBarFactoryInterface&MockInterface $statusBarFactory;
+    private MockInterface&BuildingCommodityRepositoryInterface $buildingCommodityRepository;
+    private MockInterface&TechlistRetrieverInterface $techlistRetriever;
 
     private ResearchComponent $subject;
 

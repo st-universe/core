@@ -15,11 +15,9 @@ use Stu\StuTestCase;
 
 class ModuleSelectorAddonShieldTest extends StuTestCase
 {
-    /** @var MockInterface&WeaponShieldRepositoryInterface */
-    private MockInterface $weaponShieldRepository;
+    private MockInterface&WeaponShieldRepositoryInterface $weaponShieldRepository;
 
-    /** @var MockInterface&GradientColorInterface */
-    private MockInterface $gradientColor;
+    private MockInterface&GradientColorInterface $gradientColor;
 
     private ModuleSelectorAddonShield $subject;
 
@@ -45,8 +43,10 @@ class ModuleSelectorAddonShieldTest extends StuTestCase
         $weaponShield_4 = $this->mock(WeaponShieldInterface::class);
 
         $weaponShields = new ArrayCollection([
-            $weaponShield_1, $weaponShield_2,
-            $weaponShield_3, $weaponShield_4
+            $weaponShield_1,
+            $weaponShield_2,
+            $weaponShield_3,
+            $weaponShield_4
         ]);
 
         $shieldModule->shouldReceive('getWeaponShield')

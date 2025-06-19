@@ -17,8 +17,7 @@ use Stu\StuTestCase;
 class EmailNotificationSenderTest extends StuTestCase
 {
     private $mailFactory;
-    /** @var MockInterface&Parser */
-    private $parser;
+    private MockInterface&Parser $parser;
 
     private EmailNotificationSenderInterface $subject;
 

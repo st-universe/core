@@ -19,17 +19,13 @@ use Stu\StuTestCase;
 
 class MapCycleTest extends StuTestCase
 {
-    /** @var MockInterface&MapRepositoryInterface */
-    private MockInterface $mapRepository;
+    private MockInterface&MapRepositoryInterface $mapRepository;
 
-    /** @var MockInterface&UserLayerRepositoryInterface */
-    private MockInterface $userLayerRepository;
+    private MockInterface&UserLayerRepositoryInterface $userLayerRepository;
 
-    /** @var MockInterface&UserMapRepositoryInterface */
-    private MockInterface $userMapRepository;
+    private MockInterface&UserMapRepositoryInterface $userMapRepository;
 
-    /** @var MockInterface&CreateUserAwardInterface */
-    private MockInterface $createUserAward;
+    private MockInterface&CreateUserAwardInterface $createUserAward;
 
     private MaintenanceHandlerInterface $subject;
 

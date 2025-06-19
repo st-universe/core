@@ -38,51 +38,30 @@ use Stu\StuTestCase;
 
 class ResetManagerTest extends StuTestCase
 {
-    /** @var MockInterface&KnResetInterface */
-    private MockInterface $knReset;
-    /** @var MockInterface&PmResetInterface */
-    private MockInterface $pmReset;
-    /** @var MockInterface&AllianceResetInterface */
-    private MockInterface $allianceReset;
-    /** @var MockInterface&FleetResetInterface */
-    private MockInterface $fleetReset;
-    /** @var MockInterface&CrewResetInterface */
-    private MockInterface $crewReset;
-    /** @var MockInterface&ShipResetInterface */
-    private MockInterface $shipReset;
-    /** @var MockInterface&StorageResetInterface */
-    private MockInterface $storageReset;
-    /** @var MockInterface&MapResetInterface */
-    private MockInterface $mapReset;
-    /** @var MockInterface&TradeResetInterface */
-    private MockInterface $tradeReset;
-    /** @var MockInterface&UserResetInterface */
-    private MockInterface $userReset;
-    /** @var MockInterface&GameRequestRepositoryInterface */
-    private MockInterface $gameRequestRepository;
-    /** @var MockInterface&GameConfigRepositoryInterface */
-    private MockInterface $gameConfigRepository;
-    /** @var MockInterface&PlayerDeletionInterface */
-    private MockInterface $playerDeletion;
-    /** @var MockInterface&ColonyRepositoryInterface */
-    private MockInterface $colonyRepository;
-    /** @var MockInterface&HistoryRepositoryInterface */
-    private MockInterface $historyRepository;
-    /** @var MockInterface&GameTurnRepositoryInterface */
-    private MockInterface $gameTurnRepository;
-    /** @var MockInterface&PlanetFieldRepositoryInterface */
-    private MockInterface $planetFieldRepository;
-    /** @var MockInterface&SequenceResetInterface */
-    private MockInterface $sequenceReset;
+    private MockInterface&KnResetInterface $knReset;
+    private MockInterface&PmResetInterface $pmReset;
+    private MockInterface&AllianceResetInterface $allianceReset;
+    private MockInterface&FleetResetInterface $fleetReset;
+    private MockInterface&CrewResetInterface $crewReset;
+    private MockInterface&ShipResetInterface $shipReset;
+    private MockInterface&StorageResetInterface $storageReset;
+    private MockInterface&MapResetInterface $mapReset;
+    private MockInterface&TradeResetInterface $tradeReset;
+    private MockInterface&UserResetInterface $userReset;
+    private MockInterface&GameRequestRepositoryInterface $gameRequestRepository;
+    private MockInterface&GameConfigRepositoryInterface $gameConfigRepository;
+    private MockInterface&PlayerDeletionInterface $playerDeletion;
+    private MockInterface&ColonyRepositoryInterface $colonyRepository;
+    private MockInterface&HistoryRepositoryInterface $historyRepository;
+    private MockInterface&GameTurnRepositoryInterface $gameTurnRepository;
+    private MockInterface&PlanetFieldRepositoryInterface $planetFieldRepository;
+    private MockInterface&SequenceResetInterface $sequenceReset;
 
-    /** @var MockInterface&StuConfigInterface */
-    private MockInterface $stuConfig;
+    private MockInterface&StuConfigInterface $stuConfig;
 
-    /** @var MockInterface&EntityManagerInterface */
-    private MockInterface $entityManager;
+    private MockInterface&EntityManagerInterface $entityManager;
 
-    /** @var MockInterface&Connection */
-    private MockInterface $connection;
+    private MockInterface&Connection $connection;
 
     private Interactor $interactor;
 

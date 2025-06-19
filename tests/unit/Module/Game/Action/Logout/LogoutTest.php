@@ -12,8 +12,7 @@ use Stu\StuTestCase;
 
 class LogoutTest extends StuTestCase
 {
-    /** @var MockInterface&SessionInterface */
-    private MockInterface $session;
+    private MockInterface&SessionInterface $session;
 
     private Logout $subject;
 

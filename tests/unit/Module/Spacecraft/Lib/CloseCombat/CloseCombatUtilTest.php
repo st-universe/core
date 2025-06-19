@@ -16,8 +16,7 @@ use Stu\StuTestCase;
 
 class CloseCombatUtilTest extends StuTestCase
 {
-    /** @var MockInterface&ShipInterface */
-    private ShipInterface $ship;
+    private MockInterface&ShipInterface $ship;
 
     private CloseCombatUtilInterface $subject;
 

@@ -23,12 +23,9 @@ use Stu\StuTestCase;
 
 class StorageManagerTest extends StuTestCase
 {
-    /** @var StorageRepositoryInterface&MockInterface */
-    private ?MockInterface $storageRepository;
-    /** @var ColonyInterface&MockInterface */
-    private  $colony;
-    /** @var CommodityInterface&MockInterface */
-    private  $commodity;
+    private StorageRepositoryInterface&MockInterface $storageRepository;
+    private ColonyInterface&MockInterface $colony;
+    private CommodityInterface&MockInterface $commodity;
 
     public $commodityId;
 

@@ -19,12 +19,9 @@ use Stu\StuTestCase;
 
 class ShieldRegenerationTest extends StuTestCase
 {
-    /** @var MockInterface&SpacecraftRepositoryInterface */
-    private $spacecraftRepository;
-    /** @var MockInterface&SpacecraftWrapperFactoryInterface */
-    private $spacecraftWrapperFactory;
-    /** @var MockInterface&StuTime */
-    private $stuTime;
+    private MockInterface&SpacecraftRepositoryInterface $spacecraftRepository;
+    private MockInterface&SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory;
+    private MockInterface&StuTime $stuTime;
 
     private ProcessTickHandlerInterface $subject;
 

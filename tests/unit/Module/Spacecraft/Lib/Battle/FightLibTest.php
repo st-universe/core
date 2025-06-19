@@ -30,22 +30,15 @@ use Stu\StuTestCase;
 
 class FightLibTest extends StuTestCase
 {
-    /** @var MockInterface&SpacecraftSystemManagerInterface */
-    private $spacecraftSystemManager;
-    /** @var MockInterface&CancelRepairInterface */
-    private $cancelRepair;
-    /** @var MockInterface&CancelRetrofitInterface */
-    private $cancelRetrofit;
-    /** @var MockInterface&AlertLevelBasedReactionInterface */
-    private $alertLevelBasedReaction;
-    /** @var MockInterface&InformationFactoryInterface */
-    private $informationFactory;
+    private MockInterface&SpacecraftSystemManagerInterface $spacecraftSystemManager;
+    private MockInterface&CancelRepairInterface $cancelRepair;
+    private MockInterface&CancelRetrofitInterface $cancelRetrofit;
+    private MockInterface&AlertLevelBasedReactionInterface $alertLevelBasedReaction;
+    private MockInterface&InformationFactoryInterface $informationFactory;
 
-    /** @var MockInterface&ShipWrapperInterface */
-    private ShipWrapperInterface $wrapper;
+    private MockInterface&ShipWrapperInterface $wrapper;
 
-    /** @var MockInterface&ShipInterface */
-    private ShipInterface $ship;
+    private MockInterface&ShipInterface $ship;
 
     private FightLibInterface $subject;
 

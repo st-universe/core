@@ -21,20 +21,13 @@ use Stu\StuTestCase;
 
 class SpacecraftAttackCycleTest extends StuTestCase
 {
-    /** @var MockInterface&EnergyWeaponPhaseInterface */
-    private $energyWeaponPhase;
-    /** @var MockInterface&ProjectileWeaponPhaseInterface */
-    private $projectileWeaponPhase;
-    /** @var MockInterface&AttackerProviderFactoryInterface */
-    private $attackerProviderFactory;
-    /** @var MockInterface&AttackMatchupInterface */
-    private $attackMatchup;
-    /** @var MockInterface&BattlePartyFactoryInterface */
-    private $battlePartyFactory;
-    /** @var MockInterface&SpacecraftAttackPreparationInterface */
-    private $spacecraftAttackPreparation;
-    /** @var MockInterface&MessageFactoryInterface */
-    private $messageFactory;
+    private MockInterface&EnergyWeaponPhaseInterface $energyWeaponPhase;
+    private MockInterface&ProjectileWeaponPhaseInterface $projectileWeaponPhase;
+    private MockInterface&AttackerProviderFactoryInterface $attackerProviderFactory;
+    private MockInterface&AttackMatchupInterface $attackMatchup;
+    private MockInterface&BattlePartyFactoryInterface $battlePartyFactory;
+    private MockInterface&SpacecraftAttackPreparationInterface $spacecraftAttackPreparation;
+    private MockInterface&MessageFactoryInterface $messageFactory;
 
     private SpacecraftAttackCycleInterface $subject;
 

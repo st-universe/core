@@ -22,14 +22,11 @@ use Stu\StuTestCase;
 
 class PlanetFieldHostProviderTest extends StuTestCase
 {
-    /** @var MockInterface&ColonySandboxRepositoryInterface */
-    private MockInterface $colonySandboxRepository;
+    private MockInterface&ColonySandboxRepositoryInterface $colonySandboxRepository;
 
-    /** @var MockInterface&PlanetFieldRepositoryInterface */
-    private MockInterface $planetFieldRepository;
+    private MockInterface&PlanetFieldRepositoryInterface $planetFieldRepository;
 
-    /** @var MockInterface&ColonyLoaderInterface */
-    private MockInterface $colonyLoader;
+    private MockInterface&ColonyLoaderInterface $colonyLoader;
 
     private PlanetFieldHostProviderInterface $subject;
 

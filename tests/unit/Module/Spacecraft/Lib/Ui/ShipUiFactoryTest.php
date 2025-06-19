@@ -14,10 +14,8 @@ use Stu\StuTestCase;
 
 class ShipUiFactoryTest extends StuTestCase
 {
-    /** @var MockInterface&PanelLayerCreationInterface */
-    private $panelLayerCreation;
-    /** @var MockInterface&PanelLayerConfiguration */
-    private $panelLayerConfiguration;
+    private MockInterface&PanelLayerCreationInterface $panelLayerCreation;
+    private MockInterface&PanelLayerConfiguration $panelLayerConfiguration;
 
     private ShipUiFactory $subject;
 

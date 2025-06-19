@@ -11,11 +11,9 @@ use Stu\StuTestCase;
 
 class DiplomaticRelationProposedEventTest extends StuTestCase
 {
-    /** @var MockInterface&AllianceInterface */
-    private MockInterface $alliance;
+    private MockInterface&AllianceInterface $alliance;
 
-    /** @var MockInterface&AllianceInterface */
-    private MockInterface $counterpart;
+    private MockInterface&AllianceInterface $counterpart;
 
     private int $relationTypeId = 666;
 

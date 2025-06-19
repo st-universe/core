@@ -19,29 +19,21 @@ use Stu\StuTestCase;
 
 class DemotePlayerTest extends StuTestCase
 {
-    /** @var MockInterface&DemotePlayerRequestInterface */
-    private MockInterface $demotePlayerRequest;
+    private MockInterface&DemotePlayerRequestInterface $demotePlayerRequest;
 
-    /** @var MockInterface&AllianceJobRepositoryInterface */
-    private MockInterface $allianceJobRepository;
+    private MockInterface&AllianceJobRepositoryInterface $allianceJobRepository;
 
-    /** @var MockInterface&AllianceActionManagerInterface */
-    private MockInterface $allianceActionManager;
+    private MockInterface&AllianceActionManagerInterface $allianceActionManager;
 
-    /** @var MockInterface&PrivateMessageSenderInterface */
-    private MockInterface $privateMessageSender;
+    private MockInterface&PrivateMessageSenderInterface $privateMessageSender;
 
-    /** @var MockInterface&UserRepositoryInterface */
-    private MockInterface $userRepository;
+    private MockInterface&UserRepositoryInterface $userRepository;
 
-    /** @var MockInterface&UserInterface */
-    private MockInterface $user;
+    private MockInterface&UserInterface $user;
 
-    /** @var MockInterface&GameControllerInterface */
-    private MockInterface $game;
+    private MockInterface&GameControllerInterface $game;
 
-    /** @var MockInterface&AllianceInterface */
-    private MockInterface $alliance;
+    private MockInterface&AllianceInterface $alliance;
 
     private DemotePlayer $subject;
 

@@ -20,19 +20,13 @@ use Stu\StuTestCase;
 
 class ShipTorpedoManagerTest extends StuTestCase
 {
-    /** @var MockInterface&ClearTorpedoInterface */
-    private $clearTorpedo;
-    /** @var MockInterface&TorpedoStorageRepositoryInterface */
-    private $torpedoStorageRepository;
-    /** @var MockInterface&StorageRepositoryInterface */
-    private $storageRepository;
+    private MockInterface&ClearTorpedoInterface $clearTorpedo;
+    private MockInterface&TorpedoStorageRepositoryInterface $torpedoStorageRepository;
+    private MockInterface&StorageRepositoryInterface $storageRepository;
 
-    /** @var MockInterface&ShipWrapperInterface */
-    private $wrapper;
-    /** @var MockInterface&ShipInterface */
-    private $ship;
-    /** @var MockInterface&TorpedoTypeInterface */
-    private  $torpedoType;
+    private MockInterface&ShipWrapperInterface $wrapper;
+    private MockInterface&ShipInterface $ship;
+    private MockInterface&TorpedoTypeInterface $torpedoType;
 
     private ShipTorpedoManagerInterface $subject;
 

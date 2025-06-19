@@ -18,15 +18,11 @@ use Stu\StuTestCase;
 
 class TrackerDeviceManagerTest extends StuTestCase
 {
-    /** @var MockInterface&SpacecraftSystemRepositoryInterface */
-    private MockInterface $shipSystemRepository;
-    /** @var MockInterface&PrivateMessageSenderInterface */
-    private MockInterface $privateMessageSender;
+    private MockInterface&SpacecraftSystemRepositoryInterface $shipSystemRepository;
+    private MockInterface&PrivateMessageSenderInterface $privateMessageSender;
 
-    /** @var MockInterface&ShipWrapperInterface */
-    private MockInterface $wrapper;
-    /** @var MockInterface&ShipInterface */
-    private MockInterface $ship;
+    private MockInterface&ShipWrapperInterface $wrapper;
+    private MockInterface&ShipInterface $ship;
 
     private TrackerDeviceManagerInterface $subject;
 

@@ -18,14 +18,11 @@ use Stu\StuTestCase;
 
 class AddBoardTest extends StuTestCase
 {
-    /** @var MockInterface&AddBoardRequestInterface */
-    private MockInterface $addBoardRequest;
+    private MockInterface&AddBoardRequestInterface $addBoardRequest;
 
-    /** @var MockInterface&AllianceBoardRepositoryInterface */
-    private MockInterface $allianceBoardRepository;
+    private MockInterface&AllianceBoardRepositoryInterface $allianceBoardRepository;
 
-    /** @var MockInterface&AllianceActionManagerInterface */
-    private MockInterface $allianceActionManager;
+    private MockInterface&AllianceActionManagerInterface $allianceActionManager;
 
     private AddBoard $subject;
 

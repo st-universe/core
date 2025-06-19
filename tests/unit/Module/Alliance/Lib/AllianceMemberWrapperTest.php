@@ -12,11 +12,9 @@ use Stu\StuTestCase;
 
 class AllianceMemberWrapperTest extends StuTestCase
 {
-    /** @var MockInterface&UserInterface */
-    private MockInterface $user;
+    private MockInterface&UserInterface $user;
 
-    /** @var MockInterface&AllianceInterface */
-    private MockInterface $alliance;
+    private MockInterface&AllianceInterface $alliance;
 
     private AllianceMemberWrapper $subject;
 

@@ -13,11 +13,9 @@ use Stu\StuTestCase;
 
 class ConditionCheckResultTest extends StuTestCase
 {
-    /** @var MockInterface&LeaveFleetInterface */
-    private $leaveFleet;
+    private MockInterface&LeaveFleetInterface $leaveFleet;
 
-    /** @var MockInterface&FlightCompany */
-    private $flightCompany;
+    private MockInterface&FlightCompany $flightCompany;
 
     #[Override]
     protected function setUp(): void

@@ -12,11 +12,9 @@ use Stu\StuTestCase;
 
 class ColonyTickRunnerTest extends StuTestCase
 {
-    /** @var MockInterface&ColonyTickManagerInterface */
-    private MockInterface $colonyTickManager;
+    private MockInterface&ColonyTickManagerInterface $colonyTickManager;
 
-    /** @var MockInterface&TransactionTickRunnerInterface */
-    private MockInterface $transactionTickRunner;
+    private MockInterface&TransactionTickRunnerInterface $transactionTickRunner;
 
     private ColonyTickRunner $subject;
 

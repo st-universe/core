@@ -16,17 +16,13 @@ use Stu\StuTestCase;
 
 class ShowRegistrationTest extends StuTestCase
 {
-    /** @var MockInterface&ShowRegistrationRequestInterface */
-    private MockInterface $showRegistrationRequest;
+    private MockInterface&ShowRegistrationRequestInterface $showRegistrationRequest;
 
-    /** @var MockInterface&FactionRepositoryInterface */
-    private MockInterface $factionRepository;
+    private MockInterface&FactionRepositoryInterface $factionRepository;
 
-    /** @var MockInterface&ConfigInterface */
-    private MockInterface $config;
+    private MockInterface&ConfigInterface $config;
 
-    /** @var MockInterface&UiItemFactoryInterface */
-    private MockInterface $uiItemFactory;
+    private MockInterface&UiItemFactoryInterface $uiItemFactory;
 
     private ShowRegistration $subject;
 

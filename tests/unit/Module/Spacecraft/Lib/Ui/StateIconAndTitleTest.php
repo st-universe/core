@@ -18,15 +18,11 @@ use Stu\StuTestCase;
 
 class StateIconAndTitleTest extends StuTestCase
 {
-    /** @var MockInterface&GameControllerInterface */
-    private $game;
-    /** @var MockInterface&Parser */
-    private $bbCodeParser;
+    private MockInterface&GameControllerInterface $game;
+    private MockInterface&Parser $bbCodeParser;
 
-    /** @var MockInterface&ShipWrapperInterface */
-    private $wrapper;
-    /** @var MockInterface&ShipInterface */
-    private $ship;
+    private MockInterface&ShipWrapperInterface $wrapper;
+    private MockInterface&ShipInterface $ship;
 
     private StateIconAndTitle $subject;
 

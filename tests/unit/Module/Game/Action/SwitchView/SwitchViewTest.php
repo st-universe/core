@@ -18,8 +18,7 @@ use ValueError;
 
 class SwitchViewTest extends StuTestCase
 {
-    /** @var MockInterface&GameControllerInterface  */
-    private MockInterface $game;
+    private MockInterface&GameControllerInterface  $game;
 
     private ActionControllerInterface $subject;
 

@@ -17,10 +17,8 @@ use Stu\StuTestCase;
 
 class SpacecraftBuildplanDeletionHandlerTest extends StuTestCase
 {
-    /** @var MockInterface&SpacecraftBuildplanRepositoryInterface */
-    private $spacecraftBuildplanRepository;
-    /** @var MockInterface&UserRepositoryInterface */
-    private $userRepository;
+    private MockInterface&SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository;
+    private MockInterface&UserRepositoryInterface $userRepository;
 
     private SpacecraftBuildplanDeletionHandler $subject;
 

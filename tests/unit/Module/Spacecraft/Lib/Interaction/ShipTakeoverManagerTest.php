@@ -31,27 +31,17 @@ use Stu\StuTestCase;
 
 class ShipTakeoverManagerTest extends StuTestCase
 {
-    /** @var MockInterface&ShipTakeoverRepositoryInterface */
-    private $shipTakeoverRepository;
-    /** @var MockInterface&SpacecraftRepositoryInterface */
-    private $spacecraftRepository;
-    /** @var MockInterface&StorageRepositoryInterface */
-    private $storageRepository;
-    /** @var MockInterface&CreatePrestigeLogInterface */
-    private $createPrestigeLog;
-    /** @var MockInterface&LeaveFleetInterface */
-    private $leaveFleet;
-    /** @var MockInterface&EntryCreatorInterface */
-    private $entryCreator;
-    /** @var MockInterface&PrivateMessageSenderInterface */
-    private $privateMessageSender;
-    /** @var MockInterface&GameControllerInterface */
-    private $game;
+    private MockInterface&ShipTakeoverRepositoryInterface $shipTakeoverRepository;
+    private MockInterface&SpacecraftRepositoryInterface $spacecraftRepository;
+    private MockInterface&StorageRepositoryInterface $storageRepository;
+    private MockInterface&CreatePrestigeLogInterface $createPrestigeLog;
+    private MockInterface&LeaveFleetInterface $leaveFleet;
+    private MockInterface&EntryCreatorInterface $entryCreator;
+    private MockInterface&PrivateMessageSenderInterface $privateMessageSender;
+    private MockInterface&GameControllerInterface $game;
 
-    /** @var MockInterface&ShipInterface */
-    private $ship;
-    /** @var MockInterface&ShipInterface */
-    private $target;
+    private MockInterface&ShipInterface $ship;
+    private MockInterface&ShipInterface $target;
 
     private ShipTakeoverManagerInterface $subject;
 

@@ -23,23 +23,15 @@ use Stu\StuTestCase;
 
 class ManageTorpedoTest extends StuTestCase
 {
-    /** @var MockInterface&TorpedoTypeRepositoryInterface */
-    private MockInterface $torpedoTypeRepository;
-    /** @var MockInterface&ShipTorpedoManagerInterface */
-    private MockInterface $shipTorpedoManager;
-    /** @var MockInterface&PrivateMessageSenderInterface */
-    private MockInterface $privateMessageSender;
+    private MockInterface&TorpedoTypeRepositoryInterface $torpedoTypeRepository;
+    private MockInterface&ShipTorpedoManagerInterface $shipTorpedoManager;
+    private MockInterface&PrivateMessageSenderInterface $privateMessageSender;
 
-    /** @var MockInterface&ShipWrapperInterface */
-    private $wrapper;
-    /** @var MockInterface&ShipInterface */
-    private $ship;
-    /** @var MockInterface&ManagerProviderInterface */
-    private $managerProvider;
-    /** @var MockInterface&UserInterface */
-    private $user;
-    /** @var MockInterface&TorpedoTypeInterface */
-    private $torpedoType;
+    private MockInterface&ShipWrapperInterface $wrapper;
+    private MockInterface&ShipInterface $ship;
+    private MockInterface&ManagerProviderInterface $managerProvider;
+    private MockInterface&UserInterface $user;
+    private MockInterface&TorpedoTypeInterface $torpedoType;
 
     private int $shipId = 555;
 

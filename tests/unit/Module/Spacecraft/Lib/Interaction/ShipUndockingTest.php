@@ -18,14 +18,10 @@ use Stu\StuTestCase;
 
 class ShipUndockingTest extends StuTestCase
 {
-    /** @var MockInterface&ShipRepositoryInterface */
-    private $shipRepository;
-    /** @var MockInterface&CancelRepairInterface */
-    private $cancelRepair;
-    /** @var MockInterface&CancelRetrofitInterface */
-    private $cancelRetrofit;
-    /** @var MockInterface&PrivateMessageSenderInterface */
-    private $privateMessageSender;
+    private MockInterface&ShipRepositoryInterface $shipRepository;
+    private MockInterface&CancelRepairInterface $cancelRepair;
+    private MockInterface&CancelRetrofitInterface $cancelRetrofit;
+    private MockInterface&PrivateMessageSenderInterface $privateMessageSender;
 
     private ShipUndockingInterface $subject;
 

@@ -18,14 +18,11 @@ use Stu\StuTestCase;
 
 class ColonyCreationTest extends StuTestCase
 {
-    /** @var MockInterface&ColonyRepositoryInterface */
-    private MockInterface $colonyRepository;
+    private MockInterface&ColonyRepositoryInterface $colonyRepository;
 
-    /** @var MockInterface&UserRepositoryInterface */
-    private MockInterface $userRepository;
+    private MockInterface&UserRepositoryInterface $userRepository;
 
-    /** @var MockInterface&StuRandom */
-    private MockInterface $stuRandom;
+    private MockInterface&StuRandom $stuRandom;
 
     private ColonyCreationInterface $subject;
 

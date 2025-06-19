@@ -17,11 +17,9 @@ use Stu\StuTestCase;
 
 class AttackedBattlePartyTest extends StuTestCase
 {
-    /** @var MockInterface&ShipWrapperInterface */
-    private ShipWrapperInterface $wrapper;
+    private MockInterface&ShipWrapperInterface $wrapper;
 
-    /** @var MockInterface&UserInterface */
-    private UserInterface $user;
+    private MockInterface&UserInterface $user;
 
     private BattlePartyInterface $subject;
 

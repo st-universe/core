@@ -20,19 +20,13 @@ use Stu\StuTestCase;
 
 class WarpdriveActivationSubscriberTest extends StuTestCase
 {
-    /** @var MockInterface&TractorMassPayloadUtilInterface */
-    private $tractorMassPayloadUtil;
-    /** @var MockInterface&SpacecraftStateChangerInterface */
-    private $spacecraftStateChanger;
-    /** @var MockInterface&ShipUndockingInterface */
-    private $shipUndocking;
-    /** @var MockInterface&GameControllerInterface */
-    private $game;
+    private MockInterface&TractorMassPayloadUtilInterface $tractorMassPayloadUtil;
+    private MockInterface&SpacecraftStateChangerInterface $spacecraftStateChanger;
+    private MockInterface&ShipUndockingInterface $shipUndocking;
+    private MockInterface&GameControllerInterface $game;
 
-    /** @var MockInterface&StationInterface */
-    private $station;
-    /** @var MockInterface&StationWrapperInterface */
-    private $wrapper;
+    private MockInterface&StationInterface $station;
+    private MockInterface&StationWrapperInterface $wrapper;
 
     private WarpdriveActivationSubscriber $subject;
 

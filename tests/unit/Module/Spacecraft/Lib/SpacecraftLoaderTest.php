@@ -26,23 +26,15 @@ use Stu\StuTestCase;
 
 class SpacecraftLoaderTest extends StuTestCase
 {
-    /** @var MockInterface&SpacecraftRepositoryInterface */
-    private $spacecraftRepository;
-    /** @var MockInterface&CrewAssignmentRepositoryInterface */
-    private $crewAssignmentRepository;
-    /** @var MockInterface&SemaphoreUtilInterface */
-    private $semaphoreUtil;
-    /** @var MockInterface&SpacecraftWrapperFactoryInterface */
-    private $spacecraftWrapperFactory;
-    /** @var MockInterface&LockManagerInterface */
-    private $lockManager;
-    /** @var MockInterface&GameControllerInterface */
-    private $game;
+    private MockInterface&SpacecraftRepositoryInterface $spacecraftRepository;
+    private MockInterface&CrewAssignmentRepositoryInterface $crewAssignmentRepository;
+    private MockInterface&SemaphoreUtilInterface $semaphoreUtil;
+    private MockInterface&SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory;
+    private MockInterface&LockManagerInterface $lockManager;
+    private MockInterface&GameControllerInterface $game;
 
-    /** @var MockInterface&SpacecraftInterface */
-    private $spacecraft;
-    /** @var MockInterface&SpacecraftWrapperInterface */
-    private $wrapper;
+    private MockInterface&SpacecraftInterface $spacecraft;
+    private MockInterface&SpacecraftWrapperInterface $wrapper;
 
     private int $spacecraftId = 5;
     private int $userId = 42;

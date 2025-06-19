@@ -20,11 +20,9 @@ use Stu\StuTestCase;
 
 class CheckDestinationTest extends StuTestCase
 {
-    /** @var MockInterface&MapRepositoryInterface */
-    private MockInterface $mapRepository;
+    private MockInterface&MapRepositoryInterface $mapRepository;
 
-    /** @var MockInterface&StarSystemMapRepositoryInterface */
-    private MockInterface $starSystemMapRepository;
+    private MockInterface&StarSystemMapRepositoryInterface $starSystemMapRepository;
 
     private CheckDestinationInterface $subject;
 

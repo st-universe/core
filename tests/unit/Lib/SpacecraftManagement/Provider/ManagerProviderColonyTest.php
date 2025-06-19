@@ -21,20 +21,15 @@ use Stu\StuTestCase;
 
 class ManagerProviderColonyTest extends StuTestCase
 {
-    /** @var MockInterface&ColonyInterface */
-    private MockInterface $colony;
+    private MockInterface&ColonyInterface $colony;
 
-    /** @var MockInterface&CrewCreatorInterface */
-    private MockInterface $crewCreator;
+    private MockInterface&CrewCreatorInterface $crewCreator;
 
-    /** @var MockInterface&ColonyLibFactoryInterface */
-    private MockInterface $colonyLibFactory;
+    private MockInterface&ColonyLibFactoryInterface $colonyLibFactory;
 
-    /** @var MockInterface&StorageManagerInterface */
-    private MockInterface $storageManager;
+    private MockInterface&StorageManagerInterface $storageManager;
 
-    /** @var MockInterface&TroopTransferUtilityInterface */
-    private MockInterface $troopTransferUtility;
+    private MockInterface&TroopTransferUtilityInterface $troopTransferUtility;
 
     private ManagerProviderInterface $subject;
 

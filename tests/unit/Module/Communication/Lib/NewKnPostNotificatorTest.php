@@ -18,8 +18,7 @@ use Stu\StuTestCase;
 
 class NewKnPostNotificatorTest extends StuTestCase
 {
-    /** @var MockInterface&PrivateMessageSenderInterface */
-    private MockInterface $privateMessageSender;
+    private MockInterface&PrivateMessageSenderInterface $privateMessageSender;
 
     private NewKnPostNotificator $subject;
 

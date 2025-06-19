@@ -16,19 +16,15 @@ use Stu\StuTestCase;
 
 class DriveActivatableConditionTest extends StuTestCase
 {
-    /** @var MockInterface&ActivatorDeactivatorHelperInterface */
-    private MockInterface $activatorDeactivatorHelper;
+    private MockInterface&ActivatorDeactivatorHelperInterface $activatorDeactivatorHelper;
 
     private PreFlightConditionInterface $subject;
 
-    /** @var MockInterface&ShipWrapperInterface */
-    private MockInterface $wrapper;
+    private MockInterface&ShipWrapperInterface $wrapper;
 
-    /** @var MockInterface&FlightRouteInterface */
-    private MockInterface $flightRoute;
+    private MockInterface&FlightRouteInterface $flightRoute;
 
-    /** @var MockInterface&ConditionCheckResult */
-    private MockInterface $conditionCheckResult;
+    private MockInterface&ConditionCheckResult $conditionCheckResult;
 
     #[Override]
     protected function setUp(): void

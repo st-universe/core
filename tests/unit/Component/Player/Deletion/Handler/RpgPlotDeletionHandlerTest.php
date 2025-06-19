@@ -19,14 +19,10 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 class RpgPlotDeletionHandlerTest extends MockeryTestCase
 {
-    /** @var MockInterface&RpgPlotMemberRepositoryInterface */
-    private MockInterface $rpgPlotMemberRepository;
-    /** @var MockInterface&RpgPlotRepositoryInterface */
-    private MockInterface $rpgPlotRepository;
-    /** @var MockInterface&UserRepositoryInterface */
-    private MockInterface $userRepository;
-    /** @var MockInterface&EntityManagerInterface */
-    private MockInterface $entityManager;
+    private MockInterface&RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository;
+    private MockInterface&RpgPlotRepositoryInterface $rpgPlotRepository;
+    private MockInterface&UserRepositoryInterface $userRepository;
+    private MockInterface&EntityManagerInterface $entityManager;
 
     private RpgPlotDeletionHandler $handler;
 

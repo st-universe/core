@@ -16,8 +16,7 @@ use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 
 class ActivateSystemTest extends ActionControllerTestCase
 {
-    /** @var MockInterface&ActivatorDeactivatorHelperInterface */
-    private MockInterface $helper;
+    private MockInterface&ActivatorDeactivatorHelperInterface $helper;
 
     private ActionControllerInterface $subject;
 

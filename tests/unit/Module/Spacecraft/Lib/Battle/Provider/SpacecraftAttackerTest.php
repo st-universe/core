@@ -22,17 +22,13 @@ use Stu\StuTestCase;
 
 class SpacecraftAttackerTest extends StuTestCase
 {
-    /** @var MockInterface&ShipWrapperInterface */
-    private $wrapper;
+    private MockInterface&ShipWrapperInterface $wrapper;
 
-    /** @var MockInterface&ShipTorpedoManagerInterface */
-    private $shipTorpedoManager;
+    private MockInterface&ShipTorpedoManagerInterface $shipTorpedoManager;
 
-    /** @var MockInterface&StuRandom */
-    private $stuRandom;
+    private MockInterface&StuRandom $stuRandom;
 
-    /** @var MockInterface&ShipInterface */
-    private ShipInterface $ship;
+    private MockInterface&ShipInterface $ship;
 
     private SpacecraftAttacker $subject;
 

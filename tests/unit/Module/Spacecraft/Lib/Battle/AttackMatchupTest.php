@@ -15,8 +15,7 @@ use Stu\StuTestCase;
 
 class AttackMatchupTest extends StuTestCase
 {
-    /** @var MockInterface&StuRandom */
-    private StuRandom $stuRandom;
+    private MockInterface&StuRandom $stuRandom;
 
     private AttackMatchupInterface $subject;
 

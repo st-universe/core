@@ -18,19 +18,13 @@ use Stu\StuTestCase;
 
 class TrapDetectionTest extends StuTestCase
 {
-    /** @var MockInterface&AlertedShipsDetectionInterface */
-    private $alertedShipsDetection;
-    /** @var MockInterface&PrestigeCalculationInterface */
-    private $prestigeCalculation;
-    /** @var MockInterface&StuRandom */
-    private $stuRandom;
+    private MockInterface&AlertedShipsDetectionInterface $alertedShipsDetection;
+    private MockInterface&PrestigeCalculationInterface $prestigeCalculation;
+    private MockInterface&StuRandom $stuRandom;
 
-    /** @var MockInterface&LocationInterface */
-    private $location;
-    /** @var MockInterface&ShipInterface */
-    private $leadShip;
-    /** @var MockInterface&UserInterface */
-    private $user;
+    private MockInterface&LocationInterface $location;
+    private MockInterface&ShipInterface $leadShip;
+    private MockInterface&UserInterface $user;
 
     private TrapDetectionInterface $subject;
 

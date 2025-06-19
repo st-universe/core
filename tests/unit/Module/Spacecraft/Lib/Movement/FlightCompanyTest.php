@@ -20,8 +20,7 @@ use Stu\StuTestCase;
 
 class FlightCompanyTest extends StuTestCase
 {
-    /** @var MockInterface&PreFlightConditionsCheckInterface */
-    private $preFlightConditionsCheck;
+    private MockInterface&PreFlightConditionsCheckInterface $preFlightConditionsCheck;
 
     #[Override]
     protected function setUp(): void

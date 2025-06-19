@@ -19,23 +19,17 @@ class RegisterTest extends StuTestCase
 {
     private Register $subject;
 
-    /** @var MockInterface&RegisterRequestInterface */
-    private MockInterface $registerRequest;
+    private MockInterface&RegisterRequestInterface $registerRequest;
 
-    /** @var MockInterface&FactionRepositoryInterface */
-    private MockInterface $factionRepository;
+    private MockInterface&FactionRepositoryInterface $factionRepository;
 
-    /** @var MockInterface&PlayerCreatorInterface */
-    private MockInterface $playerCreator;
+    private MockInterface&PlayerCreatorInterface $playerCreator;
 
-    /** @var MockInterface&ConfigInterface */
-    private MockInterface $config;
+    private MockInterface&ConfigInterface $config;
 
-    /** @var MockInterface&GameControllerInterface */
-    private MockInterface $game;
+    private MockInterface&GameControllerInterface $game;
 
-    /** @var MockInterface&FactionInterface */
-    private MockInterface $faction;
+    private MockInterface&FactionInterface $faction;
 
     #[Override]
     public function setUp(): void

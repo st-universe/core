@@ -24,30 +24,21 @@ use Stu\StuTestCase;
 
 class ThreatReactionTest extends StuTestCase
 {
-    /** @var MockInterface&PlayerRelationDeterminatorInterface */
-    private $playerRelationDeterminator;
+    private MockInterface&PlayerRelationDeterminatorInterface $playerRelationDeterminator;
 
-    /** @var MockInterface&SpacecraftAttackCycleInterface */
-    private $spacecraftAttackCycle;
+    private MockInterface&SpacecraftAttackCycleInterface $spacecraftAttackCycle;
 
-    /** @var MockInterface&BattlePartyFactoryInterface */
-    private $battlePartyFactory;
+    private MockInterface&BattlePartyFactoryInterface $battlePartyFactory;
 
-    /** @var MockInterface&PrivateMessageSenderInterface */
-    private $privateMessageSender;
+    private MockInterface&PrivateMessageSenderInterface $privateMessageSender;
 
-    /** @var MockInterface&GameControllerInterface */
-    private $game;
+    private MockInterface&GameControllerInterface $game;
 
-    /** @var MockInterface&ShipInterface */
-    private $ship;
-    /** @var MockInterface&ShipInterface */
-    private $target;
+    private MockInterface&ShipInterface $ship;
+    private MockInterface&ShipInterface $target;
 
-    /** @var MockInterface&ShipWrapperInterface */
-    private $wrapper;
-    /** @var MockInterface&ShipWrapperInterface */
-    private $targetWrapper;
+    private MockInterface&ShipWrapperInterface $wrapper;
+    private MockInterface&ShipWrapperInterface $targetWrapper;
 
     private ThreatReactionInterface $subject;
 

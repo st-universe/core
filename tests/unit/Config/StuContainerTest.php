@@ -17,10 +17,8 @@ use Stu\StuTestCase;
 
 class StuContainerTest extends StuTestCase
 {
-    /** @var MockInterface&MutableDefinitionSource */
-    private $definitionSource;
-    /** @var MockInterface&ContainerInterface */
-    private $wrapperContainer;
+    private MockInterface&MutableDefinitionSource $definitionSource;
+    private MockInterface&ContainerInterface $wrapperContainer;
 
     private StuContainer $subject;
 

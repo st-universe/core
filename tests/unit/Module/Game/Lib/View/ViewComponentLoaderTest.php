@@ -14,11 +14,9 @@ use Stu\StuTestCase;
 
 class ViewComponentLoaderTest extends StuTestCase
 {
-    /** @var MockInterface&ViewComponentProviderInterface  */
-    private MockInterface $componentProvider;
+    private MockInterface&ViewComponentProviderInterface  $componentProvider;
 
-    /** @var MockInterface&GameControllerInterface  */
-    private MockInterface $game;
+    private MockInterface&GameControllerInterface  $game;
 
     private ViewComponentLoaderInterface $subject;
 

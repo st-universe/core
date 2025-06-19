@@ -14,11 +14,9 @@ use Stu\StuTestCase;
 
 class ReactorWrapperTest extends StuTestCase
 {
-    /** @var MockInterface&ShipWrapperInterface */
-    private MockInterface $wrapper;
+    private MockInterface&ShipWrapperInterface $wrapper;
 
-    /** @var MockInterface&AbstractReactorSystemData */
-    private MockInterface $reactorSystemData;
+    private MockInterface&AbstractReactorSystemData $reactorSystemData;
 
     private ReactorWrapperInterface $subject;
 

@@ -17,19 +17,15 @@ use Stu\StuTestCase;
 
 class PostFlightTractorConsequenceTest extends StuTestCase
 {
-    /** @var MockInterface&TractorMassPayloadUtilInterface */
-    private MockInterface $tractorMassPayloadUtil;
+    private MockInterface&TractorMassPayloadUtilInterface $tractorMassPayloadUtil;
 
     private FlightConsequenceInterface $subject;
 
-    /** @var MockInterface&StationInterface */
-    private MockInterface $ship;
+    private MockInterface&StationInterface $ship;
 
-    /** @var MockInterface&StationWrapperInterface */
-    private MockInterface $wrapper;
+    private MockInterface&StationWrapperInterface $wrapper;
 
-    /** @var MockInterface&FlightRouteInterface */
-    private MockInterface $flightRoute;
+    private MockInterface&FlightRouteInterface $flightRoute;
 
     #[Override]
     protected function setUp(): void

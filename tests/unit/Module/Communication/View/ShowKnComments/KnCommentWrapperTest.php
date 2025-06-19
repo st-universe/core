@@ -18,8 +18,7 @@ class KnCommentWrapperTest extends StuTestCase
     private MockInterface&UserSettingsProviderInterface $userSettingsProvider;
     private MockInterface&KnCommentInterface $comment;
 
-    /** @var MockInterface&UserInterface */
-    private MockInterface $user;
+    private MockInterface&UserInterface $user;
 
     private KnCommentWrapper $tal;
 

@@ -18,10 +18,8 @@ use Stu\StuTestCase;
 
 class CancelResearchTest extends StuTestCase
 {
-    /** @var MockInterface&ResearchedRepositoryInterface */
-    private $researchedRepository;
-    /** @var MockInterface&ComponentRegistrationInterface */
-    private $componentRegistration;
+    private MockInterface&ResearchedRepositoryInterface $researchedRepository;
+    private MockInterface&ComponentRegistrationInterface $componentRegistration;
 
     private CancelResearch $subject;
 

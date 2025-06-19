@@ -19,23 +19,17 @@ use Stu\StuTestCase;
 
 class ManageBatteryTest extends StuTestCase
 {
-    /** @var MockInterface&PrivateMessageSenderInterface */
-    private MockInterface $privateMessageSender;
+    private MockInterface&PrivateMessageSenderInterface $privateMessageSender;
 
-    /** @var MockInterface&ShipWrapperInterface */
-    private MockInterface $wrapper;
+    private MockInterface&ShipWrapperInterface $wrapper;
 
-    /** @var MockInterface&EpsSystemData */
-    private MockInterface $epsSystemData;
+    private MockInterface&EpsSystemData $epsSystemData;
 
-    /** @var MockInterface&ShipInterface */
-    private MockInterface $ship;
+    private MockInterface&ShipInterface $ship;
 
-    /** @var MockInterface&ManagerProviderInterface */
-    private MockInterface $managerProvider;
+    private MockInterface&ManagerProviderInterface $managerProvider;
 
-    /** @var MockInterface&PlayerRelationDeterminatorInterface */
-    private MockInterface $playerRelationDeterminator;
+    private MockInterface&PlayerRelationDeterminatorInterface $playerRelationDeterminator;
 
 
     private int $shipId = 555;

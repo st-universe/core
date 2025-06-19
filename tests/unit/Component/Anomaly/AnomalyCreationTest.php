@@ -19,11 +19,9 @@ use Stu\StuTestCase;
 
 class AnomalyCreationTest extends StuTestCase
 {
-    /** @var MockInterface&AnomalyRepositoryInterface */
-    private MockInterface $anomalyRepository;
+    private MockInterface&AnomalyRepositoryInterface $anomalyRepository;
 
-    /** @var MockInterface&AnomalyTypeRepositoryInterface */
-    private MockInterface $anomalyTypeRepository;
+    private MockInterface&AnomalyTypeRepositoryInterface $anomalyTypeRepository;
 
     private AnomalyCreationInterface $subject;
 

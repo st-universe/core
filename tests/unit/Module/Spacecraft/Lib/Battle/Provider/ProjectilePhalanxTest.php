@@ -17,11 +17,9 @@ use Stu\StuTestCase;
 
 class ProjectilePhalanxTest extends StuTestCase
 {
-    /** @var MockInterface&ColonyInterface */
-    private $colony;
+    private MockInterface&ColonyInterface $colony;
 
-    /** @var MockInterface&StorageManagerInterface */
-    private $storageManager;
+    private MockInterface&StorageManagerInterface $storageManager;
 
     private ProjectilePhalanx $subject;
 

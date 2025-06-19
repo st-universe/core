@@ -13,8 +13,7 @@ use Stu\StuTestCase;
 
 class ColonyFunctionManagerTest extends StuTestCase
 {
-    /** @var PlanetFieldRepositoryInterface&MockInterface */
-    private MockInterface $planetFieldRepository;
+    private PlanetFieldRepositoryInterface&MockInterface $planetFieldRepository;
 
     private ColonyFunctionManager $subject;
 

@@ -18,23 +18,17 @@ use Stu\StuTestCase;
 
 class ManualColonyTickTest extends StuTestCase
 {
-    /** @var MockInterface&ManualColonyTickRequestInterface */
-    private ManualColonyTickRequestInterface $request;
+    private MockInterface&ManualColonyTickRequestInterface $request;
 
-    /** @var MockInterface&ColonyTickManagerInterface */
-    private ColonyTickManagerInterface $colonyTickManager;
+    private MockInterface&ColonyTickManagerInterface $colonyTickManager;
 
-    /** @var MockInterface&ColonyTickInterface */
-    private ColonyTickInterface $colonyTick;
+    private MockInterface&ColonyTickInterface $colonyTick;
 
-    /** @var MockInterface&ColonyRepositoryInterface */
-    private ColonyRepositoryInterface $colonyRepository;
+    private MockInterface&ColonyRepositoryInterface $colonyRepository;
 
-    /** @var MockInterface&StuConfigInterface */
-    private StuConfigInterface $config;
+    private MockInterface&StuConfigInterface $config;
 
-    /** @var MockInterface&GameControllerInterface */
-    private GameControllerInterface $game;
+    private MockInterface&GameControllerInterface $game;
 
     private ManualColonyTick $subject;
 

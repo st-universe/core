@@ -13,8 +13,7 @@ use Stu\StuTestCase;
 
 class ProcessTickCommandTest extends StuTestCase
 {
-    /** @var MockInterface&ProcessTickRunner */
-    private MockInterface $processTickRunner;
+    private MockInterface&ProcessTickRunner $processTickRunner;
 
     private ProcessTickCommand $subject;
 

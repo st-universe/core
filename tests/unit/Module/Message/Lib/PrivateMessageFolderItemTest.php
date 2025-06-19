@@ -12,11 +12,9 @@ use Stu\StuTestCase;
 
 class PrivateMessageFolderItemTest extends StuTestCase
 {
-    /** @var MockInterface&PrivateMessageRepositoryInterface */
-    private MockInterface $privateMessageRepository;
+    private MockInterface&PrivateMessageRepositoryInterface $privateMessageRepository;
 
-    /** @var MockInterface&PrivateMessageFolderInterface */
-    private MockInterface $privateMessageFolder;
+    private MockInterface&PrivateMessageFolderInterface $privateMessageFolder;
 
     private PrivateMessageFolderItem $subject;
 

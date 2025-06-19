@@ -15,8 +15,7 @@ use Stu\StuTestCase;
 
 class DatabaseAdapterTest extends StuTestCase
 {
-    /** @var MockInterface&Connection */
-    private MockInterface $database;
+    private MockInterface&Connection $database;
 
     private DatabaseAdapter $subject;
 

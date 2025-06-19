@@ -15,11 +15,9 @@ use Stu\StuTestCase;
 
 class EnergyPhalanxTest extends StuTestCase
 {
-    /** @var MockInterface&ColonyInterface */
-    private $colony;
+    private MockInterface&ColonyInterface $colony;
 
-    /** @var MockInterface&ModuleRepositoryInterface */
-    private $moduleRepository;
+    private MockInterface&ModuleRepositoryInterface $moduleRepository;
 
     private EnergyPhalanx $subject;
 

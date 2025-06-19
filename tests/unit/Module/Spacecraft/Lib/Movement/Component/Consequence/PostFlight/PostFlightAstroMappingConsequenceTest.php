@@ -28,25 +28,18 @@ use Stu\StuTestCase;
 
 class PostFlightAstroMappingConsequenceTest extends StuTestCase
 {
-    /** @var MockInterface&AstroEntryRepositoryInterface */
-    private $astroEntryRepository;
-    /** @var MockInterface&AstroEntryLibInterface */
-    private $astroEntryLib;
-    /** @var MockInterface&CreatePrestigeLogInterface */
-    private $createPrestigeLog;
-    /** @var MockInterface&MessageFactoryInterface */
-    private $messageFactory;
+    private MockInterface&AstroEntryRepositoryInterface $astroEntryRepository;
+    private MockInterface&AstroEntryLibInterface $astroEntryLib;
+    private MockInterface&CreatePrestigeLogInterface $createPrestigeLog;
+    private MockInterface&MessageFactoryInterface $messageFactory;
 
     private FlightConsequenceInterface $subject;
 
-    /** @var MockInterface&ShipInterface */
-    private MockInterface $ship;
+    private MockInterface&ShipInterface $ship;
 
-    /** @var MockInterface&ShipWrapperInterface */
-    private MockInterface $wrapper;
+    private MockInterface&ShipWrapperInterface $wrapper;
 
-    /** @var MockInterface&FlightRouteInterface */
-    private MockInterface $flightRoute;
+    private MockInterface&FlightRouteInterface $flightRoute;
 
     #[Override]
     protected function setUp(): void

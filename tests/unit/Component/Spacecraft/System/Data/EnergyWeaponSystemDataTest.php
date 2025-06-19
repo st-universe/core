@@ -15,13 +15,10 @@ use Stu\StuTestCase;
 
 class EnergyWeaponSystemDataTest extends StuTestCase
 {
-    /** @var MockInterface&SpacecraftSystemRepositoryInterface */
-    private $shipSystemRepository;
-    /** @var MockInterface&StatusBarFactoryInterface */
-    private $statusBarFactory;
+    private MockInterface&SpacecraftSystemRepositoryInterface $shipSystemRepository;
+    private MockInterface&StatusBarFactoryInterface $statusBarFactory;
 
-    /** @var MockInterface&ShipInterface */
-    private $ship;
+    private MockInterface&ShipInterface $ship;
 
     private EnergyWeaponSystemData $subject;
 

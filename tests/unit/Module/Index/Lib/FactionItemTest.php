@@ -11,8 +11,7 @@ use Stu\StuTestCase;
 
 class FactionItemTest extends StuTestCase
 {
-    /** @var MockInterface&FactionInterface  */
-    private MockInterface $faction;
+    private MockInterface&FactionInterface  $faction;
 
     private int $currentPlayerCount = 666;
 

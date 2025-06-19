@@ -17,12 +17,9 @@ use Stu\StuTestCase;
 
 class IonStormPropagationTest extends StuTestCase
 {
-    /** @var MockInterface&AnomalyRepositoryInterface */
-    private $anomalyRepository;
-    /** @var MockInterface&AnomalyCreationInterface */
-    private $anomalyCreation;
-    /** @var MockInterface&StuRandom */
-    private $stuRandom;
+    private MockInterface&AnomalyRepositoryInterface $anomalyRepository;
+    private MockInterface&AnomalyCreationInterface $anomalyCreation;
+    private MockInterface&StuRandom $stuRandom;
 
     private IonStormPropagation $subject;
 

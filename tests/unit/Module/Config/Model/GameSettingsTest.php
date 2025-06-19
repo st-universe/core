@@ -11,10 +11,8 @@ use Stu\StuTestCase;
 
 class GameSettingsTest extends StuTestCase
 {
-    /** @var MockInterface&SettingsCoreInterface */
-    private $settingsCore;
-    /** @var MockInterface&SettingsCacheInterface */
-    private $cache;
+    private MockInterface&SettingsCoreInterface $settingsCore;
+    private MockInterface&SettingsCacheInterface $cache;
 
     private GameSettings $subject;
 

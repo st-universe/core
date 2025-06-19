@@ -12,11 +12,9 @@ use Stu\StuTestCase;
 
 class GameRequestSaverTest extends StuTestCase
 {
-    /** @var MockInterface&GameRequestLoggerInterface */
-    private MockInterface $gameRequestLogger;
+    private MockInterface&GameRequestLoggerInterface $gameRequestLogger;
 
-    /** @var MockInterface&ParameterSanitizerInterface */
-    private MockInterface $parameterSanitizer;
+    private MockInterface&ParameterSanitizerInterface $parameterSanitizer;
 
     private GameRequestSaver $subject;
 

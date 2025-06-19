@@ -25,18 +25,12 @@ use Stu\StuTestCase;
 
 class ShipMoverTest extends StuTestCase
 {
-    /** @var MockInterface&SpacecraftRepositoryInterface */
-    private $spaceRepository;
-    /** @var MockInterface&FlightCompanyFactory */
-    private $flightCompanyFactory;
-    /** @var MockInterface&ShipMovementInformationAdderInterface */
-    private $shipMovementInformationAdder;
-    /** @var MockInterface&LeaveFleetInterface */
-    private $leaveFleet;
-    /** @var MockInterface&AlertReactionFacadeInterface */
-    private $alertReactionFacade;
-    /** @var MockInterface&MessageFactoryInterface */
-    private $messageFactory;
+    private MockInterface&SpacecraftRepositoryInterface $spaceRepository;
+    private MockInterface&FlightCompanyFactory $flightCompanyFactory;
+    private MockInterface&ShipMovementInformationAdderInterface $shipMovementInformationAdder;
+    private MockInterface&LeaveFleetInterface $leaveFleet;
+    private MockInterface&AlertReactionFacadeInterface $alertReactionFacade;
+    private MockInterface&MessageFactoryInterface $messageFactory;
 
     private ShipMoverInterface $subject;
 

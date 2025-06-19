@@ -16,10 +16,8 @@ use Stu\StuTestCase;
 
 class ProjectileWeaponShipSystemTest extends StuTestCase
 {
-    /** @var MockInterface&ShipWrapperInterface */
-    private $wrapper;
-    /** @var MockInterface&ShipInterface */
-    private $ship;
+    private MockInterface&ShipWrapperInterface $wrapper;
+    private MockInterface&ShipInterface $ship;
     private ProjectileWeaponShipSystem $system;
 
     #[Override]

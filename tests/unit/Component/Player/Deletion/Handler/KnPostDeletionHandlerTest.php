@@ -16,12 +16,9 @@ use Stu\StuTestCase;
 
 class KnPostDeletionHandlerTest extends StuTestCase
 {
-    /** @var MockInterface&KnPostRepositoryInterface */
-    private $knPostRepository;
-    /** @var MockInterface&UserRepositoryInterface */
-    private $userRepository;
-    /** @var MockInterface&EntityManagerInterface */
-    private $entityManager;
+    private MockInterface&KnPostRepositoryInterface $knPostRepository;
+    private MockInterface&UserRepositoryInterface $userRepository;
+    private MockInterface&EntityManagerInterface $entityManager;
 
     private KnPostDeletionHandler $subject;
 

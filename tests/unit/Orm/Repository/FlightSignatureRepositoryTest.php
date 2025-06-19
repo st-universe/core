@@ -14,11 +14,9 @@ use Stu\StuTestCase;
 
 class FlightSignatureRepositoryTest extends StuTestCase
 {
-    /** @var EntityManagerInterface&MockInterface  */
-    private MockInterface $entityManager;
+    private EntityManagerInterface&MockInterface $entityManager;
 
-    /** @var MockInterface&ClassMetadata */
-    private MockInterface $classMetaData;
+    private MockInterface&ClassMetadata $classMetaData;
 
     private FlightSignatureRepository $subject;
 

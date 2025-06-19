@@ -16,17 +16,13 @@ use Stu\StuTestCase;
 
 class CrewCountRetrieverTest extends StuTestCase
 {
-    /** @var MockInterface&CrewRepositoryInterface */
-    private MockInterface $crewRepository;
+    private MockInterface&CrewRepositoryInterface $crewRepository;
 
-    /** @var MockInterface&CrewAssignmentRepositoryInterface */
-    private MockInterface $shipCrewRepository;
+    private MockInterface&CrewAssignmentRepositoryInterface $shipCrewRepository;
 
-    /** @var MockInterface&CrewTrainingRepositoryInterface */
-    private MockInterface $crewTrainigRepository;
+    private MockInterface&CrewTrainingRepositoryInterface $crewTrainigRepository;
 
-    /** @var MockInterface&CrewLimitCalculatorInterface */
-    private MockInterface $crewLimitCalculator;
+    private MockInterface&CrewLimitCalculatorInterface $crewLimitCalculator;
 
     private CrewCountRetriever $subject;
 

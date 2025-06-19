@@ -20,17 +20,12 @@ use Stu\StuTestCase;
 
 class SkipDetectionTest extends StuTestCase
 {
-    /** @var MockInterface&PlayerRelationDeterminatorInterface */
-    private $playerRelationDeterminator;
-    /** @var MockInterface&StuTime */
-    private $stuTime;
+    private MockInterface&PlayerRelationDeterminatorInterface $playerRelationDeterminator;
+    private MockInterface&StuTime $stuTime;
 
-    /** @var MockInterface&ShipInterface */
-    private $incomingShip;
-    /** @var MockInterface&SpacecraftWrapperInterface */
-    private $alertedWrapper;
-    /** @var MockInterface&ShipInterface */
-    private $alertedShip;
+    private MockInterface&ShipInterface $incomingShip;
+    private MockInterface&SpacecraftWrapperInterface $alertedWrapper;
+    private MockInterface&ShipInterface $alertedShip;
 
     private SkipDetectionInterface $subject;
 

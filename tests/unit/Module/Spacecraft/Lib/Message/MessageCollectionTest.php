@@ -11,8 +11,7 @@ use Stu\StuTestCase;
 
 class MessageCollectionTest extends StuTestCase
 {
-    /** @var MockInterface&MessageFactoryInterface */
-    private $messageFactory;
+    private MockInterface&MessageFactoryInterface $messageFactory;
 
     private MessageCollectionInterface $subject;
 

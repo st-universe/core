@@ -27,20 +27,15 @@ use Stu\StuTestCase;
 
 class UserProfileProviderTest extends StuTestCase
 {
-    /** @var MockInterface&RpgPlotMemberRepositoryInterface */
-    private MockInterface $rpgPlotMemberRepository;
+    private MockInterface&RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository;
 
-    /** @var MockInterface&ContactRepositoryInterface */
-    private MockInterface $contactRepository;
+    private MockInterface&ContactRepositoryInterface $contactRepository;
 
-    /** @var MockInterface&UserRepositoryInterface */
-    private MockInterface $userRepository;
+    private MockInterface&UserRepositoryInterface $userRepository;
 
-    /** @var MockInterface&ParserWithImageInterface */
-    private MockInterface $parserWithImage;
+    private MockInterface&ParserWithImageInterface $parserWithImage;
 
-    /** @var MockInterface&ProfileVisitorRegistrationInterface */
-    private MockInterface $profileVisitorRegistration;
+    private MockInterface&ProfileVisitorRegistrationInterface $profileVisitorRegistration;
 
     private ViewComponentProviderInterface $subject;
 

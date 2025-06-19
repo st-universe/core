@@ -31,40 +31,29 @@ use Stu\StuTestCase;
 
 class ManageCrewTest extends StuTestCase
 {
-    /** @var MockInterface&SpacecraftCrewCalculatorInterface */
-    private MockInterface $shipCrewCalculator;
+    private MockInterface&SpacecraftCrewCalculatorInterface $shipCrewCalculator;
 
-    /** @var MockInterface&SpacecraftSystemManagerInterface */
-    private MockInterface $spacecraftSystemManager;
+    private MockInterface&SpacecraftSystemManagerInterface $spacecraftSystemManager;
 
-    /** @var MockInterface&TroopTransferUtilityInterface */
-    private MockInterface $troopTransferUtility;
+    private MockInterface&TroopTransferUtilityInterface $troopTransferUtility;
 
-    /** @var MockInterface&SpacecraftShutdownInterface */
-    private MockInterface $spacecraftShutdown;
+    private MockInterface&SpacecraftShutdownInterface $spacecraftShutdown;
 
-    /** @var MockInterface&SpacecraftLeaverInterface */
-    private MockInterface $spacecraftLeaver;
+    private MockInterface&SpacecraftLeaverInterface $spacecraftLeaver;
 
-    /** @var MockInterface&ActivatorDeactivatorHelperInterface */
-    private MockInterface $helper;
+    private MockInterface&ActivatorDeactivatorHelperInterface $helper;
 
-    /** @var MockInterface&ShipWrapperInterface */
-    private MockInterface $wrapper;
+    private MockInterface&ShipWrapperInterface $wrapper;
 
-    /** @var MockInterface&SpacecraftBuildplanInterface */
-    private MockInterface $buildplan;
+    private MockInterface&SpacecraftBuildplanInterface $buildplan;
 
-    /** @var MockInterface&ShipInterface */
-    private MockInterface $ship;
+    private MockInterface&ShipInterface $ship;
 
-    /** @var MockInterface&ManagerProviderInterface */
-    private MockInterface $managerProvider;
+    private MockInterface&ManagerProviderInterface $managerProvider;
 
     private int $shipId = 555;
 
-    /** @var MockInterface&UserInterface */
-    private MockInterface $user;
+    private MockInterface&UserInterface $user;
 
     private ManageCrew $subject;
 

@@ -17,17 +17,13 @@ use Stu\StuTestCase;
 
 class MaintenanceTickRunnerTest extends StuTestCase
 {
-    /** @var MockInterface&GameConfigRepositoryInterface */
-    private MockInterface $gameConfigRepository;
+    private MockInterface&GameConfigRepositoryInterface $gameConfigRepository;
 
-    /** @var MockInterface&TransactionTickRunnerInterface */
-    private MockInterface $transactionTickRunner;
+    private MockInterface&TransactionTickRunnerInterface $transactionTickRunner;
 
-    /** @var MockInterface&Connection */
-    private MockInterface $connection;
+    private MockInterface&Connection $connection;
 
-    /** @var MockInterface&MaintenanceHandlerInterface */
-    private MockInterface $maintenanceHandler;
+    private MockInterface&MaintenanceHandlerInterface $maintenanceHandler;
 
     private MaintenanceTickRunner $subject;
 

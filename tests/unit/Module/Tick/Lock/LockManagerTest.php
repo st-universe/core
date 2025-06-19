@@ -12,8 +12,7 @@ use Stu\StuTestCase;
 
 class LockManagerTest extends StuTestCase
 {
-    /** @var MockInterface&StuConfigInterface */
-    private StuConfigInterface $config;
+    private MockInterface&StuConfigInterface $config;
 
     private LockManagerInterface $lockManager;
 

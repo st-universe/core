@@ -13,8 +13,7 @@ use Stu\StuTestCase;
 
 class ShowWriteKnTest extends StuTestCase
 {
-    /** @var MockInterface&RpgPlotRepositoryInterface */
-    private MockInterface $rpgPlotRepository;
+    private MockInterface&RpgPlotRepositoryInterface $rpgPlotRepository;
 
     private ShowWriteKn $subject;
 

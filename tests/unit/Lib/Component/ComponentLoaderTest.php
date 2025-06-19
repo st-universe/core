@@ -18,11 +18,9 @@ use Stu\StuTestCase;
 
 class ComponentLoaderTest extends StuTestCase
 {
-    /** @var MockInterface&ComponentRegistrationInterface  */
-    private $componentRegistration;
+    private MockInterface&ComponentRegistrationInterface  $componentRegistration;
 
-    /** @var MockInterface&GameControllerInterface  */
-    private $game;
+    private MockInterface&GameControllerInterface  $game;
 
     private ComponentLoaderInterface $subject;
 

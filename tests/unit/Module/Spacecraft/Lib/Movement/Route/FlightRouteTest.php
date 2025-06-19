@@ -29,19 +29,13 @@ use function DI\get;
 
 class FlightRouteTest extends StuTestCase
 {
-    /** @var MockInterface&CheckDestinationInterface */
-    private $checkDestination;
-    /** @var MockInterface&LoadWaypointsInterface */
-    private $loadWaypoints;
-    /** @var MockInterface&EnterWaypointInterface */
-    private $enterWaypoint;
-    /** @var MockInterface&EffectHandlingInterface */
-    private $effectHandling;
+    private MockInterface&CheckDestinationInterface $checkDestination;
+    private MockInterface&LoadWaypointsInterface $loadWaypoints;
+    private MockInterface&EnterWaypointInterface $enterWaypoint;
+    private MockInterface&EffectHandlingInterface $effectHandling;
 
-    /** @var MockInterface&FlightConsequenceInterface */
-    private $flightConsequence;
-    /** @var MockInterface&FlightConsequenceInterface */
-    private $postFlightConsequence;
+    private MockInterface&FlightConsequenceInterface $flightConsequence;
+    private MockInterface&FlightConsequenceInterface $postFlightConsequence;
 
     private FlightRouteInterface $subject;
 

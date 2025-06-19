@@ -18,18 +18,12 @@ use Stu\StuTestCase;
 
 class TholianWebUtilTest extends StuTestCase
 {
-    /** @var MockInterface&SpacecraftRepositoryInterface */
-    private $spacecraftRepository;
-    /** @var MockInterface&TholianWebRepositoryInterface */
-    private $tholianWebRepository;
-    /** @var MockInterface&SpacecraftSystemRepositoryInterface */
-    private $shipSystemRepository;
-    /** @var MockInterface&StuTime */
-    private $stuTime;
-    /** @var MockInterface&PrivateMessageSenderInterface */
-    private $privateMessageSender;
-    /** @var MockInterface&EntityManagerInterface */
-    private $entityManager;
+    private MockInterface&SpacecraftRepositoryInterface $spacecraftRepository;
+    private MockInterface&TholianWebRepositoryInterface $tholianWebRepository;
+    private MockInterface&SpacecraftSystemRepositoryInterface $shipSystemRepository;
+    private MockInterface&StuTime $stuTime;
+    private MockInterface&PrivateMessageSenderInterface $privateMessageSender;
+    private MockInterface&EntityManagerInterface $entityManager;
 
     private TholianWebUtilInterface $subject;
 

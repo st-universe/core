@@ -17,11 +17,9 @@ use Stu\StuTestCase;
 
 class AlertedShipsDetectionTest extends StuTestCase
 {
-    /** @var MockInterface&SpacecraftWrapperFactoryInterface */
-    private $spacecraftWrapperFactory;
+    private MockInterface&SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory;
 
-    /** @var MockInterface&LocationInterface */
-    private $location;
+    private MockInterface&LocationInterface $location;
 
     private AlertedShipsDetectionInterface $subject;
 

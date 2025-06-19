@@ -20,20 +20,15 @@ use Stu\StuTestCase;
 
 class BuildingManagerTest extends StuTestCase
 {
-    /** @var MockInterface&PlanetFieldRepositoryInterface */
-    private MockInterface $planetFieldRepository;
+    private MockInterface&PlanetFieldRepositoryInterface $planetFieldRepository;
 
-    /** @var MockInterface&ColonyRepositoryInterface */
-    private MockInterface $colonyRepository;
+    private MockInterface&ColonyRepositoryInterface $colonyRepository;
 
-    /** @var MockInterface&ColonySandboxRepositoryInterface */
-    private MockInterface $colonySandboxRepository;
+    private MockInterface&ColonySandboxRepositoryInterface $colonySandboxRepository;
 
-    /** @var MockInterface&BuildingPostActionInterface */
-    private MockInterface $buildingPostAction;
+    private MockInterface&BuildingPostActionInterface $buildingPostAction;
 
-    /** @var MockInterface&BuildingFunctionActionMapperInterface  */
-    private MockInterface $buildingFunctionActionMapper;
+    private MockInterface&BuildingFunctionActionMapperInterface  $buildingFunctionActionMapper;
 
     private BuildingManager $buildingManager;
 
