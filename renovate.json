@@ -7,5 +7,8 @@
     "dev"
   ],
   "prConcurrentLimit": 1,
-  "prHourlyLimit": 1
+  "prHourlyLimit": 1,
+  "schedule": [
+    "at 3:00am"
+  ]
 }
