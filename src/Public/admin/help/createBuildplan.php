@@ -7,10 +7,10 @@ use Psr\Container\ContainerInterface;
 use Stu\Component\Spacecraft\Buildplan\BuildplanSignatureCreationInterface;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
-use Stu\Component\Spacecraft\SpacecraftRumpEnum;
 use Stu\Config\Init;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
+use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
@@ -63,7 +63,7 @@ Init::run(function (ContainerInterface $dic): void {
             SpacecraftModuleTypeEnum::SENSOR
         ];
 
-        if ($rump->getCategoryId() !== SpacecraftRumpEnum::SHIP_CATEGORY_STATION) {
+        if ($rump->getCategoryId() !== SpacecraftRumpCategoryEnum::SHIP_CATEGORY_STATION) {
             $moduleTypes[] = SpacecraftModuleTypeEnum::WARPDRIVE;
         }
 

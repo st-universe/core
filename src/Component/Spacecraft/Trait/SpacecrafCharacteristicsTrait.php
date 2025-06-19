@@ -2,7 +2,7 @@
 
 namespace Stu\Component\Spacecraft\Trait;
 
-use Stu\Component\Spacecraft\SpacecraftRumpEnum;
+use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Orm\Entity\StationInterface;
 
 trait SpacecrafCharacteristicsTrait
@@ -16,12 +16,12 @@ trait SpacecrafCharacteristicsTrait
 
     public function isShuttle(): bool
     {
-        return $this->getThis()->getRump()->getCategoryId() === SpacecraftRumpEnum::SHIP_CATEGORY_SHUTTLE;
+        return $this->getThis()->getRump()->getCategoryId() === SpacecraftRumpCategoryEnum::SHIP_CATEGORY_SHUTTLE;
     }
 
     public function isConstruction(): bool
     {
-        return $this->getThis()->getRump()->getCategoryId() === SpacecraftRumpEnum::SHIP_CATEGORY_CONSTRUCTION;
+        return $this->getThis()->getRump()->getCategoryId() === SpacecraftRumpCategoryEnum::SHIP_CATEGORY_CONSTRUCTION;
     }
 
     public function hasEscapePods(): bool

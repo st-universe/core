@@ -8,6 +8,7 @@ use Override;
 use request;
 use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftRumpEnum;
+use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Component\Spacecraft\System\Data\EpsSystemData;
@@ -108,7 +109,7 @@ final class BuildConstruction implements ActionControllerInterface
         }
 
         // check if the construction limit is reached
-        $limit = StationEnum::BUILDABLE_LIMITS_PER_ROLE[SpacecraftRumpEnum::SHIP_ROLE_CONSTRUCTION];
+        $limit = StationEnum::BUILDABLE_LIMITS_PER_ROLE[SpacecraftRumpRoleEnum::SHIP_ROLE_CONSTRUCTION->value];
         if ($this->spacecraftRepository->getAmountByUserAndRump($userId, $rumpId) >= $limit) {
             $game->addInformation(sprintf(_('Es können nur %d Konstrukte errichtet werden'), $limit));
             return;

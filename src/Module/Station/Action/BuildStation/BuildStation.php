@@ -6,6 +6,7 @@ namespace Stu\Module\Station\Action\BuildStation;
 
 use Override;
 use request;
+use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
@@ -63,16 +64,20 @@ final class BuildStation implements ActionControllerInterface
         }
 
         $rump = $plan->getRump();
+        $role = $rump->getRoleId();
+        if ($role === null) {
+            throw new RuntimeException(sprintf('No rump role for rumpId %d, planId %d', $rump->getId(), $wantedPlanId));
+        }
 
         // check if the limit is reached
-        $limit = StationEnum::BUILDABLE_LIMITS_PER_ROLE[$rump->getRoleId()];
+        $limit = StationEnum::BUILDABLE_LIMITS_PER_ROLE[$role->value];
         if ($this->spacecraftRepository->getAmountByUserAndRump($userId, $rump->getId()) >= $limit) {
             $game->addInformation(sprintf(_('Es können nur %d %s errichtet werden'), $limit, $rump->getName()));
             return;
         }
 
         // check if the location is allowed
-        $location = StationEnum::BUILDABLE_LOCATIONS_PER_ROLE[$rump->getRoleId()];
+        $location = StationEnum::BUILDABLE_LOCATIONS_PER_ROLE[$role->value];
         if (!$this->locationAllowed($station, $location)) {
             $game->addInformation(sprintf(_('Stationen vom Typ %s können nur %s errichtet werden'), $rump->getName(), $location));
             return;

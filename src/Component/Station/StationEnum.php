@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Station;
 
-use Stu\Component\Spacecraft\SpacecraftRumpEnum;
+use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 
 final class StationEnum
 {
@@ -16,22 +16,22 @@ final class StationEnum
 
     // station role buildable locations
     public const array BUILDABLE_LOCATIONS_PER_ROLE = [
-        SpacecraftRumpEnum::SHIP_ROLE_SHIPYARD => self::BUILDABLE_INSIDE_SYSTEM,
-        SpacecraftRumpEnum::SHIP_ROLE_SENSOR => self::BUILDABLE_EVERYWHERE,
-        SpacecraftRumpEnum::SHIP_ROLE_DEPOT_LARGE => self::BUILDABLE_INSIDE_SYSTEM,
-        SpacecraftRumpEnum::SHIP_ROLE_BASE => self::BUILDABLE_OVER_SYSTEM,
-        SpacecraftRumpEnum::SHIP_ROLE_OUTPOST => self::BUILDABLE_OUTSIDE_SYSTEM,
-        SpacecraftRumpEnum::SHIP_ROLE_DEPOT_SMALL => self::BUILDABLE_INSIDE_SYSTEM
+        SpacecraftRumpRoleEnum::SHIP_ROLE_SHIPYARD->value => self::BUILDABLE_INSIDE_SYSTEM,
+        SpacecraftRumpRoleEnum::SHIP_ROLE_SENSOR->value => self::BUILDABLE_EVERYWHERE,
+        SpacecraftRumpRoleEnum::SHIP_ROLE_DEPOT_LARGE->value => self::BUILDABLE_INSIDE_SYSTEM,
+        SpacecraftRumpRoleEnum::SHIP_ROLE_BASE->value => self::BUILDABLE_OVER_SYSTEM,
+        SpacecraftRumpRoleEnum::SHIP_ROLE_OUTPOST->value => self::BUILDABLE_OUTSIDE_SYSTEM,
+        SpacecraftRumpRoleEnum::SHIP_ROLE_DEPOT_SMALL->value => self::BUILDABLE_INSIDE_SYSTEM
     ];
 
     // buildable limits
     public const array BUILDABLE_LIMITS_PER_ROLE = [
-        SpacecraftRumpEnum::SHIP_ROLE_CONSTRUCTION => 2,
-        SpacecraftRumpEnum::SHIP_ROLE_SHIPYARD => 2,
-        SpacecraftRumpEnum::SHIP_ROLE_SENSOR => PHP_INT_MAX,
-        SpacecraftRumpEnum::SHIP_ROLE_DEPOT_LARGE => 1,
-        SpacecraftRumpEnum::SHIP_ROLE_BASE => PHP_INT_MAX,
-        SpacecraftRumpEnum::SHIP_ROLE_OUTPOST => PHP_INT_MAX,
-        SpacecraftRumpEnum::SHIP_ROLE_DEPOT_SMALL => PHP_INT_MAX
+        SpacecraftRumpRoleEnum::SHIP_ROLE_CONSTRUCTION->value => 2,
+        SpacecraftRumpRoleEnum::SHIP_ROLE_SHIPYARD->value => 2,
+        SpacecraftRumpRoleEnum::SHIP_ROLE_SENSOR->value => PHP_INT_MAX,
+        SpacecraftRumpRoleEnum::SHIP_ROLE_DEPOT_LARGE->value => 1,
+        SpacecraftRumpRoleEnum::SHIP_ROLE_BASE->value => PHP_INT_MAX,
+        SpacecraftRumpRoleEnum::SHIP_ROLE_OUTPOST->value => PHP_INT_MAX,
+        SpacecraftRumpRoleEnum::SHIP_ROLE_DEPOT_SMALL->value => PHP_INT_MAX
     ];
 }

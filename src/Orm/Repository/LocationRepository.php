@@ -7,7 +7,7 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Override;
 use RuntimeException;
 use Stu\Component\Anomaly\Type\SubspaceEllipseHandler;
-use Stu\Component\Spacecraft\SpacecraftRumpEnum;
+use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -88,7 +88,7 @@ class LocationRepository extends EntityRepository implements LocationRepositoryI
             )
             ->setParameters([
                 'threshold' => SubspaceEllipseHandler::MASS_CALCULATION_THRESHOLD,
-                'rumpCategory' => SpacecraftRumpEnum::SHIP_CATEGORY_STATION,
+                'rumpCategory' => SpacecraftRumpCategoryEnum::SHIP_CATEGORY_STATION->value,
                 'firstUserId' => UserEnum::USER_FIRST_ID,
                 'mode' => SpacecraftSystemModeEnum::MODE_OFF->value,
                 'state' => SpacecraftStateEnum::UNDER_CONSTRUCTION,

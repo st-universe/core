@@ -6,8 +6,6 @@ interface DatabaseCategoryAwardInterface
 {
     public function getId(): int;
 
-    public function setCategoryId(int $categoryId): DatabaseCategoryAwardInterface;
-
     public function getCategoryId(): int;
 
     public function setLayerId(?int $layerId): DatabaseCategoryAwardInterface;

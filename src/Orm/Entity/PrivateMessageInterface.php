@@ -24,8 +24,6 @@ interface PrivateMessageInterface
 
     public function getCategoryId(): int;
 
-    public function setCategoryId(int $categoryId): PrivateMessageInterface;
-
     public function getInboxPm(): ?PrivateMessageInterface;
 
     public function setInboxPm(?PrivateMessageInterface $pm): PrivateMessageInterface;

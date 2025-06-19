@@ -9,7 +9,7 @@ use request;
 use RuntimeException;
 use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
-use Stu\Component\Spacecraft\SpacecraftRumpEnum;
+use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
@@ -81,7 +81,7 @@ final class ShowBuildplanCreator implements ViewControllerInterface
                     SpacecraftModuleTypeEnum::SENSOR
                 ];
 
-                if ($rump->getCategoryId() !== SpacecraftRumpEnum::SHIP_CATEGORY_STATION) {
+                if ($rump->getCategoryId() !== SpacecraftRumpCategoryEnum::SHIP_CATEGORY_STATION) {
                     $moduleTypes[] = SpacecraftModuleTypeEnum::WARPDRIVE;
                 }
 

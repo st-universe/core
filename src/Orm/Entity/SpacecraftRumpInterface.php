@@ -3,18 +3,18 @@
 namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\Collection;
+use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
+use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 
 interface SpacecraftRumpInterface
 {
     public function getId(): int;
 
-    public function setCategoryId(int $categoryId): SpacecraftRumpInterface;
+    public function getCategoryId(): SpacecraftRumpCategoryEnum;
 
-    public function getCategoryId(): int;
+    public function getRoleId(): ?SpacecraftRumpRoleEnum;
 
-    public function getRoleId(): ?int;
-
-    public function setRoleId(?int $roleId): SpacecraftRumpInterface;
+    public function setRoleId(?SpacecraftRumpRoleEnum $roleId): SpacecraftRumpInterface;
 
     public function getEvadeChance(): int;
 

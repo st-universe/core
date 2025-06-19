@@ -7,7 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Component\Building\BuildingFunctionEnum;
-use Stu\Component\Spacecraft\SpacecraftRumpEnum;
+use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\SpacecraftBuildplan;
 use Stu\Orm\Entity\SpacecraftBuildplanInterface;
@@ -102,7 +102,7 @@ final class SpacecraftBuildplanRepository extends EntityRepository implements Sp
                 )
             )
             ->setParameters([
-                'category' => SpacecraftRumpEnum::SHIP_CATEGORY_STATION,
+                'category' => SpacecraftRumpCategoryEnum::SHIP_CATEGORY_STATION->value,
                 'userId' => $userId
             ])
             ->getResult();
@@ -133,7 +133,7 @@ final class SpacecraftBuildplanRepository extends EntityRepository implements Sp
                 )
             )
             ->setParameters([
-                'category' => SpacecraftRumpEnum::SHIP_CATEGORY_STATION,
+                'category' => SpacecraftRumpCategoryEnum::SHIP_CATEGORY_STATION->value,
                 'userId' => $userId
             ])
             ->getResult();

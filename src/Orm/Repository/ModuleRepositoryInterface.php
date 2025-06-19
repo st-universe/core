@@ -4,6 +4,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
+use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\Module;
 use Stu\Orm\Entity\ModuleInterface;
@@ -45,7 +46,7 @@ interface ModuleRepositoryInterface extends ObjectRepository
     public function getByTypeColonyAndLevel(
         int $colonyId,
         SpacecraftModuleTypeEnum $moduleType,
-        int $shipRumpRoleId,
+        SpacecraftRumpRoleEnum $shipRumpRole,
         array $moduleLevel
     ): array;
 
@@ -56,7 +57,7 @@ interface ModuleRepositoryInterface extends ObjectRepository
      */
     public function getByTypeAndLevel(
         int $moduleTypeId,
-        int $shipRumpRoleId,
+        SpacecraftRumpRoleEnum $shipRumpRole,
         array $moduleLevel
     ): iterable;
 

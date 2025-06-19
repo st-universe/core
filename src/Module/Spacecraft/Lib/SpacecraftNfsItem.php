@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib;
 
 use Stu\Component\Game\TimeConstants;
-use Stu\Component\Spacecraft\SpacecraftRumpEnum;
+use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Component\Spacecraft\SpacecraftTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\Type\TractorBeamShipSystem;
@@ -91,7 +91,7 @@ class SpacecraftNfsItem
     }
     public function isShuttle(): bool
     {
-        return $this->item->getRumpCategoryId() === SpacecraftRumpEnum::SHIP_CATEGORY_SHUTTLE;
+        return $this->item->getRumpCategoryId() === SpacecraftRumpCategoryEnum::SHIP_CATEGORY_SHUTTLE->value;
     }
     public function getRumpId(): int
     {

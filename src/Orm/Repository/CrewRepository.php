@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Override;
+use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\CrewInterface;
 use Stu\Orm\Entity\CrewAssignment;
@@ -43,7 +44,7 @@ final class CrewRepository extends EntityRepository implements CrewRepositoryInt
     #[Override]
     public function getAmountByUserAndShipRumpCategory(
         UserInterface $user,
-        int $shipRumpCategoryId
+        SpacecraftRumpCategoryEnum $shipRumpCategory
     ): int {
         return (int) $this->getEntityManager()
             ->createQuery(
@@ -65,7 +66,7 @@ final class CrewRepository extends EntityRepository implements CrewRepositoryInt
             )
             ->setParameters([
                 'user' => $user,
-                'categoryId' => $shipRumpCategoryId
+                'categoryId' => $shipRumpCategory->value
             ])
             ->getSingleScalarResult();
     }

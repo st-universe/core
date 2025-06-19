@@ -20,6 +20,7 @@ use Doctrine\ORM\Mapping\Table;
 use Override;
 use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
+use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Orm\Repository\ModuleRepository;
 
@@ -63,8 +64,8 @@ class Module implements ModuleInterface
     #[Column(type: 'boolean')]
     private bool $viewable = false;
 
-    #[Column(type: 'integer', nullable: true)]
-    private ?int $rumps_role_id = 0;
+    #[Column(type: 'enum', enumType: SpacecraftRumpRoleEnum::class, nullable: true)]
+    private ?SpacecraftRumpRoleEnum $rumps_role_id = null;
 
     #[Column(type: 'smallint')]
     private int $ecost = 0;
@@ -304,17 +305,9 @@ class Module implements ModuleInterface
     }
 
     #[Override]
-    public function getShipRumpRoleId(): ?int
+    public function getShipRumpRoleId(): ?SpacecraftRumpRoleEnum
     {
         return $this->rumps_role_id;
-    }
-
-    #[Override]
-    public function setShipRumpRoleId(int $shipRumpRoleId): ModuleInterface
-    {
-        $this->rumps_role_id = $shipRumpRoleId;
-
-        return $this;
     }
 
     #[Override]

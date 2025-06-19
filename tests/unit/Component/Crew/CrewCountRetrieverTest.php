@@ -7,7 +7,7 @@ namespace Stu\Component\Crew;
 use Mockery\MockInterface;
 use Override;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
-use Stu\Component\Spacecraft\SpacecraftRumpEnum;
+use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
@@ -50,7 +50,7 @@ class CrewCountRetrieverTest extends StuTestCase
         $amount_debris = 42;
 
         $this->crewRepository->shouldReceive('getAmountByUserAndShipRumpCategory')
-            ->with($user, SpacecraftRumpEnum::SHIP_CATEGORY_ESCAPE_PODS)
+            ->with($user, SpacecraftRumpCategoryEnum::SHIP_CATEGORY_ESCAPE_PODS)
             ->once()
             ->andReturn($amount_debris);
 

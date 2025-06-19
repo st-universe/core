@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Database\DatabaseEntryTypeEnum;
-use Stu\Component\Spacecraft\SpacecraftRumpEnum;
+use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\ShipRumpBuildingFunction;
@@ -127,7 +127,7 @@ final class SpacecraftRumpRepository extends EntityRepository implements Spacecr
             )
             ->setParameters([
                 'state' => 1,
-                'ignoreCategory' => SpacecraftRumpEnum::SHIP_CATEGORY_SHUTTLE,
+                'ignoreCategory' => SpacecraftRumpCategoryEnum::SHIP_CATEGORY_SHUTTLE->value,
                 'colonyId' => $colonyId
             ])
             ->getResult();

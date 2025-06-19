@@ -9,6 +9,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Override;
 use Stu\Component\Spacecraft\Repair\RepairUtilInterface;
+use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
+use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SystemDataDeserializerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
@@ -121,44 +123,44 @@ class SpacecraftWrapperFactoryTest extends StuTestCase
         $shipSolo1->shouldReceive('getRump->getCategoryId')
             ->withNoArgs()
             ->zeroOrMoreTimes()
-            ->andReturn(777);
+            ->andReturn(SpacecraftRumpCategoryEnum::SHIP_CATEGORY_STATION);
         $stationSolo2->shouldReceive('getRump->getCategoryId')
             ->withNoArgs()
             ->zeroOrMoreTimes()
-            ->andReturn(777);
+            ->andReturn(SpacecraftRumpCategoryEnum::SHIP_CATEGORY_STATION);
         $shipFleetLowSort2->shouldReceive('getRump->getCategoryId')
             ->withNoArgs()
             ->zeroOrMoreTimes()
-            ->andReturn(777);
+            ->andReturn(SpacecraftRumpCategoryEnum::SHIP_CATEGORY_STATION);
         $shipFleetLowSort1->shouldReceive('getRump->getCategoryId')
             ->withNoArgs()
             ->zeroOrMoreTimes()
-            ->andReturn(777);
+            ->andReturn(SpacecraftRumpCategoryEnum::SHIP_CATEGORY_STATION);
         $shipFleetHighSort->shouldReceive('getRump->getCategoryId')
             ->withNoArgs()
             ->zeroOrMoreTimes()
-            ->andReturn(777);
+            ->andReturn(SpacecraftRumpCategoryEnum::SHIP_CATEGORY_STATION);
 
         $shipSolo1->shouldReceive('getRump->getRoleId')
             ->withNoArgs()
             ->zeroOrMoreTimes()
-            ->andReturn(888);
+            ->andReturn(SpacecraftRumpRoleEnum::SHIP_ROLE_BASE);
         $stationSolo2->shouldReceive('getRump->getRoleId')
             ->withNoArgs()
             ->zeroOrMoreTimes()
-            ->andReturn(888);
+            ->andReturn(SpacecraftRumpRoleEnum::SHIP_ROLE_BASE);
         $shipFleetLowSort2->shouldReceive('getRump->getRoleId')
             ->withNoArgs()
             ->zeroOrMoreTimes()
-            ->andReturn(888);
+            ->andReturn(SpacecraftRumpRoleEnum::SHIP_ROLE_BASE);
         $shipFleetLowSort1->shouldReceive('getRump->getRoleId')
             ->withNoArgs()
             ->zeroOrMoreTimes()
-            ->andReturn(888);
+            ->andReturn(SpacecraftRumpRoleEnum::SHIP_ROLE_BASE);
         $shipFleetHighSort->shouldReceive('getRump->getRoleId')
             ->withNoArgs()
             ->zeroOrMoreTimes()
-            ->andReturn(888);
+            ->andReturn(SpacecraftRumpRoleEnum::SHIP_ROLE_BASE);
 
         $shipSolo1->shouldReceive('getRumpId')
             ->withNoArgs()
