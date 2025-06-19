@@ -24,10 +24,6 @@ interface MapFieldTypeInterface
 
     public function setName(string $name): MapFieldTypeInterface;
 
-    public function getColonyClassId(): int;
-
-    public function setColonyClassId(int $colonyClassId): MapFieldTypeInterface;
-
     public function getDamage(): int;
 
     public function setDamage(int $damage): MapFieldTypeInterface;

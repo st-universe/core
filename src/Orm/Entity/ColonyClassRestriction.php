@@ -23,9 +23,6 @@ class ColonyClassRestriction implements ColonyClassRestrictionInterface
     #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    #[Column(type: 'integer')]
-    private int $colony_class_id;
-
     #[Column(type: 'integer', nullable: true)]
     private ?int $terraforming_id = null;
 
@@ -48,19 +45,6 @@ class ColonyClassRestriction implements ColonyClassRestrictionInterface
     public function getId(): int
     {
         return $this->id;
-    }
-
-    #[Override]
-    public function getColonyClassId(): int
-    {
-        return $this->colony_class_id;
-    }
-
-    #[Override]
-    public function setColonyClassId(int $colonyClassId): ColonyClassRestrictionInterface
-    {
-        $this->colony_class_id = $colonyClassId;
-        return $this;
     }
 
     #[Override]

@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250618185937 extends AbstractMigration
+final class Version20250619092058 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -45,7 +45,7 @@ final class Version20250618185937 extends AbstractMigration
             CREATE INDEX board_date_idx ON stu_alliance_posts (board_id, date)
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE TABLE stu_alliance_settings (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, alliance_id INTEGER NOT NULL, setting VARCHAR(255) NOT NULL, value VARCHAR(255) NOT NULL, CONSTRAINT FK_39FF05F710A0EA3F FOREIGN KEY (alliance_id) REFERENCES stu_alliances (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)
+            CREATE TABLE stu_alliance_settings (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, setting VARCHAR(255) NOT NULL, value VARCHAR(255) NOT NULL, alliance_id INTEGER NOT NULL, CONSTRAINT FK_39FF05F710A0EA3F FOREIGN KEY (alliance_id) REFERENCES stu_alliances (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE INDEX IDX_39FF05F710A0EA3F ON stu_alliance_settings (alliance_id)
@@ -276,7 +276,7 @@ final class Version20250618185937 extends AbstractMigration
             CREATE INDEX IDX_B6DF5289A76ED395 ON stu_buoy (user_id)
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE TABLE stu_colonies (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, colonies_classes_id INTEGER NOT NULL, user_id INTEGER NOT NULL, starsystem_map_id INTEGER NOT NULL, name VARCHAR(255) NOT NULL, planet_name VARCHAR(100) NOT NULL, bev_work INTEGER NOT NULL, bev_free INTEGER NOT NULL, bev_max INTEGER NOT NULL, eps INTEGER NOT NULL, max_eps INTEGER NOT NULL, max_storage INTEGER NOT NULL, mask CLOB DEFAULT NULL, database_id INTEGER DEFAULT NULL, populationlimit INTEGER NOT NULL, immigrationstate BOOLEAN NOT NULL, shields INTEGER DEFAULT NULL, shield_frequency INTEGER DEFAULT NULL, torpedo_type INTEGER DEFAULT NULL, rotation_factor INTEGER NOT NULL, surface_width INTEGER NOT NULL, CONSTRAINT FK_D1C60F739106126 FOREIGN KEY (colonies_classes_id) REFERENCES stu_colonies_classes (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_D1C60F73496DDE10 FOREIGN KEY (starsystem_map_id) REFERENCES stu_sys_map (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_D1C60F73A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_D1C60F73942323E3 FOREIGN KEY (torpedo_type) REFERENCES stu_torpedo_types (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_D1C60F73F0AA09DB FOREIGN KEY (database_id) REFERENCES stu_database_entrys (id) NOT DEFERRABLE INITIALLY IMMEDIATE)
+            CREATE TABLE stu_colonies (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, colonies_classes_id INTEGER NOT NULL, user_id INTEGER NOT NULL, name VARCHAR(255) NOT NULL, planet_name VARCHAR(100) NOT NULL, bev_work INTEGER NOT NULL, bev_free INTEGER NOT NULL, bev_max INTEGER NOT NULL, eps INTEGER NOT NULL, max_eps INTEGER NOT NULL, max_storage INTEGER NOT NULL, mask CLOB DEFAULT NULL, database_id INTEGER DEFAULT NULL, populationlimit INTEGER NOT NULL, immigrationstate BOOLEAN NOT NULL, shields INTEGER DEFAULT NULL, shield_frequency INTEGER DEFAULT NULL, rotation_factor INTEGER NOT NULL, surface_width INTEGER NOT NULL, starsystem_map_id INTEGER NOT NULL, torpedo_type INTEGER DEFAULT NULL, CONSTRAINT FK_D1C60F739106126 FOREIGN KEY (colonies_classes_id) REFERENCES stu_colonies_classes (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_D1C60F73496DDE10 FOREIGN KEY (starsystem_map_id) REFERENCES stu_sys_map (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_D1C60F73A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_D1C60F73942323E3 FOREIGN KEY (torpedo_type) REFERENCES stu_torpedo_types (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_D1C60F73F0AA09DB FOREIGN KEY (database_id) REFERENCES stu_database_entrys (id) NOT DEFERRABLE INITIALLY IMMEDIATE)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE UNIQUE INDEX UNIQ_D1C60F73496DDE10 ON stu_colonies (starsystem_map_id)
@@ -390,7 +390,7 @@ final class Version20250618185937 extends AbstractMigration
             CREATE INDEX IDX_A843E75CB4ACC212 ON stu_colony_class_deposit (commodity_id)
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE TABLE stu_colony_class_restriction (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, colony_class_id INTEGER NOT NULL, terraforming_id INTEGER DEFAULT NULL, building_id INTEGER DEFAULT NULL, CONSTRAINT FK_CEF73D7ABA61CECC FOREIGN KEY (colony_class_id) REFERENCES stu_colonies_classes (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_CEF73D7ABD31079C FOREIGN KEY (terraforming_id) REFERENCES stu_terraforming (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_CEF73D7A4D2A7E12 FOREIGN KEY (building_id) REFERENCES stu_buildings (id) NOT DEFERRABLE INITIALLY IMMEDIATE)
+            CREATE TABLE stu_colony_class_restriction (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, terraforming_id INTEGER DEFAULT NULL, building_id INTEGER DEFAULT NULL, colony_class_id INTEGER NOT NULL, CONSTRAINT FK_CEF73D7ABA61CECC FOREIGN KEY (colony_class_id) REFERENCES stu_colonies_classes (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_CEF73D7ABD31079C FOREIGN KEY (terraforming_id) REFERENCES stu_terraforming (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_CEF73D7A4D2A7E12 FOREIGN KEY (building_id) REFERENCES stu_buildings (id) NOT DEFERRABLE INITIALLY IMMEDIATE)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE INDEX IDX_CEF73D7ABA61CECC ON stu_colony_class_restriction (colony_class_id)
@@ -531,7 +531,7 @@ final class Version20250618185937 extends AbstractMigration
             CREATE INDEX IDX_4148521FA76ED395 ON stu_database_user (user_id)
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE TABLE stu_deals (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, faction_id INTEGER DEFAULT NULL, auction BOOLEAN NOT NULL, amount INTEGER DEFAULT NULL, give_commodity INTEGER DEFAULT NULL, want_commodity INTEGER DEFAULT NULL, give_commodity_amonut INTEGER DEFAULT NULL, want_commodity_amount INTEGER DEFAULT NULL, want_prestige INTEGER DEFAULT NULL, buildplan_id INTEGER DEFAULT NULL, ship BOOLEAN DEFAULT NULL, start INTEGER NOT NULL, "end" INTEGER NOT NULL, taken_time INTEGER DEFAULT NULL, auction_user INTEGER DEFAULT NULL, auction_amount INTEGER DEFAULT NULL, CONSTRAINT FK_6DAE42FCF27F1BE1 FOREIGN KEY (want_commodity) REFERENCES stu_commodity (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_6DAE42FCABA274E9 FOREIGN KEY (give_commodity) REFERENCES stu_commodity (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_6DAE42FC8638E4E7 FOREIGN KEY (buildplan_id) REFERENCES stu_buildplan (id) NOT DEFERRABLE INITIALLY IMMEDIATE)
+            CREATE TABLE stu_deals (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, auction BOOLEAN NOT NULL, amount INTEGER DEFAULT NULL, give_commodity INTEGER DEFAULT NULL, want_commodity INTEGER DEFAULT NULL, give_commodity_amonut INTEGER DEFAULT NULL, want_commodity_amount INTEGER DEFAULT NULL, want_prestige INTEGER DEFAULT NULL, buildplan_id INTEGER DEFAULT NULL, ship BOOLEAN DEFAULT NULL, start INTEGER NOT NULL, "end" INTEGER NOT NULL, taken_time INTEGER DEFAULT NULL, auction_user INTEGER DEFAULT NULL, auction_amount INTEGER DEFAULT NULL, faction_id INTEGER DEFAULT NULL, CONSTRAINT FK_6DAE42FCF27F1BE1 FOREIGN KEY (want_commodity) REFERENCES stu_commodity (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_6DAE42FCABA274E9 FOREIGN KEY (give_commodity) REFERENCES stu_commodity (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_6DAE42FC8638E4E7 FOREIGN KEY (buildplan_id) REFERENCES stu_buildplan (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_6DAE42FC4448F8DA FOREIGN KEY (faction_id) REFERENCES stu_factions (id) NOT DEFERRABLE INITIALLY IMMEDIATE)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE INDEX IDX_6DAE42FCF27F1BE1 ON stu_deals (want_commodity)
@@ -541,6 +541,9 @@ final class Version20250618185937 extends AbstractMigration
         SQL);
         $this->addSql(<<<'SQL'
             CREATE INDEX IDX_6DAE42FC8638E4E7 ON stu_deals (buildplan_id)
+        SQL);
+        $this->addSql(<<<'SQL'
+            CREATE INDEX IDX_6DAE42FC4448F8DA ON stu_deals (faction_id)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE TABLE stu_dockingrights (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, station_id INTEGER NOT NULL, target INTEGER NOT NULL, privilege_type SMALLINT NOT NULL, privilege_mode SMALLINT NOT NULL, CONSTRAINT FK_E7D4B2A21BDB235 FOREIGN KEY (station_id) REFERENCES stu_station (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)
@@ -786,7 +789,7 @@ final class Version20250618185937 extends AbstractMigration
             CREATE TABLE stu_map_bordertypes (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, faction_id INTEGER NOT NULL, color VARCHAR(255) NOT NULL, description VARCHAR(255) NOT NULL)
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE TABLE stu_map_ftypes (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, type INTEGER NOT NULL, is_system BOOLEAN NOT NULL, ecost SMALLINT NOT NULL, name VARCHAR(255) NOT NULL, colonies_classes_id INTEGER DEFAULT NULL, damage SMALLINT NOT NULL, x_damage SMALLINT NOT NULL, x_damage_system SMALLINT DEFAULT NULL, x_damage_type SMALLINT DEFAULT NULL, "view" BOOLEAN NOT NULL, passable BOOLEAN NOT NULL, complementary_color VARCHAR(255) DEFAULT NULL, effects CLOB DEFAULT NULL, CONSTRAINT FK_3D24A6CE9106126 FOREIGN KEY (colonies_classes_id) REFERENCES stu_colonies_classes (id) NOT DEFERRABLE INITIALLY IMMEDIATE)
+            CREATE TABLE stu_map_ftypes (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, type INTEGER NOT NULL, is_system BOOLEAN NOT NULL, ecost SMALLINT NOT NULL, name VARCHAR(255) NOT NULL, damage SMALLINT NOT NULL, x_damage SMALLINT NOT NULL, x_damage_system SMALLINT DEFAULT NULL, x_damage_type SMALLINT DEFAULT NULL, "view" BOOLEAN NOT NULL, passable BOOLEAN NOT NULL, complementary_color VARCHAR(255) DEFAULT NULL, effects CLOB DEFAULT NULL, colonies_classes_id INTEGER DEFAULT NULL, CONSTRAINT FK_3D24A6CE9106126 FOREIGN KEY (colonies_classes_id) REFERENCES stu_colonies_classes (id) NOT DEFERRABLE INITIALLY IMMEDIATE)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE INDEX IDX_3D24A6CE9106126 ON stu_map_ftypes (colonies_classes_id)
@@ -924,7 +927,7 @@ final class Version20250618185937 extends AbstractMigration
             CREATE INDEX IDX_5C1857F87909E1ED ON stu_planet_type_research (research_id)
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE INDEX planet_type_idx ON stu_planet_type_research (planet_type_id)
+            CREATE INDEX IDX_5C1857F8506FDB14 ON stu_planet_type_research (planet_type_id)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE TABLE stu_planets_commodity (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, planet_classes_id INTEGER NOT NULL, commodity_id INTEGER NOT NULL, count SMALLINT NOT NULL)
@@ -1509,7 +1512,7 @@ final class Version20250618185937 extends AbstractMigration
             CREATE INDEX tutorial_view_idx ON stu_tutorial_step (module, "view")
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE TABLE stu_user (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, username VARCHAR(255) NOT NULL, allys_id INTEGER DEFAULT NULL, race INTEGER NOT NULL, state SMALLINT NOT NULL, lastaction INTEGER NOT NULL, kn_lez INTEGER NOT NULL, vac_active BOOLEAN NOT NULL, vac_request_date INTEGER NOT NULL, description CLOB NOT NULL, sessiondata CLOB NOT NULL, prestige INTEGER NOT NULL, deals BOOLEAN NOT NULL, last_boarding INTEGER DEFAULT NULL, CONSTRAINT FK_12A1701F5E0B0712 FOREIGN KEY (allys_id) REFERENCES stu_alliances (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_12A1701FDA6FBBAF FOREIGN KEY (race) REFERENCES stu_factions (id) NOT DEFERRABLE INITIALLY IMMEDIATE)
+            CREATE TABLE stu_user (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, username VARCHAR(255) NOT NULL, state SMALLINT NOT NULL, lastaction INTEGER NOT NULL, kn_lez INTEGER NOT NULL, vac_active BOOLEAN NOT NULL, vac_request_date INTEGER NOT NULL, description CLOB NOT NULL, sessiondata CLOB NOT NULL, prestige INTEGER NOT NULL, deals BOOLEAN NOT NULL, last_boarding INTEGER DEFAULT NULL, allys_id INTEGER DEFAULT NULL, race INTEGER DEFAULT NULL, CONSTRAINT FK_12A1701F5E0B0712 FOREIGN KEY (allys_id) REFERENCES stu_alliances (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_12A1701FDA6FBBAF FOREIGN KEY (race) REFERENCES stu_factions (id) NOT DEFERRABLE INITIALLY IMMEDIATE)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE INDEX IDX_12A1701FDA6FBBAF ON stu_user (race)

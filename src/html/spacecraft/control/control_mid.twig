@@ -340,7 +340,7 @@ canColonize, closestAnomalyDistance, storedShuttleCount, closescolonydistance) %
 </table>
 {% if currentColony %}
 {% set colonyId = currentColony.getId %}
-{% set colonyClassId = currentColony.getColonyClassId %}
+{% set colonyClassId = currentColony.getColonyClass.getId %}
 {% set ownsCurrentColony = currentColony.getUser.getId == SPACECRAFT.getUser.getId %}
 <br />
 <table class="tcal">
@@ -537,7 +537,7 @@ canColonize, closestAnomalyDistance, storedShuttleCount, closescolonydistance) %
 {% endmacro %}
 
 {% macro colonyImageAndName(shipId, currentColony, ownsCurrentColony) %}
-{% set colonyClassId = currentColony.getColonyClassId %}
+{% set colonyClassId = currentColony.getColonyClass.getId %}
 {% set lable = currentColony.isFree ? currentColony.getColonyClass.getName : currentColony.getName %}
 {% if ownsCurrentColony %}
 <a href="javascript:void(0);"

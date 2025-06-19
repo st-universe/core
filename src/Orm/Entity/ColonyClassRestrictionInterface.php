@@ -6,10 +6,6 @@ interface ColonyClassRestrictionInterface
 {
     public function getId(): int;
 
-    public function getColonyClassId(): int;
-
-    public function setColonyClassId(int $colonyClassId): ColonyClassRestrictionInterface;
-
     public function getColonyClass(): ColonyClassInterface;
 
     public function getTerraformingId(): ?int;

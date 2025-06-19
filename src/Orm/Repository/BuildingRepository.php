@@ -10,6 +10,7 @@ use Stu\Component\Colony\ColonyEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\BuildingCommodity;
+use Stu\Orm\Entity\ColonyClassInterface;
 use Stu\Orm\Entity\ColonyClassRestriction;
 use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Entity\PlanetFieldTypeBuilding;
@@ -28,8 +29,7 @@ final class BuildingRepository extends EntityRepository implements BuildingRepos
         int $buildMenu,
         int $offset,
         ?int $commodityId = null,
-        ?int $fieldType = null,
-        ?int $colonyClass = null
+        ?int $fieldType = null
     ): array {
 
         $commodityFilter = $commodityId === null ? '' : sprintf(
@@ -58,7 +58,7 @@ final class BuildingRepository extends EntityRepository implements BuildingRepos
                             )
                         )
                         AND NOT EXISTS (
-                            SELECT ccr.building_id FROM %s ccr WHERE ccr.colony_class_id = :colonyClass
+                            SELECT ccr.building_id FROM %s ccr WHERE ccr.colonyClass = :colonyClass
                             AND ccr.building_id = b.id)
                     )
                     %s %s
@@ -81,7 +81,7 @@ final class BuildingRepository extends EntityRepository implements BuildingRepos
                 'buildMenu' => $buildMenu,
                 'userId' => $userId,
                 'hostId' => $host->getId(),
-                'colonyClass' => $colonyClass
+                'colonyClass' => $host->getColonyClass()
             ])
             ->getResult();
     }

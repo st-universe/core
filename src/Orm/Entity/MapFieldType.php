@@ -38,9 +38,6 @@ class MapFieldType implements MapFieldTypeInterface
     #[Column(type: 'string')]
     private string $name = '';
 
-    #[Column(type: 'integer', nullable: true)]
-    private ?int $colonies_classes_id = 0;
-
     #[Column(type: 'smallint')]
     private int $damage = 0;
 
@@ -128,20 +125,6 @@ class MapFieldType implements MapFieldTypeInterface
     public function setName(string $name): MapFieldTypeInterface
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    #[Override]
-    public function getColonyClassId(): int
-    {
-        return $this->colonies_classes_id;
-    }
-
-    #[Override]
-    public function setColonyClassId(int $colonyClassId): MapFieldTypeInterface
-    {
-        $this->colonies_classes_id = $colonyClassId;
 
         return $this;
     }
