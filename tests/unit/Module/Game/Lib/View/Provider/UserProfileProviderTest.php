@@ -114,6 +114,9 @@ class UserProfileProviderTest extends StuTestCase
             ->with('PROFILE', $player)
             ->once();
         $game->shouldReceive('setTemplateVar')
+            ->with('HAS_TRANSLATION', false)
+            ->once();
+        $game->shouldReceive('setTemplateVar')
             ->with(
                 'DESCRIPTION',
                 $parsedDescription
@@ -151,7 +154,6 @@ class UserProfileProviderTest extends StuTestCase
 
         $player->shouldReceive('getDescription')
             ->withNoArgs()
-            ->once()
             ->andReturn($description);
         $player->shouldReceive('getAlliance')
             ->withNoArgs()

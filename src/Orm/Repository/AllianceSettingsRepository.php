@@ -41,7 +41,7 @@ final class AllianceSettingsRepository extends EntityRepository implements Allia
     public function findByAllianceAndSetting(AllianceInterface $alliance, string $setting): ?AllianceSettingsInterface
     {
         return $this->findOneBy([
-            'alliance_id' => $alliance->getId(),
+            'alliance' => $alliance,
             'setting' => $setting
         ]);
     }

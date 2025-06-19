@@ -72,9 +72,4 @@ class UserLayer implements UserLayerInterface
 
         return $this;
     }
-
-    public function isExplored(): bool
-    {
-        return $this->getMappingType() === MapEnum::MAPTYPE_LAYER_EXPLORED;
-    }
 }

@@ -33,7 +33,7 @@ final class FactionRepository extends EntityRepository implements FactionReposit
                 sprintf(
                     'SELECT
                         f as faction, COUNT(u.id) as count
-                    FROM %s f INDEX BY f.id LEFT JOIN %s u WITH u.race = f.id AND u.id >= :firstUserId
+                    FROM %s f INDEX BY f.id LEFT JOIN %s u WITH u.faction = f AND u.id >= :firstUserId
                     WHERE f.chooseable = :chooseable
                     GROUP BY f.id
                     ORDER BY f.id',

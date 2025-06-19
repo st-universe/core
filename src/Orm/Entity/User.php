@@ -19,7 +19,6 @@ use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use Override;
 use Stu\Component\Game\GameEnum;
-use Stu\Component\Player\UserAwardEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Repository\UserRepository;
 
@@ -35,12 +34,6 @@ class User implements UserInterface
 
     #[Column(type: 'string')]
     private string $username = '';
-
-    #[Column(type: 'integer', nullable: true)]
-    private ?int $allys_id = null;
-
-    #[Column(type: 'integer')]
-    private int $race = 9;
 
     #[Column(type: 'smallint')]
     private int $state = UserEnum::USER_STATE_NEW;
@@ -140,9 +133,6 @@ class User implements UserInterface
     #[OneToMany(targetEntity: 'UserTutorial', mappedBy: 'user', indexBy: 'tutorial_step_id', fetch: 'EXTRA_LAZY')]
     private Collection $tutorials;
 
-    /** @var null|array<mixed> */
-    private $sessiondataUnserialized;
-
     /**
      * @var ArrayCollection<int, WormholeRestriction>
      */
@@ -202,7 +192,7 @@ class User implements UserInterface
     #[Override]
     public function getFactionId(): int
     {
-        return $this->race;
+        return $this->faction->getId();
     }
 
     #[Override]
@@ -253,15 +243,6 @@ class User implements UserInterface
     public function isLocked(): bool
     {
         return $this->getUserLock() !== null && $this->getUserLock()->getRemainingTicks() > 0;
-    }
-
-    #[Override]
-    public function getUserStateDescription(): string
-    {
-        if ($this->isLocked()) {
-            return _('GESPERRT');
-        }
-        return UserEnum::getUserStateDescription($this->getState());
     }
 
     #[Override]
@@ -350,18 +331,6 @@ class User implements UserInterface
     }
 
     #[Override]
-    public function hasSeen(int $layerId): bool
-    {
-        return $this->getUserLayers()->containsKey($layerId);
-    }
-
-    #[Override]
-    public function hasExplored(int $layerId): bool
-    {
-        return $this->hasSeen($layerId) && $this->getUserLayers()->get($layerId)->isExplored();
-    }
-
-    #[Override]
     public function getSettings(): Collection
     {
         return $this->settings;
@@ -377,7 +346,6 @@ class User implements UserInterface
     public function setSessiondata(string $sessiondata): UserInterface
     {
         $this->sessiondata = $sessiondata;
-        $this->sessiondataUnserialized = null;
         return $this;
     }
 
@@ -440,25 +408,6 @@ class User implements UserInterface
     }
 
     #[Override]
-    public function setAllianceId(?int $allianceId): UserInterface
-    {
-        $this->allys_id = $allianceId;
-        return $this;
-    }
-
-    #[Override]
-    public function getSessionDataUnserialized(): array
-    {
-        if ($this->sessiondataUnserialized === null) {
-            $this->sessiondataUnserialized = unserialize($this->getSessionData());
-            if (!is_array($this->sessiondataUnserialized)) {
-                $this->sessiondataUnserialized = [];
-            }
-        }
-        return $this->sessiondataUnserialized;
-    }
-
-    #[Override]
     public function isContactable(): bool
     {
         return $this->getId() != UserEnum::USER_NOONE;
@@ -468,16 +417,6 @@ class User implements UserInterface
     public function hasAward(int $awardId): bool
     {
         return $this->awards->containsKey($awardId) === true;
-    }
-
-    #[Override]
-    public function hasStationsPmCategory(): bool
-    {
-        if ($this->isNpc()) {
-            return true;
-        }
-
-        return $this->hasAward(UserAwardEnum::RESEARCHED_STATIONS);
     }
 
     public static function isUserNpc(int $userId): bool
@@ -501,13 +440,6 @@ class User implements UserInterface
     public function __toString(): string
     {
         return sprintf('userName: %s', $this->getName());
-    }
-
-    #[Override]
-    public function hasTranslation(): bool
-    {
-        $text = $this->getDescription();
-        return strpos($text, '[translate]') !== false && strpos($text, '[/translate]') !== false;
     }
 
     #[Override]
@@ -540,22 +472,6 @@ class User implements UserInterface
         $this->pirateWrath = $wrath;
 
         return $this;
-    }
-
-    #[Override]
-    public function isProtectedAgainstPirates(): bool
-    {
-        $pirateWrath = $this->pirateWrath;
-        if ($pirateWrath === null) {
-            return false;
-        }
-
-        $timeout = $pirateWrath->getProtectionTimeout();
-        if ($timeout === null) {
-            return false;
-        }
-
-        return $timeout > time();
     }
 
     #[Override]

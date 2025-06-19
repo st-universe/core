@@ -27,9 +27,6 @@ class Deals implements DealsInterface
     #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    #[Column(type: 'integer', nullable: true)]
-    private ?int $faction_id = null;
-
     #[Column(type: 'boolean')]
     private bool $auction = false;
 
@@ -83,6 +80,10 @@ class Deals implements DealsInterface
     #[ManyToOne(targetEntity: 'SpacecraftBuildplan')]
     #[JoinColumn(name: 'buildplan_id', referencedColumnName: 'id')]
     private ?SpacecraftBuildplanInterface $buildplan = null;
+
+    #[ManyToOne(targetEntity: 'Faction')]
+    #[JoinColumn(name: 'faction_id', referencedColumnName: 'id')]
+    private ?FactionInterface $faction;
 
     /**
      * @var ArrayCollection<int, AuctionBidInterface>

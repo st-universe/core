@@ -1723,28 +1723,10 @@ parameters:
 			path: src/Orm/Entity/TradeTransaction.php
 
 		-
-			message: '#^Cannot call method isExplored\(\) on Stu\\Orm\\Entity\\UserLayerInterface\|null\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/Orm/Entity/User.php
-
-		-
-			message: '#^Method Stu\\Orm\\Entity\\User\:\:getSessionDataUnserialized\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Orm/Entity/User.php
-
-		-
 			message: '#^Property Stu\\Orm\\Entity\\User\:\:\$settings type mapping mismatch\: property can contain Doctrine\\Common\\Collections\\ArrayCollection\<string, Stu\\Orm\\Entity\\UserSettingInterface\> but database expects Doctrine\\Common\\Collections\\Collection&iterable\<Stu\\Orm\\Entity\\UserSetting\>\.$#'
 			identifier: doctrine.associationType
 			count: 1
 			path: src/Orm/Entity/User.php
-
-		-
-			message: '#^Method Stu\\Orm\\Entity\\UserInterface\:\:getSessionDataUnserialized\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Orm/Entity/UserInterface.php
 
 		-
 			message: '#^Method Stu\\Orm\\Entity\\UserLock\:\:getUserId\(\) should return int but returns int\|null\.$#'

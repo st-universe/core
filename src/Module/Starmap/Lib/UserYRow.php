@@ -7,6 +7,7 @@ namespace Stu\Module\Starmap\Lib;
 use Override;
 use RuntimeException;
 use Stu\Component\Map\EncodedMapInterface;
+use Stu\Lib\Trait\LayerExplorationTrait;
 use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
@@ -14,6 +15,8 @@ use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 class UserYRow extends YRow
 {
+    use LayerExplorationTrait;
+
     private MapRepositoryInterface $mapRepository;
 
     public function __construct(
@@ -59,7 +62,7 @@ class UserYRow extends YRow
             $this->maxx,
             $this->row
         );
-        $hasExploredLayer = $this->user->hasExplored($layer->getId());
+        $hasExploredLayer = $this->hasExplored($this->user, $layer);
 
         $result = [];
 

@@ -6,6 +6,7 @@ namespace Stu\Module\Game\Component;
 
 use Mockery\MockInterface;
 use Override;
+use Stu\Component\Player\UserAwardEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderItem;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -74,8 +75,12 @@ class MessageFolderComponentTest extends StuTestCase
         $user->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn($userId);
-        $user->shouldReceive('hasStationsPmCategory')
+        $user->shouldReceive('isNpc')
             ->withNoArgs()
+            ->once()
+            ->andReturnFalse();
+        $user->shouldReceive('hasAward')
+            ->with(UserAwardEnum::RESEARCHED_STATIONS)
             ->once()
             ->andReturnFalse();
 
@@ -134,7 +139,7 @@ class MessageFolderComponentTest extends StuTestCase
         $user->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn($userId);
-        $user->shouldReceive('hasStationsPmCategory')
+        $user->shouldReceive('isNpc')
             ->withNoArgs()
             ->once()
             ->andReturnTrue();

@@ -38,8 +38,6 @@ interface UserInterface
 
     public function isLocked(): bool;
 
-    public function getUserStateDescription(): string;
-
     public function setState(int $state): UserInterface;
 
     public function getLastaction(): int;
@@ -77,10 +75,6 @@ interface UserInterface
      */
     public function getUserLayers(): Collection;
 
-    public function hasSeen(int $layerId): bool;
-
-    public function hasExplored(int $layerId): bool;
-
     /**
      * @return Collection<string, UserSettingInterface>
      */
@@ -115,27 +109,17 @@ interface UserInterface
 
     public function setAlliance(?AllianceInterface $alliance): UserInterface;
 
-    public function setAllianceId(?int $allianceId): UserInterface;
-
-    public function getSessionDataUnserialized(): array;
-
     public function isContactable(): bool;
 
     public function hasAward(int $awardId): bool;
-
-    public function hasStationsPmCategory(): bool;
 
     public function isNpc(): bool;
 
     public function getUserLock(): ?UserLockInterface;
 
-    public function hasTranslation(): bool;
-
     public function getPirateWrath(): ?PirateWrathInterface;
 
     public function setPirateWrath(?PirateWrathInterface $wrath): UserInterface;
-
-    public function isProtectedAgainstPirates(): bool;
 
     /**
      * @return Collection<int, UserTutorialInterface>

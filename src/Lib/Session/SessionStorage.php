@@ -9,6 +9,9 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class SessionStorage implements SessionStorageInterface
 {
+    /** @var array<array<mixed>> */
+    private array $sessionDataPerUser = [];
+
     public function __construct(
         private readonly UserRepositoryInterface $userRepository,
         private readonly SessionInterface $session
@@ -23,7 +26,7 @@ final class SessionStorage implements SessionStorageInterface
         $stored = false;
         $user = $this->getUserMandatory();
 
-        $data = $user->getSessionDataUnserialized();
+        $data = $this->getSessionDataUnserialized($user);
         if (!array_key_exists($key, $data)) {
             if ($isSingleValue) {
                 $data[$key] = $value;
@@ -38,9 +41,24 @@ final class SessionStorage implements SessionStorageInterface
         }
 
         if ($stored) {
+            unset($this->sessionDataPerUser[$user->getId()]);
             $user->setSessionData(serialize($data));
             $this->userRepository->save($user);
         }
+    }
+
+    /** @return array<mixed> */
+    private function getSessionDataUnserialized(UserInterface $user): array
+    {
+        if (!array_key_exists($user->getId(), $this->sessionDataPerUser)) {
+            $sessiondataUnserialized = unserialize($user->getSessionData());
+            if (!is_array($sessiondataUnserialized)) {
+                $sessiondataUnserialized = [];
+            }
+            $this->sessionDataPerUser[$user->getId()] = $sessiondataUnserialized;
+        }
+
+        return $this->sessionDataPerUser[$user->getId()];
     }
 
     /**
@@ -51,7 +69,7 @@ final class SessionStorage implements SessionStorageInterface
     {
         $user = $this->getUserMandatory();
 
-        $data = $user->getSessionDataUnserialized();
+        $data = $this->getSessionDataUnserialized($user);
         if (!array_key_exists($key, $data)) {
             return;
         }
@@ -73,7 +91,7 @@ final class SessionStorage implements SessionStorageInterface
     #[Override]
     public function hasSessionValue(string $key, mixed $value): bool
     {
-        $data = $this->getUserMandatory()->getSessionDataUnserialized();
+        $data = $this->getSessionDataUnserialized($this->getUserMandatory());
         if (!array_key_exists($key, $data)) {
             return false;
         }
@@ -86,7 +104,7 @@ final class SessionStorage implements SessionStorageInterface
     #[Override]
     public function getSessionValue(string $key): mixed
     {
-        $data = $this->getUserMandatory()->getSessionDataUnserialized();
+        $data = $this->getSessionDataUnserialized($this->getUserMandatory());
         if (!array_key_exists($key, $data)) {
             return false;
         }

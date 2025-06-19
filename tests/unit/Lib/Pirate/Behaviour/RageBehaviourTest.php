@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Override;
 use Stu\Lib\Pirate\Component\PirateAttackInterface;
+use Stu\Lib\Pirate\Component\PirateProtectionInterface;
 use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Lib\Pirate\PirateReactionMetadata;
 use Stu\Lib\Pirate\PirateReactionTriggerEnum;
@@ -18,19 +19,17 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\StuTestCase;
 
 class RageBehaviourTest extends StuTestCase
 {
-    /** @var MockInterface&ShipRepositoryInterface */
-    private $shipRepository;
-    /** @var MockInterface&FightLibInterface */
-    private $fightLib;
-    /** @var MockInterface&PrestigeCalculationInterface */
-    private $prestigeCalculation;
-    /** @var MockInterface&PirateAttackInterface */
-    private $pirateAttack;
+    private MockInterface&ShipRepositoryInterface $shipRepository;
+    private MockInterface&FightLibInterface $fightLib;
+    private MockInterface&PrestigeCalculationInterface $prestigeCalculation;
+    private MockInterface&PirateAttackInterface $pirateAttack;
+    private MockInterface&PirateProtectionInterface $pirateProtection;
 
     /** @var MockInterface&FleetWrapperInterface */
     private $fleetWrapper;
@@ -50,6 +49,7 @@ class RageBehaviourTest extends StuTestCase
         $this->fightLib = $this->mock(FightLibInterface::class);
         $this->prestigeCalculation = $this->mock(PrestigeCalculationInterface::class);
         $this->pirateAttack = $this->mock(PirateAttackInterface::class);
+        $this->pirateProtection = $this->mock(PirateProtectionInterface::class);
 
         $this->fleetWrapper = mock(FleetWrapperInterface::class);
         $this->fleet = mock(FleetInterface::class);
@@ -64,6 +64,7 @@ class RageBehaviourTest extends StuTestCase
             $this->fightLib,
             $this->prestigeCalculation,
             $this->pirateAttack,
+            $this->pirateProtection,
             $this->initLoggerUtil()
         );
     }
@@ -161,9 +162,13 @@ class RageBehaviourTest extends StuTestCase
         $ship = $this->mock(ShipInterface::class);
         $target = $this->mock(ShipInterface::class);
         $location = $this->mock(MapInterface::class);
+        $user = $this->mock(UserInterface::class);
 
-        $target->shouldReceive('getUser->isProtectedAgainstPirates')
+        $target->shouldReceive('getUser')
             ->withNoArgs()
+            ->andReturn($user);
+        $this->pirateProtection->shouldReceive('isProtectedAgainstPirates')
+            ->with($user)
             ->andReturn(true);
 
         $this->fleetWrapper->shouldReceive('getLeadWrapper')
@@ -200,10 +205,15 @@ class RageBehaviourTest extends StuTestCase
         $ship = $this->mock(ShipInterface::class);
         $target = $this->mock(ShipInterface::class);
         $location = $this->mock(MapInterface::class);
+        $user = $this->mock(UserInterface::class);
 
-        $target->shouldReceive('getUser->isProtectedAgainstPirates')
-            ->withNoArgs()
+        $this->pirateProtection->shouldReceive('isProtectedAgainstPirates')
+            ->with($user)
             ->andReturn(true);
+
+        $target->shouldReceive('getUser')
+            ->withNoArgs()
+            ->andReturn($user);
         $target->shouldReceive('getFleet')
             ->withNoArgs()
             ->andReturn(null);
@@ -245,12 +255,16 @@ class RageBehaviourTest extends StuTestCase
         $ship = $this->mock(ShipInterface::class);
         $target = $this->mock(ShipInterface::class);
         $location = $this->mock(MapInterface::class);
+        $user = $this->mock(UserInterface::class);
 
         $target->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn(42);
-        $target->shouldReceive('getUser->isProtectedAgainstPirates')
+        $target->shouldReceive('getUser')
             ->withNoArgs()
+            ->andReturn($user);
+        $this->pirateProtection->shouldReceive('isProtectedAgainstPirates')
+            ->with($user)
             ->andReturn(false);
         $target->shouldReceive('getFleet')
             ->withNoArgs()
@@ -309,12 +323,16 @@ class RageBehaviourTest extends StuTestCase
         $ship = $this->mock(ShipInterface::class);
         $target = $this->mock(ShipInterface::class);
         $location = $this->mock(MapInterface::class);
+        $user = $this->mock(UserInterface::class);
 
         $target->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn(42);
-        $target->shouldReceive('getUser->isProtectedAgainstPirates')
+        $target->shouldReceive('getUser')
             ->withNoArgs()
+            ->andReturn($user);
+        $this->pirateProtection->shouldReceive('isProtectedAgainstPirates')
+            ->with($user)
             ->andReturn(false);
         $target->shouldReceive('getFleet')
             ->withNoArgs()
@@ -367,14 +385,18 @@ class RageBehaviourTest extends StuTestCase
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $ship = $this->mock(ShipInterface::class);
         $target = $this->mock(ShipInterface::class);
+        $user = $this->mock(UserInterface::class);
 
         $target2 = $this->mock(ShipInterface::class);
+        $user2 = $this->mock(UserInterface::class);
 
         $target3_1 = $this->mock(ShipInterface::class);
+        $user3_1 = $this->mock(UserInterface::class);
         $target3_2 = $this->mock(ShipInterface::class);
         $targetFleet3 = $this->mock(FleetInterface::class);
 
         $target4 = $this->mock(ShipInterface::class);
+        $user4 = $this->mock(UserInterface::class);
 
         $this->fightLib->shouldReceive('calculateHealthPercentage')
             ->with($target)
@@ -468,17 +490,30 @@ class RageBehaviourTest extends StuTestCase
             ->once()
             ->andReturn(true);
 
-        $target->shouldReceive('getUser->isProtectedAgainstPirates')
+        $target->shouldReceive('getUser')
             ->withNoArgs()
+            ->andReturn($user);
+        $target2->shouldReceive('getUser')
+            ->withNoArgs()
+            ->andReturn($user2);
+        $target3_1->shouldReceive('getUser')
+            ->withNoArgs()
+            ->andReturn($user3_1);
+        $target4->shouldReceive('getUser')
+            ->withNoArgs()
+            ->andReturn($user4);
+
+        $this->pirateProtection->shouldReceive('isProtectedAgainstPirates')
+            ->with($user)
             ->andReturn(false);
-        $target2->shouldReceive('getUser->isProtectedAgainstPirates')
-            ->withNoArgs()
+        $this->pirateProtection->shouldReceive('isProtectedAgainstPirates')
+            ->with($user2)
             ->andReturn(false);
-        $target3_1->shouldReceive('getUser->isProtectedAgainstPirates')
-            ->withNoArgs()
+        $this->pirateProtection->shouldReceive('isProtectedAgainstPirates')
+            ->with($user3_1)
             ->andReturn(false);
-        $target4->shouldReceive('getUser->isProtectedAgainstPirates')
-            ->withNoArgs()
+        $this->pirateProtection->shouldReceive('isProtectedAgainstPirates')
+            ->with($user4)
             ->andReturn(false);
 
         $this->pirateAttack->shouldReceive('attackShip')

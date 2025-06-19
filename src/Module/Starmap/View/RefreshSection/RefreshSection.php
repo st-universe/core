@@ -9,6 +9,7 @@ use request;
 use RuntimeException;
 use Stu\Component\Map\DirectionEnum;
 use Stu\Exception\SanityCheckException;
+use Stu\Lib\Trait\LayerExplorationTrait;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Starmap\Lib\StarmapUiFactoryInterface;
@@ -17,6 +18,8 @@ use Stu\Orm\Repository\LayerRepositoryInterface;
 
 final class RefreshSection implements ViewControllerInterface
 {
+    use LayerExplorationTrait;
+
     public const string VIEW_IDENTIFIER = 'REFRESH_SECTION';
 
     public function __construct(
@@ -37,7 +40,7 @@ final class RefreshSection implements ViewControllerInterface
         $section = $this->request->getSection();
 
         //sanity check if user knows layer
-        if (!$game->getUser()->hasSeen($layer->getId())) {
+        if (!$this->hasSeen($game->getUser(), $layer)) {
             throw new SanityCheckException('user tried to access unseen layer');
         }
 
