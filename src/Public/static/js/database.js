@@ -317,7 +317,7 @@ function initializeSpacyProgressBar(maxPrestige, actualPrestige) {
 
 	if (!progressBar || !progressText || !progressContainer) return;
 
-	const percentage = maxPrestige > 0 ? (actualPrestige / maxPrestige) * 100 : 0;
+	const percentage = ((maxPrestige - actualPrestige) / maxPrestige) * 100;
 
 	let gradient, glowColor;
 	if (percentage >= 75) {

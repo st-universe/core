@@ -83,7 +83,11 @@ final class ShowPirateRound implements ViewControllerInterface
                 }
             }
         }
+        $maxPrestige = $lastRound->getMaxPrestige() ?? 0;
+        $actualPrestige = $lastRound->getActualPrestige() ?? 0;
+        $remainingPrestige = max(0, $maxPrestige - $actualPrestige);
 
+        $game->setTemplateVar('REMAINING_PRESTIGE', $remainingPrestige);
         $game->setTemplateVar('WINNER_FACTION_SHIPS', $winnerFactionShips);
         $game->setTemplateVar('PIRATE_ROUND', $lastRound);
         $game->setTemplateVar('TOP_USERS', $topList);
