@@ -37,7 +37,6 @@ class AllViewControllerTest extends TwigTestCase
         'COLONY_VIEWS-SHOW_SUBSPACE_TELESCOPE',     // needs corresponding building on colony
         'COLONY_VIEWS-SHOW_TELESCOPE_SCAN',         // needs corresponding building on colony
         'COMMUNICATION_VIEWS-SHOW_ADMIN_DELETE_POST',
-        'DATABASE_VIEWS-SHOW_PIRATE_ROUND',         // time changes on each test run
         'DATABASE_VIEWS-SHOW_SATISFIED_WORKER',
         'DATABASE_VIEWS-SHOW_STATISTICS',
         'DATABASE_VIEWS-SHOW_SURFACE',              // needs surface scan test data
