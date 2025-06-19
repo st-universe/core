@@ -7,6 +7,7 @@ namespace Stu\Component\Station;
 use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftRumpEnum;
+use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
@@ -176,13 +177,13 @@ final class StationUtility implements StationUtilityInterface
             ->get();
 
         // set influence area
-        if ($station->getRump()->getShipRumpRole()->getId() === SpacecraftRumpEnum::SHIP_ROLE_BASE) {
+        if ($station->getRump()->getShipRumpRole()->getId() === SpacecraftRumpRoleEnum::SHIP_ROLE_BASE) {
             $station->setInfluenceArea($station->getMap()->getSystem());
             $this->stationRepository->save($station);
         }
 
         // make tradepost entry
-        if ($station->getRump()->getShipRumpRole()->getId() === SpacecraftRumpEnum::SHIP_ROLE_OUTPOST) {
+        if ($station->getRump()->getShipRumpRole()->getId() === SpacecraftRumpRoleEnum::SHIP_ROLE_OUTPOST) {
             $this->createTradepostAndLicense($station);
         }
 
@@ -293,8 +294,8 @@ final class StationUtility implements StationUtilityInterface
     public function canManageShips(StationInterface $station): bool
     {
         return $station->getRump()->getShipRumpRole() !== null
-            && ($station->getRump()->getShipRumpRole()->getId() === SpacecraftRumpEnum::SHIP_ROLE_OUTPOST
-                || $station->getRump()->getShipRumpRole()->getId() === SpacecraftRumpEnum::SHIP_ROLE_BASE)
+            && ($station->getRump()->getShipRumpRole()->getId() === SpacecraftRumpRoleEnum::SHIP_ROLE_OUTPOST
+                || $station->getRump()->getShipRumpRole()->getId() === SpacecraftRumpRoleEnum::SHIP_ROLE_BASE)
             && $station->hasEnoughCrew();
     }
 
@@ -302,8 +303,8 @@ final class StationUtility implements StationUtilityInterface
     public function canRepairShips(StationInterface $station): bool
     {
         return $station->getRump()->getShipRumpRole() !== null
-            && ($station->getRump()->getShipRumpRole()->getId() === SpacecraftRumpEnum::SHIP_ROLE_SHIPYARD
-                || $station->getRump()->getShipRumpRole()->getId() === SpacecraftRumpEnum::SHIP_ROLE_BASE)
+            && ($station->getRump()->getShipRumpRole()->getId() === SpacecraftRumpRoleEnum::SHIP_ROLE_SHIPYARD
+                || $station->getRump()->getShipRumpRole()->getId() === SpacecraftRumpRoleEnum::SHIP_ROLE_BASE)
             && $station->hasEnoughCrew();
     }
 }

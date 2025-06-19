@@ -92,8 +92,8 @@ final class CrewCreator implements CrewCreatorInterface
             if ($config === null) {
                 throw new RuntimeException(sprintf(
                     'no rump category role crew for rumpCategoryId: %d, rumpRoleId: %d',
-                    $spacecraft->getRump()->getShipRumpCategory()->getId(),
-                    $spacecraft->getRump()->getShipRumpRole()->getId()
+                    $spacecraft->getRump()->getShipRumpCategory()->getId()->value,
+                    $spacecraft->getRump()->getShipRumpRole()->getId()->value
                 ));
             }
 

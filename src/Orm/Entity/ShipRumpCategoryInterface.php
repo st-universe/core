@@ -2,11 +2,12 @@
 
 namespace Stu\Orm\Entity;
 
+use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Component\Spacecraft\SpacecraftTypeEnum;
 
 interface ShipRumpCategoryInterface
 {
-    public function getId(): int;
+    public function getId(): SpacecraftRumpCategoryEnum;
 
     public function getName(): string;
 

@@ -6,6 +6,7 @@ namespace Stu\Module\Station\View\ShowStationInfo;
 
 use Override;
 use request;
+use RuntimeException;
 use Stu\Component\Station\StationEnum;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -33,14 +34,19 @@ final class ShowStationInfo implements ViewControllerInterface
             return;
         }
 
+        $role = $rump->getRoleId();
+        if ($role === null) {
+            throw new RuntimeException(sprintf('No rump role for rumpId %d, planId %d', $rump->getId(), $planId));
+        }
+
         $game->setMacroInAjaxWindow('html/station/stationInfo.twig');
 
         $game->setTemplateVar('PLAN', $plan);
 
-        $limit = StationEnum::BUILDABLE_LIMITS_PER_ROLE[$rump->getRoleId()];
+        $limit = StationEnum::BUILDABLE_LIMITS_PER_ROLE[$role->value];
         $game->setTemplateVar('LIMIT', $limit === PHP_INT_MAX ? 'unbegrenzt' : $limit);
 
-        $location = StationEnum::BUILDABLE_LOCATIONS_PER_ROLE[$rump->getRoleId()];
+        $location = StationEnum::BUILDABLE_LOCATIONS_PER_ROLE[$role->value];
         $game->setTemplateVar('LOCATION', $location);
     }
 }

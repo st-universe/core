@@ -7,7 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Override;
-use Stu\Component\Spacecraft\SpacecraftRumpEnum;
+use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\CrewAssignment;
 use Stu\Orm\Entity\CrewAssignmentInterface;
@@ -160,7 +160,7 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
             )
             ->setParameters([
                 'user' => $user,
-                'categoryId' => SpacecraftRumpEnum::SHIP_CATEGORY_ESCAPE_PODS
+                'categoryId' => SpacecraftRumpCategoryEnum::SHIP_CATEGORY_ESCAPE_PODS->value
             ])
             ->getResult();
     }

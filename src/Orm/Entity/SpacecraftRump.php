@@ -16,7 +16,8 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
 use Override;
-use Stu\Component\Spacecraft\SpacecraftRumpEnum;
+use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
+use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Orm\Repository\SpacecraftRumpRepository;
 
 #[Table(name: 'stu_rump')]
@@ -30,11 +31,11 @@ class SpacecraftRump implements SpacecraftRumpInterface
     #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    #[column(type: 'integer')]
-    private int $category_id;
+    #[column(type: 'enum', enumType: SpacecraftRumpCategoryEnum::class, nullable: false)]
+    private SpacecraftRumpCategoryEnum $category_id;
 
-    #[column(type: 'integer', nullable: true)]
-    private ?int $role_id = 0;
+    #[column(type: 'enum', enumType: SpacecraftRumpRoleEnum::class, nullable: true)]
+    private ?SpacecraftRumpRoleEnum $role_id = null;
 
     #[column(type: 'smallint')]
     private int $evade_chance = 0;
@@ -192,27 +193,19 @@ class SpacecraftRump implements SpacecraftRumpInterface
     }
 
     #[Override]
-    public function setCategoryId(int $categoryId): SpacecraftRumpInterface
-    {
-        $this->category_id = $categoryId;
-
-        return $this;
-    }
-
-    #[Override]
-    public function getCategoryId(): int
+    public function getCategoryId(): SpacecraftRumpCategoryEnum
     {
         return $this->category_id;
     }
 
     #[Override]
-    public function getRoleId(): ?int
+    public function getRoleId(): ?SpacecraftRumpRoleEnum
     {
         return $this->role_id;
     }
 
     #[Override]
-    public function setRoleId(?int $roleId): SpacecraftRumpInterface
+    public function setRoleId(?SpacecraftRumpRoleEnum $roleId): SpacecraftRumpInterface
     {
         $this->role_id = $roleId;
         return $this;
@@ -692,20 +685,20 @@ class SpacecraftRump implements SpacecraftRumpInterface
     #[Override]
     public function isEscapePods(): bool
     {
-        return $this->getCategoryId() === SpacecraftRumpEnum::SHIP_CATEGORY_ESCAPE_PODS;
+        return $this->getCategoryId() === SpacecraftRumpCategoryEnum::SHIP_CATEGORY_ESCAPE_PODS;
     }
 
     #[Override]
     public function isShipyard(): bool
     {
-        return $this->getCategoryId() === SpacecraftRumpEnum::SHIP_CATEGORY_STATION
-            && $this->getRoleId() === SpacecraftRumpEnum::SHIP_ROLE_SHIPYARD;
+        return $this->getCategoryId() === SpacecraftRumpCategoryEnum::SHIP_CATEGORY_STATION
+            && $this->getRoleId() === SpacecraftRumpRoleEnum::SHIP_ROLE_SHIPYARD;
     }
 
     #[Override]
     public function isStation(): bool
     {
-        return $this->getCategoryId() === SpacecraftRumpEnum::SHIP_CATEGORY_STATION;
+        return $this->getCategoryId() === SpacecraftRumpCategoryEnum::SHIP_CATEGORY_STATION;
     }
 
     #[Override]

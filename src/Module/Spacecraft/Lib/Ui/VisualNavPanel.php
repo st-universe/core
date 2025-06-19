@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Ui;
 
 use Override;
-use Stu\Component\Spacecraft\SpacecraftRumpEnum;
+use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreationInterface;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
@@ -99,8 +99,8 @@ class VisualNavPanel extends AbstractVisualPanel
         }
 
         if (
-            $this->wrapper->get()->getRump()->getRoleId() === SpacecraftRumpEnum::SHIP_ROLE_SENSOR
-            || $this->wrapper->get()->getRump()->getRoleId() === SpacecraftRumpEnum::SHIP_ROLE_BASE
+            $this->wrapper->get()->getRump()->getRoleId() === SpacecraftRumpRoleEnum::SHIP_ROLE_SENSOR
+            || $this->wrapper->get()->getRump()->getRoleId() === SpacecraftRumpRoleEnum::SHIP_ROLE_BASE
         ) {
             $parentMapLocation = $this->getParentMapLocation($location);
 

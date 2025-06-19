@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Override;
+use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Orm\Repository\ShipRumpCategoryRoleCrewRepository;
 
 #[Table(name: 'stu_rumps_cat_role_crew')]
@@ -28,8 +29,8 @@ class ShipRumpCategoryRoleCrew implements ShipRumpCategoryRoleCrewInterface
     #[Column(type: 'integer')]
     private int $rump_category_id = 0;
 
-    #[Column(type: 'integer')]
-    private int $rump_role_id = 0;
+    #[Column(type: 'enum', enumType: SpacecraftRumpRoleEnum::class)]
+    private SpacecraftRumpRoleEnum $rump_role_id;
 
     #[Column(type: 'smallint')]
     private int $job_1_crew = 0;
@@ -69,25 +70,9 @@ class ShipRumpCategoryRoleCrew implements ShipRumpCategoryRoleCrewInterface
     }
 
     #[Override]
-    public function setShipRumpCategoryId(int $shipRumpCategoryId): ShipRumpCategoryRoleCrewInterface
-    {
-        $this->rump_category_id = $shipRumpCategoryId;
-
-        return $this;
-    }
-
-    #[Override]
-    public function getShipRumpRoleId(): int
+    public function getShipRumpRoleId(): SpacecraftRumpRoleEnum
     {
         return $this->rump_role_id;
-    }
-
-    #[Override]
-    public function setShipRumpRoleId(int $shipRumpRoleId): ShipRumpCategoryRoleCrewInterface
-    {
-        $this->rump_role_id = $shipRumpRoleId;
-
-        return $this;
     }
 
     #[Override]

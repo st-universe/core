@@ -5,6 +5,7 @@ namespace Stu\Orm\Entity;
 use Doctrine\Common\Collections\Collection;
 use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
+use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 
 interface ModuleInterface
@@ -53,9 +54,7 @@ interface ModuleInterface
 
     public function setViewable(bool $viewable): ModuleInterface;
 
-    public function getShipRumpRoleId(): ?int;
-
-    public function setShipRumpRoleId(int $shipRumpRoleId): ModuleInterface;
+    public function getShipRumpRoleId(): ?SpacecraftRumpRoleEnum;
 
     public function getWeapon(): ?WeaponInterface;
 

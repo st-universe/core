@@ -3,6 +3,8 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
+use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Orm\Entity\ShipRumpCategoryRoleCrew;
 use Stu\Orm\Entity\ShipRumpCategoryRoleCrewInterface;
 
@@ -12,7 +14,7 @@ use Stu\Orm\Entity\ShipRumpCategoryRoleCrewInterface;
 interface ShipRumpCategoryRoleCrewRepositoryInterface extends ObjectRepository
 {
     public function getByShipRumpCategoryAndRole(
-        int $shipRumpCategoryId,
-        int $shipRumpRoleId
+        SpacecraftRumpCategoryEnum $shipRumpCategory,
+        SpacecraftRumpRoleEnum $shipRumpRole
     ): ?ShipRumpCategoryRoleCrewInterface;
 }

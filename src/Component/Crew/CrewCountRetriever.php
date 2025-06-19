@@ -6,7 +6,7 @@ namespace Stu\Component\Crew;
 
 use Override;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
-use Stu\Component\Spacecraft\SpacecraftRumpEnum;
+use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
@@ -30,7 +30,7 @@ final class CrewCountRetriever implements CrewCountRetrieverInterface
         $count = $this->crewRepository
             ->getAmountByUserAndShipRumpCategory(
                 $user,
-                SpacecraftRumpEnum::SHIP_CATEGORY_ESCAPE_PODS
+                SpacecraftRumpCategoryEnum::SHIP_CATEGORY_ESCAPE_PODS
             );
 
         return $count + $this->shipCrewRepository->getAmountByUserAtTradeposts($user);

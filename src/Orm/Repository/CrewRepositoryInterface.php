@@ -3,6 +3,7 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\CrewInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -23,7 +24,7 @@ interface CrewRepositoryInterface extends ObjectRepository
 
     public function getAmountByUserAndShipRumpCategory(
         UserInterface $user,
-        int $shipRumpCategoryId
+        SpacecraftRumpCategoryEnum $shipRumpCategory
     ): int;
 
     public function truncateByUser(int $userId): void;

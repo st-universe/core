@@ -138,13 +138,6 @@ class PrivateMessage implements PrivateMessageInterface
     }
 
     #[Override]
-    public function setCategoryId(int $categoryId): PrivateMessageInterface
-    {
-        $this->cat_id = $categoryId;
-        return $this;
-    }
-
-    #[Override]
     public function getInboxPm(): ?PrivateMessageInterface
     {
         return $this->inboxPm;

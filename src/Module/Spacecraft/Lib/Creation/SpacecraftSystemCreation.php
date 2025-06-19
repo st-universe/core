@@ -4,7 +4,8 @@ namespace Stu\Module\Spacecraft\Lib\Creation;
 
 use Doctrine\Common\Collections\Collection;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
-use Stu\Component\Spacecraft\SpacecraftRumpEnum;
+use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
+use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Orm\Entity\BuildplanModuleInterface;
@@ -43,14 +44,14 @@ class SpacecraftSystemCreation implements SpacecraftSystemCreationInterface
         $systems = [];
 
         //default systems, that almost every ship should have
-        if ($spacecraft->getRump()->getCategoryId() !== SpacecraftRumpEnum::SHIP_CATEGORY_SHUTTLE) {
+        if ($spacecraft->getRump()->getCategoryId() !== SpacecraftRumpCategoryEnum::SHIP_CATEGORY_SHUTTLE) {
             $systems[SpacecraftSystemTypeEnum::DEFLECTOR->value] = null;
             $systems[SpacecraftSystemTypeEnum::TRACTOR_BEAM->value] = null;
         }
         $systems[SpacecraftSystemTypeEnum::LIFE_SUPPORT->value] = null;
         //TODO transporter
 
-        if ($spacecraft->getRump()->getCategoryId() === SpacecraftRumpEnum::SHIP_CATEGORY_STATION) {
+        if ($spacecraft->getRump()->getCategoryId() === SpacecraftRumpCategoryEnum::SHIP_CATEGORY_STATION) {
             $systems[SpacecraftSystemTypeEnum::BEAM_BLOCKER->value] = null;
         }
 
@@ -58,7 +59,7 @@ class SpacecraftSystemCreation implements SpacecraftSystemCreationInterface
             $systems[SpacecraftSystemTypeEnum::CONSTRUCTION_HUB->value] = null;
         }
 
-        if ($spacecraft->getRump()->getRoleId() === SpacecraftRumpEnum::SHIP_ROLE_SENSOR) {
+        if ($spacecraft->getRump()->getRoleId() === SpacecraftRumpRoleEnum::SHIP_ROLE_SENSOR) {
             $systems[SpacecraftSystemTypeEnum::UPLINK->value] = null;
         }
 

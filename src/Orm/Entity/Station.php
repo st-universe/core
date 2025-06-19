@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use Override;
-use Stu\Component\Spacecraft\SpacecraftRumpEnum;
+use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\SpacecraftTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -189,7 +189,7 @@ class Station extends Spacecraft implements StationInterface
         $count = 0;
 
         foreach ($this->getDockedShips() as $ships) {
-            if ($ships->getRump()->getCategoryId() === SpacecraftRumpEnum::SHIP_CATEGORY_SHUTTLE) {
+            if ($ships->getRump()->getCategoryId() === SpacecraftRumpCategoryEnum::SHIP_CATEGORY_SHUTTLE) {
                 $count += 1;
             }
         }

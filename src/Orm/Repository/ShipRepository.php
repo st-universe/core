@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Override;
 use Stu\Component\Game\TimeConstants;
-use Stu\Component\Spacecraft\SpacecraftRumpEnum;
+use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -141,7 +141,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 SpacecraftRump::class
             )
         )->setParameters([
-            'categoryId' => SpacecraftRumpEnum::SHIP_CATEGORY_ESCAPE_PODS
+            'categoryId' => SpacecraftRumpCategoryEnum::SHIP_CATEGORY_ESCAPE_PODS->value
         ])->getResult();
     }
 
@@ -162,7 +162,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 CrewAssignment::class
             )
         )->setParameters([
-            'categoryId' => SpacecraftRumpEnum::SHIP_CATEGORY_ESCAPE_PODS,
+            'categoryId' => SpacecraftRumpCategoryEnum::SHIP_CATEGORY_ESCAPE_PODS->value,
             'user' => $user
         ])->getResult();
     }

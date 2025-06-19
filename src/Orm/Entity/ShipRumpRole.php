@@ -6,10 +6,10 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 use Override;
+use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Orm\Repository\ShipRumpRoleRepository;
 
 #[Table(name: 'stu_rumps_roles')]
@@ -17,15 +17,14 @@ use Stu\Orm\Repository\ShipRumpRoleRepository;
 class ShipRumpRole implements ShipRumpRoleInterface
 {
     #[Id]
-    #[Column(type: 'integer')]
-    #[GeneratedValue(strategy: 'IDENTITY')]
-    private int $id;
+    #[Column(type: 'enum', enumType: SpacecraftRumpRoleEnum::class)]
+    private SpacecraftRumpRoleEnum $id;
 
     #[Column(type: 'string')]
     private string $name = '';
 
     #[Override]
-    public function getId(): int
+    public function getId(): SpacecraftRumpRoleEnum
     {
         return $this->id;
     }

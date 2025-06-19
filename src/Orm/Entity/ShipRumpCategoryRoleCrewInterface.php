@@ -2,17 +2,15 @@
 
 namespace Stu\Orm\Entity;
 
+use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
+
 interface ShipRumpCategoryRoleCrewInterface
 {
     public function getId(): int;
 
     public function getShipRumpCategoryId(): int;
 
-    public function setShipRumpCategoryId(int $shipRumpCategoryId): ShipRumpCategoryRoleCrewInterface;
-
-    public function getShipRumpRoleId(): int;
-
-    public function setShipRumpRoleId(int $shipRumpRoleId): ShipRumpCategoryRoleCrewInterface;
+    public function getShipRumpRoleId(): SpacecraftRumpRoleEnum;
 
     public function getJob1Crew(): int;
 

@@ -8,7 +8,7 @@ use Override;
 use request;
 use RuntimeException;
 use Stu\Component\Game\ModuleEnum;
-use Stu\Component\Spacecraft\SpacecraftRumpEnum;
+use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Control\ActionControllerInterface;
@@ -64,7 +64,7 @@ final class Scrapping implements ActionControllerInterface
             return;
         }
 
-        if ($station->getRump()->getCategoryId() === SpacecraftRumpEnum::SHIP_CATEGORY_CONSTRUCTION) {
+        if ($station->getRump()->getCategoryId() === SpacecraftRumpCategoryEnum::SHIP_CATEGORY_CONSTRUCTION) {
 
             $game->setView(ModuleEnum::STATION);
 

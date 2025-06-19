@@ -47,13 +47,6 @@ class DatabaseCategoryAward implements DatabaseCategoryAwardInterface
     }
 
     #[Override]
-    public function setCategoryId(int $categoryId): DatabaseCategoryAwardInterface
-    {
-        $this->category_id = $categoryId;
-        return $this;
-    }
-
-    #[Override]
     public function getCategoryId(): int
     {
         return $this->category_id;

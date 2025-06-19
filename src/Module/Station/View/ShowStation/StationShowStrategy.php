@@ -7,11 +7,11 @@ namespace Stu\Module\Station\View\ShowStation;
 use Override;
 use request;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
-use Stu\Component\Spacecraft\SpacecraftRumpEnum;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Component\Game\ModuleEnum;
+use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Module\Control\ViewContext;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -119,7 +119,7 @@ final class StationShowStrategy implements SpacecraftTypeShowStragegyInterface
             $game->setTemplateVar('SHIP_REPAIR_PROGRESS', $shipRepairProgress);
         }
 
-        if ($station->getRump()->getRoleId() === SpacecraftRumpEnum::SHIP_ROLE_SHIPYARD) {
+        if ($station->getRump()->getRoleId() === SpacecraftRumpRoleEnum::SHIP_ROLE_SHIPYARD) {
             $game->setTemplateVar('SHIP_BUILD_PROGRESS', $this->shipyardShipQueueRepository->getByShipyard($station->getId()));
         }
 

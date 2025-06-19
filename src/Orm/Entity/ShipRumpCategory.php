@@ -6,12 +6,12 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Override;
+use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Component\Spacecraft\SpacecraftTypeEnum;
 use Stu\Orm\Repository\ShipRumpCategoryRepository;
 
@@ -20,9 +20,8 @@ use Stu\Orm\Repository\ShipRumpCategoryRepository;
 class ShipRumpCategory implements ShipRumpCategoryInterface
 {
     #[Id]
-    #[Column(type: 'integer')]
-    #[GeneratedValue(strategy: 'IDENTITY')]
-    private int $id;
+    #[Column(type: 'enum', enumType: SpacecraftRumpCategoryEnum::class)]
+    private SpacecraftRumpCategoryEnum $id;
 
     #[Column(type: 'string')]
     private string $name = '';
@@ -38,7 +37,7 @@ class ShipRumpCategory implements ShipRumpCategoryInterface
     private ?DatabaseEntryInterface $databaseEntry = null;
 
     #[Override]
-    public function getId(): int
+    public function getId(): SpacecraftRumpCategoryEnum
     {
         return $this->id;
     }

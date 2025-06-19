@@ -8,7 +8,8 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Override;
 use Stu\Component\Game\TimeConstants;
-use Stu\Component\Spacecraft\SpacecraftRumpEnum;
+use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
+use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -179,7 +180,7 @@ final class StationRepository extends EntityRepository implements StationReposit
                 SpacecraftRump::class
             )
         )->setParameters([
-            'catId' => SpacecraftRumpEnum::SHIP_CATEGORY_CONSTRUCTION,
+            'catId' => SpacecraftRumpCategoryEnum::SHIP_CATEGORY_CONSTRUCTION->value,
             'firstUserId' => UserEnum::USER_FIRST_ID
         ])
             ->getResult();
@@ -274,7 +275,7 @@ final class StationRepository extends EntityRepository implements StationReposit
             )
             ->setParameters([
                 'userId' => $userId,
-                'categoryId' => SpacecraftRumpEnum::SHIP_CATEGORY_STATION
+                'categoryId' => SpacecraftRumpCategoryEnum::SHIP_CATEGORY_STATION->value
             ])
             ->getResult();
     }
@@ -316,7 +317,7 @@ final class StationRepository extends EntityRepository implements StationReposit
             )
         )
             ->setParameters([
-                'phalanxRoleId' => SpacecraftRumpEnum::SHIP_ROLE_SENSOR,
+                'phalanxRoleId' => SpacecraftRumpRoleEnum::SHIP_ROLE_SENSOR->value,
                 'minX' => $location->getCx() - $range,
                 'maxX' => $location->getCx() + $range,
                 'minY' => $location->getCy() - $range,

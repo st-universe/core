@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Override;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
+use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\Module;
 use Stu\Orm\Entity\ModuleSpecial;
@@ -105,7 +106,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
     public function getByTypeColonyAndLevel(
         int $colonyId,
         SpacecraftModuleTypeEnum $moduleType,
-        int $shipRumpRoleId,
+        SpacecraftRumpRoleEnum $shipRumpRole,
         array $moduleLevel
     ): array {
         return $this->getEntityManager()
@@ -134,7 +135,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
             ->setParameters([
                 'typeId' => $moduleType->value,
                 'colonyId' => $colonyId,
-                'shipRumpRoleId' => $shipRumpRoleId,
+                'shipRumpRoleId' => $shipRumpRole->value,
                 'levelList' => $moduleLevel,
                 'state' => 1
             ])
@@ -145,7 +146,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
     #[Override]
     public function getByTypeAndLevel(
         int $moduleTypeId,
-        int $shipRumpRoleId,
+        SpacecraftRumpRoleEnum $shipRumpRole,
         array $moduleLevel
     ): array {
         return $this->getEntityManager()
@@ -168,7 +169,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
             )
             ->setParameters([
                 'typeId' => $moduleTypeId,
-                'shipRumpRoleId' => $shipRumpRoleId,
+                'shipRumpRoleId' => $shipRumpRole->value,
                 'levelList' => $moduleLevel
             ])
             ->getResult();
