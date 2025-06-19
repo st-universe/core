@@ -39,7 +39,7 @@ jobs:
         run: echo "PHP_CS_FIXER_IGNORE_ENV=1" >> $GITHUB_ENV
         
       - name: Install Dependencies (ignore platform)
-        uses: nick-invision/retry@v1
+        uses: nick-invision/retry@v3
         with:
           timeout_minutes: 5
           max_attempts: 3
