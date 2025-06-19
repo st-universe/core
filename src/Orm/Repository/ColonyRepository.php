@@ -84,7 +84,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                 sprintf(
                     'SELECT c FROM %s c INDEX BY c.id
                      JOIN %s sm
-                     WITH c.starsystem_map_id = sm.id
+                     WITH c.starsystem_map = sm
                      WHERE c.user_id = :userId AND c.colonies_classes_id IN (
                         SELECT pt.id FROM %s pt WHERE pt.allow_start = :allowStart
                     ) AND sm.systems_id IN (
@@ -114,7 +114,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
     public function getByPosition(StarSystemMapInterface $sysmap): ?ColonyInterface
     {
         return $this->findOneBy([
-            'starsystem_map_id' => $sysmap->getId()
+            'starsystem_map' => $sysmap
         ]);
     }
 
@@ -128,7 +128,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                 sprintf(
                     'SELECT c FROM %s c
                      JOIN %s sm
-                     WITH c.starsystem_map_id = sm.id
+                     WITH c.starsystem_map = sm
                      WHERE c.user_id NOT IN (:ignoreIds)
                      AND sm.systems_id = :systemId
                      AND sm.sx BETWEEN (:sx - 1) AND (:sx + 1)
@@ -290,7 +290,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
             sprintf(
                 'SELECT c FROM %s c
                 JOIN %s sm
-                WITH c.starsystem_map_id = sm.id
+                WITH c.starsystem_map = sm
                 JOIN %s s
                 WITH sm.systems_id = s.id
                 JOIN %s m
@@ -372,7 +372,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                     'SELECT MIN(ABS(sm.sx - :sx) + ABS(sm.sy - :sy)) as distance
                 FROM %s c
                 JOIN %s sm
-                WITH c.starsystem_map_id = sm.id
+                WITH c.starsystem_map = sm
                 JOIN %s cc
                 WITH c.colonies_classes_id = cc.id
                 WHERE c.user_id = :nooneUserId
@@ -418,20 +418,20 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
             $result = $this->getEntityManager()->createQuery(
                 sprintf(
                     'SELECT MIN(ABS(l.cx - :currentX) + ABS(l.cy - :currentY)) as distance
-                FROM %s c
-                JOIN %s sm
-                WITH c.starsystem_map_id = sm.id
-                JOIN %s s
-                WITH sm.systems_id = s.id
-                JOIN %s m
-                WITH s.id = m.systems_id
-                JOIN %s l
-                WITH m.id = l.id
-                JOIN %s cc
-                WITH c.colonies_classes_id = cc.id
-                WHERE c.user_id = :nooneUserId
-                AND cc.allow_start = :allowStart
-                AND l.layer_id = :currentLayerId',
+                        FROM %s c
+                        JOIN %s sm
+                        WITH c.starsystem_map = sm
+                        JOIN %s s
+                        WITH sm.systems_id = s.id
+                        JOIN %s m
+                        WITH s.id = m.systems_id
+                        JOIN %s l
+                        WITH m.id = l.id
+                        JOIN %s cc
+                        WITH c.colonies_classes_id = cc.id
+                        WHERE c.user_id = :nooneUserId
+                        AND cc.allow_start = :allowStart
+                        AND l.layer_id = :currentLayerId',
                     Colony::class,
                     StarSystemMap::class,
                     StarSystem::class,

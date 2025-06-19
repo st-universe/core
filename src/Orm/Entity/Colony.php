@@ -46,9 +46,6 @@ class Colony implements ColonyInterface
     #[Column(type: 'integer')]
     private int $user_id = 0;
 
-    #[Column(type: 'integer')]
-    private int $starsystem_map_id = 0;
-
     #[Column(type: 'string')]
     private string $name = '';
 
@@ -91,9 +88,6 @@ class Colony implements ColonyInterface
     #[Column(type: 'integer', length: 6, nullable: true)]
     private ?int $shield_frequency = 0;
 
-    #[Column(type: 'integer', length: 3, nullable: true)]
-    private ?int $torpedo_type = null;
-
     #[Column(type: 'integer', length: 3)]
     private int $rotation_factor = 1;
 
@@ -105,7 +99,7 @@ class Colony implements ColonyInterface
     private ColonyClassInterface $colonyClass;
 
     #[OneToOne(targetEntity: 'StarSystemMap', inversedBy: 'colony')]
-    #[JoinColumn(name: 'starsystem_map_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'starsystem_map_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private StarSystemMapInterface $starsystem_map;
 
     #[ManyToOne(targetEntity: 'User')]
