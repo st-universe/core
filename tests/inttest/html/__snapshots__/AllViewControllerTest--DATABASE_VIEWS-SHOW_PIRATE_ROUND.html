@@ -17,39 +17,67 @@
                     </div>
 </div>
 <br>
-<div id="result">
-    <table class="use">
-        <tr>
-            <th>Meldung</th>
-        </tr>
-        <tr>
-            <td>
-                
-                <div class="information-container">
-                                        <div class="information-item">
-                        Keine Piraten-Runde gefunden
-                    </div>
-                    
-                                    </div>
+<div id="result" style="display: none;">..</div>
 
-                            </td>
-        </tr>
-    </table>
+<div class="statisticsToplist">
+        <div>
+        <ul class="statistics">
+                        <li>
+                <div class="userGrid">
+                    <div class="placement">
+                        <span class="placement1">1.</span>
+                    </div>
+                    <div class="userprofile">
+                        <div class="userAvatar">
+    <a href="/userprofile.php?uid=12">
+                <img src="/assets/rassen//3kn.png" title="Klingonisches Reich">
+            </a>
 </div>
 
-<br>
-<div class="statisticsToplist">
-    <div>
-        <ul class="statistics">
+                    </div>
+                    <div class="userName"><strong><span style="color: #760505">Klingonisches Reich</span></strong></div>
+                    <div>
+                        Prestige: 370<br>
+                        Schiffe: 17
+                    </div>
+                    <div>
+                        <a href="javascript:void(0);" onmouseover="cp('MOCKED_UNIQUEID','buttons/msg2', 'png');" onmouseout="cp('MOCKED_UNIQUEID','buttons/msg1', 'png');" onclick="closePopup(); openPmWindow(101, 12, 1,1);"><img src="/assets/buttons/msg1.png" name="MOCKED_UNIQUEID" title="Nachricht senden"></a>
+
+                    </div>
+                </div>
+            </li>
+                        <li>
+                <div class="userGrid">
+                    <div class="placement">
+                        <span class="placement2">2.</span>
+                    </div>
+                    <div class="userprofile">
+                        <div class="userAvatar">
+    <a href="/userprofile.php?uid=101">
+                <img src="/assets/rassen//1kn.png" title="Siedler 101">
+            </a>
+</div>
+
+                    </div>
+                    <div class="userName">Siedler 101</div>
+                    <div>
+                        Prestige: 100<br>
+                        Schiffe: 5
+                    </div>
+                    <div>
+                        
+                    </div>
+                </div>
+            </li>
                     </ul>
     </div>
-    <div>
+            <div>
         <h1>Piraten-Runde</h1>
 
         <div class="box" style="margin-bottom: 20px;">
             <div class="box_title">Runden-Information</div>
             <div class="box_body">
-                <p><strong>Start:</strong> 18.06.2025 22:31</p>
+                <p><strong>Start:</strong> 30.05.2025 13:54</p>
                                 <p><strong>Status:</strong> <span style="color: #00ff00;">Aktiv</span></p>
                             </div>
         </div>
@@ -57,14 +85,15 @@
                 <div class="box" style="margin-bottom: 20px;">
             <div class="box_title">Deine Statistiken</div>
             <div class="box_body">
-                <p>Du hast noch nicht an dieser Runde teilgenommen.</p>
+                <p><strong>Prestige:</strong> 100</p>
+                <p><strong>Zerst&ouml;rte Schiffe:</strong> 5</p>
             </div>
         </div>
         
         <div class="box" style="margin-bottom: 20px;">
             <div class="box_title">Fraktions-Verteilung</div>
             <div class="box_body" style="padding: 20px;">
-                <div id="factionChart" data-factions="null" data-max-prestige="0" data-actual-prestige="0" style="width: 400px; height: 400px; margin: 0 auto; position: relative;">
+                <div id="factionChart" data-factions='[{"id":3,"name":"Klingonisches Imperium","color":"#990000","prestige":370,"ships":17,"percentage":78.72340425531915,"rank":1},{"id":1,"name":"Vereinte F\u00f6deration der Planeten","color":"#000099","prestige":100,"ships":5,"percentage":21.27659574468085,"rank":2}]' data-max-prestige="10000" data-actual-prestige="470" style="width: 400px; height: 400px; margin: 0 auto; position: relative;">
                     <div id="chartFrame" style="
                         position: absolute; top: 0; left: 0; width: 100%; height: 100%;
                         border: 2px solid #00ffff; border-radius: 50%;
@@ -119,7 +148,7 @@
                         <div class="box_title">Runden-Fortschritt</div>
             <div class="box_body">
                 <div style="margin-bottom: 10px;">
-                    <span> Schiffe zerst&ouml;rt</span>
+                    <span>22 Schiffe zerst&ouml;rt</span>
                 </div>
                 <div id="progressContainer" style="
                 width: 100%; height: 35px; 
@@ -147,9 +176,7 @@
                     </div>
 
     </div>
-</div>
-
-
+    </div>
 <div class="footer">
     Rendered in 4.203s - Memory usage: 42.77Mb
 </div>
