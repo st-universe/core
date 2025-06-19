@@ -1,6 +1,7 @@
 {% from 'html/macros.twig' import userAvatar, pmWindow %}
 
 <div class="statisticsToplist">
+    {% if TOP_USERS %}
     <div>
         <ul class="statistics">
             {% for entry in TOP_USERS %}
@@ -25,6 +26,8 @@
             {% endfor %}
         </ul>
     </div>
+    {% endif %}
+    {% if USER_ROUND_DATA %}
     <div>
         <h1>Piraten-Runde</h1>
 
@@ -162,7 +165,5 @@
         </div>
 
     </div>
-</div>
-</div>
-</div>
+    {% endif %}
 </div>
