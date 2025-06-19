@@ -9,9 +9,7 @@ use Stu\Orm\Entity\UserInterface;
 
 final class UserlistEntry
 {
-    public function __construct(private UserInterface $user)
-    {
-    }
+    public function __construct(private UserInterface $user) {}
 
     public function getUser(): UserInterface
     {
@@ -20,7 +18,10 @@ final class UserlistEntry
 
     public function getUserStateDescription(): string
     {
-        return $this->user->getUserStateDescription();
+        if ($this->user->isLocked()) {
+            return _('GESPERRT');
+        }
+        return UserEnum::getUserStateDescription($this->user->getState());
     }
 
     public function getUserStateColor(): string

@@ -24,6 +24,8 @@ use Stu\Lib\Pirate\Component\PirateFlight;
 use Stu\Lib\Pirate\Component\PirateFlightInterface;
 use Stu\Lib\Pirate\Component\PirateNavigation;
 use Stu\Lib\Pirate\Component\PirateNavigationInterface;
+use Stu\Lib\Pirate\Component\PirateProtection;
+use Stu\Lib\Pirate\Component\PirateProtectionInterface;
 use Stu\Lib\Pirate\Component\PirateRoundManager;
 use Stu\Lib\Pirate\Component\PirateRoundManagerInterface;
 use Stu\Lib\Pirate\Component\PirateWrathManager;
@@ -69,5 +71,6 @@ return [
     PirateRoundManagerInterface::class => autowire(PirateRoundManager::class),
     PirateWrathManagerInterface::class => autowire(PirateWrathManager::class),
     PirateAttackInterface::class => autowire(PirateAttack::class),
-    TrapDetectionInterface::class => autowire(TrapDetection::class)
+    TrapDetectionInterface::class => autowire(TrapDetection::class),
+    PirateProtectionInterface::class => autowire(PirateProtection::class)
 ];

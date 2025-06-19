@@ -9,6 +9,7 @@ use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Map\DirectionEnum;
 use Stu\Exception\SanityCheckException;
+use Stu\Lib\Trait\LayerExplorationTrait;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Starmap\Lib\StarmapUiFactoryInterface;
@@ -18,6 +19,8 @@ use Stu\Orm\Repository\LayerRepositoryInterface;
 
 final class ShowSection implements ViewControllerInterface
 {
+    use LayerExplorationTrait;
+
     public const string VIEW_IDENTIFIER = 'SHOW_SECTION';
 
     public function __construct(private ShowSectionRequestInterface $showSectionRequest, private StarmapUiFactoryInterface $starmapUiFactory, private LayerRepositoryInterface $layerRepository) {}
@@ -35,7 +38,7 @@ final class ShowSection implements ViewControllerInterface
         $section = $this->showSectionRequest->getSection();
 
         // Sanity check if user knows layer
-        if (!$game->getUser()->hasSeen($layer->getId())) {
+        if (!$this->hasSeen($game->getUser(), $layer)) {
             throw new SanityCheckException('User tried to access an unseen layer');
         }
 

@@ -23,9 +23,6 @@ class AllianceSettings implements AllianceSettingsInterface
     #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    #[Column(type: 'integer')]
-    private int $alliance_id;
-
     #[Column(type: 'string')]
     private string $setting = '';
 
@@ -33,26 +30,13 @@ class AllianceSettings implements AllianceSettingsInterface
     private string $value = '';
 
     #[ManyToOne(targetEntity: 'Alliance')]
-    #[JoinColumn(name: 'alliance_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'alliance_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private AllianceInterface $alliance;
 
     #[Override]
     public function getId(): int
     {
         return $this->id;
-    }
-
-    #[Override]
-    public function getAllianceId(): int
-    {
-        return $this->alliance_id;
-    }
-
-    #[Override]
-    public function setAllianceId(int $allianceId): AllianceSettingsInterface
-    {
-        $this->alliance_id = $allianceId;
-        return $this;
     }
 
     #[Override]
@@ -65,7 +49,6 @@ class AllianceSettings implements AllianceSettingsInterface
     public function setAlliance(AllianceInterface $alliance): AllianceSettingsInterface
     {
         $this->alliance = $alliance;
-        $this->alliance_id = $alliance->getId();
         return $this;
     }
 

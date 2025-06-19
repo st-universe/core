@@ -26,8 +26,7 @@ final class UserProfileProvider implements ViewComponentProviderInterface
         private UserRepositoryInterface $userRepository,
         private ParserWithImageInterface $parserWithImage,
         private ProfileVisitorRegistrationInterface $profileVisitorRegistration
-    ) {
-    }
+    ) {}
 
     #[Override]
     public function setTemplateVariables(GameControllerInterface $game): void
@@ -48,6 +47,7 @@ final class UserProfileProvider implements ViewComponentProviderInterface
         $this->profileVisitorRegistration->register($user, $visitor);
 
         $game->setTemplateVar('PROFILE', $user);
+        $game->setTemplateVar('HAS_TRANSLATION', $this->hasTranslation($user));
         $game->setTemplateVar('COLONYSCANLIST', $this->getColonyScanList($user, $visitor));
         $game->setTemplateVar(
             'DESCRIPTION',
@@ -79,22 +79,28 @@ final class UserProfileProvider implements ViewComponentProviderInterface
         $game->addExecuteJS("initTranslations();", GameEnum::JS_EXECUTION_AFTER_RENDER);
     }
 
+    private function hasTranslation(UserInterface $user): bool
+    {
+        $text = $user->getDescription();
+        return strpos($text, '[translate]') !== false && strpos($text, '[/translate]') !== false;
+    }
+
     /**
      * @return array<int, ColonyScanInterface>
      */
-    public function getColonyScanList(UserInterface $user, UserInterface $visitor): array
+    private function getColonyScanList(UserInterface $user, UserInterface $visitor): array
     {
         $alliance = $visitor->getAlliance();
 
         if ($alliance !== null) {
-            $unfilteredScans = array_merge(...$alliance->getMembers()->map(fn (UserInterface $user) => $user->getColonyScans()->toArray()));
+            $unfilteredScans = array_merge(...$alliance->getMembers()->map(fn(UserInterface $user) => $user->getColonyScans()->toArray()));
         } else {
             $unfilteredScans = $visitor->getColonyScans()->toArray();
         }
 
         $filteredScans = array_filter(
             $unfilteredScans,
-            fn (ColonyScanInterface $scan): bool => $scan->getColonyUserId() === $user->getId()
+            fn(ColonyScanInterface $scan): bool => $scan->getColonyUserId() === $user->getId()
         );
 
         $scansByColony = [];
@@ -108,7 +114,7 @@ final class UserProfileProvider implements ViewComponentProviderInterface
 
         $latestScans = [];
         foreach ($scansByColony as $scans) {
-            usort($scans, fn ($a, $b): int => $b->getDate() <=> $a->getDate());
+            usort($scans, fn($a, $b): int => $b->getDate() <=> $a->getDate());
             $latestScans[] = $scans[0];
         }
 

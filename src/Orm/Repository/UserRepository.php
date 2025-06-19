@@ -242,15 +242,11 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
     #[Override]
     public function getFriendsByUserAndAlliance(UserInterface $user, ?AllianceInterface $alliance): iterable
     {
-        $allianceId = $alliance === null
-            ? 0
-            : $alliance->getId();
-
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT u FROM %s u WHERE u.id IN (
                     SELECT cl.user_id FROM %s cl WHERE cl.mode = :mode AND cl.recipient = :userId
-                ) OR (u.allys_id IS NOT NULL AND u.allys_id = :allianceId) AND u.id != :userId
+                ) OR (u.alliance IS NOT NULL AND u.alliance = :alliance) AND u.id != :userId
                 ORDER BY u.id',
                 User::class,
                 Contact::class
@@ -258,7 +254,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         )->setParameters([
             'mode' => ContactListModeEnum::FRIEND->value,
             'userId' => $user->getId(),
-            'allianceId' => $allianceId
+            'alliance' => $alliance
         ])->getResult();
     }
 

@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace Stu\Module\Game\Component;
 
 use Override;
+use Stu\Component\Player\UserAwardEnum;
 use Stu\Lib\Component\ComponentInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageUiFactoryInterface;
 use Stu\Orm\Entity\PrivateMessageFolderInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 
 /**
@@ -40,7 +42,7 @@ final class MessageFolderComponent implements ComponentInterface
         foreach ($pmFolder as $folderType) {
             if (
                 $folderType === PrivateMessageFolderTypeEnum::SPECIAL_STATION
-                && !$user->hasStationsPmCategory()
+                && !$this->hasStationsPmCategory($user)
             ) {
                 continue;
             }
@@ -52,5 +54,14 @@ final class MessageFolderComponent implements ComponentInterface
         }
 
         $game->setTemplateVar('PM', $folder);
+    }
+
+    private function hasStationsPmCategory(UserInterface $user): bool
+    {
+        if ($user->isNpc()) {
+            return true;
+        }
+
+        return $user->hasAward(UserAwardEnum::RESEARCHED_STATIONS);
     }
 }

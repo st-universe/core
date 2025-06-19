@@ -4,6 +4,7 @@ namespace Stu\Lib\Pirate\Behaviour;
 
 use Override;
 use Stu\Lib\Pirate\Component\PirateAttackInterface;
+use Stu\Lib\Pirate\Component\PirateProtectionInterface;
 use Stu\Lib\Pirate\PirateBehaviourEnum;
 use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Lib\Pirate\PirateReactionMetadata;
@@ -22,10 +23,11 @@ class RageBehaviour implements PirateBehaviourInterface
     private PirateLoggerInterface $logger;
 
     public function __construct(
-        private ShipRepositoryInterface $shipRepository,
-        private FightLibInterface $fightLib,
-        private PrestigeCalculationInterface $prestigeCalculation,
-        private PirateAttackInterface $pirateAttack,
+        private readonly ShipRepositoryInterface $shipRepository,
+        private readonly FightLibInterface $fightLib,
+        private readonly PrestigeCalculationInterface $prestigeCalculation,
+        private readonly PirateAttackInterface $pirateAttack,
+        private readonly PirateProtectionInterface $pirateProtection,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->logger = $loggerUtilFactory->getPirateLogger();
@@ -51,7 +53,7 @@ class RageBehaviour implements PirateBehaviourInterface
             fn(ShipInterface $target): bool =>
             $leadShip->getLocation() ===  $target->getLocation()
                 && $this->fightLib->canAttackTarget($leadShip, $target, true, false, false)
-                && !$target->getUser()->isProtectedAgainstPirates()
+                && !$this->pirateProtection->isProtectedAgainstPirates($target->getUser())
                 && ($target === $triggerSpacecraft
                     || $this->prestigeCalculation->targetHasPositivePrestige($target))
         );

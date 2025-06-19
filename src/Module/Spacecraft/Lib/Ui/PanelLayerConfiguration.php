@@ -9,6 +9,7 @@ use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Spacecraftcount\SpacecraftCountLayerTypeEnum;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace\SubspaceLayerTypeEnum;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreationInterface;
+use Stu\Lib\Trait\LayerExplorationTrait;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\LocationInterface;
@@ -18,6 +19,8 @@ use Stu\Orm\Repository\UserMapRepositoryInterface;
 
 class PanelLayerConfiguration
 {
+    use LayerExplorationTrait;
+
     public function __construct(private UserMapRepositoryInterface $userMapRepository) {}
 
     public function configureLayers(
@@ -70,7 +73,7 @@ class PanelLayerConfiguration
         $cy = $map->getY();
         $range = $wrapper->getSensorRange();
 
-        if ($this->isUserMapActive($layer->getId(), $currentUser)) {
+        if ($this->isUserMapActive($layer, $currentUser)) {
             $this->userMapRepository->insertMapFieldsForUser(
                 $currentUser->getId(),
                 $layer->getId(),
@@ -81,12 +84,12 @@ class PanelLayerConfiguration
         }
     }
 
-    private function isUserMapActive(int $layerId, UserInterface $currentUser): bool
+    private function isUserMapActive(LayerInterface $layer, UserInterface $currentUser): bool
     {
         if (!$currentUser->hasColony()) {
             return false;
         }
 
-        return !$currentUser->hasExplored($layerId);
+        return !$this->hasExplored($currentUser, $layer);
     }
 }

@@ -17,6 +17,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Config\Init;
 use Stu\Lib\Map\NavPanel\NavPanel;
 use Stu\Lib\Session\SessionStorageInterface;
+use Stu\Lib\Trait\LayerExplorationTrait;
 use Stu\Lib\Trait\SpacecraftShuttleSpaceTrait;
 use Stu\Module\Control\ViewContext;
 use Stu\Module\Control\ViewContextTypeEnum;
@@ -40,6 +41,7 @@ use Stu\Orm\Repository\ColonyRepositoryInterface;
 final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialInterface
 {
     use SpacecraftShuttleSpaceTrait;
+    use LayerExplorationTrait;
 
     public const string VIEW_IDENTIFIER = 'SHOW_SPACECRAFT';
 
@@ -191,8 +193,7 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
             return;
         }
 
-        $hasSeenLayer = $user->hasSeen($layer->getId());
-        if ($hasSeenLayer) {
+        if ($this->hasSeen($user, $layer)) {
             return;
         }
 
