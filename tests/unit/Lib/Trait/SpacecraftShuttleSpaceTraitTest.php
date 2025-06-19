@@ -16,8 +16,7 @@ class SpacecraftShuttleSpaceTraitTest extends StuTestCase
 {
     use SpacecraftShuttleSpaceTrait;
 
-    /** @var MockInterface&SpacecraftInterface */
-    private $spacecraft;
+    private MockInterface&SpacecraftInterface $spacecraft;
 
     #[Override]
     protected function setUp(): void

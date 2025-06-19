@@ -16,11 +16,9 @@ use Traversable;
 
 class LatinumRankingTest extends StuTestCase
 {
-    /** @var MockInterface&StorageRepositoryInterface */
-    private MockInterface $storageRepository;
+    private MockInterface&StorageRepositoryInterface $storageRepository;
 
-    /** @var MockInterface&UserRepositoryInterface */
-    private MockInterface $userRepository;
+    private MockInterface&UserRepositoryInterface $userRepository;
 
     private LatinumRanking $subject;
 
@@ -76,7 +74,7 @@ class LatinumRankingTest extends StuTestCase
             ->with('html/database/highscores/topLatinum.twig')
             ->once();
         $game->shouldReceive('setTemplateVar')
-            ->with('NAGUS_LIST', Mockery::on(fn (Traversable $list): bool => iterator_to_array($list) === [[
+            ->with('NAGUS_LIST', Mockery::on(fn(Traversable $list): bool => iterator_to_array($list) === [[
                 'user' => $user,
                 'amount' => $amount
             ]]))

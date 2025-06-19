@@ -16,8 +16,7 @@ use Stu\StuTestCase;
 
 class BuildingPostActionTest extends StuTestCase
 {
-    /** @var MockInterface&BuildingFunctionActionMapperInterface */
-    private MockInterface $buildingFunctionActionMapper;
+    private MockInterface&BuildingFunctionActionMapperInterface $buildingFunctionActionMapper;
 
     private BuildingPostAction $subject;
 

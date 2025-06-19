@@ -17,17 +17,13 @@ use Stu\StuTestCase;
 
 class AlertLevelBasedReactionTest extends StuTestCase
 {
-    /** @var MockInterface&SpacecraftSystemManagerInterface */
-    private $spacecraftSystemManager;
+    private MockInterface&SpacecraftSystemManagerInterface $spacecraftSystemManager;
 
-    /** @var MockInterface&ShipWrapperInterface */
-    private $wrapper;
+    private MockInterface&ShipWrapperInterface $wrapper;
 
-    /** @var MockInterface&InformationInterface */
-    private $informations;
+    private MockInterface&InformationInterface $informations;
 
-    /** @var MockInterface&ShipInterface */
-    private ShipInterface $ship;
+    private MockInterface&ShipInterface $ship;
 
     private AlertLevelBasedReactionInterface $subject;
 

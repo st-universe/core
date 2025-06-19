@@ -13,12 +13,9 @@ use Symfony\Component\Mime\Email;
 
 class StuMailTest extends StuTestCase
 {
-    /** @var MockInterface&Email */
-    private $email;
-    /** @var MockInterface&MailerInterface */
-    private $mailer;
-    /** @var MockInterface&StuConfigInterface */
-    private $stuConfig;
+    private MockInterface&Email $email;
+    private MockInterface&MailerInterface $mailer;
+    private MockInterface&StuConfigInterface $stuConfig;
 
     private StuMailInterface $subject;
 

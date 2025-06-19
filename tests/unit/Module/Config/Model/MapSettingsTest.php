@@ -6,15 +6,12 @@ namespace Stu\Module\Config\Model;
 
 use Mockery\MockInterface;
 use Override;
-use PHPUnit\Framework\MockObject\MockObject;
 use Stu\StuTestCase;
 
 class MapSettingsTest extends StuTestCase
 {
-    /** @var MockInterface&SettingsCoreInterface */
-    private $settingsCore;
-    /** @var MockInterface&SettingsCacheInterface */
-    private $cache;
+    private MockInterface&SettingsCoreInterface $settingsCore;
+    private MockInterface&SettingsCacheInterface $cache;
 
     private MapSettings $subject;
 

@@ -13,8 +13,7 @@ use Stu\StuTestCase;
 
 class ColonyTickCommandTest extends StuTestCase
 {
-    /** @var MockInterface&ColonyTickRunner */
-    private MockInterface $colonyTickRunner;
+    private MockInterface&ColonyTickRunner $colonyTickRunner;
 
     private ColonyTickCommand $subject;
 

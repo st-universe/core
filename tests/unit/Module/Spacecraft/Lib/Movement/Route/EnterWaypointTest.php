@@ -16,11 +16,9 @@ use Stu\StuTestCase;
 
 class EnterWaypointTest extends StuTestCase
 {
-    /** @var MockInterface&WormholeEntryRepositoryInterface */
-    private MockInterface $wormholeEntryRepository;
+    private MockInterface&WormholeEntryRepositoryInterface $wormholeEntryRepository;
 
-    /** @var MockInterface&StuTime */
-    private MockInterface $stuTime;
+    private MockInterface&StuTime $stuTime;
 
     private EnterWaypointInterface $subject;
 

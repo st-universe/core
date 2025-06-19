@@ -16,17 +16,13 @@ class CrewConditionTest extends StuTestCase
 {
     private PreFlightConditionInterface $subject;
 
-    /** @var MockInterface&ShipInterface */
-    private MockInterface $ship;
+    private MockInterface&ShipInterface $ship;
 
-    /** @var MockInterface&ShipWrapperInterface */
-    private MockInterface $wrapper;
+    private MockInterface&ShipWrapperInterface $wrapper;
 
-    /** @var MockInterface&FlightRouteInterface */
-    private MockInterface $flightRoute;
+    private MockInterface&FlightRouteInterface $flightRoute;
 
-    /** @var MockInterface&ConditionCheckResult */
-    private MockInterface $conditionCheckResult;
+    private MockInterface&ConditionCheckResult $conditionCheckResult;
 
     #[Override]
     protected function setUp(): void

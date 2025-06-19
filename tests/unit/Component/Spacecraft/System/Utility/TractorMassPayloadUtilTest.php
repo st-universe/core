@@ -23,23 +23,15 @@ use Stu\StuTestCase;
 
 class TractorMassPayloadUtilTest extends StuTestCase
 {
-    /** @var MockInterface&SystemDamageInterface */
-    private $systemDamage;
-    /** @var MockInterface&SpacecraftSystemManagerInterface */
-    private $spacecraftSystemManager;
-    /** @var MockInterface&StuRandom */
-    private $stuRandom;
-    /** @var MockInterface&MessageFactoryInterface */
-    private $messageFactory;
+    private MockInterface&SystemDamageInterface $systemDamage;
+    private MockInterface&SpacecraftSystemManagerInterface $spacecraftSystemManager;
+    private MockInterface&StuRandom $stuRandom;
+    private MockInterface&MessageFactoryInterface $messageFactory;
 
-    /** @var MockInterface&ShipInterface */
-    private $ship;
-    /** @var MockInterface&ShipInterface */
-    private $tractoredShip;
-    /** @var MockInterface&ShipWrapperInterface */
-    private $wrapper;
-    /** @var MockInterface&InformationInterface */
-    private $information;
+    private MockInterface&ShipInterface $ship;
+    private MockInterface&ShipInterface $tractoredShip;
+    private MockInterface&ShipWrapperInterface $wrapper;
+    private MockInterface&InformationInterface $information;
 
     private TractorMassPayloadUtilInterface $subject;
 

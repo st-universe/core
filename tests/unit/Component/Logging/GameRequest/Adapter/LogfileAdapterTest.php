@@ -14,8 +14,7 @@ use Stu\StuTestCase;
 
 class LogfileAdapterTest extends StuTestCase
 {
-    /** @var MockInterface&LoggerInterface */
-    private MockInterface $logger;
+    private MockInterface&LoggerInterface $logger;
 
     protected LogfileAdapter $subject;
 

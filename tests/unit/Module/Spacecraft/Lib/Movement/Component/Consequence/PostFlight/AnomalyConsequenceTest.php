@@ -15,8 +15,7 @@ use Stu\StuTestCase;
 
 class AnomalyConsequenceTest extends StuTestCase
 {
-    /** @var MockInterface&AnomalyHandlingInterface */
-    private $anomalyHandling;
+    private MockInterface&AnomalyHandlingInterface $anomalyHandling;
 
     private FlightConsequenceInterface $subject;
 

@@ -22,17 +22,12 @@ use Stu\StuTestCase;
 
 class ManagerProviderStationTest extends StuTestCase
 {
-    /** @var MockInterface&StationWrapperInterface */
-    private $wrapper;
-    /** @var MockInterface&CrewCreatorInterface */
-    private $crewCreator;
-    /** @var MockInterface&TroopTransferUtilityInterface */
-    private $troopTransferUtility;
-    /** @var MockInterface&StorageManagerInterface */
-    private $storageManager;
+    private MockInterface&StationWrapperInterface $wrapper;
+    private MockInterface&CrewCreatorInterface $crewCreator;
+    private MockInterface&TroopTransferUtilityInterface $troopTransferUtility;
+    private MockInterface&StorageManagerInterface $storageManager;
 
-    /** @var MockInterface&StationInterface */
-    private $station;
+    private MockInterface&StationInterface $station;
 
     private ManagerProviderInterface $subject;
 

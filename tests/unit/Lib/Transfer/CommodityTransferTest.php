@@ -21,13 +21,10 @@ use Stu\StuTestCase;
 
 class CommodityTransferTest extends StuTestCase
 {
-    /** @var MockInterface&StorageManagerInterface */
-    private $storageManager;
-    /** @var MockInterface&ColonyRepositoryInterface */
-    private $colonyRepository;
+    private MockInterface&StorageManagerInterface $storageManager;
+    private MockInterface&ColonyRepositoryInterface $colonyRepository;
 
-    /** @var MockInterface&InformationWrapper */
-    private $informations;
+    private MockInterface&InformationWrapper $informations;
 
     private CommodityTransferInterface $subject;
 

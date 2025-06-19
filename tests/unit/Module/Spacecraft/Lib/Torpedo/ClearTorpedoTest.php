@@ -18,19 +18,14 @@ use Stu\StuTestCase;
 
 class ClearTorpedoTest extends StuTestCase
 {
-    /** @var MockInterface&SpacecraftSystemManagerInterface */
-    private SpacecraftSystemManagerInterface $spacecraftSystemManager;
+    private MockInterface&SpacecraftSystemManagerInterface $spacecraftSystemManager;
 
-    /** @var MockInterface&TorpedoStorageRepositoryInterface */
-    private TorpedoStorageRepositoryInterface $torpedoStorageRepository;
+    private MockInterface&TorpedoStorageRepositoryInterface $torpedoStorageRepository;
 
-    /** @var MockInterface&StorageRepositoryInterface */
-    private StorageRepositoryInterface $storageRepository;
+    private MockInterface&StorageRepositoryInterface $storageRepository;
 
-    /** @var MockInterface&ShipWrapperInterface */
-    private ShipWrapperInterface $wrapper;
-    /** @var MockInterface&ShipInterface */
-    private ShipInterface $ship;
+    private MockInterface&ShipWrapperInterface $wrapper;
+    private MockInterface&ShipInterface $ship;
 
     private ClearTorpedoInterface $subject;
 

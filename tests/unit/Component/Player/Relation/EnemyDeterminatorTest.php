@@ -17,19 +17,15 @@ use Stu\StuTestCase;
 
 class EnemyDeterminatorTest extends StuTestCase
 {
-    /** @var MockInterface&AllianceRelationRepositoryInterface */
-    private MockInterface $allianceRelationRepository;
+    private MockInterface&AllianceRelationRepositoryInterface $allianceRelationRepository;
 
-    /** @var MockInterface&ContactRepositoryInterface */
-    private MockInterface $contactRepository;
+    private MockInterface&ContactRepositoryInterface $contactRepository;
 
     private EnemyDeterminator $subject;
 
-    /** @var MockInterface&UserInterface */
-    private MockInterface $user;
+    private MockInterface&UserInterface $user;
 
-    /** @var MockInterface&UserInterface */
-    private MockInterface $opponent;
+    private MockInterface&UserInterface $opponent;
 
     #[Override]
     protected function setUp(): void

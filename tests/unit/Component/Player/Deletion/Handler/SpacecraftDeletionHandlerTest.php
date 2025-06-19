@@ -25,22 +25,14 @@ use Stu\StuTestCase;
 
 class SpacecraftDeletionHandlerTest extends StuTestCase
 {
-    /** @var MockInterface&SpacecraftRepositoryInterface */
-    private $spacecraftRepository;
-    /** @var MockInterface&ConstructionProgressRepositoryInterface */
-    private $constructionProgressRepository;
-    /** @var MockInterface&SpacecraftRemoverInterface */
-    private $spacecraftRemover;
-    /** @var MockInterface&SpacecraftSystemManagerInterface */
-    private $spacecraftSystemManager;
-    /** @var MockInterface&SpacecraftWrapperFactoryInterface */
-    private $spacecraftWrapperFactory;
-    /** @var MockInterface&ShipUndockingInterface */
-    private $shipUndocking;
-    /** @var MockInterface&EntityManagerInterface */
-    private $entityManager;
-    /** @var MockInterface&MiningQueueRepositoryInterface */
-    private $miningQueueRepository;
+    private MockInterface&SpacecraftRepositoryInterface $spacecraftRepository;
+    private MockInterface&ConstructionProgressRepositoryInterface $constructionProgressRepository;
+    private MockInterface&SpacecraftRemoverInterface $spacecraftRemover;
+    private MockInterface&SpacecraftSystemManagerInterface $spacecraftSystemManager;
+    private MockInterface&SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory;
+    private MockInterface&ShipUndockingInterface $shipUndocking;
+    private MockInterface&EntityManagerInterface $entityManager;
+    private MockInterface&MiningQueueRepositoryInterface $miningQueueRepository;
 
     private PlayerDeletionHandlerInterface $handler;
 

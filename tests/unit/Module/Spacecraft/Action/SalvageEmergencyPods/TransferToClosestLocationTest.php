@@ -20,19 +20,14 @@ use Stu\StuTestCase;
 
 class TransferToClosestLocationTest extends StuTestCase
 {
-    /** @var MockInterface&ClosestLocations */
-    private MockInterface $closestLocations;
+    private MockInterface&ClosestLocations $closestLocations;
 
-    /** @var MockInterface&CrewAssignmentRepositoryInterface */
-    private MockInterface $shipCrewRepository;
+    private MockInterface&CrewAssignmentRepositoryInterface $shipCrewRepository;
 
-    /** @var MockInterface&DistanceCalculationInterface */
-    private MockInterface $distanceCalculation;
+    private MockInterface&DistanceCalculationInterface $distanceCalculation;
 
-    /** @var MockInterface&ShipInterface */
-    private  $ship;
-    /** @var MockInterface&ShipInterface */
-    private  $target;
+    private MockInterface&ShipInterface $ship;
+    private MockInterface&ShipInterface $target;
     private int $crewCount;
 
     private TransferToClosestLocation $subject;

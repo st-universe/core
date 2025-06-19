@@ -19,20 +19,15 @@ use Stu\StuTestCase;
 
 class ApplyFieldDamageTest extends StuTestCase
 {
-    /** @var MockInterface&ApplyDamageInterface */
-    private $applyDamage;
-    /** @var MockInterface&SpacecraftDestructionInterface */
-    private $spacecraftDestruction;
-    /** @var MockInterface&MessageFactoryInterface */
-    private $messageFactory;
+    private MockInterface&ApplyDamageInterface $applyDamage;
+    private MockInterface&SpacecraftDestructionInterface $spacecraftDestruction;
+    private MockInterface&MessageFactoryInterface $messageFactory;
 
     private ApplyFieldDamageInterface $subject;
 
-    /** @var MockInterface&ShipInterface */
-    private MockInterface $ship;
+    private MockInterface&ShipInterface $ship;
 
-    /** @var MockInterface&ShipWrapperInterface */
-    private MockInterface $wrapper;
+    private MockInterface&ShipWrapperInterface $wrapper;
 
     #[Override]
     protected function setUp(): void

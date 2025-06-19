@@ -19,17 +19,12 @@ use Stu\StuTestCase;
 
 class ChangeFleetLeaderTest extends StuTestCase
 {
-    /** @var MockInterface&FleetRepositoryInterface */
-    private $fleetRepository;
-    /** @var MockInterface&ShipRepositoryInterface */
-    private $shipRepository;
-    /** @var MockInterface&CancelColonyBlockOrDefendInterface */
-    private $cancelColonyBlockOrDefend;
-    /** @var MockInterface&EntityManagerInterface */
-    private $entityManager;
+    private MockInterface&FleetRepositoryInterface $fleetRepository;
+    private MockInterface&ShipRepositoryInterface $shipRepository;
+    private MockInterface&CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend;
+    private MockInterface&EntityManagerInterface $entityManager;
 
-    /** @var MockInterface&ShipInterface */
-    private $ship;
+    private MockInterface&ShipInterface $ship;
 
     private ChangeFleetLeaderInterface $subject;
 

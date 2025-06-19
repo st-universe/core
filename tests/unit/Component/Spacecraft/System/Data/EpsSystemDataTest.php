@@ -14,10 +14,8 @@ use Stu\StuTestCase;
 
 class EpsSystemDataTest extends StuTestCase
 {
-    /** @var MockInterface&SpacecraftSystemRepositoryInterface */
-    private $shipSystemRepository;
-    /** @var MockInterface&StatusBarFactoryInterface */
-    private $statusBarFactory;
+    private MockInterface&SpacecraftSystemRepositoryInterface $shipSystemRepository;
+    private MockInterface&StatusBarFactoryInterface $statusBarFactory;
 
     /**
      * @var MockInterface&ShipInterface

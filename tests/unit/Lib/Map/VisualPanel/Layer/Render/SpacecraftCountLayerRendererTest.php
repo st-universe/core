@@ -14,8 +14,7 @@ use Stu\StuTestCase;
 
 class SpacecraftCountLayerRendererTest extends StuTestCase
 {
-    /** @var MockInterface&AbstractVisualPanel */
-    private MockInterface $panel;
+    private MockInterface&AbstractVisualPanel $panel;
 
     #[Override]
     protected function setUp(): void

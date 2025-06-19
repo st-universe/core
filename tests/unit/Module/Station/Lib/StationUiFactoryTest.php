@@ -16,20 +16,15 @@ use Stu\StuTestCase;
 
 class StationUiFactoryTest extends StuTestCase
 {
-    /** @var MockInterface&UserRepositoryInterface */
-    private MockInterface $userRepository;
+    private MockInterface&UserRepositoryInterface $userRepository;
 
-    /** @var MockInterface&AllianceRepositoryInterface */
-    private MockInterface $allianceRepository;
+    private MockInterface&AllianceRepositoryInterface $allianceRepository;
 
-    /** @var MockInterface&FactionRepositoryInterface */
-    private MockInterface $factionRepository;
+    private MockInterface&FactionRepositoryInterface $factionRepository;
 
-    /** @var MockInterface&ShipRepositoryInterface */
-    private MockInterface $shipRepository;
+    private MockInterface&ShipRepositoryInterface $shipRepository;
 
-    /** @var MockInterface&PanelLayerCreationInterface */
-    private MockInterface $panelLayerCreation;
+    private MockInterface&PanelLayerCreationInterface $panelLayerCreation;
 
     private StationUiFactory $subject;
 

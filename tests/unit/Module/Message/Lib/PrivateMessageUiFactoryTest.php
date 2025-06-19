@@ -12,8 +12,7 @@ use Stu\StuTestCase;
 
 class PrivateMessageUiFactoryTest extends StuTestCase
 {
-    /** @var MockInterface&PrivateMessageRepositoryInterface */
-    private MockInterface $privateMessageRepository;
+    private MockInterface&PrivateMessageRepositoryInterface $privateMessageRepository;
 
     private PrivateMessageUiFactory $subject;
 

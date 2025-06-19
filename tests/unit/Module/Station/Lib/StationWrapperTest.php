@@ -20,24 +20,15 @@ use Stu\StuTestCase;
 
 class StationWrapperTest extends StuTestCase
 {
-    /** @var MockInterface&StationInterface */
-    private $station;
-    /** @var MockInterface&SpacecraftSystemManagerInterface */
-    private $spacecraftSystemManager;
-    /** @var MockInterface&SystemDataDeserializerInterface */
-    private  $systemDataDeserializer;
-    /** @var MockInterface&TorpedoTypeRepositoryInterface */
-    private  $torpedoTypeRepository;
-    /** @var MockInterface&GameControllerInterface */
-    private  $game;
-    /** @var MockInterface&SpacecraftWrapperFactoryInterface */
-    private  $spacecraftWrapperFactory;
-    /** @var MockInterface&SpacecraftStateChangerInterface */
-    private  $spacecraftStateChanger;
-    /** @var MockInterface&RepairUtilInterface */
-    private  $repairUtil;
-    /** @var MockInterface&StateIconAndTitle */
-    private  $stateIconAndTitle;
+    private MockInterface&StationInterface $station;
+    private MockInterface&SpacecraftSystemManagerInterface $spacecraftSystemManager;
+    private MockInterface&SystemDataDeserializerInterface $systemDataDeserializer;
+    private MockInterface&TorpedoTypeRepositoryInterface $torpedoTypeRepository;
+    private MockInterface&GameControllerInterface $game;
+    private MockInterface&SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory;
+    private MockInterface&SpacecraftStateChangerInterface $spacecraftStateChanger;
+    private MockInterface&RepairUtilInterface $repairUtil;
+    private MockInterface&StateIconAndTitle $stateIconAndTitle;
 
     private StationWrapperInterface $subject;
 

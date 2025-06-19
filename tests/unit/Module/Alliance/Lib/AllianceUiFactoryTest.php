@@ -18,17 +18,13 @@ use Stu\StuTestCase;
 
 class AllianceUiFactoryTest extends StuTestCase
 {
-    /** @var MockInterface&AllianceJobRepositoryInterface */
-    private MockInterface $allianceJobRepository;
+    private MockInterface&AllianceJobRepositoryInterface $allianceJobRepository;
 
-    /** @var MockInterface&SpacecraftRumpRepositoryInterface */
-    private MockInterface $spacecraftRumpRepository;
+    private MockInterface&SpacecraftRumpRepositoryInterface $spacecraftRumpRepository;
 
-    /** @var MockInterface&CrewCountRetrieverInterface */
-    private MockInterface $crewCountRetriever;
+    private MockInterface&CrewCountRetrieverInterface $crewCountRetriever;
 
-    /** @var MockInterface&CrewLimitCalculatorInterface */
-    private MockInterface $crewLimitCalculator;
+    private MockInterface&CrewLimitCalculatorInterface $crewLimitCalculator;
 
     private AllianceUiFactory $subject;
 

@@ -18,11 +18,9 @@ use Stu\StuTestCase;
 
 class MessageFolderComponentTest extends StuTestCase
 {
-    /** @var MockInterface&PrivateMessageFolderRepositoryInterface */
-    private $privateMessageFolderRepository;
+    private MockInterface&PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository;
 
-    /** @var MockInterface&PrivateMessageUiFactoryInterface */
-    private $privateMessageUiFactory;
+    private MockInterface&PrivateMessageUiFactoryInterface $privateMessageUiFactory;
 
     private MessageFolderComponent $subject;
 

@@ -13,14 +13,11 @@ use Stu\StuTestCase;
 
 class LeaveFleetTest extends StuTestCase
 {
-    /** @var MockInterface&ShipRepositoryInterface */
-    private MockInterface $shipRepository;
+    private MockInterface&ShipRepositoryInterface $shipRepository;
 
-    /** @var MockInterface&ChangeFleetLeaderInterface */
-    private MockInterface $changeFleetLeader;
+    private MockInterface&ChangeFleetLeaderInterface $changeFleetLeader;
 
-    /** @var MockInterface&ShipInterface */
-    private ShipInterface $ship;
+    private MockInterface&ShipInterface $ship;
 
     private LeaveFleetInterface $subject;
 

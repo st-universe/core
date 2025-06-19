@@ -23,18 +23,14 @@ use Stu\StuTestCase;
 //TODO@hux test handleDamage + handleDestruction
 class WarpdriveShipSystemTest extends StuTestCase
 {
-    /** @var MockInterface&GameControllerInterface */
-    private $game;
+    private MockInterface&GameControllerInterface $game;
 
-    /** @var MockInterface&SpacecraftSystemManagerInterface */
-    private $managerMock;
+    private MockInterface&SpacecraftSystemManagerInterface $managerMock;
 
     private WarpdriveShipSystem $system;
 
-    /** @var MockInterface&ShipInterface */
-    private ShipInterface $ship;
-    /** @var MockInterface&ShipWrapperInterface */
-    private ShipWrapperInterface $wrapper;
+    private MockInterface&ShipInterface $ship;
+    private MockInterface&ShipWrapperInterface $wrapper;
 
     #[Override]
     public function setUp(): void

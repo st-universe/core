@@ -16,11 +16,9 @@ use Stu\StuTestCase;
 
 class ModuleSelectorAddonHullTest extends StuTestCase
 {
-    /** @var MockInterface&TorpedoHullRepositoryInterface */
-    private MockInterface $torpedoHullRepository;
+    private MockInterface&TorpedoHullRepositoryInterface $torpedoHullRepository;
 
-    /** @var MockInterface&GradientColorInterface */
-    private MockInterface $gradientColor;
+    private MockInterface&GradientColorInterface $gradientColor;
 
     private ModuleSelectorAddonHull $subject;
 

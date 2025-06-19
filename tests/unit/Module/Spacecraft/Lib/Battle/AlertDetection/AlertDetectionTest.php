@@ -19,19 +19,13 @@ use Stu\StuTestCase;
 
 class AlertDetectionTest extends StuTestCase
 {
-    /** @var MockInterface&AlertedShipsDetectionInterface */
-    private $alertedShipsDetection;
-    /** @var MockInterface&SkipDetectionInterface */
-    private $skipDetection;
-    /** @var MockInterface&BattlePartyFactoryInterface */
-    private $battlePartyFactory;
-    /** @var MockInterface&TrojanHorseNotifierInterface */
-    private $trojanHorseNotifier;
-    /** @var MockInterface&AlertedShipInformationInterface */
-    private $alertedShipInformation;
+    private MockInterface&AlertedShipsDetectionInterface $alertedShipsDetection;
+    private MockInterface&SkipDetectionInterface $skipDetection;
+    private MockInterface&BattlePartyFactoryInterface $battlePartyFactory;
+    private MockInterface&TrojanHorseNotifierInterface $trojanHorseNotifier;
+    private MockInterface&AlertedShipInformationInterface $alertedShipInformation;
 
-    /** @var MockInterface&ShipInterface */
-    private ShipInterface $incomingShip;
+    private MockInterface&ShipInterface $incomingShip;
 
     private AlertDetectionInterface $subject;
 

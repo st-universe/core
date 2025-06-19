@@ -14,14 +14,11 @@ use Stu\StuTestCase;
 
 class BuildPlanDeleterTest extends StuTestCase
 {
-    /** @var MockInterface&SpacecraftBuildplanRepositoryInterface */
-    private MockInterface $spacecraftBuildplanRepository;
+    private MockInterface&SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository;
 
-    /** @var MockInterface&BuildplanModuleRepositoryInterface */
-    private MockInterface $buildplanModuleRepository;
+    private MockInterface&BuildplanModuleRepositoryInterface $buildplanModuleRepository;
 
-    /** @var MockInterface&ColonyShipQueueRepositoryInterface */
-    private MockInterface $colonyShipQueueRepository;
+    private MockInterface&ColonyShipQueueRepositoryInterface $colonyShipQueueRepository;
 
     private BuildPlanDeleter $subject;
 

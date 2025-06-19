@@ -14,8 +14,7 @@ use Stu\StuTestCase;
 
 class ColonyCorrectionCommandTest extends StuTestCase
 {
-    /** @var MockInterface&ColonyCorrector */
-    private MockInterface $colonyCorrector;
+    private MockInterface&ColonyCorrector $colonyCorrector;
 
     private ColonyCorrectionCommand $subject;
 

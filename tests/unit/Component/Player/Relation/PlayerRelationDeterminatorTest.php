@@ -12,19 +12,15 @@ use Stu\StuTestCase;
 
 class PlayerRelationDeterminatorTest extends StuTestCase
 {
-    /** @var MockInterface&FriendDeterminator */
-    private $friendDeterminator;
+    private MockInterface&FriendDeterminator $friendDeterminator;
 
-    /** @var MockInterface&EnemyDeterminator */
-    private $enemyDeterminator;
+    private MockInterface&EnemyDeterminator $enemyDeterminator;
 
     private PlayerRelationDeterminator $subject;
 
-    /** @var MockInterface&UserInterface */
-    private MockInterface $user;
+    private MockInterface&UserInterface $user;
 
-    /** @var MockInterface&UserInterface */
-    private MockInterface $opponent;
+    private MockInterface&UserInterface $opponent;
 
     #[Override]
     protected function setUp(): void

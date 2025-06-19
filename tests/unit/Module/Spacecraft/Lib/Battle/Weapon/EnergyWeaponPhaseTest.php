@@ -45,12 +45,9 @@ class EnergyWeaponPhaseTest extends StuTestCase
     protected $applyBuildingDamage;
     /** @var MockInterface&BuildingManagerInterface */
     protected $buildingManager;
-    /** @var MockInterface&SpacecraftDestructionInterface */
-    private $spacecraftDestruction;
-    /** @var MockInterface&StuRandom */
-    private $stuRandom;
-    /** @var MockInterface&MessageFactoryInterface */
-    private $messageFactory;
+    private MockInterface&SpacecraftDestructionInterface $spacecraftDestruction;
+    private MockInterface&StuRandom $stuRandom;
+    private MockInterface&MessageFactoryInterface $messageFactory;
 
     private EnergyWeaponPhaseInterface $subject;
 

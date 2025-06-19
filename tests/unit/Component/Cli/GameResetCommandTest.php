@@ -14,8 +14,7 @@ use Stu\StuTestCase;
 
 class GameResetCommandTest extends StuTestCase
 {
-    /** @var MockInterface&ContainerInterface */
-    private MockInterface $dic;
+    private MockInterface&ContainerInterface $dic;
 
     private GameResetCommand $subject;
 

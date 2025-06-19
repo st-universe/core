@@ -23,23 +23,17 @@ use Stu\StuTestCase;
 
 class ManageReactorTest extends StuTestCase
 {
-    /** @var MockInterface&ReactorUtilInterface */
-    private MockInterface $reactorUtil;
+    private MockInterface&ReactorUtilInterface $reactorUtil;
 
-    /** @var MockInterface&CommodityCacheInterface */
-    private MockInterface $commodityCache;
+    private MockInterface&CommodityCacheInterface $commodityCache;
 
-    /** @var MockInterface&ShipWrapperInterface */
-    private MockInterface $wrapper;
+    private MockInterface&ShipWrapperInterface $wrapper;
 
-    /** @var MockInterface&ShipInterface */
-    private MockInterface $ship;
+    private MockInterface&ShipInterface $ship;
 
-    /** @var MockInterface&ManagerProviderInterface */
-    private MockInterface $managerProvider;
+    private MockInterface&ManagerProviderInterface $managerProvider;
 
-    /** @var MockInterface&PlayerRelationDeterminatorInterface */
-    private MockInterface $playerRelationDeterminator;
+    private MockInterface&PlayerRelationDeterminatorInterface $playerRelationDeterminator;
 
     private int $shipId = 555;
 

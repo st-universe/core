@@ -15,11 +15,9 @@ use Stu\StuTestCase;
 
 class CommoditiesOverviewTest extends StuTestCase
 {
-    /** @var MockInterface&StorageRepositoryInterface */
-    private MockInterface $storageRepository;
+    private MockInterface&StorageRepositoryInterface $storageRepository;
 
-    /** @var MockInterface&DatabaseUiFactoryInterface */
-    private MockInterface $databaseUiFactory;
+    private MockInterface&DatabaseUiFactoryInterface $databaseUiFactory;
 
     private CommoditiesOverview $subject;
 

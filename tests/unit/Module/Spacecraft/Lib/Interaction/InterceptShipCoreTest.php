@@ -20,27 +20,17 @@ use Stu\StuTestCase;
 
 class InterceptShipCoreTest extends StuTestCase
 {
-    /** @var MockInterface&SpacecraftRepositoryInterface */
-    private $spacecraftRepository;
-    /** @var MockInterface&SpacecraftSystemManagerInterface */
-    private $spacecraftSystemManager;
-    /** @var MockInterface&AlertReactionFacadeInterface */
-    private $alertReactionFacade;
-    /** @var MockInterface&PrivateMessageSenderInterface */
-    private $privateMessageSender;
-    /** @var MockInterface&EntityManagerInterface */
-    private $entityManager;
+    private MockInterface&SpacecraftRepositoryInterface $spacecraftRepository;
+    private MockInterface&SpacecraftSystemManagerInterface $spacecraftSystemManager;
+    private MockInterface&AlertReactionFacadeInterface $alertReactionFacade;
+    private MockInterface&PrivateMessageSenderInterface $privateMessageSender;
+    private MockInterface&EntityManagerInterface $entityManager;
 
-    /** @var MockInterface&ShipWrapperInterface */
-    private $wrapper;
-    /** @var MockInterface&ShipWrapperInterface */
-    private $targetWrapper;
-    /** @var MockInterface&ShipInterface */
-    private $ship;
-    /** @var MockInterface&ShipInterface */
-    private $target;
-    /** @var MockInterface&InformationInterface */
-    private $informations;
+    private MockInterface&ShipWrapperInterface $wrapper;
+    private MockInterface&ShipWrapperInterface $targetWrapper;
+    private MockInterface&ShipInterface $ship;
+    private MockInterface&ShipInterface $target;
+    private MockInterface&InformationInterface $informations;
 
     private InterceptShipCoreInterface $subject;
 

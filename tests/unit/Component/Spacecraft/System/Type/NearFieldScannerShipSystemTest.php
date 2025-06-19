@@ -27,15 +27,12 @@ use Stu\StuTestCase;
 
 class NearFieldScannerShipSystemTest extends StuTestCase
 {
-    /** @var AstroEntryLibInterface&MockInterface */
-    private $astroEntryLib;
+    private AstroEntryLibInterface&MockInterface $astroEntryLib;
     /** @var TrackerDeviceManagerInterface|MockInterface */
     private $trackerDeviceManager;
 
-    /** @var ShipInterface&MockInterface */
-    private $ship;
-    /** @var ShipWrapperInterface&MockInterface */
-    private $wrapper;
+    private ShipInterface&MockInterface $ship;
+    private ShipWrapperInterface&MockInterface $wrapper;
 
     private NearFieldScannerShipSystem $system;
 

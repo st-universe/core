@@ -18,26 +18,19 @@ use Stu\StuTestCase;
 
 class LocalPlayerCreatorTest extends StuTestCase
 {
-    /** @var MockInterface&UserRepositoryInterface */
-    private MockInterface $userRepository;
+    private MockInterface&UserRepositoryInterface $userRepository;
 
-    /** @var MockInterface&PlayerDefaultsCreatorInterface */
-    private MockInterface $playerDefaultsCreator;
+    private MockInterface&PlayerDefaultsCreatorInterface $playerDefaultsCreator;
 
-    /** @var MockInterface&RegistrationEmailSenderInterface */
-    private MockInterface $registrationEmailSender;
+    private MockInterface&RegistrationEmailSenderInterface $registrationEmailSender;
 
-    /** @var MockInterface&SmsVerificationCodeSenderInterface */
-    private MockInterface $smsVerificationCodeSender;
+    private MockInterface&SmsVerificationCodeSenderInterface $smsVerificationCodeSender;
 
-    /** @var MockInterface&StuHashInterface */
-    private MockInterface $stuHash;
+    private MockInterface&StuHashInterface $stuHash;
 
-    /** @var MockInterface&EntityManagerInterface */
-    private MockInterface $entityManager;
+    private MockInterface&EntityManagerInterface $entityManager;
 
-    /** @var MockInterface&UserRefererRepositoryInterface */
-    private MockInterface $userRefererRepository;
+    private MockInterface&UserRefererRepositoryInterface $userRefererRepository;
 
     private LocalPlayerCreator $subject;
 

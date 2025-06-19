@@ -16,10 +16,8 @@ use Stu\StuTestCase;
 
 class EnergyWeaponShipSystemTest extends StuTestCase
 {
-    /** @var MockInterface&ShipInterface */
-    private $ship;
-    /** @var MockInterface&ShipWrapperInterface */
-    private  $wrapper;
+    private MockInterface&ShipInterface $ship;
+    private MockInterface&ShipWrapperInterface $wrapper;
 
     private EnergyWeaponShipSystem $system;
 

@@ -22,38 +22,27 @@ use Ubench;
 
 class ColonyTickManagerTest extends StuTestCase
 {
-    /** @var MockInterface&ColonyTickInterface */
-    private ColonyTickInterface $colonyTick;
+    private MockInterface&ColonyTickInterface $colonyTick;
 
-    /** @var MockInterface&CrewCreatorInterface */
-    private CrewCreatorInterface $crewCreator;
+    private MockInterface&CrewCreatorInterface $crewCreator;
 
-    /** @var MockInterface&CrewTrainingRepositoryInterface */
-    private CrewTrainingRepositoryInterface $crewTrainingRepository;
+    private MockInterface&CrewTrainingRepositoryInterface $crewTrainingRepository;
 
-    /** @var MockInterface&ColonyRepositoryInterface */
-    private ColonyRepositoryInterface $colonyRepository;
+    private MockInterface&ColonyRepositoryInterface $colonyRepository;
 
-    /** @var MockInterface&PrivateMessageSenderInterface */
-    private PrivateMessageSenderInterface $privateMessageSender;
+    private MockInterface&PrivateMessageSenderInterface $privateMessageSender;
 
-    /** @var MockInterface&CrewCountRetrieverInterface */
-    private CrewCountRetrieverInterface $crewCountRetriever;
+    private MockInterface&CrewCountRetrieverInterface $crewCountRetriever;
 
-    /** @var MockInterface&LockManagerInterface */
-    private LockManagerInterface $lockManager;
+    private MockInterface&LockManagerInterface $lockManager;
 
-    /** @var ColonyFunctionManagerInterface&MockInterface */
-    private ColonyFunctionManagerInterface $colonyFunctionManager;
+    private ColonyFunctionManagerInterface&MockInterface $colonyFunctionManager;
 
-    /** @var MockInterface&CrewLimitCalculatorInterface */
-    private MockInterface $crewLimitCalculator;
+    private MockInterface&CrewLimitCalculatorInterface $crewLimitCalculator;
 
-    /** @var MockInterface&ColonyLibFactoryInterface */
-    private MockInterface $colonyLibFactory;
+    private MockInterface&ColonyLibFactoryInterface $colonyLibFactory;
 
-    /** @var MockInterface&Ubench */
-    private MockInterface $benchmark;
+    private MockInterface&Ubench $benchmark;
 
     private ColonyTickManagerInterface $subject;
 

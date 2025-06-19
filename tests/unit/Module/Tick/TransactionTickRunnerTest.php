@@ -15,12 +15,9 @@ use Stu\StuTestCase;
 
 class TransactionTickRunnerTest extends StuTestCase
 {
-    /** @var MockInterface&FailureEmailSenderInterface */
-    private MockInterface $failureEmailSender;
-    /** @var MockInterface&GameControllerInterface */
-    private MockInterface $game;
-    /** @var MockInterface&EntityManagerInterface */
-    private MockInterface $entityManager;
+    private MockInterface&FailureEmailSenderInterface $failureEmailSender;
+    private MockInterface&GameControllerInterface $game;
+    private MockInterface&EntityManagerInterface $entityManager;
 
     private TransactionTickRunnerInterface $subject;
 

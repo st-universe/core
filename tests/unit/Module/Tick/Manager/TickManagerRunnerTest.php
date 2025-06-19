@@ -11,8 +11,7 @@ use Stu\StuTestCase;
 
 class TickManagerRunnerTest extends StuTestCase
 {
-    /** @var MockInterface&TickManagerInterface */
-    private MockInterface $tickManager;
+    private MockInterface&TickManagerInterface $tickManager;
 
     private TickManagerRunner $subject;
 

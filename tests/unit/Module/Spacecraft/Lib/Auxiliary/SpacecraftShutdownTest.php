@@ -22,16 +22,11 @@ use Stu\StuTestCase;
 
 class SpacecraftShutdownTest extends StuTestCase
 {
-    /** @var MockInterface&SpacecraftRepositoryInterface */
-    private $spacecraftRepository;
-    /** @var MockInterface&SpacecraftSystemManagerInterface */
-    private $spacecraftSystemManager;
-    /** @var MockInterface&LeaveFleetInterface */
-    private $leaveFleet;
-    /** @var MockInterface&SpacecraftStateChangerInterface */
-    private $spacecraftStateChanger;
-    /** @var MockInterface&ShipUndockingInterface */
-    private $shipUndocking;
+    private MockInterface&SpacecraftRepositoryInterface $spacecraftRepository;
+    private MockInterface&SpacecraftSystemManagerInterface $spacecraftSystemManager;
+    private MockInterface&LeaveFleetInterface $leaveFleet;
+    private MockInterface&SpacecraftStateChangerInterface $spacecraftStateChanger;
+    private MockInterface&ShipUndockingInterface $shipUndocking;
 
     private SpacecraftShutdownInterface $subject;
 

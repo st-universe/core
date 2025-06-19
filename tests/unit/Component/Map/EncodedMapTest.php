@@ -13,8 +13,7 @@ use Stu\StuTestCase;
 
 class EncodedMapTest extends StuTestCase
 {
-    /** @var MockInterface&StuConfigInterface */
-    private MockInterface $stuConfig;
+    private MockInterface&StuConfigInterface $stuConfig;
 
     private EncodedMapInterface $subject;
 

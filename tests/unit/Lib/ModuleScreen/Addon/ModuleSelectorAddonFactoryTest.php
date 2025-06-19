@@ -14,14 +14,11 @@ use Stu\StuTestCase;
 
 class ModuleSelectorAddonFactoryTest extends StuTestCase
 {
-    /** @var MockInterface&TorpedoHullRepositoryInterface */
-    private MockInterface $torpedoHullRepository;
+    private MockInterface&TorpedoHullRepositoryInterface $torpedoHullRepository;
 
-    /** @var MockInterface&WeaponShieldRepositoryInterface */
-    private MockInterface $weaponShieldRepository;
+    private MockInterface&WeaponShieldRepositoryInterface $weaponShieldRepository;
 
-    /** @var MockInterface&GradientColorInterface */
-    private MockInterface $gradientColor;
+    private MockInterface&GradientColorInterface $gradientColor;
 
     private ModuleSelectorAddonFactory $subject;
 

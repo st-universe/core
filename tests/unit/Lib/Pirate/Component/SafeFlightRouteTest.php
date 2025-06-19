@@ -15,11 +15,9 @@ use Stu\StuTestCase;
 
 class SafeFlightRouteTest extends StuTestCase
 {
-    /** @var MockInterface&FlightRouteFactoryInterface */
-    private $flightRouteFactory;
+    private MockInterface&FlightRouteFactoryInterface $flightRouteFactory;
 
-    /** @var MockInterface&ShipInterface */
-    private $ship;
+    private MockInterface&ShipInterface $ship;
 
     private SafeFlightRouteInterface $subject;
 

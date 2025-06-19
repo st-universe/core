@@ -18,17 +18,12 @@ use Stu\StuTestCase;
 
 class ClosestLocationsTest extends StuTestCase
 {
-    /** @var MockInterface&DistanceCalculationInterface */
-    private $distanceCalculation;
-    /** @var MockInterface&StationRepositoryInterface */
-    private $stationRepository;
-    /** @var MockInterface&TroopTransferUtilityInterface */
-    private $troopTransferUtility;
-    /** @var MockInterface&ColonyLibFactoryInterface */
-    private $colonyLibFactory;
+    private MockInterface&DistanceCalculationInterface $distanceCalculation;
+    private MockInterface&StationRepositoryInterface $stationRepository;
+    private MockInterface&TroopTransferUtilityInterface $troopTransferUtility;
+    private MockInterface&ColonyLibFactoryInterface $colonyLibFactory;
 
-    /** @var MockInterface&ShipInterface */
-    private $ship;
+    private MockInterface&ShipInterface $ship;
 
     private ClosestLocations $subject;
 

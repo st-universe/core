@@ -17,8 +17,7 @@ use Stu\StuTestCase;
 
 class BorderLayerRendererTest extends StuTestCase
 {
-    /** @var MockInterface&AbstractVisualPanel */
-    private $panel;
+    private MockInterface&AbstractVisualPanel $panel;
 
     #[Override]
     protected function setUp(): void

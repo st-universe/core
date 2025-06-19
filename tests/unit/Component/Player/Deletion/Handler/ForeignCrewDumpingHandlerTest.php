@@ -18,12 +18,9 @@ use Stu\StuTestCase;
 
 class ForeignCrewDumpingHandlerTest extends StuTestCase
 {
-    /** @var MockInterface&StationRepositoryInterface */
-    private $stationRepository;
-    /** @var MockInterface&SpacecraftLeaverInterface */
-    private $spacecraftLeaver;
-    /** @var MockInterface&EntityManagerInterface */
-    private $entityManager;
+    private MockInterface&StationRepositoryInterface $stationRepository;
+    private MockInterface&SpacecraftLeaverInterface $spacecraftLeaver;
+    private MockInterface&EntityManagerInterface $entityManager;
 
     private PlayerDeletionHandlerInterface $handler;
 

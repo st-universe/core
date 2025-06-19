@@ -15,8 +15,7 @@ use Stu\StuTestCase;
 
 class ManagerTickCommandTest extends StuTestCase
 {
-    /** @var MockInterface&ContainerInterface */
-    private MockInterface $dic;
+    private MockInterface&ContainerInterface $dic;
 
     private ManagerTickCommand $subject;
 

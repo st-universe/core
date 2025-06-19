@@ -20,12 +20,9 @@ use Stu\StuTestCase;
 
 class StartEmergencyTest extends StuTestCase
 {
-    /** @var MockInterface&SpacecraftLoaderInterface */
-    private $spacecraftLoader;
-    /** @var MockInterface&SpacecraftEmergencyRepositoryInterface */
-    private $spacecraftEmergencyRepository;
-    /** @var MockInterface&StartEmergencyRequestInterface */
-    private $startEmergencyRequest;
+    private MockInterface&SpacecraftLoaderInterface $spacecraftLoader;
+    private MockInterface&SpacecraftEmergencyRepositoryInterface $spacecraftEmergencyRepository;
+    private MockInterface&StartEmergencyRequestInterface $startEmergencyRequest;
 
     private StartEmergency $subject;
 

@@ -17,11 +17,9 @@ use Stu\StuTestCase;
 
 class LoadWaypointsTest extends StuTestCase
 {
-    /** @var MockInterface&MapRepositoryInterface */
-    private MockInterface $mapRepository;
+    private MockInterface&MapRepositoryInterface $mapRepository;
 
-    /** @var MockInterface&StarSystemMapRepositoryInterface */
-    private MockInterface $starSystemMapRepository;
+    private MockInterface&StarSystemMapRepositoryInterface $starSystemMapRepository;
 
     private LoadWaypointsInterface $subject;
 

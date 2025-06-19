@@ -28,18 +28,12 @@ use Stu\StuTestCase;
 
 class DirectedMovementTest extends StuTestCase
 {
-    /** @var MockInterface&MoveShipRequestInterface */
-    private $moveShipRequest;
-    /** @var MockInterface&SpacecraftLoaderInterface */
-    private $spacecraftLoader;
-    /** @var MockInterface&ShipMoverInterface */
-    private $shipMover;
-    /** @var MockInterface&FlightRouteFactoryInterface */
-    private $flightRouteFactory;
-    /** @var MockInterface&RandomSystemEntryInterface */
-    private $randomSystemEntry;
-    /** @var MockInterface&DistributedMessageSenderInterface */
-    private $distributedMessageSender;
+    private MockInterface&MoveShipRequestInterface $moveShipRequest;
+    private MockInterface&SpacecraftLoaderInterface $spacecraftLoader;
+    private MockInterface&ShipMoverInterface $shipMover;
+    private MockInterface&FlightRouteFactoryInterface $flightRouteFactory;
+    private MockInterface&RandomSystemEntryInterface $randomSystemEntry;
+    private MockInterface&DistributedMessageSenderInterface $distributedMessageSender;
 
     #[Override]
     protected function setUp(): void

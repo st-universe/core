@@ -12,8 +12,7 @@ use Stu\StuTestCase;
 
 class SettingsCoreTest extends StuTestCase
 {
-    /** @var MockInterface&ConfigInterface */
-    private ConfigInterface $config;
+    private MockInterface&ConfigInterface $config;
 
     private SettingsCoreInterface $subject;
 

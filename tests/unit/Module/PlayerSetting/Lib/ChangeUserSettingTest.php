@@ -17,8 +17,7 @@ use Stu\StuTestCase;
 
 class ChangeUserSettingTest extends StuTestCase
 {
-    /** @var MockInterface&UserSettingRepositoryInterface */
-    private MockInterface $userSettingRepository;
+    private MockInterface&UserSettingRepositoryInterface $userSettingRepository;
 
     private ChangeUserSettingInterface $subject;
 

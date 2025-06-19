@@ -14,14 +14,11 @@ use Stu\StuTestCase;
 
 class ColonyShieldingManagerTest extends StuTestCase
 {
-    /** @var MockInterface&PlanetFieldRepositoryInterface */
-    private MockInterface $planetFieldRepository;
+    private MockInterface&PlanetFieldRepositoryInterface $planetFieldRepository;
 
-    /** @var MockInterface&ColonyFunctionManagerInterface */
-    private MockInterface $colonyFunctionManager;
+    private MockInterface&ColonyFunctionManagerInterface $colonyFunctionManager;
 
-    /** @var MockInterface&ColonyInterface */
-    private MockInterface $colony;
+    private MockInterface&ColonyInterface $colony;
 
     private ColonyShieldingManager $subject;
 

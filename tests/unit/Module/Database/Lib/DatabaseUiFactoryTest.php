@@ -15,16 +15,11 @@ use Stu\StuTestCase;
 
 class DatabaseUiFactoryTest extends StuTestCase
 {
-    /** @var MockInterface&CommodityRepositoryInterface */
-    private $commodityRepository;
-    /** @var MockInterface&SpacecraftRepositoryInterface */
-    private $spacecraftRepository;
-    /** @var MockInterface&ColonyRepositoryInterface */
-    private $colonyRepository;
-    /** @var MockInterface&TradePostRepositoryInterface */
-    private $tradePostRepository;
-    /** @var MockInterface&UserRepositoryInterface */
-    private $userRepository;
+    private MockInterface&CommodityRepositoryInterface $commodityRepository;
+    private MockInterface&SpacecraftRepositoryInterface $spacecraftRepository;
+    private MockInterface&ColonyRepositoryInterface $colonyRepository;
+    private MockInterface&TradePostRepositoryInterface $tradePostRepository;
+    private MockInterface&UserRepositoryInterface $userRepository;
 
     private DatabaseUiFactory $subject;
 

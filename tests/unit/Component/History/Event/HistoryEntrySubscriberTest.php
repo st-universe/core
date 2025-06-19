@@ -14,8 +14,7 @@ use Stu\StuTestCase;
 
 class HistoryEntrySubscriberTest extends StuTestCase
 {
-    /** @var MockInterface&EntryCreatorInterface */
-    private MockInterface $entryCreator;
+    private MockInterface&EntryCreatorInterface $entryCreator;
 
     private HistoryEntrySubscriber $subject;
 

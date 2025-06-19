@@ -15,18 +15,14 @@ use Stu\StuTestCase;
 
 class SpacecraftTickRunnerTest extends StuTestCase
 {
-    /** @var MockInterface&SpacecraftTickManagerInterface */
-    private MockInterface $spacecraftTickManager;
+    private MockInterface&SpacecraftTickManagerInterface $spacecraftTickManager;
 
-    /** @var MockInterface&TransactionTickRunnerInterface */
-    private MockInterface $transactionTickRunner;
+    private MockInterface&TransactionTickRunnerInterface $transactionTickRunner;
 
-    /** @var MockInterface&FailureEmailSenderInterface */
-    private MockInterface $failureEmailSender;
+    private MockInterface&FailureEmailSenderInterface $failureEmailSender;
 
 
-    /** @var MockInterface&EntityManagerInterface */
-    private MockInterface $entityManager;
+    private MockInterface&EntityManagerInterface $entityManager;
 
     private SpacecraftTickRunner $subject;
 

@@ -31,14 +31,11 @@ class RageBehaviourTest extends StuTestCase
     private MockInterface&PirateAttackInterface $pirateAttack;
     private MockInterface&PirateProtectionInterface $pirateProtection;
 
-    /** @var MockInterface&FleetWrapperInterface */
-    private $fleetWrapper;
+    private MockInterface&FleetWrapperInterface $fleetWrapper;
 
-    /** @var MockInterface&FleetWrapperInterface */
-    private $fleet;
+    private MockInterface&FleetInterface $fleet;
 
-    /** @var MockInterface&PirateReactionInterface */
-    private $pirateReaction;
+    private MockInterface&PirateReactionInterface $pirateReaction;
 
     private PirateBehaviourInterface $subject;
 

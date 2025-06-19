@@ -13,8 +13,7 @@ use Stu\StuTestCase;
 
 class RelationItemVertexBuilderTest extends StuTestCase
 {
-    /** @var MockInterface&AllianceDataToGraphAttributeConverterInterface */
-    private MockInterface $allianceDataToGraphAttributeConverter;
+    private MockInterface&AllianceDataToGraphAttributeConverterInterface $allianceDataToGraphAttributeConverter;
 
     private RelationItemVertexBuilder $subject;
 

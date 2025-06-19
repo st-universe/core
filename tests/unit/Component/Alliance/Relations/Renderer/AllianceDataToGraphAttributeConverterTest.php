@@ -15,11 +15,9 @@ use Stu\StuTestCase;
 
 class AllianceDataToGraphAttributeConverterTest extends StuTestCase
 {
-    /** @var MockInterface&Parser */
-    private MockInterface $bbCodeParser;
+    private MockInterface&Parser $bbCodeParser;
 
-    /** @var MockInterface&ConfigInterface */
-    private MockInterface $config;
+    private MockInterface&ConfigInterface $config;
 
     private AllianceDataToGraphAttributeConverter $subject;
 

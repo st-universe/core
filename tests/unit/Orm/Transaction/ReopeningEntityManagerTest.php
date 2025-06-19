@@ -14,13 +14,10 @@ use Stu\StuTestCase;
 
 class ReopeningEntityManagerTest extends StuTestCase
 {
-    /** @var MockInterface&EntityManagerFactoryInterface  */
-    private $entityManagerFactory;
-    /** @var MockInterface&Configuration  */
-    private $configuration;
+    private MockInterface&EntityManagerFactoryInterface  $entityManagerFactory;
+    private MockInterface&Configuration  $configuration;
 
-    /** @var MockInterface&EntityManagerInterface */
-    private $wrapped;
+    private MockInterface&EntityManagerInterface $wrapped;
 
     private ReopeningEntityManager $subject;
 

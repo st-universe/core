@@ -21,17 +21,12 @@ use Stu\StuTestCase;
 
 class SystemDataDeserializerTest extends StuTestCase
 {
-    /** @var MockInterface&ShipSystemDataFactoryInterface */
-    private $shipSystemDataFactory;
-    /** @var MockInterface&SpacecraftWrapperFactoryInterface */
-    private $spacecraftWrapperFactory;
-    /** @var MockInterface&JsonMapperInterface */
-    private $jsonMapper;
+    private MockInterface&ShipSystemDataFactoryInterface $shipSystemDataFactory;
+    private MockInterface&SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory;
+    private JsonMapperInterface $jsonMapper;
 
-    /** @var MockInterface&ShipInterface */
-    private $ship;
-    /** @var MockInterface&SpacecraftSystemInterface */
-    private $shipSystem;
+    private MockInterface&ShipInterface $ship;
+    private MockInterface&SpacecraftSystemInterface $shipSystem;
 
     private SystemDataDeserializerInterface $subject;
 

@@ -21,13 +21,10 @@ use Stu\StuTestCase;
 
 class ShowComponentTest extends StuTestCase
 {
-    /** @var MockInterface&ComponentRegistrationInterface  */
-    private $componentRegistration;
-    /** @var MockInterface&PlanetFieldHostProviderInterface  */
-    private $planetFieldHostProvider;
+    private MockInterface&ComponentRegistrationInterface  $componentRegistration;
+    private MockInterface&PlanetFieldHostProviderInterface  $planetFieldHostProvider;
 
-    /** @var MockInterface&GameControllerInterface  */
-    private $game;
+    private MockInterface&GameControllerInterface  $game;
 
     private ViewControllerInterface $subject;
 

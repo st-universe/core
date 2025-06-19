@@ -19,11 +19,9 @@ use Stu\StuTestCase;
 
 class UserCreateCommandTest extends StuTestCase
 {
-    /** @var MockInterface&FactionRepositoryInterface */
-    private MockInterface $factionRepository;
+    private MockInterface&FactionRepositoryInterface $factionRepository;
 
-    /** @var MockInterface&LocalPlayerCreator */
-    private MockInterface $playerCreator;
+    private MockInterface&LocalPlayerCreator $playerCreator;
 
     private UserCreateCommand $subject;
 

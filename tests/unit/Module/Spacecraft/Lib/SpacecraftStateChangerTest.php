@@ -24,26 +24,17 @@ use Stu\StuTestCase;
 
 class SpacecraftStateChangerTest extends StuTestCase
 {
-    /** @var MockInterface&CancelMiningInterface */
-    private $cancelMining;
-    /** @var MockInterface&CancelRepairInterface */
-    private $cancelRepair;
-    /** @var MockInterface&CancelRetrofitInterface */
-    private $cancelRetrofit;
-    /** @var MockInterface&AstroEntryLibInterface */
-    private $astroEntryLib;
-    /** @var MockInterface&SpacecraftRepositoryInterface */
-    private $spacecraftRepository;
-    /** @var MockInterface&TholianWebUtilInterface */
-    private $tholianWebUtil;
-    /** @var MockInterface&ShipTakeoverManagerInterface */
-    private $shipTakeoverManager;
+    private MockInterface&CancelMiningInterface $cancelMining;
+    private MockInterface&CancelRepairInterface $cancelRepair;
+    private MockInterface&CancelRetrofitInterface $cancelRetrofit;
+    private MockInterface&AstroEntryLibInterface $astroEntryLib;
+    private MockInterface&SpacecraftRepositoryInterface $spacecraftRepository;
+    private MockInterface&TholianWebUtilInterface $tholianWebUtil;
+    private MockInterface&ShipTakeoverManagerInterface $shipTakeoverManager;
 
-    /** @var MockInterface&ShipWrapperInterface */
-    private $wrapper;
+    private MockInterface&ShipWrapperInterface $wrapper;
 
-    /** @var MockInterface&ShipInterface */
-    private $ship;
+    private MockInterface&ShipInterface $ship;
 
     private SpacecraftStateChangerInterface $subject;
 

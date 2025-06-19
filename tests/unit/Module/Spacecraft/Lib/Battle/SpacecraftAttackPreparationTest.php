@@ -18,10 +18,8 @@ use Stu\StuTestCase;
 
 class SpacecraftAttackPreparationTest extends StuTestCase
 {
-    /** @var MockInterface&FightLibInterface */
-    private $fightLib;
-    /** @var MockInterface&MessageFactoryInterface */
-    private $messageFactory;
+    private MockInterface&FightLibInterface $fightLib;
+    private MockInterface&MessageFactoryInterface $messageFactory;
 
     private SpacecraftAttackPreparationInterface $subject;
 

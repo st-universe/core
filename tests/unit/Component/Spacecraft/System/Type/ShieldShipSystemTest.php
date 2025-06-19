@@ -24,13 +24,10 @@ class ShieldShipSystemTest extends StuTestCase
 {
     private ShieldShipSystem $system;
 
-    /** @var SpacecraftStateChangerInterface&MockInterface */
-    private SpacecraftStateChangerInterface $spacecraftStateChanger;
+    private SpacecraftStateChangerInterface&MockInterface $spacecraftStateChanger;
 
-    /** @var ShipInterface&MockInterface */
-    private  $ship;
-    /** @var ShipWrapperInterface&MockInterface */
-    private $wrapper;
+    private ShipInterface&MockInterface $ship;
+    private ShipWrapperInterface&MockInterface $wrapper;
 
     #[Override]
     public function setUp(): void

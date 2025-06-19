@@ -18,11 +18,9 @@ use Stu\StuTestCase;
 
 class AllianceRelationRendererTest extends StuTestCase
 {
-    /** @var MockInterface&GraphVizFactoryInterface */
-    private MockInterface $graphVizFactory;
+    private MockInterface&GraphVizFactoryInterface $graphVizFactory;
 
-    /** @var MockInterface&RelationItemVertexBuilderInterface */
-    private MockInterface $relationItemVertexBuilder;
+    private MockInterface&RelationItemVertexBuilderInterface $relationItemVertexBuilder;
 
     private AllianceRelationRenderer $subject;
 

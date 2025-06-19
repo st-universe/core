@@ -14,8 +14,7 @@ use Stu\StuTestCase;
 
 class ShipyardTest extends StuTestCase
 {
-    /** @var MockInterface&ColonyShipQueueRepositoryInterface */
-    private $colonyShipQueueRepository;
+    private MockInterface&ColonyShipQueueRepositoryInterface $colonyShipQueueRepository;
 
     private Shipyard $shipyard;
 

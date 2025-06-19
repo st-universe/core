@@ -18,11 +18,9 @@ use Stu\StuTestCase;
 
 class DiplomaticRelationProposalCreationSubscriberTest extends StuTestCase
 {
-    /** @var MockInterface&AllianceRelationRepositoryInterface */
-    private MockInterface $allianceRelationRepository;
+    private MockInterface&AllianceRelationRepositoryInterface $allianceRelationRepository;
 
-    /** @var MockInterface&AllianceActionManagerInterface */
-    private MockInterface $allianceActionManager;
+    private MockInterface&AllianceActionManagerInterface $allianceActionManager;
 
     private DiplomaticRelationProposalCreationSubscriber $subject;
 

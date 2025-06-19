@@ -21,17 +21,12 @@ use Stu\StuTestCase;
 
 class ModuleRecyclingTest extends StuTestCase
 {
-    /** @var MockInterface&StorageManagerInterface */
-    private $storageManager;
-    /** @var MockInterface&StuRandom */
-    private $stuRandom;
+    private MockInterface&StorageManagerInterface $storageManager;
+    private MockInterface&StuRandom $stuRandom;
 
-    /** @var MockInterface&SpacecraftInterface */
-    private $spacecraft;
-    /** @var MockInterface&EntityWithStorageInterface */
-    private $entity;
-    /** @var MockInterface&InformationInterface */
-    private $information;
+    private MockInterface&SpacecraftInterface $spacecraft;
+    private MockInterface&EntityWithStorageInterface $entity;
+    private MockInterface&InformationInterface $information;
 
     private ModuleRecyclingInterface $subject;
 

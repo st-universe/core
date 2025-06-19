@@ -20,17 +20,13 @@ use Stu\StuTestCase;
 
 class TroopTransferUtilityTest extends StuTestCase
 {
-    /** @var MockInterface&CrewAssignmentRepositoryInterface */
-    private $shipCrewRepository;
-    /** @var MockInterface&ShipTakeoverManagerInterface */
-    private $shipTakeoverManager;
-    /** @var MockInterface&SpacecraftCrewCalculatorInterface */
-    private $shipCrewCalculator;
+    private MockInterface&CrewAssignmentRepositoryInterface $shipCrewRepository;
+    private MockInterface&ShipTakeoverManagerInterface $shipTakeoverManager;
+    private MockInterface&SpacecraftCrewCalculatorInterface $shipCrewCalculator;
 
     private TroopTransferUtilityInterface $subject;
 
-    /** @var MockInterface&ShipInterface */
-    private MockInterface $ship;
+    private MockInterface&ShipInterface $ship;
 
     #[Override]
     protected function setUp(): void

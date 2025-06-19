@@ -14,10 +14,8 @@ use Stu\StuTestCase;
 
 class RoundBasedBattlePartyTest extends StuTestCase
 {
-    /** @var MockInterface&SpacecraftRepositoryInterface */
-    private $spacecraftRepository;
-    /** @var MockInterface&BattlePartyInterface */
-    private $battleParty;
+    private MockInterface&SpacecraftRepositoryInterface $spacecraftRepository;
+    private MockInterface&BattlePartyInterface $battleParty;
 
     private RoundBasedBattleParty $subject;
 

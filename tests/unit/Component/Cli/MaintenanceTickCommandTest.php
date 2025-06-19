@@ -13,8 +13,7 @@ use Stu\StuTestCase;
 
 class MaintenanceTickCommandTest extends StuTestCase
 {
-    /** @var MockInterface&MaintenanceTickRunner */
-    private MockInterface $tickRunner;
+    private MockInterface&MaintenanceTickRunner $tickRunner;
 
     private MaintenanceTickCommand $subject;
 

@@ -20,18 +20,12 @@ use Stu\StuTestCase;
 
 class PlayerDeletionTest extends StuTestCase
 {
-    /** @var MockInterface&UserRepositoryInterface */
-    private $userRepository;
-    /** @var MockInterface&StuConfigInterface */
-    private $config;
-    /** @var MockInterface&Parser */
-    private $bbCodeParser;
-    /** @var MockInterface&StuTime */
-    private $stuTime;
-    /** @var MockInterface&LoggerUtilInterface */
-    private $loggerUtil;
-    /** @var MockInterface&PlayerDeletionHandlerInterface */
-    private $deletionHandler;
+    private MockInterface&UserRepositoryInterface $userRepository;
+    private MockInterface&StuConfigInterface $config;
+    private MockInterface&Parser $bbCodeParser;
+    private MockInterface&StuTime $stuTime;
+    private MockInterface&LoggerUtilInterface $loggerUtil;
+    private MockInterface&PlayerDeletionHandlerInterface $deletionHandler;
 
     private PlayerDeletionInterface $playerDeletion;
 

@@ -12,11 +12,9 @@ use Stu\StuTestCase;
 
 class ProcessTickRunnerTest extends StuTestCase
 {
-    /** @var MockInterface&TransactionTickRunnerInterface */
-    private MockInterface $transactionTickRunner;
+    private MockInterface&TransactionTickRunnerInterface $transactionTickRunner;
 
-    /** @var MockInterface&ProcessTickHandlerInterface */
-    private MockInterface $handler;
+    private MockInterface&ProcessTickHandlerInterface $handler;
 
     private ProcessTickRunner $subject;
 

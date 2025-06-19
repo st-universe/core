@@ -13,8 +13,7 @@ use Stu\StuTestCase;
 
 class ShowPartnerSitesTest extends StuTestCase
 {
-    /** @var MockInterface&ConfigInterface */
-    private MockInterface $config;
+    private MockInterface&ConfigInterface $config;
 
     private ShowPartnerSites $subject;
 
@@ -53,7 +52,7 @@ class ShowPartnerSitesTest extends StuTestCase
             ->with(
                 'PARTNERSITES',
                 Mockery::on(
-                    fn (array $items): bool =>
+                    fn(array $items): bool =>
                     $items === [[
                         'name' => $siteName,
                         'description' => $siteDescription,

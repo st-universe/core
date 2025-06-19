@@ -13,8 +13,7 @@ use Stu\StuTestCase;
 
 class SpacecraftTickCommandTest extends StuTestCase
 {
-    /** @var MockInterface&SpacecraftTickRunner */
-    private MockInterface $spacecraftTickRunner;
+    private MockInterface&SpacecraftTickRunner $spacecraftTickRunner;
 
     private SpacecraftTickCommand $subject;
 

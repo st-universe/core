@@ -16,10 +16,8 @@ use Stu\StuTestCase;
 
 class SessionFactoryTest extends StuTestCase
 {
-    /** @var MockInterface&SessionStringRepositoryInterface */
-    private $sessionStringRepository;
-    /** @var MockInterface&StuTime */
-    private $stuTime;
+    private MockInterface&SessionStringRepositoryInterface $sessionStringRepository;
+    private MockInterface&StuTime $stuTime;
 
     private SessionStringFactoryInterface $subject;
 

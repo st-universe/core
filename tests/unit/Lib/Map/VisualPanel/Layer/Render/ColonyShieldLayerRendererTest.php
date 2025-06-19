@@ -12,8 +12,7 @@ use Stu\StuTestCase;
 
 class ColonyShieldLayerRendererTest extends StuTestCase
 {
-    /** @var MockInterface&AbstractVisualPanel */
-    private MockInterface $panel;
+    private MockInterface&AbstractVisualPanel $panel;
 
     private LayerRendererInterface $subject;
 

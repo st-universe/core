@@ -16,10 +16,8 @@ use Stu\StuTestCase;
 
 class IonStormMovementTest extends StuTestCase
 {
-    /** @var MockInterface&AnomalyRepositoryInterface */
-    private $anomalyRepository;
-    /** @var MockInterface&StuRandom */
-    private $stuRandom;
+    private MockInterface&AnomalyRepositoryInterface $anomalyRepository;
+    private MockInterface&StuRandom $stuRandom;
 
     private IonStormMovement $subject;
 

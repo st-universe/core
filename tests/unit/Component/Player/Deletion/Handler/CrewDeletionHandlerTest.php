@@ -15,12 +15,9 @@ use Stu\StuTestCase;
 
 class CrewDeletionHandlerTest extends StuTestCase
 {
-    /** @var MockInterface&CrewAssignmentRepositoryInterface */
-    private $shipCrewRepository;
-    /** @var MockInterface&CrewRepositoryInterface */
-    private $crewRepository;
-    /** @var MockInterface&EntityManagerInterface */
-    private $entityManager;
+    private MockInterface&CrewAssignmentRepositoryInterface $shipCrewRepository;
+    private MockInterface&CrewRepositoryInterface $crewRepository;
+    private MockInterface&EntityManagerInterface $entityManager;
 
     private PlayerDeletionHandlerInterface $handler;
 

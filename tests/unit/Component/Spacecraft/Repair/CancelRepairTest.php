@@ -16,17 +16,12 @@ use Stu\StuTestCase;
 
 class CancelRepairTest extends StuTestCase
 {
-    /** @var SpacecraftRepositoryInterface&MockInterface*/
-    private $spacecraftRepo;
-    /** @var RepairTaskRepositoryInterface&MockInterface */
-    private $repairTaskRepo;
-    /** @var ColonyShipRepairRepositoryInterface&MockInterface */
-    private $colonyShipRepairRepo;
-    /** @var StationShipRepairRepositoryInterface&MockInterface */
-    private $stationShipRepairRepo;
+    private SpacecraftRepositoryInterface&MockInterface $spacecraftRepo;
+    private RepairTaskRepositoryInterface&MockInterface $repairTaskRepo;
+    private ColonyShipRepairRepositoryInterface&MockInterface $colonyShipRepairRepo;
+    private StationShipRepairRepositoryInterface&MockInterface $stationShipRepairRepo;
 
-    /** @var ShipInterface&MockInterface */
-    private  $ship;
+    private ShipInterface&MockInterface $ship;
 
     private CancelRepairInterface $cancelRepair;
 

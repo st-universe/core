@@ -20,12 +20,9 @@ use Doctrine\Common\Collections\Collection;
 
 class AllianceDeletionHandlerTest extends MockeryTestCase
 {
-    /** @var AllianceJobRepositoryInterface&MockInterface */
-    private $allianceJobRepository;
-    /** @var AllianceActionManagerInterface&MockInterface */
-    private $allianceActionManager;
-    /** @var UserRepositoryInterface&MockInterface */
-    private $userRepository;
+    private AllianceJobRepositoryInterface&MockInterface $allianceJobRepository;
+    private AllianceActionManagerInterface&MockInterface $allianceActionManager;
+        private UserRepositoryInterface&MockInterface $userRepository;
 
     private PlayerDeletionHandlerInterface $handler;
 

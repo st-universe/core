@@ -12,14 +12,11 @@ use Stu\StuTestCase;
 
 class WarDeclaredEventTest extends StuTestCase
 {
-    /** @var MockInterface&AllianceInterface */
-    private MockInterface $alliance;
+    private MockInterface&AllianceInterface $alliance;
 
-    /** @var MockInterface&AllianceInterface */
-    private MockInterface $counterpart;
+    private MockInterface&AllianceInterface $counterpart;
 
-    /** @var MockInterface&UserInterface */
-    private MockInterface $responsibleUser;
+    private MockInterface&UserInterface $responsibleUser;
 
     private WarDeclaredEvent $subject;
 

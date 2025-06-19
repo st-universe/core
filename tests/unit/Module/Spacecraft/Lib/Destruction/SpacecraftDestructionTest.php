@@ -15,14 +15,11 @@ use Stu\StuTestCase;
 
 class SpacecraftDestructionTest extends StuTestCase
 {
-    /** @var MockInterface&SpacecraftRepositoryInterface */
-    private $spacecraftRepository;
+    private MockInterface&SpacecraftRepositoryInterface $spacecraftRepository;
 
-    /** @var MockInterface&SpacecraftDestructionHandlerInterface */
-    private $deletionHandler1;
+    private MockInterface&SpacecraftDestructionHandlerInterface $deletionHandler1;
 
-    /** @var MockInterface&SpacecraftDestructionHandlerInterface */
-    private $deletionHandler2;
+    private MockInterface&SpacecraftDestructionHandlerInterface $deletionHandler2;
 
     /** @var SpacecraftDestructionInterface */
     private $subject;
