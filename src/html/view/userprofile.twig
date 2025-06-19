@@ -165,7 +165,7 @@
 						{% for csl in COLONYSCANLIST %}
 						<tr id="colonyScan_{{ csl.getId }}">
 							<td><a href="javascript:void(0);" onclick="showColonySurface({{ csl.getId() }});"><img
-										src="assets/planets/{{ csl.getColony.getColonyClassId }}.png" /></a></td>
+										src="assets/planets/{{ csl.getColony.getColonyClass.getId }}.png" /></a></td>
 							<td><span>{{ csl.getColonyName | bbcode }}</span></td>
 							<td>
 								{{ csl.getColony.getSx }}|{{ csl.getColony.getSy }}

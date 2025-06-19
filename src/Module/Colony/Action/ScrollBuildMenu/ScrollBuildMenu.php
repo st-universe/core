@@ -13,7 +13,6 @@ use Stu\Module\Colony\View\ShowBuildMenuPart\ShowBuildMenuPart;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
-use Stu\Orm\Entity\ColonyInterface;
 
 final class ScrollBuildMenu implements ActionControllerInterface
 {
@@ -27,8 +26,6 @@ final class ScrollBuildMenu implements ActionControllerInterface
         $userId = $game->getUser()->getId();
 
         $host = $this->planetFieldHostProvider->loadHostViaRequestParameters($game->getUser(), false);
-        $colonyClass = $host instanceof ColonyInterface ? $host->getColonyClass() : null;
-        $colonyClassId = $colonyClass !== null ? $colonyClass->getId() : null;
 
         $menu = request::getIntFatal('menu');
         $offset = request::getInt('offset');
@@ -49,8 +46,7 @@ final class ScrollBuildMenu implements ActionControllerInterface
             $menu,
             $offset,
             null,
-            $fieldType,
-            $colonyClassId
+            $fieldType
         );
         if ($ret === []) {
             $offset = max(0, $offset - ColonyEnum::BUILDMENU_SCROLLOFFSET);
@@ -60,8 +56,7 @@ final class ScrollBuildMenu implements ActionControllerInterface
                 $menu,
                 $offset,
                 null,
-                $fieldType,
-                $colonyClassId
+                $fieldType
             );
         }
         $game->setTemplateVar('menu', ['buildings' => $ret, 'name' => BuildMenuEnum::getDescription($menu)]);

@@ -172,12 +172,6 @@ class Colony implements ColonyInterface
     }
 
     #[Override]
-    public function getColonyClassId(): int
-    {
-        return $this->colonies_classes_id;
-    }
-
-    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;

@@ -16,8 +16,6 @@ interface ColonyInterface extends
     EntityWithCrewAssignmentsInterface,
     EntityWithInteractionCheckInterface
 {
-    public function getColonyClassId(): int;
-
     public function getUserId(): int;
 
     public function getSx(): int;

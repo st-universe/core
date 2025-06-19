@@ -110,7 +110,7 @@ final class ColonySurface implements ColonySurfaceInterface
 
         if ($mask === null) {
             $planetConfig = $this->planetGenerator->generateColony(
-                $host->getColonyClassId(),
+                $host->getColonyClass()->getId(),
                 $host->getSystem()->getBonusFieldAmount()
             );
 

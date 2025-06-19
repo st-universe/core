@@ -51,7 +51,7 @@ final class ShowField implements ViewControllerInterface
         $terraformingOptions = $this->terraformingRepository->getBySourceFieldTypeAndUser(
             $field->getFieldType(),
             $userId,
-            $host->getColonyClass()->getId()
+            $host->getColonyClass()
         );
 
         if (

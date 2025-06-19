@@ -62,8 +62,8 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
         return (int) $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT count(c.id) from %s c WHERE c.user_id = :userId AND c.colonies_classes_id IN (
-                        SELECT cc.id FROM %s cc WHERE cc.type = :type
+                    'SELECT count(c.id) from %s c WHERE c.user_id = :userId AND c.colonyClass IN (
+                        SELECT cc FROM %s cc WHERE cc.type = :type
                     )',
                     Colony::class,
                     ColonyClass::class
@@ -85,8 +85,8 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                     'SELECT c FROM %s c INDEX BY c.id
                      JOIN %s sm
                      WITH c.starsystem_map = sm
-                     WHERE c.user_id = :userId AND c.colonies_classes_id IN (
-                        SELECT pt.id FROM %s pt WHERE pt.allow_start = :allowStart
+                     WHERE c.user_id = :userId AND c.colonyClass IN (
+                        SELECT cc FROM %s cc WHERE cc.allow_start = :allowStart
                     ) AND sm.systems_id IN (
                         SELECT m.systems_id FROM %s m WHERE m.systems_id > 0 AND m.admin_region_id IN (
                             SELECT mrs.region_id from %s mrs WHERE mrs.faction_id = :factionId
@@ -370,15 +370,15 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
             $result = $this->getEntityManager()->createQuery(
                 sprintf(
                     'SELECT MIN(ABS(sm.sx - :sx) + ABS(sm.sy - :sy)) as distance
-                FROM %s c
-                JOIN %s sm
-                WITH c.starsystem_map = sm
-                JOIN %s cc
-                WITH c.colonies_classes_id = cc.id
-                WHERE c.user_id = :nooneUserId
-                AND cc.allow_start = :allowStart
-                AND sm.systems_id = :systemId
-                AND sm.id != :currentMapId',
+                        FROM %s c
+                        JOIN %s sm
+                        WITH c.starsystem_map = sm
+                        JOIN %s cc
+                        WITH c.colonyClass = cc
+                        WHERE c.user_id = :nooneUserId
+                        AND cc.allow_start = :allowStart
+                        AND sm.systems_id = :systemId
+                        AND sm.id != :currentMapId',
                     Colony::class,
                     StarSystemMap::class,
                     ColonyClass::class
@@ -428,7 +428,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                         JOIN %s l
                         WITH m.id = l.id
                         JOIN %s cc
-                        WITH c.colonies_classes_id = cc.id
+                        WITH c.colonyClass = cc
                         WHERE c.user_id = :nooneUserId
                         AND cc.allow_start = :allowStart
                         AND l.layer_id = :currentLayerId',

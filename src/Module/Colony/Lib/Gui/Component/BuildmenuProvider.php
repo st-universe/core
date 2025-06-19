@@ -6,9 +6,7 @@ use Override;
 use request;
 use Stu\Component\Building\BuildMenuEnum;
 use Stu\Component\Game\GameEnum;
-use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
@@ -21,8 +19,6 @@ final class BuildmenuProvider implements PlanetFieldHostComponentInterface
         $entity,
         GameControllerInterface $game
     ): void {
-        $colonyClass = $entity instanceof ColonyInterface ? $entity->getColonyClass() : null;
-        $colonyClassId = $colonyClass !== null ? $colonyClass->getId() : null;
         $fieldType = $this->getFieldType();
         if ($fieldType !== null) {
             $game->addExecuteJS(sprintf('fieldType = %d;', $fieldType), GameEnum::JS_EXECUTION_AJAX_UPDATE);
@@ -39,8 +35,7 @@ final class BuildmenuProvider implements PlanetFieldHostComponentInterface
                 $id,
                 0,
                 request::has('cid') ? request::getIntFatal('cid') : null,
-                $fieldType,
-                $colonyClassId
+                $fieldType
             );
         }
 

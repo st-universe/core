@@ -10,7 +10,6 @@ use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
-use Stu\Orm\Entity\ColonyInterface;
 
 final class ShowBuildMenuPart implements ViewControllerInterface
 {
@@ -24,8 +23,6 @@ final class ShowBuildMenuPart implements ViewControllerInterface
         $userId = $game->getUser()->getId();
 
         $host = $this->planetFieldHostProvider->loadHostViaRequestParameters($game->getUser(), false);
-        $colonyClass = $host instanceof ColonyInterface ? $host->getColonyClass() : null;
-        $colonyClassId = $colonyClass !== null ? $colonyClass->getId() : null;
 
         $menus = [];
 
@@ -34,8 +31,7 @@ final class ShowBuildMenuPart implements ViewControllerInterface
                 $host,
                 $userId,
                 $id,
-                0,
-                $colonyClassId
+                0
             );
         }
 

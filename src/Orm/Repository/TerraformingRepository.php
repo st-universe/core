@@ -7,6 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Orm\Entity\ColonyClassInterface;
 use Stu\Orm\Entity\ColonyClassRestriction;
 use Stu\Orm\Entity\Researched;
 use Stu\Orm\Entity\Terraforming;
@@ -17,7 +18,7 @@ use Stu\Orm\Entity\Terraforming;
 final class TerraformingRepository extends EntityRepository implements TerraformingRepositoryInterface
 {
     #[Override]
-    public function getBySourceFieldTypeAndUser(int $sourceFieldTypeId, int $userId, int $colonyClassId): array
+    public function getBySourceFieldTypeAndUser(int $sourceFieldTypeId, int $userId, ColonyClassInterface $colonyClass): array
     {
         if ($userId == UserEnum::USER_NOONE) {
             return $this->getEntityManager()->createQuery(
@@ -43,7 +44,7 @@ final class TerraformingRepository extends EntityRepository implements Terraform
                                     AND r.user_id = :userId))
                                                                 AND NOT EXISTS (SELECT ccr.id FROM %s ccr
                             WHERE ccr.terraforming_id = t.id
-                            AND ccr.colony_class_id = :colonyClassId)',
+                            AND ccr.colonyClass = :colonyClass)',
                 Terraforming::class,
                 Researched::class,
                 ColonyClassRestriction::class
@@ -51,7 +52,7 @@ final class TerraformingRepository extends EntityRepository implements Terraform
         )->setParameters([
             'userId' => $userId,
             'sourceFieldTypeId' => $sourceFieldTypeId,
-            'colonyClassId' => $colonyClassId
+            'colonyClass' => $colonyClass
         ])->getResult();
     }
 }

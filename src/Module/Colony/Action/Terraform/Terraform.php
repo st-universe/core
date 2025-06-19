@@ -66,7 +66,7 @@ final class Terraform implements ActionControllerInterface
         $terraformingopts = $this->terraformingRepository->getBySourceFieldTypeAndUser(
             $field->getFieldType(),
             $userId,
-            $host->getColonyClass()->getId()
+            $host->getColonyClass()
         );
         if (!array_key_exists($terraforming->getId(), $terraformingopts)) {
             throw new SanityCheckException('user tried to perform unresearched terraforming', self::ACTION_IDENTIFIER);

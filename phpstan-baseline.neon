@@ -1669,12 +1669,6 @@ parameters:
 			path: src/Orm/Entity/KnPost.php
 
 		-
-			message: '#^Method Stu\\Orm\\Entity\\MapFieldType\:\:getColonyClassId\(\) should return int but returns int\|null\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Orm/Entity/MapFieldType.php
-
-		-
 			message: '#^Cannot call method getBuildingType\(\) on Stu\\Orm\\Entity\\BuildingInterface\|null\.$#'
 			identifier: method.nonObject
 			count: 1

@@ -18,7 +18,7 @@ final class ColonyClassResearchRepository extends EntityRepository implements Co
     public function getByColonyClass(ColonyClassInterface $colonyClass): array
     {
         return $this->findBy([
-            'planet_type_id' => $colonyClass
+            'colonyClass' => $colonyClass
         ]);
     }
 }
