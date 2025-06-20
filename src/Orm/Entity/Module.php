@@ -64,7 +64,7 @@ class Module implements ModuleInterface
     #[Column(type: 'boolean')]
     private bool $viewable = false;
 
-    #[Column(type: 'enum', enumType: SpacecraftRumpRoleEnum::class, nullable: true)]
+    #[Column(type: 'integer', enumType: SpacecraftRumpRoleEnum::class, nullable: true)]
     private ?SpacecraftRumpRoleEnum $rumps_role_id = null;
 
     #[Column(type: 'smallint')]

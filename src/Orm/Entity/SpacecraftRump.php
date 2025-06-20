@@ -31,10 +31,10 @@ class SpacecraftRump implements SpacecraftRumpInterface
     #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    #[column(type: 'enum', enumType: SpacecraftRumpCategoryEnum::class, nullable: false)]
+    #[column(type: 'integer', enumType: SpacecraftRumpCategoryEnum::class, nullable: false)]
     private SpacecraftRumpCategoryEnum $category_id;
 
-    #[column(type: 'enum', enumType: SpacecraftRumpRoleEnum::class, nullable: true)]
+    #[column(type: 'integer', enumType: SpacecraftRumpRoleEnum::class, nullable: true)]
     private ?SpacecraftRumpRoleEnum $role_id = null;
 
     #[column(type: 'smallint')]
