@@ -29,7 +29,7 @@ class ShipRumpCategoryRoleCrew implements ShipRumpCategoryRoleCrewInterface
     #[Column(type: 'integer')]
     private int $rump_category_id = 0;
 
-    #[Column(type: 'enum', enumType: SpacecraftRumpRoleEnum::class)]
+    #[Column(type: 'integer', enumType: SpacecraftRumpRoleEnum::class)]
     private SpacecraftRumpRoleEnum $rump_role_id;
 
     #[Column(type: 'smallint')]

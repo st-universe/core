@@ -6,6 +6,7 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
@@ -20,7 +21,8 @@ use Stu\Orm\Repository\ShipRumpCategoryRepository;
 class ShipRumpCategory implements ShipRumpCategoryInterface
 {
     #[Id]
-    #[Column(type: 'enum', enumType: SpacecraftRumpCategoryEnum::class)]
+    #[GeneratedValue(strategy: 'IDENTITY')]
+    #[Column(type: 'integer', enumType: SpacecraftRumpCategoryEnum::class)]
     private SpacecraftRumpCategoryEnum $id;
 
     #[Column(type: 'string')]
