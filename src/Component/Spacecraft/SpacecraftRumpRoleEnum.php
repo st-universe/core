@@ -23,4 +23,6 @@ enum SpacecraftRumpRoleEnum: int
     case SHIP_ROLE_SENSOR = 14;
     case SHIP_ROLE_OUTPOST = 15;
     case SHIP_ROLE_BASE = 16;
+    case SHIP_ROLE_ADVENT_DOOR = 17;
+    case SHIP_ROLE_THOLIAN_WEB = 18;
 }
