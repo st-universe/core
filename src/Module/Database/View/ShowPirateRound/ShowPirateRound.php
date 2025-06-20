@@ -83,8 +83,8 @@ final class ShowPirateRound implements ViewControllerInterface
                 }
             }
         }
-        $maxPrestige = $lastRound->getMaxPrestige() ?? 0;
-        $actualPrestige = $lastRound->getActualPrestige() ?? 0;
+        $maxPrestige = $lastRound->getMaxPrestige();
+        $actualPrestige = $lastRound->getActualPrestige();
         $remainingPrestige = max(0, $maxPrestige - $actualPrestige);
 
         $game->setTemplateVar('REMAINING_PRESTIGE', $remainingPrestige);
