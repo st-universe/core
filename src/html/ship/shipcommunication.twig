@@ -21,6 +21,7 @@
   <div class="box_body">
     <form method="post" action="{{ SHIP.getType.getModuleView.getPhpPage }}">
       <input type="hidden" name="id" value="{{ SHIP.getId }}" />
+      <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
       <table class="tcal">
         <tr>
           <th>Sende Broadcast an alle Kolonien und Stationen im Umkreis von einem Feld</th>
