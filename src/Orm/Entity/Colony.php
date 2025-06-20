@@ -19,8 +19,8 @@ use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use Override;
 use Stu\Component\Colony\ColonyMenuEnum;
+use Stu\Component\Colony\Trait\ColonyRotationTrait;
 use Stu\Component\Game\ModuleEnum;
-use Stu\Component\Game\TimeConstants;
 use Stu\Lib\Colony\PlanetFieldHostTypeEnum;
 use Stu\Lib\Transfer\CommodityTransfer;
 use Stu\Lib\Transfer\TransferEntityTypeEnum;
@@ -35,6 +35,8 @@ use Stu\Orm\Repository\ColonyRepository;
 #[Entity(repositoryClass: ColonyRepository::class)]
 class Colony implements ColonyInterface
 {
+    use ColonyRotationTrait;
+
     #[Id]
     #[Column(type: 'integer')]
     #[GeneratedValue(strategy: 'IDENTITY')]
@@ -381,45 +383,6 @@ class Colony implements ColonyInterface
     }
 
     #[Override]
-    public function getTwilightZone(int $timestamp): int
-    {
-        if (array_key_exists($timestamp, $this->twilightZones)) {
-            return $this->twilightZones[$timestamp];
-        }
-
-        $twilightZone = 0;
-
-        $width = $this->getSurfaceWidth();
-        $rotationTime = $this->getRotationTime();
-        $colonyTimeSeconds = $this->getColonyTimeSeconds($timestamp);
-
-        if ($this->getDayTimePrefix($timestamp) == 1) {
-            $scaled = floor((((100 / ($rotationTime * 0.125)) * ($colonyTimeSeconds - $rotationTime * 0.25)) / 100) * $width);
-            if ($scaled == 0) {
-                $twilightZone = - (($width) - 1);
-            } elseif ((int) - (($width) - ceil($scaled)) == 0) {
-                $twilightZone = -1;
-            } else {
-                $twilightZone = (int) - (($width) - $scaled);
-            }
-        }
-        if ($this->getDayTimePrefix($timestamp) == 2) {
-            $twilightZone = $width;
-        }
-        if ($this->getDayTimePrefix($timestamp) == 3) {
-            $scaled = floor((((100 / ($rotationTime * 0.125)) * ($colonyTimeSeconds - $rotationTime * 0.75)) / 100) * $width);
-            $twilightZone = (int) ($width - $scaled);
-        }
-        if ($this->getDayTimePrefix($timestamp) == 4) {
-            $twilightZone = 0;
-        }
-
-        $this->twilightZones[$timestamp] = $twilightZone;
-
-        return $twilightZone;
-    }
-
-    #[Override]
     public function getShieldFrequency(): ?int
     {
         return $this->shield_frequency;
@@ -457,75 +420,6 @@ class Colony implements ColonyInterface
         $this->rotation_factor = $rotationFactor;
 
         return $this;
-    }
-
-    #[Override]
-    public function getRotationTime(): int
-    {
-        return (int) (TimeConstants::ONE_DAY_IN_SECONDS * $this->getRotationFactor() / 100);
-    }
-
-    public function getColonyTimeSeconds(int $timestamp): int
-    {
-        return $timestamp % $this->getRotationTime();
-    }
-
-    #[Override]
-    public function getColonyTimeHour(int $timestamp): ?string
-    {
-        $rotationTime = $this->getRotationTime();
-
-        return sprintf("%02d", (int) floor(($rotationTime / 3600) * ($this->getColonyTimeSeconds($timestamp) / $rotationTime)));
-    }
-
-    #[Override]
-    public function getColonyTimeMinute(int $timestamp): ?string
-    {
-        $rotationTime = $this->getRotationTime();
-
-        return sprintf("%02d", (int) floor(60 * (($rotationTime / 3600) * ($this->getColonyTimeSeconds($timestamp) / $rotationTime) - ((int) $this->getColonyTimeHour($timestamp)))));
-    }
-
-    #[Override]
-    public function getDayTimePrefix(int $timestamp): ?int
-    {
-        $daytimeprefix = null;
-        $daypercent = (int) (($this->getColonyTimeSeconds($timestamp) / $this->getRotationTime()) * 100);
-        if ($daypercent > 25 && $daypercent <= 37.5) {
-            $daytimeprefix = 1; //Sonnenaufgang
-        }
-        if ($daypercent > 37.5 && $daypercent <= 75) {
-            $daytimeprefix = 2; //Tag
-        }
-        if ($daypercent > 75 && $daypercent <= 87.5) {
-            $daytimeprefix = 3; //Sonnenuntergang
-        }
-        if ($daypercent > 87.5 || $daypercent <= 25) {
-            $daytimeprefix = 4; //Nacht
-        }
-        return $daytimeprefix;
-    }
-
-    #[Override]
-    public function getDayTimeName(int $timestamp): ?string
-    {
-        $daytimename = null;
-        if ($this->getDayTimePrefix($timestamp) == 1) {
-            $daytimename = 'Morgen';
-        }
-
-        if ($this->getDayTimePrefix($timestamp) == 2) {
-            $daytimename = 'Tag';
-        }
-
-        if ($this->getDayTimePrefix($timestamp) == 3) {
-            $daytimename = 'Abend';
-        }
-
-        if ($this->getDayTimePrefix($timestamp) == 4) {
-            $daytimename = 'Nacht';
-        }
-        return $daytimename;
     }
 
     #[Override]
