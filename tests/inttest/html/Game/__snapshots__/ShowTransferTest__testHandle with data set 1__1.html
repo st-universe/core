@@ -51,7 +51,7 @@
                 <table class="tcal">
         <tr>
         <td>
-            <input type="range" name="crewcount" id="crew_transfer_slider" min="0" max="1" value="0" oninput="crewTransferCount.innerText = this.value;">
+            <input type="range" name="crewcount" id="crew_transfer_slider" min="0" max="2" value="0" oninput="crewTransferCount.innerText = this.value;">
             <span style="display: inline-block; min-width: 30px;" id="crewTransferCount">0</span>
             <img src="/assets/buttons/crew.png" title="Crew">
         </td>
@@ -92,7 +92,7 @@
         <tr style="text-align: right;">
             <td>
     <input type="submit" class="button" value="Beamen" name="B_TRANSFER" id="crew_transfer_button">
-    <input type="button" class="button" value="max" onclick="$('crew_transfer_slider').value = '1'; $('crew_transfer_button').click()">
+    <input type="button" class="button" value="max" onclick="$('crew_transfer_slider').value = '2'; $('crew_transfer_button').click()">
 </td>
         </tr>
     </table>

@@ -173,7 +173,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
         $otherUserId = $tractoringSpacecraft->getUser()->getId();
         $shipName = $ship->getName();
 
-        $game->addInformation(_('Der Fluchtversuch ist fehlgeschlagen:'));
+        $game->addInformation('Der Fluchtversuch ist fehlgeschlagen:');
 
         $this->applyDamage->damage(new DamageWrapper((int) ceil($ship->getMaxHull() * random_int(10, 25) / 100)), $wrapper, $game);
 

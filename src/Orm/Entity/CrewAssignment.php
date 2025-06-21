@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
 use Override;
-use Stu\Component\Crew\CrewEnum;
+use Stu\Component\Crew\CrewPositionEnum;
 use Stu\Module\Spacecraft\Lib\Crew\EntityWithCrewAssignmentsInterface;
 use Stu\Orm\Repository\CrewAssignmentRepository;
 
@@ -25,8 +25,8 @@ class CrewAssignment implements CrewAssignmentInterface
     #[JoinColumn(name: 'crew_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CrewInterface $crew;
 
-    #[Column(type: 'smallint', nullable: true)]
-    private ?int $slot = null;
+    #[Column(type: 'smallint', enumType: CrewPositionEnum::class, nullable: true)]
+    private ?CrewPositionEnum $position = null;
 
     #[ManyToOne(targetEntity: 'Spacecraft')]
     #[JoinColumn(name: 'spacecraft_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
@@ -49,23 +49,17 @@ class CrewAssignment implements CrewAssignmentInterface
     private ?RepairTaskInterface $repairTask = null;
 
     #[Override]
-    public function getSlot(): ?int
+    public function getPosition(): ?CrewPositionEnum
     {
-        return $this->slot;
+        return $this->position ?? CrewPositionEnum::CREWMAN;
     }
 
     #[Override]
-    public function setSlot(?int $slot): CrewAssignmentInterface
+    public function setPosition(?CrewPositionEnum $position): CrewAssignmentInterface
     {
-        $this->slot = $slot;
+        $this->position = $position;
 
         return $this;
-    }
-
-    #[Override]
-    public function getPosition(): string
-    {
-        return CrewEnum::getDescription($this->getSlot());
     }
 
     #[Override]
@@ -147,6 +141,14 @@ class CrewAssignment implements CrewAssignmentInterface
         $this->tradepost = $tradepost;
 
         return $this;
+    }
+
+    #[Override]
+    public function getFightCapability(): int
+    {
+        $position = $this->getPosition() ?? CrewPositionEnum::CREWMAN;
+
+        return $position->getFightCapability();
     }
 
     #[Override]

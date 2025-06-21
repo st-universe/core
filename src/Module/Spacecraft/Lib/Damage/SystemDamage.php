@@ -53,9 +53,9 @@ final class SystemDamage implements SystemDamageInterface
         $system = $healthySystems[0];
         $system->setStatus(0);
         $system->setMode(SpacecraftSystemModeEnum::MODE_OFF);
-        $this->spacecraftSystemManager->handleDestroyedSystem($wrapper, $healthySystems[0]->getSystemType());
+        $this->spacecraftSystemManager->handleDestroyedSystem($wrapper, $system->getSystemType());
 
-        return $healthySystems[0]->getSystemType()->getDescription();
+        return $system->getSystemType()->getDescription();
     }
 
     #[Override]

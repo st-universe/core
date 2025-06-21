@@ -4,15 +4,20 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
 use Override;
-use Stu\Component\Crew\CrewEnum;
+use Stu\Component\Crew\CrewGenderEnum;
+use Stu\Component\Crew\CrewPositionEnum;
+use Stu\Component\Crew\Skill\CrewSkillLevelEnum;
 use Stu\Orm\Repository\CrewRepository;
 
 #[Table(name: 'stu_crew')]
@@ -24,11 +29,11 @@ class Crew implements CrewInterface
     #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    #[Column(type: 'smallint')]
-    private int $type = 0;
+    #[Column(type: 'string', enumType: CrewSkillLevelEnum::class)]
+    private CrewSkillLevelEnum $rank = CrewSkillLevelEnum::RECRUIT;
 
-    #[Column(type: 'smallint')]
-    private int $gender = 0;
+    #[Column(type: 'smallint', enumType: CrewGenderEnum::class)]
+    private CrewGenderEnum $gender = CrewGenderEnum::MALE;
 
     #[Column(type: 'string')]
     private string $name = '';
@@ -47,6 +52,17 @@ class Crew implements CrewInterface
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
+    /**
+     * @var ArrayCollection<int, CrewSkillInterface>
+     */
+    #[OneToMany(targetEntity: 'CrewSkill', mappedBy: 'crew', indexBy: 'position', fetch: 'EXTRA_LAZY')]
+    private Collection $skills;
+
+    public function __construct()
+    {
+        $this->skills = new ArrayCollection();
+    }
+
     #[Override]
     public function getId(): int
     {
@@ -54,27 +70,27 @@ class Crew implements CrewInterface
     }
 
     #[Override]
-    public function getType(): int
+    public function getRank(): CrewSkillLevelEnum
     {
-        return $this->type;
+        return $this->rank;
     }
 
     #[Override]
-    public function setType(int $type): CrewInterface
+    public function setRank(CrewSkillLevelEnum $rank): CrewInterface
     {
-        $this->type = $type;
+        $this->rank = $rank;
 
         return $this;
     }
 
     #[Override]
-    public function getGender(): int
+    public function getGender(): CrewGenderEnum
     {
         return $this->gender;
     }
 
     #[Override]
-    public function setGender(int $gender): CrewInterface
+    public function setGender(CrewGenderEnum $gender): CrewInterface
     {
         $this->gender = $gender;
 
@@ -129,21 +145,6 @@ class Crew implements CrewInterface
     }
 
     #[Override]
-    public function getGenderShort(): string
-    {
-        if ($this->getGender() == CrewEnum::CREW_GENDER_MALE) {
-            return 'm';
-        }
-        return 'w';
-    }
-
-    #[Override]
-    public function getTypeDescription(): string
-    {
-        return CrewEnum::getDescription($this->getType());
-    }
-
-    #[Override]
     public function getRace(): CrewRaceInterface
     {
         return $this->race;
@@ -155,6 +156,17 @@ class Crew implements CrewInterface
         $this->race = $crewRace;
 
         return $this;
+    }
+
+    public function getSkills(): Collection
+    {
+        return $this->skills;
+    }
+
+    #[Override]
+    public function isSkilledAt(CrewPositionEnum $position): bool
+    {
+        return $this->skills->containsKey($position->value);
     }
 
     #[Override]

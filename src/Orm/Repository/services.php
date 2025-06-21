@@ -109,6 +109,7 @@ use Stu\Orm\Entity\SessionString;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\SpacecraftBuildplan;
 use Stu\Orm\Entity\CrewAssignment;
+use Stu\Orm\Entity\CrewSkill;
 use Stu\Orm\Entity\ShipLog;
 use Stu\Orm\Entity\ShipRumpBuildingFunction;
 use Stu\Orm\Entity\ShipRumpCategory;
@@ -121,6 +122,8 @@ use Stu\Orm\Entity\ShipRumpSpecial;
 use Stu\Orm\Entity\ShipRumpUser;
 use Stu\Orm\Entity\ShipTakeover;
 use Stu\Orm\Entity\ShipyardShipQueue;
+use Stu\Orm\Entity\SkillEnhancement;
+use Stu\Orm\Entity\SkillEnhancementLog;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\SpacecraftEmergency;
 use Stu\Orm\Entity\SpacecraftRump;
@@ -204,6 +207,7 @@ return [
     ColonyScanRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(ColonyScan::class),
     CrewRaceRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(CrewRace::class),
     CrewRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(Crew::class),
+    CrewSkillRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(CrewSkill::class),
     CrewTrainingRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(CrewTraining::class),
     DatabaseCategoryRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(DatabaseCategory::class),
     DatabaseCategoryAwardRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(DatabaseCategoryAward::class),
@@ -283,6 +287,8 @@ return [
     SpacecraftSystemRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(SpacecraftSystem::class),
     ShipTakeoverRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(ShipTakeover::class),
     ShipyardShipQueueRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(ShipyardShipQueue::class),
+    SkillEnhancementRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(SkillEnhancement::class),
+    SkillEnhancementLogRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(SkillEnhancementLog::class),
     SpacecraftRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(Spacecraft::class),
     SpacecraftEmergencyRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(SpacecraftEmergency::class),
     StarSystemMapRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(StarSystemMap::class),
