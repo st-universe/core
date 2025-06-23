@@ -81,6 +81,8 @@ final class SessionStorage implements SessionStorageInterface
             }
             unset($data[$key][$value]);
         }
+
+        unset($this->sessionDataPerUser[$user->getId()]);
         $user->setSessionData(serialize($data));
         $this->userRepository->save($user);
     }
