@@ -106,7 +106,7 @@ final class ShowModuleFab implements ViewControllerInterface
             $rumpId = $rump->getId();
             $rumpRoleId = $rump->getRoleId();
 
-            $shipRumpModuleLevel = $this->shipRumpModuleLevelRepository->getByShipRump($rumpId);
+            $shipRumpModuleLevel = $this->shipRumpModuleLevelRepository->getByShipRump($rump);
             if ($shipRumpModuleLevel === null) {
                 throw new RuntimeException('this should not happen');
             }
@@ -127,10 +127,8 @@ final class ShowModuleFab implements ViewControllerInterface
                         $listItem->addRump($rump);
                     }
                 } else {
-                    $min_level_method = 'getModuleLevel' . $type->value . 'Min';
-                    $max_level_method = 'getModuleLevel' . $type->value . 'Max';
-                    $min_level = $shipRumpModuleLevel->$min_level_method();
-                    $max_level = $shipRumpModuleLevel->$max_level_method();
+                    $min_level = $shipRumpModuleLevel->getMinimumLevel($type);
+                    $max_level = $shipRumpModuleLevel->getMaximumLevel($type);
 
                     if ($moduleLevel >= $min_level && $moduleLevel <= $max_level) {
                         $listItem->addRump($rump);

@@ -105,7 +105,7 @@ final class BuildShip implements ActionControllerInterface
             return;
         }
 
-        $moduleLevels = $this->shipRumpModuleLevelRepository->getByShipRump($rump->getId());
+        $moduleLevels = $this->shipRumpModuleLevelRepository->getByShipRump($rump);
         if ($moduleLevels === null) {
             throw new RuntimeException(sprintf('no module level for rumpId: %d', $rump->getId()));
         }
@@ -120,7 +120,7 @@ final class BuildShip implements ActionControllerInterface
 
             if (
                 $moduleType != SpacecraftModuleTypeEnum::SPECIAL
-                && $moduleLevels->{'getModuleMandatory' . $value}()
+                && $moduleLevels->isMandatory($moduleType)
                 && count($module) == 0
             ) {
                 $game->addInformationf(
@@ -156,7 +156,7 @@ final class BuildShip implements ActionControllerInterface
                 if ($mod === null) {
                     throw new RuntimeException(sprintf('moduleId %d does not exist', $moduleId));
                 }
-            } elseif (!$moduleLevels->{'getModuleLevel' . $value}()) {
+            } elseif (!$moduleLevels->getDefaultLevel($moduleType)) {
                 return;
             }
             if ($mod === null) {

@@ -49,7 +49,7 @@ class ModuleSelector implements ModuleSelectorInterface
         }
         $moduleLevels = $this->getShipRumpModuleLevel();
 
-        return $moduleLevels->{'getModuleMandatory' . $this->getModuleType()->value}() > 0;
+        return $moduleLevels->isMandatory($this->getModuleType());
     }
 
     #[Override]
@@ -144,8 +144,8 @@ class ModuleSelector implements ModuleSelectorInterface
             } elseif ($this->getHost() instanceof ColonyInterface) {
                 $mod_level = $this->getShipRumpModuleLevel();
 
-                $min_level = $mod_level->{'getModuleLevel' . $this->getModuleType()->value . 'Min'}();
-                $max_level = $mod_level->{'getModuleLevel' . $this->getModuleType()->value . 'Max'}();
+                $min_level = $mod_level->getMinimumLevel($this->getModuleType());
+                $max_level = $mod_level->getMaximumLevel($this->getModuleType());
                 $modules = $this->moduleRepository->getByTypeColonyAndLevel(
                     $host->getId(),
                     $this->getModuleType(),
@@ -205,7 +205,7 @@ class ModuleSelector implements ModuleSelectorInterface
     private function getShipRumpModuleLevel(): ShipRumpModuleLevelInterface
     {
         if ($this->shipRumpModuleLevel === null) {
-            $this->shipRumpModuleLevel = $this->shipRumpModuleLevelRepository->getByShipRump($this->rump->getId());
+            $this->shipRumpModuleLevel = $this->shipRumpModuleLevelRepository->getByShipRump($this->rump);
         }
 
         if ($this->shipRumpModuleLevel === null) {
@@ -223,7 +223,7 @@ class ModuleSelector implements ModuleSelectorInterface
         }
 
         return $this->getShipRumpModuleLevel()
-            ->{'getModuleLevel' . $this->getModuleType()->value}();
+            ->getDefaultLevel($this->getModuleType());
     }
 
     #[Override]
