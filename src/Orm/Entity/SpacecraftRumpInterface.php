@@ -176,7 +176,7 @@ interface SpacecraftRumpInterface
 
     public function hasSpecialAbility(int $value): bool;
 
-    public function getFractionId(): int;
+    public function getFactionId(): int;
 
     /**
      * @return Collection<int, ShipRumpSpecialInterface>
