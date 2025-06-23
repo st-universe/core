@@ -6,6 +6,8 @@ namespace Stu\Module\Ship\Lib;
 
 use Override;
 use RuntimeException;
+use Stu\Component\Crew\Skill\CrewEnhancemenProxy;
+use Stu\Component\Crew\Skill\SkillEnhancementEnum;
 use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -65,6 +67,8 @@ final class AstroEntryLib implements AstroEntryLibInterface
         $entry->setState(AstronomicalMappingEnum::DONE);
         $entry->setAstroStartTurn(null);
         $this->astroEntryRepository->save($entry);
+
+        CrewEnhancemenProxy::addExpertise($ship, SkillEnhancementEnum::FINISH_ASTRO_MAPPING);
     }
 
     #[Override]

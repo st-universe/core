@@ -74,7 +74,7 @@ final class TroopTransferUtility implements TroopTransferUtilityInterface
         // TODO create CrewSlotAssignment
         $crewAssignment->clearAssignment()
             ->assign($target)
-            ->setSlot(null);
+            ->setPosition(null);
 
         $target->getCrewAssignments()->add($crewAssignment);
 

@@ -748,6 +748,12 @@ parameters:
 			path: src/Module/Crew/Lib/CrewCreator.php
 
 		-
+			message: '#^Cannot call method getExpertise\(\) on Stu\\Orm\\Entity\\CrewSkillInterface\|null\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: src/Module/Crew/Lib/CrewCreator.php
+
+		-
 			message: '#^Cannot call method getId\(\) on Stu\\Orm\\Entity\\ShipRumpRoleInterface\|null\.$#'
 			identifier: method.nonObject
 			count: 2

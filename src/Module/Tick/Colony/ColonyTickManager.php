@@ -118,7 +118,7 @@ final class ColonyTickManager extends AbstractTickManager implements ColonyTickM
             if (!$this->colonyFunctionManager->hasActiveFunction($colony, BuildingFunctionEnum::ACADEMY)) {
                 continue;
             }
-            $this->crewCreator->create($obj->getUserId(), $colony);
+            $this->crewCreator->create($obj->getUser(), $colony);
 
             $this->crewTrainingRepository->delete($obj);
             $user[$obj->getUserId()]++;

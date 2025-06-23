@@ -60,7 +60,7 @@ class ManagerProviderColony implements ManagerProviderInterface
     #[Override]
     public function addCrewAssignment(SpacecraftInterface $spacecraft, int $amount): void
     {
-        $this->crewCreator->createCrewAssignment($spacecraft, $this->colony, $amount);
+        $this->crewCreator->createCrewAssignments($spacecraft, $this->colony, $amount);
     }
 
     #[Override]

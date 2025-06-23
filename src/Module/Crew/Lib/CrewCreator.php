@@ -6,16 +6,17 @@ namespace Stu\Module\Crew\Lib;
 
 use Override;
 use RuntimeException;
-use Stu\Component\Crew\CrewEnum;
+use Stu\Component\Crew\CrewGenderEnum;
 use Stu\Component\Crew\CrewOriginException;
+use Stu\Component\Crew\CrewPositionEnum;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\CrewAssignmentInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\CrewRaceRepositoryInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpCategoryRoleCrewRepositoryInterface;
-use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class CrewCreator implements CrewCreatorInterface
 {
@@ -23,19 +24,12 @@ final class CrewCreator implements CrewCreatorInterface
         private CrewRaceRepositoryInterface $crewRaceRepository,
         private ShipRumpCategoryRoleCrewRepositoryInterface $shipRumpCategoryRoleCrewRepository,
         private CrewAssignmentRepositoryInterface $shipCrewRepository,
-        private CrewRepositoryInterface $crewRepository,
-        private UserRepositoryInterface $userRepository
+        private CrewRepositoryInterface $crewRepository
     ) {}
 
     #[Override]
-    public function create(int $userId, ?ColonyInterface $colony = null): CrewAssignmentInterface
+    public function create(UserInterface $user, ?ColonyInterface $colony = null): CrewAssignmentInterface
     {
-        $user = $this->userRepository->find($userId);
-
-        if ($user === null) {
-            throw new RuntimeException('user not found1');
-        }
-
         $arr = [];
         $raceList = $this->crewRaceRepository->getByFaction((int)$user->getFactionId());
         foreach ($raceList as $obj) {
@@ -51,7 +45,7 @@ final class CrewCreator implements CrewCreatorInterface
         }
         $race = $this->crewRaceRepository->find($arr[array_rand($arr)]);
 
-        $gender = random_int(1, 100) > $race->getMaleRatio() ? CrewEnum::CREW_GENDER_FEMALE : CrewEnum::CREW_GENDER_MALE;
+        $gender = random_int(1, 100) > $race->getMaleRatio() ? CrewGenderEnum::FEMALE : CrewGenderEnum::MALE;
 
         $crew = $this->crewRepository->prototype();
 
@@ -59,7 +53,6 @@ final class CrewCreator implements CrewCreatorInterface
         $crew->setName('Crew');
         $crew->setRace($race);
         $crew->setGender($gender);
-        $crew->setType(CrewEnum::CREW_TYPE_CREWMAN);
         $this->crewRepository->save($crew);
 
         $crewAssignment = $this->shipCrewRepository->prototype();
@@ -75,16 +68,16 @@ final class CrewCreator implements CrewCreatorInterface
     }
 
     #[Override]
-    public function createCrewAssignment(
+    public function createCrewAssignments(
         SpacecraftInterface $spacecraft,
         ColonyInterface|SpacecraftInterface $crewProvider,
         ?int $amount = null
     ): void {
         $crewToSetup = $amount ?? $spacecraft->getBuildPlan()->getCrew();
 
-        foreach (CrewEnum::CREW_ORDER as $crewType) {
+        foreach (CrewPositionEnum::getOrder() as $position) {
             $createdcount = 1;
-            $slot = $crewType == CrewEnum::CREW_TYPE_CREWMAN ? 'getJob6Crew' : 'getJob' . $crewType . 'Crew';
+            $slot = $position === CrewPositionEnum::CREWMAN ? 'getJob6Crew' : 'getJob' . $position->value . 'Crew';
             $config = $this->shipRumpCategoryRoleCrewRepository->getByShipRumpCategoryAndRole(
                 $spacecraft->getRump()->getShipRumpCategory()->getId(),
                 $spacecraft->getRump()->getShipRumpRole()->getId()
@@ -97,11 +90,11 @@ final class CrewCreator implements CrewCreatorInterface
                 ));
             }
 
-            while ($crewToSetup > 0 && ($crewType == CrewEnum::CREW_TYPE_CREWMAN || $createdcount <= $config->$slot())) {
+            while ($crewToSetup > 0 && ($position === CrewPositionEnum::CREWMAN || $createdcount <= $config->$slot())) {
                 $createdcount++;
                 $crewToSetup--;
 
-                $crewAssignment = $this->getCrewByType($crewType, $crewProvider);
+                $crewAssignment = $this->getCrewByType($position, $crewProvider);
                 if ($crewAssignment === null) {
                     $crewAssignment = $this->getCrew($crewProvider);
                 }
@@ -113,9 +106,8 @@ final class CrewCreator implements CrewCreatorInterface
                 $crewAssignment->setSpacecraft($spacecraft);
                 $crewAssignment->setColony(null);
                 $crewAssignment->setTradepost(null);
-                //TODO set both ship and crew user
                 $crewAssignment->setUser($spacecraft->getUser());
-                $crewAssignment->setSlot($crewType);
+                $crewAssignment->setPosition($position);
 
                 $spacecraft->getCrewAssignments()->add($crewAssignment);
 
@@ -125,26 +117,35 @@ final class CrewCreator implements CrewCreatorInterface
     }
 
     private function getCrewByType(
-        int $crewType,
+        CrewPositionEnum $position,
         ColonyInterface|SpacecraftInterface $crewProvider
     ): ?CrewAssignmentInterface {
 
-        foreach ($crewProvider->getCrewAssignments() as $crewAssignment) {
-            $crew = $crewAssignment->getCrew();
-            if ($crew->getType() === $crewType) {
-                $crewProvider->getCrewAssignments()->removeElement($crewAssignment);
+        $filteredCrewAssignments = $crewProvider
+            ->getCrewAssignments()
+            ->filter(fn(CrewAssignmentInterface $assignment): bool => $assignment->getCrew()->isSkilledAt($position))
+            ->toArray();
 
-                return $crewAssignment;
-            }
+        if ($filteredCrewAssignments === []) {
+            return null;
         }
 
-        return null;
+        usort(
+            $filteredCrewAssignments,
+            fn(CrewAssignmentInterface $a, CrewAssignmentInterface $b): int =>
+            $b->getCrew()->getSkills()->get($position->value)->getExpertise() - $a->getCrew()->getSkills()->get($position->value)->getExpertise()
+        );
+
+
+        $crewAssignment = current($filteredCrewAssignments);
+        $crewProvider->getCrewAssignments()->removeElement($crewAssignment);
+
+        return $crewAssignment;
     }
 
     private function getCrew(ColonyInterface|SpacecraftInterface $crewProvider): ?CrewAssignmentInterface
     {
         $crewAssignments = $crewProvider->getCrewAssignments();
-
         if ($crewAssignments->isEmpty()) {
             return null;
         }

@@ -1,0 +1,56 @@
+{% set crew = CREW_ASSIGNMENT.getCrew %}
+{% set skills = crew.getSkills %}
+<form method="post" action="spacecraft.php">
+    <div>
+        {% if skills|length > 0 %}
+        <div style="float:left; padding-right: 5px; width: 5vw;">
+            <div class="box">
+                <div class="box_title">Skills</div>
+                <div class="box_body" style="vertical-align: middle; text-align: center;">
+                    {% for skill in crew.getSkills %}
+                    <div class="box">
+                        <div class="box_title">{{ skill.getPosition.getDescription }}</div>
+                        <div class="box_body" style="vertical-align: middle; text-align: center;">
+                            {{ skill.getRank.getDescription }} ({{ skill.getExpertise }})
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        <div class="box" style="float:left;">
+            <div class="box_title">Anzahl</div>
+            <div class="box_body">
+                <input type="hidden" size="3" name="id" value="{{ crew.getId }}" />
+                <input type="text" size="3" name="count" value="{{ COUNT }}" />
+                <input type="submit" name="SHOW_CREWMAN_DETAILS" class="button" value="Aktualisieren" />
+            </div>
+        </div>
+        <div style="float:left; width: 90vw; padding-top:5px;">
+            <table class="tcal">
+                <tr>
+                    <th colspan="2">Eintrag</th>
+                    <th>Datum</th>
+                </tr>
+                {% if LOGS %}
+                {% for entry in LOGS %}
+                {% set promotion = entry.getPromotion %}
+                <tr>
+                    {% if promotion %}
+                    <td style="color:rgb(88, 196, 0)">{{ promotion }}</td>
+                    {% endif %}
+                    {% set colspan = promotion ? 1 : 2 %}
+                    <td colspan="{{ colspan }}">{{ entry.__toString|bbcode }}</td>
+                    <td>{{ entry.getTimestamp|stuDateTime }}</td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="2">Keine Einträge vorhanden</td>
+                </tr>
+                {% endif %}
+            </table>
+        </div>
+    </div>
+</form>
