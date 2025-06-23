@@ -728,9 +728,9 @@ class SpacecraftRump implements SpacecraftRumpInterface
     }
 
     #[Override]
-    public function getFractionId(): int
+    public function getFactionId(): int
     {
-        //last digit of id shows fraction id
+        //last digit of id shows faction id
         return $this->getId() % 10;
     }
 
