@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250620190641 extends AbstractMigration
+final class Version20250623105128 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -1119,10 +1119,7 @@ final class Version20250620190641 extends AbstractMigration
             CREATE INDEX rump_colonize_building_ship_rump_idx ON stu_rumps_colonize_building (rump_id)
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE TABLE stu_rumps_module_level (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, rump_id INTEGER NOT NULL, module_level_1 SMALLINT NOT NULL, module_mandatory_1 SMALLINT NOT NULL, module_level_1_min SMALLINT NOT NULL, module_level_1_max SMALLINT NOT NULL, module_level_2 SMALLINT NOT NULL, module_mandatory_2 SMALLINT NOT NULL, module_level_2_min SMALLINT NOT NULL, module_level_2_max SMALLINT NOT NULL, module_level_3 SMALLINT NOT NULL, module_mandatory_3 SMALLINT NOT NULL, module_level_3_min SMALLINT NOT NULL, module_level_3_max SMALLINT NOT NULL, module_level_4 SMALLINT NOT NULL, module_mandatory_4 SMALLINT NOT NULL, module_level_4_min SMALLINT NOT NULL, module_level_4_max SMALLINT NOT NULL, module_level_5 SMALLINT NOT NULL, module_mandatory_5 SMALLINT NOT NULL, module_level_5_min SMALLINT NOT NULL, module_level_5_max SMALLINT NOT NULL, module_level_6 SMALLINT NOT NULL, module_mandatory_6 SMALLINT NOT NULL, module_level_6_min SMALLINT NOT NULL, module_level_6_max SMALLINT NOT NULL, module_level_7 SMALLINT NOT NULL, module_mandatory_7 SMALLINT NOT NULL, module_level_7_min SMALLINT NOT NULL, module_level_7_max SMALLINT NOT NULL, module_level_8 SMALLINT NOT NULL, module_mandatory_8 SMALLINT NOT NULL, module_level_8_min SMALLINT NOT NULL, module_level_8_max SMALLINT NOT NULL, module_level_10 SMALLINT NOT NULL, module_mandatory_10 SMALLINT NOT NULL, module_level_10_min SMALLINT NOT NULL, module_level_10_max SMALLINT NOT NULL, module_level_11 SMALLINT NOT NULL, module_mandatory_11 SMALLINT NOT NULL, module_level_11_min SMALLINT NOT NULL, module_level_11_max SMALLINT NOT NULL)
-        SQL);
-        $this->addSql(<<<'SQL'
-            CREATE INDEX rump_module_level_ship_rump_idx ON stu_rumps_module_level (rump_id)
+            CREATE TABLE stu_rump_module_level (type_values CLOB DEFAULT NULL, rump_id INTEGER NOT NULL, PRIMARY KEY(rump_id), CONSTRAINT FK_83E895DE2EE98D4C FOREIGN KEY (rump_id) REFERENCES stu_rump (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE TABLE stu_rumps_module_special (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, rump_id INTEGER NOT NULL, module_special_id INTEGER NOT NULL)
@@ -2024,7 +2021,7 @@ final class Version20250620190641 extends AbstractMigration
             DROP TABLE stu_rumps_colonize_building
         SQL);
         $this->addSql(<<<'SQL'
-            DROP TABLE stu_rumps_module_level
+            DROP TABLE stu_rump_module_level
         SQL);
         $this->addSql(<<<'SQL'
             DROP TABLE stu_rumps_module_special

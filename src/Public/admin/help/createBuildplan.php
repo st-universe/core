@@ -48,9 +48,7 @@ Init::run(function (ContainerInterface $dic): void {
             throw new RuntimeException(sprintf('rumpId %d does not exist!', $rumpId));
         }
 
-        $mod_level = $shipRumpModuleLevelRepo->getByShipRump(
-            $rump->getId()
-        );
+        $mod_level = $shipRumpModuleLevelRepo->getByShipRump($rump);
         $moduleTypes = [
             SpacecraftModuleTypeEnum::HULL,
             SpacecraftModuleTypeEnum::SHIELDS,
@@ -146,15 +144,12 @@ Init::run(function (ContainerInterface $dic): void {
             );
 
             foreach ($moduleTypes as $moduleType) {
-                $mod_level = $shipRumpModuleLevelRepo->getByShipRump(
-                    $rump->getId()
-                );
-
+                $mod_level = $shipRumpModuleLevelRepo->getByShipRump($rump);
                 $moduleTypeId = $moduleType->value;
 
                 if (
-                    $mod_level->{'getModuleLevel' . $moduleTypeId}() === 0
-                    && $mod_level->{'getModuleMandatory' . $moduleTypeId}() === 0
+                    $mod_level->getDefaultLevel($moduleType) === 0
+                    && !$mod_level->isMandatory($moduleType)
                 ) {
                     continue;
                 }
@@ -164,8 +159,8 @@ Init::run(function (ContainerInterface $dic): void {
                     $moduleType->getDescription()
                 );
 
-                $min_level = $mod_level->{'getModuleLevel' . $moduleTypeId . 'Min'}();
-                $max_level = $mod_level->{'getModuleLevel' . $moduleTypeId . 'Max'}();
+                $min_level = $mod_level->getMinimumLevel($moduleType);
+                $max_level = $mod_level->getMaximumLevel($moduleType);
 
                 $modules = $moduleRepo->getByTypeAndLevel(
                     $moduleTypeId,

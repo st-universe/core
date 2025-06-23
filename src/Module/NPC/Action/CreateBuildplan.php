@@ -73,7 +73,7 @@ final class CreateBuildplan implements ActionControllerInterface
             throw new RuntimeException(sprintf('rumpId %d does not exist!', $rumpId));
         }
 
-        $mod_level = $this->shipRumpModuleLevelRepository->getByShipRump($rump->getId());
+        $mod_level = $this->shipRumpModuleLevelRepository->getByShipRump($rump);
         if ($mod_level === null) {
             throw new RuntimeException(sprintf('No module levels found for rump %d', $rump->getId()));
         }

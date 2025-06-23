@@ -115,10 +115,10 @@ final class ModuleSelectorEntry implements ModuleSelectorEntryInterface
         $moduleLevels = $this->shipRumpModuleLevel;
         $module = $this->module;
 
-        if ($moduleLevels->{'getModuleLevel' . $module->getType()->value}() > $module->getLevel()) {
+        if ($moduleLevels->getDefaultLevel($module->getType()) > $module->getLevel()) {
             return 'module_positive';
         }
-        if ($moduleLevels->{'getModuleLevel' . $module->getType()->value}() < $module->getLevel()) {
+        if ($moduleLevels->getDefaultLevel($module->getType()) < $module->getLevel()) {
             return 'module_negative';
         }
         return '';
