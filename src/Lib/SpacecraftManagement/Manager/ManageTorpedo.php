@@ -6,7 +6,6 @@ namespace Stu\Lib\SpacecraftManagement\Manager;
 
 use Override;
 use RuntimeException;
-use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -14,14 +13,12 @@ use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\TorpedoTypeInterface;
-use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 class ManageTorpedo implements ManagerInterface
 {
     public function __construct(
-        private TorpedoTypeRepositoryInterface $torpedoTypeRepository,
-        private ShipTorpedoManagerInterface $shipTorpedoManager,
-        private PrivateMessageSenderInterface $privateMessageSender
+        private readonly ShipTorpedoManagerInterface $shipTorpedoManager,
+        private readonly PrivateMessageSenderInterface $privateMessageSender
     ) {}
 
     #[Override]
@@ -54,7 +51,7 @@ class ManageTorpedo implements ManagerInterface
             return $this->unloadTorpedo(abs($load), $wrapper, $managerProvider);
         } else {
             $selectedTorpedoTypeArray = $values['torp_type'] ?? null;
-            $torpedoType = $this->determineTorpedoType($ship, $selectedTorpedoTypeArray);
+            $torpedoType = $this->determineTorpedoType($wrapper, $selectedTorpedoTypeArray);
 
             return $this->loadTorpedo($load, $torpedoType, $wrapper, $managerProvider);
         }
@@ -72,18 +69,6 @@ class ManageTorpedo implements ManagerInterface
             }
 
             return $count;
-        }
-    }
-
-    /**
-     * @return array<int, TorpedoTypeInterface>
-     */
-    private function getPossibleTorpedoTypes(SpacecraftInterface $spacecraft): array
-    {
-        if ($spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::TORPEDO_STORAGE)) {
-            return $this->torpedoTypeRepository->getAll();
-        } else {
-            return $this->torpedoTypeRepository->getByLevel($spacecraft->getRump()->getTorpedoLevel());
         }
     }
 
@@ -119,8 +104,10 @@ class ManageTorpedo implements ManagerInterface
     /**
      * @param array<int|string, mixed>|null $selectedTorpedoTypeArray
      */
-    private function determineTorpedoType(SpacecraftInterface $spacecraft, ?array $selectedTorpedoTypeArray): ?TorpedoTypeInterface
+    private function determineTorpedoType(SpacecraftWrapperInterface $wrapper, ?array $selectedTorpedoTypeArray): ?TorpedoTypeInterface
     {
+        $spacecraft = $wrapper->get();
+
         if ($spacecraft->getTorpedoCount() > 0) {
             return $spacecraft->getTorpedo();
         }
@@ -134,7 +121,7 @@ class ManageTorpedo implements ManagerInterface
         }
 
         $selectedTorpedoTypeId = (int) $selectedTorpedoTypeArray[$spacecraft->getId()];
-        $possibleTorpedoTypes = $this->getPossibleTorpedoTypes($spacecraft);
+        $possibleTorpedoTypes = $wrapper->getPossibleTorpedoTypes();
 
         if (!array_key_exists($selectedTorpedoTypeId, $possibleTorpedoTypes)) {
             return null;
