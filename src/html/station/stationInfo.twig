@@ -1,4 +1,5 @@
 {% set rump = PLAN.getRump %}
+{% set baseValues = rump.getBaseValues %}
 
 <table class="tcal">
     <tr>
@@ -11,13 +12,13 @@
                     <span>baubar:</span> {{ LOCATION }}<br />
                     <span></span><br />
                     <span>Crewanzahl:</span> {{ PLAN.getCrew }}<br />
-                    <span>Hüllenpunkte:</span> {{ rump.getBaseHull }}<br />
-                    <span>Schildpunkte:</span> {{ rump.getBaseShield }}<br />
-                    <span>EPS:</span> {{ rump.getBaseEps }}<br />
-                    <span>Reaktorleistung:</span> {{ rump.getBaseReactor }}<br />
-                    <span>Sensorreichtweite:</span> {{ rump.getBaseSensorRange }}<br />
-                    <span>Trefferchance (eff.):</span> {{ rump.getHitChance }}%<br />
-                    <span>Energiewaffenschaden:</span> {{ rump.getBaseDamage }}<br />
+                    <span>Hüllenpunkte:</span> {{ baseValues.getBaseHull }}<br />
+                    <span>Schildpunkte:</span> {{ baseValues.getBaseShield }}<br />
+                    <span>EPS:</span> {{ baseValues.getBaseEps }}<br />
+                    <span>Reaktorleistung:</span> {{ baseValues.getBaseReactor }}<br />
+                    <span>Sensorreichtweite:</span> {{ baseValues.getBaseSensorRange }}<br />
+                    <span>Trefferchance (eff.):</span> {{ baseValues.getHitChance }}%<br />
+                    <span>Energiewaffenschaden:</span> {{ baseValues.getBaseDamage }}<br />
                     <span>Energiewaffen-Salven:</span> {{ rump.getPhaserVolleys }}<br />
                     <span>Torpedolevel</span>: {{ rump.getTorpedoLevel }}<br />
                     <span>Torpedo-Salven</span>: {{ rump.getTorpedoVolleys }}<br />

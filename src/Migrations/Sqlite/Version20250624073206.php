@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250623105128 extends AbstractMigration
+final class Version20250624073206 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -1065,7 +1065,13 @@ final class Version20250623105128 extends AbstractMigration
             CREATE INDEX IDX_8F6D5B4A76ED395 ON stu_researched (user_id)
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE TABLE stu_rump (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, category_id INTEGER NOT NULL, role_id INTEGER DEFAULT NULL, evade_chance SMALLINT NOT NULL, hit_chance SMALLINT NOT NULL, module_level SMALLINT NOT NULL, base_crew SMALLINT NOT NULL, base_eps SMALLINT NOT NULL, base_reactor SMALLINT NOT NULL, base_hull INTEGER NOT NULL, base_shield INTEGER NOT NULL, base_damage SMALLINT NOT NULL, base_sensor_range SMALLINT NOT NULL, base_torpedo_storage SMALLINT NOT NULL, phaser_volleys SMALLINT NOT NULL, phaser_hull_damage_factor SMALLINT NOT NULL, phaser_shield_damage_factor SMALLINT NOT NULL, torpedo_level SMALLINT NOT NULL, torpedo_volleys SMALLINT NOT NULL, name VARCHAR(255) NOT NULL, is_buildable BOOLEAN NOT NULL, is_npc BOOLEAN NOT NULL, eps_cost SMALLINT NOT NULL, storage INTEGER NOT NULL, slots SMALLINT NOT NULL, buildtime INTEGER NOT NULL, needed_workbees SMALLINT DEFAULT NULL, sort SMALLINT NOT NULL, database_id INTEGER DEFAULT NULL, commodity_id INTEGER DEFAULT NULL, flight_ecost SMALLINT NOT NULL, beam_factor SMALLINT NOT NULL, special_slots SMALLINT NOT NULL, shuttle_slots SMALLINT NOT NULL, tractor_mass INTEGER NOT NULL, tractor_payload INTEGER NOT NULL, prestige INTEGER NOT NULL, base_warpdrive INTEGER NOT NULL, npc_buildable BOOLEAN DEFAULT NULL, CONSTRAINT FK_AD2CDF30D60322AC FOREIGN KEY (role_id) REFERENCES stu_rumps_roles (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_AD2CDF3012469DE2 FOREIGN KEY (category_id) REFERENCES stu_rumps_categories (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_AD2CDF30B4ACC212 FOREIGN KEY (commodity_id) REFERENCES stu_commodity (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_AD2CDF30F0AA09DB FOREIGN KEY (database_id) REFERENCES stu_database_entrys (id) NOT DEFERRABLE INITIALLY IMMEDIATE)
+            CREATE TABLE stu_rump (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, category_id INTEGER NOT NULL, role_id INTEGER DEFAULT NULL, phaser_volleys SMALLINT NOT NULL, phaser_hull_damage_factor SMALLINT NOT NULL, phaser_shield_damage_factor SMALLINT NOT NULL, torpedo_level SMALLINT NOT NULL, torpedo_volleys SMALLINT NOT NULL, base_torpedo_storage SMALLINT NOT NULL, name VARCHAR(255) NOT NULL, is_buildable BOOLEAN NOT NULL, is_npc BOOLEAN NOT NULL, eps_cost SMALLINT NOT NULL, storage INTEGER NOT NULL, slots SMALLINT NOT NULL, buildtime INTEGER NOT NULL, needed_workbees SMALLINT DEFAULT NULL, sort SMALLINT NOT NULL, database_id INTEGER DEFAULT NULL, commodity_id INTEGER DEFAULT NULL, flight_ecost SMALLINT NOT NULL, beam_factor SMALLINT NOT NULL, shuttle_slots SMALLINT NOT NULL, tractor_mass INTEGER NOT NULL, tractor_payload INTEGER NOT NULL, prestige INTEGER NOT NULL, npc_buildable BOOLEAN DEFAULT NULL, CONSTRAINT FK_AD2CDF30D60322AC FOREIGN KEY (role_id) REFERENCES stu_rumps_roles (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_AD2CDF3012469DE2 FOREIGN KEY (category_id) REFERENCES stu_rumps_categories (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_AD2CDF30B4ACC212 FOREIGN KEY (commodity_id) REFERENCES stu_commodity (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_AD2CDF30F0AA09DB FOREIGN KEY (database_id) REFERENCES stu_database_entrys (id) NOT DEFERRABLE INITIALLY IMMEDIATE)
+        SQL);
+        $this->addSql(<<<'SQL'
+            CREATE INDEX IDX_AD2CDF30D60322AC ON stu_rump (role_id)
+        SQL);
+        $this->addSql(<<<'SQL'
+            CREATE INDEX IDX_AD2CDF3012469DE2 ON stu_rump (category_id)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE INDEX IDX_AD2CDF30B4ACC212 ON stu_rump (commodity_id)
@@ -1074,10 +1080,7 @@ final class Version20250623105128 extends AbstractMigration
             CREATE INDEX IDX_AD2CDF30F0AA09DB ON stu_rump (database_id)
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE INDEX rump_category_idx ON stu_rump (category_id)
-        SQL);
-        $this->addSql(<<<'SQL'
-            CREATE INDEX rump_role_idx ON stu_rump (role_id)
+            CREATE TABLE stu_rump_base_values (evade_chance SMALLINT NOT NULL, hit_chance SMALLINT NOT NULL, module_level SMALLINT NOT NULL, base_crew SMALLINT NOT NULL, base_eps SMALLINT NOT NULL, base_reactor SMALLINT NOT NULL, base_hull INTEGER NOT NULL, base_shield INTEGER NOT NULL, base_damage SMALLINT NOT NULL, base_sensor_range SMALLINT NOT NULL, base_warpdrive INTEGER NOT NULL, special_slots SMALLINT NOT NULL, rump_id INTEGER NOT NULL, PRIMARY KEY(rump_id), CONSTRAINT FK_C47ECAED2EE98D4C FOREIGN KEY (rump_id) REFERENCES stu_rump (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE TABLE stu_rump_costs (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, rump_id INTEGER NOT NULL, commodity_id INTEGER NOT NULL, count INTEGER NOT NULL, CONSTRAINT FK_11BE8AA4B4ACC212 FOREIGN KEY (commodity_id) REFERENCES stu_commodity (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_11BE8AA42EE98D4C FOREIGN KEY (rump_id) REFERENCES stu_rump (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)
@@ -1087,6 +1090,9 @@ final class Version20250623105128 extends AbstractMigration
         SQL);
         $this->addSql(<<<'SQL'
             CREATE INDEX rump_cost_ship_rump_idx ON stu_rump_costs (rump_id)
+        SQL);
+        $this->addSql(<<<'SQL'
+            CREATE TABLE stu_rump_module_level (type_values CLOB DEFAULT NULL, rump_id INTEGER NOT NULL, PRIMARY KEY(rump_id), CONSTRAINT FK_30CC05172EE98D4C FOREIGN KEY (rump_id) REFERENCES stu_rump (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE TABLE stu_rumps_buildingfunction (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, rump_id INTEGER NOT NULL, building_function INTEGER NOT NULL)
@@ -1117,9 +1123,6 @@ final class Version20250623105128 extends AbstractMigration
         SQL);
         $this->addSql(<<<'SQL'
             CREATE INDEX rump_colonize_building_ship_rump_idx ON stu_rumps_colonize_building (rump_id)
-        SQL);
-        $this->addSql(<<<'SQL'
-            CREATE TABLE stu_rump_module_level (type_values CLOB DEFAULT NULL, rump_id INTEGER NOT NULL, PRIMARY KEY(rump_id), CONSTRAINT FK_83E895DE2EE98D4C FOREIGN KEY (rump_id) REFERENCES stu_rump (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE TABLE stu_rumps_module_special (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, rump_id INTEGER NOT NULL, module_special_id INTEGER NOT NULL)
@@ -2006,7 +2009,13 @@ final class Version20250623105128 extends AbstractMigration
             DROP TABLE stu_rump
         SQL);
         $this->addSql(<<<'SQL'
+            DROP TABLE stu_rump_base_values
+        SQL);
+        $this->addSql(<<<'SQL'
             DROP TABLE stu_rump_costs
+        SQL);
+        $this->addSql(<<<'SQL'
+            DROP TABLE stu_rump_module_level
         SQL);
         $this->addSql(<<<'SQL'
             DROP TABLE stu_rumps_buildingfunction
@@ -2019,9 +2028,6 @@ final class Version20250623105128 extends AbstractMigration
         SQL);
         $this->addSql(<<<'SQL'
             DROP TABLE stu_rumps_colonize_building
-        SQL);
-        $this->addSql(<<<'SQL'
-            DROP TABLE stu_rump_module_level
         SQL);
         $this->addSql(<<<'SQL'
             DROP TABLE stu_rumps_module_special

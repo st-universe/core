@@ -10,10 +10,10 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
-use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
 use Override;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
@@ -21,8 +21,6 @@ use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Orm\Repository\SpacecraftRumpRepository;
 
 #[Table(name: 'stu_rump')]
-#[Index(name: 'rump_category_idx', columns: ['category_id'])]
-#[Index(name: 'rump_role_idx', columns: ['role_id'])]
 #[Entity(repositoryClass: SpacecraftRumpRepository::class)]
 class SpacecraftRump implements SpacecraftRumpInterface
 {
@@ -31,44 +29,14 @@ class SpacecraftRump implements SpacecraftRumpInterface
     #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
+    #[OneToOne(targetEntity: 'SpacecraftRumpBaseValues', mappedBy: 'rump', fetch: 'EXTRA_LAZY', cascade: ['all'])]
+    private SpacecraftRumpBaseValuesInterface $baseValues;
+
     #[column(type: 'integer', enumType: SpacecraftRumpCategoryEnum::class, nullable: false)]
     private SpacecraftRumpCategoryEnum $category_id;
 
     #[column(type: 'integer', enumType: SpacecraftRumpRoleEnum::class, nullable: true)]
     private ?SpacecraftRumpRoleEnum $role_id = null;
-
-    #[column(type: 'smallint')]
-    private int $evade_chance = 0;
-
-    #[column(type: 'smallint')]
-    private int $hit_chance = 0;
-
-    #[column(type: 'smallint')]
-    private int $module_level = 0;
-
-    #[column(type: 'smallint')]
-    private int $base_crew = 0;
-
-    #[column(type: 'smallint')]
-    private int $base_eps = 0;
-
-    #[column(type: 'smallint')]
-    private int $base_reactor = 0;
-
-    #[column(type: 'integer')]
-    private int $base_hull = 0;
-
-    #[column(type: 'integer')]
-    private int $base_shield = 0;
-
-    #[column(type: 'smallint')]
-    private int $base_damage = 0;
-
-    #[column(type: 'smallint')]
-    private int $base_sensor_range = 0;
-
-    #[column(type: 'smallint')]
-    private int $base_torpedo_storage = 0;
 
     #[column(type: 'smallint')]
     private int $phaser_volleys = 0;
@@ -84,6 +52,9 @@ class SpacecraftRump implements SpacecraftRumpInterface
 
     #[column(type: 'smallint')]
     private int $torpedo_volleys = 0;
+
+    #[column(type: 'smallint')]
+    private int $base_torpedo_storage = 0;
 
     #[Column(type: 'string')]
     private string $name = '';
@@ -125,9 +96,6 @@ class SpacecraftRump implements SpacecraftRumpInterface
     private int $beam_factor = 0;
 
     #[column(type: 'smallint')]
-    private int $special_slots = 0;
-
-    #[column(type: 'smallint')]
     private int $shuttle_slots = 0;
 
     #[column(type: 'integer')]
@@ -138,9 +106,6 @@ class SpacecraftRump implements SpacecraftRumpInterface
 
     #[Column(type: 'integer')]
     private int $prestige;
-
-    #[Column(type: 'integer')]
-    private int $base_warpdrive = 0;
 
     #[Column(type: 'boolean', nullable: true)]
     private ?bool $npc_buildable = true;
@@ -193,6 +158,12 @@ class SpacecraftRump implements SpacecraftRumpInterface
     }
 
     #[Override]
+    public function getBaseValues(): SpacecraftRumpBaseValuesInterface
+    {
+        return $this->baseValues;
+    }
+
+    #[Override]
     public function getCategoryId(): SpacecraftRumpCategoryEnum
     {
         return $this->category_id;
@@ -205,185 +176,15 @@ class SpacecraftRump implements SpacecraftRumpInterface
     }
 
     #[Override]
-    public function setRoleId(?SpacecraftRumpRoleEnum $roleId): SpacecraftRumpInterface
-    {
-        $this->role_id = $roleId;
-        return $this;
-    }
-
-    #[Override]
-    public function getEvadeChance(): int
-    {
-        return $this->evade_chance;
-    }
-
-    #[Override]
-    public function setEvadeChance(int $evadeChance): SpacecraftRumpInterface
-    {
-        $this->evade_chance = $evadeChance;
-        return $this;
-    }
-
-    #[Override]
-    public function getHitChance(): int
-    {
-        return $this->hit_chance;
-    }
-
-    #[Override]
-    public function setHitChance(int $hitChance): SpacecraftRumpInterface
-    {
-        $this->hit_chance = $hitChance;
-        return $this;
-    }
-
-    #[Override]
-    public function getModuleLevel(): int
-    {
-        return $this->module_level;
-    }
-
-    #[Override]
-    public function setModuleLevel(int $moduleLevel): SpacecraftRumpInterface
-    {
-        $this->module_level = $moduleLevel;
-        return $this;
-    }
-
-    #[Override]
-    public function getBaseCrew(): int
-    {
-        return $this->base_crew;
-    }
-
-    #[Override]
-    public function setBaseCrew(int $baseCrew): SpacecraftRumpInterface
-    {
-        $this->base_crew = $baseCrew;
-        return $this;
-    }
-
-    #[Override]
-    public function getBaseEps(): int
-    {
-        return $this->base_eps;
-    }
-
-    #[Override]
-    public function setBaseEps(int $baseEps): SpacecraftRumpInterface
-    {
-        $this->base_eps = $baseEps;
-        return $this;
-    }
-
-    #[Override]
-    public function getBaseReactor(): int
-    {
-        return $this->base_reactor;
-    }
-
-    #[Override]
-    public function setBaseReactor(int $baseReactor): SpacecraftRumpInterface
-    {
-        $this->base_reactor = $baseReactor;
-        return $this;
-    }
-
-    #[Override]
-    public function getBaseHull(): int
-    {
-        return $this->base_hull;
-    }
-
-    #[Override]
-    public function setBaseHull(int $baseHull): SpacecraftRumpInterface
-    {
-        $this->base_hull = $baseHull;
-        return $this;
-    }
-
-    #[Override]
-    public function getBaseShield(): int
-    {
-        return $this->base_shield;
-    }
-
-    #[Override]
-    public function setBaseShield(int $baseShield): SpacecraftRumpInterface
-    {
-        $this->base_shield = $baseShield;
-        return $this;
-    }
-
-    #[Override]
-    public function getBaseDamage(): int
-    {
-        return $this->base_damage;
-    }
-
-    #[Override]
-    public function getBaseSensorRange(): int
-    {
-        return $this->base_sensor_range;
-    }
-
-    #[Override]
-    public function setBaseSensorRange(int $baseSensorRange): SpacecraftRumpInterface
-    {
-        $this->base_sensor_range = $baseSensorRange;
-        return $this;
-    }
-
-    #[Override]
-    public function getBaseTorpedoStorage(): int
-    {
-        return $this->base_torpedo_storage;
-    }
-
-    #[Override]
-    public function setBaseTorpedoStorage(int $baseTorpedoStorage): SpacecraftRumpInterface
-    {
-        $this->base_torpedo_storage = $baseTorpedoStorage;
-        return $this;
-    }
-
-    #[Override]
     public function getBeamFactor(): int
     {
         return $this->beam_factor;
     }
 
     #[Override]
-    public function setBeamFactor(int $beamFactor): SpacecraftRumpInterface
-    {
-        $this->beam_factor = $beamFactor;
-        return $this;
-    }
-
-    #[Override]
-    public function getSpecialSlots(): int
-    {
-        return $this->special_slots;
-    }
-
-    #[Override]
-    public function setSpecialSlots(int $specialSlots): SpacecraftRumpInterface
-    {
-        $this->special_slots = $specialSlots;
-        return $this;
-    }
-
-    #[Override]
     public function getShuttleSlots(): int
     {
         return $this->shuttle_slots;
-    }
-
-    #[Override]
-    public function setShuttleSlots(int $shuttleSlots): SpacecraftRumpInterface
-    {
-        $this->shuttle_slots = $shuttleSlots;
-        return $this;
     }
 
     #[Override]
@@ -399,29 +200,9 @@ class SpacecraftRump implements SpacecraftRumpInterface
     }
 
     #[Override]
-    public function getBaseWarpDrive(): int
-    {
-        return $this->base_warpdrive;
-    }
-
-    #[Override]
-    public function setBaseWarpDrive(int $baseWarpDrive): SpacecraftRumpInterface
-    {
-        $this->base_warpdrive = $baseWarpDrive;
-        return $this;
-    }
-
-    #[Override]
     public function getPhaserVolleys(): int
     {
         return $this->phaser_volleys;
-    }
-
-    #[Override]
-    public function setPhaserVolleys(int $phaserVolleys): SpacecraftRumpInterface
-    {
-        $this->phaser_volleys = $phaserVolleys;
-        return $this;
     }
 
     #[Override]
@@ -431,23 +212,9 @@ class SpacecraftRump implements SpacecraftRumpInterface
     }
 
     #[Override]
-    public function setPhaserHullDamageFactor(int $phaserHullDamageFactor): SpacecraftRumpInterface
-    {
-        $this->phaser_hull_damage_factor = $phaserHullDamageFactor;
-        return $this;
-    }
-
-    #[Override]
     public function getPhaserShieldDamageFactor(): int
     {
         return $this->phaser_shield_damage_factor;
-    }
-
-    #[Override]
-    public function setPhaserShieldDamageFactor(int $phaserShieldDamageFactor): SpacecraftRumpInterface
-    {
-        $this->phaser_shield_damage_factor = $phaserShieldDamageFactor;
-        return $this;
     }
 
     #[Override]
@@ -457,23 +224,15 @@ class SpacecraftRump implements SpacecraftRumpInterface
     }
 
     #[Override]
-    public function setTorpedoLevel(int $torpedoLevel): SpacecraftRumpInterface
-    {
-        $this->torpedo_level = $torpedoLevel;
-        return $this;
-    }
-
-    #[Override]
     public function getTorpedoVolleys(): int
     {
         return $this->torpedo_volleys;
     }
 
     #[Override]
-    public function setTorpedoVolleys(int $torpedoVolleys): SpacecraftRumpInterface
+    public function getBaseTorpedoStorage(): int
     {
-        $this->torpedo_volleys = $torpedoVolleys;
-        return $this;
+        return $this->base_torpedo_storage;
     }
 
     #[Override]
@@ -606,36 +365,15 @@ class SpacecraftRump implements SpacecraftRumpInterface
     }
 
     #[Override]
-    public function setFlightEcost(int $flightEcost): SpacecraftRumpInterface
-    {
-        $this->flight_ecost = $flightEcost;
-        return $this;
-    }
-
-    #[Override]
     public function getShipRumpRole(): ?ShipRumpRoleInterface
     {
         return $this->shipRumpRole;
     }
 
     #[Override]
-    public function setShipRumpRole(?ShipRumpRoleInterface $shipRumpRole): SpacecraftRumpInterface
-    {
-        $this->shipRumpRole = $shipRumpRole;
-        return $this;
-    }
-
-    #[Override]
     public function getShipRumpCategory(): ShipRumpCategoryInterface
     {
         return $this->shipRumpCategory;
-    }
-
-    #[Override]
-    public function setShipRumpCategory(ShipRumpCategoryInterface $shipRumpCategory): SpacecraftRumpInterface
-    {
-        $this->shipRumpCategory = $shipRumpCategory;
-        return $this;
     }
 
     #[Override]

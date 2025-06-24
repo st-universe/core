@@ -101,7 +101,7 @@ abstract class Spacecraft implements SpacecraftInterface
     #[Column(type: 'integer')]
     private int $location_id = 0;
 
-    #[OneToOne(targetEntity: 'SpacecraftCondition', mappedBy: 'spacecraft', cascade: ['all'])]
+    #[OneToOne(targetEntity: 'SpacecraftCondition', mappedBy: 'spacecraft', fetch: 'EAGER', cascade: ['all'])]
     private SpacecraftConditionInterface $condition;
 
     #[OneToOne(targetEntity: 'Ship')]

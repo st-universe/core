@@ -77,13 +77,13 @@ final class SpacecraftCrewCalculator implements SpacecraftCrewCalculatorInterfac
                 $user->getFaction(),
                 $rump
             ),
-            $rump->getBaseCrew()
+            $rump->getBaseValues()->getBaseCrew()
         );
     }
 
     private function getBaseCrewCount(SpacecraftRumpInterface $shipRump): int
     {
-        $count = $shipRump->getBaseCrew();
+        $count = $shipRump->getBaseValues()->getBaseCrew();
         if ($this->getCrewObj($shipRump) !== null) {
             foreach ([1, 2, 3, 4, 5, 7] as $slot) {
                 $crew_func = 'getJob' . $slot . 'Crew';

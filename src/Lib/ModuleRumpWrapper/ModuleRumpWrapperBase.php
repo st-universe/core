@@ -10,6 +10,7 @@ use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Entity\SpacecraftBuildplanInterface;
+use Stu\Orm\Entity\SpacecraftRumpBaseValuesInterface;
 use Stu\Orm\Entity\SpacecraftRumpInterface;
 
 abstract class ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
@@ -17,7 +18,14 @@ abstract class ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
     /** @var null|array<int, ModuleInterface> */
     private ?array $modules = null;
 
-    public function __construct(protected SpacecraftRumpInterface $rump, private ?SpacecraftBuildplanInterface $buildplan) {}
+    protected SpacecraftRumpBaseValuesInterface $rumpBaseValues;
+
+    public function __construct(
+        protected SpacecraftRumpInterface $rump,
+        private ?SpacecraftBuildplanInterface $buildplan
+    ) {
+        $this->rumpBaseValues = $rump->getBaseValues();
+    }
 
     abstract public function getModuleType(): SpacecraftModuleTypeEnum;
 

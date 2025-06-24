@@ -23,7 +23,7 @@ final class ModuleRumpWrapperHull extends ModuleRumpWrapperBase implements Modul
         return (new ModuleValueCalculator())->calculateModuleValue(
             $this->rump,
             $module,
-            $this->rump->getBaseHull()
+            $this->rumpBaseValues->getBaseHull()
         );
     }
 

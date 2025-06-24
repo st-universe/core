@@ -10,65 +10,15 @@ interface SpacecraftRumpInterface
 {
     public function getId(): int;
 
+    public function getBaseValues(): SpacecraftRumpBaseValuesInterface;
+
     public function getCategoryId(): SpacecraftRumpCategoryEnum;
 
     public function getRoleId(): ?SpacecraftRumpRoleEnum;
 
-    public function setRoleId(?SpacecraftRumpRoleEnum $roleId): SpacecraftRumpInterface;
-
-    public function getEvadeChance(): int;
-
-    public function setEvadeChance(int $evadeChance): SpacecraftRumpInterface;
-
-    public function getHitChance(): int;
-
-    public function setHitChance(int $hitChance): SpacecraftRumpInterface;
-
-    public function getModuleLevel(): int;
-
-    public function setModuleLevel(int $moduleLevel): SpacecraftRumpInterface;
-
-    public function getBaseCrew(): int;
-
-    public function setBaseCrew(int $baseCrew): SpacecraftRumpInterface;
-
-    public function getBaseEps(): int;
-
-    public function setBaseEps(int $baseEps): SpacecraftRumpInterface;
-
-    public function getBaseReactor(): int;
-
-    public function setBaseReactor(int $baseReactor): SpacecraftRumpInterface;
-
-    public function getBaseHull(): int;
-
-    public function setBaseHull(int $baseHull): SpacecraftRumpInterface;
-
-    public function getBaseShield(): int;
-
-    public function setBaseShield(int $baseShield): SpacecraftRumpInterface;
-
-    public function getBaseDamage(): int;
-
-    public function getBaseSensorRange(): int;
-
-    public function setBaseSensorRange(int $baseSensorRange): SpacecraftRumpInterface;
-
-    public function getBaseTorpedoStorage(): int;
-
-    public function setBaseTorpedoStorage(int $baseTorpedoStorage): SpacecraftRumpInterface;
-
     public function getBeamFactor(): int;
 
-    public function setBeamFactor(int $beamFactor): SpacecraftRumpInterface;
-
-    public function getSpecialSlots(): int;
-
-    public function setSpecialSlots(int $specialSlots): SpacecraftRumpInterface;
-
     public function getShuttleSlots(): int;
-
-    public function setShuttleSlots(int $shuttleSlots): SpacecraftRumpInterface;
 
     public function getTractorMass(): int;
 
@@ -76,23 +26,15 @@ interface SpacecraftRumpInterface
 
     public function getPhaserVolleys(): int;
 
-    public function setPhaserVolleys(int $phaserVolleys): SpacecraftRumpInterface;
-
     public function getPhaserHullDamageFactor(): int;
-
-    public function setPhaserHullDamageFactor(int $phaserHullDamageFactor): SpacecraftRumpInterface;
 
     public function getPhaserShieldDamageFactor(): int;
 
-    public function setPhaserShieldDamageFactor(int $phaserShieldDamageFactor): SpacecraftRumpInterface;
-
     public function getTorpedoLevel(): int;
-
-    public function setTorpedoLevel(int $torpedoLevel): SpacecraftRumpInterface;
 
     public function getTorpedoVolleys(): int;
 
-    public function setTorpedoVolleys(int $torpedoVolleys): SpacecraftRumpInterface;
+    public function getBaseTorpedoStorage(): int;
 
     public function getName(): string;
 
@@ -134,17 +76,11 @@ interface SpacecraftRumpInterface
 
     public function getFlightEcost(): int;
 
-    public function setFlightEcost(int $flightEcost): SpacecraftRumpInterface;
-
     public function getPrestige(): int;
 
     public function getShipRumpRole(): ?ShipRumpRoleInterface;
 
-    public function setShipRumpRole(?ShipRumpRoleInterface $shipRumpRole): SpacecraftRumpInterface;
-
     public function getShipRumpCategory(): ShipRumpCategoryInterface;
-
-    public function setShipRumpCategory(ShipRumpCategoryInterface $shipRumpCategory): SpacecraftRumpInterface;
 
     public function getCommodity(): ?CommodityInterface;
 
@@ -184,10 +120,6 @@ interface SpacecraftRumpInterface
     public function getSpecialAbilities(): Collection;
 
     public function getNeededRepairWorkbees(): ?int;
-
-    public function getBaseWarpDrive(): int;
-
-    public function setBaseWarpDrive(int $baseWarpDrive): SpacecraftRumpInterface;
 
     public function getNpcBuildable(): ?bool;
 

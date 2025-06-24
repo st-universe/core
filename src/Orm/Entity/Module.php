@@ -233,7 +233,7 @@ class Module implements ModuleInterface
             $result += 1;
         }
 
-        if ($this->getLevel() > $rump->getModuleLevel()) {
+        if ($this->getLevel() > $rump->getBaseValues()->getModuleLevel()) {
             $result += 1;
         }
 
