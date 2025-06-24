@@ -87,11 +87,11 @@ final class SpacecraftLeaver implements SpacecraftLeaverInterface
             $survivalMessage = _('Der Crewman wurde exekutiert!');
         } else {
 
-            //transfer crewman into pods
-            $crewAssignment->setSpacecraft($pods);
             $spacecraft->getCrewAssignments()->removeElement($crewAssignment);
-            $this->shipCrewRepository->save($crewAssignment);
+            $crewAssignment->setSpacecraft($pods);
+            $crewAssignment->setSlot(null);
 
+            $this->shipCrewRepository->save($crewAssignment);
             $survivalMessage = _('Der Crewman hat das Schiff in einer Rettungskapsel verlassen!');
         }
 
