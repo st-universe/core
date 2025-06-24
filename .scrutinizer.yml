@@ -16,7 +16,7 @@ build:
     coverage:
       tests:
         override:
-          - command: ./bin/doctrine orm:generate-proxies && XDEBUG_MODE=coverage ./vendor/bin/phpunit --coverage-clover build/coverage-clover.xml tests
+          - command: XDEBUG_MODE=coverage ./vendor/bin/phpunit --coverage-clover build/coverage-clover.xml tests
             coverage:
               file: build/coverage-clover.xml
               format: clover

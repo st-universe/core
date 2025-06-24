@@ -11,13 +11,13 @@ use Doctrine\Migrations\Tools\Console\Command\DiffCommand;
 use Doctrine\Migrations\Tools\Console\Command\ExecuteCommand;
 use Doctrine\Migrations\Tools\Console\Command\MigrateCommand;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Tools\Console\Command\GenerateProxiesCommand;
 use Doctrine\ORM\Tools\Console\Command\SchemaTool\UpdateCommand;
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
 use Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider;
 use JetBrains\PhpStorm\Deprecated;
 use Mockery;
 use Override;
-use Psr\Container\ContainerInterface;
 use request;
 use RuntimeException;
 use Spatie\Snapshots\MatchesSnapshots;
@@ -112,7 +112,7 @@ abstract class TwigTestCase extends StuTestCase
     {
         $inputString = str_replace('\\', '\\\\', sprintf("execute --configuration=\"%s\" --quiet %s --up", $className));
 
-        $this->runCommandWithDependecyFactory(ExecuteCommand::class, new StringInput($inputString));
+        $this->runCommandWithDependencyFactory(ExecuteCommand::class, new StringInput($inputString));
     }
 
     private function initializeSchemaAndTestdata(): void
@@ -120,8 +120,9 @@ abstract class TwigTestCase extends StuTestCase
         if (!self::$isSchemaCreated) {
 
             //$this->createInitialDiff();
-            //$this->forceSchemaUpdate($dic);
+            //$this->runCommand(UpdateCommand::class, "orm:schema-tool:update --force");
 
+            $this->runCommand(GenerateProxiesCommand::class, "orm:generate-proxies");
             $this->initializeTestData();
 
             self::$isSchemaCreated = true;
@@ -211,33 +212,15 @@ abstract class TwigTestCase extends StuTestCase
 
     private function createInitialDiff(): void
     {
-        $this->runCommandWithDependecyFactory(
+        $this->runCommandWithDependencyFactory(
             DiffCommand::class,
             new StringInput(sprintf("diff --configuration=\"%s\" --from-empty-schema", self::INTTEST_MIGRATIONS_CONFIG_PATH))
         );
     }
 
-    private function forceSchemaUpdate(ContainerInterface $dic): void
-    {
-        $entityManagerProvider = new SingleManagerProvider($dic->get(EntityManagerInterface::class));
-
-        $application = ConsoleRunner::createApplication(
-            $entityManagerProvider,
-            [new UpdateCommand($entityManagerProvider)]
-        );
-
-        // create schema
-        $application->setAutoExit(false);
-        $exitCode = $application->run(new StringInput('orm:schema-tool:update --force'));
-
-        if ($exitCode != 0) {
-            throw new RuntimeException('Could not force schema update!');
-        }
-    }
-
     private function initializeTestData(): TwigTestCase
     {
-        $this->runCommandWithDependecyFactory(
+        $this->runCommandWithDependencyFactory(
             MigrateCommand::class,
             new StringInput(sprintf(
                 "migrate --configuration=\"%s\" --all-or-nothing --allow-no-migration --no-interaction --quiet", // -vv",
@@ -248,7 +231,25 @@ abstract class TwigTestCase extends StuTestCase
         return $this;
     }
 
-    private function runCommandWithDependecyFactory(string $command, InputInterface $input): void
+    private function runCommand(string $commandClass, string $input): void
+    {
+        $dic = $this->getContainer();
+        $entityManagerProvider = new SingleManagerProvider($dic->get(EntityManagerInterface::class));
+
+        $application = ConsoleRunner::createApplication(
+            $entityManagerProvider,
+            [new $commandClass($entityManagerProvider)]
+        );
+
+        $application->setAutoExit(false);
+        $exitCode = $application->run(new StringInput($input));
+
+        if ($exitCode != 0) {
+            throw new RuntimeException(sprintf('Could not execute %s!', $input));
+        }
+    }
+
+    private function runCommandWithDependencyFactory(string $command, InputInterface $input): void
     {
         $dic = $this->getContainer();
         $entityManager = $dic->get(EntityManagerInterface::class);
