@@ -107,8 +107,8 @@ final class StartShuttle implements ActionControllerInterface
         }
 
         // check if ship got enough energy
-        if ($epsSystem->getEps() < $rump->getBaseEps()) {
-            $game->addInformation(sprintf(_('Es wird %d Energie für den Start des %s benötigt'), $rump->getBaseEps(), $rump->getName()));
+        if ($epsSystem->getEps() < $rump->getBaseValues()->getBaseEps()) {
+            $game->addInformation(sprintf(_('Es wird %d Energie für den Start des %s benötigt'), $rump->getBaseValues()->getBaseEps(), $rump->getName()));
             return;
         }
 

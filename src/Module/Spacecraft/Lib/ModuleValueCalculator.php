@@ -18,24 +18,26 @@ final class ModuleValueCalculator implements ModuleValueCalculatorInterface
         int $value
     ): int {
 
+        $moduleLevel = $rump->getBaseValues()->getModuleLevel();
+
         if ($module->getType() === SpacecraftModuleTypeEnum::SENSOR) {
-            if ($rump->getModuleLevel() > $module->getLevel()) {
+            if ($moduleLevel > $module->getLevel()) {
                 return (int) round($value -  $module->getDowngradeFactor());
             }
-            if ($rump->getModuleLevel() < $module->getLevel()) {
+            if ($moduleLevel < $module->getLevel()) {
                 return (int) round($value +  $module->getUpgradeFactor());
             }
-            if ($rump->getModuleLevel() === $module->getLevel()) {
+            if ($moduleLevel === $module->getLevel()) {
                 return (int) round($value +  $module->getDefaultFactor());
             }
         } else {
-            if ($rump->getModuleLevel() > $module->getLevel()) {
+            if ($moduleLevel > $module->getLevel()) {
                 return (int) round($value - $value / 100 * $module->getDowngradeFactor());
             }
-            if ($rump->getModuleLevel() < $module->getLevel()) {
+            if ($moduleLevel < $module->getLevel()) {
                 return (int) round($value + $value / 100 * $module->getUpgradeFactor());
             }
-            if ($rump->getModuleLevel() === $module->getLevel()) {
+            if ($moduleLevel === $module->getLevel()) {
                 return (int) round($value + $value / 100 * $module->getDefaultFactor());
             }
         }
@@ -45,13 +47,15 @@ final class ModuleValueCalculator implements ModuleValueCalculatorInterface
     #[Override]
     public function calculateDamageImpact(SpacecraftRumpInterface $rump, ModuleInterface $module): string
     {
-        if ($rump->getModuleLevel() > $module->getLevel()) {
+        $moduleLevel = $rump->getBaseValues()->getModuleLevel();
+
+        if ($moduleLevel > $module->getLevel()) {
             return '-' . $module->getDowngradeFactor() . '%';
         }
-        if ($rump->getModuleLevel() < $module->getLevel()) {
+        if ($moduleLevel < $module->getLevel()) {
             return '+' . $module->getUpgradeFactor() . '%';
         }
-        if ($rump->getModuleLevel() === $module->getLevel()) {
+        if ($moduleLevel === $module->getLevel()) {
             return '+' . $module->getDefaultFactor() . '%';
         }
         return _('Normal');
@@ -60,15 +64,17 @@ final class ModuleValueCalculator implements ModuleValueCalculatorInterface
     #[Override]
     public function calculateEvadeChance(SpacecraftRumpInterface $rump, ModuleInterface $module): int
     {
-        $base = $rump->getEvadeChance();
-        if ($rump->getModuleLevel() > $module->getLevel()) {
-            $value = (1 - $base / 100) * 1 / (1 - $module->getDowngradeFactor() / 100);
-        } elseif ($rump->getModuleLevel() < $module->getLevel()) {
-            $value = (1 - $base / 100) * 1 / (1 + $module->getUpgradeFactor() / 100);
-        } elseif ($rump->getModuleLevel() === $module->getLevel()) {
-            $value = (1 - $base / 100) * 1 / (1 + $module->getDefaultFactor() / 100);
+        $moduleLevel = $rump->getBaseValues()->getModuleLevel();
+        $baseEvadeChange = $rump->getBaseValues()->getEvadeChance();
+
+        if ($moduleLevel > $module->getLevel()) {
+            $value = (1 - $baseEvadeChange / 100) * 1 / (1 - $module->getDowngradeFactor() / 100);
+        } elseif ($moduleLevel < $module->getLevel()) {
+            $value = (1 - $baseEvadeChange / 100) * 1 / (1 + $module->getUpgradeFactor() / 100);
+        } elseif ($moduleLevel === $module->getLevel()) {
+            $value = (1 - $baseEvadeChange / 100) * 1 / (1 + $module->getDefaultFactor() / 100);
         } else {
-            return $base;
+            return $baseEvadeChange;
         }
         return (int) round((1 - $value) * 100);
     }

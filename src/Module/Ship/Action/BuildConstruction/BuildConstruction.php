@@ -164,7 +164,7 @@ final class BuildConstruction implements ActionControllerInterface
             for ($i = 0; $i < min($amount, $stillNeeded); $i++) {
                 $workbeePlans[] = $plan;
                 $neededCrew += $plan->getCrew();
-                $neededEps += $plan->getRump()->getBaseEps();
+                $neededEps += $plan->getRump()->getBaseValues()->getBaseEps();
             }
         }
 
@@ -290,11 +290,13 @@ final class BuildConstruction implements ActionControllerInterface
             throw new RuntimeException(sprintf('rumpId %d is not a station', $rumpId));
         }
 
+        $baseHull = $rump->getBaseValues()->getBaseHull();
+
         $construction->setUser($ship->getUser());
         $construction->setRump($rump);
         $construction->setName($rump->getName());
-        $construction->setMaxHuell($rump->getBaseHull());
-        $construction->getCondition()->setHull($rump->getBaseHull());
+        $construction->setMaxHuell($baseHull);
+        $construction->getCondition()->setHull($baseHull);
         $construction->getCondition()->setState(SpacecraftStateEnum::UNDER_CONSTRUCTION);
 
         $construction->setLocation($ship->getLocation());

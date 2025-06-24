@@ -23,7 +23,7 @@ final class ModuleRumpWrapperShield extends ModuleRumpWrapperBase implements Mod
         return (new ModuleValueCalculator())->calculateModuleValue(
             $this->rump,
             $module,
-            $this->rump->getBaseShield()
+            $this->rumpBaseValues->getBaseShield()
         );
     }
 

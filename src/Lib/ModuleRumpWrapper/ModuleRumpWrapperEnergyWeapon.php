@@ -24,7 +24,7 @@ final class ModuleRumpWrapperEnergyWeapon extends ModuleRumpWrapperBase implemen
         return (new ModuleValueCalculator())->calculateModuleValue(
             $this->rump,
             $module,
-            $this->rump->getBaseDamage()
+            $this->rumpBaseValues->getBaseDamage()
         );
     }
 

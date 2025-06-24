@@ -24,7 +24,7 @@ final class ModuleRumpWrapperEps extends ModuleRumpWrapperBase implements Module
         return (new ModuleValueCalculator())->calculateModuleValue(
             $this->rump,
             $module,
-            $this->rump->getBaseEps()
+            $this->rumpBaseValues->getBaseEps()
         );
     }
 

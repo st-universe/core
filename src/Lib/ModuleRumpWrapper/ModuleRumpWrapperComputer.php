@@ -23,7 +23,7 @@ final class ModuleRumpWrapperComputer extends ModuleRumpWrapperBase implements M
         return (new ModuleValueCalculator())->calculateModuleValue(
             $this->rump,
             $module,
-            $this->rump->getHitChance()
+            $this->rumpBaseValues->getHitChance()
         );
     }
 

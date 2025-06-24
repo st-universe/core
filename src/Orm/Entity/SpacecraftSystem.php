@@ -211,7 +211,7 @@ class SpacecraftSystem implements SpacecraftSystemInterface
         if ($module !== null && $module->getLevel() > 0) {
             return $module->getLevel();
         } else {
-            return max(1, $this->getSpacecraft()->getRump()->getModuleLevel() - 1);
+            return max(1, $this->getSpacecraft()->getRump()->getBaseValues()->getModuleLevel() - 1);
         }
     }
 

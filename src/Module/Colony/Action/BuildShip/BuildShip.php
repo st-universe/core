@@ -141,7 +141,7 @@ final class BuildShip implements ActionControllerInterface
                     $specialCount++;
                 }
 
-                if ($specialCount > $rump->getSpecialSlots()) {
+                if ($specialCount > $rump->getBaseValues()->getSpecialSlots()) {
                     $game->addInformation(_('Mehr Spezial-Module als der Rumpf gestattet'));
                     return;
                 }
