@@ -70,10 +70,13 @@ final class CancelModuleCreation implements ActionControllerInterface
 
             $this->moduleQueueRepository->save($queue);
         }
-        if ($module->getEcost() * $count > $colony->getMaxEps() - $colony->getEps()) {
-            $colony->setEps($colony->getMaxEps());
+
+        $changeable = $colony->getChangeable();
+
+        if ($module->getEcost() * $count > $colony->getMaxEps() - $changeable->getEps()) {
+            $changeable->setEps($colony->getMaxEps());
         } else {
-            $colony->upperEps($count * $module->getEcost());
+            $changeable->upperEps($count * $module->getEcost());
         }
         foreach ($module->getCost() as $cost) {
             if ($colony->getStorageSum() >= $colony->getMaxStorage()) {

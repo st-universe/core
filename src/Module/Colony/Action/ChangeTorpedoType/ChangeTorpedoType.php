@@ -19,9 +19,7 @@ final class ChangeTorpedoType implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_CHANGE_TORPS';
 
-    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyRepositoryInterface $colonyRepository, private ChangeTorpedoTypeRequestInterface $changeTorpedoTypeRequest, private TorpedoTypeRepositoryInterface $torpedoTypeRepository)
-    {
-    }
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyRepositoryInterface $colonyRepository, private ChangeTorpedoTypeRequestInterface $changeTorpedoTypeRequest, private TorpedoTypeRepositoryInterface $torpedoTypeRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -43,9 +41,9 @@ final class ChangeTorpedoType implements ActionControllerInterface
                 return;
             }
 
-            $colony->setTorpedo($availableTorpedos[$torpedoId]);
+            $colony->getChangeable()->setTorpedo($availableTorpedos[$torpedoId]);
         } else {
-            $colony->setTorpedo(null);
+            $colony->getChangeable()->setTorpedo(null);
         }
         $this->colonyRepository->save($colony);
 

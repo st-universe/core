@@ -36,7 +36,7 @@ final class ShieldingProvider implements PlanetFieldHostComponentInterface
     {
         return sprintf(
             'Schildstärke: %d/%d',
-            $host instanceof ColonyInterface ? $host->getShields() : 0,
+            $host instanceof ColonyInterface ? $host->getChangeable()->getShields() : 0,
             $this->planetFieldRepository->getMaxShieldsOfHost($host)
         );
     }
@@ -49,7 +49,7 @@ final class ShieldingProvider implements PlanetFieldHostComponentInterface
         $bars = [];
         $width = 360;
 
-        $currentShields = $host instanceof ColonyInterface ? $host->getShields() : 0;
+        $currentShields = $host instanceof ColonyInterface ? $host->getChangeable()->getShields() : 0;
         $maxShields = $colonyShieldingManager->getMaxShielding();
 
         if ($colonyShieldingManager->isShieldingEnabled()) {

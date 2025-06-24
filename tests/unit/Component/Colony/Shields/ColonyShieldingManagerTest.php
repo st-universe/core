@@ -91,7 +91,7 @@ class ColonyShieldingManagerTest extends StuTestCase
             ->once()
             ->andReturnTrue();
 
-        $this->colony->shouldReceive('getShields')
+        $this->colony->shouldReceive('getChangeable->getShields')
             ->withNoArgs()
             ->once()
             ->andReturn(0);
@@ -111,7 +111,7 @@ class ColonyShieldingManagerTest extends StuTestCase
             ->once()
             ->andReturnTrue();
 
-        $this->colony->shouldReceive('getShields')
+        $this->colony->shouldReceive('getChangeable->getShields')
             ->withNoArgs()
             ->once()
             ->andReturn(52);

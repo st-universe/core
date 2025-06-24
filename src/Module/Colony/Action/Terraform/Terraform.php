@@ -102,11 +102,13 @@ final class Terraform implements ActionControllerInterface
         GameControllerInterface $game
     ): bool {
 
-        if ($terraforming->getEnergyCosts() > $colony->getEps()) {
+        $changeable = $colony->getChangeable();
+
+        if ($terraforming->getEnergyCosts() > $changeable->getEps()) {
             $game->addInformationf(
                 _('Es wird %s Energie benötigt - Vorhanden ist nur %s'),
                 $terraforming->getEnergyCosts(),
-                $colony->getEps()
+                $changeable->getEps()
             );
             return false;
         }
@@ -151,7 +153,7 @@ final class Terraform implements ActionControllerInterface
             }
         }
 
-        $colony->lowerEps($terraforming->getEnergyCosts());
+        $changeable->lowerEps($terraforming->getEnergyCosts());
         $this->colonyRepository->save($colony);
         $time = time() + $terraforming->getDuration();
 

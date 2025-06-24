@@ -24,7 +24,20 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ColonyResetter implements ColonyResetterInterface
 {
-    public function __construct(private ColonyRepositoryInterface $colonyRepository, private UserRepositoryInterface $userRepository, private StorageRepositoryInterface $storageRepository, private ColonyTerraformingRepositoryInterface $colonyTerraformingRepository, private ColonyShipQueueRepositoryInterface $colonyShipQueueRepository, private PlanetFieldRepositoryInterface $planetFieldRepository, private FleetRepositoryInterface $fleetRepository, private CrewRepositoryInterface $crewRepository, private CrewTrainingRepositoryInterface $crewTrainingRepository, private CrewAssignmentRepositoryInterface $shipCrewRepository, private ColonySandboxRepositoryInterface $colonySandboxRepository, private PrivateMessageSenderInterface $privateMessageSender) {}
+    public function __construct(
+        private readonly ColonyRepositoryInterface $colonyRepository,
+        private readonly UserRepositoryInterface $userRepository,
+        private readonly StorageRepositoryInterface $storageRepository,
+        private readonly ColonyTerraformingRepositoryInterface $colonyTerraformingRepository,
+        private readonly ColonyShipQueueRepositoryInterface $colonyShipQueueRepository,
+        private readonly PlanetFieldRepositoryInterface $planetFieldRepository,
+        private readonly FleetRepositoryInterface $fleetRepository,
+        private readonly CrewRepositoryInterface $crewRepository,
+        private readonly CrewTrainingRepositoryInterface $crewTrainingRepository,
+        private readonly CrewAssignmentRepositoryInterface $shipCrewRepository,
+        private readonly ColonySandboxRepositoryInterface $colonySandboxRepository,
+        private readonly PrivateMessageSenderInterface $privateMessageSender
+    ) {}
 
     #[Override]
     public function reset(
@@ -36,7 +49,11 @@ final class ColonyResetter implements ColonyResetterInterface
         $this->resetCrew($colony);
         $this->resetCrewTraining($colony);
 
-        $colony->setEps(0)
+        $colony
+            ->setUser($this->userRepository->getFallbackUser())
+            ->setName('')
+            ->getChangeable()
+            ->setEps(0)
             ->setMaxEps(0)
             ->setMaxStorage(0)
             ->setWorkers(0)
@@ -46,9 +63,7 @@ final class ColonyResetter implements ColonyResetterInterface
             ->setShieldFrequency(0)
             ->setShields(0)
             ->setImmigrationstate(true)
-            ->setPopulationlimit(0)
-            ->setUser($this->userRepository->getFallbackUser())
-            ->setName('');
+            ->setPopulationlimit(0);
 
         $this->colonyRepository->save($colony);
 

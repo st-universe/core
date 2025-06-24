@@ -14,9 +14,7 @@ final class RefreshColonyEps implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'REFRESH_COLONY_EPS';
 
-    public function __construct(private ColonyLoaderInterface $colonyLoader)
-    {
-    }
+    public function __construct(private ColonyLoaderInterface $colonyLoader) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -30,6 +28,6 @@ final class RefreshColonyEps implements ViewControllerInterface
         $game->showMacro('html/colony/component/tableCell.twig');
 
         $game->setTemplateVar('ID', 'current_energy');
-        $game->setTemplateVar('INNERHTML', $colony->getEps());
+        $game->setTemplateVar('INNERHTML', $colony->getChangeable()->getEps());
     }
 }

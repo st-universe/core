@@ -65,7 +65,7 @@ class ManagerProviderColonyTest extends StuTestCase
 
     public function testGetEps(): void
     {
-        $this->colony->shouldReceive('getEps')
+        $this->colony->shouldReceive('getChangeable->getEps')
             ->withNoArgs()
             ->once()
             ->andReturn(42);
@@ -75,7 +75,7 @@ class ManagerProviderColonyTest extends StuTestCase
 
     public function testLowerEps(): void
     {
-        $this->colony->shouldReceive('lowerEps')
+        $this->colony->shouldReceive('getChangeable->lowerEps')
             ->with(5)
             ->once();
 

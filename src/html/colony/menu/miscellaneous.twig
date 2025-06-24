@@ -19,14 +19,14 @@
     <table cellpadding="0" cellspacing="0" style="width: 100%;">
       <tr>
         <td style="width: 50%;">
-          {% if COLONY.getImmigrationState %}
+          {% if COLONY.getChangeable.getImmigrationState %}
           Status: <span style="color: #007300;">Erlaubt</span>
           {% else %}
           Status: <span style="color: #FF0000;">Verboten</span>
           {% endif %}
         </td>
         <td style="width: 50%; text-align: right;">
-          {% if COLONY.getImmigrationState %}
+          {% if COLONY.getChangeable.getImmigrationState %}
           <input type="submit" value="Verbieten" name="B_PERMIT_IMMIGRATION" />
           {% else %}
           <input type="submit" value="Erlauben" name="B_ALLOW_IMMIGRATION" />
@@ -38,7 +38,7 @@
   <br />
   <div class="divhead">Bevölkerungslimit</div>
   <div class="divbody">
-    <input type="text" size="4" name="poplimit" value="{{ COLONY.getPopulationLimit }}"
+    <input type="text" size="4" name="poplimit" value="{{ COLONY.getChangeable.getPopulationLimit }}"
       onkeydown="event.key == 'Enter' && $('setpopulationlimitbutton').click()" />
     <input type="submit" id="setpopulationlimitbutton" name="B_SET_POPULATIONLIMIT" value="Ändern" />
   </div>

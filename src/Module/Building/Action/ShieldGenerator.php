@@ -24,7 +24,7 @@ final class ShieldGenerator implements BuildingActionHandlerInterface
     public function deactivate(BuildingFunctionEnum $buildingFunction, ColonyInterface|ColonySandboxInterface $host): void
     {
         if ($host instanceof ColonyInterface) {
-            $host->setShields(0);
+            $host->getChangeable()->setShields(0);
         }
     }
 

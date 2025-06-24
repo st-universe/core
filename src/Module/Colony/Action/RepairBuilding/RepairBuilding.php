@@ -65,15 +65,17 @@ final class RepairBuilding implements ActionControllerInterface
             return;
         }
 
+        $changeable = $colony->getChangeable();
         $eps = (int) ceil($building->getEpsCost() * $damageInPercent / 100);
-        if ($building->isRemovable() === false && $building->getEpsCost() > $colony->getEps()) {
-            $eps = $colony->getEps();
+
+        if ($building->isRemovable() === false && $building->getEpsCost() > $changeable->getEps()) {
+            $eps = $changeable->getEps();
         }
-        if ($eps > $colony->getEps()) {
+        if ($eps > $changeable->getEps()) {
             $game->addInformationf(
                 _('Zur Reparatur wird %d Energie benötigt - Es sind jedoch nur %d vorhanden'),
                 $eps,
-                $colony->getEps()
+                $changeable->getEps()
             );
             return;
         }
@@ -112,7 +114,7 @@ final class RepairBuilding implements ActionControllerInterface
                 (int) ceil($cost->getAmount() * $damageInPercent / 100)
             );
         }
-        $colony->lowerEps($eps);
+        $changeable->lowerEps($eps);
 
         $this->colonyRepository->save($colony);
 

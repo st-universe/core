@@ -79,7 +79,7 @@ final class ColonyListItem implements ColonyListItemInterface
     #[Override]
     public function getHousing(): int
     {
-        return $this->colony->getMaxBev();
+        return $this->colony->getChangeable()->getMaxBev();
     }
 
     #[Override]
@@ -91,7 +91,7 @@ final class ColonyListItem implements ColonyListItemInterface
     #[Override]
     public function getEps(): int
     {
-        return $this->colony->getEps();
+        return $this->colony->getChangeable()->getEps();
     }
 
     #[Override]

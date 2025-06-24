@@ -32,16 +32,18 @@ final class ApplyBuildingDamage implements ApplyBuildingDamageInterface
             throw new RuntimeException('this should not happen');
         }
 
+        $changeable = $colony->getChangeable();
+
         if (!$isOrbitField && $this->colonyLibFactory->createColonyShieldingManager($colony)->isShieldingEnabled()) {
             $damage = (int) $damageWrapper->getDamageRelative($colony, DamageModeEnum::SHIELDS);
-            if ($damage > $colony->getShields()) {
-                $informations->addInformation("- Schildschaden: " . $colony->getShields());
+            if ($damage > $changeable->getShields()) {
+                $informations->addInformation("- Schildschaden: " . $changeable->getShields());
                 $informations->addInformation("-- Schilde brechen zusammen!");
 
-                $colony->setShields(0);
+                $changeable->setShields(0);
             } else {
-                $colony->setShields($colony->getShields() - $damage);
-                $informations->addInformation("- Schildschaden: " . $damage . " - Status: " . $colony->getShields());
+                $changeable->setShields($changeable->getShields() - $damage);
+                $informations->addInformation("- Schildschaden: " . $damage . " - Status: " . $changeable->getShields());
             }
         }
         if ($damageWrapper->getNetDamage() <= 0) {

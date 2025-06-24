@@ -152,7 +152,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
         return $this->getEntityManager()->createNativeQuery(
             'SELECT sm.sx as x, sm.sy AS y,
             (SELECT COUNT(*) > 0
-                FROM stu_colonies col
+                FROM stu_colony col
                 JOIN stu_colonies_fielddata cfd
                 ON col.id = cfd.colonies_id
                 WHERE sm.id = col.starsystem_map_id
@@ -345,7 +345,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
                 WHERE sm.systems_id = :systemId
                 AND sm.id != :location
                 AND EXISTS (SELECT c.id
-                            FROM stu_colonies c
+                            FROM stu_colony c
                             WHERE c.starsystem_map_id = sm.id
                             AND c.user_id != :noOne)
                 ORDER BY RANDOM()

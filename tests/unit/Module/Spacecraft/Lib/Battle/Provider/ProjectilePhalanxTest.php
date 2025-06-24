@@ -18,7 +18,6 @@ use Stu\StuTestCase;
 class ProjectilePhalanxTest extends StuTestCase
 {
     private MockInterface&ColonyInterface $colony;
-
     private MockInterface&StorageManagerInterface $storageManager;
 
     private ProjectilePhalanx $subject;
@@ -38,7 +37,7 @@ class ProjectilePhalanxTest extends StuTestCase
 
     public function testHasSufficientEnergyExpectFalseWhenNotEnough(): void
     {
-        $this->colony->shouldReceive('getEps')
+        $this->colony->shouldReceive('getChangeable->getEps')
             ->withNoArgs()
             ->once()
             ->andReturn(4);
@@ -50,7 +49,7 @@ class ProjectilePhalanxTest extends StuTestCase
 
     public function testHasSufficientEnergyTrueWhenEnough(): void
     {
-        $this->colony->shouldReceive('getEps')
+        $this->colony->shouldReceive('getChangeable->getEps')
             ->withNoArgs()
             ->once()
             ->andReturn(5);
@@ -62,12 +61,8 @@ class ProjectilePhalanxTest extends StuTestCase
 
     public function testReduceEps(): void
     {
-        $this->colony->shouldReceive('getEps')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(5);
-        $this->colony->shouldReceive('setEps')
-            ->with(2)
+        $this->colony->shouldReceive('getChangeable->lowerEps')
+            ->with(3)
             ->once();
 
         $this->subject->reduceEps(3);
@@ -94,7 +89,7 @@ class ProjectilePhalanxTest extends StuTestCase
 
     public function testGetTorpedoCountExpectZeroWhenTorpedoIsNull(): void
     {
-        $this->colony->shouldReceive('getTorpedo')
+        $this->colony->shouldReceive('getChangeable->getTorpedo')
             ->withNoArgs()
             ->once()
             ->andReturn(null);
@@ -108,7 +103,7 @@ class ProjectilePhalanxTest extends StuTestCase
     {
         $torpedo = $this->mock(TorpedoTypeInterface::class);
 
-        $this->colony->shouldReceive('getTorpedo')
+        $this->colony->shouldReceive('getChangeable->getTorpedo')
             ->withNoArgs()
             ->once()
             ->andReturn($torpedo);
@@ -138,7 +133,7 @@ class ProjectilePhalanxTest extends StuTestCase
         $torpedo = $this->mock(TorpedoTypeInterface::class);
         $storage = $this->mock(StorageInterface::class);
 
-        $this->colony->shouldReceive('getTorpedo')
+        $this->colony->shouldReceive('getChangeable->getTorpedo')
             ->withNoArgs()
             ->once()
             ->andReturn($torpedo);
@@ -167,7 +162,7 @@ class ProjectilePhalanxTest extends StuTestCase
         $torpedo = $this->mock(TorpedoTypeInterface::class);
         $storage = $this->mock(StorageInterface::class);
 
-        $this->colony->shouldReceive('getTorpedo')
+        $this->colony->shouldReceive('getChangeable->getTorpedo')
             ->withNoArgs()
             ->once()
             ->andReturn($torpedo);
@@ -200,7 +195,7 @@ class ProjectilePhalanxTest extends StuTestCase
 
     public function testLowerTorpedoCountExpectNothingWhenTorpedoIsNull(): void
     {
-        $this->colony->shouldReceive('getTorpedo')
+        $this->colony->shouldReceive('getChangeable->getTorpedo')
             ->withNoArgs()
             ->once()
             ->andReturn(null);
@@ -213,7 +208,7 @@ class ProjectilePhalanxTest extends StuTestCase
         $torpedo = $this->mock(TorpedoTypeInterface::class);
         $commodity = $this->mock(CommodityInterface::class);
 
-        $this->colony->shouldReceive('getTorpedo')
+        $this->colony->shouldReceive('getChangeable->getTorpedo')
             ->withNoArgs()
             ->once()
             ->andReturn($torpedo);
@@ -233,7 +228,7 @@ class ProjectilePhalanxTest extends StuTestCase
 
     public function testGetProjectileWeaponDamageExpectZeroWhenTorpedoIsNull(): void
     {
-        $this->colony->shouldReceive('getTorpedo')
+        $this->colony->shouldReceive('getChangeable->getTorpedo')
             ->withNoArgs()
             ->once()
             ->andReturn(null);
@@ -247,7 +242,7 @@ class ProjectilePhalanxTest extends StuTestCase
     {
         $torpedo = $this->mock(TorpedoTypeInterface::class);
 
-        $this->colony->shouldReceive('getTorpedo')
+        $this->colony->shouldReceive('getChangeable->getTorpedo')
             ->withNoArgs()
             ->once()
             ->andReturn($torpedo);

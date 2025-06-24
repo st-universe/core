@@ -18,9 +18,7 @@ final class SetPopulationLimit implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_SET_POPULATIONLIMIT';
 
-    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyRepositoryInterface $colonyRepository)
-    {
-    }
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyRepositoryInterface $colonyRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -34,10 +32,10 @@ final class SetPopulationLimit implements ActionControllerInterface
         $game->setViewContext(ViewContextTypeEnum::COLONY_MENU, ColonyMenuEnum::MENU_OPTION);
 
         $limit = request::postIntFatal('poplimit');
-        if ($limit === $colony->getPopulationLimit() || $limit < 0) {
+        if ($limit === $colony->getChangeable()->getPopulationLimit() || $limit < 0) {
             return;
         }
-        $colony->setPopulationLimit($limit);
+        $colony->getChangeable()->setPopulationLimit($limit);
 
         $this->colonyRepository->save($colony);
 

@@ -61,7 +61,7 @@ class ColonyCorrector implements ColonyCorrectorInterface
 
             if (
                 $this->check($worker, $colony->getWorkers(), $colony, 'setWorkers', 'worker')
-                || $this->check($activeHousing, $colony->getMaxBev(), $colony, 'setMaxBev', 'housing')
+                || $this->check($activeHousing, $colony->getChangeable()->getMaxBev(), $colony, 'setMaxBev', 'housing')
                 || $this->check($storage, $colony->getMaxStorage(), $colony, 'setMaxStorage', 'storage')
                 || $this->check($eps, $colony->getMaxEps(), $colony, 'setMaxEps', 'eps')
             ) {

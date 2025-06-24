@@ -38,13 +38,13 @@ final class EnergyPhalanx extends AbstractEnergyAttacker
 
     private function getEps(): int
     {
-        return $this->colony->getEps();
+        return $this->colony->getChangeable()->getEps();
     }
 
     #[Override]
     public function reduceEps(int $amount): void
     {
-        $this->colony->setEps($this->getEps() - $amount);
+        $this->colony->getChangeable()->lowerEps($amount);
     }
 
     #[Override]

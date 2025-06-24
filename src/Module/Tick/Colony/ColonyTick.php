@@ -88,10 +88,11 @@ final class ColonyTick implements ColonyTickInterface
             }
             break;
         }
-        $colony->setEps(
+        $changeable = $colony->getChangeable();
+        $changeable->setEps(
             min(
                 $colony->getMaxEps(),
-                $colony->getEps() + $this->planetFieldRepository->getEnergyProductionByHost($colony, $deactivatedFields)
+                $changeable->getEps() + $this->planetFieldRepository->getEnergyProductionByHost($colony, $deactivatedFields)
             )
         );
 
@@ -152,7 +153,7 @@ final class ColonyTick implements ColonyTickInterface
         array &$production,
         array &$deactivatedFields
     ): bool {
-        if ($colony->getWorkers() > $colony->getMaxBev()) {
+        if ($colony->getWorkers() > $colony->getChangeable()->getMaxBev()) {
             $field = $this->getBuildingToDeactivateByLivingSpace($colony, $deactivatedFields);
             if ($field !== null) {
                 $this->deactivateBuilding($field, $production, 'Wohnraum');
@@ -176,7 +177,7 @@ final class ColonyTick implements ColonyTickInterface
     ): bool {
         $energyProduction = $this->planetFieldRepository->getEnergyProductionByHost($colony, $deactivatedFields);
 
-        if ($energyProduction < 0 && $colony->getEps() + $energyProduction < 0) {
+        if ($energyProduction < 0 && $colony->getChangeable()->getEps() + $energyProduction < 0) {
             $field = $this->getBuildingToDeactivateByEpsUsage($colony, $deactivatedFields);
             //echo $i . " hit by eps " . $field->getFieldId() . " - complete usage " . $colony->getEpsProduction() . " - usage " . $field->getBuilding()->getEpsProduction() . " MT " . microtime() . "\n";
             $this->deactivateBuilding($field, $production, 'Energie');

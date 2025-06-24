@@ -53,7 +53,9 @@ final class DisassembleShip implements ActionControllerInterface
             $userId
         );
 
-        if ($colony->getEps() < 20) {
+        $changeable = $colony->getChangeable();
+
+        if ($changeable->getEps() < 20) {
             $game->addInformation('Zur Demontage des Schiffes wird 20 Energie benötigt');
             return;
         }
@@ -71,7 +73,7 @@ final class DisassembleShip implements ActionControllerInterface
             return;
         }
 
-        $colony->lowerEps(20);
+        $changeable->lowerEps(20);
 
         $this->colonyRepository->save($colony);
 

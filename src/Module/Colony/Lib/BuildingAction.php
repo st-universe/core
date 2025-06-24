@@ -39,7 +39,7 @@ final class BuildingAction implements BuildingActionInterface
         $host = $field->getHost();
         if (
             $host instanceof ColonyInterface
-            && $host->getWorkless() < $field->getBuilding()->getWorkers()
+            && $host->getChangeable()->getWorkless() < $field->getBuilding()->getWorkers()
         ) {
             $game->addInformationf(
                 _('Zum Aktivieren des Gebäudes (%s) werden %s Arbeiter benötigt'),

@@ -35,7 +35,7 @@ final class TrainCrew implements ActionControllerInterface
             $userId
         );
         $game->setView(ShowColony::VIEW_IDENTIFIER);
-
+        $changeable = $colony->getChangeable();
 
         $localcrewlimit = $this->colonyLibFactory->createColonyPopulationCalculator(
             $colony
@@ -55,8 +55,8 @@ final class TrainCrew implements ActionControllerInterface
         if ($trainableCrewPerTick < 0) {
             $trainableCrewPerTick = 0;
         }
-        if ($trainableCrewPerTick > $colony->getWorkless()) {
-            $trainableCrewPerTick = $colony->getWorkless();
+        if ($trainableCrewPerTick > $changeable->getWorkless()) {
+            $trainableCrewPerTick = $changeable->getWorkless();
         }
 
         $count = request::postStringFatal('crewcount');
@@ -99,7 +99,7 @@ final class TrainCrew implements ActionControllerInterface
 
             $this->crewTrainingRepository->save($crew);
         }
-        $colony->setWorkless($colony->getWorkless() - $count);
+        $changeable->setWorkless($changeable->getWorkless() - $count);
 
         $this->colonyRepository->save($colony);
 

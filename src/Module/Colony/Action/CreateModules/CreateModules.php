@@ -67,6 +67,8 @@ final class CreateModules implements ActionControllerInterface
         }
 
         $storage = $colony->getStorage();
+        $changeable = $colony->getChangeable();
+
         foreach ($moduleIds as $key => $moduleId) {
             if (!array_key_exists($moduleId, $modules_av)) {
                 continue;
@@ -80,10 +82,10 @@ final class CreateModules implements ActionControllerInterface
             $module = $modules_av[$moduleId]->getModule();
             $missingcounteps = 0;
             $missingeps = 0;
-            if ($module->getEcost() * $initialcount > $colony->getEps()) {
-                $missingeps = $initialcount * $module->getEcost() - $colony->getEps();
-                $missingcounteps = $initialcount - (int) floor($colony->getEps() / $module->getEcost());
-                $count = (int) floor($colony->getEps() / $module->getEcost());
+            if ($module->getEcost() * $initialcount > $changeable->getEps()) {
+                $missingeps = $initialcount * $module->getEcost() - $changeable->getEps();
+                $missingcounteps = $initialcount - (int) floor($changeable->getEps() / $module->getEcost());
+                $count = (int) floor($changeable->getEps() / $module->getEcost());
             }
             $costs = $module->getCost();
 
@@ -110,7 +112,7 @@ final class CreateModules implements ActionControllerInterface
                 foreach ($costs as $cost) {
                     $this->storageManager->lowerStorage($colony, $cost->getCommodity(), $cost->getAmount() * $count);
                 }
-                $colony->lowerEps($count * $module->getEcost());
+                $changeable->lowerEps($count * $module->getEcost());
 
                 $this->colonyRepository->save($colony);
                 if (($queue = $this->moduleQueueRepository->getByColonyAndModuleAndBuilding($colonyId, (int) $moduleId, $function->value)) !== null) {

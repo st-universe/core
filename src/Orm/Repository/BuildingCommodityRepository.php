@@ -70,7 +70,7 @@ final class BuildingCommodityRepository extends EntityRepository implements Buil
             ->createNativeQuery(
                 'SELECT a.id as commodity_id, a.name as commodity_name, SUM(c.count) + COALESCE(MAX(d.count),0) as amount
                 FROM stu_commodity a
-                    LEFT JOIN stu_colonies col ON col.user_id = :userId
+                    LEFT JOIN stu_colony col ON col.user_id = :userId
                     LEFT JOIN stu_colonies_fielddata b ON b.colonies_id = col.id AND b.aktiv = :state
                     LEFT JOIN stu_buildings_commodity c ON c.commodity_id = a.id AND c.buildings_id = b.buildings_id
                     LEFT JOIN stu_planets_commodity d ON d.commodity_id = a.id AND d.planet_classes_id = col.colonies_classes_id
@@ -96,7 +96,7 @@ final class BuildingCommodityRepository extends EntityRepository implements Buil
 
         return (int) $this->getEntityManager()->createNativeQuery(
             'SELECT SUM(c.count) as gc
-            FROM stu_colonies d
+            FROM stu_colony d
             LEFT JOIN stu_colonies_fielddata b
                 ON b.colonies_id = d.id
                 AND b.aktiv = :state

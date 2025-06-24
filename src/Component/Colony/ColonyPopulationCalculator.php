@@ -19,9 +19,7 @@ final class ColonyPopulationCalculator implements ColonyPopulationCalculatorInte
     /**
      * @param array<int, ColonyProduction> $production
      */
-    public function __construct(private PlanetFieldHostInterface $host, private array $production)
-    {
-    }
+    public function __construct(private PlanetFieldHostInterface $host, private array $production) {}
 
     #[Override]
     public function getFreeAssignmentCount(): int
@@ -113,17 +111,19 @@ final class ColonyPopulationCalculator implements ColonyPopulationCalculatorInte
             return 0;
         }
 
-        if ($host->getImmigrationState() === false) {
+        $changeable = $host->getChangeable();
+
+        if ($changeable->getImmigrationState() === false) {
             return 0;
         }
 
         // TBD: depends on social things. return dummy for now
-        $im = ceil((($host->getMaxBev() - $host->getPopulation()) / 3) / 100 * $host->getColonyClass()->getBevGrowthRate() *  $this->getLifeStandardPercentage() / 50);
-        if ($host->getPopulation() + $im > $host->getMaxBev()) {
-            $im = $host->getMaxBev() - $host->getPopulation();
+        $im = ceil((($changeable->getMaxBev() - $host->getPopulation()) / 3) / 100 * $host->getColonyClass()->getBevGrowthRate() *  $this->getLifeStandardPercentage() / 50);
+        if ($host->getPopulation() + $im > $changeable->getMaxBev()) {
+            $im = $changeable->getMaxBev() - $host->getPopulation();
         }
-        if ($host->getPopulationLimit() > 0 && $host->getPopulation() + $im > $host->getPopulationLimit()) {
-            $im = $host->getPopulationLimit() - $host->getPopulation();
+        if ($changeable->getPopulationLimit() > 0 && $host->getPopulation() + $im > $changeable->getPopulationLimit()) {
+            $im = $changeable->getPopulationLimit() - $host->getPopulation();
         }
         if ($im < 0) {
             return 0;

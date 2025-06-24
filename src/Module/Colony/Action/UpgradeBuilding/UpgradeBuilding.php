@@ -149,16 +149,18 @@ final class UpgradeBuilding implements ActionControllerInterface
             }
         }
 
-        if ($colony->getEps() < $upgrade->getEnergyCost()) {
+        $changeable = $colony->getChangeable();
+
+        if ($changeable->getEps() < $upgrade->getEnergyCost()) {
             $game->addInformationf(
                 _('Zum Bau wird %d Energie benötigt - Vorhanden ist nur %d'),
                 $upgrade->getEnergyCost(),
-                $colony->getEps()
+                $changeable->getEps()
             );
             return false;
         }
 
-        $colony->lowerEps($upgrade->getEnergyCost());
+        $changeable->lowerEps($upgrade->getEnergyCost());
         $this->colonyRepository->save($colony);
 
         return true;

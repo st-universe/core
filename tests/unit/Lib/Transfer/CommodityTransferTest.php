@@ -123,7 +123,7 @@ class CommodityTransferTest extends StuTestCase
         $colony->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($user);
-        $colony->shouldReceive('getEps')
+        $colony->shouldReceive('getChangeable->getEps')
             ->withNoArgs()
             ->andReturn(0);
 
@@ -163,7 +163,7 @@ class CommodityTransferTest extends StuTestCase
         $colony->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($user);
-        $colony->shouldReceive('getEps')
+        $colony->shouldReceive('getChangeable->getEps')
             ->withNoArgs()
             ->andReturn(1);
 
@@ -203,7 +203,7 @@ class CommodityTransferTest extends StuTestCase
         $colony->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($user);
-        $colony->shouldReceive('getEps')
+        $colony->shouldReceive('getChangeable->getEps')
             ->withNoArgs()
             ->andReturn(1);
 
@@ -243,7 +243,7 @@ class CommodityTransferTest extends StuTestCase
         $colony->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($user);
-        $colony->shouldReceive('getEps')
+        $colony->shouldReceive('getChangeable->getEps')
             ->withNoArgs()
             ->andReturn(1);
         $colony->shouldReceive('getStorageSum')
@@ -290,13 +290,13 @@ class CommodityTransferTest extends StuTestCase
         $colony->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($user);
-        $colony->shouldReceive('getEps')
+        $colony->shouldReceive('getChangeable->getEps')
             ->withNoArgs()
             ->andReturn(6);
         $colony->shouldReceive('getBeamFactor')
             ->withNoArgs()
             ->andReturn(10);
-        $colony->shouldReceive('lowerEps')
+        $colony->shouldReceive('getChangeable->lowerEps')
             ->with(6)
             ->once();
 
@@ -378,13 +378,13 @@ class CommodityTransferTest extends StuTestCase
         $colony->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($user);
-        $colony->shouldReceive('getEps')
+        $colony->shouldReceive('getChangeable->getEps')
             ->withNoArgs()
             ->andReturn(20);
         $colony->shouldReceive('getBeamFactor')
             ->withNoArgs()
             ->andReturn(10);
-        $colony->shouldReceive('lowerEps')
+        $colony->shouldReceive('getChangeable->lowerEps')
             ->with(10)
             ->once();
 
@@ -465,13 +465,13 @@ class CommodityTransferTest extends StuTestCase
         $colony->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($user);
-        $colony->shouldReceive('getEps')
+        $colony->shouldReceive('getChangeable->getEps')
             ->withNoArgs()
             ->andReturn(5);
         $colony->shouldReceive('getBeamFactor')
             ->withNoArgs()
             ->andReturn(10);
-        $colony->shouldReceive('lowerEps')
+        $colony->shouldReceive('getChangeable->lowerEps')
             ->with(5)
             ->once();
 
@@ -651,13 +651,13 @@ class CommodityTransferTest extends StuTestCase
         $colony->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($user);
-        $colony->shouldReceive('getEps')
+        $colony->shouldReceive('getChangeable->getEps')
             ->withNoArgs()
             ->andReturn(5);
         $colony->shouldReceive('getBeamFactor')
             ->withNoArgs()
             ->andReturn(10);
-        $colony->shouldReceive('lowerEps')
+        $colony->shouldReceive('getChangeable->lowerEps')
             ->with(1)
             ->once();
 

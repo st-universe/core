@@ -18,9 +18,7 @@ final class AllowImmigration implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_ALLOW_IMMIGRATION';
 
-    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyRepositoryInterface $colonyRepository)
-    {
-    }
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyRepositoryInterface $colonyRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -33,7 +31,7 @@ final class AllowImmigration implements ActionControllerInterface
         $game->setView(ShowColony::VIEW_IDENTIFIER);
         $game->setViewContext(ViewContextTypeEnum::COLONY_MENU, ColonyMenuEnum::MENU_OPTION);
 
-        $colony->setImmigrationState(true);
+        $colony->getChangeable()->setImmigrationState(true);
 
         $this->colonyRepository->save($colony);
 
