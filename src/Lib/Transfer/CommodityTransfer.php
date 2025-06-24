@@ -120,7 +120,7 @@ final class CommodityTransfer implements CommodityTransferInterface
             return $epsSystem === null ? 0 : $epsSystem->getEps();
         }
 
-        return $subject->getEps();
+        return $subject->getChangeable()->getEps();
     }
 
     private function consumeEps(int $epsUsage, SpacecraftWrapperInterface|ColonyInterface $subject): void
@@ -136,7 +136,7 @@ final class CommodityTransfer implements CommodityTransferInterface
             }
             $epsSystem->lowerEps($epsUsage)->update();
         } else {
-            $subject->lowerEps($epsUsage);
+            $subject->getChangeable()->lowerEps($epsUsage);
             $this->colonyRepository->save($subject);
         }
     }

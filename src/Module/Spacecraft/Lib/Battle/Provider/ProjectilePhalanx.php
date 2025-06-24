@@ -32,13 +32,13 @@ final class ProjectilePhalanx implements ProjectileAttackerInterface
 
     private function getEps(): int
     {
-        return $this->colony->getEps();
+        return $this->colony->getChangeable()->getEps();
     }
 
     #[Override]
     public function reduceEps(int $amount): void
     {
-        $this->colony->setEps($this->getEps() - $amount);
+        $this->colony->getChangeable()->lowerEps($amount);
     }
 
     #[Override]
@@ -105,7 +105,7 @@ final class ProjectilePhalanx implements ProjectileAttackerInterface
     #[Override]
     public function getTorpedo(): ?TorpedoTypeInterface
     {
-        return $this->colony->getTorpedo();
+        return $this->colony->getChangeable()->getTorpedo();
     }
 
     #[Override]

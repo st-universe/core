@@ -231,7 +231,8 @@
                         Schildfrequenz in MHz (max. 6 Stellen):</td>
                     <td>
                         <div style="display: flex; flex-wrap: wrap; gap: 5px; align-items: center; max-width: 100%;">
-                            <input type="text" size="5" name="frequency" value="{{ COLONY.getShieldFrequency }}"
+                            <input type="text" size="5" name="frequency"
+                                value="{{ COLONY.getChangeable.getShieldFrequency }}"
                                 onkeydown="event.key == 'Enter' &&  $('changeFrequencyButton').click()" />
                             <input type="submit" class="button" name="B_CHANGE_FREQUENCY" value="ändern"
                                 id="changeFrequencyButton" />
@@ -240,6 +241,7 @@
                 </tr>
                 {% endif %}
                 {% if BUILDABLE_TORPEDO_TYPES %}
+                {% set currentTorpedo = COLONY.getChangeable.getTorpedo %}
                 <tr>
                     <td style="white-space: normal; hyphens: auto; overflow-wrap: break-word; word-break: normal;">
                         Torpedo-Sorte für Orbitalverteidigung</td>
@@ -248,7 +250,7 @@
                             <select name="torpid" style="max-width: 100%;">
                                 <option value="0">----------------------</option>
                                 {% for data in BUILDABLE_TORPEDO_TYPES %}
-                                {% if COLONY.getTorpedo and (COLONY.getTorpedo.getId == data.getId) %}
+                                {% if currentTorpedo and (currentTorpedo.getId == data.getId) %}
                                 <option value="{{ data.getId }}" selected="1">{{ data.getName }}</option>
                                 {% else %}
                                 <option value="{{ data.getId }}">{{ data.getName }}</option>
@@ -289,7 +291,7 @@
             <td class="populationValue">
                 <div>Wohnraum</div>
                 <img src="/assets/bev/bev_free_5_{{ USER.getFactionId }}.png" title="Wohnraum" />
-                {{ HOST.getFreeHousing }} ({{ HOST.getMaxBev }})
+                {{ HOST.getChangeable.getFreeHousing }} ({{ HOST.getMaxBev }})
             </td>
             <td class="populationValue">
                 {% set growth = POPULATION_CALCULATOR.getGrowth %}

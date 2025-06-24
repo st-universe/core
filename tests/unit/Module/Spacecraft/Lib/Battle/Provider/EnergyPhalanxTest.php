@@ -36,7 +36,7 @@ class EnergyPhalanxTest extends StuTestCase
 
     public function testHasSufficientEnergyExpectFalseWhenNotEnough(): void
     {
-        $this->colony->shouldReceive('getEps')
+        $this->colony->shouldReceive('getChangeable->getEps')
             ->withNoArgs()
             ->once()
             ->andReturn(4);
@@ -48,7 +48,7 @@ class EnergyPhalanxTest extends StuTestCase
 
     public function testHasSufficientEnergyTrueWhenEnough(): void
     {
-        $this->colony->shouldReceive('getEps')
+        $this->colony->shouldReceive('getChangeable->getEps')
             ->withNoArgs()
             ->once()
             ->andReturn(5);
@@ -60,12 +60,8 @@ class EnergyPhalanxTest extends StuTestCase
 
     public function testReduceEps(): void
     {
-        $this->colony->shouldReceive('getEps')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(5);
-        $this->colony->shouldReceive('setEps')
-            ->with(2)
+        $this->colony->shouldReceive('getChangeable->lowerEps')
+            ->with(3)
             ->once();
 
         $this->subject->reduceEps(3);

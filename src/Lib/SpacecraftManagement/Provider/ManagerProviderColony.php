@@ -28,13 +28,13 @@ class ManagerProviderColony implements ManagerProviderInterface
     #[Override]
     public function getEps(): int
     {
-        return $this->colony->getEps();
+        return $this->colony->getChangeable()->getEps();
     }
 
     #[Override]
     public function lowerEps(int $amount): ManagerProviderInterface
     {
-        $this->colony->lowerEps($amount);
+        $this->colony->getChangeable()->lowerEps($amount);
 
         return $this;
     }

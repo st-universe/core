@@ -53,7 +53,8 @@ final class ColonyShieldingManager implements ColonyShieldingManagerInterface
         }
 
         if ($shieldState) {
-            $this->host->setShields(min($this->host->getShields(), $shields));
+            $changeable = $this->host->getChangeable();
+            $changeable->setShields(min($changeable->getShields(), $shields));
         }
     }
 
@@ -76,6 +77,6 @@ final class ColonyShieldingManager implements ColonyShieldingManagerInterface
     public function isShieldingEnabled(): bool
     {
         return $this->colonyFunctionManager->hasActiveFunction($this->host, BuildingFunctionEnum::SHIELD_GENERATOR)
-            && ($this->host instanceof ColonyInterface ? $this->host->getShields() > 0 : true);
+            && ($this->host instanceof ColonyInterface ? $this->host->getChangeable()->getShields() > 0 : true);
     }
 }

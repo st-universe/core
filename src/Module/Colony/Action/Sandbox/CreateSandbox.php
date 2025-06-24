@@ -52,7 +52,7 @@ final class CreateSandbox implements
         $sandbox
             ->setColony($colony)
             ->setName($sandboxName)
-            ->setMaxBev($colony->getMaxBev())
+            ->setMaxBev($colony->getChangeable()->getMaxBev())
             ->setMaxEps($colony->getMaxEps())
             ->setMaxStorage($colony->getMaxStorage())
             ->setWorkers($colony->getWorkers())

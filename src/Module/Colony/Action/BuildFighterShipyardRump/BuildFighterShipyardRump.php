@@ -71,11 +71,13 @@ final class BuildFighterShipyardRump implements ActionControllerInterface
 
     private function produceShip(SpacecraftRumpInterface $rump, ColonyInterface $colony, GameControllerInterface $game): bool
     {
-        if ($rump->getEpsCost() > $colony->getEps()) {
+        $changeable = $colony->getChangeable();
+
+        if ($rump->getEpsCost() > $changeable->getEps()) {
             $game->addInformationf(
                 _('Es wird %d Energie benötigt - Vorhanden ist nur %d'),
                 $rump->getEpsCost(),
-                $colony->getEps()
+                $changeable->getEps()
             );
             return false;
         }
@@ -104,7 +106,7 @@ final class BuildFighterShipyardRump implements ActionControllerInterface
         foreach ($rump->getBuildingCosts() as $cost) {
             $this->storageManager->lowerStorage($colony, $cost->getCommodity(), $cost->getAmount());
         }
-        $colony->lowerEps($rump->getEpsCost());
+        $changeable->lowerEps($rump->getEpsCost());
 
         $commodity = $rump->getCommodity();
         if ($commodity === null) {

@@ -195,11 +195,12 @@ class DamageWrapper
     private function calculateDamageColonyShields(ColonyInterface $target): float
     {
         $damage = round($this->getNetDamage() / 100 * $this->getShieldDamageFactor());
+        $targetShields = $target->getChangeable()->getShields();
 
-        if ($damage < $target->getShields()) {
+        if ($damage < $targetShields) {
             $this->setNetDamage(0);
         } else {
-            $this->setNetDamage(round($damage - $target->getShields() / $this->getShieldDamageFactor() * 100));
+            $this->setNetDamage(round($damage - $targetShields / $this->getShieldDamageFactor() * 100));
         }
         return $damage;
     }

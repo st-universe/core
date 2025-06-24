@@ -55,8 +55,9 @@ final class ShowSubspaceTelescopeScan implements ViewControllerInterface
         $cy = request::getIntFatal('y');
 
         $scanCost = $this->calculateScanCost($colony, $cx, $cy);
+        $changeable = $colony->getChangeable();
 
-        if ($scanCost > $colony->getEps()) {
+        if ($scanCost > $changeable->getEps()) {
             return;
         }
 
@@ -67,7 +68,7 @@ final class ShowSubspaceTelescopeScan implements ViewControllerInterface
 
         $game->setTemplateVar('INFOS', $this->locationRepository->getRumpCategoryInfo($layer, $cx, $cy));
 
-        $colony->setEps($colony->getEps() - $scanCost);
+        $changeable->lowerEps(-$scanCost);
         $this->colonyRepository->save($colony);
 
         $game->setPageTitle(sprintf(_('Subraum Teleskop Scan %d|%d'), $cx, $cy));

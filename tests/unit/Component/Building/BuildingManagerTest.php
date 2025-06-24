@@ -11,6 +11,7 @@ use Stu\Module\Building\Action\BuildingActionHandlerInterface;
 use Stu\Module\Building\Action\BuildingFunctionActionMapperInterface;
 use Stu\Orm\Entity\BuildingFunctionInterface;
 use Stu\Orm\Entity\BuildingInterface;
+use Stu\Orm\Entity\ColonyChangeableInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -21,13 +22,9 @@ use Stu\StuTestCase;
 class BuildingManagerTest extends StuTestCase
 {
     private MockInterface&PlanetFieldRepositoryInterface $planetFieldRepository;
-
     private MockInterface&ColonyRepositoryInterface $colonyRepository;
-
     private MockInterface&ColonySandboxRepositoryInterface $colonySandboxRepository;
-
     private MockInterface&BuildingPostActionInterface $buildingPostAction;
-
     private MockInterface&BuildingFunctionActionMapperInterface  $buildingFunctionActionMapper;
 
     private BuildingManager $buildingManager;
@@ -126,6 +123,7 @@ class BuildingManagerTest extends StuTestCase
     {
         $field = $this->mock(PlanetFieldInterface::class);
         $colony = $this->mock(ColonyInterface::class);
+        $changeable = $this->mock(ColonyChangeableInterface::class);
 
         $field->shouldReceive('isActivateable')
             ->withNoArgs()
@@ -145,13 +143,16 @@ class BuildingManagerTest extends StuTestCase
             ->andReturn(666);
         $field->shouldReceive('getHost')
             ->withNoArgs()
-            ->once()
             ->andReturn($colony);
 
-        $colony->shouldReceive('getWorkless')
+        $changeable->shouldReceive('getWorkless')
             ->withNoArgs()
             ->once()
             ->andReturn(555);
+        $colony->shouldReceive('getChangeable')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($changeable);
 
         $this->buildingManager->activate($field);
     }
@@ -161,6 +162,7 @@ class BuildingManagerTest extends StuTestCase
         $field = $this->mock(PlanetFieldInterface::class);
         $host = $this->mock(ColonyInterface::class);
         $building = $this->mock(BuildingInterface::class);
+        $changeable = $this->mock(ColonyChangeableInterface::class);
 
         $worker = 6;
         $currentWorker = 33;
@@ -186,33 +188,36 @@ class BuildingManagerTest extends StuTestCase
             ->andReturn($building);
         $field->shouldReceive('getHost')
             ->withNoArgs()
-            ->once()
             ->andReturn($host);
         $field->shouldReceive('setActive')
             ->with(1)
             ->once();
 
-        $host->shouldReceive('getWorkless')
+        $host->shouldReceive('getChangeable')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($changeable);
+        $changeable->shouldReceive('getWorkless')
             ->withNoArgs()
             ->once()
             ->andReturn($workless);
-        $host->shouldReceive('getMaxBev')
+        $changeable->shouldReceive('getMaxBev')
             ->withNoArgs()
             ->once()
             ->andReturn($currentHousing);
-        $host->shouldReceive('getWorkers')
+        $changeable->shouldReceive('getWorkers')
             ->withNoArgs()
             ->once()
             ->andReturn($currentWorker);
-        $host->shouldReceive('setWorkless')
+        $changeable->shouldReceive('setWorkless')
             ->with($workless - $worker)
             ->once()
             ->andReturnSelf();
-        $host->shouldReceive('setWorkers')
+        $changeable->shouldReceive('setWorkers')
             ->with($currentWorker + $worker)
             ->once()
             ->andReturnSelf();
-        $host->shouldReceive('setMaxBev')
+        $changeable->shouldReceive('setMaxBev')
             ->with($currentHousing + $housing)
             ->once();
 
@@ -292,6 +297,7 @@ class BuildingManagerTest extends StuTestCase
         $field = $this->mock(PlanetFieldInterface::class);
         $host = $this->mock(ColonyInterface::class);
         $building = $this->mock(BuildingInterface::class);
+        $changeable = $this->mock(ColonyChangeableInterface::class);
 
         $currentWorker = 33;
         $currentWorkless = 55;
@@ -299,6 +305,10 @@ class BuildingManagerTest extends StuTestCase
 
         $worker = 6;
         $housing = 0;
+
+        $host->shouldReceive('getChangeable')
+            ->withNoArgs()
+            ->andReturn($changeable);
 
         $field->shouldReceive('isActivateable')
             ->withNoArgs()
@@ -314,39 +324,38 @@ class BuildingManagerTest extends StuTestCase
             ->andReturn($building);
         $field->shouldReceive('getHost')
             ->withNoArgs()
-            ->once()
             ->andReturn($host);
         $field->shouldReceive('setActive')
             ->with(0)
             ->once();
 
-        $host->shouldReceive('getMaxBev')
+        $changeable->shouldReceive('getMaxBev')
             ->withNoArgs()
             ->once()
             ->andReturn($currentHousing);
-        $host->shouldReceive('getWorkers')
+        $changeable->shouldReceive('getWorkers')
             ->withNoArgs()
             ->once()
             ->andReturn($currentWorker);
 
         $newWorkless = $currentWorkless + $worker;
-        $host->shouldReceive('setWorkless')
+        $changeable->shouldReceive('setWorkless')
             ->with($newWorkless)
             ->once()
             ->andReturnSelf();
-        $host->shouldReceive('getWorkless')
+        $changeable->shouldReceive('getWorkless')
             ->withNoArgs()
             ->once()
             ->andReturn($currentWorkless);
 
         $newWorkers = $currentWorker - $worker;
-        $host->shouldReceive('setWorkers')
+        $changeable->shouldReceive('setWorkers')
             ->with($newWorkers)
             ->once()
             ->andReturnSelf();
 
         $newHousing = $currentHousing;
-        $host->shouldReceive('setMaxBev')
+        $changeable->shouldReceive('setMaxBev')
             ->with($newHousing)
             ->once();
 
@@ -378,6 +387,7 @@ class BuildingManagerTest extends StuTestCase
         $field = $this->mock(PlanetFieldInterface::class);
         $host = $this->mock(ColonyInterface::class);
         $building = $this->mock(BuildingInterface::class);
+        $changeable = $this->mock(ColonyChangeableInterface::class);
 
         $currentWorker = 33;
         $currentWorkless = 55;
@@ -385,6 +395,10 @@ class BuildingManagerTest extends StuTestCase
 
         $worker = 0;
         $housing = 11;
+
+        $host->shouldReceive('getChangeable')
+            ->withNoArgs()
+            ->andReturn($changeable);
 
         $field->shouldReceive('isActivateable')
             ->withNoArgs()
@@ -400,36 +414,35 @@ class BuildingManagerTest extends StuTestCase
             ->andReturn($building);
         $field->shouldReceive('getHost')
             ->withNoArgs()
-            ->once()
             ->andReturn($host);
         $field->shouldReceive('setActive')
             ->with(0)
             ->once();
 
-        $host->shouldReceive('getWorkless')
+        $changeable->shouldReceive('getWorkless')
             ->withNoArgs()
             ->once()
             ->andReturn($currentWorkless);
-        $host->shouldReceive('getWorkers')
+        $changeable->shouldReceive('getWorkers')
             ->withNoArgs()
             ->once()
             ->andReturn($currentWorker);
 
         $newWorkers = $currentWorker;
-        $host->shouldReceive('setWorkers')
+        $changeable->shouldReceive('setWorkers')
             ->with($newWorkers)
             ->once()
             ->andReturnSelf();
-        $host->shouldReceive('setWorkless')
+        $changeable->shouldReceive('setWorkless')
             ->with($currentWorkless)
             ->once()
             ->andReturnSelf();
 
         $newHousing = $currentHousing - $housing;
-        $host->shouldReceive('setMaxBev')
+        $changeable->shouldReceive('setMaxBev')
             ->with($newHousing)
             ->once();
-        $host->shouldReceive('getMaxBev')
+        $changeable->shouldReceive('getMaxBev')
             ->withNoArgs()
             ->once()
             ->andReturn($currentHousing, $newHousing, $newHousing);
@@ -493,6 +506,7 @@ class BuildingManagerTest extends StuTestCase
         $field = $this->mock(PlanetFieldInterface::class);
         $building = $this->mock(BuildingInterface::class);
         $host = $this->mock(ColonyInterface::class);
+        $changeable = $this->mock(ColonyChangeableInterface::class);
         $function = $this->mock(BuildingFunctionInterface::class);
         $buildingAction = $this->mock(BuildingActionHandlerInterface::class);
 
@@ -502,13 +516,16 @@ class BuildingManagerTest extends StuTestCase
         $eps = 22;
         $buildingFunction = BuildingFunctionEnum::SHIELD_BATTERY;
 
+        $host->shouldReceive('getChangeable')
+            ->withNoArgs()
+            ->andReturn($changeable);
+
         $field->shouldReceive('getBuilding')
             ->withNoArgs()
             ->twice()
             ->andReturn($building);
         $field->shouldReceive('getHost')
             ->withNoArgs()
-            ->once()
             ->andReturn($host);
         $field->shouldReceive('clearBuilding')
             ->withNoArgs()
@@ -553,19 +570,19 @@ class BuildingManagerTest extends StuTestCase
             ->with($buildingFunction, $host)
             ->once();
 
-        $host->shouldReceive('getMaxStorage')
+        $changeable->shouldReceive('getMaxStorage')
             ->withNoArgs()
             ->once()
             ->andReturn($currentStorage);
-        $host->shouldReceive('getMaxEps')
+        $changeable->shouldReceive('getMaxEps')
             ->withNoArgs()
             ->once()
             ->andReturn($currentEps);
-        $host->shouldReceive('setMaxStorage')
+        $changeable->shouldReceive('setMaxStorage')
             ->with($currentStorage - $storage)
             ->once()
             ->andReturnSelf();
-        $host->shouldReceive('setMaxEps')
+        $changeable->shouldReceive('setMaxEps')
             ->with($currentEps - $eps)
             ->once();
 
@@ -584,6 +601,7 @@ class BuildingManagerTest extends StuTestCase
         $field = $this->mock(PlanetFieldInterface::class);
         $building = $this->mock(BuildingInterface::class);
         $host = $this->mock(ColonyInterface::class);
+        $changeable = $this->mock(ColonyChangeableInterface::class);
         $function = $this->mock(BuildingFunctionInterface::class);
         $buildingAction = $this->mock(BuildingActionHandlerInterface::class);
         $currentStorage = 555;
@@ -593,13 +611,16 @@ class BuildingManagerTest extends StuTestCase
         $buildingFunction = BuildingFunctionEnum::SHIELD_BATTERY;
         $buildingWorkers = 123;
 
+        $host->shouldReceive('getChangeable')
+            ->withNoArgs()
+            ->andReturn($changeable);
+
         $field->shouldReceive('getBuilding')
             ->withNoArgs()
             ->twice()
             ->andReturn($building);
         $field->shouldReceive('getHost')
             ->withNoArgs()
-            ->twice()
             ->andReturn($host);
         $field->shouldReceive('clearBuilding')
             ->withNoArgs()
@@ -659,40 +680,40 @@ class BuildingManagerTest extends StuTestCase
             ->with($buildingFunction, $host)
             ->once();
 
-        $host->shouldReceive('getMaxStorage')
+        $changeable->shouldReceive('getMaxStorage')
             ->withNoArgs()
             ->once()
             ->andReturn($currentStorage);
-        $host->shouldReceive('getMaxEps')
+        $changeable->shouldReceive('getMaxEps')
             ->withNoArgs()
             ->once()
             ->andReturn($currentEps);
-        $host->shouldReceive('setMaxStorage')
+        $changeable->shouldReceive('setMaxStorage')
             ->with($currentStorage - $storage)
             ->once()
             ->andReturnSelf();
-        $host->shouldReceive('setMaxEps')
+        $changeable->shouldReceive('setMaxEps')
             ->with($currentEps - $eps)
             ->once();
-        $host->shouldReceive('getWorkless')
+        $changeable->shouldReceive('getWorkless')
             ->withNoArgs()
             ->once()
             ->andReturn(0);
-        $host->shouldReceive('setWorkless')
+        $changeable->shouldReceive('setWorkless')
             ->with($buildingWorkers)
             ->once();
-        $host->shouldReceive('getWorkers')
+        $changeable->shouldReceive('getWorkers')
             ->withNoArgs()
             ->once()
             ->andReturn($buildingWorkers);
-        $host->shouldReceive('setWorkers')
+        $changeable->shouldReceive('setWorkers')
             ->with(0)
             ->once();
-        $host->shouldReceive('getMaxBev')
+        $changeable->shouldReceive('getMaxBev')
             ->withNoArgs()
             ->once()
             ->andReturn(200);
-        $host->shouldReceive('setMaxBev')
+        $changeable->shouldReceive('setMaxBev')
             ->with(100)
             ->once();
 
@@ -714,6 +735,7 @@ class BuildingManagerTest extends StuTestCase
         $field = $this->mock(PlanetFieldInterface::class);
         $building = $this->mock(BuildingInterface::class);
         $host = $this->mock(ColonyInterface::class);
+        $changeable = $this->mock(ColonyChangeableInterface::class);
         $function = $this->mock(BuildingFunctionInterface::class);
         $buildingAction = $this->mock(BuildingActionHandlerInterface::class);
 
@@ -724,13 +746,16 @@ class BuildingManagerTest extends StuTestCase
         $buildingFunction = BuildingFunctionEnum::SHIELD_BATTERY;
         $buildingWorkers = 123;
 
+        $host->shouldReceive('getChangeable')
+            ->withNoArgs()
+            ->andReturn($changeable);
+
         $field->shouldReceive('getBuilding')
             ->withNoArgs()
             ->twice()
             ->andReturn($building);
         $field->shouldReceive('getHost')
             ->withNoArgs()
-            ->twice()
             ->andReturn($host);
         $field->shouldReceive('clearBuilding')
             ->withNoArgs()
@@ -786,40 +811,40 @@ class BuildingManagerTest extends StuTestCase
             ->with($buildingFunction, $host)
             ->once();
 
-        $host->shouldReceive('getMaxStorage')
+        $changeable->shouldReceive('getMaxStorage')
             ->withNoArgs()
             ->once()
             ->andReturn($currentStorage);
-        $host->shouldReceive('getMaxEps')
+        $changeable->shouldReceive('getMaxEps')
             ->withNoArgs()
             ->once()
             ->andReturn($currentEps);
-        $host->shouldReceive('setMaxStorage')
+        $changeable->shouldReceive('setMaxStorage')
             ->with($currentStorage - $storage)
             ->once()
             ->andReturnSelf();
-        $host->shouldReceive('setMaxEps')
+        $changeable->shouldReceive('setMaxEps')
             ->with($currentEps - $eps)
             ->once();
-        $host->shouldReceive('getWorkless')
+        $changeable->shouldReceive('getWorkless')
             ->withNoArgs()
             ->once()
             ->andReturn(0);
-        $host->shouldReceive('setWorkless')
+        $changeable->shouldReceive('setWorkless')
             ->with($buildingWorkers)
             ->once();
-        $host->shouldReceive('getWorkers')
+        $changeable->shouldReceive('getWorkers')
             ->withNoArgs()
             ->once()
             ->andReturn($buildingWorkers);
-        $host->shouldReceive('setWorkers')
+        $changeable->shouldReceive('setWorkers')
             ->with(0)
             ->once();
-        $host->shouldReceive('getMaxBev')
+        $changeable->shouldReceive('getMaxBev')
             ->withNoArgs()
             ->once()
             ->andReturn(200);
-        $host->shouldReceive('setMaxBev')
+        $changeable->shouldReceive('setMaxBev')
             ->with(100)
             ->once();
 
@@ -853,6 +878,7 @@ class BuildingManagerTest extends StuTestCase
         $field = $this->mock(PlanetFieldInterface::class);
         $building = $this->mock(BuildingInterface::class);
         $host = $this->mock(ColonyInterface::class);
+        $changeable = $this->mock(ColonyChangeableInterface::class);
 
         $currentStorage = 555;
         $storage = 44;
@@ -860,13 +886,16 @@ class BuildingManagerTest extends StuTestCase
         $eps = 33;
         $integrity = 777;
 
+        $host->shouldReceive('getChangeable')
+            ->withNoArgs()
+            ->andReturn($changeable);
+
         $field->shouldReceive('getBuilding')
             ->withNoArgs()
             ->twice()
             ->andReturn($building);
         $field->shouldReceive('getHost')
             ->withNoArgs()
-            ->once()
             ->andReturn($host);
         $field->shouldReceive('setActive')
             ->with(0)
@@ -897,19 +926,19 @@ class BuildingManagerTest extends StuTestCase
             ->once()
             ->andReturn($integrity);
 
-        $host->shouldReceive('getMaxStorage')
+        $changeable->shouldReceive('getMaxStorage')
             ->withNoArgs()
             ->once()
             ->andReturn($currentStorage);
-        $host->shouldReceive('getMaxEps')
+        $changeable->shouldReceive('getMaxEps')
             ->withNoArgs()
             ->once()
             ->andReturn($currentEps);
-        $host->shouldReceive('setMaxStorage')
+        $changeable->shouldReceive('setMaxStorage')
             ->with($currentStorage + $storage)
             ->once()
             ->andReturnSelf();
-        $host->shouldReceive('setMaxEps')
+        $changeable->shouldReceive('setMaxEps')
             ->with($currentEps + $eps)
             ->once();
 

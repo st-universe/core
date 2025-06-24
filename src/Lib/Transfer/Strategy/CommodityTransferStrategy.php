@@ -102,10 +102,10 @@ class CommodityTransferStrategy implements TransferStrategyInterface
             $target instanceof ColonyInterface
             && $target->getUser() !== $user
             && $this->colonyLibFactory->createColonyShieldingManager($target)->isShieldingEnabled()
-            && $target->getShieldFrequency()
+            && $target->getChangeable()->getShieldFrequency()
         ) {
             $frequency = request::postInt('frequency');
-            if ($frequency !== $target->getShieldFrequency()) {
+            if ($frequency !== $target->getChangeable()->getShieldFrequency()) {
                 $information->addInformation("Die Schildfrequenz ist nicht korrekt");
                 return true;
             }

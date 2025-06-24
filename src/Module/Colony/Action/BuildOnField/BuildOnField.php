@@ -118,17 +118,19 @@ final class BuildOnField implements ActionControllerInterface
 
             if ($host instanceof ColonyInterface) {
 
+                $changeable = $host->getChangeable();
+
                 if (!$this->checkBuildingCosts($host, $building, $field, $game)) {
                     return;
-                } elseif ($host->getEps() < $building->getEpsCost()) {
+                } elseif ($changeable->getEps() < $building->getEpsCost()) {
                     $game->addInformationf(
                         _('Zum Bau wird %d Energie benötigt - Vorhanden ist nur %d'),
                         $building->getEpsCost(),
-                        $host->getEps()
+                        $changeable->getEps()
                     );
                     return;
                 } elseif (
-                    $host->getEps() > $host->getMaxEps() - $field->getBuilding()->getEpsStorage()
+                    $changeable->getEps() > $host->getMaxEps() - $field->getBuilding()->getEpsStorage()
                     && $host->getMaxEps() - $field->getBuilding()->getEpsStorage() < $building->getEpsCost()
                 ) {
                     $game->addInformation(_('Nach der Demontage steht nicht mehr genügend Energie zum Bau zur Verfügung'));
@@ -197,11 +199,13 @@ final class BuildOnField implements ActionControllerInterface
             return false;
         }
 
-        if ($colony->getEps() < $building->getEpsCost()) {
+        $changeable = $colony->getChangeable();
+
+        if ($changeable->getEps() < $building->getEpsCost()) {
             $game->addInformationf(
                 _('Zum Bau wird %d Energie benötigt - Vorhanden ist nur %d'),
                 $building->getEpsCost(),
-                $colony->getEps()
+                $changeable->getEps()
             );
             return false;
         }
@@ -210,7 +214,7 @@ final class BuildOnField implements ActionControllerInterface
             $this->storageManager->lowerStorage($colony, $cost->getCommodity(), $cost->getAmount());
         }
 
-        $colony->lowerEps($building->getEpsCost());
+        $changeable->lowerEps($building->getEpsCost());
         $field->setActive(time() + $building->getBuildtime());
 
         $this->colonyRepository->save($colony);

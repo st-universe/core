@@ -27,7 +27,7 @@ final class EpsBarProvider implements PlanetFieldHostComponentInterface
 
     public static function getEpsStatusBar(PlanetFieldHostInterface $host, int $energyProduction, int $width = 360): string
     {
-        $currentEps = $host instanceof ColonyInterface ? $host->getEps() : 0;
+        $currentEps = $host instanceof ColonyInterface ? $host->getChangeable()->getEps() : 0;
 
         $bars = [];
         $epsBar = '';
@@ -79,15 +79,16 @@ final class EpsBarProvider implements PlanetFieldHostComponentInterface
     private function getEpsBarTitleString(PlanetFieldHostInterface $host, int $energyProduction): string
     {
         if ($host instanceof ColonyInterface) {
-            $forecast = $host->getEps() + $energyProduction;
-            if ($host->getEps() + $energyProduction < 0) {
+            $changeable = $host->getChangeable();
+            $forecast = $changeable->getEps() + $energyProduction;
+            if ($changeable->getEps() + $energyProduction < 0) {
                 $forecast = 0;
             }
-            if ($host->getEps() + $energyProduction > $host->getMaxEps()) {
+            if ($changeable->getEps() + $energyProduction > $host->getMaxEps()) {
                 $forecast = $host->getMaxEps();
             }
 
-            $eps = $host->getEps();
+            $eps = $changeable->getEps();
         } else {
             $eps = 0;
             $forecast = $energyProduction;

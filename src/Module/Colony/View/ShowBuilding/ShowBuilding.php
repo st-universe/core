@@ -20,9 +20,7 @@ final class ShowBuilding implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_BUILDING';
 
-    public function __construct(private PlanetFieldHostProviderInterface $planetFieldHostProvider, private PlanetFieldRepositoryInterface $planetFieldRepository, private ShowBuildingRequestInterface $showBuildingRequest, private BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository, private BuildingRepositoryInterface $buildingRepository)
-    {
-    }
+    public function __construct(private PlanetFieldHostProviderInterface $planetFieldHostProvider, private PlanetFieldRepositoryInterface $planetFieldRepository, private ShowBuildingRequestInterface $showBuildingRequest, private BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository, private BuildingRepositoryInterface $buildingRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -50,7 +48,7 @@ final class ShowBuilding implements ViewControllerInterface
         //filter by view
         $useableFieldTypes = array_filter(
             $useableFieldTypes->toArray(),
-            fn (PlanetFieldTypeBuildingInterface $pftb): bool => $pftb->getView()
+            fn(PlanetFieldTypeBuildingInterface $pftb): bool => $pftb->getView()
         );
 
         $game->setPageTitle($building->getName());
@@ -69,7 +67,7 @@ final class ShowBuilding implements ViewControllerInterface
 
         if ($host instanceof ColonyInterface) {
             $storage        = $host->getStorage();
-            $buildingcount  = $host->getEps() / $building->getEpsCost();
+            $buildingcount  = $host->getChangeable()->getEps() / $building->getEpsCost();
             foreach ($building->getCosts() as $cost) {
                 if ($storage[$cost->getCommodityId()] != null) {
                     $need = $storage[$cost->getCommodityId()]->getAmount() / $cost->getAmount();

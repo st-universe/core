@@ -20,7 +20,15 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class PlanetColonization implements PlanetColonizationInterface
 {
-    public function __construct(private PlanetFieldRepositoryInterface $planetFieldRepository, private CommodityRepositoryInterface $commodityRepository, private StorageManagerInterface $storageManager, private ColonyLibFactoryInterface $colonyLibFactory, private ColonyRepositoryInterface $colonyRepository, private UserRepositoryInterface $userRepository, private BuildingManagerInterface $buildingManager) {}
+    public function __construct(
+        private readonly PlanetFieldRepositoryInterface $planetFieldRepository,
+        private readonly CommodityRepositoryInterface $commodityRepository,
+        private readonly StorageManagerInterface $storageManager,
+        private readonly ColonyLibFactoryInterface $colonyLibFactory,
+        private readonly ColonyRepositoryInterface $colonyRepository,
+        private readonly UserRepositoryInterface $userRepository,
+        private readonly BuildingManagerInterface $buildingManager
+    ) {}
 
     #[Override]
     public function colonize(
@@ -49,8 +57,8 @@ final class PlanetColonization implements PlanetColonizationInterface
 
         $field->setBuilding($building);
 
-        $colony->setWorkless($building->getHousing());
-        $colony->setEps($building->getEpsStorage());
+        $colony->getChangeable()->setWorkless($building->getHousing());
+        $colony->getChangeable()->setEps($building->getEpsStorage());
 
         $this->buildingManager->finish($field, true);
 

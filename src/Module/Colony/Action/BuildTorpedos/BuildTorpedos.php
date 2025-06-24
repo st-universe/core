@@ -34,6 +34,8 @@ final class BuildTorpedos implements ActionControllerInterface
 
         $torps = request::postArray('torp');
         $storage = $colony->getStorage();
+        $changeable = $colony->getChangeable();
+
         $msg = [];
         foreach ($torps as $torp_id => $count) {
             if (!array_key_exists($torp_id, $buildableTorpedoTypes)) {
@@ -41,8 +43,8 @@ final class BuildTorpedos implements ActionControllerInterface
             }
             $count = (int)$count;
             $torp = $buildableTorpedoTypes[$torp_id];
-            if ($torp->getEnergyCost() * $count > $colony->getEps()) {
-                $count = floor($colony->getEps() / $torp->getEnergyCost());
+            if ($torp->getEnergyCost() * $count > $changeable->getEps()) {
+                $count = floor($changeable->getEps() / $torp->getEnergyCost());
             }
             if ($count <= 0) {
                 continue;
@@ -74,7 +76,7 @@ final class BuildTorpedos implements ActionControllerInterface
                 $count * $torp->getProductionAmount(),
                 $torp->getName()
             );
-            $colony->lowerEps($count * $torp->getEnergyCost());
+            $changeable->lowerEps($count * $torp->getEnergyCost());
         }
         $this->colonyRepository->save($colony);
 

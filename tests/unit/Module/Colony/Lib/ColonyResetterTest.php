@@ -9,6 +9,7 @@ use Mockery;
 use Mockery\MockInterface;
 use Override;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Orm\Entity\ColonyChangeableInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ColonyTerraformingInterface;
 use Stu\Orm\Entity\CrewInterface;
@@ -127,6 +128,7 @@ class ColonyResetterTest extends StuTestCase
     public function testResetResetsColony(): void
     {
         $colony = Mockery::mock(ColonyInterface::class);
+        $changeable = $this->mock(ColonyChangeableInterface::class);
         $user = Mockery::mock(UserInterface::class);
         $fieldTerraforming = Mockery::mock(ColonyTerraformingInterface::class);
 
@@ -192,35 +194,39 @@ class ColonyResetterTest extends StuTestCase
             ->once();
 
         //OTHER
-        $colony->shouldReceive('setEps')
+        $colony->shouldReceive('getChangeable')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($changeable);
+        $changeable->shouldReceive('setEps')
             ->with(0)
             ->once()
             ->andReturnSelf();
-        $colony->shouldReceive('setMaxEps')
+        $changeable->shouldReceive('setMaxEps')
             ->with(0)
             ->once()
             ->andReturnSelf();
-        $colony->shouldReceive('setMaxStorage')
+        $changeable->shouldReceive('setMaxStorage')
             ->with(0)
             ->once()
             ->andReturnSelf();
-        $colony->shouldReceive('setWorkers')
+        $changeable->shouldReceive('setWorkers')
             ->with(0)
             ->once()
             ->andReturnSelf();
-        $colony->shouldReceive('setWorkless')
+        $changeable->shouldReceive('setWorkless')
             ->with(0)
             ->once()
             ->andReturnSelf();
-        $colony->shouldReceive('setMaxBev')
+        $changeable->shouldReceive('setMaxBev')
             ->with(0)
             ->once()
             ->andReturnSelf();
-        $colony->shouldReceive('setImmigrationstate')
+        $changeable->shouldReceive('setImmigrationstate')
             ->with(true)
             ->once()
             ->andReturnSelf();
-        $colony->shouldReceive('setPopulationlimit')
+        $changeable->shouldReceive('setPopulationlimit')
             ->with(0)
             ->once()
             ->andReturnSelf();
@@ -232,15 +238,15 @@ class ColonyResetterTest extends StuTestCase
             ->with('')
             ->once()
             ->andReturnSelf();
-        $colony->shouldReceive('setTorpedo')
+        $changeable->shouldReceive('setTorpedo')
             ->with(null)
             ->once()
             ->andReturnSelf();
-        $colony->shouldReceive('setShieldFrequency')
+        $changeable->shouldReceive('setShieldFrequency')
             ->with(0)
             ->once()
             ->andReturnSelf();
-        $colony->shouldReceive('setShields')
+        $changeable->shouldReceive('setShields')
             ->with(0)
             ->once()
             ->andReturnSelf();

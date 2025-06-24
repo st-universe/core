@@ -114,11 +114,13 @@ final class RetrofitShip implements ActionControllerInterface
             return;
         }
 
-        if ($colony->getEps() < $rump->getEpsCost()) {
+        $changeable = $colony->getChangeable();
+
+        if ($changeable->getEps() < $rump->getEpsCost()) {
             $game->addInformationf(
                 _('Zur Umrüstung wird %d Energie benötigt, es ist jedoch nur %d Energie vorhanden'),
                 $rump->getEpsCost(),
-                $colony->getEps()
+                $changeable->getEps()
             );
             return;
         }
@@ -297,7 +299,7 @@ final class RetrofitShip implements ActionControllerInterface
         $queue->setMode(2);
         $queue->setShip($ship);
 
-        $colony->setEps($colony->getEps() - $rump->getEpsCost());
+        $changeable->lowerEps(-$rump->getEpsCost());
 
         $this->colonyRepository->save($colony);
         $this->colonyShipQueueRepository->save($queue);

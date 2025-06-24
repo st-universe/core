@@ -18,9 +18,7 @@ final class ChangeFrequency implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_CHANGE_FREQUENCY';
 
-    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyRepositoryInterface $colonyRepository)
-    {
-    }
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyRepositoryInterface $colonyRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -44,7 +42,7 @@ final class ChangeFrequency implements ActionControllerInterface
             $game->addInformation(_('Unerlaubte Frequenz (Maximum: 6 Zeichen)'));
             return;
         }
-        $colony->setShieldFrequency((int)$frequency);
+        $colony->getChangeable()->setShieldFrequency((int)$frequency);
         $this->colonyRepository->save($colony);
 
         $game->addInformation(_('Die Schildfrequenz wurde geändert'));

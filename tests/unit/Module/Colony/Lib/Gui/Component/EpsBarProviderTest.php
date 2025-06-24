@@ -36,7 +36,7 @@ class EpsBarProviderTest extends StuTestCase
 
     public function testSetTemplateVariables(): void
     {
-        $this->host->shouldReceive('getEps')
+        $this->host->shouldReceive('getChangeable->getEps')
             ->withNoArgs()
             ->andReturn(80);
         $this->host->shouldReceive('getMaxEps')

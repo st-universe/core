@@ -30,8 +30,8 @@ final class AcademyProvider implements PlanetFieldHostComponentInterface
             $trainableCrew = $crewRemainingCount;
         }
 
-        if ($trainableCrew > $entity->getWorkless()) {
-            $trainableCrew = $entity->getWorkless();
+        if ($trainableCrew > $entity->getChangeable()->getWorkless()) {
+            $trainableCrew = $entity->getChangeable()->getWorkless();
         }
 
         $freeAssignmentCount = $this->colonyLibFactory->createColonyPopulationCalculator(

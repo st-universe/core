@@ -91,11 +91,13 @@ final class BuildShip implements ActionControllerInterface
             return;
         }
 
-        if ($colony->getEps() < $rump->getEpsCost()) {
+        $changeable = $colony->getChangeable();
+
+        if ($changeable->getEps() < $rump->getEpsCost()) {
             $game->addInformationf(
                 _('Zum Bau wird %d Energie benötigt, es ist jedoch nur %d Energie vorhanden'),
                 $rump->getEpsCost(),
-                $colony->getEps()
+                $changeable->getEps()
             );
             return;
         }
@@ -246,7 +248,7 @@ final class BuildShip implements ActionControllerInterface
         $queue->setBuildingFunction($building_function->getBuildingFunction());
         $queue->setMode(1);
 
-        $colony->setEps($colony->getEps() - $rump->getEpsCost());
+        $changeable->lowerEps(-$rump->getEpsCost());
 
         $this->colonyRepository->save($colony);
         $this->colonyShipQueueRepository->save($queue);

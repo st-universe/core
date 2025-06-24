@@ -7,6 +7,7 @@ namespace Stu\Component\Building;
 use Override;
 use Stu\Module\Building\Action\BuildingFunctionActionMapperInterface;
 use Stu\Orm\Entity\BuildingInterface;
+use Stu\Orm\Entity\ColonyChangeableInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ColonySandboxInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
@@ -19,7 +20,13 @@ use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
  */
 final class BuildingManager implements BuildingManagerInterface
 {
-    public function __construct(private PlanetFieldRepositoryInterface $planetFieldRepository, private ColonyRepositoryInterface $colonyRepository, private ColonySandboxRepositoryInterface $colonySandboxRepository, private BuildingFunctionActionMapperInterface $buildingFunctionActionMapper, private BuildingPostActionInterface $buildingPostAction) {}
+    public function __construct(
+        private readonly PlanetFieldRepositoryInterface $planetFieldRepository,
+        private readonly ColonyRepositoryInterface $colonyRepository,
+        private readonly ColonySandboxRepositoryInterface $colonySandboxRepository,
+        private readonly BuildingFunctionActionMapperInterface $buildingFunctionActionMapper,
+        private readonly BuildingPostActionInterface $buildingPostAction
+    ) {}
 
     #[Override]
     public function activate(PlanetFieldInterface $field): bool
@@ -42,29 +49,29 @@ final class BuildingManager implements BuildingManagerInterface
             return false;
         }
 
-        $host = $field->getHost();
+        $changeable = $this->getChangeable($field);
 
         $workerAmount = $building->getWorkers();
 
-        if ($host instanceof ColonyInterface) {
-            $worklessAmount = $host->getWorkless();
+        if ($changeable instanceof ColonyChangeableInterface) {
+            $worklessAmount = $changeable->getWorkless();
             if ($worklessAmount < $workerAmount) {
                 return false;
             }
 
-            $host->setWorkless($worklessAmount - $workerAmount);
+            $changeable->setWorkless($worklessAmount - $workerAmount);
         }
 
-        $host
-            ->setWorkers($host->getWorkers() + $workerAmount)
-            ->setMaxBev($host->getMaxBev() + $building->getHousing());
+        $changeable
+            ->setWorkers($changeable->getWorkers() + $workerAmount)
+            ->setMaxBev($changeable->getMaxBev() + $building->getHousing());
         $field->setActive(1);
 
         $this->planetFieldRepository->save($field);
 
-        $this->buildingPostAction->handleActivation($building, $host);
+        $this->buildingPostAction->handleActivation($building, $field->getHost());
 
-        $this->saveHost($host);
+        $this->saveHost($field->getHost());
 
         return true;
     }
@@ -86,16 +93,16 @@ final class BuildingManager implements BuildingManagerInterface
             return;
         }
 
-        $host = $field->getHost();
+        $changeable = $this->getChangeable($field);
 
-        $this->updateWorkerAndMaxBev($building, $host);
+        $this->updateWorkerAndMaxBev($building, $changeable);
         $field->setActive(0);
 
         $this->planetFieldRepository->save($field);
 
-        $this->buildingPostAction->handleDeactivation($building, $host);
+        $this->buildingPostAction->handleDeactivation($building, $field->getHost());
 
-        $this->saveHost($host);
+        $this->saveHost($field->getHost());
     }
 
     private function saveHost(ColonyInterface|ColonySandboxInterface $host): void
@@ -107,11 +114,11 @@ final class BuildingManager implements BuildingManagerInterface
         }
     }
 
-    private function updateWorkerAndMaxBev(BuildingInterface $building, ColonyInterface|ColonySandboxInterface $host): void
+    private function updateWorkerAndMaxBev(BuildingInterface $building, ColonyChangeableInterface|ColonySandboxInterface $host): void
     {
         $workerAmount = $building->getWorkers();
 
-        if ($host instanceof ColonyInterface) {
+        if ($host instanceof ColonyChangeableInterface) {
             $host->setWorkless($host->getWorkless() + $workerAmount);
         }
         $host->setWorkers($host->getWorkers() - $workerAmount);
@@ -131,12 +138,13 @@ final class BuildingManager implements BuildingManagerInterface
         }
 
         $host = $field->getHost();
+        $changeable = $this->getChangeable($field);
 
         if (!$field->isUnderConstruction()) {
             $this->deactivate($field);
-            $host
-                ->setMaxStorage($host->getMaxStorage() - $building->getStorage())
-                ->setMaxEps($host->getMaxEps() - $building->getEpsStorage());
+            $changeable
+                ->setMaxStorage($changeable->getMaxStorage() - $building->getStorage())
+                ->setMaxEps($changeable->getMaxEps() - $building->getEpsStorage());
         }
 
         foreach ($building->getFunctions() as $function) {
@@ -151,7 +159,7 @@ final class BuildingManager implements BuildingManagerInterface
         $field->clearBuilding();
 
         $this->planetFieldRepository->save($field);
-        $this->saveHost($host);
+        $this->saveHost($field->getHost());
     }
 
     #[Override]
@@ -162,8 +170,7 @@ final class BuildingManager implements BuildingManagerInterface
             return null;
         }
 
-        $host = $field->getHost();
-
+        $changeable = $this->getChangeable($field);
 
         $field
             ->setActive(0)
@@ -180,13 +187,22 @@ final class BuildingManager implements BuildingManagerInterface
             }
         }
 
-        $host
-            ->setMaxStorage($host->getMaxStorage() + $building->getStorage())
-            ->setMaxEps($host->getMaxEps() + $building->getEpsStorage());
+        $changeable
+            ->setMaxStorage($changeable->getMaxStorage() + $building->getStorage())
+            ->setMaxEps($changeable->getMaxEps() + $building->getEpsStorage());
 
-        $this->saveHost($host);
+        $this->saveHost($field->getHost());
         $this->planetFieldRepository->save($field);
 
         return $activationDetails;
+    }
+
+    private function getChangeable(PlanetFieldInterface $field): ColonyChangeableInterface|ColonySandboxInterface
+    {
+        $host = $field->getHost();
+
+        return $host instanceof ColonySandboxInterface
+            ? $host
+            : $host->getChangeable();
     }
 }

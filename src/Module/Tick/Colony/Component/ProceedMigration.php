@@ -15,25 +15,27 @@ class ProceedMigration implements ColonyTickComponentInterface
 
     public function work(ColonyInterface $colony, array &$production, InformationInterface $information): void
     {
-        if ($colony->getPopulation() > $colony->getMaxBev()) {
-            if ($colony->getWorkless() !== 0) {
-                $bev = random_int(1, $colony->getWorkless());
-                $colony->setWorkless($colony->getWorkless() - $bev);
+        $changeable = $colony->getChangeable();
+
+        if ($colony->getPopulation() > $changeable->getMaxBev()) {
+            if ($changeable->getWorkless() !== 0) {
+                $bev = random_int(1, $changeable->getWorkless());
+                $changeable->setWorkless($changeable->getWorkless() - $bev);
                 $information->addInformationf("%d Einwohner sind ausgewandert", $bev);
             }
             return;
         }
 
-        if ($colony->getPopulationLimit() > 0 && $colony->getPopulation() > $colony->getPopulationLimit() && $colony->getWorkless()) {
-            if (($free = ($colony->getPopulationLimit() - $colony->getWorkers())) > 0) {
+        if ($changeable->getPopulationLimit() > 0 && $colony->getPopulation() > $changeable->getPopulationLimit() && $changeable->getWorkless()) {
+            if (($free = ($changeable->getPopulationLimit() - $colony->getWorkers())) > 0) {
                 $information->addInformationf(
                     _('Es sind %d Arbeitslose ausgewandert'),
-                    ($colony->getWorkless() - $free)
+                    ($changeable->getWorkless() - $free)
                 );
-                $colony->setWorkless($free);
+                $changeable->setWorkless($free);
             } else {
                 $information->addInformation('Es sind alle Arbeitslosen ausgewandert');
-                $colony->setWorkless(0);
+                $changeable->setWorkless(0);
             }
         }
 
@@ -51,8 +53,11 @@ class ProceedMigration implements ColonyTickComponentInterface
         array $production
     ): void {
         // @todo
-        $colony->setWorkless(
-            $colony->getWorkless() +
+
+        $changeable = $colony->getChangeable();
+
+        $changeable->setWorkless(
+            $changeable->getWorkless() +
                 $this->colonyLibFactory->createColonyPopulationCalculator($colony, $production)->getGrowth()
         );
     }

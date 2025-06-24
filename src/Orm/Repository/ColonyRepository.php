@@ -194,7 +194,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
             ->createNativeQuery(
                 'SELECT u.id as user_id, bc.commodity_id AS commodity_id, SUM(bc.count) AS sum
                 FROM stu_user u
-                JOIN stu_colonies c
+                JOIN stu_colony c
                 ON u.id = c.user_id 
                 JOIN stu_colonies_fielddata cf
                 ON cf.colonies_id = c.id
@@ -221,7 +221,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
         return $this->getEntityManager()
             ->createNativeQuery(
                 'SELECT c.user_id, bc.commodity_id, SUM(bc.count) AS sum
-                FROM stu_colonies c
+                FROM stu_colony c
                 JOIN stu_colonies_fielddata cf
                 ON cf.colonies_id = c.id 
                 JOIN stu_buildings_commodity bc
@@ -261,7 +261,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                                 AND bc.commodity_id = :lifeStandard
                                 AND cf.aktiv = 1
                             )) AS satisfied
-                        FROM stu_colonies c
+                        FROM stu_colony c
                         WHERE c.user_id >= :firstUserId) AS colonies
                 GROUP BY user_id
                 ORDER BY 2 DESC

@@ -19,9 +19,7 @@ final class LoadShields implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_LOAD_SHIELDS';
 
-    public function __construct(private ColonyLoaderInterface $colonyLoader, private PlanetFieldRepositoryInterface $planetFieldRepository, private ColonyRepositoryInterface $colonyRepository)
-    {
-    }
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private PlanetFieldRepositoryInterface $planetFieldRepository, private ColonyRepositoryInterface $colonyRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -36,23 +34,24 @@ final class LoadShields implements ActionControllerInterface
         );
 
         $load = request::postIntFatal('load');
+        $changeable = $colony->getChangeable();
 
-        if ($colony->getEps() * ColonyEnum::SHIELDS_PER_EPS < $load) {
-            $load = $colony->getEps() * ColonyEnum::SHIELDS_PER_EPS;
+        if ($changeable->getEps() * ColonyEnum::SHIELDS_PER_EPS < $load) {
+            $load = $changeable->getEps() * ColonyEnum::SHIELDS_PER_EPS;
         }
 
         $maxShields = $this->planetFieldRepository->getMaxShieldsOfHost($colony);
 
-        if ($load > $maxShields - $colony->getShields()) {
-            $load = $maxShields - $colony->getShields();
+        if ($load > $maxShields - $changeable->getShields()) {
+            $load = $maxShields - $changeable->getShields();
         }
 
         if ($load < 1) {
             return;
         }
 
-        $colony->setEps($colony->getEps() - (int) ceil($load / ColonyEnum::SHIELDS_PER_EPS));
-        $colony->setShields($colony->getShields() + $load);
+        $changeable->lowerEps(-(int) ceil($load / ColonyEnum::SHIELDS_PER_EPS));
+        $changeable->setShields($changeable->getShields() + $load);
 
         $this->colonyRepository->save($colony);
         $game->addInformation(sprintf(_('Die Schilde wurden um %d Punkte geladen'), $load));
