@@ -99,8 +99,6 @@ use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\SpacecraftTypeShowStragegyInterface;
 use Stu\Module\Spacecraft\View\ShowWasteMenu\ShowWasteMenu;
 use Stu\Module\Station\View\ShowStation\StationShowStrategy;
-use Stu\Module\Spacecraft\Lib\ActivatorDeactivatorHelper;
-use Stu\Module\Spacecraft\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftShutdown;
 use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftShutdownInterface;
 use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertDetection;
@@ -279,7 +277,6 @@ return [
     SpacecraftAttackCoreInterface::class => autowire(SpacecraftAttackCore::class),
     SpacecraftAttackPreparationInterface::class => autowire(SpacecraftAttackPreparation::class),
     SpacecraftAttackCycleInterface::class => autowire(SpacecraftAttackCycle::class),
-    ActivatorDeactivatorHelperInterface::class => autowire(ActivatorDeactivatorHelper::class),
     BattlePartyFactoryInterface::class => autowire(BattlePartyFactory::class),
     SkipDetectionInterface::class => autowire(SkipDetection::class),
     AlertedShipsDetectionInterface::class => autowire(AlertedShipsDetection::class),
