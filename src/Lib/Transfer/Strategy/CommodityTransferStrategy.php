@@ -13,6 +13,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Template\StatusBarColorEnum;
 use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\UserInterface;
 
 class CommodityTransferStrategy implements TransferStrategyInterface
 {
@@ -80,7 +81,7 @@ class CommodityTransferStrategy implements TransferStrategyInterface
             return;
         }
 
-        if (!$target->canPenetrateShields($source->getUser(), $information)) {
+        if ($this->shieldsAreBlocking($target, $source->getUser(), $information)) {
             return;
         }
 
@@ -91,5 +92,25 @@ class CommodityTransferStrategy implements TransferStrategyInterface
         }
 
         $source->transfer($isUnload, $target, $information);
+    }
+
+    private function shieldsAreBlocking(StorageEntityWrapperInterface $targetWrapper, UserInterface $user, InformationInterface $information): bool
+    {
+        $target = $targetWrapper->get();
+
+        if (
+            $target instanceof ColonyInterface
+            && $target->getUser() !== $user
+            && $this->colonyLibFactory->createColonyShieldingManager($target)->isShieldingEnabled()
+            && $target->getShieldFrequency()
+        ) {
+            $frequency = request::postInt('frequency');
+            if ($frequency !== $target->getShieldFrequency()) {
+                $information->addInformation("Die Schildfrequenz ist nicht korrekt");
+                return true;
+            }
+        }
+
+        return false;
     }
 }
