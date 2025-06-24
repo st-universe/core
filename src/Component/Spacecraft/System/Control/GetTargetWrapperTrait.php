@@ -1,0 +1,28 @@
+<?php
+
+namespace Stu\Component\Spacecraft\System\Control;
+
+use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Orm\Entity\UserInterface;
+
+trait GetTargetWrapperTrait
+{
+    /** @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader*/
+    protected function getTargetWrapper(
+        SpacecraftWrapperInterface|int $target,
+        bool $allowUplink,
+        SpacecraftLoaderInterface $spacecraftLoader,
+        UserInterface $user
+    ): SpacecraftWrapperInterface {
+        if ($target instanceof SpacecraftWrapperInterface) {
+            return $target;
+        }
+
+        return $spacecraftLoader->getWrapperByIdAndUser(
+            $target,
+            $user->getId(),
+            $allowUplink
+        );
+    }
+}

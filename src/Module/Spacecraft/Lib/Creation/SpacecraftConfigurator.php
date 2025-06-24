@@ -7,9 +7,8 @@ use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
-use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
-use Stu\Module\Spacecraft\Lib\ActivatorDeactivatorHelperInterface;
+use Stu\Component\Spacecraft\System\Control\AlertStateManagerInterface;
 use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\LocationInterface;
@@ -28,14 +27,13 @@ class SpacecraftConfigurator implements SpacecraftConfiguratorInterface
      * @psalm-param T $wrapper
      */
     public function __construct(
-        private SpacecraftWrapperInterface $wrapper,
-        private TorpedoTypeRepositoryInterface $torpedoTypeRepository,
-        private ShipTorpedoManagerInterface $torpedoManager,
-        private CrewCreatorInterface $crewCreator,
-        private CrewAssignmentRepositoryInterface $shipCrewRepository,
-        private SpacecraftRepositoryInterface $spacecraftRepository,
-        private ActivatorDeactivatorHelperInterface $activatorDeactivatorHelper,
-        private GameControllerInterface $game
+        private readonly SpacecraftWrapperInterface $wrapper,
+        private readonly TorpedoTypeRepositoryInterface $torpedoTypeRepository,
+        private readonly ShipTorpedoManagerInterface $torpedoManager,
+        private readonly CrewCreatorInterface $crewCreator,
+        private readonly CrewAssignmentRepositoryInterface $shipCrewRepository,
+        private readonly SpacecraftRepositoryInterface $spacecraftRepository,
+        private readonly AlertStateManagerInterface $alertStateManager
     ) {}
 
     #[Override]
@@ -139,10 +137,9 @@ class SpacecraftConfigurator implements SpacecraftConfiguratorInterface
     #[Override]
     public function setAlertState(SpacecraftAlertStateEnum $alertState): SpacecraftConfiguratorInterface
     {
-        $this->activatorDeactivatorHelper->setAlertState(
+        $this->alertStateManager->setAlertState(
             $this->wrapper,
-            $alertState,
-            $this->game
+            $alertState
         );
 
         return $this;

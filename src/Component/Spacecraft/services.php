@@ -17,6 +17,12 @@ use Stu\Component\Spacecraft\Repair\CancelRepair;
 use Stu\Component\Spacecraft\Repair\CancelRepairInterface;
 use Stu\Component\Spacecraft\Repair\RepairUtil;
 use Stu\Component\Spacecraft\Repair\RepairUtilInterface;
+use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelper;
+use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
+use Stu\Component\Spacecraft\System\Control\AlertStateManager;
+use Stu\Component\Spacecraft\System\Control\AlertStateManagerInterface;
+use Stu\Component\Spacecraft\System\Control\SystemActivation;
+use Stu\Component\Spacecraft\System\Control\SystemDeactivation;
 use Stu\Component\Spacecraft\System\Data\ShipSystemDataFactory;
 use Stu\Component\Spacecraft\System\Data\ShipSystemDataFactoryInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManager;
@@ -113,6 +119,10 @@ return [
         ],
         autowire(StuTime::class)
     ),
+    SystemActivation::class => autowire(SystemActivation::class),
+    SystemDeactivation::class => autowire(SystemDeactivation::class),
+    ActivatorDeactivatorHelperInterface::class => autowire(ActivatorDeactivatorHelper::class),
+    AlertStateManagerInterface::class => autowire(AlertStateManager::class),
     ModuleRecyclingInterface::class => autowire(ModuleRecycling::class),
     SpacecraftCrewCalculatorInterface::class => autowire(SpacecraftCrewCalculator::class),
     BuildplanSignatureCreationInterface::class => autowire(BuildplanSignatureCreation::class),
