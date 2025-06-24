@@ -64,24 +64,6 @@ class ColonyStorageEntityWrapper implements StorageEntityWrapperInterface
         return $this->colony->getLocation();
     }
 
-    #[Override]
-    public function canPenetrateShields(UserInterface $user, InformationInterface $information): bool
-    {
-        if (
-            $this->colony->getUser() !== $user
-            && $this->colonyLibFactory->createColonyShieldingManager($this->colony)->isShieldingEnabled()
-            && $this->colony->getShieldFrequency()
-        ) {
-            $frequency = request::postInt('frequency');
-            if ($frequency !== $this->colony->getShieldFrequency()) {
-                $information->addInformation("Die Schildfrequenz ist nicht korrekt");
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     // COMMODITIES
     public function getBeamFactor(): int
     {

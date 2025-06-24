@@ -83,12 +83,6 @@ class SpacecraftStorageEntityWrapper implements StorageEntityWrapperInterface
         return $this->spacecraft->getLocation();
     }
 
-    #[Override]
-    public function canPenetrateShields(UserInterface $user, InformationInterface $information): bool
-    {
-        return true;
-    }
-
     // COMMODITIES
     #[Override]
     public function getBeamFactor(): int

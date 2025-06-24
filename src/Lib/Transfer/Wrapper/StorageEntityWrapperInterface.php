@@ -18,7 +18,6 @@ interface StorageEntityWrapperInterface
     public function getName(): string;
     public function getLocation(): LocationInterface;
     public function canTransfer(InformationInterface $information): bool;
-    public function canPenetrateShields(UserInterface $user, InformationInterface $information): bool;
 
     // COMMODITIES
     public function getBeamFactor(): int;
