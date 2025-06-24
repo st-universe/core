@@ -7,7 +7,6 @@ namespace Stu\Lib\SpacecraftManagement\Manager;
 use Mockery\MockInterface;
 use Override;
 use RuntimeException;
-use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -18,12 +17,10 @@ use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Entity\TorpedoTypeInterface;
 use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 use Stu\StuTestCase;
 
 class ManageTorpedoTest extends StuTestCase
 {
-    private MockInterface&TorpedoTypeRepositoryInterface $torpedoTypeRepository;
     private MockInterface&ShipTorpedoManagerInterface $shipTorpedoManager;
     private MockInterface&PrivateMessageSenderInterface $privateMessageSender;
 
@@ -40,7 +37,6 @@ class ManageTorpedoTest extends StuTestCase
     #[Override]
     protected function setUp(): void
     {
-        $this->torpedoTypeRepository = $this->mock(TorpedoTypeRepositoryInterface::class);
         $this->shipTorpedoManager = $this->mock(ShipTorpedoManagerInterface::class);
         $this->privateMessageSender = $this->mock(PrivateMessageSenderInterface::class);
 
@@ -51,7 +47,6 @@ class ManageTorpedoTest extends StuTestCase
         $this->managerProvider = $this->mock(ManagerProviderInterface::class);
 
         $this->subject = new ManageTorpedo(
-            $this->torpedoTypeRepository,
             $this->shipTorpedoManager,
             $this->privateMessageSender
         );
@@ -315,12 +310,15 @@ class ManageTorpedoTest extends StuTestCase
 
     public function testManageExpectNoLoadWhenShipEmptyAndIllegalTypeSelected(): void
     {
-        $possibleTorpedoTypesForLvl1 = [1 => $this->torpedoType];
+        $allPossibleTorpedoTypes = [1 => $this->torpedoType];
         $values = ['torp' => ['555' => '5'], 'torp_type' => ['555' => '7']];
 
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()
             ->andReturn($this->ship);
+        $this->wrapper->shouldReceive('getPossibleTorpedoTypes')
+            ->withNoArgs()
+            ->andReturn($allPossibleTorpedoTypes);
 
         $this->ship->shouldReceive('getId')
             ->withNoArgs()
@@ -332,19 +330,6 @@ class ManageTorpedoTest extends StuTestCase
         $this->ship->shouldReceive('getTorpedoCount')
             ->withNoArgs()
             ->andReturn(0);
-        $this->ship->shouldReceive('hasSpacecraftSystem')
-            ->with(SpacecraftSystemTypeEnum::TORPEDO_STORAGE)
-            ->once()
-            ->andReturn(false);
-        $this->ship->shouldReceive('getRump->getTorpedoLevel')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(1);
-
-        $this->torpedoTypeRepository->shouldReceive('getByLevel')
-            ->with(1)
-            ->once()
-            ->andReturn($possibleTorpedoTypesForLvl1);
 
         $msg = $this->subject->manage($this->wrapper, $values, $this->managerProvider);
 
@@ -359,6 +344,9 @@ class ManageTorpedoTest extends StuTestCase
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()
             ->andReturn($this->ship);
+        $this->wrapper->shouldReceive('getPossibleTorpedoTypes')
+            ->withNoArgs()
+            ->andReturn($allPossibleTorpedoTypes);
 
         $this->torpedoType->shouldReceive('getCommodityId')
             ->withNoArgs()
@@ -386,19 +374,10 @@ class ManageTorpedoTest extends StuTestCase
         $this->ship->shouldReceive('getTorpedoCount')
             ->withNoArgs()
             ->andReturn(0);
-        $this->ship->shouldReceive('hasSpacecraftSystem')
-            ->with(SpacecraftSystemTypeEnum::TORPEDO_STORAGE)
-            ->once()
-            ->andReturn(true);
         $this->ship->shouldReceive('getName')
             ->withNoArgs()
             ->once()
             ->andReturn('name');
-
-        $this->torpedoTypeRepository->shouldReceive('getAll')
-            ->with()
-            ->once()
-            ->andReturn($allPossibleTorpedoTypes);
 
         $msg = $this->subject->manage($this->wrapper, $values, $this->managerProvider);
 
@@ -501,6 +480,9 @@ class ManageTorpedoTest extends StuTestCase
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()
             ->andReturn($this->ship);
+        $this->wrapper->shouldReceive('getPossibleTorpedoTypes')
+            ->withNoArgs()
+            ->andReturn($allPossibleTorpedoTypes);
 
         $this->torpedoType->shouldReceive('getCommodityId')
             ->withNoArgs()
@@ -533,11 +515,6 @@ class ManageTorpedoTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(300);
 
-        $this->torpedoTypeRepository->shouldReceive('getAll')
-            ->with()
-            ->once()
-            ->andReturn($allPossibleTorpedoTypes);
-
         $this->ship->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn($this->shipId);
@@ -548,10 +525,6 @@ class ManageTorpedoTest extends StuTestCase
         $this->ship->shouldReceive('getTorpedoCount')
             ->withNoArgs()
             ->andReturn(0);
-        $this->ship->shouldReceive('hasSpacecraftSystem')
-            ->with(SpacecraftSystemTypeEnum::TORPEDO_STORAGE)
-            ->once()
-            ->andReturn(true);
         $this->ship->shouldReceive('getName')
             ->withNoArgs()
             ->andReturn('name');
