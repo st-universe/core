@@ -18,4 +18,5 @@ enum SpacecraftRumpCategoryEnum: int
     case SHIP_CATEGORY_SHUTTLE = 10;
     case SHIP_CATEGORY_CONSTRUCTION = 11;
     case SHIP_CATEGORY_STATION = 12;
+    case SHIP_CATEGORY_ENERGIENETZ = 13;
 }
