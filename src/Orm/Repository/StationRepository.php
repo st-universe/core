@@ -289,7 +289,7 @@ final class StationRepository extends EntityRepository implements StationReposit
         }
 
         $location = $wrapper->get()->getLocation();
-        $range = $wrapper->getSensorRange() * 2;
+        $range = $wrapper->getLssSystemData()?->getSensorRange() ?? 0;
 
         return $this->getEntityManager()->createQuery(
             sprintf(

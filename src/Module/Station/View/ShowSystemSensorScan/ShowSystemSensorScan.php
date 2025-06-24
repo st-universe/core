@@ -45,11 +45,13 @@ final class ShowSystemSensorScan implements ViewControllerInterface
         $shipCx = $field->getCx();
         $shipCy = $field->getCy();
 
+        $sensorRange = $wrapper->getLssSystemData()?->getSensorRange() ?? 0;
+
         if (
-            $cx < $shipCx - $wrapper->getSensorRange()
-            || $cx > $shipCx + $wrapper->getSensorRange()
-            || $cy < $shipCy - $wrapper->getSensorRange()
-            || $cy > $shipCy + $wrapper->getSensorRange()
+            $cx < $shipCx - $sensorRange
+            || $cx > $shipCx + $sensorRange
+            || $cy < $shipCy - $sensorRange
+            || $cy > $shipCy + $sensorRange
         ) {
             return;
         }

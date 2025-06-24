@@ -37,7 +37,9 @@ class VisualNavPanel extends AbstractVisualPanel
     #[Override]
     protected function createBoundaries(): PanelBoundaries
     {
-        return PanelBoundaries::fromLocation($this->getPanelCenter(), $this->wrapper->getSensorRange());
+        $range = $this->wrapper->getLssSystemData()?->getSensorRange() ?? 0;
+
+        return PanelBoundaries::fromLocation($this->getPanelCenter(), $range);
     }
 
     #[Override]

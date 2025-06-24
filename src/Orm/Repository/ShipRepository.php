@@ -265,7 +265,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         }
 
         $location = $wrapper->get()->getLocation();
-        $range = $wrapper->getSensorRange() * 2;
+        $range = $wrapper->getLssSystemData()?->getSensorRange() ?? 0;
 
         return $this->getEntityManager()->createQuery(
             sprintf(
@@ -320,7 +320,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         }
 
         $location = $wrapper->get()->getLocation();
-        $range = $wrapper->getSensorRange() * 3;
+        $range = $wrapper->getLssSystemData()?->getSensorRange() ?? 0;
 
         return $this->getEntityManager()->createQuery(
             sprintf(
