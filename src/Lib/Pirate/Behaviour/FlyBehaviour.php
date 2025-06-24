@@ -3,7 +3,6 @@
 namespace Stu\Lib\Pirate\Behaviour;
 
 use Override;
-use RuntimeException;
 use Stu\Lib\Pirate\Component\Coordinate;
 use Stu\Lib\Pirate\Component\PirateFlightInterface;
 use Stu\Lib\Pirate\Component\SafeFlightRouteInterface;
@@ -83,7 +82,8 @@ class FlyBehaviour implements PirateBehaviourInterface
     ): Coordinate {
 
         $isInXDirection = $this->stuRandom->rand(0, 1) === 0;
-        $maxFields = $leadWrapper->getSensorRange() * 2;
+        $sensorRange = $leadWrapper->getLssSystemData()?->getSensorRange() ?? 0;
+        $maxFields = $sensorRange * 2;
 
         return new Coordinate(
             $isInXDirection ? $currentLocation->getX() + $this->stuRandom->rand(-$maxFields, $maxFields) : $currentLocation->getX(),

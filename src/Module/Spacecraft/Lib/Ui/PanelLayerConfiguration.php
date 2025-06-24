@@ -71,7 +71,7 @@ class PanelLayerConfiguration
 
         $cx = $map->getX();
         $cy = $map->getY();
-        $range = $wrapper->getSensorRange();
+        $range = $wrapper->getLssSystemData()?->getSensorRange() ?? 0;
 
         if ($this->isUserMapActive($layer, $currentUser)) {
             $this->userMapRepository->insertMapFieldsForUser(

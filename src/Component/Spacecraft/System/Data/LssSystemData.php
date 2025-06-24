@@ -19,9 +19,15 @@ class LssSystemData extends AbstractSystemData
         return SpacecraftSystemTypeEnum::LSS;
     }
 
-    public function getSensorRange(): int
+    public function getTheoreticalMaxSensorRange(): int
     {
         return $this->sensorRange;
+    }
+
+    public function getSensorRange(): int
+    {
+        return (int) (ceil($this->sensorRange
+            * $this->spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::LSS)->getStatus() / 100));
     }
 
     public function setSensorRange(int $sensorRange): LssSystemData

@@ -9,6 +9,7 @@ use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\SpacecraftSystemInterface;
 use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -39,13 +40,18 @@ class EpsSystemDataTest extends StuTestCase
 
     public function testGetEpsPercentage(): void
     {
+        $system = $this->mock(SpacecraftSystemInterface::class);
+
         $this->subject->setSpacecraft($this->ship);
         $this->subject->setEps(80);
         $this->subject->setMaxEps(100);
 
-        $this->ship->shouldReceive('hasSpacecraftSystem')
+        $this->ship->shouldReceive('getSpacecraftSystem')
             ->with(SpacecraftSystemTypeEnum::EPS)
-            ->andReturn(false);
+            ->andReturn($system);
+        $system->shouldReceive('getStatus')
+            ->withNoArgs()
+            ->andReturn(100);
 
         $result = $this->subject->getEpsPercentage();
 

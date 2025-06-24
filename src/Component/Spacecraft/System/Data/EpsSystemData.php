@@ -60,10 +60,6 @@ class EpsSystemData extends AbstractSystemData
      */
     public function getMaxEps(): int
     {
-        if (!$this->spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::EPS)) {
-            return $this->maxEps;
-        }
-
         return (int) (ceil($this->maxEps
             * $this->spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::EPS)->getStatus() / 100));
     }

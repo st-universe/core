@@ -154,7 +154,7 @@ final class StarSystemRepository extends EntityRepository implements StarSystemR
         }
 
         $location = $wrapper->get()->getLocation();
-        $range = $wrapper->getSensorRange() * 4;
+        $range = $wrapper->getLssSystemData()?->getSensorRange() ?? 0;
 
         return $this->getEntityManager()->createQuery(
             sprintf(

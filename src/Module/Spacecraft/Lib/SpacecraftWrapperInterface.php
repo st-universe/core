@@ -42,8 +42,6 @@ interface SpacecraftWrapperInterface
 
     public function isUnalerted(): bool;
 
-    public function getSensorRange(): int;
-
     public function getShieldRegenerationRate(): int;
 
     /**
