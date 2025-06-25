@@ -15,6 +15,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SystemDataDeserializerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Spacecraft\Lib\Reactor\ReactorWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftStateChangerInterface;
 use Stu\Module\Spacecraft\Lib\Ui\StateIconAndTitle;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -28,6 +29,7 @@ use Stu\StuTestCase;
 class SpacecraftWrapperFactoryTest extends StuTestCase
 {
     private MockInterface&SpacecraftSystemManagerInterface $spacecraftSystemManager;
+    private MockInterface&ReactorWrapperFactoryInterface $reactorWrapperFactory;
     private MockInterface&ColonyLibFactoryInterface $colonyLibFactory;
     private MockInterface&TorpedoTypeRepositoryInterface $torpedoTypeRepository;
     private MockInterface&GameControllerInterface $game;
@@ -43,6 +45,7 @@ class SpacecraftWrapperFactoryTest extends StuTestCase
     {
         //injected
         $this->spacecraftSystemManager = $this->mock(SpacecraftSystemManagerInterface::class);
+        $this->reactorWrapperFactory = $this->mock(ReactorWrapperFactoryInterface::class);
         $this->colonyLibFactory = $this->mock(ColonyLibFactoryInterface::class);
         $this->torpedoTypeRepository = $this->mock(TorpedoTypeRepositoryInterface::class);
         $this->game = $this->mock(GameControllerInterface::class);
@@ -53,6 +56,7 @@ class SpacecraftWrapperFactoryTest extends StuTestCase
 
         $this->spacecraftWrapperFactory = new SpacecraftWrapperFactory(
             $this->spacecraftSystemManager,
+            $this->reactorWrapperFactory,
             $this->colonyLibFactory,
             $this->torpedoTypeRepository,
             $this->game,

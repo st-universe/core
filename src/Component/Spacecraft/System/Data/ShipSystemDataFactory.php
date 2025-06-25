@@ -16,11 +16,10 @@ use Stu\Orm\Repository\TholianWebRepositoryInterface;
 final class ShipSystemDataFactory implements ShipSystemDataFactoryInterface
 {
     public function __construct(
-        private ShipRepositoryInterface $shipRepository,
-        private SpacecraftSystemRepositoryInterface $shipSystemRepository,
-        private TholianWebRepositoryInterface $tholianWebRepository,
-        private StatusBarFactoryInterface $statusBarFactory
-
+        private readonly ShipRepositoryInterface $shipRepository,
+        private readonly SpacecraftSystemRepositoryInterface $shipSystemRepository,
+        private readonly TholianWebRepositoryInterface $tholianWebRepository,
+        private readonly StatusBarFactoryInterface $statusBarFactory
     ) {}
 
     #[Override]
@@ -28,92 +27,26 @@ final class ShipSystemDataFactory implements ShipSystemDataFactoryInterface
         SpacecraftSystemTypeEnum $systemType,
         SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory
     ): AbstractSystemData {
-        switch ($systemType) {
-            case SpacecraftSystemTypeEnum::HULL:
-                return  new HullSystemData(
-                    $this->shipSystemRepository,
-                    $this->statusBarFactory
-                );
-            case SpacecraftSystemTypeEnum::SHIELDS:
-                return  new ShieldSystemData(
-                    $this->shipSystemRepository,
-                    $this->statusBarFactory
-                );
-            case SpacecraftSystemTypeEnum::EPS:
-                return  new EpsSystemData(
-                    $this->shipSystemRepository,
-                    $this->statusBarFactory
-                );
-            case SpacecraftSystemTypeEnum::COMPUTER:
-                return  new ComputerSystemData(
-                    $this->shipSystemRepository,
-                    $this->statusBarFactory
-                );
-            case SpacecraftSystemTypeEnum::TRACKER:
-                return  new TrackerSystemData(
-                    $this->shipRepository,
-                    $spacecraftWrapperFactory,
-                    $this->shipSystemRepository,
-                    $this->statusBarFactory
-                );
-            case SpacecraftSystemTypeEnum::THOLIAN_WEB:
-                return  new WebEmitterSystemData(
-                    $this->shipSystemRepository,
-                    $this->tholianWebRepository,
-                    $this->statusBarFactory
-                );
-            case SpacecraftSystemTypeEnum::WARPDRIVE:
-                return  new WarpDriveSystemData(
-                    $this->shipSystemRepository,
-                    $this->statusBarFactory
-                );
-            case SpacecraftSystemTypeEnum::WARPCORE:
-                return  new WarpCoreSystemData(
-                    $this->shipSystemRepository,
-                    $this->statusBarFactory
-                );
-            case SpacecraftSystemTypeEnum::SINGULARITY_REACTOR:
-                return  new SingularityCoreSystemData(
-                    $this->shipSystemRepository,
-                    $this->statusBarFactory
-                );
-            case SpacecraftSystemTypeEnum::FUSION_REACTOR:
-                return  new FusionCoreSystemData(
-                    $this->shipSystemRepository,
-                    $this->statusBarFactory
-                );
-            case SpacecraftSystemTypeEnum::ASTRO_LABORATORY:
-                return  new AstroLaboratorySystemData(
-                    $this->shipSystemRepository,
-                    $this->statusBarFactory
-                );
-            case SpacecraftSystemTypeEnum::PHASER:
-                return  new EnergyWeaponSystemData(
-                    $this->shipSystemRepository,
-                    $this->statusBarFactory
-                );
-            case SpacecraftSystemTypeEnum::TORPEDO:
-                return  new ProjectileLauncherSystemData(
-                    $this->shipSystemRepository,
-                    $this->statusBarFactory
-                );
-            case SpacecraftSystemTypeEnum::BUSSARD_COLLECTOR:
-                return  new BussardCollectorSystemData(
-                    $this->shipSystemRepository,
-                    $this->statusBarFactory
-                );
-            case SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM:
-                return  new AggregationSystemSystemData(
-                    $this->shipSystemRepository,
-                    $this->statusBarFactory
-                );
-            case SpacecraftSystemTypeEnum::LSS:
-                return  new LssSystemData(
-                    $this->shipSystemRepository,
-                    $this->statusBarFactory
-                );
-        }
 
-        throw new InvalidSystemException(sprintf('no system data present for systemType: %d', $systemType->value));
+        return match ($systemType) {
+            SpacecraftSystemTypeEnum::HULL =>  new HullSystemData($this->shipSystemRepository, $this->statusBarFactory),
+            SpacecraftSystemTypeEnum::SHIELDS =>  new ShieldSystemData($this->shipSystemRepository, $this->statusBarFactory),
+            SpacecraftSystemTypeEnum::EPS =>  new EpsSystemData($this->shipSystemRepository, $this->statusBarFactory),
+            SpacecraftSystemTypeEnum::COMPUTER =>  new ComputerSystemData($this->shipSystemRepository, $this->statusBarFactory),
+            SpacecraftSystemTypeEnum::TRACKER =>  new TrackerSystemData($this->shipRepository, $spacecraftWrapperFactory, $this->shipSystemRepository, $this->statusBarFactory),
+            SpacecraftSystemTypeEnum::THOLIAN_WEB =>  new WebEmitterSystemData($this->shipSystemRepository, $this->tholianWebRepository, $this->statusBarFactory),
+            SpacecraftSystemTypeEnum::WARPDRIVE =>  new WarpDriveSystemData($this->shipSystemRepository, $this->statusBarFactory),
+            SpacecraftSystemTypeEnum::WARPCORE =>  new WarpCoreSystemData($this->shipSystemRepository, $this->statusBarFactory),
+            SpacecraftSystemTypeEnum::SINGULARITY_REACTOR =>  new SingularityCoreSystemData($this->shipSystemRepository, $this->statusBarFactory),
+            SpacecraftSystemTypeEnum::FUSION_REACTOR =>  new FusionCoreSystemData($this->shipSystemRepository, $this->statusBarFactory),
+            SpacecraftSystemTypeEnum::ASTRO_LABORATORY =>  new AstroLaboratorySystemData($this->shipSystemRepository, $this->statusBarFactory),
+            SpacecraftSystemTypeEnum::PHASER =>  new EnergyWeaponSystemData($this->shipSystemRepository, $this->statusBarFactory),
+            SpacecraftSystemTypeEnum::TORPEDO =>  new ProjectileLauncherSystemData($this->shipSystemRepository, $this->statusBarFactory),
+            SpacecraftSystemTypeEnum::BUSSARD_COLLECTOR =>  new BussardCollectorSystemData($this->shipSystemRepository, $this->statusBarFactory),
+            SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM =>  new AggregationSystemSystemData($this->shipSystemRepository, $this->statusBarFactory),
+            SpacecraftSystemTypeEnum::LSS =>  new LssSystemData($this->shipSystemRepository, $this->statusBarFactory),
+
+            default => throw new InvalidSystemException(sprintf('no system data present for systemType: %d', $systemType->value))
+        };
     }
 }

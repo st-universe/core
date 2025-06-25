@@ -25,6 +25,7 @@ filter:
     - 'src/'
   excluded_paths:
     - 'src/html/'
+    - 'src/Migrations/'
     - 'src/OrmProxy/'
     - 'src/Public/assets/'
   dependency_paths:

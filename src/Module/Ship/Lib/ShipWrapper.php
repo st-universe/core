@@ -5,25 +5,15 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib;
 
 use Override;
-use Stu\Component\Spacecraft\Repair\RepairUtilInterface;
-use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Component\Spacecraft\System\Data\AstroLaboratorySystemData;
 use Stu\Component\Spacecraft\System\Data\BussardCollectorSystemData;
 use Stu\Component\Spacecraft\System\Data\TrackerSystemData;
 use Stu\Component\Spacecraft\System\Data\WebEmitterSystemData;
-use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
-use Stu\Component\Spacecraft\System\SystemDataDeserializerInterface;
-use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
-use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Spacecraft\Lib\SpacecraftStateChangerInterface;
-use Stu\Module\Spacecraft\Lib\Ui\StateIconAndTitle;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapper;
-use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Station\Lib\StationWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 //TODO increase coverage
 /**
@@ -31,31 +21,6 @@ use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
  */
 final class ShipWrapper extends SpacecraftWrapper implements ShipWrapperInterface
 {
-    public function __construct(
-        ShipInterface $ship,
-        SpacecraftSystemManagerInterface $spacecraftSystemManager,
-        SystemDataDeserializerInterface $systemDataDeserializer,
-        TorpedoTypeRepositoryInterface $torpedoTypeRepository,
-        GameControllerInterface $game,
-        SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
-        SpacecraftStateChangerInterface $spacecraftStateChanger,
-        RepairUtilInterface $repairUtil,
-        StateIconAndTitle $stateIconAndTitle,
-        private ColonyLibFactoryInterface $colonyLibFactory
-    ) {
-        parent::__construct(
-            $ship,
-            $spacecraftSystemManager,
-            $systemDataDeserializer,
-            $torpedoTypeRepository,
-            $game,
-            $spacecraftWrapperFactory,
-            $spacecraftStateChanger,
-            $repairUtil,
-            $stateIconAndTitle
-        );
-    }
-
     #[Override]
     public function get(): ShipInterface
     {

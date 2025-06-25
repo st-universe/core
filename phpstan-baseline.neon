@@ -1294,6 +1294,18 @@ parameters:
 			path: src/Module/Spacecraft/Lib/Creation/SpacecraftCreator.php
 
 		-
+			message: '#^Method Stu\\Module\\Spacecraft\\Lib\\Reactor\\ReactorWrapperFactory\:\:createReactorWrapper\(\) has parameter \$wrapper with generic class Stu\\Module\\Spacecraft\\Lib\\SpacecraftWrapper but does not specify its types\: T$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Module/Spacecraft/Lib/Reactor/ReactorWrapperFactory.php
+
+		-
+			message: '#^Method Stu\\Module\\Spacecraft\\Lib\\Reactor\\ReactorWrapperFactoryInterface\:\:createReactorWrapper\(\) has parameter \$wrapper with generic class Stu\\Module\\Spacecraft\\Lib\\SpacecraftWrapper but does not specify its types\: T$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Module/Spacecraft/Lib/Reactor/ReactorWrapperFactoryInterface.php
+
+		-
 			message: '#^Method Stu\\Module\\Spacecraft\\Lib\\ReactorWrapper\:\:getEffectiveEpsProduction\(\) should return int but returns int\|null\.$#'
 			identifier: return.type
 			count: 1

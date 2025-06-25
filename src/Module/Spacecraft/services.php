@@ -235,6 +235,8 @@ use Stu\Module\Spacecraft\Lib\Movement\ShipMovementInformationAdder;
 use Stu\Module\Spacecraft\Lib\Movement\ShipMovementInformationAdderInterface;
 use Stu\Module\Spacecraft\Lib\Movement\ShipMover;
 use Stu\Module\Spacecraft\Lib\Movement\ShipMoverInterface;
+use Stu\Module\Spacecraft\Lib\Reactor\ReactorWrapperFactory;
+use Stu\Module\Spacecraft\Lib\Reactor\ReactorWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\ReactorUtil;
 use Stu\Module\Spacecraft\Lib\ReactorUtilInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftRemover;
@@ -296,6 +298,7 @@ return [
     ReactorUtilInterface::class => autowire(ReactorUtil::class),
     ClearTorpedoInterface::class => autowire(ClearTorpedo::class),
     ShipTorpedoManagerInterface::class => autowire(ShipTorpedoManager::class),
+    ReactorWrapperFactoryInterface::class => autowire(ReactorWrapperFactory::class),
     SpacecraftWrapperFactoryInterface::class => autowire(SpacecraftWrapperFactory::class)
         ->constructorParameter('stateIconAndTitle', autowire(StateIconAndTitle::class)),
     SpacecraftStateChangerInterface::class => autowire(SpacecraftStateChanger::class),
