@@ -11,18 +11,9 @@ use RuntimeException;
 use Stu\Component\Spacecraft\Repair\RepairUtilInterface;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Component\Spacecraft\System\Data\AbstractSystemData;
-use Stu\Component\Spacecraft\System\Data\ComputerSystemData;
-use Stu\Component\Spacecraft\System\Data\EnergyWeaponSystemData;
-use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Component\Spacecraft\System\Data\FusionCoreSystemData;
-use Stu\Component\Spacecraft\System\Data\HullSystemData;
-use Stu\Component\Spacecraft\System\Data\LssSystemData;
-use Stu\Component\Spacecraft\System\Data\ProjectileLauncherSystemData;
-use Stu\Component\Spacecraft\System\Data\ShieldSystemData;
 use Stu\Component\Spacecraft\System\Data\SingularityCoreSystemData;
 use Stu\Component\Spacecraft\System\Data\WarpCoreSystemData;
-use Stu\Component\Spacecraft\System\Data\WarpDriveSystemData;
-use Stu\Component\Spacecraft\System\Exception\SystemNotFoundException;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\SystemDataDeserializerInterface;
@@ -47,6 +38,8 @@ use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
  */
 abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
 {
+    use SpacecraftWrapperSystemDataTrait;
+
     /** @var Collection<int, AbstractSystemData> */
     private Collection $shipSystemDataCache;
 
@@ -68,7 +61,6 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
         private RepairUtilInterface $repairUtil,
         private StateIconAndTitle $stateIconAndTitle
     ) {
-
         $this->shipSystemDataCache = new ArrayCollection();
     }
 
@@ -368,96 +360,13 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
         return $excessCrew > 0 ? "color: green;" : "color: red;";
     }
 
-    #[Override]
-    public function getHullSystemData(): HullSystemData
-    {
-        $hullSystemData = $this->getSpecificShipSystem(
-            SpacecraftSystemTypeEnum::HULL,
-            HullSystemData::class
-        );
-
-        if ($hullSystemData === null) {
-            throw new SystemNotFoundException('no hull installed?');
-        }
-
-        return $hullSystemData;
-    }
-
-    #[Override]
-    public function getShieldSystemData(): ?ShieldSystemData
-    {
-        return $this->getSpecificShipSystem(
-            SpacecraftSystemTypeEnum::SHIELDS,
-            ShieldSystemData::class
-        );
-    }
-
-    #[Override]
-    public function getEpsSystemData(): ?EpsSystemData
-    {
-        return $this->getSpecificShipSystem(
-            SpacecraftSystemTypeEnum::EPS,
-            EpsSystemData::class
-        );
-    }
-
-    #[Override]
-    public function getComputerSystemDataMandatory(): ComputerSystemData
-    {
-        $computer = $this->getSpecificShipSystem(
-            SpacecraftSystemTypeEnum::COMPUTER,
-            ComputerSystemData::class
-        );
-        if ($computer === null) {
-            throw new SystemNotFoundException('no computer installed?');
-        }
-
-        return $computer;
-    }
-
-    #[Override]
-    public function getLssSystemData(): ?LssSystemData
-    {
-        return $this->getSpecificShipSystem(
-            SpacecraftSystemTypeEnum::LSS,
-            LssSystemData::class
-        );
-    }
-
-    #[Override]
-    public function getEnergyWeaponSystemData(): ?EnergyWeaponSystemData
-    {
-        return $this->getSpecificShipSystem(
-            SpacecraftSystemTypeEnum::PHASER,
-            EnergyWeaponSystemData::class
-        );
-    }
-
-    #[Override]
-    public function getWarpDriveSystemData(): ?WarpDriveSystemData
-    {
-        return $this->getSpecificShipSystem(
-            SpacecraftSystemTypeEnum::WARPDRIVE,
-            WarpDriveSystemData::class
-        );
-    }
-
-    #[Override]
-    public function getProjectileLauncherSystemData(): ?ProjectileLauncherSystemData
-    {
-        return $this->getSpecificShipSystem(
-            SpacecraftSystemTypeEnum::TORPEDO,
-            ProjectileLauncherSystemData::class
-        );
-    }
-
     /**
      * @template T2
      * @param class-string<T2> $className
      *
      * @return T2|null
      */
-    protected function getSpecificShipSystem(SpacecraftSystemTypeEnum $systemType, string $className)
+    public function getSpecificShipSystem(SpacecraftSystemTypeEnum $systemType, string $className)
     {
         return $this->systemDataDeserializer->getSpecificShipSystem(
             $this->spacecraft,
