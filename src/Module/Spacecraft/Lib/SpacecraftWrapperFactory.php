@@ -18,6 +18,7 @@ use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapper;
 use Stu\Module\Spacecraft\Lib\SpacecraftStateChangerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\Reactor\ReactorWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftGroup;
 use Stu\Module\Spacecraft\Lib\SpacecraftGroupInterface;
 use Stu\Module\Spacecraft\Lib\Ui\StateIconAndTitle;
@@ -34,14 +35,15 @@ use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 final class SpacecraftWrapperFactory implements SpacecraftWrapperFactoryInterface
 {
     public function __construct(
-        private SpacecraftSystemManagerInterface $spacecraftSystemManager,
-        private ColonyLibFactoryInterface $colonyLibFactory,
-        private TorpedoTypeRepositoryInterface $torpedoTypeRepository,
-        private GameControllerInterface $game,
-        private SpacecraftStateChangerInterface $spacecraftStateChanger,
-        private RepairUtilInterface $repairUtil,
-        private StateIconAndTitle $stateIconAndTitle,
-        private SystemDataDeserializerInterface $systemDataDeserializer
+        private readonly SpacecraftSystemManagerInterface $spacecraftSystemManager,
+        private readonly ReactorWrapperFactoryInterface $reactorWrapperFactory,
+        private readonly ColonyLibFactoryInterface $colonyLibFactory,
+        private readonly TorpedoTypeRepositoryInterface $torpedoTypeRepository,
+        private readonly GameControllerInterface $game,
+        private readonly SpacecraftStateChangerInterface $spacecraftStateChanger,
+        private readonly RepairUtilInterface $repairUtil,
+        private readonly StateIconAndTitle $stateIconAndTitle,
+        private readonly SystemDataDeserializerInterface $systemDataDeserializer
     ) {}
 
     #[Override]
@@ -72,9 +74,11 @@ final class SpacecraftWrapperFactory implements SpacecraftWrapperFactoryInterfac
             $this->torpedoTypeRepository,
             $this->game,
             $this,
+            $this->reactorWrapperFactory,
             $this->spacecraftStateChanger,
             $this->repairUtil,
-            $this->stateIconAndTitle
+            $this->stateIconAndTitle,
+            $this->colonyLibFactory
         );
     }
 
@@ -88,6 +92,7 @@ final class SpacecraftWrapperFactory implements SpacecraftWrapperFactoryInterfac
             $this->torpedoTypeRepository,
             $this->game,
             $this,
+            $this->reactorWrapperFactory,
             $this->spacecraftStateChanger,
             $this->repairUtil,
             $this->stateIconAndTitle,
@@ -104,9 +109,11 @@ final class SpacecraftWrapperFactory implements SpacecraftWrapperFactoryInterfac
             $this->torpedoTypeRepository,
             $this->game,
             $this,
+            $this->reactorWrapperFactory,
             $this->spacecraftStateChanger,
             $this->repairUtil,
-            $this->stateIconAndTitle
+            $this->stateIconAndTitle,
+            $this->colonyLibFactory
         );
     }
 

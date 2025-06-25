@@ -10,7 +10,9 @@ use Stu\Component\Spacecraft\Repair\RepairUtilInterface;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SystemDataDeserializerInterface;
+use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Spacecraft\Lib\Reactor\ReactorWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftStateChangerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Ui\StateIconAndTitle;
@@ -26,9 +28,11 @@ class StationWrapperTest extends StuTestCase
     private MockInterface&TorpedoTypeRepositoryInterface $torpedoTypeRepository;
     private MockInterface&GameControllerInterface $game;
     private MockInterface&SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory;
+    private MockInterface&ReactorWrapperFactoryInterface $reactorWrapperFactory;
     private MockInterface&SpacecraftStateChangerInterface $spacecraftStateChanger;
     private MockInterface&RepairUtilInterface $repairUtil;
     private MockInterface&StateIconAndTitle $stateIconAndTitle;
+    private MockInterface&ColonyLibFactoryInterface $colonyLibFactory;
 
     private StationWrapperInterface $subject;
 
@@ -42,9 +46,11 @@ class StationWrapperTest extends StuTestCase
         $this->torpedoTypeRepository = $this->mock(TorpedoTypeRepositoryInterface::class);
         $this->game = $this->mock(GameControllerInterface::class);
         $this->spacecraftWrapperFactory = $this->mock(SpacecraftWrapperFactoryInterface::class);
+        $this->reactorWrapperFactory = $this->mock(ReactorWrapperFactoryInterface::class);
         $this->spacecraftStateChanger = $this->mock(SpacecraftStateChangerInterface::class);
         $this->repairUtil = $this->mock(RepairUtilInterface::class);
         $this->stateIconAndTitle = $this->mock(StateIconAndTitle::class);
+        $this->colonyLibFactory = $this->mock(ColonyLibFactoryInterface::class);
 
         $this->subject = new StationWrapper(
             $this->station,
@@ -53,9 +59,11 @@ class StationWrapperTest extends StuTestCase
             $this->torpedoTypeRepository,
             $this->game,
             $this->spacecraftWrapperFactory,
+            $this->reactorWrapperFactory,
             $this->spacecraftStateChanger,
             $this->repairUtil,
-            $this->stateIconAndTitle
+            $this->stateIconAndTitle,
+            $this->colonyLibFactory
         );
     }
 

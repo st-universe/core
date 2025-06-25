@@ -11,21 +11,19 @@ use RuntimeException;
 use Stu\Component\Spacecraft\Repair\RepairUtilInterface;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Component\Spacecraft\System\Data\AbstractSystemData;
-use Stu\Component\Spacecraft\System\Data\FusionCoreSystemData;
-use Stu\Component\Spacecraft\System\Data\SingularityCoreSystemData;
-use Stu\Component\Spacecraft\System\Data\WarpCoreSystemData;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\SystemDataDeserializerInterface;
+use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\ShipTakeoverManagerInterface;
-use Stu\Module\Spacecraft\Lib\ReactorWrapper;
 use Stu\Module\Spacecraft\Lib\ReactorWrapperInterface;
 use Stu\Module\Spacecraft\Lib\ShipRepairCost;
 use Stu\Module\Spacecraft\Lib\SpacecraftStateChangerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\Reactor\ReactorWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Ui\StateIconAndTitle;
 use Stu\Orm\Entity\SpacecraftSystemInterface;
 use Stu\Orm\Entity\ShipTakeoverInterface;
@@ -51,15 +49,17 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
      * @param T $spacecraft
      */
     public function __construct(
-        protected SpacecraftInterface $spacecraft,
-        private SpacecraftSystemManagerInterface $spacecraftSystemManager,
-        private SystemDataDeserializerInterface $systemDataDeserializer,
-        private TorpedoTypeRepositoryInterface $torpedoTypeRepository,
-        protected GameControllerInterface $game,
-        protected SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
-        private SpacecraftStateChangerInterface $spacecraftStateChanger,
-        private RepairUtilInterface $repairUtil,
-        private StateIconAndTitle $stateIconAndTitle
+        protected readonly SpacecraftInterface $spacecraft,
+        private readonly SpacecraftSystemManagerInterface $spacecraftSystemManager,
+        private readonly SystemDataDeserializerInterface $systemDataDeserializer,
+        private readonly TorpedoTypeRepositoryInterface $torpedoTypeRepository,
+        protected readonly GameControllerInterface $game,
+        protected readonly SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
+        private readonly ReactorWrapperFactoryInterface $reactorWrapperFactory,
+        private readonly SpacecraftStateChangerInterface $spacecraftStateChanger,
+        private readonly RepairUtilInterface $repairUtil,
+        private readonly StateIconAndTitle $stateIconAndTitle,
+        protected readonly ColonyLibFactoryInterface $colonyLibFactory
     ) {
         $this->shipSystemDataCache = new ArrayCollection();
     }
@@ -124,34 +124,7 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
     public function getReactorWrapper(): ?ReactorWrapperInterface
     {
         if ($this->reactorWrapper === null) {
-            $ship = $this->spacecraft;
-            $reactorSystemData = null;
-
-
-            if ($ship->hasSpacecraftSystem(SpacecraftSystemTypeEnum::WARPCORE)) {
-                $reactorSystemData = $this->getSpecificShipSystem(
-                    SpacecraftSystemTypeEnum::WARPCORE,
-                    WarpCoreSystemData::class
-                );
-            }
-            if ($ship->hasSpacecraftSystem(SpacecraftSystemTypeEnum::SINGULARITY_REACTOR)) {
-                $reactorSystemData = $this->getSpecificShipSystem(
-                    SpacecraftSystemTypeEnum::SINGULARITY_REACTOR,
-                    SingularityCoreSystemData::class
-                );
-            }
-            if ($ship->hasSpacecraftSystem(SpacecraftSystemTypeEnum::FUSION_REACTOR)) {
-                $reactorSystemData = $this->getSpecificShipSystem(
-                    SpacecraftSystemTypeEnum::FUSION_REACTOR,
-                    FusionCoreSystemData::class
-                );
-            }
-
-            if ($reactorSystemData === null) {
-                return null;
-            }
-
-            $this->reactorWrapper = new ReactorWrapper($this, $reactorSystemData);
+            $this->reactorWrapper = $this->reactorWrapperFactory->createReactorWrapper($this);
         }
 
         return $this->reactorWrapper;
