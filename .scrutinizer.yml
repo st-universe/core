@@ -34,7 +34,5 @@ checks:
   php:
     code_rating: true
 build_failure_conditions:
-#  - 'elements.rating(<= E).exists'               # No classes/methods with a rating of E or worse
-  - 'elements.rating(<= D).new.exists'           # No new classes/methods with a rating of D or worse
+  - 'elements.rating(<= D).exists'               # No classes/methods with a rating of D or worse
 #  - 'project.metric_change("scrutinizer.test_coverage", < -0.10)'  # Code Coverage decreased from previous inspection by more than 10%
-    

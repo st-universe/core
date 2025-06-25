@@ -214,7 +214,7 @@ class Colony implements ColonyInterface
         return $this;
     }
 
-    private function getRotationFactor(): int
+    public function getRotationFactor(): int
     {
         return $this->rotation_factor;
     }
