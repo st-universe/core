@@ -90,7 +90,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
                     SELECT b.id FROM %s b WHERE b.eps_proc < 0
                 )',
                 PlanetField::class,
-                $host->getPlanetFieldHostColumnIdentifier(),
+                $host->getHostType()->getPlanetFieldHostColumnIdentifier(),
                 Building::class
             )
         )->setParameters([
@@ -112,7 +112,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
                     SELECT b.id FROM %s b WHERE b.eps_proc > 0
                 )',
                 PlanetField::class,
-                $host->getPlanetFieldHostColumnIdentifier(),
+                $host->getHostType()->getPlanetFieldHostColumnIdentifier(),
                 Building::class
             )
         )->setParameters([
@@ -130,7 +130,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
                     SELECT b.id FROM %s b WHERE b.bev_pro > 0
                 )',
                 PlanetField::class,
-                $host->getPlanetFieldHostColumnIdentifier(),
+                $host->getHostType()->getPlanetFieldHostColumnIdentifier(),
                 Building::class
             )
         )->setParameters([
@@ -148,7 +148,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
                     SELECT b.id FROM %s b WHERE b.bev_use > 0
                 )',
                 PlanetField::class,
-                $host->getPlanetFieldHostColumnIdentifier(),
+                $host->getHostType()->getPlanetFieldHostColumnIdentifier(),
                 Building::class
             )
         )->setParameters([
@@ -201,7 +201,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
                     SELECT bg.buildings_id FROM %s bg WHERE bg.commodity_id = :commodityId AND bg.count < 0
                 ) AND f.aktiv IN (:state)',
                 PlanetField::class,
-                $host->getPlanetFieldHostColumnIdentifier(),
+                $host->getHostType()->getPlanetFieldHostColumnIdentifier(),
                 BuildingCommodity::class
             )
         )->setParameters([
@@ -224,7 +224,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
                     SELECT bg.buildings_id FROM %s bg WHERE bg.commodity_id = :commodityId AND bg.count > 0
                 )',
                 PlanetField::class,
-                $host->getPlanetFieldHostColumnIdentifier(),
+                $host->getHostType()->getPlanetFieldHostColumnIdentifier(),
                 BuildingCommodity::class
             )
         )->setParameters([
@@ -237,7 +237,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
     public function getCountByHostAndBuilding(PlanetFieldHostInterface $host, int $buildingId): int
     {
         return $this->count([
-            $host->getPlanetFieldHostColumnIdentifier() => $host->getId(),
+            $host->getHostType()->getPlanetFieldHostColumnIdentifier() => $host->getId(),
             'buildings_id' => $buildingId,
         ]);
     }
@@ -275,7 +275,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
                     SELECT bf.buildings_id FROM %s bf WHERE bf.function IN (:buildingFunctionIds)
                 )',
                 PlanetField::class,
-                $host->getPlanetFieldHostIdentifier(),
+                $host->getHostType()->getPlanetFieldHostIdentifier(),
                 BuildingFunction::class
             )
         )->setParameters([
@@ -326,7 +326,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
             WHERE f1.%s = :hostId AND f1.aktiv = 1 AND f1.buildings_id IN (
                 SELECT bf1.buildings_id FROM stu_buildings_functions bf1 WHERE bf1.function = :shieldGenerator
             )',
-                $host->getPlanetFieldHostColumnIdentifier()
+                $host->getHostType()->getPlanetFieldHostColumnIdentifier()
             ),
             $rsm
         )->setParameters([
@@ -380,7 +380,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
                 ORDER BY b.name ASC',
                 PlanetField::class,
                 Building::class,
-                $host->getPlanetFieldHostColumnIdentifier(),
+                $host->getHostType()->getPlanetFieldHostColumnIdentifier(),
             )
         )->setParameters([
             'hostId' => $host->getId(),
@@ -402,7 +402,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
                 AND cfd.%s = :host',
                 PlanetField::class,
                 Building::class,
-                $host->getPlanetFieldHostIdentifier()
+                $host->getHostType()->getPlanetFieldHostIdentifier()
             )
         )->setParameters([
             'state' => 1,

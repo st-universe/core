@@ -36,7 +36,7 @@ final class CommodityRepository extends EntityRepository implements CommodityRep
                     Commodity::class,
                     BuildingCommodity::class,
                     PlanetField::class,
-                    $host->getPlanetFieldHostColumnIdentifier()
+                    $host->getHostType()->getPlanetFieldHostColumnIdentifier()
                 )
             )
             ->setParameter('hostId', $host->getId())

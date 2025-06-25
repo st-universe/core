@@ -46,7 +46,7 @@ final class BuildingCommodityRepository extends EntityRepository implements Buil
                     WHERE c.count != 0 OR d.count != 0
                     GROUP BY a.id
                     ORDER BY a.sort ASC',
-                    $host->getPlanetFieldHostColumnIdentifier()
+                    $host->getHostType()->getPlanetFieldHostColumnIdentifier()
                 ),
                 $rsm
             )

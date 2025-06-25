@@ -52,7 +52,7 @@ final class LandShip implements ActionControllerInterface
         ) {
             return;
         }
-        if (!$colony->storagePlaceLeft()) {
+        if ($colony->getMaxStorage() <= $colony->getStorageSum()) {
             $game->addInformation(_('Kein Lagerraum verfügbar'));
             return;
         }
