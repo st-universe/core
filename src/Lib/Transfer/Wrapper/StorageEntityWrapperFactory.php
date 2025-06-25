@@ -5,16 +5,10 @@ declare(strict_types=1);
 namespace Stu\Lib\Transfer\Wrapper;
 
 use RuntimeException;
-use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
-use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
-use Stu\Component\Station\Dock\DockPrivilegeUtilityInterface;
-use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Lib\Transfer\CommodityTransferInterface;
 use Stu\Lib\Transfer\EntityWithStorageInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
-use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
-use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftShutdownInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
@@ -26,19 +20,16 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 class StorageEntityWrapperFactory implements StorageEntityWrapperFactoryInterface
 {
     public function __construct(
-        private UserRepositoryInterface $userRepository,
-        private ColonyLibFactoryInterface $colonyLibFactory,
-        private CommodityTransferInterface $commodityTransfer,
-        private StorageManagerInterface $storageManager,
-        private TroopTransferUtilityInterface $troopTransferUtility,
-        private ShipTorpedoManagerInterface $shipTorpedoManager,
-        private PirateReactionInterface $pirateReaction,
-        private DockPrivilegeUtilityInterface $dockPrivilegeUtility,
-        private ActivatorDeactivatorHelperInterface $activatorDeactivatorHelper,
-        private SpacecraftSystemManagerInterface $spacecraftSystemManager,
-        private SpacecraftCrewCalculatorInterface $shipCrewCalculator,
-        private SpacecraftShutdownInterface $spacecraftShutdown,
-        private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory
+        private readonly UserRepositoryInterface $userRepository,
+        private readonly ColonyLibFactoryInterface $colonyLibFactory,
+        private readonly CommodityTransferInterface $commodityTransfer,
+        private readonly StorageManagerInterface $storageManager,
+        private readonly TroopTransferUtilityInterface $troopTransferUtility,
+        private readonly ShipTorpedoManagerInterface $shipTorpedoManager,
+        private readonly SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
+        private readonly SpacecraftStorageCommodityLogic $spacecraftStorageCommodityLogic,
+        private readonly SpacecraftStorageCrewLogic $spacecraftStorageCrewLogic,
+        private readonly SpacecraftStorageTorpedoLogic $spacecraftStorageTorpedoLogic
     ) {}
 
     public function wrapStorageEntity(EntityWithStorageInterface $entity): StorageEntityWrapperInterface
@@ -55,14 +46,9 @@ class StorageEntityWrapperFactory implements StorageEntityWrapperFactoryInterfac
         if ($entity instanceof SpacecraftInterface) {
             return new SpacecraftStorageEntityWrapper(
                 $this->shipTorpedoManager,
-                $this->pirateReaction,
-                $this->commodityTransfer,
-                $this->troopTransferUtility,
-                $this->dockPrivilegeUtility,
-                $this->activatorDeactivatorHelper,
-                $this->spacecraftSystemManager,
-                $this->shipCrewCalculator,
-                $this->spacecraftShutdown,
+                $this->spacecraftStorageCommodityLogic,
+                $this->spacecraftStorageCrewLogic,
+                $this->spacecraftStorageTorpedoLogic,
                 $this->spacecraftWrapperFactory->wrapSpacecraft($entity)
             );
         }
