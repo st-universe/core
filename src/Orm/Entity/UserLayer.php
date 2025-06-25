@@ -22,13 +22,13 @@ class UserLayer implements UserLayerInterface
     private int $map_type = MapEnum::MAPTYPE_INSERT;
 
     #[Id]
-    #[ManyToOne(targetEntity: 'User')]
-    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: User::class)]
+    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
     #[Id]
-    #[ManyToOne(targetEntity: 'Layer')]
-    #[JoinColumn(name: 'layer_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: Layer::class)]
+    #[JoinColumn(name: 'layer_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private LayerInterface $layer;
 
     #[Override]

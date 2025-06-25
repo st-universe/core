@@ -40,12 +40,12 @@ class TradeLicenseInfo implements TradeLicenseInfoInterface
     #[Column(type: 'integer')]
     private int $date = 0;
 
-    #[ManyToOne(targetEntity: 'TradePost')]
-    #[JoinColumn(name: 'posts_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: TradePost::class)]
+    #[JoinColumn(name: 'posts_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private TradePostInterface $tradePost;
 
-    #[ManyToOne(targetEntity: 'Commodity')]
-    #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: Commodity::class)]
+    #[JoinColumn(name: 'commodity_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $commodity;
 
     #[Override]

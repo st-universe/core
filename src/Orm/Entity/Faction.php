@@ -60,11 +60,11 @@ class Faction implements FactionInterface
     private ?string $welcome_message = '';
 
     //TODO survivor_rate to escape pods
-    #[ManyToOne(targetEntity: 'Research')]
+    #[ManyToOne(targetEntity: Research::class)]
     #[JoinColumn(name: 'start_research_id', referencedColumnName: 'id')]
     private ?ResearchInterface $start_research = null;
 
-    #[ManyToOne(targetEntity: 'Map')]
+    #[ManyToOne(targetEntity: Map::class)]
     #[JoinColumn(name: 'start_map_id', referencedColumnName: 'id')]
     private ?MapInterface $start_map = null;
 

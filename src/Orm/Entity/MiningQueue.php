@@ -31,12 +31,12 @@ class MiningQueue implements MiningQueueInterface
     #[Column(type: 'integer')]
     private int $location_mining_id;
 
-    #[ManyToOne(targetEntity: 'LocationMining')]
-    #[JoinColumn(name: 'location_mining_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: LocationMining::class)]
+    #[JoinColumn(name: 'location_mining_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private LocationMiningInterface $locationMining;
 
-    #[OneToOne(targetEntity: 'Ship')]
-    #[JoinColumn(name: 'ship_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[OneToOne(targetEntity: Ship::class)]
+    #[JoinColumn(name: 'ship_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ShipInterface $ship;
 
     #[Override]

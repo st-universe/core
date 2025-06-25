@@ -41,12 +41,12 @@ class BuildplanModule implements BuildplanModuleInterface
     #[Column(type: 'smallint')]
     private int $module_count = 1;
 
-    #[ManyToOne(targetEntity: 'SpacecraftBuildplan', inversedBy: 'modules')]
-    #[JoinColumn(name: 'buildplan_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: SpacecraftBuildplan::class, inversedBy: 'modules')]
+    #[JoinColumn(name: 'buildplan_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private SpacecraftBuildplanInterface $buildplan;
 
-    #[ManyToOne(targetEntity: 'Module')]
-    #[JoinColumn(name: 'module_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: Module::class)]
+    #[JoinColumn(name: 'module_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ModuleInterface $module;
 
     #[Override]

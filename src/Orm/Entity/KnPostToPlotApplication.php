@@ -32,12 +32,12 @@ class KnPostToPlotApplication implements KnPostToPlotApplicationInterface
     #[Column(type: 'integer')]
     private int $time = 0;
 
-    #[ManyToOne(targetEntity: 'KnPost')]
-    #[JoinColumn(name: 'post_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: KnPost::class)]
+    #[JoinColumn(name: 'post_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private KnPostInterface $knPost;
 
-    #[ManyToOne(targetEntity: 'RpgPlot')]
-    #[JoinColumn(name: 'plot_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: RpgPlot::class)]
+    #[JoinColumn(name: 'plot_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private RpgPlotInterface $rpgPlot;
 
     #[Override]

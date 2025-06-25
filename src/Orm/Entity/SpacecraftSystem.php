@@ -51,12 +51,12 @@ class SpacecraftSystem implements SpacecraftSystemInterface
     #[Column(type: 'text', nullable: true)]
     private ?string $data = null;
 
-    #[ManyToOne(targetEntity: 'Module')]
+    #[ManyToOne(targetEntity: Module::class)]
     #[JoinColumn(name: 'module_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?ModuleInterface $module = null;
 
-    #[ManyToOne(targetEntity: 'Spacecraft')]
-    #[JoinColumn(name: 'spacecraft_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: Spacecraft::class)]
+    #[JoinColumn(name: 'spacecraft_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private SpacecraftInterface $spacecraft;
 
     #[Override]

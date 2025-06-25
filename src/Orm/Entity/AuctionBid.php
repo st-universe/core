@@ -34,12 +34,12 @@ class AuctionBid implements AuctionBidInterface
     #[Column(type: 'integer')]
     private int $max_amount;
 
-    #[ManyToOne(targetEntity: 'Deals')]
-    #[JoinColumn(name: 'auction_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: Deals::class)]
+    #[JoinColumn(name: 'auction_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private DealsInterface $auction;
 
-    #[ManyToOne(targetEntity: 'User')]
-    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: User::class)]
+    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
     #[Override]

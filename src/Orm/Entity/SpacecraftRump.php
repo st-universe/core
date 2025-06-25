@@ -15,6 +15,7 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
+use LogicException;
 use Override;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
@@ -29,8 +30,8 @@ class SpacecraftRump implements SpacecraftRumpInterface
     #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    #[OneToOne(targetEntity: 'SpacecraftRumpBaseValues', mappedBy: 'rump', fetch: 'EXTRA_LAZY', cascade: ['all'])]
-    private SpacecraftRumpBaseValuesInterface $baseValues;
+    #[OneToOne(targetEntity: SpacecraftRumpBaseValues::class, mappedBy: 'rump', fetch: 'EXTRA_LAZY', cascade: ['all'])]
+    private ?SpacecraftRumpBaseValuesInterface $baseValues;
 
     #[column(type: 'integer', enumType: SpacecraftRumpCategoryEnum::class, nullable: false)]
     private SpacecraftRumpCategoryEnum $category_id;
@@ -110,38 +111,38 @@ class SpacecraftRump implements SpacecraftRumpInterface
     #[Column(type: 'boolean', nullable: true)]
     private ?bool $npc_buildable = true;
 
-    #[ManyToOne(targetEntity: 'ShipRumpRole')]
+    #[ManyToOne(targetEntity: ShipRumpRole::class)]
     #[JoinColumn(name: 'role_id', referencedColumnName: 'id')]
     private ?ShipRumpRoleInterface $shipRumpRole = null;
 
     /**
      * @var ArrayCollection<int, ShipRumpSpecialInterface>
      */
-    #[OneToMany(targetEntity: 'ShipRumpSpecial', mappedBy: 'spacecraftRump', indexBy: 'special')]
+    #[OneToMany(targetEntity: ShipRumpSpecial::class, mappedBy: 'spacecraftRump', indexBy: 'special')]
     private Collection $specialAbilities;
 
-    #[ManyToOne(targetEntity: 'ShipRumpCategory')]
-    #[JoinColumn(name: 'category_id', referencedColumnName: 'id')]
+    #[ManyToOne(targetEntity: ShipRumpCategory::class)]
+    #[JoinColumn(name: 'category_id', nullable: false, referencedColumnName: 'id')]
     private ShipRumpCategoryInterface $shipRumpCategory;
 
-    #[ManyToOne(targetEntity: 'Commodity')]
+    #[ManyToOne(targetEntity: Commodity::class)]
     #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id')]
     private ?CommodityInterface $commodity = null;
 
-    #[ManyToOne(targetEntity: 'DatabaseEntry')]
+    #[ManyToOne(targetEntity: DatabaseEntry::class)]
     #[JoinColumn(name: 'database_id', referencedColumnName: 'id')]
     private ?DatabaseEntryInterface $databaseEntry = null;
 
     /**
      * @var ArrayCollection<int, ShipRumpCostInterface>
      */
-    #[OneToMany(targetEntity: 'ShipRumpCost', mappedBy: 'spacecraftRump')]
+    #[OneToMany(targetEntity: ShipRumpCost::class, mappedBy: 'spacecraftRump')]
     private Collection $buildingCosts;
 
     /**
      * @var ArrayCollection<int, BuildplanHangarInterface>
      */
-    #[OneToMany(targetEntity: 'BuildplanHangar', mappedBy: 'spacecraftRump')]
+    #[OneToMany(targetEntity: BuildplanHangar::class, mappedBy: 'spacecraftRump')]
     private Collection $startHangar;
 
     public function __construct()
@@ -160,7 +161,7 @@ class SpacecraftRump implements SpacecraftRumpInterface
     #[Override]
     public function getBaseValues(): SpacecraftRumpBaseValuesInterface
     {
-        return $this->baseValues;
+        return $this->baseValues ?? throw new LogicException('Rump has no base balues');
     }
 
     #[Override]

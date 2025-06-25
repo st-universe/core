@@ -32,12 +32,12 @@ class Buoy implements BuoyInterface
     #[Column(type: 'integer')]
     private int $location_id = 0;
 
-    #[ManyToOne(targetEntity: 'Location')]
-    #[JoinColumn(name: 'location_id', referencedColumnName: 'id')]
+    #[ManyToOne(targetEntity: Location::class)]
+    #[JoinColumn(name: 'location_id', nullable: false, referencedColumnName: 'id')]
     private LocationInterface $location;
 
-    #[ManyToOne(targetEntity: 'User')]
-    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: User::class)]
+    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
     #[Override]

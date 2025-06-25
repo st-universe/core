@@ -16,6 +16,7 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
+use LogicException;
 use Override;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Component\Colony\Trait\ColonyRotationTrait;
@@ -38,8 +39,8 @@ class Colony implements ColonyInterface
     #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    #[OneToOne(targetEntity: 'ColonyChangeable', mappedBy: 'colony', fetch: 'EAGER', cascade: ['all'])]
-    private ColonyChangeableInterface $changeable;
+    #[OneToOne(targetEntity: ColonyChangeable::class, mappedBy: 'colony', fetch: 'EAGER', cascade: ['all'])]
+    private ?ColonyChangeableInterface $changeable;
 
     #[Column(type: 'integer')]
     private int $colonies_classes_id = 0;
@@ -65,58 +66,58 @@ class Colony implements ColonyInterface
     #[Column(type: 'integer', length: 2)]
     private int $surface_width = 0;
 
-    #[ManyToOne(targetEntity: 'ColonyClass')]
-    #[JoinColumn(name: 'colonies_classes_id', referencedColumnName: 'id')]
+    #[ManyToOne(targetEntity: ColonyClass::class)]
+    #[JoinColumn(name: 'colonies_classes_id', nullable: false, referencedColumnName: 'id')]
     private ColonyClassInterface $colonyClass;
 
-    #[OneToOne(targetEntity: 'StarSystemMap', inversedBy: 'colony')]
-    #[JoinColumn(name: 'starsystem_map_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    #[OneToOne(targetEntity: StarSystemMap::class, inversedBy: 'colony')]
+    #[JoinColumn(name: 'starsystem_map_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private StarSystemMapInterface $starsystem_map;
 
-    #[ManyToOne(targetEntity: 'User')]
-    #[JoinColumn(name: 'user_id', referencedColumnName: 'id')]
+    #[ManyToOne(targetEntity: User::class)]
+    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id')]
     private UserInterface $user;
 
     /**
      * @var ArrayCollection<int, PlanetFieldInterface>
      */
-    #[OneToMany(targetEntity: 'PlanetField', mappedBy: 'colony', indexBy: 'field_id', fetch: 'EXTRA_LAZY')]
+    #[OneToMany(targetEntity: PlanetField::class, mappedBy: 'colony', indexBy: 'field_id', fetch: 'EXTRA_LAZY')]
     #[OrderBy(['field_id' => 'ASC'])]
     private Collection $planetFields;
 
     /**
      * @var ArrayCollection<int, StorageInterface>
      */
-    #[OneToMany(targetEntity: 'Storage', mappedBy: 'colony', indexBy: 'commodity_id')]
+    #[OneToMany(targetEntity: Storage::class, mappedBy: 'colony', indexBy: 'commodity_id')]
     #[OrderBy(['commodity_id' => 'ASC'])]
     private Collection $storage;
 
-    #[OneToOne(targetEntity: 'DatabaseEntry')]
+    #[OneToOne(targetEntity: DatabaseEntry::class)]
     #[JoinColumn(name: 'database_id', referencedColumnName: 'id')]
     private ?DatabaseEntryInterface $databaseEntry;
 
     /**
      * @var ArrayCollection<int, FleetInterface>
      */
-    #[OneToMany(targetEntity: 'Fleet', mappedBy: 'defendedColony')]
+    #[OneToMany(targetEntity: Fleet::class, mappedBy: 'defendedColony')]
     private Collection $defenders;
 
     /**
      * @var ArrayCollection<int, FleetInterface>
      */
-    #[OneToMany(targetEntity: 'Fleet', mappedBy: 'blockedColony')]
+    #[OneToMany(targetEntity: Fleet::class, mappedBy: 'blockedColony')]
     private Collection $blockers;
 
     /**
      * @var ArrayCollection<int, CrewAssignmentInterface>
      */
-    #[OneToMany(targetEntity: 'CrewAssignment', mappedBy: 'colony')]
+    #[OneToMany(targetEntity: CrewAssignment::class, mappedBy: 'colony')]
     private Collection $crewAssignments;
 
     /**
      * @var ArrayCollection<int, CrewAssignmentInterface>
      */
-    #[OneToMany(targetEntity: 'CrewTraining', mappedBy: 'colony')]
+    #[OneToMany(targetEntity: CrewTraining::class, mappedBy: 'colony')]
     private Collection $crewTrainings;
 
     /** @var array<int, int> */
@@ -141,7 +142,7 @@ class Colony implements ColonyInterface
     #[Override]
     public function getChangeable(): ColonyChangeableInterface
     {
-        return $this->changeable;
+        return $this->changeable ?? throw new LogicException('Colony has no changeable');
     }
 
     #[Override]
@@ -377,35 +378,35 @@ class Colony implements ColonyInterface
     #[Override]
     public function getWorkers(): int
     {
-        return $this->changeable->getWorkers();
+        return $this->getChangeable()->getWorkers();
     }
 
     public function getWorkless(): int
     {
-        return $this->changeable->getWorkless();
+        return $this->getChangeable()->getWorkless();
     }
 
     public function getMaxBev(): int
     {
-        return $this->changeable->getMaxBev();
+        return $this->getChangeable()->getMaxBev();
     }
 
     #[Override]
     public function getMaxEps(): int
     {
-        return $this->changeable->getMaxEps();
+        return $this->getChangeable()->getMaxEps();
     }
 
     #[Override]
     public function getMaxStorage(): int
     {
-        return $this->changeable->getMaxStorage();
+        return $this->getChangeable()->getMaxStorage();
     }
 
     #[Override]
     public function getPopulation(): int
     {
-        return $this->changeable->getPopulation();
+        return $this->getChangeable()->getPopulation();
     }
 
     #[Override]

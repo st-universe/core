@@ -47,11 +47,11 @@ class DatabaseEntry implements DatabaseEntryInterface
     private ?int $layer_id = null;
 
     #[ManyToOne(targetEntity: DatabaseType::class)]
-    #[JoinColumn(name: 'type', referencedColumnName: 'id')]
+    #[JoinColumn(name: 'type', nullable: false, referencedColumnName: 'id')]
     private DatabaseTypeInterface $type_object;
 
     #[ManyToOne(targetEntity: DatabaseCategory::class, inversedBy: 'entries')]
-    #[JoinColumn(name: 'category_id', referencedColumnName: 'id')]
+    #[JoinColumn(name: 'category_id', nullable: false, referencedColumnName: 'id')]
     private DatabaseCategoryInterface $category;
 
     #[Override]

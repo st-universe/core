@@ -58,14 +58,14 @@ class ColonyClass implements ColonyClassInterface
     #[Column(type: 'integer')]
     private int $max_rot = 1;
 
-    #[OneToOne(targetEntity: 'DatabaseEntry')]
+    #[OneToOne(targetEntity: DatabaseEntry::class)]
     #[JoinColumn(name: 'database_id', referencedColumnName: 'id')]
     private ?DatabaseEntryInterface $databaseEntry;
 
     /**
      * @var ArrayCollection<int, ColonyClassDepositInterface>
      */
-    #[OneToMany(targetEntity: 'ColonyClassDeposit', mappedBy: 'colonyClass', indexBy: 'commodity_id')]
+    #[OneToMany(targetEntity: ColonyClassDeposit::class, mappedBy: 'colonyClass', indexBy: 'commodity_id')]
     private Collection $colonyClassDeposits;
 
     /**

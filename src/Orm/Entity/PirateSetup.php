@@ -33,7 +33,7 @@ class PirateSetup implements PirateSetupInterface
     /**
      * @var ArrayCollection<int, PirateSetupBuildplanInterface>
      */
-    #[OneToMany(targetEntity: 'PirateSetupBuildplan', mappedBy: 'setup')]
+    #[OneToMany(targetEntity: PirateSetupBuildplan::class, mappedBy: 'setup')]
     private Collection $setupBuildplans;
 
     public function __construct()

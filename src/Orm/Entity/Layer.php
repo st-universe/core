@@ -54,7 +54,7 @@ class Layer implements LayerInterface
     #[Column(type: 'boolean', nullable: true)]
     private ?bool $is_noobzone = null;
 
-    #[ManyToOne(targetEntity: 'Award')]
+    #[ManyToOne(targetEntity: Award::class)]
     #[JoinColumn(name: 'award_id', referencedColumnName: 'id')]
     private ?AwardInterface $award = null;
 

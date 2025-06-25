@@ -49,29 +49,29 @@ class StarSystem implements StarSystemInterface
     #[Column(type: 'boolean')]
     private bool $is_wormhole = false;
 
-    #[ManyToOne(targetEntity: 'StarSystemType')]
-    #[JoinColumn(name: 'type', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: StarSystemType::class)]
+    #[JoinColumn(name: 'type', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private StarSystemTypeInterface $systemType;
 
-    #[OneToOne(targetEntity: 'Map', mappedBy: 'starSystem')]
+    #[OneToOne(targetEntity: Map::class, mappedBy: 'starSystem')]
     private ?MapInterface $map = null;
 
-    #[ManyToOne(targetEntity: 'DatabaseEntry')]
+    #[ManyToOne(targetEntity: DatabaseEntry::class)]
     #[JoinColumn(name: 'database_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?DatabaseEntryInterface $databaseEntry = null;
 
-    #[OneToOne(targetEntity: 'Station', mappedBy: 'influenceArea')]
+    #[OneToOne(targetEntity: Station::class, mappedBy: 'influenceArea')]
     private ?StationInterface $station = null;
 
     /**
      * @var ArrayCollection<int, StarSystemMapInterface>
      */
-    #[OneToMany(targetEntity: 'StarSystemMap', mappedBy: 'starSystem')]
+    #[OneToMany(targetEntity: StarSystemMap::class, mappedBy: 'starSystem')]
     #[OrderBy(['sy' => 'ASC', 'sx' => 'ASC'])]
     private Collection $fields;
 
     /** @var ArrayCollection<int, AstronomicalEntryInterface> */
-    #[OneToMany(targetEntity: 'AstronomicalEntry', mappedBy: 'starSystem', indexBy: 'user_id', fetch: 'EXTRA_LAZY')]
+    #[OneToMany(targetEntity: AstronomicalEntry::class, mappedBy: 'starSystem', indexBy: 'user_id', fetch: 'EXTRA_LAZY')]
     private Collection $astronomicalEntries;
 
     public function __construct()

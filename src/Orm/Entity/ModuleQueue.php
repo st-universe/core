@@ -38,12 +38,12 @@ class ModuleQueue implements ModuleQueueInterface
     #[Column(type: 'integer', enumType: BuildingFunctionEnum::class)]
     private BuildingFunctionEnum $buildingfunction = BuildingFunctionEnum::BASE_CAMP;
 
-    #[ManyToOne(targetEntity: 'Module')]
-    #[JoinColumn(name: 'module_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: Module::class)]
+    #[JoinColumn(name: 'module_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ModuleInterface $module;
 
-    #[ManyToOne(targetEntity: 'Colony')]
-    #[JoinColumn(name: 'colony_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: Colony::class)]
+    #[JoinColumn(name: 'colony_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ColonyInterface $colony;
 
     #[Override]

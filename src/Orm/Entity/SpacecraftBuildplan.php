@@ -51,21 +51,21 @@ class SpacecraftBuildplan implements SpacecraftBuildplanInterface
     /**
      * @var ArrayCollection<int, SpacecraftInterface>
      */
-    #[OneToMany(targetEntity: 'Spacecraft', mappedBy: 'buildplan', fetch: 'EXTRA_LAZY')]
+    #[OneToMany(targetEntity: Spacecraft::class, mappedBy: 'buildplan', fetch: 'EXTRA_LAZY')]
     private Collection $spacecrafts;
 
-    #[ManyToOne(targetEntity: 'SpacecraftRump')]
-    #[JoinColumn(name: 'rump_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: SpacecraftRump::class)]
+    #[JoinColumn(name: 'rump_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private SpacecraftRumpInterface $shipRump;
 
-    #[ManyToOne(targetEntity: 'User')]
-    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: User::class)]
+    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
     /**
      * @var ArrayCollection<int, BuildplanModuleInterface>
      */
-    #[OneToMany(targetEntity: 'BuildplanModule', mappedBy: 'buildplan', indexBy: 'module_id', fetch: 'EXTRA_LAZY')]
+    #[OneToMany(targetEntity: BuildplanModule::class, mappedBy: 'buildplan', indexBy: 'module_id', fetch: 'EXTRA_LAZY')]
     #[OrderBy(['module_id' => 'ASC'])]
     private Collection $modules;
 

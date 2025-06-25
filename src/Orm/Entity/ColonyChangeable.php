@@ -18,8 +18,8 @@ use Override;
 class ColonyChangeable implements ColonyChangeableInterface
 {
     #[Id]
-    #[OneToOne(targetEntity: 'Colony', inversedBy: 'changeable')]
-    #[JoinColumn(name: 'colony_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    #[OneToOne(targetEntity: Colony::class, inversedBy: 'changeable')]
+    #[JoinColumn(name: 'colony_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ColonyInterface $colony;
 
     #[Column(type: 'integer', length: 5)]
@@ -52,7 +52,7 @@ class ColonyChangeable implements ColonyChangeableInterface
     #[Column(type: 'integer', length: 6, nullable: true)]
     private ?int $shield_frequency = 0;
 
-    #[ManyToOne(targetEntity: 'TorpedoType')]
+    #[ManyToOne(targetEntity: TorpedoType::class)]
     #[JoinColumn(name: 'torpedo_type', referencedColumnName: 'id')]
     private ?TorpedoTypeInterface $torpedo = null;
 

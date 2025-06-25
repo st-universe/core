@@ -29,12 +29,12 @@ class StationShipRepair implements StationShipRepairInterface
     #[Column(type: 'integer')]
     private int $ship_id;
 
-    #[ManyToOne(targetEntity: 'Station')]
-    #[JoinColumn(name: 'station_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: Station::class)]
+    #[JoinColumn(name: 'station_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private StationInterface $station;
 
-    #[ManyToOne(targetEntity: 'Ship')]
-    #[JoinColumn(name: 'ship_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: Ship::class)]
+    #[JoinColumn(name: 'ship_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ShipInterface $ship;
 
     #[Override]

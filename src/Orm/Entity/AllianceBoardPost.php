@@ -47,16 +47,16 @@ class AllianceBoardPost implements AllianceBoardPostInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $lastedit = null;
 
-    #[ManyToOne(targetEntity: 'AllianceBoardTopic', inversedBy: 'posts')]
-    #[JoinColumn(name: 'topic_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: AllianceBoardTopic::class, inversedBy: 'posts')]
+    #[JoinColumn(name: 'topic_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private AllianceBoardTopicInterface $topic;
 
-    #[ManyToOne(targetEntity: 'AllianceBoard', inversedBy: 'posts')]
-    #[JoinColumn(name: 'board_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: AllianceBoard::class, inversedBy: 'posts')]
+    #[JoinColumn(name: 'board_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private AllianceBoardInterface $board;
 
-    #[ManyToOne(targetEntity: 'User')]
-    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: User::class)]
+    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
     #[Override]

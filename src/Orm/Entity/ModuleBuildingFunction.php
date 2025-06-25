@@ -31,8 +31,8 @@ class ModuleBuildingFunction implements ModuleBuildingFunctionInterface
     #[Column(type: 'integer')]
     private int $buildingfunction = 0;
 
-    #[ManyToOne(targetEntity: 'Module')]
-    #[JoinColumn(name: 'module_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: Module::class)]
+    #[JoinColumn(name: 'module_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ModuleInterface $module;
 
     #[Override]

@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
+use LogicException;
 use Override;
 use Stu\Orm\Repository\TradeOfferRepository;
 
@@ -50,24 +51,24 @@ class TradeOffer implements TradeOfferInterface
     #[Column(type: 'integer')]
     private int $date = 0;
 
-    #[ManyToOne(targetEntity: 'TradePost')]
-    #[JoinColumn(name: 'posts_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: TradePost::class)]
+    #[JoinColumn(name: 'posts_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private TradePostInterface $tradePost;
 
-    #[ManyToOne(targetEntity: 'Commodity')]
-    #[JoinColumn(name: 'wg_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: Commodity::class)]
+    #[JoinColumn(name: 'wg_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $wantedCommodity;
 
-    #[ManyToOne(targetEntity: 'Commodity')]
-    #[JoinColumn(name: 'gg_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: Commodity::class)]
+    #[JoinColumn(name: 'gg_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $offeredCommodity;
 
-    #[ManyToOne(targetEntity: 'User')]
-    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: User::class)]
+    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
-    #[OneToOne(targetEntity: 'Storage', mappedBy: 'tradeOffer')]
-    private StorageInterface $storage;
+    #[OneToOne(targetEntity: Storage::class, mappedBy: 'tradeOffer')]
+    private ?StorageInterface $storage;
 
     #[Override]
     public function getId(): int
@@ -237,6 +238,6 @@ class TradeOffer implements TradeOfferInterface
     #[Override]
     public function getStorage(): StorageInterface
     {
-        return $this->storage;
+        return $this->storage ?? throw new LogicException('TradeOffer has no storage');
     }
 }

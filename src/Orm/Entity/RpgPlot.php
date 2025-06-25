@@ -47,17 +47,17 @@ class RpgPlot implements RpgPlotInterface
     /**
      * @var ArrayCollection<int, KnPostInterface>
      */
-    #[OneToMany(targetEntity: 'KnPost', mappedBy: 'rpgPlot')]
+    #[OneToMany(targetEntity: KnPost::class, mappedBy: 'rpgPlot')]
     private Collection $posts;
 
     /**
      * @var ArrayCollection<int, RpgPlotMemberInterface>
      */
-    #[OneToMany(targetEntity: 'RpgPlotMember', mappedBy: 'rpgPlot', indexBy: 'user_id')]
+    #[OneToMany(targetEntity: RpgPlotMember::class, mappedBy: 'rpgPlot', indexBy: 'user_id')]
     private Collection $members;
 
-    #[ManyToOne(targetEntity: 'User')]
-    #[JoinColumn(name: 'user_id', referencedColumnName: 'id')]
+    #[ManyToOne(targetEntity: User::class)]
+    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id')]
     private UserInterface $user;
 
     public function __construct()

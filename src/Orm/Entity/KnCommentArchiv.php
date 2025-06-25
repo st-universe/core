@@ -49,8 +49,8 @@ class KnCommentArchiv implements KnCommentArchivInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $deleted = null;
 
-    #[ManyToOne(targetEntity: 'KnPostArchiv')]
-    #[JoinColumn(name: 'post_id', referencedColumnName: 'former_id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: KnPostArchiv::class)]
+    #[JoinColumn(name: 'post_id', nullable: false, referencedColumnName: 'former_id', onDelete: 'CASCADE')]
     private KnPostArchivInterface $post;
 
 

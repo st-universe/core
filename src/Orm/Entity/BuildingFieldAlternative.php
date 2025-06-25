@@ -37,12 +37,12 @@ class BuildingFieldAlternative implements BuildingFieldAlternativeInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $research_id = null;
 
-    #[ManyToOne(targetEntity: 'Building')]
-    #[JoinColumn(name: 'buildings_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: Building::class)]
+    #[JoinColumn(name: 'buildings_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private BuildingInterface $building;
 
-    #[ManyToOne(targetEntity: 'Building')]
-    #[JoinColumn(name: 'alternate_buildings_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: Building::class)]
+    #[JoinColumn(name: 'alternate_buildings_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private BuildingInterface $alternateBuilding;
 
     #[Override]

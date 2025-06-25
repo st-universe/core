@@ -34,15 +34,15 @@ class BuildingCost implements BuildingCostInterface
     #[Column(type: 'integer')]
     private int $count = 0;
 
-    #[ManyToOne(targetEntity: 'Commodity')]
-    #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: Commodity::class)]
+    #[JoinColumn(name: 'commodity_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $commodity;
 
     /**
      * @var BuildingInterface
      */
-    #[ManyToOne(targetEntity: 'Building', inversedBy: 'buildingCosts')]
-    #[JoinColumn(name: 'buildings_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: Building::class, inversedBy: 'buildingCosts')]
+    #[JoinColumn(name: 'buildings_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private $building;
 
     #[Override]

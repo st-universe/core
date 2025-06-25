@@ -45,16 +45,16 @@ class AstronomicalEntry implements AstronomicalEntryInterface
     #[Column(type: 'text')]
     private string $field_ids = '';
 
-    #[ManyToOne(targetEntity: 'User')]
-    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: User::class)]
+    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
-    #[ManyToOne(targetEntity: 'StarSystem', inversedBy: 'astronomicalEntries')]
+    #[ManyToOne(targetEntity: StarSystem::class, inversedBy: 'astronomicalEntries')]
     #[JoinColumn(name: 'systems_id', referencedColumnName: 'id')]
     private ?StarSystemInterface $starSystem = null;
 
 
-    #[ManyToOne(targetEntity: 'MapRegion', inversedBy: 'astronomicalEntries')]
+    #[ManyToOne(targetEntity: MapRegion::class, inversedBy: 'astronomicalEntries')]
     #[JoinColumn(name: 'region_id', referencedColumnName: 'id')]
     private ?MapRegionInterface $region = null;
 

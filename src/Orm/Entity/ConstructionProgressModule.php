@@ -29,12 +29,12 @@ class ConstructionProgressModule implements ConstructionProgressModuleInterface
     #[Column(type: 'integer')]
     private int $module_id = 0;
 
-    #[ManyToOne(targetEntity: 'ConstructionProgress')]
-    #[JoinColumn(name: 'progress_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: ConstructionProgress::class)]
+    #[JoinColumn(name: 'progress_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ConstructionProgressInterface $progress;
 
-    #[ManyToOne(targetEntity: 'Module')]
-    #[JoinColumn(name: 'module_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: Module::class)]
+    #[JoinColumn(name: 'module_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ModuleInterface $module;
 
     #[Override]

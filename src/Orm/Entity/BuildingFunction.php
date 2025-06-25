@@ -36,8 +36,8 @@ class BuildingFunction implements BuildingFunctionInterface
     /**
      * @var BuildingInterface
      */
-    #[ManyToOne(targetEntity: 'Building', inversedBy: 'buildingFunctions')]
-    #[JoinColumn(name: 'buildings_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: Building::class, inversedBy: 'buildingFunctions')]
+    #[JoinColumn(name: 'buildings_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private $building;
 
     #[Override]

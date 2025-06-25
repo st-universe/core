@@ -39,7 +39,7 @@ class CrewRace implements CrewRaceInterface
     private string $define = '';
 
     #[ManyToOne(targetEntity: Faction::class)]
-    #[JoinColumn(name: 'faction_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'faction_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private FactionInterface $faction;
 
     #[Override]

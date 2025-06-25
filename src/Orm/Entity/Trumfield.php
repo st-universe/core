@@ -42,12 +42,12 @@ class Trumfield implements TrumfieldInterface
     /**
      * @var ArrayCollection<int, StorageInterface>
      */
-    #[OneToMany(targetEntity: 'Storage', mappedBy: 'trumfield', indexBy: 'commodity_id')]
+    #[OneToMany(targetEntity: Storage::class, mappedBy: 'trumfield', indexBy: 'commodity_id')]
     #[OrderBy(['commodity_id' => 'ASC'])]
     private Collection $storage;
 
-    #[ManyToOne(targetEntity: 'Location')]
-    #[JoinColumn(name: 'location_id', referencedColumnName: 'id')]
+    #[ManyToOne(targetEntity: Location::class)]
+    #[JoinColumn(name: 'location_id', nullable: false, referencedColumnName: 'id')]
     private LocationInterface $location;
 
     #[Override]

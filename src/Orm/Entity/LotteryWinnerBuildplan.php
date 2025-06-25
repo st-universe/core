@@ -32,8 +32,8 @@ class LotteryWinnerBuildplan implements LotteryWinnerBuildplanInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $faction_id = null;
 
-    #[ManyToOne(targetEntity: 'SpacecraftBuildplan')]
-    #[JoinColumn(name: 'buildplan_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: SpacecraftBuildplan::class)]
+    #[JoinColumn(name: 'buildplan_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private SpacecraftBuildplanInterface $buildplan;
 
     #[Override]

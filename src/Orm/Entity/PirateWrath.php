@@ -25,8 +25,8 @@ class PirateWrath implements PirateWrathInterface
     private ?int $protection_timeout = null;
 
     #[Id]
-    #[OneToOne(targetEntity: 'User', inversedBy: 'pirateWrath')]
-    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[OneToOne(targetEntity: User::class, inversedBy: 'pirateWrath')]
+    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
     #[Override]

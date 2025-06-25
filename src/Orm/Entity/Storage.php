@@ -60,35 +60,35 @@ class Storage implements StorageInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $trumfield_id = null;
 
-    #[ManyToOne(targetEntity: 'User')]
+    #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?UserInterface $user = null;
 
     #[ManyToOne(targetEntity: Commodity::class)]
-    #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'commodity_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $commodity;
 
-    #[ManyToOne(targetEntity: 'Colony', inversedBy: 'storage')]
+    #[ManyToOne(targetEntity: Colony::class, inversedBy: 'storage')]
     #[JoinColumn(name: 'colony_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?ColonyInterface $colony = null;
 
-    #[ManyToOne(targetEntity: 'Spacecraft', inversedBy: 'storage')]
+    #[ManyToOne(targetEntity: Spacecraft::class, inversedBy: 'storage')]
     #[JoinColumn(name: 'spacecraft_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?SpacecraftInterface $spacecraft = null;
 
-    #[OneToOne(targetEntity: 'TorpedoStorage', inversedBy: 'storage')]
+    #[OneToOne(targetEntity: TorpedoStorage::class, inversedBy: 'storage')]
     #[JoinColumn(name: 'torpedo_storage_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?TorpedoStorageInterface $torpedoStorage = null;
 
-    #[ManyToOne(targetEntity: 'TradePost')]
+    #[ManyToOne(targetEntity: TradePost::class)]
     #[JoinColumn(name: 'tradepost_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?TradePostInterface $tradePost = null;
 
-    #[OneToOne(targetEntity: 'TradeOffer', inversedBy: 'storage')]
+    #[OneToOne(targetEntity: TradeOffer::class, inversedBy: 'storage')]
     #[JoinColumn(name: 'tradeoffer_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?TradeOfferInterface $tradeOffer = null;
 
-    #[ManyToOne(targetEntity: 'Trumfield', inversedBy: 'storage')]
+    #[ManyToOne(targetEntity: Trumfield::class, inversedBy: 'storage')]
     #[JoinColumn(name: 'trumfield_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?TrumfieldInterface $trumfield = null;
 

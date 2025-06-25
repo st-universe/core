@@ -31,21 +31,21 @@ class Ship extends Spacecraft implements ShipInterface
     #[Column(type: 'boolean')]
     private bool $is_fleet_leader = false;
 
-    #[ManyToOne(targetEntity: 'Fleet', inversedBy: 'ships')]
+    #[ManyToOne(targetEntity: Fleet::class, inversedBy: 'ships')]
     #[JoinColumn(name: 'fleet_id', referencedColumnName: 'id')]
     private ?FleetInterface $fleet = null;
 
-    #[ManyToOne(targetEntity: 'Station', inversedBy: 'dockedShips')]
+    #[ManyToOne(targetEntity: Station::class, inversedBy: 'dockedShips')]
     #[JoinColumn(name: 'docked_to_id', referencedColumnName: 'id')]
     private ?StationInterface $dockedTo = null;
 
-    #[OneToOne(targetEntity: 'Spacecraft', mappedBy: 'tractoredShip')]
+    #[OneToOne(targetEntity: Spacecraft::class, mappedBy: 'tractoredShip')]
     private ?SpacecraftInterface $tractoringSpacecraft = null;
 
-    #[OneToOne(targetEntity: 'MiningQueue', mappedBy: 'ship')]
+    #[OneToOne(targetEntity: MiningQueue::class, mappedBy: 'ship')]
     private ?MiningQueueInterface $miningqueue = null;
 
-    #[OneToOne(targetEntity: 'ColonyShipQueue', mappedBy: 'ship')]
+    #[OneToOne(targetEntity: ColonyShipQueue::class, mappedBy: 'ship')]
     private ?ColonyShipQueueInterface $colonyShipQueue = null;
 
     #[Override]

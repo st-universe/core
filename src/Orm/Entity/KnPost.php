@@ -70,23 +70,23 @@ class KnPost implements KnPostInterface
     /**
      * @var ArrayCollection<int, KnCommentInterface>
      */
-    #[OneToMany(targetEntity: 'KnComment', mappedBy: 'post')]
+    #[OneToMany(targetEntity: KnComment::class, mappedBy: 'post')]
     #[OrderBy(['id' => 'ASC'])]
     private Collection $comments;
 
     /**
      * @var ArrayCollection<int, KnCharacterInterface>
      */
-    #[OneToMany(targetEntity: 'KnCharacter', mappedBy: 'knPost')]
+    #[OneToMany(targetEntity: KnCharacter::class, mappedBy: 'knPost')]
     private Collection $knCharacters;
 
 
-    #[ManyToOne(targetEntity: 'RpgPlot', inversedBy: 'posts')]
+    #[ManyToOne(targetEntity: RpgPlot::class, inversedBy: 'posts')]
     #[JoinColumn(name: 'plot_id', referencedColumnName: 'id')]
     private ?RpgPlotInterface $rpgPlot = null;
 
-    #[ManyToOne(targetEntity: 'User')]
-    #[JoinColumn(name: 'user_id', referencedColumnName: 'id')]
+    #[ManyToOne(targetEntity: User::class)]
+    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id')]
     private UserInterface $user;
 
 

@@ -33,7 +33,7 @@ class DatabaseCategoryAward implements DatabaseCategoryAwardInterface
     private ?int $award_id = null;
 
     #[ManyToOne(targetEntity: DatabaseCategory::class)]
-    #[JoinColumn(name: 'category_id', referencedColumnName: 'id')]
+    #[JoinColumn(name: 'category_id', nullable: false, referencedColumnName: 'id')]
     private DatabaseCategoryInterface $category;
 
     #[ManyToOne(targetEntity: Award::class)]

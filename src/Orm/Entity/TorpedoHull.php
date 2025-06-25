@@ -36,12 +36,12 @@ class TorpedoHull implements TorpedoHullInterface
     private int $modificator = 0;
 
 
-    #[ManyToOne(targetEntity: 'TorpedoType')]
-    #[JoinColumn(name: 'torpedo_type', referencedColumnName: 'id')]
+    #[ManyToOne(targetEntity: TorpedoType::class)]
+    #[JoinColumn(name: 'torpedo_type', nullable: false, referencedColumnName: 'id')]
     private TorpedoTypeInterface $torpedo;
 
-    #[ManyToOne(targetEntity: 'Module')]
-    #[JoinColumn(name: 'module_id', referencedColumnName: 'id')]
+    #[ManyToOne(targetEntity: Module::class)]
+    #[JoinColumn(name: 'module_id', nullable: false, referencedColumnName: 'id')]
     private ModuleInterface $module;
 
     #[Override]

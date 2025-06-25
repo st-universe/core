@@ -64,14 +64,14 @@ class Research implements ResearchInterface
     private ?int $upper_limit_colony_amount = null;
 
     #[ManyToOne(targetEntity: Commodity::class)]
-    #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'commodity_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $commodity;
 
-    #[ManyToOne(targetEntity: 'SpacecraftBuildplan')]
+    #[ManyToOne(targetEntity: SpacecraftBuildplan::class)]
     #[JoinColumn(name: 'reward_buildplan_id', referencedColumnName: 'id')]
     private ?SpacecraftBuildplanInterface $rewardBuildplan = null;
 
-    #[ManyToOne(targetEntity: 'Award')]
+    #[ManyToOne(targetEntity: Award::class)]
     #[JoinColumn(name: 'award_id', referencedColumnName: 'id')]
     private ?AwardInterface $award = null;
 

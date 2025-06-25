@@ -46,12 +46,12 @@ class BasicTrade implements BasicTradeInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $user_id = null;
 
-    #[ManyToOne(targetEntity: 'Faction')]
-    #[JoinColumn(name: 'faction_id', referencedColumnName: 'id')]
+    #[ManyToOne(targetEntity: Faction::class)]
+    #[JoinColumn(name: 'faction_id', nullable: false, referencedColumnName: 'id')]
     private FactionInterface $faction;
 
-    #[ManyToOne(targetEntity: 'Commodity')]
-    #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: Commodity::class)]
+    #[JoinColumn(name: 'commodity_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $commodity;
 
     #[Override]

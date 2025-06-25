@@ -30,26 +30,26 @@ class Station extends Spacecraft implements StationInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $influence_area_id = null;
 
-    #[OneToOne(targetEntity: 'TradePost', mappedBy: 'station')]
+    #[OneToOne(targetEntity: TradePost::class, mappedBy: 'station')]
     private ?TradePostInterface $tradePost = null;
 
-    #[OneToOne(targetEntity: 'ConstructionProgress', mappedBy: 'station')]
+    #[OneToOne(targetEntity: ConstructionProgress::class, mappedBy: 'station')]
     private ?ConstructionProgressInterface $constructionProgress = null;
 
     /**
      * @var ArrayCollection<int, ShipInterface>
      */
-    #[OneToMany(targetEntity: 'Ship', mappedBy: 'dockedTo', indexBy: 'id')]
+    #[OneToMany(targetEntity: Ship::class, mappedBy: 'dockedTo', indexBy: 'id')]
     #[OrderBy(['fleet_id' => 'DESC', 'is_fleet_leader' => 'DESC'])]
     private Collection $dockedShips;
 
     /**
      * @var ArrayCollection<int, DockingPrivilegeInterface>
      */
-    #[OneToMany(targetEntity: 'DockingPrivilege', mappedBy: 'station')]
+    #[OneToMany(targetEntity: DockingPrivilege::class, mappedBy: 'station')]
     private Collection $dockingPrivileges;
 
-    #[OneToOne(targetEntity: 'StarSystem')]
+    #[OneToOne(targetEntity: StarSystem::class)]
     #[JoinColumn(name: 'influence_area_id', referencedColumnName: 'id')]
     private ?StarSystemInterface $influenceArea = null;
 

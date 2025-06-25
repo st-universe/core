@@ -19,6 +19,7 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
+use LogicException;
 use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
@@ -101,68 +102,68 @@ abstract class Spacecraft implements SpacecraftInterface
     #[Column(type: 'integer')]
     private int $location_id = 0;
 
-    #[OneToOne(targetEntity: 'SpacecraftCondition', mappedBy: 'spacecraft', fetch: 'EAGER', cascade: ['all'])]
-    private SpacecraftConditionInterface $condition;
+    #[OneToOne(targetEntity: SpacecraftCondition::class, mappedBy: 'spacecraft', fetch: 'EAGER', cascade: ['all'])]
+    private ?SpacecraftConditionInterface $condition;
 
-    #[OneToOne(targetEntity: 'Ship')]
+    #[OneToOne(targetEntity: Ship::class)]
     #[JoinColumn(name: 'tractored_ship_id', referencedColumnName: 'id')]
     private ?ShipInterface $tractoredShip = null;
 
-    #[ManyToOne(targetEntity: 'TholianWeb')]
+    #[ManyToOne(targetEntity: TholianWeb::class)]
     #[JoinColumn(name: 'holding_web_id', referencedColumnName: 'id')]
     private ?TholianWebInterface $holdingWeb = null;
 
-    #[ManyToOne(targetEntity: 'User')]
-    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: User::class)]
+    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
     /**
      * @var ArrayCollection<int, CrewAssignmentInterface>
      */
-    #[OneToMany(targetEntity: 'CrewAssignment', mappedBy: 'spacecraft', indexBy: 'crew_id')]
+    #[OneToMany(targetEntity: CrewAssignment::class, mappedBy: 'spacecraft', indexBy: 'crew_id')]
     #[OrderBy(['crew' => 'ASC'])]
     private Collection $crew;
 
-    #[OneToOne(targetEntity: 'TorpedoStorage', mappedBy: 'spacecraft')]
+    #[OneToOne(targetEntity: TorpedoStorage::class, mappedBy: 'spacecraft')]
     private ?TorpedoStorageInterface $torpedoStorage = null;
 
     /**
      * @var ArrayCollection<int, SpacecraftSystemInterface>
      */
-    #[OneToMany(targetEntity: 'SpacecraftSystem', mappedBy: 'spacecraft', indexBy: 'system_type')]
+    #[OneToMany(targetEntity: SpacecraftSystem::class, mappedBy: 'spacecraft', indexBy: 'system_type')]
     #[OrderBy(['system_type' => 'ASC'])]
     private Collection $systems;
 
-    #[ManyToOne(targetEntity: 'SpacecraftRump')]
-    #[JoinColumn(name: 'rump_id', referencedColumnName: 'id')]
+    #[ManyToOne(targetEntity: SpacecraftRump::class)]
+    #[JoinColumn(name: 'rump_id', nullable: false, referencedColumnName: 'id')]
     private SpacecraftRumpInterface $rump;
 
-    #[ManyToOne(targetEntity: 'SpacecraftBuildplan')]
+    #[ManyToOne(targetEntity: SpacecraftBuildplan::class)]
     #[JoinColumn(name: 'plan_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?SpacecraftBuildplanInterface $buildplan = null;
 
     /**
      * @var ArrayCollection<int, StorageInterface>
      */
-    #[OneToMany(targetEntity: 'Storage', mappedBy: 'spacecraft', indexBy: 'commodity_id')]
+    #[OneToMany(targetEntity: Storage::class, mappedBy: 'spacecraft', indexBy: 'commodity_id')]
     #[OrderBy(['commodity_id' => 'ASC'])]
     private Collection $storage;
 
-    #[ManyToOne(targetEntity: 'Location')]
-    #[JoinColumn(name: 'location_id', referencedColumnName: 'id')]
+    #[ManyToOne(targetEntity: Location::class)]
+    #[JoinColumn(name: 'location_id', nullable: false, referencedColumnName: 'id')]
     private LocationInterface $location;
 
     /**
      * @var ArrayCollection<int, ShipLogInterface>
      */
-    #[OneToMany(targetEntity: 'ShipLog', mappedBy: 'spacecraft', fetch: 'EXTRA_LAZY')]
+    #[OneToMany(targetEntity: ShipLog::class, mappedBy: 'spacecraft', fetch: 'EXTRA_LAZY')]
     #[OrderBy(['id' => 'DESC'])]
     private Collection $logbook;
 
-    #[OneToOne(targetEntity: 'ShipTakeover', mappedBy: 'source')]
+    #[OneToOne(targetEntity: ShipTakeover::class, mappedBy: 'source')]
     private ?ShipTakeoverInterface $takeoverActive = null;
 
-    #[OneToOne(targetEntity: 'ShipTakeover', mappedBy: 'target')]
+    #[OneToOne(targetEntity: ShipTakeover::class, mappedBy: 'target')]
     private ?ShipTakeoverInterface $takeoverPassive = null;
 
     public function __construct()
@@ -186,7 +187,7 @@ abstract class Spacecraft implements SpacecraftInterface
     #[Override]
     public function getCondition(): SpacecraftConditionInterface
     {
-        return $this->condition;
+        return $this->condition ?? throw new LogicException('Spacecraft has no condition');;
     }
 
     #[Override]
@@ -441,7 +442,7 @@ abstract class Spacecraft implements SpacecraftInterface
     #[Override]
     public function getState(): SpacecraftStateEnum
     {
-        return $this->condition->getState();
+        return $this->getCondition()->getState();
     }
 
     #[Override]

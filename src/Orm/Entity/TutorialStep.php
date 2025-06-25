@@ -50,10 +50,10 @@ class TutorialStep implements TutorialStepInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $fallbackIndex = null;
 
-    #[OneToOne(targetEntity: 'TutorialStep', mappedBy: 'nextStep')]
+    #[OneToOne(targetEntity: TutorialStep::class, mappedBy: 'nextStep')]
     private ?TutorialStepInterface $previousStep;
 
-    #[OneToOne(targetEntity: 'TutorialStep')]
+    #[OneToOne(targetEntity: TutorialStep::class)]
     #[JoinColumn(name: 'next_step_id', referencedColumnName: 'id')]
     private ?TutorialStepInterface $nextStep;
 

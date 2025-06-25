@@ -37,16 +37,16 @@ class BuildplanHangar implements BuildplanHangarInterface
     #[Column(type: 'integer')]
     private int $start_energy_costs;
 
-    #[ManyToOne(targetEntity: 'TorpedoType')]
+    #[ManyToOne(targetEntity: TorpedoType::class)]
     #[JoinColumn(name: 'default_torpedo_type_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?TorpedoTypeInterface $defaultTorpedoType = null;
 
-    #[ManyToOne(targetEntity: 'SpacecraftBuildplan')]
-    #[JoinColumn(name: 'buildplan_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: SpacecraftBuildplan::class)]
+    #[JoinColumn(name: 'buildplan_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private SpacecraftBuildplanInterface $buildplan;
 
-    #[ManyToOne(targetEntity: 'SpacecraftRump', inversedBy: 'startHangar')]
-    #[JoinColumn(name: 'rump_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: SpacecraftRump::class, inversedBy: 'startHangar')]
+    #[JoinColumn(name: 'rump_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private SpacecraftRumpInterface $spacecraftRump;
 
     #[Override]

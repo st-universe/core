@@ -52,27 +52,27 @@ class Alliance implements AllianceInterface
     #[Column(type: 'string', length: 7)]
     private string $rgb_code = '';
 
-    #[ManyToOne(targetEntity: 'Faction')]
+    #[ManyToOne(targetEntity: Faction::class)]
     #[JoinColumn(name: 'faction_id', referencedColumnName: 'id')]
     private ?FactionInterface $faction = null;
 
     /**
      * @var ArrayCollection<int, AllianceSettingsInterface>
      */
-    #[OneToMany(targetEntity: 'AllianceSettings', mappedBy: 'alliance')]
+    #[OneToMany(targetEntity: AllianceSettings::class, mappedBy: 'alliance')]
     private Collection $settings;
 
 
     /**
      * @var ArrayCollection<int, UserInterface>
      */
-    #[OneToMany(targetEntity: 'User', mappedBy: 'alliance')]
+    #[OneToMany(targetEntity: User::class, mappedBy: 'alliance')]
     private Collection $members;
 
     /**
      * @var ArrayCollection<int, AllianceJobInterface>
      */
-    #[OneToMany(targetEntity: 'AllianceJob', mappedBy: 'alliance', indexBy: 'type')]
+    #[OneToMany(targetEntity: AllianceJob::class, mappedBy: 'alliance', indexBy: 'type')]
     private Collection $jobs;
 
 

@@ -37,8 +37,8 @@ class RpgPlotMemberArchiv implements RpgPlotMemberArchivInterface
     #[Column(type: 'integer')]
     private int $user_id = 0;
 
-    #[ManyToOne(targetEntity: 'RpgPlotArchiv', inversedBy: 'members')]
-    #[JoinColumn(name: 'plot_id', referencedColumnName: 'former_id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: RpgPlotArchiv::class, inversedBy: 'members')]
+    #[JoinColumn(name: 'plot_id', nullable: false, referencedColumnName: 'former_id', onDelete: 'CASCADE')]
     private RpgPlotArchivInterface $rpgPlot;
 
     #[Override]

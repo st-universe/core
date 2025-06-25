@@ -36,7 +36,7 @@ class GameTurn implements GameTurnInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $pirate_fleets = 0;
 
-    #[OneToOne(targetEntity: 'GameTurnStats', mappedBy: 'turn')]
+    #[OneToOne(targetEntity: GameTurnStats::class, mappedBy: 'turn')]
     private ?GameTurnStatsInterface $stats = null;
 
     #[Override]

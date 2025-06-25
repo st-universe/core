@@ -59,25 +59,25 @@ class TradePost implements TradePostInterface
     #[Column(type: 'boolean', nullable: true)]
     private ?bool $is_dock_pm_auto_read = null;
 
-    #[ManyToOne(targetEntity: 'User')]
-    #[JoinColumn(name: 'user_id', referencedColumnName: 'id')]
+    #[ManyToOne(targetEntity: User::class)]
+    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id')]
     private UserInterface $user;
 
     /**
      * @var ArrayCollection<int, TradeLicenseInfoInterface>
      */
-    #[OneToMany(targetEntity: 'TradeLicenseInfo', mappedBy: 'tradePost')]
+    #[OneToMany(targetEntity: TradeLicenseInfo::class, mappedBy: 'tradePost')]
     #[OrderBy(['id' => 'DESC'])]
     private Collection $licenseInfos;
 
-    #[OneToOne(targetEntity: 'Station', inversedBy: 'tradePost')]
-    #[JoinColumn(name: 'station_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[OneToOne(targetEntity: Station::class, inversedBy: 'tradePost')]
+    #[JoinColumn(name: 'station_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private StationInterface $station;
 
     /**
      * @var ArrayCollection<int, CrewAssignmentInterface>
      */
-    #[OneToMany(targetEntity: 'CrewAssignment', mappedBy: 'tradepost')]
+    #[OneToMany(targetEntity: CrewAssignment::class, mappedBy: 'tradepost')]
     private Collection $crewAssignments;
 
     public function __construct()

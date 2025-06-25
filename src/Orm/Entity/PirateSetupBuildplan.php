@@ -20,13 +20,13 @@ class PirateSetupBuildplan implements PirateSetupBuildplanInterface
     private int $amount;
 
     #[Id]
-    #[ManyToOne(targetEntity: 'PirateSetup', inversedBy: 'setupBuildplans')]
-    #[JoinColumn(name: 'pirate_setup_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: PirateSetup::class, inversedBy: 'setupBuildplans')]
+    #[JoinColumn(name: 'pirate_setup_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private PirateSetupInterface $setup;
 
     #[Id]
     #[ManyToOne(targetEntity: SpacecraftBuildplan::class)]
-    #[JoinColumn(name: 'buildplan_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'buildplan_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private SpacecraftBuildplanInterface $buildplan;
 
     #[Override]

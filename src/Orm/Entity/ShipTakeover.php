@@ -38,12 +38,12 @@ class ShipTakeover implements ShipTakeoverInterface
     #[Column(type: 'integer')]
     private int $prestige = 0;
 
-    #[OneToOne(targetEntity: 'Spacecraft')]
-    #[JoinColumn(name: 'source_spacecraft_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[OneToOne(targetEntity: Spacecraft::class)]
+    #[JoinColumn(name: 'source_spacecraft_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private SpacecraftInterface $source;
 
-    #[OneToOne(targetEntity: 'Spacecraft')]
-    #[JoinColumn(name: 'target_spacecraft_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[OneToOne(targetEntity: Spacecraft::class)]
+    #[JoinColumn(name: 'target_spacecraft_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private SpacecraftInterface $target;
 
     #[Override]

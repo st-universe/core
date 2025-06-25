@@ -31,17 +31,17 @@ class StarSystemMap extends Location implements StarSystemMapInterface
     #[Column(type: 'integer')]
     private int $systems_id = 0;
 
-    #[ManyToOne(targetEntity: 'StarSystem', inversedBy: 'fields')]
-    #[JoinColumn(name: 'systems_id', referencedColumnName: 'id')]
+    #[ManyToOne(targetEntity: StarSystem::class, inversedBy: 'fields')]
+    #[JoinColumn(name: 'systems_id', nullable: false, referencedColumnName: 'id')]
     private StarSystemInterface $starSystem;
 
-    #[OneToOne(targetEntity: 'Colony', mappedBy: 'starsystem_map')]
+    #[OneToOne(targetEntity: Colony::class, mappedBy: 'starsystem_map')]
     private ?ColonyInterface $colony = null;
 
     /**
      * @var ArrayCollection<int, WormholeEntryInterface>
      */
-    #[OneToMany(targetEntity: 'WormholeEntry', mappedBy: 'systemMap')]
+    #[OneToMany(targetEntity: WormholeEntry::class, mappedBy: 'systemMap')]
     private Collection $wormholeEntries;
 
     public function __construct()

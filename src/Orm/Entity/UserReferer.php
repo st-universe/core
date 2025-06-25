@@ -22,8 +22,8 @@ class UserReferer implements UserRefererInterface
     #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    #[OneToOne(targetEntity: 'UserRegistration', inversedBy: 'referer')]
-    #[JoinColumn(name: 'user_id', referencedColumnName: 'user_id', nullable: false, onDelete: 'CASCADE')]
+    #[OneToOne(targetEntity: UserRegistration::class, inversedBy: 'referer')]
+    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'user_id', onDelete: 'CASCADE')]
     private UserRegistrationInterface $userRegistration;
 
     #[Column(type: 'text')]

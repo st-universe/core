@@ -17,6 +17,7 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
+use LogicException;
 use Override;
 use Stu\Component\Game\GameEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -65,78 +66,78 @@ class User implements UserInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $last_boarding = null;
 
-    #[OneToOne(targetEntity: 'UserRegistration', mappedBy: 'user', cascade: ['all'])]
-    private UserRegistrationInterface $registration;
+    #[OneToOne(targetEntity: UserRegistration::class, mappedBy: 'user', cascade: ['all'])]
+    private ?UserRegistrationInterface $registration;
 
-    #[ManyToOne(targetEntity: 'Alliance', inversedBy: 'members')]
+    #[ManyToOne(targetEntity: Alliance::class, inversedBy: 'members')]
     #[JoinColumn(name: 'allys_id', referencedColumnName: 'id')]
     private ?AllianceInterface $alliance = null;
 
-    #[ManyToOne(targetEntity: 'Faction')]
-    #[JoinColumn(name: 'race', referencedColumnName: 'id')]
+    #[ManyToOne(targetEntity: Faction::class)]
+    #[JoinColumn(name: 'race', nullable: false, referencedColumnName: 'id')]
     private FactionInterface $faction;
 
     /**
      * @var ArrayCollection<int, BuoyInterface>
      */
-    #[OneToMany(targetEntity: 'Buoy', mappedBy: 'user')]
+    #[OneToMany(targetEntity: Buoy::class, mappedBy: 'user')]
     private Collection $buoys;
 
     /**
      * @var ArrayCollection<int, UserAwardInterface>
      */
-    #[OneToMany(targetEntity: 'UserAward', mappedBy: 'user', indexBy: 'award_id')]
+    #[OneToMany(targetEntity: UserAward::class, mappedBy: 'user', indexBy: 'award_id')]
     #[OrderBy(['award_id' => 'ASC'])]
     private Collection $awards;
 
     /**
      * @var ArrayCollection<int, ColonyInterface>
      */
-    #[OneToMany(targetEntity: 'Colony', mappedBy: 'user', indexBy: 'id')]
+    #[OneToMany(targetEntity: Colony::class, mappedBy: 'user', indexBy: 'id')]
     #[OrderBy(['colonies_classes_id' => 'ASC', 'id' => 'ASC'])]
     private Collection $colonies;
 
     /**
      * @var ArrayCollection<int, UserLayerInterface>
      */
-    #[OneToMany(targetEntity: 'UserLayer', mappedBy: 'user', indexBy: 'layer_id')]
+    #[OneToMany(targetEntity: UserLayer::class, mappedBy: 'user', indexBy: 'layer_id')]
     private Collection $userLayers;
 
-    #[OneToOne(targetEntity: 'UserLock', mappedBy: 'user')]
+    #[OneToOne(targetEntity: UserLock::class, mappedBy: 'user')]
     private ?UserLockInterface $userLock = null;
 
     /**
      * @var ArrayCollection<string, UserSettingInterface>
      */
-    #[OneToMany(targetEntity: 'UserSetting', mappedBy: 'user', indexBy: 'setting')]
+    #[OneToMany(targetEntity: UserSetting::class, mappedBy: 'user', indexBy: 'setting')]
     private Collection $settings;
 
     /**
      * @var ArrayCollection<int, UserCharacterInterface>
      */
-    #[OneToMany(targetEntity: 'UserCharacter', mappedBy: 'user')]
+    #[OneToMany(targetEntity: UserCharacter::class, mappedBy: 'user')]
     private Collection $characters;
 
     /**
      * @var ArrayCollection<int, ColonyScanInterface>
      */
-    #[OneToMany(targetEntity: 'ColonyScan', mappedBy: 'user', indexBy: 'id', fetch: 'EXTRA_LAZY')]
+    #[OneToMany(targetEntity: ColonyScan::class, mappedBy: 'user', indexBy: 'id', fetch: 'EXTRA_LAZY')]
     #[OrderBy(['colony_id' => 'ASC', 'date' => 'ASC'])]
     private Collection $colonyScans;
 
-    #[OneToOne(targetEntity: 'PirateWrath', mappedBy: 'user')]
+    #[OneToOne(targetEntity: PirateWrath::class, mappedBy: 'user')]
     private ?PirateWrathInterface $pirateWrath = null;
 
     /**
      * @var ArrayCollection<int, UserTutorialInterface>
      */
-    #[OneToMany(targetEntity: 'UserTutorial', mappedBy: 'user', indexBy: 'tutorial_step_id', fetch: 'EXTRA_LAZY')]
+    #[OneToMany(targetEntity: UserTutorial::class, mappedBy: 'user', indexBy: 'tutorial_step_id', fetch: 'EXTRA_LAZY')]
     private Collection $tutorials;
 
     /**
      * @var ArrayCollection<int, WormholeRestriction>
      */
-    #[OneToMany(targetEntity: 'WormholeRestriction', mappedBy: 'user')]
+    #[OneToMany(targetEntity: WormholeRestriction::class, mappedBy: 'user')]
     private Collection $wormholeRestrictions;
 
     public function __construct()
@@ -161,7 +162,7 @@ class User implements UserInterface
     #[Override]
     public function getRegistration(): UserRegistrationInterface
     {
-        return $this->registration;
+        return $this->registration ?? throw new LogicException('User has no registration');
     }
 
     #[Override]

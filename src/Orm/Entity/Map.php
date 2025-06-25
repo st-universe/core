@@ -46,34 +46,34 @@ class Map extends Location implements MapInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $admin_region_id = null;
 
-    #[OneToOne(targetEntity: 'StarSystem', inversedBy: 'map')]
+    #[OneToOne(targetEntity: StarSystem::class, inversedBy: 'map')]
     #[JoinColumn(name: 'systems_id', referencedColumnName: 'id')]
     private ?StarSystemInterface $starSystem = null;
 
-    #[ManyToOne(targetEntity: 'StarSystem')]
+    #[ManyToOne(targetEntity: StarSystem::class)]
     #[JoinColumn(name: 'influence_area_id', referencedColumnName: 'id')]
     private ?StarSystemInterface $influenceArea = null;
 
-    #[ManyToOne(targetEntity: 'StarSystemType')]
+    #[ManyToOne(targetEntity: StarSystemType::class)]
     #[JoinColumn(name: 'system_type_id', referencedColumnName: 'id')]
     private ?StarSystemTypeInterface $starSystemType = null;
 
-    #[ManyToOne(targetEntity: 'MapBorderType')]
+    #[ManyToOne(targetEntity: MapBorderType::class)]
     #[JoinColumn(name: 'bordertype_id', referencedColumnName: 'id')]
     private ?MapBorderTypeInterface $mapBorderType = null;
 
-    #[ManyToOne(targetEntity: 'MapRegion')]
+    #[ManyToOne(targetEntity: MapRegion::class)]
     #[JoinColumn(name: 'region_id', referencedColumnName: 'id')]
     private ?MapRegionInterface $mapRegion = null;
 
-    #[ManyToOne(targetEntity: 'MapRegion')]
+    #[ManyToOne(targetEntity: MapRegion::class)]
     #[JoinColumn(name: 'admin_region_id', referencedColumnName: 'id')]
     private ?MapRegionInterface $administratedRegion = null;
 
     /**
      * @var ArrayCollection<int, WormholeEntryInterface>
      */
-    #[OneToMany(targetEntity: 'WormholeEntry', mappedBy: 'map')]
+    #[OneToMany(targetEntity: WormholeEntry::class, mappedBy: 'map')]
     private Collection $wormholeEntries;
 
     public function __construct()

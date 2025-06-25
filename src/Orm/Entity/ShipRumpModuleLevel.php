@@ -25,8 +25,8 @@ class ShipRumpModuleLevel implements ShipRumpModuleLevelInterface
     public const string MANDATORY_KEY = 'mandatory';
 
     #[Id]
-    #[OneToOne(targetEntity: 'SpacecraftRump')]
-    #[JoinColumn(name: 'rump_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[OneToOne(targetEntity: SpacecraftRump::class)]
+    #[JoinColumn(name: 'rump_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private SpacecraftRumpInterface $rump;
 
     /** @var array<int, array<string, bool|int|string>> */

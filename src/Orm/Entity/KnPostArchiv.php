@@ -72,11 +72,11 @@ class KnPostArchiv implements KnPostArchivInterface
     /**
      * @var ArrayCollection<int, KnCommentArchivInterface>
      */
-    #[OneToMany(targetEntity: 'KnCommentArchiv', mappedBy: 'post')]
+    #[OneToMany(targetEntity: KnCommentArchiv::class, mappedBy: 'post')]
     #[OrderBy(['id' => 'ASC'])]
     private Collection $comments;
 
-    #[ManyToOne(targetEntity: 'RpgPlotArchiv', inversedBy: 'posts')]
+    #[ManyToOne(targetEntity: RpgPlotArchiv::class, inversedBy: 'posts')]
     #[JoinColumn(name: 'plot_id', referencedColumnName: 'former_id')]
     private ?RpgPlotArchivInterface $rpgPlot = null;
 

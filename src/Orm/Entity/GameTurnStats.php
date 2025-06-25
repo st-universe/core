@@ -61,8 +61,8 @@ class GameTurnStats implements GameTurnStatsInterface
     #[Column(type: 'integer')]
     private int $new_pm_count;
 
-    #[OneToOne(targetEntity: 'GameTurn')]
-    #[JoinColumn(name: 'turn_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[OneToOne(targetEntity: GameTurn::class)]
+    #[JoinColumn(name: 'turn_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private GameTurnInterface $turn;
 
     #[Override]

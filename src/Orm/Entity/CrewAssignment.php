@@ -21,30 +21,30 @@ use Stu\Orm\Repository\CrewAssignmentRepository;
 class CrewAssignment implements CrewAssignmentInterface
 {
     #[Id]
-    #[OneToOne(targetEntity: 'Crew')]
-    #[JoinColumn(name: 'crew_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[OneToOne(targetEntity: Crew::class)]
+    #[JoinColumn(name: 'crew_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CrewInterface $crew;
 
     #[Column(type: 'smallint', nullable: true)]
     private ?int $slot = null;
 
-    #[ManyToOne(targetEntity: 'Spacecraft')]
+    #[ManyToOne(targetEntity: Spacecraft::class)]
     #[JoinColumn(name: 'spacecraft_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?SpacecraftInterface $spacecraft = null;
 
-    #[ManyToOne(targetEntity: 'Colony')]
+    #[ManyToOne(targetEntity: Colony::class)]
     #[JoinColumn(name: 'colony_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?ColonyInterface $colony = null;
 
-    #[ManyToOne(targetEntity: 'TradePost')]
+    #[ManyToOne(targetEntity: TradePost::class)]
     #[JoinColumn(name: 'tradepost_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?TradePostInterface $tradepost = null;
 
-    #[ManyToOne(targetEntity: 'User')]
+    #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
-    #[ManyToOne(targetEntity: 'RepairTask')]
+    #[ManyToOne(targetEntity: RepairTask::class)]
     #[JoinColumn(name: 'repair_task_id', referencedColumnName: 'id')]
     private ?RepairTaskInterface $repairTask = null;
 

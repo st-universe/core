@@ -53,13 +53,13 @@ class RpgPlotArchiv implements RpgPlotArchivInterface
     /**
      * @var ArrayCollection<int, KnPostArchivInterface>
      */
-    #[OneToMany(targetEntity: 'KnPostArchiv', mappedBy: 'rpgPlot')]
+    #[OneToMany(targetEntity: KnPostArchiv::class, mappedBy: 'rpgPlot')]
     private Collection $posts;
 
     /**
      * @var ArrayCollection<int, RpgPlotMemberArchivInterface>
      */
-    #[OneToMany(targetEntity: 'RpgPlotMemberArchiv', mappedBy: 'rpgPlot', indexBy: 'user_id')]
+    #[OneToMany(targetEntity: RpgPlotMemberArchiv::class, mappedBy: 'rpgPlot', indexBy: 'user_id')]
     private Collection $members;
 
     public function __construct()

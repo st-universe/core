@@ -34,7 +34,7 @@ class ShipRumpCategory implements ShipRumpCategoryInterface
     #[Column(type: 'string', enumType: SpacecraftTypeEnum::class)]
     private SpacecraftTypeEnum $type = SpacecraftTypeEnum::SHIP;
 
-    #[ManyToOne(targetEntity: 'DatabaseEntry')]
+    #[ManyToOne(targetEntity: DatabaseEntry::class)]
     #[JoinColumn(name: 'database_id', referencedColumnName: 'id')]
     private ?DatabaseEntryInterface $databaseEntry = null;
 

@@ -53,26 +53,26 @@ class Fleet implements FleetInterface
 
     private string $hiddenStyle;
 
-    #[ManyToOne(targetEntity: 'User')]
-    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: User::class)]
+    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
     /**
      * @var ArrayCollection<int, ShipInterface>
      */
-    #[OneToMany(targetEntity: 'Ship', mappedBy: 'fleet', indexBy: 'id')]
+    #[OneToMany(targetEntity: Ship::class, mappedBy: 'fleet', indexBy: 'id')]
     #[OrderBy(['is_fleet_leader' => 'DESC', 'name' => 'ASC'])]
     private Collection $shiplist;
 
-    #[OneToOne(targetEntity: 'Ship')]
-    #[JoinColumn(name: 'ships_id', referencedColumnName: 'id')]
+    #[OneToOne(targetEntity: Ship::class)]
+    #[JoinColumn(name: 'ships_id', nullable: false, referencedColumnName: 'id')]
     private ShipInterface $fleetLeader;
 
-    #[ManyToOne(targetEntity: 'Colony', inversedBy: 'defenders')]
+    #[ManyToOne(targetEntity: Colony::class, inversedBy: 'defenders')]
     #[JoinColumn(name: 'defended_colony_id', referencedColumnName: 'id')]
     private ?ColonyInterface $defendedColony = null;
 
-    #[ManyToOne(targetEntity: 'Colony', inversedBy: 'blockers')]
+    #[ManyToOne(targetEntity: Colony::class, inversedBy: 'blockers')]
     #[JoinColumn(name: 'blocked_colony_id', referencedColumnName: 'id')]
     private ?ColonyInterface $blockedColony = null;
 

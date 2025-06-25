@@ -30,7 +30,7 @@ class ColonyClassRestriction implements ColonyClassRestrictionInterface
     private ?int $building_id = null;
 
     #[ManyToOne(targetEntity: ColonyClass::class)]
-    #[JoinColumn(name: 'colony_class_id', referencedColumnName: 'id', nullable: false)]
+    #[JoinColumn(name: 'colony_class_id', nullable: false, referencedColumnName: 'id')]
     private ColonyClassInterface $colonyClass;
 
     #[ManyToOne(targetEntity: Terraforming::class)]
