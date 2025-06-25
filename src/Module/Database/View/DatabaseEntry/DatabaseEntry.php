@@ -263,7 +263,7 @@ final class DatabaseEntry implements ViewControllerInterface
 
         $filteredScans = array_filter(
             $unfilteredScans,
-            fn(ColonyScanInterface $scan): bool => $scan->getColony()->getSystemsId() === $systemId
+            fn(ColonyScanInterface $scan): bool => $scan->getColony()->getSystem()->getId() === $systemId
         );
 
         $scansByColony = [];

@@ -163,31 +163,9 @@ class Colony implements ColonyInterface
     }
 
     #[Override]
-    public function getSystemsId(): int
-    {
-        return $this->getSystem()->getId();
-    }
-
-    #[Override]
     public function getName(): string
     {
         return $this->name;
-    }
-
-    #[Override]
-    public function getNameAndSectorString(): string
-    {
-        return sprintf(
-            '%s %s',
-            $this->getName(),
-            $this->getSectorString()
-        );
-    }
-
-    #[Override]
-    public function getSystemString(): string
-    {
-        return sprintf('%s-System (%s|%s)', $this->getSystem()->getName(), $this->getSystem()->getCx(), $this->getSystem()->getCy());
     }
 
     #[Override]
@@ -236,8 +214,7 @@ class Colony implements ColonyInterface
         return $this;
     }
 
-    #[Override]
-    public function getRotationFactor(): int
+    private function getRotationFactor(): int
     {
         return $this->rotation_factor;
     }

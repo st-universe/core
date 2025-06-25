@@ -5,12 +5,14 @@
     {% set colonyClass = colony.getColonyClass %}
     {% set colonyClassId = colonyClass.getId %}
     {% set title = colony.getName|bbcode2txt %}
+    {% set system = colony.getSystem %}
+    {% set systemString = system.getName ~ '-System ('~ system.getCx ~'|'~ system.getCy ~')' %}
     {% set overlibText = "<table class='tcal'>
         <tr>
             <th>Kolonieinformationen: " ~ title ~ "</th>
         </tr>
         <tr>
-            <td>Koordinaten: " ~ colony.getSx ~ "|" ~ colony.getSy ~ "<br>System: " ~ colony.getSystemString|bbcode2txt
+            <td>Koordinaten: " ~ colony.getSx ~ "|" ~ colony.getSy ~ "<br>System: " ~ systemString|bbcode2txt
                 ~ "<br>EPS: " ~ colony.getChangeable.getEps ~ "/" ~ colony.getMaxEps ~ "<br>Lager: " ~
                 colony.getStorageSum ~ "/" ~ colony.getMaxStorage ~ "</td>
         </tr>
