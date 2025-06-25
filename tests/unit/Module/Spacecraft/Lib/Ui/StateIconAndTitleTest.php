@@ -36,7 +36,6 @@ class StateIconAndTitleTest extends StuTestCase
         $this->ship = $this->mock(ShipInterface::class);
 
         $this->wrapper->shouldReceive('get')
-            ->once()
             ->andReturn($this->ship);
 
         $this->subject = new StateIconAndTitle(
@@ -161,10 +160,6 @@ class StateIconAndTitleTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(6);
 
-        $this->wrapper->shouldReceive('getAstroLaboratorySystemData')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(null);
         $this->wrapper->shouldReceive('getTakeoverTicksLeft')
             ->with($takeover)
             ->once()
@@ -184,10 +179,6 @@ class StateIconAndTitleTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftStateEnum::NONE);
-        $this->ship->shouldReceive('getTakeoverActive')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(null);
         $this->ship->shouldReceive('getTakeoverPassive')
             ->withNoArgs()
             ->once()
@@ -210,10 +201,6 @@ class StateIconAndTitleTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(6);
 
-        $this->wrapper->shouldReceive('getAstroLaboratorySystemData')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(null);
         $this->wrapper->shouldReceive('getTakeoverTicksLeft')
             ->with($takeover)
             ->once()
