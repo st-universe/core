@@ -17,8 +17,8 @@ use Override;
 class UserRegistration implements UserRegistrationInterface
 {
     #[Id]
-    #[OneToOne(targetEntity: 'User', inversedBy: 'registration')]
-    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[OneToOne(targetEntity: User::class, inversedBy: 'registration')]
+    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
     #[Column(type: 'string', length: 20)]
@@ -51,7 +51,7 @@ class UserRegistration implements UserRegistrationInterface
     #[Column(type: 'string', length: 6, nullable: true)]
     private ?string $email_code = null;
 
-    #[OneToOne(targetEntity: 'UserReferer', mappedBy: 'userRegistration')]
+    #[OneToOne(targetEntity: UserReferer::class, mappedBy: 'userRegistration')]
     private ?UserRefererInterface $referer = null;
 
     public function __construct(UserInterface $user)

@@ -41,8 +41,8 @@ class PrivateMessageFolder implements PrivateMessageFolderInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $deleted = null;
 
-    #[ManyToOne(targetEntity: 'User')]
-    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: User::class)]
+    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
     #[Override]

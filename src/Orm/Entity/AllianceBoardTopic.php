@@ -49,22 +49,22 @@ class AllianceBoardTopic implements AllianceBoardTopicInterface
     #[Column(type: 'boolean')]
     private bool $sticky = false;
 
-    #[ManyToOne(targetEntity: 'AllianceBoard', inversedBy: 'topics')]
-    #[JoinColumn(name: 'board_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: AllianceBoard::class, inversedBy: 'topics')]
+    #[JoinColumn(name: 'board_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private AllianceBoardInterface $board;
 
-    #[ManyToOne(targetEntity: 'Alliance')]
-    #[JoinColumn(name: 'alliance_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: Alliance::class)]
+    #[JoinColumn(name: 'alliance_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private AllianceInterface $alliance;
 
-    #[ManyToOne(targetEntity: 'User')]
-    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: User::class)]
+    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
     /**
      * @var ArrayCollection<int, AllianceBoardPostInterface>
      */
-    #[OneToMany(targetEntity: 'AllianceBoardPost', mappedBy: 'topic')]
+    #[OneToMany(targetEntity: AllianceBoardPost::class, mappedBy: 'topic')]
     #[OrderBy(['date' => 'DESC'])]
     private Collection $posts;
 

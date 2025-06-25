@@ -34,11 +34,11 @@ class ResearchDependency implements ResearchDependencyInterface
     private ResearchModeEnum $mode;
 
     #[ManyToOne(targetEntity: Research::class)]
-    #[JoinColumn(name: 'research_id', referencedColumnName: 'id')]
+    #[JoinColumn(name: 'research_id', nullable: false, referencedColumnName: 'id')]
     private ResearchInterface $research;
 
     #[ManyToOne(targetEntity: Research::class)]
-    #[JoinColumn(name: 'depends_on', referencedColumnName: 'id')]
+    #[JoinColumn(name: 'depends_on', nullable: false, referencedColumnName: 'id')]
     private ResearchInterface $research_depends_on;
 
     #[Override]

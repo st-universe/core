@@ -35,11 +35,11 @@ class TerraformingCost implements TerraformingCostInterface
     private int $count = 0;
 
     #[ManyToOne(targetEntity: Commodity::class)]
-    #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'commodity_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $commodity;
 
     #[ManyToOne(targetEntity: Terraforming::class)]
-    #[JoinColumn(name: 'terraforming_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'terraforming_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private TerraformingInterface $terraforming;
 
     #[Override]

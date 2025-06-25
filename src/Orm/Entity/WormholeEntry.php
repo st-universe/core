@@ -27,15 +27,6 @@ class WormholeEntry implements WormholeEntryInterface
     #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    #[Column(type: 'integer')]
-    private int $map_id;
-
-    #[Column(type: 'integer')]
-    private int $system_id;
-
-    #[Column(type: 'integer')]
-    private int $system_map_id;
-
     #[Column(type: 'string', length: 10, enumType: WormholeEntryTypeEnum::class)]
     private WormholeEntryTypeEnum $type = WormholeEntryTypeEnum::BOTH;
 
@@ -45,22 +36,22 @@ class WormholeEntry implements WormholeEntryInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $cooldown = null;
 
-    #[ManyToOne(targetEntity: 'Map', inversedBy: 'wormholeEntries')]
-    #[JoinColumn(name: 'map_id', referencedColumnName: 'id')]
+    #[ManyToOne(targetEntity: Map::class, inversedBy: 'wormholeEntries')]
+    #[JoinColumn(name: 'map_id', nullable: false, referencedColumnName: 'id')]
     private MapInterface $map;
 
-    #[ManyToOne(targetEntity: 'StarSystem')]
-    #[JoinColumn(name: 'system_id', referencedColumnName: 'id')]
+    #[ManyToOne(targetEntity: StarSystem::class)]
+    #[JoinColumn(name: 'system_id', nullable: false, referencedColumnName: 'id')]
     private StarSystemInterface $starSystem;
 
-    #[ManyToOne(targetEntity: 'StarSystemMap', inversedBy: 'wormholeEntries')]
-    #[JoinColumn(name: 'system_map_id', referencedColumnName: 'id')]
+    #[ManyToOne(targetEntity: StarSystemMap::class, inversedBy: 'wormholeEntries')]
+    #[JoinColumn(name: 'system_map_id', nullable: false, referencedColumnName: 'id')]
     private StarSystemMapInterface $systemMap;
 
     /**
      * @var ArrayCollection<int, WormholeRestriction>
      */
-    #[OneToMany(targetEntity: 'WormholeRestriction', mappedBy: 'wormholeEntry')]
+    #[OneToMany(targetEntity: WormholeRestriction::class, mappedBy: 'wormholeEntry')]
     private Collection $restrictions;
 
 

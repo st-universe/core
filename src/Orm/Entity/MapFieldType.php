@@ -63,7 +63,7 @@ class MapFieldType implements MapFieldTypeInterface
     #[Column(type: 'json', nullable: true)]
     private ?array $effects = null;
 
-    #[ManyToOne(targetEntity: 'ColonyClass')]
+    #[ManyToOne(targetEntity: ColonyClass::class)]
     #[JoinColumn(name: 'colonies_classes_id', referencedColumnName: 'id')]
     private ?ColonyClassInterface $colonyClass = null;
 

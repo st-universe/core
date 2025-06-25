@@ -44,12 +44,12 @@ class KnComment implements KnCommentInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $deleted = null;
 
-    #[ManyToOne(targetEntity: 'KnPost')]
-    #[JoinColumn(name: 'post_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: KnPost::class)]
+    #[JoinColumn(name: 'post_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private KnPostInterface $post;
 
-    #[ManyToOne(targetEntity: 'User')]
-    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: User::class)]
+    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
     #[Override]

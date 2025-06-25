@@ -59,19 +59,19 @@ class ColonyShipQueue implements ColonyShipQueueInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $ship_id = null;
 
-    #[ManyToOne(targetEntity: 'SpacecraftBuildplan')]
-    #[JoinColumn(name: 'buildplan_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: SpacecraftBuildplan::class)]
+    #[JoinColumn(name: 'buildplan_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private SpacecraftBuildplanInterface $spacecraftBuildplan;
 
-    #[ManyToOne(targetEntity: 'SpacecraftRump')]
-    #[JoinColumn(name: 'rump_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: SpacecraftRump::class)]
+    #[JoinColumn(name: 'rump_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private SpacecraftRumpInterface $shipRump;
 
-    #[ManyToOne(targetEntity: 'Colony')]
-    #[JoinColumn(name: 'colony_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: Colony::class)]
+    #[JoinColumn(name: 'colony_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ColonyInterface $colony;
 
-    #[OneToOne(targetEntity: 'Ship')]
+    #[OneToOne(targetEntity: Ship::class)]
     #[JoinColumn(name: 'ship_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?ShipInterface $ship = null;
 

@@ -55,23 +55,23 @@ class PrivateMessage implements PrivateMessageInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $deleted = null;
 
-    #[ManyToOne(targetEntity: 'PrivateMessageFolder')]
-    #[JoinColumn(name: 'cat_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: PrivateMessageFolder::class)]
+    #[JoinColumn(name: 'cat_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private PrivateMessageFolderInterface $category;
 
-    #[ManyToOne(targetEntity: 'User')]
-    #[JoinColumn(name: 'send_user', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: User::class)]
+    #[JoinColumn(name: 'send_user', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $sendingUser;
 
-    #[ManyToOne(targetEntity: 'User')]
-    #[JoinColumn(name: 'recip_user', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: User::class)]
+    #[JoinColumn(name: 'recip_user', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $receivingUser;
 
-    #[OneToOne(targetEntity: 'PrivateMessage', inversedBy: 'outboxPm')]
+    #[OneToOne(targetEntity: PrivateMessage::class, inversedBy: 'outboxPm')]
     #[JoinColumn(name: 'inbox_pm_id', referencedColumnName: 'id')]
     private ?PrivateMessageInterface $inboxPm = null;
 
-    #[OneToOne(targetEntity: 'PrivateMessage', mappedBy: 'inboxPm')]
+    #[OneToOne(targetEntity: PrivateMessage::class, mappedBy: 'inboxPm')]
     private ?PrivateMessageInterface $outboxPm = null;
 
     #[Override]

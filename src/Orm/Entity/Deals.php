@@ -69,26 +69,26 @@ class Deals implements DealsInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $auction_amount = null;
 
-    #[ManyToOne(targetEntity: 'Commodity')]
-    #[JoinColumn(name: 'want_commodity', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: Commodity::class)]
+    #[JoinColumn(name: 'want_commodity', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $wantedCommodity;
 
-    #[ManyToOne(targetEntity: 'Commodity')]
-    #[JoinColumn(name: 'give_commodity', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: Commodity::class)]
+    #[JoinColumn(name: 'give_commodity', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $giveCommodity;
 
-    #[ManyToOne(targetEntity: 'SpacecraftBuildplan')]
+    #[ManyToOne(targetEntity: SpacecraftBuildplan::class)]
     #[JoinColumn(name: 'buildplan_id', referencedColumnName: 'id')]
     private ?SpacecraftBuildplanInterface $buildplan = null;
 
-    #[ManyToOne(targetEntity: 'Faction')]
+    #[ManyToOne(targetEntity: Faction::class)]
     #[JoinColumn(name: 'faction_id', referencedColumnName: 'id')]
     private ?FactionInterface $faction;
 
     /**
      * @var ArrayCollection<int, AuctionBidInterface>
      */
-    #[OneToMany(targetEntity: 'AuctionBid', mappedBy: 'auction')]
+    #[OneToMany(targetEntity: AuctionBid::class, mappedBy: 'auction')]
     #[OrderBy(['max_amount' => 'ASC'])]
     private Collection $auctionBids;
 

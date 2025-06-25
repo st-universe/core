@@ -35,11 +35,11 @@ class BuildingUpgradeCost implements BuildingUpgradeCostInterface
     private int $amount;
 
     #[ManyToOne(targetEntity: Commodity::class)]
-    #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'commodity_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $commodity;
 
     #[ManyToOne(targetEntity: BuildingUpgrade::class)]
-    #[JoinColumn(name: 'buildings_upgrades_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'buildings_upgrades_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private BuildingUpgradeInterface $upgrade;
 
     #[Override]

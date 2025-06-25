@@ -79,27 +79,27 @@ class Building implements BuildingInterface
     /**
      * @var ArrayCollection<int, BuildingCostInterface>
      */
-    #[OneToMany(targetEntity: 'BuildingCost', mappedBy: 'building')]
+    #[OneToMany(targetEntity: BuildingCost::class, mappedBy: 'building')]
     #[OrderBy(['commodity_id' => 'ASC'])]
     private Collection $costs;
 
     /**
      * @var ArrayCollection<int, BuildingFunctionInterface>
      */
-    #[OneToMany(targetEntity: 'BuildingFunction', mappedBy: 'building', indexBy: 'function')]
+    #[OneToMany(targetEntity: BuildingFunction::class, mappedBy: 'building', indexBy: 'function')]
     private Collection $functions;
 
     /**
      * @var ArrayCollection<int, BuildingCommodityInterface>
      */
-    #[OneToMany(targetEntity: 'BuildingCommodity', mappedBy: 'building', indexBy: 'commodity_id')]
+    #[OneToMany(targetEntity: BuildingCommodity::class, mappedBy: 'building', indexBy: 'commodity_id')]
     #[OrderBy(['commodity_id' => 'ASC'])]
     private Collection $commodities;
 
     /**
      * @var ArrayCollection<int, PlanetFieldTypeBuildingInterface>
      */
-    #[OneToMany(targetEntity: 'PlanetFieldTypeBuilding', mappedBy: 'building', indexBy: 'type')]
+    #[OneToMany(targetEntity: PlanetFieldTypeBuilding::class, mappedBy: 'building', indexBy: 'type')]
     private Collection $possibleFieldTypes;
 
     /**

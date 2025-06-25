@@ -34,15 +34,15 @@ class ModuleCost implements ModuleCostInterface
     #[Column(type: 'integer')]
     private int $count = 0;
 
-    #[ManyToOne(targetEntity: 'Commodity')]
-    #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: Commodity::class)]
+    #[JoinColumn(name: 'commodity_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $commodity;
 
     /**
      * @var ModuleInterface
      */
-    #[ManyToOne(targetEntity: 'Module', inversedBy: 'buildingCosts')]
-    #[JoinColumn(name: 'module_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: Module::class, inversedBy: 'buildingCosts')]
+    #[JoinColumn(name: 'module_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private $module;
 
     #[Override]

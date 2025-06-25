@@ -54,49 +54,49 @@ abstract class Location implements LocationInterface
     #[Column(type: 'integer')]
     private int $field_id = 0;
 
-    #[ManyToOne(targetEntity: 'Layer')]
+    #[ManyToOne(targetEntity: Layer::class)]
     #[JoinColumn(name: 'layer_id', referencedColumnName: 'id')]
     protected ?LayerInterface $layer;
 
-    #[ManyToOne(targetEntity: 'MapFieldType')]
-    #[JoinColumn(name: 'field_id', referencedColumnName: 'id')]
+    #[ManyToOne(targetEntity: MapFieldType::class)]
+    #[JoinColumn(name: 'field_id', nullable: false, referencedColumnName: 'id')]
     private MapFieldTypeInterface $mapFieldType;
 
     /**
      * @var ArrayCollection<int, SpacecraftInterface>
      */
-    #[OneToMany(targetEntity: 'Spacecraft', mappedBy: 'location', indexBy: 'id', fetch: 'EXTRA_LAZY')]
+    #[OneToMany(targetEntity: Spacecraft::class, mappedBy: 'location', indexBy: 'id', fetch: 'EXTRA_LAZY')]
     private Collection $spacecrafts;
 
     /**
      * @var ArrayCollection<int, TrumfieldInterface>
      */
-    #[OneToMany(targetEntity: 'Trumfield', mappedBy: 'location', indexBy: 'id', fetch: 'EXTRA_LAZY')]
+    #[OneToMany(targetEntity: Trumfield::class, mappedBy: 'location', indexBy: 'id', fetch: 'EXTRA_LAZY')]
     private Collection $trumfields;
 
     /**
      * @var ArrayCollection<int, FlightSignatureInterface>
      */
-    #[OneToMany(targetEntity: 'FlightSignature', mappedBy: 'location')]
+    #[OneToMany(targetEntity: FlightSignature::class, mappedBy: 'location')]
     #[OrderBy(['time' => 'DESC'])]
     private Collection $signatures;
 
     /**
      * @var ArrayCollection<int, BuoyInterface>
      */
-    #[OneToMany(targetEntity: 'Buoy', mappedBy: 'location', indexBy: 'id', fetch: 'EXTRA_LAZY')]
+    #[OneToMany(targetEntity: Buoy::class, mappedBy: 'location', indexBy: 'id', fetch: 'EXTRA_LAZY')]
     private Collection $buoys;
 
     /**
      * @var ArrayCollection<int, AnomalyInterface>
      */
-    #[OneToMany(targetEntity: 'Anomaly', mappedBy: 'location', indexBy: 'anomaly_type_id', fetch: 'EXTRA_LAZY')]
+    #[OneToMany(targetEntity: Anomaly::class, mappedBy: 'location', indexBy: 'anomaly_type_id', fetch: 'EXTRA_LAZY')]
     private Collection $anomalies;
 
     /**
      * @var ArrayCollection<int, LocationMiningInterface>
      */
-    #[OneToMany(targetEntity: 'LocationMining', mappedBy: 'location')]
+    #[OneToMany(targetEntity: LocationMining::class, mappedBy: 'location')]
     private Collection $locationMinings;
 
     public function __construct()

@@ -39,11 +39,11 @@ class LocationMining implements LocationMiningInterface
     private ?int $depleted_at = null;
 
     #[ManyToOne(targetEntity: Location::class)]
-    #[JoinColumn(name: 'location_id', referencedColumnName: 'id')]
+    #[JoinColumn(name: 'location_id', nullable: false, referencedColumnName: 'id')]
     private LocationInterface $location;
 
     #[ManyToOne(targetEntity: Commodity::class)]
-    #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id')]
+    #[JoinColumn(name: 'commodity_id', nullable: false, referencedColumnName: 'id')]
     private CommodityInterface $commodity;
 
     #[Override]

@@ -53,8 +53,8 @@ class ShipRumpCategoryRoleCrew implements ShipRumpCategoryRoleCrewInterface
     #[Column(type: 'smallint')]
     private int $job_7_crew = 0;
 
-    #[ManyToOne(targetEntity: 'ShipRumpRole')]
-    #[JoinColumn(name: 'rump_role_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: ShipRumpRole::class)]
+    #[JoinColumn(name: 'rump_role_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ShipRumpRoleInterface $shiprumpRole;
 
     #[Override]

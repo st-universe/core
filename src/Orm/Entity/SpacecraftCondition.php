@@ -33,8 +33,8 @@ class SpacecraftCondition implements SpacecraftConditionInterface
     private SpacecraftStateEnum $state = SpacecraftStateEnum::NONE;
 
     #[Id]
-    #[OneToOne(targetEntity: 'Spacecraft', inversedBy: 'condition')]
-    #[JoinColumn(name: 'spacecraft_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[OneToOne(targetEntity: Spacecraft::class, inversedBy: 'condition')]
+    #[JoinColumn(name: 'spacecraft_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private SpacecraftInterface $spacecraft;
 
     // transitive fields

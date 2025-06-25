@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
+use LogicException;
 use Override;
 use Stu\Orm\Repository\TorpedoStorageRepository;
 
@@ -32,16 +33,16 @@ class TorpedoStorage implements TorpedoStorageInterface
     #[Column(type: 'integer', length: 3)]
     private int $torpedo_type;
 
-    #[OneToOne(targetEntity: 'Spacecraft', inversedBy: 'torpedoStorage')]
-    #[JoinColumn(name: 'spacecraft_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[OneToOne(targetEntity: Spacecraft::class, inversedBy: 'torpedoStorage')]
+    #[JoinColumn(name: 'spacecraft_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private SpacecraftInterface $spacecraft;
 
-    #[ManyToOne(targetEntity: 'TorpedoType')]
-    #[JoinColumn(name: 'torpedo_type', referencedColumnName: 'id')]
+    #[ManyToOne(targetEntity: TorpedoType::class)]
+    #[JoinColumn(name: 'torpedo_type', nullable: false, referencedColumnName: 'id')]
     private TorpedoTypeInterface $torpedo;
 
-    #[OneToOne(targetEntity: 'Storage', mappedBy: 'torpedoStorage')]
-    private StorageInterface $storage;
+    #[OneToOne(targetEntity: Storage::class, mappedBy: 'torpedoStorage')]
+    private ?StorageInterface $storage;
 
     #[Override]
     public function getId(): int
@@ -78,7 +79,7 @@ class TorpedoStorage implements TorpedoStorageInterface
     #[Override]
     public function getStorage(): StorageInterface
     {
-        return $this->storage;
+        return $this->storage ?? throw new LogicException('TorpedoStorage has no storage');
     }
 
     #[Override]

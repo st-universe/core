@@ -47,16 +47,16 @@ class ShipyardShipQueue implements ShipyardShipQueueInterface
     #[Column(type: 'integer')]
     private int $stop_date = 0;
 
-    #[ManyToOne(targetEntity: 'SpacecraftBuildplan')]
-    #[JoinColumn(name: 'buildplan_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: SpacecraftBuildplan::class)]
+    #[JoinColumn(name: 'buildplan_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private SpacecraftBuildplanInterface $spacecraftBuildplan;
 
-    #[ManyToOne(targetEntity: 'SpacecraftRump')]
-    #[JoinColumn(name: 'rump_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: SpacecraftRump::class)]
+    #[JoinColumn(name: 'rump_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private SpacecraftRumpInterface $spacecraftRump;
 
-    #[ManyToOne(targetEntity: 'Station')]
-    #[JoinColumn(name: 'station_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: Station::class)]
+    #[JoinColumn(name: 'station_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private StationInterface $station;
 
     #[Override]

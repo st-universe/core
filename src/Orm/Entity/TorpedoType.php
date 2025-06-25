@@ -68,11 +68,11 @@ class TorpedoType implements TorpedoTypeInterface
     /**
      * @var ArrayCollection<int, TorpedoTypeCostInterface>
      */
-    #[OneToMany(targetEntity: 'TorpedoTypeCost', mappedBy: 'torpedoType')]
+    #[OneToMany(targetEntity: TorpedoTypeCost::class, mappedBy: 'torpedoType')]
     private Collection $productionCosts;
 
-    #[ManyToOne(targetEntity: 'Commodity')]
-    #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id')]
+    #[ManyToOne(targetEntity: Commodity::class)]
+    #[JoinColumn(name: 'commodity_id', nullable: false, referencedColumnName: 'id')]
     private CommodityInterface $commodity;
 
     public function __construct()

@@ -24,12 +24,12 @@ class ColonyClassResearch implements ColonyClassResearchInterface
     #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    #[ManyToOne(targetEntity: 'Research')]
-    #[JoinColumn(name: 'research_id', referencedColumnName: 'id', nullable: false)]
+    #[ManyToOne(targetEntity: Research::class)]
+    #[JoinColumn(name: 'research_id', nullable: false, referencedColumnName: 'id')]
     private ResearchInterface $research;
 
-    #[ManyToOne(targetEntity: 'ColonyClass')]
-    #[JoinColumn(name: 'planet_type_id', referencedColumnName: 'id', nullable: false)]
+    #[ManyToOne(targetEntity: ColonyClass::class)]
+    #[JoinColumn(name: 'planet_type_id', nullable: false, referencedColumnName: 'id')]
     private ColonyClassInterface $colonyClass;
 
     #[Override]

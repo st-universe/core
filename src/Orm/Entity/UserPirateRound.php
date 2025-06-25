@@ -35,12 +35,12 @@ class UserPirateRound implements UserPirateRoundInterface
     #[Column(type: 'integer')]
     private int $prestige = 0;
 
-    #[ManyToOne(targetEntity: 'User')]
-    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: User::class)]
+    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
-    #[ManyToOne(targetEntity: 'PirateRound')]
-    #[JoinColumn(name: 'pirate_round_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: PirateRound::class)]
+    #[JoinColumn(name: 'pirate_round_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private PirateRoundInterface $pirateRound;
 
     #[Override]

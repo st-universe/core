@@ -45,22 +45,22 @@ class Anomaly implements AnomalyInterface
     #[Column(type: 'text', nullable: true)]
     private ?string $data = null;
 
-    #[ManyToOne(targetEntity: 'AnomalyType')]
-    #[JoinColumn(name: 'anomaly_type_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: AnomalyType::class)]
+    #[JoinColumn(name: 'anomaly_type_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private AnomalyTypeInterface $anomalyType;
 
-    #[ManyToOne(targetEntity: 'Location')]
+    #[ManyToOne(targetEntity: Location::class)]
     #[JoinColumn(name: 'location_id', referencedColumnName: 'id')]
     private ?LocationInterface $location;
 
-    #[ManyToOne(targetEntity: 'Anomaly')]
+    #[ManyToOne(targetEntity: Anomaly::class)]
     #[JoinColumn(name: 'parent_id', referencedColumnName: 'id')]
     private ?AnomalyInterface $parent;
 
     /**
      * @var ArrayCollection<int, AnomalyInterface>
      */
-    #[OneToMany(targetEntity: 'Anomaly', mappedBy: 'parent', indexBy: 'location_id')]
+    #[OneToMany(targetEntity: Anomaly::class, mappedBy: 'parent', indexBy: 'location_id')]
     private Collection $children;
 
     public function __construct()

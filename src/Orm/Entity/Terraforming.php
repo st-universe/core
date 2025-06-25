@@ -49,7 +49,7 @@ class Terraforming implements TerraformingInterface
     /**
      * @var ArrayCollection<int, TerraformingCostInterface>
      */
-    #[OneToMany(targetEntity: 'TerraformingCost', mappedBy: 'terraforming')]
+    #[OneToMany(targetEntity: TerraformingCost::class, mappedBy: 'terraforming')]
     private Collection $costs;
 
     /**

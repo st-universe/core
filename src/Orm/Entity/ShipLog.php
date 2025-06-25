@@ -38,7 +38,7 @@ class ShipLog implements ShipLogInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $deleted = null;
 
-    #[ManyToOne(targetEntity: 'Spacecraft')]
+    #[ManyToOne(targetEntity: Spacecraft::class)]
     #[JoinColumn(name: 'spacecraft_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?SpacecraftInterface $spacecraft = null;
 

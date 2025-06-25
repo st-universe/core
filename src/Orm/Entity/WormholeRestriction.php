@@ -23,12 +23,12 @@ class WormholeRestriction implements WormholeRestrictionInterface
     #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    #[ManyToOne(targetEntity: 'WormholeEntry')]
-    #[JoinColumn(name: 'wormhole_entry_id', referencedColumnName: 'id')]
+    #[ManyToOne(targetEntity: WormholeEntry::class)]
+    #[JoinColumn(name: 'wormhole_entry_id', nullable: false, referencedColumnName: 'id')]
     private WormholeEntryInterface $wormholeEntry;
 
-    #[ManyToOne(targetEntity: 'User')]
-    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: User::class)]
+    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
     #[Column(type: 'integer', nullable: true)]

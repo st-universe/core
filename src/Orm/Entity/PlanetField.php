@@ -57,19 +57,19 @@ class PlanetField implements PlanetFieldInterface
     #[Column(type: 'boolean')]
     private bool $activate_after_build = true;
 
-    #[ManyToOne(targetEntity: 'Building')]
+    #[ManyToOne(targetEntity: Building::class)]
     #[JoinColumn(name: 'buildings_id', referencedColumnName: 'id')]
     private ?BuildingInterface $building = null;
 
-    #[ManyToOne(targetEntity: 'Terraforming')]
+    #[ManyToOne(targetEntity: Terraforming::class)]
     #[JoinColumn(name: 'terraforming_id', referencedColumnName: 'id')]
     private ?TerraformingInterface $terraforming = null;
 
-    #[ManyToOne(targetEntity: 'Colony')]
+    #[ManyToOne(targetEntity: Colony::class)]
     #[JoinColumn(name: 'colonies_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?ColonyInterface $colony = null;
 
-    #[ManyToOne(targetEntity: 'ColonySandbox')]
+    #[ManyToOne(targetEntity: ColonySandbox::class)]
     #[JoinColumn(name: 'colony_sandbox_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?ColonySandboxInterface $sandbox = null;
 

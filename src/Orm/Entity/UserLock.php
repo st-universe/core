@@ -37,7 +37,7 @@ class UserLock implements UserLockInterface
     #[Column(type: 'text')]
     private string $reason = '';
 
-    #[OneToOne(targetEntity: 'User', inversedBy: 'userLock')]
+    #[OneToOne(targetEntity: User::class, inversedBy: 'userLock')]
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?UserInterface $user = null;
 

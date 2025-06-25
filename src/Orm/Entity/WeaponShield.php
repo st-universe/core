@@ -38,12 +38,12 @@ class WeaponShield implements WeaponShieldInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $faction_id = 0;
 
-    #[ManyToOne(targetEntity: 'Weapon')]
-    #[JoinColumn(name: 'weapon_id', referencedColumnName: 'id')]
+    #[ManyToOne(targetEntity: Weapon::class)]
+    #[JoinColumn(name: 'weapon_id', nullable: false, referencedColumnName: 'id')]
     private WeaponInterface $weapon;
 
-    #[ManyToOne(targetEntity: 'Module')]
-    #[JoinColumn(name: 'module_id', referencedColumnName: 'id')]
+    #[ManyToOne(targetEntity: Module::class)]
+    #[JoinColumn(name: 'module_id', nullable: false, referencedColumnName: 'id')]
     private ModuleInterface $module;
 
     #[Override]

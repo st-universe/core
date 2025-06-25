@@ -35,12 +35,12 @@ class MapRegion implements MapRegionInterface
     #[Column(type: 'string', nullable: true)]
     private ?string $layers = null;
 
-    #[ManyToOne(targetEntity: 'DatabaseEntry')]
+    #[ManyToOne(targetEntity: DatabaseEntry::class)]
     #[JoinColumn(name: 'database_id', referencedColumnName: 'id')]
     private ?DatabaseEntryInterface $databaseEntry = null;
 
     /** @var ArrayCollection<int, AstronomicalEntryInterface> */
-    #[OneToMany(targetEntity: 'AstronomicalEntry', mappedBy: 'region', indexBy: 'user_id', fetch: 'EXTRA_LAZY')]
+    #[OneToMany(targetEntity: AstronomicalEntry::class, mappedBy: 'region', indexBy: 'user_id', fetch: 'EXTRA_LAZY')]
     private Collection $astronomicalEntries;
 
     public function __construct()

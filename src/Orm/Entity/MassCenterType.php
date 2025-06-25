@@ -33,8 +33,8 @@ class MassCenterType implements MassCenterTypeInterface
     #[Column(type: 'integer')]
     private int $first_field_type_id = 0;
 
-    #[OneToOne(targetEntity: 'MapFieldType')]
-    #[JoinColumn(name: 'first_field_type_id', referencedColumnName: 'id')]
+    #[OneToOne(targetEntity: MapFieldType::class)]
+    #[JoinColumn(name: 'first_field_type_id', nullable: false, referencedColumnName: 'id')]
     private MapFieldTypeInterface $firstFieldType;
 
     #[Override]

@@ -36,12 +36,12 @@ class ConstructionProgress implements ConstructionProgressInterface
     /**
      * @var ArrayCollection<int, ConstructionProgressModuleInterface>
      */
-    #[OneToMany(targetEntity: 'ConstructionProgressModule', mappedBy: 'progress', indexBy: 'module_id')]
+    #[OneToMany(targetEntity: ConstructionProgressModule::class, mappedBy: 'progress', indexBy: 'module_id')]
     #[OrderBy(['module_id' => 'ASC'])]
     private Collection $specialModules;
 
-    #[OneToOne(targetEntity: 'Station')]
-    #[JoinColumn(name: 'station_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[OneToOne(targetEntity: Station::class)]
+    #[JoinColumn(name: 'station_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private StationInterface $station;
 
     public function __construct()

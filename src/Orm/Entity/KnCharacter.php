@@ -29,12 +29,12 @@ class KnCharacter implements KnCharacterInterface
     #[Column(name: "character_id", type: "integer")]
     private int $characterId;
 
-    #[ManyToOne(targetEntity: "KnPost")]
-    #[JoinColumn(name: "kn_id", referencedColumnName: "id", onDelete: "CASCADE")]
+    #[ManyToOne(targetEntity: KnPost::class)]
+    #[JoinColumn(name: "kn_id", nullable: false, referencedColumnName: "id", onDelete: "CASCADE")]
     private KnPostInterface $knPost;
 
-    #[ManyToOne(targetEntity: "UserCharacter")]
-    #[JoinColumn(name: "character_id", referencedColumnName: "id", onDelete: "CASCADE")]
+    #[ManyToOne(targetEntity: UserCharacter::class)]
+    #[JoinColumn(name: "character_id", nullable: false, referencedColumnName: "id", onDelete: "CASCADE")]
     private UserCharacterInterface $userCharacters;
 
 

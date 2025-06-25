@@ -24,13 +24,13 @@ class ColonyClassDeposit implements ColonyClassDepositInterface
     private int $max_amount = 0;
 
     #[Id]
-    #[ManyToOne(targetEntity: 'ColonyClass')]
-    #[JoinColumn(name: 'colony_class_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: ColonyClass::class)]
+    #[JoinColumn(name: 'colony_class_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ColonyClassInterface $colonyClass;
 
     #[Id]
-    #[ManyToOne(targetEntity: 'Commodity')]
-    #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: Commodity::class)]
+    #[JoinColumn(name: 'commodity_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $commodity;
 
     #[Override]

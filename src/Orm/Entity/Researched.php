@@ -36,11 +36,11 @@ class Researched implements ResearchedInterface
     private int $finished = 0;
 
     #[ManyToOne(targetEntity: Research::class)]
-    #[JoinColumn(name: 'research_id', referencedColumnName: 'id')]
+    #[JoinColumn(name: 'research_id', nullable: false, referencedColumnName: 'id')]
     private ResearchInterface $research;
 
-    #[ManyToOne(targetEntity: 'User')]
-    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: User::class)]
+    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
     #[Override]

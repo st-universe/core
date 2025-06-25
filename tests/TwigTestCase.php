@@ -122,7 +122,7 @@ abstract class TwigTestCase extends StuTestCase
             //$this->createInitialDiff();
             //$this->runCommand(UpdateCommand::class, "orm:schema-tool:update --force");
 
-            $this->runCommand(GenerateProxiesCommand::class, "orm:generate-proxies");
+            $this->runCommand(GenerateProxiesCommand::class, "orm:generate-proxies --quiet");
             $this->initializeTestData();
 
             self::$isSchemaCreated = true;

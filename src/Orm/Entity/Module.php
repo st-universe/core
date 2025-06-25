@@ -79,56 +79,53 @@ class Module implements ModuleInterface
     /**
      * @var ResearchInterface
      */
-    #[ManyToOne(targetEntity: 'Research')]
-    #[JoinColumn(name: 'research_id', referencedColumnName: 'id')]
+    #[ManyToOne(targetEntity: Research::class)]
+    #[JoinColumn(name: 'research_id', nullable: false, referencedColumnName: 'id')]
     private $research;
 
-    #[ManyToOne(targetEntity: 'Commodity')]
-    #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: Commodity::class)]
+    #[JoinColumn(name: 'commodity_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $commodity;
 
     /**
      * @var FactionInterface
      */
-    #[ManyToOne(targetEntity: 'Faction')]
-    #[JoinColumn(name: 'faction_id', referencedColumnName: 'id')]
+    #[ManyToOne(targetEntity: Faction::class)]
+    #[JoinColumn(name: 'faction_id', nullable: false, referencedColumnName: 'id')]
     private $faction;
 
-    /**
-     * @var ShipRumpRoleInterface
-     */
-    #[ManyToOne(targetEntity: 'ShipRumpRole')]
-    #[JoinColumn(name: 'rumps_role_id', referencedColumnName: 'id')]
-    private $shipRumpRole;
+    #[ManyToOne(targetEntity: ShipRumpRole::class)]
+    #[JoinColumn(name: 'rumps_role_id', nullable: false, referencedColumnName: 'id')]
+    private ShipRumpRoleInterface $shipRumpRole;
 
     /**
      * @var ArrayCollection<int, ModuleSpecialInterface>
      */
-    #[OneToMany(targetEntity: 'ModuleSpecial', mappedBy: 'module', indexBy: 'special_id', fetch: 'EXTRA_LAZY')]
+    #[OneToMany(targetEntity: ModuleSpecial::class, mappedBy: 'module', indexBy: 'special_id', fetch: 'EXTRA_LAZY')]
     #[OrderBy(['special_id' => 'ASC'])]
     private Collection $moduleSpecials;
 
     /**
      * @var ArrayCollection<int, ModuleCostInterface>
      */
-    #[OneToMany(targetEntity: 'ModuleCost', mappedBy: 'module')]
+    #[OneToMany(targetEntity: ModuleCost::class, mappedBy: 'module')]
     private Collection $buildingCosts;
 
     /**
      * @var ArrayCollection<int, TorpedoHullInterface>
      */
-    #[OneToMany(targetEntity: 'TorpedoHull', mappedBy: 'module', indexBy: 'torpedo_type')]
+    #[OneToMany(targetEntity: TorpedoHull::class, mappedBy: 'module', indexBy: 'torpedo_type')]
     #[OrderBy(['torpedo_type' => 'ASC'])]
     private Collection $torpedoHull;
 
     /**
      * @var ArrayCollection<int, WeaponShieldInterface>
      */
-    #[OneToMany(targetEntity: 'WeaponShield', mappedBy: 'module', indexBy: 'weapon_id')]
+    #[OneToMany(targetEntity: WeaponShield::class, mappedBy: 'module', indexBy: 'weapon_id')]
     #[OrderBy(['weapon_id' => 'ASC'])]
     private Collection $weaponShield;
 
-    #[OneToOne(targetEntity: 'Weapon', mappedBy: 'module')]
+    #[OneToOne(targetEntity: Weapon::class, mappedBy: 'module')]
     private ?WeaponInterface $weapon = null;
 
     public function __construct()

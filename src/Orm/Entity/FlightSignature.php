@@ -54,12 +54,12 @@ class FlightSignature implements FlightSignatureInterface
     #[Column(type: 'boolean')]
     private bool $is_cloaked = false;
 
-    #[ManyToOne(targetEntity: 'SpacecraftRump')]
-    #[JoinColumn(name: 'rump_id', referencedColumnName: 'id')]
+    #[ManyToOne(targetEntity: SpacecraftRump::class)]
+    #[JoinColumn(name: 'rump_id', nullable: false, referencedColumnName: 'id')]
     private SpacecraftRumpInterface $rump;
 
-    #[ManyToOne(targetEntity: 'Location')]
-    #[JoinColumn(name: 'location_id', referencedColumnName: 'id')]
+    #[ManyToOne(targetEntity: Location::class)]
+    #[JoinColumn(name: 'location_id', nullable: false, referencedColumnName: 'id')]
     private LocationInterface $location;
 
     #[Override]

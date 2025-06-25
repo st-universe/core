@@ -18,18 +18,18 @@ use Stu\Orm\Repository\ColonyDepositMiningRepository;
 class ColonyDepositMining implements ColonyDepositMiningInterface
 {
     #[Id]
-    #[ManyToOne(targetEntity: 'User')]
-    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: User::class)]
+    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
     #[Id]
-    #[ManyToOne(targetEntity: 'Colony')]
-    #[JoinColumn(name: 'colony_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: Colony::class)]
+    #[JoinColumn(name: 'colony_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ColonyInterface $colony;
 
     #[Id]
-    #[ManyToOne(targetEntity: 'Commodity')]
-    #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: Commodity::class)]
+    #[JoinColumn(name: 'commodity_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $commodity;
 
     #[Column(type: 'integer')]

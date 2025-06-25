@@ -38,18 +38,18 @@ class AllianceBoard implements AllianceBoardInterface
     /**
      * @var ArrayCollection<int, AllianceBoardTopicInterface>
      */
-    #[OneToMany(targetEntity: 'AllianceBoardTopic', mappedBy: 'board')]
+    #[OneToMany(targetEntity: AllianceBoardTopic::class, mappedBy: 'board')]
     private Collection $topics;
 
     /**
      * @var ArrayCollection<int, AllianceBoardPostInterface>
      */
-    #[OneToMany(targetEntity: 'AllianceBoardPost', mappedBy: 'board')]
+    #[OneToMany(targetEntity: AllianceBoardPost::class, mappedBy: 'board')]
     #[OrderBy(['date' => 'DESC'])]
     private Collection $posts;
 
-    #[ManyToOne(targetEntity: 'Alliance')]
-    #[JoinColumn(name: 'alliance_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: Alliance::class)]
+    #[JoinColumn(name: 'alliance_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private AllianceInterface $alliance;
 
     public function __construct()

@@ -43,15 +43,15 @@ class StarSystemType implements StarSystemTypeInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $second_mass_center_id = null;
 
-    #[OneToOne(targetEntity: 'DatabaseEntry')]
+    #[OneToOne(targetEntity: DatabaseEntry::class)]
     #[JoinColumn(name: 'database_id', referencedColumnName: 'id')]
     private ?DatabaseEntryInterface $databaseEntry = null;
 
-    #[ManyToOne(targetEntity: 'MassCenterType')]
+    #[ManyToOne(targetEntity: MassCenterType::class)]
     #[JoinColumn(name: 'first_mass_center_id', referencedColumnName: 'id')]
     private ?MassCenterTypeInterface $firstMassCenterType = null;
 
-    #[ManyToOne(targetEntity: 'MassCenterType')]
+    #[ManyToOne(targetEntity: MassCenterType::class)]
     #[JoinColumn(name: 'second_mass_center_id', referencedColumnName: 'id')]
     private ?MassCenterTypeInterface $secondMassCenterType = null;
 

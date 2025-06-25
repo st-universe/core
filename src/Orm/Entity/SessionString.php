@@ -36,7 +36,7 @@ class SessionString implements SessionStringInterface
     #[Column(type: 'datetime', nullable: true)]
     private DateTimeInterface $date;
 
-    #[ManyToOne(targetEntity: 'User')]
+    #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?UserInterface $user = null;
 

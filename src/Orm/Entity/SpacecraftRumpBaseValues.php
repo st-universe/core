@@ -17,8 +17,8 @@ use Override;
 class SpacecraftRumpBaseValues implements SpacecraftRumpBaseValuesInterface
 {
     #[Id]
-    #[OneToOne(targetEntity: 'SpacecraftRump', inversedBy: 'baseValues')]
-    #[JoinColumn(name: 'rump_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[OneToOne(targetEntity: SpacecraftRump::class, inversedBy: 'baseValues')]
+    #[JoinColumn(name: 'rump_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private SpacecraftRumpInterface $rump;
 
     #[column(type: 'smallint')]

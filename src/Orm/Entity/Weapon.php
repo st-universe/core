@@ -43,8 +43,8 @@ class Weapon implements WeaponInterface
     #[Column(type: 'integer')]
     private int $module_id = 0;
 
-    #[OneToOne(targetEntity: 'Module', inversedBy: 'weapon')]
-    #[JoinColumn(name: 'module_id', referencedColumnName: 'id')]
+    #[OneToOne(targetEntity: Module::class, inversedBy: 'weapon')]
+    #[JoinColumn(name: 'module_id', nullable: false, referencedColumnName: 'id')]
     private ModuleInterface $module;
 
     #[Override]

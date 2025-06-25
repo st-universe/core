@@ -17,13 +17,13 @@ use Stu\Orm\Repository\UserTutorialRepository;
 class UserTutorial implements UserTutorialInterface
 {
     #[Id]
-    #[ManyToOne(targetEntity: 'User', inversedBy: 'tutorials')]
-    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: User::class, inversedBy: 'tutorials')]
+    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
     #[Id]
-    #[ManyToOne(targetEntity: 'TutorialStep')]
-    #[JoinColumn(name: 'tutorial_step_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: TutorialStep::class)]
+    #[JoinColumn(name: 'tutorial_step_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private TutorialStepInterface $tutorialStep;
 
     #[Override]

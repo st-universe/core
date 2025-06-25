@@ -33,11 +33,11 @@ class DatabaseUser implements DatabaseUserInterface
     private int $date;
 
     #[ManyToOne(targetEntity: DatabaseEntry::class)]
-    #[JoinColumn(name: 'database_id', referencedColumnName: 'id')]
+    #[JoinColumn(name: 'database_id', nullable: false, referencedColumnName: 'id')]
     private DatabaseEntryInterface $databaseEntry;
 
-    #[ManyToOne(targetEntity: 'User')]
-    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: User::class)]
+    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
     #[Override]

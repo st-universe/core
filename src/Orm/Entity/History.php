@@ -44,7 +44,7 @@ class History implements HistoryInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $location_id = null;
 
-    #[ManyToOne(targetEntity: 'Location')]
+    #[ManyToOne(targetEntity: Location::class)]
     #[JoinColumn(name: 'location_id', referencedColumnName: 'id')]
     private ?LocationInterface $location;
 

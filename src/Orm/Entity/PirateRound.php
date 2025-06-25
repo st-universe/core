@@ -42,7 +42,7 @@ class PirateRound implements PirateRoundInterface
     /**
      * @var ArrayCollection<int, UserPirateRoundInterface>
      */
-    #[OneToMany(targetEntity: 'UserPirateRound', mappedBy: 'pirateRound')]
+    #[OneToMany(targetEntity: UserPirateRound::class, mappedBy: 'pirateRound')]
     private Collection $userPirateRounds;
 
     public function __construct()

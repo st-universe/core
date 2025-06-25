@@ -29,8 +29,8 @@ class AllianceSettings implements AllianceSettingsInterface
     #[Column(type: 'string')]
     private string $value = '';
 
-    #[ManyToOne(targetEntity: 'Alliance')]
-    #[JoinColumn(name: 'alliance_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: Alliance::class)]
+    #[JoinColumn(name: 'alliance_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private AllianceInterface $alliance;
 
     #[Override]

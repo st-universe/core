@@ -46,19 +46,19 @@ class BuildingUpgrade implements BuildingUpgradeInterface
     /**
      * @var ArrayCollection<int, BuildingUpgradeCostInterface>
      */
-    #[OneToMany(targetEntity: 'BuildingUpgradeCost', mappedBy: 'upgrade')]
+    #[OneToMany(targetEntity: BuildingUpgradeCost::class, mappedBy: 'upgrade')]
     private Collection $upgradeCosts;
 
-    #[ManyToOne(targetEntity: 'Building')]
-    #[JoinColumn(name: 'upgrade_to', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: Building::class)]
+    #[JoinColumn(name: 'upgrade_to', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private BuildingInterface $upgradeToBuilding;
 
     /**
      * @var BuildingInterface
      */
-    #[ManyToOne(targetEntity: 'Building')]
-    #[JoinColumn(name: 'upgrade_from', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private $upgradeFromBuilding;
+    #[ManyToOne(targetEntity: Building::class)]
+    #[JoinColumn(name: 'upgrade_from', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    private BuildingInterface $upgradeFromBuilding;
 
     public function __construct()
     {

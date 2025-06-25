@@ -31,7 +31,7 @@ class ShipRumpSpecial implements ShipRumpSpecialInterface
     #[Column(type: 'integer')]
     private int $special = 0;
 
-    #[ManyToOne(targetEntity: 'SpacecraftRump', inversedBy: 'specialAbilities')]
+    #[ManyToOne(targetEntity: SpacecraftRump::class, inversedBy: 'specialAbilities')]
     #[JoinColumn(name: 'rump_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?SpacecraftRumpInterface $spacecraftRump = null;
 

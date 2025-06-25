@@ -38,16 +38,16 @@ class ColonyTerraforming implements ColonyTerraformingInterface
     #[Column(type: 'integer')]
     private int $finished = 0;
 
-    #[ManyToOne(targetEntity: 'Terraforming')]
-    #[JoinColumn(name: 'terraforming_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: Terraforming::class)]
+    #[JoinColumn(name: 'terraforming_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private TerraformingInterface $terraforming;
 
-    #[ManyToOne(targetEntity: 'PlanetField')]
-    #[JoinColumn(name: 'field_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: PlanetField::class)]
+    #[JoinColumn(name: 'field_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private PlanetFieldInterface $field;
 
-    #[ManyToOne(targetEntity: 'Colony')]
-    #[JoinColumn(name: 'colonies_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: Colony::class)]
+    #[JoinColumn(name: 'colonies_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ColonyInterface $colony;
 
     #[Override]

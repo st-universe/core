@@ -32,12 +32,12 @@ class CrewTraining implements CrewTrainingInterface
     #[Column(type: 'integer')]
     private int $colony_id = 0;
 
-    #[ManyToOne(targetEntity: 'Colony')]
-    #[JoinColumn(name: 'colony_id', referencedColumnName: 'id')]
+    #[ManyToOne(targetEntity: Colony::class)]
+    #[JoinColumn(name: 'colony_id', nullable: false, referencedColumnName: 'id')]
     private ColonyInterface $colony;
 
-    #[ManyToOne(targetEntity: 'User')]
-    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: User::class)]
+    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
     #[Override]

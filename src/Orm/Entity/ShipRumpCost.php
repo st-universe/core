@@ -34,12 +34,12 @@ class ShipRumpCost implements ShipRumpCostInterface
     #[Column(type: 'integer')]
     private int $count = 0;
 
-    #[ManyToOne(targetEntity: 'Commodity')]
-    #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: Commodity::class)]
+    #[JoinColumn(name: 'commodity_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $commodity;
 
-    #[ManyToOne(targetEntity: 'SpacecraftRump', inversedBy: 'buildingCosts')]
-    #[JoinColumn(name: 'rump_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: SpacecraftRump::class, inversedBy: 'buildingCosts')]
+    #[JoinColumn(name: 'rump_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private SpacecraftRumpInterface $spacecraftRump;
 
     #[Override]

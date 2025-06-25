@@ -38,12 +38,12 @@ class AllianceRelation implements AllianceRelationInterface
     #[Column(type: 'integer')]
     private int $date = 0;
 
-    #[ManyToOne(targetEntity: 'Alliance')]
-    #[JoinColumn(name: 'alliance_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: Alliance::class)]
+    #[JoinColumn(name: 'alliance_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private AllianceInterface $alliance;
 
-    #[ManyToOne(targetEntity: 'Alliance')]
-    #[JoinColumn(name: 'recipient', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ManyToOne(targetEntity: Alliance::class)]
+    #[JoinColumn(name: 'recipient', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private AllianceInterface $opponent;
 
     #[Override]
