@@ -9,6 +9,7 @@ use Override;
 use Stu\Component\Station\Dock\DockTypeEnum;
 use Stu\Orm\Entity\DockingPrivilege;
 use Stu\Orm\Entity\DockingPrivilegeInterface;
+use Stu\Orm\Entity\StationInterface;
 
 /**
  * @extends EntityRepository<DockingPrivilege>
@@ -39,21 +40,22 @@ final class DockingPrivilegeRepository extends EntityRepository implements Docki
     }
 
     #[Override]
-    public function existsForTargetAndTypeAndShip(int $targetId, DockTypeEnum $privilegeType, int $shipId): bool
+    public function existsForTargetAndTypeAndShip(int $targetId, DockTypeEnum $privilegeType, StationInterface $station): bool
     {
         return $this->count([
-            'station_id' => $shipId,
+            'station' => $station,
             'target' => $targetId,
             'privilege_type' => $privilegeType->value,
         ]) > 0;
     }
 
     #[Override]
-    public function getByStation(int $stationId): array
+    public function getByStation(StationInterface $station): array
     {
-        return $this->findBy([
-            'station_id' => $stationId,
-        ]);
+        return $this->findBy(
+            ['station' => $station],
+            ['privilege_mode' => 'DESC']
+        );
     }
 
     #[Override]

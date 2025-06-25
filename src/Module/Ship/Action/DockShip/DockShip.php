@@ -89,7 +89,7 @@ final class DockShip implements ActionControllerInterface
             return;
         }
 
-        if (!$this->dockPrivilegeUtility->checkPrivilegeFor($target->getId(), $ship)) {
+        if (!$this->dockPrivilegeUtility->checkPrivilegeFor($target, $ship)) {
 
             $this->privateMessageSender->send(
                 $userId,

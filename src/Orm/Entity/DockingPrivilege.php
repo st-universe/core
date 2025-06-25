@@ -8,7 +8,6 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
-use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
@@ -18,7 +17,6 @@ use Stu\Component\Station\Dock\DockTypeEnum;
 use Stu\Orm\Repository\DockingPrivilegeRepository;
 
 #[Table(name: 'stu_dockingrights')]
-#[Index(name: 'dockingrights_station_idx', columns: ['station_id'])]
 #[Entity(repositoryClass: DockingPrivilegeRepository::class)]
 class DockingPrivilege implements DockingPrivilegeInterface
 {
@@ -26,9 +24,6 @@ class DockingPrivilege implements DockingPrivilegeInterface
     #[Column(type: 'integer')]
     #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
-
-    #[Column(type: 'integer')]
-    private int $station_id = 0;
 
     #[Column(type: 'integer')]
     private int $target = 0; //TODO create refs to user, ally, ship and faction entities and make cascade delete
@@ -40,7 +35,7 @@ class DockingPrivilege implements DockingPrivilegeInterface
     private DockModeEnum $privilege_mode = DockModeEnum::ALLOW;
 
     #[ManyToOne(targetEntity: 'Station', inversedBy: 'dockingPrivileges')]
-    #[JoinColumn(name: 'station_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private StationInterface $station;
 
     #[Override]

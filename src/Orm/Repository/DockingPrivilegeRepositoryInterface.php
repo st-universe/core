@@ -6,6 +6,7 @@ use Doctrine\Persistence\ObjectRepository;
 use Stu\Component\Station\Dock\DockTypeEnum;
 use Stu\Orm\Entity\DockingPrivilege;
 use Stu\Orm\Entity\DockingPrivilegeInterface;
+use Stu\Orm\Entity\StationInterface;
 
 /**
  * @extends ObjectRepository<DockingPrivilege>
@@ -20,12 +21,12 @@ interface DockingPrivilegeRepositoryInterface extends ObjectRepository
 
     public function delete(DockingPrivilegeInterface $post): void;
 
-    public function existsForTargetAndTypeAndShip(int $targetId, DockTypeEnum $privilegeType, int $shipId): bool;
+    public function existsForTargetAndTypeAndShip(int $targetId, DockTypeEnum $privilegeType, StationInterface $station): bool;
 
     /**
-     * @return list<DockingPrivilegeInterface>
+     * @return array<DockingPrivilegeInterface>
      */
-    public function getByStation(int $stationId): array;
+    public function getByStation(StationInterface $station): array;
 
     public function truncateByTypeAndTarget(DockTypeEnum $type, int $targetId): void;
 }
