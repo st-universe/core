@@ -37,7 +37,7 @@ class TrumfieldStorageEntityWrapper implements StorageEntityWrapperInterface
     #[Override]
     public function getName(): string
     {
-        return 'Trümmerfeld';
+        return $this->trumfield->getName();
     }
 
     #[Override]

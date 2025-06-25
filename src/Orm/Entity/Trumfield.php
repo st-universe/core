@@ -150,6 +150,12 @@ class Trumfield implements TrumfieldInterface
     }
 
     #[Override]
+    public function getName(): string
+    {
+        return $this->getTransferEntityType()->getName();
+    }
+
+    #[Override]
     public function getHref(): string
     {
         return '';

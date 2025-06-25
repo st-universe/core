@@ -20,6 +20,8 @@ interface EntityWithStorageInterface extends
 {
     public function getId(): int;
 
+    public function getName(): string;
+
     /** @return Collection<int, StorageInterface> Indexed by commodityId, ordered by commodityId */
     public function getStorage(): Collection;
 
