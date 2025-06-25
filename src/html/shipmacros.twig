@@ -45,7 +45,7 @@
 {% endmacro %}
 
 {% macro trumfieldImage(trumfield) %}
-<img src="/assets/ships/wrack/{{ trumfield.getFormerRumpId }}.png" title="Trümmerfeld"
+<img src="/assets/ships/wrack/{{ trumfield.getFormerRumpId }}.png" title="{{ trumfield.getName }}"
     onload="adjustCellHeight(this); adjustCellWidth(this);" />
 {% endmacro %}
 
