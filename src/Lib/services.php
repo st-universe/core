@@ -68,6 +68,9 @@ use Stu\Lib\Transfer\TransferInformationFactoryInterface;
 use Stu\Lib\Transfer\TransferEntityLoader;
 use Stu\Lib\Transfer\TransferEntityLoaderInterface;
 use Stu\Lib\Transfer\TransferTypeEnum;
+use Stu\Lib\Transfer\Wrapper\SpacecraftStorageCommodityLogic;
+use Stu\Lib\Transfer\Wrapper\SpacecraftStorageCrewLogic;
+use Stu\Lib\Transfer\Wrapper\SpacecraftStorageTorpedoLogic;
 use Stu\Lib\Transfer\Wrapper\StorageEntityWrapperFactory;
 use Stu\Lib\Transfer\Wrapper\StorageEntityWrapperFactoryInterface;
 use Stu\Module\Config\StuConfigInterface;
@@ -125,7 +128,10 @@ return [
     InteractionMemberFactoryInterface::class => autowire(InteractionMemberFactory::class),
     InteractionCheckerBuilderFactoryInterface::class => autowire(InteractionCheckerBuilderFactory::class),
     StorageManagerInterface::class => autowire(StorageManager::class),
-    StorageEntityWrapperFactoryInterface::class => autowire(StorageEntityWrapperFactory::class),
+    StorageEntityWrapperFactoryInterface::class => autowire(StorageEntityWrapperFactory::class)
+        ->constructorParameter('spacecraftStorageCommodityLogic', autowire(SpacecraftStorageCommodityLogic::class))
+        ->constructorParameter('spacecraftStorageCrewLogic', autowire(SpacecraftStorageCrewLogic::class))
+        ->constructorParameter('spacecraftStorageTorpedoLogic', autowire(SpacecraftStorageTorpedoLogic::class)),
     TransferInformationFactoryInterface::class => autowire(TransferInformationFactory::class),
     TransferStrategyInterface::class => [
         TransferTypeEnum::COMMODITIES->value => autowire(CommodityTransferStrategy::class),
