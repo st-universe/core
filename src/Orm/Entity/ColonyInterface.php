@@ -58,8 +58,6 @@ interface ColonyInterface extends
 
     public function setColonyClass(ColonyClassInterface $colonyClass): ColonyInterface;
 
-    public function storagePlaceLeft(): bool;
-
     public function getStarsystemMap(): StarSystemMapInterface;
 
     public function setStarsystemMap(StarSystemMapInterface $systemMap): ColonyInterface;

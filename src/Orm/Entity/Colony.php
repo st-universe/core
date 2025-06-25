@@ -264,12 +264,6 @@ class Colony implements ColonyInterface
     }
 
     #[Override]
-    public function storagePlaceLeft(): bool
-    {
-        return $this->getMaxStorage() > $this->getStorageSum();
-    }
-
-    #[Override]
     public function getStarsystemMap(): StarSystemMapInterface
     {
         return $this->starsystem_map;
@@ -418,18 +412,6 @@ class Colony implements ColonyInterface
     public function getSectorString(): string
     {
         return $this->getStarsystemMap()->getSectorString();
-    }
-
-    #[Override]
-    public function getPlanetFieldHostIdentifier(): string
-    {
-        return 'colony';
-    }
-
-    #[Override]
-    public function getPlanetFieldHostColumnIdentifier(): string
-    {
-        return 'colonies_id';
     }
 
     #[Override]

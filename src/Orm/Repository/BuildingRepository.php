@@ -67,7 +67,7 @@ final class BuildingRepository extends EntityRepository implements BuildingRepos
                     Researched::class,
                     PlanetFieldTypeBuilding::class,
                     PlanetField::class,
-                    $host->getPlanetFieldHostColumnIdentifier(),
+                    $host->getHostType()->getPlanetFieldHostColumnIdentifier(),
                     ColonyClassRestriction::class,
                     $commodityFilter,
                     $fieldTypeFilter

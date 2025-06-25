@@ -203,18 +203,6 @@ class ColonySandbox implements ColonySandboxInterface, PlanetFieldHostInterface
     }
 
     #[Override]
-    public function getPlanetFieldHostIdentifier(): string
-    {
-        return 'sandbox';
-    }
-
-    #[Override]
-    public function getPlanetFieldHostColumnIdentifier(): string
-    {
-        return 'colony_sandbox_id';
-    }
-
-    #[Override]
     public function isColony(): bool
     {
         return false;

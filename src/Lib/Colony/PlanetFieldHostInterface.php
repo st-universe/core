@@ -30,10 +30,6 @@ interface PlanetFieldHostInterface extends EntityWithComponentsInterface
 
     public function getMaxStorage(): int;
 
-    public function getPlanetFieldHostIdentifier(): string;
-
-    public function getPlanetFieldHostColumnIdentifier(): string;
-
     public function getColonyClass(): ColonyClassInterface;
 
     /**
