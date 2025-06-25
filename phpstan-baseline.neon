@@ -1306,6 +1306,12 @@ parameters:
 			path: src/Module/Spacecraft/Lib/ReactorWrapper.php
 
 		-
+			message: '#^Method Stu\\Module\\Spacecraft\\Lib\\SpacecraftWrapper\:\:getThis\(\) return type with generic class Stu\\Module\\Spacecraft\\Lib\\SpacecraftWrapper does not specify its types\: T$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Module/Spacecraft/Lib/SpacecraftWrapper.php
+
+		-
 			message: '#^Method Stu\\Module\\Spacecraft\\View\\ShowSectorScan\\ShowSectorScan\:\:getSignatures\(\) should return array\<int, Stu\\Lib\\SignatureWrapper\> but returns array\<string, Stu\\Lib\\SignatureWrapper\>\.$#'
 			identifier: return.type
 			count: 1
