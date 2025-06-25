@@ -48,7 +48,7 @@ final class AddDockPrivilege implements ActionControllerInterface
         $mode = DockModeEnum::from(request::getIntFatal('mode'));
 
         $game->setView(ShowDockingPrivileges::VIEW_IDENTIFIER);
-        if ($this->dockingPrivilegeRepository->existsForTargetAndTypeAndShip($target, $type, $station->getId()) === true) {
+        if ($this->dockingPrivilegeRepository->existsForTargetAndTypeAndShip($target, $type, $station)) {
             return;
         }
         $save = 0;

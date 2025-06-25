@@ -16,6 +16,7 @@ use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftShutdownInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\StationInterface;
 use Stu\Orm\Entity\UserInterface;
 
 class SpacecraftStorageCrewLogic
@@ -90,6 +91,10 @@ class SpacecraftStorageCrewLogic
     {
         $spacecraft = $wrapper->get();
 
+        if (!$spacecraft instanceof StationInterface) {
+            return false;
+        }
+
         if (!$spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::LIFE_SUPPORT)) {
             $information->addInformationf('Die %s hat keine Lebenserhaltungssysteme', $spacecraft->getName());
 
@@ -113,7 +118,7 @@ class SpacecraftStorageCrewLogic
             return false;
         }
 
-        if (!$this->dockPrivilegeUtility->checkPrivilegeFor($spacecraft->getId(), $user)) {
+        if (!$this->dockPrivilegeUtility->checkPrivilegeFor($spacecraft, $user)) {
             $information->addInformation("Benötigte Andockerlaubnis wurde verweigert");
             return false;
         }
