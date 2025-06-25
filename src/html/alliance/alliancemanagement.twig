@@ -36,7 +36,7 @@
         <td>
             {% for col in data.getColonies %}
             <img src="assets/planets/{{ col.getColonyClass.getId }}.png"
-                title="{{ col.getNameAndSectorString|bbcode2txt }}" />
+                title="{{ col.getName|bbcode2txt }} {{ col.getSectorString }}" />
             {% endfor %}
         </td>
         <td>

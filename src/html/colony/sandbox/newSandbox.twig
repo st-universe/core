@@ -7,7 +7,8 @@
                 <td>
                     <select id="colony-id">
                         {% for colony in SANDBOX_LIST %}
-                        <option value="{{ colony.getId }}">{{ colony.getNameAndSectorString|bbcode2txt }}</option>
+                        <option value="{{ colony.getId }}">{{ colony.getName|bbcode2txt }} {{ colony.getSectorString }}
+                        </option>
                         {% endfor %}
                     </select>
                 </td>

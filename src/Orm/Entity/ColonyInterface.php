@@ -24,12 +24,6 @@ interface ColonyInterface extends
 
     public function getSy(): int;
 
-    public function getSystemsId(): int;
-
-    public function getNameAndSectorString(): string;
-
-    public function getSystemString(): string;
-
     public function setName(string $name): ColonyInterface;
 
     public function getPlanetName(): string;
@@ -45,8 +39,6 @@ interface ColonyInterface extends
     public function setDatabaseEntry(?DatabaseEntryInterface $entry): ColonyInterface;
 
     public function getTwilightZone(int $timestamp): int;
-
-    public function getRotationFactor(): int;
 
     public function setRotationFactor(int $rotationFactor): ColonyInterface;
 
