@@ -2,13 +2,13 @@
 
 namespace Stu\Component\Player;
 
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 interface ColonyLimitCalculatorInterface
 {
-    public function canColonizeFurtherColonyWithType(UserInterface $user, int $colonyType): bool;
+    public function canColonizeFurtherColonyWithType(User $user, int $colonyType): bool;
 
-    public function getColonyLimitWithType(UserInterface $user, int $colonyType): int;
+    public function getColonyLimitWithType(User $user, int $colonyType): int;
 
-    public function getColonyCountWithType(UserInterface $user, int $colonyType): int;
+    public function getColonyCountWithType(User $user, int $colonyType): int;
 }

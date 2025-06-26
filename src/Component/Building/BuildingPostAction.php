@@ -7,9 +7,9 @@ namespace Stu\Component\Building;
 use Override;
 use Stu\Module\Building\Action\BuildingActionHandlerInterface;
 use Stu\Module\Building\Action\BuildingFunctionActionMapperInterface;
-use Stu\Orm\Entity\BuildingInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\ColonySandboxInterface;
+use Stu\Orm\Entity\Building;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\ColonySandbox;
 
 /**
  * Handles certain post de-/activation actions depending on building functions
@@ -20,8 +20,8 @@ final class BuildingPostAction implements BuildingPostActionInterface
 
     #[Override]
     public function handleDeactivation(
-        BuildingInterface $building,
-        ColonyInterface|ColonySandboxInterface $host
+        Building $building,
+        Colony|ColonySandbox $host
     ): void {
         $this->handle(
             $building,
@@ -33,8 +33,8 @@ final class BuildingPostAction implements BuildingPostActionInterface
 
     #[Override]
     public function handleActivation(
-        BuildingInterface $building,
-        ColonyInterface|ColonySandboxInterface $host
+        Building $building,
+        Colony|ColonySandbox $host
     ): void {
         $this->handle(
             $building,
@@ -45,7 +45,7 @@ final class BuildingPostAction implements BuildingPostActionInterface
     }
 
     private function handle(
-        BuildingInterface $building,
+        Building $building,
         callable $callback
     ): void {
         foreach ($building->getFunctions() as $function) {

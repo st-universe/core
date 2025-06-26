@@ -7,8 +7,8 @@ namespace Stu\Module\PlayerProfile\Lib;
 use Mockery;
 use Mockery\MockInterface;
 use Override;
-use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Entity\UserProfileVisitorInterface;
+use Stu\Orm\Entity\User;
+use Stu\Orm\Entity\UserProfileVisitor;
 use Stu\Orm\Repository\UserProfileVisitorRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -30,8 +30,8 @@ class ProfileVisitorRegistrationTest extends StuTestCase
 
     public function testRegisterDoesNotRegisterIfUserAndVisitorAreSame(): void
     {
-        $user = $this->mock(UserInterface::class);
-        $visitor = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
+        $visitor = $this->mock(User::class);
 
         $userId = 666;
 
@@ -50,8 +50,8 @@ class ProfileVisitorRegistrationTest extends StuTestCase
 
     public function testRegisterDoesNotRegisterIfVisitorHasAlreadyVisited(): void
     {
-        $user = $this->mock(UserInterface::class);
-        $visitor = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
+        $visitor = $this->mock(User::class);
 
         $user->shouldReceive('getId')
             ->withNoArgs()
@@ -73,9 +73,9 @@ class ProfileVisitorRegistrationTest extends StuTestCase
 
     public function testRegisterRegistersVisit(): void
     {
-        $user = $this->mock(UserInterface::class);
-        $visitor = $this->mock(UserInterface::class);
-        $profileVisit = $this->mock(UserProfileVisitorInterface::class);
+        $user = $this->mock(User::class);
+        $visitor = $this->mock(User::class);
+        $profileVisit = $this->mock(UserProfileVisitor::class);
 
         $user->shouldReceive('getId')
             ->withNoArgs()

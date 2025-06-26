@@ -12,12 +12,11 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 
 #[Table(name: 'stu_mass_center_type')]
 #[Index(name: 'mass_center_field_type_idx', columns: ['first_field_type_id'])]
 #[Entity]
-class MassCenterType implements MassCenterTypeInterface
+class MassCenterType
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -35,28 +34,24 @@ class MassCenterType implements MassCenterTypeInterface
 
     #[OneToOne(targetEntity: MapFieldType::class)]
     #[JoinColumn(name: 'first_field_type_id', nullable: false, referencedColumnName: 'id')]
-    private MapFieldTypeInterface $firstFieldType;
+    private MapFieldType $firstFieldType;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getDescription(): string
     {
         return $this->description;
     }
 
-    #[Override]
     public function getSize(): int
     {
         return $this->size;
     }
 
-    #[Override]
-    public function getFirstFieldType(): MapFieldTypeInterface
+    public function getFirstFieldType(): MapFieldType
     {
         return $this->firstFieldType;
     }

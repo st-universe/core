@@ -8,20 +8,20 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\StorageInterface;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\Storage;
 use Stu\StuTestCase;
 
 class SpacecraftShuttleSpaceTraitTest extends StuTestCase
 {
     use SpacecraftShuttleSpaceTrait;
 
-    private MockInterface&SpacecraftInterface $spacecraft;
+    private MockInterface&Spacecraft $spacecraft;
 
     #[Override]
     protected function setUp(): void
     {
-        $this->spacecraft = $this->mock(SpacecraftInterface::class);
+        $this->spacecraft = $this->mock(Spacecraft::class);
     }
 
     public function testGetStoredShuttleCountExpectZeroWhenStorageEmpty(): void
@@ -38,9 +38,9 @@ class SpacecraftShuttleSpaceTraitTest extends StuTestCase
 
     public function testGetStoredShuttleCountExpectCorrectAmount(): void
     {
-        $storageNoShuttle = $this->mock(StorageInterface::class);
-        $storageShuttle2 = $this->mock(StorageInterface::class);
-        $storageShuttle3 = $this->mock(StorageInterface::class);
+        $storageNoShuttle = $this->mock(Storage::class);
+        $storageShuttle2 = $this->mock(Storage::class);
+        $storageShuttle3 = $this->mock(Storage::class);
 
         $this->spacecraft->shouldReceive('getStorage')
             ->withNoArgs()
@@ -88,7 +88,7 @@ class SpacecraftShuttleSpaceTraitTest extends StuTestCase
 
     public function testHasFreeShuttleSpaceExpectFalseWhenNoSpaceLeft(): void
     {
-        $storageShuttle42 = $this->mock(StorageInterface::class);
+        $storageShuttle42 = $this->mock(Storage::class);
 
         $this->spacecraft->shouldReceive('hasSpacecraftSystem')
             ->with(SpacecraftSystemTypeEnum::SHUTTLE_RAMP)
@@ -119,7 +119,7 @@ class SpacecraftShuttleSpaceTraitTest extends StuTestCase
 
     public function testHasFreeShuttleSpaceExpectTrueWhenSpaceLeft(): void
     {
-        $storageShuttle42 = $this->mock(StorageInterface::class);
+        $storageShuttle42 = $this->mock(Storage::class);
 
         $this->spacecraft->shouldReceive('hasSpacecraftSystem')
             ->with(SpacecraftSystemTypeEnum::SHUTTLE_RAMP)

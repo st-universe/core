@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping\Table;
 #[Table(name: 'stu_planets_commodity')]
 #[Index(name: 'planet_classes_idx', columns: ['planet_classes_id'])]
 #[Entity]
-class PlanetCommodity implements PlanetCommodityInterface
+class PlanetCommodity
 {
     #[Id]
     #[Column(type: 'integer')]

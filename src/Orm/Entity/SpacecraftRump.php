@@ -16,14 +16,13 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
 use LogicException;
-use Override;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Orm\Repository\SpacecraftRumpRepository;
 
 #[Table(name: 'stu_rump')]
 #[Entity(repositoryClass: SpacecraftRumpRepository::class)]
-class SpacecraftRump implements SpacecraftRumpInterface
+class SpacecraftRump
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -31,7 +30,7 @@ class SpacecraftRump implements SpacecraftRumpInterface
     private int $id;
 
     #[OneToOne(targetEntity: SpacecraftRumpBaseValues::class, mappedBy: 'rump', fetch: 'EXTRA_LAZY', cascade: ['all'])]
-    private ?SpacecraftRumpBaseValuesInterface $baseValues;
+    private ?SpacecraftRumpBaseValues $baseValues;
 
     #[column(type: 'integer', enumType: SpacecraftRumpCategoryEnum::class, nullable: false)]
     private SpacecraftRumpCategoryEnum $category_id;
@@ -113,34 +112,34 @@ class SpacecraftRump implements SpacecraftRumpInterface
 
     #[ManyToOne(targetEntity: ShipRumpRole::class)]
     #[JoinColumn(name: 'role_id', referencedColumnName: 'id')]
-    private ?ShipRumpRoleInterface $shipRumpRole = null;
+    private ?ShipRumpRole $shipRumpRole = null;
 
     /**
-     * @var ArrayCollection<int, ShipRumpSpecialInterface>
+     * @var ArrayCollection<int, ShipRumpSpecial>
      */
     #[OneToMany(targetEntity: ShipRumpSpecial::class, mappedBy: 'spacecraftRump', indexBy: 'special')]
     private Collection $specialAbilities;
 
     #[ManyToOne(targetEntity: ShipRumpCategory::class)]
     #[JoinColumn(name: 'category_id', nullable: false, referencedColumnName: 'id')]
-    private ShipRumpCategoryInterface $shipRumpCategory;
+    private ShipRumpCategory $shipRumpCategory;
 
     #[ManyToOne(targetEntity: Commodity::class)]
     #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id')]
-    private ?CommodityInterface $commodity = null;
+    private ?Commodity $commodity = null;
 
     #[ManyToOne(targetEntity: DatabaseEntry::class)]
     #[JoinColumn(name: 'database_id', referencedColumnName: 'id')]
-    private ?DatabaseEntryInterface $databaseEntry = null;
+    private ?DatabaseEntry $databaseEntry = null;
 
     /**
-     * @var ArrayCollection<int, ShipRumpCostInterface>
+     * @var ArrayCollection<int, ShipRumpCost>
      */
     #[OneToMany(targetEntity: ShipRumpCost::class, mappedBy: 'spacecraftRump')]
     private Collection $buildingCosts;
 
     /**
-     * @var ArrayCollection<int, BuildplanHangarInterface>
+     * @var ArrayCollection<int, BuildplanHangar>
      */
     #[OneToMany(targetEntity: BuildplanHangar::class, mappedBy: 'spacecraftRump')]
     private Collection $startHangar;
@@ -152,295 +151,248 @@ class SpacecraftRump implements SpacecraftRumpInterface
         $this->specialAbilities = new ArrayCollection();
     }
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
-    public function getBaseValues(): SpacecraftRumpBaseValuesInterface
+    public function getBaseValues(): SpacecraftRumpBaseValues
     {
         return $this->baseValues ?? throw new LogicException('Rump has no base balues');
     }
 
-    #[Override]
     public function getCategoryId(): SpacecraftRumpCategoryEnum
     {
         return $this->category_id;
     }
 
-    #[Override]
     public function getRoleId(): ?SpacecraftRumpRoleEnum
     {
         return $this->role_id;
     }
 
-    #[Override]
     public function getBeamFactor(): int
     {
         return $this->beam_factor;
     }
 
-    #[Override]
     public function getShuttleSlots(): int
     {
         return $this->shuttle_slots;
     }
 
-    #[Override]
     public function getTractorMass(): int
     {
         return $this->tractor_mass;
     }
 
-    #[Override]
     public function getTractorPayload(): int
     {
         return $this->tractor_payload;
     }
 
-    #[Override]
     public function getPhaserVolleys(): int
     {
         return $this->phaser_volleys;
     }
 
-    #[Override]
     public function getPhaserHullDamageFactor(): int
     {
         return $this->phaser_hull_damage_factor;
     }
 
-    #[Override]
     public function getPhaserShieldDamageFactor(): int
     {
         return $this->phaser_shield_damage_factor;
     }
 
-    #[Override]
     public function getTorpedoLevel(): int
     {
         return $this->torpedo_level;
     }
 
-    #[Override]
     public function getTorpedoVolleys(): int
     {
         return $this->torpedo_volleys;
     }
 
-    #[Override]
     public function getBaseTorpedoStorage(): int
     {
         return $this->base_torpedo_storage;
     }
 
-    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
-    #[Override]
-    public function setName(string $name): SpacecraftRumpInterface
+    public function setName(string $name): SpacecraftRump
     {
         $this->name = $name;
         return $this;
     }
 
-    #[Override]
     public function getIsBuildable(): bool
     {
         return $this->is_buildable;
     }
 
-    #[Override]
-    public function setIsBuildable(bool $isBuildable): SpacecraftRumpInterface
+    public function setIsBuildable(bool $isBuildable): SpacecraftRump
     {
         $this->is_buildable = $isBuildable;
         return $this;
     }
 
-    #[Override]
     public function getIsNpc(): bool
     {
         return $this->is_npc;
     }
 
-    #[Override]
-    public function setIsNpc(bool $isNpc): SpacecraftRumpInterface
+    public function setIsNpc(bool $isNpc): SpacecraftRump
     {
         $this->is_npc = $isNpc;
         return $this;
     }
 
-    #[Override]
     public function getEpsCost(): int
     {
         return $this->eps_cost;
     }
 
-    #[Override]
-    public function setEpsCost(int $energyCosts): SpacecraftRumpInterface
+    public function setEpsCost(int $energyCosts): SpacecraftRump
     {
         $this->eps_cost = $energyCosts;
         return $this;
     }
 
-    #[Override]
     public function getStorage(): int
     {
         return $this->storage;
     }
 
-    #[Override]
-    public function setStorage(int $storage): SpacecraftRumpInterface
+    public function setStorage(int $storage): SpacecraftRump
     {
         $this->storage = $storage;
         return $this;
     }
 
-    #[Override]
     public function getDockingSlots(): int
     {
         return $this->slots;
     }
 
-    #[Override]
-    public function setDockingSlots(int $slots): SpacecraftRumpInterface
+    public function setDockingSlots(int $slots): SpacecraftRump
     {
         $this->slots = $slots;
         return $this;
     }
 
-    #[Override]
     public function getBuildtime(): int
     {
         return $this->buildtime;
     }
 
-    #[Override]
-    public function setBuildtime(int $buildtime): SpacecraftRumpInterface
+    public function setBuildtime(int $buildtime): SpacecraftRump
     {
         $this->buildtime = $buildtime;
         return $this;
     }
 
-    #[Override]
     public function getSort(): int
     {
         return $this->sort;
     }
 
-    #[Override]
-    public function setSort(int $sort): SpacecraftRumpInterface
+    public function setSort(int $sort): SpacecraftRump
     {
         $this->sort = $sort;
         return $this;
     }
 
-    #[Override]
     public function getDatabaseId(): ?int
     {
         return $this->database_id;
     }
 
-    #[Override]
     public function getCommodityId(): ?int
     {
         return $this->commodity_id;
     }
 
-    #[Override]
-    public function setCommodityId(?int $commodityId): SpacecraftRumpInterface
+    public function setCommodityId(?int $commodityId): SpacecraftRump
     {
         $this->commodity_id = $commodityId;
         return $this;
     }
 
-    #[Override]
     public function getFlightEcost(): int
     {
         return $this->flight_ecost;
     }
 
-    #[Override]
-    public function getShipRumpRole(): ?ShipRumpRoleInterface
+    public function getShipRumpRole(): ?ShipRumpRole
     {
         return $this->shipRumpRole;
     }
 
-    #[Override]
-    public function getShipRumpCategory(): ShipRumpCategoryInterface
+    public function getShipRumpCategory(): ShipRumpCategory
     {
         return $this->shipRumpCategory;
     }
 
-    #[Override]
-    public function getCommodity(): ?CommodityInterface
+    public function getCommodity(): ?Commodity
     {
         return $this->commodity;
     }
 
-    #[Override]
-    public function setCommodity(?CommodityInterface $commodity): SpacecraftRumpInterface
+    public function setCommodity(?Commodity $commodity): SpacecraftRump
     {
         $this->commodity = $commodity;
         return $this;
     }
 
-    #[Override]
     public function getNeededWorkbees(): ?int
     {
         return $this->needed_workbees;
     }
 
-    #[Override]
     public function getNeededRepairWorkbees(): ?int
     {
         return  $this->getNeededWorkbees() / 5;
     }
 
-    #[Override]
-    public function getDatabaseEntry(): ?DatabaseEntryInterface
+    public function getDatabaseEntry(): ?DatabaseEntry
     {
         return $this->databaseEntry;
     }
 
-    #[Override]
-    public function setDatabaseEntry(?DatabaseEntryInterface $databaseEntry): SpacecraftRumpInterface
+    public function setDatabaseEntry(?DatabaseEntry $databaseEntry): SpacecraftRump
     {
         $this->databaseEntry = $databaseEntry;
         return $this;
     }
 
-    #[Override]
     public function getPrestige(): int
     {
         return $this->prestige;
     }
 
-    #[Override]
     public function isEscapePods(): bool
     {
         return $this->getCategoryId() === SpacecraftRumpCategoryEnum::SHIP_CATEGORY_ESCAPE_PODS;
     }
 
-    #[Override]
     public function isShipyard(): bool
     {
         return $this->getCategoryId() === SpacecraftRumpCategoryEnum::SHIP_CATEGORY_STATION
             && $this->getRoleId() === SpacecraftRumpRoleEnum::SHIP_ROLE_SHIPYARD;
     }
 
-    #[Override]
     public function isStation(): bool
     {
         return $this->getCategoryId() === SpacecraftRumpCategoryEnum::SHIP_CATEGORY_STATION;
     }
 
-    #[Override]
     public function isWorkbee(): bool
     {
         $commodity = $this->getCommodity();
@@ -448,25 +400,27 @@ class SpacecraftRump implements SpacecraftRumpInterface
         return $commodity !== null && $commodity->isWorkbee();
     }
 
-    #[Override]
+    /**
+     * @return Collection<int, BuildplanHangar>
+     */
     public function getStartHangar(): Collection
     {
         return $this->startHangar;
     }
 
-    #[Override]
+    /**
+     * @return Collection<int, ShipRumpCost>
+     */
     public function getBuildingCosts(): Collection
     {
         return $this->buildingCosts;
     }
 
-    #[Override]
     public function hasSpecialAbility(int $value): bool
     {
         return $this->specialAbilities->containsKey($value);
     }
 
-    #[Override]
     public function getFactionId(): int
     {
         //last digit of id shows faction id
@@ -474,22 +428,19 @@ class SpacecraftRump implements SpacecraftRumpInterface
     }
 
     /**
-     * @return Collection<int, ShipRumpSpecialInterface>
+     * @return Collection<int, ShipRumpSpecial>
      */
-    #[Override]
     public function getSpecialAbilities(): Collection
     {
         return $this->specialAbilities;
     }
 
-    #[Override]
     public function getNpcBuildable(): ?bool
     {
         return $this->npc_buildable;
     }
 
-    #[Override]
-    public function setNpcBuildable(?bool $npcBuildable): SpacecraftRumpInterface
+    public function setNpcBuildable(?bool $npcBuildable): SpacecraftRump
     {
         $this->npc_buildable = $npcBuildable;
         return $this;

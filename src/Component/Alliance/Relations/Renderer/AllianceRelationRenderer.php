@@ -9,8 +9,8 @@ use Fhaculty\Graph\Vertex;
 use Override;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\GrapViz\GraphVizFactoryInterface;
-use Stu\Orm\Entity\AllianceInterface;
-use Stu\Orm\Entity\AllianceRelationInterface;
+use Stu\Orm\Entity\Alliance;
+use Stu\Orm\Entity\AllianceRelation;
 
 /**
  * Renders the relations between alliances
@@ -38,7 +38,7 @@ final class AllianceRelationRenderer implements AllianceRelationRendererInterfac
 
         $vertexes = [];
 
-        /** @var AllianceRelationInterface $relation */
+        /** @var AllianceRelation $relation */
         foreach ($relationList as $relation) {
             $this->addAlliance($graph, $relation->getAlliance(), $vertexes);
             $this->addAlliance($graph, $relation->getOpponent(), $vertexes);
@@ -65,7 +65,7 @@ final class AllianceRelationRenderer implements AllianceRelationRendererInterfac
      */
     private function addAlliance(
         Graph $graph,
-        AllianceInterface $alliance,
+        Alliance $alliance,
         array &$vertices
     ): void {
         $allianceId = $alliance->getId();

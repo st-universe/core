@@ -9,8 +9,7 @@ use Override;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\PrivateMessageFolder;
-use Stu\Orm\Entity\PrivateMessageFolderInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 /**
  * @extends EntityRepository<PrivateMessageFolder>
@@ -18,13 +17,13 @@ use Stu\Orm\Entity\UserInterface;
 final class PrivateMessageFolderRepository extends EntityRepository implements PrivateMessageFolderRepositoryInterface
 {
     #[Override]
-    public function prototype(): PrivateMessageFolderInterface
+    public function prototype(): PrivateMessageFolder
     {
         return new PrivateMessageFolder();
     }
 
     #[Override]
-    public function save(PrivateMessageFolderInterface $post): void
+    public function save(PrivateMessageFolder $post): void
     {
         $em = $this->getEntityManager();
 
@@ -33,7 +32,7 @@ final class PrivateMessageFolderRepository extends EntityRepository implements P
     }
 
     #[Override]
-    public function delete(PrivateMessageFolderInterface $post): void
+    public function delete(PrivateMessageFolder $post): void
     {
         $em = $this->getEntityManager();
 
@@ -42,7 +41,7 @@ final class PrivateMessageFolderRepository extends EntityRepository implements P
     }
 
     #[Override]
-    public function getOrderedByUser(UserInterface $user): array
+    public function getOrderedByUser(User $user): array
     {
         return $this->findBy(
             [
@@ -54,7 +53,7 @@ final class PrivateMessageFolderRepository extends EntityRepository implements P
     }
 
     #[Override]
-    public function getByUserAndSpecial(int $userId, PrivateMessageFolderTypeEnum $folderType): ?PrivateMessageFolderInterface
+    public function getByUserAndSpecial(int $userId, PrivateMessageFolderTypeEnum $folderType): ?PrivateMessageFolder
     {
         return $this->findOneBy([
             'user_id' => $userId,
@@ -63,7 +62,7 @@ final class PrivateMessageFolderRepository extends EntityRepository implements P
     }
 
     #[Override]
-    public function getMaxOrderIdByUser(UserInterface $user): int
+    public function getMaxOrderIdByUser(User $user): int
     {
         return (int)$this->getEntityManager()->createQuery(
             sprintf(

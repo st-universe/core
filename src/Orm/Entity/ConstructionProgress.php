@@ -15,12 +15,11 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\ConstructionProgressRepository;
 
 #[Table(name: 'stu_construction_progress')]
 #[Entity(repositoryClass: ConstructionProgressRepository::class)]
-class ConstructionProgress implements ConstructionProgressInterface
+class ConstructionProgress
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -34,7 +33,7 @@ class ConstructionProgress implements ConstructionProgressInterface
     private int $remaining_ticks = 0;
 
     /**
-     * @var ArrayCollection<int, ConstructionProgressModuleInterface>
+     * @var ArrayCollection<int, ConstructionProgressModule>
      */
     #[OneToMany(targetEntity: ConstructionProgressModule::class, mappedBy: 'progress', indexBy: 'module_id')]
     #[OrderBy(['module_id' => 'ASC'])]
@@ -42,54 +41,50 @@ class ConstructionProgress implements ConstructionProgressInterface
 
     #[OneToOne(targetEntity: Station::class)]
     #[JoinColumn(name: 'station_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private StationInterface $station;
+    private Station $station;
 
     public function __construct()
     {
         $this->specialModules = new ArrayCollection();
     }
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
-    public function getStation(): StationInterface
+    public function getStation(): Station
     {
         return $this->station;
     }
 
-    #[Override]
-    public function setStation(StationInterface $station): ConstructionProgressInterface
+    public function setStation(Station $station): ConstructionProgress
     {
         $this->station = $station;
 
         return $this;
     }
 
-    #[Override]
+    /**
+     * @return Collection<int, ConstructionProgressModule>
+     */
     public function getSpecialModules(): Collection
     {
         return $this->specialModules;
     }
 
-    #[Override]
     public function getRemainingTicks(): int
     {
         return $this->remaining_ticks;
     }
 
-    #[Override]
-    public function setRemainingTicks(int $remainingTicks): ConstructionProgressInterface
+    public function setRemainingTicks(int $remainingTicks): ConstructionProgress
     {
         $this->remaining_ticks = $remainingTicks;
 
         return $this;
     }
 
-    #[Override]
     public function __toString(): string
     {
         return sprintf('constructionProgress, stationId: %d', $this->station_id);

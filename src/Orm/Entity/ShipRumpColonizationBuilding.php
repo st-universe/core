@@ -10,13 +10,12 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\ShipRumpColonizationBuildingRepository;
 
 #[Table(name: 'stu_rumps_colonize_building')]
 #[Index(name: 'rump_colonize_building_ship_rump_idx', columns: ['rump_id'])]
 #[Entity(repositoryClass: ShipRumpColonizationBuildingRepository::class)]
-class ShipRumpColonizationBuilding implements ShipRumpColonizationBuildingInterface
+class ShipRumpColonizationBuilding
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -29,26 +28,22 @@ class ShipRumpColonizationBuilding implements ShipRumpColonizationBuildingInterf
     #[Column(type: 'integer')]
     private int $building_id = 0;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getRumpId(): int
     {
         return $this->rump_id;
     }
 
-    #[Override]
     public function getBuildingId(): int
     {
         return $this->building_id;
     }
 
-    #[Override]
-    public function setBuildingId(int $buildingId): ShipRumpColonizationBuildingInterface
+    public function setBuildingId(int $buildingId): ShipRumpColonizationBuilding
     {
         $this->building_id = $buildingId;
 

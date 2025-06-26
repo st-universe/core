@@ -6,7 +6,7 @@ namespace Stu\Module\Message\Lib;
 
 use Mockery\MockInterface;
 use Override;
-use Stu\Orm\Entity\PrivateMessageFolderInterface;
+use Stu\Orm\Entity\PrivateMessageFolder;
 use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -14,7 +14,7 @@ class PrivateMessageFolderItemTest extends StuTestCase
 {
     private MockInterface&PrivateMessageRepositoryInterface $privateMessageRepository;
 
-    private MockInterface&PrivateMessageFolderInterface $privateMessageFolder;
+    private MockInterface&PrivateMessageFolder $privateMessageFolder;
 
     private PrivateMessageFolderItem $subject;
 
@@ -22,7 +22,7 @@ class PrivateMessageFolderItemTest extends StuTestCase
     protected function setUp(): void
     {
         $this->privateMessageRepository = $this->mock(PrivateMessageRepositoryInterface::class);
-        $this->privateMessageFolder = $this->mock(PrivateMessageFolderInterface::class);
+        $this->privateMessageFolder = $this->mock(PrivateMessageFolder::class);
 
         $this->subject = new PrivateMessageFolderItem(
             $this->privateMessageRepository,

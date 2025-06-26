@@ -11,13 +11,12 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Component\Map\MapEnum;
 use Stu\Orm\Repository\LayerRepository;
 
 #[Table(name: 'stu_layer')]
 #[Entity(repositoryClass: LayerRepository::class)]
-class Layer implements LayerInterface
+class Layer
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -56,40 +55,34 @@ class Layer implements LayerInterface
 
     #[ManyToOne(targetEntity: Award::class)]
     #[JoinColumn(name: 'award_id', referencedColumnName: 'id')]
-    private ?AwardInterface $award = null;
+    private ?Award $award = null;
 
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
-    #[Override]
     public function getWidth(): int
     {
         return $this->width;
     }
 
-    #[Override]
     public function getHeight(): int
     {
         return $this->height;
     }
 
-    #[Override]
     public function isHidden(): bool
     {
         return $this->is_hidden;
     }
 
-    #[Override]
     public function isFinished(): bool
     {
         if ($this->is_finished === null) {
@@ -99,7 +92,6 @@ class Layer implements LayerInterface
         return $this->is_finished;
     }
 
-    #[Override]
     public function isEncoded(): bool
     {
         if ($this->is_encoded === null) {
@@ -109,27 +101,23 @@ class Layer implements LayerInterface
         return $this->is_encoded;
     }
 
-    #[Override]
-    public function getAward(): ?AwardInterface
+    public function getAward(): ?Award
     {
         return $this->award;
     }
 
-    #[Override]
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    #[Override]
-    public function setDescription(?string $description): LayerInterface
+    public function setDescription(?string $description): Layer
     {
         $this->description = $description;
 
         return $this;
     }
 
-    #[Override]
     public function isColonizable(): bool
     {
         if ($this->is_colonizable === null) {
@@ -139,7 +127,6 @@ class Layer implements LayerInterface
         return $this->is_colonizable;
     }
 
-    #[Override]
     public function isNoobzone(): bool
     {
         if ($this->is_noobzone === null) {
@@ -149,25 +136,21 @@ class Layer implements LayerInterface
         return $this->is_noobzone;
     }
 
-    #[Override]
     public function getSectorsHorizontal(): int
     {
         return (int)ceil($this->getWidth() / MapEnum::FIELDS_PER_SECTION);
     }
 
-    #[Override]
     public function getSectorsVertical(): int
     {
         return (int)ceil($this->getHeight() / MapEnum::FIELDS_PER_SECTION);
     }
 
-    #[Override]
     public function getSectorCount(): int
     {
         return $this->getSectorsVertical() * $this->getSectorsHorizontal();
     }
 
-    #[Override]
     public function getSectorId(int $mapCx, int $mapCy): int
     {
         return $mapCx + ($mapCy - 1) * $this->getSectorsHorizontal();

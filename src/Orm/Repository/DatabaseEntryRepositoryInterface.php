@@ -4,40 +4,39 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\DatabaseEntry;
-use Stu\Orm\Entity\DatabaseEntryInterface;
 
 /**
  * @extends ObjectRepository<DatabaseEntry>
  *
- * @method null|DatabaseEntryInterface find(integer $id)
+ * @method null|DatabaseEntry find(integer $id)
  */
 interface DatabaseEntryRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return list<DatabaseEntryInterface>
+     * @return list<DatabaseEntry>
      */
     public function getByCategoryId(int $categoryId): array;
 
-    public function getByCategoryIdAndObjectId(int $categoryId, int $objectId): ?DatabaseEntryInterface;
+    public function getByCategoryIdAndObjectId(int $categoryId, int $objectId): ?DatabaseEntry;
 
     /**
-     * @return list<DatabaseEntryInterface>
+     * @return list<DatabaseEntry>
      */
     public function getStarSystemEntriesByLayer(int $categoryId, ?int $layer = null): array;
 
     /**
-     * @return list<DatabaseEntryInterface>
+     * @return list<DatabaseEntry>
      */
     public function getRegionEntriesByLayer(int $categoryId, ?int $layer = null): array;
 
     /**
-     * @return list<DatabaseEntryInterface>
+     * @return list<DatabaseEntry>
      */
     public function getTradePostEntriesByLayer(int $categoryId, ?int $layer = null): array;
 
-    public function prototype(): DatabaseEntryInterface;
+    public function prototype(): DatabaseEntry;
 
-    public function save(DatabaseEntryInterface $entry): void;
+    public function save(DatabaseEntry $entry): void;
 
     /**
      * @return array<int|null>

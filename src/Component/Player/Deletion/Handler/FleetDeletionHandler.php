@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Player\Deletion\Handler;
 
 use Override;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 
 final class FleetDeletionHandler implements PlayerDeletionHandlerInterface
@@ -15,7 +15,7 @@ final class FleetDeletionHandler implements PlayerDeletionHandlerInterface
     }
 
     #[Override]
-    public function delete(UserInterface $user): void
+    public function delete(User $user): void
     {
         $this->fleetRepository->truncateByUser($user);
     }

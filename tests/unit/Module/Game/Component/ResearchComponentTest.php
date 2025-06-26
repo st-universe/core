@@ -11,9 +11,9 @@ use Stu\Module\Research\TechlistRetrieverInterface;
 use Stu\Module\Template\StatusBarColorEnum;
 use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Module\Template\StatusBarInterface;
-use Stu\Orm\Entity\ResearchedInterface;
-use Stu\Orm\Entity\ResearchInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Researched;
+use Stu\Orm\Entity\Research;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\BuildingCommodityRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\StuTestCase;
@@ -46,7 +46,7 @@ class ResearchComponentTest extends StuTestCase
     public function testRenderRendersWithoutCurrentResearch(): void
     {
         $game = $this->mock(GameControllerInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
 
         $this->researchedRepository->shouldReceive('getCurrentResearch')
             ->with($user)
@@ -81,11 +81,11 @@ class ResearchComponentTest extends StuTestCase
     public function testRenderRendersWithResearch(): void
     {
         $game = $this->mock(GameControllerInterface::class);
-        $user = $this->mock(UserInterface::class);
-        $currentResearch = $this->mock(ResearchedInterface::class);
-        $waitingResearch = $this->mock(ResearchedInterface::class);
+        $user = $this->mock(User::class);
+        $currentResearch = $this->mock(Researched::class);
+        $waitingResearch = $this->mock(Researched::class);
         $statusBar = $this->mock(StatusBarInterface::class);
-        $research = $this->mock(ResearchInterface::class);
+        $research = $this->mock(Research::class);
 
         $points = 666;
         $alreadyResearchedPoints = 42;

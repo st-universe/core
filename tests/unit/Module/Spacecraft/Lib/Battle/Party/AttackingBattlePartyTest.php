@@ -7,9 +7,9 @@ namespace Stu\Module\Spacecraft\Lib\Battle\Party;
 use Doctrine\Common\Collections\ArrayCollection;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\SpacecraftCondition;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\StuTestCase;
 
 class AttackingBattlePartyTest extends StuTestCase
@@ -17,8 +17,8 @@ class AttackingBattlePartyTest extends StuTestCase
     public function testGetActiveMembersExpectSingle(): void
     {
         $wrapper = $this->mock(ShipWrapperInterface::class);
-        $ship = $this->mock(ShipInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $ship = $this->mock(Ship::class);
+        $user = $this->mock(User::class);
 
         $wrapper->shouldReceive('getFleetWrapper')
             ->withNoArgs()
@@ -61,8 +61,8 @@ class AttackingBattlePartyTest extends StuTestCase
     public function testGetActiveMembersExpectSingleWhenNotFleetLeader(): void
     {
         $wrapper = $this->mock(ShipWrapperInterface::class);
-        $ship = $this->mock(ShipInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $ship = $this->mock(Ship::class);
+        $user = $this->mock(User::class);
         $fleetWrapper = $this->mock(FleetWrapperInterface::class);
 
         $wrapper->shouldReceive('getFleetWrapper')
@@ -106,11 +106,11 @@ class AttackingBattlePartyTest extends StuTestCase
     public function testGetActiveMembersExpectFleet(): void
     {
         $wrapper = $this->mock(ShipWrapperInterface::class);
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
         $wrapper2 = $this->mock(ShipWrapperInterface::class);
-        $ship2 = $this->mock(ShipInterface::class);
+        $ship2 = $this->mock(Ship::class);
         $fleetWrapper = $this->mock(FleetWrapperInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
         $condition = $this->mock(SpacecraftCondition::class);
         $condition2 = $this->mock(SpacecraftCondition::class);
 
@@ -173,11 +173,11 @@ class AttackingBattlePartyTest extends StuTestCase
     public function testGetActiveMembersExpectRealFleet(): void
     {
         $wrapper = $this->mock(ShipWrapperInterface::class);
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
         $wrapper2 = $this->mock(ShipWrapperInterface::class);
-        $ship2 = $this->mock(ShipInterface::class);
+        $ship2 = $this->mock(Ship::class);
         $fleetWrapper = $this->mock(FleetWrapperInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
         $condition = $this->mock(SpacecraftCondition::class);
         $condition2 = $this->mock(SpacecraftCondition::class);
 

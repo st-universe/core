@@ -13,9 +13,8 @@ use Stu\Component\Ship\FlightSignatureVisibilityEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\StarSystemInterface;
+use Stu\Orm\Entity\StarSystem;
 use Stu\Orm\Entity\StarSystemMap;
-use Stu\Orm\Entity\StarSystemMapInterface;
 
 /**
  * @extends EntityRepository<StarSystemMap>
@@ -36,7 +35,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
         int $starSystemId,
         int $sx,
         int $sy
-    ): ?StarSystemMapInterface {
+    ): ?StarSystemMap {
         return $this->findOneBy([
             'systems_id' => $starSystemId,
             'sx' => $sx,
@@ -417,13 +416,13 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
     }
 
     #[Override]
-    public function prototype(): StarSystemMapInterface
+    public function prototype(): StarSystemMap
     {
         return new StarSystemMap();
     }
 
     #[Override]
-    public function save(StarSystemMapInterface $starSystemMap): void
+    public function save(StarSystemMap $starSystemMap): void
     {
         $em = $this->getEntityManager();
 
@@ -431,7 +430,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
     }
 
     #[Override]
-    public function truncateByStarSystem(StarSystemInterface $starSystem): void
+    public function truncateByStarSystem(StarSystem $starSystem): void
     {
         $this->getEntityManager()->createQuery(
             sprintf(

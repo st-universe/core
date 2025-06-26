@@ -8,7 +8,7 @@ use Override;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
@@ -26,7 +26,7 @@ final class TradepostDeletionHandler implements PlayerDeletionHandlerInterface
     ) {}
 
     #[Override]
-    public function delete(UserInterface $user): void
+    public function delete(User $user): void
     {
         $fallbackUser = $this->userRepository->getFallbackUser();
 

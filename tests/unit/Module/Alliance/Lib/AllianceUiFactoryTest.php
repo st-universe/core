@@ -9,9 +9,9 @@ use Override;
 use Stu\Component\Crew\CrewCountRetrieverInterface;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Module\Alliance\View\Management\ManagementListItem;
-use Stu\Orm\Entity\AllianceInterface;
-use Stu\Orm\Entity\AllianceRelationInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Alliance;
+use Stu\Orm\Entity\AllianceRelation;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 use Stu\StuTestCase;
@@ -50,8 +50,8 @@ class AllianceUiFactoryTest extends StuTestCase
         static::assertInstanceOf(
             ManagementListItem::class,
             $this->subject->createManagementListItem(
-                $this->mock(AllianceInterface::class),
-                $this->mock(UserInterface::class),
+                $this->mock(Alliance::class),
+                $this->mock(User::class),
                 666
             )
         );
@@ -62,7 +62,7 @@ class AllianceUiFactoryTest extends StuTestCase
         static::assertInstanceOf(
             AllianceListItem::class,
             $this->subject->createAllianceListItem(
-                $this->mock(AllianceInterface::class)
+                $this->mock(Alliance::class)
             )
         );
     }
@@ -72,8 +72,8 @@ class AllianceUiFactoryTest extends StuTestCase
         static::assertInstanceOf(
             AllianceMemberWrapper::class,
             $this->subject->createAllianceMemberWrapper(
-                $this->mock(UserInterface::class),
-                $this->mock(AllianceInterface::class)
+                $this->mock(User::class),
+                $this->mock(Alliance::class)
             )
         );
     }
@@ -83,8 +83,8 @@ class AllianceUiFactoryTest extends StuTestCase
         static::assertInstanceOf(
             AllianceRelationWrapper::class,
             $this->subject->createAllianceRelationWrapper(
-                $this->mock(AllianceInterface::class),
-                $this->mock(AllianceRelationInterface::class)
+                $this->mock(Alliance::class),
+                $this->mock(AllianceRelation::class)
             )
         );
     }

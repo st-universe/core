@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -16,7 +15,7 @@ use Stu\Orm\Repository\LocationMiningRepository;
 
 #[Table(name: 'stu_location_mining')]
 #[Entity(repositoryClass: LocationMiningRepository::class)]
-class LocationMining implements LocationMiningInterface
+class LocationMining
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -40,98 +39,83 @@ class LocationMining implements LocationMiningInterface
 
     #[ManyToOne(targetEntity: Location::class)]
     #[JoinColumn(name: 'location_id', nullable: false, referencedColumnName: 'id')]
-    private LocationInterface $location;
+    private Location $location;
 
     #[ManyToOne(targetEntity: Commodity::class)]
     #[JoinColumn(name: 'commodity_id', nullable: false, referencedColumnName: 'id')]
-    private CommodityInterface $commodity;
+    private Commodity $commodity;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getLocationId(): int
     {
         return $this->location_id;
     }
 
-    #[Override]
     public function setLocationId(int $location_id): void
     {
         $this->location_id = $location_id;
     }
 
-    #[Override]
     public function getCommodityId(): int
     {
         return $this->commodity_id;
     }
 
-    #[Override]
     public function setCommodityId(int $commodity_id): void
     {
         $this->commodity_id = $commodity_id;
     }
 
-    #[Override]
     public function getActualAmount(): int
     {
         return $this->actual_amount;
     }
 
-    #[Override]
     public function setActualAmount(int $actual_amount): void
     {
         $this->actual_amount = $actual_amount;
     }
 
-    #[Override]
     public function getMaxAmount(): int
     {
         return $this->max_amount;
     }
 
-    #[Override]
     public function setMaxAmount(int $max_amount): void
     {
         $this->max_amount = $max_amount;
     }
 
-    #[Override]
     public function getDepletedAt(): ?int
     {
         return $this->depleted_at;
     }
 
-    #[Override]
     public function setDepletedAt(?int $depleted_at): void
     {
         $this->depleted_at = $depleted_at;
     }
 
-    #[Override]
-    public function getLocation(): LocationInterface
+    public function getLocation(): Location
     {
         return $this->location;
     }
 
-    #[Override]
-    public function setLocation(LocationInterface $location): void
+    public function setLocation(Location $location): void
     {
         $this->location = $location;
     }
 
-    #[Override]
-    public function getCommodity(): CommodityInterface
+    public function getCommodity(): Commodity
     {
         return $this->commodity;
     }
 
-    #[Override]
-    public function setCommodity(CommodityInterface $commodity): void
+    public function setCommodity(Commodity $commodity): void
     {
         $this->commodity = $commodity;
     }

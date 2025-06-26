@@ -11,8 +11,8 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
 
 class StateIconAndTitle
 {
@@ -41,7 +41,7 @@ class StateIconAndTitle
     }
 
     /** @return array<string> */
-    private function getForActiveRepair(SpacecraftInterface $spacecraft): array
+    private function getForActiveRepair(Spacecraft $spacecraft): array
     {
         $isStation = $spacecraft->isStation();
         return ['buttons/rep2', sprintf(
@@ -91,9 +91,9 @@ class StateIconAndTitle
     }
 
     /** @return array<string>|null */
-    private function getForGatherResources(SpacecraftInterface $spacecraft): ?array
+    private function getForGatherResources(Spacecraft $spacecraft): ?array
     {
-        if (!$spacecraft instanceof ShipInterface) {
+        if (!$spacecraft instanceof Ship) {
             return null;
         }
 

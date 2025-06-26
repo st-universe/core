@@ -8,8 +8,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Stu\Module\Spacecraft\Lib\Battle\SpacecraftAttackCauseEnum;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\User;
 use Stu\StuTestCase;
 
 class ColonyDefendingBattlePartyTest extends StuTestCase
@@ -17,8 +17,8 @@ class ColonyDefendingBattlePartyTest extends StuTestCase
     public function testGetActiveMembersExpectSingle(): void
     {
         $wrapper = $this->mock(ShipWrapperInterface::class);
-        $ship = $this->mock(ShipInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $ship = $this->mock(Ship::class);
+        $user = $this->mock(User::class);
 
         $wrapper->shouldReceive('getFleetWrapper')
             ->withNoArgs()
@@ -60,11 +60,11 @@ class ColonyDefendingBattlePartyTest extends StuTestCase
     public function testGetActiveMembersExpectUncloakedFleetShips(): void
     {
         $wrapper = $this->mock(ShipWrapperInterface::class);
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
         $wrapper2 = $this->mock(ShipWrapperInterface::class);
-        $ship2 = $this->mock(ShipInterface::class);
+        $ship2 = $this->mock(Ship::class);
         $fleetWrapper = $this->mock(FleetWrapperInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
 
         $wrapper->shouldReceive('get')
             ->withNoArgs()
@@ -123,8 +123,8 @@ class ColonyDefendingBattlePartyTest extends StuTestCase
     public function testGetAttackCause(): void
     {
         $wrapper = $this->mock(ShipWrapperInterface::class);
-        $ship = $this->mock(ShipInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $ship = $this->mock(Ship::class);
+        $user = $this->mock(User::class);
 
         $wrapper->shouldReceive('get')
             ->withNoArgs()
@@ -145,8 +145,8 @@ class ColonyDefendingBattlePartyTest extends StuTestCase
     public function testGetAlertDescription(): void
     {
         $wrapper = $this->mock(ShipWrapperInterface::class);
-        $ship = $this->mock(ShipInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $ship = $this->mock(Ship::class);
+        $user = $this->mock(User::class);
 
         $wrapper->shouldReceive('get')
             ->withNoArgs()

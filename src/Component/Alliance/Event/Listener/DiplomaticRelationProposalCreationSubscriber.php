@@ -8,7 +8,7 @@ use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Alliance\Event\DiplomaticRelationProposedEvent;
 use Stu\Component\Alliance\Event\WarDeclaredEvent;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
-use Stu\Orm\Entity\AllianceInterface;
+use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 
 /**
@@ -69,8 +69,8 @@ final class DiplomaticRelationProposalCreationSubscriber
     }
 
     private function createAllianceRelation(
-        AllianceInterface $alliance,
-        AllianceInterface $counterpart,
+        Alliance $alliance,
+        Alliance $counterpart,
         int $relationTypeId,
         int $date = 0
     ): void {

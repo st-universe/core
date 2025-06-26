@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index\Lib;
 
-use Stu\Orm\Entity\FactionInterface;
+use Stu\Orm\Entity\Faction;
 
 /**
  * Wrap the faction and provide additional methods - for use in TAL
  */
 class FactionItem
 {
-    public function __construct(private FactionInterface $faction, private int $currentPlayerCount)
+    public function __construct(private Faction $faction, private int $currentPlayerCount)
     {
     }
 

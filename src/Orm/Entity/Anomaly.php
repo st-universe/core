@@ -15,15 +15,15 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestroyerInterface;
 use Stu\Orm\Repository\AnomalyRepository;
 
 #[Table(name: 'stu_anomaly')]
 #[Index(name: 'anomaly_to_type_idx', columns: ['anomaly_type_id'])]
 #[Index(name: 'anomaly_remaining_idx', columns: ['remaining_ticks'])]
 #[Entity(repositoryClass: AnomalyRepository::class)]
-class Anomaly implements AnomalyInterface
+class Anomaly implements SpacecraftDestroyerInterface
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -47,18 +47,18 @@ class Anomaly implements AnomalyInterface
 
     #[ManyToOne(targetEntity: AnomalyType::class)]
     #[JoinColumn(name: 'anomaly_type_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private AnomalyTypeInterface $anomalyType;
+    private AnomalyType $anomalyType;
 
     #[ManyToOne(targetEntity: Location::class)]
     #[JoinColumn(name: 'location_id', referencedColumnName: 'id')]
-    private ?LocationInterface $location;
+    private ?Location $location;
 
     #[ManyToOne(targetEntity: Anomaly::class)]
     #[JoinColumn(name: 'parent_id', referencedColumnName: 'id')]
-    private ?AnomalyInterface $parent;
+    private ?Anomaly $parent;
 
     /**
-     * @var ArrayCollection<int, AnomalyInterface>
+     * @var ArrayCollection<int, Anomaly>
      */
     #[OneToMany(targetEntity: Anomaly::class, mappedBy: 'parent', indexBy: 'location_id')]
     private Collection $children;
@@ -68,122 +68,105 @@ class Anomaly implements AnomalyInterface
         $this->children = new ArrayCollection();
     }
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getRemainingTicks(): int
     {
         return $this->remaining_ticks;
     }
 
-    #[Override]
-    public function setRemainingTicks(int $remainingTicks): AnomalyInterface
+    public function setRemainingTicks(int $remainingTicks): Anomaly
     {
         $this->remaining_ticks = $remainingTicks;
 
         return $this;
     }
 
-    #[Override]
-    public function changeRemainingTicks(int $amount): AnomalyInterface
+    public function changeRemainingTicks(int $amount): Anomaly
     {
         $this->remaining_ticks += $amount;
 
         return $this;
     }
 
-    #[Override]
     public function isActive(): bool
     {
         return $this->getRemainingTicks() > 0;
     }
 
-    #[Override]
-    public function getAnomalyType(): AnomalyTypeInterface
+    public function getAnomalyType(): AnomalyType
     {
         return $this->anomalyType;
     }
 
-    #[Override]
-    public function setAnomalyType(AnomalyTypeInterface $anomalyType): AnomalyInterface
+    public function setAnomalyType(AnomalyType $anomalyType): Anomaly
     {
         $this->anomalyType = $anomalyType;
 
         return $this;
     }
 
-    #[Override]
-    public function getLocation(): ?LocationInterface
+    public function getLocation(): ?Location
     {
         return $this->location;
     }
 
-    #[Override]
-    public function setLocation(?LocationInterface $location): AnomalyInterface
+    public function setLocation(?Location $location): Anomaly
     {
         $this->location = $location;
 
         return $this;
     }
 
-    #[Override]
-    public function getParent(): ?AnomalyInterface
+    public function getParent(): ?Anomaly
     {
         return $this->parent;
     }
 
-    #[Override]
-    public function setParent(?AnomalyInterface $anomaly): AnomalyInterface
+    public function setParent(?Anomaly $anomaly): Anomaly
     {
         $this->parent = $anomaly;
 
         return $this;
     }
 
-    #[Override]
     public function getData(): ?string
     {
         return $this->data;
     }
 
-    #[Override]
-    public function setData(string $data): AnomalyInterface
+    public function setData(string $data): Anomaly
     {
         $this->data = $data;
         return $this;
     }
 
-    #[Override]
-    public function getRoot(): AnomalyInterface
+    public function getRoot(): Anomaly
     {
         $parent = $this->getParent();
 
         return $parent === null ? $this : $parent->getRoot();
     }
 
-    #[Override]
+    /** @return Collection<int, Anomaly> */
     public function getChildren(): Collection
     {
         return $this->children;
     }
 
-    #[Override]
     public function hasChildren(): bool
     {
         return !$this->getChildren()->isEmpty();
     }
 
-    #[Override]
     public function getUserId(): int
     {
         return UserEnum::USER_NOONE;
     }
 
-    #[Override]
     public function getName(): string
     {
         return $this->getAnomalyType()->getName();

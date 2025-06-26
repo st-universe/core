@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Lib;
 
 use Stu\Lib\ColonyProduction\ColonyProduction;
-use Stu\Orm\Entity\BuildingInterface;
+use Stu\Orm\Entity\Building;
 
 class ColonyProductionPreviewWrapper
 {
     /**
      * @param array<ColonyProduction> $production
      */
-    public function __construct(private ColonyLibFactoryInterface $colonyLibFactory, private BuildingInterface $building, private array $production)
+    public function __construct(private ColonyLibFactoryInterface $colonyLibFactory, private Building $building, private array $production)
     {
     }
 

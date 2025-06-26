@@ -6,12 +6,12 @@ namespace Stu\Component\Colony;
 
 use Doctrine\Common\Collections\Collection;
 use Stu\Module\Spacecraft\Lib\SpacecraftGroupInterface;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Colony;
 
 interface OrbitShipWrappersRetrieverInterface
 {
     /**
      * @return Collection<string, SpacecraftGroupInterface>
      */
-    public function retrieve(ColonyInterface $colony): Collection;
+    public function retrieve(Colony $colony): Collection;
 }

@@ -18,7 +18,7 @@ use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\AnomalyRepositoryInterface;
 use Stu\Orm\Repository\OpenedAdventDoorRepositoryInterface;
 
@@ -112,7 +112,7 @@ final class OpenEasterEgg implements ActionControllerInterface
         $game->addInformation("Du hast " . $msg);
     }
 
-    private function createOpenedAdventDoor(UserInterface $user): void
+    private function createOpenedAdventDoor(User $user): void
     {
         $openedDoor = $this->openedAdventDoorRepository->prototype();
         $openedDoor

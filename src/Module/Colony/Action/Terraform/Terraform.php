@@ -14,9 +14,9 @@ use Stu\Module\Colony\Component\ColonyComponentEnum;
 use Stu\Module\Colony\View\ShowInformation\ShowInformation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\PlanetFieldInterface;
-use Stu\Orm\Entity\TerraformingInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\PlanetField;
+use Stu\Orm\Entity\Terraforming;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
@@ -72,7 +72,7 @@ final class Terraform implements ActionControllerInterface
             throw new SanityCheckException('user tried to perform unresearched terraforming', self::ACTION_IDENTIFIER);
         }
 
-        if ($host instanceof ColonyInterface) {
+        if ($host instanceof Colony) {
             if (!$this->doColonyCheckAndConsume($terraforming, $field, $host, $game)) {
                 return;
             }
@@ -96,9 +96,9 @@ final class Terraform implements ActionControllerInterface
     }
 
     private function doColonyCheckAndConsume(
-        TerraformingInterface $terraforming,
-        PlanetFieldInterface $field,
-        ColonyInterface $colony,
+        Terraforming $terraforming,
+        PlanetField $field,
+        Colony $colony,
         GameControllerInterface $game
     ): bool {
 

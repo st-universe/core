@@ -8,13 +8,13 @@ use JBBCode\Parser;
 use Override;
 use Stu\Component\Map\EncodedMapInterface;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
-use Stu\Orm\Entity\LayerInterface;
-use Stu\Orm\Entity\TradePostInterface;
+use Stu\Orm\Entity\Layer;
+use Stu\Orm\Entity\TradePost;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 class ExplorableStarMapItem implements ExplorableStarMapItemInterface
 {
-    private ?TradePostInterface $tradepost = null;
+    private ?TradePost $tradepost = null;
 
     private bool $hide = false;
 
@@ -24,7 +24,7 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
         private readonly EncodedMapInterface $encodedMap,
         private readonly Parser $bbCodeParser,
         private readonly ExploreableStarMapInterface $exploreableStarMap,
-        private readonly LayerInterface $layer
+        private readonly Layer $layer
     ) {}
 
     #[Override]
@@ -46,7 +46,7 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
     }
 
     #[Override]
-    public function getLayer(): LayerInterface
+    public function getLayer(): Layer
     {
         return $this->layer;
     }
@@ -85,7 +85,7 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
         return $result;
     }
 
-    private function getTradepostTitle(TradePostInterface $tradepost): string
+    private function getTradepostTitle(TradePost $tradepost): string
     {
         $licenseInfo = $tradepost->getLatestLicenseInfo();
 
@@ -137,7 +137,7 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
             ) : null;
     }
 
-    private function getTradepost(): ?TradePostInterface
+    private function getTradepost(): ?TradePost
     {
         if ($this->exploreableStarMap->getTradePostId() === null) {
             return null;

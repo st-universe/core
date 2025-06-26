@@ -8,9 +8,9 @@ use InvalidArgumentException;
 use Mockery\MockInterface;
 use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\StarSystemInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\StarSystem;
+use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 use Stu\StuTestCase;
@@ -41,8 +41,8 @@ class LoadWaypointsTest extends StuTestCase
         static::expectException(InvalidArgumentException::class);
 
         $this->subject->load(
-            $this->mock(MapInterface::class),
-            $this->mock(StarSystemMapInterface::class)
+            $this->mock(Map::class),
+            $this->mock(StarSystemMap::class)
         );
     }
 
@@ -52,8 +52,8 @@ class LoadWaypointsTest extends StuTestCase
         static::expectException(InvalidArgumentException::class);
 
         $this->subject->load(
-            $this->mock(StarSystemMapInterface::class),
-            $this->mock(MapInterface::class)
+            $this->mock(StarSystemMap::class),
+            $this->mock(Map::class)
         );
     }
 
@@ -76,8 +76,8 @@ class LoadWaypointsTest extends StuTestCase
         int $destY,
         bool $sortAscending
     ): void {
-        $start = $this->mock(MapInterface::class);
-        $destination = $this->mock(MapInterface::class);
+        $start = $this->mock(Map::class);
+        $destination = $this->mock(Map::class);
         $waypoints = [$start, $destination];
 
         $start->shouldReceive('getX')
@@ -138,9 +138,9 @@ class LoadWaypointsTest extends StuTestCase
         int $destY,
         bool $sortAscending
     ): void {
-        $start = $this->mock(StarSystemMapInterface::class);
-        $destination = $this->mock(StarSystemMapInterface::class);
-        $system = $this->mock(StarSystemInterface::class);
+        $start = $this->mock(StarSystemMap::class);
+        $destination = $this->mock(StarSystemMap::class);
+        $system = $this->mock(StarSystem::class);
         $waypoints = [$start, $destination];
 
         $start->shouldReceive('getX')

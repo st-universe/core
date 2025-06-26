@@ -6,7 +6,7 @@ namespace Stu\Component\Logging\GameRequest;
 
 use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Stu\Orm\Entity\GameRequestInterface;
+use Stu\Orm\Entity\GameRequest;
 use Stu\StuTestCase;
 
 class ParameterSanitizerTest extends StuTestCase
@@ -24,7 +24,7 @@ class ParameterSanitizerTest extends StuTestCase
         array $parameter,
         array $expected
     ): void {
-        $gameRequest = $this->mock(GameRequestInterface::class);
+        $gameRequest = $this->mock(GameRequest::class);
         $gameRequest->shouldReceive('getParameterArray')
             ->withNoArgs()
             ->once()

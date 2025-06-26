@@ -6,14 +6,14 @@ namespace Stu\Lib\Transfer;
 
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Colony;
 
 interface CommodityTransferInterface
 {
     public function transferCommodity(
         int $commodityId,
         string|int $wantedAmount,
-        SpacecraftWrapperInterface|ColonyInterface $subject,
+        SpacecraftWrapperInterface|Colony $subject,
         EntityWithStorageInterface $source,
         EntityWithStorageInterface $target,
         InformationInterface $information

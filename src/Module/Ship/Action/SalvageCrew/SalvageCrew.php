@@ -20,7 +20,7 @@ use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
-use Stu\Orm\Entity\StationInterface;
+use Stu\Orm\Entity\Station;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 
 final class SalvageCrew implements ActionControllerInterface
@@ -62,7 +62,7 @@ final class SalvageCrew implements ActionControllerInterface
         }
         $target = $targetWrapper->get();
 
-        $tradepost = $target instanceof StationInterface ? $target->getTradePost() : null;
+        $tradepost = $target instanceof Station ? $target->getTradePost() : null;
         if ($tradepost === null) {
             throw new SanityCheckException('target is not a tradepost', self::ACTION_IDENTIFIER);
         }

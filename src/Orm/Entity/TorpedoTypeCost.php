@@ -11,11 +11,10 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 
 #[Table(name: 'stu_torpedo_cost')]
 #[Entity]
-class TorpedoTypeCost implements TorpedoTypeCostInterface
+class TorpedoTypeCost
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -33,68 +32,59 @@ class TorpedoTypeCost implements TorpedoTypeCostInterface
 
     #[ManyToOne(targetEntity: TorpedoType::class)]
     #[JoinColumn(name: 'torpedo_type_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private TorpedoTypeInterface $torpedoType;
+    private TorpedoType $torpedoType;
 
     #[ManyToOne(targetEntity: Commodity::class)]
     #[JoinColumn(name: 'commodity_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private CommodityInterface $commodity;
+    private Commodity $commodity;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
-    public function getTorpedoType(): TorpedoTypeInterface
+    public function getTorpedoType(): TorpedoType
     {
         return $this->torpedoType;
     }
 
-    #[Override]
     public function getTorpedoTypeId(): int
     {
         return $this->torpedo_type_id;
     }
 
-    #[Override]
-    public function setTorpedoTypeId(int $torpedoTypeId): TorpedoTypeCostInterface
+    public function setTorpedoTypeId(int $torpedoTypeId): TorpedoTypeCost
     {
         $this->torpedo_type_id = $torpedoTypeId;
 
         return $this;
     }
 
-    #[Override]
     public function getCommodityId(): int
     {
         return $this->commodity_id;
     }
 
-    #[Override]
-    public function setCommodityId(int $commodityId): TorpedoTypeCostInterface
+    public function setCommodityId(int $commodityId): TorpedoTypeCost
     {
         $this->commodity_id = $commodityId;
 
         return $this;
     }
 
-    #[Override]
     public function getAmount(): int
     {
         return $this->count;
     }
 
-    #[Override]
-    public function setAmount(int $amount): TorpedoTypeCostInterface
+    public function setAmount(int $amount): TorpedoTypeCost
     {
         $this->count = $amount;
 
         return $this;
     }
 
-    #[Override]
-    public function getCommodity(): CommodityInterface
+    public function getCommodity(): Commodity
     {
         return $this->commodity;
     }

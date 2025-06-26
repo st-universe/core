@@ -11,9 +11,9 @@ use RuntimeException;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\StorageInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Storage;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class CommodityTransfer implements CommodityTransferInterface
@@ -27,7 +27,7 @@ final class CommodityTransfer implements CommodityTransferInterface
     public function transferCommodity(
         int $commodityId,
         string|int $wantedAmount,
-        SpacecraftWrapperInterface|ColonyInterface $subject,
+        SpacecraftWrapperInterface|Colony $subject,
         EntityWithStorageInterface $source,
         EntityWithStorageInterface $target,
         InformationInterface $information
@@ -99,11 +99,11 @@ final class CommodityTransfer implements CommodityTransferInterface
         EntityWithStorageInterface $source,
         EntityWithStorageInterface $target
     ): bool {
-        return ($source instanceof ShipInterface && $source->getDockedTo() === $target)
-            || ($target instanceof ShipInterface && $target->getDockedTo() === $source);
+        return ($source instanceof Ship && $source->getDockedTo() === $target)
+            || ($target instanceof Ship && $target->getDockedTo() === $source);
     }
 
-    private function getBeamFactor(SpacecraftWrapperInterface|ColonyInterface $subject): int
+    private function getBeamFactor(SpacecraftWrapperInterface|Colony $subject): int
     {
         if ($subject instanceof SpacecraftWrapperInterface) {
             return $subject->get()->getRump()->getBeamFactor();
@@ -112,7 +112,7 @@ final class CommodityTransfer implements CommodityTransferInterface
         return $subject->getBeamFactor();
     }
 
-    private function getAvailableEps(SpacecraftWrapperInterface|ColonyInterface $subject): int
+    private function getAvailableEps(SpacecraftWrapperInterface|Colony $subject): int
     {
         if ($subject instanceof SpacecraftWrapperInterface) {
             $epsSystem = $subject->getEpsSystemData();
@@ -123,7 +123,7 @@ final class CommodityTransfer implements CommodityTransferInterface
         return $subject->getChangeable()->getEps();
     }
 
-    private function consumeEps(int $epsUsage, SpacecraftWrapperInterface|ColonyInterface $subject): void
+    private function consumeEps(int $epsUsage, SpacecraftWrapperInterface|Colony $subject): void
     {
         if ($epsUsage === 0) {
             return;
@@ -142,14 +142,14 @@ final class CommodityTransfer implements CommodityTransferInterface
     }
 
     /** 
-     * @param ArrayCollection<int, StorageInterface> $storage
+     * @param ArrayCollection<int, Storage> $storage
      * 
-     * @return ArrayCollection<int, StorageInterface> sorted by commodity->sort
+     * @return ArrayCollection<int, Storage> sorted by commodity->sort
      */
     public static function excludeNonBeamable(Collection $storage): Collection
     {
         $beamableStorage = $storage
-            ->filter(fn(StorageInterface $storage): bool => $storage->getCommodity()->isBeamable() === true)
+            ->filter(fn(Storage $storage): bool => $storage->getCommodity()->isBeamable() === true)
             ->toArray();
 
         usort($beamableStorage, function ($a, $b): int {

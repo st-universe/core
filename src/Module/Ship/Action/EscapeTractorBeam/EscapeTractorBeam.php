@@ -24,7 +24,7 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Damage\SystemDamageInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class EscapeTractorBeam implements ActionControllerInterface
@@ -143,7 +143,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
     }
 
     private function sufferDeflectorDamage(
-        SpacecraftInterface $tractoringSpacecraft,
+        Spacecraft $tractoringSpacecraft,
         ShipWrapperInterface $wrapper,
         GameControllerInterface $game
     ): void {
@@ -165,7 +165,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
     }
 
     private function sufferHullDamage(
-        SpacecraftInterface $tractoringSpacecraft,
+        Spacecraft $tractoringSpacecraft,
         ShipWrapperInterface $wrapper,
         GameControllerInterface $game
     ): void {

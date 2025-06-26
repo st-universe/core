@@ -2,11 +2,11 @@
 
 namespace Stu\Module\PlayerSetting\Lib;
 
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 interface ChangeUserSettingInterface
 {
-    public function change(UserInterface $user, UserSettingEnum $setting, string $value): void;
+    public function change(User $user, UserSettingEnum $setting, string $value): void;
 
-    public function reset(UserInterface $user, UserSettingEnum $setting): void;
+    public function reset(User $user, UserSettingEnum $setting): void;
 }

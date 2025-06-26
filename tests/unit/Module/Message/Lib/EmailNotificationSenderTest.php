@@ -11,7 +11,7 @@ use Stu\Lib\Mail\MailFactoryInterface;
 use Stu\Lib\Mail\StuMailInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\StuTestCase;
 
 class EmailNotificationSenderTest extends StuTestCase
@@ -47,7 +47,7 @@ class EmailNotificationSenderTest extends StuTestCase
 
     public function testSendNotification(): void
     {
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
         $parser = $this->mock(Parser::class);
 
         $user->shouldReceive('getRegistration->getEmail')

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Player;
 
 use Override;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ResearchRepositoryInterface;
 
@@ -16,19 +16,19 @@ final class ColonyLimitCalculator implements ColonyLimitCalculatorInterface
     }
 
     #[Override]
-    public function canColonizeFurtherColonyWithType(UserInterface $user, int $colonyType): bool
+    public function canColonizeFurtherColonyWithType(User $user, int $colonyType): bool
     {
         return $this->colonyRepository->getAmountByUser($user, $colonyType) < $this->researchRepository->getColonyTypeLimitByUser($user, $colonyType);
     }
 
     #[Override]
-    public function getColonyLimitWithType(UserInterface $user, int $colonyType): int
+    public function getColonyLimitWithType(User $user, int $colonyType): int
     {
         return $this->researchRepository->getColonyTypeLimitByUser($user, $colonyType);
     }
 
     #[Override]
-    public function getColonyCountWithType(UserInterface $user, int $colonyType): int
+    public function getColonyCountWithType(User $user, int $colonyType): int
     {
         return $this->colonyRepository->getAmountByUser($user, $colonyType);
     }

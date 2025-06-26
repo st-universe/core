@@ -6,24 +6,24 @@ namespace Stu\Module\Trade\Lib;
 
 use Override;
 use Stu\Module\Commodity\CommodityTypeEnum;
-use Stu\Orm\Entity\BasicTradeInterface;
-use Stu\Orm\Entity\StationInterface;
-use Stu\Orm\Entity\StorageInterface;
-use Stu\Orm\Entity\TradePostInterface;
+use Stu\Orm\Entity\BasicTrade;
+use Stu\Orm\Entity\Station;
+use Stu\Orm\Entity\Storage;
+use Stu\Orm\Entity\TradePost;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 
 final class BasicTradeAccountWrapper implements BasicTradeAccountWrapperInterface
 {
     /**
-     * @var array<StorageInterface>|null
+     * @var array<Storage>|null
      */
     private ?array $storage = null;
 
     /**
-     * @param array<BasicTradeInterface> $basicTrades
+     * @param array<BasicTrade> $basicTrades
      */
-    public function __construct(private StorageRepositoryInterface $storageRepository, private TradePostInterface $tradePost, private array $basicTrades, private int $userId, private CommodityRepositoryInterface $commodityRepository) {}
+    public function __construct(private StorageRepositoryInterface $storageRepository, private TradePost $tradePost, private array $basicTrades, private int $userId, private CommodityRepositoryInterface $commodityRepository) {}
 
     #[Override]
     public function getId(): int
@@ -32,7 +32,7 @@ final class BasicTradeAccountWrapper implements BasicTradeAccountWrapperInterfac
     }
 
     #[Override]
-    public function getStation(): StationInterface
+    public function getStation(): Station
     {
         return $this->tradePost->getStation();
     }
@@ -67,7 +67,7 @@ final class BasicTradeAccountWrapper implements BasicTradeAccountWrapperInterfac
     }
 
     /**
-     * @return array<StorageInterface>
+     * @return array<Storage>
      */
     private function getStorage(): array
     {
@@ -85,7 +85,7 @@ final class BasicTradeAccountWrapper implements BasicTradeAccountWrapperInterfac
     {
         return array_reduce(
             $this->getStorage(),
-            fn(int $value, StorageInterface $storage): int => $value + $storage->getAmount(),
+            fn(int $value, Storage $storage): int => $value + $storage->getAmount(),
             0
         );
     }

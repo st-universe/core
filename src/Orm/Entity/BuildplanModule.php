@@ -12,14 +12,13 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\UniqueConstraint;
-use Override;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Orm\Repository\BuildplanModuleRepository;
 
 #[Table(name: 'stu_buildplans_modules')]
 #[UniqueConstraint(name: 'buildplan_module_type_idx', columns: ['buildplan_id', 'module_type', 'module_special'])]
 #[Entity(repositoryClass: BuildplanModuleRepository::class)]
-class BuildplanModule implements BuildplanModuleInterface
+class BuildplanModule
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -43,96 +42,83 @@ class BuildplanModule implements BuildplanModuleInterface
 
     #[ManyToOne(targetEntity: SpacecraftBuildplan::class, inversedBy: 'modules')]
     #[JoinColumn(name: 'buildplan_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private SpacecraftBuildplanInterface $buildplan;
+    private SpacecraftBuildplan $buildplan;
 
     #[ManyToOne(targetEntity: Module::class)]
     #[JoinColumn(name: 'module_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ModuleInterface $module;
+    private Module $module;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
-    public function getBuildplan(): SpacecraftBuildplanInterface
+    public function getBuildplan(): SpacecraftBuildplan
     {
         return $this->buildplan;
     }
 
-    #[Override]
-    public function setBuildplan(SpacecraftBuildplanInterface $buildplan): BuildplanModuleInterface
+    public function setBuildplan(SpacecraftBuildplan $buildplan): BuildplanModule
     {
         $this->buildplan = $buildplan;
 
         return $this;
     }
 
-    #[Override]
     public function getModuleType(): SpacecraftModuleTypeEnum
     {
         return $this->module_type;
     }
 
-    #[Override]
-    public function setModuleType(SpacecraftModuleTypeEnum $moduleType): BuildplanModuleInterface
+    public function setModuleType(SpacecraftModuleTypeEnum $moduleType): BuildplanModule
     {
         $this->module_type = $moduleType;
 
         return $this;
     }
 
-    #[Override]
     public function getModuleCount(): int
     {
         return $this->module_count;
     }
 
-    #[Override]
-    public function setModuleCount(int $moduleCount): BuildplanModuleInterface
+    public function setModuleCount(int $moduleCount): BuildplanModule
     {
         $this->module_count = $moduleCount;
 
         return $this;
     }
 
-    #[Override]
     public function getModuleSpecial(): ?int
     {
         return $this->module_special;
     }
 
-    #[Override]
-    public function setModuleSpecial(?int $moduleSpecial): BuildplanModuleInterface
+    public function setModuleSpecial(?int $moduleSpecial): BuildplanModule
     {
         $this->module_special = $moduleSpecial;
 
         return $this;
     }
 
-    #[Override]
     public function getModuleId(): int
     {
         return $this->module_id;
     }
 
-    #[Override]
-    public function setModuleId(int $moduleId): BuildplanModuleInterface
+    public function setModuleId(int $moduleId): BuildplanModule
     {
         $this->module_id = $moduleId;
 
         return $this;
     }
 
-    #[Override]
-    public function getModule(): ModuleInterface
+    public function getModule(): Module
     {
         return $this->module;
     }
 
-    #[Override]
-    public function setModule(ModuleInterface $module): BuildplanModuleInterface
+    public function setModule(Module $module): BuildplanModule
     {
         $this->module = $module;
 

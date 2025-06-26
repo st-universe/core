@@ -17,13 +17,12 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\FleetRepository;
 
 #[Table(name: 'stu_fleets')]
 #[Index(name: 'fleet_user_idx', columns: ['user_id'])]
 #[Entity(repositoryClass: FleetRepository::class)]
-class Fleet implements FleetInterface
+class Fleet
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -55,10 +54,10 @@ class Fleet implements FleetInterface
 
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $user;
+    private User $user;
 
     /**
-     * @var ArrayCollection<int, ShipInterface>
+     * @var ArrayCollection<int, Ship>
      */
     #[OneToMany(targetEntity: Ship::class, mappedBy: 'fleet', indexBy: 'id')]
     #[OrderBy(['is_fleet_leader' => 'DESC', 'name' => 'ASC'])]
@@ -66,161 +65,142 @@ class Fleet implements FleetInterface
 
     #[OneToOne(targetEntity: Ship::class)]
     #[JoinColumn(name: 'ships_id', nullable: false, referencedColumnName: 'id')]
-    private ShipInterface $fleetLeader;
+    private Ship $fleetLeader;
 
     #[ManyToOne(targetEntity: Colony::class, inversedBy: 'defenders')]
     #[JoinColumn(name: 'defended_colony_id', referencedColumnName: 'id')]
-    private ?ColonyInterface $defendedColony = null;
+    private ?Colony $defendedColony = null;
 
     #[ManyToOne(targetEntity: Colony::class, inversedBy: 'blockers')]
     #[JoinColumn(name: 'blocked_colony_id', referencedColumnName: 'id')]
-    private ?ColonyInterface $blockedColony = null;
+    private ?Colony $blockedColony = null;
 
     public function __construct()
     {
         $this->shiplist = new ArrayCollection();
     }
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
-    #[Override]
-    public function setName(string $name): FleetInterface
+    public function setName(string $name): Fleet
     {
         $this->name = $name;
         return $this;
     }
 
-    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    #[Override]
+    /**
+     * @return Collection<int, Ship>
+     */
     public function getShips(): Collection
     {
         return $this->shiplist;
     }
 
-    #[Override]
     public function getShipCount(): int
     {
         return $this->getShips()->count();
     }
 
-    #[Override]
-    public function getLeadShip(): ShipInterface
+    public function getLeadShip(): Ship
     {
         return $this->fleetLeader;
     }
 
-    #[Override]
-    public function setLeadShip(ShipInterface $ship): FleetInterface
+    public function setLeadShip(Ship $ship): Fleet
     {
         $this->fleetLeader = $ship;
         return $this;
     }
 
-    #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    #[Override]
-    public function setUser(UserInterface $user): FleetInterface
+    public function setUser(User $user): Fleet
     {
         $this->user = $user;
         return $this;
     }
 
-    #[Override]
-    public function getDefendedColony(): ?ColonyInterface
+    public function getDefendedColony(): ?Colony
     {
         return $this->defendedColony;
     }
 
-    #[Override]
-    public function setDefendedColony(?ColonyInterface $defendedColony): FleetInterface
+    public function setDefendedColony(?Colony $defendedColony): Fleet
     {
         $this->defendedColony = $defendedColony;
         return $this;
     }
 
-    #[Override]
-    public function getBlockedColony(): ?ColonyInterface
+    public function getBlockedColony(): ?Colony
     {
         return $this->blockedColony;
     }
 
-    #[Override]
-    public function setBlockedColony(?ColonyInterface $blockedColony): FleetInterface
+    public function setBlockedColony(?Colony $blockedColony): Fleet
     {
         $this->blockedColony = $blockedColony;
         return $this;
     }
 
-    #[Override]
     public function getSort(): ?int
     {
         return $this->sort;
     }
 
-    #[Override]
-    public function setSort(?int $sort): FleetInterface
+    public function setSort(?int $sort): Fleet
     {
         $this->sort = $sort;
 
         return $this;
     }
 
-    #[Override]
     public function isFleetFixed(): bool
     {
         return $this->is_fixed;
     }
 
-    #[Override]
-    public function setIsFleetFixed(bool $isFixed): FleetInterface
+    public function setIsFleetFixed(bool $isFixed): Fleet
     {
         $this->is_fixed = $isFixed;
         return $this;
     }
 
-    #[Override]
     public function getCrewSum(): int
     {
         return array_reduce(
             $this->shiplist->toArray(),
-            fn(int $sum, ShipInterface $ship): int => $sum + ($ship->getCondition()->isDestroyed() ? 0 : $ship->getBuildplan()->getCrew()),
+            fn(int $sum, Ship $ship): int => $sum + ($ship->getCondition()->isDestroyed() ? 0 : $ship->getBuildplan()->getCrew()),
             0
         );
     }
 
-    #[Override]
     public function getHiddenStyle(): string
     {
         return $this->hiddenStyle;
     }
 
-    #[Override]
-    public function setHiddenStyle(string $hiddenStyle): FleetInterface
+    public function setHiddenStyle(string $hiddenStyle): Fleet
     {
         $this->hiddenStyle = $hiddenStyle;
         return $this;
     }
 
-    #[Override]
     public function __toString(): string
     {
         return $this->getName();

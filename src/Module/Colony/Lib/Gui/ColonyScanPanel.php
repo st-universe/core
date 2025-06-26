@@ -14,13 +14,13 @@ use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreationInterface;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
 use Stu\Lib\Map\VisualPanel\VisualPanelElementInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Colony;
 
 class ColonyScanPanel extends AbstractVisualPanel
 {
     public function __construct(
         PanelLayerCreationInterface $panelLayerCreation,
-        private ColonyInterface $colony,
+        private Colony $colony,
         private ColonyFunctionManagerInterface $colonyFunctionManager,
         LoggerUtilInterface $loggerUtil
     ) {

@@ -8,7 +8,7 @@ use Override;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Module\Commodity\CommodityTypeEnum;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Colony;
 
 final class ColonyPopulationCalculator implements ColonyPopulationCalculatorInterface
 {
@@ -24,7 +24,7 @@ final class ColonyPopulationCalculator implements ColonyPopulationCalculatorInte
     #[Override]
     public function getFreeAssignmentCount(): int
     {
-        if (!$this->host instanceof ColonyInterface) {
+        if (!$this->host instanceof Colony) {
             return 0;
         }
 
@@ -107,7 +107,7 @@ final class ColonyPopulationCalculator implements ColonyPopulationCalculatorInte
     public function getGrowth(): int
     {
         $host = $this->host;
-        if (!$host instanceof ColonyInterface) {
+        if (!$host instanceof Colony) {
             return 0;
         }
 

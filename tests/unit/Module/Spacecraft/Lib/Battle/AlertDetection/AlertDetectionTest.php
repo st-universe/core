@@ -12,9 +12,9 @@ use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Party\AlertStateBattleParty;
 use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\User;
 use Stu\StuTestCase;
 
 class AlertDetectionTest extends StuTestCase
@@ -25,7 +25,7 @@ class AlertDetectionTest extends StuTestCase
     private MockInterface&TrojanHorseNotifierInterface $trojanHorseNotifier;
     private MockInterface&AlertedShipInformationInterface $alertedShipInformation;
 
-    private MockInterface&ShipInterface $incomingShip;
+    private MockInterface&Ship $incomingShip;
 
     private AlertDetectionInterface $subject;
 
@@ -40,7 +40,7 @@ class AlertDetectionTest extends StuTestCase
         $this->alertedShipInformation = $this->mock(AlertedShipInformationInterface::class);
 
         //params
-        $this->incomingShip = $this->mock(ShipInterface::class);
+        $this->incomingShip = $this->mock(Ship::class);
 
         $this->subject = new AlertDetection(
             $this->alertedShipsDetection,
@@ -53,8 +53,8 @@ class AlertDetectionTest extends StuTestCase
 
     public function testDetectAlertedBattlePartiesExpectEmptyArrayWhenNoShipsOnLocation(): void
     {
-        $location = $this->mock(MapInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $location = $this->mock(Map::class);
+        $user = $this->mock(User::class);
 
         $this->incomingShip->shouldReceive('getLocation')
             ->withNoArgs()
@@ -82,13 +82,13 @@ class AlertDetectionTest extends StuTestCase
     public function testDetectAlertedBattlePartiesExpectSuccessAndServiceCalls(): void
     {
         $wrapper = $this->mock(ShipWrapperInterface::class);
-        $ship = $this->mock(ShipInterface::class);
-        $location = $this->mock(MapInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $ship = $this->mock(Ship::class);
+        $location = $this->mock(Map::class);
+        $user = $this->mock(User::class);
         $battleParty = $this->mock(AlertStateBattleParty::class);
         $wrapperToSkip = $this->mock(ShipWrapperInterface::class);
-        $shipToSkip = $this->mock(ShipInterface::class);
-        $tractoringShip = $this->mock(ShipInterface::class);
+        $shipToSkip = $this->mock(Ship::class);
+        $tractoringShip = $this->mock(Ship::class);
         $informations = $this->mock(InformationInterface::class);
 
         $ship->shouldReceive('getId')

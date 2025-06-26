@@ -9,7 +9,7 @@ use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestroyerInterface;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionCauseEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\TholianWebInterface;
+use Stu\Orm\Entity\TholianWeb;
 
 class LeaveIntactModules implements SpacecraftDestructionHandlerInterface
 {
@@ -27,7 +27,7 @@ class LeaveIntactModules implements SpacecraftDestructionHandlerInterface
 
         $spacecraft = $destroyedSpacecraftWrapper->get();
 
-        if ($spacecraft->isShuttle() || $spacecraft instanceof TholianWebInterface) {
+        if ($spacecraft->isShuttle() || $spacecraft instanceof TholianWeb) {
             return;
         }
 

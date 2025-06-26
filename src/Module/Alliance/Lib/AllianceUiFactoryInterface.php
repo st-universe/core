@@ -5,29 +5,29 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Lib;
 
 use Stu\Module\Alliance\View\Management\ManagementListItem;
-use Stu\Orm\Entity\AllianceInterface;
-use Stu\Orm\Entity\AllianceRelationInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Alliance;
+use Stu\Orm\Entity\AllianceRelation;
+use Stu\Orm\Entity\User;
 
 interface AllianceUiFactoryInterface
 {
     public function createManagementListItem(
-        AllianceInterface $alliance,
-        UserInterface $user,
+        Alliance $alliance,
+        User $user,
         int $currentUserId,
     ): ManagementListItem;
 
     public function createAllianceListItem(
-        AllianceInterface $alliance
+        Alliance $alliance
     ): AllianceListItem;
 
     public function createAllianceMemberWrapper(
-        UserInterface $user,
-        AllianceInterface $alliance
+        User $user,
+        Alliance $alliance
     ): AllianceMemberWrapper;
 
     public function createAllianceRelationWrapper(
-        AllianceInterface $alliance,
-        AllianceRelationInterface $allianceRelation
+        Alliance $alliance,
+        AllianceRelation $allianceRelation
     ): AllianceRelationWrapper;
 }

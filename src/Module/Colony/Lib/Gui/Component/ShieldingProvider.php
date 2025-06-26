@@ -8,7 +8,7 @@ use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Template\StatusBarColorEnum;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Colony;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class ShieldingProvider implements PlanetFieldHostComponentInterface
@@ -36,7 +36,7 @@ final class ShieldingProvider implements PlanetFieldHostComponentInterface
     {
         return sprintf(
             'Schildstärke: %d/%d',
-            $host instanceof ColonyInterface ? $host->getChangeable()->getShields() : 0,
+            $host instanceof Colony ? $host->getChangeable()->getShields() : 0,
             $this->planetFieldRepository->getMaxShieldsOfHost($host)
         );
     }
@@ -49,7 +49,7 @@ final class ShieldingProvider implements PlanetFieldHostComponentInterface
         $bars = [];
         $width = 360;
 
-        $currentShields = $host instanceof ColonyInterface ? $host->getChangeable()->getShields() : 0;
+        $currentShields = $host instanceof Colony ? $host->getChangeable()->getShields() : 0;
         $maxShields = $colonyShieldingManager->getMaxShielding();
 
         if ($colonyShieldingManager->isShieldingEnabled()) {

@@ -4,23 +4,22 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\UserCharacter;
-use Stu\Orm\Entity\UserCharacterInterface;
 
 /**
  * @extends ObjectRepository<UserCharacter>
  *
- * @method null|UserCharacterInterface find(integer $id)
+ * @method null|UserCharacter find(integer $id)
  */
 interface UserCharacterRepositoryInterface extends ObjectRepository
 {
-    public function prototype(): UserCharacterInterface;
+    public function prototype(): UserCharacter;
 
-    public function save(UserCharacterInterface $userCharacters): void;
+    public function save(UserCharacter $userCharacters): void;
 
-    public function delete(UserCharacterInterface $userCharacters): void;
+    public function delete(UserCharacter $userCharacters): void;
 
     /**
-     * @return list<UserCharacterInterface>
+     * @return list<UserCharacter>
      */
     public function findByUserId(int $userId): array;
 }

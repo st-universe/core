@@ -4,7 +4,7 @@ namespace Stu\Module\Spacecraft\Lib\Creation;
 
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\LocationInterface;
+use Stu\Orm\Entity\Location;
 
 /**
  * @template T of SpacecraftWrapperInterface
@@ -12,7 +12,7 @@ use Stu\Orm\Entity\LocationInterface;
 interface SpacecraftConfiguratorInterface
 {
     /** @return SpacecraftConfiguratorInterface<T> */
-    public function setLocation(LocationInterface $location): SpacecraftConfiguratorInterface;
+    public function setLocation(Location $location): SpacecraftConfiguratorInterface;
 
     /** @return SpacecraftConfiguratorInterface<T> */
     public function loadEps(int $percentage): SpacecraftConfiguratorInterface;

@@ -16,7 +16,7 @@ use Stu\Module\Control\StuHashInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\BlockedUserRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -102,7 +102,7 @@ final class SmsManagement implements
         return $processedMobile;
     }
 
-    private function resendSmsCode(UserInterface $user): void
+    private function resendSmsCode(User $user): void
     {
         $registration = $user->getRegistration();
         $randomHash = substr(md5(uniqid((string) random_int(0, mt_getrandmax()), true)), 16, 6);
@@ -122,7 +122,7 @@ final class SmsManagement implements
         throw new AccountNotVerifiedException('Der SMS-Verifikationscode wurde erneut versendet');
     }
 
-    private function updateMobileAndSend(UserInterface $user, string $newMobile, GameControllerInterface $game): void
+    private function updateMobileAndSend(User $user, string $newMobile, GameControllerInterface $game): void
     {
         if (!$this->isMobileNumberCountryAllowed($newMobile)) {
             throw new AccountNotVerifiedException('Nur deutsche (+49), österreichische (+43) und schweizer (+41) Nummern werden unterstützt');

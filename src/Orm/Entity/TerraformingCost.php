@@ -12,13 +12,12 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\TerraformingCostRepository;
 
 #[Table(name: 'stu_terraforming_cost')]
 #[Index(name: 'terraforming_idx', columns: ['terraforming_id'])]
 #[Entity(repositoryClass: TerraformingCostRepository::class)]
-class TerraformingCost implements TerraformingCostInterface
+class TerraformingCost
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -36,68 +35,59 @@ class TerraformingCost implements TerraformingCostInterface
 
     #[ManyToOne(targetEntity: Commodity::class)]
     #[JoinColumn(name: 'commodity_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private CommodityInterface $commodity;
+    private Commodity $commodity;
 
     #[ManyToOne(targetEntity: Terraforming::class)]
     #[JoinColumn(name: 'terraforming_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private TerraformingInterface $terraforming;
+    private Terraforming $terraforming;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getTerraformingId(): int
     {
         return $this->terraforming_id;
     }
 
-    #[Override]
-    public function setTerraformingId(int $terraformingId): TerraformingCostInterface
+    public function setTerraformingId(int $terraformingId): TerraformingCost
     {
         $this->terraforming_id = $terraformingId;
 
         return $this;
     }
 
-    #[Override]
     public function getCommodityId(): int
     {
         return $this->commodity_id;
     }
 
-    #[Override]
-    public function setCommodityId(int $commodityId): TerraformingCostInterface
+    public function setCommodityId(int $commodityId): TerraformingCost
     {
         $this->commodity_id = $commodityId;
 
         return $this;
     }
 
-    #[Override]
     public function getAmount(): int
     {
         return $this->count;
     }
 
-    #[Override]
-    public function setAmount(int $amount): TerraformingCostInterface
+    public function setAmount(int $amount): TerraformingCost
     {
         $this->count = $amount;
 
         return $this;
     }
 
-    #[Override]
-    public function getCommodity(): CommodityInterface
+    public function getCommodity(): Commodity
     {
         return $this->commodity;
     }
 
-    #[Override]
-    public function getTerraforming(): TerraformingInterface
+    public function getTerraforming(): Terraforming
     {
         return $this->terraforming;
     }

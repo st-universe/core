@@ -7,7 +7,7 @@ use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Game\Lib\View\Provider\ViewComponentProviderInterface;
-use Stu\Orm\Entity\PrivateMessageInterface;
+use Stu\Orm\Entity\PrivateMessage;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 
@@ -46,7 +46,7 @@ class MessengerStyleProvider implements ViewComponentProviderInterface
         $game->setTemplateVar('CONVERSATIONS', $conversations);
     }
 
-    private function determineUnreadPmCount(PrivateMessageInterface $message): int
+    private function determineUnreadPmCount(PrivateMessage $message): int
     {
         return $this->privateMessageRepository->getNewAmountByFolderAndSender(
             $message->getCategory(),
@@ -54,7 +54,7 @@ class MessengerStyleProvider implements ViewComponentProviderInterface
         );
     }
 
-    private function determineDateString(PrivateMessageInterface $message, int $timestamp): string
+    private function determineDateString(PrivateMessage $message, int $timestamp): string
     {
         $messageTimestamp = $message->getDate();
         $distanceInSeconds = $timestamp - $messageTimestamp;

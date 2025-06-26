@@ -9,9 +9,9 @@ use Override;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Research\ResearchStateFactoryInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\ResearchedInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Researched;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -20,7 +20,7 @@ class AdvanceResearchTest extends StuTestCase
     private MockInterface&ResearchedRepositoryInterface $researchedRepository;
     private MockInterface&ResearchStateFactoryInterface $researchStateFactory;
 
-    private MockInterface&ColonyInterface $colony;
+    private MockInterface&Colony $colony;
     private MockInterface&InformationInterface $information;
 
     private ColonyTickComponentInterface $subject;
@@ -31,7 +31,7 @@ class AdvanceResearchTest extends StuTestCase
         $this->researchedRepository = $this->mock(ResearchedRepositoryInterface::class);
         $this->researchStateFactory = $this->mock(ResearchStateFactoryInterface::class);
 
-        $this->colony = $this->mock(ColonyInterface::class);
+        $this->colony = $this->mock(Colony::class);
         $this->information = $this->mock(InformationInterface::class);
 
         $this->subject = new AdvanceResearch(
@@ -42,7 +42,7 @@ class AdvanceResearchTest extends StuTestCase
 
     public function testWorkExpectNothingWhenNoCurrentResearch(): void
     {
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
 
         $production = [];
 
@@ -61,8 +61,8 @@ class AdvanceResearchTest extends StuTestCase
 
     public function testWorkExpectNothingWhenNeededCommodityNotProduced(): void
     {
-        $user = $this->mock(UserInterface::class);
-        $researched = $this->mock(ResearchedInterface::class);
+        $user = $this->mock(User::class);
+        $researched = $this->mock(Researched::class);
 
         $production = [];
 
@@ -85,8 +85,8 @@ class AdvanceResearchTest extends StuTestCase
 
     public function testWorkExpectAdvanceOfOneResearch(): void
     {
-        $user = $this->mock(UserInterface::class);
-        $researched = $this->mock(ResearchedInterface::class);
+        $user = $this->mock(User::class);
+        $researched = $this->mock(Researched::class);
         $colonyProduction = $this->mock(ColonyProduction::class);
 
         $production = [42 => $colonyProduction];
@@ -124,9 +124,9 @@ class AdvanceResearchTest extends StuTestCase
 
     public function testWorkExpectNoAdvanceOfSecondWhenNoRemainingPoints(): void
     {
-        $user = $this->mock(UserInterface::class);
-        $researched = $this->mock(ResearchedInterface::class);
-        $researched2 = $this->mock(ResearchedInterface::class);
+        $user = $this->mock(User::class);
+        $researched = $this->mock(Researched::class);
+        $researched2 = $this->mock(Researched::class);
         $colonyProduction = $this->mock(ColonyProduction::class);
 
         $production = [42 => $colonyProduction];
@@ -165,8 +165,8 @@ class AdvanceResearchTest extends StuTestCase
 
     public function testWorkExpectNoAdvanceOfSecondWhenNotPresent(): void
     {
-        $user = $this->mock(UserInterface::class);
-        $researched = $this->mock(ResearchedInterface::class);
+        $user = $this->mock(User::class);
+        $researched = $this->mock(Researched::class);
         $colonyProduction = $this->mock(ColonyProduction::class);
 
         $production = [42 => $colonyProduction];
@@ -205,9 +205,9 @@ class AdvanceResearchTest extends StuTestCase
 
     public function testWorkExpectNoAdvanceOfSecondWhenOtherCommodity(): void
     {
-        $user = $this->mock(UserInterface::class);
-        $researched = $this->mock(ResearchedInterface::class);
-        $researched2 = $this->mock(ResearchedInterface::class);
+        $user = $this->mock(User::class);
+        $researched = $this->mock(Researched::class);
+        $researched2 = $this->mock(Researched::class);
         $colonyProduction = $this->mock(ColonyProduction::class);
 
         $production = [42 => $colonyProduction];
@@ -249,9 +249,9 @@ class AdvanceResearchTest extends StuTestCase
 
     public function testWorkExpectAdvanceOfSecondWhenSameCommodity(): void
     {
-        $user = $this->mock(UserInterface::class);
-        $researched = $this->mock(ResearchedInterface::class);
-        $researched2 = $this->mock(ResearchedInterface::class);
+        $user = $this->mock(User::class);
+        $researched = $this->mock(Researched::class);
+        $researched2 = $this->mock(Researched::class);
         $colonyProduction = $this->mock(ColonyProduction::class);
 
         $production = [42 => $colonyProduction];
@@ -296,10 +296,10 @@ class AdvanceResearchTest extends StuTestCase
 
     public function testWorkExpectAdvanceOfSameOnOtherColony(): void
     {
-        $colony2 = $this->mock(ColonyInterface::class);
-        $user = $this->mock(UserInterface::class);
-        $researched = $this->mock(ResearchedInterface::class);
-        $researched2 = $this->mock(ResearchedInterface::class);
+        $colony2 = $this->mock(Colony::class);
+        $user = $this->mock(User::class);
+        $researched = $this->mock(Researched::class);
+        $researched2 = $this->mock(Researched::class);
         $colonyProduction = $this->mock(ColonyProduction::class);
         $colonyProduction2 = $this->mock(ColonyProduction::class);
 
@@ -351,10 +351,10 @@ class AdvanceResearchTest extends StuTestCase
 
     public function testWorkExpectAdvanceOfSecondOnOtherColony(): void
     {
-        $colony2 = $this->mock(ColonyInterface::class);
-        $user = $this->mock(UserInterface::class);
-        $researched = $this->mock(ResearchedInterface::class);
-        $researched2 = $this->mock(ResearchedInterface::class);
+        $colony2 = $this->mock(Colony::class);
+        $user = $this->mock(User::class);
+        $researched = $this->mock(Researched::class);
+        $researched2 = $this->mock(Researched::class);
         $colonyProduction = $this->mock(ColonyProduction::class);
         $colonyProduction2 = $this->mock(ColonyProduction::class);
 
@@ -413,10 +413,10 @@ class AdvanceResearchTest extends StuTestCase
 
     public function testWorkExpectNoAdvanceOfSecondOnOtherColonyWhenOtherCommodity(): void
     {
-        $colony2 = $this->mock(ColonyInterface::class);
-        $user = $this->mock(UserInterface::class);
-        $researched = $this->mock(ResearchedInterface::class);
-        $researched2 = $this->mock(ResearchedInterface::class);
+        $colony2 = $this->mock(Colony::class);
+        $user = $this->mock(User::class);
+        $researched = $this->mock(Researched::class);
+        $researched2 = $this->mock(Researched::class);
         $colonyProduction = $this->mock(ColonyProduction::class);
         $colonyProduction2 = $this->mock(ColonyProduction::class);
 

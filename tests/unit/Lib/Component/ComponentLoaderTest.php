@@ -12,7 +12,7 @@ use Stu\Component\Game\ModuleEnum;
 use Stu\Module\Colony\Component\ColonyComponentEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Game\Component\GameComponentEnum;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Colony;
 use Stu\StuMocks;
 use Stu\StuTestCase;
 
@@ -134,7 +134,7 @@ class ComponentLoaderTest extends StuTestCase
         $componentEnumWithEntity = $this->mock(ComponentEnumInterface::class);
         $componentWithVars = $this->mock(ComponentInterface::class);
         $componentWithEntity = $this->mock(EntityComponentInterface::class);
-        $entity = $this->mock(ColonyInterface::class);
+        $entity = $this->mock(Colony::class);
 
         StuMocks::get()->mockService('GAME_COMPONENTS', [
             'WITH_VARS' => $componentWithVars
@@ -228,7 +228,7 @@ class ComponentLoaderTest extends StuTestCase
         $componentEnumWithVars = $this->mock(ComponentEnumInterface::class);
         $componentEnumNoVars = $this->mock(ComponentEnumInterface::class);
         $componentEnumWithEntity = $this->mock(ComponentEnumInterface::class);
-        $entity = $this->mock(ColonyInterface::class);
+        $entity = $this->mock(Colony::class);
 
         $this->subject->registerStubbedComponent($componentEnumWithVars)
             ->registerStubbedComponent($componentEnumNoVars)

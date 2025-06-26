@@ -9,7 +9,7 @@ use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\View\Boards\Boards;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\AllianceBoardInterface;
+use Stu\Orm\Entity\AllianceBoard;
 use Stu\Orm\Repository\AllianceBoardRepositoryInterface;
 
 final class RenameBoard implements ActionControllerInterface
@@ -27,7 +27,7 @@ final class RenameBoard implements ActionControllerInterface
 
         $name = $this->renameBoardRequest->getTitle();
 
-        /** @var AllianceBoardInterface $board */
+        /** @var AllianceBoard $board */
         $board = $this->allianceBoardRepository->find($this->renameBoardRequest->getBoardId());
         if ($board === null || $board->getAllianceId() !== $alliance->getId()) {
             throw new AccessViolationException();

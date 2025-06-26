@@ -3,34 +3,33 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonyTerraforming;
-use Stu\Orm\Entity\ColonyTerraformingInterface;
 
 /**
  * @extends ObjectRepository<ColonyTerraforming>
  *
- * @method null|ColonyTerraformingInterface find(integer $id)
+ * @method null|ColonyTerraforming find(integer $id)
  */
 interface ColonyTerraformingRepositoryInterface extends ObjectRepository
 {
-    public function prototype(): ColonyTerraformingInterface;
+    public function prototype(): ColonyTerraforming;
 
-    public function save(ColonyTerraformingInterface $terraforming): void;
+    public function save(ColonyTerraforming $terraforming): void;
 
-    public function delete(ColonyTerraformingInterface $terraforming): void;
+    public function delete(ColonyTerraforming $terraforming): void;
 
     /**
-     * @param array<ColonyInterface> $colonyies
+     * @param array<Colony> $colonyies
      *
-     * @return ColonyTerraformingInterface[]
+     * @return ColonyTerraforming[]
      */
     public function getByColony(array $colonyies): array;
 
-    public function getByColonyAndField(int $colonyId, int $fieldId): ?ColonyTerraformingInterface;
+    public function getByColonyAndField(int $colonyId, int $fieldId): ?ColonyTerraforming;
 
     /**
-     * @return array<ColonyTerraformingInterface>
+     * @return array<ColonyTerraforming>
      */
     public function getFinishedJobs(): array;
 }

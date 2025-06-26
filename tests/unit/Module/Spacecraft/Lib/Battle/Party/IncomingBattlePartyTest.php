@@ -7,8 +7,8 @@ namespace Stu\Module\Spacecraft\Lib\Battle\Party;
 use Doctrine\Common\Collections\ArrayCollection;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\User;
 use Stu\StuTestCase;
 
 class IncomingBattlePartyTest extends StuTestCase
@@ -16,8 +16,8 @@ class IncomingBattlePartyTest extends StuTestCase
     public function testGetActiveMembersExpectEmptyWhenCloaked(): void
     {
         $wrapper = $this->mock(ShipWrapperInterface::class);
-        $ship = $this->mock(ShipInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $ship = $this->mock(Ship::class);
+        $user = $this->mock(User::class);
 
         $wrapper->shouldReceive('getFleetWrapper')
             ->withNoArgs()
@@ -59,8 +59,8 @@ class IncomingBattlePartyTest extends StuTestCase
     public function testGetActiveMembersExpectEmptyWhenWarped(): void
     {
         $wrapper = $this->mock(ShipWrapperInterface::class);
-        $ship = $this->mock(ShipInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $ship = $this->mock(Ship::class);
+        $user = $this->mock(User::class);
 
         $wrapper->shouldReceive('getFleetWrapper')
             ->withNoArgs()
@@ -105,8 +105,8 @@ class IncomingBattlePartyTest extends StuTestCase
     public function testGetActiveMembersExpectSingleWhenUncloakedAndUnwarped(): void
     {
         $wrapper = $this->mock(ShipWrapperInterface::class);
-        $ship = $this->mock(ShipInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $ship = $this->mock(Ship::class);
+        $user = $this->mock(User::class);
 
         $wrapper->shouldReceive('getFleetWrapper')
             ->withNoArgs()
@@ -154,13 +154,13 @@ class IncomingBattlePartyTest extends StuTestCase
     public function testGetActiveMembersExpectUncloakedAndUnwarpedFleetShips(): void
     {
         $wrapper = $this->mock(ShipWrapperInterface::class);
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
         $wrapperCloaked = $this->mock(ShipWrapperInterface::class);
         $wrapperWarped = $this->mock(ShipWrapperInterface::class);
-        $shipCloaked = $this->mock(ShipInterface::class);
-        $shipWarped = $this->mock(ShipInterface::class);
+        $shipCloaked = $this->mock(Ship::class);
+        $shipWarped = $this->mock(Ship::class);
         $fleetWrapper = $this->mock(FleetWrapperInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
 
         $wrapper->shouldReceive('get')
             ->withNoArgs()

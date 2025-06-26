@@ -12,7 +12,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\KnPostInterface;
+use Stu\Orm\Entity\KnPost;
 use Stu\Orm\Repository\KnCharacterRepositoryInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
@@ -127,7 +127,7 @@ final class AddKnPost implements ActionControllerInterface
     /**
      * @param int[] $characterIds
      */
-    private function notifyCharacterOwners(KnPostInterface $post, array $characterIds): void
+    private function notifyCharacterOwners(KnPost $post, array $characterIds): void
     {
         $userCharactersMap = [];
 

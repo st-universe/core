@@ -21,9 +21,9 @@ use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionCauseEnum;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\ModuleInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Module;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 abstract class AbstractWeaponPhase
@@ -90,7 +90,7 @@ abstract class AbstractWeaponPhase
         return $evadeChance;
     }
 
-    protected function getModule(SpacecraftInterface $ship, SpacecraftModuleTypeEnum $moduleType): ?ModuleInterface
+    protected function getModule(Spacecraft $ship, SpacecraftModuleTypeEnum $moduleType): ?Module
     {
         $buildplan = $ship->getBuildplan();
         if ($buildplan === null) {
@@ -105,7 +105,7 @@ abstract class AbstractWeaponPhase
         return $modules->first();
     }
 
-    protected function getUser(int $userId): UserInterface
+    protected function getUser(int $userId): User
     {
         $user = $this->userRepository->find($userId);
         if ($user === null) {

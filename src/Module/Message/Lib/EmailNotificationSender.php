@@ -11,7 +11,7 @@ use Stu\Lib\Mail\MailFactoryInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 final class EmailNotificationSender implements EmailNotificationSenderInterface
 {
@@ -26,7 +26,7 @@ final class EmailNotificationSender implements EmailNotificationSenderInterface
     }
 
     #[Override]
-    public function sendNotification(string $senderName, string $message, UserInterface $user): void
+    public function sendNotification(string $senderName, string $message, User $user): void
     {
         $mail = $this->mailFactory->createStuMail()
             ->withDefaultSender()

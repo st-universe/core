@@ -7,9 +7,9 @@ namespace Stu\Module\Database\Lib;
 use Override;
 use Stu\Module\Award\Lib\CreateUserAwardInterface;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
-use Stu\Orm\Entity\DatabaseCategoryInterface;
-use Stu\Orm\Entity\DatabaseEntryInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\DatabaseCategory;
+use Stu\Orm\Entity\DatabaseEntry;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\DatabaseCategoryAwardRepositoryInterface;
 use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
@@ -25,7 +25,7 @@ final class CreateDatabaseEntry implements CreateDatabaseEntryInterface
     ) {}
 
     #[Override]
-    public function createDatabaseEntryForUser(UserInterface $user, int $databaseEntryId): ?DatabaseEntryInterface
+    public function createDatabaseEntryForUser(User $user, int $databaseEntryId): ?DatabaseEntry
     {
         if ($databaseEntryId === 0) {
             return null;
@@ -60,8 +60,8 @@ final class CreateDatabaseEntry implements CreateDatabaseEntryInterface
     }
 
     public function checkForCategoryCompletion(
-        UserInterface $user,
-        DatabaseCategoryInterface $category,
+        User $user,
+        DatabaseCategory $category,
         ?int $ignoredDatabaseEntryId = null,
         ?int $layerId = null
     ): void {

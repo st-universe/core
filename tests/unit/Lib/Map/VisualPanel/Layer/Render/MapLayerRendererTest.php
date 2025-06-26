@@ -9,12 +9,12 @@ use Override;
 use Stu\Component\Map\EncodedMapInterface;
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
 use Stu\Lib\Map\VisualPanel\Layer\Data\MapData;
-use Stu\Orm\Entity\LayerInterface;
+use Stu\Orm\Entity\Layer;
 use Stu\StuTestCase;
 
 class MapLayerRendererTest extends StuTestCase
 {
-    private MockInterface&LayerInterface $layer;
+    private MockInterface&Layer $layer;
 
     private MockInterface&EncodedMapInterface $encodedMap;
 
@@ -25,7 +25,7 @@ class MapLayerRendererTest extends StuTestCase
     #[Override]
     protected function setUp(): void
     {
-        $this->layer = mock(LayerInterface::class);
+        $this->layer = mock(Layer::class);
         $this->encodedMap = mock(EncodedMapInterface::class);
 
         $this->panel = mock(AbstractVisualPanel::class);

@@ -10,8 +10,7 @@ use Override;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\Researched;
-use Stu\Orm\Entity\ResearchedInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 /**
  * @extends EntityRepository<Researched>
@@ -19,7 +18,7 @@ use Stu\Orm\Entity\UserInterface;
 final class ResearchedRepository extends EntityRepository implements ResearchedRepositoryInterface
 {
     #[Override]
-    public function hasUserFinishedResearch(UserInterface $user, array $researchIds): bool
+    public function hasUserFinishedResearch(User $user, array $researchIds): bool
     {
         return $this->getEntityManager()
             ->createQuery(
@@ -64,7 +63,7 @@ final class ResearchedRepository extends EntityRepository implements ResearchedR
     }
 
     #[Override]
-    public function getCurrentResearch(UserInterface $user): array
+    public function getCurrentResearch(User $user): array
     {
         return $this->getEntityManager()
             ->createQuery(
@@ -81,7 +80,7 @@ final class ResearchedRepository extends EntityRepository implements ResearchedR
     }
 
     #[Override]
-    public function getFor(int $researchId, int $userId): ?ResearchedInterface
+    public function getFor(int $researchId, int $userId): ?Researched
     {
         return $this->findOneBy([
             'research_id' => $researchId,
@@ -90,7 +89,7 @@ final class ResearchedRepository extends EntityRepository implements ResearchedR
     }
 
     #[Override]
-    public function save(ResearchedInterface $researched): void
+    public function save(Researched $researched): void
     {
         $em = $this->getEntityManager();
 
@@ -99,7 +98,7 @@ final class ResearchedRepository extends EntityRepository implements ResearchedR
     }
 
     #[Override]
-    public function delete(ResearchedInterface $researched): void
+    public function delete(Researched $researched): void
     {
         $em = $this->getEntityManager();
 
@@ -108,7 +107,7 @@ final class ResearchedRepository extends EntityRepository implements ResearchedR
     }
 
     #[Override]
-    public function prototype(): ResearchedInterface
+    public function prototype(): Researched
     {
         return new Researched();
     }

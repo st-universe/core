@@ -4,31 +4,30 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\Layer;
-use Stu\Orm\Entity\LayerInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 /**
  * @extends ObjectRepository<Layer>
  *
- * @method null|LayerInterface find(integer $id)
+ * @method null|Layer find(integer $id)
  */
 interface LayerRepositoryInterface extends ObjectRepository
 {
-    public function prototype(): LayerInterface;
+    public function prototype(): Layer;
 
-    public function save(LayerInterface $layer): void;
+    public function save(Layer $layer): void;
 
-    public function delete(LayerInterface $layer): void;
+    public function delete(Layer $layer): void;
 
     /**
-     * @return array<int, LayerInterface>
+     * @return array<int, Layer>
      */
     public function findAllIndexed(): array;
 
     /**
-     * @return array<int, LayerInterface>
+     * @return array<int, Layer>
      */
-    public function getKnownByUser(UserInterface $user): array;
+    public function getKnownByUser(User $user): array;
 
-    public function getDefaultLayer(): LayerInterface;
+    public function getDefaultLayer(): Layer;
 }

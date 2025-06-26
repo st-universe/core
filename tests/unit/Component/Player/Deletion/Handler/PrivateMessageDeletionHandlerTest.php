@@ -9,7 +9,7 @@ use Mockery;
 use Mockery\MockInterface;
 use Override;
 use Stu\Component\Player\Deletion\Handler\PrivateMessageDeletionHandler;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\StuTestCase;
 
 class PrivateMessageDeletionHandlerTest extends StuTestCase
@@ -31,7 +31,7 @@ class PrivateMessageDeletionHandlerTest extends StuTestCase
 
     public function testDeleteUpdatesTheSendingUser(): void
     {
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
 
         $user->shouldReceive('getId')
             ->withNoArgs()

@@ -14,10 +14,10 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\Lib\ReactorWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftSystemInterface;
-use Stu\Orm\Entity\StarSystemInterface;
-use Stu\Orm\Entity\TholianWebInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\SpacecraftSystem;
+use Stu\Orm\Entity\StarSystem;
+use Stu\Orm\Entity\TholianWeb;
 use Stu\StuTestCase;
 
 //TODO@hux test handleDamage + handleDestruction
@@ -29,7 +29,7 @@ class WarpdriveShipSystemTest extends StuTestCase
 
     private WarpdriveShipSystem $system;
 
-    private MockInterface&ShipInterface $ship;
+    private MockInterface&Ship $ship;
     private MockInterface&ShipWrapperInterface $wrapper;
 
     #[Override]
@@ -39,7 +39,7 @@ class WarpdriveShipSystemTest extends StuTestCase
 
         $this->managerMock = $this->mock(SpacecraftSystemManagerInterface::class);
 
-        $this->ship = $this->mock(ShipInterface::class);
+        $this->ship = $this->mock(Ship::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
 
         $this->wrapper->shouldReceive('get')
@@ -69,7 +69,7 @@ class WarpdriveShipSystemTest extends StuTestCase
 
     public function testCheckActivationConditionsReturnsFalseIfShipInActiveTholianWeb(): void
     {
-        $tholianWeb = $this->mock(TholianWebInterface::class);
+        $tholianWeb = $this->mock(TholianWeb::class);
 
         $this->ship->shouldReceive('isTractored')
             ->withNoArgs()
@@ -103,7 +103,7 @@ class WarpdriveShipSystemTest extends StuTestCase
             ->once()
             ->andReturn(null);
 
-        $starSystem = Mockery::mock(StarSystemInterface::class);
+        $starSystem = Mockery::mock(StarSystem::class);
         $this->ship->shouldReceive('getSystem')
             ->withNoArgs()
             ->twice()
@@ -135,7 +135,7 @@ class WarpdriveShipSystemTest extends StuTestCase
             ->once()
             ->andReturn(null);
 
-        $starSystem = Mockery::mock(StarSystemInterface::class);
+        $starSystem = Mockery::mock(StarSystem::class);
         $this->ship->shouldReceive('getSystem')
             ->withNoArgs()
             ->twice()
@@ -180,7 +180,7 @@ class WarpdriveShipSystemTest extends StuTestCase
             ->once()
             ->andReturn(null);
 
-        $starSystem = Mockery::mock(StarSystemInterface::class);
+        $starSystem = Mockery::mock(StarSystem::class);
         $this->ship->shouldReceive('getSystem')
             ->withNoArgs()
             ->twice()
@@ -219,7 +219,7 @@ class WarpdriveShipSystemTest extends StuTestCase
 
     public function testActivateActivatesAndActivatesWarpStateOnTraktorShip(): void
     {
-        $system = $this->mock(SpacecraftSystemInterface::class);
+        $system = $this->mock(SpacecraftSystem::class);
 
         //DOCKING STUFF
         $this->ship->shouldReceive('setDockedTo')
@@ -252,7 +252,7 @@ class WarpdriveShipSystemTest extends StuTestCase
 
     public function testDeactivateDeactivates(): void
     {
-        $system = $this->mock(SpacecraftSystemInterface::class);
+        $system = $this->mock(SpacecraftSystem::class);
 
         $this->ship->shouldReceive('getSpacecraftSystem')
             ->with(SpacecraftSystemTypeEnum::WARPDRIVE)

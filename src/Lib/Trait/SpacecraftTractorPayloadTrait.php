@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Stu\Lib\Trait;
 
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 
 trait SpacecraftTractorPayloadTrait
 {
     /**
      * proportional to tractor beam system status
      */
-    protected function getTractorPayload(SpacecraftInterface $spacecraft): int
+    protected function getTractorPayload(Spacecraft $spacecraft): int
     {
         if (!$spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::TRACTOR_BEAM)) {
             return 0;

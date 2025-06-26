@@ -13,8 +13,8 @@ use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\SpacecraftTypeShowStragegyInterface;
-use Stu\Orm\Entity\DatabaseEntryInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\DatabaseEntry;
+use Stu\Orm\Entity\Ship;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 
 class ShipShowStrategy implements SpacecraftTypeShowStragegyInterface
@@ -43,7 +43,7 @@ class ShipShowStrategy implements SpacecraftTypeShowStragegyInterface
         return $this;
     }
 
-    private function getAstroState(ShipInterface $ship, GameControllerInterface $game, bool $isSystem): AstroStateWrapper
+    private function getAstroState(Ship $ship, GameControllerInterface $game, bool $isSystem): AstroStateWrapper
     {
         //$this->loggerUtil->init('SS', LoggerEnum::LEVEL_ERROR);
 
@@ -73,7 +73,7 @@ class ShipShowStrategy implements SpacecraftTypeShowStragegyInterface
         return new AstroStateWrapper($state, $turnsLeft, $isSystem, $measurementpointsleft);
     }
 
-    private function getDatabaseEntryForShipLocation(ShipInterface $ship, bool $isSystem): ?DatabaseEntryInterface
+    private function getDatabaseEntryForShipLocation(Ship $ship, bool $isSystem): ?DatabaseEntry
     {
         if ($isSystem) {
             $system = $ship->getSystem() ?? $ship->isOverSystem();

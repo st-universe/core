@@ -9,10 +9,10 @@ use Override;
 use RuntimeException;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Component\Anomaly\Type\IonStorm\IonStormData;
-use Stu\Orm\Entity\AnomalyInterface;
-use Stu\Orm\Entity\AnomalyTypeInterface;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
+use Stu\Orm\Entity\Anomaly;
+use Stu\Orm\Entity\AnomalyType;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Repository\AnomalyRepositoryInterface;
 use Stu\Orm\Repository\AnomalyTypeRepositoryInterface;
 use Stu\StuTestCase;
@@ -47,14 +47,14 @@ class AnomalyCreationTest extends StuTestCase
             ->once()
             ->andReturnNull();
 
-        $this->subject->create(AnomalyTypeEnum::SUBSPACE_ELLIPSE, $this->mock(MapInterface::class));
+        $this->subject->create(AnomalyTypeEnum::SUBSPACE_ELLIPSE, $this->mock(Map::class));
     }
 
     public function testCreateExpectNewEntityWithMapLocationAndDataObject(): void
     {
-        $anomaly = $this->mock(AnomalyInterface::class);
-        $anomalyType = $this->mock(AnomalyTypeInterface::class);
-        $map = $this->mock(MapInterface::class);
+        $anomaly = $this->mock(Anomaly::class);
+        $anomalyType = $this->mock(AnomalyType::class);
+        $map = $this->mock(Map::class);
         $dataObject = new IonStormData(42, 17);
 
         $map->shouldReceive('addAnomaly')
@@ -102,10 +102,10 @@ class AnomalyCreationTest extends StuTestCase
 
     public function testCreateExpectNewEntityWithStarsystemMapLocation(): void
     {
-        $anomaly = $this->mock(AnomalyInterface::class);
-        $parent = $this->mock(AnomalyInterface::class);
-        $anomalyType = $this->mock(AnomalyTypeInterface::class);
-        $map = $this->mock(StarSystemMapInterface::class);
+        $anomaly = $this->mock(Anomaly::class);
+        $parent = $this->mock(Anomaly::class);
+        $anomalyType = $this->mock(AnomalyType::class);
+        $map = $this->mock(StarSystemMap::class);
 
         $anomalyType->shouldReceive('getLifespanInTicks')
             ->withNoArgs()

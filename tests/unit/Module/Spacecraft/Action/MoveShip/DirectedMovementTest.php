@@ -20,10 +20,10 @@ use Stu\Module\Spacecraft\Lib\Movement\ShipMoverInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\FleetInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\TholianWebInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Fleet;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\TholianWeb;
 use Stu\StuTestCase;
 
 class DirectedMovementTest extends StuTestCase
@@ -73,13 +73,13 @@ class DirectedMovementTest extends StuTestCase
         $userId = 666;
         $shipId = 42;
 
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
         $shipWrapper = $this->mock(ShipWrapperInterface::class);
         $game = $this->mock(GameControllerInterface::class);
         $flightRoute = $this->mock(FlightRouteInterface::class);
         $informationWrapper = $this->mock(InformationWrapper::class);
         $messages = $this->mock(MessageCollectionInterface::class);
-        $holdingWeb = $this->mock(TholianWebInterface::class);
+        $holdingWeb = $this->mock(TholianWeb::class);
 
         /** @var AbstractDirectedMovement $subject */
         $subject = new $className(
@@ -186,7 +186,7 @@ class DirectedMovementTest extends StuTestCase
         $userId = 666;
         $shipId = 42;
 
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
         $shipWrapper = $this->mock(ShipWrapperInterface::class);
         $game = $this->mock(GameControllerInterface::class);
 
@@ -234,7 +234,7 @@ class DirectedMovementTest extends StuTestCase
         $userId = 666;
         $shipId = 42;
 
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
         $shipWrapper = $this->mock(ShipWrapperInterface::class);
         $game = $this->mock(GameControllerInterface::class);
 
@@ -292,10 +292,10 @@ class DirectedMovementTest extends StuTestCase
         $userId = 666;
         $shipId = 42;
 
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
         $shipWrapper = $this->mock(ShipWrapperInterface::class);
         $game = $this->mock(GameControllerInterface::class);
-        $holdingWeb = $this->mock(TholianWebInterface::class);
+        $holdingWeb = $this->mock(TholianWeb::class);
 
         $subject = new MoveShipRight(
             $this->moveShipRequest,
@@ -353,8 +353,8 @@ class DirectedMovementTest extends StuTestCase
         $userId = 666;
         $shipId = 42;
 
-        $ship = $this->mock(ShipInterface::class);
-        $fleet = $this->mock(FleetInterface::class);
+        $ship = $this->mock(Ship::class);
+        $fleet = $this->mock(Fleet::class);
         $shipWrapper = $this->mock(ShipWrapperInterface::class);
         $game = $this->mock(GameControllerInterface::class);
 
@@ -391,7 +391,7 @@ class DirectedMovementTest extends StuTestCase
             ->andReturn(true);
         $fleet->shouldReceive('getDefendedColony')
             ->withNoArgs()
-            ->andReturn($this->mock(ColonyInterface::class));
+            ->andReturn($this->mock(Colony::class));
 
         $game->shouldReceive('getUser->getId')
             ->withNoArgs()
@@ -421,8 +421,8 @@ class DirectedMovementTest extends StuTestCase
         $userId = 666;
         $shipId = 42;
 
-        $ship = $this->mock(ShipInterface::class);
-        $fleet = $this->mock(FleetInterface::class);
+        $ship = $this->mock(Ship::class);
+        $fleet = $this->mock(Fleet::class);
         $shipWrapper = $this->mock(ShipWrapperInterface::class);
         $game = $this->mock(GameControllerInterface::class);
 
@@ -462,7 +462,7 @@ class DirectedMovementTest extends StuTestCase
             ->andReturn(null);
         $fleet->shouldReceive('getBlockedColony')
             ->withNoArgs()
-            ->andReturn($this->mock(ColonyInterface::class));
+            ->andReturn($this->mock(Colony::class));
 
         $game->shouldReceive('getUser->getId')
             ->withNoArgs()
@@ -497,13 +497,13 @@ class DirectedMovementTest extends StuTestCase
         $destY = 5;
         $fieldCount = 1;
 
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
         $shipWrapper = $this->mock(ShipWrapperInterface::class);
         $game = $this->mock(GameControllerInterface::class);
         $flightRoute = $this->mock(FlightRouteInterface::class);
         $messages = $this->mock(MessageCollectionInterface::class);
         $informationWrapper = $this->mock(InformationWrapper::class);
-        $holdingWeb = $this->mock(TholianWebInterface::class);
+        $holdingWeb = $this->mock(TholianWeb::class);
 
         $subject = new MoveShipRight(
             $this->moveShipRequest,
@@ -615,13 +615,13 @@ class DirectedMovementTest extends StuTestCase
         $destX = 6;
         $destY = 5;
 
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
         $shipWrapper = $this->mock(ShipWrapperInterface::class);
         $game = $this->mock(GameControllerInterface::class);
         $flightRoute = $this->mock(FlightRouteInterface::class);
         $messages = $this->mock(MessageCollectionInterface::class);
         $informationWrapper = $this->mock(InformationWrapper::class);
-        $holdingWeb = $this->mock(TholianWebInterface::class);
+        $holdingWeb = $this->mock(TholianWeb::class);
 
         $subject = new MoveShip(
             $this->moveShipRequest,

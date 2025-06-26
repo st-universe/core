@@ -2,16 +2,16 @@
 
 namespace Stu\Module\Colony\Lib;
 
-use Stu\Orm\Entity\BuildingInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\PlanetFieldInterface;
+use Stu\Orm\Entity\Building;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\PlanetField;
 
 interface PlanetColonizationInterface
 {
     public function colonize(
-        ColonyInterface $colony,
+        Colony $colony,
         int $userId,
-        BuildingInterface $building,
-        ?PlanetFieldInterface $field = null
+        Building $building,
+        ?PlanetField $field = null
     ): void;
 }

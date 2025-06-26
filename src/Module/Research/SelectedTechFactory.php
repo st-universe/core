@@ -7,8 +7,8 @@ namespace Stu\Module\Research;
 use Noodlehaus\ConfigInterface;
 use Override;
 use Stu\Module\Template\StatusBarFactoryInterface;
-use Stu\Orm\Entity\ResearchInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Research;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\ResearchDependencyRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
@@ -27,8 +27,8 @@ final class SelectedTechFactory implements SelectedTechFactoryInterface
 
     #[Override]
     public function createSelectedTech(
-        ResearchInterface $research,
-        UserInterface $currentUser
+        Research $research,
+        User $currentUser
     ): SelectedTechInterface {
         return new SelectedTech(
             $this->researchRepository,

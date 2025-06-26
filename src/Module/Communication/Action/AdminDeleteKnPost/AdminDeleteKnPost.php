@@ -8,11 +8,11 @@ use Override;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\KnPostInterface;
+use Stu\Orm\Entity\KnPost;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 final class AdminDeleteKnPost implements ActionControllerInterface
 {
@@ -28,7 +28,7 @@ final class AdminDeleteKnPost implements ActionControllerInterface
         }
         $admin = $game->getUser();
 
-        /** @var KnPostInterface|null $post */
+        /** @var KnPost|null $post */
         $post = $this->knPostRepository->find($this->deleteKnPostRequest->getKnId());
         if (!$post) {
             throw new AccessViolationException();
@@ -47,7 +47,7 @@ final class AdminDeleteKnPost implements ActionControllerInterface
         $game->addInformation(_('Der Beitrag wurde gelöscht'));
     }
 
-    private function sendPm(string $text, UserInterface $user): void
+    private function sendPm(string $text, User $user): void
     {
 
         $this->privateMessageSender->send(

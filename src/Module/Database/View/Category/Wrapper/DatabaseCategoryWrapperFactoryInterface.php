@@ -2,20 +2,20 @@
 
 namespace Stu\Module\Database\View\Category\Wrapper;
 
-use Stu\Orm\Entity\DatabaseCategoryInterface;
-use Stu\Orm\Entity\DatabaseEntryInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\DatabaseCategory;
+use Stu\Orm\Entity\DatabaseEntry;
+use Stu\Orm\Entity\User;
 
 interface DatabaseCategoryWrapperFactoryInterface
 {
     public function createDatabaseCategoryWrapper(
-        DatabaseCategoryInterface $databaseCategory,
-        UserInterface $user,
+        DatabaseCategory $databaseCategory,
+        User $user,
         ?int $layer = null
     ): DatabaseCategoryWrapperInterface;
 
     public function createDatabaseCategoryEntryWrapper(
-        DatabaseEntryInterface $databaseEntry,
-        UserInterface $user
+        DatabaseEntry $databaseEntry,
+        User $user
     ): DatabaseCategoryEntryWrapperInterface;
 }

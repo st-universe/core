@@ -23,8 +23,8 @@ use Stu\Lib\Map\VisualPanel\Layer\Render\SpacecraftCountLayerRenderer;
 use Stu\Lib\Map\VisualPanel\Layer\Render\SubspaceLayerRenderer;
 use Stu\Lib\Map\VisualPanel\Layer\Render\SystemLayerRenderer;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\LayerInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Layer;
+use Stu\Orm\Entity\Spacecraft;
 
 final class PanelLayerCreation implements PanelLayerCreationInterface
 {
@@ -55,7 +55,7 @@ final class PanelLayerCreation implements PanelLayerCreationInterface
     }
 
     #[Override]
-    public function addMapLayer(LayerInterface $layer): PanelLayerCreationInterface
+    public function addMapLayer(Layer $layer): PanelLayerCreationInterface
     {
         $this->layers[PanelLayerEnum::MAP->value] = new MapLayerRenderer($layer, $this->encodedMap);
 
@@ -82,7 +82,7 @@ final class PanelLayerCreation implements PanelLayerCreationInterface
     #[Override]
     public function addShipCountLayer(
         bool $showCloakedEverywhere,
-        ?SpacecraftInterface $currentSpacecraft,
+        ?Spacecraft $currentSpacecraft,
         SpacecraftCountLayerTypeEnum $type,
         int $id
     ): PanelLayerCreationInterface {

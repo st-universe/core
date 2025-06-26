@@ -14,8 +14,8 @@ use Stu\Module\Spacecraft\Lib\Interaction\ShipUndockingInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftStateChangerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Station\Lib\StationWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\StationInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Station;
 use Stu\StuTestCase;
 
 class WarpdriveActivationSubscriberTest extends StuTestCase
@@ -25,7 +25,7 @@ class WarpdriveActivationSubscriberTest extends StuTestCase
     private MockInterface&ShipUndockingInterface $shipUndocking;
     private MockInterface&GameControllerInterface $game;
 
-    private MockInterface&StationInterface $station;
+    private MockInterface&Station $station;
     private MockInterface&StationWrapperInterface $wrapper;
 
     private WarpdriveActivationSubscriber $subject;
@@ -38,7 +38,7 @@ class WarpdriveActivationSubscriberTest extends StuTestCase
         $this->shipUndocking = $this->mock(ShipUndockingInterface::class);
         $this->game = $this->mock(GameControllerInterface::class);
 
-        $this->station = $this->mock(StationInterface::class);
+        $this->station = $this->mock(Station::class);
         $this->wrapper = $this->mock(StationWrapperInterface::class);
 
         $this->wrapper->shouldReceive('get')
@@ -83,7 +83,7 @@ class WarpdriveActivationSubscriberTest extends StuTestCase
     {
         $event = $this->mock(WarpdriveActivationEvent::class);
         $traktoredShipWrapper = $this->mock(ShipWrapperInterface::class);
-        $traktoredShip = $this->mock(ShipInterface::class);
+        $traktoredShip = $this->mock(Ship::class);
 
         $event->shouldReceive('getWrapper')
             ->withNoArgs()
@@ -120,7 +120,7 @@ class WarpdriveActivationSubscriberTest extends StuTestCase
     {
         $event = $this->mock(WarpdriveActivationEvent::class);
         $traktoredShipWrapper = $this->mock(ShipWrapperInterface::class);
-        $traktoredShip = $this->mock(ShipInterface::class);
+        $traktoredShip = $this->mock(Ship::class);
 
         $event->shouldReceive('getWrapper')
             ->withNoArgs()

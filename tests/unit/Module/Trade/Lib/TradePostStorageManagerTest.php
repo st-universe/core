@@ -6,10 +6,10 @@ namespace Stu\Module\Trade\Lib;
 
 use Mockery\MockInterface;
 use Override;
-use Stu\Orm\Entity\CommodityInterface;
-use Stu\Orm\Entity\StorageInterface;
-use Stu\Orm\Entity\TradePostInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Commodity;
+use Stu\Orm\Entity\Storage;
+use Stu\Orm\Entity\TradePost;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\StuTestCase;
@@ -28,20 +28,18 @@ class TradePostStorageManagerTest extends StuTestCase
 
     private ?TradePostStorageManagerInterface $manager;
 
-    private TradePostInterface $tradePost;
-
-    private StorageInterface $storage;
-
-    private UserInterface $user;
+    private TradePost&MockInterface $tradePost;
+    private Storage&MockInterface $storage;
+    private User&MockInterface $user;
 
     #[Override]
     public function setUp(): void
     {
         $this->storageRepository = $this->mock(StorageRepositoryInterface::class);
         $this->commodityRepository = $this->mock(CommodityRepositoryInterface::class);
-        $this->tradePost = $this->mock(TradePostInterface::class);
-        $this->storage = $this->mock(StorageInterface::class);
-        $this->user = $this->mock(UserInterface::class);
+        $this->tradePost = $this->mock(TradePost::class);
+        $this->storage = $this->mock(Storage::class);
+        $this->user = $this->mock(User::class);
 
         $this->manager = new TradePostStorageManager(
             $this->storageRepository,
@@ -127,8 +125,8 @@ class TradePostStorageManagerTest extends StuTestCase
     public function testUpperStorageCreateNewIfNonExistent(): void
     {
         $this->mockStorage();
-        $newStorage = $this->mock(StorageInterface::class);
-        $commodity = $this->mock(CommodityInterface::class);
+        $newStorage = $this->mock(Storage::class);
+        $commodity = $this->mock(Commodity::class);
 
         $this->storageRepository->shouldReceive('prototype')
             ->withNoArgs()

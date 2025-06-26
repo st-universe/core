@@ -6,7 +6,7 @@ namespace Stu\Component\Player;
 
 use Override;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 final class CrewLimitCalculator implements CrewLimitCalculatorInterface
 {
@@ -15,7 +15,7 @@ final class CrewLimitCalculator implements CrewLimitCalculatorInterface
     }
 
     #[Override]
-    public function getGlobalCrewLimit(UserInterface $user): int
+    public function getGlobalCrewLimit(User $user): int
     {
         $limit = 0;
         foreach ($user->getColonies() as $colony) {

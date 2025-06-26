@@ -10,7 +10,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Spacecraft\View\ShowInformation\ShowInformation;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 
 final class LeaveFleet implements ActionControllerInterface
 {
@@ -38,7 +38,7 @@ final class LeaveFleet implements ActionControllerInterface
         }
     }
 
-    private function entferneSchiffAusFlotte(ShipInterface $ship, GameControllerInterface $game): void
+    private function entferneSchiffAusFlotte(Ship $ship, GameControllerInterface $game): void
     {
         $fleet = $ship->getFleet();
         if ($fleet === null) {

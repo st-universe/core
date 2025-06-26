@@ -8,8 +8,8 @@ use Mockery\MockInterface;
 use Override;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Orm\Entity\LotteryTicketInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\LotteryTicket;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\LotteryTicketRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -48,8 +48,8 @@ class LotteryFacadeTest extends StuTestCase
 
     public function testCreateLotteryTicket(): void
     {
-        $user = $this->mock(UserInterface::class);
-        $ticket = $this->mock(LotteryTicketInterface::class);
+        $user = $this->mock(User::class);
+        $ticket = $this->mock(LotteryTicket::class);
 
         $time = 1672575107;
 

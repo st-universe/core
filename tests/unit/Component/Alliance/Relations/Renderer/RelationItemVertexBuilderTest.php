@@ -8,7 +8,7 @@ use Fhaculty\Graph\Graph;
 use Fhaculty\Graph\Vertex;
 use Mockery\MockInterface;
 use Override;
-use Stu\Orm\Entity\AllianceInterface;
+use Stu\Orm\Entity\Alliance;
 use Stu\StuTestCase;
 
 class RelationItemVertexBuilderTest extends StuTestCase
@@ -30,7 +30,7 @@ class RelationItemVertexBuilderTest extends StuTestCase
     public function testBuildReturnsVertex(): void
     {
         $graph = $this->mock(Graph::class);
-        $alliance = $this->mock(AllianceInterface::class);
+        $alliance = $this->mock(Alliance::class);
         $vertex = $this->mock(Vertex::class);
 
         $allianceId = 666;

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Spacecraft;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Stu\Orm\Entity\ModuleSpecialInterface;
+use Stu\Orm\Entity\ModuleSpecial;
 use Stu\StuTestCase;
 
 class ModuleSpecialAbilityEnumTest extends StuTestCase
@@ -23,7 +23,7 @@ class ModuleSpecialAbilityEnumTest extends StuTestCase
     {
         $collection = new ArrayCollection();
 
-        $moduleSpecial = $this->mock(ModuleSpecialInterface::class);
+        $moduleSpecial = $this->mock(ModuleSpecial::class);
         $moduleSpecial->shouldReceive('getSpecialId')
             ->withNoArgs()
             ->andReturn(ModuleSpecialAbilityEnum::CLOAK);
@@ -39,12 +39,12 @@ class ModuleSpecialAbilityEnumTest extends StuTestCase
     {
         $collection = new ArrayCollection();
 
-        $moduleSpecial2 = $this->mock(ModuleSpecialInterface::class);
+        $moduleSpecial2 = $this->mock(ModuleSpecial::class);
         $moduleSpecial2->shouldReceive('getSpecialId')
             ->withNoArgs()
             ->andReturn(ModuleSpecialAbilityEnum::RPG);
 
-        $moduleSpecial3 = $this->mock(ModuleSpecialInterface::class);
+        $moduleSpecial3 = $this->mock(ModuleSpecial::class);
         $moduleSpecial3->shouldReceive('getSpecialId')
             ->withNoArgs()
             ->andReturn(ModuleSpecialAbilityEnum::TACHYON_SCANNER);
@@ -61,17 +61,17 @@ class ModuleSpecialAbilityEnumTest extends StuTestCase
     {
         $collection = new ArrayCollection();
 
-        $moduleSpecial2 = $this->mock(ModuleSpecialInterface::class);
+        $moduleSpecial2 = $this->mock(ModuleSpecial::class);
         $moduleSpecial2->shouldReceive('getSpecialId')
             ->withNoArgs()
             ->andReturn(ModuleSpecialAbilityEnum::RPG);
 
-        $moduleSpecial4 = $this->mock(ModuleSpecialInterface::class);
+        $moduleSpecial4 = $this->mock(ModuleSpecial::class);
         $moduleSpecial4->shouldReceive('getSpecialId')
             ->withNoArgs()
             ->andReturn(ModuleSpecialAbilityEnum::TACHYON_SCANNER);
 
-        $moduleSpecial6 = $this->mock(ModuleSpecialInterface::class);
+        $moduleSpecial6 = $this->mock(ModuleSpecial::class);
         $moduleSpecial6->shouldReceive('getSpecialId')
             ->withNoArgs()
             ->andReturn(ModuleSpecialAbilityEnum::ASTRO_LABORATORY);

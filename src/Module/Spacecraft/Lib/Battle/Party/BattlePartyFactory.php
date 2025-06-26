@@ -7,7 +7,7 @@ use Override;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 class BattlePartyFactory implements BattlePartyFactoryInterface
@@ -69,7 +69,7 @@ class BattlePartyFactory implements BattlePartyFactoryInterface
 
     #[Override]
     public function createColonyDefendingBattleParty(
-        ShipInterface $leader
+        Ship $leader
     ): ColonyDefendingBattleParty {
         return new ColonyDefendingBattleParty(
             $this->spacecraftWrapperFactory->wrapShip($leader)

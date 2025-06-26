@@ -12,13 +12,12 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\TachyonScanRepository;
 
 #[Table(name: 'stu_tachyon_scan')]
 #[Index(name: 'tachyon_scan_user_idx', columns: ['user_id'])]
 #[Entity(repositoryClass: TachyonScanRepository::class)]
-class TachyonScan implements TachyonScanInterface
+class TachyonScan
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -36,57 +35,49 @@ class TachyonScan implements TachyonScanInterface
 
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $user;
+    private User $user;
 
     #[ManyToOne(targetEntity: Location::class)]
     #[JoinColumn(name: 'location_id', nullable: false, referencedColumnName: 'id')]
-    private LocationInterface $location;
+    private Location $location;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    #[Override]
-    public function setUser(UserInterface $user): TachyonScanInterface
+    public function setUser(User $user): TachyonScan
     {
         $this->user = $user;
         return $this;
     }
 
-    #[Override]
     public function getScanTime(): int
     {
         return $this->scan_time;
     }
-    #[Override]
-    public function setScanTime(int $scanTime): TachyonScanInterface
+    public function setScanTime(int $scanTime): TachyonScan
     {
         $this->scan_time = $scanTime;
         return $this;
     }
 
-    #[Override]
-    public function getLocation(): LocationInterface
+    public function getLocation(): Location
     {
         return $this->location;
     }
 
-    #[Override]
-    public function setLocation(LocationInterface $location): TachyonScanInterface
+    public function setLocation(Location $location): TachyonScan
     {
         $this->location = $location;
 

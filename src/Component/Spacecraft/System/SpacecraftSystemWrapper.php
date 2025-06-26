@@ -2,21 +2,21 @@
 
 namespace Stu\Component\Spacecraft\System;
 
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\SpacecraftSystemInterface;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\SpacecraftSystem;
 
 class SpacecraftSystemWrapper
 {
-    private SpacecraftSystemInterface $spacecraftSystem;
+    private SpacecraftSystem $spacecraftSystem;
 
     public function __construct(
-        SpacecraftInterface $spacecraft,
+        Spacecraft $spacecraft,
         private SpacecraftSystemTypeEnum $type
     ) {
         $this->spacecraftSystem = $spacecraft->getSpacecraftSystem($type);
     }
 
-    public function get(): SpacecraftSystemInterface
+    public function get(): SpacecraftSystem
     {
         return $this->spacecraftSystem;
     }

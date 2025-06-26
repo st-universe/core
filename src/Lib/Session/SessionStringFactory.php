@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Lib\Session;
 
 use Stu\Module\Control\StuTime;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
 
 class SessionStringFactory implements SessionStringFactoryInterface
@@ -15,7 +15,7 @@ class SessionStringFactory implements SessionStringFactoryInterface
         private StuTime $stuTime
     ) {}
 
-    public function createSessionString(UserInterface $user): string
+    public function createSessionString(User $user): string
     {
         $string = bin2hex(random_bytes(15));
 

@@ -14,13 +14,12 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Override;
 use Stu\Component\Map\WormholeEntryTypeEnum;
 use Stu\Orm\Repository\WormholeEntryRepository;
 
 #[Table(name: 'stu_wormhole_entry')]
 #[Entity(repositoryClass: WormholeEntryRepository::class)]
-class WormholeEntry implements WormholeEntryInterface
+class WormholeEntry
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -38,15 +37,15 @@ class WormholeEntry implements WormholeEntryInterface
 
     #[ManyToOne(targetEntity: Map::class, inversedBy: 'wormholeEntries')]
     #[JoinColumn(name: 'map_id', nullable: false, referencedColumnName: 'id')]
-    private MapInterface $map;
+    private Map $map;
 
     #[ManyToOne(targetEntity: StarSystem::class)]
     #[JoinColumn(name: 'system_id', nullable: false, referencedColumnName: 'id')]
-    private StarSystemInterface $starSystem;
+    private StarSystem $starSystem;
 
     #[ManyToOne(targetEntity: StarSystemMap::class, inversedBy: 'wormholeEntries')]
     #[JoinColumn(name: 'system_map_id', nullable: false, referencedColumnName: 'id')]
-    private StarSystemMapInterface $systemMap;
+    private StarSystemMap $systemMap;
 
     /**
      * @var ArrayCollection<int, WormholeRestriction>
@@ -61,40 +60,34 @@ class WormholeEntry implements WormholeEntryInterface
     }
 
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
-    public function getMap(): MapInterface
+    public function getMap(): Map
     {
         return $this->map;
     }
 
-    #[Override]
-    public function getSystem(): StarSystemInterface
+    public function getSystem(): StarSystem
     {
         return $this->starSystem;
     }
 
-    #[Override]
-    public function getSystemMap(): StarSystemMapInterface
+    public function getSystemMap(): StarSystemMap
     {
         return $this->systemMap;
     }
 
-    #[Override]
-    public function setLastUsed(int $lastUsed): WormholeEntryInterface
+    public function setLastUsed(int $lastUsed): WormholeEntry
     {
         $this->last_used = $lastUsed;
 
         return $this;
     }
 
-    #[Override]
-    public function isUsable(LocationInterface $location): bool
+    public function isUsable(Location $location): bool
     {
         if (
             $this->last_used !== null && $this->cooldown !== null
@@ -114,11 +107,10 @@ class WormholeEntry implements WormholeEntryInterface
         return $location === $this->systemMap;
     }
 
-    #[Override]
     /**
      * @return Collection<int, WormholeRestriction>
      */
-    public function getRestrictions(): iterable
+    public function getRestrictions(): Collection
     {
         return $this->restrictions;
     }

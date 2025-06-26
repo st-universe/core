@@ -10,13 +10,11 @@ use Stu\Lib\Map\VisualPanel\Layer\Data\CellDataInterface;
 use Stu\Lib\Map\VisualPanel\Layer\Data\MapData;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerEnum;
 use Stu\Lib\Map\VisualPanel\PanelAttributesInterface;
-use Stu\Orm\Entity\LayerInterface;
+use Stu\Orm\Entity\Layer;
 
 final class MapLayerRenderer implements LayerRendererInterface
 {
-    public function __construct(private LayerInterface $layer, private EncodedMapInterface $encodedMap)
-    {
-    }
+    public function __construct(private Layer $layer, private EncodedMapInterface $encodedMap) {}
 
     /** @param MapData $data */
     #[Override]

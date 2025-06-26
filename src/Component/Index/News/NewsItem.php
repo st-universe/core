@@ -6,11 +6,11 @@ namespace Stu\Component\Index\News;
 
 use Override;
 use Stu\Lib\ParserWithImageInterface;
-use Stu\Orm\Entity\NewsInterface;
+use Stu\Orm\Entity\News;
 
 final class NewsItem implements NewsItemInterface
 {
-    public function __construct(private ParserWithImageInterface $parserWithImage, private NewsInterface $news)
+    public function __construct(private ParserWithImageInterface $parserWithImage, private News $news)
     {
     }
 

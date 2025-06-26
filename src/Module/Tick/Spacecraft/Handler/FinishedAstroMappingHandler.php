@@ -11,8 +11,8 @@ use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\DatabaseEntryInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\DatabaseEntry;
+use Stu\Orm\Entity\Ship;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 
 class FinishedAstroMappingHandler implements SpacecraftTickHandlerInterface
@@ -36,7 +36,7 @@ class FinishedAstroMappingHandler implements SpacecraftTickHandlerInterface
 
         $ship = $wrapper->get();
 
-        /** @var null|DatabaseEntryInterface $databaseEntry */
+        /** @var null|DatabaseEntry $databaseEntry */
         /** @var string $message */
         [$message, $databaseEntry] = $this->getDatabaseEntryForShipLocation($ship);
 
@@ -75,9 +75,9 @@ class FinishedAstroMappingHandler implements SpacecraftTickHandlerInterface
     }
 
     /**
-     * @return array{0: string|null, 1: DatabaseEntryInterface|null}
+     * @return array{0: string|null, 1: DatabaseEntry|null}
      */
-    private function getDatabaseEntryForShipLocation(ShipInterface $ship): array
+    private function getDatabaseEntryForShipLocation(Ship $ship): array
     {
         $system = $ship->getSystem();
         if ($system !== null) {

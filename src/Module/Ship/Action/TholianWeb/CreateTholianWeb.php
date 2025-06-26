@@ -23,9 +23,9 @@ use Stu\Module\Spacecraft\Lib\SpacecraftStateChangerInterface;
 use Stu\Module\Spacecraft\Lib\Creation\SpacecraftCreatorInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\TholianWebInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\TholianWeb;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\Orm\Repository\TholianWebRepositoryInterface;
 
@@ -101,7 +101,7 @@ final class CreateTholianWeb implements ActionControllerInterface
         $this->spacecraftStateChanger->changeState($wrapper, SpacecraftStateEnum::WEB_SPINNING);
 
         //create web
-        /** @var TholianWebInterface */
+        /** @var TholianWeb */
         $web = $this->spacecraftCreator->createBy($userId, 9, 1840, null)
             ->setLocation($ship->getLocation())
             ->finishConfiguration()
@@ -144,7 +144,7 @@ final class CreateTholianWeb implements ActionControllerInterface
         );
     }
 
-    private function tryToCatch(ShipInterface $ship, int $targetId, GameControllerInterface $game): ?SpacecraftInterface
+    private function tryToCatch(Ship $ship, int $targetId, GameControllerInterface $game): ?Spacecraft
     {
         $target = $this->spacecraftRepository->find($targetId);
 

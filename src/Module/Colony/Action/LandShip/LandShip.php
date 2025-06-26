@@ -18,8 +18,8 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftRemoverInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Torpedo\ClearTorpedoInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Ship;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class LandShip implements ActionControllerInterface
@@ -91,14 +91,14 @@ final class LandShip implements ActionControllerInterface
         $game->addInformationf(_('Die %s ist gelandet'), $ship->getName());
     }
 
-    private function transferCrewToColony(ShipInterface $ship, ColonyInterface $colony): void
+    private function transferCrewToColony(Ship $ship, Colony $colony): void
     {
         foreach ($ship->getCrewAssignments() as $crewAssignment) {
             $this->troopTransferUtility->assignCrew($crewAssignment, $colony);
         }
     }
 
-    private function retrieveLoadedTorpedos(ShipWrapperInterface $wrapper, ColonyInterface $colony, GameControllerInterface $game): void
+    private function retrieveLoadedTorpedos(ShipWrapperInterface $wrapper, Colony $colony, GameControllerInterface $game): void
     {
         $ship = $wrapper->get();
         $torpedoStorage = $ship->getTorpedoStorage();

@@ -11,8 +11,8 @@ use RuntimeException;
 use Stu\Component\Anomaly\Type\AnomalyHandlerInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\AnomalyInterface;
-use Stu\Orm\Entity\MapInterface;
+use Stu\Orm\Entity\Anomaly;
+use Stu\Orm\Entity\Map;
 use Stu\Orm\Repository\AnomalyRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -42,7 +42,7 @@ class AnomalyHandlingTest extends StuTestCase
         static::expectExceptionMessage('no handler defined for type: 666');
         static::expectException(RuntimeException::class);
 
-        $anomaly = $this->mock(AnomalyInterface::class);
+        $anomaly = $this->mock(Anomaly::class);
 
         $anomaly->shouldReceive('getAnomalyType->getId')
             ->withNoArgs()
@@ -58,7 +58,7 @@ class AnomalyHandlingTest extends StuTestCase
 
     public function testProcessExistingAnomaliesExpectDisappearWhenLifespanIsOver(): void
     {
-        $anomaly = $this->mock(AnomalyInterface::class);
+        $anomaly = $this->mock(Anomaly::class);
 
         $anomaly->shouldReceive('getAnomalyType->getId')
             ->withNoArgs()
@@ -91,8 +91,8 @@ class AnomalyHandlingTest extends StuTestCase
 
     public function testProcessExistingAnomaliesExpectReductionIfStillAlive(): void
     {
-        $anomaly = $this->mock(AnomalyInterface::class);
-        $child = $this->mock(AnomalyInterface::class);
+        $anomaly = $this->mock(Anomaly::class);
+        $child = $this->mock(Anomaly::class);
 
         $anomaly->shouldReceive('getAnomalyType->getId')
             ->withNoArgs()
@@ -142,9 +142,9 @@ class AnomalyHandlingTest extends StuTestCase
     public function testHandleIncomingSpacecraft(): void
     {
         $wrapper = $this->mock(SpacecraftWrapperInterface::class);
-        $location = $this->mock(MapInterface::class);
-        $anomaly1 = $this->mock(AnomalyInterface::class);
-        $anomaly2 = $this->mock(AnomalyInterface::class);
+        $location = $this->mock(Map::class);
+        $anomaly1 = $this->mock(Anomaly::class);
+        $anomaly2 = $this->mock(Anomaly::class);
         $messages = $this->mock(MessageCollectionInterface::class);
 
         $anomaly1->shouldReceive('getAnomalyType->getId')

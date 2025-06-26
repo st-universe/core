@@ -7,7 +7,6 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\AllianceBoardTopic;
-use Stu\Orm\Entity\AllianceBoardTopicInterface;
 
 /**
  * @extends EntityRepository<AllianceBoardTopic>
@@ -15,13 +14,13 @@ use Stu\Orm\Entity\AllianceBoardTopicInterface;
 final class AllianceBoardTopicRepository extends EntityRepository implements AllianceBoardTopicRepositoryInterface
 {
     #[Override]
-    public function prototype(): AllianceBoardTopicInterface
+    public function prototype(): AllianceBoardTopic
     {
         return new AllianceBoardTopic();
     }
 
     #[Override]
-    public function save(AllianceBoardTopicInterface $post): void
+    public function save(AllianceBoardTopic $post): void
     {
         $em = $this->getEntityManager();
 
@@ -30,7 +29,7 @@ final class AllianceBoardTopicRepository extends EntityRepository implements All
     }
 
     #[Override]
-    public function delete(AllianceBoardTopicInterface $post): void
+    public function delete(AllianceBoardTopic $post): void
     {
         $em = $this->getEntityManager();
 

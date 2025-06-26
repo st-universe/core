@@ -2,12 +2,12 @@
 
 namespace Stu\Component\Spacecraft\Buildplan;
 
-use Stu\Orm\Entity\ModuleInterface;
+use Stu\Orm\Entity\Module;
 
 interface BuildplanSignatureCreationInterface
 {
     /**
-     * @param array<ModuleInterface> $modules
+     * @param array<Module> $modules
      */
     public function createSignature(array $modules, int $crewUsage): string;
 

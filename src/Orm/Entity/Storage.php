@@ -13,7 +13,6 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\StorageRepository;
 
 #[Table(name: 'stu_storage')]
@@ -25,7 +24,7 @@ use Stu\Orm\Repository\StorageRepository;
 #[Index(name: 'storage_tradepost_idx', columns: ['tradepost_id'])]
 #[Index(name: 'storage_tradeoffer_idx', columns: ['tradeoffer_id'])]
 #[Entity(repositoryClass: StorageRepository::class)]
-class Storage implements StorageInterface
+class Storage
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -62,157 +61,138 @@ class Storage implements StorageInterface
 
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ?UserInterface $user = null;
+    private ?User $user = null;
 
     #[ManyToOne(targetEntity: Commodity::class)]
     #[JoinColumn(name: 'commodity_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private CommodityInterface $commodity;
+    private Commodity $commodity;
 
     #[ManyToOne(targetEntity: Colony::class, inversedBy: 'storage')]
     #[JoinColumn(name: 'colony_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ?ColonyInterface $colony = null;
+    private ?Colony $colony = null;
 
     #[ManyToOne(targetEntity: Spacecraft::class, inversedBy: 'storage')]
     #[JoinColumn(name: 'spacecraft_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ?SpacecraftInterface $spacecraft = null;
+    private ?Spacecraft $spacecraft = null;
 
     #[OneToOne(targetEntity: TorpedoStorage::class, inversedBy: 'storage')]
     #[JoinColumn(name: 'torpedo_storage_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ?TorpedoStorageInterface $torpedoStorage = null;
+    private ?TorpedoStorage $torpedoStorage = null;
 
     #[ManyToOne(targetEntity: TradePost::class)]
     #[JoinColumn(name: 'tradepost_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ?TradePostInterface $tradePost = null;
+    private ?TradePost $tradePost = null;
 
     #[OneToOne(targetEntity: TradeOffer::class, inversedBy: 'storage')]
     #[JoinColumn(name: 'tradeoffer_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ?TradeOfferInterface $tradeOffer = null;
+    private ?TradeOffer $tradeOffer = null;
 
     #[ManyToOne(targetEntity: Trumfield::class, inversedBy: 'storage')]
     #[JoinColumn(name: 'trumfield_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ?TrumfieldInterface $trumfield = null;
+    private ?Trumfield $trumfield = null;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    #[Override]
-    public function setUser(UserInterface $user): StorageInterface
+    public function setUser(User $user): Storage
     {
         $this->user = $user;
 
         return $this;
     }
 
-    #[Override]
     public function getCommodityId(): int
     {
         return $this->commodity_id;
     }
 
-    #[Override]
     public function getAmount(): int
     {
         return $this->count;
     }
 
-    #[Override]
-    public function setAmount(int $amount): StorageInterface
+    public function setAmount(int $amount): Storage
     {
         $this->count = $amount;
 
         return $this;
     }
 
-    #[Override]
-    public function getCommodity(): CommodityInterface
+    public function getCommodity(): Commodity
     {
         return $this->commodity;
     }
 
-    #[Override]
-    public function setCommodity(CommodityInterface $commodity): StorageInterface
+    public function setCommodity(Commodity $commodity): Storage
     {
         $this->commodity = $commodity;
 
         return $this;
     }
 
-    #[Override]
-    public function getColony(): ?ColonyInterface
+    public function getColony(): ?Colony
     {
         return $this->colony;
     }
 
-    #[Override]
-    public function setColony(ColonyInterface $colony): StorageInterface
+    public function setColony(Colony $colony): Storage
     {
         $this->colony = $colony;
         return $this;
     }
 
-    #[Override]
-    public function getSpacecraft(): ?SpacecraftInterface
+    public function getSpacecraft(): ?Spacecraft
     {
         return $this->spacecraft;
     }
 
-    #[Override]
-    public function setSpacecraft(?SpacecraftInterface $spacecraft): StorageInterface
+    public function setSpacecraft(?Spacecraft $spacecraft): Storage
     {
         $this->spacecraft = $spacecraft;
         return $this;
     }
 
-    #[Override]
-    public function getTorpedoStorage(): ?TorpedoStorageInterface
+    public function getTorpedoStorage(): ?TorpedoStorage
     {
         return $this->torpedoStorage;
     }
 
-    #[Override]
-    public function setTorpedoStorage(TorpedoStorageInterface $torpedoStorage): StorageInterface
+    public function setTorpedoStorage(TorpedoStorage $torpedoStorage): Storage
     {
         $this->torpedoStorage = $torpedoStorage;
         return $this;
     }
 
-    #[Override]
-    public function getTradePost(): ?TradePostInterface
+    public function getTradePost(): ?TradePost
     {
         return $this->tradePost;
     }
 
-    #[Override]
-    public function setTradePost(TradePostInterface $tradePost): StorageInterface
+    public function setTradePost(TradePost $tradePost): Storage
     {
         $this->tradePost = $tradePost;
         return $this;
     }
 
-    #[Override]
-    public function getTradeOffer(): ?TradeOfferInterface
+    public function getTradeOffer(): ?TradeOffer
     {
         return $this->tradeOffer;
     }
 
-    #[Override]
-    public function setTradeOffer(TradeOfferInterface $tradeOffer): StorageInterface
+    public function setTradeOffer(TradeOffer $tradeOffer): Storage
     {
         $this->tradeOffer = $tradeOffer;
         return $this;
     }
 
-    #[Override]
-    public function setTrumfield(TrumfieldInterface $trumfield): StorageInterface
+    public function setTrumfield(Trumfield $trumfield): Storage
     {
         $this->trumfield = $trumfield;
         return $this;

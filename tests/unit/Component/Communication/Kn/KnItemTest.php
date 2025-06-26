@@ -9,9 +9,9 @@ use Override;
 use Stu\Module\Template\StatusBar;
 use Stu\Module\Template\StatusBarColorEnum;
 use Stu\Module\Template\StatusBarFactoryInterface;
-use Stu\Orm\Entity\KnPostInterface;
-use Stu\Orm\Entity\RpgPlotInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\KnPost;
+use Stu\Orm\Entity\RpgPlot;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\KnCommentRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -20,8 +20,8 @@ class KnItemTest extends StuTestCase
     private MockInterface&KnBbCodeParser $bbcodeParser;
     private MockInterface&KnCommentRepositoryInterface $knCommentRepository;
     private MockInterface&StatusBarFactoryInterface $statusBarFactory;
-    private MockInterface&KnPostInterface $post;
-    /** @var null|MockInterface|UserInterface */
+    private MockInterface&KnPost $post;
+    /** @var null|MockInterface|User */
     private $currentUser;
 
     private KnItemInterface $item;
@@ -32,8 +32,8 @@ class KnItemTest extends StuTestCase
         $this->bbcodeParser = $this->mock(KnBbCodeParser::class);
         $this->knCommentRepository = $this->mock(KnCommentRepositoryInterface::class);
         $this->statusBarFactory = $this->mock(StatusBarFactoryInterface::class);
-        $this->post = $this->mock(KnPostInterface::class);
-        $this->currentUser = $this->mock(UserInterface::class);
+        $this->post = $this->mock(KnPost::class);
+        $this->currentUser = $this->mock(User::class);
 
         $this->item = new KnItem(
             $this->bbcodeParser,
@@ -61,7 +61,7 @@ class KnItemTest extends StuTestCase
 
     public function testGetUserReturnsValue(): void
     {
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
 
         $this->post->shouldReceive('getUser')
             ->withNoArgs()
@@ -189,7 +189,7 @@ class KnItemTest extends StuTestCase
 
     public function testGetPlotReturnsPlot(): void
     {
-        $plot = $this->mock(RpgPlotInterface::class);
+        $plot = $this->mock(RpgPlot::class);
 
         $this->post->shouldReceive('getRpgPlot')
             ->withNoArgs()
@@ -219,7 +219,7 @@ class KnItemTest extends StuTestCase
 
     public function testDisplayContactLinksReturnsTrue(): void
     {
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
 
         $this->post->shouldReceive('getUser')
             ->withNoArgs()
@@ -375,7 +375,7 @@ class KnItemTest extends StuTestCase
         $this->post->shouldReceive('getUser')
             ->withNoArgs()
             ->once()
-            ->andReturn($this->mock(UserInterface::class));
+            ->andReturn($this->mock(User::class));
 
         $this->currentUser->shouldReceive('getId')
             ->withNoArgs()

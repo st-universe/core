@@ -6,7 +6,7 @@ namespace Stu\Component\Spacecraft;
 
 use Doctrine\Common\Collections\Collection;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
-use Stu\Orm\Entity\ModuleSpecialInterface;
+use Stu\Orm\Entity\ModuleSpecial;
 
 enum ModuleSpecialAbilityEnum: int
 {
@@ -89,7 +89,7 @@ enum ModuleSpecialAbilityEnum: int
     }
 
     /**
-     * @param Collection<int, ModuleSpecialInterface> $specials
+     * @param Collection<int, ModuleSpecial> $specials
      */
     public static function getHash(Collection $specials): ?int
     {

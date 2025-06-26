@@ -12,9 +12,9 @@ use Stu\Module\Control\StuTime;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftEmergencyInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\SpacecraftEmergency;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\SpacecraftEmergencyRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -49,9 +49,9 @@ class StopEmergencyTest extends StuTestCase
         $shipId = 666;
         $userId = 42;
 
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
         $shipWrapper = $this->mock(ShipWrapperInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
         $game = $this->mock(GameControllerInterface::class);
 
         $game->shouldReceive('setView')
@@ -97,11 +97,11 @@ class StopEmergencyTest extends StuTestCase
         $shipId = 666;
         $userId = 42;
 
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
         $shipWrapper = $this->mock(ShipWrapperInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
         $game = $this->mock(GameControllerInterface::class);
-        $emergency = $this->mock(SpacecraftEmergencyInterface::class);
+        $emergency = $this->mock(SpacecraftEmergency::class);
         $computer = $this->mock(ComputerSystemData::class);
 
         $game->shouldReceive('setView')

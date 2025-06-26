@@ -5,7 +5,7 @@ namespace Stu\Lib\Interaction\Member;
 use Stu\Lib\Interaction\EntityWithInteractionCheckInterface;
 use Stu\Lib\Interaction\InteractionCheckType;
 use Stu\Lib\Map\EntityWithLocationInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 interface InteractionMemberInterface extends EntityWithLocationInterface
 {
@@ -23,5 +23,5 @@ interface InteractionMemberInterface extends EntityWithLocationInterface
 
     public function get(): EntityWithInteractionCheckInterface;
 
-    public function getUser(): ?UserInterface;
+    public function getUser(): ?User;
 }

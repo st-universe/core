@@ -11,12 +11,11 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\DatabaseCategoryAwardRepository;
 
 #[Table(name: 'stu_database_category_awards')]
 #[Entity(repositoryClass: DatabaseCategoryAwardRepository::class)]
-class DatabaseCategoryAward implements DatabaseCategoryAwardInterface
+class DatabaseCategoryAward
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -34,58 +33,50 @@ class DatabaseCategoryAward implements DatabaseCategoryAwardInterface
 
     #[ManyToOne(targetEntity: DatabaseCategory::class)]
     #[JoinColumn(name: 'category_id', nullable: false, referencedColumnName: 'id')]
-    private DatabaseCategoryInterface $category;
+    private DatabaseCategory $category;
 
     #[ManyToOne(targetEntity: Award::class)]
     #[JoinColumn(name: 'award_id', referencedColumnName: 'id')]
-    private ?AwardInterface $award = null;
+    private ?Award $award = null;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getCategoryId(): int
     {
         return $this->category_id;
     }
 
-    #[Override]
-    public function setLayerId(?int $layerId): DatabaseCategoryAwardInterface
+    public function setLayerId(?int $layerId): DatabaseCategoryAward
     {
         $this->layer_id = $layerId;
         return $this;
     }
 
-    #[Override]
     public function getLayerId(): ?int
     {
         return $this->layer_id;
     }
 
-    #[Override]
-    public function setAwardId(?int $awardId): DatabaseCategoryAwardInterface
+    public function setAwardId(?int $awardId): DatabaseCategoryAward
     {
         $this->award_id = $awardId;
         return $this;
     }
 
-    #[Override]
     public function getAwardId(): ?int
     {
         return $this->award_id;
     }
 
-    #[Override]
-    public function getCategory(): DatabaseCategoryInterface
+    public function getCategory(): DatabaseCategory
     {
         return $this->category;
     }
 
-    #[Override]
-    public function getAward(): ?AwardInterface
+    public function getAward(): ?Award
     {
         return $this->award;
     }

@@ -14,7 +14,7 @@ use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageSender;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class PlayerDeletion implements PlayerDeletionInterface
@@ -79,7 +79,7 @@ final class PlayerDeletion implements PlayerDeletionInterface
         }
     }
 
-    private function delete(UserInterface $user): void
+    private function delete(User $user): void
     {
         $userId = $user->getId();
         $name = $this->bbCodeParser->parse($user->getName())->getAsText();

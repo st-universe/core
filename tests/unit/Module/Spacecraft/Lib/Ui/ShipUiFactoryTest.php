@@ -9,7 +9,7 @@ use Override;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreationInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\StuTestCase;
 
 class ShipUiFactoryTest extends StuTestCase
@@ -37,7 +37,7 @@ class ShipUiFactoryTest extends StuTestCase
             VisualNavPanel::class,
             $this->subject->createVisualNavPanel(
                 $this->mock(SpacecraftWrapperInterface::class),
-                $this->mock(UserInterface::class),
+                $this->mock(User::class),
                 $this->mock(LoggerUtilInterface::class),
                 true,
             )

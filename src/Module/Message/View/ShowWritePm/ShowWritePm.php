@@ -15,8 +15,8 @@ use Stu\Module\Message\Lib\PrivateMessageFolderItem;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageListItem;
 use Stu\Module\Message\Lib\PrivateMessageUiFactoryInterface;
-use Stu\Orm\Entity\PrivateMessageFolderInterface;
-use Stu\Orm\Entity\PrivateMessageInterface;
+use Stu\Orm\Entity\PrivateMessageFolder;
+use Stu\Orm\Entity\PrivateMessage;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
@@ -54,7 +54,7 @@ final class ShowWritePm implements ViewControllerInterface
             $isInboxMessengerStyle = $this->userSettingsProvider->isInboxMessengerStyle($user);
 
             $correspondence = array_map(
-                fn(PrivateMessageInterface $message): PrivateMessageListItem => new PrivateMessageListItem(
+                fn(PrivateMessage $message): PrivateMessageListItem => new PrivateMessageListItem(
                     $this->privateMessageRepository,
                     $this->contactRepository,
                     $this->userSettingsProvider,
@@ -86,7 +86,7 @@ final class ShowWritePm implements ViewControllerInterface
         $game->setTemplateVar(
             'PM_CATEGORIES',
             array_map(
-                fn(PrivateMessageFolderInterface $privateMessageFolder): PrivateMessageFolderItem =>
+                fn(PrivateMessageFolder $privateMessageFolder): PrivateMessageFolderItem =>
                 $this->privateMessageUiFactory->createPrivateMessageFolderItem($privateMessageFolder),
                 $this->privateMessageFolderRepository->getOrderedByUser($user)
             )

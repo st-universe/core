@@ -4,7 +4,6 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\TerraformingCost;
-use Stu\Orm\Entity\TerraformingCostInterface;
 
 /**
  * @extends ObjectRepository<TerraformingCost>
@@ -12,7 +11,7 @@ use Stu\Orm\Entity\TerraformingCostInterface;
 interface TerraformingCostRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return list<TerraformingCostInterface>
+     * @return list<TerraformingCost>
      */
     public function getByTerraforming(int $terraformingId): array;
 }

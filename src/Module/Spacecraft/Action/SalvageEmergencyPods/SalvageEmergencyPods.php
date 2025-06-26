@@ -20,9 +20,9 @@ use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftRemoverInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\TradePostInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\TradePost;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 
@@ -91,7 +91,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         if ($this->cancelRepair->cancelRepair($spacecraft)) {
             $game->addInformation("Die Reparatur wurde abgebrochen");
         }
-        if ($spacecraft instanceof ShipInterface && $this->cancelRetrofit->cancelRetrofit($spacecraft)) {
+        if ($spacecraft instanceof Ship && $this->cancelRetrofit->cancelRetrofit($spacecraft)) {
             $game->addInformation("Die Umrüstung wurde abgebrochen");
         }
 
@@ -122,7 +122,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
     /**
      * @return array<int, int>
      */
-    private function determineCrewmanPerUser(SpacecraftInterface $target): array
+    private function determineCrewmanPerUser(Spacecraft $target): array
     {
         $crewmanPerUser = [];
 
@@ -144,9 +144,9 @@ final class SalvageEmergencyPods implements ActionControllerInterface
      */
     private function sendPMsToCrewOwners(
         array $crewmanPerUser,
-        SpacecraftInterface $spacecraft,
-        SpacecraftInterface $target,
-        TradePostInterface $closestTradepost,
+        Spacecraft $spacecraft,
+        Spacecraft $target,
+        TradePost $closestTradepost,
         GameControllerInterface $game
     ): void {
         $userId = $game->getUser()->getId();
@@ -198,7 +198,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         }
     }
 
-    private function gotEnoughFreeTroopQuarters(SpacecraftInterface $spacecraft, int $count): bool
+    private function gotEnoughFreeTroopQuarters(Spacecraft $spacecraft, int $count): bool
     {
         return $this->troopTransferUtility->getFreeQuarters($spacecraft) >= $count;
     }

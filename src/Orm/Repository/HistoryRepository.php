@@ -9,7 +9,6 @@ use Override;
 use Stu\Component\History\HistoryTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\History;
-use Stu\Orm\Entity\HistoryInterface;
 
 /**
  * @extends EntityRepository<History>
@@ -119,13 +118,13 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
     }
 
     #[Override]
-    public function prototype(): HistoryInterface
+    public function prototype(): History
     {
         return new History();
     }
 
     #[Override]
-    public function save(HistoryInterface $history): void
+    public function save(History $history): void
     {
         $em = $this->getEntityManager();
 
@@ -133,7 +132,7 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
     }
 
     #[Override]
-    public function delete(HistoryInterface $history): void
+    public function delete(History $history): void
     {
         $em = $this->getEntityManager();
 

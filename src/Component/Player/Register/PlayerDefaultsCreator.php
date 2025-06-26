@@ -8,7 +8,7 @@ use Override;
 use RuntimeException;
 use Stu\Component\Map\MapEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
@@ -22,7 +22,7 @@ final class PlayerDefaultsCreator implements PlayerDefaultsCreatorInterface
     public function __construct(private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository, private ResearchedRepositoryInterface $researchedRepository, private LayerRepositoryInterface $layerRepository, private UserLayerRepositoryInterface $userLayerRepository,  private TutorialStepRepositoryInterface $tutorialStepRepository,  private UserTutorialRepositoryInterface $userTutorialRepository) {}
 
     #[Override]
-    public function createDefault(UserInterface $user): void
+    public function createDefault(User $user): void
     {
         $this->createDefaultPmCategories($user);
         $this->createDefaultUserLayer($user);
@@ -30,7 +30,7 @@ final class PlayerDefaultsCreator implements PlayerDefaultsCreatorInterface
         $this->createTutorialsForPlayer($user);
     }
 
-    private function createDefaultPmCategories(UserInterface $user): void
+    private function createDefaultPmCategories(User $user): void
     {
         foreach (PrivateMessageFolderTypeEnum::cases() as $folderType) {
 
@@ -48,7 +48,7 @@ final class PlayerDefaultsCreator implements PlayerDefaultsCreatorInterface
         }
     }
 
-    private function createDefaultUserLayer(UserInterface $user): void
+    private function createDefaultUserLayer(User $user): void
     {
         $defaultLayer = $this->layerRepository->find(MapEnum::DEFAULT_LAYER);
 
@@ -64,7 +64,7 @@ final class PlayerDefaultsCreator implements PlayerDefaultsCreatorInterface
         $user->getUserLayers()->set(MapEnum::DEFAULT_LAYER, $userLayer);
     }
 
-    private function createDefaultStartResearch(UserInterface $user): void
+    private function createDefaultStartResearch(User $user): void
     {
         $faction = $user->getFaction();
         $startResarch = $faction->getStartResearch();
@@ -82,7 +82,7 @@ final class PlayerDefaultsCreator implements PlayerDefaultsCreatorInterface
         $this->researchedRepository->save($db);
     }
 
-    private function createTutorialsForPlayer(UserInterface $player): void
+    private function createTutorialsForPlayer(User $player): void
     {
         $firstSteps = $this->tutorialStepRepository->findAllFirstSteps();
         foreach ($firstSteps as $step) {

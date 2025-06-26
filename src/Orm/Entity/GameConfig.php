@@ -10,13 +10,12 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\GameConfigRepository;
 
 #[Table(name: 'stu_game_config')]
 #[Index(name: 'option_idx', columns: ['option'])]
 #[Entity(repositoryClass: GameConfigRepository::class)]
-class GameConfig implements GameConfigInterface
+class GameConfig
 {
     public const TABLE_NAME = 'stu_game_config';
 
@@ -31,34 +30,29 @@ class GameConfig implements GameConfigInterface
     #[Column(type: 'smallint')]
     private int $value = 0;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getOption(): int
     {
         return $this->option;
     }
 
-    #[Override]
-    public function setOption(int $option): GameConfigInterface
+    public function setOption(int $option): GameConfig
     {
         $this->option = $option;
 
         return $this;
     }
 
-    #[Override]
     public function getValue(): int
     {
         return $this->value;
     }
 
-    #[Override]
-    public function setValue(int $value): GameConfigInterface
+    public function setValue(int $value): GameConfig
     {
         $this->value = $value;
 

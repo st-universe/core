@@ -9,7 +9,7 @@ use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Entity\AllianceBoardTopicInterface;
+use Stu\Orm\Entity\AllianceBoardTopic;
 use Stu\Orm\Repository\AllianceBoardPostRepositoryInterface;
 use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
@@ -34,7 +34,7 @@ final class Topic implements ViewControllerInterface
         $topicId = $this->topicRequest->getTopicId();
         $allianceId = $alliance->getId();
 
-        /** @var AllianceBoardTopicInterface $topic */
+        /** @var AllianceBoardTopic $topic */
         $topic = $this->allianceBoardTopicRepository->find($topicId);
         if ($topic === null) {
             throw new AccessViolationException(sprintf(_('userId %d tried to access non-existent topicId %d'), $userId, $topicId));
@@ -91,7 +91,7 @@ final class Topic implements ViewControllerInterface
         $game->setTemplateVar('USERID', $game->getUser()->getId());
     }
 
-    private function getTopicNavigation(AllianceBoardTopicInterface $topic): array
+    private function getTopicNavigation(AllianceBoardTopic $topic): array
     {
         $mark = $this->topicRequest->getPageMark();
         if ($mark % self::ALLIANCEBOARDLIMITER != 0 || $mark < 0) {

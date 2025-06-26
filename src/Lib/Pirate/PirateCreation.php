@@ -14,11 +14,11 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
-use Stu\Orm\Entity\FleetInterface;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\PirateSetupInterface;
-use Stu\Orm\Entity\PirateRoundInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Fleet;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\PirateSetup;
+use Stu\Orm\Entity\PirateRound;
+use Stu\Orm\Entity\Ship;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\GameTurnRepositoryInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
@@ -153,7 +153,7 @@ class PirateCreation implements PirateCreationInterface
      * 
      * @return array{maxFleets: int, maxPerTick: int, maxPer10Min: int}
      */
-    private function calculateDynamicLimits(PirateRoundInterface $currentRound): array
+    private function calculateDynamicLimits(PirateRound $currentRound): array
     {
         $maxPrestige = $currentRound->getMaxPrestige();
         $actualPrestige = $currentRound->getActualPrestige();
@@ -194,7 +194,7 @@ class PirateCreation implements PirateCreationInterface
         }
     }
 
-    private function calculateSpawnProbability(PirateRoundInterface $currentRound): float
+    private function calculateSpawnProbability(PirateRound $currentRound): float
     {
         $maxPrestige = $currentRound->getMaxPrestige();
         $actualPrestige = $currentRound->getActualPrestige();
@@ -216,7 +216,7 @@ class PirateCreation implements PirateCreationInterface
     }
 
     #[Override]
-    public function createPirateFleet(?ShipInterface $supportCaller = null): FleetInterface
+    public function createPirateFleet(?Ship $supportCaller = null): Fleet
     {
         $pirateUser = $this->userRepository->find(UserEnum::USER_NPC_KAZON);
         if ($pirateUser === null) {
@@ -253,8 +253,8 @@ class PirateCreation implements PirateCreationInterface
         return $fleet;
     }
 
-    /** @return array<ShipInterface> */
-    private function createShips(PirateSetupInterface $pirateSetup, ?ShipInterface $supportCaller): array
+    /** @return array<Ship> */
+    private function createShips(PirateSetup $pirateSetup, ?Ship $supportCaller): array
     {
         $randomLocation = $supportCaller === null ? $this->getRandomMapLocation() : $supportCaller->getLocation();
 
@@ -302,16 +302,16 @@ class PirateCreation implements PirateCreationInterface
         return $result;
     }
 
-    private function getRandomPirateSetup(): PirateSetupInterface
+    private function getRandomPirateSetup(): PirateSetup
     {
         $pirateSetups = $this->pirateSetupRepository->findAll();
 
-        $pirateProbabilities = array_map(fn(PirateSetupInterface $setup): int => $setup->getProbabilityWeight(), $pirateSetups);
+        $pirateProbabilities = array_map(fn(PirateSetup $setup): int => $setup->getProbabilityWeight(), $pirateSetups);
 
         return $pirateSetups[$this->stuRandom->randomKeyOfProbabilities($pirateProbabilities)];
     }
 
-    private function getRandomMapLocation(): MapInterface
+    private function getRandomMapLocation(): Map
     {
         $defaultLayer = $this->layerRepository->getDefaultLayer();
 

@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Component\Database\DatabaseCategoryTypeEnum;
 use Stu\Orm\Entity\ColonyClass;
-use Stu\Orm\Entity\ColonyClassInterface;
 use Stu\Orm\Entity\DatabaseEntry;
 
 /**
@@ -17,7 +16,7 @@ use Stu\Orm\Entity\DatabaseEntry;
 final class ColonyClassRepository extends EntityRepository implements ColonyClassRepositoryInterface
 {
     #[Override]
-    public function save(ColonyClassInterface $obj): void
+    public function save(ColonyClass $obj): void
     {
         $em = $this->getEntityManager();
 

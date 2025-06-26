@@ -8,8 +8,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Override;
 use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\FleetInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Fleet;
+use Stu\Orm\Entity\Ship;
 use Stu\StuTestCase;
 
 class PrestigeCalculationTest extends StuTestCase
@@ -24,7 +24,7 @@ class PrestigeCalculationTest extends StuTestCase
 
     public function testGetPrestigeOfSpacecraftOrFleetExpectSingleShipPrestige(): void
     {
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
 
         $ship->shouldReceive('getFleet')
             ->withNoArgs()
@@ -43,7 +43,7 @@ class PrestigeCalculationTest extends StuTestCase
     public function testGetPrestigeOfSpacecraftOrFleetExpectSingleWrapperPrestige(): void
     {
         $wrapper = $this->mock(ShipWrapperInterface::class);
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
 
         $wrapper->shouldReceive('get')
             ->withNoArgs()
@@ -66,9 +66,9 @@ class PrestigeCalculationTest extends StuTestCase
 
     public function testGetPrestigeOfSpacecraftOrFleetExpectFleetPrestige(): void
     {
-        $ship1 = $this->mock(ShipInterface::class);
-        $ship2 = $this->mock(ShipInterface::class);
-        $fleet = $this->mock(FleetInterface::class);
+        $ship1 = $this->mock(Ship::class);
+        $ship2 = $this->mock(Ship::class);
+        $fleet = $this->mock(Fleet::class);
 
         $ship1->shouldReceive('getFleet')
             ->withNoArgs()
@@ -96,7 +96,7 @@ class PrestigeCalculationTest extends StuTestCase
 
     public function testTargetHasPositivePrestigeExpectFalseForSingleShip(): void
     {
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
 
         $ship->shouldReceive('getFleet')
             ->withNoArgs()
@@ -114,7 +114,7 @@ class PrestigeCalculationTest extends StuTestCase
 
     public function testTargetHasPositivePrestigeExpectTrueForSingleShip(): void
     {
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
 
         $ship->shouldReceive('getFleet')
             ->withNoArgs()
@@ -132,10 +132,10 @@ class PrestigeCalculationTest extends StuTestCase
 
     public function testTargetHasPositivePrestigeExpectTrueForFleet(): void
     {
-        $ship1 = $this->mock(ShipInterface::class);
-        $ship2 = $this->mock(ShipInterface::class);
-        $ship3 = $this->mock(ShipInterface::class);
-        $fleet = $this->mock(FleetInterface::class);
+        $ship1 = $this->mock(Ship::class);
+        $ship2 = $this->mock(Ship::class);
+        $ship3 = $this->mock(Ship::class);
+        $fleet = $this->mock(Fleet::class);
 
         $ship1->shouldReceive('getFleet')
             ->withNoArgs()

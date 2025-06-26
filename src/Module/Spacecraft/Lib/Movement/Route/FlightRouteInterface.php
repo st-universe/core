@@ -9,33 +9,33 @@ use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Movement\FlightCompany;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\LocationInterface;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
-use Stu\Orm\Entity\WormholeEntryInterface;
+use Stu\Orm\Entity\Location;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\StarSystemMap;
+use Stu\Orm\Entity\WormholeEntry;
 
 interface FlightRouteInterface
 {
     public function setDestination(
-        MapInterface|StarSystemMapInterface $destination,
+        Map|StarSystemMap $destination,
         bool $isTranswarp
     ): FlightRouteInterface;
 
     public function setDestinationViaWormhole(
-        WormholeEntryInterface $wormholeEntry,
+        WormholeEntry $wormholeEntry,
         bool $isEntry
     ): FlightRouteInterface;
 
     public function setDestinationViaCoordinates(
-        ShipInterface $ship,
+        Ship $ship,
         int $x,
         int $y
     ): FlightRouteInterface;
 
-    public function getCurrentWaypoint(): LocationInterface;
+    public function getCurrentWaypoint(): Location;
 
-    public function getNextWaypoint(): LocationInterface;
+    public function getNextWaypoint(): Location;
 
     public function abortFlight(): void;
 

@@ -7,8 +7,8 @@ namespace Stu\Module\Spacecraft\Lib\Torpedo;
 use InvalidArgumentException;
 use Override;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\TorpedoTypeInterface;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\TorpedoType;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TorpedoStorageRepositoryInterface;
 
@@ -21,7 +21,7 @@ final class ShipTorpedoManager implements ShipTorpedoManagerInterface
     ) {}
 
     #[Override]
-    public function changeTorpedo(SpacecraftWrapperInterface $wrapper, int $changeAmount, ?TorpedoTypeInterface $type = null): void
+    public function changeTorpedo(SpacecraftWrapperInterface $wrapper, int $changeAmount, ?TorpedoType $type = null): void
     {
         $spacecraft = $wrapper->get();
 
@@ -37,7 +37,7 @@ final class ShipTorpedoManager implements ShipTorpedoManagerInterface
         }
     }
 
-    private function setupNewTorpedo(SpacecraftInterface $spacecraft, int $changeAmount, ?TorpedoTypeInterface $type = null): void
+    private function setupNewTorpedo(Spacecraft $spacecraft, int $changeAmount, ?TorpedoType $type = null): void
     {
         if ($type === null) {
             throw new InvalidArgumentException('can not set torpedo type without type specified');
@@ -46,7 +46,7 @@ final class ShipTorpedoManager implements ShipTorpedoManagerInterface
         $this->createTorpedoStorage($spacecraft, $changeAmount, $type);
     }
 
-    private function createTorpedoStorage(SpacecraftInterface $spacecraft, int $amount, TorpedoTypeInterface $type): void
+    private function createTorpedoStorage(Spacecraft $spacecraft, int $amount, TorpedoType $type): void
     {
         $torpedoStorage = $this->torpedoStorageRepository->prototype();
         $torpedoStorage->setSpacecraft($spacecraft);

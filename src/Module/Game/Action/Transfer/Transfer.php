@@ -24,7 +24,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\TargetLink;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Colony;
 use Stu\Orm\Repository\NPCLogRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 
@@ -111,7 +111,7 @@ final class Transfer implements ActionControllerInterface
 
         if ($transferInformation->getTargetType() === TransferEntityTypeEnum::COLONY && !$isUnload && !$this->playerRelationDeterminator->isFriend($target->getUser(), $source->getUser())) {
             $targetEntity = $transferInformation->getTargetWrapper()->get();
-            if ($targetEntity instanceof ColonyInterface) {
+            if ($targetEntity instanceof Colony) {
                 $targetUser = $target->getUser();
                 $sourceUser = $source->getUser();
                 if ($targetUser !== null && $sourceUser !== null && $this->mapRepository->isAdminRegionUserRegion($target->getLocation()->getId(), $targetUser->getFactionId())) {

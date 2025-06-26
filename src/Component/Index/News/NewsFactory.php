@@ -6,7 +6,7 @@ namespace Stu\Component\Index\News;
 
 use Override;
 use Stu\Lib\ParserWithImageInterface;
-use Stu\Orm\Entity\NewsInterface;
+use Stu\Orm\Entity\News;
 
 final class NewsFactory implements NewsFactoryInterface
 {
@@ -16,7 +16,7 @@ final class NewsFactory implements NewsFactoryInterface
 
     #[Override]
     public function createNewsItem(
-        NewsInterface $news
+        News $news
     ): NewsItemInterface {
         return new NewsItem(
             $this->parserWithImage,

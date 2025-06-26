@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib;
 
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Override;
@@ -19,10 +19,10 @@ use Stu\Module\Spacecraft\Lib\Reactor\ReactorWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftStateChangerInterface;
 use Stu\Module\Spacecraft\Lib\Ui\StateIconAndTitle;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\FleetInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\StationInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Fleet;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Station;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -69,8 +69,8 @@ class SpacecraftWrapperFactoryTest extends StuTestCase
 
     public function testWrapShips(): void
     {
-        $shipA = $this->mock(ShipInterface::class);
-        $shipB = $this->mock(ShipInterface::class);
+        $shipA = $this->mock(Ship::class);
+        $shipB = $this->mock(Ship::class);
         $shipArray = [12 => $shipA, 27 => $shipB];
 
         $result = $this->spacecraftWrapperFactory->wrapShips($shipArray);
@@ -82,14 +82,14 @@ class SpacecraftWrapperFactoryTest extends StuTestCase
 
     public function testWrapSpacecraftsAsGroups(): void
     {
-        $user = $this->mock(UserInterface::class);
-        $shipSolo1 = $this->mock(ShipInterface::class);
-        $stationSolo2 = $this->mock(StationInterface::class);
-        $shipFleetLowSort2 = $this->mock(ShipInterface::class);
-        $shipFleetLowSort1 = $this->mock(ShipInterface::class);
-        $shipFleetHighSort = $this->mock(ShipInterface::class);
-        $fleetLowSort = $this->mock(FleetInterface::class);
-        $fleetHighSort = $this->mock(FleetInterface::class);
+        $user = $this->mock(User::class);
+        $shipSolo1 = $this->mock(Ship::class);
+        $stationSolo2 = $this->mock(Station::class);
+        $shipFleetLowSort2 = $this->mock(Ship::class);
+        $shipFleetLowSort1 = $this->mock(Ship::class);
+        $shipFleetHighSort = $this->mock(Ship::class);
+        $fleetLowSort = $this->mock(Fleet::class);
+        $fleetHighSort = $this->mock(Fleet::class);
 
         $spacecrafts = new ArrayCollection([
             12 => $shipSolo1,
@@ -263,13 +263,13 @@ class SpacecraftWrapperFactoryTest extends StuTestCase
         $this->assertEquals([
             0 => $shipSolo1,
             1 => $stationSolo2
-        ], $group1->getWrappers()->map(fn(SpacecraftWrapperInterface $wrapper): SpacecraftInterface => $wrapper->get())->toArray());
+        ], $group1->getWrappers()->map(fn(SpacecraftWrapperInterface $wrapper): Spacecraft => $wrapper->get())->toArray());
         $this->assertEquals([
             0 => $shipFleetLowSort2,
             1 => $shipFleetLowSort1
-        ], $group2->getWrappers()->map(fn(SpacecraftWrapperInterface $wrapper): SpacecraftInterface => $wrapper->get())->toArray());
+        ], $group2->getWrappers()->map(fn(SpacecraftWrapperInterface $wrapper): Spacecraft => $wrapper->get())->toArray());
         $this->assertEquals([
             0 => $shipFleetHighSort
-        ], $group3->getWrappers()->map(fn(SpacecraftWrapperInterface $wrapper): SpacecraftInterface => $wrapper->get())->toArray());
+        ], $group3->getWrappers()->map(fn(SpacecraftWrapperInterface $wrapper): Spacecraft => $wrapper->get())->toArray());
     }
 }

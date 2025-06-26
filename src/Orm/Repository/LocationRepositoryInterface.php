@@ -3,28 +3,27 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
-use Stu\Orm\Entity\LayerInterface;
+use Stu\Orm\Entity\Layer;
 use Stu\Orm\Entity\Location;
-use Stu\Orm\Entity\LocationInterface;
 
 /**
  * @extends ObjectRepository<Location>
  *
- * @method null|LocationInterface find(integer $id)
+ * @method null|Location find(integer $id)
  */
 interface LocationRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return array<LocationInterface>
+     * @return array<Location>
      */
     public function getForSubspaceEllipseCreation(): array;
 
     /**
      * @return array<array{category_name: string, amount: int}>
      */
-    public function getRumpCategoryInfo(LayerInterface $layer, int $cx, int $cy): array;
+    public function getRumpCategoryInfo(Layer $layer, int $cx, int $cy): array;
 
-    public function getRandomLocation(): LocationInterface;
+    public function getRandomLocation(): Location;
 
-    public function getByCoordinates(int $x, int $y, int $layerId): ?LocationInterface;
+    public function getByCoordinates(int $x, int $y, int $layerId): ?Location;
 }

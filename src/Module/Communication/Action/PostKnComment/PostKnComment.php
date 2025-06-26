@@ -11,7 +11,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\KnPostInterface;
+use Stu\Orm\Entity\KnPost;
 use Stu\Orm\Repository\KnCommentRepositoryInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 
@@ -27,7 +27,7 @@ final class PostKnComment implements ActionControllerInterface
     {
         $game->setView(ShowKnComments::VIEW_IDENTIFIER);
 
-        /** @var KnPostInterface $post */
+        /** @var KnPost $post */
         $post = $this->knPostRepository->find($this->postKnCommentRequest->getKnId());
 
         if ($post === null) {
@@ -74,10 +74,6 @@ final class PostKnComment implements ActionControllerInterface
         // send notifications to other commentators
         foreach ($post->getComments() as $comment) {
             $commentatorId = $comment->getUser()->getId();
-
-            if (!isset($commentatorId)) {
-                continue;
-            }
 
             if (!in_array($commentatorId, $notificatedPlayers)) {
                 $notificatedPlayers[] = $commentatorId;

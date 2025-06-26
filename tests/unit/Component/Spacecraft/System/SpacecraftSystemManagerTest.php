@@ -23,15 +23,15 @@ use Stu\Component\Spacecraft\System\Exception\SystemNotDeactivatableException;
 use Stu\Component\Spacecraft\System\Exception\SystemNotFoundException;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftSystemInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\SpacecraftSystem;
 use Stu\StuTestCase;
 
 class SpacecraftSystemManagerTest extends StuTestCase
 {
-    private MockInterface&ShipInterface $ship;
+    private MockInterface&Ship $ship;
     private MockInterface&ShipWrapperInterface $wrapper;
-    private MockInterface&SpacecraftSystemInterface $shipSystem;
+    private MockInterface&SpacecraftSystem $shipSystem;
     private MockInterface&SpacecraftSystemTypeInterface $systemType;
 
     private MockInterface&StuTime $stuTimeMock;
@@ -43,9 +43,9 @@ class SpacecraftSystemManagerTest extends StuTestCase
     #[Override]
     public function setUp(): void
     {
-        $this->ship = $this->mock(ShipInterface::class);
+        $this->ship = $this->mock(Ship::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
-        $this->shipSystem = $this->mock(SpacecraftSystemInterface::class);
+        $this->shipSystem = $this->mock(SpacecraftSystem::class);
         $this->systemType = $this->mock(SpacecraftSystemTypeInterface::class);
 
         $this->stuTimeMock = $this->mock(StuTime::class);

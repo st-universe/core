@@ -11,7 +11,7 @@ use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\CancelColonyBlockOrDefendInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -30,18 +30,18 @@ final class ChangeFleetLeader implements ChangeFleetLeaderInterface
     }
 
     #[Override]
-    public function change(ShipInterface $oldLeader): void
+    public function change(Ship $oldLeader): void
     {
         $fleet = $oldLeader->getFleet();
         if ($fleet === null) {
             throw new RuntimeException('no fleet available');
         }
 
-        /** @var false|ShipInterface */
+        /** @var false|Ship */
         $newLeader = current(
             array_filter(
                 $fleet->getShips()->toArray(),
-                fn(ShipInterface $ship): bool => $ship !== $oldLeader
+                fn(Ship $ship): bool => $ship !== $oldLeader
             )
         );
 

@@ -11,12 +11,11 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\ResearchedRepository;
 
 #[Table(name: 'stu_researched')]
 #[Entity(repositoryClass: ResearchedRepository::class)]
-class Researched implements ResearchedInterface
+class Researched
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -37,86 +36,74 @@ class Researched implements ResearchedInterface
 
     #[ManyToOne(targetEntity: Research::class)]
     #[JoinColumn(name: 'research_id', nullable: false, referencedColumnName: 'id')]
-    private ResearchInterface $research;
+    private Research $research;
 
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $user;
+    private User $user;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    #[Override]
-    public function setUser(UserInterface $user): ResearchedInterface
+    public function setUser(User $user): Researched
     {
         $this->user = $user;
         return $this;
     }
 
-    #[Override]
     public function getActive(): int
     {
         return $this->aktiv;
     }
 
-    #[Override]
-    public function setActive(int $active): ResearchedInterface
+    public function setActive(int $active): Researched
     {
         $this->aktiv = $active;
 
         return $this;
     }
 
-    #[Override]
     public function getFinished(): int
     {
         return $this->finished;
     }
 
-    #[Override]
-    public function setFinished(int $finished): ResearchedInterface
+    public function setFinished(int $finished): Researched
     {
         $this->finished = $finished;
 
         return $this;
     }
 
-    #[Override]
-    public function getResearch(): ResearchInterface
+    public function getResearch(): Research
     {
         return $this->research;
     }
 
-    #[Override]
-    public function setResearch(ResearchInterface $research): ResearchedInterface
+    public function setResearch(Research $research): Researched
     {
         $this->research = $research;
 
         return $this;
     }
 
-    #[Override]
     public function getResearchId(): int
     {
         return $this->research_id;
     }
 
-    #[Override]
     public function getProgress(): int
     {
         return $this->getResearch()->getPoints() - $this->getActive();

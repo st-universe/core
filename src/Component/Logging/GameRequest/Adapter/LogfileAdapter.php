@@ -7,7 +7,7 @@ namespace Stu\Component\Logging\GameRequest\Adapter;
 use Monolog\Level;
 use Override;
 use Psr\Log\LoggerInterface;
-use Stu\Orm\Entity\GameRequestInterface;
+use Stu\Orm\Entity\GameRequest;
 use Throwable;
 
 /**
@@ -21,7 +21,7 @@ final class LogfileAdapter extends AbstractAdapter
 
     #[Override]
     protected function log(
-        GameRequestInterface $gameRequest,
+        GameRequest $gameRequest,
         Level $logLevel,
         bool $isRequestCheck = true
     ): void {

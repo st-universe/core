@@ -10,11 +10,11 @@ use Mockery\MockInterface;
 use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Map\DirectionEnum;
-use Stu\Orm\Entity\FlightSignatureInterface;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftRumpInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
+use Stu\Orm\Entity\FlightSignature;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\SpacecraftRump;
+use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -40,10 +40,10 @@ class FlightSignatureCreatorTest extends StuTestCase
         static::expectException(InvalidArgumentException::class);
 
         $this->subject->createSignatures(
-            $this->mock(ShipInterface::class),
+            $this->mock(Ship::class),
             DirectionEnum::LEFT,
-            $this->mock(MapInterface::class),
-            $this->mock(StarSystemMapInterface::class)
+            $this->mock(Map::class),
+            $this->mock(StarSystemMap::class)
         );
     }
 
@@ -53,10 +53,10 @@ class FlightSignatureCreatorTest extends StuTestCase
         static::expectException(InvalidArgumentException::class);
 
         $this->subject->createSignatures(
-            $this->mock(ShipInterface::class),
+            $this->mock(Ship::class),
             DirectionEnum::LEFT,
-            $this->mock(StarSystemMapInterface::class),
-            $this->mock(MapInterface::class)
+            $this->mock(StarSystemMap::class),
+            $this->mock(Map::class)
         );
     }
 
@@ -75,12 +75,12 @@ class FlightSignatureCreatorTest extends StuTestCase
         DirectionEnum $fromDirection,
         DirectionEnum $toDirection
     ): void {
-        $ship = $this->mock(ShipInterface::class);
-        $currentField = $this->mock(MapInterface::class);
-        $nextField = $this->mock(MapInterface::class);
-        $fromSignature = $this->mock(FlightSignatureInterface::class);
-        $toSignature = $this->mock(FlightSignatureInterface::class);
-        $shipRump = $this->mock(SpacecraftRumpInterface::class);
+        $ship = $this->mock(Ship::class);
+        $currentField = $this->mock(Map::class);
+        $nextField = $this->mock(Map::class);
+        $fromSignature = $this->mock(FlightSignature::class);
+        $toSignature = $this->mock(FlightSignature::class);
+        $shipRump = $this->mock(SpacecraftRump::class);
 
         $userId = 666;
         $shipId = 42;
@@ -186,12 +186,12 @@ class FlightSignatureCreatorTest extends StuTestCase
         DirectionEnum $fromDirection,
         DirectionEnum $toDirection
     ): void {
-        $ship = $this->mock(ShipInterface::class);
-        $currentField = $this->mock(StarSystemMapInterface::class);
-        $nextField = $this->mock(StarSystemMapInterface::class);
-        $fromSignature = $this->mock(FlightSignatureInterface::class);
-        $toSignature = $this->mock(FlightSignatureInterface::class);
-        $shipRump = $this->mock(SpacecraftRumpInterface::class);
+        $ship = $this->mock(Ship::class);
+        $currentField = $this->mock(StarSystemMap::class);
+        $nextField = $this->mock(StarSystemMap::class);
+        $fromSignature = $this->mock(FlightSignature::class);
+        $toSignature = $this->mock(FlightSignature::class);
+        $shipRump = $this->mock(SpacecraftRump::class);
 
         $userId = 666;
         $shipId = 42;

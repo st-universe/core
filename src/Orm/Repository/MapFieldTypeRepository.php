@@ -7,7 +7,6 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\MapFieldType;
-use Stu\Orm\Entity\MapFieldTypeInterface;
 
 /**
  * @extends EntityRepository<MapFieldType>
@@ -15,7 +14,7 @@ use Stu\Orm\Entity\MapFieldTypeInterface;
 final class MapFieldTypeRepository extends EntityRepository implements MapFieldTypeRepositoryInterface
 {
     #[Override]
-    public function save(MapFieldTypeInterface $map): void
+    public function save(MapFieldType $map): void
     {
         $em = $this->getEntityManager();
 

@@ -6,15 +6,15 @@ namespace Stu\Module\Spacecraft\Lib\Battle\Provider;
 
 use Override;
 use RuntimeException;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\LocationInterface;
-use Stu\Orm\Entity\ModuleInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Location;
+use Stu\Orm\Entity\Module;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 
 final class EnergyPhalanx extends AbstractEnergyAttacker
 {
-    public function __construct(private ColonyInterface $colony, private ModuleRepositoryInterface $moduleRepository) {}
+    public function __construct(private Colony $colony, private ModuleRepositoryInterface $moduleRepository) {}
 
     #[Override]
     public function hasSufficientEnergy(int $amount): bool
@@ -23,7 +23,7 @@ final class EnergyPhalanx extends AbstractEnergyAttacker
     }
 
     #[Override]
-    public function isAvoidingHullHits(SpacecraftInterface $target): bool
+    public function isAvoidingHullHits(Spacecraft $target): bool
     {
         return false;
     }
@@ -82,7 +82,7 @@ final class EnergyPhalanx extends AbstractEnergyAttacker
     }
 
     #[Override]
-    public function getWeaponModule(): ModuleInterface
+    public function getWeaponModule(): Module
     {
         if ($this->module === null) {
             $module = $this->moduleRepository->find($this->getModuleId());
@@ -121,7 +121,7 @@ final class EnergyPhalanx extends AbstractEnergyAttacker
     }
 
     #[Override]
-    public function getLocation(): LocationInterface
+    public function getLocation(): Location
     {
         return $this->colony->getLocation();
     }

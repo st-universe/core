@@ -10,13 +10,12 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Component\Map\MapEnum;
 use Stu\Orm\Repository\UserLayerRepository;
 
 #[Table(name: 'stu_user_layer')]
 #[Entity(repositoryClass: UserLayerRepository::class)]
-class UserLayer implements UserLayerInterface
+class UserLayer
 {
     #[Column(type: 'smallint')]
     private int $map_type = MapEnum::MAPTYPE_INSERT;
@@ -24,49 +23,43 @@ class UserLayer implements UserLayerInterface
     #[Id]
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $user;
+    private User $user;
 
     #[Id]
     #[ManyToOne(targetEntity: Layer::class)]
     #[JoinColumn(name: 'layer_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private LayerInterface $layer;
+    private Layer $layer;
 
-    #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    #[Override]
-    public function setUser(UserInterface $user): UserLayerInterface
+    public function setUser(User $user): UserLayer
     {
         $this->user = $user;
 
         return $this;
     }
 
-    #[Override]
-    public function getLayer(): LayerInterface
+    public function getLayer(): Layer
     {
         return $this->layer;
     }
 
-    #[Override]
-    public function setLayer(LayerInterface $layer): UserLayerInterface
+    public function setLayer(Layer $layer): UserLayer
     {
         $this->layer = $layer;
 
         return $this;
     }
 
-    #[Override]
     public function getMappingType(): int
     {
         return $this->map_type;
     }
 
-    #[Override]
-    public function setMappingType(int $mappingType): UserLayerInterface
+    public function setMappingType(int $mappingType): UserLayer
     {
         $this->map_type = $mappingType;
 

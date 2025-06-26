@@ -6,7 +6,7 @@ namespace Stu\Module\Message\Lib;
 
 use Mockery\MockInterface;
 use Override;
-use Stu\Orm\Entity\PrivateMessageFolderInterface;
+use Stu\Orm\Entity\PrivateMessageFolder;
 use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -31,7 +31,7 @@ class PrivateMessageUiFactoryTest extends StuTestCase
         static::assertInstanceOf(
             PrivateMessageFolderItem::class,
             $this->subject->createPrivateMessageFolderItem(
-                $this->mock(PrivateMessageFolderInterface::class)
+                $this->mock(PrivateMessageFolder::class)
             )
         );
     }

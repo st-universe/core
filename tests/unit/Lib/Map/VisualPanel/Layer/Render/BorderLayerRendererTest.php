@@ -12,7 +12,7 @@ use Stu\Component\Spacecraft\System\Data\LssSystemData;
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
 use Stu\Lib\Map\VisualPanel\Layer\Data\BorderData;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 use Stu\StuTestCase;
 
 class BorderLayerRendererTest extends StuTestCase
@@ -54,7 +54,7 @@ class BorderLayerRendererTest extends StuTestCase
         string $expected = 'border:1px solid #2d2d2d;'
     ): void {
         $borderData = $this->mock(BorderData::class);
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
         $wrapper = $this->mock(SpacecraftWrapperInterface::class);
         $lss = $this->mock(LssSystemData::class);
 
@@ -111,7 +111,7 @@ class BorderLayerRendererTest extends StuTestCase
         string $expected = 'border:1px solid #2d2d2d;'
     ): void {
         $borderData = $this->mock(BorderData::class);
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
         $wrapper = $this->mock(SpacecraftWrapperInterface::class);
         $lss = $this->mock(LssSystemData::class);
 

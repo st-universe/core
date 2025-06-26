@@ -11,12 +11,11 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\StationShipRepairRepository;
 
 #[Table(name: 'stu_station_shiprepair')]
 #[Entity(repositoryClass: StationShipRepairRepository::class)]
-class StationShipRepair implements StationShipRepairInterface
+class StationShipRepair
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -31,51 +30,44 @@ class StationShipRepair implements StationShipRepairInterface
 
     #[ManyToOne(targetEntity: Station::class)]
     #[JoinColumn(name: 'station_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private StationInterface $station;
+    private Station $station;
 
     #[ManyToOne(targetEntity: Ship::class)]
     #[JoinColumn(name: 'ship_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ShipInterface $ship;
+    private Ship $ship;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getStationId(): int
     {
         return $this->station_id;
     }
 
-    #[Override]
     public function getShipId(): int
     {
         return $this->ship_id;
     }
 
-    #[Override]
-    public function getStation(): StationInterface
+    public function getStation(): Station
     {
         return $this->station;
     }
 
-    #[Override]
-    public function setStation(StationInterface $station): StationShipRepairInterface
+    public function setStation(Station $station): StationShipRepair
     {
         $this->station = $station;
         return $this;
     }
 
-    #[Override]
-    public function getShip(): ShipInterface
+    public function getShip(): Ship
     {
         return $this->ship;
     }
 
-    #[Override]
-    public function setShip(ShipInterface $ship): StationShipRepairInterface
+    public function setShip(Ship $ship): StationShipRepair
     {
         $this->ship = $ship;
         return $this;

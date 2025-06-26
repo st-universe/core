@@ -7,7 +7,7 @@ namespace Stu\Lib\Map\VisualPanel;
 use Override;
 use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayers;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 
 class VisualNavPanelEntry extends SignaturePanelEntry
 {
@@ -16,7 +16,7 @@ class VisualNavPanelEntry extends SignaturePanelEntry
         int $y,
         private bool $isOnShipLevel,
         PanelLayers $layers,
-        private SpacecraftInterface $currentSpacecraft
+        private Spacecraft $currentSpacecraft
     ) {
         parent::__construct($x, $y, $layers);
     }

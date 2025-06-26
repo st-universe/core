@@ -9,44 +9,39 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\UserTutorialRepository;
 
 #[Table(name: 'stu_user_tutorial')]
 #[Entity(repositoryClass: UserTutorialRepository::class)]
-class UserTutorial implements UserTutorialInterface
+class UserTutorial
 {
     #[Id]
     #[ManyToOne(targetEntity: User::class, inversedBy: 'tutorials')]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $user;
+    private User $user;
 
     #[Id]
     #[ManyToOne(targetEntity: TutorialStep::class)]
     #[JoinColumn(name: 'tutorial_step_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private TutorialStepInterface $tutorialStep;
+    private TutorialStep $tutorialStep;
 
-    #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    #[Override]
-    public function setUser(UserInterface $user): UserTutorialInterface
+    public function setUser(User $user): UserTutorial
     {
         $this->user = $user;
         return $this;
     }
 
-    #[Override]
-    public function getTutorialStep(): TutorialStepInterface
+    public function getTutorialStep(): TutorialStep
     {
         return $this->tutorialStep;
     }
 
-    #[Override]
-    public function setTutorialStep(TutorialStepInterface $tutorialStep): UserTutorialInterface
+    public function setTutorialStep(TutorialStep $tutorialStep): UserTutorial
     {
         $this->tutorialStep = $tutorialStep;
         return $this;

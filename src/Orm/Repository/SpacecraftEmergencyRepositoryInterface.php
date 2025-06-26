@@ -4,21 +4,20 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\SpacecraftEmergency;
-use Stu\Orm\Entity\SpacecraftEmergencyInterface;
 
 /**
  * @extends ObjectRepository<SpacecraftEmergency>
  */
 interface SpacecraftEmergencyRepositoryInterface extends ObjectRepository
 {
-    public function prototype(): SpacecraftEmergencyInterface;
+    public function prototype(): SpacecraftEmergency;
 
-    public function save(SpacecraftEmergencyInterface $spacecraftEmergency): void;
+    public function save(SpacecraftEmergency $spacecraftEmergency): void;
 
-    public function getByShipId(int $shipId): ?SpacecraftEmergencyInterface;
+    public function getByShipId(int $shipId): ?SpacecraftEmergency;
 
     /**
-     * @return list<SpacecraftEmergencyInterface>
+     * @return list<SpacecraftEmergency>
      */
     public function getActive(): array;
 }

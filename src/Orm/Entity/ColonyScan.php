@@ -11,12 +11,11 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\ColonyScanRepository;
 
 #[Table(name: 'stu_colony_scan')]
 #[Entity(repositoryClass: ColonyScanRepository::class)]
-class ColonyScan implements ColonyScanInterface
+class ColonyScan
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -46,138 +45,118 @@ class ColonyScan implements ColonyScanInterface
 
     #[ManyToOne(targetEntity: Colony::class)]
     #[JoinColumn(name: 'colony_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ColonyInterface $colony;
+    private Colony $colony;
 
 
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $user;
+    private User $user;
 
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getColonyId(): int
     {
         return $this->colony_id;
     }
 
-    #[Override]
-    public function setColonyId(int $colonyid): ColonyScanInterface
+    public function setColonyId(int $colonyid): ColonyScan
     {
         $this->colony_id = $colonyid;
         return $this;
     }
 
-    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    #[Override]
-    public function setUserId(int $userid): ColonyScanInterface
+    public function setUserId(int $userid): ColonyScan
     {
         $this->user_id = $userid;
         return $this;
     }
 
-    #[Override]
     public function getColonyUserId(): int
     {
         return $this->colony_user_id;
     }
 
-    #[Override]
-    public function setColonyUserId(int $colonyuserid): ColonyScanInterface
+    public function setColonyUserId(int $colonyuserid): ColonyScan
     {
         $this->colony_user_id = $colonyuserid;
         return $this;
     }
 
-    #[Override]
     public function getColonyName(): ?string
     {
         return $this->colony_name;
     }
 
-    #[Override]
-    public function setColonyName(?string $colonyname): ColonyScanInterface
+    public function setColonyName(?string $colonyname): ColonyScan
     {
         $this->colony_name = $colonyname;
         return $this;
     }
 
-    #[Override]
     public function getColonyUserName(): string
     {
         return $this->colony_user_name;
     }
 
-    #[Override]
-    public function setColonyUserName(string $colonyusername): ColonyScanInterface
+    public function setColonyUserName(string $colonyusername): ColonyScan
     {
         $this->colony_user_name = $colonyusername;
         return $this;
     }
 
-    #[Override]
     public function getFieldData(): string
     {
         return $this->mask;
     }
 
-    #[Override]
-    public function setFieldData(string $fieldData): ColonyScanInterface
+    public function setFieldData(string $fieldData): ColonyScan
     {
         $this->mask = $fieldData;
         return $this;
     }
 
-    #[Override]
     public function getDate(): int
     {
         return $this->date;
     }
 
-    #[Override]
-    public function setDate(int $date): ColonyScanInterface
+    public function setDate(int $date): ColonyScan
     {
         $this->date = $date;
         return $this;
     }
 
-    #[Override]
-    public function getColony(): ColonyInterface
+    public function getColony(): Colony
     {
         return $this->colony;
     }
 
-    #[Override]
-    public function setColony(ColonyInterface $colony): ColonyScanInterface
+    public function setColony(Colony $colony): ColonyScan
     {
         $this->colony = $colony;
         return $this;
     }
 
-    #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    #[Override]
-    public function setUser(UserInterface $user): ColonyScanInterface
+    public function setUser(User $user): ColonyScan
     {
         $this->user = $user;
         return $this;
     }
 
-    #[Override]
     public function isAbandoned(): bool
     {
         return $this->getColony()->getUserId() !== $this->colony_user_id;

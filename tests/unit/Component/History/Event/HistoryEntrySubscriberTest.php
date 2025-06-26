@@ -8,8 +8,8 @@ use Mockery\MockInterface;
 use Override;
 use Stu\Component\Alliance\Event\WarDeclaredEvent;
 use Stu\Module\History\Lib\EntryCreatorInterface;
-use Stu\Orm\Entity\AllianceInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Alliance;
+use Stu\Orm\Entity\User;
 use Stu\StuTestCase;
 
 class HistoryEntrySubscriberTest extends StuTestCase
@@ -31,9 +31,9 @@ class HistoryEntrySubscriberTest extends StuTestCase
     public function testOnWarDeclarationCreatesEntry(): void
     {
         $event = $this->mock(WarDeclaredEvent::class);
-        $alliance = $this->mock(AllianceInterface::class);
-        $counterpart = $this->mock(AllianceInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $alliance = $this->mock(Alliance::class);
+        $counterpart = $this->mock(Alliance::class);
+        $user = $this->mock(User::class);
 
         $allianceName = 'some-name';
         $counterpartName = 'some-other-name';

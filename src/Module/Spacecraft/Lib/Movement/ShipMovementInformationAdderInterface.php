@@ -4,20 +4,20 @@ namespace Stu\Module\Spacecraft\Lib\Movement;
 
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Route\RouteModeEnum;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
 
 interface ShipMovementInformationAdderInterface
 {
     public function reachedDestination(
-        SpacecraftInterface $spacecraft,
+        Spacecraft $spacecraft,
         bool $isFleetMode,
         RouteModeEnum $routeMode,
         MessageCollectionInterface $messages
     ): void;
 
     public function reachedDestinationDestroyed(
-        SpacecraftInterface $spacecraft,
+        Spacecraft $spacecraft,
         string $leadShipName,
         bool $isFleetMode,
         RouteModeEnum $routeMode,
@@ -25,8 +25,8 @@ interface ShipMovementInformationAdderInterface
     ): void;
 
     public function pulledTractoredShip(
-        SpacecraftInterface $spacecraft,
-        ShipInterface $tractoredShip,
+        Spacecraft $spacecraft,
+        Ship $tractoredShip,
         RouteModeEnum $routeMode,
         MessageCollectionInterface $messages
     ): void;

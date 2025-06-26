@@ -3,15 +3,15 @@
 namespace Stu\Component\Communication\Kn;
 
 use Doctrine\Common\Collections\Collection;
-use Stu\Orm\Entity\KnCharacterInterface;
-use Stu\Orm\Entity\RpgPlotInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\KnCharacter;
+use Stu\Orm\Entity\RpgPlot;
+use Stu\Orm\Entity\User;
 
 interface KnItemInterface
 {
     public function getId(): int;
 
-    public function getUser(): UserInterface;
+    public function getUser(): User;
 
     public function getUserId(): int;
 
@@ -25,10 +25,10 @@ interface KnItemInterface
 
     public function isEditAble(): bool;
 
-    public function getPlot(): ?RpgPlotInterface;
+    public function getPlot(): ?RpgPlot;
 
     /**
-     * @return Collection<int, KnCharacterInterface>
+     * @return Collection<int, KnCharacter>
      */
     public function getCharacters(): Collection;
 

@@ -10,7 +10,7 @@ use Stu\Lib\Map\VisualPanel\Layer\Data\BorderData;
 use Stu\Lib\Map\VisualPanel\Layer\Data\CellDataInterface;
 use Stu\Lib\Map\VisualPanel\PanelAttributesInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 
 final class BorderLayerRenderer implements LayerRendererInterface
 {
@@ -87,7 +87,7 @@ final class BorderLayerRenderer implements LayerRendererInterface
         return self::DEFAULT_BORDER_COLOR;
     }
 
-    private function isCurrentShipPosition(BorderData $data, SpacecraftInterface $currentSpacecraft): bool
+    private function isCurrentShipPosition(BorderData $data, Spacecraft $currentSpacecraft): bool
     {
         return $this->isOnShipLevel === true
             && $data->getPosX() === $currentSpacecraft->getPosX()

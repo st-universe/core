@@ -11,8 +11,8 @@ use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\TorpedoTypeInterface;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\TorpedoType;
 
 class ManageTorpedo implements ManagerInterface
 {
@@ -57,7 +57,7 @@ class ManageTorpedo implements ManagerInterface
         }
     }
 
-    private function determineCount(mixed $value, SpacecraftInterface $spacecraft): int
+    private function determineCount(mixed $value, Spacecraft $spacecraft): int
     {
         if ($value == 'm') {
             return $spacecraft->getMaxTorpedos();
@@ -104,7 +104,7 @@ class ManageTorpedo implements ManagerInterface
     /**
      * @param array<int|string, mixed>|null $selectedTorpedoTypeArray
      */
-    private function determineTorpedoType(SpacecraftWrapperInterface $wrapper, ?array $selectedTorpedoTypeArray): ?TorpedoTypeInterface
+    private function determineTorpedoType(SpacecraftWrapperInterface $wrapper, ?array $selectedTorpedoTypeArray): ?TorpedoType
     {
         $spacecraft = $wrapper->get();
 
@@ -135,7 +135,7 @@ class ManageTorpedo implements ManagerInterface
      */
     private function loadTorpedo(
         int $load,
-        ?TorpedoTypeInterface $torpedoType,
+        ?TorpedoType $torpedoType,
         SpacecraftWrapperInterface $wrapper,
         ManagerProviderInterface $managerProvider
     ): array {
@@ -187,9 +187,9 @@ class ManageTorpedo implements ManagerInterface
 
     private function sendMessage(
         int $load,
-        TorpedoTypeInterface $torpedoType,
+        TorpedoType $torpedoType,
         ManagerProviderInterface $managerProvider,
-        SpacecraftInterface $spacecraft
+        Spacecraft $spacecraft
     ): void {
         $this->privateMessageSender->send(
             $managerProvider->getUser()->getId(),

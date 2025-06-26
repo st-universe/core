@@ -8,17 +8,17 @@ use Override;
 use RuntimeException;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Transfer\EntityWithStorageInterface;
-use Stu\Orm\Entity\LocationInterface;
-use Stu\Orm\Entity\TorpedoTypeInterface;
-use Stu\Orm\Entity\TrumfieldInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Location;
+use Stu\Orm\Entity\TorpedoType;
+use Stu\Orm\Entity\Trumfield;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 class TrumfieldStorageEntityWrapper implements StorageEntityWrapperInterface
 {
     public function __construct(
         private UserRepositoryInterface $userRepository,
-        private TrumfieldInterface $trumfield
+        private Trumfield $trumfield
     ) {}
 
     // GENERAL
@@ -29,7 +29,7 @@ class TrumfieldStorageEntityWrapper implements StorageEntityWrapperInterface
     }
 
     #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->userRepository->getFallbackUser();
     }
@@ -47,7 +47,7 @@ class TrumfieldStorageEntityWrapper implements StorageEntityWrapperInterface
     }
 
     #[Override]
-    public function getLocation(): LocationInterface
+    public function getLocation(): Location
     {
         return $this->trumfield->getLocation();
     }
@@ -70,13 +70,13 @@ class TrumfieldStorageEntityWrapper implements StorageEntityWrapperInterface
 
     // CREW
     #[Override]
-    public function getMaxTransferrableCrew(bool $isTarget, UserInterface $user): int
+    public function getMaxTransferrableCrew(bool $isTarget, User $user): int
     {
         return 0;
     }
 
     #[Override]
-    public function getFreeCrewSpace(UserInterface $user): int
+    public function getFreeCrewSpace(User $user): int
     {
         return 0;
     }
@@ -88,7 +88,7 @@ class TrumfieldStorageEntityWrapper implements StorageEntityWrapperInterface
     }
 
     #[Override]
-    public function acceptsCrewFrom(int $amount, UserInterface $user, InformationInterface $information): bool
+    public function acceptsCrewFrom(int $amount, User $user, InformationInterface $information): bool
     {
         return false;
     }
@@ -99,7 +99,7 @@ class TrumfieldStorageEntityWrapper implements StorageEntityWrapperInterface
     // TORPEDOS
 
     #[Override]
-    public function getTorpedo(): ?TorpedoTypeInterface
+    public function getTorpedo(): ?TorpedoType
     {
         return null;
     }
@@ -123,13 +123,13 @@ class TrumfieldStorageEntityWrapper implements StorageEntityWrapperInterface
     }
 
     #[Override]
-    public function canStoreTorpedoType(TorpedoTypeInterface $torpedoType, InformationInterface $information): bool
+    public function canStoreTorpedoType(TorpedoType $torpedoType, InformationInterface $information): bool
     {
         return false;
     }
 
     #[Override]
-    public function changeTorpedo(int $changeAmount, TorpedoTypeInterface $type): void
+    public function changeTorpedo(int $changeAmount, TorpedoType $type): void
     {
         throw new RuntimeException('this should not happen');
     }

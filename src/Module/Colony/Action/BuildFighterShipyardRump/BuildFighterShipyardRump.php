@@ -13,8 +13,8 @@ use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\SpacecraftRumpInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 
@@ -69,7 +69,7 @@ final class BuildFighterShipyardRump implements ActionControllerInterface
         }
     }
 
-    private function produceShip(SpacecraftRumpInterface $rump, ColonyInterface $colony, GameControllerInterface $game): bool
+    private function produceShip(SpacecraftRump $rump, Colony $colony, GameControllerInterface $game): bool
     {
         $changeable = $colony->getChangeable();
 

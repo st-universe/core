@@ -5,21 +5,21 @@ namespace Stu\Component\Spacecraft\Trait;
 use RuntimeException;
 use Stu\Component\Spacecraft\System\Exception\InvalidSystemException;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\SpacecraftSystemInterface;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\SpacecraftSystem;
 
 trait SpacecraftTrait
 {
-    private function getThis(): SpacecraftInterface
+    private function getThis(): Spacecraft
     {
-        if (!$this instanceof SpacecraftInterface) {
+        if (!$this instanceof Spacecraft) {
             throw new RuntimeException('trait can only be used on spacecraft entities');
         }
 
         return $this;
     }
 
-    public function getSpacecraftSystem(SpacecraftSystemTypeEnum $type): SpacecraftSystemInterface
+    public function getSpacecraftSystem(SpacecraftSystemTypeEnum $type): SpacecraftSystem
     {
         $system = $this->getThis()->getSystems()->get($type->value);
         if ($system === null) {

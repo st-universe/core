@@ -9,7 +9,7 @@ use Override;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Colony;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 class ColonyCorrector implements ColonyCorrectorInterface
@@ -72,7 +72,7 @@ class ColonyCorrector implements ColonyCorrectorInterface
         $this->entityManager->flush();
     }
 
-    private function check(int $expected, int $actual, ColonyInterface $colony, string $method, string $description): bool
+    private function check(int $expected, int $actual, Colony $colony, string $method, string $description): bool
     {
         if ($expected !== $actual) {
             $colony->$method($expected);

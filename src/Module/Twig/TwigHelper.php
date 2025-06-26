@@ -29,11 +29,11 @@ use Stu\Module\Control\StuTime;
 use Stu\Module\Spacecraft\Lib\Battle\FightLibInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftNfsItem;
 use Stu\Module\Template\TemplateHelperInterface;
-use Stu\Orm\Entity\AnomalyInterface;
-use Stu\Orm\Entity\BuildingInterface;
-use Stu\Orm\Entity\PlanetFieldInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Anomaly;
+use Stu\Orm\Entity\Building;
+use Stu\Orm\Entity\PlanetField;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\User;
 use Twig\Environment;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -129,7 +129,7 @@ class TwigHelper
         $htmlSafeFilter = new TwigFilter('htmlSafe', fn(string $text): string => htmlspecialchars($text));
         $this->environment->addFilter($htmlSafeFilter);
 
-        $adventDoorFilter = new TwigFilter('adventDoor', fn(AnomalyInterface $anomaly): int => (int)((120 - $anomaly->getRemainingTicks()) / 5) + 1);
+        $adventDoorFilter = new TwigFilter('adventDoor', fn(Anomaly $anomaly): int => (int)((120 - $anomaly->getRemainingTicks()) / 5) + 1);
         $this->environment->addFilter($adventDoorFilter);
 
         $shortNameFilter = new TwigFilter('shortName', fn(string $name): string => array_reduce(
@@ -139,7 +139,7 @@ class TwigHelper
         ));
         $this->environment->addFilter($shortNameFilter);
 
-        $getMaxCrewCountByShipFilter = new TwigFilter('getMaxCrewCountByShip', fn(SpacecraftInterface $spacecraft): int => $this->shipCrewCalculator->getMaxCrewCountByShip($spacecraft));
+        $getMaxCrewCountByShipFilter = new TwigFilter('getMaxCrewCountByShip', fn(Spacecraft $spacecraft): int => $this->shipCrewCalculator->getMaxCrewCountByShip($spacecraft));
         $this->environment->addFilter($getMaxCrewCountByShipFilter);
 
         $numberWithThousandSeperatorFilter = new TwigFilter('numberWithThousandSeperator', fn($value): string => $this->templateHelper->getNumberWithThousandSeperator($value));
@@ -148,13 +148,13 @@ class TwigHelper
 
     private function registerFunctions(): void
     {
-        $canAttackTargetFunction = new TwigFunction('canAttackTarget', fn(SpacecraftInterface $spacecraft, SpacecraftInterface|SpacecraftNfsItem $target): bool => $this->fightLib->canAttackTarget($spacecraft, $target));
+        $canAttackTargetFunction = new TwigFunction('canAttackTarget', fn(Spacecraft $spacecraft, Spacecraft|SpacecraftNfsItem $target): bool => $this->fightLib->canAttackTarget($spacecraft, $target));
         $this->environment->addFunction($canAttackTargetFunction);
 
-        $getEpsProductionPreviewFunction = new TwigFunction('getEpsProductionPreview', fn(PlanetFieldHostInterface $host, BuildingInterface $building): ColonyEpsProductionPreviewWrapper => $this->colonyLibFactory->createEpsProductionPreviewWrapper($host, $building));
+        $getEpsProductionPreviewFunction = new TwigFunction('getEpsProductionPreview', fn(PlanetFieldHostInterface $host, Building $building): ColonyEpsProductionPreviewWrapper => $this->colonyLibFactory->createEpsProductionPreviewWrapper($host, $building));
         $this->environment->addFunction($getEpsProductionPreviewFunction);
 
-        $getCommodityProductionPreviewFunction = new TwigFunction('getCommodityProductionPreview', fn(PlanetFieldHostInterface $host, BuildingInterface $building): ColonyProductionPreviewWrapper => $this->colonyLibFactory->createColonyProductionPreviewWrapper($building, $host));
+        $getCommodityProductionPreviewFunction = new TwigFunction('getCommodityProductionPreview', fn(PlanetFieldHostInterface $host, Building $building): ColonyProductionPreviewWrapper => $this->colonyLibFactory->createColonyProductionPreviewWrapper($building, $host));
         $this->environment->addFunction($getCommodityProductionPreviewFunction);
 
         $getColonyMenuClassFunction = new TwigFunction('getColonyMenuClass', fn(ColonyMenuEnum $currentMenu, int $value): string => ColonyMenuEnum::getMenuClass($currentMenu, $value));
@@ -175,7 +175,7 @@ class TwigHelper
         $stuDateFunction = new TwigFunction('stuDate', fn(string $format): string => $this->stuTime->date($format));
         $this->environment->addFunction($stuDateFunction);
 
-        $dayNightPrefixFunction = new TwigFunction('getDayNightPrefix', fn(PlanetFieldInterface $field): string => $field->getDayNightPrefix($this->stuTime->time()));
+        $dayNightPrefixFunction = new TwigFunction('getDayNightPrefix', fn(PlanetField $field): string => $field->getDayNightPrefix($this->stuTime->time()));
         $this->environment->addFunction($dayNightPrefixFunction);
 
         $maskEmailFunction = new TwigFunction('maskEmail', fn(string $email): string => $this->maskEmail($email));
@@ -186,7 +186,7 @@ class TwigHelper
 
         $hasSpacecraftSystemByNameFunction = new TwigFunction(
             'getSpacecraftSystemWrapper',
-            fn(SpacecraftInterface $spacecraft, string $name): ?SpacecraftSystemWrapper
+            fn(Spacecraft $spacecraft, string $name): ?SpacecraftSystemWrapper
             => $this->spacecraftSystemWrapperFactory->create($spacecraft, SpacecraftSystemTypeEnum::getByName($name))
         );
         $this->environment->addFunction($hasSpacecraftSystemByNameFunction);
@@ -194,15 +194,15 @@ class TwigHelper
         $isFeatureGrantedFunction = new TwigFunction('isFeatureGranted', fn(int $userId, string $feature): bool => $this->accessCheck->isFeatureGranted($userId, AccessGrantedFeatureEnum::from($feature), $this->game));
         $this->environment->addFunction($isFeatureGrantedFunction);
 
-        $getUserAvatarFunction = new TwigFunction('getAvatar', fn(UserInterface|UserContainer $user): string => $user instanceof UserContainer
+        $getUserAvatarFunction = new TwigFunction('getAvatar', fn(User|UserContainer $user): string => $user instanceof UserContainer
             ? $user->getAvatar()
             : $this->userSettingsProvider->getAvatar($user));
         $this->environment->addFunction($getUserAvatarFunction);
 
-        $getRpgBehaviorFunction = new TwigFunction('getRpgBehavior', fn(UserInterface $user): UserRpgBehaviorEnum => $this->userSettingsProvider->getRpgBehavior($user));
+        $getRpgBehaviorFunction = new TwigFunction('getRpgBehavior', fn(User $user): UserRpgBehaviorEnum => $this->userSettingsProvider->getRpgBehavior($user));
         $this->environment->addFunction($getRpgBehaviorFunction);
 
-        $isShowOnlineStateFunction = new TwigFunction('isShowOnlineState', fn(UserInterface $user): bool => $this->userSettingsProvider->isShowOnlineState($user));
+        $isShowOnlineStateFunction = new TwigFunction('isShowOnlineState', fn(User $user): bool => $this->userSettingsProvider->isShowOnlineState($user));
         $this->environment->addFunction($isShowOnlineStateFunction);
     }
 

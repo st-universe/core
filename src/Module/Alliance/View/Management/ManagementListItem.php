@@ -6,9 +6,9 @@ namespace Stu\Module\Alliance\View\Management;
 
 use Stu\Component\Crew\CrewCountRetrieverInterface;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
-use Stu\Orm\Entity\AllianceInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Alliance;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 
@@ -17,7 +17,7 @@ use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
  */
 final class ManagementListItem
 {
-    public function __construct(private AllianceJobRepositoryInterface $allianceJobRepository, private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository, private AllianceInterface $alliance, private UserInterface $user, private int $currentUserId, private CrewLimitCalculatorInterface $crewLimitCalculator, private CrewCountRetrieverInterface $crewCountRetriever) {}
+    public function __construct(private AllianceJobRepositoryInterface $allianceJobRepository, private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository, private Alliance $alliance, private User $user, private int $currentUserId, private CrewLimitCalculatorInterface $crewLimitCalculator, private CrewCountRetrieverInterface $crewCountRetriever) {}
 
     /**
      * Return the user's id
@@ -78,7 +78,7 @@ final class ManagementListItem
     }
 
     /**
-     * @return array<ColonyInterface>
+     * @return array<Colony>
      */
     public function getColonies(): array
     {

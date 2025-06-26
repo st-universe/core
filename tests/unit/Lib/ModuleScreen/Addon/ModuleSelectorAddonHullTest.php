@@ -8,9 +8,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Override;
 use Stu\Lib\ModuleScreen\GradientColorInterface;
-use Stu\Orm\Entity\ModuleInterface;
-use Stu\Orm\Entity\TorpedoHullInterface;
-use Stu\Orm\Entity\TorpedoTypeInterface;
+use Stu\Orm\Entity\Module;
+use Stu\Orm\Entity\TorpedoHull;
+use Stu\Orm\Entity\TorpedoType;
 use Stu\Orm\Repository\TorpedoHullRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -36,11 +36,11 @@ class ModuleSelectorAddonHullTest extends StuTestCase
 
     public function testGetModificators(): void
     {
-        $torpedoModule = $this->mock(ModuleInterface::class);
-        $torpedoHull1 = $this->mock(TorpedoHullInterface::class);
-        $torpedoHull2 = $this->mock(TorpedoHullInterface::class);
-        $torpedoType1 = $this->mock(TorpedoTypeInterface::class);
-        $torpedoType2 = $this->mock(TorpedoTypeInterface::class);
+        $torpedoModule = $this->mock(Module::class);
+        $torpedoHull1 = $this->mock(TorpedoHull::class);
+        $torpedoHull2 = $this->mock(TorpedoHull::class);
+        $torpedoType1 = $this->mock(TorpedoType::class);
+        $torpedoType2 = $this->mock(TorpedoType::class);
 
         $torpedoModule->shouldReceive('getTorpedoHull')
             ->withNoArgs()

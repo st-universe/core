@@ -9,8 +9,8 @@ use Mockery;
 use Mockery\MockInterface;
 use Override;
 use Stu\Module\Control\StuTime;
-use Stu\Orm\Entity\SessionStringInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\SessionString;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -35,8 +35,8 @@ class SessionFactoryTest extends StuTestCase
 
     public function testCreateSessionString(): void
     {
-        $user = $this->mock(UserInterface::class);
-        $sessionString = $this->mock(SessionStringInterface::class);
+        $user = $this->mock(User::class);
+        $sessionString = $this->mock(SessionString::class);
         $dateTime = $this->mock(DateTime::class);
 
         $this->sessionStringRepository->shouldReceive('prototype')

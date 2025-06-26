@@ -17,9 +17,9 @@ use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\CommodityInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Commodity;
+use Stu\Orm\Entity\Ship;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 
 final class ManageOrbitalShuttles implements ActionControllerInterface
@@ -162,11 +162,11 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
     }
 
     private function transferShuttles(
-        CommodityInterface $commodity,
+        Commodity $commodity,
         int $current,
         int $wanted,
-        ShipInterface $ship,
-        ColonyInterface $colony,
+        Ship $ship,
+        Colony $colony,
         InformationWrapper $informations
     ): void {
         $diff = abs($wanted - $current);

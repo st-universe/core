@@ -7,13 +7,13 @@ use Stu\Component\Crew\CrewCountRetrieverInterface;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Colony;
 
 final class AcademyProvider implements PlanetFieldHostComponentInterface
 {
     public function __construct(private ColonyLibFactoryInterface $colonyLibFactory, private CrewCountRetrieverInterface $crewCountRetriever) {}
 
-    /** @param ColonyInterface&PlanetFieldHostInterface $entity */
+    /** @param Colony&PlanetFieldHostInterface $entity */
     #[Override]
     public function setTemplateVariables(
         $entity,

@@ -9,12 +9,11 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\NPCLogRepository;
 
 #[Table(name: 'stu_npc_log')]
 #[Entity(repositoryClass: NPCLogRepository::class)]
-class NPCLog implements NPCLogInterface
+class NPCLog
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -35,62 +34,53 @@ class NPCLog implements NPCLogInterface
 
 
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getText(): string
     {
         return $this->text;
     }
 
-    #[Override]
-    public function setText(string $text): NPCLogInterface
+    public function setText(string $text): NPCLog
     {
         $this->text = $text;
 
         return $this;
     }
 
-    #[Override]
     public function getDate(): int
     {
         return $this->date;
     }
 
-    #[Override]
-    public function setDate(int $date): NPCLogInterface
+    public function setDate(int $date): NPCLog
     {
         $this->date = $date;
 
         return $this;
     }
 
-    #[Override]
     public function getSourceUserId(): ?int
     {
         return $this->source_user_id;
     }
 
-    #[Override]
-    public function setSourceUserId(int $sourceuserId): NPCLogInterface
+    public function setSourceUserId(int $sourceuserId): NPCLog
     {
         $this->source_user_id = $sourceuserId;
 
         return $this;
     }
 
-    #[Override]
     public function getFactionId(): ?int
     {
         return $this->faction_id;
     }
 
-    #[Override]
-    public function setFactionId(?int $factionId): NPCLogInterface
+    public function setFactionId(?int $factionId): NPCLog
     {
         $this->faction_id = $factionId;
 

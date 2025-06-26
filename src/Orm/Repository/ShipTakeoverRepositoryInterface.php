@@ -4,20 +4,19 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\ShipTakeover;
-use Stu\Orm\Entity\ShipTakeoverInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 /**
  * @extends ObjectRepository<ShipTakeover>
  */
 interface ShipTakeoverRepositoryInterface extends ObjectRepository
 {
-    public function prototype(): ShipTakeoverInterface;
+    public function prototype(): ShipTakeover;
 
-    public function save(ShipTakeoverInterface $shipTakeover): void;
+    public function save(ShipTakeover $shipTakeover): void;
 
-    public function delete(ShipTakeoverInterface $shipTakeover): void;
+    public function delete(ShipTakeover $shipTakeover): void;
 
-    /** @return array<ShipTakeoverInterface> */
-    public function getByTargetOwner(UserInterface $user): array;
+    /** @return array<ShipTakeover> */
+    public function getByTargetOwner(User $user): array;
 }

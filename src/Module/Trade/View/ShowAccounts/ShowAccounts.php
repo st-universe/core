@@ -9,7 +9,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Trade\Lib\TradeAccountWrapperInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
-use Stu\Orm\Entity\TradePostInterface;
+use Stu\Orm\Entity\TradePost;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 final class ShowAccounts implements ViewControllerInterface
@@ -26,7 +26,7 @@ final class ShowAccounts implements ViewControllerInterface
         $userId = $game->getUser()->getId();
 
         $list = array_map(
-            fn (TradePostInterface $tradePost): TradeAccountWrapperInterface => $this->tradeLibFactory->createTradeAccountWrapper($tradePost, $userId),
+            fn (TradePost $tradePost): TradeAccountWrapperInterface => $this->tradeLibFactory->createTradeAccountWrapper($tradePost, $userId),
             $this->tradePostRepository->getByUserLicense($userId)
         );
 

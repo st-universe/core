@@ -11,14 +11,13 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Component\Station\Dock\DockModeEnum;
 use Stu\Component\Station\Dock\DockTypeEnum;
 use Stu\Orm\Repository\DockingPrivilegeRepository;
 
 #[Table(name: 'stu_dockingrights')]
 #[Entity(repositoryClass: DockingPrivilegeRepository::class)]
-class DockingPrivilege implements DockingPrivilegeInterface
+class DockingPrivilege
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -36,61 +35,52 @@ class DockingPrivilege implements DockingPrivilegeInterface
 
     #[ManyToOne(targetEntity: Station::class, inversedBy: 'dockingPrivileges')]
     #[JoinColumn(name: 'station_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private StationInterface $station;
+    private Station $station;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getTargetId(): int
     {
         return $this->target;
     }
 
-    #[Override]
-    public function setTargetId(int $targetId): DockingPrivilegeInterface
+    public function setTargetId(int $targetId): DockingPrivilege
     {
         $this->target = $targetId;
         return $this;
     }
 
-    #[Override]
     public function getPrivilegeType(): DockTypeEnum
     {
         return $this->privilege_type;
     }
 
-    #[Override]
-    public function setPrivilegeType(DockTypeEnum $privilegeType): DockingPrivilegeInterface
+    public function setPrivilegeType(DockTypeEnum $privilegeType): DockingPrivilege
     {
         $this->privilege_type = $privilegeType;
         return $this;
     }
 
-    #[Override]
     public function getPrivilegeMode(): DockModeEnum
     {
         return $this->privilege_mode;
     }
 
-    #[Override]
-    public function setPrivilegeMode(DockModeEnum $privilegeMode): DockingPrivilegeInterface
+    public function setPrivilegeMode(DockModeEnum $privilegeMode): DockingPrivilege
     {
         $this->privilege_mode = $privilegeMode;
         return $this;
     }
 
-    #[Override]
-    public function getStation(): StationInterface
+    public function getStation(): Station
     {
         return $this->station;
     }
 
-    #[Override]
-    public function setStation(StationInterface $station): DockingPrivilegeInterface
+    public function setStation(Station $station): DockingPrivilege
     {
         $this->station = $station;
         return $this;

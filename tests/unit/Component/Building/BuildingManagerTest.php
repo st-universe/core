@@ -9,11 +9,11 @@ use Mockery\MockInterface;
 use Override;
 use Stu\Module\Building\Action\BuildingActionHandlerInterface;
 use Stu\Module\Building\Action\BuildingFunctionActionMapperInterface;
-use Stu\Orm\Entity\BuildingFunctionInterface;
-use Stu\Orm\Entity\BuildingInterface;
-use Stu\Orm\Entity\ColonyChangeableInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\PlanetFieldInterface;
+use Stu\Orm\Entity\BuildingFunction;
+use Stu\Orm\Entity\Building;
+use Stu\Orm\Entity\ColonyChangeable;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonySandboxRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
@@ -49,7 +49,7 @@ class BuildingManagerTest extends StuTestCase
 
     public function testActivateFailsIfNotActivateable(): void
     {
-        $field = $this->mock(PlanetFieldInterface::class);
+        $field = $this->mock(PlanetField::class);
 
         $field->shouldReceive('isActivateable')
             ->withNoArgs()
@@ -58,14 +58,14 @@ class BuildingManagerTest extends StuTestCase
         $field->shouldReceive('getBuilding')
             ->withNoArgs()
             ->once()
-            ->andReturn($this->mock(BuildingInterface::class));
+            ->andReturn($this->mock(Building::class));
 
         $this->buildingManager->activate($field);
     }
 
     public function testActivateFailsIfAlreadyActive(): void
     {
-        $field = $this->mock(PlanetFieldInterface::class);
+        $field = $this->mock(PlanetField::class);
 
         $field->shouldReceive('isActivateable')
             ->withNoArgs()
@@ -78,14 +78,14 @@ class BuildingManagerTest extends StuTestCase
         $field->shouldReceive('getBuilding')
             ->withNoArgs()
             ->once()
-            ->andReturn($this->mock(BuildingInterface::class));
+            ->andReturn($this->mock(Building::class));
 
         $this->buildingManager->activate($field);
     }
 
     public function testActivateFailsIfDamaged(): void
     {
-        $field = $this->mock(PlanetFieldInterface::class);
+        $field = $this->mock(PlanetField::class);
 
         $field->shouldReceive('isActivateable')
             ->withNoArgs()
@@ -102,14 +102,14 @@ class BuildingManagerTest extends StuTestCase
         $field->shouldReceive('getBuilding')
             ->withNoArgs()
             ->once()
-            ->andReturn($this->mock(BuildingInterface::class));
+            ->andReturn($this->mock(Building::class));
 
         $this->buildingManager->activate($field);
     }
 
     public function testActivateFailsIfNoBuildingAvailable(): void
     {
-        $field = $this->mock(PlanetFieldInterface::class);
+        $field = $this->mock(PlanetField::class);
 
         $field->shouldReceive('getBuilding')
             ->withNoArgs()
@@ -121,9 +121,9 @@ class BuildingManagerTest extends StuTestCase
 
     public function testActivateFailsOnLackOfWorklessPeople(): void
     {
-        $field = $this->mock(PlanetFieldInterface::class);
-        $colony = $this->mock(ColonyInterface::class);
-        $changeable = $this->mock(ColonyChangeableInterface::class);
+        $field = $this->mock(PlanetField::class);
+        $colony = $this->mock(Colony::class);
+        $changeable = $this->mock(ColonyChangeable::class);
 
         $field->shouldReceive('isActivateable')
             ->withNoArgs()
@@ -159,10 +159,10 @@ class BuildingManagerTest extends StuTestCase
 
     public function testActivateActivates(): void
     {
-        $field = $this->mock(PlanetFieldInterface::class);
-        $host = $this->mock(ColonyInterface::class);
-        $building = $this->mock(BuildingInterface::class);
-        $changeable = $this->mock(ColonyChangeableInterface::class);
+        $field = $this->mock(PlanetField::class);
+        $host = $this->mock(Colony::class);
+        $building = $this->mock(Building::class);
+        $changeable = $this->mock(ColonyChangeable::class);
 
         $worker = 6;
         $currentWorker = 33;
@@ -246,7 +246,7 @@ class BuildingManagerTest extends StuTestCase
 
     public function testDeactivateFailsIfNoBuildingAvailable(): void
     {
-        $field = $this->mock(PlanetFieldInterface::class);
+        $field = $this->mock(PlanetField::class);
 
         $field->shouldReceive('getBuilding')
             ->withNoArgs()
@@ -258,12 +258,12 @@ class BuildingManagerTest extends StuTestCase
 
     public function testDeactivateFailsIfNotActivateable(): void
     {
-        $field = $this->mock(PlanetFieldInterface::class);
+        $field = $this->mock(PlanetField::class);
 
         $field->shouldReceive('getBuilding')
             ->withNoArgs()
             ->once()
-            ->andReturn($this->mock(BuildingInterface::class));
+            ->andReturn($this->mock(Building::class));
         $field->shouldReceive('isActivateable')
             ->withNoArgs()
             ->once()
@@ -274,12 +274,12 @@ class BuildingManagerTest extends StuTestCase
 
     public function testDeactivateFailsIfAlreadyInactive(): void
     {
-        $field = $this->mock(PlanetFieldInterface::class);
+        $field = $this->mock(PlanetField::class);
 
         $field->shouldReceive('getBuilding')
             ->withNoArgs()
             ->once()
-            ->andReturn($this->mock(BuildingInterface::class));
+            ->andReturn($this->mock(Building::class));
         $field->shouldReceive('isActivateable')
             ->withNoArgs()
             ->once()
@@ -294,10 +294,10 @@ class BuildingManagerTest extends StuTestCase
 
     public function testDeactivateDeactivatesForProduction(): void
     {
-        $field = $this->mock(PlanetFieldInterface::class);
-        $host = $this->mock(ColonyInterface::class);
-        $building = $this->mock(BuildingInterface::class);
-        $changeable = $this->mock(ColonyChangeableInterface::class);
+        $field = $this->mock(PlanetField::class);
+        $host = $this->mock(Colony::class);
+        $building = $this->mock(Building::class);
+        $changeable = $this->mock(ColonyChangeable::class);
 
         $currentWorker = 33;
         $currentWorkless = 55;
@@ -384,10 +384,10 @@ class BuildingManagerTest extends StuTestCase
 
     public function testDeactivateDeactivatesForHousing(): void
     {
-        $field = $this->mock(PlanetFieldInterface::class);
-        $host = $this->mock(ColonyInterface::class);
-        $building = $this->mock(BuildingInterface::class);
-        $changeable = $this->mock(ColonyChangeableInterface::class);
+        $field = $this->mock(PlanetField::class);
+        $host = $this->mock(Colony::class);
+        $building = $this->mock(Building::class);
+        $changeable = $this->mock(ColonyChangeable::class);
 
         $currentWorker = 33;
         $currentWorkless = 55;
@@ -472,7 +472,7 @@ class BuildingManagerTest extends StuTestCase
 
     public function testRemoveFailsOnMissingBuilding(): void
     {
-        $field = $this->mock(PlanetFieldInterface::class);
+        $field = $this->mock(PlanetField::class);
 
         $field->shouldReceive('getBuilding')
             ->withNoArgs()
@@ -484,9 +484,9 @@ class BuildingManagerTest extends StuTestCase
 
     public function testRemoveFailsIfBuildingIsNotRemoveable(): void
     {
-        $field = $this->mock(PlanetFieldInterface::class);
+        $field = $this->mock(PlanetField::class);
 
-        $building = $this->mock(BuildingInterface::class);
+        $building = $this->mock(Building::class);
 
         $field->shouldReceive('getBuilding')
             ->withNoArgs()
@@ -503,11 +503,11 @@ class BuildingManagerTest extends StuTestCase
 
     public function testRemoveRemovesWhenNotActivateable(): void
     {
-        $field = $this->mock(PlanetFieldInterface::class);
-        $building = $this->mock(BuildingInterface::class);
-        $host = $this->mock(ColonyInterface::class);
-        $changeable = $this->mock(ColonyChangeableInterface::class);
-        $function = $this->mock(BuildingFunctionInterface::class);
+        $field = $this->mock(PlanetField::class);
+        $building = $this->mock(Building::class);
+        $host = $this->mock(Colony::class);
+        $changeable = $this->mock(ColonyChangeable::class);
+        $function = $this->mock(BuildingFunction::class);
         $buildingAction = $this->mock(BuildingActionHandlerInterface::class);
 
         $currentStorage = 555;
@@ -598,11 +598,11 @@ class BuildingManagerTest extends StuTestCase
 
     public function testRemoveRemovesExpectDeactivationWhenActive(): void
     {
-        $field = $this->mock(PlanetFieldInterface::class);
-        $building = $this->mock(BuildingInterface::class);
-        $host = $this->mock(ColonyInterface::class);
-        $changeable = $this->mock(ColonyChangeableInterface::class);
-        $function = $this->mock(BuildingFunctionInterface::class);
+        $field = $this->mock(PlanetField::class);
+        $building = $this->mock(Building::class);
+        $host = $this->mock(Colony::class);
+        $changeable = $this->mock(ColonyChangeable::class);
+        $function = $this->mock(BuildingFunction::class);
         $buildingAction = $this->mock(BuildingActionHandlerInterface::class);
         $currentStorage = 555;
         $storage = 44;
@@ -732,11 +732,11 @@ class BuildingManagerTest extends StuTestCase
 
     public function testRemoveExpectRemovalWhenUpgrade(): void
     {
-        $field = $this->mock(PlanetFieldInterface::class);
-        $building = $this->mock(BuildingInterface::class);
-        $host = $this->mock(ColonyInterface::class);
-        $changeable = $this->mock(ColonyChangeableInterface::class);
-        $function = $this->mock(BuildingFunctionInterface::class);
+        $field = $this->mock(PlanetField::class);
+        $building = $this->mock(Building::class);
+        $host = $this->mock(Colony::class);
+        $changeable = $this->mock(ColonyChangeable::class);
+        $function = $this->mock(BuildingFunction::class);
         $buildingAction = $this->mock(BuildingActionHandlerInterface::class);
 
         $currentStorage = 555;
@@ -863,7 +863,7 @@ class BuildingManagerTest extends StuTestCase
 
     public function testFinishFailsIfNoBuildingAvailable(): void
     {
-        $field = $this->mock(PlanetFieldInterface::class);
+        $field = $this->mock(PlanetField::class);
 
         $field->shouldReceive('getBuilding')
             ->withNoArgs()
@@ -875,10 +875,10 @@ class BuildingManagerTest extends StuTestCase
 
     public function testFinishFinishesAndActivates(): void
     {
-        $field = $this->mock(PlanetFieldInterface::class);
-        $building = $this->mock(BuildingInterface::class);
-        $host = $this->mock(ColonyInterface::class);
-        $changeable = $this->mock(ColonyChangeableInterface::class);
+        $field = $this->mock(PlanetField::class);
+        $building = $this->mock(Building::class);
+        $host = $this->mock(Colony::class);
+        $changeable = $this->mock(ColonyChangeable::class);
 
         $currentStorage = 555;
         $storage = 44;

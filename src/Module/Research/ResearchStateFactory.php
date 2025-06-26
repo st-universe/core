@@ -18,7 +18,18 @@ use Stu\Orm\Repository\ShipRumpUserRepositoryInterface;
 
 final class ResearchStateFactory implements ResearchStateFactoryInterface
 {
-    public function __construct(private ResearchedRepositoryInterface $researchedRepository, private ShipRumpUserRepositoryInterface $shipRumpUserRepository, private PrivateMessageSenderInterface $privateMessageSender, private CreateDatabaseEntryInterface $createDatabaseEntry, private CrewCreatorInterface $crewCreator, private ShipCreatorInterface $shipCreator, private ShipRepositoryInterface $shipRepository, private SpacecraftSystemManagerInterface $spacecraftSystemManager, private CreateUserAwardInterface $createUserAward, private EntityManagerInterface $entityManager) {}
+    public function __construct(
+        private ResearchedRepositoryInterface $researchedRepository,
+        private ShipRumpUserRepositoryInterface $shipRumpUserRepository,
+        private PrivateMessageSenderInterface $privateMessageSender,
+        private CreateDatabaseEntryInterface $createDatabaseEntry,
+        private CrewCreatorInterface $crewCreator,
+        private ShipCreatorInterface $shipCreator,
+        private ShipRepositoryInterface $shipRepository,
+        private SpacecraftSystemManagerInterface $spacecraftSystemManager,
+        private CreateUserAwardInterface $createUserAward,
+        private EntityManagerInterface $entityManager
+    ) {}
 
     #[Override]
     public function createResearchState(): ResearchStateInterface

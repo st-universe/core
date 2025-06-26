@@ -29,10 +29,10 @@ use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\AnomalyInterface;
-use Stu\Orm\Entity\LayerInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Anomaly;
+use Stu\Orm\Entity\Layer;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\AnomalyRepositoryInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\LocationRepositoryInterface;
@@ -98,13 +98,13 @@ final class IonStormHandler implements AnomalyHandlerInterface
     {
         return array_reduce(
             $this->layerRepository->findAllIndexed(),
-            fn(int $value, LayerInterface $layer): int => $value + (int)ceil($layer->getWidth() * $layer->getHeight() / self::LOCATIONS_PER_STORM),
+            fn(int $value, Layer $layer): int => $value + (int)ceil($layer->getWidth() * $layer->getHeight() / self::LOCATIONS_PER_STORM),
             0
         );
     }
 
     #[Override]
-    public function handleSpacecraftTick(AnomalyInterface $root): void
+    public function handleSpacecraftTick(Anomaly $root): void
     {
         $ionStormData = $this->getIonStormData($root);
         $locationPool = $this->locationPoolFactory->createLocationPool($root, $ionStormData->velocity + 1);
@@ -120,7 +120,7 @@ final class IonStormHandler implements AnomalyHandlerInterface
         $this->damageSpacecrafts($root);
     }
 
-    private function damageSpacecrafts(AnomalyInterface $root): void
+    private function damageSpacecrafts(Anomaly $root): void
     {
         foreach ($root->getChildren() as $child) {
             $location = $child->getLocation();
@@ -136,7 +136,7 @@ final class IonStormHandler implements AnomalyHandlerInterface
 
                 $wrapper = $this->spacecraftWrapperFactory->wrapSpacecraft($spacecraft);
 
-                if ($spacecraft instanceof ShipInterface) {
+                if ($spacecraft instanceof Ship) {
                     $this->damageSpacecraft(
                         $wrapper,
                         $child,
@@ -174,7 +174,7 @@ final class IonStormHandler implements AnomalyHandlerInterface
         $this->spacecraftRepository->save($spacecraft);
     }
 
-    private function getIonStormData(AnomalyInterface $root): IonStormData
+    private function getIonStormData(Anomaly $root): IonStormData
     {
         $data = $root->getData();
         if ($data === null) {
@@ -188,13 +188,13 @@ final class IonStormHandler implements AnomalyHandlerInterface
     }
 
     #[Override]
-    public function letAnomalyDisappear(AnomalyInterface $anomaly): void
+    public function letAnomalyDisappear(Anomaly $anomaly): void
     {
         //not needed
     }
 
     #[Override]
-    public function handleIncomingSpacecraft(SpacecraftWrapperInterface $wrapper, AnomalyInterface $anomaly, MessageCollectionInterface $messages): void
+    public function handleIncomingSpacecraft(SpacecraftWrapperInterface $wrapper, Anomaly $anomaly, MessageCollectionInterface $messages): void
     {
         $message = $this->messageFactory->createMessage(
             UserEnum::USER_NOONE,
@@ -226,7 +226,7 @@ final class IonStormHandler implements AnomalyHandlerInterface
         $this->spacecraftRepository->save($spacecraft);
     }
 
-    private function damageSpacecraft(SpacecraftWrapperInterface $wrapper, AnomalyInterface $anomaly, InformationInterface $informations, int $damagePercentage): void
+    private function damageSpacecraft(SpacecraftWrapperInterface $wrapper, Anomaly $anomaly, InformationInterface $informations, int $damagePercentage): void
     {
         $spacecraft = $wrapper->get();
 
@@ -262,7 +262,7 @@ final class IonStormHandler implements AnomalyHandlerInterface
         }
     }
 
-    private function getHullDamageFactor(SpacecraftInterface $spacecraft): int
+    private function getHullDamageFactor(Spacecraft $spacecraft): int
     {
         $hull = $spacecraft->getModules()[SpacecraftModuleTypeEnum::HULL->value] ?? null;
         if ($hull === null) {

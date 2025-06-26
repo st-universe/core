@@ -6,11 +6,10 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Override;
-use Stu\Orm\Entity\ColonyClassInterface;
+use Stu\Orm\Entity\ColonyClass;
 use Stu\Orm\Entity\ColonyClassRestriction;
-use Stu\Orm\Entity\ColonyClassRestrictionInterface;
-use Stu\Orm\Entity\TerraformingInterface;
-use Stu\Orm\Entity\BuildingInterface;
+use Stu\Orm\Entity\Terraforming;
+use Stu\Orm\Entity\Building;
 
 /**
  * @extends EntityRepository<ColonyClassRestriction>
@@ -18,20 +17,20 @@ use Stu\Orm\Entity\BuildingInterface;
 final class ColonyClassRestrictionRepository extends EntityRepository implements ColonyClassRestrictionRepositoryInterface
 {
     #[Override]
-    public function prototype(): ColonyClassRestrictionInterface
+    public function prototype(): ColonyClassRestriction
     {
         return new ColonyClassRestriction();
     }
 
     #[Override]
-    public function save(ColonyClassRestrictionInterface $restriction): void
+    public function save(ColonyClassRestriction $restriction): void
     {
         $em = $this->getEntityManager();
         $em->persist($restriction);
     }
 
     #[Override]
-    public function delete(ColonyClassRestrictionInterface $restriction): void
+    public function delete(ColonyClassRestriction $restriction): void
     {
         $em = $this->getEntityManager();
         $em->remove($restriction);

@@ -9,7 +9,7 @@ use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Colony;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -62,7 +62,7 @@ class AttackerProviderFactoryTest extends StuTestCase
 
     public function testGetEnergyPhalanxAttacker(): void
     {
-        $colony = $this->mock(ColonyInterface::class);
+        $colony = $this->mock(Colony::class);
 
         $attacker = $this->subject->createEnergyPhalanxAttacker($colony);
 
@@ -71,7 +71,7 @@ class AttackerProviderFactoryTest extends StuTestCase
 
     public function testGetProjectilePhalanxAttacker(): void
     {
-        $colony = $this->mock(ColonyInterface::class);
+        $colony = $this->mock(Colony::class);
 
         $attacker = $this->subject->createProjectilePhalanxAttacker($colony);
 

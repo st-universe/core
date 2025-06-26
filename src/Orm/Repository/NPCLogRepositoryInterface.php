@@ -4,26 +4,25 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\NPCLog;
-use Stu\Orm\Entity\NPCLogInterface;
 
 /**
  * @extends ObjectRepository<NPCLog>
  *
- * @method null|NPCLogInterface find(integer $id)
- * @method NPCLogInterface[] findAll()
+ * @method null|NPCLog find(integer $id)
+ * @method NPCLog[] findAll()
  */
 interface NPCLogRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return array<NPCLogInterface>
+     * @return array<NPCLog>
      */
     public function getRecent(): array;
 
-    public function prototype(): NPCLogInterface;
+    public function prototype(): NPCLog;
 
-    public function save(NPCLogInterface $npclog): void;
+    public function save(NPCLog $npclog): void;
 
-    public function delete(NPCLOgInterface $npclog): void;
+    public function delete(NPCLog $npclog): void;
 
     public function truncateAllEntities(): void;
 }

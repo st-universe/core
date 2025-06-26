@@ -11,11 +11,8 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Override;
 use Stu\Orm\Entity\MapBorderType;
-use Stu\Orm\Entity\MapBorderTypeInterface;
 use Stu\Orm\Entity\MapRegion;
-use Stu\Orm\Entity\MapRegionInterface;
 use Stu\Orm\Entity\StarSystem;
-use Stu\Orm\Entity\StarSystemInterface;
 
 #[Entity]
 class ExploreableStarMap implements ExploreableStarMapInterface
@@ -62,15 +59,15 @@ class ExploreableStarMap implements ExploreableStarMapInterface
 
     #[ManyToOne(targetEntity: MapBorderType::class)]
     #[JoinColumn(name: 'bordertype_id', referencedColumnName: 'id')]
-    private ?MapBorderTypeInterface $mapBorderType = null;
+    private ?MapBorderType $mapBorderType = null;
 
     #[ManyToOne(targetEntity: StarSystem::class)]
     #[JoinColumn(name: 'influence_area_id', referencedColumnName: 'id')]
-    private ?StarSystemInterface $influenceArea = null;
+    private ?StarSystem $influenceArea = null;
 
     #[ManyToOne(targetEntity: MapRegion::class)]
     #[JoinColumn(name: 'region_id', referencedColumnName: 'id')]
-    private ?MapRegionInterface $adminRegion = null;
+    private ?MapRegion $adminRegion = null;
 
     #[Override]
     public function getId(): int
@@ -139,26 +136,26 @@ class ExploreableStarMap implements ExploreableStarMapInterface
     }
 
     #[Override]
-    public function setRegionDescription(string $regiondescription): ExploreableStarMapInterface
+    public function setRegionDescription(string $regiondescription): ExploreableStarMap
     {
         $this->region_description = $regiondescription;
         return $this;
     }
 
     #[Override]
-    public function getMapBorderType(): ?MapBorderTypeInterface
+    public function getMapBorderType(): ?MapBorderType
     {
         return $this->mapBorderType;
     }
 
     #[Override]
-    public function getAdminRegion(): ?MapRegionInterface
+    public function getAdminRegion(): ?MapRegion
     {
         return $this->adminRegion;
     }
 
     #[Override]
-    public function getInfluenceArea(): ?StarSystemInterface
+    public function getInfluenceArea(): ?StarSystem
     {
         return $this->influenceArea;
     }

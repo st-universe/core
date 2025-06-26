@@ -3,7 +3,7 @@
 namespace Stu\Component\Spacecraft\Trait;
 
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
-use Stu\Orm\Entity\StationInterface;
+use Stu\Orm\Entity\Station;
 
 trait SpacecrafCharacteristicsTrait
 {
@@ -11,7 +11,7 @@ trait SpacecrafCharacteristicsTrait
 
     public function isStation(): bool
     {
-        return $this->getThis() instanceof StationInterface;
+        return $this->getThis() instanceof Station;
     }
 
     public function isShuttle(): bool

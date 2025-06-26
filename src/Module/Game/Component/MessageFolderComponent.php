@@ -10,8 +10,8 @@ use Stu\Lib\Component\ComponentInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageUiFactoryInterface;
-use Stu\Orm\Entity\PrivateMessageFolderInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\PrivateMessageFolder;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 
 /**
@@ -47,7 +47,7 @@ final class MessageFolderComponent implements ComponentInterface
                 continue;
             }
 
-            /** @var PrivateMessageFolderInterface $specialFolder */
+            /** @var PrivateMessageFolder $specialFolder */
             $specialFolder = $this->privateMessageFolderRepository->getByUserAndSpecial($user->getId(), $folderType);
 
             $folder[$folderType->value] = $this->commUiFactory->createPrivateMessageFolderItem($specialFolder);
@@ -56,7 +56,7 @@ final class MessageFolderComponent implements ComponentInterface
         $game->setTemplateVar('PM', $folder);
     }
 
-    private function hasStationsPmCategory(UserInterface $user): bool
+    private function hasStationsPmCategory(User $user): bool
     {
         if ($user->isNpc()) {
             return true;

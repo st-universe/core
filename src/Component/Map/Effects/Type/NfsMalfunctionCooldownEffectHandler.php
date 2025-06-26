@@ -13,7 +13,7 @@ use Stu\Module\Control\StuRandom;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\LocationInterface;
+use Stu\Orm\Entity\Location;
 
 class NfsMalfunctionCooldownEffectHandler implements EffectHandlerInterface
 {
@@ -32,7 +32,7 @@ class NfsMalfunctionCooldownEffectHandler implements EffectHandlerInterface
     }
 
     #[Override]
-    public function addFlightInformation(LocationInterface $location, MessageCollectionInterface $messages): void
+    public function addFlightInformation(Location $location, MessageCollectionInterface $messages): void
     {
         $messages->addInformationf(
             "[color=yellow]Subraumverzerrungen durch %s induzieren Rückkopplung in den Nahbereichsensoren in Sektor %s[/color]",

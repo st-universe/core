@@ -7,7 +7,7 @@ namespace Stu\Component\Player;
 use Mockery\MockInterface;
 use Override;
 use Stu\Component\Colony\ColonyTypeEnum;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ResearchRepositoryInterface;
 use Stu\StuTestCase;
@@ -40,7 +40,7 @@ class ColonyLimitCalculatorTest extends StuTestCase
 
     public function testCanColonizeFurtherColonyWithTypeReturnsFalseIfExceeded(): void
     {
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
         $type = ColonyTypeEnum::COLONY_TYPE_ASTEROID;
 
         //use new function
@@ -62,7 +62,7 @@ class ColonyLimitCalculatorTest extends StuTestCase
 
     public function testCanColonizeFurtherPlanetsReturnsTrueIfPossible(): void
     {
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
         $type = ColonyTypeEnum::COLONY_TYPE_ASTEROID;
 
         //use new function

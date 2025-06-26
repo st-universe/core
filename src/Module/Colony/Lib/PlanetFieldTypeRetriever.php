@@ -12,7 +12,7 @@ use Stu\Component\Game\TimeConstants;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Orm\Entity\PlanetFieldInterface;
+use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Repository\PlanetFieldTypeRepositoryInterface;
 
 /**
@@ -68,7 +68,7 @@ final class PlanetFieldTypeRetriever implements PlanetFieldTypeRetrieverInterfac
 
     #[Override]
     public function isUndergroundField(
-        PlanetFieldInterface $planetField
+        PlanetField $planetField
     ): bool {
         return $this->isTypeOf(
             $planetField,
@@ -78,7 +78,7 @@ final class PlanetFieldTypeRetriever implements PlanetFieldTypeRetrieverInterfac
 
     #[Override]
     public function isOrbitField(
-        PlanetFieldInterface $planetField
+        PlanetField $planetField
     ): bool {
         return $this->isTypeOf(
             $planetField,
@@ -87,7 +87,7 @@ final class PlanetFieldTypeRetriever implements PlanetFieldTypeRetrieverInterfac
     }
 
     private function isTypeOf(
-        PlanetFieldInterface $planetField,
+        PlanetField $planetField,
         int $fieldCategory
     ): bool {
         return $this->getCategory($planetField->getFieldType()) === $fieldCategory;

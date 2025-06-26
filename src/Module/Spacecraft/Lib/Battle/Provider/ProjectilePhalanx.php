@@ -6,15 +6,15 @@ namespace Stu\Module\Spacecraft\Lib\Battle\Provider;
 
 use Override;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\LocationInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\TorpedoTypeInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Location;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\TorpedoType;
 
 final class ProjectilePhalanx implements ProjectileAttackerInterface
 {
     public function __construct(
-        private ColonyInterface $colony,
+        private Colony $colony,
         private StorageManagerInterface $storageManager
     ) {}
 
@@ -25,7 +25,7 @@ final class ProjectilePhalanx implements ProjectileAttackerInterface
     }
 
     #[Override]
-    public function isAvoidingHullHits(SpacecraftInterface $target): bool
+    public function isAvoidingHullHits(Spacecraft $target): bool
     {
         return false;
     }
@@ -103,7 +103,7 @@ final class ProjectilePhalanx implements ProjectileAttackerInterface
     }
 
     #[Override]
-    public function getTorpedo(): ?TorpedoTypeInterface
+    public function getTorpedo(): ?TorpedoType
     {
         return $this->colony->getChangeable()->getTorpedo();
     }
@@ -130,7 +130,7 @@ final class ProjectilePhalanx implements ProjectileAttackerInterface
     }
 
     #[Override]
-    public function getLocation(): LocationInterface
+    public function getLocation(): Location
     {
         return $this->colony->getLocation();
     }

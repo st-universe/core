@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace Stu\Lib\SpacecraftManagement\Provider;
 
 use Doctrine\Common\Collections\Collection;
-use Stu\Orm\Entity\CommodityInterface;
-use Stu\Orm\Entity\CrewAssignmentInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\StorageInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Commodity;
+use Stu\Orm\Entity\CrewAssignment;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\Storage;
+use Stu\Orm\Entity\User;
 
 interface ManagerProviderInterface
 {
-    public function getUser(): UserInterface;
+    public function getUser(): User;
 
     public function getEps(): int;
 
@@ -25,21 +25,21 @@ interface ManagerProviderInterface
 
     public function getFreeCrewAmount(): int;
 
-    public function addCrewAssignment(SpacecraftInterface $spacecraft, int $amount): void;
+    public function addCrewAssignment(Spacecraft $spacecraft, int $amount): void;
 
     public function getFreeCrewStorage(): int;
 
     /**
-     * @param array<CrewAssignmentInterface> $crewAssignments
+     * @param array<CrewAssignment> $crewAssignments
      */
     public function addCrewAssignments(array $crewAssignments): void;
 
     /**
-     * @return Collection<int, StorageInterface>
+     * @return Collection<int, Storage>
      */
     public function getStorage(): Collection;
 
-    public function upperStorage(CommodityInterface $commodity, int $amount): void;
+    public function upperStorage(Commodity $commodity, int $amount): void;
 
-    public function lowerStorage(CommodityInterface $commodity, int $amount): void;
+    public function lowerStorage(Commodity $commodity, int $amount): void;
 }

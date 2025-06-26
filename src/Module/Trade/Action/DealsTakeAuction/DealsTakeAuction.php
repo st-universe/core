@@ -15,10 +15,10 @@ use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\ShowDeals\ShowDeals;
-use Stu\Orm\Entity\DealsInterface;
-use Stu\Orm\Entity\SpacecraftBuildplanInterface;
-use Stu\Orm\Entity\TradePostInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Deals;
+use Stu\Orm\Entity\SpacecraftBuildplan;
+use Stu\Orm\Entity\TradePost;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\DealsRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
@@ -141,7 +141,7 @@ final class DealsTakeAuction implements ActionControllerInterface
         $this->dealsRepository->save($auction);
     }
 
-    private function determineNeededStorageSpace(DealsInterface $auction): int
+    private function determineNeededStorageSpace(Deals $auction): int
     {
         $result = 0;
 
@@ -157,7 +157,7 @@ final class DealsTakeAuction implements ActionControllerInterface
     }
 
 
-    private function createShip(SpacecraftBuildplanInterface $buildplan, TradePostInterface $tradePost, int $userId): void
+    private function createShip(SpacecraftBuildplan $buildplan, TradePost $tradePost, int $userId): void
     {
         $this->shipCreator->createBy($userId, $buildplan->getRump()->getId(), $buildplan->getId())
             ->setLocation($tradePost->getStation()->getLocation())
@@ -173,7 +173,7 @@ final class DealsTakeAuction implements ActionControllerInterface
         return true;
     }
 
-    private function copyBuildplan(SpacecraftBuildplanInterface $buildplan, UserInterface $user): void
+    private function copyBuildplan(SpacecraftBuildplan $buildplan, User $user): void
     {
         //copying buildplan
         $newPlan = $this->spacecraftBuildplanRepository->prototype();

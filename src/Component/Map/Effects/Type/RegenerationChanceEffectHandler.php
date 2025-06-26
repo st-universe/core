@@ -11,7 +11,7 @@ use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\LocationInterface;
+use Stu\Orm\Entity\Location;
 
 class RegenerationChanceEffectHandler implements EffectHandlerInterface
 {
@@ -32,7 +32,7 @@ class RegenerationChanceEffectHandler implements EffectHandlerInterface
     }
 
     #[Override]
-    public function addFlightInformation(LocationInterface $location, MessageCollectionInterface $messages): void
+    public function addFlightInformation(Location $location, MessageCollectionInterface $messages): void
     {
         $messages->addInformationf(
             "[color=green]Konstruktives Partikelresonanzfeld durch %s in Sektor %s kann zu einem Energietransfer führen.[/color]",

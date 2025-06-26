@@ -16,9 +16,9 @@ use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\ShowAccounts\ShowAccounts;
-use Stu\Orm\Entity\StorageInterface;
-use Stu\Orm\Entity\TradeLicenseInfoInterface;
-use Stu\Orm\Entity\TradeLicenseInterface;
+use Stu\Orm\Entity\Storage;
+use Stu\Orm\Entity\TradeLicenseInfo;
+use Stu\Orm\Entity\TradeLicense;
 use Stu\Orm\Repository\TradeLicenseInfoRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
@@ -77,8 +77,8 @@ final class RenewTradeLicense implements ActionControllerInterface
     }
 
     private function renewLicense(
-        TradeLicenseInterface $activeLicense,
-        TradeLicenseInfoInterface $licenseInfo
+        TradeLicense $activeLicense,
+        TradeLicenseInfo $licenseInfo
     ): void {
         $this->payLicenseViaAccount($activeLicense, $licenseInfo);
 
@@ -88,8 +88,8 @@ final class RenewTradeLicense implements ActionControllerInterface
     }
 
     private function payLicenseViaAccount(
-        TradeLicenseInterface $activeLicense,
-        TradeLicenseInfoInterface $licenseInfo,
+        TradeLicense $activeLicense,
+        TradeLicenseInfo $licenseInfo,
     ): void {
         $tradePost = $activeLicense->getTradePost();
 
@@ -99,7 +99,7 @@ final class RenewTradeLicense implements ActionControllerInterface
         $commodityId = $licenseInfo->getCommodity()->getId();
         $costs = $licenseInfo->getAmount();
 
-        /** @var ?StorageInterface */
+        /** @var ?Storage */
         $stor = $storageManager->getStorage()->get($commodityId) ?? null;
         if ($stor === null) {
             throw new SanityCheckException('storage not existent');

@@ -17,8 +17,8 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ColonyScanRepositoryInterface;
 
 final class ShowColonyScan implements ViewControllerInterface
@@ -100,7 +100,7 @@ final class ShowColonyScan implements ViewControllerInterface
         $game->setMacroInAjaxWindow('html/ship/colonyscan.twig');
     }
 
-    private function createColonyScan(UserInterface $user, ColonyInterface $colony): void
+    private function createColonyScan(User $user, Colony $colony): void
     {
         $colonyscan = $this->colonyScanRepository->prototype();
         $colonyscan->setColony($colony);

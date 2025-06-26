@@ -12,14 +12,13 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\AllianceBoardPostRepository;
 
 #[Table(name: 'stu_alliance_posts')]
 #[Index(name: 'topic_date_idx', columns: ['topic_id', 'date'])]
 #[Index(name: 'board_date_idx', columns: ['board_id', 'date'])]
 #[Entity(repositoryClass: AllianceBoardPostRepository::class)]
-class AllianceBoardPost implements AllianceBoardPostInterface
+class AllianceBoardPost
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -49,147 +48,127 @@ class AllianceBoardPost implements AllianceBoardPostInterface
 
     #[ManyToOne(targetEntity: AllianceBoardTopic::class, inversedBy: 'posts')]
     #[JoinColumn(name: 'topic_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private AllianceBoardTopicInterface $topic;
+    private AllianceBoardTopic $topic;
 
     #[ManyToOne(targetEntity: AllianceBoard::class, inversedBy: 'posts')]
     #[JoinColumn(name: 'board_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private AllianceBoardInterface $board;
+    private AllianceBoard $board;
 
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $user;
+    private User $user;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getTopicId(): int
     {
         return $this->topic_id;
     }
 
-    #[Override]
-    public function setTopicId(int $topicId): AllianceBoardPostInterface
+    public function setTopicId(int $topicId): AllianceBoardPost
     {
         $this->topic_id = $topicId;
 
         return $this;
     }
 
-    #[Override]
     public function getBoardId(): int
     {
         return $this->board_id;
     }
 
-    #[Override]
-    public function setBoardId(int $boardId): AllianceBoardPostInterface
+    public function setBoardId(int $boardId): AllianceBoardPost
     {
         $this->board_id = $boardId;
 
         return $this;
     }
 
-    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
-    #[Override]
-    public function setName(string $name): AllianceBoardPostInterface
+    public function setName(string $name): AllianceBoardPost
     {
         $this->name = $name;
 
         return $this;
     }
 
-    #[Override]
     public function getDate(): int
     {
         return $this->date;
     }
 
-    #[Override]
-    public function setDate(int $date): AllianceBoardPostInterface
+    public function setDate(int $date): AllianceBoardPost
     {
         $this->date = $date;
 
         return $this;
     }
 
-    #[Override]
     public function getText(): string
     {
         return $this->text;
     }
 
-    #[Override]
-    public function setText(string $text): AllianceBoardPostInterface
+    public function setText(string $text): AllianceBoardPost
     {
         $this->text = $text;
 
         return $this;
     }
 
-    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    #[Override]
-    public function setUser(UserInterface $user): AllianceBoardPostInterface
+    public function setUser(User $user): AllianceBoardPost
     {
         $this->user = $user;
         return $this;
     }
 
-    #[Override]
-    public function getTopic(): AllianceBoardTopicInterface
+    public function getTopic(): AllianceBoardTopic
     {
         return $this->topic;
     }
 
-    #[Override]
-    public function setTopic(AllianceBoardTopicInterface $topic): AllianceBoardPostInterface
+    public function setTopic(AllianceBoardTopic $topic): AllianceBoardPost
     {
         $this->topic = $topic;
 
         return $this;
     }
 
-    #[Override]
-    public function getBoard(): AllianceBoardInterface
+    public function getBoard(): AllianceBoard
     {
         return $this->board;
     }
 
-    #[Override]
-    public function setBoard(AllianceBoardInterface $board): AllianceBoardPostInterface
+    public function setBoard(AllianceBoard $board): AllianceBoardPost
     {
         $this->board = $board;
 
         return $this;
     }
 
-    #[Override]
     public function getEditDate(): ?int
     {
         return $this->lastedit;
     }
 
-    #[Override]
-    public function setEditDate(?int $editDate): AllianceBoardPostInterface
+    public function setEditDate(?int $editDate): AllianceBoardPost
     {
         $this->lastedit = $editDate;
 

@@ -6,18 +6,17 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\AuctionBid;
-use Stu\Orm\Entity\AuctionBidInterface;
 
 /**
  * @extends ObjectRepository<AuctionBid>
  *
- * @method null|AuctionBidInterface find(integer $auction_id)
+ * @method null|AuctionBid find(integer $auction_id)
  */
 interface AuctionBidRepositoryInterface extends ObjectRepository
 {
-    public function prototype(): AuctionBidInterface;
+    public function prototype(): AuctionBid;
 
-    public function save(AuctionBidInterface $post): void;
+    public function save(AuctionBid $post): void;
 
-    public function delete(AuctionBidInterface $post): void;
+    public function delete(AuctionBid $post): void;
 }

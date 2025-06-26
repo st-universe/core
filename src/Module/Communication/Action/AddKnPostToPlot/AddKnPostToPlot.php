@@ -12,8 +12,8 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\KnPostInterface;
-use Stu\Orm\Entity\RpgPlotInterface;
+use Stu\Orm\Entity\KnPost;
+use Stu\Orm\Entity\RpgPlot;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 use Stu\Orm\Repository\KnPostToPlotApplicationRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
@@ -65,7 +65,7 @@ final class AddKnPostToPlot implements ActionControllerInterface
         $game->addInformation('Der Beitrag wurde hinzugefügt');
     }
 
-    private function notifyPlotMembers(KnPostInterface $post, RpgPlotInterface $plot): void
+    private function notifyPlotMembers(KnPost $post, RpgPlot $plot): void
     {
         foreach ($plot->getMembers() as $member) {
             if ($member->getUser() !== $post->getUser()) {

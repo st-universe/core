@@ -5,7 +5,7 @@ namespace Stu\Component\Spacecraft\Trait;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\Type\TractorBeamShipSystem;
 use Stu\Module\Spacecraft\Lib\Battle\FightLib;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 
 trait SpacecraftInteractionTrait
 {
@@ -35,7 +35,7 @@ trait SpacecraftInteractionTrait
 
         return $this->isSystemHealthy(SpacecraftSystemTypeEnum::WARPDRIVE)
             && !$self->isTractoring()
-            && (!$self instanceof ShipInterface || !$self->isTractored());
+            && (!$self instanceof Ship || !$self->isTractored());
     }
 
     public function canMove(): bool

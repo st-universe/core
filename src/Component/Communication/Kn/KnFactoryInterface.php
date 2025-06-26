@@ -2,10 +2,10 @@
 
 namespace Stu\Component\Communication\Kn;
 
-use Stu\Orm\Entity\KnPostInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\KnPost;
+use Stu\Orm\Entity\User;
 
 interface KnFactoryInterface
 {
-    public function createKnItem(KnPostInterface $knPost, UserInterface $currentUser): KnItemInterface;
+    public function createKnItem(KnPost $knPost, User $currentUser): KnItemInterface;
 }

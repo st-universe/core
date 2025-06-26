@@ -9,7 +9,7 @@ use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Colony;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 /**
@@ -26,7 +26,7 @@ final class ColonyShieldingManager implements ColonyShieldingManagerInterface
     #[Override]
     public function updateActualShields(): void
     {
-        if (!$this->host instanceof ColonyInterface) {
+        if (!$this->host instanceof Colony) {
             return;
         }
 
@@ -77,6 +77,6 @@ final class ColonyShieldingManager implements ColonyShieldingManagerInterface
     public function isShieldingEnabled(): bool
     {
         return $this->colonyFunctionManager->hasActiveFunction($this->host, BuildingFunctionEnum::SHIELD_GENERATOR)
-            && ($this->host instanceof ColonyInterface ? $this->host->getChangeable()->getShields() > 0 : true);
+            && ($this->host instanceof Colony ? $this->host->getChangeable()->getShields() > 0 : true);
     }
 }

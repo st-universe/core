@@ -7,7 +7,7 @@ namespace Stu\Component\Crew;
 use Override;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
@@ -25,7 +25,7 @@ final class CrewCountRetriever implements CrewCountRetrieverInterface
     ) {}
 
     #[Override]
-    public function getDebrisAndTradePostsCount(UserInterface $user): int
+    public function getDebrisAndTradePostsCount(User $user): int
     {
         $count = $this->crewRepository
             ->getAmountByUserAndShipRumpCategory(
@@ -37,19 +37,19 @@ final class CrewCountRetriever implements CrewCountRetrieverInterface
     }
 
     #[Override]
-    public function getAssignedToShipsCount(UserInterface $user): int
+    public function getAssignedToShipsCount(User $user): int
     {
         return $this->shipCrewRepository->getAmountByUserOnShips($user);
     }
 
     #[Override]
-    public function getInTrainingCount(UserInterface $user): int
+    public function getInTrainingCount(User $user): int
     {
         return $this->crewTrainingRepository->getCountByUser($user);
     }
 
     #[Override]
-    public function getRemainingCount(UserInterface $user): int
+    public function getRemainingCount(User $user): int
     {
         return max(
             0,
@@ -58,13 +58,13 @@ final class CrewCountRetriever implements CrewCountRetrieverInterface
     }
 
     #[Override]
-    public function getAssignedCount(UserInterface $user): int
+    public function getAssignedCount(User $user): int
     {
         return $this->shipCrewRepository->getAmountByUser($user);
     }
 
     #[Override]
-    public function getTrainableCount(UserInterface $user): int
+    public function getTrainableCount(User $user): int
     {
         return (int) ceil($this->crewLimitCalculator->getGlobalCrewLimit($user) / 10);
     }

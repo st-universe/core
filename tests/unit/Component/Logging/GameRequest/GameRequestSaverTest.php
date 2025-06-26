@@ -7,7 +7,7 @@ namespace Stu\Component\Logging\GameRequest;
 use Mockery\MockInterface;
 use Override;
 use Stu\Component\Logging\GameRequest\Adapter\GameRequestLoggerInterface;
-use Stu\Orm\Entity\GameRequestInterface;
+use Stu\Orm\Entity\GameRequest;
 use Stu\StuTestCase;
 
 class GameRequestSaverTest extends StuTestCase
@@ -32,8 +32,8 @@ class GameRequestSaverTest extends StuTestCase
 
     public function testSaveSavesInfo(): void
     {
-        $gameRequest = $this->mock(GameRequestInterface::class);
-        $sanitizedGameRequest = $this->mock(GameRequestInterface::class);
+        $gameRequest = $this->mock(GameRequest::class);
+        $sanitizedGameRequest = $this->mock(GameRequest::class);
 
         $this->parameterSanitizer->shouldReceive('sanitize')
             ->with($gameRequest)
@@ -49,8 +49,8 @@ class GameRequestSaverTest extends StuTestCase
 
     public function testSaveSavesError(): void
     {
-        $gameRequest = $this->mock(GameRequestInterface::class);
-        $sanitizedGameRequest = $this->mock(GameRequestInterface::class);
+        $gameRequest = $this->mock(GameRequest::class);
+        $sanitizedGameRequest = $this->mock(GameRequest::class);
 
         $this->parameterSanitizer->shouldReceive('sanitize')
             ->with($gameRequest)

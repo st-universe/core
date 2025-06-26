@@ -8,8 +8,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Override;
 use Stu\Lib\ModuleScreen\GradientColorInterface;
-use Stu\Orm\Entity\ModuleInterface;
-use Stu\Orm\Entity\WeaponShieldInterface;
+use Stu\Orm\Entity\Module;
+use Stu\Orm\Entity\WeaponShield;
 use Stu\Orm\Repository\WeaponShieldRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -35,12 +35,12 @@ class ModuleSelectorAddonShieldTest extends StuTestCase
 
     public function testgetModificators(): void
     {
-        $shieldModule = $this->mock(ModuleInterface::class);
+        $shieldModule = $this->mock(Module::class);
 
-        $weaponShield_1 = $this->mock(WeaponShieldInterface::class);
-        $weaponShield_2 = $this->mock(WeaponShieldInterface::class);
-        $weaponShield_3 = $this->mock(WeaponShieldInterface::class);
-        $weaponShield_4 = $this->mock(WeaponShieldInterface::class);
+        $weaponShield_1 = $this->mock(WeaponShield::class);
+        $weaponShield_2 = $this->mock(WeaponShield::class);
+        $weaponShield_3 = $this->mock(WeaponShield::class);
+        $weaponShield_4 = $this->mock(WeaponShield::class);
 
         $weaponShields = new ArrayCollection([
             $weaponShield_1,

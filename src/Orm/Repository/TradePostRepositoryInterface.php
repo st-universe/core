@@ -3,54 +3,53 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
-use Stu\Orm\Entity\LocationInterface;
+use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\TradePost;
-use Stu\Orm\Entity\TradePostInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 /**
  * @extends ObjectRepository<TradePost>
  *
- * @method null|TradePostInterface find(integer $id)
- * @method TradePostInterface[] findAll()
+ * @method null|TradePost find(integer $id)
+ * @method TradePost[] findAll()
  *
  */
 interface TradePostRepositoryInterface extends ObjectRepository
 {
-    public function prototype(): TradePostInterface;
+    public function prototype(): TradePost;
 
-    public function save(TradePostInterface $tradePost): void;
+    public function save(TradePost $tradePost): void;
 
-    public function delete(TradePostInterface $tradePost): void;
+    public function delete(TradePost $tradePost): void;
 
     /**
-     * @return array<TradePostInterface>
+     * @return array<TradePost>
      */
     public function getByUser(int $userId): array;
 
     /**
-     * @return array<TradePostInterface>
+     * @return array<TradePost>
      */
     public function getByUserLicense(int $userId): array;
 
     /**
-     * @return array<TradePostInterface>
+     * @return array<TradePost>
      */
     public function getByUserLicenseOnlyNPC(int $userId): array;
 
     /**
-     * @return array<TradePostInterface>
+     * @return array<TradePost>
      */
     public function getByUserLicenseOnlyFerg(int $userId): array;
 
-    public function getClosestNpcTradePost(LocationInterface $location): ?TradePostInterface;
+    public function getClosestNpcTradePost(Location $location): ?TradePost;
 
     public function getFergTradePost(
         int $tradePostId
-    ): ?TradePostInterface;
+    ): ?TradePost;
 
     /**
-     * @return array<UserInterface>
+     * @return array<User>
      */
     public function getUsersWithStorageOnTradepost(int $tradePostId): array;
 

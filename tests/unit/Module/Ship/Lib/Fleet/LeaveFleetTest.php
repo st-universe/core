@@ -6,8 +6,8 @@ namespace Stu\Module\Ship\Lib\Fleet;
 
 use Mockery\MockInterface;
 use Override;
-use Stu\Orm\Entity\FleetInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Fleet;
+use Stu\Orm\Entity\Ship;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -17,7 +17,7 @@ class LeaveFleetTest extends StuTestCase
 
     private MockInterface&ChangeFleetLeaderInterface $changeFleetLeader;
 
-    private MockInterface&ShipInterface $ship;
+    private MockInterface&Ship $ship;
 
     private LeaveFleetInterface $subject;
 
@@ -29,7 +29,7 @@ class LeaveFleetTest extends StuTestCase
         $this->changeFleetLeader = $this->mock(ChangeFleetLeaderInterface::class);
 
         //params
-        $this->ship = $this->mock(ShipInterface::class);
+        $this->ship = $this->mock(Ship::class);
 
         $this->subject = new LeaveFleet(
             $this->shipRepository,
@@ -52,7 +52,7 @@ class LeaveFleetTest extends StuTestCase
 
     public function testLeaveFleetExpectFleetLeaderChangeWhenFleetLeader(): void
     {
-        $fleet = $this->mock(FleetInterface::class);
+        $fleet = $this->mock(Fleet::class);
 
         $fleet->shouldReceive('getId')
             ->withNoArgs()
@@ -85,7 +85,7 @@ class LeaveFleetTest extends StuTestCase
 
     public function testLeaveFleetExpectRemoveWhenInFleet(): void
     {
-        $fleet = $this->mock(FleetInterface::class);
+        $fleet = $this->mock(Fleet::class);
 
         $fleet->shouldReceive('getId')
             ->withNoArgs()

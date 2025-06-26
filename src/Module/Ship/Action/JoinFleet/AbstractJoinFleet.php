@@ -12,7 +12,7 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 
 abstract class AbstractJoinFleet
@@ -28,7 +28,7 @@ abstract class AbstractJoinFleet
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
-    public function tryToAddToFleet(ShipInterface $ship, GameControllerInterface $game): void
+    public function tryToAddToFleet(Ship $ship, GameControllerInterface $game): void
     {
         $fleetId = request::indInt('fleetid');
         $fleet = $this->fleetRepository->find($fleetId);
@@ -90,7 +90,7 @@ abstract class AbstractJoinFleet
         ));
     }
 
-    private function isTholianWebPreventing(ShipInterface $fleetLeader, ShipInterface $ship): bool
+    private function isTholianWebPreventing(Ship $fleetLeader, Ship $ship): bool
     {
         $fleetLeaderWeb = $fleetLeader->getHoldingWeb();
         $shipWeb = $ship->getHoldingWeb();

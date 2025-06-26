@@ -15,15 +15,20 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use RuntimeException;
+use Stu\Lib\Interaction\EntityWithInteractionCheckInterface;
+use Stu\Lib\Map\EntityWithLocationInterface;
 use Stu\Lib\Transfer\CommodityTransfer;
+use Stu\Lib\Transfer\EntityWithStorageInterface;
 use Stu\Lib\Transfer\TransferEntityTypeEnum;
 use Stu\Orm\Repository\TrumfieldRepository;
 
 #[Table(name: 'stu_trumfield')]
 #[Entity(repositoryClass: TrumfieldRepository::class)]
-class Trumfield implements TrumfieldInterface
+class Trumfield implements
+    EntityWithStorageInterface,
+    EntityWithLocationInterface,
+    EntityWithInteractionCheckInterface
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -40,7 +45,7 @@ class Trumfield implements TrumfieldInterface
     private int $location_id = 0;
 
     /**
-     * @var ArrayCollection<int, StorageInterface>
+     * @var ArrayCollection<int, Storage>
      */
     #[OneToMany(targetEntity: Storage::class, mappedBy: 'trumfield', indexBy: 'commodity_id')]
     #[OrderBy(['commodity_id' => 'ASC'])]
@@ -48,80 +53,69 @@ class Trumfield implements TrumfieldInterface
 
     #[ManyToOne(targetEntity: Location::class)]
     #[JoinColumn(name: 'location_id', nullable: false, referencedColumnName: 'id')]
-    private LocationInterface $location;
+    private Location $location;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getHull(): int
     {
         return $this->huelle;
     }
 
-    #[Override]
-    public function setHull(int $hull): TrumfieldInterface
+    public function setHull(int $hull): Trumfield
     {
         $this->huelle = $hull;
         return $this;
     }
 
-    #[Override]
     public function getFormerRumpId(): int
     {
         return $this->former_rump_id;
     }
 
-    #[Override]
-    public function setFormerRumpId(int $formerRumpId): TrumfieldInterface
+    public function setFormerRumpId(int $formerRumpId): Trumfield
     {
         $this->former_rump_id = $formerRumpId;
         return $this;
     }
 
-    #[Override]
     public function getStorage(): Collection
     {
         return $this->storage;
     }
 
-    #[Override]
     public function getStorageSum(): int
     {
         return array_reduce(
             $this->getStorage()->getValues(),
-            fn(int $sum, StorageInterface $storage): int => $sum + $storage->getAmount(),
+            fn(int $sum, Storage $storage): int => $sum + $storage->getAmount(),
             0
         );
     }
 
-    #[Override]
     public function getMaxStorage(): int
     {
         return $this->getStorageSum();
     }
 
-    #[Override]
     public function getBeamableStorage(): Collection
     {
         return CommodityTransfer::excludeNonBeamable($this->storage);
     }
 
-    #[Override]
     public function getCrewAssignments(): Collection
     {
         return new ArrayCollection();
     }
 
-    #[Override]
-    public function getLocation(): MapInterface|StarSystemMapInterface
+    public function getLocation(): Map|StarSystemMap
     {
         if (
-            $this->location instanceof MapInterface
-            || $this->location instanceof StarSystemMapInterface
+            $this->location instanceof Map
+            || $this->location instanceof StarSystemMap
         ) {
             return $this->location;
         }
@@ -129,33 +123,28 @@ class Trumfield implements TrumfieldInterface
         throw new RuntimeException('unknown type');
     }
 
-    #[Override]
-    public function setLocation(LocationInterface $location): TrumfieldInterface
+    public function setLocation(Location $location): Trumfield
     {
         $this->location = $location;
 
         return $this;
     }
 
-    #[Override]
-    public function getUser(): ?UserInterface
+    public function getUser(): ?User
     {
         return null;
     }
 
-    #[Override]
     public function getTransferEntityType(): TransferEntityTypeEnum
     {
         return TransferEntityTypeEnum::TRUMFIELD;
     }
 
-    #[Override]
     public function getName(): string
     {
         return $this->getTransferEntityType()->getName();
     }
 
-    #[Override]
     public function getHref(): string
     {
         return '';

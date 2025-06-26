@@ -10,8 +10,8 @@ use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Building\BuildingFunctionTypeEnum;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\PlanetFieldInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
@@ -40,7 +40,7 @@ final class ColonySurface implements ColonySurfaceInterface
         if (!$this->showUnderground) {
             $fields = array_filter(
                 $fields,
-                fn(PlanetFieldInterface $field): bool => !$this->planetFieldTypeRetriever->isUndergroundField($field)
+                fn(PlanetField $field): bool => !$this->planetFieldTypeRetriever->isUndergroundField($field)
             );
         }
 
@@ -52,15 +52,15 @@ final class ColonySurface implements ColonySurfaceInterface
 
             array_walk(
                 $fields,
-                function (PlanetFieldInterface $field) use ($building, $researchedArray): void {
+                function (PlanetField $field) use ($building, $researchedArray): void {
                     if (
                         $field->getTerraformingId() === null &&
                         $building->getBuildableFields()->containsKey($field->getFieldType())
                     ) {
-                        //PlanetFieldTypeBuildingInterface
+                        //PlanetFieldTypeBuilding
                         $fieldBuilding = $building->getBuildableFields()->get($field->getFieldType());
 
-                        $researchId = $fieldBuilding->getResearchId();
+                        $researchId = $fieldBuilding?->getResearchId();
                         if ($researchId == null || $this->isResearched($researchId, $researchedArray)) {
                             $field->setBuildMode(true);
                         }
@@ -99,7 +99,7 @@ final class ColonySurface implements ColonySurfaceInterface
     public function updateSurface(): void
     {
         $host = $this->host;
-        if (!$host instanceof ColonyInterface) {
+        if (!$host instanceof Colony) {
             return;
         }
         if (!$host->isFree()) {

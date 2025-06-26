@@ -6,12 +6,12 @@ namespace Stu\Module\Spacecraft\Lib\Battle\Weapon;
 
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 
 interface TholianWebWeaponPhaseInterface
 {
     public function damageCapturedShip(
-        ShipInterface $ship,
+        Ship $ship,
         SpacecraftWrapperInterface $wrapper,
         InformationInterface $informations
     ): void;

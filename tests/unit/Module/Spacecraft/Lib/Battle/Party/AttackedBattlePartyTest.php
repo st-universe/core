@@ -10,16 +10,16 @@ use Override;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Station\Lib\StationWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\StationInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Station;
+use Stu\Orm\Entity\User;
 use Stu\StuTestCase;
 
 class AttackedBattlePartyTest extends StuTestCase
 {
     private MockInterface&ShipWrapperInterface $wrapper;
 
-    private MockInterface&UserInterface $user;
+    private MockInterface&User $user;
 
     private BattlePartyInterface $subject;
 
@@ -30,7 +30,7 @@ class AttackedBattlePartyTest extends StuTestCase
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
 
         //other
-        $this->user = $this->mock(UserInterface::class);
+        $this->user = $this->mock(User::class);
 
         $this->wrapper->shouldReceive('get->getUser')
             ->withNoArgs()
@@ -74,8 +74,8 @@ class AttackedBattlePartyTest extends StuTestCase
     public function testGetActiveMembersExpectSingleWhenDockedToNpc(): void
     {
         $dockedToWrapper = $this->mock(StationWrapperInterface::class);
-        $dockedToStation = $this->mock(StationInterface::class);
-        $dockedToUser = $this->mock(UserInterface::class);
+        $dockedToStation = $this->mock(Station::class);
+        $dockedToUser = $this->mock(User::class);
 
         $this->wrapper->shouldReceive('getFleetWrapper')
             ->withNoArgs()
@@ -105,8 +105,8 @@ class AttackedBattlePartyTest extends StuTestCase
     public function testGetActiveMembersExpectSingleWhenDockedOffline(): void
     {
         $dockedToWrapper = $this->mock(StationWrapperInterface::class);
-        $dockedToStation = $this->mock(StationInterface::class);
-        $dockedToUser = $this->mock(UserInterface::class);
+        $dockedToStation = $this->mock(Station::class);
+        $dockedToUser = $this->mock(User::class);
 
         $this->wrapper->shouldReceive('getFleetWrapper')
             ->withNoArgs()
@@ -151,8 +151,8 @@ class AttackedBattlePartyTest extends StuTestCase
     public function testGetActiveMembersExpectSingleAndOnlineDocked(): void
     {
         $dockedToWrapper = $this->mock(StationWrapperInterface::class);
-        $dockedToStation = $this->mock(StationInterface::class);
-        $dockedToUser = $this->mock(UserInterface::class);
+        $dockedToStation = $this->mock(Station::class);
+        $dockedToUser = $this->mock(User::class);
 
         $this->wrapper->shouldReceive('getFleetWrapper')
             ->withNoArgs()
@@ -234,11 +234,11 @@ class AttackedBattlePartyTest extends StuTestCase
     public function testGetActiveMembersExpectFleetAndOnlineDocked(): void
     {
         $secondWrapper = $this->mock(ShipWrapperInterface::class);
-        $secondShip = $this->mock(ShipInterface::class);
+        $secondShip = $this->mock(Ship::class);
         $fleetWrapper = $this->mock(FleetWrapperInterface::class);
         $dockedToWrapper = $this->mock(StationWrapperInterface::class);
-        $dockedToStation = $this->mock(StationInterface::class);
-        $dockedToUser = $this->mock(UserInterface::class);
+        $dockedToStation = $this->mock(Station::class);
+        $dockedToUser = $this->mock(User::class);
 
         $this->wrapper->shouldReceive('getFleetWrapper')
             ->withNoArgs()
@@ -311,7 +311,7 @@ class AttackedBattlePartyTest extends StuTestCase
     public function testGetActiveMembersExpectCloakedFleet(): void
     {
         $secondWrapper = $this->mock(ShipWrapperInterface::class);
-        $secondShip = $this->mock(ShipInterface::class);
+        $secondShip = $this->mock(Ship::class);
         $fleetWrapper = $this->mock(FleetWrapperInterface::class);
 
         $this->wrapper->shouldReceive('getFleetWrapper')

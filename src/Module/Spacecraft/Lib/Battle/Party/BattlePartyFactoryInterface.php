@@ -5,7 +5,7 @@ namespace Stu\Module\Spacecraft\Lib\Battle\Party;
 use Doctrine\Common\Collections\Collection;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 
 interface BattlePartyFactoryInterface
 {
@@ -40,6 +40,6 @@ interface BattlePartyFactoryInterface
     ): MixedBattleParty;
 
     public function createColonyDefendingBattleParty(
-        ShipInterface $leader
+        Ship $leader
     ): ColonyDefendingBattleParty;
 }

@@ -11,7 +11,6 @@ use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\DatabaseCategory;
 use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\DatabaseUser;
-use Stu\Orm\Entity\DatabaseUserInterface;
 
 /**
  * @extends EntityRepository<DatabaseUser>
@@ -32,7 +31,7 @@ final class DatabaseUserRepository extends EntityRepository implements DatabaseU
     }
 
     #[Override]
-    public function findFor(int $databaseEntryId, int $userId): ?DatabaseUserInterface
+    public function findFor(int $databaseEntryId, int $userId): ?DatabaseUser
     {
         return $this->findOneBy([
             'user_id' => $userId,
@@ -50,13 +49,13 @@ final class DatabaseUserRepository extends EntityRepository implements DatabaseU
     }
 
     #[Override]
-    public function prototype(): DatabaseUserInterface
+    public function prototype(): DatabaseUser
     {
         return new DatabaseUser();
     }
 
     #[Override]
-    public function save(DatabaseUserInterface $entry): void
+    public function save(DatabaseUser $entry): void
     {
         $em = $this->getEntityManager();
         $em->persist($entry);

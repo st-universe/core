@@ -14,7 +14,6 @@ use Mockery\MockInterface;
 use Override;
 use Stu\Component\Game\GameEnum;
 use Stu\Orm\Entity\GameConfig;
-use Stu\Orm\Entity\GameConfigInterface;
 use Stu\StuTestCase;
 
 class GameConfigRepositoryTest extends StuTestCase
@@ -41,7 +40,7 @@ class GameConfigRepositoryTest extends StuTestCase
 
     public function testSaveSaves(): void
     {
-        $item = $this->mock(GameConfigInterface::class);
+        $item = $this->mock(GameConfig::class);
 
         $this->entityManager->shouldReceive('persist')
             ->with($item)
@@ -57,7 +56,7 @@ class GameConfigRepositoryTest extends StuTestCase
     {
         $optionId = 666;
 
-        $item = $this->mock(GameConfigInterface::class);
+        $item = $this->mock(GameConfig::class);
         $persister = $this->mock(EntityPersister::class);
         $unitOfWork = $this->mock(UnitOfWork::class);
 

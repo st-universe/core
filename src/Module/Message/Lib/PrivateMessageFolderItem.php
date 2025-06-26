@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Lib;
 
-use Stu\Orm\Entity\PrivateMessageFolderInterface;
+use Stu\Orm\Entity\PrivateMessageFolder;
 use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 
 class PrivateMessageFolderItem
 {
-    public function __construct(private PrivateMessageRepositoryInterface $privateMessageRepository, private PrivateMessageFolderInterface $privateMessageFolder) {}
+    public function __construct(private PrivateMessageRepositoryInterface $privateMessageRepository, private PrivateMessageFolder $privateMessageFolder) {}
 
     /**
      * Returns the id of the folder

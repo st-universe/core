@@ -9,9 +9,9 @@ use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Entity\BuildingInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\PlanetFieldTypeBuildingInterface;
+use Stu\Orm\Entity\Building;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\PlanetFieldTypeBuilding;
 use Stu\Orm\Repository\BuildingFieldAlternativeRepositoryInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
@@ -48,7 +48,7 @@ final class ShowBuilding implements ViewControllerInterface
         //filter by view
         $useableFieldTypes = array_filter(
             $useableFieldTypes->toArray(),
-            fn(PlanetFieldTypeBuildingInterface $pftb): bool => $pftb->getView()
+            fn(PlanetFieldTypeBuilding $pftb): bool => $pftb->getView()
         );
 
         $game->setPageTitle($building->getName());
@@ -61,11 +61,11 @@ final class ShowBuilding implements ViewControllerInterface
         $this->setBuildingLimit($building, $host, $game);
     }
 
-    private function setBuildingLimit(BuildingInterface $building, PlanetFieldHostInterface $host, GameControllerInterface $game): void
+    private function setBuildingLimit(Building $building, PlanetFieldHostInterface $host, GameControllerInterface $game): void
     {
         $buildingcount = null;
 
-        if ($host instanceof ColonyInterface) {
+        if ($host instanceof Colony) {
             $storage        = $host->getStorage();
             $buildingcount  = $host->getChangeable()->getEps() / $building->getEpsCost();
             foreach ($building->getCosts() as $cost) {

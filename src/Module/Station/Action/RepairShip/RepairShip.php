@@ -15,7 +15,7 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Station\View\ShowShipRepair\ShowShipRepair;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\StationShipRepairRepositoryInterface;
 
@@ -56,7 +56,7 @@ final class RepairShip implements ActionControllerInterface
             return;
         }
         $ship = $targetWrapper->get();
-        if (!$ship instanceof ShipInterface) {
+        if (!$ship instanceof Ship) {
             return;
         }
 

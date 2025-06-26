@@ -12,7 +12,6 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Component\Map\DirectionEnum;
 use Stu\Orm\Repository\FlightSignatureRepository;
 
@@ -20,7 +19,7 @@ use Stu\Orm\Repository\FlightSignatureRepository;
 #[Index(name: 'flight_sig_user_idx', columns: ['user_id'])]
 #[Index(name: 'flight_sig_sensor_result_idx', columns: ['from_direction', 'to_direction', 'time'])]
 #[Entity(repositoryClass: FlightSignatureRepository::class)]
-class FlightSignature implements FlightSignatureInterface
+class FlightSignature
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -56,124 +55,106 @@ class FlightSignature implements FlightSignatureInterface
 
     #[ManyToOne(targetEntity: SpacecraftRump::class)]
     #[JoinColumn(name: 'rump_id', nullable: false, referencedColumnName: 'id')]
-    private SpacecraftRumpInterface $rump;
+    private SpacecraftRump $rump;
 
     #[ManyToOne(targetEntity: Location::class)]
     #[JoinColumn(name: 'location_id', nullable: false, referencedColumnName: 'id')]
-    private LocationInterface $location;
+    private Location $location;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
-    public function setUserId(int $userId): FlightSignatureInterface
+    public function setUserId(int $userId): FlightSignature
     {
         $this->user_id = $userId;
         return $this;
     }
 
-    #[Override]
     public function getShipId(): int
     {
         return $this->ship_id;
     }
 
-    #[Override]
-    public function setShipId(int $shipId): FlightSignatureInterface
+    public function setShipId(int $shipId): FlightSignature
     {
         $this->ship_id = $shipId;
         return $this;
     }
 
-    #[Override]
     public function getShipName(): string
     {
         return $this->ship_name;
     }
 
-    #[Override]
-    public function setSpacecraftName(string $name): FlightSignatureInterface
+    public function setSpacecraftName(string $name): FlightSignature
     {
         $this->ship_name = $name;
         return $this;
     }
 
-    #[Override]
     public function isCloaked(): bool
     {
         return $this->is_cloaked;
     }
 
-    #[Override]
-    public function setIsCloaked(bool $isCloaked): FlightSignatureInterface
+    public function setIsCloaked(bool $isCloaked): FlightSignature
     {
         $this->is_cloaked = $isCloaked;
         return $this;
     }
 
-    #[Override]
-    public function getRump(): SpacecraftRumpInterface
+    public function getRump(): SpacecraftRump
     {
         return $this->rump;
     }
 
-    #[Override]
-    public function setRump(SpacecraftRumpInterface $rump): FlightSignatureInterface
+    public function setRump(SpacecraftRump $rump): FlightSignature
     {
         $this->rump = $rump;
         return $this;
     }
 
-    #[Override]
     public function getTime(): int
     {
         return $this->time;
     }
-    #[Override]
-    public function setTime(int $time): FlightSignatureInterface
+    public function setTime(int $time): FlightSignature
     {
         $this->time = $time;
         return $this;
     }
 
-    #[Override]
-    public function getLocation(): LocationInterface
+    public function getLocation(): Location
     {
         return $this->location;
     }
 
-    #[Override]
-    public function setLocation(LocationInterface $location): FlightSignatureInterface
+    public function setLocation(Location $location): FlightSignature
     {
         $this->location = $location;
 
         return $this;
     }
 
-    #[Override]
     public function getFromDirection(): ?DirectionEnum
     {
         return $this->from_direction;
     }
 
-    #[Override]
-    public function setFromDirection(DirectionEnum $direction): FlightSignatureInterface
+    public function setFromDirection(DirectionEnum $direction): FlightSignature
     {
         $this->from_direction = $direction;
         return $this;
     }
 
-    #[Override]
     public function getToDirection(): ?DirectionEnum
     {
         return $this->to_direction;
     }
 
-    #[Override]
-    public function setToDirection(DirectionEnum $direction): FlightSignatureInterface
+    public function setToDirection(DirectionEnum $direction): FlightSignature
     {
         $this->to_direction = $direction;
         return $this;

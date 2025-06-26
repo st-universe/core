@@ -15,14 +15,13 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\TorpedoTypeRepository;
 
 #[Table(name: 'stu_torpedo_types')]
 #[Index(name: 'torpedo_type_research_idx', columns: ['research_id'])]
 #[Index(name: 'level_idx', columns: ['level'])]
 #[Entity(repositoryClass: TorpedoTypeRepository::class)]
-class TorpedoType implements TorpedoTypeInterface
+class TorpedoType
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -66,194 +65,171 @@ class TorpedoType implements TorpedoTypeInterface
     private int $amount = 0;
 
     /**
-     * @var ArrayCollection<int, TorpedoTypeCostInterface>
+     * @var ArrayCollection<int, TorpedoTypeCost>
      */
     #[OneToMany(targetEntity: TorpedoTypeCost::class, mappedBy: 'torpedoType')]
     private Collection $productionCosts;
 
     #[ManyToOne(targetEntity: Commodity::class)]
     #[JoinColumn(name: 'commodity_id', nullable: false, referencedColumnName: 'id')]
-    private CommodityInterface $commodity;
+    private Commodity $commodity;
 
     public function __construct()
     {
         $this->productionCosts = new ArrayCollection();
     }
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
-    #[Override]
-    public function setName(string $name): TorpedoTypeInterface
+    public function setName(string $name): TorpedoType
     {
         $this->name = $name;
 
         return $this;
     }
 
-    #[Override]
     public function getBaseDamage(): int
     {
         return $this->base_damage;
     }
 
-    #[Override]
     public function getCriticalChance(): int
     {
         return $this->critical_chance;
     }
 
-    #[Override]
-    public function setCriticalChance(int $criticalChance): TorpedoTypeInterface
+    public function setCriticalChance(int $criticalChance): TorpedoType
     {
         $this->critical_chance = $criticalChance;
 
         return $this;
     }
 
-    #[Override]
     public function getHitFactor(): int
     {
         return $this->hit_factor;
     }
 
-    #[Override]
-    public function setHitFactor(int $hitFactor): TorpedoTypeInterface
+    public function setHitFactor(int $hitFactor): TorpedoType
     {
         $this->hit_factor = $hitFactor;
 
         return $this;
     }
 
-    #[Override]
     public function getHullDamageFactor(): int
     {
         return $this->hull_damage_factor;
     }
 
-    #[Override]
-    public function setHullDamageFactor(int $hullDamageFactor): TorpedoTypeInterface
+    public function setHullDamageFactor(int $hullDamageFactor): TorpedoType
     {
         $this->hull_damage_factor = $hullDamageFactor;
 
         return $this;
     }
 
-    #[Override]
     public function getShieldDamageFactor(): int
     {
         return $this->shield_damage_factor;
     }
 
-    #[Override]
-    public function setShieldDamageFactor(int $shieldDamageFactor): TorpedoTypeInterface
+    public function setShieldDamageFactor(int $shieldDamageFactor): TorpedoType
     {
         $this->shield_damage_factor = $shieldDamageFactor;
 
         return $this;
     }
 
-    #[Override]
     public function getVariance(): int
     {
         return $this->variance;
     }
 
-    #[Override]
-    public function setVariance(int $variance): TorpedoTypeInterface
+    public function setVariance(int $variance): TorpedoType
     {
         $this->variance = $variance;
 
         return $this;
     }
 
-    #[Override]
     public function getCommodityId(): int
     {
         return $this->commodity_id;
     }
 
-    #[Override]
-    public function setCommodityId(int $commodityId): TorpedoTypeInterface
+    public function setCommodityId(int $commodityId): TorpedoType
     {
         $this->commodity_id = $commodityId;
 
         return $this;
     }
 
-    #[Override]
     public function getLevel(): int
     {
         return $this->level;
     }
 
-    #[Override]
-    public function setLevel(int $level): TorpedoTypeInterface
+    public function setLevel(int $level): TorpedoType
     {
         $this->level = $level;
 
         return $this;
     }
 
-    #[Override]
     public function getResearchId(): int
     {
         return $this->research_id;
     }
 
-    #[Override]
-    public function setResearchId(int $researchId): TorpedoTypeInterface
+    public function setResearchId(int $researchId): TorpedoType
     {
         $this->research_id = $researchId;
 
         return $this;
     }
 
-    #[Override]
     public function getEnergyCost(): int
     {
         return $this->ecost;
     }
 
-    #[Override]
-    public function setEnergyCost(int $energyCost): TorpedoTypeInterface
+    public function setEnergyCost(int $energyCost): TorpedoType
     {
         $this->ecost = $energyCost;
 
         return $this;
     }
 
-    #[Override]
     public function getProductionAmount(): int
     {
         return $this->amount;
     }
 
-    #[Override]
-    public function setProductionAmount(int $productionAmount): TorpedoTypeInterface
+    public function setProductionAmount(int $productionAmount): TorpedoType
     {
         $this->amount = $productionAmount;
 
         return $this;
     }
 
-    #[Override]
+    /**
+     * @return Collection<int, TorpedoTypeCost>
+     */
     public function getProductionCosts(): Collection
     {
         return $this->productionCosts;
     }
 
-    #[Override]
-    public function getCommodity(): CommodityInterface
+    public function getCommodity(): Commodity
     {
         return $this->commodity;
     }

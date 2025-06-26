@@ -7,9 +7,8 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\ShipTakeover;
-use Stu\Orm\Entity\ShipTakeoverInterface;
 use Stu\Orm\Entity\Spacecraft;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 /**
  * @extends EntityRepository<ShipTakeover>
@@ -17,13 +16,13 @@ use Stu\Orm\Entity\UserInterface;
 final class ShipTakeoverRepository extends EntityRepository implements ShipTakeoverRepositoryInterface
 {
     #[Override]
-    public function prototype(): ShipTakeoverInterface
+    public function prototype(): ShipTakeover
     {
         return new ShipTakeover();
     }
 
     #[Override]
-    public function save(ShipTakeoverInterface $shipTakeover): void
+    public function save(ShipTakeover $shipTakeover): void
     {
         $em = $this->getEntityManager();
 
@@ -31,7 +30,7 @@ final class ShipTakeoverRepository extends EntityRepository implements ShipTakeo
     }
 
     #[Override]
-    public function delete(ShipTakeoverInterface $shipTakeover): void
+    public function delete(ShipTakeover $shipTakeover): void
     {
         $em = $this->getEntityManager();
 
@@ -39,7 +38,7 @@ final class ShipTakeoverRepository extends EntityRepository implements ShipTakeo
     }
 
     #[Override]
-    public function getByTargetOwner(UserInterface $user): array
+    public function getByTargetOwner(User $user): array
     {
         return $this->getEntityManager()->createQuery(
             sprintf(

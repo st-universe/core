@@ -8,7 +8,7 @@ use Noodlehaus\ConfigInterface;
 use Override;
 use RuntimeException;
 use Stu\Lib\Mail\MailFactoryInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 final class SmsVerificationCodeSender implements SmsVerificationCodeSenderInterface
 {
@@ -18,7 +18,7 @@ final class SmsVerificationCodeSender implements SmsVerificationCodeSenderInterf
     ) {}
 
     #[Override]
-    public function send(UserInterface $player, string $code): void
+    public function send(User $player, string $code): void
     {
         $body = <<<EOT
             Dein Aktivierungscode für Star Trek Universe lautet:\n\n

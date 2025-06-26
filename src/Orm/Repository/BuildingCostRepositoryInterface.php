@@ -4,7 +4,6 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\BuildingCost;
-use Stu\Orm\Entity\BuildingCostInterface;
 
 /**
  * @extends ObjectRepository<BuildingCost>
@@ -12,7 +11,7 @@ use Stu\Orm\Entity\BuildingCostInterface;
 interface BuildingCostRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return list<BuildingCostInterface>
+     * @return list<BuildingCost>
      */
     public function getByBuilding(int $buildingId): array;
 }

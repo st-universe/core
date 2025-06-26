@@ -10,7 +10,7 @@ use Override;
 use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -62,7 +62,7 @@ final class ShowWriteQuickPm implements ViewControllerInterface
         $game->setTemplateVar('TEMPLATETEXT', $conversationInfo->getTemplateText($this->bbCodeParser));
     }
 
-    private function determineFrom(int $fromId, int $fromType, UserInterface $user): ?ConversationInfo
+    private function determineFrom(int $fromId, int $fromType, User $user): ?ConversationInfo
     {
         $conversationInfo = new ConversationInfo();
 

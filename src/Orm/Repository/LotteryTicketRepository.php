@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Override;
 use Stu\Orm\Entity\LotteryTicket;
-use Stu\Orm\Entity\LotteryTicketInterface;
 
 /**
  * @extends EntityRepository<LotteryTicket>
@@ -16,13 +15,13 @@ use Stu\Orm\Entity\LotteryTicketInterface;
 final class LotteryTicketRepository extends EntityRepository implements LotteryTicketRepositoryInterface
 {
     #[Override]
-    public function prototype(): LotteryTicketInterface
+    public function prototype(): LotteryTicket
     {
         return new LotteryTicket();
     }
 
     #[Override]
-    public function save(LotteryTicketInterface $lotteryticket): void
+    public function save(LotteryTicket $lotteryticket): void
     {
         $em = $this->getEntityManager();
 

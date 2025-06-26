@@ -11,12 +11,11 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\UserPirateRoundRepository;
 
 #[Table(name: 'stu_user_pirate_round')]
 #[Entity(repositoryClass: UserPirateRoundRepository::class)]
-class UserPirateRound implements UserPirateRoundInterface
+class UserPirateRound
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -37,79 +36,68 @@ class UserPirateRound implements UserPirateRoundInterface
 
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $user;
+    private User $user;
 
     #[ManyToOne(targetEntity: PirateRound::class)]
     #[JoinColumn(name: 'pirate_round_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private PirateRoundInterface $pirateRound;
+    private PirateRound $pirateRound;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    #[Override]
-    public function setUser(UserInterface $user): UserPirateRoundInterface
+    public function setUser(User $user): UserPirateRound
     {
         $this->user = $user;
         $this->user_id = $user->getId();
         return $this;
     }
 
-    #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    #[Override]
     public function getPirateRoundId(): int
     {
         return $this->pirate_round_id;
     }
 
-    #[Override]
-    public function setPirateRound(PirateRoundInterface $pirateRound): UserPirateRoundInterface
+    public function setPirateRound(PirateRound $pirateRound): UserPirateRound
     {
         $this->pirateRound = $pirateRound;
         $this->pirate_round_id = $pirateRound->getId();
         return $this;
     }
 
-    #[Override]
-    public function getPirateRound(): PirateRoundInterface
+    public function getPirateRound(): PirateRound
     {
         return $this->pirateRound;
     }
 
-    #[Override]
     public function getDestroyedShips(): int
     {
         return $this->destroyed_ships;
     }
 
-    #[Override]
-    public function setDestroyedShips(int $destroyedShips): UserPirateRoundInterface
+    public function setDestroyedShips(int $destroyedShips): UserPirateRound
     {
         $this->destroyed_ships = $destroyedShips;
         return $this;
     }
 
-    #[Override]
     public function getPrestige(): int
     {
         return $this->prestige;
     }
 
-    #[Override]
-    public function setPrestige(int $prestige): UserPirateRoundInterface
+    public function setPrestige(int $prestige): UserPirateRound
     {
         $this->prestige = $prestige;
         return $this;

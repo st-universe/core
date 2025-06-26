@@ -6,8 +6,8 @@ namespace Stu\Component\Communication\Kn;
 
 use Override;
 use Stu\Module\Template\StatusBarFactoryInterface;
-use Stu\Orm\Entity\KnPostInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\KnPost;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\KnCommentRepositoryInterface;
 
 final class KnFactory implements KnFactoryInterface
@@ -20,8 +20,8 @@ final class KnFactory implements KnFactoryInterface
 
     #[Override]
     public function createKnItem(
-        KnPostInterface $knPost,
-        UserInterface $currentUser
+        KnPost $knPost,
+        User $currentUser
     ): KnItemInterface {
         return new KnItem(
             $this->bbCodeParser,

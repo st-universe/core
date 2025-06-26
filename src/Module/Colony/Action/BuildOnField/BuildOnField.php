@@ -17,11 +17,11 @@ use Stu\Module\Colony\View\ShowInformation\ShowInformation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\BuildingCostInterface;
-use Stu\Orm\Entity\BuildingInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\ColonySandboxInterface;
-use Stu\Orm\Entity\PlanetFieldInterface;
+use Stu\Orm\Entity\BuildingCost;
+use Stu\Orm\Entity\Building;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\ColonySandbox;
+use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Repository\BuildingFieldAlternativeRepositoryInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -94,7 +94,7 @@ final class BuildOnField implements ActionControllerInterface
             return;
         }
         if (
-            $host instanceof ColonyInterface
+            $host instanceof Colony
             && $building->hasLimit()
             && $this->planetFieldRepository->getCountByBuildingAndUser($buildingId, $userId) >= $building->getLimit()
         ) {
@@ -116,7 +116,7 @@ final class BuildOnField implements ActionControllerInterface
 
         if ($field->hasBuilding()) {
 
-            if ($host instanceof ColonyInterface) {
+            if ($host instanceof Colony) {
 
                 $changeable = $host->getChangeable();
 
@@ -148,7 +148,7 @@ final class BuildOnField implements ActionControllerInterface
                 ->addComponentUpdate(ColonyComponentEnum::STORAGE, $host);
         }
 
-        if ($host instanceof ColonyInterface && !$this->doColonyChecksAndConsume($field, $building, $host, $game)) {
+        if ($host instanceof Colony && !$this->doColonyChecksAndConsume($field, $building, $host, $game)) {
             return;
         }
 
@@ -162,7 +162,7 @@ final class BuildOnField implements ActionControllerInterface
             ->addComponentUpdate(ColonyComponentEnum::EPS_BAR, $host)
             ->addComponentUpdate(ColonyComponentEnum::STORAGE, $host);
 
-        if ($host instanceof ColonySandboxInterface) {
+        if ($host instanceof ColonySandbox) {
             $this->buildingManager->finish($field);
 
             $game->addInformationf(
@@ -181,9 +181,9 @@ final class BuildOnField implements ActionControllerInterface
     }
 
     private function doColonyChecksAndConsume(
-        PlanetFieldInterface $field,
-        BuildingInterface $building,
-        ColonyInterface $colony,
+        PlanetField $field,
+        Building $building,
+        Colony $colony,
         GameControllerInterface $game
     ): bool {
         if (
@@ -223,9 +223,9 @@ final class BuildOnField implements ActionControllerInterface
     }
 
     private function checkBuildingCosts(
-        ColonyInterface $colony,
-        BuildingInterface $building,
-        PlanetFieldInterface $field,
+        Colony $colony,
+        Building $building,
+        PlanetField $field,
         GameControllerInterface $game
     ): bool {
         $isEnoughAvailable = true;
@@ -240,7 +240,7 @@ final class BuildOnField implements ActionControllerInterface
                 $currentBuildingCost = $field->getBuilding()->getCosts()->toArray();
                 $result = array_filter(
                     $currentBuildingCost,
-                    fn(BuildingCostInterface $buildingCost): bool => $commodityId === $buildingCost->getCommodityId()
+                    fn(BuildingCost $buildingCost): bool => $commodityId === $buildingCost->getCommodityId()
                 );
                 if (
                     !$storage->containsKey($commodityId) &&
@@ -267,7 +267,7 @@ final class BuildOnField implements ActionControllerInterface
             if ($field->hasBuilding()) {
                 $result = array_filter(
                     $currentBuildingCost,
-                    fn(BuildingCostInterface $buildingCost): bool => $commodityId === $buildingCost->getCommodityId()
+                    fn(BuildingCost $buildingCost): bool => $commodityId === $buildingCost->getCommodityId()
                 );
                 if ($result !== []) {
                     $amount += current($result)->getHalfAmount();

@@ -9,7 +9,7 @@ use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Commodity\Lib\CommodityCacheInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Colony;
 
 final class StorageProvider implements PlanetFieldHostComponentInterface
 {
@@ -28,7 +28,7 @@ final class StorageProvider implements PlanetFieldHostComponentInterface
             $this->colonyLibFactory->createColonyProductionSumReducer()->reduce($prod)
         );
 
-        $stor = $entity instanceof ColonyInterface ? $entity->getStorage() : new ArrayCollection();
+        $stor = $entity instanceof Colony ? $entity->getStorage() : new ArrayCollection();
         $storage = [];
         foreach ($commodities as $value) {
             $commodityId = $value->getId();
@@ -51,7 +51,7 @@ final class StorageProvider implements PlanetFieldHostComponentInterface
 
     private function getStorageSum(PlanetFieldHostInterface $host): int
     {
-        if (!$host instanceof ColonyInterface) {
+        if (!$host instanceof Colony) {
             return 0;
         }
 
@@ -60,7 +60,7 @@ final class StorageProvider implements PlanetFieldHostComponentInterface
 
     private function getStorageSumPercent(PlanetFieldHostInterface $host): float
     {
-        if (!$host instanceof ColonyInterface) {
+        if (!$host instanceof Colony) {
             return 0;
         }
 

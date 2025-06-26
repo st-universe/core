@@ -6,7 +6,7 @@ namespace Stu\Component\Ship\Retrofit;
 
 use Override;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -17,7 +17,7 @@ final class CancelRetrofit implements CancelRetrofitInterface
 
 
     #[Override]
-    public function cancelRetrofit(ShipInterface $ship): bool
+    public function cancelRetrofit(Ship $ship): bool
     {
         $state = $ship->getState();
         if ($state === SpacecraftStateEnum::RETROFIT) {
@@ -31,7 +31,7 @@ final class CancelRetrofit implements CancelRetrofitInterface
         return false;
     }
 
-    private function setStateNoneAndSave(ShipInterface $ship): void
+    private function setStateNoneAndSave(Ship $ship): void
     {
         $ship->getCondition()->setState(SpacecraftStateEnum::NONE);
         $this->shipRepository->save($ship);

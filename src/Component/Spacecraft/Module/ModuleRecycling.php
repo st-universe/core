@@ -9,8 +9,8 @@ use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Transfer\EntityWithStorageInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Control\StuRandom;
-use Stu\Orm\Entity\ModuleInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Module;
+use Stu\Orm\Entity\Spacecraft;
 
 class ModuleRecycling implements ModuleRecyclingInterface
 {
@@ -21,13 +21,13 @@ class ModuleRecycling implements ModuleRecyclingInterface
 
     #[Override]
     public function retrieveSomeModules(
-        SpacecraftInterface $spacecraft,
+        Spacecraft $spacecraft,
         EntityWithStorageInterface $entity,
         InformationInterface $information,
         int $recyclingChance = 50
     ): void {
 
-        /** @var array<int, array{0: ModuleInterface, 1: int, 2: int}> */
+        /** @var array<int, array{0: Module, 1: int, 2: int}> */
         $recycledModuleChances = [];
 
         $buildplan = $spacecraft->getBuildplan();

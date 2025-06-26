@@ -11,9 +11,9 @@ use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Transfer\Wrapper\StorageEntityWrapperInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
-use Stu\Orm\Entity\CrewAssignmentInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\CrewAssignment;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\User;
 
 class TroopTransferStrategy implements TransferStrategyInterface
 {
@@ -34,7 +34,7 @@ class TroopTransferStrategy implements TransferStrategyInterface
         $targetEntity = $target->get();
 
         if (
-            $targetEntity instanceof ShipInterface
+            $targetEntity instanceof Ship
             && $targetEntity->getBuildplan() !== null
         ) {
             $game->setTemplateVar('SHOW_TARGET_CREW', true);
@@ -52,7 +52,7 @@ class TroopTransferStrategy implements TransferStrategyInterface
     private function getMaxTransferrableCrew(
         StorageEntityWrapperInterface $source,
         StorageEntityWrapperInterface $target,
-        UserInterface $user,
+        User $user,
         bool $isUnload
     ): int {
         return min(
@@ -91,7 +91,7 @@ class TroopTransferStrategy implements TransferStrategyInterface
 
         $destination = $isUnload ? $target : $source;
         $crewAssignments = $isUnload ? $source->get()->getCrewAssignments() : $target->get()->getCrewAssignments();
-        $filteredByUser = $crewAssignments->filter(fn(CrewAssignmentInterface $crewAssignment): bool => $crewAssignment->getCrew()->getUser() === $source->getUser())->toArray();
+        $filteredByUser = $crewAssignments->filter(fn(CrewAssignment $crewAssignment): bool => $crewAssignment->getCrew()->getUser() === $source->getUser())->toArray();
         $slice = array_slice($filteredByUser, 0, $amount);
 
         foreach ($slice as $crewAssignment) {

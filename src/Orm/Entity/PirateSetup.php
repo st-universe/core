@@ -12,12 +12,11 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\PirateSetupRepository;
 
 #[Table(name: 'stu_pirate_setup')]
 #[Entity(repositoryClass: PirateSetupRepository::class)]
-class PirateSetup implements PirateSetupInterface
+class PirateSetup
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -31,7 +30,7 @@ class PirateSetup implements PirateSetupInterface
     private int $probability_weight;
 
     /**
-     * @var ArrayCollection<int, PirateSetupBuildplanInterface>
+     * @var ArrayCollection<int, PirateSetupBuildplan>
      */
     #[OneToMany(targetEntity: PirateSetupBuildplan::class, mappedBy: 'setup')]
     private Collection $setupBuildplans;
@@ -41,25 +40,24 @@ class PirateSetup implements PirateSetupInterface
         $this->setupBuildplans = new ArrayCollection();
     }
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
-    #[Override]
     public function getProbabilityWeight(): int
     {
         return $this->probability_weight;
     }
 
-    #[Override]
+    /**
+     * @return Collection<int, PirateSetupBuildplan>
+     */
     public function getSetupBuildplans(): Collection
     {
         return $this->setupBuildplans;

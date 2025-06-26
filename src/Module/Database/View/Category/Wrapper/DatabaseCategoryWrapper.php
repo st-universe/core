@@ -6,17 +6,17 @@ namespace Stu\Module\Database\View\Category\Wrapper;
 
 use Override;
 use Stu\Component\Database\DatabaseCategoryTypeEnum;
-use Stu\Orm\Entity\DatabaseCategoryInterface;
-use Stu\Orm\Entity\DatabaseEntryInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\DatabaseCategory;
+use Stu\Orm\Entity\DatabaseEntry;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
 
 final class DatabaseCategoryWrapper implements DatabaseCategoryWrapperInterface
 {
     public function __construct(
         private DatabaseCategoryWrapperFactoryInterface $databaseCategoryWrapperFactory,
-        private DatabaseCategoryInterface $databaseCategory,
-        private UserInterface $user,
+        private DatabaseCategory $databaseCategory,
+        private User $user,
         private DatabaseEntryRepositoryInterface $databaseEntryRepository,
         private ?int $layer = null
     ) {}
@@ -92,7 +92,7 @@ final class DatabaseCategoryWrapper implements DatabaseCategoryWrapperInterface
         }
 
         return array_map(
-            fn(DatabaseEntryInterface $entry): DatabaseCategoryEntryWrapperInterface =>
+            fn(DatabaseEntry $entry): DatabaseCategoryEntryWrapperInterface =>
             $this->databaseCategoryWrapperFactory->createDatabaseCategoryEntryWrapper($entry, $this->user),
             $entries
         );

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Lib;
 
 use Override;
-use Stu\Orm\Entity\SpacecraftBuildplanInterface;
+use Stu\Orm\Entity\SpacecraftBuildplan;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
@@ -18,7 +18,7 @@ final class BuildPlanDeleter implements BuildPlanDeleterInterface
     public function __construct(private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository, private BuildplanModuleRepositoryInterface $buildplanModuleRepository, private ColonyShipQueueRepositoryInterface $colonyShipQueueRepository) {}
 
     #[Override]
-    public function delete(SpacecraftBuildplanInterface $spacecraftBuildplan): void
+    public function delete(SpacecraftBuildplan $spacecraftBuildplan): void
     {
         $this->buildplanModuleRepository->truncateByBuildplan($spacecraftBuildplan->getId());
         $this->spacecraftBuildplanRepository->delete($spacecraftBuildplan);
@@ -26,7 +26,7 @@ final class BuildPlanDeleter implements BuildPlanDeleterInterface
 
     #[Override]
     public function isDeletable(
-        SpacecraftBuildplanInterface $spacecraftBuildplan
+        SpacecraftBuildplan $spacecraftBuildplan
     ): bool {
         $queuedShipsCount = $this->colonyShipQueueRepository->getCountByBuildplan($spacecraftBuildplan->getId());
 

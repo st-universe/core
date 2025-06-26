@@ -4,20 +4,19 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\GameTurnStats;
-use Stu\Orm\Entity\GameTurnStatsInterface;
 
 /**
  * @extends ObjectRepository<GameTurnStats>
  *
- * @method GameTurnStatsInterface[] findAll()
+ * @method GameTurnStats[] findAll()
  */
 interface GameTurnStatsRepositoryInterface extends ObjectRepository
 {
-    public function prototype(): GameTurnStatsInterface;
+    public function prototype(): GameTurnStats;
 
-    public function save(GameTurnStatsInterface $turn): void;
+    public function save(GameTurnStats $turn): void;
 
-    public function delete(GameTurnStatsInterface $turn): void;
+    public function delete(GameTurnStats $turn): void;
 
     public function getShipCount(): int;
 
@@ -30,7 +29,7 @@ interface GameTurnStatsRepositoryInterface extends ObjectRepository
     public function getFlightSigsSystem24h(): int;
 
     /**
-     * @return array<GameTurnStatsInterface>
+     * @return array<GameTurnStats>
      */
     public function getLatestStats(int $amount, int $divisor): array;
 }

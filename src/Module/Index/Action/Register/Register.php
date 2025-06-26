@@ -10,7 +10,7 @@ use Stu\Component\Player\Register\PlayerCreatorInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Index\View\ShowFinishRegistration\ShowFinishRegistration;
-use Stu\Orm\Entity\FactionInterface;
+use Stu\Orm\Entity\Faction;
 use Stu\Orm\Repository\FactionRepositoryInterface;
 
 final class Register implements ActionControllerInterface
@@ -36,7 +36,7 @@ final class Register implements ActionControllerInterface
 
         $factionId = $this->registerRequest->getFactionId();
 
-        /** @var null|array{faction: FactionInterface, count: int} $faction */
+        /** @var null|array{faction: Faction, count: int} $faction */
         $faction = $this->factionRepository->getPlayableFactionsPlayerCount()[$factionId] ?? null;
 
         if ($faction === null) {

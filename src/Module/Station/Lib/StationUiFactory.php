@@ -8,9 +8,9 @@ use Override;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreationInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\DockingPrivilegeInterface;
-use Stu\Orm\Entity\StarSystemInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\DockingPrivilege;
+use Stu\Orm\Entity\StarSystem;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -32,9 +32,9 @@ final class StationUiFactory implements StationUiFactoryInterface
     #[Override]
     public function createSystemScanPanel(
         SpacecraftWrapperInterface $currentWrapper,
-        UserInterface $user,
+        User $user,
         LoggerUtilInterface $loggerUtil,
-        StarSystemInterface $system
+        StarSystem $system
     ): SystemScanPanel {
         return new SystemScanPanel(
             $this->panelLayerCreation,
@@ -47,7 +47,7 @@ final class StationUiFactory implements StationUiFactoryInterface
 
     #[Override]
     public function createDockingPrivilegeItem(
-        DockingPrivilegeInterface $dockingPrivilege
+        DockingPrivilege $dockingPrivilege
     ): DockingPrivilegeItem {
         return new DockingPrivilegeItem(
             $this->userRepository,

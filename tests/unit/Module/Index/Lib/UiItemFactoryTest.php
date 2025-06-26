@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Index\Lib;
 
 use Override;
-use Stu\Orm\Entity\FactionInterface;
+use Stu\Orm\Entity\Faction;
 use Stu\StuTestCase;
 
 class UiItemFactoryTest extends StuTestCase
@@ -23,7 +23,7 @@ class UiItemFactoryTest extends StuTestCase
         static::assertInstanceOf(
             FactionItem::class,
             $this->subject->createFactionItem(
-                $this->mock(FactionInterface::class),
+                $this->mock(Faction::class),
                 666
             )
         );

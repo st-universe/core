@@ -11,8 +11,8 @@ use Mockery\MockInterface;
 use Override;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Ship\Lib\CancelColonyBlockOrDefendInterface;
-use Stu\Orm\Entity\FleetInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Fleet;
+use Stu\Orm\Entity\Ship;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\StuTestCase;
@@ -24,7 +24,7 @@ class ChangeFleetLeaderTest extends StuTestCase
     private MockInterface&CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend;
     private MockInterface&EntityManagerInterface $entityManager;
 
-    private MockInterface&ShipInterface $ship;
+    private MockInterface&Ship $ship;
 
     private ChangeFleetLeaderInterface $subject;
 
@@ -38,7 +38,7 @@ class ChangeFleetLeaderTest extends StuTestCase
         $this->entityManager = $this->mock(EntityManagerInterface::class);
 
         //params
-        $this->ship = $this->mock(ShipInterface::class);
+        $this->ship = $this->mock(Ship::class);
 
         $this->subject = new ChangeFleetLeader(
             $this->fleetRepository,
@@ -51,7 +51,7 @@ class ChangeFleetLeaderTest extends StuTestCase
 
     public function testChangeExpectFleetDeletionIfSingleShip(): void
     {
-        $fleet = $this->mock(FleetInterface::class);
+        $fleet = $this->mock(Fleet::class);
         $fleetShips = new ArrayCollection([$this->ship]);
 
         $this->ship->shouldReceive('getFleet')
@@ -91,8 +91,8 @@ class ChangeFleetLeaderTest extends StuTestCase
 
     public function testChangeExpectLeaderChangeIfNotSingleShip(): void
     {
-        $fleet = $this->mock(FleetInterface::class);
-        $otherShip = $this->mock(ShipInterface::class);
+        $fleet = $this->mock(Fleet::class);
+        $otherShip = $this->mock(Ship::class);
         $fleetShips = [$this->ship, $otherShip];
 
         $this->ship->shouldReceive('getId')

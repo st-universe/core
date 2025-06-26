@@ -13,7 +13,7 @@ use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 use Stu\StuTestCase;
 
 class SpacecraftAttackPreparationTest extends StuTestCase
@@ -55,10 +55,10 @@ class SpacecraftAttackPreparationTest extends StuTestCase
         $defender1 = $this->mock(ShipWrapperInterface::class);
         $defender2 = $this->mock(ShipWrapperInterface::class);
 
-        $ship1 = $this->mock(ShipInterface::class);
-        $ship2 = $this->mock(ShipInterface::class);
-        $ship3 = $this->mock(ShipInterface::class);
-        $ship4 = $this->mock(ShipInterface::class);
+        $ship1 = $this->mock(Ship::class);
+        $ship2 = $this->mock(Ship::class);
+        $ship3 = $this->mock(Ship::class);
+        $ship4 = $this->mock(Ship::class);
 
         $message1 = $this->mock(MessageInterface::class);
         $message2 = $this->mock(MessageInterface::class);

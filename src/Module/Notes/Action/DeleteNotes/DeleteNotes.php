@@ -9,7 +9,7 @@ use request;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\NoteInterface;
+use Stu\Orm\Entity\Note;
 use Stu\Orm\Repository\NoteRepositoryInterface;
 
 final class DeleteNotes implements ActionControllerInterface
@@ -35,7 +35,7 @@ final class DeleteNotes implements ActionControllerInterface
                 continue;
             }
 
-            /** @var NoteInterface $obj */
+            /** @var Note $obj */
             $obj = $this->noteRepository->find((int)$noteId);
             if ($obj === null) {
                 continue;

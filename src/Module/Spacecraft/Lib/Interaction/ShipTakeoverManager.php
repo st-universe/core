@@ -13,11 +13,11 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
-use Stu\Orm\Entity\BuildplanModuleInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\ShipTakeoverInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\BuildplanModule;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\ShipTakeover;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ShipTakeoverRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
@@ -36,13 +36,13 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
     ) {}
 
     #[Override]
-    public function getPrestigeForBoardingAttempt(SpacecraftInterface $target): int
+    public function getPrestigeForBoardingAttempt(Spacecraft $target): int
     {
         return (int)ceil($this->getPrestigeForTakeover($target) / 25);
     }
 
     #[Override]
-    public function getPrestigeForTakeover(SpacecraftInterface $target): int
+    public function getPrestigeForTakeover(Spacecraft $target): int
     {
         $buildplan = $target->getBuildplan();
         if ($buildplan === null) {
@@ -50,13 +50,13 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
         }
 
         return $buildplan->getModules()->reduce(
-            fn(int $value, BuildplanModuleInterface $buildplanModule): int => $value + $buildplanModule->getModule()->getLevel() * self::BOARDING_PRESTIGE_PER_MODULE_LEVEL,
+            fn(int $value, BuildplanModule $buildplanModule): int => $value + $buildplanModule->getModule()->getLevel() * self::BOARDING_PRESTIGE_PER_MODULE_LEVEL,
             self::BOARDING_PRESTIGE_PER_TRY
         );
     }
 
     #[Override]
-    public function startTakeover(SpacecraftInterface $source, SpacecraftInterface $target, int $prestige): void
+    public function startTakeover(Spacecraft $source, Spacecraft $target, int $prestige): void
     {
         $takeover = $this->shipTakeoverRepository->prototype();
         $takeover
@@ -82,7 +82,7 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
         );
 
         $isFleet = false;
-        if ($target instanceof ShipInterface) {
+        if ($target instanceof Ship) {
             $isFleet = $target->getFleet() !== null;
             if ($isFleet) {
                 $this->leaveFleet->leaveFleet($target);
@@ -93,7 +93,7 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
     }
 
 
-    private function sendStartPm(ShipTakeoverInterface $takeover, bool $leftFleet): void
+    private function sendStartPm(ShipTakeover $takeover, bool $leftFleet): void
     {
         $sourceShip = $takeover->getSourceSpacecraft();
         $sourceUser = $sourceShip->getUser();
@@ -117,7 +117,7 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
     }
 
     #[Override]
-    public function isTakeoverReady(ShipTakeoverInterface $takeover): bool
+    public function isTakeoverReady(ShipTakeover $takeover): bool
     {
         $remainingTurns = $takeover->getStartTurn() + self::TURNS_TO_TAKEOVER - $this->game->getCurrentRound()->getTurn();
         if ($remainingTurns <= 0) {
@@ -144,9 +144,9 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
     }
 
     private function sendRemainingPm(
-        ShipTakeoverInterface $takeover,
+        ShipTakeover $takeover,
         int $fromId,
-        SpacecraftInterface $linked,
+        Spacecraft $linked,
         int $remainingTurns
     ): void {
         $this->privateMessageSender->send(
@@ -165,7 +165,7 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
 
     #[Override]
     public function cancelTakeover(
-        ?ShipTakeoverInterface $takeover,
+        ?ShipTakeover $takeover,
         ?string $cause = null,
         bool $force = false
     ): void {
@@ -209,10 +209,10 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
         $this->removeTakeover($takeover);
     }
 
-    private function isTargetTractoredBySource(ShipTakeoverInterface $takeover): bool
+    private function isTargetTractoredBySource(ShipTakeover $takeover): bool
     {
         $targetSpacecraft = $takeover->getTargetSpacecraft();
-        if (!$targetSpacecraft instanceof ShipInterface) {
+        if (!$targetSpacecraft instanceof Ship) {
             return false;
         }
 
@@ -220,7 +220,7 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
     }
 
     #[Override]
-    public function cancelBothTakeover(SpacecraftInterface $spacecraft, ?string $passiveCause = null): void
+    public function cancelBothTakeover(Spacecraft $spacecraft, ?string $passiveCause = null): void
     {
         $this->cancelTakeover(
             $spacecraft->getTakeoverActive()
@@ -233,9 +233,9 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
     }
 
     private function sendCancelPm(
-        ShipTakeoverInterface $takeover,
+        ShipTakeover $takeover,
         int $fromId,
-        SpacecraftInterface $linked,
+        Spacecraft $linked,
         ?string $cause
     ): void {
 
@@ -253,7 +253,7 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
     }
 
     #[Override]
-    public function finishTakeover(ShipTakeoverInterface $takeover): void
+    public function finishTakeover(ShipTakeover $takeover): void
     {
         $sourceUser = $takeover->getSourceSpacecraft()->getUser();
         $targetShip = $takeover->getTargetSpacecraft();
@@ -303,7 +303,7 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
         $this->removeTakeover($takeover);
     }
 
-    private function changeShipOwner(SpacecraftInterface $ship, UserInterface $user): void
+    private function changeShipOwner(Spacecraft $ship, User $user): void
     {
         $ship->setUser($user);
         $this->spacecraftRepository->save($ship);
@@ -329,9 +329,9 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
     }
 
     private function sendFinishedPm(
-        ShipTakeoverInterface $takeover,
+        ShipTakeover $takeover,
         int $fromId,
-        UserInterface $to,
+        User $to,
         string $message,
         bool $addHref
     ): void {
@@ -345,7 +345,7 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
         );
     }
 
-    private function removeTakeover(ShipTakeoverInterface $takeover): void
+    private function removeTakeover(ShipTakeover $takeover): void
     {
         $sourceShip = $takeover->getSourceSpacecraft();
         $sourceShip

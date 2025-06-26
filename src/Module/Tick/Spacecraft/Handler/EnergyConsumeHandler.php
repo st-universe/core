@@ -12,8 +12,8 @@ use Stu\Module\Spacecraft\Lib\Crew\SpacecraftLeaverInterface;
 use Stu\Module\Spacecraft\Lib\ReactorWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Tick\Spacecraft\SpacecraftTickFinishedException;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\SpacecraftSystemInterface;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\SpacecraftSystem;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 
 class EnergyConsumeHandler implements SpacecraftTickHandlerInterface
@@ -113,7 +113,7 @@ class EnergyConsumeHandler implements SpacecraftTickHandlerInterface
 
     private function deactivateSystem(
         SpacecraftWrapperInterface $wrapper,
-        SpacecraftSystemInterface $system,
+        SpacecraftSystem $system,
         int $energyConsumption,
         InformationInterface $information
     ): void {
@@ -131,7 +131,7 @@ class EnergyConsumeHandler implements SpacecraftTickHandlerInterface
         }
     }
 
-    private function calculateBatteryReload(SpacecraftInterface $spacecraft, EpsSystemData $eps, int $newEps): int
+    private function calculateBatteryReload(Spacecraft $spacecraft, EpsSystemData $eps, int $newEps): int
     {
         return $spacecraft->isStation()
             && $eps->reloadBattery()

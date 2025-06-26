@@ -8,8 +8,8 @@ use Mockery\MockInterface;
 use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Template\StatusBarFactoryInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftSystemInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\SpacecraftSystem;
 use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -19,7 +19,7 @@ class EpsSystemDataTest extends StuTestCase
     private MockInterface&StatusBarFactoryInterface $statusBarFactory;
 
     /**
-     * @var MockInterface&ShipInterface
+     * @var MockInterface&Ship
      */
     private $ship;
 
@@ -30,7 +30,7 @@ class EpsSystemDataTest extends StuTestCase
     {
         $this->shipSystemRepository = $this->mock(SpacecraftSystemRepositoryInterface::class);
         $this->statusBarFactory = $this->mock(StatusBarFactoryInterface::class);
-        $this->ship = $this->mock(ShipInterface::class);
+        $this->ship = $this->mock(Ship::class);
 
         $this->subject = new EpsSystemData(
             $this->shipSystemRepository,
@@ -40,7 +40,7 @@ class EpsSystemDataTest extends StuTestCase
 
     public function testGetEpsPercentage(): void
     {
-        $system = $this->mock(SpacecraftSystemInterface::class);
+        $system = $this->mock(SpacecraftSystem::class);
 
         $this->subject->setSpacecraft($this->ship);
         $this->subject->setEps(80);

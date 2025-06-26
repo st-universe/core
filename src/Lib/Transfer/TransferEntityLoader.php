@@ -11,10 +11,10 @@ use Stu\Lib\Transfer\Wrapper\StorageEntityWrapperInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\TrumfieldInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\Trumfield;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\TrumfieldRepositoryInterface;
 
 class TransferEntityLoader implements TransferEntityLoaderInterface
@@ -32,11 +32,11 @@ class TransferEntityLoader implements TransferEntityLoaderInterface
         int $id,
         TransferEntityTypeEnum $entityType,
         bool $checkForEntityLock = true,
-        ?UserInterface $user = null
+        ?User $user = null
     ): StorageEntityWrapperInterface {
 
 
-        /** @var null|SpacecraftInterface|ColonyInterface|TrumfieldInterface */
+        /** @var null|Spacecraft|Colony|Trumfield */
         $target = match ($entityType) {
             TransferEntityTypeEnum::SHIP,
             TransferEntityTypeEnum::STATION => $this->loadSpacecraft($id, $checkForEntityLock, $user),
@@ -55,7 +55,7 @@ class TransferEntityLoader implements TransferEntityLoaderInterface
         return $this->storageEntityWrapperFactory->wrapStorageEntity($target);
     }
 
-    private function loadSpacecraft(int $id, bool $checkForEntityLock, ?UserInterface $user): ?SpacecraftInterface
+    private function loadSpacecraft(int $id, bool $checkForEntityLock, ?User $user): ?Spacecraft
     {
         $spacecraftWrapper = $user !== null
             ? $this->spacecraftLoader->getWrapperByIdAndUser($id, $user->getId(), false, $checkForEntityLock)
@@ -66,7 +66,7 @@ class TransferEntityLoader implements TransferEntityLoaderInterface
             : null;
     }
 
-    private function loadColony(int $id, bool $checkForEntityLock, ?UserInterface $user): ColonyInterface
+    private function loadColony(int $id, bool $checkForEntityLock, ?User $user): Colony
     {
         return $user !== null
             ? $this->colonyLoader->loadWithOwnerValidation($id, $user->getId(), $checkForEntityLock)

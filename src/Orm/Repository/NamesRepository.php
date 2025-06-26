@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Component\Game\NameTypeEnum;
 use Stu\Orm\Entity\Names;
-use Stu\Orm\Entity\NamesInterface;
 use Stu\Orm\Entity\StarSystem;
 
 /**
@@ -17,7 +16,7 @@ use Stu\Orm\Entity\StarSystem;
 final class NamesRepository extends EntityRepository implements NamesRepositoryInterface
 {
     #[Override]
-    public function save(NamesInterface $name): void
+    public function save(Names $name): void
     {
         $em = $this->getEntityManager();
 

@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Override;
 use Stu\Orm\Entity\ColonyShipRepair;
-use Stu\Orm\Entity\ColonyShipRepairInterface;
 
 /**
  * @extends EntityRepository<ColonyShipRepair>
@@ -16,7 +15,7 @@ use Stu\Orm\Entity\ColonyShipRepairInterface;
 final class ColonyShipRepairRepository extends EntityRepository implements ColonyShipRepairRepositoryInterface
 {
     #[Override]
-    public function prototype(): ColonyShipRepairInterface
+    public function prototype(): ColonyShipRepair
     {
         return new ColonyShipRepair();
     }
@@ -31,7 +30,7 @@ final class ColonyShipRepairRepository extends EntityRepository implements Colon
     }
 
     #[Override]
-    public function getByShip(int $shipId): ?ColonyShipRepairInterface
+    public function getByShip(int $shipId): ?ColonyShipRepair
     {
         return $this->findOneBy([
             'ship_id' => $shipId
@@ -63,7 +62,7 @@ final class ColonyShipRepairRepository extends EntityRepository implements Colon
     }
 
     #[Override]
-    public function save(ColonyShipRepairInterface $colonyShipRepair): void
+    public function save(ColonyShipRepair $colonyShipRepair): void
     {
         $em = $this->getEntityManager();
 
@@ -71,7 +70,7 @@ final class ColonyShipRepairRepository extends EntityRepository implements Colon
     }
 
     #[Override]
-    public function delete(ColonyShipRepairInterface $colonyShipRepair): void
+    public function delete(ColonyShipRepair $colonyShipRepair): void
     {
         $em = $this->getEntityManager();
 

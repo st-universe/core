@@ -14,7 +14,6 @@ use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
-use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 
@@ -105,13 +104,6 @@ final class TransferToAccount implements ActionControllerInterface
             }
             if (!$commodity->isBeamable()) {
                 $game->addInformationf(_('%s ist nicht beambar'), $commodity->getName());
-                continue;
-            }
-            if ($commodity->isIllegal($tradepost->getTradeNetwork())) {
-                $game->addInformationf(
-                    _('Der Handel mit %s ist in diesem Handelsnetzwerk verboten'),
-                    $commodity->getName()
-                );
                 continue;
             }
             $count = min($count, $storage->getAmount());

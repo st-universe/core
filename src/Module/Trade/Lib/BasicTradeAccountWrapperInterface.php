@@ -2,13 +2,13 @@
 
 namespace Stu\Module\Trade\Lib;
 
-use Stu\Orm\Entity\StationInterface;
+use Stu\Orm\Entity\Station;
 
 interface BasicTradeAccountWrapperInterface
 {
     public function getId(): int;
 
-    public function getStation(): StationInterface;
+    public function getStation(): Station;
 
     public function getTradePostDescription(): string;
 

@@ -11,9 +11,9 @@ use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftShutdownInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\CrewAssignmentInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\CrewAssignment;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
@@ -53,7 +53,7 @@ final class SpacecraftLeaver implements SpacecraftLeaverInterface
         return '-- Die Crew hat das Schiff in den Rettungskapseln verlassen!';
     }
 
-    private function escapeIntoPods(SpacecraftInterface $spacecraft): void
+    private function escapeIntoPods(Spacecraft $spacecraft): void
     {
         //create pods entity
         $pods = $this->launchEscapePods->launch($spacecraft);
@@ -69,7 +69,7 @@ final class SpacecraftLeaver implements SpacecraftLeaverInterface
     }
 
     #[Override]
-    public function dumpCrewman(CrewAssignmentInterface $crewAssignment, string $message): string
+    public function dumpCrewman(CrewAssignment $crewAssignment, string $message): string
     {
         $spacecraft = $crewAssignment->getSpacecraft();
         if ($spacecraft === null) {
@@ -106,8 +106,8 @@ final class SpacecraftLeaver implements SpacecraftLeaverInterface
     }
 
     private function sendPmToOwner(
-        UserInterface $sender,
-        UserInterface $owner,
+        User $sender,
+        User $owner,
         string $message,
         string $survivalMessage
     ): void {
@@ -123,7 +123,7 @@ final class SpacecraftLeaver implements SpacecraftLeaverInterface
         );
     }
 
-    private function letCrewDie(SpacecraftInterface $spacecraft): void
+    private function letCrewDie(Spacecraft $spacecraft): void
     {
         foreach ($spacecraft->getCrewAssignments() as $shipCrew) {
             $this->crewRepository->delete($shipCrew->getCrew());

@@ -12,7 +12,7 @@ use Stu\Module\Control\AccessGrantedFeatureEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContextTypeEnum;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Colony;
 use Stu\Orm\Repository\ColonySandboxRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
@@ -40,7 +40,7 @@ final class CreateSandbox implements
 
         $colonyId = request::getIntFatal('cid');
 
-        /** @var ColonyInterface|null */
+        /** @var Colony|null */
         $colony = $game->getUser()->getColonies()->get($colonyId);
         if ($colony === null) {
             return;

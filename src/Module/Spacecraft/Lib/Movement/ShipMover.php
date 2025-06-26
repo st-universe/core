@@ -12,8 +12,8 @@ use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class ShipMover implements ShipMoverInterface
@@ -90,7 +90,7 @@ final class ShipMover implements ShipMoverInterface
                 $this->leaveFleet($flightCompany->getLeader(), $messages);
             }
 
-            /** @var array<array{0: SpacecraftInterface, 1: ShipWrapperInterface}> */
+            /** @var array<array{0: Spacecraft, 1: ShipWrapperInterface}> */
             $movedTractoredShipWrappers = [];
 
             // move every possible ship by one field
@@ -120,7 +120,7 @@ final class ShipMover implements ShipMoverInterface
     }
 
     /**
-     * @param array<array{0: SpacecraftInterface, 1: ShipWrapperInterface}> $movedTractoredShipWrappers
+     * @param array<array{0: Spacecraft, 1: ShipWrapperInterface}> $movedTractoredShipWrappers
      */
     private function moveShipsByOneField(
         FlightCompany $flightCompany,
@@ -143,7 +143,7 @@ final class ShipMover implements ShipMoverInterface
         }
     }
 
-    /** @param array<array{0: SpacecraftInterface, 1: ShipWrapperInterface}> $movedTractoredShipWrappers */
+    /** @param array<array{0: Spacecraft, 1: ShipWrapperInterface}> $movedTractoredShipWrappers */
     private function alertReactionCheck(
         SpacecraftWrapperInterface $leadWrapper,
         array $movedTractoredShipWrappers,
@@ -174,7 +174,7 @@ final class ShipMover implements ShipMoverInterface
     }
 
     /**
-     * @return array<ShipInterface>
+     * @return array<Ship>
      */
     private function initTractoredShips(FlightCompany $flightCompany): array
     {
@@ -194,15 +194,15 @@ final class ShipMover implements ShipMoverInterface
         return $tractoredShips;
     }
 
-    private function leaveFleet(SpacecraftInterface $ship, MessageCollectionInterface $messages): void
+    private function leaveFleet(Spacecraft $ship, MessageCollectionInterface $messages): void
     {
-        if ($ship instanceof ShipInterface && $this->leaveFleet->leaveFleet($ship)) {
+        if ($ship instanceof Ship && $this->leaveFleet->leaveFleet($ship)) {
             $messages->addInformationf('Die %s hat die Flotte verlassen', $ship->getName());
         }
     }
 
     /**
-     * @param array<ShipInterface> $initialTractoredShips
+     * @param array<Ship> $initialTractoredShips
      */
     private function saveShips(FlightCompany $flightCompany, array $initialTractoredShips): void
     {

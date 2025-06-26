@@ -13,9 +13,9 @@ use Stu\Lib\Colony\PlanetFieldHostProvider;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Lib\Colony\PlanetFieldHostTypeEnum;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\ColonySandboxInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\ColonySandbox;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ColonySandboxRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\StuTestCase;
@@ -49,7 +49,7 @@ class PlanetFieldHostProviderTest extends StuTestCase
         static::expectExceptionMessage('request param "id" is missing');
         static::expectException(RuntimeException::class);
 
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
 
         $this->subject->loadHostViaRequestParameters($user);
     }
@@ -59,7 +59,7 @@ class PlanetFieldHostProviderTest extends StuTestCase
         static::expectExceptionMessage('request param "hosttype" is missing');
         static::expectException(RuntimeException::class);
 
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
 
         request::setMockVars(['id' => 42]);
 
@@ -68,8 +68,8 @@ class PlanetFieldHostProviderTest extends StuTestCase
 
     public function testLoadHostViaRequestParametersExpectColony(): void
     {
-        $user = $this->mock(UserInterface::class);
-        $colony = $this->mock(ColonyInterface::class);
+        $user = $this->mock(User::class);
+        $colony = $this->mock(Colony::class);
 
         request::setMockVars(['id' => 42, 'hosttype' => PlanetFieldHostTypeEnum::COLONY->value]);
 
@@ -93,7 +93,7 @@ class PlanetFieldHostProviderTest extends StuTestCase
         static::expectExceptionMessage('sandbox with following id does not exist: 42');
         static::expectException(RuntimeException::class);
 
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
 
         request::setMockVars(['id' => 42, 'hosttype' => PlanetFieldHostTypeEnum::SANDBOX->value]);
 
@@ -110,15 +110,15 @@ class PlanetFieldHostProviderTest extends StuTestCase
         static::expectExceptionMessage('sandbox does belong to other user');
         static::expectException(SanityCheckException::class);
 
-        $user = $this->mock(UserInterface::class);
-        $sandbox = $this->mock(ColonySandboxInterface::class);
+        $user = $this->mock(User::class);
+        $sandbox = $this->mock(ColonySandbox::class);
 
         request::setMockVars(['id' => 42, 'hosttype' => PlanetFieldHostTypeEnum::SANDBOX->value]);
 
         $sandbox->shouldReceive('getUser')
             ->withNoArgs()
             ->once()
-            ->andReturn($this->mock(UserInterface::class));
+            ->andReturn($this->mock(User::class));
 
         $this->colonySandboxRepository->shouldReceive('find')
             ->with(42)
@@ -130,8 +130,8 @@ class PlanetFieldHostProviderTest extends StuTestCase
 
     public function testLoadHostViaRequestParametersExpectSandbox(): void
     {
-        $user = $this->mock(UserInterface::class);
-        $sandbox = $this->mock(ColonySandboxInterface::class);
+        $user = $this->mock(User::class);
+        $sandbox = $this->mock(ColonySandbox::class);
 
         request::setMockVars(['id' => 42, 'hosttype' => PlanetFieldHostTypeEnum::SANDBOX->value]);
 

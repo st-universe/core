@@ -2,11 +2,11 @@
 
 namespace Stu\Module\Trade\Lib;
 
-use Stu\Orm\Entity\TradeOfferInterface;
+use Stu\Orm\Entity\TradeOffer;
 
 interface TradeOfferItemInterface
 {
-    public function getOffer(): TradeOfferInterface;
+    public function getOffer(): TradeOffer;
 
     public function isOwnOffer(): bool;
 }

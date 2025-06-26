@@ -19,9 +19,9 @@ use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
-use Stu\Orm\Entity\FleetInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Fleet;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -48,7 +48,7 @@ class CallForSupportBehaviour implements PirateBehaviourInterface
         FleetWrapperInterface $fleet,
         PirateReactionInterface $pirateReaction,
         PirateReactionMetadata $reactionMetadata,
-        ?SpacecraftInterface $triggerSpacecraft
+        ?Spacecraft $triggerSpacecraft
     ): ?PirateBehaviourEnum {
 
         $leadWrapper = $fleet->getLeadWrapper();
@@ -70,14 +70,14 @@ class CallForSupportBehaviour implements PirateBehaviourInterface
         return null;
     }
 
-    private function getSupportFleet(ShipWrapperInterface $leadWrapper, PirateReactionMetadata $reactionMetadata): ?FleetInterface
+    private function getSupportFleet(ShipWrapperInterface $leadWrapper, PirateReactionMetadata $reactionMetadata): ?Fleet
     {
         $leadShip = $leadWrapper->get();
         $friends = $this->shipRepository->getPirateFriends($leadWrapper);
 
         $filteredFriends = array_filter(
             $friends,
-            fn(ShipInterface $friend): bool =>
+            fn(Ship $friend): bool =>
             !$friend->getCondition()->isDestroyed()
                 && $friend->isFleetLeader()
                 && $friend->getLocation() !== $leadShip->getLocation()
@@ -85,7 +85,7 @@ class CallForSupportBehaviour implements PirateBehaviourInterface
 
         usort(
             $filteredFriends,
-            fn(ShipInterface $a, ShipInterface $b): int =>
+            fn(Ship $a, Ship $b): int =>
             $this->distanceCalculation->shipToShipDistance($leadShip, $a) - $this->distanceCalculation->shipToShipDistance($leadShip, $b)
         );
 
@@ -124,7 +124,7 @@ class CallForSupportBehaviour implements PirateBehaviourInterface
         return $supportFleet;
     }
 
-    private function createSupportFleet(ShipInterface $leadShip, PirateReactionMetadata $reactionMetadata): ?FleetInterface
+    private function createSupportFleet(Ship $leadShip, PirateReactionMetadata $reactionMetadata): ?Fleet
     {
         if (!$this->isNewSupportEligible($reactionMetadata)) {
             $this->logger->log('....support creation not eligible');

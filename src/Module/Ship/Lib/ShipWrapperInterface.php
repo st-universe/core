@@ -8,11 +8,11 @@ use Stu\Component\Spacecraft\System\Data\TrackerSystemData;
 use Stu\Component\Spacecraft\System\Data\WebEmitterSystemData;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Station\Lib\StationWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 
 interface ShipWrapperInterface extends SpacecraftWrapperInterface
 {
-    public function get(): ShipInterface;
+    public function get(): Ship;
 
     public function canLandOnCurrentColony(): bool;
 

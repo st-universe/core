@@ -11,7 +11,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
-use Stu\Orm\Entity\TradeOfferInterface;
+use Stu\Orm\Entity\TradeOffer;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TradeOfferRepositoryInterface;
 
@@ -31,7 +31,7 @@ final class CancelOffer implements ActionControllerInterface
         $userId = $game->getUser()->getId();
         $offerId = $this->cancelOfferRequest->getOfferId();
 
-        /** @var TradeOfferInterface $offer */
+        /** @var TradeOffer $offer */
         $offer = $this->tradeOfferRepository->find($offerId);
 
         if ($offer->getUserId() !== $userId) {

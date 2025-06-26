@@ -7,7 +7,6 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\TradeShoutbox;
-use Stu\Orm\Entity\TradeShoutboxInterface;
 
 /**
  * @extends EntityRepository<TradeShoutbox>
@@ -49,13 +48,13 @@ final class TradeShoutboxRepository extends EntityRepository implements TradeSho
     }
 
     #[Override]
-    public function prototype(): TradeShoutboxInterface
+    public function prototype(): TradeShoutbox
     {
         return new TradeShoutbox();
     }
 
     #[Override]
-    public function save(TradeShoutboxInterface $tradeShoutbox): void
+    public function save(TradeShoutbox $tradeShoutbox): void
     {
         $em = $this->getEntityManager();
 

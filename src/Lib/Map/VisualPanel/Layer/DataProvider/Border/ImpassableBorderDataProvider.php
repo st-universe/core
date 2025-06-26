@@ -8,7 +8,7 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Override;
 use Stu\Lib\Map\VisualPanel\Layer\Data\BorderData;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
@@ -16,7 +16,7 @@ final class ImpassableBorderDataProvider extends AbstractBorderDataProvider
 {
 
     public function __construct(
-        private SpacecraftInterface $currentSpacecraft,
+        private Spacecraft $currentSpacecraft,
         protected MapRepositoryInterface $mapRepository,
         protected StarSystemMapRepositoryInterface $starSystemMapRepository
     ) {}

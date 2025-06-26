@@ -7,9 +7,9 @@ namespace Stu\Lib\Colony;
 use Doctrine\Common\Collections\Collection;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Lib\Component\EntityWithComponentsInterface;
-use Stu\Orm\Entity\ColonyClassInterface;
-use Stu\Orm\Entity\PlanetFieldInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\ColonyClass;
+use Stu\Orm\Entity\PlanetField;
+use Stu\Orm\Entity\User;
 
 interface PlanetFieldHostInterface extends EntityWithComponentsInterface
 {
@@ -20,7 +20,7 @@ interface PlanetFieldHostInterface extends EntityWithComponentsInterface
 
     public function getName(): string;
 
-    public function getUser(): UserInterface;
+    public function getUser(): User;
 
     public function getWorkers(): int;
 
@@ -30,10 +30,10 @@ interface PlanetFieldHostInterface extends EntityWithComponentsInterface
 
     public function getMaxStorage(): int;
 
-    public function getColonyClass(): ColonyClassInterface;
+    public function getColonyClass(): ColonyClass;
 
     /**
-     * @return Collection<int, PlanetFieldInterface>
+     * @return Collection<int, PlanetField>
      */
     public function getPlanetFields(): Collection;
 

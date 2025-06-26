@@ -10,10 +10,10 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\LocationInterface;
-use Stu\Orm\Entity\ModuleInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\TorpedoTypeInterface;
+use Stu\Orm\Entity\Location;
+use Stu\Orm\Entity\Module;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\TorpedoType;
 
 class SpacecraftAttacker extends AbstractEnergyAttacker implements ProjectileAttackerInterface
 {
@@ -27,7 +27,7 @@ class SpacecraftAttacker extends AbstractEnergyAttacker implements ProjectileAtt
     }
 
     #[Override]
-    public function isAvoidingHullHits(SpacecraftInterface $target): bool
+    public function isAvoidingHullHits(Spacecraft $target): bool
     {
         return $this->isAttackingShieldsOnly && !$target->isShielded();
     }
@@ -55,7 +55,7 @@ class SpacecraftAttacker extends AbstractEnergyAttacker implements ProjectileAtt
     }
 
     #[Override]
-    public function getWeaponModule(): ModuleInterface
+    public function getWeaponModule(): Module
     {
         if ($this->module === null) {
             $shipSystem = $this->get()->getSpacecraftSystem(SpacecraftSystemTypeEnum::PHASER);
@@ -101,7 +101,7 @@ class SpacecraftAttacker extends AbstractEnergyAttacker implements ProjectileAtt
         return $this->get()->getUser()->getId();
     }
 
-    private function get(): SpacecraftInterface
+    private function get(): Spacecraft
     {
         return $this->wrapper->get();
     }
@@ -143,7 +143,7 @@ class SpacecraftAttacker extends AbstractEnergyAttacker implements ProjectileAtt
     }
 
     #[Override]
-    public function getTorpedo(): ?TorpedoTypeInterface
+    public function getTorpedo(): ?TorpedoType
     {
         return $this->get()->getTorpedo();
     }
@@ -186,7 +186,7 @@ class SpacecraftAttacker extends AbstractEnergyAttacker implements ProjectileAtt
     }
 
     #[Override]
-    public function getLocation(): LocationInterface
+    public function getLocation(): Location
     {
         return $this->get()->getLocation();
     }

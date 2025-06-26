@@ -12,13 +12,12 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\NoteRepository;
 
 #[Table(name: 'stu_notes')]
 #[Index(name: 'note_user_idx', columns: ['user_id'])]
 #[Entity(repositoryClass: NoteRepository::class)]
-class Note implements NoteInterface
+class Note
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -39,70 +38,60 @@ class Note implements NoteInterface
 
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $user;
+    private User $user;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    #[Override]
-    public function setUser(UserInterface $user): NoteInterface
+    public function setUser(User $user): Note
     {
         $this->user = $user;
         return $this;
     }
 
-    #[Override]
-    public function setDate(int $date): NoteInterface
+    public function setDate(int $date): Note
     {
         $this->date = $date;
 
         return $this;
     }
 
-    #[Override]
     public function getDate(): int
     {
         return $this->date;
     }
 
-    #[Override]
-    public function setTitle(string $title): NoteInterface
+    public function setTitle(string $title): Note
     {
         $this->title = $title;
 
         return $this;
     }
 
-    #[Override]
     public function getTitle(): string
     {
         return $this->title;
     }
 
-    #[Override]
-    public function setText(string $text): NoteInterface
+    public function setText(string $text): Note
     {
         $this->text = $text;
 
         return $this;
     }
 
-    #[Override]
     public function getText(): string
     {
         return $this->text;

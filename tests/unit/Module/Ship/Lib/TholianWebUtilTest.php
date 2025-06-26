@@ -9,8 +9,8 @@ use Mockery\MockInterface;
 use Override;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\TholianWebInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\TholianWeb;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
 use Stu\Orm\Repository\TholianWebRepositoryInterface;
@@ -51,8 +51,8 @@ class TholianWebUtilTest extends StuTestCase
 
     public function testisTargetOutsideFinishedTholianWebExpectFalseWhenNoWeb(): void
     {
-        $ship = $this->mock(ShipInterface::class);
-        $target = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
+        $target = $this->mock(Ship::class);
 
         $ship->shouldReceive('getHoldingWeb')
             ->withNoArgs()
@@ -66,9 +66,9 @@ class TholianWebUtilTest extends StuTestCase
 
     public function testisTargetOutsideFinishedTholianWebExpectFalseWhenWebUnfinished(): void
     {
-        $ship = $this->mock(ShipInterface::class);
-        $target = $this->mock(ShipInterface::class);
-        $web = $this->mock(TholianWebInterface::class);
+        $ship = $this->mock(Ship::class);
+        $target = $this->mock(Ship::class);
+        $web = $this->mock(TholianWeb::class);
 
         $ship->shouldReceive('getHoldingWeb')
             ->withNoArgs()
@@ -86,9 +86,9 @@ class TholianWebUtilTest extends StuTestCase
 
     public function testisTargetOutsideFinishedTholianWebExpectFalseWhenTargetInSameFinishedWeb(): void
     {
-        $ship = $this->mock(ShipInterface::class);
-        $target = $this->mock(ShipInterface::class);
-        $web = $this->mock(TholianWebInterface::class);
+        $ship = $this->mock(Ship::class);
+        $target = $this->mock(Ship::class);
+        $web = $this->mock(TholianWeb::class);
 
         $ship->shouldReceive('getHoldingWeb')
             ->withNoArgs()
@@ -111,9 +111,9 @@ class TholianWebUtilTest extends StuTestCase
 
     public function testisTargetOutsideFinishedTholianWebExpectTrueWhenTargetOutsideFinishedWeb(): void
     {
-        $ship = $this->mock(ShipInterface::class);
-        $target = $this->mock(ShipInterface::class);
-        $web = $this->mock(TholianWebInterface::class);
+        $ship = $this->mock(Ship::class);
+        $target = $this->mock(Ship::class);
+        $web = $this->mock(TholianWeb::class);
 
         $ship->shouldReceive('getHoldingWeb')
             ->withNoArgs()

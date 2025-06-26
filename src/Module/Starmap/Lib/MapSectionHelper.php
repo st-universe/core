@@ -11,7 +11,7 @@ use Stu\Component\Map\MapEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Orm\Entity\LayerInterface;
+use Stu\Orm\Entity\Layer;
 
 final class MapSectionHelper
 {
@@ -26,7 +26,7 @@ final class MapSectionHelper
 
     public function setTemplateVars(
         GameControllerInterface $game,
-        LayerInterface $layer,
+        Layer $layer,
         int $currentSection,
         bool $isMapEditor = false,
         ?DirectionEnum $direction = null
@@ -89,7 +89,7 @@ final class MapSectionHelper
         int $maxx,
         int $miny,
         int $maxy,
-        LayerInterface $layer,
+        Layer $layer,
         GameControllerInterface $game
     ): void {
         if ($yCoordinate - 1 >= 1) {
@@ -134,7 +134,7 @@ final class MapSectionHelper
     private function enableNavOptions(
         int $xCoordinate,
         int $yCoordinate,
-        LayerInterface $layer,
+        Layer $layer,
         GameControllerInterface $game
     ): void {
         $layerWidth = $layer->getWidth();
@@ -152,7 +152,7 @@ final class MapSectionHelper
     private function getSection(
         int $currentSection,
         ?DirectionEnum $direction,
-        LayerInterface $layer
+        Layer $layer
     ): int {
 
         $result = $currentSection;
@@ -179,7 +179,7 @@ final class MapSectionHelper
         return $result;
     }
 
-    private function getSectionX(int $sectionId, LayerInterface $layer): int
+    private function getSectionX(int $sectionId, Layer $layer): int
     {
         $this->loggerUtil->log(sprintf('layerSectorsHorizontal: %d', $layer->getSectorsHorizontal()));
 
@@ -188,7 +188,7 @@ final class MapSectionHelper
         return $result === 0 ? $layer->getSectorsHorizontal() : $result;
     }
 
-    private function getSectionY(int $sectionId, LayerInterface $layer): int
+    private function getSectionY(int $sectionId, Layer $layer): int
     {
         return (int)ceil($sectionId / $layer->getSectorsHorizontal());
     }

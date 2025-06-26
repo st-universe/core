@@ -17,14 +17,14 @@ use Stu\Module\Spacecraft\Lib\ReactorWrapperInterface;
 use Stu\Module\Spacecraft\Lib\ShipRepairCost;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\SpacecraftSystemInterface;
-use Stu\Orm\Entity\ShipTakeoverInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\TorpedoTypeInterface;
+use Stu\Orm\Entity\SpacecraftSystem;
+use Stu\Orm\Entity\ShipTakeover;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\TorpedoType;
 
 interface SpacecraftWrapperInterface
 {
-    public function get(): SpacecraftInterface;
+    public function get(): Spacecraft;
 
     public function getFleetWrapper(): ?FleetWrapperInterface;
 
@@ -47,7 +47,7 @@ interface SpacecraftWrapperInterface
     /**
      * highest damage first, then prio
      *
-     * @return SpacecraftSystemInterface[]
+     * @return SpacecraftSystem[]
      */
     public function getDamagedSystems(): array;
 
@@ -69,7 +69,7 @@ interface SpacecraftWrapperInterface
     public function getRepairCosts(): array;
 
     /**
-     * @return array<int, TorpedoTypeInterface>
+     * @return array<int, TorpedoType>
      */
     public function getPossibleTorpedoTypes(): array;
 
@@ -80,7 +80,7 @@ interface SpacecraftWrapperInterface
      */
     public function getStateIconAndTitle(): ?array;
 
-    public function getTakeoverTicksLeft(?ShipTakeoverInterface $takeover = null): int;
+    public function getTakeoverTicksLeft(?ShipTakeover $takeover = null): int;
 
     public function getCrewStyle(): string;
 

@@ -2,7 +2,7 @@
 
 namespace Stu\Module\Communication\View\ShowKnComments;
 
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 interface KnCommentWrapperInterface
 {
@@ -22,5 +22,5 @@ interface KnCommentWrapperInterface
 
     public function isDeleteable(): bool;
 
-    public function getUser(): UserInterface;
+    public function getUser(): User;
 }

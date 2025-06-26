@@ -11,16 +11,15 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 
 #[Table(name: 'stu_colony_changeable')]
 #[Entity]
-class ColonyChangeable implements ColonyChangeableInterface
+class ColonyChangeable
 {
     #[Id]
     #[OneToOne(targetEntity: Colony::class, inversedBy: 'changeable')]
     #[JoinColumn(name: 'colony_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ColonyInterface $colony;
+    private Colony $colony;
 
     #[Column(type: 'integer', length: 5)]
     private int $bev_work = 0;
@@ -54,176 +53,149 @@ class ColonyChangeable implements ColonyChangeableInterface
 
     #[ManyToOne(targetEntity: TorpedoType::class)]
     #[JoinColumn(name: 'torpedo_type', referencedColumnName: 'id')]
-    private ?TorpedoTypeInterface $torpedo = null;
+    private ?TorpedoType $torpedo = null;
 
-    #[Override]
-    public function getColony(): ColonyInterface
+    public function getColony(): Colony
     {
         return $this->colony;
     }
 
-    #[Override]
     public function getWorkers(): int
     {
         return $this->bev_work;
     }
 
-    #[Override]
-    public function setWorkers(int $bev_work): ColonyChangeableInterface
+    public function setWorkers(int $bev_work): ColonyChangeable
     {
         $this->bev_work = $bev_work;
         return $this;
     }
 
-    #[Override]
     public function getWorkless(): int
     {
         return $this->bev_free;
     }
 
-    #[Override]
-    public function setWorkless(int $bev_free): ColonyChangeableInterface
+    public function setWorkless(int $bev_free): ColonyChangeable
     {
         $this->bev_free = $bev_free;
         return $this;
     }
 
-    #[Override]
     public function getMaxBev(): int
     {
         return $this->bev_max;
     }
 
-    #[Override]
-    public function setMaxBev(int $bev_max): ColonyChangeableInterface
+    public function setMaxBev(int $bev_max): ColonyChangeable
     {
         $this->bev_max = $bev_max;
         return $this;
     }
 
-    #[Override]
     public function getEps(): int
     {
         return $this->eps;
     }
 
-    #[Override]
-    public function setEps(int $eps): ColonyChangeableInterface
+    public function setEps(int $eps): ColonyChangeable
     {
         $this->eps = $eps;
         return $this;
     }
 
-    #[Override]
     public function getMaxEps(): int
     {
         return $this->max_eps;
     }
 
-    #[Override]
-    public function setMaxEps(int $max_eps): ColonyChangeableInterface
+    public function setMaxEps(int $max_eps): ColonyChangeable
     {
         $this->max_eps = $max_eps;
         return $this;
     }
 
-    #[Override]
     public function getMaxStorage(): int
     {
         return $this->max_storage;
     }
 
-    #[Override]
-    public function setMaxStorage(int $max_storage): ColonyChangeableInterface
+    public function setMaxStorage(int $max_storage): ColonyChangeable
     {
         $this->max_storage = $max_storage;
         return $this;
     }
 
-    #[Override]
     public function getPopulationlimit(): int
     {
         return $this->populationlimit;
     }
 
-    #[Override]
-    public function setPopulationlimit(int $populationlimit): ColonyChangeableInterface
+    public function setPopulationlimit(int $populationlimit): ColonyChangeable
     {
         $this->populationlimit = $populationlimit;
         return $this;
     }
 
-    #[Override]
     public function getImmigrationstate(): bool
     {
         return $this->immigrationstate;
     }
 
-    #[Override]
-    public function setImmigrationstate(bool $immigrationstate): ColonyChangeableInterface
+    public function setImmigrationstate(bool $immigrationstate): ColonyChangeable
     {
         $this->immigrationstate = $immigrationstate;
         return $this;
     }
 
-    #[Override]
     public function getShields(): ?int
     {
         return $this->shields;
     }
 
-    #[Override]
-    public function setShields(?int $shields): ColonyChangeableInterface
+    public function setShields(?int $shields): ColonyChangeable
     {
         $this->shields = $shields;
         return $this;
     }
 
-    #[Override]
     public function getShieldFrequency(): ?int
     {
         return $this->shield_frequency;
     }
 
-    #[Override]
-    public function setShieldFrequency(?int $shieldFrequency): ColonyChangeableInterface
+    public function setShieldFrequency(?int $shieldFrequency): ColonyChangeable
     {
         $this->shield_frequency = $shieldFrequency;
         return $this;
     }
 
-    #[Override]
-    public function getTorpedo(): ?TorpedoTypeInterface
+    public function getTorpedo(): ?TorpedoType
     {
         return $this->torpedo;
     }
 
-    #[Override]
-    public function setTorpedo(?TorpedoTypeInterface $torpedoType): ColonyChangeableInterface
+    public function setTorpedo(?TorpedoType $torpedoType): ColonyChangeable
     {
         $this->torpedo = $torpedoType;
         return $this;
     }
 
-    #[Override]
     public function getPopulation(): int
     {
         return $this->getWorkers() + $this->getWorkless();
     }
 
-    #[Override]
     public function getFreeHousing(): int
     {
         return $this->getMaxBev() - $this->getPopulation();
     }
 
-    #[Override]
     public function lowerEps(int $value): void
     {
         $this->setEps($this->getEps() - $value);
     }
 
-    #[Override]
     public function upperEps(int $value): void
     {
         $this->setEps($this->getEps() + $value);

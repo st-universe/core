@@ -11,7 +11,7 @@ use Stu\Config\Init;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
-use Stu\Orm\Entity\ModuleInterface;
+use Stu\Orm\Entity\Module;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
@@ -92,7 +92,7 @@ Init::run(function (ContainerInterface $dic): void {
                 $buildplanRepo->save($plan);
                 $db->flush();
 
-                /** @var array<int, ModuleInterface> */
+                /** @var array<int, Module> */
                 $modules = [];
 
                 foreach ($moduleList as $moduleId) {

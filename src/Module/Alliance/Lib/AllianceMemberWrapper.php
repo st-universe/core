@@ -2,21 +2,21 @@
 
 namespace Stu\Module\Alliance\Lib;
 
-use Stu\Orm\Entity\AllianceInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Alliance;
+use Stu\Orm\Entity\User;
 
 final class AllianceMemberWrapper
 {
-    public function __construct(private UserInterface $user, private AllianceInterface $alliance)
+    public function __construct(private User $user, private Alliance $alliance)
     {
     }
 
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    public function getAlliance(): AllianceInterface
+    public function getAlliance(): Alliance
     {
         return $this->alliance;
     }

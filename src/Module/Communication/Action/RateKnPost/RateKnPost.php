@@ -10,7 +10,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
-use Stu\Orm\Entity\KnPostInterface;
+use Stu\Orm\Entity\KnPost;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 
 final class RateKnPost implements ActionControllerInterface
@@ -24,7 +24,7 @@ final class RateKnPost implements ActionControllerInterface
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        /** @var KnPostInterface $post */
+        /** @var KnPost $post */
         $post = $this->knPostRepository->find($this->knPostRequest->getKnId());
 
         if ($post === null) {
@@ -52,7 +52,7 @@ final class RateKnPost implements ActionControllerInterface
         $this->checkForPrestige($post, $rating);
     }
 
-    private function checkForPrestige(KnPostInterface $post, int $rating): void
+    private function checkForPrestige(KnPost $post, int $rating): void
     {
         // nothing to do
         if ($rating < 0) {
@@ -68,7 +68,7 @@ final class RateKnPost implements ActionControllerInterface
         $this->createPrestigeLog->createLog(self::PRESTIGE_PER_POSITIVE_VOTE, $description, $post->getUser(), time());
     }
 
-    private function getTitle(KnPostInterface $post): string
+    private function getTitle(KnPost $post): string
     {
         $title = (string) $post->getTitle();
 

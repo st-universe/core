@@ -13,16 +13,16 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapper;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Station\Lib\StationWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 
 //TODO increase coverage
 /**
- * @extends SpacecraftWrapper<ShipInterface>
+ * @extends SpacecraftWrapper<Ship>
  */
 final class ShipWrapper extends SpacecraftWrapper implements ShipWrapperInterface
 {
     #[Override]
-    public function get(): ShipInterface
+    public function get(): Ship
     {
         return $this->spacecraft;
     }

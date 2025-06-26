@@ -2,9 +2,9 @@
 
 namespace Stu\Module\Colony\Lib;
 
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Colony;
 
 interface ColonyResetterInterface
 {
-    public function reset(ColonyInterface $colony, bool $sendMessage = true): void;
+    public function reset(Colony $colony, bool $sendMessage = true): void;
 }

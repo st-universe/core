@@ -8,7 +8,7 @@ use RuntimeException;
 use Stu\Component\Anomaly\AnomalyCreationInterface;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Module\Control\StuRandom;
-use Stu\Orm\Entity\AnomalyInterface;
+use Stu\Orm\Entity\Anomaly;
 use Stu\Orm\Repository\AnomalyRepositoryInterface;
 
 class IonStormPropagation
@@ -19,7 +19,7 @@ class IonStormPropagation
         private StuRandom $stuRandom
     ) {}
 
-    public function propagateStorm(AnomalyInterface $root, LocationPool $locationPool): void
+    public function propagateStorm(Anomaly $root, LocationPool $locationPool): void
     {
         if ($root->getChildren()->isEmpty()) {
             $root->setRemainingTicks(0);
@@ -45,7 +45,7 @@ class IonStormPropagation
         }
     }
 
-    private function split(AnomalyInterface $anomaly, AnomalyInterface $root, LocationPool $locationPool): void
+    private function split(Anomaly $anomaly, Anomaly $root, LocationPool $locationPool): void
     {
         $remainingTicks = $anomaly->getRemainingTicks();
         if ($remainingTicks < 10) {
@@ -87,7 +87,7 @@ class IonStormPropagation
         }
     }
 
-    private function transferRemainingTicks(AnomalyInterface $source, AnomalyInterface $target, int $percentage): void
+    private function transferRemainingTicks(Anomaly $source, Anomaly $target, int $percentage): void
     {
         $transferAmount = (int)floor($source->getRemainingTicks() * $percentage / 100);
         if ($transferAmount !== 0) {

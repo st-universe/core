@@ -1,1 +1,1 @@
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;

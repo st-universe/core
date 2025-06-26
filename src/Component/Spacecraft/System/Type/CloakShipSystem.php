@@ -14,7 +14,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeInterface;
 use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftStateChangerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 
 final class CloakShipSystem extends AbstractSpacecraftSystemType implements SpacecraftSystemTypeInterface
 {
@@ -36,7 +36,7 @@ final class CloakShipSystem extends AbstractSpacecraftSystemType implements Spac
             return false;
         }
 
-        if ($spacecraft instanceof ShipInterface && $spacecraft->isTractored()) {
+        if ($spacecraft instanceof Ship && $spacecraft->isTractored()) {
             $reason = _('das Schiff von einem Traktorstrahl gehalten wird');
             return false;
         }
@@ -80,7 +80,7 @@ final class CloakShipSystem extends AbstractSpacecraftSystemType implements Spac
             $manager->deactivate($wrapper, SpacecraftSystemTypeEnum::TRACTOR_BEAM, true);
         }
 
-        if ($spacecraft instanceof ShipInterface) {
+        if ($spacecraft instanceof Ship) {
             $spacecraft->setDockedTo(null);
         }
         $this->spacecraftStateChanger->changeState($wrapper, SpacecraftStateEnum::NONE);

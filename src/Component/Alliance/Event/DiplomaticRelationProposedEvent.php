@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace Stu\Component\Alliance\Event;
 
-use Stu\Orm\Entity\AllianceInterface;
+use Stu\Orm\Entity\Alliance;
 
 /**
  * Describes the event of a diplomatic relation proposal creation
  */
 class DiplomaticRelationProposedEvent
 {
-    public function __construct(private AllianceInterface $alliance, private AllianceInterface $counterpart, private int $relationTypeId)
+    public function __construct(private Alliance $alliance, private Alliance $counterpart, private int $relationTypeId)
     {
     }
 
     /**
      * Returns the alliance which created the proposal
      */
-    public function getAlliance(): AllianceInterface
+    public function getAlliance(): Alliance
     {
         return $this->alliance;
     }
@@ -26,7 +26,7 @@ class DiplomaticRelationProposedEvent
     /**
      * Returns the alliance the relation was proposed to
      */
-    public function getCounterpart(): AllianceInterface
+    public function getCounterpart(): Alliance
     {
         return $this->counterpart;
     }

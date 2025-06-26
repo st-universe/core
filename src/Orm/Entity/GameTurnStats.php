@@ -12,13 +12,12 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\GameTurnStatsRepository;
 
 #[Table(name: 'stu_game_turn_stats')]
 #[Index(name: 'game_turn_stats_turn_idx', columns: ['turn_id'])]
 #[Entity(repositoryClass: GameTurnStatsRepository::class)]
-class GameTurnStats implements GameTurnStatsInterface
+class GameTurnStats
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -63,182 +62,156 @@ class GameTurnStats implements GameTurnStatsInterface
 
     #[OneToOne(targetEntity: GameTurn::class)]
     #[JoinColumn(name: 'turn_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private GameTurnInterface $turn;
+    private GameTurn $turn;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
-    public function getTurn(): GameTurnInterface
+    public function getTurn(): GameTurn
     {
         return $this->turn;
     }
 
-    #[Override]
-    public function setTurn(GameTurnInterface $turn): GameTurnStatsInterface
+    public function setTurn(GameTurn $turn): GameTurnStats
     {
         $this->turn = $turn;
         return $this;
     }
 
-    #[Override]
     public function getUserCount(): int
     {
         return $this->user_count;
     }
 
-    #[Override]
-    public function setUserCount(int $userCount): GameTurnStatsInterface
+    public function setUserCount(int $userCount): GameTurnStats
     {
         $this->user_count = $userCount;
 
         return $this;
     }
 
-    #[Override]
     public function getLogins24h(): int
     {
         return $this->logins_24h;
     }
 
-    #[Override]
-    public function setLogins24h(int $logins24h): GameTurnStatsInterface
+    public function setLogins24h(int $logins24h): GameTurnStats
     {
         $this->logins_24h = $logins24h;
 
         return $this;
     }
 
-    #[Override]
     public function getInactiveCount(): int
     {
         return $this->inactive_count;
     }
 
-    #[Override]
-    public function setInactiveCount(int $inactiveCount): GameTurnStatsInterface
+    public function setInactiveCount(int $inactiveCount): GameTurnStats
     {
         $this->inactive_count = $inactiveCount;
 
         return $this;
     }
 
-    #[Override]
     public function getVacationCount(): int
     {
         return $this->vacation_count;
     }
 
-    #[Override]
-    public function setVacationCount(int $vacationCount): GameTurnStatsInterface
+    public function setVacationCount(int $vacationCount): GameTurnStats
     {
         $this->vacation_count = $vacationCount;
 
         return $this;
     }
 
-    #[Override]
     public function getShipCount(): int
     {
         return $this->ship_count;
     }
 
-    #[Override]
-    public function setShipCount(int $shipCount): GameTurnStatsInterface
+    public function setShipCount(int $shipCount): GameTurnStats
     {
         $this->ship_count = $shipCount;
 
         return $this;
     }
 
-    #[Override]
     public function getShipCountManned(): int
     {
         return $this->ship_count_manned;
     }
 
-    #[Override]
-    public function setShipCountManned(int $shipCountManned): GameTurnStatsInterface
+    public function setShipCountManned(int $shipCountManned): GameTurnStats
     {
         $this->ship_count_manned = $shipCountManned;
 
         return $this;
     }
 
-    #[Override]
     public function getShipCountNpc(): int
     {
         return $this->ship_count_npc;
     }
 
-    #[Override]
-    public function setShipCountNpc(int $shipCountNpc): GameTurnStatsInterface
+    public function setShipCountNpc(int $shipCountNpc): GameTurnStats
     {
         $this->ship_count_npc = $shipCountNpc;
 
         return $this;
     }
 
-    #[Override]
     public function getKnCount(): int
     {
         return $this->kn_count;
     }
 
-    #[Override]
-    public function setKnCount(int $knCount): GameTurnStatsInterface
+    public function setKnCount(int $knCount): GameTurnStats
     {
         $this->kn_count = $knCount;
 
         return $this;
     }
 
-    #[Override]
     public function getFlightSig24h(): int
     {
         return $this->flight_sig_24h;
     }
 
-    #[Override]
-    public function setFlightSig24h(int $flightSig24h): GameTurnStatsInterface
+    public function setFlightSig24h(int $flightSig24h): GameTurnStats
     {
         $this->flight_sig_24h = $flightSig24h;
 
         return $this;
     }
 
-    #[Override]
     public function getFlightSigSystem24h(): int
     {
         return $this->flight_sig_system_24h;
     }
 
-    #[Override]
-    public function setFlightSigSystem24h(int $flightSigSystem24h): GameTurnStatsInterface
+    public function setFlightSigSystem24h(int $flightSigSystem24h): GameTurnStats
     {
         $this->flight_sig_system_24h = $flightSigSystem24h;
 
         return $this;
     }
 
-    #[Override]
     public function getNewPmCount(): int
     {
         return $this->new_pm_count;
     }
 
-    #[Override]
-    public function setNewPmCount(int $newPmCount): GameTurnStatsInterface
+    public function setNewPmCount(int $newPmCount): GameTurnStats
     {
         $this->new_pm_count = $newPmCount;
 
         return $this;
     }
 
-    #[Override]
     public function __toString(): string
     {
         return sprintf(

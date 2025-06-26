@@ -13,7 +13,6 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use RuntimeException;
 use Stu\Orm\Repository\StarSystemTypeRepository;
 
@@ -21,7 +20,7 @@ use Stu\Orm\Repository\StarSystemTypeRepository;
 #[Index(name: 'starsystem_mass_center_1_idx', columns: ['first_mass_center_id'])]
 #[Index(name: 'starsystem_mass_center_2_idx', columns: ['second_mass_center_id'])]
 #[Entity(repositoryClass: StarSystemTypeRepository::class)]
-class StarSystemType implements StarSystemTypeInterface
+class StarSystemType
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -45,23 +44,21 @@ class StarSystemType implements StarSystemTypeInterface
 
     #[OneToOne(targetEntity: DatabaseEntry::class)]
     #[JoinColumn(name: 'database_id', referencedColumnName: 'id')]
-    private ?DatabaseEntryInterface $databaseEntry = null;
+    private ?DatabaseEntry $databaseEntry = null;
 
     #[ManyToOne(targetEntity: MassCenterType::class)]
     #[JoinColumn(name: 'first_mass_center_id', referencedColumnName: 'id')]
-    private ?MassCenterTypeInterface $firstMassCenterType = null;
+    private ?MassCenterType $firstMassCenterType = null;
 
     #[ManyToOne(targetEntity: MassCenterType::class)]
     #[JoinColumn(name: 'second_mass_center_id', referencedColumnName: 'id')]
-    private ?MassCenterTypeInterface $secondMassCenterType = null;
+    private ?MassCenterType $secondMassCenterType = null;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getDescription(): string
     {
         $firstMassCenter = $this->getFirstMassCenterType();
@@ -89,47 +86,40 @@ class StarSystemType implements StarSystemTypeInterface
         );
     }
 
-    #[Override]
-    public function setDescription(string $description): StarSystemTypeInterface
+    public function setDescription(string $description): StarSystemType
     {
         $this->description = $description;
 
         return $this;
     }
 
-    #[Override]
     public function getDatabaseEntryId(): ?int
     {
         return $this->database_id;
     }
 
-    #[Override]
-    public function getDatabaseEntry(): ?DatabaseEntryInterface
+    public function getDatabaseEntry(): ?DatabaseEntry
     {
         return $this->databaseEntry;
     }
 
-    #[Override]
-    public function setDatabaseEntry(?DatabaseEntryInterface $databaseEntry): StarSystemTypeInterface
+    public function setDatabaseEntry(?DatabaseEntry $databaseEntry): StarSystemType
     {
         $this->databaseEntry = $databaseEntry;
 
         return $this;
     }
 
-    #[Override]
-    public function getFirstMassCenterType(): ?MassCenterTypeInterface
+    public function getFirstMassCenterType(): ?MassCenterType
     {
         return $this->firstMassCenterType;
     }
 
-    #[Override]
-    public function getSecondMassCenterType(): ?MassCenterTypeInterface
+    public function getSecondMassCenterType(): ?MassCenterType
     {
         return $this->secondMassCenterType;
     }
 
-    #[Override]
     public function getIsGenerateable(): ?bool
     {
         return $this->is_generateable;

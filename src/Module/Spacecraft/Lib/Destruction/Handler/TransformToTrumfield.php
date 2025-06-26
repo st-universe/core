@@ -11,7 +11,7 @@ use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionCauseEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftStateChangerInterface;
 use Stu\Module\Spacecraft\Lib\Torpedo\ClearTorpedoInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\StationInterface;
+use Stu\Orm\Entity\Station;
 use Stu\Orm\Repository\ConstructionProgressRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
@@ -75,7 +75,7 @@ class TransformToTrumfield implements SpacecraftDestructionHandlerInterface
         // delete torpedo storage
         $this->clearTorpedo->clearTorpedoStorage($destroyedSpacecraftWrapper);
 
-        if (!$spacecraft instanceof StationInterface) {
+        if (!$spacecraft instanceof Station) {
             return;
         }
 

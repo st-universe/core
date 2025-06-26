@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Lib;
 
-use Psr\Container\ContainerInterface;
 use Stu\Lib\Pirate\Behaviour\AssaultPhalanxBehaviour;
 use Stu\Lib\Pirate\Behaviour\AttackShipBehaviour;
 use Stu\Lib\Pirate\Behaviour\CallForSupportBehaviour;

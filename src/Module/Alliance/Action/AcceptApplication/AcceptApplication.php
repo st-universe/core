@@ -12,7 +12,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\AllianceJobInterface;
+use Stu\Orm\Entity\AllianceJob;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -20,9 +20,7 @@ final class AcceptApplication implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_ACCEPT_APPLICATION';
 
-    public function __construct(private AcceptApplicationRequestInterface $acceptApplicationRequest, private AllianceJobRepositoryInterface $allianceJobRepository, private AllianceActionManagerInterface $allianceActionManager, private PrivateMessageSenderInterface $privateMessageSender, private UserRepositoryInterface $userRepository)
-    {
-    }
+    public function __construct(private AcceptApplicationRequestInterface $acceptApplicationRequest, private AllianceJobRepositoryInterface $allianceJobRepository, private AllianceActionManagerInterface $allianceActionManager, private PrivateMessageSenderInterface $privateMessageSender, private UserRepositoryInterface $userRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -68,8 +66,8 @@ final class AcceptApplication implements ActionControllerInterface
         $game->addInformation(_('Die Bewerbung wurde angenommen'));
     }
 
-    /** @param array<AllianceJobInterface> $applications */
-    private function cancelOtherApplications(array $applications, AllianceJobInterface $currentApplication): void
+    /** @param array<AllianceJob> $applications */
+    private function cancelOtherApplications(array $applications, AllianceJob $currentApplication): void
     {
         $text = sprintf(
             'Der Siedler %s wurde bei einer anderen Allianz aufgenommen',

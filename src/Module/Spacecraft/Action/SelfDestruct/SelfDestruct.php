@@ -19,7 +19,7 @@ use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class SelfDestruct implements ActionControllerInterface
@@ -99,7 +99,7 @@ final class SelfDestruct implements ActionControllerInterface
         $this->createNegativePrestigeLog($prestigeAmount, $rumpName, $user);
     }
 
-    private function createNegativePrestigeLog(int $prestigeAmount, string $rumpName, UserInterface $user): void
+    private function createNegativePrestigeLog(int $prestigeAmount, string $rumpName, User $user): void
     {
         $amount = -abs($prestigeAmount);
 
@@ -113,7 +113,7 @@ final class SelfDestruct implements ActionControllerInterface
         $this->sendSystemMessage($description, $user);
     }
 
-    private function sendSystemMessage(string $description, UserInterface $user): void
+    private function sendSystemMessage(string $description, User $user): void
     {
         $this->privateMessageSender->send(
             UserEnum::USER_NOONE,

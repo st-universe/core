@@ -8,15 +8,15 @@ use Override;
 use RuntimeException;
 use Stu\Component\Map\DirectionEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\LocationInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
+use Stu\Orm\Entity\Location;
+use Stu\Orm\Entity\StarSystemMap;
 
 final class UpdateFlightDirection implements UpdateFlightDirectionInterface
 {
     #[Override]
     public function updateWhenTraversing(
-        LocationInterface $oldWaypoint,
-        LocationInterface $waypoint,
+        Location $oldWaypoint,
+        Location $waypoint,
         SpacecraftWrapperInterface $wrapper
     ): DirectionEnum {
 
@@ -55,7 +55,7 @@ final class UpdateFlightDirection implements UpdateFlightDirectionInterface
     }
 
     #[Override]
-    public function updateWhenSystemExit(SpacecraftWrapperInterface $wrapper, StarSystemMapInterface $starsystemMap): void
+    public function updateWhenSystemExit(SpacecraftWrapperInterface $wrapper, StarSystemMap $starsystemMap): void
     {
         $system = $starsystemMap->getSystem();
 

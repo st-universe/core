@@ -4,7 +4,7 @@ namespace Stu\Module\Ship\Lib;
 
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SourceAndTargetWrappersInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 
 interface ShipLoaderInterface
 {
@@ -13,7 +13,7 @@ interface ShipLoaderInterface
         int $userId,
         bool $allowUplink = false,
         bool $checkForEntityLock = true
-    ): ShipInterface;
+    ): Ship;
 
     public function getWrapperByIdAndUser(
         int $shipId,
@@ -33,5 +33,5 @@ interface ShipLoaderInterface
 
     public function find(int $shipId, bool $checkForEntityLock = true): ?ShipWrapperInterface;
 
-    public function save(ShipInterface $ship): void;
+    public function save(Ship $ship): void;
 }

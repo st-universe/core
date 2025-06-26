@@ -6,31 +6,30 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\UserPirateRound;
-use Stu\Orm\Entity\UserPirateRoundInterface;
 
 /**
  * @extends ObjectRepository<UserPirateRound>
  *
- * @method null|UserPirateRoundInterface find(integer $id)
- * @method UserPirateRoundInterface[] findAll()
+ * @method null|UserPirateRound find(integer $id)
+ * @method UserPirateRound[] findAll()
  */
 interface UserPirateRoundRepositoryInterface extends ObjectRepository
 {
-    public function prototype(): UserPirateRoundInterface;
+    public function prototype(): UserPirateRound;
 
-    public function save(UserPirateRoundInterface $userPirateRound): void;
+    public function save(UserPirateRound $userPirateRound): void;
 
-    public function delete(UserPirateRoundInterface $userPirateRound): void;
+    public function delete(UserPirateRound $userPirateRound): void;
 
     /**
-     * @return UserPirateRoundInterface[]
+     * @return UserPirateRound[]
      */
     public function findByPirateRound(int $pirateRoundId): array;
 
     /**
-     * @return UserPirateRoundInterface[]
+     * @return UserPirateRound[]
      */
     public function findByUser(int $userId): array;
 
-    public function findByUserAndPirateRound(int $userId, int $pirateRoundId): ?UserPirateRoundInterface;
+    public function findByUserAndPirateRound(int $userId, int $pirateRoundId): ?UserPirateRound;
 }

@@ -8,9 +8,9 @@ use Override;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\KnPostInterface;
-use Stu\Orm\Entity\RpgPlotInterface;
-use Stu\Orm\Entity\RpgPlotMemberInterface;
+use Stu\Orm\Entity\KnPost;
+use Stu\Orm\Entity\RpgPlot;
+use Stu\Orm\Entity\RpgPlotMember;
 
 /**
  * Notifies users about new kn postings
@@ -22,7 +22,7 @@ final class NewKnPostNotificator implements NewKnPostNotificatorInterface
     }
 
     #[Override]
-    public function notify(KnPostInterface $post, RpgPlotInterface $plot): void
+    public function notify(KnPost $post, RpgPlot $plot): void
     {
         $postUser = $post->getUser();
         $url = $post->getUrl();
@@ -37,9 +37,9 @@ final class NewKnPostNotificator implements NewKnPostNotificatorInterface
         // filter the postUser from the member list
         $plot->getMembers()
             ->filter(
-                fn (RpgPlotMemberInterface $member): bool => $member->getUserId() !== $postUserId
+                fn (RpgPlotMember $member): bool => $member->getUserId() !== $postUserId
             )
-            ->map(function (RpgPlotMemberInterface $member) use ($text, $url): void {
+            ->map(function (RpgPlotMember $member) use ($text, $url): void {
                 $this->privateMessageSender->send(
                     UserEnum::USER_NOONE,
                     $member->getUserId(),

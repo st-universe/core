@@ -11,12 +11,11 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\KnPostToPlotApplicationRepository;
 
 #[Table(name: 'stu_kn_plot_application')]
 #[Entity(repositoryClass: KnPostToPlotApplicationRepository::class)]
-class KnPostToPlotApplication implements KnPostToPlotApplicationInterface
+class KnPostToPlotApplication
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -34,53 +33,46 @@ class KnPostToPlotApplication implements KnPostToPlotApplicationInterface
 
     #[ManyToOne(targetEntity: KnPost::class)]
     #[JoinColumn(name: 'post_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private KnPostInterface $knPost;
+    private KnPost $knPost;
 
     #[ManyToOne(targetEntity: RpgPlot::class)]
     #[JoinColumn(name: 'plot_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private RpgPlotInterface $rpgPlot;
+    private RpgPlot $rpgPlot;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
-    public function getRpgPlot(): RpgPlotInterface
+    public function getRpgPlot(): RpgPlot
     {
         return $this->rpgPlot;
     }
 
-    #[Override]
-    public function setRpgPlot(RpgPlotInterface $rpgPlot): KnPostToPlotApplicationInterface
+    public function setRpgPlot(RpgPlot $rpgPlot): KnPostToPlotApplication
     {
         $this->rpgPlot = $rpgPlot;
 
         return $this;
     }
 
-    #[Override]
-    public function getKnPost(): KnPostInterface
+    public function getKnPost(): KnPost
     {
         return $this->knPost;
     }
 
-    #[Override]
-    public function setKnPost(KnPostInterface $knPost): KnPostToPlotApplicationInterface
+    public function setKnPost(KnPost $knPost): KnPostToPlotApplication
     {
         $this->knPost = $knPost;
 
         return $this;
     }
 
-    #[Override]
     public function getTime(): int
     {
         return $this->time;
     }
-    #[Override]
-    public function setTime(int $time): KnPostToPlotApplicationInterface
+    public function setTime(int $time): KnPostToPlotApplication
     {
         $this->time = $time;
         return $this;

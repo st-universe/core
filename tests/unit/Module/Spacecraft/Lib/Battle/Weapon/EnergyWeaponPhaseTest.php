@@ -22,11 +22,11 @@ use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftRumpInterface;
-use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Entity\WeaponInterface;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\SpacecraftRump;
+use Stu\Orm\Entity\User;
+use Stu\Orm\Entity\Weapon;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\Orm\Repository\WeaponRepositoryInterface;
 use Stu\StuTestCase;
@@ -80,16 +80,16 @@ class EnergyWeaponPhaseTest extends StuTestCase
     public function testFireExpectNoSecondShotIfTargetDestroyedOnFirst(): void
     {
         $attacker = $this->mock(EnergyAttackerInterface::class);
-        $target = $this->mock(ShipInterface::class);
+        $target = $this->mock(Ship::class);
         $targetWrapper = $this->mock(ShipWrapperInterface::class);
-        $weapon = $this->mock(WeaponInterface::class);
-        $user = $this->mock(UserInterface::class);
-        $targetUser = $this->mock(UserInterface::class);
-        $targetRump = $this->mock(SpacecraftRumpInterface::class);
+        $weapon = $this->mock(Weapon::class);
+        $user = $this->mock(User::class);
+        $targetUser = $this->mock(User::class);
+        $targetRump = $this->mock(SpacecraftRump::class);
         $targetPool = $this->mock(BattlePartyInterface::class);
         $messages = $this->mock(MessageCollectionInterface::class);
         $message = $this->mock(MessageInterface::class);
-        $location = $this->mock(MapInterface::class);
+        $location = $this->mock(Map::class);
 
         $targetId = 42;
 
@@ -266,9 +266,9 @@ class EnergyWeaponPhaseTest extends StuTestCase
     public function testFireExpectNoShotIfAttackerAvoidsHittingHull(): void
     {
         $attacker = $this->mock(EnergyAttackerInterface::class);
-        $target = $this->mock(ShipInterface::class);
+        $target = $this->mock(Ship::class);
         $targetWrapper = $this->mock(ShipWrapperInterface::class);
-        $weapon = $this->mock(WeaponInterface::class);
+        $weapon = $this->mock(Weapon::class);
         $targetPool = $this->mock(BattlePartyInterface::class);
         $messages = $this->mock(MessageCollectionInterface::class);
 

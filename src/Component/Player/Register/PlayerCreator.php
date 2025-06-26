@@ -12,9 +12,9 @@ use Stu\Component\Player\Register\Exception\MobileNumberInvalidException;
 use Stu\Component\Player\Register\Exception\PlayerDuplicateException;
 use Stu\Module\Control\StuHashInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\FactionInterface;
-use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Entity\UserRegistrationInterface;
+use Stu\Orm\Entity\Faction;
+use Stu\Orm\Entity\User;
+use Stu\Orm\Entity\UserRegistration;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\Orm\Repository\UserRefererRepositoryInterface;
 
@@ -37,7 +37,7 @@ class PlayerCreator implements PlayerCreatorInterface
     public function createWithMobileNumber(
         string $loginName,
         string $emailAddress,
-        FactionInterface $faction,
+        Faction $faction,
         string $mobile,
         string $password,
         ?string $referer = null
@@ -98,13 +98,13 @@ class PlayerCreator implements PlayerCreatorInterface
     public function createPlayer(
         string $loginName,
         string $emailAddress,
-        FactionInterface $faction,
+        Faction $faction,
         string $password,
         ?string $mobile = null,
         ?string $smsCode = null,
         ?string $emailCode = null,
         ?string $referer = null
-    ): UserInterface {
+    ): User {
 
         $player = $this->userRepository->prototype();
         $player->setFaction($faction);
@@ -144,7 +144,7 @@ class PlayerCreator implements PlayerCreatorInterface
         return $player;
     }
 
-    private function saveReferer(UserRegistrationInterface $registration, ?string $referer): void
+    private function saveReferer(UserRegistration $registration, ?string $referer): void
     {
         if ($referer !== null) {
 

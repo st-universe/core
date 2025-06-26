@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Battle\Provider;
 
-use Stu\Orm\Entity\TorpedoTypeInterface;
+use Stu\Orm\Entity\TorpedoType;
 
 interface ProjectileAttackerInterface extends AttackerInterface
 {
@@ -14,7 +14,7 @@ interface ProjectileAttackerInterface extends AttackerInterface
 
     public function getTorpedoCount(): int;
 
-    public function getTorpedo(): ?TorpedoTypeInterface;
+    public function getTorpedo(): ?TorpedoType;
 
     public function lowerTorpedoCount(int $amount): void;
 

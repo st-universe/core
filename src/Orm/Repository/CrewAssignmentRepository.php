@@ -10,12 +10,10 @@ use Override;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\CrewAssignment;
-use Stu\Orm\Entity\CrewAssignmentInterface;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\SpacecraftRump;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\Crew;
-use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\Station;
 
 /**
@@ -24,13 +22,13 @@ use Stu\Orm\Entity\Station;
 final class CrewAssignmentRepository extends EntityRepository implements CrewAssignmentRepositoryInterface
 {
     #[Override]
-    public function prototype(): CrewAssignmentInterface
+    public function prototype(): CrewAssignment
     {
         return new CrewAssignment();
     }
 
     #[Override]
-    public function save(CrewAssignmentInterface $post): void
+    public function save(CrewAssignment $post): void
     {
         $em = $this->getEntityManager();
 
@@ -38,7 +36,7 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
     }
 
     #[Override]
-    public function delete(CrewAssignmentInterface $post): void
+    public function delete(CrewAssignment $post): void
     {
         $em = $this->getEntityManager();
 
@@ -46,7 +44,7 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
     }
 
     #[Override]
-    public function getAmountBySpacecraft(SpacecraftInterface $spacecraft): int
+    public function getAmountBySpacecraft(Spacecraft $spacecraft): int
     {
         return $this->count([
             'spacecraft' => $spacecraft
@@ -54,13 +52,13 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
     }
 
     #[Override]
-    public function hasEnoughCrew(SpacecraftInterface $spacecraft): bool
+    public function hasEnoughCrew(Spacecraft $spacecraft): bool
     {
         return $this->getAmountBySpacecraft($spacecraft) >= $spacecraft->getNeededCrewCount();
     }
 
     #[Override]
-    public function hasCrewmanOfUser(SpacecraftInterface $spacecraft, int $userId): bool
+    public function hasCrewmanOfUser(Spacecraft $spacecraft, int $userId): bool
     {
         return (int)$this->getEntityManager()
             ->createQuery(
@@ -115,7 +113,7 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
     }
 
     #[Override]
-    public function getAmountByUser(UserInterface $user): int
+    public function getAmountByUser(User $user): int
     {
         return $this->count([
             'user' => $user
@@ -123,7 +121,7 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
     }
 
     #[Override]
-    public function getByUserAtColonies(UserInterface $user): array
+    public function getByUserAtColonies(User $user): array
     {
         return $this->getEntityManager()
             ->createQuery(
@@ -140,7 +138,7 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
     }
 
     #[Override]
-    public function getByUserOnEscapePods(UserInterface $user): array
+    public function getByUserOnEscapePods(User $user): array
     {
         return $this->getEntityManager()
             ->createQuery(
@@ -166,7 +164,7 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
     }
 
     #[Override]
-    public function getByUserAtTradeposts(UserInterface $user): array
+    public function getByUserAtTradeposts(User $user): array
     {
         return $this->getEntityManager()
             ->createQuery(
@@ -183,7 +181,7 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
     }
 
     #[Override]
-    public function getAmountByUserOnColonies(UserInterface $user): int
+    public function getAmountByUserOnColonies(User $user): int
     {
         return (int)$this->getEntityManager()->createQuery(
             sprintf(
@@ -197,7 +195,7 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
     }
 
     #[Override]
-    public function getAmountByUserOnShips(UserInterface $user): int
+    public function getAmountByUserOnShips(User $user): int
     {
         return (int)$this->getEntityManager()
             ->createQuery(
@@ -214,7 +212,7 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
     }
 
     #[Override]
-    public function getAmountByUserAtTradeposts(UserInterface $user): int
+    public function getAmountByUserAtTradeposts(User $user): int
     {
         return (int)$this->getEntityManager()
             ->createQuery(
@@ -256,7 +254,7 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
     }
 
     #[Override]
-    public function truncateBySpacecraft(SpacecraftInterface $spacecraft): void
+    public function truncateBySpacecraft(Spacecraft $spacecraft): void
     {
         $this->getEntityManager()
             ->createQuery(
@@ -270,7 +268,7 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
     }
 
     #[Override]
-    public function truncateByUser(UserInterface $user): void
+    public function truncateByUser(User $user): void
     {
         $this->getEntityManager()
             ->createQuery(
@@ -284,7 +282,7 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
     }
 
     #[Override]
-    public function hasCrewOnForeignStation(UserInterface $user): bool
+    public function hasCrewOnForeignStation(User $user): bool
     {
         return (int) $this->getEntityManager()
             ->createQuery(

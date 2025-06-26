@@ -4,7 +4,7 @@ namespace Stu\Lib\Session;
 
 use Override;
 use Stu\Exception\SessionInvalidException;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class SessionStorage implements SessionStorageInterface
@@ -48,7 +48,7 @@ final class SessionStorage implements SessionStorageInterface
     }
 
     /** @return array<mixed> */
-    private function getSessionDataUnserialized(UserInterface $user): array
+    private function getSessionDataUnserialized(User $user): array
     {
         if (!array_key_exists($user->getId(), $this->sessionDataPerUser)) {
             $sessiondataUnserialized = unserialize($user->getSessionData());
@@ -113,7 +113,7 @@ final class SessionStorage implements SessionStorageInterface
         return $data[$key];
     }
 
-    private function getUserMandatory(): UserInterface
+    private function getUserMandatory(): User
     {
         $user = $this->session->getUser();
         if ($user === null) {

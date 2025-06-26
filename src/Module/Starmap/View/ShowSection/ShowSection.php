@@ -14,7 +14,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Starmap\Lib\StarmapUiFactoryInterface;
 use Stu\Module\Starmap\View\RefreshSection\RefreshSection;
-use Stu\Orm\Entity\LayerInterface;
+use Stu\Orm\Entity\Layer;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 
 final class ShowSection implements ViewControllerInterface
@@ -31,7 +31,7 @@ final class ShowSection implements ViewControllerInterface
         $layerId = $this->showSectionRequest->getLayerId();
         $layer = $this->layerRepository->find($layerId);
 
-        if (!$layer instanceof LayerInterface) {
+        if (!$layer instanceof Layer) {
             throw new SanityCheckException('Invalid layer');
         }
 

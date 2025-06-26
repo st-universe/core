@@ -14,7 +14,7 @@ use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\InterceptShipCoreInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 
 class PirateAttack implements PirateAttackInterface
 {
@@ -32,7 +32,7 @@ class PirateAttack implements PirateAttackInterface
     }
 
     #[Override]
-    public function attackShip(FleetWrapperInterface $fleetWrapper, ShipInterface $target): void
+    public function attackShip(FleetWrapperInterface $fleetWrapper, Ship $target): void
     {
         $leadWrapper = $fleetWrapper->getLeadWrapper();
         $targetWrapper = $this->spacecraftWrapperFactory->wrapShip($target);

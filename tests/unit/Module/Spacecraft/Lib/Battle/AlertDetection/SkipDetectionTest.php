@@ -12,10 +12,10 @@ use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Module\Control\StuTime;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\PirateWrathInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\TholianWebInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\PirateWrath;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\TholianWeb;
+use Stu\Orm\Entity\User;
 use Stu\StuTestCase;
 
 class SkipDetectionTest extends StuTestCase
@@ -23,9 +23,9 @@ class SkipDetectionTest extends StuTestCase
     private MockInterface&PlayerRelationDeterminatorInterface $playerRelationDeterminator;
     private MockInterface&StuTime $stuTime;
 
-    private MockInterface&ShipInterface $incomingShip;
+    private MockInterface&Ship $incomingShip;
     private MockInterface&SpacecraftWrapperInterface $alertedWrapper;
-    private MockInterface&ShipInterface $alertedShip;
+    private MockInterface&Ship $alertedShip;
 
     private SkipDetectionInterface $subject;
 
@@ -35,9 +35,9 @@ class SkipDetectionTest extends StuTestCase
         $this->playerRelationDeterminator = $this->mock(PlayerRelationDeterminatorInterface::class);
         $this->stuTime = $this->mock(StuTime::class);
 
-        $this->incomingShip = $this->mock(ShipInterface::class);
+        $this->incomingShip = $this->mock(Ship::class);
         $this->alertedWrapper = $this->mock(SpacecraftWrapperInterface::class);
-        $this->alertedShip = $this->mock(ShipInterface::class);
+        $this->alertedShip = $this->mock(Ship::class);
 
         $this->alertedWrapper->shouldReceive('get')
             ->withNoArgs()
@@ -53,8 +53,8 @@ class SkipDetectionTest extends StuTestCase
     public function testIsSkippedExpectTrueWhenAlertYellowAndNotEnemy(): void
     {
         $usersToInformAboutTrojanHorse = new ArrayCollection();
-        $alertUser = $this->mock(UserInterface::class);
-        $incomingShipUser = $this->mock(UserInterface::class);
+        $alertUser = $this->mock(User::class);
+        $incomingShipUser = $this->mock(User::class);
 
         $this->incomingShip->shouldReceive('getUser')
             ->withNoArgs()
@@ -89,11 +89,11 @@ class SkipDetectionTest extends StuTestCase
     public function testIsSkippedExpectTrueAndTrojanNoticeWhenTractoredByFriend(): void
     {
         $usersToInformAboutTrojanHorse = new ArrayCollection();
-        $alertUser = $this->mock(UserInterface::class);
-        $incomingShipUser = $this->mock(UserInterface::class);
+        $alertUser = $this->mock(User::class);
+        $incomingShipUser = $this->mock(User::class);
 
-        $tractoringShip = $this->mock(ShipInterface::class);
-        $tractoringShipUser = $this->mock(UserInterface::class);
+        $tractoringShip = $this->mock(Ship::class);
+        $tractoringShipUser = $this->mock(User::class);
 
         $this->incomingShip->shouldReceive('getUser')
             ->withNoArgs()
@@ -137,12 +137,12 @@ class SkipDetectionTest extends StuTestCase
 
     public function testIsSkippedExpectTrueAndNoTrojanNoticeWhenTractoredByFriendButAlreadyNoticed(): void
     {
-        $alertUser = $this->mock(UserInterface::class);
+        $alertUser = $this->mock(User::class);
         $usersToInformAboutTrojanHorse = new ArrayCollection([$alertUser]);
-        $incomingShipUser = $this->mock(UserInterface::class);
+        $incomingShipUser = $this->mock(User::class);
 
-        $tractoringShip = $this->mock(ShipInterface::class);
-        $tractoringShipUser = $this->mock(UserInterface::class);
+        $tractoringShip = $this->mock(Ship::class);
+        $tractoringShipUser = $this->mock(User::class);
 
         $this->incomingShip->shouldReceive('getUser')
             ->withNoArgs()
@@ -182,8 +182,8 @@ class SkipDetectionTest extends StuTestCase
     public function testIsSkippedExpectTrueWhenIsFriend(): void
     {
         $usersToInformAboutTrojanHorse = new ArrayCollection();
-        $alertUser = $this->mock(UserInterface::class);
-        $incomingShipUser = $this->mock(UserInterface::class);
+        $alertUser = $this->mock(User::class);
+        $incomingShipUser = $this->mock(User::class);
 
         $this->incomingShip->shouldReceive('getUser')
             ->withNoArgs()
@@ -218,9 +218,9 @@ class SkipDetectionTest extends StuTestCase
     public function testIsSkippedExpectTrueWhenInFinishedWeb(): void
     {
         $usersToInformAboutTrojanHorse = new ArrayCollection();
-        $alertUser = $this->mock(UserInterface::class);
-        $incomingShipUser = $this->mock(UserInterface::class);
-        $finishedWeb = $this->mock(TholianWebInterface::class);
+        $alertUser = $this->mock(User::class);
+        $incomingShipUser = $this->mock(User::class);
+        $finishedWeb = $this->mock(TholianWeb::class);
 
         $this->incomingShip->shouldReceive('getUser')
             ->withNoArgs()
@@ -268,9 +268,9 @@ class SkipDetectionTest extends StuTestCase
     public function testIsSkippedExpectTrueWhenAlertIsPirateAndNewUser(): void
     {
         $usersToInformAboutTrojanHorse = new ArrayCollection();
-        $alertUser = $this->mock(UserInterface::class);
-        $incomingShipUser = $this->mock(UserInterface::class);
-        $unfinishedWeb = $this->mock(TholianWebInterface::class);
+        $alertUser = $this->mock(User::class);
+        $incomingShipUser = $this->mock(User::class);
+        $unfinishedWeb = $this->mock(TholianWeb::class);
 
         $incomingShipUser->shouldReceive('getRegistration->getCreationDate')
             ->withNoArgs()
@@ -324,10 +324,10 @@ class SkipDetectionTest extends StuTestCase
     public function testIsSkippedExpectTrueWhenAlertIsPirateAndProtectionExists(): void
     {
         $usersToInformAboutTrojanHorse = new ArrayCollection();
-        $alertUser = $this->mock(UserInterface::class);
-        $incomingShipUser = $this->mock(UserInterface::class);
-        $unfinishedWeb = $this->mock(TholianWebInterface::class);
-        $pirateWrath = $this->mock(PirateWrathInterface::class);
+        $alertUser = $this->mock(User::class);
+        $incomingShipUser = $this->mock(User::class);
+        $unfinishedWeb = $this->mock(TholianWeb::class);
+        $pirateWrath = $this->mock(PirateWrath::class);
 
         $incomingShipUser->shouldReceive('getRegistration->getCreationDate')
             ->withNoArgs()
@@ -393,10 +393,10 @@ class SkipDetectionTest extends StuTestCase
     public function testIsSkippedExpectTrueWhenIncomingIsPirateAndProtectionExists(): void
     {
         $usersToInformAboutTrojanHorse = new ArrayCollection();
-        $alertUser = $this->mock(UserInterface::class);
-        $incomingShipUser = $this->mock(UserInterface::class);
-        $unfinishedWeb = $this->mock(TholianWebInterface::class);
-        $pirateWrath = $this->mock(PirateWrathInterface::class);
+        $alertUser = $this->mock(User::class);
+        $incomingShipUser = $this->mock(User::class);
+        $unfinishedWeb = $this->mock(TholianWeb::class);
+        $pirateWrath = $this->mock(PirateWrath::class);
 
         $incomingShipUser->shouldReceive('getRegistration->getCreationDate')
             ->withNoArgs()
@@ -469,10 +469,10 @@ class SkipDetectionTest extends StuTestCase
     public function testIsSkippedExpectFalseWhenAlertIsPirateAndNoProtection(): void
     {
         $usersToInformAboutTrojanHorse = new ArrayCollection();
-        $alertUser = $this->mock(UserInterface::class);
-        $incomingShipUser = $this->mock(UserInterface::class);
-        $unfinishedWeb = $this->mock(TholianWebInterface::class);
-        $pirateWrath = $this->mock(PirateWrathInterface::class);
+        $alertUser = $this->mock(User::class);
+        $incomingShipUser = $this->mock(User::class);
+        $unfinishedWeb = $this->mock(TholianWeb::class);
+        $pirateWrath = $this->mock(PirateWrath::class);
 
         $incomingShipUser->shouldReceive('getRegistration->getCreationDate')
             ->withNoArgs()
@@ -545,9 +545,9 @@ class SkipDetectionTest extends StuTestCase
     public function testIsSkippedExpectFalseWhenAlertIsPirateAndNoWrath(): void
     {
         $usersToInformAboutTrojanHorse = new ArrayCollection();
-        $alertUser = $this->mock(UserInterface::class);
-        $incomingShipUser = $this->mock(UserInterface::class);
-        $unfinishedWeb = $this->mock(TholianWebInterface::class);
+        $alertUser = $this->mock(User::class);
+        $incomingShipUser = $this->mock(User::class);
+        $unfinishedWeb = $this->mock(TholianWeb::class);
 
         $incomingShipUser->shouldReceive('getRegistration->getCreationDate')
             ->withNoArgs()
@@ -616,10 +616,10 @@ class SkipDetectionTest extends StuTestCase
     public function testIsSkippedExpectFalseWhenIncomingIsPirateAndNoProtection(): void
     {
         $usersToInformAboutTrojanHorse = new ArrayCollection();
-        $alertUser = $this->mock(UserInterface::class);
-        $incomingShipUser = $this->mock(UserInterface::class);
-        $unfinishedWeb = $this->mock(TholianWebInterface::class);
-        $pirateWrath = $this->mock(PirateWrathInterface::class);
+        $alertUser = $this->mock(User::class);
+        $incomingShipUser = $this->mock(User::class);
+        $unfinishedWeb = $this->mock(TholianWeb::class);
+        $pirateWrath = $this->mock(PirateWrath::class);
 
         $incomingShipUser->shouldReceive('getRegistration->getCreationDate')
             ->withNoArgs()
@@ -692,9 +692,9 @@ class SkipDetectionTest extends StuTestCase
     public function testIsSkippedExpectFalseWhenIncomingIsPirateAndNoWrath(): void
     {
         $usersToInformAboutTrojanHorse = new ArrayCollection();
-        $alertUser = $this->mock(UserInterface::class);
-        $incomingShipUser = $this->mock(UserInterface::class);
-        $unfinishedWeb = $this->mock(TholianWebInterface::class);
+        $alertUser = $this->mock(User::class);
+        $incomingShipUser = $this->mock(User::class);
+        $unfinishedWeb = $this->mock(TholianWeb::class);
 
         $incomingShipUser->shouldReceive('getRegistration->getCreationDate')
             ->withNoArgs()
@@ -763,8 +763,8 @@ class SkipDetectionTest extends StuTestCase
     public function testIsSkippedExpectFalse(): void
     {
         $usersToInformAboutTrojanHorse = new ArrayCollection();
-        $alertUser = $this->mock(UserInterface::class);
-        $incomingShipUser = $this->mock(UserInterface::class);
+        $alertUser = $this->mock(User::class);
+        $incomingShipUser = $this->mock(User::class);
 
         $incomingShipUser->shouldReceive('getRegistration->getCreationDate')
             ->withNoArgs()

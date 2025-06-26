@@ -6,7 +6,7 @@ use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Commodity\Lib\CommodityCacheInterface;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Colony;
 use Stu\Orm\Repository\ColonyDepositMiningRepositoryInterface;
 
 class ProceedStorage implements ColonyTickComponentInterface
@@ -18,7 +18,7 @@ class ProceedStorage implements ColonyTickComponentInterface
         private readonly UserSettingsProviderInterface $userSettingsProvider
     ) {}
 
-    public function work(ColonyInterface $colony, array &$production, InformationInterface $information): void
+    public function work(Colony $colony, array &$production, InformationInterface $information): void
     {
         $sum = $colony->getStorageSum();
 

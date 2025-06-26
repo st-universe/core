@@ -4,31 +4,30 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\PirateWrath;
-use Stu\Orm\Entity\PirateWrathInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 /**
  * @extends ObjectRepository<PirateWrath>
  *
- * @method PirateWrathInterface[] findAll()
+ * @method PirateWrath[] findAll()
  */
 interface PirateWrathRepositoryInterface extends ObjectRepository
 {
-    public function save(PirateWrathInterface $wrath): void;
+    public function save(PirateWrath $wrath): void;
 
-    public function delete(PirateWrathInterface $wrath): void;
+    public function delete(PirateWrath $wrath): void;
 
-    public function prototype(): PirateWrathInterface;
+    public function prototype(): PirateWrath;
 
     public function truncateAllEntries(): void;
 
     /**
-     * @return PirateWrathInterface[]
+     * @return PirateWrath[]
      */
     public function getPirateWrathTop10(): array;
 
     /**
-     * @return PirateWrathInterface[]
+     * @return PirateWrath[]
      */
-    public function getByUser(UserInterface $user): array;
+    public function getByUser(User $user): array;
 }

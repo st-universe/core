@@ -3,23 +3,22 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserTag;
-use Stu\Orm\Entity\UserTagInterface;
 
 /**
  * @extends ObjectRepository<UserTag>
  *
- * @method null|UserTagInterface find(integer $id)
+ * @method null|UserTag find(integer $id)
  */
 interface UserTagRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return iterable<UserTagInterface>
+     * @return iterable<UserTag>
      */
-    public function getByUser(UserInterface $user): iterable;
+    public function getByUser(User $user): iterable;
 
-    public function prototype(): UserTagInterface;
+    public function prototype(): UserTag;
 
-    public function save(UserTagInterface $userTag): void;
+    public function save(UserTag $userTag): void;
 }

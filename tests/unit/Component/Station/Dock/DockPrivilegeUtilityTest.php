@@ -7,11 +7,11 @@ namespace Stu\Component\Station\Dock;
 use Mockery\MockInterface;
 use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Stu\Orm\Entity\AllianceInterface;
-use Stu\Orm\Entity\DockingPrivilegeInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\StationInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Alliance;
+use Stu\Orm\Entity\DockingPrivilege;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Station;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\DockingPrivilegeRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -68,7 +68,7 @@ class DockPrivilegeUtilityTest extends StuTestCase
     #[DataProvider('provideUserSourceData')]
     public function testCheckPrivilegeForUserSource(array $privilegesData, bool $expectedResult): void
     {
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
 
         $this->runTestsWithSource($user, $user, $privilegesData, $expectedResult);
     }
@@ -119,8 +119,8 @@ class DockPrivilegeUtilityTest extends StuTestCase
     #[DataProvider('provideShipSourceData')]
     public function testCheckPrivilegeForShipSource(array $privilegesData, bool $expectedResult): void
     {
-        $user = $this->mock(UserInterface::class);
-        $ship = $this->mock(ShipInterface::class);
+        $user = $this->mock(User::class);
+        $ship = $this->mock(Ship::class);
 
         $ship->shouldReceive('getId')
             ->withNoArgs()
@@ -135,13 +135,13 @@ class DockPrivilegeUtilityTest extends StuTestCase
     }
 
     private function runTestsWithSource(
-        UserInterface|MockInterface $user,
-        UserInterface|ShipInterface|MockInterface $source,
+        User|MockInterface $user,
+        User|Ship|MockInterface $source,
         array $privilegesData,
         bool $expectedResult
     ): void {
-        $station = $this->mock(StationInterface::class);
-        $alliance = $this->mock(AllianceInterface::class);
+        $station = $this->mock(Station::class);
+        $alliance = $this->mock(Alliance::class);
 
         $user->shouldReceive('getId')
             ->withNoArgs()
@@ -163,7 +163,7 @@ class DockPrivilegeUtilityTest extends StuTestCase
 
         $privilegeArray = [];
         foreach ($privilegesData as $entry) {
-            $privilege = $this->mock(DockingPrivilegeInterface::class);
+            $privilege = $this->mock(DockingPrivilege::class);
 
             $privilege->shouldReceive('getPrivilegeType')
                 ->withNoArgs()

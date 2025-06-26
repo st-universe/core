@@ -12,13 +12,12 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\UserProfileVisitorRepository;
 
 #[Table(name: 'stu_user_profile_visitors')]
 #[Index(name: 'user_profile_visitor_user_idx', columns: ['user_id'])]
 #[Entity(repositoryClass: UserProfileVisitorRepository::class)]
-class UserProfileVisitor implements UserProfileVisitorInterface
+class UserProfileVisitor
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -36,65 +35,56 @@ class UserProfileVisitor implements UserProfileVisitorInterface
 
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $user;
+    private User $user;
 
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'recipient', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $opponent;
+    private User $opponent;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    #[Override]
     public function getProfileUserId(): int
     {
         return $this->recipient;
     }
 
-    #[Override]
     public function getDate(): int
     {
         return $this->date;
     }
 
-    #[Override]
-    public function setDate(int $date): UserProfileVisitorInterface
+    public function setDate(int $date): UserProfileVisitor
     {
         $this->date = $date;
 
         return $this;
     }
 
-    #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    #[Override]
-    public function setUser(UserInterface $user): UserProfileVisitorInterface
+    public function setUser(User $user): UserProfileVisitor
     {
         $this->user = $user;
         return $this;
     }
 
-    #[Override]
-    public function getProfileUser(): UserInterface
+    public function getProfileUser(): User
     {
         return $this->opponent;
     }
 
-    #[Override]
-    public function setProfileUser(UserInterface $profileUser): UserProfileVisitorInterface
+    public function setProfileUser(User $profileUser): UserProfileVisitor
     {
         $this->opponent = $profileUser;
         return $this;

@@ -14,7 +14,7 @@ use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -28,8 +28,8 @@ class InterceptShipCoreTest extends StuTestCase
 
     private MockInterface&ShipWrapperInterface $wrapper;
     private MockInterface&ShipWrapperInterface $targetWrapper;
-    private MockInterface&ShipInterface $ship;
-    private MockInterface&ShipInterface $target;
+    private MockInterface&Ship $ship;
+    private MockInterface&Ship $target;
     private MockInterface&InformationInterface $informations;
 
     private InterceptShipCoreInterface $subject;
@@ -46,9 +46,9 @@ class InterceptShipCoreTest extends StuTestCase
 
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
         $this->targetWrapper = $this->mock(ShipWrapperInterface::class);
-        $this->ship = $this->mock(ShipInterface::class);
-        $this->target = $this->mock(ShipInterface::class);
-        $this->target = $this->mock(ShipInterface::class);
+        $this->ship = $this->mock(Ship::class);
+        $this->target = $this->mock(Ship::class);
+        $this->target = $this->mock(Ship::class);
         $this->informations = $this->mock(InformationInterface::class);
 
         $this->wrapper->shouldReceive('get')

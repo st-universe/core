@@ -11,7 +11,7 @@ use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\AbstractFlightConse
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Route\RouteModeEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
+use Stu\Orm\Entity\StarSystemMap;
 
 class WarpdriveConsequence extends AbstractFlightConsequence implements FlightStartConsequenceInterface
 {
@@ -34,7 +34,7 @@ class WarpdriveConsequence extends AbstractFlightConsequence implements FlightSt
             return;
         }
 
-        if ($flightRoute->getNextWaypoint() instanceof StarSystemMapInterface) {
+        if ($flightRoute->getNextWaypoint() instanceof StarSystemMap) {
             return;
         }
 

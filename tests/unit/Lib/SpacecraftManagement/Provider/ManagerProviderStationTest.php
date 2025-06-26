@@ -13,11 +13,11 @@ use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Station\Lib\StationWrapperInterface;
-use Stu\Orm\Entity\CommodityInterface;
-use Stu\Orm\Entity\CrewAssignmentInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\StationInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Commodity;
+use Stu\Orm\Entity\CrewAssignment;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Station;
+use Stu\Orm\Entity\User;
 use Stu\StuTestCase;
 
 class ManagerProviderStationTest extends StuTestCase
@@ -27,7 +27,7 @@ class ManagerProviderStationTest extends StuTestCase
     private MockInterface&TroopTransferUtilityInterface $troopTransferUtility;
     private MockInterface&StorageManagerInterface $storageManager;
 
-    private MockInterface&StationInterface $station;
+    private MockInterface&Station $station;
 
     private ManagerProviderInterface $subject;
 
@@ -39,7 +39,7 @@ class ManagerProviderStationTest extends StuTestCase
         $this->troopTransferUtility = $this->mock(TroopTransferUtilityInterface::class);
         $this->storageManager = $this->mock(StorageManagerInterface::class);
 
-        $this->station = $this->mock(StationInterface::class);
+        $this->station = $this->mock(Station::class);
 
         $this->subject = new ManagerProviderStation(
             $this->wrapper,
@@ -51,7 +51,7 @@ class ManagerProviderStationTest extends StuTestCase
 
     public function testGetUser(): void
     {
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
 
         $this->wrapper->shouldReceive('get->getUser')
             ->withNoArgs()
@@ -161,7 +161,7 @@ class ManagerProviderStationTest extends StuTestCase
 
     public function testCreateCrewAssignment(): void
     {
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
 
         $this->crewCreator->shouldReceive('createCrewAssignment')
             ->with($ship, $this->station, 42)
@@ -193,7 +193,7 @@ class ManagerProviderStationTest extends StuTestCase
 
     public function testAddCrewAssignments(): void
     {
-        $crewAssignment = $this->mock(CrewAssignmentInterface::class);
+        $crewAssignment = $this->mock(CrewAssignment::class);
         $crewAssignments = [$crewAssignment];
 
         $this->wrapper->shouldReceive('get')
@@ -222,7 +222,7 @@ class ManagerProviderStationTest extends StuTestCase
 
     public function testUpperStorage(): void
     {
-        $commodity = $this->mock(CommodityInterface::class);
+        $commodity = $this->mock(Commodity::class);
 
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()
@@ -238,7 +238,7 @@ class ManagerProviderStationTest extends StuTestCase
 
     public function testLowerStorage(): void
     {
-        $commodity = $this->mock(CommodityInterface::class);
+        $commodity = $this->mock(Commodity::class);
 
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()

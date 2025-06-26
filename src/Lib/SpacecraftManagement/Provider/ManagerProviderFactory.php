@@ -10,7 +10,7 @@ use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Station\Lib\StationWrapperInterface;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Colony;
 
 class ManagerProviderFactory implements ManagerProviderFactoryInterface
 {
@@ -22,7 +22,7 @@ class ManagerProviderFactory implements ManagerProviderFactoryInterface
     ) {}
 
     #[Override]
-    public function getManagerProviderColony(ColonyInterface $colony): ManagerProviderInterface
+    public function getManagerProviderColony(Colony $colony): ManagerProviderInterface
     {
         return new ManagerProviderColony(
             $colony,

@@ -4,7 +4,7 @@ namespace Stu\Module\Station\Lib\Creation;
 
 use Stu\Module\Spacecraft\Lib\Creation\SpacecraftConfiguratorInterface;
 use Stu\Module\Station\Lib\StationWrapperInterface;
-use Stu\Orm\Entity\ConstructionProgressInterface;
+use Stu\Orm\Entity\ConstructionProgress;
 
 interface StationCreatorInterface
 {
@@ -15,6 +15,6 @@ interface StationCreatorInterface
         int $userId,
         int $rumpId,
         int $buildplanId,
-        ConstructionProgressInterface $progress
+        ConstructionProgress $progress
     ): SpacecraftConfiguratorInterface;
 }

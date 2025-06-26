@@ -9,7 +9,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderItem;
 use Stu\Module\Message\Lib\PrivateMessageUiFactoryInterface;
-use Stu\Orm\Entity\PrivateMessageFolderInterface;
+use Stu\Orm\Entity\PrivateMessageFolder;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 
 final class ShowPmCategoryList implements ViewControllerInterface
@@ -27,7 +27,7 @@ final class ShowPmCategoryList implements ViewControllerInterface
         $game->setTemplateVar(
             'PM_CATEGORIES',
             array_map(
-                fn(PrivateMessageFolderInterface $privateMessageFolder): PrivateMessageFolderItem =>
+                fn(PrivateMessageFolder $privateMessageFolder): PrivateMessageFolderItem =>
                 $this->privateMessageUiFactory->createPrivateMessageFolderItem($privateMessageFolder),
                 $this->privateMessageFolderRepository->getOrderedByUser($game->getUser())
             )

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Spacecraft\Buildplan;
 
 use Override;
-use Stu\Orm\Entity\ModuleInterface;
+use Stu\Orm\Entity\Module;
 use Stu\StuTestCase;
 
 class BuildplanSignatureCreationTest extends StuTestCase
@@ -20,10 +20,10 @@ class BuildplanSignatureCreationTest extends StuTestCase
 
     public function testCeateBuildplanSignature(): void
     {
-        $moduleA = $this->mock(ModuleInterface::class);
-        $moduleB = $this->mock(ModuleInterface::class);
-        $moduleC = $this->mock(ModuleInterface::class);
-        $moduleD = $this->mock(ModuleInterface::class);
+        $moduleA = $this->mock(Module::class);
+        $moduleB = $this->mock(Module::class);
+        $moduleC = $this->mock(Module::class);
+        $moduleD = $this->mock(Module::class);
 
         $moduleA->shouldReceive('getId')
             ->withNoArgs()

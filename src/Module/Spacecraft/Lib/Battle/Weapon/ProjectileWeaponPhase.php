@@ -12,10 +12,10 @@ use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Provider\ProjectileAttackerInterface;
 use Stu\Module\Spacecraft\Lib\Battle\SpacecraftAttackCauseEnum;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\PlanetFieldInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\TorpedoTypeInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\PlanetField;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\TorpedoType;
 
 //TODO unit tests
 final class ProjectileWeaponPhase extends AbstractWeaponPhase implements ProjectileWeaponPhaseInterface
@@ -96,7 +96,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
     #[Override]
     public function fireAtBuilding(
         ProjectileAttackerInterface $attacker,
-        PlanetFieldInterface $target,
+        PlanetField $target,
         bool $isOrbitField,
         int &$antiParticleCount
     ): InformationWrapper {
@@ -104,7 +104,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
         $informations = new InformationWrapper();
 
         $host = $target->getHost();
-        if (!$host instanceof ColonyInterface) {
+        if (!$host instanceof Colony) {
             return $informations;
         }
 
@@ -185,15 +185,15 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
         return 1;
     }
 
-    private function isCritical(TorpedoTypeInterface $torpedo, bool $isTargetCloaked): bool
+    private function isCritical(TorpedoType $torpedo, bool $isTargetCloaked): bool
     {
         $critChance = $isTargetCloaked ? $torpedo->getCriticalChance() * 2 : $torpedo->getCriticalChance();
         return random_int(1, 100) <= $critChance;
     }
 
     private function setTorpedoHullModificator(
-        SpacecraftInterface $target,
-        TorpedoTypeInterface $torpedo,
+        Spacecraft $target,
+        TorpedoType $torpedo,
         DamageWrapper $damageWrapper
     ): void {
 

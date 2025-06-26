@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Lib;
 
 use Override;
-use Stu\Orm\Entity\SpacecraftRumpInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\SpacecraftRump;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
@@ -15,8 +15,8 @@ final class BuildableRumpListItem implements BuildableRumpListItemInterface
     public function __construct(
         private SpacecraftRepositoryInterface $spacecraftRepository,
         private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository,
-        private SpacecraftRumpInterface $shipRump,
-        private UserInterface $currentUser
+        private SpacecraftRump $shipRump,
+        private User $currentUser
     ) {}
 
     #[Override]

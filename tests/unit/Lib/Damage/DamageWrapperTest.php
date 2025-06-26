@@ -7,7 +7,7 @@ namespace Stu\Lib\Damage;
 use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 use Stu\StuTestCase;
 
 class DamageWrapperTest extends StuTestCase
@@ -43,7 +43,7 @@ class DamageWrapperTest extends StuTestCase
         int $expectedShieldDamage,
         int $leftNetDamage
     ): void {
-        $target = $this->mock(ShipInterface::class);
+        $target = $this->mock(Ship::class);
 
         $target->shouldReceive('getCondition->getShield')
             ->withNoArgs()
@@ -79,7 +79,7 @@ class DamageWrapperTest extends StuTestCase
         DamageModeEnum $mode,
         int $expectedHullDamage
     ): void {
-        $target = $this->mock(ShipInterface::class);
+        $target = $this->mock(Ship::class);
 
         $this->subject->setNetDamage($netDamage);
         $this->subject->setIsTorpedoDamage($isTorpedo);

@@ -4,29 +4,28 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\RpgPlotMember;
-use Stu\Orm\Entity\RpgPlotMemberInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 /**
  * @extends ObjectRepository<RpgPlotMember>
  */
 interface RpgPlotMemberRepositoryInterface extends ObjectRepository
 {
-    public function getByPlotAndUser(int $plotId, int $userId): ?RpgPlotMemberInterface;
+    public function getByPlotAndUser(int $plotId, int $userId): ?RpgPlotMember;
 
-    public function prototype(): RpgPlotMemberInterface;
+    public function prototype(): RpgPlotMember;
 
-    public function save(RpgPlotMemberInterface $rpgPlotMember): void;
+    public function save(RpgPlotMember $rpgPlotMember): void;
 
-    public function delete(RpgPlotMemberInterface $rpgPlotMember): void;
+    public function delete(RpgPlotMember $rpgPlotMember): void;
 
     /**
-     * @return array<RpgPlotMemberInterface>
+     * @return array<RpgPlotMember>
      */
-    public function getByUser(UserInterface $user): array;
+    public function getByUser(User $user): array;
 
     /**
-     * @return array<RpgPlotMemberInterface>
+     * @return array<RpgPlotMember>
      */
     public function getByPlot(int $plotId): array;
 

@@ -9,7 +9,7 @@ use Mockery\MockInterface;
 use Monolog\Level;
 use Override;
 use Psr\Log\LoggerInterface;
-use Stu\Orm\Entity\GameRequestInterface;
+use Stu\Orm\Entity\GameRequest;
 use Stu\StuTestCase;
 
 class LogfileAdapterTest extends StuTestCase
@@ -30,7 +30,7 @@ class LogfileAdapterTest extends StuTestCase
 
     public function testInfoLogs(): void
     {
-        $gameRequest = $this->mock(GameRequestInterface::class);
+        $gameRequest = $this->mock(GameRequest::class);
 
         $this->createLoggingExpectations($gameRequest, Level::Info);
 
@@ -39,7 +39,7 @@ class LogfileAdapterTest extends StuTestCase
 
     public function testErrorLogs(): void
     {
-        $gameRequest = $this->mock(GameRequestInterface::class);
+        $gameRequest = $this->mock(GameRequest::class);
 
         $this->createLoggingExpectations($gameRequest, Level::Error);
 
@@ -47,7 +47,7 @@ class LogfileAdapterTest extends StuTestCase
     }
 
     /**
-     * @param MockInterface&GameRequestInterface $gameRequest
+     * @param MockInterface&GameRequest $gameRequest
      */
     protected function createLoggingExpectations(
         MockInterface $gameRequest,

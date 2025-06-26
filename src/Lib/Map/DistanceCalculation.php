@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Stu\Lib\Map;
 
 use Override;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\StarSystemInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\StarSystem;
 
 class DistanceCalculation implements DistanceCalculationInterface
 {
     #[Override]
-    public function shipToShipDistance(SpacecraftInterface $one, SpacecraftInterface $other): int
+    public function shipToShipDistance(Spacecraft $one, Spacecraft $other): int
     {
 
         return $this->calculateAbsoluteDistance(
@@ -26,7 +26,7 @@ class DistanceCalculation implements DistanceCalculationInterface
     }
 
     #[Override]
-    public function spacecraftToColonyDistance(SpacecraftInterface $spacecraft, ColonyInterface $colony): int
+    public function spacecraftToColonyDistance(Spacecraft $spacecraft, Colony $colony): int
     {
         return $this->calculateAbsoluteDistance(
             $spacecraft->getSystem(),
@@ -39,8 +39,8 @@ class DistanceCalculation implements DistanceCalculationInterface
     }
 
     private function calculateAbsoluteDistance(
-        ?StarSystemInterface $system1,
-        ?StarSystemInterface $system2,
+        ?StarSystem $system1,
+        ?StarSystem $system2,
         int $x1,
         int $y1,
         int $x2,
@@ -77,8 +77,8 @@ class DistanceCalculation implements DistanceCalculationInterface
     }
 
     private function isInSameSystem(
-        ?StarSystemInterface $system1,
-        ?StarSystemInterface $system2
+        ?StarSystem $system1,
+        ?StarSystem $system2
     ): bool {
         if ($system1 === null || $system2 === null) {
             return false;
@@ -88,7 +88,7 @@ class DistanceCalculation implements DistanceCalculationInterface
     }
 
     private function calculateSystemBorderDistance(
-        ?StarSystemInterface $system,
+        ?StarSystem $system,
         int $x,
         int $y,
     ): int {

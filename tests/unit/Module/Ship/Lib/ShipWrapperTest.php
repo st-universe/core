@@ -16,17 +16,17 @@ use Stu\Module\Spacecraft\Lib\Reactor\ReactorWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftStateChangerInterface;
 use Stu\Module\Spacecraft\Lib\Ui\StateIconAndTitle;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\CommodityInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Commodity;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\StarSystemMap;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 use Stu\StuTestCase;
 
 class ShipWrapperTest extends StuTestCase
 {
-    private MockInterface&ShipInterface $ship;
+    private MockInterface&Ship $ship;
     private MockInterface&SpacecraftSystemManagerInterface $spacecraftSystemManager;
     private MockInterface&SystemDataDeserializerInterface $systemDataDeserializer;
     private MockInterface&TorpedoTypeRepositoryInterface $torpedoTypeRepository;
@@ -44,7 +44,7 @@ class ShipWrapperTest extends StuTestCase
     public function setUp(): void
     {
         //injected
-        $this->ship = $this->mock(ShipInterface::class);
+        $this->ship = $this->mock(Ship::class);
         $this->spacecraftSystemManager = $this->mock(SpacecraftSystemManagerInterface::class);
         $this->systemDataDeserializer = $this->mock(SystemDataDeserializerInterface::class);
         $this->torpedoTypeRepository = $this->mock(TorpedoTypeRepositoryInterface::class);
@@ -86,7 +86,7 @@ class ShipWrapperTest extends StuTestCase
     {
         $this->ship->shouldReceive('getRump->getCommodity')
             ->withNoArgs()
-            ->andReturn($this->mock(CommodityInterface::class));
+            ->andReturn($this->mock(Commodity::class));
         $this->ship->shouldReceive('isShuttle')
             ->withNoArgs()
             ->andReturn(true);
@@ -100,7 +100,7 @@ class ShipWrapperTest extends StuTestCase
     {
         $this->ship->shouldReceive('getRump->getCommodity')
             ->withNoArgs()
-            ->andReturn($this->mock(CommodityInterface::class));
+            ->andReturn($this->mock(Commodity::class));
         $this->ship->shouldReceive('isShuttle')
             ->withNoArgs()
             ->andReturn(false);
@@ -115,11 +115,11 @@ class ShipWrapperTest extends StuTestCase
 
     public function testCanLandOnCurrentColonyExpectFalseWhenNotAboveColony(): void
     {
-        $starmap = $this->mock(StarSystemMapInterface::class);
+        $starmap = $this->mock(StarSystemMap::class);
 
         $this->ship->shouldReceive('getRump->getCommodity')
             ->withNoArgs()
-            ->andReturn($this->mock(CommodityInterface::class));
+            ->andReturn($this->mock(Commodity::class));
         $this->ship->shouldReceive('isShuttle')
             ->withNoArgs()
             ->andReturn(false);
@@ -138,13 +138,13 @@ class ShipWrapperTest extends StuTestCase
 
     public function testCanLandOnCurrentColonyExpectFalseWhenColonyOfOtherUser(): void
     {
-        $user = $this->mock(UserInterface::class);
-        $starmap = $this->mock(StarSystemMapInterface::class);
-        $colony = $this->mock(ColonyInterface::class);
+        $user = $this->mock(User::class);
+        $starmap = $this->mock(StarSystemMap::class);
+        $colony = $this->mock(Colony::class);
 
         $this->ship->shouldReceive('getRump->getCommodity')
             ->withNoArgs()
-            ->andReturn($this->mock(CommodityInterface::class));
+            ->andReturn($this->mock(Commodity::class));
         $this->ship->shouldReceive('isShuttle')
             ->withNoArgs()
             ->andReturn(false);
@@ -161,7 +161,7 @@ class ShipWrapperTest extends StuTestCase
 
         $colony->shouldReceive('getUser')
             ->withNoArgs()
-            ->andReturn($this->mock(UserInterface::class));
+            ->andReturn($this->mock(User::class));
 
         $result = $this->subject->canLandOnCurrentColony();
 
@@ -170,14 +170,14 @@ class ShipWrapperTest extends StuTestCase
 
     public function testCanLandOnCurrentColonyExpectFalseWhenNoAirfieldOnColony(): void
     {
-        $user = $this->mock(UserInterface::class);
-        $starmap = $this->mock(StarSystemMapInterface::class);
-        $colony = $this->mock(ColonyInterface::class);
+        $user = $this->mock(User::class);
+        $starmap = $this->mock(StarSystemMap::class);
+        $colony = $this->mock(Colony::class);
         $surface = $this->mock(ColonySurfaceInterface::class);
 
         $this->ship->shouldReceive('getRump->getCommodity')
             ->withNoArgs()
-            ->andReturn($this->mock(CommodityInterface::class));
+            ->andReturn($this->mock(Commodity::class));
         $this->ship->shouldReceive('isShuttle')
             ->withNoArgs()
             ->andReturn(false);
@@ -211,14 +211,14 @@ class ShipWrapperTest extends StuTestCase
 
     public function testCanLandOnCurrentColonyExpectWhenOwnColonyHasAirfield(): void
     {
-        $user = $this->mock(UserInterface::class);
-        $starmap = $this->mock(StarSystemMapInterface::class);
-        $colony = $this->mock(ColonyInterface::class);
+        $user = $this->mock(User::class);
+        $starmap = $this->mock(StarSystemMap::class);
+        $colony = $this->mock(Colony::class);
         $surface = $this->mock(ColonySurfaceInterface::class);
 
         $this->ship->shouldReceive('getRump->getCommodity')
             ->withNoArgs()
-            ->andReturn($this->mock(CommodityInterface::class));
+            ->andReturn($this->mock(Commodity::class));
         $this->ship->shouldReceive('isShuttle')
             ->withNoArgs()
             ->andReturn(false);

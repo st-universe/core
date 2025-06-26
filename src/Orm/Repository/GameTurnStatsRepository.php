@@ -10,7 +10,6 @@ use Stu\Component\Game\TimeConstants;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\FlightSignature;
 use Stu\Orm\Entity\GameTurnStats;
-use Stu\Orm\Entity\GameTurnStatsInterface;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\CrewAssignment;
 use Stu\Orm\Entity\SpacecraftRump;
@@ -23,13 +22,13 @@ use Stu\Orm\Entity\StarSystemMap;
 final class GameTurnStatsRepository extends EntityRepository implements GameTurnStatsRepositoryInterface
 {
     #[Override]
-    public function prototype(): GameTurnStatsInterface
+    public function prototype(): GameTurnStats
     {
         return new GameTurnStats();
     }
 
     #[Override]
-    public function save(GameTurnStatsInterface $turn): void
+    public function save(GameTurnStats $turn): void
     {
         $em = $this->getEntityManager();
 
@@ -38,7 +37,7 @@ final class GameTurnStatsRepository extends EntityRepository implements GameTurn
     }
 
     #[Override]
-    public function delete(GameTurnStatsInterface $turn): void
+    public function delete(GameTurnStats $turn): void
     {
         $em = $this->getEntityManager();
 

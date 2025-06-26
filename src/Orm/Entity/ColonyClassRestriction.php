@@ -11,12 +11,11 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\ColonyClassRestrictionRepository;
 
 #[Table(name: 'stu_colony_class_restriction')]
 #[Entity(repositoryClass: ColonyClassRestrictionRepository::class)]
-class ColonyClassRestriction implements ColonyClassRestrictionInterface
+class ColonyClassRestriction
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -31,62 +30,54 @@ class ColonyClassRestriction implements ColonyClassRestrictionInterface
 
     #[ManyToOne(targetEntity: ColonyClass::class)]
     #[JoinColumn(name: 'colony_class_id', nullable: false, referencedColumnName: 'id')]
-    private ColonyClassInterface $colonyClass;
+    private ColonyClass $colonyClass;
 
     #[ManyToOne(targetEntity: Terraforming::class)]
     #[JoinColumn(name: 'terraforming_id', referencedColumnName: 'id', nullable: true)]
-    private ?TerraformingInterface $terraforming = null;
+    private ?Terraforming $terraforming = null;
 
     #[ManyToOne(targetEntity: Building::class)]
     #[JoinColumn(name: 'building_id', referencedColumnName: 'id', nullable: true)]
-    private ?BuildingInterface $building = null;
+    private ?Building $building = null;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
-    public function getColonyClass(): ColonyClassInterface
+    public function getColonyClass(): ColonyClass
     {
         return $this->colonyClass;
     }
 
-    #[Override]
     public function getTerraformingId(): ?int
     {
         return $this->terraforming_id;
     }
 
-    #[Override]
-    public function setTerraformingId(?int $terraformingId): ColonyClassRestrictionInterface
+    public function setTerraformingId(?int $terraformingId): ColonyClassRestriction
     {
         $this->terraforming_id = $terraformingId;
         return $this;
     }
 
-    #[Override]
-    public function getTerraforming(): ?TerraformingInterface
+    public function getTerraforming(): ?Terraforming
     {
         return $this->terraforming;
     }
 
-    #[Override]
     public function getBuildingId(): ?int
     {
         return $this->building_id;
     }
 
-    #[Override]
-    public function setBuildingId(?int $buildingId): ColonyClassRestrictionInterface
+    public function setBuildingId(?int $buildingId): ColonyClassRestriction
     {
         $this->building_id = $buildingId;
         return $this;
     }
 
-    #[Override]
-    public function getBuilding(): ?BuildingInterface
+    public function getBuilding(): ?Building
     {
         return $this->building;
     }

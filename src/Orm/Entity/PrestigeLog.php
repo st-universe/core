@@ -10,13 +10,12 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\PrestigeLogRepository;
 
 #[Table(name: 'stu_prestige_log')]
 #[Index(name: 'prestige_log_user_idx', columns: ['user_id'])]
 #[Entity(repositoryClass: PrestigeLogRepository::class)]
-class PrestigeLog implements PrestigeLogInterface
+class PrestigeLog
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -35,60 +34,51 @@ class PrestigeLog implements PrestigeLogInterface
     #[Column(type: 'integer')]
     private int $date;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    #[Override]
-    public function setUserId(int $userId): PrestigeLogInterface
+    public function setUserId(int $userId): PrestigeLog
     {
         $this->user_id = $userId;
         return $this;
     }
 
-    #[Override]
     public function getAmount(): int
     {
         return $this->amount;
     }
 
-    #[Override]
-    public function setAmount(int $amount): PrestigeLogInterface
+    public function setAmount(int $amount): PrestigeLog
     {
         $this->amount = $amount;
         return $this;
     }
 
-    #[Override]
     public function getDescription(): string
     {
         return $this->description;
     }
 
-    #[Override]
-    public function setDescription(string $description): PrestigeLogInterface
+    public function setDescription(string $description): PrestigeLog
     {
         $this->description = $description;
         return $this;
     }
 
-    #[Override]
-    public function setDate(int $date): PrestigeLogInterface
+    public function setDate(int $date): PrestigeLog
     {
         $this->date = $date;
 
         return $this;
     }
 
-    #[Override]
     public function getDate(): int
     {
         return $this->date;

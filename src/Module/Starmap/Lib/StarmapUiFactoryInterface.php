@@ -4,25 +4,25 @@ declare(strict_types=1);
 
 namespace Stu\Module\Starmap\Lib;
 
-use Stu\Orm\Entity\LayerInterface;
-use Stu\Orm\Entity\StarSystemInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Layer;
+use Stu\Orm\Entity\StarSystem;
+use Stu\Orm\Entity\User;
 
 interface StarmapUiFactoryInterface
 {
     public function createMapSectionHelper(): MapSectionHelper;
 
     public function createYRow(
-        ?LayerInterface $layer,
+        ?Layer $layer,
         int $cury,
         int $minx,
         int $maxx,
-        int|StarSystemInterface $system
+        int|StarSystem $system
     ): YRow;
 
     public function createUserYRow(
-        UserInterface $user,
-        LayerInterface $layer,
+        User $user,
+        Layer $layer,
         int $cury,
         int $minx,
         int $maxx,
@@ -31,6 +31,6 @@ interface StarmapUiFactoryInterface
 
     public function createExplorableStarmapItem(
         ExploreableStarMapInterface $exploreableStarMap,
-        LayerInterface $layer
+        Layer $layer
     ): ExplorableStarMapItemInterface;
 }

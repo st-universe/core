@@ -7,7 +7,6 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\UserCharacter;
-use Stu\Orm\Entity\UserCharacterInterface;
 
 /**
  * @extends EntityRepository<UserCharacter>
@@ -15,13 +14,13 @@ use Stu\Orm\Entity\UserCharacterInterface;
 final class UserCharacterRepository extends EntityRepository implements UserCharacterRepositoryInterface
 {
     #[Override]
-    public function prototype(): UserCharacterInterface
+    public function prototype(): UserCharacter
     {
         return new UserCharacter();
     }
 
     #[Override]
-    public function save(UserCharacterInterface $userCharacters): void
+    public function save(UserCharacter $userCharacters): void
     {
         $em = $this->getEntityManager();
 
@@ -29,7 +28,7 @@ final class UserCharacterRepository extends EntityRepository implements UserChar
     }
 
     #[Override]
-    public function delete(UserCharacterInterface $userCharacters): void
+    public function delete(UserCharacter $userCharacters): void
     {
         $em = $this->getEntityManager();
 
@@ -37,7 +36,7 @@ final class UserCharacterRepository extends EntityRepository implements UserChar
     }
 
     /**
-     * @return list<UserCharacterInterface>
+     * @return list<UserCharacter>
      */
     #[Override]
     public function findByUserId(int $userId): array

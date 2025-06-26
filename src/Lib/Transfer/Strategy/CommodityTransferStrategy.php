@@ -12,8 +12,8 @@ use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Template\StatusBarColorEnum;
 use Stu\Module\Template\StatusBarFactoryInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\User;
 
 class CommodityTransferStrategy implements TransferStrategyInterface
 {
@@ -38,7 +38,7 @@ class CommodityTransferStrategy implements TransferStrategyInterface
             $beamableStorage
         );
 
-        if ($target instanceof ColonyInterface) {
+        if ($target instanceof Colony) {
             $game->setTemplateVar(
                 'SHOW_SHIELD_FREQUENCY',
                 $this->colonyLibFactory->createColonyShieldingManager($target)->isShieldingEnabled() && $target->getUser() !== $source->getUser()
@@ -94,12 +94,12 @@ class CommodityTransferStrategy implements TransferStrategyInterface
         $source->transfer($isUnload, $target, $information);
     }
 
-    private function shieldsAreBlocking(StorageEntityWrapperInterface $targetWrapper, UserInterface $user, InformationInterface $information): bool
+    private function shieldsAreBlocking(StorageEntityWrapperInterface $targetWrapper, User $user, InformationInterface $information): bool
     {
         $target = $targetWrapper->get();
 
         if (
-            $target instanceof ColonyInterface
+            $target instanceof Colony
             && $target->getUser() !== $user
             && $this->colonyLibFactory->createColonyShieldingManager($target)->isShieldingEnabled()
             && $target->getChangeable()->getShieldFrequency()

@@ -8,7 +8,7 @@ use Override;
 use Stu\Module\Communication\View\ShowKnComments\ShowKnComments;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\KnCommentInterface;
+use Stu\Orm\Entity\KnComment;
 use Stu\Orm\Repository\KnCommentRepositoryInterface;
 
 final class DeleteKnComment implements ActionControllerInterface
@@ -26,7 +26,7 @@ final class DeleteKnComment implements ActionControllerInterface
 
         $game->setView(ShowKnComments::VIEW_IDENTIFIER);
 
-        /** @var KnCommentInterface $obj */
+        /** @var KnComment $obj */
         $obj = $this->knCommentRepository->find($this->deleteKnCommentRequest->getCommentId());
         if ($obj === null) {
             return;

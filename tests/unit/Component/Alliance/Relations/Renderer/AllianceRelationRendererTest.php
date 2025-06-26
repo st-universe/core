@@ -12,8 +12,8 @@ use Mockery\MockInterface;
 use Override;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\GrapViz\GraphVizFactoryInterface;
-use Stu\Orm\Entity\AllianceInterface;
-use Stu\Orm\Entity\AllianceRelationInterface;
+use Stu\Orm\Entity\Alliance;
+use Stu\Orm\Entity\AllianceRelation;
 use Stu\StuTestCase;
 
 class AllianceRelationRendererTest extends StuTestCase
@@ -38,9 +38,9 @@ class AllianceRelationRendererTest extends StuTestCase
 
     public function testRenderRenders(): void
     {
-        $relation = $this->mock(AllianceRelationInterface::class);
-        $alliance = $this->mock(AllianceInterface::class);
-        $opponent = $this->mock(AllianceInterface::class);
+        $relation = $this->mock(AllianceRelation::class);
+        $alliance = $this->mock(Alliance::class);
+        $opponent = $this->mock(Alliance::class);
         $graph = $this->mock(Graph::class);
         $graphViz = $this->mock(GraphViz::class);
         $vertex1 = $this->mock(Vertex::class);

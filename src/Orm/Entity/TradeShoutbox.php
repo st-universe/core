@@ -12,13 +12,12 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\TradeShoutboxRepository;
 
 #[Table(name: 'stu_trade_shoutbox')]
 #[Index(name: 'trade_network_date_idx', columns: ['trade_network_id', 'date'])]
 #[Entity(repositoryClass: TradeShoutboxRepository::class)]
-class TradeShoutbox implements TradeShoutboxInterface
+class TradeShoutbox
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -39,70 +38,60 @@ class TradeShoutbox implements TradeShoutboxInterface
 
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $user;
+    private User $user;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    #[Override]
     public function getTradeNetworkId(): int
     {
         return $this->trade_network_id;
     }
 
-    #[Override]
-    public function setTradeNetworkId(int $tradeNetworkId): TradeShoutboxInterface
+    public function setTradeNetworkId(int $tradeNetworkId): TradeShoutbox
     {
         $this->trade_network_id = $tradeNetworkId;
 
         return $this;
     }
 
-    #[Override]
     public function getDate(): int
     {
         return $this->date;
     }
 
-    #[Override]
-    public function setDate(int $date): TradeShoutboxInterface
+    public function setDate(int $date): TradeShoutbox
     {
         $this->date = $date;
 
         return $this;
     }
 
-    #[Override]
     public function getMessage(): string
     {
         return $this->message;
     }
 
-    #[Override]
-    public function setMessage(string $message): TradeShoutboxInterface
+    public function setMessage(string $message): TradeShoutbox
     {
         $this->message = $message;
 
         return $this;
     }
 
-    #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    #[Override]
-    public function setUser(UserInterface $user): TradeShoutboxInterface
+    public function setUser(User $user): TradeShoutbox
     {
         $this->user = $user;
         return $this;

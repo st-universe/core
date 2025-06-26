@@ -9,8 +9,7 @@ use Doctrine\ORM\EntityRepository;
 use Stu\Module\Control\ViewContext;
 use Stu\Orm\Entity\TutorialStep;
 use Stu\Orm\Entity\UserTutorial;
-use Stu\Orm\Entity\UserTutorialInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 /**
  * @extends EntityRepository<UserTutorial>
@@ -18,13 +17,13 @@ use Stu\Orm\Entity\UserInterface;
 final class UserTutorialRepository extends EntityRepository implements UserTutorialRepositoryInterface
 {
     #[Override]
-    public function prototype(): UserTutorialInterface
+    public function prototype(): UserTutorial
     {
         return new UserTutorial();
     }
 
     #[Override]
-    public function save(UserTutorialInterface $userTutorial): void
+    public function save(UserTutorial $userTutorial): void
     {
         $em = $this->getEntityManager();
         $em->persist($userTutorial);
@@ -32,7 +31,7 @@ final class UserTutorialRepository extends EntityRepository implements UserTutor
     }
 
     #[Override]
-    public function delete(UserTutorialInterface $userTutorial): void
+    public function delete(UserTutorial $userTutorial): void
     {
         $em = $this->getEntityManager();
         $em->remove($userTutorial);
@@ -40,7 +39,7 @@ final class UserTutorialRepository extends EntityRepository implements UserTutor
     }
 
     #[Override]
-    public function truncateByUser(UserInterface $user): void
+    public function truncateByUser(User $user): void
     {
         $this->getEntityManager()
             ->createQuery(
@@ -56,7 +55,7 @@ final class UserTutorialRepository extends EntityRepository implements UserTutor
     }
 
     #[Override]
-    public function findByUserAndViewContext(UserInterface $user, ViewContext $viewContext): ?UserTutorial
+    public function findByUserAndViewContext(User $user, ViewContext $viewContext): ?UserTutorial
     {
         return $this->getEntityManager()->createQuery(
             sprintf(

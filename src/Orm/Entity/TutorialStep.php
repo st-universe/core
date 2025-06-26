@@ -12,14 +12,13 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Orm\Repository\TutorialStepRepository;
 
 #[Table(name: 'stu_tutorial_step')]
 #[Index(name: 'tutorial_view_idx', columns: ['module', 'view'])]
 #[Entity(repositoryClass: TutorialStepRepository::class)]
-class TutorialStep implements TutorialStepInterface
+class TutorialStep
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -51,37 +50,32 @@ class TutorialStep implements TutorialStepInterface
     private ?int $fallbackIndex = null;
 
     #[OneToOne(targetEntity: TutorialStep::class, mappedBy: 'nextStep')]
-    private ?TutorialStepInterface $previousStep;
+    private ?TutorialStep $previousStep;
 
     #[OneToOne(targetEntity: TutorialStep::class)]
     #[JoinColumn(name: 'next_step_id', referencedColumnName: 'id')]
-    private ?TutorialStepInterface $nextStep;
+    private ?TutorialStep $nextStep;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getModule(): ModuleEnum
     {
         return $this->module;
     }
 
-    #[Override]
     public function setModule(ModuleEnum $module): void
     {
         $this->module = $module;
     }
 
-    #[Override]
     public function getView(): string
     {
         return $this->view;
     }
 
-    #[Override]
     public function getPreviousStepId(): ?int
     {
         $previousStep = $this->getPreviousStep();
@@ -92,79 +86,66 @@ class TutorialStep implements TutorialStepInterface
         return $previousStep->getId();
     }
 
-    #[Override]
     public function getNextStepId(): ?int
     {
         return $this->next_step_id;
     }
 
-    #[Override]
-    public function getPreviousStep(): ?TutorialStepInterface
+    public function getPreviousStep(): ?TutorialStep
     {
         return $this->previousStep;
     }
 
-    #[Override]
-    public function getNextStep(): ?TutorialStepInterface
+    public function getNextStep(): ?TutorialStep
     {
         return $this->nextStep;
     }
 
-    #[Override]
     public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    #[Override]
     public function setTitle(?string $title): void
     {
         $this->title = $title;
     }
 
-    #[Override]
     public function getText(): ?string
     {
         return $this->text;
     }
 
-    #[Override]
     public function setText(?string $text): void
     {
         $this->text = $text;
     }
 
-    #[Override]
     public function getElementIds(): ?string
     {
         return $this->elementIds;
     }
 
-    #[Override]
     public function setElementIds(?string $elementIds): void
     {
         $this->elementIds = $elementIds;
     }
 
-    #[Override]
     public function getInnerUpdate(): ?string
     {
         return $this->innerUpdate;
     }
 
-    #[Override]
     public function setInnerUpdate(?string $innerUpdate): void
     {
         $this->innerUpdate = $innerUpdate;
     }
 
-    #[Override]
     public function getFallbackIndex(): ?int
     {
         return $this->fallbackIndex;
     }
 
-    #[Override]
     public function setFallbackIndex(?int $fallbackIndex): void
     {
         $this->fallbackIndex = $fallbackIndex;

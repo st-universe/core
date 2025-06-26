@@ -7,7 +7,7 @@ namespace Stu\Component\Colony;
 use Mockery\MockInterface;
 use Override;
 use Stu\Component\Building\BuildingFunctionEnum;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Colony;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -29,7 +29,7 @@ class ColonyFunctionManagerTest extends StuTestCase
 
     public function testHasActiveFunctionReturnsValueWithoutCache(): void
     {
-        $colony = $this->mock(ColonyInterface::class);
+        $colony = $this->mock(Colony::class);
 
         $function = BuildingFunctionEnum::BASE_CAMP;
 
@@ -45,7 +45,7 @@ class ColonyFunctionManagerTest extends StuTestCase
 
     public function testHasActiveFunctionReturnsValueWithCache(): void
     {
-        $colony = $this->mock(ColonyInterface::class);
+        $colony = $this->mock(Colony::class);
 
         $function = BuildingFunctionEnum::BASE_CAMP;
         $colonyId = 21;
@@ -70,7 +70,7 @@ class ColonyFunctionManagerTest extends StuTestCase
 
     public function testHasFunctionReturnsValue(): void
     {
-        $colony = $this->mock(ColonyInterface::class);
+        $colony = $this->mock(Colony::class);
 
         $function = BuildingFunctionEnum::BASE_CAMP;
 

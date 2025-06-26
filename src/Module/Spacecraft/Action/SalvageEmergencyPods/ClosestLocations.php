@@ -7,9 +7,9 @@ namespace Stu\Module\Spacecraft\Action\SalvageEmergencyPods;
 use Stu\Lib\Map\DistanceCalculationInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\StationInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\Station;
 use Stu\Orm\Repository\StationRepositoryInterface;
 
 class ClosestLocations
@@ -22,9 +22,9 @@ class ClosestLocations
     ) {}
 
     /**
-     * @return null|array{0: int, 1: StationInterface}
+     * @return null|array{0: int, 1: Station}
      */
-    public function searchClosestUsableStation(SpacecraftInterface $ship, int $count): ?array
+    public function searchClosestUsableStation(Spacecraft $ship, int $count): ?array
     {
         $result = null;
 
@@ -52,9 +52,9 @@ class ClosestLocations
     }
 
     /**
-     * @return null|array{0: int, 1: ColonyInterface}
+     * @return null|array{0: int, 1: Colony}
      */
-    public function searchClosestUsableColony(SpacecraftInterface $spacecraft, int $count): ?array
+    public function searchClosestUsableColony(Spacecraft $spacecraft, int $count): ?array
     {
         $result = null;
 

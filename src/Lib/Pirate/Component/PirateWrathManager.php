@@ -13,8 +13,8 @@ use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
-use Stu\Orm\Entity\PirateWrathInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\PirateWrath;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\PirateWrathRepositoryInterface;
 
 class PirateWrathManager implements PirateWrathManagerInterface
@@ -37,13 +37,13 @@ class PirateWrathManager implements PirateWrathManagerInterface
     }
 
     #[Override]
-    public function increaseWrathViaTrigger(UserInterface $user, PirateReactionTriggerEnum $reactionTrigger): void
+    public function increaseWrathViaTrigger(User $user, PirateReactionTriggerEnum $reactionTrigger): void
     {
         $this->increaseWrath($user, $reactionTrigger->getWrath());
     }
 
     #[Override]
-    public function increaseWrath(UserInterface $user, int $amount): void
+    public function increaseWrath(User $user, int $amount): void
     {
         if (
             $user->isNpc()
@@ -95,7 +95,7 @@ class PirateWrathManager implements PirateWrathManagerInterface
         );
     }
 
-    private function makePiratesReallyAngry(PirateWrathInterface $wrath): void
+    private function makePiratesReallyAngry(PirateWrath $wrath): void
     {
         $user = $wrath->getUser();
 
@@ -117,7 +117,7 @@ class PirateWrathManager implements PirateWrathManagerInterface
     }
 
     #[Override]
-    public function decreaseWrath(UserInterface $user, int $amount): void
+    public function decreaseWrath(User $user, int $amount): void
     {
         if (
             $user->isNpc()
@@ -152,7 +152,7 @@ class PirateWrathManager implements PirateWrathManagerInterface
     }
 
     #[Override]
-    public function setProtectionTimeoutFromPrestige(UserInterface $user, int $prestige, GameControllerInterface $game): void
+    public function setProtectionTimeoutFromPrestige(User $user, int $prestige, GameControllerInterface $game): void
     {
         $wrath = $this->getPirateWrathOfUser($user);
 
@@ -203,7 +203,7 @@ Es wäre doch zu Schade wenn Eure Investition dadurch völlig verpuffen würde, 
         );
     }
 
-    private function getPirateWrathOfUser(UserInterface $user): PirateWrathInterface
+    private function getPirateWrathOfUser(User $user): PirateWrath
     {
         $wrath = $user->getPirateWrath();
 

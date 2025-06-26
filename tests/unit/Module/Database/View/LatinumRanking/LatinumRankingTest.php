@@ -8,7 +8,7 @@ use Mockery;
 use Mockery\MockInterface;
 use Override;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\StuTestCase;
@@ -37,7 +37,7 @@ class LatinumRankingTest extends StuTestCase
     public function testHandleRenders(): void
     {
         $game = $this->mock(GameControllerInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
 
         $userId = 666;
         $amount = 42;

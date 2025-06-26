@@ -12,13 +12,12 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\ShipRumpCostRepository;
 
 #[Table(name: 'stu_rump_costs')]
 #[Index(name: 'rump_cost_ship_rump_idx', columns: ['rump_id'])]
 #[Entity(repositoryClass: ShipRumpCostRepository::class)]
-class ShipRumpCost implements ShipRumpCostInterface
+class ShipRumpCost
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -36,54 +35,47 @@ class ShipRumpCost implements ShipRumpCostInterface
 
     #[ManyToOne(targetEntity: Commodity::class)]
     #[JoinColumn(name: 'commodity_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private CommodityInterface $commodity;
+    private Commodity $commodity;
 
     #[ManyToOne(targetEntity: SpacecraftRump::class, inversedBy: 'buildingCosts')]
     #[JoinColumn(name: 'rump_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private SpacecraftRumpInterface $spacecraftRump;
+    private SpacecraftRump $spacecraftRump;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getRumpId(): int
     {
         return $this->rump_id;
     }
 
-    #[Override]
     public function getCommodityId(): int
     {
         return $this->commodity_id;
     }
 
-    #[Override]
-    public function setCommodityId(int $commodityId): ShipRumpCostInterface
+    public function setCommodityId(int $commodityId): ShipRumpCost
     {
         $this->commodity_id = $commodityId;
 
         return $this;
     }
 
-    #[Override]
     public function getAmount(): int
     {
         return $this->count;
     }
 
-    #[Override]
-    public function setAmount(int $amount): ShipRumpCostInterface
+    public function setAmount(int $amount): ShipRumpCost
     {
         $this->count = $amount;
 
         return $this;
     }
 
-    #[Override]
-    public function getCommodity(): CommodityInterface
+    public function getCommodity(): Commodity
     {
         return $this->commodity;
     }

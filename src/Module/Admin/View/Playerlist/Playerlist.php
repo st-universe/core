@@ -8,7 +8,7 @@ use Override;
 use Stu\Module\Admin\Lib\UserlistEntry;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class Playerlist implements ViewControllerInterface
@@ -34,7 +34,7 @@ final class Playerlist implements ViewControllerInterface
         $game->setTemplateVar(
             'LIST',
             array_map(
-                fn (UserInterface $user): UserlistEntry => new UserlistEntry($user),
+                fn (User $user): UserlistEntry => new UserlistEntry($user),
                 $this->userRepository->getNonNpcList()
             )
         );

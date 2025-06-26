@@ -17,20 +17,29 @@ use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use LogicException;
-use Override;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Component\Colony\Trait\ColonyRotationTrait;
 use Stu\Component\Game\ModuleEnum;
+use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Lib\Colony\PlanetFieldHostTypeEnum;
+use Stu\Lib\Interaction\EntityWithInteractionCheckInterface;
+use Stu\Lib\Map\EntityWithLocationInterface;
 use Stu\Lib\Transfer\CommodityTransfer;
+use Stu\Lib\Transfer\EntityWithStorageInterface;
 use Stu\Lib\Transfer\TransferEntityTypeEnum;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\Spacecraft\Lib\Crew\EntityWithCrewAssignmentsInterface;
 use Stu\Orm\Repository\ColonyRepository;
 
 #[Table(name: 'stu_colony')]
 #[Entity(repositoryClass: ColonyRepository::class)]
-class Colony implements ColonyInterface
+class Colony implements
+    PlanetFieldHostInterface,
+    EntityWithStorageInterface,
+    EntityWithLocationInterface,
+    EntityWithCrewAssignmentsInterface,
+    EntityWithInteractionCheckInterface
 {
     use ColonyRotationTrait;
 
@@ -40,7 +49,7 @@ class Colony implements ColonyInterface
     private int $id;
 
     #[OneToOne(targetEntity: ColonyChangeable::class, mappedBy: 'colony', fetch: 'EAGER', cascade: ['all'])]
-    private ?ColonyChangeableInterface $changeable;
+    private ?ColonyChangeable $changeable;
 
     #[Column(type: 'integer')]
     private int $colonies_classes_id = 0;
@@ -68,25 +77,25 @@ class Colony implements ColonyInterface
 
     #[ManyToOne(targetEntity: ColonyClass::class)]
     #[JoinColumn(name: 'colonies_classes_id', nullable: false, referencedColumnName: 'id')]
-    private ColonyClassInterface $colonyClass;
+    private ColonyClass $colonyClass;
 
     #[OneToOne(targetEntity: StarSystemMap::class, inversedBy: 'colony')]
     #[JoinColumn(name: 'starsystem_map_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private StarSystemMapInterface $starsystem_map;
+    private StarSystemMap $starsystem_map;
 
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id')]
-    private UserInterface $user;
+    private User $user;
 
     /**
-     * @var ArrayCollection<int, PlanetFieldInterface>
+     * @var ArrayCollection<int, PlanetField>
      */
     #[OneToMany(targetEntity: PlanetField::class, mappedBy: 'colony', indexBy: 'field_id', fetch: 'EXTRA_LAZY')]
     #[OrderBy(['field_id' => 'ASC'])]
     private Collection $planetFields;
 
     /**
-     * @var ArrayCollection<int, StorageInterface>
+     * @var ArrayCollection<int, Storage>
      */
     #[OneToMany(targetEntity: Storage::class, mappedBy: 'colony', indexBy: 'commodity_id')]
     #[OrderBy(['commodity_id' => 'ASC'])]
@@ -94,28 +103,28 @@ class Colony implements ColonyInterface
 
     #[OneToOne(targetEntity: DatabaseEntry::class)]
     #[JoinColumn(name: 'database_id', referencedColumnName: 'id')]
-    private ?DatabaseEntryInterface $databaseEntry;
+    private ?DatabaseEntry $databaseEntry;
 
     /**
-     * @var ArrayCollection<int, FleetInterface>
+     * @var ArrayCollection<int, Fleet>
      */
     #[OneToMany(targetEntity: Fleet::class, mappedBy: 'defendedColony')]
     private Collection $defenders;
 
     /**
-     * @var ArrayCollection<int, FleetInterface>
+     * @var ArrayCollection<int, Fleet>
      */
     #[OneToMany(targetEntity: Fleet::class, mappedBy: 'blockedColony')]
     private Collection $blockers;
 
     /**
-     * @var ArrayCollection<int, CrewAssignmentInterface>
+     * @var ArrayCollection<int, CrewAssignment>
      */
     #[OneToMany(targetEntity: CrewAssignment::class, mappedBy: 'colony')]
     private Collection $crewAssignments;
 
     /**
-     * @var ArrayCollection<int, CrewAssignmentInterface>
+     * @var ArrayCollection<int, CrewTraining>
      */
     #[OneToMany(targetEntity: CrewTraining::class, mappedBy: 'colony')]
     private Collection $crewTrainings;
@@ -133,83 +142,70 @@ class Colony implements ColonyInterface
         $this->crewTrainings = new ArrayCollection();
     }
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
-    public function getChangeable(): ColonyChangeableInterface
+    public function getChangeable(): ColonyChangeable
     {
         return $this->changeable ?? throw new LogicException('Colony has no changeable');
     }
 
-    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    #[Override]
     public function getSx(): int
     {
         return $this->getStarsystemMap()->getSx();
     }
 
-    #[Override]
     public function getSy(): int
     {
         return $this->getStarsystemMap()->getSy();
     }
 
-    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
-    #[Override]
-    public function setName(string $name): ColonyInterface
+    public function setName(string $name): Colony
     {
         $this->name = $name;
         return $this;
     }
 
-    #[Override]
     public function getPlanetName(): string
     {
         return $this->planet_name;
     }
 
-    #[Override]
-    public function setPlanetName(string $planet_name): ColonyInterface
+    public function setPlanetName(string $planet_name): Colony
     {
         $this->planet_name = $planet_name;
         return $this;
     }
 
-    #[Override]
     public function getMask(): ?string
     {
         return $this->mask;
     }
 
-    #[Override]
-    public function setMask(?string $mask): ColonyInterface
+    public function setMask(?string $mask): Colony
     {
         $this->mask = $mask;
         return $this;
     }
 
-    #[Override]
     public function getDatabaseId(): ?int
     {
         return $this->database_id;
     }
 
-    #[Override]
-    public function setDatabaseEntry(?DatabaseEntryInterface $entry): ColonyInterface
+    public function setDatabaseEntry(?DatabaseEntry $entry): Colony
     {
         $this->databaseEntry = $entry;
         return $this;
@@ -220,162 +216,143 @@ class Colony implements ColonyInterface
         return $this->rotation_factor;
     }
 
-    #[Override]
-    public function setRotationFactor(int $rotationFactor): ColonyInterface
+    public function setRotationFactor(int $rotationFactor): Colony
     {
         $this->rotation_factor = $rotationFactor;
 
         return $this;
     }
 
-    #[Override]
     public function getSurfaceWidth(): int
     {
         return $this->surface_width;
     }
 
-    #[Override]
-    public function setSurfaceWidth(int $surfaceWidth): ColonyInterface
+    public function setSurfaceWidth(int $surfaceWidth): Colony
     {
         $this->surface_width = $surfaceWidth;
         return $this;
     }
 
-    #[Override]
-    public function getColonyClass(): ColonyClassInterface
+    public function getColonyClass(): ColonyClass
     {
         return $this->colonyClass;
     }
 
-    #[Override]
-    public function setColonyClass(ColonyClassInterface $colonyClass): ColonyInterface
+    public function setColonyClass(ColonyClass $colonyClass): Colony
     {
         $this->colonyClass = $colonyClass;
         return $this;
     }
 
-    #[Override]
     public function getStorageSum(): int
     {
         return array_reduce(
             $this->getStorage()->getValues(),
-            fn(int $sum, StorageInterface $storage): int => $sum + $storage->getAmount(),
+            fn(int $sum, Storage $storage): int => $sum + $storage->getAmount(),
             0
         );
     }
 
-    #[Override]
-    public function getStarsystemMap(): StarSystemMapInterface
+    public function getStarsystemMap(): StarSystemMap
     {
         return $this->starsystem_map;
     }
 
-    #[Override]
-    public function getLocation(): MapInterface|StarSystemMapInterface
+    public function getLocation(): Map|StarSystemMap
     {
         return $this->getStarsystemMap();
     }
 
-    #[Override]
-    public function setStarsystemMap(StarSystemMapInterface $systemMap): ColonyInterface
+    public function setStarsystemMap(StarSystemMap $systemMap): Colony
     {
         $this->starsystem_map = $systemMap;
 
         return $this;
     }
 
-    #[Override]
-    public function getSystem(): StarSystemInterface
+    public function getSystem(): StarSystem
     {
         return $this->getStarsystemMap()->getSystem();
     }
 
-    #[Override]
     public function getBeamFactor(): int
     {
         return 10;
     }
 
-    #[Override]
     public function getPlanetFields(): Collection
     {
         return $this->planetFields;
     }
 
-    #[Override]
     public function getBeamableStorage(): Collection
     {
         return CommodityTransfer::excludeNonBeamable($this->storage);
     }
 
-    #[Override]
     public function getStorage(): Collection
     {
         return $this->storage;
     }
 
-    #[Override]
     public function isDefended(): bool
     {
         return !$this->getDefenders()->isEmpty();
     }
 
-    #[Override]
+    /**
+     * @return Collection<int, Fleet>
+     */
     public function getDefenders(): Collection
     {
         return $this->defenders;
     }
 
-    #[Override]
     public function isBlocked(): bool
     {
         return !$this->getBlockers()->isEmpty();
     }
 
-    #[Override]
+    /**
+     * @return Collection<int, Fleet>
+     */
     public function getBlockers(): Collection
     {
         return $this->blockers;
     }
 
-    #[Override]
     public function getCrewAssignments(): Collection
     {
         return $this->crewAssignments;
     }
 
-    #[Override]
     public function getCrewAssignmentAmount(): int
     {
         return $this->crewAssignments->count();
     }
 
-    #[Override]
     public function getCrewTrainingAmount(): int
     {
         return $this->crewTrainings->count();
     }
 
-    #[Override]
     public function isFree(): bool
     {
         return $this->getUserId() === UserEnum::USER_NOONE;
     }
 
-    #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    #[Override]
-    public function setUser(UserInterface $user): ColonyInterface
+    public function setUser(User $user): Colony
     {
         $this->user = $user;
         return $this;
     }
 
-    #[Override]
     public function getWorkers(): int
     {
         return $this->getChangeable()->getWorkers();
@@ -391,61 +368,51 @@ class Colony implements ColonyInterface
         return $this->getChangeable()->getMaxBev();
     }
 
-    #[Override]
     public function getMaxEps(): int
     {
         return $this->getChangeable()->getMaxEps();
     }
 
-    #[Override]
     public function getMaxStorage(): int
     {
         return $this->getChangeable()->getMaxStorage();
     }
 
-    #[Override]
     public function getPopulation(): int
     {
         return $this->getChangeable()->getPopulation();
     }
 
-    #[Override]
     public function getSectorString(): string
     {
         return $this->getStarsystemMap()->getSectorString();
     }
 
-    #[Override]
     public function isColony(): bool
     {
         return true;
     }
 
-    #[Override]
     public function getHostType(): PlanetFieldHostTypeEnum
     {
         return PlanetFieldHostTypeEnum::COLONY;
     }
 
-    #[Override]
     public function getDefaultViewIdentifier(): string
     {
         return ShowColony::VIEW_IDENTIFIER;
     }
 
-    #[Override]
     public function isMenuAllowed(ColonyMenuEnum $menu): bool
     {
         return true;
     }
 
-    #[Override]
     public function getTransferEntityType(): TransferEntityTypeEnum
     {
         return TransferEntityTypeEnum::COLONY;
     }
 
-    #[Override]
     public function getHref(): string
     {
         return sprintf(
@@ -456,7 +423,6 @@ class Colony implements ColonyInterface
         );
     }
 
-    #[Override]
     public function getComponentParameters(): string
     {
         return sprintf(

@@ -13,19 +13,19 @@ use Stu\Lib\Transfer\EntityWithStorageInterface;
 use Stu\Lib\Transfer\Storage\Exception\CommodityMissingException;
 use Stu\Lib\Transfer\Storage\Exception\QuantityTooSmallException;
 use Stu\Lib\Transfer\TransferEntityTypeEnum;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\CommodityInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\StorageInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Commodity;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\Storage;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\StuTestCase;
 
 class StorageManagerTest extends StuTestCase
 {
     private StorageRepositoryInterface&MockInterface $storageRepository;
-    private ColonyInterface&MockInterface $colony;
-    private CommodityInterface&MockInterface $commodity;
+    private Colony&MockInterface $colony;
+    private Commodity&MockInterface $commodity;
 
     public $commodityId;
 
@@ -35,8 +35,8 @@ class StorageManagerTest extends StuTestCase
     public function setUp(): void
     {
         $this->storageRepository = $this->mock(StorageRepositoryInterface::class);
-        $this->colony = $this->mock(ColonyInterface::class);
-        $this->commodity = $this->mock(CommodityInterface::class);
+        $this->colony = $this->mock(Colony::class);
+        $this->commodity = $this->mock(Commodity::class);
 
         $this->manager = new StorageManager(
             $this->storageRepository
@@ -64,7 +64,7 @@ class StorageManagerTest extends StuTestCase
     {
         $this->expectException(QuantityTooSmallException::class);
 
-        $storageItem = $this->mock(StorageInterface::class);
+        $storageItem = $this->mock(Storage::class);
 
         $amount = 666;
         $storedAmount = 33;
@@ -105,7 +105,7 @@ class StorageManagerTest extends StuTestCase
 
     public function testLowerStorageRemovesCommodityFromStorageIfQuantityIsSame(): void
     {
-        $storageItem = $this->mock(StorageInterface::class);
+        $storageItem = $this->mock(Storage::class);
 
         $amount = 666;
         $this->commodityId = 42;
@@ -142,7 +142,7 @@ class StorageManagerTest extends StuTestCase
 
     public function testLowerStorageUpdatesStorageItem(): void
     {
-        $storageItem = $this->mock(StorageInterface::class);
+        $storageItem = $this->mock(Storage::class);
 
         $amount = 666;
         $storedAmount = 777;
@@ -184,9 +184,9 @@ class StorageManagerTest extends StuTestCase
     public static function getTransferEntitiesProvider(): array
     {
         return [
-            [Mockery::mock(ColonyInterface::class), TransferEntityTypeEnum::COLONY, 'setColony'],
-            [Mockery::mock(SpacecraftInterface::class), TransferEntityTypeEnum::SHIP, 'setSpacecraft'],
-            [Mockery::mock(SpacecraftInterface::class), TransferEntityTypeEnum::STATION, 'setSpacecraft']
+            [Mockery::mock(Colony::class), TransferEntityTypeEnum::COLONY, 'setColony'],
+            [Mockery::mock(Spacecraft::class), TransferEntityTypeEnum::SHIP, 'setSpacecraft'],
+            [Mockery::mock(Spacecraft::class), TransferEntityTypeEnum::STATION, 'setSpacecraft']
         ];
     }
 
@@ -196,8 +196,8 @@ class StorageManagerTest extends StuTestCase
         TransferEntityTypeEnum $entityType,
         string $expectedSetter
     ): void {
-        $storageItem = $this->mock(StorageInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $storageItem = $this->mock(Storage::class);
+        $user = $this->mock(User::class);
         $storage = new ArrayCollection();
 
         $amount = 666;
@@ -259,7 +259,7 @@ class StorageManagerTest extends StuTestCase
 
     public function testUpperStorageUpdateExistingStorageItem(): void
     {
-        $storageItem = $this->mock(StorageInterface::class);
+        $storageItem = $this->mock(Storage::class);
 
         $amount = 666;
         $this->commodityId = 42;

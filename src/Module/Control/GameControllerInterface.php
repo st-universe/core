@@ -6,9 +6,9 @@ use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Information\InformationWrapper;
-use Stu\Orm\Entity\GameRequestInterface;
-use Stu\Orm\Entity\GameTurnInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\GameRequest;
+use Stu\Orm\Entity\GameTurn;
+use Stu\Orm\Entity\User;
 use SysvSemaphore;
 
 interface GameControllerInterface extends InformationInterface
@@ -45,7 +45,7 @@ interface GameControllerInterface extends InformationInterface
 
     public function setTemplateVar(string $key, mixed $variable);
 
-    public function getUser(): UserInterface;
+    public function getUser(): User;
 
     public function hasUser(): bool;
 
@@ -78,7 +78,7 @@ interface GameControllerInterface extends InformationInterface
 
     public function redirectTo(string $href): void;
 
-    public function getCurrentRound(): GameTurnInterface;
+    public function getCurrentRound(): GameTurn;
 
     public function checkDatabaseItem(?int $databaseEntryId): void;
 
@@ -89,7 +89,7 @@ interface GameControllerInterface extends InformationInterface
 
     public function sessionAndAdminCheck(): void;
 
-    public function getGameRequest(): GameRequestInterface;
+    public function getGameRequest(): GameRequest;
 
     public function getGameRequestId(): string;
 

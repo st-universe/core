@@ -7,19 +7,19 @@ namespace Stu\Component\Spacecraft\System\Data;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Module\Template\StatusBarInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
 
 abstract class AbstractSystemData
 {
-    protected SpacecraftInterface $spacecraft;
+    protected Spacecraft $spacecraft;
 
     public function __construct(
         private SpacecraftSystemRepositoryInterface $shipSystemRepository,
         private StatusBarFactoryInterface $statusBarFactory
     ) {}
 
-    public function setSpacecraft(SpacecraftInterface $spacecraft): void
+    public function setSpacecraft(Spacecraft $spacecraft): void
     {
         $this->spacecraft = $spacecraft;
     }

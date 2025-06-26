@@ -7,18 +7,17 @@ namespace Stu\Orm\Repository;
 use Doctrine\DBAL\Connection;
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\GameConfig;
-use Stu\Orm\Entity\GameConfigInterface;
 
 /**
  * @extends ObjectRepository<GameConfig>
  *
- * @method GameConfigInterface[] findAll()
+ * @method GameConfig[] findAll()
  */
 interface GameConfigRepositoryInterface extends ObjectRepository
 {
-    public function save(GameConfigInterface $item): void;
+    public function save(GameConfig $item): void;
 
-    public function getByOption(int $optionId): ?GameConfigInterface;
+    public function getByOption(int $optionId): ?GameConfig;
 
     /**
      * Updates the game state by bypassing the EntityManager

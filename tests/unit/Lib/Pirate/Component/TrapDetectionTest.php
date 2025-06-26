@@ -11,9 +11,9 @@ use Stu\Module\Control\StuRandom;
 use Stu\Module\Prestige\Lib\PrestigeCalculationInterface;
 use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertedShipsDetectionInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\LocationInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Location;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\User;
 use Stu\StuTestCase;
 
 class TrapDetectionTest extends StuTestCase
@@ -22,9 +22,9 @@ class TrapDetectionTest extends StuTestCase
     private MockInterface&PrestigeCalculationInterface $prestigeCalculation;
     private MockInterface&StuRandom $stuRandom;
 
-    private MockInterface&LocationInterface $location;
-    private MockInterface&ShipInterface $leadShip;
-    private MockInterface&UserInterface $user;
+    private MockInterface&Location $location;
+    private MockInterface&Ship $leadShip;
+    private MockInterface&User $user;
 
     private TrapDetectionInterface $subject;
 
@@ -35,9 +35,9 @@ class TrapDetectionTest extends StuTestCase
         $this->prestigeCalculation = $this->mock(PrestigeCalculationInterface::class);
         $this->stuRandom = $this->mock(StuRandom::class);
 
-        $this->location = $this->mock(LocationInterface::class);
-        $this->leadShip = $this->mock(ShipInterface::class);
-        $this->user = $this->mock(UserInterface::class);
+        $this->location = $this->mock(Location::class);
+        $this->leadShip = $this->mock(Ship::class);
+        $this->user = $this->mock(User::class);
 
         $this->leadShip->shouldReceive('getUser')
             ->withNoArgs()

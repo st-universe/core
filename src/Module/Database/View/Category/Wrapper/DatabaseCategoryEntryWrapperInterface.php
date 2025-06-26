@@ -2,14 +2,14 @@
 
 namespace Stu\Module\Database\View\Category\Wrapper;
 
-use Stu\Orm\Entity\ColonyClassInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\StarSystemInterface;
+use Stu\Orm\Entity\ColonyClass;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\StarSystem;
 
 interface DatabaseCategoryEntryWrapperInterface
 {
     /**
-     * @return null|StarSystemInterface|SpacecraftInterface|ColonyClassInterface
+     * @return null|StarSystem|Spacecraft|ColonyClass
      */
     public function getObject(): mixed;
 

@@ -10,7 +10,6 @@ use Monolog\Level;
 use Override;
 use request;
 use Stu\Orm\Entity\GameRequest;
-use Stu\Orm\Entity\GameRequestInterface;
 
 /**
  * Adapter for saving game requests in the database
@@ -25,7 +24,7 @@ final class DatabaseAdapter extends AbstractAdapter
 
     #[Override]
     protected function log(
-        GameRequestInterface $gameRequest,
+        GameRequest $gameRequest,
         Level $logLevel,
         bool $isRequestCheck
     ): void {

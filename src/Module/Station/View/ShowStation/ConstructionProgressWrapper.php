@@ -3,14 +3,14 @@
 namespace Stu\Module\Station\View\ShowStation;
 
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
-use Stu\Orm\Entity\ConstructionProgressInterface;
-use Stu\Orm\Entity\StationInterface;
+use Stu\Orm\Entity\ConstructionProgress;
+use Stu\Orm\Entity\Station;
 
 class ConstructionProgressWrapper
 {
     public function __construct(
-        private ConstructionProgressInterface $progress,
-        private StationInterface $station,
+        private ConstructionProgress $progress,
+        private Station $station,
         private int $dockedWorbeeCount,
         private int $neededWorbeeCount
     ) {}

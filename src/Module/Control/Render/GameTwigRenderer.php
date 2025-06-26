@@ -12,7 +12,7 @@ use Stu\Component\Player\UserAwardEnum;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Twig\TwigPageInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 
 final class GameTwigRenderer implements GameTwigRendererInterface
@@ -30,7 +30,7 @@ final class GameTwigRenderer implements GameTwigRendererInterface
     #[Override]
     public function render(
         GameControllerInterface $game,
-        ?UserInterface $user
+        ?User $user
     ): string {
 
         $this->setGameVariables($game);
@@ -65,7 +65,7 @@ final class GameTwigRenderer implements GameTwigRendererInterface
         }
     }
 
-    private function setUserVariables(?UserInterface $user): void
+    private function setUserVariables(?User $user): void
     {
         if ($user === null) {
             $this->twigPage->setVar('USER', null);
@@ -81,7 +81,7 @@ final class GameTwigRenderer implements GameTwigRendererInterface
         }
     }
 
-    private function hasStationsNavigation(UserInterface $user): bool
+    private function hasStationsNavigation(User $user): bool
     {
         if ($user->isNpc()) {
             return true;

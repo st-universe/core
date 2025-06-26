@@ -10,13 +10,13 @@ use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Player\UserCssClassEnum;
 use Stu\Component\Player\UserRpgBehaviorEnum;
 use Stu\Module\PlayerSetting\Lib\UserSettingEnum;
-use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Entity\UserSettingInterface;
+use Stu\Orm\Entity\User;
+use Stu\Orm\Entity\UserSetting;
 
 class UserSettingsProvider implements UserSettingsProviderInterface
 {
     #[Override]
-    public function getRgbCode(UserInterface $user): string
+    public function getRgbCode(User $user): string
     {
         $setting = $this->getSettings($user)->get(UserSettingEnum::RGB_CODE->value);
         if ($setting !== null) {
@@ -27,7 +27,7 @@ class UserSettingsProvider implements UserSettingsProviderInterface
     }
 
     #[Override]
-    public function getCss(UserInterface $user): UserCssClassEnum
+    public function getCss(User $user): UserCssClassEnum
     {
         $setting = $this->getSettings($user)->get(UserSettingEnum::CSS_COLOR_SHEET->value);
         if ($setting !== null) {
@@ -38,7 +38,7 @@ class UserSettingsProvider implements UserSettingsProviderInterface
     }
 
     #[Override]
-    public function getAvatar(UserInterface $user): string
+    public function getAvatar(User $user): string
     {
         $setting = $this->getSettings($user)->get(UserSettingEnum::AVATAR->value);
         if ($setting !== null) {
@@ -49,7 +49,7 @@ class UserSettingsProvider implements UserSettingsProviderInterface
     }
 
     #[Override]
-    public function isEmailNotification(UserInterface $user): bool
+    public function isEmailNotification(User $user): bool
     {
         $setting = $this->getSettings($user)->get(UserSettingEnum::EMAIL_NOTIFICATION->value);
         if ($setting !== null) {
@@ -60,7 +60,7 @@ class UserSettingsProvider implements UserSettingsProviderInterface
     }
 
     #[Override]
-    public function isStorageNotification(UserInterface $user): bool
+    public function isStorageNotification(User $user): bool
     {
         $setting = $this->getSettings($user)->get(UserSettingEnum::STORAGE_NOTIFICATION->value);
         if ($setting !== null) {
@@ -71,7 +71,7 @@ class UserSettingsProvider implements UserSettingsProviderInterface
     }
 
     #[Override]
-    public function isShowOnlineState(UserInterface $user): bool
+    public function isShowOnlineState(User $user): bool
     {
         $setting = $this->getSettings($user)->get(UserSettingEnum::SHOW_ONLINE_STATUS->value);
         if ($setting !== null) {
@@ -82,7 +82,7 @@ class UserSettingsProvider implements UserSettingsProviderInterface
     }
 
     #[Override]
-    public function isShowPmReadReceipt(UserInterface $user): bool
+    public function isShowPmReadReceipt(User $user): bool
     {
         $setting = $this->getSettings($user)->get(UserSettingEnum::SHOW_PM_READ_RECEIPT->value);
         if ($setting !== null) {
@@ -93,7 +93,7 @@ class UserSettingsProvider implements UserSettingsProviderInterface
     }
 
     #[Override]
-    public function isSaveLogin(UserInterface $user): bool
+    public function isSaveLogin(User $user): bool
     {
         $setting = $this->getSettings($user)->get(UserSettingEnum::SAVE_LOGIN->value);
         if ($setting !== null) {
@@ -104,7 +104,7 @@ class UserSettingsProvider implements UserSettingsProviderInterface
     }
 
     #[Override]
-    public function getFleetFixedDefault(UserInterface $user): bool
+    public function getFleetFixedDefault(User $user): bool
     {
         $setting = $this->getSettings($user)->get(UserSettingEnum::FLEET_FIXED_DEFAULT->value);
         if ($setting !== null) {
@@ -115,7 +115,7 @@ class UserSettingsProvider implements UserSettingsProviderInterface
     }
 
     #[Override]
-    public function getWarpsplitAutoCarryoverDefault(UserInterface $user): bool
+    public function getWarpsplitAutoCarryoverDefault(User $user): bool
     {
         $setting = $this->getSettings($user)->get(UserSettingEnum::WARPSPLIT_AUTO_CARRYOVER_DEFAULT->value);
         if ($setting !== null) {
@@ -126,7 +126,7 @@ class UserSettingsProvider implements UserSettingsProviderInterface
     }
 
     #[Override]
-    public function getDefaultView(UserInterface $user): ModuleEnum
+    public function getDefaultView(User $user): ModuleEnum
     {
         $setting = $this->getSettings($user)->get(UserSettingEnum::DEFAULT_VIEW->value);
         if ($setting !== null) {
@@ -137,7 +137,7 @@ class UserSettingsProvider implements UserSettingsProviderInterface
     }
 
     #[Override]
-    public function getRpgBehavior(UserInterface $user): UserRpgBehaviorEnum
+    public function getRpgBehavior(User $user): UserRpgBehaviorEnum
     {
         $setting = $this->getSettings($user)->get(UserSettingEnum::RPG_BEHAVIOR->value);
         if ($setting !== null) {
@@ -148,7 +148,7 @@ class UserSettingsProvider implements UserSettingsProviderInterface
     }
 
     #[Override]
-    public function isShowPirateHistoryEntrys(UserInterface $user): bool
+    public function isShowPirateHistoryEntrys(User $user): bool
     {
         $setting = $this->getSettings($user)->get(UserSettingEnum::SHOW_PIRATE_HISTORY_ENTRYS->value);
         if ($setting !== null) {
@@ -159,7 +159,7 @@ class UserSettingsProvider implements UserSettingsProviderInterface
     }
 
     #[Override]
-    public function isInboxMessengerStyle(UserInterface $user): bool
+    public function isInboxMessengerStyle(User $user): bool
     {
         $setting = $this->getSettings($user)->get(UserSettingEnum::INBOX_MESSENGER_STYLE->value);
         if ($setting !== null) {
@@ -170,9 +170,9 @@ class UserSettingsProvider implements UserSettingsProviderInterface
     }
 
     /**
-     * @return Collection<string, UserSettingInterface>
+     * @return Collection<string, UserSetting>
      */
-    private function getSettings(UserInterface $user): Collection
+    private function getSettings(User $user): Collection
     {
         return $user->getSettings();
     }

@@ -11,13 +11,12 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Orm\Repository\RepairTaskRepository;
 
 #[Table(name: 'stu_repair_task')]
 #[Entity(repositoryClass: RepairTaskRepository::class)]
-class RepairTask implements RepairTaskInterface
+class RepairTask
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -41,78 +40,67 @@ class RepairTask implements RepairTaskInterface
 
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $user;
+    private User $user;
 
     #[ManyToOne(targetEntity: Spacecraft::class)]
     #[JoinColumn(name: 'spacecraft_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private SpacecraftInterface $spacecraft;
+    private Spacecraft $spacecraft;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    #[Override]
-    public function setUser(UserInterface $user): RepairTaskInterface
+    public function setUser(User $user): RepairTask
     {
         $this->user = $user;
         return $this;
     }
 
-    #[Override]
-    public function getSpacecraft(): SpacecraftInterface
+    public function getSpacecraft(): Spacecraft
     {
         return $this->spacecraft;
     }
 
-    #[Override]
-    public function setSpacecraft(SpacecraftInterface $spacecraft): RepairTaskInterface
+    public function setSpacecraft(Spacecraft $spacecraft): RepairTask
     {
         $this->spacecraft = $spacecraft;
         return $this;
     }
 
-    #[Override]
-    public function setFinishTime(int $finishTime): RepairTaskInterface
+    public function setFinishTime(int $finishTime): RepairTask
     {
         $this->finish_time = $finishTime;
         return $this;
     }
 
-    #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
         return $this->system_type;
     }
 
-    #[Override]
-    public function setSystemType(SpacecraftSystemTypeEnum $type): RepairTaskInterface
+    public function setSystemType(SpacecraftSystemTypeEnum $type): RepairTask
     {
         $this->system_type = $type;
         return $this;
     }
 
-    #[Override]
     public function getHealingPercentage(): int
     {
         return $this->healing_percentage;
     }
 
-    #[Override]
-    public function setHealingPercentage(int $healingPercentage): RepairTaskInterface
+    public function setHealingPercentage(int $healingPercentage): RepairTask
     {
         $this->healing_percentage = $healingPercentage;
         return $this;

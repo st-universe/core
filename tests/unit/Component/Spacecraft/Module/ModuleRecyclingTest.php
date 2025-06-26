@@ -11,12 +11,12 @@ use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Transfer\EntityWithStorageInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Control\StuRandom;
-use Stu\Orm\Entity\BuildplanModuleInterface;
-use Stu\Orm\Entity\CommodityInterface;
-use Stu\Orm\Entity\ModuleInterface;
-use Stu\Orm\Entity\SpacecraftBuildplanInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\SpacecraftSystemInterface;
+use Stu\Orm\Entity\BuildplanModule;
+use Stu\Orm\Entity\Commodity;
+use Stu\Orm\Entity\Module;
+use Stu\Orm\Entity\SpacecraftBuildplan;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\SpacecraftSystem;
 use Stu\StuTestCase;
 
 class ModuleRecyclingTest extends StuTestCase
@@ -24,7 +24,7 @@ class ModuleRecyclingTest extends StuTestCase
     private MockInterface&StorageManagerInterface $storageManager;
     private MockInterface&StuRandom $stuRandom;
 
-    private MockInterface&SpacecraftInterface $spacecraft;
+    private MockInterface&Spacecraft $spacecraft;
     private MockInterface&EntityWithStorageInterface $entity;
     private MockInterface&InformationInterface $information;
 
@@ -36,7 +36,7 @@ class ModuleRecyclingTest extends StuTestCase
         $this->storageManager = $this->mock(StorageManagerInterface::class);
         $this->stuRandom = $this->mock(StuRandom::class);
 
-        $this->spacecraft = $this->mock(SpacecraftInterface::class);
+        $this->spacecraft = $this->mock(Spacecraft::class);
         $this->entity = $this->mock(EntityWithStorageInterface::class);
         $this->information = $this->mock(InformationInterface::class);
 
@@ -58,16 +58,16 @@ class ModuleRecyclingTest extends StuTestCase
 
     public function testRetrieveSomeModulesExpectRecyclingOfInstalledSystems(): void
     {
-        $buildplan = $this->mock(SpacecraftBuildplanInterface::class);
-        $systemHealth100 = $this->mock(SpacecraftSystemInterface::class);
-        $systemHealth50 = $this->mock(SpacecraftSystemInterface::class);
-        $systemHealth1 = $this->mock(SpacecraftSystemInterface::class);
-        $moduleHealth100 = $this->mock(ModuleInterface::class);
-        $moduleHealth50 = $this->mock(ModuleInterface::class);
-        $moduleHealth1 = $this->mock(ModuleInterface::class);
-        $commodityHealth100 = $this->mock(CommodityInterface::class);
-        $commodityHealth50 = $this->mock(CommodityInterface::class);
-        $buildplanModuleHealth50 = $this->mock(BuildplanModuleInterface::class);
+        $buildplan = $this->mock(SpacecraftBuildplan::class);
+        $systemHealth100 = $this->mock(SpacecraftSystem::class);
+        $systemHealth50 = $this->mock(SpacecraftSystem::class);
+        $systemHealth1 = $this->mock(SpacecraftSystem::class);
+        $moduleHealth100 = $this->mock(Module::class);
+        $moduleHealth50 = $this->mock(Module::class);
+        $moduleHealth1 = $this->mock(Module::class);
+        $commodityHealth100 = $this->mock(Commodity::class);
+        $commodityHealth50 = $this->mock(Commodity::class);
+        $buildplanModuleHealth50 = $this->mock(BuildplanModule::class);
 
         $this->spacecraft->shouldReceive('getBuildplan')
             ->withNoArgs()
@@ -183,13 +183,13 @@ class ModuleRecyclingTest extends StuTestCase
 
     public function testRetrieveSomeModulesExpectRecyclingOfBuildplanModules(): void
     {
-        $buildplan = $this->mock(SpacecraftBuildplanInterface::class);
-        $moduleCount1 = $this->mock(ModuleInterface::class);
-        $moduleCount11 = $this->mock(ModuleInterface::class);
-        $commodityCount1 = $this->mock(CommodityInterface::class);
-        $commodityCount11 = $this->mock(CommodityInterface::class);
-        $buildplanModuleCount1 = $this->mock(BuildplanModuleInterface::class);
-        $buildplanModuleCount11 = $this->mock(BuildplanModuleInterface::class);
+        $buildplan = $this->mock(SpacecraftBuildplan::class);
+        $moduleCount1 = $this->mock(Module::class);
+        $moduleCount11 = $this->mock(Module::class);
+        $commodityCount1 = $this->mock(Commodity::class);
+        $commodityCount11 = $this->mock(Commodity::class);
+        $buildplanModuleCount1 = $this->mock(BuildplanModule::class);
+        $buildplanModuleCount11 = $this->mock(BuildplanModule::class);
 
         $this->spacecraft->shouldReceive('getBuildplan')
             ->withNoArgs()
@@ -293,9 +293,9 @@ class ModuleRecyclingTest extends StuTestCase
 
     public function testRetrieveSomeModulesExpectNoRecyclingIfStorageIsFull(): void
     {
-        $buildplan = $this->mock(SpacecraftBuildplanInterface::class);
-        $module = $this->mock(ModuleInterface::class);
-        $buildplanModule = $this->mock(BuildplanModuleInterface::class);
+        $buildplan = $this->mock(SpacecraftBuildplan::class);
+        $module = $this->mock(Module::class);
+        $buildplanModule = $this->mock(BuildplanModule::class);
 
         $this->spacecraft->shouldReceive('getBuildplan')
             ->withNoArgs()

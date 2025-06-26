@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Stu;
 
 use Stu\Lib\Session\SessionInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 class TestSession implements SessionInterface
 {
     public const DEFAULT_USER_ID = 101;
 
-    private ?UserInterface $user = null;
+    private ?User $user = null;
 
     public function __construct(private UserRepositoryInterface $userRepository) {}
 
@@ -26,14 +26,14 @@ class TestSession implements SessionInterface
         }
     }
 
-    public function setUser(?UserInterface $user): SessionInterface
+    public function setUser(?User $user): SessionInterface
     {
         return $this;
     }
 
     public function createSession(bool $session_check = true): void {}
 
-    public function getUser(): ?UserInterface
+    public function getUser(): ?User
     {
         if ($this->user === null) {
             $this->user = $this->userRepository->find(self::DEFAULT_USER_ID);
@@ -41,5 +41,5 @@ class TestSession implements SessionInterface
         return $this->user;
     }
 
-    public function logout(?UserInterface $user = null): void {}
+    public function logout(?User $user = null): void {}
 }

@@ -31,9 +31,9 @@ use Stu\Module\Spacecraft\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Module\Spacecraft\Lib\Ui\ShipUiFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\AnomalyRepositoryInterface;
 use Stu\Orm\Repository\UserLayerRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -182,7 +182,7 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
         $this->loggerUtil->log(sprintf('ShowShip.handle-end, timestamp: %F', microtime(true)));
     }
 
-    private function createUserLayerIfNecessary(UserInterface $user, SpacecraftInterface $spacecraft): void
+    private function createUserLayerIfNecessary(User $user, Spacecraft $spacecraft): void
     {
         $layer = $spacecraft->getLayer();
         if ($layer === null) {
@@ -234,7 +234,7 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
         }
     }
 
-    private function getColony(SpacecraftInterface $spacecraft): ?ColonyInterface
+    private function getColony(Spacecraft $spacecraft): ?Colony
     {
         if ($spacecraft->getStarsystemMap() === null) {
             return null;

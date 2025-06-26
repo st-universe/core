@@ -7,7 +7,6 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\WormholeRestriction;
-use Stu\Orm\Entity\WormholeRestrictionInterface;
 
 /**
  * @extends EntityRepository<WormholeRestriction>
@@ -15,7 +14,7 @@ use Stu\Orm\Entity\WormholeRestrictionInterface;
 final class WormholeRestrictionRepository extends EntityRepository implements WormholeRestrictionRepositoryInterface
 {
     #[Override]
-    public function save(WormholeRestrictionInterface $restriction): void
+    public function save(WormholeRestriction $restriction): void
     {
         $em = $this->getEntityManager();
         $em->persist($restriction);

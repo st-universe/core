@@ -18,8 +18,8 @@ use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftNfsItem;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\Lib\TrumfieldNfsItem;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\User;
 
 final class FightLib implements FightLibInterface
@@ -52,7 +52,7 @@ final class FightLib implements FightLibInterface
 
         $informationWrapper = $this->informationFactory->createInformationWrapper();
 
-        if ($spacecraft instanceof ShipInterface && $spacecraft->getDockedTo() !== null) {
+        if ($spacecraft instanceof Ship && $spacecraft->getDockedTo() !== null) {
             $spacecraft->setDockedTo(null);
             $informationWrapper->addInformation("- Das Schiff hat abgedockt");
         }
@@ -68,7 +68,7 @@ final class FightLib implements FightLibInterface
 
         $this->cancelRepair->cancelRepair($spacecraft);
 
-        if ($spacecraft instanceof ShipInterface) {
+        if ($spacecraft instanceof Ship) {
             $this->cancelRetrofit->cancelRetrofit($spacecraft);
         }
 
@@ -82,8 +82,8 @@ final class FightLib implements FightLibInterface
 
     #[Override]
     public function canAttackTarget(
-        SpacecraftInterface $spacecraft,
-        SpacecraftInterface|SpacecraftNfsItem $target,
+        Spacecraft $spacecraft,
+        Spacecraft|SpacecraftNfsItem $target,
         bool $checkCloaked = false,
         bool $checkActiveWeapons = true,
         bool $checkWarped = true
@@ -103,7 +103,7 @@ final class FightLib implements FightLibInterface
         }
 
         //if tractored, can only attack tractoring ship
-        $tractoringShip = $spacecraft instanceof ShipInterface ? $spacecraft->getTractoringSpacecraft() : null;
+        $tractoringShip = $spacecraft instanceof Ship ? $spacecraft->getTractoringSpacecraft() : null;
         if ($tractoringShip !== null) {
             return $target->getId() === $tractoringShip->getId();
         }
@@ -122,8 +122,8 @@ final class FightLib implements FightLibInterface
         }
 
         //can't attack same fleet
-        $ownFleetId = $spacecraft instanceof ShipInterface ? $spacecraft->getFleetId() : null;
-        $targetFleetId = ($target instanceof ShipInterface || $target instanceof SpacecraftNfsItem) ? $target->getFleetId() : null;
+        $ownFleetId = $spacecraft instanceof Ship ? $spacecraft->getFleetId() : null;
+        $targetFleetId = ($target instanceof Ship || $target instanceof SpacecraftNfsItem) ? $target->getFleetId() : null;
         if ($ownFleetId === null || $targetFleetId === null) {
             return true;
         }
@@ -148,7 +148,7 @@ final class FightLib implements FightLibInterface
         ];
     }
 
-    public static function isBoardingPossible(SpacecraftInterface|SpacecraftNfsItem|TrumfieldNfsItem $object): bool
+    public static function isBoardingPossible(Spacecraft|SpacecraftNfsItem|TrumfieldNfsItem $object): bool
     {
         if ($object instanceof TrumfieldNfsItem) {
             return false;
@@ -166,7 +166,7 @@ final class FightLib implements FightLibInterface
     }
 
     #[Override]
-    public function calculateHealthPercentage(ShipInterface $target): int
+    public function calculateHealthPercentage(Ship $target): int
     {
         $shipCount = 0;
         $healthSum = 0;

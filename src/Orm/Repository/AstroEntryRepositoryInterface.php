@@ -4,32 +4,31 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\AstronomicalEntry;
-use Stu\Orm\Entity\AstronomicalEntryInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 /**
  * @extends ObjectRepository<AstronomicalEntry>
  *
- * @method null|AstronomicalEntryInterface find(integer $id)
- * @method AstronomicalEntryInterface[] findAll()
+ * @method null|AstronomicalEntry find(integer $id)
+ * @method AstronomicalEntry[] findAll()
  */
 interface AstroEntryRepositoryInterface extends ObjectRepository
 {
-    public function prototype(): AstronomicalEntryInterface;
+    public function prototype(): AstronomicalEntry;
 
-    public function save(AstronomicalEntryInterface $entry): void;
+    public function save(AstronomicalEntry $entry): void;
 
-    public function delete(AstronomicalEntryInterface $entry): void;
+    public function delete(AstronomicalEntry $entry): void;
 
     public function truncateAllAstroEntries(): void;
 
     /**
-     * @return array<AstronomicalEntryInterface>
+     * @return array<AstronomicalEntry>
      */
-    public function getByUser(UserInterface $user): array;
+    public function getByUser(User $user): array;
 
     /**
-     * @return array<AstronomicalEntryInterface>
+     * @return array<AstronomicalEntry>
      */
-    public function getByUserAndState(UserInterface $user, int $state): array;
+    public function getByUserAndState(User $user, int $state): array;
 }

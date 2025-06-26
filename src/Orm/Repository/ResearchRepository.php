@@ -11,8 +11,7 @@ use Stu\Orm\Entity\Commodity;
 use Stu\Orm\Entity\Research;
 use Stu\Orm\Entity\ResearchDependency;
 use Stu\Orm\Entity\Researched;
-use Stu\Orm\Entity\ResearchInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 /**
  * @extends EntityRepository<Research>
@@ -42,7 +41,7 @@ final class ResearchRepository extends EntityRepository implements ResearchRepos
     }
 
     #[Override]
-    public function getColonyTypeLimitByUser(UserInterface $user, int $colonyType): int
+    public function getColonyTypeLimitByUser(User $user, int $colonyType): int
     {
         return (int)$this->getEntityManager()->createQuery(
             sprintf(
@@ -86,7 +85,7 @@ final class ResearchRepository extends EntityRepository implements ResearchRepos
     }
 
     #[Override]
-    public function save(ResearchInterface $research): void
+    public function save(Research $research): void
     {
         $em = $this->getEntityManager();
 

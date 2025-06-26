@@ -8,7 +8,7 @@ use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\System\Data\ShipSystemDataFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 
 class SystemDataDeserializer implements SystemDataDeserializerInterface
 {
@@ -19,7 +19,7 @@ class SystemDataDeserializer implements SystemDataDeserializerInterface
 
     #[Override]
     public function getSpecificShipSystem(
-        SpacecraftInterface $spacecraft,
+        Spacecraft $spacecraft,
         SpacecraftSystemTypeEnum $systemType,
         string $className,
         Collection $shipSystemDataCache,

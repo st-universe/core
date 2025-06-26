@@ -8,8 +8,8 @@ use Override;
 use RuntimeException;
 use Stu\Component\Map\EncodedMapInterface;
 use Stu\Lib\Trait\LayerExplorationTrait;
-use Stu\Orm\Entity\LayerInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Layer;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
@@ -24,8 +24,8 @@ class UserYRow extends YRow
         MapRepositoryInterface $mapRepository,
         StarSystemMapRepositoryInterface $starSystemMapRepository,
         EncodedMapInterface $encodedMap,
-        private UserInterface $user,
-        LayerInterface $layer,
+        private User $user,
+        Layer $layer,
         int $cury,
         int $minx,
         int $maxx,

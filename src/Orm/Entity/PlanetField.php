@@ -12,7 +12,6 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use RuntimeException;
 use Stu\Orm\Repository\PlanetFieldRepository;
 
@@ -23,7 +22,7 @@ use Stu\Orm\Repository\PlanetFieldRepository;
 #[Index(name: 'sandbox_building_active_idx', columns: ['colony_sandbox_id', 'buildings_id', 'aktiv'])]
 #[Index(name: 'active_idx', columns: ['aktiv'])]
 #[Entity(repositoryClass: PlanetFieldRepository::class)]
-class PlanetField implements PlanetFieldInterface
+class PlanetField
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -59,124 +58,107 @@ class PlanetField implements PlanetFieldInterface
 
     #[ManyToOne(targetEntity: Building::class)]
     #[JoinColumn(name: 'buildings_id', referencedColumnName: 'id')]
-    private ?BuildingInterface $building = null;
+    private ?Building $building = null;
 
     #[ManyToOne(targetEntity: Terraforming::class)]
     #[JoinColumn(name: 'terraforming_id', referencedColumnName: 'id')]
-    private ?TerraformingInterface $terraforming = null;
+    private ?Terraforming $terraforming = null;
 
     #[ManyToOne(targetEntity: Colony::class)]
     #[JoinColumn(name: 'colonies_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ?ColonyInterface $colony = null;
+    private ?Colony $colony = null;
 
     #[ManyToOne(targetEntity: ColonySandbox::class)]
     #[JoinColumn(name: 'colony_sandbox_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ?ColonySandboxInterface $sandbox = null;
+    private ?ColonySandbox $sandbox = null;
 
     private bool $buildmode = false;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getFieldId(): int
     {
         return $this->field_id;
     }
 
-    #[Override]
-    public function setFieldId(int $fieldId): PlanetFieldInterface
+    public function setFieldId(int $fieldId): PlanetField
     {
         $this->field_id = $fieldId;
         return $this;
     }
 
-    #[Override]
     public function getFieldType(): int
     {
         return $this->type_id;
     }
 
-    #[Override]
-    public function setFieldType(int $planetFieldTypeId): PlanetFieldInterface
+    public function setFieldType(int $planetFieldTypeId): PlanetField
     {
         $this->type_id = $planetFieldTypeId;
         return $this;
     }
 
-    #[Override]
     public function getBuildingId(): ?int
     {
         return $this->buildings_id;
     }
 
-    #[Override]
     public function getTerraformingId(): ?int
     {
         return $this->terraforming_id;
     }
 
-    #[Override]
     public function getIntegrity(): int
     {
         return $this->integrity;
     }
 
-    #[Override]
-    public function setIntegrity(int $integrity): PlanetFieldInterface
+    public function setIntegrity(int $integrity): PlanetField
     {
         $this->integrity = $integrity;
         return $this;
     }
 
-    #[Override]
     public function getActive(): int
     {
         return $this->aktiv;
     }
 
-    #[Override]
-    public function setActive(int $aktiv): PlanetFieldInterface
+    public function setActive(int $aktiv): PlanetField
     {
         $this->aktiv = $aktiv;
         return $this;
     }
 
-    #[Override]
     public function getActivateAfterBuild(): bool
     {
         return $this->activate_after_build;
     }
 
-    #[Override]
-    public function setActivateAfterBuild(bool $activateAfterBuild): PlanetFieldInterface
+    public function setActivateAfterBuild(bool $activateAfterBuild): PlanetField
     {
         $this->activate_after_build = $activateAfterBuild;
         return $this;
     }
 
-    #[Override]
     public function setBuildMode(bool $value): void
     {
         $this->buildmode = $value;
     }
 
-    #[Override]
     public function getBuildtime(): int
     {
         return $this->getActive();
     }
 
-    #[Override]
     public function isActive(): bool
     {
         return $this->getActive() === 1;
     }
 
-    #[Override]
     public function isActivateable(): bool
     {
         if ($this->hasBuilding() === false) {
@@ -188,7 +170,6 @@ class PlanetField implements PlanetFieldInterface
         return $this->getBuilding()->isActivateable();
     }
 
-    #[Override]
     public function hasHighDamage(): bool
     {
         if (!$this->isDamaged()) {
@@ -197,19 +178,16 @@ class PlanetField implements PlanetFieldInterface
         return round((100 / $this->getBuilding()->getIntegrity()) * $this->getIntegrity()) < 50;
     }
 
-    #[Override]
     public function isUnderConstruction(): bool
     {
         return $this->getActive() > 1;
     }
 
-    #[Override]
     public function hasBuilding(): bool
     {
         return $this->getBuilding() !== null;
     }
 
-    #[Override]
     public function getCssClass(): string
     {
         if ($this->buildmode === true) {
@@ -237,7 +215,6 @@ class PlanetField implements PlanetFieldInterface
         return 'cfu';
     }
 
-    #[Override]
     public function getBuildingState(): string
     {
         if ($this->isUnderConstruction()) {
@@ -246,21 +223,18 @@ class PlanetField implements PlanetFieldInterface
         return 'a';
     }
 
-    #[Override]
-    public function getBuilding(): ?BuildingInterface
+    public function getBuilding(): ?Building
     {
         return $this->building;
     }
 
-    #[Override]
-    public function setBuilding(?BuildingInterface $building): PlanetFieldInterface
+    public function setBuilding(?Building $building): PlanetField
     {
         $this->building = $building;
 
         return $this;
     }
 
-    #[Override]
     public function isDamaged(): bool
     {
         if (!$this->hasBuilding()) {
@@ -272,7 +246,6 @@ class PlanetField implements PlanetFieldInterface
         return $this->getIntegrity() !== $this->getBuilding()->getIntegrity();
     }
 
-    #[Override]
     public function clearBuilding(): void
     {
         $this->setBuilding(null);
@@ -280,8 +253,7 @@ class PlanetField implements PlanetFieldInterface
         $this->setActive(0);
     }
 
-    #[Override]
-    public function getHost(): ColonyInterface|ColonySandboxInterface
+    public function getHost(): Colony|ColonySandbox
     {
         $colony = $this->colony;
         $sandbox = $this->sandbox;
@@ -293,35 +265,30 @@ class PlanetField implements PlanetFieldInterface
         return $colony ?? $sandbox;
     }
 
-    #[Override]
-    public function setColony(ColonyInterface $colony): PlanetFieldInterface
+    public function setColony(Colony $colony): PlanetField
     {
         $this->colony = $colony;
         return $this;
     }
 
-    #[Override]
-    public function setColonySandbox(ColonySandboxInterface $sandbox): PlanetFieldInterface
+    public function setColonySandbox(ColonySandbox $sandbox): PlanetField
     {
         $this->sandbox = $sandbox;
         return $this;
     }
 
-    #[Override]
-    public function getTerraforming(): ?TerraformingInterface
+    public function getTerraforming(): ?Terraforming
     {
         return $this->terraforming;
     }
 
-    #[Override]
-    public function setTerraforming(?TerraformingInterface $terraforming): PlanetFieldInterface
+    public function setTerraforming(?Terraforming $terraforming): PlanetField
     {
         $this->terraforming = $terraforming;
 
         return $this;
     }
 
-    #[Override]
     public function getDayNightPrefix(int $timestamp): string
     {
         $twilightZone = $this->getHost()->getTwilightZone($timestamp);
@@ -333,7 +300,6 @@ class PlanetField implements PlanetFieldInterface
         return $this->getFieldId() % $this->getHost()->getSurfaceWidth() < -$twilightZone ? 'n' : 't';
     }
 
-    #[Override]
     public function getBuildProgress(): int
     {
         $building = $this->getBuilding();
@@ -345,7 +311,6 @@ class PlanetField implements PlanetFieldInterface
         return time() - $start;
     }
 
-    #[Override]
     public function getOverlayWidth(): int
     {
         $building = $this->getBuilding();
@@ -358,13 +323,11 @@ class PlanetField implements PlanetFieldInterface
         return (int) round((40 / 100) * $perc);
     }
 
-    #[Override]
     public function getPictureType(): string
     {
         return $this->getBuildingId() . "/" . $this->getBuilding()->getBuildingType() . $this->getBuildingState();
     }
 
-    #[Override]
     public function isColonizeAble(): bool
     {
         return in_array($this->getFieldType(), $this->getHost()->getColonyClass()->getColonizeableFields());

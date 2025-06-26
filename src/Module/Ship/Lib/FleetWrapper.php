@@ -8,19 +8,19 @@ use Doctrine\Common\Collections\Collection;
 use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
-use Stu\Orm\Entity\FleetInterface;
+use Stu\Orm\Entity\Fleet;
 
 final class FleetWrapper implements FleetWrapperInterface
 {
     public function __construct(
-        private FleetInterface $fleet,
+        private Fleet $fleet,
         private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
         private GameControllerInterface $game,
         private bool $isSingleShips
     ) {}
 
     #[Override]
-    public function get(): FleetInterface
+    public function get(): Fleet
     {
         return $this->fleet;
     }

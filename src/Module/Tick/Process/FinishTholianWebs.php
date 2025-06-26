@@ -13,15 +13,22 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
 use Stu\Module\Ship\Lib\TholianWebUtilInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\TholianWebInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\TholianWeb;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\TholianWebRepositoryInterface;
 
 final class FinishTholianWebs implements ProcessTickHandlerInterface
 {
-    public function __construct(private TholianWebRepositoryInterface $tholianWebRepository, private TholianWebUtilInterface $tholianWebUtil, private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory, private LeaveFleetInterface $leaveFleet, private SpacecraftSystemManagerInterface $spacecraftSystemManager, private PrivateMessageSenderInterface $privateMessageSender) {}
+    public function __construct(
+        private TholianWebRepositoryInterface $tholianWebRepository,
+        private TholianWebUtilInterface $tholianWebUtil,
+        private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
+        private LeaveFleetInterface $leaveFleet,
+        private SpacecraftSystemManagerInterface $spacecraftSystemManager,
+        private PrivateMessageSenderInterface $privateMessageSender
+    ) {}
 
     #[Override]
     public function work(): void
@@ -42,12 +49,18 @@ final class FinishTholianWebs implements ProcessTickHandlerInterface
         }
     }
 
-    private function handleFleetConstellations(TholianWebInterface $web): void
+    private function handleFleetConstellations(TholianWeb $web): void
     {
+        /** @var array<int, array<Ship>> */
         $fleets = [];
 
         //determine constellations
         foreach ($web->getCapturedSpacecrafts() as $spacecraft) {
+
+            if (!$spacecraft instanceof Ship) {
+                continue;
+            }
+
             $fleet = $spacecraft->getFleet();
             if ($fleet === null) {
                 continue;
@@ -79,7 +92,7 @@ final class FinishTholianWebs implements ProcessTickHandlerInterface
             $fleetName = $fleet->getName();
 
             /**
-             * @var ShipInterface[] $shiplist
+             * @var Ship[] $shiplist
              */
             foreach ($shiplist as $ship) {
                 $this->leaveFleet->leaveFleet($ship);
@@ -103,7 +116,7 @@ final class FinishTholianWebs implements ProcessTickHandlerInterface
         }
     }
 
-    private function cancelTractorBeams(TholianWebInterface $web): void
+    private function cancelTractorBeams(TholianWeb $web): void
     {
         $webOwner = $web->getUser();
 
@@ -112,14 +125,14 @@ final class FinishTholianWebs implements ProcessTickHandlerInterface
                 $this->cancelTractorBeam($webOwner, $spacecraft);
             }
 
-            $tractoringSpacecraft = $spacecraft instanceof ShipInterface ? $spacecraft->getTractoringSpacecraft() : null;
+            $tractoringSpacecraft = $spacecraft instanceof Ship ? $spacecraft->getTractoringSpacecraft() : null;
             if ($tractoringSpacecraft !== null) {
                 $this->cancelTractorBeam($webOwner, $tractoringSpacecraft);
             }
         }
     }
 
-    private function cancelTractorBeam(UserInterface $webOwner, SpacecraftInterface $spacecraft): void
+    private function cancelTractorBeam(User $webOwner, Spacecraft $spacecraft): void
     {
         $this->privateMessageSender->send(
             $webOwner->getId(),

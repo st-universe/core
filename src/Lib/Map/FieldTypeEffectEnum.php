@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Map;
 
-use Stu\Orm\Entity\MapFieldTypeInterface;
+use Stu\Orm\Entity\MapFieldType;
 
 enum FieldTypeEffectEnum: string
 {
@@ -77,7 +77,7 @@ enum FieldTypeEffectEnum: string
         };
     }
 
-    public function getFlightDestinationInfo(MapFieldTypeInterface $fieldType): ?string
+    public function getFlightDestinationInfo(MapFieldType $fieldType): ?string
     {
         $fieldTypeName = $fieldType->getName();
 

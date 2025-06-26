@@ -10,7 +10,7 @@ use Stu\Component\Map\DirectionEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpEnum;
 use Stu\Module\Spacecraft\Lib\Creation\SpacecraftFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
@@ -31,7 +31,7 @@ final class LaunchEscapePods implements LaunchEscapePodsInterface
     ) {}
 
     #[Override]
-    public function launch(SpacecraftInterface $spacecraft): ?SpacecraftInterface
+    public function launch(Spacecraft $spacecraft): ?Spacecraft
     {
         $shipRump = $this->spacecraftRumpRepository->find($spacecraft->getUser()->getFactionId() + SpacecraftRumpEnum::SHIP_RUMP_BASE_ID_ESCAPE_PODS);
 
@@ -57,7 +57,7 @@ final class LaunchEscapePods implements LaunchEscapePodsInterface
         return $pods;
     }
 
-    private function returnToSafety(SpacecraftInterface $pods, SpacecraftInterface $spacecraft): void
+    private function returnToSafety(Spacecraft $pods, Spacecraft $spacecraft): void
     {
         $field = $pods->getLocation();
 
@@ -98,7 +98,7 @@ final class LaunchEscapePods implements LaunchEscapePodsInterface
     /**
      * @return array<int>
      */
-    private function fly2(SpacecraftInterface $pods): array
+    private function fly2(Spacecraft $pods): array
     {
         return [$pods->getPosX(), $pods->getPosY() - 1];
     }
@@ -107,7 +107,7 @@ final class LaunchEscapePods implements LaunchEscapePodsInterface
     /**
      * @return array<int>
      */
-    private function fly4(SpacecraftInterface $pods): array
+    private function fly4(Spacecraft $pods): array
     {
         return [$pods->getPosX(), $pods->getPosY() + 1];
     }
@@ -116,7 +116,7 @@ final class LaunchEscapePods implements LaunchEscapePodsInterface
     /**
      * @return array<int>
      */
-    private function fly3(SpacecraftInterface $pods): array
+    private function fly3(Spacecraft $pods): array
     {
         return [$pods->getPosX() - 1, $pods->getPosY()];
     }
@@ -125,7 +125,7 @@ final class LaunchEscapePods implements LaunchEscapePodsInterface
     /**
      * @return array<int>
      */
-    private function fly1(SpacecraftInterface $pods): array
+    private function fly1(Spacecraft $pods): array
     {
         return [$pods->getPosX() + 1, $pods->getPosY()];
     }

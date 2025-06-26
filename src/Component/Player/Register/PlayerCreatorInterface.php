@@ -3,8 +3,8 @@
 namespace Stu\Component\Player\Register;
 
 use Stu\Component\Player\Register\Exception\RegistrationException;
-use Stu\Orm\Entity\FactionInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Faction;
+use Stu\Orm\Entity\User;
 
 interface PlayerCreatorInterface
 {
@@ -14,7 +14,7 @@ interface PlayerCreatorInterface
     public function createWithMobileNumber(
         string $loginName,
         string $emailAddress,
-        FactionInterface $faction,
+        Faction $faction,
         string $mobile,
         string $password,
         ?string $referer = null
@@ -23,10 +23,10 @@ interface PlayerCreatorInterface
     public function createPlayer(
         string $loginName,
         string $emailAddress,
-        FactionInterface $faction,
+        Faction $faction,
         string $password,
         ?string $mobile = null,
         ?string $smsCode = null,
         ?string $referer = null
-    ): UserInterface;
+    ): User;
 }

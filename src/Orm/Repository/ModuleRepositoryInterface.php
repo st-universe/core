@@ -5,33 +5,32 @@ namespace Stu\Orm\Repository;
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\Module;
-use Stu\Orm\Entity\ModuleInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
 
 /**
  * @extends ObjectRepository<Module>
  *
- * @method null|ModuleInterface find(integer $id)
+ * @method null|Module find(integer $id)
  */
 interface ModuleRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return array<ModuleInterface>
+     * @return array<Module>
      */
     public function getBySpecialTypeAndRump(
-        ColonyInterface|SpacecraftInterface $host,
+        Colony|Spacecraft $host,
         SpacecraftModuleTypeEnum $moduleType,
         int $rumpId
     ): array;
 
     /**
-     * @return array<ModuleInterface>
+     * @return array<Module>
      */
     public function getBySpecialTypeAndRumpAndRole(
-        ColonyInterface|ShipInterface $host,
+        Colony|Ship $host,
         SpacecraftModuleTypeEnum $moduleType,
         int $rumpId,
         int $shipRumpRoleId
@@ -41,7 +40,7 @@ interface ModuleRepositoryInterface extends ObjectRepository
     /**
      * @param array<int> $moduleLevel
      *
-     * @return array<ModuleInterface>
+     * @return array<Module>
      */
     public function getByTypeColonyAndLevel(
         int $colonyId,
@@ -53,7 +52,7 @@ interface ModuleRepositoryInterface extends ObjectRepository
     /**
      * @param array<int> $moduleLevel
      *
-     * @return array<ModuleInterface>
+     * @return array<Module>
      */
     public function getByTypeAndLevel(
         int $moduleTypeId,
@@ -64,7 +63,7 @@ interface ModuleRepositoryInterface extends ObjectRepository
     /**
      * @param array<int> $specialTypeIds
      *
-     * @return iterable<ModuleInterface>
+     * @return iterable<Module>
      */
     public function getBySpecialTypeIds(array $specialTypeIds): iterable;
 }

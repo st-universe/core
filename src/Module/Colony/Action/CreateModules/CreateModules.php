@@ -12,7 +12,7 @@ use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\ModuleBuildingFunctionInterface;
+use Stu\Orm\Entity\ModuleBuildingFunction;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ModuleBuildingFunctionRepositoryInterface;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
@@ -60,7 +60,7 @@ final class CreateModules implements ActionControllerInterface
         }
         $prod = [];
 
-        /** @var ModuleBuildingFunctionInterface[] $modules_av */
+        /** @var ModuleBuildingFunction[] $modules_av */
         $modules_av = [];
         foreach ($this->moduleBuildingFunctionRepository->getByBuildingFunctionAndUser($function, $userId) as $module) {
             $modules_av[$module->getModuleId()] = $module;

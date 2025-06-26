@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Stu\Lib\Map\NavPanel;
 
 use RuntimeException;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 
 class NavPanel
 {
-    public function __construct(private SpacecraftInterface $spacecraft) {}
+    public function __construct(private Spacecraft $spacecraft) {}
 
-    public function getSpacecraft(): SpacecraftInterface
+    public function getSpacecraft(): Spacecraft
     {
         return $this->spacecraft;
     }

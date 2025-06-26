@@ -9,16 +9,16 @@ use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyFactoryInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftNfsItem;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
 
 interface FightLibInterface
 {
     public function ready(SpacecraftWrapperInterface $wrapper, InformationInterface $informations): void;
 
     public function canAttackTarget(
-        SpacecraftInterface $spacecraft,
-        SpacecraftInterface|SpacecraftNfsItem $nfsItem,
+        Spacecraft $spacecraft,
+        Spacecraft|SpacecraftNfsItem $nfsItem,
         bool $checkCloaked = false,
         bool $checkActiveWeapons = true,
         bool $checkWarped = true
@@ -34,5 +34,5 @@ interface FightLibInterface
         BattlePartyFactoryInterface $battlePartyFactory
     ): array;
 
-    public function calculateHealthPercentage(ShipInterface $target): int;
+    public function calculateHealthPercentage(Ship $target): int;
 }

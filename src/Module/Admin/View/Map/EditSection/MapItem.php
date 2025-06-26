@@ -6,15 +6,13 @@ namespace Stu\Module\Admin\View\Map\EditSection;
 
 use RuntimeException;
 use Stu\Component\Map\EncodedMapInterface;
-use Stu\Orm\Entity\MapInterface;
+use Stu\Orm\Entity\Map;
 
 class MapItem
 {
-    public function __construct(private EncodedMapInterface $encodedMap, private MapInterface $map)
-    {
-    }
+    public function __construct(private EncodedMapInterface $encodedMap, private Map $map) {}
 
-    public function getMap(): MapInterface
+    public function getMap(): Map
     {
         return $this->map;
     }

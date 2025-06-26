@@ -20,7 +20,7 @@ use Stu\Module\Colony\View\ShowModuleScreen\ShowModuleScreen;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
-use Stu\Orm\Entity\ModuleInterface;
+use Stu\Orm\Entity\Module;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
@@ -135,10 +135,10 @@ final class RetrofitShip implements ActionControllerInterface
             throw new RuntimeException(sprintf('no module level for rumpId: %d', $rump->getId()));
         }
 
-        /** @var array<int, ModuleInterface> */
+        /** @var array<int, Module> */
         $modules = [];
 
-        /** @var array<int, array<int, ModuleInterface>> */
+        /** @var array<int, array<int, Module>> */
         $oldModulesOfType = [];
 
         foreach (SpacecraftModuleTypeEnum::getModuleSelectorOrder() as $moduleType) {
@@ -203,7 +203,7 @@ final class RetrofitShip implements ActionControllerInterface
         $storage = $colony->getStorage();
         $modulesToLower = [];
         foreach ($modules as $module) {
-            $isNewModule = !array_filter($oldModulesOfType[$module->getType()->value], function (ModuleInterface $oldModule) use ($module): bool {
+            $isNewModule = !array_filter($oldModulesOfType[$module->getType()->value], function (Module $oldModule) use ($module): bool {
                 return $oldModule->getId() === $module->getId();
             });
 

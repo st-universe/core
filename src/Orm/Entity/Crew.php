@@ -11,13 +11,12 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Component\Crew\CrewEnum;
 use Stu\Orm\Repository\CrewRepository;
 
 #[Table(name: 'stu_crew')]
 #[Entity(repositoryClass: CrewRepository::class)]
-class Crew implements CrewInterface
+class Crew
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -41,54 +40,47 @@ class Crew implements CrewInterface
 
     #[ManyToOne(targetEntity: CrewRace::class)]
     #[JoinColumn(name: 'race_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private CrewRaceInterface $race;
+    private CrewRace $race;
 
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $user;
+    private User $user;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getType(): int
     {
         return $this->type;
     }
 
-    #[Override]
-    public function setType(int $type): CrewInterface
+    public function setType(int $type): Crew
     {
         $this->type = $type;
 
         return $this;
     }
 
-    #[Override]
     public function getGender(): int
     {
         return $this->gender;
     }
 
-    #[Override]
-    public function setGender(int $gender): CrewInterface
+    public function setGender(int $gender): Crew
     {
         $this->gender = $gender;
 
         return $this;
     }
 
-    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
-    #[Override]
-    public function setName(string $name): CrewInterface
+    public function setName(string $name): Crew
     {
         $this->name = $name;
 
@@ -100,35 +92,30 @@ class Crew implements CrewInterface
         return $this->user_id;
     }
 
-    #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    #[Override]
-    public function setUser(UserInterface $user): CrewInterface
+    public function setUser(User $user): Crew
     {
         $this->user = $user;
 
         return $this;
     }
 
-    #[Override]
     public function getRaceId(): int
     {
         return $this->race_id;
     }
 
-    #[Override]
-    public function setRaceId(int $raceId): CrewInterface
+    public function setRaceId(int $raceId): Crew
     {
         $this->race_id = $raceId;
 
         return $this;
     }
 
-    #[Override]
     public function getGenderShort(): string
     {
         if ($this->getGender() == CrewEnum::CREW_GENDER_MALE) {
@@ -137,27 +124,23 @@ class Crew implements CrewInterface
         return 'w';
     }
 
-    #[Override]
     public function getTypeDescription(): string
     {
         return CrewEnum::getDescription($this->getType());
     }
 
-    #[Override]
-    public function getRace(): CrewRaceInterface
+    public function getRace(): CrewRace
     {
         return $this->race;
     }
 
-    #[Override]
-    public function setRace(CrewRaceInterface $crewRace): CrewInterface
+    public function setRace(CrewRace $crewRace): Crew
     {
         $this->race = $crewRace;
 
         return $this;
     }
 
-    #[Override]
     public function __toString(): string
     {
         return sprintf('crewId: %d', $this->getId());

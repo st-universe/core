@@ -16,13 +16,12 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\AllianceBoardRepository;
 
 #[Table(name: 'stu_alliance_boards')]
 #[Index(name: 'alliance_idx', columns: ['alliance_id'])]
 #[Entity(repositoryClass: AllianceBoardRepository::class)]
-class AllianceBoard implements AllianceBoardInterface
+class AllianceBoard
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -36,13 +35,13 @@ class AllianceBoard implements AllianceBoardInterface
     private string $name = '';
 
     /**
-     * @var ArrayCollection<int, AllianceBoardTopicInterface>
+     * @var ArrayCollection<int, AllianceBoardTopic>
      */
     #[OneToMany(targetEntity: AllianceBoardTopic::class, mappedBy: 'board')]
     private Collection $topics;
 
     /**
-     * @var ArrayCollection<int, AllianceBoardPostInterface>
+     * @var ArrayCollection<int, AllianceBoardPost>
      */
     #[OneToMany(targetEntity: AllianceBoardPost::class, mappedBy: 'board')]
     #[OrderBy(['date' => 'DESC'])]
@@ -50,7 +49,7 @@ class AllianceBoard implements AllianceBoardInterface
 
     #[ManyToOne(targetEntity: Alliance::class)]
     #[JoinColumn(name: 'alliance_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private AllianceInterface $alliance;
+    private Alliance $alliance;
 
     public function __construct()
     {
@@ -58,50 +57,43 @@ class AllianceBoard implements AllianceBoardInterface
         $this->posts = new ArrayCollection();
     }
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getAllianceId(): int
     {
         return $this->alliance_id;
     }
 
-    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
-    #[Override]
-    public function setName(string $name): AllianceBoardInterface
+    public function setName(string $name): AllianceBoard
     {
         $this->name = $name;
 
         return $this;
     }
 
-    #[Override]
     public function getTopicCount(): int
     {
         return count($this->topics);
     }
 
-    #[Override]
     public function getPostCount(): int
     {
         return array_reduce(
             $this->getTopics()->toArray(),
-            fn(int $sum, AllianceBoardTopicInterface $allianceBoardTopic): int => $sum + $allianceBoardTopic->getPostCount(),
+            fn(int $sum, AllianceBoardTopic $allianceBoardTopic): int => $sum + $allianceBoardTopic->getPostCount(),
             0
         );
     }
 
-    #[Override]
-    public function getLatestPost(): ?AllianceBoardPostInterface
+    public function getLatestPost(): ?AllianceBoardPost
     {
         $post = $this->getPosts()->first();
 
@@ -110,27 +102,29 @@ class AllianceBoard implements AllianceBoardInterface
             : $post;
     }
 
-    #[Override]
+    /**
+     * @return Collection<int, AllianceBoardTopic>
+     */
     public function getTopics(): Collection
     {
         return $this->topics;
     }
 
-    #[Override]
-    public function getAlliance(): AllianceInterface
+    public function getAlliance(): Alliance
     {
         return $this->alliance;
     }
 
-    #[Override]
-    public function setAlliance(AllianceInterface $alliance): AllianceBoardInterface
+    public function setAlliance(Alliance $alliance): AllianceBoard
     {
         $this->alliance = $alliance;
 
         return $this;
     }
 
-    #[Override]
+    /**
+     * @return Collection<int, AllianceBoardPost>
+     */
     public function getPosts(): Collection
     {
         return $this->posts;

@@ -2,11 +2,11 @@
 
 namespace Stu\Component\Spacecraft\System;
 
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 
 class SpacecraftSystemWrapperFactory implements SpacecraftSystemWrapperFactoryInterface
 {
-    public function create(SpacecraftInterface $spacecraft, SpacecraftSystemTypeEnum $type): ?SpacecraftSystemWrapper
+    public function create(Spacecraft $spacecraft, SpacecraftSystemTypeEnum $type): ?SpacecraftSystemWrapper
     {
         if (!$spacecraft->hasSpacecraftSystem($type)) {
             return null;

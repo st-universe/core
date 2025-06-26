@@ -14,8 +14,8 @@ use Stu\Module\Spacecraft\Lib\Message\MessageInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\FlightConsequenceInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\TholianWebInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\TholianWeb;
 use Stu\StuTestCase;
 
 class TholianWebConsequenceTest extends StuTestCase
@@ -25,7 +25,7 @@ class TholianWebConsequenceTest extends StuTestCase
 
     private FlightConsequenceInterface $subject;
 
-    private MockInterface&ShipInterface $ship;
+    private MockInterface&Ship $ship;
 
     private MockInterface&ShipWrapperInterface $wrapper;
 
@@ -37,7 +37,7 @@ class TholianWebConsequenceTest extends StuTestCase
         $this->tholianWebUtil = $this->mock(TholianWebUtilInterface::class);
         $this->messageFactory = $this->mock(MessageFactoryInterface::class);
 
-        $this->ship = $this->mock(ShipInterface::class);
+        $this->ship = $this->mock(Ship::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
         $this->flightRoute = $this->mock(FlightRouteInterface::class);
 
@@ -109,7 +109,7 @@ class TholianWebConsequenceTest extends StuTestCase
     public function testTriggerExpectNothingWhenInFinishedWeb(): void
     {
         $messages = $this->mock(MessageCollectionInterface::class);
-        $web = $this->mock(TholianWebInterface::class);
+        $web = $this->mock(TholianWeb::class);
         $message = $this->mock(MessageInterface::class);
 
         $this->ship->shouldReceive('getCondition->isDestroyed')
@@ -153,7 +153,7 @@ class TholianWebConsequenceTest extends StuTestCase
     public function testTriggerExpectReleaseWhenInUnfinishedWeb(): void
     {
         $messages = $this->mock(MessageCollectionInterface::class);
-        $web = $this->mock(TholianWebInterface::class);
+        $web = $this->mock(TholianWeb::class);
         $message = $this->mock(MessageInterface::class);
 
         $this->ship->shouldReceive('getCondition->isDestroyed')

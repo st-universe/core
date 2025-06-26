@@ -20,7 +20,6 @@ use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use LogicException;
-use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
@@ -39,6 +38,11 @@ use Stu\Component\Spacecraft\Trait\SpacecraftStorageTrait;
 use Stu\Component\Spacecraft\Trait\SpacecraftSystemHealthTrait;
 use Stu\Component\Spacecraft\Trait\SpacecraftSystemStateTrait;
 use Stu\Component\Spacecraft\Trait\SpacecraftTorpedoTrait;
+use Stu\Lib\Interaction\EntityWithInteractionCheckInterface;
+use Stu\Lib\Map\EntityWithLocationInterface;
+use Stu\Lib\Transfer\EntityWithStorageInterface;
+use Stu\Module\Spacecraft\Lib\Crew\EntityWithCrewAssignmentsInterface;
+use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestroyerInterface;
 use Stu\Orm\Repository\SpacecraftRepository;
 
 #[Table(name: 'stu_spacecraft')]
@@ -50,7 +54,12 @@ use Stu\Orm\Repository\SpacecraftRepository;
     SpacecraftTypeEnum::STATION->value => Station::class,
     SpacecraftTypeEnum::THOLIAN_WEB->value => TholianWeb::class
 ])]
-abstract class Spacecraft implements SpacecraftInterface
+abstract class Spacecraft implements
+    SpacecraftDestroyerInterface,
+    EntityWithStorageInterface,
+    EntityWithLocationInterface,
+    EntityWithCrewAssignmentsInterface,
+    EntityWithInteractionCheckInterface
 {
     use SpacecraftSystemStateTrait;
     use SpacecraftSystemExistenceTrait;
@@ -103,32 +112,32 @@ abstract class Spacecraft implements SpacecraftInterface
     private int $location_id = 0;
 
     #[OneToOne(targetEntity: SpacecraftCondition::class, mappedBy: 'spacecraft', fetch: 'EAGER', cascade: ['all'])]
-    private ?SpacecraftConditionInterface $condition;
+    private ?SpacecraftCondition $condition;
 
     #[OneToOne(targetEntity: Ship::class)]
     #[JoinColumn(name: 'tractored_ship_id', referencedColumnName: 'id')]
-    private ?ShipInterface $tractoredShip = null;
+    private ?Ship $tractoredShip = null;
 
     #[ManyToOne(targetEntity: TholianWeb::class)]
     #[JoinColumn(name: 'holding_web_id', referencedColumnName: 'id')]
-    private ?TholianWebInterface $holdingWeb = null;
+    private ?TholianWeb $holdingWeb = null;
 
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $user;
+    private User $user;
 
     /**
-     * @var ArrayCollection<int, CrewAssignmentInterface>
+     * @var ArrayCollection<int, CrewAssignment>
      */
     #[OneToMany(targetEntity: CrewAssignment::class, mappedBy: 'spacecraft', indexBy: 'crew_id')]
     #[OrderBy(['crew' => 'ASC'])]
     private Collection $crew;
 
     #[OneToOne(targetEntity: TorpedoStorage::class, mappedBy: 'spacecraft')]
-    private ?TorpedoStorageInterface $torpedoStorage = null;
+    private ?TorpedoStorage $torpedoStorage = null;
 
     /**
-     * @var ArrayCollection<int, SpacecraftSystemInterface>
+     * @var ArrayCollection<int, SpacecraftSystem>
      */
     #[OneToMany(targetEntity: SpacecraftSystem::class, mappedBy: 'spacecraft', indexBy: 'system_type')]
     #[OrderBy(['system_type' => 'ASC'])]
@@ -136,14 +145,14 @@ abstract class Spacecraft implements SpacecraftInterface
 
     #[ManyToOne(targetEntity: SpacecraftRump::class)]
     #[JoinColumn(name: 'rump_id', nullable: false, referencedColumnName: 'id')]
-    private SpacecraftRumpInterface $rump;
+    private SpacecraftRump $rump;
 
     #[ManyToOne(targetEntity: SpacecraftBuildplan::class)]
     #[JoinColumn(name: 'plan_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ?SpacecraftBuildplanInterface $buildplan = null;
+    private ?SpacecraftBuildplan $buildplan = null;
 
     /**
-     * @var ArrayCollection<int, StorageInterface>
+     * @var ArrayCollection<int, Storage>
      */
     #[OneToMany(targetEntity: Storage::class, mappedBy: 'spacecraft', indexBy: 'commodity_id')]
     #[OrderBy(['commodity_id' => 'ASC'])]
@@ -151,20 +160,20 @@ abstract class Spacecraft implements SpacecraftInterface
 
     #[ManyToOne(targetEntity: Location::class)]
     #[JoinColumn(name: 'location_id', nullable: false, referencedColumnName: 'id')]
-    private LocationInterface $location;
+    private Location $location;
 
     /**
-     * @var ArrayCollection<int, ShipLogInterface>
+     * @var ArrayCollection<int, ShipLog>
      */
     #[OneToMany(targetEntity: ShipLog::class, mappedBy: 'spacecraft', fetch: 'EXTRA_LAZY')]
     #[OrderBy(['id' => 'DESC'])]
     private Collection $logbook;
 
     #[OneToOne(targetEntity: ShipTakeover::class, mappedBy: 'source')]
-    private ?ShipTakeoverInterface $takeoverActive = null;
+    private ?ShipTakeover $takeoverActive = null;
 
     #[OneToOne(targetEntity: ShipTakeover::class, mappedBy: 'target')]
-    private ?ShipTakeoverInterface $takeoverPassive = null;
+    private ?ShipTakeover $takeoverPassive = null;
 
     public function __construct()
     {
@@ -174,7 +183,6 @@ abstract class Spacecraft implements SpacecraftInterface
         $this->logbook = new ArrayCollection();
     }
 
-    #[Override]
     public function getId(): int
     {
         if ($this->id === null) {
@@ -184,98 +192,88 @@ abstract class Spacecraft implements SpacecraftInterface
         return $this->id;
     }
 
-    #[Override]
-    public function getCondition(): SpacecraftConditionInterface
+    public function getCondition(): SpacecraftCondition
     {
         return $this->condition ?? throw new LogicException('Spacecraft has no condition');;
     }
 
-    #[Override]
-    public function setCondition(SpacecraftConditionInterface $condition): SpacecraftInterface
+    public function setCondition(SpacecraftCondition $condition): Spacecraft
     {
         $this->condition = $condition;
 
         return $this;
     }
 
-    #[Override]
+    public abstract function getType(): SpacecraftTypeEnum;
+
+    public abstract function getFleet(): ?Fleet;
+
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    #[Override]
     public function getUserName(): string
     {
         return $this->getUser()->getName();
     }
 
-    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
-    #[Override]
-    public function setName(string $name): SpacecraftInterface
+    public function setName(string $name): Spacecraft
     {
         $this->name = $name;
         return $this;
     }
 
-    #[Override]
     public function getMaxHull(): int
     {
         return $this->max_huelle;
     }
 
-    #[Override]
-    public function setMaxHuell(int $maxHull): SpacecraftInterface
+    public function setMaxHuell(int $maxHull): Spacecraft
     {
         $this->max_huelle = $maxHull;
         return $this;
     }
 
-    #[Override]
-    public function setMaxShield(int $maxShields): SpacecraftInterface
+    public function setMaxShield(int $maxShields): Spacecraft
     {
         $this->max_schilde = $maxShields;
         return $this;
     }
 
-    #[Override]
     public function getDatabaseId(): ?int
     {
         return $this->database_id;
     }
 
-    #[Override]
-    public function setDatabaseId(?int $databaseEntryId): SpacecraftInterface
+    public function setDatabaseId(?int $databaseEntryId): Spacecraft
     {
         $this->database_id = $databaseEntryId;
         return $this;
     }
 
-    #[Override]
     public function getCrewAssignments(): Collection
     {
         return $this->crew;
     }
 
-    #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    #[Override]
-    public function setUser(UserInterface $user): SpacecraftInterface
+    public function setUser(User $user): Spacecraft
     {
         $this->user = $user;
         return $this;
     }
 
-    #[Override]
+    /** @return array<int, Module>*/
     public function getModules(): array
     {
         $modules = [];
@@ -294,31 +292,27 @@ abstract class Spacecraft implements SpacecraftInterface
         return $modules;
     }
 
-    #[Override]
-    public function getTorpedoStorage(): ?TorpedoStorageInterface
+    public function getTorpedoStorage(): ?TorpedoStorage
     {
         return $this->torpedoStorage;
     }
 
-    #[Override]
-    public function setTorpedoStorage(?TorpedoStorageInterface $torpedoStorage): SpacecraftInterface
+    public function setTorpedoStorage(?TorpedoStorage $torpedoStorage): Spacecraft
     {
         $this->torpedoStorage = $torpedoStorage;
         return $this;
     }
 
-    #[Override]
     public function getStorage(): Collection
     {
         return $this->storage;
     }
 
-    #[Override]
-    public function getLocation(): MapInterface|StarSystemMapInterface
+    public function getLocation(): Map|StarSystemMap
     {
         if (
-            $this->location instanceof MapInterface
-            || $this->location instanceof StarSystemMapInterface
+            $this->location instanceof Map
+            || $this->location instanceof StarSystemMap
         ) {
             return $this->location;
         }
@@ -326,126 +320,113 @@ abstract class Spacecraft implements SpacecraftInterface
         throw new RuntimeException('unknown type');
     }
 
-    #[Override]
+    /**
+     * @return Collection<int, ShipLog> Ordered by id
+     */
     public function getLogbook(): Collection
     {
         return $this->logbook;
     }
 
-    #[Override]
-    public function getTakeoverActive(): ?ShipTakeoverInterface
+    public function getTakeoverActive(): ?ShipTakeover
     {
         return $this->takeoverActive;
     }
 
-    #[Override]
-    public function setTakeoverActive(?ShipTakeoverInterface $takeover): SpacecraftInterface
+    public function setTakeoverActive(?ShipTakeover $takeover): Spacecraft
     {
         $this->takeoverActive = $takeover;
 
         return $this;
     }
 
-    #[Override]
-    public function getTakeoverPassive(): ?ShipTakeoverInterface
+    public function getTakeoverPassive(): ?ShipTakeover
     {
         return $this->takeoverPassive;
     }
 
-    #[Override]
-    public function setTakeoverPassive(?ShipTakeoverInterface $takeover): SpacecraftInterface
+    public function setTakeoverPassive(?ShipTakeover $takeover): Spacecraft
     {
         $this->takeoverPassive = $takeover;
 
         return $this;
     }
 
-    #[Override]
-    public function setLocation(LocationInterface $location): SpacecraftInterface
+    public function setLocation(Location $location): Spacecraft
     {
         $this->location = $location;
 
         return $this;
     }
 
-    #[Override]
-    public function getBuildplan(): ?SpacecraftBuildplanInterface
+    public function getBuildplan(): ?SpacecraftBuildplan
     {
         return $this->buildplan;
     }
 
-    #[Override]
-    public function setBuildplan(?SpacecraftBuildplanInterface $spacecraftBuildplan): SpacecraftInterface
+    public function setBuildplan(?SpacecraftBuildplan $spacecraftBuildplan): Spacecraft
     {
         $this->buildplan = $spacecraftBuildplan;
         return $this;
     }
 
-    #[Override]
+    /**
+     * @return Collection<int, SpacecraftSystem>
+     */
     public function getSystems(): Collection
     {
         return $this->systems;
     }
 
-    #[Override]
-    public function getTractoredShip(): ?ShipInterface
+    public function getTractoredShip(): ?Ship
     {
         return $this->tractoredShip;
     }
 
-    #[Override]
-    public function setTractoredShip(?ShipInterface $ship): SpacecraftInterface
+    public function setTractoredShip(?Ship $ship): Spacecraft
     {
         $this->tractoredShip = $ship;
         return $this;
     }
 
-    #[Override]
-    public function getHoldingWeb(): ?TholianWebInterface
+    public function getHoldingWeb(): ?TholianWeb
     {
         return $this->holdingWeb;
     }
 
-    #[Override]
-    public function setHoldingWeb(?TholianWebInterface $web): SpacecraftInterface
+    public function setHoldingWeb(?TholianWeb $web): Spacecraft
     {
         $this->holdingWeb = $web;
 
         return $this;
     }
 
-    #[Override]
-    public function getRump(): SpacecraftRumpInterface
+    public function getRump(): SpacecraftRump
     {
         return $this->rump;
     }
 
-    #[Override]
     public function getRumpId(): int
     {
         return $this->getRump()->getId();
     }
 
-    #[Override]
     public function getRumpName(): string
     {
         return $this->getRump()->getName();
     }
 
-    #[Override]
-    public function setRump(SpacecraftRumpInterface $shipRump): SpacecraftInterface
+    public function setRump(SpacecraftRump $shipRump): Spacecraft
     {
         $this->rump = $shipRump;
         return $this;
     }
 
-    #[Override]
     public function getState(): SpacecraftStateEnum
     {
         return $this->getCondition()->getState();
     }
 
-    #[Override]
     public function __toString(): string
     {
         if ($this->id !== null) {

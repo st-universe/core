@@ -16,12 +16,12 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
-use Override;
+use Stu\Module\Ship\Lib\EntityWithAstroEntryInterface;
 use Stu\Orm\Repository\StarSystemRepository;
 
 #[Table(name: 'stu_systems')]
 #[Entity(repositoryClass: StarSystemRepository::class)]
-class StarSystem implements StarSystemInterface
+class StarSystem implements EntityWithAstroEntryInterface
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -51,26 +51,26 @@ class StarSystem implements StarSystemInterface
 
     #[ManyToOne(targetEntity: StarSystemType::class)]
     #[JoinColumn(name: 'type', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private StarSystemTypeInterface $systemType;
+    private StarSystemType $systemType;
 
     #[OneToOne(targetEntity: Map::class, mappedBy: 'starSystem')]
-    private ?MapInterface $map = null;
+    private ?Map $map = null;
 
     #[ManyToOne(targetEntity: DatabaseEntry::class)]
     #[JoinColumn(name: 'database_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ?DatabaseEntryInterface $databaseEntry = null;
+    private ?DatabaseEntry $databaseEntry = null;
 
     #[OneToOne(targetEntity: Station::class, mappedBy: 'influenceArea')]
-    private ?StationInterface $station = null;
+    private ?Station $station = null;
 
     /**
-     * @var ArrayCollection<int, StarSystemMapInterface>
+     * @var ArrayCollection<int, StarSystemMap>
      */
     #[OneToMany(targetEntity: StarSystemMap::class, mappedBy: 'starSystem')]
     #[OrderBy(['sy' => 'ASC', 'sx' => 'ASC'])]
     private Collection $fields;
 
-    /** @var ArrayCollection<int, AstronomicalEntryInterface> */
+    /** @var ArrayCollection<int, AstronomicalEntry> */
     #[OneToMany(targetEntity: AstronomicalEntry::class, mappedBy: 'starSystem', indexBy: 'user_id', fetch: 'EXTRA_LAZY')]
     private Collection $astronomicalEntries;
 
@@ -80,13 +80,11 @@ class StarSystem implements StarSystemInterface
         $this->astronomicalEntries = new ArrayCollection();
     }
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getCx(): ?int
     {
         $map = $this->map;
@@ -97,7 +95,6 @@ class StarSystem implements StarSystemInterface
         return null;
     }
 
-    #[Override]
     public function getCy(): ?int
     {
         $map = $this->map;
@@ -108,137 +105,120 @@ class StarSystem implements StarSystemInterface
         return null;
     }
 
-    #[Override]
-    public function getType(): StarSystemTypeInterface
+    public function getType(): StarSystemType
     {
         return $this->systemType;
     }
 
-    #[Override]
-    public function setType(StarSystemTypeInterface $systemType): StarSystemInterface
+    public function setType(StarSystemType $systemType): StarSystem
     {
         $this->systemType = $systemType;
 
         return $this;
     }
 
-    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
-    #[Override]
-    public function setName(string $name): StarSystemInterface
+    public function setName(string $name): StarSystem
     {
         $this->name = $name;
 
         return $this;
     }
 
-    #[Override]
     public function getMaxX(): int
     {
         return $this->max_x;
     }
 
-    #[Override]
-    public function setMaxX(int $maxX): StarSystemInterface
+    public function setMaxX(int $maxX): StarSystem
     {
         $this->max_x = $maxX;
 
         return $this;
     }
 
-    #[Override]
     public function getMaxY(): int
     {
         return $this->max_y;
     }
 
-    #[Override]
-    public function setMaxY(int $maxY): StarSystemInterface
+    public function setMaxY(int $maxY): StarSystem
     {
         $this->max_y = $maxY;
 
         return $this;
     }
 
-    #[Override]
     public function getBonusFieldAmount(): int
     {
         return $this->bonus_fields;
     }
 
-    #[Override]
-    public function setBonusFieldAmount(int $bonusFieldAmount): StarSystemInterface
+    public function setBonusFieldAmount(int $bonusFieldAmount): StarSystem
     {
         $this->bonus_fields = $bonusFieldAmount;
 
         return $this;
     }
 
-    #[Override]
-    public function getSystemType(): StarSystemTypeInterface
+    public function getSystemType(): StarSystemType
     {
         return $this->systemType;
     }
 
-    #[Override]
-    public function getDatabaseEntry(): ?DatabaseEntryInterface
+    public function getDatabaseEntry(): ?DatabaseEntry
     {
         return $this->databaseEntry;
     }
 
-    #[Override]
-    public function setDatabaseEntry(?DatabaseEntryInterface $databaseEntry): StarSystemInterface
+    public function setDatabaseEntry(?DatabaseEntry $databaseEntry): StarSystem
     {
         $this->databaseEntry = $databaseEntry;
 
         return $this;
     }
 
-    #[Override]
-    public function getLayer(): ?LayerInterface
+    public function getLayer(): ?Layer
     {
         if ($this->isWormhole()) {
             return null;
         }
 
-        return $this->getMap()->getLayer();
+        return $this->getMap()?->getLayer();
     }
 
-    #[Override]
-    public function getMap(): ?MapInterface
+    public function getMap(): ?Map
     {
         return $this->map;
     }
 
-    #[Override]
-    public function getStation(): ?StationInterface
+    public function getStation(): ?Station
     {
         return $this->station;
     }
 
-    #[Override]
     public function unsetStation(): void
     {
         $this->station = null;
     }
 
-    #[Override]
+    /**
+     * @return Collection<int, StarSystemMap>
+     */
     public function getFields(): Collection
     {
         return $this->fields;
     }
 
-    #[Override]
     public function isWormhole(): bool
     {
         return $this->is_wormhole;
     }
 
-    #[Override]
     public function getAstronomicalEntries(): Collection
     {
         return $this->astronomicalEntries;

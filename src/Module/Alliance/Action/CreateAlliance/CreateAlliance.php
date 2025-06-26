@@ -63,7 +63,7 @@ final class CreateAlliance implements ActionControllerInterface
 
         $this->allianceJobRepository->save($job);
 
-        $alliance->getJobs()->offsetSet(AllianceEnum::ALLIANCE_JOBS_FOUNDER, $job);
+        $alliance->getJobs()->set(AllianceEnum::ALLIANCE_JOBS_FOUNDER, $job);
 
         $game->addInformation('Die Allianz wurde gegründet');
     }

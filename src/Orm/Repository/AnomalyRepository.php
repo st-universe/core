@@ -10,9 +10,7 @@ use Override;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Anomaly;
-use Stu\Orm\Entity\AnomalyInterface;
 use Stu\Orm\Entity\Location;
-use Stu\Orm\Entity\LocationInterface;
 use Stu\Orm\Entity\Map;
 
 /**
@@ -21,20 +19,20 @@ use Stu\Orm\Entity\Map;
 final class AnomalyRepository extends EntityRepository implements AnomalyRepositoryInterface
 {
     #[Override]
-    public function prototype(): AnomalyInterface
+    public function prototype(): Anomaly
     {
         return new Anomaly();
     }
 
     #[Override]
-    public function save(AnomalyInterface $anomaly): void
+    public function save(Anomaly $anomaly): void
     {
         $em = $this->getEntityManager();
         $em->persist($anomaly);
     }
 
     #[Override]
-    public function delete(AnomalyInterface $anomaly): void
+    public function delete(Anomaly $anomaly): void
     {
         $location = $anomaly->getLocation();
         if ($location !== null) {
@@ -50,7 +48,7 @@ final class AnomalyRepository extends EntityRepository implements AnomalyReposit
     }
 
     #[Override]
-    public function getByLocationAndType(LocationInterface $location, AnomalyTypeEnum $type): ?AnomalyInterface
+    public function getByLocationAndType(Location $location, AnomalyTypeEnum $type): ?Anomaly
     {
         return $this->findOneBy([
             'location_id' => $location->getId(),
@@ -59,7 +57,7 @@ final class AnomalyRepository extends EntityRepository implements AnomalyReposit
     }
 
     /**
-     * @return array<AnomalyInterface>
+     * @return array<Anomaly>
      */
     #[Override]
     public function findAllRoot(): array

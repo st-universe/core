@@ -4,27 +4,26 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\Research;
-use Stu\Orm\Entity\ResearchInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 /**
  * @extends ObjectRepository<Research>
  *
- * @method null|ResearchInterface find(Integer $id)
+ * @method null|Research find(Integer $id)
  */
 interface ResearchRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return array<ResearchInterface>
+     * @return array<Research>
      */
     public function getAvailableResearch(int $userId): array;
 
-    public function getColonyTypeLimitByUser(UserInterface $user, int $colonyType): int;
+    public function getColonyTypeLimitByUser(User $user, int $colonyType): int;
 
     /**
-     * @return array<ResearchInterface>
+     * @return array<Research>
      */
     public function getPossibleResearchByParent(int $researchId): array;
 
-    public function save(ResearchInterface $research): void;
+    public function save(Research $research): void;
 }

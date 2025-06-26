@@ -15,9 +15,7 @@ final class ChangeSettings implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_CHANGE_SETTINGS';
 
-    public function __construct(private ChangeUserSettingInterface $changeUserSetting)
-    {
-    }
+    public function __construct(private ChangeUserSettingInterface $changeUserSetting) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void

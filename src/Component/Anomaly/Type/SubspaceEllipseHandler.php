@@ -20,7 +20,7 @@ use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\AnomalyInterface;
+use Stu\Orm\Entity\Anomaly;
 use Stu\Orm\Repository\LocationRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
@@ -64,7 +64,7 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
     }
 
     #[Override]
-    public function handleSpacecraftTick(AnomalyInterface $anomaly): void
+    public function handleSpacecraftTick(Anomaly $anomaly): void
     {
         $location = $anomaly->getLocation();
         if ($location === null) {
@@ -142,12 +142,12 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
     }
 
     #[Override]
-    public function letAnomalyDisappear(AnomalyInterface $anomaly): void
+    public function letAnomalyDisappear(Anomaly $anomaly): void
     {
         //TODO
     }
 
-    private function informSpacecraftOwnersAboutCreation(AnomalyInterface $anomaly): void
+    private function informSpacecraftOwnersAboutCreation(Anomaly $anomaly): void
     {
         $usersToInform = [];
 
@@ -198,7 +198,7 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
     }
 
     #[Override]
-    public function handleIncomingSpacecraft(SpacecraftWrapperInterface $wrapper, AnomalyInterface $anomaly, MessageCollectionInterface $messages): void
+    public function handleIncomingSpacecraft(SpacecraftWrapperInterface $wrapper, Anomaly $anomaly, MessageCollectionInterface $messages): void
     {
         //not needed
     }

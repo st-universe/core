@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Lib\Map\VisualPanel;
 
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayers;
-use Stu\Orm\Entity\StarSystemInterface;
+use Stu\Orm\Entity\StarSystem;
 
 class SystemScanPanelEntry extends SignaturePanelEntry
 {
@@ -13,7 +13,7 @@ class SystemScanPanelEntry extends SignaturePanelEntry
         int $x,
         int $y,
         PanelLayers $layers,
-        private StarSystemInterface $system
+        private StarSystem $system
     ) {
         parent::__construct($x, $y, $layers);
     }

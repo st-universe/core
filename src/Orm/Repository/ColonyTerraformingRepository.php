@@ -7,7 +7,6 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\ColonyTerraforming;
-use Stu\Orm\Entity\ColonyTerraformingInterface;
 
 /**
  * @extends EntityRepository<ColonyTerraforming>
@@ -15,13 +14,13 @@ use Stu\Orm\Entity\ColonyTerraformingInterface;
 final class ColonyTerraformingRepository extends EntityRepository implements ColonyTerraformingRepositoryInterface
 {
     #[Override]
-    public function prototype(): ColonyTerraformingInterface
+    public function prototype(): ColonyTerraforming
     {
         return new ColonyTerraforming();
     }
 
     #[Override]
-    public function save(ColonyTerraformingInterface $terraforming): void
+    public function save(ColonyTerraforming $terraforming): void
     {
         $em = $this->getEntityManager();
 
@@ -29,7 +28,7 @@ final class ColonyTerraformingRepository extends EntityRepository implements Col
     }
 
     #[Override]
-    public function delete(ColonyTerraformingInterface $terraforming): void
+    public function delete(ColonyTerraforming $terraforming): void
     {
         $em = $this->getEntityManager();
 
@@ -45,7 +44,7 @@ final class ColonyTerraformingRepository extends EntityRepository implements Col
     }
 
     #[Override]
-    public function getByColonyAndField(int $colonyId, int $fieldId): ?ColonyTerraformingInterface
+    public function getByColonyAndField(int $colonyId, int $fieldId): ?ColonyTerraforming
     {
         return $this->findOneBy([
             'colonies_id' => $colonyId,

@@ -3,11 +3,11 @@
 namespace Stu\Component\Spacecraft\System;
 
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 
 interface SpacecraftSystemTypeInterface
 {
-    public function setSpacecraft(SpacecraftInterface $spacecraft): void;
+    public function setSpacecraft(Spacecraft $spacecraft): void;
 
     public function checkActivationConditions(SpacecraftWrapperInterface $wrapper, string &$reason): bool;
 

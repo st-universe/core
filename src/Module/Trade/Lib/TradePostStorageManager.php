@@ -8,9 +8,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use InvalidArgumentException;
 use Override;
-use Stu\Orm\Entity\StorageInterface;
-use Stu\Orm\Entity\TradePostInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Storage;
+use Stu\Orm\Entity\TradePost;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 
@@ -19,19 +19,19 @@ final class TradePostStorageManager implements TradePostStorageManagerInterface
     private ?int $storageSum = null;
 
     /**
-     * @var ArrayCollection<int, StorageInterface>
+     * @var ArrayCollection<int, Storage>
      */
     private ?ArrayCollection $storage = null;
 
     public function __construct(
         private StorageRepositoryInterface $storageRepository,
         private CommodityRepositoryInterface $commodityRepository,
-        private TradePostInterface $tradePost,
-        private UserInterface $user
+        private TradePost $tradePost,
+        private User $user
     ) {}
 
     #[Override]
-    public function getTradePost(): TradePostInterface
+    public function getTradePost(): TradePost
     {
         return $this->tradePost;
     }
@@ -41,7 +41,7 @@ final class TradePostStorageManager implements TradePostStorageManagerInterface
     {
         if ($this->storageSum === null) {
             $this->storageSum = $this->getStorage()->reduce(
-                fn(int $value, StorageInterface $storage): int => $value + $storage->getAmount(),
+                fn(int $value, Storage $storage): int => $value + $storage->getAmount(),
                 0
             );
         }
@@ -73,7 +73,7 @@ final class TradePostStorageManager implements TradePostStorageManagerInterface
     {
         $storage = $this->getStorage();
 
-        /** @var ?StorageInterface */
+        /** @var ?Storage */
         $stor = $storage->get($commodityId) ?? null;
         if ($stor === null) {
             $stor = $this->storageRepository->prototype();
@@ -96,7 +96,7 @@ final class TradePostStorageManager implements TradePostStorageManagerInterface
     {
         $storage = $this->getStorage();
 
-        /** @var ?StorageInterface */
+        /** @var ?Storage */
         $stor = $storage->get($commodityId) ?? null;
         if ($stor === null) {
             return;

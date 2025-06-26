@@ -10,8 +10,8 @@ use Noodlehaus\ConfigInterface;
 use Override;
 use Stu\Component\Alliance\Relations\Renderer\AllianceRelationRendererInterface;
 use Stu\Lib\ParserWithImageInterface;
-use Stu\Orm\Entity\AllianceInterface;
-use Stu\Orm\Entity\AllianceRelationInterface;
+use Stu\Orm\Entity\Alliance;
+use Stu\Orm\Entity\AllianceRelation;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -23,7 +23,7 @@ class AllianceDescriptionRendererTest extends StuTestCase
 
     private MockInterface&AllianceRelationRepositoryInterface $allianceRelationRepository;
 
-    private MockInterface&AllianceInterface $alliance;
+    private MockInterface&Alliance $alliance;
 
     private MockInterface&ConfigInterface $config;
 
@@ -37,7 +37,7 @@ class AllianceDescriptionRendererTest extends StuTestCase
         $this->allianceRelationRepository = $this->mock(AllianceRelationRepositoryInterface::class);
         $this->config = $this->mock(ConfigInterface::class);
 
-        $this->alliance = $this->mock(AllianceInterface::class);
+        $this->alliance = $this->mock(Alliance::class);
 
         $this->subject = new AllianceDescriptionRenderer(
             $this->parserWithImage,
@@ -172,7 +172,7 @@ class AllianceDescriptionRendererTest extends StuTestCase
         $value = 'some-render-result';
         $allianceId = 666;
 
-        $relation = $this->mock(AllianceRelationInterface::class);
+        $relation = $this->mock(AllianceRelation::class);
 
         $this->allianceRelationRenderer->shouldReceive('render')
             ->with(

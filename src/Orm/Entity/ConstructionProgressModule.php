@@ -11,12 +11,11 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\ConstructionProgressModuleRepository;
 
 #[Table(name: 'stu_progress_module')]
 #[Entity(repositoryClass: ConstructionProgressModuleRepository::class)]
-class ConstructionProgressModule implements ConstructionProgressModuleInterface
+class ConstructionProgressModule
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -31,39 +30,34 @@ class ConstructionProgressModule implements ConstructionProgressModuleInterface
 
     #[ManyToOne(targetEntity: ConstructionProgress::class)]
     #[JoinColumn(name: 'progress_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ConstructionProgressInterface $progress;
+    private ConstructionProgress $progress;
 
     #[ManyToOne(targetEntity: Module::class)]
     #[JoinColumn(name: 'module_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ModuleInterface $module;
+    private Module $module;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
-    public function getConstructionProgress(): ConstructionProgressInterface
+    public function getConstructionProgress(): ConstructionProgress
     {
         return $this->progress;
     }
 
-    #[Override]
-    public function setConstructionProgress(ConstructionProgressInterface $progress): ConstructionProgressModuleInterface
+    public function setConstructionProgress(ConstructionProgress $progress): ConstructionProgressModule
     {
         $this->progress = $progress;
         return $this;
     }
 
-    #[Override]
-    public function getModule(): ModuleInterface
+    public function getModule(): Module
     {
         return $this->module;
     }
 
-    #[Override]
-    public function setModule(ModuleInterface $module): ConstructionProgressModuleInterface
+    public function setModule(Module $module): ConstructionProgressModule
     {
         $this->module = $module;
 

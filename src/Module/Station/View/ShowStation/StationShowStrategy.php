@@ -18,9 +18,9 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\SpacecraftTypeShowStragegyInterface;
 use Stu\Module\Station\Lib\StationLoaderInterface;
-use Stu\Orm\Entity\ConstructionProgressInterface;
-use Stu\Orm\Entity\StationInterface;
-use Stu\Orm\Entity\StationShipRepairInterface;
+use Stu\Orm\Entity\ConstructionProgress;
+use Stu\Orm\Entity\Station;
+use Stu\Orm\Entity\StationShipRepair;
 use Stu\Orm\Repository\ShipyardShipQueueRepositoryInterface;
 use Stu\Orm\Repository\StationShipRepairRepositoryInterface;
 
@@ -74,7 +74,7 @@ final class StationShowStrategy implements SpacecraftTypeShowStragegyInterface
         return $this;
     }
 
-    private function doConstructionStuff(StationInterface $station, ?ConstructionProgressInterface $progress, GameControllerInterface $game): void
+    private function doConstructionStuff(Station $station, ?ConstructionProgress $progress, GameControllerInterface $game): void
     {
         if (!$station->isConstruction()) {
             return;
@@ -100,7 +100,7 @@ final class StationShowStrategy implements SpacecraftTypeShowStragegyInterface
         }
     }
 
-    private function doStationStuff(StationInterface $station, GameControllerInterface $game): void
+    private function doStationStuff(Station $station, GameControllerInterface $game): void
     {
         if ($this->stationUtility->canManageShips($station)) {
             $game->setTemplateVar('CAN_MANAGE', true);
@@ -110,7 +110,7 @@ final class StationShowStrategy implements SpacecraftTypeShowStragegyInterface
             $game->setTemplateVar('CAN_REPAIR', true);
 
             $shipRepairProgress = array_map(
-                fn(StationShipRepairInterface $repair): ShipWrapperInterface => $this->spacecraftWrapperFactory->wrapShip($repair->getShip()),
+                fn(StationShipRepair $repair): ShipWrapperInterface => $this->spacecraftWrapperFactory->wrapShip($repair->getShip()),
                 $this->stationShipRepairRepository->getByStation(
                     $station->getId()
                 )

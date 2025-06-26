@@ -13,9 +13,9 @@ use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\FlightConsequenceInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\MapFieldTypeInterface;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\MapFieldType;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\Ship;
 use Stu\StuTestCase;
 
 class DeflectorConsequenceTest extends StuTestCase
@@ -24,7 +24,7 @@ class DeflectorConsequenceTest extends StuTestCase
 
     private FlightConsequenceInterface $subject;
 
-    private MockInterface&ShipInterface $ship;
+    private MockInterface&Ship $ship;
 
     private MockInterface&ShipWrapperInterface $wrapper;
 
@@ -35,7 +35,7 @@ class DeflectorConsequenceTest extends StuTestCase
     {
         $this->applyFieldDamage = $this->mock(ApplyFieldDamageInterface::class);
 
-        $this->ship = $this->mock(ShipInterface::class);
+        $this->ship = $this->mock(Ship::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
         $this->flightRoute = $this->mock(FlightRouteInterface::class);
 
@@ -87,8 +87,8 @@ class DeflectorConsequenceTest extends StuTestCase
     public function testTriggerExpectNothingWhenNoDeflectorCost(): void
     {
         $messages = $this->mock(MessageCollectionInterface::class);
-        $fieldType = $this->mock(MapFieldTypeInterface::class);
-        $waypoint = $this->mock(MapInterface::class);
+        $fieldType = $this->mock(MapFieldType::class);
+        $waypoint = $this->mock(Map::class);
 
         $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
@@ -127,8 +127,8 @@ class DeflectorConsequenceTest extends StuTestCase
     public function testTriggerExpectSpecialDamageAndDestruction(): void
     {
         $messages = $this->mock(MessageCollectionInterface::class);
-        $fieldType = $this->mock(MapFieldTypeInterface::class);
-        $waypoint = $this->mock(MapInterface::class);
+        $fieldType = $this->mock(MapFieldType::class);
+        $waypoint = $this->mock(Map::class);
 
         $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
@@ -186,8 +186,8 @@ class DeflectorConsequenceTest extends StuTestCase
     public function testTriggerExpectSpecialDamageAndNoDestruction(): void
     {
         $messages = $this->mock(MessageCollectionInterface::class);
-        $fieldType = $this->mock(MapFieldTypeInterface::class);
-        $waypoint = $this->mock(MapInterface::class);
+        $fieldType = $this->mock(MapFieldType::class);
+        $waypoint = $this->mock(Map::class);
 
         $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
@@ -249,8 +249,8 @@ class DeflectorConsequenceTest extends StuTestCase
     public function testTriggerExpectDamageWhenDeflectorDestroyed(): void
     {
         $messages = $this->mock(MessageCollectionInterface::class);
-        $fieldType = $this->mock(MapFieldTypeInterface::class);
-        $waypoint = $this->mock(MapInterface::class);
+        $fieldType = $this->mock(MapFieldType::class);
+        $waypoint = $this->mock(Map::class);
 
         $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
@@ -309,8 +309,8 @@ class DeflectorConsequenceTest extends StuTestCase
     public function testTriggerExpectDamageWhenNoEpsInstalled(): void
     {
         $messages = $this->mock(MessageCollectionInterface::class);
-        $fieldType = $this->mock(MapFieldTypeInterface::class);
-        $waypoint = $this->mock(MapInterface::class);
+        $fieldType = $this->mock(MapFieldType::class);
+        $waypoint = $this->mock(Map::class);
 
         $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
@@ -375,9 +375,9 @@ class DeflectorConsequenceTest extends StuTestCase
     public function testTriggerExpectDamageWhenNotEnoughEnergyForDeflector(): void
     {
         $messages = $this->mock(MessageCollectionInterface::class);
-        $fieldType = $this->mock(MapFieldTypeInterface::class);
+        $fieldType = $this->mock(MapFieldType::class);
         $epsSystem = $this->mock(EpsSystemData::class);
-        $waypoint = $this->mock(MapInterface::class);
+        $waypoint = $this->mock(Map::class);
 
         $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
@@ -454,9 +454,9 @@ class DeflectorConsequenceTest extends StuTestCase
     public function testTriggerExpectNoDamageWhenEnoughEnergyForDeflector(): void
     {
         $messages = $this->mock(MessageCollectionInterface::class);
-        $fieldType = $this->mock(MapFieldTypeInterface::class);
+        $fieldType = $this->mock(MapFieldType::class);
         $epsSystem = $this->mock(EpsSystemData::class);
-        $waypoint = $this->mock(MapInterface::class);
+        $waypoint = $this->mock(Map::class);
 
         $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()

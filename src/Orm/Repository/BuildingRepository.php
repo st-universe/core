@@ -10,12 +10,12 @@ use Stu\Component\Colony\ColonyEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\BuildingCommodity;
-use Stu\Orm\Entity\ColonyClassInterface;
+use Stu\Orm\Entity\ColonyClass;
 use Stu\Orm\Entity\ColonyClassRestriction;
 use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Entity\PlanetFieldTypeBuilding;
 use Stu\Orm\Entity\Researched;
-use Stu\Orm\Entity\ResearchInterface;
+use Stu\Orm\Entity\Research;
 
 /**
  * @extends EntityRepository<Building>
@@ -87,7 +87,7 @@ final class BuildingRepository extends EntityRepository implements BuildingRepos
     }
 
     #[Override]
-    public function getByResearch(ResearchInterface $research): array
+    public function getByResearch(Research $research): array
     {
         return $this->findBy(
             [

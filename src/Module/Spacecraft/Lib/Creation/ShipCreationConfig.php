@@ -7,7 +7,7 @@ use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Module\Spacecraft\Lib\Creation\SpacecraftCreationConfigInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 
 class ShipCreationConfig implements SpacecraftCreationConfigInterface
@@ -18,7 +18,7 @@ class ShipCreationConfig implements SpacecraftCreationConfigInterface
     ) {}
 
     #[Override]
-    public function getSpacecraft(): ?SpacecraftInterface
+    public function getSpacecraft(): ?Spacecraft
     {
         return null;
     }

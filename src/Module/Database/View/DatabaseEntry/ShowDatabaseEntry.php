@@ -15,10 +15,10 @@ use Stu\Lib\Map\VisualPanel\PanelAttributesInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\View\Category\Category;
-use Stu\Orm\Entity\ColonyScanInterface;
-use Stu\Orm\Entity\DatabaseEntryInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\ColonyScan;
+use Stu\Orm\Entity\DatabaseEntry;
+use Stu\Orm\Entity\StarSystemMap;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\DatabaseCategoryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
@@ -30,7 +30,7 @@ use Stu\Orm\Repository\StarSystemRepositoryInterface;
 use Stu\PlanetGenerator\PlanetGeneratorInterface;
 
 
-final class DatabaseEntry implements ViewControllerInterface
+final class ShowDatabaseEntry implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_ENTRY';
 
@@ -60,7 +60,7 @@ final class DatabaseEntry implements ViewControllerInterface
         }
 
         /**
-         * @var DatabaseEntryInterface $entry
+         * @var DatabaseEntry $entry
          */
         $entry = $this->databaseEntryRepository->find($entryId);
         $category = $this->databaseCategoryRepository->find($categoryId);
@@ -98,7 +98,7 @@ final class DatabaseEntry implements ViewControllerInterface
         $game->setTemplateVar('ENTRY', $entry);
     }
 
-    private function addSpecialVars(GameControllerInterface $game, DatabaseEntryInterface $entry): void
+    private function addSpecialVars(GameControllerInterface $game, DatabaseEntry $entry): void
     {
         $entry_object_id = $entry->getObjectId();
 
@@ -221,7 +221,7 @@ final class DatabaseEntry implements ViewControllerInterface
         return sprintf('display: grid; grid-template-columns: %s;', implode(' ', $gridArray));
     }
 
-    private function createMapData(StarSystemMapInterface $systemMap): MapData
+    private function createMapData(StarSystemMap $systemMap): MapData
     {
         return new MapData(
             $systemMap->getSx(),
@@ -230,7 +230,7 @@ final class DatabaseEntry implements ViewControllerInterface
         );
     }
 
-    private function hasUserColonyInSystem(UserInterface $user, int $systemId): bool
+    private function hasUserColonyInSystem(User $user, int $systemId): bool
     {
         foreach ($user->getColonies() as $colony) {
             if ($colony->getStarsystemMap()->getSystem()->getId() === $systemId) {
@@ -241,7 +241,7 @@ final class DatabaseEntry implements ViewControllerInterface
         return false;
     }
 
-    private function showPmHref(StarSystemMapInterface $map, UserInterface $user): bool
+    private function showPmHref(StarSystemMap $map, User $user): bool
     {
         return $map->getColony() !== null
             && !$map->getColony()->isFree()
@@ -249,21 +249,21 @@ final class DatabaseEntry implements ViewControllerInterface
     }
 
     /**
-     * @return array<int, ColonyScanInterface>
+     * @return array<int, ColonyScan>
      */
-    public function getColonyScanList(UserInterface $user, int $systemId): array
+    public function getColonyScanList(User $user, int $systemId): array
     {
         $alliance = $user->getAlliance();
 
         if ($alliance !== null) {
-            $unfilteredScans = array_merge(...$alliance->getMembers()->map(fn(UserInterface $user) => $user->getColonyScans()->toArray()));
+            $unfilteredScans = array_merge(...$alliance->getMembers()->map(fn(User $user) => $user->getColonyScans()->toArray()));
         } else {
             $unfilteredScans = $user->getColonyScans()->toArray();
         }
 
         $filteredScans = array_filter(
             $unfilteredScans,
-            fn(ColonyScanInterface $scan): bool => $scan->getColony()->getSystem()->getId() === $systemId
+            fn(ColonyScan $scan): bool => $scan->getColony()->getSystem()->getId() === $systemId
         );
 
         $scansByColony = [];

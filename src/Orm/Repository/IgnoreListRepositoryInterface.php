@@ -4,26 +4,25 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\IgnoreList;
-use Stu\Orm\Entity\IgnoreListInterface;
 
 /**
  * @extends ObjectRepository<IgnoreList>
  */
 interface IgnoreListRepositoryInterface extends ObjectRepository
 {
-    public function prototype(): IgnoreListInterface;
+    public function prototype(): IgnoreList;
 
-    public function save(IgnoreListInterface $ignoreList): void;
+    public function save(IgnoreList $ignoreList): void;
 
-    public function delete(IgnoreListInterface $ignoreList): void;
+    public function delete(IgnoreList $ignoreList): void;
 
     /**
-     * @return list<IgnoreListInterface>
+     * @return list<IgnoreList>
      */
     public function getByRecipient(int $recipientId): array;
 
     /**
-     * @return list<IgnoreListInterface>
+     * @return list<IgnoreList>
      */
     public function getByUser(int $userId): array;
 

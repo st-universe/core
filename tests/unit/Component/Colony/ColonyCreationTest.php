@@ -8,10 +8,10 @@ use Mockery\MockInterface;
 use Override;
 use RuntimeException;
 use Stu\Module\Control\StuRandom;
-use Stu\Orm\Entity\ColonyClassInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\ColonyClass;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\StarSystemMap;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\StuTestCase;
@@ -45,7 +45,7 @@ class ColonyCreationTest extends StuTestCase
         static::expectExceptionMessage('colony class can not be null');
         static::expectException(RuntimeException::class);
 
-        $systemMap = $this->mock(StarSystemMapInterface::class);
+        $systemMap = $this->mock(StarSystemMap::class);
 
         $systemMap->shouldReceive('getFieldType->getColonyClass')
             ->withNoArgs()
@@ -57,10 +57,10 @@ class ColonyCreationTest extends StuTestCase
 
     public function testCreateExpectCreationOfNewColony(): void
     {
-        $systemMap = $this->mock(StarSystemMapInterface::class);
-        $colonyClass = $this->mock(ColonyClassInterface::class);
-        $colony = $this->mock(ColonyInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $systemMap = $this->mock(StarSystemMap::class);
+        $colonyClass = $this->mock(ColonyClass::class);
+        $colony = $this->mock(Colony::class);
+        $user = $this->mock(User::class);
 
         $systemMap->shouldReceive('getFieldType->getColonyClass')
             ->withNoArgs()

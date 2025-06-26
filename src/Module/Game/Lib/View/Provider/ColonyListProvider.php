@@ -8,7 +8,7 @@ use Override;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\ColonyListItemInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Colony;
 use Stu\Orm\Repository\BuildingCommodityRepositoryInterface;
 use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
@@ -30,7 +30,7 @@ final class ColonyListProvider implements ViewComponentProviderInterface
         $game->setTemplateVar(
             'COLONY_LIST',
             array_map(
-                fn (ColonyInterface $colony): ColonyListItemInterface => $this->colonyLibFactory->createColonyListItem($colony),
+                fn (Colony $colony): ColonyListItemInterface => $this->colonyLibFactory->createColonyListItem($colony),
                 $colonyList
             )
         );

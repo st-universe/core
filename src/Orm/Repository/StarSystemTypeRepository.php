@@ -9,7 +9,6 @@ use Override;
 use Stu\Component\Database\DatabaseCategoryTypeEnum;
 use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\StarSystemType;
-use Stu\Orm\Entity\StarSystemTypeInterface;
 
 /**
  * @extends EntityRepository<StarSystemType>
@@ -17,7 +16,7 @@ use Stu\Orm\Entity\StarSystemTypeInterface;
 final class StarSystemTypeRepository extends EntityRepository implements StarSystemTypeRepositoryInterface
 {
     #[Override]
-    public function save(StarSystemTypeInterface $type): void
+    public function save(StarSystemType $type): void
     {
         $em = $this->getEntityManager();
 

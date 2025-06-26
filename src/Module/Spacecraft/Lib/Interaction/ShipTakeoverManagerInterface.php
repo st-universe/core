@@ -2,8 +2,8 @@
 
 namespace Stu\Module\Spacecraft\Lib\Interaction;
 
-use Stu\Orm\Entity\ShipTakeoverInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\ShipTakeover;
+use Stu\Orm\Entity\Spacecraft;
 
 interface ShipTakeoverManagerInterface
 {
@@ -12,24 +12,24 @@ interface ShipTakeoverManagerInterface
     public const BOARDING_PRESTIGE_PER_MODULE_LEVEL = 25;
     public const TURNS_TO_TAKEOVER = 10;
 
-    public function getPrestigeForBoardingAttempt(SpacecraftInterface $target): int;
+    public function getPrestigeForBoardingAttempt(Spacecraft $target): int;
 
-    public function getPrestigeForTakeover(SpacecraftInterface $target): int;
+    public function getPrestigeForTakeover(Spacecraft $target): int;
 
-    public function startTakeover(SpacecraftInterface $source, SpacecraftInterface $target, int $prestige): void;
+    public function startTakeover(Spacecraft $source, Spacecraft $target, int $prestige): void;
 
-    public function isTakeoverReady(ShipTakeoverInterface $takeover): bool;
+    public function isTakeoverReady(ShipTakeover $takeover): bool;
 
     public function cancelTakeover(
-        ?ShipTakeoverInterface $takeover,
+        ?ShipTakeover $takeover,
         ?string $cause = null,
         bool $force = false
     ): void;
 
     public function cancelBothTakeover(
-        SpacecraftInterface $spacecraft,
+        Spacecraft $spacecraft,
         ?string $passiveCause = null
     ): void;
 
-    public function finishTakeover(ShipTakeoverInterface $takeover): void;
+    public function finishTakeover(ShipTakeover $takeover): void;
 }

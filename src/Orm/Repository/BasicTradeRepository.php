@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Component\Trade\TradeEnum;
 use Stu\Orm\Entity\BasicTrade;
-use Stu\Orm\Entity\BasicTradeInterface;
 use Stu\Orm\Entity\TradeLicense;
 use Stu\Orm\Entity\TradePost;
 
@@ -18,13 +17,13 @@ use Stu\Orm\Entity\TradePost;
 final class BasicTradeRepository extends EntityRepository implements BasicTradeRepositoryInterface
 {
     #[Override]
-    public function prototype(): BasicTradeInterface
+    public function prototype(): BasicTrade
     {
         return new BasicTrade();
     }
 
     #[Override]
-    public function save(BasicTradeInterface $basicTrade): void
+    public function save(BasicTrade $basicTrade): void
     {
         $em = $this->getEntityManager();
 
@@ -55,7 +54,7 @@ final class BasicTradeRepository extends EntityRepository implements BasicTradeR
     }
 
     #[Override]
-    public function getByUniqId(string $uniqId): ?BasicTradeInterface
+    public function getByUniqId(string $uniqId): ?BasicTrade
     {
         return $this->findOneBy([
             'uniqid' => $uniqId
@@ -63,7 +62,7 @@ final class BasicTradeRepository extends EntityRepository implements BasicTradeR
     }
 
     #[Override]
-    public function isNewest(BasicTradeInterface $basicTrade): bool
+    public function isNewest(BasicTrade $basicTrade): bool
     {
         return $this->getEntityManager()->createQuery(
             sprintf(
@@ -81,7 +80,7 @@ final class BasicTradeRepository extends EntityRepository implements BasicTradeR
     }
 
     #[Override]
-    public function getLatestRates(BasicTradeInterface $basicTrade): array
+    public function getLatestRates(BasicTrade $basicTrade): array
     {
         return $this->getEntityManager()
             ->createQuery(

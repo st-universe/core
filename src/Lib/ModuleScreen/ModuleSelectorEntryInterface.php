@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ModuleScreen;
 
-use Stu\Orm\Entity\ModuleInterface;
+use Stu\Orm\Entity\Module;
 
 interface ModuleSelectorEntryInterface
 {
@@ -12,7 +12,7 @@ interface ModuleSelectorEntryInterface
 
     public function isDisabled(): bool;
 
-    public function getModule(): ModuleInterface;
+    public function getModule(): Module;
 
     public function getNeededCrew(): int;
 

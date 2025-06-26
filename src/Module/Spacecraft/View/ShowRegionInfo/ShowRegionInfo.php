@@ -12,7 +12,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\MapInterface;
+use Stu\Orm\Entity\Map;
 
 final class ShowRegionInfo implements ViewControllerInterface
 {
@@ -36,7 +36,7 @@ final class ShowRegionInfo implements ViewControllerInterface
         $regionId = request::getIntFatal('regionid');
 
         $mapField = $ship->getLocation();
-        if (!$mapField instanceof MapInterface) {
+        if (!$mapField instanceof Map) {
             throw new RuntimeException('region info only available for map fields');
         }
 

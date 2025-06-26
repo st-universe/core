@@ -14,8 +14,8 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\StationRepositoryInterface;
 
@@ -38,7 +38,7 @@ final class SendBroadcast implements ActionControllerInterface
 
         $text = request::postStringFatal('text');
 
-        /** @var Collection<int, UserInterface> */
+        /** @var Collection<int, User> */
         $usersToBroadcast = new ArrayCollection();
 
         $this->searchBroadcastableColoniesInRange($ship, $usersToBroadcast);
@@ -59,9 +59,9 @@ final class SendBroadcast implements ActionControllerInterface
     }
 
     /**
-     * @param Collection<int, UserInterface> $usersToBroadcast
+     * @param Collection<int, User> $usersToBroadcast
      */
-    private function searchBroadcastableColoniesInRange(SpacecraftInterface $ship, Collection $usersToBroadcast): void
+    private function searchBroadcastableColoniesInRange(Spacecraft $ship, Collection $usersToBroadcast): void
     {
         $systemMap = $ship->getStarsystemMap();
 
@@ -83,9 +83,9 @@ final class SendBroadcast implements ActionControllerInterface
     }
 
     /**
-     * @param Collection<int, UserInterface> $usersToBroadcast
+     * @param Collection<int, User> $usersToBroadcast
      */
-    private function searchBroadcastableStationsInRange(SpacecraftInterface $ship, Collection $usersToBroadcast): void
+    private function searchBroadcastableStationsInRange(Spacecraft $ship, Collection $usersToBroadcast): void
     {
         $stations = $this->stationRepository->getForeignStationsInBroadcastRange($ship);
 

@@ -7,7 +7,7 @@ namespace Stu\Module\Spacecraft\Lib\Damage;
 use Stu\Lib\Damage\DamageWrapper;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\SpacecraftSystemInterface;
+use Stu\Orm\Entity\SpacecraftSystem;
 
 interface SystemDamageInterface
 {
@@ -32,7 +32,7 @@ interface SystemDamageInterface
 
     public function damageShipSystem(
         SpacecraftWrapperInterface $wrapper,
-        SpacecraftSystemInterface $system,
+        SpacecraftSystem $system,
         int $dmg,
         InformationInterface $informations
     ): bool;

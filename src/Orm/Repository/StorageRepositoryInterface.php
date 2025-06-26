@@ -3,56 +3,55 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\Storage;
-use Stu\Orm\Entity\StorageInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 /**
  * @extends ObjectRepository<Storage>
  *
- * @method null|StorageInterface find(integer $id)
+ * @method null|Storage find(integer $id)
  */
 interface StorageRepositoryInterface extends ObjectRepository
 {
-    public function prototype(): StorageInterface;
+    public function prototype(): Storage;
 
-    public function save(StorageInterface $storage): void;
+    public function save(Storage $storage): void;
 
-    public function delete(StorageInterface $storage): void;
+    public function delete(Storage $storage): void;
 
     /**
      * @return list<array{commodity_id: int, amount: int}>
      */
-    public function getByUserAccumulated(UserInterface $user): array;
+    public function getByUserAccumulated(User $user): array;
 
     /**
      * @return list<array{commodity_id: int, colonies_id: int, amount: int}>
      */
-    public function getColonyStorageByUserAndCommodity(UserInterface $user, int $commodityId): array;
+    public function getColonyStorageByUserAndCommodity(User $user, int $commodityId): array;
 
     /**
      * @return list<array{commodity_id: int, spacecraft_id: int, amount: int}>
      */
-    public function getSpacecraftStorageByUserAndCommodity(UserInterface $user, int $commodityId): array;
+    public function getSpacecraftStorageByUserAndCommodity(User $user, int $commodityId): array;
 
     /**
-     * @return list<StorageInterface>
+     * @return list<Storage>
      */
-    public function getTradePostStorageByUserAndCommodity(UserInterface $user, int $commodityId): array;
+    public function getTradePostStorageByUserAndCommodity(User $user, int $commodityId): array;
 
     /**
      * @return array<array{commodity_id: int, posts_id: int, amount: int}>
      */
-    public function getTradeOfferStorageByUserAndCommodity(UserInterface $user, int $commodityId): array;
+    public function getTradeOfferStorageByUserAndCommodity(User $user, int $commodityId): array;
 
     /**
      * @return array<array{commodity_id: int, spacecraft_id: int, amount: int}>
      */
-    public function getTorpdeoStorageByUserAndCommodity(UserInterface $user, int $commodityId): array;
+    public function getTorpdeoStorageByUserAndCommodity(User $user, int $commodityId): array;
 
     /**
-     * @return StorageInterface[]
+     * @return Storage[]
      */
     public function getByTradePostAndUser(int $tradePostId, int $userId): array;
 
@@ -62,10 +61,10 @@ interface StorageRepositoryInterface extends ObjectRepository
         int $tradePostId,
         int $userId,
         int $commodityId
-    ): ?StorageInterface;
+    ): ?Storage;
 
     /**
-     * @return StorageInterface[]
+     * @return Storage[]
      */
     public function getByTradeNetworkAndUserAndCommodityAmount(
         int $tradeNetwork,
@@ -75,7 +74,7 @@ interface StorageRepositoryInterface extends ObjectRepository
     ): array;
 
     /**
-     * @return StorageInterface[]
+     * @return Storage[]
      */
     public function getByTradePost(int $tradePostId): array;
 
@@ -84,7 +83,7 @@ interface StorageRepositoryInterface extends ObjectRepository
      */
     public function getLatinumTop10(): array;
 
-    public function truncateByColony(ColonyInterface $colony): void;
+    public function truncateByColony(Colony $colony): void;
 
     public function truncateByCommodity(int $commodityId): void;
 

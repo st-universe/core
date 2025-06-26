@@ -13,8 +13,8 @@ use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftNfsItem;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class TractorBeamShipSystem extends AbstractSpacecraftSystemType implements SpacecraftSystemTypeInterface
@@ -46,7 +46,7 @@ final class TractorBeamShipSystem extends AbstractSpacecraftSystemType implement
             return false;
         }
 
-        if ($spacecraft instanceof ShipInterface) {
+        if ($spacecraft instanceof Ship) {
             if ($spacecraft->getDockedTo() !== null) {
                 $reason = _('das Schiff angedockt ist');
                 return false;
@@ -121,7 +121,7 @@ final class TractorBeamShipSystem extends AbstractSpacecraftSystemType implement
         }
     }
 
-    public static function isTractorBeamPossible(SpacecraftInterface|SpacecraftNfsItem $spacecraft): bool
+    public static function isTractorBeamPossible(Spacecraft|SpacecraftNfsItem $spacecraft): bool
     {
         return !($spacecraft->isStation()
             || $spacecraft->isCloaked()

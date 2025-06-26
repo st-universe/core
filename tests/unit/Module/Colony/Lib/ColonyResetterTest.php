@@ -9,13 +9,13 @@ use Mockery;
 use Mockery\MockInterface;
 use Override;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Orm\Entity\ColonyChangeableInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\ColonyTerraformingInterface;
-use Stu\Orm\Entity\CrewInterface;
-use Stu\Orm\Entity\FleetInterface;
-use Stu\Orm\Entity\CrewAssignmentInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\ColonyChangeable;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\ColonyTerraforming;
+use Stu\Orm\Entity\Crew;
+use Stu\Orm\Entity\Fleet;
+use Stu\Orm\Entity\CrewAssignment;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonySandboxRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
@@ -127,10 +127,10 @@ class ColonyResetterTest extends StuTestCase
 
     public function testResetResetsColony(): void
     {
-        $colony = Mockery::mock(ColonyInterface::class);
-        $changeable = $this->mock(ColonyChangeableInterface::class);
-        $user = Mockery::mock(UserInterface::class);
-        $fieldTerraforming = Mockery::mock(ColonyTerraformingInterface::class);
+        $colony = Mockery::mock(Colony::class);
+        $changeable = $this->mock(ColonyChangeable::class);
+        $user = Mockery::mock(User::class);
+        $fieldTerraforming = Mockery::mock(ColonyTerraforming::class);
 
         $this->userRepository->shouldReceive('getFallbackUser')
             ->withNoArgs()
@@ -138,7 +138,7 @@ class ColonyResetterTest extends StuTestCase
             ->andReturn($user);
 
         //BLOCKERS
-        $blockerFleet = Mockery::mock(FleetInterface::class);
+        $blockerFleet = Mockery::mock(Fleet::class);
 
         $blockerFleet->shouldReceive('setBlockedColony')
             ->with(null)
@@ -155,7 +155,7 @@ class ColonyResetterTest extends StuTestCase
             ->andReturn($blockerFleetCollection);
 
         //DEFENDERS
-        $defenderFleet = Mockery::mock(FleetInterface::class);
+        $defenderFleet = Mockery::mock(Fleet::class);
 
         $defenderFleet->shouldReceive('setDefendedColony')
             ->with(null)
@@ -172,8 +172,8 @@ class ColonyResetterTest extends StuTestCase
             ->andReturn($defenderFleetCollection);
 
         //CREW
-        $crewAssignment = $this->mock(CrewAssignmentInterface::class);
-        $crew = $this->mock(CrewInterface::class);
+        $crewAssignment = $this->mock(CrewAssignment::class);
+        $crew = $this->mock(Crew::class);
         $crewAssignmentsCollection = new ArrayCollection([$crewAssignment]);
         $colony->shouldReceive('getCrewAssignments')
             ->withNoArgs()

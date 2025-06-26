@@ -6,7 +6,7 @@ use Override;
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\PirateRoundRepositoryInterface;
 use Stu\Orm\Repository\UserPirateRoundRepositoryInterface;
 
@@ -54,7 +54,7 @@ class PirateRoundManager implements PirateRoundManagerInterface
     }
 
     #[Override]
-    public function addUserStats(UserInterface $user, int $prestige): void
+    public function addUserStats(User $user, int $prestige): void
     {
         $currentRound = $this->pirateRoundRepository->getCurrentActiveRound();
         if ($currentRound === null) {

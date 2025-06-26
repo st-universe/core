@@ -15,8 +15,8 @@ use Stu\Module\Colony\Component\ColonyComponentEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Game\Component\GameComponentEnum;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\User;
 use Stu\StuTestCase;
 
 class ShowComponentTest extends StuTestCase
@@ -87,8 +87,8 @@ class ShowComponentTest extends StuTestCase
 
     public function testHandleExpectCorrectComponentWithEntity(): void
     {
-        $user = $this->mock(UserInterface::class);
-        $entity = $this->mock(ColonyInterface::class);
+        $user = $this->mock(User::class);
+        $entity = $this->mock(Colony::class);
 
         request::setMockVars([
             'component' => 'COLONY_SHIELDING',

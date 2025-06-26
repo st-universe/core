@@ -13,8 +13,8 @@ use Stu\Module\Spacecraft\Lib\Movement\Component\FlightSignatureCreatorInterface
 use Stu\Module\Spacecraft\Lib\Movement\Component\UpdateFlightDirectionInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\Ship;
 use Stu\StuTestCase;
 
 class PostFlightDirectionConsequenceTest extends StuTestCase
@@ -25,7 +25,7 @@ class PostFlightDirectionConsequenceTest extends StuTestCase
 
     private FlightConsequenceInterface $subject;
 
-    private MockInterface&ShipInterface $ship;
+    private MockInterface&Ship $ship;
 
     private MockInterface&ShipWrapperInterface $wrapper;
 
@@ -37,7 +37,7 @@ class PostFlightDirectionConsequenceTest extends StuTestCase
         $this->flightSignatureCreator = $this->mock(FlightSignatureCreatorInterface::class);
         $this->updateFlightDirection = $this->mock(UpdateFlightDirectionInterface::class);
 
-        $this->ship = $this->mock(ShipInterface::class);
+        $this->ship = $this->mock(Ship::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
         $this->flightRoute = $this->mock(FlightRouteInterface::class);
 
@@ -90,8 +90,8 @@ class PostFlightDirectionConsequenceTest extends StuTestCase
     public function testTriggerExpectDirectionUpdateOnlyWhenTractored(): void
     {
         $messages = $this->mock(MessageCollectionInterface::class);
-        $oldWaypoint = $this->mock(MapInterface::class);
-        $newWaypoint = $this->mock(MapInterface::class);
+        $oldWaypoint = $this->mock(Map::class);
+        $newWaypoint = $this->mock(Map::class);
 
         $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
@@ -130,8 +130,8 @@ class PostFlightDirectionConsequenceTest extends StuTestCase
     public function testTriggerExpectFlightSignaturesWhenNotTractored(): void
     {
         $messages = $this->mock(MessageCollectionInterface::class);
-        $oldWaypoint = $this->mock(MapInterface::class);
-        $newWaypoint = $this->mock(MapInterface::class);
+        $oldWaypoint = $this->mock(Map::class);
+        $newWaypoint = $this->mock(Map::class);
 
         $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()

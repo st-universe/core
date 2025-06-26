@@ -7,9 +7,8 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\SpacecraftSystem;
-use Stu\Orm\Entity\SpacecraftSystemInterface;
 
 /**
  * @extends EntityRepository<SpacecraftSystem>
@@ -17,13 +16,13 @@ use Stu\Orm\Entity\SpacecraftSystemInterface;
 final class SpacecraftSystemRepository extends EntityRepository implements SpacecraftSystemRepositoryInterface
 {
     #[Override]
-    public function prototype(): SpacecraftSystemInterface
+    public function prototype(): SpacecraftSystem
     {
         return new SpacecraftSystem();
     }
 
     #[Override]
-    public function save(SpacecraftSystemInterface $post): void
+    public function save(SpacecraftSystem $post): void
     {
         $em = $this->getEntityManager();
 
@@ -31,7 +30,7 @@ final class SpacecraftSystemRepository extends EntityRepository implements Space
     }
 
     #[Override]
-    public function delete(SpacecraftSystemInterface $post): void
+    public function delete(SpacecraftSystem $post): void
     {
         $em = $this->getEntityManager();
 
@@ -86,7 +85,7 @@ final class SpacecraftSystemRepository extends EntityRepository implements Space
     }
 
     #[Override]
-    public function getWebOwningShipSystem(int $webId): ?SpacecraftSystemInterface
+    public function getWebOwningShipSystem(int $webId): ?SpacecraftSystem
     {
         return $this->getEntityManager()
             ->createQuery(
@@ -105,7 +104,7 @@ final class SpacecraftSystemRepository extends EntityRepository implements Space
     }
 
     #[Override]
-    public function isSystemHealthy(SpacecraftInterface $spacecraft, SpacecraftSystemTypeEnum $type): bool
+    public function isSystemHealthy(Spacecraft $spacecraft, SpacecraftSystemTypeEnum $type): bool
     {
         return (int)$this->getEntityManager()
             ->createQuery(

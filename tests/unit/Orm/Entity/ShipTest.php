@@ -9,7 +9,7 @@ use Stu\StuTestCase;
 
 class ShipTest extends StuTestCase
 {
-    private ShipInterface $subject;
+    private Ship $subject;
 
     #[Override]
     public function setUp(): void
@@ -19,7 +19,7 @@ class ShipTest extends StuTestCase
 
     public function testsetLocationWhenMap(): void
     {
-        $map = $this->mock(MapInterface::class);
+        $map = $this->mock(Map::class);
 
         $this->subject->setLocation($map);
 
@@ -29,8 +29,8 @@ class ShipTest extends StuTestCase
 
     public function testsetLocationWhenSystemMapAndNotWormhole(): void
     {
-        $map = $this->mock(MapInterface::class);
-        $systemMap = $this->mock(StarSystemMapInterface::class);
+        $map = $this->mock(Map::class);
+        $systemMap = $this->mock(StarSystemMap::class);
 
         $systemMap->shouldReceive('getSystem->getMap')
             ->withNoArgs()
@@ -45,8 +45,8 @@ class ShipTest extends StuTestCase
 
     public function testsetLocationWhenSystemMapAndWormhole(): void
     {
-        $map = $this->mock(MapInterface::class);
-        $systemMap = $this->mock(StarSystemMapInterface::class);
+        $map = $this->mock(Map::class);
+        $systemMap = $this->mock(StarSystemMap::class);
 
         $systemMap->shouldReceive('getSystem->getMap')
             ->withNoArgs()

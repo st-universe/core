@@ -7,7 +7,7 @@ namespace Stu\Component\Spacecraft\System\Data;
 use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Template\StatusBarFactoryInterface;
-use Stu\Orm\Entity\TholianWebInterface;
+use Stu\Orm\Entity\TholianWeb;
 use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
 use Stu\Orm\Repository\TholianWebRepositoryInterface;
 
@@ -30,7 +30,7 @@ class WebEmitterSystemData extends AbstractSystemData
         return SpacecraftSystemTypeEnum::THOLIAN_WEB;
     }
 
-    public function getWebUnderConstruction(): ?TholianWebInterface
+    public function getWebUnderConstruction(): ?TholianWeb
     {
         if ($this->webUnderConstructionId === null) {
             return null;
@@ -38,7 +38,7 @@ class WebEmitterSystemData extends AbstractSystemData
         return $this->tholianWebRepository->find($this->webUnderConstructionId);
     }
 
-    public function getOwnedTholianWeb(): ?TholianWebInterface
+    public function getOwnedTholianWeb(): ?TholianWeb
     {
         if ($this->ownedWebId === null) {
             return null;

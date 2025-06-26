@@ -17,7 +17,6 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Repository\TradePostRepository;
 
@@ -25,7 +24,7 @@ use Stu\Orm\Repository\TradePostRepository;
 #[Index(name: 'trade_network_idx', columns: ['trade_network'])]
 #[Index(name: 'trade_post_station_idx', columns: ['station_id'])]
 #[Entity(repositoryClass: TradePostRepository::class)]
-class TradePost implements TradePostInterface
+class TradePost
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -61,10 +60,10 @@ class TradePost implements TradePostInterface
 
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id')]
-    private UserInterface $user;
+    private User $user;
 
     /**
-     * @var ArrayCollection<int, TradeLicenseInfoInterface>
+     * @var ArrayCollection<int, TradeLicenseInfo>
      */
     #[OneToMany(targetEntity: TradeLicenseInfo::class, mappedBy: 'tradePost')]
     #[OrderBy(['id' => 'DESC'])]
@@ -72,10 +71,10 @@ class TradePost implements TradePostInterface
 
     #[OneToOne(targetEntity: Station::class, inversedBy: 'tradePost')]
     #[JoinColumn(name: 'station_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private StationInterface $station;
+    private Station $station;
 
     /**
-     * @var ArrayCollection<int, CrewAssignmentInterface>
+     * @var ArrayCollection<int, CrewAssignment>
      */
     #[OneToMany(targetEntity: CrewAssignment::class, mappedBy: 'tradepost')]
     private Collection $crewAssignments;
@@ -86,138 +85,118 @@ class TradePost implements TradePostInterface
         $this->crewAssignments = new ArrayCollection();
     }
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    #[Override]
-    public function setUser(UserInterface $user): TradePostInterface
+    public function setUser(User $user): TradePost
     {
         $this->user = $user;
 
         return $this;
     }
 
-    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
-    #[Override]
-    public function setName(string $name): TradePostInterface
+    public function setName(string $name): TradePost
     {
         $this->name = $name;
 
         return $this;
     }
 
-    #[Override]
     public function getDescription(): string
     {
         return $this->description;
     }
 
-    #[Override]
-    public function setDescription(string $description): TradePostInterface
+    public function setDescription(string $description): TradePost
     {
         $this->description = $description;
 
         return $this;
     }
 
-    #[Override]
     public function getStationId(): int
     {
         return $this->station_id;
     }
 
-    #[Override]
     public function getTradeNetwork(): int
     {
         return $this->trade_network;
     }
 
-    #[Override]
-    public function setTradeNetwork(int $tradeNetwork): TradePostInterface
+    public function setTradeNetwork(int $tradeNetwork): TradePost
     {
         $this->trade_network = $tradeNetwork;
 
         return $this;
     }
 
-    #[Override]
     public function getLevel(): int
     {
         return $this->level;
     }
 
-    #[Override]
-    public function setLevel(int $level): TradePostInterface
+    public function setLevel(int $level): TradePost
     {
         $this->level = $level;
 
         return $this;
     }
 
-    #[Override]
     public function getTransferCapacity(): int
     {
         return $this->transfer_capacity;
     }
 
-    #[Override]
-    public function setTransferCapacity(int $transferCapacity): TradePostInterface
+    public function setTransferCapacity(int $transferCapacity): TradePost
     {
         $this->transfer_capacity = $transferCapacity;
 
         return $this;
     }
 
-    #[Override]
     public function getStorage(): int
     {
         return $this->storage;
     }
 
-    #[Override]
-    public function setStorage(int $storage): TradePostInterface
+    public function setStorage(int $storage): TradePost
     {
         $this->storage = $storage;
 
         return $this;
     }
 
-    #[Override]
     public function isDockPmAutoRead(): bool
     {
         return $this->is_dock_pm_auto_read ?? false;
     }
 
-    #[Override]
-    public function setIsDockPmAutoRead(bool $value): TradePostInterface
+    public function setIsDockPmAutoRead(bool $value): TradePost
     {
         $this->is_dock_pm_auto_read = $value;
 
         return $this;
     }
 
-    #[Override]
-    public function getLatestLicenseInfo(): ?TradeLicenseInfoInterface
+    public function getLatestLicenseInfo(): ?TradeLicenseInfo
     {
         if ($this->licenseInfos->isEmpty()) {
             return null;
@@ -225,29 +204,28 @@ class TradePost implements TradePostInterface
         return $this->licenseInfos->first();
     }
 
-    #[Override]
-    public function getStation(): StationInterface
+    public function getStation(): Station
     {
         return $this->station;
     }
 
-    #[Override]
-    public function setStation(StationInterface $station): TradePostInterface
+    public function setStation(Station $station): TradePost
     {
         $this->station = $station;
 
         return $this;
     }
 
-    #[Override]
+    /**
+     * @return Collection<int, CrewAssignment>
+     */
     public function getCrewAssignments(): Collection
     {
         return $this->crewAssignments;
     }
 
-    #[Override]
     public function getCrewCountOfUser(
-        UserInterface $user
+        User $user
     ): int {
         $count = 0;
 
@@ -260,13 +238,11 @@ class TradePost implements TradePostInterface
         return $count;
     }
 
-    #[Override]
     public function isNpcTradepost(): bool
     {
         return $this->getUserId() < UserEnum::USER_FIRST_ID;
     }
 
-    #[Override]
     public function __toString(): string
     {
         return $this->getName();

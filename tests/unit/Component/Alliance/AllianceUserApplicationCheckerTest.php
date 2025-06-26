@@ -6,10 +6,10 @@ namespace Stu\Component\Alliance;
 
 use Mockery\MockInterface;
 use Override;
-use Stu\Orm\Entity\AllianceInterface;
-use Stu\Orm\Entity\AllianceJobInterface;
-use Stu\Orm\Entity\FactionInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Alliance;
+use Stu\Orm\Entity\AllianceJob;
+use Stu\Orm\Entity\Faction;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -28,8 +28,8 @@ class AllianceUserApplicationCheckerTest extends StuTestCase
     {
         $this->allianceJobRepository = $this->mock(AllianceJobRepositoryInterface::class);
 
-        $this->user = $this->mock(UserInterface::class);
-        $this->alliance = $this->mock(AllianceInterface::class);
+        $this->user = $this->mock(User::class);
+        $this->alliance = $this->mock(Alliance::class);
 
         $this->subject = new AllianceUserApplicationChecker(
             $this->allianceJobRepository
@@ -45,7 +45,7 @@ class AllianceUserApplicationCheckerTest extends StuTestCase
                 AllianceEnum::ALLIANCE_JOBS_PENDING
             )
             ->once()
-            ->andReturn($this->mock(AllianceJobInterface::class));
+            ->andReturn($this->mock(AllianceJob::class));
 
         $this->assertFalse(
             $this->subject->mayApply($this->user, $this->alliance)
@@ -92,7 +92,7 @@ class AllianceUserApplicationCheckerTest extends StuTestCase
         $this->user->shouldReceive('getAlliance')
             ->withNoArgs()
             ->once()
-            ->andReturn($this->mock(AllianceInterface::class));
+            ->andReturn($this->mock(Alliance::class));
 
         $this->assertFalse(
             $this->subject->mayApply($this->user, $this->alliance)
@@ -117,7 +117,7 @@ class AllianceUserApplicationCheckerTest extends StuTestCase
         $this->alliance->shouldReceive('getFaction')
             ->withNoArgs()
             ->twice()
-            ->andReturn($this->mock(FactionInterface::class));
+            ->andReturn($this->mock(Faction::class));
 
         $this->user->shouldReceive('getAlliance')
             ->withNoArgs()
@@ -126,7 +126,7 @@ class AllianceUserApplicationCheckerTest extends StuTestCase
         $this->user->shouldReceive('getFaction')
             ->withNoArgs()
             ->once()
-            ->andReturn($this->mock(FactionInterface::class));
+            ->andReturn($this->mock(Faction::class));
 
         $this->assertFalse(
             $this->subject->mayApply($this->user, $this->alliance)
@@ -135,7 +135,7 @@ class AllianceUserApplicationCheckerTest extends StuTestCase
 
     public function testMayApplyReturnsTrueIfFactionsMatch(): void
     {
-        $faction = $this->mock(FactionInterface::class);
+        $faction = $this->mock(Faction::class);
 
         $this->allianceJobRepository->shouldReceive('getByUserAndAllianceAndType')
             ->with(

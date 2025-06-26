@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ModuleQueue;
-use Stu\Orm\Entity\ModuleQueueInterface;
 
 /**
  * @extends EntityRepository<ModuleQueue>
@@ -48,7 +47,7 @@ final class ModuleQueueRepository extends EntityRepository implements ModuleQueu
         int $colonyId,
         int $moduleId,
         int $buildingFunction
-    ): ?ModuleQueueInterface {
+    ): ?ModuleQueue {
         return $this->findOneBy([
             'colony_id' => $colonyId,
             'module_id' => $moduleId,
@@ -68,13 +67,13 @@ final class ModuleQueueRepository extends EntityRepository implements ModuleQueu
     }
 
     #[Override]
-    public function prototype(): ModuleQueueInterface
+    public function prototype(): ModuleQueue
     {
         return new ModuleQueue();
     }
 
     #[Override]
-    public function save(ModuleQueueInterface $moduleQueue): void
+    public function save(ModuleQueue $moduleQueue): void
     {
         $em = $this->getEntityManager();
 
@@ -82,7 +81,7 @@ final class ModuleQueueRepository extends EntityRepository implements ModuleQueu
     }
 
     #[Override]
-    public function delete(ModuleQueueInterface $moduleQueue): void
+    public function delete(ModuleQueue $moduleQueue): void
     {
         $em = $this->getEntityManager();
 

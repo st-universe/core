@@ -4,7 +4,7 @@ namespace Stu\Module\Message\Lib;
 
 use Stu\Lib\General\EntityWithHrefInterface;
 use Stu\Lib\Information\InformationWrapper;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 interface PrivateMessageSenderInterface
 {
@@ -18,10 +18,10 @@ interface PrivateMessageSenderInterface
     ): void;
 
     /**
-     * @param UserInterface[] $recipients
+     * @param User[] $recipients
      */
     public function sendBroadcast(
-        UserInterface $sender,
+        User $sender,
         array $recipients,
         string $text
     ): void;

@@ -16,7 +16,7 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\ShipTakeoverManagerInterface;
 use Stu\Module\Ship\Lib\TholianWebUtilInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class SpacecraftStateChanger implements SpacecraftStateChangerInterface
@@ -50,7 +50,7 @@ final class SpacecraftStateChanger implements SpacecraftStateChangerInterface
             $this->cancelRepair->cancelRepair($ship);
         } elseif ($currentState === SpacecraftStateEnum::ASTRO_FINALIZING) {
             $this->astroEntryLib->cancelAstroFinalizing($wrapper);
-        } elseif ($currentState === SpacecraftStateEnum::RETROFIT && $ship instanceof ShipInterface) {
+        } elseif ($currentState === SpacecraftStateEnum::RETROFIT && $ship instanceof Ship) {
             $this->cancelRetrofit->cancelRetrofit($ship);
         } elseif ($currentState === SpacecraftStateEnum::WEB_SPINNING && $wrapper instanceof ShipWrapperInterface) {
             $this->tholianWebUtil->releaseWebHelper($wrapper);
@@ -109,7 +109,7 @@ final class SpacecraftStateChanger implements SpacecraftStateChangerInterface
 
         if (
             $alertState !== SpacecraftAlertStateEnum::ALERT_GREEN
-            && $ship instanceof ShipInterface
+            && $ship instanceof Ship
             && $this->cancelRetrofit->cancelRetrofit($ship)
         ) {
             $msg = _('Die Umrüstung wurde abgebrochen');

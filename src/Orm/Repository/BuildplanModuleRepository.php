@@ -7,7 +7,6 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\BuildplanModule;
-use Stu\Orm\Entity\BuildplanModuleInterface;
 
 /**
  * @extends EntityRepository<BuildplanModule>
@@ -24,13 +23,13 @@ final class BuildplanModuleRepository extends EntityRepository implements Buildp
     }
 
     #[Override]
-    public function prototype(): BuildplanModuleInterface
+    public function prototype(): BuildplanModule
     {
         return new BuildplanModule();
     }
 
     #[Override]
-    public function save(BuildplanModuleInterface $obj): void
+    public function save(BuildplanModule $obj): void
     {
         $em = $this->getEntityManager();
 
@@ -38,7 +37,7 @@ final class BuildplanModuleRepository extends EntityRepository implements Buildp
     }
 
     #[Override]
-    public function delete(BuildplanModuleInterface $obj): void
+    public function delete(BuildplanModule $obj): void
     {
         $em = $this->getEntityManager();
 

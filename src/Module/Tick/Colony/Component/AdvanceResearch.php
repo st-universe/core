@@ -5,8 +5,8 @@ namespace Stu\Module\Tick\Colony\Component;
 use Override;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Research\ResearchStateFactoryInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\ResearchedInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Researched;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 
 final class AdvanceResearch implements ColonyTickComponentInterface
@@ -21,7 +21,7 @@ final class AdvanceResearch implements ColonyTickComponentInterface
 
 
     #[Override]
-    public function work(ColonyInterface $colony, array &$production, InformationInterface $information): void
+    public function work(Colony $colony, array &$production, InformationInterface $information): void
     {
         $researches = $this->researchedRepository->getCurrentResearch($colony->getUser());
         $currentResearch = $researches === [] ? null : current($researches);
@@ -68,7 +68,7 @@ final class AdvanceResearch implements ColonyTickComponentInterface
         return $commodityId === $this->userToResearchCommodity[$userId];
     }
 
-    private function advanceResearchState(ResearchedInterface $researched, int $amount): int
+    private function advanceResearchState(Researched $researched, int $amount): int
     {
         return $this->researchStateFactory->createResearchState()->advance(
             $researched,

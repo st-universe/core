@@ -9,12 +9,11 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\PartnerSiteRepository;
 
 #[Table(name: 'stu_partnersite')]
 #[Entity(repositoryClass: PartnerSiteRepository::class)]
-class PartnerSite implements PartnerSiteInterface
+class PartnerSite
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -33,31 +32,26 @@ class PartnerSite implements PartnerSiteInterface
     #[Column(type: 'string', length: 200)]
     private string $banner = '';
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
-    #[Override]
     public function getUrl(): string
     {
         return $this->url;
     }
 
-    #[Override]
     public function getText(): string
     {
         return $this->text;
     }
 
-    #[Override]
     public function getBanner(): string
     {
         return $this->banner;

@@ -10,7 +10,6 @@ use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Component\Game\GameEnum;
 use Stu\Orm\Entity\GameConfig;
-use Stu\Orm\Entity\GameConfigInterface;
 
 /**
  * @extends EntityRepository<GameConfig>
@@ -18,7 +17,7 @@ use Stu\Orm\Entity\GameConfigInterface;
 final class GameConfigRepository extends EntityRepository implements GameConfigRepositoryInterface
 {
     #[Override]
-    public function save(GameConfigInterface $item): void
+    public function save(GameConfig $item): void
     {
         $em = $this->getEntityManager();
 
@@ -27,7 +26,7 @@ final class GameConfigRepository extends EntityRepository implements GameConfigR
     }
 
     #[Override]
-    public function getByOption(int $optionId): ?GameConfigInterface
+    public function getByOption(int $optionId): ?GameConfig
     {
         return $this->findOneBy([
             'option' => $optionId

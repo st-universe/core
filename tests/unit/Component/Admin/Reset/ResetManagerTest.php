@@ -26,8 +26,8 @@ use Stu\Component\Admin\Reset\User\UserResetInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Player\Deletion\PlayerDeletionInterface;
 use Stu\Module\Config\StuConfigInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\GameTurnInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\GameTurn;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\GameConfigRepositoryInterface;
 use Stu\Orm\Repository\GameRequestRepositoryInterface;
@@ -127,7 +127,7 @@ class ResetManagerTest extends StuTestCase
     public function testPerformResetResets(): void
     {
         $database = $this->mock(Connection::class);
-        $colony = $this->mock(ColonyInterface::class);
+        $colony = $this->mock(Colony::class);
 
         $this->storageReset->shouldReceive('deleteAllTradeOffers')
             ->withNoArgs()
@@ -320,7 +320,7 @@ class ResetManagerTest extends StuTestCase
             ->withNoArgs()
             ->once();
 
-        $newTurn = $this->mock(GameTurnInterface::class);
+        $newTurn = $this->mock(GameTurn::class);
 
         $this->gameTurnRepository->shouldReceive('truncateAllGameTurns')
             ->withNoArgs()

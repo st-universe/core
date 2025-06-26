@@ -10,14 +10,13 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepository;
 
 #[Table(name: 'stu_rump_module_level')]
 #[Entity(repositoryClass: ShipRumpModuleLevelRepository::class)]
-class ShipRumpModuleLevel implements ShipRumpModuleLevelInterface
+class ShipRumpModuleLevel
 {
     public const string DEFAULT_LEVEL_KEY = 'default';
     public const string MIN_LEVEL_KEY = 'min';
@@ -27,13 +26,12 @@ class ShipRumpModuleLevel implements ShipRumpModuleLevelInterface
     #[Id]
     #[OneToOne(targetEntity: SpacecraftRump::class)]
     #[JoinColumn(name: 'rump_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private SpacecraftRumpInterface $rump;
+    private SpacecraftRump $rump;
 
     /** @var array<int, array<string, bool|int|string>> */
     #[Column(type: 'json', nullable: true)]
     private ?array $type_values = null;
 
-    #[Override]
     public function getMinimumLevel(SpacecraftModuleTypeEnum $type): int
     {
         $value = $this->getValuesForType($type)[self::MIN_LEVEL_KEY];
@@ -44,7 +42,6 @@ class ShipRumpModuleLevel implements ShipRumpModuleLevelInterface
         return $value;
     }
 
-    #[Override]
     public function getDefaultLevel(SpacecraftModuleTypeEnum $type): int
     {
         $value = $this->getValuesForType($type)[self::DEFAULT_LEVEL_KEY];
@@ -55,7 +52,6 @@ class ShipRumpModuleLevel implements ShipRumpModuleLevelInterface
         return $value;
     }
 
-    #[Override]
     public function getMaximumLevel(SpacecraftModuleTypeEnum $type): int
     {
         $value = $this->getValuesForType($type)[self::MAX_LEVEL_KEY];
@@ -66,7 +62,6 @@ class ShipRumpModuleLevel implements ShipRumpModuleLevelInterface
         return $value;
     }
 
-    #[Override]
     public function isMandatory(SpacecraftModuleTypeEnum $type): bool
     {
         $value = $this->getValuesForType($type)[self::MANDATORY_KEY];
@@ -77,8 +72,8 @@ class ShipRumpModuleLevel implements ShipRumpModuleLevelInterface
         return $value;
     }
 
-    #[Override]
-    public function setValue(SpacecraftModuleTypeEnum $type, string $key, $value): ShipRumpModuleLevelInterface
+    /** @param int|bool|string $value */
+    public function setValue(SpacecraftModuleTypeEnum $type, string $key, $value): ShipRumpModuleLevel
     {
         if ($this->type_values === null) {
             $this->type_values = [];
@@ -106,7 +101,6 @@ class ShipRumpModuleLevel implements ShipRumpModuleLevelInterface
         return $this->type_values[$type->value];
     }
 
-    #[Override]
     public function getMandatoryModulesCount(): ?int
     {
         return array_reduce(

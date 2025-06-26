@@ -6,26 +6,25 @@ use Doctrine\Persistence\ObjectRepository;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Anomaly;
-use Stu\Orm\Entity\AnomalyInterface;
-use Stu\Orm\Entity\LocationInterface;
+use Stu\Orm\Entity\Location;
 
 /**
  * @extends ObjectRepository<Anomaly>
  *
- * @method null|AnomalyInterface find(integer $id)
- * @method AnomalyInterface[] findAll()
+ * @method null|Anomaly find(integer $id)
+ * @method Anomaly[] findAll()
  */
 interface AnomalyRepositoryInterface extends ObjectRepository
 {
-    public function prototype(): AnomalyInterface;
+    public function prototype(): Anomaly;
 
-    public function save(AnomalyInterface $anomaly): void;
+    public function save(Anomaly $anomaly): void;
 
-    public function delete(AnomalyInterface $anomaly): void;
+    public function delete(Anomaly $anomaly): void;
 
-    public function getByLocationAndType(LocationInterface $location, AnomalyTypeEnum $type): ?AnomalyInterface;
+    public function getByLocationAndType(Location $location, AnomalyTypeEnum $type): ?Anomaly;
 
-    /** @return array<AnomalyInterface> */
+    /** @return array<Anomaly> */
     public function findAllRoot(): array;
 
     public function getActiveCountByTypeWithoutParent(AnomalyTypeEnum $type): int;

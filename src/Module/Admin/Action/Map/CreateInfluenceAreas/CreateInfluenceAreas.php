@@ -11,8 +11,8 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\StarSystemInterface;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\StarSystem;
 use Stu\Orm\Repository\MapRepositoryInterface;
 
 final class CreateInfluenceAreas implements ActionControllerInterface
@@ -24,10 +24,10 @@ final class CreateInfluenceAreas implements ActionControllerInterface
     /** @var array<int, array<int, bool>> */
     private array $usedMaps = [];
 
-    /** @var array<int, array<int, MapInterface>> */
+    /** @var array<int, array<int, Map>> */
     private array $spreader = [];
 
-    /** @var array<int, array<int, MapInterface>> */
+    /** @var array<int, array<int, Map>> */
     private array $mapsByCoords = [];
 
     public function __construct(
@@ -112,7 +112,7 @@ final class CreateInfluenceAreas implements ActionControllerInterface
         $game->addInformation("Influence Areas wurden randomisiert verteilt");
     }
 
-    private function spreadInCircle(MapInterface $map, StarSystemInterface $system): void
+    private function spreadInCircle(Map $map, StarSystem $system): void
     {
         $x = $map->getX();
         $y = $map->getY();
@@ -166,7 +166,7 @@ final class CreateInfluenceAreas implements ActionControllerInterface
     }
 
     /**
-     * @param array<int, array<int, MapInterface>> $array
+     * @param array<int, array<int, Map>> $array
      */
     private function shuffle_assoc(array &$array): bool
     {
@@ -186,7 +186,7 @@ final class CreateInfluenceAreas implements ActionControllerInterface
     }
 
     /**
-     * @param array<MapInterface> $maps
+     * @param array<Map> $maps
      */
     private function loadMapByCoords(array $maps): void
     {
@@ -201,7 +201,7 @@ final class CreateInfluenceAreas implements ActionControllerInterface
         }
     }
 
-    private function getRandomFreeNeighbour(MapInterface $map): ?MapInterface
+    private function getRandomFreeNeighbour(Map $map): ?Map
     {
         $x = $map->getX();
         $y = $map->getY();
@@ -245,14 +245,14 @@ final class CreateInfluenceAreas implements ActionControllerInterface
         return array_key_exists($y, $this->usedMaps[$x]);
     }
 
-    private function setInfluenceArea(MapInterface $map, StarSystemInterface $system): void
+    private function setInfluenceArea(Map $map, StarSystem $system): void
     {
         $map->setInfluenceArea($system);
         $this->addUsedMap($map);
         $this->mapRepository->save($map);
     }
 
-    private function addSpreader(MapInterface $map, int $influenceId): void
+    private function addSpreader(Map $map, int $influenceId): void
     {
         $this->loggerUtil->log(sprintf('addSpreader - mapId: %d, influenceId: %d', $map->getId(), $influenceId));
         if (!array_key_exists($influenceId, $this->spreader)) {
@@ -261,7 +261,7 @@ final class CreateInfluenceAreas implements ActionControllerInterface
         $this->spreader[$influenceId][$map->getId()] = $map;
     }
 
-    private function addUsedMap(MapInterface $map): void
+    private function addUsedMap(Map $map): void
     {
         $x = $map->getX();
         $y = $map->getY();

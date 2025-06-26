@@ -10,7 +10,7 @@ use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\View\Category\Wrapper\DatabaseCategoryWrapperFactoryInterface;
-use Stu\Orm\Entity\DatabaseCategoryInterface;
+use Stu\Orm\Entity\DatabaseCategory;
 use Stu\Orm\Repository\DatabaseCategoryRepositoryInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 
@@ -26,7 +26,7 @@ final class Category implements ViewControllerInterface
         $category_id = $this->categoryRequest->getCategoryId();
 
         /**
-         * @var DatabaseCategoryInterface $category
+         * @var DatabaseCategory $category
          */
         $category = $this->databaseCategoryRepository->find($category_id);
 

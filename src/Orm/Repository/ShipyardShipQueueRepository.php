@@ -7,7 +7,6 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\ShipyardShipQueue;
-use Stu\Orm\Entity\ShipyardShipQueueInterface;
 
 /**
  * @extends EntityRepository<ShipyardShipQueue>
@@ -15,13 +14,13 @@ use Stu\Orm\Entity\ShipyardShipQueueInterface;
 final class ShipyardShipQueueRepository extends EntityRepository implements ShipyardShipQueueRepositoryInterface
 {
     #[Override]
-    public function prototype(): ShipyardShipQueueInterface
+    public function prototype(): ShipyardShipQueue
     {
         return new ShipyardShipQueue();
     }
 
     #[Override]
-    public function save(ShipyardShipQueueInterface $post): void
+    public function save(ShipyardShipQueue $post): void
     {
         $em = $this->getEntityManager();
 
@@ -29,7 +28,7 @@ final class ShipyardShipQueueRepository extends EntityRepository implements Ship
     }
 
     #[Override]
-    public function delete(ShipyardShipQueueInterface $post): void
+    public function delete(ShipyardShipQueue $post): void
     {
         $em = $this->getEntityManager();
 

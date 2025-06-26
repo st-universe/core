@@ -10,13 +10,12 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\PlanetFieldTypeRepository;
 
 #[Table(name: 'stu_colony_fieldtype')]
 #[Index(name: 'field_id_idx', columns: ['field_id'])]
 #[Entity(repositoryClass: PlanetFieldTypeRepository::class)]
-class PlanetFieldType implements PlanetFieldTypeInterface
+class PlanetFieldType
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -35,55 +34,47 @@ class PlanetFieldType implements PlanetFieldTypeInterface
     #[Column(type: 'integer')]
     private int $category;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getFieldType(): int
     {
         return $this->field_id;
     }
 
-    #[Override]
-    public function setFieldType(int $fieldType): PlanetFieldTypeInterface
+    public function setFieldType(int $fieldType): PlanetFieldType
     {
         $this->field_id = $fieldType;
 
         return $this;
     }
 
-    #[Override]
     public function getDescription(): string
     {
         return $this->description;
     }
 
-    #[Override]
-    public function setDescription(string $description): PlanetFieldTypeInterface
+    public function setDescription(string $description): PlanetFieldType
     {
         $this->description = $description;
 
         return $this;
     }
 
-    #[Override]
     public function getBaseFieldType(): int
     {
         return $this->normal_id;
     }
 
-    #[Override]
-    public function setBaseFieldType(int $baseFieldType): PlanetFieldTypeInterface
+    public function setBaseFieldType(int $baseFieldType): PlanetFieldType
     {
         $this->normal_id = $baseFieldType;
 
         return $this;
     }
 
-    #[Override]
     public function getCategory(): int
     {
         return $this->category;

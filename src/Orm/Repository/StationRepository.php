@@ -18,22 +18,15 @@ use Stu\Module\Station\Lib\TStationItem;
 use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Map;
-use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\CrewAssignment;
-use Stu\Orm\Entity\LocationInterface;
 use Stu\Orm\Entity\PirateWrath;
 use Stu\Orm\Entity\SpacecraftRump;
-use Stu\Orm\Entity\SpacecraftRumpInterface;
 use Stu\Orm\Entity\Spacecraft;
-use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\SpacecraftSystem;
 use Stu\Orm\Entity\StarSystemMap;
-use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Entity\Station;
-use Stu\Orm\Entity\StationInterface;
 use Stu\Orm\Entity\TradePost;
 use Stu\Orm\Entity\User;
-use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Entity\UserRegistration;
 
 /**
@@ -42,7 +35,7 @@ use Stu\Orm\Entity\UserRegistration;
 final class StationRepository extends EntityRepository implements StationRepositoryInterface
 {
     #[Override]
-    public function save(StationInterface $station): void
+    public function save(Station $station): void
     {
         $em = $this->getEntityManager();
 
@@ -50,7 +43,7 @@ final class StationRepository extends EntityRepository implements StationReposit
     }
 
     #[Override]
-    public function delete(StationInterface $station): void
+    public function delete(Station $station): void
     {
         $em = $this->getEntityManager();
 
@@ -69,7 +62,7 @@ final class StationRepository extends EntityRepository implements StationReposit
     }
 
     #[Override]
-    public function getForeignStationsInBroadcastRange(SpacecraftInterface $spacecraft): array
+    public function getForeignStationsInBroadcastRange(Spacecraft $spacecraft): array
     {
         $layer = $spacecraft->getLayer();
         $systemMap = $spacecraft->getStarsystemMap();
@@ -188,9 +181,9 @@ final class StationRepository extends EntityRepository implements StationReposit
 
     #[Override]
     public function getStationScannerResults(
-        SpacecraftInterface $spacecraft,
+        Spacecraft $spacecraft,
         bool $showCloaked = false,
-        MapInterface|StarSystemMapInterface|null $field = null
+        Map|StarSystemMap|null $field = null
     ): array {
 
         $rsm = new ResultSetMapping();
@@ -252,7 +245,7 @@ final class StationRepository extends EntityRepository implements StationReposit
     }
 
     #[Override]
-    public function getStationOnLocation(LocationInterface $location): ?StationInterface
+    public function getStationOnLocation(Location $location): ?Station
     {
         return $this->findOneBy(['location' => $location]);
     }
@@ -334,7 +327,7 @@ final class StationRepository extends EntityRepository implements StationReposit
     }
 
     #[Override]
-    public function getByUserAndRump(UserInterface $user, SpacecraftRumpInterface $rump): array
+    public function getByUserAndRump(User $user, SpacecraftRump $rump): array
     {
         return $this->findBy([
             'user_id' => $user->getId(),

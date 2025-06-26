@@ -11,14 +11,14 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemPriorities;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 
 abstract class AbstractSpacecraftSystemType implements SpacecraftSystemTypeInterface
 {
-    protected SpacecraftInterface $spacecraft;
+    protected Spacecraft $spacecraft;
 
     #[Override]
-    public function setSpacecraft(SpacecraftInterface $spacecraft): void
+    public function setSpacecraft(Spacecraft $spacecraft): void
     {
         $this->spacecraft = $spacecraft;
     }

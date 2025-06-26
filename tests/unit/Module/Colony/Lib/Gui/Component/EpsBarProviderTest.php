@@ -8,7 +8,7 @@ use Mockery;
 use Mockery\MockInterface;
 use Override;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Colony;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -16,7 +16,7 @@ class EpsBarProviderTest extends StuTestCase
 {
     private MockInterface&PlanetFieldRepositoryInterface $planetFieldRepository;
 
-    private MockInterface&ColonyInterface $host;
+    private MockInterface&Colony $host;
     private MockInterface&GameControllerInterface $game;
 
     private PlanetFieldHostComponentInterface $subject;
@@ -26,7 +26,7 @@ class EpsBarProviderTest extends StuTestCase
     {
         $this->planetFieldRepository = Mockery::mock(PlanetFieldRepositoryInterface::class);
 
-        $this->host = $this->mock(ColonyInterface::class);
+        $this->host = $this->mock(Colony::class);
         $this->game = $this->mock(GameControllerInterface::class);
 
         $this->subject = new EpsBarProvider(

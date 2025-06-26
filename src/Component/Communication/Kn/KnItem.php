@@ -9,9 +9,9 @@ use Override;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Template\StatusBarColorEnum;
 use Stu\Module\Template\StatusBarFactoryInterface;
-use Stu\Orm\Entity\KnPostInterface;
-use Stu\Orm\Entity\RpgPlotInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\KnPost;
+use Stu\Orm\Entity\RpgPlot;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\KnCommentRepositoryInterface;
 
 final class KnItem implements KnItemInterface
@@ -24,8 +24,8 @@ final class KnItem implements KnItemInterface
         private KnBbCodeParser $bbcodeParser,
         private KnCommentRepositoryInterface $knCommentRepository,
         private StatusBarFactoryInterface $statusBarFactory,
-        private KnPostInterface $post,
-        private UserInterface $currentUser
+        private KnPost $post,
+        private User $currentUser
     ) {}
 
     #[Override]
@@ -35,7 +35,7 @@ final class KnItem implements KnItemInterface
     }
 
     #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->post->getUser();
     }
@@ -77,7 +77,7 @@ final class KnItem implements KnItemInterface
     }
 
     #[Override]
-    public function getPlot(): ?RpgPlotInterface
+    public function getPlot(): ?RpgPlot
     {
         return $this->post->getRpgPlot();
     }

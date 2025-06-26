@@ -2,11 +2,11 @@
 
 namespace Stu\Lib\Pirate\Component;
 
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 interface PirateRoundManagerInterface
 {
     public function decreasePrestige(int $amount): void;
 
-    public function addUserStats(UserInterface $user, int $prestige): void;
+    public function addUserStats(User $user, int $prestige): void;
 }

@@ -12,14 +12,13 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\BuildingCommodityRepository;
 
 #[Table(name: 'stu_buildings_commodity')]
 #[Index(name: 'building_commodity_building_idx', columns: ['buildings_id'])]
 #[Index(name: 'commodity_count_idx', columns: ['commodity_id', 'count'])]
 #[Entity(repositoryClass: BuildingCommodityRepository::class)]
-class BuildingCommodity implements BuildingCommodityInterface
+class BuildingCommodity
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -37,65 +36,57 @@ class BuildingCommodity implements BuildingCommodityInterface
 
     #[ManyToOne(targetEntity: Commodity::class)]
     #[JoinColumn(name: 'commodity_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private CommodityInterface $commodity;
+    private Commodity $commodity;
 
     /**
-     * @var BuildingInterface
+     * @var Building
      */
     #[ManyToOne(targetEntity: Building::class, inversedBy: 'buildingCommodities')]
     #[JoinColumn(name: 'buildings_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private $building;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getBuildingId(): int
     {
         return $this->buildings_id;
     }
 
-    #[Override]
-    public function setBuildingId(int $buildingId): BuildingCommodityInterface
+    public function setBuildingId(int $buildingId): BuildingCommodity
     {
         $this->buildings_id = $buildingId;
 
         return $this;
     }
 
-    #[Override]
     public function getCommodityId(): int
     {
         return $this->commodity_id;
     }
 
-    #[Override]
-    public function setCommodityId(int $commodityId): BuildingCommodityInterface
+    public function setCommodityId(int $commodityId): BuildingCommodity
     {
         $this->commodity_id = $commodityId;
 
         return $this;
     }
 
-    #[Override]
     public function getAmount(): int
     {
         return $this->count;
     }
 
-    #[Override]
-    public function setAmount(int $amount): BuildingCommodityInterface
+    public function setAmount(int $amount): BuildingCommodity
     {
         $this->count = $amount;
 
         return $this;
     }
 
-    #[Override]
-    public function getCommodity(): CommodityInterface
+    public function getCommodity(): Commodity
     {
         return $this->commodity;
     }

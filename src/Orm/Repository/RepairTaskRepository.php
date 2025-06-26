@@ -7,8 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\RepairTask;
-use Stu\Orm\Entity\RepairTaskInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 
 /**
  * @extends EntityRepository<RepairTask>
@@ -16,13 +15,13 @@ use Stu\Orm\Entity\ShipInterface;
 final class RepairTaskRepository extends EntityRepository implements RepairTaskRepositoryInterface
 {
     #[Override]
-    public function prototype(): RepairTaskInterface
+    public function prototype(): RepairTask
     {
         return new RepairTask();
     }
 
     #[Override]
-    public function save(RepairTaskInterface $obj): void
+    public function save(RepairTask $obj): void
     {
         $em = $this->getEntityManager();
 
@@ -30,7 +29,7 @@ final class RepairTaskRepository extends EntityRepository implements RepairTaskR
     }
 
     #[Override]
-    public function delete(RepairTaskInterface $post): void
+    public function delete(RepairTask $post): void
     {
         $em = $this->getEntityManager();
 
@@ -38,7 +37,7 @@ final class RepairTaskRepository extends EntityRepository implements RepairTaskR
     }
 
     #[Override]
-    public function getByShip(int $shipId): ?ShipInterface
+    public function getByShip(int $shipId): ?RepairTask
     {
         return $this->findOneBy([
             'spacecraft_id' => $shipId

@@ -11,10 +11,9 @@ use Stu\Exception\FallbackUserDoesNotExistException;
 use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\PlayerSetting\Lib\UserSettingEnum;
-use Stu\Orm\Entity\AllianceInterface;
+use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\Contact;
 use Stu\Orm\Entity\User;
-use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Entity\UserRegistration;
 use Stu\Orm\Entity\UserSetting;
 
@@ -24,7 +23,7 @@ use Stu\Orm\Entity\UserSetting;
 final class UserRepository extends EntityRepository implements UserRepositoryInterface
 {
     #[Override]
-    public function prototype(): UserInterface
+    public function prototype(): User
     {
         $user = new User();
         $user->setRegistration(new UserRegistration($user));
@@ -33,7 +32,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
     }
 
     #[Override]
-    public function save(UserInterface $post): void
+    public function save(User $post): void
     {
         $em = $this->getEntityManager();
 
@@ -41,7 +40,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
     }
 
     #[Override]
-    public function delete(UserInterface $post): void
+    public function delete(User $post): void
     {
         $em = $this->getEntityManager();
 
@@ -49,7 +48,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
     }
 
     #[Override]
-    public function getByResetToken(string $resetToken): ?UserInterface
+    public function getByResetToken(string $resetToken): ?User
     {
         return $this->getEntityManager()
             ->createQuery(
@@ -122,7 +121,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
     }
 
     #[Override]
-    public function getByEmail(string $email): ?UserInterface
+    public function getByEmail(string $email): ?User
     {
         return $this->getEntityManager()
             ->createQuery(
@@ -140,7 +139,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
     }
 
     #[Override]
-    public function getByMobile(string $mobile, string $mobileHash): ?UserInterface
+    public function getByMobile(string $mobile, string $mobileHash): ?User
     {
         return $this->getEntityManager()->createQuery(
             sprintf(
@@ -159,7 +158,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
     }
 
     #[Override]
-    public function getByLogin(string $loginName): ?UserInterface
+    public function getByLogin(string $loginName): ?User
     {
         return $this->getEntityManager()
             ->createQuery(
@@ -177,7 +176,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
     }
 
     #[Override]
-    public function getByAlliance(AllianceInterface $alliance): iterable
+    public function getByAlliance(Alliance $alliance): iterable
     {
         return $this->findBy(
             [
@@ -240,7 +239,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
     }
 
     #[Override]
-    public function getFriendsByUserAndAlliance(UserInterface $user, ?AllianceInterface $alliance): iterable
+    public function getFriendsByUserAndAlliance(User $user, ?Alliance $alliance): iterable
     {
         return $this->getEntityManager()->createQuery(
             sprintf(
@@ -378,7 +377,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
     }
 
     #[Override]
-    public function getFallbackUser(): UserInterface
+    public function getFallbackUser(): User
     {
         $user = $this->find(UserEnum::USER_NOONE);
 

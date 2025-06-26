@@ -16,10 +16,10 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Module\Station\Lib\StationLoaderInterface;
-use Stu\Orm\Entity\ModuleInterface;
-use Stu\Orm\Entity\SpacecraftBuildplanInterface;
-use Stu\Orm\Entity\SpacecraftRumpInterface;
-use Stu\Orm\Entity\StationInterface;
+use Stu\Orm\Entity\Module;
+use Stu\Orm\Entity\SpacecraftBuildplan;
+use Stu\Orm\Entity\SpacecraftRump;
+use Stu\Orm\Entity\Station;
 use Stu\Orm\Repository\ConstructionProgressModuleRepositoryInterface;
 use Stu\Orm\Repository\ConstructionProgressRepositoryInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
@@ -120,7 +120,7 @@ final class BuildStation implements ActionControllerInterface
         ));
     }
 
-    private function locationAllowed(StationInterface $station, string $location): bool
+    private function locationAllowed(Station $station, string $location): bool
     {
         if ($location === StationEnum::BUILDABLE_EVERYWHERE) {
             return true;
@@ -142,11 +142,11 @@ final class BuildStation implements ActionControllerInterface
     }
 
     /**
-     * @param array<ModuleInterface> $wantedSpecialModules
+     * @param array<Module> $wantedSpecialModules
      */
     private function startTransformation(
-        StationInterface $station,
-        SpacecraftBuildplanInterface $plan,
+        Station $station,
+        SpacecraftBuildplan $plan,
         array $wantedSpecialModules
     ): void {
         $rump = $plan->getRump();
@@ -182,9 +182,9 @@ final class BuildStation implements ActionControllerInterface
     }
 
     /**
-     * @param array<ModuleInterface> $availableMods
+     * @param array<Module> $availableMods
      */
-    private function getModuleIfAllowed(int $wantedModId, array $availableMods): ?ModuleInterface
+    private function getModuleIfAllowed(int $wantedModId, array $availableMods): ?Module
     {
         foreach ($availableMods as $mod) {
             if ($mod->getId() === $wantedModId) {
@@ -196,9 +196,9 @@ final class BuildStation implements ActionControllerInterface
     }
 
     /**
-     * @return array<ModuleInterface>
+     * @return array<Module>
      */
-    private function getSpecialModules(StationInterface $station, SpacecraftRumpInterface $rump): array
+    private function getSpecialModules(Station $station, SpacecraftRump $rump): array
     {
         $shipRumpRole = $rump->getShipRumpRole();
         if ($shipRumpRole === null) {
@@ -213,11 +213,11 @@ final class BuildStation implements ActionControllerInterface
     }
 
     /**
-     * @param array<ModuleInterface> $wantedSpecialModules
+     * @param array<Module> $wantedSpecialModules
      */
     public function consumeNeededModules(
-        StationInterface $station,
-        SpacecraftBuildplanInterface $plan,
+        Station $station,
+        SpacecraftBuildplan $plan,
         array $wantedSpecialModules
     ): bool {
         // check if everything is available in required numbers

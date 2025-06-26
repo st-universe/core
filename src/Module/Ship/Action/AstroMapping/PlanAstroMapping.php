@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\AstroMapping;
 
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\StarSystemMap;
 use Override;
 use request;
 
@@ -17,10 +17,10 @@ use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
-use Stu\Orm\Entity\AstronomicalEntryInterface;
-use Stu\Orm\Entity\LocationInterface;
-use Stu\Orm\Entity\MapRegionInterface;
-use Stu\Orm\Entity\StarSystemInterface;
+use Stu\Orm\Entity\AstronomicalEntry;
+use Stu\Orm\Entity\Location;
+use Stu\Orm\Entity\MapRegion;
+use Stu\Orm\Entity\StarSystem;
 use Stu\Orm\Repository\AstroEntryRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
@@ -92,10 +92,10 @@ final class PlanAstroMapping implements ActionControllerInterface
 
 
     private function obtainMeasurementFields(
-        ?StarSystemInterface $system,
-        ?MapRegionInterface $mapRegion,
-        AstronomicalEntryInterface $entry,
-        MapInterface|StarSystemMapInterface $location
+        ?StarSystem $system,
+        ?MapRegion $mapRegion,
+        AstronomicalEntry $entry,
+        Map|StarSystemMap $location
     ): void {
         if ($system !== null) {
             $entry->setSystem($system);
@@ -107,14 +107,14 @@ final class PlanAstroMapping implements ActionControllerInterface
         }
     }
 
-    private function obtainMeasurementFieldsForSystem(StarSystemInterface $system, AstronomicalEntryInterface $entry, LocationInterface $location): void
+    private function obtainMeasurementFieldsForSystem(StarSystem $system, AstronomicalEntry $entry, Location $location): void
     {
         $idArray = $this->starSystemMapRepository->getRandomSystemMapIdsForAstroMeasurement($system->getId(), $location->getFieldId());
 
         $entry->setFieldIds(serialize($idArray));
     }
 
-    private function obtainMeasurementFieldsForRegion(MapRegionInterface $mapRegion, AstronomicalEntryInterface $entry, LocationInterface $location): void
+    private function obtainMeasurementFieldsForRegion(MapRegion $mapRegion, AstronomicalEntry $entry, Location $location): void
     {
         $mapIds = $this->mapRepository->getRandomMapIdsForAstroMeasurement($mapRegion->getId(), self::REGION_MAP_PERCENTAGE, $location->getFieldId());
 

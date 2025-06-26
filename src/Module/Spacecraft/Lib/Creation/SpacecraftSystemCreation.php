@@ -8,9 +8,9 @@ use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
-use Stu\Orm\Entity\BuildplanModuleInterface;
-use Stu\Orm\Entity\ModuleInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\BuildplanModule;
+use Stu\Orm\Entity\Module;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
 
 class SpacecraftSystemCreation implements SpacecraftSystemCreationInterface
@@ -20,7 +20,7 @@ class SpacecraftSystemCreation implements SpacecraftSystemCreationInterface
     ) {}
 
     public function createShipSystemsByModuleList(
-        SpacecraftInterface $spacecraft,
+        Spacecraft $spacecraft,
         Collection $buildplanModules,
         ?SpacecraftCreationConfigInterface $spacecraftCreationConfig
     ): void {
@@ -38,8 +38,8 @@ class SpacecraftSystemCreation implements SpacecraftSystemCreationInterface
     }
 
 
-    /** @return array<int, ModuleInterface|null>  */
-    private function getDefaultSystems(SpacecraftInterface $spacecraft): array
+    /** @return array<int, Module|null>  */
+    private function getDefaultSystems(Spacecraft $spacecraft): array
     {
         $systems = [];
 
@@ -66,7 +66,7 @@ class SpacecraftSystemCreation implements SpacecraftSystemCreationInterface
         return $systems;
     }
 
-    private function createShipSystem(int $systemType, SpacecraftInterface $spacecraft, ?ModuleInterface $module): void
+    private function createShipSystem(int $systemType, Spacecraft $spacecraft, ?Module $module): void
     {
         $spacecraftSystem = $this->shipSystemRepository->prototype();
         $spacecraftSystem->setSpacecraft($spacecraft);
@@ -82,8 +82,8 @@ class SpacecraftSystemCreation implements SpacecraftSystemCreationInterface
     }
 
     /**
-     * @param Collection<int, BuildplanModuleInterface> $buildplanModules
-     * @param array<int, ModuleInterface|null> $systems
+     * @param Collection<int, BuildplanModule> $buildplanModules
+     * @param array<int, Module|null> $systems
      */
     private function addModuleSystems(Collection $buildplanModules, array &$systems): void
     {
@@ -109,7 +109,7 @@ class SpacecraftSystemCreation implements SpacecraftSystemCreationInterface
     }
 
     /**
-     * @param array<int, ModuleInterface|null> $systems
+     * @param array<int, Module|null> $systems
      */
     private function addSpecialSystems(SpacecraftCreationConfigInterface $specialSystemsProvider, array &$systems): void
     {
@@ -119,9 +119,9 @@ class SpacecraftSystemCreation implements SpacecraftSystemCreationInterface
     }
 
     /**
-     * @param array<int, null|ModuleInterface> $systems
+     * @param array<int, null|Module> $systems
      */
-    private function addSpecialSystem(ModuleInterface $module, array &$systems): void
+    private function addSpecialSystem(Module $module, array &$systems): void
     {
         foreach ($module->getSpecials() as $special) {
             $moduleSpecial = $special->getSpecialId();

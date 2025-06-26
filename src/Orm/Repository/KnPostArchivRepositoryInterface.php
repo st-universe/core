@@ -4,37 +4,36 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\KnPostArchiv;
-use Stu\Orm\Entity\KnPostArchivInterface;
-use Stu\Orm\Entity\RpgPlotArchivInterface;
+use Stu\Orm\Entity\RpgPlotArchiv;
 
 /**
  * @extends ObjectRepository<KnPostArchiv>
  *
- * @method null|KnPostArchivInterface find(integer $id)
- * @method KnPostArchivInterface[] findAll()
+ * @method null|KnPostArchiv find(integer $id)
+ * @method KnPostArchiv[] findAll()
  */
 interface KnPostArchivRepositoryInterface extends ObjectRepository
 {
-    public function prototype(): KnPostArchivInterface;
+    public function prototype(): KnPostArchiv;
 
-    public function save(KnPostArchivInterface $post): void;
+    public function save(KnPostArchiv $post): void;
 
-    public function delete(KnPostArchivInterface $post): void;
+    public function delete(KnPostArchiv $post): void;
 
     /**
-     * @return array<KnPostArchivInterface>
+     * @return array<KnPostArchiv>
      */
     public function getBy(int $offset, int $limit): array;
 
     /**
-     * @return array<KnPostArchivInterface>
+     * @return array<KnPostArchiv>
      */
     public function getByUser(int $userId): array;
 
     /**
-     * @return array<KnPostArchivInterface>
+     * @return array<KnPostArchiv>
      */
-    public function getByPlot(RpgPlotArchivInterface $plot, ?int $offset, ?int $limit): array;
+    public function getByPlot(RpgPlotArchiv $plot, ?int $offset, ?int $limit): array;
 
     public function getAmount(): int;
 
@@ -43,12 +42,12 @@ interface KnPostArchivRepositoryInterface extends ObjectRepository
     public function getAmountSince(int $postId): int;
 
     /**
-     * @return array<KnPostArchivInterface>
+     * @return array<KnPostArchiv>
      */
     public function getNewerThenMark(int $mark): array;
 
     /**
-     * @return array<KnPostArchivInterface>
+     * @return array<KnPostArchiv>
      */
     public function searchByContent(string $content): array;
 

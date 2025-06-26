@@ -4,23 +4,22 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Module\Spacecraft\Lib\TSpacecraftItemInterface;
-use Stu\Orm\Entity\MapInterface;
+use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\Spacecraft;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\StarSystemMap;
+use Stu\Orm\Entity\User;
 
 /**
  * @extends ObjectRepository<Spacecraft>
  *
- * @method null|SpacecraftInterface find(integer $id)
- * @method SpacecraftInterface[] findAll()
+ * @method null|Spacecraft find(integer $id)
+ * @method Spacecraft[] findAll()
  */
 interface SpacecraftRepositoryInterface extends ObjectRepository
 {
-    public function save(SpacecraftInterface $spacecraft): void;
+    public function save(Spacecraft $spacecraft): void;
 
-    public function delete(SpacecraftInterface $spacecraft): void;
+    public function delete(Spacecraft $spacecraft): void;
 
     public function getAmountByUserAndSpecialAbility(
         int $userId,
@@ -30,38 +29,38 @@ interface SpacecraftRepositoryInterface extends ObjectRepository
     public function getAmountByUserAndRump(int $userId, int $spacecraftRumpId): int;
 
     /**
-     * @return array<SpacecraftInterface>
+     * @return array<Spacecraft>
      */
-    public function getByUser(UserInterface $user): array;
+    public function getByUser(User $user): array;
 
     /**
-     * @return array<SpacecraftInterface>
+     * @return array<Spacecraft>
      */
     public function getSuitableForShieldRegeneration(): array;
 
     /**
-     * @return array<SpacecraftInterface>
+     * @return array<Spacecraft>
      */
     public function getPlayerSpacecraftsForTick(): iterable;
 
-    /** @return array<SpacecraftInterface> */
+    /** @return array<Spacecraft> */
     public function getNpcSpacecraftsForTick(): array;
 
     public function isCloakedSpacecraftAtLocation(
-        SpacecraftInterface $spacecraft
+        Spacecraft $spacecraft
     ): bool;
 
     /** @return array<TSpacecraftItemInterface> */
     public function getSingleSpacecraftScannerResults(
-        SpacecraftInterface $spacecraft,
+        Spacecraft $spacecraft,
         bool $showCloaked = false,
-        MapInterface|StarSystemMapInterface|null $field = null
+        Map|StarSystemMap|null $field = null
     ): array;
 
-    public function getRandomSpacecraftWithCrewByUser(int $userId): ?SpacecraftInterface;
+    public function getRandomSpacecraftWithCrewByUser(int $userId): ?Spacecraft;
 
     /**
-     * @return array<SpacecraftInterface>
+     * @return array<Spacecraft>
      */
     public function getAllTractoringSpacecrafts(): array;
 

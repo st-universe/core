@@ -4,14 +4,14 @@ namespace Stu\Module\Spacecraft\Lib\CloseCombat;
 
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\CrewAssignmentInterface;
+use Stu\Orm\Entity\CrewAssignment;
 
 interface BoardShipUtilInterface
 {
 
     /**
-     * @param array<CrewAssignmentInterface> $attackers
-     * @param array<CrewAssignmentInterface> $defenders
+     * @param array<CrewAssignment> $attackers
+     * @param array<CrewAssignment> $defenders
      */
     public function cycleKillRound(
         array &$attackers,

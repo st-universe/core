@@ -5,24 +5,24 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Lib;
 
 use Override;
-use Stu\Orm\Entity\AllianceInterface;
-use Stu\Orm\Entity\AllianceRelationInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Alliance;
+use Stu\Orm\Entity\AllianceRelation;
+use Stu\Orm\Entity\User;
 
 final class AllianceRelationItem implements AllianceRelationItemInterface
 {
-    public function __construct(private AllianceRelationInterface $allianceRelation, private UserInterface $currentUser)
+    public function __construct(private AllianceRelation $allianceRelation, private User $currentUser)
     {
     }
 
     #[Override]
-    public function getRelation(): AllianceRelationInterface
+    public function getRelation(): AllianceRelation
     {
         return $this->allianceRelation;
     }
 
     #[Override]
-    public function getOpponent(): AllianceInterface
+    public function getOpponent(): Alliance
     {
         if ($this->allianceRelation->getOpponent() === $this->currentUser->getAlliance()) {
             return $this->allianceRelation->getAlliance();

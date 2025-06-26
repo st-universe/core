@@ -5,19 +5,19 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\Lib;
 
 use Override;
-use Stu\Orm\Entity\StationInterface;
-use Stu\Orm\Entity\StorageInterface;
-use Stu\Orm\Entity\TradePostInterface;
+use Stu\Orm\Entity\Station;
+use Stu\Orm\Entity\Storage;
+use Stu\Orm\Entity\TradePost;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 
 final class DealAccountWrapper implements DealAccountWrapperInterface
 {
-    /** @var array<StorageInterface> */
+    /** @var array<Storage> */
     private ?array $storage = null;
 
     public function __construct(
         private StorageRepositoryInterface $storageRepository,
-        private TradePostInterface $tradePost,
+        private TradePost $tradePost,
         private int $userId
     ) {}
 
@@ -28,12 +28,12 @@ final class DealAccountWrapper implements DealAccountWrapperInterface
     }
 
     #[Override]
-    public function getStation(): StationInterface
+    public function getStation(): Station
     {
         return $this->tradePost->getStation();
     }
 
-    /** @return array<StorageInterface> */
+    /** @return array<Storage> */
     private function getStorage(): array
     {
         if ($this->storage === null) {
@@ -50,7 +50,7 @@ final class DealAccountWrapper implements DealAccountWrapperInterface
     {
         return array_reduce(
             $this->getStorage(),
-            fn(int $value, StorageInterface $storage): int => $value + $storage->getAmount(),
+            fn(int $value, Storage $storage): int => $value + $storage->getAmount(),
             0
         );
     }

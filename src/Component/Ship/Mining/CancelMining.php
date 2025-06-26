@@ -7,7 +7,7 @@ namespace Stu\Component\Ship\Mining;
 use Override;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 use Stu\Orm\Repository\MiningQueueRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -40,7 +40,7 @@ final class CancelMining implements CancelMiningInterface
         return false;
     }
 
-    private function setStateNoneAndSave(ShipInterface $ship): void
+    private function setStateNoneAndSave(Ship $ship): void
     {
         $ship->getCondition()->setState(SpacecraftStateEnum::NONE);
         $this->shipRepository->save($ship);

@@ -9,7 +9,7 @@ use InvalidArgumentException;
 use Stu\Component\Faction\FactionEnum;
 use Stu\Component\Player\Register\LocalPlayerCreator;
 use Stu\Module\PlayerSetting\Action\ChangePassword\ChangePassword;
-use Stu\Orm\Entity\FactionInterface;
+use Stu\Orm\Entity\Faction;
 use Stu\Orm\Repository\FactionRepositoryInterface;
 
 /**
@@ -74,7 +74,7 @@ final class UserCreateCommand extends Command
 
         $io->info('passwort validated', true);
 
-        /** @var FactionInterface $faction */
+        /** @var Faction $faction */
         $faction = $this->factionRepository->find($factionId);
 
         $io->info('faction exists', true);

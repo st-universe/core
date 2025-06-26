@@ -9,7 +9,7 @@ use Override;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\SpacecraftDestructionHandlerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -43,7 +43,7 @@ class SpacecraftDestructionTest extends StuTestCase
     {
         $destroyer = $this->mock(SpacecraftDestroyerInterface::class);
         $destroyedShipWrapper = $this->mock(ShipWrapperInterface::class);
-        $destroyedShip = $this->mock(ShipInterface::class);
+        $destroyedShip = $this->mock(Ship::class);
         $cause = SpacecraftDestructionCauseEnum::ALERT_RED;
         $informations = $this->mock(InformationInterface::class);
 

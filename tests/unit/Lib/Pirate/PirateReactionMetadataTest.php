@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Pirate;
 
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 use Stu\StuTestCase;
 
 class PirateReactionMetadataTest extends StuTestCase
@@ -13,7 +13,7 @@ class PirateReactionMetadataTest extends StuTestCase
     {
         $subject = new PirateReactionMetadata(
             PirateReactionTriggerEnum::ON_ATTACK,
-            $this->mock(ShipInterface::class)
+            $this->mock(Ship::class)
         );
 
         $result = $subject->getReactionAmount(PirateBehaviourEnum::CALL_FOR_SUPPORT);
@@ -25,7 +25,7 @@ class PirateReactionMetadataTest extends StuTestCase
     {
         $subject = new PirateReactionMetadata(
             PirateReactionTriggerEnum::ON_ATTACK,
-            $this->mock(ShipInterface::class)
+            $this->mock(Ship::class)
         );
 
         $subject->addReaction(PirateBehaviourEnum::CALL_FOR_SUPPORT);
@@ -38,7 +38,7 @@ class PirateReactionMetadataTest extends StuTestCase
     {
         $subject = new PirateReactionMetadata(
             PirateReactionTriggerEnum::ON_ATTACK,
-            $this->mock(ShipInterface::class)
+            $this->mock(Ship::class)
         );
 
         $subject->addReaction(PirateBehaviourEnum::CALL_FOR_SUPPORT);

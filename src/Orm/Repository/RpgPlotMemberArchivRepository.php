@@ -7,7 +7,6 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\RpgPlotMemberArchiv;
-use Stu\Orm\Entity\RpgPlotMemberArchivInterface;
 
 /**
  * @extends EntityRepository<RpgPlotMemberArchiv>
@@ -15,7 +14,7 @@ use Stu\Orm\Entity\RpgPlotMemberArchivInterface;
 final class RpgPlotMemberArchivRepository extends EntityRepository implements RpgPlotMemberArchivRepositoryInterface
 {
     #[Override]
-    public function getByPlotAndUser(int $plotId, int $userId): ?RpgPlotMemberArchivInterface
+    public function getByPlotAndUser(int $plotId, int $userId): ?RpgPlotMemberArchiv
     {
         return $this->findOneBy([
             'plot_id' => $plotId,
@@ -24,13 +23,13 @@ final class RpgPlotMemberArchivRepository extends EntityRepository implements Rp
     }
 
     #[Override]
-    public function prototype(): RpgPlotMemberArchivInterface
+    public function prototype(): RpgPlotMemberArchiv
     {
         return new RpgPlotMemberArchiv();
     }
 
     #[Override]
-    public function save(RpgPlotMemberArchivInterface $rpgPlotMember): void
+    public function save(RpgPlotMemberArchiv $rpgPlotMember): void
     {
         $em = $this->getEntityManager();
 
@@ -38,7 +37,7 @@ final class RpgPlotMemberArchivRepository extends EntityRepository implements Rp
     }
 
     #[Override]
-    public function delete(RpgPlotMemberArchivInterface $rpgPlotMember): void
+    public function delete(RpgPlotMemberArchiv $rpgPlotMember): void
     {
         $em = $this->getEntityManager();
 

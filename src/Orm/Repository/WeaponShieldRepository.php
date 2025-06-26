@@ -7,7 +7,6 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\WeaponShield;
-use Stu\Orm\Entity\WeaponShieldInterface;
 
 /**
  * @extends EntityRepository<WeaponShield>
@@ -15,13 +14,13 @@ use Stu\Orm\Entity\WeaponShieldInterface;
 final class WeaponShieldRepository extends EntityRepository implements WeaponShieldRepositoryInterface
 {
     #[Override]
-    public function prototype(): WeaponShieldInterface
+    public function prototype(): WeaponShield
     {
         return new WeaponShield();
     }
 
     #[Override]
-    public function save(WeaponShieldInterface $weaponshield): void
+    public function save(WeaponShield $weaponshield): void
     {
         $em = $this->getEntityManager();
 
@@ -29,7 +28,7 @@ final class WeaponShieldRepository extends EntityRepository implements WeaponShi
     }
 
     #[Override]
-    public function delete(WeaponShieldInterface $weaponshield): void
+    public function delete(WeaponShield $weaponshield): void
     {
         $em = $this->getEntityManager();
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Battle\Provider;
 
-use Stu\Orm\Entity\WeaponInterface;
+use Stu\Orm\Entity\Weapon;
 
 interface EnergyAttackerInterface extends AttackerInterface
 {
@@ -14,7 +14,7 @@ interface EnergyAttackerInterface extends AttackerInterface
 
     public function getFiringMode(): int;
 
-    public function getWeapon(): WeaponInterface;
+    public function getWeapon(): Weapon;
 
     public function getWeaponDamage(bool $isCritical): int;
 

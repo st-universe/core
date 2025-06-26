@@ -4,7 +4,6 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\ModuleSpecial;
-use Stu\Orm\Entity\ModuleSpecialInterface;
 
 /**
  * @extends ObjectRepository<ModuleSpecial>
@@ -12,7 +11,7 @@ use Stu\Orm\Entity\ModuleSpecialInterface;
 interface ModuleSpecialRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return list<ModuleSpecialInterface>
+     * @return list<ModuleSpecial>
      */
     public function getByModule(int $moduleId): array;
 }

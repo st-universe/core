@@ -11,8 +11,8 @@ use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Alliance\Event\DiplomaticRelationProposedEvent;
 use Stu\Component\Alliance\Event\WarDeclaredEvent;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
-use Stu\Orm\Entity\AllianceInterface;
-use Stu\Orm\Entity\AllianceRelationInterface;
+use Stu\Orm\Entity\Alliance;
+use Stu\Orm\Entity\AllianceRelation;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -39,9 +39,9 @@ class DiplomaticRelationProposalCreationSubscriberTest extends StuTestCase
     public function testOnWarDeclarationHandlesEvent(): void
     {
         $event = $this->mock(WarDeclaredEvent::class);
-        $alliance = $this->mock(AllianceInterface::class);
-        $counterpart = $this->mock(AllianceInterface::class);
-        $relation = $this->mock(AllianceRelationInterface::class);
+        $alliance = $this->mock(Alliance::class);
+        $counterpart = $this->mock(Alliance::class);
+        $relation = $this->mock(AllianceRelation::class);
 
         $allianceName = 'some-name';
         $counterpartId = 666;
@@ -106,9 +106,9 @@ class DiplomaticRelationProposalCreationSubscriberTest extends StuTestCase
     public function testOnRelationProposalHandlesEvent(): void
     {
         $event = $this->mock(DiplomaticRelationProposedEvent::class);
-        $alliance = $this->mock(AllianceInterface::class);
-        $counterpart = $this->mock(AllianceInterface::class);
-        $relation = $this->mock(AllianceRelationInterface::class);
+        $alliance = $this->mock(Alliance::class);
+        $counterpart = $this->mock(Alliance::class);
+        $relation = $this->mock(AllianceRelation::class);
 
         $allianceName = 'some-name';
         $counterpartId = 666;

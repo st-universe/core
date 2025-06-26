@@ -2,21 +2,21 @@
 
 namespace Stu\Module\Trade\Lib;
 
-use Stu\Orm\Entity\StationInterface;
-use Stu\Orm\Entity\StorageInterface;
+use Stu\Orm\Entity\Station;
+use Stu\Orm\Entity\Storage;
 
 interface TradeAccountWrapperInterface
 {
     public function getId(): int;
 
-    public function getStation(): StationInterface;
+    public function getStation(): Station;
 
     public function getTradePostDescription(): string;
 
     public function getTradePostName(): string;
 
     /**
-     * @return StorageInterface[]
+     * @return Storage[]
      */
     public function getStorage(): array;
 

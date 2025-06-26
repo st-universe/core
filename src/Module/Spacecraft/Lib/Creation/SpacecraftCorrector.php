@@ -7,8 +7,8 @@ use SebastianBergmann\Diff\Differ;
 use SebastianBergmann\Diff\Output\DiffOnlyOutputBuilder;
 use Stu\Module\Logging\StuLogger;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
-use Stu\Orm\Entity\SpacecraftBuildplanInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\SpacecraftBuildplan;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\ConstructionProgressRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 
@@ -70,7 +70,7 @@ class SpacecraftCorrector implements SpacecraftCorrectorInterface
         }
     }
 
-    private function correctSpacecraft(SpacecraftInterface $spacecraft, SpacecraftBuildplanInterface $buildplan, Differ $differ): bool
+    private function correctSpacecraft(Spacecraft $spacecraft, SpacecraftBuildplan $buildplan, Differ $differ): bool
     {
         $rump = $buildplan->getRump();
         $wrapper = $this->spacecraftWrapperFactory->wrapSpacecraft($spacecraft);

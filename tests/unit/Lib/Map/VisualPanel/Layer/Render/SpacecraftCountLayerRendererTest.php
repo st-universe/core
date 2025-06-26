@@ -9,7 +9,7 @@ use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
 use Stu\Lib\Map\VisualPanel\Layer\Data\SpacecraftCountData;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 use Stu\StuTestCase;
 
 class SpacecraftCountLayerRendererTest extends StuTestCase
@@ -183,7 +183,7 @@ class SpacecraftCountLayerRendererTest extends StuTestCase
     public function testRenderExpectNoCloakedInfoWhenTachyonSystemOffline(): void
     {
         $mapData = $this->mock(SpacecraftCountData::class);
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
 
         $mapData->shouldReceive('isDubious')
             ->withNoArgs()
@@ -264,7 +264,7 @@ class SpacecraftCountLayerRendererTest extends StuTestCase
         bool $isShowCloakedExpected
     ): void {
         $mapData = $this->mock(SpacecraftCountData::class);
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
 
         $mapData->shouldReceive('isDubious')
             ->withNoArgs()

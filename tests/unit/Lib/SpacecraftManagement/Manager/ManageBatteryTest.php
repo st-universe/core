@@ -13,8 +13,8 @@ use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\User;
 use Stu\StuTestCase;
 
 class ManageBatteryTest extends StuTestCase
@@ -25,7 +25,7 @@ class ManageBatteryTest extends StuTestCase
 
     private MockInterface&EpsSystemData $epsSystemData;
 
-    private MockInterface&ShipInterface $ship;
+    private MockInterface&Ship $ship;
 
     private MockInterface&ManagerProviderInterface $managerProvider;
 
@@ -44,7 +44,7 @@ class ManageBatteryTest extends StuTestCase
         $this->privateMessageSender = $this->mock(PrivateMessageSenderInterface::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
         $this->epsSystemData = $this->mock(EpsSystemData::class);
-        $this->ship = $this->mock(ShipInterface::class);
+        $this->ship = $this->mock(Ship::class);
         $this->managerProvider = $this->mock(ManagerProviderInterface::class);
         $this->playerRelationDeterminator = $this->mock(PlayerRelationDeterminatorInterface::class);
 
@@ -82,11 +82,11 @@ class ManageBatteryTest extends StuTestCase
             ->andReturn($this->shipId);
         $this->ship->shouldReceive('getUser')
             ->withNoArgs()
-            ->andReturn($this->mock(UserInterface::class));
+            ->andReturn($this->mock(User::class));
 
         $this->managerProvider->shouldReceive('getUser')
             ->withNoArgs()
-            ->andReturn($this->mock(UserInterface::class));
+            ->andReturn($this->mock(User::class));
 
         $msg = $this->subject->manage($this->wrapper, $values, $this->managerProvider);
 
@@ -112,11 +112,11 @@ class ManageBatteryTest extends StuTestCase
             ->andReturn($this->shipId);
         $this->ship->shouldReceive('getUser')
             ->withNoArgs()
-            ->andReturn($this->mock(UserInterface::class));
+            ->andReturn($this->mock(User::class));
 
         $this->managerProvider->shouldReceive('getUser')
             ->withNoArgs()
-            ->andReturn($this->mock(UserInterface::class));
+            ->andReturn($this->mock(User::class));
 
         $msg = $this->subject->manage($this->wrapper, $values, $this->managerProvider);
 
@@ -142,11 +142,11 @@ class ManageBatteryTest extends StuTestCase
             ->andReturn($this->shipId);
         $this->ship->shouldReceive('getUser')
             ->withNoArgs()
-            ->andReturn($this->mock(UserInterface::class));
+            ->andReturn($this->mock(User::class));
 
         $this->managerProvider->shouldReceive('getUser')
             ->withNoArgs()
-            ->andReturn($this->mock(UserInterface::class));
+            ->andReturn($this->mock(User::class));
 
         $msg = $this->subject->manage($this->wrapper, $values, $this->managerProvider);
 
@@ -172,7 +172,7 @@ class ManageBatteryTest extends StuTestCase
             ->andReturn($this->shipId);
         $this->ship->shouldReceive('getUser')
             ->withNoArgs()
-            ->andReturn($this->mock(UserInterface::class));
+            ->andReturn($this->mock(User::class));
         $this->ship->shouldReceive('isShielded')
             ->withNoArgs()
             ->andReturn(true);
@@ -182,7 +182,7 @@ class ManageBatteryTest extends StuTestCase
 
         $this->managerProvider->shouldReceive('getUser')
             ->withNoArgs()
-            ->andReturn($this->mock(UserInterface::class));
+            ->andReturn($this->mock(User::class));
 
         $this->playerRelationDeterminator->shouldReceive('isFriend')
             ->with($this->ship->getUser(), $this->managerProvider->getUser())
@@ -212,14 +212,14 @@ class ManageBatteryTest extends StuTestCase
             ->andReturn($this->shipId);
         $this->ship->shouldReceive('getUser')
             ->withNoArgs()
-            ->andReturn($this->mock(UserInterface::class));
+            ->andReturn($this->mock(User::class));
         $this->ship->shouldReceive('isShielded')
             ->withNoArgs()
             ->andReturn(false);
 
         $this->managerProvider->shouldReceive('getUser')
             ->withNoArgs()
-            ->andReturn($this->mock(UserInterface::class));
+            ->andReturn($this->mock(User::class));
 
 
         $this->playerRelationDeterminator->shouldReceive('isFriend')
@@ -254,14 +254,14 @@ class ManageBatteryTest extends StuTestCase
             ->andReturn($this->shipId);
         $this->ship->shouldReceive('getUser')
             ->withNoArgs()
-            ->andReturn($this->mock(UserInterface::class));
+            ->andReturn($this->mock(User::class));
         $this->ship->shouldReceive('isShielded')
             ->withNoArgs()
             ->andReturn(false);
 
         $this->managerProvider->shouldReceive('getUser')
             ->withNoArgs()
-            ->andReturn($this->mock(UserInterface::class));
+            ->andReturn($this->mock(User::class));
 
         $this->playerRelationDeterminator->shouldReceive('isFriend')
             ->with($this->ship->getUser(), $this->managerProvider->getUser())
@@ -309,7 +309,7 @@ class ManageBatteryTest extends StuTestCase
             ->withNoArgs()
             ->andReturn('name');
 
-        $userMock = $this->mock(UserInterface::class);
+        $userMock = $this->mock(User::class);
         $userMock->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn($this->shipUserId);
@@ -322,7 +322,7 @@ class ManageBatteryTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(true);
 
-        $managerProviderUserMock = $this->mock(UserInterface::class);
+        $managerProviderUserMock = $this->mock(User::class);
         $managerProviderUserMock->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn($this->managerProviderUserId);
@@ -408,7 +408,7 @@ class ManageBatteryTest extends StuTestCase
             ->withNoArgs()
             ->andReturn('name');
 
-        $userMock = $this->mock(UserInterface::class);
+        $userMock = $this->mock(User::class);
         $userMock->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn($this->shipUserId);
@@ -421,7 +421,7 @@ class ManageBatteryTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(false);
 
-        $managerProviderUserMock = $this->mock(UserInterface::class);
+        $managerProviderUserMock = $this->mock(User::class);
         $managerProviderUserMock->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn($this->managerProviderUserId);
@@ -499,7 +499,7 @@ class ManageBatteryTest extends StuTestCase
             ->withNoArgs()
             ->andReturn('name');
 
-        $userMock = $this->mock(UserInterface::class);
+        $userMock = $this->mock(User::class);
         $userMock->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn($this->shipUserId);
@@ -512,7 +512,7 @@ class ManageBatteryTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(false);
 
-        $managerProviderUserMock = $this->mock(UserInterface::class);
+        $managerProviderUserMock = $this->mock(User::class);
         $managerProviderUserMock->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn($this->managerProviderUserId);
@@ -591,7 +591,7 @@ class ManageBatteryTest extends StuTestCase
             ->withNoArgs()
             ->andReturn('name');
 
-        $userMock = $this->mock(UserInterface::class);
+        $userMock = $this->mock(User::class);
         $userMock->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn($this->shipUserId);
@@ -604,7 +604,7 @@ class ManageBatteryTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(false);
 
-        $managerProviderUserMock = $this->mock(UserInterface::class);
+        $managerProviderUserMock = $this->mock(User::class);
         $managerProviderUserMock->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn($this->managerProviderUserId);

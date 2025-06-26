@@ -2,7 +2,7 @@
 
 namespace Stu\Module\Spacecraft\Lib\Destruction;
 
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 
 enum SpacecraftDestructionCauseEnum
 {
@@ -18,7 +18,7 @@ enum SpacecraftDestructionCauseEnum
 
     public function getHistoryEntryText(
         ?SpacecraftDestroyerInterface $destroyer,
-        SpacecraftInterface $destroyedSpacecraft
+        Spacecraft $destroyedSpacecraft
     ): string {
 
         $destroyerName = $destroyer === null ? '' : $destroyer->getName();

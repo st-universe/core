@@ -3,12 +3,12 @@
 namespace Stu\Module\Trade\Lib;
 
 use Doctrine\Common\Collections\Collection;
-use Stu\Orm\Entity\StorageInterface;
-use Stu\Orm\Entity\TradePostInterface;
+use Stu\Orm\Entity\Storage;
+use Stu\Orm\Entity\TradePost;
 
 interface TradePostStorageManagerInterface
 {
-    public function getTradePost(): TradePostInterface;
+    public function getTradePost(): TradePost;
 
     public function getFreeStorage(): int;
 
@@ -16,7 +16,7 @@ interface TradePostStorageManagerInterface
 
     public function lowerStorage(int $commodityId, int $amount): void;
 
-    /** @return Collection<int, StorageInterface> Indexed by commodityId, ordered by commodityId */
+    /** @return Collection<int, Storage> Indexed by commodityId, ordered by commodityId */
     public function getStorage(): Collection;
 
     public function getStorageSum(): int;

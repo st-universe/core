@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Session;
 
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 interface SessionInterface
 {
     public function createSession(bool $session_check = true): void;
 
-    public function getUser(): ?UserInterface;
+    public function getUser(): ?User;
 
-    public function setUser(?UserInterface $user): SessionInterface;
+    public function setUser(?User $user): SessionInterface;
 
-    public function logout(?UserInterface $user = null): void;
+    public function logout(?User $user = null): void;
 }

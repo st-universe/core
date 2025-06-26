@@ -6,10 +6,10 @@ use Doctrine\Common\Collections\Collection;
 use Override;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\LocationInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Location;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\User;
 
 class AlertedShipsDetection implements AlertedShipsDetectionInterface
 {
@@ -19,18 +19,18 @@ class AlertedShipsDetection implements AlertedShipsDetectionInterface
 
     #[Override]
     public function getAlertedShipsOnLocation(
-        LocationInterface $location,
-        UserInterface $user
+        Location $location,
+        User $user
     ): Collection {
         return $location->getSpacecraftsWithoutVacation()
             ->filter(
-                fn(SpacecraftInterface $spacecraft): bool =>
+                fn(Spacecraft $spacecraft): bool =>
                 $spacecraft->getUser() !== $user
-                    && ($spacecraft->getFleet() === null || !$spacecraft instanceof ShipInterface || $spacecraft->isFleetLeader())
+                    && ($spacecraft->getFleet() === null || !$spacecraft instanceof Ship || $spacecraft->isFleetLeader())
                     && !$spacecraft->isWarped()
                     && !$spacecraft->isCloaked()
             )
-            ->map(fn(SpacecraftInterface $spacecraft): SpacecraftWrapperInterface => $this->spacecraftWrapperFactory->wrapSpacecraft($spacecraft))
+            ->map(fn(Spacecraft $spacecraft): SpacecraftWrapperInterface => $this->spacecraftWrapperFactory->wrapSpacecraft($spacecraft))
             ->filter(fn(SpacecraftWrapperInterface $wrapper): bool => !$wrapper->isUnalerted());
     }
 }

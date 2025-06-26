@@ -8,7 +8,7 @@ use Override;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Orm\Entity\RpgPlotInterface;
+use Stu\Orm\Entity\RpgPlot;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -24,7 +24,7 @@ final class AddKnPlotMember implements ActionControllerInterface
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        /** @var RpgPlotInterface $plot */
+        /** @var RpgPlot $plot */
         $plot = $this->rpgPlotRepository->find($this->addKnPlotMemberRequest->getPlotId());
         if ($plot === null || $plot->getUserId() !== $game->getUser()->getId() || !$plot->isActive()) {
             return;

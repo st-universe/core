@@ -8,7 +8,7 @@ use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Module\Spacecraft\Lib\ModuleValueCalculator;
-use Stu\Orm\Entity\ModuleInterface;
+use Stu\Orm\Entity\Module;
 use Stu\Module\Spacecraft\Lib\ReactorWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -16,7 +16,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 final class ModuleRumpWrapperReactor extends ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
 {
     #[Override]
-    public function getValue(?ModuleInterface $module = null): int
+    public function getValue(?Module $module = null): int
     {
         $module ??= current($this->getModule());
         if ($module === false) {
@@ -31,7 +31,7 @@ final class ModuleRumpWrapperReactor extends ModuleRumpWrapperBase implements Mo
     }
 
     #[Override]
-    public function getSecondValue(?ModuleInterface $module = null): int
+    public function getSecondValue(?Module $module = null): int
     {
         $module ??= current($this->getModule());
         if ($module === false) {

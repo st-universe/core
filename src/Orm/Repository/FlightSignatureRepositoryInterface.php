@@ -3,28 +3,27 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\FlightSignature;
-use Stu\Orm\Entity\FlightSignatureInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 /**
  * @extends ObjectRepository<FlightSignature>
  *
- * @method null|FlightSignatureInterface find(integer $id)
+ * @method null|FlightSignature find(integer $id)
  */
 interface FlightSignatureRepositoryInterface extends ObjectRepository
 {
-    public function prototype(): FlightSignatureInterface;
+    public function prototype(): FlightSignature;
 
     /**
-     * @param list<FlightSignatureInterface> $array
+     * @param list<FlightSignature> $array
      */
     public function saveAll(array $array): void;
 
-    public function save(FlightSignatureInterface $item): void;
+    public function save(FlightSignature $item): void;
 
-    public function getVisibleSignatureCount(ColonyInterface $colony): int;
+    public function getVisibleSignatureCount(Colony $colony): int;
 
     /**
      * @return array<array{minx: int, maxx: int, miny: int, maxy: int}>
@@ -47,7 +46,7 @@ interface FlightSignatureRepositoryInterface extends ObjectRepository
     public function getSignatureRangeForAlly(int $allyId): array;
 
     /**
-     * @return array<FlightSignatureInterface>
+     * @return array<FlightSignature>
      */
     public function getVisibleSignatures(int $locationId, int $ignoreId): array;
 
@@ -58,7 +57,7 @@ interface FlightSignatureRepositoryInterface extends ObjectRepository
      */
     public function getFlightsTop10(): array;
 
-    public function getSignaturesForUser(UserInterface $user): int;
+    public function getSignaturesForUser(User $user): int;
 
     public function truncateAllSignatures(): void;
 }

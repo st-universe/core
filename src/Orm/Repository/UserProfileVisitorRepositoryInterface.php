@@ -3,27 +3,26 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserProfileVisitor;
-use Stu\Orm\Entity\UserProfileVisitorInterface;
 
 /**
  * @extends ObjectRepository<UserProfileVisitor>
  */
 interface UserProfileVisitorRepositoryInterface extends ObjectRepository
 {
-    public function isVisitRegistered(UserInterface $user, UserInterface $visitor): bool;
+    public function isVisitRegistered(User $user, User $visitor): bool;
 
-    public function prototype(): UserProfileVisitorInterface;
+    public function prototype(): UserProfileVisitor;
 
-    public function save(UserProfileVisitorInterface $userProfileVisitor): void;
+    public function save(UserProfileVisitor $userProfileVisitor): void;
 
     /**
-     * @return list<UserProfileVisitorInterface>
+     * @return list<UserProfileVisitor>
      */
     public function getRecent(int $userId): array;
 
-    public function truncateByUser(UserInterface $user): void;
+    public function truncateByUser(User $user): void;
 
     public function truncateAllEntries(): void;
 }

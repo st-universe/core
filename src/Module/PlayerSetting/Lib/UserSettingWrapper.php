@@ -7,12 +7,12 @@ use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Component\Player\UserCssClassEnum;
 use Stu\Component\Player\UserRpgBehaviorEnum;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 class UserSettingWrapper
 {
     public function __construct(
-        private readonly UserInterface $user,
+        private readonly User $user,
         private readonly UserSettingEnum $type,
         private readonly bool $isAdmin,
         private readonly UserSettingsProviderInterface $userSettingsProvider
@@ -53,7 +53,7 @@ class UserSettingWrapper
     }
 
     /** @return array<ModuleEnum> */
-    private function getFilteredViews(UserInterface $user, bool $isAdmin): array
+    private function getFilteredViews(User $user, bool $isAdmin): array
     {
         return array_filter(ModuleEnum::cases(), function (ModuleEnum $case) use ($user, $isAdmin): bool {
 

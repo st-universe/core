@@ -10,16 +10,15 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 
 #[Table(name: 'stu_user_registration')]
 #[Entity]
-class UserRegistration implements UserRegistrationInterface
+class UserRegistration
 {
     #[Id]
     #[OneToOne(targetEntity: User::class, inversedBy: 'registration')]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $user;
+    private User $user;
 
     #[Column(type: 'string', length: 20)]
     private string $login = '';
@@ -52,151 +51,129 @@ class UserRegistration implements UserRegistrationInterface
     private ?string $email_code = null;
 
     #[OneToOne(targetEntity: UserReferer::class, mappedBy: 'userRegistration')]
-    private ?UserRefererInterface $referer = null;
+    private ?UserReferer $referer = null;
 
-    public function __construct(UserInterface $user)
+    public function __construct(User $user)
     {
         $this->user = $user;
     }
 
-    #[Override]
     public function getLogin(): string
     {
         return $this->login;
     }
 
-    #[Override]
-    public function setLogin(string $login): UserRegistrationInterface
+    public function setLogin(string $login): UserRegistration
     {
         $this->login = $login;
         return $this;
     }
 
-    #[Override]
     public function getPassword(): string
     {
         return $this->pass;
     }
 
-    #[Override]
-    public function setPassword(string $password): UserRegistrationInterface
+    public function setPassword(string $password): UserRegistration
     {
         $this->pass = $password;
         return $this;
     }
 
-    #[Override]
     public function getSmsCode(): ?string
     {
         return $this->sms_code;
     }
 
-    #[Override]
-    public function setSmsCode(?string $code): UserRegistrationInterface
+    public function setSmsCode(?string $code): UserRegistration
     {
         $this->sms_code = $code;
         return $this;
     }
 
-    #[Override]
     public function getEmail(): string
     {
         return $this->email;
     }
 
-    #[Override]
-    public function setEmail(string $email): UserRegistrationInterface
+    public function setEmail(string $email): UserRegistration
     {
         $this->email = $email;
         return $this;
     }
 
-    #[Override]
     public function getMobile(): ?string
     {
         return $this->mobile;
     }
 
-    #[Override]
-    public function setMobile(?string $mobile): UserRegistrationInterface
+    public function setMobile(?string $mobile): UserRegistration
     {
         $this->mobile = $mobile;
         return $this;
     }
 
-    #[Override]
     public function getCreationDate(): int
     {
         return $this->creation;
     }
 
-    #[Override]
-    public function setCreationDate(int $creationDate): UserRegistrationInterface
+    public function setCreationDate(int $creationDate): UserRegistration
     {
         $this->creation = $creationDate;
         return $this;
     }
 
-    #[Override]
     public function getDeletionMark(): int
     {
         return $this->delmark;
     }
 
-    #[Override]
-    public function setDeletionMark(int $deletionMark): UserRegistrationInterface
+    public function setDeletionMark(int $deletionMark): UserRegistration
     {
         $this->delmark = $deletionMark;
         return $this;
     }
 
-    #[Override]
     public function getPasswordToken(): string
     {
         return $this->password_token;
     }
 
-    #[Override]
-    public function setPasswordToken(string $password_token): UserRegistrationInterface
+    public function setPasswordToken(string $password_token): UserRegistration
     {
         $this->password_token = $password_token;
         return $this;
     }
 
-    #[Override]
-    public function getReferer(): ?UserRefererInterface
+    public function getReferer(): ?UserReferer
     {
         return $this->referer;
     }
 
-    #[Override]
-    public function setReferer(?UserRefererInterface $referer): UserRegistrationInterface
+    public function setReferer(?UserReferer $referer): UserRegistration
     {
         $this->referer = $referer;
         return $this;
     }
 
-    #[Override]
     public function getSmsSended(): int
     {
         return $this->sms_sended ?? 1;
     }
 
-    #[Override]
-    public function setSmsSended(int $smsSended): UserRegistrationInterface
+    public function setSmsSended(int $smsSended): UserRegistration
     {
         $this->sms_sended = $smsSended;
         return $this;
     }
 
-    #[Override]
     public function getEmailCode(): ?string
     {
         return $this->email_code;
     }
 
-    #[Override]
-    public function setEmailCode(?string $emailCode): UserRegistrationInterface
+    public function setEmailCode(?string $emailCode): UserRegistration
     {
         $this->email_code = $emailCode;
         return $this;

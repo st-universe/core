@@ -8,17 +8,17 @@ use Mockery\MockInterface;
 use Noodlehaus\ConfigInterface;
 use Override;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
-use Stu\Orm\Entity\KnCommentInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\KnComment;
+use Stu\Orm\Entity\User;
 use Stu\StuTestCase;
 
 class KnCommentWrapperTest extends StuTestCase
 {
     private MockInterface&ConfigInterface $config;
     private MockInterface&UserSettingsProviderInterface $userSettingsProvider;
-    private MockInterface&KnCommentInterface $comment;
+    private MockInterface&KnComment $comment;
 
-    private MockInterface&UserInterface $user;
+    private MockInterface&User $user;
 
     private KnCommentWrapper $tal;
 
@@ -27,8 +27,8 @@ class KnCommentWrapperTest extends StuTestCase
     {
         $this->config = $this->mock(ConfigInterface::class);
         $this->userSettingsProvider = $this->mock(UserSettingsProviderInterface::class);
-        $this->comment = $this->mock(KnCommentInterface::class);
-        $this->user = $this->mock(UserInterface::class);
+        $this->comment = $this->mock(KnComment::class);
+        $this->user = $this->mock(User::class);
 
         $this->tal = new KnCommentWrapper(
             $this->config,
@@ -163,7 +163,7 @@ class KnCommentWrapperTest extends StuTestCase
 
     public function testGetUserAvatarPathReturnsActualUserAvatarPath(): void
     {
-        $commentUser = $this->mock(UserInterface::class);
+        $commentUser = $this->mock(User::class);
 
         $avatarPath = 'some-path';
         $basePath = 'some-base-path';
@@ -198,7 +198,7 @@ class KnCommentWrapperTest extends StuTestCase
 
     public function testIsDeleteableReturnsFalseIfCommentBelongsToOtherUser(): void
     {
-        $otherUser = $this->mock(UserInterface::class);
+        $otherUser = $this->mock(User::class);
 
         $this->comment->shouldReceive('getUser')
             ->withNoArgs()

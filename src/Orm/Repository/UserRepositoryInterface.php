@@ -3,30 +3,29 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
-use Stu\Orm\Entity\AllianceInterface;
+use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\User;
-use Stu\Orm\Entity\UserInterface;
 
 /**
  * @extends ObjectRepository<User>
  *
- * @method null|UserInterface find(integer $id)
- * @method UserInterface[] findAll()
+ * @method null|User find(integer $id)
+ * @method User[] findAll()
  */
 interface UserRepositoryInterface extends ObjectRepository
 {
-    public function prototype(): UserInterface;
+    public function prototype(): User;
 
-    public function save(UserInterface $post): void;
+    public function save(User $post): void;
 
-    public function delete(UserInterface $post): void;
+    public function delete(User $post): void;
 
-    public function getByResetToken(string $resetToken): ?UserInterface;
+    public function getByResetToken(string $resetToken): ?User;
 
     /**
      * @param array<int> $ignoreIds
      *
-     * @return array<int, UserInterface>
+     * @return array<int, User>
      */
     public function getDeleteable(
         int $idleTimeThreshold,
@@ -35,27 +34,27 @@ interface UserRepositoryInterface extends ObjectRepository
     ): array;
 
     /**
-     * @return array<int, UserInterface>
+     * @return array<int, User>
      */
     public function getIdleRegistrations(
         int $idleTimeThreshold
     ): array;
 
-    public function getByEmail(string $email): ?UserInterface;
+    public function getByEmail(string $email): ?User;
 
-    public function getByMobile(string $mobile, string $mobileHash): ?UserInterface;
+    public function getByMobile(string $mobile, string $mobileHash): ?User;
 
-    public function getByLogin(string $loginName): ?UserInterface;
+    public function getByLogin(string $loginName): ?User;
 
     /**
      * Returns all members of the given alliance
      *
-     * @return array<UserInterface>
+     * @return array<User>
      */
-    public function getByAlliance(AllianceInterface $alliance): iterable;
+    public function getByAlliance(Alliance $alliance): iterable;
 
     /**
-     * @return array<UserInterface>
+     * @return array<User>
      */
     public function getList(
         string $sortField,
@@ -65,7 +64,7 @@ interface UserRepositoryInterface extends ObjectRepository
     ): array;
 
     /**
-     * @return array<UserInterface>
+     * @return array<User>
      */
     public function getNPCAdminList(
         string $sortField,
@@ -75,12 +74,12 @@ interface UserRepositoryInterface extends ObjectRepository
     ): array;
 
     /**
-     * @return array<UserInterface>
+     * @return array<User>
      */
-    public function getFriendsByUserAndAlliance(UserInterface $user, ?AllianceInterface $alliance): iterable;
+    public function getFriendsByUserAndAlliance(User $user, ?Alliance $alliance): iterable;
 
     /**
-     * @return array<UserInterface>
+     * @return array<User>
      */
     public function getOrderedByLastaction(int $limit, int $ignoreUserId, int $lastActionThreshold): iterable;
 
@@ -93,17 +92,17 @@ interface UserRepositoryInterface extends ObjectRepository
     public function getActiveAmountRecentlyOnline(int $threshold): int;
 
     /**
-     * @return array<UserInterface>
+     * @return array<User>
      */
     public function getNpcList(): iterable;
 
     /**
-     * @return array<UserInterface>
+     * @return array<User>
      */
     public function getNonNpcList(): iterable;
 
     /**
      * Returns the game's default fallback user item
      */
-    public function getFallbackUser(): UserInterface;
+    public function getFallbackUser(): User;
 }

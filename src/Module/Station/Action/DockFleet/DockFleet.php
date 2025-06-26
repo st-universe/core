@@ -21,7 +21,7 @@ use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Module\Station\Lib\StationWrapperInterface;
-use Stu\Orm\Entity\FleetInterface;
+use Stu\Orm\Entity\Fleet;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -91,7 +91,7 @@ final class DockFleet implements ActionControllerInterface
         $this->fleetDock($wrapper, $targetFleet, $game);
     }
 
-    private function fleetDock(StationWrapperInterface $stationWrapper, FleetInterface $targetFleet, GameControllerInterface $game): void
+    private function fleetDock(StationWrapperInterface $stationWrapper, Fleet $targetFleet, GameControllerInterface $game): void
     {
         $station = $stationWrapper->get();
         $epsSystem = $stationWrapper->getEpsSystemData();

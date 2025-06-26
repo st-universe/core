@@ -8,7 +8,7 @@ use Mockery\MockInterface;
 use Override;
 use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
 use Stu\Module\Spacecraft\Lib\Movement\FlightCompany;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 use Stu\StuTestCase;
 
 class ConditionCheckResultTest extends StuTestCase
@@ -26,7 +26,7 @@ class ConditionCheckResultTest extends StuTestCase
 
     public function testAddBlockedShipExpectBlockWhenFixedFleet(): void
     {
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
 
         $ship->shouldReceive('getId')
             ->withNoArgs()
@@ -34,7 +34,7 @@ class ConditionCheckResultTest extends StuTestCase
 
         $this->flightCompany->shouldReceive('getLeader')
             ->withNoArgs()
-            ->andReturn($this->mock(ShipInterface::class));
+            ->andReturn($this->mock(Ship::class));
         $this->flightCompany->shouldReceive('isFixedFleetMode')
             ->withNoArgs()
             ->andReturn(true);
@@ -50,7 +50,7 @@ class ConditionCheckResultTest extends StuTestCase
 
     public function testAddBlockedShipExpectLeaveFleetWhenNotFixedFleet(): void
     {
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
 
         $ship->shouldReceive('getId')
             ->withNoArgs()
@@ -70,7 +70,7 @@ class ConditionCheckResultTest extends StuTestCase
 
         $this->flightCompany->shouldReceive('getLeader')
             ->withNoArgs()
-            ->andReturn($this->mock(ShipInterface::class));
+            ->andReturn($this->mock(Ship::class));
         $this->flightCompany->shouldReceive('isFixedFleetMode')
             ->withNoArgs()
             ->andReturn(false);
@@ -93,8 +93,8 @@ class ConditionCheckResultTest extends StuTestCase
 
     public function testAddBlockedShipExpectNoLeaveFleetWhenNotFixedFleetButLeaderBlocked(): void
     {
-        $leaderShip = $this->mock(ShipInterface::class);
-        $ship = $this->mock(ShipInterface::class);
+        $leaderShip = $this->mock(Ship::class);
+        $ship = $this->mock(Ship::class);
 
         $leaderShip->shouldReceive('getId')
             ->withNoArgs()
@@ -125,7 +125,7 @@ class ConditionCheckResultTest extends StuTestCase
 
     public function testAddBlockedShipExpectNoLeaveFleetWhenLeader(): void
     {
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
 
         $ship->shouldReceive('getId')
             ->withNoArgs()
@@ -152,7 +152,7 @@ class ConditionCheckResultTest extends StuTestCase
 
     public function testAddBlockedShipExpectBlockWhenFleetLeader(): void
     {
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
 
         $ship->shouldReceive('getId')
             ->withNoArgs()
@@ -178,7 +178,7 @@ class ConditionCheckResultTest extends StuTestCase
 
     public function testAddBlockedShipExpectBlockWhenSingleShip(): void
     {
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
 
         $ship->shouldReceive('getId')
             ->withNoArgs()
@@ -186,7 +186,7 @@ class ConditionCheckResultTest extends StuTestCase
 
         $this->flightCompany->shouldReceive('getLeader')
             ->withNoArgs()
-            ->andReturn($this->mock(ShipInterface::class));
+            ->andReturn($this->mock(Ship::class));
         $this->flightCompany->shouldReceive('isFixedFleetMode')
             ->withNoArgs()
             ->andReturn(true);
@@ -204,7 +204,7 @@ class ConditionCheckResultTest extends StuTestCase
 
     public function testAddBlockedShipExpectBlockWhenSingleShipIsNotFleetLeader(): void
     {
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
 
         $ship->shouldReceive('getId')
             ->withNoArgs()

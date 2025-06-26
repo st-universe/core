@@ -5,7 +5,7 @@ namespace Stu\Module\Game\Lib;
 use Stu\Component\Game\GameEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContext;
-use Stu\Orm\Entity\TutorialStepInterface;
+use Stu\Orm\Entity\TutorialStep;
 use Stu\Orm\Repository\TutorialStepRepositoryInterface;
 use Stu\Orm\Repository\UserTutorialRepositoryInterface;
 
@@ -38,7 +38,7 @@ final class TutorialProvider
             return;
         }
 
-        $payloadArray = array_map(fn(TutorialStepInterface $tutorialStep): array => $this->convertTutorialStep($tutorialStep), $tutorialSteps);
+        $payloadArray = array_map(fn(TutorialStep $tutorialStep): array => $this->convertTutorialStep($tutorialStep), $tutorialSteps);
 
         $game->addExecuteJS(sprintf(
             "initTutorialSteps('%s', %d);",
@@ -48,7 +48,7 @@ final class TutorialProvider
     }
 
     /** @return array<string, mixed> */
-    private function convertTutorialStep(TutorialStepInterface $tutorialStep): array
+    private function convertTutorialStep(TutorialStep $tutorialStep): array
     {
         $result = [];
 

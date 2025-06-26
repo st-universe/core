@@ -7,7 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\ColonyClassInterface;
+use Stu\Orm\Entity\ColonyClass;
 use Stu\Orm\Entity\ColonyClassRestriction;
 use Stu\Orm\Entity\Researched;
 use Stu\Orm\Entity\Terraforming;
@@ -18,7 +18,7 @@ use Stu\Orm\Entity\Terraforming;
 final class TerraformingRepository extends EntityRepository implements TerraformingRepositoryInterface
 {
     #[Override]
-    public function getBySourceFieldTypeAndUser(int $sourceFieldTypeId, int $userId, ColonyClassInterface $colonyClass): array
+    public function getBySourceFieldTypeAndUser(int $sourceFieldTypeId, int $userId, ColonyClass $colonyClass): array
     {
         if ($userId == UserEnum::USER_NOONE) {
             return $this->getEntityManager()->createQuery(

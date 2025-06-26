@@ -11,12 +11,11 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\WormholeRestrictionRepository;
 
 #[Table(name: 'stu_wormhole_restrictions')]
 #[Entity(repositoryClass: WormholeRestrictionRepository::class)]
-class WormholeRestriction implements WormholeRestrictionInterface
+class WormholeRestriction
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -25,55 +24,48 @@ class WormholeRestriction implements WormholeRestrictionInterface
 
     #[ManyToOne(targetEntity: WormholeEntry::class)]
     #[JoinColumn(name: 'wormhole_entry_id', nullable: false, referencedColumnName: 'id')]
-    private WormholeEntryInterface $wormholeEntry;
+    private WormholeEntry $wormholeEntry;
 
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $user;
+    private User $user;
 
     #[Column(type: 'integer', nullable: true)]
     private ?int $mode = null;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
-    public function getWormholeEntry(): WormholeEntryInterface
+    public function getWormholeEntry(): WormholeEntry
     {
         return $this->wormholeEntry;
     }
 
-    #[Override]
-    public function setWormholeEntry(WormholeEntryInterface $wormholeEntry): WormholeRestrictionInterface
+    public function setWormholeEntry(WormholeEntry $wormholeEntry): WormholeRestriction
     {
         $this->wormholeEntry = $wormholeEntry;
         return $this;
     }
 
-    #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    #[Override]
-    public function setUser(UserInterface $user): WormholeRestrictionInterface
+    public function setUser(User $user): WormholeRestriction
     {
         $this->user = $user;
         return $this;
     }
 
-    #[Override]
     public function getMode(): ?int
     {
         return $this->mode;
     }
 
-    #[Override]
-    public function setMode(?int $mode): WormholeRestrictionInterface
+    public function setMode(?int $mode): WormholeRestriction
     {
         $this->mode = $mode;
         return $this;

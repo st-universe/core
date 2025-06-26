@@ -16,7 +16,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftRemoverInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
-use Stu\Orm\Entity\StationInterface;
+use Stu\Orm\Entity\Station;
 use Stu\Orm\Repository\ConstructionProgressRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
 use Stu\Orm\Repository\StationRepositoryInterface;
@@ -89,7 +89,7 @@ final class Scrapping implements ActionControllerInterface
         $game->addInformation(_('Das Demontieren hat begonnen'));
     }
 
-    private function startScrapping(StationInterface $station): void
+    private function startScrapping(Station $station): void
     {
         $condition = $station->getCondition();
         $condition->setState(SpacecraftStateEnum::UNDER_SCRAPPING);

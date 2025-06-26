@@ -10,8 +10,8 @@ use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Module\Control\StuTime;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\User;
 
 //TODO convert conditions to implementations of SkipConditionInterface
 class SkipDetection implements SkipDetectionInterface
@@ -23,9 +23,9 @@ class SkipDetection implements SkipDetectionInterface
 
     #[Override]
     public function isSkipped(
-        SpacecraftInterface $incomingSpacecraft,
+        Spacecraft $incomingSpacecraft,
         SpacecraftWrapperInterface $alertedWrapper,
-        ?SpacecraftInterface $tractoringSpacecraft,
+        ?Spacecraft $tractoringSpacecraft,
         Collection $usersToInformAboutTrojanHorse
     ): bool {
 
@@ -75,8 +75,8 @@ class SkipDetection implements SkipDetectionInterface
     }
 
     private function skipDueToPirateProtection(
-        UserInterface $incomingShipUser,
-        SpacecraftInterface $alertedSpacecraft
+        User $incomingShipUser,
+        Spacecraft $alertedSpacecraft
     ): bool {
 
         $time = $this->stuTime->time();

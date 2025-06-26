@@ -10,14 +10,14 @@ use Mockery\MockInterface;
 use Override;
 use Stu\Component\Map\MapEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
-use Stu\Orm\Entity\LayerInterface;
-use Stu\Orm\Entity\PrivateMessageFolderInterface;
-use Stu\Orm\Entity\ResearchedInterface;
-use Stu\Orm\Entity\ResearchInterface;
-use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Entity\UserLayerInterface;
-use Stu\Orm\Entity\TutorialStepInterface;
-use Stu\Orm\Entity\UserTutorialInterface;
+use Stu\Orm\Entity\Layer;
+use Stu\Orm\Entity\PrivateMessageFolder;
+use Stu\Orm\Entity\Researched;
+use Stu\Orm\Entity\Research;
+use Stu\Orm\Entity\User;
+use Stu\Orm\Entity\UserLayer;
+use Stu\Orm\Entity\TutorialStep;
+use Stu\Orm\Entity\UserTutorial;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
@@ -63,15 +63,15 @@ class PlayerDefaultsCreatorTest extends MockeryTestCase
 
     public function testCreateDefaultCreatesDefaults(): void
     {
-        $user = Mockery::mock(UserInterface::class)->shouldAllowMockingProtectedMethods();
-        /** @var UserInterface&MockInterface $user */
-        $pmFolder = Mockery::mock(PrivateMessageFolderInterface::class);
-        $startResearch = Mockery::mock(ResearchInterface::class);
-        $researchEntry = Mockery::mock(ResearchedInterface::class);
-        $layer = Mockery::mock(LayerInterface::class);
-        $userLayer = Mockery::mock(UserLayerInterface::class);
-        $tutorialStep = Mockery::mock(TutorialStepInterface::class);
-        $userTutorial = Mockery::mock(UserTutorialInterface::class);
+        $user = Mockery::mock(User::class)->shouldAllowMockingProtectedMethods();
+        /** @var User&MockInterface $user */
+        $pmFolder = Mockery::mock(PrivateMessageFolder::class);
+        $startResearch = Mockery::mock(Research::class);
+        $researchEntry = Mockery::mock(Researched::class);
+        $layer = Mockery::mock(Layer::class);
+        $userLayer = Mockery::mock(UserLayer::class);
+        $tutorialStep = Mockery::mock(TutorialStep::class);
+        $userTutorial = Mockery::mock(UserTutorial::class);
 
         $defaultCategoryCount = count(array_filter(
             PrivateMessageFolderTypeEnum::cases(),

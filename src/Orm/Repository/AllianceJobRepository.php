@@ -6,10 +6,9 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Override;
-use Stu\Orm\Entity\AllianceInterface;
+use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\AllianceJob;
-use Stu\Orm\Entity\AllianceJobInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 /**
  * @extends EntityRepository<AllianceJob>
@@ -17,13 +16,13 @@ use Stu\Orm\Entity\UserInterface;
 final class AllianceJobRepository extends EntityRepository implements AllianceJobRepositoryInterface
 {
     #[Override]
-    public function prototype(): AllianceJobInterface
+    public function prototype(): AllianceJob
     {
         return new AllianceJob();
     }
 
     #[Override]
-    public function save(AllianceJobInterface $post): void
+    public function save(AllianceJob $post): void
     {
         $em = $this->getEntityManager();
 
@@ -31,7 +30,7 @@ final class AllianceJobRepository extends EntityRepository implements AllianceJo
     }
 
     #[Override]
-    public function delete(AllianceJobInterface $post): void
+    public function delete(AllianceJob $post): void
     {
         $em = $this->getEntityManager();
 
@@ -91,10 +90,10 @@ final class AllianceJobRepository extends EntityRepository implements AllianceJo
 
     #[Override]
     public function getByUserAndAllianceAndType(
-        UserInterface $user,
-        AllianceInterface $alliance,
+        User $user,
+        Alliance $alliance,
         int $type
-    ): ?AllianceJobInterface {
+    ): ?AllianceJob {
         return $this->findOneBy([
             'user' => $user,
             'alliance' => $alliance,
@@ -103,7 +102,7 @@ final class AllianceJobRepository extends EntityRepository implements AllianceJo
     }
 
     #[Override]
-    public function getSingleResultByAllianceAndType(int $allianceId, int $typeId): ?AllianceJobInterface
+    public function getSingleResultByAllianceAndType(int $allianceId, int $typeId): ?AllianceJob
     {
         return $this->findOneBy([
             'alliance_id' => $allianceId,

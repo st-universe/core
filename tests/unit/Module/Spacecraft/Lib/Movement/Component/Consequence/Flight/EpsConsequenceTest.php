@@ -13,16 +13,16 @@ use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\FlightConsequenceIn
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Route\RouteModeEnum;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\StarSystemMap;
 use Stu\StuTestCase;
 
 class EpsConsequenceTest extends StuTestCase
 {
     private FlightConsequenceInterface $subject;
 
-    private MockInterface&ShipInterface $ship;
+    private MockInterface&Ship $ship;
 
     private MockInterface&ShipWrapperInterface $wrapper;
 
@@ -31,7 +31,7 @@ class EpsConsequenceTest extends StuTestCase
     #[Override]
     protected function setUp(): void
     {
-        $this->ship = $this->mock(ShipInterface::class);
+        $this->ship = $this->mock(Ship::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
         $this->flightRoute = $this->mock(FlightRouteInterface::class);
 
@@ -86,9 +86,9 @@ class EpsConsequenceTest extends StuTestCase
             [RouteModeEnum::WORMHOLE_ENTRY],
             [RouteModeEnum::WORMHOLE_EXIT],
             [RouteModeEnum::TRANSWARP],
-            [RouteModeEnum::FLIGHT, MapInterface::class],
-            [RouteModeEnum::FLIGHT, StarSystemMapInterface::class, 2, null, 2],
-            [RouteModeEnum::FLIGHT, StarSystemMapInterface::class, 2, 3, 5]
+            [RouteModeEnum::FLIGHT, Map::class],
+            [RouteModeEnum::FLIGHT, StarSystemMap::class, 2, null, 2],
+            [RouteModeEnum::FLIGHT, StarSystemMap::class, 2, 3, 5]
         ];
     }
 
@@ -136,7 +136,7 @@ class EpsConsequenceTest extends StuTestCase
                 ->andReturn($flightCost);
         }
         if ($tractorCost !== null) {
-            $tractoredShip = $this->mock(ShipInterface::class);
+            $tractoredShip = $this->mock(Ship::class);
 
             $this->ship->shouldReceive('getTractoredShip')
                 ->withNoArgs()

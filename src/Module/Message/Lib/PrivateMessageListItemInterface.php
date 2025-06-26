@@ -2,12 +2,12 @@
 
 namespace Stu\Module\Message\Lib;
 
-use Stu\Orm\Entity\ContactInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Contact;
+use Stu\Orm\Entity\User;
 
 interface PrivateMessageListItemInterface
 {
-    public function getSender(): UserInterface;
+    public function getSender(): User;
 
     public function getDate(): int;
 
@@ -25,7 +25,7 @@ interface PrivateMessageListItemInterface
 
     public function displayUserLinks(): bool;
 
-    public function senderIsContact(): ?ContactInterface;
+    public function senderIsContact(): ?Contact;
 
     public function hasTranslation(): bool;
 }

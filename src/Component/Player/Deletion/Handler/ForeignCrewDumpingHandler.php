@@ -7,7 +7,7 @@ namespace Stu\Component\Player\Deletion\Handler;
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use Stu\Module\Spacecraft\Lib\Crew\SpacecraftLeaverInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\StationRepositoryInterface;
 
 final class ForeignCrewDumpingHandler implements PlayerDeletionHandlerInterface
@@ -19,7 +19,7 @@ final class ForeignCrewDumpingHandler implements PlayerDeletionHandlerInterface
     ) {}
 
     #[Override]
-    public function delete(UserInterface $user): void
+    public function delete(User $user): void
     {
         foreach ($this->stationRepository->getStationsByUser($user->getId()) as $station) {
 

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Research;
 
-use Stu\Orm\Entity\CommodityInterface;
+use Stu\Orm\Entity\Commodity;
 
 final class TechDependency
 {
-    public function __construct(private string $name, private CommodityInterface $commodity)
+    public function __construct(private string $name, private Commodity $commodity)
     {
     }
 
@@ -17,7 +17,7 @@ final class TechDependency
         return $this->name;
     }
 
-    public function getCommodity(): CommodityInterface
+    public function getCommodity(): Commodity
     {
         return $this->commodity;
     }

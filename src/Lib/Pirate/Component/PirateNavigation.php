@@ -9,9 +9,9 @@ use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Route\RandomSystemEntryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\LocationInterface;
-use Stu\Orm\Entity\StarSystemInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
+use Stu\Orm\Entity\Location;
+use Stu\Orm\Entity\StarSystem;
+use Stu\Orm\Entity\StarSystemMap;
 
 class PirateNavigation implements PirateNavigationInterface
 {
@@ -30,7 +30,7 @@ class PirateNavigation implements PirateNavigationInterface
     #[Override]
     public function navigateToTarget(
         FleetWrapperInterface $fleet,
-        LocationInterface|StarSystemInterface $target
+        Location|StarSystem $target
     ): bool {
         $leadWrapper = $fleet->getLeadWrapper();
         $leadShip = $leadWrapper->get();
@@ -54,7 +54,7 @@ class PirateNavigation implements PirateNavigationInterface
             return false;
         }
 
-        if ($target instanceof StarSystemInterface) {
+        if ($target instanceof StarSystem) {
             return true;
         }
 
@@ -68,20 +68,20 @@ class PirateNavigation implements PirateNavigationInterface
         return true;
     }
 
-    private function getTargetSystem(LocationInterface|StarSystemInterface $target): ?StarSystemInterface
+    private function getTargetSystem(Location|StarSystem $target): ?StarSystem
     {
-        if ($target instanceof StarSystemInterface) {
+        if ($target instanceof StarSystem) {
             return $target;
         }
 
-        if ($target instanceof StarSystemMapInterface) {
+        if ($target instanceof StarSystemMap) {
             return $target->getSystem();
         }
 
         return null;
     }
 
-    private function navigateIntoSystem(ShipWrapperInterface $wrapper, StarSystemInterface $system): bool
+    private function navigateIntoSystem(ShipWrapperInterface $wrapper, StarSystem $system): bool
     {
         $leadShip = $wrapper->get();
 
@@ -109,7 +109,7 @@ class PirateNavigation implements PirateNavigationInterface
         return true;
     }
 
-    private function leaveStarSystem(ShipWrapperInterface $wrapper, StarSystemInterface $system): bool
+    private function leaveStarSystem(ShipWrapperInterface $wrapper, StarSystem $system): bool
     {
         $mapField = $system->getMap();
         if ($mapField === null) {
@@ -125,7 +125,7 @@ class PirateNavigation implements PirateNavigationInterface
         return $wrapper->get()->getSystem() === null;
     }
 
-    private function enterSystem(ShipWrapperInterface $wrapper, StarSystemInterface $system): bool
+    private function enterSystem(ShipWrapperInterface $wrapper, StarSystem $system): bool
     {
         $destination = $this->randomSystemEntry->getRandomEntryPoint($wrapper, $system);
 

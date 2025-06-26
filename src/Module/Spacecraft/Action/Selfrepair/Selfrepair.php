@@ -17,7 +17,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class Selfrepair implements ActionControllerInterface
@@ -132,7 +132,7 @@ final class Selfrepair implements ActionControllerInterface
         $this->spacecraftRepository->save($ship);
     }
 
-    private function checkForSpareParts(SpacecraftInterface $ship, int $neededSparePartCount, int $repairType, GameControllerInterface $game): bool
+    private function checkForSpareParts(Spacecraft $ship, int $neededSparePartCount, int $repairType, GameControllerInterface $game): bool
     {
         $result = true;
 
@@ -157,7 +157,7 @@ final class Selfrepair implements ActionControllerInterface
         return $result;
     }
 
-    private function consumeCommodities(SpacecraftInterface $ship, int $repairType, int $neededSparePartCount, GameControllerInterface $game): void
+    private function consumeCommodities(Spacecraft $ship, int $repairType, int $neededSparePartCount, GameControllerInterface $game): void
     {
         if (
             $repairType === RepairTaskConstants::SPARE_PARTS_ONLY

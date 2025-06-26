@@ -7,10 +7,10 @@ namespace Stu\Component\Player\Relation;
 use Mockery\MockInterface;
 use Override;
 use Stu\Component\Alliance\AllianceEnum;
-use Stu\Orm\Entity\AllianceInterface;
-use Stu\Orm\Entity\AllianceRelationInterface;
-use Stu\Orm\Entity\ContactInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Alliance;
+use Stu\Orm\Entity\AllianceRelation;
+use Stu\Orm\Entity\Contact;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\StuTestCase;
@@ -23,9 +23,9 @@ class FriendDeterminatorTest extends StuTestCase
 
     private FriendDeterminator $subject;
 
-    private MockInterface&UserInterface $user;
+    private MockInterface&User $user;
 
-    private MockInterface&UserInterface $opponent;
+    private MockInterface&User $opponent;
 
     #[Override]
     protected function setUp(): void
@@ -38,13 +38,13 @@ class FriendDeterminatorTest extends StuTestCase
             $this->contactRepository
         );
 
-        $this->user = $this->mock(UserInterface::class);
-        $this->opponent = $this->mock(UserInterface::class);
+        $this->user = $this->mock(User::class);
+        $this->opponent = $this->mock(User::class);
     }
 
     public function testIsFriendReturnsAllyIfAlliancesMatch(): void
     {
-        $alliance = $this->mock(AllianceInterface::class);
+        $alliance = $this->mock(Alliance::class);
 
         $this->user->shouldReceive('getAlliance')
             ->withNoArgs()
@@ -64,8 +64,8 @@ class FriendDeterminatorTest extends StuTestCase
 
     public function testIsFriendReturnsAllyIfAlliancesHaveFriendlyRelation(): void
     {
-        $allianceUser = $this->mock(AllianceInterface::class);
-        $allianceOpponent = $this->mock(AllianceInterface::class);
+        $allianceUser = $this->mock(Alliance::class);
+        $allianceOpponent = $this->mock(Alliance::class);
 
         $allianceUserId = 666;
         $allianceOpponentId = 42;
@@ -101,7 +101,7 @@ class FriendDeterminatorTest extends StuTestCase
                 $allianceUserId
             )
             ->once()
-            ->andReturn($this->mock(AllianceRelationInterface::class));
+            ->andReturn($this->mock(AllianceRelation::class));
 
         $this->assertEquals(
             PlayerRelationTypeEnum::ALLY,
@@ -111,8 +111,8 @@ class FriendDeterminatorTest extends StuTestCase
 
     public function testIsFriendReturnsNoneIfAlliancesHaveNoFriendlyRelationAndUserHasNoContact(): void
     {
-        $allianceUser = $this->mock(AllianceInterface::class);
-        $allianceOpponent = $this->mock(AllianceInterface::class);
+        $allianceUser = $this->mock(Alliance::class);
+        $allianceOpponent = $this->mock(Alliance::class);
 
         $allianceUserId = 666;
         $allianceOpponentId = 42;
@@ -178,7 +178,7 @@ class FriendDeterminatorTest extends StuTestCase
         $userId = 33;
         $opponentId = 21;
 
-        $contact = $this->mock(ContactInterface::class);
+        $contact = $this->mock(Contact::class);
 
         $this->user->shouldReceive('getAlliance')
             ->withNoArgs()

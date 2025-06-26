@@ -11,12 +11,11 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\BuoyRepository;
 
 #[Table(name: 'stu_buoy')]
 #[Entity(repositoryClass: BuoyRepository::class)]
-class Buoy implements BuoyInterface
+class Buoy
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -34,64 +33,55 @@ class Buoy implements BuoyInterface
 
     #[ManyToOne(targetEntity: Location::class)]
     #[JoinColumn(name: 'location_id', nullable: false, referencedColumnName: 'id')]
-    private LocationInterface $location;
+    private Location $location;
 
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $user;
+    private User $user;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    #[Override]
     public function setUserId(int $user_id): void
     {
         $this->user_id = $user_id;
     }
 
-    #[Override]
     public function getText(): string
     {
         return $this->text;
     }
 
-    #[Override]
     public function setText(string $text): void
     {
         $this->text = $text;
     }
 
-    #[Override]
-    public function getLocation(): LocationInterface
+    public function getLocation(): Location
     {
         return $this->location;
     }
 
-    #[Override]
-    public function setLocation(LocationInterface $location): BuoyInterface
+    public function setLocation(Location $location): Buoy
     {
         $this->location = $location;
 
         return $this;
     }
 
-    #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    #[Override]
-    public function setUser(UserInterface $user): void
+    public function setUser(User $user): void
     {
         $this->user = $user;
     }

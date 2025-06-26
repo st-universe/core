@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Component\Alliance;
 
 use Override;
-use Stu\Orm\Entity\AllianceInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Alliance;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 
 /**
@@ -20,8 +20,8 @@ final class AllianceUserApplicationChecker implements AllianceUserApplicationChe
 
     #[Override]
     public function mayApply(
-        UserInterface $user,
-        AllianceInterface $alliance
+        User $user,
+        Alliance $alliance
     ): bool {
         $pendingApplication = $this->allianceJobRepository->getByUserAndAllianceAndType(
             $user,

@@ -11,7 +11,6 @@ use Stu\Component\Trade\TradeEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\TradeLicense;
 use Stu\Orm\Entity\TradeOffer;
-use Stu\Orm\Entity\TradeOfferInterface;
 
 /**
  * @extends EntityRepository<TradeOffer>
@@ -19,13 +18,13 @@ use Stu\Orm\Entity\TradeOfferInterface;
 final class TradeOfferRepository extends EntityRepository implements TradeOfferRepositoryInterface
 {
     #[Override]
-    public function prototype(): TradeOfferInterface
+    public function prototype(): TradeOffer
     {
         return new TradeOffer();
     }
 
     #[Override]
-    public function save(TradeOfferInterface $post): void
+    public function save(TradeOffer $post): void
     {
         $em = $this->getEntityManager();
 
@@ -33,7 +32,7 @@ final class TradeOfferRepository extends EntityRepository implements TradeOfferR
     }
 
     #[Override]
-    public function delete(TradeOfferInterface $post): void
+    public function delete(TradeOffer $post): void
     {
         $em = $this->getEntityManager();
 

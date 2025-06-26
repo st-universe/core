@@ -4,26 +4,25 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\ColonyScan;
-use Stu\Orm\Entity\ColonyScanInterface;
 
 /**
- * @method null|ColonyScanInterface find(integer $id)
+ * @method null|ColonyScan find(integer $id)
  * @extends ObjectRepository<ColonyScan>
  */
 interface ColonyScanRepositoryInterface extends ObjectRepository
 {
-    public function prototype(): ColonyScanInterface;
+    public function prototype(): ColonyScan;
 
-    public function save(ColonyScanInterface $post): void;
+    public function save(ColonyScan $post): void;
 
-    public function delete(ColonyScanInterface $post): void;
+    public function delete(ColonyScan $post): void;
 
     /**
-     * @return list<ColonyScanInterface>
+     * @return list<ColonyScan>
      */
     public function getByUser(int $userId): array;
 
-    public function truncateByUserId(ColonyScanInterface $userId): void;
+    public function truncateByUserId(ColonyScan $userId): void;
 
     public function getSurface(int $colonyId): array;
 

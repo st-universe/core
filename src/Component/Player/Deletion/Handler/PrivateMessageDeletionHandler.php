@@ -7,7 +7,7 @@ namespace Stu\Component\Player\Deletion\Handler;
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 /**
  * Updates the sending user to the fallback one on user deletion
@@ -19,7 +19,7 @@ final class PrivateMessageDeletionHandler implements PlayerDeletionHandlerInterf
     ) {}
 
     #[Override]
-    public function delete(UserInterface $user): void
+    public function delete(User $user): void
     {
         $this->setFallbackUserByDeletedSender($user);
         $this->unsetInboxReference($user);
@@ -27,7 +27,7 @@ final class PrivateMessageDeletionHandler implements PlayerDeletionHandlerInterf
         $this->entityManager->flush();
     }
 
-    private function setFallbackUserByDeletedSender(UserInterface $user): void
+    private function setFallbackUserByDeletedSender(User $user): void
     {
         $this->entityManager->getConnection()->executeStatement(
             'UPDATE stu_pms SET send_user = :nobodyId
@@ -39,7 +39,7 @@ final class PrivateMessageDeletionHandler implements PlayerDeletionHandlerInterf
         );
     }
 
-    private function unsetInboxReference(UserInterface $user): void
+    private function unsetInboxReference(User $user): void
     {
         $this->entityManager->getConnection()->executeStatement(
             'UPDATE stu_pms outbox SET inbox_pm_id = NULL

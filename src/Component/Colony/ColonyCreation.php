@@ -7,8 +7,8 @@ namespace Stu\Component\Colony;
 use Override;
 use RuntimeException;
 use Stu\Module\Control\StuRandom;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -17,7 +17,7 @@ final class ColonyCreation implements ColonyCreationInterface
     public function __construct(private ColonyRepositoryInterface $colonyRepository, private UserRepositoryInterface $userRepository, private StuRandom $stuRandom) {}
 
     #[Override]
-    public function create(StarSystemMapInterface $systemMap, string $name): ColonyInterface
+    public function create(StarSystemMap $systemMap, string $name): Colony
     {
         $colonyClass = $systemMap->getFieldType()->getColonyClass();
         if ($colonyClass === null) {

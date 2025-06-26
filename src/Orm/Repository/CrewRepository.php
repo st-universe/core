@@ -8,11 +8,10 @@ use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Orm\Entity\Crew;
-use Stu\Orm\Entity\CrewInterface;
 use Stu\Orm\Entity\CrewAssignment;
 use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\Spacecraft;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 /**
  * @extends EntityRepository<Crew>
@@ -20,13 +19,13 @@ use Stu\Orm\Entity\UserInterface;
 final class CrewRepository extends EntityRepository implements CrewRepositoryInterface
 {
     #[Override]
-    public function prototype(): CrewInterface
+    public function prototype(): Crew
     {
         return new Crew();
     }
 
     #[Override]
-    public function save(CrewInterface $post): void
+    public function save(Crew $post): void
     {
         $em = $this->getEntityManager();
 
@@ -34,7 +33,7 @@ final class CrewRepository extends EntityRepository implements CrewRepositoryInt
     }
 
     #[Override]
-    public function delete(CrewInterface $post): void
+    public function delete(Crew $post): void
     {
         $em = $this->getEntityManager();
 
@@ -43,7 +42,7 @@ final class CrewRepository extends EntityRepository implements CrewRepositoryInt
 
     #[Override]
     public function getAmountByUserAndShipRumpCategory(
-        UserInterface $user,
+        User $user,
         SpacecraftRumpCategoryEnum $shipRumpCategory
     ): int {
         return (int) $this->getEntityManager()

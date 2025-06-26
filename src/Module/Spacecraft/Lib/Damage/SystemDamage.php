@@ -10,7 +10,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Lib\Damage\DamageWrapper;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\SpacecraftSystemInterface;
+use Stu\Orm\Entity\SpacecraftSystem;
 
 //TODO unit tests and move to Lib/Damage
 final class SystemDamage implements SystemDamageInterface
@@ -75,20 +75,20 @@ final class SystemDamage implements SystemDamageInterface
         }
     }
 
-    /** @return array<SpacecraftSystemInterface>  */
+    /** @return array<SpacecraftSystem>  */
     private function getHealthySystems(SpacecraftWrapperInterface $wrapper, DamageWrapper $damageWrapper): array
     {
         return $wrapper->get()->getSystems()
-            ->filter(fn(SpacecraftSystemInterface $system): bool => $damageWrapper->canDamageSystem($system->getSystemType()))
-            ->filter(fn(SpacecraftSystemInterface $system): bool => $system->getStatus() > 0)
-            ->filter(fn(SpacecraftSystemInterface $system): bool => $system->getSystemType()->canBeDamaged())
+            ->filter(fn(SpacecraftSystem $system): bool => $damageWrapper->canDamageSystem($system->getSystemType()))
+            ->filter(fn(SpacecraftSystem $system): bool => $system->getStatus() > 0)
+            ->filter(fn(SpacecraftSystem $system): bool => $system->getSystemType()->canBeDamaged())
             ->toArray();
     }
 
     #[Override]
     public function damageShipSystem(
         SpacecraftWrapperInterface $wrapper,
-        SpacecraftSystemInterface $system,
+        SpacecraftSystem $system,
         int $dmg,
         InformationInterface $informations
     ): bool {

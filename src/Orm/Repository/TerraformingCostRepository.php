@@ -7,7 +7,6 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\TerraformingCost;
-use Stu\Orm\Entity\TerraformingCostInterface;
 
 /**
  * @extends EntityRepository<TerraformingCost>
@@ -15,7 +14,7 @@ use Stu\Orm\Entity\TerraformingCostInterface;
 final class TerraformingCostRepository extends EntityRepository implements TerraformingCostRepositoryInterface
 {
     /**
-     * @return TerraformingCostInterface[]
+     * @return TerraformingCost[]
      */
     #[Override]
     public function getByTerraforming(int $terraformingId): array

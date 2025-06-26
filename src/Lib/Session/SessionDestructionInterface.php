@@ -2,9 +2,9 @@
 
 namespace Stu\Lib\Session;
 
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 interface SessionDestructionInterface
 {
-    public function destroySession(SessionInterface $session, ?UserInterface $user = null): void;
+    public function destroySession(SessionInterface $session, ?User $user = null): void;
 }

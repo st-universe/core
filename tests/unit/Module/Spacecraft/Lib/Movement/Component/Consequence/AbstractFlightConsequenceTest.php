@@ -11,7 +11,7 @@ use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 use Stu\StuTestCase;
 
 class AbstractFlightConsequenceTest extends StuTestCase
@@ -40,7 +40,7 @@ class AbstractFlightConsequenceTest extends StuTestCase
         bool $expectExecution
     ): void {
 
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $flightRoute = $this->mock(FlightRouteInterface::class);
         $messages = $this->mock(MessageCollectionInterface::class);

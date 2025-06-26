@@ -5,13 +5,13 @@ namespace Stu\Lib\Session;
 use DateTime;
 use Override;
 use Stu\Exception\SessionInvalidException;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\UserIpTableRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class Session implements SessionInterface
 {
-    private ?UserInterface $user = null;
+    private ?User $user = null;
 
     public function __construct(
         private readonly UserIpTableRepositoryInterface $userIpTableRepository,
@@ -45,13 +45,13 @@ final class Session implements SessionInterface
      * @api
      */
     #[Override]
-    public function getUser(): ?UserInterface
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
     #[Override]
-    public function setUser(?UserInterface $user): SessionInterface
+    public function setUser(?User $user): SessionInterface
     {
         $this->user = $user;
 
@@ -59,7 +59,7 @@ final class Session implements SessionInterface
     }
 
     #[Override]
-    public function logout(?UserInterface $user = null): void
+    public function logout(?User $user = null): void
     {
         $this->sessionDestruction->destroySession($this, $user);
     }

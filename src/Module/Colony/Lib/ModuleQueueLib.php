@@ -7,8 +7,8 @@ namespace Stu\Module\Colony\Lib;
 use Override;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
-use Stu\Orm\Entity\BuildingInterface;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Building;
+use Stu\Orm\Entity\Colony;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
 
 final class ModuleQueueLib implements ModuleQueueLibInterface
@@ -16,13 +16,13 @@ final class ModuleQueueLib implements ModuleQueueLibInterface
     public function __construct(private ModuleQueueRepositoryInterface $moduleQueueRepository, private StorageManagerInterface $storageManager) {}
 
     #[Override]
-    public function cancelModuleQueues(ColonyInterface $colony, BuildingFunctionEnum $buildingFunction): void
+    public function cancelModuleQueues(Colony $colony, BuildingFunctionEnum $buildingFunction): void
     {
         $this->cancelModuleQueuesForBuildingFunctions($colony, [$buildingFunction->value]);
     }
 
     #[Override]
-    public function cancelModuleQueuesForBuilding(ColonyInterface $colony, BuildingInterface $building): void
+    public function cancelModuleQueuesForBuilding(Colony $colony, Building $building): void
     {
         $this->cancelModuleQueuesForBuildingFunctions($colony, $building->getFunctions()->getKeys());
     }
@@ -30,7 +30,7 @@ final class ModuleQueueLib implements ModuleQueueLibInterface
     /**
      * @param array<int> $functionIds
      */
-    private function cancelModuleQueuesForBuildingFunctions(ColonyInterface $colony, array $functionIds): void
+    private function cancelModuleQueuesForBuildingFunctions(Colony $colony, array $functionIds): void
     {
         $queues = $this->moduleQueueRepository->getByColonyAndBuilding($colony->getId(), $functionIds);
 

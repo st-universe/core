@@ -8,7 +8,7 @@ use Noodlehaus\ConfigInterface;
 use Override;
 use RuntimeException;
 use Stu\Lib\Mail\MailFactoryInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 final class RegistrationEmailSender implements RegistrationEmailSenderInterface
 {
@@ -18,7 +18,7 @@ final class RegistrationEmailSender implements RegistrationEmailSenderInterface
     ) {}
 
     #[Override]
-    public function send(UserInterface $player, string $activationCode): void
+    public function send(User $player, string $activationCode): void
     {
         $body = <<<EOT
             Hallo %s\n\n

@@ -14,7 +14,7 @@ use Stu\Orm\Repository\UserMapRepository;
 
 #[Table(name: 'stu_user_map')]
 #[Entity(repositoryClass: UserMapRepository::class)]
-class UserMap implements UserMapInterface
+class UserMap
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -30,10 +30,10 @@ class UserMap implements UserMapInterface
     #[Id]
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $user;
+    private User $user;
 
     #[Id]
     #[ManyToOne(targetEntity: Layer::class)]
     #[JoinColumn(name: 'layer_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private LayerInterface $layer;
+    private Layer $layer;
 }

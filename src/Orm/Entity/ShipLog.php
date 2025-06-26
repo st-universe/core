@@ -11,12 +11,11 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\ShipLogRepository;
 
 #[Table(name: 'stu_ship_log')]
 #[Entity(repositoryClass: ShipLogRepository::class)]
-class ShipLog implements ShipLogInterface
+class ShipLog
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -40,59 +39,51 @@ class ShipLog implements ShipLogInterface
 
     #[ManyToOne(targetEntity: Spacecraft::class)]
     #[JoinColumn(name: 'spacecraft_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ?SpacecraftInterface $spacecraft = null;
+    private ?Spacecraft $spacecraft = null;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
-    public function setSpacecraft(SpacecraftInterface $spacecraft): ShipLogInterface
+    public function setSpacecraft(Spacecraft $spacecraft): ShipLog
     {
         $this->spacecraft = $spacecraft;
 
         return $this;
     }
 
-    #[Override]
     public function getText(): string
     {
         return $this->text;
     }
 
-    #[Override]
-    public function setText(string $text): ShipLogInterface
+    public function setText(string $text): ShipLog
     {
         $this->text = $text;
 
         return $this;
     }
 
-    #[Override]
     public function getDate(): int
     {
         return $this->date;
     }
 
-    #[Override]
-    public function setDate(int $date): ShipLogInterface
+    public function setDate(int $date): ShipLog
     {
         $this->date = $date;
 
         return $this;
     }
 
-    #[Override]
-    public function setDeleted(int $timestamp): ShipLogInterface
+    public function setDeleted(int $timestamp): ShipLog
     {
         $this->deleted = $timestamp;
 
         return $this;
     }
 
-    #[Override]
     public function isDeleted(): bool
     {
         return $this->deleted !== null;

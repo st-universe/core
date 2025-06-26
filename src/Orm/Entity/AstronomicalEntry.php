@@ -12,7 +12,6 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\AstroEntryRepository;
 
 #[Table(name: 'stu_astro_entry')]
@@ -20,7 +19,7 @@ use Stu\Orm\Repository\AstroEntryRepository;
 #[Index(name: 'astro_entry_star_system_idx', columns: ['systems_id'])]
 #[Index(name: 'astro_entry_map_region_idx', columns: ['region_id'])]
 #[Entity(repositoryClass: AstroEntryRepository::class)]
-class AstronomicalEntry implements AstronomicalEntryInterface
+class AstronomicalEntry
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -47,108 +46,93 @@ class AstronomicalEntry implements AstronomicalEntryInterface
 
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $user;
+    private User $user;
 
     #[ManyToOne(targetEntity: StarSystem::class, inversedBy: 'astronomicalEntries')]
     #[JoinColumn(name: 'systems_id', referencedColumnName: 'id')]
-    private ?StarSystemInterface $starSystem = null;
+    private ?StarSystem $starSystem = null;
 
 
     #[ManyToOne(targetEntity: MapRegion::class, inversedBy: 'astronomicalEntries')]
     #[JoinColumn(name: 'region_id', referencedColumnName: 'id')]
-    private ?MapRegionInterface $region = null;
+    private ?MapRegion $region = null;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    #[Override]
-    public function setUser(UserInterface $user): AstronomicalEntryInterface
+    public function setUser(User $user): AstronomicalEntry
     {
         $this->user = $user;
         return $this;
     }
 
-    #[Override]
     public function getState(): int
     {
         return $this->state;
     }
 
-    #[Override]
-    public function setState(int $state): AstronomicalEntryInterface
+    public function setState(int $state): AstronomicalEntry
     {
         $this->state = $state;
         return $this;
     }
 
-    #[Override]
     public function getAstroStartTurn(): ?int
     {
         return $this->astro_start_turn;
     }
 
-    #[Override]
-    public function setAstroStartTurn(?int $turn): AstronomicalEntryInterface
+    public function setAstroStartTurn(?int $turn): AstronomicalEntry
     {
         $this->astro_start_turn = $turn;
         return $this;
     }
 
-    #[Override]
-    public function getSystem(): ?StarSystemInterface
+    public function getSystem(): ?StarSystem
     {
         return $this->starSystem;
     }
 
-    #[Override]
-    public function setSystem(StarSystemInterface $starSystem): AstronomicalEntryInterface
+    public function setSystem(StarSystem $starSystem): AstronomicalEntry
     {
         $this->starSystem = $starSystem;
         return $this;
     }
 
-    #[Override]
-    public function getRegion(): ?MapRegionInterface
+    public function getRegion(): ?MapRegion
     {
         return $this->region;
     }
 
-    #[Override]
-    public function setRegion(MapRegionInterface $region): AstronomicalEntryInterface
+    public function setRegion(MapRegion $region): AstronomicalEntry
     {
         $this->region = $region;
         return $this;
     }
 
-    #[Override]
     public function getFieldIds(): string
     {
         return $this->field_ids;
     }
 
-    #[Override]
-    public function setFieldIds(string $fieldIds): AstronomicalEntryInterface
+    public function setFieldIds(string $fieldIds): AstronomicalEntry
     {
         $this->field_ids = $fieldIds;
         return $this;
     }
 
-    #[Override]
     public function isMeasured(): bool
     {
         return $this->getFieldIds() === '' || $this->getFieldIds() === '0';

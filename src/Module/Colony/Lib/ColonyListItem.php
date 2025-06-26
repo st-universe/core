@@ -11,9 +11,9 @@ use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Module\Colony\Lib\Gui\Component\EpsBarProvider;
 use Stu\Module\Template\StatusBarColorEnum;
 use Stu\Module\Template\StatusBarFactoryInterface;
-use Stu\Orm\Entity\ColonyClassInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\StarSystemInterface;
+use Stu\Orm\Entity\ColonyClass;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\StarSystem;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class ColonyListItem implements ColonyListItemInterface
@@ -30,7 +30,7 @@ final class ColonyListItem implements ColonyListItemInterface
         private PlanetFieldRepositoryInterface $planetFieldRepository,
         private CommodityConsumptionInterface $commodityConsumption,
         private StatusBarFactoryInterface $statusBarFactory,
-        private ColonyInterface $colony,
+        private Colony $colony,
         private int $signatureCount
     ) {}
 
@@ -47,7 +47,7 @@ final class ColonyListItem implements ColonyListItemInterface
     }
 
     #[Override]
-    public function getSystem(): StarSystemInterface
+    public function getSystem(): StarSystem
     {
         return $this->colony->getSystem();
     }
@@ -129,7 +129,7 @@ final class ColonyListItem implements ColonyListItemInterface
     }
 
     #[Override]
-    public function getColonyClass(): ColonyClassInterface
+    public function getColonyClass(): ColonyClass
     {
         return $this->colony->getColonyClass();
     }

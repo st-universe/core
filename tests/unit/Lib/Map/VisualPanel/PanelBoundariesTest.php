@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Map\VisualPanel;
 
-use Stu\Orm\Entity\LayerInterface;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\StarSystemInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
+use Stu\Orm\Entity\Layer;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\StarSystem;
+use Stu\Orm\Entity\StarSystemMap;
 use Stu\StuTestCase;
 
 class PanelBoundariesTest extends StuTestCase
 {
     public function testFromArray(): void
     {
-        $layer = mock(LayerInterface::class);
+        $layer = mock(Layer::class);
 
         $result = PanelBoundaries::fromArray(
             [
@@ -35,7 +35,7 @@ class PanelBoundariesTest extends StuTestCase
 
     public function testFromSystem(): void
     {
-        $system = mock(StarSystemInterface::class);
+        $system = mock(StarSystem::class);
 
         $system->shouldReceive('getMaxX')
             ->withNoArgs()
@@ -59,8 +59,8 @@ class PanelBoundariesTest extends StuTestCase
 
     public function testFromMapLocation(): void
     {
-        $map = mock(MapInterface::class);
-        $layer = mock(LayerInterface::class);
+        $map = mock(Map::class);
+        $layer = mock(Layer::class);
 
         $map->shouldReceive('getLayer')
             ->withNoArgs()
@@ -95,8 +95,8 @@ class PanelBoundariesTest extends StuTestCase
 
     public function testFromSystemMapLocation(): void
     {
-        $systemMap = mock(StarSystemMapInterface::class);
-        $system = mock(StarSystemInterface::class);
+        $systemMap = mock(StarSystemMap::class);
+        $system = mock(StarSystem::class);
 
         $systemMap->shouldReceive('getSystem')
             ->withNoArgs()

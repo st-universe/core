@@ -15,7 +15,7 @@ use Stu\Module\Spacecraft\Lib\Interaction\InterceptShipCoreInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 
 final class InterceptShip implements ActionControllerInterface
 {
@@ -81,7 +81,7 @@ final class InterceptShip implements ActionControllerInterface
             return;
         }
 
-        if ($ship instanceof ShipInterface && $ship->getDockedTo() !== null) {
+        if ($ship instanceof Ship && $ship->getDockedTo() !== null) {
             $game->addInformation('Das Schiff hat abgedockt');
             $ship->setDockedTo(null);
         }

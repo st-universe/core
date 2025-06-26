@@ -14,7 +14,7 @@ use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 
 final class UnloadBattery implements ActionControllerInterface
 {
@@ -59,7 +59,7 @@ final class UnloadBattery implements ActionControllerInterface
         $game->addInformation($this->unloadBattery($ship, $load));
     }
 
-    private function unloadBattery(SpacecraftInterface $ship, int $load): string
+    private function unloadBattery(Spacecraft $ship, int $load): string
     {
         // cancel conditions
         if (!$ship->hasEnoughCrew()) {

@@ -5,19 +5,19 @@ declare(strict_types=1);
 namespace Stu\Lib\Trait;
 
 use Stu\Component\Map\MapEnum;
-use Stu\Orm\Entity\LayerInterface;
-use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Entity\UserLayerInterface;
+use Stu\Orm\Entity\Layer;
+use Stu\Orm\Entity\User;
+use Stu\Orm\Entity\UserLayer;
 
 trait LayerExplorationTrait
 {
-    protected function hasExplored(UserInterface $user, LayerInterface $layer): bool
+    protected function hasExplored(User $user, Layer $layer): bool
     {
         if (!$this->hasSeen($user, $layer)) {
             return false;
         }
 
-        /** @var null|UserLayerInterface */
+        /** @var null|UserLayer */
         $userLayer = $user->getUserLayers()->get($layer->getId());
 
         return $userLayer === null
@@ -25,7 +25,7 @@ trait LayerExplorationTrait
             : $userLayer->getMappingType() === MapEnum::MAPTYPE_LAYER_EXPLORED;
     }
 
-    protected function hasSeen(UserInterface $user, LayerInterface $layer): bool
+    protected function hasSeen(User $user, Layer $layer): bool
     {
         return $user->getUserLayers()->containsKey($layer->getId());
     }

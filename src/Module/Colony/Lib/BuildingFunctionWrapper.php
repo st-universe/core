@@ -7,11 +7,11 @@ namespace Stu\Module\Colony\Lib;
 use Override;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Module\Building\BuildingFunctionTypeEnum;
-use Stu\Orm\Entity\BuildingFunctionInterface;
+use Stu\Orm\Entity\BuildingFunction;
 
 final class BuildingFunctionWrapper implements BuildingFunctionWrapperInterface
 {
-    /** @param array<BuildingFunctionInterface> $buildingfunctions */
+    /** @param array<BuildingFunction> $buildingfunctions */
     public function __construct(private array $buildingfunctions) {}
 
     #[Override]

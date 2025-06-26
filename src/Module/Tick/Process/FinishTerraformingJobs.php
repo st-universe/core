@@ -8,7 +8,7 @@ use Override;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\ColonySandboxInterface;
+use Stu\Orm\Entity\ColonySandbox;
 use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
@@ -24,7 +24,7 @@ final class FinishTerraformingJobs implements ProcessTickHandlerInterface
             $colonyField = $colonyTerraforming->getField();
 
             $host = $colonyField->getHost();
-            if ($host instanceof ColonySandboxInterface) {
+            if ($host instanceof ColonySandbox) {
                 continue;
             }
 

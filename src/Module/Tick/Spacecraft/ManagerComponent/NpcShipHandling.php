@@ -13,7 +13,7 @@ use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Tick\Spacecraft\Handler\StationConstructionHandler;
 use Stu\Module\Tick\Spacecraft\Handler\StationPassiveRepairHandler;
 use Stu\Module\Tick\Spacecraft\SpacecraftTickFinishedException;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 class NpcShipHandling implements ManagerComponentInterface
@@ -70,7 +70,7 @@ class NpcShipHandling implements ManagerComponentInterface
         }
     }
 
-    private function sendMessage(SpacecraftInterface $ship, InformationWrapper $informationWrapper): void
+    private function sendMessage(Spacecraft $ship, InformationWrapper $informationWrapper): void
     {
         if ($informationWrapper->isEmpty()) {
             return;

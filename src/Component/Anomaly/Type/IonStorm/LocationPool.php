@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Component\Anomaly\Type\IonStorm;
 
-use Stu\Orm\Entity\LocationInterface;
+use Stu\Orm\Entity\Location;
 
 class LocationPool
 {
-    /** @param array<string, LocationInterface> $locations */
+    /** @param array<string, Location> $locations */
     public function __construct(private array $locations) {}
 
-    public function getLocation(int $x, int $y): ?LocationInterface
+    public function getLocation(int $x, int $y): ?Location
     {
         $key = sprintf('%d_%d', $x, $y);
         if (!array_key_exists($key, $this->locations)) {
@@ -21,8 +21,8 @@ class LocationPool
         return $this->locations[$key];
     }
 
-    /** @return array<LocationInterface> */
-    public function getNeighbours(LocationInterface $location): array
+    /** @return array<Location> */
+    public function getNeighbours(Location $location): array
     {
         $result = [];
 

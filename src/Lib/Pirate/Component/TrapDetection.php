@@ -8,8 +8,8 @@ use Stu\Module\Control\StuRandom;
 use Stu\Module\Prestige\Lib\PrestigeCalculationInterface;
 use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertedShipsDetectionInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\LocationInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Location;
+use Stu\Orm\Entity\Ship;
 
 class TrapDetection implements TrapDetectionInterface
 {
@@ -20,7 +20,7 @@ class TrapDetection implements TrapDetectionInterface
     ) {}
 
     #[Override]
-    public function isAlertTrap(LocationInterface $location, ShipInterface $leadShip): bool
+    public function isAlertTrap(Location $location, Ship $leadShip): bool
     {
         $alertedWrappers = $this->alertedShipsDetection->getAlertedShipsOnLocation(
             $location,

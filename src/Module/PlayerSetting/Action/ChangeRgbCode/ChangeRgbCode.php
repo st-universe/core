@@ -15,9 +15,7 @@ final class ChangeRgbCode implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_CHANGE_USER_RGB';
 
-    public function __construct(private ChangeUserSettingInterface $changerUserSetting)
-    {
-    }
+    public function __construct(private ChangeUserSettingInterface $changerUserSetting) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void

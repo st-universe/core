@@ -9,16 +9,16 @@ use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\PirateRoundInterface;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\PirateRound;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\PirateRoundRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\UserPirateRoundRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
-use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Entity\UserPirateRoundInterface;
+use Stu\Orm\Entity\User;
+use Stu\Orm\Entity\UserPirateRound;
 
 
 final class HandlePirateRound implements MaintenanceHandlerInterface
@@ -62,7 +62,7 @@ final class HandlePirateRound implements MaintenanceHandlerInterface
         }
     }
 
-    private function getLastPirateRound(): ?PirateRoundInterface
+    private function getLastPirateRound(): ?PirateRound
     {
         $allRounds = $this->pirateRoundRepository->findBy([], ['id' => 'DESC'], 1);
 
@@ -84,7 +84,7 @@ final class HandlePirateRound implements MaintenanceHandlerInterface
         return $timestamp <= $fortyFiveDaysAgo && $timestamp > $fortySixDaysAgo;
     }
 
-    private function handleRecentlyEndedRound(PirateRoundInterface $pirateRound): void
+    private function handleRecentlyEndedRound(PirateRound $pirateRound): void
     {
         $winningFactionData = $this->getWinningFactionData($pirateRound->getId());
 
@@ -212,7 +212,7 @@ final class HandlePirateRound implements MaintenanceHandlerInterface
         );
     }
 
-    private function getRandomMapLocation(): MapInterface
+    private function getRandomMapLocation(): Map
     {
         $defaultLayer = $this->layerRepository->getDefaultLayer();
 
@@ -256,8 +256,8 @@ final class HandlePirateRound implements MaintenanceHandlerInterface
     }
 
     /**
-     * @param UserPirateRoundInterface[] $userPirateRounds
-     * @return UserPirateRoundInterface[]
+     * @param UserPirateRound[] $userPirateRounds
+     * @return UserPirateRound[]
      */
     private function getTopThreeUsers(array $userPirateRounds): array
     {
@@ -267,7 +267,7 @@ final class HandlePirateRound implements MaintenanceHandlerInterface
     }
 
     /**
-     * @param UserPirateRoundInterface[] $userPirateRounds
+     * @param UserPirateRound[] $userPirateRounds
      */
     private function calculateFactionTotalPrestige(array $userPirateRounds, int $winningFactionId): int
     {
@@ -282,11 +282,11 @@ final class HandlePirateRound implements MaintenanceHandlerInterface
 
     /**
      * @param array{factionId: int, factionName: string} $winningFactionData
-     * @param UserPirateRoundInterface[] $topThreeUsers
+     * @param UserPirateRound[] $topThreeUsers
      * @return array{amount: int, text: string}
      */
     private function calculateUserPrestigeReward(
-        UserInterface $user,
+        User $user,
         array $winningFactionData,
         int $winningFactionTotalPrestige,
         array $topThreeUsers
@@ -375,9 +375,9 @@ final class HandlePirateRound implements MaintenanceHandlerInterface
 
 
     /**
-     * @param UserPirateRoundInterface[] $topThreeUsers
+     * @param UserPirateRound[] $topThreeUsers
      */
-    private function findUserInTopThree(UserInterface $user, array $topThreeUsers): ?UserPirateRoundInterface
+    private function findUserInTopThree(User $user, array $topThreeUsers): ?UserPirateRound
     {
         foreach ($topThreeUsers as $topUser) {
             if ($topUser->getUser()->getId() === $user->getId()) {
@@ -388,10 +388,10 @@ final class HandlePirateRound implements MaintenanceHandlerInterface
     }
 
     /**
-     * @param UserPirateRoundInterface[] $topThreeUsers
-     * @return UserPirateRoundInterface[]
+     * @param UserPirateRound[] $topThreeUsers
+     * @return UserPirateRound[]
      */
-    private function getAllianceTopThreeUsers(UserInterface $user, array $topThreeUsers): array
+    private function getAllianceTopThreeUsers(User $user, array $topThreeUsers): array
     {
         $userAlliance = $user->getAlliance();
         if ($userAlliance === null) {

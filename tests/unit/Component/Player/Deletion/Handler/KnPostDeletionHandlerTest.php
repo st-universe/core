@@ -8,8 +8,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Mockery\MockInterface;
 use Override;
 use Stu\Component\Player\Deletion\Handler\KnPostDeletionHandler;
-use Stu\Orm\Entity\KnPostInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\KnPost;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\StuTestCase;
@@ -38,9 +38,9 @@ class KnPostDeletionHandlerTest extends StuTestCase
 
     public function testDeleteUpdatesKnItemUser(): void
     {
-        $user = $this->mock(UserInterface::class);
-        $fallbackUser = $this->mock(UserInterface::class);
-        $knPost = $this->mock(KnPostInterface::class);
+        $user = $this->mock(User::class);
+        $fallbackUser = $this->mock(User::class);
+        $knPost = $this->mock(KnPost::class);
 
         $userId = 666;
         $userName = 'sixsixsix';

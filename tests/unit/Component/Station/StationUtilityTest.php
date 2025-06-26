@@ -10,8 +10,8 @@ use Override;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Station\Lib\Creation\StationCreatorInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\StationInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Station;
 use Stu\Orm\Repository\ConstructionProgressModuleRepositoryInterface;
 use Stu\Orm\Repository\ConstructionProgressRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
@@ -67,11 +67,11 @@ class StationUtilityTest extends StuTestCase
 
     public function testGetDockedWorkbeeCount(): void
     {
-        $station = $this->mock(StationInterface::class);
-        $docked1 = $this->mock(ShipInterface::class);
-        $docked2 = $this->mock(ShipInterface::class);
-        $docked3 = $this->mock(ShipInterface::class);
-        $docked4 = $this->mock(ShipInterface::class);
+        $station = $this->mock(Station::class);
+        $docked1 = $this->mock(Ship::class);
+        $docked2 = $this->mock(Ship::class);
+        $docked3 = $this->mock(Ship::class);
+        $docked4 = $this->mock(Ship::class);
 
         $station->shouldReceive('getDockedShips')
             ->withNoArgs()

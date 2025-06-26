@@ -7,7 +7,7 @@ use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Commodity\Lib\CommodityCacheInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Colony;
 use Stu\Orm\Repository\ColonyDepositMiningRepositoryInterface;
 
 final class EffectsProvider implements PlanetFieldHostComponentInterface
@@ -25,7 +25,7 @@ final class EffectsProvider implements PlanetFieldHostComponentInterface
     ): void {
         $commodities = $this->commodityCache->getAll(CommodityTypeEnum::COMMODITY_TYPE_EFFECT);
 
-        $depositMinings = $entity instanceof ColonyInterface ? $this->colonyDepositMiningRepository->getCurrentUserDepositMinings($entity) : [];
+        $depositMinings = $entity instanceof Colony ? $this->colonyDepositMiningRepository->getCurrentUserDepositMinings($entity) : [];
         $prod = $this->colonyLibFactory->createColonyCommodityProduction($entity)->getProduction();
 
         $effects = [];

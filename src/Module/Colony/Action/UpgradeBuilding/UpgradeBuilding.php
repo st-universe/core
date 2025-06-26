@@ -15,10 +15,10 @@ use Stu\Module\Colony\Lib\BuildingActionInterface;
 use Stu\Module\Colony\View\ShowInformation\ShowInformation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\BuildingUpgradeCostInterface;
-use Stu\Orm\Entity\BuildingUpgradeInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\ColonySandboxInterface;
+use Stu\Orm\Entity\BuildingUpgradeCost;
+use Stu\Orm\Entity\BuildingUpgrade;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\ColonySandbox;
 use Stu\Orm\Repository\BuildingFieldAlternativeRepositoryInterface;
 use Stu\Orm\Repository\BuildingUpgradeRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -74,7 +74,7 @@ final class UpgradeBuilding implements ActionControllerInterface
             return;
         }
 
-        if ($host instanceof ColonyInterface && !$this->doColonyCheckAndConsumeEnergy($upgrade, $host, $game)) {
+        if ($host instanceof Colony && !$this->doColonyCheckAndConsumeEnergy($upgrade, $host, $game)) {
             return;
         }
 
@@ -88,7 +88,7 @@ final class UpgradeBuilding implements ActionControllerInterface
         $isActive = $field->isActive();
         $this->buildingAction->remove($field, $game, true);
 
-        if ($host instanceof ColonyInterface) {
+        if ($host instanceof Colony) {
             foreach ($upgrade->getUpgradeCosts() as $obj) {
                 $this->storageManager->lowerStorage($host, $obj->getCommodity(), $obj->getAmount());
             }
@@ -104,7 +104,7 @@ final class UpgradeBuilding implements ActionControllerInterface
             ->addComponentUpdate(ColonyComponentEnum::EPS_BAR, $host)
             ->addComponentUpdate(ColonyComponentEnum::STORAGE, $host);
 
-        if ($host instanceof ColonySandboxInterface) {
+        if ($host instanceof ColonySandbox) {
             $this->buildingManager->finish($field);
 
             $game->addInformationf(
@@ -124,11 +124,11 @@ final class UpgradeBuilding implements ActionControllerInterface
         $this->planetFieldRepository->save($field);
     }
 
-    private function doColonyCheckAndConsumeEnergy(BuildingUpgradeInterface $upgrade, ColonyInterface $colony, GameControllerInterface $game): bool
+    private function doColonyCheckAndConsumeEnergy(BuildingUpgrade $upgrade, Colony $colony, GameControllerInterface $game): bool
     {
         $storage = $colony->getStorage();
 
-        /** @var BuildingUpgradeCostInterface $obj */
+        /** @var BuildingUpgradeCost $obj */
         foreach ($upgrade->getUpgradeCosts() as $obj) {
             if (!$storage->containsKey($obj->getCommodityId())) {
                 $game->addInformationf(

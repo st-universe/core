@@ -11,12 +11,11 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\UserAwardRepository;
 
 #[Table(name: 'stu_user_award')]
 #[Entity(repositoryClass: UserAwardRepository::class)]
-class UserAward implements UserAwardInterface
+class UserAward
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -31,51 +30,44 @@ class UserAward implements UserAwardInterface
 
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $user;
+    private User $user;
 
     #[ManyToOne(targetEntity: Award::class)]
     #[JoinColumn(name: 'award_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private AwardInterface $award;
+    private Award $award;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    #[Override]
-    public function setUser(UserInterface $user): UserAwardInterface
+    public function setUser(User $user): UserAward
     {
         $this->user = $user;
         return $this;
     }
 
-    #[Override]
     public function getAwardId(): int
     {
         return $this->award_id;
     }
 
-    #[Override]
-    public function getAward(): AwardInterface
+    public function getAward(): Award
     {
         return $this->award;
     }
 
-    #[Override]
-    public function setAward(AwardInterface $award): UserAwardInterface
+    public function setAward(Award $award): UserAward
     {
         $this->award = $award;
         return $this;

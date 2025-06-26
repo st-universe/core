@@ -9,7 +9,7 @@ use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\LocationInterface;
+use Stu\Orm\Entity\Location;
 
 class ReactorLeakEffectHandler implements EffectHandlerInterface
 {
@@ -22,7 +22,7 @@ class ReactorLeakEffectHandler implements EffectHandlerInterface
     }
 
     #[Override]
-    public function addFlightInformation(LocationInterface $location, MessageCollectionInterface $messages): void
+    public function addFlightInformation(Location $location, MessageCollectionInterface $messages): void
     {
         $messages->addInformationf(
             "[color=yellow]Partikelanomalie durch %s kann in Sektor %s hochenergetische Reaktor-Plasmaströme aus der Reaktorkernmatrix extrahieren[/color]",

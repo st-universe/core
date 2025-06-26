@@ -10,7 +10,6 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\GameRequestRepository;
 use Throwable;
 
@@ -21,7 +20,7 @@ use Throwable;
 #[Table(name: 'stu_game_request')]
 #[Index(name: 'game_request_idx', columns: ['user_id', 'action', 'view'])]
 #[Entity(repositoryClass: GameRequestRepository::class)]
-class GameRequest implements GameRequestInterface
+class GameRequest
 {
     public const TABLE_NAME = 'stu_game_request';
 
@@ -68,14 +67,12 @@ class GameRequest implements GameRequestInterface
     /** @var array<Throwable> */
     private array $errors = [];
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
-    public function setUserId(?UserInterface $user): GameRequestInterface
+    public function setUserId(?User $user): GameRequest
     {
         if ($user !== null) {
             $this->user_id = $user->getId();
@@ -83,29 +80,25 @@ class GameRequest implements GameRequestInterface
         return $this;
     }
 
-    #[Override]
-    public function setTurnId(GameTurnInterface $turn): GameRequestInterface
+    public function setTurnId(GameTurn $turn): GameRequest
     {
         $this->turn_id = $turn->getId();
         return $this;
     }
 
-    #[Override]
-    public function setTime(int $time): GameRequestInterface
+    public function setTime(int $time): GameRequest
     {
         $this->time = $time;
         return $this;
     }
 
-    #[Override]
-    public function setModule(string $module): GameRequestInterface
+    public function setModule(string $module): GameRequest
     {
         $this->module = $module;
         return $this;
     }
 
-    #[Override]
-    public function setAction(string $action): GameRequestInterface
+    public function setAction(string $action): GameRequest
     {
         $this->action = $action;
         $this->unsetParameter($action);
@@ -113,15 +106,13 @@ class GameRequest implements GameRequestInterface
         return $this;
     }
 
-    #[Override]
-    public function setActionMs(int $actionMs): GameRequestInterface
+    public function setActionMs(int $actionMs): GameRequest
     {
         $this->action_ms = $actionMs;
         return $this;
     }
 
-    #[Override]
-    public function setView(string $view): GameRequestInterface
+    public function setView(string $view): GameRequest
     {
         $this->view = $view;
         $this->unsetParameter($view);
@@ -129,111 +120,103 @@ class GameRequest implements GameRequestInterface
         return $this;
     }
 
-    #[Override]
-    public function setViewMs(int $viewMs): GameRequestInterface
+    public function setViewMs(int $viewMs): GameRequest
     {
         $this->view_ms = $viewMs;
         return $this;
     }
 
-    #[Override]
-    public function setRenderMs(int $renderMs): GameRequestInterface
+    public function setRenderMs(int $renderMs): GameRequest
     {
         $this->render_ms = $renderMs;
         return $this;
     }
 
-    #[Override]
-    public function setParameterArray(array $parameter): GameRequestInterface
+    /**
+     * @param array<mixed> $parameter
+     */
+    public function setParameterArray(array $parameter): GameRequest
     {
         $this->params = (string) json_encode($parameter, JSON_PRETTY_PRINT);
         $this->parameterArray = $parameter;
         return $this;
     }
 
-    #[Override]
+    /**
+     * @return array<mixed>
+     */
     public function getParameterArray(): array
     {
         return $this->parameterArray;
     }
 
-    #[Override]
     public function getUserId(): ?int
     {
         return $this->user_id;
     }
 
-    #[Override]
     public function getTurnId(): int
     {
         return $this->turn_id;
     }
 
-    #[Override]
     public function getTime(): int
     {
         return $this->time;
     }
 
-    #[Override]
     public function getModule(): ?string
     {
         return $this->module;
     }
 
-    #[Override]
     public function getAction(): ?string
     {
         return $this->action;
     }
 
-    #[Override]
     public function getActionMs(): ?int
     {
         return $this->action_ms;
     }
 
-    #[Override]
     public function getView(): ?string
     {
         return $this->view;
     }
 
-    #[Override]
     public function getViewMs(): ?int
     {
         return $this->view_ms;
     }
 
-    #[Override]
     public function getRenderMs(): ?int
     {
         return $this->render_ms;
     }
 
-    #[Override]
     public function getRequestId(): string
     {
         return $this->requestId;
     }
 
-    #[Override]
-    public function setRequestId(string $requestId): GameRequestInterface
+    public function setRequestId(string $requestId): GameRequest
     {
         $this->requestId = $requestId;
 
         return $this;
     }
 
-    #[Override]
-    public function addError(Throwable $error): GameRequestInterface
+    public function addError(Throwable $error): GameRequest
     {
         $this->errors[] = $error;
 
         return $this;
     }
 
-    #[Override]
+    /**
+     * @return array<Throwable>
+     */
     public function getErrors(): array
     {
         return $this->errors;

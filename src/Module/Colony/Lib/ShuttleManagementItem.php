@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
-use Stu\Orm\Entity\CommodityInterface;
+use Stu\Orm\Entity\Commodity;
 
 final class ShuttleManagementItem
 {
@@ -12,7 +12,7 @@ final class ShuttleManagementItem
 
     private int $colonyLoad = 0;
 
-    public function __construct(private CommodityInterface $commodity)
+    public function __construct(private Commodity $commodity)
     {
     }
 

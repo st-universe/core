@@ -13,14 +13,13 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\SessionStringRepository;
 
 #[Table(name: 'stu_session_strings')]
 #[Index(name: 'session_string_user_idx', columns: ['sess_string', 'user_id'])]
 #[Index(name: 'session_string_date_idx', columns: ['date'])]
 #[Entity(repositoryClass: SessionStringRepository::class)]
-class SessionString implements SessionStringInterface
+class SessionString
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -38,49 +37,42 @@ class SessionString implements SessionStringInterface
 
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ?UserInterface $user = null;
+    private ?User $user = null;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    #[Override]
-    public function setUser(UserInterface $user): SessionStringInterface
+    public function setUser(User $user): SessionString
     {
         $this->user = $user;
         return $this;
     }
 
-    #[Override]
     public function getSessionString(): string
     {
         return $this->sess_string;
     }
 
-    #[Override]
-    public function setSessionString(string $sessionString): SessionStringInterface
+    public function setSessionString(string $sessionString): SessionString
     {
         $this->sess_string = $sessionString;
 
         return $this;
     }
 
-    #[Override]
     public function getDate(): DateTimeInterface
     {
         return $this->date;
     }
 
-    #[Override]
-    public function setDate(DateTimeInterface $date): SessionStringInterface
+    public function setDate(DateTimeInterface $date): SessionString
     {
         $this->date = $date;
 

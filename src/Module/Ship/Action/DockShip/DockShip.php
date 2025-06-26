@@ -21,7 +21,7 @@ use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
-use Stu\Orm\Entity\StationInterface;
+use Stu\Orm\Entity\Station;
 
 final class DockShip implements ActionControllerInterface
 {
@@ -61,7 +61,7 @@ final class DockShip implements ActionControllerInterface
             return;
         }
         $target = $targetWrapper->get();
-        if (!$target instanceof StationInterface) {
+        if (!$target instanceof Station) {
             return;
         }
 
@@ -157,7 +157,7 @@ final class DockShip implements ActionControllerInterface
 
     private function fleetDock(
         FleetWrapperInterface $fleetWrapper,
-        StationInterface $target,
+        Station $target,
         GameControllerInterface $game
     ): void {
         $msg = [_("Flottenbefehl ausgeführt: Andocken an ") . $target->getName()];
@@ -231,7 +231,7 @@ final class DockShip implements ActionControllerInterface
         $game->addInformationMerge($msg);
     }
 
-    private function isAutoReadOnDock(StationInterface $target): bool
+    private function isAutoReadOnDock(Station $target): bool
     {
         $tradePost = $target->getTradePost();
         if ($tradePost === null) {

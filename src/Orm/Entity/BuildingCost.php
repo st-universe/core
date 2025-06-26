@@ -12,13 +12,12 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\BuildingCostRepository;
 
 #[Table(name: 'stu_buildings_cost')]
 #[Index(name: 'building_cost_building_idx', columns: ['buildings_id'])]
 #[Entity(repositoryClass: BuildingCostRepository::class)]
-class BuildingCost implements BuildingCostInterface
+class BuildingCost
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -36,70 +35,61 @@ class BuildingCost implements BuildingCostInterface
 
     #[ManyToOne(targetEntity: Commodity::class)]
     #[JoinColumn(name: 'commodity_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private CommodityInterface $commodity;
+    private Commodity $commodity;
 
     /**
-     * @var BuildingInterface
+     * @var Building
      */
     #[ManyToOne(targetEntity: Building::class, inversedBy: 'buildingCosts')]
     #[JoinColumn(name: 'buildings_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private $building;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getBuildingId(): int
     {
         return $this->buildings_id;
     }
 
-    #[Override]
-    public function setBuildingId(int $buildingId): BuildingCostInterface
+    public function setBuildingId(int $buildingId): BuildingCost
     {
         $this->buildings_id = $buildingId;
 
         return $this;
     }
 
-    #[Override]
     public function getCommodityId(): int
     {
         return $this->commodity_id;
     }
 
-    #[Override]
-    public function setCommodityId(int $commodityId): BuildingCostInterface
+    public function setCommodityId(int $commodityId): BuildingCost
     {
         $this->commodity_id = $commodityId;
 
         return $this;
     }
 
-    #[Override]
     public function getAmount(): int
     {
         return $this->count;
     }
 
-    #[Override]
-    public function setAmount(int $amount): BuildingCostInterface
+    public function setAmount(int $amount): BuildingCost
     {
         $this->count = $amount;
 
         return $this;
     }
 
-    #[Override]
-    public function getCommodity(): CommodityInterface
+    public function getCommodity(): Commodity
     {
         return $this->commodity;
     }
 
-    #[Override]
     public function getHalfAmount(): int
     {
         return (int) ceil($this->getAmount() / 2);

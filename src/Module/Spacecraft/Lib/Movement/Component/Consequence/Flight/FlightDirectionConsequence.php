@@ -12,7 +12,7 @@ use Stu\Module\Spacecraft\Lib\Movement\Component\UpdateFlightDirectionInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Route\RouteModeEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
+use Stu\Orm\Entity\StarSystemMap;
 
 class FlightDirectionConsequence extends AbstractFlightConsequence implements FlightStartConsequenceInterface
 {
@@ -34,7 +34,7 @@ class FlightDirectionConsequence extends AbstractFlightConsequence implements Fl
         //leaving star system
         if ($flightRoute->getRouteMode() === RouteModeEnum::SYSTEM_EXIT) {
             $oldWaypoint = $wrapper->get()->getLocation();
-            if (!$oldWaypoint instanceof StarSystemMapInterface) {
+            if (!$oldWaypoint instanceof StarSystemMap) {
                 throw new RuntimeException('this should not happen');
             }
 

@@ -9,7 +9,7 @@ use Stu\Lib\Pirate\PirateBehaviourEnum;
 use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Lib\Pirate\PirateReactionMetadata;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 
 class DeactivateShieldsBehaviour implements PirateBehaviourInterface
 {
@@ -19,7 +19,7 @@ class DeactivateShieldsBehaviour implements PirateBehaviourInterface
         FleetWrapperInterface $fleetWrapper,
         PirateReactionInterface $pirateReaction,
         PirateReactionMetadata $reactionMetadata,
-        ?SpacecraftInterface $triggerSpacecraft
+        ?Spacecraft $triggerSpacecraft
     ): ?PirateBehaviourEnum {
 
         foreach ($fleetWrapper->getShipWrappers() as $wrapper) {

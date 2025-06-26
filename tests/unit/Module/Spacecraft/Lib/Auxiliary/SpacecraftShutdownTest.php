@@ -15,8 +15,8 @@ use Stu\Module\Spacecraft\Lib\Interaction\ShipUndockingInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftStateChangerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Station\Lib\StationWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\StationInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Station;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -58,7 +58,7 @@ class SpacecraftShutdownTest extends StuTestCase
     public function testShutdownWhenShip(?bool $doLeaveFleet): void
     {
         $wrapper = $this->mock(ShipWrapperInterface::class);
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
 
         $wrapper->shouldReceive('get')
             ->withNoArgs()
@@ -103,7 +103,7 @@ class SpacecraftShutdownTest extends StuTestCase
     public function testShutdownWhenStation(?bool $doLeaveFleet): void
     {
         $wrapper = $this->mock(StationWrapperInterface::class);
-        $station = $this->mock(StationInterface::class);
+        $station = $this->mock(Station::class);
         $computer = $this->mock(ComputerSystemData::class);
 
         $wrapper->shouldReceive('get')
@@ -154,7 +154,7 @@ class SpacecraftShutdownTest extends StuTestCase
     public function testShutdownExpectNoStateChangeWhenPassiveState(): void
     {
         $wrapper = $this->mock(StationWrapperInterface::class);
-        $station = $this->mock(StationInterface::class);
+        $station = $this->mock(Station::class);
 
         $wrapper->shouldReceive('get')
             ->withNoArgs()

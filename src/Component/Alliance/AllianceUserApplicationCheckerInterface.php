@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Component\Alliance;
 
-use Stu\Orm\Entity\AllianceInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Alliance;
+use Stu\Orm\Entity\User;
 
 interface AllianceUserApplicationCheckerInterface
 {
@@ -13,7 +13,7 @@ interface AllianceUserApplicationCheckerInterface
      * Checks if the given user may apply for the given alliance
      */
     public function mayApply(
-        UserInterface $user,
-        AllianceInterface $alliance
+        User $user,
+        Alliance $alliance
     ): bool;
 }

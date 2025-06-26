@@ -4,7 +4,6 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\PlanetFieldTypeBuilding;
-use Stu\Orm\Entity\PlanetFieldTypeBuildingInterface;
 
 /**
  * @extends ObjectRepository<PlanetFieldTypeBuilding>
@@ -12,7 +11,7 @@ use Stu\Orm\Entity\PlanetFieldTypeBuildingInterface;
 interface PlanetFieldTypeBuildingRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return list<PlanetFieldTypeBuildingInterface>
+     * @return list<PlanetFieldTypeBuilding>
      */
     public function getByBuilding(int $buildingId): array;
 }

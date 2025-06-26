@@ -11,7 +11,7 @@ use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Component\Spacecraft\System\Control\AlertStateManagerInterface;
 use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\LocationInterface;
+use Stu\Orm\Entity\Location;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
@@ -37,7 +37,7 @@ class SpacecraftConfigurator implements SpacecraftConfiguratorInterface
     ) {}
 
     #[Override]
-    public function setLocation(LocationInterface $location): SpacecraftConfiguratorInterface
+    public function setLocation(Location $location): SpacecraftConfiguratorInterface
     {
         $this->wrapper->get()->setLocation($location);
 

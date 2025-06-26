@@ -11,8 +11,8 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -22,7 +22,7 @@ class TrackerDeviceManagerTest extends StuTestCase
     private MockInterface&PrivateMessageSenderInterface $privateMessageSender;
 
     private MockInterface&ShipWrapperInterface $wrapper;
-    private MockInterface&ShipInterface $ship;
+    private MockInterface&Ship $ship;
 
     private TrackerDeviceManagerInterface $subject;
 
@@ -34,7 +34,7 @@ class TrackerDeviceManagerTest extends StuTestCase
         $this->privateMessageSender = $this->mock(PrivateMessageSenderInterface::class);
 
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
-        $this->ship = $this->mock(ShipInterface::class);
+        $this->ship = $this->mock(Ship::class);
 
         $this->subject = new TrackerDeviceManager(
             $this->shipSystemRepository,
@@ -73,9 +73,9 @@ class TrackerDeviceManagerTest extends StuTestCase
     {
         $trackerSystemData = $this->mock(TrackerSystemData::class);
         $targetWrapper = $this->mock(ShipWrapperInterface::class);
-        $targetShip = $this->mock(ShipInterface::class);
+        $targetShip = $this->mock(Ship::class);
         $spacecraftSystemManager = $this->mock(SpacecraftSystemManagerInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
 
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()

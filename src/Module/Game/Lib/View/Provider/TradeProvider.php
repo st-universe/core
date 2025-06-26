@@ -12,7 +12,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Trade\Lib\TradeOfferItem;
 use Stu\Module\Trade\Lib\TradeOfferItemInterface;
-use Stu\Orm\Entity\TradeOfferInterface;
+use Stu\Orm\Entity\TradeOffer;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradeOfferRepositoryInterface;
@@ -67,7 +67,7 @@ final class TradeProvider implements ViewComponentProviderInterface
         $game->setTemplateVar(
             'OFFER_LIST',
             array_map(
-                fn(TradeOfferInterface $tradeOffer): TradeOfferItemInterface => new TradeOfferItem($tradeOffer, $user),
+                fn(TradeOffer $tradeOffer): TradeOfferItemInterface => new TradeOfferItem($tradeOffer, $user),
                 $this->tradeOfferRepository->getByUserLicenses($userId, $commodityId, $postId, $dir)
             )
         );

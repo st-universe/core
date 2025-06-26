@@ -8,7 +8,7 @@ use Noodlehaus\ConfigInterface;
 use Override;
 use Stu\Component\Alliance\Relations\Renderer\AllianceRelationRendererInterface;
 use Stu\Lib\ParserWithImageInterface;
-use Stu\Orm\Entity\AllianceInterface;
+use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 
 /**
@@ -26,7 +26,7 @@ final class AllianceDescriptionRenderer implements AllianceDescriptionRendererIn
 
     #[Override]
     public function render(
-        AllianceInterface $alliance
+        Alliance $alliance
     ): string {
         $replacementVars = $this->getReplacementVars();
 
@@ -47,27 +47,27 @@ final class AllianceDescriptionRenderer implements AllianceDescriptionRendererIn
     }
 
     /**
-     * @return array<string, callable(AllianceInterface): string>
+     * @return array<string, callable(Alliance): string>
      */
     private function getReplacementVars(): array
     {
         return [
-            'ALLIANCE_HOMEPAGE_LINK' => static fn (AllianceInterface $alliance): string => sprintf('<a href="%s" target="_blank">%s</a>', $alliance->getHomepage(), 'Zur Allianz Homepage'),
-            'ALLIANCE_BANNER' => function (AllianceInterface $alliance): string {
+            'ALLIANCE_HOMEPAGE_LINK' => static fn (Alliance $alliance): string => sprintf('<a href="%s" target="_blank">%s</a>', $alliance->getHomepage(), 'Zur Allianz Homepage'),
+            'ALLIANCE_BANNER' => function (Alliance $alliance): string {
                 $avatar = $alliance->getAvatar();
 
                 return $avatar !== ''
                     ? sprintf('<img src="%s/%s.png" />', $this->config->get('game.alliance_avatar_path'), $avatar)
                     : '';
             },
-            'ALLIANCE_PRESIDENT' => static fn (AllianceInterface $alliance): string => $alliance->getFounder()->getUser()->getName(),
-            'ALLIANCE_VICEPRESIDENT' => static fn (AllianceInterface $alliance): string => $alliance->getSuccessor() !== null
+            'ALLIANCE_PRESIDENT' => static fn (Alliance $alliance): string => $alliance->getFounder()->getUser()->getName(),
+            'ALLIANCE_VICEPRESIDENT' => static fn (Alliance $alliance): string => $alliance->getSuccessor() !== null
                 ? $alliance->getSuccessor()->getUser()->getName()
                 : 'Unbesetzt',
-            'ALLIANCE_FOREIGNMINISTER' => static fn (AllianceInterface $alliance): string => $alliance->getDiplomatic() !== null
+            'ALLIANCE_FOREIGNMINISTER' => static fn (Alliance $alliance): string => $alliance->getDiplomatic() !== null
                 ? $alliance->getDiplomatic()->getUser()->getName()
                 : 'Unbesetzt',
-            'ALLIANCE_DIPLOMATIC_RELATIONS' => fn (AllianceInterface $alliance): string =>
+            'ALLIANCE_DIPLOMATIC_RELATIONS' => fn (Alliance $alliance): string =>
             $this->allianceRelationRenderer->render(
                 $this->allianceRelationRepository->getActiveByAlliance($alliance->getId()),
                 self::RELATION_IMAGE_WIDTH,

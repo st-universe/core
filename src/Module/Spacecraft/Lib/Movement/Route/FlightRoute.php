@@ -14,12 +14,12 @@ use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\FlightConsequenceInterface;
 use Stu\Module\Spacecraft\Lib\Movement\FlightCompany;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\LocationInterface;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
-use Stu\Orm\Entity\StationInterface;
-use Stu\Orm\Entity\WormholeEntryInterface;
+use Stu\Orm\Entity\Location;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\StarSystemMap;
+use Stu\Orm\Entity\Station;
+use Stu\Orm\Entity\WormholeEntry;
 
 final class FlightRoute implements FlightRouteInterface
 {
@@ -28,12 +28,12 @@ final class FlightRoute implements FlightRouteInterface
 
     private RouteModeEnum $routeMode = RouteModeEnum::FLIGHT;
 
-    private LocationInterface $current;
+    private Location $current;
 
-    private ?WormholeEntryInterface $wormholeEntry = null;
+    private ?WormholeEntry $wormholeEntry = null;
 
     /**
-     * @var Collection<int, LocationInterface>
+     * @var Collection<int, Location>
      */
     private Collection $waypoints;
 
@@ -54,12 +54,12 @@ final class FlightRoute implements FlightRouteInterface
 
     #[Override]
     public function setDestination(
-        MapInterface|StarSystemMapInterface $destination,
+        Map|StarSystemMap $destination,
         bool $isTranswarp
     ): FlightRouteInterface {
         $this->waypoints->add($destination);
 
-        if ($destination instanceof MapInterface) {
+        if ($destination instanceof Map) {
             if ($isTranswarp) {
                 $this->routeMode = RouteModeEnum::TRANSWARP;
             } else {
@@ -73,7 +73,7 @@ final class FlightRoute implements FlightRouteInterface
     }
 
     #[Override]
-    public function setDestinationViaWormhole(WormholeEntryInterface $wormholeEntry, bool $isEntry): FlightRouteInterface
+    public function setDestinationViaWormhole(WormholeEntry $wormholeEntry, bool $isEntry): FlightRouteInterface
     {
         $this->wormholeEntry = $wormholeEntry;
         if ($isEntry) {
@@ -88,7 +88,7 @@ final class FlightRoute implements FlightRouteInterface
     }
 
     #[Override]
-    public function setDestinationViaCoordinates(SpacecraftInterface $spacecraft, int $x, int $y): FlightRouteInterface
+    public function setDestinationViaCoordinates(Spacecraft $spacecraft, int $x, int $y): FlightRouteInterface
     {
         $start = $spacecraft->getLocation();
         $this->current = $start;
@@ -103,13 +103,13 @@ final class FlightRoute implements FlightRouteInterface
     }
 
     #[Override]
-    public function getCurrentWaypoint(): LocationInterface
+    public function getCurrentWaypoint(): Location
     {
         return $this->current;
     }
 
     #[Override]
-    public function getNextWaypoint(): LocationInterface
+    public function getNextWaypoint(): Location
     {
         if ($this->waypoints->isEmpty()) {
             throw new RuntimeException('isDestinationArrived has to be called beforehand');
@@ -238,7 +238,7 @@ final class FlightRoute implements FlightRouteInterface
         }
 
         return $routeMode === RouteModeEnum::FLIGHT
-            && $this->getNextWaypoint() instanceof StarSystemMapInterface;
+            && $this->getNextWaypoint() instanceof StarSystemMap;
     }
 
     #[Override]
@@ -254,7 +254,7 @@ final class FlightRoute implements FlightRouteInterface
         }
 
         return $routeMode === RouteModeEnum::FLIGHT
-            && $this->getNextWaypoint() instanceof MapInterface;
+            && $this->getNextWaypoint() instanceof Map;
     }
 
     #[Override]
@@ -292,7 +292,7 @@ final class FlightRoute implements FlightRouteInterface
     {
         $destination = $this->waypoints->last();
 
-        return $destination instanceof MapInterface
+        return $destination instanceof Map
             && in_array($destination->getAdminRegionId(), $regionIds);
     }
 
@@ -301,7 +301,7 @@ final class FlightRoute implements FlightRouteInterface
     {
         $destination = $this->waypoints->last();
 
-        return $destination instanceof MapInterface
-            && $destination->getSpacecrafts()->exists(fn(int $key, SpacecraftInterface $spacecraft): bool => $spacecraft instanceof StationInterface && $spacecraft->getTradePost() !== null);
+        return $destination instanceof Map
+            && $destination->getSpacecrafts()->exists(fn(int $key, Spacecraft $spacecraft): bool => $spacecraft instanceof Station && $spacecraft->getTradePost() !== null);
     }
 }

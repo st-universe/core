@@ -5,7 +5,7 @@ namespace Stu\Module\Tick\Colony\Component;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Colony;
 
 class ProceedMigration implements ColonyTickComponentInterface
 {
@@ -13,7 +13,7 @@ class ProceedMigration implements ColonyTickComponentInterface
         private readonly ColonyLibFactoryInterface $colonyLibFactory
     ) {}
 
-    public function work(ColonyInterface $colony, array &$production, InformationInterface $information): void
+    public function work(Colony $colony, array &$production, InformationInterface $information): void
     {
         $changeable = $colony->getChangeable();
 
@@ -49,7 +49,7 @@ class ProceedMigration implements ColonyTickComponentInterface
      * @param array<int, ColonyProduction> $production
      */
     private function proceedImmigration(
-        ColonyInterface $colony,
+        Colony $colony,
         array $production
     ): void {
         // @todo

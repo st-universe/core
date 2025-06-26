@@ -8,13 +8,12 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Orm\Repository\AnomalyTypeRepository;
 
 #[Table(name: 'stu_anomaly_type')]
 #[Entity(repositoryClass: AnomalyTypeRepository::class)]
-class AnomalyType implements AnomalyTypeInterface
+class AnomalyType
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -26,25 +25,21 @@ class AnomalyType implements AnomalyTypeInterface
     #[Column(type: 'integer')]
     private int $lifespan_in_ticks;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
-    #[Override]
     public function getLifespanInTicks(): int
     {
         return $this->lifespan_in_ticks;
     }
 
-    #[Override]
     public function getTemplate(): string
     {
         return AnomalyTypeEnum::from($this->getId())->getTemplate();

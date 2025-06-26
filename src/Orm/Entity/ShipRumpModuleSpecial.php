@@ -10,12 +10,11 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 
 #[Table(name: 'stu_rumps_module_special')]
 #[Index(name: 'rump_module_special_ship_rump_idx', columns: ['rump_id'])]
 #[Entity]
-class ShipRumpModuleSpecial implements ShipRumpModuleSpecialInterface
+class ShipRumpModuleSpecial
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -28,28 +27,24 @@ class ShipRumpModuleSpecial implements ShipRumpModuleSpecialInterface
     #[Column(type: 'integer')]
     private int $module_special_id = 0;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
-    public function setRumpId(int $rumpId): ShipRumpModuleSpecialInterface
+    public function setRumpId(int $rumpId): ShipRumpModuleSpecial
     {
         $this->rump_id = $rumpId;
 
         return $this;
     }
 
-    #[Override]
     public function getModuleSpecialId(): int
     {
         return $this->module_special_id;
     }
 
-    #[Override]
-    public function setModuleSpecialId(int $moduleSpecialId): ShipRumpModuleSpecialInterface
+    public function setModuleSpecialId(int $moduleSpecialId): ShipRumpModuleSpecial
     {
         $this->module_special_id = $moduleSpecialId;
 

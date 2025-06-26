@@ -19,7 +19,7 @@ use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftRemoverInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 
 final class StoreShuttle implements ActionControllerInterface
 {
@@ -122,7 +122,7 @@ final class StoreShuttle implements ActionControllerInterface
         $game->addInformation("Shuttle erfolgreich eingesammelt");
     }
 
-    private function storeShuttle(SpacecraftInterface $spacecraft, SpacecraftInterface $shuttle): void
+    private function storeShuttle(Spacecraft $spacecraft, Spacecraft $shuttle): void
     {
         foreach ($shuttle->getCrewAssignments() as $crewAssignment) {
             $this->troopTransferUtility->assignCrew($crewAssignment, $spacecraft);

@@ -9,10 +9,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use Mockery\MockInterface;
 use Override;
 use Stu\Module\Spacecraft\Lib\Crew\SpacecraftLeaverInterface;
-use Stu\Orm\Entity\CrewAssignmentInterface;
-use Stu\Orm\Entity\CrewInterface;
-use Stu\Orm\Entity\StationInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\CrewAssignment;
+use Stu\Orm\Entity\Crew;
+use Stu\Orm\Entity\Station;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\StationRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -40,14 +40,14 @@ class ForeignCrewDumpingHandlerTest extends StuTestCase
 
     public function testDelete(): void
     {
-        $stationWithoutCrew = $this->mock(StationInterface::class);
-        $stationWithForeigner = $this->mock(StationInterface::class);
-        $ownCrewAssignment = $this->mock(CrewAssignmentInterface::class);
-        $foreignerCrewAssignment = $this->mock(CrewAssignmentInterface::class);
-        $ownCrew = $this->mock(CrewInterface::class);
-        $foreignerCrew = $this->mock(CrewInterface::class);
-        $user = $this->mock(UserInterface::class);
-        $otherUser = $this->mock(UserInterface::class);
+        $stationWithoutCrew = $this->mock(Station::class);
+        $stationWithForeigner = $this->mock(Station::class);
+        $ownCrewAssignment = $this->mock(CrewAssignment::class);
+        $foreignerCrewAssignment = $this->mock(CrewAssignment::class);
+        $ownCrew = $this->mock(Crew::class);
+        $foreignerCrew = $this->mock(Crew::class);
+        $user = $this->mock(User::class);
+        $otherUser = $this->mock(User::class);
 
         $stationWithoutCrew->shouldReceive('getCrewAssignments')
             ->withNoArgs()

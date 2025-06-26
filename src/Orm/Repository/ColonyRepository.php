@@ -14,7 +14,6 @@ use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonyClass;
-use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\Layer;
 use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Map;
@@ -22,10 +21,8 @@ use Stu\Orm\Entity\MapRegionSettlement;
 use Stu\Orm\Entity\PirateWrath;
 use Stu\Orm\Entity\StarSystem;
 use Stu\Orm\Entity\StarSystemMap;
-use Stu\Orm\Entity\StarSystemMapInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\User;
-use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Entity\UserRegistration;
 
 /**
@@ -34,13 +31,13 @@ use Stu\Orm\Entity\UserRegistration;
 final class ColonyRepository extends EntityRepository implements ColonyRepositoryInterface
 {
     #[Override]
-    public function prototype(): ColonyInterface
+    public function prototype(): Colony
     {
         return new Colony();
     }
 
     #[Override]
-    public function save(ColonyInterface $colony): void
+    public function save(Colony $colony): void
     {
         $em = $this->getEntityManager();
 
@@ -48,7 +45,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
     }
 
     #[Override]
-    public function delete(ColonyInterface $colony): void
+    public function delete(Colony $colony): void
     {
         $em = $this->getEntityManager();
 
@@ -57,7 +54,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
     }
 
     #[Override]
-    public function getAmountByUser(UserInterface $user, int $colonyType): int
+    public function getAmountByUser(User $user, int $colonyType): int
     {
         return (int) $this->getEntityManager()
             ->createQuery(
@@ -111,7 +108,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
     }
 
     #[Override]
-    public function getByPosition(StarSystemMapInterface $sysmap): ?ColonyInterface
+    public function getByPosition(StarSystemMap $sysmap): ?Colony
     {
         return $this->findOneBy([
             'starsystem_map' => $sysmap
@@ -120,8 +117,8 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
 
     #[Override]
     public function getForeignColoniesInBroadcastRange(
-        StarSystemMapInterface $systemMap,
-        UserInterface $user
+        StarSystemMap $systemMap,
+        User $user
     ): array {
         return $this->getEntityManager()
             ->createQuery(
@@ -343,14 +340,14 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
         $spacecraft = $wrapper->get();
         $location = $spacecraft->getLocation();
 
-        if ($location instanceof StarSystemMapInterface) {
+        if ($location instanceof StarSystemMap) {
             return $this->getClosestColonizableColonyInSystem($spacecraft);
         } else {
             return $this->getClosestSystemWithColonizableColonies($spacecraft);
         }
     }
 
-    private function getClosestColonizableColonyInSystem(SpacecraftInterface $spacecraft): ?int
+    private function getClosestColonizableColonyInSystem(Spacecraft $spacecraft): ?int
     {
         $systemMap = $spacecraft->getStarsystemMap();
         if ($systemMap === null) {
@@ -401,7 +398,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
     }
 
 
-    private function getClosestSystemWithColonizableColonies(SpacecraftInterface $spacecraft): ?int
+    private function getClosestSystemWithColonizableColonies(Spacecraft $spacecraft): ?int
     {
         $currentLocation = $spacecraft->getLocation();
         $currentX = $currentLocation->getCx();

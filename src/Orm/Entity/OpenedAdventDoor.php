@@ -9,12 +9,11 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\OpenedAdventDoorRepository;
 
 #[Table(name: 'stu_opened_advent_door')]
 #[Entity(repositoryClass: OpenedAdventDoorRepository::class)]
-class OpenedAdventDoor implements OpenedAdventDoorInterface
+class OpenedAdventDoor
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -34,37 +33,32 @@ class OpenedAdventDoor implements OpenedAdventDoorInterface
     private int $time;
 
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
-    public function setUserId(int $userId): OpenedAdventDoorInterface
+    public function setUserId(int $userId): OpenedAdventDoor
     {
         $this->user_id = $userId;
 
         return $this;
     }
 
-    #[Override]
-    public function setDay(int $day): OpenedAdventDoorInterface
+    public function setDay(int $day): OpenedAdventDoor
     {
         $this->day = $day;
 
         return $this;
     }
 
-    #[Override]
-    public function setYear(int $year): OpenedAdventDoorInterface
+    public function setYear(int $year): OpenedAdventDoor
     {
         $this->year = $year;
 
         return $this;
     }
-    #[Override]
-    public function setTime(int $time): OpenedAdventDoorInterface
+    public function setTime(int $time): OpenedAdventDoor
     {
         $this->time = $time;
 

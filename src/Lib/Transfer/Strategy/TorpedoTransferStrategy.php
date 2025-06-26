@@ -10,7 +10,7 @@ use RuntimeException;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Transfer\Wrapper\StorageEntityWrapperInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Colony;
 
 class TorpedoTransferStrategy implements TransferStrategyInterface
 {
@@ -22,7 +22,7 @@ class TorpedoTransferStrategy implements TransferStrategyInterface
         GameControllerInterface $game
     ): void {
 
-        if ($target instanceof ColonyInterface) {
+        if ($target instanceof Colony) {
             throw new RuntimeException('this should not happen');
         }
 

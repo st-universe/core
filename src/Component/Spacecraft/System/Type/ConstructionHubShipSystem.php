@@ -10,7 +10,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\ShipyardShipQueueRepositoryInterface;
 
 final class ConstructionHubShipSystem extends AbstractSpacecraftSystemType implements SpacecraftSystemTypeInterface
@@ -70,7 +70,7 @@ final class ConstructionHubShipSystem extends AbstractSpacecraftSystemType imple
         $this->stopShipyardQeue($wrapper->get());
     }
 
-    private function stopShipyardQeue(SpacecraftInterface $spacecraft): void
+    private function stopShipyardQeue(Spacecraft $spacecraft): void
     {
         $this->shipyardShipQueueRepository->stopQueueByShipyard($spacecraft->getId());
     }

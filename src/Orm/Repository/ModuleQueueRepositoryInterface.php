@@ -4,22 +4,21 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\ModuleQueue;
-use Stu\Orm\Entity\ModuleQueueInterface;
 
 /**
  * @extends ObjectRepository<ModuleQueue>
  *
- * @method ModuleQueueInterface[] findAll()
+ * @method ModuleQueue[] findAll()
  */
 interface ModuleQueueRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return list<ModuleQueueInterface>
+     * @return list<ModuleQueue>
      */
     public function getByUser(int $userId): array;
 
     /**
-     * @return list<ModuleQueueInterface>
+     * @return list<ModuleQueue>
      */
     public function getByColony(int $colonyId): array;
 
@@ -27,23 +26,23 @@ interface ModuleQueueRepositoryInterface extends ObjectRepository
         int $colonyId,
         int $moduleId,
         int $buildingFunction
-    ): ?ModuleQueueInterface;
+    ): ?ModuleQueue;
 
     /**
      * @param array<int> $buildingFunctions
      *
-     * @return array<ModuleQueueInterface>
+     * @return array<ModuleQueue>
      */
     public function getByColonyAndBuilding(
         int $colonyId,
         array $buildingFunctions
     ): array;
 
-    public function prototype(): ModuleQueueInterface;
+    public function prototype(): ModuleQueue;
 
-    public function save(ModuleQueueInterface $moduleQueue): void;
+    public function save(ModuleQueue $moduleQueue): void;
 
-    public function delete(ModuleQueueInterface $moduleQueue): void;
+    public function delete(ModuleQueue $moduleQueue): void;
 
     public function getAmountByColonyAndModule(int $colonyId, int $moduleId): int;
 }

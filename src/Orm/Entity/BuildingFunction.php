@@ -12,7 +12,6 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Orm\Repository\BuildingFunctionRepository;
 
@@ -20,7 +19,7 @@ use Stu\Orm\Repository\BuildingFunctionRepository;
 #[Index(name: 'building_function_building_idx', columns: ['buildings_id'])]
 #[Index(name: 'building_function_function_idx', columns: ['function'])]
 #[Entity(repositoryClass: BuildingFunctionRepository::class)]
-class BuildingFunction implements BuildingFunctionInterface
+class BuildingFunction
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -34,40 +33,35 @@ class BuildingFunction implements BuildingFunctionInterface
     private BuildingFunctionEnum $function = BuildingFunctionEnum::COLONY_CENTRAL;
 
     /**
-     * @var BuildingInterface
+     * @var Building
      */
     #[ManyToOne(targetEntity: Building::class, inversedBy: 'buildingFunctions')]
     #[JoinColumn(name: 'buildings_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private $building;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getBuildingId(): int
     {
         return $this->buildings_id;
     }
 
-    #[Override]
-    public function setBuildingId(int $buildingId): BuildingFunctionInterface
+    public function setBuildingId(int $buildingId): BuildingFunction
     {
         $this->buildings_id = $buildingId;
 
         return $this;
     }
 
-    #[Override]
     public function getFunction(): BuildingFunctionEnum
     {
         return $this->function;
     }
 
-    #[Override]
-    public function setFunction(BuildingFunctionEnum $function): BuildingFunctionInterface
+    public function setFunction(BuildingFunctionEnum $function): BuildingFunction
     {
         $this->function = $function;
 

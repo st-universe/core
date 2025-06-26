@@ -6,7 +6,7 @@ namespace Stu\Component\Logging\GameRequest;
 
 use Override;
 use Stu\Component\Logging\GameRequest\Adapter\GameRequestLoggerInterface;
-use Stu\Orm\Entity\GameRequestInterface;
+use Stu\Orm\Entity\GameRequest;
 
 /**
  * Handles saving of the game's request
@@ -19,7 +19,7 @@ final class GameRequestSaver implements GameRequestSaverInterface
 
     #[Override]
     public function save(
-        GameRequestInterface $gameRequest,
+        GameRequest $gameRequest,
         bool $errorOccured = false
     ): void {
         $gameRequest = $this->parameterSanitizer->sanitize($gameRequest);

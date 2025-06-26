@@ -6,8 +6,8 @@ namespace Stu\Module\Template;
 
 use Override;
 use Stu\Module\Colony\Lib\PlanetFieldTypeRetrieverInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\PlanetFieldInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
 
 final class TemplateHelper implements TemplateHelperInterface
@@ -91,7 +91,7 @@ final class TemplateHelper implements TemplateHelperInterface
 
     #[Override]
     public function getPlanetFieldTitle(
-        PlanetFieldInterface $planetField
+        PlanetField $planetField
     ): string {
         $fieldTypeName = self::getPlanetFieldTypeDescription($planetField->getFieldType());
 
@@ -100,7 +100,7 @@ final class TemplateHelper implements TemplateHelperInterface
         if ($building === null) {
             $terraFormingState = null;
             $host = $planetField->getHost();
-            if ($host instanceof ColonyInterface) {
+            if ($host instanceof Colony) {
                 $terraFormingState = $this->colonyTerraformingRepository->getByColonyAndField(
                     $host->getId(),
                     $planetField->getId()

@@ -14,8 +14,8 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
@@ -71,7 +71,7 @@ final class CrewLimitations implements ManagerComponentInterface
         }
     }
 
-    private function letColonyAssignmentsQuit(UserInterface $user, int $crewToQuit): int
+    private function letColonyAssignmentsQuit(User $user, int $crewToQuit): int
     {
         $amount = 0;
 
@@ -97,7 +97,7 @@ final class CrewLimitations implements ManagerComponentInterface
         return $amount;
     }
 
-    private function letTradepostAssignmentsQuit(UserInterface $user, int $crewToQuit): int
+    private function letTradepostAssignmentsQuit(User $user, int $crewToQuit): int
     {
         $amount = 0;
 
@@ -123,7 +123,7 @@ final class CrewLimitations implements ManagerComponentInterface
         return $amount;
     }
 
-    private function letEscapePodAssignmentsQuit(UserInterface $user, int $crewToQuit): int
+    private function letEscapePodAssignmentsQuit(User $user, int $crewToQuit): int
     {
         $amount = 0;
 
@@ -177,7 +177,7 @@ final class CrewLimitations implements ManagerComponentInterface
         return $amount;
     }
 
-    private function letCrewQuit(SpacecraftInterface $randomSpacecraft, int $userId): int
+    private function letCrewQuit(Spacecraft $randomSpacecraft, int $userId): int
     {
         $wrapper = $this->spacecraftWrapperFactory->wrapSpacecraft($randomSpacecraft);
         $doAlertRedCheck = $randomSpacecraft->getWarpDriveState() || $randomSpacecraft->isCloaked();

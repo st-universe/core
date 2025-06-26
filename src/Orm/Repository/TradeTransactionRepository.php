@@ -9,7 +9,6 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Override;
 use Stu\Component\Game\TimeConstants;
 use Stu\Orm\Entity\TradeTransaction;
-use Stu\Orm\Entity\TradeTransactionInterface;
 
 /**
  * @extends EntityRepository<TradeTransaction>
@@ -17,13 +16,13 @@ use Stu\Orm\Entity\TradeTransactionInterface;
 final class TradeTransactionRepository extends EntityRepository implements TradeTransactionRepositoryInterface
 {
     #[Override]
-    public function prototype(): TradeTransactionInterface
+    public function prototype(): TradeTransaction
     {
         return new TradeTransaction();
     }
 
     #[Override]
-    public function save(TradeTransactionInterface $tradeTransaction): void
+    public function save(TradeTransaction $tradeTransaction): void
     {
         $em = $this->getEntityManager();
 

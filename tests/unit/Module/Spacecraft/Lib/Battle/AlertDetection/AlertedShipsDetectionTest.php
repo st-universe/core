@@ -9,17 +9,17 @@ use Mockery\MockInterface;
 use Override;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\FleetInterface;
-use Stu\Orm\Entity\LocationInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Fleet;
+use Stu\Orm\Entity\Location;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\User;
 use Stu\StuTestCase;
 
 class AlertedShipsDetectionTest extends StuTestCase
 {
     private MockInterface&SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory;
 
-    private MockInterface&LocationInterface $location;
+    private MockInterface&Location $location;
 
     private AlertedShipsDetectionInterface $subject;
 
@@ -28,7 +28,7 @@ class AlertedShipsDetectionTest extends StuTestCase
     {
         $this->spacecraftWrapperFactory = $this->mock(SpacecraftWrapperFactoryInterface::class);
 
-        $this->location = $this->mock(LocationInterface::class);
+        $this->location = $this->mock(Location::class);
 
         $this->subject = new AlertedShipsDetection(
             $this->spacecraftWrapperFactory
@@ -44,7 +44,7 @@ class AlertedShipsDetectionTest extends StuTestCase
 
         $result = $this->subject->getAlertedShipsOnLocation(
             $this->location,
-            $this->mock(UserInterface::class)
+            $this->mock(User::class)
         );
 
         $this->assertTrue($result->isEmpty());
@@ -52,8 +52,8 @@ class AlertedShipsDetectionTest extends StuTestCase
 
     public function testGetAlertedShipsOnLocationExpectEmptyCollectionWhenSameUser(): void
     {
-        $ship = $this->mock(ShipInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $ship = $this->mock(Ship::class);
+        $user = $this->mock(User::class);
 
         $this->location->shouldReceive('getSpacecraftsWithoutVacation')
             ->withNoArgs()
@@ -74,8 +74,8 @@ class AlertedShipsDetectionTest extends StuTestCase
 
     public function testGetAlertedShipsOnLocationExpectEmptyCollectionWhenNotFleetLeader(): void
     {
-        $ship = $this->mock(ShipInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $ship = $this->mock(Ship::class);
+        $user = $this->mock(User::class);
 
         $this->location->shouldReceive('getSpacecraftsWithoutVacation')
             ->withNoArgs()
@@ -90,11 +90,11 @@ class AlertedShipsDetectionTest extends StuTestCase
             ->andReturn(false);
         $ship->shouldReceive('getFleet')
             ->withNoArgs()
-            ->andReturn($this->mock(FleetInterface::class));
+            ->andReturn($this->mock(Fleet::class));
 
         $result = $this->subject->getAlertedShipsOnLocation(
             $this->location,
-            $this->mock(UserInterface::class)
+            $this->mock(User::class)
         );
 
         $this->assertTrue($result->isEmpty());
@@ -102,8 +102,8 @@ class AlertedShipsDetectionTest extends StuTestCase
 
     public function testGetAlertedShipsOnLocationExpectEmptyCollectionWhenWarped(): void
     {
-        $ship = $this->mock(ShipInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $ship = $this->mock(Ship::class);
+        $user = $this->mock(User::class);
 
         $this->location->shouldReceive('getSpacecraftsWithoutVacation')
             ->withNoArgs()
@@ -125,7 +125,7 @@ class AlertedShipsDetectionTest extends StuTestCase
 
         $result = $this->subject->getAlertedShipsOnLocation(
             $this->location,
-            $this->mock(UserInterface::class)
+            $this->mock(User::class)
         );
 
         $this->assertTrue($result->isEmpty());
@@ -133,8 +133,8 @@ class AlertedShipsDetectionTest extends StuTestCase
 
     public function testGetAlertedShipsOnLocationExpectEmptyCollectionWhenCloaked(): void
     {
-        $ship = $this->mock(ShipInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $ship = $this->mock(Ship::class);
+        $user = $this->mock(User::class);
 
         $this->location->shouldReceive('getSpacecraftsWithoutVacation')
             ->withNoArgs()
@@ -156,7 +156,7 @@ class AlertedShipsDetectionTest extends StuTestCase
 
         $result = $this->subject->getAlertedShipsOnLocation(
             $this->location,
-            $this->mock(UserInterface::class)
+            $this->mock(User::class)
         );
 
         $this->assertTrue($result->isEmpty());
@@ -164,8 +164,8 @@ class AlertedShipsDetectionTest extends StuTestCase
 
     public function testGetAlertedShipsOnLocationExpectEmptyCollectionWhenAlertGreen(): void
     {
-        $ship = $this->mock(ShipInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $ship = $this->mock(Ship::class);
+        $user = $this->mock(User::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
 
         $this->location->shouldReceive('getSpacecraftsWithoutVacation')
@@ -196,7 +196,7 @@ class AlertedShipsDetectionTest extends StuTestCase
 
         $result = $this->subject->getAlertedShipsOnLocation(
             $this->location,
-            $this->mock(UserInterface::class)
+            $this->mock(User::class)
         );
 
         $this->assertTrue($result->isEmpty());
@@ -204,8 +204,8 @@ class AlertedShipsDetectionTest extends StuTestCase
 
     public function testGetAlertedShipsOnLocationExpectWrapperWhenFleetLeader(): void
     {
-        $ship = $this->mock(ShipInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $ship = $this->mock(Ship::class);
+        $user = $this->mock(User::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
 
         $this->location->shouldReceive('getSpacecraftsWithoutVacation')
@@ -236,7 +236,7 @@ class AlertedShipsDetectionTest extends StuTestCase
 
         $result = $this->subject->getAlertedShipsOnLocation(
             $this->location,
-            $this->mock(UserInterface::class)
+            $this->mock(User::class)
         );
 
         $this->assertEquals(1, $result->count());
@@ -245,8 +245,8 @@ class AlertedShipsDetectionTest extends StuTestCase
 
     public function testGetAlertedShipsOnLocationExpectWrapperWhenSingleton(): void
     {
-        $ship = $this->mock(ShipInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $ship = $this->mock(Ship::class);
+        $user = $this->mock(User::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
 
         $this->location->shouldReceive('getSpacecraftsWithoutVacation')
@@ -280,7 +280,7 @@ class AlertedShipsDetectionTest extends StuTestCase
 
         $result = $this->subject->getAlertedShipsOnLocation(
             $this->location,
-            $this->mock(UserInterface::class)
+            $this->mock(User::class)
         );
 
         $this->assertEquals(1, $result->count());

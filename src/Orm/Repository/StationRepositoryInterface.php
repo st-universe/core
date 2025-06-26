@@ -5,59 +5,58 @@ namespace Stu\Orm\Repository;
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\Lib\TSpacecraftItemInterface;
-use Stu\Orm\Entity\LocationInterface;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\SpacecraftRumpInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Location;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\SpacecraftRump;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\Station;
-use Stu\Orm\Entity\StationInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\StarSystemMap;
+use Stu\Orm\Entity\User;
 
 /**
  * @extends ObjectRepository<Station>
  *
- * @method null|StationInterface find(integer $id)
- * @method StationInterface[] findAll()
+ * @method null|Station find(integer $id)
+ * @method Station[] findAll()
  */
 interface StationRepositoryInterface extends ObjectRepository
 {
-    public function save(StationInterface $station): void;
+    public function save(Station $station): void;
 
-    public function delete(StationInterface $station): void;
+    public function delete(Station $station): void;
 
-    /** @return array<StationInterface> */
+    /** @return array<Station> */
     public function getByUser(int $userId): array;
 
-    /** @return array<StationInterface> */
-    public function getForeignStationsInBroadcastRange(SpacecraftInterface $spacecraft): array;
+    /** @return array<Station> */
+    public function getForeignStationsInBroadcastRange(Spacecraft $spacecraft): array;
 
-    /** @return array<StationInterface> */
+    /** @return array<Station> */
     public function getTradePostsWithoutDatabaseEntry(): array;
 
-    /** @return array<StationInterface> */
+    /** @return array<Station> */
     public function getByUplink(int $userId): array;
 
-    /** @return array<StationInterface> */
+    /** @return array<Station> */
     public function getStationConstructions(): array;
 
     /**
      * @return array<TSpacecraftItemInterface>
      */
     public function getStationScannerResults(
-        SpacecraftInterface $spacecraft,
+        Spacecraft $spacecraft,
         bool $showCloaked = false,
-        MapInterface|StarSystemMapInterface|null $field = null
+        Map|StarSystemMap|null $field = null
     ): array;
 
-    public function getStationOnLocation(LocationInterface $location): ?StationInterface;
+    public function getStationOnLocation(Location $location): ?Station;
 
-    /** @return array<StationInterface> */
+    /** @return array<Station> */
     public function getStationsByUser(int $userId): array;
 
-    /** @return array<StationInterface> */
-    public function getByUserAndRump(UserInterface $user, SpacecraftRumpInterface $rump): array;
+    /** @return array<Station> */
+    public function getByUserAndRump(User $user, SpacecraftRump $rump): array;
 
-    /** @return array<StationInterface> */
+    /** @return array<Station> */
     public function getPiratePhalanxTargets(SpacecraftWrapperInterface $wrapper): array;
 }

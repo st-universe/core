@@ -11,7 +11,7 @@ use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\AbstractFlightConsequence;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\MapFieldTypeInterface;
+use Stu\Orm\Entity\MapFieldType;
 
 class DeflectorConsequence extends AbstractFlightConsequence implements PostFlightConsequenceInterface
 {
@@ -91,7 +91,7 @@ class DeflectorConsequence extends AbstractFlightConsequence implements PostFlig
 
     private function hasEnoughEpsForDeflector(
         SpacecraftWrapperInterface $wrapper,
-        MapFieldTypeInterface $nextFieldType
+        MapFieldType $nextFieldType
     ): bool {
 
         $epsSystem = $wrapper->getEpsSystemData();

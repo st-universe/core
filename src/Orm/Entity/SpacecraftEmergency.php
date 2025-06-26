@@ -11,12 +11,11 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\SpacecraftEmergencyRepository;
 
 #[Table(name: 'stu_spacecraft_emergency')]
 #[Entity(repositoryClass: SpacecraftEmergencyRepository::class)]
-class SpacecraftEmergency implements SpacecraftEmergencyInterface
+class SpacecraftEmergency
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -37,65 +36,56 @@ class SpacecraftEmergency implements SpacecraftEmergencyInterface
 
     #[ManyToOne(targetEntity: Spacecraft::class)]
     #[JoinColumn(name: 'spacecraft_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private SpacecraftInterface $spacecraft;
+    private Spacecraft $spacecraft;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
-    public function getSpacecraft(): SpacecraftInterface
+    public function getSpacecraft(): Spacecraft
     {
         return $this->spacecraft;
     }
 
-    #[Override]
-    public function setSpacecraft(SpacecraftInterface $spacecraft): SpacecraftEmergencyInterface
+    public function setSpacecraft(Spacecraft $spacecraft): SpacecraftEmergency
     {
         $this->spacecraft = $spacecraft;
 
         return $this;
     }
 
-    #[Override]
     public function getText(): string
     {
         return $this->text;
     }
 
-    #[Override]
-    public function setText(string $text): SpacecraftEmergencyInterface
+    public function setText(string $text): SpacecraftEmergency
     {
         $this->text = $text;
 
         return $this;
     }
 
-    #[Override]
     public function getDate(): int
     {
         return $this->date;
     }
 
-    #[Override]
-    public function setDate(int $date): SpacecraftEmergencyInterface
+    public function setDate(int $date): SpacecraftEmergency
     {
         $this->date = $date;
 
         return $this;
     }
 
-    #[Override]
-    public function setDeleted(int $timestamp): SpacecraftEmergencyInterface
+    public function setDeleted(int $timestamp): SpacecraftEmergency
     {
         $this->deleted = $timestamp;
 
         return $this;
     }
 
-    #[Override]
     public function isDeleted(): bool
     {
         return $this->deleted !== null;

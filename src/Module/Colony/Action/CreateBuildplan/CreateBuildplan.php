@@ -20,7 +20,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
-use Stu\Orm\Entity\ModuleInterface;
+use Stu\Orm\Entity\Module;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
@@ -76,7 +76,7 @@ final class CreateBuildplan implements ActionControllerInterface
             throw new RuntimeException(sprintf('no module level for rumpId: %d', $rump->getId()));
         }
 
-        /** @var array<int, ModuleInterface> */
+        /** @var array<int, Module> */
         $modules = [];
 
         $error = false;

@@ -13,7 +13,7 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
-use Stu\Orm\Entity\SpacecraftBuildplanInterface;
+use Stu\Orm\Entity\SpacecraftBuildplan;
 
 
 
@@ -106,7 +106,7 @@ final class ShowShipCreator implements ViewControllerInterface
         }
     }
 
-    private function isDeletable(SpacecraftBuildplanInterface $buildplan): bool
+    private function isDeletable(SpacecraftBuildplan $buildplan): bool
     {
         return $buildplan->getSpacecraftCount() === 0;
     }

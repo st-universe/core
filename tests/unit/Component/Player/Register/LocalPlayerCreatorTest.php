@@ -9,9 +9,9 @@ use Mockery;
 use Mockery\MockInterface;
 use Override;
 use Stu\Module\Control\StuHashInterface;
-use Stu\Orm\Entity\FactionInterface;
-use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Entity\UserRegistrationInterface;
+use Stu\Orm\Entity\Faction;
+use Stu\Orm\Entity\User;
+use Stu\Orm\Entity\UserRegistration;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\Orm\Repository\UserRefererRepositoryInterface;
 use Stu\StuTestCase;
@@ -63,9 +63,9 @@ class LocalPlayerCreatorTest extends StuTestCase
         $password = 'some-password';
         $userId = 666;
 
-        $faction = $this->mock(FactionInterface::class);
-        $user = $this->mock(UserInterface::class);
-        $registration = $this->mock(UserRegistrationInterface::class);
+        $faction = $this->mock(Faction::class);
+        $user = $this->mock(User::class);
+        $registration = $this->mock(UserRegistration::class);
 
         $this->userRepository->shouldReceive('prototype')
             ->withNoArgs()

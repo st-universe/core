@@ -2,13 +2,13 @@
 
 namespace Stu\Module\Crew\Lib;
 
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\CrewAssignmentInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\CrewAssignment;
+use Stu\Orm\Entity\Spacecraft;
 
 interface CrewCreatorInterface
 {
-    public function create(int $userId, ?ColonyInterface $colony = null): CrewAssignmentInterface;
+    public function create(int $userId, ?Colony $colony = null): CrewAssignment;
 
-    public function createCrewAssignment(SpacecraftInterface $spacecraft, ColonyInterface|SpacecraftInterface $crewProvider, ?int $amount = null): void;
+    public function createCrewAssignment(Spacecraft $spacecraft, Colony|Spacecraft $crewProvider, ?int $amount = null): void;
 }

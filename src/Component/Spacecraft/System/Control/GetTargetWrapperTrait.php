@@ -4,7 +4,7 @@ namespace Stu\Component\Spacecraft\System\Control;
 
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 trait GetTargetWrapperTrait
 {
@@ -13,7 +13,7 @@ trait GetTargetWrapperTrait
         SpacecraftWrapperInterface|int $target,
         bool $allowUplink,
         SpacecraftLoaderInterface $spacecraftLoader,
-        UserInterface $user
+        User $user
     ): SpacecraftWrapperInterface {
         if ($target instanceof SpacecraftWrapperInterface) {
             return $target;

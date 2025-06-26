@@ -13,11 +13,11 @@ use Stu\Module\Spacecraft\Lib\Interaction\ShipUndockingInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftRemoverInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\ConstructionProgressInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\StationInterface;
-use Stu\Orm\Entity\TradePostInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\ConstructionProgress;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Station;
+use Stu\Orm\Entity\TradePost;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ConstructionProgressRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\Orm\Repository\MiningQueueRepositoryInterface;
@@ -62,14 +62,14 @@ class SpacecraftDeletionHandlerTest extends StuTestCase
 
     public function testDeleteDeletesUserShips(): void
     {
-        $user = $this->mock(UserInterface::class);
-        $station = $this->mock(StationInterface::class);
-        $stationWithProgress = $this->mock(StationInterface::class);
-        $constructionProgress = $this->mock(ConstructionProgressInterface::class);
-        $tradepostStation = $this->mock(StationInterface::class);
-        $ship = $this->mock(ShipInterface::class);
+        $user = $this->mock(User::class);
+        $station = $this->mock(Station::class);
+        $stationWithProgress = $this->mock(Station::class);
+        $constructionProgress = $this->mock(ConstructionProgress::class);
+        $tradepostStation = $this->mock(Station::class);
+        $ship = $this->mock(Ship::class);
         $wrapper = $this->mock(SpacecraftWrapperInterface::class);
-        $tractoredShip = $this->mock(ShipInterface::class);
+        $tractoredShip = $this->mock(Ship::class);
 
         $station->shouldReceive('getTradePost')
             ->withNoArgs()
@@ -82,7 +82,7 @@ class SpacecraftDeletionHandlerTest extends StuTestCase
         $tradepostStation->shouldReceive('getTradePost')
             ->withNoArgs()
             ->once()
-            ->andReturn($this->mock(TradePostInterface::class));
+            ->andReturn($this->mock(TradePost::class));
 
         $station->shouldReceive('getConstructionProgress')
             ->withNoArgs()

@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\StuTestCase;
 
 class ColoniesComponentTest extends StuTestCase
@@ -24,7 +24,7 @@ class ColoniesComponentTest extends StuTestCase
 
     public function testRenderRendersSystemUserWithoutColonies(): void
     {
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
         $game = $this->mock(GameControllerInterface::class);
 
         $user->shouldReceive('getId')
@@ -45,7 +45,7 @@ class ColoniesComponentTest extends StuTestCase
 
     public function testRenderRendersNormalUserWithColonies(): void
     {
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
         $game = $this->mock(GameControllerInterface::class);
         $colonies = $this->mock(Collection::class);
 

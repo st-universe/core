@@ -6,20 +6,19 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\TradeLicenseInfo;
-use Stu\Orm\Entity\TradeLicenseInfoInterface;
 
 /**
  * @extends ObjectRepository<TradeLicenseInfo>
  *
- * @method null|TradeLicenseInfoInterface find(integer $id)
+ * @method null|TradeLicenseInfo find(integer $id)
  */
 interface TradeLicenseInfoRepositoryInterface extends ObjectRepository
 {
-    public function prototype(): TradeLicenseInfoInterface;
+    public function prototype(): TradeLicenseInfo;
 
-    public function save(TradeLicenseInfoInterface $setLicense): void;
+    public function save(TradeLicenseInfo $setLicense): void;
 
-    public function delete(TradeLicenseInfoInterface $setLicense): void;
+    public function delete(TradeLicenseInfo $setLicense): void;
 
-    public function getLatestLicenseInfo(int $tradepostId): ?TradeLicenseInfoInterface;
+    public function getLatestLicenseInfo(int $tradepostId): ?TradeLicenseInfo;
 }

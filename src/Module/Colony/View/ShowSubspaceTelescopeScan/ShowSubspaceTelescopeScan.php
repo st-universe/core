@@ -14,7 +14,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Colony;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\LocationRepositoryInterface;
 
@@ -75,7 +75,7 @@ final class ShowSubspaceTelescopeScan implements ViewControllerInterface
         $game->setMacroInAjaxWindow('html/colony/component/telescopeScan.twig');
     }
 
-    private function calculateScanCost(ColonyInterface $colony, int $cx, int $cy): int
+    private function calculateScanCost(Colony $colony, int $cx, int $cy): int
     {
         $layer = $colony->getSystem()->getLayer();
 

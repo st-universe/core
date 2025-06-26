@@ -12,10 +12,10 @@ use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Provider\EnergyAttackerInterface;
 use Stu\Module\Spacecraft\Lib\Battle\SpacecraftAttackCauseEnum;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\PlanetFieldInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\WeaponInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\PlanetField;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\Weapon;
 
 //TODO unit tests
 final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeaponPhaseInterface
@@ -108,13 +108,13 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
     #[Override]
     public function fireAtBuilding(
         EnergyAttackerInterface $attacker,
-        PlanetFieldInterface $target,
+        PlanetField $target,
         bool $isOrbitField
     ): InformationWrapper {
         $informations = new InformationWrapper();
 
         $host = $target->getHost();
-        if (!$host instanceof ColonyInterface) {
+        if (!$host instanceof Colony) {
             return $informations;
         }
 
@@ -184,15 +184,15 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
         return $informations;
     }
 
-    private function isCritical(WeaponInterface $weapon, bool $isTargetCloaked): bool
+    private function isCritical(Weapon $weapon, bool $isTargetCloaked): bool
     {
         $critChance = $isTargetCloaked ? $weapon->getCriticalChance() * 2 : $weapon->getCriticalChance();
         return $this->stuRandom->rand(1, 100) <= $critChance;
     }
 
     private function setWeaponShieldModificator(
-        SpacecraftInterface $target,
-        WeaponInterface $weapon,
+        Spacecraft $target,
+        Weapon $weapon,
         DamageWrapper $damageWrapper
     ): void {
 

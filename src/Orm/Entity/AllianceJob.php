@@ -11,12 +11,11 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\AllianceJobRepository;
 
 #[Table(name: 'stu_alliances_jobs')]
 #[Entity(repositoryClass: AllianceJobRepository::class)]
-class AllianceJob implements AllianceJobInterface
+class AllianceJob
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -34,60 +33,52 @@ class AllianceJob implements AllianceJobInterface
 
     #[ManyToOne(targetEntity: Alliance::class)]
     #[JoinColumn(name: 'alliance_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private AllianceInterface $alliance;
+    private Alliance $alliance;
 
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $user;
+    private User $user;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    #[Override]
     public function getType(): int
     {
         return $this->type;
     }
 
-    #[Override]
-    public function setType(int $type): AllianceJobInterface
+    public function setType(int $type): AllianceJob
     {
         $this->type = $type;
 
         return $this;
     }
 
-    #[Override]
-    public function getAlliance(): AllianceInterface
+    public function getAlliance(): Alliance
     {
         return $this->alliance;
     }
 
-    #[Override]
-    public function setAlliance(AllianceInterface $alliance): AllianceJobInterface
+    public function setAlliance(Alliance $alliance): AllianceJob
     {
         $this->alliance = $alliance;
 
         return $this;
     }
 
-    #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    #[Override]
-    public function setUser(UserInterface $user): AllianceJobInterface
+    public function setUser(User $user): AllianceJob
     {
         $this->user = $user;
         return $this;

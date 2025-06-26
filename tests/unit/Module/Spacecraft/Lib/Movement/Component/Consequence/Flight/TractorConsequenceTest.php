@@ -14,7 +14,7 @@ use Stu\Module\Spacecraft\Lib\Message\MessageInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\FlightConsequenceInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 use Stu\StuTestCase;
 
 class TractorConsequenceTest extends StuTestCase
@@ -25,7 +25,7 @@ class TractorConsequenceTest extends StuTestCase
 
     private FlightConsequenceInterface $subject;
 
-    private MockInterface&ShipInterface $ship;
+    private MockInterface&Ship $ship;
 
     private MockInterface&ShipWrapperInterface $wrapper;
 
@@ -38,7 +38,7 @@ class TractorConsequenceTest extends StuTestCase
         $this->cancelColonyBlockOrDefend = $this->mock(CancelColonyBlockOrDefendInterface::class);
         $this->messageFactory = $this->mock(MessageFactoryInterface::class);
 
-        $this->ship = $this->mock(ShipInterface::class);
+        $this->ship = $this->mock(Ship::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
         $this->flightRoute = $this->mock(FlightRouteInterface::class);
 
@@ -77,7 +77,7 @@ class TractorConsequenceTest extends StuTestCase
     public function testTriggerExpectReleaseWhenTargetCantBeTowed(): void
     {
         $messages = $this->mock(MessageCollectionInterface::class);
-        $tractoredShip = $this->mock(ShipInterface::class);
+        $tractoredShip = $this->mock(Ship::class);
         $message = $this->mock(MessageInterface::class);
 
         $this->ship->shouldReceive('getCondition->isDestroyed')
@@ -113,7 +113,7 @@ class TractorConsequenceTest extends StuTestCase
     public function testTriggerExpectColonyBlockDefendCallWhenCanBeTowed(): void
     {
         $messages = $this->mock(MessageCollectionInterface::class);
-        $tractoredShip = $this->mock(ShipInterface::class);
+        $tractoredShip = $this->mock(Ship::class);
         $message = $this->mock(MessageInterface::class);
 
         $this->ship->shouldReceive('getCondition->isDestroyed')

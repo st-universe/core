@@ -4,26 +4,25 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\ShipyardShipQueue;
-use Stu\Orm\Entity\ShipyardShipQueueInterface;
 
 /**
  * @extends ObjectRepository<ShipyardShipQueue>
  */
 interface ShipyardShipQueueRepositoryInterface extends ObjectRepository
 {
-    public function prototype(): ShipyardShipQueueInterface;
+    public function prototype(): ShipyardShipQueue;
 
-    public function save(ShipyardShipQueueInterface $post): void;
+    public function save(ShipyardShipQueue $post): void;
 
-    public function delete(ShipyardShipQueueInterface $post): void;
+    public function delete(ShipyardShipQueue $post): void;
 
     /**
-     * @return array<ShipyardShipQueueInterface>
+     * @return array<ShipyardShipQueue>
      */
     public function getByShipyard(int $stationId): array;
 
     /**
-     * @return array<ShipyardShipQueueInterface>
+     * @return array<ShipyardShipQueue>
      */
     public function getByUser(int $userId): array;
 
@@ -34,7 +33,7 @@ interface ShipyardShipQueueRepositoryInterface extends ObjectRepository
     public function restartQueueByShipyard(int $stationId): void;
 
     /**
-     * @return array<ShipyardShipQueueInterface>
+     * @return array<ShipyardShipQueue>
      */
     public function getFinishedJobs(): array;
 }

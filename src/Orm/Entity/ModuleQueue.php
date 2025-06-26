@@ -12,14 +12,13 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Orm\Repository\ModuleQueueRepository;
 
 #[Table(name: 'stu_modules_queue')]
 #[Index(name: 'module_queue_colony_module_idx', columns: ['colony_id', 'module_id'])]
 #[Entity(repositoryClass: ModuleQueueRepository::class)]
-class ModuleQueue implements ModuleQueueInterface
+class ModuleQueue
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -40,81 +39,70 @@ class ModuleQueue implements ModuleQueueInterface
 
     #[ManyToOne(targetEntity: Module::class)]
     #[JoinColumn(name: 'module_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ModuleInterface $module;
+    private Module $module;
 
     #[ManyToOne(targetEntity: Colony::class)]
     #[JoinColumn(name: 'colony_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ColonyInterface $colony;
+    private Colony $colony;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
-    public function getColony(): ColonyInterface
+    public function getColony(): Colony
     {
         return $this->colony;
     }
 
-    #[Override]
-    public function setColony(ColonyInterface $colony): ModuleQueueInterface
+    public function setColony(Colony $colony): ModuleQueue
     {
         $this->colony = $colony;
         return $this;
     }
 
-    #[Override]
     public function getModuleId(): int
     {
         return $this->module_id;
     }
 
-    #[Override]
-    public function setModuleId(int $moduleId): ModuleQueueInterface
+    public function setModuleId(int $moduleId): ModuleQueue
     {
         $this->module_id = $moduleId;
 
         return $this;
     }
 
-    #[Override]
     public function getAmount(): int
     {
         return $this->count;
     }
 
-    #[Override]
-    public function setAmount(int $amount): ModuleQueueInterface
+    public function setAmount(int $amount): ModuleQueue
     {
         $this->count = $amount;
 
         return $this;
     }
 
-    #[Override]
     public function getBuildingFunction(): BuildingFunctionEnum
     {
         return $this->buildingfunction;
     }
 
-    #[Override]
-    public function setBuildingFunction(BuildingFunctionEnum $buildingFunction): ModuleQueueInterface
+    public function setBuildingFunction(BuildingFunctionEnum $buildingFunction): ModuleQueue
     {
         $this->buildingfunction = $buildingFunction;
 
         return $this;
     }
 
-    #[Override]
-    public function getModule(): ModuleInterface
+    public function getModule(): Module
     {
         return $this->module;
     }
 
-    #[Override]
-    public function setModule(ModuleInterface $module): ModuleQueueInterface
+    public function setModule(Module $module): ModuleQueue
     {
         $this->module = $module;
 

@@ -8,7 +8,7 @@ use JBBCode\Parser;
 use Noodlehaus\ConfigInterface;
 use Override;
 use Stu\Component\Faction\FactionEnum;
-use Stu\Orm\Entity\AllianceInterface;
+use Stu\Orm\Entity\Alliance;
 
 /**
  * Converts alliance related data to to graph attribute values
@@ -21,7 +21,7 @@ final class AllianceDataToGraphAttributeConverter implements AllianceDataToGraph
 
     #[Override]
     public function convertName(
-        AllianceInterface $alliance
+        Alliance $alliance
     ): string {
         return str_replace(
             ['&', '<', '>', '"', "'", '\\', "\n"],
@@ -32,7 +32,7 @@ final class AllianceDataToGraphAttributeConverter implements AllianceDataToGraph
 
     #[Override]
     public function getFrameColor(
-        AllianceInterface $alliance,
+        Alliance $alliance,
         string $defaultColor = '#8b8b8b'
     ): string {
         $faction = $alliance->getFaction();
@@ -52,7 +52,7 @@ final class AllianceDataToGraphAttributeConverter implements AllianceDataToGraph
 
     #[Override]
     public function getUrl(
-        AllianceInterface $alliance
+        Alliance $alliance
     ): string {
         return sprintf(
             '%s/alliance.php?id=%d',
@@ -63,7 +63,7 @@ final class AllianceDataToGraphAttributeConverter implements AllianceDataToGraph
 
     #[Override]
     public function getFillColor(
-        AllianceInterface $alliance
+        Alliance $alliance
     ): string {
         return $alliance->isNpcAlliance()
             ? '#2b2b2b'

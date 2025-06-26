@@ -13,7 +13,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftStateChangerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 
 class BussardCollectorShipSystem extends AbstractSpacecraftSystemType implements SpacecraftSystemTypeInterface
 {
@@ -35,7 +35,7 @@ class BussardCollectorShipSystem extends AbstractSpacecraftSystemType implements
             return false;
         }
 
-        if ($spacecraft instanceof ShipInterface) {
+        if ($spacecraft instanceof Ship) {
             if ($spacecraft->isTractored()) {
                 $reason = _('das Schiff von einem Traktorstrahl gehalten wird');
                 return false;
@@ -82,7 +82,7 @@ class BussardCollectorShipSystem extends AbstractSpacecraftSystemType implements
             $manager->deactivate($wrapper, SpacecraftSystemTypeEnum::TRACTOR_BEAM, true);
         }
 
-        if ($spacecraft instanceof ShipInterface) {
+        if ($spacecraft instanceof Ship) {
             $spacecraft->setDockedTo(null);
         }
         $this->spacecraftStateChanger->changeState($wrapper, SpacecraftStateEnum::NONE);

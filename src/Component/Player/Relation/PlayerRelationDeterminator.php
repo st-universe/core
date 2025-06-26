@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Player\Relation;
 
 use Override;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 /**
  * Some locations require to determine if a certain user is friendly towards the player
@@ -18,7 +18,7 @@ final class PlayerRelationDeterminator implements PlayerRelationDeterminatorInte
     ) {}
 
     #[Override]
-    public function isFriend(?UserInterface $user, ?UserInterface $otherUser): bool
+    public function isFriend(?User $user, ?User $otherUser): bool
     {
         if ($user === null || $otherUser === null) {
             return false;
@@ -42,7 +42,7 @@ final class PlayerRelationDeterminator implements PlayerRelationDeterminatorInte
     }
 
     #[Override]
-    public function isEnemy(UserInterface $user, UserInterface $otherUser): bool
+    public function isEnemy(User $user, User $otherUser): bool
     {
         $enemyRelation = $this->enemyDeterminator->isEnemy($user, $otherUser);
         if ($enemyRelation->isDominant()) {

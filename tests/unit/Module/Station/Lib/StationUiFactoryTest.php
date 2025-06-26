@@ -7,7 +7,7 @@ namespace Stu\Module\Station\Lib;
 use Mockery\MockInterface;
 use Override;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreationInterface;
-use Stu\Orm\Entity\DockingPrivilegeInterface;
+use Stu\Orm\Entity\DockingPrivilege;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -51,7 +51,7 @@ class StationUiFactoryTest extends StuTestCase
         static::assertInstanceOf(
             DockingPrivilegeItem::class,
             $this->subject->createDockingPrivilegeItem(
-                $this->mock(DockingPrivilegeInterface::class)
+                $this->mock(DockingPrivilege::class)
             )
         );
     }

@@ -10,13 +10,11 @@ use Override;
 use Stu\Component\Trade\TradeEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\Location;
-use Stu\Orm\Entity\LocationInterface;
 use Stu\Orm\Entity\Station;
 use Stu\Orm\Entity\Storage;
 use Stu\Orm\Entity\TradeLicense;
 use Stu\Orm\Entity\TradeOffer;
 use Stu\Orm\Entity\TradePost;
-use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Entity\User;
 
 /**
@@ -25,13 +23,13 @@ use Stu\Orm\Entity\User;
 final class TradePostRepository extends EntityRepository implements TradePostRepositoryInterface
 {
     #[Override]
-    public function prototype(): TradePostInterface
+    public function prototype(): TradePost
     {
         return new TradePost();
     }
 
     #[Override]
-    public function save(TradePostInterface $tradePost): void
+    public function save(TradePost $tradePost): void
     {
         $em = $this->getEntityManager();
 
@@ -39,7 +37,7 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
     }
 
     #[Override]
-    public function delete(TradePostInterface $tradePost): void
+    public function delete(TradePost $tradePost): void
     {
         $em = $this->getEntityManager();
 
@@ -118,7 +116,7 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
     }
 
     #[Override]
-    public function getClosestNpcTradePost(LocationInterface $location): ?TradePostInterface
+    public function getClosestNpcTradePost(Location $location): ?TradePost
     {
         $layer = $location->getLayer();
         if ($layer === null) {
@@ -160,7 +158,7 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
     #[Override]
     public function getFergTradePost(
         int $tradePostId
-    ): ?TradePostInterface {
+    ): ?TradePost {
         return $this->findOneBy([
             'id' => $tradePostId
         ]);

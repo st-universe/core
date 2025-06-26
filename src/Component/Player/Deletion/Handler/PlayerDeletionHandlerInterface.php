@@ -2,9 +2,9 @@
 
 namespace Stu\Component\Player\Deletion\Handler;
 
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 interface PlayerDeletionHandlerInterface
 {
-    public function delete(UserInterface $user): void;
+    public function delete(User $user): void;
 }

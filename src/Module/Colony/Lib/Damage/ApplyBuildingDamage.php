@@ -10,8 +10,8 @@ use Stu\Lib\Damage\DamageModeEnum;
 use Stu\Lib\Damage\DamageWrapper;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\PlanetFieldInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\PlanetField;
 
 final class ApplyBuildingDamage implements ApplyBuildingDamageInterface
 {
@@ -22,13 +22,13 @@ final class ApplyBuildingDamage implements ApplyBuildingDamageInterface
     #[Override]
     public function damageBuilding(
         DamageWrapper $damageWrapper,
-        PlanetFieldInterface $target,
+        PlanetField $target,
         bool $isOrbitField
     ): InformationWrapper {
         $informations = new InformationWrapper();
 
         $colony = $target->getHost();
-        if (!$colony instanceof ColonyInterface) {
+        if (!$colony instanceof Colony) {
             throw new RuntimeException('this should not happen');
         }
 

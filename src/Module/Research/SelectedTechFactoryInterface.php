@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Research;
 
-use Stu\Orm\Entity\ResearchInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Research;
+use Stu\Orm\Entity\User;
 
 interface SelectedTechFactoryInterface
 {
-    public function createSelectedTech(ResearchInterface $research, UserInterface $currentUser): SelectedTechInterface;
+    public function createSelectedTech(Research $research, User $currentUser): SelectedTechInterface;
 }

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Component\StarSystem;
 
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\StarSystemInterface;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\StarSystem;
 
 interface StarSystemCreationInterface
 {
-    public function recreateStarSystem(MapInterface $map, string $randomSystemName): ?StarSystemInterface;
+    public function recreateStarSystem(Map $map, string $randomSystemName): ?StarSystem;
 }

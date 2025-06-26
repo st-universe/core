@@ -7,7 +7,6 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\UserLayer;
-use Stu\Orm\Entity\UserLayerInterface;
 
 /**
  * @extends EntityRepository<UserLayer>
@@ -15,13 +14,13 @@ use Stu\Orm\Entity\UserLayerInterface;
 final class UserLayerRepository extends EntityRepository implements UserLayerRepositoryInterface
 {
     #[Override]
-    public function prototype(): UserLayerInterface
+    public function prototype(): UserLayer
     {
         return new UserLayer();
     }
 
     #[Override]
-    public function save(UserLayerInterface $userLayer): void
+    public function save(UserLayer $userLayer): void
     {
         $em = $this->getEntityManager();
 
@@ -29,7 +28,7 @@ final class UserLayerRepository extends EntityRepository implements UserLayerRep
     }
 
     #[Override]
-    public function delete(UserLayerInterface $userLayer): void
+    public function delete(UserLayer $userLayer): void
     {
         $em = $this->getEntityManager();
 

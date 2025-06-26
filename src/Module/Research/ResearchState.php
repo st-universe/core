@@ -15,18 +15,29 @@ use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\ResearchedInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Researched;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpUserRepositoryInterface;
 
 final class ResearchState implements ResearchStateInterface
 {
-    public function __construct(private ResearchedRepositoryInterface $researchedRepository, private ShipRumpUserRepositoryInterface $shipRumpUserRepository, private PrivateMessageSenderInterface $privateMessageSender, private CreateDatabaseEntryInterface $createDatabaseEntry, private CrewCreatorInterface $crewCreator, private ShipCreatorInterface $shipCreator, private ShipRepositoryInterface $shipRepository, private SpacecraftSystemManagerInterface $spacecraftSystemManager, private CreateUserAwardInterface $createUserAward, private EntityManagerInterface $entityManager) {}
+    public function __construct(
+        private ResearchedRepositoryInterface $researchedRepository,
+        private ShipRumpUserRepositoryInterface $shipRumpUserRepository,
+        private PrivateMessageSenderInterface $privateMessageSender,
+        private CreateDatabaseEntryInterface $createDatabaseEntry,
+        private CrewCreatorInterface $crewCreator,
+        private ShipCreatorInterface $shipCreator,
+        private ShipRepositoryInterface $shipRepository,
+        private SpacecraftSystemManagerInterface $spacecraftSystemManager,
+        private CreateUserAwardInterface $createUserAward,
+        private EntityManagerInterface $entityManager
+    ) {}
 
     #[Override]
-    public function advance(ResearchedInterface $state, int $amount): int
+    public function advance(Researched $state, int $amount): int
     {
         $active = $state->getActive();
 
@@ -42,7 +53,7 @@ final class ResearchState implements ResearchStateInterface
     }
 
     #[Override]
-    public function finish(ResearchedInterface $state): void
+    public function finish(Researched $state): void
     {
         $state->setActive(0);
         $state->setFinished(time());
@@ -60,7 +71,7 @@ final class ResearchState implements ResearchStateInterface
         $this->checkForAward($state);
     }
 
-    private function createRewardShip(ResearchedInterface $state): void
+    private function createRewardShip(Researched $state): void
     {
         if ($state->getResearch()->getRewardBuildplan() === null) {
             return;
@@ -74,7 +85,7 @@ final class ResearchState implements ResearchStateInterface
 
         $userId = $state->getUser()->getId();
         $plan = $state->getResearch()->getRewardBuildplan();
-        /** @var ColonyInterface */
+        /** @var Colony */
         $colony = $userColonies->first();
         $wrapper = $this->shipCreator->createBy($userId, $plan->getRump()->getId(), $plan->getId())
             ->setLocation($colony->getStarsystemMap())
@@ -104,7 +115,7 @@ final class ResearchState implements ResearchStateInterface
         );
     }
 
-    private function createShipRumpEntries(ResearchedInterface $state): void
+    private function createShipRumpEntries(Researched $state): void
     {
         $rumpId = $state->getResearch()->getRumpId();
         if ($rumpId === 0) {
@@ -120,14 +131,14 @@ final class ResearchState implements ResearchStateInterface
         $this->shipRumpUserRepository->save($entry);
     }
 
-    private function createDatabaseEntries(ResearchedInterface $state): void
+    private function createDatabaseEntries(Researched $state): void
     {
         foreach ($state->getResearch()->getDatabaseEntryIds() as $entry) {
             $this->createDatabaseEntry->createDatabaseEntryForUser($state->getUser(), $entry);
         }
     }
 
-    private function checkForAward(ResearchedInterface $state): void
+    private function checkForAward(Researched $state): void
     {
         $user = $state->getUser();
         $award = $state->getResearch()->getAward();

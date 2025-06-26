@@ -8,7 +8,7 @@ use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Station\Lib\StationWrapperInterface;
-use Stu\Orm\Entity\StationInterface;
+use Stu\Orm\Entity\Station;
 use Stu\Orm\Repository\StationRepositoryInterface;
 
 final class StationProvider implements ViewComponentProviderInterface
@@ -29,7 +29,7 @@ final class StationProvider implements ViewComponentProviderInterface
         $game->setTemplateVar(
             'STATIONS',
             array_map(
-                fn(StationInterface $station): StationWrapperInterface => $this->spacecraftWrapperFactory->wrapStation($station),
+                fn(Station $station): StationWrapperInterface => $this->spacecraftWrapperFactory->wrapStation($station),
                 array_merge($stations, $uplinkStations)
             )
         );

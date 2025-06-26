@@ -6,14 +6,14 @@ namespace Stu\Component\Alliance\Event;
 
 use Mockery\MockInterface;
 use Override;
-use Stu\Orm\Entity\AllianceInterface;
+use Stu\Orm\Entity\Alliance;
 use Stu\StuTestCase;
 
 class DiplomaticRelationProposedEventTest extends StuTestCase
 {
-    private MockInterface&AllianceInterface $alliance;
+    private MockInterface&Alliance $alliance;
 
-    private MockInterface&AllianceInterface $counterpart;
+    private MockInterface&Alliance $counterpart;
 
     private int $relationTypeId = 666;
 
@@ -22,8 +22,8 @@ class DiplomaticRelationProposedEventTest extends StuTestCase
     #[Override]
     protected function setUp(): void
     {
-        $this->alliance = $this->mock(AllianceInterface::class);
-        $this->counterpart = $this->mock(AllianceInterface::class);
+        $this->alliance = $this->mock(Alliance::class);
+        $this->counterpart = $this->mock(Alliance::class);
 
         $this->subject = new DiplomaticRelationProposedEvent(
             $this->alliance,

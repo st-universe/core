@@ -2,9 +2,9 @@
 
 namespace Stu\Component\Ship\Retrofit;
 
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 
 interface CancelRetrofitInterface
 {
-    public function cancelRetrofit(ShipInterface $ship): bool;
+    public function cancelRetrofit(Ship $ship): bool;
 }

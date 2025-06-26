@@ -9,9 +9,9 @@ use Doctrine\Common\Collections\Collection;
 use InvalidArgumentException;
 use Override;
 use RuntimeException;
-use Stu\Orm\Entity\LocationInterface;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
+use Stu\Orm\Entity\Location;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
@@ -21,10 +21,10 @@ final class LoadWaypoints implements LoadWaypointsInterface
 
     #[Override]
     public function load(
-        LocationInterface $start,
-        LocationInterface $destination
+        Location $start,
+        Location $destination
     ): Collection {
-        if ($start instanceof MapInterface !== $destination instanceof MapInterface) {
+        if ($start instanceof Map !== $destination instanceof Map) {
             throw new InvalidArgumentException('start and destination have different type');
         }
 
@@ -42,7 +42,7 @@ final class LoadWaypoints implements LoadWaypointsInterface
         if ($startX > $destinationX) {
             $sortAscending = false;
         }
-        if ($start instanceof StarSystemMapInterface) {
+        if ($start instanceof StarSystemMap) {
             $waypoints = $this->starSystemMapRepository->getByCoordinateRange(
                 $start->getSystem()->getId(),
                 min($startX, $destinationX),

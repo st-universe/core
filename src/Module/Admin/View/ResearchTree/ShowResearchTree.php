@@ -12,8 +12,8 @@ use request;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Entity\ResearchDependencyInterface;
-use Stu\Orm\Entity\ResearchInterface;
+use Stu\Orm\Entity\ResearchDependency;
+use Stu\Orm\Entity\Research;
 use Stu\Orm\Repository\FactionRepositoryInterface;
 use Stu\Orm\Repository\ResearchDependencyRepositoryInterface;
 
@@ -67,7 +67,7 @@ final class ShowResearchTree implements ViewControllerInterface
     }
 
     /** @param array<Vertex> $vertexes */
-    private function addResearch(ResearchInterface $research, Graph $graph, array &$vertexes, int &$points): void
+    private function addResearch(Research $research, Graph $graph, array &$vertexes, int &$points): void
     {
         $researchId = $research->getId();
         if (array_key_exists($research->getId(), $vertexes)) {
@@ -102,7 +102,7 @@ final class ShowResearchTree implements ViewControllerInterface
     }
 
     /** @param array<Vertex> $vertexes */
-    private function addEdge(ResearchDependencyInterface $researchDependency, array $vertexes): void
+    private function addEdge(ResearchDependency $researchDependency, array $vertexes): void
     {
         $edge = $vertexes[$researchDependency->getDependsOn()]
             ->createEdgeTo($vertexes[$researchDependency->getResearchId()]);

@@ -10,13 +10,13 @@ use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Lib\ModuleScreen\Addon\ModuleSelectorAddonInterface;
 use Stu\Module\Twig\TwigPageInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\SpacecraftBuildplanInterface;
-use Stu\Orm\Entity\SpacecraftRumpInterface;
-use Stu\Orm\Entity\ShipRumpModuleLevelInterface;
-use Stu\Orm\Entity\ShipRumpRoleInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\SpacecraftBuildplan;
+use Stu\Orm\Entity\SpacecraftRump;
+use Stu\Orm\Entity\ShipRumpModuleLevel;
+use Stu\Orm\Entity\ShipRumpRole;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
 
@@ -27,18 +27,18 @@ class ModuleSelector implements ModuleSelectorInterface
 
     /** @var ModuleSelectorEntryInterface[]|null */
     private ?array $moduleSelectorEntries = null;
-    private ?ShipRumpModuleLevelInterface $shipRumpModuleLevel = null;
+    private ?ShipRumpModuleLevel $shipRumpModuleLevel = null;
 
     public function __construct(
         private ModuleRepositoryInterface $moduleRepository,
         private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository,
         private TwigPageInterface $twigPage,
         private SpacecraftModuleTypeEnum $moduleType,
-        private ColonyInterface|SpacecraftInterface $host,
-        private SpacecraftRumpInterface $rump,
-        private UserInterface $user,
+        private Colony|Spacecraft $host,
+        private SpacecraftRump $rump,
+        private User $user,
         private ?ModuleSelectorAddonInterface $addon,
-        private ?SpacecraftBuildplanInterface $buildplan = null
+        private ?SpacecraftBuildplan $buildplan = null
     ) {}
 
     #[Override]
@@ -111,12 +111,12 @@ class ModuleSelector implements ModuleSelectorInterface
     }
 
     #[Override]
-    public function getRump(): SpacecraftRumpInterface
+    public function getRump(): SpacecraftRump
     {
         return $this->rump;
     }
 
-    private function getShipRumpRole(): ShipRumpRoleInterface
+    private function getShipRumpRole(): ShipRumpRole
     {
         $shipRumpRole = $this->getRump()->getShipRumpRole();
 
@@ -141,7 +141,7 @@ class ModuleSelector implements ModuleSelectorInterface
                     $this->getModuleType(),
                     $this->getRump()->getId()
                 );
-            } elseif ($this->getHost() instanceof ColonyInterface) {
+            } elseif ($this->getHost() instanceof Colony) {
                 $mod_level = $this->getShipRumpModuleLevel();
 
                 $min_level = $mod_level->getMinimumLevel($this->getModuleType());
@@ -191,18 +191,18 @@ class ModuleSelector implements ModuleSelectorInterface
     }
 
     #[Override]
-    public function getHost(): ColonyInterface|SpacecraftInterface
+    public function getHost(): Colony|Spacecraft
     {
         return $this->host;
     }
 
     #[Override]
-    public function getBuildplan(): ?SpacecraftBuildplanInterface
+    public function getBuildplan(): ?SpacecraftBuildplan
     {
         return $this->buildplan;
     }
 
-    private function getShipRumpModuleLevel(): ShipRumpModuleLevelInterface
+    private function getShipRumpModuleLevel(): ShipRumpModuleLevel
     {
         if ($this->shipRumpModuleLevel === null) {
             $this->shipRumpModuleLevel = $this->shipRumpModuleLevelRepository->getByShipRump($this->rump);

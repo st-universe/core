@@ -7,10 +7,10 @@ namespace Stu\Component\Player;
 use Mockery\MockInterface;
 use Override;
 use Stu\Component\Colony\ColonyTypeEnum;
-use Stu\Orm\Entity\ColonyClassInterface;
-use Stu\Orm\Entity\ColonyClassResearchInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\ColonyClass;
+use Stu\Orm\Entity\ColonyClassResearch;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ColonyClassResearchRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\StuTestCase;
@@ -50,8 +50,8 @@ class ColonizationCheckerTest extends StuTestCase
 
     public function testCanColonizeReturnsFalseIfNotFree(): void
     {
-        $user = $this->mock(UserInterface::class);
-        $colony = $this->mock(ColonyInterface::class);
+        $user = $this->mock(User::class);
+        $colony = $this->mock(Colony::class);
 
         $colony->shouldReceive('isFree')
             ->withNoArgs()
@@ -65,8 +65,8 @@ class ColonizationCheckerTest extends StuTestCase
 
     public function testCanColonizeReturnsFalseIfLimitIsExceeded(): void
     {
-        $user = $this->mock(UserInterface::class);
-        $colony = $this->mock(ColonyInterface::class);
+        $user = $this->mock(User::class);
+        $colony = $this->mock(Colony::class);
         $type = ColonyTypeEnum::COLONY_TYPE_MOON;
 
         $colony->shouldReceive('isFree')
@@ -90,10 +90,10 @@ class ColonizationCheckerTest extends StuTestCase
 
     public function testCanColonizeReturnsFalseIfNeedsResearchAndNotResearched(): void
     {
-        $user = $this->mock(UserInterface::class);
-        $colony = $this->mock(ColonyInterface::class);
-        $colonyClassResearch = $this->mock(ColonyClassResearchInterface::class);
-        $colonyClass = $this->mock(ColonyClassInterface::class);
+        $user = $this->mock(User::class);
+        $colony = $this->mock(Colony::class);
+        $colonyClassResearch = $this->mock(ColonyClassResearch::class);
+        $colonyClass = $this->mock(ColonyClass::class);
         $type = ColonyTypeEnum::COLONY_TYPE_MOON;
 
         $researchId = 666;
@@ -139,10 +139,10 @@ class ColonizationCheckerTest extends StuTestCase
 
     public function testCanColonizeReturnsTrueIfNeedsResearchAndIsResearched(): void
     {
-        $user = $this->mock(UserInterface::class);
-        $colony = $this->mock(ColonyInterface::class);
-        $colonyClassResearch = $this->mock(ColonyClassResearchInterface::class);
-        $colonyClass = $this->mock(ColonyClassInterface::class);
+        $user = $this->mock(User::class);
+        $colony = $this->mock(Colony::class);
+        $colonyClassResearch = $this->mock(ColonyClassResearch::class);
+        $colonyClass = $this->mock(ColonyClass::class);
         $type = ColonyTypeEnum::COLONY_TYPE_MOON;
 
         $researchId = 666;
@@ -188,9 +188,9 @@ class ColonizationCheckerTest extends StuTestCase
 
     public function testCanColonizeReturnsTrueIfNoResearchNeeded(): void
     {
-        $user = $this->mock(UserInterface::class);
-        $colony = $this->mock(ColonyInterface::class);
-        $colonyClass = $this->mock(ColonyClassInterface::class);
+        $user = $this->mock(User::class);
+        $colony = $this->mock(Colony::class);
+        $colonyClass = $this->mock(ColonyClass::class);
         $type = ColonyTypeEnum::COLONY_TYPE_MOON;
 
         $colonyClass->shouldReceive('getType')

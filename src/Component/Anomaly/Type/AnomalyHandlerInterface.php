@@ -6,15 +6,15 @@ namespace Stu\Component\Anomaly\Type;
 
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\AnomalyInterface;
+use Stu\Orm\Entity\Anomaly;
 
 interface AnomalyHandlerInterface
 {
     public function checkForCreation(): void;
 
-    public function handleSpacecraftTick(AnomalyInterface $anomaly): void;
+    public function handleSpacecraftTick(Anomaly $anomaly): void;
 
-    public function handleIncomingSpacecraft(SpacecraftWrapperInterface $wrapper, AnomalyInterface $anomaly, MessageCollectionInterface $messages): void;
+    public function handleIncomingSpacecraft(SpacecraftWrapperInterface $wrapper, Anomaly $anomaly, MessageCollectionInterface $messages): void;
 
-    public function letAnomalyDisappear(AnomalyInterface $anomaly): void;
+    public function letAnomalyDisappear(Anomaly $anomaly): void;
 }

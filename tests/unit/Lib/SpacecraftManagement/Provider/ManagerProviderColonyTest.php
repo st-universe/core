@@ -12,16 +12,16 @@ use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\CommodityInterface;
-use Stu\Orm\Entity\CrewAssignmentInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Commodity;
+use Stu\Orm\Entity\CrewAssignment;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\User;
 use Stu\StuTestCase;
 
 class ManagerProviderColonyTest extends StuTestCase
 {
-    private MockInterface&ColonyInterface $colony;
+    private MockInterface&Colony $colony;
 
     private MockInterface&CrewCreatorInterface $crewCreator;
 
@@ -36,7 +36,7 @@ class ManagerProviderColonyTest extends StuTestCase
     #[Override]
     protected function setUp(): void
     {
-        $this->colony = $this->mock(ColonyInterface::class);
+        $this->colony = $this->mock(Colony::class);
         $this->crewCreator = $this->mock(CrewCreatorInterface::class);
         $this->colonyLibFactory = $this->mock(ColonyLibFactoryInterface::class);
         $this->storageManager = $this->mock(StorageManagerInterface::class);
@@ -53,7 +53,7 @@ class ManagerProviderColonyTest extends StuTestCase
 
     public function testGetUser(): void
     {
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
 
         $this->colony->shouldReceive('getUser')
             ->withNoArgs()
@@ -114,7 +114,7 @@ class ManagerProviderColonyTest extends StuTestCase
 
     public function testCreateCrewAssignment(): void
     {
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
 
         $this->crewCreator->shouldReceive('createCrewAssignment')
             ->with($ship, $this->colony, 42)
@@ -143,7 +143,7 @@ class ManagerProviderColonyTest extends StuTestCase
 
     public function testAddCrewAssignments(): void
     {
-        $crewAssignment = $this->mock(CrewAssignmentInterface::class);
+        $crewAssignment = $this->mock(CrewAssignment::class);
         $crewAssignments = [$crewAssignment];
 
         $this->troopTransferUtility->shouldReceive('assignCrew')
@@ -167,7 +167,7 @@ class ManagerProviderColonyTest extends StuTestCase
 
     public function testUpperStorage(): void
     {
-        $commodity = $this->mock(CommodityInterface::class);
+        $commodity = $this->mock(Commodity::class);
 
         $this->storageManager->shouldReceive('upperStorage')
             ->with($this->colony, $commodity, 5)
@@ -178,7 +178,7 @@ class ManagerProviderColonyTest extends StuTestCase
 
     public function testLowerStorage(): void
     {
-        $commodity = $this->mock(CommodityInterface::class);
+        $commodity = $this->mock(Commodity::class);
 
         $this->storageManager->shouldReceive('lowerStorage')
             ->with($this->colony, $commodity, 5)

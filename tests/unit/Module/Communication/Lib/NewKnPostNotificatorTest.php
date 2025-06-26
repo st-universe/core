@@ -10,10 +10,10 @@ use Override;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\KnPostInterface;
-use Stu\Orm\Entity\RpgPlotInterface;
-use Stu\Orm\Entity\RpgPlotMemberInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\KnPost;
+use Stu\Orm\Entity\RpgPlot;
+use Stu\Orm\Entity\RpgPlotMember;
+use Stu\Orm\Entity\User;
 use Stu\StuTestCase;
 
 class NewKnPostNotificatorTest extends StuTestCase
@@ -34,10 +34,10 @@ class NewKnPostNotificatorTest extends StuTestCase
 
     public function testNotifyNotifiesAllPlotMembers(): void
     {
-        $post = $this->mock(KnPostInterface::class);
-        $plot = $this->mock(RpgPlotInterface::class);
-        $postUser = $this->mock(UserInterface::class);
-        $plotMember = $this->mock(RpgPlotMemberInterface::class);
+        $post = $this->mock(KnPost::class);
+        $plot = $this->mock(RpgPlot::class);
+        $postUser = $this->mock(User::class);
+        $plotMember = $this->mock(RpgPlotMember::class);
 
         $userName = 'some-user';
         $plotTitle = 'some-title';

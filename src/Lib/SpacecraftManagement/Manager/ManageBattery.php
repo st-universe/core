@@ -12,7 +12,7 @@ use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 
 class ManageBattery implements ManagerInterface
 {
@@ -93,7 +93,7 @@ class ManageBattery implements ManagerInterface
         return $load;
     }
 
-    private function sendMessageToOwner(SpacecraftInterface $spacecraft, ManagerProviderInterface $managerProvider, int $load): void
+    private function sendMessageToOwner(Spacecraft $spacecraft, ManagerProviderInterface $managerProvider, int $load): void
     {
         $this->privateMessageSender->send(
             $managerProvider->getUser()->getId(),

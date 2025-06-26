@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Stu\Component\Building;
 
-use Stu\Orm\Entity\BuildingInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\ColonySandboxInterface;
+use Stu\Orm\Entity\Building;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\ColonySandbox;
 
 interface BuildingPostActionInterface
 {
     public function handleDeactivation(
-        BuildingInterface $building,
-        ColonyInterface|ColonySandboxInterface $host
+        Building $building,
+        Colony|ColonySandbox $host
     ): void;
 
     public function handleActivation(
-        BuildingInterface $building,
-        ColonyInterface|ColonySandboxInterface $host
+        Building $building,
+        Colony|ColonySandbox $host
     ): void;
 }

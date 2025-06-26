@@ -12,12 +12,11 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\PirateRoundRepository;
 
 #[Table(name: 'stu_pirate_round')]
 #[Entity(repositoryClass: PirateRoundRepository::class)]
-class PirateRound implements PirateRoundInterface
+class PirateRound
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -40,7 +39,7 @@ class PirateRound implements PirateRoundInterface
     private ?int $faction_winner = null;
 
     /**
-     * @var ArrayCollection<int, UserPirateRoundInterface>
+     * @var ArrayCollection<int, UserPirateRound>
      */
     #[OneToMany(targetEntity: UserPirateRound::class, mappedBy: 'pirateRound')]
     private Collection $userPirateRounds;
@@ -50,78 +49,69 @@ class PirateRound implements PirateRoundInterface
         $this->userPirateRounds = new ArrayCollection();
     }
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getStart(): int
     {
         return $this->start;
     }
 
-    #[Override]
-    public function setStart(int $start): PirateRoundInterface
+    public function setStart(int $start): PirateRound
     {
         $this->start = $start;
         return $this;
     }
 
-    #[Override]
     public function getEndTime(): ?int
     {
         return $this->end_time;
     }
 
-    #[Override]
-    public function setEndTime(?int $endTime): PirateRoundInterface
+    public function setEndTime(?int $endTime): PirateRound
     {
         $this->end_time = $endTime;
         return $this;
     }
 
-    #[Override]
     public function getMaxPrestige(): int
     {
         return $this->max_prestige;
     }
 
-    #[Override]
-    public function setMaxPrestige(int $maxPrestige): PirateRoundInterface
+    public function setMaxPrestige(int $maxPrestige): PirateRound
     {
         $this->max_prestige = $maxPrestige;
         return $this;
     }
 
-    #[Override]
     public function getActualPrestige(): int
     {
         return $this->actual_prestige;
     }
 
-    #[Override]
-    public function setActualPrestige(int $actualPrestige): PirateRoundInterface
+    public function setActualPrestige(int $actualPrestige): PirateRound
     {
         $this->actual_prestige = $actualPrestige;
         return $this;
     }
 
-    #[Override]
     public function getFactionWinner(): ?int
     {
         return $this->faction_winner;
     }
 
-    #[Override]
-    public function setFactionWinner(?int $factionWinner): PirateRoundInterface
+    public function setFactionWinner(?int $factionWinner): PirateRound
     {
         $this->faction_winner = $factionWinner;
         return $this;
     }
 
-    #[Override]
+    /**
+     * @return Collection<int, UserPirateRound>
+     */
     public function getUserPirateRounds(): Collection
     {
         return $this->userPirateRounds;

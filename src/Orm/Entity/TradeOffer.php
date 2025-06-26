@@ -14,13 +14,12 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
 use LogicException;
-use Override;
 use Stu\Orm\Repository\TradeOfferRepository;
 
 #[Table(name: 'stu_trade_offers')]
 #[Index(name: 'trade_post_user_idx', columns: ['posts_id', 'user_id'])]
 #[Entity(repositoryClass: TradeOfferRepository::class)]
-class TradeOffer implements TradeOfferInterface
+class TradeOffer
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -53,190 +52,165 @@ class TradeOffer implements TradeOfferInterface
 
     #[ManyToOne(targetEntity: TradePost::class)]
     #[JoinColumn(name: 'posts_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private TradePostInterface $tradePost;
+    private TradePost $tradePost;
 
     #[ManyToOne(targetEntity: Commodity::class)]
     #[JoinColumn(name: 'wg_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private CommodityInterface $wantedCommodity;
+    private Commodity $wantedCommodity;
 
     #[ManyToOne(targetEntity: Commodity::class)]
     #[JoinColumn(name: 'gg_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private CommodityInterface $offeredCommodity;
+    private Commodity $offeredCommodity;
 
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $user;
+    private User $user;
 
     #[OneToOne(targetEntity: Storage::class, mappedBy: 'tradeOffer')]
-    private ?StorageInterface $storage;
+    private ?Storage $storage;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    #[Override]
     public function getTradePostId(): int
     {
         return $this->posts_id;
     }
 
-    #[Override]
-    public function setTradePostId(int $tradePostId): TradeOfferInterface
+    public function setTradePostId(int $tradePostId): TradeOffer
     {
         $this->posts_id = $tradePostId;
 
         return $this;
     }
 
-    #[Override]
     public function getOfferCount(): int
     {
         return $this->amount;
     }
 
-    #[Override]
-    public function setOfferCount(int $offerCount): TradeOfferInterface
+    public function setOfferCount(int $offerCount): TradeOffer
     {
         $this->amount = $offerCount;
 
         return $this;
     }
 
-    #[Override]
     public function getWantedCommodityId(): int
     {
         return $this->wg_id;
     }
 
-    #[Override]
-    public function setWantedCommodityId(int $wantedCommodityId): TradeOfferInterface
+    public function setWantedCommodityId(int $wantedCommodityId): TradeOffer
     {
         $this->wg_id = $wantedCommodityId;
 
         return $this;
     }
 
-    #[Override]
     public function getWantedCommodityCount(): int
     {
         return $this->wg_count;
     }
 
-    #[Override]
-    public function setWantedCommodityCount(int $wantedCommodityCount): TradeOfferInterface
+    public function setWantedCommodityCount(int $wantedCommodityCount): TradeOffer
     {
         $this->wg_count = $wantedCommodityCount;
 
         return $this;
     }
 
-    #[Override]
     public function getOfferedCommodityId(): int
     {
         return $this->gg_id;
     }
 
-    #[Override]
-    public function setOfferedCommodityId(int $offeredCommodityId): TradeOfferInterface
+    public function setOfferedCommodityId(int $offeredCommodityId): TradeOffer
     {
         $this->gg_id = $offeredCommodityId;
 
         return $this;
     }
 
-    #[Override]
     public function getOfferedCommodityCount(): int
     {
         return $this->gg_count;
     }
 
-    #[Override]
-    public function setOfferedCommodityCount(int $offeredCommodityCount): TradeOfferInterface
+    public function setOfferedCommodityCount(int $offeredCommodityCount): TradeOffer
     {
         $this->gg_count = $offeredCommodityCount;
 
         return $this;
     }
 
-    #[Override]
     public function getDate(): int
     {
         return $this->date;
     }
 
-    #[Override]
-    public function setDate(int $date): TradeOfferInterface
+    public function setDate(int $date): TradeOffer
     {
         $this->date = $date;
 
         return $this;
     }
 
-    #[Override]
-    public function getTradePost(): TradePostInterface
+    public function getTradePost(): TradePost
     {
         return $this->tradePost;
     }
 
-    #[Override]
-    public function setTradePost(TradePostInterface $tradePost): TradeOfferInterface
+    public function setTradePost(TradePost $tradePost): TradeOffer
     {
         $this->tradePost = $tradePost;
 
         return $this;
     }
 
-    #[Override]
-    public function getWantedCommodity(): CommodityInterface
+    public function getWantedCommodity(): Commodity
     {
         return $this->wantedCommodity;
     }
 
-    #[Override]
-    public function setWantedCommodity(CommodityInterface $wantedCommodity): TradeOfferInterface
+    public function setWantedCommodity(Commodity $wantedCommodity): TradeOffer
     {
         $this->wantedCommodity = $wantedCommodity;
 
         return $this;
     }
 
-    #[Override]
-    public function getOfferedCommodity(): CommodityInterface
+    public function getOfferedCommodity(): Commodity
     {
         return $this->offeredCommodity;
     }
 
-    #[Override]
-    public function setOfferedCommodity(CommodityInterface $offeredCommodity): TradeOfferInterface
+    public function setOfferedCommodity(Commodity $offeredCommodity): TradeOffer
     {
         $this->offeredCommodity = $offeredCommodity;
 
         return $this;
     }
 
-    #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    #[Override]
-    public function setUser(UserInterface $user): TradeOfferInterface
+    public function setUser(User $user): TradeOffer
     {
         $this->user = $user;
         return $this;
     }
 
-    #[Override]
-    public function getStorage(): StorageInterface
+    public function getStorage(): Storage
     {
         return $this->storage ?? throw new LogicException('TradeOffer has no storage');
     }

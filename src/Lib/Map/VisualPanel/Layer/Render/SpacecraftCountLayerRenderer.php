@@ -9,11 +9,11 @@ use Stu\Lib\Map\VisualPanel\Layer\Data\CellDataInterface;
 use Stu\Lib\Map\VisualPanel\Layer\Data\SpacecraftCountData;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerEnum;
 use Stu\Lib\Map\VisualPanel\PanelAttributesInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 
 final class SpacecraftCountLayerRenderer implements LayerRendererInterface
 {
-    public function __construct(private bool $showCloakedEverywhere, private ?SpacecraftInterface $currentSpacecraft) {}
+    public function __construct(private bool $showCloakedEverywhere, private ?Spacecraft $currentSpacecraft) {}
 
     /** @param SpacecraftCountData $data */
     #[Override]
@@ -61,7 +61,7 @@ final class SpacecraftCountLayerRenderer implements LayerRendererInterface
         return null;
     }
 
-    private function getTachyonRange(SpacecraftInterface $spacecraft): int
+    private function getTachyonRange(Spacecraft $spacecraft): int
     {
         return $spacecraft->isStation() ? 7 : 3;
     }

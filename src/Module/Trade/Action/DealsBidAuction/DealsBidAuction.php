@@ -16,8 +16,8 @@ use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\ShowDeals\ShowDeals;
-use Stu\Orm\Entity\AuctionBidInterface;
-use Stu\Orm\Entity\DealsInterface;
+use Stu\Orm\Entity\AuctionBid;
+use Stu\Orm\Entity\Deals;
 use Stu\Orm\Repository\AuctionBidRepositoryInterface;
 use Stu\Orm\Repository\DealsRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
@@ -34,9 +34,7 @@ final class DealsBidAuction implements ActionControllerInterface
     private const int BID_TYPE_REVISE = 3;
     private const int BID_TYPE_REVISE_OLD = 4;
 
-    public function __construct(private DealsBidAuctionRequestInterface $dealsbidauctionRequest, private TradeLibFactoryInterface $tradeLibFactory, private AuctionBidRepositoryInterface $auctionBidRepository, private DealsRepositoryInterface $dealsRepository, private TradePostRepositoryInterface $tradepostRepository, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private StorageRepositoryInterface $storageRepository, private PrivateMessageSenderInterface $privateMessageSender, private CreatePrestigeLogInterface $createPrestigeLog, private StuTime $stuTime)
-    {
-    }
+    public function __construct(private DealsBidAuctionRequestInterface $dealsbidauctionRequest, private TradeLibFactoryInterface $tradeLibFactory, private AuctionBidRepositoryInterface $auctionBidRepository, private DealsRepositoryInterface $dealsRepository, private TradePostRepositoryInterface $tradepostRepository, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private StorageRepositoryInterface $storageRepository, private PrivateMessageSenderInterface $privateMessageSender, private CreatePrestigeLogInterface $createPrestigeLog, private StuTime $stuTime) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -97,7 +95,7 @@ final class DealsBidAuction implements ActionControllerInterface
         }
     }
 
-    private function createFirstBid(int $maxAmount, DealsInterface $auction, GameControllerInterface $game): void
+    private function createFirstBid(int $maxAmount, Deals $auction, GameControllerInterface $game): void
     {
         //check if enough available
         if (!$this->checkAndCollectCosts($auction, $maxAmount, self::BID_TYPE_FIRST, $game)) {
@@ -118,7 +116,7 @@ final class DealsBidAuction implements ActionControllerInterface
         $game->addInformation(sprintf(_('Du hast das erste Gebot abgegeben. Dein Maximalgebot liegt bei %d'), $maxAmount));
     }
 
-    private function raiseOwnBid(int $maxAmount, AuctionBidInterface $bid, GameControllerInterface $game, DealsInterface $auction): void
+    private function raiseOwnBid(int $maxAmount, AuctionBid $bid, GameControllerInterface $game, Deals $auction): void
     {
         $currentHighestBid = $auction->getHighestBid();
         $additionalAmount = $maxAmount - $currentHighestBid->getMaxAmount();
@@ -133,7 +131,7 @@ final class DealsBidAuction implements ActionControllerInterface
         $this->auctionBidRepository->save($bid);
     }
 
-    private function raiseCurrentAmount(int $maxAmount, DealsInterface $auction, GameControllerInterface $game): void
+    private function raiseCurrentAmount(int $maxAmount, Deals $auction, GameControllerInterface $game): void
     {
         //check if enough available
         if (!$this->checkAndCollectCosts($auction, $maxAmount, self::BID_TYPE_RAISE_OTHER, $game)) {
@@ -174,7 +172,7 @@ final class DealsBidAuction implements ActionControllerInterface
     }
 
 
-    private function setNewHighestBid(int $maxAmount, DealsInterface $auction, GameControllerInterface $game): void
+    private function setNewHighestBid(int $maxAmount, Deals $auction, GameControllerInterface $game): void
     {
         //check if enough available
         if (!$this->checkAndCollectCosts($auction, $maxAmount, self::BID_TYPE_REVISE, $game)) {
@@ -197,7 +195,7 @@ final class DealsBidAuction implements ActionControllerInterface
         $game->addInformation(sprintf(_('Gebot wurde auf %d erhöht. Dein Maximalgebot liegt bei %d. Du bist nun Meistbietender!'), $auction->getAuctionAmount(), $maxAmount));
     }
 
-    private function checkAndCollectCosts(DealsInterface $auction, int $neededAmount, int $bidType, GameControllerInterface $game): bool
+    private function checkAndCollectCosts(Deals $auction, int $neededAmount, int $bidType, GameControllerInterface $game): bool
     {
         //check for sufficient amount
         if (!$this->isEnoughAvailable($auction, $neededAmount, $game)) {
@@ -290,7 +288,7 @@ final class DealsBidAuction implements ActionControllerInterface
         };
     }
 
-    private function isEnoughAvailable(DealsInterface $auction, int $neededAmount, GameControllerInterface $game): bool
+    private function isEnoughAvailable(Deals $auction, int $neededAmount, GameControllerInterface $game): bool
     {
         $userId = $game->getUser()->getId();
 

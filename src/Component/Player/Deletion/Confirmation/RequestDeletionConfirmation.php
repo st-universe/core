@@ -9,7 +9,7 @@ use RuntimeException;
 use Stu\Lib\Mail\MailFactoryInterface;
 use Stu\Module\Control\StuHashInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class RequestDeletionConfirmation implements RequestDeletionConfirmationInterface
@@ -21,7 +21,7 @@ final class RequestDeletionConfirmation implements RequestDeletionConfirmationIn
         private StuHashInterface $stuHash
     ) {}
 
-    public function request(UserInterface $user): void
+    public function request(User $user): void
     {
         $registration = $user->getRegistration();
         $token = $this->stuHash->hash(time() . $registration->getCreationDate());

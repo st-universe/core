@@ -11,12 +11,12 @@ use Stu\Component\Colony\ColonyTypeEnum;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Orm\Entity\MapFieldTypeInterface;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\MassCenterTypeInterface;
-use Stu\Orm\Entity\StarSystemInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
-use Stu\Orm\Entity\StarSystemTypeInterface;
+use Stu\Orm\Entity\MapFieldType;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\MassCenterType;
+use Stu\Orm\Entity\StarSystem;
+use Stu\Orm\Entity\StarSystemMap;
+use Stu\Orm\Entity\StarSystemType;
 use Stu\Orm\Repository\MapFieldTypeRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
@@ -29,7 +29,7 @@ final class StarSystemCreation implements StarSystemCreationInterface
 {
     private LoggerUtilInterface $loggerUtil;
 
-    /** @var array<int, MapFieldTypeInterface> */
+    /** @var array<int, MapFieldType> */
     private array $fieldTypeCache = [];
 
     public function __construct(
@@ -46,7 +46,7 @@ final class StarSystemCreation implements StarSystemCreationInterface
     }
 
     #[Override]
-    public function recreateStarSystem(MapInterface $map, string $randomSystemName): ?StarSystemInterface
+    public function recreateStarSystem(Map $map, string $randomSystemName): ?StarSystem
     {
         //$this->loggerUtil->init('SysGen', LoggerEnum::LEVEL_ERROR);
 
@@ -88,8 +88,8 @@ final class StarSystemCreation implements StarSystemCreationInterface
     }
 
     private function initializeStarSystem(
-        StarSystemTypeInterface $systemType,
-        StarSystemInterface $starSystem,
+        StarSystemType $systemType,
+        StarSystem $starSystem,
         SystemMapDataInterface $mapData,
         string $randomSystemName
     ): void {
@@ -108,7 +108,7 @@ final class StarSystemCreation implements StarSystemCreationInterface
      * @return array<string, string>
      */
     private function createSystemMapEntries(
-        StarSystemInterface $starSystem,
+        StarSystem $starSystem,
         SystemMapDataInterface $mapData
     ): array {
         $fieldData = $mapData->getFieldData();
@@ -140,14 +140,14 @@ final class StarSystemCreation implements StarSystemCreationInterface
     /**
      * @param array<string, string> $planetMoonIdentifiers
      */
-    private function createColonies(StarSystemInterface $starSystem, array $planetMoonIdentifiers): void
+    private function createColonies(StarSystem $starSystem, array $planetMoonIdentifiers): void
     {
         /**
-         * @var array<StarSystemMapInterface>
+         * @var array<StarSystemMap>
          */
         $systemMapsWithoutColony = array_filter(
             $starSystem->getFields()->toArray(),
-            fn (StarSystemMapInterface $systemMap): bool => $systemMap->getFieldType()->getColonyClass() !== null
+            fn (StarSystemMap $systemMap): bool => $systemMap->getFieldType()->getColonyClass() !== null
         );
 
         foreach ($systemMapsWithoutColony as $systemMap) {
@@ -161,7 +161,7 @@ final class StarSystemCreation implements StarSystemCreationInterface
         int $x,
         int $y,
         int $fieldId,
-        StarSystemInterface $starSystem,
+        StarSystem $starSystem,
         SystemMapDataInterface $mapData
     ): ?string {
 
@@ -188,7 +188,7 @@ final class StarSystemCreation implements StarSystemCreationInterface
         return null;
     }
 
-    private function getFieldType(int $fieldId): MapFieldTypeInterface
+    private function getFieldType(int $fieldId): MapFieldType
     {
         if (!array_key_exists($fieldId, $this->fieldTypeCache)) {
             $fieldType = $this->mapFieldTypeRepository->find($fieldId === 0 ? 1 : $fieldId);
@@ -202,7 +202,7 @@ final class StarSystemCreation implements StarSystemCreationInterface
         return $this->fieldTypeCache[$fieldId];
     }
 
-    private function getStarSystem(MapInterface $map): StarSystemInterface
+    private function getStarSystem(Map $map): StarSystem
     {
         $starSystem = $map->getSystem();
         if ($starSystem === null) {
@@ -220,7 +220,7 @@ final class StarSystemCreation implements StarSystemCreationInterface
     /**
      * @return array<int, int>
      */
-    private function getMassCenterFields(MassCenterTypeInterface $massCenterType): array
+    private function getMassCenterFields(MassCenterType $massCenterType): array
     {
         $result = [];
 
