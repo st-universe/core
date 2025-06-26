@@ -9,6 +9,7 @@ use request;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\TimeConstants;
 use Stu\Exception\SanityCheckException;
+use Stu\Lib\Transfer\Storage\Exception\CommodityMissingException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContextTypeEnum;
@@ -27,7 +28,13 @@ final class RenewTradeLicense implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_RENEW_TRADELICENSE';
 
-    public function __construct(private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradeLicenseInfoRepositoryInterface $tradeCreateLicenseRepository, private TradeLibFactoryInterface $tradeLibFactory, private TradePostRepositoryInterface $tradePostRepository, private PrivateMessageSenderInterface $privateMessageSender) {}
+    public function __construct(
+        private TradeLicenseRepositoryInterface $tradeLicenseRepository,
+        private TradeLicenseInfoRepositoryInterface $tradeCreateLicenseRepository,
+        private TradeLibFactoryInterface $tradeLibFactory,
+        private TradePostRepositoryInterface $tradePostRepository,
+        private PrivateMessageSenderInterface $privateMessageSender
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -61,6 +68,14 @@ final class RenewTradeLicense implements ActionControllerInterface
         if ($activeLicense === null) {
             throw new SanityCheckException('user does not have a license');
         }
+
+        try {
+            $this->payLicenseViaAccount($activeLicense, $licenseInfo);
+        } catch (CommodityMissingException) {
+            $game->addInformation('Dein Warenkonto verfügt nicht über ausreichend Waren');
+            return;
+        }
+
         $this->renewLicense($activeLicense, $licenseInfo);
 
         $game->addInformation('Handelslizenz wurde erteilt');
@@ -80,9 +95,6 @@ final class RenewTradeLicense implements ActionControllerInterface
         TradeLicense $activeLicense,
         TradeLicenseInfo $licenseInfo
     ): void {
-        $this->payLicenseViaAccount($activeLicense, $licenseInfo);
-
-        //update license
         $activeLicense->setExpired(time() + $licenseInfo->getDays() * TimeConstants::ONE_DAY_IN_SECONDS);
         $this->tradeLicenseRepository->save($activeLicense);
     }
@@ -102,10 +114,10 @@ final class RenewTradeLicense implements ActionControllerInterface
         /** @var ?Storage */
         $stor = $storageManager->getStorage()->get($commodityId) ?? null;
         if ($stor === null) {
-            throw new SanityCheckException('storage not existent');
+            throw new CommodityMissingException('storage not existent');
         }
         if ($stor->getAmount() < $costs) {
-            throw new SanityCheckException('storage insufficient');
+            throw new CommodityMissingException('storage insufficient');
         }
 
         $storageManagerRemote->upperStorage($commodityId, $costs);
