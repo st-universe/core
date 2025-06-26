@@ -36,7 +36,7 @@ final class AlertStateManager implements AlertStateManagerInterface
             $target,
             false,
             $this->spacecraftLoader,
-            $this->game->getUser()
+            $this->game
         );
 
         if (!$this->setAlertStateShip($wrapper, $alertState)) {
