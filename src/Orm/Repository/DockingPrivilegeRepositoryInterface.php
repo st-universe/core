@@ -22,11 +22,5 @@ interface DockingPrivilegeRepositoryInterface extends ObjectRepository
 
     public function existsForTargetAndTypeAndShip(int $targetId, DockTypeEnum $privilegeType, Station $station): bool;
 
-    // TODO this is deprecated an can be replaced by station->getDockingPriviliges
-    /**
-     * @return array<DockingPrivilege>
-     */
-    public function getByStation(Station $station): array;
-
     public function truncateByTypeAndTarget(DockTypeEnum $type, int $targetId): void;
 }

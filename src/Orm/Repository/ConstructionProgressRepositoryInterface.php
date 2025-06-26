@@ -4,7 +4,6 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\ConstructionProgress;
-use Stu\Orm\Entity\Station;
 
 /**
  * @extends ObjectRepository<ConstructionProgress>
@@ -14,8 +13,6 @@ use Stu\Orm\Entity\Station;
  */
 interface ConstructionProgressRepositoryInterface extends ObjectRepository
 {
-    public function getByStation(Station $station): ?ConstructionProgress;
-
     public function prototype(): ConstructionProgress;
 
     public function save(ConstructionProgress $constructionProgress): void;

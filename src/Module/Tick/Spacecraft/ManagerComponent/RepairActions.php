@@ -57,7 +57,6 @@ final class RepairActions implements ManagerComponentInterface
                         $queue->getAmount()
                     );
 
-                    //TODO add colony name to message
                     $this->privateMessageSender->send(
                         UserEnum::USER_NOONE,
                         $colony->getUser()->getId(),

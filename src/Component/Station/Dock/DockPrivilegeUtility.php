@@ -11,18 +11,14 @@ use Stu\Orm\Entity\DockingPrivilege;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Station;
 use Stu\Orm\Entity\User;
-use Stu\Orm\Repository\DockingPrivilegeRepositoryInterface;
 
 final class DockPrivilegeUtility implements DockPrivilegeUtilityInterface
 {
-    public function __construct(private readonly DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository) {}
-
     #[Override]
     public function checkPrivilegeFor(Station $station, User|Ship $source): bool
     {
         try {
-            return array_reduce(
-                $this->dockingPrivilegeRepository->getByStation($station),
+            return $station->getDockPrivileges()->reduce(
                 fn(bool $isAllowed, DockingPrivilege $privilege): bool => $isAllowed || $this->isAllowed($privilege, $source),
                 false
             );

@@ -49,15 +49,6 @@ final class DockingPrivilegeRepository extends EntityRepository implements Docki
     }
 
     #[Override]
-    public function getByStation(Station $station): array
-    {
-        return $this->findBy(
-            ['station' => $station],
-            ['privilege_mode' => 'DESC']
-        );
-    }
-
-    #[Override]
     public function truncateByTypeAndTarget(DockTypeEnum $type, int $targetId): void
     {
         $this->getEntityManager()

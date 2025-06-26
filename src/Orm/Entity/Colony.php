@@ -152,6 +152,13 @@ class Colony implements
         return $this->changeable ?? throw new LogicException('Colony has no changeable');
     }
 
+    public function setChangeable(ColonyChangeable $changeable): Colony
+    {
+        $this->changeable = $changeable;
+
+        return $this;
+    }
+
     public function getUserId(): int
     {
         return $this->user_id;
