@@ -2,6 +2,7 @@
 
 namespace Stu\Component\Spacecraft\System\Control;
 
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\User;
@@ -13,7 +14,7 @@ trait GetTargetWrapperTrait
         SpacecraftWrapperInterface|int $target,
         bool $allowUplink,
         SpacecraftLoaderInterface $spacecraftLoader,
-        User $user
+        GameControllerInterface $game
     ): SpacecraftWrapperInterface {
         if ($target instanceof SpacecraftWrapperInterface) {
             return $target;
@@ -21,7 +22,7 @@ trait GetTargetWrapperTrait
 
         return $spacecraftLoader->getWrapperByIdAndUser(
             $target,
-            $user->getId(),
+            $game->getUser()->getId(),
             $allowUplink
         );
     }

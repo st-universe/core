@@ -39,7 +39,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
             $target,
             $allowUplink,
             $this->spacecraftLoader,
-            $this->game->getUser()
+            $this->game
         );
 
         return $this->systemActivation->activateIntern($wrapper, $type, $logger, $isDryRun);
@@ -92,7 +92,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
             $target,
             $allowUplink,
             $this->spacecraftLoader,
-            $this->game->getUser()
+            $this->game
         );
 
         return $this->systemDeactivation->deactivateIntern($wrapper, $type, $informations);
@@ -108,7 +108,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
             $target,
             false,
             $this->spacecraftLoader,
-            $this->game->getUser()
+            $this->game
         );
 
         if (!$wrapper instanceof ShipWrapperInterface) {
@@ -159,7 +159,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
             $shipId,
             true,
             $this->spacecraftLoader,
-            $this->game->getUser()
+            $this->game
         )->getLssSystemData();
         if ($lss === null) {
             throw new RuntimeException('this should not happen!');
