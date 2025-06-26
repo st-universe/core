@@ -18,7 +18,7 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 
 
-final class HandlePirateRound implements MaintenanceHandlerInterface
+final class BeginPirateRound implements MaintenanceHandlerInterface
 {
     public const array FORBIDDEN_ADMIN_AREAS = [
         MapEnum::ADMIN_REGION_SUPERPOWER_CENTRAL,

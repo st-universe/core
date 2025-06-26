@@ -23,7 +23,7 @@ return [
     OldTradeLicenseDeletion::class => autowire(OldTradeLicenseDeletion::class),
     OldTradeOffersDeletion::class => autowire(OldTradeOffersDeletion::class),
     TopFlightsReward::class => autowire(TopFlightsReward::class),
-    HandlePirateRound::class => autowire(HandlePirateRound::class),
+    BeginPirateRound::class => autowire(BeginPirateRound::class),
     UserInformation::class => autowire(UserInformation::class),
     MaintenanceHandlerInterface::class => [
         get(DatabaseBackup::class),
@@ -41,7 +41,7 @@ return [
         get(EmptyPlotDeletion::class),
         get(OldTradeLicenseDeletion::class),
         get(TopFlightsReward::class),
-        get(HandlePirateRound::class),
+        get(BeginPirateRound::class),
         get(EndLotteryPeriod::class),
         get(PirateWrathDecreaser::class),
         get(UserInformation::class),

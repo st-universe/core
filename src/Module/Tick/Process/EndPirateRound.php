@@ -20,7 +20,7 @@ use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserPirateRound;
 
 
-final class HandlePirateRound implements ProcessTickHandlerInterface
+final class EndPirateRound implements ProcessTickHandlerInterface
 {
     public const array FORBIDDEN_ADMIN_AREAS = [
         MapEnum::ADMIN_REGION_SUPERPOWER_CENTRAL,
