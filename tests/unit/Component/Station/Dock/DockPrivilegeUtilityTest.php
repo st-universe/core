@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Station\Dock;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -12,7 +13,6 @@ use Stu\Orm\Entity\DockingPrivilege;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Station;
 use Stu\Orm\Entity\User;
-use Stu\Orm\Repository\DockingPrivilegeRepositoryInterface;
 use Stu\StuTestCase;
 
 class DockPrivilegeUtilityTest extends StuTestCase
@@ -22,18 +22,12 @@ class DockPrivilegeUtilityTest extends StuTestCase
     private const int FACTION_ID = 555;
     private const int SHIP_ID = 5555;
 
-    private DockingPrivilegeRepositoryInterface&MockInterface $dockingPrivilegeRepository;
-
     private DockPrivilegeUtilityInterface $subject;
 
     #[Override]
     public function setUp(): void
     {
-        $this->dockingPrivilegeRepository = $this->mock(DockingPrivilegeRepositoryInterface::class);
-
-        $this->subject = new DockPrivilegeUtility(
-            $this->dockingPrivilegeRepository
-        );
+        $this->subject = new DockPrivilegeUtility();
     }
 
     public static function provideUserSourceData(): array
@@ -181,10 +175,10 @@ class DockPrivilegeUtilityTest extends StuTestCase
             $privilegeArray[] = $privilege;
         }
 
-        $this->dockingPrivilegeRepository->shouldReceive('getByStation')
-            ->with($station)
+        $station->shouldReceive('getDockPrivileges')
+            ->withNoArgs()
             ->once()
-            ->andReturn($privilegeArray);
+            ->andReturn(new ArrayCollection($privilegeArray));
 
         $result = $this->subject->checkPrivilegeFor($station, $source);
 

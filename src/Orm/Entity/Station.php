@@ -46,6 +46,7 @@ class Station extends Spacecraft
      * @var ArrayCollection<int, DockingPrivilege>
      */
     #[OneToMany(targetEntity: DockingPrivilege::class, mappedBy: 'station')]
+    #[OrderBy(['privilege_mode' => 'DESC'])]
     private Collection $dockingPrivileges;
 
     #[OneToOne(targetEntity: StarSystem::class)]

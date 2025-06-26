@@ -95,10 +95,8 @@ final class Scrapping implements ActionControllerInterface
         $condition->setState(SpacecraftStateEnum::UNDER_SCRAPPING);
 
         //setup scrapping progress
-        $progress = $this->constructionProgressRepository->getByStation($station);
-        if ($progress === null) {
-            throw new RuntimeException(sprintf('station with id %d does not have construction progess', $station->getId()));
-        }
+        $progress = $station->getConstructionProgress()
+            ?? throw new RuntimeException(sprintf('station with id %d does not have construction progess', $station->getId()));
         $progress->setRemainingTicks((int)ceil($station->getRump()->getBuildtime() / 2));
 
         $this->constructionProgressRepository->save($progress);

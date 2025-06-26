@@ -55,6 +55,11 @@ class ColonyChangeable
     #[JoinColumn(name: 'torpedo_type', referencedColumnName: 'id')]
     private ?TorpedoType $torpedo = null;
 
+    public function __construct(Colony $colony)
+    {
+        $this->colony = $colony;
+    }
+
     public function getColony(): Colony
     {
         return $this->colony;

@@ -162,11 +162,7 @@ final class BuildStation implements ActionControllerInterface
 
         $this->spacecraftRepository->save($station);
 
-        $progress = $this->constructionProgressRepository->getByStation($station);
-
-        if ($progress === null) {
-            $progress = $this->constructionProgressRepository->prototype();
-        }
+        $progress = $station->getConstructionProgress() ?? $this->constructionProgressRepository->prototype();
         $progress->setStation($station);
         $progress->setRemainingTicks($rump->getBuildtime());
 

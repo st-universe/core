@@ -14,7 +14,11 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ColonyCreation implements ColonyCreationInterface
 {
-    public function __construct(private ColonyRepositoryInterface $colonyRepository, private UserRepositoryInterface $userRepository, private StuRandom $stuRandom) {}
+    public function __construct(
+        private readonly ColonyRepositoryInterface $colonyRepository,
+        private readonly UserRepositoryInterface $userRepository,
+        private readonly StuRandom $stuRandom
+    ) {}
 
     #[Override]
     public function create(StarSystemMap $systemMap, string $name): Colony
@@ -24,7 +28,6 @@ final class ColonyCreation implements ColonyCreationInterface
             throw new RuntimeException('colony class can not be null');
         }
 
-        // TODO colonyConstants
         $colony = $this->colonyRepository->prototype();
 
         $colony->setColonyClass($colonyClass);

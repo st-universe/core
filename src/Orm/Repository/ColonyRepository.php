@@ -13,6 +13,7 @@ use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\ColonyChangeable;
 use Stu\Orm\Entity\ColonyClass;
 use Stu\Orm\Entity\Layer;
 use Stu\Orm\Entity\Location;
@@ -33,7 +34,11 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
     #[Override]
     public function prototype(): Colony
     {
-        return new Colony();
+        $colony = new Colony();
+        $changeable = new ColonyChangeable($colony);
+        $colony->setChangeable($changeable);
+
+        return $colony;
     }
 
     #[Override]
