@@ -11,13 +11,12 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\ColonyClassResearchRepository;
 
 //TODO rename table and column planet_type_id
 #[Table(name: 'stu_planet_type_research')]
 #[Entity(repositoryClass: ColonyClassResearchRepository::class)]
-class ColonyClassResearch implements ColonyClassResearchInterface
+class ColonyClassResearch
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -26,39 +25,34 @@ class ColonyClassResearch implements ColonyClassResearchInterface
 
     #[ManyToOne(targetEntity: Research::class)]
     #[JoinColumn(name: 'research_id', nullable: false, referencedColumnName: 'id')]
-    private ResearchInterface $research;
+    private Research $research;
 
     #[ManyToOne(targetEntity: ColonyClass::class)]
     #[JoinColumn(name: 'planet_type_id', nullable: false, referencedColumnName: 'id')]
-    private ColonyClassInterface $colonyClass;
+    private ColonyClass $colonyClass;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
-    public function getResearch(): ResearchInterface
+    public function getResearch(): Research
     {
         return $this->research;
     }
 
-    #[Override]
-    public function setResearch(ResearchInterface $research): ColonyClassResearchInterface
+    public function setResearch(Research $research): ColonyClassResearch
     {
         $this->research = $research;
         return $this;
     }
 
-    #[Override]
-    public function getColonyClass(): ColonyClassInterface
+    public function getColonyClass(): ColonyClass
     {
         return $this->colonyClass;
     }
 
-    #[Override]
-    public function setColonyClass(ColonyClassInterface $colonyClass): ColonyClassResearchInterface
+    public function setColonyClass(ColonyClass $colonyClass): ColonyClassResearch
     {
         $this->colonyClass = $colonyClass;
         return $this;

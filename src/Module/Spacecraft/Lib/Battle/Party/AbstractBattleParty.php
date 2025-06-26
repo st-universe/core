@@ -8,12 +8,12 @@ use Override;
 use RuntimeException;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 abstract class AbstractBattleParty implements BattlePartyInterface
 {
     private bool $isStation;
-    private UserInterface $user;
+    private User $user;
 
     /** @var Collection<int, covariant SpacecraftWrapperInterface> $members */
     private ?Collection $members = null;
@@ -32,7 +32,7 @@ abstract class AbstractBattleParty implements BattlePartyInterface
     abstract protected function initMembers(): Collection;
 
     #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->user;
     }

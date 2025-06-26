@@ -8,16 +8,16 @@ use Override;
 use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\ColonySandboxInterface;
-use Stu\Orm\Entity\PlanetFieldInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\ColonySandbox;
+use Stu\Orm\Entity\PlanetField;
 
 final class BuildingAction implements BuildingActionInterface
 {
     public function __construct(private StorageManagerInterface $storageManager, private BuildingManagerInterface $buildingManager) {}
 
     #[Override]
-    public function activate(PlanetFieldInterface $field, GameControllerInterface $game): void
+    public function activate(PlanetField $field, GameControllerInterface $game): void
     {
         if (!$field->hasBuilding()) {
             return;
@@ -38,7 +38,7 @@ final class BuildingAction implements BuildingActionInterface
 
         $host = $field->getHost();
         if (
-            $host instanceof ColonyInterface
+            $host instanceof Colony
             && $host->getChangeable()->getWorkless() < $field->getBuilding()->getWorkers()
         ) {
             $game->addInformationf(
@@ -59,7 +59,7 @@ final class BuildingAction implements BuildingActionInterface
     }
 
     #[Override]
-    public function deactivate(PlanetFieldInterface $field, GameControllerInterface $game): void
+    public function deactivate(PlanetField $field, GameControllerInterface $game): void
     {
         if (!$field->hasBuilding()) {
             return;
@@ -82,7 +82,7 @@ final class BuildingAction implements BuildingActionInterface
 
     #[Override]
     public function remove(
-        PlanetFieldInterface $field,
+        PlanetField $field,
         GameControllerInterface $game,
         bool $isDueToUpgrade = false
     ): void {
@@ -107,7 +107,7 @@ final class BuildingAction implements BuildingActionInterface
 
 
         $host = $field->getHost();
-        if ($host instanceof ColonySandboxInterface) {
+        if ($host instanceof ColonySandbox) {
             return;
         }
 

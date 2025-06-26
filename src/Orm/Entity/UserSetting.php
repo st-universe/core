@@ -10,18 +10,17 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Module\PlayerSetting\Lib\UserSettingEnum;
 use Stu\Orm\Repository\UserSettingRepository;
 
 #[Table(name: 'stu_user_setting')]
 #[Entity(repositoryClass: UserSettingRepository::class)]
-class UserSetting implements UserSettingInterface
+class UserSetting
 {
     #[Id]
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $user;
+    private User $user;
 
     #[Id]
     #[Column(type: 'string', enumType: UserSettingEnum::class)]
@@ -30,30 +29,26 @@ class UserSetting implements UserSettingInterface
     #[Column(type: 'string')]
     private string $value = '';
 
-    #[Override]
-    public function setUser(UserInterface $user): UserSettingInterface
+    public function setUser(User $user): UserSetting
     {
         $this->user = $user;
 
         return $this;
     }
 
-    #[Override]
-    public function setSetting(UserSettingEnum $setting): UserSettingInterface
+    public function setSetting(UserSettingEnum $setting): UserSetting
     {
         $this->setting = $setting;
 
         return $this;
     }
 
-    #[Override]
     public function getValue(): string
     {
         return $this->value;
     }
 
-    #[Override]
-    public function setValue(string $value): UserSettingInterface
+    public function setValue(string $value): UserSetting
     {
         $this->value = $value;
 

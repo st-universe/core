@@ -7,7 +7,6 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\NPCLog;
-use Stu\Orm\Entity\NPCLogInterface;
 
 /**
  * @extends EntityRepository<NPCLog>
@@ -25,13 +24,13 @@ final class NPCLogRepository extends EntityRepository implements NPCLogRepositor
     }
 
     #[Override]
-    public function prototype(): NPCLogInterface
+    public function prototype(): NPCLog
     {
         return new NPCLog();
     }
 
     #[Override]
-    public function save(NPCLogInterface $npclog): void
+    public function save(NPCLog $npclog): void
     {
         $em = $this->getEntityManager();
 
@@ -39,7 +38,7 @@ final class NPCLogRepository extends EntityRepository implements NPCLogRepositor
     }
 
     #[Override]
-    public function delete(NPCLogInterface $npclog): void
+    public function delete(NPCLog $npclog): void
     {
         $em = $this->getEntityManager();
 

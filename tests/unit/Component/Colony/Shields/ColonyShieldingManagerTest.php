@@ -8,7 +8,7 @@ use Mockery\MockInterface;
 use Override;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Colony;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -18,7 +18,7 @@ class ColonyShieldingManagerTest extends StuTestCase
 
     private MockInterface&ColonyFunctionManagerInterface $colonyFunctionManager;
 
-    private MockInterface&ColonyInterface $colony;
+    private MockInterface&Colony $colony;
 
     private ColonyShieldingManager $subject;
 
@@ -27,7 +27,7 @@ class ColonyShieldingManagerTest extends StuTestCase
     {
         $this->planetFieldRepository = $this->mock(PlanetFieldRepositoryInterface::class);
         $this->colonyFunctionManager = $this->mock(ColonyFunctionManagerInterface::class);
-        $this->colony = $this->mock(ColonyInterface::class);
+        $this->colony = $this->mock(Colony::class);
 
         $this->subject = new ColonyShieldingManager(
             $this->planetFieldRepository,

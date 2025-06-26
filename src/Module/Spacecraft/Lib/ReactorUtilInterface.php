@@ -4,18 +4,18 @@ namespace Stu\Module\Spacecraft\Lib;
 
 use Doctrine\Common\Collections\Collection;
 use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\StorageInterface;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\Storage;
 
 interface ReactorUtilInterface
 {
     /**
-     * @param Collection<int, StorageInterface> $storages
+     * @param Collection<int, Storage> $storages
      */
     public function storageContainsNeededCommodities(Collection $storages, ReactorWrapperInterface $reactor): bool;
 
     public function loadReactor(
-        SpacecraftInterface $spacecraft,
+        Spacecraft $spacecraft,
         int $additionalLoad,
         ?ManagerProviderInterface $managerProvider,
         ReactorWrapperInterface $reactor

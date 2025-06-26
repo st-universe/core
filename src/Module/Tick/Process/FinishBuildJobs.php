@@ -9,7 +9,7 @@ use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\ColonySandboxInterface;
+use Stu\Orm\Entity\ColonySandbox;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class FinishBuildJobs implements ProcessTickHandlerInterface
@@ -23,7 +23,7 @@ final class FinishBuildJobs implements ProcessTickHandlerInterface
         foreach ($result as $field) {
             $activationDetails = $this->buildingManager->finish($field, $field->getActivateAfterBuild());
             $host = $field->getHost();
-            if ($host instanceof ColonySandboxInterface) {
+            if ($host instanceof ColonySandbox) {
                 continue;
             }
 

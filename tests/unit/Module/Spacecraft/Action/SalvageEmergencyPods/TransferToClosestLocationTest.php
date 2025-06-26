@@ -9,12 +9,12 @@ use Mockery\MockInterface;
 use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Lib\Map\DistanceCalculationInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\CrewAssignmentInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\StationInterface;
-use Stu\Orm\Entity\TradePostInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\CrewAssignment;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Station;
+use Stu\Orm\Entity\TradePost;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -26,8 +26,8 @@ class TransferToClosestLocationTest extends StuTestCase
 
     private MockInterface&DistanceCalculationInterface $distanceCalculation;
 
-    private MockInterface&ShipInterface $ship;
-    private MockInterface&ShipInterface $target;
+    private MockInterface&Ship $ship;
+    private MockInterface&Ship $target;
     private int $crewCount;
 
     private TransferToClosestLocation $subject;
@@ -39,8 +39,8 @@ class TransferToClosestLocationTest extends StuTestCase
         $this->distanceCalculation = $this->mock(DistanceCalculationInterface::class);
         $this->shipCrewRepository = $this->mock(CrewAssignmentRepositoryInterface::class);
 
-        $this->ship = $this->mock(ShipInterface::class);
-        $this->target = $this->mock(ShipInterface::class);
+        $this->ship = $this->mock(Ship::class);
+        $this->target = $this->mock(Ship::class);
 
         $this->subject = new TransferToClosestLocation(
             $this->closestLocations,
@@ -119,11 +119,11 @@ class TransferToClosestLocationTest extends StuTestCase
         ?int $coloDistance,
         ?string $coloName,
         ?string $coloSector
-    ): ?ColonyInterface {
+    ): ?Colony {
         $result = null;
 
         if ($coloDistance !== null) {
-            $colony = $this->mock(ColonyInterface::class);
+            $colony = $this->mock(Colony::class);
             $colony->shouldReceive('getName')
                 ->withNoArgs()
                 ->andReturn($coloName);
@@ -146,11 +146,11 @@ class TransferToClosestLocationTest extends StuTestCase
         ?int $stationDistance,
         ?string $stationName,
         ?string $stationSector
-    ): ?ShipInterface {
+    ): ?Ship {
         $result = null;
 
         if ($stationDistance !== null) {
-            $station = $this->mock(ShipInterface::class);
+            $station = $this->mock(Ship::class);
             $station->shouldReceive('getName')
                 ->withNoArgs()
                 ->andReturn($stationName);
@@ -173,10 +173,10 @@ class TransferToClosestLocationTest extends StuTestCase
         int $tradePostDistance,
         string $tradePostName,
         string $tradePostSector
-    ): TradePostInterface {
+    ): TradePost {
 
-        $tradepost = $this->mock(TradePostInterface::class);
-        $station = $this->mock(StationInterface::class);
+        $tradepost = $this->mock(TradePost::class);
+        $station = $this->mock(Station::class);
         $tradepost->shouldReceive('getName')
             ->withNoArgs()
             ->andReturn($tradePostName);
@@ -199,15 +199,15 @@ class TransferToClosestLocationTest extends StuTestCase
         ?int $coloDistance,
         ?int $stationDistance,
         int $tradePostDistance,
-        ?ColonyInterface $closestColony,
-        ?ShipInterface $closestStation,
-        TradePostInterface $closestTradepost
+        ?Colony $closestColony,
+        ?Ship $closestStation,
+        TradePost $closestTradepost
     ): void {
-        $user = $this->mock(UserInterface::class);
-        $otherUser = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
+        $otherUser = $this->mock(User::class);
 
-        $shipCrew = $this->mock(CrewAssignmentInterface::class);
-        $foreignCrewAssignment = $this->mock(CrewAssignmentInterface::class);
+        $shipCrew = $this->mock(CrewAssignment::class);
+        $foreignCrewAssignment = $this->mock(CrewAssignment::class);
         $crewlist = new ArrayCollection([$shipCrew, $foreignCrewAssignment]);
 
         $this->target->shouldReceive('getCrewAssignments')

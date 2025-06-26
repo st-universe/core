@@ -7,7 +7,7 @@ use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Lib\Pirate\PirateCreation;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 
 class SafeFlightRoute implements SafeFlightRouteInterface
 {
@@ -19,7 +19,7 @@ class SafeFlightRoute implements SafeFlightRouteInterface
 
     #[Override]
     public function getSafeFlightRoute(
-        ShipInterface $ship,
+        Ship $ship,
         callable $coordinateCallable
     ): ?FlightRouteInterface {
 

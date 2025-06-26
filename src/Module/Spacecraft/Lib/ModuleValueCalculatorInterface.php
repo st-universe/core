@@ -2,18 +2,18 @@
 
 namespace Stu\Module\Spacecraft\Lib;
 
-use Stu\Orm\Entity\ModuleInterface;
-use Stu\Orm\Entity\SpacecraftRumpInterface;
+use Stu\Orm\Entity\Module;
+use Stu\Orm\Entity\SpacecraftRump;
 
 interface ModuleValueCalculatorInterface
 {
     public function calculateModuleValue(
-        SpacecraftRumpInterface $rump,
-        ModuleInterface $module,
+        SpacecraftRump $rump,
+        Module $module,
         int $value
     ): int;
 
-    public function calculateDamageImpact(SpacecraftRumpInterface $rump, ModuleInterface $module): string;
+    public function calculateDamageImpact(SpacecraftRump $rump, Module $module): string;
 
-    public function calculateEvadeChance(SpacecraftRumpInterface $rump, ModuleInterface $module): int;
+    public function calculateEvadeChance(SpacecraftRump $rump, Module $module): int;
 }

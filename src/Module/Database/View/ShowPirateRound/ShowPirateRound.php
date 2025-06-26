@@ -7,8 +7,8 @@ namespace Stu\Module\Database\View\ShowPirateRound;
 use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Entity\PirateRoundInterface;
-use Stu\Orm\Entity\UserPirateRoundInterface;
+use Stu\Orm\Entity\PirateRound;
+use Stu\Orm\Entity\UserPirateRound;
 use Stu\Orm\Repository\PirateRoundRepositoryInterface;
 use Stu\Orm\Repository\UserPirateRoundRepositoryInterface;
 
@@ -96,14 +96,14 @@ final class ShowPirateRound implements ViewControllerInterface
         $game->setTemplateVar('FACTION_DATA', $factionData);
     }
 
-    private function getLastPirateRound(): ?PirateRoundInterface
+    private function getLastPirateRound(): ?PirateRound
     {
         $allRounds = $this->pirateRoundRepository->findBy([], ['id' => 'DESC'], 1);
         return empty($allRounds) ? null : $allRounds[0];
     }
 
     /**
-     * @param UserPirateRoundInterface[] $userPirateRounds
+     * @param UserPirateRound[] $userPirateRounds
      * @return array<int, array<string, mixed>>
      */
     private function getFactionPrestigeData(array $userPirateRounds): array

@@ -9,8 +9,8 @@ use request;
 use RuntimeException;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
-use Stu\Orm\Entity\PlanetFieldInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\PlanetField;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ColonySandboxRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
@@ -21,7 +21,7 @@ class PlanetFieldHostProvider implements PlanetFieldHostProviderInterface
     }
 
     #[Override]
-    public function loadFieldViaRequestParameter(UserInterface $user, bool $checkForEntityLock = true): PlanetFieldInterface
+    public function loadFieldViaRequestParameter(User $user, bool $checkForEntityLock = true): PlanetField
     {
         if (!request::has('fid')) {
             throw new RuntimeException('request param "fid" is missing');
@@ -40,7 +40,7 @@ class PlanetFieldHostProvider implements PlanetFieldHostProviderInterface
     }
 
     #[Override]
-    public function loadHostViaRequestParameters(UserInterface $user, bool $checkForEntityLock = true): PlanetFieldHostInterface
+    public function loadHostViaRequestParameters(User $user, bool $checkForEntityLock = true): PlanetFieldHostInterface
     {
         if (!request::has('id')) {
             throw new RuntimeException('request param "id" is missing');
@@ -58,7 +58,7 @@ class PlanetFieldHostProvider implements PlanetFieldHostProviderInterface
     private function getHostInternal(
         int $id,
         PlanetFieldHostTypeEnum $hostType,
-        UserInterface $user,
+        User $user,
         bool $checkForEntityLock
     ): PlanetFieldHostInterface {
 

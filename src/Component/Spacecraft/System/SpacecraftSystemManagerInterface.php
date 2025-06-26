@@ -11,8 +11,8 @@ use Stu\Component\Spacecraft\System\Exception\SystemCooldownException;
 use Stu\Component\Spacecraft\System\Exception\SystemDamagedException;
 use Stu\Component\Spacecraft\System\Exception\SystemNotFoundException;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\SpacecraftSystemInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\SpacecraftSystem;
+use Stu\Orm\Entity\Spacecraft;
 
 interface SpacecraftSystemManagerInterface
 {
@@ -56,7 +56,7 @@ interface SpacecraftSystemManagerInterface
     public function handleDamagedSystem(SpacecraftWrapperInterface $wrapper, SpacecraftSystemTypeEnum $type): void;
 
     /**
-     * @return array<SpacecraftSystemInterface>
+     * @return array<SpacecraftSystem>
      */
-    public function getActiveSystems(SpacecraftInterface $ship, bool $sort = false): array;
+    public function getActiveSystems(Spacecraft $ship, bool $sort = false): array;
 }

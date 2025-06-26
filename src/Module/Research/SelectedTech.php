@@ -9,10 +9,10 @@ use Override;
 use RuntimeException;
 use Stu\Module\Template\StatusBarColorEnum;
 use Stu\Module\Template\StatusBarFactoryInterface;
-use Stu\Orm\Entity\ResearchDependencyInterface;
-use Stu\Orm\Entity\ResearchedInterface;
-use Stu\Orm\Entity\ResearchInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\ResearchDependency;
+use Stu\Orm\Entity\Researched;
+use Stu\Orm\Entity\Research;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\ResearchDependencyRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
@@ -20,7 +20,7 @@ use Stu\Orm\Repository\ResearchRepositoryInterface;
 
 final class SelectedTech implements SelectedTechInterface
 {
-    private ?ResearchedInterface $state = null;
+    private ?Researched $state = null;
 
     /** @var null|array<string, TechDependency> */
     private ?array $excludes = null;
@@ -34,19 +34,19 @@ final class SelectedTech implements SelectedTechInterface
         private ResearchDependencyRepositoryInterface $researchDependencyRepository,
         private BuildingRepositoryInterface $buildingRepository,
         private StatusBarFactoryInterface $statusBarFactory,
-        private ResearchInterface $research,
-        private UserInterface $currentUser,
+        private Research $research,
+        private User $currentUser,
         private ConfigInterface $config
     ) {}
 
     #[Override]
-    public function getResearch(): ResearchInterface
+    public function getResearch(): Research
     {
         return $this->research;
     }
 
     #[Override]
-    public function getResearchState(): ?ResearchedInterface
+    public function getResearchState(): ?Researched
     {
         if ($this->state === null) {
             $this->state = $this->researchedRepository->getFor(
@@ -67,7 +67,7 @@ final class SelectedTech implements SelectedTechInterface
 
             array_walk(
                 $techList,
-                function (ResearchDependencyInterface $dependecy) use (&$result): void {
+                function (ResearchDependency $dependecy) use (&$result): void {
                     $name = $dependecy->getResearchDependOn()->getName();
 
                     if (!array_key_exists($name, $result) && $name !== $this->research->getName()) {
@@ -99,7 +99,7 @@ final class SelectedTech implements SelectedTechInterface
 
             array_walk(
                 $techList,
-                function (ResearchInterface $research) use (&$result): void {
+                function (Research $research) use (&$result): void {
                     $name = $research->getName();
 
                     if (!array_key_exists($name, $result) && $name !== $this->research->getName()) {

@@ -5,16 +5,19 @@ namespace Stu\Module\Maintenance;
 use Override;
 use Stu\Component\Map\MapEnum;
 use Stu\Module\Award\Lib\CreateUserAwardInterface;
-use Stu\Orm\Entity\UserLayerInterface;
+use Stu\Orm\Entity\UserLayer;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\UserLayerRepositoryInterface;
 use Stu\Orm\Repository\UserMapRepositoryInterface;
 
 final class MapCycle implements MaintenanceHandlerInterface
 {
-    public function __construct(private MapRepositoryInterface $mapRepository, private UserLayerRepositoryInterface $userLayerRepository, private UserMapRepositoryInterface $userMapRepository, private CreateUserAwardInterface $createUserAward)
-    {
-    }
+    public function __construct(
+        private MapRepositoryInterface $mapRepository,
+        private UserLayerRepositoryInterface $userLayerRepository,
+        private UserMapRepositoryInterface $userMapRepository,
+        private CreateUserAwardInterface $createUserAward
+    ) {}
 
     #[Override]
     public function handle(): void
@@ -32,7 +35,7 @@ final class MapCycle implements MaintenanceHandlerInterface
         }
     }
 
-    private function cycle(UserLayerInterface $userLayer): void
+    private function cycle(UserLayer $userLayer): void
     {
         $userLayer->setMappingType(MapEnum::MAPTYPE_LAYER_EXPLORED);
         $this->userLayerRepository->save($userLayer);

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Component\Colony;
 
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\StarSystemMap;
 
 interface ColonyCreationInterface
 {
-    public function create(StarSystemMapInterface $systemMap, string $name): ColonyInterface;
+    public function create(StarSystemMap $systemMap, string $name): Colony;
 }

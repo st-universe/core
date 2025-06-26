@@ -7,7 +7,6 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\GameTurn;
-use Stu\Orm\Entity\GameTurnInterface;
 
 /**
  * @extends EntityRepository<GameTurn>
@@ -15,7 +14,7 @@ use Stu\Orm\Entity\GameTurnInterface;
 final class GameTurnRepository extends EntityRepository implements GameTurnRepositoryInterface
 {
     #[Override]
-    public function getCurrent(): ?GameTurnInterface
+    public function getCurrent(): ?GameTurn
     {
         return $this->findOneBy(
             [],
@@ -24,13 +23,13 @@ final class GameTurnRepository extends EntityRepository implements GameTurnRepos
     }
 
     #[Override]
-    public function prototype(): GameTurnInterface
+    public function prototype(): GameTurn
     {
         return new GameTurn();
     }
 
     #[Override]
-    public function save(GameTurnInterface $turn): void
+    public function save(GameTurn $turn): void
     {
         $em = $this->getEntityManager();
 
@@ -39,7 +38,7 @@ final class GameTurnRepository extends EntityRepository implements GameTurnRepos
     }
 
     #[Override]
-    public function delete(GameTurnInterface $turn): void
+    public function delete(GameTurn $turn): void
     {
         $em = $this->getEntityManager();
 

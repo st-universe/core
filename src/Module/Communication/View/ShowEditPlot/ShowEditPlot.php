@@ -8,7 +8,7 @@ use Override;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Entity\RpgPlotInterface;
+use Stu\Orm\Entity\RpgPlot;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 
 final class ShowEditPlot implements ViewControllerInterface
@@ -22,7 +22,7 @@ final class ShowEditPlot implements ViewControllerInterface
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        /** @var RpgPlotInterface $plot */
+        /** @var RpgPlot $plot */
         $plot = $this->rpgPlotRepository->find($this->showEditPlotRequest->getPlotId());
         if ($plot === null || $plot->getUserId() !== $game->getUser()->getId()) {
             throw new AccessViolationException();

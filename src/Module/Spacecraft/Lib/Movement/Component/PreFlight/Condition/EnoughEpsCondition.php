@@ -10,11 +10,11 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\ConditionCheckResult;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Route\RouteModeEnum;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\Ship;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 
 class EnoughEpsCondition implements PreFlightConditionInterface
 {
@@ -51,7 +51,7 @@ class EnoughEpsCondition implements PreFlightConditionInterface
         }
     }
 
-    private function getEnergyForSystemsActivation(FlightRouteInterface $flightRoute, SpacecraftInterface $spacecraft): int
+    private function getEnergyForSystemsActivation(FlightRouteInterface $flightRoute, Spacecraft $spacecraft): int
     {
         $result = 0;
 
@@ -67,14 +67,14 @@ class EnoughEpsCondition implements PreFlightConditionInterface
             $result += $this->getEnergyUsageForActivation($spacecraft, SpacecraftSystemTypeEnum::TRANSWARP_COIL);
         }
 
-        if ($spacecraft instanceof ShipInterface && $spacecraft->getDockedTo() !== null) {
+        if ($spacecraft instanceof Ship && $spacecraft->getDockedTo() !== null) {
             $result += ShipEnum::SYSTEM_ECOST_DOCK;
         }
 
         return $result;
     }
 
-    private function getEnergyUsageForActivation(SpacecraftInterface $spacecraft, SpacecraftSystemTypeEnum $systemId): int
+    private function getEnergyUsageForActivation(Spacecraft $spacecraft, SpacecraftSystemTypeEnum $systemId): int
     {
         if (!$spacecraft->hasSpacecraftSystem($systemId)) {
             return 0;
@@ -87,14 +87,14 @@ class EnoughEpsCondition implements PreFlightConditionInterface
         return 0;
     }
 
-    private function getEpsNeededForFlight(FlightRouteInterface $flightRoute, SpacecraftInterface $spacecraft): int
+    private function getEpsNeededForFlight(FlightRouteInterface $flightRoute, Spacecraft $spacecraft): int
     {
         if ($flightRoute->getRouteMode() !== RouteModeEnum::FLIGHT) {
             return 0;
         }
 
         $nextWaypoint = $flightRoute->getNextWaypoint();
-        if ($nextWaypoint instanceof MapInterface) {
+        if ($nextWaypoint instanceof Map) {
             return 0;
         }
 

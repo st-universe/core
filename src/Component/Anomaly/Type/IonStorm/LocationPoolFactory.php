@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Component\Anomaly\Type\IonStorm;
 
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
-use Stu\Orm\Entity\AnomalyInterface;
-use Stu\Orm\Entity\LocationInterface;
+use Stu\Orm\Entity\Anomaly;
+use Stu\Orm\Entity\Location;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
@@ -17,13 +17,13 @@ class LocationPoolFactory
         private StarSystemMapRepositoryInterface $starSystemMapRepository
     ) {}
 
-    public function createLocationPool(AnomalyInterface $anomaly, int $stretch): LocationPool
+    public function createLocationPool(Anomaly $anomaly, int $stretch): LocationPool
     {
         return new LocationPool($this->getLocations($anomaly, $stretch));
     }
 
-    /** @return array<string, LocationInterface> */
-    private function getLocations(AnomalyInterface $anomaly, int $stretch): array
+    /** @return array<string, Location> */
+    private function getLocations(Anomaly $anomaly, int $stretch): array
     {
         $panelBoundaries = null;
         foreach ($anomaly->getChildren() as $child) {

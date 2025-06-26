@@ -3,12 +3,12 @@
 namespace Stu\Lib\Pirate\Component;
 
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\LocationInterface;
+use Stu\Orm\Entity\Location;
 
 interface MoveOnLayerInterface
 {
     public function move(
         ShipWrapperInterface $wrapper,
-        ?LocationInterface $target
+        ?Location $target
     ): bool;
 }

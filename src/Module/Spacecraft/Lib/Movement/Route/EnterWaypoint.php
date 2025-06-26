@@ -6,9 +6,9 @@ namespace Stu\Module\Spacecraft\Lib\Movement\Route;
 
 use Override;
 use Stu\Module\Control\StuTime;
-use Stu\Orm\Entity\LocationInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\WormholeEntryInterface;
+use Stu\Orm\Entity\Location;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\WormholeEntry;
 use Stu\Orm\Repository\WormholeEntryRepositoryInterface;
 
 final class EnterWaypoint implements EnterWaypointInterface
@@ -20,10 +20,10 @@ final class EnterWaypoint implements EnterWaypointInterface
 
     #[Override]
     public function enterNextWaypoint(
-        ?SpacecraftInterface $spacecraft,
+        ?Spacecraft $spacecraft,
         bool $isTraversing,
-        LocationInterface $waypoint,
-        ?WormholeEntryInterface $wormholeEntry
+        Location $waypoint,
+        ?WormholeEntry $wormholeEntry
     ): void {
 
         if ($spacecraft === null) {

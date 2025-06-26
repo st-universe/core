@@ -12,7 +12,7 @@ use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreationInterface;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
 use Stu\Lib\Map\VisualPanel\SignaturePanelEntry;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Orm\Entity\LayerInterface;
+use Stu\Orm\Entity\Layer;
 
 class SignaturePanel extends AbstractVisualPanel
 {
@@ -20,7 +20,7 @@ class SignaturePanel extends AbstractVisualPanel
     public function __construct(
         private array $data,
         PanelLayerCreationInterface $panelLayerCreation,
-        private LayerInterface $layer,
+        private Layer $layer,
         private int $shipId,
         private int $userId,
         private int $allyId,

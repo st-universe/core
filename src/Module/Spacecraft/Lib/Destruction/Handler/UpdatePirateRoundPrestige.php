@@ -12,7 +12,7 @@ use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestroyerInterface;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionCauseEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 class UpdatePirateRoundPrestige implements SpacecraftDestructionHandlerInterface
@@ -39,7 +39,7 @@ class UpdatePirateRoundPrestige implements SpacecraftDestructionHandlerInterface
 
         if (
             $userOfDestroyed->getId() === UserEnum::USER_NPC_KAZON
-            && $spacecraft instanceof ShipInterface
+            && $spacecraft instanceof Ship
             && $destroyer !== null
         ) {
             $destroyerUser = $this->userRepository->find($destroyer->getUserId());

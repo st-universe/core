@@ -9,7 +9,6 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Mockery\MockInterface;
 use Override;
 use Stu\Orm\Entity\FlightSignature;
-use Stu\Orm\Entity\FlightSignatureInterface;
 use Stu\StuTestCase;
 
 class FlightSignatureRepositoryTest extends StuTestCase
@@ -44,7 +43,7 @@ class FlightSignatureRepositoryTest extends StuTestCase
 
     public function testSaveSaves(): void
     {
-        $entity = $this->mock(FlightSignatureInterface::class);
+        $entity = $this->mock(FlightSignature::class);
 
         $this->entityManager->shouldReceive('persist')
             ->with($entity)

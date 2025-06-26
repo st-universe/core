@@ -6,9 +6,8 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Override;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\TholianWeb;
-use Stu\Orm\Entity\TholianWebInterface;
 
 /**
  * @extends EntityRepository<TholianWeb>
@@ -16,7 +15,7 @@ use Stu\Orm\Entity\TholianWebInterface;
 final class TholianWebRepository extends EntityRepository implements TholianWebRepositoryInterface
 {
     #[Override]
-    public function save(TholianWebInterface $web): void
+    public function save(TholianWeb $web): void
     {
         $em = $this->getEntityManager();
 
@@ -24,7 +23,7 @@ final class TholianWebRepository extends EntityRepository implements TholianWebR
     }
 
     #[Override]
-    public function delete(TholianWebInterface $web): void
+    public function delete(TholianWeb $web): void
     {
         $em = $this->getEntityManager();
 
@@ -32,7 +31,7 @@ final class TholianWebRepository extends EntityRepository implements TholianWebR
     }
 
     #[Override]
-    public function getWebAtLocation(ShipInterface $ship): ?TholianWebInterface
+    public function getWebAtLocation(Ship $ship): ?TholianWeb
     {
         return $this->getEntityManager()->createQuery(
             sprintf(

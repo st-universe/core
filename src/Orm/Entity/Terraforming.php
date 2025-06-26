@@ -14,14 +14,13 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\UniqueConstraint;
-use Override;
 use Stu\Orm\Repository\TerraformingRepository;
 
 #[Table(name: 'stu_terraforming')]
 #[Index(name: 'terraforming_research_idx', columns: ['research_id'])]
 #[UniqueConstraint(name: 'field_transformation_idx', columns: ['v_feld', 'z_feld'])]
 #[Entity(repositoryClass: TerraformingRepository::class)]
-class Terraforming implements TerraformingInterface
+class Terraforming
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -47,13 +46,13 @@ class Terraforming implements TerraformingInterface
     private ?int $research_id = null;
 
     /**
-     * @var ArrayCollection<int, TerraformingCostInterface>
+     * @var ArrayCollection<int, TerraformingCost>
      */
     #[OneToMany(targetEntity: TerraformingCost::class, mappedBy: 'terraforming')]
     private Collection $costs;
 
     /**
-     * @var ArrayCollection<int, ColonyClassRestrictionInterface>
+     * @var ArrayCollection<int, ColonyClassRestriction>
      */
     #[OneToMany(mappedBy: 'terraforming', targetEntity: ColonyClassRestriction::class)]
     private Collection $restrictions;
@@ -65,103 +64,92 @@ class Terraforming implements TerraformingInterface
         $this->restrictions = new ArrayCollection();
     }
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getDescription(): string
     {
         return $this->description;
     }
 
-    #[Override]
-    public function setDescription(string $description): TerraformingInterface
+    public function setDescription(string $description): Terraforming
     {
         $this->description = $description;
 
         return $this;
     }
 
-    #[Override]
     public function getEnergyCosts(): int
     {
         return $this->ecost;
     }
 
-    #[Override]
-    public function setEnergyCosts(int $energyCosts): TerraformingInterface
+    public function setEnergyCosts(int $energyCosts): Terraforming
     {
         $this->ecost = $energyCosts;
 
         return $this;
     }
 
-    #[Override]
     public function getFromFieldTypeId(): int
     {
         return $this->v_feld;
     }
 
-    #[Override]
-    public function setFromFieldTypeId(int $fromFieldTypeId): TerraformingInterface
+    public function setFromFieldTypeId(int $fromFieldTypeId): Terraforming
     {
         $this->v_feld = $fromFieldTypeId;
 
         return $this;
     }
 
-    #[Override]
     public function getToFieldTypeId(): int
     {
         return $this->z_feld;
     }
 
-    #[Override]
-    public function setToFieldTypeId(int $toFieldTypeId): TerraformingInterface
+    public function setToFieldTypeId(int $toFieldTypeId): Terraforming
     {
         $this->z_feld = $toFieldTypeId;
 
         return $this;
     }
 
-    #[Override]
     public function getDuration(): int
     {
         return $this->duration;
     }
 
-    #[Override]
-    public function setDuration(int $duration): TerraformingInterface
+    public function setDuration(int $duration): Terraforming
     {
         $this->duration = $duration;
 
         return $this;
     }
 
-    #[Override]
     public function getResearchId(): ?int
     {
         return $this->research_id;
     }
 
-    #[Override]
-    public function setResearchId(?int $researchId): TerraformingInterface
+    public function setResearchId(?int $researchId): Terraforming
     {
         $this->research_id = $researchId;
         return $this;
     }
 
-    #[Override]
+    /**
+     * @return Collection<int, TerraformingCost>
+     */
     public function getCosts(): Collection
     {
         return $this->costs;
     }
 
     /**
-     * @return Collection<int, ColonyClassRestrictionInterface>
+     * @return Collection<int, ColonyClassRestriction>
      */
     public function getRestrictions(): Collection
     {

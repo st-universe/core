@@ -13,11 +13,10 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
 use Stu\Module\PlayerSetting\Lib\UserSettingEnum;
 use Stu\Module\Starmap\Lib\ExploreableStarMap;
-use Stu\Orm\Entity\LayerInterface;
+use Stu\Orm\Entity\Layer;
 use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Map;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\MapRegionSettlement;
 use Stu\Orm\Entity\StarSystemMap;
 
@@ -28,7 +27,7 @@ use Stu\Orm\Entity\StarSystemMap;
 final class MapRepository extends EntityRepository implements MapRepositoryInterface
 {
     #[Override]
-    public function getAmountByLayer(LayerInterface $layer): int
+    public function getAmountByLayer(Layer $layer): int
     {
         return $this->count([
             'layer_id' => $layer->getId()
@@ -99,7 +98,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     }
 
     #[Override]
-    public function getByCoordinates(?LayerInterface $layer, int $cx, int $cy): ?MapInterface
+    public function getByCoordinates(?Layer $layer, int $cx, int $cy): ?Map
     {
         if ($layer === null) {
             return null;
@@ -159,7 +158,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     }
 
     #[Override]
-    public function save(MapInterface $map): void
+    public function save(Map $map): void
     {
         $em = $this->getEntityManager();
 
@@ -258,7 +257,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     }
 
     #[Override]
-    public function getImpassableBorderData(PanelBoundaries $boundaries, Userinterface $user, ResultSetMapping $rsm): array
+    public function getImpassableBorderData(PanelBoundaries $boundaries, User $user, ResultSetMapping $rsm): array
     {
         return $this->getEntityManager()->createNativeQuery(
             'SELECT DISTINCT 
@@ -531,7 +530,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     }
 
     #[Override]
-    public function getWithEmptySystem(LayerInterface $layer): array
+    public function getWithEmptySystem(Layer $layer): array
     {
         return $this->getEntityManager()
             ->createQuery(
@@ -591,7 +590,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     }
 
     #[Override]
-    public function getRandomPassableUnoccupiedWithoutDamage(LayerInterface $layer, bool $isAtBorder = false): MapInterface
+    public function getRandomPassableUnoccupiedWithoutDamage(Layer $layer, bool $isAtBorder = false): Map
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('id', 'id', 'integer');

@@ -16,7 +16,7 @@ use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Module\Station\View\ShowShipManagement\ShowShipManagement;
-use Stu\Orm\Entity\StationInterface;
+use Stu\Orm\Entity\Station;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class ManageShips implements ActionControllerInterface
@@ -87,7 +87,7 @@ final class ManageShips implements ActionControllerInterface
         array $values,
         ManagerProviderInterface $managerProvider,
         int $shipId,
-        StationInterface $station
+        Station $station
     ): array {
         $ship = $this->spacecraftRepository->find($shipId);
         if ($ship === null) {

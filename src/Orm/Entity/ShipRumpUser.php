@@ -12,13 +12,12 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\ShipRumpUserRepository;
 
 #[Table(name: 'stu_rumps_user')]
 #[Index(name: 'rump_user_idx', columns: ['rump_id', 'user_id'])]
 #[Entity(repositoryClass: ShipRumpUserRepository::class)]
-class ShipRumpUser implements ShipRumpUserInterface
+class ShipRumpUser
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -33,36 +32,31 @@ class ShipRumpUser implements ShipRumpUserInterface
 
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $user;
+    private User $user;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
-    public function setRumpId(int $rumpId): ShipRumpUserInterface
+    public function setRumpId(int $rumpId): ShipRumpUser
     {
         $this->rump_id = $rumpId;
 
         return $this;
     }
 
-    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    #[Override]
-    public function setUser(UserInterface $user): ShipRumpUserInterface
+    public function setUser(User $user): ShipRumpUser
     {
         $this->user = $user;
         return $this;

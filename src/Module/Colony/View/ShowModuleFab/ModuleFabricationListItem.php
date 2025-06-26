@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowModuleFab;
 
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\ModuleCostInterface;
-use Stu\Orm\Entity\ModuleInterface;
-use Stu\Orm\Entity\SpacecraftBuildplanInterface;
-use Stu\Orm\Entity\SpacecraftRumpInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\ModuleCost;
+use Stu\Orm\Entity\Module;
+use Stu\Orm\Entity\SpacecraftBuildplan;
+use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
 
 final class ModuleFabricationListItem
@@ -20,11 +20,11 @@ final class ModuleFabricationListItem
 
     public function __construct(
         private ModuleQueueRepositoryInterface $moduleQueueRepository,
-        private ModuleInterface $module,
-        private ColonyInterface $colony
+        private Module $module,
+        private Colony $colony
     ) {}
 
-    public function getModule(): ModuleInterface
+    public function getModule(): Module
     {
         return $this->module;
     }
@@ -59,7 +59,7 @@ final class ModuleFabricationListItem
         return $this->module->getEcost();
     }
 
-    /** @return array<int, ModuleCostInterface> */
+    /** @return array<int, ModuleCost> */
     public function getConstructionCosts(): array
     {
         return $this->module->getCostSorted();
@@ -83,14 +83,14 @@ final class ModuleFabricationListItem
         return $result->getAmount();
     }
 
-    public function addRump(SpacecraftRumpInterface $shipRump): void
+    public function addRump(SpacecraftRump $shipRump): void
     {
         if (!in_array($shipRump->getId(), $this->rump_ids)) {
             $this->rump_ids[] = $shipRump->getId();
         }
     }
 
-    public function addBuildplan(SpacecraftBuildplanInterface $buildplan): void
+    public function addBuildplan(SpacecraftBuildplan $buildplan): void
     {
         if (!in_array($buildplan->getId(), $this->buildplan_ids)) {
             $this->buildplan_ids[] = $buildplan->getId();

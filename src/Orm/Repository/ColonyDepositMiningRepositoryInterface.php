@@ -4,18 +4,17 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\ColonyDepositMining;
-use Stu\Orm\Entity\ColonyDepositMiningInterface;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Colony;
 
 /**
  * @extends ObjectRepository<ColonyDepositMining>
  */
 interface ColonyDepositMiningRepositoryInterface extends ObjectRepository
 {
-    public function prototype(): ColonyDepositMiningInterface;
+    public function prototype(): ColonyDepositMining;
 
-    public function save(ColonyDepositMiningInterface $entity): void;
+    public function save(ColonyDepositMining $entity): void;
 
-    /** @return array<int, ColonyDepositMiningInterface> */
-    public function getCurrentUserDepositMinings(ColonyInterface $colony): array;
+    /** @return array<int, ColonyDepositMining> */
+    public function getCurrentUserDepositMinings(Colony $colony): array;
 }

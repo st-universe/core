@@ -4,10 +4,10 @@ namespace Stu\Lib\ModuleScreen;
 
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Lib\ModuleScreen\Addon\ModuleSelectorAddonInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\SpacecraftBuildplanInterface;
-use Stu\Orm\Entity\SpacecraftRumpInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\SpacecraftBuildplan;
+use Stu\Orm\Entity\SpacecraftRump;
+use Stu\Orm\Entity\Spacecraft;
 
 interface ModuleSelectorInterface
 {
@@ -29,9 +29,9 @@ interface ModuleSelectorInterface
 
     public function getUserId(): int;
 
-    public function getHost(): ColonyInterface|SpacecraftInterface;
+    public function getHost(): Colony|Spacecraft;
 
-    public function getRump(): SpacecraftRumpInterface;
+    public function getRump(): SpacecraftRump;
 
     /**
      * @return ModuleSelectorEntryInterface[]
@@ -49,7 +49,7 @@ interface ModuleSelectorInterface
 
     public function getModuleTypeLevel(): int;
 
-    public function getBuildplan(): ?SpacecraftBuildplanInterface;
+    public function getBuildplan(): ?SpacecraftBuildplan;
 
     public function getAddon(): ?ModuleSelectorAddonInterface;
 }

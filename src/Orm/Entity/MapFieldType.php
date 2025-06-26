@@ -12,14 +12,13 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Orm\Repository\MapFieldTypeRepository;
 
 #[Table(name: 'stu_map_ftypes')]
 #[Index(name: 'map_ftypes_type_idx', columns: ['type'])]
 #[Entity(repositoryClass: MapFieldTypeRepository::class)]
-class MapFieldType implements MapFieldTypeInterface
+class MapFieldType
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -65,152 +64,131 @@ class MapFieldType implements MapFieldTypeInterface
 
     #[ManyToOne(targetEntity: ColonyClass::class)]
     #[JoinColumn(name: 'colonies_classes_id', referencedColumnName: 'id')]
-    private ?ColonyClassInterface $colonyClass = null;
+    private ?ColonyClass $colonyClass = null;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getType(): int
     {
         return $this->type;
     }
 
-    #[Override]
-    public function setType(int $type): MapFieldTypeInterface
+    public function setType(int $type): MapFieldType
     {
         $this->type = $type;
 
         return $this;
     }
 
-    #[Override]
     public function getIsSystem(): bool
     {
         return $this->is_system;
     }
 
-    #[Override]
-    public function setIsSystem(bool $isSystem): MapFieldTypeInterface
+    public function setIsSystem(bool $isSystem): MapFieldType
     {
         $this->is_system = $isSystem;
 
         return $this;
     }
 
-    #[Override]
     public function getEnergyCosts(): int
     {
         return $this->ecost;
     }
 
-    #[Override]
-    public function setEnergyCosts(int $energyCosts): MapFieldTypeInterface
+    public function setEnergyCosts(int $energyCosts): MapFieldType
     {
         $this->ecost = $energyCosts;
 
         return $this;
     }
 
-    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
-    #[Override]
-    public function setName(string $name): MapFieldTypeInterface
+    public function setName(string $name): MapFieldType
     {
         $this->name = $name;
 
         return $this;
     }
 
-    #[Override]
     public function getDamage(): int
     {
         return $this->damage;
     }
 
-    #[Override]
-    public function setDamage(int $damage): MapFieldTypeInterface
+    public function setDamage(int $damage): MapFieldType
     {
         $this->damage = $damage;
 
         return $this;
     }
 
-    #[Override]
     public function getSpecialDamage(): int
     {
         return $this->x_damage;
     }
 
-    #[Override]
-    public function setSpecialDamage(int $specialDamage): MapFieldTypeInterface
+    public function setSpecialDamage(int $specialDamage): MapFieldType
     {
         $this->x_damage = $specialDamage;
 
         return $this;
     }
 
-    #[Override]
     public function getSpecialDamageType(): ?int
     {
         return $this->x_damage_type;
     }
 
-    #[Override]
     public function getView(): bool
     {
         return $this->view;
     }
 
-    #[Override]
-    public function setView(bool $view): MapFieldTypeInterface
+    public function setView(bool $view): MapFieldType
     {
         $this->view = $view;
 
         return $this;
     }
 
-    #[Override]
     public function getPassable(): bool
     {
         return $this->passable;
     }
 
-    #[Override]
-    public function setPassable(bool $passable): MapFieldTypeInterface
+    public function setPassable(bool $passable): MapFieldType
     {
         $this->passable = $passable;
 
         return $this;
     }
 
-    #[Override]
     public function getComplementaryColor(): ?string
     {
         return $this->complementary_color;
     }
 
-    #[Override]
-    public function setComplementaryColor(?string $complementaryColor): MapFieldTypeInterface
+    public function setComplementaryColor(?string $complementaryColor): MapFieldType
     {
         $this->complementary_color = $complementaryColor;
         return $this;
     }
 
-    #[Override]
-    public function getColonyClass(): ?ColonyClassInterface
+    public function getColonyClass(): ?ColonyClass
     {
         return $this->colonyClass;
     }
 
-    #[Override]
+    /** @return array<FieldTypeEffectEnum> */
     public function getEffects(): array
     {
         return array_map(
@@ -219,21 +197,19 @@ class MapFieldType implements MapFieldTypeInterface
         );
     }
 
-    #[Override]
-    public function setEffects(?array $effects): MapFieldTypeInterface
+    /** @param null|array<FieldTypeEffectEnum> $effects */
+    public function setEffects(?array $effects): MapFieldType
     {
         $this->effects = $effects;
 
         return $this;
     }
 
-    #[Override]
     public function hasEffect(FieldTypeEffectEnum $effect): bool
     {
         return in_array($effect, $this->getEffects());
     }
 
-    #[Override]
     public function getEffectsAsString(): ?string
     {
         if ($this->effects === null) {

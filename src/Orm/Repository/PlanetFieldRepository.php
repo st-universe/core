@@ -14,9 +14,7 @@ use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\BuildingCommodity;
 use Stu\Orm\Entity\BuildingFunction;
 use Stu\Orm\Entity\Colony;
-use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\PlanetField;
-use Stu\Orm\Entity\PlanetFieldInterface;
 
 /**
  * @extends EntityRepository<PlanetField>
@@ -24,13 +22,13 @@ use Stu\Orm\Entity\PlanetFieldInterface;
 final class PlanetFieldRepository extends EntityRepository implements PlanetFieldRepositoryInterface
 {
     #[Override]
-    public function prototype(): PlanetFieldInterface
+    public function prototype(): PlanetField
     {
         return new PlanetField();
     }
 
     #[Override]
-    public function save(PlanetFieldInterface $planetField): void
+    public function save(PlanetField $planetField): void
     {
         $em = $this->getEntityManager();
 
@@ -38,7 +36,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
     }
 
     #[Override]
-    public function delete(PlanetFieldInterface $planetField): void
+    public function delete(PlanetField $planetField): void
     {
         $em = $this->getEntityManager();
 
@@ -47,7 +45,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
     }
 
     #[Override]
-    public function getByColonyAndFieldId(int $colonyId, int $fieldId): ?PlanetFieldInterface
+    public function getByColonyAndFieldId(int $colonyId, int $fieldId): ?PlanetField
     {
         return $this->findOneBy([
             'colonies_id' => $colonyId,
@@ -56,7 +54,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
     }
 
     #[Override]
-    public function getByColonyAndFieldIndex(int $colonyId, int $fieldIndex): ?PlanetFieldInterface
+    public function getByColonyAndFieldIndex(int $colonyId, int $fieldIndex): ?PlanetField
     {
         return $this->findOneBy([
             'colonies_id' => $colonyId,
@@ -412,7 +410,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
     }
 
     #[Override]
-    public function truncateByColony(ColonyInterface $colony): void
+    public function truncateByColony(Colony $colony): void
     {
         $this->getEntityManager()->createQuery(
             sprintf(

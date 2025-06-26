@@ -10,13 +10,12 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\Trait\SpacecraftHullColorStyleTrait;
 
 #[Table(name: 'stu_spacecraft_condition')]
 #[Entity]
-class SpacecraftCondition implements SpacecraftConditionInterface
+class SpacecraftCondition
 {
     use SpacecraftHullColorStyleTrait;
 
@@ -35,108 +34,93 @@ class SpacecraftCondition implements SpacecraftConditionInterface
     #[Id]
     #[OneToOne(targetEntity: Spacecraft::class, inversedBy: 'condition')]
     #[JoinColumn(name: 'spacecraft_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private SpacecraftInterface $spacecraft;
+    private Spacecraft $spacecraft;
 
     // transitive fields
     private bool $is_destroyed = false;
 
-    public function __construct(SpacecraftInterface $spacecraft)
+    public function __construct(Spacecraft $spacecraft)
     {
         $this->spacecraft = $spacecraft;
     }
 
-    #[Override]
-    public function getSpacecraft(): SpacecraftInterface
+    public function getSpacecraft(): Spacecraft
     {
         return $this->spacecraft;
     }
 
-    #[Override]
     public function getHull(): int
     {
         return $this->hull;
     }
 
-    #[Override]
-    public function setHull(int $hull): SpacecraftConditionInterface
+    public function setHull(int $hull): SpacecraftCondition
     {
         $this->hull = $hull;
         return $this;
     }
 
-    #[Override]
-    public function changeHull(int $amount): SpacecraftConditionInterface
+    public function changeHull(int $amount): SpacecraftCondition
     {
         $this->hull += $amount;
         return $this;
     }
 
-    #[Override]
     public function getShield(): int
     {
         return $this->shield;
     }
 
-    #[Override]
-    public function setShield(int $shield): SpacecraftConditionInterface
+    public function setShield(int $shield): SpacecraftCondition
     {
         $this->shield = $shield;
         return $this;
     }
 
-    #[Override]
-    public function changeShield(int $amount): SpacecraftConditionInterface
+    public function changeShield(int $amount): SpacecraftCondition
     {
         $this->shield += $amount;
         return $this;
     }
 
-    #[Override]
     public function isDestroyed(): bool
     {
         return $this->is_destroyed;
     }
 
-    #[Override]
-    public function setIsDestroyed(bool $isDestroyed): SpacecraftConditionInterface
+    public function setIsDestroyed(bool $isDestroyed): SpacecraftCondition
     {
         $this->is_destroyed = $isDestroyed;
         return $this;
     }
 
-    #[Override]
     public function isDisabled(): bool
     {
         return $this->is_disabled;
     }
 
-    #[Override]
-    public function setDisabled(bool $isDisabled): SpacecraftConditionInterface
+    public function setDisabled(bool $isDisabled): SpacecraftCondition
     {
         $this->is_disabled = $isDisabled;
         return $this;
     }
 
-    #[Override]
     public function getState(): SpacecraftStateEnum
     {
         return $this->state;
     }
 
-    #[Override]
-    public function setState(SpacecraftStateEnum $state): SpacecraftConditionInterface
+    public function setState(SpacecraftStateEnum $state): SpacecraftCondition
     {
         $this->state = $state;
         return $this;
     }
 
-    #[Override]
     public function isUnderRepair(): bool
     {
         return $this->getState()->isRepairState();
     }
 
-    #[Override]
     public function isUnderRetrofit(): bool
     {
         return $this->getState() === SpacecraftStateEnum::RETROFIT;

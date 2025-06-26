@@ -10,7 +10,7 @@ use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Entity\AllianceSettingsInterface;
+use Stu\Orm\Entity\AllianceSettings;
 
 final class Edit implements ViewControllerInterface
 {
@@ -48,19 +48,19 @@ final class Edit implements ViewControllerInterface
         );
 
         $founderDescription = $alliance->getSettings()->filter(
-            function (AllianceSettingsInterface $setting): bool {
+            function (AllianceSettings $setting): bool {
                 return $setting->getSetting() === AllianceSettingsEnum::ALLIANCE_FOUNDER_DESCRIPTION;
             }
         )->first();
 
         $successorDescription = $alliance->getSettings()->filter(
-            function (AllianceSettingsInterface $setting): bool {
+            function (AllianceSettings $setting): bool {
                 return $setting->getSetting() === AllianceSettingsEnum::ALLIANCE_SUCCESSOR_DESCRIPTION;
             }
         )->first();
 
         $diplomatDescription = $alliance->getSettings()->filter(
-            function (AllianceSettingsInterface $setting): bool {
+            function (AllianceSettings $setting): bool {
                 return $setting->getSetting() === AllianceSettingsEnum::ALLIANCE_DIPLOMATIC_DESCRIPTION;
             }
         )->first();

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\Lib;
 
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 abstract class DatabaseTopList
@@ -18,7 +18,7 @@ abstract class DatabaseTopList
         return $this->user_id;
     }
 
-    public function getUser(): ?UserInterface
+    public function getUser(): ?User
     {
         return $this->userRepository->find($this->user_id);
     }

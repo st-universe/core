@@ -8,7 +8,7 @@ use Override;
 use Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\ConditionCheckResult;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 
 class BlockedCondition implements PreFlightConditionInterface
 {
@@ -21,7 +21,7 @@ class BlockedCondition implements PreFlightConditionInterface
 
         $ship = $wrapper->get();
 
-        if ($ship instanceof ShipInterface && $ship->isTractored()) {
+        if ($ship instanceof Ship && $ship->isTractored()) {
             $conditionCheckResult->addBlockedShip(
                 $ship,
                 sprintf(_('Die %s wird von einem Traktorstrahl gehalten'), $ship->getName())

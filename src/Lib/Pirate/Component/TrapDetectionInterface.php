@@ -2,11 +2,11 @@
 
 namespace Stu\Lib\Pirate\Component;
 
-use Stu\Orm\Entity\LocationInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Location;
+use Stu\Orm\Entity\Ship;
 
 interface TrapDetectionInterface
 {
 
-    public function isAlertTrap(LocationInterface $location, ShipInterface $leadShip): bool;
+    public function isAlertTrap(Location $location, Ship $leadShip): bool;
 }

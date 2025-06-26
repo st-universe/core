@@ -13,7 +13,6 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\PrivateMessageRepository;
 
 #[Table(name: 'stu_pms')]
@@ -21,7 +20,7 @@ use Stu\Orm\Repository\PrivateMessageRepository;
 #[Index(name: 'correspondence', columns: ['recip_user', 'send_user'])]
 #[Index(name: 'pm_date_idx', columns: ['date'])]
 #[Entity(repositoryClass: PrivateMessageRepository::class)]
-class PrivateMessage implements PrivateMessageInterface
+class PrivateMessage
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -57,172 +56,148 @@ class PrivateMessage implements PrivateMessageInterface
 
     #[ManyToOne(targetEntity: PrivateMessageFolder::class)]
     #[JoinColumn(name: 'cat_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private PrivateMessageFolderInterface $category;
+    private PrivateMessageFolder $category;
 
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'send_user', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $sendingUser;
+    private User $sendingUser;
 
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'recip_user', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $receivingUser;
+    private User $receivingUser;
 
     #[OneToOne(targetEntity: PrivateMessage::class, inversedBy: 'outboxPm')]
     #[JoinColumn(name: 'inbox_pm_id', referencedColumnName: 'id')]
-    private ?PrivateMessageInterface $inboxPm = null;
+    private ?PrivateMessage $inboxPm = null;
 
     #[OneToOne(targetEntity: PrivateMessage::class, mappedBy: 'inboxPm')]
-    private ?PrivateMessageInterface $outboxPm = null;
+    private ?PrivateMessage $outboxPm = null;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getSenderId(): int
     {
         return $this->send_user;
     }
 
-    #[Override]
     public function getRecipientId(): int
     {
         return $this->recip_user;
     }
 
-    #[Override]
     public function getText(): string
     {
         return $this->text;
     }
 
-    #[Override]
-    public function setText(string $text): PrivateMessageInterface
+    public function setText(string $text): PrivateMessage
     {
         $this->text = $text;
         return $this;
     }
 
-    #[Override]
     public function getDate(): int
     {
         return $this->date;
     }
 
-    #[Override]
-    public function setDate(int $date): PrivateMessageInterface
+    public function setDate(int $date): PrivateMessage
     {
         $this->date = $date;
         return $this;
     }
 
-    #[Override]
     public function getNew(): bool
     {
         return $this->new;
     }
 
-    #[Override]
-    public function setNew(bool $new): PrivateMessageInterface
+    public function setNew(bool $new): PrivateMessage
     {
         $this->new = $new;
         return $this;
     }
 
-    #[Override]
     public function getCategoryId(): int
     {
         return $this->cat_id;
     }
 
-    #[Override]
-    public function getInboxPm(): ?PrivateMessageInterface
+    public function getInboxPm(): ?PrivateMessage
     {
         return $this->inboxPm;
     }
 
-    #[Override]
-    public function setInboxPm(?PrivateMessageInterface $pm): PrivateMessageInterface
+    public function setInboxPm(?PrivateMessage $pm): PrivateMessage
     {
         $this->inboxPm = $pm;
         return $this;
     }
 
-    #[Override]
-    public function getOutboxPm(): ?PrivateMessageInterface
+    public function getOutboxPm(): ?PrivateMessage
     {
         return $this->outboxPm;
     }
 
-    #[Override]
     public function getHref(): ?string
     {
         return $this->href;
     }
 
-    #[Override]
-    public function setHref(?string $href): PrivateMessageInterface
+    public function setHref(?string $href): PrivateMessage
     {
         $this->href = $href;
         return $this;
     }
 
-    #[Override]
-    public function getCategory(): PrivateMessageFolderInterface
+    public function getCategory(): PrivateMessageFolder
     {
         return $this->category;
     }
 
-    #[Override]
-    public function setCategory(PrivateMessageFolderInterface $folder): PrivateMessageInterface
+    public function setCategory(PrivateMessageFolder $folder): PrivateMessage
     {
         $this->category = $folder;
         return $this;
     }
 
-    #[Override]
-    public function getSender(): UserInterface
+    public function getSender(): User
     {
         return $this->sendingUser;
     }
 
-    #[Override]
-    public function setSender(UserInterface $user): PrivateMessageInterface
+    public function setSender(User $user): PrivateMessage
     {
         $this->sendingUser = $user;
         return $this;
     }
 
-    #[Override]
-    public function getRecipient(): UserInterface
+    public function getRecipient(): User
     {
         return $this->receivingUser;
     }
 
-    #[Override]
-    public function setRecipient(UserInterface $recipient): PrivateMessageInterface
+    public function setRecipient(User $recipient): PrivateMessage
     {
         $this->receivingUser = $recipient;
         return $this;
     }
 
-    #[Override]
     public function isDeleted(): bool
     {
         return $this->deleted !== null;
     }
 
-    #[Override]
-    public function setDeleted(int $timestamp): PrivateMessageInterface
+    public function setDeleted(int $timestamp): PrivateMessage
     {
         $this->deleted = $timestamp;
 
         return $this;
     }
 
-    #[Override]
     public function hasTranslation(): bool
     {
         $text = $this->getText();

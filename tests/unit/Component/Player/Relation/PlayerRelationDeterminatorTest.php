@@ -7,7 +7,7 @@ namespace Stu\Component\Player\Relation;
 use Mockery\MockInterface;
 use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\StuTestCase;
 
 class PlayerRelationDeterminatorTest extends StuTestCase
@@ -18,9 +18,9 @@ class PlayerRelationDeterminatorTest extends StuTestCase
 
     private PlayerRelationDeterminator $subject;
 
-    private MockInterface&UserInterface $user;
+    private MockInterface&User $user;
 
-    private MockInterface&UserInterface $opponent;
+    private MockInterface&User $opponent;
 
     #[Override]
     protected function setUp(): void
@@ -33,8 +33,8 @@ class PlayerRelationDeterminatorTest extends StuTestCase
             $this->enemyDeterminator
         );
 
-        $this->user = $this->mock(UserInterface::class);
-        $this->opponent = $this->mock(UserInterface::class);
+        $this->user = $this->mock(User::class);
+        $this->opponent = $this->mock(User::class);
     }
 
     public function testIsFriendExpectTrueIfSameUser(): void

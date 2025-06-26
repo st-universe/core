@@ -11,12 +11,11 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\KnCharacterRepository;
 
 #[Table(name: "stu_kn_character")]
 #[Entity(repositoryClass: KnCharacterRepository::class)]
-class KnCharacter implements KnCharacterInterface
+class KnCharacter
 {
     #[Id]
     #[Column(type: "integer")]
@@ -31,66 +30,57 @@ class KnCharacter implements KnCharacterInterface
 
     #[ManyToOne(targetEntity: KnPost::class)]
     #[JoinColumn(name: "kn_id", nullable: false, referencedColumnName: "id", onDelete: "CASCADE")]
-    private KnPostInterface $knPost;
+    private KnPost $knPost;
 
     #[ManyToOne(targetEntity: UserCharacter::class)]
     #[JoinColumn(name: "character_id", nullable: false, referencedColumnName: "id", onDelete: "CASCADE")]
-    private UserCharacterInterface $userCharacters;
+    private UserCharacter $userCharacters;
 
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getKnId(): int
     {
         return $this->knId;
     }
 
-    #[Override]
-    public function setKnId(int $knId): KnCharacterInterface
+    public function setKnId(int $knId): KnCharacter
     {
         $this->knId = $knId;
         return $this;
     }
 
-    #[Override]
     public function getCharacterId(): int
     {
         return $this->characterId;
     }
 
-    #[Override]
-    public function setCharacterId(int $characterId): KnCharacterInterface
+    public function setCharacterId(int $characterId): KnCharacter
     {
         $this->characterId = $characterId;
         return $this;
     }
 
-    #[Override]
-    public function getKnPost(): KnPostInterface
+    public function getKnPost(): KnPost
     {
         return $this->knPost;
     }
 
-    #[Override]
-    public function setKnPost(KnPostInterface $knPost): KnCharacterInterface
+    public function setKnPost(KnPost $knPost): KnCharacter
     {
         $this->knPost = $knPost;
         return $this;
     }
 
-    #[Override]
-    public function getUserCharacter(): UserCharacterInterface
+    public function getUserCharacter(): UserCharacter
     {
         return $this->userCharacters;
     }
 
-    #[Override]
-    public function setUserCharacter(UserCharacterInterface $userCharacters): KnCharacterInterface
+    public function setUserCharacter(UserCharacter $userCharacters): KnCharacter
     {
         $this->userCharacters = $userCharacters;
         return $this;

@@ -17,9 +17,9 @@ use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\RepairTaskInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\RepairTask;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\RepairTaskRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
@@ -117,8 +117,8 @@ final class RepairUtil implements RepairUtilInterface
     #[Override]
     public function enoughSparePartsOnEntity(
         array $neededParts,
-        ColonyInterface|SpacecraftInterface $entity,
-        SpacecraftInterface $spacecraft
+        Colony|Spacecraft $entity,
+        Spacecraft $spacecraft
     ): bool {
         $neededSpareParts = $neededParts[CommodityTypeEnum::COMMODITY_SPARE_PART];
         $neededSystemComponents = $neededParts[CommodityTypeEnum::COMMODITY_SYSTEM_COMPONENT];
@@ -147,8 +147,8 @@ final class RepairUtil implements RepairUtilInterface
     private function sendNeededAmountMessage(
         int $neededSpareParts,
         int $neededSystemComponents,
-        SpacecraftInterface $spacecraft,
-        ColonyInterface|SpacecraftInterface $entity
+        Spacecraft $spacecraft,
+        Colony|Spacecraft $entity
     ): void {
         $neededPartsString = sprintf(
             "%d %s%s",
@@ -161,7 +161,7 @@ final class RepairUtil implements RepairUtilInterface
             ) : '')
         );
 
-        $isColony = $entity instanceof ColonyInterface;
+        $isColony = $entity instanceof Colony;
 
         //PASSIVE REPAIR OF STATION BY WORKBEES
         if ($entity === $spacecraft) {
@@ -199,7 +199,7 @@ final class RepairUtil implements RepairUtilInterface
     }
 
     #[Override]
-    public function consumeSpareParts(array $neededParts, ColonyInterface|SpacecraftInterface $entity): void
+    public function consumeSpareParts(array $neededParts, Colony|Spacecraft $entity): void
     {
         foreach ($neededParts as $commodityKey => $amount) {
             //$this->loggerUtil->log(sprintf('consume, cid: %d, amount: %d', $commodityKey, $amount));
@@ -221,7 +221,7 @@ final class RepairUtil implements RepairUtilInterface
     //SELFREPAIR STUFF
 
     #[Override]
-    public function determineFreeEngineerCount(SpacecraftInterface $ship): int
+    public function determineFreeEngineerCount(Spacecraft $ship): int
     {
         $engineerCount = 0;
 
@@ -269,7 +269,7 @@ final class RepairUtil implements RepairUtilInterface
     }
 
     #[Override]
-    public function createRepairTask(SpacecraftInterface $ship, SpacecraftSystemTypeEnum $systemType, int $repairType, int $finishTime): void
+    public function createRepairTask(Spacecraft $ship, SpacecraftSystemTypeEnum $systemType, int $repairType, int $finishTime): void
     {
         $obj = $this->repairTaskRepository->prototype();
 
@@ -299,7 +299,7 @@ final class RepairUtil implements RepairUtilInterface
     }
 
     #[Override]
-    public function instantSelfRepair(SpacecraftInterface $spacecraft, SpacecraftSystemTypeEnum $systemType, int $healingPercentage): bool
+    public function instantSelfRepair(Spacecraft $spacecraft, SpacecraftSystemTypeEnum $systemType, int $healingPercentage): bool
     {
         return $this->internalSelfRepair(
             $spacecraft,
@@ -309,7 +309,7 @@ final class RepairUtil implements RepairUtilInterface
     }
 
     #[Override]
-    public function selfRepair(SpacecraftInterface $spacecraft, RepairTaskInterface $repairTask): bool
+    public function selfRepair(Spacecraft $spacecraft, RepairTask $repairTask): bool
     {
         $systemType = $repairTask->getSystemType();
         $percentage = $repairTask->getHealingPercentage();
@@ -319,7 +319,7 @@ final class RepairUtil implements RepairUtilInterface
         return $this->internalSelfRepair($spacecraft, $systemType, $percentage);
     }
 
-    private function internalSelfRepair(SpacecraftInterface $spacecraft, SpacecraftSystemTypeEnum $systemType, int $percentage): bool
+    private function internalSelfRepair(Spacecraft $spacecraft, SpacecraftSystemTypeEnum $systemType, int $percentage): bool
     {
         $result = true;
 

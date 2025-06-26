@@ -12,13 +12,12 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\LotteryTicketRepository;
 
 #[Table(name: 'stu_lottery_ticket')]
 #[Index(name: 'lottery_ticket_period_idx', columns: ['period'])]
 #[Entity(repositoryClass: LotteryTicketRepository::class)]
-class LotteryTicket implements LotteryTicketInterface
+class LotteryTicket
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -36,21 +35,19 @@ class LotteryTicket implements LotteryTicketInterface
 
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $user;
+    private User $user;
 
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    #[Override]
-    public function setUser(UserInterface $user): LotteryTicketInterface
+    public function setUser(User $user): LotteryTicket
     {
         $this->user = $user;
         $this->user_id = $user->getId();
@@ -58,21 +55,18 @@ class LotteryTicket implements LotteryTicketInterface
         return $this;
     }
 
-    #[Override]
     public function getPeriod(): string
     {
         return $this->period;
     }
 
-    #[Override]
-    public function setPeriod(string $period): LotteryTicketInterface
+    public function setPeriod(string $period): LotteryTicket
     {
         $this->period = $period;
 
         return $this;
     }
 
-    #[Override]
     public function setIsWinner(bool $isWinner): bool
     {
         return $this->is_winner = $isWinner;

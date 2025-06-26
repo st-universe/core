@@ -2,7 +2,7 @@
 
 namespace Stu\Module\Colony\Lib;
 
-use Stu\Orm\Entity\PlanetFieldInterface;
+use Stu\Orm\Entity\PlanetField;
 
 interface PlanetFieldTypeRetrieverInterface
 {
@@ -14,13 +14,13 @@ interface PlanetFieldTypeRetrieverInterface
      * Returns `true` if the field is located within the underground
      */
     public function isUndergroundField(
-        PlanetFieldInterface $planetField
+        PlanetField $planetField
     ): bool;
 
     /**
      * Returns `true` if the field is located within the orbit
      */
     public function isOrbitField(
-        PlanetFieldInterface $planetField
+        PlanetField $planetField
     ): bool;
 }

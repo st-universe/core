@@ -2,7 +2,7 @@
 
 namespace Stu\Module\Colony\Lib;
 
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Colony;
 
 interface ColonyLoaderInterface
 {
@@ -10,7 +10,7 @@ interface ColonyLoaderInterface
         int $colonyId,
         int $userId,
         bool $checkForEntityLock = true
-    ): ColonyInterface;
+    ): Colony;
 
-    public function load(int $colonyId, bool $checkForEntityLock = true): ColonyInterface;
+    public function load(int $colonyId, bool $checkForEntityLock = true): Colony;
 }

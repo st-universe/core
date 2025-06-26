@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Starmap\Lib;
 
-use Stu\Orm\Entity\LayerInterface;
+use Stu\Orm\Entity\Layer;
 
 interface ExplorableStarMapItemInterface
 {
@@ -14,7 +14,7 @@ interface ExplorableStarMapItemInterface
 
     public function getFieldId(): int;
 
-    public function getLayer(): LayerInterface;
+    public function getLayer(): Layer;
 
     public function getTitle(): ?string;
 

@@ -11,11 +11,11 @@ use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\CommodityInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\StorageInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Commodity;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Storage;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -45,7 +45,7 @@ class CommodityTransferTest extends StuTestCase
 
     public function testTransferCommodityExpectNothingWhenCommodityNotPresent(): void
     {
-        $colony = $this->mock(ColonyInterface::class);
+        $colony = $this->mock(Colony::class);
 
         $colony->shouldReceive('getStorage')
             ->withNoArgs()
@@ -66,10 +66,10 @@ class CommodityTransferTest extends StuTestCase
 
     public function testTransferCommodityExpectInfoWhenCommodityNotBeamable(): void
     {
-        $colony = $this->mock(ColonyInterface::class);
-        $storage = $this->mock(StorageInterface::class);
-        $commodity = $this->mock(CommodityInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $colony = $this->mock(Colony::class);
+        $storage = $this->mock(Storage::class);
+        $commodity = $this->mock(Commodity::class);
+        $user = $this->mock(User::class);
 
         $colony->shouldReceive('getStorage')
             ->withNoArgs()
@@ -111,10 +111,10 @@ class CommodityTransferTest extends StuTestCase
 
     public function testTransferCommodityExpectNothingWhenNoEps(): void
     {
-        $colony = $this->mock(ColonyInterface::class);
-        $storage = $this->mock(StorageInterface::class);
-        $commodity = $this->mock(CommodityInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $colony = $this->mock(Colony::class);
+        $storage = $this->mock(Storage::class);
+        $commodity = $this->mock(Commodity::class);
+        $user = $this->mock(User::class);
 
         $colony->shouldReceive('getStorage')
             ->withNoArgs()
@@ -151,10 +151,10 @@ class CommodityTransferTest extends StuTestCase
 
     public function testTransferCommodityExpectNothingWhenAmountNotReadable(): void
     {
-        $colony = $this->mock(ColonyInterface::class);
-        $storage = $this->mock(StorageInterface::class);
-        $commodity = $this->mock(CommodityInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $colony = $this->mock(Colony::class);
+        $storage = $this->mock(Storage::class);
+        $commodity = $this->mock(Commodity::class);
+        $user = $this->mock(User::class);
 
         $colony->shouldReceive('getStorage')
             ->withNoArgs()
@@ -191,10 +191,10 @@ class CommodityTransferTest extends StuTestCase
 
     public function testTransferCommodityExpectNothingWhenAmountSmallerOne(): void
     {
-        $colony = $this->mock(ColonyInterface::class);
-        $storage = $this->mock(StorageInterface::class);
-        $commodity = $this->mock(CommodityInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $colony = $this->mock(Colony::class);
+        $storage = $this->mock(Storage::class);
+        $commodity = $this->mock(Commodity::class);
+        $user = $this->mock(User::class);
 
         $colony->shouldReceive('getStorage')
             ->withNoArgs()
@@ -231,10 +231,10 @@ class CommodityTransferTest extends StuTestCase
 
     public function testTransferCommodityExpectNothingWhenTargetStorageFull(): void
     {
-        $colony = $this->mock(ColonyInterface::class);
-        $storage = $this->mock(StorageInterface::class);
-        $commodity = $this->mock(CommodityInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $colony = $this->mock(Colony::class);
+        $storage = $this->mock(Storage::class);
+        $commodity = $this->mock(Commodity::class);
+        $user = $this->mock(User::class);
 
         $colony->shouldReceive('getStorage')
             ->withNoArgs()
@@ -277,11 +277,11 @@ class CommodityTransferTest extends StuTestCase
 
     public function testTransferCommodityExpectTransferCappedByStorageAmount(): void
     {
-        $colony = $this->mock(ColonyInterface::class);
-        $ship = $this->mock(ShipInterface::class);
-        $storage = $this->mock(StorageInterface::class);
-        $commodity = $this->mock(CommodityInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $colony = $this->mock(Colony::class);
+        $ship = $this->mock(Ship::class);
+        $storage = $this->mock(Storage::class);
+        $commodity = $this->mock(Commodity::class);
+        $user = $this->mock(User::class);
 
         $colony->shouldReceive('getStorage')
             ->withNoArgs()
@@ -365,11 +365,11 @@ class CommodityTransferTest extends StuTestCase
 
     public function testTransferCommodityExpectMaximumTransfer(): void
     {
-        $colony = $this->mock(ColonyInterface::class);
-        $ship = $this->mock(ShipInterface::class);
-        $storage = $this->mock(StorageInterface::class);
-        $commodity = $this->mock(CommodityInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $colony = $this->mock(Colony::class);
+        $ship = $this->mock(Ship::class);
+        $storage = $this->mock(Storage::class);
+        $commodity = $this->mock(Commodity::class);
+        $user = $this->mock(User::class);
 
         $colony->shouldReceive('getStorage')
             ->withNoArgs()
@@ -452,11 +452,11 @@ class CommodityTransferTest extends StuTestCase
 
     public function testTransferCommodityExpectTransferCappedByColonyEps(): void
     {
-        $colony = $this->mock(ColonyInterface::class);
-        $ship = $this->mock(ShipInterface::class);
-        $storage = $this->mock(StorageInterface::class);
-        $commodity = $this->mock(CommodityInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $colony = $this->mock(Colony::class);
+        $ship = $this->mock(Ship::class);
+        $storage = $this->mock(Storage::class);
+        $commodity = $this->mock(Commodity::class);
+        $user = $this->mock(User::class);
 
         $colony->shouldReceive('getStorage')
             ->withNoArgs()
@@ -540,12 +540,12 @@ class CommodityTransferTest extends StuTestCase
 
     public function testTransferCommodityExpectTransferCappedByShipEps(): void
     {
-        $colony = $this->mock(ColonyInterface::class);
+        $colony = $this->mock(Colony::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
-        $ship = $this->mock(ShipInterface::class);
-        $storage = $this->mock(StorageInterface::class);
-        $commodity = $this->mock(CommodityInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $ship = $this->mock(Ship::class);
+        $storage = $this->mock(Storage::class);
+        $commodity = $this->mock(Commodity::class);
+        $user = $this->mock(User::class);
         $epsSystem = $this->mock(EpsSystemData::class);
 
         $colony->shouldReceive('getUser')
@@ -638,11 +638,11 @@ class CommodityTransferTest extends StuTestCase
 
     public function testTransferCommodityExpectTransferCappedByFreeStorage(): void
     {
-        $colony = $this->mock(ColonyInterface::class);
-        $ship = $this->mock(ShipInterface::class);
-        $storage = $this->mock(StorageInterface::class);
-        $commodity = $this->mock(CommodityInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $colony = $this->mock(Colony::class);
+        $ship = $this->mock(Ship::class);
+        $storage = $this->mock(Storage::class);
+        $commodity = $this->mock(Commodity::class);
+        $user = $this->mock(User::class);
 
         $colony->shouldReceive('getStorage')
             ->withNoArgs()

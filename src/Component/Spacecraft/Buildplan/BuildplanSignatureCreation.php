@@ -3,7 +3,7 @@
 namespace Stu\Component\Spacecraft\Buildplan;
 
 use Override;
-use Stu\Orm\Entity\ModuleInterface;
+use Stu\Orm\Entity\Module;
 
 class BuildplanSignatureCreation implements BuildplanSignatureCreationInterface
 {
@@ -11,7 +11,7 @@ class BuildplanSignatureCreation implements BuildplanSignatureCreationInterface
     #[Override]
     public function createSignature(array $modules, int $crewUsage): string
     {
-        $ids = array_map(fn(ModuleInterface $module): int => $module->getId(), $modules);
+        $ids = array_map(fn(Module $module): int => $module->getId(), $modules);
 
         return $this->createSignatureByModuleIds($ids, $crewUsage);
     }

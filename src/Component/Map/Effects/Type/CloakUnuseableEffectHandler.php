@@ -10,7 +10,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\LocationInterface;
+use Stu\Orm\Entity\Location;
 
 class CloakUnuseableEffectHandler implements EffectHandlerInterface
 {
@@ -25,7 +25,7 @@ class CloakUnuseableEffectHandler implements EffectHandlerInterface
     }
 
     #[Override]
-    public function addFlightInformation(LocationInterface $location, MessageCollectionInterface $messages): void
+    public function addFlightInformation(Location $location, MessageCollectionInterface $messages): void
     {
         $messages->addInformationf(
             "[color=yellow]Ionische Dispersion durch %s stört die Phasenmodulation von Tarnsystemen in Sektor %s[/color]",

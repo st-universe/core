@@ -11,8 +11,8 @@ use Stu\Lib\Component\ComponentRegistrationInterface;
 use Stu\Module\Control\GameController;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Game\Component\GameComponentEnum;
-use Stu\Orm\Entity\ResearchedInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Researched;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -38,7 +38,7 @@ class CancelResearchTest extends StuTestCase
     public function testHandleDoesNothingIfNoCurrentResearch(): void
     {
         $game = $this->mock(GameControllerInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
 
         request::setMockVars(['id' => 42]);
 
@@ -61,8 +61,8 @@ class CancelResearchTest extends StuTestCase
     public function testHandleCancelsTheUsersResearch(): void
     {
         $game = $this->mock(GameControllerInterface::class);
-        $user = $this->mock(UserInterface::class);
-        $researchReference = $this->mock(ResearchedInterface::class);
+        $user = $this->mock(User::class);
+        $researchReference = $this->mock(Researched::class);
 
         request::setMockVars(['id' => 42]);
 

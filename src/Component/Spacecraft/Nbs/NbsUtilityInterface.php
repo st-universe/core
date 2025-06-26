@@ -4,19 +4,19 @@ namespace Stu\Component\Spacecraft\Nbs;
 
 use Stu\Lib\Session\SessionStorageInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\StarSystemMap;
 
 interface NbsUtilityInterface
 {
-    public function isTachyonActive(SpacecraftInterface $spacecraft): bool;
+    public function isTachyonActive(Spacecraft $spacecraft): bool;
 
     public function setNbsTemplateVars(
-        SpacecraftInterface $spacecraft,
+        Spacecraft $spacecraft,
         GameControllerInterface $game,
         ?SessionStorageInterface $sessionStorage,
         bool $tachyonActive,
-        MapInterface|StarSystemMapInterface|null $field = null
+        Map|StarSystemMap|null $field = null
     ): void;
 }

@@ -2,15 +2,15 @@
 
 namespace Stu\Module\Research;
 
-use Stu\Orm\Entity\BuildingInterface;
-use Stu\Orm\Entity\ResearchedInterface;
-use Stu\Orm\Entity\ResearchInterface;
+use Stu\Orm\Entity\Building;
+use Stu\Orm\Entity\Researched;
+use Stu\Orm\Entity\Research;
 
 interface SelectedTechInterface
 {
-    public function getResearch(): ResearchInterface;
+    public function getResearch(): Research;
 
-    public function getResearchState(): ?ResearchedInterface;
+    public function getResearchState(): ?Researched;
 
     /** @return array<string, TechDependency> */
     public function getDistinctExcludeNames(): array;
@@ -30,6 +30,6 @@ interface SelectedTechInterface
 
     public function getWikiLink(): string;
 
-    /** @return array<BuildingInterface> */
+    /** @return array<Building> */
     public function getBuildings(): array;
 }

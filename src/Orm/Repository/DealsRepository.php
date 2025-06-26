@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Component\Game\TimeConstants;
 use Stu\Orm\Entity\Deals;
-use Stu\Orm\Entity\DealsInterface;
 use Stu\Orm\Entity\Faction;
 use Stu\Orm\Entity\User;
 
@@ -18,13 +17,13 @@ use Stu\Orm\Entity\User;
 final class DealsRepository extends EntityRepository implements DealsRepositoryInterface
 {
     #[Override]
-    public function prototype(): DealsInterface
+    public function prototype(): Deals
     {
         return new Deals();
     }
 
     #[Override]
-    public function save(DealsInterface $post): void
+    public function save(Deals $post): void
     {
         $em = $this->getEntityManager();
 
@@ -32,7 +31,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
     }
 
     #[Override]
-    public function delete(DealsInterface $post): void
+    public function delete(Deals $post): void
     {
         $em = $this->getEntityManager();
 

@@ -8,7 +8,7 @@ use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 
 final class UplinkShipSystem extends AbstractSpacecraftSystemType implements SpacecraftSystemTypeInterface
 {
@@ -42,7 +42,7 @@ final class UplinkShipSystem extends AbstractSpacecraftSystemType implements Spa
         return true;
     }
 
-    private function getOwnCrewCount(SpacecraftInterface $spacecraft): int
+    private function getOwnCrewCount(Spacecraft $spacecraft): int
     {
         $count = 0;
         foreach ($spacecraft->getCrewAssignments() as $spacecraftCrew) {
@@ -53,7 +53,7 @@ final class UplinkShipSystem extends AbstractSpacecraftSystemType implements Spa
         return $count;
     }
 
-    private function hasForeignCrew(SpacecraftInterface $spacecraft): bool
+    private function hasForeignCrew(Spacecraft $spacecraft): bool
     {
         foreach ($spacecraft->getCrewAssignments() as $spacecraftCrew) {
             if ($spacecraftCrew->getCrew()->getUser() !== $spacecraft->getUser()) {

@@ -5,7 +5,7 @@ namespace Stu\Module\Station\Lib\Creation;
 use Stu\Module\Spacecraft\Lib\Creation\SpacecraftConfiguratorInterface;
 use Stu\Module\Spacecraft\Lib\Creation\SpacecraftCreatorInterface;
 use Stu\Module\Station\Lib\StationWrapperInterface;
-use Stu\Orm\Entity\ConstructionProgressInterface;
+use Stu\Orm\Entity\ConstructionProgress;
 
 class StationCreator implements StationCreatorInterface
 {
@@ -16,7 +16,7 @@ class StationCreator implements StationCreatorInterface
         int $userId,
         int $rumpId,
         int $buildplanId,
-        ConstructionProgressInterface $progress
+        ConstructionProgress $progress
     ): SpacecraftConfiguratorInterface {
 
         return $this->spacecraftCreator->createBy(

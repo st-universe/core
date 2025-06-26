@@ -18,15 +18,13 @@ use Stu\Module\Spacecraft\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Orm\Entity\Anomaly;
 use Stu\Orm\Entity\SpacecraftBuildplan;
 use Stu\Orm\Entity\CrewAssignment;
-use Stu\Orm\Entity\MapInterface;
+use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\ShipRumpSpecial;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\SpacecraftCondition;
-use Stu\Orm\Entity\SpacecraftInterface;
 use Stu\Orm\Entity\SpacecraftSystem;
-use Stu\Orm\Entity\StarSystemMapInterface;
+use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Entity\User;
-use Stu\Orm\Entity\UserInterface;
 
 /**
  * @extends EntityRepository<Spacecraft>
@@ -34,7 +32,7 @@ use Stu\Orm\Entity\UserInterface;
 final class SpacecraftRepository extends EntityRepository implements SpacecraftRepositoryInterface
 {
     #[Override]
-    public function save(SpacecraftInterface $spacecraft): void
+    public function save(Spacecraft $spacecraft): void
     {
         $em = $this->getEntityManager();
 
@@ -42,7 +40,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
     }
 
     #[Override]
-    public function delete(SpacecraftInterface $spacecraft): void
+    public function delete(Spacecraft $spacecraft): void
     {
         $em = $this->getEntityManager();
 
@@ -85,7 +83,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
     }
 
     #[Override]
-    public function getByUser(UserInterface $user): array
+    public function getByUser(User $user): array
     {
         return $this->findBy([
             'user_id' => $user,
@@ -176,7 +174,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
 
     #[Override]
     public function isCloakedSpacecraftAtLocation(
-        SpacecraftInterface $spacecraft
+        Spacecraft $spacecraft
     ): bool {
 
         $result = $this->getEntityManager()->createQuery(
@@ -203,9 +201,9 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
 
     #[Override]
     public function getSingleSpacecraftScannerResults(
-        SpacecraftInterface $spacecraft,
+        Spacecraft $spacecraft,
         bool $showCloaked = false,
-        MapInterface|StarSystemMapInterface|null $field = null
+        Map|StarSystemMap|null $field = null
     ): array {
 
         $rsm = new ResultSetMapping();
@@ -275,7 +273,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
     }
 
     #[Override]
-    public function getRandomSpacecraftWithCrewByUser(int $userId): ?SpacecraftInterface
+    public function getRandomSpacecraftWithCrewByUser(int $userId): ?Spacecraft
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('id', 'id', 'integer');

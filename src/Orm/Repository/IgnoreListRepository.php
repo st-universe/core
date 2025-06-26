@@ -7,7 +7,6 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\IgnoreList;
-use Stu\Orm\Entity\IgnoreListInterface;
 
 /**
  * @extends EntityRepository<IgnoreList>
@@ -15,13 +14,13 @@ use Stu\Orm\Entity\IgnoreListInterface;
 final class IgnoreListRepository extends EntityRepository implements IgnoreListRepositoryInterface
 {
     #[Override]
-    public function prototype(): IgnoreListInterface
+    public function prototype(): IgnoreList
     {
         return new IgnoreList();
     }
 
     #[Override]
-    public function save(IgnoreListInterface $ignoreList): void
+    public function save(IgnoreList $ignoreList): void
     {
         $em = $this->getEntityManager();
 
@@ -29,7 +28,7 @@ final class IgnoreListRepository extends EntityRepository implements IgnoreListR
     }
 
     #[Override]
-    public function delete(IgnoreListInterface $ignoreList): void
+    public function delete(IgnoreList $ignoreList): void
     {
         $em = $this->getEntityManager();
 

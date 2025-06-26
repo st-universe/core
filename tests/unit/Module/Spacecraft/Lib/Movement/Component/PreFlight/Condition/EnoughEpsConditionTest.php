@@ -14,9 +14,9 @@ use Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\ConditionCheckResult;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Route\RouteModeEnum;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\StarSystemMap;
 use Stu\StuTestCase;
 
 class EnoughEpsConditionTest extends StuTestCase
@@ -25,7 +25,7 @@ class EnoughEpsConditionTest extends StuTestCase
 
     private PreFlightConditionInterface $subject;
 
-    private MockInterface&ShipInterface $ship;
+    private MockInterface&Ship $ship;
 
     private MockInterface&ShipWrapperInterface $wrapper;
 
@@ -38,7 +38,7 @@ class EnoughEpsConditionTest extends StuTestCase
     {
         $this->spacecraftSystemManager = $this->mock(SpacecraftSystemManagerInterface::class);
 
-        $this->ship = $this->mock(ShipInterface::class);
+        $this->ship = $this->mock(Ship::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
         $this->flightRoute = $this->mock(FlightRouteInterface::class);
         $this->conditionCheckResult = $this->mock(ConditionCheckResult::class);
@@ -156,10 +156,10 @@ class EnoughEpsConditionTest extends StuTestCase
             [RouteModeEnum::WORMHOLE_ENTRY],
             [RouteModeEnum::WORMHOLE_EXIT],
             [RouteModeEnum::TRANSWARP],
-            [RouteModeEnum::FLIGHT, MapInterface::class],
-            [RouteModeEnum::FLIGHT, StarSystemMapInterface::class, false],
-            [RouteModeEnum::FLIGHT, StarSystemMapInterface::class, true, 2, null, 2],
-            [RouteModeEnum::FLIGHT, StarSystemMapInterface::class, true, 2, 3, 5]
+            [RouteModeEnum::FLIGHT, Map::class],
+            [RouteModeEnum::FLIGHT, StarSystemMap::class, false],
+            [RouteModeEnum::FLIGHT, StarSystemMap::class, true, 2, null, 2],
+            [RouteModeEnum::FLIGHT, StarSystemMap::class, true, 2, 3, 5]
         ];
     }
 
@@ -209,7 +209,7 @@ class EnoughEpsConditionTest extends StuTestCase
                 ->andReturn($this->mock($nextWaypointClass));
         }
 
-        if ($nextWaypointClass === StarSystemMapInterface::class) {
+        if ($nextWaypointClass === StarSystemMap::class) {
             $this->ship->shouldReceive('hasSpacecraftSystem')
                 ->with(SpacecraftSystemTypeEnum::IMPULSEDRIVE)
                 ->andReturn($hasImpulse);
@@ -222,7 +222,7 @@ class EnoughEpsConditionTest extends StuTestCase
                 ->andReturn($flightCost);
         }
         if ($tractorCost !== null) {
-            $tractoredShip = $this->mock(ShipInterface::class);
+            $tractoredShip = $this->mock(Ship::class);
 
             $this->ship->shouldReceive('getTractoredShip')
                 ->withNoArgs()

@@ -3,13 +3,13 @@
 namespace Stu\Lib\Pirate\Component;
 
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
-use Stu\Orm\Entity\LocationInterface;
-use Stu\Orm\Entity\StarSystemInterface;
+use Stu\Orm\Entity\Location;
+use Stu\Orm\Entity\StarSystem;
 
 interface PirateNavigationInterface
 {
     public function navigateToTarget(
         FleetWrapperInterface $fleet,
-        LocationInterface|StarSystemInterface $target
+        Location|StarSystem $target
     ): bool;
 }

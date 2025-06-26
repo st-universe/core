@@ -6,7 +6,7 @@ namespace Stu\Component\Player\Deletion\Handler;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -24,7 +24,7 @@ final class RpgPlotDeletionHandler implements PlayerDeletionHandlerInterface
     ) {}
 
     #[Override]
-    public function delete(UserInterface $user): void
+    public function delete(User $user): void
     {
         $gameFallbackUser = $this->userRepository->getFallbackUser();
         $userId = $user->getId();

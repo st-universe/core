@@ -11,9 +11,9 @@ use Mockery\MockInterface;
 use Override;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
-use Stu\Orm\Entity\AllianceInterface;
-use Stu\Orm\Entity\AllianceJobInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Alliance;
+use Stu\Orm\Entity\AllianceJob;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Doctrine\Common\Collections\Collection;
@@ -22,7 +22,7 @@ class AllianceDeletionHandlerTest extends MockeryTestCase
 {
     private AllianceJobRepositoryInterface&MockInterface $allianceJobRepository;
     private AllianceActionManagerInterface&MockInterface $allianceActionManager;
-        private UserRepositoryInterface&MockInterface $userRepository;
+    private UserRepositoryInterface&MockInterface $userRepository;
 
     private PlayerDeletionHandlerInterface $handler;
 
@@ -42,11 +42,11 @@ class AllianceDeletionHandlerTest extends MockeryTestCase
 
     public function testDeleteDoesNotTouchAllianceIfNotFounder(): void
     {
-        /** @var UserInterface|MockInterface $user */
-        $user = Mockery::mock(UserInterface::class);
+        /** @var User|MockInterface $user */
+        $user = Mockery::mock(User::class);
 
-        /** @var AllianceJobInterface|MockInterface $job */
-        $job = Mockery::mock(AllianceJobInterface::class);
+        /** @var AllianceJob|MockInterface $job */
+        $job = Mockery::mock(AllianceJob::class);
 
         $userId = 666;
 
@@ -73,16 +73,16 @@ class AllianceDeletionHandlerTest extends MockeryTestCase
 
     public function testDeleteDeletesAllianceIfNoSuccessor(): void
     {
-        /** @var UserInterface|MockInterface $user */
-        $user = Mockery::mock(UserInterface::class);
+        /** @var User|MockInterface $user */
+        $user = Mockery::mock(User::class);
 
-        /** @var AllianceJobInterface|MockInterface $job */
-        $job = Mockery::mock(AllianceJobInterface::class);
+        /** @var AllianceJob|MockInterface $job */
+        $job = Mockery::mock(AllianceJob::class);
 
-        /** @var AllianceInterface|MockInterface $alliance */
-        $alliance = Mockery::mock(AllianceInterface::class);
+        /** @var Alliance|MockInterface $alliance */
+        $alliance = Mockery::mock(Alliance::class);
 
-        /** @var Collection<int, UserInterface>|MockInterface $members */
+        /** @var Collection<int, User>|MockInterface $members */
         $members = Mockery::mock(Collection::class);
 
         $userId = 666;
@@ -144,19 +144,19 @@ class AllianceDeletionHandlerTest extends MockeryTestCase
 
     public function testDeleteMakesSuccessorFounder(): void
     {
-        /** @var UserInterface|MockInterface $user */
-        $user = Mockery::mock(UserInterface::class);
+        /** @var User|MockInterface $user */
+        $user = Mockery::mock(User::class);
 
-        /** @var AllianceJobInterface|MockInterface $job */
-        $job = Mockery::mock(AllianceJobInterface::class);
+        /** @var AllianceJob|MockInterface $job */
+        $job = Mockery::mock(AllianceJob::class);
 
-        /** @var AllianceJobInterface|MockInterface $successorJob */
-        $successorJob = Mockery::mock(AllianceJobInterface::class);
+        /** @var AllianceJob|MockInterface $successorJob */
+        $successorJob = Mockery::mock(AllianceJob::class);
 
-        /** @var AllianceInterface|MockInterface $alliance */
-        $alliance = Mockery::mock(AllianceInterface::class);
+        /** @var Alliance|MockInterface $alliance */
+        $alliance = Mockery::mock(Alliance::class);
 
-        /** @var Collection<int, UserInterface>|MockInterface $members */
+        /** @var Collection<int, User>|MockInterface $members */
         $members = Mockery::mock(Collection::class);
 
         $userId = 666;

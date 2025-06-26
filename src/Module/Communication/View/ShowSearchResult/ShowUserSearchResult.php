@@ -11,7 +11,7 @@ use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Entity\KnPostInterface;
+use Stu\Orm\Entity\KnPost;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 
 final class ShowUserSearchResult implements ViewControllerInterface
@@ -42,7 +42,7 @@ final class ShowUserSearchResult implements ViewControllerInterface
         $game->setTemplateVar(
             'KN_POSTINGS',
             array_map(
-                fn(KnPostInterface $knPost): KnItemInterface => $this->knFactory->createKnItem(
+                fn(KnPost $knPost): KnItemInterface => $this->knFactory->createKnItem(
                     $knPost,
                     $user
                 ),

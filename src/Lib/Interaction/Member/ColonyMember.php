@@ -6,20 +6,20 @@ use Override;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Lib\Interaction\InteractionCheckType;
 use Stu\Module\Ship\Lib\TholianWebUtilInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\StarSystemMap;
+use Stu\Orm\Entity\User;
 
 class ColonyMember implements InteractionMemberInterface
 {
     public function __construct(
         private TholianWebUtilInterface $tholianWebUtil,
-        private ColonyInterface $colony
+        private Colony $colony
     ) {}
 
     #[Override]
-    public function get(): ColonyInterface
+    public function get(): Colony
     {
         return $this->colony;
     }
@@ -56,13 +56,13 @@ class ColonyMember implements InteractionMemberInterface
     }
 
     #[Override]
-    public function getLocation(): MapInterface|StarSystemMapInterface
+    public function getLocation(): Map|StarSystemMap
     {
         return $this->colony->getLocation();
     }
 
     #[Override]
-    public function getUser(): ?UserInterface
+    public function getUser(): ?User
     {
         return $this->colony->getUser();
     }

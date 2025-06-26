@@ -25,11 +25,11 @@ use Stu\Module\Spacecraft\Lib\Ui\StateIconAndTitle;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Station\Lib\StationWrapper;
 use Stu\Module\Station\Lib\StationWrapperInterface;
-use Stu\Orm\Entity\FleetInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\StationInterface;
-use Stu\Orm\Entity\TholianWebInterface;
+use Stu\Orm\Entity\Fleet;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\Station;
+use Stu\Orm\Entity\TholianWeb;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 final class SpacecraftWrapperFactory implements SpacecraftWrapperFactoryInterface
@@ -47,17 +47,17 @@ final class SpacecraftWrapperFactory implements SpacecraftWrapperFactoryInterfac
     ) {}
 
     #[Override]
-    public function wrapSpacecraft(SpacecraftInterface $spacecraft): SpacecraftWrapperInterface
+    public function wrapSpacecraft(Spacecraft $spacecraft): SpacecraftWrapperInterface
     {
-        if ($spacecraft instanceof ShipInterface) {
+        if ($spacecraft instanceof Ship) {
             return $this->wrapShip($spacecraft);
         }
 
-        if ($spacecraft instanceof StationInterface) {
+        if ($spacecraft instanceof Station) {
             return $this->wrapStation($spacecraft);
         }
 
-        if ($spacecraft instanceof TholianWebInterface) {
+        if ($spacecraft instanceof TholianWeb) {
             return $this->wrapTholianWeb($spacecraft);
         }
 
@@ -65,7 +65,7 @@ final class SpacecraftWrapperFactory implements SpacecraftWrapperFactoryInterfac
     }
 
     #[Override]
-    public function wrapStation(StationInterface $station): StationWrapperInterface
+    public function wrapStation(Station $station): StationWrapperInterface
     {
         return new StationWrapper(
             $station,
@@ -83,7 +83,7 @@ final class SpacecraftWrapperFactory implements SpacecraftWrapperFactoryInterfac
     }
 
     #[Override]
-    public function wrapShip(ShipInterface $ship): ShipWrapperInterface
+    public function wrapShip(Ship $ship): ShipWrapperInterface
     {
         return new ShipWrapper(
             $ship,
@@ -100,7 +100,7 @@ final class SpacecraftWrapperFactory implements SpacecraftWrapperFactoryInterfac
         );
     }
 
-    private function wrapTholianWeb(TholianWebInterface $tholianWeb): TholianWebWrapper
+    private function wrapTholianWeb(TholianWeb $tholianWeb): TholianWebWrapper
     {
         return new TholianWebWrapper(
             $tholianWeb,
@@ -133,7 +133,7 @@ final class SpacecraftWrapperFactory implements SpacecraftWrapperFactoryInterfac
     public function wrapSpacecrafts(array $spacecrafts): Collection
     {
         return (new ArrayCollection($spacecrafts))
-            ->map(fn(SpacecraftInterface $spacecraft): SpacecraftWrapperInterface => $this->wrapSpacecraft($spacecraft));
+            ->map(fn(Spacecraft $spacecraft): SpacecraftWrapperInterface => $this->wrapSpacecraft($spacecraft));
     }
 
     #[Override]
@@ -145,7 +145,7 @@ final class SpacecraftWrapperFactory implements SpacecraftWrapperFactoryInterfac
         $groups = new ArrayCollection();
 
         foreach (SpacecraftGroup::sortSpacecraftCollection($spacecrafts) as $spacecraft) {
-            $fleet = $spacecraft instanceof ShipInterface ? $spacecraft->getFleet() : null;
+            $fleet = $spacecraft instanceof Ship ? $spacecraft->getFleet() : null;
             $fleetId = $fleet === null ? 0 : $fleet->getId();
             $sort = $fleet === null ? PHP_INT_MAX : $fleet->getSort();
             $groupKey = sprintf('%d_%d', $sort, $fleetId);
@@ -165,7 +165,7 @@ final class SpacecraftWrapperFactory implements SpacecraftWrapperFactoryInterfac
     }
 
     #[Override]
-    public function wrapFleet(FleetInterface $fleet): FleetWrapperInterface
+    public function wrapFleet(Fleet $fleet): FleetWrapperInterface
     {
         return new FleetWrapper($fleet, $this, $this->game, false);
     }
@@ -174,7 +174,7 @@ final class SpacecraftWrapperFactory implements SpacecraftWrapperFactoryInterfac
     public function wrapFleets(array $fleets): array
     {
         return array_map(
-            fn(FleetInterface $fleet): FleetWrapperInterface => $this->wrapFleet($fleet),
+            fn(Fleet $fleet): FleetWrapperInterface => $this->wrapFleet($fleet),
             $fleets
         );
     }

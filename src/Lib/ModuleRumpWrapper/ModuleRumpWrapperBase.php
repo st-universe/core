@@ -8,21 +8,21 @@ use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\ModuleInterface;
-use Stu\Orm\Entity\SpacecraftBuildplanInterface;
-use Stu\Orm\Entity\SpacecraftRumpBaseValuesInterface;
-use Stu\Orm\Entity\SpacecraftRumpInterface;
+use Stu\Orm\Entity\Module;
+use Stu\Orm\Entity\SpacecraftBuildplan;
+use Stu\Orm\Entity\SpacecraftRumpBaseValues;
+use Stu\Orm\Entity\SpacecraftRump;
 
 abstract class ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
 {
-    /** @var null|array<int, ModuleInterface> */
+    /** @var null|array<int, Module> */
     private ?array $modules = null;
 
-    protected SpacecraftRumpBaseValuesInterface $rumpBaseValues;
+    protected SpacecraftRumpBaseValues $rumpBaseValues;
 
     public function __construct(
-        protected SpacecraftRumpInterface $rump,
-        private ?SpacecraftBuildplanInterface $buildplan
+        protected SpacecraftRump $rump,
+        private ?SpacecraftBuildplan $buildplan
     ) {
         $this->rumpBaseValues = $rump->getBaseValues();
     }
@@ -43,7 +43,7 @@ abstract class ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
     }
 
     #[Override]
-    public function getSecondValue(?ModuleInterface $module = null): int
+    public function getSecondValue(?Module $module = null): int
     {
         throw new RuntimeException(sprintf('not implemented for moduleType: %s', $this->getModuleType()->name));
     }

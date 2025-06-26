@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Component\Player\Register;
 
 use Override;
-use Stu\Orm\Entity\FactionInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Faction;
+use Stu\Orm\Entity\User;
 
 /**
  * Creates players without any registration/validation
@@ -17,13 +17,13 @@ class LocalPlayerCreator extends PlayerCreator
     public function createPlayer(
         string $loginName,
         string $emailAddress,
-        FactionInterface $faction,
+        Faction $faction,
         string $password,
         ?string $mobile = null,
         ?string $smsCode = null,
         ?string $emailCode = null,
         ?string $referrer = null
-    ): UserInterface {
+    ): User {
 
         $player = $this->userRepository->prototype();
         $player->setUsername(sprintf('Siedler %d', $player->getId()));

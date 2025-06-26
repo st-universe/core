@@ -6,12 +6,12 @@ namespace Stu\Lib\Transfer\Wrapper;
 
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Information\InformationInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\TorpedoTypeInterface;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\TorpedoType;
 
 class SpacecraftStorageTorpedoLogic
 {
-    public function canTransferTorpedos(SpacecraftInterface $spacecraft, InformationInterface $information): bool
+    public function canTransferTorpedos(Spacecraft $spacecraft, InformationInterface $information): bool
     {
         if (!$spacecraft->isSystemHealthy(SpacecraftSystemTypeEnum::TORPEDO_STORAGE)) {
             $information->addInformation("Das Torpedolager ist zerstört");
@@ -21,7 +21,7 @@ class SpacecraftStorageTorpedoLogic
         return true;
     }
 
-    public function canStoreTorpedoType(SpacecraftInterface $spacecraft, TorpedoTypeInterface $torpedoType, InformationInterface $information): bool
+    public function canStoreTorpedoType(Spacecraft $spacecraft, TorpedoType $torpedoType, InformationInterface $information): bool
     {
         if (
             !$spacecraft->isSystemHealthy(SpacecraftSystemTypeEnum::TORPEDO_STORAGE)

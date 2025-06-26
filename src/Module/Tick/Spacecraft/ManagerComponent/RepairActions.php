@@ -17,9 +17,9 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\StationInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Station;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
@@ -141,7 +141,7 @@ final class RepairActions implements ManagerComponentInterface
         }
     }
 
-    private function repairShipOnEntity(ShipInterface $ship, ColonyInterface|StationInterface $entity, bool $isRepairStationBonus): bool
+    private function repairShipOnEntity(Ship $ship, Colony|Station $entity, bool $isRepairStationBonus): bool
     {
         // check for U-Mode
         if ($entity->getUser()->isVacationRequestOldEnough()) {
@@ -177,7 +177,7 @@ final class RepairActions implements ManagerComponentInterface
         return $repairFinished;
     }
 
-    private function repairHull(ShipInterface $ship, bool $isRepairStationBonus): void
+    private function repairHull(Ship $ship, bool $isRepairStationBonus): void
     {
         $condition = $ship->getCondition();
         $hullRepairRate = $isRepairStationBonus ? RepairUtil::REPAIR_RATE_PER_TICK * 2 : RepairUtil::REPAIR_RATE_PER_TICK;
@@ -233,9 +233,9 @@ final class RepairActions implements ManagerComponentInterface
         }
     }
 
-    private function sendPrivateMessages(ShipInterface $ship, ColonyInterface|StationInterface $entity): void
+    private function sendPrivateMessages(Ship $ship, Colony|Station $entity): void
     {
-        $shipOwnerMessage = $entity instanceof ColonyInterface ? sprintf(
+        $shipOwnerMessage = $entity instanceof Colony ? sprintf(
             "Die Reparatur der %s wurde in Sektor %s bei der Kolonie %s des Spielers %s fertiggestellt",
             $ship->getName(),
             $ship->getSectorString(),
@@ -257,7 +257,7 @@ final class RepairActions implements ManagerComponentInterface
             PrivateMessageFolderTypeEnum::SPECIAL_SHIP
         );
 
-        $entityOwnerMessage = $entity instanceof ColonyInterface ? sprintf(
+        $entityOwnerMessage = $entity instanceof Colony ? sprintf(
             "Die Reparatur der %s von Siedler %s wurde in Sektor %s bei der Kolonie %s fertiggestellt",
             $ship->getName(),
             $ship->getUser()->getName(),
@@ -276,7 +276,7 @@ final class RepairActions implements ManagerComponentInterface
             UserEnum::USER_NOONE,
             $entity->getUser()->getId(),
             $entityOwnerMessage,
-            $entity instanceof ColonyInterface ? PrivateMessageFolderTypeEnum::SPECIAL_COLONY :
+            $entity instanceof Colony ? PrivateMessageFolderTypeEnum::SPECIAL_COLONY :
                 PrivateMessageFolderTypeEnum::SPECIAL_STATION
         );
     }

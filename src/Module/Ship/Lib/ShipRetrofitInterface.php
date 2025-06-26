@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftBuildplanInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\SpacecraftBuildplan;
 
 interface ShipRetrofitInterface
 {
-    public function updateBy(ShipInterface $ship, SpacecraftBuildplanInterface $newBuildplan, ColonyInterface $colony): void;
+    public function updateBy(Ship $ship, SpacecraftBuildplan $newBuildplan, Colony $colony): void;
 }

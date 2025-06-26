@@ -23,9 +23,9 @@ use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyFactoryInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\TrumfieldNfsItem;
-use Stu\Orm\Entity\SpacecraftBuildplanInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\StationInterface;
+use Stu\Orm\Entity\SpacecraftBuildplan;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Station;
 use Stu\StuTestCase;
 
 class FightLibTest extends StuTestCase
@@ -38,7 +38,7 @@ class FightLibTest extends StuTestCase
 
     private MockInterface&ShipWrapperInterface $wrapper;
 
-    private MockInterface&ShipInterface $ship;
+    private MockInterface&Ship $ship;
 
     private FightLibInterface $subject;
 
@@ -56,7 +56,7 @@ class FightLibTest extends StuTestCase
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
 
         //other
-        $this->ship = $this->mock(ShipInterface::class);
+        $this->ship = $this->mock(Ship::class);
 
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()
@@ -136,7 +136,7 @@ class FightLibTest extends StuTestCase
         $this->ship->shouldReceive('getBuildplan')
             ->withNoArgs()
             ->once()
-            ->andReturn($this->mock(SpacecraftBuildplanInterface::class));
+            ->andReturn($this->mock(SpacecraftBuildplan::class));
         $this->ship->shouldReceive('hasEnoughCrew')
             ->withNoArgs()
             ->once()
@@ -161,7 +161,7 @@ class FightLibTest extends StuTestCase
         $this->ship->shouldReceive('getBuildplan')
             ->withNoArgs()
             ->once()
-            ->andReturn($this->mock(SpacecraftBuildplanInterface::class));
+            ->andReturn($this->mock(SpacecraftBuildplan::class));
         $this->ship->shouldReceive('hasEnoughCrew')
             ->withNoArgs()
             ->once()
@@ -170,7 +170,7 @@ class FightLibTest extends StuTestCase
         $this->ship->shouldReceive('getDockedTo')
             ->withNoArgs()
             ->once()
-            ->andReturn($this->mock(StationInterface::class));
+            ->andReturn($this->mock(Station::class));
         $this->ship->shouldReceive('setDockedTo')
             ->with(null)
             ->once();
@@ -237,7 +237,7 @@ class FightLibTest extends StuTestCase
         $this->ship->shouldReceive('getBuildplan')
             ->withNoArgs()
             ->once()
-            ->andReturn($this->mock(SpacecraftBuildplanInterface::class));
+            ->andReturn($this->mock(SpacecraftBuildplan::class));
         $this->ship->shouldReceive('hasEnoughCrew')
             ->withNoArgs()
             ->once()
@@ -284,8 +284,8 @@ class FightLibTest extends StuTestCase
 
     public function testCanAttackTargetExpectFalseWhenNoActiveWeapon(): void
     {
-        $ship = $this->mock(ShipInterface::class);
-        $target = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
+        $target = $this->mock(Ship::class);
 
         $ship->shouldReceive('hasActiveWeapon')
             ->withNoArgs()
@@ -299,7 +299,7 @@ class FightLibTest extends StuTestCase
 
     public function testCanAttackTargetExpectFalseWhenAttackingSelf(): void
     {
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
 
         $ship->shouldReceive('hasActiveWeapon')
             ->withNoArgs()
@@ -313,8 +313,8 @@ class FightLibTest extends StuTestCase
 
     public function testCanAttackTargetExpectFalseWhenAttackingCloakedTarget(): void
     {
-        $ship = $this->mock(ShipInterface::class);
-        $target = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
+        $target = $this->mock(Ship::class);
 
         $ship->shouldReceive('hasActiveWeapon')
             ->withNoArgs()
@@ -334,9 +334,9 @@ class FightLibTest extends StuTestCase
 
     public function testCanAttackTargetExpectFalseWhenTractoredAndAttackingOtherTarget(): void
     {
-        $ship = $this->mock(ShipInterface::class);
-        $target = $this->mock(ShipInterface::class);
-        $tractoringShip = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
+        $target = $this->mock(Ship::class);
+        $tractoringShip = $this->mock(Ship::class);
 
         $ship->shouldReceive('hasActiveWeapon')
             ->withNoArgs()
@@ -366,8 +366,8 @@ class FightLibTest extends StuTestCase
 
     public function testCanAttackTargetExpectTrueWhenAttackingTractoringShip(): void
     {
-        $ship = $this->mock(ShipInterface::class);
-        $target = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
+        $target = $this->mock(Ship::class);
 
         $ship->shouldReceive('hasActiveWeapon')
             ->withNoArgs()
@@ -392,8 +392,8 @@ class FightLibTest extends StuTestCase
 
     public function testCanAttackTargetExpectTrueWhenAttackingTractoringShipWithoutWeaponCheck(): void
     {
-        $ship = $this->mock(ShipInterface::class);
-        $target = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
+        $target = $this->mock(Ship::class);
 
         $ship->shouldReceive('getId')
             ->withNoArgs()
@@ -414,8 +414,8 @@ class FightLibTest extends StuTestCase
 
     public function testCanAttackTargetExpectFalseWhenAttackingWarpedTarget(): void
     {
-        $ship = $this->mock(ShipInterface::class);
-        $target = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
+        $target = $this->mock(Ship::class);
 
         $ship->shouldReceive('hasActiveWeapon')
             ->withNoArgs()
@@ -444,8 +444,8 @@ class FightLibTest extends StuTestCase
 
     public function testCanAttackTargetExpectFalseWhenAttackingOwnCloaked(): void
     {
-        $ship = $this->mock(ShipInterface::class);
-        $target = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
+        $target = $this->mock(Ship::class);
 
         $ship->shouldReceive('hasActiveWeapon')
             ->withNoArgs()
@@ -483,8 +483,8 @@ class FightLibTest extends StuTestCase
 
     public function testCanAttackTargetExpectFalseWhenAttackingOwnFleet(): void
     {
-        $ship = $this->mock(ShipInterface::class);
-        $target = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
+        $target = $this->mock(Ship::class);
 
         $ship->shouldReceive('hasActiveWeapon')
             ->withNoArgs()
@@ -528,8 +528,8 @@ class FightLibTest extends StuTestCase
 
     public function testCanAttackTargetExpectTrueWhenAttackingSingleShip(): void
     {
-        $ship = $this->mock(ShipInterface::class);
-        $target = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
+        $target = $this->mock(Ship::class);
 
         $ship->shouldReceive('hasActiveWeapon')
             ->withNoArgs()
@@ -573,8 +573,8 @@ class FightLibTest extends StuTestCase
 
     public function testCanAttackTargetExpectTrueWhenAttackerIsSingleShip(): void
     {
-        $ship = $this->mock(ShipInterface::class);
-        $target = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
+        $target = $this->mock(Ship::class);
 
         $ship->shouldReceive('hasActiveWeapon')
             ->withNoArgs()
@@ -618,8 +618,8 @@ class FightLibTest extends StuTestCase
 
     public function testCanAttackTargetExpectTrueWhenAttackingOtherFleet(): void
     {
-        $ship = $this->mock(ShipInterface::class);
-        $target = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
+        $target = $this->mock(Ship::class);
 
         $ship->shouldReceive('hasActiveWeapon')
             ->withNoArgs()
@@ -663,8 +663,8 @@ class FightLibTest extends StuTestCase
 
     public function testCanAttackTargetExpectTrueWithoutWarpCheck(): void
     {
-        $ship = $this->mock(ShipInterface::class);
-        $target = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
+        $target = $this->mock(Ship::class);
 
         $ship->shouldReceive('hasActiveWeapon')
             ->withNoArgs()
@@ -765,7 +765,7 @@ class FightLibTest extends StuTestCase
 
     public function testIsBoardingPossibleExpectFalseWhenTholianWeb(): void
     {
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
 
         $ship->shouldReceive('getType')
             ->withNoArgs()
@@ -779,7 +779,7 @@ class FightLibTest extends StuTestCase
 
     public function testIsBoardingPossibleExpectFalseWhenStation(): void
     {
-        $station = $this->mock(StationInterface::class);
+        $station = $this->mock(Station::class);
 
         $station->shouldReceive('getType')
             ->withNoArgs()
@@ -793,7 +793,7 @@ class FightLibTest extends StuTestCase
 
     public function testIsBoardingPossibleExpectFalseWhenNpc(): void
     {
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
 
         $ship->shouldReceive('getType')
             ->withNoArgs()
@@ -812,7 +812,7 @@ class FightLibTest extends StuTestCase
 
     public function testIsBoardingPossibleExpectFalseWhenCloaked(): void
     {
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
 
         $ship->shouldReceive('getType')
             ->withNoArgs()
@@ -836,7 +836,7 @@ class FightLibTest extends StuTestCase
 
     public function testIsBoardingPossibleExpectFalseWhenShieldsOn(): void
     {
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
 
         $ship->shouldReceive('getType')
             ->withNoArgs()
@@ -864,7 +864,7 @@ class FightLibTest extends StuTestCase
 
     public function testIsBoardingPossibleExpectFalseWhenWarped(): void
     {
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
 
         $ship->shouldReceive('getType')
             ->withNoArgs()

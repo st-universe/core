@@ -12,7 +12,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 
 final class AlertLevelBasedReaction implements AlertLevelBasedReactionInterface
 {
@@ -70,7 +70,7 @@ final class AlertLevelBasedReaction implements AlertLevelBasedReactionInterface
             return true;
         }
 
-        if (!$ship->isTractoring() && (!$ship instanceof ShipInterface || !$ship->isTractored())) {
+        if (!$ship->isTractoring() && (!$ship instanceof Ship || !$ship->isTractored())) {
             try {
                 $this->spacecraftSystemManager->activate($wrapper, SpacecraftSystemTypeEnum::SHIELDS);
 

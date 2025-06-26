@@ -4,21 +4,20 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\ColonyClassRestriction;
-use Stu\Orm\Entity\ColonyClassRestrictionInterface;
-use Stu\Orm\Entity\ColonyClassInterface;
-use Stu\Orm\Entity\TerraformingInterface;
-use Stu\Orm\Entity\BuildingInterface;
+use Stu\Orm\Entity\ColonyClass;
+use Stu\Orm\Entity\Terraforming;
+use Stu\Orm\Entity\Building;
 
 /**
  * @extends ObjectRepository<ColonyClassRestriction>
  *
- * @method null|ColonyClassRestrictionInterface find(integer $id)
+ * @method null|ColonyClassRestriction find(integer $id)
  */
 interface ColonyClassRestrictionRepositoryInterface extends ObjectRepository
 {
-    public function prototype(): ColonyClassRestrictionInterface;
+    public function prototype(): ColonyClassRestriction;
 
-    public function save(ColonyClassRestrictionInterface $restriction): void;
+    public function save(ColonyClassRestriction $restriction): void;
 
-    public function delete(ColonyClassRestrictionInterface $restriction): void;
+    public function delete(ColonyClassRestriction $restriction): void;
 }

@@ -10,7 +10,7 @@ use Stu\Module\Control\StuTime;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\LotteryTicketRepositoryInterface;
 
 final class LotteryFacade implements LotteryFacadeInterface
@@ -18,7 +18,7 @@ final class LotteryFacade implements LotteryFacadeInterface
     public function __construct(private LotteryTicketRepositoryInterface $lotteryTicketRepository, private PrivateMessageSenderInterface $privateMessageSender, private StuTime $stuTime) {}
 
     #[Override]
-    public function createLotteryTicket(UserInterface $user, bool $sendPm): void
+    public function createLotteryTicket(User $user, bool $sendPm): void
     {
         $ticket = $this->lotteryTicketRepository->prototype();
         $ticket->setUser($user);

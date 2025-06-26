@@ -8,9 +8,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Override;
 use Stu\Module\PlayerSetting\Lib\ChangeUserSetting;
-use Stu\Module\PlayerSetting\Lib\ChangeUserSettingInterface;
 use Stu\Module\PlayerSetting\Lib\UserSettingEnum;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserSetting;
 use Stu\Orm\Repository\UserSettingRepositoryInterface;
 use Stu\StuTestCase;
@@ -19,7 +18,7 @@ class ChangeUserSettingTest extends StuTestCase
 {
     private MockInterface&UserSettingRepositoryInterface $userSettingRepository;
 
-    private ChangeUserSettingInterface $subject;
+    private ChangeUserSetting $subject;
 
     #[Override]
     protected function setUp(): void
@@ -33,7 +32,7 @@ class ChangeUserSettingTest extends StuTestCase
 
     public function testChangeExpectNewEntityIfNoneExists(): void
     {
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
         $userSetting = $this->mock(UserSetting::class);
 
         $settings = new ArrayCollection();
@@ -71,7 +70,7 @@ class ChangeUserSettingTest extends StuTestCase
 
     public function testChangeEditIfAlreadyExists(): void
     {
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
         $userSetting = $this->mock(UserSetting::class);
 
         $settings = new ArrayCollection([UserSettingEnum::AVATAR->value => $userSetting]);
@@ -97,7 +96,7 @@ class ChangeUserSettingTest extends StuTestCase
 
     public function testResetExpectNothingIfNotExists(): void
     {
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
 
         $settings = new ArrayCollection();
 
@@ -112,7 +111,7 @@ class ChangeUserSettingTest extends StuTestCase
 
     public function testResetExpectDeletionIfExists(): void
     {
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
         $userSetting = $this->mock(UserSetting::class);
 
         $settings = new ArrayCollection([UserSettingEnum::AVATAR->value => $userSetting]);

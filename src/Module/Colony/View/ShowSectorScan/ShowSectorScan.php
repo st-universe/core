@@ -11,7 +11,7 @@ use Stu\Lib\SignatureWrapper;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
+use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
@@ -57,7 +57,7 @@ final class ShowSectorScan implements ViewControllerInterface
     /**
      * @return array<string, SignatureWrapper>
      */
-    private function getSignatures(StarSystemMapInterface $field, int $ignoreId): array
+    private function getSignatures(StarSystemMap $field, int $ignoreId): array
     {
         $allSigs = $this->flightSignatureRepository->getVisibleSignatures($field->getId(), $ignoreId);
 

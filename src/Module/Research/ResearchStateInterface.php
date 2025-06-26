@@ -2,12 +2,12 @@
 
 namespace Stu\Module\Research;
 
-use Stu\Orm\Entity\ResearchedInterface;
+use Stu\Orm\Entity\Researched;
 
 interface ResearchStateInterface
 {
-    public function finish(ResearchedInterface $state): void;
+    public function finish(Researched $state): void;
 
     /** returns the remaining amount */
-    public function advance(ResearchedInterface $state, int $amount): int;
+    public function advance(Researched $state, int $amount): int;
 }

@@ -4,24 +4,23 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\AllianceBoard;
-use Stu\Orm\Entity\AllianceBoardInterface;
 
 /**
  * @extends ObjectRepository<AllianceBoard>
  *
- * @method null|AllianceBoardInterface find(integer $id)
- * @method AllianceBoardInterface[] findAll()
+ * @method null|AllianceBoard find(integer $id)
+ * @method AllianceBoard[] findAll()
  */
 interface AllianceBoardRepositoryInterface extends ObjectRepository
 {
-    public function prototype(): AllianceBoardInterface;
+    public function prototype(): AllianceBoard;
 
-    public function save(AllianceBoardInterface $post): void;
+    public function save(AllianceBoard $post): void;
 
-    public function delete(AllianceBoardInterface $post): void;
+    public function delete(AllianceBoard $post): void;
 
     /**
-     * @return array<AllianceBoardInterface>
+     * @return array<AllianceBoard>
      */
     public function getByAlliance(int $allianceId): array;
 

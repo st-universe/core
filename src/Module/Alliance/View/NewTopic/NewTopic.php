@@ -8,7 +8,7 @@ use Override;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Entity\AllianceBoardInterface;
+use Stu\Orm\Entity\AllianceBoard;
 use Stu\Orm\Repository\AllianceBoardRepositoryInterface;
 
 final class NewTopic implements ViewControllerInterface
@@ -25,7 +25,7 @@ final class NewTopic implements ViewControllerInterface
     {
         $alliance = $game->getUser()->getAlliance();
 
-        /** @var AllianceBoardInterface $board */
+        /** @var AllianceBoard $board */
         $board = $this->allianceBoardRepository->find($this->newTopicRequest->getBoardId());
         if ($board === null || $board->getAllianceId() !== $alliance->getId()) {
             throw new AccessViolationException();

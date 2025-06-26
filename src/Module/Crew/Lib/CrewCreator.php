@@ -8,9 +8,9 @@ use Override;
 use RuntimeException;
 use Stu\Component\Crew\CrewEnum;
 use Stu\Component\Crew\CrewOriginException;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\CrewAssignmentInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\CrewAssignment;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\CrewRaceRepositoryInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
@@ -28,7 +28,7 @@ final class CrewCreator implements CrewCreatorInterface
     ) {}
 
     #[Override]
-    public function create(int $userId, ?ColonyInterface $colony = null): CrewAssignmentInterface
+    public function create(int $userId, ?Colony $colony = null): CrewAssignment
     {
         $user = $this->userRepository->find($userId);
 
@@ -76,8 +76,8 @@ final class CrewCreator implements CrewCreatorInterface
 
     #[Override]
     public function createCrewAssignment(
-        SpacecraftInterface $spacecraft,
-        ColonyInterface|SpacecraftInterface $crewProvider,
+        Spacecraft $spacecraft,
+        Colony|Spacecraft $crewProvider,
         ?int $amount = null
     ): void {
         $crewToSetup = $amount ?? $spacecraft->getBuildPlan()->getCrew();
@@ -126,8 +126,8 @@ final class CrewCreator implements CrewCreatorInterface
 
     private function getCrewByType(
         int $crewType,
-        ColonyInterface|SpacecraftInterface $crewProvider
-    ): ?CrewAssignmentInterface {
+        Colony|Spacecraft $crewProvider
+    ): ?CrewAssignment {
 
         foreach ($crewProvider->getCrewAssignments() as $crewAssignment) {
             $crew = $crewAssignment->getCrew();
@@ -141,7 +141,7 @@ final class CrewCreator implements CrewCreatorInterface
         return null;
     }
 
-    private function getCrew(ColonyInterface|SpacecraftInterface $crewProvider): ?CrewAssignmentInterface
+    private function getCrew(Colony|Spacecraft $crewProvider): ?CrewAssignment
     {
         $crewAssignments = $crewProvider->getCrewAssignments();
 
@@ -149,7 +149,7 @@ final class CrewCreator implements CrewCreatorInterface
             return null;
         }
 
-        /** @var CrewAssignmentInterface $random */
+        /** @var CrewAssignment $random */
         $random = $crewAssignments->get(array_rand($crewAssignments->toArray()));
 
         $crewAssignments->removeElement($random);

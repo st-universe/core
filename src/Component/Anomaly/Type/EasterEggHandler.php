@@ -9,8 +9,8 @@ use Stu\Component\Anomaly\AnomalyCreationInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\AnomalyInterface;
-use Stu\Orm\Entity\MapInterface;
+use Stu\Orm\Entity\Anomaly;
+use Stu\Orm\Entity\Map;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
@@ -52,13 +52,13 @@ final class EasterEggHandler implements AnomalyHandlerInterface
 
     /** reset location */
     #[Override]
-    public function handleSpacecraftTick(AnomalyInterface $anomaly): void
+    public function handleSpacecraftTick(Anomaly $anomaly): void
     {
 
         $anomaly->setLocation($this->getRandomMap());
     }
 
-    private function getRandomMap(): MapInterface
+    private function getRandomMap(): Map
     {
         $layer = $this->layerRepository->getDefaultLayer();
 
@@ -72,13 +72,13 @@ final class EasterEggHandler implements AnomalyHandlerInterface
     }
 
     #[Override]
-    public function handleIncomingSpacecraft(SpacecraftWrapperInterface $wrapper, AnomalyInterface $anomaly, MessageCollectionInterface $messages): void
+    public function handleIncomingSpacecraft(SpacecraftWrapperInterface $wrapper, Anomaly $anomaly, MessageCollectionInterface $messages): void
     {
         //not needed
     }
 
     #[Override]
-    public function letAnomalyDisappear(AnomalyInterface $anomaly): void
+    public function letAnomalyDisappear(Anomaly $anomaly): void
     {
         //TODO
     }

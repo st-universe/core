@@ -6,9 +6,9 @@ namespace Stu\Module\Research;
 
 use Override;
 use Stu\Component\Research\ResearchModeEnum;
-use Stu\Orm\Entity\ResearchedInterface;
-use Stu\Orm\Entity\ResearchInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Researched;
+use Stu\Orm\Entity\Research;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\FactionRepositoryInterface;
 use Stu\Orm\Repository\ResearchDependencyRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
@@ -21,20 +21,20 @@ final class TechlistRetriever implements TechlistRetrieverInterface
     }
 
     #[Override]
-    public function getResearchList(UserInterface $user): array
+    public function getResearchList(User $user): array
     {
         $researchedList = $this->getResearchedList($user);
 
         $researchedIdsWithUnfinished = array_map(
-            fn (ResearchedInterface $researched): int => $researched->getResearch()->getId(),
+            fn (Researched $researched): int => $researched->getResearch()->getId(),
             $researchedList
         );
 
         $researchedIdsOnlyFinished = array_map(
-            fn (ResearchedInterface $researched): int => $researched->getResearch()->getId(),
+            fn (Researched $researched): int => $researched->getResearch()->getId(),
             array_filter(
                 $researchedList,
-                fn (ResearchedInterface $researched): bool => $researched->getFinished() > 0
+                fn (Researched $researched): bool => $researched->getFinished() > 0
             )
         );
 
@@ -110,7 +110,7 @@ final class TechlistRetriever implements TechlistRetrieverInterface
     }
 
     #[Override]
-    public function canResearch(UserInterface $user, int $researchId): ?ResearchInterface
+    public function canResearch(User $user, int $researchId): ?Research
     {
         return $this->getResearchList($user)[$researchId] ?? null;
     }
@@ -161,7 +161,7 @@ final class TechlistRetriever implements TechlistRetrieverInterface
     }
 
     #[Override]
-    public function getResearchedList(UserInterface $user): array
+    public function getResearchedList(User $user): array
     {
         return $this->researchedRepository->getListByUser($user->getId());
     }

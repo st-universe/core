@@ -3,12 +3,12 @@
 namespace Stu\Module\Ship\Lib;
 
 use Stu\Lib\Information\InformationInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 
 interface CancelColonyBlockOrDefendInterface
 {
     public function work(
-        SpacecraftInterface $spacecraft,
+        Spacecraft $spacecraft,
         InformationInterface $informations,
         bool $isTraktor = false
     ): void;

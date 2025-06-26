@@ -3,18 +3,18 @@
 namespace Stu\Module\Colony\Lib;
 
 use Stu\Lib\ColonyProduction\ColonyProduction;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\CommodityInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Commodity;
 
 interface CommodityConsumptionInterface
 {
     /**
      * @param array<ColonyProduction> $production
      *
-     * @return array<int, array{turnsleft: int, commodity: CommodityInterface}>
+     * @return array<int, array{turnsleft: int, commodity: Commodity}>
      */
     public function getConsumption(
         array $production,
-        ColonyInterface $colony
+        Colony $colony
     ): array;
 }

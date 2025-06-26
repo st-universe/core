@@ -4,21 +4,20 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\LotteryWinnerBuildplan;
-use Stu\Orm\Entity\LotteryWinnerBuildplanInterface;
 
 /**
  * @extends ObjectRepository<LotteryWinnerBuildplan>
  *
- * @method null|LotteryWinnerBuildplanInterface find(integer $id)
+ * @method null|LotteryWinnerBuildplan find(integer $id)
  */
 interface LotteryWinnerBuildplanRepositoryInterface extends ObjectRepository
 {
-    public function prototype(): LotteryWinnerBuildplanInterface;
+    public function prototype(): LotteryWinnerBuildplan;
 
-    public function save(LotteryWinnerBuildplanInterface $lotteryWinnerBuildplan): void;
+    public function save(LotteryWinnerBuildplan $lotteryWinnerBuildplan): void;
 
     /**
-     * @return LotteryWinnerBuildplanInterface[]
+     * @return LotteryWinnerBuildplan[]
      */
     public function findByFactionId(?int $factionId): array;
 }

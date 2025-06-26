@@ -7,8 +7,8 @@ namespace Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
 use Stu\Module\Spacecraft\Lib\Movement\FlightCompany;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
 
 class ConditionCheckResult
 {
@@ -26,7 +26,7 @@ class ConditionCheckResult
         $this->informations = new InformationWrapper();
     }
 
-    public function addBlockedShip(SpacecraftInterface $spacecraft, string $reason): void
+    public function addBlockedShip(Spacecraft $spacecraft, string $reason): void
     {
         if (!$this->isBlocked($spacecraft)) {
             $this->blockedSpacecraftIds[] = $spacecraft->getId();
@@ -36,7 +36,7 @@ class ConditionCheckResult
             if ($isLeader) {
                 $this->isLeaderBlocked = true;
             } elseif (
-                $spacecraft instanceof ShipInterface
+                $spacecraft instanceof Ship
                 && !$this->flightCompany->isFixedFleetMode()
                 && !$this->isLeaderBlocked
             ) {
@@ -60,7 +60,7 @@ class ConditionCheckResult
         return $this->blockedSpacecraftIds;
     }
 
-    public function isBlocked(SpacecraftInterface $spacecraft): bool
+    public function isBlocked(Spacecraft $spacecraft): bool
     {
         return in_array($spacecraft->getId(), $this->blockedSpacecraftIds);
     }
@@ -71,7 +71,7 @@ class ConditionCheckResult
         return $this->informations->getInformations();
     }
 
-    private function leaveFleet(ShipInterface $ship): void
+    private function leaveFleet(Ship $ship): void
     {
         $this->leaveFleet->leaveFleet($ship);
 

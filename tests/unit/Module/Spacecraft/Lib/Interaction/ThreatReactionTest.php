@@ -18,8 +18,8 @@ use Stu\Module\Spacecraft\Lib\Battle\SpacecraftAttackCauseEnum;
 use Stu\Module\Spacecraft\Lib\Battle\SpacecraftAttackCycleInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\User;
 use Stu\StuTestCase;
 
 class ThreatReactionTest extends StuTestCase
@@ -34,8 +34,8 @@ class ThreatReactionTest extends StuTestCase
 
     private MockInterface&GameControllerInterface $game;
 
-    private MockInterface&ShipInterface $ship;
-    private MockInterface&ShipInterface $target;
+    private MockInterface&Ship $ship;
+    private MockInterface&Ship $target;
 
     private MockInterface&ShipWrapperInterface $wrapper;
     private MockInterface&ShipWrapperInterface $targetWrapper;
@@ -53,8 +53,8 @@ class ThreatReactionTest extends StuTestCase
         $this->game = $this->mock(GameControllerInterface::class);
 
         //params
-        $this->ship = $this->mock(ShipInterface::class);
-        $this->target = $this->mock(ShipInterface::class);
+        $this->ship = $this->mock(Ship::class);
+        $this->target = $this->mock(Ship::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
         $this->targetWrapper = $this->mock(ShipWrapperInterface::class);
 
@@ -94,7 +94,7 @@ class ThreatReactionTest extends StuTestCase
 
     public function testReactToThreatExpectFalseWhenSameUser(): void
     {
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
 
         $this->ship->shouldReceive('getUser')
             ->withNoArgs()
@@ -121,8 +121,8 @@ class ThreatReactionTest extends StuTestCase
 
     public function testReactToThreatExpectFalseWhenTargetUserIsFriend(): void
     {
-        $user = $this->mock(UserInterface::class);
-        $user2 = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
+        $user2 = $this->mock(User::class);
 
         $this->ship->shouldReceive('getUser')
             ->withNoArgs()
@@ -153,8 +153,8 @@ class ThreatReactionTest extends StuTestCase
 
     public function testReactToThreatExpectFalseWhenEmptyAttackCycle(): void
     {
-        $user = $this->mock(UserInterface::class);
-        $user2 = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
+        $user2 = $this->mock(User::class);
         $messages = $this->mock(MessageCollectionInterface::class);
         $attackingBattleParty = $this->mock(AttackingBattleParty::class);
         $attackedBattleParty = $this->mock(SingletonBattleParty::class);
@@ -219,8 +219,8 @@ class ThreatReactionTest extends StuTestCase
 
     public function testReactToThreatExpectTrueWhenFightHappened(): void
     {
-        $user = $this->mock(UserInterface::class);
-        $user2 = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
+        $user2 = $this->mock(User::class);
         $messages = $this->mock(MessageCollectionInterface::class);
         $informations = $this->mock(InformationWrapper::class);
         $attackingBattleParty = $this->mock(AttackingBattleParty::class);

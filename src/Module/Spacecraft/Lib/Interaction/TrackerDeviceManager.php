@@ -10,9 +10,9 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
 
 class TrackerDeviceManager implements TrackerDeviceManagerInterface
@@ -57,7 +57,7 @@ class TrackerDeviceManager implements TrackerDeviceManagerInterface
             ->deactivate($wrapper, SpacecraftSystemTypeEnum::TRACKER, true);
     }
 
-    private function sendDeactivationPMs(SpacecraftInterface $spacecraft, ShipInterface $target, bool $sendPmToTargetOwner): void
+    private function sendDeactivationPMs(Spacecraft $spacecraft, Ship $target, bool $sendPmToTargetOwner): void
     {
         if ($target->getUser() !== $spacecraft->getUser()) {
 
@@ -88,7 +88,7 @@ class TrackerDeviceManager implements TrackerDeviceManagerInterface
         }
     }
 
-    private function getTrackerSource(UserInterface $user): string
+    private function getTrackerSource(User $user): string
     {
         return match (random_int(0, 2)) {
             0 => _('Der Ursprung kann nicht identifiziert werden'),

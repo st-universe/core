@@ -2,18 +2,18 @@
 
 namespace Stu\Module\History\Lib;
 
-use Stu\Orm\Entity\AllianceInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Alliance;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Component\History\HistoryTypeEnum;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\LocationInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Location;
 
 interface EntryCreatorInterface
 {
     public function addEntry(
         string $text,
         int $sourceUserId,
-        SpacecraftInterface|ColonyInterface|AllianceInterface $target
+        Spacecraft|Colony|Alliance $target
     ): void;
 
     public function createEntry(
@@ -21,6 +21,6 @@ interface EntryCreatorInterface
         string $text,
         int $sourceUserId,
         int $targetUserId,
-        ?LocationInterface $location = null
+        ?Location $location = null
     ): void;
 }

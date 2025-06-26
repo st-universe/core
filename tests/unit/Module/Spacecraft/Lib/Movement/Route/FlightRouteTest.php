@@ -17,12 +17,12 @@ use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\FlightConsequenceIn
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight\PostFlightConsequenceInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Movement\FlightCompany;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
-use Stu\Orm\Entity\StationInterface;
-use Stu\Orm\Entity\TradePostInterface;
-use Stu\Orm\Entity\WormholeEntryInterface;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\StarSystemMap;
+use Stu\Orm\Entity\Station;
+use Stu\Orm\Entity\TradePost;
+use Stu\Orm\Entity\WormholeEntry;
 use Stu\StuTestCase;
 
 use function DI\get;
@@ -63,9 +63,9 @@ class FlightRouteTest extends StuTestCase
     public function testSetDestinationExpectOneMapWaypointWhenNotTranswarp(): void
     {
         $flightCompany = $this->mock(FlightCompany::class);
-        $map = $this->mock(MapInterface::class);
-        $ship = $this->mock(ShipInterface::class);
-        $tractoredShip = $this->mock(ShipInterface::class);
+        $map = $this->mock(Map::class);
+        $ship = $this->mock(Ship::class);
+        $tractoredShip = $this->mock(Ship::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $tractoredShipWrapper = $this->mock(ShipWrapperInterface::class);
         $messages = $this->mock(MessageCollectionInterface::class);
@@ -128,8 +128,8 @@ class FlightRouteTest extends StuTestCase
     public function testSetDestinationExpectOneMapWaypointWhenTranswarp(): void
     {
         $flightCompany = $this->mock(FlightCompany::class);
-        $map = $this->mock(MapInterface::class);
-        $ship = $this->mock(ShipInterface::class);
+        $map = $this->mock(Map::class);
+        $ship = $this->mock(Ship::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $messages = $this->mock(MessageCollectionInterface::class);
 
@@ -178,9 +178,9 @@ class FlightRouteTest extends StuTestCase
     public function testSetDestinationExpectOneSystemMapWaypoint(): void
     {
         $flightCompany = $this->mock(FlightCompany::class);
-        $map = $this->mock(StarSystemMapInterface::class);
+        $map = $this->mock(StarSystemMap::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
         $messages = $this->mock(MessageCollectionInterface::class);
 
         $this->subject->setDestination($map, false);
@@ -228,10 +228,10 @@ class FlightRouteTest extends StuTestCase
     public function testSetDestinationViaWormholeExpectSystemMapAsWaypointWhenEntry(): void
     {
         $flightCompany = $this->mock(FlightCompany::class);
-        $wormholeEntry = $this->mock(WormholeEntryInterface::class);
-        $systemMap = $this->mock(StarSystemMapInterface::class);
+        $wormholeEntry = $this->mock(WormholeEntry::class);
+        $systemMap = $this->mock(StarSystemMap::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
         $messages = $this->mock(MessageCollectionInterface::class);
 
         $flightCompany->shouldReceive('getActiveMembers')
@@ -282,10 +282,10 @@ class FlightRouteTest extends StuTestCase
     public function testSetDestinationViaWormholeExpectSystemMapAsWaypointWhenExit(): void
     {
         $flightCompany = $this->mock(FlightCompany::class);
-        $wormholeEntry = $this->mock(WormholeEntryInterface::class);
-        $map = $this->mock(MapInterface::class);
+        $wormholeEntry = $this->mock(WormholeEntry::class);
+        $map = $this->mock(Map::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
         $messages = $this->mock(MessageCollectionInterface::class);
 
         $flightCompany->shouldReceive('getActiveMembers')
@@ -336,8 +336,8 @@ class FlightRouteTest extends StuTestCase
 
     public function testSetDestinationViaCoordinatesExpectValidationOnlyWhenStartEqualsDestination(): void
     {
-        $start = $this->mock(MapInterface::class);
-        $ship = $this->mock(ShipInterface::class);
+        $start = $this->mock(Map::class);
+        $ship = $this->mock(Ship::class);
 
         $ship->shouldReceive('getLocation')
             ->withNoArgs()
@@ -356,11 +356,11 @@ class FlightRouteTest extends StuTestCase
     public function testSetDestinationViaCoordinatesExpectValidationAndWaypointLoading(): void
     {
         $flightCompany = $this->mock(FlightCompany::class);
-        $start = $this->mock(MapInterface::class);
-        $first = $this->mock(MapInterface::class);
-        $destination = $this->mock(MapInterface::class);
+        $start = $this->mock(Map::class);
+        $first = $this->mock(Map::class);
+        $destination = $this->mock(Map::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
         $messages = $this->mock(MessageCollectionInterface::class);
         $waypoints = new ArrayCollection();
 
@@ -428,7 +428,7 @@ class FlightRouteTest extends StuTestCase
 
     public function testAbortFlightExpectWaypointClearance(): void
     {
-        $map = $this->mock(MapInterface::class);
+        $map = $this->mock(Map::class);
 
         $this->subject->setDestination($map, false);
 
@@ -455,10 +455,10 @@ class FlightRouteTest extends StuTestCase
 
     public function testHasSpecialDamageOnFieldExpectFalseIfWaypointsWithoutSpecialDamage(): void
     {
-        $start = $this->mock(MapInterface::class);
-        $destination = $this->mock(MapInterface::class);
+        $start = $this->mock(Map::class);
+        $destination = $this->mock(Map::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
         $waypoints = new ArrayCollection();
 
         $waypoints->add($destination);
@@ -495,11 +495,11 @@ class FlightRouteTest extends StuTestCase
 
     public function testHasSpecialDamageOnFieldExpectTrueIfWaypointWithSpecialDamage(): void
     {
-        $start = $this->mock(MapInterface::class);
-        $first = $this->mock(MapInterface::class);
-        $destination = $this->mock(MapInterface::class);
+        $start = $this->mock(Map::class);
+        $first = $this->mock(Map::class);
+        $destination = $this->mock(Map::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
         $waypoints = new ArrayCollection();
 
         $waypoints->add($first);
@@ -537,10 +537,10 @@ class FlightRouteTest extends StuTestCase
 
     public function testHasEffectOnRouteExpectFalseIfNoEffect(): void
     {
-        $start = $this->mock(MapInterface::class);
-        $destination = $this->mock(MapInterface::class);
+        $start = $this->mock(Map::class);
+        $destination = $this->mock(Map::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
         $waypoints = new ArrayCollection();
 
         $waypoints->add($destination);
@@ -577,11 +577,11 @@ class FlightRouteTest extends StuTestCase
 
     public function testHasEffectOnRouteExpectTrueIfEffectExistent(): void
     {
-        $start = $this->mock(MapInterface::class);
-        $first = $this->mock(MapInterface::class);
-        $destination = $this->mock(MapInterface::class);
+        $start = $this->mock(Map::class);
+        $first = $this->mock(Map::class);
+        $destination = $this->mock(Map::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
         $waypoints = new ArrayCollection();
 
         $waypoints->add($first);
@@ -619,10 +619,10 @@ class FlightRouteTest extends StuTestCase
 
     public function testIsDestinationInAdminRegionExpectTrueIfMatch(): void
     {
-        $start = $this->mock(MapInterface::class);
-        $destination = $this->mock(MapInterface::class);
+        $start = $this->mock(Map::class);
+        $destination = $this->mock(Map::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
         $waypoints = new ArrayCollection();
 
         $waypoints->add($destination);
@@ -659,10 +659,10 @@ class FlightRouteTest extends StuTestCase
 
     public function testIsDestinationInAdminRegionExpectFalseIfNoMatch(): void
     {
-        $start = $this->mock(MapInterface::class);
-        $destination = $this->mock(MapInterface::class);
+        $start = $this->mock(Map::class);
+        $destination = $this->mock(Map::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
         $waypoints = new ArrayCollection();
 
         $waypoints->add($destination);
@@ -699,7 +699,7 @@ class FlightRouteTest extends StuTestCase
 
     public function testIsDestinationAtTradepostExpectFalseWhenNotOnMap(): void
     {
-        $destination = $this->mock(StarSystemMapInterface::class);
+        $destination = $this->mock(StarSystemMap::class);
 
         $this->subject->setDestination($destination, false);
 
@@ -710,7 +710,7 @@ class FlightRouteTest extends StuTestCase
 
     public function testIsDestinationAtTradepostExpectFalseWhenNoShipsOnMap(): void
     {
-        $destination = $this->mock(MapInterface::class);
+        $destination = $this->mock(Map::class);
 
         $shiplist = new ArrayCollection();
 
@@ -728,8 +728,8 @@ class FlightRouteTest extends StuTestCase
 
     public function testIsDestinationAtTradepostExpectFalseWhenNoTradepost(): void
     {
-        $destination = $this->mock(MapInterface::class);
-        $station = $this->mock(StationInterface::class);
+        $destination = $this->mock(Map::class);
+        $station = $this->mock(Station::class);
 
         $spacecraftList = new ArrayCollection([$station]);
 
@@ -752,8 +752,8 @@ class FlightRouteTest extends StuTestCase
 
     public function testIsDestinationAtTradepostExpectTrueWhenTradepostOnMap(): void
     {
-        $destination = $this->mock(MapInterface::class);
-        $station = $this->mock(StationInterface::class);
+        $destination = $this->mock(Map::class);
+        $station = $this->mock(Station::class);
 
         $spacecraftList = new ArrayCollection([$station]);
 
@@ -765,7 +765,7 @@ class FlightRouteTest extends StuTestCase
         $station->shouldReceive('getTradePost')
             ->withNoArgs()
             ->once()
-            ->andReturn($this->mock(TradePostInterface::class));
+            ->andReturn($this->mock(TradePost::class));
 
         $this->subject->setDestination($destination, false);
 

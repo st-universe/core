@@ -11,8 +11,8 @@ use Stu\Component\Colony\ColonyFunctionManager;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Orm\Entity\BuildingCommodity;
-use Stu\Orm\Entity\ColonyClassInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\ColonyClass;
+use Stu\Orm\Entity\User;
 
 /**
  * @extends EntityRepository<BuildingCommodity>
@@ -28,7 +28,7 @@ final class BuildingCommodityRepository extends EntityRepository implements Buil
     }
 
     #[Override]
-    public function getProductionByColony(PlanetFieldHostInterface $host, ColonyClassInterface $colonyClass): iterable
+    public function getProductionByColony(PlanetFieldHostInterface $host, ColonyClass $colonyClass): iterable
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('commodity_id', 'commodity_id', 'integer');
@@ -59,7 +59,7 @@ final class BuildingCommodityRepository extends EntityRepository implements Buil
     }
 
     #[Override]
-    public function getProductionSumForAllUserColonies(UserInterface $user): iterable
+    public function getProductionSumForAllUserColonies(User $user): iterable
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('commodity_id', 'commodity_id', 'integer');
@@ -89,7 +89,7 @@ final class BuildingCommodityRepository extends EntityRepository implements Buil
     }
 
     #[Override]
-    public function getProductionByCommodityAndUser(int $commodityId, UserInterface $user): int
+    public function getProductionByCommodityAndUser(int $commodityId, User $user): int
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('gc', 'gc', 'integer');

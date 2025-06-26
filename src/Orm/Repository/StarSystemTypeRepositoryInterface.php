@@ -4,19 +4,18 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\StarSystemType;
-use Stu\Orm\Entity\StarSystemTypeInterface;
 
 /**
  * @extends ObjectRepository<StarSystemType>
  *
- * @method StarSystemTypeInterface[] findAll()
+ * @method StarSystemType[] findAll()
  */
 interface StarSystemTypeRepositoryInterface extends ObjectRepository
 {
-    public function save(StarSystemTypeInterface $type): void;
+    public function save(StarSystemType $type): void;
 
     /**
-     * @return array<StarSystemTypeInterface>
+     * @return array<StarSystemType>
      */
     public function getWithoutDatabaseEntry(): array;
 }

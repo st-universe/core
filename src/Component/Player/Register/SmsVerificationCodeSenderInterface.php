@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Register;
 
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 interface SmsVerificationCodeSenderInterface
 {
-    public function send(UserInterface $player, string $code): void;
+    public function send(User $player, string $code): void;
 }

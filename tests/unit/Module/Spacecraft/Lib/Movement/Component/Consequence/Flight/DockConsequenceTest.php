@@ -13,8 +13,8 @@ use Stu\Module\Spacecraft\Lib\Message\MessageInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\FlightConsequenceInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\StationInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Station;
 use Stu\StuTestCase;
 
 class DockConsequenceTest extends StuTestCase
@@ -23,7 +23,7 @@ class DockConsequenceTest extends StuTestCase
 
     private FlightConsequenceInterface $subject;
 
-    private MockInterface&ShipInterface $ship;
+    private MockInterface&Ship $ship;
 
     private MockInterface&ShipWrapperInterface $wrapper;
 
@@ -34,7 +34,7 @@ class DockConsequenceTest extends StuTestCase
     {
         $this->messageFactory = $this->mock(MessageFactoryInterface::class);
 
-        $this->ship = $this->mock(ShipInterface::class);
+        $this->ship = $this->mock(Ship::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
         $this->flightRoute = $this->mock(FlightRouteInterface::class);
 
@@ -106,7 +106,7 @@ class DockConsequenceTest extends StuTestCase
         $this->ship->shouldReceive('getDockedTo')
             ->withNoArgs()
             ->once()
-            ->andReturn($this->mock(StationInterface::class));
+            ->andReturn($this->mock(Station::class));
         $this->ship->shouldReceive('getUser->getId')
             ->withNoArgs()
             ->once()
@@ -168,7 +168,7 @@ class DockConsequenceTest extends StuTestCase
         $this->ship->shouldReceive('getDockedTo')
             ->withNoArgs()
             ->once()
-            ->andReturn($this->mock(StationInterface::class));
+            ->andReturn($this->mock(Station::class));
         $this->ship->shouldReceive('getUser->getId')
             ->withNoArgs()
             ->once()

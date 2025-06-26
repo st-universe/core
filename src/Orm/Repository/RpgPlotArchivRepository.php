@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\KnPostArchiv;
 use Stu\Orm\Entity\RpgPlotArchiv;
-use Stu\Orm\Entity\RpgPlotArchivInterface;
 use Stu\Orm\Entity\RpgPlotMemberArchiv;
 
 /**
@@ -25,13 +24,13 @@ final class RpgPlotArchivRepository extends EntityRepository implements RpgPlotA
     }
 
     #[Override]
-    public function prototype(): RpgPlotArchivInterface
+    public function prototype(): RpgPlotArchiv
     {
         return new RpgPlotArchiv();
     }
 
     #[Override]
-    public function save(RpgPlotArchivInterface $rpgPlot): void
+    public function save(RpgPlotArchiv $rpgPlot): void
     {
         $em = $this->getEntityManager();
 
@@ -39,7 +38,7 @@ final class RpgPlotArchivRepository extends EntityRepository implements RpgPlotA
     }
 
     #[Override]
-    public function delete(RpgPlotArchivInterface $rpgPlot): void
+    public function delete(RpgPlotArchiv $rpgPlot): void
     {
         $em = $this->getEntityManager();
 

@@ -8,15 +8,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Override;
 use Stu\Component\Crew\CrewEnum;
-use Stu\Orm\Entity\CrewInterface;
-use Stu\Orm\Entity\FactionInterface;
-use Stu\Orm\Entity\CrewAssignmentInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Crew;
+use Stu\Orm\Entity\Faction;
+use Stu\Orm\Entity\CrewAssignment;
+use Stu\Orm\Entity\Ship;
 use Stu\StuTestCase;
 
 class CloseCombatUtilTest extends StuTestCase
 {
-    private MockInterface&ShipInterface $ship;
+    private MockInterface&Ship $ship;
 
     private CloseCombatUtilInterface $subject;
 
@@ -24,7 +24,7 @@ class CloseCombatUtilTest extends StuTestCase
     public function setUp(): void
     {
         //params
-        $this->ship = $this->mock(ShipInterface::class);
+        $this->ship = $this->mock(Ship::class);
 
         $this->subject = new CloseCombatUtil();
     }
@@ -45,7 +45,7 @@ class CloseCombatUtilTest extends StuTestCase
 
     public function testGetCombatGroupWithOnlyOneCrewmann(): void
     {
-        $shipCrew1 = $this->mock(CrewAssignmentInterface::class);
+        $shipCrew1 = $this->mock(CrewAssignment::class);
 
         $crewList = new ArrayCollection([$shipCrew1]);
 
@@ -62,18 +62,18 @@ class CloseCombatUtilTest extends StuTestCase
 
     public function testGetCombatGroupExpectRightOrder(): void
     {
-        $shipCrew1 = $this->mock(CrewAssignmentInterface::class);
-        $shipCrew2 = $this->mock(CrewAssignmentInterface::class);
-        $shipCrew3 = $this->mock(CrewAssignmentInterface::class);
-        $shipCrew4 = $this->mock(CrewAssignmentInterface::class);
-        $shipCrew5 = $this->mock(CrewAssignmentInterface::class);
-        $shipCrew6 = $this->mock(CrewAssignmentInterface::class);
-        $crew1 = $this->mock(CrewInterface::class);
-        $crew2 = $this->mock(CrewInterface::class);
-        $crew3 = $this->mock(CrewInterface::class);
-        $crew4 = $this->mock(CrewInterface::class);
-        $crew5 = $this->mock(CrewInterface::class);
-        $crew6 = $this->mock(CrewInterface::class);
+        $shipCrew1 = $this->mock(CrewAssignment::class);
+        $shipCrew2 = $this->mock(CrewAssignment::class);
+        $shipCrew3 = $this->mock(CrewAssignment::class);
+        $shipCrew4 = $this->mock(CrewAssignment::class);
+        $shipCrew5 = $this->mock(CrewAssignment::class);
+        $shipCrew6 = $this->mock(CrewAssignment::class);
+        $crew1 = $this->mock(Crew::class);
+        $crew2 = $this->mock(Crew::class);
+        $crew3 = $this->mock(Crew::class);
+        $crew4 = $this->mock(Crew::class);
+        $crew5 = $this->mock(Crew::class);
+        $crew6 = $this->mock(Crew::class);
 
         $crewList = new ArrayCollection([
             $shipCrew4,
@@ -137,11 +137,11 @@ class CloseCombatUtilTest extends StuTestCase
 
     public function testGetCombatValue(): void
     {
-        $shipCrew1 = $this->mock(CrewAssignmentInterface::class);
-        $shipCrew2 = $this->mock(CrewAssignmentInterface::class);
-        $crew1 = $this->mock(CrewInterface::class);
-        $crew2 = $this->mock(CrewInterface::class);
-        $faction = $this->mock(FactionInterface::class);
+        $shipCrew1 = $this->mock(CrewAssignment::class);
+        $shipCrew2 = $this->mock(CrewAssignment::class);
+        $crew1 = $this->mock(Crew::class);
+        $crew2 = $this->mock(Crew::class);
+        $faction = $this->mock(Faction::class);
 
         $shipCrew1->shouldReceive('getCrew')
             ->withNoArgs()

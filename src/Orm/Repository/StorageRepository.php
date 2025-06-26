@@ -9,12 +9,11 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Override;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\Storage;
-use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Entity\TradeOffer;
 use Stu\Orm\Entity\TradePost;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 /**
  * @extends EntityRepository<Storage>
@@ -22,13 +21,13 @@ use Stu\Orm\Entity\UserInterface;
 final class StorageRepository extends EntityRepository implements StorageRepositoryInterface
 {
     #[Override]
-    public function prototype(): StorageInterface
+    public function prototype(): Storage
     {
         return new Storage();
     }
 
     #[Override]
-    public function save(StorageInterface $storage): void
+    public function save(Storage $storage): void
     {
         $em = $this->getEntityManager();
 
@@ -36,7 +35,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
     }
 
     #[Override]
-    public function delete(StorageInterface $storage): void
+    public function delete(Storage $storage): void
     {
         $em = $this->getEntityManager();
 
@@ -44,7 +43,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
     }
 
     #[Override]
-    public function getByUserAccumulated(UserInterface $user): array
+    public function getByUserAccumulated(User $user): array
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('commodity_id', 'commodity_id', 'integer');
@@ -68,7 +67,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
     }
 
     #[Override]
-    public function getColonyStorageByUserAndCommodity(UserInterface $user, int $commodityId): array
+    public function getColonyStorageByUserAndCommodity(User $user, int $commodityId): array
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('commodity_id', 'commodity_id', 'integer');
@@ -90,7 +89,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
     }
 
     #[Override]
-    public function getSpacecraftStorageByUserAndCommodity(UserInterface $user, int $commodityId): array
+    public function getSpacecraftStorageByUserAndCommodity(User $user, int $commodityId): array
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('commodity_id', 'commodity_id', 'integer');
@@ -116,7 +115,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
     }
 
     #[Override]
-    public function getTradePostStorageByUserAndCommodity(UserInterface $user, int $commodityId): array
+    public function getTradePostStorageByUserAndCommodity(User $user, int $commodityId): array
     {
         return $this->getEntityManager()
             ->createQuery(
@@ -138,7 +137,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
     }
 
     #[Override]
-    public function getTradeOfferStorageByUserAndCommodity(UserInterface $user, int $commodityId): array
+    public function getTradeOfferStorageByUserAndCommodity(User $user, int $commodityId): array
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('commodity_id', 'commodity_id', 'integer');
@@ -164,7 +163,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
     }
 
     #[Override]
-    public function getTorpdeoStorageByUserAndCommodity(UserInterface $user, int $commodityId): array
+    public function getTorpdeoStorageByUserAndCommodity(User $user, int $commodityId): array
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('commodity_id', 'commodity_id', 'integer');
@@ -228,7 +227,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
         int $tradePostId,
         int $userId,
         int $commodityId
-    ): ?StorageInterface {
+    ): ?Storage {
         return $this->findOneBy([
             'tradepost_id' => $tradePostId,
             'user_id' => $userId,
@@ -304,7 +303,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
     }
 
     #[Override]
-    public function truncateByColony(ColonyInterface $colony): void
+    public function truncateByColony(Colony $colony): void
     {
         $this->getEntityManager()
             ->createQuery(

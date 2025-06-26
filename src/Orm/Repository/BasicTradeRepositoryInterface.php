@@ -4,32 +4,31 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\BasicTrade;
-use Stu\Orm\Entity\BasicTradeInterface;
 
 /**
  * @extends ObjectRepository<BasicTrade>
  *
- * @method null|BasicTradeInterface find(integer $id)
+ * @method null|BasicTrade find(integer $id)
  */
 interface BasicTradeRepositoryInterface extends ObjectRepository
 {
-    public function prototype(): BasicTradeInterface;
+    public function prototype(): BasicTrade;
 
-    public function save(BasicTradeInterface $basicTrade): void;
+    public function save(BasicTrade $basicTrade): void;
 
     /**
-     * @return array<BasicTradeInterface>
+     * @return array<BasicTrade>
      */
     public function getBasicTrades(int $userId): array;
 
-    public function getByUniqId(string $uniqId): ?BasicTradeInterface;
+    public function getByUniqId(string $uniqId): ?BasicTrade;
 
-    public function isNewest(BasicTradeInterface $basicTrade): bool;
+    public function isNewest(BasicTrade $basicTrade): bool;
 
     /**
-     * @return array<BasicTradeInterface>
+     * @return array<BasicTrade>
      */
-    public function getLatestRates(BasicTradeInterface $basicTrade): array;
+    public function getLatestRates(BasicTrade $basicTrade): array;
 
     public function truncateAllBasicTrades(): void;
 }

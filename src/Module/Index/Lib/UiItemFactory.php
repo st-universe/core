@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Index\Lib;
 
 use Override;
-use Stu\Orm\Entity\FactionInterface;
+use Stu\Orm\Entity\Faction;
 
 /**
  * Creates ui related items for the index area
@@ -14,7 +14,7 @@ final class UiItemFactory implements UiItemFactoryInterface
 {
     #[Override]
     public function createFactionItem(
-        FactionInterface $faction,
+        Faction $faction,
         int $currentPlayerCount
     ): FactionItem {
         return new FactionItem(

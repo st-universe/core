@@ -14,8 +14,8 @@ use Stu\Component\Spacecraft\System\Data\HullSystemData;
 use Stu\Component\Spacecraft\System\Data\ShipSystemDataFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Template\StatusBarFactoryInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftSystemInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\SpacecraftSystem;
 use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -25,8 +25,8 @@ class SystemDataDeserializerTest extends StuTestCase
     private MockInterface&SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory;
     private JsonMapperInterface $jsonMapper;
 
-    private MockInterface&ShipInterface $ship;
-    private MockInterface&SpacecraftSystemInterface $shipSystem;
+    private MockInterface&Ship $ship;
+    private MockInterface&SpacecraftSystem $shipSystem;
 
     private SystemDataDeserializerInterface $subject;
 
@@ -37,8 +37,8 @@ class SystemDataDeserializerTest extends StuTestCase
         $this->shipSystemDataFactory = $this->mock(ShipSystemDataFactoryInterface::class);
         $this->jsonMapper = (new JsonMapperFactory())->bestFit();
 
-        $this->ship = $this->mock(ShipInterface::class);
-        $this->shipSystem = $this->mock(SpacecraftSystemInterface::class);
+        $this->ship = $this->mock(Ship::class);
+        $this->shipSystem = $this->mock(SpacecraftSystem::class);
         $this->spacecraftWrapperFactory = $this->mock(SpacecraftWrapperFactoryInterface::class);
 
         $this->subject = new SystemDataDeserializer(

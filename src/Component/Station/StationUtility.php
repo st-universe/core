@@ -16,11 +16,11 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Action\BuildConstruction\BuildConstruction;
 use Stu\Module\Station\Lib\Creation\StationCreatorInterface;
-use Stu\Orm\Entity\ConstructionProgressInterface;
-use Stu\Orm\Entity\SpacecraftBuildplanInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftRumpInterface;
-use Stu\Orm\Entity\StationInterface;
+use Stu\Orm\Entity\ConstructionProgress;
+use Stu\Orm\Entity\SpacecraftBuildplan;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\SpacecraftRump;
+use Stu\Orm\Entity\Station;
 use Stu\Orm\Repository\ConstructionProgressModuleRepositoryInterface;
 use Stu\Orm\Repository\ConstructionProgressRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
@@ -51,7 +51,7 @@ final class StationUtility implements StationUtilityInterface
     }
 
 
-    public static function canShipBuildConstruction(ShipInterface $ship): bool
+    public static function canShipBuildConstruction(Ship $ship): bool
     {
         if (!$ship->isShuttleRampHealthy()) {
             return false;
@@ -95,7 +95,7 @@ final class StationUtility implements StationUtilityInterface
     }
 
     #[Override]
-    public function getBuidplanIfResearchedByUser(int $planId, int $userId): ?SpacecraftBuildplanInterface
+    public function getBuidplanIfResearchedByUser(int $planId, int $userId): ?SpacecraftBuildplan
     {
         $this->loggerUtil->log(sprintf('getBuidplanIfResearchedByUser. planId: %d, userId: %d', $planId, $userId));
 
@@ -113,17 +113,17 @@ final class StationUtility implements StationUtilityInterface
     }
 
     #[Override]
-    public function getDockedWorkbeeCount(StationInterface $station): int
+    public function getDockedWorkbeeCount(Station $station): int
     {
         return $station->getDockedShips()
-            ->filter(fn(ShipInterface $docked): bool => $docked->hasEnoughCrew()
+            ->filter(fn(Ship $docked): bool => $docked->hasEnoughCrew()
                 && !$docked->getUser()->isVacationRequestOldEnough()
                 && $docked->getRump()->isWorkbee())
             ->count();
     }
 
     #[Override]
-    public function getNeededWorkbeeCount(StationInterface $station, SpacecraftRumpInterface $rump): int
+    public function getNeededWorkbeeCount(Station $station, SpacecraftRump $rump): int
     {
         if ($rump->getNeededWorkbees() === null) {
             return 0;
@@ -146,20 +146,20 @@ final class StationUtility implements StationUtilityInterface
     }
 
     #[Override]
-    public function hasEnoughDockedWorkbees(StationInterface $station, SpacecraftRumpInterface $rump): bool
+    public function hasEnoughDockedWorkbees(Station $station, SpacecraftRump $rump): bool
     {
         return $this->getDockedWorkbeeCount($station) >= $this->getNeededWorkbeeCount($station, $rump);
     }
 
     #[Override]
-    public function reduceRemainingTicks(ConstructionProgressInterface $progress): void
+    public function reduceRemainingTicks(ConstructionProgress $progress): void
     {
         $progress->setRemainingTicks($progress->getRemainingTicks() - 1);
         $this->constructionProgressRepository->save($progress);
     }
 
     #[Override]
-    public function finishStation(ConstructionProgressInterface $progress): void
+    public function finishStation(ConstructionProgress $progress): void
     {
         $station = $progress->getStation();
         $plan = $station->getBuildplan();
@@ -192,7 +192,7 @@ final class StationUtility implements StationUtilityInterface
         $this->constructionProgressRepository->save($progress);
     }
 
-    private function createTradepostAndLicense(StationInterface $station): void
+    private function createTradepostAndLicense(Station $station): void
     {
         $owner = $station->getUser();
         $tradepost = $this->tradePostRepository->prototype();
@@ -219,7 +219,7 @@ final class StationUtility implements StationUtilityInterface
     }
 
     #[Override]
-    public function finishScrapping(ConstructionProgressInterface $progress, InformationInterface $information): void
+    public function finishScrapping(ConstructionProgress $progress, InformationInterface $information): void
     {
         $station = $progress->getStation();
 
@@ -293,7 +293,7 @@ final class StationUtility implements StationUtilityInterface
     }
 
     #[Override]
-    public function canManageShips(StationInterface $station): bool
+    public function canManageShips(Station $station): bool
     {
         return $station->getRump()->getShipRumpRole() !== null
             && ($station->getRump()->getShipRumpRole()->getId() === SpacecraftRumpRoleEnum::SHIP_ROLE_OUTPOST
@@ -302,7 +302,7 @@ final class StationUtility implements StationUtilityInterface
     }
 
     #[Override]
-    public function canRepairShips(StationInterface $station): bool
+    public function canRepairShips(Station $station): bool
     {
         return $station->getRump()->getShipRumpRole() !== null
             && ($station->getRump()->getShipRumpRole()->getId() === SpacecraftRumpRoleEnum::SHIP_ROLE_SHIPYARD

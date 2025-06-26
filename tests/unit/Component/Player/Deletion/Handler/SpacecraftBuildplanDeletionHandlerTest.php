@@ -8,9 +8,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Override;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\SpacecraftBuildplanInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\SpacecraftBuildplan;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\StuTestCase;
@@ -36,13 +36,13 @@ class SpacecraftBuildplanDeletionHandlerTest extends StuTestCase
 
     public function testDeleteDeletesBuildplans(): void
     {
-        $user = $this->mock(UserInterface::class);
-        $foreignBuildplansUser = $this->mock(UserInterface::class);
-        $spacecraftBuildplanWithoutShips = $this->mock(SpacecraftBuildplanInterface::class);
-        $spacecraftBuildplanWithOwnShip = $this->mock(SpacecraftBuildplanInterface::class);
-        $spacecraftBuildplanWithForeignShip = $this->mock(SpacecraftBuildplanInterface::class);
-        $ownShip = $this->mock(ShipInterface::class);
-        $foreignShip = $this->mock(ShipInterface::class);
+        $user = $this->mock(User::class);
+        $foreignBuildplansUser = $this->mock(User::class);
+        $spacecraftBuildplanWithoutShips = $this->mock(SpacecraftBuildplan::class);
+        $spacecraftBuildplanWithOwnShip = $this->mock(SpacecraftBuildplan::class);
+        $spacecraftBuildplanWithForeignShip = $this->mock(SpacecraftBuildplan::class);
+        $ownShip = $this->mock(Ship::class);
+        $foreignShip = $this->mock(Ship::class);
 
         $userId = 666;
 
@@ -84,7 +84,7 @@ class SpacecraftBuildplanDeletionHandlerTest extends StuTestCase
         $foreignShip->shouldReceive('getUser')
             ->withNoArgs()
             ->once()
-            ->andReturn($this->mock(UserInterface::class));
+            ->andReturn($this->mock(User::class));
 
         $this->spacecraftBuildplanRepository->shouldReceive('getByUser')
             ->with($userId)

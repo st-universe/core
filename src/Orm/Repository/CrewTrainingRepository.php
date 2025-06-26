@@ -7,10 +7,9 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\CrewTraining;
-use Stu\Orm\Entity\CrewTrainingInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 /**
  * @extends EntityRepository<CrewTraining>
@@ -18,7 +17,7 @@ use Stu\Orm\Entity\UserInterface;
 final class CrewTrainingRepository extends EntityRepository implements CrewTrainingRepositoryInterface
 {
     #[Override]
-    public function save(CrewTrainingInterface $researched): void
+    public function save(CrewTraining $researched): void
     {
         $em = $this->getEntityManager();
 
@@ -26,7 +25,7 @@ final class CrewTrainingRepository extends EntityRepository implements CrewTrain
     }
 
     #[Override]
-    public function delete(CrewTrainingInterface $researched): void
+    public function delete(CrewTraining $researched): void
     {
         $em = $this->getEntityManager();
 
@@ -34,13 +33,13 @@ final class CrewTrainingRepository extends EntityRepository implements CrewTrain
     }
 
     #[Override]
-    public function prototype(): CrewTrainingInterface
+    public function prototype(): CrewTraining
     {
         return new CrewTraining();
     }
 
     #[Override]
-    public function truncateByColony(ColonyInterface $colony): void
+    public function truncateByColony(Colony $colony): void
     {
         $this->getEntityManager()
             ->createQuery(
@@ -54,7 +53,7 @@ final class CrewTrainingRepository extends EntityRepository implements CrewTrain
     }
 
     #[Override]
-    public function getCountByUser(UserInterface $user): int
+    public function getCountByUser(User $user): int
     {
         return $this->count([
             'user' => $user

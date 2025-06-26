@@ -10,13 +10,13 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftSystemInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\SpacecraftSystem;
 use Stu\StuTestCase;
 
 class EnergyWeaponShipSystemTest extends StuTestCase
 {
-    private MockInterface&ShipInterface $ship;
+    private MockInterface&Ship $ship;
     private MockInterface&ShipWrapperInterface $wrapper;
 
     private EnergyWeaponShipSystem $system;
@@ -24,7 +24,7 @@ class EnergyWeaponShipSystemTest extends StuTestCase
     #[Override]
     public function setUp(): void
     {
-        $this->ship = $this->mock(ShipInterface::class);
+        $this->ship = $this->mock(Ship::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
 
         $this->wrapper->shouldReceive('get')
@@ -96,7 +96,7 @@ class EnergyWeaponShipSystemTest extends StuTestCase
     public function testActivateActivates(): void
     {
         $managerMock = $this->mock(SpacecraftSystemManagerInterface::class);
-        $system = $this->mock(SpacecraftSystemInterface::class);
+        $system = $this->mock(SpacecraftSystem::class);
 
         $this->ship->shouldReceive('getSpacecraftSystem')
             ->with(SpacecraftSystemTypeEnum::PHASER)
@@ -111,7 +111,7 @@ class EnergyWeaponShipSystemTest extends StuTestCase
 
     public function testDeactivateDeactivates(): void
     {
-        $system = $this->mock(SpacecraftSystemInterface::class);
+        $system = $this->mock(SpacecraftSystem::class);
 
         $this->ship->shouldReceive('getSpacecraftSystem')
             ->with(SpacecraftSystemTypeEnum::PHASER)

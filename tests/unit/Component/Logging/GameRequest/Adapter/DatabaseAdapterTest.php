@@ -10,7 +10,6 @@ use Mockery\MockInterface;
 use Monolog\Logger;
 use Override;
 use Stu\Orm\Entity\GameRequest;
-use Stu\Orm\Entity\GameRequestInterface;
 use Stu\StuTestCase;
 
 class DatabaseAdapterTest extends StuTestCase
@@ -31,7 +30,7 @@ class DatabaseAdapterTest extends StuTestCase
 
     public function testInfoLogs(): void
     {
-        $gameRequest = $this->mock(GameRequestInterface::class);
+        $gameRequest = $this->mock(GameRequest::class);
 
         $requestId = 'some-request-id';
         $turnId = 666;

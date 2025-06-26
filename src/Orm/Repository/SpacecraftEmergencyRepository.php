@@ -7,7 +7,6 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\SpacecraftEmergency;
-use Stu\Orm\Entity\SpacecraftEmergencyInterface;
 
 /**
  * @extends EntityRepository<SpacecraftEmergency>
@@ -15,13 +14,13 @@ use Stu\Orm\Entity\SpacecraftEmergencyInterface;
 final class SpacecraftEmergencyRepository extends EntityRepository implements SpacecraftEmergencyRepositoryInterface
 {
     #[Override]
-    public function prototype(): SpacecraftEmergencyInterface
+    public function prototype(): SpacecraftEmergency
     {
         return new SpacecraftEmergency();
     }
 
     #[Override]
-    public function save(SpacecraftEmergencyInterface $spacecraftEmergency): void
+    public function save(SpacecraftEmergency $spacecraftEmergency): void
     {
         $em = $this->getEntityManager();
 
@@ -29,7 +28,7 @@ final class SpacecraftEmergencyRepository extends EntityRepository implements Sp
     }
 
     #[Override]
-    public function getByShipId(int $shipId): ?SpacecraftEmergencyInterface
+    public function getByShipId(int $shipId): ?SpacecraftEmergency
     {
         return $this->findOneBy([
             'spacecraft_id' => $shipId,

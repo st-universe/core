@@ -6,9 +6,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Override;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\User;
 
 class SpacecraftGroup implements SpacecraftGroupInterface
 {
@@ -17,7 +17,7 @@ class SpacecraftGroup implements SpacecraftGroupInterface
 
     public function __construct(
         private String $name,
-        private ?UserInterface $user
+        private ?User $user
     ) {
         $this->spacecraftWrappers = new ArrayCollection();
     }
@@ -41,15 +41,15 @@ class SpacecraftGroup implements SpacecraftGroupInterface
     }
 
     #[Override]
-    public function getUser(): ?UserInterface
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
     /** 
-     * @param Collection<int, covariant SpacecraftInterface> $spacecrafts 
+     * @param Collection<int, covariant Spacecraft> $spacecrafts 
      * 
-     * @return Collection<int, SpacecraftInterface>
+     * @return Collection<int, Spacecraft>
      */
     public static function sortSpacecraftCollection(Collection $spacecrafts): Collection
     {
@@ -57,9 +57,9 @@ class SpacecraftGroup implements SpacecraftGroupInterface
 
         usort(
             $spacecraftArray,
-            function (SpacecraftInterface $a, SpacecraftInterface $b): int {
-                $fleetA = $a instanceof ShipInterface ? $a->getFleet() : null;
-                $fleetB = $b instanceof ShipInterface ? $b->getFleet() : null;
+            function (Spacecraft $a, Spacecraft $b): int {
+                $fleetA = $a instanceof Ship ? $a->getFleet() : null;
+                $fleetB = $b instanceof Ship ? $b->getFleet() : null;
 
                 $fleetASort = $fleetA !== null ? $fleetA->getSort() : 0;
                 $fleetBSort = $fleetB !== null ? $fleetB->getSort() : 0;
@@ -67,8 +67,8 @@ class SpacecraftGroup implements SpacecraftGroupInterface
                     $fleetAid = $fleetA !== null ? $fleetA->getId() : 0;
                     $fleetBid = $fleetB !== null ? $fleetB->getId() : 0;
                     if ($fleetBid === $fleetAid) {
-                        $aIsFleetLeader = $a instanceof ShipInterface && $a->isFleetLeader();
-                        $bIsFleetLeader = $b instanceof ShipInterface && $b->isFleetLeader();
+                        $aIsFleetLeader = $a instanceof Ship && $a->isFleetLeader();
+                        $bIsFleetLeader = $b instanceof Ship && $b->isFleetLeader();
                         if ($bIsFleetLeader === $aIsFleetLeader) {
                             $catA = $a->getRump()->getCategoryId();
                             $catB = $b->getRump()->getCategoryId();

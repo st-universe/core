@@ -6,31 +6,30 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Lib\Map\VisualPanel\Layer\Data\CellDataInterface;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
-use Stu\Orm\Entity\LayerInterface;
-use Stu\Orm\Entity\StarSystemInterface;
+use Stu\Orm\Entity\Layer;
+use Stu\Orm\Entity\StarSystem;
 use Stu\Orm\Entity\StarSystemMap;
-use Stu\Orm\Entity\StarSystemMapInterface;
 
 /**
  * @extends ObjectRepository<StarSystemMap>
  *
- * @method null|StarSystemMapInterface find(integer $id)
+ * @method null|StarSystemMap find(integer $id)
  */
 interface StarSystemMapRepositoryInterface extends ObjectRepository
 {
-    /** @return array<StarSystemMapInterface> */
+    /** @return array<StarSystemMap> */
     public function getBySystemOrdered(int $starSystemId): array;
 
     public function getByCoordinates(
         int $starSystemId,
         int $sx,
         int $sy
-    ): ?StarSystemMapInterface;
+    ): ?StarSystemMap;
 
-    /** @return array<string, StarSystemMapInterface> */
+    /** @return array<string, StarSystemMap> */
     public function getByBoundaries(PanelBoundaries $boundaries): array;
 
-    /** @return array<string, StarSystemMapInterface> */
+    /** @return array<string, StarSystemMap> */
     public function getByCoordinateRange(
         int $starSystemId,
         int $startSx,
@@ -75,9 +74,9 @@ interface StarSystemMapRepositoryInterface extends ObjectRepository
      */
     public function getRandomSystemMapIdsForAstroMeasurement(int $starSystemId, int $location): array;
 
-    public function prototype(): StarSystemMapInterface;
+    public function prototype(): StarSystemMap;
 
-    public function save(StarSystemMapInterface $starSystemMap): void;
+    public function save(StarSystemMap $starSystemMap): void;
 
-    public function truncateByStarSystem(StarSystemInterface $starSystem): void;
+    public function truncateByStarSystem(StarSystem $starSystem): void;
 }

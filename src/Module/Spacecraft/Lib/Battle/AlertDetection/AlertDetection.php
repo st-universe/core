@@ -7,7 +7,7 @@ use Override;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Party\AlertStateBattleParty;
 use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyFactoryInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 
 class AlertDetection implements AlertDetectionInterface
 {
@@ -21,9 +21,9 @@ class AlertDetection implements AlertDetectionInterface
 
     #[Override]
     public function detectAlertedBattleParties(
-        SpacecraftInterface $incomingSpacecraft,
+        Spacecraft $incomingSpacecraft,
         InformationInterface $informations,
-        ?SpacecraftInterface $tractoringSpacecraft = null
+        ?Spacecraft $tractoringSpacecraft = null
     ): array {
 
         $alertedWrappers = $this->alertedShipsDetection->getAlertedShipsOnLocation(

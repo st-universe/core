@@ -7,7 +7,6 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\TorpedoHull;
-use Stu\Orm\Entity\TorpedoHullInterface;
 
 /**
  * @extends EntityRepository<TorpedoHull>
@@ -15,13 +14,13 @@ use Stu\Orm\Entity\TorpedoHullInterface;
 final class TorpedoHullRepository extends EntityRepository implements TorpedoHullRepositoryInterface
 {
     #[Override]
-    public function prototype(): TorpedoHullInterface
+    public function prototype(): TorpedoHull
     {
         return new TorpedoHull();
     }
 
     #[Override]
-    public function save(TorpedoHullInterface $torpedohull): void
+    public function save(TorpedoHull $torpedohull): void
     {
         $em = $this->getEntityManager();
 
@@ -29,7 +28,7 @@ final class TorpedoHullRepository extends EntityRepository implements TorpedoHul
     }
 
     #[Override]
-    public function delete(TorpedoHullInterface $torpedohull): void
+    public function delete(TorpedoHull $torpedohull): void
     {
         $em = $this->getEntityManager();
 

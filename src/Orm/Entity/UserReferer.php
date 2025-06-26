@@ -11,11 +11,10 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 
 #[Table(name: 'stu_user_referer')]
 #[Entity(repositoryClass: 'Stu\Orm\Repository\UserRefererRepository')]
-class UserReferer implements UserRefererInterface
+class UserReferer
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -24,38 +23,33 @@ class UserReferer implements UserRefererInterface
 
     #[OneToOne(targetEntity: UserRegistration::class, inversedBy: 'referer')]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'user_id', onDelete: 'CASCADE')]
-    private UserRegistrationInterface $userRegistration;
+    private UserRegistration $userRegistration;
 
     #[Column(type: 'text')]
     private string $referer;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
-    public function getUserRegistration(): UserRegistrationInterface
+    public function getUserRegistration(): UserRegistration
     {
         return $this->userRegistration;
     }
 
-    #[Override]
-    public function setUserRegistration(UserRegistrationInterface $registration): UserRefererInterface
+    public function setUserRegistration(UserRegistration $registration): UserReferer
     {
         $this->userRegistration = $registration;
         return $this;
     }
 
-    #[Override]
     public function getReferer(): string
     {
         return $this->referer;
     }
 
-    #[Override]
-    public function setReferer(string $referer): UserRefererInterface
+    public function setReferer(string $referer): UserReferer
     {
         $this->referer = $referer;
         return $this;

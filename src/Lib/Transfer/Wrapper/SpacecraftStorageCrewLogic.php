@@ -15,9 +15,9 @@ use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftShutdownInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\StationInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\Station;
+use Stu\Orm\Entity\User;
 
 class SpacecraftStorageCrewLogic
 {
@@ -30,7 +30,7 @@ class SpacecraftStorageCrewLogic
         private SpacecraftShutdownInterface $spacecraftShutdown
     ) {}
 
-    public function getMaxTransferrableCrew(SpacecraftInterface $spacecraft, bool $isTarget, UserInterface $user): int
+    public function getMaxTransferrableCrew(Spacecraft $spacecraft, bool $isTarget, User $user): int
     {
         return min(
             $this->troopTransferUtility->ownCrewOnTarget($user, $spacecraft),
@@ -38,7 +38,7 @@ class SpacecraftStorageCrewLogic
         );
     }
 
-    public function getFreeCrewSpace(SpacecraftInterface $spacecraft, UserInterface $user): int
+    public function getFreeCrewSpace(Spacecraft $spacecraft, User $user): int
     {
         if ($user !== $spacecraft->getUser()) {
             if (!$spacecraft->hasUplink()) {
@@ -87,11 +87,11 @@ class SpacecraftStorageCrewLogic
         return true;
     }
 
-    public function acceptsCrewFrom(SpacecraftWrapperInterface $wrapper, int $amount, UserInterface $user, InformationInterface $information): bool
+    public function acceptsCrewFrom(SpacecraftWrapperInterface $wrapper, int $amount, User $user, InformationInterface $information): bool
     {
         $spacecraft = $wrapper->get();
 
-        if (!$spacecraft instanceof StationInterface) {
+        if (!$spacecraft instanceof Station) {
             return false;
         }
 
@@ -209,7 +209,7 @@ class SpacecraftStorageCrewLogic
         }
     }
 
-    private function getOwnCrewCount(SpacecraftInterface $spacecraft): int
+    private function getOwnCrewCount(Spacecraft $spacecraft): int
     {
         $count = 0;
         foreach ($spacecraft->getCrewAssignments() as $spacecraftCrew) {

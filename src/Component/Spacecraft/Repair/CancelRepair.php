@@ -6,7 +6,7 @@ namespace Stu\Component\Spacecraft\Repair;
 
 use Override;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\RepairTaskRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
@@ -23,7 +23,7 @@ final class CancelRepair implements CancelRepairInterface
 
 
     #[Override]
-    public function cancelRepair(SpacecraftInterface $ship): bool
+    public function cancelRepair(Spacecraft $ship): bool
     {
         $state = $ship->getState();
         if ($state === SpacecraftStateEnum::REPAIR_PASSIVE) {
@@ -44,7 +44,7 @@ final class CancelRepair implements CancelRepairInterface
         return false;
     }
 
-    private function setStateNoneAndSave(SpacecraftInterface $ship): void
+    private function setStateNoneAndSave(Spacecraft $ship): void
     {
         $ship->getCondition()->setState(SpacecraftStateEnum::NONE);
         $this->spacecraftRepository->save($ship);

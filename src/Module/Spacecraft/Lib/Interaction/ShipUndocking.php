@@ -9,8 +9,8 @@ use Stu\Component\Ship\Retrofit\CancelRetrofitInterface;
 use Stu\Component\Spacecraft\Repair\CancelRepairInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\StationInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Station;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShipUndocking implements ShipUndockingInterface
@@ -24,7 +24,7 @@ final class ShipUndocking implements ShipUndockingInterface
 
 
     #[Override]
-    public function undockShip(StationInterface $station, ShipInterface $dockedShip): void
+    public function undockShip(Station $station, Ship $dockedShip): void
     {
         $this->cancelRepair->cancelRepair($dockedShip);
         $this->cancelRetrofit->cancelRetrofit($dockedShip);
@@ -45,7 +45,7 @@ final class ShipUndocking implements ShipUndockingInterface
     }
 
     #[Override]
-    public function undockAllDocked(StationInterface $station): bool
+    public function undockAllDocked(Station $station): bool
     {
         $dockedShips = $station->getDockedShips();
         if ($dockedShips->isEmpty()) {

@@ -10,7 +10,6 @@ use Mockery\MockInterface;
 use Override;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\User;
-use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\UserRepository;
 use Stu\StuTestCase;
 
@@ -38,7 +37,7 @@ class UserRepositoryTest extends StuTestCase
 
     public function testGetFallbackUserReturnsItem(): void
     {
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
 
         $this->entityManager->shouldReceive('find')
             ->with(User::class, UserEnum::USER_NOONE, null, null)

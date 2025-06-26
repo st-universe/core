@@ -33,10 +33,10 @@ use Stu\Module\Game\Lib\GameSetupInterface;
 use Stu\Module\Game\Lib\TutorialProvider;
 use Stu\Module\Logging\StuLogger;
 use Stu\Module\Twig\TwigPageInterface;
-use Stu\Orm\Entity\GameConfigInterface;
-use Stu\Orm\Entity\GameRequestInterface;
-use Stu\Orm\Entity\GameTurnInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\GameConfig;
+use Stu\Orm\Entity\GameRequest;
+use Stu\Orm\Entity\GameTurn;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\GameConfigRepositoryInterface;
 use Stu\Orm\Repository\GameRequestRepositoryInterface;
@@ -224,7 +224,7 @@ final class GameController implements GameControllerInterface
     }
 
     #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         $user = $this->session->getUser();
 
@@ -241,7 +241,7 @@ final class GameController implements GameControllerInterface
     }
 
     /**
-     * @return array<int, GameConfigInterface>
+     * @return array<int, GameConfig>
      */
     private function getGameConfig(): array
     {
@@ -329,7 +329,7 @@ final class GameController implements GameControllerInterface
     }
 
     #[Override]
-    public function getCurrentRound(): GameTurnInterface
+    public function getCurrentRound(): GameTurn
     {
         if ($this->gameData->currentRound === null) {
             $this->gameData->currentRound = $this->gameTurnRepository->getCurrent();
@@ -397,7 +397,7 @@ final class GameController implements GameControllerInterface
     }
 
     #[Override]
-    public function getGameRequest(): GameRequestInterface
+    public function getGameRequest(): GameRequest
     {
         if ($this->gameData->gameRequest === null) {
             $gameRequest = $this->gameRequestRepository->prototype();
@@ -512,7 +512,7 @@ final class GameController implements GameControllerInterface
         $this->gameRequestSaver->save($gameRequest);
     }
 
-    private function checkUserLock(GameRequestInterface $gameRequest): void
+    private function checkUserLock(GameRequest $gameRequest): void
     {
         if ($this->hasUser()) {
             $user = $this->getUser();
@@ -592,7 +592,7 @@ final class GameController implements GameControllerInterface
         $this->eventDispatcher->dispatch($event);
     }
 
-    private function executeCallback(ModuleEnum $module, GameRequestInterface $gameRequest): void
+    private function executeCallback(ModuleEnum $module, GameRequest $gameRequest): void
     {
         $actions = $this->controllerDiscovery->getControllers($module, false);
 
@@ -611,7 +611,7 @@ final class GameController implements GameControllerInterface
         }
     }
 
-    private function executeView(ModuleEnum $module, GameRequestInterface $gameRequest): void
+    private function executeView(ModuleEnum $module, GameRequest $gameRequest): void
     {
         $viewFromContext = $this->getViewContext(ViewContextTypeEnum::VIEW);
 

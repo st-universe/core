@@ -8,8 +8,8 @@ use Override;
 use RuntimeException;
 use Stu\Module\Spacecraft\Lib\SourceAndTargetWrappersInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
-use Stu\Orm\Entity\StationInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Station;
+use Stu\Orm\Entity\Spacecraft;
 
 final class StationLoader implements StationLoaderInterface
 {
@@ -26,7 +26,7 @@ final class StationLoader implements StationLoaderInterface
         int $userId,
         bool $allowUplink = false,
         bool $checkForEntityLock = true
-    ): StationInterface {
+    ): Station {
 
         $spacecraft = $this->spacecraftLoader->getByIdAndUser(
             $stationId,
@@ -35,7 +35,7 @@ final class StationLoader implements StationLoaderInterface
             $checkForEntityLock
         );
 
-        if (!$spacecraft instanceof StationInterface) {
+        if (!$spacecraft instanceof Station) {
             throw new RuntimeException(sprintf('stationId %d is not a station', $stationId));
         }
 
@@ -97,7 +97,7 @@ final class StationLoader implements StationLoaderInterface
         return $wrapper;
     }
 
-    public function save(SpacecraftInterface $station): void
+    public function save(Spacecraft $station): void
     {
         $this->spacecraftLoader->save($station);
     }

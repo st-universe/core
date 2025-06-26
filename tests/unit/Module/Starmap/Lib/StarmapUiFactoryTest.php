@@ -9,8 +9,8 @@ use Mockery\MockInterface;
 use Override;
 use Stu\Component\Map\EncodedMapInterface;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
-use Stu\Orm\Entity\LayerInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Layer;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
@@ -61,7 +61,7 @@ class StarmapUiFactoryTest extends StuTestCase
         static::assertInstanceOf(
             YRow::class,
             $this->subject->createYRow(
-                $this->mock(LayerInterface::class),
+                $this->mock(Layer::class),
                 222,
                 333,
                 444,
@@ -75,8 +75,8 @@ class StarmapUiFactoryTest extends StuTestCase
         static::assertInstanceOf(
             UserYRow::class,
             $this->subject->createUserYRow(
-                $this->mock(UserInterface::class),
-                $this->mock(LayerInterface::class),
+                $this->mock(User::class),
+                $this->mock(Layer::class),
                 111,
                 222,
                 333,
@@ -91,7 +91,7 @@ class StarmapUiFactoryTest extends StuTestCase
             ExplorableStarMapItem::class,
             $this->subject->createExplorableStarmapItem(
                 $this->mock(ExploreableStarMapInterface::class),
-                $this->mock(LayerInterface::class)
+                $this->mock(Layer::class)
             )
         );
     }

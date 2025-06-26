@@ -12,14 +12,13 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\ColonyTerraformingRepository;
 
 #[Table(name: 'stu_colonies_terraforming')]
 #[Index(name: 'colony_idx', columns: ['colonies_id'])]
 #[Index(name: 'finished_idx', columns: ['finished'])]
 #[Entity(repositoryClass: ColonyTerraformingRepository::class)]
-class ColonyTerraforming implements ColonyTerraformingInterface
+class ColonyTerraforming
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -40,104 +39,90 @@ class ColonyTerraforming implements ColonyTerraformingInterface
 
     #[ManyToOne(targetEntity: Terraforming::class)]
     #[JoinColumn(name: 'terraforming_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private TerraformingInterface $terraforming;
+    private Terraforming $terraforming;
 
     #[ManyToOne(targetEntity: PlanetField::class)]
     #[JoinColumn(name: 'field_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private PlanetFieldInterface $field;
+    private PlanetField $field;
 
     #[ManyToOne(targetEntity: Colony::class)]
     #[JoinColumn(name: 'colonies_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ColonyInterface $colony;
+    private Colony $colony;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getColonyId(): int
     {
         return $this->colonies_id;
     }
 
-    #[Override]
     public function getFieldId(): int
     {
         return $this->field_id;
     }
 
-    #[Override]
     public function getTerraformingId(): int
     {
         return $this->terraforming_id;
     }
 
-    #[Override]
-    public function setTerraformingId(int $terraformingId): ColonyTerraformingInterface
+    public function setTerraformingId(int $terraformingId): ColonyTerraforming
     {
         $this->terraforming_id = $terraformingId;
 
         return $this;
     }
 
-    #[Override]
     public function getFinishDate(): int
     {
         return $this->finished;
     }
 
-    #[Override]
-    public function setFinishDate(int $finishDate): ColonyTerraformingInterface
+    public function setFinishDate(int $finishDate): ColonyTerraforming
     {
         $this->finished = $finishDate;
 
         return $this;
     }
 
-    #[Override]
-    public function getTerraforming(): TerraformingInterface
+    public function getTerraforming(): Terraforming
     {
         return $this->terraforming;
     }
 
-    #[Override]
-    public function setTerraforming(TerraformingInterface $terraforming): ColonyTerraformingInterface
+    public function setTerraforming(Terraforming $terraforming): ColonyTerraforming
     {
         $this->terraforming = $terraforming;
 
         return $this;
     }
 
-    #[Override]
-    public function getField(): PlanetFieldInterface
+    public function getField(): PlanetField
     {
         return $this->field;
     }
 
-    #[Override]
-    public function setField(PlanetFieldInterface $planetField): ColonyTerraformingInterface
+    public function setField(PlanetField $planetField): ColonyTerraforming
     {
         $this->field = $planetField;
 
         return $this;
     }
 
-    #[Override]
-    public function getColony(): ColonyInterface
+    public function getColony(): Colony
     {
         return $this->colony;
     }
 
-    #[Override]
-    public function setColony(ColonyInterface $colony): ColonyTerraformingInterface
+    public function setColony(Colony $colony): ColonyTerraforming
     {
         $this->colony = $colony;
         return $this;
     }
 
-    #[Override]
     public function getProgress(): int
     {
         $start = $this->getFinishDate() - $this->getTerraforming()->getDuration();

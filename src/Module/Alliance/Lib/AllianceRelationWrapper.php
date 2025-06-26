@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Lib;
 
 use Stu\Component\Alliance\AllianceEnum;
-use Stu\Orm\Entity\AllianceInterface;
-use Stu\Orm\Entity\AllianceRelationInterface;
+use Stu\Orm\Entity\Alliance;
+use Stu\Orm\Entity\AllianceRelation;
 
 final class AllianceRelationWrapper
 {
-    public function __construct(private AllianceInterface $alliance, private AllianceRelationInterface $relation)
+    public function __construct(private Alliance $alliance, private AllianceRelation $relation)
     {
     }
 

@@ -10,7 +10,6 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Orm\Repository\ShipRumpBuildingFunctionRepository;
 
@@ -18,7 +17,7 @@ use Stu\Orm\Repository\ShipRumpBuildingFunctionRepository;
 #[Index(name: 'building_function_ship_rump_idx', columns: ['rump_id'])]
 #[Index(name: 'building_function_idx', columns: ['building_function'])]
 #[Entity(repositoryClass: ShipRumpBuildingFunctionRepository::class)]
-class ShipRumpBuildingFunction implements ShipRumpBuildingFunctionInterface
+class ShipRumpBuildingFunction
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -31,28 +30,24 @@ class ShipRumpBuildingFunction implements ShipRumpBuildingFunctionInterface
     #[Column(type: 'integer', enumType: BuildingFunctionEnum::class)]
     private BuildingFunctionEnum $building_function = BuildingFunctionEnum::BASE_CAMP;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
-    public function setRumpId(int $rumpId): ShipRumpBuildingFunctionInterface
+    public function setRumpId(int $rumpId): ShipRumpBuildingFunction
     {
         $this->rump_id = $rumpId;
 
         return $this;
     }
 
-    #[Override]
     public function getBuildingFunction(): BuildingFunctionEnum
     {
         return $this->building_function;
     }
 
-    #[Override]
-    public function setBuildingFunction(BuildingFunctionEnum $buildingFunction): ShipRumpBuildingFunctionInterface
+    public function setBuildingFunction(BuildingFunctionEnum $buildingFunction): ShipRumpBuildingFunction
     {
         $this->building_function = $buildingFunction;
 

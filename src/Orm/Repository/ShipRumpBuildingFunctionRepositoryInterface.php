@@ -4,8 +4,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\ShipRumpBuildingFunction;
-use Stu\Orm\Entity\ShipRumpBuildingFunctionInterface;
-use Stu\Orm\Entity\SpacecraftRumpInterface;
+use Stu\Orm\Entity\SpacecraftRump;
 
 /**
  * @extends ObjectRepository<ShipRumpBuildingFunction>
@@ -13,7 +12,7 @@ use Stu\Orm\Entity\SpacecraftRumpInterface;
 interface ShipRumpBuildingFunctionRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return list<ShipRumpBuildingFunctionInterface>
+     * @return list<ShipRumpBuildingFunction>
      */
-    public function getByShipRump(SpacecraftRumpInterface $shipRump): array;
+    public function getByShipRump(SpacecraftRump $shipRump): array;
 }

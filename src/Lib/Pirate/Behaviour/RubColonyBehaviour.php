@@ -20,9 +20,9 @@ use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\StorageInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\Storage;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 class RubColonyBehaviour implements PirateBehaviourInterface
@@ -48,7 +48,7 @@ class RubColonyBehaviour implements PirateBehaviourInterface
         FleetWrapperInterface $fleet,
         PirateReactionInterface $pirateReaction,
         PirateReactionMetadata $reactionMetadata,
-        ?SpacecraftInterface $triggerSpacecraft
+        ?Spacecraft $triggerSpacecraft
     ): ?PirateBehaviourEnum {
 
         $leadWrapper = $fleet->getLeadWrapper();
@@ -60,7 +60,7 @@ class RubColonyBehaviour implements PirateBehaviourInterface
             return PirateBehaviourEnum::FLY;
         }
 
-        usort($targets, fn(ColonyInterface $a, ColonyInterface $b): int =>
+        usort($targets, fn(Colony $a, Colony $b): int =>
         $this->distanceCalculation->spacecraftToColonyDistance($leadShip, $a) - $this->distanceCalculation->spacecraftToColonyDistance($leadShip, $b));
 
         $closestColony = current($targets);
@@ -77,7 +77,7 @@ class RubColonyBehaviour implements PirateBehaviourInterface
         return null;
     }
 
-    private function rubColony(FleetWrapperInterface $fleetWrapper, ColonyInterface $colony): void
+    private function rubColony(FleetWrapperInterface $fleetWrapper, Colony $colony): void
     {
         if ($this->colonyLibFactory->createColonyShieldingManager($colony)->isShieldingEnabled()) {
             $this->logger->log('    colony has shield on');
@@ -88,7 +88,7 @@ class RubColonyBehaviour implements PirateBehaviourInterface
 
         $filteredColonyStorage = array_filter(
             $colony->getStorage()->toArray(),
-            fn(StorageInterface $storage): bool => $storage->getCommodity()->isBeamable($colony->getUser(), $pirateUser)
+            fn(Storage $storage): bool => $storage->getCommodity()->isBeamable($colony->getUser(), $pirateUser)
         );
 
         $allInformations = new InformationWrapper();

@@ -14,14 +14,13 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Alliance\Exception\AllianceFounderNotSetException;
 use Stu\Orm\Repository\AllianceRepository;
 
 #[Table(name: 'stu_alliances')]
 #[Entity(repositoryClass: AllianceRepository::class)]
-class Alliance implements AllianceInterface
+class Alliance
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -54,23 +53,23 @@ class Alliance implements AllianceInterface
 
     #[ManyToOne(targetEntity: Faction::class)]
     #[JoinColumn(name: 'faction_id', referencedColumnName: 'id')]
-    private ?FactionInterface $faction = null;
+    private ?Faction $faction = null;
 
     /**
-     * @var ArrayCollection<int, AllianceSettingsInterface>
+     * @var ArrayCollection<int, AllianceSettings>
      */
     #[OneToMany(targetEntity: AllianceSettings::class, mappedBy: 'alliance')]
     private Collection $settings;
 
 
     /**
-     * @var ArrayCollection<int, UserInterface>
+     * @var ArrayCollection<int, User>
      */
     #[OneToMany(targetEntity: User::class, mappedBy: 'alliance')]
     private Collection $members;
 
     /**
-     * @var ArrayCollection<int, AllianceJobInterface>
+     * @var ArrayCollection<int, AllianceJob>
      */
     #[OneToMany(targetEntity: AllianceJob::class, mappedBy: 'alliance', indexBy: 'type')]
     private Collection $jobs;
@@ -83,117 +82,99 @@ class Alliance implements AllianceInterface
         $this->settings = new ArrayCollection();
     }
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
-    #[Override]
-    public function setName(string $name): AllianceInterface
+    public function setName(string $name): Alliance
     {
         $this->name = $name;
         return $this;
     }
 
-    #[Override]
     public function getDescription(): string
     {
         return $this->description;
     }
 
-    #[Override]
-    public function setDescription(string $description): AllianceInterface
+    public function setDescription(string $description): Alliance
     {
         $this->description = $description;
         return $this;
     }
 
-    #[Override]
     public function getHomepage(): string
     {
         return $this->homepage;
     }
 
-    #[Override]
-    public function setHomepage(string $homepage): AllianceInterface
+    public function setHomepage(string $homepage): Alliance
     {
         $this->homepage = $homepage;
         return $this;
     }
 
-    #[Override]
     public function getDate(): int
     {
         return $this->date;
     }
 
-    #[Override]
-    public function setDate(int $date): AllianceInterface
+    public function setDate(int $date): Alliance
     {
         $this->date = $date;
         return $this;
     }
 
-    #[Override]
-    public function getFaction(): ?FactionInterface
+    public function getFaction(): ?Faction
     {
         return $this->faction;
     }
 
-    #[Override]
-    public function setFaction(?FactionInterface $faction): AllianceInterface
+    public function setFaction(?Faction $faction): Alliance
     {
         $this->faction = $faction;
         return $this;
     }
 
-    #[Override]
     public function getAcceptApplications(): bool
     {
         return $this->accept_applications;
     }
 
-    #[Override]
-    public function setAcceptApplications(bool $acceptApplications): AllianceInterface
+    public function setAcceptApplications(bool $acceptApplications): Alliance
     {
         $this->accept_applications = $acceptApplications;
         return $this;
     }
 
-    #[Override]
     public function hasAvatar(): bool
     {
         return strlen($this->getAvatar()) > 0;
     }
 
-    #[Override]
     public function getAvatar(): string
     {
         return $this->avatar;
     }
 
-    #[Override]
-    public function setAvatar(string $avatar): AllianceInterface
+    public function setAvatar(string $avatar): Alliance
     {
         $this->avatar = $avatar;
         return $this;
     }
 
-    #[Override]
     public function getRgbCode(): string
     {
         return $this->rgb_code;
     }
 
-    #[Override]
-    public function setRgbCode(string $rgbCode): AllianceInterface
+    public function setRgbCode(string $rgbCode): Alliance
     {
         $this->rgb_code = $rgbCode;
         return $this;
@@ -202,8 +183,7 @@ class Alliance implements AllianceInterface
     /**
      * @throws AllianceFounderNotSetException
      */
-    #[Override]
-    public function getFounder(): AllianceJobInterface
+    public function getFounder(): AllianceJob
     {
         $job = $this->jobs->get(AllianceEnum::ALLIANCE_JOBS_FOUNDER);
         if ($job === null) {
@@ -213,25 +193,27 @@ class Alliance implements AllianceInterface
         return $job;
     }
 
-    #[Override]
-    public function getSuccessor(): ?AllianceJobInterface
+    public function getSuccessor(): ?AllianceJob
     {
         return $this->jobs->get(AllianceEnum::ALLIANCE_JOBS_SUCCESSOR);
     }
 
-    #[Override]
-    public function getDiplomatic(): ?AllianceJobInterface
+    public function getDiplomatic(): ?AllianceJob
     {
         return $this->jobs->get(AllianceEnum::ALLIANCE_JOBS_DIPLOMATIC);
     }
 
-    #[Override]
+    /**
+     * @return Collection<int, User>
+     */
     public function getMembers(): Collection
     {
         return $this->members;
     }
 
-    #[Override]
+    /**
+     * Returns `true` if the founder is a npc
+     */
     public function isNpcAlliance(): bool
     {
         $founder = $this->jobs->get(AllianceEnum::ALLIANCE_JOBS_FOUNDER);
@@ -243,26 +225,30 @@ class Alliance implements AllianceInterface
         return $founder->getUser()->isNpc();
     }
 
-    #[Override]
+    /**
+     * Returns the alliance jobs, indexed by type
+     *
+     * @return Collection<int, AllianceJob>
+     */
     public function getJobs(): Collection
     {
         return $this->jobs;
     }
 
-    #[Override]
     public function __toString(): string
     {
         return $this->getName();
     }
 
-    #[Override]
     public function hasTranslation(): bool
     {
         $text = $this->getDescription();
         return strpos($text, '[translate]') !== false && strpos($text, '[/translate]') !== false;
     }
 
-    #[Override]
+    /**
+     * @return Collection<int, AllianceSettings>
+     */
     public function getSettings(): Collection
     {
         return $this->settings;

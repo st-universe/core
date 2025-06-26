@@ -5,22 +5,22 @@ namespace Stu\Module\Prestige\Lib;
 use Override;
 use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
 
 class PrestigeCalculation implements PrestigeCalculationInterface
 {
 
     #[Override]
-    public function getPrestigeOfSpacecraftOrFleet(SpacecraftWrapperInterface|SpacecraftInterface $spacecraft): int
+    public function getPrestigeOfSpacecraftOrFleet(SpacecraftWrapperInterface|Spacecraft $spacecraft): int
     {
-        $target = $spacecraft instanceof SpacecraftInterface ? $spacecraft : $spacecraft->get();
+        $target = $spacecraft instanceof Spacecraft ? $spacecraft : $spacecraft->get();
 
         $fleet = $target->getFleet();
         if ($fleet !== null) {
             return array_reduce(
                 $fleet->getShips()->toArray(),
-                fn(int $value, ShipInterface $fleetShip): int => $value + $fleetShip->getRump()->getPrestige(),
+                fn(int $value, Ship $fleetShip): int => $value + $fleetShip->getRump()->getPrestige(),
                 0
             );
         }
@@ -29,7 +29,7 @@ class PrestigeCalculation implements PrestigeCalculationInterface
     }
 
     #[Override]
-    public function targetHasPositivePrestige(SpacecraftInterface $target): bool
+    public function targetHasPositivePrestige(Spacecraft $target): bool
     {
         $fleet = $target->getFleet();
         if ($fleet !== null) {

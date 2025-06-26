@@ -2,12 +2,12 @@
 
 namespace Stu\Module\Spacecraft\Lib\Interaction;
 
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\StationInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Station;
 
 interface ShipUndockingInterface
 {
-    public function undockShip(StationInterface $station, ShipInterface $dockedShip): void;
+    public function undockShip(Station $station, Ship $dockedShip): void;
 
-    public function undockAllDocked(StationInterface $station): bool;
+    public function undockAllDocked(Station $station): bool;
 }

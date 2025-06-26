@@ -2,12 +2,12 @@
 
 namespace Stu\Component\Spacecraft\Trait;
 
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\LayerInterface;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\MapRegionInterface;
-use Stu\Orm\Entity\StarSystemInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Layer;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\MapRegion;
+use Stu\Orm\Entity\StarSystem;
+use Stu\Orm\Entity\StarSystemMap;
 
 trait SpacecraftLocationTrait
 {
@@ -23,32 +23,32 @@ trait SpacecraftLocationTrait
         return $this->getThis()->getLocation()->getY();
     }
 
-    public function getMap(): ?MapInterface
+    public function getMap(): ?Map
     {
         $location = $this->getThis()->getLocation();
 
-        if ($location instanceof MapInterface) {
+        if ($location instanceof Map) {
             return $location;
         }
 
         return $location->getSystem()->getMap();
     }
 
-    public function getStarsystemMap(): ?StarSystemMapInterface
+    public function getStarsystemMap(): ?StarSystemMap
     {
-        if ($this->getThis()->getLocation() instanceof StarSystemMapInterface) {
+        if ($this->getThis()->getLocation() instanceof StarSystemMap) {
             return $this->getThis()->getLocation();
         }
 
         return null;
     }
 
-    public function getLayer(): ?LayerInterface
+    public function getLayer(): ?Layer
     {
         return $this->getThis()->getLocation()->getLayer();
     }
 
-    public function getMapRegion(): ?MapRegionInterface
+    public function getMapRegion(): ?MapRegion
     {
         $systemMap = $this->getStarsystemMap();
         if ($systemMap !== null) {
@@ -63,22 +63,22 @@ trait SpacecraftLocationTrait
         return $map->getMapRegion();
     }
 
-    public function isOverColony(): ?ColonyInterface
+    public function isOverColony(): ?Colony
     {
         return $this->getStarsystemMap() !== null ? $this->getStarsystemMap()->getColony() : null;
     }
 
-    public function isOverSystem(): ?StarSystemInterface
+    public function isOverSystem(): ?StarSystem
     {
         $location = $this->getThis()->getLocation();
-        if ($location instanceof StarSystemMapInterface) {
+        if ($location instanceof StarSystemMap) {
             return null;
         }
 
         return $location->getSystem();
     }
 
-    public function getSystem(): ?StarSystemInterface
+    public function getSystem(): ?StarSystem
     {
         return $this->getStarsystemMap() !== null ? $this->getStarsystemMap()->getSystem() : null;
     }

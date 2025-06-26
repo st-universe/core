@@ -13,11 +13,11 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
-use Stu\Orm\Entity\ModuleInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftRumpInterface;
-use Stu\Orm\Entity\SpacecraftSystemInterface;
-use Stu\Orm\Entity\TorpedoTypeInterface;
+use Stu\Orm\Entity\Module;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\SpacecraftRump;
+use Stu\Orm\Entity\SpacecraftSystem;
+use Stu\Orm\Entity\TorpedoType;
 use Stu\StuTestCase;
 
 class SpacecraftAttackerTest extends StuTestCase
@@ -28,7 +28,7 @@ class SpacecraftAttackerTest extends StuTestCase
 
     private MockInterface&StuRandom $stuRandom;
 
-    private MockInterface&ShipInterface $ship;
+    private MockInterface&Ship $ship;
 
     private SpacecraftAttacker $subject;
 
@@ -41,7 +41,7 @@ class SpacecraftAttackerTest extends StuTestCase
         $this->stuRandom = $this->mock(StuRandom::class);
         $this->stuRandom = $this->mock(StuRandom::class);
 
-        $this->ship = $this->mock(ShipInterface::class);
+        $this->ship = $this->mock(Ship::class);
 
         $this->subject = new SpacecraftAttacker(
             $this->wrapper,
@@ -133,8 +133,8 @@ class SpacecraftAttackerTest extends StuTestCase
 
     public function testGetWeaponModuleExpectModuleWhenModuleExistent(): void
     {
-        $system = $this->mock(SpacecraftSystemInterface::class);
-        $module = $this->mock(ModuleInterface::class);
+        $system = $this->mock(SpacecraftSystem::class);
+        $module = $this->mock(Module::class);
 
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()
@@ -158,7 +158,7 @@ class SpacecraftAttackerTest extends StuTestCase
     {
         static::expectException(RuntimeException::class);
 
-        $system = $this->mock(SpacecraftSystemInterface::class);
+        $system = $this->mock(SpacecraftSystem::class);
 
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()
@@ -269,7 +269,7 @@ class SpacecraftAttackerTest extends StuTestCase
 
     public function testGetTorpedo(): void
     {
-        $torpedo = $this->mock(TorpedoTypeInterface::class);
+        $torpedo = $this->mock(TorpedoType::class);
 
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()
@@ -388,8 +388,8 @@ class SpacecraftAttackerTest extends StuTestCase
 
     public function testGetProjectileWeaponDamageExpectZeroWhenNoTorpedoSystemInstalled(): void
     {
-        $torpedo = $this->mock(TorpedoTypeInterface::class);
-        $system = $this->mock(SpacecraftSystemInterface::class);
+        $torpedo = $this->mock(TorpedoType::class);
+        $system = $this->mock(SpacecraftSystem::class);
 
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()
@@ -414,10 +414,10 @@ class SpacecraftAttackerTest extends StuTestCase
 
     public function testGetProjectileWeaponDamageExpectCorrectValue(): void
     {
-        $torpedo = $this->mock(TorpedoTypeInterface::class);
-        $module = $this->mock(ModuleInterface::class);
-        $system = $this->mock(SpacecraftSystemInterface::class);
-        $this->mock(SpacecraftRumpInterface::class);
+        $torpedo = $this->mock(TorpedoType::class);
+        $module = $this->mock(Module::class);
+        $system = $this->mock(SpacecraftSystem::class);
+        $this->mock(SpacecraftRump::class);
 
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()

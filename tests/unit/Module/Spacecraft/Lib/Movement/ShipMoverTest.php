@@ -7,8 +7,8 @@ namespace Stu\Module\Spacecraft\Lib\Movement\Route;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Override;
-use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
+use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Movement\ShipMovementInformationAdderInterface;
@@ -18,8 +18,8 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Movement\FlightCompany;
 use Stu\Module\Spacecraft\Lib\Movement\FlightCompanyFactory;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\Ship;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -57,10 +57,10 @@ class ShipMoverTest extends StuTestCase
     public function testCheckAndMoveExpectAbortionWhenFlightNotPossible(): void
     {
         $flightCompany = $this->mock(FlightCompany::class);
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $flightRoute = $this->mock(FlightRouteInterface::class);
-        $map = $this->mock(MapInterface::class);
+        $map = $this->mock(Map::class);
         $messageCollection = $this->mock(MessageCollectionInterface::class);
 
         $ship->shouldReceive('getTractoredShip')
@@ -114,14 +114,14 @@ class ShipMoverTest extends StuTestCase
     public function testCheckAndMoveExpectLossOfEmptyShipIfNotFixed(): void
     {
         $flightCompany = $this->mock(FlightCompany::class);
-        $ship = $this->mock(ShipInterface::class);
-        $lostShip = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
+        $lostShip = $this->mock(Ship::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $lostWrapper = $this->mock(ShipWrapperInterface::class);
         $fleetWrapper = $this->mock(FleetWrapperInterface::class);
         $flightRoute = $this->mock(FlightRouteInterface::class);
-        $map1 = $this->mock(MapInterface::class);
-        $map2 = $this->mock(MapInterface::class);
+        $map1 = $this->mock(Map::class);
+        $map2 = $this->mock(Map::class);
         $messageCollection = $this->mock(MessageCollectionInterface::class);
 
         $flightCompany->shouldReceive('isFleetMode')
@@ -255,10 +255,10 @@ class ShipMoverTest extends StuTestCase
     public function testCheckAndMoveExpectNoAlertCheckIfDestroyedOnEntrance(): void
     {
         $flightCompany = $this->mock(FlightCompany::class);
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $flightRoute = $this->mock(FlightRouteInterface::class);
-        $map = $this->mock(MapInterface::class);
+        $map = $this->mock(Map::class);
         $messageCollection = $this->mock(MessageCollectionInterface::class);
 
         $flightCompany->shouldReceive('isFleetMode')

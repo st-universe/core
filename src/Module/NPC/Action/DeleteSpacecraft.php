@@ -13,7 +13,7 @@ use Stu\Module\Spacecraft\Lib\SpacecraftRemoverInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Repository\NPCLogRepositoryInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 
@@ -126,7 +126,7 @@ final class DeleteSpacecraft implements ActionControllerInterface
         $this->npcLogRepository->save($entry);
     }
 
-    private function letCrewDie(SpacecraftInterface $spacecraft): void
+    private function letCrewDie(Spacecraft $spacecraft): void
     {
         foreach ($spacecraft->getCrewAssignments() as $shipCrew) {
             $this->crewRepository->delete($shipCrew->getCrew());

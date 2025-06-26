@@ -19,10 +19,10 @@ use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Tick\Colony\Component\ColonyTickComponentInterface;
-use Stu\Orm\Entity\BuildingCommodityInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\CommodityInterface;
-use Stu\Orm\Entity\PlanetFieldInterface;
+use Stu\Orm\Entity\BuildingCommodity;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Commodity;
+use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Repository\ColonyDepositMiningRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
@@ -49,7 +49,7 @@ final class ColonyTick implements ColonyTickInterface
     ) {}
 
     #[Override]
-    public function work(ColonyInterface $colony): void
+    public function work(Colony $colony): void
     {
         $this->information = $this->informationFactory->createInformationWrapper();
 
@@ -64,7 +64,7 @@ final class ColonyTick implements ColonyTickInterface
     /**
      * @return array<int>
      */
-    private function mainLoop(ColonyInterface $colony): array
+    private function mainLoop(Colony $colony): array
     {
         $i = 1;
         $production = $this->colonyLibFactory->createColonyCommodityProduction($colony)->getProduction();
@@ -108,7 +108,7 @@ final class ColonyTick implements ColonyTickInterface
      * @param array<int> $deactivatedFields
      */
     private function checkStorage(
-        ColonyInterface $colony,
+        Colony $colony,
         array &$production,
         array &$deactivatedFields
     ): bool {
@@ -149,7 +149,7 @@ final class ColonyTick implements ColonyTickInterface
      * @param array<int> $deactivatedFields
      */
     private function checkLivingSpace(
-        ColonyInterface $colony,
+        Colony $colony,
         array &$production,
         array &$deactivatedFields
     ): bool {
@@ -171,7 +171,7 @@ final class ColonyTick implements ColonyTickInterface
      * @param array<int> $deactivatedFields
      */
     private function checkEnergyProduction(
-        ColonyInterface $colony,
+        Colony $colony,
         array &$production,
         array &$deactivatedFields
     ): bool {
@@ -193,11 +193,11 @@ final class ColonyTick implements ColonyTickInterface
      * @param array<int, ColonyProduction> $production
      */
     private function deactivateBuilding(
-        PlanetFieldInterface $field,
+        PlanetField $field,
         array &$production,
-        CommodityInterface|string $cause
+        Commodity|string $cause
     ): void {
-        $ext = $cause instanceof CommodityInterface ? $cause->getName() : $cause;
+        $ext = $cause instanceof Commodity ? $cause->getName() : $cause;
         $building = $field->getBuilding();
 
         if ($building === null) {
@@ -220,10 +220,10 @@ final class ColonyTick implements ColonyTickInterface
      * @param array<int> $deactivatedFields
      */
     private function getBuildingToDeactivateByCommodity(
-        ColonyInterface $colony,
+        Colony $colony,
         int $commodityId,
         array $deactivatedFields
-    ): PlanetFieldInterface {
+    ): PlanetField {
         $fields = $this->planetFieldRepository->getCommodityConsumingByHostAndCommodity(
             $colony,
             $commodityId,
@@ -244,9 +244,9 @@ final class ColonyTick implements ColonyTickInterface
      * @param array<int> $deactivatedFields
      */
     private function getBuildingToDeactivateByEpsUsage(
-        ColonyInterface $colony,
+        Colony $colony,
         array $deactivatedFields
-    ): PlanetFieldInterface {
+    ): PlanetField {
         $fields = $this->planetFieldRepository->getEnergyConsumingByHost(
             $colony,
             [1],
@@ -266,9 +266,9 @@ final class ColonyTick implements ColonyTickInterface
      * @param array<int> $deactivatedFields
      */
     private function getBuildingToDeactivateByLivingSpace(
-        ColonyInterface $colony,
+        Colony $colony,
         array $deactivatedFields
-    ): ?PlanetFieldInterface {
+    ): ?PlanetField {
         $fields = $this->planetFieldRepository->getWorkerConsumingByColonyAndState(
             $colony->getId(),
             [1],
@@ -282,7 +282,7 @@ final class ColonyTick implements ColonyTickInterface
     /**
      * @param array<int> $deactivatedFields
      */
-    private function proceedModules(ColonyInterface $colony, array $deactivatedFields): void
+    private function proceedModules(Colony $colony, array $deactivatedFields): void
     {
         foreach ($this->moduleQueueRepository->getByColony($colony->getId()) as $queue) {
             $buildingFunction = $queue->getBuildingFunction();
@@ -312,7 +312,7 @@ final class ColonyTick implements ColonyTickInterface
         }
     }
 
-    private function sendMessages(ColonyInterface $colony): void
+    private function sendMessages(Colony $colony): void
     {
         if ($this->information->isEmpty()) {
             return;
@@ -336,7 +336,7 @@ final class ColonyTick implements ColonyTickInterface
     }
 
     /**
-     * @param Collection<int, BuildingCommodityInterface> $buildingProduction
+     * @param Collection<int, BuildingCommodity> $buildingProduction
      * @param array<int, ColonyProduction> $production
      */
     private function mergeProduction(

@@ -11,12 +11,11 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\FactionRepository;
 
 #[Table(name: 'stu_factions')]
 #[Entity(repositoryClass: FactionRepository::class)]
-class Faction implements FactionInterface
+class Faction
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -62,162 +61,140 @@ class Faction implements FactionInterface
     //TODO survivor_rate to escape pods
     #[ManyToOne(targetEntity: Research::class)]
     #[JoinColumn(name: 'start_research_id', referencedColumnName: 'id')]
-    private ?ResearchInterface $start_research = null;
+    private ?Research $start_research = null;
 
     #[ManyToOne(targetEntity: Map::class)]
     #[JoinColumn(name: 'start_map_id', referencedColumnName: 'id')]
-    private ?MapInterface $start_map = null;
+    private ?Map $start_map = null;
 
     #[ManyToOne(targetEntity: Commodity::class)]
     #[JoinColumn(name: 'positive_effect_primary_commodity_id', referencedColumnName: 'id')]
-    private ?CommodityInterface $primaryEffectCommodity = null;
+    private ?Commodity $primaryEffectCommodity = null;
 
     #[ManyToOne(targetEntity: Commodity::class)]
     #[JoinColumn(name: 'positive_effect_secondary_commodity_id', referencedColumnName: 'id')]
-    private ?CommodityInterface $secondaryEffectCommodity = null;
+    private ?Commodity $secondaryEffectCommodity = null;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
-    #[Override]
-    public function setName(string $name): FactionInterface
+    public function setName(string $name): Faction
     {
         $this->name = $name;
 
         return $this;
     }
 
-    #[Override]
     public function getDescription(): string
     {
         return $this->description;
     }
 
-    #[Override]
-    public function setDescription(string $description): FactionInterface
+    public function setDescription(string $description): Faction
     {
         $this->description = $description;
 
         return $this;
     }
 
-    #[Override]
     public function getDarkerColor(): string
     {
         return $this->darker_color;
     }
 
-    #[Override]
-    public function setDarkerColor(string $darkerColor): FactionInterface
+    public function setDarkerColor(string $darkerColor): Faction
     {
         $this->darker_color = $darkerColor;
 
         return $this;
     }
 
-    #[Override]
     public function getChooseable(): bool
     {
         return $this->chooseable;
     }
 
-    #[Override]
-    public function setChooseable(bool $chooseable): FactionInterface
+    public function setChooseable(bool $chooseable): Faction
     {
         $this->chooseable = $chooseable;
 
         return $this;
     }
 
-    #[Override]
     public function getPlayerLimit(): int
     {
         return $this->player_limit;
     }
 
-    #[Override]
-    public function setPlayerLimit(int $playerLimit): FactionInterface
+    public function setPlayerLimit(int $playerLimit): Faction
     {
         $this->player_limit = $playerLimit;
 
         return $this;
     }
 
-    #[Override]
     public function getStartBuildingId(): int
     {
         return $this->start_building_id;
     }
 
-    #[Override]
-    public function setStartBuildingId(int $startBuildingId): FactionInterface
+    public function setStartBuildingId(int $startBuildingId): Faction
     {
         $this->start_building_id = $startBuildingId;
 
         return $this;
     }
 
-    #[Override]
-    public function getStartResearch(): ?ResearchInterface
+    public function getStartResearch(): ?Research
     {
         return $this->start_research;
     }
 
-    #[Override]
-    public function setStartResearch(?ResearchInterface $start_research): FactionInterface
+    public function setStartResearch(?Research $start_research): Faction
     {
         $this->start_research = $start_research;
         return $this;
     }
 
-    #[Override]
-    public function getStartMap(): ?MapInterface
+    public function getStartMap(): ?Map
     {
         return $this->start_map;
     }
 
-    #[Override]
-    public function setStartMap(?MapInterface $start_map): FactionInterface
+    public function setStartMap(?Map $start_map): Faction
     {
         $this->start_map = $start_map;
         return $this;
     }
 
-    #[Override]
     public function getCloseCombatScore(): ?int
     {
         return $this->close_combat_score;
     }
 
-    #[Override]
-    public function getPrimaryEffectCommodity(): ?CommodityInterface
+    public function getPrimaryEffectCommodity(): ?Commodity
     {
         return $this->primaryEffectCommodity;
     }
 
-    #[Override]
-    public function getSecondaryEffectCommodity(): ?CommodityInterface
+    public function getSecondaryEffectCommodity(): ?Commodity
     {
         return $this->secondaryEffectCommodity;
     }
 
-    #[Override]
     public function getWelcomeMessage(): ?string
     {
         return $this->welcome_message;
     }
 
-    #[Override]
-    public function setWelcomeMessage(string $welcome_message): FactionInterface
+    public function setWelcomeMessage(string $welcome_message): Faction
     {
         $this->welcome_message = $welcome_message;
 

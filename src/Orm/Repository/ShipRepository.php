@@ -16,21 +16,16 @@ use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\TFleetShipItem;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Location;
-use Stu\Orm\Entity\LocationInterface;
-use Stu\Orm\Entity\MapInterface;
+use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\PirateWrath;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\CrewAssignment;
-use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\SpacecraftRump;
-use Stu\Orm\Entity\SpacecraftRumpInterface;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\SpacecraftCondition;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
+use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Entity\Storage;
 use Stu\Orm\Entity\User;
-use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Entity\UserRegistration;
 
 /**
@@ -39,7 +34,7 @@ use Stu\Orm\Entity\UserRegistration;
 final class ShipRepository extends EntityRepository implements ShipRepositoryInterface
 {
     #[Override]
-    public function save(ShipInterface $post): void
+    public function save(Ship $post): void
     {
         $em = $this->getEntityManager();
 
@@ -47,7 +42,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     }
 
     #[Override]
-    public function delete(ShipInterface $post): void
+    public function delete(Ship $post): void
     {
         $em = $this->getEntityManager();
 
@@ -67,7 +62,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     }
 
     #[Override]
-    public function getByLocationAndUser(LocationInterface $location, UserInterface $user): array
+    public function getByLocationAndUser(Location $location, User $user): array
     {
         return $this->findBy([
             'user' => $user,
@@ -80,7 +75,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     }
 
     #[Override]
-    public function getPossibleFleetMembers(ShipInterface $fleetLeader): iterable
+    public function getPossibleFleetMembers(Ship $fleetLeader): iterable
     {
         return $this->getEntityManager()->createQuery(
             sprintf(
@@ -146,7 +141,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     }
 
     #[Override]
-    public function getEscapePodsByCrewOwner(UserInterface $user): array
+    public function getEscapePodsByCrewOwner(User $user): array
     {
         return $this->getEntityManager()->createQuery(
             sprintf(
@@ -169,9 +164,9 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
 
     #[Override]
     public function getFleetShipsScannerResults(
-        SpacecraftInterface $spacecraft,
+        Spacecraft $spacecraft,
         bool $showCloaked = false,
-        MapInterface|StarSystemMapInterface|null $field = null
+        Map|StarSystemMap|null $field = null
     ): array {
 
         $rsm = new ResultSetMapping();
@@ -349,7 +344,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     }
 
     #[Override]
-    public function getByUserAndRump(UserInterface $user, SpacecraftRumpInterface $rump): array
+    public function getByUserAndRump(User $user, SpacecraftRump $rump): array
     {
         return $this->findBy([
             'user_id' => $user->getId(),

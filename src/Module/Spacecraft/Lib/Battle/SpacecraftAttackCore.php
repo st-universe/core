@@ -18,8 +18,8 @@ use Stu\Module\Ship\Lib\TholianWebUtilInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
 
 final class SpacecraftAttackCore implements SpacecraftAttackCoreInterface
 {
@@ -80,9 +80,9 @@ final class SpacecraftAttackCore implements SpacecraftAttackCoreInterface
         }
     }
 
-    private function isActiveTractorShipWarped(SpacecraftInterface $spacecraft, SpacecraftInterface $target): bool
+    private function isActiveTractorShipWarped(Spacecraft $spacecraft, Spacecraft $target): bool
     {
-        $tractoringShip = $spacecraft instanceof ShipInterface ? $spacecraft->getTractoringSpacecraft() : null;
+        $tractoringShip = $spacecraft instanceof Ship ? $spacecraft->getTractoringSpacecraft() : null;
         if ($tractoringShip === null) {
             return false;
         }

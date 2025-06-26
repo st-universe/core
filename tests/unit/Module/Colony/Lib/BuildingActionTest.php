@@ -10,9 +10,9 @@ use Override;
 use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\BuildingInterface;
-use Stu\Orm\Entity\ColonySandboxInterface;
-use Stu\Orm\Entity\PlanetFieldInterface;
+use Stu\Orm\Entity\Building;
+use Stu\Orm\Entity\ColonySandbox;
+use Stu\Orm\Entity\PlanetField;
 use Stu\StuTestCase;
 
 class BuildingActionTest extends StuTestCase
@@ -27,7 +27,7 @@ class BuildingActionTest extends StuTestCase
     private $buildingManager;
 
     /**
-     * @var MockInterface&PlanetFieldInterface
+     * @var MockInterface&PlanetField
      */
     private $field;
 
@@ -40,7 +40,7 @@ class BuildingActionTest extends StuTestCase
         $this->storageManager = Mockery::mock(StorageManagerInterface::class);
         $this->buildingManager = Mockery::mock(BuildingManagerInterface::class);
 
-        $this->field = $this->mock(PlanetFieldInterface::class);
+        $this->field = $this->mock(PlanetField::class);
 
         $this->subject = new BuildingAction(
             $this->storageManager,
@@ -51,7 +51,7 @@ class BuildingActionTest extends StuTestCase
     public function testRemoveExpectRemovalOfPreviousBuilding(): void
     {
         $game = $this->mock(GameControllerInterface::class);
-        $building = $this->mock(BuildingInterface::class);
+        $building = $this->mock(Building::class);
 
         $this->field->shouldReceive('hasBuilding')
             ->withNoArgs()
@@ -68,7 +68,7 @@ class BuildingActionTest extends StuTestCase
         $this->field->shouldReceive('getHost')
             ->withNoArgs()
             ->once()
-            ->andReturn($this->mock(ColonySandboxInterface::class));
+            ->andReturn($this->mock(ColonySandbox::class));
 
         $building->shouldReceive('isRemovable')
             ->withNoArgs()

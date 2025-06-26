@@ -25,14 +25,14 @@ use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Reactor\ReactorWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Ui\StateIconAndTitle;
-use Stu\Orm\Entity\SpacecraftSystemInterface;
-use Stu\Orm\Entity\ShipTakeoverInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\SpacecraftSystem;
+use Stu\Orm\Entity\ShipTakeover;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 //TODO increase coverage
 /**
- * @template T of SpacecraftInterface
+ * @template T of Spacecraft
  */
 abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
 {
@@ -49,7 +49,7 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
      * @param T $spacecraft
      */
     public function __construct(
-        protected readonly SpacecraftInterface $spacecraft,
+        protected readonly Spacecraft $spacecraft,
         private readonly SpacecraftSystemManagerInterface $spacecraftSystemManager,
         private readonly SystemDataDeserializerInterface $systemDataDeserializer,
         private readonly TorpedoTypeRepositoryInterface $torpedoTypeRepository,
@@ -65,7 +65,7 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
     }
 
     #[Override]
-    public function get(): SpacecraftInterface
+    public function get(): Spacecraft
     {
         return $this->spacecraft;
     }
@@ -172,7 +172,7 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
     /**
      * highest damage first, then prio
      *
-     * @return SpacecraftSystemInterface[]
+     * @return SpacecraftSystem[]
      */
     #[Override]
     public function getDamagedSystems(): array
@@ -189,7 +189,7 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
         // sort by damage and priority
         usort(
             $damagedSystems,
-            function (SpacecraftSystemInterface $a, SpacecraftSystemInterface $b) use ($prioArray): int {
+            function (SpacecraftSystem $a, SpacecraftSystem $b) use ($prioArray): int {
                 if ($a->getStatus() === $b->getStatus()) {
                     return $prioArray[$b->getSystemType()->value] <=> $prioArray[$a->getSystemType()->value];
                 }
@@ -308,7 +308,7 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
     }
 
     #[Override]
-    public function getTakeoverTicksLeft(?ShipTakeoverInterface $takeover = null): int
+    public function getTakeoverTicksLeft(?ShipTakeover $takeover = null): int
     {
         $takeover ??= $this->spacecraft->getTakeoverActive();
         if ($takeover === null) {

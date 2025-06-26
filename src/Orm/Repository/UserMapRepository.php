@@ -6,9 +6,9 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Override;
-use Stu\Orm\Entity\LayerInterface;
-use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Entity\UserLayerInterface;
+use Stu\Orm\Entity\Layer;
+use Stu\Orm\Entity\User;
+use Stu\Orm\Entity\UserLayer;
 use Stu\Orm\Entity\UserMap;
 
 /**
@@ -46,7 +46,7 @@ final class UserMapRepository extends EntityRepository implements UserMapReposit
     }
 
     #[Override]
-    public function getAmountByUser(UserInterface $user, LayerInterface $layer): int
+    public function getAmountByUser(User $user, Layer $layer): int
     {
         return (int)$this->getEntityManager()->createQuery(
             sprintf(
@@ -63,7 +63,7 @@ final class UserMapRepository extends EntityRepository implements UserMapReposit
     }
 
     #[Override]
-    public function truncateByUser(UserInterface $user): void
+    public function truncateByUser(User $user): void
     {
         $this->getEntityManager()->createQuery(
             sprintf(
@@ -77,7 +77,7 @@ final class UserMapRepository extends EntityRepository implements UserMapReposit
     }
 
     #[Override]
-    public function truncateByUserAndLayer(UserLayerInterface $userLayer): void
+    public function truncateByUserAndLayer(UserLayer $userLayer): void
     {
         $this->getEntityManager()->createQuery(
             sprintf(

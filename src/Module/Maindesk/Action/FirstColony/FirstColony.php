@@ -13,7 +13,7 @@ use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\CommodityInterface;
+use Stu\Orm\Entity\Commodity;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
@@ -92,7 +92,7 @@ final class FirstColony implements ActionControllerInterface
         $game->redirectTo('./colony.php?id=' . $colony->getId());
     }
 
-    private function getCommodity(int $commodityId): CommodityInterface
+    private function getCommodity(int $commodityId): Commodity
     {
         $commodity = $this->commodityRepository->find($commodityId);
         if ($commodity === null) {

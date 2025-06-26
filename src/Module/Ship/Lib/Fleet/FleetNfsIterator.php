@@ -8,7 +8,7 @@ use Iterator;
 use Override;
 use Stu\Lib\Session\SessionStorageInterface;
 use Stu\Module\Ship\Lib\TFleetShipItemInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 
 /**
  * @implements Iterator<FleetNfsItem>
@@ -26,7 +26,7 @@ final class FleetNfsIterator implements Iterator
      */
     public function __construct(
         iterable $ships,
-        private SpacecraftInterface $currentSpacecraft,
+        private Spacecraft $currentSpacecraft,
         private ?SessionStorageInterface $sessionStorage,
         private int $userId
     ) {

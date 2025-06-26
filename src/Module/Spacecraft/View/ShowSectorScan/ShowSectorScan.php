@@ -13,9 +13,9 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\LocationInterface;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Location;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
 
 final class ShowSectorScan implements ViewControllerInterface
@@ -81,9 +81,9 @@ final class ShowSectorScan implements ViewControllerInterface
         $game->setTemplateVar('BUOYS', $ship->getLocation()->getBuoys());
     }
 
-    private function checkDatabaseItemForMap(LocationInterface $location, GameControllerInterface $game): void
+    private function checkDatabaseItemForMap(Location $location, GameControllerInterface $game): void
     {
-        if (!$location instanceof MapInterface) {
+        if (!$location instanceof Map) {
             return;
         }
 
@@ -129,12 +129,12 @@ final class ShowSectorScan implements ViewControllerInterface
         return $filteredSigs;
     }
 
-    private function getMapPath(SpacecraftInterface $spacecraft): string
+    private function getMapPath(Spacecraft $spacecraft): string
     {
         $currentMapField = $spacecraft->getLocation();
         $layer = $currentMapField->getLayer();
 
-        if ($currentMapField instanceof MapInterface && $layer !== null) {
+        if ($currentMapField instanceof Map && $layer !== null) {
             return $this->encodedMap->getEncodedMapPath($currentMapField->getFieldId(), $layer);
         } else {
             return sprintf('%d.png', $currentMapField->getFieldId());

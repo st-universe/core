@@ -26,8 +26,8 @@ use Stu\Module\Spacecraft\Lib\CloseCombat\CloseCombatUtilInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\StationInterface;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\Station;
 use Stu\Orm\Repository\StationRepositoryInterface;
 
 class AssaultPhalanxBehaviour implements PirateBehaviourInterface
@@ -56,7 +56,7 @@ class AssaultPhalanxBehaviour implements PirateBehaviourInterface
         FleetWrapperInterface $fleet,
         PirateReactionInterface $pirateReaction,
         PirateReactionMetadata $reactionMetadata,
-        ?SpacecraftInterface $triggerSpacecraft
+        ?Spacecraft $triggerSpacecraft
     ): ?PirateBehaviourEnum {
 
         $leadWrapper = $fleet->getLeadWrapper();
@@ -68,7 +68,7 @@ class AssaultPhalanxBehaviour implements PirateBehaviourInterface
 
         $filteredTargets = array_filter(
             $targets,
-            fn(StationInterface $target): bool =>
+            fn(Station $target): bool =>
             !$this->trapDetection->isAlertTrap($target->getLocation(), $leadShip)
         );
 
@@ -80,14 +80,14 @@ class AssaultPhalanxBehaviour implements PirateBehaviourInterface
 
         usort(
             $filteredTargets,
-            fn(StationInterface $a, StationInterface $b): int =>
+            fn(Station $a, Station $b): int =>
             $this->distanceCalculation->shipToShipDistance($leadShip, $a) - $this->distanceCalculation->shipToShipDistance($leadShip, $b)
         );
 
         $isFleetFight = false;
         $informations = new InformationWrapper();
 
-        /** @var StationInterface */
+        /** @var Station */
         $closestPhalanx = current($filteredTargets);
         $phalanxWrapper = $this->spacecraftWrapperFactory->wrapStation($closestPhalanx);
 

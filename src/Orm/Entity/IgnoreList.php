@@ -12,13 +12,12 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\IgnoreListRepository;
 
 #[Table(name: 'stu_ignorelist')]
 #[Index(name: 'user_recipient_idx', columns: ['user_id', 'recipient'])]
 #[Entity(repositoryClass: IgnoreListRepository::class)]
-class IgnoreList implements IgnoreListInterface
+class IgnoreList
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -36,65 +35,56 @@ class IgnoreList implements IgnoreListInterface
 
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $user;
+    private User $user;
 
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'recipient', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $opponent;
+    private User $opponent;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    #[Override]
     public function getRecipientId(): int
     {
         return $this->recipient;
     }
 
-    #[Override]
     public function getDate(): int
     {
         return $this->date;
     }
 
-    #[Override]
-    public function setDate(int $date): IgnoreListInterface
+    public function setDate(int $date): IgnoreList
     {
         $this->date = $date;
 
         return $this;
     }
 
-    #[Override]
-    public function getRecipient(): UserInterface
+    public function getRecipient(): User
     {
         return $this->opponent;
     }
 
-    #[Override]
-    public function setRecipient(UserInterface $recipient): IgnoreListInterface
+    public function setRecipient(User $recipient): IgnoreList
     {
         $this->opponent = $recipient;
         return $this;
     }
 
-    #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    #[Override]
-    public function setUser(UserInterface $user): IgnoreListInterface
+    public function setUser(User $user): IgnoreList
     {
         $this->user = $user;
         return $this;

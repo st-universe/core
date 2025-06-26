@@ -7,7 +7,6 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\Trumfield;
-use Stu\Orm\Entity\TrumfieldInterface;
 
 /**
  * @extends EntityRepository<Trumfield>
@@ -15,13 +14,13 @@ use Stu\Orm\Entity\TrumfieldInterface;
 final class TrumfieldRepository extends EntityRepository implements TrumfieldRepositoryInterface
 {
     #[Override]
-    public function prototype(): TrumfieldInterface
+    public function prototype(): Trumfield
     {
         return new Trumfield();
     }
 
     #[Override]
-    public function save(TrumfieldInterface $trumfield): void
+    public function save(Trumfield $trumfield): void
     {
         $em = $this->getEntityManager();
 
@@ -29,7 +28,7 @@ final class TrumfieldRepository extends EntityRepository implements TrumfieldRep
     }
 
     #[Override]
-    public function delete(TrumfieldInterface $trumfield): void
+    public function delete(Trumfield $trumfield): void
     {
         $em = $this->getEntityManager();
 

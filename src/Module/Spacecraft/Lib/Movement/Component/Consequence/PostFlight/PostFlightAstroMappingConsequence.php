@@ -16,7 +16,7 @@ use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\AbstractFlightConse
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 use Stu\Orm\Repository\AstroEntryRepositoryInterface;
 
 class PostFlightAstroMappingConsequence extends AbstractFlightConsequence implements PostFlightConsequenceInterface
@@ -104,7 +104,7 @@ class PostFlightAstroMappingConsequence extends AbstractFlightConsequence implem
         $this->astroEntryRepository->save($astroEntry);
     }
 
-    private function createPrestigeLog(ShipInterface $ship): void
+    private function createPrestigeLog(Ship $ship): void
     {
         $this->createPrestigeLog->createLog(
             1,
@@ -114,7 +114,7 @@ class PostFlightAstroMappingConsequence extends AbstractFlightConsequence implem
         );
     }
 
-    private function addReachedWaypointInfo(MessageInterface $message, ShipInterface $ship): void
+    private function addReachedWaypointInfo(MessageInterface $message, Ship $ship): void
     {
         $message->add(sprintf(
             _('Die %s hat einen Kartographierungs-Messpunkt erreicht: %s'),

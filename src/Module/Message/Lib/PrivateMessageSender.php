@@ -10,8 +10,8 @@ use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Lib\General\EntityWithHrefInterface;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\StuTime;
-use Stu\Orm\Entity\PrivateMessageInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\PrivateMessage;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -89,7 +89,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
         }
     }
 
-    private function getSender(int $senderId): UserInterface
+    private function getSender(int $senderId): User
     {
         if (in_array($senderId, self::$blockedUserIds)) {
             return $this->userRepository->getFallbackUser();
@@ -112,7 +112,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
 
     #[Override]
     public function sendBroadcast(
-        UserInterface $sender,
+        User $sender,
         array $recipients,
         string $text
     ): void {
@@ -148,15 +148,15 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
     }
 
     private function createPrivateMessage(
-        UserInterface $sender,
-        UserInterface $recipient,
+        User $sender,
+        User $recipient,
         int $time,
         PrivateMessageFolderTypeEnum $folderType,
         string $text,
         ?string $href,
         bool $new,
-        ?PrivateMessageInterface $inboxPm = null
-    ): PrivateMessageInterface {
+        ?PrivateMessage $inboxPm = null
+    ): PrivateMessage {
         $folder = $this->privateMessageFolderRepository->getByUserAndSpecial($recipient->getId(), $folderType);
 
         if ($folder === null) {

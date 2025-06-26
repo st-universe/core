@@ -4,7 +4,7 @@ namespace Stu\Module\Spacecraft\Lib;
 
 use Doctrine\Common\Collections\Collection;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 interface SpacecraftGroupInterface
 {
@@ -15,5 +15,5 @@ interface SpacecraftGroupInterface
 
     public function getName(): string;
 
-    public function getUser(): ?UserInterface;
+    public function getUser(): ?User;
 }

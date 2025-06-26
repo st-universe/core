@@ -6,17 +6,17 @@ namespace Stu\Lib\Transfer\Wrapper;
 
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Transfer\EntityWithStorageInterface;
-use Stu\Orm\Entity\LocationInterface;
-use Stu\Orm\Entity\TorpedoTypeInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Location;
+use Stu\Orm\Entity\TorpedoType;
+use Stu\Orm\Entity\User;
 
 interface StorageEntityWrapperInterface
 {
     // GENERAL
     public function get(): EntityWithStorageInterface;
-    public function getUser(): UserInterface;
+    public function getUser(): User;
     public function getName(): string;
-    public function getLocation(): LocationInterface;
+    public function getLocation(): Location;
     public function canTransfer(InformationInterface $information): bool;
 
     // COMMODITIES
@@ -28,17 +28,17 @@ interface StorageEntityWrapperInterface
     ): void;
 
     // CREW
-    public function getMaxTransferrableCrew(bool $isTarget, UserInterface $user): int;
-    public function getFreeCrewSpace(UserInterface $user): int;
+    public function getMaxTransferrableCrew(bool $isTarget, User $user): int;
+    public function getFreeCrewSpace(User $user): int;
     public function checkCrewStorage(int $amount, bool $isUnload, InformationInterface $information): bool;
-    public function acceptsCrewFrom(int $amount, UserInterface $user, InformationInterface $information): bool;
+    public function acceptsCrewFrom(int $amount, User $user, InformationInterface $information): bool;
     public function postCrewTransfer(int $foreignCrewChangeAmount, StorageEntityWrapperInterface $other, InformationInterface $information): void;
 
     // TORPEDOS
-    public function getTorpedo(): ?TorpedoTypeInterface;
+    public function getTorpedo(): ?TorpedoType;
     public function getTorpedoCount(): int;
     public function getMaxTorpedos(): int;
     public function canTransferTorpedos(InformationInterface $information): bool;
-    public function canStoreTorpedoType(TorpedoTypeInterface $torpedoType, InformationInterface $information): bool;
-    public function changeTorpedo(int $changeAmount, TorpedoTypeInterface $type): void;
+    public function canStoreTorpedoType(TorpedoType $torpedoType, InformationInterface $information): bool;
+    public function changeTorpedo(int $changeAmount, TorpedoType $type): void;
 }

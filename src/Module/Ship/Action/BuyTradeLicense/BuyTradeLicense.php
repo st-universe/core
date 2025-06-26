@@ -19,11 +19,11 @@ use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Spacecraft\View\ShowTradeMenu\ShowTradeMenu;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\StorageInterface;
-use Stu\Orm\Entity\TradeLicenseInfoInterface;
-use Stu\Orm\Entity\TradePostInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Storage;
+use Stu\Orm\Entity\TradeLicenseInfo;
+use Stu\Orm\Entity\TradePost;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseInfoRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
@@ -86,11 +86,11 @@ final class BuyTradeLicense implements ActionControllerInterface
     }
 
     private function buyLicense(
-        ShipInterface $ship,
-        TradePostInterface $tradePost,
+        Ship $ship,
+        TradePost $tradePost,
         int $targetId,
-        TradeLicenseInfoInterface $licenseInfo,
-        UserInterface $user
+        TradeLicenseInfo $licenseInfo,
+        User $user
     ): void {
         $mode = request::getStringFatal('method');
 
@@ -109,10 +109,10 @@ final class BuyTradeLicense implements ActionControllerInterface
     }
 
     private function payLicenseViaShip(
-        ShipInterface $ship,
-        TradePostInterface $tradePost,
+        Ship $ship,
+        TradePost $tradePost,
         int $targetId,
-        TradeLicenseInfoInterface $licenseInfo
+        TradeLicenseInfo $licenseInfo
     ): void {
         if (!$this->interactionChecker->checkPosition($ship, $tradePost->getStation())) {
             throw new SanityCheckException('ship is not at tradepost location');
@@ -143,10 +143,10 @@ final class BuyTradeLicense implements ActionControllerInterface
     }
 
     private function payLicenseViaAccount(
-        TradePostInterface $tradePost,
+        TradePost $tradePost,
         int $targetId,
-        TradeLicenseInfoInterface $licenseInfo,
-        UserInterface $user
+        TradeLicenseInfo $licenseInfo,
+        User $user
     ): void {
         $targetTradepost = $this->tradePostRepository->find($targetId);
         if ($targetTradepost === null) {
@@ -159,7 +159,7 @@ final class BuyTradeLicense implements ActionControllerInterface
         $commodityId = $licenseInfo->getCommodity()->getId();
         $costs = $licenseInfo->getAmount();
 
-        /** @var ?StorageInterface */
+        /** @var ?Storage */
         $stor = $storageManager->getStorage()->get($commodityId) ?? null;
         if ($stor === null) {
             throw new SanityCheckException('storage not existent');
@@ -176,9 +176,9 @@ final class BuyTradeLicense implements ActionControllerInterface
     }
 
     private function createLicense(
-        TradePostInterface $tradePost,
-        UserInterface $user,
-        TradeLicenseInfoInterface $licenseInfo
+        TradePost $tradePost,
+        User $user,
+        TradeLicenseInfo $licenseInfo
     ): void {
         $license = $this->tradeLicenseRepository->prototype();
         $license->setTradePost($tradePost);

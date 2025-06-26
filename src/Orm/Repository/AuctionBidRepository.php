@@ -7,7 +7,6 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\AuctionBid;
-use Stu\Orm\Entity\AuctionBidInterface;
 
 /**
  * @extends EntityRepository<AuctionBid>
@@ -15,13 +14,13 @@ use Stu\Orm\Entity\AuctionBidInterface;
 final class AuctionBidRepository extends EntityRepository implements AuctionBidRepositoryInterface
 {
     #[Override]
-    public function prototype(): AuctionBidInterface
+    public function prototype(): AuctionBid
     {
         return new AuctionBid();
     }
 
     #[Override]
-    public function save(AuctionBidInterface $post): void
+    public function save(AuctionBid $post): void
     {
         $em = $this->getEntityManager();
 
@@ -29,7 +28,7 @@ final class AuctionBidRepository extends EntityRepository implements AuctionBidR
     }
 
     #[Override]
-    public function delete(AuctionBidInterface $post): void
+    public function delete(AuctionBid $post): void
     {
         $em = $this->getEntityManager();
 

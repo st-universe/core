@@ -7,8 +7,8 @@ use Override;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Route\RouteModeEnum;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
 
 //TODO unit tests
 final class ShipMovementInformationAdder implements ShipMovementInformationAdderInterface
@@ -17,7 +17,7 @@ final class ShipMovementInformationAdder implements ShipMovementInformationAdder
 
     #[Override]
     public function reachedDestination(
-        SpacecraftInterface $spacecraft,
+        Spacecraft $spacecraft,
         bool $isFleetMode,
         RouteModeEnum $routeMode,
         MessageCollectionInterface $messages
@@ -99,7 +99,7 @@ final class ShipMovementInformationAdder implements ShipMovementInformationAdder
 
     #[Override]
     public function reachedDestinationDestroyed(
-        SpacecraftInterface $spacecraft,
+        Spacecraft $spacecraft,
         string $leadShipName,
         bool $isFleetMode,
         RouteModeEnum $routeMode,
@@ -174,8 +174,8 @@ final class ShipMovementInformationAdder implements ShipMovementInformationAdder
 
     #[Override]
     public function pulledTractoredShip(
-        SpacecraftInterface $spacecraft,
-        ShipInterface $tractoredShip,
+        Spacecraft $spacecraft,
+        Ship $tractoredShip,
         RouteModeEnum $routeMode,
         MessageCollectionInterface $messages
     ): void {

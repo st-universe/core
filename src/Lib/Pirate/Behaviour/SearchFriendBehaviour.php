@@ -13,8 +13,8 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Module\Spacecraft\Lib\Battle\FightLibInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 class SearchFriendBehaviour implements PirateBehaviourInterface
@@ -36,7 +36,7 @@ class SearchFriendBehaviour implements PirateBehaviourInterface
         FleetWrapperInterface $fleet,
         PirateReactionInterface $pirateReaction,
         PirateReactionMetadata $reactionMetadata,
-        ?SpacecraftInterface $triggerSpacecraft
+        ?Spacecraft $triggerSpacecraft
     ): ?PirateBehaviourEnum {
 
         $leadWrapper = $fleet->getLeadWrapper();
@@ -44,7 +44,7 @@ class SearchFriendBehaviour implements PirateBehaviourInterface
 
         $filteredFriends = array_filter(
             $this->shipRepository->getPirateFriends($leadWrapper),
-            fn(ShipInterface $friend): bool =>
+            fn(Ship $friend): bool =>
             !$friend->getCondition()->isDestroyed() && $friend->isFleetLeader()
         );
 
@@ -56,7 +56,7 @@ class SearchFriendBehaviour implements PirateBehaviourInterface
 
         usort(
             $filteredFriends,
-            fn(ShipInterface $a, ShipInterface $b): int =>
+            fn(Ship $a, Ship $b): int =>
             $this->fightLib->calculateHealthPercentage($a) -  $this->fightLib->calculateHealthPercentage($b)
         );
 

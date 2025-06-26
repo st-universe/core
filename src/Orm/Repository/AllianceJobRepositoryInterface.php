@@ -5,31 +5,30 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
-use Stu\Orm\Entity\AllianceInterface;
+use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\AllianceJob;
-use Stu\Orm\Entity\AllianceJobInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 /**
  * @extends ObjectRepository<AllianceJob>
  *
- * @method null|AllianceJobInterface find(integer $id)
+ * @method null|AllianceJob find(integer $id)
  */
 interface AllianceJobRepositoryInterface extends ObjectRepository
 {
-    public function prototype(): AllianceJobInterface;
+    public function prototype(): AllianceJob;
 
-    public function save(AllianceJobInterface $post): void;
+    public function save(AllianceJob $post): void;
 
-    public function delete(AllianceJobInterface $post): void;
+    public function delete(AllianceJob $post): void;
 
     /**
-     * @return array<int, AllianceJobInterface>
+     * @return array<int, AllianceJob>
      */
     public function getByUser(int $userId): array;
 
     /**
-     * @return AllianceJobInterface[]
+     * @return AllianceJob[]
      */
     public function getByAlliance(int $allianceId): array;
 
@@ -38,17 +37,17 @@ interface AllianceJobRepositoryInterface extends ObjectRepository
     public function truncateByAlliance(int $allianceId): void;
 
     /**
-     * @return AllianceJobInterface[]
+     * @return AllianceJob[]
      */
     public function getByAllianceAndType(int $allianceId, int $typeId): array;
 
     public function getByUserAndAllianceAndType(
-        UserInterface $user,
-        AllianceInterface $alliance,
+        User $user,
+        Alliance $alliance,
         int $type
-    ): ?AllianceJobInterface;
+    ): ?AllianceJob;
 
-    public function getSingleResultByAllianceAndType(int $allianceId, int $typeId): ?AllianceJobInterface;
+    public function getSingleResultByAllianceAndType(int $allianceId, int $typeId): ?AllianceJob;
 
     public function truncateAllAllianceJobs(): void;
 }

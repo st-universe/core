@@ -8,14 +8,14 @@ use Mockery\MockInterface;
 use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use RuntimeException;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\ModuleInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Module;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\StuTestCase;
 
 class EnergyPhalanxTest extends StuTestCase
 {
-    private MockInterface&ColonyInterface $colony;
+    private MockInterface&Colony $colony;
 
     private MockInterface&ModuleRepositoryInterface $moduleRepository;
 
@@ -25,7 +25,7 @@ class EnergyPhalanxTest extends StuTestCase
     public function setUp(): void
     {
         //injected
-        $this->colony = $this->mock(ColonyInterface::class);
+        $this->colony = $this->mock(Colony::class);
         $this->moduleRepository = $this->mock(ModuleRepositoryInterface::class);
 
         $this->subject = new EnergyPhalanx(
@@ -130,7 +130,7 @@ class EnergyPhalanxTest extends StuTestCase
     #[DataProvider('provideGetWeaponModuleData')]
     public function testGetWeaponModuleExpectModuleWhenModuleExistent(int $faction, int $moduleId): void
     {
-        $module = $this->mock(ModuleInterface::class);
+        $module = $this->mock(Module::class);
 
         $this->colony->shouldReceive('getUser->getFactionId')
             ->withNoArgs()

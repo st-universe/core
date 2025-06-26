@@ -16,9 +16,9 @@ use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\LocationInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
+use Stu\Orm\Entity\Location;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\StarSystemMap;
 
 class FlyBehaviour implements PirateBehaviourInterface
 {
@@ -39,7 +39,7 @@ class FlyBehaviour implements PirateBehaviourInterface
         FleetWrapperInterface $fleet,
         PirateReactionInterface $pirateReaction,
         PirateReactionMetadata $reactionMetadata,
-        ?SpacecraftInterface $triggerSpacecraft
+        ?Spacecraft $triggerSpacecraft
     ): ?PirateBehaviourEnum {
         $leadWrapper = $fleet->getLeadWrapper();
         $leadShip = $leadWrapper->get();
@@ -47,7 +47,7 @@ class FlyBehaviour implements PirateBehaviourInterface
         $currentLocation = $leadShip->getLocation();
 
         if (
-            $currentLocation instanceof StarSystemMapInterface
+            $currentLocation instanceof StarSystemMap
             && $this->stuRandom->rand(1, 4) === 1
         ) {
             $this->leaveStarSystem($leadWrapper, $currentLocation);
@@ -78,7 +78,7 @@ class FlyBehaviour implements PirateBehaviourInterface
 
     private function getCoordinate(
         SpacecraftWrapperInterface $leadWrapper,
-        LocationInterface $currentLocation
+        Location $currentLocation
     ): Coordinate {
 
         $isInXDirection = $this->stuRandom->rand(0, 1) === 0;
@@ -91,7 +91,7 @@ class FlyBehaviour implements PirateBehaviourInterface
         );
     }
 
-    private function leaveStarSystem(ShipWrapperInterface $wrapper, StarSystemMapInterface $currentLocation): void
+    private function leaveStarSystem(ShipWrapperInterface $wrapper, StarSystemMap $currentLocation): void
     {
         $mapField = $currentLocation->getSystem()->getMap();
         if ($mapField === null) {

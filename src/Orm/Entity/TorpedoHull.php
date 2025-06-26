@@ -12,14 +12,13 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\TorpedoHullRepository;
 
 #[Table(name: 'stu_torpedo_hull')]
 #[Index(name: 'torpedo_hull_module_idx', columns: ['module_id'])]
 #[Index(name: 'torpedo_hull_torpedo_idx', columns: ['torpedo_type'])]
 #[Entity(repositoryClass: TorpedoHullRepository::class)]
-class TorpedoHull implements TorpedoHullInterface
+class TorpedoHull
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -38,68 +37,59 @@ class TorpedoHull implements TorpedoHullInterface
 
     #[ManyToOne(targetEntity: TorpedoType::class)]
     #[JoinColumn(name: 'torpedo_type', nullable: false, referencedColumnName: 'id')]
-    private TorpedoTypeInterface $torpedo;
+    private TorpedoType $torpedo;
 
     #[ManyToOne(targetEntity: Module::class)]
     #[JoinColumn(name: 'module_id', nullable: false, referencedColumnName: 'id')]
-    private ModuleInterface $module;
+    private Module $module;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getModuleId(): int
     {
         return $this->module_id;
     }
 
-    #[Override]
-    public function setModuleId(int $moduleId): TorpedoHullInterface
+    public function setModuleId(int $moduleId): TorpedoHull
     {
         $this->module_id = $moduleId;
 
         return $this;
     }
 
-    #[Override]
     public function getTorpedoType(): int
     {
         return $this->torpedo_type;
     }
 
-    #[Override]
-    public function setTorpedoType(int $torpedoType): TorpedoHullInterface
+    public function setTorpedoType(int $torpedoType): TorpedoHull
     {
         $this->torpedo_type = $torpedoType;
 
         return $this;
     }
 
-    #[Override]
     public function getModificator(): int
     {
         return $this->modificator;
     }
 
-    #[Override]
-    public function setModificator(int $Modificator): TorpedoHullInterface
+    public function setModificator(int $Modificator): TorpedoHull
     {
         $this->modificator = $Modificator;
 
         return $this;
     }
 
-    #[Override]
-    public function getTorpedo(): TorpedoTypeInterface
+    public function getTorpedo(): TorpedoType
     {
         return $this->torpedo;
     }
 
-    #[Override]
-    public function getModule(): ModuleInterface
+    public function getModule(): Module
     {
         return $this->module;
     }

@@ -12,7 +12,7 @@ use request;
 use Stu\Lib\AccountNotVerifiedException;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -87,7 +87,7 @@ class AccessCheckTest extends StuTestCase
     public function testCheckUserAccessExpectTrueWhenUserIsAdmin(): void
     {
         $controller = $this->mock(AccessCheckControllerInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
 
         $controller->shouldReceive('getFeatureIdentifier')
             ->withNoArgs()
@@ -122,7 +122,7 @@ class AccessCheckTest extends StuTestCase
     public function testCheckUserAccessExpectTrueWhenAccessGranted(): void
     {
         $controller = $this->mock(AccessCheckControllerInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
 
         $controller->shouldReceive('getFeatureIdentifier')
             ->withNoArgs()
@@ -174,7 +174,7 @@ class AccessCheckTest extends StuTestCase
         array $grantedFeatures
     ): void {
         $controller = $this->mock(AccessCheckControllerInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
 
         $controller->shouldReceive('getFeatureIdentifier')
             ->withNoArgs()
@@ -217,21 +217,21 @@ class AccessCheckTest extends StuTestCase
     public static function providerActionControllerData(): array
     {
         return [
-            [false, 'SESSION_STRING', Mockery::mock(UserInterface::class), true],
-            [true, 'SESSION_STRING', Mockery::mock(UserInterface::class), true],
-            [true, null, Mockery::mock(UserInterface::class), false],
+            [false, 'SESSION_STRING', Mockery::mock(User::class), true],
+            [true, 'SESSION_STRING', Mockery::mock(User::class), true],
+            [true, null, Mockery::mock(User::class), false],
             [true, 'SESSION_STRING', null, false],
             [true, null, null, false],
             [false, null, null, true],
         ];
     }
 
-    /** @param null|UserInterface|MockInterface $user*/
+    /** @param null|User|MockInterface $user*/
     #[DataProvider('providerActionControllerData')]
     public function testCheckUserAccessForActionControllers(
         bool $performSessionCheck,
         ?string $sstr,
-        ?UserInterface $user,
+        ?User $user,
         bool $expectedResult
     ): void {
         $controller = $this->mock(ActionControllerInterface::class);

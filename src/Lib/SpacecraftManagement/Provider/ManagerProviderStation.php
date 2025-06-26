@@ -11,9 +11,9 @@ use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Station\Lib\StationWrapperInterface;
-use Stu\Orm\Entity\CommodityInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Commodity;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\User;
 
 class ManagerProviderStation implements ManagerProviderInterface
 {
@@ -25,7 +25,7 @@ class ManagerProviderStation implements ManagerProviderInterface
     ) {}
 
     #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->wrapper->get()->getUser();
     }
@@ -81,7 +81,7 @@ class ManagerProviderStation implements ManagerProviderInterface
     }
 
     #[Override]
-    public function addCrewAssignment(SpacecraftInterface $spacecraft, int $amount): void
+    public function addCrewAssignment(Spacecraft $spacecraft, int $amount): void
     {
         $this->crewCreator->createCrewAssignment($spacecraft, $this->wrapper->get(), $amount);
     }
@@ -111,7 +111,7 @@ class ManagerProviderStation implements ManagerProviderInterface
     }
 
     #[Override]
-    public function upperStorage(CommodityInterface $commodity, int $amount): void
+    public function upperStorage(Commodity $commodity, int $amount): void
     {
         $this->storageManager->upperStorage(
             $this->wrapper->get(),
@@ -121,7 +121,7 @@ class ManagerProviderStation implements ManagerProviderInterface
     }
 
     #[Override]
-    public function lowerStorage(CommodityInterface $commodity, int $amount): void
+    public function lowerStorage(Commodity $commodity, int $amount): void
     {
         $this->storageManager->lowerStorage(
             $this->wrapper->get(),

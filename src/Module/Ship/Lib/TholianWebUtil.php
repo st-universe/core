@@ -21,9 +21,9 @@ use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\SpacecraftSystemInterface;
-use Stu\Orm\Entity\TholianWebInterface;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\SpacecraftSystem;
+use Stu\Orm\Entity\TholianWeb;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
 use Stu\Orm\Repository\TholianWebRepositoryInterface;
@@ -67,7 +67,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
     }
 
     #[Override]
-    public function releaseAllShips(TholianWebInterface $web, SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory): void
+    public function releaseAllShips(TholianWeb $web, SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory): void
     {
         foreach ($web->getCapturedSpacecrafts() as $target) {
             $this->releaseSpacecraftFromWeb($spacecraftWrapperFactory->wrapSpacecraft($target));
@@ -87,7 +87,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
     }
 
     #[Override]
-    public function removeWeb(TholianWebInterface $web): void
+    public function removeWeb(TholianWeb $web): void
     {
         $this->loggerUtil->log(sprintf('removeWeb, webId: %d', $web->getId()));
 
@@ -135,7 +135,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
 
     #[Override]
     public function resetWebHelpers(
-        TholianWebInterface $web,
+        TholianWeb $web,
         SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
         bool $isFinished = false
     ): void {
@@ -184,7 +184,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
     }
 
     #[Override]
-    public function updateWebFinishTime(TholianWebInterface $web, ?int $helperModifier = null): ?int
+    public function updateWebFinishTime(TholianWeb $web, ?int $helperModifier = null): ?int
     {
         $this->loggerUtil->log(sprintf('updateWebFinishTime, webId: %d', $web->getId()));
 
@@ -215,12 +215,12 @@ final class TholianWebUtil implements TholianWebUtilInterface
         //initialize by weight of targets and spinners
         $targetWeightSum = array_reduce(
             $web->getCapturedSpacecrafts()->toArray(),
-            fn(int $sum, SpacecraftInterface $spacecraft): int => $sum + $spacecraft->getRump()->getTractorMass(),
+            fn(int $sum, Spacecraft $spacecraft): int => $sum + $spacecraft->getRump()->getTractorMass(),
             0
         );
         $webSpinnerWeightSum = array_reduce(
             $this->shipSystemRepository->getWebConstructingShipSystems($web->getId()),
-            fn(int $sum, SpacecraftSystemInterface $shipSystem): int => $sum + $shipSystem->getSpacecraft()->getRump()->getTractorMass(),
+            fn(int $sum, SpacecraftSystem $shipSystem): int => $sum + $shipSystem->getSpacecraft()->getRump()->getTractorMass(),
             0
         );
 
@@ -244,7 +244,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
 
         return $emitter;
     }
-    private function getMandatoryWebUnderConstruction(WebEmitterSystemData $emitter): TholianWebInterface
+    private function getMandatoryWebUnderConstruction(WebEmitterSystemData $emitter): TholianWeb
     {
         $web = $emitter->getWebUnderConstruction();
         if ($web === null) {
@@ -257,7 +257,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
     #[Override]
     public function isTargetOutsideFinishedTholianWeb(EntityWithInteractionCheckInterface $source, EntityWithInteractionCheckInterface $target): bool
     {
-        if (!$source instanceof SpacecraftInterface) {
+        if (!$source instanceof Spacecraft) {
             return false;
         }
 
@@ -266,13 +266,13 @@ final class TholianWebUtil implements TholianWebUtilInterface
             return false;
         }
 
-        return !$target instanceof SpacecraftInterface || $target->getHoldingWeb() !== $web;
+        return !$target instanceof Spacecraft || $target->getHoldingWeb() !== $web;
     }
 
     #[Override]
     public function isTargetInsideFinishedTholianWeb(EntityWithInteractionCheckInterface $source, EntityWithInteractionCheckInterface $target): bool
     {
-        if (!$target instanceof SpacecraftInterface) {
+        if (!$target instanceof Spacecraft) {
             return false;
         }
 
@@ -281,6 +281,6 @@ final class TholianWebUtil implements TholianWebUtilInterface
             return false;
         }
 
-        return !$source instanceof SpacecraftInterface || $source->getHoldingWeb() !== $web;
+        return !$source instanceof Spacecraft || $source->getHoldingWeb() !== $web;
     }
 }

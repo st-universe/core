@@ -9,7 +9,7 @@ use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Colony;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 
 class AttackerProviderFactory implements AttackerProviderFactoryInterface
@@ -33,7 +33,7 @@ class AttackerProviderFactory implements AttackerProviderFactoryInterface
     }
 
     #[Override]
-    public function createEnergyPhalanxAttacker(ColonyInterface $colony): EnergyAttackerInterface
+    public function createEnergyPhalanxAttacker(Colony $colony): EnergyAttackerInterface
     {
         return new EnergyPhalanx(
             $colony,
@@ -42,7 +42,7 @@ class AttackerProviderFactory implements AttackerProviderFactoryInterface
     }
 
     #[Override]
-    public function createProjectilePhalanxAttacker(ColonyInterface $colony): ProjectileAttackerInterface
+    public function createProjectilePhalanxAttacker(Colony $colony): ProjectileAttackerInterface
     {
         return new ProjectilePhalanx(
             $colony,

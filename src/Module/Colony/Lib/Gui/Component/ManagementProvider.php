@@ -13,8 +13,8 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Database\View\Category\Wrapper\DatabaseCategoryWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
-use Stu\Orm\Entity\ColonyDepositMiningInterface;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\ColonyDepositMining;
+use Stu\Orm\Entity\Colony;
 use Stu\Orm\Repository\ColonyDepositMiningRepositoryInterface;
 use Stu\Orm\Repository\StationRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
@@ -39,7 +39,7 @@ final class ManagementProvider implements PlanetFieldHostComponentInterface
         GameControllerInterface $game
     ): void {
 
-        if (!$entity instanceof ColonyInterface) {
+        if (!$entity instanceof Colony) {
             return;
         }
 
@@ -98,14 +98,14 @@ final class ManagementProvider implements PlanetFieldHostComponentInterface
     }
 
     /**
-     * @return array<int, array{deposit: ColonyDepositMiningInterface, currentlyMined: int}>
+     * @return array<int, array{deposit: ColonyDepositMining, currentlyMined: int}>
      */
     private function getUserDepositMinings(PlanetFieldHostInterface $host): array
     {
         $production = $this->colonyLibFactory->createColonyCommodityProduction($host)->getProduction();
 
         $result = [];
-        if (!$host instanceof ColonyInterface) {
+        if (!$host instanceof Colony) {
             return $result;
         }
 

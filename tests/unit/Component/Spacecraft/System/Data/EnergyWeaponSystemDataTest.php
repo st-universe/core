@@ -8,8 +8,8 @@ use Mockery\MockInterface;
 use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Template\StatusBarFactoryInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftSystemInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\SpacecraftSystem;
 use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -18,7 +18,7 @@ class EnergyWeaponSystemDataTest extends StuTestCase
     private MockInterface&SpacecraftSystemRepositoryInterface $shipSystemRepository;
     private MockInterface&StatusBarFactoryInterface $statusBarFactory;
 
-    private MockInterface&ShipInterface $ship;
+    private MockInterface&Ship $ship;
 
     private EnergyWeaponSystemData $subject;
 
@@ -27,7 +27,7 @@ class EnergyWeaponSystemDataTest extends StuTestCase
     {
         $this->shipSystemRepository = $this->mock(SpacecraftSystemRepositoryInterface::class);
         $this->statusBarFactory = $this->mock(StatusBarFactoryInterface::class);
-        $this->ship = $this->mock(ShipInterface::class);
+        $this->ship = $this->mock(Ship::class);
 
         $this->subject = new EnergyWeaponSystemData(
             $this->shipSystemRepository,
@@ -37,7 +37,7 @@ class EnergyWeaponSystemDataTest extends StuTestCase
 
     public function testGetBaseDamage(): void
     {
-        $spacecraftSystem = $this->mock(SpacecraftSystemInterface::class);
+        $spacecraftSystem = $this->mock(SpacecraftSystem::class);
 
         $this->subject->setSpacecraft($this->ship);
         $this->subject->setBaseDamage(200);

@@ -18,11 +18,11 @@ use Stu\Module\Spacecraft\Lib\Message\MessageInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\FlightConsequenceInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\AstronomicalEntryInterface;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\StarSystemInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\AstronomicalEntry;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\StarSystem;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\AstroEntryRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -35,7 +35,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
 
     private FlightConsequenceInterface $subject;
 
-    private MockInterface&ShipInterface $ship;
+    private MockInterface&Ship $ship;
 
     private MockInterface&ShipWrapperInterface $wrapper;
 
@@ -49,7 +49,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
         $this->createPrestigeLog = $this->mock(CreatePrestigeLogInterface::class);
         $this->messageFactory = $this->mock(MessageFactoryInterface::class);
 
-        $this->ship = $this->mock(ShipInterface::class);
+        $this->ship = $this->mock(Ship::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
         $this->flightRoute = $this->mock(FlightRouteInterface::class);
 
@@ -146,7 +146,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
         $this->ship->shouldReceive('getSystem')
             ->withNoArgs()
             ->once()
-            ->andReturn($this->mock(StarSystemInterface::class));
+            ->andReturn($this->mock(StarSystem::class));
 
         $this->astroEntryLib->shouldReceive('getAstroEntryByShipLocation')
             ->with($this->ship, false)
@@ -162,10 +162,10 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
 
     public function testTriggerExpectArrivingWaypoint(): void
     {
-        $map = $this->mock(MapInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $map = $this->mock(Map::class);
+        $user = $this->mock(User::class);
         $messages = $this->mock(MessageCollectionInterface::class);
-        $astroEntry = $this->mock(AstronomicalEntryInterface::class);
+        $astroEntry = $this->mock(AstronomicalEntry::class);
         $astroLab = $this->mock(AstroLaboratorySystemData::class);
         $message = $this->mock(MessageInterface::class);
 
@@ -185,7 +185,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
         $this->ship->shouldReceive('getSystem')
             ->withNoArgs()
             ->once()
-            ->andReturn($this->mock(StarSystemInterface::class));
+            ->andReturn($this->mock(StarSystem::class));
         $this->ship->shouldReceive('getName')
             ->withNoArgs()
             ->once()
@@ -269,10 +269,10 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
     public function testTriggerExpectMeasured(): void
     {
 
-        $map = $this->mock(MapInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $map = $this->mock(Map::class);
+        $user = $this->mock(User::class);
         $messages = $this->mock(MessageCollectionInterface::class);
-        $astroEntry = $this->mock(AstronomicalEntryInterface::class);
+        $astroEntry = $this->mock(AstronomicalEntry::class);
         $astroLab = $this->mock(AstroLaboratorySystemData::class);
         $message = $this->mock(MessageInterface::class);
 
@@ -292,7 +292,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
         $this->ship->shouldReceive('getSystem')
             ->withNoArgs()
             ->once()
-            ->andReturn($this->mock(StarSystemInterface::class));
+            ->andReturn($this->mock(StarSystem::class));
         $this->ship->shouldReceive('getName')
             ->withNoArgs()
             ->andReturn('SHIP');
@@ -378,10 +378,10 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
 
     public function testTriggerExpectCancelOfFinalizing(): void
     {
-        $map = $this->mock(MapInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $map = $this->mock(Map::class);
+        $user = $this->mock(User::class);
         $messages = $this->mock(MessageCollectionInterface::class);
-        $astroEntry = $this->mock(AstronomicalEntryInterface::class);
+        $astroEntry = $this->mock(AstronomicalEntry::class);
         $astroLab = $this->mock(AstroLaboratorySystemData::class);
         $message = $this->mock(MessageInterface::class);
 
@@ -401,7 +401,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
         $this->ship->shouldReceive('getSystem')
             ->withNoArgs()
             ->once()
-            ->andReturn($this->mock(StarSystemInterface::class));
+            ->andReturn($this->mock(StarSystem::class));
         $this->ship->shouldReceive('getName')
             ->withNoArgs()
             ->andReturn('SHIP');

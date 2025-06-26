@@ -14,8 +14,8 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\StationInterface;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\Station;
 
 final class ShowScan implements ViewControllerInterface
 {
@@ -98,7 +98,7 @@ final class ShowScan implements ViewControllerInterface
         $game->setTemplateVar('SHIP', $ship);
 
         $tradePostCrewCount = null;
-        $targetTradePost = $target instanceof StationInterface ? $target->getTradePost() : null;
+        $targetTradePost = $target instanceof Station ? $target->getTradePost() : null;
 
         if ($targetTradePost !== null) {
             $tradePostCrewCount = $targetTradePost->getCrewCountOfUser($user);
@@ -112,7 +112,7 @@ final class ShowScan implements ViewControllerInterface
         );
     }
 
-    private function calculateShieldPercentage(SpacecraftInterface $target): int
+    private function calculateShieldPercentage(Spacecraft $target): int
     {
         return $target->getMaxShield() === 0
             ? 0

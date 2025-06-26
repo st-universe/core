@@ -18,8 +18,8 @@ use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperSensor;
 use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperShield;
 use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperSpecial;
 use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperWarpDrive;
-use Stu\Orm\Entity\SpacecraftBuildplanInterface;
-use Stu\Orm\Entity\SpacecraftRumpInterface;
+use Stu\Orm\Entity\SpacecraftBuildplan;
+use Stu\Orm\Entity\SpacecraftRump;
 
 enum SpacecraftModuleTypeEnum: int
 {
@@ -81,17 +81,17 @@ enum SpacecraftModuleTypeEnum: int
     public function getModuleRumpWrapperCallable(): callable
     {
         return match ($this) {
-            self::HULL => fn(SpacecraftRumpInterface $rump, ?SpacecraftBuildplanInterface $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperHull($rump, $buildplan),
-            self::SHIELDS => fn(SpacecraftRumpInterface $rump, ?SpacecraftBuildplanInterface $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperShield($rump, $buildplan),
-            self::EPS => fn(SpacecraftRumpInterface $rump, ?SpacecraftBuildplanInterface $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperEps($rump, $buildplan),
-            self::IMPULSEDRIVE => fn(SpacecraftRumpInterface $rump, ?SpacecraftBuildplanInterface $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperImpulseDrive($rump, $buildplan),
-            self::REACTOR => fn(SpacecraftRumpInterface $rump, ?SpacecraftBuildplanInterface $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperReactor($rump, $buildplan),
-            self::COMPUTER => fn(SpacecraftRumpInterface $rump, ?SpacecraftBuildplanInterface $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperComputer($rump, $buildplan),
-            self::PHASER => fn(SpacecraftRumpInterface $rump, ?SpacecraftBuildplanInterface $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperEnergyWeapon($rump, $buildplan),
-            self::TORPEDO => fn(SpacecraftRumpInterface $rump, ?SpacecraftBuildplanInterface $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperProjectileWeapon($rump, $buildplan),
-            self::SENSOR => fn(SpacecraftRumpInterface $rump, ?SpacecraftBuildplanInterface $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperSensor($rump, $buildplan),
-            self::WARPDRIVE => fn(SpacecraftRumpInterface $rump, ?SpacecraftBuildplanInterface $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperWarpDrive($rump, $buildplan),
-            self::SPECIAL => fn(SpacecraftRumpInterface $rump, ?SpacecraftBuildplanInterface $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperSpecial($rump, $buildplan)
+            self::HULL => fn(SpacecraftRump $rump, ?SpacecraftBuildplan $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperHull($rump, $buildplan),
+            self::SHIELDS => fn(SpacecraftRump $rump, ?SpacecraftBuildplan $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperShield($rump, $buildplan),
+            self::EPS => fn(SpacecraftRump $rump, ?SpacecraftBuildplan $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperEps($rump, $buildplan),
+            self::IMPULSEDRIVE => fn(SpacecraftRump $rump, ?SpacecraftBuildplan $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperImpulseDrive($rump, $buildplan),
+            self::REACTOR => fn(SpacecraftRump $rump, ?SpacecraftBuildplan $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperReactor($rump, $buildplan),
+            self::COMPUTER => fn(SpacecraftRump $rump, ?SpacecraftBuildplan $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperComputer($rump, $buildplan),
+            self::PHASER => fn(SpacecraftRump $rump, ?SpacecraftBuildplan $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperEnergyWeapon($rump, $buildplan),
+            self::TORPEDO => fn(SpacecraftRump $rump, ?SpacecraftBuildplan $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperProjectileWeapon($rump, $buildplan),
+            self::SENSOR => fn(SpacecraftRump $rump, ?SpacecraftBuildplan $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperSensor($rump, $buildplan),
+            self::WARPDRIVE => fn(SpacecraftRump $rump, ?SpacecraftBuildplan $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperWarpDrive($rump, $buildplan),
+            self::SPECIAL => fn(SpacecraftRump $rump, ?SpacecraftBuildplan $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperSpecial($rump, $buildplan)
         };
     }
 

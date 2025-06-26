@@ -7,7 +7,7 @@ namespace Stu\Lib\Component;
 use Override;
 use Stu\Module\Colony\Component\ColonyComponentEnum;
 use Stu\Module\Game\Component\GameComponentEnum;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Colony;
 use Stu\StuTestCase;
 
 class ComponentRegistrationTest extends StuTestCase
@@ -61,7 +61,7 @@ class ComponentRegistrationTest extends StuTestCase
 
     public function testRegisterComponent(): void
     {
-        $entity = $this->mock(ColonyInterface::class);
+        $entity = $this->mock(Colony::class);
 
         $this->subject->registerComponent(GameComponentEnum::PM);
         $this->subject->registerComponent(ColonyComponentEnum::SURFACE, $entity);

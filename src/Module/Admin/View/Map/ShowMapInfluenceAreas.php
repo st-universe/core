@@ -11,7 +11,7 @@ use Stu\Component\Image\ImageCreationInterface;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Entity\LayerInterface;
+use Stu\Orm\Entity\Layer;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 
@@ -50,7 +50,7 @@ final class ShowMapInfluenceAreas implements ViewControllerInterface
 		$game->setTemplateVar('GRAPH', $this->imageCreation->gdImageInSrc($this->buildImage($layer, $showAllyAreas !== 0)));
 	}
 
-	private function buildImage(LayerInterface $layer, bool $showAllyAreas): mixed
+	private function buildImage(Layer $layer, bool $showAllyAreas): mixed
 	{
 		$width = $layer->getWidth() * 15;
 		$height = $layer->getHeight() * 15;

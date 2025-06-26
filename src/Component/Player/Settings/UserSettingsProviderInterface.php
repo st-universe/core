@@ -7,27 +7,27 @@ namespace Stu\Component\Player\Settings;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Player\UserCssClassEnum;
 use Stu\Component\Player\UserRpgBehaviorEnum;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 interface UserSettingsProviderInterface
 {
     // STRING
-    public function getRgbCode(UserInterface $user): string;
-    public function getAvatar(UserInterface $user): string;
+    public function getRgbCode(User $user): string;
+    public function getAvatar(User $user): string;
 
     // ENUM
-    public function getDefaultView(UserInterface $user): ModuleEnum;
-    public function getRpgBehavior(UserInterface $user): UserRpgBehaviorEnum;
-    public function getCss(UserInterface $user): UserCssClassEnum;
+    public function getDefaultView(User $user): ModuleEnum;
+    public function getRpgBehavior(User $user): UserRpgBehaviorEnum;
+    public function getCss(User $user): UserCssClassEnum;
 
     // BOOL
-    public function isEmailNotification(UserInterface $user): bool;
-    public function isStorageNotification(UserInterface $user): bool;
-    public function isShowOnlineState(UserInterface $user): bool;
-    public function isShowPmReadReceipt(UserInterface $user): bool;
-    public function isSaveLogin(UserInterface $user): bool;
-    public function getFleetFixedDefault(UserInterface $user): bool;
-    public function getWarpsplitAutoCarryoverDefault(UserInterface $user): bool;
-    public function isShowPirateHistoryEntrys(UserInterface $user): bool;
-    public function isInboxMessengerStyle(UserInterface $user): bool;
+    public function isEmailNotification(User $user): bool;
+    public function isStorageNotification(User $user): bool;
+    public function isShowOnlineState(User $user): bool;
+    public function isShowPmReadReceipt(User $user): bool;
+    public function isSaveLogin(User $user): bool;
+    public function getFleetFixedDefault(User $user): bool;
+    public function getWarpsplitAutoCarryoverDefault(User $user): bool;
+    public function isShowPirateHistoryEntrys(User $user): bool;
+    public function isInboxMessengerStyle(User $user): bool;
 }

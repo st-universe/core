@@ -12,13 +12,12 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\ModuleBuildingFunctionRepository;
 
 #[Table(name: 'stu_modules_buildingfunction')]
 #[Index(name: 'module_buildingfunction_idx', columns: ['module_id', 'buildingfunction'])]
 #[Entity(repositoryClass: ModuleBuildingFunctionRepository::class)]
-class ModuleBuildingFunction implements ModuleBuildingFunctionInterface
+class ModuleBuildingFunction
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -33,44 +32,38 @@ class ModuleBuildingFunction implements ModuleBuildingFunctionInterface
 
     #[ManyToOne(targetEntity: Module::class)]
     #[JoinColumn(name: 'module_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ModuleInterface $module;
+    private Module $module;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getModuleId(): int
     {
         return $this->module_id;
     }
 
-    #[Override]
-    public function setModuleId(int $moduleId): ModuleBuildingFunctionInterface
+    public function setModuleId(int $moduleId): ModuleBuildingFunction
     {
         $this->module_id = $moduleId;
 
         return $this;
     }
 
-    #[Override]
     public function getBuildingFunction(): int
     {
         return $this->buildingfunction;
     }
 
-    #[Override]
-    public function setBuildingFunction(int $buildingFunction): ModuleBuildingFunctionInterface
+    public function setBuildingFunction(int $buildingFunction): ModuleBuildingFunction
     {
         $this->buildingfunction = $buildingFunction;
 
         return $this;
     }
 
-    #[Override]
-    public function getModule(): ModuleInterface
+    public function getModule(): Module
     {
         return $this->module;
     }

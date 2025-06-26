@@ -4,7 +4,6 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\News;
-use Stu\Orm\Entity\NewsInterface;
 
 /**
  * @extends ObjectRepository<News>
@@ -12,7 +11,7 @@ use Stu\Orm\Entity\NewsInterface;
 interface NewsRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return array<NewsInterface>
+     * @return array<News>
      */
     public function getRecent(int $limit): array;
 }

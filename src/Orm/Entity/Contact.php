@@ -12,14 +12,13 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Orm\Repository\ContactRepository;
 
 #[Table(name: 'stu_contactlist')]
 #[Index(name: 'user_pair_idx', columns: ['user_id', 'recipient'])]
 #[Entity(repositoryClass: ContactRepository::class)]
-class Contact implements ContactInterface
+class Contact
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -43,102 +42,87 @@ class Contact implements ContactInterface
 
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $user;
+    private User $user;
 
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'recipient', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $opponent;
+    private User $opponent;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    #[Override]
     public function getRecipientId(): int
     {
         return $this->recipient;
     }
 
-    #[Override]
     public function getMode(): ContactListModeEnum
     {
         return $this->mode;
     }
 
-    #[Override]
-    public function setMode(ContactListModeEnum $mode): ContactInterface
+    public function setMode(ContactListModeEnum $mode): Contact
     {
         $this->mode = $mode;
         return $this;
     }
 
-    #[Override]
     public function getComment(): string
     {
         return $this->comment;
     }
 
-    #[Override]
-    public function setComment(string $comment): ContactInterface
+    public function setComment(string $comment): Contact
     {
         $this->comment = $comment;
         return $this;
     }
 
-    #[Override]
     public function getDate(): int
     {
         return $this->date;
     }
 
-    #[Override]
-    public function setDate(int $date): ContactInterface
+    public function setDate(int $date): Contact
     {
         $this->date = $date;
         return $this;
     }
 
-    #[Override]
-    public function getRecipient(): UserInterface
+    public function getRecipient(): User
     {
         return $this->opponent;
     }
 
-    #[Override]
-    public function setRecipient(UserInterface $recipient): ContactInterface
+    public function setRecipient(User $recipient): Contact
     {
         $this->opponent = $recipient;
         return $this;
     }
 
-    #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    #[Override]
-    public function setUser(UserInterface $user): ContactInterface
+    public function setUser(User $user): Contact
     {
         $this->user = $user;
         return $this;
     }
 
-    #[Override]
     public function isFriendly(): bool
     {
         return $this->getMode() === ContactListModeEnum::FRIEND;
     }
 
-    #[Override]
     public function isEnemy(): bool
     {
         return $this->getMode() === ContactListModeEnum::ENEMY;

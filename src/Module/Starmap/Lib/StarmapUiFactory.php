@@ -9,9 +9,9 @@ use Override;
 use Stu\Component\Map\EncodedMapInterface;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Orm\Entity\LayerInterface;
-use Stu\Orm\Entity\StarSystemInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Layer;
+use Stu\Orm\Entity\StarSystem;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
@@ -42,11 +42,11 @@ final class StarmapUiFactory implements StarmapUiFactoryInterface
 
     #[Override]
     public function createYRow(
-        ?LayerInterface $layer,
+        ?Layer $layer,
         int $cury,
         int $minx,
         int $maxx,
-        int|StarSystemInterface $system
+        int|StarSystem $system
     ): YRow {
         return new YRow(
             $this->mapRepository,
@@ -62,8 +62,8 @@ final class StarmapUiFactory implements StarmapUiFactoryInterface
 
     #[Override]
     public function createUserYRow(
-        UserInterface $user,
-        LayerInterface $layer,
+        User $user,
+        Layer $layer,
         int $cury,
         int $minx,
         int $maxx,
@@ -86,7 +86,7 @@ final class StarmapUiFactory implements StarmapUiFactoryInterface
     #[Override]
     public function createExplorableStarmapItem(
         ExploreableStarMapInterface $exploreableStarMap,
-        LayerInterface $layer
+        Layer $layer
     ): ExplorableStarMapItem {
         return new ExplorableStarMapItem(
             $this->tradePostRepository,

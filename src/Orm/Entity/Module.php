@@ -17,7 +17,6 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
@@ -27,7 +26,7 @@ use Stu\Orm\Repository\ModuleRepository;
 #[Table(name: 'stu_modules')]
 #[Index(name: 'ship_rump_role_type_idx', columns: ['rumps_role_id', 'type'])]
 #[Entity(repositoryClass: ModuleRepository::class)]
-class Module implements ModuleInterface
+class Module
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -77,7 +76,7 @@ class Module implements ModuleInterface
     private ?SpacecraftSystemTypeEnum $system_type = null;
 
     /**
-     * @var ResearchInterface
+     * @var Research
      */
     #[ManyToOne(targetEntity: Research::class)]
     #[JoinColumn(name: 'research_id', nullable: false, referencedColumnName: 'id')]
@@ -85,10 +84,10 @@ class Module implements ModuleInterface
 
     #[ManyToOne(targetEntity: Commodity::class)]
     #[JoinColumn(name: 'commodity_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private CommodityInterface $commodity;
+    private Commodity $commodity;
 
     /**
-     * @var FactionInterface
+     * @var Faction
      */
     #[ManyToOne(targetEntity: Faction::class)]
     #[JoinColumn(name: 'faction_id', nullable: false, referencedColumnName: 'id')]
@@ -96,37 +95,37 @@ class Module implements ModuleInterface
 
     #[ManyToOne(targetEntity: ShipRumpRole::class)]
     #[JoinColumn(name: 'rumps_role_id', nullable: false, referencedColumnName: 'id')]
-    private ShipRumpRoleInterface $shipRumpRole;
+    private ShipRumpRole $shipRumpRole;
 
     /**
-     * @var ArrayCollection<int, ModuleSpecialInterface>
+     * @var ArrayCollection<int, ModuleSpecial>
      */
     #[OneToMany(targetEntity: ModuleSpecial::class, mappedBy: 'module', indexBy: 'special_id', fetch: 'EXTRA_LAZY')]
     #[OrderBy(['special_id' => 'ASC'])]
     private Collection $moduleSpecials;
 
     /**
-     * @var ArrayCollection<int, ModuleCostInterface>
+     * @var ArrayCollection<int, ModuleCost>
      */
     #[OneToMany(targetEntity: ModuleCost::class, mappedBy: 'module')]
     private Collection $buildingCosts;
 
     /**
-     * @var ArrayCollection<int, TorpedoHullInterface>
+     * @var ArrayCollection<int, TorpedoHull>
      */
     #[OneToMany(targetEntity: TorpedoHull::class, mappedBy: 'module', indexBy: 'torpedo_type')]
     #[OrderBy(['torpedo_type' => 'ASC'])]
     private Collection $torpedoHull;
 
     /**
-     * @var ArrayCollection<int, WeaponShieldInterface>
+     * @var ArrayCollection<int, WeaponShield>
      */
     #[OneToMany(targetEntity: WeaponShield::class, mappedBy: 'module', indexBy: 'weapon_id')]
     #[OrderBy(['weapon_id' => 'ASC'])]
     private Collection $weaponShield;
 
     #[OneToOne(targetEntity: Weapon::class, mappedBy: 'module')]
-    private ?WeaponInterface $weapon = null;
+    private ?Weapon $weapon = null;
 
     public function __construct()
     {
@@ -136,90 +135,77 @@ class Module implements ModuleInterface
         $this->weaponShield = new ArrayCollection();
     }
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
-    #[Override]
-    public function setName(string $name): ModuleInterface
+    public function setName(string $name): Module
     {
         $this->name = $name;
 
         return $this;
     }
 
-    #[Override]
     public function getLevel(): int
     {
         return $this->level;
     }
 
-    #[Override]
-    public function setLevel(int $level): ModuleInterface
+    public function setLevel(int $level): Module
     {
         $this->level = $level;
 
         return $this;
     }
 
-    #[Override]
     public function getUpgradeFactor(): int
     {
         return $this->upgrade_factor;
     }
 
-    #[Override]
-    public function setUpgradeFactor(int $upgradeFactor): ModuleInterface
+    public function setUpgradeFactor(int $upgradeFactor): Module
     {
         $this->upgrade_factor = $upgradeFactor;
 
         return $this;
     }
 
-    #[Override]
     public function getDefaultFactor(): int
     {
         return $this->default_factor;
     }
 
-    #[Override]
-    public function setDefaultFactor(int $defaultFactor): ModuleInterface
+    public function setDefaultFactor(int $defaultFactor): Module
     {
         $this->default_factor = $defaultFactor;
 
         return $this;
     }
 
-    #[Override]
     public function getDowngradeFactor(): int
     {
         return $this->downgrade_factor;
     }
 
-    #[Override]
-    public function setDowngradeFactor(int $downgradeFactor): ModuleInterface
+    public function setDowngradeFactor(int $downgradeFactor): Module
     {
         $this->downgrade_factor = $downgradeFactor;
 
         return $this;
     }
 
-    #[Override]
     public function getCrew(): int
     {
         return $this->crew;
     }
 
-    #[Override]
-    public function getCrewByFactionAndRumpLvl(FactionInterface $faction, SpacecraftRumpInterface $rump): int
+    public function getCrewByFactionAndRumpLvl(Faction $faction, SpacecraftRump $rump): int
     {
         $result = $this->getCrew();
 
@@ -237,173 +223,163 @@ class Module implements ModuleInterface
         return $result;
     }
 
-    #[Override]
-    public function setCrew(int $crew): ModuleInterface
+    public function setCrew(int $crew): Module
     {
         $this->crew = $crew;
 
         return $this;
     }
 
-    #[Override]
     public function getType(): SpacecraftModuleTypeEnum
     {
         return $this->type;
     }
 
-    #[Override]
-    public function setType(SpacecraftModuleTypeEnum $type): ModuleInterface
+    public function setType(SpacecraftModuleTypeEnum $type): Module
     {
         $this->type = $type;
 
         return $this;
     }
 
-    #[Override]
     public function getResearchId(): ?int
     {
         return $this->research_id;
     }
 
-    #[Override]
-    public function setResearchId(int $researchId): ModuleInterface
+    public function setResearchId(int $researchId): Module
     {
         $this->research_id = $researchId;
 
         return $this;
     }
 
-    #[Override]
     public function getCommodityId(): int
     {
         return $this->commodity_id;
     }
 
-    #[Override]
-    public function setCommodityId(int $commodityId): ModuleInterface
+    public function setCommodityId(int $commodityId): Module
     {
         $this->commodity_id = $commodityId;
 
         return $this;
     }
 
-    #[Override]
     public function getViewable(): bool
     {
         return $this->viewable;
     }
 
-    #[Override]
-    public function setViewable(bool $viewable): ModuleInterface
+    public function setViewable(bool $viewable): Module
     {
         $this->viewable = $viewable;
 
         return $this;
     }
 
-    #[Override]
     public function getShipRumpRoleId(): ?SpacecraftRumpRoleEnum
     {
         return $this->rumps_role_id;
     }
 
-    #[Override]
-    public function getWeapon(): ?WeaponInterface
+    public function getWeapon(): ?Weapon
     {
         return $this->weapon;
     }
 
-    #[Override]
     public function getEcost(): int
     {
         return $this->ecost;
     }
 
-    #[Override]
-    public function setEcost(int $energyCosts): ModuleInterface
+    public function setEcost(int $energyCosts): Module
     {
         $this->ecost = $energyCosts;
 
         return $this;
     }
 
-    #[Override]
     public function getFactionId(): ?int
     {
         return $this->faction_id;
     }
 
-    #[Override]
-    public function setFactionId(int $factionId): ?ModuleInterface
+    public function setFactionId(int $factionId): ?Module
     {
         $this->faction_id = $factionId;
 
         return $this;
     }
 
-    #[Override]
     public function getSystemType(): ?SpacecraftSystemTypeEnum
     {
         return $this->system_type;
     }
 
-    #[Override]
+    /**
+     * @return Collection<int, ModuleSpecial>
+     */
     public function getSpecials(): Collection
     {
         return $this->moduleSpecials;
     }
 
-    #[Override]
     public function hasSpecial(ModuleSpecialAbilityEnum $ability): bool
     {
         return $this->moduleSpecials->containsKey($ability->value);
     }
 
-    #[Override]
+    /**
+     * @return Collection<int, ModuleCost>
+     */
     public function getCost(): Collection
     {
         return $this->buildingCosts;
     }
 
-    #[Override]
+    /**
+     * @return array<int, ModuleCost>
+     */
     public function getCostSorted(): array
     {
         $array = $this->getCost()->getValues();
 
         usort(
             $array,
-            fn(ModuleCostInterface $a, ModuleCostInterface $b): int => $a->getCommodity()->getSort() <=> $b->getCommodity()->getSort()
+            fn(ModuleCost $a, ModuleCost $b): int => $a->getCommodity()->getSort() <=> $b->getCommodity()->getSort()
         );
 
         return $array;
     }
 
-    #[Override]
-    public function getCommodity(): CommodityInterface
+    public function getCommodity(): Commodity
     {
         return $this->commodity;
     }
 
-    #[Override]
     public function getDescription(): string
     {
         return $this->getType()->getDescription();
     }
 
-    #[Override]
+    /**
+     * @return Collection<int, TorpedoHull>
+     */
     public function getTorpedoHull(): Collection
     {
         return $this->torpedoHull;
     }
 
-    #[Override]
+    /**
+     * @return Collection<int, WeaponShield>
+     */
     public function getWeaponShield(): Collection
     {
         return $this->weaponShield;
     }
 
-    #[Override]
-    public function getFaction(): ?FactionInterface
+    public function getFaction(): ?Faction
     {
         return $this->faction;
     }

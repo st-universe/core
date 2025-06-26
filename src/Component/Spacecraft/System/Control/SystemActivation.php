@@ -17,8 +17,8 @@ use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\ConditionCheckResult;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Template\TemplateHelperInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 class SystemActivation
@@ -80,11 +80,11 @@ class SystemActivation
         return false;
     }
 
-    private function logError(SpacecraftInterface $spacecraft, string $message, ConditionCheckResult|InformationInterface $logger): void
+    private function logError(Spacecraft $spacecraft, string $message, ConditionCheckResult|InformationInterface $logger): void
     {
         if ($logger instanceof InformationInterface) {
             $logger->addInformation($message);
-        } elseif ($spacecraft instanceof ShipInterface) {
+        } elseif ($spacecraft instanceof Ship) {
             $logger->addBlockedShip($spacecraft, $message);
         }
     }

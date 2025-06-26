@@ -16,9 +16,9 @@ use Stu\Module\Commodity\Lib\CommodityCacheInterface;
 use Stu\Module\Spacecraft\Lib\ReactorUtilInterface;
 use Stu\Module\Spacecraft\Lib\ReactorWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\CommodityInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Commodity;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\User;
 use Stu\StuTestCase;
 
 class ManageReactorTest extends StuTestCase
@@ -29,7 +29,7 @@ class ManageReactorTest extends StuTestCase
 
     private MockInterface&ShipWrapperInterface $wrapper;
 
-    private MockInterface&ShipInterface $ship;
+    private MockInterface&Ship $ship;
 
     private MockInterface&ManagerProviderInterface $managerProvider;
 
@@ -45,7 +45,7 @@ class ManageReactorTest extends StuTestCase
         $this->reactorUtil = $this->mock(ReactorUtilInterface::class);
         $this->commodityCache = $this->mock(CommodityCacheInterface::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
-        $this->ship = $this->mock(ShipInterface::class);
+        $this->ship = $this->mock(Ship::class);
         $this->managerProvider = $this->mock(ManagerProviderInterface::class);
         $this->playerRelationDeterminator = $this->mock(PlayerRelationDeterminatorInterface::class);
 
@@ -151,9 +151,9 @@ class ManageReactorTest extends StuTestCase
     public function testManageExpectInfoMessageWhenNotFriendButShieldsOn(): void
     {
         $reactorWrapper = $this->mock(ReactorWrapperInterface::class);
-        $dilithium = $this->mock(CommodityInterface::class);
-        $am = $this->mock(CommodityInterface::class);
-        $deut = $this->mock(CommodityInterface::class);
+        $dilithium = $this->mock(Commodity::class);
+        $am = $this->mock(Commodity::class);
+        $deut = $this->mock(Commodity::class);
 
         $storage = $this->mock(Collection::class);
         $values = ['reactor' => ['555' => '42']];
@@ -175,7 +175,7 @@ class ManageReactorTest extends StuTestCase
             ->withNoArgs()
             ->andReturn('name');
 
-        $userMock = $this->mock(UserInterface::class);
+        $userMock = $this->mock(User::class);
         $this->ship->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($userMock);
@@ -183,7 +183,7 @@ class ManageReactorTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(true);
 
-        $managerProviderUserMock = $this->mock(UserInterface::class);
+        $managerProviderUserMock = $this->mock(User::class);
         $this->managerProvider->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($managerProviderUserMock);
@@ -231,9 +231,9 @@ class ManageReactorTest extends StuTestCase
     public function testManageExpectInfoMessageWhenInsufficientCommoditiesOnProvider(): void
     {
         $reactorWrapper = $this->mock(ReactorWrapperInterface::class);
-        $dilithium = $this->mock(CommodityInterface::class);
-        $am = $this->mock(CommodityInterface::class);
-        $deut = $this->mock(CommodityInterface::class);
+        $dilithium = $this->mock(Commodity::class);
+        $am = $this->mock(Commodity::class);
+        $deut = $this->mock(Commodity::class);
 
         $storage = $this->mock(Collection::class);
         $values = ['reactor' => ['555' => '42']];
@@ -264,7 +264,7 @@ class ManageReactorTest extends StuTestCase
             ->withNoArgs()
             ->andReturn('name');
 
-        $userMock = $this->mock(UserInterface::class);
+        $userMock = $this->mock(User::class);
         $this->ship->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($userMock);
@@ -272,7 +272,7 @@ class ManageReactorTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(true);
 
-        $managerProviderUserMock = $this->mock(UserInterface::class);
+        $managerProviderUserMock = $this->mock(User::class);
         $this->managerProvider->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($managerProviderUserMock);
@@ -343,7 +343,7 @@ class ManageReactorTest extends StuTestCase
             ->withNoArgs()
             ->andReturn('name');
 
-        $userMock = $this->mock(UserInterface::class);
+        $userMock = $this->mock(User::class);
         $this->ship->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($userMock);
@@ -351,7 +351,7 @@ class ManageReactorTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(false);
 
-        $managerProviderUserMock = $this->mock(UserInterface::class);
+        $managerProviderUserMock = $this->mock(User::class);
         $this->managerProvider->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($managerProviderUserMock);
@@ -397,12 +397,12 @@ class ManageReactorTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(false);
 
-        $userMock = $this->mock(UserInterface::class);
+        $userMock = $this->mock(User::class);
         $this->ship->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($userMock);
 
-        $managerProviderUserMock = $this->mock(UserInterface::class);
+        $managerProviderUserMock = $this->mock(User::class);
         $this->managerProvider->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($managerProviderUserMock);

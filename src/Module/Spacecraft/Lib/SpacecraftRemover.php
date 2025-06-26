@@ -12,7 +12,7 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftShutdownInterface;
 use Stu\Module\Spacecraft\Lib\Torpedo\ClearTorpedoInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
@@ -44,7 +44,7 @@ final class SpacecraftRemover implements SpacecraftRemoverInterface
     }
 
     #[Override]
-    public function remove(SpacecraftInterface $spacecraft, ?bool $truncateCrew = false): void
+    public function remove(Spacecraft $spacecraft, ?bool $truncateCrew = false): void
     {
         $wrapper = $this->spacecraftWrapperFactory->wrapSpacecraft($spacecraft);
 

@@ -2,9 +2,9 @@
 
 namespace Stu\Lib\Pirate\Component;
 
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 interface PirateProtectionInterface
 {
-    public function isProtectedAgainstPirates(UserInterface $user): bool;
+    public function isProtectedAgainstPirates(User $user): bool;
 }

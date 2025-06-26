@@ -7,41 +7,40 @@ use Doctrine\Persistence\ObjectRepository;
 use Stu\Lib\Map\VisualPanel\Layer\Data\CellDataInterface;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
 use Stu\Module\Starmap\Lib\ExploreableStarMapInterface;
-use Stu\Orm\Entity\LayerInterface;
+use Stu\Orm\Entity\Layer;
 use Stu\Orm\Entity\Map;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 /**
  * @extends ObjectRepository<Map>
  *
- * @method null|MapInterface find(integer $id)
+ * @method null|Map find(integer $id)
  */
 interface MapRepositoryInterface extends ObjectRepository
 {
-    public function getAmountByLayer(LayerInterface $layer): int;
+    public function getAmountByLayer(Layer $layer): int;
 
     /**
-     * @return array<MapInterface>
+     * @return array<Map>
      */
     public function getAllOrdered(int $layerId): array;
 
     /**
-     * @return array<int, MapInterface>
+     * @return array<int, Map>
      */
     public function getAllWithSystem(int $layerId): array;
 
     /**
-     * @return array<int, MapInterface>
+     * @return array<int, Map>
      */
     public function getAllWithoutSystem(int $layerId): array;
 
-    public function getByCoordinates(?LayerInterface $layer, int $cx, int $cy): ?MapInterface;
+    public function getByCoordinates(?Layer $layer, int $cx, int $cy): ?Map;
 
-    /** @return array<string, MapInterface> */
+    /** @return array<string, Map> */
     public function getByBoundaries(PanelBoundaries $boundaries): array;
 
-    /** @return array<string, MapInterface> */
+    /** @return array<string, Map> */
     public function getByCoordinateRange(
         int $layerId,
         int $startSx,
@@ -51,7 +50,7 @@ interface MapRepositoryInterface extends ObjectRepository
         bool $sortAscending = true
     ): array;
 
-    public function save(MapInterface $map): void;
+    public function save(Map $map): void;
 
     /** @return array<CellDataInterface> */
     public function getMapLayerData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
@@ -69,7 +68,7 @@ interface MapRepositoryInterface extends ObjectRepository
     public function getRegionBorderData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
 
     /** @return array<CellDataInterface> */
-    public function getImpassableBorderData(PanelBoundaries $boundaries, Userinterface $user, ResultSetMapping $rsm): array;
+    public function getImpassableBorderData(PanelBoundaries $boundaries, User $user, ResultSetMapping $rsm): array;
 
     /** @return array<CellDataInterface> */
     public function getAnomalyData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
@@ -98,9 +97,9 @@ interface MapRepositoryInterface extends ObjectRepository
     ): array;
 
     /**
-     * @return array<MapInterface>
+     * @return array<Map>
      */
-    public function getWithEmptySystem(LayerInterface $layer): array;
+    public function getWithEmptySystem(Layer $layer): array;
 
 
     /**
@@ -109,7 +108,7 @@ interface MapRepositoryInterface extends ObjectRepository
     public function getRandomMapIdsForAstroMeasurement(int $regionId, int $maxPercentage, int $location): array;
 
 
-    public function getRandomPassableUnoccupiedWithoutDamage(LayerInterface $layer, bool $isAtBorder = false): MapInterface;
+    public function getRandomPassableUnoccupiedWithoutDamage(Layer $layer, bool $isAtBorder = false): Map;
 
     /** @return array<CellDataInterface> */
     public function getSubspaceLayerData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;

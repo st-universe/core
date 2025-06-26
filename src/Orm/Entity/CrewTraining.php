@@ -12,14 +12,13 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\CrewTrainingRepository;
 
 #[Table(name: 'stu_crew_training')]
 #[Index(name: 'crew_training_colony_idx', columns: ['colony_id'])]
 #[Index(name: 'crew_training_user_idx', columns: ['user_id'])]
 #[Entity(repositoryClass: CrewTrainingRepository::class)]
-class CrewTraining implements CrewTrainingInterface
+class CrewTraining
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -34,51 +33,44 @@ class CrewTraining implements CrewTrainingInterface
 
     #[ManyToOne(targetEntity: Colony::class)]
     #[JoinColumn(name: 'colony_id', nullable: false, referencedColumnName: 'id')]
-    private ColonyInterface $colony;
+    private Colony $colony;
 
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $user;
+    private User $user;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    #[Override]
     public function getColonyId(): int
     {
         return $this->colony_id;
     }
 
-    #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    #[Override]
-    public function setUser(UserInterface $user): CrewTrainingInterface
+    public function setUser(User $user): CrewTraining
     {
         $this->user = $user;
         return $this;
     }
 
-    #[Override]
-    public function getColony(): ColonyInterface
+    public function getColony(): Colony
     {
         return $this->colony;
     }
 
-    #[Override]
-    public function setColony(ColonyInterface $colony): CrewTrainingInterface
+    public function setColony(Colony $colony): CrewTraining
     {
         $this->colony = $colony;
         return $this;

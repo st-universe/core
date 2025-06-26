@@ -10,7 +10,7 @@ use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Station\Lib\StationLoaderInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 
 final class ShowStationShiplist implements ViewControllerInterface
 {
@@ -35,7 +35,7 @@ final class ShowStationShiplist implements ViewControllerInterface
         );
 
         $shipList = $wrapper->get()->getDockedShips()
-            ->map(fn(ShipInterface $ship): ShipWrapperInterface => $this->spacecraftWrapperFactory->wrapShip($ship));
+            ->map(fn(Ship $ship): ShipWrapperInterface => $this->spacecraftWrapperFactory->wrapShip($ship));
 
         $game->setPageTitle(_('Angedockte Schiffe'));
         $game->setMacroInAjaxWindow('html/station/shipList.twig');

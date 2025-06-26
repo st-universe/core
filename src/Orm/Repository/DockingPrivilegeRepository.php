@@ -8,8 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Component\Station\Dock\DockTypeEnum;
 use Stu\Orm\Entity\DockingPrivilege;
-use Stu\Orm\Entity\DockingPrivilegeInterface;
-use Stu\Orm\Entity\StationInterface;
+use Stu\Orm\Entity\Station;
 
 /**
  * @extends EntityRepository<DockingPrivilege>
@@ -17,13 +16,13 @@ use Stu\Orm\Entity\StationInterface;
 final class DockingPrivilegeRepository extends EntityRepository implements DockingPrivilegeRepositoryInterface
 {
     #[Override]
-    public function prototype(): DockingPrivilegeInterface
+    public function prototype(): DockingPrivilege
     {
         return new DockingPrivilege();
     }
 
     #[Override]
-    public function save(DockingPrivilegeInterface $post): void
+    public function save(DockingPrivilege $post): void
     {
         $em = $this->getEntityManager();
 
@@ -31,7 +30,7 @@ final class DockingPrivilegeRepository extends EntityRepository implements Docki
     }
 
     #[Override]
-    public function delete(DockingPrivilegeInterface $post): void
+    public function delete(DockingPrivilege $post): void
     {
         $em = $this->getEntityManager();
 
@@ -40,7 +39,7 @@ final class DockingPrivilegeRepository extends EntityRepository implements Docki
     }
 
     #[Override]
-    public function existsForTargetAndTypeAndShip(int $targetId, DockTypeEnum $privilegeType, StationInterface $station): bool
+    public function existsForTargetAndTypeAndShip(int $targetId, DockTypeEnum $privilegeType, Station $station): bool
     {
         return $this->count([
             'station' => $station,
@@ -50,7 +49,7 @@ final class DockingPrivilegeRepository extends EntityRepository implements Docki
     }
 
     #[Override]
-    public function getByStation(StationInterface $station): array
+    public function getByStation(Station $station): array
     {
         return $this->findBy(
             ['station' => $station],

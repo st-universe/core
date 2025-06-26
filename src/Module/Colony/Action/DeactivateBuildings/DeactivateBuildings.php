@@ -13,7 +13,7 @@ use Stu\Module\Colony\Lib\BuildingMassActionConfigurationInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContextTypeEnum;
-use Stu\Orm\Entity\PlanetFieldInterface;
+use Stu\Orm\Entity\PlanetField;
 
 final class DeactivateBuildings implements ActionControllerInterface
 {
@@ -39,7 +39,7 @@ final class DeactivateBuildings implements ActionControllerInterface
             return;
         }
 
-        /** @var PlanetFieldInterface[] $fields */
+        /** @var PlanetField[] $fields */
         $fields = $config($host, $selection);
 
         foreach ($fields as $field) {

@@ -2,9 +2,9 @@
 
 namespace Stu\Module\Message\Lib;
 
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 interface SendWelcomeMessageInterface
 {
-    public function sendWelcomeMessage(UserInterface $user): void;
+    public function sendWelcomeMessage(User $user): void;
 }

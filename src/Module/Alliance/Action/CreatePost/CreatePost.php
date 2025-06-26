@@ -10,7 +10,7 @@ use Stu\Module\Alliance\View\NewPost\NewPost;
 use Stu\Module\Alliance\View\Topic\Topic;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\AllianceBoardTopicInterface;
+use Stu\Orm\Entity\AllianceBoardTopic;
 use Stu\Orm\Repository\AllianceBoardPostRepositoryInterface;
 use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
@@ -36,7 +36,7 @@ final class CreatePost implements ActionControllerInterface
             return;
         }
 
-        /** @var AllianceBoardTopicInterface $topic */
+        /** @var AllianceBoardTopic $topic */
         $topic = $this->allianceBoardTopicRepository->find($topicId);
         if ($topic === null || $topic->getAllianceId() !== $alliance->getId()) {
             throw new AccessViolationException();

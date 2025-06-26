@@ -7,8 +7,8 @@ namespace Stu\Component\Anomaly;
 use Override;
 use RuntimeException;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
-use Stu\Orm\Entity\AnomalyInterface;
-use Stu\Orm\Entity\LocationInterface;
+use Stu\Orm\Entity\Anomaly;
+use Stu\Orm\Entity\Location;
 use Stu\Orm\Repository\AnomalyRepositoryInterface;
 use Stu\Orm\Repository\AnomalyTypeRepositoryInterface;
 
@@ -22,10 +22,10 @@ final class AnomalyCreation implements AnomalyCreationInterface
     #[Override]
     public function create(
         AnomalyTypeEnum $type,
-        ?LocationInterface $location,
-        ?AnomalyInterface $parent = null,
+        ?Location $location,
+        ?Anomaly $parent = null,
         ?Object $dataObject = null
-    ): AnomalyInterface {
+    ): Anomaly {
 
         $anomalyType = $this->anomalyTypeRepository->find($type->value);
         if ($anomalyType === null) {

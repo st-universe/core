@@ -8,8 +8,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\User;
 use Stu\StuTestCase;
 
 class AlertStateBattlePartyTest extends StuTestCase
@@ -17,8 +17,8 @@ class AlertStateBattlePartyTest extends StuTestCase
     public function testGetActiveMembersExpectSingle(): void
     {
         $wrapper = $this->mock(ShipWrapperInterface::class);
-        $ship = $this->mock(ShipInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $ship = $this->mock(Ship::class);
+        $user = $this->mock(User::class);
 
         $wrapper->shouldReceive('getFleetWrapper')
             ->withNoArgs()
@@ -61,15 +61,15 @@ class AlertStateBattlePartyTest extends StuTestCase
     public function testGetActiveMembersExpectOnlyUncloakedAndUnwarpedWithSufficientAlertState(): void
     {
         $wrapperOk = $this->mock(ShipWrapperInterface::class);
-        $ship = $this->mock(ShipInterface::class);
+        $ship = $this->mock(Ship::class);
         $wrapperCloaked = $this->mock(ShipWrapperInterface::class);
-        $shipCloaked = $this->mock(ShipInterface::class);
+        $shipCloaked = $this->mock(Ship::class);
         $wrapperWarped = $this->mock(ShipWrapperInterface::class);
-        $shipWarped = $this->mock(ShipInterface::class);
+        $shipWarped = $this->mock(Ship::class);
         $wrapperLowAlert = $this->mock(ShipWrapperInterface::class);
-        $shipLowerAlert = $this->mock(ShipInterface::class);
+        $shipLowerAlert = $this->mock(Ship::class);
         $fleetWrapper = $this->mock(FleetWrapperInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
 
         $wrapperOk->shouldReceive('getFleetWrapper')
             ->withNoArgs()

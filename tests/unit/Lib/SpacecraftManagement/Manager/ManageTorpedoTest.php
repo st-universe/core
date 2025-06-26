@@ -12,11 +12,11 @@ use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
-use Stu\Orm\Entity\CommodityInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\StorageInterface;
-use Stu\Orm\Entity\TorpedoTypeInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Commodity;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Storage;
+use Stu\Orm\Entity\TorpedoType;
+use Stu\Orm\Entity\User;
 use Stu\StuTestCase;
 
 class ManageTorpedoTest extends StuTestCase
@@ -25,10 +25,10 @@ class ManageTorpedoTest extends StuTestCase
     private MockInterface&PrivateMessageSenderInterface $privateMessageSender;
 
     private MockInterface&ShipWrapperInterface $wrapper;
-    private MockInterface&ShipInterface $ship;
+    private MockInterface&Ship $ship;
     private MockInterface&ManagerProviderInterface $managerProvider;
-    private MockInterface&UserInterface $user;
-    private MockInterface&TorpedoTypeInterface $torpedoType;
+    private MockInterface&User $user;
+    private MockInterface&TorpedoType $torpedoType;
 
     private int $shipId = 555;
 
@@ -41,9 +41,9 @@ class ManageTorpedoTest extends StuTestCase
         $this->privateMessageSender = $this->mock(PrivateMessageSenderInterface::class);
 
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
-        $this->ship = $this->mock(ShipInterface::class);
-        $this->user = $this->mock(UserInterface::class);
-        $this->torpedoType = $this->mock(TorpedoTypeInterface::class);
+        $this->ship = $this->mock(Ship::class);
+        $this->user = $this->mock(User::class);
+        $this->torpedoType = $this->mock(TorpedoType::class);
         $this->managerProvider = $this->mock(ManagerProviderInterface::class);
 
         $this->subject = new ManageTorpedo(
@@ -133,7 +133,7 @@ class ManageTorpedoTest extends StuTestCase
 
     public function testManageExpectNoUnloadWhenForeignShip(): void
     {
-        $shipOwner = $this->mock(UserInterface::class);
+        $shipOwner = $this->mock(User::class);
         $values = ['torp' => ['555' => '5']];
 
         $this->wrapper->shouldReceive('get')
@@ -204,7 +204,7 @@ class ManageTorpedoTest extends StuTestCase
 
     public function testManageExpectUnloadWhenShipNotEmpty(): void
     {
-        $torpedoCommodity = $this->mock(CommodityInterface::class);
+        $torpedoCommodity = $this->mock(Commodity::class);
         $values = ['torp' => ['555' => '5']];
 
         $this->wrapper->shouldReceive('get')
@@ -386,8 +386,8 @@ class ManageTorpedoTest extends StuTestCase
 
     public function testManageExpectReloadWhenShipAlreadyHasTorpedo(): void
     {
-        $torpedoCommodity = $this->mock(CommodityInterface::class);
-        $providerStorage = $this->mock(StorageInterface::class);
+        $torpedoCommodity = $this->mock(Commodity::class);
+        $providerStorage = $this->mock(Storage::class);
         $values = ['torp' => ['555' => '5']];
 
         $this->wrapper->shouldReceive('get')
@@ -473,8 +473,8 @@ class ManageTorpedoTest extends StuTestCase
     public function testManageExpectLoadWhenShipIsEmpty(): void
     {
         $allPossibleTorpedoTypes = [1 => $this->torpedoType];
-        $torpedoCommodity = $this->mock(CommodityInterface::class);
-        $providerStorage = $this->mock(StorageInterface::class);
+        $torpedoCommodity = $this->mock(Commodity::class);
+        $providerStorage = $this->mock(Storage::class);
         $values = ['torp' => ['555' => '5'], 'torp_type' => ['555' => '1']];
 
         $this->wrapper->shouldReceive('get')

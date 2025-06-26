@@ -9,7 +9,7 @@ use Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\ConditionCheckResult;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Route\RouteModeEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
+use Stu\Orm\Entity\StarSystemMap;
 
 class EnoughWarpdriveCondition implements PreFlightConditionInterface
 {
@@ -25,7 +25,7 @@ class EnoughWarpdriveCondition implements PreFlightConditionInterface
             return;
         }
 
-        if ($flightRoute->getNextWaypoint() instanceof StarSystemMapInterface) {
+        if ($flightRoute->getNextWaypoint() instanceof StarSystemMap) {
             return;
         }
 

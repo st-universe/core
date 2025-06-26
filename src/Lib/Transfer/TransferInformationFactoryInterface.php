@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Transfer;
 
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 interface TransferInformationFactoryInterface
 {
@@ -15,7 +15,7 @@ interface TransferInformationFactoryInterface
         TransferEntityTypeEnum $targetType,
         TransferTypeEnum $currentType,
         bool $isUnload,
-        UserInterface $user,
+        User $user,
         bool $checkForEntityLock
     ): TransferInformation;
 }

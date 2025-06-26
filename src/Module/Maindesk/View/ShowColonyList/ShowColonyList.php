@@ -12,7 +12,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Control\ViewWithTutorialInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Colony;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class ShowColonyList implements ViewControllerInterface, ViewWithTutorialInterface
@@ -51,8 +51,8 @@ final class ShowColonyList implements ViewControllerInterface, ViewWithTutorialI
     }
 
     /**
-     * @param array<ColonyInterface> $planets
-     * @return array<int, array{layer_name: string, layer_description: string|null, regions: array<int, array{region_name: string, planets: array<ColonyInterface>}>}>
+     * @param array<Colony> $planets
+     * @return array<int, array{layer_name: string, layer_description: string|null, regions: array<int, array{region_name: string, planets: array<Colony>}>}>
      */
     private function groupPlanetsByLayerAndRegion(array $planets): array
     {

@@ -2,12 +2,12 @@
 
 namespace Stu\Module\Colony\Lib;
 
-use Stu\Orm\Entity\PlanetFieldInterface;
+use Stu\Orm\Entity\PlanetField;
 
 interface ColonySurfaceInterface
 {
     /**
-     * @return array<int, PlanetFieldInterface>
+     * @return array<int, PlanetField>
      */
     public function getSurface(): array;
 

@@ -6,39 +6,38 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\RpgPlotArchiv;
-use Stu\Orm\Entity\RpgPlotArchivInterface;
 
 /**
  * @extends ObjectRepository<RpgPlotArchiv>
  *
- * @method null|RpgPlotArchivInterface find(integer $id)
- * @method RpgPlotArchivInterface[] findAll()
+ * @method null|RpgPlotArchiv find(integer $id)
+ * @method RpgPlotArchiv[] findAll()
  */
 interface RpgPlotArchivRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return array<RpgPlotArchivInterface>
+     * @return array<RpgPlotArchiv>
      */
     public function getByFoundingUser(int $userId): array;
 
-    public function prototype(): RpgPlotArchivInterface;
+    public function prototype(): RpgPlotArchiv;
 
-    public function save(RpgPlotArchivInterface $rpgPlot): void;
+    public function save(RpgPlotArchiv $rpgPlot): void;
 
-    public function delete(RpgPlotArchivInterface $rpgPlot): void;
+    public function delete(RpgPlotArchiv $rpgPlot): void;
 
     /**
-     * @return array<RpgPlotArchivInterface>
+     * @return array<RpgPlotArchiv>
      */
     public function getActiveByUser(int $userId): array;
 
     /**
-     * @return array<RpgPlotArchivInterface>
+     * @return array<RpgPlotArchiv>
      */
     public function getEmptyOldPlots(int $maxAge): array;
 
     /**
-     * @return array<RpgPlotArchivInterface>
+     * @return array<RpgPlotArchiv>
      */
     public function getOrderedList(): array;
 

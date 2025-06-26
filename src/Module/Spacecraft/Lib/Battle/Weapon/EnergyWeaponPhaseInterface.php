@@ -9,7 +9,7 @@ use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Provider\EnergyAttackerInterface;
 use Stu\Module\Spacecraft\Lib\Battle\SpacecraftAttackCauseEnum;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
-use Stu\Orm\Entity\PlanetFieldInterface;
+use Stu\Orm\Entity\PlanetField;
 
 interface EnergyWeaponPhaseInterface
 {
@@ -22,7 +22,7 @@ interface EnergyWeaponPhaseInterface
 
     public function fireAtBuilding(
         EnergyAttackerInterface $attacker,
-        PlanetFieldInterface $target,
+        PlanetField $target,
         bool $isOrbitField
     ): InformationWrapper;
 }

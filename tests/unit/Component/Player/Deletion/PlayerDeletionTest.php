@@ -14,7 +14,7 @@ use Stu\Module\Control\StuTime;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -57,8 +57,8 @@ class PlayerDeletionTest extends StuTestCase
 
     public function testHandleDeleteableRemovesIdleAndMarkedPlayers(): void
     {
-        $idlePlayer = $this->mock(UserInterface::class);
-        $player = $this->mock(UserInterface::class);
+        $idlePlayer = $this->mock(User::class);
+        $player = $this->mock(User::class);
 
         $this->stuTime->shouldReceive('time')
             ->withNoArgs()
@@ -132,7 +132,7 @@ class PlayerDeletionTest extends StuTestCase
 
     public function testHandleResetRemovesAllActualPlayer(): void
     {
-        $player = $this->mock(UserInterface::class);
+        $player = $this->mock(User::class);
 
         $this->userRepository->shouldReceive('getNonNpcList')
             ->withNoArgs()

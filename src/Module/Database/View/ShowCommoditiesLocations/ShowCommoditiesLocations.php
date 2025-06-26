@@ -9,7 +9,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\Lib\DatabaseUiFactoryInterface;
 use Stu\Module\Database\Lib\StorageWrapper;
-use Stu\Orm\Entity\StorageInterface;
+use Stu\Orm\Entity\Storage;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 
 /**
@@ -59,7 +59,7 @@ final class ShowCommoditiesLocations implements ViewControllerInterface
         $game->setTemplateVar(
             'POST_LOCATIONS',
             array_map(
-                fn(StorageInterface $storage): StorageWrapper => $this->databaseUiFactory->createStorageWrapper(
+                fn(Storage $storage): StorageWrapper => $this->databaseUiFactory->createStorageWrapper(
                     $storage->getCommodityId(),
                     $storage->getAmount(),
                     $storage->getTradePost()->getId()

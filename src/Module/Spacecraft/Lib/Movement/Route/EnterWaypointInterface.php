@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Movement\Route;
 
-use Stu\Orm\Entity\LocationInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\WormholeEntryInterface;
+use Stu\Orm\Entity\Location;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\WormholeEntry;
 
 interface EnterWaypointInterface
 {
     public function enterNextWaypoint(
-        ?SpacecraftInterface $spacecraft,
+        ?Spacecraft $spacecraft,
         bool $isTraversing,
-        LocationInterface $waypoint,
-        ?WormholeEntryInterface $wormholeEntry
+        Location $waypoint,
+        ?WormholeEntry $wormholeEntry
     ): void;
 }

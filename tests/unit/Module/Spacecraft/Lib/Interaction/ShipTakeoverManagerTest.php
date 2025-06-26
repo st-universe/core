@@ -16,14 +16,14 @@ use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
-use Stu\Orm\Entity\BuildplanModuleInterface;
-use Stu\Orm\Entity\FleetInterface;
-use Stu\Orm\Entity\SpacecraftBuildplanInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\ShipTakeoverInterface;
-use Stu\Orm\Entity\StorageInterface;
-use Stu\Orm\Entity\TorpedoStorageInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\BuildplanModule;
+use Stu\Orm\Entity\Fleet;
+use Stu\Orm\Entity\SpacecraftBuildplan;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\ShipTakeover;
+use Stu\Orm\Entity\Storage;
+use Stu\Orm\Entity\TorpedoStorage;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ShipTakeoverRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
@@ -40,8 +40,8 @@ class ShipTakeoverManagerTest extends StuTestCase
     private MockInterface&PrivateMessageSenderInterface $privateMessageSender;
     private MockInterface&GameControllerInterface $game;
 
-    private MockInterface&ShipInterface $ship;
-    private MockInterface&ShipInterface $target;
+    private MockInterface&Ship $ship;
+    private MockInterface&Ship $target;
 
     private ShipTakeoverManagerInterface $subject;
 
@@ -59,8 +59,8 @@ class ShipTakeoverManagerTest extends StuTestCase
         $this->game = $this->mock(GameControllerInterface::class);
 
         //params
-        $this->ship = $this->mock(ShipInterface::class);
-        $this->target = $this->mock(ShipInterface::class);
+        $this->ship = $this->mock(Ship::class);
+        $this->target = $this->mock(Ship::class);
 
         $this->subject = new ShipTakeoverManager(
             $this->shipTakeoverRepository,
@@ -88,9 +88,9 @@ class ShipTakeoverManagerTest extends StuTestCase
 
     public function testGetPrestigeForBoardingAttemptExpectCostBasedOnModules(): void
     {
-        $buildplan = $this->mock(SpacecraftBuildplanInterface::class);
-        $buildplanModule1 = $this->mock(BuildplanModuleInterface::class);
-        $buildplanModule2 = $this->mock(BuildplanModuleInterface::class);
+        $buildplan = $this->mock(SpacecraftBuildplan::class);
+        $buildplanModule1 = $this->mock(BuildplanModule::class);
+        $buildplanModule2 = $this->mock(BuildplanModule::class);
 
         $this->target->shouldReceive('getBuildplan')
             ->withNoArgs()
@@ -127,9 +127,9 @@ class ShipTakeoverManagerTest extends StuTestCase
     #[DataProvider('startTakeoverTestData')]
     public function testStartTakeover(bool $isTargetInFleet, string $expectedMessage): void
     {
-        $takeover = $this->mock(ShipTakeoverInterface::class);
-        $user = $this->mock(UserInterface::class);
-        $targetUser = $this->mock(UserInterface::class);
+        $takeover = $this->mock(ShipTakeover::class);
+        $user = $this->mock(User::class);
+        $targetUser = $this->mock(User::class);
 
         $currentTurn = 42;
 
@@ -177,7 +177,7 @@ class ShipTakeoverManagerTest extends StuTestCase
             ->andReturn(77);
         $this->target->shouldReceive('getFleet')
             ->withNoArgs()
-            ->andReturn($isTargetInFleet ? $this->mock(FleetInterface::class) : null);
+            ->andReturn($isTargetInFleet ? $this->mock(Fleet::class) : null);
         $targetUser->shouldReceive('getName')
             ->withNoArgs()
             ->andReturn('TARGETUSER');
@@ -235,7 +235,7 @@ class ShipTakeoverManagerTest extends StuTestCase
 
     public function testIsTakeoverReadyExpectTrueWhenReady(): void
     {
-        $takeover = $this->mock(ShipTakeoverInterface::class);
+        $takeover = $this->mock(ShipTakeover::class);
 
         $takeover->shouldReceive('getStartTurn')
             ->withNoArgs()
@@ -254,7 +254,7 @@ class ShipTakeoverManagerTest extends StuTestCase
 
     public function testIsTakeoverReadyExpectFalseWhenNotFinished(): void
     {
-        $takeover = $this->mock(ShipTakeoverInterface::class);
+        $takeover = $this->mock(ShipTakeover::class);
 
         $takeover->shouldReceive('getStartTurn')
             ->withNoArgs()
@@ -324,7 +324,7 @@ class ShipTakeoverManagerTest extends StuTestCase
 
     public function testCancelTakeoverExpectNothingWhenTargetIsTractoredBySource(): void
     {
-        $takeover = $this->mock(ShipTakeoverInterface::class);
+        $takeover = $this->mock(ShipTakeover::class);
 
         $takeover->shouldReceive('getSourceSpacecraft')
             ->withNoArgs()
@@ -344,9 +344,9 @@ class ShipTakeoverManagerTest extends StuTestCase
 
     public function testCancelTakeoverExpectCancelWhenTargetTractoredByOtherShip(): void
     {
-        $takeover = $this->mock(ShipTakeoverInterface::class);
-        $user = $this->mock(UserInterface::class);
-        $targetUser = $this->mock(UserInterface::class);
+        $takeover = $this->mock(ShipTakeover::class);
+        $user = $this->mock(User::class);
+        $targetUser = $this->mock(User::class);
 
         $takeover->shouldReceive('getSourceSpacecraft')
             ->withNoArgs()
@@ -393,7 +393,7 @@ class ShipTakeoverManagerTest extends StuTestCase
             ->with(null);
         $this->target->shouldReceive('getTractoringSpacecraft')
             ->withNoArgs()
-            ->andReturn($this->mock(ShipInterface::class));
+            ->andReturn($this->mock(Ship::class));
         $targetUser->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn(777);
@@ -441,9 +441,9 @@ class ShipTakeoverManagerTest extends StuTestCase
 
     public function testCancelTakeoverExpectCancelWhenTargetNotTractored(): void
     {
-        $takeover = $this->mock(ShipTakeoverInterface::class);
-        $user = $this->mock(UserInterface::class);
-        $targetUser = $this->mock(UserInterface::class);
+        $takeover = $this->mock(ShipTakeover::class);
+        $user = $this->mock(User::class);
+        $targetUser = $this->mock(User::class);
 
         $takeover->shouldReceive('getSourceSpacecraft')
             ->withNoArgs()
@@ -544,13 +544,13 @@ class ShipTakeoverManagerTest extends StuTestCase
 
     public function testFinishTakeover(): void
     {
-        $takeover = $this->mock(ShipTakeoverInterface::class);
-        $user = $this->mock(UserInterface::class);
-        $targetUser = $this->mock(UserInterface::class);
-        $storage = $this->mock(StorageInterface::class);
-        $storage2 = $this->mock(StorageInterface::class);
-        $torpedoStorage = $this->mock(TorpedoStorageInterface::class);
-        $boundStorage = $this->mock(StorageInterface::class);
+        $takeover = $this->mock(ShipTakeover::class);
+        $user = $this->mock(User::class);
+        $targetUser = $this->mock(User::class);
+        $storage = $this->mock(Storage::class);
+        $storage2 = $this->mock(Storage::class);
+        $torpedoStorage = $this->mock(TorpedoStorage::class);
+        $boundStorage = $this->mock(Storage::class);
 
         $takeover->shouldReceive('getSourceSpacecraft')
             ->withNoArgs()

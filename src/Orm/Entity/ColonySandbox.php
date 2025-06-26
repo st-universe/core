@@ -15,7 +15,6 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Lib\Colony\PlanetFieldHostTypeEnum;
@@ -24,7 +23,7 @@ use Stu\Orm\Repository\ColonySandboxRepository;
 
 #[Table(name: 'stu_colony_sandbox')]
 #[Entity(repositoryClass: ColonySandboxRepository::class)]
-class ColonySandbox implements ColonySandboxInterface, PlanetFieldHostInterface
+class ColonySandbox implements PlanetFieldHostInterface
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -53,7 +52,7 @@ class ColonySandbox implements ColonySandboxInterface, PlanetFieldHostInterface
     private ?string $mask = null;
 
     /**
-     * @var ArrayCollection<int, PlanetFieldInterface>
+     * @var ArrayCollection<int, PlanetField>
      */
     #[OneToMany(targetEntity: PlanetField::class, mappedBy: 'sandbox', indexBy: 'field_id', fetch: 'EXTRA_LAZY')]
     #[OrderBy(['field_id' => 'ASC'])]
@@ -61,166 +60,141 @@ class ColonySandbox implements ColonySandboxInterface, PlanetFieldHostInterface
 
     #[ManyToOne(targetEntity: Colony::class)]
     #[JoinColumn(name: 'colony_id', nullable: false, referencedColumnName: 'id')]
-    private ColonyInterface $colony;
+    private Colony $colony;
 
     public function __construct()
     {
         $this->planetFields = new ArrayCollection();
     }
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->getColony()->getUser();
     }
 
-    #[Override]
-    public function getColony(): ColonyInterface
+    public function getColony(): Colony
     {
         return $this->colony;
     }
 
-    #[Override]
-    public function setColony(ColonyInterface $colony): ColonySandboxInterface
+    public function setColony(Colony $colony): ColonySandbox
     {
         $this->colony = $colony;
 
         return $this;
     }
 
-    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
-    #[Override]
-    public function setName(string $name): ColonySandboxInterface
+    public function setName(string $name): ColonySandbox
     {
         $this->name = $name;
         return $this;
     }
 
-    #[Override]
     public function getWorkers(): int
     {
         return $this->bev_work;
     }
 
-    #[Override]
-    public function setWorkers(int $bev_work): ColonySandboxInterface
+    public function setWorkers(int $bev_work): ColonySandbox
     {
         $this->bev_work = $bev_work;
         return $this;
     }
 
-    #[Override]
     public function getMaxBev(): int
     {
         return $this->bev_max;
     }
 
-    #[Override]
-    public function setMaxBev(int $bev_max): ColonySandboxInterface
+    public function setMaxBev(int $bev_max): ColonySandbox
     {
         $this->bev_max = $bev_max;
         return $this;
     }
 
-    #[Override]
     public function getPopulation(): int
     {
         return $this->getMaxBev();
     }
 
-    #[Override]
     public function getMaxEps(): int
     {
         return $this->max_eps;
     }
 
-    #[Override]
-    public function setMaxEps(int $max_eps): ColonySandboxInterface
+    public function setMaxEps(int $max_eps): ColonySandbox
     {
         $this->max_eps = $max_eps;
         return $this;
     }
 
-    #[Override]
     public function getMaxStorage(): int
     {
         return $this->max_storage;
     }
 
-    #[Override]
-    public function setMaxStorage(int $max_storage): ColonySandboxInterface
+    public function setMaxStorage(int $max_storage): ColonySandbox
     {
         $this->max_storage = $max_storage;
         return $this;
     }
 
-    #[Override]
     public function getMask(): ?string
     {
         return $this->mask;
     }
 
-    #[Override]
-    public function setMask(?string $mask): ColonySandboxInterface
+    public function setMask(?string $mask): ColonySandbox
     {
         $this->mask = $mask;
         return $this;
     }
 
-    #[Override]
     public function getPlanetFields(): Collection
     {
         return $this->planetFields;
     }
 
-    #[Override]
     public function getTwilightZone(int $timestamp): int
     {
         return $this->getColony()->getTwilightZone($timestamp);
     }
 
-    #[Override]
     public function getSurfaceWidth(): int
     {
         return $this->getColony()->getSurfaceWidth();
     }
 
-    #[Override]
-    public function getColonyClass(): ColonyClassInterface
+    public function getColonyClass(): ColonyClass
     {
         return $this->getColony()->getColonyClass();
     }
 
-    #[Override]
     public function isColony(): bool
     {
         return false;
     }
 
-    #[Override]
     public function getHostType(): PlanetFieldHostTypeEnum
     {
         return PlanetFieldHostTypeEnum::SANDBOX;
     }
 
-    #[Override]
     public function getDefaultViewIdentifier(): string
     {
         return ShowColonySandbox::VIEW_IDENTIFIER;
     }
 
-    #[Override]
     public function isMenuAllowed(ColonyMenuEnum $menu): bool
     {
         return in_array($menu, [
@@ -232,7 +206,6 @@ class ColonySandbox implements ColonySandboxInterface, PlanetFieldHostInterface
         ]);
     }
 
-    #[Override]
     public function getComponentParameters(): string
     {
         return sprintf(

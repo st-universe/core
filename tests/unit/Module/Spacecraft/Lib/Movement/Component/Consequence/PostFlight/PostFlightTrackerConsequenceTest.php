@@ -13,7 +13,7 @@ use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\FlightConsequenceIn
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Route\RouteModeEnum;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 use Stu\StuTestCase;
 
 class PostFlightTrackerConsequenceTest extends StuTestCase
@@ -23,7 +23,7 @@ class PostFlightTrackerConsequenceTest extends StuTestCase
 
     private FlightConsequenceInterface $subject;
 
-    private MockInterface&ShipInterface $ship;
+    private MockInterface&Ship $ship;
 
     private MockInterface&ShipWrapperInterface $wrapper;
 
@@ -35,7 +35,7 @@ class PostFlightTrackerConsequenceTest extends StuTestCase
         $this->trackerDeviceManager = $this->mock(TrackerDeviceManagerInterface::class);
         $this->spacecraftSystemManager = $this->mock(SpacecraftSystemManagerInterface::class);
 
-        $this->ship = $this->mock(ShipInterface::class);
+        $this->ship = $this->mock(Ship::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
         $this->flightRoute = $this->mock(FlightRouteInterface::class);
 

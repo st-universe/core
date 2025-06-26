@@ -7,9 +7,9 @@ namespace Stu\Lib\Map;
 use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use RuntimeException;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\StarSystemInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\StarSystem;
 use Stu\StuTestCase;
 
 class DistanceCalculationTest extends StuTestCase
@@ -148,9 +148,9 @@ class DistanceCalculationTest extends StuTestCase
     private function mockStarSystem(
         ?int $x,
         ?int $y
-    ): ?StarSystemInterface {
+    ): ?StarSystem {
         if ($x !== null && $y !== null) {
-            $system = $this->mock(StarSystemInterface::class);
+            $system = $this->mock(StarSystem::class);
 
             $system->shouldReceive('getCx')
                 ->withNoArgs()
@@ -176,11 +176,11 @@ class DistanceCalculationTest extends StuTestCase
     }
 
     private function mockShipCoordinates(
-        ?StarSystemInterface $system,
+        ?StarSystem $system,
         int $shipPosX,
         int $shipPosY
-    ): ShipInterface {
-        $ship = $this->mock(ShipInterface::class);
+    ): Ship {
+        $ship = $this->mock(Ship::class);
 
         $ship->shouldReceive('getSystem')
             ->withNoArgs()
@@ -196,11 +196,11 @@ class DistanceCalculationTest extends StuTestCase
     }
 
     private function mockColonyCoordinates(
-        StarSystemInterface $system,
+        StarSystem $system,
         int $x,
         int $y
-    ): ColonyInterface {
-        $colony = $this->mock(ColonyInterface::class);
+    ): Colony {
+        $colony = $this->mock(Colony::class);
 
         $colony->shouldReceive('getSystem')
             ->withNoArgs()

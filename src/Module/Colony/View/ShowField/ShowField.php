@@ -13,10 +13,10 @@ use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Template\StatusBarColorEnum;
 use Stu\Module\Template\StatusBarFactoryInterface;
-use Stu\Orm\Entity\BuildingInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\ColonyShipRepairInterface;
-use Stu\Orm\Entity\PlanetFieldInterface;
+use Stu\Orm\Entity\Building;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\ColonyShipRepair;
+use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Repository\BuildingUpgradeRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
@@ -65,13 +65,13 @@ final class ShowField implements ViewControllerInterface
             $upgradeOptions = [];
         }
 
-        if ($host instanceof ColonyInterface) {
+        if ($host instanceof Colony) {
             $game->setTemplateVar('COLONY', $host);
             $game->setTemplateVar('SHIP_BUILD_PROGRESS', $this->colonyShipQueueRepository->getByColonyAndMode($host->getId(), 1));
             $game->setTemplateVar('SHIP_RETROFIT_PROGRESS', $this->colonyShipQueueRepository->getByColonyAndMode($host->getId(), 2));
 
             $shipRepairProgress = array_map(
-                fn(ColonyShipRepairInterface $repair): ShipWrapperInterface => $this->spacecraftWrapperFactory->wrapShip($repair->getShip()),
+                fn(ColonyShipRepair $repair): ShipWrapperInterface => $this->spacecraftWrapperFactory->wrapShip($repair->getShip()),
                 $this->colonyShipRepairRepository->getByColonyField(
                     $host->getId(),
                     $field->getFieldId()
@@ -140,7 +140,7 @@ final class ShowField implements ViewControllerInterface
         );
     }
 
-    private function getConstructionStatusBar(PlanetFieldInterface $field, BuildingInterface $building): string
+    private function getConstructionStatusBar(PlanetField $field, Building $building): string
     {
         return $this->statusBarFactory
             ->createStatusBar()

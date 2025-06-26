@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Component\Game\TimeConstants;
 use Stu\Orm\Entity\TradeTransfer;
-use Stu\Orm\Entity\TradeTransferInterface;
 
 /**
  * @extends EntityRepository<TradeTransfer>
@@ -16,13 +15,13 @@ use Stu\Orm\Entity\TradeTransferInterface;
 final class TradeTransferRepository extends EntityRepository implements TradeTransferRepositoryInterface
 {
     #[Override]
-    public function prototype(): TradeTransferInterface
+    public function prototype(): TradeTransfer
     {
         return new TradeTransfer();
     }
 
     #[Override]
-    public function save(TradeTransferInterface $tradeTransfer): void
+    public function save(TradeTransfer $tradeTransfer): void
     {
         $em = $this->getEntityManager();
 

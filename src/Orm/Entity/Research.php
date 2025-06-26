@@ -11,13 +11,12 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Component\Colony\ColonyTypeEnum;
 use Stu\Orm\Repository\ResearchRepository;
 
 #[Table(name: 'stu_research')]
 #[Entity(repositoryClass: ResearchRepository::class)]
-class Research implements ResearchInterface
+class Research
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -65,158 +64,142 @@ class Research implements ResearchInterface
 
     #[ManyToOne(targetEntity: Commodity::class)]
     #[JoinColumn(name: 'commodity_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private CommodityInterface $commodity;
+    private Commodity $commodity;
 
     #[ManyToOne(targetEntity: SpacecraftBuildplan::class)]
     #[JoinColumn(name: 'reward_buildplan_id', referencedColumnName: 'id')]
-    private ?SpacecraftBuildplanInterface $rewardBuildplan = null;
+    private ?SpacecraftBuildplan $rewardBuildplan = null;
 
     #[ManyToOne(targetEntity: Award::class)]
     #[JoinColumn(name: 'award_id', referencedColumnName: 'id')]
-    private ?AwardInterface $award = null;
+    private ?Award $award = null;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
-    #[Override]
-    public function setName(string $name): ResearchInterface
+    public function setName(string $name): Research
     {
         $this->name = $name;
 
         return $this;
     }
 
-    #[Override]
     public function getDescription(): string
     {
         return $this->description;
     }
 
-    #[Override]
-    public function setDescription(string $description): ResearchInterface
+    public function setDescription(string $description): Research
     {
         $this->description = $description;
 
         return $this;
     }
 
-    #[Override]
     public function getSort(): int
     {
         return $this->sort;
     }
 
-    #[Override]
-    public function setSort(int $sort): ResearchInterface
+    public function setSort(int $sort): Research
     {
         $this->sort = $sort;
 
         return $this;
     }
 
-    #[Override]
     public function getRumpId(): int
     {
         return $this->rump_id;
     }
 
-    #[Override]
+    /**
+     * @return array<int>
+     */
     public function getDatabaseEntryIds(): array
     {
         return $this->database_entries;
     }
 
-    #[Override]
-    public function setDatabaseEntryIds(array $databaseEntryIds): ResearchInterface
+    /**
+     * @param array<int> $databaseEntryIds
+     */
+    public function setDatabaseEntryIds(array $databaseEntryIds): Research
     {
         $this->database_entries = $databaseEntryIds;
 
         return $this;
     }
 
-    #[Override]
     public function getPoints(): int
     {
         return $this->points;
     }
 
-    #[Override]
-    public function setPoints(int $points): ResearchInterface
+    public function setPoints(int $points): Research
     {
         $this->points = $points;
 
         return $this;
     }
 
-    #[Override]
     public function getCommodityId(): int
     {
         return $this->commodity_id;
     }
 
-    #[Override]
-    public function setCommodityId(int $commodityId): ResearchInterface
+    public function setCommodityId(int $commodityId): Research
     {
         $this->commodity_id = $commodityId;
 
         return $this;
     }
 
-    #[Override]
     public function getUpperPlanetLimit(): int
     {
         return $this->upper_limit_colony_type === ColonyTypeEnum::COLONY_TYPE_PLANET
             && $this->upper_limit_colony_amount !== null ? $this->upper_limit_colony_amount : 0;
     }
 
-    #[Override]
     public function getUpperMoonLimit(): int
     {
         return $this->upper_limit_colony_type === ColonyTypeEnum::COLONY_TYPE_MOON
             && $this->upper_limit_colony_amount !== null ? $this->upper_limit_colony_amount : 0;
     }
 
-    #[Override]
     public function getUpperAsteroidLimit(): int
     {
         return $this->upper_limit_colony_type === ColonyTypeEnum::COLONY_TYPE_ASTEROID
             && $this->upper_limit_colony_amount !== null ? $this->upper_limit_colony_amount : 0;
     }
 
-    #[Override]
     public function getRewardBuildplanId(): ?int
     {
         return $this->reward_buildplan_id;
     }
 
-    #[Override]
-    public function getCommodity(): CommodityInterface
+    public function getCommodity(): Commodity
     {
         return $this->commodity;
     }
 
-    #[Override]
-    public function getRewardBuildplan(): ?SpacecraftBuildplanInterface
+    public function getRewardBuildplan(): ?SpacecraftBuildplan
     {
         return $this->rewardBuildplan;
     }
 
-    #[Override]
-    public function getAward(): ?AwardInterface
+    public function getAward(): ?Award
     {
         return $this->award;
     }
 
-    #[Override]
     public function getNeededAwardId(): ?int
     {
         return $this->needed_award;

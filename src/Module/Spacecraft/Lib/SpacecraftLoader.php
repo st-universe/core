@@ -19,7 +19,7 @@ use Stu\Module\Spacecraft\Lib\SourceAndTargetWrappers;
 use Stu\Module\Spacecraft\Lib\SourceAndTargetWrappersInterface;
 use Stu\Module\Tick\Lock\LockManagerInterface;
 use Stu\Module\Tick\Lock\LockTypeEnum;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
@@ -43,7 +43,7 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
         int $userId,
         bool $allowUplink = false,
         bool $checkForEntityLock = true
-    ): SpacecraftInterface {
+    ): Spacecraft {
 
         return $this->getByIdAndUserAndTargetIntern(
             $spacecraftId,
@@ -120,7 +120,7 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
         }
     }
 
-    private function checkviolations(SpacecraftInterface $spacecraft, int $userId, bool $allowUplink): void
+    private function checkviolations(Spacecraft $spacecraft, int $userId, bool $allowUplink): void
     {
         if ($spacecraft->getUser()->getId() !== $userId) {
             if ($this->crewAssignmentRepository->hasCrewmanOfUser($spacecraft, $userId)) {
@@ -155,7 +155,7 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
     }
 
     #[Override]
-    public function save(SpacecraftInterface $spacecraft): void
+    public function save(Spacecraft $spacecraft): void
     {
         $this->spacecraftRepository->save($spacecraft);
     }
@@ -163,7 +163,7 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
     /**
      * @return SourceAndTargetWrappersInterface<SpacecraftWrapperInterface>
      */
-    private function acquireSemaphores(SpacecraftInterface $spacecraft, ?int $targetId): SourceAndTargetWrappersInterface
+    private function acquireSemaphores(Spacecraft $spacecraft, ?int $targetId): SourceAndTargetWrappersInterface
     {
         if ($targetId === null && $this->game->isSemaphoreAlreadyAcquired($spacecraft->getUser()->getId())) {
             return new SourceAndTargetWrappers($this->spacecraftWrapperFactory->wrapSpacecraft($spacecraft));
@@ -189,7 +189,7 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
         return $result;
     }
 
-    private function acquireSemaphoreForSpacecraft(?SpacecraftInterface $spacecraft, ?int $spacecraftId): ?SpacecraftWrapperInterface
+    private function acquireSemaphoreForSpacecraft(?Spacecraft $spacecraft, ?int $spacecraftId): ?SpacecraftWrapperInterface
     {
         if ($spacecraft === null && $spacecraftId === null) {
             return null;

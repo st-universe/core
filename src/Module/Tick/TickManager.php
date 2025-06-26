@@ -7,7 +7,7 @@ use RuntimeException;
 use Stu\Component\Game\TimeConstants;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Orm\Entity\GameTurnInterface;
+use Stu\Orm\Entity\GameTurn;
 use Stu\Orm\Repository\GameTurnRepositoryInterface;
 use Stu\Orm\Repository\GameTurnStatsRepositoryInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
@@ -45,14 +45,14 @@ final class TickManager implements TickManagerInterface
         $this->createGameTurnStats($oldTurn, $newTurn);
     }
 
-    private function endTurn(GameTurnInterface $turn): void
+    private function endTurn(GameTurn $turn): void
     {
         $turn->setEnd(time());
 
         $this->gameTurnRepository->save($turn);
     }
 
-    private function startTurn(GameTurnInterface $oldTurn): GameTurnInterface
+    private function startTurn(GameTurn $oldTurn): GameTurn
     {
         $obj = $this->gameTurnRepository->prototype();
         $obj->setStart(time());
@@ -86,7 +86,7 @@ final class TickManager implements TickManagerInterface
         }
     }
 
-    private function createGameTurnStats(GameTurnInterface $oldTurn, GameTurnInterface $newTurn): void
+    private function createGameTurnStats(GameTurn $oldTurn, GameTurn $newTurn): void
     {
         $stats = $this->gameTurnStatsRepository->prototype();
 

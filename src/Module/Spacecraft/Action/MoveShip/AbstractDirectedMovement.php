@@ -17,7 +17,7 @@ use Stu\Module\Spacecraft\Lib\Movement\ShipMoverInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 
 abstract class AbstractDirectedMovement implements ActionControllerInterface
 {
@@ -91,7 +91,7 @@ abstract class AbstractDirectedMovement implements ActionControllerInterface
             return true;
         }
 
-        if ($spacecraft instanceof ShipInterface) {
+        if ($spacecraft instanceof Ship) {
 
             if ($spacecraft->isTractored()) {
                 $game->addInformation(_('Das Schiff wird von einem Traktorstrahl gehalten'));

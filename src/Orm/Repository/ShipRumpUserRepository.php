@@ -7,7 +7,6 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\ShipRumpUser;
-use Stu\Orm\Entity\ShipRumpUserInterface;
 
 /**
  * @extends EntityRepository<ShipRumpUser>
@@ -24,13 +23,13 @@ final class ShipRumpUserRepository extends EntityRepository implements ShipRumpU
     }
 
     #[Override]
-    public function prototype(): ShipRumpUserInterface
+    public function prototype(): ShipRumpUser
     {
         return new ShipRumpUser();
     }
 
     #[Override]
-    public function save(ShipRumpUserInterface $shipRumpUser): void
+    public function save(ShipRumpUser $shipRumpUser): void
     {
         $em = $this->getEntityManager();
 

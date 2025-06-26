@@ -9,14 +9,14 @@ use Override;
 use Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\ConditionCheckResult;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 use Stu\StuTestCase;
 
 class CrewConditionTest extends StuTestCase
 {
     private PreFlightConditionInterface $subject;
 
-    private MockInterface&ShipInterface $ship;
+    private MockInterface&Ship $ship;
 
     private MockInterface&ShipWrapperInterface $wrapper;
 
@@ -27,7 +27,7 @@ class CrewConditionTest extends StuTestCase
     #[Override]
     protected function setUp(): void
     {
-        $this->ship = $this->mock(ShipInterface::class);
+        $this->ship = $this->mock(Ship::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
         $this->flightRoute = $this->mock(FlightRouteInterface::class);
         $this->conditionCheckResult = $this->mock(ConditionCheckResult::class);

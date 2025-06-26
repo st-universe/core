@@ -8,8 +8,8 @@ use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftRemoverInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Ship;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -57,7 +57,7 @@ class EscapePodHandling implements ManagerComponentInterface
         }
     }
 
-    private function transferOwnCrewToColony(ShipInterface $escapePod, ColonyInterface $colony): int
+    private function transferOwnCrewToColony(Ship $escapePod, Colony $colony): int
     {
         $count = 0;
 

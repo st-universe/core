@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Movement\Route;
 
 use Doctrine\Common\Collections\Collection;
-use Stu\Orm\Entity\LocationInterface;
+use Stu\Orm\Entity\Location;
 
 interface LoadWaypointsInterface
 {
     /**
-     * @return Collection<int, LocationInterface>
+     * @return Collection<int, Location>
      */
     public function load(
-        LocationInterface $start,
-        LocationInterface $destination
+        Location $start,
+        Location $destination
     ): Collection;
 }

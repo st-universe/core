@@ -6,7 +6,7 @@ namespace Stu\Lib\Transfer;
 
 use Override;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 class TransferInformationFactory implements TransferInformationFactoryInterface
 {
@@ -23,7 +23,7 @@ class TransferInformationFactory implements TransferInformationFactoryInterface
         TransferEntityTypeEnum $targetType,
         TransferTypeEnum $currentType,
         bool $isUnload,
-        UserInterface $user,
+        User $user,
         bool $checkForEntityLock
     ): TransferInformation {
 

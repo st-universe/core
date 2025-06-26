@@ -14,13 +14,12 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\UniqueConstraint;
-use Override;
 use Stu\Orm\Repository\StarSystemMapRepository;
 
 #[Table(name: 'stu_sys_map')]
 #[UniqueConstraint(name: 'system_coordinates_idx', columns: ['sx', 'sy', 'systems_id'])]
 #[Entity(repositoryClass: StarSystemMapRepository::class)]
-class StarSystemMap extends Location implements StarSystemMapInterface
+class StarSystemMap extends Location
 {
     #[Column(type: 'smallint')]
     private int $sx = 0;
@@ -33,13 +32,13 @@ class StarSystemMap extends Location implements StarSystemMapInterface
 
     #[ManyToOne(targetEntity: StarSystem::class, inversedBy: 'fields')]
     #[JoinColumn(name: 'systems_id', nullable: false, referencedColumnName: 'id')]
-    private StarSystemInterface $starSystem;
+    private StarSystem $starSystem;
 
     #[OneToOne(targetEntity: Colony::class, mappedBy: 'starsystem_map')]
-    private ?ColonyInterface $colony = null;
+    private ?Colony $colony = null;
 
     /**
-     * @var ArrayCollection<int, WormholeEntryInterface>
+     * @var ArrayCollection<int, WormholeEntry>
      */
     #[OneToMany(targetEntity: WormholeEntry::class, mappedBy: 'systemMap')]
     private Collection $wormholeEntries;
@@ -50,109 +49,92 @@ class StarSystemMap extends Location implements StarSystemMapInterface
         $this->wormholeEntries = new ArrayCollection();
     }
 
-    #[Override]
-    public function getLayer(): ?LayerInterface
+    public function getLayer(): ?Layer
     {
         return $this->layer;
     }
 
-    #[Override]
     public function getSx(): int
     {
         return $this->sx;
     }
 
-    #[Override]
-    public function setSx(int $sx): StarSystemMapInterface
+    public function setSx(int $sx): StarSystemMap
     {
         $this->sx = $sx;
 
         return $this;
     }
 
-    #[Override]
     public function getX(): int
     {
         return $this->getSx();
     }
 
-    #[Override]
     public function getSy(): int
     {
         return $this->sy;
     }
 
-    #[Override]
-    public function setSy(int $sy): StarSystemMapInterface
+    public function setSy(int $sy): StarSystemMap
     {
         $this->sy = $sy;
 
         return $this;
     }
 
-    #[Override]
     public function getY(): int
     {
         return $this->getSy();
     }
 
-    #[Override]
     public function getSystemId(): int
     {
         return $this->systems_id;
     }
 
-    #[Override]
-    public function getSystem(): StarSystemInterface
+    public function getSystem(): StarSystem
     {
         return $this->starSystem;
     }
 
-    #[Override]
-    public function setSystem(StarSystemInterface $starSystem): StarSystemMapInterface
+    public function setSystem(StarSystem $starSystem): StarSystemMap
     {
         $this->starSystem = $starSystem;
 
         return $this;
     }
 
-    #[Override]
-    public function getColony(): ?ColonyInterface
+    public function getColony(): ?Colony
     {
         return $this->colony;
     }
 
-    #[Override]
-    public function getMapRegion(): ?MapRegionInterface
+    public function getMapRegion(): ?MapRegion
     {
         return null;
     }
 
-    #[Override]
-    public function getAdministratedRegion(): ?MapRegionInterface
+    public function getAdministratedRegion(): ?MapRegion
     {
         return null;
     }
 
-    #[Override]
-    public function getInfluenceArea(): ?StarSystemInterface
+    public function getInfluenceArea(): ?StarSystem
     {
         return null;
     }
 
-    #[Override]
     protected function getWormholeEntries(): Collection
     {
         return $this->wormholeEntries;
     }
 
-    #[Override]
     public function getFieldStyle(): string
     {
         return "background-image: url('/assets/map/" . $this->getFieldId() . ".png'); opacity:1;";
     }
 
-    #[Override]
     public function getSectorId(): ?int
     {
         $parentMap = $this->getSystem()->getMap();
@@ -163,7 +145,6 @@ class StarSystemMap extends Location implements StarSystemMapInterface
         return $parentMap->getSectorId();
     }
 
-    #[Override]
     public function getSectorString(): string
     {
         return sprintf(

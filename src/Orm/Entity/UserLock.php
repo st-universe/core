@@ -12,13 +12,12 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\UserLockRepository;
 
 #[Table(name: 'stu_user_lock')]
 #[Index(name: 'user_lock_user_idx', columns: ['user_id'])]
 #[Entity(repositoryClass: UserLockRepository::class)]
-class UserLock implements UserLockInterface
+class UserLock
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -39,68 +38,58 @@ class UserLock implements UserLockInterface
 
     #[OneToOne(targetEntity: User::class, inversedBy: 'userLock')]
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ?UserInterface $user = null;
+    private ?User $user = null;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
-    public function setUserId(?int $userId): UserLockInterface
+    public function setUserId(?int $userId): UserLock
     {
         $this->user_id = $userId;
         return $this;
     }
 
-    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    #[Override]
-    public function getUser(): ?UserInterface
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    #[Override]
-    public function setUser(?UserInterface $user): UserLockInterface
+    public function setUser(?User $user): UserLock
     {
         $this->user = $user;
         return $this;
     }
 
-    #[Override]
-    public function setFormerUserId(?int $userId): UserLockInterface
+    public function setFormerUserId(?int $userId): UserLock
     {
         $this->former_user_id = $userId;
         return $this;
     }
 
-    #[Override]
     public function getRemainingTicks(): int
     {
         return $this->remaining_ticks;
     }
 
-    #[Override]
-    public function setRemainingTicks(int $count): UserLockInterface
+    public function setRemainingTicks(int $count): UserLock
     {
         $this->remaining_ticks = $count;
         return $this;
     }
 
-    #[Override]
     public function getReason(): string
     {
         return $this->reason;
     }
 
-    #[Override]
-    public function setReason(string $reason): UserLockInterface
+    public function setReason(string $reason): UserLock
     {
         $this->reason = $reason;
 

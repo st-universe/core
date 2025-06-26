@@ -15,7 +15,7 @@ use Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\ConditionCheckResult;
 use Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\PreFlightConditionsCheckInterface;
 use Stu\Module\Spacecraft\Lib\Movement\FlightCompany;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\StuTestCase;
 
 class FlightCompanyTest extends StuTestCase
@@ -30,7 +30,7 @@ class FlightCompanyTest extends StuTestCase
 
     public function testGetLeader(): void
     {
-        $spacecraft = $this->mock(SpacecraftInterface::class);
+        $spacecraft = $this->mock(Spacecraft::class);
         $wrapper = $this->mock(SpacecraftWrapperInterface::class);
         $members = new ArrayCollection();
 
@@ -74,8 +74,8 @@ class FlightCompanyTest extends StuTestCase
 
     public function testGetActiveMembers(): void
     {
-        $spacecraft = $this->mock(SpacecraftInterface::class);
-        $destroyedSpacecraft = $this->mock(SpacecraftInterface::class);
+        $spacecraft = $this->mock(Spacecraft::class);
+        $destroyedSpacecraft = $this->mock(Spacecraft::class);
         $wrapper = $this->mock(SpacecraftWrapperInterface::class);
         $destroyedWrapper = $this->mock(SpacecraftWrapperInterface::class);
         $members = new ArrayCollection([1 => $wrapper, 2 => $destroyedWrapper]);
@@ -332,7 +332,7 @@ class FlightCompanyTest extends StuTestCase
     public function testIsFlightPossible(bool $isFlightPossible): void
     {
         $wrapper = $this->mock(SpacecraftWrapperInterface::class);
-        $spacecraft = $this->mock(SpacecraftInterface::class);
+        $spacecraft = $this->mock(Spacecraft::class);
         $blockedWrapper = $this->mock(SpacecraftWrapperInterface::class);
         $flightRoute = $this->mock(FlightRouteInterface::class);
         $conditionCheckResult = $this->mock(ConditionCheckResult::class);

@@ -15,10 +15,10 @@ use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Damage\SystemDamageInterface;
-use Stu\Orm\Entity\FleetInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\SpacecraftSystemInterface;
+use Stu\Orm\Entity\Fleet;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\SpacecraftSystem;
 use Stu\StuTestCase;
 
 class TractorMassPayloadUtilTest extends StuTestCase
@@ -28,8 +28,8 @@ class TractorMassPayloadUtilTest extends StuTestCase
     private MockInterface&StuRandom $stuRandom;
     private MockInterface&MessageFactoryInterface $messageFactory;
 
-    private MockInterface&ShipInterface $ship;
-    private MockInterface&ShipInterface $tractoredShip;
+    private MockInterface&Ship $ship;
+    private MockInterface&Ship $tractoredShip;
     private MockInterface&ShipWrapperInterface $wrapper;
     private MockInterface&InformationInterface $information;
 
@@ -46,8 +46,8 @@ class TractorMassPayloadUtilTest extends StuTestCase
 
         //PARAMS
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
-        $this->ship = $this->mock(ShipInterface::class);
-        $this->tractoredShip = $this->mock(ShipInterface::class);
+        $this->ship = $this->mock(Ship::class);
+        $this->tractoredShip = $this->mock(Ship::class);
         $this->information = $this->mock(InformationInterface::class);
 
         $this->wrapper->shouldReceive('get')
@@ -63,7 +63,7 @@ class TractorMassPayloadUtilTest extends StuTestCase
         ) extends TractorMassPayloadUtil {
 
             #[Override]
-            protected function getTractorPayload(SpacecraftInterface $spacecraft): int
+            protected function getTractorPayload(Spacecraft $spacecraft): int
             {
                 return $spacecraft->getRump()->getTractorPayload();
             }
@@ -73,12 +73,12 @@ class TractorMassPayloadUtilTest extends StuTestCase
 
     public function testTryToTowExpectReleaseWhenTargetInOtherFleetWithMoreThanOneShip(): void
     {
-        $tractoredShipFleet = $this->mock(FleetInterface::class);
+        $tractoredShipFleet = $this->mock(Fleet::class);
 
         $this->ship->shouldReceive('getFleet')
             ->withNoArgs()
             ->once()
-            ->andReturn($this->mock(FleetInterface::class));
+            ->andReturn($this->mock(Fleet::class));
 
         $this->tractoredShip->shouldReceive('getFleet')
             ->withNoArgs()
@@ -109,12 +109,12 @@ class TractorMassPayloadUtilTest extends StuTestCase
 
     public function testTryToTowExpectDeactivationWhenToHeavy(): void
     {
-        $tractoredShipFleet = $this->mock(FleetInterface::class);
+        $tractoredShipFleet = $this->mock(Fleet::class);
 
         $this->ship->shouldReceive('getFleet')
             ->withNoArgs()
             ->once()
-            ->andReturn($this->mock(FleetInterface::class));
+            ->andReturn($this->mock(Fleet::class));
         $this->ship->shouldReceive('getRump->getTractorPayload')
             ->withNoArgs()
             ->once()
@@ -157,7 +157,7 @@ class TractorMassPayloadUtilTest extends StuTestCase
 
     public function testTryToTowExpectSuccessWhenPotentEnough(): void
     {
-        $fleet = $this->mock(FleetInterface::class);
+        $fleet = $this->mock(Fleet::class);
 
         $this->ship->shouldReceive('getFleet')
             ->withNoArgs()
@@ -226,7 +226,7 @@ class TractorMassPayloadUtilTest extends StuTestCase
     public function teststressTractorSystemForTowingExpectTrueWhenOverTresholdAndStillHealthy(): void
     {
         $messages = $this->mock(MessageCollectionInterface::class);
-        $system = $this->mock(SpacecraftSystemInterface::class);
+        $system = $this->mock(SpacecraftSystem::class);
         $message = $this->mock(MessageInterface::class);
 
         $damage = 7;
@@ -288,7 +288,7 @@ class TractorMassPayloadUtilTest extends StuTestCase
     {
         $messages = $this->mock(MessageCollectionInterface::class);
         $message = $this->mock(MessageInterface::class);
-        $system = $this->mock(SpacecraftSystemInterface::class);
+        $system = $this->mock(SpacecraftSystem::class);
 
         $damage = 7;
 

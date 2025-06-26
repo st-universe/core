@@ -9,9 +9,9 @@ use Stu\Lib\Session\SessionStorageInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\Fleet\FleetNfsIterator;
 use Stu\Module\Spacecraft\Lib\SpacecraftNfsIterator;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\Orm\Repository\StationRepositoryInterface;
@@ -27,18 +27,18 @@ final class NbsUtility implements NbsUtilityInterface
     ) {}
 
     #[Override]
-    public function isTachyonActive(SpacecraftInterface $spacecraft): bool
+    public function isTachyonActive(Spacecraft $spacecraft): bool
     {
         return $this->tachyonScanRepository->isTachyonScanActiveByShipLocationAndOwner($spacecraft);
     }
 
     #[Override]
     public function setNbsTemplateVars(
-        SpacecraftInterface $spacecraft,
+        Spacecraft $spacecraft,
         GameControllerInterface $game,
         ?SessionStorageInterface $sessionStorage,
         bool $tachyonActive,
-        MapInterface|StarSystemMapInterface|null $field = null
+        Map|StarSystemMap|null $field = null
     ): void {
         if ($spacecraft->getNbs() || $field !== null) {
             $stationNbs = new SpacecraftNfsIterator($this->stationRepository->getStationScannerResults(
@@ -81,7 +81,7 @@ final class NbsUtility implements NbsUtilityInterface
         }
     }
 
-    private function showCloakedShipInfo(SpacecraftInterface $spacecraft, bool $tachyonActive): bool
+    private function showCloakedShipInfo(Spacecraft $spacecraft, bool $tachyonActive): bool
     {
         return !$tachyonActive
             && $spacecraft->getTachyonState()

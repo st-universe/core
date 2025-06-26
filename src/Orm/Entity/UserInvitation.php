@@ -11,14 +11,13 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\UserInvitationRepository;
 
 #[Table(name: 'stu_user_invitations')]
 #[Index(name: 'user_invitation_user_idx', columns: ['user_id'])]
 #[Index(name: 'user_invitation_token_idx', columns: ['token'])]
 #[Entity(repositoryClass: UserInvitationRepository::class)]
-class UserInvitation implements UserInvitationInterface
+class UserInvitation
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -37,68 +36,58 @@ class UserInvitation implements UserInvitationInterface
     #[Column(type: 'string')]
     private string $token = '';
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    #[Override]
-    public function setUserId(int $userId): UserInvitationInterface
+    public function setUserId(int $userId): UserInvitation
     {
         $this->user_id = $userId;
 
         return $this;
     }
 
-    #[Override]
     public function getInvitedUserId(): ?int
     {
         return $this->invited_user_id;
     }
 
-    #[Override]
-    public function setInvitedUserId(?int $userId): UserInvitationInterface
+    public function setInvitedUserId(?int $userId): UserInvitation
     {
         $this->invited_user_id = $userId;
 
         return $this;
     }
 
-    #[Override]
     public function getDate(): DateTimeInterface
     {
         return $this->date;
     }
 
-    #[Override]
-    public function setDate(DateTimeInterface $date): UserInvitationInterface
+    public function setDate(DateTimeInterface $date): UserInvitation
     {
         $this->date = $date;
 
         return $this;
     }
 
-    #[Override]
     public function getToken(): string
     {
         return $this->token;
     }
 
-    #[Override]
-    public function setToken(string $token): UserInvitationInterface
+    public function setToken(string $token): UserInvitation
     {
         $this->token = $token;
         return $this;
     }
 
-    #[Override]
     public function isValid(int $ttl): bool
     {
         return $this->invited_user_id === null && time() < $this->getDate()->getTimestamp() + $ttl;

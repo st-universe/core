@@ -12,13 +12,12 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\AuctionBidRepository;
 
 #[Table(name: 'stu_auction_bid')]
 #[Index(name: 'auction_bid_sort_idx', columns: ['max_amount'])]
 #[Entity(repositoryClass: AuctionBidRepository::class)]
-class AuctionBid implements AuctionBidInterface
+class AuctionBid
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -36,84 +35,73 @@ class AuctionBid implements AuctionBidInterface
 
     #[ManyToOne(targetEntity: Deals::class)]
     #[JoinColumn(name: 'auction_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private DealsInterface $auction;
+    private Deals $auction;
 
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $user;
+    private User $user;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getAuctionId(): int
     {
         return $this->auction_id;
     }
 
 
-    #[Override]
-    public function setAuctionId(int $auction_id): AuctionBidInterface
+    public function setAuctionId(int $auction_id): AuctionBid
     {
         $this->auction_id = $auction_id;
 
         return $this;
     }
 
-    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
 
-    #[Override]
-    public function setUserId(int $user_id): AuctionBidInterface
+    public function setUserId(int $user_id): AuctionBid
     {
         $this->user_id = $user_id;
 
         return $this;
     }
 
-    #[Override]
     public function getMaxAmount(): int
     {
         return $this->max_amount;
     }
 
-    #[Override]
-    public function setMaxAmount(int $max_amount): AuctionBidInterface
+    public function setMaxAmount(int $max_amount): AuctionBid
     {
         $this->max_amount = $max_amount;
 
         return $this;
     }
 
-    #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    #[Override]
-    public function setUser(UserInterface $user): AuctionBidInterface
+    public function setUser(User $user): AuctionBid
     {
         $this->user = $user;
 
         return $this;
     }
 
-    #[Override]
-    public function getAuction(): DealsInterface
+    public function getAuction(): Deals
     {
         return $this->auction;
     }
 
-    #[Override]
-    public function setAuction(DealsInterface $auction): AuctionBidInterface
+    public function setAuction(Deals $auction): AuctionBid
     {
         $this->auction = $auction;
 

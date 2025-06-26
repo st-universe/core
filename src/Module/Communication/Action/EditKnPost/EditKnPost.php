@@ -11,8 +11,8 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\KnCharacterInterface;
-use Stu\Orm\Entity\KnPostInterface;
+use Stu\Orm\Entity\KnCharacter;
+use Stu\Orm\Entity\KnPost;
 use Stu\Orm\Repository\KnCharacterRepositoryInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
@@ -33,7 +33,7 @@ final class EditKnPost implements ActionControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        /** @var KnPostInterface $post */
+        /** @var KnPost $post */
         $post = $this->knPostRepository->find($this->editKnPostRequest->getKnId());
         if ($post === null || ($post->getUserId() !== $userId && !$game->isAdmin())) {
             throw new AccessViolationException();
@@ -75,7 +75,7 @@ final class EditKnPost implements ActionControllerInterface
 
 
         $currentCharacterEntities = $this->knCharactersRepository->findBy(['knPost' => $post]);
-        $currentCharacterIds = array_map(fn(KnCharacterInterface $character): int => $character->getUserCharacter()->getId(), $currentCharacterEntities);
+        $currentCharacterIds = array_map(fn(KnCharacter $character): int => $character->getUserCharacter()->getId(), $currentCharacterEntities);
 
 
         $newCharacterIdsInput = $this->editKnPostRequest->getCharacterIds();

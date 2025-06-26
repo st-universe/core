@@ -17,8 +17,8 @@ use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftRemoverInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class LandShuttle implements ActionControllerInterface
@@ -125,7 +125,7 @@ final class LandShuttle implements ActionControllerInterface
         $game->addInformation("Shuttle erfolgreich gelandet");
     }
 
-    private function landShuttle(ShipInterface $shuttle, SpacecraftInterface $target): void
+    private function landShuttle(Ship $shuttle, Spacecraft $target): void
     {
         foreach ($shuttle->getCrewAssignments() as $crewAssignment) {
             $this->troopTransferUtility->assignCrew($crewAssignment, $target);

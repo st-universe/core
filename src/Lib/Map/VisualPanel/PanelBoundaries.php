@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace Stu\Lib\Map\VisualPanel;
 
 use RuntimeException;
-use Stu\Orm\Entity\LayerInterface;
-use Stu\Orm\Entity\LocationInterface;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\StarSystemInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
+use Stu\Orm\Entity\Layer;
+use Stu\Orm\Entity\Location;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\StarSystem;
+use Stu\Orm\Entity\StarSystemMap;
 
 final class PanelBoundaries
 {
-    public function __construct(private int $minX, private int $maxX, private int $minY, private int $maxY, private LayerInterface|StarSystemInterface $parent) {}
+    public function __construct(private int $minX, private int $maxX, private int $minY, private int $maxY, private Layer|StarSystem $parent) {}
 
     /** @return array<int> */
     public function getColumnRange(): array
@@ -54,10 +54,10 @@ final class PanelBoundaries
 
     public function isOnMap(): bool
     {
-        return $this->parent instanceof LayerInterface;
+        return $this->parent instanceof Layer;
     }
 
-    public function extendBy(LocationInterface $location): void
+    public function extendBy(Location $location): void
     {
         $this->minX = min($this->minX, $location->getX());
         $this->maxX = max($this->maxX, $location->getX());
@@ -76,7 +76,7 @@ final class PanelBoundaries
     /**
      * @param array{minx: int, maxx: int, miny: int, maxy: int} $array
      */
-    public static function fromArray(array $array, LayerInterface $layer): PanelBoundaries
+    public static function fromArray(array $array, Layer $layer): PanelBoundaries
     {
         return new PanelBoundaries(
             $array['minx'],
@@ -87,7 +87,7 @@ final class PanelBoundaries
         );
     }
 
-    public static function fromSystem(StarSystemInterface $system): PanelBoundaries
+    public static function fromSystem(StarSystem $system): PanelBoundaries
     {
         return new PanelBoundaries(
             1,
@@ -98,19 +98,19 @@ final class PanelBoundaries
         );
     }
 
-    public static function fromLocation(LocationInterface $location, int $range): PanelBoundaries
+    public static function fromLocation(Location $location, int $range): PanelBoundaries
     {
-        if ($location instanceof MapInterface) {
+        if ($location instanceof Map) {
             return self::fromMap($location, $range);
         }
-        if ($location instanceof StarSystemMapInterface) {
+        if ($location instanceof StarSystemMap) {
             return self::fromSystemMap($location, $range);
         }
 
         throw new RuntimeException('unsupported location type');
     }
 
-    private static function fromMap(MapInterface $map, int $range): PanelBoundaries
+    private static function fromMap(Map $map, int $range): PanelBoundaries
     {
         $layer = $map->getLayer();
         if ($layer === null) {
@@ -126,7 +126,7 @@ final class PanelBoundaries
         );
     }
 
-    private static function fromSystemMap(StarSystemMapInterface $systemMap, int $range): PanelBoundaries
+    private static function fromSystemMap(StarSystemMap $systemMap, int $range): PanelBoundaries
     {
         return self::createLocationWithRange(
             $systemMap,
@@ -138,10 +138,10 @@ final class PanelBoundaries
     }
 
     private static function createLocationWithRange(
-        LocationInterface $location,
+        Location $location,
         int $width,
         int $height,
-        LayerInterface|StarSystemInterface $parent,
+        Layer|StarSystem $parent,
         int $range
     ): PanelBoundaries {
         return new PanelBoundaries(

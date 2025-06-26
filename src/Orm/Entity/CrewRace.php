@@ -11,12 +11,11 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\CrewRaceRepository;
 
 #[Table(name: 'stu_crew_race')]
 #[Entity(repositoryClass: CrewRaceRepository::class)]
-class CrewRace implements CrewRaceInterface
+class CrewRace
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -40,92 +39,79 @@ class CrewRace implements CrewRaceInterface
 
     #[ManyToOne(targetEntity: Faction::class)]
     #[JoinColumn(name: 'faction_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private FactionInterface $faction;
+    private Faction $faction;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getFactionId(): int
     {
         return $this->faction_id;
     }
 
-    #[Override]
-    public function setFactionId(int $factionId): CrewRaceInterface
+    public function setFactionId(int $factionId): CrewRace
     {
         $this->faction_id = $factionId;
 
         return $this;
     }
 
-    #[Override]
     public function getDescription(): string
     {
         return $this->description;
     }
 
-    #[Override]
-    public function setDescription(string $description): CrewRaceInterface
+    public function setDescription(string $description): CrewRace
     {
         $this->description = $description;
 
         return $this;
     }
 
-    #[Override]
     public function getChance(): int
     {
         return $this->chance;
     }
 
-    #[Override]
-    public function setChance(int $chance): CrewRaceInterface
+    public function setChance(int $chance): CrewRace
     {
         $this->chance = $chance;
 
         return $this;
     }
 
-    #[Override]
     public function getMaleRatio(): int
     {
         return $this->maleratio;
     }
 
-    #[Override]
-    public function setMaleRatio(int $maleRatio): CrewRaceInterface
+    public function setMaleRatio(int $maleRatio): CrewRace
     {
         $this->maleratio = $maleRatio;
 
         return $this;
     }
 
-    #[Override]
     public function getGfxPath(): string
     {
         return $this->define;
     }
 
-    #[Override]
-    public function setGfxPath(string $gfxPath): CrewRaceInterface
+    public function setGfxPath(string $gfxPath): CrewRace
     {
         $this->define = $gfxPath;
 
         return $this;
     }
 
-    #[Override]
-    public function getFaction(): FactionInterface
+    public function getFaction(): Faction
     {
         return $this->faction;
     }
 
-    #[Override]
-    public function setFaction(FactionInterface $faction): CrewRaceInterface
+    public function setFaction(Faction $faction): CrewRace
     {
         $this->faction = $faction;
 

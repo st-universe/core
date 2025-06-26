@@ -3,7 +3,7 @@
 namespace Stu\Lib\Session;
 
 use RuntimeException;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
 
 final class SessionDestruction implements SessionDestructionInterface
@@ -12,7 +12,7 @@ final class SessionDestruction implements SessionDestructionInterface
         private SessionStringRepositoryInterface $sessionStringRepository
     ) {}
 
-    public function destroySession(SessionInterface $session, ?UserInterface $user = null): void
+    public function destroySession(SessionInterface $session, ?User $user = null): void
     {
         $userToTruncate = $user ?? $session->getUser();
         if ($userToTruncate !== null) {

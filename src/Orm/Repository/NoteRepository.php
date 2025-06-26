@@ -7,7 +7,6 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\Note;
-use Stu\Orm\Entity\NoteInterface;
 
 /**
  * @extends EntityRepository<Note>
@@ -23,13 +22,13 @@ final class NoteRepository extends EntityRepository implements NoteRepositoryInt
     }
 
     #[Override]
-    public function prototype(): NoteInterface
+    public function prototype(): Note
     {
         return new Note();
     }
 
     #[Override]
-    public function save(NoteInterface $note): void
+    public function save(Note $note): void
     {
         $em = $this->getEntityManager();
 
@@ -37,7 +36,7 @@ final class NoteRepository extends EntityRepository implements NoteRepositoryInt
     }
 
     #[Override]
-    public function delete(NoteInterface $note): void
+    public function delete(Note $note): void
     {
         $em = $this->getEntityManager();
 

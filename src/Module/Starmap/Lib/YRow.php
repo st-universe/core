@@ -8,9 +8,9 @@ use RuntimeException;
 use Stu\Component\Map\EncodedMapInterface;
 use Stu\Lib\Map\VisualPanel\Layer\Data\MapData;
 use Stu\Module\Admin\View\Map\EditSection\MapItem;
-use Stu\Orm\Entity\LayerInterface;
-use Stu\Orm\Entity\StarSystemInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
+use Stu\Orm\Entity\Layer;
+use Stu\Orm\Entity\StarSystem;
+use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
@@ -19,7 +19,16 @@ class YRow
     /** @var null|array<MapItem>|array<MapData> */
     protected $fields;
 
-    public function __construct(private MapRepositoryInterface $mapRepository, private StarSystemMapRepositoryInterface $systemMapRepository, private EncodedMapInterface $encodedMap, protected ?LayerInterface $layer, protected int $row, protected int $minx, protected int $maxx, protected int|StarSystemInterface $system) {}
+    public function __construct(
+        private MapRepositoryInterface $mapRepository,
+        private StarSystemMapRepositoryInterface $systemMapRepository,
+        private EncodedMapInterface $encodedMap,
+        protected ?Layer $layer,
+        protected int $row,
+        protected int $minx,
+        protected int $maxx,
+        protected int|StarSystem $system
+    ) {}
 
     /**
      * @return array<MapItem>|array<MapData>
@@ -59,10 +68,10 @@ class YRow
         if ($this->fields === null) {
             $this->fields = [];
 
-            if ($this->system instanceof StarSystemInterface) {
+            if ($this->system instanceof StarSystem) {
                 $this->fields = $this->system->getFields()
-                    ->filter(fn(StarSystemMapInterface $systemMap): bool => $systemMap->getSy() === $this->row)
-                    ->map(fn(StarSystemMapInterface $systemMap): MapData => $this->mapSystemMapToMapData($systemMap))
+                    ->filter(fn(StarSystemMap $systemMap): bool => $systemMap->getSy() === $this->row)
+                    ->map(fn(StarSystemMap $systemMap): MapData => $this->mapSystemMapToMapData($systemMap))
                     ->toArray();
             } else {
 
@@ -81,7 +90,7 @@ class YRow
         return $this->fields;
     }
 
-    private function mapSystemMapToMapData(StarSystemMapInterface $systemMap): MapData
+    private function mapSystemMapToMapData(StarSystemMap $systemMap): MapData
     {
         return new MapData(
             $systemMap->getSx(),

@@ -10,7 +10,7 @@ use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Index\Lib\FactionItem;
 use Stu\Module\Index\Lib\UiItemFactoryInterface;
-use Stu\Orm\Entity\FactionInterface;
+use Stu\Orm\Entity\Faction;
 use Stu\Orm\Repository\FactionRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -45,7 +45,7 @@ class ShowRegistrationTest extends StuTestCase
     public function testHandleRenders(): void
     {
         $game = $this->mock(GameControllerInterface::class);
-        $faction = $this->mock(FactionInterface::class);
+        $faction = $this->mock(Faction::class);
         $factionItem = $this->mock(FactionItem::class);
 
         $token = 'some-token';

@@ -13,9 +13,9 @@ use Stu\Lib\Pirate\PirateReactionTriggerEnum;
 use Stu\Lib\Transfer\CommodityTransferInterface;
 use Stu\Lib\Transfer\EntityWithStorageInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\StorageInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\Storage;
 
 class SpacecraftStorageCommodityLogic
 {
@@ -55,8 +55,8 @@ class SpacecraftStorageCommodityLogic
         if (
             !$isUnload
             && $hasTransfered
-            && $spacecraft instanceof ShipInterface
-            && $targetEntity instanceof ShipInterface
+            && $spacecraft instanceof Ship
+            && $targetEntity instanceof Ship
         ) {
             $this->pirateReaction->checkForPirateReaction(
                 $targetEntity,
@@ -122,9 +122,9 @@ class SpacecraftStorageCommodityLogic
         return $hasTransfered;
     }
 
-    /** @param Collection<int, StorageInterface> $storage */
+    /** @param Collection<int, Storage> $storage */
     private function isSanityFaulty(
-        SpacecraftInterface $spacecraft,
+        Spacecraft $spacecraft,
         EntityWithStorageInterface $transferTarget,
         Collection $storage,
         ?EpsSystemData $epsSystem,

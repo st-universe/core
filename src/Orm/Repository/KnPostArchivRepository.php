@@ -7,8 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\KnPostArchiv;
-use Stu\Orm\Entity\KnPostArchivInterface;
-use Stu\Orm\Entity\RpgPlotArchivInterface;
+use Stu\Orm\Entity\RpgPlotArchiv;
 
 /**
  * @extends EntityRepository<KnPostArchiv>
@@ -16,13 +15,13 @@ use Stu\Orm\Entity\RpgPlotArchivInterface;
 final class KnPostArchivRepository extends EntityRepository implements KnPostArchivRepositoryInterface
 {
     #[Override]
-    public function prototype(): KnPostArchivInterface
+    public function prototype(): KnPostArchiv
     {
         return new KnPostArchiv();
     }
 
     #[Override]
-    public function save(KnPostArchivInterface $post): void
+    public function save(KnPostArchiv $post): void
     {
         $em = $this->getEntityManager();
 
@@ -31,7 +30,7 @@ final class KnPostArchivRepository extends EntityRepository implements KnPostArc
     }
 
     #[Override]
-    public function delete(KnPostArchivInterface $post): void
+    public function delete(KnPostArchiv $post): void
     {
         $em = $this->getEntityManager();
 
@@ -59,7 +58,7 @@ final class KnPostArchivRepository extends EntityRepository implements KnPostArc
     }
 
     #[Override]
-    public function getByPlot(RpgPlotArchivInterface $plot, ?int $offset, ?int $limit): array
+    public function getByPlot(RpgPlotArchiv $plot, ?int $offset, ?int $limit): array
     {
         return $this->findBy(
             ['plot_id' => $plot],

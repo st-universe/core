@@ -9,7 +9,7 @@ use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Database\Lib\DatabaseUiFactoryInterface;
 use Stu\Module\Database\Lib\StorageWrapper;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -36,7 +36,7 @@ class CommoditiesOverviewTest extends StuTestCase
     public function testHandleRenders(): void
     {
         $game = $this->mock(GameControllerInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
         $storageWrapper = $this->mock(StorageWrapper::class);
 
         $commodityId = 666;

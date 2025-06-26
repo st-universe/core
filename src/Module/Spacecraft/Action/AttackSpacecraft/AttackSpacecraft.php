@@ -19,7 +19,7 @@ use Stu\Module\Spacecraft\Lib\Battle\SpacecraftAttackCoreInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 
 //TODO unit tests and request class
 final class AttackSpacecraft implements ActionControllerInterface
@@ -88,7 +88,7 @@ final class AttackSpacecraft implements ActionControllerInterface
             return;
         }
 
-        if ($spacecraft instanceof ShipInterface && $spacecraft->getDockedTo() !== null) {
+        if ($spacecraft instanceof Ship && $spacecraft->getDockedTo() !== null) {
             $spacecraft->setDockedTo(null);
         }
 

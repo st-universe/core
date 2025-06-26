@@ -10,7 +10,7 @@ use Stu\Component\Spacecraft\System\Utility\TractorMassPayloadUtilInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\ShipUndockingInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftStateChangerInterface;
-use Stu\Orm\Entity\StationInterface;
+use Stu\Orm\Entity\Station;
 
 /**
  * Subscribes to events related to diplomatic relations proposals
@@ -35,7 +35,7 @@ final class WarpdriveActivationSubscriber
         $spacecraft = $wrapper->get();
 
         $this->spacecraftStateChanger->changeState($wrapper, SpacecraftStateEnum::NONE);
-        if ($spacecraft instanceof StationInterface) {
+        if ($spacecraft instanceof Station) {
             $this->shipUndocking->undockAllDocked($spacecraft);
         }
 

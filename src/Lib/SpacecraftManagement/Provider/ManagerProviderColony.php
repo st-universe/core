@@ -10,17 +10,17 @@ use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\CommodityInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Commodity;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\User;
 
 class ManagerProviderColony implements ManagerProviderInterface
 {
-    public function __construct(private ColonyInterface $colony, private CrewCreatorInterface $crewCreator, private ColonyLibFactoryInterface $colonyLibFactory, private StorageManagerInterface $storageManager, private TroopTransferUtilityInterface $troopTransferUtility) {}
+    public function __construct(private Colony $colony, private CrewCreatorInterface $crewCreator, private ColonyLibFactoryInterface $colonyLibFactory, private StorageManagerInterface $storageManager, private TroopTransferUtilityInterface $troopTransferUtility) {}
 
     #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->colony->getUser();
     }
@@ -58,7 +58,7 @@ class ManagerProviderColony implements ManagerProviderInterface
     }
 
     #[Override]
-    public function addCrewAssignment(SpacecraftInterface $spacecraft, int $amount): void
+    public function addCrewAssignment(Spacecraft $spacecraft, int $amount): void
     {
         $this->crewCreator->createCrewAssignment($spacecraft, $this->colony, $amount);
     }
@@ -86,7 +86,7 @@ class ManagerProviderColony implements ManagerProviderInterface
     }
 
     #[Override]
-    public function upperStorage(CommodityInterface $commodity, int $amount): void
+    public function upperStorage(Commodity $commodity, int $amount): void
     {
         $this->storageManager->upperStorage(
             $this->colony,
@@ -96,7 +96,7 @@ class ManagerProviderColony implements ManagerProviderInterface
     }
 
     #[Override]
-    public function lowerStorage(CommodityInterface $commodity, int $amount): void
+    public function lowerStorage(Commodity $commodity, int $amount): void
     {
         $this->storageManager->lowerStorage(
             $this->colony,

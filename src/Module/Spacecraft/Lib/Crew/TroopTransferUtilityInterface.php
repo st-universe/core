@@ -2,19 +2,19 @@
 
 namespace Stu\Module\Spacecraft\Lib\Crew;
 
-use Stu\Orm\Entity\CrewAssignmentInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\CrewAssignment;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\User;
 
 interface TroopTransferUtilityInterface
 {
-    public function getFreeQuarters(SpacecraftInterface $ship): int;
+    public function getFreeQuarters(Spacecraft $ship): int;
 
-    public function getBeamableTroopCount(SpacecraftInterface $spacecraft): int;
+    public function getBeamableTroopCount(Spacecraft $spacecraft): int;
 
-    public function ownCrewOnTarget(UserInterface $user, EntityWithCrewAssignmentsInterface $target): int;
+    public function ownCrewOnTarget(User $user, EntityWithCrewAssignmentsInterface $target): int;
 
-    public function foreignerCount(SpacecraftInterface $spacecraft): int;
+    public function foreignerCount(Spacecraft $spacecraft): int;
 
-    public function assignCrew(CrewAssignmentInterface $crewAssignment, EntityWithCrewAssignmentsInterface $target): void;
+    public function assignCrew(CrewAssignment $crewAssignment, EntityWithCrewAssignmentsInterface $target): void;
 }

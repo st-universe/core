@@ -4,27 +4,26 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\Fleet;
-use Stu\Orm\Entity\FleetInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 /**
  * @extends ObjectRepository<Fleet>
  *
- * @method null|FleetInterface find(integer $id)
- * @method FleetInterface[] findAll()
+ * @method null|Fleet find(integer $id)
+ * @method Fleet[] findAll()
  */
 interface FleetRepositoryInterface extends ObjectRepository
 {
-    public function prototype(): FleetInterface;
+    public function prototype(): Fleet;
 
-    public function save(FleetInterface $fleet): void;
+    public function save(Fleet $fleet): void;
 
-    public function delete(FleetInterface $fleet): void;
+    public function delete(Fleet $fleet): void;
 
-    public function truncateByUser(UserInterface $user): void;
+    public function truncateByUser(User $user): void;
 
     /**
-     * @return array<FleetInterface>
+     * @return array<Fleet>
      */
     public function getByUser(int $userId): array;
 
@@ -33,7 +32,7 @@ interface FleetRepositoryInterface extends ObjectRepository
     public function getHighestSortByUser(int $userId): int;
 
     /**
-     * @return iterable<FleetInterface>
+     * @return iterable<Fleet>
      */
     public function getNonNpcFleetList(): iterable;
 

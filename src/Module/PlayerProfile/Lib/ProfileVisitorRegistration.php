@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\PlayerProfile\Lib;
 
 use Override;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\UserProfileVisitorRepositoryInterface;
 
 /**
@@ -19,8 +19,8 @@ final class ProfileVisitorRegistration implements ProfileVisitorRegistrationInte
 
     #[Override]
     public function register(
-        UserInterface $user,
-        UserInterface $visitor
+        User $user,
+        User $visitor
     ): void {
         if (
             $user->getId() !== $visitor->getId() &&

@@ -2,15 +2,15 @@
 
 namespace Stu\Module\Spacecraft\Lib\Battle\AlertDetection\SkipDetection;
 
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\User;
 
 interface SkipConditionInterface
 {
     public function isSkipped(
-        UserInterface $incomingShipUser,
-        SpacecraftInterface $alertedSpacecraft,
-        UserInterface $alertedUser,
+        User $incomingShipUser,
+        Spacecraft $alertedSpacecraft,
+        User $alertedUser,
         int $time
     ): bool;
 }

@@ -7,7 +7,6 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\AllianceBoardPost;
-use Stu\Orm\Entity\AllianceBoardPostInterface;
 
 /**
  * @extends EntityRepository<AllianceBoardPost>
@@ -15,7 +14,7 @@ use Stu\Orm\Entity\AllianceBoardPostInterface;
 final class AllianceBoardPostRepository extends EntityRepository implements AllianceBoardPostRepositoryInterface
 {
     #[Override]
-    public function getRecentByBoard(int $boardId): ?AllianceBoardPostInterface
+    public function getRecentByBoard(int $boardId): ?AllianceBoardPost
     {
         return $this->findOneBy(
             ['board_id' => $boardId],
@@ -24,7 +23,7 @@ final class AllianceBoardPostRepository extends EntityRepository implements Alli
     }
 
     #[Override]
-    public function getRecentByTopic(int $topicId): ?AllianceBoardPostInterface
+    public function getRecentByTopic(int $topicId): ?AllianceBoardPost
     {
         return $this->findOneBy(
             ['topic_id' => $topicId],
@@ -60,13 +59,13 @@ final class AllianceBoardPostRepository extends EntityRepository implements Alli
     }
 
     #[Override]
-    public function prototype(): AllianceBoardPostInterface
+    public function prototype(): AllianceBoardPost
     {
         return new AllianceBoardPost();
     }
 
     #[Override]
-    public function save(AllianceBoardPostInterface $post): void
+    public function save(AllianceBoardPost $post): void
     {
         $em = $this->getEntityManager();
 
@@ -75,7 +74,7 @@ final class AllianceBoardPostRepository extends EntityRepository implements Alli
     }
 
     #[Override]
-    public function delete(AllianceBoardPostInterface $post): void
+    public function delete(AllianceBoardPost $post): void
     {
         $em = $this->getEntityManager();
 

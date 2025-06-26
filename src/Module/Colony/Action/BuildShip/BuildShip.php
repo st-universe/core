@@ -19,7 +19,7 @@ use Stu\Module\Colony\View\ShowModuleScreen\ShowModuleScreen;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
-use Stu\Orm\Entity\ModuleInterface;
+use Stu\Orm\Entity\Module;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
@@ -112,7 +112,7 @@ final class BuildShip implements ActionControllerInterface
             throw new RuntimeException(sprintf('no module level for rumpId: %d', $rump->getId()));
         }
 
-        /** @var array<int, ModuleInterface> */
+        /** @var array<int, Module> */
         $modules = [];
 
         foreach (SpacecraftModuleTypeEnum::getModuleSelectorOrder() as $moduleType) {

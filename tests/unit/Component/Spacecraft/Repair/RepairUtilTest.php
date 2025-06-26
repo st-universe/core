@@ -11,10 +11,10 @@ use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\ColonyShipRepairInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftSystemInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\ColonyShipRepair;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\SpacecraftSystem;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\RepairTaskRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
@@ -43,7 +43,7 @@ class RepairUtilTest extends StuTestCase
     /** @var ShipWrapperInterface|MockInterface */
     private $wrapper;
 
-    /** @var ShipInterface|MockInterface */
+    /** @var Ship|MockInterface */
     private $ship;
 
     private RepairUtilInterface $subject;
@@ -59,7 +59,7 @@ class RepairUtilTest extends StuTestCase
         $this->privateMessageSender = $this->mock(PrivateMessageSenderInterface::class);
 
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
-        $this->ship = $this->mock(ShipInterface::class);
+        $this->ship = $this->mock(Ship::class);
 
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()
@@ -121,8 +121,8 @@ class RepairUtilTest extends StuTestCase
 
     public function testGetRepairDurationWithDamagedSystems(): void
     {
-        $damagedSystem1 = $this->mock(SpacecraftSystemInterface::class);
-        $damagedSystem2 = $this->mock(SpacecraftSystemInterface::class);
+        $damagedSystem1 = $this->mock(SpacecraftSystem::class);
+        $damagedSystem2 = $this->mock(SpacecraftSystem::class);
 
         $this->wrapper->shouldReceive('getDamagedSystems')
             ->withNoArgs()->once()->andReturn([$damagedSystem1, $damagedSystem2]);
@@ -156,8 +156,8 @@ class RepairUtilTest extends StuTestCase
         $this->ship->shouldReceive('getId')
             ->withNoArgs()->once()->andReturn(42);
 
-        $colonyShipRepair = $this->mock(ColonyShipRepairInterface::class);
-        $colony = $this->mock(ColonyInterface::class);
+        $colonyShipRepair = $this->mock(ColonyShipRepair::class);
+        $colony = $this->mock(Colony::class);
 
         $this->colonyShipRepairRepository->shouldReceive('getByShip')
             ->with(42)->once()->andReturn($colonyShipRepair);
@@ -179,10 +179,10 @@ class RepairUtilTest extends StuTestCase
 
     public function testGetRepairDurationWithDamagedSystemsAndActiveRepairStation(): void
     {
-        $damagedSystem1 = $this->mock(SpacecraftSystemInterface::class);
-        $damagedSystem2 = $this->mock(SpacecraftSystemInterface::class);
-        $damagedSystem3 = $this->mock(SpacecraftSystemInterface::class);
-        $damagedSystem4 = $this->mock(SpacecraftSystemInterface::class);
+        $damagedSystem1 = $this->mock(SpacecraftSystem::class);
+        $damagedSystem2 = $this->mock(SpacecraftSystem::class);
+        $damagedSystem3 = $this->mock(SpacecraftSystem::class);
+        $damagedSystem4 = $this->mock(SpacecraftSystem::class);
 
         $this->wrapper->shouldReceive('getDamagedSystems')
             ->withNoArgs()->once()->andReturn([
@@ -200,8 +200,8 @@ class RepairUtilTest extends StuTestCase
         $this->ship->shouldReceive('getId')
             ->withNoArgs()->once()->andReturn(42);
 
-        $colonyShipRepair = $this->mock(ColonyShipRepairInterface::class);
-        $colony = $this->mock(ColonyInterface::class);
+        $colonyShipRepair = $this->mock(ColonyShipRepair::class);
+        $colony = $this->mock(Colony::class);
 
         $this->colonyShipRepairRepository->shouldReceive('getByShip')
             ->with(42)->once()->andReturn($colonyShipRepair);
@@ -248,7 +248,7 @@ class RepairUtilTest extends StuTestCase
         $this->wrapper->shouldReceive('getDamagedSystems')
             ->withNoArgs()->once()->andReturn([]);
 
-        $colony = $this->mock(ColonyInterface::class);
+        $colony = $this->mock(Colony::class);
 
         $this->colonyFunctionManager->shouldReceive('hasActiveFunction')
             ->with($colony, BuildingFunctionEnum::REPAIR_SHIPYARD)
@@ -273,7 +273,7 @@ class RepairUtilTest extends StuTestCase
         $this->wrapper->shouldReceive('getDamagedSystems')
             ->withNoArgs()->once()->andReturn([]);
 
-        $colony = $this->mock(ColonyInterface::class);
+        $colony = $this->mock(Colony::class);
 
         $this->colonyFunctionManager->shouldReceive('hasActiveFunction')
             ->with($colony, BuildingFunctionEnum::REPAIR_SHIPYARD)

@@ -5,10 +5,10 @@ namespace Stu\Component\Spacecraft\Repair;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\RepairTaskInterface;
-use Stu\Orm\Entity\SpacecraftSystemInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\RepairTask;
+use Stu\Orm\Entity\SpacecraftSystem;
+use Stu\Orm\Entity\Spacecraft;
 
 interface RepairUtilInterface
 {
@@ -20,22 +20,22 @@ interface RepairUtilInterface
     /** @param array<int, int> $neededParts */
     public function enoughSparePartsOnEntity(
         array $neededParts,
-        ColonyInterface|SpacecraftInterface $entity,
-        SpacecraftInterface $spacecraft
+        Colony|Spacecraft $entity,
+        Spacecraft $spacecraft
     ): bool;
 
     /** @param array<int, int> $neededParts */
-    public function consumeSpareParts(array $neededParts, ColonyInterface|SpacecraftInterface $entity): void;
+    public function consumeSpareParts(array $neededParts, Colony|Spacecraft $entity): void;
 
-    public function determineFreeEngineerCount(SpacecraftInterface $ship): int;
+    public function determineFreeEngineerCount(Spacecraft $ship): int;
 
     /**
-     * @return array<int, SpacecraftSystemInterface>
+     * @return array<int, SpacecraftSystem>
      */
     public function determineRepairOptions(SpacecraftWrapperInterface $wrapper): array;
 
     public function createRepairTask(
-        SpacecraftInterface $ship,
+        Spacecraft $ship,
         SpacecraftSystemTypeEnum $systemType,
         int $repairType,
         int $finishTime
@@ -44,14 +44,14 @@ interface RepairUtilInterface
     public function determineHealingPercentage(int $repairType): int;
 
     public function instantSelfRepair(
-        SpacecraftInterface $spacecraft,
+        Spacecraft $spacecraft,
         SpacecraftSystemTypeEnum $type,
         int $healingPercentage
     ): bool;
 
     public function selfRepair(
-        SpacecraftInterface $spacecraft,
-        RepairTaskInterface $repairTask
+        Spacecraft $spacecraft,
+        RepairTask $repairTask
     ): bool;
 
     public function isRepairStationBonus(ShipWrapperInterface $wrapper): bool;

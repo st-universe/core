@@ -6,25 +6,24 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\PrivateMessage;
-use Stu\Orm\Entity\PrivateMessageFolderInterface;
-use Stu\Orm\Entity\PrivateMessageInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\PrivateMessageFolder;
+use Stu\Orm\Entity\User;
 
 /**
  * @extends ObjectRepository<PrivateMessage>
  *
- * @method null|PrivateMessageInterface find(integer $id)
+ * @method null|PrivateMessage find(integer $id)
  */
 interface PrivateMessageRepositoryInterface extends ObjectRepository
 {
-    public function prototype(): PrivateMessageInterface;
+    public function prototype(): PrivateMessage;
 
-    public function save(PrivateMessageInterface $post, bool $doFlush = false): void;
+    public function save(PrivateMessage $post, bool $doFlush = false): void;
 
     /**
      * @param array<int> $specialIds
      *
-     * @return array<PrivateMessageInterface>
+     * @return array<PrivateMessage>
      */
     public function getOrderedCorrepondence(
         int $userId,
@@ -34,16 +33,16 @@ interface PrivateMessageRepositoryInterface extends ObjectRepository
     ): array;
 
     /**
-     * @return array<PrivateMessageInterface>
+     * @return array<PrivateMessage>
      */
-    public function getBySender(UserInterface $user): array;
+    public function getBySender(User $user): array;
 
     /**
-     * @return array<PrivateMessageInterface>
+     * @return array<PrivateMessage>
      */
-    public function getByReceiver(UserInterface $user): array;
+    public function getByReceiver(User $user): array;
 
-    /** @return array<PrivateMessageInterface> */
+    /** @return array<PrivateMessage> */
     public function getByUserAndFolder(
         int $userId,
         int $folderId,
@@ -51,18 +50,18 @@ interface PrivateMessageRepositoryInterface extends ObjectRepository
         int $limit
     ): array;
 
-    /** @return array<PrivateMessageInterface> */
-    public function getConversations(UserInterface $user): array;
+    /** @return array<PrivateMessage> */
+    public function getConversations(User $user): array;
 
-    public function getAmountByFolder(PrivateMessageFolderInterface $privateMessageFolder): int;
+    public function getAmountByFolder(PrivateMessageFolder $privateMessageFolder): int;
 
-    public function getNewAmountByFolder(PrivateMessageFolderInterface $privateMessageFolder): int;
+    public function getNewAmountByFolder(PrivateMessageFolder $privateMessageFolder): int;
 
-    public function getNewAmountByFolderAndSender(PrivateMessageFolderInterface $privateMessageFolder, UserInterface $sender): int;
+    public function getNewAmountByFolderAndSender(PrivateMessageFolder $privateMessageFolder, User $sender): int;
 
     public function setDeleteTimestampByFolder(int $folderId, int $timestamp): void;
 
-    public function hasRecentMessage(UserInterface $user): bool;
+    public function hasRecentMessage(User $user): bool;
 
     public function getAmountSince(int $timestamp): int;
 

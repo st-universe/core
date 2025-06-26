@@ -11,9 +11,7 @@ final class TopFlightsReward implements MaintenanceHandlerInterface
 {
     public const array PRESTIGE_REWARDS = [20, 15, 10, 7, 6, 5, 4, 3, 2, 1];
 
-    public function __construct(private FlightSignatureRepositoryInterface $flightSignatureRepository, private UserRepositoryInterface $userRepository, private CreatePrestigeLogInterface $createPrestigeLog)
-    {
-    }
+    public function __construct(private FlightSignatureRepositoryInterface $flightSignatureRepository, private UserRepositoryInterface $userRepository, private CreatePrestigeLogInterface $createPrestigeLog) {}
 
     #[Override]
     public function handle(): void

@@ -2,10 +2,10 @@
 
 namespace Stu\Module\Award\Lib;
 
-use Stu\Orm\Entity\AwardInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Award;
+use Stu\Orm\Entity\User;
 
 interface CreateUserAwardInterface
 {
-    public function createAwardForUser(UserInterface $user, AwardInterface $award): void;
+    public function createAwardForUser(User $user, Award $award): void;
 }

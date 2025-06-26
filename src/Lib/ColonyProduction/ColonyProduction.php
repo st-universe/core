@@ -2,13 +2,13 @@
 
 namespace Stu\Lib\ColonyProduction;
 
-use Stu\Orm\Entity\CommodityInterface;
+use Stu\Orm\Entity\Commodity;
 
 class ColonyProduction
 {
     private int $preview = 0;
 
-    public function __construct(private CommodityInterface $commodity, private int $production, private ?int $pc)
+    public function __construct(private Commodity $commodity, private int $production, private ?int $pc)
     {
     }
 
@@ -91,7 +91,7 @@ class ColonyProduction
         return 'positive';
     }
 
-    public function getCommodity(): CommodityInterface
+    public function getCommodity(): Commodity
     {
         return $this->commodity;
     }

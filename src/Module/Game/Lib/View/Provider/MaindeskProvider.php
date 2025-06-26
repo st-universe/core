@@ -17,7 +17,7 @@ use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Spacecraft\Lib\EmergencyWrapper;
-use Stu\Orm\Entity\KnPostInterface;
+use Stu\Orm\Entity\KnPost;
 use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 use Stu\Orm\Repository\HistoryRepositoryInterface;
@@ -75,7 +75,7 @@ final class MaindeskProvider implements ViewComponentProviderInterface
         $game->setTemplateVar(
             'NEW_KN_POSTINGS',
             array_map(
-                function (KnPostInterface $knPost) use ($user, $newAmount): KnItemInterface {
+                function (KnPost $knPost) use ($user, $newAmount): KnItemInterface {
                     $newAmount--;
                     $knItem = $this->knFactory->createKnItem(
                         $knPost,

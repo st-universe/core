@@ -4,39 +4,38 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\LayerInterface;
+use Stu\Orm\Entity\Layer;
 use Stu\Orm\Entity\StarSystem;
-use Stu\Orm\Entity\StarSystemInterface;
 
 /**
  * @extends ObjectRepository<StarSystem>
  *
- * @method null|StarSystemInterface find(integer $id)
+ * @method null|StarSystem find(integer $id)
  */
 interface StarSystemRepositoryInterface extends ObjectRepository
 {
-    public function prototype(): StarSystemInterface;
+    public function prototype(): StarSystem;
 
-    public function save(StarSystemInterface $storage): void;
+    public function save(StarSystem $storage): void;
 
     /**
-     * @return array<StarSystemInterface>
+     * @return array<StarSystem>
      */
     public function getByLayer(int $layerId): array;
 
     /**
-     * @return array<StarSystemInterface>
+     * @return array<StarSystem>
      */
     public function getWithoutDatabaseEntry(): array;
 
-    public function getNumberOfSystemsToGenerate(LayerInterface $layer): int;
+    public function getNumberOfSystemsToGenerate(Layer $layer): int;
 
-    public function getPreviousStarSystem(StarSystemInterface $current): ?StarSystemInterface;
+    public function getPreviousStarSystem(StarSystem $current): ?StarSystem;
 
-    public function getNextStarSystem(StarSystemInterface $current): ?StarSystemInterface;
+    public function getNextStarSystem(StarSystem $current): ?StarSystem;
 
     /**
-     * @return array<StarSystemInterface>
+     * @return array<StarSystem>
      */
     public function getPirateHides(SpacecraftWrapperInterface $wrapper): array;
 }

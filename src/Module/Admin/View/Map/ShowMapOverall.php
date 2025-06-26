@@ -13,7 +13,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
-use Stu\Orm\Entity\LayerInterface;
+use Stu\Orm\Entity\Layer;
 
 
 final class ShowMapOverall implements ViewControllerInterface
@@ -102,7 +102,7 @@ final class ShowMapOverall implements ViewControllerInterface
         exit;
     }
 
-    private function getMapGraphicPath(LayerInterface $layer, int $fieldType): string
+    private function getMapGraphicPath(Layer $layer, int $fieldType): string
     {
         $webrootWithoutPublic = str_replace("/Public", "", $this->config->getGameSettings()->getWebroot());
 

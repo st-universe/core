@@ -12,7 +12,7 @@ use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Tick\Spacecraft\Handler\SpacecraftTickHandlerInterface;
 use Stu\Module\Tick\Spacecraft\ManagerComponent\ManagerComponentInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentInterface
@@ -72,7 +72,7 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
         $this->spacecraftRepository->save($spacecraft);
     }
 
-    private function potentialLog(SpacecraftInterface $spacecraft, SpacecraftTickHandlerInterface $handler, float $startTime): void
+    private function potentialLog(Spacecraft $spacecraft, SpacecraftTickHandlerInterface $handler, float $startTime): void
     {
         $endTime = microtime(true);
 
@@ -91,7 +91,7 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
         }
     }
 
-    private function sendMessage(SpacecraftInterface $ship, InformationWrapper $informationWrapper): void
+    private function sendMessage(Spacecraft $ship, InformationWrapper $informationWrapper): void
     {
         if ($informationWrapper->isEmpty()) {
             return;

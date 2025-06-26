@@ -8,7 +8,7 @@ use Stu\Component\Colony\OrbitShipWrappersRetrieverInterface;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Colony;
 use Stu\Orm\Repository\ShipRumpBuildingFunctionRepositoryInterface;
 
 final class ShipDisassemblyProvider implements PlanetFieldHostComponentInterface
@@ -20,7 +20,7 @@ final class ShipDisassemblyProvider implements PlanetFieldHostComponentInterface
         private OrbitShipWrappersRetrieverInterface $orbitShipWrappersRetriever
     ) {}
 
-    /** @param ColonyInterface $entity */
+    /** @param Colony $entity */
     #[Override]
     public function setTemplateVariables(
         $entity,

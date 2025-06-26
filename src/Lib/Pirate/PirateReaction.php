@@ -13,9 +13,9 @@ use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
-use Stu\Orm\Entity\FleetInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Fleet;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
 
 class PirateReaction implements PirateReactionInterface
 {
@@ -35,12 +35,12 @@ class PirateReaction implements PirateReactionInterface
 
     #[Override]
     public function checkForPirateReaction(
-        SpacecraftInterface $target,
+        Spacecraft $target,
         PirateReactionTriggerEnum $reactionTrigger,
-        SpacecraftInterface $triggerSpacecraft
+        Spacecraft $triggerSpacecraft
     ): bool {
 
-        $targetFleet = $target instanceof ShipInterface ? $target->getFleet() : null;
+        $targetFleet = $target instanceof Ship ? $target->getFleet() : null;
         if (
             $targetFleet === null
             || $targetFleet->getUser()->getId() !== UserEnum::USER_NPC_KAZON
@@ -60,9 +60,9 @@ class PirateReaction implements PirateReactionInterface
 
     #[Override]
     public function react(
-        FleetInterface $fleet,
+        Fleet $fleet,
         PirateReactionTriggerEnum $reactionTrigger,
-        SpacecraftInterface $triggerSpacecraft,
+        Spacecraft $triggerSpacecraft,
         PirateReactionMetadata $reactionMetadata
     ): void {
         $this->pirateWrathManager->increaseWrathViaTrigger($triggerSpacecraft->getUser(), $reactionTrigger);
@@ -134,7 +134,7 @@ class PirateReaction implements PirateReactionInterface
         PirateBehaviourEnum $behaviour,
         FleetWrapperInterface $fleetWrapper,
         PirateReactionMetadata $reactionMetadata,
-        ?SpacecraftInterface $triggerSpacecraft
+        ?Spacecraft $triggerSpacecraft
     ): ?PirateBehaviourEnum {
 
         $reactionMetadata->addReaction($behaviour);

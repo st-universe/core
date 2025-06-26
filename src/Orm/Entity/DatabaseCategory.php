@@ -13,12 +13,11 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\DatabaseCategoryRepository;
 
 #[Table(name: 'stu_database_categories')]
 #[Entity(repositoryClass: DatabaseCategoryRepository::class)]
-class DatabaseCategory implements DatabaseCategoryInterface
+class DatabaseCategory
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -41,14 +40,14 @@ class DatabaseCategory implements DatabaseCategoryInterface
     private int $prestige;
 
     /**
-     * @var ArrayCollection<int, DatabaseEntryInterface>
+     * @var ArrayCollection<int, DatabaseEntry>
      */
     #[OneToMany(targetEntity: DatabaseEntry::class, mappedBy: 'category')]
     #[OrderBy(['sort' => 'ASC'])]
     private Collection $entries;
 
     /**
-     * @var ArrayCollection<int, DatabaseCategoryAwardInterface>
+     * @var ArrayCollection<int, DatabaseCategoryAward>
      */
     #[OneToMany(targetEntity: DatabaseCategoryAward::class, mappedBy: 'category')]
     private Collection $categoryAwards;
@@ -59,77 +58,75 @@ class DatabaseCategory implements DatabaseCategoryInterface
         $this->categoryAwards = new ArrayCollection();
     }
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
-    public function setDescription(string $description): DatabaseCategoryInterface
+    public function setDescription(string $description): DatabaseCategory
     {
         $this->description = $description;
         return $this;
     }
 
-    #[Override]
     public function getDescription(): string
     {
         return $this->description;
     }
 
-    #[Override]
-    public function setPoints(int $points): DatabaseCategoryInterface
+    public function setPoints(int $points): DatabaseCategory
     {
         $this->points = $points;
         return $this;
     }
 
-    #[Override]
     public function getPoints(): int
     {
         return $this->points;
     }
 
-    #[Override]
-    public function setType(int $type): DatabaseCategoryInterface
+    public function setType(int $type): DatabaseCategory
     {
         $this->type = $type;
         return $this;
     }
 
-    #[Override]
     public function getType(): int
     {
         return $this->type;
     }
 
-    #[Override]
-    public function setSort(int $sort): DatabaseCategoryInterface
+    public function setSort(int $sort): DatabaseCategory
     {
         $this->sort = $sort;
         return $this;
     }
 
-    #[Override]
     public function getSort(): int
     {
         return $this->sort;
     }
 
-    #[Override]
     public function getPrestige(): int
     {
         return $this->prestige;
     }
 
-    #[Override]
+    /**
+     * Returns a list of associated database entries
+     *
+     * @return array<int, DatabaseEntry>
+     */
     public function getEntries(): array
     {
         return $this->entries->toArray();
     }
 
-    #[Override]
+    /**
+     * Returns a list of associated category awards
+     *
+     * @return array<int, DatabaseCategoryAward>
+     */
     public function getCategoryAwards(): array
     {
         return $this->categoryAwards->toArray();

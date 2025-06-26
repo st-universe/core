@@ -7,8 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\ShipRumpModuleLevel;
-use Stu\Orm\Entity\ShipRumpModuleLevelInterface;
-use Stu\Orm\Entity\SpacecraftRumpInterface;
+use Stu\Orm\Entity\SpacecraftRump;
 
 /**
  * @extends EntityRepository<ShipRumpModuleLevel>
@@ -17,7 +16,7 @@ use Stu\Orm\Entity\SpacecraftRumpInterface;
 final class ShipRumpModuleLevelRepository extends EntityRepository implements ShipRumpModuleLevelRepositoryInterface
 {
     #[Override]
-    public function save(ShipRumpModuleLevelInterface $entity): void
+    public function save(ShipRumpModuleLevel $entity): void
     {
         $em = $this->getEntityManager();
 
@@ -25,7 +24,7 @@ final class ShipRumpModuleLevelRepository extends EntityRepository implements Sh
     }
 
     #[Override]
-    public function getByShipRump(SpacecraftRumpInterface $rump): ?ShipRumpModuleLevelInterface
+    public function getByShipRump(SpacecraftRump $rump): ?ShipRumpModuleLevel
     {
         return $this->findOneBy([
             'rump' => $rump

@@ -9,11 +9,10 @@ use Override;
 use Stu\Component\Database\DatabaseCategoryTypeEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\DatabaseEntry;
-use Stu\Orm\Entity\LayerInterface;
+use Stu\Orm\Entity\Layer;
 use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\StarSystem;
-use Stu\Orm\Entity\StarSystemInterface;
 
 /**
  * @extends EntityRepository<StarSystem>
@@ -21,13 +20,13 @@ use Stu\Orm\Entity\StarSystemInterface;
 final class StarSystemRepository extends EntityRepository implements StarSystemRepositoryInterface
 {
     #[Override]
-    public function prototype(): StarSystemInterface
+    public function prototype(): StarSystem
     {
         return new StarSystem();
     }
 
     #[Override]
-    public function save(StarSystemInterface $storage): void
+    public function save(StarSystem $storage): void
     {
         $em = $this->getEntityManager();
 
@@ -76,7 +75,7 @@ final class StarSystemRepository extends EntityRepository implements StarSystemR
     }
 
     #[Override]
-    public function getNumberOfSystemsToGenerate(LayerInterface $layer): int
+    public function getNumberOfSystemsToGenerate(Layer $layer): int
     {
         return (int) $this->getEntityManager()
             ->createQuery(
@@ -98,7 +97,7 @@ final class StarSystemRepository extends EntityRepository implements StarSystemR
     }
 
     #[Override]
-    public function getPreviousStarSystem(StarSystemInterface $current): ?StarSystemInterface
+    public function getPreviousStarSystem(StarSystem $current): ?StarSystem
     {
         return $this->getEntityManager()
             ->createQuery(
@@ -122,7 +121,7 @@ final class StarSystemRepository extends EntityRepository implements StarSystemR
     }
 
     #[Override]
-    public function getNextStarSystem(StarSystemInterface $current): ?StarSystemInterface
+    public function getNextStarSystem(StarSystem $current): ?StarSystem
     {
         return $this->getEntityManager()
             ->createQuery(

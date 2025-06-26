@@ -12,14 +12,13 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Orm\Repository\AllianceRelationRepository;
 
 #[Table(name: 'stu_alliances_relations')]
 #[Index(name: 'alliance_relation_idx', columns: ['alliance_id', 'recipient'])]
 #[Entity(repositoryClass: AllianceRelationRepository::class)]
-class AllianceRelation implements AllianceRelationInterface
+class AllianceRelation
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -40,69 +39,62 @@ class AllianceRelation implements AllianceRelationInterface
 
     #[ManyToOne(targetEntity: Alliance::class)]
     #[JoinColumn(name: 'alliance_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private AllianceInterface $alliance;
+    private Alliance $alliance;
 
     #[ManyToOne(targetEntity: Alliance::class)]
     #[JoinColumn(name: 'recipient', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private AllianceInterface $opponent;
+    private Alliance $opponent;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getType(): int
     {
         return $this->type;
     }
 
-    #[Override]
-    public function setType(int $type): AllianceRelationInterface
+    public function setType(int $type): AllianceRelation
     {
         $this->type = $type;
         return $this;
     }
 
-    #[Override]
     public function getAllianceId(): int
     {
         return $this->alliance_id;
     }
 
-    #[Override]
     public function getOpponentId(): int
     {
         return $this->recipient;
     }
 
-    #[Override]
     public function getDate(): int
     {
         return $this->date;
     }
 
-    #[Override]
-    public function setDate(int $date): AllianceRelationInterface
+    public function setDate(int $date): AllianceRelation
     {
         $this->date = $date;
         return $this;
     }
 
-    #[Override]
     public function isPending(): bool
     {
         return $this->getDate() === 0;
     }
 
-    #[Override]
     public function isWar(): bool
     {
         return $this->getType() === AllianceEnum::ALLIANCE_RELATION_WAR;
     }
 
-    #[Override]
+    /**
+     * @return array<array{name: string, value: int}>
+     */
     public function getPossibleTypes(): array
     {
         $ret = [];
@@ -121,35 +113,33 @@ class AllianceRelation implements AllianceRelationInterface
         return $ret;
     }
 
-    #[Override]
-    public function getAlliance(): AllianceInterface
+    public function getAlliance(): Alliance
     {
         return $this->alliance;
     }
 
-    #[Override]
-    public function setAlliance(AllianceInterface $alliance): AllianceRelationInterface
+    public function setAlliance(Alliance $alliance): AllianceRelation
     {
         $this->alliance = $alliance;
 
         return $this;
     }
 
-    #[Override]
-    public function getOpponent(): AllianceInterface
+    public function getOpponent(): Alliance
     {
         return $this->opponent;
     }
 
-    #[Override]
-    public function setOpponent(AllianceInterface $opponent): AllianceRelationInterface
+    public function setOpponent(Alliance $opponent): AllianceRelation
     {
         $this->opponent = $opponent;
 
         return $this;
     }
 
-    #[Override]
+    /**
+     * @deprecated Move into AllianceEnum
+     */
     public function getTypeDescription(): string
     {
         return match ($this->getType()) {

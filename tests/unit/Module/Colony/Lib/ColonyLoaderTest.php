@@ -11,7 +11,7 @@ use Stu\Exception\AccessViolationException;
 use Stu\Exception\EntityLockedException;
 use Stu\Module\Tick\Lock\LockManagerInterface;
 use Stu\Module\Tick\Lock\LockTypeEnum;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Colony;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -28,7 +28,7 @@ class ColonyLoaderTest extends StuTestCase
     private $lockManager;
 
     /**
-     * @var MockInterface&null|ColonyInterface
+     * @var MockInterface&null|Colony
      */
     private $colony;
 
@@ -44,7 +44,7 @@ class ColonyLoaderTest extends StuTestCase
         $this->colonyRepository = Mockery::mock(ColonyRepositoryInterface::class);
         $this->lockManager = Mockery::mock(LockManagerInterface::class);
 
-        $this->colony = $this->mock(ColonyInterface::class);
+        $this->colony = $this->mock(Colony::class);
 
         $this->subject = new ColonyLoader(
             $this->colonyRepository,

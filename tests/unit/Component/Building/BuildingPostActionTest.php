@@ -9,9 +9,9 @@ use Mockery\MockInterface;
 use Override;
 use Stu\Module\Building\Action\BuildingActionHandlerInterface;
 use Stu\Module\Building\Action\BuildingFunctionActionMapperInterface;
-use Stu\Orm\Entity\BuildingFunctionInterface;
-use Stu\Orm\Entity\BuildingInterface;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\BuildingFunction;
+use Stu\Orm\Entity\Building;
+use Stu\Orm\Entity\Colony;
 use Stu\StuTestCase;
 
 class BuildingPostActionTest extends StuTestCase
@@ -32,9 +32,9 @@ class BuildingPostActionTest extends StuTestCase
 
     public function testHandleDeactivationPerformsActions(): void
     {
-        $building = $this->mock(BuildingInterface::class);
-        $colony = $this->mock(ColonyInterface::class);
-        $function = $this->mock(BuildingFunctionInterface::class);
+        $building = $this->mock(Building::class);
+        $colony = $this->mock(Colony::class);
+        $function = $this->mock(BuildingFunction::class);
         $buildingActionHandler = $this->mock(BuildingActionHandlerInterface::class);
 
         $buildingFunction = BuildingFunctionEnum::SHIELD_BATTERY;
@@ -63,9 +63,9 @@ class BuildingPostActionTest extends StuTestCase
 
     public function testHandleActivationPerformsActions(): void
     {
-        $building = $this->mock(BuildingInterface::class);
-        $colony = $this->mock(ColonyInterface::class);
-        $function = $this->mock(BuildingFunctionInterface::class);
+        $building = $this->mock(Building::class);
+        $colony = $this->mock(Colony::class);
+        $function = $this->mock(BuildingFunction::class);
         $buildingActionHandler = $this->mock(BuildingActionHandlerInterface::class);
 
         $buildingFunction = BuildingFunctionEnum::SHIELD_BATTERY;

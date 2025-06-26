@@ -2,13 +2,13 @@
 
 namespace Stu\Lib\Pirate;
 
-use Stu\Orm\Entity\FleetInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Fleet;
+use Stu\Orm\Entity\Ship;
 
 interface PirateCreationInterface
 {
-    /** @return array<FleetInterface> */
+    /** @return array<Fleet> */
     public function createPirateFleetsIfNeeded(): array;
 
-    public function createPirateFleet(?ShipInterface $supportCaller = null): FleetInterface;
+    public function createPirateFleet(?Ship $supportCaller = null): Fleet;
 }

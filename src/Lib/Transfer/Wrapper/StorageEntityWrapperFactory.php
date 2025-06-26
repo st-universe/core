@@ -12,9 +12,9 @@ use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\TrumfieldInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\Trumfield;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 class StorageEntityWrapperFactory implements StorageEntityWrapperFactoryInterface
@@ -34,7 +34,7 @@ class StorageEntityWrapperFactory implements StorageEntityWrapperFactoryInterfac
 
     public function wrapStorageEntity(EntityWithStorageInterface $entity): StorageEntityWrapperInterface
     {
-        if ($entity instanceof ColonyInterface) {
+        if ($entity instanceof Colony) {
             return new ColonyStorageEntityWrapper(
                 $this->colonyLibFactory,
                 $this->commodityTransfer,
@@ -43,7 +43,7 @@ class StorageEntityWrapperFactory implements StorageEntityWrapperFactoryInterfac
                 $entity
             );
         }
-        if ($entity instanceof SpacecraftInterface) {
+        if ($entity instanceof Spacecraft) {
             return new SpacecraftStorageEntityWrapper(
                 $this->shipTorpedoManager,
                 $this->spacecraftStorageCommodityLogic,
@@ -52,7 +52,7 @@ class StorageEntityWrapperFactory implements StorageEntityWrapperFactoryInterfac
                 $this->spacecraftWrapperFactory->wrapSpacecraft($entity)
             );
         }
-        if ($entity instanceof TrumfieldInterface) {
+        if ($entity instanceof Trumfield) {
             return new TrumfieldStorageEntityWrapper($this->userRepository, $entity);
         }
 

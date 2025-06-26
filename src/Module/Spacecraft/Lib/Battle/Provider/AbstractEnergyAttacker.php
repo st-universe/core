@@ -8,13 +8,13 @@ use Override;
 use RuntimeException;
 use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Module\Control\StuRandom;
-use Stu\Orm\Entity\ModuleInterface;
-use Stu\Orm\Entity\WeaponInterface;
+use Stu\Orm\Entity\Module;
+use Stu\Orm\Entity\Weapon;
 
 abstract class AbstractEnergyAttacker implements EnergyAttackerInterface
 {
-    protected ?ModuleInterface $module = null;
-    private ?WeaponInterface $weapon = null;
+    protected ?Module $module = null;
+    private ?Weapon $weapon = null;
 
     public function __construct(
         protected StuRandom $stuRandom
@@ -28,10 +28,10 @@ abstract class AbstractEnergyAttacker implements EnergyAttackerInterface
         return $weapon->getFiringMode();
     }
 
-    abstract public function getWeaponModule(): ModuleInterface;
+    abstract public function getWeaponModule(): Module;
 
     #[Override]
-    public function getWeapon(): WeaponInterface
+    public function getWeapon(): Weapon
     {
         if ($this->weapon === null) {
             $weapon = $this->getWeaponModule()->getWeapon();

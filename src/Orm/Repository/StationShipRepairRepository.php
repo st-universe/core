@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Override;
 use Stu\Orm\Entity\StationShipRepair;
-use Stu\Orm\Entity\StationShipRepairInterface;
 
 /**
  * @extends EntityRepository<StationShipRepair>
@@ -16,7 +15,7 @@ use Stu\Orm\Entity\StationShipRepairInterface;
 final class StationShipRepairRepository extends EntityRepository implements StationShipRepairRepositoryInterface
 {
     #[Override]
-    public function prototype(): StationShipRepairInterface
+    public function prototype(): StationShipRepair
     {
         return new StationShipRepair();
     }
@@ -30,7 +29,7 @@ final class StationShipRepairRepository extends EntityRepository implements Stat
     }
 
     #[Override]
-    public function getByShip(int $shipId): ?StationShipRepairInterface
+    public function getByShip(int $shipId): ?StationShipRepair
     {
         return $this->findOneBy([
             'ship_id' => $shipId
@@ -60,7 +59,7 @@ final class StationShipRepairRepository extends EntityRepository implements Stat
     }
 
     #[Override]
-    public function save(StationShipRepairInterface $stationShipRepair): void
+    public function save(StationShipRepair $stationShipRepair): void
     {
         $em = $this->getEntityManager();
 
@@ -68,7 +67,7 @@ final class StationShipRepairRepository extends EntityRepository implements Stat
     }
 
     #[Override]
-    public function delete(StationShipRepairInterface $stationShipRepair): void
+    public function delete(StationShipRepair $stationShipRepair): void
     {
         $em = $this->getEntityManager();
 

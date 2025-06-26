@@ -11,9 +11,9 @@ use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Station\Dock\DockTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\AllianceInterface;
-use Stu\Orm\Entity\AllianceJobInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Alliance;
+use Stu\Orm\Entity\AllianceJob;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
 use Stu\Orm\Repository\DockingPrivilegeRepositoryInterface;
@@ -52,7 +52,7 @@ final class AllianceActionManager implements AllianceActionManagerInterface
     }
 
     #[Override]
-    public function delete(AllianceInterface $alliance, bool $sendMesage = true): void
+    public function delete(Alliance $alliance, bool $sendMesage = true): void
     {
         $this->dockingPrivilegeRepository->truncateByTypeAndTarget(DockTypeEnum::ALLIANCE, $alliance->getId());
 
@@ -92,7 +92,7 @@ final class AllianceActionManager implements AllianceActionManagerInterface
     }
 
     #[Override]
-    public function mayEdit(AllianceInterface $alliance, UserInterface $user): bool
+    public function mayEdit(Alliance $alliance, User $user): bool
     {
         $successor = $alliance->getSuccessor();
         $founder = $alliance->getFounder();
@@ -102,7 +102,7 @@ final class AllianceActionManager implements AllianceActionManagerInterface
     }
 
     #[Override]
-    public function mayManageForeignRelations(AllianceInterface $alliance, UserInterface $user): bool
+    public function mayManageForeignRelations(Alliance $alliance, User $user): bool
     {
         $diplomatic = $alliance->getDiplomatic();
 
@@ -116,10 +116,10 @@ final class AllianceActionManager implements AllianceActionManagerInterface
     #[Override]
     public function sendMessage(int $allianceId, string $text): void
     {
-        /** @var AllianceJobInterface[] $jobList */
+        /** @var AllianceJob[] $jobList */
         $jobList = array_filter(
             $this->allianceJobRepository->getByAlliance($allianceId),
-            static fn(AllianceJobInterface $job): bool => $job->getType() !== AllianceEnum::ALLIANCE_JOBS_PENDING
+            static fn(AllianceJob $job): bool => $job->getType() !== AllianceEnum::ALLIANCE_JOBS_PENDING
         );
 
         foreach ($jobList as $job) {
@@ -128,7 +128,7 @@ final class AllianceActionManager implements AllianceActionManagerInterface
     }
 
     #[Override]
-    public function mayEditFactionMode(AllianceInterface $alliance, int $factionId): bool
+    public function mayEditFactionMode(Alliance $alliance, int $factionId): bool
     {
         if ($alliance->getFaction() === null) {
             return true;

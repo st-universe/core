@@ -12,14 +12,13 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\KnCommentRepository;
 
 #[Table(name: 'stu_kn_comments')]
 #[Index(name: 'kn_comment_post_idx', columns: ['post_id'])]
 #[Index(name: 'kn_comment_user_idx', columns: ['user_id'])]
 #[Entity(repositoryClass: KnCommentRepository::class)]
-class KnComment implements KnCommentInterface
+class KnComment
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -46,116 +45,100 @@ class KnComment implements KnCommentInterface
 
     #[ManyToOne(targetEntity: KnPost::class)]
     #[JoinColumn(name: 'post_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private KnPostInterface $post;
+    private KnPost $post;
 
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $user;
+    private User $user;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getKnId(): int
     {
         return $this->post_id;
     }
 
-    #[Override]
-    public function setPostId(int $postId): KnCommentInterface
+    public function setPostId(int $postId): KnComment
     {
         $this->post_id = $postId;
 
         return $this;
     }
 
-    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    #[Override]
-    public function setUser(UserInterface $user): KnCommentInterface
+    public function setUser(User $user): KnComment
     {
         $this->user = $user;
         return $this;
     }
 
-    #[Override]
     public function getUsername(): string
     {
         return $this->username;
     }
 
-    #[Override]
-    public function setUsername(string $username): KnCommentInterface
+    public function setUsername(string $username): KnComment
     {
         $this->username = $username;
 
         return $this;
     }
 
-    #[Override]
     public function getText(): string
     {
         return $this->text;
     }
 
-    #[Override]
-    public function setText(string $text): KnCommentInterface
+    public function setText(string $text): KnComment
     {
         $this->text = $text;
 
         return $this;
     }
 
-    #[Override]
     public function getDate(): int
     {
         return $this->date;
     }
 
-    #[Override]
-    public function setDate(int $date): KnCommentInterface
+    public function setDate(int $date): KnComment
     {
         $this->date = $date;
 
         return $this;
     }
 
-    #[Override]
-    public function getPosting(): KnPostInterface
+    public function getPosting(): KnPost
     {
         return $this->post;
     }
 
-    #[Override]
-    public function setPosting(KnPostInterface $post): KnCommentInterface
+    public function setPosting(KnPost $post): KnComment
     {
         $this->post = $post;
 
         return $this;
     }
 
-    #[Override]
-    public function setDeleted(int $timestamp): KnCommentInterface
+    public function setDeleted(int $timestamp): KnComment
     {
         $this->deleted = $timestamp;
 
         return $this;
     }
 
-    #[Override]
     public function isDeleted(): bool
     {
         return $this->deleted !== null;

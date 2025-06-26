@@ -2,17 +2,17 @@
 
 namespace Stu\Module\Database\Lib;
 
-use Stu\Orm\Entity\DatabaseCategoryInterface;
-use Stu\Orm\Entity\DatabaseEntryInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\DatabaseCategory;
+use Stu\Orm\Entity\DatabaseEntry;
+use Stu\Orm\Entity\User;
 
 interface CreateDatabaseEntryInterface
 {
-    public function createDatabaseEntryForUser(UserInterface $user, int $databaseEntryId): ?DatabaseEntryInterface;
+    public function createDatabaseEntryForUser(User $user, int $databaseEntryId): ?DatabaseEntry;
 
     public function checkForCategoryCompletion(
-        UserInterface $user,
-        DatabaseCategoryInterface $category,
+        User $user,
+        DatabaseCategory $category,
         ?int $finishedDatabaseEntryId = null
     ): void;
 }

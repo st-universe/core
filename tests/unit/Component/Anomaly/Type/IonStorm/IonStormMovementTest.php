@@ -9,8 +9,8 @@ use Mockery\MockInterface;
 use Override;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Module\Control\StuRandom;
-use Stu\Orm\Entity\AnomalyInterface;
-use Stu\Orm\Entity\LocationInterface;
+use Stu\Orm\Entity\Anomaly;
+use Stu\Orm\Entity\Location;
 use Stu\Orm\Repository\AnomalyRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -35,7 +35,7 @@ class IonStormMovementTest extends StuTestCase
 
     public function testMoveStormExpectMovementChangeWhenTypeVariable(): void
     {
-        $root = $this->mock(AnomalyInterface::class);
+        $root = $this->mock(Anomaly::class);
         $locationPool = $this->mock(LocationPool::class);
 
         $ionStormData = new IonStormData(0, 0, IonStormMovementType::VARIABLE);
@@ -66,16 +66,16 @@ class IonStormMovementTest extends StuTestCase
 
     public function testMoveStormExpectMovementOfChildren(): void
     {
-        $root = $this->mock(AnomalyInterface::class);
-        $child = $this->mock(AnomalyInterface::class);
-        $child2 = $this->mock(AnomalyInterface::class);
-        $childOnBorder = $this->mock(AnomalyInterface::class);
+        $root = $this->mock(Anomaly::class);
+        $child = $this->mock(Anomaly::class);
+        $child2 = $this->mock(Anomaly::class);
+        $childOnBorder = $this->mock(Anomaly::class);
         $locationPool = $this->mock(LocationPool::class);
-        $childLocation = $this->mock(LocationInterface::class);
-        $child2Location = $this->mock(LocationInterface::class);
-        $newLocation = $this->mock(LocationInterface::class);
-        $childOnBorderLocation = $this->mock(LocationInterface::class);
-        $locationWithIonStorm = $this->mock(LocationInterface::class);
+        $childLocation = $this->mock(Location::class);
+        $child2Location = $this->mock(Location::class);
+        $newLocation = $this->mock(Location::class);
+        $childOnBorderLocation = $this->mock(Location::class);
+        $locationWithIonStorm = $this->mock(Location::class);
 
         $ionStormData = new IonStormData(45, 4, IonStormMovementType::STATIC);
 
@@ -177,10 +177,10 @@ class IonStormMovementTest extends StuTestCase
 
     public function testMoveStormExpectDeletionWhenTargetLocationForbidden(): void
     {
-        $root = $this->mock(AnomalyInterface::class);
-        $childWithForbiddenTarget = $this->mock(AnomalyInterface::class);
-        $childWithForbiddenTargetLocation = $this->mock(LocationInterface::class);
-        $forbiddenLocation = $this->mock(LocationInterface::class);
+        $root = $this->mock(Anomaly::class);
+        $childWithForbiddenTarget = $this->mock(Anomaly::class);
+        $childWithForbiddenTargetLocation = $this->mock(Location::class);
+        $forbiddenLocation = $this->mock(Location::class);
         $locationPool = $this->mock(LocationPool::class);
 
         $ionStormData = new IonStormData(45, 4, IonStormMovementType::STATIC);

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Logging\GameRequest;
 
 use Override;
-use Stu\Orm\Entity\GameRequestInterface;
+use Stu\Orm\Entity\GameRequest;
 
 /**
  * Cleans the parameter list from privacy/security related ones
@@ -24,8 +24,8 @@ final class ParameterSanitizer implements ParameterSanitizerInterface
 
     #[Override]
     public function sanitize(
-        GameRequestInterface $gameRequest
-    ): GameRequestInterface {
+        GameRequest $gameRequest
+    ): GameRequest {
         $params = array_diff_key(
             $gameRequest->getParameterArray(),
             array_flip(self::PARAMETER_BLACKLIST)

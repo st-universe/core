@@ -4,7 +4,6 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\BuildplanModule;
-use Stu\Orm\Entity\BuildplanModuleInterface;
 
 /**
  * @extends ObjectRepository<BuildplanModule>
@@ -12,15 +11,15 @@ use Stu\Orm\Entity\BuildplanModuleInterface;
 interface BuildplanModuleRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return array<BuildplanModuleInterface>
+     * @return array<BuildplanModule>
      */
     public function getByBuildplan(int $buildplanId): array;
 
-    public function prototype(): BuildplanModuleInterface;
+    public function prototype(): BuildplanModule;
 
-    public function save(BuildplanModuleInterface $obj): void;
+    public function save(BuildplanModule $obj): void;
 
-    public function delete(BuildplanModuleInterface $obj): void;
+    public function delete(BuildplanModule $obj): void;
 
     public function truncateByBuildplan(int $buildplanId): void;
 }

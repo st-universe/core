@@ -6,13 +6,13 @@ use Override;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Party\AlertStateBattleParty;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 
 class AlertedShipInformation implements AlertedShipInformationInterface
 {
     #[Override]
     public function addAlertedShipsInfo(
-        SpacecraftInterface $incomingSpacecraft,
+        Spacecraft $incomingSpacecraft,
         array $alertedBattleParties,
         InformationInterface $informations
     ): void {
@@ -53,7 +53,7 @@ class AlertedShipInformation implements AlertedShipInformationInterface
 
     /** @param array<AlertStateBattleParty> $alertedBattleParties */
     private function addInformation(
-        SpacecraftInterface $incomingSpacecraft,
+        Spacecraft $incomingSpacecraft,
         array $alertedBattleParties,
         SpacecraftAlertStateEnum $alertState,
         bool $isSingleton,

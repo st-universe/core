@@ -14,7 +14,7 @@ use Stu\Module\Colony\View\ShowOrbitManagement\ShowOrbitManagement;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Colony;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
@@ -78,7 +78,7 @@ final class ManageOrbitalSpacecrafts implements ActionControllerInterface
         array $values,
         ManagerProviderInterface $managerProvider,
         int $spacecraftId,
-        ColonyInterface $colony
+        Colony $colony
     ): array {
         $spacecraft = $this->spacecraftRepository->find($spacecraftId);
         if ($spacecraft === null) {

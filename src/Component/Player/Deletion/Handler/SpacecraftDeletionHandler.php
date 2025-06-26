@@ -11,10 +11,10 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Spacecraft\Lib\Interaction\ShipUndockingInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftRemoverInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\StationInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\Station;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ConstructionProgressRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\Orm\Repository\MiningQueueRepositoryInterface;
@@ -33,32 +33,32 @@ final class SpacecraftDeletionHandler implements PlayerDeletionHandlerInterface
     ) {}
 
     #[Override]
-    public function delete(UserInterface $user): void
+    public function delete(User $user): void
     {
         foreach ($this->spacecraftRepository->getByUser($user) as $spacecraft) {
 
             // do nothing if tradepost, because it gets handled in TradepostDeletionHandler
             if (
-                $spacecraft instanceof StationInterface
+                $spacecraft instanceof Station
                 && $spacecraft->getTradePost() !== null
             ) {
                 continue;
             }
 
-            if ($spacecraft instanceof StationInterface) {
+            if ($spacecraft instanceof Station) {
                 $this->deleteConstructionProgress($spacecraft);
                 $this->undockAllDockedShips($spacecraft);
             }
 
             $this->unsetTractor($spacecraft);
-            if ($spacecraft instanceof ShipInterface) {
+            if ($spacecraft instanceof Ship) {
                 $this->deleteMiningQueue($spacecraft);
             }
             $this->spacecraftRemover->remove($spacecraft, true);
         }
     }
 
-    private function deleteConstructionProgress(StationInterface $station): void
+    private function deleteConstructionProgress(Station $station): void
     {
         $progress = $station->getConstructionProgress();
         if ($progress !== null) {
@@ -67,7 +67,7 @@ final class SpacecraftDeletionHandler implements PlayerDeletionHandlerInterface
         }
     }
 
-    private function undockAllDockedShips(StationInterface $station): void
+    private function undockAllDockedShips(Station $station): void
     {
         $anyDocked = $this->shipUndocking->undockAllDocked($station);
 
@@ -76,7 +76,7 @@ final class SpacecraftDeletionHandler implements PlayerDeletionHandlerInterface
         }
     }
 
-    private function unsetTractor(SpacecraftInterface $spacecraft): void
+    private function unsetTractor(Spacecraft $spacecraft): void
     {
         $tractoredShip = $spacecraft->getTractoredShip();
 
@@ -91,7 +91,7 @@ final class SpacecraftDeletionHandler implements PlayerDeletionHandlerInterface
         );
     }
 
-    private function deleteMiningQueue(ShipInterface $spacecraft): void
+    private function deleteMiningQueue(Ship $spacecraft): void
     {
         $miningqueue = $spacecraft->getMiningQueue();
         if ($miningqueue !== null) {

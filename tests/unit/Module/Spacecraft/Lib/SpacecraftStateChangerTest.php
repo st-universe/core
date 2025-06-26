@@ -18,7 +18,7 @@ use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\ShipTakeoverManagerInterface;
 use Stu\Module\Ship\Lib\TholianWebUtilInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -34,7 +34,7 @@ class SpacecraftStateChangerTest extends StuTestCase
 
     private MockInterface&ShipWrapperInterface $wrapper;
 
-    private MockInterface&ShipInterface $ship;
+    private MockInterface&Ship $ship;
 
     private SpacecraftStateChangerInterface $subject;
 
@@ -54,7 +54,7 @@ class SpacecraftStateChangerTest extends StuTestCase
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
 
         //other
-        $this->ship = $this->mock(ShipInterface::class);
+        $this->ship = $this->mock(Ship::class);
 
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()

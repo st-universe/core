@@ -8,7 +8,7 @@ use Mockery;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
 use Override;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 
 class FleetDeletionHandlerTest extends MockeryTestCase
@@ -32,7 +32,7 @@ class FleetDeletionHandlerTest extends MockeryTestCase
 
     public function testDeleteDeletesFleets(): void
     {
-        $user = Mockery::mock(UserInterface::class);
+        $user = Mockery::mock(User::class);
 
         $this->fleetRepository->shouldReceive('truncateByUser')
             ->with($user)

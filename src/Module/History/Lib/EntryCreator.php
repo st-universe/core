@@ -7,10 +7,10 @@ namespace Stu\Module\History\Lib;
 use Override;
 use Stu\Component\History\HistoryTypeEnum;
 use Stu\Lib\Map\EntityWithLocationInterface;
-use Stu\Orm\Entity\AllianceInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\LocationInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Alliance;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Location;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\HistoryRepositoryInterface;
 
 final class EntryCreator implements EntryCreatorInterface
@@ -21,13 +21,13 @@ final class EntryCreator implements EntryCreatorInterface
     public function addEntry(
         string $text,
         int $sourceUserId,
-        SpacecraftInterface|ColonyInterface|AllianceInterface $target
+        Spacecraft|Colony|Alliance $target
     ): void {
 
-        if ($target instanceof SpacecraftInterface) {
+        if ($target instanceof Spacecraft) {
             $type = $target->isStation() ? HistoryTypeEnum::STATION : HistoryTypeEnum::SHIP;
             $targetUser = $target->getUser();
-        } elseif ($target instanceof ColonyInterface) {
+        } elseif ($target instanceof Colony) {
             $type = HistoryTypeEnum::COLONY;
             $targetUser = $target->getUser();
         } else {
@@ -54,7 +54,7 @@ final class EntryCreator implements EntryCreatorInterface
         string $text,
         int $sourceUserId,
         int $targetUserId,
-        ?LocationInterface $location = null
+        ?Location $location = null
     ): void {
         $entry = $this->historyRepository->prototype();
         $entry->setText($text);

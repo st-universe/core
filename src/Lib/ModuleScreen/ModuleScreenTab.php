@@ -2,7 +2,7 @@
 
 namespace Stu\Lib\ModuleScreen;
 
-use Stu\Orm\Entity\ModuleInterface;
+use Stu\Orm\Entity\Module;
 
 class ModuleScreenTab
 {
@@ -34,7 +34,7 @@ class ModuleScreenTab
             if (!$this->moduleSelector->hasSelectedModule()) {
                 $class .= ' module_selector_unselected';
             } else {
-                /** @var ModuleInterface $mod */
+                /** @var Module $mod */
                 $mod = $this->moduleSelector->getBuildplan()->getModulesByType($this->moduleSelector->getModuleType())->first();
                 $commodityId = $mod->getCommodityId();
 

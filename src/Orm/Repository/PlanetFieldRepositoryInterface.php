@@ -5,29 +5,28 @@ namespace Stu\Orm\Repository;
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\PlanetField;
-use Stu\Orm\Entity\PlanetFieldInterface;
 
 /**
  * @extends ObjectRepository<PlanetField>
  *
- * @method null|PlanetFieldInterface find(integer $id)
+ * @method null|PlanetField find(integer $id)
  */
 interface PlanetFieldRepositoryInterface extends ObjectRepository
 {
-    public function prototype(): PlanetFieldInterface;
+    public function prototype(): PlanetField;
 
-    public function save(PlanetFieldInterface $planetField): void;
+    public function save(PlanetField $planetField): void;
 
-    public function delete(PlanetFieldInterface $planetField): void;
+    public function delete(PlanetField $planetField): void;
 
-    public function getByColonyAndFieldId(int $colonyId, int $fieldId): ?PlanetFieldInterface;
+    public function getByColonyAndFieldId(int $colonyId, int $fieldId): ?PlanetField;
 
-    public function getByColonyAndFieldIndex(int $colonyId, int $fieldIndex): ?PlanetFieldInterface;
+    public function getByColonyAndFieldIndex(int $colonyId, int $fieldIndex): ?PlanetField;
 
     /**
-     * @return array<PlanetFieldInterface>
+     * @return array<PlanetField>
      */
     public function getByColonyAndType(int $colonyId, int $planetFieldTypeId): array;
 
@@ -35,7 +34,7 @@ interface PlanetFieldRepositoryInterface extends ObjectRepository
      * @param array<int> $state
      * @param array<int> $excludedFields
      *
-     * @return array<PlanetFieldInterface>
+     * @return array<PlanetField>
      */
     public function getEnergyConsumingByHost(
         PlanetFieldHostInterface $host,
@@ -45,7 +44,7 @@ interface PlanetFieldRepositoryInterface extends ObjectRepository
     ): array;
 
     /**
-     * @return array<PlanetFieldInterface>
+     * @return array<PlanetField>
      */
     public function getEnergyProducingByHost(PlanetFieldHostInterface $host): array;
 
@@ -53,7 +52,7 @@ interface PlanetFieldRepositoryInterface extends ObjectRepository
      * @param array<int> $state
      * @param array<int> $excludedFields
      *
-     * @return array<PlanetFieldInterface>
+     * @return array<PlanetField>
      */
     public function getCommodityConsumingByHostAndCommodity(
         PlanetFieldHostInterface $host,
@@ -64,24 +63,24 @@ interface PlanetFieldRepositoryInterface extends ObjectRepository
     ): array;
 
     /**
-     * @return array<PlanetFieldInterface>
+     * @return array<PlanetField>
      */
     public function getCommodityProducingByHostAndCommodity(PlanetFieldHostInterface $host, int $commodityId): array;
 
     /**
-     * @return array<PlanetFieldInterface>
+     * @return array<PlanetField>
      */
     public function getHousingProvidingByHost(PlanetFieldHostInterface $host): array;
 
     /**
-     * @return array<PlanetFieldInterface>
+     * @return array<PlanetField>
      */
     public function getWorkerConsumingByHost(PlanetFieldHostInterface $host): array;
 
     /**
      * @param array<int> $excludedFields
      *
-     * @return array<PlanetFieldInterface>
+     * @return array<PlanetField>
      */
     public function getWorkerConsumingByColonyAndState(
         int $colonyId,
@@ -109,7 +108,7 @@ interface PlanetFieldRepositoryInterface extends ObjectRepository
     /**
      * @param array<int> $buildingFunctionIds
      *
-     * @return array<PlanetFieldInterface>
+     * @return array<PlanetField>
      */
     public function getByColonyAndBuildingFunction(
         int $colonyId,
@@ -119,17 +118,17 @@ interface PlanetFieldRepositoryInterface extends ObjectRepository
     public function getMaxShieldsOfHost(PlanetFieldHostInterface $host): int;
 
     /**
-     * @return array<PlanetFieldInterface>
+     * @return array<PlanetField>
      */
     public function getInConstructionByUser(int $userId): array;
 
     /**
-     * @return array<PlanetFieldInterface>
+     * @return array<PlanetField>
      */
     public function getByConstructionFinish(int $finishTime): array;
 
     /**
-     * @return array<PlanetFieldInterface>
+     * @return array<PlanetField>
      */
     public function getByColonyWithBuilding(PlanetFieldHostInterface $host): array;
 
@@ -138,5 +137,5 @@ interface PlanetFieldRepositoryInterface extends ObjectRepository
      */
     public function getEnergyProductionByHost(PlanetFieldHostInterface $host, array $excludedFields = [-1]): int;
 
-    public function truncateByColony(ColonyInterface $colony): void;
+    public function truncateByColony(Colony $colony): void;
 }

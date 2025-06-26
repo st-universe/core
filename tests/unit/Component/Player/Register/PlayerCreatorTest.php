@@ -12,9 +12,9 @@ use Stu\Component\Player\Register\Exception\EmailAddressInvalidException;
 use Stu\Component\Player\Register\Exception\LoginNameInvalidException;
 use Stu\Component\Player\Register\Exception\PlayerDuplicateException;
 use Stu\Module\Control\StuHashInterface;
-use Stu\Orm\Entity\FactionInterface;
-use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Entity\UserRegistrationInterface;
+use Stu\Orm\Entity\Faction;
+use Stu\Orm\Entity\User;
+use Stu\Orm\Entity\UserRegistration;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\Orm\Repository\UserRefererRepositoryInterface;
 
@@ -59,7 +59,7 @@ class PlayerCreatorTest extends MockeryTestCase
         $this->creator->createWithMobileNumber(
             'meh',
             'lol',
-            Mockery::mock(FactionInterface::class),
+            Mockery::mock(Faction::class),
             'mobile',
             'password'
         );
@@ -72,7 +72,7 @@ class PlayerCreatorTest extends MockeryTestCase
         $this->creator->createWithMobileNumber(
             'mehzomglol',
             'lol',
-            Mockery::mock(FactionInterface::class),
+            Mockery::mock(Faction::class),
             'mobile',
             'password'
         );
@@ -87,12 +87,12 @@ class PlayerCreatorTest extends MockeryTestCase
         $this->userRepository->shouldReceive('getByLogin')
             ->with($loginname)
             ->once()
-            ->andReturn(Mockery::mock(UserInterface::class));
+            ->andReturn(Mockery::mock(User::class));
 
         $this->creator->createWithMobileNumber(
             $loginname,
             'lol@example.com',
-            Mockery::mock(FactionInterface::class),
+            Mockery::mock(Faction::class),
             'mobile',
             'password'
         );
@@ -112,12 +112,12 @@ class PlayerCreatorTest extends MockeryTestCase
         $this->userRepository->shouldReceive('getByEmail')
             ->with($email)
             ->once()
-            ->andReturn(Mockery::mock(UserInterface::class));
+            ->andReturn(Mockery::mock(User::class));
 
         $this->creator->createWithMobileNumber(
             $loginname,
             $email,
-            Mockery::mock(FactionInterface::class),
+            Mockery::mock(Faction::class),
             'mobile',
             'password'
         );
@@ -130,9 +130,9 @@ class PlayerCreatorTest extends MockeryTestCase
         $user_id = 42;
         $password = 'snafu';
 
-        $user = Mockery::mock(UserInterface::class);
-        $registration = Mockery::mock(UserRegistrationInterface::class);
-        $faction = Mockery::mock(FactionInterface::class);
+        $user = Mockery::mock(User::class);
+        $registration = Mockery::mock(UserRegistration::class);
+        $faction = Mockery::mock(Faction::class);
 
         $this->userRepository->shouldReceive('save')
             ->with($user)

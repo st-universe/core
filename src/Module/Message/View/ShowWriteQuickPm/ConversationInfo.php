@@ -5,20 +5,20 @@ declare(strict_types=1);
 namespace Stu\Module\Message\View\ShowWriteQuickPm;
 
 use JBBCode\Parser;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\FleetInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Fleet;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\User;
 
 class ConversationInfo
 {
     /**
-     * @var UserInterface|SpacecraftInterface|FleetInterface|ColonyInterface
+     * @var User|Spacecraft|Fleet|Colony
      */
     private $from;
 
     /**
-     * @var UserInterface|SpacecraftInterface|FleetInterface|ColonyInterface
+     * @var User|Spacecraft|Fleet|Colony
      */
     private $to;
 
@@ -26,11 +26,11 @@ class ConversationInfo
     private string $whoText;
     private string $sectorString;
     private string $toText;
-    private UserInterface $recipient;
+    private User $recipient;
 
 
     /**
-     * @param UserInterface|SpacecraftInterface|FleetInterface|ColonyInterface $from
+     * @param User|Spacecraft|Fleet|Colony $from
      */
     public function setFrom($from): void
     {
@@ -38,7 +38,7 @@ class ConversationInfo
     }
 
     /**
-     * @param UserInterface|SpacecraftInterface|FleetInterface|ColonyInterface $to
+     * @param User|Spacecraft|Fleet|Colony $to
      */
     public function setTo($to): void
     {
@@ -65,12 +65,12 @@ class ConversationInfo
         $this->toText = $toText;
     }
 
-    public function getRecipient(): UserInterface
+    public function getRecipient(): User
     {
         return $this->recipient;
     }
 
-    public function setRecipient(UserInterface $recipient): void
+    public function setRecipient(User $recipient): void
     {
         $this->recipient = $recipient;
     }

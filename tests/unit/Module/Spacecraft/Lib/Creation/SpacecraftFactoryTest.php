@@ -8,23 +8,23 @@ use Mockery\MockInterface;
 use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Spacecraft\SpacecraftTypeEnum;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftConditionInterface;
-use Stu\Orm\Entity\SpacecraftRumpInterface;
-use Stu\Orm\Entity\StationInterface;
-use Stu\Orm\Entity\TholianWebInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\SpacecraftCondition;
+use Stu\Orm\Entity\SpacecraftRump;
+use Stu\Orm\Entity\Station;
+use Stu\Orm\Entity\TholianWeb;
 use Stu\StuTestCase;
 
 class SpacecraftFactoryTest extends StuTestCase
 {
-    private MockInterface&SpacecraftRumpInterface $rump;
+    private MockInterface&SpacecraftRump $rump;
 
     private SpacecraftFactoryInterface $subject;
 
     #[Override]
     public function setUp(): void
     {
-        $this->rump = $this->mock(SpacecraftRumpInterface::class);
+        $this->rump = $this->mock(SpacecraftRump::class);
 
         $this->subject = new SpacecraftFactory();
     }
@@ -32,9 +32,9 @@ class SpacecraftFactoryTest extends StuTestCase
     public static function provideTestData(): array
     {
         return [
-            [SpacecraftTypeEnum::SHIP, ShipInterface::class],
-            [SpacecraftTypeEnum::STATION, StationInterface::class],
-            [SpacecraftTypeEnum::THOLIAN_WEB, TholianWebInterface::class],
+            [SpacecraftTypeEnum::SHIP, Ship::class],
+            [SpacecraftTypeEnum::STATION, Station::class],
+            [SpacecraftTypeEnum::THOLIAN_WEB, TholianWeb::class],
         ];
     }
 
@@ -54,7 +54,7 @@ class SpacecraftFactoryTest extends StuTestCase
 
         $this->assertTrue($result instanceof $className);
 
-        $this->assertTrue($result->getCondition() instanceof SpacecraftConditionInterface);
+        $this->assertTrue($result->getCondition() instanceof SpacecraftCondition);
         $this->assertSame($result, $result->getCondition()->getSpacecraft());
     }
 }

@@ -7,7 +7,6 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\UserPirateRound;
-use Stu\Orm\Entity\UserPirateRoundInterface;
 
 /**
  * @extends EntityRepository<UserPirateRound>
@@ -15,13 +14,13 @@ use Stu\Orm\Entity\UserPirateRoundInterface;
 final class UserPirateRoundRepository extends EntityRepository implements UserPirateRoundRepositoryInterface
 {
     #[Override]
-    public function prototype(): UserPirateRoundInterface
+    public function prototype(): UserPirateRound
     {
         return new UserPirateRound();
     }
 
     #[Override]
-    public function save(UserPirateRoundInterface $userPirateRound): void
+    public function save(UserPirateRound $userPirateRound): void
     {
         $em = $this->getEntityManager();
 
@@ -29,7 +28,7 @@ final class UserPirateRoundRepository extends EntityRepository implements UserPi
     }
 
     #[Override]
-    public function delete(UserPirateRoundInterface $userPirateRound): void
+    public function delete(UserPirateRound $userPirateRound): void
     {
         $em = $this->getEntityManager();
 
@@ -55,7 +54,7 @@ final class UserPirateRoundRepository extends EntityRepository implements UserPi
     }
 
     #[Override]
-    public function findByUserAndPirateRound(int $userId, int $pirateRoundId): ?UserPirateRoundInterface
+    public function findByUserAndPirateRound(int $userId, int $pirateRoundId): ?UserPirateRound
     {
         return $this->findOneBy([
             'user_id' => $userId,

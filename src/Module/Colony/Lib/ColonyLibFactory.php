@@ -26,13 +26,13 @@ use Stu\Module\Commodity\Lib\CommodityCacheInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Module\Twig\TwigPageInterface;
-use Stu\Orm\Entity\BuildingInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\CommodityInterface;
-use Stu\Orm\Entity\SpacecraftBuildplanInterface;
-use Stu\Orm\Entity\SpacecraftRumpInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Building;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Commodity;
+use Stu\Orm\Entity\SpacecraftBuildplan;
+use Stu\Orm\Entity\SpacecraftRump;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\BuildingCommodityRepositoryInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -100,7 +100,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
 
     #[Override]
     public function createColonyListItem(
-        ColonyInterface $colony
+        Colony $colony
     ): ColonyListItemInterface {
         return new ColonyListItem(
             $this,
@@ -114,8 +114,8 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
 
     #[Override]
     public function createBuildableRumpItem(
-        SpacecraftRumpInterface $shipRump,
-        UserInterface $currentUser
+        SpacecraftRump $shipRump,
+        User $currentUser
     ): BuildableRumpListItemInterface {
         return new BuildableRumpListItem(
             $this->spacecraftRepository,
@@ -127,7 +127,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
 
     #[Override]
     public function createColonyProductionPreviewWrapper(
-        BuildingInterface $building,
+        Building $building,
         PlanetFieldHostInterface $host
     ): ColonyProductionPreviewWrapper {
         return new ColonyProductionPreviewWrapper(
@@ -140,7 +140,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
     #[Override]
     public function createEpsProductionPreviewWrapper(
         PlanetFieldHostInterface $host,
-        BuildingInterface $building
+        Building $building
     ): ColonyEpsProductionPreviewWrapper {
         return new ColonyEpsProductionPreviewWrapper(
             $this->planetFieldRepository,
@@ -152,10 +152,10 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
     #[Override]
     public function createModuleSelector(
         SpacecraftModuleTypeEnum $moduleType,
-        ColonyInterface|SpacecraftInterface $host,
-        SpacecraftRumpInterface $rump,
-        UserInterface $user,
-        ?SpacecraftBuildplanInterface $buildplan = null
+        Colony|Spacecraft $host,
+        SpacecraftRump $rump,
+        User $user,
+        ?SpacecraftBuildplan $buildplan = null
     ): ModuleSelector {
 
         $addon = $this->moduleSelectorAddonFactory->createModuleSelectorAddon($moduleType);
@@ -175,7 +175,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
 
     #[Override]
     public function createColonyProduction(
-        CommodityInterface $commodity,
+        Commodity $commodity,
         int $production,
         ?int $pc = null
     ): ColonyProduction {
@@ -229,7 +229,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
 
     #[Override]
     public function createColonyScanPanel(
-        ColonyInterface $colony
+        Colony $colony
     ): ColonyScanPanel {
         return new ColonyScanPanel(
             $this->panelLayerCreation,

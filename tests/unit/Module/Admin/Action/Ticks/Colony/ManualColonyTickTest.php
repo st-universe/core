@@ -12,7 +12,7 @@ use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Tick\Colony\ColonyTickInterface;
 use Stu\Module\Tick\Colony\ColonyTickManagerInterface;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Colony;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -174,7 +174,7 @@ class ManualColonyTickTest extends StuTestCase
     public function testHandleExecutesForSingleColonyWhenColonyExists(): void
     {
         $colonyId = 5;
-        $colony = $this->mock(ColonyInterface::class);
+        $colony = $this->mock(Colony::class);
 
         $this->game->shouldReceive('isAdmin')
             ->withNoArgs()

@@ -18,8 +18,8 @@ use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
-use Stu\Orm\Entity\SpacecraftBuildplanInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\SpacecraftBuildplan;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
@@ -128,9 +128,9 @@ final class StartShuttle implements ActionControllerInterface
     }
 
     private function startShuttle(
-        SpacecraftInterface $ship,
+        Spacecraft $ship,
         EpsSystemData $epsSystem,
-        SpacecraftBuildplanInterface $plan,
+        SpacecraftBuildplan $plan,
         GameControllerInterface $game
     ): void {
         $rump = $plan->getRump();

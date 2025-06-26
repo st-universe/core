@@ -7,7 +7,6 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\TorpedoStorage;
-use Stu\Orm\Entity\TorpedoStorageInterface;
 
 /**
  * @extends EntityRepository<TorpedoStorage>
@@ -15,13 +14,13 @@ use Stu\Orm\Entity\TorpedoStorageInterface;
 final class TorpedoStorageRepository extends EntityRepository implements TorpedoStorageRepositoryInterface
 {
     #[Override]
-    public function prototype(): TorpedoStorageInterface
+    public function prototype(): TorpedoStorage
     {
         return new TorpedoStorage();
     }
 
     #[Override]
-    public function save(TorpedoStorageInterface $torpedoStorage): void
+    public function save(TorpedoStorage $torpedoStorage): void
     {
         $em = $this->getEntityManager();
 
@@ -29,7 +28,7 @@ final class TorpedoStorageRepository extends EntityRepository implements Torpedo
     }
 
     #[Override]
-    public function delete(TorpedoStorageInterface $torpedoStorage): void
+    public function delete(TorpedoStorage $torpedoStorage): void
     {
         $em = $this->getEntityManager();
 

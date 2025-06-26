@@ -9,7 +9,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Party\AlertStateBattleParty;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 use Stu\StuTestCase;
 
 class AlertedShipInformationTest extends StuTestCase
@@ -39,7 +39,7 @@ class AlertedShipInformationTest extends StuTestCase
         string $expectedInfo
     ): void {
 
-        $incomingShip = $this->mock(ShipInterface::class);
+        $incomingShip = $this->mock(Ship::class);
         $informations = $this->mock(InformationInterface::class);
         $battleParty = $this->mock(AlertStateBattleParty::class);
 

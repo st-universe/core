@@ -7,7 +7,6 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\LotteryWinnerBuildplan;
-use Stu\Orm\Entity\LotteryWinnerBuildplanInterface;
 
 /**
  * @extends EntityRepository<LotteryWinnerBuildplan>
@@ -15,13 +14,13 @@ use Stu\Orm\Entity\LotteryWinnerBuildplanInterface;
 final class LotteryWinnerBuildplanRepository extends EntityRepository implements LotteryWinnerBuildplanRepositoryInterface
 {
     #[Override]
-    public function prototype(): LotteryWinnerBuildplanInterface
+    public function prototype(): LotteryWinnerBuildplan
     {
         return new LotteryWinnerBuildplan();
     }
 
     #[Override]
-    public function save(LotteryWinnerBuildplanInterface $lotteryWinnerBuildplan): void
+    public function save(LotteryWinnerBuildplan $lotteryWinnerBuildplan): void
     {
         $em = $this->getEntityManager();
 
@@ -29,7 +28,7 @@ final class LotteryWinnerBuildplanRepository extends EntityRepository implements
     }
 
     /**
-     * @return LotteryWinnerBuildplanInterface[]
+     * @return LotteryWinnerBuildplan[]
      */
     public function findByFactionId(?int $factionId): array
     {

@@ -10,12 +10,11 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\ColonyClassDepositRepository;
 
 #[Table(name: 'stu_colony_class_deposit')]
 #[Entity(repositoryClass: ColonyClassDepositRepository::class)]
-class ColonyClassDeposit implements ColonyClassDepositInterface
+class ColonyClassDeposit
 {
     #[Column(type: 'integer')]
     private int $min_amount = 0;
@@ -26,32 +25,28 @@ class ColonyClassDeposit implements ColonyClassDepositInterface
     #[Id]
     #[ManyToOne(targetEntity: ColonyClass::class)]
     #[JoinColumn(name: 'colony_class_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ColonyClassInterface $colonyClass;
+    private ColonyClass $colonyClass;
 
     #[Id]
     #[ManyToOne(targetEntity: Commodity::class)]
     #[JoinColumn(name: 'commodity_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private CommodityInterface $commodity;
+    private Commodity $commodity;
 
-    #[Override]
-    public function getColonyClass(): ColonyClassInterface
+    public function getColonyClass(): ColonyClass
     {
         return $this->colonyClass;
     }
 
-    #[Override]
-    public function getCommodity(): CommodityInterface
+    public function getCommodity(): Commodity
     {
         return $this->commodity;
     }
 
-    #[Override]
     public function getMinAmount(): int
     {
         return $this->min_amount;
     }
 
-    #[Override]
     public function getMaxAmount(): int
     {
         return $this->max_amount;

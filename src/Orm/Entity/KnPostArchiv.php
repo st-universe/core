@@ -17,7 +17,6 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\UniqueConstraint;
-use Override;
 use Stu\Module\Communication\View\ShowSingleKn\ShowSingleKn;
 use Stu\Orm\Repository\KnPostArchivRepository;
 
@@ -26,7 +25,7 @@ use Stu\Orm\Repository\KnPostArchivRepository;
 #[Index(name: 'kn_post_archiv_date_idx', columns: ['date'])]
 #[UniqueConstraint(name: 'unique_kn_archiv_former_id', columns: ['former_id'])]
 #[Entity(repositoryClass: KnPostArchivRepository::class)]
-class KnPostArchiv implements KnPostArchivInterface
+class KnPostArchiv
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -70,7 +69,7 @@ class KnPostArchiv implements KnPostArchivInterface
     private array $ratings = [];
 
     /**
-     * @var ArrayCollection<int, KnCommentArchivInterface>
+     * @var ArrayCollection<int, KnCommentArchiv>
      */
     #[OneToMany(targetEntity: KnCommentArchiv::class, mappedBy: 'post')]
     #[OrderBy(['id' => 'ASC'])]
@@ -78,161 +77,150 @@ class KnPostArchiv implements KnPostArchivInterface
 
     #[ManyToOne(targetEntity: RpgPlotArchiv::class, inversedBy: 'posts')]
     #[JoinColumn(name: 'plot_id', referencedColumnName: 'former_id')]
-    private ?RpgPlotArchivInterface $rpgPlot = null;
+    private ?RpgPlotArchiv $rpgPlot = null;
 
     public function __construct()
     {
         $this->comments = new ArrayCollection();
     }
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getVersion(): ?string
     {
         return $this->version;
     }
 
-    #[Override]
     public function getFormerId(): int
     {
         return $this->former_id;
     }
 
-    #[Override]
     public function getTitle(): ?string
     {
         return $this->titel;
     }
 
-    #[Override]
-    public function setTitle(string $title): KnPostArchivInterface
+    public function setTitle(string $title): KnPostArchiv
     {
         $this->titel = $title;
 
         return $this;
     }
 
-    #[Override]
     public function getText(): string
     {
         return $this->text;
     }
 
-    #[Override]
-    public function setText(string $text): KnPostArchivInterface
+    public function setText(string $text): KnPostArchiv
     {
         $this->text = $text;
 
         return $this;
     }
 
-    #[Override]
     public function getDate(): int
     {
         return $this->date;
     }
 
-    #[Override]
-    public function setDate(int $date): KnPostArchivInterface
+    public function setDate(int $date): KnPostArchiv
     {
         $this->date = $date;
 
         return $this;
     }
 
-    #[Override]
     public function getUsername(): string
     {
         return $this->username;
     }
 
-    #[Override]
-    public function setUsername(string $username): KnPostArchivInterface
+    public function setUsername(string $username): KnPostArchiv
     {
         $this->username = $username;
 
         return $this;
     }
 
-    #[Override]
     public function getUserId(): ?int
     {
         return $this->user_id;
     }
 
-    #[Override]
     public function getdelUserId(): ?int
     {
         return $this->del_user_id;
     }
 
-    #[Override]
-    public function setdelUserId(?int $userid): KnPostArchivInterface
+    public function setdelUserId(?int $userid): KnPostArchiv
     {
         $this->del_user_id = $userid;
 
         return $this;
     }
 
-    #[Override]
     public function getEditDate(): ?int
     {
         return $this->lastedit;
     }
 
-    #[Override]
-    public function setEditDate(int $editDate): KnPostArchivInterface
+    public function setEditDate(int $editDate): KnPostArchiv
     {
         $this->lastedit = $editDate;
 
         return $this;
     }
 
-    #[Override]
     public function getPlotId(): ?int
     {
         return $this->plot_id;
     }
 
-    #[Override]
-    public function getRpgPlot(): ?RpgPlotArchivInterface
+    public function getRpgPlot(): ?RpgPlotArchiv
     {
         return $this->rpgPlot;
     }
 
-    #[Override]
-    public function setRpgPlot(?RpgPlotArchivInterface $rpgPlot): KnPostArchivInterface
+    public function setRpgPlot(?RpgPlotArchiv $rpgPlot): KnPostArchiv
     {
         $this->rpgPlot = $rpgPlot;
 
         return $this;
     }
 
-    #[Override]
+    /**
+     * @return Collection<int, KnCommentArchiv>
+     */
     public function getComments(): Collection
     {
         return $this->comments;
     }
 
-    #[Override]
+    /**
+     * @return array<mixed>
+     */
     public function getRatings(): array
     {
         return $this->ratings;
     }
 
-    #[Override]
-    public function setRatings(array $ratings): KnPostArchivInterface
+    /**
+     * @param array<mixed> $ratings
+     */
+    public function setRatings(array $ratings): KnPostArchiv
     {
         $this->ratings = $ratings;
         return $this;
     }
 
-    #[Override]
+    /**
+     * Returns the relativ url to this posting
+     */
     public function getUrl(): string
     {
         return sprintf(

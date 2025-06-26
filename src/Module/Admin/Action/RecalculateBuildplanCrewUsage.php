@@ -12,9 +12,9 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Orm\Entity\BuildplanModuleInterface;
-use Stu\Orm\Entity\ModuleInterface;
-use Stu\Orm\Entity\SpacecraftBuildplanInterface;
+use Stu\Orm\Entity\BuildplanModule;
+use Stu\Orm\Entity\Module;
+use Stu\Orm\Entity\SpacecraftBuildplan;
 use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 
 final class RecalculateBuildplanCrewUsage implements ActionControllerInterface
@@ -53,7 +53,7 @@ final class RecalculateBuildplanCrewUsage implements ActionControllerInterface
 
             $actualCrewUsage = $this->shipCrewCalculator->getCrewUsage(
                 array_map(
-                    fn(BuildplanModuleInterface $buildplanModule): ModuleInterface => $buildplanModule->getModule(),
+                    fn(BuildplanModule $buildplanModule): Module => $buildplanModule->getModule(),
                     $buildplan->getModules()->toArray()
                 ),
                 $buildplan->getRump(),
@@ -69,7 +69,7 @@ final class RecalculateBuildplanCrewUsage implements ActionControllerInterface
         $game->addInformationf("Es wurden %d Baupläne aktualisiert", $updatedBuildplans);
     }
 
-    private function updateBuildplanCrew(SpacecraftBuildplanInterface $buildplan, int $crewUsage): void
+    private function updateBuildplanCrew(SpacecraftBuildplan $buildplan, int $crewUsage): void
     {
         $oldCrewUsage = $buildplan->getCrew();
 

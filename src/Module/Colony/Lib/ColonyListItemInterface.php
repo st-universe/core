@@ -3,10 +3,10 @@
 namespace Stu\Module\Colony\Lib;
 
 use Doctrine\Common\Collections\Collection;
-use Stu\Orm\Entity\ColonyClassInterface;
-use Stu\Orm\Entity\CommodityInterface;
-use Stu\Orm\Entity\StarSystemInterface;
-use Stu\Orm\Entity\StorageInterface;
+use Stu\Orm\Entity\ColonyClass;
+use Stu\Orm\Entity\Commodity;
+use Stu\Orm\Entity\StarSystem;
+use Stu\Orm\Entity\Storage;
 
 interface ColonyListItemInterface
 {
@@ -14,7 +14,7 @@ interface ColonyListItemInterface
 
     public function getName(): string;
 
-    public function getSystem(): StarSystemInterface;
+    public function getSystem(): StarSystem;
 
     public function getSX(): int;
 
@@ -39,16 +39,16 @@ interface ColonyListItemInterface
     public function getMaxStorage(): int;
 
     /**
-     * @return Collection<int, StorageInterface>
+     * @return Collection<int, Storage>
      */
     public function getStorage(): Collection;
 
-    public function getColonyClass(): ColonyClassInterface;
+    public function getColonyClass(): ColonyClass;
 
     public function getProductionSum(): int;
 
     /**
-     * @return array<int, array{turnsleft:int, commodity:CommodityInterface}>
+     * @return array<int, array{turnsleft:int, commodity:Commodity}>
      */
     public function getCommodityUseView(): array;
 

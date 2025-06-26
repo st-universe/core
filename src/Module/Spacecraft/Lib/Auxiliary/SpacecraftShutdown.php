@@ -11,8 +11,8 @@ use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\ShipUndockingInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftStateChangerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\StationInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Station;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class SpacecraftShutdown implements SpacecraftShutdownInterface
@@ -32,10 +32,10 @@ final class SpacecraftShutdown implements SpacecraftShutdownInterface
 
         $spacecraft = $wrapper->get();
 
-        if ($doLeaveFleet && $spacecraft instanceof ShipInterface) {
+        if ($doLeaveFleet && $spacecraft instanceof Ship) {
             $this->leaveFleet->leaveFleet($spacecraft);
         }
-        if ($spacecraft instanceof StationInterface) {
+        if ($spacecraft instanceof Station) {
             $this->shipUndocking->undockAllDocked($spacecraft);
         }
         if ($spacecraft->getState()->isActiveState()) {

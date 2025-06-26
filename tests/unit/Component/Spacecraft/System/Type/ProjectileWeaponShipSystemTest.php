@@ -10,20 +10,20 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftSystemInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\SpacecraftSystem;
 use Stu\StuTestCase;
 
 class ProjectileWeaponShipSystemTest extends StuTestCase
 {
     private MockInterface&ShipWrapperInterface $wrapper;
-    private MockInterface&ShipInterface $ship;
+    private MockInterface&Ship $ship;
     private ProjectileWeaponShipSystem $system;
 
     #[Override]
     public function setUp(): void
     {
-        $this->ship = $this->mock(ShipInterface::class);
+        $this->ship = $this->mock(Ship::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
 
         $this->wrapper->shouldReceive('get')
@@ -126,7 +126,7 @@ class ProjectileWeaponShipSystemTest extends StuTestCase
     public function testActivateActivates(): void
     {
         $managerMock = $this->mock(SpacecraftSystemManagerInterface::class);
-        $system = $this->mock(SpacecraftSystemInterface::class);
+        $system = $this->mock(SpacecraftSystem::class);
 
         $this->ship->shouldReceive('getSpacecraftSystem')
             ->with(SpacecraftSystemTypeEnum::TORPEDO)
@@ -141,7 +141,7 @@ class ProjectileWeaponShipSystemTest extends StuTestCase
 
     public function testDectivateDectivates(): void
     {
-        $system = $this->mock(SpacecraftSystemInterface::class);
+        $system = $this->mock(SpacecraftSystem::class);
 
         $this->ship->shouldReceive('getSpacecraftSystem')
             ->with(SpacecraftSystemTypeEnum::TORPEDO)

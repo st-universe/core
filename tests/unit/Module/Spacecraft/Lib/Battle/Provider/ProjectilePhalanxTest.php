@@ -9,15 +9,15 @@ use Mockery\MockInterface;
 use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\CommodityInterface;
-use Stu\Orm\Entity\StorageInterface;
-use Stu\Orm\Entity\TorpedoTypeInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Commodity;
+use Stu\Orm\Entity\Storage;
+use Stu\Orm\Entity\TorpedoType;
 use Stu\StuTestCase;
 
 class ProjectilePhalanxTest extends StuTestCase
 {
-    private MockInterface&ColonyInterface $colony;
+    private MockInterface&Colony $colony;
     private MockInterface&StorageManagerInterface $storageManager;
 
     private ProjectilePhalanx $subject;
@@ -26,7 +26,7 @@ class ProjectilePhalanxTest extends StuTestCase
     public function setUp(): void
     {
         //injected
-        $this->colony = $this->mock(ColonyInterface::class);
+        $this->colony = $this->mock(Colony::class);
         $this->storageManager = $this->mock(StorageManagerInterface::class);
 
         $this->subject = new ProjectilePhalanx(
@@ -101,7 +101,7 @@ class ProjectilePhalanxTest extends StuTestCase
 
     public function testGetTorpedoCountExpectZeroWhenNoTorpedosInStorage(): void
     {
-        $torpedo = $this->mock(TorpedoTypeInterface::class);
+        $torpedo = $this->mock(TorpedoType::class);
 
         $this->colony->shouldReceive('getChangeable->getTorpedo')
             ->withNoArgs()
@@ -130,8 +130,8 @@ class ProjectilePhalanxTest extends StuTestCase
     #[DataProvider('provideGetTorpedoStateData')]
     public function testGetTorpedoState(bool $expected, int $count): void
     {
-        $torpedo = $this->mock(TorpedoTypeInterface::class);
-        $storage = $this->mock(StorageInterface::class);
+        $torpedo = $this->mock(TorpedoType::class);
+        $storage = $this->mock(Storage::class);
 
         $this->colony->shouldReceive('getChangeable->getTorpedo')
             ->withNoArgs()
@@ -159,8 +159,8 @@ class ProjectilePhalanxTest extends StuTestCase
 
     public function testGetTorpedoCountExpectStorageAmountWhenTorpedosInStorage(): void
     {
-        $torpedo = $this->mock(TorpedoTypeInterface::class);
-        $storage = $this->mock(StorageInterface::class);
+        $torpedo = $this->mock(TorpedoType::class);
+        $storage = $this->mock(Storage::class);
 
         $this->colony->shouldReceive('getChangeable->getTorpedo')
             ->withNoArgs()
@@ -205,8 +205,8 @@ class ProjectilePhalanxTest extends StuTestCase
 
     public function testLowerTorpedoCountExpectLowering(): void
     {
-        $torpedo = $this->mock(TorpedoTypeInterface::class);
-        $commodity = $this->mock(CommodityInterface::class);
+        $torpedo = $this->mock(TorpedoType::class);
+        $commodity = $this->mock(Commodity::class);
 
         $this->colony->shouldReceive('getChangeable->getTorpedo')
             ->withNoArgs()
@@ -240,7 +240,7 @@ class ProjectilePhalanxTest extends StuTestCase
 
     public function testGetProjectileWeaponDamageExpectCorrectValue(): void
     {
-        $torpedo = $this->mock(TorpedoTypeInterface::class);
+        $torpedo = $this->mock(TorpedoType::class);
 
         $this->colony->shouldReceive('getChangeable->getTorpedo')
             ->withNoArgs()

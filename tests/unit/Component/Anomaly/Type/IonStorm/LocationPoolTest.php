@@ -6,7 +6,7 @@ namespace Stu\Component\Anomaly\Type\IonStorm;
 
 use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Stu\Orm\Entity\LocationInterface;
+use Stu\Orm\Entity\Location;
 use Stu\StuTestCase;
 
 class LocationPoolTest extends StuTestCase
@@ -18,11 +18,11 @@ class LocationPoolTest extends StuTestCase
     {
         $this->subject = new LocationPool(
             [
-                '1_2' => $this->mock(LocationInterface::class),
-                '2_1' => $this->mock(LocationInterface::class),
-                '2_2' => $this->mock(LocationInterface::class),
-                '2_3' => $this->mock(LocationInterface::class),
-                '3_2' => $this->mock(LocationInterface::class)
+                '1_2' => $this->mock(Location::class),
+                '2_1' => $this->mock(Location::class),
+                '2_2' => $this->mock(Location::class),
+                '2_3' => $this->mock(Location::class),
+                '3_2' => $this->mock(Location::class)
             ]
         );
     }
@@ -45,7 +45,7 @@ class LocationPoolTest extends StuTestCase
     #[DataProvider('getNeighboursDataProvider')]
     public function testGetNeighbours(int $x, int $y, int $expectedNeighbourAmount): void
     {
-        $location = $this->mock(LocationInterface::class);
+        $location = $this->mock(Location::class);
 
         $location->shouldReceive('getX')
             ->withNoArgs()

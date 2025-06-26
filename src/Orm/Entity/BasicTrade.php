@@ -12,13 +12,12 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\BasicTradeRepository;
 
 #[Table(name: 'stu_basic_trade')]
 #[Index(name: 'base_trade_idx', columns: ['faction_id', 'commodity_id', 'date_ms'])]
 #[Entity(repositoryClass: BasicTradeRepository::class)]
-class BasicTrade implements BasicTradeInterface
+class BasicTrade
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -48,104 +47,90 @@ class BasicTrade implements BasicTradeInterface
 
     #[ManyToOne(targetEntity: Faction::class)]
     #[JoinColumn(name: 'faction_id', nullable: false, referencedColumnName: 'id')]
-    private FactionInterface $faction;
+    private Faction $faction;
 
     #[ManyToOne(targetEntity: Commodity::class)]
     #[JoinColumn(name: 'commodity_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private CommodityInterface $commodity;
+    private Commodity $commodity;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
-    public function setFaction(FactionInterface $faction): BasicTradeInterface
+    public function setFaction(Faction $faction): BasicTrade
     {
         $this->faction = $faction;
 
         return $this;
     }
 
-    #[Override]
-    public function getFaction(): FactionInterface
+    public function getFaction(): Faction
     {
         return $this->faction;
     }
 
-    #[Override]
-    public function setCommodity(CommodityInterface $commodity): BasicTradeInterface
+    public function setCommodity(Commodity $commodity): BasicTrade
     {
         $this->commodity = $commodity;
 
         return $this;
     }
 
-    #[Override]
-    public function getCommodity(): CommodityInterface
+    public function getCommodity(): Commodity
     {
         return $this->commodity;
     }
 
-    #[Override]
-    public function setBuySell(int $buySell): BasicTradeInterface
+    public function setBuySell(int $buySell): BasicTrade
     {
         $this->buy_sell = $buySell;
 
         return $this;
     }
 
-    #[Override]
     public function getBuySell(): int
     {
         return $this->buy_sell;
     }
 
-    #[Override]
-    public function setValue(int $value): BasicTradeInterface
+    public function setValue(int $value): BasicTrade
     {
         $this->value = $value;
 
         return $this;
     }
 
-    #[Override]
     public function getValue(): int
     {
         return $this->value;
     }
 
-    #[Override]
-    public function setDate(int $date): BasicTradeInterface
+    public function setDate(int $date): BasicTrade
     {
         $this->date_ms = $date;
 
         return $this;
     }
 
-    #[Override]
     public function getDate(): int
     {
         return (int)$this->date_ms;
     }
 
-    #[Override]
-    public function setUniqId(string $uniqid): BasicTradeInterface
+    public function setUniqId(string $uniqid): BasicTrade
     {
         $this->uniqid = $uniqid;
 
         return $this;
     }
 
-    #[Override]
     public function getUniqId(): string
     {
         return $this->uniqid;
     }
 
-    #[Override]
-    public function setUserId(int $userId): BasicTradeInterface
+    public function setUserId(int $userId): BasicTrade
     {
         $this->user_id = $userId;
 

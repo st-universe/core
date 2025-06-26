@@ -14,12 +14,12 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
-use Override;
+use Stu\Module\Ship\Lib\EntityWithAstroEntryInterface;
 use Stu\Orm\Repository\MapRegionRepository;
 
 #[Table(name: 'stu_map_regions')]
 #[Entity(repositoryClass: MapRegionRepository::class)]
-class MapRegion implements MapRegionInterface
+class MapRegion implements EntityWithAstroEntryInterface
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -37,9 +37,9 @@ class MapRegion implements MapRegionInterface
 
     #[ManyToOne(targetEntity: DatabaseEntry::class)]
     #[JoinColumn(name: 'database_id', referencedColumnName: 'id')]
-    private ?DatabaseEntryInterface $databaseEntry = null;
+    private ?DatabaseEntry $databaseEntry = null;
 
-    /** @var ArrayCollection<int, AstronomicalEntryInterface> */
+    /** @var ArrayCollection<int, AstronomicalEntry> */
     #[OneToMany(targetEntity: AstronomicalEntry::class, mappedBy: 'region', indexBy: 'user_id', fetch: 'EXTRA_LAZY')]
     private Collection $astronomicalEntries;
 
@@ -48,54 +48,46 @@ class MapRegion implements MapRegionInterface
         $this->astronomicalEntries = new ArrayCollection();
     }
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getDescription(): string
     {
         return $this->description;
     }
 
-    #[Override]
-    public function setDescription(string $description): MapRegionInterface
+    public function setDescription(string $description): MapRegion
     {
         $this->description = $description;
 
         return $this;
     }
 
-    #[Override]
-    public function getDatabaseEntry(): ?DatabaseEntryInterface
+    public function getDatabaseEntry(): ?DatabaseEntry
     {
         return $this->databaseEntry;
     }
 
-    #[Override]
-    public function setDatabaseEntry(?DatabaseEntryInterface $databaseEntry): MapRegionInterface
+    public function setDatabaseEntry(?DatabaseEntry $databaseEntry): MapRegion
     {
         $this->databaseEntry = $databaseEntry;
 
         return $this;
     }
 
-    #[Override]
     public function getAstronomicalEntries(): Collection
     {
         return $this->astronomicalEntries;
     }
 
-    #[Override]
     public function getLayers(): ?string
     {
         return $this->layers;
     }
 
-    #[Override]
-    public function setLayers(?string $layers): MapRegionInterface
+    public function setLayers(?string $layers): MapRegion
     {
         $this->layers = $layers;
 

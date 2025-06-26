@@ -11,7 +11,7 @@ use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 //TODO create unit test
@@ -42,7 +42,7 @@ final class ReactorUtil implements ReactorUtilInterface
 
     #[Override]
     public function loadReactor(
-        SpacecraftInterface $spacecraft,
+        Spacecraft $spacecraft,
         int $additionalLoad,
         ?ManagerProviderInterface $managerProvider,
         ReactorWrapperInterface $reactor

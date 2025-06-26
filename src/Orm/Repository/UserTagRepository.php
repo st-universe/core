@@ -6,9 +6,8 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Override;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserTag;
-use Stu\Orm\Entity\UserTagInterface;
 
 /**
  * @extends EntityRepository<UserTag>
@@ -16,7 +15,7 @@ use Stu\Orm\Entity\UserTagInterface;
 final class UserTagRepository extends EntityRepository implements UserTagRepositoryInterface
 {
     #[Override]
-    public function getByUser(UserInterface $user): iterable
+    public function getByUser(User $user): iterable
     {
         return $this->findBy([
             'user' => $user
@@ -24,13 +23,13 @@ final class UserTagRepository extends EntityRepository implements UserTagReposit
     }
 
     #[Override]
-    public function prototype(): UserTagInterface
+    public function prototype(): UserTag
     {
         return new UserTag();
     }
 
     #[Override]
-    public function save(UserTagInterface $userTag): void
+    public function save(UserTag $userTag): void
     {
         $em = $this->getEntityManager();
 

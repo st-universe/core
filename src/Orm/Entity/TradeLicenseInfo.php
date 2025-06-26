@@ -12,13 +12,12 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\TradeLicenseInfoRepository;
 
 #[Table(name: 'stu_trade_license_info')]
 #[Index(name: 'trade_license_info_post_idx', columns: ['posts_id'])]
 #[Entity(repositoryClass: TradeLicenseInfoRepository::class)]
-class TradeLicenseInfo implements TradeLicenseInfoInterface
+class TradeLicenseInfo
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -42,102 +41,88 @@ class TradeLicenseInfo implements TradeLicenseInfoInterface
 
     #[ManyToOne(targetEntity: TradePost::class)]
     #[JoinColumn(name: 'posts_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private TradePostInterface $tradePost;
+    private TradePost $tradePost;
 
     #[ManyToOne(targetEntity: Commodity::class)]
     #[JoinColumn(name: 'commodity_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private CommodityInterface $commodity;
+    private Commodity $commodity;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
-    public function getTradepost(): TradePostInterface
+    public function getTradepost(): TradePost
     {
         return $this->tradePost;
     }
 
-    #[Override]
-    public function setTradepost(TradePostInterface $tradepost): TradeLicenseInfoInterface
+    public function setTradepost(TradePost $tradepost): TradeLicenseInfo
     {
         $this->tradePost = $tradepost;
 
         return $this;
     }
 
-    #[Override]
     public function getTradePostId(): int
     {
         return $this->posts_id;
     }
 
-    #[Override]
-    public function setTradePostId(int $posts_id): TradeLicenseInfoInterface
+    public function setTradePostId(int $posts_id): TradeLicenseInfo
     {
         $this->posts_id = $posts_id;
 
         return $this;
     }
 
-    #[Override]
     public function getCommodityId(): int
     {
         return $this->commodity_id;
     }
 
-    #[Override]
-    public function getCommodity(): CommodityInterface
+    public function getCommodity(): Commodity
     {
         return $this->commodity;
     }
 
-    #[Override]
-    public function setCommodity(CommodityInterface $commodity): TradeLicenseInfoInterface
+    public function setCommodity(Commodity $commodity): TradeLicenseInfo
     {
         $this->commodity = $commodity;
 
         return $this;
     }
 
-    #[Override]
     public function getAmount(): int
     {
         return $this->amount;
     }
 
-    #[Override]
-    public function setAmount(int $amount): TradeLicenseInfoInterface
+    public function setAmount(int $amount): TradeLicenseInfo
     {
         $this->amount = $amount;
 
         return $this;
     }
 
-    #[Override]
     public function getDate(): int
     {
         return $this->date;
     }
 
-    #[Override]
-    public function setDate(int $date): TradeLicenseInfoInterface
+    public function setDate(int $date): TradeLicenseInfo
     {
         $this->date = $date;
 
         return $this;
     }
 
-    #[Override]
     public function getDays(): int
     {
         return $this->days;
     }
 
-    #[Override]
-    public function setDays(int $days): TradeLicenseInfoInterface
+    public function setDays(int $days): TradeLicenseInfo
     {
         $this->days = $days;
 

@@ -12,13 +12,12 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\UniqueConstraint;
-use Override;
 use Stu\Orm\Repository\KnCommentArchivRepository;
 
 #[Table(name: 'stu_kn_comments_archiv')]
 #[UniqueConstraint(name: 'unique_comments_former_id', columns: ['former_id'])]
 #[Entity(repositoryClass: KnCommentArchivRepository::class)]
-class KnCommentArchiv implements KnCommentArchivInterface
+class KnCommentArchiv
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -51,112 +50,96 @@ class KnCommentArchiv implements KnCommentArchivInterface
 
     #[ManyToOne(targetEntity: KnPostArchiv::class)]
     #[JoinColumn(name: 'post_id', nullable: false, referencedColumnName: 'former_id', onDelete: 'CASCADE')]
-    private KnPostArchivInterface $post;
+    private KnPostArchiv $post;
 
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getVersion(): ?string
     {
         return $this->version;
     }
 
-    #[Override]
     public function getFormerId(): int
     {
         return $this->former_id;
     }
 
-    #[Override]
     public function getKnId(): int
     {
         return $this->post_id;
     }
 
-    #[Override]
-    public function setPostId(int $postId): KnCommentArchivInterface
+    public function setPostId(int $postId): KnCommentArchiv
     {
         $this->post_id = $postId;
 
         return $this;
     }
 
-    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    #[Override]
     public function getUsername(): string
     {
         return $this->username;
     }
 
-    #[Override]
-    public function setUsername(string $username): KnCommentArchivInterface
+    public function setUsername(string $username): KnCommentArchiv
     {
         $this->username = $username;
 
         return $this;
     }
 
-    #[Override]
     public function getText(): string
     {
         return $this->text;
     }
 
-    #[Override]
-    public function setText(string $text): KnCommentArchivInterface
+    public function setText(string $text): KnCommentArchiv
     {
         $this->text = $text;
 
         return $this;
     }
 
-    #[Override]
     public function getDate(): int
     {
         return $this->date;
     }
 
-    #[Override]
-    public function setDate(int $date): KnCommentArchivInterface
+    public function setDate(int $date): KnCommentArchiv
     {
         $this->date = $date;
 
         return $this;
     }
 
-    #[Override]
-    public function getPosting(): KnPostArchivInterface
+    public function getPosting(): KnPostArchiv
     {
         return $this->post;
     }
 
-    #[Override]
-    public function setPosting(KnPostArchivInterface $post): KnCommentArchivInterface
+    public function setPosting(KnPostArchiv $post): KnCommentArchiv
     {
         $this->post = $post;
 
         return $this;
     }
 
-    #[Override]
-    public function setDeleted(int $timestamp): KnCommentArchivInterface
+    public function setDeleted(int $timestamp): KnCommentArchiv
     {
         $this->deleted = $timestamp;
 
         return $this;
     }
 
-    #[Override]
     public function isDeleted(): bool
     {
         return $this->deleted !== null;

@@ -10,27 +10,26 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\ColonyDepositMiningRepository;
 
 #[Table(name: 'stu_colony_deposit_mining')]
 #[Entity(repositoryClass: ColonyDepositMiningRepository::class)]
-class ColonyDepositMining implements ColonyDepositMiningInterface
+class ColonyDepositMining
 {
     #[Id]
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $user;
+    private User $user;
 
     #[Id]
     #[ManyToOne(targetEntity: Colony::class)]
     #[JoinColumn(name: 'colony_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ColonyInterface $colony;
+    private Colony $colony;
 
     #[Id]
     #[ManyToOne(targetEntity: Commodity::class)]
     #[JoinColumn(name: 'commodity_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private CommodityInterface $commodity;
+    private Commodity $commodity;
 
     #[Column(type: 'integer')]
     private int $commodity_id;
@@ -38,63 +37,54 @@ class ColonyDepositMining implements ColonyDepositMiningInterface
     #[Column(type: 'integer')]
     private int $amount_left;
 
-    #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    #[Override]
-    public function setUser(UserInterface $user): ColonyDepositMiningInterface
+    public function setUser(User $user): ColonyDepositMining
     {
         $this->user = $user;
 
         return $this;
     }
 
-    #[Override]
-    public function getColony(): ColonyInterface
+    public function getColony(): Colony
     {
         return $this->colony;
     }
 
-    #[Override]
-    public function setColony(ColonyInterface $colony): ColonyDepositMiningInterface
+    public function setColony(Colony $colony): ColonyDepositMining
     {
         $this->colony = $colony;
 
         return $this;
     }
 
-    #[Override]
-    public function getCommodity(): CommodityInterface
+    public function getCommodity(): Commodity
     {
         return $this->commodity;
     }
 
-    #[Override]
-    public function setCommodity(CommodityInterface $commodity): ColonyDepositMiningInterface
+    public function setCommodity(Commodity $commodity): ColonyDepositMining
     {
         $this->commodity = $commodity;
 
         return $this;
     }
 
-    #[Override]
     public function getAmountLeft(): int
     {
         return $this->amount_left;
     }
 
-    #[Override]
-    public function setAmountLeft(int $amountLeft): ColonyDepositMiningInterface
+    public function setAmountLeft(int $amountLeft): ColonyDepositMining
     {
         $this->amount_left = $amountLeft;
 
         return $this;
     }
 
-    #[Override]
     public function isEnoughLeft(int $neededAmount): bool
     {
         return $this->getAmountLeft() >= $neededAmount;

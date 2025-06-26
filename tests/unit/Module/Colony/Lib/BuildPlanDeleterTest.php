@@ -6,7 +6,7 @@ namespace Stu\Module\Colony\Lib;
 
 use Mockery\MockInterface;
 use Override;
-use Stu\Orm\Entity\SpacecraftBuildplanInterface;
+use Stu\Orm\Entity\SpacecraftBuildplan;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
@@ -38,7 +38,7 @@ class BuildPlanDeleterTest extends StuTestCase
 
     public function testDeleteDeletes(): void
     {
-        $spacecraftBuildplan = $this->mock(SpacecraftBuildplanInterface::class);
+        $spacecraftBuildplan = $this->mock(SpacecraftBuildplan::class);
 
         $planId = 666;
 
@@ -60,7 +60,7 @@ class BuildPlanDeleterTest extends StuTestCase
 
     public function testIsDeletableReturnsFalseIfShipsExist(): void
     {
-        $spacecraftBuildplan = $this->mock(SpacecraftBuildplanInterface::class);
+        $spacecraftBuildplan = $this->mock(SpacecraftBuildplan::class);
 
         $planId = 666;
 
@@ -85,7 +85,7 @@ class BuildPlanDeleterTest extends StuTestCase
 
     public function testIsDeletableReturnsFalseIfQueuedShipsExist(): void
     {
-        $spacecraftBuildplan = $this->mock(SpacecraftBuildplanInterface::class);
+        $spacecraftBuildplan = $this->mock(SpacecraftBuildplan::class);
 
         $planId = 666;
 
@@ -110,7 +110,7 @@ class BuildPlanDeleterTest extends StuTestCase
 
     public function testIsDeletableReturnsTrueIfDeletable(): void
     {
-        $spacecraftBuildplan = $this->mock(SpacecraftBuildplanInterface::class);
+        $spacecraftBuildplan = $this->mock(SpacecraftBuildplan::class);
 
         $planId = 666;
 

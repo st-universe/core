@@ -14,7 +14,6 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\UniqueConstraint;
-use Override;
 use Stu\Orm\Repository\RpgPlotArchivRepository;
 
 #[Table(name: 'stu_plots_archiv')]
@@ -22,7 +21,7 @@ use Stu\Orm\Repository\RpgPlotArchivRepository;
 #[UniqueConstraint(name: 'unique_plot_id', columns: ['id'])]
 #[UniqueConstraint(name: 'unique_former_id', columns: ['former_id'])]
 #[Entity(repositoryClass: RpgPlotArchivRepository::class)]
-class RpgPlotArchiv implements RpgPlotArchivInterface
+class RpgPlotArchiv
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -51,13 +50,13 @@ class RpgPlotArchiv implements RpgPlotArchivInterface
     private ?int $end_date = null;
 
     /**
-     * @var ArrayCollection<int, KnPostArchivInterface>
+     * @var ArrayCollection<int, KnPostArchiv>
      */
     #[OneToMany(targetEntity: KnPostArchiv::class, mappedBy: 'rpgPlot')]
     private Collection $posts;
 
     /**
-     * @var ArrayCollection<int, RpgPlotMemberArchivInterface>
+     * @var ArrayCollection<int, RpgPlotMemberArchiv>
      */
     #[OneToMany(targetEntity: RpgPlotMemberArchiv::class, mappedBy: 'rpgPlot', indexBy: 'user_id')]
     private Collection $members;
@@ -68,117 +67,105 @@ class RpgPlotArchiv implements RpgPlotArchivInterface
         $this->members = new ArrayCollection();
     }
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getVersion(): ?string
     {
         return $this->version;
     }
 
-    #[Override]
     public function getFormerId(): int
     {
         return $this->former_id;
     }
 
-    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    #[Override]
     public function getTitle(): string
     {
         return $this->title;
     }
 
-    #[Override]
-    public function setTitle(string $title): RpgPlotArchivInterface
+    public function setTitle(string $title): RpgPlotArchiv
     {
         $this->title = $title;
 
         return $this;
     }
 
-    #[Override]
     public function getDescription(): string
     {
         return $this->description;
     }
 
-    #[Override]
-    public function setDescription(string $description): RpgPlotArchivInterface
+    public function setDescription(string $description): RpgPlotArchiv
     {
         $this->description = $description;
 
         return $this;
     }
 
-    #[Override]
     public function getStartDate(): int
     {
         return $this->start_date;
     }
 
-    #[Override]
-    public function setStartDate(int $startDate): RpgPlotArchivInterface
+    public function setStartDate(int $startDate): RpgPlotArchiv
     {
         $this->start_date = $startDate;
 
         return $this;
     }
 
-    #[Override]
     public function getEndDate(): ?int
     {
         return $this->end_date;
     }
 
-    #[Override]
-    public function setEndDate(?int $endDate): RpgPlotArchivInterface
+    public function setEndDate(?int $endDate): RpgPlotArchiv
     {
         $this->end_date = $endDate;
 
         return $this;
     }
 
-    #[Override]
     public function isActive(): bool
     {
         return $this->getEndDate() === null || $this->getEndDate() === 0;
     }
 
-    #[Override]
+    /**
+     * @return Collection<int, KnPostArchiv>
+     */
     public function getPosts(): Collection
     {
         return $this->posts;
     }
 
-    #[Override]
     public function getMemberCount(): int
     {
         return $this->members->count();
     }
 
-    #[Override]
     public function getPostingCount(): int
     {
         return $this->posts->count();
     }
 
-    #[Override]
+    /**
+     * @return Collection<int, RpgPlotMemberArchiv>
+     */
     public function getMembers(): Collection
     {
         return $this->members;
     }
 
-    #[Override]
     public function __toString(): string
     {
         return sprintf('title: %s', $this->getTitle());

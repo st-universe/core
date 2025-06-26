@@ -12,7 +12,6 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Component\Game\TimeConstants;
 use Stu\Module\Control\StuTime;
 use Stu\Orm\Repository\TradeLicenseRepository;
@@ -20,7 +19,7 @@ use Stu\Orm\Repository\TradeLicenseRepository;
 #[Table(name: 'stu_trade_license')]
 #[Index(name: 'user_trade_post_idx', columns: ['user_id', 'posts_id'])]
 #[Entity(repositoryClass: TradeLicenseRepository::class)]
-class TradeLicense implements TradeLicenseInterface
+class TradeLicense
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -41,94 +40,81 @@ class TradeLicense implements TradeLicenseInterface
 
     #[ManyToOne(targetEntity: TradePost::class)]
     #[JoinColumn(name: 'posts_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private TradePostInterface $tradePost;
+    private TradePost $tradePost;
 
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $user;
+    private User $user;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getTradePostId(): int
     {
         return $this->posts_id;
     }
 
-    #[Override]
-    public function setTradePostId(int $tradePostId): TradeLicenseInterface
+    public function setTradePostId(int $tradePostId): TradeLicense
     {
         $this->posts_id = $tradePostId;
 
         return $this;
     }
 
-    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    #[Override]
     public function getDate(): int
     {
         return $this->date;
     }
 
-    #[Override]
-    public function setDate(int $date): TradeLicenseInterface
+    public function setDate(int $date): TradeLicense
     {
         $this->date = $date;
 
         return $this;
     }
 
-    #[Override]
     public function getExpired(): int
     {
         return $this->expired;
     }
 
-    #[Override]
-    public function setExpired(int $expired): TradeLicenseInterface
+    public function setExpired(int $expired): TradeLicense
     {
         $this->expired = $expired;
 
         return $this;
     }
 
-    #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    #[Override]
-    public function setUser(UserInterface $user): TradeLicenseInterface
+    public function setUser(User $user): TradeLicense
     {
         $this->user = $user;
         return $this;
     }
 
-    #[Override]
-    public function getTradePost(): TradePostInterface
+    public function getTradePost(): TradePost
     {
         return $this->tradePost;
     }
 
-    #[Override]
-    public function setTradePost(TradePostInterface $tradePost): TradeLicenseInterface
+    public function setTradePost(TradePost $tradePost): TradeLicense
     {
         $this->tradePost = $tradePost;
 
         return $this;
     }
 
-    #[Override]
     public function getRemainingFullDays(?StuTime $stuTime = null): int
     {
         return (int)floor(($this->getExpired() - ($stuTime !== null ? $stuTime->time() : time())) / TimeConstants::ONE_DAY_IN_SECONDS);

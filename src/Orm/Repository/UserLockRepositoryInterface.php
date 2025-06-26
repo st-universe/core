@@ -4,23 +4,22 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\UserLock;
-use Stu\Orm\Entity\UserLockInterface;
 
 /**
  * @extends ObjectRepository<UserLock>
  *
- * @method null|UserLockInterface find(integer $id)
+ * @method null|UserLock find(integer $id)
  */
 interface UserLockRepositoryInterface extends ObjectRepository
 {
-    public function getActiveByUser(int $userId): ?UserLockInterface;
+    public function getActiveByUser(int $userId): ?UserLock;
 
     /**
-     * @return list<UserLockInterface>
+     * @return list<UserLock>
      */
     public function getActive(): array;
 
-    public function save(UserLockInterface $researched): void;
+    public function save(UserLock $researched): void;
 
-    public function prototype(): UserLockInterface;
+    public function prototype(): UserLock;
 }

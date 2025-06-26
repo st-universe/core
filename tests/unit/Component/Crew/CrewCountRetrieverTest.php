@@ -8,7 +8,7 @@ use Mockery\MockInterface;
 use Override;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
@@ -44,7 +44,7 @@ class CrewCountRetrieverTest extends StuTestCase
 
     public function testGetDebrisAndTradePostsCountReturnsValue(): void
     {
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
 
         $amount_tradeposts = 666;
         $amount_debris = 42;
@@ -69,7 +69,7 @@ class CrewCountRetrieverTest extends StuTestCase
     {
         $value = 666;
 
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
 
         $this->shipCrewRepository->shouldReceive('getAmountByUserOnShips')
             ->with($user)
@@ -84,7 +84,7 @@ class CrewCountRetrieverTest extends StuTestCase
 
     public function testGetInTrainingCountReturnsValue(): void
     {
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
 
         $value = 666;
 
@@ -101,7 +101,7 @@ class CrewCountRetrieverTest extends StuTestCase
 
     public function testGetRemainingCountReturnsZeroIfNotPositive(): void
     {
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
 
         $this->crewLimitCalculator->shouldReceive('getGlobalCrewLimit')
             ->with($user)
@@ -126,7 +126,7 @@ class CrewCountRetrieverTest extends StuTestCase
 
     public function testGetRemainingCountReturnsValueIfPositive(): void
     {
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
 
         $this->crewLimitCalculator->shouldReceive('getGlobalCrewLimit')
             ->with($user)
@@ -151,7 +151,7 @@ class CrewCountRetrieverTest extends StuTestCase
 
     public function testGetAssignedCountReturnsValue(): void
     {
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
 
         $value = 666;
 
@@ -168,7 +168,7 @@ class CrewCountRetrieverTest extends StuTestCase
 
     public function testGetTrainableCountReturnsValue(): void
     {
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
 
         $this->crewLimitCalculator->shouldReceive('getGlobalCrewLimit')
             ->with($user)

@@ -11,10 +11,10 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\ShowAccounts\ShowAccounts;
-use Stu\Orm\Entity\CommodityInterface;
-use Stu\Orm\Entity\TradeOfferInterface;
-use Stu\Orm\Entity\TradePostInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Commodity;
+use Stu\Orm\Entity\TradeOffer;
+use Stu\Orm\Entity\TradePost;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TradeOfferRepositoryInterface;
@@ -143,14 +143,14 @@ final class CreateOffer implements ActionControllerInterface
     }
 
     private function saveOffer(
-        UserInterface $user,
-        TradePostInterface $tradePost,
-        CommodityInterface $offeredCommodity,
+        User $user,
+        TradePost $tradePost,
+        Commodity $offeredCommodity,
         int $giveAmount,
-        CommodityInterface $wantedCommodity,
+        Commodity $wantedCommodity,
         int $wantedAmount,
         int $offerAmount
-    ): TradeOfferInterface {
+    ): TradeOffer {
         $offer = $this->tradeOfferRepository->prototype();
         $offer->setUser($user);
         $offer->setTradePost($tradePost);
@@ -166,7 +166,7 @@ final class CreateOffer implements ActionControllerInterface
         return $offer;
     }
 
-    private function saveStorage(TradeOfferInterface $tradeOffer): void
+    private function saveStorage(TradeOffer $tradeOffer): void
     {
         $storage = $this->storageRepository->prototype();
         $storage->setUser($tradeOffer->getUser());

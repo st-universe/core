@@ -10,7 +10,7 @@ use Stu\Module\Communication\Action\EditKnPost\EditKnPost;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Entity\KnPostInterface;
+use Stu\Orm\Entity\KnPost;
 use Stu\Orm\Repository\KnCharacterRepositoryInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
@@ -30,7 +30,7 @@ final class ShowEditKn implements ViewControllerInterface
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        /** @var KnPostInterface $post */
+        /** @var KnPost $post */
         $post = $this->knPostRepository->find($this->showEditKnRequest->getKnId());
 
         if ($post === null) {

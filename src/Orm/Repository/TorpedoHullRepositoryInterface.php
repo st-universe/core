@@ -4,20 +4,19 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\TorpedoHull;
-use Stu\Orm\Entity\TorpedoHullInterface;
 
 /**
  * @extends ObjectRepository<TorpedoHull>
  *
- * @method null|TorpedoHullInterface find(integer $id)
+ * @method null|TorpedoHull find(integer $id)
  */
 interface TorpedoHullRepositoryInterface extends ObjectRepository
 {
-    public function prototype(): TorpedoHullInterface;
+    public function prototype(): TorpedoHull;
 
-    public function save(TorpedoHullInterface $torpedohull): void;
+    public function save(TorpedoHull $torpedohull): void;
 
-    public function delete(TorpedoHullInterface $torpedohull): void;
+    public function delete(TorpedoHull $torpedohull): void;
 
     /**
      * @return array<int>

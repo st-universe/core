@@ -4,25 +4,24 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\Names;
-use Stu\Orm\Entity\NamesInterface;
 
 /**
  * @extends ObjectRepository<Names>
  *
- * @method null|NamesInterface find(integer $id)
- * @method NamesInterface[] findAll()
+ * @method null|Names find(integer $id)
+ * @method Names[] findAll()
  */
 interface NamesRepositoryInterface extends ObjectRepository
 {
-    public function save(NamesInterface $name): void;
+    public function save(Names $name): void;
 
     /**
-     * @return array<NamesInterface>
+     * @return array<Names>
      */
     public function mostUnusedNames(): array;
 
     /**
-     * @return array<NamesInterface>
+     * @return array<Names>
      */
     public function getRandomFreeSystemNames(int $amount): array;
 }

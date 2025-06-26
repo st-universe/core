@@ -7,18 +7,16 @@ namespace Stu\Component\Map;
 use Override;
 use RuntimeException;
 use Stu\Module\Config\StuConfigInterface;
-use Stu\Orm\Entity\LayerInterface;
+use Stu\Orm\Entity\Layer;
 
 class EncodedMap implements EncodedMapInterface
 {
     private ?string $key = null;
 
-    public function __construct(private StuConfigInterface $stuConfig)
-    {
-    }
+    public function __construct(private StuConfigInterface $stuConfig) {}
 
     #[Override]
-    public function getEncodedMapPath(int $mapFieldType, LayerInterface $layer): string
+    public function getEncodedMapPath(int $mapFieldType, Layer $layer): string
     {
         $key = $this->getKey();
 

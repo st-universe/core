@@ -10,14 +10,14 @@ use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Lib\Pirate\PirateCreation;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 use Stu\StuTestCase;
 
 class SafeFlightRouteTest extends StuTestCase
 {
     private MockInterface&FlightRouteFactoryInterface $flightRouteFactory;
 
-    private MockInterface&ShipInterface $ship;
+    private MockInterface&Ship $ship;
 
     private SafeFlightRouteInterface $subject;
 
@@ -26,7 +26,7 @@ class SafeFlightRouteTest extends StuTestCase
     {
         $this->flightRouteFactory = $this->mock(FlightRouteFactoryInterface::class);
 
-        $this->ship = $this->mock(ShipInterface::class);
+        $this->ship = $this->mock(Ship::class);
 
         $this->subject = new SafeFlightRoute($this->flightRouteFactory);
     }

@@ -3,7 +3,7 @@
 namespace Stu\Module\Station\Lib;
 
 use Stu\Module\Spacecraft\Lib\SourceAndTargetWrappersInterface;
-use Stu\Orm\Entity\StationInterface;
+use Stu\Orm\Entity\Station;
 
 interface StationLoaderInterface
 {
@@ -12,7 +12,7 @@ interface StationLoaderInterface
         int $userId,
         bool $allowUplink = false,
         bool $checkForEntityLock = true
-    ): StationInterface;
+    ): Station;
 
     public function getWrapperByIdAndUser(
         int $stationId,
@@ -32,5 +32,5 @@ interface StationLoaderInterface
 
     public function find(int $stationId, bool $checkForEntityLock = true): ?StationWrapperInterface;
 
-    public function save(StationInterface $station): void;
+    public function save(Station $station): void;
 }

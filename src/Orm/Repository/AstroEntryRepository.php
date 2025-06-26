@@ -7,8 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\AstronomicalEntry;
-use Stu\Orm\Entity\AstronomicalEntryInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 /**
  * @extends EntityRepository<AstronomicalEntry>
@@ -16,13 +15,13 @@ use Stu\Orm\Entity\UserInterface;
 final class AstroEntryRepository extends EntityRepository implements AstroEntryRepositoryInterface
 {
     #[Override]
-    public function prototype(): AstronomicalEntryInterface
+    public function prototype(): AstronomicalEntry
     {
         return new AstronomicalEntry();
     }
 
     #[Override]
-    public function save(AstronomicalEntryInterface $entry): void
+    public function save(AstronomicalEntry $entry): void
     {
         $em = $this->getEntityManager();
 
@@ -30,7 +29,7 @@ final class AstroEntryRepository extends EntityRepository implements AstroEntryR
     }
 
     #[Override]
-    public function delete(AstronomicalEntryInterface $entry): void
+    public function delete(AstronomicalEntry $entry): void
     {
         $em = $this->getEntityManager();
 
@@ -50,18 +49,18 @@ final class AstroEntryRepository extends EntityRepository implements AstroEntryR
         )->execute();
     }
 
-    /** @return array<AstronomicalEntryInterface> */
+    /** @return array<AstronomicalEntry> */
     #[Override]
-    public function getByUser(UserInterface $user): array
+    public function getByUser(User $user): array
     {
         return $this->findBy(
             ['user_id' => $user->getId()]
         );
     }
 
-    /** @return array<AstronomicalEntryInterface> */
+    /** @return array<AstronomicalEntry> */
     #[Override]
-    public function getByUserAndState(UserInterface $user, int $state): array
+    public function getByUserAndState(User $user, int $state): array
     {
         return $this->findBy(
             ['user_id' => $user->getId(), 'state' => $state]

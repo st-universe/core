@@ -9,9 +9,9 @@ use RuntimeException;
 use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\AstronomicalEntryInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\AstronomicalEntry;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\AstroEntryRepositoryInterface;
 
 final class AstroEntryLib implements AstroEntryLibInterface
@@ -68,7 +68,7 @@ final class AstroEntryLib implements AstroEntryLibInterface
     }
 
     #[Override]
-    public function getAstroEntryByShipLocation(SpacecraftInterface $spacecraft, bool $showOverSystem = true): ?AstronomicalEntryInterface
+    public function getAstroEntryByShipLocation(Spacecraft $spacecraft, bool $showOverSystem = true): ?AstronomicalEntry
     {
         $user = $spacecraft->getUser();
         $system = $spacecraft->getSystem();
@@ -90,7 +90,7 @@ final class AstroEntryLib implements AstroEntryLibInterface
         return null;
     }
 
-    private function getAstroEntryForUser(EntityWithAstroEntryInterface $entity, UserInterface $user): ?AstronomicalEntryInterface
+    private function getAstroEntryForUser(EntityWithAstroEntryInterface $entity, User $user): ?AstronomicalEntry
     {
         return $entity->getAstronomicalEntries()->get($user->getId());
     }

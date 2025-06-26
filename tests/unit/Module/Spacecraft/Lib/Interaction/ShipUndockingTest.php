@@ -11,8 +11,8 @@ use Stu\Component\Ship\Retrofit\CancelRetrofitInterface;
 use Stu\Component\Spacecraft\Repair\CancelRepairInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\StationInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Station;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -44,7 +44,7 @@ class ShipUndockingTest extends StuTestCase
 
     public function testUndockAllDockedExpectFalseWhenNothingDocked(): void
     {
-        $station = $this->mock(StationInterface::class);
+        $station = $this->mock(Station::class);
 
         $station->shouldReceive('getDockedShips')
             ->withNoArgs()
@@ -58,9 +58,9 @@ class ShipUndockingTest extends StuTestCase
 
     public function testUndockAllDockedExpectTrueWhenDocked(): void
     {
-        $station = $this->mock(StationInterface::class);
-        $ship1 = $this->mock(ShipInterface::class);
-        $ship2 = $this->mock(ShipInterface::class);
+        $station = $this->mock(Station::class);
+        $ship1 = $this->mock(Ship::class);
+        $ship2 = $this->mock(Ship::class);
 
         $dockedShips = new ArrayCollection([$ship1, $ship2]);
 

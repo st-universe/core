@@ -18,8 +18,8 @@ use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Tick\Lock\LockManagerInterface;
 use Stu\Module\Tick\Lock\LockTypeEnum;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\StuTestCase;
@@ -33,7 +33,7 @@ class SpacecraftLoaderTest extends StuTestCase
     private MockInterface&LockManagerInterface $lockManager;
     private MockInterface&GameControllerInterface $game;
 
-    private MockInterface&SpacecraftInterface $spacecraft;
+    private MockInterface&Spacecraft $spacecraft;
     private MockInterface&SpacecraftWrapperInterface $wrapper;
 
     private int $spacecraftId = 5;
@@ -45,7 +45,7 @@ class SpacecraftLoaderTest extends StuTestCase
     public function setUp(): void
     {
         //injected
-        $this->spacecraft = $this->mock(SpacecraftInterface::class);
+        $this->spacecraft = $this->mock(Spacecraft::class);
         $this->wrapper = $this->mock(SpacecraftWrapperInterface::class);
         $this->spacecraftRepository = $this->mock(SpacecraftRepositoryInterface::class);
         $this->crewAssignmentRepository = $this->mock(CrewAssignmentRepositoryInterface::class);
@@ -323,7 +323,7 @@ class SpacecraftLoaderTest extends StuTestCase
     {
         $userSema = 123456;
         $targetUserSema = 23456;
-        $target = $this->mock(ShipInterface::class);
+        $target = $this->mock(Ship::class);
         $targetWrapper = $this->mock(ShipWrapperInterface::class);
 
         $this->lockManager->shouldReceive('isLocked')

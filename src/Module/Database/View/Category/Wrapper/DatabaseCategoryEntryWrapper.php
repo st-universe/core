@@ -6,9 +6,9 @@ namespace Stu\Module\Database\View\Category\Wrapper;
 
 use Override;
 use Stu\Component\Database\DatabaseCategoryTypeEnum;
-use Stu\Orm\Entity\DatabaseEntryInterface;
-use Stu\Orm\Entity\DatabaseUserInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\DatabaseEntry;
+use Stu\Orm\Entity\DatabaseUser;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ColonyClassRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
@@ -18,16 +18,16 @@ final class DatabaseCategoryEntryWrapper implements DatabaseCategoryEntryWrapper
 {
     public function __construct(
         private DatabaseUserRepositoryInterface $databaseUserRepository,
-        private DatabaseEntryInterface $databaseEntry,
+        private DatabaseEntry $databaseEntry,
         private StarSystemRepositoryInterface $starSystemRepository,
         private StationRepositoryInterface $stationRepository,
         private ColonyClassRepositoryInterface $colonyClassRepository,
-        private UserInterface $user
+        private User $user
     ) {}
 
     private ?bool $wasEntryDiscovered = null;
 
-    private ?DatabaseUserInterface $userDiscovery = null;
+    private ?DatabaseUser $userDiscovery = null;
 
     /**
      * @todo Refactor this

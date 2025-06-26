@@ -10,9 +10,9 @@ use RuntimeException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Game\View\Noop\Noop;
-use Stu\Orm\Entity\TutorialStepInterface;
-use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Entity\UserTutorialInterface;
+use Stu\Orm\Entity\TutorialStep;
+use Stu\Orm\Entity\User;
+use Stu\Orm\Entity\UserTutorial;
 use Stu\Orm\Repository\TutorialStepRepositoryInterface;
 use Stu\Orm\Repository\UserTutorialRepositoryInterface;
 
@@ -56,7 +56,7 @@ final class SetTutorial implements ActionControllerInterface
         $this->userTutorialRepository->save($userTutorial);
     }
 
-    private function determineUserTutorial(TutorialStepInterface $tutorialStep, bool $isForward, UserInterface $user): UserTutorialInterface
+    private function determineUserTutorial(TutorialStep $tutorialStep, bool $isForward, User $user): UserTutorial
     {
         $step = $tutorialStep;
         $tutorials = $user->getTutorials();

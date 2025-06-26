@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Module\Control\ViewContext;
 use Stu\Orm\Entity\TutorialStep;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserTutorial;
 
 /**
@@ -15,7 +15,7 @@ use Stu\Orm\Entity\UserTutorial;
 final class TutorialStepRepository extends EntityRepository implements TutorialStepRepositoryInterface
 {
     #[Override]
-    public function findByUserAndViewContext(UserInterface $user, ViewContext $viewContext): array
+    public function findByUserAndViewContext(User $user, ViewContext $viewContext): array
     {
         return $this->getEntityManager()->createQuery(
             sprintf(

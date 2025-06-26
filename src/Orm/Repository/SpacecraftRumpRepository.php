@@ -12,11 +12,10 @@ use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\ShipRumpBuildingFunction;
-use Stu\Orm\Entity\SpacecraftRumpInterface;
 use Stu\Orm\Entity\ShipRumpUser;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\Storage;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 /**
  * @extends EntityRepository<SpacecraftRump>
@@ -24,7 +23,7 @@ use Stu\Orm\Entity\UserInterface;
 final class SpacecraftRumpRepository extends EntityRepository implements SpacecraftRumpRepositoryInterface
 {
     #[Override]
-    public function save(SpacecraftRumpInterface $post): void
+    public function save(SpacecraftRump $post): void
     {
         $em = $this->getEntityManager();
 
@@ -32,7 +31,7 @@ final class SpacecraftRumpRepository extends EntityRepository implements Spacecr
     }
 
     #[Override]
-    public function getGroupedInfoByUser(UserInterface $user): array
+    public function getGroupedInfoByUser(User $user): array
     {
         return $this->getEntityManager()
             ->createQuery(

@@ -16,9 +16,9 @@ use Stu\Module\Alliance\Lib\AllianceListItem;
 use Stu\Module\Alliance\Lib\AllianceMemberWrapper;
 use Stu\Module\Alliance\Lib\AllianceUiFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\AllianceInterface;
-use Stu\Orm\Entity\AllianceSettingsInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Alliance;
+use Stu\Orm\Entity\AllianceSettings;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
 
@@ -51,7 +51,7 @@ final class AllianceProvider implements ViewComponentProviderInterface
         $game->addExecuteJS("initTranslations();", GameEnum::JS_EXECUTION_AFTER_RENDER);
     }
 
-    private function setTemplateVariablesForAlliance(AllianceInterface $alliance, GameControllerInterface $game): void
+    private function setTemplateVariablesForAlliance(Alliance $alliance, GameControllerInterface $game): void
     {
         $user = $game->getUser();
         $allianceId = $alliance->getId();
@@ -102,24 +102,24 @@ final class AllianceProvider implements ViewComponentProviderInterface
         $game->setTemplateVar(
             'MEMBERS',
             $alliance->getMembers()->map(
-                fn(UserInterface $user): AllianceMemberWrapper => $this->allianceUiFactory->createAllianceMemberWrapper($user, $alliance)
+                fn(User $user): AllianceMemberWrapper => $this->allianceUiFactory->createAllianceMemberWrapper($user, $alliance)
             )
         );
 
         $founderDescription = $settings->filter(
-            function (AllianceSettingsInterface $setting): bool {
+            function (AllianceSettings $setting): bool {
                 return $setting->getSetting() === AllianceSettingsEnum::ALLIANCE_FOUNDER_DESCRIPTION;
             }
         )->first();
 
         $successorDescription = $settings->filter(
-            function (AllianceSettingsInterface $setting): bool {
+            function (AllianceSettings $setting): bool {
                 return $setting->getSetting() === AllianceSettingsEnum::ALLIANCE_SUCCESSOR_DESCRIPTION;
             }
         )->first();
 
         $diplomatDescription = $settings->filter(
-            function (AllianceSettingsInterface $setting): bool {
+            function (AllianceSettings $setting): bool {
                 return $setting->getSetting() === AllianceSettingsEnum::ALLIANCE_DIPLOMATIC_DESCRIPTION;
             }
         )->first();
@@ -152,14 +152,14 @@ final class AllianceProvider implements ViewComponentProviderInterface
         $game->setTemplateVar(
             'ALLIANCE_LIST_OPEN',
             array_map(
-                fn(AllianceInterface $alliance): AllianceListItem => $this->allianceUiFactory->createAllianceListItem($alliance),
+                fn(Alliance $alliance): AllianceListItem => $this->allianceUiFactory->createAllianceListItem($alliance),
                 $this->allianceRepository->findByApplicationState(true)
             )
         );
         $game->setTemplateVar(
             'ALLIANCE_LIST_CLOSED',
             array_map(
-                fn(AllianceInterface $alliance): AllianceListItem => $this->allianceUiFactory->createAllianceListItem($alliance),
+                fn(Alliance $alliance): AllianceListItem => $this->allianceUiFactory->createAllianceListItem($alliance),
                 $this->allianceRepository->findByApplicationState(false)
             )
         );

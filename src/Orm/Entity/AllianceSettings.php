@@ -11,12 +11,11 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\AllianceSettingsRepository;
 
 #[Table(name: 'stu_alliance_settings')]
 #[Entity(repositoryClass: AllianceSettingsRepository::class)]
-class AllianceSettings implements AllianceSettingsInterface
+class AllianceSettings
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -31,48 +30,41 @@ class AllianceSettings implements AllianceSettingsInterface
 
     #[ManyToOne(targetEntity: Alliance::class)]
     #[JoinColumn(name: 'alliance_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private AllianceInterface $alliance;
+    private Alliance $alliance;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
-    public function getAlliance(): AllianceInterface
+    public function getAlliance(): Alliance
     {
         return $this->alliance;
     }
 
-    #[Override]
-    public function setAlliance(AllianceInterface $alliance): AllianceSettingsInterface
+    public function setAlliance(Alliance $alliance): AllianceSettings
     {
         $this->alliance = $alliance;
         return $this;
     }
 
-    #[Override]
     public function getSetting(): string
     {
         return $this->setting;
     }
 
-    #[Override]
-    public function setSetting(string $setting): AllianceSettingsInterface
+    public function setSetting(string $setting): AllianceSettings
     {
         $this->setting = $setting;
         return $this;
     }
 
-    #[Override]
     public function getValue(): string
     {
         return $this->value;
     }
 
-    #[Override]
-    public function setValue(string $value): AllianceSettingsInterface
+    public function setValue(string $value): AllianceSettings
     {
         $this->value = $value;
         return $this;

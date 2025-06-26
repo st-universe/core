@@ -10,7 +10,7 @@ use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\TholianWebRepositoryInterface;
 
 class WebEmitterSystemSettings implements SystemSettingsProviderInterface
@@ -60,7 +60,7 @@ class WebEmitterSystemSettings implements SystemSettingsProviderInterface
             if ($emitter->isUseable()) {
                 $possibleTargetList = $ship->getLocation()
                     ->getSpacecraftsWithoutVacation()
-                    ->filter(fn(SpacecraftInterface $target): bool => !$target->isCloaked() && !$target->isWarped() && $target !== $ship);
+                    ->filter(fn(Spacecraft $target): bool => !$target->isCloaked() && !$target->isWarped() && $target !== $ship);
 
                 $game->setTemplateVar('AVAILABLE_SHIPS', $possibleTargetList);
             } else {

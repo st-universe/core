@@ -7,7 +7,7 @@ namespace Stu\Component\Alliance\Relations\Renderer;
 use Fhaculty\Graph\Graph;
 use Fhaculty\Graph\Vertex;
 use Override;
-use Stu\Orm\Entity\AllianceInterface;
+use Stu\Orm\Entity\Alliance;
 
 /**
  * Builds a graph node ("vertex") for an alliance
@@ -21,7 +21,7 @@ final class RelationItemVertexBuilder implements RelationItemVertexBuilderInterf
     #[Override]
     public function build(
         Graph $graph,
-        AllianceInterface $alliance
+        Alliance $alliance
     ): Vertex {
         $vertex = $graph->createVertex($alliance->getId());
         $vertex->setAttribute(

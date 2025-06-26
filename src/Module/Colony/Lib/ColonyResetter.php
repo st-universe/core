@@ -8,8 +8,8 @@ use Override;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\FleetInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Fleet;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonySandboxRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
@@ -41,7 +41,7 @@ final class ColonyResetter implements ColonyResetterInterface
 
     #[Override]
     public function reset(
-        ColonyInterface $colony,
+        Colony $colony,
         bool $sendMessage = true
     ): void {
         $this->resetBlockers($colony, $sendMessage);
@@ -78,7 +78,7 @@ final class ColonyResetter implements ColonyResetterInterface
         $this->colonySandboxRepository->truncateByColony($colony);
     }
 
-    private function resetBlockers(ColonyInterface $colony, bool $sendMessage = true): void
+    private function resetBlockers(Colony $colony, bool $sendMessage = true): void
     {
         foreach ($colony->getBlockers() as $blockerFleet) {
             if ($sendMessage) {
@@ -92,7 +92,7 @@ final class ColonyResetter implements ColonyResetterInterface
         $colony->getBlockers()->clear();
     }
 
-    private function resetDefenders(ColonyInterface $colony, bool $sendMessage = true): void
+    private function resetDefenders(Colony $colony, bool $sendMessage = true): void
     {
         foreach ($colony->getDefenders() as $defenderFleet) {
             if ($sendMessage) {
@@ -106,7 +106,7 @@ final class ColonyResetter implements ColonyResetterInterface
         $colony->getDefenders()->clear();
     }
 
-    private function resetCrew(ColonyInterface $colony): void
+    private function resetCrew(Colony $colony): void
     {
         foreach ($colony->getCrewAssignments() as $crewAssignment) {
             $this->shipCrewRepository->delete($crewAssignment);
@@ -114,12 +114,12 @@ final class ColonyResetter implements ColonyResetterInterface
         }
     }
 
-    private function resetCrewTraining(ColonyInterface $colony): void
+    private function resetCrewTraining(Colony $colony): void
     {
         $this->crewTrainingRepository->truncateByColony($colony);
     }
 
-    private function sendMessage(ColonyInterface $colony, FleetInterface $fleet, bool $isDefending): void
+    private function sendMessage(Colony $colony, Fleet $fleet, bool $isDefending): void
     {
         $txt = sprintf(
             'Der Spieler %s hat die Kolonie %s in Sektor %d|%d (%s System) verlassen. Deine Flotte %s hat die %s beendet.',

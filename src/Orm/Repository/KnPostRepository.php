@@ -9,9 +9,8 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Override;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\KnPost;
-use Stu\Orm\Entity\KnPostInterface;
-use Stu\Orm\Entity\RpgPlotInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\RpgPlot;
+use Stu\Orm\Entity\User;
 
 /**
  * @extends EntityRepository<KnPost>
@@ -19,13 +18,13 @@ use Stu\Orm\Entity\UserInterface;
 final class KnPostRepository extends EntityRepository implements KnPostRepositoryInterface
 {
     #[Override]
-    public function prototype(): KnPostInterface
+    public function prototype(): KnPost
     {
         return new KnPost();
     }
 
     #[Override]
-    public function save(KnPostInterface $post): void
+    public function save(KnPost $post): void
     {
         $em = $this->getEntityManager();
 
@@ -34,7 +33,7 @@ final class KnPostRepository extends EntityRepository implements KnPostRepositor
     }
 
     #[Override]
-    public function delete(KnPostInterface $post): void
+    public function delete(KnPost $post): void
     {
         $em = $this->getEntityManager();
 
@@ -62,7 +61,7 @@ final class KnPostRepository extends EntityRepository implements KnPostRepositor
     }
 
     #[Override]
-    public function getByPlot(RpgPlotInterface $plot, ?int $offset, ?int $limit): array
+    public function getByPlot(RpgPlot $plot, ?int $offset, ?int $limit): array
     {
         return $this->findBy(
             ['plot_id' => $plot, 'deleted' => null],
@@ -168,7 +167,7 @@ final class KnPostRepository extends EntityRepository implements KnPostRepositor
     }
 
     #[Override]
-    public function getRpgVotesOfUser(UserInterface $user): ?int
+    public function getRpgVotesOfUser(User $user): ?int
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('votes', 'votes', 'integer');
@@ -193,7 +192,7 @@ final class KnPostRepository extends EntityRepository implements KnPostRepositor
     }
 
     #[Override]
-    public function findActiveById(int $id): ?KnPostInterface
+    public function findActiveById(int $id): ?KnPost
     {
         return $this->findOneBy([
             'id' => $id,

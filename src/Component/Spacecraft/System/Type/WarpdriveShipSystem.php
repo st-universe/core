@@ -13,7 +13,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 
 final class WarpdriveShipSystem extends AbstractSpacecraftSystemType implements SpacecraftSystemTypeInterface
 {
@@ -32,7 +32,7 @@ final class WarpdriveShipSystem extends AbstractSpacecraftSystemType implements 
     {
         $spacecraft = $wrapper->get();
 
-        if ($spacecraft instanceof ShipInterface && $spacecraft->isTractored()) {
+        if ($spacecraft instanceof Ship && $spacecraft->isTractored()) {
             $reason = _('es von einem Traktorstrahl gehalten wird');
             return false;
         }
@@ -64,7 +64,7 @@ final class WarpdriveShipSystem extends AbstractSpacecraftSystemType implements 
     public function activate(SpacecraftWrapperInterface $wrapper, SpacecraftSystemManagerInterface $manager): void
     {
         $spacecraft = $wrapper->get();
-        if ($spacecraft instanceof ShipInterface) {
+        if ($spacecraft instanceof Ship) {
             $spacecraft->setDockedTo(null);
         }
         $spacecraft->getSpacecraftSystem($this->getSystemType())->setMode(SpacecraftSystemModeEnum::MODE_ON);

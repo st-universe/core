@@ -8,11 +8,11 @@ use Override;
 use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\Type\TroopQuartersShipSystem;
-use Stu\Orm\Entity\ModuleInterface;
-use Stu\Orm\Entity\ShipRumpCategoryRoleCrewInterface;
-use Stu\Orm\Entity\SpacecraftRumpInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Module;
+use Stu\Orm\Entity\ShipRumpCategoryRoleCrew;
+use Stu\Orm\Entity\SpacecraftRump;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ShipRumpCategoryRoleCrewRepositoryInterface;
 
 /**
@@ -24,7 +24,7 @@ final class SpacecraftCrewCalculator implements SpacecraftCrewCalculatorInterfac
 
     #[Override]
     public function getMaxCrewCountByRump(
-        SpacecraftRumpInterface $shipRump
+        SpacecraftRump $shipRump
     ): int {
         if ($this->getCrewObj($shipRump) === null) {
             return $this->getBaseCrewCount($shipRump);
@@ -35,8 +35,8 @@ final class SpacecraftCrewCalculator implements SpacecraftCrewCalculatorInterfac
 
     #[Override]
     public function getCrewObj(
-        SpacecraftRumpInterface $shipRump
-    ): ?ShipRumpCategoryRoleCrewInterface {
+        SpacecraftRump $shipRump
+    ): ?ShipRumpCategoryRoleCrew {
 
         $roleId = $shipRump->getRoleId();
         if ($roleId === null) {
@@ -52,7 +52,7 @@ final class SpacecraftCrewCalculator implements SpacecraftCrewCalculatorInterfac
 
     #[Override]
     public function getMaxCrewCountByShip(
-        SpacecraftInterface $spacecraft
+        Spacecraft $spacecraft
     ): int {
         $rump = $spacecraft->getRump();
 
@@ -69,11 +69,11 @@ final class SpacecraftCrewCalculator implements SpacecraftCrewCalculatorInterfac
     }
 
     #[Override]
-    public function getCrewUsage(array $modules, SpacecraftRumpInterface $rump, UserInterface $user): int
+    public function getCrewUsage(array $modules, SpacecraftRump $rump, User $user): int
     {
         return array_reduce(
             $modules,
-            fn(int $value, ModuleInterface $module): int => $value + $module->getCrewByFactionAndRumpLvl(
+            fn(int $value, Module $module): int => $value + $module->getCrewByFactionAndRumpLvl(
                 $user->getFaction(),
                 $rump
             ),
@@ -81,7 +81,7 @@ final class SpacecraftCrewCalculator implements SpacecraftCrewCalculatorInterfac
         );
     }
 
-    private function getBaseCrewCount(SpacecraftRumpInterface $shipRump): int
+    private function getBaseCrewCount(SpacecraftRump $shipRump): int
     {
         $count = $shipRump->getBaseValues()->getBaseCrew();
         if ($this->getCrewObj($shipRump) !== null) {

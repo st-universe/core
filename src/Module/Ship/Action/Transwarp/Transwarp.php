@@ -19,16 +19,16 @@ use Stu\Module\Spacecraft\Action\MoveShip\AbstractDirectedMovement;
 use Stu\Module\Spacecraft\Action\MoveShip\MoveShipRequestInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\UserLayerInterface;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\UserLayer;
 use Stu\Orm\Repository\MapRepositoryInterface;
 
 final class Transwarp extends AbstractDirectedMovement
 {
     public const string ACTION_IDENTIFIER = 'B_TRANSWARP';
 
-    private MapInterface $destination;
+    private Map $destination;
 
     /** @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader */
     public function __construct(
@@ -56,7 +56,7 @@ final class Transwarp extends AbstractDirectedMovement
         $layerId = request::postIntFatal('transwarplayer');
 
         //sanity check if user knows layer
-        /** @var null|UserLayerInterface */
+        /** @var null|UserLayer */
         $userLayer = $game->getUser()->getUserLayers()->get($layerId);
         if ($userLayer === null) {
             return true;
@@ -93,7 +93,7 @@ final class Transwarp extends AbstractDirectedMovement
         }
 
         if (
-            $ship instanceof ShipInterface
+            $ship instanceof Ship
             && $ship->getFleet() !== null
             && $ship->getFleet()->getShipCount() > 1
         ) {

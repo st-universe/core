@@ -7,9 +7,8 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Component\Building\BuildingFunctionEnum;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonyShipQueue;
-use Stu\Orm\Entity\ColonyShipQueueInterface;
 
 /**
  * @extends EntityRepository<ColonyShipQueue>
@@ -17,13 +16,13 @@ use Stu\Orm\Entity\ColonyShipQueueInterface;
 final class ColonyShipQueueRepository extends EntityRepository implements ColonyShipQueueRepositoryInterface
 {
     #[Override]
-    public function prototype(): ColonyShipQueueInterface
+    public function prototype(): ColonyShipQueue
     {
         return new ColonyShipQueue();
     }
 
     #[Override]
-    public function save(ColonyShipQueueInterface $post): void
+    public function save(ColonyShipQueue $post): void
     {
         $em = $this->getEntityManager();
 
@@ -31,7 +30,7 @@ final class ColonyShipQueueRepository extends EntityRepository implements Colony
     }
 
     #[Override]
-    public function delete(ColonyShipQueueInterface $queue): void
+    public function delete(ColonyShipQueue $queue): void
     {
         $em = $this->getEntityManager();
 
@@ -155,7 +154,7 @@ final class ColonyShipQueueRepository extends EntityRepository implements Colony
     }
 
     #[Override]
-    public function truncateByColony(ColonyInterface $colony): void
+    public function truncateByColony(Colony $colony): void
     {
         $this->getEntityManager()
             ->createQuery(
@@ -171,7 +170,7 @@ final class ColonyShipQueueRepository extends EntityRepository implements Colony
     }
 
     #[Override]
-    public function truncateByColonyAndBuildingFunction(ColonyInterface $colony, BuildingFunctionEnum $buildingFunction): void
+    public function truncateByColonyAndBuildingFunction(Colony $colony, BuildingFunctionEnum $buildingFunction): void
     {
         $this->getEntityManager()
             ->createQuery(

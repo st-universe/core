@@ -27,7 +27,7 @@ use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftStateChangerInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class ActivateTractorBeam implements ActionControllerInterface
@@ -95,7 +95,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
             return;
         }
 
-        if (!$target instanceof ShipInterface) {
+        if (!$target instanceof Ship) {
             $game->addInformation("Das Ziel kann nicht erfasst werden");
             $this->abort($wrapper, $game);
             return;
@@ -114,7 +114,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
         }
         if (
             $target->getFleetId() !== null
-            && $ship instanceof ShipInterface
+            && $ship instanceof Ship
             && $target->getFleetId() == $ship->getFleetId()
         ) {
             $game->addInformation("Die " . $targetName . " befindet sich in der selben Flotte wie die " . $shipName);

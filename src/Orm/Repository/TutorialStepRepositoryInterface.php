@@ -4,20 +4,19 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Module\Control\ViewContext;
-use Stu\Orm\Entity\TutorialStepInterface;
 use Stu\Orm\Entity\TutorialStep;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 /**
  * @extends ObjectRepository<TutorialStep>
  * 
- * @method null|TutorialStepInterface find(integer $id)
+ * @method null|TutorialStep find(integer $id)
  */
 interface TutorialStepRepositoryInterface extends ObjectRepository
 {
-    /** @return array<int, TutorialStepInterface> */
-    public function findByUserAndViewContext(UserInterface $user, ViewContext $viewContext): array;
+    /** @return array<int, TutorialStep> */
+    public function findByUserAndViewContext(User $user, ViewContext $viewContext): array;
 
-    /** @return array<TutorialStepInterface> */
+    /** @return array<TutorialStep> */
     public function findAllFirstSteps(): array;
 }

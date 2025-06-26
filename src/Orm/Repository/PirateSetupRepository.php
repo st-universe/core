@@ -6,12 +6,11 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\PirateSetup;
-use Stu\Orm\Entity\PirateSetupInterface;
 
 /**
  * @extends EntityRepository<PirateSetup>
  *
- * @method PirateSetupInterface[] findAll()
+ * @method PirateSetup[] findAll()
  */
 final class PirateSetupRepository extends EntityRepository implements PirateSetupRepositoryInterface
 {

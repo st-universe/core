@@ -14,14 +14,13 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Component\Colony\ColonyEnum;
 use Stu\Component\Colony\ColonyTypeEnum;
 use Stu\Orm\Repository\ColonyClassRepository;
 
 #[Table(name: 'stu_colonies_classes')]
 #[Entity(repositoryClass: ColonyClassRepository::class)]
-class ColonyClass implements ColonyClassInterface
+class ColonyClass
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -60,16 +59,16 @@ class ColonyClass implements ColonyClassInterface
 
     #[OneToOne(targetEntity: DatabaseEntry::class)]
     #[JoinColumn(name: 'database_id', referencedColumnName: 'id')]
-    private ?DatabaseEntryInterface $databaseEntry;
+    private ?DatabaseEntry $databaseEntry;
 
     /**
-     * @var ArrayCollection<int, ColonyClassDepositInterface>
+     * @var ArrayCollection<int, ColonyClassDeposit>
      */
     #[OneToMany(targetEntity: ColonyClassDeposit::class, mappedBy: 'colonyClass', indexBy: 'commodity_id')]
     private Collection $colonyClassDeposits;
 
     /**
-     * @var ArrayCollection<int, ColonyClassRestrictionInterface>
+     * @var ArrayCollection<int, ColonyClassRestriction>
      */
     #[OneToMany(mappedBy: 'colonyClass', targetEntity: ColonyClassRestriction::class)]
     private Collection $restrictions;
@@ -81,161 +80,149 @@ class ColonyClass implements ColonyClassInterface
         $this->restrictions = new ArrayCollection();
     }
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
-    #[Override]
-    public function setName(string $name): ColonyClassInterface
+    public function setName(string $name): ColonyClass
     {
         $this->name = $name;
 
         return $this;
     }
 
-    #[Override]
     public function getType(): int
     {
         return $this->type;
     }
 
-    #[Override]
     public function isPlanet(): bool
     {
         return $this->getType() === ColonyTypeEnum::COLONY_TYPE_PLANET;
     }
 
-    #[Override]
     public function isMoon(): bool
     {
         return $this->getType() === ColonyTypeEnum::COLONY_TYPE_MOON;
     }
 
-    #[Override]
     public function isAsteroid(): bool
     {
         return $this->getType() === ColonyTypeEnum::COLONY_TYPE_ASTEROID;
     }
 
-    #[Override]
     public function getDatabaseId(): ?int
     {
         return $this->database_id;
     }
 
-    #[Override]
-    public function setDatabaseEntry(?DatabaseEntryInterface $entry): ColonyClassInterface
+    public function setDatabaseEntry(?DatabaseEntry $entry): ColonyClass
     {
         $this->databaseEntry = $entry;
 
         return $this;
     }
 
-    #[Override]
+    /**
+     * @return array<int>
+     */
     public function getColonizeableFields(): array
     {
         return $this->colonizeable_fields;
     }
 
-    #[Override]
-    public function setColonizeableFields(array $colonizeableFields): ColonyClassInterface
+    /**
+     * @param array<int> $colonizeableFields
+     */
+    public function setColonizeableFields(array $colonizeableFields): ColonyClass
     {
         $this->colonizeable_fields = $colonizeableFields;
 
         return $this;
     }
 
-    #[Override]
     public function getBevGrowthRate(): int
     {
         return $this->bev_growth_rate;
     }
 
-    #[Override]
-    public function setBevGrowthRate(int $bevGroethRate): ColonyClassInterface
+    public function setBevGrowthRate(int $bevGroethRate): ColonyClass
     {
         $this->bev_growth_rate = $bevGroethRate;
 
         return $this;
     }
 
-    #[Override]
     public function getSpecialId(): int
     {
         return $this->special;
     }
 
-    #[Override]
-    public function setSpecialId(int $specialId): ColonyClassInterface
+    public function setSpecialId(int $specialId): ColonyClass
     {
         $this->special = $specialId;
 
         return $this;
     }
 
-    #[Override]
     public function getAllowStart(): bool
     {
         return $this->allow_start;
     }
 
-    #[Override]
-    public function setAllowStart(bool $allowStart): ColonyClassInterface
+    public function setAllowStart(bool $allowStart): ColonyClass
     {
         $this->allow_start = $allowStart;
 
         return $this;
     }
 
-    #[Override]
+    /**
+     * @return Collection<int, ColonyClassDeposit>
+     */
     public function getColonyClassDeposits(): Collection
     {
         return $this->colonyClassDeposits;
     }
 
-    #[Override]
     public function hasRing(): bool
     {
         return $this->getSpecialId() == ColonyEnum::COLONY_CLASS_SPECIAL_RING;
     }
 
-    #[Override]
     public function getMinRotation(): int
     {
         return $this->min_rot;
     }
 
-    #[Override]
-    public function setMinRotation(int $rotation): ColonyClassInterface
+    public function setMinRotation(int $rotation): ColonyClass
     {
         $this->min_rot = $rotation;
 
         return $this;
     }
 
-    #[Override]
     public function getMaxRotation(): int
     {
         return $this->max_rot;
     }
 
-    #[Override]
-    public function setMaxRotation(int $rotation): ColonyClassInterface
+    public function setMaxRotation(int $rotation): ColonyClass
     {
         $this->max_rot = $rotation;
 
         return $this;
     }
 
-    #[Override]
+    /**
+     * @return Collection<int, ColonyClassRestriction>
+     */
     public function getRestrictions(): Collection
     {
         return $this->restrictions;

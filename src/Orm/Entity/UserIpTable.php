@@ -13,7 +13,6 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\UserIpTableRepository;
 
 #[Table(name: 'stu_user_iptable')]
@@ -22,7 +21,7 @@ use Stu\Orm\Repository\UserIpTableRepository;
 #[Index(name: 'iptable_end_idx', columns: ['endDate'])]
 #[Index(name: 'iptable_ip_idx', columns: ['ip'])]
 #[Entity(repositoryClass: UserIpTableRepository::class)]
-class UserIpTable implements UserIpTableInterface
+class UserIpTable
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -49,97 +48,83 @@ class UserIpTable implements UserIpTableInterface
 
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $user;
+    private User $user;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    #[Override]
-    public function setUser(UserInterface $user): UserInterface
+    public function setUser(User $user): User
     {
         $this->user = $user;
         return $this->user;
     }
 
-    #[Override]
     public function getIp(): string
     {
         return $this->ip;
     }
 
-    #[Override]
-    public function setIp(string $ip): UserIpTableInterface
+    public function setIp(string $ip): UserIpTable
     {
         $this->ip = $ip;
 
         return $this;
     }
 
-    #[Override]
     public function getSessionId(): string
     {
         return $this->session;
     }
 
-    #[Override]
-    public function setSessionId(string $sessionId): UserIpTableInterface
+    public function setSessionId(string $sessionId): UserIpTable
     {
         $this->session = $sessionId;
 
         return $this;
     }
 
-    #[Override]
     public function getUserAgent(): string
     {
         return $this->agent;
     }
 
-    #[Override]
-    public function setUserAgent(string $userAgent): UserIpTableInterface
+    public function setUserAgent(string $userAgent): UserIpTable
     {
         $this->agent = $userAgent;
 
         return $this;
     }
 
-    #[Override]
     public function getStartDate(): ?DateTimeInterface
     {
         return $this->startDate;
     }
 
-    #[Override]
-    public function setStartDate(DateTimeInterface $startDate): UserIpTableInterface
+    public function setStartDate(DateTimeInterface $startDate): UserIpTable
     {
         $this->startDate = $startDate;
 
         return $this;
     }
 
-    #[Override]
     public function getEndDate(): ?DateTimeInterface
     {
         return $this->endDate;
     }
 
-    #[Override]
-    public function setEndDate(DateTimeInterface $endDate): UserIpTableInterface
+    public function setEndDate(DateTimeInterface $endDate): UserIpTable
     {
         $this->endDate = $endDate;
 

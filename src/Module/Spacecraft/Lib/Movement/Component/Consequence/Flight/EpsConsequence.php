@@ -11,8 +11,8 @@ use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\AbstractFlightConse
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Route\RouteModeEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\Spacecraft;
 
 class EpsConsequence extends AbstractFlightConsequence implements FlightStartConsequenceInterface
 {
@@ -42,14 +42,14 @@ class EpsConsequence extends AbstractFlightConsequence implements FlightStartCon
         }
     }
 
-    private function getEpsNeededForFlight(FlightRouteInterface $flightRoute, SpacecraftInterface $ship): int
+    private function getEpsNeededForFlight(FlightRouteInterface $flightRoute, Spacecraft $ship): int
     {
         if ($flightRoute->getRouteMode() !== RouteModeEnum::FLIGHT) {
             return 0;
         }
 
         $nextWaypoint = $flightRoute->getNextWaypoint();
-        if ($nextWaypoint instanceof MapInterface) {
+        if ($nextWaypoint instanceof Map) {
             return 0;
         }
 

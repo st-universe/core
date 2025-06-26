@@ -4,28 +4,27 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\AllianceBoardTopic;
-use Stu\Orm\Entity\AllianceBoardTopicInterface;
 
 /**
  * @extends ObjectRepository<AllianceBoardTopic>
  */
 interface AllianceBoardTopicRepositoryInterface extends ObjectRepository
 {
-    public function prototype(): AllianceBoardTopicInterface;
+    public function prototype(): AllianceBoardTopic;
 
-    public function save(AllianceBoardTopicInterface $post): void;
+    public function save(AllianceBoardTopic $post): void;
 
-    public function delete(AllianceBoardTopicInterface $post): void;
+    public function delete(AllianceBoardTopic $post): void;
 
     /**
-     * @return list<AllianceBoardTopicInterface>
+     * @return list<AllianceBoardTopic>
      */
     public function getRecentByAlliance(int $allianceId, int $limit = 3): array;
 
     public function getAmountByBoardId(int $boardId): int;
 
     /**
-     * @return list<AllianceBoardTopicInterface>
+     * @return list<AllianceBoardTopic>
      */
     public function getByBoardIdOrdered(int $boardId): array;
 }

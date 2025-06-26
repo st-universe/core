@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\Collection;
 use Override;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 
 class TrojanHorseNotifier implements TrojanHorseNotifierInterface
 {
@@ -16,8 +16,8 @@ class TrojanHorseNotifier implements TrojanHorseNotifierInterface
 
     #[Override]
     public function informUsersAboutTrojanHorse(
-        SpacecraftInterface $incomingSpacecraft,
-        ?SpacecraftInterface $tractoringSpacecraft,
+        Spacecraft $incomingSpacecraft,
+        ?Spacecraft $tractoringSpacecraft,
         Collection $users
     ): void {
 

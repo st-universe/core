@@ -9,8 +9,7 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Override;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\Fleet;
-use Stu\Orm\Entity\FleetInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 /**
  * @extends EntityRepository<Fleet>
@@ -18,13 +17,13 @@ use Stu\Orm\Entity\UserInterface;
 final class FleetRepository extends EntityRepository implements FleetRepositoryInterface
 {
     #[Override]
-    public function prototype(): FleetInterface
+    public function prototype(): Fleet
     {
         return new Fleet();
     }
 
     #[Override]
-    public function save(FleetInterface $fleet): void
+    public function save(Fleet $fleet): void
     {
         $em = $this->getEntityManager();
 
@@ -32,7 +31,7 @@ final class FleetRepository extends EntityRepository implements FleetRepositoryI
     }
 
     #[Override]
-    public function delete(FleetInterface $fleet): void
+    public function delete(Fleet $fleet): void
     {
         $em = $this->getEntityManager();
 
@@ -41,7 +40,7 @@ final class FleetRepository extends EntityRepository implements FleetRepositoryI
     }
 
     #[Override]
-    public function truncateByUser(UserInterface $user): void
+    public function truncateByUser(User $user): void
     {
         $this->getEntityManager()->createQuery(
             sprintf(

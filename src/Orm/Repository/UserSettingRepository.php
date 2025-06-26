@@ -6,9 +6,8 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Override;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserSetting;
-use Stu\Orm\Entity\UserSettingInterface;
 
 /**
  * @extends EntityRepository<UserSetting>
@@ -16,13 +15,13 @@ use Stu\Orm\Entity\UserSettingInterface;
 final class UserSettingRepository extends EntityRepository implements UserSettingRepositoryInterface
 {
     #[Override]
-    public function prototype(): UserSettingInterface
+    public function prototype(): UserSetting
     {
         return new UserSetting();
     }
 
     #[Override]
-    public function save(UserSettingInterface $userSetting): void
+    public function save(UserSetting $userSetting): void
     {
         $em = $this->getEntityManager();
 
@@ -30,7 +29,7 @@ final class UserSettingRepository extends EntityRepository implements UserSettin
     }
 
     #[Override]
-    public function delete(UserSettingInterface $userSetting): void
+    public function delete(UserSetting $userSetting): void
     {
         $em = $this->getEntityManager();
 
@@ -38,7 +37,7 @@ final class UserSettingRepository extends EntityRepository implements UserSettin
     }
 
     #[Override]
-    public function truncateByUser(UserInterface $user): void
+    public function truncateByUser(User $user): void
     {
         $this->getEntityManager()->createQuery(
             sprintf(

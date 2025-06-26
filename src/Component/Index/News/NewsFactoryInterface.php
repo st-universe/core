@@ -2,9 +2,9 @@
 
 namespace Stu\Component\Index\News;
 
-use Stu\Orm\Entity\NewsInterface;
+use Stu\Orm\Entity\News;
 
 interface NewsFactoryInterface
 {
-    public function createNewsItem(NewsInterface $news): NewsItemInterface;
+    public function createNewsItem(News $news): NewsItemInterface;
 }

@@ -12,8 +12,8 @@ use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\Data\AstroLaboratorySystemData;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\ShipTakeoverInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\ShipTakeover;
 use Stu\StuTestCase;
 
 class StateIconAndTitleTest extends StuTestCase
@@ -22,7 +22,7 @@ class StateIconAndTitleTest extends StuTestCase
     private MockInterface&Parser $bbCodeParser;
 
     private MockInterface&ShipWrapperInterface $wrapper;
-    private MockInterface&ShipInterface $ship;
+    private MockInterface&Ship $ship;
 
     private StateIconAndTitle $subject;
 
@@ -33,7 +33,7 @@ class StateIconAndTitleTest extends StuTestCase
         $this->bbCodeParser = $this->mock(Parser::class);
 
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
-        $this->ship = $this->mock(ShipInterface::class);
+        $this->ship = $this->mock(Ship::class);
 
         $this->wrapper->shouldReceive('get')
             ->andReturn($this->ship);
@@ -132,7 +132,7 @@ class StateIconAndTitleTest extends StuTestCase
 
     public function testGetStateIconAndTitleForActiveTakeover(): void
     {
-        $takeover = $this->mock(ShipTakeoverInterface::class);
+        $takeover = $this->mock(ShipTakeover::class);
 
         $this->ship->shouldReceive('getState')
             ->withNoArgs()
@@ -173,7 +173,7 @@ class StateIconAndTitleTest extends StuTestCase
 
     public function testGetStateIconAndTitleForPassiveTakeover(): void
     {
-        $takeover = $this->mock(ShipTakeoverInterface::class);
+        $takeover = $this->mock(ShipTakeover::class);
 
         $this->ship->shouldReceive('getState')
             ->withNoArgs()

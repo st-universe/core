@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Override;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -169,8 +169,8 @@ class RoundBasedBattlePartyTest extends StuTestCase
     {
         $wrapper0 = $this->mock(ShipWrapperInterface::class);
         $wrapper1 = $this->mock(ShipWrapperInterface::class);
-        $ship0 = $this->mock(ShipInterface::class);
-        $ship1 = $this->mock(ShipInterface::class);
+        $ship0 = $this->mock(Ship::class);
+        $ship1 = $this->mock(Ship::class);
 
         $this->battleParty->shouldReceive('getActiveMembers')
             ->with(true)

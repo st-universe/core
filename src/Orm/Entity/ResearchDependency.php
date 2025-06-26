@@ -11,13 +11,12 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Component\Research\ResearchModeEnum;
 use Stu\Orm\Repository\ResearchDependencyRepository;
 
 #[Table(name: 'stu_research_dependencies')]
 #[Entity(repositoryClass: ResearchDependencyRepository::class)]
-class ResearchDependency implements ResearchDependencyInterface
+class ResearchDependency
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -35,68 +34,59 @@ class ResearchDependency implements ResearchDependencyInterface
 
     #[ManyToOne(targetEntity: Research::class)]
     #[JoinColumn(name: 'research_id', nullable: false, referencedColumnName: 'id')]
-    private ResearchInterface $research;
+    private Research $research;
 
     #[ManyToOne(targetEntity: Research::class)]
     #[JoinColumn(name: 'depends_on', nullable: false, referencedColumnName: 'id')]
-    private ResearchInterface $research_depends_on;
+    private Research $research_depends_on;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getResearchId(): int
     {
         return $this->research_id;
     }
 
-    #[Override]
-    public function setResearchId(int $researchId): ResearchDependencyInterface
+    public function setResearchId(int $researchId): ResearchDependency
     {
         $this->research_id = $researchId;
 
         return $this;
     }
 
-    #[Override]
     public function getDependsOn(): int
     {
         return $this->depends_on;
     }
 
-    #[Override]
-    public function setDependsOn(int $dependsOn): ResearchDependencyInterface
+    public function setDependsOn(int $dependsOn): ResearchDependency
     {
         $this->depends_on = $dependsOn;
 
         return $this;
     }
 
-    #[Override]
     public function getMode(): ResearchModeEnum
     {
         return $this->mode;
     }
 
-    #[Override]
-    public function setMode(ResearchModeEnum $mode): ResearchDependencyInterface
+    public function setMode(ResearchModeEnum $mode): ResearchDependency
     {
         $this->mode = $mode;
 
         return $this;
     }
 
-    #[Override]
-    public function getResearch(): ResearchInterface
+    public function getResearch(): Research
     {
         return $this->research;
     }
 
-    #[Override]
-    public function getResearchDependOn(): ResearchInterface
+    public function getResearchDependOn(): Research
     {
         return $this->research_depends_on;
     }

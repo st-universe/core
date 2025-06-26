@@ -7,10 +7,10 @@ namespace Stu\Module\Spacecraft\Lib\Movement\Route;
 use Mockery\MockInterface;
 use Override;
 use Stu\Module\Control\StuTime;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
-use Stu\Orm\Entity\WormholeEntryInterface;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\StarSystemMap;
+use Stu\Orm\Entity\WormholeEntry;
 use Stu\Orm\Repository\WormholeEntryRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -36,7 +36,7 @@ class EnterWaypointTest extends StuTestCase
 
     public function testEnterNextWaypointExpectNothingWhenSpacecraftIsNull(): void
     {
-        $waypoint = $this->mock(MapInterface::class);
+        $waypoint = $this->mock(Map::class);
 
         $waypoint->shouldNotHaveBeenCalled();
 
@@ -50,9 +50,9 @@ class EnterWaypointTest extends StuTestCase
 
     public function testEnterNextWaypointExpectLocationUpdateWhenOnMap(): void
     {
-        $ship = $this->mock(ShipInterface::class);
-        $tractoredShip = $this->mock(ShipInterface::class);
-        $waypoint = $this->mock(MapInterface::class);
+        $ship = $this->mock(Ship::class);
+        $tractoredShip = $this->mock(Ship::class);
+        $waypoint = $this->mock(Map::class);
 
         $ship->shouldReceive('setLocation')
             ->with($waypoint)
@@ -95,9 +95,9 @@ class EnterWaypointTest extends StuTestCase
 
     public function testEnterNextWaypointExpectWormholeEntryUsing(): void
     {
-        $ship = $this->mock(ShipInterface::class);
-        $waypoint = $this->mock(MapInterface::class);
-        $wormholeEntry = $this->mock(WormholeEntryInterface::class);
+        $ship = $this->mock(Ship::class);
+        $waypoint = $this->mock(Map::class);
+        $wormholeEntry = $this->mock(WormholeEntry::class);
 
         $ship->shouldReceive('setLocation')
             ->with($waypoint)
@@ -138,8 +138,8 @@ class EnterWaypointTest extends StuTestCase
 
     public function testEnterNextWaypointExpectLocationUpdateWhenOnSystemMap(): void
     {
-        $ship = $this->mock(ShipInterface::class);
-        $waypoint = $this->mock(StarSystemMapInterface::class);
+        $ship = $this->mock(Ship::class);
+        $waypoint = $this->mock(StarSystemMap::class);
 
         $ship->shouldReceive('setLocation')
             ->with($waypoint)

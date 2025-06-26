@@ -2,9 +2,9 @@
 
 namespace Stu\Component\Spacecraft\Repair;
 
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 
 interface CancelRepairInterface
 {
-    public function cancelRepair(SpacecraftInterface $spacecraft): bool;
+    public function cancelRepair(Spacecraft $spacecraft): bool;
 }

@@ -4,7 +4,6 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\DatabaseUser;
-use Stu\Orm\Entity\DatabaseUserInterface;
 
 /**
  * @extends ObjectRepository<DatabaseUser>
@@ -13,13 +12,13 @@ interface DatabaseUserRepositoryInterface extends ObjectRepository
 {
     public function truncateByUserId(int $userId): void;
 
-    public function findFor(int $databaseEntryId, int $userId): ?DatabaseUserInterface;
+    public function findFor(int $databaseEntryId, int $userId): ?DatabaseUser;
 
     public function exists(int $userId, int $databaseEntryId): bool;
 
-    public function prototype(): DatabaseUserInterface;
+    public function prototype(): DatabaseUser;
 
-    public function save(DatabaseUserInterface $entry): void;
+    public function save(DatabaseUser $entry): void;
 
     /**
      * @return array<array{user_id: int, points: int, timestamp: int}>

@@ -6,7 +6,7 @@ use Override;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Template\StatusBarColorEnum;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Colony;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class EpsBarProvider implements PlanetFieldHostComponentInterface
@@ -27,7 +27,7 @@ final class EpsBarProvider implements PlanetFieldHostComponentInterface
 
     public static function getEpsStatusBar(PlanetFieldHostInterface $host, int $energyProduction, int $width = 360): string
     {
-        $currentEps = $host instanceof ColonyInterface ? $host->getChangeable()->getEps() : 0;
+        $currentEps = $host instanceof Colony ? $host->getChangeable()->getEps() : 0;
 
         $bars = [];
         $epsBar = '';
@@ -78,7 +78,7 @@ final class EpsBarProvider implements PlanetFieldHostComponentInterface
 
     private function getEpsBarTitleString(PlanetFieldHostInterface $host, int $energyProduction): string
     {
-        if ($host instanceof ColonyInterface) {
+        if ($host instanceof Colony) {
             $changeable = $host->getChangeable();
             $forecast = $changeable->getEps() + $energyProduction;
             if ($changeable->getEps() + $energyProduction < 0) {

@@ -5,45 +5,44 @@ namespace Stu\Orm\Repository;
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Orm\Entity\Commodity;
-use Stu\Orm\Entity\CommodityInterface;
 
 /**
  * @extends ObjectRepository<Commodity>
  *
- * @method null|CommodityInterface find(integer $commodityId)
- * @method CommodityInterface[] findAll()
+ * @method null|Commodity find(integer $commodityId)
+ * @method Commodity[] findAll()
  */
 interface CommodityRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return array<CommodityInterface>
+     * @return array<Commodity>
      */
     public function getByBuildingsOnColony(PlanetFieldHostInterface $host): array;
 
     /**
-     * @return array<CommodityInterface>
+     * @return array<Commodity>
      */
     public function getByType(int $typeId): array;
 
     /**
-     * @return array<CommodityInterface>
+     * @return array<Commodity>
      */
     public function getViewable(): array;
 
     /**
-     * @return array<CommodityInterface>
+     * @return array<Commodity>
      */
     public function getTradeable(): array;
 
     /**
-     * @return array<CommodityInterface>
+     * @return array<Commodity>
      */
     public function getTradeableNPC(): array;
 
     /**
      * Returns a dict of all commodities, indexed by its id
      *
-     * @return array<int, CommodityInterface>
+     * @return array<int, Commodity>
      */
     public function getAll(): array;
 }

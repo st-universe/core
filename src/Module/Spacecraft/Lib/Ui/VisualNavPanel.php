@@ -12,14 +12,14 @@ use Stu\Lib\Map\VisualPanel\PanelBoundaries;
 use Stu\Lib\Map\VisualPanel\VisualNavPanelEntry;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\LocationInterface;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Location;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\StarSystemMap;
+use Stu\Orm\Entity\User;
 
 class VisualNavPanel extends AbstractVisualPanel
 {
-    private LocationInterface|null $panelCenter = null;
+    private Location|null $panelCenter = null;
 
     private ?bool $isOnShipLevel = null;
 
@@ -27,7 +27,7 @@ class VisualNavPanel extends AbstractVisualPanel
         PanelLayerCreationInterface $panelLayerCreation,
         private PanelLayerConfiguration $panelLayerConfiguration,
         private SpacecraftWrapperInterface $wrapper,
-        private UserInterface $user,
+        private User $user,
         LoggerUtilInterface $loggerUtil,
         private bool $tachyonFresh
     ) {
@@ -84,7 +84,7 @@ class VisualNavPanel extends AbstractVisualPanel
         return $this->isOnShipLevel;
     }
 
-    private function getPanelCenter(): LocationInterface
+    private function getPanelCenter(): Location
     {
         if ($this->panelCenter === null) {
             $this->panelCenter = $this->determinePanelCenter();
@@ -93,10 +93,10 @@ class VisualNavPanel extends AbstractVisualPanel
         return $this->panelCenter;
     }
 
-    private function determinePanelCenter(): LocationInterface
+    private function determinePanelCenter(): Location
     {
         $location = $this->wrapper->get()->getLocation();
-        if ($location instanceof MapInterface) {
+        if ($location instanceof Map) {
             return $location;
         }
 
@@ -112,9 +112,9 @@ class VisualNavPanel extends AbstractVisualPanel
         return $location;
     }
 
-    private function getParentMapLocation(LocationInterface $location): ?MapInterface
+    private function getParentMapLocation(Location $location): ?Map
     {
-        if ($location instanceof StarSystemMapInterface) {
+        if ($location instanceof StarSystemMap) {
             return $location->getSystem()->getMap();
         }
 

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Database\View\Category\Wrapper;
 
 use Override;
-use Stu\Orm\Entity\DatabaseCategoryInterface;
-use Stu\Orm\Entity\DatabaseEntryInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\DatabaseCategory;
+use Stu\Orm\Entity\DatabaseEntry;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ColonyClassRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
@@ -26,8 +26,8 @@ final class DatabaseCategoryWrapperFactory implements DatabaseCategoryWrapperFac
 
     #[Override]
     public function createDatabaseCategoryWrapper(
-        DatabaseCategoryInterface $databaseCategory,
-        UserInterface $user,
+        DatabaseCategory $databaseCategory,
+        User $user,
         ?int $layer = null
     ): DatabaseCategoryWrapperInterface {
         return new DatabaseCategoryWrapper(
@@ -41,8 +41,8 @@ final class DatabaseCategoryWrapperFactory implements DatabaseCategoryWrapperFac
 
     #[Override]
     public function createDatabaseCategoryEntryWrapper(
-        DatabaseEntryInterface $databaseEntry,
-        UserInterface $user
+        DatabaseEntry $databaseEntry,
+        User $user
     ): DatabaseCategoryEntryWrapperInterface {
         return new DatabaseCategoryEntryWrapper(
             $this->databaseUserRepository,

@@ -3,13 +3,13 @@
 namespace Stu\Module\Spacecraft\Lib\Torpedo;
 
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\TorpedoTypeInterface;
+use Stu\Orm\Entity\TorpedoType;
 
 interface ShipTorpedoManagerInterface
 {
     public function changeTorpedo(
         SpacecraftWrapperInterface $wrapper,
         int $changeAmount,
-        ?TorpedoTypeInterface $type = null
+        ?TorpedoType $type = null
     ): void;
 }

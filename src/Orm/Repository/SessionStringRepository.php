@@ -9,8 +9,7 @@ use DateTime;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\SessionString;
-use Stu\Orm\Entity\SessionStringInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 /**
  * @extends EntityRepository<SessionString>
@@ -34,7 +33,7 @@ final class SessionStringRepository extends EntityRepository implements SessionS
     }
 
     #[Override]
-    public function truncate(UserInterface $user): void
+    public function truncate(User $user): void
     {
         $q = $this->getEntityManager()->createQuery(
             sprintf(
@@ -50,13 +49,13 @@ final class SessionStringRepository extends EntityRepository implements SessionS
     }
 
     #[Override]
-    public function prototype(): SessionStringInterface
+    public function prototype(): SessionString
     {
         return new SessionString();
     }
 
     #[Override]
-    public function save(SessionStringInterface $sessionString): void
+    public function save(SessionString $sessionString): void
     {
         $em = $this->getEntityManager();
 

@@ -14,7 +14,6 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use RuntimeException;
 use Stu\Component\Map\MapEnum;
 use Stu\Orm\Repository\MapRepository;
@@ -26,7 +25,7 @@ use Stu\Orm\Repository\MapRepository;
 #[Index(name: 'map_bordertype_idx', columns: ['bordertype_id'])]
 #[Index(name: 'map_admin_region_idx', columns: ['admin_region_id'])]
 #[Entity(repositoryClass: MapRepository::class)]
-class Map extends Location implements MapInterface
+class Map extends Location
 {
     #[Column(type: 'integer', nullable: true)]
     private ?int $system_type_id = null;
@@ -48,30 +47,30 @@ class Map extends Location implements MapInterface
 
     #[OneToOne(targetEntity: StarSystem::class, inversedBy: 'map')]
     #[JoinColumn(name: 'systems_id', referencedColumnName: 'id')]
-    private ?StarSystemInterface $starSystem = null;
+    private ?StarSystem $starSystem = null;
 
     #[ManyToOne(targetEntity: StarSystem::class)]
     #[JoinColumn(name: 'influence_area_id', referencedColumnName: 'id')]
-    private ?StarSystemInterface $influenceArea = null;
+    private ?StarSystem $influenceArea = null;
 
     #[ManyToOne(targetEntity: StarSystemType::class)]
     #[JoinColumn(name: 'system_type_id', referencedColumnName: 'id')]
-    private ?StarSystemTypeInterface $starSystemType = null;
+    private ?StarSystemType $starSystemType = null;
 
     #[ManyToOne(targetEntity: MapBorderType::class)]
     #[JoinColumn(name: 'bordertype_id', referencedColumnName: 'id')]
-    private ?MapBorderTypeInterface $mapBorderType = null;
+    private ?MapBorderType $mapBorderType = null;
 
     #[ManyToOne(targetEntity: MapRegion::class)]
     #[JoinColumn(name: 'region_id', referencedColumnName: 'id')]
-    private ?MapRegionInterface $mapRegion = null;
+    private ?MapRegion $mapRegion = null;
 
     #[ManyToOne(targetEntity: MapRegion::class)]
     #[JoinColumn(name: 'admin_region_id', referencedColumnName: 'id')]
-    private ?MapRegionInterface $administratedRegion = null;
+    private ?MapRegion $administratedRegion = null;
 
     /**
-     * @var ArrayCollection<int, WormholeEntryInterface>
+     * @var ArrayCollection<int, WormholeEntry>
      */
     #[OneToMany(targetEntity: WormholeEntry::class, mappedBy: 'map')]
     private Collection $wormholeEntries;
@@ -82,8 +81,7 @@ class Map extends Location implements MapInterface
         $this->wormholeEntries = new ArrayCollection();
     }
 
-    #[Override]
-    public function getLayer(): ?LayerInterface
+    public function getLayer(): ?Layer
     {
         if ($this->layer === null) {
             throw new RuntimeException('Layer of Map can not be null');
@@ -91,7 +89,6 @@ class Map extends Location implements MapInterface
         return $this->layer;
     }
 
-    #[Override]
     public function getX(): int
     {
         if ($this->getCx() === null) {
@@ -100,7 +97,6 @@ class Map extends Location implements MapInterface
         return $this->getCx();
     }
 
-    #[Override]
     public function getY(): int
     {
         if ($this->getCy() === null) {
@@ -109,117 +105,99 @@ class Map extends Location implements MapInterface
         return $this->getCy();
     }
 
-    #[Override]
     public function getSystemTypeId(): ?int
     {
         return $this->system_type_id;
     }
 
-    #[Override]
-    public function setSystemTypeId(?int $system_type_id): MapInterface
+    public function setSystemTypeId(?int $system_type_id): Map
     {
         $this->system_type_id = $system_type_id;
         return $this;
     }
 
-    #[Override]
     public function getInfluenceAreaId(): ?int
     {
         return $this->influence_area_id;
     }
 
-    #[Override]
-    public function setInfluenceAreaId(?int $influenceAreaId): MapInterface
+    public function setInfluenceAreaId(?int $influenceAreaId): Map
     {
         $this->influence_area_id = $influenceAreaId;
         return $this;
     }
 
-    #[Override]
     public function getBordertypeId(): ?int
     {
         return $this->bordertype_id;
     }
 
-    #[Override]
-    public function setBordertypeId(?int $bordertype_id): MapInterface
+    public function setBordertypeId(?int $bordertype_id): Map
     {
         $this->bordertype_id = $bordertype_id;
         return $this;
     }
 
-    #[Override]
     public function getRegionId(): ?int
     {
         return $this->region_id;
     }
 
-    #[Override]
-    public function setRegionId(?int $region_id): MapInterface
+    public function setRegionId(?int $region_id): Map
     {
         $this->region_id = $region_id;
         return $this;
     }
 
-    #[Override]
     public function getAdminRegionId(): ?int
     {
         return $this->admin_region_id;
     }
 
-    #[Override]
-    public function setAdminRegionId(?int $admin_region_id): MapInterface
+    public function setAdminRegionId(?int $admin_region_id): Map
     {
         $this->admin_region_id = $admin_region_id;
         return $this;
     }
 
-    #[Override]
-    public function getSystem(): ?StarSystemInterface
+    public function getSystem(): ?StarSystem
     {
         return $this->starSystem;
     }
 
-    #[Override]
-    public function setSystem(StarSystemInterface $starSystem): MapInterface
+    public function setSystem(StarSystem $starSystem): Map
     {
         $this->starSystem = $starSystem;
         return $this;
     }
 
-    #[Override]
-    public function getInfluenceArea(): ?StarSystemInterface
+    public function getInfluenceArea(): ?StarSystem
     {
         return $this->influenceArea;
     }
 
-    #[Override]
-    public function setInfluenceArea(?StarSystemInterface $influenceArea): MapInterface
+    public function setInfluenceArea(?StarSystem $influenceArea): Map
     {
         $this->influenceArea = $influenceArea;
         return $this;
     }
 
-    #[Override]
-    public function getStarSystemType(): ?StarSystemTypeInterface
+    public function getStarSystemType(): ?StarSystemType
     {
         return $this->starSystemType;
     }
 
-    #[Override]
-    public function getMapBorderType(): ?MapBorderTypeInterface
+    public function getMapBorderType(): ?MapBorderType
     {
         return $this->mapBorderType;
     }
 
-    #[Override]
-    public function getMapRegion(): ?MapRegionInterface
+    public function getMapRegion(): ?MapRegion
     {
         return $this->mapRegion;
     }
 
-    #[Override]
-    public function getAdministratedRegion(): ?MapRegionInterface
+    public function getAdministratedRegion(): ?MapRegion
     {
         return $this->administratedRegion;
     }
@@ -242,13 +220,11 @@ class Map extends Location implements MapInterface
         return $borderType->getColor();
     }
 
-    #[Override]
     protected function getWormholeEntries(): Collection
     {
         return $this->wormholeEntries;
     }
 
-    #[Override]
     public function getSectorId(): ?int
     {
         $layer = $this->getLayer();
@@ -268,7 +244,6 @@ class Map extends Location implements MapInterface
         );
     }
 
-    #[Override]
     public function getSectorString(): string
     {
         return  $this->getCx() . '|' . $this->getCy();

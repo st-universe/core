@@ -12,9 +12,8 @@ use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\LayerInterface;
+use Stu\Orm\Entity\Layer;
 use Stu\Orm\Entity\Location;
-use Stu\Orm\Entity\LocationInterface;
 
 /**
  * @extends EntityRepository<Location>
@@ -121,7 +120,7 @@ class LocationRepository extends EntityRepository implements LocationRepositoryI
 
 
     #[Override]
-    public function getRumpCategoryInfo(LayerInterface $layer, int $cx, int $cy): array
+    public function getRumpCategoryInfo(Layer $layer, int $cx, int $cy): array
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('category_name', 'category_name', 'string');
@@ -159,7 +158,7 @@ class LocationRepository extends EntityRepository implements LocationRepositoryI
     }
 
     #[Override]
-    public function getRandomLocation(): LocationInterface
+    public function getRandomLocation(): Location
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('id', 'id', 'integer');
@@ -183,7 +182,7 @@ class LocationRepository extends EntityRepository implements LocationRepositoryI
     }
 
     #[Override]
-    public function getByCoordinates(int $x, int $y, int $layerId): ?LocationInterface
+    public function getByCoordinates(int $x, int $y, int $layerId): ?Location
     {
         return $this->findOneBy([
             'cx' => $x,

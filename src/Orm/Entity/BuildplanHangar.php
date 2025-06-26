@@ -12,13 +12,12 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\UniqueConstraint;
-use Override;
 use Stu\Orm\Repository\BuildplanHangarRepository;
 
 #[Table(name: 'stu_buildplans_hangar')]
 #[UniqueConstraint(name: 'rump_idx', columns: ['rump_id'])]
 #[Entity(repositoryClass: BuildplanHangarRepository::class)]
-class BuildplanHangar implements BuildplanHangarInterface
+class BuildplanHangar
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -39,76 +38,66 @@ class BuildplanHangar implements BuildplanHangarInterface
 
     #[ManyToOne(targetEntity: TorpedoType::class)]
     #[JoinColumn(name: 'default_torpedo_type_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ?TorpedoTypeInterface $defaultTorpedoType = null;
+    private ?TorpedoType $defaultTorpedoType = null;
 
     #[ManyToOne(targetEntity: SpacecraftBuildplan::class)]
     #[JoinColumn(name: 'buildplan_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private SpacecraftBuildplanInterface $buildplan;
+    private SpacecraftBuildplan $buildplan;
 
     #[ManyToOne(targetEntity: SpacecraftRump::class, inversedBy: 'startHangar')]
     #[JoinColumn(name: 'rump_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private SpacecraftRumpInterface $spacecraftRump;
+    private SpacecraftRump $spacecraftRump;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getBuildplanId(): int
     {
         return $this->buildplan_id;
     }
 
-    #[Override]
-    public function setBuildplanId(int $buildplanId): BuildplanHangarInterface
+    public function setBuildplanId(int $buildplanId): BuildplanHangar
     {
         $this->buildplan_id = $buildplanId;
 
         return $this;
     }
 
-    #[Override]
     public function getDefaultTorpedoTypeId(): int
     {
         return $this->default_torpedo_type_id;
     }
 
-    #[Override]
-    public function setDefaultTorpedoTypeId(int $defaultTorpedoTypeId): BuildplanHangarInterface
+    public function setDefaultTorpedoTypeId(int $defaultTorpedoTypeId): BuildplanHangar
     {
         $this->default_torpedo_type_id = $defaultTorpedoTypeId;
 
         return $this;
     }
 
-    #[Override]
-    public function getDefaultTorpedoType(): ?TorpedoTypeInterface
+    public function getDefaultTorpedoType(): ?TorpedoType
     {
         return $this->defaultTorpedoType;
     }
 
-    #[Override]
-    public function getBuildplan(): SpacecraftBuildplanInterface
+    public function getBuildplan(): SpacecraftBuildplan
     {
         return $this->buildplan;
     }
 
-    #[Override]
-    public function setStartEnergyCosts(int $startEnergyCosts): BuildplanHangarInterface
+    public function setStartEnergyCosts(int $startEnergyCosts): BuildplanHangar
     {
         $this->start_energy_costs = $startEnergyCosts;
         return $this;
     }
 
-    #[Override]
     public function getStartEnergyCosts(): int
     {
         return $this->start_energy_costs;
     }
 
-    #[Override]
     public function getRumpId(): int
     {
         return $this->rump_id;

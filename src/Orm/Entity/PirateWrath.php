@@ -10,13 +10,12 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Lib\Pirate\Component\PirateWrathManager;
 use Stu\Orm\Repository\PirateWrathRepository;
 
 #[Table(name: 'stu_pirate_wrath')]
 #[Entity(repositoryClass: PirateWrathRepository::class)]
-class PirateWrath implements PirateWrathInterface
+class PirateWrath
 {
     #[Column(type: 'integer')]
     private int $wrath = PirateWrathManager::DEFAULT_WRATH;
@@ -27,44 +26,38 @@ class PirateWrath implements PirateWrathInterface
     #[Id]
     #[OneToOne(targetEntity: User::class, inversedBy: 'pirateWrath')]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $user;
+    private User $user;
 
-    #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    #[Override]
-    public function setUser(UserInterface $user): PirateWrathInterface
+    public function setUser(User $user): PirateWrath
     {
         $this->user = $user;
 
         return $this;
     }
 
-    #[Override]
     public function getWrath(): int
     {
         return $this->wrath;
     }
 
-    #[Override]
-    public function setWrath(int $wrath): PirateWrathInterface
+    public function setWrath(int $wrath): PirateWrath
     {
         $this->wrath = $wrath;
 
         return $this;
     }
 
-    #[Override]
     public function getProtectionTimeout(): ?int
     {
         return $this->protection_timeout;
     }
 
-    #[Override]
-    public function setProtectionTimeout(?int $timestamp): PirateWrathInterface
+    public function setProtectionTimeout(?int $timestamp): PirateWrath
     {
         $this->protection_timeout = $timestamp;
 

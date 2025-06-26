@@ -9,11 +9,11 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Override;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\Module;
 use Stu\Orm\Entity\ModuleSpecial;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
 
 /**
  * @extends EntityRepository<Module>
@@ -23,7 +23,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
     // used for ModuleSelector
     #[Override]
     public function getBySpecialTypeAndRumpAndRole(
-        ColonyInterface|ShipInterface $host,
+        Colony|Ship $host,
         SpacecraftModuleTypeEnum $moduleType,
         int $rumpId,
         int $shipRumpRoleId
@@ -56,7 +56,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
             )
             ->setParameters([
                 'typeId' => $moduleType->value,
-                'hostIdColumnName' => $host instanceof ColonyInterface ? 'colony_id' : 'ship_id',
+                'hostIdColumnName' => $host instanceof Colony ? 'colony_id' : 'ship_id',
                 'hostId' => $host->getId(),
                 'shipRumpRoleId' => $shipRumpRoleId,
                 'rumpId' => $rumpId,
@@ -67,7 +67,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
 
     #[Override]
     public function getBySpecialTypeAndRump(
-        ColonyInterface|SpacecraftInterface $host,
+        Colony|Spacecraft $host,
         SpacecraftModuleTypeEnum $moduleType,
         int $rumpId
     ): array {
@@ -92,7 +92,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
             )
             ->setParameters([
                 'typeId' => $moduleType->value,
-                'hostIdColumnName' => $host instanceof ColonyInterface ? 'colony_id' : 'ship_id',
+                'hostIdColumnName' => $host instanceof Colony ? 'colony_id' : 'ship_id',
                 'hostId' => $host->getId(),
                 'rumpId' => $rumpId,
                 'state' => 1

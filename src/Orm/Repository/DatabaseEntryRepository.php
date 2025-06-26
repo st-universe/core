@@ -7,7 +7,6 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\DatabaseEntry;
-use Stu\Orm\Entity\DatabaseEntryInterface;
 use Stu\Orm\Entity\StarSystem;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\MapRegion;
@@ -28,7 +27,7 @@ final class DatabaseEntryRepository extends EntityRepository implements Database
     }
 
     #[Override]
-    public function getByCategoryIdAndObjectId(int $categoryId, int $objectId): ?DatabaseEntryInterface
+    public function getByCategoryIdAndObjectId(int $categoryId, int $objectId): ?DatabaseEntry
     {
         return $this->findOneBy([
             'category_id' => $categoryId,
@@ -125,13 +124,13 @@ final class DatabaseEntryRepository extends EntityRepository implements Database
     }
 
     #[Override]
-    public function prototype(): DatabaseEntryInterface
+    public function prototype(): DatabaseEntry
     {
         return new DatabaseEntry();
     }
 
     #[Override]
-    public function save(DatabaseEntryInterface $entry): void
+    public function save(DatabaseEntry $entry): void
     {
         $em = $this->getEntityManager();
 

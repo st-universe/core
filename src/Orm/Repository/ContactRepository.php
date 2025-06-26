@@ -8,8 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Orm\Entity\Contact;
-use Stu\Orm\Entity\ContactInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 /**
  * @extends EntityRepository<Contact>
@@ -17,13 +16,13 @@ use Stu\Orm\Entity\UserInterface;
 final class ContactRepository extends EntityRepository implements ContactRepositoryInterface
 {
     #[Override]
-    public function prototype(): ContactInterface
+    public function prototype(): Contact
     {
         return new Contact();
     }
 
     #[Override]
-    public function save(ContactInterface $post): void
+    public function save(Contact $post): void
     {
         $em = $this->getEntityManager();
 
@@ -31,7 +30,7 @@ final class ContactRepository extends EntityRepository implements ContactReposit
     }
 
     #[Override]
-    public function delete(ContactInterface $post): void
+    public function delete(Contact $post): void
     {
         $em = $this->getEntityManager();
 
@@ -40,7 +39,7 @@ final class ContactRepository extends EntityRepository implements ContactReposit
     }
 
     #[Override]
-    public function getByUserAndOpponent(int $userId, int $opponentId): ?ContactInterface
+    public function getByUserAndOpponent(int $userId, int $opponentId): ?Contact
     {
         return $this->findOneBy([
             'user_id' => $userId,
@@ -49,7 +48,7 @@ final class ContactRepository extends EntityRepository implements ContactReposit
     }
 
     #[Override]
-    public function getOrderedByUser(UserInterface $user): array
+    public function getOrderedByUser(User $user): array
     {
         return $this->findBy(
             ['user_id' => $user->getId()],
@@ -58,7 +57,7 @@ final class ContactRepository extends EntityRepository implements ContactReposit
     }
 
     #[Override]
-    public function getRemoteOrderedByUser(UserInterface $user): array
+    public function getRemoteOrderedByUser(User $user): array
     {
         return $this->findBy(
             [

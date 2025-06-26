@@ -11,10 +11,10 @@ use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace\SubspaceLayerTypeEnum;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreationInterface;
 use Stu\Lib\Trait\LayerExplorationTrait;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\LayerInterface;
-use Stu\Orm\Entity\LocationInterface;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Layer;
+use Stu\Orm\Entity\Location;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\UserMapRepositoryInterface;
 
 class PanelLayerConfiguration
@@ -26,8 +26,8 @@ class PanelLayerConfiguration
     public function configureLayers(
         PanelLayerCreationInterface $panelLayerCreation,
         SpacecraftWrapperInterface $wrapper,
-        LocationInterface $panelCenter,
-        UserInterface $currentUser,
+        Location $panelCenter,
+        User $currentUser,
         bool $tachyonFresh,
         bool $isShipOnLevel
     ): void {
@@ -48,7 +48,7 @@ class PanelLayerConfiguration
             ->addBorderLayer($wrapper, $isShipOnLevel)
             ->addAnomalyLayer();
 
-        if ($panelCenter instanceof MapInterface) {
+        if ($panelCenter instanceof Map) {
             $layer = $panelCenter->getLayer();
             if ($layer === null) {
                 throw new RuntimeException('this should not happen');
@@ -62,7 +62,7 @@ class PanelLayerConfiguration
         }
     }
 
-    private function createUserMapEntries(SpacecraftWrapperInterface $wrapper, LayerInterface $layer, UserInterface $currentUser): void
+    private function createUserMapEntries(SpacecraftWrapperInterface $wrapper, Layer $layer, User $currentUser): void
     {
         $map = $wrapper->get()->getMap();
         if ($map === null) {
@@ -84,7 +84,7 @@ class PanelLayerConfiguration
         }
     }
 
-    private function isUserMapActive(LayerInterface $layer, UserInterface $currentUser): bool
+    private function isUserMapActive(Layer $layer, User $currentUser): bool
     {
         if (!$currentUser->hasColony()) {
             return false;

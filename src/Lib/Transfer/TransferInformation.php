@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Stu\Lib\Transfer;
 
 use Stu\Lib\Transfer\Wrapper\StorageEntityWrapperInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
 
 class TransferInformation
 {
@@ -41,7 +41,7 @@ class TransferInformation
         }
 
         if (
-            $this->target instanceof SpacecraftInterface
+            $this->target instanceof Spacecraft
             && $this->target->hasUplink()
         ) {
             return true;
@@ -59,8 +59,8 @@ class TransferInformation
             return false;
         }
 
-        return $this->source instanceof SpacecraftInterface
-            && $this->target instanceof SpacecraftInterface
+        return $this->source instanceof Spacecraft
+            && $this->target instanceof Spacecraft
             && $this->source->isTorpedoStorageHealthy()
             && (!$this->isUnload() || $this->source->getTorpedoCount() > 0)
             && ($this->target->hasTorpedo() || $this->target->isTorpedoStorageHealthy())
@@ -141,13 +141,13 @@ class TransferInformation
 
     public function isUpIcon(): bool
     {
-        return ($this->getSource() instanceof ColonyInterface) === $this->isUnload();
+        return ($this->getSource() instanceof Colony) === $this->isUnload();
     }
 
     public function showFleetleaderActions(): bool
     {
         $source = $this->getSource();
-        if (!$source instanceof ShipInterface) {
+        if (!$source instanceof Ship) {
             return false;
         }
 

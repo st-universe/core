@@ -8,8 +8,8 @@ use Override;
 use Stu\Lib\Component\ComponentRegistrationInterface;
 use Stu\Module\Game\Component\GameComponentEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\DatabaseEntryInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\DatabaseEntry;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\PrestigeLogRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -22,13 +22,13 @@ final class CreatePrestigeLog implements CreatePrestigeLogInterface
     ) {}
 
     #[Override]
-    public function createLog(int $amount, string $description, UserInterface $user, int $date): void
+    public function createLog(int $amount, string $description, User $user, int $date): void
     {
         $this->createLogIntern($amount, $description, $user, $date);
     }
 
     #[Override]
-    public function createLogForDatabaseEntry(DatabaseEntryInterface $databaseEntry, UserInterface $user, int $date): void
+    public function createLogForDatabaseEntry(DatabaseEntry $databaseEntry, User $user, int $date): void
     {
         $amount = $databaseEntry->getCategory()->getPrestige();
         $description = sprintf(
@@ -41,7 +41,7 @@ final class CreatePrestigeLog implements CreatePrestigeLogInterface
         $this->createLogIntern($amount, $description, $user, $date);
     }
 
-    private function createLogIntern(int $amount, string $description, UserInterface $user, int $date): void
+    private function createLogIntern(int $amount, string $description, User $user, int $date): void
     {
         if ($user->getId() < UserEnum::USER_FIRST_ID) {
             return;

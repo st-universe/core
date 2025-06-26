@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Action\SalvageEmergencyPods;
 
 use Stu\Lib\Map\DistanceCalculationInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\TradePostInterface;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\TradePost;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 
 final class TransferToClosestLocation
@@ -18,10 +18,10 @@ final class TransferToClosestLocation
     ) {}
 
     public function transfer(
-        SpacecraftInterface $ship,
-        SpacecraftInterface $target,
+        Spacecraft $ship,
+        Spacecraft $target,
         int $crewCount,
-        TradePostInterface $closestTradepost
+        TradePost $closestTradepost
     ): string {
         $closestColony = null;
         $colonyDistance = null;

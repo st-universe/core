@@ -14,13 +14,12 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
 use LogicException;
-use Override;
 use Stu\Orm\Repository\TorpedoStorageRepository;
 
 #[Table(name: 'stu_torpedo_storage')]
 #[Index(name: 'torpedo_storage_spacecraft_idx', columns: ['spacecraft_id'])]
 #[Entity(repositoryClass: TorpedoStorageRepository::class)]
-class TorpedoStorage implements TorpedoStorageInterface
+class TorpedoStorage
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -35,55 +34,48 @@ class TorpedoStorage implements TorpedoStorageInterface
 
     #[OneToOne(targetEntity: Spacecraft::class, inversedBy: 'torpedoStorage')]
     #[JoinColumn(name: 'spacecraft_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private SpacecraftInterface $spacecraft;
+    private Spacecraft $spacecraft;
 
     #[ManyToOne(targetEntity: TorpedoType::class)]
     #[JoinColumn(name: 'torpedo_type', nullable: false, referencedColumnName: 'id')]
-    private TorpedoTypeInterface $torpedo;
+    private TorpedoType $torpedo;
 
     #[OneToOne(targetEntity: Storage::class, mappedBy: 'torpedoStorage')]
-    private ?StorageInterface $storage;
+    private ?Storage $storage;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
-    public function getSpacecraft(): SpacecraftInterface
+    public function getSpacecraft(): Spacecraft
     {
         return $this->spacecraft;
     }
 
-    #[Override]
-    public function setSpacecraft(SpacecraftInterface $spacecraft): TorpedoStorageInterface
+    public function setSpacecraft(Spacecraft $spacecraft): TorpedoStorage
     {
         $this->spacecraft = $spacecraft;
         return $this;
     }
 
-    #[Override]
-    public function getTorpedo(): TorpedoTypeInterface
+    public function getTorpedo(): TorpedoType
     {
         return $this->torpedo;
     }
 
-    #[Override]
-    public function setTorpedo(TorpedoTypeInterface $torpedoType): TorpedoStorageInterface
+    public function setTorpedo(TorpedoType $torpedoType): TorpedoStorage
     {
         $this->torpedo = $torpedoType;
         return $this;
     }
 
-    #[Override]
-    public function getStorage(): StorageInterface
+    public function getStorage(): Storage
     {
         return $this->storage ?? throw new LogicException('TorpedoStorage has no storage');
     }
 
-    #[Override]
-    public function setStorage(StorageInterface $storage): TorpedoStorageInterface
+    public function setStorage(Storage $storage): TorpedoStorage
     {
         $this->storage = $storage;
 

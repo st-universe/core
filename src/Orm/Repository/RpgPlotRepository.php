@@ -8,9 +8,8 @@ use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\KnPost;
 use Stu\Orm\Entity\RpgPlot;
-use Stu\Orm\Entity\RpgPlotInterface;
 use Stu\Orm\Entity\RpgPlotMember;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 /**
  * @extends EntityRepository<RpgPlot>
@@ -26,13 +25,13 @@ final class RpgPlotRepository extends EntityRepository implements RpgPlotReposit
     }
 
     #[Override]
-    public function prototype(): RpgPlotInterface
+    public function prototype(): RpgPlot
     {
         return new RpgPlot();
     }
 
     #[Override]
-    public function save(RpgPlotInterface $rpgPlot): void
+    public function save(RpgPlot $rpgPlot): void
     {
         $em = $this->getEntityManager();
 
@@ -40,7 +39,7 @@ final class RpgPlotRepository extends EntityRepository implements RpgPlotReposit
     }
 
     #[Override]
-    public function delete(RpgPlotInterface $rpgPlot): void
+    public function delete(RpgPlot $rpgPlot): void
     {
         $em = $this->getEntityManager();
 
@@ -65,7 +64,7 @@ final class RpgPlotRepository extends EntityRepository implements RpgPlotReposit
     }
 
     #[Override]
-    public function getByUser(UserInterface $user): array
+    public function getByUser(User $user): array
     {
         return $this->getEntityManager()
             ->createQuery(

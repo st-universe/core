@@ -12,14 +12,13 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\ShipyardShipQueueRepository;
 
 #[Table(name: 'stu_shipyard_shipqueue')]
 #[Index(name: 'shipyard_shipqueue_user_idx', columns: ['user_id'])]
 #[Index(name: 'shipyard_shipqueue_finish_date_idx', columns: ['finish_date'])]
 #[Entity(repositoryClass: ShipyardShipQueueRepository::class)]
-class ShipyardShipQueue implements ShipyardShipQueueInterface
+class ShipyardShipQueue
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -49,119 +48,103 @@ class ShipyardShipQueue implements ShipyardShipQueueInterface
 
     #[ManyToOne(targetEntity: SpacecraftBuildplan::class)]
     #[JoinColumn(name: 'buildplan_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private SpacecraftBuildplanInterface $spacecraftBuildplan;
+    private SpacecraftBuildplan $spacecraftBuildplan;
 
     #[ManyToOne(targetEntity: SpacecraftRump::class)]
     #[JoinColumn(name: 'rump_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private SpacecraftRumpInterface $spacecraftRump;
+    private SpacecraftRump $spacecraftRump;
 
     #[ManyToOne(targetEntity: Station::class)]
     #[JoinColumn(name: 'station_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private StationInterface $station;
+    private Station $station;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
-    public function getStation(): StationInterface
+    public function getStation(): Station
     {
         return $this->station;
     }
 
-    #[Override]
-    public function setStation(StationInterface $station): ShipyardShipQueueInterface
+    public function setStation(Station $station): ShipyardShipQueue
     {
         $this->station = $station;
         return $this;
     }
 
-    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    #[Override]
-    public function setUserId(int $userId): ShipyardShipQueueInterface
+    public function setUserId(int $userId): ShipyardShipQueue
     {
         $this->user_id = $userId;
 
         return $this;
     }
 
-    #[Override]
     public function getRumpId(): int
     {
         return $this->rump_id;
     }
 
-    #[Override]
     public function getBuildtime(): int
     {
         return $this->buildtime;
     }
 
-    #[Override]
-    public function setBuildtime(int $buildtime): ShipyardShipQueueInterface
+    public function setBuildtime(int $buildtime): ShipyardShipQueue
     {
         $this->buildtime = $buildtime;
 
         return $this;
     }
 
-    #[Override]
     public function getFinishDate(): int
     {
         return $this->finish_date;
     }
 
-    #[Override]
-    public function setFinishDate(int $finishDate): ShipyardShipQueueInterface
+    public function setFinishDate(int $finishDate): ShipyardShipQueue
     {
         $this->finish_date = $finishDate;
 
         return $this;
     }
 
-    #[Override]
     public function getStopDate(): int
     {
         return $this->stop_date;
     }
 
-    #[Override]
-    public function setStopDate(int $stopDate): ShipyardShipQueueInterface
+    public function setStopDate(int $stopDate): ShipyardShipQueue
     {
         $this->stop_date = $stopDate;
 
         return $this;
     }
 
-    #[Override]
-    public function getRump(): SpacecraftRumpInterface
+    public function getRump(): SpacecraftRump
     {
         return $this->spacecraftRump;
     }
 
-    #[Override]
-    public function setRump(SpacecraftRumpInterface $spacecraftRump): ShipyardShipQueueInterface
+    public function setRump(SpacecraftRump $spacecraftRump): ShipyardShipQueue
     {
         $this->spacecraftRump = $spacecraftRump;
 
         return $this;
     }
 
-    #[Override]
-    public function getSpacecraftBuildplan(): SpacecraftBuildplanInterface
+    public function getSpacecraftBuildplan(): SpacecraftBuildplan
     {
         return $this->spacecraftBuildplan;
     }
 
-    #[Override]
-    public function setSpacecraftBuildplan(SpacecraftBuildplanInterface $spacecraftBuildplan): ShipyardShipQueueInterface
+    public function setSpacecraftBuildplan(SpacecraftBuildplan $spacecraftBuildplan): ShipyardShipQueue
     {
         $this->spacecraftBuildplan = $spacecraftBuildplan;
 

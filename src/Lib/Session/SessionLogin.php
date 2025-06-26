@@ -11,8 +11,8 @@ use Stu\Lib\LoginException;
 use Stu\Lib\UserLockedException;
 use Stu\Module\Control\StuHashInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Entity\UserLockInterface;
+use Stu\Orm\Entity\User;
+use Stu\Orm\Entity\UserLock;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use Stu\Orm\Repository\UserIpTableRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -67,7 +67,7 @@ final class SessionLogin implements SessionLoginInterface
         return true;
     }
 
-    private function loadUser(string $login): UserInterface
+    private function loadUser(string $login): User
     {
         $user = $this->userRepository->getByLogin(mb_strtolower($login));
         if ($user === null) {
@@ -83,7 +83,7 @@ final class SessionLogin implements SessionLoginInterface
         return $user;
     }
 
-    private function setUser(UserInterface $user): void
+    private function setUser(User $user): void
     {
         $_SESSION['uid'] = $user->getId();
         $_SESSION['login'] = 1;
@@ -91,7 +91,7 @@ final class SessionLogin implements SessionLoginInterface
         $this->session->setUser($user);
     }
 
-    private function checkPassword(UserInterface $user, string $password): void
+    private function checkPassword(User $user, string $password): void
     {
         $registration = $user->getRegistration();
         $passwordHash = $registration->getPassword();
@@ -107,10 +107,10 @@ final class SessionLogin implements SessionLoginInterface
         }
     }
 
-    private function checkUser(UserInterface $user): void
+    private function checkUser(User $user): void
     {
         if ($user->isLocked()) {
-            /** @var UserLockInterface $userLock */
+            /** @var UserLock $userLock */
             $userLock = $user->getUserLock();
 
             throw new UserLockedException(
@@ -123,7 +123,7 @@ final class SessionLogin implements SessionLoginInterface
         }
     }
 
-    private function updateUser(UserInterface $user): void
+    private function updateUser(User $user): void
     {
         if ($user->getState() === UserEnum::USER_STATE_NEW) {
             $user->setState(UserEnum::USER_STATE_UNCOLONIZED);
@@ -138,7 +138,7 @@ final class SessionLogin implements SessionLoginInterface
         $this->userRepository->save($user);
     }
 
-    private function addIpTableEntry(UserInterface $user): void
+    private function addIpTableEntry(User $user): void
     {
         $ipTableEntry = $this->userIpTableRepository->prototype();
         $ipTableEntry->setUser($user);
@@ -150,7 +150,7 @@ final class SessionLogin implements SessionLoginInterface
         $this->userIpTableRepository->save($ipTableEntry);
     }
 
-    private function buildCookieString(UserInterface $user): string
+    private function buildCookieString(User $user): string
     {
         return $this->stuHash->hash(($user->getId() . $user->getRegistration()->getEMail() . $user->getRegistration()->getCreationDate()));
     }

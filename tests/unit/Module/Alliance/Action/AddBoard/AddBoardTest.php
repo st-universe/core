@@ -10,9 +10,9 @@ use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\View\Boards\Boards;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\AllianceBoardInterface;
-use Stu\Orm\Entity\AllianceInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\AllianceBoard;
+use Stu\Orm\Entity\Alliance;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\AllianceBoardRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -58,9 +58,9 @@ class AddBoardTest extends StuTestCase
     {
         static::expectException(AccessViolationException::class);
 
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
         $game = $this->mock(GameControllerInterface::class);
-        $alliance = $this->mock(AllianceInterface::class);
+        $alliance = $this->mock(Alliance::class);
 
         $game->shouldReceive('getUser')
             ->withNoArgs()
@@ -82,9 +82,9 @@ class AddBoardTest extends StuTestCase
 
     public function testHandleErrorsIfNameIsTooShort(): void
     {
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
         $game = $this->mock(GameControllerInterface::class);
-        $alliance = $this->mock(AllianceInterface::class);
+        $alliance = $this->mock(Alliance::class);
 
         $game->shouldReceive('getUser')
             ->withNoArgs()
@@ -117,10 +117,10 @@ class AddBoardTest extends StuTestCase
 
     public function testHandleCreatesBoard(): void
     {
-        $user = $this->mock(UserInterface::class);
+        $user = $this->mock(User::class);
         $game = $this->mock(GameControllerInterface::class);
-        $alliance = $this->mock(AllianceInterface::class);
-        $board = $this->mock(AllianceBoardInterface::class);
+        $alliance = $this->mock(Alliance::class);
+        $board = $this->mock(AllianceBoard::class);
 
         $name = 'abcdc';
 

@@ -12,7 +12,6 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -23,7 +22,7 @@ use Stu\Orm\Repository\SpacecraftSystemRepository;
 #[Index(name: 'spacecraft_system_type_idx', columns: ['system_type'])]
 #[Index(name: 'spacecraft_system_mode_idx', columns: ['mode'])]
 #[Entity(repositoryClass: SpacecraftSystemRepository::class)]
-class SpacecraftSystem implements SpacecraftSystemInterface
+class SpacecraftSystem
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -53,73 +52,63 @@ class SpacecraftSystem implements SpacecraftSystemInterface
 
     #[ManyToOne(targetEntity: Module::class)]
     #[JoinColumn(name: 'module_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ?ModuleInterface $module = null;
+    private ?Module $module = null;
 
     #[ManyToOne(targetEntity: Spacecraft::class)]
     #[JoinColumn(name: 'spacecraft_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private SpacecraftInterface $spacecraft;
+    private Spacecraft $spacecraft;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
         return $this->system_type;
     }
 
-    #[Override]
-    public function setSystemType(SpacecraftSystemTypeEnum $type): SpacecraftSystemInterface
+    public function setSystemType(SpacecraftSystemTypeEnum $type): SpacecraftSystem
     {
         $this->system_type = $type;
 
         return $this;
     }
 
-    #[Override]
     public function getModuleId(): ?int
     {
         return $this->module_id;
     }
 
-    #[Override]
-    public function setModuleId(int $moduleId): SpacecraftSystemInterface
+    public function setModuleId(int $moduleId): SpacecraftSystem
     {
         $this->module_id = $moduleId;
 
         return $this;
     }
 
-    #[Override]
     public function getStatus(): int
     {
         return $this->status;
     }
 
-    #[Override]
-    public function setStatus(int $status): SpacecraftSystemInterface
+    public function setStatus(int $status): SpacecraftSystem
     {
         $this->status = $status;
 
         return $this;
     }
 
-    #[Override]
     public function isHealthy(): bool
     {
         return $this->getStatus() > 0;
     }
 
-    #[Override]
     public function getName(): string
     {
         return $this->getSystemType()->getDescription();
     }
 
-    #[Override]
     public function getCssClass(): string
     {
         if ($this->getStatus() < 1) {
@@ -135,75 +124,64 @@ class SpacecraftSystem implements SpacecraftSystemInterface
         }
     }
 
-    #[Override]
     public function getMode(): SpacecraftSystemModeEnum
     {
         return $this->mode;
     }
 
-    #[Override]
-    public function setMode(SpacecraftSystemModeEnum $mode): SpacecraftSystemInterface
+    public function setMode(SpacecraftSystemModeEnum $mode): SpacecraftSystem
     {
         $this->mode = $mode;
 
         return $this;
     }
 
-    #[Override]
     public function getCooldown(): ?int
     {
         return $this->cooldown > time() ? $this->cooldown : null;
     }
 
-    #[Override]
-    public function setCooldown(int $cooldown): SpacecraftSystemInterface
+    public function setCooldown(int $cooldown): SpacecraftSystem
     {
         $this->cooldown = $cooldown;
 
         return $this;
     }
 
-    #[Override]
-    public function getModule(): ?ModuleInterface
+    public function getModule(): ?Module
     {
         return $this->module;
     }
 
-    #[Override]
-    public function setModule(ModuleInterface $module): SpacecraftSystemInterface
+    public function setModule(Module $module): SpacecraftSystem
     {
         $this->module = $module;
 
         return $this;
     }
 
-    #[Override]
-    public function getSpacecraft(): SpacecraftInterface
+    public function getSpacecraft(): Spacecraft
     {
         return $this->spacecraft;
     }
 
-    #[Override]
-    public function setSpacecraft(SpacecraftInterface $spacecraft): SpacecraftSystemInterface
+    public function setSpacecraft(Spacecraft $spacecraft): SpacecraftSystem
     {
         $this->spacecraft = $spacecraft;
         return $this;
     }
 
-    #[Override]
     public function getData(): ?string
     {
         return $this->data;
     }
 
-    #[Override]
-    public function setData(string $data): SpacecraftSystemInterface
+    public function setData(string $data): SpacecraftSystem
     {
         $this->data = $data;
         return $this;
     }
 
-    #[Override]
     public function determineSystemLevel(): int
     {
         $module = $this->getModule();
@@ -215,13 +193,11 @@ class SpacecraftSystem implements SpacecraftSystemInterface
         }
     }
 
-    #[Override]
     public function hasSpecial(ModuleSpecialAbilityEnum $ability): bool
     {
         return $this->module !== null && $this->module->hasSpecial($ability);
     }
 
-    #[Override]
     public function __toString(): string
     {
         return sprintf(

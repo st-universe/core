@@ -12,13 +12,12 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\TradeTransferRepository;
 
 #[Table(name: 'stu_trade_transfers')]
 #[Index(name: 'trade_transfer_post_user_idx', columns: ['posts_id', 'user_id'])]
 #[Entity(repositoryClass: TradeTransferRepository::class)]
-class TradeTransfer implements TradeTransferInterface
+class TradeTransfer
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -39,87 +38,75 @@ class TradeTransfer implements TradeTransferInterface
 
     #[ManyToOne(targetEntity: TradePost::class)]
     #[JoinColumn(name: 'posts_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private TradePostInterface $tradePost;
+    private TradePost $tradePost;
 
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $user;
+    private User $user;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getTradePostId(): int
     {
         return $this->posts_id;
     }
 
-    #[Override]
-    public function setTradePostId(int $tradePostId): TradeTransferInterface
+    public function setTradePostId(int $tradePostId): TradeTransfer
     {
         $this->posts_id = $tradePostId;
 
         return $this;
     }
 
-    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    #[Override]
-    public function setUser(UserInterface $user): TradeTransferInterface
+    public function setUser(User $user): TradeTransfer
     {
         $this->user = $user;
         return $this;
     }
 
-    #[Override]
     public function getAmount(): int
     {
         return $this->count;
     }
 
-    #[Override]
-    public function setAmount(int $amount): TradeTransferInterface
+    public function setAmount(int $amount): TradeTransfer
     {
         $this->count = $amount;
 
         return $this;
     }
 
-    #[Override]
     public function getDate(): int
     {
         return $this->date;
     }
 
-    #[Override]
-    public function setDate(int $date): TradeTransferInterface
+    public function setDate(int $date): TradeTransfer
     {
         $this->date = $date;
 
         return $this;
     }
 
-    #[Override]
-    public function getTradePost(): TradePostInterface
+    public function getTradePost(): TradePost
     {
         return $this->tradePost;
     }
 
-    #[Override]
-    public function setTradePost(TradePostInterface $tradePost): TradeTransferInterface
+    public function setTradePost(TradePost $tradePost): TradeTransfer
     {
         $this->tradePost = $tradePost;
 

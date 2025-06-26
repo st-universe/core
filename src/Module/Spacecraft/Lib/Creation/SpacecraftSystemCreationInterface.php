@@ -3,16 +3,16 @@
 namespace Stu\Module\Spacecraft\Lib\Creation;
 
 use Doctrine\Common\Collections\Collection;
-use Stu\Orm\Entity\BuildplanModuleInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\BuildplanModule;
+use Stu\Orm\Entity\Spacecraft;
 
 interface SpacecraftSystemCreationInterface
 {
     /**
-     * @param Collection<int, BuildplanModuleInterface> $buildplanModules
+     * @param Collection<int, BuildplanModule> $buildplanModules
      */
     public function createShipSystemsByModuleList(
-        SpacecraftInterface $spacecraft,
+        Spacecraft $spacecraft,
         Collection $buildplanModules,
         ?SpacecraftCreationConfigInterface $spacecraftCreationConfig
     ): void;

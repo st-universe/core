@@ -7,7 +7,6 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\MiningQueue;
-use Stu\Orm\Entity\MiningQueueInterface;
 
 /**
  * @extends EntityRepository<MiningQueue>
@@ -15,13 +14,13 @@ use Stu\Orm\Entity\MiningQueueInterface;
 final class MiningQueueRepository extends EntityRepository implements MiningQueueRepositoryInterface
 {
     #[Override]
-    public function prototype(): MiningQueueInterface
+    public function prototype(): MiningQueue
     {
         return new MiningQueue();
     }
 
     #[Override]
-    public function getByShip(int $shipId): ?MiningQueueInterface
+    public function getByShip(int $shipId): ?MiningQueue
     {
         return $this->findOneBy([
             'ship_id' => $shipId
@@ -29,7 +28,7 @@ final class MiningQueueRepository extends EntityRepository implements MiningQueu
     }
 
     #[Override]
-    public function save(MiningQueueInterface $miningqueue): void
+    public function save(MiningQueue $miningqueue): void
     {
         $em = $this->getEntityManager();
 
@@ -37,7 +36,7 @@ final class MiningQueueRepository extends EntityRepository implements MiningQueu
     }
 
     #[Override]
-    public function delete(MiningQueueInterface $miningqueue): void
+    public function delete(MiningQueue $miningqueue): void
     {
         $em = $this->getEntityManager();
 

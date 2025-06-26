@@ -4,17 +4,17 @@ namespace Stu\Lib\Interaction\Member;
 
 use Override;
 use Stu\Lib\Interaction\InteractionCheckType;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
-use Stu\Orm\Entity\TrumfieldInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\StarSystemMap;
+use Stu\Orm\Entity\Trumfield;
+use Stu\Orm\Entity\User;
 
 class TrumfieldMember implements InteractionMemberInterface
 {
-    public function __construct(private TrumfieldInterface $trumfield) {}
+    public function __construct(private Trumfield $trumfield) {}
 
     #[Override]
-    public function get(): TrumfieldInterface
+    public function get(): Trumfield
     {
         return $this->trumfield;
     }
@@ -36,13 +36,13 @@ class TrumfieldMember implements InteractionMemberInterface
     }
 
     #[Override]
-    public function getLocation(): MapInterface|StarSystemMapInterface
+    public function getLocation(): Map|StarSystemMap
     {
         return $this->trumfield->getLocation();
     }
 
     #[Override]
-    public function getUser(): ?UserInterface
+    public function getUser(): ?User
     {
         return null;
     }

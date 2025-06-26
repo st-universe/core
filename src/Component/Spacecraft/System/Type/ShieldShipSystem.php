@@ -14,7 +14,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeInterface;
 use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftStateChangerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 
 final class ShieldShipSystem extends AbstractSpacecraftSystemType implements SpacecraftSystemTypeInterface
 {
@@ -41,7 +41,7 @@ final class ShieldShipSystem extends AbstractSpacecraftSystemType implements Spa
             return false;
         }
 
-        if ($spacecraft instanceof ShipInterface && $spacecraft->isTractored()) {
+        if ($spacecraft instanceof Ship && $spacecraft->isTractored()) {
             $reason = _('das Schiff von einem Traktorstrahl gehalten wird');
             return false;
         }
@@ -79,7 +79,7 @@ final class ShieldShipSystem extends AbstractSpacecraftSystemType implements Spa
         $this->spacecraftStateChanger->changeState($wrapper, SpacecraftStateEnum::NONE);
         $spacecraft->getSpacecraftSystem($this->getSystemType())->setMode(SpacecraftSystemModeEnum::MODE_ON);
 
-        if ($spacecraft instanceof ShipInterface) {
+        if ($spacecraft instanceof Ship) {
             $spacecraft->setDockedTo(null);
         }
     }

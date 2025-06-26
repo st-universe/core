@@ -7,7 +7,7 @@ namespace Stu\Module\Ship\Lib\Fleet;
 use Override;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class LeaveFleet implements LeaveFleetInterface
@@ -23,7 +23,7 @@ final class LeaveFleet implements LeaveFleetInterface
     }
 
     #[Override]
-    public function leaveFleet(ShipInterface $ship): bool
+    public function leaveFleet(Ship $ship): bool
     {
         $fleet = $ship->getFleet();
 

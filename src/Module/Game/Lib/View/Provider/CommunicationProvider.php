@@ -10,8 +10,8 @@ use Stu\Component\Communication\Kn\KnFactoryInterface;
 use Stu\Component\Communication\Kn\KnItemInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\KnPostInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\KnPost;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 
 final class CommunicationProvider implements ViewComponentProviderInterface
@@ -67,7 +67,7 @@ final class CommunicationProvider implements ViewComponentProviderInterface
         $game->setTemplateVar(
             'KN_POSTINGS',
             array_map(
-                function (KnPostInterface $knPost) use ($user, $markedPostId): KnItemInterface {
+                function (KnPost $knPost) use ($user, $markedPostId): KnItemInterface {
                     $knItem = $this->knFactory->createKnItem(
                         $knPost,
                         $user
@@ -89,7 +89,7 @@ final class CommunicationProvider implements ViewComponentProviderInterface
         $game->addExecuteJS("initTranslations();", GameEnum::JS_EXECUTION_AFTER_RENDER);
     }
 
-    private function getMarkedKnId(UserInterface $user): ?int
+    private function getMarkedKnId(User $user): ?int
     {
         $markedPostId = request::getInt('markedPost');
         if ($markedPostId !== 0) {

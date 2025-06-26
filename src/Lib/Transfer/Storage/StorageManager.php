@@ -10,7 +10,7 @@ use Stu\Lib\Transfer\EntityWithStorageInterface;
 use Stu\Lib\Transfer\Storage\Exception\CommodityMissingException;
 use Stu\Lib\Transfer\Storage\Exception\QuantityTooSmallException;
 use Stu\Lib\Transfer\TransferEntityTypeEnum;
-use Stu\Orm\Entity\CommodityInterface;
+use Stu\Orm\Entity\Commodity;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 
 final class StorageManager implements StorageManagerInterface
@@ -20,7 +20,7 @@ final class StorageManager implements StorageManagerInterface
     ) {}
 
     #[Override]
-    public function lowerStorage(EntityWithStorageInterface $entity, CommodityInterface $commodity, int $amount): void
+    public function lowerStorage(EntityWithStorageInterface $entity, Commodity $commodity, int $amount): void
     {
         $storageList = $entity->getStorage();
 
@@ -57,7 +57,7 @@ final class StorageManager implements StorageManagerInterface
     }
 
     #[Override]
-    public function upperStorage(EntityWithStorageInterface $entity, CommodityInterface $commodity, int $amount): void
+    public function upperStorage(EntityWithStorageInterface $entity, Commodity $commodity, int $amount): void
     {
         $storage = $entity->getStorage();
         $commodityId = $commodity->getId();

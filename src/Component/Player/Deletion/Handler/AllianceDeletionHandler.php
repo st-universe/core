@@ -8,7 +8,7 @@ use Override;
 use Doctrine\Common\Collections\Collection;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -17,7 +17,7 @@ final class AllianceDeletionHandler implements PlayerDeletionHandlerInterface
     public function __construct(private AllianceJobRepositoryInterface $allianceJobRepository, private AllianceActionManagerInterface $allianceActionManager, private UserRepositoryInterface $userRepository) {}
 
     #[Override]
-    public function delete(UserInterface $user): void
+    public function delete(User $user): void
     {
         foreach ($this->allianceJobRepository->getByUser($user->getId()) as $job) {
             if ($job->getType() === AllianceEnum::ALLIANCE_JOBS_FOUNDER) {
@@ -64,9 +64,9 @@ final class AllianceDeletionHandler implements PlayerDeletionHandlerInterface
     }
 
     /**
-     * @param Collection<int, UserInterface> $members
+     * @param Collection<int, User> $members
      */
-    private function getLastOnlineMember(Collection $members): ?UserInterface
+    private function getLastOnlineMember(Collection $members): ?User
     {
         $lastOnlineMember = null;
         $maxLastAction = 0;

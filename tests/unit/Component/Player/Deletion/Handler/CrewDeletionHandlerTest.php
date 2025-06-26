@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Mockery;
 use Mockery\MockInterface;
 use Override;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 use Stu\StuTestCase;
@@ -37,7 +37,7 @@ class CrewDeletionHandlerTest extends StuTestCase
 
     public function testDeleteDeletesCrewAssignmentsAndCrew(): void
     {
-        $user = Mockery::mock(UserInterface::class);
+        $user = Mockery::mock(User::class);
 
         $user->shouldReceive('getId')
             ->withNoArgs()

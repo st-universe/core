@@ -11,8 +11,8 @@ use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 
 final class CancelColonyBlockOrDefend implements CancelColonyBlockOrDefendInterface
@@ -28,13 +28,13 @@ final class CancelColonyBlockOrDefend implements CancelColonyBlockOrDefendInterf
     }
 
     #[Override]
-    public function work(SpacecraftInterface $spacecraft, InformationInterface $informations, bool $isTraktor = false): void
+    public function work(Spacecraft $spacecraft, InformationInterface $informations, bool $isTraktor = false): void
     {
         $this->loggerUtil->log('A');
         $target = $isTraktor ? $spacecraft->getTractoredShip() : $spacecraft;
         $this->loggerUtil->log('B');
 
-        if ($target === null || !$target instanceof ShipInterface || !$target->isFleetLeader()) {
+        if ($target === null || !$target instanceof Ship || !$target->isFleetLeader()) {
             $this->loggerUtil->log('C');
             return;
         }

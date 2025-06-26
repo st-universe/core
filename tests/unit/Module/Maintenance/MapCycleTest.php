@@ -8,10 +8,10 @@ use Mockery\MockInterface;
 use Override;
 use Stu\Component\Map\MapEnum;
 use Stu\Module\Award\Lib\CreateUserAwardInterface;
-use Stu\Orm\Entity\AwardInterface;
-use Stu\Orm\Entity\LayerInterface;
-use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Entity\UserLayerInterface;
+use Stu\Orm\Entity\Award;
+use Stu\Orm\Entity\Layer;
+use Stu\Orm\Entity\User;
+use Stu\Orm\Entity\UserLayer;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\UserLayerRepositoryInterface;
 use Stu\Orm\Repository\UserMapRepositoryInterface;
@@ -57,9 +57,9 @@ class MapCycleTest extends StuTestCase
 
     public function testHandleExpectNothingIfUserLayerNotMapped(): void
     {
-        $userLayer = $this->mock(UserLayerInterface::class);
-        $user = $this->mock(UserInterface::class);
-        $layer = $this->mock(LayerInterface::class);
+        $userLayer = $this->mock(UserLayer::class);
+        $user = $this->mock(User::class);
+        $layer = $this->mock(Layer::class);
 
         $userLayer->shouldReceive('getUser')
             ->withNoArgs()
@@ -90,9 +90,9 @@ class MapCycleTest extends StuTestCase
 
     public function testHandleExpectLayerExploredIfUserLayerHasMapped(): void
     {
-        $userLayer = $this->mock(UserLayerInterface::class);
-        $user = $this->mock(UserInterface::class);
-        $layer = $this->mock(LayerInterface::class);
+        $userLayer = $this->mock(UserLayer::class);
+        $user = $this->mock(User::class);
+        $layer = $this->mock(Layer::class);
 
         $userLayer->shouldReceive('getUser')
             ->withNoArgs()
@@ -136,10 +136,10 @@ class MapCycleTest extends StuTestCase
 
     public function testHandleExpectAwardCreationIfLayerHasAward(): void
     {
-        $userLayer = $this->mock(UserLayerInterface::class);
-        $user = $this->mock(UserInterface::class);
-        $layer = $this->mock(LayerInterface::class);
-        $award = $this->mock(AwardInterface::class);
+        $userLayer = $this->mock(UserLayer::class);
+        $user = $this->mock(User::class);
+        $layer = $this->mock(Layer::class);
+        $award = $this->mock(Award::class);
 
         $userLayer->shouldReceive('getUser')
             ->withNoArgs()

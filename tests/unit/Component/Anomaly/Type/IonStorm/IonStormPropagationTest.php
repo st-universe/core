@@ -10,8 +10,8 @@ use Override;
 use Stu\Component\Anomaly\AnomalyCreationInterface;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Module\Control\StuRandom;
-use Stu\Orm\Entity\AnomalyInterface;
-use Stu\Orm\Entity\LocationInterface;
+use Stu\Orm\Entity\Anomaly;
+use Stu\Orm\Entity\Location;
 use Stu\Orm\Repository\AnomalyRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -39,7 +39,7 @@ class IonStormPropagationTest extends StuTestCase
 
     public function testPropagateStormExpectDeletionIfChildsEmpty(): void
     {
-        $root = $this->mock(AnomalyInterface::class);
+        $root = $this->mock(Anomaly::class);
         $locationPool = $this->mock(LocationPool::class);
 
         $root->shouldReceive('getChildren')
@@ -55,20 +55,20 @@ class IonStormPropagationTest extends StuTestCase
 
     public function testPropagateStorm(): void
     {
-        $root = $this->mock(AnomalyInterface::class);
-        $newAnomaly = $this->mock(AnomalyInterface::class);
+        $root = $this->mock(Anomaly::class);
+        $newAnomaly = $this->mock(Anomaly::class);
         $locationPool = $this->mock(LocationPool::class);
-        $child1 = $this->mock(AnomalyInterface::class);
-        $child2WithIonStormOnNeighbour = $this->mock(AnomalyInterface::class);
-        $child3LowOnTicks = $this->mock(AnomalyInterface::class);
-        $child4WithForbiddenNeighbour = $this->mock(AnomalyInterface::class);
-        $existingIonStorm = $this->mock(AnomalyInterface::class);
-        $locationChild1 = $this->mock(LocationInterface::class);
-        $locationChild2 = $this->mock(LocationInterface::class);
-        $locationChild4 = $this->mock(LocationInterface::class);
-        $locationWithoutStorm = $this->mock(LocationInterface::class);
-        $locationWithIonStorm = $this->mock(LocationInterface::class);
-        $locationWithForbiddenEffect = $this->mock(LocationInterface::class);
+        $child1 = $this->mock(Anomaly::class);
+        $child2WithIonStormOnNeighbour = $this->mock(Anomaly::class);
+        $child3LowOnTicks = $this->mock(Anomaly::class);
+        $child4WithForbiddenNeighbour = $this->mock(Anomaly::class);
+        $existingIonStorm = $this->mock(Anomaly::class);
+        $locationChild1 = $this->mock(Location::class);
+        $locationChild2 = $this->mock(Location::class);
+        $locationChild4 = $this->mock(Location::class);
+        $locationWithoutStorm = $this->mock(Location::class);
+        $locationWithIonStorm = $this->mock(Location::class);
+        $locationWithForbiddenEffect = $this->mock(Location::class);
 
         $this->stuRandom->shouldReceive('rand')
             ->with(1, 3)

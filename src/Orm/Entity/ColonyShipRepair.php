@@ -12,12 +12,11 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\ColonyShipRepairRepository;
 
 #[Table(name: 'stu_colonies_shiprepair')]
 #[Entity(repositoryClass: ColonyShipRepairRepository::class)]
-class ColonyShipRepair implements ColonyShipRepairInterface
+class ColonyShipRepair
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -35,65 +34,56 @@ class ColonyShipRepair implements ColonyShipRepairInterface
 
     #[ManyToOne(targetEntity: Colony::class)]
     #[JoinColumn(name: 'colony_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ColonyInterface $colony;
+    private Colony $colony;
 
     #[OneToOne(targetEntity: Ship::class)]
     #[JoinColumn(name: 'ship_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ShipInterface $ship;
+    private Ship $ship;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getColonyId(): int
     {
         return $this->colony_id;
     }
 
-    #[Override]
     public function getShipId(): int
     {
         return $this->ship_id;
     }
 
-    #[Override]
-    public function setFieldId(int $field_id): ColonyShipRepairInterface
+    public function setFieldId(int $field_id): ColonyShipRepair
     {
         $this->field_id = $field_id;
 
         return $this;
     }
 
-    #[Override]
     public function getFieldId(): int
     {
         return $this->field_id;
     }
 
-    #[Override]
-    public function getColony(): ColonyInterface
+    public function getColony(): Colony
     {
         return $this->colony;
     }
 
-    #[Override]
-    public function setColony(ColonyInterface $colony): ColonyShipRepairInterface
+    public function setColony(Colony $colony): ColonyShipRepair
     {
         $this->colony = $colony;
         return $this;
     }
 
-    #[Override]
-    public function getShip(): ShipInterface
+    public function getShip(): Ship
     {
         return $this->ship;
     }
 
-    #[Override]
-    public function setShip(ShipInterface $ship): ColonyShipRepairInterface
+    public function setShip(Ship $ship): ColonyShipRepair
     {
         $this->ship = $ship;
         return $this;

@@ -16,14 +16,13 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\UniqueConstraint;
-use Override;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Orm\Repository\SpacecraftBuildplanRepository;
 
 #[Table(name: 'stu_buildplan')]
 #[Entity(repositoryClass: SpacecraftBuildplanRepository::class)]
 #[UniqueConstraint(name: 'buildplan_signatures_idx', columns: ['user_id', 'rump_id', 'signature'])]
-class SpacecraftBuildplan implements SpacecraftBuildplanInterface
+class SpacecraftBuildplan
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -49,21 +48,21 @@ class SpacecraftBuildplan implements SpacecraftBuildplanInterface
     private int $crew = 0;
 
     /**
-     * @var ArrayCollection<int, SpacecraftInterface>
+     * @var ArrayCollection<int, Spacecraft>
      */
     #[OneToMany(targetEntity: Spacecraft::class, mappedBy: 'buildplan', fetch: 'EXTRA_LAZY')]
     private Collection $spacecrafts;
 
     #[ManyToOne(targetEntity: SpacecraftRump::class)]
     #[JoinColumn(name: 'rump_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private SpacecraftRumpInterface $shipRump;
+    private SpacecraftRump $shipRump;
 
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $user;
+    private User $user;
 
     /**
-     * @var ArrayCollection<int, BuildplanModuleInterface>
+     * @var ArrayCollection<int, BuildplanModule>
      */
     #[OneToMany(targetEntity: BuildplanModule::class, mappedBy: 'buildplan', indexBy: 'module_id', fetch: 'EXTRA_LAZY')]
     #[OrderBy(['module_id' => 'ASC'])]
@@ -75,140 +74,132 @@ class SpacecraftBuildplan implements SpacecraftBuildplanInterface
         $this->modules = new ArrayCollection();
     }
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getRumpId(): int
     {
         return $this->rump_id;
     }
 
-    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    #[Override]
-    public function setUser(UserInterface $user): SpacecraftBuildplanInterface
+    public function setUser(User $user): SpacecraftBuildplan
     {
         $this->user = $user;
         return $this;
     }
 
-    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
-    #[Override]
-    public function setName(string $name): SpacecraftBuildplanInterface
+    public function setName(string $name): SpacecraftBuildplan
     {
         $this->name = $name;
 
         return $this;
     }
 
-    #[Override]
     public function getBuildtime(): int
     {
         return $this->buildtime;
     }
 
-    #[Override]
-    public function setBuildtime(int $buildtime): SpacecraftBuildplanInterface
+    public function setBuildtime(int $buildtime): SpacecraftBuildplan
     {
         $this->buildtime = $buildtime;
 
         return $this;
     }
 
-    #[Override]
     public function getSpacecraftCount(): int
     {
         return $this->getSpacecraftList()->count();
     }
 
-    #[Override]
     public function getSignature(): ?string
     {
         return $this->signature;
     }
 
-    #[Override]
-    public function setSignature(?string $signature): SpacecraftBuildplanInterface
+    public function setSignature(?string $signature): SpacecraftBuildplan
     {
         $this->signature = $signature;
 
         return $this;
     }
 
-    #[Override]
     public function getCrew(): int
     {
         return $this->crew;
     }
 
-    #[Override]
-    public function setCrew(int $crew): SpacecraftBuildplanInterface
+    public function setCrew(int $crew): SpacecraftBuildplan
     {
         $this->crew = $crew;
 
         return $this;
     }
 
-    #[Override]
+    /**
+     * @return Collection<int, Spacecraft>
+     */
     public function getSpacecraftList(): Collection
     {
         return $this->spacecrafts;
     }
 
-    #[Override]
-    public function getRump(): SpacecraftRumpInterface
+    public function getRump(): SpacecraftRump
     {
         return $this->shipRump;
     }
 
-    #[Override]
-    public function setRump(SpacecraftRumpInterface $shipRump): SpacecraftBuildplanInterface
+    public function setRump(SpacecraftRump $shipRump): SpacecraftBuildplan
     {
         $this->shipRump = $shipRump;
 
         return $this;
     }
 
-    #[Override]
+    /**
+     * @return Collection<int, Module>
+     */
     public function getModulesByType(SpacecraftModuleTypeEnum $type): Collection
     {
         return $this
             ->getModules()
-            ->filter(fn(BuildplanModuleInterface $buildplanModule): bool => $buildplanModule->getModuleType() === $type)
-            ->map(fn(BuildplanModuleInterface $buildplanModule): ModuleInterface => $buildplanModule->getModule());
+            ->filter(fn(BuildplanModule $buildplanModule): bool => $buildplanModule->getModuleType() === $type)
+            ->map(fn(BuildplanModule $buildplanModule): Module => $buildplanModule->getModule());
     }
 
-    #[Override]
+    /**
+     * @return Collection<int, BuildplanModule>
+     */
     public function getModules(): Collection
     {
         return $this->modules;
     }
 
-    #[Override]
+    /**
+     * @return Collection<int, BuildplanModule>
+     */
     public function getModulesOrdered(): Collection
     {
         $array = $this->modules->toArray();
 
-        uasort($array, function (BuildplanModuleInterface $a, BuildplanModuleInterface $b): int {
+        uasort($array, function (BuildplanModule $a, BuildplanModule $b): int {
             return $a->getModuleType()->getOrder() <=> $b->getModuleType()->getOrder();
         });
 

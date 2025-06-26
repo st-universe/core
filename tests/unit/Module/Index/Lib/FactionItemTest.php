@@ -6,12 +6,12 @@ namespace Stu\Module\Index\Lib;
 
 use Mockery\MockInterface;
 use Override;
-use Stu\Orm\Entity\FactionInterface;
+use Stu\Orm\Entity\Faction;
 use Stu\StuTestCase;
 
 class FactionItemTest extends StuTestCase
 {
-    private MockInterface&FactionInterface  $faction;
+    private MockInterface&Faction  $faction;
 
     private int $currentPlayerCount = 666;
 
@@ -20,7 +20,7 @@ class FactionItemTest extends StuTestCase
     #[Override]
     protected function setUp(): void
     {
-        $this->faction = $this->mock(FactionInterface::class);
+        $this->faction = $this->mock(Faction::class);
 
         $this->subject = new FactionItem(
             $this->faction,

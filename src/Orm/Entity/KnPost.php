@@ -16,8 +16,8 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Component\Game\ModuleEnum;
+use Stu\Lib\General\EntityWithHrefInterface;
 use Stu\Module\Communication\View\ShowSingleKn\ShowSingleKn;
 use Stu\Orm\Repository\KnPostRepository;
 
@@ -26,7 +26,7 @@ use Stu\Orm\Repository\KnPostRepository;
 #[Index(name: 'kn_post_date_idx', columns: ['date'])]
 #[Index(name: 'kn_post_user_idx', columns: ['user_id'])]
 #[Entity(repositoryClass: KnPostRepository::class)]
-class KnPost implements KnPostInterface
+class KnPost implements EntityWithHrefInterface
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -45,8 +45,8 @@ class KnPost implements KnPostInterface
     #[Column(type: 'string')]
     private string $username = '';
 
-    #[Column(type: 'integer', nullable: true)]
-    private ?int $user_id = 0;
+    #[Column(type: 'integer')]
+    private int $user_id = 0;
 
     #[Column(type: 'integer', nullable: true)]
     private ?int $del_user_id = 0;
@@ -60,7 +60,6 @@ class KnPost implements KnPostInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $deleted = null;
 
-
     /**
      * @var array<mixed>
      */
@@ -68,14 +67,14 @@ class KnPost implements KnPostInterface
     private array $ratings = [];
 
     /**
-     * @var ArrayCollection<int, KnCommentInterface>
+     * @var ArrayCollection<int, KnComment>
      */
     #[OneToMany(targetEntity: KnComment::class, mappedBy: 'post')]
     #[OrderBy(['id' => 'ASC'])]
     private Collection $comments;
 
     /**
-     * @var ArrayCollection<int, KnCharacterInterface>
+     * @var ArrayCollection<int, KnCharacter>
      */
     #[OneToMany(targetEntity: KnCharacter::class, mappedBy: 'knPost')]
     private Collection $knCharacters;
@@ -83,11 +82,11 @@ class KnPost implements KnPostInterface
 
     #[ManyToOne(targetEntity: RpgPlot::class, inversedBy: 'posts')]
     #[JoinColumn(name: 'plot_id', referencedColumnName: 'id')]
-    private ?RpgPlotInterface $rpgPlot = null;
+    private ?RpgPlot $rpgPlot = null;
 
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id')]
-    private UserInterface $user;
+    private User $user;
 
 
     public function __construct()
@@ -96,162 +95,147 @@ class KnPost implements KnPostInterface
         $this->knCharacters = new ArrayCollection();
     }
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getTitle(): ?string
     {
         return $this->titel;
     }
 
-    #[Override]
-    public function setTitle(string $title): KnPostInterface
+    public function setTitle(string $title): KnPost
     {
         $this->titel = $title;
 
         return $this;
     }
 
-    #[Override]
     public function getText(): string
     {
         return $this->text;
     }
 
-    #[Override]
-    public function setText(string $text): KnPostInterface
+    public function setText(string $text): KnPost
     {
         $this->text = $text;
 
         return $this;
     }
 
-    #[Override]
     public function getDate(): int
     {
         return $this->date;
     }
 
-    #[Override]
-    public function setDate(int $date): KnPostInterface
+    public function setDate(int $date): KnPost
     {
         $this->date = $date;
 
         return $this;
     }
 
-    #[Override]
     public function getUsername(): string
     {
         return $this->username;
     }
 
-    #[Override]
-    public function setUsername(string $username): KnPostInterface
+    public function setUsername(string $username): KnPost
     {
         $this->username = $username;
 
         return $this;
     }
 
-    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    #[Override]
     public function getdelUserId(): ?int
     {
         return $this->del_user_id;
     }
 
-    #[Override]
-    public function setdelUserId(?int $userid): KnPostInterface
+    public function setdelUserId(?int $userid): KnPost
     {
         $this->del_user_id = $userid;
 
         return $this;
     }
 
-    #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    #[Override]
-    public function setUser(UserInterface $user): KnPostInterface
+    public function setUser(User $user): KnPost
     {
         $this->user = $user;
         return $this;
     }
 
-    #[Override]
     public function getEditDate(): int
     {
         return $this->lastedit;
     }
 
-    #[Override]
-    public function setEditDate(int $editDate): KnPostInterface
+    public function setEditDate(int $editDate): KnPost
     {
         $this->lastedit = $editDate;
 
         return $this;
     }
 
-    #[Override]
     public function getPlotId(): ?int
     {
         return $this->plot_id;
     }
 
-    #[Override]
-    public function getRpgPlot(): ?RpgPlotInterface
+    public function getRpgPlot(): ?RpgPlot
     {
         return $this->rpgPlot;
     }
 
-    #[Override]
-    public function setRpgPlot(?RpgPlotInterface $rpgPlot): KnPostInterface
+    public function setRpgPlot(?RpgPlot $rpgPlot): KnPost
     {
         $this->rpgPlot = $rpgPlot;
 
         return $this;
     }
 
-    #[Override]
+    /**
+     * @return Collection<int, KnComment>
+     */
     public function getComments(): Collection
     {
         return $this->comments;
     }
 
-    #[Override]
+    /**
+     * @return array<mixed>
+     */
     public function getRatings(): array
     {
         return $this->ratings;
     }
 
-    #[Override]
-    public function setRatings(array $ratings): KnPostInterface
+    /**
+     * @param array<mixed> $ratings
+     */
+    public function setRatings(array $ratings): KnPost
     {
         $this->ratings = $ratings;
         return $this;
     }
 
-    #[Override]
     public function getDeleted(): ?int
     {
         return $this->deleted;
     }
 
-    #[Override]
-    public function setDeleted(?int $timestamp): KnPostInterface
+    public function setDeleted(?int $timestamp): KnPost
     {
         $this->deleted = $timestamp;
 
@@ -259,7 +243,6 @@ class KnPost implements KnPostInterface
     }
 
 
-    #[Override]
     public function getUrl(): string
     {
         return sprintf(
@@ -270,15 +253,13 @@ class KnPost implements KnPostInterface
     }
 
     /**
-     * @return Collection<int, KnCharacterInterface>
+     * @return Collection<int, KnCharacter>
      */
-    #[Override]
     public function getKnCharacters(): Collection
     {
         return $this->knCharacters;
     }
 
-    #[Override]
     public function getHref(): string
     {
         return sprintf(

@@ -13,8 +13,8 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\SpacecraftRumpInterface;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
@@ -110,7 +110,7 @@ final class SpacecraftCreator implements SpacecraftCreatorInterface
         return $this->spacecraftConfiguratorFactory->createSpacecraftConfigurator($wrapper);
     }
 
-    private function getSpacecraft(SpacecraftRumpInterface $rump, ?SpacecraftCreationConfigInterface $spacecraftCreationConfig): SpacecraftInterface
+    private function getSpacecraft(SpacecraftRump $rump, ?SpacecraftCreationConfigInterface $spacecraftCreationConfig): Spacecraft
     {
         if ($spacecraftCreationConfig === null) {
             return $this->spacecraftFactory->create($rump);

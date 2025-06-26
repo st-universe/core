@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Movement\Component;
 
 use Stu\Component\Map\DirectionEnum;
-use Stu\Orm\Entity\LocationInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Location;
+use Stu\Orm\Entity\Spacecraft;
 
 interface FlightSignatureCreatorInterface
 {
@@ -14,9 +14,9 @@ interface FlightSignatureCreatorInterface
      * Create signature for flight paths
      */
     public function createSignatures(
-        SpacecraftInterface $spacecraft,
+        Spacecraft $spacecraft,
         DirectionEnum $direction,
-        LocationInterface $currentField,
-        LocationInterface $nextField
+        Location $currentField,
+        Location $nextField
     ): void;
 }

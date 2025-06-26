@@ -4,7 +4,7 @@ namespace Stu\Module\Spacecraft\Lib;
 
 use Stu\Module\Spacecraft\Lib\SourceAndTargetWrappersInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 
 /**
  * @template T of SpacecraftWrapperInterface
@@ -16,7 +16,7 @@ interface SpacecraftLoaderInterface
         int $userId,
         bool $allowUplink = false,
         bool $checkForEntityLock = true
-    ): SpacecraftInterface;
+    ): Spacecraft;
 
     public function getWrapperByIdAndUser(
         int $spacecraftId,
@@ -38,5 +38,5 @@ interface SpacecraftLoaderInterface
 
     public function find(int $spacecraftId, bool $checkForEntityLock = true): ?SpacecraftWrapperInterface;
 
-    public function save(SpacecraftInterface $spacecraft): void;
+    public function save(Spacecraft $spacecraft): void;
 }

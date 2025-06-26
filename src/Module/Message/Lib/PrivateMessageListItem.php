@@ -7,28 +7,28 @@ namespace Stu\Module\Message\Lib;
 use Override;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\ContactInterface;
-use Stu\Orm\Entity\PrivateMessageInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Contact;
+use Stu\Orm\Entity\PrivateMessage;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 
 class PrivateMessageListItem implements PrivateMessageListItemInterface
 {
-    private ?UserInterface $sender = null;
+    private ?User $sender = null;
 
-    private ?ContactInterface $sendercontact = null;
+    private ?Contact $sendercontact = null;
 
     public function __construct(
         private readonly PrivateMessageRepositoryInterface $privateMessageRepository,
         private readonly ContactRepositoryInterface $contactRepository,
         private readonly UserSettingsProviderInterface $userSettingsProvider,
-        private readonly PrivateMessageInterface $message,
-        private readonly UserInterface $currentUser
+        private readonly PrivateMessage $message,
+        private readonly User $currentUser
     ) {}
 
     #[Override]
-    public function getSender(): UserInterface
+    public function getSender(): User
     {
         if ($this->sender === null) {
             $this->sender = $this->message->getSender();
@@ -110,7 +110,7 @@ class PrivateMessageListItem implements PrivateMessageListItemInterface
     }
 
     #[Override]
-    public function senderIsContact(): ?ContactInterface
+    public function senderIsContact(): ?Contact
     {
         if ($this->sendercontact === null) {
             $this->sendercontact = $this->contactRepository->getByUserAndOpponent(

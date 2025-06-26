@@ -9,8 +9,7 @@ use Override;
 use RuntimeException;
 use Stu\Component\Map\MapEnum;
 use Stu\Orm\Entity\Layer;
-use Stu\Orm\Entity\LayerInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserLayer;
 
 /**
@@ -19,13 +18,13 @@ use Stu\Orm\Entity\UserLayer;
 final class LayerRepository extends EntityRepository implements LayerRepositoryInterface
 {
     #[Override]
-    public function prototype(): LayerInterface
+    public function prototype(): Layer
     {
         return new Layer();
     }
 
     #[Override]
-    public function save(LayerInterface $layer): void
+    public function save(Layer $layer): void
     {
         $em = $this->getEntityManager();
 
@@ -33,7 +32,7 @@ final class LayerRepository extends EntityRepository implements LayerRepositoryI
     }
 
     #[Override]
-    public function delete(LayerInterface $layer): void
+    public function delete(Layer $layer): void
     {
         $em = $this->getEntityManager();
 
@@ -56,7 +55,7 @@ final class LayerRepository extends EntityRepository implements LayerRepositoryI
     }
 
     #[Override]
-    public function getKnownByUser(UserInterface $user): array
+    public function getKnownByUser(User $user): array
     {
         return $this->getEntityManager()
             ->createQuery(
@@ -76,7 +75,7 @@ final class LayerRepository extends EntityRepository implements LayerRepositoryI
     }
 
     #[Override]
-    public function getDefaultLayer(): LayerInterface
+    public function getDefaultLayer(): Layer
     {
         $layer = $this->find(MapEnum::DEFAULT_LAYER);
 

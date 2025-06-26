@@ -6,26 +6,25 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\PirateRound;
-use Stu\Orm\Entity\PirateRoundInterface;
 
 /**
  * @extends ObjectRepository<PirateRound>
  *
- * @method null|PirateRoundInterface find(integer $id)
- * @method PirateRoundInterface[] findAll()
+ * @method null|PirateRound find(integer $id)
+ * @method PirateRound[] findAll()
  */
 interface PirateRoundRepositoryInterface extends ObjectRepository
 {
-    public function prototype(): PirateRoundInterface;
+    public function prototype(): PirateRound;
 
-    public function save(PirateRoundInterface $pirateRound): void;
+    public function save(PirateRound $pirateRound): void;
 
-    public function delete(PirateRoundInterface $pirateRound): void;
+    public function delete(PirateRound $pirateRound): void;
 
-    public function getCurrentActiveRound(): ?PirateRoundInterface;
+    public function getCurrentActiveRound(): ?PirateRound;
 
     /**
-     * @return PirateRoundInterface[]
+     * @return PirateRound[]
      */
     public function findActiveRounds(): array;
 }

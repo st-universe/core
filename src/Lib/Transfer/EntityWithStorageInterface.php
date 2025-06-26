@@ -8,10 +8,10 @@ use Doctrine\Common\Collections\Collection;
 use Stu\Lib\General\EntityWithHrefInterface;
 use Stu\Lib\Interaction\EntityWithInteractionCheckInterface;
 use Stu\Module\Spacecraft\Lib\Crew\EntityWithCrewAssignmentsInterface;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
-use Stu\Orm\Entity\StorageInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\StarSystemMap;
+use Stu\Orm\Entity\Storage;
+use Stu\Orm\Entity\User;
 
 interface EntityWithStorageInterface extends
     EntityWithCrewAssignmentsInterface,
@@ -22,19 +22,19 @@ interface EntityWithStorageInterface extends
 
     public function getName(): string;
 
-    /** @return Collection<int, StorageInterface> Indexed by commodityId, ordered by commodityId */
+    /** @return Collection<int, Storage> Indexed by commodityId, ordered by commodityId */
     public function getStorage(): Collection;
 
-    /** @return Collection<int, StorageInterface> Indexed by commodityId, ordered by Commodity->sort */
+    /** @return Collection<int, Storage> Indexed by commodityId, ordered by Commodity->sort */
     public function getBeamableStorage(): Collection;
 
     public function getStorageSum(): int;
 
     public function getMaxStorage(): int;
 
-    public function getUser(): ?UserInterface;
+    public function getUser(): ?User;
 
-    public function getLocation(): MapInterface|StarSystemMapInterface;
+    public function getLocation(): Map|StarSystemMap;
 
     public function getTransferEntityType(): TransferEntityTypeEnum;
 }

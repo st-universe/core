@@ -11,14 +11,13 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Component\Spacecraft\SpacecraftTypeEnum;
 use Stu\Orm\Repository\ShipRumpCategoryRepository;
 
 #[Table(name: 'stu_rumps_categories')]
 #[Entity(repositoryClass: ShipRumpCategoryRepository::class)]
-class ShipRumpCategory implements ShipRumpCategoryInterface
+class ShipRumpCategory
 {
     #[Id]
     #[GeneratedValue(strategy: 'IDENTITY')]
@@ -36,49 +35,42 @@ class ShipRumpCategory implements ShipRumpCategoryInterface
 
     #[ManyToOne(targetEntity: DatabaseEntry::class)]
     #[JoinColumn(name: 'database_id', referencedColumnName: 'id')]
-    private ?DatabaseEntryInterface $databaseEntry = null;
+    private ?DatabaseEntry $databaseEntry = null;
 
-    #[Override]
     public function getId(): SpacecraftRumpCategoryEnum
     {
         return $this->id;
     }
 
-    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
-    #[Override]
-    public function setName(string $name): ShipRumpCategoryInterface
+    public function setName(string $name): ShipRumpCategory
     {
         $this->name = $name;
 
         return $this;
     }
 
-    #[Override]
     public function getDatabaseId(): int
     {
         return $this->database_id;
     }
 
-    #[Override]
-    public function getDatabaseEntry(): ?DatabaseEntryInterface
+    public function getDatabaseEntry(): ?DatabaseEntry
     {
         return $this->databaseEntry;
     }
 
-    #[Override]
-    public function setDatabaseEntry(?DatabaseEntryInterface $databaseEntry): ShipRumpCategoryInterface
+    public function setDatabaseEntry(?DatabaseEntry $databaseEntry): ShipRumpCategory
     {
         $this->databaseEntry = $databaseEntry;
 
         return $this;
     }
 
-    #[Override]
     public function getType(): SpacecraftTypeEnum
     {
         return $this->type;

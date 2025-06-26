@@ -4,7 +4,7 @@ namespace Stu\Module\Spacecraft\Lib\Battle\AlertDetection;
 
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Party\AlertStateBattleParty;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 
 interface AlertDetectionInterface
 {
@@ -12,8 +12,8 @@ interface AlertDetectionInterface
      * @return array<int, AlertStateBattleParty>
      */
     public function detectAlertedBattleParties(
-        SpacecraftInterface $incomingSpacecraft,
+        Spacecraft $incomingSpacecraft,
         InformationInterface $informations,
-        ?SpacecraftInterface $tractoringSpacecraft = null
+        ?Spacecraft $tractoringSpacecraft = null
     ): array;
 }

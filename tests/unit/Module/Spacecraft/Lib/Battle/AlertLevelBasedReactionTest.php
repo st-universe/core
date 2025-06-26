@@ -12,7 +12,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 use Stu\StuTestCase;
 
 class AlertLevelBasedReactionTest extends StuTestCase
@@ -23,7 +23,7 @@ class AlertLevelBasedReactionTest extends StuTestCase
 
     private MockInterface&InformationInterface $informations;
 
-    private MockInterface&ShipInterface $ship;
+    private MockInterface&Ship $ship;
 
     private AlertLevelBasedReactionInterface $subject;
 
@@ -38,7 +38,7 @@ class AlertLevelBasedReactionTest extends StuTestCase
         $this->informations = $this->mock(InformationInterface::class);
 
         //other
-        $this->ship = $this->mock(ShipInterface::class);
+        $this->ship = $this->mock(Ship::class);
 
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()

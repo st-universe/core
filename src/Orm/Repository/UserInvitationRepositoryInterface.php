@@ -4,28 +4,27 @@ namespace Stu\Orm\Repository;
 
 use DateTimeInterface;
 use Doctrine\Persistence\ObjectRepository;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserInvitation;
-use Stu\Orm\Entity\UserInvitationInterface;
 
 /**
  * @extends ObjectRepository<UserInvitation>
  *
- * @method null|UserInvitationInterface find(integer $id)
- * @method UserInvitationInterface[] findAll()
+ * @method null|UserInvitation find(integer $id)
+ * @method UserInvitation[] findAll()
  */
 interface UserInvitationRepositoryInterface extends ObjectRepository
 {
-    public function prototype(): UserInvitationInterface;
+    public function prototype(): UserInvitation;
 
-    public function save(UserInvitationInterface $userInvitation): void;
+    public function save(UserInvitation $userInvitation): void;
 
     /**
-     * @return list<UserInvitationInterface>
+     * @return list<UserInvitation>
      */
-    public function getInvitationsByUser(UserInterface $user): array;
+    public function getInvitationsByUser(User $user): array;
 
-    public function getByToken(string $token): ?UserInvitationInterface;
+    public function getByToken(string $token): ?UserInvitation;
 
     public function truncateExpiredTokens(DateTimeInterface $ttl): void;
 

@@ -10,7 +10,6 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Component\Spacecraft\SpacecraftTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Station\StationUtility;
@@ -19,7 +18,7 @@ use Stu\Orm\Repository\ShipRepository;
 
 #[Table(name: 'stu_ship')]
 #[Entity(repositoryClass: ShipRepository::class)]
-class Ship extends Spacecraft implements ShipInterface
+class Ship extends Spacecraft
 {
     #[Column(type: 'integer', nullable: true)]
     private ?int $fleet_id = null;
@@ -33,79 +32,69 @@ class Ship extends Spacecraft implements ShipInterface
 
     #[ManyToOne(targetEntity: Fleet::class, inversedBy: 'ships')]
     #[JoinColumn(name: 'fleet_id', referencedColumnName: 'id')]
-    private ?FleetInterface $fleet = null;
+    private ?Fleet $fleet = null;
 
     #[ManyToOne(targetEntity: Station::class, inversedBy: 'dockedShips')]
     #[JoinColumn(name: 'docked_to_id', referencedColumnName: 'id')]
-    private ?StationInterface $dockedTo = null;
+    private ?Station $dockedTo = null;
 
     #[OneToOne(targetEntity: Spacecraft::class, mappedBy: 'tractoredShip')]
-    private ?SpacecraftInterface $tractoringSpacecraft = null;
+    private ?Spacecraft $tractoringSpacecraft = null;
 
     #[OneToOne(targetEntity: MiningQueue::class, mappedBy: 'ship')]
-    private ?MiningQueueInterface $miningqueue = null;
+    private ?MiningQueue $miningqueue = null;
 
     #[OneToOne(targetEntity: ColonyShipQueue::class, mappedBy: 'ship')]
-    private ?ColonyShipQueueInterface $colonyShipQueue = null;
+    private ?ColonyShipQueue $colonyShipQueue = null;
 
-    #[Override]
     public function getType(): SpacecraftTypeEnum
     {
         return SpacecraftTypeEnum::SHIP;
     }
 
-    #[Override]
     public function getFleetId(): ?int
     {
         return $this->fleet_id;
     }
 
-    #[Override]
-    public function setFleetId(?int $fleetId): ShipInterface
+    public function setFleetId(?int $fleetId): Ship
     {
         $this->fleet_id = $fleetId;
         return $this;
     }
 
-    #[Override]
     public function getIsFleetLeader(): bool
     {
         return $this->getFleet() !== null && $this->is_fleet_leader;
     }
 
-    #[Override]
-    public function setIsFleetLeader(bool $isFleetLeader): ShipInterface
+    public function setIsFleetLeader(bool $isFleetLeader): Ship
     {
         $this->is_fleet_leader = $isFleetLeader;
         return $this;
     }
 
-    #[Override]
-    public function getFleet(): ?FleetInterface
+    public function getFleet(): ?Fleet
     {
         return $this->fleet;
     }
 
-    #[Override]
-    public function setFleet(?FleetInterface $fleet): ShipInterface
+    public function setFleet(?Fleet $fleet): Ship
     {
         $this->fleet = $fleet;
         return $this;
     }
 
-    #[Override]
     public function isFleetLeader(): bool
     {
         return $this->getIsFleetLeader();
     }
 
-    #[Override]
     public function isTractored(): bool
     {
         return $this->getTractoringSpacecraft() !== null;
     }
 
-    #[Override]
     public function dockedOnTradePost(): bool
     {
         $dockedTo = $this->getDockedTo();
@@ -114,39 +103,33 @@ class Ship extends Spacecraft implements ShipInterface
             && $dockedTo->getTradePost() !== null;
     }
 
-    #[Override]
-    public function getTractoringSpacecraft(): ?SpacecraftInterface
+    public function getTractoringSpacecraft(): ?Spacecraft
     {
         return $this->tractoringSpacecraft;
     }
 
-    #[Override]
-    public function setTractoringSpacecraft(?SpacecraftInterface $spacecraft): ShipInterface
+    public function setTractoringSpacecraft(?Spacecraft $spacecraft): Ship
     {
         $this->tractoringSpacecraft = $spacecraft;
         return $this;
     }
 
-    #[Override]
-    public function getDockedTo(): ?StationInterface
+    public function getDockedTo(): ?Station
     {
         return $this->dockedTo;
     }
 
-    #[Override]
-    public function setDockedTo(?StationInterface $dockedTo): ShipInterface
+    public function setDockedTo(?Station $dockedTo): Ship
     {
         $this->dockedTo = $dockedTo;
         return $this;
     }
 
-    #[Override]
     public function canBuildConstruction(): bool
     {
         return StationUtility::canShipBuildConstruction($this);
     }
 
-    #[Override]
     public function isWarped(): bool
     {
         $tractoringShip = $this->getTractoringSpacecraft();
@@ -158,38 +141,32 @@ class Ship extends Spacecraft implements ShipInterface
         return parent::getWarpDriveState();
     }
 
-    #[Override]
     public function getAstroState(): bool
     {
         return $this->getSystemState(SpacecraftSystemTypeEnum::ASTRO_LABORATORY);
     }
 
-    #[Override]
     public function isBussardCollectorHealthy(): bool
     {
         return $this->isSystemHealthy(SpacecraftSystemTypeEnum::BUSSARD_COLLECTOR);
     }
 
-    #[Override]
-    public function getMiningQueue(): ?MiningQueueInterface
+    public function getMiningQueue(): ?MiningQueue
     {
         return $this->miningqueue;
     }
 
-    #[Override]
-    public function getColonyShipQueue(): ?ColonyShipQueueInterface
+    public function getColonyShipQueue(): ?ColonyShipQueue
     {
         return $this->colonyShipQueue;
     }
 
-    #[Override]
-    public function setColonyShipQueue(?ColonyShipQueueInterface $queue): ShipInterface
+    public function setColonyShipQueue(?ColonyShipQueue $queue): Ship
     {
         $this->colonyShipQueue = $queue;
         return $this;
     }
 
-    #[Override]
     public function getTransferEntityType(): TransferEntityTypeEnum
     {
         return TransferEntityTypeEnum::SHIP;

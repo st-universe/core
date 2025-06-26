@@ -8,12 +8,12 @@ use InvalidArgumentException;
 use Mockery\MockInterface;
 use Override;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\CommodityInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\StorageInterface;
-use Stu\Orm\Entity\TorpedoStorageInterface;
-use Stu\Orm\Entity\TorpedoTypeInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Commodity;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Storage;
+use Stu\Orm\Entity\TorpedoStorage;
+use Stu\Orm\Entity\TorpedoType;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TorpedoStorageRepositoryInterface;
 use Stu\StuTestCase;
@@ -25,8 +25,8 @@ class ShipTorpedoManagerTest extends StuTestCase
     private MockInterface&StorageRepositoryInterface $storageRepository;
 
     private MockInterface&ShipWrapperInterface $wrapper;
-    private MockInterface&ShipInterface $ship;
-    private MockInterface&TorpedoTypeInterface $torpedoType;
+    private MockInterface&Ship $ship;
+    private MockInterface&TorpedoType $torpedoType;
 
     private ShipTorpedoManagerInterface $subject;
 
@@ -40,8 +40,8 @@ class ShipTorpedoManagerTest extends StuTestCase
 
         //params
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
-        $this->ship = $this->mock(ShipInterface::class);
-        $this->torpedoType = $this->mock(TorpedoTypeInterface::class);
+        $this->ship = $this->mock(Ship::class);
+        $this->torpedoType = $this->mock(TorpedoType::class);
 
         $this->subject = new ShipTorpedoManager(
             $this->clearTorpedo,
@@ -68,10 +68,10 @@ class ShipTorpedoManagerTest extends StuTestCase
 
     public function testChangeTorpedoExpectCreationOfNewStorageWhenShipIsEmptyAndTypeIsSpecified(): void
     {
-        $torpedoStorage = $this->mock(TorpedoStorageInterface::class);
-        $storage = $this->mock(StorageInterface::class);
-        $user = $this->mock(UserInterface::class);
-        $commodity = $this->mock(CommodityInterface::class);
+        $torpedoStorage = $this->mock(TorpedoStorage::class);
+        $storage = $this->mock(Storage::class);
+        $user = $this->mock(User::class);
+        $commodity = $this->mock(Commodity::class);
 
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()
@@ -136,7 +136,7 @@ class ShipTorpedoManagerTest extends StuTestCase
 
     public function testChangeTorpedoExpectTorpedoClearanceWhenSetToZero(): void
     {
-        $torpedoStorage = $this->mock(TorpedoStorageInterface::class);
+        $torpedoStorage = $this->mock(TorpedoStorage::class);
 
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()
@@ -161,8 +161,8 @@ class ShipTorpedoManagerTest extends StuTestCase
 
     public function testChangeTorpedoExpectChangingOfAmount(): void
     {
-        $torpedoStorage = $this->mock(TorpedoStorageInterface::class);
-        $storage = $this->mock(StorageInterface::class);
+        $torpedoStorage = $this->mock(TorpedoStorage::class);
+        $storage = $this->mock(Storage::class);
 
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()

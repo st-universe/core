@@ -9,11 +9,11 @@ use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use RuntimeException;
 use Stu\Exception\SanityCheckException;
-use Stu\Orm\Entity\LayerInterface;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\StarSystemInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
+use Stu\Orm\Entity\Layer;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\StarSystem;
+use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 use Stu\StuTestCase;
@@ -69,10 +69,10 @@ class CheckDestinationTest extends StuTestCase
         ?int $finalY,
         ?bool $returnResult
     ): void {
-        $start = $this->mock(MapInterface::class);
-        $ship = $this->mock(ShipInterface::class);
-        $layer = $this->mock(LayerInterface::class);
-        $destination = $returnResult ? $this->mock(MapInterface::class) : null;
+        $start = $this->mock(Map::class);
+        $ship = $this->mock(Ship::class);
+        $layer = $this->mock(Layer::class);
+        $destination = $returnResult ? $this->mock(Map::class) : null;
 
         $ship->shouldReceive('getLocation')
             ->withNoArgs()
@@ -167,10 +167,10 @@ class CheckDestinationTest extends StuTestCase
         ?int $finalY,
         ?bool $returnResult
     ): void {
-        $start = $this->mock(StarSystemMapInterface::class);
-        $ship = $this->mock(ShipInterface::class);
-        $system = $this->mock(StarSystemInterface::class);
-        $destination = $returnResult ? $this->mock(StarSystemMapInterface::class) : null;
+        $start = $this->mock(StarSystemMap::class);
+        $ship = $this->mock(Ship::class);
+        $system = $this->mock(StarSystem::class);
+        $destination = $returnResult ? $this->mock(StarSystemMap::class) : null;
 
         $ship->shouldReceive('getLocation')
             ->withNoArgs()

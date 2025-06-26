@@ -7,9 +7,9 @@ namespace Stu\Component\Colony;
 use Doctrine\Common\Collections\Collection;
 use Override;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
 
 /**
  * Retrieve all ship wrappers within the orbit of a colony
@@ -21,11 +21,11 @@ final class OrbitShipWrappersRetriever implements OrbitShipWrappersRetrieverInte
     ) {}
 
     #[Override]
-    public function retrieve(ColonyInterface $colony): Collection
+    public function retrieve(Colony $colony): Collection
     {
         $shipsOnLocation = $colony->getLocation()
             ->getSpacecrafts()
-            ->filter(fn(SpacecraftInterface $spacecraft): bool => $spacecraft instanceof ShipInterface
+            ->filter(fn(Spacecraft $spacecraft): bool => $spacecraft instanceof Ship
                 && !$spacecraft->isCloaked());
 
         return $this->spacecraftWrapperFactory->wrapSpacecraftsAsGroups($shipsOnLocation);

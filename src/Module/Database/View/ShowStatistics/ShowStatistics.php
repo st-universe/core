@@ -14,7 +14,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\Lib\GraphInfo;
 use Stu\Module\Database\Lib\PlotInfo;
-use Stu\Orm\Entity\GameTurnStatsInterface;
+use Stu\Orm\Entity\GameTurnStats;
 use Stu\Orm\Repository\GameTurnStatsRepositoryInterface;
 
 final class ShowStatistics implements ViewControllerInterface
@@ -115,7 +115,7 @@ final class ShowStatistics implements ViewControllerInterface
     }
 
     /**
-     * @param GameTurnStatsInterface[] $stats
+     * @param GameTurnStats[] $stats
      */
     private function createImageSrc(array $stats, GraphInfo $graphInfo, string $title): string
     {
@@ -191,7 +191,7 @@ final class ShowStatistics implements ViewControllerInterface
 
     /**
      * @param PlotInfo[] $plotInfos
-     * @param GameTurnStatsInterface[] $stats
+     * @param GameTurnStats[] $stats
      */
     private function createPlots(array $datax, array $plotInfos, array $stats): array
     {

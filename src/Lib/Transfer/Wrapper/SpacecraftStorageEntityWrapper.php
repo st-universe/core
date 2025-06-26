@@ -9,14 +9,14 @@ use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Transfer\EntityWithStorageInterface;
 use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\LocationInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\TorpedoTypeInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Location;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\TorpedoType;
+use Stu\Orm\Entity\User;
 
 class SpacecraftStorageEntityWrapper implements StorageEntityWrapperInterface
 {
-    private SpacecraftInterface $spacecraft;
+    private Spacecraft $spacecraft;
 
     public function __construct(
         private readonly ShipTorpedoManagerInterface $shipTorpedoManager,
@@ -36,7 +36,7 @@ class SpacecraftStorageEntityWrapper implements StorageEntityWrapperInterface
     }
 
     #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->spacecraft->getUser();
     }
@@ -59,7 +59,7 @@ class SpacecraftStorageEntityWrapper implements StorageEntityWrapperInterface
     }
 
     #[Override]
-    public function getLocation(): LocationInterface
+    public function getLocation(): Location
     {
         return $this->spacecraft->getLocation();
     }
@@ -83,13 +83,13 @@ class SpacecraftStorageEntityWrapper implements StorageEntityWrapperInterface
 
     // CREW
     #[Override]
-    public function getMaxTransferrableCrew(bool $isTarget, UserInterface $user): int
+    public function getMaxTransferrableCrew(bool $isTarget, User $user): int
     {
         return $this->crewLogic->getMaxTransferrableCrew($this->spacecraft, $isTarget, $user);
     }
 
     #[Override]
-    public function getFreeCrewSpace(UserInterface $user): int
+    public function getFreeCrewSpace(User $user): int
     {
         return $this->crewLogic->getFreeCrewSpace($this->spacecraft, $user);
     }
@@ -101,7 +101,7 @@ class SpacecraftStorageEntityWrapper implements StorageEntityWrapperInterface
     }
 
     #[Override]
-    public function acceptsCrewFrom(int $amount, UserInterface $user, InformationInterface $information): bool
+    public function acceptsCrewFrom(int $amount, User $user, InformationInterface $information): bool
     {
         return $this->crewLogic->acceptsCrewFrom($this->spacecraftWrapper, $amount, $user, $information);
     }
@@ -115,7 +115,7 @@ class SpacecraftStorageEntityWrapper implements StorageEntityWrapperInterface
     // TORPEDOS
 
     #[Override]
-    public function getTorpedo(): ?TorpedoTypeInterface
+    public function getTorpedo(): ?TorpedoType
     {
         return $this->spacecraft->getTorpedo();
     }
@@ -139,13 +139,13 @@ class SpacecraftStorageEntityWrapper implements StorageEntityWrapperInterface
     }
 
     #[Override]
-    public function canStoreTorpedoType(TorpedoTypeInterface $torpedoType, InformationInterface $information): bool
+    public function canStoreTorpedoType(TorpedoType $torpedoType, InformationInterface $information): bool
     {
         return $this->torpedoLogic->canStoreTorpedoType($this->spacecraft, $torpedoType, $information);
     }
 
     #[Override]
-    public function changeTorpedo(int $changeAmount, TorpedoTypeInterface $type): void
+    public function changeTorpedo(int $changeAmount, TorpedoType $type): void
     {
         $this->shipTorpedoManager->changeTorpedo(
             $this->spacecraftWrapper,

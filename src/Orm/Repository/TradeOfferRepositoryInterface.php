@@ -6,25 +6,24 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\TradeOffer;
-use Stu\Orm\Entity\TradeOfferInterface;
 
 /**
  * @extends ObjectRepository<TradeOffer>
  *
- * @method null|TradeOfferInterface find(integer $id)
+ * @method null|TradeOffer find(integer $id)
  */
 interface TradeOfferRepositoryInterface extends ObjectRepository
 {
-    public function prototype(): TradeOfferInterface;
+    public function prototype(): TradeOffer;
 
-    public function save(TradeOfferInterface $post): void;
+    public function save(TradeOffer $post): void;
 
-    public function delete(TradeOfferInterface $post): void;
+    public function delete(TradeOffer $post): void;
 
     public function truncateByUser(int $userId): void;
 
     /**
-     * @return array<TradeOfferInterface>
+     * @return array<TradeOffer>
      */
     public function getByTradePostAndUserAndOfferedCommodity(
         int $tradePostId,
@@ -33,7 +32,7 @@ interface TradeOfferRepositoryInterface extends ObjectRepository
     ): array;
 
     /**
-     * @return array<TradeOfferInterface>
+     * @return array<TradeOffer>
      */
     public function getByTradePostAndUserAndCommodities(
         int $tradePostId,
@@ -43,7 +42,7 @@ interface TradeOfferRepositoryInterface extends ObjectRepository
     ): array;
 
     /**
-     * @return array<TradeOfferInterface>
+     * @return array<TradeOffer>
      */
     public function getByUserLicenses(int $userId, ?int $commodityId, ?int $tradePostId, int $direction): array;
 
@@ -55,7 +54,7 @@ interface TradeOfferRepositoryInterface extends ObjectRepository
     public function getGroupedSumByTradePostAndUser(int $tradePostId, int $userId): array;
 
     /**
-     * @return array<TradeOfferInterface>
+     * @return array<TradeOffer>
      */
     public function getOldOffers(int $threshold): array;
 

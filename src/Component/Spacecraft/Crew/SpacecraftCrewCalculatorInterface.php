@@ -4,24 +4,24 @@ declare(strict_types=1);
 
 namespace Stu\Component\Spacecraft\Crew;
 
-use Stu\Orm\Entity\ModuleInterface;
-use Stu\Orm\Entity\ShipRumpCategoryRoleCrewInterface;
-use Stu\Orm\Entity\SpacecraftRumpInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Module;
+use Stu\Orm\Entity\ShipRumpCategoryRoleCrew;
+use Stu\Orm\Entity\SpacecraftRump;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\User;
 
 interface SpacecraftCrewCalculatorInterface
 {
-    public function getMaxCrewCountByRump(SpacecraftRumpInterface $shipRump): int;
+    public function getMaxCrewCountByRump(SpacecraftRump $shipRump): int;
 
-    public function getCrewObj(SpacecraftRumpInterface $shipRump): ?ShipRumpCategoryRoleCrewInterface;
+    public function getCrewObj(SpacecraftRump $shipRump): ?ShipRumpCategoryRoleCrew;
 
     public function getMaxCrewCountByShip(
-        SpacecraftInterface $spacecraft
+        Spacecraft $spacecraft
     ): int;
 
     /**
-     * @param array<ModuleInterface> $modules
+     * @param array<Module> $modules
      */
-    public function getCrewUsage(array $modules, SpacecraftRumpInterface $rump, UserInterface $user): int;
+    public function getCrewUsage(array $modules, SpacecraftRump $rump, User $user): int;
 }

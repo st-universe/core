@@ -12,8 +12,8 @@ use Override;
 use Stu\CliInteractorHelper;
 use Stu\Component\Faction\FactionEnum;
 use Stu\Component\Player\Register\LocalPlayerCreator;
-use Stu\Orm\Entity\FactionInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Faction;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\FactionRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -118,8 +118,8 @@ class UserCreateCommandTest extends StuTestCase
     {
         $app = $this->mock(Application::class);
         $interactor = $this->mock(CliInteractorHelper::class);
-        $faction = $this->mock(FactionInterface::class);
-        $user = $this->mock(UserInterface::class);
+        $faction = $this->mock(Faction::class);
+        $user = $this->mock(User::class);
 
         $userName = 'some-username';
         $emailAddress = 'some@example.com';

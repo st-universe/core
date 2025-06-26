@@ -15,7 +15,7 @@ use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacadeInterface
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 
 final class FleetDeactivateWarp implements ActionControllerInterface
 {
@@ -57,10 +57,10 @@ final class FleetDeactivateWarp implements ActionControllerInterface
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
     }
 
-    /** @return array<int, array{0: ShipInterface, 1: ShipWrapperInterface}> */
+    /** @return array<int, array{0: Ship, 1: ShipWrapperInterface}> */
     private function getTractoredShipWrappers(ShipWrapperInterface $leader): array
     {
-        /** @var array<int, array{0: ShipInterface, 1: ShipWrapperInterface}> */
+        /** @var array<int, array{0: Ship, 1: ShipWrapperInterface}> */
         $result = [];
 
         $fleetWrapper = $leader->getFleetWrapper();

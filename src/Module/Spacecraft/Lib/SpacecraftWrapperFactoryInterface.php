@@ -9,43 +9,43 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftGroupInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Station\Lib\StationWrapperInterface;
-use Stu\Orm\Entity\FleetInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\StationInterface;
+use Stu\Orm\Entity\Fleet;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\Station;
 
 //TODO rename and move
 interface SpacecraftWrapperFactoryInterface
 {
-    public function wrapSpacecraft(SpacecraftInterface $spacecraft): SpacecraftWrapperInterface;
-    public function wrapShip(ShipInterface $ship): ShipWrapperInterface;
-    public function wrapStation(StationInterface $station): StationWrapperInterface;
+    public function wrapSpacecraft(Spacecraft $spacecraft): SpacecraftWrapperInterface;
+    public function wrapShip(Ship $ship): ShipWrapperInterface;
+    public function wrapStation(Station $station): StationWrapperInterface;
 
     /**
-     * @param array<ShipInterface> $ships
+     * @param array<Ship> $ships
      *
      * @return ArrayCollection<int, ShipWrapperInterface>
      */
     public function wrapShips(array $ships): Collection;
 
     /**
-     * @param array<int, SpacecraftInterface> $spacecrafts
+     * @param array<int, Spacecraft> $spacecrafts
      *
      * @return Collection<int, SpacecraftWrapperInterface>
      */
     public function wrapSpacecrafts(array $spacecrafts): Collection;
 
     /**
-     * @param Collection<int, covariant SpacecraftInterface> $spacecrafts
+     * @param Collection<int, covariant Spacecraft> $spacecrafts
      * 
      * @return Collection<string, SpacecraftGroupInterface>
      */
     public function wrapSpacecraftsAsGroups(Collection $spacecrafts): Collection;
 
-    public function wrapFleet(FleetInterface $fleet): FleetWrapperInterface;
+    public function wrapFleet(Fleet $fleet): FleetWrapperInterface;
 
     /**
-     * @param array<FleetInterface> $fleets
+     * @param array<Fleet> $fleets
      *
      * @return array<FleetWrapperInterface>
      */

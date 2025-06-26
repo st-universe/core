@@ -5,18 +5,17 @@ namespace Stu\Orm\Repository;
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Orm\Entity\Building;
-use Stu\Orm\Entity\BuildingInterface;
-use Stu\Orm\Entity\ResearchInterface;
+use Stu\Orm\Entity\Research;
 
 /**
  * @extends ObjectRepository<Building>
  *
- * @method null|BuildingInterface find(integer $id)
+ * @method null|Building find(integer $id)
  */
 interface BuildingRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return array<BuildingInterface>
+     * @return array<Building>
      */
     public function getBuildmenuBuildings(
         PlanetFieldHostInterface $host,
@@ -27,6 +26,6 @@ interface BuildingRepositoryInterface extends ObjectRepository
         ?int $fieldType = null
     ): array;
 
-    /** @return array<BuildingInterface> */
-    public function getByResearch(ResearchInterface $research): array;
+    /** @return array<Building> */
+    public function getByResearch(Research $research): array;
 }

@@ -8,7 +8,7 @@ use Mockery\MockInterface;
 use Override;
 use RuntimeException;
 use Stu\Module\Config\StuConfigInterface;
-use Stu\Orm\Entity\LayerInterface;
+use Stu\Orm\Entity\Layer;
 use Stu\StuTestCase;
 
 class EncodedMapTest extends StuTestCase
@@ -32,7 +32,7 @@ class EncodedMapTest extends StuTestCase
         static::expectExceptionMessage('encoding key is missing in configuration');
         static::expectException(RuntimeException::class);
 
-        $layer = $this->mock(LayerInterface::class);
+        $layer = $this->mock(Layer::class);
 
         $this->stuConfig->shouldReceive('getGameSettings->getMapSettings->getEncryptionKey')
             ->withNoArgs()
@@ -44,7 +44,7 @@ class EncodedMapTest extends StuTestCase
 
     public function testGetEncodedMapPathExpectCorrectPathWhenKeyIsPresent(): void
     {
-        $layer = $this->mock(LayerInterface::class);
+        $layer = $this->mock(Layer::class);
 
         $this->stuConfig->shouldReceive('getGameSettings->getMapSettings->getEncryptionKey')
             ->withNoArgs()

@@ -12,8 +12,8 @@ use Stu\Module\Spacecraft\Lib\Interaction\ShipUndockingInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\StationInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Station;
 
 final class UndockStationShip implements ActionControllerInterface
 {
@@ -46,8 +46,8 @@ final class UndockStationShip implements ActionControllerInterface
         $target = $targetWrapper->get();
 
         if (
-            !$target instanceof ShipInterface
-            || !$station instanceof StationInterface
+            !$target instanceof Ship
+            || !$station instanceof Station
             || $target->getDockedTo() !== $station
         ) {
             return;

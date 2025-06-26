@@ -8,8 +8,8 @@ use Override;
 use RuntimeException;
 use Stu\Component\Map\DirectionEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\StarSystemInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
+use Stu\Orm\Entity\StarSystem;
+use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 class RandomSystemEntry implements RandomSystemEntryInterface
@@ -17,7 +17,7 @@ class RandomSystemEntry implements RandomSystemEntryInterface
     public function __construct(private StarSystemMapRepositoryInterface $starSystemMapRepository) {}
 
     #[Override]
-    public function getRandomEntryPoint(SpacecraftWrapperInterface $wrapper, StarSystemInterface $system): StarSystemMapInterface
+    public function getRandomEntryPoint(SpacecraftWrapperInterface $wrapper, StarSystem $system): StarSystemMap
     {
         [$posx, $posy] = $this->getDestinationCoordinates($wrapper, $system);
 
@@ -34,7 +34,7 @@ class RandomSystemEntry implements RandomSystemEntryInterface
     /**
      * @return array{0: int,1: int}
      */
-    private function getDestinationCoordinates(SpacecraftWrapperInterface $wrapper, StarSystemInterface $system): array
+    private function getDestinationCoordinates(SpacecraftWrapperInterface $wrapper, StarSystem $system): array
     {
         $flightDirection = $wrapper->getComputerSystemDataMandatory()->getFlightDirection();
         while ($flightDirection === DirectionEnum::NON) {

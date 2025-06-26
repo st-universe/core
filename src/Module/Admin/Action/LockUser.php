@@ -13,7 +13,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\UserLockRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -77,7 +77,7 @@ final class LockUser implements ActionControllerInterface
         $game->addInformationf(_('Der Spieler %s (%d) ist nun gesperrt'), $userToLock->getName(), $userIdToLock);
     }
 
-    private function setUserLock(UserInterface $user, int $remainingTicks): void
+    private function setUserLock(User $user, int $remainingTicks): void
     {
         $lock = $this->userLockRepository->getActiveByUser($user->getId());
 

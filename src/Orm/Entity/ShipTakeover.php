@@ -12,14 +12,13 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\ShipTakeoverRepository;
 
 #[Table(name: 'stu_ship_takeover')]
 #[Index(name: 'ship_takeover_source_idx', columns: ['source_spacecraft_id'])]
 #[Index(name: 'ship_takeover_target_idx', columns: ['target_spacecraft_id'])]
 #[Entity(repositoryClass: ShipTakeoverRepository::class)]
-class ShipTakeover implements ShipTakeoverInterface
+class ShipTakeover
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -40,67 +39,58 @@ class ShipTakeover implements ShipTakeoverInterface
 
     #[OneToOne(targetEntity: Spacecraft::class)]
     #[JoinColumn(name: 'source_spacecraft_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private SpacecraftInterface $source;
+    private Spacecraft $source;
 
     #[OneToOne(targetEntity: Spacecraft::class)]
     #[JoinColumn(name: 'target_spacecraft_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private SpacecraftInterface $target;
+    private Spacecraft $target;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
-    public function setSourceSpacecraft(SpacecraftInterface $spacecraft): ShipTakeoverInterface
+    public function setSourceSpacecraft(Spacecraft $spacecraft): ShipTakeover
     {
         $this->source = $spacecraft;
 
         return $this;
     }
 
-    #[Override]
-    public function getSourceSpacecraft(): SpacecraftInterface
+    public function getSourceSpacecraft(): Spacecraft
     {
         return $this->source;
     }
 
-    #[Override]
-    public function setTargetSpacecraft(SpacecraftInterface $spacecraft): ShipTakeoverInterface
+    public function setTargetSpacecraft(Spacecraft $spacecraft): ShipTakeover
     {
         $this->target = $spacecraft;
 
         return $this;
     }
 
-    #[Override]
-    public function getTargetSpacecraft(): SpacecraftInterface
+    public function getTargetSpacecraft(): Spacecraft
     {
         return $this->target;
     }
 
-    #[Override]
     public function getStartTurn(): int
     {
         return $this->start_turn;
     }
 
-    #[Override]
-    public function setStartTurn(int $turn): ShipTakeoverInterface
+    public function setStartTurn(int $turn): ShipTakeover
     {
         $this->start_turn = $turn;
         return $this;
     }
 
-    #[Override]
     public function getPrestige(): int
     {
         return $this->prestige;
     }
 
-    #[Override]
-    public function setPrestige(int $prestige): ShipTakeoverInterface
+    public function setPrestige(int $prestige): ShipTakeover
     {
         $this->prestige = $prestige;
         return $this;

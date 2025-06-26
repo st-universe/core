@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Lib;
 
-use Stu\Orm\Entity\AllianceInterface;
-use Stu\Orm\Entity\FactionInterface;
+use Stu\Orm\Entity\Alliance;
+use Stu\Orm\Entity\Faction;
 
 final class AllianceListItem
 {
-    public function __construct(private AllianceInterface $alliance)
+    public function __construct(private Alliance $alliance)
     {
     }
 
@@ -23,7 +23,7 @@ final class AllianceListItem
         return $this->alliance->getName();
     }
 
-    public function getFaction(): ?FactionInterface
+    public function getFaction(): ?Faction
     {
         return $this->alliance->getFaction();
     }

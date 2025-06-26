@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Template;
 
-use Stu\Orm\Entity\PlanetFieldInterface;
+use Stu\Orm\Entity\PlanetField;
 
 interface TemplateHelperInterface
 {
@@ -20,5 +20,5 @@ interface TemplateHelperInterface
 
     public function getPlanetFieldTypeDescription(int $fieldTypeId): string;
 
-    public function getPlanetFieldTitle(PlanetFieldInterface $planetField): string;
+    public function getPlanetFieldTitle(PlanetField $planetField): string;
 }

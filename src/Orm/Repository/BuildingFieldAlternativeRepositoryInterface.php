@@ -4,17 +4,16 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\BuildingFieldAlternative;
-use Stu\Orm\Entity\BuildingFieldAlternativeInterface;
 
 /**
  * @extends ObjectRepository<BuildingFieldAlternative>
  */
 interface BuildingFieldAlternativeRepositoryInterface extends ObjectRepository
 {
-    public function getByBuildingAndFieldType(int $buildingId, int $fieldType): ?BuildingFieldAlternativeInterface;
+    public function getByBuildingAndFieldType(int $buildingId, int $fieldType): ?BuildingFieldAlternative;
 
     /**
-     * @return list<BuildingFieldAlternativeInterface>
+     * @return list<BuildingFieldAlternative>
      */
     public function getByBuildingIdAndResearchedByUser(int $buildingId, int $userId): iterable;
 }

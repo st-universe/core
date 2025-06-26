@@ -9,7 +9,7 @@ use RuntimeException;
 use Stu\Component\Anomaly\Type\AnomalyHandlerInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\AnomalyInterface;
+use Stu\Orm\Entity\Anomaly;
 use Stu\Orm\Repository\AnomalyRepositoryInterface;
 
 final class AnomalyHandling implements AnomalyHandlingInterface
@@ -49,7 +49,7 @@ final class AnomalyHandling implements AnomalyHandlingInterface
         }
     }
 
-    private function decreaseLifespan(AnomalyInterface $anomaly, AnomalyHandlerInterface $handler): void
+    private function decreaseLifespan(Anomaly $anomaly, AnomalyHandlerInterface $handler): void
     {
         $remainingTicks = $anomaly->getRemainingTicks();
 
@@ -66,7 +66,7 @@ final class AnomalyHandling implements AnomalyHandlingInterface
         }
     }
 
-    private function getHandler(AnomalyInterface $anomaly): AnomalyHandlerInterface
+    private function getHandler(Anomaly $anomaly): AnomalyHandlerInterface
     {
         $type = $anomaly->getAnomalyType()->getId();
 

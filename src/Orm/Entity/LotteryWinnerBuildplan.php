@@ -11,12 +11,11 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\LotteryWinnerBuildplanRepository;
 
 #[Table(name: 'stu_lottery_buildplan')]
 #[Entity(repositoryClass: LotteryWinnerBuildplanRepository::class)]
-class LotteryWinnerBuildplan implements LotteryWinnerBuildplanInterface
+class LotteryWinnerBuildplan
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -34,27 +33,23 @@ class LotteryWinnerBuildplan implements LotteryWinnerBuildplanInterface
 
     #[ManyToOne(targetEntity: SpacecraftBuildplan::class)]
     #[JoinColumn(name: 'buildplan_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private SpacecraftBuildplanInterface $buildplan;
+    private SpacecraftBuildplan $buildplan;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
-    public function getBuildplan(): SpacecraftBuildplanInterface
+    public function getBuildplan(): SpacecraftBuildplan
     {
         return $this->buildplan;
     }
 
-    #[Override]
     public function getChance(): int
     {
         return $this->chance;
     }
 
-    #[Override]
     public function getFactionId(): ?int
     {
         return $this->faction_id;

@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Stu\Lib\ModuleScreen;
 
 use Override;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\ModuleInterface;
-use Stu\Orm\Entity\SpacecraftBuildplanInterface;
-use Stu\Orm\Entity\SpacecraftRumpInterface;
-use Stu\Orm\Entity\ShipRumpModuleLevelInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\StorageInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Module;
+use Stu\Orm\Entity\SpacecraftBuildplan;
+use Stu\Orm\Entity\SpacecraftRump;
+use Stu\Orm\Entity\ShipRumpModuleLevel;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\Storage;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 
 final class ModuleSelectorEntry implements ModuleSelectorEntryInterface
@@ -20,13 +20,13 @@ final class ModuleSelectorEntry implements ModuleSelectorEntryInterface
 
     public function __construct(
         private ModuleSelectorInterface $moduleSelector,
-        private ModuleInterface $module,
-        private SpacecraftRumpInterface $rump,
-        private ShipRumpModuleLevelInterface $shipRumpModuleLevel,
-        private ColonyInterface|SpacecraftInterface $host,
-        private UserInterface $user,
+        private Module $module,
+        private SpacecraftRump $rump,
+        private ShipRumpModuleLevel $shipRumpModuleLevel,
+        private Colony|Spacecraft $host,
+        private User $user,
         private ModuleRepositoryInterface $moduleRepository,
-        private ?SpacecraftBuildplanInterface $buildplan = null
+        private ?SpacecraftBuildplan $buildplan = null
     ) {}
 
 
@@ -69,7 +69,7 @@ final class ModuleSelectorEntry implements ModuleSelectorEntryInterface
     #[Override]
     public function getStoredAmount(): int
     {
-        /** @var StorageInterface|null */
+        /** @var Storage|null */
         $storage = $this->host->getStorage()->get($this->module->getCommodityId());
 
         if ($storage === null) {
@@ -80,7 +80,7 @@ final class ModuleSelectorEntry implements ModuleSelectorEntryInterface
     }
 
     #[Override]
-    public function getModule(): ModuleInterface
+    public function getModule(): Module
     {
         return $this->module;
     }

@@ -12,13 +12,12 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\UniqueConstraint;
-use Override;
 use Stu\Orm\Repository\RpgPlotMemberArchivRepository;
 
 #[Table(name: 'stu_plots_members_archiv')]
 #[UniqueConstraint(name: 'plot_archiv_user_idx', columns: ['plot_id', 'user_id'])]
 #[Entity(repositoryClass: RpgPlotMemberArchivRepository::class)]
-class RpgPlotMemberArchiv implements RpgPlotMemberArchivInterface
+class RpgPlotMemberArchiv
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -39,46 +38,39 @@ class RpgPlotMemberArchiv implements RpgPlotMemberArchivInterface
 
     #[ManyToOne(targetEntity: RpgPlotArchiv::class, inversedBy: 'members')]
     #[JoinColumn(name: 'plot_id', nullable: false, referencedColumnName: 'former_id', onDelete: 'CASCADE')]
-    private RpgPlotArchivInterface $rpgPlot;
+    private RpgPlotArchiv $rpgPlot;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getVersion(): ?string
     {
         return $this->version;
     }
 
-    #[Override]
     public function getFormerId(): int
     {
         return $this->former_id;
     }
 
-    #[Override]
     public function getPlotId(): int
     {
         return $this->plot_id;
     }
 
-    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    #[Override]
-    public function getRpgPlot(): RpgPlotArchivInterface
+    public function getRpgPlot(): RpgPlotArchiv
     {
         return $this->rpgPlot;
     }
 
-    #[Override]
-    public function setRpgPlot(RpgPlotArchivInterface $rpgPlot): RpgPlotMemberArchivInterface
+    public function setRpgPlot(RpgPlotArchiv $rpgPlot): RpgPlotMemberArchiv
     {
         $this->rpgPlot = $rpgPlot;
 

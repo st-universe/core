@@ -2,21 +2,21 @@
 
 namespace Stu\Module\Research;
 
-use Stu\Orm\Entity\ResearchedInterface;
-use Stu\Orm\Entity\ResearchInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Researched;
+use Stu\Orm\Entity\Research;
+use Stu\Orm\Entity\User;
 
 interface TechlistRetrieverInterface
 {
     /**
-     * @return ResearchInterface[]
+     * @return Research[]
      */
-    public function getResearchList(UserInterface $user): array;
+    public function getResearchList(User $user): array;
 
-    public function canResearch(UserInterface $user, int $researchId): ?ResearchInterface;
+    public function canResearch(User $user, int $researchId): ?Research;
 
     /**
-     * @return ResearchedInterface[]
+     * @return Researched[]
      */
-    public function getResearchedList(UserInterface $user): array;
+    public function getResearchedList(User $user): array;
 }

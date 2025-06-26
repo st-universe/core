@@ -13,7 +13,6 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Orm\Repository\ColonyShipQueueRepository;
 
@@ -22,7 +21,7 @@ use Stu\Orm\Repository\ColonyShipQueueRepository;
 #[Index(name: 'colony_shipqueue_user_idx', columns: ['user_id'])]
 #[Index(name: 'colony_shipqueue_finish_date_idx', columns: ['finish_date'])]
 #[Entity(repositoryClass: ColonyShipQueueRepository::class)]
-class ColonyShipQueue implements ColonyShipQueueInterface
+class ColonyShipQueue
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -61,131 +60,114 @@ class ColonyShipQueue implements ColonyShipQueueInterface
 
     #[ManyToOne(targetEntity: SpacecraftBuildplan::class)]
     #[JoinColumn(name: 'buildplan_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private SpacecraftBuildplanInterface $spacecraftBuildplan;
+    private SpacecraftBuildplan $spacecraftBuildplan;
 
     #[ManyToOne(targetEntity: SpacecraftRump::class)]
     #[JoinColumn(name: 'rump_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private SpacecraftRumpInterface $shipRump;
+    private SpacecraftRump $shipRump;
 
     #[ManyToOne(targetEntity: Colony::class)]
     #[JoinColumn(name: 'colony_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ColonyInterface $colony;
+    private Colony $colony;
 
     #[OneToOne(targetEntity: Ship::class)]
     #[JoinColumn(name: 'ship_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ?ShipInterface $ship = null;
+    private ?Ship $ship = null;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
-    public function getColony(): ColonyInterface
+    public function getColony(): Colony
     {
         return $this->colony;
     }
 
-    #[Override]
-    public function setColony(ColonyInterface $colony): ColonyShipQueueInterface
+    public function setColony(Colony $colony): ColonyShipQueue
     {
         $this->colony = $colony;
         return $this;
     }
 
-    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    #[Override]
-    public function setUserId(int $userId): ColonyShipQueueInterface
+    public function setUserId(int $userId): ColonyShipQueue
     {
         $this->user_id = $userId;
 
         return $this;
     }
 
-    #[Override]
     public function getRumpId(): int
     {
         return $this->rump_id;
     }
 
-    #[Override]
     public function getBuildtime(): int
     {
         return $this->buildtime;
     }
 
-    #[Override]
-    public function setBuildtime(int $buildtime): ColonyShipQueueInterface
+    public function setBuildtime(int $buildtime): ColonyShipQueue
     {
         $this->buildtime = $buildtime;
 
         return $this;
     }
 
-    #[Override]
     public function getFinishDate(): int
     {
         return $this->finish_date;
     }
 
-    #[Override]
-    public function setFinishDate(int $finishDate): ColonyShipQueueInterface
+    public function setFinishDate(int $finishDate): ColonyShipQueue
     {
         $this->finish_date = $finishDate;
 
         return $this;
     }
 
-    #[Override]
     public function getStopDate(): int
     {
         return $this->stop_date;
     }
 
-    #[Override]
-    public function setStopDate(int $stopDate): ColonyShipQueueInterface
+    public function setStopDate(int $stopDate): ColonyShipQueue
     {
         $this->stop_date = $stopDate;
 
         return $this;
     }
 
-    #[Override]
-    public function setBuildingFunction(BuildingFunctionEnum $buildingFunction): ColonyShipQueueInterface
+    public function setBuildingFunction(BuildingFunctionEnum $buildingFunction): ColonyShipQueue
     {
         $this->building_function_id = $buildingFunction;
 
         return $this;
     }
 
-    #[Override]
-    public function getRump(): SpacecraftRumpInterface
+    public function getRump(): SpacecraftRump
     {
         return $this->shipRump;
     }
 
-    #[Override]
-    public function setRump(SpacecraftRumpInterface $shipRump): ColonyShipQueueInterface
+    public function setRump(SpacecraftRump $shipRump): ColonyShipQueue
     {
         $this->shipRump = $shipRump;
 
         return $this;
     }
 
-    #[Override]
-    public function getSpacecraftBuildplan(): SpacecraftBuildplanInterface
+    public function getSpacecraftBuildplan(): SpacecraftBuildplan
     {
         return $this->spacecraftBuildplan;
     }
 
-    #[Override]
-    public function setSpacecraftBuildplan(SpacecraftBuildplanInterface $spacecraftBuildplan): ColonyShipQueueInterface
+    public function setSpacecraftBuildplan(SpacecraftBuildplan $spacecraftBuildplan): ColonyShipQueue
     {
         $this->spacecraftBuildplan = $spacecraftBuildplan;
 
@@ -193,27 +175,23 @@ class ColonyShipQueue implements ColonyShipQueueInterface
     }
 
 
-    #[Override]
     public function getMode(): ?int
     {
         return $this->mode;
     }
 
-    #[Override]
-    public function setMode(?int $mode): ColonyShipQueueInterface
+    public function setMode(?int $mode): ColonyShipQueue
     {
         $this->mode = $mode;
         return $this;
     }
 
-    #[Override]
-    public function getShip(): ?ShipInterface
+    public function getShip(): ?Ship
     {
         return $this->ship;
     }
 
-    #[Override]
-    public function setShip(?ShipInterface $ship): ColonyShipQueueInterface
+    public function setShip(?Ship $ship): ColonyShipQueue
     {
         $this->ship = $ship;
         return $this;

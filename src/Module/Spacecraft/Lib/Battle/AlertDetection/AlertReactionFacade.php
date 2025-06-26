@@ -13,7 +13,7 @@ use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Party\IncomingBattleParty;
 use Stu\Module\Spacecraft\Lib\Battle\SpacecraftAttackCycleInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 
 final class AlertReactionFacade implements AlertReactionFacadeInterface
 {
@@ -28,7 +28,7 @@ final class AlertReactionFacade implements AlertReactionFacadeInterface
     public function doItAll(
         SpacecraftWrapperInterface $incomingWrapper,
         InformationInterface $informations,
-        ?SpacecraftInterface $tractoringSpacecraft = null,
+        ?Spacecraft $tractoringSpacecraft = null,
     ): void {
 
         $incomingBattleParty = $this->battlePartyFactory->createIncomingBattleParty($incomingWrapper);

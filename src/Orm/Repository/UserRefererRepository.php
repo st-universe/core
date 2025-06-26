@@ -6,8 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\UserReferer;
-use Stu\Orm\Entity\UserRefererInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Override;
 
 /**
@@ -16,13 +15,13 @@ use Override;
 final class UserRefererRepository extends EntityRepository implements UserRefererRepositoryInterface
 {
     #[Override]
-    public function prototype(): UserRefererInterface
+    public function prototype(): UserReferer
     {
         return new UserReferer();
     }
 
     #[Override]
-    public function save(UserRefererInterface $referer): void
+    public function save(UserReferer $referer): void
     {
         $em = $this->getEntityManager();
         $em->persist($referer);
@@ -30,7 +29,7 @@ final class UserRefererRepository extends EntityRepository implements UserRefere
     }
 
     #[Override]
-    public function delete(UserRefererInterface $referer): void
+    public function delete(UserReferer $referer): void
     {
         $em = $this->getEntityManager();
         $em->remove($referer);

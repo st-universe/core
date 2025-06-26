@@ -7,16 +7,16 @@ namespace Stu\Module\Communication\View\ShowKnComments;
 use Noodlehaus\ConfigInterface;
 use Override;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
-use Stu\Orm\Entity\KnCommentInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\KnComment;
+use Stu\Orm\Entity\User;
 
 final class KnCommentWrapper implements KnCommentWrapperInterface
 {
     public function __construct(
         private readonly ConfigInterface $config,
         private readonly UserSettingsProviderInterface $userSettingsProvider,
-        private readonly KnCommentInterface $comment,
-        private readonly UserInterface $currentUser
+        private readonly KnComment $comment,
+        private readonly User $currentUser
     ) {}
 
     #[Override]
@@ -91,7 +91,7 @@ final class KnCommentWrapper implements KnCommentWrapperInterface
     }
 
     #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->comment->getUser();
     }

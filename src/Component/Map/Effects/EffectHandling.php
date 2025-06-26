@@ -11,7 +11,7 @@ use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\LocationInterface;
+use Stu\Orm\Entity\Location;
 
 final class EffectHandling implements EffectHandlingInterface
 {
@@ -31,7 +31,7 @@ final class EffectHandling implements EffectHandlingInterface
     }
 
     #[Override]
-    public function addFlightInformationForActiveEffects(LocationInterface $location, MessageCollectionInterface $messages): void
+    public function addFlightInformationForActiveEffects(Location $location, MessageCollectionInterface $messages): void
     {
         $this->walkEffects($location, function (EffectHandlerInterface $handler) use ($location, $messages): void {
             $handler->addFlightInformation($location, $messages);
@@ -46,7 +46,7 @@ final class EffectHandling implements EffectHandlingInterface
         });
     }
 
-    private function walkEffects(LocationInterface $location, callable $func): void
+    private function walkEffects(Location $location, callable $func): void
     {
         foreach ($location->getFieldType()->getEffects() as $effect) {
             if ($effect->hasHandler()) {

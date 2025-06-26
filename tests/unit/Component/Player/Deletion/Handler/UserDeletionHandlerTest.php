@@ -6,8 +6,8 @@ namespace Stu\Component\Player\Deletion\Handler;
 
 use Mockery\MockInterface;
 use Override;
-use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Entity\UserLockInterface;
+use Stu\Orm\Entity\User;
+use Stu\Orm\Entity\UserLock;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use Stu\Orm\Repository\UserLockRepositoryInterface;
 use Stu\Orm\Repository\UserProfileVisitorRepositoryInterface;
@@ -56,8 +56,8 @@ class UserDeletionHandlerTest extends StuTestCase
 
     public function testDeleteDeletesUser(): void
     {
-        $user = $this->mock(UserInterface::class);
-        $userLock = $this->mock(UserLockInterface::class);
+        $user = $this->mock(User::class);
+        $userLock = $this->mock(UserLock::class);
 
         $user->shouldReceive('getId')
             ->withNoArgs()

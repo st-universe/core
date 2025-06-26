@@ -9,8 +9,8 @@ use Mockery\MockInterface;
 use Noodlehaus\ConfigInterface;
 use Override;
 use Stu\Component\Faction\FactionEnum;
-use Stu\Orm\Entity\AllianceInterface;
-use Stu\Orm\Entity\FactionInterface;
+use Stu\Orm\Entity\Alliance;
+use Stu\Orm\Entity\Faction;
 use Stu\StuTestCase;
 
 class AllianceDataToGraphAttributeConverterTest extends StuTestCase
@@ -39,7 +39,7 @@ class AllianceDataToGraphAttributeConverterTest extends StuTestCase
         $parsedName = 'some-parsed-name';
         $specialCharacters = '<>&"\'\\' . PHP_EOL;
 
-        $alliance = $this->mock(AllianceInterface::class);
+        $alliance = $this->mock(Alliance::class);
 
         $alliance->shouldReceive('getName')
             ->withNoArgs()
@@ -63,8 +63,8 @@ class AllianceDataToGraphAttributeConverterTest extends StuTestCase
 
     public function testGetFrameColorReturnMappedFactionColor(): void
     {
-        $alliance = $this->mock(AllianceInterface::class);
-        $faction = $this->mock(FactionInterface::class);
+        $alliance = $this->mock(Alliance::class);
+        $faction = $this->mock(Faction::class);
 
         $alliance->shouldReceive('getFaction')
             ->withNoArgs()
@@ -83,7 +83,7 @@ class AllianceDataToGraphAttributeConverterTest extends StuTestCase
 
     public function testGetFrameColorReturnsRgbCodeIfSet(): void
     {
-        $alliance = $this->mock(AllianceInterface::class);
+        $alliance = $this->mock(Alliance::class);
 
         $rgbCode = 'some-code';
 
@@ -104,7 +104,7 @@ class AllianceDataToGraphAttributeConverterTest extends StuTestCase
 
     public function testGetFrameColorReturnsDefaultValue(): void
     {
-        $alliance = $this->mock(AllianceInterface::class);
+        $alliance = $this->mock(Alliance::class);
 
         $default = 'some-code';
 
@@ -125,7 +125,7 @@ class AllianceDataToGraphAttributeConverterTest extends StuTestCase
 
     public function testGetUrlReturnsAbsoluteUrl(): void
     {
-        $alliance = $this->mock(AllianceInterface::class);
+        $alliance = $this->mock(Alliance::class);
 
         $allianceId = 666;
         $base_url = 'some-url';
@@ -152,7 +152,7 @@ class AllianceDataToGraphAttributeConverterTest extends StuTestCase
 
     public function testGetFillColorReturnsValueForNpcAlliance(): void
     {
-        $alliance = $this->mock(AllianceInterface::class);
+        $alliance = $this->mock(Alliance::class);
 
         $alliance->shouldReceive('isNpcAlliance')
             ->withNoArgs()
@@ -167,7 +167,7 @@ class AllianceDataToGraphAttributeConverterTest extends StuTestCase
 
     public function testGetFillColorReturnsValueForNonNpcAlliance(): void
     {
-        $alliance = $this->mock(AllianceInterface::class);
+        $alliance = $this->mock(Alliance::class);
 
         $alliance->shouldReceive('isNpcAlliance')
             ->withNoArgs()

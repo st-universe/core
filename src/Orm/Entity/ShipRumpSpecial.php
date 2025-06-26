@@ -12,13 +12,12 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\ShipRumpSpecialRepository;
 
 #[Table(name: 'stu_rumps_specials')]
 #[Index(name: 'rump_special_ship_rump_idx', columns: ['rump_id'])]
 #[Entity(repositoryClass: ShipRumpSpecialRepository::class)]
-class ShipRumpSpecial implements ShipRumpSpecialInterface
+class ShipRumpSpecial
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -33,30 +32,26 @@ class ShipRumpSpecial implements ShipRumpSpecialInterface
 
     #[ManyToOne(targetEntity: SpacecraftRump::class, inversedBy: 'specialAbilities')]
     #[JoinColumn(name: 'rump_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ?SpacecraftRumpInterface $spacecraftRump = null;
+    private ?SpacecraftRump $spacecraftRump = null;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
-    public function setRumpId(int $rumpId): ShipRumpSpecialInterface
+    public function setRumpId(int $rumpId): ShipRumpSpecial
     {
         $this->rump_id = $rumpId;
 
         return $this;
     }
 
-    #[Override]
     public function getSpecialId(): int
     {
         return $this->special;
     }
 
-    #[Override]
-    public function setSpecialId(int $specialId): ShipRumpSpecialInterface
+    public function setSpecialId(int $specialId): ShipRumpSpecial
     {
         $this->special = $specialId;
 

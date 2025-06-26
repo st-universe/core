@@ -14,7 +14,7 @@ use Stu\Module\Game\Component\GameComponentEnum;
 use Stu\Module\Game\Lib\View\Provider\ViewComponentProviderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderItem;
 use Stu\Module\Message\Lib\PrivateMessageUiFactoryInterface;
-use Stu\Orm\Entity\PrivateMessageFolderInterface;
+use Stu\Orm\Entity\PrivateMessageFolder;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 
 final class MessageProvider implements ViewComponentProviderInterface
@@ -40,7 +40,7 @@ final class MessageProvider implements ViewComponentProviderInterface
         $game->setTemplateVar(
             'PM_CATEGORIES',
             array_map(
-                fn(PrivateMessageFolderInterface $folder): PrivateMessageFolderItem =>
+                fn(PrivateMessageFolder $folder): PrivateMessageFolderItem =>
                 $this->privateMessageUiFactory->createPrivateMessageFolderItem($folder),
                 $this->privateMessageFolderRepository->getOrderedByUser($game->getUser())
             )

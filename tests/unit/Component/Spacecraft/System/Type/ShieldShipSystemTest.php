@@ -14,10 +14,10 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftStateChangerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\MapFieldTypeInterface;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftSystemInterface;
+use Stu\Orm\Entity\MapFieldType;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\SpacecraftSystem;
 use Stu\StuTestCase;
 
 class ShieldShipSystemTest extends StuTestCase
@@ -26,14 +26,14 @@ class ShieldShipSystemTest extends StuTestCase
 
     private SpacecraftStateChangerInterface&MockInterface $spacecraftStateChanger;
 
-    private ShipInterface&MockInterface $ship;
+    private Ship&MockInterface $ship;
     private ShipWrapperInterface&MockInterface $wrapper;
 
     #[Override]
     public function setUp(): void
     {
         $this->spacecraftStateChanger = $this->mock(SpacecraftStateChangerInterface::class);
-        $this->ship = $this->mock(ShipInterface::class);
+        $this->ship = $this->mock(Ship::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
 
         $this->wrapper->shouldReceive('get')
@@ -126,8 +126,8 @@ class ShieldShipSystemTest extends StuTestCase
 
     public function testCheckActivationConditionsReturnsFalseIfShieldMalfunctionEffect(): void
     {
-        $location = $this->mock(MapInterface::class);
-        $fieldType = $this->mock(MapFieldTypeInterface::class);
+        $location = $this->mock(Map::class);
+        $fieldType = $this->mock(MapFieldType::class);
 
         $this->ship->shouldReceive('isCloaked')
             ->withNoArgs()
@@ -171,8 +171,8 @@ class ShieldShipSystemTest extends StuTestCase
 
     public function testCheckActivationConditionsReturnsFalseIfSubspaceEllipseIsExistent(): void
     {
-        $location = $this->mock(MapInterface::class);
-        $fieldType = $this->mock(MapFieldTypeInterface::class);
+        $location = $this->mock(Map::class);
+        $fieldType = $this->mock(MapFieldType::class);
 
         $this->ship->shouldReceive('isCloaked')
             ->withNoArgs()
@@ -217,8 +217,8 @@ class ShieldShipSystemTest extends StuTestCase
 
     public function testCheckActivationConditionsReturnsFalseIfIonStormIsExistent(): void
     {
-        $location = $this->mock(MapInterface::class);
-        $fieldType = $this->mock(MapFieldTypeInterface::class);
+        $location = $this->mock(Map::class);
+        $fieldType = $this->mock(MapFieldType::class);
 
         $this->ship->shouldReceive('isCloaked')
             ->withNoArgs()
@@ -267,8 +267,8 @@ class ShieldShipSystemTest extends StuTestCase
 
     public function testCheckActivationConditionsReturnsTrueIfActivateable(): void
     {
-        $location = $this->mock(MapInterface::class);
-        $fieldType = $this->mock(MapFieldTypeInterface::class);
+        $location = $this->mock(Map::class);
+        $fieldType = $this->mock(MapFieldType::class);
 
         $this->ship->shouldReceive('isCloaked')
             ->withNoArgs()
@@ -326,7 +326,7 @@ class ShieldShipSystemTest extends StuTestCase
     public function testActivateActivates(): void
     {
         $managerMock = $this->mock(SpacecraftSystemManagerInterface::class);
-        $system = $this->mock(SpacecraftSystemInterface::class);
+        $system = $this->mock(SpacecraftSystem::class);
 
         $this->ship->shouldReceive('setDockedTo')
             ->with(null)
@@ -348,7 +348,7 @@ class ShieldShipSystemTest extends StuTestCase
 
     public function testDeactivateDeactivates(): void
     {
-        $system = $this->mock(SpacecraftSystemInterface::class);
+        $system = $this->mock(SpacecraftSystem::class);
 
         $this->ship->shouldReceive('getSpacecraftSystem')
             ->with(SpacecraftSystemTypeEnum::SHIELDS)

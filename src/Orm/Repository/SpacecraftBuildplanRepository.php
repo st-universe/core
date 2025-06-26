@@ -10,7 +10,6 @@ use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\SpacecraftBuildplan;
-use Stu\Orm\Entity\SpacecraftBuildplanInterface;
 use Stu\Orm\Entity\ShipRumpBuildingFunction;
 use Stu\Orm\Entity\ShipRumpUser;
 use Stu\Orm\Entity\SpacecraftRump;
@@ -54,7 +53,7 @@ final class SpacecraftBuildplanRepository extends EntityRepository implements Sp
         int $userId,
         int $rumpId,
         string $signature
-    ): ?SpacecraftBuildplanInterface {
+    ): ?SpacecraftBuildplan {
         return $this->findOneBy([
             'user_id' => $userId,
             'rump_id' => $rumpId,
@@ -63,7 +62,7 @@ final class SpacecraftBuildplanRepository extends EntityRepository implements Sp
     }
 
     #[Override]
-    public function getShuttleBuildplan(int $commodityId): ?SpacecraftBuildplanInterface
+    public function getShuttleBuildplan(int $commodityId): ?SpacecraftBuildplan
     {
         return $this->getEntityManager()
             ->createQuery(
@@ -109,7 +108,7 @@ final class SpacecraftBuildplanRepository extends EntityRepository implements Sp
     }
 
     #[Override]
-    public function getStationBuildplanByRump(int $rumpId): ?SpacecraftBuildplanInterface
+    public function getStationBuildplanByRump(int $rumpId): ?SpacecraftBuildplan
     {
         return $this->findOneBy([
             'rump_id' => $rumpId
@@ -140,13 +139,13 @@ final class SpacecraftBuildplanRepository extends EntityRepository implements Sp
     }
 
     #[Override]
-    public function prototype(): SpacecraftBuildplanInterface
+    public function prototype(): SpacecraftBuildplan
     {
         return new SpacecraftBuildplan();
     }
 
     #[Override]
-    public function save(SpacecraftBuildplanInterface $spacecraftBuildplan): void
+    public function save(SpacecraftBuildplan $spacecraftBuildplan): void
     {
         $em = $this->getEntityManager();
 
@@ -154,7 +153,7 @@ final class SpacecraftBuildplanRepository extends EntityRepository implements Sp
     }
 
     #[Override]
-    public function delete(SpacecraftBuildplanInterface $spacecraftBuildplan): void
+    public function delete(SpacecraftBuildplan $spacecraftBuildplan): void
     {
         $em = $this->getEntityManager();
 
@@ -170,7 +169,7 @@ final class SpacecraftBuildplanRepository extends EntityRepository implements Sp
     }
 
     #[Override]
-    public function findByUserAndName(int $userId, string $name): ?SpacecraftBuildplanInterface
+    public function findByUserAndName(int $userId, string $name): ?SpacecraftBuildplan
     {
         return $this->findOneBy([
             'user_id' => $userId,

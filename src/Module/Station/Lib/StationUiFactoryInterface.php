@@ -6,20 +6,20 @@ namespace Stu\Module\Station\Lib;
 
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\DockingPrivilegeInterface;
-use Stu\Orm\Entity\StarSystemInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\DockingPrivilege;
+use Stu\Orm\Entity\StarSystem;
+use Stu\Orm\Entity\User;
 
 interface StationUiFactoryInterface
 {
     public function createSystemScanPanel(
         SpacecraftWrapperInterface $currentWrapper,
-        UserInterface $user,
+        User $user,
         LoggerUtilInterface $loggerUtil,
-        StarSystemInterface $system
+        StarSystem $system
     ): SystemScanPanel;
 
     public function createDockingPrivilegeItem(
-        DockingPrivilegeInterface $dockingPrivilege
+        DockingPrivilege $dockingPrivilege
     ): DockingPrivilegeItem;
 }

@@ -4,7 +4,7 @@ namespace Stu\Component\Spacecraft\Trait;
 
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\Type\TorpedoStorageShipSystem;
-use Stu\Orm\Entity\TorpedoTypeInterface;
+use Stu\Orm\Entity\TorpedoType;
 
 trait SpacecraftTorpedoTrait
 {
@@ -21,7 +21,7 @@ trait SpacecraftTorpedoTrait
         return $torpedoStorage->getStorage()->getAmount();
     }
 
-    public function getTorpedo(): ?TorpedoTypeInterface
+    public function getTorpedo(): ?TorpedoType
     {
         $torpedoStorage = $this->getThis()->getTorpedoStorage();
         if ($torpedoStorage === null) {

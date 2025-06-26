@@ -4,32 +4,31 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\LocationMining;
-use Stu\Orm\Entity\LocationMiningInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\MiningQueueInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\MiningQueue;
 
 /**
  * @extends ObjectRepository<LocationMining>
  *
- * @method null|LocationMiningInterface find(integer $id)
+ * @method null|LocationMining find(integer $id)
  */
 interface LocationMiningRepositoryInterface extends ObjectRepository
 {
-    public function prototype(): LocationMiningInterface;
+    public function prototype(): LocationMining;
 
-    public function save(LocationMiningInterface $locationMining): void;
+    public function save(LocationMining $locationMining): void;
 
     /**
-     * @return LocationMiningInterface[]
+     * @return LocationMining[]
      */
-    public function getMiningAtLocation(ShipInterface $ship): array;
+    public function getMiningAtLocation(Ship $ship): array;
 
-    public function getMiningQueueAtLocation(ShipInterface $ship): ?MiningQueueInterface;
+    public function getMiningQueueAtLocation(Ship $ship): ?MiningQueue;
 
-    public function findById(int $id): ?LocationMiningInterface;
+    public function findById(int $id): ?LocationMining;
 
     /**
-     * @return LocationMiningInterface[]
+     * @return LocationMining[]
      */
     public function findDepletedEntries(): array;
 }

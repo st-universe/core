@@ -12,13 +12,12 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\ModuleCostRepository;
 
 #[Table(name: 'stu_modules_cost')]
 #[Index(name: 'module_cost_module_idx', columns: ['module_id'])]
 #[Entity(repositoryClass: ModuleCostRepository::class)]
-class ModuleCost implements ModuleCostInterface
+class ModuleCost
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -36,65 +35,57 @@ class ModuleCost implements ModuleCostInterface
 
     #[ManyToOne(targetEntity: Commodity::class)]
     #[JoinColumn(name: 'commodity_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private CommodityInterface $commodity;
+    private Commodity $commodity;
 
     /**
-     * @var ModuleInterface
+     * @var Module
      */
     #[ManyToOne(targetEntity: Module::class, inversedBy: 'buildingCosts')]
     #[JoinColumn(name: 'module_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private $module;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getModuleId(): int
     {
         return $this->module_id;
     }
 
-    #[Override]
-    public function setModuleId(int $moduleId): ModuleCostInterface
+    public function setModuleId(int $moduleId): ModuleCost
     {
         $this->module_id = $moduleId;
 
         return $this;
     }
 
-    #[Override]
     public function getCommodityId(): int
     {
         return $this->commodity_id;
     }
 
-    #[Override]
-    public function setCommodityId(int $commodityId): ModuleCostInterface
+    public function setCommodityId(int $commodityId): ModuleCost
     {
         $this->commodity_id = $commodityId;
 
         return $this;
     }
 
-    #[Override]
     public function getAmount(): int
     {
         return $this->count;
     }
 
-    #[Override]
-    public function setAmount(int $amount): ModuleCostInterface
+    public function setAmount(int $amount): ModuleCost
     {
         $this->count = $amount;
 
         return $this;
     }
 
-    #[Override]
-    public function getCommodity(): CommodityInterface
+    public function getCommodity(): Commodity
     {
         return $this->commodity;
     }

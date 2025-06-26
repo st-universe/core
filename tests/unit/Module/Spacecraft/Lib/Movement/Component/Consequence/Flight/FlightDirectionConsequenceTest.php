@@ -13,9 +13,9 @@ use Stu\Module\Spacecraft\Lib\Movement\Component\UpdateFlightDirectionInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Route\RouteModeEnum;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\StarSystemMap;
 use Stu\StuTestCase;
 
 class FlightDirectionConsequenceTest extends StuTestCase
@@ -24,7 +24,7 @@ class FlightDirectionConsequenceTest extends StuTestCase
 
     private FlightConsequenceInterface $subject;
 
-    private MockInterface&ShipInterface $ship;
+    private MockInterface&Ship $ship;
 
     private MockInterface&ShipWrapperInterface $wrapper;
 
@@ -35,7 +35,7 @@ class FlightDirectionConsequenceTest extends StuTestCase
     {
         $this->updateFlightDirection = $this->mock(UpdateFlightDirectionInterface::class);
 
-        $this->ship = $this->mock(ShipInterface::class);
+        $this->ship = $this->mock(Ship::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
         $this->flightRoute = $this->mock(FlightRouteInterface::class);
 
@@ -88,7 +88,7 @@ class FlightDirectionConsequenceTest extends StuTestCase
         static::expectException(RuntimeException::class);
 
         $messages = $this->mock(MessageCollectionInterface::class);
-        $oldWaypoint = $this->mock(MapInterface::class);
+        $oldWaypoint = $this->mock(Map::class);
 
         $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
@@ -114,7 +114,7 @@ class FlightDirectionConsequenceTest extends StuTestCase
     public function testTriggerExpectUpdateWhenLeavingSystem(): void
     {
         $messages = $this->mock(MessageCollectionInterface::class);
-        $oldWaypoint = $this->mock(StarSystemMapInterface::class);
+        $oldWaypoint = $this->mock(StarSystemMap::class);
 
         $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()

@@ -16,8 +16,8 @@ use Stu\Module\Spacecraft\Lib\Interaction\TrackerDeviceManagerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Template\StatusBarFactoryInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftSystemInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\SpacecraftSystem;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
 use Stu\StuTestCase;
@@ -36,13 +36,13 @@ class LongRangeScannerShipSystemTest extends StuTestCase
      */
     private $trackerDeviceManager;
 
-    private ShipInterface $ship;
+    private Ship $ship;
     private ShipWrapperInterface $wrapper;
 
     #[Override]
     public function setUp(): void
     {
-        $this->ship = $this->mock(ShipInterface::class);
+        $this->ship = $this->mock(Ship::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
         $this->astroEntryLib = Mockery::mock(AstroEntryLibInterface::class);
         $this->trackerDeviceManager = Mockery::mock(TrackerDeviceManagerInterface::class);
@@ -64,7 +64,7 @@ class LongRangeScannerShipSystemTest extends StuTestCase
     public function testActivateActivates(): void
     {
         $managerMock = $this->mock(SpacecraftSystemManagerInterface::class);
-        $system = $this->mock(SpacecraftSystemInterface::class);
+        $system = $this->mock(SpacecraftSystem::class);
 
         $this->ship->shouldReceive('getSpacecraftSystem')
             ->with(SpacecraftSystemTypeEnum::LSS)
@@ -84,8 +84,8 @@ class LongRangeScannerShipSystemTest extends StuTestCase
 
     public function testDeactivateDeactivates(): void
     {
-        $systemNbs = $this->mock(SpacecraftSystemInterface::class);
-        $systemAstro = $this->mock(SpacecraftSystemInterface::class);
+        $systemNbs = $this->mock(SpacecraftSystem::class);
+        $systemAstro = $this->mock(SpacecraftSystem::class);
 
         $this->ship->shouldReceive('getSpacecraftSystem')
             ->with(SpacecraftSystemTypeEnum::LSS)
@@ -148,8 +148,8 @@ class LongRangeScannerShipSystemTest extends StuTestCase
 
     public function testHandleDestruction(): void
     {
-        $systemAstro = $this->mock(SpacecraftSystemInterface::class);
-        $this->mock(SpacecraftSystemInterface::class);
+        $systemAstro = $this->mock(SpacecraftSystem::class);
+        $this->mock(SpacecraftSystem::class);
 
         //ASTRO STUFF
         $this->ship->shouldReceive('hasSpacecraftSystem')

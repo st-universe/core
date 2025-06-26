@@ -6,22 +6,22 @@ namespace Stu\Module\Spacecraft\Lib\CloseCombat;
 
 use Override;
 use Stu\Component\Crew\CrewEnum;
-use Stu\Orm\Entity\FactionInterface;
-use Stu\Orm\Entity\CrewAssignmentInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Faction;
+use Stu\Orm\Entity\CrewAssignment;
+use Stu\Orm\Entity\Spacecraft;
 
 final class CloseCombatUtil implements CloseCombatUtilInterface
 {
     public const int MAX_CREWMAN_PER_COMBAT = 5;
 
     #[Override]
-    public function getCombatGroup(SpacecraftInterface $spacecraft): array
+    public function getCombatGroup(Spacecraft $spacecraft): array
     {
         $crewArray = $spacecraft->getCrewAssignments()->toArray();
 
         usort(
             $crewArray,
-            fn(CrewAssignmentInterface $a, CrewAssignmentInterface $b): int
+            fn(CrewAssignment $a, CrewAssignment $b): int
             => CrewEnum::CREW_FIGHT_CAPABILITIES[$b->getCrew()->getType()]
                 <=> CrewEnum::CREW_FIGHT_CAPABILITIES[$a->getCrew()->getType()]
         );
@@ -30,13 +30,13 @@ final class CloseCombatUtil implements CloseCombatUtilInterface
     }
 
     #[Override]
-    public function getCombatValue(array $combatGroup, FactionInterface $faction): int
+    public function getCombatValue(array $combatGroup, Faction $faction): int
     {
         $factionCombatScore = $faction->getCloseCombatScore();
 
         return array_reduce(
             $combatGroup,
-            fn(int $value, CrewAssignmentInterface $shipCrew): int
+            fn(int $value, CrewAssignment $shipCrew): int
             => $value + CrewEnum::CREW_FIGHT_CAPABILITIES[$shipCrew->getCrew()->getType()] * $factionCombatScore,
             0
         );

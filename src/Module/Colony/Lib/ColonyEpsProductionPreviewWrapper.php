@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Lib;
 
 use Stu\Lib\Colony\PlanetFieldHostInterface;
-use Stu\Orm\Entity\BuildingInterface;
+use Stu\Orm\Entity\Building;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 class ColonyEpsProductionPreviewWrapper
 {
     private ?int $preview = null;
 
-    public function __construct(private PlanetFieldRepositoryInterface $planetFieldRepository, private PlanetFieldHostInterface $host, private BuildingInterface $building)
+    public function __construct(private PlanetFieldRepositoryInterface $planetFieldRepository, private PlanetFieldHostInterface $host, private Building $building)
     {
     }
 

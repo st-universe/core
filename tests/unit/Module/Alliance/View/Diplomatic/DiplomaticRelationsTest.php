@@ -8,7 +8,7 @@ use Mockery\MockInterface;
 use Override;
 use Stu\Component\Alliance\Relations\Renderer\AllianceRelationRendererInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\AllianceRelationInterface;
+use Stu\Orm\Entity\AllianceRelation;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -38,7 +38,7 @@ class DiplomaticRelationsTest extends StuTestCase
 
         $renderResult = 'some-render-result';
 
-        $relation = $this->mock(AllianceRelationInterface::class);
+        $relation = $this->mock(AllianceRelation::class);
 
         $game->shouldReceive('setPageTitle')
             ->with('Diplomatische Beziehungen')

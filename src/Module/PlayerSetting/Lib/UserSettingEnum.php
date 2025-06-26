@@ -3,7 +3,7 @@
 namespace Stu\Module\PlayerSetting\Lib;
 
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 enum UserSettingEnum: string
 {
@@ -84,7 +84,7 @@ enum UserSettingEnum: string
         };
     }
 
-    public function getUserValue(UserInterface $user, UserSettingsProviderInterface $settingsProvider): mixed
+    public function getUserValue(User $user, UserSettingsProviderInterface $settingsProvider): mixed
     {
         return match ($this) {
             self::AVATAR => $settingsProvider->getAvatar($user),

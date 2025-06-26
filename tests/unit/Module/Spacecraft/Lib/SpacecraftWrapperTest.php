@@ -21,13 +21,13 @@ use Stu\Module\Spacecraft\Lib\SpacecraftStateChangerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Ui\StateIconAndTitle;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapper;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 use Stu\StuTestCase;
 
 class SpacecraftWrapperTest extends StuTestCase
 {
-    private MockInterface&ShipInterface $spacecraft;
+    private MockInterface&Ship $spacecraft;
     private MockInterface&SpacecraftSystemManagerInterface $spacecraftSystemManager;
     private MockInterface&SystemDataDeserializerInterface $systemDataDeserializer;
     private MockInterface&TorpedoTypeRepositoryInterface $torpedoTypeRepository;
@@ -45,7 +45,7 @@ class SpacecraftWrapperTest extends StuTestCase
     public function setUp(): void
     {
         //injected
-        $this->spacecraft = $this->mock(ShipInterface::class);
+        $this->spacecraft = $this->mock(Ship::class);
         $this->spacecraftSystemManager = $this->mock(SpacecraftSystemManagerInterface::class);
         $this->systemDataDeserializer = $this->mock(SystemDataDeserializerInterface::class);
         $this->torpedoTypeRepository = $this->mock(TorpedoTypeRepositoryInterface::class);

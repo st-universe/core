@@ -9,12 +9,11 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\MapBorderTypeRepository;
 
 #[Table(name: 'stu_map_bordertypes')]
 #[Entity(repositoryClass: MapBorderTypeRepository::class)]
-class MapBorderType implements MapBorderTypeInterface
+class MapBorderType
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -30,48 +29,41 @@ class MapBorderType implements MapBorderTypeInterface
     #[Column(type: 'string')]
     private string $description;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getFactionId(): int
     {
         return $this->faction_id;
     }
 
-    #[Override]
-    public function setFactionId(int $factionId): MapBorderTypeInterface
+    public function setFactionId(int $factionId): MapBorderType
     {
         $this->faction_id = $factionId;
 
         return $this;
     }
 
-    #[Override]
     public function getColor(): string
     {
         return $this->color;
     }
 
-    #[Override]
-    public function setColor(string $color): MapBorderTypeInterface
+    public function setColor(string $color): MapBorderType
     {
         $this->color = $color;
 
         return $this;
     }
 
-    #[Override]
     public function getDescription(): string
     {
         return $this->description;
     }
 
-    #[Override]
-    public function setDescription(string $description): MapBorderTypeInterface
+    public function setDescription(string $description): MapBorderType
     {
         $this->description = $description;
 

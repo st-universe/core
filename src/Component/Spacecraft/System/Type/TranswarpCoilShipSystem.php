@@ -8,7 +8,7 @@ use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 
 final class TranswarpCoilShipSystem extends AbstractSpacecraftSystemType implements SpacecraftSystemTypeInterface
 {
@@ -23,7 +23,7 @@ final class TranswarpCoilShipSystem extends AbstractSpacecraftSystemType impleme
     {
         $spacecraft = $wrapper->get();
 
-        if ($spacecraft instanceof ShipInterface && $spacecraft->isTractored()) {
+        if ($spacecraft instanceof Ship && $spacecraft->isTractored()) {
             $reason = _('es von einem Traktorstrahl gehalten wird');
             return false;
         }

@@ -12,13 +12,12 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\BuildingFieldAlternativeRepository;
 
 #[Table(name: 'stu_buildings_field_alternative')]
 #[Index(name: 'building_field_idx', columns: ['fieldtype', 'buildings_id'])]
 #[Entity(repositoryClass: BuildingFieldAlternativeRepository::class)]
-class BuildingFieldAlternative implements BuildingFieldAlternativeInterface
+class BuildingFieldAlternative
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -39,81 +38,70 @@ class BuildingFieldAlternative implements BuildingFieldAlternativeInterface
 
     #[ManyToOne(targetEntity: Building::class)]
     #[JoinColumn(name: 'buildings_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private BuildingInterface $building;
+    private Building $building;
 
     #[ManyToOne(targetEntity: Building::class)]
     #[JoinColumn(name: 'alternate_buildings_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private BuildingInterface $alternateBuilding;
+    private Building $alternateBuilding;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getFieldType(): int
     {
         return $this->fieldtype;
     }
 
-    #[Override]
-    public function setFieldType(int $fieldType): BuildingFieldAlternativeInterface
+    public function setFieldType(int $fieldType): BuildingFieldAlternative
     {
         $this->fieldtype = $fieldType;
 
         return $this;
     }
 
-    #[Override]
     public function getBuildingId(): int
     {
         return $this->buildings_id;
     }
 
-    #[Override]
-    public function setBuildingId(int $buildingId): BuildingFieldAlternativeInterface
+    public function setBuildingId(int $buildingId): BuildingFieldAlternative
     {
         $this->buildings_id = $buildingId;
 
         return $this;
     }
 
-    #[Override]
     public function getAlternativeBuildingId(): int
     {
         return $this->alternate_buildings_id;
     }
 
-    #[Override]
-    public function setAlternativeBuildingId(int $alternativeBuildingId): BuildingFieldAlternativeInterface
+    public function setAlternativeBuildingId(int $alternativeBuildingId): BuildingFieldAlternative
     {
         $this->alternate_buildings_id = $alternativeBuildingId;
 
         return $this;
     }
 
-    #[Override]
-    public function getAlternativeBuilding(): BuildingInterface
+    public function getAlternativeBuilding(): Building
     {
         return $this->alternateBuilding;
     }
 
-    #[Override]
     public function getResearchId(): ?int
     {
         return $this->research_id;
     }
 
-    #[Override]
-    public function setResearchId(?int $researchId): BuildingFieldAlternativeInterface
+    public function setResearchId(?int $researchId): BuildingFieldAlternative
     {
         $this->research_id = $researchId;
         return $this;
     }
 
-    #[Override]
-    public function getBuilding(): BuildingInterface
+    public function getBuilding(): Building
     {
         return $this->building;
     }

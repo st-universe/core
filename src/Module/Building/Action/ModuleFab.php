@@ -7,29 +7,29 @@ namespace Stu\Module\Building\Action;
 use Override;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Module\Colony\Lib\ModuleQueueLibInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\ColonySandboxInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\ColonySandbox;
 
 final class ModuleFab implements BuildingActionHandlerInterface
 {
     public function __construct(private ModuleQueueLibInterface $moduleQueueLib) {}
 
     #[Override]
-    public function destruct(BuildingFunctionEnum $buildingFunction, ColonyInterface $colony): void
+    public function destruct(BuildingFunctionEnum $buildingFunction, Colony $colony): void
     {
         //nothing to do here
     }
 
     #[Override]
-    public function deactivate(BuildingFunctionEnum $buildingFunction, ColonyInterface|ColonySandboxInterface $host): void
+    public function deactivate(BuildingFunctionEnum $buildingFunction, Colony|ColonySandbox $host): void
     {
-        if ($host instanceof ColonyInterface) {
+        if ($host instanceof Colony) {
             $this->moduleQueueLib->cancelModuleQueues($host, $buildingFunction);
         }
     }
 
     #[Override]
-    public function activate(BuildingFunctionEnum $buildingFunction, ColonyInterface|ColonySandboxInterface $host): void
+    public function activate(BuildingFunctionEnum $buildingFunction, Colony|ColonySandbox $host): void
     {
         //nothing to do here
     }

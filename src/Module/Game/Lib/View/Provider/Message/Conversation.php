@@ -7,8 +7,8 @@ namespace Stu\Module\Game\Lib\View\Provider\Message;
 use Override;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Module\Message\Lib\PrivateMessageListItem;
-use Stu\Orm\Entity\PrivateMessageInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\PrivateMessage;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 
@@ -17,10 +17,10 @@ final class Conversation extends PrivateMessageListItem
     private const int MAX_PREVIEW_CHARS = 200;
 
     public function __construct(
-        private PrivateMessageInterface $message,
+        private PrivateMessage $message,
         private int $unreadPmCount,
         private string $dateString,
-        UserInterface $currentUser,
+        User $currentUser,
         PrivateMessageRepositoryInterface $privateMessageRepository,
         ContactRepositoryInterface $contactRepository,
         UserSettingsProviderInterface $userSettingsProvider
@@ -60,7 +60,7 @@ final class Conversation extends PrivateMessageListItem
         );
     }
 
-    public function getOtherUser(): UserInterface
+    public function getOtherUser(): User
     {
         return $this->message->getSender();
     }

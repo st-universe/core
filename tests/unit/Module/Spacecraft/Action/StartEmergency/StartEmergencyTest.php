@@ -12,9 +12,9 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftEmergencyInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\SpacecraftEmergency;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\SpacecraftEmergencyRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -43,8 +43,8 @@ class StartEmergencyTest extends StuTestCase
     public function testHandleDoesNothingIfEmergencyCallAlreadyActive(): void
     {
         $game = $this->mock(GameControllerInterface::class);
-        $user = $this->mock(UserInterface::class);
-        $ship = $this->mock(ShipInterface::class);
+        $user = $this->mock(User::class);
+        $ship = $this->mock(Ship::class);
         $shipWrapper = $this->mock(ShipWrapperInterface::class);
 
         $shipId = 666;
@@ -89,8 +89,8 @@ class StartEmergencyTest extends StuTestCase
     public function testHandleErrorsIfMessageIsTooLong(): void
     {
         $game = $this->mock(GameControllerInterface::class);
-        $user = $this->mock(UserInterface::class);
-        $ship = $this->mock(ShipInterface::class);
+        $user = $this->mock(User::class);
+        $ship = $this->mock(Ship::class);
         $shipWrapper = $this->mock(ShipWrapperInterface::class);
 
         $shipId = 666;
@@ -146,10 +146,10 @@ class StartEmergencyTest extends StuTestCase
     public function testHandleCreatesEmergencyCall(): void
     {
         $game = $this->mock(GameControllerInterface::class);
-        $user = $this->mock(UserInterface::class);
-        $ship = $this->mock(ShipInterface::class);
+        $user = $this->mock(User::class);
+        $ship = $this->mock(Ship::class);
         $shipWrapper = $this->mock(ShipWrapperInterface::class);
-        $emergency = $this->mock(SpacecraftEmergencyInterface::class);
+        $emergency = $this->mock(SpacecraftEmergency::class);
         $computer = $this->mock(ComputerSystemData::class);
 
         $shipId = 666;

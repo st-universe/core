@@ -9,8 +9,8 @@ use Mockery;
 use Mockery\MockInterface;
 use Override;
 use Stu\Module\Colony\Lib\ColonyResetterInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -42,8 +42,8 @@ class ColonyDeletionHandlerTest extends StuTestCase
 
     public function testDeleteDeletesUser(): void
     {
-        $colony = Mockery::mock(ColonyInterface::class);
-        $user = Mockery::mock(UserInterface::class);
+        $colony = Mockery::mock(Colony::class);
+        $user = Mockery::mock(User::class);
         $colonyList = Mockery::mock(Collection::class);
 
         $user->shouldReceive('getColonies')

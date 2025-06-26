@@ -5,9 +5,9 @@ namespace Stu\Lib\Damage;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Pirate\Component\PirateWrathManager;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\User;
 
 class DamageWrapper
 {
@@ -123,7 +123,7 @@ class DamageWrapper
         $this->modificator = $value;
     }
 
-    public function setPirateWrath(UserInterface $attacker, SpacecraftInterface $target): void
+    public function setPirateWrath(User $attacker, Spacecraft $target): void
     {
         if ($attacker->getId() !== UserEnum::USER_NPC_KAZON) {
             return;
@@ -151,9 +151,9 @@ class DamageWrapper
         return $this;
     }
 
-    public function getDamageRelative(ColonyInterface|SpacecraftInterface $target, DamageModeEnum $mode): float
+    public function getDamageRelative(Colony|Spacecraft $target, DamageModeEnum $mode): float
     {
-        if ($target instanceof ColonyInterface) {
+        if ($target instanceof Colony) {
             if ($mode === DamageModeEnum::HULL) {
                 return $this->calculateDamageBuilding();
             }
@@ -167,7 +167,7 @@ class DamageWrapper
     }
 
 
-    private function calculateDamageShields(SpacecraftInterface $target): float
+    private function calculateDamageShields(Spacecraft $target): float
     {
         $netDamage = $this->getNetDamage();
         $netDamage = $this->mindPirateWrath($netDamage);
@@ -192,7 +192,7 @@ class DamageWrapper
     }
 
 
-    private function calculateDamageColonyShields(ColonyInterface $target): float
+    private function calculateDamageColonyShields(Colony $target): float
     {
         $damage = round($this->getNetDamage() / 100 * $this->getShieldDamageFactor());
         $targetShields = $target->getChangeable()->getShields();

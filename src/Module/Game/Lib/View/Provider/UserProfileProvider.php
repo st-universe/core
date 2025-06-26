@@ -12,8 +12,8 @@ use Stu\Module\Control\Exception\ItemNotFoundException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Module\PlayerProfile\Lib\ProfileVisitorRegistrationInterface;
-use Stu\Orm\Entity\ColonyScanInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\ColonyScan;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -79,28 +79,28 @@ final class UserProfileProvider implements ViewComponentProviderInterface
         $game->addExecuteJS("initTranslations();", GameEnum::JS_EXECUTION_AFTER_RENDER);
     }
 
-    private function hasTranslation(UserInterface $user): bool
+    private function hasTranslation(User $user): bool
     {
         $text = $user->getDescription();
         return strpos($text, '[translate]') !== false && strpos($text, '[/translate]') !== false;
     }
 
     /**
-     * @return array<int, ColonyScanInterface>
+     * @return array<int, ColonyScan>
      */
-    private function getColonyScanList(UserInterface $user, UserInterface $visitor): array
+    private function getColonyScanList(User $user, User $visitor): array
     {
         $alliance = $visitor->getAlliance();
 
         if ($alliance !== null) {
-            $unfilteredScans = array_merge(...$alliance->getMembers()->map(fn(UserInterface $user) => $user->getColonyScans()->toArray()));
+            $unfilteredScans = array_merge(...$alliance->getMembers()->map(fn(User $user) => $user->getColonyScans()->toArray()));
         } else {
             $unfilteredScans = $visitor->getColonyScans()->toArray();
         }
 
         $filteredScans = array_filter(
             $unfilteredScans,
-            fn(ColonyScanInterface $scan): bool => $scan->getColonyUserId() === $user->getId()
+            fn(ColonyScan $scan): bool => $scan->getColonyUserId() === $user->getId()
         );
 
         $scansByColony = [];

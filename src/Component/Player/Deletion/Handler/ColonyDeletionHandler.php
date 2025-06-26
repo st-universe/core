@@ -6,7 +6,7 @@ namespace Stu\Component\Player\Deletion\Handler;
 
 use Override;
 use Stu\Module\Colony\Lib\ColonyResetterInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 final class ColonyDeletionHandler implements PlayerDeletionHandlerInterface
 {
@@ -15,7 +15,7 @@ final class ColonyDeletionHandler implements PlayerDeletionHandlerInterface
     }
 
     #[Override]
-    public function delete(UserInterface $user): void
+    public function delete(User $user): void
     {
         foreach ($user->getColonies()->toArray() as $colony) {
             $this->colonyResetter->reset($colony, false);

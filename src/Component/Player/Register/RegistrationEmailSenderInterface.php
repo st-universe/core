@@ -2,9 +2,9 @@
 
 namespace Stu\Component\Player\Register;
 
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 interface RegistrationEmailSenderInterface
 {
-    public function send(UserInterface $player, string $activationCode): void;
+    public function send(User $player, string $activationCode): void;
 }

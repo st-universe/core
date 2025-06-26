@@ -8,10 +8,10 @@ use Stu\Component\Spacecraft\Nbs\NbsUtilityInterface;
 use Stu\Lib\Interaction\InteractionCheckType;
 use Stu\Lib\Transfer\CommodityTransferInterface;
 use Stu\Module\Ship\Lib\TholianWebUtilInterface;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\StarSystemMap;
+use Stu\Orm\Entity\User;
 
 class SpacecraftMember implements InteractionMemberInterface
 {
@@ -19,11 +19,11 @@ class SpacecraftMember implements InteractionMemberInterface
         private NbsUtilityInterface $nbsUtility,
         private TholianWebUtilInterface $tholianWebUtil,
         private CommodityTransferInterface $commodityTransfer,
-        private SpacecraftInterface $spacecraft
+        private Spacecraft $spacecraft
     ) {}
 
     #[Override]
-    public function get(): SpacecraftInterface
+    public function get(): Spacecraft
     {
         return $this->spacecraft;
     }
@@ -68,7 +68,7 @@ class SpacecraftMember implements InteractionMemberInterface
 
         $otherEntity = $other->get();
         if (
-            $otherEntity instanceof SpacecraftInterface
+            $otherEntity instanceof Spacecraft
             && $shouldCheck(InteractionCheckType::EXPECT_TARGET_DOCKED_OR_NO_ION_STORM)
             && $this->spacecraft->getLocation()->hasAnomaly(AnomalyTypeEnum::ION_STORM)
             && !$this->commodityTransfer->isDockTransfer($this->spacecraft, $otherEntity)
@@ -108,13 +108,13 @@ class SpacecraftMember implements InteractionMemberInterface
     }
 
     #[Override]
-    public function getLocation(): MapInterface|StarSystemMapInterface
+    public function getLocation(): Map|StarSystemMap
     {
         return $this->spacecraft->getLocation();
     }
 
     #[Override]
-    public function getUser(): ?UserInterface
+    public function getUser(): ?User
     {
         return $this->spacecraft->getUser();
     }

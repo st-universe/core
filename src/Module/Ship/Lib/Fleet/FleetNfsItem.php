@@ -9,15 +9,15 @@ use Stu\Lib\Session\SessionStorageInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftNfsItem;
 use Stu\Module\Spacecraft\Lib\SpacecraftNfsIterator;
 use Stu\Module\Ship\Lib\TFleetShipItemInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
 
 final class FleetNfsItem
 {
     /** @param array<TFleetShipItemInterface> $ships */
     public function __construct(
         private array $ships,
-        private SpacecraftInterface $currentSpacecraft,
+        private Spacecraft $currentSpacecraft,
         private ?SessionStorageInterface $sessionStorage,
         private int $userId
     ) {}
@@ -39,7 +39,7 @@ final class FleetNfsItem
 
     public function isFleetOfCurrentShip(): bool
     {
-        $currentFleet = $this->currentSpacecraft instanceof ShipInterface ? $this->currentSpacecraft->getFleet() : null;
+        $currentFleet = $this->currentSpacecraft instanceof Ship ? $this->currentSpacecraft->getFleet() : null;
         if ($currentFleet === null) {
             throw new RuntimeException('should not happen');
         }

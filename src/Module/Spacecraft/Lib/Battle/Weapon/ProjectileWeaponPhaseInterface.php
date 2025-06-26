@@ -7,7 +7,7 @@ use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Provider\ProjectileAttackerInterface;
 use Stu\Module\Spacecraft\Lib\Battle\SpacecraftAttackCauseEnum;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
-use Stu\Orm\Entity\PlanetFieldInterface;
+use Stu\Orm\Entity\PlanetField;
 
 interface ProjectileWeaponPhaseInterface
 {
@@ -20,7 +20,7 @@ interface ProjectileWeaponPhaseInterface
 
     public function fireAtBuilding(
         ProjectileAttackerInterface $attacker,
-        PlanetFieldInterface $target,
+        PlanetField $target,
         bool $isOrbitField,
         int &$antiParticleCount
     ): InformationWrapper;

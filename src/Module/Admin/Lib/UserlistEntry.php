@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Stu\Module\Admin\Lib;
 
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 final class UserlistEntry
 {
-    public function __construct(private UserInterface $user) {}
+    public function __construct(private User $user) {}
 
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->user;
     }

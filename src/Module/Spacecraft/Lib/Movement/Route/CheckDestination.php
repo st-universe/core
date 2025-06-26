@@ -7,9 +7,9 @@ namespace Stu\Module\Spacecraft\Lib\Movement\Route;
 use Override;
 use RuntimeException;
 use Stu\Exception\SanityCheckException;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
@@ -19,10 +19,10 @@ final class CheckDestination implements CheckDestinationInterface
 
     #[Override]
     public function validate(
-        SpacecraftInterface $spacecraft,
+        Spacecraft $spacecraft,
         int $destinationX,
         int $destinationY
-    ): MapInterface|StarSystemMapInterface {
+    ): Map|StarSystemMap {
         $start = $spacecraft->getLocation();
 
         if ($start->getX() !== $destinationX && $start->getY() !== $destinationY) {
@@ -42,7 +42,7 @@ final class CheckDestination implements CheckDestinationInterface
         if ($destinationY < 1) {
             $destinationY = 1;
         }
-        if ($start instanceof StarSystemMapInterface) {
+        if ($start instanceof StarSystemMap) {
 
             $system = $start->getSystem();
             if ($destinationX > $system->getMaxX()) {

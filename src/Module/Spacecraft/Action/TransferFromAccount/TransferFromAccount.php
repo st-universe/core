@@ -14,8 +14,7 @@ use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
-use Stu\Orm\Entity\StorageInterface;
-use Stu\Orm\Entity\TradePostInterface;
+use Stu\Orm\Entity\Storage;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 
@@ -69,7 +68,7 @@ final class TransferFromAccount implements ActionControllerInterface
         $gcount = request::postArray('count');
 
         $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradepost, $game->getUser());
-        /** @var array<int, StorageInterface> */
+        /** @var array<int, Storage> */
         $curCommodities = $storageManager->getStorage()->toArray();
 
         if ($curCommodities === []) {
@@ -99,10 +98,6 @@ final class TransferFromAccount implements ActionControllerInterface
 
             if (!$commodity->isBeamable()) {
                 $game->addInformation($commodity->getName() . " ist nicht beambar");
-                continue;
-            }
-            if ($commodity->isIllegal($tradepost->getTradeNetwork())) {
-                $game->addInformation($commodity->getName() . ' ist in diesem Handelsnetzwerk illegal und kann nicht gehandelt werden');
                 continue;
             }
             if ($count > $curCommodities[$value]->getAmount()) {

@@ -2,11 +2,11 @@
 
 namespace Stu\Component\Station\Dock;
 
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\StationInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Station;
+use Stu\Orm\Entity\User;
 
 interface DockPrivilegeUtilityInterface
 {
-    public function checkPrivilegeFor(StationInterface $station, UserInterface|ShipInterface $source): bool;
+    public function checkPrivilegeFor(Station $station, User|Ship $source): bool;
 }

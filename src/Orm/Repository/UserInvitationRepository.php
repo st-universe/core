@@ -7,9 +7,8 @@ namespace Stu\Orm\Repository;
 use DateTimeInterface;
 use Doctrine\ORM\EntityRepository;
 use Override;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserInvitation;
-use Stu\Orm\Entity\UserInvitationInterface;
 
 /**
  * @extends EntityRepository<UserInvitation>
@@ -17,13 +16,13 @@ use Stu\Orm\Entity\UserInvitationInterface;
 final class UserInvitationRepository extends EntityRepository implements UserInvitationRepositoryInterface
 {
     #[Override]
-    public function prototype(): UserInvitationInterface
+    public function prototype(): UserInvitation
     {
         return new UserInvitation();
     }
 
     #[Override]
-    public function save(UserInvitationInterface $userInvitation): void
+    public function save(UserInvitation $userInvitation): void
     {
         $em = $this->getEntityManager();
 
@@ -32,7 +31,7 @@ final class UserInvitationRepository extends EntityRepository implements UserInv
     }
 
     #[Override]
-    public function getInvitationsByUser(UserInterface $user): array
+    public function getInvitationsByUser(User $user): array
     {
         return $this->findBy([
             'user_id' => $user
@@ -40,7 +39,7 @@ final class UserInvitationRepository extends EntityRepository implements UserInv
     }
 
     #[Override]
-    public function getByToken(string $token): ?UserInvitationInterface
+    public function getByToken(string $token): ?UserInvitation
     {
         return $this->findOneBy([
             'token' => $token

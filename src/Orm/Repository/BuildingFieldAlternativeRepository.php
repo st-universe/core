@@ -7,7 +7,6 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\BuildingFieldAlternative;
-use Stu\Orm\Entity\BuildingFieldAlternativeInterface;
 use Stu\Orm\Entity\Researched;
 
 /**
@@ -16,7 +15,7 @@ use Stu\Orm\Entity\Researched;
 final class BuildingFieldAlternativeRepository extends EntityRepository implements BuildingFieldAlternativeRepositoryInterface
 {
     #[Override]
-    public function getByBuildingAndFieldType(int $buildingId, int $fieldType): ?BuildingFieldAlternativeInterface
+    public function getByBuildingAndFieldType(int $buildingId, int $fieldType): ?BuildingFieldAlternative
     {
         return $this->findOneBy([
             'buildings_id' => $buildingId,

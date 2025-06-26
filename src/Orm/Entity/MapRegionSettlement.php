@@ -9,11 +9,10 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 
 #[Table(name: 'stu_map_regions_settlement')]
 #[Entity]
-class MapRegionSettlement implements MapRegionSettlementInterface
+class MapRegionSettlement
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -26,35 +25,30 @@ class MapRegionSettlement implements MapRegionSettlementInterface
     #[Column(type: 'integer')]
     private int $faction_id;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
-    public function setRegionId(int $region_id): MapRegionSettlementInterface
+    public function setRegionId(int $region_id): MapRegionSettlement
     {
         $this->region_id = $region_id;
 
         return $this;
     }
 
-    #[Override]
     public function getRegionId(): int
     {
         return $this->region_id;
     }
 
-    #[Override]
-    public function setFactionId(int $faction_id): MapRegionSettlementInterface
+    public function setFactionId(int $faction_id): MapRegionSettlement
     {
         $this->faction_id = $faction_id;
 
         return $this;
     }
 
-    #[Override]
     public function getFactionId(): int
     {
         return $this->faction_id;

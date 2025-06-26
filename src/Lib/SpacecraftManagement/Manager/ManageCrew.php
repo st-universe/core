@@ -17,8 +17,8 @@ use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\SpacecraftBuildplanInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\SpacecraftBuildplan;
+use Stu\Orm\Entity\Spacecraft;
 
 class ManageCrew implements ManagerInterface
 {
@@ -67,7 +67,7 @@ class ManageCrew implements ManagerInterface
     private function setNewCrew(
         int $newCrewCount,
         SpacecraftWrapperInterface $wrapper,
-        SpacecraftBuildplanInterface $buildplan,
+        SpacecraftBuildplan $buildplan,
         ManagerProviderInterface $managerProvider,
         array &$msg,
         InformationWrapper $informations
@@ -87,7 +87,7 @@ class ManageCrew implements ManagerInterface
     private function increaseCrew(
         int $newCrewCount,
         SpacecraftWrapperInterface $wrapper,
-        SpacecraftBuildplanInterface $buildplan,
+        SpacecraftBuildplan $buildplan,
         ManagerProviderInterface $managerProvider,
         array &$msg,
         InformationWrapper $informations
@@ -185,7 +185,7 @@ class ManageCrew implements ManagerInterface
         }
     }
 
-    private function dumpForeignCrew(SpacecraftInterface $spacecraft): void
+    private function dumpForeignCrew(Spacecraft $spacecraft): void
     {
         foreach ($spacecraft->getCrewAssignments() as $shipCrew) {
             if ($shipCrew->getCrew()->getUser() !== $spacecraft->getUser()) {

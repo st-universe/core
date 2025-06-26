@@ -11,7 +11,7 @@ use Stu\Component\Player\Register\Exception\LoginNameInvalidException;
 use Stu\Component\Player\Register\PlayerCreatorInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Index\View\ShowFinishRegistration\ShowFinishRegistration;
-use Stu\Orm\Entity\FactionInterface;
+use Stu\Orm\Entity\Faction;
 use Stu\Orm\Repository\FactionRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -29,7 +29,7 @@ class RegisterTest extends StuTestCase
 
     private MockInterface&GameControllerInterface $game;
 
-    private MockInterface&FactionInterface $faction;
+    private MockInterface&Faction $faction;
 
     #[Override]
     public function setUp(): void
@@ -39,7 +39,7 @@ class RegisterTest extends StuTestCase
         $this->playerCreator = $this->mock(PlayerCreatorInterface::class);
         $this->config = $this->mock(ConfigInterface::class);
         $this->game = $this->mock(GameControllerInterface::class);
-        $this->faction = $this->mock(FactionInterface::class);
+        $this->faction = $this->mock(Faction::class);
 
         $this->subject = new Register(
             $this->registerRequest,

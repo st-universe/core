@@ -11,8 +11,8 @@ use Stu\Component\Colony\ColonyPopulationCalculatorInterface;
 use Stu\Lib\Map\DistanceCalculationInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Ship;
 use Stu\Orm\Repository\StationRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -23,7 +23,7 @@ class ClosestLocationsTest extends StuTestCase
     private MockInterface&TroopTransferUtilityInterface $troopTransferUtility;
     private MockInterface&ColonyLibFactoryInterface $colonyLibFactory;
 
-    private MockInterface&ShipInterface $ship;
+    private MockInterface&Ship $ship;
 
     private ClosestLocations $subject;
 
@@ -35,7 +35,7 @@ class ClosestLocationsTest extends StuTestCase
         $this->troopTransferUtility = $this->mock(TroopTransferUtilityInterface::class);
         $this->colonyLibFactory = $this->mock(ColonyLibFactoryInterface::class);
 
-        $this->ship = $this->mock(ShipInterface::class);
+        $this->ship = $this->mock(Ship::class);
 
         $this->subject = new ClosestLocations(
             $this->distanceCalculation,
@@ -65,10 +65,10 @@ class ClosestLocationsTest extends StuTestCase
 
     public function testSearchClosestUsableStationExpectClosestStation(): void
     {
-        $stationUnmanned = $this->mock(ShipInterface::class);
-        $stationFarAway = $this->mock(ShipInterface::class);
-        $stationClosest = $this->mock(ShipInterface::class);
-        $stationNotEnoughSpace = $this->mock(ShipInterface::class);
+        $stationUnmanned = $this->mock(Ship::class);
+        $stationFarAway = $this->mock(Ship::class);
+        $stationClosest = $this->mock(Ship::class);
+        $stationNotEnoughSpace = $this->mock(Ship::class);
 
         $this->ship->shouldReceive('getUser->getId')
             ->withNoArgs()
@@ -134,9 +134,9 @@ class ClosestLocationsTest extends StuTestCase
 
     public function testSearchClosestUsableColonyExpectClosestColony(): void
     {
-        $colonyNotEnoughSpace = $this->mock(ColonyInterface::class);
-        $colonyFarAway = $this->mock(ColonyInterface::class);
-        $colonyClosest = $this->mock(ColonyInterface::class);
+        $colonyNotEnoughSpace = $this->mock(Colony::class);
+        $colonyFarAway = $this->mock(Colony::class);
+        $colonyClosest = $this->mock(Colony::class);
 
         $populationCalculatorNotEnoughSpace = $this->mock(ColonyPopulationCalculatorInterface::class);
         $populationFarAway = $this->mock(ColonyPopulationCalculatorInterface::class);

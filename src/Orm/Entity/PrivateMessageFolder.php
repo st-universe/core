@@ -12,14 +12,13 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Orm\Repository\PrivateMessageFolderRepository;
 
 #[Table(name: 'stu_pm_cats')]
 #[Index(name: 'user_special_idx', columns: ['user_id', 'special'])]
 #[Entity(repositoryClass: PrivateMessageFolderRepository::class)]
-class PrivateMessageFolder implements PrivateMessageFolderInterface
+class PrivateMessageFolder
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -43,73 +42,62 @@ class PrivateMessageFolder implements PrivateMessageFolderInterface
 
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $user;
+    private User $user;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    #[Override]
-    public function setUser(UserInterface $user): PrivateMessageFolderInterface
+    public function setUser(User $user): PrivateMessageFolder
     {
         $this->user = $user;
         return $this;
     }
 
-    #[Override]
     public function getDescription(): string
     {
         return $this->description;
     }
 
-    #[Override]
-    public function setDescription(string $description): PrivateMessageFolderInterface
+    public function setDescription(string $description): PrivateMessageFolder
     {
         $this->description = $description;
         return $this;
     }
 
-    #[Override]
     public function getSort(): int
     {
         return $this->sort;
     }
 
-    #[Override]
-    public function setSort(int $sort): PrivateMessageFolderInterface
+    public function setSort(int $sort): PrivateMessageFolder
     {
         $this->sort = $sort;
         return $this;
     }
 
-    #[Override]
     public function getSpecial(): PrivateMessageFolderTypeEnum
     {
         return $this->special;
     }
 
-    #[Override]
-    public function setSpecial(PrivateMessageFolderTypeEnum $special): PrivateMessageFolderInterface
+    public function setSpecial(PrivateMessageFolderTypeEnum $special): PrivateMessageFolder
     {
         $this->special = $special;
         return $this;
     }
 
-    #[Override]
     public function isPMOutDir(): bool
     {
         return $this->getSpecial() == PrivateMessageFolderTypeEnum::SPECIAL_PMOUT;
@@ -118,27 +106,23 @@ class PrivateMessageFolder implements PrivateMessageFolderInterface
     /**
      * specifies if you can move a private message to this folder
      */
-    #[Override]
     public function isDropable(): bool
     {
         return $this->getSpecial()->isDropable();
     }
 
-    #[Override]
     public function isDeleteAble(): bool
     {
         return $this->getSpecial() === PrivateMessageFolderTypeEnum::DEFAULT_OWN;
     }
 
-    #[Override]
-    public function setDeleted(int $timestamp): PrivateMessageFolderInterface
+    public function setDeleted(int $timestamp): PrivateMessageFolder
     {
         $this->deleted = $timestamp;
 
         return $this;
     }
 
-    #[Override]
     public function isDeleted(): bool
     {
         return $this->deleted !== null;

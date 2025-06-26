@@ -7,8 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\AllianceSettings;
-use Stu\Orm\Entity\AllianceSettingsInterface;
-use Stu\Orm\Entity\AllianceInterface;
+use Stu\Orm\Entity\Alliance;
 
 /**
  * @extends EntityRepository<AllianceSettings>
@@ -16,13 +15,13 @@ use Stu\Orm\Entity\AllianceInterface;
 final class AllianceSettingsRepository extends EntityRepository implements AllianceSettingsRepositoryInterface
 {
     #[Override]
-    public function prototype(): AllianceSettingsInterface
+    public function prototype(): AllianceSettings
     {
         return new AllianceSettings();
     }
 
     #[Override]
-    public function save(AllianceSettingsInterface $post): void
+    public function save(AllianceSettings $post): void
     {
         $em = $this->getEntityManager();
 
@@ -30,7 +29,7 @@ final class AllianceSettingsRepository extends EntityRepository implements Allia
     }
 
     #[Override]
-    public function delete(AllianceSettingsInterface $post): void
+    public function delete(AllianceSettings $post): void
     {
         $em = $this->getEntityManager();
 
@@ -38,7 +37,7 @@ final class AllianceSettingsRepository extends EntityRepository implements Allia
     }
 
     #[Override]
-    public function findByAllianceAndSetting(AllianceInterface $alliance, string $setting): ?AllianceSettingsInterface
+    public function findByAllianceAndSetting(Alliance $alliance, string $setting): ?AllianceSettings
     {
         return $this->findOneBy([
             'alliance' => $alliance,

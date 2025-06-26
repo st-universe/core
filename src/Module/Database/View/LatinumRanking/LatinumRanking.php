@@ -8,7 +8,7 @@ use Generator;
 use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -43,7 +43,7 @@ final class LatinumRanking implements ViewControllerInterface
     }
 
     /**
-     * @return Generator<array{user: null|UserInterface, amount: int}>
+     * @return Generator<array{user: null|User, amount: int}>
      */
     private function getTop10(): Generator
     {

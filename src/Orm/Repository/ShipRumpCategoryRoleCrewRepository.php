@@ -9,7 +9,6 @@ use Override;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Orm\Entity\ShipRumpCategoryRoleCrew;
-use Stu\Orm\Entity\ShipRumpCategoryRoleCrewInterface;
 
 /**
  * @extends EntityRepository<ShipRumpCategoryRoleCrew>
@@ -20,7 +19,7 @@ final class ShipRumpCategoryRoleCrewRepository extends EntityRepository implemen
     public function getByShipRumpCategoryAndRole(
         SpacecraftRumpCategoryEnum $shipRumpCategory,
         SpacecraftRumpRoleEnum $shipRumpRole
-    ): ?ShipRumpCategoryRoleCrewInterface {
+    ): ?ShipRumpCategoryRoleCrew {
         return $this->findOneBy([
             'rump_category_id' => $shipRumpCategory->value,
             'rump_role_id' => $shipRumpRole->value,

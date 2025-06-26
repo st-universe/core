@@ -5,31 +5,30 @@ namespace Stu\Orm\Repository;
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Orm\Entity\PrivateMessageFolder;
-use Stu\Orm\Entity\PrivateMessageFolderInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 /**
  * @extends ObjectRepository<PrivateMessageFolder>
  *
- * @method null|PrivateMessageFolderInterface find(integer $id)
- * @method PrivateMessageFolderInterface[] findAll()
+ * @method null|PrivateMessageFolder find(integer $id)
+ * @method PrivateMessageFolder[] findAll()
  */
 interface PrivateMessageFolderRepositoryInterface extends ObjectRepository
 {
-    public function prototype(): PrivateMessageFolderInterface;
+    public function prototype(): PrivateMessageFolder;
 
-    public function save(PrivateMessageFolderInterface $post): void;
+    public function save(PrivateMessageFolder $post): void;
 
-    public function delete(PrivateMessageFolderInterface $post): void;
+    public function delete(PrivateMessageFolder $post): void;
 
     /**
-     * @return array<PrivateMessageFolderInterface>
+     * @return array<PrivateMessageFolder>
      */
-    public function getOrderedByUser(UserInterface $user): array;
+    public function getOrderedByUser(User $user): array;
 
-    public function getByUserAndSpecial(int $userId, PrivateMessageFolderTypeEnum $folderType): ?PrivateMessageFolderInterface;
+    public function getByUserAndSpecial(int $userId, PrivateMessageFolderTypeEnum $folderType): ?PrivateMessageFolder;
 
-    public function getMaxOrderIdByUser(UserInterface $user): int;
+    public function getMaxOrderIdByUser(User $user): int;
 
     public function truncateAllNonNpcFolders(): void;
 }

@@ -2,13 +2,13 @@
 
 namespace Stu\Module\Trade\Lib;
 
-use Stu\Orm\Entity\CommodityInterface;
+use Stu\Orm\Entity\Commodity;
 
 interface BasicTradeItemInterface
 {
     public function getUniqId(): string;
 
-    public function getCommodity(): CommodityInterface;
+    public function getCommodity(): Commodity;
 
     public function getStoredAmount(): int;
 

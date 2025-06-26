@@ -15,8 +15,8 @@ use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Module\Prestige\Lib\PrestigeCalculationInterface;
 use Stu\Module\Spacecraft\Lib\Battle\FightLibInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 class AttackShipBehaviour implements PirateBehaviourInterface
@@ -41,7 +41,7 @@ class AttackShipBehaviour implements PirateBehaviourInterface
         FleetWrapperInterface $fleet,
         PirateReactionInterface $pirateReaction,
         PirateReactionMetadata $reactionMetadata,
-        ?SpacecraftInterface $triggerSpacecraft
+        ?Spacecraft $triggerSpacecraft
     ): ?PirateBehaviourEnum {
         $leadWrapper = $fleet->getLeadWrapper();
         $leadShip = $leadWrapper->get();
@@ -56,7 +56,7 @@ class AttackShipBehaviour implements PirateBehaviourInterface
 
         $filteredTargets = array_filter(
             $targets,
-            fn(ShipInterface $target): bool =>
+            fn(Ship $target): bool =>
             $this->fightLib->canAttackTarget($leadShip, $target, true, false, false)
                 && !$this->trapDetection->isAlertTrap($target->getLocation(), $leadShip)
                 && ($target === $triggerSpacecraft
@@ -71,7 +71,7 @@ class AttackShipBehaviour implements PirateBehaviourInterface
 
         usort(
             $filteredTargets,
-            fn(ShipInterface $a, ShipInterface $b): int =>
+            fn(Ship $a, Ship $b): int =>
             $this->distanceCalculation->shipToShipDistance($leadShip, $a) - $this->distanceCalculation->shipToShipDistance($leadShip, $b)
         );
 
@@ -84,7 +84,7 @@ class AttackShipBehaviour implements PirateBehaviourInterface
         return null;
     }
 
-    private function targetHasEnoughPrestige(int $piratePrestige, ShipInterface $target): bool
+    private function targetHasEnoughPrestige(int $piratePrestige, Ship $target): bool
     {
         $targetPrestige = $this->prestigeCalculation->getPrestigeOfSpacecraftOrFleet($target);
         $this->logger->log(sprintf('      targetPrestige %d', $targetPrestige));

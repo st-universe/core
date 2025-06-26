@@ -15,13 +15,12 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\BuildingUpgradeRepository;
 
 #[Table(name: 'stu_buildings_upgrades')]
 #[Index(name: 'upgrade_from_research_idx', columns: ['upgrade_from', 'research_id'])]
 #[Entity(repositoryClass: BuildingUpgradeRepository::class)]
-class BuildingUpgrade implements BuildingUpgradeInterface
+class BuildingUpgrade
 {
     #[Id]
     #[Column(type: 'bigint')]
@@ -44,110 +43,100 @@ class BuildingUpgrade implements BuildingUpgradeInterface
     private int $energy_cost = 0;
 
     /**
-     * @var ArrayCollection<int, BuildingUpgradeCostInterface>
+     * @var ArrayCollection<int, BuildingUpgradeCost>
      */
     #[OneToMany(targetEntity: BuildingUpgradeCost::class, mappedBy: 'upgrade')]
     private Collection $upgradeCosts;
 
     #[ManyToOne(targetEntity: Building::class)]
     #[JoinColumn(name: 'upgrade_to', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private BuildingInterface $upgradeToBuilding;
+    private Building $upgradeToBuilding;
 
     /**
-     * @var BuildingInterface
+     * @var Building
      */
     #[ManyToOne(targetEntity: Building::class)]
     #[JoinColumn(name: 'upgrade_from', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private BuildingInterface $upgradeFromBuilding;
+    private Building $upgradeFromBuilding;
 
     public function __construct()
     {
         $this->upgradeCosts = new ArrayCollection();
     }
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getUpgradeFromBuildingId(): int
     {
         return $this->upgrade_from;
     }
 
-    #[Override]
-    public function setUpgradeFromBuildingId(int $upgradeFromBuildingId): BuildingUpgradeInterface
+    public function setUpgradeFromBuildingId(int $upgradeFromBuildingId): BuildingUpgrade
     {
         $this->upgrade_from = $upgradeFromBuildingId;
 
         return $this;
     }
 
-    #[Override]
     public function getUpgradeToBuildingId(): int
     {
         return $this->upgrade_to;
     }
 
-    #[Override]
-    public function setUpgradeToBuildingId(int $upgradeToBuildingId): BuildingUpgradeInterface
+    public function setUpgradeToBuildingId(int $upgradeToBuildingId): BuildingUpgrade
     {
         $this->upgrade_to = $upgradeToBuildingId;
 
         return $this;
     }
 
-    #[Override]
     public function getResearchId(): int
     {
         return $this->research_id;
     }
 
-    #[Override]
-    public function setResearchId(int $researchId): BuildingUpgradeInterface
+    public function setResearchId(int $researchId): BuildingUpgrade
     {
         $this->research_id = $researchId;
 
         return $this;
     }
 
-    #[Override]
     public function getDescription(): string
     {
         return $this->description;
     }
 
-    #[Override]
-    public function setDescription(string $description): BuildingUpgradeInterface
+    public function setDescription(string $description): BuildingUpgrade
     {
         $this->description = $description;
 
         return $this;
     }
 
-    #[Override]
     public function getEnergyCost(): int
     {
         return $this->getBuilding()->getEpsCost();
     }
 
-    #[Override]
-    public function setEnergyCost(int $energyCost): BuildingUpgradeInterface
+    public function setEnergyCost(int $energyCost): BuildingUpgrade
     {
         $this->energy_cost = $energyCost;
 
         return $this;
     }
 
-    #[Override]
-    public function getBuilding(): BuildingInterface
+    public function getBuilding(): Building
     {
         return $this->upgradeToBuilding;
     }
 
-    #[Override]
+    /**
+     * @return Collection<int, BuildingCost>
+     */
     public function getUpgradeCosts(): Collection
     {
         return $this->getBuilding()->getCosts();

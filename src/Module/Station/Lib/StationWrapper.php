@@ -8,15 +8,15 @@ use Stu\Component\Spacecraft\System\Data\AggregationSystemSystemData;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapper;
-use Stu\Orm\Entity\StationInterface;
+use Stu\Orm\Entity\Station;
 
 /**
- * @extends SpacecraftWrapper<StationInterface>
+ * @extends SpacecraftWrapper<Station>
  */
 class StationWrapper extends SpacecraftWrapper implements StationWrapperInterface
 {
     #[Override]
-    public function get(): StationInterface
+    public function get(): Station
     {
         return $this->spacecraft;
     }

@@ -7,10 +7,8 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\MiningQueue;
-use Stu\Orm\Entity\MiningQueueInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\LocationMining;
-use Stu\Orm\Entity\LocationMiningInterface;
 
 /**
  * @extends EntityRepository<LocationMining>
@@ -20,20 +18,20 @@ final class LocationMiningRepository extends EntityRepository implements Locatio
     public const int ISM_RECREATION_COOLDOWN = 1728000; // 20 days
 
     #[Override]
-    public function prototype(): LocationMiningInterface
+    public function prototype(): LocationMining
     {
         return new LocationMining();
     }
 
     #[Override]
-    public function save(LocationMiningInterface $locationMining): void
+    public function save(LocationMining $locationMining): void
     {
         $em = $this->getEntityManager();
         $em->persist($locationMining);
     }
 
     #[Override]
-    public function getMiningAtLocation(ShipInterface $ship): array
+    public function getMiningAtLocation(Ship $ship): array
     {
         return $this->getEntityManager()->createQuery(
             sprintf(
@@ -47,7 +45,7 @@ final class LocationMiningRepository extends EntityRepository implements Locatio
     }
 
     #[Override]
-    public function getMiningQueueAtLocation(ShipInterface $ship): ?MiningQueueInterface
+    public function getMiningQueueAtLocation(Ship $ship): ?MiningQueue
     {
         return $this->getEntityManager()->createQuery(
             sprintf(
@@ -61,13 +59,13 @@ final class LocationMiningRepository extends EntityRepository implements Locatio
     }
 
     #[Override]
-    public function findById(int $id): ?LocationMiningInterface
+    public function findById(int $id): ?LocationMining
     {
         return $this->find($id);
     }
 
     /**
-     * @return LocationMiningInterface[]
+     * @return LocationMining[]
      */
     #[Override]
     public function findDepletedEntries(): array

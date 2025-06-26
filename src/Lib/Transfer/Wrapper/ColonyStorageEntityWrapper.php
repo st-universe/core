@@ -13,10 +13,10 @@ use Stu\Lib\Transfer\EntityWithStorageInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\LocationInterface;
-use Stu\Orm\Entity\TorpedoTypeInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Location;
+use Stu\Orm\Entity\TorpedoType;
+use Stu\Orm\Entity\User;
 
 class ColonyStorageEntityWrapper implements StorageEntityWrapperInterface
 {
@@ -25,7 +25,7 @@ class ColonyStorageEntityWrapper implements StorageEntityWrapperInterface
         private CommodityTransferInterface $commodityTransfer,
         private StorageManagerInterface $storageManager,
         private TroopTransferUtilityInterface $troopTransferUtility,
-        private ColonyInterface $colony
+        private Colony $colony
     ) {}
 
     // GENERAL
@@ -36,7 +36,7 @@ class ColonyStorageEntityWrapper implements StorageEntityWrapperInterface
     }
 
     #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->colony->getUser();
     }
@@ -59,7 +59,7 @@ class ColonyStorageEntityWrapper implements StorageEntityWrapperInterface
     }
 
     #[Override]
-    public function getLocation(): LocationInterface
+    public function getLocation(): Location
     {
         return $this->colony->getLocation();
     }
@@ -132,13 +132,13 @@ class ColonyStorageEntityWrapper implements StorageEntityWrapperInterface
 
     // CREW
     #[Override]
-    public function getMaxTransferrableCrew(bool $isTarget, UserInterface $user): int
+    public function getMaxTransferrableCrew(bool $isTarget, User $user): int
     {
         return $this->troopTransferUtility->ownCrewOnTarget($user, $this->colony);
     }
 
     #[Override]
-    public function getFreeCrewSpace(UserInterface $user): int
+    public function getFreeCrewSpace(User $user): int
     {
         if ($user !== $this->colony->getUser()) {
             return 0;
@@ -156,7 +156,7 @@ class ColonyStorageEntityWrapper implements StorageEntityWrapperInterface
     }
 
     #[Override]
-    public function acceptsCrewFrom(int $amount, UserInterface $user, InformationInterface $information): bool
+    public function acceptsCrewFrom(int $amount, User $user, InformationInterface $information): bool
     {
         return $this->colony->getUser() === $user;
     }
@@ -167,7 +167,7 @@ class ColonyStorageEntityWrapper implements StorageEntityWrapperInterface
     // TORPEDOS
 
     #[Override]
-    public function getTorpedo(): ?TorpedoTypeInterface
+    public function getTorpedo(): ?TorpedoType
     {
         return null;
     }
@@ -191,13 +191,13 @@ class ColonyStorageEntityWrapper implements StorageEntityWrapperInterface
     }
 
     #[Override]
-    public function canStoreTorpedoType(TorpedoTypeInterface $torpedoType, InformationInterface $information): bool
+    public function canStoreTorpedoType(TorpedoType $torpedoType, InformationInterface $information): bool
     {
         return true;
     }
 
     #[Override]
-    public function changeTorpedo(int $changeAmount, TorpedoTypeInterface $type): void
+    public function changeTorpedo(int $changeAmount, TorpedoType $type): void
     {
         if ($changeAmount > 0) {
             $this->storageManager->upperStorage(

@@ -6,12 +6,12 @@ namespace Stu\Component\Spacecraft\Module;
 
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Transfer\EntityWithStorageInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\Spacecraft;
 
 interface ModuleRecyclingInterface
 {
     public function retrieveSomeModules(
-        SpacecraftInterface $spacecraft,
+        Spacecraft $spacecraft,
         EntityWithStorageInterface $entity,
         InformationInterface $information,
         int $recyclingChance = 50

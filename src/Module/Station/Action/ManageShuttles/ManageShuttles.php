@@ -17,8 +17,8 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Module\Station\View\ShowShipManagement\ShowShipManagement;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\StationInterface;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\Station;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 
 final class ManageShuttles implements ActionControllerInterface
@@ -151,8 +151,8 @@ final class ManageShuttles implements ActionControllerInterface
         int $commodityId,
         int $current,
         int $wanted,
-        SpacecraftInterface $spacecraft,
-        StationInterface $station
+        Spacecraft $spacecraft,
+        Station $station
     ): string {
         $commodity = $this->commodityRepository->find($commodityId);
         if ($commodity === null) {

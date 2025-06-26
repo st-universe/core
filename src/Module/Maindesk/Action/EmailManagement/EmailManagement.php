@@ -15,7 +15,7 @@ use Stu\Module\Control\NoAccessCheckControllerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class EmailManagement implements
@@ -64,7 +64,7 @@ final class EmailManagement implements
         $this->updateEmailAndSend($user, $newEmail);
     }
 
-    private function resendActivationEmail(UserInterface $user): void
+    private function resendActivationEmail(User $user): void
     {
         $registration = $user->getRegistration();
         $randomEmailHash = substr(md5(uniqid((string) random_int(0, mt_getrandmax()), true)), 16, 6);
@@ -75,7 +75,7 @@ final class EmailManagement implements
         throw new AccountNotVerifiedException('Die Aktivierungs-E-Mail wurde erneut an ' . $registration->getEmail() . ' versendet');
     }
 
-    private function updateEmailAndSend(UserInterface $user, string $newEmail): void
+    private function updateEmailAndSend(User $user, string $newEmail): void
     {
         if (!filter_var($newEmail, FILTER_VALIDATE_EMAIL)) {
             throw new AccountNotVerifiedException('Ungültige E-Mail-Adresse');

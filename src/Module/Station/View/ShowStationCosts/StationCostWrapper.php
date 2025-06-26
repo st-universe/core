@@ -2,12 +2,12 @@
 
 namespace Stu\Module\Station\View\ShowStationCosts;
 
-use Stu\Orm\Entity\BuildplanModuleInterface;
-use Stu\Orm\Entity\StorageInterface;
+use Stu\Orm\Entity\BuildplanModule;
+use Stu\Orm\Entity\Storage;
 
 class StationCostWrapper
 {
-    public function __construct(private BuildplanModuleInterface $buildplanModule, private ?StorageInterface $shipStorage)
+    public function __construct(private BuildplanModule $buildplanModule, private ?Storage $shipStorage)
     {
     }
 

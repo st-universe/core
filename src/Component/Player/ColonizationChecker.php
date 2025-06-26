@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Stu\Component\Player;
 
 use Override;
-use Stu\Orm\Entity\ColonyClassResearchInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\ColonyClassResearch;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ColonyClassResearchRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 
@@ -18,7 +18,7 @@ final class ColonizationChecker implements ColonizationCheckerInterface
     }
 
     #[Override]
-    public function canColonize(UserInterface $user, ColonyInterface $colony): bool
+    public function canColonize(User $user, Colony $colony): bool
     {
         if (!$colony->isFree()) {
             return false;
@@ -31,7 +31,7 @@ final class ColonizationChecker implements ColonizationCheckerInterface
         }
 
         $researchIds = array_map(
-            fn (ColonyClassResearchInterface $colonyClassResearch): int => $colonyClassResearch->getResearch()->getId(),
+            fn (ColonyClassResearch $colonyClassResearch): int => $colonyClassResearch->getResearch()->getId(),
             $this->colonyClassResearchRepository->getByColonyClass($colonyClass)
         );
         if ($researchIds !== [] && $this->researchedRepository->hasUserFinishedResearch($user, $researchIds) === false) {

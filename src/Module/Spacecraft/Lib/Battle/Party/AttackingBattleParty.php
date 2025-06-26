@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\Collection;
 use Override;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 
 class AttackingBattleParty extends AbstractBattleParty
 {
@@ -30,7 +30,7 @@ class AttackingBattleParty extends AbstractBattleParty
         $fleetWrapper = $this->leader->getFleetWrapper();
 
         if (
-            $ship instanceof ShipInterface
+            $ship instanceof Ship
             && $ship->isFleetLeader() && $fleetWrapper !== null
         ) {
             return $fleetWrapper->getShipWrappers();

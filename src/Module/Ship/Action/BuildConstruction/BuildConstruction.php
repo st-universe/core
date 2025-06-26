@@ -26,9 +26,9 @@ use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Spacecraft\Lib\Creation\SpacecraftFactoryInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
-use Stu\Orm\Entity\SpacecraftBuildplanInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\StationInterface;
+use Stu\Orm\Entity\SpacecraftBuildplan;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Station;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\DockingPrivilegeRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
@@ -239,7 +239,7 @@ final class BuildConstruction implements ActionControllerInterface
         $game->addInformation('Die gestarteten Workbees haben an das Konstrukt angedockt');
     }
 
-    private function startWorkbee(ShipInterface $ship, EpsSystemData $epsSystem, SpacecraftBuildplanInterface $plan): ShipInterface
+    private function startWorkbee(Ship $ship, EpsSystemData $epsSystem, SpacecraftBuildplan $plan): Ship
     {
         $rump = $plan->getRump();
 
@@ -277,7 +277,7 @@ final class BuildConstruction implements ActionControllerInterface
         return $workbee;
     }
 
-    private function buildConstruction(ShipInterface $ship, int $rumpId): StationInterface
+    private function buildConstruction(Ship $ship, int $rumpId): Station
     {
         $rump = $this->spacecraftRumpRepository->find($rumpId);
 
@@ -286,7 +286,7 @@ final class BuildConstruction implements ActionControllerInterface
         }
 
         $construction = $this->spacecraftFactory->create($rump);
-        if (!$construction instanceof StationInterface) {
+        if (!$construction instanceof Station) {
             throw new RuntimeException(sprintf('rumpId %d is not a station', $rumpId));
         }
 
@@ -306,7 +306,7 @@ final class BuildConstruction implements ActionControllerInterface
         return $construction;
     }
 
-    private function allowDockingForOwner(StationInterface $station): void
+    private function allowDockingForOwner(Station $station): void
     {
         $dock = $this->dockingPrivilegeRepository->prototype();
         $dock->setPrivilegeMode(DockModeEnum::ALLOW);

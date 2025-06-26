@@ -12,12 +12,11 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\UserTagRepository;
 
 #[Table(name: 'stu_user_tag')]
 #[Entity(repositoryClass: UserTagRepository::class)]
-class UserTag implements UserTagInterface
+class UserTag
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -35,54 +34,46 @@ class UserTag implements UserTagInterface
 
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $user;
+    private User $user;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
-    public function setTagTypeId(int $tagTypeId): UserTagInterface
+    public function setTagTypeId(int $tagTypeId): UserTag
     {
         $this->tag_type_id = $tagTypeId;
         return $this;
     }
 
-    #[Override]
     public function getTagTypeId(): int
     {
         return $this->tag_type_id;
     }
 
-    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    #[Override]
-    public function setUser(UserInterface $user): UserTagInterface
+    public function setUser(User $user): UserTag
     {
         $this->user = $user;
         return $this;
     }
 
-    #[Override]
     public function getDate(): ?DateTimeInterface
     {
         return $this->date;
     }
 
-    #[Override]
-    public function setDate(DateTimeInterface $date): UserTagInterface
+    public function setDate(DateTimeInterface $date): UserTag
     {
         $this->date = $date;
 

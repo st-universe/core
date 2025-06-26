@@ -3,9 +3,9 @@
 namespace Stu\Module\Control;
 
 use Stu\Lib\Information\InformationWrapper;
-use Stu\Orm\Entity\GameConfigInterface;
-use Stu\Orm\Entity\GameRequestInterface;
-use Stu\Orm\Entity\GameTurnInterface;
+use Stu\Orm\Entity\GameConfig;
+use Stu\Orm\Entity\GameRequest;
+use Stu\Orm\Entity\GameTurn;
 use SysvSemaphore;
 
 final class GameData
@@ -23,7 +23,7 @@ final class GameData
     /** @var array<int, array<string>> */
     public array $execjs = [];
 
-    public ?GameTurnInterface $currentRound = null;
+    public ?GameTurn $currentRound = null;
 
     /** @var array<string> */
     public array $achievements = [];
@@ -37,10 +37,10 @@ final class GameData
     /** @var array<int, SysvSemaphore> */
     public array $semaphores = [];
 
-    /** @var GameConfigInterface[]|null */
+    /** @var GameConfig[]|null */
     public ?array $gameConfig = null;
 
-    public ?GameRequestInterface $gameRequest = null;
+    public ?GameRequest $gameRequest = null;
 
     public function __construct()
     {

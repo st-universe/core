@@ -13,16 +13,16 @@ use Stu\Lib\Map\VisualPanel\PanelBoundaries;
 use Stu\Lib\Map\VisualPanel\SystemScanPanelEntry;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\StarSystemInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\StarSystem;
+use Stu\Orm\Entity\User;
 
 class SystemScanPanel extends AbstractVisualPanel
 {
     public function __construct(
         PanelLayerCreationInterface $panelLayerCreation,
         private SpacecraftWrapperInterface $currentWrapper,
-        private StarSystemInterface $system,
-        private UserInterface $user,
+        private StarSystem $system,
+        private User $user,
         LoggerUtilInterface $loggerUtil
     ) {
         parent::__construct($panelLayerCreation, $loggerUtil);

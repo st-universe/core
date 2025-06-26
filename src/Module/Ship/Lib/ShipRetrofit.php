@@ -13,13 +13,13 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftBuildplanInterface;
-use Stu\Orm\Entity\ModuleInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\SpacecraftBuildplan;
+use Stu\Orm\Entity\Module;
 use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
-use Stu\Orm\Entity\SpacecraftSystemInterface;
+use Stu\Orm\Entity\SpacecraftSystem;
 
 final class ShipRetrofit implements ShipRetrofitInterface
 {
@@ -31,7 +31,7 @@ final class ShipRetrofit implements ShipRetrofitInterface
     ) {}
 
     #[Override]
-    public function updateBy(ShipInterface $ship, SpacecraftBuildplanInterface $newBuildplan, ColonyInterface $colony): void
+    public function updateBy(Ship $ship, SpacecraftBuildplan $newBuildplan, Colony $colony): void
     {
         $oldBuildplan = $ship->getBuildplan();
         $wrapper = $this->spacecraftWrapperFactory->wrapShip($ship);
@@ -47,13 +47,13 @@ final class ShipRetrofit implements ShipRetrofitInterface
             $oldModules = $oldBuildplan->getModulesByType($moduleType)->toArray();
             $newModules = $newBuildplan->getModulesByType($moduleType)->toArray();
 
-            /** @var array<ModuleInterface> */
-            $addingModules = array_udiff($newModules, $oldModules, function (ModuleInterface $a, ModuleInterface $b): int {
+            /** @var array<Module> */
+            $addingModules = array_udiff($newModules, $oldModules, function (Module $a, Module $b): int {
                 return $a->getId() - $b->getId();
             });
 
-            /** @var array<ModuleInterface> */
-            $deletingModules = array_udiff($oldModules, $newModules, function (ModuleInterface $a, ModuleInterface $b): int {
+            /** @var array<Module> */
+            $deletingModules = array_udiff($oldModules, $newModules, function (Module $a, Module $b): int {
                 return $a->getId() - $b->getId();
             });
 
@@ -102,8 +102,8 @@ final class ShipRetrofit implements ShipRetrofitInterface
         $ship->setBuildplan($newBuildplan);
     }
 
-    /** @param array<ModuleInterface> $returnedmodules */
-    private function removeModule(ShipInterface $ship, ModuleInterface $oldModule, array &$returnedmodules): void
+    /** @param array<Module> $returnedmodules */
+    private function removeModule(Ship $ship, Module $oldModule, array &$returnedmodules): void
     {
         if ($oldModule->getType() != SpacecraftModuleTypeEnum::HULL) {
 
@@ -116,7 +116,7 @@ final class ShipRetrofit implements ShipRetrofitInterface
         }
     }
 
-    private function getSystemByModule(ModuleInterface $module, ShipInterface $ship): SpacecraftSystemInterface
+    private function getSystemByModule(Module $module, Ship $ship): SpacecraftSystem
     {
         foreach ($ship->getSystems()  as $system) {
             if ($system->getModule() === $module) {
@@ -128,8 +128,8 @@ final class ShipRetrofit implements ShipRetrofitInterface
     }
 
     /**
-     * @param array<ModuleInterface> $modules
-     * @param array<int, ModuleInterface|null> $systems
+     * @param array<Module> $modules
+     * @param array<int, Module|null> $systems
      */
     private function addModuleSystems(array $modules, array &$systems): void
     {
@@ -154,9 +154,9 @@ final class ShipRetrofit implements ShipRetrofitInterface
     }
 
     /**
-     * @param array<int, null|ModuleInterface> $systems
+     * @param array<int, null|Module> $systems
      */
-    private function addSpecialSystems(ModuleInterface $module, array &$systems): void
+    private function addSpecialSystems(Module $module, array &$systems): void
     {
         foreach ($module->getSpecials() as $special) {
             $moduleSpecial = $special->getSpecialId();
@@ -168,7 +168,7 @@ final class ShipRetrofit implements ShipRetrofitInterface
         }
     }
 
-    private function createShipSystem(int $systemType, ShipInterface $ship, ?ModuleInterface $module): void
+    private function createShipSystem(int $systemType, Ship $ship, ?Module $module): void
     {
         $shipSystem = $this->shipSystemRepository
             ->prototype()

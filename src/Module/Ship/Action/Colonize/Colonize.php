@@ -21,9 +21,9 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftRemoverInterface;
 use Stu\Module\Spacecraft\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\CommodityInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Commodity;
+use Stu\Orm\Entity\Ship;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\ColonyDepositMiningRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -155,7 +155,7 @@ final class Colonize implements ActionControllerInterface
         ));
     }
 
-    private function getCommodity(int $commodityId): CommodityInterface
+    private function getCommodity(int $commodityId): Commodity
     {
         $commodity = $this->commodityRepository->find($commodityId);
         if ($commodity === null) {
@@ -165,14 +165,14 @@ final class Colonize implements ActionControllerInterface
         return $commodity;
     }
 
-    private function transferCrewToColony(ShipInterface $ship, ColonyInterface $colony): void
+    private function transferCrewToColony(Ship $ship, Colony $colony): void
     {
         foreach ($ship->getCrewAssignments() as $crewAssignment) {
             $this->troopTransferUtility->assignCrew($crewAssignment, $colony);
         }
     }
 
-    private function createUserDepositMinings(ColonyInterface $colony): void
+    private function createUserDepositMinings(Colony $colony): void
     {
         $deposits = $colony->getColonyClass()->getColonyClassDeposits();
         $userMinings = $this->colonyDepositMiningRepository->getCurrentUserDepositMinings($colony);

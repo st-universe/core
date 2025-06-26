@@ -7,7 +7,7 @@ namespace Stu\Component\Anomaly\Type\IonStorm;
 use RuntimeException;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Module\Control\StuRandom;
-use Stu\Orm\Entity\AnomalyInterface;
+use Stu\Orm\Entity\Anomaly;
 use Stu\Orm\Repository\AnomalyRepositoryInterface;
 
 class IonStormMovement
@@ -17,7 +17,7 @@ class IonStormMovement
         private StuRandom $stuRandom
     ) {}
 
-    public function moveStorm(AnomalyInterface $root, IonStormData $ionStormData, LocationPool $locationPool): void
+    public function moveStorm(Anomaly $root, IonStormData $ionStormData, LocationPool $locationPool): void
     {
         $horizontal = $ionStormData->getHorizontalMovement();
         $vertical = $ionStormData->getVerticalMovement();
@@ -33,7 +33,7 @@ class IonStormMovement
         }
     }
 
-    private function moveChild(AnomalyInterface $child, int $horizontal, int $vertical, LocationPool $locationPool): void
+    private function moveChild(Anomaly $child, int $horizontal, int $vertical, LocationPool $locationPool): void
     {
         $currentLocation = $child->getLocation();
         if ($currentLocation === null) {

@@ -18,7 +18,6 @@ use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use LogicException;
-use Override;
 use Stu\Component\Game\GameEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Repository\UserRepository;
@@ -26,7 +25,7 @@ use Stu\Orm\Repository\UserRepository;
 #[Table(name: 'stu_user')]
 #[Index(name: 'user_alliance_idx', columns: ['allys_id'])]
 #[Entity(repositoryClass: UserRepository::class)]
-class User implements UserInterface
+class User
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -67,69 +66,69 @@ class User implements UserInterface
     private ?int $last_boarding = null;
 
     #[OneToOne(targetEntity: UserRegistration::class, mappedBy: 'user', cascade: ['all'])]
-    private ?UserRegistrationInterface $registration;
+    private ?UserRegistration $registration;
 
     #[ManyToOne(targetEntity: Alliance::class, inversedBy: 'members')]
     #[JoinColumn(name: 'allys_id', referencedColumnName: 'id')]
-    private ?AllianceInterface $alliance = null;
+    private ?Alliance $alliance = null;
 
     #[ManyToOne(targetEntity: Faction::class)]
     #[JoinColumn(name: 'race', nullable: false, referencedColumnName: 'id')]
-    private FactionInterface $faction;
+    private Faction $faction;
 
     /**
-     * @var ArrayCollection<int, BuoyInterface>
+     * @var ArrayCollection<int, Buoy>
      */
     #[OneToMany(targetEntity: Buoy::class, mappedBy: 'user')]
     private Collection $buoys;
 
     /**
-     * @var ArrayCollection<int, UserAwardInterface>
+     * @var ArrayCollection<int, UserAward>
      */
     #[OneToMany(targetEntity: UserAward::class, mappedBy: 'user', indexBy: 'award_id')]
     #[OrderBy(['award_id' => 'ASC'])]
     private Collection $awards;
 
     /**
-     * @var ArrayCollection<int, ColonyInterface>
+     * @var ArrayCollection<int, Colony>
      */
     #[OneToMany(targetEntity: Colony::class, mappedBy: 'user', indexBy: 'id')]
     #[OrderBy(['colonies_classes_id' => 'ASC', 'id' => 'ASC'])]
     private Collection $colonies;
 
     /**
-     * @var ArrayCollection<int, UserLayerInterface>
+     * @var ArrayCollection<int, UserLayer>
      */
     #[OneToMany(targetEntity: UserLayer::class, mappedBy: 'user', indexBy: 'layer_id')]
     private Collection $userLayers;
 
     #[OneToOne(targetEntity: UserLock::class, mappedBy: 'user')]
-    private ?UserLockInterface $userLock = null;
+    private ?UserLock $userLock = null;
 
     /**
-     * @var ArrayCollection<string, UserSettingInterface>
+     * @var ArrayCollection<string, UserSetting>
      */
     #[OneToMany(targetEntity: UserSetting::class, mappedBy: 'user', indexBy: 'setting')]
     private Collection $settings;
 
     /**
-     * @var ArrayCollection<int, UserCharacterInterface>
+     * @var ArrayCollection<int, UserCharacter>
      */
-    #[OneToMany(targetEntity: UserCharacter::class, mappedBy: 'user')]
+    #[OneToMany(targetEntity: UserCharacter::class, mappedBy: 'user', fetch: 'EXTRA_LAZY')]
     private Collection $characters;
 
     /**
-     * @var ArrayCollection<int, ColonyScanInterface>
+     * @var ArrayCollection<int, ColonyScan>
      */
     #[OneToMany(targetEntity: ColonyScan::class, mappedBy: 'user', indexBy: 'id', fetch: 'EXTRA_LAZY')]
     #[OrderBy(['colony_id' => 'ASC', 'date' => 'ASC'])]
     private Collection $colonyScans;
 
     #[OneToOne(targetEntity: PirateWrath::class, mappedBy: 'user')]
-    private ?PirateWrathInterface $pirateWrath = null;
+    private ?PirateWrath $pirateWrath = null;
 
     /**
-     * @var ArrayCollection<int, UserTutorialInterface>
+     * @var ArrayCollection<int, UserTutorial>
      */
     #[OneToMany(targetEntity: UserTutorial::class, mappedBy: 'user', indexBy: 'tutorial_step_id', fetch: 'EXTRA_LAZY')]
     private Collection $tutorials;
@@ -137,7 +136,7 @@ class User implements UserInterface
     /**
      * @var ArrayCollection<int, WormholeRestriction>
      */
-    #[OneToMany(targetEntity: WormholeRestriction::class, mappedBy: 'user')]
+    #[OneToMany(targetEntity: WormholeRestriction::class, mappedBy: 'user', fetch: 'EXTRA_LAZY')]
     private Collection $wormholeRestrictions;
 
     public function __construct()
@@ -153,27 +152,23 @@ class User implements UserInterface
         $this->wormholeRestrictions = new ArrayCollection();
     }
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
-    public function getRegistration(): UserRegistrationInterface
+    public function getRegistration(): UserRegistration
     {
         return $this->registration ?? throw new LogicException('User has no registration');
     }
 
-    #[Override]
-    public function setRegistration(UserRegistrationInterface $registration): UserInterface
+    public function setRegistration(UserRegistration $registration): User
     {
         $this->registration = $registration;
 
         return $this;
     }
 
-    #[Override]
     public function getName(): string
     {
         //if UMODE active, add info to user name
@@ -183,45 +178,44 @@ class User implements UserInterface
         return $this->username;
     }
 
-    #[Override]
-    public function setUsername(string $username): UserInterface
+    public function setUsername(string $username): User
     {
         $this->username = $username;
         return $this;
     }
 
-    #[Override]
     public function getFactionId(): int
     {
         return $this->faction->getId();
     }
 
-    #[Override]
-    public function setFaction(FactionInterface $faction): UserInterface
+    public function setFaction(Faction $faction): User
     {
         $this->faction = $faction;
         return $this;
     }
 
-    #[Override]
-    public function getFaction(): FactionInterface
+    public function getFaction(): Faction
     {
         return $this->faction;
     }
 
-    #[Override]
+    /**
+     * @return Collection<int, UserAward>
+     */
     public function getAwards(): Collection
     {
         return $this->awards;
     }
 
-    #[Override]
+    /**
+     * @return Collection<int, Colony>
+     */
     public function getColonies(): Collection
     {
         return $this->colonies;
     }
 
-    #[Override]
     public function hasColony(): bool
     {
         if (
@@ -234,187 +228,164 @@ class User implements UserInterface
         return !$this->getColonies()->isEmpty();
     }
 
-    #[Override]
     public function getState(): int
     {
         return $this->state;
     }
 
-    #[Override]
     public function isLocked(): bool
     {
         return $this->getUserLock() !== null && $this->getUserLock()->getRemainingTicks() > 0;
     }
 
-    #[Override]
-    public function setState(int $state): UserInterface
+    public function setState(int $state): User
     {
         $this->state = $state;
         return $this;
     }
 
-    #[Override]
     public function getLastaction(): int
     {
         return $this->lastaction;
     }
 
-    #[Override]
-    public function setLastaction(int $lastaction): UserInterface
+    public function setLastaction(int $lastaction): User
     {
         $this->lastaction = $lastaction;
         return $this;
     }
 
-    #[Override]
     public function getKnMark(): int
     {
         return $this->kn_lez;
     }
 
-    #[Override]
-    public function setKnMark(int $knMark): UserInterface
+    public function setKnMark(int $knMark): User
     {
         $this->kn_lez = $knMark;
         return $this;
     }
 
-    #[Override]
     public function isVacationMode(): bool
     {
         return $this->vac_active;
     }
 
-    #[Override]
-    public function setVacationMode(bool $vacationMode): UserInterface
+    public function setVacationMode(bool $vacationMode): User
     {
         $this->vac_active = $vacationMode;
         return $this;
     }
 
-    #[Override]
     public function getVacationRequestDate(): int
     {
         return $this->vac_request_date;
     }
 
-    #[Override]
-    public function setVacationRequestDate(int $date): UserInterface
+    public function setVacationRequestDate(int $date): User
     {
         $this->vac_request_date = $date;
 
         return $this;
     }
 
-    #[Override]
     public function isVacationRequestOldEnough(): bool
     {
         return $this->isVacationMode() && (time() - $this->getVacationRequestDate() > UserEnum::VACATION_DELAY_IN_SECONDS);
     }
 
-    #[Override]
     public function getDescription(): string
     {
         return $this->description;
     }
 
-    #[Override]
-    public function setDescription(string $description): UserInterface
+    public function setDescription(string $description): User
     {
         $this->description = $description;
         return $this;
     }
 
-    #[Override]
+    /**
+     * @return Collection<int, UserLayer>
+     */
     public function getUserLayers(): Collection
     {
         return $this->userLayers;
     }
 
-    #[Override]
+    /**
+     * @return Collection<string, UserSetting>
+     */
     public function getSettings(): Collection
     {
         return $this->settings;
     }
 
-    #[Override]
     public function getSessiondata(): string
     {
         return $this->sessiondata;
     }
 
-    #[Override]
-    public function setSessiondata(string $sessiondata): UserInterface
+    public function setSessiondata(string $sessiondata): User
     {
         $this->sessiondata = $sessiondata;
         return $this;
     }
 
-    #[Override]
     public function getPrestige(): int
     {
         return $this->prestige;
     }
 
-    #[Override]
-    public function setPrestige(int $prestige): UserInterface
+    public function setPrestige(int $prestige): User
     {
         $this->prestige = $prestige;
         return $this;
     }
 
-    #[Override]
     public function getDeals(): bool
     {
         return $this->deals;
     }
 
-    #[Override]
-    public function setDeals(bool $deals): UserInterface
+    public function setDeals(bool $deals): User
     {
         $this->deals = $deals;
         return $this;
     }
 
-    #[Override]
     public function getLastBoarding(): ?int
     {
         return $this->last_boarding;
     }
 
-    #[Override]
-    public function setLastBoarding(int $lastBoarding): UserInterface
+    public function setLastBoarding(int $lastBoarding): User
     {
         $this->last_boarding = $lastBoarding;
         return $this;
     }
 
-    #[Override]
     public function isOnline(): bool
     {
         return !($this->getLastAction() < time() - GameEnum::USER_ONLINE_PERIOD);
     }
 
-    #[Override]
-    public function getAlliance(): ?AllianceInterface
+    public function getAlliance(): ?Alliance
     {
         return $this->alliance;
     }
 
-    #[Override]
-    public function setAlliance(?AllianceInterface $alliance): UserInterface
+    public function setAlliance(?Alliance $alliance): User
     {
         $this->alliance = $alliance;
         return $this;
     }
 
-    #[Override]
     public function isContactable(): bool
     {
         return $this->getId() != UserEnum::USER_NOONE;
     }
 
-    #[Override]
     public function hasAward(int $awardId): bool
     {
         return $this->awards->containsKey($awardId) === true;
@@ -425,63 +396,68 @@ class User implements UserInterface
         return $userId < UserEnum::USER_FIRST_ID;
     }
 
-    #[Override]
     public function isNpc(): bool
     {
         return self::isUserNpc($this->getId());
     }
 
-    #[Override]
-    public function getUserLock(): ?UserLockInterface
+    public function getUserLock(): ?UserLock
     {
         return $this->userLock;
     }
 
-    #[Override]
     public function __toString(): string
     {
         return sprintf('userName: %s', $this->getName());
     }
 
-    #[Override]
+    /**
+     * @return Collection<int, UserCharacter>
+     */
     public function getCharacters(): Collection
     {
         return $this->characters;
     }
 
-    #[Override]
+    /**
+     * @return Collection<int, ColonyScan>
+     */
     public function getColonyScans(): Collection
     {
         return $this->colonyScans;
     }
 
-    #[Override]
+    /**
+     * @return Collection<int, Buoy>
+     */
     public function getBuoys(): Collection
     {
         return $this->buoys;
     }
 
-    #[Override]
-    public function getPirateWrath(): ?PirateWrathInterface
+    public function getPirateWrath(): ?PirateWrath
     {
         return $this->pirateWrath;
     }
 
-    #[Override]
-    public function setPirateWrath(?PirateWrathInterface $wrath): UserInterface
+    public function setPirateWrath(?PirateWrath $wrath): User
     {
         $this->pirateWrath = $wrath;
 
         return $this;
     }
 
-    #[Override]
+    /**
+     * @return Collection<int, UserTutorial>
+     */
     public function getTutorials(): Collection
     {
         return $this->tutorials;
     }
 
-    #[Override]
+    /**
+     * @return Collection<int, WormholeRestriction>
+     */
     public function getWormholeRestrictions(): Collection
     {
         return $this->wormholeRestrictions;

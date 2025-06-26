@@ -4,16 +4,16 @@ namespace Stu\Module\Spacecraft\Lib\Battle\AlertDetection;
 
 use Doctrine\Common\Collections\Collection;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\User;
 
 interface SkipDetectionInterface
 {
-    /** @param Collection<int, UserInterface> $usersToInformAboutTrojanHorse */
+    /** @param Collection<int, User> $usersToInformAboutTrojanHorse */
     public function isSkipped(
-        SpacecraftInterface $incomingSpacecraft,
+        Spacecraft $incomingSpacecraft,
         SpacecraftWrapperInterface $alertedWrapper,
-        ?SpacecraftInterface $tractoringSpacecraft,
+        ?Spacecraft $tractoringSpacecraft,
         Collection $usersToInformAboutTrojanHorse
     ): bool;
 }

@@ -19,9 +19,9 @@ use Stu\Module\Database\View\ColonyProductionWorthRanking\ColonyProductionWorthR
 use Stu\Module\Database\View\ColonyWorthRanking\ColonyWorthRanking;
 use Stu\Module\Database\View\CommoditiesOverview\CommoditiesOverview;
 use Stu\Module\Database\View\CrewRanking\CrewRanking;
-use Stu\Module\Database\View\DatabaseEntry\DatabaseEntry;
 use Stu\Module\Database\View\DatabaseEntry\DatabaseEntryRequest;
 use Stu\Module\Database\View\DatabaseEntry\DatabaseEntryRequestInterface;
+use Stu\Module\Database\View\DatabaseEntry\ShowDatabaseEntry;
 use Stu\Module\Database\View\DiscovererRating\DiscovererRanking;
 use Stu\Module\Database\View\FlightRanking\FlightRanking;
 use Stu\Module\Database\View\LatinumRanking\LatinumRanking;
@@ -65,7 +65,7 @@ return [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
         Category::VIEW_IDENTIFIER => autowire(Category::class),
         CrewRanking::VIEW_IDENTIFIER => autowire(CrewRanking::class),
-        DatabaseEntry::VIEW_IDENTIFIER => autowire(DatabaseEntry::class),
+        ShowDatabaseEntry::VIEW_IDENTIFIER => autowire(ShowDatabaseEntry::class),
         DiscovererRanking::VIEW_IDENTIFIER => autowire(DiscovererRanking::class),
         FlightRanking::VIEW_IDENTIFIER => autowire(FlightRanking::class),
         ColonyWorthRanking::VIEW_IDENTIFIER => autowire(ColonyWorthRanking::class),

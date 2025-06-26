@@ -11,7 +11,7 @@ use Stu\Module\Alliance\View\Board\Board;
 use Stu\Module\Alliance\View\Topic\Topic;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\AllianceBoardPostInterface;
+use Stu\Orm\Entity\AllianceBoardPost;
 use Stu\Orm\Repository\AllianceBoardPostRepositoryInterface;
 use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
@@ -28,7 +28,7 @@ final class DeletePost implements ActionControllerInterface
     {
         $alliance = $game->getUser()->getAlliance();
 
-        /** @var AllianceBoardPostInterface $post */
+        /** @var AllianceBoardPost $post */
         $post = $this->allianceBoardPostRepository->find(request::getIntFatal('pid'));
         if ($post === null) {
             return;

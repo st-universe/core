@@ -8,9 +8,9 @@ use Override;
 use Stu\Component\Crew\CrewCountRetrieverInterface;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Module\Alliance\View\Management\ManagementListItem;
-use Stu\Orm\Entity\AllianceInterface;
-use Stu\Orm\Entity\AllianceRelationInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Alliance;
+use Stu\Orm\Entity\AllianceRelation;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 
@@ -23,8 +23,8 @@ final class AllianceUiFactory implements AllianceUiFactoryInterface
 
     #[Override]
     public function createManagementListItem(
-        AllianceInterface $alliance,
-        UserInterface $user,
+        Alliance $alliance,
+        User $user,
         int $currentUserId
     ): ManagementListItem {
         return new ManagementListItem(
@@ -40,7 +40,7 @@ final class AllianceUiFactory implements AllianceUiFactoryInterface
 
     #[Override]
     public function createAllianceListItem(
-        AllianceInterface $alliance
+        Alliance $alliance
     ): AllianceListItem {
         return new AllianceListItem(
             $alliance
@@ -49,8 +49,8 @@ final class AllianceUiFactory implements AllianceUiFactoryInterface
 
     #[Override]
     public function createAllianceMemberWrapper(
-        UserInterface $user,
-        AllianceInterface $alliance
+        User $user,
+        Alliance $alliance
     ): AllianceMemberWrapper {
         return new AllianceMemberWrapper(
             $user,
@@ -60,8 +60,8 @@ final class AllianceUiFactory implements AllianceUiFactoryInterface
 
     #[Override]
     public function createAllianceRelationWrapper(
-        AllianceInterface $alliance,
-        AllianceRelationInterface $allianceRelation
+        Alliance $alliance,
+        AllianceRelation $allianceRelation
     ): AllianceRelationWrapper {
         return new AllianceRelationWrapper(
             $alliance,

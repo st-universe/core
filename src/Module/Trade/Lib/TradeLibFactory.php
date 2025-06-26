@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\Lib;
 
 use Override;
-use Stu\Orm\Entity\BasicTradeInterface;
-use Stu\Orm\Entity\TradePostInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\BasicTrade;
+use Stu\Orm\Entity\TradePost;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
@@ -27,7 +27,7 @@ final class TradeLibFactory implements TradeLibFactoryInterface
 
     #[Override]
     public function createTradeAccountWrapper(
-        TradePostInterface $tradePost,
+        TradePost $tradePost,
         int $userId
     ): TradeAccountWrapperInterface {
         return new TradeAccountWrapper(
@@ -42,13 +42,13 @@ final class TradeLibFactory implements TradeLibFactoryInterface
 
     #[Override]
     public function createBasicTradeAccountWrapper(
-        TradePostInterface $tradePost,
+        TradePost $tradePost,
         array $basicTrades,
         int $userId
     ): BasicTradeAccountWrapperInterface {
         $filteredBasicTrades = array_filter(
             $basicTrades,
-            fn (BasicTradeInterface $basicTrade): bool => $basicTrade->getFaction()->getId() === $tradePost->getTradeNetwork()
+            fn (BasicTrade $basicTrade): bool => $basicTrade->getFaction()->getId() === $tradePost->getTradeNetwork()
         );
 
         return new BasicTradeAccountWrapper(
@@ -62,8 +62,8 @@ final class TradeLibFactory implements TradeLibFactoryInterface
 
     #[Override]
     public function createTradePostStorageManager(
-        TradePostInterface $tradePost,
-        UserInterface $user
+        TradePost $tradePost,
+        User $user
     ): TradePostStorageManagerInterface {
         return new TradePostStorageManager(
             $this->storageRepository,

@@ -9,7 +9,6 @@ use Override;
 use Stu\Component\Game\TimeConstants;
 use Stu\Component\Trade\TradeEnum;
 use Stu\Orm\Entity\TradeLicense;
-use Stu\Orm\Entity\TradeLicenseInterface;
 use Stu\Orm\Entity\TradePost;
 
 /**
@@ -18,13 +17,13 @@ use Stu\Orm\Entity\TradePost;
 final class TradeLicenseRepository extends EntityRepository implements TradeLicenseRepositoryInterface
 {
     #[Override]
-    public function prototype(): TradeLicenseInterface
+    public function prototype(): TradeLicense
     {
         return new TradeLicense();
     }
 
     #[Override]
-    public function save(TradeLicenseInterface $post): void
+    public function save(TradeLicense $post): void
     {
         $em = $this->getEntityManager();
 
@@ -32,7 +31,7 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
     }
 
     #[Override]
-    public function delete(TradeLicenseInterface $post): void
+    public function delete(TradeLicense $post): void
     {
         $em = $this->getEntityManager();
 
@@ -146,7 +145,7 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
     }
 
     #[Override]
-    public function getLatestActiveLicenseByUserAndTradePost(int $userId, int $tradePostId): ?TradeLicenseInterface
+    public function getLatestActiveLicenseByUserAndTradePost(int $userId, int $tradePostId): ?TradeLicense
     {
         return $this->getEntityManager()
             ->createQuery(

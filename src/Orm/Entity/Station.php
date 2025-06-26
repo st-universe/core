@@ -14,7 +14,6 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\SpacecraftTypeEnum;
@@ -25,33 +24,33 @@ use Stu\Orm\Repository\StationRepository;
 #[Table(name: 'stu_station')]
 #[Index(name: 'station_influence_area_idx', columns: ['influence_area_id'])]
 #[Entity(repositoryClass: StationRepository::class)]
-class Station extends Spacecraft implements StationInterface
+class Station extends Spacecraft
 {
     #[Column(type: 'integer', nullable: true)]
     private ?int $influence_area_id = null;
 
     #[OneToOne(targetEntity: TradePost::class, mappedBy: 'station')]
-    private ?TradePostInterface $tradePost = null;
+    private ?TradePost $tradePost = null;
 
     #[OneToOne(targetEntity: ConstructionProgress::class, mappedBy: 'station')]
-    private ?ConstructionProgressInterface $constructionProgress = null;
+    private ?ConstructionProgress $constructionProgress = null;
 
     /**
-     * @var ArrayCollection<int, ShipInterface>
+     * @var ArrayCollection<int, Ship>
      */
     #[OneToMany(targetEntity: Ship::class, mappedBy: 'dockedTo', indexBy: 'id')]
     #[OrderBy(['fleet_id' => 'DESC', 'is_fleet_leader' => 'DESC'])]
     private Collection $dockedShips;
 
     /**
-     * @var ArrayCollection<int, DockingPrivilegeInterface>
+     * @var ArrayCollection<int, DockingPrivilege>
      */
     #[OneToMany(targetEntity: DockingPrivilege::class, mappedBy: 'station')]
     private Collection $dockingPrivileges;
 
     #[OneToOne(targetEntity: StarSystem::class)]
     #[JoinColumn(name: 'influence_area_id', referencedColumnName: 'id')]
-    private ?StarSystemInterface $influenceArea = null;
+    private ?StarSystem $influenceArea = null;
 
     public function __construct()
     {
@@ -60,60 +59,51 @@ class Station extends Spacecraft implements StationInterface
         $this->dockingPrivileges = new ArrayCollection();
     }
 
-    #[Override]
     public function getType(): SpacecraftTypeEnum
     {
         return SpacecraftTypeEnum::STATION;
     }
 
-    #[Override]
-    public function getFleet(): ?FleetInterface
+    public function getFleet(): ?Fleet
     {
         return null;
     }
 
-    #[Override]
-    public function getTradePost(): ?TradePostInterface
+    public function getTradePost(): ?TradePost
     {
         return $this->tradePost;
     }
 
-    #[Override]
-    public function setTradePost(?TradePostInterface $tradePost): StationInterface
+    public function setTradePost(?TradePost $tradePost): Station
     {
         $this->tradePost = $tradePost;
 
         return $this;
     }
 
-    #[Override]
-    public function getInfluenceArea(): ?StarSystemInterface
+    public function getInfluenceArea(): ?StarSystem
     {
         return $this->influenceArea;
     }
 
-    #[Override]
-    public function setInfluenceArea(?StarSystemInterface $influenceArea): StationInterface
+    public function setInfluenceArea(?StarSystem $influenceArea): Station
     {
         $this->influenceArea = $influenceArea;
         return $this;
     }
 
-    #[Override]
-    public function getConstructionProgress(): ?ConstructionProgressInterface
+    public function getConstructionProgress(): ?ConstructionProgress
     {
         return $this->constructionProgress;
     }
 
-    #[Override]
-    public function resetConstructionProgress(): StationInterface
+    public function resetConstructionProgress(): Station
     {
         $this->constructionProgress = null;
 
         return $this;
     }
 
-    #[Override]
     public function getModules(): array
     {
         $constructionProgress = $this->getConstructionProgress();
@@ -123,18 +113,18 @@ class Station extends Spacecraft implements StationInterface
 
         $parentModules = parent::getModules();
         $parentModuleIds = array_map(
-            fn(ModuleInterface $module): int => $module->getId(),
+            fn(Module $module): int => $module->getId(),
             $parentModules
         );
 
         $specialModules = $constructionProgress
             ->getSpecialModules()
             ->filter(
-                fn(ConstructionProgressModuleInterface $progressModule): bool =>
+                fn(ConstructionProgressModule $progressModule): bool =>
                 !in_array($progressModule->getModule()->getId(), $parentModuleIds)
             )
             ->map(
-                fn(ConstructionProgressModuleInterface $progressModule): ModuleInterface =>
+                fn(ConstructionProgressModule $progressModule): Module =>
                 $progressModule->getModule()
             )
             ->toArray();
@@ -142,14 +132,14 @@ class Station extends Spacecraft implements StationInterface
         return $parentModules + $specialModules;
     }
 
-
-    #[Override]
+    /**
+     * @return Collection<int, DockingPrivilege>
+     */
     public function getDockPrivileges(): Collection
     {
         return $this->dockingPrivileges;
     }
 
-    #[Override]
     public function getDockingSlotCount(): int
     {
         $state = $this->getCondition()->getState();
@@ -159,31 +149,29 @@ class Station extends Spacecraft implements StationInterface
             ? 50 : $this->getRump()->getDockingSlots();
     }
 
-    #[Override]
     public function hasFreeDockingSlots(): bool
     {
         return $this->getDockingSlotCount() > $this->getDockedShipCount();
     }
 
-    #[Override]
     public function getFreeDockingSlotCount(): int
     {
         return $this->getDockingSlotCount() - $this->getDockedShipCount();
     }
 
-    #[Override]
     public function getDockedShipCount(): int
     {
         return $this->dockedShips->count();
     }
 
-    #[Override]
+    /**
+     * @return Collection<int, Ship>
+     */
     public function getDockedShips(): Collection
     {
         return $this->dockedShips;
     }
 
-    #[Override]
     public function getDockedWorkbeeCount(): int
     {
         $count = 0;
@@ -197,19 +185,16 @@ class Station extends Spacecraft implements StationInterface
         return $count;
     }
 
-    #[Override]
     public function getConstructionHubState(): bool
     {
         return $this->getSystemState(SpacecraftSystemTypeEnum::CONSTRUCTION_HUB);
     }
 
-    #[Override]
     public function isAggregationSystemHealthy(): bool
     {
         return $this->isSystemHealthy(SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM);
     }
 
-    #[Override]
     public function getTransferEntityType(): TransferEntityTypeEnum
     {
         return TransferEntityTypeEnum::STATION;

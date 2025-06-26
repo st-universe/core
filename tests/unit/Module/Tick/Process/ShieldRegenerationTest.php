@@ -11,9 +11,9 @@ use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\MapFieldTypeInterface;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\MapFieldType;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -41,7 +41,7 @@ class ShieldRegenerationTest extends StuTestCase
 
     public function testWorkExpectNothingIfTimerTooHigh(): void
     {
-        $spacecraft = $this->mock(SpacecraftInterface::class);
+        $spacecraft = $this->mock(Spacecraft::class);
         $wrapper = $this->mock(SpacecraftWrapperInterface::class);
         $shieldSystemData = $this->mock(ShieldSystemData::class);
 
@@ -75,10 +75,10 @@ class ShieldRegenerationTest extends StuTestCase
 
     public function testWorkExpectNothingIfEffectIsPreventing(): void
     {
-        $spacecraft = $this->mock(SpacecraftInterface::class);
+        $spacecraft = $this->mock(Spacecraft::class);
         $wrapper = $this->mock(SpacecraftWrapperInterface::class);
-        $location = $this->mock(MapInterface::class);
-        $fieldType = $this->mock(MapFieldTypeInterface::class);
+        $location = $this->mock(Map::class);
+        $fieldType = $this->mock(MapFieldType::class);
         $shieldSystemData = $this->mock(ShieldSystemData::class);
 
         $this->spacecraftRepository->shouldReceive('getSuitableForShieldRegeneration')

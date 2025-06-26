@@ -6,7 +6,7 @@ namespace Stu\Module\Station\Lib;
 
 use Stu\Component\Station\Dock\DockModeEnum;
 use Stu\Component\Station\Dock\DockTypeEnum;
-use Stu\Orm\Entity\DockingPrivilegeInterface;
+use Stu\Orm\Entity\DockingPrivilege;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -19,7 +19,7 @@ final class DockingPrivilegeItem
         private AllianceRepositoryInterface $allianceRepository,
         private FactionRepositoryInterface $factionRepository,
         private ShipRepositoryInterface $shipRepository,
-        private DockingPrivilegeInterface $dockingPrivilege
+        private DockingPrivilege $dockingPrivilege
     ) {}
 
     public function getId(): int

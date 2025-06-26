@@ -7,7 +7,6 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\UserLock;
-use Stu\Orm\Entity\UserLockInterface;
 
 /**
  * @extends EntityRepository<UserLock>
@@ -15,7 +14,7 @@ use Stu\Orm\Entity\UserLockInterface;
 final class UserLockRepository extends EntityRepository implements UserLockRepositoryInterface
 {
     #[Override]
-    public function getActiveByUser(int $userId): ?UserLockInterface
+    public function getActiveByUser(int $userId): ?UserLock
     {
         return $this->getEntityManager()->createQuery(
             sprintf(
@@ -44,7 +43,7 @@ final class UserLockRepository extends EntityRepository implements UserLockRepos
     }
 
     #[Override]
-    public function save(UserLockInterface $award): void
+    public function save(UserLock $award): void
     {
         $em = $this->getEntityManager();
 
@@ -52,7 +51,7 @@ final class UserLockRepository extends EntityRepository implements UserLockRepos
     }
 
     #[Override]
-    public function prototype(): UserLockInterface
+    public function prototype(): UserLock
     {
         return new UserLock();
     }

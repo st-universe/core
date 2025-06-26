@@ -12,13 +12,12 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\UniqueConstraint;
-use Override;
 use Stu\Orm\Repository\RpgPlotMemberRepository;
 
 #[Table(name: 'stu_plots_members')]
 #[UniqueConstraint(name: 'plot_user_idx', columns: ['plot_id', 'user_id'])]
 #[Entity(repositoryClass: RpgPlotMemberRepository::class)]
-class RpgPlotMember implements RpgPlotMemberInterface
+class RpgPlotMember
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -33,52 +32,45 @@ class RpgPlotMember implements RpgPlotMemberInterface
 
     #[ManyToOne(targetEntity: RpgPlot::class, inversedBy: 'members')]
     #[JoinColumn(name: 'plot_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private RpgPlotInterface $rpgPlot;
+    private RpgPlot $rpgPlot;
 
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $user;
+    private User $user;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
     public function getPlotId(): int
     {
         return $this->plot_id;
     }
 
-    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    #[Override]
-    public function getRpgPlot(): RpgPlotInterface
+    public function getRpgPlot(): RpgPlot
     {
         return $this->rpgPlot;
     }
 
-    #[Override]
-    public function setRpgPlot(RpgPlotInterface $rpgPlot): RpgPlotMemberInterface
+    public function setRpgPlot(RpgPlot $rpgPlot): RpgPlotMember
     {
         $this->rpgPlot = $rpgPlot;
 
         return $this;
     }
 
-    #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    #[Override]
-    public function setUser(UserInterface $user): RpgPlotMemberInterface
+    public function setUser(User $user): RpgPlotMember
     {
         $this->user = $user;
         return $this;

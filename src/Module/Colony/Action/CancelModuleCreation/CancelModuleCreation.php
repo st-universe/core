@@ -12,7 +12,7 @@ use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContextTypeEnum;
-use Stu\Orm\Entity\ModuleInterface;
+use Stu\Orm\Entity\Module;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
@@ -36,7 +36,7 @@ final class CancelModuleCreation implements ActionControllerInterface
         $function = request::postIntFatal('func');
         $count = request::postInt('count');
 
-        /** @var ModuleInterface $module */
+        /** @var Module $module */
         $module = $this->moduleRepository->find($module_id);
 
         if ($module === null) {

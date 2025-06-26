@@ -14,7 +14,7 @@ use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 use Stu\StuTestCase;
 
 class ApplyFieldDamageTest extends StuTestCase
@@ -25,7 +25,7 @@ class ApplyFieldDamageTest extends StuTestCase
 
     private ApplyFieldDamageInterface $subject;
 
-    private MockInterface&ShipInterface $ship;
+    private MockInterface&Ship $ship;
 
     private MockInterface&ShipWrapperInterface $wrapper;
 
@@ -36,7 +36,7 @@ class ApplyFieldDamageTest extends StuTestCase
         $this->spacecraftDestruction = $this->mock(SpacecraftDestructionInterface::class);
         $this->messageFactory = $this->mock(MessageFactoryInterface::class);
 
-        $this->ship = $this->mock(ShipInterface::class);
+        $this->ship = $this->mock(Ship::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
 
         $this->wrapper->shouldReceive('get')
@@ -54,7 +54,7 @@ class ApplyFieldDamageTest extends StuTestCase
     {
         $messages = $this->mock(MessageCollectionInterface::class);
 
-        $tractoredShip = $this->mock(ShipInterface::class);
+        $tractoredShip = $this->mock(Ship::class);
         $tractoredShipWrapper = $this->mock(ShipWrapperInterface::class);
 
         $message = $this->mock(MessageInterface::class);

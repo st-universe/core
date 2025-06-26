@@ -11,8 +11,8 @@ use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\View\Management\Management;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Orm\Entity\AllianceInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Alliance;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\StuTestCase;
@@ -29,11 +29,11 @@ class DemotePlayerTest extends StuTestCase
 
     private MockInterface&UserRepositoryInterface $userRepository;
 
-    private MockInterface&UserInterface $user;
+    private MockInterface&User $user;
 
     private MockInterface&GameControllerInterface $game;
 
-    private MockInterface&AllianceInterface $alliance;
+    private MockInterface&Alliance $alliance;
 
     private DemotePlayer $subject;
 
@@ -50,9 +50,9 @@ class DemotePlayerTest extends StuTestCase
         $this->privateMessageSender = $this->mock(PrivateMessageSenderInterface::class);
         $this->userRepository = $this->mock(UserRepositoryInterface::class);
 
-        $this->user = $this->mock(UserInterface::class);
+        $this->user = $this->mock(User::class);
         $this->game = $this->mock(GameControllerInterface::class);
-        $this->alliance = $this->mock(AllianceInterface::class);
+        $this->alliance = $this->mock(Alliance::class);
 
         $this->subject = new DemotePlayer(
             $this->demotePlayerRequest,
@@ -100,7 +100,7 @@ class DemotePlayerTest extends StuTestCase
     {
         static::expectException(AccessViolationException::class);
 
-        $player = $this->mock(UserInterface::class);
+        $player = $this->mock(User::class);
 
         $this->createBasicExpectation();
 
@@ -126,7 +126,7 @@ class DemotePlayerTest extends StuTestCase
     {
         static::expectException(AccessViolationException::class);
 
-        $player = $this->mock(UserInterface::class);
+        $player = $this->mock(User::class);
 
         $this->createBasicExpectation();
 
@@ -154,7 +154,7 @@ class DemotePlayerTest extends StuTestCase
 
     public function testHandleDemotesPlayer(): void
     {
-        $player = $this->mock(UserInterface::class);
+        $player = $this->mock(User::class);
 
         $allianceName = 'alliance-name';
 

@@ -10,8 +10,8 @@ use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestroyerInterface;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionCauseEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\TholianWebInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\TholianWeb;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
 use Stu\Orm\Repository\TholianWebRepositoryInterface;
@@ -35,7 +35,7 @@ class TholianWebDestruction implements SpacecraftDestructionHandlerInterface
     ): void {
 
         $tholianWeb = $destroyedSpacecraftWrapper->get();
-        if (!$tholianWeb instanceof TholianWebInterface) {
+        if (!$tholianWeb instanceof TholianWeb) {
             return;
         }
 
@@ -51,7 +51,7 @@ class TholianWebDestruction implements SpacecraftDestructionHandlerInterface
 
         $this->tholianWebUtil->resetWebHelpers($tholianWeb, $this->spacecraftWrapperFactory);
 
-        /** @var ShipInterface */
+        /** @var Ship */
         $owningShip = $owningSpacecraftSystem->getSpacecraft();
 
         $webEmitterSystemData = $this->spacecraftWrapperFactory

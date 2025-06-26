@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250625101230 extends AbstractMigration
+final class Version20250626102702 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -516,7 +516,7 @@ final class Version20250625101230 extends AbstractMigration
             CREATE INDEX IDX_4D14EE9A8CDE5729 ON stu_database_entrys (type)
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE INDEX database_entry_category_id_idx ON stu_database_entrys (category_id)
+            CREATE INDEX IDX_4D14EE9A12469DE2 ON stu_database_entrys (category_id)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE TABLE stu_database_types (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, description VARCHAR(255) NOT NULL, macro VARCHAR(255) NOT NULL)
@@ -657,7 +657,7 @@ final class Version20250625101230 extends AbstractMigration
             CREATE INDEX user_recipient_idx ON stu_ignorelist (user_id, recipient)
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE TABLE stu_kn (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, titel VARCHAR(255) DEFAULT NULL, text CLOB NOT NULL, date INTEGER NOT NULL, username VARCHAR(255) NOT NULL, user_id INTEGER DEFAULT NULL, del_user_id INTEGER DEFAULT NULL, lastedit INTEGER NOT NULL, plot_id INTEGER DEFAULT NULL, deleted INTEGER DEFAULT NULL, ratings CLOB NOT NULL, CONSTRAINT FK_27245FD3680D0B01 FOREIGN KEY (plot_id) REFERENCES stu_plots (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_27245FD3A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) NOT DEFERRABLE INITIALLY IMMEDIATE)
+            CREATE TABLE stu_kn (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, titel VARCHAR(255) DEFAULT NULL, text CLOB NOT NULL, date INTEGER NOT NULL, username VARCHAR(255) NOT NULL, user_id INTEGER NOT NULL, del_user_id INTEGER DEFAULT NULL, lastedit INTEGER NOT NULL, plot_id INTEGER DEFAULT NULL, deleted INTEGER DEFAULT NULL, ratings CLOB NOT NULL, CONSTRAINT FK_27245FD3680D0B01 FOREIGN KEY (plot_id) REFERENCES stu_plots (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_27245FD3A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) NOT DEFERRABLE INITIALLY IMMEDIATE)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE INDEX plot_idx ON stu_kn (plot_id)
@@ -1512,7 +1512,7 @@ final class Version20250625101230 extends AbstractMigration
             CREATE INDEX tutorial_view_idx ON stu_tutorial_step (module, "view")
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE TABLE stu_user (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, username VARCHAR(255) NOT NULL, state SMALLINT NOT NULL, lastaction INTEGER NOT NULL, kn_lez INTEGER NOT NULL, vac_active BOOLEAN NOT NULL, vac_request_date INTEGER NOT NULL, description CLOB NOT NULL, sessiondata CLOB NOT NULL, prestige INTEGER NOT NULL, deals BOOLEAN NOT NULL, last_boarding INTEGER DEFAULT NULL, allys_id INTEGER DEFAULT NULL, race INTEGER DEFAULT NULL, CONSTRAINT FK_12A1701F5E0B0712 FOREIGN KEY (allys_id) REFERENCES stu_alliances (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_12A1701FDA6FBBAF FOREIGN KEY (race) REFERENCES stu_factions (id) NOT DEFERRABLE INITIALLY IMMEDIATE)
+            CREATE TABLE stu_user (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, username VARCHAR(255) NOT NULL, state SMALLINT NOT NULL, lastaction INTEGER NOT NULL, kn_lez INTEGER NOT NULL, vac_active BOOLEAN NOT NULL, vac_request_date INTEGER NOT NULL, description CLOB NOT NULL, sessiondata CLOB NOT NULL, prestige INTEGER NOT NULL, deals BOOLEAN NOT NULL, last_boarding INTEGER DEFAULT NULL, allys_id INTEGER DEFAULT NULL, race INTEGER NOT NULL, CONSTRAINT FK_12A1701F5E0B0712 FOREIGN KEY (allys_id) REFERENCES stu_alliances (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_12A1701FDA6FBBAF FOREIGN KEY (race) REFERENCES stu_factions (id) NOT DEFERRABLE INITIALLY IMMEDIATE)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE INDEX IDX_12A1701FDA6FBBAF ON stu_user (race)
@@ -1530,7 +1530,7 @@ final class Version20250625101230 extends AbstractMigration
             CREATE INDEX IDX_E1449B843D5282CF ON stu_user_award (award_id)
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE TABLE stu_user_character (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL, description CLOB DEFAULT NULL, avatar VARCHAR(32) DEFAULT NULL, former_user_id INTEGER DEFAULT NULL, user_id INTEGER DEFAULT NULL, CONSTRAINT FK_6E46626CA76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)
+            CREATE TABLE stu_user_character (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL, description CLOB DEFAULT NULL, avatar VARCHAR(32) DEFAULT NULL, former_user_id INTEGER DEFAULT NULL, user_id INTEGER NOT NULL, CONSTRAINT FK_6E46626CA76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE INDEX IDX_6E46626CA76ED395 ON stu_user_character (user_id)
@@ -1656,7 +1656,7 @@ final class Version20250625101230 extends AbstractMigration
             CREATE INDEX weapon_module_idx ON stu_weapons (module_id)
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE TABLE stu_wormhole_entry (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, map_id INTEGER NOT NULL, system_id INTEGER NOT NULL, system_map_id INTEGER NOT NULL, type VARCHAR(10) NOT NULL, last_used INTEGER DEFAULT NULL, cooldown INTEGER DEFAULT NULL, CONSTRAINT FK_D68CF8C953C55F64 FOREIGN KEY (map_id) REFERENCES stu_map (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_D68CF8C9D0952FA5 FOREIGN KEY (system_id) REFERENCES stu_systems (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_D68CF8C9434BEAA5 FOREIGN KEY (system_map_id) REFERENCES stu_sys_map (id) NOT DEFERRABLE INITIALLY IMMEDIATE)
+            CREATE TABLE stu_wormhole_entry (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, type VARCHAR(10) NOT NULL, last_used INTEGER DEFAULT NULL, cooldown INTEGER DEFAULT NULL, map_id INTEGER NOT NULL, system_id INTEGER NOT NULL, system_map_id INTEGER NOT NULL, CONSTRAINT FK_D68CF8C953C55F64 FOREIGN KEY (map_id) REFERENCES stu_map (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_D68CF8C9D0952FA5 FOREIGN KEY (system_id) REFERENCES stu_systems (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_D68CF8C9434BEAA5 FOREIGN KEY (system_map_id) REFERENCES stu_sys_map (id) NOT DEFERRABLE INITIALLY IMMEDIATE)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE INDEX IDX_D68CF8C953C55F64 ON stu_wormhole_entry (map_id)
@@ -1668,7 +1668,7 @@ final class Version20250625101230 extends AbstractMigration
             CREATE INDEX IDX_D68CF8C9434BEAA5 ON stu_wormhole_entry (system_map_id)
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE TABLE stu_wormhole_restrictions (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, mode INTEGER DEFAULT NULL, wormhole_entry_id INTEGER DEFAULT NULL, user_id INTEGER DEFAULT NULL, CONSTRAINT FK_76C7B8E0BE56147A FOREIGN KEY (wormhole_entry_id) REFERENCES stu_wormhole_entry (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_76C7B8E0A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)
+            CREATE TABLE stu_wormhole_restrictions (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, mode INTEGER DEFAULT NULL, wormhole_entry_id INTEGER NOT NULL, user_id INTEGER NOT NULL, CONSTRAINT FK_76C7B8E0BE56147A FOREIGN KEY (wormhole_entry_id) REFERENCES stu_wormhole_entry (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_76C7B8E0A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE INDEX IDX_76C7B8E0BE56147A ON stu_wormhole_restrictions (wormhole_entry_id)

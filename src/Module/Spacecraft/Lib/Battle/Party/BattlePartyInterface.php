@@ -6,11 +6,11 @@ use Countable;
 use Doctrine\Common\Collections\Collection;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 interface BattlePartyInterface extends Countable
 {
-    public function getUser(): UserInterface;
+    public function getUser(): User;
 
     public function getLeader(): SpacecraftWrapperInterface;
 

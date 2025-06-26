@@ -8,8 +8,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Mockery;
 use Mockery\MockInterface;
 use Override;
-use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Entity\UserLayerInterface;
+use Stu\Orm\Entity\User;
+use Stu\Orm\Entity\UserLayer;
 use Stu\Orm\Repository\UserLayerRepositoryInterface;
 use Stu\Orm\Repository\UserMapRepositoryInterface;
 use Stu\StuTestCase;
@@ -42,8 +42,8 @@ class UserMapDeletionHandlerTest extends StuTestCase
 
     public function testDeleteDeletesUserMapEntries(): void
     {
-        $user = Mockery::mock(UserInterface::class);
-        $userLayer = Mockery::mock(UserLayerInterface::class);
+        $user = Mockery::mock(User::class);
+        $userLayer = Mockery::mock(UserLayer::class);
         $userLayers = new ArrayCollection([$userLayer]);
 
         $user->shouldReceive('getUserLayers')

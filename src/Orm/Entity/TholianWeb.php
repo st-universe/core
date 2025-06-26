@@ -10,7 +10,6 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftTypeEnum;
 use Stu\Lib\Transfer\TransferEntityTypeEnum;
@@ -18,13 +17,13 @@ use Stu\Orm\Repository\TholianWebRepository;
 
 #[Table(name: 'stu_tholian_web')]
 #[Entity(repositoryClass: TholianWebRepository::class)]
-class TholianWeb extends Spacecraft implements TholianWebInterface
+class TholianWeb extends Spacecraft
 {
     #[Column(type: 'integer', nullable: true)]
     private ?int $finished_time = 0;
 
     /**
-     * @var ArrayCollection<int, SpacecraftInterface>
+     * @var ArrayCollection<int, Spacecraft>
      */
     #[OneToMany(targetEntity: Spacecraft::class, mappedBy: 'holdingWeb')]
     private Collection $capturedSpacecrafts;
@@ -35,33 +34,28 @@ class TholianWeb extends Spacecraft implements TholianWebInterface
         $this->capturedSpacecrafts = new ArrayCollection();
     }
 
-    #[Override]
     public function getType(): SpacecraftTypeEnum
     {
         return SpacecraftTypeEnum::THOLIAN_WEB;
     }
 
-    #[Override]
-    public function getFleet(): ?FleetInterface
+    public function getFleet(): ?Fleet
     {
         return null;
     }
 
-    #[Override]
     public function getFinishedTime(): ?int
     {
         return $this->finished_time;
     }
 
-    #[Override]
-    public function setFinishedTime(?int $time): TholianWebInterface
+    public function setFinishedTime(?int $time): TholianWeb
     {
         $this->finished_time = $time;
 
         return $this;
     }
 
-    #[Override]
     public function isFinished(): bool
     {
         //uninitialized
@@ -77,19 +71,19 @@ class TholianWeb extends Spacecraft implements TholianWebInterface
         return $this->finished_time < time();
     }
 
-    #[Override]
+    /**
+     * @return Collection<int, Spacecraft>
+     */
     public function getCapturedSpacecrafts(): Collection
     {
         return $this->capturedSpacecrafts;
     }
 
-    #[Override]
     public function updateFinishTime(int $time): void
     {
         $this->finished_time = $time;
     }
 
-    #[Override]
     public function getTransferEntityType(): TransferEntityTypeEnum
     {
         throw new RuntimeException('unsupported operation');

@@ -7,8 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\ConstructionProgress;
-use Stu\Orm\Entity\ConstructionProgressInterface;
-use Stu\Orm\Entity\StationInterface;
+use Stu\Orm\Entity\Station;
 
 /**
  * @extends EntityRepository<ConstructionProgress>
@@ -16,7 +15,7 @@ use Stu\Orm\Entity\StationInterface;
 final class ConstructionProgressRepository extends EntityRepository implements ConstructionProgressRepositoryInterface
 {
     #[Override]
-    public function getByStation(StationInterface $station): ?ConstructionProgressInterface
+    public function getByStation(Station $station): ?ConstructionProgress
     {
         return $this->getEntityManager()
             ->createQuery(
@@ -31,13 +30,13 @@ final class ConstructionProgressRepository extends EntityRepository implements C
     }
 
     #[Override]
-    public function prototype(): ConstructionProgressInterface
+    public function prototype(): ConstructionProgress
     {
         return new ConstructionProgress();
     }
 
     #[Override]
-    public function save(ConstructionProgressInterface $constructionProgress): void
+    public function save(ConstructionProgress $constructionProgress): void
     {
         $em = $this->getEntityManager();
 
@@ -45,7 +44,7 @@ final class ConstructionProgressRepository extends EntityRepository implements C
     }
 
     #[Override]
-    public function delete(ConstructionProgressInterface $constructionProgress): void
+    public function delete(ConstructionProgress $constructionProgress): void
     {
         $em = $this->getEntityManager();
 

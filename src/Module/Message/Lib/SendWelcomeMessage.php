@@ -6,7 +6,7 @@ namespace Stu\Module\Message\Lib;
 
 use Override;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\FactionRepositoryInterface;
 
 final class SendWelcomeMessage implements SendWelcomeMessageInterface
@@ -17,7 +17,7 @@ final class SendWelcomeMessage implements SendWelcomeMessageInterface
     ) {}
 
     #[Override]
-    public function sendWelcomeMessage(UserInterface $user): void
+    public function sendWelcomeMessage(User $user): void
     {
         $faction = $this->factionRepository->find($user->getFactionId());
 

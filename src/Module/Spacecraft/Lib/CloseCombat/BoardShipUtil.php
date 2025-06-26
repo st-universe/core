@@ -8,7 +8,7 @@ use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftShutdownInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\CrewAssignmentInterface;
+use Stu\Orm\Entity\CrewAssignment;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 
@@ -62,9 +62,9 @@ class BoardShipUtil implements BoardShipUtilInterface
     }
 
     /**
-     * @param array<int, CrewAssignmentInterface> &$combatGroup
+     * @param array<int, CrewAssignment> &$combatGroup
      */
-    private function getKilledCrew(array &$combatGroup, SpacecraftWrapperInterface $wrapper): CrewAssignmentInterface
+    private function getKilledCrew(array &$combatGroup, SpacecraftWrapperInterface $wrapper): CrewAssignment
     {
         $keys = array_keys($combatGroup);
         shuffle($keys);

@@ -9,9 +9,9 @@ use Override;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Lib\General\EntityWithHrefInterface;
 use Stu\Module\Control\StuTime;
-use Stu\Orm\Entity\PrivateMessageFolderInterface;
-use Stu\Orm\Entity\PrivateMessageInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\PrivateMessageFolder;
+use Stu\Orm\Entity\PrivateMessage;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -57,15 +57,15 @@ class PrivateMessageSenderTest extends StuTestCase
 
     public function testSendWithoutEmailNotification(): void
     {
-        $sender = $this->mock(UserInterface::class);
-        $recipient = $this->mock(UserInterface::class);
+        $sender = $this->mock(User::class);
+        $recipient = $this->mock(User::class);
         $hrefEntity = $this->mock(EntityWithHrefInterface::class);
 
-        $recipientfolder = $this->mock(PrivateMessageFolderInterface::class);
-        $senderOutboxFolder = $this->mock(PrivateMessageFolderInterface::class);
+        $recipientfolder = $this->mock(PrivateMessageFolder::class);
+        $senderOutboxFolder = $this->mock(PrivateMessageFolder::class);
 
-        $recipientpm = $this->mock(PrivateMessageInterface::class);
-        $outboxPm = $this->mock(PrivateMessageInterface::class);
+        $recipientpm = $this->mock(PrivateMessage::class);
+        $outboxPm = $this->mock(PrivateMessage::class);
 
         $sender->shouldReceive('getId')
             ->withNoArgs()
@@ -197,14 +197,14 @@ class PrivateMessageSenderTest extends StuTestCase
 
     public function testSendWithEmailNotificationAndAlreadyRead(): void
     {
-        $sender = $this->mock(UserInterface::class);
-        $recipient = $this->mock(UserInterface::class);
+        $sender = $this->mock(User::class);
+        $recipient = $this->mock(User::class);
 
-        $recipientfolder = $this->mock(PrivateMessageFolderInterface::class);
-        $senderOutboxFolder = $this->mock(PrivateMessageFolderInterface::class);
+        $recipientfolder = $this->mock(PrivateMessageFolder::class);
+        $senderOutboxFolder = $this->mock(PrivateMessageFolder::class);
 
-        $recipientpm = $this->mock(PrivateMessageInterface::class);
-        $outboxPm = $this->mock(PrivateMessageInterface::class);
+        $recipientpm = $this->mock(PrivateMessage::class);
+        $outboxPm = $this->mock(PrivateMessage::class);
 
         $sender->shouldReceive('getId')
             ->withNoArgs()
@@ -344,7 +344,7 @@ class PrivateMessageSenderTest extends StuTestCase
 
     public function testSendBroadcastWithEmptyRecipients(): void
     {
-        $sender = $this->mock(UserInterface::class);
+        $sender = $this->mock(User::class);
 
         $this->messageRepository->shouldNotHaveBeenCalled();
 
@@ -353,18 +353,18 @@ class PrivateMessageSenderTest extends StuTestCase
 
     public function testSendBroadcastWithRecipients(): void
     {
-        $sender = $this->mock(UserInterface::class);
-        $recipient1 = $this->mock(UserInterface::class);
-        $recipient2 = $this->mock(UserInterface::class);
-        $userNoOne = $this->mock(UserInterface::class);
+        $sender = $this->mock(User::class);
+        $recipient1 = $this->mock(User::class);
+        $recipient2 = $this->mock(User::class);
+        $userNoOne = $this->mock(User::class);
 
-        $recipient1folder = $this->mock(PrivateMessageFolderInterface::class);
-        $recipient2folder = $this->mock(PrivateMessageFolderInterface::class);
-        $senderOutboxFolder = $this->mock(PrivateMessageFolderInterface::class);
+        $recipient1folder = $this->mock(PrivateMessageFolder::class);
+        $recipient2folder = $this->mock(PrivateMessageFolder::class);
+        $senderOutboxFolder = $this->mock(PrivateMessageFolder::class);
 
-        $recipient1pm = $this->mock(PrivateMessageInterface::class);
-        $recipient2pm = $this->mock(PrivateMessageInterface::class);
-        $outboxPm = $this->mock(PrivateMessageInterface::class);
+        $recipient1pm = $this->mock(PrivateMessage::class);
+        $recipient2pm = $this->mock(PrivateMessage::class);
+        $outboxPm = $this->mock(PrivateMessage::class);
 
 
         $sender->shouldReceive('getId')
@@ -556,10 +556,10 @@ class PrivateMessageSenderTest extends StuTestCase
 
     public function testSendExpectNoOutboxWhenSenderIsBlocked(): void
     {
-        $fallbackUser = $this->mock(UserInterface::class);
-        $recipient = $this->mock(UserInterface::class);
-        $folder = $this->mock(PrivateMessageFolderInterface::class);
-        $message = $this->mock(PrivateMessageInterface::class);
+        $fallbackUser = $this->mock(User::class);
+        $recipient = $this->mock(User::class);
+        $folder = $this->mock(PrivateMessageFolder::class);
+        $message = $this->mock(PrivateMessage::class);
 
         PrivateMessageSender::$blockedUserIds = [2];
 

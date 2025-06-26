@@ -6,9 +6,8 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Override;
-use Stu\Orm\Entity\AllianceInterface;
+use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\AllianceRelation;
-use Stu\Orm\Entity\AllianceRelationInterface;
 
 /**
  * @extends EntityRepository<AllianceRelation>
@@ -16,13 +15,13 @@ use Stu\Orm\Entity\AllianceRelationInterface;
 final class AllianceRelationRepository extends EntityRepository implements AllianceRelationRepositoryInterface
 {
     #[Override]
-    public function prototype(): AllianceRelationInterface
+    public function prototype(): AllianceRelation
     {
         return new AllianceRelation();
     }
 
     #[Override]
-    public function save(AllianceRelationInterface $post): void
+    public function save(AllianceRelation $post): void
     {
         $em = $this->getEntityManager();
 
@@ -30,7 +29,7 @@ final class AllianceRelationRepository extends EntityRepository implements Allia
     }
 
     #[Override]
-    public function delete(AllianceRelationInterface $post): void
+    public function delete(AllianceRelation $post): void
     {
         $em = $this->getEntityManager();
 
@@ -38,7 +37,7 @@ final class AllianceRelationRepository extends EntityRepository implements Allia
     }
 
     #[Override]
-    public function truncateByAlliances(AllianceInterface $alliance, AllianceInterface $opponent): void
+    public function truncateByAlliances(Alliance $alliance, Alliance $opponent): void
     {
         $this->getEntityManager()
             ->createQuery(
@@ -127,7 +126,7 @@ final class AllianceRelationRepository extends EntityRepository implements Allia
     }
 
     #[Override]
-    public function getActiveByAlliancePair(int $allianceId, int $opponentId): ?AllianceRelationInterface
+    public function getActiveByAlliancePair(int $allianceId, int $opponentId): ?AllianceRelation
     {
         return $this->getEntityManager()
             ->createQuery(
@@ -145,7 +144,7 @@ final class AllianceRelationRepository extends EntityRepository implements Allia
 
 
     #[Override]
-    public function getActiveByTypeAndAlliancePair(array $typeIds, int $allianceId, int $opponentId): ?AllianceRelationInterface
+    public function getActiveByTypeAndAlliancePair(array $typeIds, int $allianceId, int $opponentId): ?AllianceRelation
     {
         return $this->getEntityManager()
             ->createQuery(

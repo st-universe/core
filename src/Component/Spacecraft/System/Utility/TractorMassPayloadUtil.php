@@ -14,7 +14,7 @@ use Stu\Module\Spacecraft\Lib\Damage\SystemDamageInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\Ship;
 
 class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
 {
@@ -32,12 +32,12 @@ class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
     #[Override]
     public function tryToTow(
         SpacecraftWrapperInterface $wrapper,
-        ShipInterface $tractoredShip,
+        Ship $tractoredShip,
         InformationInterface $information
     ): bool {
 
         $spacecraft = $wrapper->get();
-        $ownFleet = $spacecraft instanceof ShipInterface ? $spacecraft->getFleet() : null;
+        $ownFleet = $spacecraft instanceof Ship ? $spacecraft->getFleet() : null;
         $tractoredShipFleet = $tractoredShip->getFleet();
 
         // target in other fleet?
@@ -77,7 +77,7 @@ class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
     #[Override]
     public function isTractorSystemStressed(
         SpacecraftWrapperInterface $wrapper,
-        ShipInterface $tractoredShip
+        Ship $tractoredShip
     ): bool {
         $ship = $wrapper->get();
         $mass = $tractoredShip->getRump()->getTractorMass();
@@ -90,7 +90,7 @@ class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
     #[Override]
     public function stressTractorSystemForTowing(
         SpacecraftWrapperInterface $wrapper,
-        ShipInterface $tractoredShip,
+        Ship $tractoredShip,
         MessageCollectionInterface $messages
     ): void {
         $ship = $wrapper->get();

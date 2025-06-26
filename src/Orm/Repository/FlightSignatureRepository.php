@@ -9,11 +9,10 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Override;
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\FlightSignature;
-use Stu\Orm\Entity\FlightSignatureInterface;
 use Stu\Orm\Entity\StarSystemMap;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 
 /**
  * @extends EntityRepository<FlightSignature>
@@ -21,7 +20,7 @@ use Stu\Orm\Entity\UserInterface;
 final class FlightSignatureRepository extends EntityRepository implements FlightSignatureRepositoryInterface
 {
     #[Override]
-    public function prototype(): FlightSignatureInterface
+    public function prototype(): FlightSignature
     {
         return new FlightSignature();
     }
@@ -37,14 +36,14 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
     }
 
     #[Override]
-    public function save(FlightSignatureInterface $item): void
+    public function save(FlightSignature $item): void
     {
         $em = $this->getEntityManager();
         $em->persist($item);
     }
 
     #[Override]
-    public function getVisibleSignatureCount(ColonyInterface $colony): int
+    public function getVisibleSignatureCount(Colony $colony): int
     {
         return (int) $this->getEntityManager()
             ->createQuery(
@@ -220,7 +219,7 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
     }
 
     #[Override]
-    public function getSignaturesForUser(UserInterface $user): int
+    public function getSignaturesForUser(User $user): int
     {
         return (int)$this
             ->getEntityManager()

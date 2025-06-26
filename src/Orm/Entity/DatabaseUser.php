@@ -11,12 +11,11 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Override;
 use Stu\Orm\Repository\DatabaseUserRepository;
 
 #[Table(name: 'stu_database_user')]
 #[Entity(repositoryClass: DatabaseUserRepository::class)]
-class DatabaseUser implements DatabaseUserInterface
+class DatabaseUser
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -34,66 +33,57 @@ class DatabaseUser implements DatabaseUserInterface
 
     #[ManyToOne(targetEntity: DatabaseEntry::class)]
     #[JoinColumn(name: 'database_id', nullable: false, referencedColumnName: 'id')]
-    private DatabaseEntryInterface $databaseEntry;
+    private DatabaseEntry $databaseEntry;
 
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private UserInterface $user;
+    private User $user;
 
-    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
-    public function setDatabaseEntry(DatabaseEntryInterface $databaseEntry): DatabaseUserInterface
+    public function setDatabaseEntry(DatabaseEntry $databaseEntry): DatabaseUser
     {
         $this->databaseEntry = $databaseEntry;
 
         return $this;
     }
 
-    #[Override]
-    public function getDatabaseEntry(): DatabaseEntryInterface
+    public function getDatabaseEntry(): DatabaseEntry
     {
         return $this->databaseEntry;
     }
 
-    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    #[Override]
-    public function setUser(UserInterface $user): DatabaseUserInterface
+    public function setUser(User $user): DatabaseUser
     {
         $this->user = $user;
         return $this;
     }
 
-    #[Override]
-    public function getUser(): UserInterface
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    #[Override]
-    public function setDate(int $date): DatabaseUserInterface
+    public function setDate(int $date): DatabaseUser
     {
         $this->date = $date;
 
         return $this;
     }
 
-    #[Override]
     public function getDate(): int
     {
         return $this->date;
     }
 
-    #[Override]
     public function getDatabaseEntryId(): int
     {
         return $this->database_id;

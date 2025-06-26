@@ -10,7 +10,7 @@ use RuntimeException;
 use Stu\Component\Map\DirectionEnum;
 use Stu\Component\Spacecraft\System\Data\ComputerSystemData;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\MapInterface;
+use Stu\Orm\Entity\Map;
 use Stu\StuTestCase;
 
 class UpdateFlightDirectionTest extends StuTestCase
@@ -49,8 +49,8 @@ class UpdateFlightDirectionTest extends StuTestCase
         ?DirectionEnum $expectedFlightDirection
     ): void {
         $wrapper = $this->mock(SpacecraftWrapperInterface::class);
-        $oldWaypoint = $this->mock(MapInterface::class);
-        $waypoint = $this->mock(MapInterface::class);
+        $oldWaypoint = $this->mock(Map::class);
+        $waypoint = $this->mock(Map::class);
         $computer = $this->mock(ComputerSystemData::class);
 
         $oldWaypoint->shouldReceive('getX')

@@ -7,9 +7,9 @@ use Stu\Component\Spacecraft\Nbs\NbsUtilityInterface;
 use Stu\Lib\Interaction\EntityWithInteractionCheckInterface;
 use Stu\Lib\Transfer\CommodityTransferInterface;
 use Stu\Module\Ship\Lib\TholianWebUtilInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
-use Stu\Orm\Entity\TrumfieldInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\Trumfield;
 
 class InteractionMemberFactory implements InteractionMemberFactoryInterface
 {
@@ -21,13 +21,13 @@ class InteractionMemberFactory implements InteractionMemberFactoryInterface
 
     public function createMember(EntityWithInteractionCheckInterface $entity): InteractionMemberInterface
     {
-        if ($entity instanceof ColonyInterface) {
+        if ($entity instanceof Colony) {
             return new ColonyMember($this->tholianWebUtil, $entity);
         }
-        if ($entity instanceof SpacecraftInterface) {
+        if ($entity instanceof Spacecraft) {
             return new SpacecraftMember($this->nbsUtility, $this->tholianWebUtil, $this->commodityTransfer, $entity);
         }
-        if ($entity instanceof TrumfieldInterface) {
+        if ($entity instanceof Trumfield) {
             return new TrumfieldMember($entity);
         }
 

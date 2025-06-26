@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Player\Relation;
 
 use Stu\Component\Alliance\AllianceEnum;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 
@@ -15,7 +15,7 @@ class EnemyDeterminator
     {
     }
 
-    public function isEnemy(UserInterface $user, UserInterface $otherUser): PlayerRelationTypeEnum
+    public function isEnemy(User $user, User $otherUser): PlayerRelationTypeEnum
     {
         $alliance = $user->getAlliance();
 

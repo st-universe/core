@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonyScan;
-use Stu\Orm\Entity\ColonyScanInterface;
 use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Entity\PlanetFieldType;
 
@@ -18,13 +17,13 @@ use Stu\Orm\Entity\PlanetFieldType;
 final class ColonyScanRepository extends EntityRepository implements ColonyScanRepositoryInterface
 {
     #[Override]
-    public function prototype(): ColonyScanInterface
+    public function prototype(): ColonyScan
     {
         return new ColonyScan();
     }
 
     #[Override]
-    public function save(ColonyScanInterface $post): void
+    public function save(ColonyScan $post): void
     {
         $em = $this->getEntityManager();
 
@@ -32,7 +31,7 @@ final class ColonyScanRepository extends EntityRepository implements ColonyScanR
     }
 
     #[Override]
-    public function delete(ColonyScanInterface $post): void
+    public function delete(ColonyScan $post): void
     {
         $em = $this->getEntityManager();
 
@@ -48,7 +47,7 @@ final class ColonyScanRepository extends EntityRepository implements ColonyScanR
     }
 
     #[Override]
-    public function truncateByUserId(ColonyScanInterface $userId): void
+    public function truncateByUserId(ColonyScan $userId): void
     {
         $this->getEntityManager()
             ->createQuery(

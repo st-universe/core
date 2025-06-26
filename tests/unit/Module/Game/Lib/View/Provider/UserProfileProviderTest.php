@@ -15,11 +15,11 @@ use Stu\Module\Control\Exception\ItemNotFoundException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Module\PlayerProfile\Lib\ProfileVisitorRegistrationInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\ColonyScanInterface;
-use Stu\Orm\Entity\ContactInterface;
-use Stu\Orm\Entity\RpgPlotMemberInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\ColonyScan;
+use Stu\Orm\Entity\Contact;
+use Stu\Orm\Entity\RpgPlotMember;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -84,15 +84,15 @@ class UserProfileProviderTest extends StuTestCase
         $description = 'some-description';
 
         $game = $this->mock(GameControllerInterface::class);
-        $player = $this->mock(UserInterface::class);
-        $visitor = $this->mock(UserInterface::class);
-        $plotMember = $this->mock(RpgPlotMemberInterface::class);
-        $contact = $this->mock(ContactInterface::class);
-        $friend = $this->mock(UserInterface::class);
+        $player = $this->mock(User::class);
+        $visitor = $this->mock(User::class);
+        $plotMember = $this->mock(RpgPlotMember::class);
+        $contact = $this->mock(Contact::class);
+        $friend = $this->mock(User::class);
         $bbCodeParser = $this->mock(Parser::class);
-        $colonyScan = $this->mock(ColonyScanInterface::class);
-        $colony = $this->mock(ColonyInterface::class);
-        $this->mock(ColonyInterface::class);
+        $colonyScan = $this->mock(ColonyScan::class);
+        $colony = $this->mock(Colony::class);
+        $this->mock(Colony::class);
 
         request::setMockVars(['uid' => $playerId]);
 

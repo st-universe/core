@@ -9,12 +9,12 @@ use Mockery\MockInterface;
 use Override;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\ShipTakeoverManagerInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\SpacecraftBuildplanInterface;
-use Stu\Orm\Entity\CrewAssignmentInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\ShipTakeoverInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\SpacecraftBuildplan;
+use Stu\Orm\Entity\CrewAssignment;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\ShipTakeover;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -26,7 +26,7 @@ class TroopTransferUtilityTest extends StuTestCase
 
     private TroopTransferUtilityInterface $subject;
 
-    private MockInterface&ShipInterface $ship;
+    private MockInterface&Ship $ship;
 
     #[Override]
     protected function setUp(): void
@@ -35,7 +35,7 @@ class TroopTransferUtilityTest extends StuTestCase
         $this->shipTakeoverManager = $this->mock(ShipTakeoverManagerInterface::class);
         $this->shipCrewCalculator = $this->mock(SpacecraftCrewCalculatorInterface::class);
 
-        $this->ship = $this->mock(ShipInterface::class);
+        $this->ship = $this->mock(Ship::class);
 
         $this->subject = new TroopTransferUtility(
             $this->shipCrewRepository,
@@ -92,7 +92,7 @@ class TroopTransferUtilityTest extends StuTestCase
 
     public function testGetBeamableTroopCountExpectZeroWhenNotEnoughCrew(): void
     {
-        $buildplan = $this->mock(SpacecraftBuildplanInterface::class);
+        $buildplan = $this->mock(SpacecraftBuildplan::class);
 
         $this->ship->shouldReceive('getBuildplan')
             ->withNoArgs()
@@ -115,7 +115,7 @@ class TroopTransferUtilityTest extends StuTestCase
 
     public function testGetBeamableTroopCountExpectFreeCrewCount(): void
     {
-        $buildplan = $this->mock(SpacecraftBuildplanInterface::class);
+        $buildplan = $this->mock(SpacecraftBuildplan::class);
 
         $this->ship->shouldReceive('getBuildplan')
             ->withNoArgs()
@@ -138,9 +138,9 @@ class TroopTransferUtilityTest extends StuTestCase
 
     public function testGetOwnCrewOnTarget(): void
     {
-        $user = $this->mock(UserInterface::class);
-        $shipCrew1 = $this->mock(CrewAssignmentInterface::class);
-        $shipCrew2 = $this->mock(CrewAssignmentInterface::class);
+        $user = $this->mock(User::class);
+        $shipCrew1 = $this->mock(CrewAssignment::class);
+        $shipCrew2 = $this->mock(CrewAssignment::class);
 
         $crewAssignments = new ArrayCollection([$shipCrew1, $shipCrew2]);
 
@@ -156,7 +156,7 @@ class TroopTransferUtilityTest extends StuTestCase
         $shipCrew2->shouldReceive('getCrew->getUser')
             ->withNoArgs()
             ->once()
-            ->andReturn($this->mock(UserInterface::class));
+            ->andReturn($this->mock(User::class));
 
         $result = $this->subject->ownCrewOnTarget($user, $this->ship);
 
@@ -165,9 +165,9 @@ class TroopTransferUtilityTest extends StuTestCase
 
     public function testForeignerCount(): void
     {
-        $user = $this->mock(UserInterface::class);
-        $shipCrew1 = $this->mock(CrewAssignmentInterface::class);
-        $shipCrew2 = $this->mock(CrewAssignmentInterface::class);
+        $user = $this->mock(User::class);
+        $shipCrew1 = $this->mock(CrewAssignment::class);
+        $shipCrew2 = $this->mock(CrewAssignment::class);
 
         $crewAssignments = new ArrayCollection([$shipCrew1, $shipCrew2]);
 
@@ -187,7 +187,7 @@ class TroopTransferUtilityTest extends StuTestCase
         $shipCrew2->shouldReceive('getCrew->getUser')
             ->withNoArgs()
             ->once()
-            ->andReturn($this->mock(UserInterface::class));
+            ->andReturn($this->mock(User::class));
 
         $result = $this->subject->foreignerCount($this->ship);
 
@@ -196,9 +196,9 @@ class TroopTransferUtilityTest extends StuTestCase
 
     public function testAssignCrewWhenShipTarget(): void
     {
-        $shipCrew = $this->mock(CrewAssignmentInterface::class);
-        $target = $this->mock(ShipInterface::class);
-        $takeover = $this->mock(ShipTakeoverInterface::class);
+        $shipCrew = $this->mock(CrewAssignment::class);
+        $target = $this->mock(Ship::class);
+        $takeover = $this->mock(ShipTakeover::class);
 
         $shipCrew->shouldReceive('clearAssignment')
             ->withNoArgs()
@@ -236,8 +236,8 @@ class TroopTransferUtilityTest extends StuTestCase
 
     public function testAssignCrewWhenColonyTarget(): void
     {
-        $shipCrew = $this->mock(CrewAssignmentInterface::class);
-        $target = $this->mock(ColonyInterface::class);
+        $shipCrew = $this->mock(CrewAssignment::class);
+        $target = $this->mock(Colony::class);
 
         $shipCrew->shouldReceive('clearAssignment')
             ->withNoArgs()

@@ -2,9 +2,9 @@
 
 namespace Stu\Module\Starmap\Lib;
 
-use Stu\Orm\Entity\MapBorderTypeInterface;
-use Stu\Orm\Entity\MapRegionInterface;
-use Stu\Orm\Entity\StarSystemInterface;
+use Stu\Orm\Entity\MapBorderType;
+use Stu\Orm\Entity\MapRegion;
+use Stu\Orm\Entity\StarSystem;
 
 interface ExploreableStarMapInterface
 {
@@ -30,11 +30,11 @@ interface ExploreableStarMapInterface
 
     public function getRegionDescription(): ?string;
 
-    public function setRegionDescription(string $regiondescription): ExploreableStarMapInterface;
+    public function setRegionDescription(string $regiondescription): ExploreableStarMap;
 
-    public function getMapBorderType(): ?MapBorderTypeInterface;
+    public function getMapBorderType(): ?MapBorderType;
 
-    public function getAdminRegion(): ?MapRegionInterface;
+    public function getAdminRegion(): ?MapRegion;
 
-    public function getInfluenceArea(): ?StarSystemInterface;
+    public function getInfluenceArea(): ?StarSystem;
 }

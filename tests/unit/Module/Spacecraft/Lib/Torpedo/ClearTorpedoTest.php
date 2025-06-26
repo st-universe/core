@@ -9,9 +9,9 @@ use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\StorageInterface;
-use Stu\Orm\Entity\TorpedoStorageInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Storage;
+use Stu\Orm\Entity\TorpedoStorage;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TorpedoStorageRepositoryInterface;
 use Stu\StuTestCase;
@@ -25,7 +25,7 @@ class ClearTorpedoTest extends StuTestCase
     private MockInterface&StorageRepositoryInterface $storageRepository;
 
     private MockInterface&ShipWrapperInterface $wrapper;
-    private MockInterface&ShipInterface $ship;
+    private MockInterface&Ship $ship;
 
     private ClearTorpedoInterface $subject;
 
@@ -39,7 +39,7 @@ class ClearTorpedoTest extends StuTestCase
 
         //params
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
-        $this->ship = $this->mock(ShipInterface::class);
+        $this->ship = $this->mock(Ship::class);
 
         $this->subject = new ClearTorpedo(
             $this->spacecraftSystemManager,
@@ -64,8 +64,8 @@ class ClearTorpedoTest extends StuTestCase
 
     public function testClearTorpedoStorageExpectClearanceWhenStorageFilled(): void
     {
-        $torpedoStorage = $this->mock(TorpedoStorageInterface::class);
-        $storage = $this->mock(StorageInterface::class);
+        $torpedoStorage = $this->mock(TorpedoStorage::class);
+        $storage = $this->mock(Storage::class);
 
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()
@@ -100,8 +100,8 @@ class ClearTorpedoTest extends StuTestCase
 
     public function testClearTorpedoStorageExpectClearanceAndDeactivationWhenActive(): void
     {
-        $torpedoStorage = $this->mock(TorpedoStorageInterface::class);
-        $storage = $this->mock(StorageInterface::class);
+        $torpedoStorage = $this->mock(TorpedoStorage::class);
+        $storage = $this->mock(Storage::class);
 
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()

@@ -17,9 +17,9 @@ use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Module\Trade\Lib\LotteryFacadeInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
-use Stu\Orm\Entity\LotteryWinnerBuildplanInterface;
-use Stu\Orm\Entity\TradePostInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\LotteryWinnerBuildplan;
+use Stu\Orm\Entity\TradePost;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\AwardRepositoryInterface;
 use Stu\Orm\Repository\LotteryTicketRepositoryInterface;
 use Stu\Orm\Repository\LotteryWinnerBuildplanRepositoryInterface;
@@ -132,7 +132,7 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
         }
     }
 
-    private function createAwardAndPrestige(UserInterface $user, int $time): void
+    private function createAwardAndPrestige(User $user, int $time): void
     {
         $award = $this->awardRepository->find(UserAwardEnum::LOTTERY_WINNER);
 
@@ -153,7 +153,7 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
         );
     }
 
-    private function payOutLatinum(UserInterface $winner, int $jackpot, int $ticketCount, TradePostInterface $tradePost): void
+    private function payOutLatinum(User $winner, int $jackpot, int $ticketCount, TradePost $tradePost): void
     {
         $storageManagerUser = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $winner);
 
@@ -174,15 +174,15 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
         );
     }
 
-    private function transmitShip(UserInterface $winner, TradePostInterface $tradePost): void
+    private function transmitShip(User $winner, TradePost $tradePost): void
     {
-        /** @var array<int, LotteryWinnerBuildplanInterface> */
+        /** @var array<int, LotteryWinnerBuildplan> */
         $winnerBuildplans = $this->lotteryWinnerBuildplanRepository->findByFactionId($winner->getFactionId());
         if (empty($winnerBuildplans)) {
             return;
         }
 
-        $chances = array_map(fn(LotteryWinnerBuildplanInterface $winnerBuildplan): int => $winnerBuildplan->getChance(), $winnerBuildplans);
+        $chances = array_map(fn(LotteryWinnerBuildplan $winnerBuildplan): int => $winnerBuildplan->getChance(), $winnerBuildplans);
 
         $randomKey = $this->stuRandom->randomKeyOfProbabilities($chances);
         $buildplan = $winnerBuildplans[$randomKey]->getBuildplan();

@@ -9,7 +9,7 @@ use Override;
 use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class NPCList implements ViewControllerInterface
@@ -71,7 +71,7 @@ final class NPCList implements ViewControllerInterface
             //filter by name/id
             $npc_list = array_filter(
                 $npc_list,
-                function (UserInterface $user) use ($search): bool {
+                function (User $user) use ($search): bool {
                     $nameHit = strpos(strtoupper($this->parser->parse($user->getName())->getAsText()), $search) !== false;
                     $idHit = is_numeric($search) && ($user->getId() === (int)$search);
 

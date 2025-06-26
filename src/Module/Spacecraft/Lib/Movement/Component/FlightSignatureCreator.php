@@ -7,10 +7,10 @@ namespace Stu\Module\Spacecraft\Lib\Movement\Component;
 use InvalidArgumentException;
 use Override;
 use Stu\Component\Map\DirectionEnum;
-use Stu\Orm\Entity\FlightSignatureInterface;
-use Stu\Orm\Entity\LocationInterface;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\SpacecraftInterface;
+use Stu\Orm\Entity\FlightSignature;
+use Stu\Orm\Entity\Location;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
 
 /**
@@ -22,12 +22,12 @@ final class FlightSignatureCreator implements FlightSignatureCreatorInterface
 
     #[Override]
     public function createSignatures(
-        SpacecraftInterface $spacecraft,
+        Spacecraft $spacecraft,
         DirectionEnum $direction,
-        LocationInterface $currentLocation,
-        LocationInterface $nextLocation
+        Location $currentLocation,
+        Location $nextLocation
     ): void {
-        if ($currentLocation instanceof MapInterface !== $nextLocation instanceof MapInterface) {
+        if ($currentLocation instanceof Map !== $nextLocation instanceof Map) {
             throw new InvalidArgumentException('wayopints have different type');
         }
 
@@ -46,8 +46,8 @@ final class FlightSignatureCreator implements FlightSignatureCreatorInterface
 
     private function create(
         DirectionEnum $direction,
-        FlightSignatureInterface $fromSignature,
-        FlightSignatureInterface $toSignature
+        FlightSignature $fromSignature,
+        FlightSignature $toSignature
     ): void {
 
         $fromSignature->setToDirection($direction);
@@ -57,7 +57,7 @@ final class FlightSignatureCreator implements FlightSignatureCreatorInterface
         $this->flightSignatureRepository->save($toSignature);
     }
 
-    private function createSignature(SpacecraftInterface $spacecraft): FlightSignatureInterface
+    private function createSignature(Spacecraft $spacecraft): FlightSignature
     {
         $signature = $this->flightSignatureRepository->prototype();
         $signature->setUserId($spacecraft->getUser()->getId());
