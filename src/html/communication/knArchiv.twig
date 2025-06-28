@@ -63,7 +63,7 @@
                         <div class="segment">
                             <div style="text-align: center;">
                                 <strong>ARCHIV</strong><br>
-                                <span style="font-size: 80%;">v{{ post.version }}</span>
+                                <span style="font-size: 80%;">{{ ARCHIVE_VERSION_DISPLAY }}</span>
                             </div>
                         </div>
                         <div class="segment">
@@ -71,6 +71,21 @@
                                 Original-ID: {{ post.formerId }}
                             </div>
                         </div>
+                        {% if post.refs %}
+                        <div class="segment">
+                            <div style="text-align: center; font-size: 80%;">
+                                <strong>Referenzen:</strong><br>
+                                {% for refId in post.refs %}
+                                <a href="javascript:void(0);"
+                                    onclick="document.knarchivesearchform.search.value='{{ refId }}'; searchKnArchive('SHOW_POSTID_ARCHIVE_SEARCH');"
+                                    style="color: #6699cc; text-decoration: underline;">
+                                    #{{ refId }}
+                                </a>
+                                {% if not loop.last %}, {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
                     </div>
                     <div class="knGridRating">
                         {% if post.editDate and post.editDate > 0 %}
@@ -124,7 +139,7 @@
     <div class="box">
         <div class="box_title">KN-Archiv</div>
         <div class="box_body">
-            <strong>Version {{ ARCHIVE_VERSION }}</strong><br />
+            <strong>Version {{ ARCHIVE_VERSION_DISPLAY }}</strong><br />
             <span style="font-size: 90%;">{{ TOTAL_POSTS }} Beiträge archiviert</span>
             <br /><br />
             <a href="/comm.php" class="linkbutton">« Zurück zum aktuellen KN</a>

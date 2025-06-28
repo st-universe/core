@@ -47,4 +47,9 @@ interface KnArchiveItemInterface
     public function getCommentCount(): int;
 
     public function getDivClass(): string;
+
+    /**
+     * @return array<int>|null
+     */
+    public function getRefs(): ?array;
 }

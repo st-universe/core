@@ -62,6 +62,12 @@ class KnPostArchiv
     #[Column(type: 'json')]
     private array $ratings = [];
 
+    /**
+     * @var array<int>|null
+     */
+    #[Column(type: 'json', nullable: true)]
+    private ?array $refs = null;
+
     public function getId(): int
     {
         return $this->id;
@@ -167,6 +173,23 @@ class KnPostArchiv
     public function setRatings(array $ratings): KnPostArchiv
     {
         $this->ratings = $ratings;
+        return $this;
+    }
+
+    /**
+     * @return array<int>|null
+     */
+    public function getRefs(): ?array
+    {
+        return $this->refs;
+    }
+
+    /**
+     * @param array<int>|null $refs
+     */
+    public function setRefs(?array $refs): KnPostArchiv
+    {
+        $this->refs = $refs;
         return $this;
     }
 
