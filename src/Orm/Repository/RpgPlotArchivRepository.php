@@ -98,4 +98,42 @@ final class RpgPlotArchivRepository extends EntityRepository implements RpgPlotA
             )
         )->execute();
     }
+
+    #[Override]
+    public function getAvailableVersions(): array
+    {
+        $result = $this->createQueryBuilder('rpa')
+            ->select('DISTINCT rpa.version')
+            ->orderBy('rpa.version', 'DESC')
+            ->getQuery()
+            ->getScalarResult();
+
+        return array_column($result, 'version');
+    }
+
+    #[Override]
+    public function getByVersion(string $version): array
+    {
+        return $this->findBy(
+            ['version' => $version],
+            ['start_date' => 'desc']
+        );
+    }
+
+    #[Override]
+    public function getOrderedListByVersion(string $version): array
+    {
+        return $this->createQueryBuilder('rpa')
+            ->where('rpa.version = :version')
+            ->setParameter('version', $version)
+            ->orderBy('rpa.start_date', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    #[Override]
+    public function findByFormerId(int $formerId): ?RpgPlotArchiv
+    {
+        return $this->findOneBy(['former_id' => $formerId]);
+    }
 }

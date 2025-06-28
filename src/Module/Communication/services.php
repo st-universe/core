@@ -64,9 +64,17 @@ use Stu\Module\Communication\View\ShowKnArchive\ShowKnArchiveRequestInterface;
 use Stu\Module\Communication\View\ShowKnArchiveComments\ShowKnArchiveComments;
 use Stu\Module\Communication\View\ShowKnArchiveComments\ShowKnArchiveCommentsRequest;
 use Stu\Module\Communication\View\ShowKnArchiveComments\ShowKnArchiveCommentsRequestInterface;
+use Stu\Module\Communication\View\ShowArchiveSearchResult\ShowUserArchiveSearchResult;
+use Stu\Module\Communication\View\ShowArchiveSearchResult\ShowPostIdArchiveSearchResult;
+use Stu\Module\Communication\View\ShowArchiveSearchResult\ShowPostArchiveSearchResult;
+use Stu\Module\Communication\View\ShowArchiveSearchResult\ShowArchiveSearchResultRequest;
+use Stu\Module\Communication\View\ShowArchiveSearchResult\ShowArchiveSearchResultRequestInterface;
 use Stu\Module\Communication\View\ShowKnArchivePlot\ShowKnArchivePlot;
 use Stu\Module\Communication\View\ShowKnArchivePlot\ShowKnArchivePlotRequest;
 use Stu\Module\Communication\View\ShowKnArchivePlot\ShowKnArchivePlotRequestInterface;
+use Stu\Module\Communication\View\ShowKnArchivePlotList\ShowKnArchivePlotList;
+use Stu\Module\Communication\View\ShowKnArchivePlotList\ShowKnArchivePlotListRequest;
+use Stu\Module\Communication\View\ShowKnArchivePlotList\ShowKnArchivePlotListRequestInterface;
 use Stu\Module\Communication\View\ShowKnCharacter\ShowKnCharacter;
 use Stu\Module\Communication\View\ShowKnCharacter\ShowKnCharacterRequest;
 use Stu\Module\Communication\View\ShowKnCharacter\ShowKnCharacterRequestInterface;
@@ -117,7 +125,9 @@ return [
     ShowSearchResultRequestInterface::class => autowire(ShowSearchResultRequest::class),
     ShowKnArchiveRequestInterface::class => autowire(ShowKnArchiveRequest::class),
     ShowKnArchiveCommentsRequestInterface::class => autowire(ShowKnArchiveCommentsRequest::class),
+    ShowKnArchivePlotListRequestInterface::class => autowire(ShowKnArchivePlotListRequest::class),
     ShowKnArchivePlotRequestInterface::class => autowire(ShowKnArchivePlotRequest::class),
+    ShowArchiveSearchResultRequestInterface::class => autowire(ShowArchiveSearchResultRequest::class),
     'COMMUNICATION_ACTIONS' => [
         SetKnMark::ACTION_IDENTIFIER => autowire(SetKnMark::class),
         AdminDeleteKnPost::ACTION_IDENTIFIER => autowire(AdminDeleteKnPost::class),
@@ -159,6 +169,10 @@ return [
         ShowPostIdSearchResult::VIEW_IDENTIFIER => autowire(ShowPostIdSearchResult::class),
         ShowKnArchive::VIEW_IDENTIFIER => autowire(ShowKnArchive::class),
         ShowKnArchiveComments::VIEW_IDENTIFIER => autowire(ShowKnArchiveComments::class),
+        ShowKnArchivePlotList::VIEW_IDENTIFIER => autowire(ShowKnArchivePlotList::class),
+        ShowUserArchiveSearchResult::VIEW_IDENTIFIER => autowire(ShowUserArchiveSearchResult::class),
+        ShowPostIdArchiveSearchResult::VIEW_IDENTIFIER => autowire(ShowPostIdArchiveSearchResult::class),
+        ShowPostArchiveSearchResult::VIEW_IDENTIFIER => autowire(ShowPostArchiveSearchResult::class),
         ShowKnArchivePlot::VIEW_IDENTIFIER => autowire(ShowKnArchivePlot::class)
     ],
 ];

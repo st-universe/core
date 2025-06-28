@@ -154,3 +154,16 @@ function showKnArchiveComments(knId) {
 	openWindow(elt, 1, 450);
 	ajax_update(elt, "comm.php?SHOW_KN_ARCHIVE_COMMENTS=1&knid=" + knId);
 }
+
+function searchKnArchive(action) {
+	var searchValue = document.forms['knarchivesearchform'].search.value;
+	var version = document.forms['knarchivesearchform'].version.value;
+	var sessionString = document.forms['knarchivesearchform'].sstr.value;
+
+	if (searchValue.trim() === '') {
+		alert('Bitte geben Sie einen Suchbegriff ein!');
+		return;
+	}
+
+	window.location.href = '/comm.php?' + action + '=1&search=' + encodeURIComponent(searchValue) + '&version=' + encodeURIComponent(version) + '&sstr=' + sessionString;
+}

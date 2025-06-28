@@ -1,0 +1,43 @@
+{% from 'html/macros.twig' import userAvatar %}
+
+{% for plotData in PLOT_LIST %}
+{% set plot = plotData.plot %}
+<div class="plotListItem">
+    <div>
+        <div class="plotTitle">
+            <a href="?SHOW_ARCHIVE_PLOT=1&plotid={{ plot.getFormerId }}">{{ plot.getTitle }}</a>
+            <span style="color: #888; font-size: 80%; margin-left: 10px;">(ARCHIV)</span>
+        </div>
+        <div>
+            {{ plotData.postCount }} Beitrag/Beiträge von {{ plotData.memberCount }} Spieler(n)
+        </div>
+    </div>
+    <div>
+        <div>
+            Gestartet: {{ plot.getStartDate|stuDate }}
+        </div>
+        <div>
+            <span>Status:</span>
+            {% if plot.isActive %}
+            <span style="color: #90EE90;">Aktiv</span>
+            {% else %}
+            <span style="color: #FFA500;">Beendet am {{ plot.getEndDate|stuDate }}</span>
+            {% endif %}
+        </div>
+        <div style="margin-top: 5px; color: #888; font-size: 80%;">
+            Archiv-Version: {{ plot.getVersion }}
+        </div>
+    </div>
+    <div class="plotMember">
+        {% for member in plotData.members %}
+        <div style="margin: 2px; padding: 2px; background-color: #333; border-radius: 3px; font-size: 80%;">
+            {{ member.getUsername }} ({{ member.getUserId }})
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endfor %}
+<li>
+    <span style="color: #cecece">></span>
+    <a href="?SHOW_ARCHIVE_PLOTLIST=1&version={{ ARCHIVE_VERSION }}">Liste aller Archiv-Plots</a>
+</li>
