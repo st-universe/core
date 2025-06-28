@@ -31,7 +31,7 @@
     <div class="plotMember">
         {% for member in plotData.members %}
         <div style="margin: 2px; padding: 2px; background-color: #333; border-radius: 3px; font-size: 80%;">
-            {{ member.getUsername }} ({{ member.getUserId }})
+            {{ member.getUsername|bbcode }} ({{ member.getUserId }})
         </div>
         {% endfor %}
     </div>
