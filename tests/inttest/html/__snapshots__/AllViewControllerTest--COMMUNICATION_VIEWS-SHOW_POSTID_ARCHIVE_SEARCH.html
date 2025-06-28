@@ -1,0 +1,111 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body>
+<div class="box">
+    <div class="box_title" style="text-align: left">/
+                <a href="comm.php">
+            KommNet
+        </a>
+                <span> / </span>
+                        <a href="comm.php?SHOW_KN_ARCHIVE=1&amp;version=">
+            Archiv
+        </a>
+                    </div>
+</div>
+<br>
+<div id="result">
+    <table class="use">
+        <tr>
+            <th>Meldung</th>
+        </tr>
+        <tr>
+            <td>
+                
+                <div class="information-container">
+                                        <div class="information-item">
+                        Ung&uuml;ltige Archiv-Version!
+                    </div>
+                    
+                                    </div>
+
+                            </td>
+        </tr>
+    </table>
+</div>
+
+<br>
+<div style="width: 75%; float: left; margin-right: 1%">
+        <div class="divhead">Meldung</div>
+    <div class="divbody">Keine Beitr&auml;ge in dieser Archiv-Version vorhanden</div>
+    </div>
+
+<div style="width: 24%; float: left">
+    <div class="box">
+        <div class="box_title">KN-Archiv</div>
+        <div class="box_body">
+            <strong>Version </strong><br>
+            <span style="font-size: 90%;"> Beitr&auml;ge archiviert</span>
+            <br><br>
+            <a href="/comm.php" class="linkbutton">&laquo; Zur&uuml;ck zum aktuellen KN</a>
+            <br><br>
+            <strong>&Uuml;bersicht</strong><br>
+            <ul>
+                <li>
+                    <span style="color: #cecece">&gt;</span>
+                    <a href="?=1&amp;version=">Alle Beitr&auml;ge</a>
+                </li>
+            </ul>
+            <div class="seperator"> </div>
+            <ul>
+                <li>
+                    <strong>Archiv-Plots</strong>
+                </li>
+                <li>
+                    <span style="color: #cecece">&gt;</span>
+                    <a href="?SHOW_ARCHIVE_PLOTLIST=1&amp;version=">Liste aller Archiv-Plots</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <br>
+    <div class="box">
+        <div class="box_title">Archiv-Suche</div>
+        <div class="box_body">
+            <form method="post" action="comm.php" name="knarchivesearchform">
+                <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
+                <input type="hidden" name="version" value="">
+                <ul>
+                    <li>
+                        <input type="text" name="search" style="width: 150px;" onkeypress="return event.keyCode != 13;">
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);" onclick="searchKnArchive('SHOW_USER_ARCHIVE_SEARCH');" class="linkbutton">
+                            nach Spieler-ID suchen
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);" onclick="searchKnArchive('SHOW_POSTID_ARCHIVE_SEARCH');" class="linkbutton">
+                            nach Original-ID suchen
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);" onclick="searchKnArchive('SHOW_POST_ARCHIVE_SEARCH');" class="linkbutton">
+                            nach Text suchen
+                        </a>
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="footer">
+    Rendered in 4.203s - Memory usage: 42.77Mb
+</div>
+
+</body>
+</html>

@@ -1,131 +1,186 @@
 {% from 'html/macros.twig' import userAvatar, userInfo %}
 
-<div style="margin-bottom: 15px; padding: 10px; background-color: #2a2a2a; border: 1px solid #444;">
-    <div style="float: left;">
-        <strong style="color: #fff;">KN-Archiv - Version {{ ARCHIVE_VERSION }}</strong>
-    </div>
-    <div style="float: right;">
-        <a href="/comm.php" class="linkbutton">&laquo; Zurück zum aktuellen KN</a>
-    </div>
-    <div style="clear: both;"></div>
-    <div style="margin-top: 5px; color: #ccc; font-size: 90%;">
-        {{ TOTAL_POSTS }} Beiträge archiviert
-    </div>
-</div>
+<div style="width: 75%; float: left; margin-right: 1%">
+    {% if not KN_POSTINGS %}
+    <div class="divhead">Meldung</div>
+    <div class="divbody">Keine Beiträge in dieser Archiv-Version vorhanden</div>
+    {% else %}
 
-{% if not KN_POSTINGS %}
-<div class="divhead">Meldung</div>
-<div class="divbody">Keine Beiträge in dieser Archiv-Version vorhanden</div>
-{% else %}
+    {% if KN_NAVIGATION %}
+    <table>
+        <tr>
+            {% for item in KN_NAVIGATION %}
+            <td>
+                <a href="?{{ SHOW_ARCHIVE_VIEW }}=1&version={{ ARCHIVE_VERSION }}&mark={{ item.mark }}"
+                    class="{{ item.cssclass }}">
+                    {{ item.page }}
+                </a>
+            </td>
+            {% endfor %}
+        </tr>
+    </table>
+    {% endif %}
+    <br />
 
-{% if KN_NAVIGATION %}
-<table>
-    <tr>
-        {% for item in KN_NAVIGATION %}
-        <td>
-            <a href="?{{ SHOW_ARCHIVE_VIEW }}=1&version={{ ARCHIVE_VERSION }}&mark={{ item.mark }}"
-                class="{{ item.cssclass }}">
-                {{ item.page }}
-            </a>
-        </td>
-        {% endfor %}
-    </tr>
-</table>
-{% endif %}
-<br />
-
-{% for post in KN_POSTINGS %}
-{% set postId = post.id %}
-<div style="overflow: hidden; text-overflow: ellipsis">
-    <div id="kn_archive_post_{{ postId }}" class="{{ post.divClass }}">
-        <div class="box_title" style="padding-top: 5px; padding-bottom: 5px; font-size: 110%;">
-            {{ post.username|bbcode }}
-        </div>
-        <div class="box_body" style="margin: 0; padding: 0;">
-            <div class="knGrid">
-                <div class="knGridText">
-                    <div style="padding: 10px;">
-                        {% if post.rpgPlot %}
-                        <span class="knh1">{{ post.rpgPlot.title }}</span>
-                        <span>(<a href="?SHOW_ARCHIVE_PLOT=1&plotid={{ post.rpgPlot.formerId }}" target="_blank">
-                                Zum Archiv-Plot</a>)</span>
-                        {% if post.title %}
-                        <br />
-                        {% endif %}
-                        {% endif %}
-                        {% if post.title %}
-                        <span class="knh2">{{ post.title }}</span>
-                        {% endif %}
-                        <br />
-                        <br />
-                        <span class="translatable-content" style="overflow-wrap: break-word; word-break: break-word;">
-                            {% autoescape false %}
-                            {{ post.text|nl2br }}
-                            {% endautoescape %}
-                        </span>
-                    </div>
-                </div>
-                <div class="knGridUser">
-                    <div class="segment">
-                        <div style="text-align: center; width: 100%">
-                            {{ post.date|stuDateTime }}
+    {% for post in KN_POSTINGS %}
+    {% set postId = post.id %}
+    <div style="overflow: hidden; text-overflow: ellipsis">
+        <div id="kn_archive_post_{{ postId }}" class="{{ post.divClass }}">
+            <div class="box_title" style="padding-top: 5px; padding-bottom: 5px; font-size: 110%;">
+                {{ post.username|bbcode }}
+            </div>
+            <div class="box_body" style="margin: 0; padding: 0;">
+                <div class="knGrid">
+                    <div class="knGridText">
+                        <div style="padding: 10px;">
+                            {% if post.rpgPlot %}
+                            <span class="knh1">{{ post.rpgPlot.title }}</span>
+                            <span>(<a href="?SHOW_ARCHIVE_PLOT=1&plotid={{ post.rpgPlot.formerId }}" target="_blank">
+                                    Zum Archiv-Plot</a>)</span>
+                            {% if post.title %}
+                            <br />
+                            {% endif %}
+                            {% endif %}
+                            {% if post.title %}
+                            <span class="knh2">{{ post.title }}</span>
+                            {% endif %}
+                            <br />
+                            <br />
+                            <span class="translatable-content"
+                                style="overflow-wrap: break-word; word-break: break-word;">
+                                {% autoescape false %}
+                                {{ post.text|nl2br }}
+                                {% endautoescape %}
+                            </span>
                         </div>
                     </div>
-                    <div class="segment">
-                        <div style="text-align: center;">
-                            <strong>ARCHIV</strong><br>
-                            <span style="font-size: 80%;">v{{ post.version }}</span>
+                    <div class="knGridUser">
+                        <div class="segment">
+                            <div style="text-align: center; width: 100%">
+                                {{ post.date|stuDateTime }}
+                            </div>
+                        </div>
+                        <div class="segment">
+                            <div style="text-align: center;">
+                                <strong>ARCHIV</strong><br>
+                                <span style="font-size: 80%;">v{{ post.version }}</span>
+                            </div>
+                        </div>
+                        <div class="segment">
+                            <div style="text-align: center; font-size: 80%;">
+                                Original-ID: {{ post.formerId }}
+                            </div>
                         </div>
                     </div>
-                    <div class="segment">
-                        <div style="text-align: center; font-size: 80%;">
-                            Original-ID: {{ post.formerId }}
-                        </div>
-                    </div>
-                </div>
-                <div class="knGridRating">
-                    {% if post.editDate and post.editDate > 0 %}
-                    <div class="segment">
-                        <span class="knedit">Bearbeitet: {{ post.editDate|stuDateTime }}</span>
-                    </div>
-                    {% endif %}
-                    <div class="segment" id="kn_rating_{{ postId }}">
-                        {% if post.ratingBar %}
-                        <div style="display: inline-block">
-                            {% autoescape false %}
-                            {{ post.ratingBar }}
-                            {% endautoescape %}
+                    <div class="knGridRating">
+                        {% if post.editDate and post.editDate > 0 %}
+                        <div class="segment">
+                            <span class="knedit">Bearbeitet: {{ post.editDate|stuDateTime }}</span>
                         </div>
                         {% endif %}
-                    </div>
-                    <div class="segment">
-                        <a href="javascript:void(0);" onclick="showKnArchiveComments({{ post.formerId }});">
-                            {{ post.commentCount }} <span>Kommentare</span>
-                            <br><small style="color: #888;">(archiviert)</small>
-                        </a>
+                        <div class="segment" id="kn_rating_{{ postId }}">
+                            {% if post.ratingBar %}
+                            <div style="display: inline-block">
+                                {% autoescape false %}
+                                {{ post.ratingBar }}
+                                {% endautoescape %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="segment">
+                            <a href="javascript:void(0);" onclick="showKnArchiveComments({{ post.formerId }});">
+                                {{ post.commentCount }} <span>Kommentare</span>
+                                <br><small style="color: #888;">(archiviert)</small>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        <br />
     </div>
+    {% endfor %}
+
     <br />
+    {% if KN_NAVIGATION %}
+    <table>
+        <tr>
+            {% for item in KN_NAVIGATION %}
+            <td>
+                <a href="?{{ SHOW_ARCHIVE_VIEW }}=1&version={{ ARCHIVE_VERSION }}&mark={{ item.mark }}"
+                    class="{{ item.cssclass }}">
+                    {{ item.page }}
+                </a>
+            </td>
+            {% endfor %}
+        </tr>
+    </table>
+    {% endif %}
+
+    {% endif %}
 </div>
-{% endfor %}
 
-<br />
-{% if KN_NAVIGATION %}
-<table>
-    <tr>
-        {% for item in KN_NAVIGATION %}
-        <td>
-            <a href="?{{ SHOW_ARCHIVE_VIEW }}=1&version={{ ARCHIVE_VERSION }}&mark={{ item.mark }}"
-                class="{{ item.cssclass }}">
-                {{ item.page }}
-            </a>
-        </td>
-        {% endfor %}
-    </tr>
-</table>
-{% endif %}
+<div style="width: 24%; float: left">
+    <div class="box">
+        <div class="box_title">KN-Archiv</div>
+        <div class="box_body">
+            <strong>Version {{ ARCHIVE_VERSION }}</strong><br />
+            <span style="font-size: 90%;">{{ TOTAL_POSTS }} Beiträge archiviert</span>
+            <br /><br />
+            <a href="/comm.php" class="linkbutton">« Zurück zum aktuellen KN</a>
+            <br /><br />
+            <strong>Übersicht</strong><br />
+            <ul>
+                <li>
+                    <span style="color: #cecece">></span>
+                    <a href="?{{ SHOW_ARCHIVE_VIEW }}=1&version={{ ARCHIVE_VERSION }}">Alle Beiträge</a>
+                </li>
+            </ul>
+            <div class="seperator"> </div>
+            <ul>
+                <li>
+                    <strong>Archiv-Plots</strong>
+                </li>
+                <li>
+                    <span style="color: #cecece">></span>
+                    <a href="?SHOW_ARCHIVE_PLOTLIST=1&version={{ ARCHIVE_VERSION }}">Liste aller Archiv-Plots</a>
+                </li>
+            </ul>
+        </div>
+    </div>
 
-{% endif %}
+    <br />
+    <div class="box">
+        <div class="box_title">Archiv-Suche</div>
+        <div class="box_body">
+            <form method="post" action="comm.php" name="knarchivesearchform">
+                <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+                <input type="hidden" name="version" value="{{ ARCHIVE_VERSION }}" />
+                <ul>
+                    <li>
+                        <input type="text" name="search" style="width: 150px;"
+                            onkeypress="return event.keyCode != 13;" />
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);" onClick="searchKnArchive('SHOW_USER_ARCHIVE_SEARCH');"
+                            class="linkbutton">
+                            nach Spieler-ID suchen
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);" onClick="searchKnArchive('SHOW_POSTID_ARCHIVE_SEARCH');"
+                            class="linkbutton">
+                            nach Original-ID suchen
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);" onClick="searchKnArchive('SHOW_POST_ARCHIVE_SEARCH');"
+                            class="linkbutton">
+                            nach Text suchen
+                        </a>
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </div>
+</div>

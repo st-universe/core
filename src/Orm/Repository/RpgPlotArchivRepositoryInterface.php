@@ -42,4 +42,21 @@ interface RpgPlotArchivRepositoryInterface extends ObjectRepository
     public function getOrderedList(): array;
 
     public function truncateAllEntities(): void;
+
+    /**
+     * @return array<string>
+     */
+    public function getAvailableVersions(): array;
+
+    /**
+     * @return array<RpgPlotArchiv>
+     */
+    public function getByVersion(string $version): array;
+
+    /**
+     * @return array<RpgPlotArchiv>
+     */
+    public function getOrderedListByVersion(string $version): array;
+
+    public function findByFormerId(int $formerId): ?RpgPlotArchiv;
 }

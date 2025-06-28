@@ -1,0 +1,36 @@
+{% from 'html/macros.twig' import userAvatar %}
+
+<div class="box" style="margin-bottom: 15px;">
+    <div class="box_title">Archiv-Plots</div>
+    <div class="box_body">
+        <strong>Version {{ ARCHIVE_VERSION }}</strong><br />
+        <span style="font-size: 90%;">{{ (ACTIVE_PLOTS|length + ENDED_PLOTS|length) }} Plots archiviert</span>
+        <br /><br />
+        <div style="float: right;">
+            <a href="/comm.php?{{ SHOW_ARCHIVE_VIEW }}=1&version={{ ARCHIVE_VERSION }}" class="linkbutton">&laquo;
+                Zurück zum Archiv</a>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+</div>
+
+{% if ACTIVE_PLOTS %}
+<div class="divhead">Aktive Archiv-Plots</div>
+<div class="plotList">
+    {% set PLOT_LIST = ACTIVE_PLOTS %}
+    {% include 'html/communication/plot/plotListArchiv.twig' %}
+</div>
+{% endif %}
+
+{% if ENDED_PLOTS %}
+<div class="divhead">Beendete Archiv-Plots</div>
+<div class="plotList">
+    {% set PLOT_LIST = ENDED_PLOTS %}
+    {% include 'html/communication/plot/plotListArchiv.twig' %}
+</div>
+{% endif %}
+
+{% if not ACTIVE_PLOTS and not ENDED_PLOTS %}
+<div class="divhead">Meldung</div>
+<div class="divbody">Keine Plots in dieser Archiv-Version vorhanden</div>
+{% endif %}

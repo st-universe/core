@@ -82,4 +82,17 @@ interface KnPostArchivRepositoryInterface extends ObjectRepository
      * @return array<KnPostArchiv>
      */
     public function getByPlotFormerId(int $plotFormerId, ?int $offset, ?int $limit): array;
+
+    // Neue Methoden für Archiv-Suche
+    /**
+     * @return array<KnPostArchiv>
+     */
+    public function getByUserAndVersion(int $userId, string $version): array;
+
+    public function findByFormerIdAndVersion(int $formerId, string $version): ?KnPostArchiv;
+
+    /**
+     * @return array<KnPostArchiv>
+     */
+    public function searchByContentAndVersion(string $content, string $version): array;
 }

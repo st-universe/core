@@ -223,4 +223,45 @@ final class KnPostArchivRepository extends EntityRepository implements KnPostArc
             $offset
         );
     }
+
+    #[Override]
+    public function getByUserAndVersion(int $userId, string $version): array
+    {
+        return $this->findBy(
+            [
+                'user_id' => $userId,
+                'version' => $version
+            ],
+            ['date' => 'desc']
+        );
+    }
+
+    #[Override]
+    public function findByFormerIdAndVersion(int $formerId, string $version): ?KnPostArchiv
+    {
+        return $this->findOneBy([
+            'former_id' => $formerId,
+            'version' => $version
+        ]);
+    }
+
+    #[Override]
+    public function searchByContentAndVersion(string $content, string $version): array
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT p FROM %s p
+                    WHERE (UPPER(p.text) like UPPER(:content) OR UPPER(p.titel) like UPPER(:content))
+                    AND p.version = :version
+                    ORDER BY p.date DESC',
+                    KnPostArchiv::class
+                )
+            )
+            ->setParameters([
+                'content' => sprintf('%%%s%%', $content),
+                'version' => $version
+            ])
+            ->getResult();
+    }
 }
