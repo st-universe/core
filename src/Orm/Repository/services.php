@@ -65,6 +65,8 @@ use Stu\Orm\Entity\GameTurn;
 use Stu\Orm\Entity\GameTurnStats;
 use Stu\Orm\Entity\History;
 use Stu\Orm\Entity\IgnoreList;
+use Stu\Orm\Entity\KnPostArchiv;
+use Stu\Orm\Entity\KnCommentArchiv;
 use Stu\Orm\Entity\KnCharacter;
 use Stu\Orm\Entity\KnComment;
 use Stu\Orm\Entity\KnPost;
@@ -104,6 +106,8 @@ use Stu\Orm\Entity\Research;
 use Stu\Orm\Entity\ResearchDependency;
 use Stu\Orm\Entity\Researched;
 use Stu\Orm\Entity\RpgPlot;
+use Stu\Orm\Entity\RpgPlotArchiv;
+use Stu\Orm\Entity\RpgPlotMemberArchiv;
 use Stu\Orm\Entity\RpgPlotMember;
 use Stu\Orm\Entity\SessionString;
 use Stu\Orm\Entity\Ship;
@@ -225,6 +229,8 @@ return [
     IgnoreListRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(IgnoreList::class),
     KnCharacterRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(KnCharacter::class),
     KnCommentRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(KnComment::class),
+    KnPostArchivRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(KnPostArchiv::class),
+    KnCommentArchivRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(KnCommentArchiv::class),
     KnPostRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(KnPost::class),
     KnPostToPlotApplicationRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(KnPostToPlotApplication::class),
     LayerRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(Layer::class),
@@ -264,6 +270,8 @@ return [
     ResearchedRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(Researched::class),
     ResearchDependencyRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(ResearchDependency::class),
     RpgPlotRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(RpgPlot::class),
+    RpgPlotArchivRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(RpgPlotArchiv::class),
+    RpgPlotMemberArchivRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(RpgPlotMemberArchiv::class),
     RpgPlotMemberRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(RpgPlotMember::class),
     SessionStringRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(SessionString::class),
     SpacecraftBuildplanRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(SpacecraftBuildplan::class),

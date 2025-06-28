@@ -58,6 +58,15 @@ use Stu\Module\Communication\View\ShowEditKn\ShowEditKnRequestInterface;
 use Stu\Module\Communication\View\ShowEditPlot\ShowEditPlot;
 use Stu\Module\Communication\View\ShowEditPlot\ShowEditPlotRequest;
 use Stu\Module\Communication\View\ShowEditPlot\ShowEditPlotRequestInterface;
+use Stu\Module\Communication\View\ShowKnArchive\ShowKnArchive;
+use Stu\Module\Communication\View\ShowKnArchive\ShowKnArchiveRequest;
+use Stu\Module\Communication\View\ShowKnArchive\ShowKnArchiveRequestInterface;
+use Stu\Module\Communication\View\ShowKnArchiveComments\ShowKnArchiveComments;
+use Stu\Module\Communication\View\ShowKnArchiveComments\ShowKnArchiveCommentsRequest;
+use Stu\Module\Communication\View\ShowKnArchiveComments\ShowKnArchiveCommentsRequestInterface;
+use Stu\Module\Communication\View\ShowKnArchivePlot\ShowKnArchivePlot;
+use Stu\Module\Communication\View\ShowKnArchivePlot\ShowKnArchivePlotRequest;
+use Stu\Module\Communication\View\ShowKnArchivePlot\ShowKnArchivePlotRequestInterface;
 use Stu\Module\Communication\View\ShowKnCharacter\ShowKnCharacter;
 use Stu\Module\Communication\View\ShowKnCharacter\ShowKnCharacterRequest;
 use Stu\Module\Communication\View\ShowKnCharacter\ShowKnCharacterRequestInterface;
@@ -106,6 +115,9 @@ return [
     EndKnPlotRequestInterface::class => autowire(EndKnPlotRequest::class),
     ShowSingleKnRequestInterface::class => autowire(ShowSingleKnRequest::class),
     ShowSearchResultRequestInterface::class => autowire(ShowSearchResultRequest::class),
+    ShowKnArchiveRequestInterface::class => autowire(ShowKnArchiveRequest::class),
+    ShowKnArchiveCommentsRequestInterface::class => autowire(ShowKnArchiveCommentsRequest::class),
+    ShowKnArchivePlotRequestInterface::class => autowire(ShowKnArchivePlotRequest::class),
     'COMMUNICATION_ACTIONS' => [
         SetKnMark::ACTION_IDENTIFIER => autowire(SetKnMark::class),
         AdminDeleteKnPost::ACTION_IDENTIFIER => autowire(AdminDeleteKnPost::class),
@@ -144,6 +156,9 @@ return [
         ShowSingleKn::VIEW_IDENTIFIER => autowire(ShowSingleKn::class),
         ShowPostSearchResult::VIEW_IDENTIFIER => autowire(ShowPostSearchResult::class),
         ShowUserSearchResult::VIEW_IDENTIFIER => autowire(ShowUserSearchResult::class),
-        ShowPostIdSearchResult::VIEW_IDENTIFIER => autowire(ShowPostIdSearchResult::class)
+        ShowPostIdSearchResult::VIEW_IDENTIFIER => autowire(ShowPostIdSearchResult::class),
+        ShowKnArchive::VIEW_IDENTIFIER => autowire(ShowKnArchive::class),
+        ShowKnArchiveComments::VIEW_IDENTIFIER => autowire(ShowKnArchiveComments::class),
+        ShowKnArchivePlot::VIEW_IDENTIFIER => autowire(ShowKnArchivePlot::class)
     ],
 ];
