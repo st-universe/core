@@ -23,10 +23,26 @@ final class KnCommentArchivRepository extends EntityRepository implements KnComm
         );
     }
 
+    /**
+     * @return list<KnCommentArchiv>
+     */
+    public function getByPostFormerId(int $postFormerId): array
+    {
+        return $this->findBy(
+            ['post_id' => $postFormerId],
+            ['id' => 'desc'],
+        );
+    }
+
     #[Override]
     public function getAmountByPost(KnPostArchiv $post): int
     {
         return $this->count(['post_id' => $post, 'deleted' => null]);
+    }
+
+    public function getAmountByFormerId(int $postFormerId): int
+    {
+        return $this->count(['post_id' => $postFormerId, 'deleted' => null]);
     }
 
     #[Override]

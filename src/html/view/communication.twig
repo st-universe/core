@@ -47,6 +47,25 @@
     </div>
   </div>
   {% endif %}
+
+  {% if AVAILABLE_ARCHIVE_VERSIONS %}
+  <br />
+  <div class="box">
+    <div class="box_title">KN-Archiv</div>
+    <div class="box_body">
+      <strong>Verfügbare Versionen</strong><br />
+      <ul>
+        {% for version in AVAILABLE_ARCHIVE_VERSIONS %}
+        <li>
+          <span style="color: #cecece">&gt;</span>
+          <a href="?{{ SHOW_ARCHIVE_VIEW }}=1&version={{ version }}">{{ version }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  {% endif %}
+
   <br />
   <div class="box">
     <div class="box_title">Suche</div>

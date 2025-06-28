@@ -48,11 +48,6 @@ class KnCommentArchiv
     #[Column(type: 'integer', nullable: true)]
     private ?int $deleted = null;
 
-    #[ManyToOne(targetEntity: KnPostArchiv::class)]
-    #[JoinColumn(name: 'post_id', nullable: false, referencedColumnName: 'former_id', onDelete: 'CASCADE')]
-    private KnPostArchiv $post;
-
-
     public function getId(): int
     {
         return $this->id;
@@ -117,18 +112,6 @@ class KnCommentArchiv
     public function setDate(int $date): KnCommentArchiv
     {
         $this->date = $date;
-
-        return $this;
-    }
-
-    public function getPosting(): KnPostArchiv
-    {
-        return $this->post;
-    }
-
-    public function setPosting(KnPostArchiv $post): KnCommentArchiv
-    {
-        $this->post = $post;
 
         return $this;
     }

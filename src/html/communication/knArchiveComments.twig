@@ -1,0 +1,27 @@
+{% for comment in COMMENTS %}
+<table class="tcal">
+    <tr>
+        <td rowspan="2" style="width: 40px">
+            <div
+                style="width: 40px; height: 40px; background-color: #333; text-align: center; line-height: 40px; color: #888; font-size: 10px;">
+                ARCHIV
+            </div>
+        </td>
+        <th style="text-align: center;">
+            {{ comment.username | bbcode }} ({{ comment.userId }})
+        </th>
+        <th style="width: 120px; text-align: center;">{{ comment.date | date("Y-m-d H:i:s") }}</th>
+        <th style="width: 20px">
+            <span style="color: #888; font-size: 10px;">ARCHIV</span>
+        </th>
+    </tr>
+    <tr>
+        <td colspan="3">{{ comment.text | bbcode }}</td>
+    </tr>
+</table>
+{% if not loop.last %}
+<br />
+{% endif %}
+{% else %}
+<div class="divhead" style="text-align: center;">Keine Kommentare im Archiv vorhanden</div>
+{% endfor %}

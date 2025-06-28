@@ -35,9 +35,32 @@ interface KnPostArchivRepositoryInterface extends ObjectRepository
      */
     public function getByPlot(RpgPlotArchiv $plot, ?int $offset, ?int $limit): array;
 
+    /**
+     * @return array<KnPostArchiv>
+     */
+    public function getByVersion(string $version, int $offset, int $limit): array;
+
+    /**
+     * @return array<KnPostArchiv>
+     */
+    public function getByVersionWithPlots(string $version, int $offset, int $limit): array;
+
+    /**
+     * @param array<int> $plotIds
+     * @return array<int, RpgPlotArchiv>
+     */
+    public function getPlotsByIds(array $plotIds): array;
+
+    /**
+     * @return array<string>
+     */
+    public function getAvailableVersions(): array;
+
     public function getAmount(): int;
 
     public function getAmountByPlot(int $plotId): int;
+
+    public function getAmountByVersion(string $version): int;
 
     public function getAmountSince(int $postId): int;
 
@@ -52,4 +75,11 @@ interface KnPostArchivRepositoryInterface extends ObjectRepository
     public function searchByContent(string $content): array;
 
     public function truncateAllEntities(): void;
+
+    public function findByFormerId(int $formerId): ?KnPostArchiv;
+
+    /**
+     * @return array<KnPostArchiv>
+     */
+    public function getByPlotFormerId(int $plotFormerId, ?int $offset, ?int $limit): array;
 }

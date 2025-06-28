@@ -52,6 +52,13 @@ final class RpgPlotMemberArchivRepository extends EntityRepository implements Rp
         ]);
     }
 
+    public function getByPlotFormerId(int $plotFormerId): array
+    {
+        return $this->findBy([
+            'plot_id' => $plotFormerId
+        ]);
+    }
+
     #[Override]
     public function truncateAllEntities(): void
     {

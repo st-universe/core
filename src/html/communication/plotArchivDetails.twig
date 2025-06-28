@@ -1,0 +1,49 @@
+{% from 'html/macros.twig' import userAvatar %}
+<div class="plot-container">
+    <div class="plot-kn">
+        {% include 'html/communication/knArchivPlot.twig' %}
+    </div>
+    {% if PLOT %}
+    <div class="plot-details">
+        <div class="divhead">Archiv-Plot: {{ PLOT.title ?? 'Unbekannt' }}</div>
+        <div class="divbody">
+            <strong>Beschreibung</strong><br>
+            {{ PLOT.description|default('')|nl2br|raw }}
+            <br><br>
+
+            {% if PLOT_MEMBERS %}
+            <strong>Teilnehmer</strong><br>
+            {% for member in PLOT_MEMBERS %}
+            {% if member.username %}
+            {{ member.username|bbcode }} ({{ member.userId }})<br>
+            {% else %}
+            Unbekannter User ({{ member.userId }})<br>
+            {% endif %}
+            {% endfor %}
+            <br>
+            {% endif %}
+
+            <strong>Status</strong><br>
+            Plot lief vom {{ PLOT.startDate|default(0)|date('d.m.Y') }}
+            {% if PLOT.endDate %}
+            bis {{ PLOT.endDate|date('d.m.Y') }}
+            {% else %}
+            (Ende unbekannt)
+            {% endif %}
+            <br><br>
+            <strong>Archiv-Version</strong><br>
+            {{ PLOT.version ?? 'Unbekannt' }}
+            <br><br>
+            <strong>Original Plot-ID</strong><br>
+            {{ PLOT.formerId ?? 'Unbekannt' }}
+        </div>
+    </div>
+    {% else %}
+    <div class="plot-details">
+        <div class="divhead">Plot nicht gefunden</div>
+        <div class="divbody">
+            Der angeforderte Archiv-Plot konnte nicht gefunden werden.
+        </div>
+    </div>
+    {% endif %}
+</div>

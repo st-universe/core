@@ -4,17 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
-use Doctrine\ORM\Mapping\JoinColumn;
-use Doctrine\ORM\Mapping\ManyToOne;
-use Doctrine\ORM\Mapping\OneToMany;
-use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\UniqueConstraint;
 use Stu\Module\Communication\View\ShowSingleKn\ShowSingleKn;
@@ -68,22 +62,6 @@ class KnPostArchiv
     #[Column(type: 'json')]
     private array $ratings = [];
 
-    /**
-     * @var ArrayCollection<int, KnCommentArchiv>
-     */
-    #[OneToMany(targetEntity: KnCommentArchiv::class, mappedBy: 'post')]
-    #[OrderBy(['id' => 'ASC'])]
-    private Collection $comments;
-
-    #[ManyToOne(targetEntity: RpgPlotArchiv::class, inversedBy: 'posts')]
-    #[JoinColumn(name: 'plot_id', referencedColumnName: 'former_id')]
-    private ?RpgPlotArchiv $rpgPlot = null;
-
-    public function __construct()
-    {
-        $this->comments = new ArrayCollection();
-    }
-
     public function getId(): int
     {
         return $this->id;
@@ -107,7 +85,6 @@ class KnPostArchiv
     public function setTitle(string $title): KnPostArchiv
     {
         $this->titel = $title;
-
         return $this;
     }
 
@@ -119,7 +96,6 @@ class KnPostArchiv
     public function setText(string $text): KnPostArchiv
     {
         $this->text = $text;
-
         return $this;
     }
 
@@ -131,7 +107,6 @@ class KnPostArchiv
     public function setDate(int $date): KnPostArchiv
     {
         $this->date = $date;
-
         return $this;
     }
 
@@ -143,7 +118,6 @@ class KnPostArchiv
     public function setUsername(string $username): KnPostArchiv
     {
         $this->username = $username;
-
         return $this;
     }
 
@@ -160,7 +134,6 @@ class KnPostArchiv
     public function setdelUserId(?int $userid): KnPostArchiv
     {
         $this->del_user_id = $userid;
-
         return $this;
     }
 
@@ -172,33 +145,12 @@ class KnPostArchiv
     public function setEditDate(int $editDate): KnPostArchiv
     {
         $this->lastedit = $editDate;
-
         return $this;
     }
 
     public function getPlotId(): ?int
     {
         return $this->plot_id;
-    }
-
-    public function getRpgPlot(): ?RpgPlotArchiv
-    {
-        return $this->rpgPlot;
-    }
-
-    public function setRpgPlot(?RpgPlotArchiv $rpgPlot): KnPostArchiv
-    {
-        $this->rpgPlot = $rpgPlot;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, KnCommentArchiv>
-     */
-    public function getComments(): Collection
-    {
-        return $this->comments;
     }
 
     /**
@@ -218,9 +170,6 @@ class KnPostArchiv
         return $this;
     }
 
-    /**
-     * Returns the relativ url to this posting
-     */
     public function getUrl(): string
     {
         return sprintf(

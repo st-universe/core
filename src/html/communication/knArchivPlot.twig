@@ -1,0 +1,103 @@
+{% from 'html/macros.twig' import userAvatar, userInfo %}
+
+{% if not KN_POSTINGS %}
+<div class="divhead">Meldung</div>
+<div class="divbody">Keine Beiträge in diesem Archiv-Plot vorhanden</div>
+{% else %}
+
+{% if KN_NAVIGATION %}
+<table>
+    <tr>
+        {% for item in KN_NAVIGATION %}
+        <td>
+            <a href="?SHOW_ARCHIVE_PLOT=1&plotid={{ PLOT.formerId }}&mark={{ item.mark }}" class="{{ item.cssclass }}">
+                {{ item.page }}
+            </a>
+        </td>
+        {% endfor %}
+    </tr>
+</table>
+{% endif %}
+<br />
+
+{% for post in KN_POSTINGS %}
+{% set postId = post.id %}
+<div style="overflow: hidden; text-overflow: ellipsis">
+    <div id="kn_archive_post_{{ postId }}" class="{{ post.divClass }}">
+        <div class="box_title" style="padding-top: 5px; padding-bottom: 5px; font-size: 110%;">
+            {{ post.username|bbcode }}
+        </div>
+        <div class="box_body" style="margin: 0; padding: 0;">
+            <div class="knGrid">
+                <div class="knGridText">
+                    <div style="padding: 10px;">
+                        {% if post.title %}
+                        <span class="knh2">{{ post.title }}</span>
+                        <br /><br />
+                        {% endif %}
+                        <span class="translatable-content" style="overflow-wrap: break-word; word-break: break-word;">
+                            {{ post.text|raw }}
+                        </span>
+                    </div>
+                </div>
+                <div class="knGridUser">
+                    <div class="segment">
+                        <div style="text-align: center; width: 100%">
+                            {{ post.date|date('d.m.Y H:i') }}
+                        </div>
+                    </div>
+                    <div class="segment">
+                        <div style="text-align: center;">
+                            <strong>ARCHIV</strong><br>
+                            <span style="font-size: 80%;">v{{ post.version }}</span>
+                        </div>
+                    </div>
+                    <div class="segment">
+                        <div style="text-align: center; font-size: 80%;">
+                            Original-ID: {{ post.formerId }}
+                        </div>
+                    </div>
+                </div>
+                <div class="knGridRating">
+                    {% if post.editDate and post.editDate > 0 %}
+                    <div class="segment">
+                        <span class="knedit">Bearbeitet: {{ post.editDate|date('d.m.Y H:i') }}</span>
+                    </div>
+                    {% endif %}
+                    <div class="segment" id="kn_rating_{{ postId }}">
+                        {% if post.ratingBar %}
+                        <div style="display: inline-block">
+                            {{ post.ratingBar|raw }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="segment">
+                        <a href="javascript:void(0);" onclick="showKnArchiveComments({{ post.formerId }});">
+                            {{ post.commentCount }} <span>Kommentare</span>
+                            <br><small style="color: #888;">(archiviert)</small>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+</div>
+{% endfor %}
+
+<br />
+{% if KN_NAVIGATION %}
+<table>
+    <tr>
+        {% for item in KN_NAVIGATION %}
+        <td>
+            <a href="?SHOW_ARCHIVE_PLOT=1&plotid={{ PLOT.formerId }}&mark={{ item.mark }}" class="{{ item.cssclass }}">
+                {{ item.page }}
+            </a>
+        </td>
+        {% endfor %}
+    </tr>
+</table>
+{% endif %}
+
+{% endif %}

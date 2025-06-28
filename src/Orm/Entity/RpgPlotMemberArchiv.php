@@ -8,8 +8,6 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
-use Doctrine\ORM\Mapping\JoinColumn;
-use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\UniqueConstraint;
 use Stu\Orm\Repository\RpgPlotMemberArchivRepository;
@@ -36,9 +34,8 @@ class RpgPlotMemberArchiv
     #[Column(type: 'integer')]
     private int $user_id = 0;
 
-    #[ManyToOne(targetEntity: RpgPlotArchiv::class, inversedBy: 'members')]
-    #[JoinColumn(name: 'plot_id', nullable: false, referencedColumnName: 'former_id', onDelete: 'CASCADE')]
-    private RpgPlotArchiv $rpgPlot;
+    #[Column(type: 'string', nullable: true)]
+    private ?string $username = null;
 
     public function getId(): int
     {
@@ -65,15 +62,14 @@ class RpgPlotMemberArchiv
         return $this->user_id;
     }
 
-    public function getRpgPlot(): RpgPlotArchiv
+    public function getUsername(): ?string
     {
-        return $this->rpgPlot;
+        return $this->username;
     }
 
-    public function setRpgPlot(RpgPlotArchiv $rpgPlot): RpgPlotMemberArchiv
+    public function setUsername(?string $username): RpgPlotMemberArchiv
     {
-        $this->rpgPlot = $rpgPlot;
-
+        $this->username = $username;
         return $this;
     }
 }

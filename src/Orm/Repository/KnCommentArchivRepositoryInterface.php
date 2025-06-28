@@ -16,7 +16,14 @@ interface KnCommentArchivRepositoryInterface extends ObjectRepository
      */
     public function getByPost(int $postId): array;
 
+    /**
+     * @return list<KnCommentArchiv>
+     */
+    public function getByPostFormerId(int $postFormerId): array;
+
     public function getAmountByPost(KnPostArchiv $post): int;
+
+    public function getAmountByFormerId(int $formerId): int;
 
     public function prototype(): KnCommentArchiv;
 

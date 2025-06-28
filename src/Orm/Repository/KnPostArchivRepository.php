@@ -69,6 +69,69 @@ final class KnPostArchivRepository extends EntityRepository implements KnPostArc
     }
 
     #[Override]
+    public function getByVersion(string $version, int $offset, int $limit): array
+    {
+        return $this->findBy(
+            ['version' => $version],
+            ['date' => 'desc'],
+            $limit,
+            $offset
+        );
+    }
+
+    #[Override]
+    public function getByVersionWithPlots(string $version, int $offset, int $limit): array
+    {
+        return $this->createQueryBuilder('kpa')
+            ->where('kpa.version = :version')
+            ->setParameter('version', $version)
+            ->orderBy('kpa.date', 'DESC')
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @param array<int> $plotIds
+     * @return array<int, RpgPlotArchiv>
+     */
+    #[Override]
+    public function getPlotsByIds(array $plotIds): array
+    {
+        if (empty($plotIds)) {
+            return [];
+        }
+
+        $plots = $this->getEntityManager()
+            ->getRepository(RpgPlotArchiv::class)
+            ->createQueryBuilder('rpa')
+            ->where('rpa.former_id IN (:plotIds)')
+            ->setParameter('plotIds', $plotIds)
+            ->getQuery()
+            ->getResult();
+
+        $result = [];
+        foreach ($plots as $plot) {
+            $result[$plot->getFormerId()] = $plot;
+        }
+
+        return $result;
+    }
+
+    #[Override]
+    public function getAvailableVersions(): array
+    {
+        $result = $this->createQueryBuilder('kpa')
+            ->select('DISTINCT kpa.version')
+            ->orderBy('kpa.version', 'DESC')
+            ->getQuery()
+            ->getScalarResult();
+
+        return array_column($result, 'version');
+    }
+
+    #[Override]
     public function getAmount(): int
     {
         return $this->count([]);
@@ -80,6 +143,12 @@ final class KnPostArchivRepository extends EntityRepository implements KnPostArc
         return $this->count([
             'plot_id' => $plotId
         ]);
+    }
+
+    #[Override]
+    public function getAmountByVersion(string $version): int
+    {
+        return $this->count(['version' => $version]);
     }
 
     #[Override]
@@ -136,5 +205,22 @@ final class KnPostArchivRepository extends EntityRepository implements KnPostArc
                 KnPostArchiv::class
             )
         )->execute();
+    }
+
+    #[Override]
+    public function findByFormerId(int $formerId): ?KnPostArchiv
+    {
+        return $this->findOneBy(['former_id' => $formerId]);
+    }
+
+    #[Override]
+    public function getByPlotFormerId(int $plotFormerId, ?int $offset, ?int $limit): array
+    {
+        return $this->findBy(
+            ['plot_id' => $plotFormerId],
+            ['date' => 'desc'],
+            $limit,
+            $offset
+        );
     }
 }

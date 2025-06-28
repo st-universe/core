@@ -9,14 +9,20 @@ use request;
 use Stu\Component\Communication\Kn\KnFactoryInterface;
 use Stu\Component\Communication\Kn\KnItemInterface;
 use Stu\Component\Game\GameEnum;
+use Stu\Module\Communication\View\ShowKnArchive\ShowKnArchive;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\KnPost;
 use Stu\Orm\Entity\User;
+use Stu\Orm\Repository\KnPostArchivRepositoryInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 
 final class CommunicationProvider implements ViewComponentProviderInterface
 {
-    public function __construct(private KnPostRepositoryInterface $knPostRepository, private KnFactoryInterface $knFactory) {}
+    public function __construct(
+        private KnPostRepositoryInterface $knPostRepository,
+        private KnFactoryInterface $knFactory,
+        private KnPostArchivRepositoryInterface $knPostArchivRepository
+    ) {}
 
     #[Override]
     public function setTemplateVariables(GameControllerInterface $game): void
@@ -61,7 +67,6 @@ final class CommunicationProvider implements ViewComponentProviderInterface
             $knNavigation[] = ["page" => ">>", "mark" => $maxpage * GameEnum::KN_PER_SITE - GameEnum::KN_PER_SITE, "cssclass" => "pages"];
         }
 
-
         $markedPostId = $this->getMarkedKnId($user);
 
         $game->setTemplateVar(
@@ -85,6 +90,11 @@ final class CommunicationProvider implements ViewComponentProviderInterface
         $game->setTemplateVar('KN_OFFSET', $mark);
         $game->setTemplateVar('NEW_KN_POSTING_COUNT', $newKnPostCount);
         $game->setTemplateVar('KN_NAVIGATION', $knNavigation);
+
+        // Archiv-Versionen laden
+        $availableVersions = $this->knPostArchivRepository->getAvailableVersions();
+        $game->setTemplateVar('AVAILABLE_ARCHIVE_VERSIONS', $availableVersions);
+        $game->setTemplateVar('SHOW_ARCHIVE_VIEW', ShowKnArchive::VIEW_IDENTIFIER);
 
         $game->addExecuteJS("initTranslations();", GameEnum::JS_EXECUTION_AFTER_RENDER);
     }
