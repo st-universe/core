@@ -17,12 +17,12 @@
       <ul>
         {% if HAS_NEW_KN_POSTINGS %}
         <li>
-          <span style="color: #cecece">&gt;</span> <a href="?user_mark=1">Neue Beiträge ab
+          <span style="color: #cecece">></span> <a href="?user_mark=1">Neue Beiträge ab
             Lesezeichen:</a> {{ NEW_KN_POSTING_COUNT }}
         </li>
         {% endif %}
         <li>
-          <span style="color: #cecece">&gt;</span> <a href="?">Alle Beiträge</a> (<a
+          <span style="color: #cecece">></span> <a href="?">Alle Beiträge</a> (<a
             href="?mark={{ KN_START }}">aufsteigend</a>)
         </li>
       </ul>
@@ -32,15 +32,15 @@
           <strong>RPG Plots</strong>
         </li>
         <li>
-          <span style="color: #cecece">&gt;</span> <a href="?SHOW_MYPLOTS=1">Liste meiner
+          <span style="color: #cecece">></span> <a href="?SHOW_MYPLOTS=1">Liste meiner
             Plots</a>
         </li>
         <li>
-          <span style="color: #cecece">&gt;</span> <a href="?SHOW_PLOTLIST=1">Liste aller
+          <span style="color: #cecece">></span> <a href="?SHOW_PLOTLIST=1">Liste aller
             Plots</a>
         </li>
         <li>
-          <span style="color: #cecece">&gt;</span> <a href="?SHOW_CREATE_PLOT=1">Neuen
+          <span style="color: #cecece">></span> <a href="?SHOW_CREATE_PLOT=1">Neuen
             Plot erstellen</a>
         </li>
       </ul>
@@ -55,10 +55,10 @@
     <div class="box_body">
       <strong>Verfügbare Versionen</strong><br />
       <ul>
-        {% for version in AVAILABLE_ARCHIVE_VERSIONS %}
+        {% for versionData in AVAILABLE_ARCHIVE_VERSIONS %}
         <li>
-          <span style="color: #cecece">&gt;</span>
-          <a href="?{{ SHOW_ARCHIVE_VIEW }}=1&version={{ version }}">{{ version }}</a>
+          <span style="color: #cecece">></span>
+          <a href="?{{ SHOW_ARCHIVE_VIEW }}=1&version={{ versionData.version }}">{{ versionData.display }}</a>
         </li>
         {% endfor %}
       </ul>

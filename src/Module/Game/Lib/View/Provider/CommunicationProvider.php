@@ -91,9 +91,15 @@ final class CommunicationProvider implements ViewComponentProviderInterface
         $game->setTemplateVar('NEW_KN_POSTING_COUNT', $newKnPostCount);
         $game->setTemplateVar('KN_NAVIGATION', $knNavigation);
 
-        // Archiv-Versionen laden
         $availableVersions = $this->knPostArchivRepository->getAvailableVersions();
-        $game->setTemplateVar('AVAILABLE_ARCHIVE_VERSIONS', $availableVersions);
+        $formattedVersions = array_map(function ($version) {
+            return [
+                'version' => $version,
+                'display' => $this->formatVersion($version)
+            ];
+        }, $availableVersions);
+
+        $game->setTemplateVar('AVAILABLE_ARCHIVE_VERSIONS', $formattedVersions);
         $game->setTemplateVar('SHOW_ARCHIVE_VIEW', ShowKnArchive::VIEW_IDENTIFIER);
 
         $game->addExecuteJS("initTranslations();", GameEnum::JS_EXECUTION_AFTER_RENDER);
@@ -112,5 +118,20 @@ final class CommunicationProvider implements ViewComponentProviderInterface
         }
 
         return null;
+    }
+
+    private function formatVersion(string $version): string
+    {
+        $cleanVersion = ltrim($version, 'v');
+
+        if (str_contains($cleanVersion, 'alpha')) {
+            return 'v' . str_replace('alpha', 'α', $cleanVersion);
+        }
+
+        if (preg_match('/^(\d)(\d)$/', $cleanVersion, $matches)) {
+            return 'v' . $matches[1] . '.' . $matches[2];
+        }
+
+        return $version;
     }
 }

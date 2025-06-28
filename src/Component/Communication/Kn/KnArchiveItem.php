@@ -153,4 +153,13 @@ final class KnArchiveItem implements KnArchiveItemInterface
     {
         return 'box kn_archive_post';
     }
+
+    /**
+     * @return array<int>|null
+     */
+    #[Override]
+    public function getRefs(): ?array
+    {
+        return $this->post->getRefs();
+    }
 }

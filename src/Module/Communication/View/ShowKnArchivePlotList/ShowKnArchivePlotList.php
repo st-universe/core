@@ -33,7 +33,7 @@ final class ShowKnArchivePlotList implements ViewControllerInterface
             return;
         }
 
-        $game->setPageTitle(sprintf('Archiv-Plots - Version %s', $version));
+        $game->setPageTitle(sprintf('Archiv-Plots - Version %s', $this->formatVersion($version)));
         $game->appendNavigationPart('comm.php', _('KommNet'));
         $game->appendNavigationPart('comm.php?SHOW_KN_ARCHIVE=1&version=' . $version, _('Archiv'));
         $game->appendNavigationPart(
@@ -47,7 +47,6 @@ final class ShowKnArchivePlotList implements ViewControllerInterface
         $ended_plots = [];
 
         foreach ($plots as $plot) {
-            // Zusätzliche Informationen für jeden Plot sammeln
             $postCount = $this->knPostArchivRepository->getAmountByPlot($plot->getFormerId());
             $members = $this->rpgPlotMemberArchivRepository->getByPlotFormerId($plot->getFormerId());
 
@@ -68,6 +67,22 @@ final class ShowKnArchivePlotList implements ViewControllerInterface
         $game->setTemplateVar('ACTIVE_PLOTS', $active_plots);
         $game->setTemplateVar('ENDED_PLOTS', $ended_plots);
         $game->setTemplateVar('ARCHIVE_VERSION', $version);
+        $game->setTemplateVar('ARCHIVE_VERSION_DISPLAY', $this->formatVersion($version));
         $game->setTemplateVar('SHOW_ARCHIVE_VIEW', 'SHOW_KN_ARCHIVE');
+    }
+
+    private function formatVersion(string $version): string
+    {
+        $cleanVersion = ltrim($version, 'v');
+
+        if (str_contains($cleanVersion, 'alpha')) {
+            return 'v' . str_replace('alpha', 'α', $cleanVersion);
+        }
+
+        if (preg_match('/^(\d)(\d)$/', $cleanVersion, $matches)) {
+            return 'v' . $matches[1] . '.' . $matches[2];
+        }
+
+        return $version;
     }
 }

@@ -95,5 +95,22 @@ final class ShowKnArchivePlot implements ViewControllerInterface
         $game->setTemplateVar('KN_NAVIGATION', $knNavigation);
         $game->setTemplateVar('PLOT', $plot);
         $game->setTemplateVar('PLOT_MEMBERS', $plotMembers);
+        $game->setTemplateVar('ARCHIVE_VERSION', $plot->getVersion() ?? '');
+        $game->setTemplateVar('ARCHIVE_VERSION_DISPLAY', $this->formatVersion($plot->getVersion() ?? ''));
+    }
+
+    private function formatVersion(string $version): string
+    {
+        $cleanVersion = ltrim($version, 'v');
+
+        if (str_contains($cleanVersion, 'alpha')) {
+            return 'v' . str_replace('alpha', 'α', $cleanVersion);
+        }
+
+        if (preg_match('/^(\d)(\d)$/', $cleanVersion, $matches)) {
+            return 'v' . $matches[1] . '.' . $matches[2];
+        }
+
+        return $version;
     }
 }
