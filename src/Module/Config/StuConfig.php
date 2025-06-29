@@ -8,6 +8,7 @@ use Stu\Module\Config\Model\DbSettingsInterface;
 use Stu\Module\Config\Model\DebugSettingsInterface;
 use Stu\Module\Config\Model\GameSettingsInterface;
 use Stu\Module\Config\Model\ResetSettingsInterface;
+use Stu\Module\Config\Model\SecuritySettingsInterface;
 use Stu\Module\Config\Model\SettingsCacheInterface;
 
 final class StuConfig implements StuConfigInterface
@@ -44,5 +45,11 @@ final class StuConfig implements StuConfigInterface
     public function getResetSettings(): ResetSettingsInterface
     {
         return $this->settingsCache->getSettings(ResetSettingsInterface::class, null);
+    }
+
+    #[Override]
+    public function getSecuritySettings(): SecuritySettingsInterface
+    {
+        return $this->settingsCache->getSettings(SecuritySettingsInterface::class, null);
     }
 }

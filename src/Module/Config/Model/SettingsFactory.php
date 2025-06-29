@@ -71,6 +71,11 @@ class SettingsFactory implements SettingsFactoryInterface
                 $parent,
                 $this->createSettingsCore($type, $parent),
                 $settingsCache
+            ),
+            StuConfigSettingEnum::SECURITY => new SecuritySettings(
+                $parent,
+                $this->createSettingsCore($type, $parent),
+                $settingsCache
             )
         };
     }
