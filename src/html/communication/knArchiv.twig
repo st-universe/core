@@ -57,7 +57,7 @@
                     <div class="knGridUser">
                         <div class="segment">
                             <div style="text-align: center; width: 100%">
-                                {{ post.date|stuDateTime }}
+                                {{ post.formattedDate }}
                                 {{ post.date|date('d.m.Y H:i') }}
                             </div>
                         </div>
@@ -89,9 +89,9 @@
                         {% endif %}
                     </div>
                     <div class="knGridRating">
-                        {% if post.editDate and post.editDate > 0 %}
+                        {% if post.formattedEditDate %}
                         <div class="segment">
-                            <span class="knedit">Bearbeitet: {{ post.editDate|stuDateTime }}</span>
+                            <span class="knedit">Bearbeitet: {{ post.formattedEditDate }}</span>
                         </div>
                         {% endif %}
                         <div class="segment" id="kn_rating_{{ postId }}">
