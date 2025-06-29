@@ -38,12 +38,12 @@ final class BasicTradeItem implements BasicTradeItemInterface
     #[Override]
     public function getBuyValue(): int
     {
-        return (int) ($this->basicTrade?->getValue() ?? 0 / self::BASIC_TRADE_VALUE_SCALE);
+        return (int) (($this->basicTrade?->getValue() ?? 0) / self::BASIC_TRADE_VALUE_SCALE);
     }
 
     #[Override]
     public function getSellValue(): int
     {
-        return (int)($this->basicTrade?->getValue() ?? 0 / self::BASIC_TRADE_VALUE_SCALE * self::BASIC_TRADE_SELL_BUY_ALPHA);
+        return (int)((($this->basicTrade?->getValue() ?? 0) / self::BASIC_TRADE_VALUE_SCALE) * self::BASIC_TRADE_SELL_BUY_ALPHA);
     }
 }
