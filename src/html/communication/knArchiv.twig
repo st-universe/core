@@ -12,7 +12,7 @@
             {% for item in KN_NAVIGATION %}
             <td>
                 <a href="?{{ SHOW_ARCHIVE_VIEW }}=1&version={{ ARCHIVE_VERSION }}&mark={{ item.mark }}"
-                    class="{{ item.cssclass }}">
+                    class="{{ item.cssclass }}" style="{{ item.style }}">
                     {{ item.page }}
                 </a>
             </td>
@@ -58,6 +58,7 @@
                         <div class="segment">
                             <div style="text-align: center; width: 100%">
                                 {{ post.date|stuDateTime }}
+                                {{ post.date|date('d.m.Y H:i') }}
                             </div>
                         </div>
                         <div class="segment">
@@ -123,7 +124,7 @@
             {% for item in KN_NAVIGATION %}
             <td>
                 <a href="?{{ SHOW_ARCHIVE_VIEW }}=1&version={{ ARCHIVE_VERSION }}&mark={{ item.mark }}"
-                    class="{{ item.cssclass }}">
+                    class="{{ item.cssclass }}" style="{{ item.style }}">
                     {{ item.page }}
                 </a>
             </td>

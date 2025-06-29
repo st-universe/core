@@ -17,7 +17,7 @@ use Stu\Orm\Repository\KnPostArchivRepository;
 #[Table(name: 'stu_kn_archiv')]
 #[Index(name: 'plot_archiv_idx', columns: ['plot_id'])]
 #[Index(name: 'kn_post_archiv_date_idx', columns: ['date'])]
-#[UniqueConstraint(name: 'unique_kn_archiv_former_id', columns: ['former_id'])]
+#[UniqueConstraint(name: 'unique_kn_archiv_former_id_version', columns: ['former_id', 'version'])]
 #[Entity(repositoryClass: KnPostArchivRepository::class)]
 class KnPostArchiv
 {
@@ -32,7 +32,7 @@ class KnPostArchiv
     #[Column(type: 'integer')]
     private int $former_id;
 
-    #[Column(type: 'string', nullable: true)]
+    #[Column(type: 'text', nullable: true)]
     private ?string $titel = null;
 
     #[Column(type: 'text')]
@@ -41,7 +41,7 @@ class KnPostArchiv
     #[Column(type: 'integer')]
     private int $date = 0;
 
-    #[Column(type: 'string')]
+    #[Column(type: 'text')]
     private string $username = '';
 
     #[Column(type: 'integer')]
