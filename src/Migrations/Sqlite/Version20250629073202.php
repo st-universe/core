@@ -10,11 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-<<<<<<<< HEAD:src/Migrations/Sqlite/Version20250628120756.php
-final class Version20250628120756 extends AbstractMigration
-========
-final class Version20250627070642 extends AbstractMigration
->>>>>>>> 291f2ec6b (remove obsolete UserTag entity):src/Migrations/Sqlite/Version20250627070642.php
+final class Version20250629073202 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -673,7 +669,7 @@ final class Version20250627070642 extends AbstractMigration
             CREATE INDEX kn_post_user_idx ON stu_kn (user_id)
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE TABLE stu_kn_archiv (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, version VARCHAR(255) NOT NULL, former_id INTEGER NOT NULL, titel VARCHAR(255) DEFAULT NULL, text CLOB NOT NULL, date INTEGER NOT NULL, username VARCHAR(255) NOT NULL, user_id INTEGER NOT NULL, del_user_id INTEGER DEFAULT NULL, lastedit INTEGER DEFAULT NULL, plot_id INTEGER DEFAULT NULL, ratings CLOB NOT NULL)
+            CREATE TABLE stu_kn_archiv (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, version VARCHAR(255) NOT NULL, former_id INTEGER NOT NULL, titel CLOB DEFAULT NULL, text CLOB NOT NULL, date INTEGER NOT NULL, username CLOB NOT NULL, user_id INTEGER NOT NULL, del_user_id INTEGER DEFAULT NULL, lastedit INTEGER DEFAULT NULL, plot_id INTEGER DEFAULT NULL, ratings CLOB NOT NULL, refs CLOB DEFAULT NULL)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE INDEX plot_archiv_idx ON stu_kn_archiv (plot_id)
@@ -682,7 +678,7 @@ final class Version20250627070642 extends AbstractMigration
             CREATE INDEX kn_post_archiv_date_idx ON stu_kn_archiv (date)
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE UNIQUE INDEX unique_kn_archiv_former_id ON stu_kn_archiv (former_id)
+            CREATE UNIQUE INDEX unique_kn_archiv_former_id_version ON stu_kn_archiv (former_id, version)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE TABLE stu_kn_character (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, kn_id INTEGER NOT NULL, character_id INTEGER NOT NULL, CONSTRAINT FK_B00DC07A6A392D53 FOREIGN KEY (kn_id) REFERENCES stu_kn (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_B00DC07A1136BE75 FOREIGN KEY (character_id) REFERENCES stu_user_character (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)
@@ -970,10 +966,7 @@ final class Version20250627070642 extends AbstractMigration
             CREATE UNIQUE INDEX plot_user_idx ON stu_plots_members (plot_id, user_id)
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE TABLE stu_plots_members_archiv (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, version VARCHAR(255) NOT NULL, former_id INTEGER NOT NULL, plot_id INTEGER NOT NULL, user_id INTEGER NOT NULL, username VARCHAR(255) DEFAULT NULL, CONSTRAINT FK_CDE3D430680D0B01 FOREIGN KEY (plot_id) REFERENCES stu_plots_archiv (former_id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)
-        SQL);
-        $this->addSql(<<<'SQL'
-            CREATE INDEX IDX_CDE3D430680D0B01 ON stu_plots_members_archiv (plot_id)
+            CREATE TABLE stu_plots_members_archiv (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, version VARCHAR(255) NOT NULL, former_id INTEGER NOT NULL, plot_id INTEGER NOT NULL, user_id INTEGER NOT NULL, username VARCHAR(255) DEFAULT NULL)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE UNIQUE INDEX plot_archiv_user_idx ON stu_plots_members_archiv (plot_id, user_id)
