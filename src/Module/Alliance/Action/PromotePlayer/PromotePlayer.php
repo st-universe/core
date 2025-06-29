@@ -20,7 +20,13 @@ final class PromotePlayer implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_PROMOTE_USER';
 
-    public function __construct(private PromotePlayerRequestInterface $promotePlayerRequest, private AllianceJobRepositoryInterface $allianceJobRepository, private AllianceActionManagerInterface $allianceActionManager, private PrivateMessageSenderInterface $privateMessageSender, private UserRepositoryInterface $userRepository) {}
+    public function __construct(
+        private PromotePlayerRequestInterface $promotePlayerRequest,
+        private AllianceJobRepositoryInterface $allianceJobRepository,
+        private AllianceActionManagerInterface $allianceActionManager,
+        private PrivateMessageSenderInterface $privateMessageSender,
+        private UserRepositoryInterface $userRepository
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -32,8 +38,6 @@ final class PromotePlayer implements ActionControllerInterface
         if ($alliance === null) {
             throw new AccessViolationException();
         }
-
-        $allianceId = $alliance->getId();
 
         if (!$this->allianceActionManager->mayEdit($alliance, $user)) {
             throw new AccessViolationException();
@@ -58,7 +62,9 @@ final class PromotePlayer implements ActionControllerInterface
             throw new AccessViolationException();
         }
 
-        if ($alliance->getFounder()->getUserId() === $playerId) {
+        $founderJob = $alliance->getFounder();
+
+        if ($founderJob->getUserId() === $playerId) {
             throw new AccessViolationException();
         }
 
@@ -70,16 +76,12 @@ final class PromotePlayer implements ActionControllerInterface
 
         switch ($type) {
             case AllianceEnum::ALLIANCE_JOBS_FOUNDER:
-                $founderJob = $this->allianceJobRepository->getSingleResultByAllianceAndType(
-                    $allianceId,
-                    AllianceEnum::ALLIANCE_JOBS_FOUNDER
-                );
                 if ($founderJob->getUserId() !== $userId) {
                     throw new AccessViolationException();
                 }
                 $this->allianceActionManager->setJobForUser(
-                    $allianceId,
-                    $playerId,
+                    $alliance,
+                    $player,
                     AllianceEnum::ALLIANCE_JOBS_FOUNDER
                 );
                 $text = sprintf(
@@ -94,8 +96,8 @@ final class PromotePlayer implements ActionControllerInterface
                 }
 
                 $this->allianceActionManager->setJobForUser(
-                    $allianceId,
-                    $playerId,
+                    $alliance,
+                    $player,
                     AllianceEnum::ALLIANCE_JOBS_SUCCESSOR
                 );
 
@@ -110,8 +112,8 @@ final class PromotePlayer implements ActionControllerInterface
                 }
 
                 $this->allianceActionManager->setJobForUser(
-                    $allianceId,
-                    $playerId,
+                    $alliance,
+                    $player,
                     AllianceEnum::ALLIANCE_JOBS_DIPLOMATIC
                 );
 

@@ -30,7 +30,7 @@ final class FinishBuildJobs implements ProcessTickHandlerInterface
             $txt = sprintf(
                 "Kolonie %s: %s auf Feld %s fertiggestellt\n%s",
                 $host->getName(),
-                $field->getBuilding()->getName(),
+                $field->getBuilding()?->getName() ?? 'UNKNOWN',
                 $field->getFieldId(),
                 $activationDetails ?? ''
             );

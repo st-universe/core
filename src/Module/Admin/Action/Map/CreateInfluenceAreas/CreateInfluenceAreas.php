@@ -59,6 +59,7 @@ final class CreateInfluenceAreas implements ActionControllerInterface
         $allSystems = [];
 
         foreach ($allMapWithSystem as $map) {
+            /** @var StarSystem */
             $system = $map->getSystem();
             $systemId = $system->getId();
             $allSystems[$systemId] = $system;
@@ -166,7 +167,7 @@ final class CreateInfluenceAreas implements ActionControllerInterface
     }
 
     /**
-     * @param array<int, array<int, Map>> $array
+     * @param array<int, mixed> $array
      */
     private function shuffle_assoc(array &$array): bool
     {

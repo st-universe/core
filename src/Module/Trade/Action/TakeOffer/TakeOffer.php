@@ -7,6 +7,7 @@ namespace Stu\Module\Trade\Action\TakeOffer;
 use Override;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Exception\AccessViolationException;
+use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContextTypeEnum;
@@ -75,6 +76,9 @@ final class TakeOffer implements ActionControllerInterface
         }
 
         $tradePost = $storage->getTradePost();
+        if ($tradePost === null) {
+            throw new SanityCheckException(sprintf('storageId %d not on tradepost', $storage->getId()));
+        }
 
         $storageManagerUser = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $game->getUser());
         $storageManagerRemote = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $selectedOffer->getUser());

@@ -13,7 +13,6 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Spacecraft\Lib\ShipRumpSpecialAbilityEnum;
-use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class ShowColonization implements ViewControllerInterface
 {
@@ -22,7 +21,11 @@ final class ShowColonization implements ViewControllerInterface
     //5 months
     public const int USER_COLONIZATION_TIME = 12_960_000;
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private ColonyLibFactoryInterface $colonyLibFactory, private ColonyRepositoryInterface $colonyRepository, private ColonizationCheckerInterface $colonizationChecker) {}
+    public function __construct(
+        private ShipLoaderInterface $shipLoader,
+        private ColonyLibFactoryInterface $colonyLibFactory,
+        private ColonizationCheckerInterface $colonizationChecker
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -39,18 +42,14 @@ final class ShowColonization implements ViewControllerInterface
         $game->setPageTitle("Kolonie gründen");
         $game->setMacroInAjaxWindow('');
 
-        $colony = $this->colonyRepository->getByPosition(
-            $ship->getStarsystemMap()
-        );
-
+        $colony = $ship->isOverColony();
         if ($colony === null) {
             return;
         }
 
         $layer = $colony->getSystem()->getLayer();
-        $userColonies = $this->colonyRepository->findBy(['user_id' => $userId]);
+        $userColonies = $game->getUser()->getColonies();
         $colocount = count($userColonies);
-
 
         if ($layer) {
             if ($layer->isNoobzone()) {

@@ -16,18 +16,15 @@ final class DeleteBoard implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_DELETE_BOARD';
 
-    public function __construct(private DeleteBoardRequestInterface $deleteBoardRequest, private AllianceBoardRepositoryInterface $allianceBoardRepository)
-    {
-    }
+    public function __construct(private DeleteBoardRequestInterface $deleteBoardRequest, private AllianceBoardRepositoryInterface $allianceBoardRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();
 
-        /** @var AllianceBoard $board */
         $board = $this->allianceBoardRepository->find($this->deleteBoardRequest->getBoardId());
-        if ($board === null || $board->getAllianceId() !== $alliance->getId()) {
+        if ($board === null || $board->getAlliance() !== $alliance) {
             throw new AccessViolationException();
         }
 

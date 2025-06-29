@@ -32,7 +32,7 @@ class WarpdriveBoosterShipSystem extends AbstractSpacecraftSystemType implements
     }
 
     #[Override]
-    public function getCooldownSeconds(): ?int
+    public function getCooldownSeconds(): int
     {
         return TimeConstants::ONE_DAY_IN_SECONDS;
     }

@@ -14,9 +14,8 @@ final class ReactorWrapper implements ReactorWrapperInterface
     private ?int $epsProduction = null;
     private ?int $warpdriveProduction = null;
 
-    //effective values
-    private ?int $effectiveEpsProduction = null;
-    private ?int $effectiveWarpDriveProduction = null;
+    /** @var null|array{eps: int, warpdrive: int} */
+    private ?array $effectiveValues = null;
 
     public function __construct(private SpacecraftWrapperInterface $wrapper, private AbstractReactorSystemData $reactorSystemData) {}
 
@@ -70,23 +69,24 @@ final class ReactorWrapper implements ReactorWrapperInterface
     #[Override]
     public function getEffectiveEpsProduction(): int
     {
-        if ($this->effectiveEpsProduction === null) {
-            $this->calculateEffectiveProduction();
+        if ($this->effectiveValues === null) {
+            $this->effectiveValues = $this->calculateEffectiveProduction();
         }
-        return $this->effectiveEpsProduction;
+        return $this->effectiveValues['eps'];
     }
 
     #[Override]
     public function getEffectiveWarpDriveProduction(): int
     {
-        if ($this->effectiveWarpDriveProduction === null) {
-            $this->calculateEffectiveProduction();
+        if ($this->effectiveValues === null) {
+            $this->effectiveValues = $this->calculateEffectiveProduction();
         }
 
-        return $this->effectiveWarpDriveProduction;
+        return $this->effectiveValues['warpdrive'];
     }
 
-    private function calculateEffectiveProduction(): void
+    /** @return array{eps: int, warpdrive: int} */
+    private function calculateEffectiveProduction(): array
     {
         $epsSystem = $this->wrapper->getEpsSystemData();
         $warpdrive = $this->wrapper->getWarpDriveSystemData();
@@ -111,8 +111,7 @@ final class ReactorWrapper implements ReactorWrapperInterface
             $effWdProd = min($missingWarpdrive, $this->getWarpdriveProduction() + (int)floor($excess / $flightCost));
         }
 
-        $this->effectiveEpsProduction = $effEpsProd;
-        $this->effectiveWarpDriveProduction = $effWdProd;
+        return ['eps' => $effEpsProd, 'warpdrive' => $effWdProd];
     }
 
     #[Override]

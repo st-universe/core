@@ -677,9 +677,6 @@ final class GameController implements GameControllerInterface
         $this->gameData = new GameData();
     }
 
-    /**
-     * @return array{executionTime: float|string, memoryPeakUsage: float|string}
-     */
     #[Override]
     public function getBenchmarkResult(): array
     {

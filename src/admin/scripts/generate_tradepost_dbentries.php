@@ -17,6 +17,10 @@ Init::run(function (ContainerInterface $dic): void {
     $category = $dic->get(DatabaseCategoryRepositoryInterface::class)->find(DatabaseCategoryTypeEnum::DATABASE_CATEGORY_TRADEPOST);
     $stationRepo = $dic->get(StationRepositoryInterface::class);
 
+    if ($type === null || $category === null) {
+        throw new RuntimeException('type or category is null');
+    }
+
     $result = $stationRepo->getTradePostsWithoutDatabaseEntry();
     foreach ($result as $obj) {
         $db = $repository->prototype();

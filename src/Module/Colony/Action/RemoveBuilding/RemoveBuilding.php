@@ -29,11 +29,12 @@ final class RemoveBuilding implements ActionControllerInterface
         $game->setView(ShowInformation::VIEW_IDENTIFIER);
 
         $field = $this->planetFieldHostProvider->loadFieldViaRequestParameter($game->getUser());
+        $building = $field->getBuilding();
 
-        if (!$field->hasBuilding()) {
+        if ($building === null) {
             return;
         }
-        if (!$field->getBuilding()->isRemovable()) {
+        if (!$building->isRemovable()) {
             return;
         }
 

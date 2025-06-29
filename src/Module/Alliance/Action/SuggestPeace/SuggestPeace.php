@@ -16,9 +16,7 @@ final class SuggestPeace implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_SUGGEST_PEACE';
 
-    public function __construct(private SuggestPeaceRequestInterface $suggestPeaceRequest, private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager)
-    {
-    }
+    public function __construct(private SuggestPeaceRequestInterface $suggestPeaceRequest, private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -48,7 +46,7 @@ final class SuggestPeace implements ActionControllerInterface
             return;
         }
 
-        if (!$relation || ($relation->getOpponentId() !== $allianceId && $relation->getAllianceId() !== $allianceId)) {
+        if ($relation->getOpponentId() !== $allianceId && $relation->getAlliance() !== $alliance) {
             return;
         }
 
@@ -68,7 +66,7 @@ final class SuggestPeace implements ActionControllerInterface
             $alliance->getName()
         );
 
-        if ($relation->getAllianceId() === $allianceId) {
+        if ($relation->getAlliance() === $alliance) {
             $this->allianceActionManager->sendMessage($relation->getOpponentId(), $text);
         } else {
             $this->allianceActionManager->sendMessage($relation->getAllianceId(), $text);

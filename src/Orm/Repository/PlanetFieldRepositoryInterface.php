@@ -79,6 +79,7 @@ interface PlanetFieldRepositoryInterface extends ObjectRepository
 
     /**
      * @param array<int> $excludedFields
+     * @param array<int> $state
      *
      * @return array<PlanetField>
      */

@@ -105,7 +105,7 @@ final class Colonize implements ActionControllerInterface
             $this->userRepository->save($user);
             $this->planetColonization->colonize(
                 $colony,
-                $userId,
+                $user,
                 $building,
                 $field
             );
@@ -133,7 +133,7 @@ final class Colonize implements ActionControllerInterface
 
             $this->planetColonization->colonize(
                 $colony,
-                $userId,
+                $user,
                 $building,
                 $field
             );

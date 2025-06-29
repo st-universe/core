@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Image;
 
 use Amenadiel\JpGraph\Graph\Graph;
+use GdImage;
 use Override;
 use RuntimeException;
 
@@ -13,13 +14,13 @@ final class ImageCreation implements ImageCreationInterface
     #[Override]
     public function graphInSrc(Graph $graph): string
     {
-        $img = $graph->Stroke(_IMG_HANDLER);
+        $img = $graph->Stroke('__handle');
 
         return $this->gdImageInSrc($img);
     }
 
     #[Override]
-    public function gdImageInSrc($gdImage): string
+    public function gdImageInSrc(GdImage $gdImage): string
     {
         ob_start();
         imagepng($gdImage);

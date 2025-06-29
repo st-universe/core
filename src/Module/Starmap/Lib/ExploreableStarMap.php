@@ -27,8 +27,8 @@ class ExploreableStarMap implements ExploreableStarMapInterface
     #[Column(type: 'integer')]
     private int $cy = 0;
 
-    #[Column(type: 'integer', nullable: true)]
-    private ?int $field_id = 0;
+    #[Column(type: 'integer')]
+    private int $field_id = 0;
 
     #[Column(type: 'integer')]
     private int $layer_id = 0;

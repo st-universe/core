@@ -32,9 +32,9 @@ interface FleetRepositoryInterface extends ObjectRepository
     public function getHighestSortByUser(int $userId): int;
 
     /**
-     * @return iterable<Fleet>
+     * @return array<Fleet>
      */
-    public function getNonNpcFleetList(): iterable;
+    public function getNonNpcFleetList(): array;
 
     public function truncateAllFleets(): void;
 }

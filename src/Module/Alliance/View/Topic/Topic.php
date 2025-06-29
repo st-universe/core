@@ -19,7 +19,12 @@ final class Topic implements ViewControllerInterface
 
     public const int ALLIANCEBOARDLIMITER = 20;
 
-    public function __construct(private TopicRequestInterface $topicRequest, private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository, private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository, private AllianceActionManagerInterface $allianceActionManager) {}
+    public function __construct(
+        private TopicRequestInterface $topicRequest,
+        private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository,
+        private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository,
+        private AllianceActionManagerInterface $allianceActionManager
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -34,13 +39,12 @@ final class Topic implements ViewControllerInterface
         $topicId = $this->topicRequest->getTopicId();
         $allianceId = $alliance->getId();
 
-        /** @var AllianceBoardTopic $topic */
         $topic = $this->allianceBoardTopicRepository->find($topicId);
         if ($topic === null) {
             throw new AccessViolationException(sprintf(_('userId %d tried to access non-existent topicId %d'), $userId, $topicId));
         }
 
-        if ($topic->getAllianceId() !== $allianceId) {
+        if ($topic->getAlliance() !== $alliance) {
             throw new AccessViolationException(sprintf(_('userId %d tried to access topic of foreign ally, topicId %d'), $userId, $topicId));
         }
 
@@ -91,6 +95,7 @@ final class Topic implements ViewControllerInterface
         $game->setTemplateVar('USERID', $game->getUser()->getId());
     }
 
+    /** @return array< array{page: '<'|'<<'|'>', mark: int<-20, max>, cssclass: 'pages'}|array{page: '>>'|float, mark: float, cssclass: 'pages'|'pages selected'}> */
     private function getTopicNavigation(AllianceBoardTopic $topic): array
     {
         $mark = $this->topicRequest->getPageMark();

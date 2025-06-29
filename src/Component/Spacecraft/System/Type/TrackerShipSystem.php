@@ -46,7 +46,7 @@ class TrackerShipSystem extends AbstractSpacecraftSystemType implements Spacecra
     }
 
     #[Override]
-    public function getCooldownSeconds(): ?int
+    public function getCooldownSeconds(): int
     {
         return TimeConstants::ONE_HOUR_IN_SECONDS;
     }

@@ -25,7 +25,8 @@ final class ShowDeals implements ViewControllerInterface
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $userId = $game->getUser()->getId();
+        $user = $game->getUser();
+        $userId = $user->getId();
 
         $game->appendNavigationPart(
             'trade.php',
@@ -38,7 +39,7 @@ final class ShowDeals implements ViewControllerInterface
         $game->setPageTitle(_('/ Handel / Deals des Großen Nagus'));
         $game->setViewTemplate('html/trade/deals.twig');
 
-        $game->getUser()->setDeals(false);
+        $user->setDeals(false);
 
         $hasLicense = $this->tradeLicenseRepository->hasFergLicense($userId);
 
@@ -47,19 +48,21 @@ final class ShowDeals implements ViewControllerInterface
             return;
         }
 
-        if ($game->getUser()->getPirateWrath() === null) {
-            $game->setTemplateVar('WRATH', PirateWrathManager::DEFAULT_WRATH);
-        } else {
-            $game->setTemplateVar('WRATH', $game->getUser()->getPirateWrath()->getWrath());
-        }
-
         $time = $this->stuTime->time();
-        if ($game->getUser()->getPirateWrath() === null || $game->getUser()->getPirateWrath()->getProtectionTimeout() < $time) {
+        $pirateWrath = $user->getPirateWrath();
+        if ($pirateWrath === null) {
+            $game->setTemplateVar('WRATH', PirateWrathManager::DEFAULT_WRATH);
             $game->setTemplateVar('PROTECTIONTIMEOUT', $time);
         } else {
-            $game->setTemplateVar('PROTECTIONTIMEOUT', $game->getUser()->getPirateWrath()->getProtectionTimeout());
-            $game->setTemplateVar('PROTECTIONTIME', $this->stuTime->transformToStuDateTime($game->getUser()->getPirateWrath()->getProtectionTimeout()));
+            $game->setTemplateVar('WRATH', $pirateWrath->getWrath());
+            $protectionTimeout = $pirateWrath->getProtectionTimeout();
+            $game->setTemplateVar('PROTECTIONTIMEOUT', $protectionTimeout);
+
+            if ($protectionTimeout !== null && $pirateWrath->getProtectionTimeout() < $time) {
+                $game->setTemplateVar('PROTECTIONTIME', $this->stuTime->transformToStuDateTime($protectionTimeout));
+            }
         }
+
 
         $hasActivedeals = $this->dealsRepository->hasActiveDeals($userId);
         if ($hasActivedeals) {

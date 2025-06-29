@@ -79,7 +79,7 @@ final class LockUser implements ActionControllerInterface
 
     private function setUserLock(User $user, int $remainingTicks): void
     {
-        $lock = $this->userLockRepository->getActiveByUser($user->getId());
+        $lock = $this->userLockRepository->getActiveByUser($user);
 
         if ($lock === null) {
             $lock = $this->userLockRepository->prototype();

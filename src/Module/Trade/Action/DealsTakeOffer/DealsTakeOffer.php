@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\Action\DealsTakeOffer;
 
 use Override;
+use RuntimeException;
 use Stu\Component\Trade\TradeEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
@@ -28,7 +29,18 @@ final class DealsTakeOffer implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_DEALS_TAKE_OFFER';
 
-    public function __construct(private DealsTakeOfferRequestInterface $dealstakeOfferRequest, private TradeLibFactoryInterface $tradeLibFactory, private DealsRepositoryInterface $dealsRepository, private TradePostRepositoryInterface $tradepostRepository, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private StorageRepositoryInterface $storageRepository, private BuildplanModuleRepositoryInterface $buildplanModuleRepository, private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository, private ShipCreatorInterface $shipCreator, private CreatePrestigeLogInterface $createPrestigeLog) {}
+    public function __construct(
+        private DealsTakeOfferRequestInterface $dealstakeOfferRequest,
+        private TradeLibFactoryInterface $tradeLibFactory,
+        private DealsRepositoryInterface $dealsRepository,
+        private TradePostRepositoryInterface $tradepostRepository,
+        private TradeLicenseRepositoryInterface $tradeLicenseRepository,
+        private StorageRepositoryInterface $storageRepository,
+        private BuildplanModuleRepositoryInterface $buildplanModuleRepository,
+        private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository,
+        private ShipCreatorInterface $shipCreator,
+        private CreatePrestigeLogInterface $createPrestigeLog
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -40,21 +52,21 @@ final class DealsTakeOffer implements ActionControllerInterface
         $game->setView(ShowDeals::VIEW_IDENTIFIER);
 
         $selectedDeal = $this->dealsRepository->find($dealId);
+        if ($selectedDeal === null) {
+            $game->addInformation(_('Das Angebot ist nicht mehr verfügbar'));
+            return;
+        }
 
         if ($userId < 100) {
             $game->addInformation(_('NPCs können dieses Angebot nicht annehmen'));
             return;
         }
 
-        if ($amount < 1 && $selectedDeal->getgiveCommodityId() !== null) {
+        if ($amount < 1 && $selectedDeal->getGiveCommodityId() !== null) {
             $game->addInformation(_('Zu geringe Anzahl ausgewählt'));
             return;
         }
 
-        if ($selectedDeal === null) {
-            $game->addInformation(_('Das Angebot ist nicht mehr verfügbar'));
-            return;
-        }
 
         if (!$this->tradeLicenseRepository->hasFergLicense($userId)) {
             throw new AccessViolationException(sprintf(
@@ -71,44 +83,55 @@ final class DealsTakeOffer implements ActionControllerInterface
             }
         }
 
-        if ($selectedDeal->getwantCommodityId() !== null || $selectedDeal->getWantPrestige() !== null) {
-            if ($selectedDeal->getwantCommodityId() !== null) {
+        $wantedCommodity = $selectedDeal->getWantedCommodity();
+        if ($wantedCommodity !== null || $selectedDeal->getWantPrestige() !== null) {
+            if ($wantedCommodity !== null) {
                 $storage = $this->storageRepository->getByTradepostAndUserAndCommodity(
                     TradeEnum::DEALS_FERG_TRADEPOST_ID,
                     $userId,
-                    $selectedDeal->getWantCommodityId()
+                    $wantedCommodity->getId()
                 );
 
-
-                if ($storage === null || $storage->getAmount() < $selectedDeal->getwantCommodityAmount()) {
+                if ($storage === null || $storage->getAmount() < $selectedDeal->getWantCommodityAmount()) {
                     $game->addInformation(sprintf(
                         _('Es befindet sich nicht genügend %s auf diesem Handelsposten'),
-                        $selectedDeal->getWantedCommodity()->getName()
+                        $wantedCommodity->getName()
                     ));
                     return;
                 }
             }
 
-            $tradePost = $this->tradepostRepository->getFergTradePost(TradeEnum::DEALS_FERG_TRADEPOST_ID);
+            $tradePost = $this->tradepostRepository->find(TradeEnum::DEALS_FERG_TRADEPOST_ID);
+            if ($tradePost === null) {
+                throw new RuntimeException('no deals ferg tradepost found');
+            }
 
             $storageManagerUser = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $user);
 
             $freeStorage = $storageManagerUser->getFreeStorage();
 
-            if ($selectedDeal->getgiveCommodityId() !== null) {
-                if ($selectedDeal->getwantCommodityId() !== null) {
+            if ($selectedDeal->getGiveCommodityId() !== null) {
+                if ($wantedCommodity !== null) {
+
+                    $storage = $this->storageRepository->getByTradepostAndUserAndCommodity(
+                        TradeEnum::DEALS_FERG_TRADEPOST_ID,
+                        $userId,
+                        $wantedCommodity->getId()
+                    );
+                    $storageAmount = $storage?->getAmount() ?? 0;
+
                     if (
                         $freeStorage <= 0 &&
-                        $selectedDeal->getgiveCommodityAmount() > $selectedDeal->getwantCommodityAmount()
+                        $selectedDeal->getGiveCommodityAmount() > $selectedDeal->getWantCommodityAmount()
                     ) {
                         $game->addInformation(_('Dein Warenkonto auf diesem Handelsposten ist voll'));
                         return;
                     }
-                    if ($amount * $selectedDeal->getwantCommodityAmount() > $storage->getAmount()) {
-                        $amount = (int) floor($storage->getAmount() / $selectedDeal->getwantCommodityAmount());
+                    if ($amount * $selectedDeal->getWantCommodityAmount() > $storageAmount) {
+                        $amount = (int) floor($storageAmount / $selectedDeal->getWantCommodityAmount());
                     }
-                    if ($amount * $selectedDeal->getgiveCommodityAmount() - $amount * $selectedDeal->getwantCommodityAmount() > $freeStorage) {
-                        $amount = (int) floor($freeStorage / ($selectedDeal->getgiveCommodityAmount() - $selectedDeal->getwantCommodityAmount()));
+                    if ($amount * $selectedDeal->getGiveCommodityAmount() - $amount * $selectedDeal->getWantCommodityAmount() > $freeStorage) {
+                        $amount = (int) floor($freeStorage / ($selectedDeal->getGiveCommodityAmount() - $selectedDeal->getWantCommodityAmount()));
                         if ($amount <= 0) {
                             $game->addInformation(_('Es steht für diese Transaktion nicht genügend Platz in deinem Warenkonto zur Verfügung'));
                             return;
@@ -127,8 +150,8 @@ final class DealsTakeOffer implements ActionControllerInterface
                     if ($amount * $selectedDeal->getWantPrestige() > $userprestige) {
                         $amount = (int) floor($userprestige / $selectedDeal->getWantPrestige());
                     }
-                    if ($amount * $selectedDeal->getgiveCommodityAmount() - $amount * $selectedDeal->getWantPrestige() > $freeStorage) {
-                        $amount = (int) floor($freeStorage / ($selectedDeal->getgiveCommodityAmount() - $selectedDeal->getWantPrestige()));
+                    if ($amount * $selectedDeal->getGiveCommodityAmount() - $amount * $selectedDeal->getWantPrestige() > $freeStorage) {
+                        $amount = (int) floor($freeStorage / ($selectedDeal->getGiveCommodityAmount() - $selectedDeal->getWantPrestige()));
                         if ($amount <= 0) {
                             $game->addInformation(_('Es steht für diese Transaktion nicht genügend Platz in deinem Warenkonto zur Verfügung'));
                             return;
@@ -154,25 +177,29 @@ final class DealsTakeOffer implements ActionControllerInterface
                 }
             }
 
-            if ($selectedDeal->getgiveCommodityId() !== null) {
+            $givenCommodityId = $selectedDeal->getGiveCommodityId();
+            if ($givenCommodityId !== null) {
                 $storageManagerUser->upperStorage(
-                    $selectedDeal->getgiveCommodityId(),
-                    (int) $selectedDeal->getgiveCommodityAmount() * $amount
+                    $givenCommodityId,
+                    (int) $selectedDeal->getGiveCommodityAmount() * $amount
                 );
             }
 
-            if ($selectedDeal->getShip() == true) {
-                $this->createShip($selectedDeal->getBuildplan(), $tradePost, $userId);
+            $buildplan = $selectedDeal->getBuildplan();
+            if ($buildplan !== null) {
+                if ($selectedDeal->getShip() === true) {
+                    $this->createShip($buildplan, $tradePost, $userId);
+                }
+
+                if (($selectedDeal->getShip() ?? false)) {
+                    $this->copyBuildplan($buildplan, $user);
+                }
             }
 
-            if ($selectedDeal->getShip() == false && $selectedDeal->getBuildplanId() !== null) {
-                $this->copyBuildplan($selectedDeal->getBuildplan(), $user);
-            }
-
-            if ($selectedDeal->getwantCommodityId() !== null) {
+            if ($selectedDeal->getWantCommodityId() !== null) {
                 $storageManagerUser->lowerStorage(
-                    $selectedDeal->getwantCommodityId(),
-                    (int) $selectedDeal->getwantCommodityAmount() * $amount
+                    $selectedDeal->getWantCommodityId(),
+                    (int) $selectedDeal->getWantCommodityAmount() * $amount
                 );
             }
 
@@ -183,7 +210,7 @@ final class DealsTakeOffer implements ActionControllerInterface
                 );
                 $this->createPrestigeLog->createLog(- ($amount * $selectedDeal->getWantPrestige()), $description, $game->getUser(), time());
             }
-            $game->addInformation(sprintf(_('Der Deal wurde %d mal angenommen'), $amount));
+            $game->addInformationf('Der Deal wurde %d mal angenommen', $amount);
         }
     }
 

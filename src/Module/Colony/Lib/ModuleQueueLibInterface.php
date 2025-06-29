@@ -8,7 +8,7 @@ use Stu\Orm\Entity\Colony;
 
 interface ModuleQueueLibInterface
 {
-    public function cancelModuleQueues(Colony $colony, BuildingFunctionEnum $buildingFunction);
+    public function cancelModuleQueues(Colony $colony, BuildingFunctionEnum $buildingFunction): void;
 
-    public function cancelModuleQueuesForBuilding(Colony $colony, Building $building);
+    public function cancelModuleQueuesForBuilding(Colony $colony, Building $building): void;
 }

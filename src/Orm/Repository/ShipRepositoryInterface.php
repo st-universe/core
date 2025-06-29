@@ -39,19 +39,19 @@ interface ShipRepositoryInterface extends ObjectRepository
     ): array;
 
     /**
-     * @return iterable<Ship>
+     * @return array<Ship>
      */
-    public function getPossibleFleetMembers(Ship $fleetLeader): iterable;
+    public function getPossibleFleetMembers(Ship $fleetLeader): array;
 
     /**
-     * @return iterable<Ship>
+     * @return array<Ship>
      */
     public function getWithTradeLicensePayment(
         int $userId,
         int $tradePostShipId,
         int $commodityId,
         int $amount
-    ): iterable;
+    ): array;
 
     /**
      * @return array<Ship>

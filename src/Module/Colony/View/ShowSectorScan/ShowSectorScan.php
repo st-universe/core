@@ -19,10 +19,16 @@ final class ShowSectorScan implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_SECTOR_SCAN';
 
+    /** @var array<int, int> */
     private array $fadedSignaturesUncloaked = [];
+    /** @var array<int, int> */
     private array $fadedSignaturesCloaked = [];
 
-    public function __construct(private ColonyLoaderInterface $colonyLoader, private StarSystemMapRepositoryInterface $mapRepository, private FlightSignatureRepositoryInterface $flightSignatureRepository) {}
+    public function __construct(
+        private ColonyLoaderInterface $colonyLoader,
+        private StarSystemMapRepositoryInterface $mapRepository,
+        private FlightSignatureRepositoryInterface $flightSignatureRepository
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -55,7 +61,7 @@ final class ShowSectorScan implements ViewControllerInterface
     }
 
     /**
-     * @return array<string, SignatureWrapper>
+     * @return array<SignatureWrapper>
      */
     private function getSignatures(StarSystemMap $field, int $ignoreId): array
     {
@@ -79,7 +85,7 @@ final class ShowSectorScan implements ViewControllerInterface
                         $this->fadedSignaturesUncloaked[$id] = $id;
                     }
                 } else {
-                    $filteredSigs[$id . '_' . $name] = $wrapper;
+                    $filteredSigs[sprintf('%d_%s', $id, $name)] = $wrapper;
                 }
             }
         }

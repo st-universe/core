@@ -6,6 +6,7 @@ namespace Stu\Module\Trade\Action\CreateOffer;
 
 use Override;
 use Stu\Exception\AccessViolationException;
+use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -23,9 +24,7 @@ final class CreateOffer implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_CREATE_OFFER';
 
-    public function __construct(private CreateOfferRequestInterface $createOfferRequest, private CommodityRepositoryInterface $commodityRepository, private TradeLibFactoryInterface $tradeLibFactory, private TradeOfferRepositoryInterface $tradeOfferRepository, private StorageRepositoryInterface $storageRepository)
-    {
-    }
+    public function __construct(private CreateOfferRequestInterface $createOfferRequest, private CommodityRepositoryInterface $commodityRepository, private TradeLibFactoryInterface $tradeLibFactory, private TradeOfferRepositoryInterface $tradeOfferRepository, private StorageRepositoryInterface $storageRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -44,6 +43,9 @@ final class CreateOffer implements ActionControllerInterface
         }
 
         $tradePost = $storage->getTradePost();
+        if ($tradePost === null) {
+            throw new SanityCheckException(sprintf('storageId %d not on tradepost!', $this->createOfferRequest->getStorageId()));
+        }
 
         if ($tradePost->getUserId() === UserEnum::USER_NOONE) {
             $game->addInformation(_('Dieser Handelsposten wurde verlassen. Handel ist nicht mehr möglich.'));

@@ -14,9 +14,10 @@ final class BoardSettings implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_BOARD_SETTINGS';
 
-    public function __construct(private BoardSettingsRequestInterface $boardSettingsRequest, private AllianceBoardRepositoryInterface $allianceBoardRepository)
-    {
-    }
+    public function __construct(
+        private BoardSettingsRequestInterface $boardSettingsRequest,
+        private AllianceBoardRepositoryInterface $allianceBoardRepository
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -27,7 +28,7 @@ final class BoardSettings implements ViewControllerInterface
         }
 
         $board = $this->allianceBoardRepository->find($this->boardSettingsRequest->getBoardId());
-        if ($board === null || $board->getAllianceId() !== $alliance->getId()) {
+        if ($board === null || $board->getAlliance() !== $alliance) {
             throw new AccessViolationException();
         }
 

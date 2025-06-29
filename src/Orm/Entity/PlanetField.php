@@ -161,13 +161,14 @@ class PlanetField
 
     public function isActivateable(): bool
     {
-        if ($this->hasBuilding() === false) {
+        $building = $this->building;
+        if ($building === null) {
             return false;
         }
         if ($this->isUnderConstruction()) {
             return false;
         }
-        return $this->getBuilding()->isActivateable();
+        return $building->isActivateable();
     }
 
     public function hasHighDamage(): bool
@@ -175,7 +176,13 @@ class PlanetField
         if (!$this->isDamaged()) {
             return false;
         }
-        return round((100 / $this->getBuilding()->getIntegrity()) * $this->getIntegrity()) < 50;
+
+        $building = $this->getBuilding();
+        if ($building === null) {
+            throw new RuntimeException('should only be called on fields with building!');
+        }
+
+        return round((100 / $building->getIntegrity()) * $this->getIntegrity()) < 50;
     }
 
     public function isUnderConstruction(): bool
@@ -237,13 +244,14 @@ class PlanetField
 
     public function isDamaged(): bool
     {
-        if (!$this->hasBuilding()) {
+        $building = $this->building;
+        if ($building === null) {
             return false;
         }
         if ($this->isUnderConstruction()) {
             return false;
         }
-        return $this->getIntegrity() !== $this->getBuilding()->getIntegrity();
+        return $this->getIntegrity() !== $building->getIntegrity();
     }
 
     public function clearBuilding(): void
@@ -325,7 +333,7 @@ class PlanetField
 
     public function getPictureType(): string
     {
-        return $this->getBuildingId() . "/" . $this->getBuilding()->getBuildingType() . $this->getBuildingState();
+        return $this->getBuildingId() . "/" . ($this->getBuilding()?->getBuildingType() ?? 'UNDEFINED') . $this->getBuildingState();
     }
 
     public function isColonizeAble(): bool

@@ -32,7 +32,7 @@ class SessionString
     #[Column(type: 'string')]
     private string $sess_string = '';
 
-    #[Column(type: 'datetime', nullable: true)]
+    #[Column(type: 'datetime')]
     private DateTimeInterface $date;
 
     #[ManyToOne(targetEntity: User::class)]

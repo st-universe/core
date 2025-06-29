@@ -28,7 +28,7 @@ final class BuildingCommodityRepository extends EntityRepository implements Buil
     }
 
     #[Override]
-    public function getProductionByColony(PlanetFieldHostInterface $host, ColonyClass $colonyClass): iterable
+    public function getProductionByColony(PlanetFieldHostInterface $host, ColonyClass $colonyClass): array
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('commodity_id', 'commodity_id', 'integer');

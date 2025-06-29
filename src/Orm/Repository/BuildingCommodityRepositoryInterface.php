@@ -19,9 +19,9 @@ interface BuildingCommodityRepositoryInterface extends ObjectRepository
     public function getByBuilding(int $buildingId): array;
 
     /**
-     * @return iterable<array{commodity_id: int, production: int, pc: int}>
+     * @return array<array{commodity_id: int, production: int, pc: int}>
      */
-    public function getProductionByColony(PlanetFieldHostInterface $host, ColonyClass $colonyClass): iterable;
+    public function getProductionByColony(PlanetFieldHostInterface $host, ColonyClass $colonyClass): array;
 
     /**
      * Returns the production sum of default commodities of all colonies for the given user

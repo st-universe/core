@@ -31,7 +31,7 @@ class WebEmitterShipSystem extends AbstractSpacecraftSystemType implements Space
     }
 
     #[Override]
-    public function getCooldownSeconds(): ?int
+    public function getCooldownSeconds(): int
     {
         return TimeConstants::ONE_DAY_IN_SECONDS;
     }
@@ -60,7 +60,7 @@ class WebEmitterShipSystem extends AbstractSpacecraftSystemType implements Space
             return;
         }
 
-        $webUnderConstruction = $wrapper->getWebEmitterSystemData()->getWebUnderConstruction();
+        $webUnderConstruction = $wrapper->getWebEmitterSystemData()?->getWebUnderConstruction();
         if ($webUnderConstruction === null) {
             return;
         }

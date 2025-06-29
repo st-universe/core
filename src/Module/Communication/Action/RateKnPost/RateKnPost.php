@@ -24,9 +24,7 @@ final class RateKnPost implements ActionControllerInterface
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        /** @var KnPost $post */
         $post = $this->knPostRepository->find($this->knPostRequest->getKnId());
-
         if ($post === null) {
             return;
         }

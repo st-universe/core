@@ -3,6 +3,7 @@
 namespace Stu\Module\Maintenance;
 
 use Override;
+use RuntimeException;
 use Stu\Component\Game\TimeConstants;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -16,9 +17,7 @@ final class OldTradeOffersDeletion implements MaintenanceHandlerInterface
 {
     public const int OFFER_MAX_AGE = TimeConstants::TWO_WEEKS_IN_SECONDS;
 
-    public function __construct(private TradeOfferRepositoryInterface $tradeOfferRepository, private TradeLibFactoryInterface $tradeLibFactory, private PrivateMessageSenderInterface $privateMessageSender, private StorageRepositoryInterface $storageRepository)
-    {
-    }
+    public function __construct(private TradeOfferRepositoryInterface $tradeOfferRepository, private TradeLibFactoryInterface $tradeLibFactory, private PrivateMessageSenderInterface $privateMessageSender, private StorageRepositoryInterface $storageRepository) {}
 
     #[Override]
     public function handle(): void
@@ -27,7 +26,8 @@ final class OldTradeOffersDeletion implements MaintenanceHandlerInterface
 
         $pm = new InformationWrapper();
         $userId = 0;
-        $postId = 0;
+        $postId = null;
+        $storageManager = null;
 
         foreach ($offersToDelete as $offer) {
             // send message to user
@@ -52,6 +52,11 @@ final class OldTradeOffersDeletion implements MaintenanceHandlerInterface
                 );
                 $pm->addInformation("\n" . sprintf(_('%s:'), $post->getName()));
             }
+
+            if ($storageManager === null) {
+                throw new RuntimeException('this should not happen');
+            }
+
             $userId = $offer->getUserId();
             $postId = $offer->getTradePostId();
 

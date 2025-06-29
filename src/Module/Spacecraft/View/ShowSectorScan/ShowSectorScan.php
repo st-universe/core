@@ -97,7 +97,7 @@ final class ShowSectorScan implements ViewControllerInterface
     }
 
     /**
-     * @return array<int, SignatureWrapper>
+     * @return array<string, SignatureWrapper>
      */
     private function getSignatures(int $fieldId, int $ignoreId): array
     {

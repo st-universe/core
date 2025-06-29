@@ -113,14 +113,6 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
     }
 
     #[Override]
-    public function getByPosition(StarSystemMap $sysmap): ?Colony
-    {
-        return $this->findOneBy([
-            'starsystem_map' => $sysmap
-        ]);
-    }
-
-    #[Override]
     public function getForeignColoniesInBroadcastRange(
         StarSystemMap $systemMap,
         User $user
@@ -149,7 +141,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
     }
 
     #[Override]
-    public function getByBatchGroup(int $batchGroup, int $batchGroupCount): iterable
+    public function getByBatchGroup(int $batchGroup, int $batchGroupCount): array
     {
         return $this->getEntityManager()
             ->createQuery(
@@ -169,7 +161,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
     }
 
     #[Override]
-    public function getColonized(): iterable
+    public function getColonized(): array
     {
         return $this->getEntityManager()
             ->createQuery(

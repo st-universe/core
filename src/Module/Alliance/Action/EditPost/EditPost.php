@@ -16,9 +16,7 @@ final class EditPost implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_EDIT_POSTING';
 
-    public function __construct(private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository)
-    {
-    }
+    public function __construct(private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -30,7 +28,7 @@ final class EditPost implements ActionControllerInterface
             return;
         }
 
-        if ($post->getBoard()->getAllianceId() !== $alliance->getId()) {
+        if ($post->getBoard()->getAlliance() !== $alliance) {
             throw new AccessViolationException();
         }
 

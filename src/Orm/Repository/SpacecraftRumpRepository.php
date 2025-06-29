@@ -133,7 +133,7 @@ final class SpacecraftRumpRepository extends EntityRepository implements Spacecr
     }
 
     #[Override]
-    public function getList(): iterable
+    public function getList(): array
     {
         return $this->findBy(
             [],

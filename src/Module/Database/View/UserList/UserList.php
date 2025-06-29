@@ -88,6 +88,7 @@ final class UserList implements ViewControllerInterface
         $game->setTemplateVar('SEARCH', $search !== false ? request::indString('search') : '');
     }
 
+    /** @return array<array{page: '<'|'<<'|'>', mark: int<-25, max>, cssclass: 'pages'}|array{page: '>>'|float, mark: float, cssclass: 'pages'|'pages selected'}> */
     private function getUserListNavigation(): array
     {
         $mark = $this->userListRequest->getPagination();

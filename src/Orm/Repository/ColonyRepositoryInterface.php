@@ -29,8 +29,6 @@ interface ColonyRepositoryInterface extends ObjectRepository
      */
     public function getStartingByFaction(int $factionId): array;
 
-    public function getByPosition(StarSystemMap $sysmap): ?Colony;
-
     /**
      * @return array<Colony>
      */
@@ -40,14 +38,14 @@ interface ColonyRepositoryInterface extends ObjectRepository
     ): array;
 
     /**
-     * @return iterable<Colony>
+     * @return array<Colony>
      */
-    public function getByBatchGroup(int $batchGroup, int $batchGroupCount): iterable;
+    public function getByBatchGroup(int $batchGroup, int $batchGroupCount): array;
 
     /**
-     * @return iterable<Colony>
+     * @return array<Colony>
      */
-    public function getColonized(): iterable;
+    public function getColonized(): array;
 
     /**
      * @return array<Colony>

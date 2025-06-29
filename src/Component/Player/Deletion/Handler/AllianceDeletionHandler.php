@@ -38,11 +38,10 @@ final class AllianceDeletionHandler implements PlayerDeletionHandlerInterface
                     $this->allianceActionManager->delete($alliance);
                 }
                 if ($successor !== null) {
-                    $successorUserId = $successor->getUserId();
 
                     $this->allianceActionManager->setJobForUser(
-                        $alliance->getId(),
-                        $successorUserId,
+                        $alliance,
+                        $successor->getUser(),
                         AllianceEnum::ALLIANCE_JOBS_FOUNDER
                     );
                     $this->allianceJobRepository->delete($successor);
@@ -52,8 +51,8 @@ final class AllianceDeletionHandler implements PlayerDeletionHandlerInterface
                         $this->allianceJobRepository->delete($diplomatic);
                     }
                     $this->allianceActionManager->setJobForUser(
-                        $alliance->getId(),
-                        $lastonlinemember->getId(),
+                        $alliance,
+                        $lastonlinemember,
                         AllianceEnum::ALLIANCE_JOBS_FOUNDER
                     );
                 }

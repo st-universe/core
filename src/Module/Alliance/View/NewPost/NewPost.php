@@ -8,14 +8,16 @@ use Override;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Entity\AllianceBoardTopic;
 use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
 final class NewPost implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_NEW_POST';
 
-    public function __construct(private NewPostRequestInterface $newPostRequest, private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository) {}
+    public function __construct(
+        private NewPostRequestInterface $newPostRequest,
+        private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -29,9 +31,8 @@ final class NewPost implements ViewControllerInterface
         $topicId = $this->newPostRequest->getTopicId();
         $allianceId = $alliance->getId();
 
-        /** @var AllianceBoardTopic $topic */
         $topic = $this->allianceBoardTopicRepository->find($topicId);
-        if ($topic === null || $topic->getAllianceId() !== $allianceId) {
+        if ($topic === null || $topic->getAlliance() !== $alliance) {
             throw new AccessViolationException();
         }
 

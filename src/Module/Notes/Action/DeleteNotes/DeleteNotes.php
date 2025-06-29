@@ -9,16 +9,13 @@ use request;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\Note;
 use Stu\Orm\Repository\NoteRepositoryInterface;
 
 final class DeleteNotes implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_DELETE_NOTES';
 
-    public function __construct(private NoteRepositoryInterface $noteRepository)
-    {
-    }
+    public function __construct(private NoteRepositoryInterface $noteRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -35,7 +32,6 @@ final class DeleteNotes implements ActionControllerInterface
                 continue;
             }
 
-            /** @var Note $obj */
             $obj = $this->noteRepository->find((int)$noteId);
             if ($obj === null) {
                 continue;

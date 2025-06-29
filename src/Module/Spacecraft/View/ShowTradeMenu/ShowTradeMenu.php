@@ -14,7 +14,6 @@ use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
-use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseInfoRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
@@ -31,7 +30,6 @@ final class ShowTradeMenu implements ViewControllerInterface
         private TradeLicenseInfoRepositoryInterface $TradeLicenseInfoRepository,
         private TradeLibFactoryInterface $tradeLibFactory,
         private TradePostRepositoryInterface $tradePostRepository,
-        private CommodityRepositoryInterface $commodityRepository,
         private InteractionCheckerInterface $interactionChecker,
         private SpacecraftLoaderInterface $spaceCraftLoader
     ) {}
@@ -67,9 +65,9 @@ final class ShowTradeMenu implements ViewControllerInterface
         $licenseInfo = $this->TradeLicenseInfoRepository->getLatestLicenseInfo($tradepost->getId());
 
         if ($licenseInfo !== null) {
-            $commodityId = $licenseInfo->getCommodityId();
-            $commodity = $this->commodityRepository->find($commodityId);
-            $commodityName = $commodity !== null ? $commodity->getName() : '';
+            $commodity = $licenseInfo->getCommodity();
+            $commodityId = $commodity->getId();
+            $commodityName = $commodity->getName();
             $licensecost = $licenseInfo->getAmount();
             $licensedays = $licenseInfo->getDays();
         } else {

@@ -14,15 +14,13 @@ final class ShowNote implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_NOTE';
 
-    public function __construct(private ShowNoteRequestInterface $showNoteRequest, private NoteRepositoryInterface $noteRepository)
-    {
-    }
+    public function __construct(private ShowNoteRequestInterface $showNoteRequest, private NoteRepositoryInterface $noteRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $note = $this->noteRepository->find($this->showNoteRequest->getNoteId());
-        if ($note->getUserId() !== $game->getUser()->getId()) {
+        if ($note === null || $note->getUserId() !== $game->getUser()->getId()) {
             throw new AccessViolationException();
         }
 

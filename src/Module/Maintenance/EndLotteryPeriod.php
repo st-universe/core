@@ -61,7 +61,7 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
             return;
         }
 
-        $tradePost = $this->tradepostRepository->getFergTradePost(TradeEnum::DEALS_FERG_TRADEPOST_ID);
+        $tradePost = $this->tradepostRepository->find(TradeEnum::DEALS_FERG_TRADEPOST_ID);
         if ($tradePost === null) {
             throw new RuntimeException('no deals ferg tradepost found');
         }

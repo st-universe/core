@@ -7,6 +7,7 @@ use Stu\Module\Control\StuTime;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Orm\Entity\TradeLicense;
 use Stu\Orm\Repository\TradeLicenseInfoRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 
@@ -14,9 +15,12 @@ final class OldTradeLicenseDeletion implements MaintenanceHandlerInterface
 {
     private const int INFORM_ABOUT_ALMOST_EXPIRED_IN_DAYS = 7;
 
-    public function __construct(private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradeLicenseInfoRepositoryInterface $tradeLicenseInfoRepository, private PrivateMessageSenderInterface $privateMessageSender, private StuTime $stuTime)
-    {
-    }
+    public function __construct(
+        private TradeLicenseRepositoryInterface $tradeLicenseRepository,
+        private TradeLicenseInfoRepositoryInterface $tradeLicenseInfoRepository,
+        private PrivateMessageSenderInterface $privateMessageSender,
+        private StuTime $stuTime
+    ) {}
 
     #[Override]
     public function handle(): void
@@ -25,6 +29,7 @@ final class OldTradeLicenseDeletion implements MaintenanceHandlerInterface
         $this->informAboutAlmostExpiredLicenses($deletedLicenses);
     }
 
+    /** @param array<int, TradeLicense> $deletedLicenses */
     private function informAboutAlmostExpiredLicenses(array $deletedLicenses): void
     {
         $almostExpiredLicenses = $this->tradeLicenseRepository->getLicensesExpiredInLessThan(self::INFORM_ABOUT_ALMOST_EXPIRED_IN_DAYS);
@@ -57,6 +62,7 @@ final class OldTradeLicenseDeletion implements MaintenanceHandlerInterface
         }
     }
 
+    /** @return array<int, TradeLicense> */
     private function deleteExpiredLicenses(): array
     {
         $licensesToDelete = $this->tradeLicenseRepository->getExpiredLicenses();
@@ -75,10 +81,14 @@ final class OldTradeLicenseDeletion implements MaintenanceHandlerInterface
                     UserEnum::USER_NOONE,
                     $userId,
                     sprintf(
-                        "Deine Lizenz am Handelsposten %s ist abgelaufen.\nEine neue Lizenz kostet dort aktuell %d %s.",
+                        "Deine Lizenz am Handelsposten %s ist abgelaufen.%s",
                         $tradePost->getName(),
-                        $latestLicenseInfo->getAmount(),
-                        $latestLicenseInfo->getCommodity()->getName()
+                        $latestLicenseInfo !== null ? sprintf(
+                            "\nEine neue Lizenz für %d Tage kostet aktuell %d %s.",
+                            $latestLicenseInfo->getDays(),
+                            $latestLicenseInfo->getAmount(),
+                            $latestLicenseInfo->getCommodity()->getName()
+                        ) : ''
                     ),
                     PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM
                 );

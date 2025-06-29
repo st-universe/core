@@ -6,6 +6,7 @@ namespace Stu\Module\Station\View\ShowSystemSensorScan;
 
 use Override;
 use request;
+use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -57,15 +58,14 @@ final class ShowSystemSensorScan implements ViewControllerInterface
         }
 
         $mapField = $this->mapRepository->getByCoordinates($station->getLayer(), $cx, $cy);
+        if ($mapField === null) {
+            throw new SanityCheckException(sprintf('map does not exist with layerId: %d, cx: %d, cy: %d', $station->getLayer()?->getId() ?? 0, $cx, $cy));
+        }
 
         $game->showMacro('html/visualPanel/panel.twig');
 
         $system = $mapField->getSystem();
         if ($system === null) {
-            return;
-        }
-
-        if ($mapField === null) {
             return;
         }
 

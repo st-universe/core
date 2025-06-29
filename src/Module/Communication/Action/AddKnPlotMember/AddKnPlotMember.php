@@ -8,7 +8,6 @@ use Override;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Orm\Entity\RpgPlot;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -17,14 +16,17 @@ final class AddKnPlotMember implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_ADD_PLOTMEMBER';
 
-    public function __construct(private AddKnPlotMemberRequestInterface $addKnPlotMemberRequest, private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository, private RpgPlotRepositoryInterface $rpgPlotRepository, private PrivateMessageSenderInterface $privateMessageSender, private UserRepositoryInterface $userRepository)
-    {
-    }
+    public function __construct(
+        private AddKnPlotMemberRequestInterface $addKnPlotMemberRequest,
+        private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository,
+        private RpgPlotRepositoryInterface $rpgPlotRepository,
+        private PrivateMessageSenderInterface $privateMessageSender,
+        private UserRepositoryInterface $userRepository
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        /** @var RpgPlot $plot */
         $plot = $this->rpgPlotRepository->find($this->addKnPlotMemberRequest->getPlotId());
         if ($plot === null || $plot->getUserId() !== $game->getUser()->getId() || !$plot->isActive()) {
             return;

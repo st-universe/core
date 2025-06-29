@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Stu\Lib;
 
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
+use Stu\Orm\Entity\FlightSignature;
+use Stu\Orm\Entity\SpacecraftRump;
 
 class SignatureWrapper
 {
-    public function __construct(private $signature)
-    {
-    }
+    public function __construct(private FlightSignature $signature) {}
 
-    public function getRump()
+    public function getRump(): ?SpacecraftRump
     {
         if ($this->signature->isCloaked()) {
             if ($this->signature->getTime() > (time() - FlightSignatureVisibilityEnum::RUMP_VISIBILITY_CLOAKED)) {
@@ -28,7 +28,7 @@ class SignatureWrapper
         }
     }
 
-    public function getShipName()
+    public function getShipName(): ?string
     {
         if ($this->signature->isCloaked()) {
             if ($this->signature->getTime() > (time() - FlightSignatureVisibilityEnum::NAME_VISIBILITY_CLOAKED)) {

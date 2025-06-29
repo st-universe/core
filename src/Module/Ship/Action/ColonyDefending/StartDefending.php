@@ -13,14 +13,17 @@ use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
-use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 
 final class StartDefending implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_START_DEFENDING';
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private ColonyRepositoryInterface $colonyRepository, private FleetRepositoryInterface $fleetRepository, private PrivateMessageSenderInterface $privateMessageSender) {}
+    public function __construct(
+        private ShipLoaderInterface $shipLoader,
+        private FleetRepositoryInterface $fleetRepository,
+        private PrivateMessageSenderInterface $privateMessageSender
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -34,10 +37,7 @@ final class StartDefending implements ActionControllerInterface
             $userId
         );
 
-        $currentColony = $this->colonyRepository->getByPosition(
-            $ship->getStarsystemMap()
-        );
-
+        $currentColony = $ship->isOverColony();
         if ($currentColony === null) {
             return;
         }
@@ -51,7 +51,7 @@ final class StartDefending implements ActionControllerInterface
         }
 
         $fleet = $ship->getFleet();
-        if ($fleet->getBlockedColony() !== null || $fleet->getDefendedColony() !== null) {
+        if ($fleet === null ||  $fleet->getBlockedColony() !== null || $fleet->getDefendedColony() !== null) {
             return;
         }
 

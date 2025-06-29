@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\Leave;
 
 use Override;
-use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Game\ModuleEnum;
-use Stu\Exception\AccessViolationException;
+use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -18,23 +17,23 @@ final class Leave implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_LEAVE_ALLIANCE';
 
-    public function __construct(private AllianceJobRepositoryInterface $allianceJobRepository, private PrivateMessageSenderInterface $privateMessageSender, private UserRepositoryInterface $userRepository) {}
+    public function __construct(
+        private AllianceJobRepositoryInterface $allianceJobRepository,
+        private PrivateMessageSenderInterface $privateMessageSender,
+        private UserRepositoryInterface $userRepository
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
         $alliance = $user->getAlliance();
+        if ($alliance === null) {
+            throw new SanityCheckException();
+        }
         $userId = $user->getId();
 
-        $foundJob = $this->allianceJobRepository->getSingleResultByAllianceAndType(
-            $alliance->getId(),
-            AllianceEnum::ALLIANCE_JOBS_FOUNDER
-        );
-
-        if ($foundJob->getUserId() === $userId) {
-            throw new AccessViolationException();
-        }
+        $foundJob = $alliance->getFounder();
 
         $this->allianceJobRepository->truncateByUser($userId);
 

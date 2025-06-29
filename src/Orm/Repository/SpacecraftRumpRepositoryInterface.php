@@ -42,7 +42,7 @@ interface SpacecraftRumpRepositoryInterface extends ObjectRepository
     public function getStartableByColony(int $colonyId): array;
 
     /**
-     * @return iterable<SpacecraftRump>
+     * @return array<SpacecraftRump>
      */
-    public function getList(): iterable;
+    public function getList(): array;
 }

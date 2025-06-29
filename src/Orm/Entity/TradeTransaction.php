@@ -39,8 +39,8 @@ class TradeTransaction
     #[Column(type: 'integer')]
     private int $date = 0;
 
-    #[Column(type: 'integer', nullable: true)]
-    private ?int $tradepost_id = 0;
+    #[Column(type: 'integer')]
+    private int $tradepost_id = 0;
 
     #[ManyToOne(targetEntity: Commodity::class)]
     #[JoinColumn(name: 'wg_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]

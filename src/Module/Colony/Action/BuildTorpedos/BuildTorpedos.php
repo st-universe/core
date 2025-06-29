@@ -33,7 +33,7 @@ final class BuildTorpedos implements ActionControllerInterface
         $buildableTorpedoTypes = $this->torpedoTypeRepository->getForUser($userId);
 
         $torps = request::postArray('torp');
-        $storage = $colony->getStorage();
+        $storages = $colony->getStorage();
         $changeable = $colony->getChangeable();
 
         $msg = [];
@@ -50,12 +50,14 @@ final class BuildTorpedos implements ActionControllerInterface
                 continue;
             }
             foreach ($torp->getProductionCosts() as $cost) {
-                if (!$storage->containsKey($cost->getCommodityId())) {
+
+                $storage = $storages->get($cost->getCommodityId());
+                if ($storage === null) {
                     $count = 0;
                     break;
                 }
-                if ($count * $cost->getAmount() > $storage[$cost->getCommodityId()]->getAmount()) {
-                    $count = floor($storage[$cost->getCommodityId()]->getAmount() / $cost->getAmount());
+                if ($count * $cost->getAmount() > $storage->getAmount()) {
+                    $count = floor($storage->getAmount() / $cost->getAmount());
                 }
             }
             if ($count == 0) {

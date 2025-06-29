@@ -120,7 +120,6 @@
       "@composer security:check"
     ],
     "qaStage2": [
-      "@composer orm:proxies",
       "@composer integrationtests"
     ],
     "gen:assets": [

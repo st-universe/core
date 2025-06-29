@@ -32,7 +32,7 @@ final class TranswarpCoilShipSystem extends AbstractSpacecraftSystemType impleme
     }
 
     #[Override]
-    public function getCooldownSeconds(): ?int
+    public function getCooldownSeconds(): int
     {
         return 300;
     }

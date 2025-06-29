@@ -15,9 +15,10 @@ final class RenameTopic implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_RENAME_TOPIC';
 
-    public function __construct(private RenameTopicRequestInterface $renameTopicRequest, private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository)
-    {
-    }
+    public function __construct(
+        private RenameTopicRequestInterface $renameTopicRequest,
+        private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -27,7 +28,7 @@ final class RenameTopic implements ActionControllerInterface
         $name = $this->renameTopicRequest->getTitle();
 
         $topic = $this->allianceBoardTopicRepository->find($this->renameTopicRequest->getTopicId());
-        if ($topic === null || $topic->getAllianceId() !== $alliance->getId()) {
+        if ($topic === null || $topic->getAlliance() !== $alliance) {
             throw new AccessViolationException();
         }
 

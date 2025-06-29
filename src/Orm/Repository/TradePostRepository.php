@@ -156,15 +156,6 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
     }
 
     #[Override]
-    public function getFergTradePost(
-        int $tradePostId
-    ): ?TradePost {
-        return $this->findOneBy([
-            'id' => $tradePostId
-        ]);
-    }
-
-    #[Override]
     public function getUsersWithStorageOnTradepost(int $tradePostId): array
     {
         return $this->getEntityManager()

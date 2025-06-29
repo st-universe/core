@@ -14,9 +14,10 @@ final class TopicSettings implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_TOPIC_SETTINGS';
 
-    public function __construct(private TopicSettingsRequestInterface $topicSettingsRequest, private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository)
-    {
-    }
+    public function __construct(
+        private TopicSettingsRequestInterface $topicSettingsRequest,
+        private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -25,7 +26,7 @@ final class TopicSettings implements ViewControllerInterface
         $topicId = $this->topicSettingsRequest->getTopicId();
 
         $topic = $this->allianceBoardTopicRepository->find($topicId);
-        if ($topic === null || $topic->getAllianceId() !== $alliance->getId()) {
+        if ($topic === null || $topic->getAlliance() !== $alliance) {
             throw new AccessViolationException();
         }
 

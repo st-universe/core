@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250629073202 extends AbstractMigration
+final class Version20250629073521 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -243,7 +243,7 @@ final class Version20250629073202 extends AbstractMigration
             CREATE UNIQUE INDEX buildplan_signatures_idx ON stu_buildplan (user_id, rump_id, signature)
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE TABLE stu_buildplans_hangar (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, rump_id INTEGER NOT NULL, buildplan_id INTEGER NOT NULL, default_torpedo_type_id INTEGER DEFAULT NULL, start_energy_costs INTEGER NOT NULL, CONSTRAINT FK_DE1E0721497D0592 FOREIGN KEY (default_torpedo_type_id) REFERENCES stu_torpedo_types (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_DE1E07218638E4E7 FOREIGN KEY (buildplan_id) REFERENCES stu_buildplan (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_DE1E07212EE98D4C FOREIGN KEY (rump_id) REFERENCES stu_rump (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)
+            CREATE TABLE stu_buildplans_hangar (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, rump_id INTEGER NOT NULL, buildplan_id INTEGER NOT NULL, start_energy_costs INTEGER NOT NULL, default_torpedo_type_id INTEGER DEFAULT NULL, CONSTRAINT FK_DE1E0721497D0592 FOREIGN KEY (default_torpedo_type_id) REFERENCES stu_torpedo_types (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_DE1E07218638E4E7 FOREIGN KEY (buildplan_id) REFERENCES stu_buildplan (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_DE1E07212EE98D4C FOREIGN KEY (rump_id) REFERENCES stu_rump (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE INDEX IDX_DE1E0721497D0592 ON stu_buildplans_hangar (default_torpedo_type_id)
@@ -1107,7 +1107,7 @@ final class Version20250629073202 extends AbstractMigration
             CREATE INDEX ship_rump_category_role_idx ON stu_rumps_cat_role_crew (rump_category_id, rump_role_id)
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE TABLE stu_rumps_categories (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL, database_id INTEGER DEFAULT NULL, type VARCHAR(255) NOT NULL, CONSTRAINT FK_D23A3E0BF0AA09DB FOREIGN KEY (database_id) REFERENCES stu_database_entrys (id) NOT DEFERRABLE INITIALLY IMMEDIATE)
+            CREATE TABLE stu_rumps_categories (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL, type VARCHAR(255) NOT NULL, database_id INTEGER DEFAULT NULL, CONSTRAINT FK_D23A3E0BF0AA09DB FOREIGN KEY (database_id) REFERENCES stu_database_entrys (id) NOT DEFERRABLE INITIALLY IMMEDIATE)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE INDEX IDX_D23A3E0BF0AA09DB ON stu_rumps_categories (database_id)
@@ -1143,7 +1143,7 @@ final class Version20250629073202 extends AbstractMigration
             CREATE INDEX rump_user_idx ON stu_rumps_user (rump_id, user_id)
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE TABLE stu_session_strings (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, sess_string VARCHAR(255) NOT NULL, date DATETIME DEFAULT NULL, CONSTRAINT FK_6468CB57A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)
+            CREATE TABLE stu_session_strings (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, sess_string VARCHAR(255) NOT NULL, date DATETIME NOT NULL, CONSTRAINT FK_6468CB57A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE INDEX IDX_6468CB57A76ED395 ON stu_session_strings (user_id)
@@ -1467,7 +1467,7 @@ final class Version20250629073202 extends AbstractMigration
             CREATE INDEX trade_network_date_idx ON stu_trade_shoutbox (trade_network_id, date)
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE TABLE stu_trade_transaction (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, wg_id INTEGER NOT NULL, wg_count INTEGER NOT NULL, gg_id INTEGER NOT NULL, gg_count INTEGER NOT NULL, date INTEGER NOT NULL, tradepost_id INTEGER DEFAULT NULL, CONSTRAINT FK_D2A0D0A2B221185A FOREIGN KEY (wg_id) REFERENCES stu_commodity (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_D2A0D0A2D2C18FD8 FOREIGN KEY (gg_id) REFERENCES stu_commodity (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)
+            CREATE TABLE stu_trade_transaction (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, wg_id INTEGER NOT NULL, wg_count INTEGER NOT NULL, gg_id INTEGER NOT NULL, gg_count INTEGER NOT NULL, date INTEGER NOT NULL, tradepost_id INTEGER NOT NULL, CONSTRAINT FK_D2A0D0A2B221185A FOREIGN KEY (wg_id) REFERENCES stu_commodity (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_D2A0D0A2D2C18FD8 FOREIGN KEY (gg_id) REFERENCES stu_commodity (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE INDEX IDX_D2A0D0A2B221185A ON stu_trade_transaction (wg_id)
@@ -1566,7 +1566,7 @@ final class Version20250629073202 extends AbstractMigration
             CREATE INDEX IDX_8FC49479EA6EFDCD ON stu_user_layer (layer_id)
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE TABLE stu_user_lock (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER DEFAULT NULL, former_user_id INTEGER DEFAULT NULL, remaining_ticks INTEGER NOT NULL, reason CLOB NOT NULL, CONSTRAINT FK_F36B0C5EA76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)
+            CREATE TABLE stu_user_lock (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, former_user_id INTEGER DEFAULT NULL, remaining_ticks INTEGER NOT NULL, reason CLOB NOT NULL, user_id INTEGER DEFAULT NULL, CONSTRAINT FK_F36B0C5EA76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE UNIQUE INDEX UNIQ_F36B0C5EA76ED395 ON stu_user_lock (user_id)

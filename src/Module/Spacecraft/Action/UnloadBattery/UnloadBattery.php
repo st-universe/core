@@ -49,7 +49,7 @@ final class UnloadBattery implements ActionControllerInterface
             $msg = [];
             $msg[] = _('Flottenbefehl ausgeführt: Ersatzbatterie entladen');
 
-            foreach ($ship->getFleet()->getShips() as $ship) {
+            foreach ($ship->getFleet()?->getShips() ?? [] as $ship) {
                 $msg[] = $this->unloadBattery($ship, $load);
             }
             $game->addInformationMerge($msg);

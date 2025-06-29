@@ -75,7 +75,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     }
 
     #[Override]
-    public function getPossibleFleetMembers(Ship $fleetLeader): iterable
+    public function getPossibleFleetMembers(Ship $fleetLeader): array
     {
         return $this->getEntityManager()->createQuery(
             sprintf(
@@ -106,7 +106,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         int $tradePostShipId,
         int $commodityId,
         int $amount
-    ): iterable {
+    ): array {
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT s FROM %s s WHERE s.user_id = :userId AND s.docked_to_id = :tradePostShipId AND s.id IN (

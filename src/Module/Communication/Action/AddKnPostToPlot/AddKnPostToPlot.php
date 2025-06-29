@@ -7,6 +7,7 @@ namespace Stu\Module\Communication\Action\AddKnPostToPlot;
 use Override;
 use request;
 use Stu\Component\Game\TimeConstants;
+use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -50,6 +51,10 @@ final class AddKnPostToPlot implements ActionControllerInterface
         }
 
         $post = $this->knPostRepository->find($postId);
+        if ($post === null) {
+            throw new SanityCheckException(sprintf('postId %d does not exist', $postId));
+        }
+
         if ($post->getPlotId() !== null) {
             $this->knPostToPlotApplicationRepository->delete($application);
             $game->addInformation('Dieser Beitrag ist bereits einem Plot zugewiesen');

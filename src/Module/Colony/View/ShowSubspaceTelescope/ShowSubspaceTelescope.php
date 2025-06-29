@@ -54,6 +54,10 @@ final class ShowSubspaceTelescope implements ViewControllerInterface
         $mapX =  (int) ceil($system->getCx() / MapEnum::FIELDS_PER_SECTION);
         $mapY =  (int) ceil($system->getCy() / MapEnum::FIELDS_PER_SECTION);
         $layer = $system->getLayer();
+        if ($layer === null) {
+            $game->addInformation('Das Subraumteleskop kann hier nicht verwendet werden');
+            return;
+        }
 
         $game->addExecuteJS(sprintf(
             "registerNavKeys('%s.php', '%s', '%s');",

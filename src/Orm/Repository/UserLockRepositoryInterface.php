@@ -3,6 +3,7 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserLock;
 
 /**
@@ -12,7 +13,7 @@ use Stu\Orm\Entity\UserLock;
  */
 interface UserLockRepositoryInterface extends ObjectRepository
 {
-    public function getActiveByUser(int $userId): ?UserLock;
+    public function getActiveByUser(User $user): ?UserLock;
 
     /**
      * @return list<UserLock>

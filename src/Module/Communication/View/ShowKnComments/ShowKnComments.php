@@ -10,7 +10,6 @@ use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Module\Communication\Action\PostKnComment\PostKnComment;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Entity\KnPost;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 
 final class ShowKnComments implements ViewControllerInterface
@@ -29,9 +28,7 @@ final class ShowKnComments implements ViewControllerInterface
     {
         $user = $game->getUser();
 
-        /** @var KnPost $post */
         $post = $this->knPostRepository->find($this->showKnCommentsRequest->getKnPostId());
-
         if ($post === null) {
             return;
         }

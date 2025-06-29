@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\DeleteAlliance;
 
 use Override;
+use RuntimeException;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Exception\AccessViolationException;
@@ -29,8 +30,11 @@ final class DeleteAlliance implements ActionControllerInterface
     {
         $user = $game->getUser();
         $alliance = $user->getAlliance();
-        $allianceId = $alliance->getId();
+        if ($alliance === null) {
+            throw new RuntimeException('user not in alliance');
+        }
 
+        $allianceId = $alliance->getId();
         $game->setView(ModuleEnum::ALLIANCE);
 
         $jobFounder = $this->allianceJobRepository->getSingleResultByAllianceAndType(

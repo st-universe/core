@@ -9,7 +9,6 @@ use Stu\Exception\AccessViolationException;
 use Stu\Module\Communication\Action\EditKnPost\EditKnPost;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\KnPost;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 
 final class DeleteKnPost implements ActionControllerInterface
@@ -23,7 +22,6 @@ final class DeleteKnPost implements ActionControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        /** @var KnPost $post */
         $post = $this->knPostRepository->find($this->deleteKnPostRequest->getKnId());
         if ($post === null || $post->getUserId() !== $userId) {
             throw new AccessViolationException();

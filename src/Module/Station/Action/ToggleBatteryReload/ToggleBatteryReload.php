@@ -6,6 +6,7 @@ namespace Stu\Module\Station\Action\ToggleBatteryReload;
 
 use Override;
 use request;
+use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Station\Lib\StationLoaderInterface;
@@ -26,6 +27,9 @@ final class ToggleBatteryReload implements ActionControllerInterface
         }
 
         $epsSystem = $wrapper->getEpsSystemData();
+        if ($epsSystem === null) {
+            throw new SanityCheckException(sprintf('stationId %d does not have eps system', request::getIntFatal('id')));
+        }
         $epsSystem->setReloadBattery(!$epsSystem->reloadBattery())->update();
 
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);

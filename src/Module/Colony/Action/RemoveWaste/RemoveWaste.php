@@ -50,11 +50,13 @@ final class RemoveWaste implements ActionControllerInterface
             return;
         }
 
-        $storage = $colony->getStorage();
+        $storages = $colony->getStorage();
 
         $wasted = [];
         foreach ($commodities as $commodityId => $count) {
-            if (!$storage->containsKey((int)$commodityId)) {
+
+            $storage = $storages->get((int)$commodityId);
+            if ($storage === null) {
                 continue;
             }
             $count = (int)$count;
@@ -69,10 +71,8 @@ final class RemoveWaste implements ActionControllerInterface
                 continue;
             }
 
-            $stor = $storage->get((int)$commodityId);
-
-            if ($count > $stor->getAmount()) {
-                $count = $stor->getAmount();
+            if ($count > $storage->getAmount()) {
+                $count = $storage->getAmount();
             }
 
             $this->storageManager->lowerStorage($colony, $commodity, $count);

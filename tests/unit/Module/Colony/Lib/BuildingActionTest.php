@@ -53,10 +53,6 @@ class BuildingActionTest extends StuTestCase
         $game = $this->mock(GameControllerInterface::class);
         $building = $this->mock(Building::class);
 
-        $this->field->shouldReceive('hasBuilding')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(true);
         $this->field->shouldReceive('getBuilding')
             ->withNoArgs()
             ->once()

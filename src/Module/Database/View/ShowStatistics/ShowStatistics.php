@@ -100,6 +100,8 @@ final class ShowStatistics implements ViewControllerInterface
 
     /**
      * @param GraphInfo[] $graphInfos
+     * 
+     * @return array<string>
      */
     private function createImagesSources(array $graphInfos, int $divisor): array
     {
@@ -114,9 +116,7 @@ final class ShowStatistics implements ViewControllerInterface
         return $imageSources;
     }
 
-    /**
-     * @param GameTurnStats[] $stats
-     */
+    /** @param array<GameTurnStats> $stats */
     private function createImageSrc(array $stats, GraphInfo $graphInfo, string $title): string
     {
         $this->minY = $graphInfo->yAxisStartAtZero ? 0 : PHP_INT_MAX;
@@ -132,7 +132,7 @@ final class ShowStatistics implements ViewControllerInterface
         $graph->SetMargin(70, 30, 30, 90);
         $graph->SetMarginColor('black');
         $graph->tabtitle->Set($title);
-        $graph->tabtitle->SetFont(FF_ARIAL, FS_BOLD, 10);
+        $graph->tabtitle->SetFont(15, 9002, 10);
         $graph->tabtitle->SetColor('white', 'black', 'white');
         $graph->img->SetAntiAliasing(false);
         $graph->SetColor('black');
@@ -158,11 +158,16 @@ final class ShowStatistics implements ViewControllerInterface
         $graph->legend->SetPos(0.05, 0.01, "top", "right");
         $graph->legend->SetColor('white', 'white');
         $graph->legend->SetFillColor('black');
-        $graph->legend->SetFont(FF_ARIAL, FS_BOLD, 8);
+        $graph->legend->SetFont(15, 9002, 8);
 
         return $this->imageCreation->graphInSrc($graph);
     }
 
+    /** 
+     * @param GameTurnStats[] $stats 
+     * 
+     * @return array<int, int>
+     * */
     private function createDataX(array $stats): array
     {
         $datax = [];
@@ -174,6 +179,10 @@ final class ShowStatistics implements ViewControllerInterface
         return $datax;
     }
 
+    /** @param GameTurnStats[] $stats 
+     * 
+     * @return array<int, int>
+     */
     private function createDataY(string $method, array $stats): array
     {
         $datay = [];
@@ -190,8 +199,11 @@ final class ShowStatistics implements ViewControllerInterface
     }
 
     /**
+     * @param array<int, int> $datax
      * @param PlotInfo[] $plotInfos
      * @param GameTurnStats[] $stats
+     * 
+     * @return array<LinePlot>
      */
     private function createPlots(array $datax, array $plotInfos, array $stats): array
     {
@@ -217,6 +229,9 @@ final class ShowStatistics implements ViewControllerInterface
         return $plots;
     }
 
+    /** 
+     * @param GameTurnStats[] $stats 
+     * */
     private function configureXAxis(Graph $graph, array $stats): void
     {
         $fmt = new IntlDateFormatter(
@@ -241,7 +256,7 @@ final class ShowStatistics implements ViewControllerInterface
         $graph->xaxis->SetLabelAngle(45);
         $graph->xaxis->SetPos('min');
         $graph->xaxis->SetMajTickPositions($tickPositions, $tickLabels);
-        $graph->xaxis->SetFont(FF_ARIAL, FS_NORMAL, 8);
+        $graph->xaxis->SetFont(15, 9001, 8);
         $graph->xaxis->SetColor('white', 'white');
     }
 
@@ -250,7 +265,7 @@ final class ShowStatistics implements ViewControllerInterface
         $yGrace = $this->maxY - $this->minY < 10 ? 50 : 10;
 
         $graph->yaxis->scale->SetGrace($yGrace, $yAxisStartAtZero ? 0 : $yGrace);
-        $graph->yaxis->SetFont(FF_ARIAL, FS_NORMAL, 8);
+        $graph->yaxis->SetFont(15, 9001, 8);
         $graph->yaxis->SetColor('white', 'white');
     }
 }

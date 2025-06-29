@@ -9,6 +9,7 @@ use Stu\Component\Database\DatabaseEntryTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Exception\AccessViolationException;
+use Stu\Exception\SanityCheckException;
 use Stu\Lib\Map\VisualPanel\Layer\Data\MapData;
 use Stu\Lib\Map\VisualPanel\Layer\Render\SystemLayerRenderer;
 use Stu\Lib\Map\VisualPanel\PanelAttributesInterface;
@@ -64,6 +65,9 @@ final class ShowDatabaseEntry implements ViewControllerInterface
          */
         $entry = $this->databaseEntryRepository->find($entryId);
         $category = $this->databaseCategoryRepository->find($categoryId);
+        if ($category === null) {
+            throw new SanityCheckException(sprintf('categoryId %d does not exist', $categoryId));
+        }
 
         $entry_name = $entry->getDescription();
 
@@ -166,6 +170,9 @@ final class ShowDatabaseEntry implements ViewControllerInterface
                 break;
             case DatabaseEntryTypeEnum::DATABASE_TYPE_STARSYSTEM:
                 $starSystem = $this->starSystemRepository->find($entry_object_id);
+                if ($starSystem === null) {
+                    throw new SanityCheckException(sprintf('starSystemId %d does not exist', $entry_object_id));
+                }
                 $data = [];
                 $userHasColonyInSystem = $this->hasUserColonyInSystem($game->getUser(), $entry_object_id);
 

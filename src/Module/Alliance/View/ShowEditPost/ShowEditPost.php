@@ -29,7 +29,7 @@ final class ShowEditPost implements ViewControllerInterface
 
         $board = $post->getBoard();
         $topic = $post->getTopic();
-        if ($board->getAllianceId() !== $alliance->getId()) {
+        if ($board->getAlliance() !== $alliance) {
             throw new AccessViolationException();
         }
 

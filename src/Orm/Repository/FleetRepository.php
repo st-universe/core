@@ -93,7 +93,7 @@ final class FleetRepository extends EntityRepository implements FleetRepositoryI
     }
 
     #[Override]
-    public function getNonNpcFleetList(): iterable
+    public function getNonNpcFleetList(): array
     {
         return $this->getEntityManager()
             ->createQuery(

@@ -89,11 +89,6 @@ class AllianceBoardTopic
         return $this;
     }
 
-    public function getAllianceId(): int
-    {
-        return $this->alliance_id;
-    }
-
     public function getName(): string
     {
         return $this->name;

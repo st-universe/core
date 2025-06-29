@@ -12,7 +12,6 @@ use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\KnCharacter;
-use Stu\Orm\Entity\KnPost;
 use Stu\Orm\Repository\KnCharacterRepositoryInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
@@ -33,7 +32,6 @@ final class EditKnPost implements ActionControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        /** @var KnPost $post */
         $post = $this->knPostRepository->find($this->editKnPostRequest->getKnId());
         if ($post === null || ($post->getUserId() !== $userId && !$game->isAdmin())) {
             throw new AccessViolationException();

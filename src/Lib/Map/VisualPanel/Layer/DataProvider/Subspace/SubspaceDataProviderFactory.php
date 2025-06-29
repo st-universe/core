@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace;
 
 use Override;
-use RuntimeException;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\AbstractPanelLayerDataProvider;
 use Stu\Orm\Repository\LocationRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
@@ -22,19 +21,12 @@ final class SubspaceDataProviderFactory implements SubspaceDataProviderFactoryIn
     #[Override]
     public function getDataProvider(int $id, SubspaceLayerTypeEnum $type): AbstractPanelLayerDataProvider
     {
-        switch ($type) {
-            case SubspaceLayerTypeEnum::ALL:
-                return new GeneralSubspaceDataProvider($this->locationRepository, $this->mapRepository, $this->starSystemMapRepository);
-            case SubspaceLayerTypeEnum::IGNORE_USER:
-                return new IgnoringSubspaceDataProvider($id, $this->locationRepository, $this->mapRepository, $this->starSystemMapRepository);
-            case SubspaceLayerTypeEnum::ALLIANCE_ONLY:
-                return new AllianceSubspaceDataProvider($id, $this->locationRepository, $this->mapRepository, $this->starSystemMapRepository);
-            case SubspaceLayerTypeEnum::USER_ONLY:
-                return new UserSubspaceDataProvider($id, $this->locationRepository, $this->mapRepository, $this->starSystemMapRepository);
-            case SubspaceLayerTypeEnum::SPACECRAFT_ONLY:
-                return new ShipSubspaceDataProvider($id, $this->locationRepository, $this->mapRepository, $this->starSystemMapRepository);
-        }
-
-        throw new RuntimeException(sprintf('subspace layer type %d is not supported', $type->value));
+        return match ($type) {
+            SubspaceLayerTypeEnum::ALL => new GeneralSubspaceDataProvider($this->locationRepository, $this->mapRepository, $this->starSystemMapRepository),
+            SubspaceLayerTypeEnum::IGNORE_USER => new IgnoringSubspaceDataProvider($id, $this->locationRepository, $this->mapRepository, $this->starSystemMapRepository),
+            SubspaceLayerTypeEnum::ALLIANCE_ONLY => new AllianceSubspaceDataProvider($id, $this->locationRepository, $this->mapRepository, $this->starSystemMapRepository),
+            SubspaceLayerTypeEnum::USER_ONLY => new UserSubspaceDataProvider($id, $this->locationRepository, $this->mapRepository, $this->starSystemMapRepository),
+            SubspaceLayerTypeEnum::SPACECRAFT_ONLY => new ShipSubspaceDataProvider($id, $this->locationRepository, $this->mapRepository, $this->starSystemMapRepository)
+        };
     }
 }
