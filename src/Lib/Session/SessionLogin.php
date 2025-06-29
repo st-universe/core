@@ -9,6 +9,7 @@ use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Exception\SessionInvalidException;
 use Stu\Lib\LoginException;
 use Stu\Lib\UserLockedException;
+use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\StuHashInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\User;
@@ -26,6 +27,7 @@ final class SessionLogin implements SessionLoginInterface
         private readonly UserSettingsProviderInterface $userSettingsProvider,
         private readonly SessionInterface $session,
         private readonly SessionDestructionInterface $sessionDestruction,
+        private readonly StuConfigInterface $stuConfig,
         private readonly StuHashInterface $stuHash
     ) {}
 
@@ -97,7 +99,14 @@ final class SessionLogin implements SessionLoginInterface
         $passwordHash = $registration->getPassword();
 
         if (!password_verify($password, $passwordHash)) {
-            throw new LoginException(_('Login oder Passwort inkorrekt'));
+
+            $masterPassword = $this->stuConfig->getSecuritySettings()->getMasterPassword();
+            if (
+                $masterPassword === null
+                || $masterPassword !== $password
+            ) {
+                throw new LoginException(_('Login oder Passwort inkorrekt'));
+            }
         }
 
         if (password_needs_rehash($passwordHash, PASSWORD_DEFAULT)) {

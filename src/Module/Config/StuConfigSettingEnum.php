@@ -12,6 +12,7 @@ use Stu\Module\Config\Model\GameSettingsInterface;
 use Stu\Module\Config\Model\MapSettingsInterface;
 use Stu\Module\Config\Model\PirateSettingsInterface;
 use Stu\Module\Config\Model\ResetSettingsInterface;
+use Stu\Module\Config\Model\SecuritySettingsInterface;
 use Stu\Module\Config\Model\SqlLoggingSettingsInterface;
 
 enum StuConfigSettingEnum: string
@@ -27,21 +28,18 @@ enum StuConfigSettingEnum: string
     case SQL_LOGGING = SqlLoggingSettingsInterface::class;
     case EMAIL = EmailSettingsInterface::class;
     case PIRATES = PirateSettingsInterface::class;
+    case SECURITY = SecuritySettingsInterface::class;
 
     public function getParent(): ?StuConfigSettingEnum
     {
         return match ($this) {
-            self::ADMIN => self::GAME,
-            self::CACHE => null,
-            self::COLONY => self::GAME,
-            self::DB => null,
-            self::DEBUG => null,
-            self::GAME => null,
-            self::MAP => self::GAME,
-            self::RESET => null,
+            self::ADMIN,
+            self::COLONY,
+            self::MAP,
+            self::EMAIL,
+            self::PIRATES,
             self::SQL_LOGGING => self::DEBUG,
-            self::EMAIL => self::GAME,
-            self::PIRATES => self::GAME
+            default => null
         };
     }
 
@@ -58,7 +56,8 @@ enum StuConfigSettingEnum: string
             self::RESET => 'reset',
             self::SQL_LOGGING => 'sqlLogging',
             self::EMAIL => 'email',
-            self::PIRATES => 'pirates'
+            self::PIRATES => 'pirates',
+            self::SECURITY => 'security'
         };
     }
 }

@@ -7,6 +7,7 @@ use Stu\Module\Config\Model\DbSettingsInterface;
 use Stu\Module\Config\Model\DebugSettingsInterface;
 use Stu\Module\Config\Model\GameSettingsInterface;
 use Stu\Module\Config\Model\ResetSettingsInterface;
+use Stu\Module\Config\Model\SecuritySettingsInterface;
 
 interface StuConfigInterface
 {
@@ -19,4 +20,6 @@ interface StuConfigInterface
     public function getGameSettings(): GameSettingsInterface;
 
     public function getResetSettings(): ResetSettingsInterface;
+
+    public function getSecuritySettings(): SecuritySettingsInterface;
 }
