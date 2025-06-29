@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dc8d43fc20d56558683a180974954538",
+    "content-hash": "ed47a4232be0dda6a2b50f2f578e8f58",
     "packages": [
         {
             "name": "adhocore/cli",
@@ -9477,27 +9477,6 @@
             "time": "2025-05-08T15:44:02+00:00"
         },
         {
-            "name": "st-universe/assets",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/st-universe/assets.git",
-                "reference": "5816bd22935c5d08dd145cbc3ce95e5ba38ad297"
-            },
-            "require": {
-                "ext-gd": "*",
-                "ext-json": "*",
-                "php": "^7.4||^8"
-            },
-            "default-branch": true,
-            "type": "library",
-            "license": [
-                "proprietary"
-            ],
-            "description": "STU Assets",
-            "time": "2025-05-26T18:58:06+00:00"
-        },
-        {
             "name": "staabm/side-effects-detector",
             "version": "1.0.5",
             "source": {
@@ -10224,7 +10203,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "st-universe/assets": 20,
         "st-universe/planet-generator": 20,
         "st-universe/starsystem-generator": 20
     },
@@ -10245,6 +10223,6 @@
         "ext-sysvsem": "*",
         "ext-xsl": "*"
     },
-    "platform-dev": {},
-    "plugin-api-version": "2.6.0"
+    "platform-dev": [],
+    "plugin-api-version": "2.3.0"
 }

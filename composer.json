@@ -77,8 +77,7 @@
     "phpstan/phpstan-phpunit": "^2.0",
     "phpunit/phpunit": "^12",
     "rector/rector": "^2.0",
-    "spatie/phpunit-snapshot-assertions": "^5.1",
-    "st-universe/assets": "dev-master"
+    "spatie/phpunit-snapshot-assertions": "^5.1"
   },
   "config": {
     "sort-packages": true,
@@ -116,7 +115,6 @@
       "@composer qaStage2"
     ],
     "qaStage1": [
-      "@composer orm:proxies",
       "@composer unittests",
       "@composer stan",
       "@composer security:check"
@@ -139,12 +137,5 @@
     "qaStage2": "Executes integrative qa related actions",
     "gen:assets": "Generates asset images",
     "gen:baseline": "Generates the phpstan baseline"
-  },
-  "extra": {
-    "installer-paths": {
-      "./src/Public/assets": [
-        "st-universe/assets"
-      ]
-    }
   }
 }
