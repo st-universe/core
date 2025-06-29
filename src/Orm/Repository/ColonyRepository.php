@@ -244,7 +244,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
             ->createNativeQuery(
                 'SELECT user_id, SUM(satisfied) AS satisfied
                 FROM ( SELECT c.user_id,
-                            LEAST( COALESCE(c.bev_work, 0),
+                            LEAST( COALESCE(cc.bev_work, 0),
                             ( SELECT COALESCE(SUM(bc.count), 0)
                                 FROM stu_colonies_fielddata cf
                                 JOIN stu_buildings b
@@ -256,6 +256,8 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                                 AND cf.aktiv = 1
                             )) AS satisfied
                         FROM stu_colony c
+                        JOIN stu_colony_changeable cc
+                        ON c.id = cc.colony_id
                         WHERE c.user_id >= :firstUserId) AS colonies
                 GROUP BY user_id
                 ORDER BY 2 DESC
