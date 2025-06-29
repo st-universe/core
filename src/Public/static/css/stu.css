@@ -1313,18 +1313,6 @@ div.userBoxDetailAddendum {
   padding-top: 3px;
 }
 
-div.userTag {
-  width: 60px;
-  height: 20px;
-  display: inline-block;
-  text-align: center;
-  vertical-align: middle;
-}
-
-div.userTag1 {
-  background-color: #8b001e;
-}
-
 div.knRatingPositive {
   cursor: pointer;
   padding: 1px 7px 1px 7px;
