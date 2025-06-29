@@ -17,7 +17,7 @@ trait CustomControllerHelperTrait
     {
         if (array_key_exists('REQUEST_METHOD', $_SERVER)) {
             $request = $_SERVER['REQUEST_METHOD'] === 'GET' ? $_GET : $_POST;
-            $this->initRequestParser($request);
+            $this->initRequestParser($request, new Config());
         }
     }
 
@@ -40,7 +40,7 @@ trait CustomControllerHelperTrait
     protected function parameter(string $name): TypeParser
     {
         if (request::isMocked()) {
-            $this->initRequestParser(request::getvars());
+            $this->initRequestParser(request::getvars(), new Config());
         }
 
         return $this->queryParameter($name);
