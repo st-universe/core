@@ -50,8 +50,18 @@ final class ShowKnArchive implements ViewControllerInterface
 
         $knNavigation = [];
         if ($curpage != 0) {
-            $knNavigation[] = ["page" => "<<", "mark" => 0, "cssclass" => "pages"];
-            $knNavigation[] = ["page" => "<", "mark" => ($mark - GameEnum::KN_PER_SITE), "cssclass" => "pages"];
+            $knNavigation[] = [
+                "page" => "<<",
+                "mark" => 0,
+                "cssclass" => "pages",
+                "style" => "min-width: 30px; width: auto; padding: 5px 8px; text-align: center; display: inline-block; white-space: nowrap;"
+            ];
+            $knNavigation[] = [
+                "page" => "<",
+                "mark" => ($mark - GameEnum::KN_PER_SITE),
+                "cssclass" => "pages",
+                "style" => "min-width: 30px; width: auto; padding: 5px 8px; text-align: center; display: inline-block; white-space: nowrap;"
+            ];
         }
 
         for ($i = $curpage - 1; $i <= $curpage + 3; $i++) {
@@ -61,13 +71,24 @@ final class ShowKnArchive implements ViewControllerInterface
             $knNavigation[] = [
                 "page" => $i,
                 "mark" => ($i * GameEnum::KN_PER_SITE - GameEnum::KN_PER_SITE),
-                "cssclass" => ($curpage + 1 === $i ? "pages selected" : "pages")
+                "cssclass" => ($curpage + 1 === $i ? "pages selected" : "pages"),
+                "style" => "min-width: 30px; width: auto; padding: 5px 8px; text-align: center; display: inline-block; white-space: nowrap;"
             ];
         }
 
         if ($curpage + 1 !== $maxpage) {
-            $knNavigation[] = ["page" => ">", "mark" => ($mark + GameEnum::KN_PER_SITE), "cssclass" => "pages"];
-            $knNavigation[] = ["page" => ">>", "mark" => $maxpage * GameEnum::KN_PER_SITE - GameEnum::KN_PER_SITE, "cssclass" => "pages"];
+            $knNavigation[] = [
+                "page" => ">",
+                "mark" => ($mark + GameEnum::KN_PER_SITE),
+                "cssclass" => "pages",
+                "style" => "min-width: 30px; width: auto; padding: 5px 8px; text-align: center; display: inline-block; white-space: nowrap;"
+            ];
+            $knNavigation[] = [
+                "page" => ">>",
+                "mark" => $maxpage * GameEnum::KN_PER_SITE - GameEnum::KN_PER_SITE,
+                "cssclass" => "pages",
+                "style" => "min-width: 30px; width: auto; padding: 5px 8px; text-align: center; display: inline-block; white-space: nowrap;"
+            ];
         }
 
         $archivePosts = $this->knPostArchivRepository->getByVersion($version, $mark, GameEnum::KN_PER_SITE);
